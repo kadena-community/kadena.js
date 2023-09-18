@@ -6,6 +6,7 @@ import type { INavHeaderLinkProps } from './NavHeaderLink';
 import { NavHeaderLink } from './NavHeaderLink';
 import type { INavHeaderNavigationProps } from './NavHeaderNavigation';
 import { NavHeaderNavigation } from './NavHeaderNavigation';
+import { INavHeaderSelectProps, NavHeaderSelect } from './NavHeaderSelect';
 
 import type { FC } from 'react';
 
@@ -14,6 +15,7 @@ export {
   INavHeaderContentProps,
   INavHeaderLinkProps,
   INavHeaderNavigationProps,
+  INavHeaderSelectProps,
 };
 
 export interface INavHeaderProps {
@@ -21,6 +23,7 @@ export interface INavHeaderProps {
   Navigation: FC<INavHeaderNavigationProps>;
   Link: FC<INavHeaderLinkProps>;
   Content: FC<INavHeaderContentProps>;
+  Select: FC<INavHeaderSelectProps>;
 }
 
 export const NavHeader: INavHeaderProps = {
@@ -28,4 +31,5 @@ export const NavHeader: INavHeaderProps = {
   Navigation: NavHeaderNavigation,
   Link: NavHeaderLink,
   Content: NavHeaderContent,
+  Select: NavHeaderSelect,
 };

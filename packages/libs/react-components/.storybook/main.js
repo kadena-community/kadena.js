@@ -6,7 +6,7 @@ module.exports = {
     '@storybook/addon-interactions',
     '@storybook/addon-mdx-gfm',
     'storybook-dark-mode',
-    '@storybook/addon-docs'
+    '@storybook/addon-docs',
   ],
   framework: {
     name: '@storybook/react-webpack5',
@@ -16,7 +16,7 @@ module.exports = {
     autodocs: true,
   },
   transform: {
-    "^.+\\.[tj]sx?$": "babel-jest",
-    "^.+\\.mdx$": "@storybook/addon-docs/jest-transform-mdx"
-  }
+    '^.+\\.[tj]sx?$': 'babel-jest',
+    '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx',
+  },
 };

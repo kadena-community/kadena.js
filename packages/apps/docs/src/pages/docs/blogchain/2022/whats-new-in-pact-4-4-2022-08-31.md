@@ -12,12 +12,12 @@ description:
 menu: What’s New in Pact 4.4
 label: What’s New in Pact 4.4
 publishDate: 2022-08-31
+headerImage: /assets/blog/1_IW4RipwJLD_0U4n4O6_MlA.webp
+tags: [pact]
 author: Emily Pillmore
 authorId: emily.pillmore
 layout: blog
 ---
-
-![Check out the newest changes to Pact 4.4](/assets/blog/1_IW4RipwJLD_0U4n4O6_MlA.webp)
 
 # What’s New in Pact 4.4
 

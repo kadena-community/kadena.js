@@ -11,6 +11,7 @@ description:
 menu: Kadena on Bloomberg TV
 label: Kadena on Bloomberg TV
 publishDate: 2019-06-17
+tags: [kadena]
 author: Vivienne Chen
 authorId: vivienne.chen
 layout: blog
@@ -45,7 +46,7 @@ Some highlights from Monica’s segment on Bloomberg TV:
   pick up your prescription, you can trust that it has been verified along the
   chain.” For more on what a hybrid blockchain can do to unlock trapped
   liquidity,
-  _**[read Kadena CEO Will Martino’s post on the Blockchain Sharing Economy](../2018/blockchain-future-smart-contract-sharing-economy-2018-12-17)**_
+  _**[read Kadena CEO Will Martino’s post on the Blockchain Sharing Economy](/docs/blogchain/2018/blockchain-future-smart-contract-sharing-economy-2018-12-17)**_
 
 - **Facebook’s stablecoin**: “This represents another company that has large
   institutional value demonstrating that they think blockchain is a way for them

@@ -9,12 +9,12 @@ description:
 menu: Blockchain summer
 label: Blockchain summer
 publishDate: 2019-07-29
+headerImage: /assets/blog/kl314KSDD7wK0hd2pbA.webp
+tags: [kadena]
 author: Miguel Angel Romero Jr.
 authorId: miguel.angel
 layout: blog
 ---
-
-![](/assets/blog/kl314KSDD7wK0hd2pbA.webp)
 
 # Blockchain summer - the road to mainstream adoption
 

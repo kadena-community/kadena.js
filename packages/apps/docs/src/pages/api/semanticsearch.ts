@@ -37,6 +37,7 @@ const getData = (file: string): IFrontmatterData => {
 
   let foundItem: IMenuData;
   const findPage = (tree: IMenuData[], file: string): IMenuData | undefined => {
+    if (!tree) return;
     tree.forEach((item) => {
       if (item.root === file) {
         foundItem = item;

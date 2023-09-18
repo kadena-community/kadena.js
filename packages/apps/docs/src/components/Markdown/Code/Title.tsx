@@ -5,6 +5,7 @@ import React from 'react';
 
 interface IProp {
   children: ReactNode;
+  'data-language'?: string;
 }
 
 export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
@@ -18,7 +19,7 @@ export const TitleWrapper: FC<IProp> = ({ children, ...props }) => {
 
   return (
     <div className={codeTitle} {...props}>
-      {children}
+      {children} {props['data-language']}
     </div>
   );
 };

@@ -14,7 +14,7 @@ type StoryProps = {
 } & ITextFieldProps;
 
 const meta: Meta<StoryProps> = {
-  title: 'Components/TextField',
+  title: 'Form/TextField',
   parameters: {
     docs: {
       description: {

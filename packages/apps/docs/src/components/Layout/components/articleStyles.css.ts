@@ -18,7 +18,6 @@ export const contentClass = style([
     position: 'relative',
     paddingTop: '$10',
     paddingX: 0,
-    paddingBottom: '$35',
     overflow: 'hidden',
     width: '100%',
     height: '100%',
@@ -59,6 +58,8 @@ export const contentClassVariants: Record<LayoutType, string> = styleVariants({
     },
   },
   full: {},
-  blog: {},
+  blog: {
+    paddingTop: 0,
+  },
   redocly: {},
 });

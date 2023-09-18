@@ -8,12 +8,12 @@ description:
 menu: How Kadena is Reimagining Blockchain Developer UX
 label: How Kadena is Reimagining Blockchain Developer UX
 publishDate: 2022-06-09
+headerImage: /assets/blog/1_q5vogZ5itWngvqAHv9_Zbg.webp
+tags: [kadena]
 author: Randy Daal
 authorId: randy.daal
 layout: blog
 ---
-
-![](/assets/blog/1_q5vogZ5itWngvqAHv9_Zbg.webp)
 
 # How Kadena is Reimagining Blockchain Developer UX
 
@@ -76,9 +76,8 @@ development. Here are some major reasons why:
   which makes it the most advanced and fastest blockchain platform in the world.
   Kadena is currently the only proof of work platform capable of scaling to
   settle the 9+ million trades executed daily on the New York Stock Exchange.
-  Kadena is also built on
-  [Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact) — the first
-  truly human readable smart contract language.
+  Kadena is also built on [Pact](/docs/pact/beginner) — the first truly human
+  readable smart contract language.
 
 - Second, we’ve brought together a passionate community of 100s of builders,
   miners, and advocates who are spreading the word about Kadena and creating

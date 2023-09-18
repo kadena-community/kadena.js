@@ -8,7 +8,7 @@ export const footerWrapperClass = style([
   sprinkles({
     position: 'relative',
     background: '$neutral2',
-    marginTop: '$40',
+    marginTop: '$20',
   }),
   {
     zIndex: $$navMenu,
@@ -42,16 +42,20 @@ export const footerClass = style([
 
 export const textClass = style([
   sprinkles({
-    color: '$neutral4',
+    display: 'block',
+    color: '$neutral6',
     paddingX: '$3',
+    textAlign: 'center',
   }),
 ]);
 
 export const linkClass = style([
   sprinkles({
+    display: 'block',
     textDecoration: 'none',
-    color: '$neutral4',
+    color: '$neutral6',
     paddingX: '$3',
+    textAlign: 'center',
   }),
   {
     selectors: {

@@ -13,12 +13,12 @@ description:
 menu: Users Shouldn’t Pay for Gas
 label: Users Shouldn’t Pay for Gas
 publishDate: 2019-12-19
+headerImage: /assets/blog/2019/1_2tCoP7nddaQefAs0TVlygg.webp
+tags: [pact]
 author: Will Martino
 authorId: will.martino
 layout: blog
 ---
-
-![](/assets/blog/2019/1_2tCoP7nddaQefAs0TVlygg.webp)
 
 # Users Shouldn’t Pay for Gas
 

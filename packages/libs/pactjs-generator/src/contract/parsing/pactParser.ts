@@ -6,23 +6,29 @@ import { functionCalls, parser } from './utils/pactGrammar';
 import type { IModuleLike } from './utils/utils';
 import { getModuleFullName } from './utils/utils';
 
+export interface IType {
+  kind: string;
+  value: string;
+  isList?: true;
+}
+
 interface ISchema {
   name: string;
   doc?: string;
   properties?: Array<{
     name: string;
-    type: string | { kind: string; value: string };
+    type: string | IType;
   }>;
 }
 
 interface IMethod {
   name: string;
   kind: string; // 'defun' | 'defcap' | 'defpact'; // need to fix typing
-  returnType?: string | { kind: string; value: string };
+  returnType?: string | IType;
   doc?: string;
   parameters?: Array<{
     name: string;
-    type: string | { kind: string; value: string };
+    type: string | IType;
   }>;
 }
 

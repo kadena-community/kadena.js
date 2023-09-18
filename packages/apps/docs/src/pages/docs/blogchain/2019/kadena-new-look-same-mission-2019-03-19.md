@@ -12,12 +12,12 @@ description:
 menu: Kadena New Look, Same Mission
 label: Kadena New Look, Same Mission
 publishDate: 2019-03-19
+headerImage: /assets/blog/1_sv7Bttb-Wg98ZiJm6gC1rg.webp
+tags: [kadena]
 author: Vivienne Chen
 authorId: vivienne.chen
 layout: blog
 ---
-
-![](/assets/blog/1_sv7Bttb-Wg98ZiJm6gC1rg.webp)
 
 # Kadena: New Look, Same Mission
 

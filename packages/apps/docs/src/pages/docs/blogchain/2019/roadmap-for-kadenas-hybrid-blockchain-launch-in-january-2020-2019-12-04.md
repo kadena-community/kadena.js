@@ -12,12 +12,11 @@ description:
 menu: Roadmap for Kadena’s Hybrid Blockchain Launch in January 2020
 label: Roadmap for Kadena’s Hybrid Blockchain Launch in January 2020
 publishDate: 2019-12-04
+headerImage: /assets/blog/2019/1_5QtIuWilmEdMKrygNeF79Q.webp
 author: Tony Pham
 authorId: tony.pham
 layout: blog
 ---
-
-![](/assets/blog/2019/1_5QtIuWilmEdMKrygNeF79Q.webp)
 
 # Roadmap for Kadena’s Hybrid Blockchain Launch in January 2020
 

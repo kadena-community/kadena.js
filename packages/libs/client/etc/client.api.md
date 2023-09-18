@@ -37,6 +37,9 @@ export function createEckoWalletQuicksign(): IEckoSignFunction;
 export function createEckoWalletSign(): IEckoSignSingleFunction;
 
 // @public
+export const createSignWithKeypair: ICreateSignWithKeypair;
+
+// @public
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
 
 // @public
@@ -130,6 +133,14 @@ export interface ICreateClient {
 }
 
 // @public
+export interface ICreateSignWithKeypair {
+    // (undocumented)
+    (key: IKeypair): ISignFunction;
+    // (undocumented)
+    (keys: IKeypair[]): ISignFunction;
+}
+
+// @public
 export interface IEckoSignFunction extends ISignFunction, ICommonEckoFunctions {
 }
 
@@ -144,6 +155,14 @@ export interface IExecutionPayloadObject {
         code?: string;
         data?: Record<string, unknown>;
     };
+}
+
+// @public
+export interface IKeypair {
+    // (undocumented)
+    publicKey: string;
+    // (undocumented)
+    secretKey: string;
 }
 
 // @public (undocumented)

@@ -10,12 +10,12 @@ description:
 menu: Kadena Public Blockchain. Getting Started with Transfers
 label: Kadena Public Blockchain. Getting Started with Transfers
 publishDate: 2019-12-19
+headerImage: /assets/blog/2019/0_N20Oo9xivfuJFuug.webp
+tags: [pact]
 author: Emily Pillmore
 authorId: emily.pillmore
 layout: blog
 ---
-
-![](/assets/blog/2019/0_N20Oo9xivfuJFuug.webp)
 
 # Kadena Public Blockchain: Getting Started with Transfers
 

@@ -1,13 +1,13 @@
 {
-	"recommendations": [
-		"apollographql.vscode-apollo",
-		"editorconfig.editorconfig",
-		"dbaeumer.vscode-eslint",
-		"folke.vscode-monorepo-workspace",
-		"esbenp.prettier-vscode",
-		"eamodio.gitlens",
-		"christian-kohler.path-intellisense",
-		"prisma.prisma",
-		"graphql.vscode-graphql"
-	]
+  "recommendations": [
+    "apollographql.vscode-apollo",
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "folke.vscode-monorepo-workspace",
+    "esbenp.prettier-vscode",
+    "eamodio.gitlens",
+    "christian-kohler.path-intellisense",
+    "prisma.prisma",
+    "graphql.vscode-graphql"
+  ]
 }

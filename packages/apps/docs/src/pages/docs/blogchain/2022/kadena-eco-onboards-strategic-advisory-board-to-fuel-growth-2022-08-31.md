@@ -9,12 +9,12 @@ description:
 menu: Kadena Eco Onboards Strategic Advisory Board to Fuel Growth
 label: Kadena Eco Onboards Strategic Advisory Board to Fuel Growth
 publishDate: 2022-08-31
+headerImage: /assets/blog/1_GKYqAg6WO1MEc4z5l7Kx2A.webp
+tags: [kadena, grant]
 author: Francesco Melpignano
 authorId: francesco.melpignano
 layout: blog
 ---
-
-![Kadena Eco is proud to announce Brooke Ricketts as a Strategic Advisor](/assets/blog/1_GKYqAg6WO1MEc4z5l7Kx2A.webp)
 
 # Kadena Eco Onboards Strategic Advisory Board to Fuel Growth
 

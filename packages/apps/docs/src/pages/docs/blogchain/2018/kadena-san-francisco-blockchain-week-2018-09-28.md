@@ -9,12 +9,12 @@ description:
 menu: San Francisco Blockchain Week
 label: San Francisco Blockchain Week
 publishDate: 2018-09-28
+headerImage: /assets/blog/1_ecJ400MzdFVrsqfd-EucJg.webp
+tags: [kadena]
 author: Miguel Angel Romero Jr.
 authorId: miguel.angel
 layout: blog
 ---
-
-![](/assets/blog/1_ecJ400MzdFVrsqfd-EucJg.webp)
 
 # San Francisco Blockchain Week
 

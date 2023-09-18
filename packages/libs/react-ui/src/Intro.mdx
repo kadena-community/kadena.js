@@ -1,0 +1,10 @@
+import Readme from '../README.md?raw';
+import { Markdown } from '@storybook/blocks';
+import { Meta } from '@storybook/blocks';
+
+<Meta
+  title="Welcome/Intro"
+  parameters={{ options: { isToolshown: false }, id: 1 }}
+/>
+
+<Markdown>{Readme}</Markdown>

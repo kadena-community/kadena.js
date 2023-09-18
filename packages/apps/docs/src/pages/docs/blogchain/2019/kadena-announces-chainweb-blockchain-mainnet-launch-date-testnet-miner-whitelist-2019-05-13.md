@@ -14,12 +14,12 @@ label:
   Kadena Announces Public Blockchain Mainnet Launch Date & Testnet Miner
   Whitelist
 publishDate: 2019-05-13
+headerImage: /assets/blog/1_xxQ-iEPWZDrWwSpvKpOm2w.webp
+tags: [kadena]
 author: Vivienne Chen
 authorId: vivienne.chen
 layout: blog
 ---
-
-![](/assets/blog/1_xxQ-iEPWZDrWwSpvKpOm2w.webp)
 
 # Kadena Announces Public Blockchain Mainnet Launch Date & Testnet Miner Whitelist
 

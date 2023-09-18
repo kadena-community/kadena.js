@@ -10,6 +10,7 @@ description:
 menu: Tech Bulletin #1 — March 3, 2023
 label: Tech Bulletin #1 — March 3, 2023
 publishDate: 2023-03-03
+tags: [kadena, chainweaver, pact, marmalade, kadenajs, chainweb, community]
 author: Kadena
 authorId: kadena
 layout: blog
@@ -37,7 +38,7 @@ allows wallets to sign multiple transactions in a single request. Version 2.2.3
 further provides bug fixes and better gas defaults for cross-chain operations.
 
 Download or use Chainweaver here:
-[https://docs.kadena.io/basics/wallets#chainweaver](https://docs.kadena.io/basics/wallets#chainweaver).
+[/docs/kadena/wallets](/docs/kadena/wallets#chainweaverh-1967816367).
 
 Official release:
 [https://github.com/kadena-io/chainweaver/releases/tag/v2.2.3](https://github.com/kadena-io/chainweaver/releases/tag/v2.2.3)

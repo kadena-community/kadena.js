@@ -5,10 +5,15 @@ import { getReadTime } from './utils.mjs';
 import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
+import authors from './../data/authors.json' assert { type: 'json' };
 
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
   return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
+};
+
+const checkDynamicAuthorsPage = (filename) => {
+  return filename.includes('[authorId]');
 };
 
 const convertFile = (file) => {
@@ -103,10 +108,36 @@ const createTree = (rootDir, parent = []) => {
 
     if (!child.root) return;
 
-    console.log(currentFile);
     if (fs.statSync(`${currentFile}`).isFile()) {
-      const obj = convertFile(currentFile);
-      Object.assign(child, obj);
+      if (checkDynamicAuthorsPage(currentFile)) {
+        authors
+          .sort((a, b) => {
+            if (a.id > b.id) return 1;
+            if (a.id < b.id) return -1;
+            return 0;
+          })
+          .forEach((author, idx) => {
+            const obj = convertFile(currentFile);
+
+            const newObj = {
+              ...obj,
+              icon: undefined,
+              order: idx,
+              title: author.name,
+              label: author.name,
+              menu: author.name,
+              wordCount: 0,
+              readingTimeInMinutes: 0,
+              description: author.description,
+              root: `/docs/blogchain/authors/${author.id}`,
+            };
+
+            parent.push(newObj);
+          });
+      } else {
+        const obj = convertFile(currentFile);
+        Object.assign(child, obj);
+      }
     } else if (fs.existsSync(`${currentFile}/index.md`)) {
       const obj = convertFile(`${currentFile}/index.md`);
       Object.assign(child, obj);

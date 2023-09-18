@@ -6,12 +6,12 @@ description:
 menu: Kadena Launches Blockchain-as-a-Service
 label: Kadena Launches Blockchain-as-a-Service
 publishDate: 2019-08-27
+headerImage: /assets/blog/0_QgOv9OHFdAY2-9Mk.png
+tags: [kadena]
 author: Ben Jessel
 authorId: ben.jessel
 layout: blog
 ---
-
-![](/assets/blog/0_QgOv9OHFdAY2-9Mk.png)
 
 # Kadena Launches Blockchain-as-a-Service (BaaS) on Azure Marketplace
 
@@ -33,7 +33,7 @@ the cost and time-to-market associated with the on-premise installation of other
 blockchain solutions today.
 
 As the first blockchain offering on Microsoft Azure Marketplace to offer
-[Formal Verification](../2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11),
+[Formal Verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11),
 Kadena’s scalable solution enables enterprises to efficiently transact and share
 data in a secure and decentralized manner. Our existing blockchain clients
 include $3 billion asset manager

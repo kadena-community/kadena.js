@@ -19,7 +19,8 @@
         "root": ["."],
         "alias": {
           "@components": "./src/components",
-          "@theme": "./src/styles"
+          "@theme": "./src/styles",
+          "@utils": "./src/utils"
         }
       }
     ]

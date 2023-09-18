@@ -4,7 +4,7 @@ import {
   Input,
   InputWrapper,
   Option,
-  Select,
+  Select
 } from '@kadena/react-ui';
 
 import {

@@ -1,23 +1,12 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { sprinkles } from '@kadena/react-ui/theme';
 
-import { globalStyle, style } from '@vanilla-extract/css';
-
-export const ulListClassName = 'markdown-unordered-list';
+import { style } from '@vanilla-extract/css';
 
 export const ulListClass = style([
   sprinkles({
     marginY: '$5',
     marginX: 0,
     position: 'relative',
+    color: '$neutral4',
   }),
 ]);
-
-globalStyle(`.${ulListClassName}  ul`, {
-  marginTop: 0,
-  marginBottom: 0,
-});
-
-globalStyle(`.${ulListClassName}  li::marker`, {
-  color: vars.colors.$primaryHighContrast,
-  fontWeight: vars.fontWeights.$bold,
-});

@@ -9,6 +9,7 @@ export const treeListClass = style([
     padding: 0,
   }),
   {
+    overflowX: 'hidden',
     listStyle: 'none',
     overflowY: 'hidden',
     transition: 'all .5s ease',

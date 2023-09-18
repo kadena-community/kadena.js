@@ -10,14 +10,14 @@ description:
 menu: Deprecation Notice for Module Guards and Pact Guards
 label: Deprecation Notice for Module Guards and Pact Guards
 publishDate: 2022-10-03
+headerImage: /assets/blog/1_8sbZuCncPEgill19IVOSYQ.webp
+tags: [kadena, pact]
 author: Emily Pillmore
 authorId: emily.pillmore
 layout: blog
 ---
 
 # Deprecation Notice for Module Guards and Pact Guards
-
-![](/assets/blog/1_8sbZuCncPEgill19IVOSYQ.webp)
 
 Kadena aims to continue building and supporting our developer community with a
 robust, best-in-class experience for Web3 developers. In order to do so, the

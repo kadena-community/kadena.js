@@ -34,7 +34,7 @@ const HTMLInputTypes: HTMLInputTypeAttribute[] = [
 ];
 
 const meta: Meta<IInputProps> = {
-  title: 'Components/Input',
+  title: 'Form/Input',
   component: Input,
   parameters: {
     docs: {

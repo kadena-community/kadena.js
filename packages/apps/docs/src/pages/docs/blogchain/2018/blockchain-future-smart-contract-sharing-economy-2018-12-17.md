@@ -9,6 +9,7 @@ description:
 menu: The Future of Blockchain is the Smart Contract Sharing Economy
 label: The Future of Blockchain is the Smart Contract Sharing Economy
 publishDate: 2018-12-17
+tags: [kadena]
 author: Will Martino
 authorId: will.martino
 layout: blog

@@ -130,3 +130,92 @@ export const glowClass = style([
     zIndex: 0,
   },
 ]);
+
+export const selectContainerClass = style([
+  sprinkles({
+    alignItems: 'stretch',
+    backgroundColor: '$gray90',
+    borderRadius: '$sm',
+    display: 'flex',
+    flexGrow: 1,
+    lineHeight: '$lg',
+    overflow: 'hidden',
+    paddingLeft: '$4',
+    paddingRight: '$2',
+    position: 'relative',
+  }),
+  {
+    border: `1px solid ${vars.colors.$gray40}`,
+    selectors: {
+      '&:active': {
+        color: vars.colors.$gray40,
+      },
+    },
+  },
+]);
+
+export const selectContainerClassDisabled = style([
+  sprinkles({
+    backgroundColor: {
+      lightMode: '$gray20',
+    },
+    color: {
+      lightMode: '$foreground',
+    },
+  }),
+]);
+
+export const selectIconClass = style([
+  sprinkles({
+    alignItems: 'center',
+    display: 'flex',
+    color: '$gray40',
+  }),
+  {
+    selectors: {
+      '&:active': {
+        color: vars.colors.$gray40,
+      },
+    },
+  },
+]);
+
+export const selectClass = style([
+  sprinkles({
+    background: 'none',
+    border: 'none',
+    color: '$gray40',
+    flexGrow: 1,
+    outline: 'none',
+    paddingRight: '$8',
+    paddingLeft: '$sm',
+    paddingY: '$2',
+    fontSize: '$base',
+  }),
+  {
+    backgroundColor: 'inherit',
+    appearance: 'none',
+  },
+]);
+
+export const chevronIconClass = style([
+  sprinkles({
+    marginRight: '$2',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: '$1',
+    color: '$gray40',
+    display: 'inline-flex',
+    alignItems: 'center',
+  }),
+  {
+    pointerEvents: 'none',
+    zIndex: 10,
+    selectors: {
+      '&:active': {
+        color: vars.colors.$gray40,
+      },
+    },
+  },
+]);
