@@ -11,7 +11,7 @@ export default function useAlgoliaSearch(limitResults = 25) {
     'BD67NIA9JD',
     '0e7307de57fb813aab55f7429257aa61',
   );
-  const index = client.initIndex('docs_website');
+  const index = client.initIndex('docs_website_dev');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<undefined | string>(undefined);
   const [metaData, setMetadata] = useState<StreamMetaData[]>([]);
@@ -23,10 +23,13 @@ export default function useAlgoliaSearch(limitResults = 25) {
     index
       .search(query, { hitsPerPage: limitResults })
       .then(({ hits }) => {
+        console.log({
+          hits,
+        })
         setIsLoading(false);
         const mappedData = hits.map((hit) => {
           // @ts-ignore
-          const { filePath, title, content, url, header } = hit?.metadata;
+          const { filePath, title, content, url, header } = hit || {};
           return {
             filePath,
             title,
