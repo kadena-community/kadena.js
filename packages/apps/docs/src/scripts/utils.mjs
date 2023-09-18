@@ -22,6 +22,7 @@ export const importReadMes = [
     title: 'Node Client',
     options: {
       RootOrder: 1,
+      tags: ['chainweb', 'pact', 'reference'],
     },
   },
   {
@@ -31,6 +32,7 @@ export const importReadMes = [
     options: {
       RootOrder: 99,
       hideEditLink: true,
+      tags: ['chainweb', 'api', 'reference'],
     },
   },
   /** /libs/chainweb-stream-client */
@@ -40,6 +42,7 @@ export const importReadMes = [
     title: 'Stream Client',
     options: {
       RootOrder: 2,
+      tags: ['chainweb', 'stream', 'reference'],
     },
   },
   {
@@ -49,6 +52,7 @@ export const importReadMes = [
     options: {
       RootOrder: 99,
       hideEditLink: true,
+      tags: ['chainweb', 'stream', 'reference'],
     },
   },
   /** /libs/chainwebjs */
@@ -58,6 +62,7 @@ export const importReadMes = [
     title: 'JS bindings',
     options: {
       RootOrder: 3,
+      tags: ['chainweb', 'javascript', 'typescript', 'stream'],
     },
   },
   {
@@ -67,6 +72,7 @@ export const importReadMes = [
     options: {
       RootOrder: 99,
       hideEditLink: true,
+      tags: ['chainweb', 'javascript', 'typescript', 'stream', 'reference'],
     },
   },
   /** /libs/client */
@@ -76,6 +82,13 @@ export const importReadMes = [
     title: 'Client',
     options: {
       RootOrder: 7,
+      tags: [
+        'javascript',
+        'typescript',
+        'signing',
+        'transaction',
+        'typescript client',
+      ],
     },
   },
   {
@@ -85,6 +98,14 @@ export const importReadMes = [
     options: {
       RootOrder: 99,
       hideEditLink: true,
+      tags: [
+        'javascript',
+        'typescript',
+        'signing',
+        'transaction',
+        'typescript client',
+        'reference',
+      ],
     },
   },
 
@@ -94,6 +115,7 @@ export const importReadMes = [
     title: 'Client examples',
     options: {
       RootOrder: 8,
+      tags: ['javascript', 'typescript', 'examples', 'transfer'],
     },
   },
 
@@ -113,6 +135,7 @@ export const importReadMes = [
     options: {
       RootOrder: 98,
       hideEditLink: true,
+      tags: ['javascript', 'typescript', 'cryptography examples', 'functions'],
     },
   },
   {
@@ -122,6 +145,13 @@ export const importReadMes = [
     options: {
       RootOrder: 99,
       hideEditLink: true,
+      tags: [
+        'javascript',
+        'typescript',
+        'cryptography examples',
+        'functions',
+        'reference',
+      ],
     },
   },
   /** /libs/kadena.js */
@@ -131,6 +161,7 @@ export const importReadMes = [
     title: 'KadenaJS',
     options: {
       RootOrder: 6,
+      tags: ['run tests', 'pact server'],
     },
   },
   /** /libs/pactjs */
@@ -140,6 +171,7 @@ export const importReadMes = [
     title: 'PactJS',
     options: {
       RootOrder: 6,
+      tags: ['javascript', 'typescript', 'pact'],
     },
   },
   {
@@ -149,6 +181,7 @@ export const importReadMes = [
     options: {
       RootOrder: 98,
       hideEditLink: true,
+      tags: ['javascript', 'typescript', 'pact', 'reference'],
     },
   },
   {
@@ -158,6 +191,7 @@ export const importReadMes = [
     options: {
       RootOrder: 99,
       hideEditLink: true,
+      tags: ['javascript', 'typescript', 'pact', 'reference'],
     },
   },
   /** /libs/pactjs-generator */
@@ -167,6 +201,7 @@ export const importReadMes = [
     title: 'PactJS Generator',
     options: {
       RootOrder: 7,
+      tags: ['javascript', 'typescript', 'pact', 'reference', 'api'],
     },
   },
   {
@@ -176,6 +211,7 @@ export const importReadMes = [
     options: {
       RootOrder: 99,
       hideEditLink: true,
+      tags: ['javascript', 'typescript', 'pact', 'reference', 'api'],
     },
   },
   /** /tools/cookbook */
@@ -185,6 +221,7 @@ export const importReadMes = [
     title: 'JS Cookbook',
     options: {
       RootOrder: 2,
+      tags: ['javascript', 'typescript', 'pact', 'reference', 'api'],
     },
   },
   /** /tools/kda-cli */
@@ -194,6 +231,15 @@ export const importReadMes = [
     title: 'KDA CLI',
     options: {
       RootOrder: 3,
+      tags: [
+        'javascript',
+        'typescript',
+        'kda',
+        'chainweaver',
+        'setup devnet',
+        'cli',
+        'client',
+      ],
     },
   },
   {
@@ -203,6 +249,16 @@ export const importReadMes = [
     options: {
       RootOrder: 99,
       hideEditLink: true,
+      tags: [
+        'javascript',
+        'typescript',
+        'kda',
+        'chainweaver',
+        'setup devnet',
+        'cli',
+        'client',
+        'reference',
+      ],
     },
   },
   /** /tools/pactjs-cli */
@@ -212,6 +268,7 @@ export const importReadMes = [
     title: 'CLI tool',
     options: {
       RootOrder: 6,
+      tags: ['pactjs', 'cli', 'client', 'contracts'],
     },
   },
   {
@@ -221,6 +278,7 @@ export const importReadMes = [
     options: {
       RootOrder: 99,
       hideEditLink: true,
+      tags: ['pactjs', 'cli', 'client', 'contracts', 'reference'],
     },
   },
 ];

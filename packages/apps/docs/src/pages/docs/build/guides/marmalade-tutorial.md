@@ -5,6 +5,7 @@ menu: Build
 label: Marmalade Tutorial
 order: 1
 layout: full
+tags: [pact, marmalade, nft, tutorial]
 ---
 
 # Marmalade Tutorial
@@ -20,8 +21,8 @@ to use, build, and trade NFTs.
 
 To learn more about Marmalade try these recommended readings:
 
-1. [Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)](https://medium.com/kadena-io/mint-a-marketplace-nfts-on-kadena-marmalade-part-1-2262cbfa5296)
-2. [Mint a Marketplace! NFTs on Kadena Marmalade (Part 2)](https://medium.com/kadena-io/mint-a-marketplace-nfts-on-kadena-marmalade-part-2-f1477a4cf736)
+1. [Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)](/docs/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-1-2021-12-02.md)
+2. [Mint a Marketplace! NFTs on Kadena Marmalade (Part 2)](/docs/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-2-2021-12-03.md)
 
 ### What Makes Marmalade Unique
 

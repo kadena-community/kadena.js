@@ -5,6 +5,7 @@ menu: Build
 label: Safe Transfer
 order: 5
 layout: full
+tags: [pact, tutorial, transfer]
 ---
 
 # Safe Transfer
