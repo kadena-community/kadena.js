@@ -52,7 +52,7 @@ more subcomponents would negatively affect DX.
 > [here](https://bradfrost.com/blog/post/atomic-web-design/) and
 > [here](https://atomicdesign.bradfrost.com/chapter-2/).
 
-#### Button component as an example
+##### Button component as an example
 
 One example of a component that we updated from the Composition to Configuration
 approach was the `Button` component.
