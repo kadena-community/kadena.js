@@ -39,10 +39,10 @@ export default builder.prismaNode('Event', {
 
     block: t.prismaField({
       type: 'Block',
-      nullable: true,
+      nullable: false,
       // eslint-disable-next-line @typescript-eslint/typedef
       resolve(query, parent, args, context, info) {
-        return prismaClient.block.findUnique({
+        return prismaClient.block.findUniqueOrThrow({
           where: {
             hash: parent.blockHash,
           },
