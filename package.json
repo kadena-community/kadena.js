@@ -6,7 +6,7 @@
   "license": "ISC",
   "scripts": {
     "build": "turbo run build",
-    "format": "pnpm run /^format:.*/ && pnpm -r run format",
+    "format": "pnpm run /^format:.*/ && turbo run format",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",
     "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",
     "format:src": "prettier . \"!packages\" --cache --write",
