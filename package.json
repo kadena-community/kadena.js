@@ -10,6 +10,7 @@
     "format:ci": "pnpm -r run format:src --check",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . \"!packages\" --cache --write",
+    "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",
     "preinstall": "npx --no-install only-allow pnpm",
     "knip": "NEXT_TRANSLATE_PATH=packages/apps/tools knip",
     "lint": "pnpm run lint:fix-versions && turbo run lint",

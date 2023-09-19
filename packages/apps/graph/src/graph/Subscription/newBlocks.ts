@@ -1,5 +1,6 @@
 import { prismaClient } from '../../db/prismaClient';
 import { dotenv } from '../../utils/dotenv';
+import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
 import { builder } from '../builder';
 
 import type { Block } from '@prisma/client';
@@ -70,11 +71,4 @@ async function getLastBlocks(
   log("found '%s' blocks", foundblocks.length);
 
   return foundblocks;
-}
-
-function nullishOrEmpty(value: unknown): boolean {
-  if (Array.isArray(value)) {
-    return value.length === 0;
-  }
-  return value === null || value === undefined;
 }
