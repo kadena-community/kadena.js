@@ -1,14 +1,11 @@
-import { Stack } from '@kadena/react-ui';
-
-import { InfiniteScroll } from '@/components';
 import { BlogItem, BlogList } from '@/components/Blog';
+import { BlogListWrapper } from '@/components/BlogList';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
   TitleHeader,
 } from '@/components/Layout/components';
-import { useGetBlogs } from '@/hooks';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
 import type { IMenuData, IPageProps } from '@/types/Layout';
 import {
@@ -26,18 +23,6 @@ interface IProps extends IPageProps {
 }
 
 const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
-  const {
-    handleLoad,
-    error,
-    isLoading,
-    isDone,
-    data: extraPosts,
-  } = useGetBlogs();
-
-  const startRetry = (isRetry: boolean = false): void => {
-    handleLoad(isRetry);
-  };
-
   const [firstPost, ...allPosts] = posts;
 
   return (
@@ -57,22 +42,8 @@ const BlogChainHome: FC<IProps> = ({ frontmatter, posts }) => {
               <BlogItem key={firstPost.root} item={firstPost} />
             </BlogList>
           )}
-          <Stack>
-            <BlogList>
-              {allPosts.map((item) => (
-                <BlogItem key={item.root} item={item} />
-              ))}
-              {extraPosts.map((item) => (
-                <BlogItem key={item.root} item={item} />
-              ))}
-              <InfiniteScroll
-                handleLoad={startRetry}
-                isLoading={isLoading}
-                error={error}
-                isDone={isDone}
-              />
-            </BlogList>
-          </Stack>
+
+          <BlogListWrapper initPosts={allPosts} />
         </article>
       </div>
     </>

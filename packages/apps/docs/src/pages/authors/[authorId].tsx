@@ -1,7 +1,4 @@
-import { Stack } from '@kadena/react-ui';
-
-import { InfiniteScroll } from '@/components';
-import { BlogItem, BlogList } from '@/components/Blog';
+import { BlogListWrapper } from '@/components/BlogList';
 import {
   articleClass,
   contentClass,
@@ -9,7 +6,6 @@ import {
   TitleHeader,
 } from '@/components/Layout/components';
 import authors from '@/data/authors.json';
-import { useGetBlogs } from '@/hooks';
 import { getAuthorInfo, getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
 import type { IAuthorInfo, IMenuData, IPageProps } from '@/types/Layout';
 import {
@@ -28,18 +24,6 @@ interface IProps extends IPageProps {
 }
 
 const Home: FC<IProps> = ({ posts, authorInfo }) => {
-  const {
-    handleLoad,
-    error,
-    isLoading,
-    isDone,
-    data: extraPosts,
-  } = useGetBlogs({ authorId: authorInfo?.id });
-
-  const startRetry = (isRetry: boolean = false): void => {
-    handleLoad(isRetry);
-  };
-
   if (!authorInfo) return null;
 
   return (
@@ -54,22 +38,7 @@ const Home: FC<IProps> = ({ posts, authorInfo }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Stack>
-            <BlogList>
-              {posts.map((item) => (
-                <BlogItem key={item.root} item={item} />
-              ))}
-              {extraPosts.map((item) => (
-                <BlogItem key={item.root} item={item} />
-              ))}
-              <InfiniteScroll
-                handleLoad={startRetry}
-                isLoading={isLoading}
-                error={error}
-                isDone={isDone}
-              />
-            </BlogList>
-          </Stack>
+          <BlogListWrapper authorId={authorInfo.id} initPosts={posts} />
         </article>
       </div>
     </>
