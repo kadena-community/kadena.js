@@ -4,12 +4,12 @@ export interface IMostPopularPage {
   title: string;
 }
 
-export interface IDimensionValue {
+interface IDimensionValue {
   /** DimensionValue value */
   value?: string;
 }
 
-export interface IMetricValue {
+interface IMetricValue {
   /** MetricValue value */
   value?: string;
 }

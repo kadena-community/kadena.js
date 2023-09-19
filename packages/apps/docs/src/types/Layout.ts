@@ -27,7 +27,7 @@ export interface INavigation {
   next?: INavigationMenuItem;
 }
 
-export interface INavigationMenuItem {
+interface INavigationMenuItem {
   title: string;
   root: string;
 }

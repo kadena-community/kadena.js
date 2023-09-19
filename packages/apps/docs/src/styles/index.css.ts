@@ -17,8 +17,4 @@ const browseSectionWrapper = style([
   },
 ]);
 
-export const fullWidth = style({
-  width: '100%',
-});
-
 export { browseSectionWrapper };

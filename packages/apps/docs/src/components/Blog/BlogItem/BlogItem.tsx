@@ -1,7 +1,7 @@
 import { Heading, Stack } from '@kadena/react-ui';
 
 import { Avatar } from '../Avatar';
-import { FormatDate } from '../FormatDate';
+import { FormatDate } from '..';
 
 import { blogitem, footer, link, metaItem } from './styles.css';
 
