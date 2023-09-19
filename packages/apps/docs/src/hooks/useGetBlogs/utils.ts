@@ -23,11 +23,9 @@ export const getInitBlogPosts = (
     (item) => item.root === STARTBRANCH,
   ) as IMenuData;
 
-  let posts = startBranch.children
-    .filter((item) => !item.root.includes('/author'))
-    .flatMap((item) => {
-      return item.children;
-    });
+  let posts = startBranch.children.flatMap((item) => {
+    return item.children;
+  });
 
   if (authorId) {
     posts = posts.filter((post) => post.authorId === authorId);
