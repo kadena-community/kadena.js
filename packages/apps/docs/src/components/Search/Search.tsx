@@ -14,7 +14,7 @@ interface IProps {
 }
 
 export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
-  const [tabName, setTabName] = useState<string | undefined>();
+  const [tabName, setTabName] = useState<string | undefined>('docs');
   console.log({
     query,
   });
