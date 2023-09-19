@@ -9,10 +9,12 @@ import {
   styleVariants,
 } from '@vanilla-extract/css';
 
-const bgHoverColor = createVar(),
-  bgActiveColor = createVar(),
-  focusOutlineColor = createVar();
+const backgroundColorHover = createVar(),
+  backgroundColorActive = createVar(),
+  colorHover = createVar(),
+  outlineColorFocus = createVar();
 
+// Main container
 export const container = style([
   sprinkles({
     border: 'none',
@@ -33,23 +35,19 @@ export const container = style([
       '&[href]': {
         display: 'inline-flex',
       },
-      // [`${darkThemeClass} &:hover`]: {
-      //   color: colorPalette.$gray100,
-      //   backgroundColor: colorPalette.$blue30,
-      // },
     },
     ':hover': {
-      backgroundColor: bgHoverColor,
-      // color: vars.colors.$blue20,
+      color: colorHover,
+      backgroundColor: backgroundColorHover,
     },
     ':active': {
-      backgroundColor: bgActiveColor,
+      backgroundColor: backgroundColorActive,
     },
     ':focus-visible': {
       outlineOffset: '2px',
       outlineWidth: vars.borderWidths.$md,
       outlineStyle: 'solid',
-      outlineColor: focusOutlineColor,
+      outlineColor: outlineColorFocus,
     },
     ':disabled': {
       opacity: 0.7,
@@ -62,7 +60,11 @@ export const container = style([
   },
 ]);
 
-const variants: Omit<Record<ColorType, ColorType>, 'info' | 'tertiary'> = {
+// Button variants
+export const colorVariants: Omit<
+  Record<ColorType, ColorType>,
+  'info' | 'tertiary'
+> = {
   primary: 'primary',
   secondary: 'secondary',
   positive: 'positive',
@@ -70,7 +72,17 @@ const variants: Omit<Record<ColorType, ColorType>, 'info' | 'tertiary'> = {
   negative: 'negative',
 };
 
-export const colorVariants = styleVariants(variants, (variant) => {
+export const typeVariants: {
+  default: 'default';
+  compact: 'compact';
+  alternative: 'alternative';
+} = {
+  default: 'default',
+  compact: 'compact',
+  alternative: 'alternative',
+};
+
+export const defaultVariant = styleVariants(colorVariants, (variant) => {
   return [
     container,
     sprinkles({
@@ -79,19 +91,58 @@ export const colorVariants = styleVariants(variants, (variant) => {
     }),
     {
       vars: {
-        [bgHoverColor]: vars.colors[`$${variant}HighContrast`],
-        [bgActiveColor]: vars.colors[`$${variant}HighContrast`],
-        [focusOutlineColor]: vars.colors[`$${variant}Accent`],
+        [colorHover]: vars.colors[`$${variant}Contrast`],
+        [backgroundColorHover]: vars.colors[`$${variant}HighContrast`],
+        [backgroundColorActive]: vars.colors[`$${variant}HighContrast`],
+        [outlineColorFocus]: vars.colors[`$${variant}Accent`],
       },
     },
   ];
 });
 
+export const compactVariant = styleVariants(colorVariants, (variant) => {
+  return [
+    container,
+    sprinkles({
+      background: 'none',
+      color: `$${variant}ContrastInverted`,
+    }),
+    {
+      vars: {
+        [colorHover]: vars.colors[`$${variant}ContrastInverted`],
+        [backgroundColorHover]: 'none',
+        [backgroundColorActive]: vars.colors[`$${variant}HighContrast`],
+        [outlineColorFocus]: vars.colors[`$${variant}Accent`],
+      },
+    },
+  ];
+});
+
+export const alternativeVariant = styleVariants(colorVariants, (variant) => {
+  return [
+    container,
+    sprinkles({
+      bg: `$${variant}LowContrast`,
+      color: `$${variant}ContrastInverted`,
+    }),
+    {
+      vars: {
+        [colorHover]: vars.colors[`$${variant}ContrastInverted`],
+        [backgroundColorHover]: vars.colors[`$${variant}SurfaceInverted`],
+        [backgroundColorActive]: vars.colors[`$${variant}HighContrast`],
+        [outlineColorFocus]: vars.colors[`$${variant}Accent`],
+      },
+    },
+  ];
+});
+
+// Animations
 const rotate = keyframes({
   '0%': { transform: 'rotate(0deg)' },
   '100%': { transform: 'rotate(360deg)' },
 });
 
+// Loading styles
 export const buttonLoadingClass = style({
   pointerEvents: 'none',
 });
