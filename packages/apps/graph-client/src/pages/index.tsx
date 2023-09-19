@@ -45,15 +45,9 @@ const Home: React.FC = () => {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`/${routes.TRANSACTION}/${searchField}`);
         break;
-      case 'account-transactions':
+      case 'account':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(
-          `/account/${searchField}/transactions?module=${moduleField}`,
-        );
-        break;
-      case 'account-transfers':
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(`/account/${searchField}/transfers?module=${moduleField}`);
+        router.push(`/${routes.ACCOUNT}/${searchField}?module=${moduleField}`);
         break;
       case 'event':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -115,8 +109,7 @@ const Home: React.FC = () => {
               onChange={(event) => setSearchType(event.target.value)}
             >
               <Option value="request-key">Request Key</Option>
-              <Option value="account-transactions">Account Transactions</Option>
-              <Option value="account-transfers">Account Transfers</Option>
+              <Option value="account">Account</Option>
               <Option value="event">Event</Option>
             </Select>
           </Grid.Item>

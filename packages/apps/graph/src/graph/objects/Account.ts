@@ -7,7 +7,7 @@ export default builder.objectType('Account', {
     accountName: t.exposeString('id'),
     transactions: t.prismaConnection({
       type: 'Transaction',
-      cursor: 'block_requestkey',
+      cursor: 'blockHash_requestkey',
       resolve: (query, parent) => {
         return prismaClient.transaction.findMany({
           where: {

@@ -1,6 +1,7 @@
 import './objects/Account';
 import './objects/Block';
 import './objects/Transaction';
+import './objects/Transfer';
 import './objects/Event';
 import './Query/account';
 import './Query/hello';

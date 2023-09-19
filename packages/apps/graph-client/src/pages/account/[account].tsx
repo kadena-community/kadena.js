@@ -1,5 +1,5 @@
-import { mainStyle } from '../../../../components/main/styles.css';
-import { Text } from '../../../../components/text';
+import { mainStyle } from '../../components/main/styles.css';
+import { Text } from '../../components/text';
 
 import Head from 'next/head';
 import React from 'react';
