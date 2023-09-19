@@ -44,6 +44,7 @@
     "@next/mdx": "~13.3.4",
     "@vanilla-extract/css": "1.12.0",
     "acorn": "~8.8.2",
+    "algoliasearch": "^4.20.0",
     "classnames": "^2.3.1",
     "date-fns": "~2.30.0",
     "globby": "~13.2.2",
