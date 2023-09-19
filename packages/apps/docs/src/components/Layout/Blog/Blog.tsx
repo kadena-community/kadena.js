@@ -102,10 +102,7 @@ export const Blog: FC<IPageProps> = ({
                         itemScope
                         itemType="https://schema.org/Person"
                       >
-                        <Link
-                          itemProp="url"
-                          href={`/docs/blogchain/authors/${authorInfo.id}`}
-                        >
+                        <Link itemProp="url" href={`/authors/${authorInfo.id}`}>
                           <Image
                             itemProp="image"
                             src={authorInfo.avatar}
