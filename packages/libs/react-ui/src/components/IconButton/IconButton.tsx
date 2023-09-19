@@ -1,4 +1,4 @@
-import { colorVariants, stateVariants } from './IconButton.css';
+import { colorVariants, nonActiveClass } from './IconButton.css';
 
 import { SystemIcon } from '@components/Icon';
 import classnames from 'classnames';
@@ -18,7 +18,7 @@ export interface IIconButtonProps
   color?: keyof typeof colorVariants;
   type?: 'button' | 'submit' | 'reset';
   asChild?: boolean;
-  state?: 'active';
+  active?: boolean;
 }
 
 export const IconButton: FC<IIconButtonProps> = ({
@@ -29,13 +29,13 @@ export const IconButton: FC<IIconButtonProps> = ({
   title,
   children,
   asChild = false,
-  state,
+  active = false,
   ...restProps
 }) => {
   const Icon = icon && SystemIcon[icon];
   const ariaLabel = restProps['aria-label'] ?? title;
   const classNames = classnames(colorVariants[color], {
-    [stateVariants[color]]: state === 'active',
+    [nonActiveClass]: !active,
   });
 
   if (asChild && React.isValidElement(children)) {
