@@ -1,8 +1,11 @@
-import { Heading, Stack, Text } from '@kadena/react-ui';
+import { Box, Heading, Stack, Text } from '@kadena/react-ui';
 
 import { browseSectionWrapper } from '../../../styles/index.css';
 
 import { BrowseSection } from '@/components';
+import { BlogPostsStrip } from '@/components/BlogPostsStrip';
+import type { IMenuData } from '@/types/Layout';
+import { getBlogPosts } from '@/utils/getBlogPosts';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -12,7 +15,11 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
-const Home: FC = () => {
+interface IProps {
+  blogPosts: IMenuData[];
+}
+
+const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <Stack direction="column" gap="$2xl">
       <div>
@@ -58,14 +65,26 @@ const Home: FC = () => {
           <Link href="/docs/kadena/whitepapers/kuro-layer-2">Kuro Layer 2</Link>
         </BrowseSection>
       </Stack>
+
+      <Box>
+        <Heading as="h4">Latest Kadena posts</Heading>
+        <BlogPostsStrip
+          data={blogPosts}
+          link={`/docs/tags/kadena`}
+          linkLabel="More Kadena blogchain..."
+        />
+      </Box>
     </Stack>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  const blogPosts = await getBlogPosts(['kadena']);
+
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      blogPosts,
       frontmatter: {
         title: 'Intro to Kadena',
         menu: 'Kadena',

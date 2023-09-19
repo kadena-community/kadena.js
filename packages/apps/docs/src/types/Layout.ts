@@ -114,6 +114,8 @@ export interface IMenuData {
   isMenuOpen: boolean;
   isActive: boolean;
   publishDate?: string;
+  headerImage?: string;
+  tags?: string[];
   author?: string;
   authorId?: string;
   authorInfo?: IAuthorInfo;
