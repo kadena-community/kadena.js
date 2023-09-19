@@ -1,5 +1,3 @@
-import { prismaClient } from '../../db/prismaClient';
-import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 import Account from '../objects/Account';
 
@@ -15,17 +13,18 @@ const AccountFilter = builder.inputType('AccountFilter', {
 });
 
 builder.queryField('account', (t) => {
-  return t.prismaField({
+  return t.field({
     args: {
       accountName: t.arg.string({ required: true }),
       filter: t.arg({ type: AccountFilter }),
     },
-    type: [Account],
-    resolve: async (__query, __parent, { accountName, filter }) => {
-      t.nodeList
+    type: Account,
+    resolve: async (root, args) => {
       return {
-        ID: `Account:${accountName}`,
-        accountName,
+        id: `Account:${args.accountName}`,
+        accountName: args.accountName,
+        transactions: [],
+        transfers: [],
       };
     },
   });

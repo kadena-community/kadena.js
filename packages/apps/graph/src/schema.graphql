@@ -137,7 +137,7 @@ type Account {
   chainAccounts: [ChainAccount!]!
   totalBalances: [FungibleBalance!]!
   transactions: [Transaction!]!
-  transfers(module: String): [Transfer!]!
+  transfers: [Transfer!]!
 }
 
 type FungibleBalance {

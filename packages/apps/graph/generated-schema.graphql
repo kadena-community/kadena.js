@@ -1,3 +1,23 @@
+type Account {
+  accountName: String!
+  id: String!
+  transactions(after: String, before: String, first: Int, last: Int): AccountTransactionsConnection!
+}
+
+input AccountFilter {
+  module: String
+}
+
+type AccountTransactionsConnection {
+  edges: [AccountTransactionsConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type AccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
 """
 The `BigInt` scalar type represents non-fractional signed whole numeric values.
 """
@@ -49,6 +69,7 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
+  account(accountName: String!, filter: AccountFilter): Account!
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
   hello(name: String): String!

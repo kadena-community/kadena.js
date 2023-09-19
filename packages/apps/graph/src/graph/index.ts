@@ -1,5 +1,7 @@
+import './objects/Account';
 import './objects/Block';
 import './objects/Transaction';
+import './Query/account';
 import './Query/hello';
 import './Query/completedBlockHeights';
 import './Query/blocksFromHeight';

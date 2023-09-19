@@ -1,27 +1,46 @@
 import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
-export default builder.queryType({
+export default builder.objectType('Account', {
   fields: (t) => ({
-    id: t.field({
-      type: 'ID',
-      args: {
-        accountName: t.arg.string({ required: true }),
-      },
-      nullable: false,
-      resolve: (parent, args, context, info) => {
-        return `Account:${args.accountName}`;
-      },
+    id: t.exposeString('id'),
+    accountName: t.exposeString('id'),
+    transactions: t.prismaConnection({
+      type: 'Transaction',
+      cursor: 'block_requestkey',
+      resolve: (query, parent) => {
+        return prismaClient.transaction.findMany({
+          where: {
+            sender: parent.accountName,
+          },
+          orderBy: {
+            height: 'desc',
+          },
+          take: 10,
+        });
+      }
     }),
-    accountName: t.field({
-      type: 'String',
-      args: {
-        accountName: t.arg.string({ required: true }),
-      },
-      nullable: false,
-      resolve: (parent, args, context, info) => {
-        return args.accountName;
-      },
+    transfers: t.prismaConnection({
+      type: 'Transfer',
+      cursor: 'block_chainid_idx_modulehash_requestkey',
+      resolve: (query, parent) => {
+        return prismaClient.transfer.findMany({
+          where: {
+            OR: [
+              {
+                from_acct: parent.accountName,
+              },
+              {
+                to_acct: parent.accountName,
+              }
+            ],   
+          },
+          orderBy: {
+            height: 'desc',
+          },
+          take: 10,
+        });
+      }
     }),
   }),
 });
