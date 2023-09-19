@@ -4,3 +4,4 @@ etc
 lib
 temp
 **/*.md
+tsdoc-metadata.json

@@ -24,10 +24,12 @@
     "cypress:run": "percy exec -- cypress run",
     "dev": "pnpm run build:scripts && next dev",
     "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint src --ext .js,.ts,.jsx,.tsx,.mjs --fix",
+    "lint:src": "eslint src --ext .js,.ts,.jsx,.tsx,.mjs",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
     "test": "echo 'No tests, until there is time to debug the build'"
