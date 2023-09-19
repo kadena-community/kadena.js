@@ -1,8 +1,14 @@
 import { Box, Stack } from '@kadena/react-ui';
 
 import { Avatar } from '../Blog/Avatar';
+import { BrowseSection } from '../BrowseSection';
 
-import { dividerClass } from './styles.css';
+import {
+  descriptionClass,
+  linkClass,
+  sectionClass,
+  sectionExtraClass,
+} from './styles.css';
 
 import type { IAuthorInfo } from '@/types/Layout';
 import Link from 'next/link';
@@ -16,33 +22,49 @@ interface IProps {
 export const AuthorProfileCard: FC<IProps> = ({ author }) => {
   return (
     <section itemProp="author" itemScope itemType="https://schema.org/Person">
-      <Stack>
-        <Box>
+      <Stack direction={{ sm: 'column', md: 'row' }} gap="$10">
+        <div className={sectionClass}>
           <Stack alignItems="flex-start" gap="$4">
             <Avatar name={author.name} avatar={author.avatar} />
             <Stack direction="column">
-              <Link itemProp="url" href={`/authors/${author.id}`}>
+              <Link
+                className={linkClass}
+                itemProp="url"
+                href={`/authors/${author.id}`}
+              >
                 <h4 itemProp="name">{author.name}</h4>
-                <span>{author.description}</span>
+                <span className={descriptionClass}>{author.description}</span>
               </Link>
-              <h4>Links</h4>
-              <ul>
-                <li></li>
-              </ul>
+
+              <Box marginTop="$4">
+                <BrowseSection title="Links">
+                  {author.twitter && (
+                    <Link href={`https://x.com/${author.twitter}`}>
+                      Twitter
+                    </Link>
+                  )}
+                  {author.linkedin && (
+                    <Link
+                      href={`https://www.linkedin.com/in/${author.linkedin}`}
+                    >
+                      LinkedIn
+                    </Link>
+                  )}
+                </BrowseSection>
+              </Box>
             </Stack>
           </Stack>
-        </Box>
-        <div className={dividerClass} />
-        <Box>
-          <h4>Other articles</h4>
-          <ul>
+        </div>
+
+        <div className={sectionExtraClass}>
+          <BrowseSection title="Other links">
             {author.posts.map((post) => (
-              <li key={post.root}>
-                <Link href={post.root}>{post.title}</Link>
-              </li>
+              <Link key={post.root} href={post.root}>
+                {post.title}
+              </Link>
             ))}
-          </ul>
-        </Box>
+          </BrowseSection>
+        </div>
       </Stack>
     </section>
   );

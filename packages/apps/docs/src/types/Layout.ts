@@ -50,6 +50,7 @@ export interface IAuthorInfo {
   avatar: string;
   description?: string;
   twitter?: string;
+  linkedin?: string;
   posts: IMenuData[];
 }
 export interface IPageMeta extends IBasePageMeta {

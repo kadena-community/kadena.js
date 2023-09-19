@@ -53,6 +53,7 @@ export const Blog: FC<IPageProps> = ({
           subTitle="The place where the blog meets the chain"
           icon="BlogChain"
         />
+
         <div id="maincontent" className={contentClassNames}>
           <article
             className={articleClass}
