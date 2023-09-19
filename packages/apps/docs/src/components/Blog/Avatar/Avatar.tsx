@@ -13,7 +13,7 @@ interface IProps {
 export const Avatar: FC<IProps> = ({ name, avatar }) => {
   if (avatar) {
     return (
-      <div className={avatar}>
+      <div>
         <Image
           className={avatarClass}
           src={avatar}
