@@ -40,7 +40,7 @@ export const container = style([
     },
     ':hover': {
       backgroundColor: bgHoverColor,
-      color: vars.colors.$blue20,
+      // color: vars.colors.$blue20,
     },
     ':active': {
       backgroundColor: bgActiveColor,
@@ -74,13 +74,13 @@ export const colorVariants = styleVariants(variants, (variant) => {
   return [
     container,
     sprinkles({
-      color: `$${variant}Surface`,
-      bg: `$${variant}Contrast`,
+      bg: `$${variant}Surface`,
+      color: `$${variant}Contrast`,
     }),
     {
       vars: {
         [bgHoverColor]: vars.colors[`$${variant}HighContrast`],
-        [bgActiveColor]: vars.colors[`$${variant}Accent`],
+        [bgActiveColor]: vars.colors[`$${variant}HighContrast`],
         [focusOutlineColor]: vars.colors[`$${variant}Accent`],
       },
     },
