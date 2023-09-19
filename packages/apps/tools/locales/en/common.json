@@ -160,5 +160,6 @@
   "Track & trace transactions": "Track & trace transactions",
   "Retry": "Retry",
   "Search": "Search",
-  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!"
+  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!",
+  "The faucet can not be used on Mainnet. You can switch networks in the top bar.": "The faucet can not be used on Mainnet.<1/>You can switch networks in the top bar."
 }

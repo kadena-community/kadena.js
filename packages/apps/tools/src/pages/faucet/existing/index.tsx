@@ -5,10 +5,10 @@ import {
   Button,
   Card,
   Grid,
-  Heading,
+  Heading, Notification,
 } from '@kadena/react-ui';
 
-import { buttonContainerClass, containerClass } from './styles.css';
+import { buttonContainerClass, containerClass, notificationContainerStyle } from './styles.css';
 
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
@@ -63,6 +63,7 @@ const ExistingAccountFaucetPage: FC = () => {
     status: FormStatus;
     message?: string;
   }>({ status: 'idle' });
+
 
   useToolbar([
     {
@@ -132,6 +133,16 @@ const ExistingAccountFaucetPage: FC = () => {
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
+      <div className={notificationContainerStyle}>
+        {showNotification ? (
+          <Notification.Root
+            color="warning"
+            expanded={true}
+            icon="Information"
+            title={t('The faucet can not be used on Mainnet. You can switch networks in the top bar.')}
+          />
+        ) : null}
+      </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}
@@ -140,16 +151,6 @@ const ExistingAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        {showNotification ? (
-            <FormStatusNotification
-              status={'erroneous'}
-              statusBodies={{
-                erroneous: t('You cannot use faucet on Mainnet.'),
-              }}
-              body={t('You cannot use faucet on Mainnet.')}
-            />
-        )
-        : null}
         <Card fullWidth>
           <Heading as="h5">Account</Heading>
           <Box marginBottom="$4" />
@@ -169,6 +170,7 @@ const ExistingAccountFaucetPage: FC = () => {
           </Grid.Root>
         </Card>
         <div className={buttonContainerClass}>
+
           <Button
             loading={requestStatus.status === 'processing'}
             icon="TrailingIcon"
