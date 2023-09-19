@@ -13,7 +13,7 @@ export const EVENT_NAMES = {
   'click:subscribe': 'click:subscribe',
 } as const;
 
-export const COOKIE_CONSENTNAME = 'cookie_consent';
+const COOKIE_CONSENTNAME = 'cookie_consent';
 
 type IOptionsType = Record<string, string | undefined>;
 
