@@ -5,6 +5,7 @@ menu: Build
 label: Quickstart
 order: 1
 layout: full
+tags: [chainweb, chainweaver, tutorial, resources]
 ---
 
 # Kadena Quickstart

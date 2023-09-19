@@ -7,6 +7,7 @@ menu: Syntax
 label: Syntax
 order: 4
 layout: full
+tags: ['pact', 'language reference', 'syntax']
 ---
 
 # Syntax

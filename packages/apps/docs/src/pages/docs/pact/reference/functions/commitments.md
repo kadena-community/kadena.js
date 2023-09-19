@@ -7,6 +7,7 @@ menu: Commitments
 label: Commitments
 order: 8
 layout: full
+tags: ['pact', 'language reference', 'commitments']
 ---
 
 # Commitments

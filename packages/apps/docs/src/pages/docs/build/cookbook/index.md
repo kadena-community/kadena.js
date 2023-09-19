@@ -5,6 +5,7 @@ menu: Cookbook
 label: Cookbook
 order: 3
 layout: full
+tags: [pact, typescript, account, transactions, utils]
 ---
 
 # Pact-lang-API Cookbook

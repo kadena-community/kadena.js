@@ -8,6 +8,7 @@ menu: Test in the SDK
 label: Test in the SDK
 order: 13
 layout: full
+tags: ['pact', 'sdk', 'repl', 'repl file', 'pact repl']
 ---
 
 # Test in the SDK

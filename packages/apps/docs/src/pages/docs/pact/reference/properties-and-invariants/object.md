@@ -7,6 +7,7 @@ menu: Object Operators
 label: Object Operators
 order: 5
 layout: full
+tags: ['pact', 'language reference', 'object operators', 'pact operators']
 ---
 
 # Object operators

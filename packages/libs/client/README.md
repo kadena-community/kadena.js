@@ -42,30 +42,30 @@ With `@kadena/client` you can also [send a request to the blockchain][8]. That's
 covered in this article. We'll also be exploring the concepts and rationale of
 `@kadena/client`.
 
-- [@kadena/client](#kadenaclient)
-  - [Package @kadena/client](#package-kadenaclient)
-- [Getting started](#getting-started)
-    - [Transaction building](#transaction-building)
-    - [Signing](#signing)
-  - [Prerequisites](#prerequisites)
-  - [Contract-based interaction using @kadena/client](#contract-based-interaction-using-kadenaclient)
-    - [Generate interfaces from the blockchain](#generate-interfaces-from-the-blockchain)
-      - [Generate interfaces locally](#generate-interfaces-locally)
-    - [Downloading contracts from the blockchain](#downloading-contracts-from-the-blockchain)
-  - [Building a simple transaction from the contract](#building-a-simple-transaction-from-the-contract)
-    - [Notes](#notes)
-  - [Signing](#signing-1)
-    - [Manually signing the transaction](#manually-signing-the-transaction)
-    - [Integrated sign request to Chainweaver desktop](#integrated-sign-request-to-chainweaver-desktop)
-    - [Signing with a WalletConnect compatible wallet](#signing-with-a-walletconnect-compatible-wallet)
-  - [Using the commandBuilder](#using-the-commandbuilder)
-  - [Using FP approach](#using-fp-approach)
-  - [Send a request to the blockchain](#send-a-request-to-the-blockchain)
-  - [Upgrading from @kadena/client 0.x to 1.0.0](#upgrading-from-kadenaclient-0x-to-100)
-    - [Sending a transaction 'transfer'](#sending-a-transaction-transfer)
-    - [Read from the blockchain 'getBalance'](#read-from-the-blockchain-getbalance)
-  - [Further development](#further-development)
-  - [Contact the team](#contact-the-team)
+- [@kadena/client][9]
+  - [Package @kadena/client][10]
+- [Getting started][11]
+  - [Transaction building][12]
+  - [Signing][13]
+  - [Prerequisites][14]
+  - [Contract-based interaction using @kadena/client][15]
+    - [Generate interfaces from the blockchain][6]
+      - [Generate interfaces locally][16]
+    - [Downloading contracts from the blockchain][17]
+  - [Building a simple transaction from the contract][18]
+    - [Notes][19]
+  - [Signing][20]
+    - [Manually signing the transaction][21]
+    - [Integrated sign request to Chainweaver desktop][7]
+    - [Signing with a WalletConnect compatible wallet][22]
+  - [Using the commandBuilder][4]
+  - [Using FP approach][5]
+  - [Send a request to the blockchain][8]
+  - [Upgrading from @kadena/client 0.x to 1.0.0][3]
+    - [Sending a transaction 'transfer'][23]
+    - [Read from the blockchain 'getBalance'][24]
+  - [Further development][25]
+  - [Contact the team][26]
 
 ## Prerequisites
 
@@ -200,8 +200,8 @@ const unsignedTransaction = Pact.builder
 - The `addSigner` function accepts the `public-key` of the signer and let signer
   add the capabilities they want to sign for. Note that `coin.GAS` doesn't have
   any arguments, but `coin.TRANSFER` does.
-- The `setMeta` argument object has a `senderAccount` property. This is an `account`
-  and could be `gas station` account in some scenarios.
+- The `setMeta` argument object has a `senderAccount` property. This is an
+  `account` and could be `gas station` account in some scenarios.
 - To add an **Unrestricted Signer** ([Unscoped Signature][28]), call `addSigner`
   without extra arguments
 
@@ -267,7 +267,10 @@ const unsignedTransaction = Pact.builder
   // add signer(s) if its required
   .addSigner('your-pubkey')
   // set chain id and sender
-  .setMeta({ chainId: '8', senderAccount: 'your-k-or-w-account-or-gas-station' })
+  .setMeta({
+    chainId: '8',
+    senderAccount: 'your-k-or-w-account-or-gas-station',
+  })
   // set networkId
   .setNetworkId('mainnet01')
   // create transaction with hash

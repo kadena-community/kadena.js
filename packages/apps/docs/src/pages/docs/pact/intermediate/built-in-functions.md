@@ -7,6 +7,7 @@ menu: Built in Functions
 label: Built in Functions
 order: 5
 layout: full
+tags: ['pact', 'built in functions', 'intermediate', 'pact tutorials']
 ---
 
 # Built in Functions

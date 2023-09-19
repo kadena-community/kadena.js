@@ -5,6 +5,15 @@ menu: Hello World
 label: Hello World
 order: 2
 layout: full
+tags:
+  [
+    'pact',
+    'hello world',
+    'tutorials',
+    'hello world tutorial',
+    'pact hello world',
+    'smart contract deployment',
+  ]
 ---
 
 # Hello World

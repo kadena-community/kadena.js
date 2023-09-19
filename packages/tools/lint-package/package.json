@@ -20,11 +20,12 @@
     "build": "tsc",
     "dev": "tsc -w",
     "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:pkg": "node ./lib/index.js",
-    "lint:src": "eslint ./src --ext .js,.ts --fix",
+    "lint:src": "eslint ./src --ext .js,.ts",
     "test": ""
   },
   "dependencies": {

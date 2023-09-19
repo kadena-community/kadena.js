@@ -1,6 +1,9 @@
 import { Box, Button, Heading, Text } from '@kadena/react-ui';
 
 import { LandingPageCard, LandingPageCardSection } from '@/components';
+import { BlogPostsStrip } from '@/components/BlogPostsStrip';
+import type { IMenuData } from '@/types/Layout';
+import { getBlogPosts } from '@/utils/getBlogPosts';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -10,7 +13,11 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
-const Home: FC = () => {
+interface IProps {
+  blogPosts: IMenuData[];
+}
+
+const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <>
       <LandingPageCardSection>
@@ -91,13 +98,19 @@ const Home: FC = () => {
           </Button>
         </LandingPageCard>
       </LandingPageCardSection>
+
+      <Heading as="h4">Latest contribute posts</Heading>
+      <BlogPostsStrip data={blogPosts} />
     </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  const blogPosts = await getBlogPosts(['ambassadors', 'grant']);
+
   return {
     props: {
+      blogPosts,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Contribute',

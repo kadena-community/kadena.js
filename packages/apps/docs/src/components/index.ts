@@ -14,3 +14,4 @@ export * from './SearchModal';
 export * from './MostPopular';
 export * from './InfiniteScroll';
 export * from './Loading';
+export * from './AuthorProfileCard';

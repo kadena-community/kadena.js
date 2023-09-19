@@ -7,6 +7,7 @@ menu: Numerical Operators
 label: Numerical operators
 order: 2
 layout: full
+tags: ['pact', 'language reference', 'numerical operators', 'pact operators']
 ---
 
 # Numerical operators

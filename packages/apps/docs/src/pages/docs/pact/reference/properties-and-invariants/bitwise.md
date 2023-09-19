@@ -7,6 +7,7 @@ menu: Bitwise Operators
 label: Bitwise Operators
 order: 3
 layout: full
+tags: ['pact', 'language reference', 'bitwise operators', 'pact operators']
 ---
 
 # Bitwise operators

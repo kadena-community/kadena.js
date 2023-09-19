@@ -7,6 +7,8 @@ menu: Transactional Operators
 label: Transactional Operators
 order: 10
 layout: full
+tags:
+  ['pact', 'language reference', 'transactional operators', 'pact operators']
 ---
 
 # Transactional operators

@@ -7,6 +7,7 @@ menu: ZK
 label: ZK
 order: 10
 layout: full
+tags: ['pact', 'language reference', 'zk', 'zk proof verification']
 ---
 
 # Zk

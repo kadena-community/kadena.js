@@ -5,6 +5,7 @@ menu: Resources
 label: Pact Kuro layer 2
 order: 2
 layout: full
+tags: [kuro, cluster, resources]
 ---
 
 # Kuro layer 2 - guides

@@ -5,6 +5,7 @@ menu: Web Editor
 label: Web Editor
 order: 2
 layout: full
+tags: ['pact', 'web editor', 'pact tutorials']
 ---
 
 # Web Editor

@@ -14,6 +14,7 @@ import {
 import { ChainwebGraph } from '../components/chainweb';
 import { mainStyle } from '../components/main/styles.css';
 import { Text } from '../components/text';
+import routes from '../constants/routes';
 import { useChainTree } from '../context/chain-tree-context';
 import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
 import { usePrevious } from '../utils/hooks/use-previous';
@@ -42,7 +43,7 @@ const Home: React.FC = () => {
     switch (searchType) {
       case 'request-key':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(`/transaction/${searchField}`);
+        router.push(`/${routes.TRANSACTION}/${searchField}`);
         break;
       case 'account-transactions':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -53,6 +54,10 @@ const Home: React.FC = () => {
       case 'account-transfers':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`/account/${searchField}/transfers?module=${moduleField}`);
+        break;
+      case 'event':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`${routes.EVENT}/${searchField}`);
         break;
     }
   };
@@ -112,6 +117,7 @@ const Home: React.FC = () => {
               <Option value="request-key">Request Key</Option>
               <Option value="account-transactions">Account Transactions</Option>
               <Option value="account-transfers">Account Transfers</Option>
+              <Option value="event">Event</Option>
             </Select>
           </Grid.Item>
           <Grid.Item>

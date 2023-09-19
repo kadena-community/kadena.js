@@ -7,6 +7,8 @@ menu: Quantification Operators
 label: Quantification Operators
 order: 9
 layout: full
+tags:
+  ['pact', 'language reference', 'quantification operators', 'pact operators']
 ---
 
 # Quantification operators

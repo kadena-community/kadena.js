@@ -7,6 +7,7 @@ menu: Interfaces with Pact
 label: Interfaces with Pact
 order: 4
 layout: full
+tags: ['pact', 'tutorials', 'interfaces']
 ---
 
 # Interfaces with Pact
