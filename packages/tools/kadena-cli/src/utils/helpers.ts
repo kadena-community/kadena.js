@@ -60,6 +60,7 @@ export interface IQuestion<T> {
   prompt: (
     config: Partial<TConfigOptions>,
     previousAnswers: Partial<T>,
+    args: Partial<T>,
   ) => Promise<T[keyof T]>;
 }
 
@@ -105,6 +106,7 @@ export async function collectResponses<T>(
     responses[question.key as keyof T] = await question.prompt(
       config,
       responses,
+      args,
     );
 
     result = generator.next();

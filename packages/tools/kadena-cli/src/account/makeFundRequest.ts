@@ -1,11 +1,17 @@
 import type { ChainId } from '@kadena/client';
-import { isSignedTransaction, Pact } from '@kadena/client';
+import {
+  createSignWithKeypair,
+  isSignedTransaction,
+  Pact,
+} from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
-import { listen, submit } from '../utils/client';
+import { pollStatus, submit } from '../utils/client';
 import { getConfig, getContext } from '../utils/globalConfig';
 
 import type { TFundOptions } from './fundCommand';
+import { FAUCET_CONSTANTS } from '../constants/faucet';
+import { sign } from '@kadena/cryptography-utils';
 
 // /* fund code from kadena testnet facuet
 
@@ -43,10 +49,15 @@ import type { TFundOptions } from './fundCommand';
 //     }
 // */
 
-async function fundTestNet({ receiver }: TFundOptions): Promise<void> {
-  console.log('hit');
-  const { chainId, networkId, publicKey } = getConfig();
-  const amount = 100;
+async function fundTestNet({
+  receiver,
+  chainId,
+  networkId,
+  network,
+  publicKey,
+}: TFundOptions): Promise<void> {
+  const { faucetOpKP, faucetAcct, faucetOpAcct } = FAUCET_CONSTANTS;
+  const amount = 20;
   const transaction = Pact.builder
     .execution(
       Pact.modules['user.coin-faucet']['request-coin'](
@@ -54,36 +65,42 @@ async function fundTestNet({ receiver }: TFundOptions): Promise<void> {
         new PactNumber(amount).toPactDecimal(),
       ),
     )
-    .addSigner(publicKey, (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .addSigner(faucetOpAcct, (withCap: any) => [withCap('coin.GAS')])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .addSigner(faucetOpKP.publicKey, (withCap: any) => [
+      withCap(
         'coin.TRANSFER',
-        'coin-faucet',
+        faucetAcct,
         receiver,
         new PactNumber(amount).toPactDecimal(),
       ),
     ])
     .setMeta({
-      creationTime: Math.floor(new Date().getTime() / 1000),
-      ttl: 28800,
-      gasLimit: 10000,
-      chainId: chainId.toString() as ChainId,
-      gasPrice: 0.00001,
-      senderAccount: 'faucet-operation',
+      senderAccount: faucetOpAcct,
+      chainId: chainId as unknown as ChainId,
     })
     .setNetworkId(networkId)
     .createTransaction();
 
+  const signedTx = await createSignWithKeypair({
+    publicKey: faucetOpKP.publicKey,
+    secretKey: faucetOpKP.secretKey,
+  })(transaction);
+
   try {
-    if (isSignedTransaction(transaction)) {
-      const transactionDescriptor = await submit(transaction);
-      const response = await listen(transactionDescriptor);
+    if (isSignedTransaction(signedTx)) {
+      const transactionDescriptor = await submit(signedTx);
+      const response = await pollStatus(transactionDescriptor);
       console.log(response);
-      if (response.result.status === 'failure') {
-        throw response.result.error;
-      } else {
-        console.log(response.result);
-      }
+      const x = response[transactionDescriptor.requestKey];
+      console.log(x);
+
+      // if (response.result.status === 'failure') {
+      //   throw response.result.error;
+      // } else {
+      //   console.log(response.result);
+      // }
     }
   } catch (e) {
     throw new Error(`Failed to fund account: ${e}`);

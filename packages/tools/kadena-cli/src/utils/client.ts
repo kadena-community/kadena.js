@@ -1,6 +1,6 @@
 /*
   TO-DO:
-  
+
   needed for fundCommand.ts and probably others
   probaby merge with other config
  */
@@ -34,7 +34,6 @@ export const apiHostGenerator = ({
 
 // configure the client and export the functions
 export const {
-  listen,
   submit,
   //   preflight,
   dirtyRead,
@@ -42,7 +41,7 @@ export const {
   pollStatus,
   getStatus,
   createSpv,
-} = createClient(apiHostGenerator);
+} = createClient();
 
 export const networkChoices: { value: string; name: string }[] = [
   { value: 'mainnet', name: 'Mainnet' },
