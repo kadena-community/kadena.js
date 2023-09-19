@@ -103,6 +103,7 @@ export const vars = createGlobalTheme(':root', {
 
     $primarySurface: colorPalette.$blue80,
     $primaryContrast: colorPalette.$blue20,
+    $primaryLowContrast: colorPalette.$blue10,
     $primaryHighContrast: colorPalette.$blue100,
     $primaryAccent: colorPalette.$blue60,
 
@@ -111,6 +112,7 @@ export const vars = createGlobalTheme(':root', {
 
     $secondarySurface: colorPalette.$pink80,
     $secondaryContrast: colorPalette.$pink20,
+    $secondaryLowContrast: colorPalette.$pink10,
     $secondaryHighContrast: colorPalette.$pink100,
     $secondaryAccent: colorPalette.$pink60,
 
@@ -119,6 +121,7 @@ export const vars = createGlobalTheme(':root', {
 
     $tertiarySurface: colorPalette.$purple80,
     $tertiaryContrast: colorPalette.$purple20,
+    $tertiaryLowContrast: colorPalette.$purple10,
     $tertiaryHighContrast: colorPalette.$purple100,
     $tertiaryAccent: colorPalette.$purple60,
 
@@ -139,6 +142,7 @@ export const vars = createGlobalTheme(':root', {
 
     $infoSurface: colorPalette.$blue80,
     $infoContrast: colorPalette.$blue20,
+    $infoLowContrast: colorPalette.$blue10,
     $infoHighContrast: colorPalette.$blue100,
     $infoAccent: colorPalette.$blue60,
 
@@ -147,6 +151,7 @@ export const vars = createGlobalTheme(':root', {
 
     $warningSurface: colorPalette.$yellow80,
     $warningContrast: colorPalette.$yellow20,
+    $warningLowContrast: colorPalette.$yellow10,
     $warningHighContrast: colorPalette.$yellow100,
     $warningAccent: colorPalette.$yellow60,
 
@@ -155,6 +160,7 @@ export const vars = createGlobalTheme(':root', {
 
     $negativeSurface: colorPalette.$red80,
     $negativeContrast: colorPalette.$red20,
+    $negativeLowContrast: colorPalette.$red10,
     $negativeHighContrast: colorPalette.$red100,
     $negativeAccent: colorPalette.$red60,
 
@@ -163,6 +169,7 @@ export const vars = createGlobalTheme(':root', {
 
     $positiveSurface: colorPalette.$green80,
     $positiveContrast: colorPalette.$green20,
+    $positiveLowContrast: colorPalette.$green10,
     $positiveHighContrast: colorPalette.$green100,
     $positiveAccent: colorPalette.$green60,
 
@@ -193,31 +200,32 @@ export const darkThemeClass = createTheme(vars.colors, {
 
   // Global tokens
 
-  // todo: add inverted variants
-
-  $primarySurface: colorPalette.$blue80,
-  $primaryContrast: colorPalette.$blue40,
-  $primaryHighContrast: colorPalette.$blue100,
+  $primarySurface: colorPalette.$blue40,
+  $primaryContrast: colorPalette.$blue80,
+  $primaryLowContrast: colorPalette.$blue100,
+  $primaryHighContrast: colorPalette.$blue20,
   $primaryAccent: colorPalette.$blue60,
 
-  $primarySurfaceInverted: hexToRgba(colorPalette.$blue40, 0.8),
-  $primaryContrastInverted: colorPalette.$blue80,
+  $primarySurfaceInverted: hexToRgba(colorPalette.$blue80, 0.8),
+  $primaryContrastInverted: colorPalette.$blue40,
 
-  $secondarySurface: colorPalette.$pink80,
-  $secondaryContrast: colorPalette.$pink40,
-  $secondaryHighContrast: colorPalette.$pink100,
+  $secondarySurface: colorPalette.$pink40,
+  $secondaryContrast: colorPalette.$pink80,
+  $secondaryLowContrast: colorPalette.$pink100,
+  $secondaryHighContrast: colorPalette.$pink20,
   $secondaryAccent: colorPalette.$pink60,
 
-  $secondarySurfaceInverted: hexToRgba(colorPalette.$pink40, 0.8),
-  $secondaryContrastInverted: colorPalette.$pink80,
+  $secondarySurfaceInverted: hexToRgba(colorPalette.$pink80, 0.8),
+  $secondaryContrastInverted: colorPalette.$pink40,
 
-  $tertiarySurface: colorPalette.$purple80,
-  $tertiaryContrast: colorPalette.$purple40,
-  $tertiaryHighContrast: colorPalette.$purple100,
+  $tertiarySurface: colorPalette.$purple40,
+  $tertiaryContrast: colorPalette.$purple80,
+  $tertiaryLowContrast: colorPalette.$purple100,
+  $tertiaryHighContrast: colorPalette.$purple20,
   $tertiaryAccent: colorPalette.$purple60,
 
-  $tertiarySurfaceInverted: hexToRgba(colorPalette.$purple40, 0.8),
-  $tertiaryContrastInverted: colorPalette.$purple80,
+  $tertiarySurfaceInverted: hexToRgba(colorPalette.$purple80, 0.8),
+  $tertiaryContrastInverted: colorPalette.$purple40,
 
   $borderDefault: hexToRgba(colorPalette.$gray20, 0.2),
   $borderSubtle: hexToRgba(colorPalette.$gray10, 0.2),
@@ -231,37 +239,41 @@ export const darkThemeClass = createTheme(vars.colors, {
 
   // Status
 
-  $infoSurface: hexToRgba(colorPalette.$blue80, 0.8),
-  $infoContrast: colorPalette.$blue20,
-  $infoHighContrast: colorPalette.$blue100,
+  $infoSurface: hexToRgba(colorPalette.$blue40, 0.8),
+  $infoContrast: colorPalette.$blue80,
+  $infoLowContrast: colorPalette.$blue100,
+  $infoHighContrast: colorPalette.$blue20,
   $infoAccent: colorPalette.$blue60,
 
-  $infoSurfaceInverted: hexToRgba(colorPalette.$blue40, 0.8),
-  $infoContrastInverted: colorPalette.$blue80,
+  $infoSurfaceInverted: hexToRgba(colorPalette.$blue80, 0.8),
+  $infoContrastInverted: colorPalette.$blue40,
 
-  $warningSurface: hexToRgba(colorPalette.$yellow80, 0.8),
-  $warningContrast: colorPalette.$yellow20,
-  $warningHighContrast: colorPalette.$yellow100,
+  $warningSurface: hexToRgba(colorPalette.$yellow40, 0.8),
+  $warningContrast: colorPalette.$yellow80,
+  $warningLowContrast: colorPalette.$yellow100,
+  $warningHighContrast: colorPalette.$yellow20,
   $warningAccent: colorPalette.$yellow60,
 
-  $warningSurfaceInverted: hexToRgba(colorPalette.$yellow40, 0.8),
-  $warningContrastInverted: colorPalette.$yellow80,
+  $warningSurfaceInverted: hexToRgba(colorPalette.$yellow80, 0.8),
+  $warningContrastInverted: colorPalette.$yellow40,
 
-  $negativeSurface: hexToRgba(colorPalette.$red80, 0.8),
-  $negativeContrast: colorPalette.$red20,
-  $negativeHighContrast: colorPalette.$red100,
+  $negativeSurface: hexToRgba(colorPalette.$red40, 0.8),
+  $negativeContrast: colorPalette.$red80,
+  $negativeLowContrast: colorPalette.$red100,
+  $negativeHighContrast: colorPalette.$red20,
   $negativeAccent: colorPalette.$red60,
 
-  $negativeSurfaceInverted: hexToRgba(colorPalette.$red40, 0.8),
-  $negativeContrastInverted: colorPalette.$red80,
+  $negativeSurfaceInverted: hexToRgba(colorPalette.$red80, 0.8),
+  $negativeContrastInverted: colorPalette.$red40,
 
-  $positiveSurface: hexToRgba(colorPalette.$green80, 0.8),
-  $positiveContrast: colorPalette.$green20,
-  $positiveHighContrast: colorPalette.$green100,
+  $positiveSurface: hexToRgba(colorPalette.$green40, 0.8),
+  $positiveContrast: colorPalette.$green80,
+  $positiveLowContrast: colorPalette.$green100,
+  $positiveHighContrast: colorPalette.$green20,
   $positiveAccent: colorPalette.$green60,
 
-  $positiveSurfaceInverted: hexToRgba(colorPalette.$green40, 0.8),
-  $positiveContrastInverted: colorPalette.$green80,
+  $positiveSurfaceInverted: hexToRgba(colorPalette.$green80, 0.8),
+  $positiveContrastInverted: colorPalette.$green40,
 
   // State
 
