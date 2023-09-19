@@ -23,12 +23,14 @@
     "build": "heft build",
     "dev": "heft build -w",
     "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
     "kda": "node lib/index.js",
     "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint src --ext .js,.ts,.tsx --fix",
+    "lint:src": "eslint src --ext .js,.ts,.tsx",
     "test": "jest --silent"
   },
   "dependencies": {
