@@ -108,11 +108,11 @@ async function fundDevNet({ receiver }: TFundOptions): Promise<void> {
 }
 
 export async function makeFundRequest(args: TFundOptions): Promise<void> {
-  const network = args;
+  const { network } = args;
   switch (network) {
-    case 'testnet' as unknown as TFundOptions:
+    case 'testnet' as Partial<TFundOptions>['network']:
       return fundTestNet(args);
-    case 'devnet' as unknown as TFundOptions:
+    case 'devnet' as Partial<TFundOptions>['network']:
       return fundDevNet(args);
     default:
       throw new Error(`Unsupported network: ${network}`);

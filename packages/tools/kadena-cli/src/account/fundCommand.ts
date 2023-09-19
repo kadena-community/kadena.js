@@ -1,7 +1,5 @@
-import { IDefaultConfigOptions } from '../constants/config';
 import { networkChoices } from '../utils/client';
-import { displayConfig } from '../utils/display';
-import { getConfig, getContext } from '../utils/globalConfig';
+import { getContext } from '../utils/globalConfig';
 import type { IQuestion } from '../utils/helpers';
 import { collectResponses, getPubKeyFromAccount } from '../utils/helpers';
 import { processZodErrors } from '../utils/process-zod-errors';
@@ -10,7 +8,6 @@ import { makeFundRequest } from './makeFundRequest';
 
 import { input, select } from '@inquirer/prompts';
 import chalk from 'chalk';
-import clear from 'clear';
 import type { Command } from 'commander';
 import { Option } from 'commander';
 import { z, ZodError } from 'zod';
