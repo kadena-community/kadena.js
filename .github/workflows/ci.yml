@@ -1,12 +1,9 @@
-name: CI (build, test, format)
+name: CI (build, lint, test)
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
   pull_request:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
   build:
@@ -24,7 +21,6 @@ jobs:
           show-progress: false
 
       - name: Fetch base branch
-        if: github.ref_name != 'main'
         run: git fetch origin ${{ github.base_ref }}
 
       - uses: pnpm/action-setup@v2
@@ -41,10 +37,3 @@ jobs:
 
       - name: Build, lint, test all packages
         run: pnpm turbo build lint test
-
-      - name: List mismatched dependencies
-        run: pnpm run lint:versions
-
-      - name: Verify source code formatting
-        if: github.ref_name != 'main'
-        run: pnpm run format:ci
