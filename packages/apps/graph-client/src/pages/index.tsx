@@ -7,6 +7,7 @@ import {
 import { ChainwebGraph } from '../components/chainweb';
 import { mainStyle } from '../components/main/styles.css';
 import { Text } from '../components/text';
+import routes from '../constants/routes';
 import { useChainTree } from '../context/chain-tree-context';
 import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
 import { usePrevious } from '../utils/hooks/use-previous';
@@ -33,7 +34,10 @@ const Home: React.FC = () => {
   const search = (): void => {
     if (searchType === 'request-key') {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`/transaction/${searchField}`);
+      router.push(`${routes.TRANSACTION}/${searchField}`);
+    } else if (searchType === 'event') {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push(`${routes.EVENT}/${searchField}`);
     }
   };
 
@@ -90,6 +94,7 @@ const Home: React.FC = () => {
               onChange={(event) => setSearchType(event.target.value)}
             >
               <option value="request-key">Request Key</option>
+              <option value="event">Event</option>
             </Select>
           </Grid.Item>
           <Grid.Item>

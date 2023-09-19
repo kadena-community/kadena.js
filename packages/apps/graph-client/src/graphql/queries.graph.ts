@@ -62,6 +62,22 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
   }
 `;
 
+export const CORE_EVENT_FIELDS: DocumentNode = gql`
+  fragment CoreEventFields on Event {
+    id
+    #block{}
+    requestKey
+    chainId
+    height
+    #index
+    #module
+    #name
+    eventParameters
+    #parameters
+    qualName
+  }
+`;
+
 export const getLastBlock: DocumentNode = gql`
   query getLastBlock {
     lastBlockHeight
@@ -99,6 +115,10 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       block {
         id
       }
+      events {
+        qualName
+        eventParameters
+      }
       chainId
       code
       continuation
@@ -121,6 +141,27 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       step
       ttl
       txId
+    }
+  }
+`;
+
+export const getEventByName: DocumentNode = gql`
+  subscription getEventByName($eventName: String!) {
+    event(eventName: $eventName) {
+      # id
+      block {
+        id
+      }
+      chainId
+      height
+      index
+      # module
+      # name
+      eventParameters
+      qualName
+      transaction {
+        requestKey
+      }
     }
   }
 `;
