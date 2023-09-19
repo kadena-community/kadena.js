@@ -5,9 +5,8 @@ import {
   contentClassVariants,
   TitleHeader,
 } from '@/components/Layout/components';
-import authors from '@/data/authors.json';
-import { getAuthorInfo, getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IAuthorInfo, IMenuData, IPageProps } from '@/types/Layout';
+import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
+import type { IMenuData, IPageProps } from '@/types/Layout';
 import { getAllBlogTags } from '@/utils';
 import {
   checkSubTreeForActive,
