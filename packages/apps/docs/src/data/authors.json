@@ -117,12 +117,14 @@
     "id": "andy",
     "name": "Andy",
     "avatar": "/assets/blog/author/1_Teql7zGu3DM2mC6AUllPKA.jpg",
+    "description": "Frontend developer",
     "twitter": "andortang"
   },
   {
     "id": "jermaine.jong",
     "name": "Jermaine Jong",
-    "avatar": "/assets/blog/author/1__HBhgqdnPjVjeHbTyyPyqw.png"
+    "avatar": "/assets/blog/author/1__HBhgqdnPjVjeHbTyyPyqw.png",
+    "description": "Frontend developer"
   },
   {
     "id": "randy.daal",

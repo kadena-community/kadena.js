@@ -12,11 +12,31 @@ const getFrontMatter = (node) => {
   }
 };
 
+const getLatestBlogPostsOfAuthor = (author) => {
+  const data = getData();
+
+  const STARTBRANCH = '/docs/blogchain';
+
+  const startBranch = data.find((item) => item.root === STARTBRANCH);
+
+  let posts =
+    startBranch.children.flatMap((item) => {
+      return item.children;
+    }) ?? [];
+
+  return posts.filter((post) => post.authorId === author.id).slice(0, 5);
+};
+
 const getBlogAuthorInfo = (data) => {
   const authorId = data.authorId;
   if (!authorId) return;
 
-  return authors.find((author) => author.id === authorId);
+  const author = authors.find((author) => author.id === authorId);
+  if (!author) return;
+
+  author.posts = getLatestBlogPostsOfAuthor(author);
+
+  return author;
 };
 
 const getFileName = (file) => {
