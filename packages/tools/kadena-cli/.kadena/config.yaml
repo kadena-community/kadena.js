@@ -1,0 +1,25 @@
+contexts:
+  mainnet:
+    publicKey: 554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94
+    privateKey: privatef48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94
+    chainId: 1
+    networkId: mainnet01
+    networkHost: https://api.chainweb.com
+    networkExplorerUrl: https://explorer.chainweb.com/mainnet/tx/
+    kadenaNamesApiEndpoint: https://www.kadenanames.com/api/v1
+  testnet:
+    publicKey: ''
+    privateKey: ''
+    chainId: 1
+    networkId: testnet04
+    networkHost: https://api.testnet.chainweb.com
+    networkExplorerUrl: https://explorer.chainweb.com/testnet/tx/
+    kadenaNamesApiEndpoint: https://www.kadenanames.com/api/v1
+  devnet:
+    publicKey: ''
+    privateKey: ''
+    chainId: 0
+    networkId: ''
+    networkHost: ''
+    networkExplorerUrl: ''
+    kadenaNamesApiEndpoint: https://www.kadenanames.com/api/v1
