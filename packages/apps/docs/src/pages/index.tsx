@@ -1,6 +1,7 @@
 import { Box, Heading, Stack } from '@kadena/react-ui';
 
 import { BrowseSection } from '@/components';
+import { BlogPostsStrip } from '@/components/BlogPostsStrip';
 import {
   articleClass,
   contentClass,
@@ -8,7 +9,9 @@ import {
 } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
 import { browseSectionWrapper } from '@/styles/index.css';
+import type { IMenuData } from '@/types/Layout';
 import type { IMostPopularPage } from '@/types/MostPopularData';
+import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
@@ -22,9 +25,10 @@ import React from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];
+  blogPosts: IMenuData[];
 }
 
-const Home: FC<IProps> = ({ popularPages }) => {
+const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
   return (
     <>
       <HomeHeader popularPages={popularPages} />
@@ -117,28 +121,37 @@ const Home: FC<IProps> = ({ popularPages }) => {
             </Stack>
           </Box>
 
-          <Stack direction="column" gap="$2xl">
-            <BrowseSection title="General" titleAs="h5" direction="row">
-              <BrowseSection.LinkBlock
-                title="Overview of Pact"
-                subtitle="Explore all products"
-                icon="Overview"
-                href="/docs/pact"
-              />
-              <BrowseSection.LinkBlock
-                title="Chainweb"
-                subtitle="Explore all products"
-                icon="SmartContract"
-                href="/docs/chainweb"
-              />
-              <BrowseSection.LinkBlock
-                title="Marmalade"
-                subtitle="Explore all products"
-                icon="Marmalade"
-                href="/docs/marmalade"
-              />
-            </BrowseSection>
-          </Stack>
+          <Box marginBottom="$10">
+            <Stack direction="column" gap="$2xl">
+              <BrowseSection title="General" titleAs="h5" direction="row">
+                <BrowseSection.LinkBlock
+                  title="Overview of Pact"
+                  subtitle="Explore all products"
+                  icon="Overview"
+                  href="/docs/pact"
+                />
+                <BrowseSection.LinkBlock
+                  title="Chainweb"
+                  subtitle="Explore all products"
+                  icon="SmartContract"
+                  href="/docs/chainweb"
+                />
+                <BrowseSection.LinkBlock
+                  title="Marmalade"
+                  subtitle="Explore all products"
+                  icon="Marmalade"
+                  href="/docs/marmalade"
+                />
+              </BrowseSection>
+            </Stack>
+          </Box>
+
+          <Heading as="h4">Latest Blogchain posts</Heading>
+          <BlogPostsStrip
+            data={blogPosts}
+            link="/docs/blogchain"
+            linkLabel="More Blogchain posts"
+          />
         </article>
       </div>
     </>
@@ -147,10 +160,12 @@ const Home: FC<IProps> = ({ popularPages }) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const mostPopularPages = await getMostPopularPages();
+  const blogPosts = await getBlogPosts();
 
   return {
     props: {
       popularPages: mostPopularPages,
+      blogPosts,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Welcome to Kadena docs',

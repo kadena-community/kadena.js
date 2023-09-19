@@ -70,7 +70,9 @@ const Header: FC<IHeaderProps> = () => {
           id="network-select"
           ariaLabel={t('Select Network')}
           value={selectedNetwork as string}
-          onChange={(e) => setSelectedNetwork((e.target as HTMLSelectElement).value as Network)}
+          onChange={(e) =>
+            setSelectedNetwork((e.target as HTMLSelectElement).value as Network)
+          }
           icon="Earth"
         >
           {networks.map((network) => (

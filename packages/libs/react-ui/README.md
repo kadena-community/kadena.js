@@ -1,7 +1,7 @@
 # React UI
 
-**@kadena/react-ui** is a library used to provide a styling environment and basic
-React components for reuse in Kadena applications. It uses
+**@kadena/react-ui** is a library used to provide a styling environment and
+basic React components for reuse in Kadena applications. It uses
 [vanilla-extract/css][1] (will be referred to as VE) to establish a system of
 utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
 theme) that align with Kadena's Design System and exposes them so that they can
@@ -18,7 +18,7 @@ their configuration options.
 
 Run the following commands to install dependencies and build the library:
 
-```bash
+```sh
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
 pnpm install
@@ -47,19 +47,20 @@ Add **@kadena/react-ui** as a dependency in your `package.json`:
 Then run the following commands to install the package and update the monorepo's
 state:
 
-```bash
+```sh
 pnpm install
 ```
 
 VE requires bundler configuration to handle CSS. To set this up in Next.js you
 will need to install the following plugin:
 
-```bash
+```sh
 pnpm add @vanilla-extract/next-plugin --dev
 ```
 
-*If you don’t have a next.config.js file in the root of your project, you'll need to create one first.*
-Add the plugin to your next.config.js file and add **@kadena/react-ui** to transpilePackages:
+_If you don’t have a next.config.js file in the root of your project, you'll
+need to create one first._ Add the plugin to your next.config.js file and add
+**@kadena/react-ui** to transpilePackages:
 
 ```js
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
@@ -81,8 +82,8 @@ from **@kadena/react-ui** and components within your application.
 
 ### Usage
 
-As mentioned earlier, **@kadena/react-ui** provides components and styling utilities
-that align with the Kadena design system.
+As mentioned earlier, **@kadena/react-ui** provides components and styling
+utilities that align with the Kadena design system.
 
 Example for importing and using components:
 
@@ -115,9 +116,10 @@ export const exampleClass = style([
 ### Dark Theme
 
 We are utilizing the [theming][6] feature from VE to create CSS color variables
-that invert depending on the selected theme (light/dark). By default, the theme will have
-colors suitable for light mode, but to add dark theme integration you can export
-`darkThemeClass` from **@kadena/react-ui** and use it with your theme provider.
+that invert depending on the selected theme (light/dark). By default, the theme
+will have colors suitable for light mode, but to add dark theme integration you
+can export `darkThemeClass` from **@kadena/react-ui** and use it with your theme
+provider.
 
 You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
@@ -154,7 +156,7 @@ export default MyApp;
 After installing dependencies, you can start Storybook with the following
 command:
 
-```bash
+```sh
 pnpm storybook
 ```
 
@@ -164,7 +166,7 @@ The component library is not yet published. To use it in an app outside of this
 mono repo you first clone this repo and then reference this library from your
 app.
 
-```bash
+```sh
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
 pnpm install
@@ -213,9 +215,9 @@ _Sprinkles_
 Sprinkles is an optional utility class built on top of VE that allows users to
 generate a set of custom utility classes (similar to Tailwind). @kadena/react-ui
 has setup sprinkles using the defined theme based on the Kadena Design System.
-Whenever possible it is preferrable to use these utility classes and avoid creating
-unnecessary custom classes using the `style` function to keep the bundle size
-smaller.
+Whenever possible it is preferrable to use these utility classes and avoid
+creating unnecessary custom classes using the `style` function to keep the
+bundle size smaller.
 
 _Colors_
 
@@ -248,8 +250,9 @@ primaryHighContrast: '#002F5C', // High Contrast
 ```
 
 If at any point you feel that you need more than these variations of a specific
-color, reach out to our designer(s) to discuss if it would be possible to simplify the
-design to use these 4 colors before adding them to the color tokens.
+color, reach out to our designer(s) to discuss if it would be possible to
+simplify the design to use these 4 colors before adding them to the color
+tokens.
 
 _Spacing_
 

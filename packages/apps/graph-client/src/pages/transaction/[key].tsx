@@ -189,7 +189,32 @@ const RequestKey: React.FC = () => {
                     <Table.Td>
                       <strong>Events</strong>
                     </Table.Td>
-                    <Table.Td>TODO</Table.Td>
+                    <Table.Td>
+                      {transactionSubscription?.transaction?.events?.map(
+                        (event, index) => (
+                          <Table.Root key={index}>
+                            <Table.Body>
+                              <Table.Tr>
+                                <Table.Td>
+                                  <strong>Name</strong>
+                                </Table.Td>
+                                <Table.Td>{event.qualName}</Table.Td>
+                              </Table.Tr>
+                              <Table.Tr>
+                                <Table.Td>
+                                  <strong>Parameters</strong>
+                                </Table.Td>
+                                <Table.Td>
+                                  <pre>
+                                    {JSON.stringify(event.eventParameters)}
+                                  </pre>
+                                </Table.Td>
+                              </Table.Tr>
+                            </Table.Body>
+                          </Table.Root>
+                        ),
+                      )}
+                    </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>

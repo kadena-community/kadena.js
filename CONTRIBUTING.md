@@ -102,8 +102,7 @@ Examples:
 
 - Deprecate the `doSomething()` API function.
 - Use `doSomethingBetter()` instead.
-- Fix an issue where `ExampleWidget` API did not handle dates correctly (issue
-  #81)
+- Fix issue where `ExampleWidget` API did not handle dates correctly (fix #81)
 - Improve the diagnostic logging when running in advanced mode.
 - Upgrade from `react@15` to `react@16-beta` release of the flexible panels
   feature
@@ -111,8 +110,7 @@ Examples:
 (Credits: [rushjs.io/pages/best_practices/change_logs][8])
 
 If you don't see a need for authoring changelogs for your package (e.g. a PoC or
-packages without consumers), add it to
-[.changeset/config.json#ignore](.changeset/config.json).
+packages without consumers), add it to [.changeset/config.json#ignore][9].
 
 ### Code
 
@@ -129,7 +127,7 @@ pnpm format  # Format (using Prettier)
 Run from root to apply to all packages, use `--filter` for a selection, and run
 from any package folder to apply it only there.
 
-See [Filters][9] for more details.
+See [Filters][10] for more details.
 
 For everything else, please discuss.
 
@@ -147,8 +145,8 @@ To publish a new version of updated packages, please make sure you:
 - have push rights to this repository's `main` branch
 - are on a clean `main` branch
 
-We're using [Changesets][10] for our release process. The manual process in [How
-do I run the version and publish commands?][11] is what we use and repeat here:
+We're using [Changesets][11] for our release process. The manual process in [How
+do I run the version and publish commands?][12] is what we use and repeat here:
 
 1.  Check out and pull `main`
 2.  Update changelogs and bump versions
@@ -186,7 +184,8 @@ git push --tags
 [7]:
   https://lirantal.com/blog/introducing-changesets-simplify-project-versioning-with-semantic-releases/
 [8]: https://rushjs.io/pages/best_practices/change_logs
-[9]: ./docs/pnpm-turbo-filter.md
-[10]: https://github.com/changesets/changesets
-[11]:
+[9]: .changeset/config.json
+[10]: ./docs/pnpm-turbo-filter.md
+[11]: https://github.com/changesets/changesets
+[12]:
   https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md#how-do-i-run-the-version-and-publish-commands
