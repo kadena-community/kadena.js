@@ -25,14 +25,14 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
             icon="ThumbUpOutline"
             onClick={handlePageHelpful}
             title="Useful"
-            state={isPageHelpful === 'up' ? 'active' : undefined}
+            active={isPageHelpful === 'up'}
           />
           <IconButton
             color="negative"
             icon="ThumbDownOutline"
             onClick={handlePageNotHelpful}
             title="Not useful"
-            state={isPageHelpful === 'down' ? 'active' : undefined}
+            active={isPageHelpful === 'down'}
           />
         </Stack>
       </Stack>
