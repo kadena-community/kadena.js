@@ -57,8 +57,8 @@ export const AuthorProfileCard: FC<IProps> = ({ author }) => {
         </div>
 
         <div className={sectionExtraClass}>
-          <BrowseSection title="Other links">
-            {author.posts.map((post) => (
+          <BrowseSection title="Latest posts">
+            {author.posts?.map((post) => (
               <Link key={post.root} href={post.root}>
                 {post.title}
               </Link>
