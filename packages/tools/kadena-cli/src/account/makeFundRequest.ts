@@ -74,10 +74,8 @@ async function fundTestNet({ receiver }: TFundOptions): Promise<void> {
     .setNetworkId(networkId)
     .createTransaction();
 
-  console.log('transaction', transaction);
   try {
     if (isSignedTransaction(transaction)) {
-      console.log('hi');
       const transactionDescriptor = await submit(transaction);
       const response = await listen(transactionDescriptor);
       console.log(response);

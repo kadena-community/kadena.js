@@ -7,6 +7,7 @@ import { processZodErrors } from '../utils/process-zod-errors';
 import { makeFundRequest } from './makeFundRequest';
 
 import { input, select } from '@inquirer/prompts';
+import chalk from 'chalk';
 import clear from 'clear';
 import type { Command } from 'commander';
 import { z } from 'zod';
@@ -55,10 +56,14 @@ export function fundCommand(program: Command, version: string): void {
           });
 
           clear(true);
-          responses = await collectResponses(
-            proceed === 'no' ? {} : args,
-            questions,
-          );
+          if (proceed === 'no') {
+            console.log(
+              chalk.red(
+                'Please update your config by running "kda config init"',
+              ),
+            );
+            return;
+          }
         } else {
           responses = await collectResponses(args, questions);
         }
