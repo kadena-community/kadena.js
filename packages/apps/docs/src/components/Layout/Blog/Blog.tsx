@@ -1,5 +1,3 @@
-import { Grid, Stack } from '@kadena/react-ui';
-
 import { baseGridClass } from '../basestyles.css';
 import {
   articleClass,
@@ -23,8 +21,6 @@ import { AuthorProfileCard } from '@/components';
 import type { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
 import classNames from 'classnames';
-import Image from 'next/image';
-import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
