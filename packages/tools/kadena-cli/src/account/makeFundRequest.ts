@@ -6,12 +6,10 @@ import {
 } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
+import { FAUCET_CONSTANTS } from '../constants/faucet';
 import { pollStatus, submit } from '../utils/client';
-import { getConfig, getContext } from '../utils/globalConfig';
 
 import type { TFundOptions } from './fundCommand';
-import { FAUCET_CONSTANTS } from '../constants/faucet';
-import { sign } from '@kadena/cryptography-utils';
 
 // /* fund code from kadena testnet facuet
 
@@ -53,8 +51,6 @@ async function fundTestNet({
   receiver,
   chainId,
   networkId,
-  network,
-  publicKey,
 }: TFundOptions): Promise<void> {
   const { faucetOpKP, faucetAcct, faucetOpAcct } = FAUCET_CONSTANTS;
   const amount = 20;
@@ -112,14 +108,13 @@ async function fundDevNet({ receiver }: TFundOptions): Promise<void> {
 }
 
 export async function makeFundRequest(args: TFundOptions): Promise<void> {
-  const context = getContext();
-  console.log(context);
-  switch (context) {
-    case 'testnet':
+  const network = args;
+  switch (network) {
+    case 'testnet' as unknown as TFundOptions:
       return fundTestNet(args);
-    case 'devnet':
+    case 'devnet' as unknown as TFundOptions:
       return fundDevNet(args);
     default:
-      throw new Error(`Unsupported network: ${context}`);
+      throw new Error(`Unsupported network: ${network}`);
   }
 }
