@@ -4,3 +4,4 @@ lib
 temp
 **/*.graphql
 **/*.md
+tsdoc-metadata.json
