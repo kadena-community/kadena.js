@@ -5,3 +5,4 @@ export * from './hasSameBasePath';
 export * from './isEmailValid';
 export * from './createLinkFromMD';
 export * from './author';
+export * from './getAllBlogTags';

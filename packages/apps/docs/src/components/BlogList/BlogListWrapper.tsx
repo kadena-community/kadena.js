@@ -9,17 +9,23 @@ import React from 'react';
 interface IProps {
   authorId?: string;
   year?: string;
+  tagId: string;
   initPosts: IMenuData[];
 }
 
-export const BlogListWrapper: FC<IProps> = ({ authorId, year, initPosts }) => {
+export const BlogListWrapper: FC<IProps> = ({
+  authorId,
+  year,
+  tagId,
+  initPosts,
+}) => {
   const {
     handleLoad,
     error,
     isLoading,
     isDone,
     data: extraPosts,
-  } = useGetBlogs({ authorId, year });
+  } = useGetBlogs({ authorId, year, tagId });
 
   const startRetry = (isRetry: boolean = false): void => {
     handleLoad(isRetry);

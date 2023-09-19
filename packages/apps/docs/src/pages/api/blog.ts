@@ -13,16 +13,19 @@ const search = async (
     offset = 0,
     authorId,
     year,
+    tagId,
   } = req.query as unknown as {
     limit: number;
     offset: number;
     authorId?: string;
     year?: string;
+    tagId?: string;
   };
 
   const data = getInitBlogPosts(menuData as IMenuData[], offset, limit, {
     authorId,
     year,
+    tagId,
   });
 
   res.json(data);

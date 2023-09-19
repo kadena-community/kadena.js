@@ -5,6 +5,7 @@ import { getAuthorData } from '@/utils/staticGeneration/getData.mjs';
 export interface IIBlogLoadOptions {
   authorId?: string;
   year?: string;
+  tagId?: string;
 }
 
 export const getAuthorInfo = (authorId?: string): IAuthorInfo | undefined => {
@@ -16,7 +17,7 @@ export const getInitBlogPosts = (
   menuData: IMenuData[],
   offset: number,
   limit: number,
-  { authorId, year }: IIBlogLoadOptions = {},
+  { authorId, year, tagId }: IIBlogLoadOptions = {},
 ): IMenuData[] => {
   const STARTBRANCH = '/docs/blogchain';
 
@@ -31,6 +32,9 @@ export const getInitBlogPosts = (
 
   if (authorId) {
     posts = posts.filter((post) => post.authorId === authorId);
+  }
+  if (tagId) {
+    posts = posts.filter((post) => post.tags?.includes(tagId));
   }
 
   if (year) {
