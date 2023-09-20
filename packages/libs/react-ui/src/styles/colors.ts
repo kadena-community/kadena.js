@@ -92,8 +92,7 @@ export const colorPalette = {
   $purple100: '#320052',
 };
 
-// eslint-disable-next-line @kadena-dev/typedef-var
-export const gradients = {
+export const gradients: {} = {
   gradient1: `linear-gradient(135deg, ${colorPalette.$blue60} 0%, ${colorPalette.$pink60} 100%)`,
   gradient2: `linear-gradient(135deg, ${colorPalette.$blue20} 0%, ${colorPalette.$pink20} 100%)`,
 };
