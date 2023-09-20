@@ -16,3 +16,4 @@ export * from './InfiniteScroll';
 export * from './Loading';
 export * from './AuthorProfileCard';
 export * from './TagList';
+export * from './AuthorList';

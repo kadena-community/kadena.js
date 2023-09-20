@@ -9,7 +9,7 @@ import React from 'react';
 interface IProps {
   authorId?: string;
   year?: string;
-  tagId: string;
+  tagId?: string;
   initPosts: IMenuData[];
 }
 

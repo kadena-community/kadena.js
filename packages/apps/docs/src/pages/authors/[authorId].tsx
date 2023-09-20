@@ -68,9 +68,9 @@ export const getStaticProps: GetStaticProps<{}, { authorId: string }> = async (
       posts,
       authorInfo,
       frontmatter: {
-        title: 'BlogChain authors',
-        menu: 'authors',
-        label: 'authors',
+        title: authorInfo?.name ?? '',
+        menu: authorInfo?.name ?? '',
+        label: authorInfo?.name ?? '',
         order: 0,
         description: 'who is writing our blogchain posts?',
         layout: 'home',
