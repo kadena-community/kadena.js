@@ -39,8 +39,8 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
       tabName !== undefined &&
       tabName.trim() !== ''
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       if (tabName === 'docs') {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         handleSubmit(query);
       } else {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
