@@ -1,5 +1,4 @@
 import type { StreamMetaData } from '@7-docs/edge';
-import algoliasearch from 'algoliasearch';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -11,41 +10,38 @@ interface IHookResult {
 }
 
 export default function useAlgoliaSearch(limitResults = 25): IHookResult {
-  const client = algoliasearch(
-    'BD67NIA9JD',
-    '2a38c9156d62b12da7a1dfa759a7ae39',
-  );
-  const index = client.initIndex('docs_website_dev');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<undefined | string>(undefined);
   const [metaData, setMetadata] = useState<StreamMetaData[]>([]);
   const router = useRouter();
 
-  function handleSubmit(query: string): void {
+  async function handleSubmit(query: string): Promise<void> {
     setIsLoading(true);
-    index
-      .search(query, { hitsPerPage: limitResults })
-      .then(({ hits }) => {
+    const url = `/api/semanticsearch?search=${encodeURIComponent(
+      query,
+    )}&limit=${limitResults}`;
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const response = await fetch(url, options);
+
+      if (response.ok) {
+        const data = await response.json();
         setIsLoading(false);
-        const mappedData = hits.map((hit) => {
-          // @ts-ignore
-          const { filePath, title, content, url, header } = hit || {};
-          return {
-            filePath,
-            title,
-            content,
-            url,
-            header,
-          };
-        });
-        setMetadata(mappedData);
+        setMetadata(data);
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${router.route}?q=${query}`);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err.message);
-      });
+      }
+    } catch (e) {
+      setIsLoading(false);
+      setError(e.message);
+    }
   }
 
   return {
