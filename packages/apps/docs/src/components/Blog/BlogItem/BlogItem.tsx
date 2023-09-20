@@ -3,7 +3,7 @@ import { Heading, Stack, Tag } from '@kadena/react-ui';
 import { Avatar } from '../Avatar';
 import { FormatDate } from '../FormatDate';
 
-import { blogitem, footer, link, metaItem } from './styles.css';
+import { blogitem, footer, link, metaItem, tagLinkClass } from './styles.css';
 
 import type { IMenuData } from '@/types/Layout';
 import Link from 'next/link';
@@ -39,9 +39,9 @@ export const BlogItem: FC<IProps> = ({ item }) => {
           <span>
             {item.tags &&
               item.tags.map((tag) => (
-                <Link key={tag} href={`/tags/${tag}`}>
+                <span className={tagLinkClass} key={tag}>
                   <Tag>{tag}</Tag>
-                </Link>
+                </span>
               ))}
           </span>
         </footer>
