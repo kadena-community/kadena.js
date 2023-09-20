@@ -4,3 +4,6 @@ export * from './getParentHeading';
 export * from './hasSameBasePath';
 export * from './isEmailValid';
 export * from './author';
+export * from './dates';
+export * from './getBlogPosts';
+export * from './getAllBlogTags';
