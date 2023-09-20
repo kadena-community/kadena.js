@@ -4,13 +4,13 @@ import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
-import { Prisma } from '@prisma/client';
 import type { Transaction, Transfer } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import {
   BigIntResolver,
   DateTimeResolver,
-  PositiveFloatResolver,
   NonNegativeFloatResolver,
+  PositiveFloatResolver,
 } from 'graphql-scalars';
 import type { IncomingMessage } from 'http';
 

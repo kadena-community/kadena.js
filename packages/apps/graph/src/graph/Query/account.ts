@@ -1,8 +1,6 @@
 import { builder } from '../builder';
 import Account from '../objects/Account';
 
-import _debug from 'debug';
-
 const AccountFilter = builder.inputType('AccountFilter', {
   fields: (t) => ({
     module: t.string(),

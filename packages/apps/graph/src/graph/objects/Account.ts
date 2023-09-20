@@ -18,7 +18,7 @@ export default builder.objectType('Account', {
           },
           take: 10,
         });
-      }
+      },
     }),
     transfers: t.prismaConnection({
       type: 'Transfer',
@@ -32,15 +32,15 @@ export default builder.objectType('Account', {
               },
               {
                 to_acct: parent.accountName,
-              }
-            ],   
+              },
+            ],
           },
           orderBy: {
             height: 'desc',
           },
           take: 10,
         });
-      }
+      },
     }),
   }),
 });
