@@ -1,7 +1,7 @@
 import { SearchResults } from './components/SearchResults';
 import useAlgoliaSearch from './useAlgoliaSearch';
 
-// import { useSearch } from '@/hooks';
+import { useSearch } from '@/hooks';
 import { mapMatches } from '@/pages/api/semanticsearch';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import type { FC } from 'react';
@@ -17,12 +17,18 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   const [tabName, setTabName] = useState<string | undefined>('docs');
   const {
     metadata = [],
-    // outputStream,
     handleSubmit,
-    // conversation,
     error,
     isLoading,
   } = useAlgoliaSearch(limitResults);
+
+  const {
+    outputStream,
+    conversation,
+    error: conversationError,
+    isLoading: conversationIsLoading,
+    handleSubmit: handleConversationSubmit,
+  } = useSearch();
 
   const semanticResults = metadata.map(mapMatches);
 
@@ -34,7 +40,12 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
       tabName.trim() !== ''
     ) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      handleSubmit(query);
+      if (tabName === 'docs') {
+        handleSubmit(query);
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        handleConversationSubmit(query);
+      }
       analyticsEvent(EVENT_NAMES['click:search'], { query, tabName });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,10 +60,11 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
       <SearchResults
         semanticResults={semanticResults}
         semanticIsLoading={isLoading}
-        outputStream="outputStream"
+        conversation={conversation}
+        outputStream={outputStream}
         query={query}
-        error={error}
-        isLoading={isLoading}
+        error={error || conversationError}
+        isLoading={conversationIsLoading}
         hasScroll={hasScroll}
         onTabSelect={onTabSelect}
         limitResults={limitResults}

@@ -32,7 +32,7 @@ interface IProps {
   semanticError?: string;
   semanticIsLoading: boolean;
   outputStream: string;
-  conversation?: IConversation;
+  conversation: IConversation;
   limitResults?: number;
   query?: string;
   error?: string;
@@ -151,7 +151,7 @@ export const SearchResults: FC<IProps> = ({
               </Notification.Root>
             )}
 
-            {conversation?.history?.map((interaction, idx) => {
+            {conversation.history?.map((interaction, idx) => {
               const metadata = removeUnnecessarySearchRecords(
                 interaction?.metadata,
               );
