@@ -1,4 +1,4 @@
-import { Box, Heading, Stack } from '@kadena/react-ui';
+import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
 
 import { BrowseSection } from '@/components';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip';
@@ -37,9 +37,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Box marginBottom="$10">
-            <Heading as="h4">Getting started</Heading>
-            <Stack wrap="wrap">
+          <Grid.Root columns={{ sm: 1, md: 2 }}>
+            <Grid.Item rowSpan={2}>
               <BrowseSection
                 title="Core concepts"
                 className={browseSectionWrapper}
@@ -50,6 +49,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <Link href="/docs/kadena/kda">What is KDA token?</Link>
                 <Link href="/docs/pact">What are Pact smart contracts?</Link>
               </BrowseSection>
+            </Grid.Item>
+            <Grid.Item>
               <BrowseSection
                 title="Developers"
                 className={browseSectionWrapper}
@@ -62,6 +63,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 </Link>
                 <Link href="/docs/pact">Pact developer tutorials</Link>
               </BrowseSection>
+            </Grid.Item>
+            <Grid.Item>
               <BrowseSection
                 title="Setup local environment"
                 className={browseSectionWrapper}
@@ -74,8 +77,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   Technical grants
                 </Link>
               </BrowseSection>
-            </Stack>
-          </Box>
+            </Grid.Item>
+          </Grid.Root>
 
           <Box marginBottom="$10">
             <Stack wrap="wrap">
