@@ -5,12 +5,11 @@ import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
 import { Prisma, Transaction, Transfer } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime/library';
 import {
   BigIntResolver,
   DateTimeResolver,
   PositiveFloatResolver,
-  GraphQLDeweyDecimalResolver as DecimalResolver,
+  NonNegativeFloatResolver,
 } from 'graphql-scalars';
 import type { IncomingMessage } from 'http';
 
@@ -25,8 +24,8 @@ interface IDefaultTypesExtension {
       Output: Date;
     };
     Decimal: {
-      Input: Decimal;
-      Output: Decimal;
+      Input: number;
+      Output: number;
     };
     PositiveFloat: {
       Input: number;
@@ -85,7 +84,7 @@ type ScalarTypeResolver<TScalarInputShape, TScalarOutputShape> =
 const SCALARS = [
   ['BigInt', BigIntResolver],
   ['DateTime', DateTimeResolver],
-  ['Decimal', DecimalResolver],
+  ['Decimal', NonNegativeFloatResolver],
   ['PositiveFloat', PositiveFloatResolver],
 ] as const;
 

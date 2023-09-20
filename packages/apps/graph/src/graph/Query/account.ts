@@ -23,6 +23,8 @@ builder.queryField('account', (t) => {
       return {
         id: `Account:${args.accountName}`,
         accountName: args.accountName,
+        chainAccounts: [],
+        totalBalances: [],
         transactions: [],
         transfers: [],
       };
