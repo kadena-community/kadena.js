@@ -6,7 +6,7 @@ import {
   TitleHeader,
 } from '@/components/Layout/components';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IMenuData, IPageProps } from '@/types/Layout';
+import type { IMenuData, IPageProps, ITag } from '@/types/Layout';
 import { getAllBlogTags } from '@/utils';
 import {
   checkSubTreeForActive,
@@ -42,8 +42,8 @@ const Home: FC<IProps> = ({ posts, frontmatter, tagId }) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   getAllBlogTags();
   return {
-    paths: getAllBlogTags().map((tag: string) => ({
-      params: { tagId: tag },
+    paths: getAllBlogTags().map((tag: ITag) => ({
+      params: { tagId: tag.tag },
     })),
     fallback: false, // false or "blocking"
   };

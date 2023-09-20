@@ -124,3 +124,8 @@ export interface IMenuData {
   wordCount?: number;
   readingTimeInMinutes?: number;
 }
+
+export interface ITag {
+  tag: string;
+  count: number;
+}

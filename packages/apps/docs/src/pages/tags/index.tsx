@@ -6,7 +6,7 @@ import {
   contentClassVariants,
   TitleHeader,
 } from '@/components/Layout/components';
-import type { IPageProps } from '@/types/Layout';
+import type { IPageProps, ITag } from '@/types/Layout';
 import { getAllBlogTags } from '@/utils';
 import {
   checkSubTreeForActive,
@@ -19,10 +19,10 @@ import type { FC } from 'react';
 import React from 'react';
 
 interface IProps extends IPageProps {
-  tags: string[];
+  tags: ITag[];
 }
 
-const Home: FC<IProps> = ({ frontmatter }) => {
+const Home: FC<IProps> = ({ tags, frontmatter }) => {
   return (
     <>
       <TitleHeader
@@ -37,9 +37,11 @@ const Home: FC<IProps> = ({ frontmatter }) => {
         <article className={articleClass}>
           <Stack direction="column" gap="$2xl">
             <ul>
-              {frontmatter.tags?.map((tag) => (
-                <li key={tag}>
-                  <Link href={`/tags/${encodeURIComponent(tag)}`}>{tag}</Link>
+              {tags?.map((tag) => (
+                <li key={tag.tag}>
+                  <Link href={`/tags/${encodeURIComponent(tag.tag)}`}>
+                    {tag.tag}-{tag.count}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -55,8 +57,8 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      tags,
       frontmatter: {
-        tags,
         title: 'Tags',
         menu: 'all tags',
         label: 'overview',
