@@ -27,7 +27,7 @@ export const statusVariant = styleVariants(statusOptions, (status) => {
     vars: {
       [helperIconColor]: vars.colors[`$${status}Accent`],
       [statusColor]: vars.colors[`$${status}Accent`],
-      [helperTextColor]: vars.colors[`$${status}Contrast`],
+      [helperTextColor]: vars.colors[`$${status}ContrastInverted`],
     },
   };
 });
