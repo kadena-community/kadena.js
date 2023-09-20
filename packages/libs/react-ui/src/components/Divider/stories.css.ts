@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 
 export const ContentClass = style([
   sprinkles({
-    backgroundColor: '$primarySurface',
+    backgroundColor: '$primarySurfaceInverted',
     borderRadius: '$sm',
     padding: '$2',
     color: '$neutral6',

@@ -19,7 +19,7 @@ export const pageNavButtonClass = style([
     alignItems: 'center',
     paddingX: '$3',
     paddingY: '$2',
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
     border: 'none',
     background: 'none',
     fontWeight: '$semiBold',
@@ -40,7 +40,7 @@ export const pageNavLabelClass = style([
 
 export const pageNumButtonClass = style([
   sprinkles({
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
     width: '$8',
     paddingY: '$2',
     border: 'none',

@@ -69,12 +69,6 @@ export const listItemClass = style([
   },
 ]);
 
-export const itemStackClass = style([
-  {
-    gap: '0 !important',
-  },
-]);
-
 export const listItemLinkClass = style([
   sprinkles({
     display: 'flex',

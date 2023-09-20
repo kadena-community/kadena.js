@@ -123,15 +123,6 @@ importers:
       '@7-docs/cli':
         specifier: ~0.3.2
         version: 0.3.2
-      '@babel/preset-env':
-        specifier: ^7.22.9
-        version: 7.22.9(@babel/core@7.22.15)
-      '@babel/preset-react':
-        specifier: ^7.18.6
-        version: 7.18.6(@babel/core@7.22.15)
-      '@babel/preset-typescript':
-        specifier: ^7.21.0
-        version: 7.21.0(@babel/core@7.22.15)
       '@kadena-dev/eslint-config':
         specifier: workspace:*
         version: link:../../tools/eslint-config
@@ -141,12 +132,6 @@ importers:
       '@kadena-dev/lint-package':
         specifier: workspace:*
         version: link:../../tools/lint-package
-      '@kadena/pactjs-cli':
-        specifier: workspace:*
-        version: link:../../tools/pactjs-cli
-      '@kadena/types':
-        specifier: workspace:*
-        version: link:../../libs/types
       '@percy/cli':
         specifier: ~1.24.0
         version: 1.24.0
@@ -180,24 +165,12 @@ importers:
       '@storybook/addon-mdx-gfm':
         specifier: ^7.4.0
         version: 7.4.0
-      '@storybook/blocks':
-        specifier: ^7.4.0
-        version: 7.4.0(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/csf':
-        specifier: ~0.1.1
-        version: 0.1.1
-      '@storybook/docs-mdx':
-        specifier: ~0.1.0
-        version: 0.1.0
       '@storybook/react':
         specifier: ^7.4.0
         version: 7.4.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
       '@storybook/react-webpack5':
         specifier: ^7.4.0
         version: 7.4.0(@babel/core@7.22.15)(@swc/core@1.3.80)(esbuild@0.18.20)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
-      '@storybook/testing-library':
-        specifier: ^0.2.0
-        version: 0.2.0
       '@storybook/theming':
         specifier: ^7.4.0
         version: 7.4.0(react-dom@18.2.0)(react@18.2.0)
@@ -4718,21 +4691,6 @@ packages:
       '@babel/plugin-transform-dotall-regex': 7.22.5(@babel/core@7.22.9)
       '@babel/types': 7.22.5
       esutils: 2.0.3
-    dev: true
-
-  /@babel/preset-react@7.18.6(@babel/core@7.22.15):
-    resolution: {integrity: sha512-zXr6atUmyYdiWRVLOZahakYmOBHtWc2WGCkP8PYTgZi0iJXDY2CN180TdrIW4OGOAdLc7TifzDIvtx6izaRIzg==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.22.15
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-validator-option': 7.22.5
-      '@babel/plugin-transform-react-display-name': 7.22.5(@babel/core@7.22.15)
-      '@babel/plugin-transform-react-jsx': 7.22.5(@babel/core@7.22.15)
-      '@babel/plugin-transform-react-jsx-development': 7.22.5(@babel/core@7.22.15)
-      '@babel/plugin-transform-react-pure-annotations': 7.22.5(@babel/core@7.22.15)
     dev: true
 
   /@babel/preset-react@7.18.6(@babel/core@7.22.9):

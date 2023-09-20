@@ -1,6 +1,7 @@
-import { avatarClass } from './styles.css';
+import { avatarClass, avatarSizeVariant } from './styles.css';
 
 import { getInitials } from '@/utils';
+import classNames from 'classnames';
 import Image from 'next/image';
 import type { FC } from 'react';
 import React from 'react';
@@ -8,20 +9,21 @@ import React from 'react';
 interface IProps {
   name?: string;
   avatar?: string;
+  size?: 'default' | 'large';
 }
 
-export const Avatar: FC<IProps> = ({ name, avatar }) => {
+export const Avatar: FC<IProps> = ({ name, avatar, size = 'default' }) => {
   if (avatar) {
+    const avatarSize = size === 'large' ? 60 : 40;
+
     return (
-      <div>
-        <Image
-          className={avatarClass}
-          src={avatar}
-          width={40}
-          height={40}
-          alt={`avatar: ${name}`}
-        />
-      </div>
+      <Image
+        className={classNames(avatarClass, avatarSizeVariant[size])}
+        src={avatar}
+        width={avatarSize}
+        height={avatarSize}
+        alt={`avatar: ${name}`}
+      />
     );
   }
   if (name) {

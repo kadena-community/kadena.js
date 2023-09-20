@@ -50,12 +50,12 @@ export const displayVariant = styleVariants({
 export const warningVariant = styleVariants({
   mild: [
     sprinkles({
-      color: '$warningContrast',
+      color: '$warningContrastInverted',
     }),
   ],
   severe: [
     sprinkles({
-      color: '$negativeContrast',
+      color: '$negativeContrastInverted',
     }),
   ],
 });

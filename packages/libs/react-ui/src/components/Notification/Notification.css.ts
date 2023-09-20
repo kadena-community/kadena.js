@@ -32,9 +32,9 @@ export const containerClass = style([
 export const cardColorVariants = styleVariants(colorVariants, (color) => {
   return [
     sprinkles({
-      backgroundColor: `$${color}Surface`,
-      borderColor: `$${color}Contrast`,
-      color: `$${color}Contrast`,
+      backgroundColor: `$${color}SurfaceInverted`,
+      borderColor: `$${color}ContrastInverted`,
+      color: `$${color}ContrastInverted`,
     }),
   ];
 });
@@ -104,7 +104,7 @@ export const actionButtonColorVariants = styleVariants(
     return [
       actionButtonClass,
       sprinkles({
-        color: `$${color}Contrast`,
+        color: `$${color}ContrastInverted`,
       }),
     ];
   },
