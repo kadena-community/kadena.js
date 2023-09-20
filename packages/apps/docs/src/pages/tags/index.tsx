@@ -1,5 +1,6 @@
 import { Stack } from '@kadena/react-ui';
 
+import { TagList, TagListItem } from '@/components';
 import {
   articleClass,
   contentClass,
@@ -14,7 +15,6 @@ import {
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
-import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -36,15 +36,9 @@ const Home: FC<IProps> = ({ tags, frontmatter }) => {
       >
         <article className={articleClass}>
           <Stack direction="column" gap="$2xl">
-            <ul>
-              {tags?.map((tag) => (
-                <li key={tag.tag}>
-                  <Link href={`/tags/${encodeURIComponent(tag.tag)}`}>
-                    {tag.tag}-{tag.count}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <TagList>
+              {tags?.map((tag) => <TagListItem key={tag.tag} {...tag} />)}
+            </TagList>
           </Stack>
         </article>
       </div>

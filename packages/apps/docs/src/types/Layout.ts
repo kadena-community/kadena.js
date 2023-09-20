@@ -128,4 +128,5 @@ export interface IMenuData {
 export interface ITag {
   tag: string;
   count: number;
+  links: IMenuData[];
 }

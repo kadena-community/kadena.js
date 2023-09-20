@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@kadena/react-ui';
+import { Heading, Stack, Tag } from '@kadena/react-ui';
 
 import { Avatar } from '../Avatar';
 import { FormatDate } from '../FormatDate';
@@ -36,6 +36,14 @@ export const BlogItem: FC<IProps> = ({ item }) => {
         <footer className={footer}>
           <span className={metaItem}>{item.readingTimeInMinutes} minutes</span>
           <FormatDate className={metaItem} date={item.publishDate} />
+          <span>
+            {item.tags &&
+              item.tags.map((tag) => (
+                <Link key={tag} href={`/tags/${tag}`}>
+                  <Tag>{tag}</Tag>
+                </Link>
+              ))}
+          </span>
         </footer>
       </Link>
     </li>

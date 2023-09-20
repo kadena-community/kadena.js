@@ -1,10 +1,15 @@
 import type { IMenuData, ITag } from '@/types/Layout';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 
-const countPostsPerTag = (tag: string, data?: IMenuData[]): number => {
-  if (!data) return 0;
+const PostsPerTag = (tag: string, data?: IMenuData[]): Omit<ITag, 'tag'> => {
+  if (!data) return { count: 0, links: [] };
 
-  return data.filter((post) => post.tags?.includes(tag)).length;
+  const links = data.filter((post) => post.tags?.includes(tag));
+
+  return {
+    count: links.length,
+    links: links.slice(0, 3),
+  };
 };
 
 export const getAllBlogTags = (): ITag[] => {
@@ -22,7 +27,7 @@ export const getAllBlogTags = (): ITag[] => {
     .map((tag) => {
       return {
         tag,
-        count: countPostsPerTag(tag, posts),
+        ...PostsPerTag(tag, posts),
       };
     });
 };
