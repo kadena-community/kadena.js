@@ -5,7 +5,7 @@ export default builder.prismaNode('Transfer', {
   id: { field: 'block_chainid_idx_modulehash_requestkey' },
   fields: (t) => ({
     // database fields
-    amount: t.expose('amount', { type: 'Decimal' }),
+    amount: t.expose('amount' as never, { type: 'Decimal' }),
     blockHash: t.exposeString('block'),
     chainId: t.expose('chainid', { type: 'BigInt' }),
     fromAccount: t.exposeString('from_acct'),
