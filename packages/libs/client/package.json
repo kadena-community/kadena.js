@@ -54,7 +54,7 @@
     "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.3",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "@walletconnect/types": "~2.8.1",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",

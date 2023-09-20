@@ -48,7 +48,7 @@
     "@rushstack/heft": "~0.50.6",
     "@types/eventsource": "1.1.11",
     "@types/heft-jest": "~1.0.3",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
     "prettier-plugin-packagejson": "^2.4.5"
