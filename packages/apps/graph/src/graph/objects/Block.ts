@@ -44,11 +44,11 @@ export default builder.prismaNode('Block', {
         events: t.arg.stringList({ required: false, defaultValue: [] }),
       },
       type: 'Transaction',
-      cursor: 'blockHash_requestkey',
+      cursor: 'blockhash_requestkey',
       async totalCount(parent, { events }, context, info) {
         return prismaClient.transaction.count({
           where: {
-            blockHash: parent.hash,
+            blockhash: parent.hash,
             requestkey: {
               in: await getTransactionsRequestkeyByEvent(events || [], parent),
             },
@@ -59,7 +59,7 @@ export default builder.prismaNode('Block', {
         return prismaClient.transaction.findMany({
           ...query,
           where: {
-            blockHash: parent.hash,
+            blockhash: parent.hash,
             requestkey: {
               in: await getTransactionsRequestkeyByEvent(events || [], parent),
             },
@@ -93,12 +93,12 @@ async function getTransactionsRequestkeyByEvent(
   ).map((r) => r.requestkey);
 }
 
-async function getConfirmationDepth(blockHash: string): Promise<number> {
+async function getConfirmationDepth(blockhash: string): Promise<number> {
   const result = await prismaClient.$queryRaw<{ depth: number }[]>`
     WITH RECURSIVE BlockDescendants AS (
       SELECT hash, parent, 0 AS depth
       FROM blocks
-      WHERE hash = ${blockHash}
+      WHERE hash = ${blockhash}
       UNION ALL
       SELECT b.hash, b.parent, d.depth + 1 AS depth
       FROM BlockDescendants d
