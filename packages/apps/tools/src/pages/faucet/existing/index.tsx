@@ -5,10 +5,15 @@ import {
   Button,
   Card,
   Grid,
-  Heading, Notification,
+  Heading,
+  Notification,
 } from '@kadena/react-ui';
 
-import { buttonContainerClass, containerClass, notificationContainerStyle } from './styles.css';
+import {
+  buttonContainerClass,
+  containerClass,
+  notificationContainerStyle,
+} from './styles.css';
 
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
@@ -63,7 +68,6 @@ const ExistingAccountFaucetPage: FC = () => {
     status: FormStatus;
     message?: string;
   }>({ status: 'idle' });
-
 
   useToolbar([
     {
@@ -139,7 +143,9 @@ const ExistingAccountFaucetPage: FC = () => {
             color="warning"
             expanded={true}
             icon="Information"
-            title={t('The faucet can not be used on Mainnet. You can switch networks in the top bar.')}
+            title={t(
+              'The faucet can not be used on Mainnet. You can switch networks in the top bar.',
+            )}
           />
         ) : null}
       </div>
@@ -170,7 +176,6 @@ const ExistingAccountFaucetPage: FC = () => {
           </Grid.Root>
         </Card>
         <div className={buttonContainerClass}>
-
           <Button
             loading={requestStatus.status === 'processing'}
             icon="TrailingIcon"

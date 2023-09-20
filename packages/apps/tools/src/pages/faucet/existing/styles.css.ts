@@ -12,7 +12,5 @@ export const buttonContainerClass = style([
   { display: 'flex', flexDirection: 'row-reverse' },
 ]);
 export const notificationContainerStyle = style([
-  sprinkles({  fontSize: '$xs', marginY: '$6' }),
+  sprinkles({ fontSize: '$xs', marginY: '$6' }),
 ]);
-
-
