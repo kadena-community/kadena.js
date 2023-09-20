@@ -2,7 +2,7 @@ import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
-export const consentButton = style([
+const consentButton = style([
   sprinkles({
     display: 'flex',
     alignItems: 'center',
