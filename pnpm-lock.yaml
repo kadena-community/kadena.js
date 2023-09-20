@@ -282,6 +282,9 @@ importers:
 
   packages/apps/graph:
     dependencies:
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
       '@pothos/core':
         specifier: ~3.33.0
         version: 3.33.0(graphql@16.8.0)

@@ -4,7 +4,8 @@ import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
-import { Prisma, Transaction, Transfer } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import type { Transaction, Transfer } from '@prisma/client';
 import {
   BigIntResolver,
   DateTimeResolver,
@@ -39,10 +40,10 @@ export interface IContext {
 }
 
 export interface IAccount {
-  id: string
-  accountName: string
-  transactions: Transaction[]
-  transfers: Transfer[]
+  id: string;
+  accountName: string;
+  transactions: Transaction[];
+  transfers: Transfer[];
 }
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -51,7 +52,7 @@ export const builder = new SchemaBuilder<
     PrismaTypes: PrismaTypes;
     Context: IContext;
     Objects: {
-      Account: IAccount,
+      Account: IAccount;
     };
   }
 >({
