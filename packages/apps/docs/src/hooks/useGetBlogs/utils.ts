@@ -4,6 +4,8 @@ import { getAuthorData } from '@/utils/staticGeneration/getData.mjs';
 
 export interface IIBlogLoadOptions {
   authorId?: string;
+  year?: string;
+  tagId?: string;
 }
 
 export const getAuthorInfo = (authorId?: string): IAuthorInfo | undefined => {
@@ -15,20 +17,33 @@ export const getInitBlogPosts = (
   menuData: IMenuData[],
   offset: number,
   limit: number,
-  { authorId }: IIBlogLoadOptions = {},
+  { authorId, year, tagId }: IIBlogLoadOptions = {},
 ): IMenuData[] => {
   const STARTBRANCH = '/docs/blogchain';
 
+  let posts: IMenuData[] = [];
   const startBranch = menuData.find(
     (item) => item.root === STARTBRANCH,
   ) as IMenuData;
 
-  let posts = startBranch.children.flatMap((item) => {
+  posts = startBranch.children.flatMap((item) => {
     return item.children;
   });
 
   if (authorId) {
     posts = posts.filter((post) => post.authorId === authorId);
+  }
+  if (tagId) {
+    posts = posts.filter((post) => post.tags?.includes(tagId));
+  }
+
+  if (year) {
+    posts = posts.filter((post) => {
+      if (!post.publishDate) return false;
+      const date = new Date(post.publishDate);
+
+      return `${date.getFullYear()}` === year;
+    });
   }
 
   posts = posts

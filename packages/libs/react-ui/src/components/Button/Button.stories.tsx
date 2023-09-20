@@ -1,6 +1,6 @@
 import type { IButtonProps } from './Button';
 import { Button } from './Button';
-import { colorVariants } from './Button.css';
+import { colorVariants, typeVariants } from './Button.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -43,6 +43,9 @@ const meta: Meta<
       control: {
         type: 'select',
       },
+      table: {
+        type: { summary: Object.keys(SystemIcon).join(' | ') },
+      },
       if: { arg: 'loading', eq: false },
     },
     iconAlign: {
@@ -51,12 +54,32 @@ const meta: Meta<
       control: {
         type: 'radio',
       },
+      table: {
+        type: { summary: 'left | right' },
+        defaultValue: { summary: 'right' },
+      },
       if: { arg: 'icon', neq: '-' },
     },
-    variant: {
+    color: {
       options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
       control: {
         type: 'select',
+      },
+      description: 'color variant',
+      table: {
+        type: { summary: Object.keys(colorVariants).join(' | ') },
+        defaultValue: { summary: 'primary' },
+      },
+    },
+    variant: {
+      options: Object.keys(typeVariants) as (keyof typeof typeVariants)[],
+      control: {
+        type: 'select',
+      },
+      description: 'button style variant',
+      table: {
+        type: { summary: Object.keys(typeVariants).join(' | ') },
+        defaultValue: { summary: 'default' },
       },
     },
     title: {
@@ -91,6 +114,10 @@ const meta: Meta<
       control: {
         type: 'radio',
       },
+      table: {
+        type: { summary: 'button | a' },
+        defaultValue: { summary: 'button' },
+      },
     },
     disabled: {
       description: 'only used when rendered as button',
@@ -123,7 +150,8 @@ export const Dynamic: Story = {
   name: 'Button',
   args: {
     as: 'button',
-    variant: 'primary',
+    color: 'primary',
+    variant: 'default',
     disabled: false,
     href: 'https://kadena.io',
     iconAlign: 'right',
@@ -135,7 +163,8 @@ export const Dynamic: Story = {
   },
   render: ({
     as,
-    variant = 'primary',
+    color = 'primary',
+    variant = 'default',
     disabled,
     href,
     iconAlign = 'right',
@@ -159,6 +188,7 @@ export const Dynamic: Story = {
         onClick={onClick}
         target={target}
         title={title}
+        color={color}
         variant={variant}
         icon={icon}
         iconAlign={iconAlign}

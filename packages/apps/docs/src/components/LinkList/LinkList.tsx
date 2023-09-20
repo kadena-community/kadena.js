@@ -6,7 +6,7 @@ import Link from 'next/link';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 
-export interface ILinkList {
+interface ILinkList {
   children?: ReactNode;
   title?: string;
 }

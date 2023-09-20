@@ -27,7 +27,7 @@ export interface INavigation {
   next?: INavigationMenuItem;
 }
 
-export interface INavigationMenuItem {
+interface INavigationMenuItem {
   title: string;
   root: string;
 }
@@ -123,4 +123,10 @@ export interface IMenuData {
   authorInfo?: IAuthorInfo;
   wordCount?: number;
   readingTimeInMinutes?: number;
+}
+
+export interface ITag {
+  tag: string;
+  count: number;
+  links: IMenuData[];
 }

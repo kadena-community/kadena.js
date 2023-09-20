@@ -1,6 +1,9 @@
+import type { colorVariants, typeVariants } from './Button.css';
 import {
+  alternativeVariant,
   buttonLoadingClass,
-  colorVariants,
+  compactVariant,
+  defaultVariant,
   iconLoadingClass,
 } from './Button.css';
 
@@ -15,7 +18,8 @@ export interface IButtonProps
     'as' | 'disabled' | 'className'
   > {
   as?: 'button' | 'a';
-  variant?: keyof typeof colorVariants;
+  color?: keyof typeof colorVariants;
+  variant?: keyof typeof typeVariants;
   children: React.ReactNode;
   disabled?: boolean;
   href?: string;
@@ -33,7 +37,8 @@ export interface IButtonProps
 export const Button: FC<IButtonProps> = ({
   as = 'button',
   children,
-  variant = 'primary',
+  color = 'primary',
+  variant = 'default',
   href,
   icon,
   iconAlign = 'right',
@@ -50,7 +55,18 @@ export const Button: FC<IButtonProps> = ({
     Icon = SystemIcon.Loading;
   }
 
-  const buttonClassname = cn(colorVariants[variant], {
+  const buttonVariant = () => {
+    switch (variant) {
+      case 'compact':
+        return compactVariant[color];
+      case 'alternative':
+        return alternativeVariant[color];
+      default:
+        return defaultVariant[color];
+    }
+  };
+
+  const buttonClassname = cn(buttonVariant(), {
     [buttonLoadingClass]: loading,
   });
 

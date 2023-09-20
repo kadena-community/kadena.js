@@ -61,16 +61,6 @@ export const landingFrontMatter: IBasePageMeta = {
   icon: 'KadenaOverview',
 };
 
-export const homeFrontMatter: IBasePageMeta = {
-  title: 'Welcome to Kadena docs',
-  menu: 'Pact',
-  label: 'Pact Test',
-  order: 1,
-  description:
-    "Welcome to Kadena's documentation! All our Documentation in 1 place. Pact, ChainWeb, KDA, Marmalade etc",
-  layout: 'home',
-};
-
 export const redoclyFrontMatter: IPageMeta = {
   title: 'Chainweb',
   menu: 'Chainweb',

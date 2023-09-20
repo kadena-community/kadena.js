@@ -17,7 +17,7 @@ import NextLink from 'next/link';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 
-export interface IBrowseSectionProps {
+interface IBrowseSectionProps {
   title?: string;
   titleAs?: IHeadingProps['as'];
   children?: ReactNode;
@@ -25,7 +25,7 @@ export interface IBrowseSectionProps {
   className?: string;
 }
 
-export type BrowseSectionType = FC<IBrowseSectionProps> & {
+type BrowseSectionType = FC<IBrowseSectionProps> & {
   LinkBlock: FC<ILinkBlock>;
   LinkList: FC<ILinkList>;
 };

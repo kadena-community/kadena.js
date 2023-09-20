@@ -9,7 +9,7 @@ import {
 
 import { createVar, style } from '@vanilla-extract/css';
 
-export const $$shadowWidth = createVar();
+const $$shadowWidth = createVar();
 
 export const codebackgroundClass = style([
   sprinkles({}),
