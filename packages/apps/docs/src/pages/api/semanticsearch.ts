@@ -3,6 +3,8 @@ import type { IFrontmatterData } from '@/types';
 import type { IMenuData } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import type { StreamMetaData } from '@7-docs/edge';
+import algoliasearch from 'algoliasearch';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 interface IQueryResult extends StreamMetaData {
   content?: string;
@@ -92,3 +94,58 @@ export const mapMatches = (metadata: StreamMetaData): IQueryResult => {
     ...data,
   };
 };
+
+interface ISemanticSearchQuery {
+  search?: string;
+  limit?: string;
+}
+
+interface ISemanticSearchRequest extends Omit<NextApiRequest, 'query'> {
+  query?: ISemanticSearchQuery;
+}
+
+// E.g /api/semanticsearch?search=foo&limit=10
+const semanticSearch = async (
+  req: ISemanticSearchRequest,
+  res: NextApiResponse,
+): Promise<void> => {
+  console.log('req', req.query);
+  const { query: { search = '', limit = '10' } = {} } = req;
+
+  const limitNumber = parseInt(limit, 10);
+
+  if (!search) {
+    return res.status(200).json([]);
+  }
+
+  const client = algoliasearch(
+    process.env.ALGOLIA_APP_ID ?? '',
+    process.env.ALGOLIA_SEARCH_API_KEY ?? '',
+  );
+
+  const index = client.initIndex(process.env.ALGOLIA_INDEX_NAME ?? '');
+
+  index
+    .search(search, { hitsPerPage: limitNumber })
+    .then(({ hits }) => {
+      const mappedData = hits.map((hit) => {
+        const { filePath, title, content, url, header } = hit as StreamMetaData;
+        return {
+          filePath,
+          title,
+          content,
+          url,
+          header,
+        };
+      });
+      return res.status(200).json(mappedData);
+    })
+    .catch(() => {
+      return res.status(500).json({
+        status: 500,
+        message: 'Something went wrong, please try again later',
+      });
+    });
+};
+
+export default semanticSearch;
