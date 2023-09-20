@@ -144,7 +144,7 @@ const ExistingAccountFaucetPage: FC = () => {
             expanded={true}
             icon="Information"
             title={t(
-              'The faucet can not be used on Mainnet. You can switch networks in the top bar.',
+              'The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet.',
             )}
           />
         ) : null}

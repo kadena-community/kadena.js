@@ -161,5 +161,5 @@
   "Retry": "Retry",
   "Search": "Search",
   "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!",
-  "The faucet can not be used on Mainnet. You can switch networks in the top bar.": "The faucet can not be used on Mainnet.<1/>You can switch networks in the top bar."
+  "The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet.": "The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet."
 }
