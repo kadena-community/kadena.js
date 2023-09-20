@@ -1,15 +1,14 @@
-import { Card, Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/react-ui';
 
-import { AuthorList, AuthorListItem, AuthorProfileCard } from '@/components';
+import { TagList, TagListItem } from '@/components';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
   TitleHeader,
 } from '@/components/Layout/components';
-import authorsData from '@/data/authors.json';
-import type { IAuthorInfo, IPageProps } from '@/types/Layout';
-import { getLatestBlogPostsOfAuthor } from '@/utils';
+import type { IPageProps, ITag } from '@/types/Layout';
+import { getAllBlogTags } from '@/utils';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -20,10 +19,10 @@ import type { FC } from 'react';
 import React from 'react';
 
 interface IProps extends IPageProps {
-  authors: IAuthorInfo[];
+  tags: ITag[];
 }
 
-const Home: FC<IProps> = ({ frontmatter, authors }) => {
+const Home: FC<IProps> = ({ tags, frontmatter }) => {
   return (
     <>
       <TitleHeader
@@ -37,15 +36,9 @@ const Home: FC<IProps> = ({ frontmatter, authors }) => {
       >
         <article className={articleClass}>
           <Stack direction="column" gap="$2xl">
-            <AuthorList>
-              {authors.map((author) => (
-                <AuthorListItem key={author.id}>
-                  <Card fullWidth>
-                    <AuthorProfileCard author={author} />
-                  </Card>
-                </AuthorListItem>
-              ))}
-            </AuthorList>
+            <TagList>
+              {tags?.map((tag) => <TagListItem key={tag.tag} {...tag} />)}
+            </TagList>
           </Stack>
         </article>
       </div>
@@ -54,28 +47,18 @@ const Home: FC<IProps> = ({ frontmatter, authors }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const authors = authorsData
-    .sort((a, b) => {
-      if (a.id > b.id) return 1;
-      if (a.id < b.id) return -1;
-      return 0;
-    })
-    .map((author) => {
-      return { ...author, posts: getLatestBlogPostsOfAuthor(author) };
-    }) as IAuthorInfo[];
-
+  const tags = getAllBlogTags();
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
-      authors,
+      tags,
       frontmatter: {
-        title: 'BlogChain authors',
-        menu: 'authors Overview',
+        title: 'Tags',
+        menu: 'all tags',
         label: 'overview',
         order: 0,
-        description: 'who is writing our blogchain posts?',
         layout: 'home',
-        icon: 'BlogChain',
+        icon: 'Concepts',
       },
     },
   };

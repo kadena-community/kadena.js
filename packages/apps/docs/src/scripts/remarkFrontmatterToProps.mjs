@@ -1,4 +1,5 @@
 import yaml from 'js-yaml';
+import { compareDesc } from 'date-fns';
 import { getReadTime } from './utils.mjs';
 import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from './../utils/staticGeneration/getData.mjs';
@@ -24,7 +25,12 @@ const getLatestBlogPostsOfAuthor = (author) => {
       return item.children;
     }) ?? [];
 
-  return posts.filter((post) => post.authorId === author.id).slice(0, 5);
+  return posts
+    .filter((post) => post.authorId === author.id)
+    .sort((a, b) =>
+      compareDesc(new Date(a.publishDate), new Date(b.publishDate)),
+    )
+    .slice(0, 5);
 };
 
 const getBlogAuthorInfo = (data) => {
