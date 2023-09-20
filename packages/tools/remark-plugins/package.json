@@ -39,7 +39,7 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/mdast": "^3.0.11",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
     "prettier-plugin-packagejson": "^2.4.5",

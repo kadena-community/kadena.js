@@ -55,7 +55,7 @@
     "@types/cross-spawn": "~6.0.2",
     "@types/heft-jest": "~1.0.3",
     "@types/jest": "^29.5.3",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "chalk": "^5.2.0",
     "eslint": "^8.45.0",
