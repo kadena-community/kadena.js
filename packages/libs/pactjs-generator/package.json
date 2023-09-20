@@ -48,7 +48,7 @@
     "@types/heft-jest": "~1.0.3",
     "@types/moo": "~0.5.5",
     "@types/nearley": "~2.11.2",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "chokidar": "^3.5.3",
     "concurrently": "^7.2.2",
     "eslint": "^8.45.0",
