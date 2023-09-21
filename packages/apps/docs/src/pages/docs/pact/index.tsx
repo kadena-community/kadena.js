@@ -43,7 +43,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
     >
       <article className={articleClass}>
         <Box marginRight={{ sm: 0, lg: '$32', xl: '$64' }} marginBottom="$10">
-          <Heading as="h4">The human-readable smart contract language</Heading>
           <Text>
             Pact allows anyone to write clearly, directly and safely onto a
             blockchain — a true innovation for secure and simple smart contract
@@ -191,10 +190,11 @@ export const getStaticProps: GetStaticProps = async () => {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Learn Pact',
+        subTitle: 'The human-readable smart contract language',
         menu: 'Pact',
         label: 'Pact',
         order: 3,
-        description: 'Kadena makes blockchain work for everyone.',
+        description: 'The human-readable smart contract language',
         layout: 'landing',
         icon: 'PactLanguage',
       },
