@@ -95,7 +95,7 @@ const QueryParams = {
 };
 
 export const getServerSideProps: GetServerSideProps<{
-  data: Array<{ chainId: ChainwebChainId; moduleName: string }>;
+  data: IModule[];
   prefetchedModule: (IModule & { code: string }) | null;
 }> = async (context) => {
   // TODO: Tidy this up
