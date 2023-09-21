@@ -31,5 +31,5 @@ export async function getBalance(
     throw { message: 'Failed with error', result: JSON.stringify(commandResult) };
   }
 
-  commandResult.result.data;
+  return commandResult.result.data as number;
 }

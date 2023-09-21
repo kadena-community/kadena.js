@@ -1,6 +1,7 @@
 type Account {
   accountName: String!
   id: String!
+  totalBalances(accountName: String!, modules: [String!]!): [FungibleBalance!]!
   transactions(after: String, before: String, first: Int, last: Int): AccountTransactionsConnection!
   transfers(after: String, before: String, first: Int, last: Int): AccountTransfersConnection!
 }
@@ -80,6 +81,11 @@ type Event implements Node {
   qualName: String!
   requestKey: String!
   transaction: Transaction
+}
+
+type FungibleBalance {
+  balance: Float!
+  module: String!
 }
 
 interface Node {

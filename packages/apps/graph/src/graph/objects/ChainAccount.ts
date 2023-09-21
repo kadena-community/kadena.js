@@ -1,5 +1,5 @@
-import { IChainAccount, builder } from '../builder';
+import { builder } from '../builder';
 
-export default builder
-  .objectRef<IChainAccount>('ChainAccount')
-  .implement({ fields: (t) => ({}) });
+export default builder.objectType('ChainAccount', {
+  fields: (t) => ({}),
+});

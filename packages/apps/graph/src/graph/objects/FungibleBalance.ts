@@ -1,5 +1,8 @@
-import { IFungibleBalance, builder } from '../builder';
+import { builder } from '../builder';
 
-export default builder
-  .objectRef<IFungibleBalance>('FungibleBalance')
-  .implement({ fields: (t) => ({}) });
+export default builder.objectType('FungibleBalance', {
+  fields: (t) => ({
+    module: t.exposeString('module'),
+    balance: t.exposeFloat('balance'),
+  }),
+});

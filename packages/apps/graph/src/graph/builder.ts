@@ -72,8 +72,6 @@ export const builder = new SchemaBuilder<
     Context: IContext;
     Objects: {
       Account: IAccount;
-    };
-    Interfaces: {
       ChainAccount: IChainAccount;
       FungibleBalance: IFungibleBalance
     };

@@ -1,4 +1,3 @@
-import { ChainId, Pact, createClient } from '@kadena/client';
 import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 import { getBalance } from '../../services/node-service';
@@ -26,17 +25,33 @@ export default builder.objectType('Account', {
     //     ];
     //   },
     // }),
-    // totalBalances: t.field({
-    //   type: ['FungibleBalance'],
-    //   resolve: (parent, args) => {
-    //     return [
-    //       {
-    //         module: 'coin',
-    //         balance: 1.234567,
-    //       },
-    //     ];
-    //   },
-    // }),
+    totalBalances: t.field({
+      args: {
+        accountName: t.arg.string({ required: true }),
+        modules: t.arg.stringList({ required: true }),
+      },
+      type: ['FungibleBalance'],
+      resolve: async (parent, args) => {
+        const balances: { module: string, balance: number }[] = [];
+
+        for (let i = 0; i < 20; i++) {
+          for (let module of args.modules) {
+            const existingBalance = balances.find((balance) => balance.module === module);
+
+            if (existingBalance) {
+              existingBalance.balance += await getBalance(module, args.accountName, i.toString());
+            } else {
+              balances.push({
+                module,
+                balance: await getBalance(module, args.accountName, i.toString()),
+              });
+            }
+          }
+        }
+
+        return balances;
+      },
+    }),
     transactions: t.prismaConnection({
       type: 'Transaction',
       cursor: 'blockHash_requestkey',
@@ -56,10 +71,6 @@ export default builder.objectType('Account', {
       type: 'Transfer',
       cursor: 'block_chainid_idx_modulehash_requestkey',
       resolve: async (query, parent, args) => {
-        for (let i = 0; i <= 19; i++) {
-          console.log('result:', await getBalance('coin', parent.accountName, i.toString()));
-        }
-
         return prismaClient.transfer.findMany({
           where: {
             OR: [
