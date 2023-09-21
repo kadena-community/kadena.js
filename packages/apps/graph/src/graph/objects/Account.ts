@@ -32,21 +32,38 @@ export default builder.objectType('Account', {
       },
       type: ['FungibleBalance'],
       resolve: async (parent, args) => {
-        const balances: { module: string, balance: number }[] = [];
+        const moduleBalances = new Map();
+
+        // Create an array of promises to fetch balances for all modules concurrently
+        const promises = [];
 
         for (let i = 0; i < 20; i++) {
           for (let module of args.modules) {
-            const existingBalance = balances.find((balance) => balance.module === module);
+            const promise = getBalance(module, args.accountName, i.toString());
 
-            if (existingBalance) {
-              existingBalance.balance += await getBalance(module, args.accountName, i.toString());
-            } else {
-              balances.push({
-                module,
-                balance: await getBalance(module, args.accountName, i.toString()),
-              });
+            if (!moduleBalances.has(module)) {
+              moduleBalances.set(module, []);
             }
+
+            promises.push(
+              promise.then((balance) => {
+                moduleBalances.get(module).push(balance);
+              }),
+            );
           }
+        }
+
+        await Promise.all(promises);
+
+        // Calculate the total balance for each module
+        const balances = [];
+
+        for (let [module, balanceArray] of moduleBalances) {
+          const totalBalance = balanceArray.reduce(
+            (sum: number, balance: number) => sum + balance,
+            0,
+          );
+          balances.push({ module, balance: totalBalance });
         }
 
         return balances;
