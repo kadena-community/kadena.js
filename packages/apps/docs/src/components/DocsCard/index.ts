@@ -1,0 +1,1 @@
+export { DocsCard } from './DocsCard';

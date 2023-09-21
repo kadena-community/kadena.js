@@ -9,10 +9,11 @@ import {
   columnLinkClass,
   columnLinkListItemClass,
   directionVariants,
+  markerVariants,
   sectionRowContainerClass,
 } from './styles.css';
 
-import classnames from 'classnames';
+import classNames from 'classnames';
 import NextLink from 'next/link';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
@@ -23,6 +24,7 @@ interface IBrowseSectionProps {
   children?: ReactNode;
   direction?: 'column' | 'row';
   className?: string;
+  marker?: 'none' | 'default';
 }
 
 type BrowseSectionType = FC<IBrowseSectionProps> & {
@@ -41,19 +43,26 @@ const BrowseSection: BrowseSectionType = ({
   direction = 'column',
   /* eslint-disable-next-line react/prop-types */
   className,
+  // eslint-disable-next-line react/prop-types
+  marker = 'default',
 }) => {
-  const containerClass = classnames(className, {
+  const containerClass = classNames(className, {
     [sectionRowContainerClass]: direction === 'row',
   });
 
-  const listItemClassName = classnames({
+  const listItemClassName = classNames({
     [columnLinkListItemClass]: direction === 'row',
   });
 
   return (
     <section className={containerClass}>
       {Boolean(title) && <Heading as={titleAs}>{title}</Heading>}
-      <ul className={directionVariants[direction]}>
+      <ul
+        className={classNames(
+          directionVariants[direction],
+          markerVariants[marker],
+        )}
+      >
         {React.Children.map(children, (child) => {
           if (!child) return child;
           if (
@@ -75,7 +84,7 @@ const BrowseSection: BrowseSectionType = ({
             if (React.isValidElement(child)) {
               const childWithProps = React.cloneElement(child, {
                 // @ts-ignore
-                className: columnLinkClass,
+                className: classNames(columnLinkClass, child.props.className),
               });
 
               return (

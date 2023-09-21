@@ -1,23 +1,14 @@
 ---
-title: Kadena Quickstart
+title: Sign the Memory Wall
 description: Learn Kadena’s core concepts & tools for development in 15 minutes
-menu: Build
-label: Quickstart
+menu: Sign the Memory Wall
+label: Sign the Memory Wall
 order: 1
 layout: full
 tags: [chainweb, chainweaver, tutorial, resources]
 ---
 
-# Kadena Quickstart
-
-## Welcome to the developer-friendly blockchain.
-
-Building useful applications on a blockchain doesn’t have to be hard or
-expensive. This Developer Quickstart is designed to remove the friction from
-onboarding so that you can understand how to build with Kadena quickly and
-easily.
-
-## Sign the Memory Wall
+# Sign the Memory Wall
 
 Engrave your name with the Kadena “Memory Wall” smart contract.
 
