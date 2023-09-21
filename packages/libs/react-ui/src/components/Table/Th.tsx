@@ -7,11 +7,16 @@ import type { FC } from 'react';
 import React from 'react';
 
 export interface IThProps
-  extends Pick<Sprinkles, 'width' | 'minWidth' | 'maxWidth'> {
+  extends Partial<Pick<Sprinkles, 'width' | 'minWidth' | 'maxWidth'>> {
   children?: React.ReactNode;
 }
 
-export const Th: FC<IThProps> = ({ children, width, minWidth, maxWidth }) => {
+export const Th: FC<IThProps> = ({
+  children,
+  width = '100%',
+  minWidth = 'min-content',
+  maxWidth = 'maxContent',
+}) => {
   return (
     <th
       className={classNames(thClass, sprinkles({ width, minWidth, maxWidth }))}

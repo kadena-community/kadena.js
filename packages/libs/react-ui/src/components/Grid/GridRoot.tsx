@@ -13,22 +13,24 @@ import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface IGridRootProps
-  extends Pick<
-    Sprinkles,
-    | 'margin'
-    | 'marginX'
-    | 'marginY'
-    | 'marginTop'
-    | 'marginBottom'
-    | 'marginLeft'
-    | 'marginRight'
-    | 'padding'
-    | 'paddingX'
-    | 'paddingY'
-    | 'paddingTop'
-    | 'paddingBottom'
-    | 'paddingLeft'
-    | 'paddingRight'
+  extends Partial<
+    Pick<
+      Sprinkles,
+      | 'margin'
+      | 'marginX'
+      | 'marginY'
+      | 'marginTop'
+      | 'marginBottom'
+      | 'marginLeft'
+      | 'marginRight'
+      | 'padding'
+      | 'paddingX'
+      | 'paddingY'
+      | 'paddingTop'
+      | 'paddingBottom'
+      | 'paddingLeft'
+      | 'paddingRight'
+    >
   > {
   children?: ReactNode;
   columns?: ResponsiveInputType;

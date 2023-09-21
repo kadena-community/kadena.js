@@ -9,12 +9,16 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 
-export interface ITableProps extends Pick<Sprinkles, 'wordBreak'> {
+export interface ITableProps extends Partial<Pick<Sprinkles, 'wordBreak'>> {
   children?: CompoundType<typeof TBody> | CompoundType<typeof THead>;
   striped?: boolean;
 }
 
-export const Table: FC<ITableProps> = ({ children, striped, wordBreak }) => {
+export const Table: FC<ITableProps> = ({
+  children,
+  striped,
+  wordBreak = 'normal',
+}) => {
   return (
     <table
       className={classNames(

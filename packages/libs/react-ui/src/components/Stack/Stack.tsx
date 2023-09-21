@@ -5,25 +5,27 @@ import type { ElementType } from 'react';
 import { createElement } from 'react';
 
 export interface IStackProps
-  extends Pick<
-    Sprinkles,
-    | 'margin'
-    | 'marginX'
-    | 'marginY'
-    | 'marginTop'
-    | 'marginBottom'
-    | 'marginLeft'
-    | 'marginRight'
-    | 'justifyContent'
-    | 'alignItems'
-    | 'width'
-    | 'padding'
-    | 'paddingX'
-    | 'paddingY'
-    | 'paddingTop'
-    | 'paddingBottom'
-    | 'paddingLeft'
-    | 'paddingRight'
+  extends Partial<
+    Pick<
+      Sprinkles,
+      | 'margin'
+      | 'marginX'
+      | 'marginY'
+      | 'marginTop'
+      | 'marginBottom'
+      | 'marginLeft'
+      | 'marginRight'
+      | 'justifyContent'
+      | 'alignItems'
+      | 'width'
+      | 'padding'
+      | 'paddingX'
+      | 'paddingY'
+      | 'paddingTop'
+      | 'paddingBottom'
+      | 'paddingLeft'
+      | 'paddingRight'
+    >
   > {
   direction?: Sprinkles['flexDirection'];
   wrap?: Sprinkles['flexWrap'];
