@@ -1,4 +1,6 @@
-import { colorPalette, gradients, hexToRgba } from '@theme/colors';
+import { hexToRgba } from './utils';
+
+import { colorPalette, gradients } from '@theme/colors.css';
 import { createGlobalTheme, createTheme } from '@vanilla-extract/css';
 
 export const vars = createGlobalTheme(':root', {
