@@ -1,9 +1,10 @@
-import { Box, Heading, Stack, Text } from '@kadena/react-ui';
+import { Box, Grid, Heading, Stack, Text } from '@kadena/react-ui';
 
 import { browseSectionWrapper } from '../../../styles/index.css';
 
-import { BrowseSection } from '@/components';
+import { BrowseSection, DocsCard } from '@/components';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip';
+import { docsCardLink } from '@/components/DocsCard/styles.css';
 import type { IMenuData } from '@/types/Layout';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import {
@@ -23,7 +24,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <Stack direction="column" gap="$2xl">
       <div>
-        <Heading as="h2">Welcome to Kadena</Heading>
         <Text>
           <a href="https://www.kadena.io" target="_blank" rel="noreferrer">
             Kadena
@@ -47,6 +47,101 @@ const Home: FC<IProps> = ({ blogPosts }) => {
         </Text>
       </div>
 
+      <Box marginBottom="$20">
+        <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
+          <Grid.Item rowSpan={2}>
+            <DocsCard
+              label="Language reference"
+              description="Reference for the Pact smart-contract language, designed for correct, transactional execution on a high-perdormance blockchain."
+              schema="info"
+              background="smartwallet"
+            >
+              <BrowseSection marker="none">
+                <Link className={docsCardLink} href="/docs/kadena/overview">
+                  Introduction
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/docs/pact/reference/rest-api"
+                >
+                  REST API&apos;s
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/docs/pact/reference/concepts"
+                >
+                  Concepts
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/docs/pact/reference/syntax"
+                >
+                  Syntax
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/docs/pact/reference/time-formats"
+                >
+                  Time Formats
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/docs/pact/reference/functions"
+                >
+                  Built-in functions
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/docs/pact/reference/property-checking"
+                >
+                  Property Checking System
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/docs/pact/reference/properties-and-invariants"
+                >
+                  Property and Invariant Functions
+                </Link>
+              </BrowseSection>
+            </DocsCard>
+          </Grid.Item>
+          <Grid.Item>
+            <DocsCard
+              label="Tutorials"
+              description="Start learning Pact and how to implement it."
+              schema="warning"
+              background="react"
+            >
+              <BrowseSection marker="none">
+                <Link className={docsCardLink} href="/docs/pact/beginner">
+                  Beginner tutorials
+                </Link>
+                <Link className={docsCardLink} href="/docs/pact/intermediate">
+                  Intermediate tutorials
+                </Link>
+              </BrowseSection>
+            </DocsCard>
+          </Grid.Item>
+          <Grid.Item>
+            <DocsCard
+              label="Whitepapers"
+              description="Pact is the programming language for writing smart contracts to be executed by the Kadena blockchain."
+              schema="success"
+              background="whitepapers"
+            >
+              <BrowseSection marker="none">
+                <Link
+                  className={docsCardLink}
+                  href="/docs/kadena/whitepapers/pact-smart-contract-language"
+                >
+                  Pact Smart Contract
+                </Link>
+              </BrowseSection>
+            </DocsCard>
+          </Grid.Item>
+        </Grid.Root>
+      </Box>
+
       <Stack wrap="wrap" width="100%">
         <BrowseSection title="General" className={browseSectionWrapper}>
           <Link href="/docs/kadena/overview">Overview of Kadena</Link>
@@ -67,7 +162,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
       </Stack>
 
       <Box>
-        <Heading as="h4">Latest Kadena posts</Heading>
+        <Heading as="h6">Stay up-to-date</Heading>
         <BlogPostsStrip
           data={blogPosts}
           link={`/docs/tags/kadena`}

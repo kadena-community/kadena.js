@@ -1,4 +1,4 @@
-import { Heading, Stack, Text } from '@kadena/react-ui';
+import { Stack, Text } from '@kadena/react-ui';
 
 import { listItemClass, listItemLinkClass } from './styles.css';
 

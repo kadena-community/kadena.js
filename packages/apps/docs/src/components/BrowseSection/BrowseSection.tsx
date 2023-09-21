@@ -43,6 +43,7 @@ const BrowseSection: BrowseSectionType = ({
   direction = 'column',
   /* eslint-disable-next-line react/prop-types */
   className,
+  // eslint-disable-next-line react/prop-types
   marker = 'default',
 }) => {
   const containerClass = classNames(className, {

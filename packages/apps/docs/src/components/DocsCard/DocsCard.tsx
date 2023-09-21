@@ -1,4 +1,3 @@
-import type { ProductIcon } from '@kadena/react-ui';
 import { Box, Heading, Text } from '@kadena/react-ui';
 
 import { backgroundVariant, cardClass, cardVariants } from './styles.css';

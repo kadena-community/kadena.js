@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Stack, Text } from '@kadena/react-ui';
+import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
 
 import { BrowseSection, DocsCard } from '@/components';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip';
@@ -9,7 +9,6 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
-import { browseSectionWrapper } from '@/styles/index.css';
 import type { IMenuData } from '@/types/Layout';
 import type { IMostPopularPage } from '@/types/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
