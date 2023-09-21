@@ -1,7 +1,5 @@
 import { Box, Grid, Heading, Stack, Text } from '@kadena/react-ui';
 
-import { browseSectionWrapper } from '../../../styles/index.css';
-
 import { BrowseSection, DocsCard } from '@/components';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
