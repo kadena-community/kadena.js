@@ -41,14 +41,14 @@ export const directionVariants = styleVariants({
 
 export const columnLinkListItemClass = style([
   sprinkles({
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
     lineHeight: '$lg',
   }),
 ]);
 
 export const columnLinkClass = style([
   sprinkles({
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
     textDecoration: 'underline',
   }),
   {
@@ -80,7 +80,7 @@ export const listItemLinkClass = style([
   sprinkles({
     display: 'flex',
     textDecoration: 'none',
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
   }),
   {
     ':hover': {

@@ -121,7 +121,6 @@ const createTree = (rootDir, parent = []) => {
 
             const newObj = {
               ...obj,
-              icon: undefined,
               order: idx,
               title: author.name,
               label: author.name,

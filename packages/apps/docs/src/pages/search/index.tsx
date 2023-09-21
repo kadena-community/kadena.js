@@ -69,7 +69,6 @@ export const getStaticProps: GetStaticProps = async (context, ...args) => {
         order: 0,
         description: 'We will find stuff for u',
         layout: 'home',
-        icon: 'KadenaOverview',
       },
     },
   };

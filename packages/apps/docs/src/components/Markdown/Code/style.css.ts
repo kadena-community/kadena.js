@@ -103,7 +103,7 @@ export const codeTitle = style([
         alignItems: 'center',
         margin: `0 ${vars.sizes.$2}`,
         color: `${vars.colors.$background}`,
-        backgroundColor: `${vars.colors.$primaryContrast}`,
+        backgroundColor: `${vars.colors.$primaryContrastInverted}`,
         borderRadius: `${vars.radii.$sm}`,
         width: `${vars.sizes.$6}`,
         height: `${vars.sizes.$6}`,

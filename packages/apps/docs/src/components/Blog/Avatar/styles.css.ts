@@ -8,8 +8,8 @@ export const avatarClass = style([
     justifyContent: 'center',
     alignItems: 'center',
 
-    backgroundColor: '$primaryContrast',
-    color: '$primarySurface',
+    backgroundColor: '$primaryContrastInverted',
+    color: '$primarySurfaceInverted',
     fontWeight: '$bold',
     fontSize: '$md',
   }),

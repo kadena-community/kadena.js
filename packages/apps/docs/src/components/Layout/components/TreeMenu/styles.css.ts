@@ -49,7 +49,7 @@ export const linkClass = style([
 
 export const linkActiveClass = styleVariants({
   false: {},
-  true: { color: vars.colors.$primaryContrast },
+  true: { color: vars.colors.$primaryContrastInverted },
 });
 
 export const levelItemVariantClass = styleVariants({

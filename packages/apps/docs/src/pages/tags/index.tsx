@@ -25,11 +25,7 @@ interface IProps extends IPageProps {
 const Home: FC<IProps> = ({ tags, frontmatter }) => {
   return (
     <>
-      <TitleHeader
-        title={frontmatter.title}
-        subTitle={frontmatter.subTitle}
-        icon={frontmatter.icon}
-      />
+      <TitleHeader title={frontmatter.title} subTitle={frontmatter.subTitle} />
       <div
         className={classNames(contentClass, contentClassVariants.home)}
         id="maincontent"
@@ -58,7 +54,6 @@ export const getStaticProps: GetStaticProps = async () => {
         label: 'overview',
         order: 0,
         layout: 'home',
-        icon: 'Concepts',
       },
     },
   };

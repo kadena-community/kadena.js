@@ -124,7 +124,6 @@ export const getStaticProps: GetStaticProps = async () => {
         order: 4,
         description: 'Be a part of our ecosystem',
         layout: 'landing',
-        icon: 'Contribute',
       },
     },
   };
