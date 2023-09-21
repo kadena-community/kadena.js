@@ -21,36 +21,12 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <Stack direction="column" gap="$2xl">
-      <div>
-        <Text>
-          <a href="https://www.kadena.io" target="_blank" rel="noreferrer">
-            Kadena
-          </a>{' '}
-          was founded on the idea that blockchain could revolutionize how the
-          world interacts and transacts. But to get to mass adoption, chain
-          technology and the ecosystem connecting it to the business world
-          needed to be reimagined from the ground up. Our founders built a
-          proprietary chain architecture and created the tools to make
-          blockchain work for business – at speed, scale, and energy efficiency
-          previously thought unachievable.&#x20; Don&apos;t forget to follow us
-          on{' '}
-          <a
-            href="ttps://twitter.com/kadena_io"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Twitter
-          </a>{' '}
-          for the latest updates.&#x20;
-        </Text>
-      </div>
-
       <Box marginBottom="$20">
         <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
           <Grid.Item rowSpan={2}>
             <DocsCard
               label="General"
-              description="Learn more about Kadena. What we do, our values and what makes us tick."
+              description="Kadena was founded on the idea that blockchain could revolutionize how the world interacts and transacts. But to get to mass adoption, chain technology and the ecosystem connecting it to the business world needed to be reimagined from the ground up. Our founders built a proprietary chain architecture and created the tools to make blockchain work for business – at speed, scale, and energy efficiency previously thought unachievable."
               schema="info"
               background="contribute"
             >

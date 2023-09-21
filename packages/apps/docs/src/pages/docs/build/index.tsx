@@ -26,7 +26,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
           <Grid.Item>
             <DocsCard
               label="Quickstart"
-              description="Building useful applications on a blockchain doesn’t have to be hard or expensive. This Developer Quickstart is designed to remove the friction from onboarding so that you can understand how to build with Kadena quickly and easily."
+              description="This Developer Quickstart is designed to remove the friction from onboarding so that you can understand how to build with Kadena quickly and easily."
               schema="warning"
               background="contribute"
             >
