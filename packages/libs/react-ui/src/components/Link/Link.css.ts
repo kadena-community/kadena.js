@@ -23,8 +23,6 @@ export const linkContainerClass = style([
   },
 ]);
 
-export const blockLinkClass = style([
-  sprinkles({
-    display: 'flex',
-  }),
-]);
+export const blockLinkClass = style({
+  display: 'flex',
+});

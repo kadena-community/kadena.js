@@ -1,4 +1,5 @@
 import { SystemIcon } from '../Icon';
+import { Stack } from '..';
 
 import type { ILinkProps } from '@components/Link';
 import { Link } from '@components/Link';
@@ -76,30 +77,31 @@ export const Primary: Story = {
     target: '_blank',
     icon: 'Link',
     iconAlign: 'left',
-    block: true,
   },
   render: ({ href, target, icon, iconAlign }) => {
     return (
       <>
-        <Link href={href} target={target} asChild>
-          Link without icon
-        </Link>
-        <Link
-          href={`${href}?${Date.now()}`}
-          target={target}
-          iconAlign={iconAlign}
-          icon={icon}
-        >
-          Non-visited
-        </Link>
-        <Link href={href} target={target} icon={icon}>
-          Kadena.io
-        </Link>
-        <Link asChild>
-          <a href={href} target={target}>
-            Link asChild
-          </a>
-        </Link>
+        <Stack direction="row" gap="$2">
+          <Link href={href} target={target} asChild>
+            Link without icon
+          </Link>
+          <Link
+            href={`${href}?${Date.now()}`}
+            target={target}
+            iconAlign={iconAlign}
+            icon={icon}
+          >
+            Non-visited
+          </Link>
+          <Link href={href} target={target} icon={icon}>
+            Kadena.io
+          </Link>
+          <Link asChild>
+            <a href={href} target={target}>
+              Link asChild
+            </a>
+          </Link>
+        </Stack>
         <Link href={href} target={target} icon={icon} block>
           Block Link
         </Link>
