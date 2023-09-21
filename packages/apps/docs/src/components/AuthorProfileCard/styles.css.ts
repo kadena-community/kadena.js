@@ -29,7 +29,7 @@ export const linkClass = style([
   {
     selectors: {
       '&:hover': {
-        color: vars.colors.$primaryContrast,
+        color: vars.colors.$primaryContrastInverted,
         textDecoration: 'underline',
       },
     },
