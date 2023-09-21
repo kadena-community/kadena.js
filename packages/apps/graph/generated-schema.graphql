@@ -6,7 +6,7 @@ type Account {
 }
 
 input AccountFilter {
-  module: String
+  chains: [String!]
 }
 
 type AccountTransactionsConnection {
@@ -97,7 +97,7 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
-  account(accountName: String!, filter: AccountFilter): Account!
+  account(accountName: String!, filter: AccountFilter, modules: [String!]!): Account!
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
   hello(name: String): String!

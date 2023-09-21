@@ -39,9 +39,28 @@ export interface IContext {
   req: IncomingMessage;
 }
 
+export interface IChainAccount {
+  chainId: string;
+  guard: {
+    keys: string[];
+    predicate: 'KeysAll' | 'KeysAny' | 'KeysTwo' | string;
+  };
+  balance: number;
+  module: string;
+  transactions: Transaction[];
+  transfers: Transfer[];
+}
+
+export interface IFungibleBalance {
+  module: string;
+  balance: number;
+}
+
 export interface IAccount {
   id: string;
   accountName: string;
+  chainAccounts: IChainAccount[];
+  totalBalances: IFungibleBalance[];
   transactions: Transaction[];
   transfers: Transfer[];
 }
@@ -53,6 +72,10 @@ export const builder = new SchemaBuilder<
     Context: IContext;
     Objects: {
       Account: IAccount;
+    };
+    Interfaces: {
+      ChainAccount: IChainAccount;
+      FungibleBalance: IFungibleBalance
     };
   }
 >({

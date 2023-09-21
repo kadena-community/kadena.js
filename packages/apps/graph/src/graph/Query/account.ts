@@ -3,7 +3,7 @@ import Account from '../objects/Account';
 
 const AccountFilter = builder.inputType('AccountFilter', {
   fields: (t) => ({
-    module: t.string(),
+    chains: t.stringList(),
   }),
 });
 
@@ -11,6 +11,7 @@ builder.queryField('account', (t) => {
   return t.field({
     args: {
       accountName: t.arg.string({ required: true }),
+      modules: t.arg.stringList({ required: true }),
       filter: t.arg({ type: AccountFilter }),
     },
     type: Account,
