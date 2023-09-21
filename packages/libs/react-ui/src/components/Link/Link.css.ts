@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 
 export const linkContainerClass = style([
   sprinkles({
-    display: 'flex',
+    display: 'inline-flex',
     gap: '$2',
     color: '$primaryContrastInverted',
   }),
@@ -23,8 +23,8 @@ export const linkContainerClass = style([
   },
 ]);
 
-export const inlineLinkClass = style([
+export const blockLinkClass = style([
   sprinkles({
-    display: 'inline-flex',
+    display: 'flex',
   }),
 ]);

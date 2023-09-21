@@ -1,6 +1,6 @@
 import { SystemIcon } from '..';
 
-import { inlineLinkClass, linkContainerClass } from './Link.css';
+import { blockLinkClass, linkContainerClass } from './Link.css';
 
 import classnames from 'classnames';
 import type { FC, ReactNode } from 'react';
@@ -13,7 +13,7 @@ export interface ILinkProps {
   icon?: keyof typeof SystemIcon;
   iconAlign?: 'left' | 'right';
   asChild?: boolean;
-  inline?: boolean;
+  block?: boolean;
 }
 
 export const Link: FC<ILinkProps> = ({
@@ -21,13 +21,13 @@ export const Link: FC<ILinkProps> = ({
   icon,
   iconAlign = 'left',
   asChild = false,
-  inline = false,
+  block = false,
   ...restProps
 }) => {
   const Icon = icon && SystemIcon[icon];
 
   const linkClasses = classnames(linkContainerClass, {
-    [inlineLinkClass]: inline,
+    [blockLinkClass]: block,
   });
 
   const getContents = (linkContents: ReactNode): ReactNode => (
