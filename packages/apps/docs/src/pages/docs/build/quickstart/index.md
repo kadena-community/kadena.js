@@ -1,7 +1,7 @@
 ---
 title: Kadena Quickstart
 description: Learn Kadena’s core concepts & tools for development in 15 minutes
-menu: Build
+menu: Quickstart
 label: Quickstart
 order: 1
 layout: full
