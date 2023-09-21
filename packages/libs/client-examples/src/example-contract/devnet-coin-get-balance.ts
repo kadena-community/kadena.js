@@ -1,4 +1,5 @@
-import { ChainId, Pact, createClient } from '@kadena/client';
+import type { ChainId} from '@kadena/client';
+import { createClient,Pact } from '@kadena/client';
 
 const DEVNET_HOST: string = 'localhost:8080';
 const NETWORK_ID: string = 'fast-development';
