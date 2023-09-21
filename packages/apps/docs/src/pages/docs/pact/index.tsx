@@ -33,6 +33,16 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
       id="main"
     >
       <article className={articleClass}>
+        <Box marginRight={{ sm: 0, lg: '$32', xl: '$64' }} marginBottom="$10">
+          <Heading as="h4">The human-readable smart contract language</Heading>
+          <Text>
+            Pact allows anyone to write clearly, directly and safely onto a
+            blockchain — a true innovation for secure and simple smart contract
+            development. Pact will enable you to create entirely new business
+            models and on-chain services.
+          </Text>
+        </Box>
+
         <Stack
           justifyContent="space-between"
           direction={{ sm: 'column', lg: 'row' }}
@@ -76,7 +86,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </BrowseSection>
         </Box>
 
-        <Heading as="h4">Latest Pact posts</Heading>
+        <Heading as="h6">Latest Pact posts</Heading>
         <BlogPostsStrip
           data={blogPosts}
           link={`/docs/tags/pact`}

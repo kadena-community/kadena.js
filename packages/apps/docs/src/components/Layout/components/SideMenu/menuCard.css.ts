@@ -5,10 +5,9 @@ import { style, styleVariants } from '@vanilla-extract/css';
 export const menuCardClass = style([
   sprinkles({
     position: 'absolute',
-    top: 0,
+
     width: '100%',
     height: '100%',
-    marginY: '$16',
     paddingX: '$6',
   }),
   {

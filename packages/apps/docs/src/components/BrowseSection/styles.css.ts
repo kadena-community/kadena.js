@@ -19,6 +19,13 @@ export const directionVariants = styleVariants({
     {
       listStyle: 'none',
       rowGap: 0,
+      flexDirection: 'column',
+
+      '@media': {
+        [`screen and ${breakpoints.md}`]: {
+          flexDirection: 'row',
+        },
+      },
     },
   ],
   column: [
@@ -56,7 +63,7 @@ export const listItemClass = style([
   sprinkles({
     display: 'flex',
     gap: '$4',
-    paddingX: 0,
+    paddingRight: '$4',
     paddingY: '$3',
   }),
   {
@@ -73,16 +80,11 @@ export const listItemLinkClass = style([
   sprinkles({
     display: 'flex',
     textDecoration: 'none',
+    color: '$primaryContrast',
   }),
   {
     ':hover': {
       textDecoration: 'underline',
     },
   },
-]);
-
-export const iconClass = style([
-  sprinkles({
-    marginRight: '$2',
-  }),
 ]);

@@ -12,7 +12,7 @@ import {
   sectionRowContainerClass,
 } from './styles.css';
 
-import classnames from 'classnames';
+import classNames from 'classnames';
 import NextLink from 'next/link';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
@@ -42,11 +42,11 @@ const BrowseSection: BrowseSectionType = ({
   /* eslint-disable-next-line react/prop-types */
   className,
 }) => {
-  const containerClass = classnames(className, {
+  const containerClass = classNames(className, {
     [sectionRowContainerClass]: direction === 'row',
   });
 
-  const listItemClassName = classnames({
+  const listItemClassName = classNames({
     [columnLinkListItemClass]: direction === 'row',
   });
 
@@ -75,7 +75,7 @@ const BrowseSection: BrowseSectionType = ({
             if (React.isValidElement(child)) {
               const childWithProps = React.cloneElement(child, {
                 // @ts-ignore
-                className: columnLinkClass,
+                className: classNames(columnLinkClass, child.props.className),
               });
 
               return (

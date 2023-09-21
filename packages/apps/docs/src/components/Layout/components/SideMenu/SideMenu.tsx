@@ -1,4 +1,4 @@
-import { Heading, TextField } from '@kadena/react-ui';
+import { Box, Heading, Input } from '@kadena/react-ui';
 
 import { MainTreeItem } from '../TreeMenu';
 import { TreeList } from '../TreeMenu/TreeList';
@@ -67,15 +67,17 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
       )}
 
       <ShowOnMobile>
-        <TextField
-          inputProps={{
-            id: 'search',
-            onKeyUp: handleKeyPress,
-            placeholder: 'Search',
-            leftIcon: 'Magnify',
-            'aria-label': 'Search',
-          }}
-        ></TextField>
+        <Box marginX="$4" marginBottom="$8" marginTop="$4">
+          <Input
+            id="search"
+            rightIcon="Magnify"
+            onKeyUp={handleKeyPress}
+            placeholder="Search"
+            outlined
+            type="text"
+            aria-label="Search"
+          />
+        </Box>
       </ShowOnMobile>
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
         <ul className={listClass}>
