@@ -119,7 +119,6 @@ export const getStaticProps: GetStaticProps = async () => {
         order: 1,
         description: 'Build on Kadena',
         layout: 'landing',
-        icon: 'Contribute',
       },
     },
   };

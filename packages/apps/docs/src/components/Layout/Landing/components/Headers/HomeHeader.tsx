@@ -1,11 +1,6 @@
 import { Box, GradientText, Grid, Heading, Stack } from '@kadena/react-ui';
 
-import {
-  headerClass,
-  mostPopularWrapper,
-  subheaderClass,
-  wrapperClass,
-} from './style.css';
+import { headerClass, subheaderClass, wrapperClass } from './style.css';
 
 import { MostPopular } from '@/components/MostPopular';
 import { SearchBar } from '@/components/SearchBar';

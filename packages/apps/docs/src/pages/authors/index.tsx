@@ -26,11 +26,7 @@ interface IProps extends IPageProps {
 const Home: FC<IProps> = ({ frontmatter, authors }) => {
   return (
     <>
-      <TitleHeader
-        title={frontmatter.title}
-        subTitle={frontmatter.subTitle}
-        icon={frontmatter.icon}
-      />
+      <TitleHeader title={frontmatter.title} subTitle={frontmatter.subTitle} />
       <div
         className={classNames(contentClass, contentClassVariants.home)}
         id="maincontent"
@@ -75,7 +71,6 @@ export const getStaticProps: GetStaticProps = async () => {
         order: 0,
         description: 'who is writing our blogchain posts?',
         layout: 'home',
-        icon: 'BlogChain',
       },
     },
   };

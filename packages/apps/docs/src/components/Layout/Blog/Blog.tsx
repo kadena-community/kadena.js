@@ -57,7 +57,6 @@ export const Blog: FC<IPageProps> = ({
         <TitleHeader
           title="BlogChain"
           subTitle="The place where the blog meets the chain"
-          icon="BlogChain"
         />
 
         <div id="maincontent" className={contentClassNames}>
