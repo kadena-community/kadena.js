@@ -4,7 +4,7 @@ import {
   transformVariants,
 } from '../typography.css';
 
-import { sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const elementVariant = styleVariants({

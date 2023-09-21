@@ -1,5 +1,4 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { sprinkles, vars } from '@theme';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([

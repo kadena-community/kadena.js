@@ -3,8 +3,7 @@ import {
   helperTextColor,
 } from './InputHelper/InputHelper.css';
 
-import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { sprinkles, vars } from '@theme';
 import { createVar, styleVariants } from '@vanilla-extract/css';
 
 export const statusColor = createVar();

@@ -3,7 +3,7 @@ import { statusVariant } from '@components/InputWrapper/InputWrapper.css';
 import type { ITextFieldProps } from '@components/TextField';
 import { TextField } from '@components/TextField';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
+import { vars } from '@theme';
 import React from 'react';
 
 type StoryProps = {

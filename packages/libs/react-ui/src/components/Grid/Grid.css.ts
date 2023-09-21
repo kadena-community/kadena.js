@@ -1,5 +1,5 @@
 /* eslint @typescript-eslint/naming-convention: 0 */
-import { breakpoints, sprinkles } from '@theme/sprinkles.css';
+import { breakpoints, sprinkles } from '@theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const gridContainerClass = style([
@@ -77,7 +77,7 @@ export const explicitColumnVariant = styleVariants(columnCount, (count) => {
   ];
 });
 
-export type ResponsiveVariant = Record<string, Record<number, string>>;
+type ResponsiveVariant = Record<string, Record<number, string>>;
 
 export const containerColumnVariants: ResponsiveVariant = {
   sm: containerColumnVariantsArray[0],

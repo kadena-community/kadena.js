@@ -7,11 +7,7 @@ import { NotificationContainer } from './NotificationContainer';
 
 import type { FC } from 'react';
 
-export type {
-  INotificationProps,
-  INotificationActionsProps,
-  INotificationButtonProps,
-};
+export type { INotificationProps, INotificationActionsProps };
 
 interface INotification {
   Root: FC<INotificationProps>;

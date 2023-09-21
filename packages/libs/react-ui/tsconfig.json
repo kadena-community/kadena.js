@@ -12,6 +12,7 @@
     "removeComments": true,
     "paths": {
       "@components/*": ["src/components/*"],
+      "@theme": ["src/styles/index.ts"],
       "@theme/*": ["src/styles/*"],
       "@utils/*": ["src/utils/*"]
     }

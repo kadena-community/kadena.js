@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles } from '@theme/sprinkles.css';
+import { breakpoints, sprinkles } from '@theme';
 import { style } from '@vanilla-extract/css';
 
 export const openModal = style([

@@ -14,7 +14,6 @@ import { Tag } from '@components/Tag';
 import type { FC } from 'react';
 import React from 'react';
 
-export default {};
 export interface IProfileCardProps {
   name: string;
   title: string;

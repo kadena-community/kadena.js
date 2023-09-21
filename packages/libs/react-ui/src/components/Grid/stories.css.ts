@@ -1,4 +1,4 @@
-import { sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme';
 import { style } from '@vanilla-extract/css';
 
 export const ContentClass = style([

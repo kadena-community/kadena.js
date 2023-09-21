@@ -16,7 +16,7 @@ export {
   INavFooterPanelProps,
 };
 
-export interface INavFooterProps {
+interface INavFooterProps {
   Root: FC<INavFooterRootProps>;
   Panel: FC<INavFooterPanelProps>;
   Link: FC<INavFooterLinkProps>;

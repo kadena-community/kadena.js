@@ -1,4 +1,4 @@
-import { vars } from '@theme/vars.css';
+import { vars } from '@theme';
 import { style } from '@vanilla-extract/css';
 
 export const dividerClass = style({

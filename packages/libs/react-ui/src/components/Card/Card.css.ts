@@ -1,5 +1,4 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
+import { darkThemeClass, sprinkles, vars } from '@theme';
 import { createVar, style } from '@vanilla-extract/css';
 
 const textColor = createVar();

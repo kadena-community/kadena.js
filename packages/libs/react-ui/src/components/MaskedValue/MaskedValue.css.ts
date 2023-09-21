@@ -1,7 +1,5 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { createVar, style } from '@vanilla-extract/css';
-
-export const inputStatusColor = createVar();
+import { sprinkles } from '@theme';
+import { style } from '@vanilla-extract/css';
 
 export const titleContainer = style([
   sprinkles({

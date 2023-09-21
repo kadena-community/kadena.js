@@ -1,9 +1,8 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import type { ColorType } from '@theme/vars.css';
-import { vars } from '@theme/vars.css';
+import type { ColorType } from '@theme';
+import { sprinkles, vars } from '@theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
-export const container = style([
+const container = style([
   sprinkles({
     display: 'flex',
     justifyContent: 'center',
@@ -27,7 +26,7 @@ export const container = style([
   },
 ]);
 
-export type ColorOptions = ColorType | 'default' | 'inverted';
+type ColorOptions = ColorType | 'default' | 'inverted';
 
 const colors: Record<ColorOptions, ColorOptions> = {
   default: 'default',

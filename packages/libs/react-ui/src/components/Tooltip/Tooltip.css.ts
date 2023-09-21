@@ -1,5 +1,4 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { sprinkles, vars } from '@theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const container = style([
@@ -26,7 +25,7 @@ export const container = style([
   },
 ]);
 
-export const baseArrow = style([
+const baseArrow = style([
   sprinkles({
     position: 'absolute',
     width: '$4',

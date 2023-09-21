@@ -1,7 +1,5 @@
-import { colorPalette } from '@theme/colors';
-import { sprinkles } from '@theme/sprinkles.css';
-import type { ColorType } from '@theme/vars.css';
-import { vars } from '@theme/vars.css';
+import type { ColorType } from '@theme';
+import { colorPalette, sprinkles, vars } from '@theme';
 import {
   createVar,
   keyframes,
@@ -15,7 +13,7 @@ const backgroundColorHover = createVar(),
   outlineColorFocus = createVar();
 
 // Main container
-export const container = style([
+const container = style([
   sprinkles({
     border: 'none',
     borderRadius: '$sm',

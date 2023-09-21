@@ -20,7 +20,7 @@ export type { ITabsContainerProps, ITabProps, ITabContentProps } from './Tabs';
 export type { ITagProps } from './Tag';
 export type { ITextFieldProps } from './TextField/TextField';
 export type { ITooltipProps } from './Tooltip';
-export type { ITrackerCardProps, ILabelValue } from './TrackerCard/TrackerCard';
+export type { ITrackerCardProps } from './TrackerCard/TrackerCard';
 export type { ITreeProps } from './Tree';
 export type {
   INavFooterIconButtonProps,

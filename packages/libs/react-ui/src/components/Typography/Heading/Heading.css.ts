@@ -6,8 +6,7 @@ import {
   transformVariants,
 } from '../typography.css';
 
-import { sprinkles } from '@theme/sprinkles.css';
-import type { RecipeVariants } from '@vanilla-extract/recipes';
+import { sprinkles } from '@theme';
 import { recipe } from '@vanilla-extract/recipes';
 
 export const elementVariants = {
@@ -128,5 +127,3 @@ export const heading = recipe({
     transform: 'none',
   },
 });
-
-export type BaseTextVariants = RecipeVariants<typeof heading>;

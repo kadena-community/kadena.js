@@ -1,4 +1,4 @@
-import { darkThemeClass } from '../src/styles';
+import { darkThemeClass } from '../src/styles/vars.css';
 import { colorPalette } from '../src/styles/colors';
 import { type Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';

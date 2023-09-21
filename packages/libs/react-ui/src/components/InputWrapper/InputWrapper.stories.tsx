@@ -5,7 +5,7 @@ import { Input } from '@components/Input';
 import type { IInputWrapperProps } from '@components/InputWrapper';
 import { InputWrapper } from '@components/InputWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
+import { vars } from '@theme';
 import React from 'react';
 
 type StoryProps = {

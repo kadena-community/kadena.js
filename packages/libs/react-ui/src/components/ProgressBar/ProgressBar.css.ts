@@ -1,5 +1,4 @@
-import { colorPalette } from '@theme/colors';
-import { sprinkles } from '@theme/sprinkles.css';
+import { colorPalette, sprinkles } from '@theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const circleColorVariant = styleVariants({

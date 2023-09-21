@@ -6,8 +6,8 @@ import {
   gridContainerClass,
 } from './Grid.css';
 
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { sprinkles } from '@theme/sprinkles.css';
+import type { Sprinkles } from '@theme';
+import { sprinkles } from '@theme';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';

@@ -1,7 +1,7 @@
 import type { ITableProps } from '@components/Table';
 import { Table } from '@components/Table';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
+import { vars } from '@theme';
 import React from 'react';
 
 const selectOptions: (keyof typeof vars.sizes | undefined)[] = [

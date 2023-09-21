@@ -1,6 +1,5 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import type { ColorType } from '@theme/vars.css';
-import { vars } from '@theme/vars.css';
+import type { ColorType } from '@theme';
+import { sprinkles, vars } from '@theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const colorVariants: Omit<
@@ -82,7 +81,7 @@ export const actionsContainerClass = style([
   }),
 ]);
 
-export const actionButtonClass = style([
+const actionButtonClass = style([
   sprinkles({
     display: 'flex',
     justifyContent: 'center',

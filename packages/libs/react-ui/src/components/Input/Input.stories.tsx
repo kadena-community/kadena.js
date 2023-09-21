@@ -4,7 +4,7 @@ import type { IInputProps } from '@components/Input';
 import { Input } from '@components/Input';
 import { Stack } from '@components/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
+import { vars } from '@theme';
 import type { HTMLInputTypeAttribute } from 'react';
 import React from 'react';
 
