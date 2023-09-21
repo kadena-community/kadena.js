@@ -51,73 +51,46 @@ const Home: FC<IProps> = ({ blogPosts }) => {
         <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
           <Grid.Item rowSpan={2}>
             <DocsCard
-              label="Language reference"
-              description="Reference for the Pact smart-contract language, designed for correct, transactional execution on a high-perdormance blockchain."
+              label="General"
+              description="Learn more about Kadena. What we do, our values and what makes us tick."
               schema="info"
-              background="smartwallet"
+              background="contribute"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/docs/kadena/overview">
-                  Introduction
+                  Overview of Kadena
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/docs/pact/reference/rest-api"
+                  href="/docs/kadena/code-of-conduct"
                 >
-                  REST API&apos;s
+                  Code of Conduct
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/docs/pact/reference/concepts"
-                >
-                  Concepts
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/docs/pact/reference/syntax"
-                >
-                  Syntax
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/docs/pact/reference/time-formats"
-                >
-                  Time Formats
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/docs/pact/reference/functions"
-                >
-                  Built-in functions
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/docs/pact/reference/property-checking"
-                >
-                  Property Checking System
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/docs/pact/reference/properties-and-invariants"
-                >
-                  Property and Invariant Functions
-                </Link>
+                <a className={docsCardLink} href="https://kadena.io">
+                  Kadena.io
+                </a>
               </BrowseSection>
             </DocsCard>
           </Grid.Item>
           <Grid.Item>
             <DocsCard
-              label="Tutorials"
-              description="Start learning Pact and how to implement it."
+              label="Resources"
+              description="Miscellaneous resources to make your Kadena journey easier."
               schema="warning"
-              background="react"
+              background="marmalade"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/docs/pact/beginner">
-                  Beginner tutorials
+                <Link
+                  className={docsCardLink}
+                  href="/docs/kadena/resources/glossary"
+                >
+                  Glossary
                 </Link>
-                <Link className={docsCardLink} href="/docs/pact/intermediate">
-                  Intermediate tutorials
+                <Link
+                  className={docsCardLink}
+                  href="/docs/kadena/resources/press-kit"
+                >
+                  Press kit
                 </Link>
               </BrowseSection>
             </DocsCard>
@@ -125,41 +98,34 @@ const Home: FC<IProps> = ({ blogPosts }) => {
           <Grid.Item>
             <DocsCard
               label="Whitepapers"
-              description="Pact is the programming language for writing smart contracts to be executed by the Kadena blockchain."
+              description="Read up on the different aspects of Kadena in our whitepapers."
               schema="success"
               background="whitepapers"
             >
               <BrowseSection marker="none">
                 <Link
                   className={docsCardLink}
+                  href="/docs/kadena/whitepapers/chainweb-layer-1"
+                >
+                  Chainweb layer 1
+                </Link>
+                <Link
+                  className={docsCardLink}
                   href="/docs/kadena/whitepapers/pact-smart-contract-language"
                 >
                   Pact Smart Contract
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/docs/kadena/whitepapers/kuro-layer-2"
+                >
+                  Kuro Layer 2
                 </Link>
               </BrowseSection>
             </DocsCard>
           </Grid.Item>
         </Grid.Root>
       </Box>
-
-      <Stack wrap="wrap" width="100%">
-        <BrowseSection title="General" className={browseSectionWrapper}>
-          <Link href="/docs/kadena/overview">Overview of Kadena</Link>
-          <Link href="/docs/kadena/whitepapers">Whitepapers</Link>
-          <Link href="/docs/kadena/code-of-conduct">Code of Conduct</Link>
-          <a href="https://kadena.io">Kadena.io</a>
-        </BrowseSection>
-
-        <BrowseSection title="Whitepapers" className={browseSectionWrapper}>
-          <Link href="/docs/kadena/whitepapers/chainweb-layer-1">
-            Chainweb layer 1
-          </Link>
-          <Link href="/docs/kadena/whitepapers/pact-smart-contract-language">
-            Pact Smart Contract
-          </Link>
-          <Link href="/docs/kadena/whitepapers/kuro-layer-2">Kuro Layer 2</Link>
-        </BrowseSection>
-      </Stack>
 
       <Box>
         <Heading as="h6">Stay up-to-date</Heading>

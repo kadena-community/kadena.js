@@ -16,6 +16,7 @@ interface IProps extends PropsWithChildren {
     | 'quickstart'
     | 'smartwallet'
     | 'react'
+    | 'marmalade'
     | 'default';
 }
 

@@ -129,5 +129,18 @@ export const backgroundVariant = styleVariants({
       },
     },
   },
+  marmalade: {
+    backgroundRepeat: 'no-repeat',
+    backgroundImage: `url("/assets/background/marmalade.svg")`,
+    backgroundPosition: 'right -140px bottom -120px',
+    backgroundSize: '300px',
+
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        backgroundPosition: 'right -200px bottom -220px',
+        backgroundSize: '450px',
+      },
+    },
+  },
   default: {},
 });
