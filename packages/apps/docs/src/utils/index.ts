@@ -7,3 +7,4 @@ export * from './author';
 export * from './dates';
 export * from './getBlogPosts';
 export * from './getAllBlogTags';
+export * from './mostProductiveAuthors';

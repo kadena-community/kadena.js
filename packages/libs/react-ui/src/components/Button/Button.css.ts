@@ -108,6 +108,7 @@ export const compactVariant = styleVariants(colorVariants, (variant) => {
       color: `$${variant}ContrastInverted`,
     }),
     {
+      padding: `${vars.sizes.$1} ${vars.sizes.$1}`,
       vars: {
         [colorHover]: vars.colors[`$${variant}ContrastInverted`],
         [backgroundColorHover]: 'none',
