@@ -31,7 +31,7 @@ export function useParsedBlocks(): IUseParseBlocksReturn {
     (newBlocks: IBlock[]) => {
       const groupedNewBlocks: Record<number, IBlock[]> = {};
       newBlocks.forEach((block) => {
-        groupedNewBlocks[block.height as number]?.length
+        return groupedNewBlocks[block.height as number]?.length
           ? (groupedNewBlocks[block.height] = [
               ...groupedNewBlocks[block.height],
               block,

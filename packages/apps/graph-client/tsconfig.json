@@ -12,7 +12,12 @@
     "isolatedModules": true,
     "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
     "declarationMap": false,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "exclude": ["node_modules"]
 }

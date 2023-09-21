@@ -437,6 +437,9 @@ importers:
       concurrently:
         specifier: ^7.2.2
         version: 7.2.2
+      mini-css-extract-plugin:
+        specifier: 1.3.0
+        version: 1.3.0(webpack@5.88.2)
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
