@@ -88,3 +88,11 @@ export const listItemLinkClass = style([
     },
   },
 ]);
+
+export const markerVariants = styleVariants({
+  none: {
+    listStyle: 'none',
+    padding: 0,
+  },
+  default: {},
+});

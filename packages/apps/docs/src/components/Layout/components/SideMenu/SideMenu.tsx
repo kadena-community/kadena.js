@@ -79,6 +79,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           />
         </Box>
       </ShowOnMobile>
+
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
         <ul className={listClass}>
           {menuItems.map((item) => (

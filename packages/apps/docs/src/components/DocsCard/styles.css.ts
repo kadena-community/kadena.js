@@ -72,7 +72,7 @@ export const backgroundVariant = styleVariants({
 
     '@media': {
       [`screen and ${breakpoints.md}`]: {
-        backgroundPosition: 'right -200px bottom -250px',
+        backgroundPosition: 'right -250px bottom -250px',
         backgroundSize: '500px',
       },
     },
@@ -100,6 +100,32 @@ export const backgroundVariant = styleVariants({
       [`screen and ${breakpoints.md}`]: {
         backgroundPosition: 'right -220px bottom -220px',
         backgroundSize: '500px',
+      },
+    },
+  },
+  smartwallet: {
+    backgroundRepeat: 'no-repeat',
+    backgroundImage: `url("/assets/background/smartwallet.svg")`,
+    backgroundPosition: 'right -140px bottom -120px',
+    backgroundSize: '300px',
+
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        backgroundPosition: 'right -320px bottom -120px',
+        backgroundSize: '500px',
+      },
+    },
+  },
+  react: {
+    backgroundRepeat: 'no-repeat',
+    backgroundImage: `url("/assets/background/react.svg")`,
+    backgroundPosition: 'right -140px bottom -120px',
+    backgroundSize: '300px',
+
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        backgroundPosition: 'right -250px bottom -220px',
+        backgroundSize: '450px',
       },
     },
   },

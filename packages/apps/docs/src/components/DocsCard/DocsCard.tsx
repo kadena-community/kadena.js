@@ -11,7 +11,13 @@ interface IProps extends PropsWithChildren {
   label: string;
   description: string;
   schema?: 'info' | 'warning' | 'success';
-  background: 'whitepapers' | 'contribute' | 'quickstart' | 'default';
+  background:
+    | 'whitepapers'
+    | 'contribute'
+    | 'quickstart'
+    | 'smartwallet'
+    | 'react'
+    | 'default';
 }
 
 export const DocsCard: FC<IProps> = ({

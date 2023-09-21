@@ -47,7 +47,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="info"
                   background="whitepapers"
                 >
-                  <BrowseSection>
+                  <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/docs/kadena/overview">
                       What is the Kadena Blockchain?
                     </Link>
@@ -67,7 +67,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="warning"
                   background="contribute"
                 >
-                  <BrowseSection>
+                  <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/docs/build/guides">
                       5 minutes quick start
                     </Link>
@@ -96,7 +96,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="success"
                   background="quickstart"
                 >
-                  <BrowseSection>
+                  <BrowseSection marker="none">
                     <Link
                       className={docsCardLink}
                       href="/docs/kadena/wallets/chainweaver"

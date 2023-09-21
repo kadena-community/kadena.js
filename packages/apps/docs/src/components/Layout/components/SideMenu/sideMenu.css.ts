@@ -55,7 +55,6 @@ export const sideMenuTitleButtonClass = style([
     cursor: 'pointer',
   }),
   {
-    height: 'auto',
     border: '0',
     backgroundColor: 'transparent',
 
