@@ -1,9 +1,10 @@
 type Account {
   accountName: String!
+  chainAccounts(accountName: String!, modules: [String!]!): [ChainAccount!]!
   id: String!
   totalBalances(accountName: String!, modules: [String!]!): [FungibleBalance!]!
-  transactions(after: String, before: String, first: Int, last: Int): AccountTransactionsConnection!
-  transfers(after: String, before: String, first: Int, last: Int): AccountTransfersConnection!
+  transactions(accountName: String!, after: String, before: String, first: Int, last: Int): AccountTransactionsConnection!
+  transfers(accountName: String!, after: String, before: String, first: Int, last: Int): AccountTransfersConnection!
 }
 
 input AccountFilter {
@@ -59,6 +60,23 @@ type BlockTransactionsConnection {
 type BlockTransactionsConnectionEdge {
   cursor: String!
   node: Transaction!
+}
+
+type ChainAccount {
+  balance: Float!
+  chainId: ID!
+  module: String!
+  transfers(accountName: String!, after: String, before: String, first: Int, last: Int, modules: [String!]!): ChainAccountTransfersConnection!
+}
+
+type ChainAccountTransfersConnection {
+  edges: [ChainAccountTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type ChainAccountTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
 }
 
 """

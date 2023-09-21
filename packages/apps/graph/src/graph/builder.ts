@@ -41,13 +41,13 @@ export interface IContext {
 
 export interface IChainAccount {
   chainId: string;
-  guard: {
-    keys: string[];
-    predicate: 'KeysAll' | 'KeysAny' | 'KeysTwo' | string;
-  };
+  // guard: {
+  //   keys: string[];
+  //   predicate: 'KeysAll' | 'KeysAny' | 'KeysTwo' | string;
+  // };
   balance: number;
   module: string;
-  transactions: Transaction[];
+  // transactions: Transaction[];
   transfers: Transfer[];
 }
 

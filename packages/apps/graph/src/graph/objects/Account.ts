@@ -1,30 +1,47 @@
 import { prismaClient } from '../../db/prismaClient';
-import { builder } from '../builder';
+import { IChainAccount, builder } from '../builder';
 import { getBalance } from '../../services/node-service';
 
 export default builder.objectType('Account', {
   fields: (t) => ({
     id: t.exposeString('id'),
     accountName: t.exposeString('id'),
-    // chainAccounts: t.field({
-    //   type: ['ChainAccount'],
-    //   resolve: async (parent, args) => {
+    chainAccounts: t.field({
+      args: {
+        accountName: t.arg.string({ required: true }),
+        modules: t.arg.stringList({ required: true }),
+      },
+      type: ['ChainAccount'],
+      resolve: async (parent, args) => {
+        const chainAccounts: IChainAccount[] = [];
 
-    //     return [
-    //       {
-    //         chainId: '1',
-    //         guard: {
-    //           keys: ['1'],
-    //           predicate: 'KeysAll',
-    //         },
-    //         balance: 1.234567,
-    //         module: 'coin',
-    //         transactions: [],
-    //         transfers: [],
-    //       },
-    //     ];
-    //   },
-    // }),
+        for (let i = 0; i < 20; i++) {
+          for (let module of args.modules) {
+            const balance = await getBalance(
+              module,
+              args.accountName,
+              i.toString(),
+            );
+
+            if (balance) {
+              chainAccounts.push({
+                chainId: i.toString(),
+                // guard: {
+                //   keys: ['1'],
+                //   predicate: 'KeysAll',
+                // },
+                balance,
+                module,
+                // transactions: [],
+                transfers: [],
+              });
+            }
+          }
+        }
+
+        return chainAccounts;
+      },
+    }),
     totalBalances: t.field({
       args: {
         accountName: t.arg.string({ required: true }),
@@ -71,11 +88,14 @@ export default builder.objectType('Account', {
     }),
     transactions: t.prismaConnection({
       type: 'Transaction',
+      args: {
+        accountName: t.arg.string({ required: true }),
+      },
       cursor: 'blockHash_requestkey',
-      resolve: (query, parent) => {
+      resolve: (query, parent, args) => {
         return prismaClient.transaction.findMany({
           where: {
-            sender: parent.accountName,
+            sender: args.accountName,
           },
           orderBy: {
             height: 'desc',
@@ -86,16 +106,19 @@ export default builder.objectType('Account', {
     }),
     transfers: t.prismaConnection({
       type: 'Transfer',
+      args: {
+        accountName: t.arg.string({ required: true }),
+      },
       cursor: 'block_chainid_idx_modulehash_requestkey',
       resolve: async (query, parent, args) => {
         return prismaClient.transfer.findMany({
           where: {
             OR: [
               {
-                from_acct: parent.accountName,
+                from_acct: args.accountName,
               },
               {
-                to_acct: parent.accountName,
+                to_acct: args.accountName,
               },
             ],
           },

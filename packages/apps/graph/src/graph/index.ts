@@ -1,5 +1,6 @@
 import './objects/Account';
 import './objects/Block';
+import './objects/ChainAccount';
 import './objects/FungibleBalance';
 import './objects/Transaction';
 import './objects/Transfer';
