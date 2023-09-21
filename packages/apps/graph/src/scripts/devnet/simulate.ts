@@ -1,7 +1,38 @@
-import type { IPactDecimal } from '@kadena/types';
+import type { IAccount } from './helper';
+import { createAccount, sender00 } from './helper';
+import { transfer } from './transfer';
 
-const networkId = 'testnet04';
-const chainId = '0';
-const hostGenerator = `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+export async function simulate(
+  noAccounts: number = 2,
+  transferInterval: number = 2000,
+  transferAmount: number = 10,
+) {
+  const accounts: IAccount[] = [];
 
-async function main() {}
+  // Create accounts
+  for (let i = 0; i < noAccounts; i++) {
+    const account = createAccount();
+    console.log(
+      `Generated KeyPair\nAccount: ${account.account}\nPublic Key: ${account.publicKey}\nSecret Key: ${account.secretKey}\n`,
+    );
+    accounts.push(account);
+  }
+
+  // Fund accounts
+  for (let i = 0; i < accounts.length; i++) {
+    const account = accounts[i];
+    await transfer(account.publicKey, sender00);
+  }
+
+  while (true) {
+    // Transfer between accounts
+    for (let i = 0; i < accounts.length; i++) {
+      const account = accounts[i];
+      const nextAccount = accounts[(i + 1) % accounts.length];
+      await transfer(nextAccount.publicKey, account, transferAmount);
+      await new Promise((resolve) => setTimeout(resolve, transferInterval));
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, transferInterval));
+  }
+}
