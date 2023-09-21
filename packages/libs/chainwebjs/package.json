@@ -48,7 +48,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "heft build --clean",
+    "build": "tsc && api-extractor run --local --verbose",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -57,7 +57,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "heft test"
+    "test": "jest"
   },
   "dependencies": {
     "base64url": "^3.0.1",
@@ -71,12 +71,13 @@
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@microsoft/api-extractor": "^7.37.0",
     "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
     "@types/eventsource": "1.1.11",
-    "@types/heft-jest": "~1.0.3",
+    "@types/jest": "^29.5.3",
     "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
+    "jest": "^29.7.0",
     "prettier": "~3.0.0",
     "prettier-plugin-packagejson": "^2.4.5",
     "typescript": "5.2.2"

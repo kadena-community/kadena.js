@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "build:local": "pnpm run pactjs:coin && heft build --clean",
+    "build:local": "pnpm run pactjs:coin && tsc && api-extractor run --local --verbose",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -34,8 +34,6 @@
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
-    "@types/heft-jest": "~1.0.3",
     "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",

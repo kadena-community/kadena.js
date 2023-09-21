@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/mdast": "^3.0.11",
     "@types/node": "^18.17.14",
