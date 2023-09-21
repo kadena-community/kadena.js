@@ -61,7 +61,7 @@ export default function usePageHelpfulModal(
             className={textAreaClass}
             ref={inputRef}
           ></textarea>
-          <Button variant="primary" onClick={closeModal}>
+          <Button onClick={closeModal}>
             Send Feedback
           </Button>
         </Stack>
