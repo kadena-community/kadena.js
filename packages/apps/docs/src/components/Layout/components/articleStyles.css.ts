@@ -16,7 +16,7 @@ export const contentClass = style([
   sprinkles({
     display: 'flex',
     position: 'relative',
-
+    paddingTop: '$10',
     paddingX: 0,
     overflow: 'hidden',
     width: '100%',

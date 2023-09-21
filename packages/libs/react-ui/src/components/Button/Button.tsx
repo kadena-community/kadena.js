@@ -55,7 +55,7 @@ export const Button: FC<IButtonProps> = ({
     Icon = SystemIcon.Loading;
   }
 
-  const buttonVariant = (): string => {
+  const buttonVariant = () => {
     switch (variant) {
       case 'compact':
         return compactVariant[color];

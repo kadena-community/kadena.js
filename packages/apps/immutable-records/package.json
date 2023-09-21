@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "node build.mjs",
     "dev": "next dev",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",

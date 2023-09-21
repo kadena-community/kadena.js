@@ -1,14 +1,14 @@
-import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
+import { Box, Heading, Stack } from '@kadena/react-ui';
 
-import { BrowseSection, DocsCard } from '@/components';
+import { BrowseSection } from '@/components';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip';
-import { docsCardLink } from '@/components/DocsCard/styles.css';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components';
 import { HomeHeader } from '@/components/Layout/Landing/components';
+import { browseSectionWrapper } from '@/styles/index.css';
 import type { IMenuData } from '@/types/Layout';
 import type { IMostPopularPage } from '@/types/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
@@ -37,191 +37,121 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Box marginBottom="$20">
-            <Grid.Root gap="$lg" columns={{ sm: 1, md: 2 }}>
-              <Grid.Item rowSpan={2}>
-                <DocsCard
-                  label="Introduction"
-                  description="What makes Kadena unique? Learn about our core concepts."
-                  schema="info"
-                  background="whitepapers"
-                >
-                  <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/docs/kadena/overview">
-                      What is the Kadena Blockchain?
-                    </Link>
-                    <Link className={docsCardLink} href="/docs/kadena/kda">
-                      What is KDA token?
-                    </Link>
-                    <Link className={docsCardLink} href="/docs/pact">
-                      What are Pact smart contracts?
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
-              </Grid.Item>
-              <Grid.Item>
-                <DocsCard
-                  label="Learn through tutorials"
-                  description="Find training and documentation and discover resources to assist you in learning. Whether you are just starting or an experienced professional, our hands-on approach helps you reach your goals faster, more confidently, and at your own pace."
-                  schema="warning"
-                  background="contribute"
-                >
-                  <BrowseSection marker="none">
-                    <Link
-                      className={docsCardLink}
-                      href="/docs/build/quickstart/5-minute-quickstart"
-                    >
-                      5 minutes quick start
-                    </Link>
-                    <a
-                      className={docsCardLink}
-                      href="https://academy.kadena.io"
-                    >
-                      Learn on the Academy
-                    </a>
-                    <Link className={docsCardLink} href="/docs/build/guides">
-                      Create a Smart Contract
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/docs/build/guides/building-a-voting-dapp"
-                    >
-                      Build your first dApp
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
-              </Grid.Item>
-              <Grid.Item>
-                <DocsCard
-                  label="Setup"
-                  description="Use the right tools and platforms for building many types of decentralized applications."
-                  schema="success"
-                  background="quickstart"
-                >
-                  <BrowseSection marker="none">
-                    <Link
-                      className={docsCardLink}
-                      href="/docs/kadena/wallets/chainweaver"
-                    >
-                      Development wallet
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/docs/contribute/ambassadors"
-                    >
-                      Local devnet
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/docs/pact/beginner/test-in-the-sdk"
-                    >
-                      Pact REPL
-                    </Link>
-                    <Link className={docsCardLink} href="/docs/pact/vscode">
-                      Visual Studio Code
-                    </Link>
-                  </BrowseSection>
-                </DocsCard>
-              </Grid.Item>
-            </Grid.Root>
+          <Box marginBottom="$10">
+            <Heading as="h4">Getting started</Heading>
+            <Stack wrap="wrap">
+              <BrowseSection
+                title="Core concepts"
+                className={browseSectionWrapper}
+              >
+                <Link href="/docs/kadena/overview">
+                  What is the Kadena Blockchain?
+                </Link>
+                <Link href="/docs/kadena/kda">What is KDA token?</Link>
+                <Link href="/docs/pact">What are Pact smart contracts?</Link>
+              </BrowseSection>
+              <BrowseSection
+                title="Developers"
+                className={browseSectionWrapper}
+              >
+                <Link href="/docs/build/quickstart">
+                  Learn through tutorials
+                </Link>
+                <Link href="/docs/pact/beginner/language-basics">
+                  Pact Language resources
+                </Link>
+                <Link href="/docs/pact">Pact developer tutorials</Link>
+              </BrowseSection>
+              <BrowseSection
+                title="Setup local environment"
+                className={browseSectionWrapper}
+              >
+                <Link href="/docs/build/support">Developer program</Link>
+                <Link href="/docs/contribute/ambassadors">
+                  Ambassador program
+                </Link>
+                <Link href="/docs/build/support/technical-grants">
+                  Technical grants
+                </Link>
+              </BrowseSection>
+            </Stack>
           </Box>
 
-          <Stack direction="column" gap="$xl">
-            <BrowseSection title="Useful tools" direction="row">
-              <BrowseSection.LinkBlock
-                title="Bootstrap Kadena dApp"
-                subtitle="Quickstart your Kadena app"
-                href="https://github.com/kadena-community/create-kadena-app"
-              />
+          <Box marginBottom="$10">
+            <Stack wrap="wrap">
+              <BrowseSection title="General" className={browseSectionWrapper}>
+                <Link href="/docs/kadena">Overview of Kadena</Link>
+                <Link href="/docs/kadena/kda/manage-kda">Manage your KDA</Link>
+                <a href="https://kadena.io" target="_blank" rel="noreferrer">
+                  Kadena.io
+                </a>
+              </BrowseSection>
+              <BrowseSection
+                title="Useful tools"
+                className={browseSectionWrapper}
+              >
+                <Link href="/docs/build/support">
+                  Chainweaver (Wallet & Workbench)
+                </Link>
+                <Link href="/docs/kadena/wallets/chainweaver">Atom IDE</Link>
+                <a href="https://explorer.chainweb.com/mainnet">
+                  Block Explorer
+                </a>
+                <a href="https://transfer.chainweb.com/">Web transfer tools</a>
+                <a href="https://balance.chainweb.com/">Balance checker</a>
+              </BrowseSection>
+              <BrowseSection title="Programs" className={browseSectionWrapper}>
+                <Link href="/docs/build/support">Developer program</Link>
+                <Link href="/docs/contribute/ambassadors">
+                  Ambassador program
+                </Link>
+                <Link href="/docs/build/support/technical-grants">
+                  Technical grants
+                </Link>
+                <a href="https://github.com/kadena-community/create-kadena-app">
+                  Bootstrap Kadena dApp
+                </a>
+                <a href="https://hub.docker.com/r/kadena/devnet">
+                  Devnet Docker Container
+                </a>
+                <a href="https://github.com/kadena-io/pact#installing-pact">
+                  Pact binary
+                </a>
+              </BrowseSection>
+            </Stack>
+          </Box>
 
-              <BrowseSection.LinkBlock
-                title="Devnet Docker Container"
-                subtitle="Run a chainweb-node instance for development"
-                href="https://hub.docker.com/r/kadena/devnet"
-              />
+          <Box marginBottom="$10">
+            <Stack direction="column" gap="$2xl">
+              <BrowseSection title="General" titleAs="h5" direction="row">
+                <BrowseSection.LinkBlock
+                  title="Overview of Pact"
+                  subtitle="Explore all products"
+                  icon="Overview"
+                  href="/docs/pact"
+                />
+                <BrowseSection.LinkBlock
+                  title="Chainweb"
+                  subtitle="Explore all products"
+                  icon="SmartContract"
+                  href="/docs/chainweb"
+                />
+                <BrowseSection.LinkBlock
+                  title="Marmalade"
+                  subtitle="Explore all products"
+                  icon="Marmalade"
+                  href="/docs/marmalade"
+                />
+              </BrowseSection>
+            </Stack>
+          </Box>
 
-              <BrowseSection.LinkBlock
-                title="Dev Wallet Chainweaver [web]"
-                subtitle="Chainweaver on the web"
-                href="https://chainweaver.kadena.network/"
-              />
-
-              <BrowseSection.LinkBlock
-                title="Dev Wallet Chainweaver [desktop]"
-                subtitle="Kadena Chainweaver desktop wallet"
-                href="https://github.com/kadena-io/chainweaver/releases"
-              />
-
-              <BrowseSection.LinkBlock
-                title="Pact binary"
-                subtitle="Install Pact for yourself"
-                href="https://github.com/kadena-io/pact#installing-pact"
-              />
-            </BrowseSection>
-
-            <BrowseSection title="General" direction="row">
-              <BrowseSection.LinkBlock
-                title="Overview of Kadena"
-                subtitle="Find out what we are about"
-                href="/docs/kadena"
-              />
-              <BrowseSection.LinkBlock
-                title="Manage your KDA"
-                subtitle="Wallets & patforms"
-                href="/docs/kadena/kda/manage-kda"
-              />
-              <BrowseSection.LinkBlock
-                title="Kadena.io"
-                subtitle="Home is where the heart is"
-                href="https://kadena.io"
-              />
-            </BrowseSection>
-
-            <BrowseSection title="Programs" direction="row">
-              <BrowseSection.LinkBlock
-                title="Ambassador program"
-                subtitle="Apply for some Ambassador privileges"
-                href="/docs/contribute/ambassadors"
-              />
-              <BrowseSection.LinkBlock
-                title="Technical grants"
-                subtitle="Empowering builders for innovation"
-                href="https://kadena.io/grants/"
-              />
-              <BrowseSection.LinkBlock
-                title="Docs"
-                subtitle="Help to improve our docs"
-                href="/docs/contribute/contribute"
-              />
-            </BrowseSection>
-
-            <Box>
-              <Heading as="h6">Stay up-to-date</Heading>
-              <BlogPostsStrip
-                data={blogPosts}
-                link="/docs/blogchain"
-                linkLabel="More Blogchain posts"
-              />
-            </Box>
-
-            <BrowseSection title="General" direction="row">
-              <BrowseSection.LinkBlock
-                title="Overview of Pact"
-                subtitle="Learn the basics of Pact to create a smart contract"
-                href="/docs/pact"
-              />
-              <BrowseSection.LinkBlock
-                title="Chainweb"
-                subtitle="Chainweb is our scalable Proof-Of-Work (PoW) consensus algorithm"
-                href="/docs/chainweb"
-              />
-              <BrowseSection.LinkBlock
-                title="Marmalade"
-                subtitle="Marmalade provides the complete NFT infrastructure."
-                href="/docs/marmalade"
-              />
-            </BrowseSection>
-          </Stack>
+          <Heading as="h4">Latest Blogchain posts</Heading>
+          <BlogPostsStrip
+            data={blogPosts}
+            link="/docs/blogchain"
+            linkLabel="More Blogchain posts"
+          />
         </article>
       </div>
     </>

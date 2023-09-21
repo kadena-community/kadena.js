@@ -19,6 +19,7 @@
 '@kadena/client': none
 '@kadena/pactjs': none
 '@kadena/graph': none
+'@kadena/tools': none
 '@kadena/types': none
 '@kadena/docs': none
 ---

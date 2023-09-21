@@ -6,14 +6,9 @@ import {
   Card,
   Grid,
   Heading,
-  Notification,
 } from '@kadena/react-ui';
 
-import {
-  buttonContainerClass,
-  containerClass,
-  notificationContainerStyle,
-} from './styles.css';
+import { buttonContainerClass, containerClass } from './styles.css';
 
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
@@ -21,7 +16,6 @@ import AccountNameField, {
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { fundExistingAccount } from '@/services/faucet';
@@ -60,7 +54,6 @@ interface IFundExistingAccountResponse
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
-  const { selectedNetwork } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
@@ -122,8 +115,6 @@ const ExistingAccountFaucetPage: FC = () => {
     [chainID, t],
   );
 
-  const showNotification = selectedNetwork === 'mainnet01';
-
   const {
     register,
     handleSubmit,
@@ -137,18 +128,6 @@ const ExistingAccountFaucetPage: FC = () => {
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
-      <div className={notificationContainerStyle}>
-        {showNotification ? (
-          <Notification.Root
-            color="warning"
-            expanded={true}
-            icon="Information"
-            title={t(
-              'The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet.',
-            )}
-          />
-        ) : null}
-      </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}

@@ -1,8 +1,7 @@
-import { Box, Grid, Heading } from '@kadena/react-ui';
+import { Box, Button, Heading, Text } from '@kadena/react-ui';
 
-import { BrowseSection, DocsCard } from '@/components';
+import { LandingPageCard, LandingPageCardSection } from '@/components';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip';
-import { docsCardLink } from '@/components/DocsCard/styles.css';
 import type { IMenuData } from '@/types/Layout';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import {
@@ -21,89 +20,86 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <>
-      <Box marginBottom="$20">
-        <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-          <Grid.Item rowSpan={2}>
-            <DocsCard
-              label="We are looking for Ambassadors"
-              description="Since the launch of Kadena's public blockchain, we have had
+      <LandingPageCardSection>
+        <LandingPageCard>
+          <Heading as="h4">Kadena DAO</Heading>
+          <Box marginY="$4">
+            <Text>
+              Kadena has built the framework for the first DAO, Decentralized
+              Autonomous Organization, on its public blockchain called dao.init.
+              As Kadena’s ecosystem continues to grow, the creation of a DAO
+              will allow for the broader community to provide their input in a
+              decentralized manner.
+            </Text>
+          </Box>
+          <Button as="a" asChild>
+            <Link href={'/docs/contribute/kadena-dao'}>Start contributing</Link>
+          </Button>
+        </LandingPageCard>
+        <LandingPageCard>
+          <Heading as="h4">We are looking for Ambassadors</Heading>
+          <Box marginY="$4">
+            <Text>
+              Since the launch of Kadena&apos;s public blockchain, we have had
               active individuals in our community’s social channels who drive
               adoption. Whether it is keeping the community up to date, writing
               blog posts, or educating new members about the Kadena project,
-              they have help promote Kadena and spread awareness."
-              schema="info"
-              background="contribute"
-            >
-              <BrowseSection marker="none">
-                <Link
-                  className={docsCardLink}
-                  href={'/docs/contribute/ambassadors'}
-                >
-                  Become an ambassador
-                </Link>
-              </BrowseSection>
-            </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
-            <DocsCard
-              label="Run a node"
-              description=""
-              schema="warning"
-              background="marmalade"
-            >
-              <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/docs/contribute/node">
-                  Run a Node
-                </Link>
+              they have help promote Kadena and spread awareness.
+            </Text>
+          </Box>
+          <Button as="a" asChild>
+            <Link href={'/docs/contribute/ambassadors'}>
+              Become an ambassador
+            </Link>
+          </Button>
+        </LandingPageCard>
 
-                <Link
-                  className={docsCardLink}
-                  href="/docs/contribute/node/start-mining"
-                >
-                  Start mining
-                </Link>
+        <LandingPageCard>
+          <Heading as="h4">Run a Node</Heading>
+          <Box marginY="$4">
+            <Text>
+              <ul>
+                <li>
+                  <Link href="/docs/contribute/node">Run a Node</Link>
+                </li>
+                <li>
+                  <Link href="/docs/contribute/node/start-mining">
+                    Start mining
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/docs/contribute/node/interact-with-nodes">
+                    Interact with Nodes
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/docs/contribute/node/troubleshooting-chainweb">
+                    Troubleshooting Chainweb
+                  </Link>
+                </li>
+              </ul>
+            </Text>
+          </Box>
+        </LandingPageCard>
 
-                <Link
-                  className={docsCardLink}
-                  href="/docs/contribute/node/interact-with-nodes"
-                >
-                  Interact with Nodes
-                </Link>
-
-                <Link
-                  className={docsCardLink}
-                  href="/docs/contribute/node/troubleshooting-chainweb"
-                >
-                  Troubleshooting Chainweb
-                </Link>
-              </BrowseSection>
-            </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
-            <DocsCard
-              label="Contribute to the docs"
-              description="The Kadena documentation is open source and hosted on GitHub.
+        <LandingPageCard>
+          <Heading as="h4">Contribute to the docs</Heading>
+          <Box marginY="$4">
+            <Text>
+              The Kadena documentation is open source and hosted on GitHub.
               Using our public-facing Docs repo in the Kadena Community GitHub,
               you can make suggested changes using pull requests. This allows
               community members to improve the documentation and helps improve
-              the Kadena developer experience."
-              schema="success"
-              background="whitepapers"
-            >
-              <BrowseSection marker="none">
-                <Link
-                  className={docsCardLink}
-                  href={'/docs/contribute/contribute'}
-                >
-                  Fix our docs
-                </Link>
-              </BrowseSection>
-            </DocsCard>
-          </Grid.Item>
-        </Grid.Root>
-      </Box>
+              the Kadena developer experience.
+            </Text>
+          </Box>
+          <Button as="a" asChild>
+            <Link href={'/docs/contribute/contribute'}>Fix our docs</Link>
+          </Button>
+        </LandingPageCard>
+      </LandingPageCardSection>
 
-      <Heading as="h6">Stay up-to-date</Heading>
+      <Heading as="h4">Latest contribute posts</Heading>
       <BlogPostsStrip data={blogPosts} />
     </>
   );

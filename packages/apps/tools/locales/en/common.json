@@ -160,6 +160,5 @@
   "Track & trace transactions": "Track & trace transactions",
   "Retry": "Retry",
   "Search": "Search",
-  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!",
-  "The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet.": "The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet."
+  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!"
 }
