@@ -1,189 +1,101 @@
 ---
-title: Kadena Quickstart
-description: Learn Kadena’s core concepts & tools for development in 15 minutes
+title: 5 Minute Quickstart
+description: Learn Kadena’s core concepts & tools for development in 5 minutes
 menu: Quickstart
-label: Quickstart
+label: 5 Minute Quickstart
 order: 1
 layout: full
-tags: [chainweb, chainweaver, tutorial, resources]
+tags: [devnet, chainweaver, tutorial, docker, transactions]
 ---
 
-# Kadena Quickstart
+# Getting Started with Kadena
 
-## Welcome to the developer-friendly blockchain.
+Welcome to the world of Kadena, a powerful blockchain platform that combines
+scalability with simplicity. In this guide, we'll walk you through the essential
+steps to kickstart your journey with Kadena. Whether you're a seasoned
+blockchain developer or a newcomer to the space, you'll find the process
+intuitive and efficient.
 
-Building useful applications on a blockchain doesn’t have to be hard or
-expensive. This Developer Quickstart is designed to remove the friction from
-onboarding so that you can understand how to build with Kadena quickly and
-easily.
+## Start fat-container `kadena/devnet`
 
-## Sign the Memory Wall
+1. Create docker volume
 
-Engrave your name with the Kadena “Memory Wall” smart contract.
+   ```jsx
+   docker volume create kadena_devnet
+   ```
 
-**What you will accomplish**
+2. start kadena-devnet fat-container
 
-- Perform a real Mainnet transaction
-- View your transaction on the Block Explorer
+   ```jsx
+   docker run -it -p 8080:8080 -v kadena_devnet:/data --name devnet kadena/devnet
+   ```
 
-### Step-by-step instructions
+## Monitor the blockchain
 
-1. Go to [hello.chainweb.com](https://hello.chainweb.com)
-2. Type your name and then submit
-3. Wait for the transaction to be mined in a block
-4. Upon success, click the Block Explorer link or go to explorer.chainweb.com to
-   find your transaction under “Recent Transactions”
+In the fat-container we expose an explorer that connects to the devnet
 
-:::note Key takeaway
+1. Go to http://localhost:8080/explorer/
 
-Something hidden just allowed you to instantly interact with a real blockchain,
-yet you did not have to create an account or own tokens to pay the transaction’s
-gas. This is possible thanks to gas stations, an autonomous account that exists
-only to fund gas payments on behalf of other users under specific conditions. By
-having a gas station pay user onboarding costs, we remove the friction of
-acquiring tokens in advance of signup, which allows a user’s first interaction
-with a dApp to become as easy as filling out a web form.
+Here you can see the blocks that are mined, and the transactions that are
+executed
 
-:::
+In Kadena a block is mined every 30 seconds. However, to optimize development
+workflow, the devnet mines a block in 5 seconds.
 
-### Additional Resources
+## Install Chainweaver
 
-- Read more about gas stations
-  [here](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836).
-- [See the Smart Contract Code for Memory Wall](https://github.com/kadena-io/developer-scripts/tree/master/pact/dapp-contracts/memory-wall)
+1. Download and install Chainweaver:
+   https://github.com/kadena-io/chainweaver/releases
+2. Launch Chainweaver and create your mnemonic key
 
-## Setup Chainweaver
+## Add devnet to Chainweaver
 
-Setup Chainweaver, Kadena’s official wallet and developer workbench.
+1. Click "Settings" tab in the bottom left
+2. Select "Network"
+3. Fill in the network name: "Devnet"
+4. Open the network you created "> Devnet"
+5. Add a node: "127.0.0.1:8080", the red dot on the right, should become green
+   now.
 
-### What you will accomplish
+## Create keys to sign transactions
 
-- Setup a secure KDA wallet
-- Get introduced to Kadena's primary developer workbench & IDE
+1. Go to "Keys" on the left and click "+ Generate" on the top-right. This is
+   your first key-pair.
+2. To show the balance of this account, click "Add k: Account".
+3. Go back to the "Accounts" tab on the left. Notice that the "Balance (KDA)"
+   says "Does not exist".
 
-### Step-by-step instructions
+In Kadena, keys and accounts do not represent the same thing. An account needs
+to be created before it can be used.
 
-1. Go to [kadena.io/chainweaver](https://kadena.io/chainweaver-tos/)
-2. Agree to the terms of service and click "Create new wallet"
-3. Follow the 3-step process for creating a new wallet:
+## Fund your account
 
-- Set password
-- Record recovery phrase
-- Verify recovery phrase
+> Note: we use [NodeJS](https://nodejs.dev/en/learn/how-to-install-nodejs/)
+> (personal recommendation to
+> [install with `n`](https://github.com/tj/n#readme)) and run `npm install` in
+> the root of this project
 
-To download Chainweaver and find detailed instructions on Chainweaver usage go
-here [Chainweaver User Guide](/docs/kadena/wallets/chainweaver).
+Before we can create an account, you need to have KDA to pay for the gas-fees
+(transaction fee).
 
-## Testnet Account Setup
+We can gain KDA by funding it from a pre-installed "devnet" account called
+"sender00".
 
-Create and fund a Testnet account on chain 1 using the “Coin Faucet” smart
-contract.
+In this process, we’ll submit a transaction that creates an account based on the
+"keys" and "predicate" that you supply. The combination of `keys` + `predicate`
+makes a `keyset`, which is used to `guard` your account.
 
-### What you will accomplish
+1. Send money from "sender00" to your account. Copy your account name from the
+   "Accounts" tab and fill it in the command
 
-- Create an account
-- Get some Testnet KDA coins
+```jsx
+npm run start -- fund --keys "<your-key>" --predicate "keys-all"
+```
 
-### Step-by-step instructions
+1. Open the Block Explorer http://localhost:8080/explorer/ to monitor the
+   transaction
+2. In Chainweaver, click "Refresh" to update the account balances
 
-1. In the Keys section of Chainweaver and copy your public key
-2. Go to [faucet.testnet.chainweb.com](https://faucet.testnet.chainweb.com/)
-3. Select “Create and fund new account”
-4. Enter your public key in the “Public Key” field
-5. Enter some unique name in the “Account Name” field
-6. Select “Create and fund new account”
-7. Wait about 30 seconds, then select “Check Request Status” to see the
-   transaction confirmation message
-8. Go back to Chainweaver and in the account section click on "+ Watch Account"
-9. Type the account name you have chosen for yourself and click "Add"
-10. You should see all 20 tokens you have received from the Testnet faucet!
+## Deploy a contract
 
-### Additional Resources
-
-- [See the Smart Contract Code for Coin Faucet](https://github.com/kadena-io/developer-scripts/tree/master/pact/dapp-contracts/faucet)
-
-## Pacty Parrots
-
-Play the “Pacty Parrots” game to see how dApps and wallets interact.
-
-### What you will accomplish
-
-- Sign a transaction
-- See how dApps interact with wallets
-- Win some coins! (Maybe)
-
-### Step-by-step instructions
-
-1. Make sure Chainweaver is still open on your computer
-2. Go to
-   [pactyparrots.testnet.chainweb.com](http://pactyparrots.testnet.chainweb.com/)
-3. Skim through the game rules and then enter the account name you recently
-   created
-4. Select “Start new round” to begin the game
-5. When Chainweaver pops up you will be prompted with a signing request which
-   has 3 parts:
-
-- Configuration: View transaction info and adjust settings if desired
-- Sign: Select your public key in each of the 3 “Grant Capabilities” fields
-- Preview: You should see a Raw Response of “Write succeeded!” and if so select
-  “Submit”
-
-6. Watch the parrots dance and wait for your result
-7. Choose to “Spin again” or “Cash out” which will prompt another transaction to
-   sign via Chainweaver
-
-:::note Key Takeaways
-
-For developers and end users, navigating wallet-dApp interaction can be a
-challenging experience. For example, developing with Ethereum requires wallets
-and dApps to integrate intricate web3.js code in order to perform necessary
-signing operations.
-
-Kadena simplifies this interaction with a signing API. There is no need to embed
-a web browser or to store private keys in a browser plug-in.
-
-As a developer on Kadena, when your dApp needs to send a signed transaction,
-simply make an AJAX request to the signing API on localhost port 9467. Then the
-user's wallet will handle the details of transaction signing.
-
-:::
-
-### Additional Resources
-
-- [See the Smart Contract Code for Pacty Parrots](https://github.com/kadena-io/developer-scripts/tree/master/pact/dapp-contracts/pacty-parrot)
-- [See the Documentation for Implementing the Signing API](https://kadena-io.github.io/signing-api/)
-
-## Apply your knowledge to build a brand new dApp
-
-### What you’ve accomplished
-
-1. Created and funded an account
-2. Performed multiple transactions
-3. Interacted with Mainnet and Testnet
-4. Used a gas station and signing API
-5. Used Block Explorer and Chainweaver
-
-## What’s Next?
-
-You are now familiar with the core concepts and tools for developing powerful
-and user-friendly applications with Kadena. Take your learning to the next level
-with any of these paths:
-
-Follow a guided template to create a complete dApp with a React frontend.
-
-- [Go to create-pact-app](https://github.com/kadena-io/create-pact-app)
-
-Learn Pact, Kadena’s human-readable smart contract language.
-
-- [Go to Pact Developer Tutorials](/docs/pact)
-
-Deepen your understanding of Pact and the Kadena ecosystem by following the Real
-World Pact core concepts guide and tutorial series, building from a testnet
-faucet to a DeFi lending platform.
-
-- [Go to Real World Pact](https://github.com/thomashoneyman/real-world-pact)
-
-Already have a dApp idea? Apply to our Developer Program to get technical and
-marketing support from Kadena.
-
-- [Go to Developer Program](/docs/build/support)
+TBD
