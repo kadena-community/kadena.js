@@ -41,11 +41,7 @@ const BlogChainHome: FC<IProps> = ({
 
   return (
     <>
-      <TitleHeader
-        title={frontmatter.title}
-        subTitle={frontmatter.subTitle}
-        icon={frontmatter.icon}
-      />
+      <TitleHeader title={frontmatter.title} subTitle={frontmatter.subTitle} />
       <div
         className={classNames(contentClass, contentClassVariants.home)}
         id="maincontent"
@@ -106,7 +102,6 @@ export const getStaticProps: GetStaticProps = async () => {
         order: 7,
         description: 'The place where the blog meets the chain',
         layout: 'home',
-        icon: 'BlogChain',
       },
     },
   };

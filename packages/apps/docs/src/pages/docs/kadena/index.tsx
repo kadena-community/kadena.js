@@ -128,7 +128,6 @@ export const getStaticProps: GetStaticProps = async () => {
         order: 0,
         description: 'Welcome to Kadena&apos;s documentation!',
         layout: 'landing',
-        icon: 'KadenaOverview',
       },
     },
   };

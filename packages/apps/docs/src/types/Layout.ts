@@ -1,5 +1,3 @@
-import type { ProductIcon } from '@kadena/react-ui';
-
 import type { ITopDoc } from '@/data/getTopDocs';
 import type { ReactNode } from 'react';
 
@@ -40,7 +38,6 @@ export interface IBasePageMeta {
   layout: LayoutType;
   description: string;
   subTitle?: string;
-  icon?: ProductIconNames;
   lastModifiedDate?: Date;
 }
 
@@ -73,7 +70,6 @@ export interface IMenuItem {
   label: string;
   isActive: boolean; // checks that the actual item is active in the menu
   isMenuOpen: boolean; // makes sure that the parent slide menu is open
-  icon?: ProductIconNames;
   children: IMenuItem[];
 }
 
@@ -88,8 +84,6 @@ export interface ILayout {
 }
 
 export type LevelType = 1 | 2 | 3;
-
-export type ProductIconNames = keyof typeof ProductIcon;
 
 export interface IPageProps {
   children?: ReactNode;

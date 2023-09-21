@@ -50,7 +50,7 @@ const Item: FC<IResultProps> = ({ item }) => {
     <li>
       <Link href={url} passHref legacyBehavior>
         <a className={itemLinkClass} onClick={clearModal}>
-          <Heading color="primaryContrast" as="h5">
+          <Heading color="primaryContrastInverted" as="h5">
             {item.title}
           </Heading>
           <ItemBreadCrumb url={url} />

@@ -196,7 +196,6 @@ export const getStaticProps: GetStaticProps = async () => {
         order: 3,
         description: 'The human-readable smart contract language',
         layout: 'landing',
-        icon: 'PactLanguage',
       },
     },
   };
