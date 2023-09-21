@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
+import { Box, Grid, Stack } from '@kadena/react-ui';
 
 import { BrowseSection, MostPopular } from '@/components';
 import { BlogItem, BlogList } from '@/components/Blog';
