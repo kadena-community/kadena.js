@@ -24,7 +24,7 @@ const ModuleExplorer: FC = () => {
   Debug('kadena-transfer:pages:transfer:module-explorer');
   const { t } = useTranslation('common');
   const [moduleSearch, setModuleSearch] = useState<string>('');
-  const [modules, setModules] = useState<IModulesResult>({});
+  const [modules, setModules] = useState<IModulesResult>();
 
   const { selectedNetwork: network } = useWalletConnectClient();
   const [chainID, onChainSelectChange] = usePersistentChainID();

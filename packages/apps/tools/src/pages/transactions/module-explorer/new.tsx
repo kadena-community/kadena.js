@@ -150,7 +150,7 @@ const NewPage = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [isPending, startTransition] = useTransition();
 
-  const onChange = (e) => {
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
     startTransition(() => {
       setSearchQuery(e.target.value);
