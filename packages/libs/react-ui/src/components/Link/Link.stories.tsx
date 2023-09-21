@@ -55,6 +55,9 @@ const meta: Meta<
       description:
         "Use this prop when you're using a different Link component and want to pass on styles, icons, and additional props. For example when using next/link in Next.js.",
     },
+    block: {
+      description: 'Set to true to make the link a block element.',
+    },
   },
 };
 
@@ -73,6 +76,7 @@ export const Primary: Story = {
     target: '_blank',
     icon: 'Link',
     iconAlign: 'left',
+    block: true,
   },
   render: ({ href, target, icon, iconAlign }) => {
     return (
@@ -95,6 +99,9 @@ export const Primary: Story = {
           <a href={href} target={target}>
             Link asChild
           </a>
+        </Link>
+        <Link href={href} target={target} icon={icon} block>
+          Block Link
         </Link>
       </>
     );
