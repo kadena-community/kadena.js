@@ -45,7 +45,7 @@ export default function usePageHelpfulModal(
             <Stack gap="$2" direction="row">
               <Text>
                 Would you like to contribute to this page by{' '}
-                <Link href={editLink} target="_blank" inline>
+                <Link href={editLink} target="_blank">
                   editing
                 </Link>{' '}
                 it
