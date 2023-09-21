@@ -14,10 +14,10 @@ export interface ISidePanelProps {
 
 const SidePanel = ({ results, onResultClick }: ISidePanelProps) => {
   const [text, setText] = useState('');
-  const [searchQuery, setSearchQuery] = useState();
+  const [searchQuery, setSearchQuery] = useState<string>();
   const [isPending, startTransition] = useTransition();
 
-  const onChange = (e) => {
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
     startTransition(() => {
       setSearchQuery(e.target.value);
