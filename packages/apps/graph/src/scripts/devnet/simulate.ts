@@ -33,6 +33,7 @@ export async function simulate(
       await new Promise((resolve) => setTimeout(resolve, transferInterval));
     }
 
+    // Timeout
     await new Promise((resolve) => setTimeout(resolve, transferInterval));
   }
 }
