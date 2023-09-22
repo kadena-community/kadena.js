@@ -11,16 +11,102 @@ tags: [pact, smart contract, typescript, tutorial]
 docker run -it -p 8080:8080 -v ./:/tmp/uploads kadena/devnet:latest
 ```
 
-### Listing modules
+## Listing modules
 
 You will see preloaded contracts among which the contracts in the `./pact/root`
 folder. No voting related contracts yet.
 
-### Configure Devnet in Chainweaver
+## Configure Devnet in Chainweaver
 
 Settings > Network.
 Node: http://localhost:8080
 
-### List modules
+## List modules
 
 Same result as when running the snippet
+
+
+## Albert's guide
+
+### Start fat-container `kadena/devnet`
+
+1. Create docker volume
+
+   ```jsx
+   docker volume create kadena_devnet
+   ```
+
+2. start kadena-devnet fat-container
+
+   ```jsx
+   docker run -it -p 8080:8080 -v kadena_devnet:/data --name devnet kadena/devnet
+   # restart with
+   docker start devnet
+   ```
+
+### Monitor the blockchain
+
+In the fat-container we expose an explorer that connects to the devnet
+
+1. Go to http://localhost:8080/explorer/
+
+Here you can see the blocks that are mined, and the transactions that are
+executed
+
+In Kadena a block is mined every 30 seconds. However, to optimize development
+workflow, the devnet mines a block in 5 seconds.
+
+### Chainweaver wallet
+
+1. Download and install Chainweaver:
+   https://github.com/kadena-io/chainweaver/releases  
+   Or use the web version: https://chainweaver.kadena.network
+2. Launch Chainweaver and create your mnemonic key
+
+### Add devnet to Chainweaver
+
+1. Click "Settings" tab in the bottom left
+2. Select "Network"
+3. Fill in the network name: "Devnet"
+4. Open the network you created "> Devnet"
+5. Add a node: "127.0.0.1:8080", the red dot on the right, should become green
+   now.
+
+### Create keys to sign transactions
+
+1. Go to "Keys" on the left and click "+ Generate" on the top-right. This is
+   your first key-pair.
+2. To show the balance of this account, click "Add k: Account".
+3. Go back to the "Accounts" tab on the left. Notice that the "Balance (KDA)"
+   says "Does not exist".
+
+In Kadena, keys and accounts do not represent the same thing. An account needs
+to be created before it can be used.
+
+### Fund your account
+
+> Note: we use [NodeJS](https://nodejs.dev/en/learn/how-to-install-nodejs/)
+> (personal recommendation to
+> [install with `n`](https://github.com/tj/n#readme)) and run `npm install` in
+> the root of this project
+
+Before we can create an account, you need to have KDA to pay for the gas-fees
+(transaction fee).
+
+We can gain KDA by funding it from a pre-installed "devnet" account called
+"sender00".
+
+In this process, we’ll submit a transaction that creates an account based on the
+"keys" and "predicate" that you supply. The combination of `keys` + `predicate`
+makes a `keyset`, which is used to `guard` your account.
+
+1. Send money from "sender00" to your account. Copy your account name from the
+   "Accounts" tab and fill it in the command
+
+   ```jsx
+   npm run start -- fund --keys "<your-key>" --predicate "keys-all"
+   ```
+
+2. Open the Block Explorer http://localhost:8080/explorer/ to monitor the
+   transaction
+3. In Chainweaver, click "Refresh" to update the account balances
