@@ -5,3 +5,10 @@ export const containerStyle = style([
 ]);
 
 export const modulesContainerStyle = style([{ flex: 1, overflow: 'scroll' }]);
+
+export const moduleTitle = style({
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: '18rem',
+});
