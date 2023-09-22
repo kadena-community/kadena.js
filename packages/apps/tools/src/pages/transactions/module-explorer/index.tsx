@@ -2,6 +2,8 @@ import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { Breadcrumbs } from '@kadena/react-ui';
 
+import { getCookieValue, getQueryValue } from './utils';
+
 import type { IModule } from '@/components/Global/ModuleExplorer';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
@@ -17,7 +19,6 @@ import { useToolbar } from '@/context/layout-context';
 import { describeModule } from '@/services/modules/describe-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
-import { getName, parse } from '@/utils/persist';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type {
@@ -25,32 +26,11 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import useTranslation from 'next-translate/useTranslation';
-import type { ParsedUrlQuery } from 'querystring';
 import React, { useCallback, useState } from 'react';
 
 const QueryParams = {
   MODULE: 'module',
   CHAIN: 'chain',
-};
-
-const getQueryValue = (
-  needle: string,
-  haystack: ParsedUrlQuery,
-  validator?: (value: string) => boolean,
-): string | undefined => {
-  if (typeof haystack[needle] === 'undefined') {
-    return undefined;
-  }
-
-  const value = Array.isArray(haystack[needle])
-    ? (haystack[needle]![0] as string)
-    : (haystack[needle] as string);
-
-  if (validator) {
-    return validator(value) ? value : undefined;
-  }
-
-  return value;
 };
 
 export const getModules = async (network: Network): Promise<IModule[]> => {
@@ -106,12 +86,11 @@ export const getServerSideProps: GetServerSideProps<{
   data: IModule[];
   openedModules: IEditorProps['openedModules'];
 }> = async (context) => {
-  // TODO: Tidy this up
-  const network: Network =
-    parse(
-      context.req.cookies[encodeURIComponent(getName(StorageKeys.NETWORK))] ||
-        '',
-    ) || DefaultValues.NETWORK;
+  const network = getCookieValue(
+    StorageKeys.NETWORK,
+    context.req.cookies,
+    DefaultValues.NETWORK,
+  ) as Network;
 
   const modules = await getModules(network);
 
@@ -120,7 +99,7 @@ export const getServerSideProps: GetServerSideProps<{
   const chainQueryValue = getQueryValue(
     QueryParams.CHAIN,
     context.query,
-    (value) => CHAINS.includes(value as ChainwebChainId),
+    (value) => CHAINS.includes(value),
   );
   if (moduleQueryValue && chainQueryValue) {
     const moduleResponse = await describeModule(
