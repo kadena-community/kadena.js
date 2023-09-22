@@ -11,7 +11,6 @@ interface IProps {
 }
 
 export const LastModifiedDate: FC<IProps> = ({ date }) => {
-  console.log(date, new Date(date));
   if (!date) return null;
   const dateString = formatISODate(date);
   return (
