@@ -7,7 +7,6 @@ import { importReadMes } from './utils.mjs';
 import chalk from 'chalk';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import logUpdate from 'log-update';
 
 const promiseExec = promisify(exec);
 const errors = [];
