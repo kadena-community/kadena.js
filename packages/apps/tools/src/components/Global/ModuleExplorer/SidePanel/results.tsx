@@ -1,9 +1,9 @@
 import type { ITreeProps } from '@kadena/react-ui';
 import { Button, Tree } from '@kadena/react-ui';
 
+import type { IModule } from '..';
 import type { getModulesMap } from '../utils';
 
-import type { IModule } from '@/pages/transactions/module-explorer/new';
 import React, { useMemo } from 'react';
 
 export interface IResultsProps extends React.HTMLAttributes<HTMLDivElement> {

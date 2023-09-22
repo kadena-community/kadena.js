@@ -2,6 +2,7 @@ import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { Breadcrumbs } from '@kadena/react-ui';
 
+import type { IModule } from '@/components/Global/ModuleExplorer';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import type { Network } from '@/constants/kadena';
@@ -26,11 +27,6 @@ import type {
 import useTranslation from 'next-translate/useTranslation';
 import type { ParsedUrlQuery } from 'querystring';
 import React, { useCallback, useState } from 'react';
-
-interface IModule {
-  chainId: ChainwebChainId;
-  moduleName: string;
-}
 
 const QueryParams = {
   MODULE: 'module',
