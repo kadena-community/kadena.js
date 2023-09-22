@@ -34,6 +34,7 @@ export const Full: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
+  console.log(frontmatter);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const menuRef = useRef<HTMLUListElement | null>(null);

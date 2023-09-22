@@ -1,17 +1,17 @@
 //  TODO: Find a better source for the last modified date (https://app.asana.com/0/1204649083736950/1204804598558906/f)
 
-//import { Stack, Text } from '@kadena/react-ui';
-//import { formatISODate } from '@/utils/dates';
-//import React, { FC } from 'react';
+import { Stack, Text } from '@kadena/react-ui';
+
+import { formatISODate } from '@/utils/dates';
 import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   date?: Date;
 }
 
 export const LastModifiedDate: FC<IProps> = ({ date }) => {
-  return null;
-  /*
+  console.log(date, new Date(date));
   if (!date) return null;
   const dateString = formatISODate(date);
   return (
@@ -21,5 +21,4 @@ export const LastModifiedDate: FC<IProps> = ({ date }) => {
       </Text>
     </Stack>
   );
-  */
 };

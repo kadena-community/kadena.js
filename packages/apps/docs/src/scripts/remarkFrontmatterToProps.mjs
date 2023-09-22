@@ -5,6 +5,28 @@ import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.m
 import { getData } from './../utils/staticGeneration/getData.mjs';
 import authors from './../data/authors.json' assert { type: 'json' };
 
+const flat = (acc, val) => {
+  const { children, ...newVal } = val;
+
+  return [
+    ...acc,
+    newVal,
+    children ? children.reduce(flat, []).flat() : undefined,
+  ];
+};
+
+const getFlatData = () => {
+  return getData().reduce(flat, []).flat();
+};
+
+const getCurrentPostFromJson = (root) => {
+  const data = getFlatData();
+
+  return data.find((item) => {
+    return item && item.root === root;
+  });
+};
+
 const getFrontMatter = (node) => {
   const { type, value } = node;
 
@@ -66,21 +88,12 @@ const getFileNameInPackage = (file) => {
   return `/${newPath}`;
 };
 
-const flat = (acc, val) => {
-  const { children, ...newVal } = val;
-
-  return [
-    ...acc,
-    newVal,
-    children ? children.reduce(flat, []).flat() : undefined,
-  ];
-};
 /**
  * create a navigation object with the next and previous link in the navigation json.
  */
 const createNavigation = (file) => {
   const path = getPathName(getFileName(file));
-  const flatData = getData().reduce(flat, []).flat();
+  const flatData = getFlatData();
 
   const itemIdx = flatData.findIndex((i) => {
     return i && i.root === path;
@@ -95,20 +108,23 @@ const createNavigation = (file) => {
 const remarkFrontmatterToProps = () => {
   return async (tree, file) => {
     tree.children = tree.children.map((node) => {
-      const data = getFrontMatter(node);
-      if (!data) return node;
+      const frontMatterData = getFrontMatter(node);
+      if (!frontMatterData) return node;
+      const menuData =
+        getCurrentPostFromJson(getPathName(getFileName(file))) ?? {};
 
       return {
         type: 'props',
         data: {
           frontmatter: {
+            lastModifiedDate: menuData.lastModifiedDate,
             ...getReadTime(file.value),
             editLink:
               process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
               getFileNameInPackage(file),
             navigation: createNavigation(file),
-            ...data,
-            authorInfo: getBlogAuthorInfo(data),
+            ...frontMatterData,
+            authorInfo: getBlogAuthorInfo(frontMatterData),
           },
         },
       };
