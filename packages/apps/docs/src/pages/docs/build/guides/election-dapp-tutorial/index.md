@@ -1,6 +1,6 @@
 ---
 title: Election dApp tutorial
-description: Election dApp tutorial
+description: The Election dApp tutorial will teach you how to implement a voting website that registers votes on the Kadena blockchain.
 menu: Election dApp tutorial
 label: Introduction
 order: 3
