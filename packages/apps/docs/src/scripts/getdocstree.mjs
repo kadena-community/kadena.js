@@ -10,6 +10,7 @@ import { promisify } from 'util';
 import logUpdate from 'log-update';
 
 const promiseExec = promisify(exec);
+const errors = [];
 
 const Spinner = () => {
   const elegantSpinner = () => {
@@ -53,7 +54,7 @@ const convertFile = async (file) => {
   const doc = fs.readFileSync(`${file}`, 'utf-8');
   let data;
   if (isMarkDownFile(file)) {
-    data = getFrontMatter(doc);
+    data = getFrontMatter(doc, file);
   } else {
     const regex = /frontmatter\s*:\s*{[^}]+}/;
     const match = doc.match(regex);
@@ -65,9 +66,9 @@ const convertFile = async (file) => {
 
     data = JSON.parse(metaString);
   }
+  if (!data) return;
 
   const readTime = getReadTime(doc);
-
   const lastModifiedDate = await getLastModifiedDate(file);
 
   return {
@@ -79,11 +80,16 @@ const convertFile = async (file) => {
   };
 };
 
-const getFrontMatter = (doc) => {
+const getFrontMatter = (doc, file) => {
   const tree = fromMarkdown(doc.toString(), {
     extensions: [frontmatter()],
     mdastExtensions: [frontmatterFromMarkdown()],
   });
+
+  if (!tree.children[0] || tree.children[0].type !== 'yaml') {
+    errors.push(`${file}: there is no frontmatter found`);
+    return;
+  }
 
   return yaml.load(tree.children[0].value);
 };
@@ -153,7 +159,9 @@ const getFile = async (rootDir, parent, file) => {
     const obj = await convertFile(`${currentFile}/index.tsx`);
     Object.assign(child, obj);
   } else {
-    throw new Error(currentFile);
+    errors.push(
+      `${currentFile}: there is no index.[md|mdx|tsx] in this directory`,
+    );
   }
   parent = pushToParent(parent, child);
 
@@ -171,14 +179,12 @@ const createTree = async (rootDir, parent = []) => {
     await getFile(rootDir, parent, files[i]);
   }
 
-  // files.forEach(async (file) => {});
-
   return parent;
 };
 
 const init = async () => {
   const loader = console.log(
-    '=============================================== START DOCS TREE ==',
+    '=============================================== START DOCS TREE ==\n\n',
   );
 
   const spinner = Spinner();
@@ -190,9 +196,17 @@ const init = async () => {
 
   fs.writeFileSync(MENUFILE, fileStr);
   spinner.stop();
-  console.log(chalk.green('✓'), 'DOCS TREE CREATED');
+
+  if (errors.length) {
+    errors.map((error) => {
+      console.warn(chalk.red('⨯'), error);
+    });
+    process.exitCode = 1;
+  } else {
+    console.log(chalk.green('✓'), 'DOCS TREE CREATED');
+  }
   console.log(
-    '=============================================== END DOCS TREE ====',
+    '\n\n=============================================== END DOCS TREE ====',
   );
 };
 
