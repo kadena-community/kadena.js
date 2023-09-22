@@ -1,6 +1,9 @@
 ---
 title: "05: Admin account"
 description: "Election dApp tutorial chapter 05: Admin account"
+menu: Election dApp tutorial
+label: "05: Admin account"
+order: 5
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---

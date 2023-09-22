@@ -1,6 +1,9 @@
 ---
 title: "10: Voting"
 description: "Election dApp tutorial chapter 10: Voting"
+menu: Election dApp tutorial
+label: "10: Voting"
+order: 10
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---

@@ -1,6 +1,9 @@
 ---
 title: "02: Running Devnet"
 description: "Election dApp tutorial chapter 02: Running Devnet"
+menu: Election dApp tutorial
+label: "02: Running Devnet"
+order: 2
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---

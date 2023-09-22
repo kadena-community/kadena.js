@@ -1,6 +1,9 @@
 ---
 title: "01: Getting started"
 description: "Election dApp tutorial chapter 01: Getting started"
+menu: Election dApp tutorial
+label: "01: Getting started"
+order: 1
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---

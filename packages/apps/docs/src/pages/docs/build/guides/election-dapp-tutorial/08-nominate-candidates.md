@@ -1,6 +1,9 @@
 ---
 title: "08: Nominating candidates"
 description: "Election dApp tutorial chapter 08: Nominating candidates"
+menu: Election dApp tutorial
+label: "08: Nominating"
+order: 8
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---

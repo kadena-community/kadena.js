@@ -1,6 +1,9 @@
 ---
 title: "09: Gas station"
 description: "Election dApp tutorial chapter 09: Gas station"
+menu: Election dApp tutorial
+label: "09: Gas station"
+order: 9
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---

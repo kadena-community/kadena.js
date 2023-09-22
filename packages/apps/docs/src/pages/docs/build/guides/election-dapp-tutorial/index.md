@@ -1,9 +1,9 @@
 ---
 title: Election dApp tutorial
 description: Election dApp tutorial
-menu: Build
-label: Election dApp tutorial
-order: 4
+menu: Election dApp tutorial
+label: Introduction
+order: 3
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---

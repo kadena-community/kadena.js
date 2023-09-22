@@ -1,6 +1,9 @@
 ---
 title: "07: Deploy contract"
 description: "Election dApp tutorial chapter 07: Deploy contract"
+menu: Election dApp tutorial
+label: "07: Deploy contract"
+order: 7
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---

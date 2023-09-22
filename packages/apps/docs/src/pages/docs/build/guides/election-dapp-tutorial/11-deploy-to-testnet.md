@@ -1,6 +1,9 @@
 ---
 title: "11: Deploy to Testnet"
 description: "Election dApp tutorial chapter 11: Deploy to Testnet"
+menu: Election dApp tutorial
+label: "11: Deploy to Testnet"
+order: 11
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
