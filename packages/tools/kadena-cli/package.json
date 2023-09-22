@@ -46,7 +46,7 @@
     "@types/js-yaml": "^4.0.5",
     "chalk": "^4.1.2",
     "clear": "^0.1.0",
-    "commander": "^9.3.0",
+    "commander": "^11.0.0",
     "cross-fetch": "~3.1.5",
     "debug": "~4.3.4",
     "js-yaml": "~4.1.0",
