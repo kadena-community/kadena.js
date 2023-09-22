@@ -8,7 +8,7 @@ const usePersistentChainID = (): [ChainwebChainId, OnChainSelectChange] => {
   const { selectedChain, setSelectedChain } = useWalletConnectClient();
   const onChainSelectChange = useCallback<OnChainSelectChange>(
     (selectedChain) => {
-      setSelectedChain(selectedChain as ChainwebChainId);
+      setSelectedChain(selectedChain);
     },
     [setSelectedChain],
   );
