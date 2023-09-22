@@ -1,10 +1,10 @@
-import type { ChainwebChainId } from '@kadena/chainweb-node-client';
-
 import type { IModulesResult } from '../modules/list-module';
+
+import type { IModule } from '@/components/Global';
 
 export const transformModulesRequest = (
   modulesRequest: IModulesResult,
-): Array<{ chainId: ChainwebChainId; moduleName: string }> => {
+): Array<IModule> => {
   if (!modulesRequest.data) {
     return [];
   }
