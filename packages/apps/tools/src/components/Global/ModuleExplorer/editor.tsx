@@ -1,6 +1,7 @@
 import { Tabs } from '@kadena/react-ui';
 
-import type { IModule } from '@/pages/transactions/module-explorer/new';
+import type { IModule } from '.';
+
 import dynamic from 'next/dynamic';
 import React from 'react';
 

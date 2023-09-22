@@ -1,11 +1,17 @@
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+
 import type { IEditorProps } from './editor';
 import Editor from './editor';
 import SidePanel from './SidePanel';
 import { containerStyle } from './styles.css';
 import { getModulesMap } from './utils';
 
-import type { IModule } from '@/pages/transactions/module-explorer/new';
 import React from 'react';
+
+export interface IModule {
+  chainId: ChainwebChainId;
+  moduleName: string;
+}
 
 export interface IModuleExplorerProps {
   modules: IModule[];

@@ -1,6 +1,6 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
-import type { IModule } from '@/pages/transactions/module-explorer/new';
+import type { IModule } from '.';
 
 export const getModulesMap = (
   modules: IModule[],
