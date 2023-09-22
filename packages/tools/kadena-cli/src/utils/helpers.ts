@@ -1,8 +1,17 @@
-import type { TConfigOptions } from '../config/configOptions';
+import { getCombinedConfig } from '../config/configHelpers';
+import type { TConfigOptions } from '../config/configQuestions';
+import { defaultNetworksPath } from '../constants/networks';
 
-import { getConfig } from './globalConfig';
+import type { Command, Option } from 'commander';
+import { existsSync, mkdirSync, readdirSync } from 'fs';
+import path from 'path';
 
-import type { Command } from 'commander';
+export interface ICustomChoice {
+  value: string;
+  name?: string;
+  description?: string;
+  disabled?: boolean | string;
+}
 
 /**
  * Assigns a value to an object's property if the value is neither undefined nor an empty string.
@@ -93,6 +102,7 @@ export function* questionGenerator<T>(
 export async function collectResponses<T>(
   args: Partial<T>,
   questions: IQuestion<T>[],
+  config?: Partial<TConfigOptions>,
 ): Promise<T> {
   const responses: Partial<T> = {
     ...args,
@@ -102,9 +112,9 @@ export async function collectResponses<T>(
   let result = generator.next();
   while (result.done === false) {
     const question = result.value;
-    const config = getConfig();
+    const currentConfig = config || {};
     responses[question.key as keyof T] = await question.prompt(
-      config,
+      currentConfig,
       responses,
       args,
     );
@@ -139,48 +149,227 @@ export function getPubKeyFromAccount(account: string): string {
 }
 
 /**
- * Creates a new sub-command with specified arguments and attaches it to the given Commander program.
+ * Creates and attaches a new sub-command with specified arguments and options to the provided Commander program.
  *
  * @template T - The type of the arguments that the sub-command will receive.
  *
- * @param {string} name - The name of the sub-command.
- * @param {string} description - The description for the sub-command, to be displayed in help messages.
- * @param {(args: T) => Promise<void> | void} actionFn - The action function to be executed when the sub-command is called.
- *   This function can be either synchronous or asynchronous and receives the arguments passed to the sub-command.
+ * @param {string} name - The name identifier of the sub-command.
+ * @param {string} description - A brief description of the sub-command, displayed in help messages.
+ * @param {(args: T) => Promise<void> | void} actionFn - A function defining the actions to be executed when the sub-command is invoked.
+ *   It may be either synchronous or asynchronous and receives the arguments passed to the sub-command.
+ * @param {Array<Option>} [options] - An optional array of Commander Option instances to be associated with the sub-command.
  *
- * @returns {(program: Command) => void} - A function that, when invoked with a Commander program, adds the
- *   sub-command to that program.
+ * @returns {(program: Command) => void} - A function that, when invoked with a Commander program, attaches the
+ *   created sub-command to that program.
  *
  * @throws Will throw an error if the actionFn results in a rejected promise.
  *
  * @example
+ * // Define command-specific options
+ * const myOptions = [
+ *   new Option('-v, --verbose', 'output extra debugging'),
+ *   new Option('-s, --silent', 'suppress output')
+ * ];
+ *
+ * // Define the action function to be executed when the sub-command is invoked
  * interface MyArgs {
  *   verbose: boolean;
  * }
  * const myAction = async (args: MyArgs) => {
  *   if (args.verbose) {
  *     await someAsyncFunction();
- *     console.log("Verbose mode on!");
+ *     console.log("Verbose mode activated!");
  *   }
  * };
- * createSimpleSubCommand('my-command', 'This is my command', myAction)(program);
+ *
+ * // Create and attach the sub-command to the Commander program
+ * createSimpleSubCommand('my-command', 'This is a sample command', myAction, myOptions)(program);
  */
+
 export function createSimpleSubCommand<T>(
   name: string,
   description: string,
   actionFn: (args: T) => Promise<void> | void,
+  options: Option[] = [],
 ): (program: Command) => void {
   return (program: Command) => {
-    program
-      .command(name)
-      .description(description)
-      .action(async (args, ...rest) => {
-        try {
-          await actionFn(args);
-        } catch (error) {
-          console.error(`Error executing command ${name}:`, error);
-          process.exit(1);
-        }
-      });
+    const command = program.command(name).description(description);
+    options.forEach((option) => {
+      command.addOption(option);
+    });
+    command.action(async (args, ...rest) => {
+      try {
+        await actionFn(args);
+      } catch (error) {
+        console.error(`Error executing command ${name}:`, error);
+        process.exit(1);
+      }
+    });
   };
+}
+
+/**
+ * Capitalizes the first letter of a string.
+ *
+ * @function
+ * @param {string} str - The string to capitalize.
+ * @returns {string} The string with the first letter capitalized.
+ * @example
+ *
+ * const lowerCaseString = "hello";
+ * const upperCaseString = capitalizeFirstLetter(lowerCaseString);
+ * console.log(upperCaseString); // Outputs: Hello
+ */
+export function capitalizeFirstLetter(str: string): string {
+  if (typeof str !== 'string' || str.length === 0) return '';
+
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function getExistingNetworks(): ICustomChoice[] {
+  if (!existsSync(defaultNetworksPath)) {
+    mkdirSync(defaultNetworksPath, { recursive: true });
+  }
+
+  try {
+    return readdirSync(defaultNetworksPath).map((filename) => ({
+      value: path.basename(filename.toLowerCase(), '.yaml'),
+      name: path.basename(filename.toLowerCase(), '.yaml'),
+    }));
+  } catch (error) {
+    console.error('Error reading networks directory:', error);
+    return [];
+  }
+}
+
+/**
+ * Sanitizes a string to create a safe filename by replacing illegal, control,
+ * reserved and trailing characters with hyphens. It ensures that the file does
+ * not end with a hyphen.
+ *
+ * @param {string} str - The input string that needs to be sanitized.
+ * @returns {string} - The sanitized string, ensuring it does not end with a hyphen.
+ *
+ * @example
+ * const originalString = "This is a <sample> string:file\\name?";
+ * const sanitizedString = sanitizeFilename(originalString);
+ * console.log(sanitizedString); // Outputs: This-is-a--sample--string-file-name
+ */
+export function sanitizeFilename(str: string): string {
+  const illegalRe = /[\/\?<>\\:\*\|":\s]/g;
+  /* eslint-disable-next-line */
+  const controlRe = /[\x00-\x1f\x80-\x9f]/g;
+  const reservedRe = /^\.+$/;
+  const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
+  const windowsTrailingRe = /[\. ]+$/;
+
+  if (typeof str !== 'string') {
+    throw new Error('Input must be string');
+  }
+
+  str = str.replace(illegalRe, '-');
+  str = str.replace(controlRe, '-');
+  str = str.replace(reservedRe, '-');
+  str = str.replace(windowsReservedRe, '-');
+  str = str.replace(windowsTrailingRe, '-');
+
+  // Ensure that the filename does not end with a hyphen
+  str = str.replace(/-+$/, '').toLowerCase();
+
+  return str;
+}
+
+/**
+ * Checks if the input string contains only alphabetic characters.
+ *
+ * @function
+ * @export
+ * @param {string} str - The input string to be checked.
+ * @returns {boolean} Returns true if the string only contains alphabetic characters (either lower case or upper case), and false if the string contains any non-alphabetic characters.
+ *
+ * @example
+ *
+ * isAlphabetic("HelloWorld"); // returns true
+ * isAlphabetic("123ABC"); // returns false
+ * isAlphabetic("Hello World!"); // returns false
+ */
+export function isAlphabetic(str: string): boolean {
+  const regex = /^[A-Za-z]+$/;
+  return regex.test(str);
+}
+
+/**
+ * Checks if a string contains only alphabetic characters and numbers.
+ *
+ * @param {string} str - The input string that needs to be checked.
+ * @returns {boolean} - Returns `true` if the string is alphanumeric, otherwise returns `false`.
+ *
+ * @example
+ * const isAlnum = isAlphanumeric("abc123"); // Outputs: true
+ */
+export function isAlphanumeric(str: string): boolean {
+  const regex = /^[A-Za-z0-9]+$/;
+  return regex.test(str);
+}
+
+/**
+ * Checks if a string contains only numeric characters.
+ *
+ * @param {string} str - The input string that needs to be checked.
+ * @returns {boolean} - Returns `true` if the string is numeric, otherwise returns `false`.
+ *
+ * @example
+ * const isNum = isNumeric("12345"); // Outputs: true
+ */
+export function isNumeric(str: string): boolean {
+  const regex = /^[0-9]+$/;
+  return regex.test(str);
+}
+
+/**
+ * Processes a project and returns configuration options.
+ *
+ * @async
+ * @function
+ * @param {string} projectName - The name of the project.
+ * @param {string[]} [keys] - The keys of the configuration options to return.
+ * If not provided or if the array is empty, an empty object is returned.
+ * @returns {Promise<Record<string, unknown>>} A promise that resolves to an object
+ * containing the requested configuration options.
+ *
+ * @example
+ * // Get 'chainId', 'network' configuration options of 'myProject'
+ * processProject('myProject', ['chainId', 'network'])
+ */
+export async function processProject(
+  projectName: string,
+  keys?: string[],
+): Promise<Record<string, unknown>> {
+  const combinedConfig = getCombinedConfig(projectName);
+
+  if (!keys || keys.length === 0) return {};
+
+  const filteredConfig: Record<string, unknown> = {};
+  for (const key of keys) {
+    if (key in combinedConfig) {
+      filteredConfig[key] = combinedConfig[key as keyof typeof combinedConfig];
+    }
+  }
+
+  return filteredConfig;
+}
+
+/**
+ * Retrieves the 'key' property from each object in an array.
+ *
+ * @function
+ * @template T - The type of the objects in the input array.
+ * @param {Array<IQuestion<T>>} arr - The array of objects from which to extract 'key' properties.
+ * @returns {Array<string>} - An array of strings representing the 'key' properties of the input objects.
+ * @example
+ * // Returns ['receiver', 'network', 'chainId', 'networkId']
+ * getQuestionKeys(fundQuestions);
+ */
+export function getQuestionKeys<T>(arr: Array<IQuestion<T>>): Array<string> {
+  return arr.map((question) => question.key as string);
 }

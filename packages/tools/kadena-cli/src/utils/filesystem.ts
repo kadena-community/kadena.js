@@ -45,3 +45,19 @@ export function writeFile(
   }
   writeFileSync(filePath, data, options);
 }
+
+/**
+ * Ensures that a directory exists, and if it doesn't, creates it.
+ *
+ * @function
+ * @param {string} directoryPath - The path of the directory to ensure it exists.
+ * @throws Will throw an error if unable to create the directory.
+ * @example
+ * // Ensures that the 'myDirectory' exists, if not it will be created.
+ * ensureDirectoryExists('path/to/myDirectory');
+ */
+export function ensureDirectoryExists(directoryPath: string): void {
+  if (!PathExists(directoryPath)) {
+    mkdirSync(directoryPath, { recursive: true });
+  }
+}

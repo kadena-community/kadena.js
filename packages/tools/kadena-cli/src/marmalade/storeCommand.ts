@@ -1,4 +1,4 @@
-import { processZodErrors } from '../utils/process-zod-errors';
+import { processZodErrors } from '../utils/processZodErrors';
 
 import type { Command } from 'commander';
 

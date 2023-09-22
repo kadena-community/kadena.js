@@ -1,28 +1,33 @@
-import { displayConfig, displayContext } from '../utils/display';
-import { getConfig, getContext, getFullConfig } from '../utils/globalConfig';
+import { collectResponses } from '../utils/helpers';
 
-export interface IFullConfigurationArgs {}
-export interface ICurrentContextArgs {}
-export interface IConfigurationArgs {}
-export interface IPublicKeyArgs {}
-export interface IPrivateKeyArgs {}
+import { displayGeneralConfig, getProjectConfig } from './configHelpers';
+import type { TConfigOptions } from './configQuestions';
+import { ConfigOptions } from './configQuestions';
+import { projectNameQuestion } from './infoQuestions';
 
-export const fullConfigurationAction = (args: IFullConfigurationArgs): void => {
-  displayConfig(getFullConfig());
-};
+import chalk from 'chalk';
+import debug from 'debug';
 
-export const currentContextAction = (args: ICurrentContextArgs): void => {
-  displayContext(getContext());
-};
+export type IShowConfigurationArgs = Pick<TConfigOptions, 'projectName'>;
 
-export const configurationAction = (args: IConfigurationArgs): void => {
-  displayConfig(getConfig());
-};
+export const showConfigurationAction = async (
+  args: IShowConfigurationArgs,
+): Promise<void> => {
+  debug('init:action')({ args });
 
-export const publicKeyAction = (args: IPublicKeyArgs): void => {
-  displayConfig(getConfig(), ['publicKey']);
-};
+  const responses = await collectResponses(args, projectNameQuestion);
 
-export const privateKeyAction = (args: IPrivateKeyArgs): void => {
-  displayConfig(getConfig(), ['privateKey']);
+  const config = { ...args, ...responses };
+
+  ConfigOptions.pick({ projectName: true }).parse(config);
+
+  try {
+    displayGeneralConfig(getProjectConfig(config.projectName.toLowerCase()));
+  } catch (e) {
+    console.error(
+      chalk.red(
+        `Project config file '${config.projectName.toLowerCase()}' not found`,
+      ),
+    );
+  }
 };

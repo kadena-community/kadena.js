@@ -1,14 +1,14 @@
-import { processZodErrors } from '../utils/process-zod-errors';
+import { processZodErrors } from '../utils/processZodErrors';
 
 import type { Command } from 'commander';
 
-export interface IGenerateOptions {}
+export interface IManageKeysOptions {}
 
-export function generate(program: Command, version: string): void {
+export function manageKeys(program: Command, version: string): void {
   program
-    .command('generate')
-    .description('generate an HD-key or public-private key-pair')
-    .action((args: IGenerateOptions) => {
+    .command('manage')
+    .description('Manage key(s)')
+    .action((args: IManageKeysOptions) => {
       try {
         // TODO: use @inquirer/prompts to interactively get missing flags
         // TODO: create zod validator

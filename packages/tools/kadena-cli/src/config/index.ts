@@ -1,21 +1,11 @@
 import { createSimpleSubCommand } from '../utils/helpers';
 
-import { contextCommand } from './contextCommand';
-import type {
-  IConfigurationArgs,
-  ICurrentContextArgs,
-  IFullConfigurationArgs,
-  IPrivateKeyArgs,
-  IPublicKeyArgs} from './infoCommand';
-import {
-  configurationAction,
-  currentContextAction,
-  fullConfigurationAction,
-  privateKeyAction,
-  publicKeyAction} from './infoCommand';
-import { initCommand } from './initCommand';
+import type { IShowConfigurationArgs } from './infoCommand';
+import { showConfigurationAction } from './infoCommand';
+import { initCommand } from './initConfigCommand';
 
 import type { Command } from 'commander';
+import { Option } from 'commander';
 
 /**
  * Represents the root command for the configuration CLI.
@@ -36,37 +26,14 @@ export function configCommandFactory(program: Command, version: string): void {
       `Tool for setting up and managing the CLI configuration and contexts`,
     );
 
+  // create project configuration
   initCommand(configProgram, version);
-  contextCommand(configProgram, version);
 
-  // Attach the subcommands to the configProgram
-  createSimpleSubCommand<ICurrentContextArgs>(
-    'current-context',
-    'display current Context',
-    currentContextAction,
-  )(configProgram);
-
-  createSimpleSubCommand<IConfigurationArgs>(
-    'current-config',
-    'display current configuration for current context',
-    configurationAction,
-  )(configProgram);
-
-  createSimpleSubCommand<IFullConfigurationArgs>(
-    'full-config',
-    'displays configuration for all contexts',
-    fullConfigurationAction,
-  )(configProgram);
-
-  createSimpleSubCommand<IPublicKeyArgs>(
-    'public-key',
-    'display Public Key',
-    publicKeyAction,
-  )(configProgram);
-
-  createSimpleSubCommand<IPrivateKeyArgs>(
-    'private-key',
-    'display Private Key',
-    privateKeyAction,
+  // show configuration
+  createSimpleSubCommand<IShowConfigurationArgs>(
+    'show',
+    'displays configuration ',
+    showConfigurationAction,
+    [new Option('-p, --projectName <projectName>', 'Name of project')],
   )(configProgram);
 }

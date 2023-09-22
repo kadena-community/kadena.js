@@ -2,13 +2,13 @@ import { processZodErrors } from '../utils/processZodErrors';
 
 import type { Command } from 'commander';
 
-export interface IStartOptions {}
+export interface IGenerateKeysOptions {}
 
-export function startCommand(program: Command, version: string): void {
+export function generateKeys(program: Command, version: string): void {
   program
-    .command('start')
-    .description('start the local devnet')
-    .action((args: IStartOptions) => {
+    .command('generate')
+    .description('generate an HD-key or public-private key-pair')
+    .action((args: IGenerateKeysOptions) => {
       try {
         // TODO: use @inquirer/prompts to interactively get missing flags
         // TODO: create zod validator

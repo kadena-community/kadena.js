@@ -3,8 +3,9 @@ import { accountCommandFactory } from './account';
 import { configCommandFactory } from './config';
 import { contractCommandFactory } from './contract';
 import { devnetCommandFactory } from './devnet';
-import { keyCommandFactory } from './key';
+import { keysCommandFactory } from './keys';
 import { marmaladeCommandFactory } from './marmalade';
+import { networksCommandFactory } from './networks';
 import { txCommandFactory } from './tx';
 import { typescriptCommandFactory } from './typescript';
 
@@ -22,8 +23,9 @@ const packageJson: { version: string } = JSON.parse(
 
 [
   configCommandFactory,
+  networksCommandFactory,
   devnetCommandFactory,
-  keyCommandFactory,
+  keysCommandFactory,
   accountCommandFactory,
   txCommandFactory,
   contractCommandFactory,
