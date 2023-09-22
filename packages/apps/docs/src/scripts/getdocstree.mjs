@@ -1,22 +1,55 @@
 import * as fs from 'fs';
-
+import chalk from 'chalk';
 import yaml from 'js-yaml';
 import { getReadTime } from './utils.mjs';
 import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
-import authors from './../data/authors.json' assert { type: 'json' };
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import logUpdate from 'log-update';
+
+const promiseExec = promisify(exec);
+
+const Spinner = () => {
+  const elegantSpinner = () => {
+    var i = 0;
+
+    return function () {
+      return frames[(i = ++i % frames.length)];
+    };
+  };
+
+  var frame = elegantSpinner();
+  let interval;
+  const frames = '◴◷◶◵'.split('');
+
+  return {
+    start: () => {
+      interval = setInterval(function () {
+        logUpdate(chalk.cyan(frame()));
+      }, 50);
+    },
+    stop: () => {
+      clearInterval(interval);
+      logUpdate.clear();
+    },
+  };
+};
 
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
   return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
 };
 
-const checkDynamicAuthorsPage = (filename) => {
-  return filename.includes('[authorId]');
+const getLastModifiedDate = async (root) => {
+  const { stdout, stderr } = await promiseExec(
+    `git log -1 --pretty="format:%ci" ${root}`,
+  );
+  return stdout;
 };
 
-const convertFile = (file) => {
+const convertFile = async (file) => {
   const doc = fs.readFileSync(`${file}`, 'utf-8');
   let data;
   if (isMarkDownFile(file)) {
@@ -35,11 +68,14 @@ const convertFile = (file) => {
 
   const readTime = getReadTime(doc);
 
+  const lastModifiedDate = await getLastModifiedDate(file);
+
   return {
     ...data,
     ...readTime,
     isMenuOpen: false,
     isActive: false,
+    lastModifiedDate,
   };
 };
 
@@ -94,77 +130,70 @@ const INITIALPATH = './src/pages/docs';
 const MENUFILE = './src/_generated/menu.mjs';
 const TREE = [];
 
-const createTree = (rootDir, parent = []) => {
+const getFile = async (rootDir, parent, file) => {
+  const currentFile = `${rootDir}/${file}`;
+  const arr = [];
+  let child = {
+    children: arr,
+  };
+  child.root = findPath(currentFile);
+
+  if (!child.root) return;
+
+  if (fs.statSync(`${currentFile}`).isFile()) {
+    const obj = await convertFile(currentFile);
+    Object.assign(child, obj);
+  } else if (fs.existsSync(`${currentFile}/index.md`)) {
+    const obj = await convertFile(`${currentFile}/index.md`);
+    Object.assign(child, obj);
+  } else if (fs.existsSync(`${currentFile}/index.mdx`)) {
+    const obj = await convertFile(`${currentFile}/index.mdx`);
+    Object.assign(child, obj);
+  } else if (fs.existsSync(`${currentFile}/index.tsx`)) {
+    const obj = await convertFile(`${currentFile}/index.tsx`);
+    Object.assign(child, obj);
+  } else {
+    throw new Error(currentFile);
+  }
+  parent = pushToParent(parent, child);
+
+  if (fs.statSync(currentFile).isDirectory()) {
+    child.children = await createTree(currentFile, child.children);
+
+    return child.children;
+  }
+};
+
+const createTree = async (rootDir, parent = []) => {
   const files = fs.readdirSync(rootDir);
 
-  files.forEach((file) => {
-    const currentFile = `${rootDir}/${file}`;
+  for (let i = 0; i < files.length; i++) {
+    await getFile(rootDir, parent, files[i]);
+  }
 
-    const arr = [];
-    let child = {
-      children: arr,
-    };
-    child.root = findPath(currentFile);
-
-    if (!child.root) return;
-
-    if (fs.statSync(`${currentFile}`).isFile()) {
-      if (checkDynamicAuthorsPage(currentFile)) {
-        authors
-          .sort((a, b) => {
-            if (a.id > b.id) return 1;
-            if (a.id < b.id) return -1;
-            return 0;
-          })
-          .forEach((author, idx) => {
-            const obj = convertFile(currentFile);
-
-            const newObj = {
-              ...obj,
-              order: idx,
-              title: author.name,
-              label: author.name,
-              menu: author.name,
-              wordCount: 0,
-              readingTimeInMinutes: 0,
-              description: author.description,
-              root: `/docs/blogchain/authors/${author.id}`,
-            };
-
-            parent.push(newObj);
-          });
-      } else {
-        const obj = convertFile(currentFile);
-        Object.assign(child, obj);
-      }
-    } else if (fs.existsSync(`${currentFile}/index.md`)) {
-      const obj = convertFile(`${currentFile}/index.md`);
-      Object.assign(child, obj);
-    } else if (fs.existsSync(`${currentFile}/index.mdx`)) {
-      const obj = convertFile(`${currentFile}/index.mdx`);
-      Object.assign(child, obj);
-    } else if (fs.existsSync(`${currentFile}/index.tsx`)) {
-      const obj = convertFile(`${currentFile}/index.tsx`);
-      Object.assign(child, obj);
-    } else {
-      throw new Error(currentFile);
-    }
-    parent = pushToParent(parent, child);
-
-    if (fs.statSync(currentFile).isDirectory()) {
-      child.children = createTree(currentFile, child.children);
-
-      return child.children;
-    }
-  });
+  // files.forEach(async (file) => {});
 
   return parent;
 };
 
-const result = createTree(INITIALPATH, TREE);
+const init = async () => {
+  const loader = console.log(
+    '=============================================== START DOCS TREE ==',
+  );
 
-// write menu file
-const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
-export const menuData = ${JSON.stringify(result, null, 2)}`;
+  const spinner = Spinner();
+  spinner.start();
+  const result = await createTree(INITIALPATH, TREE);
+  // write menu file
+  const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
+  export const menuData = ${JSON.stringify(result, null, 2)}`;
 
-fs.writeFileSync(MENUFILE, fileStr);
+  fs.writeFileSync(MENUFILE, fileStr);
+  spinner.stop();
+  console.log(chalk.green('✓'), 'DOCS TREE CREATED');
+  console.log(
+    '=============================================== END DOCS TREE ====',
+  );
+};
+
+init();
