@@ -4,6 +4,8 @@ import { Button, Tree } from '@kadena/react-ui';
 import type { IModule } from '..';
 import type { getModulesMap } from '../utils';
 
+import { moduleTitle } from './styles.css';
+
 import React, { useMemo } from 'react';
 
 export interface IResultsProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,7 +19,11 @@ const resultsMapToTreeItems = (
   onItemClick: IResultsProps['onItemClick'],
 ): ITreeProps['items'] => {
   return Array.from(data, ([moduleName, chains]) => ({
-    title: moduleName,
+    title: (
+      <p className={moduleTitle} title={moduleName}>
+        {moduleName}
+      </p>
+    ),
     items: chains.map((chainId) => ({
       title: (
         <Button
