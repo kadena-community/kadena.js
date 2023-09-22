@@ -52,7 +52,9 @@ describe('getCookieValue', () => {
   });
 
   it('should be able to get an existing value from the cookies', () => {
-    expect(getCookieValue('devOption', exampleCookies)).not.toBe('%22BASIC%22');
-    expect(getCookieValue('devOption', exampleCookies)).toBe('BASIC');
+    expect(getCookieValue('chainID', exampleCookies)).not.toBe('%221%22');
+    expect(getCookieValue('chainID', exampleCookies)).toBe('1');
+
+    expect(getCookieValue('network', exampleCookies)).toBe('testnet04');
   });
 });
