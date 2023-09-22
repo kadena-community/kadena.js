@@ -1,11 +1,15 @@
-import { colorVariants } from './IconButton.css';
+import { colorVariants, nonActiveClass } from './IconButton.css';
 
 import { SystemIcon } from '@components/Icon';
+import classnames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 
 export interface IIconButtonProps
-  extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color' | 'className'> {
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'color' | 'className'
+  > {
   as?: 'button' | 'a';
   icon: keyof typeof SystemIcon;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -14,6 +18,7 @@ export interface IIconButtonProps
   color?: keyof typeof colorVariants;
   type?: 'button' | 'submit' | 'reset';
   asChild?: boolean;
+  active?: boolean;
 }
 
 export const IconButton: FC<IIconButtonProps> = ({
@@ -24,10 +29,14 @@ export const IconButton: FC<IIconButtonProps> = ({
   title,
   children,
   asChild = false,
+  active = false,
   ...restProps
 }) => {
   const Icon = icon && SystemIcon[icon];
   const ariaLabel = restProps['aria-label'] ?? title;
+  const classNames = classnames(colorVariants[color], {
+    [nonActiveClass]: !active,
+  });
 
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(children, {
@@ -35,14 +44,14 @@ export const IconButton: FC<IIconButtonProps> = ({
       href,
       ariaLabel,
       ...children.props,
-      className: colorVariants[color],
+      className: classNames,
       children: <Icon size="md" />,
     });
   }
 
   if (as === 'a' && href !== undefined && href !== '') {
     return (
-      <a className={colorVariants[color]} href={href} aria-label={ariaLabel}>
+      <a className={classNames} href={href} aria-label={ariaLabel}>
         <Icon size="md" />
       </a>
     );
@@ -51,7 +60,7 @@ export const IconButton: FC<IIconButtonProps> = ({
   return (
     <button
       {...restProps}
-      className={colorVariants[color]}
+      className={classNames}
       aria-label={ariaLabel}
       data-testid="kda-icon-button"
     >

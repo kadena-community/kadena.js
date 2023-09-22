@@ -14,7 +14,7 @@ export const container = style([
     border: 'none',
   }),
   {
-    transition: 'opacity .2s ease',
+    transition: 'opacity, outline .2s ease',
     selectors: {
       '&:hover': {
         opacity: '.6',
@@ -52,6 +52,17 @@ export const colorVariants = styleVariants(colors, (color) => {
 
   return [
     container,
-    sprinkles({ color: `$${color}Contrast`, bg: `$${color}Surface` }),
+    sprinkles({
+      color: `$${color}Contrast`,
+      bg: `$${color}Surface`,
+    }),
+    {
+      outlineOffset: '2px',
+      outline: `2px solid ${vars.colors[`$${color}Accent`]}`,
+    },
   ];
+});
+
+export const nonActiveClass = style({
+  outline: 'none',
 });
