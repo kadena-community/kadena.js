@@ -196,8 +196,8 @@ importers:
         specifier: 18.2.7
         version: 18.2.7
       '@vanilla-extract/next-plugin':
-        specifier: 2.1.2
-        version: 2.1.2(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2)
+        specifier: 2.3.1
+        version: 2.3.1(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2)
       '@vanilla-extract/webpack-plugin':
         specifier: 2.2.0
         version: 2.2.0(@types/node@18.17.14)(webpack@5.88.2)
@@ -420,8 +420,8 @@ importers:
         specifier: 1.12.0
         version: 1.12.0
       '@vanilla-extract/next-plugin':
-        specifier: 2.1.2
-        version: 2.1.2(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2)
+        specifier: 2.3.1
+        version: 2.3.1(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2)
       concurrently:
         specifier: ^7.2.2
         version: 7.2.2
@@ -484,8 +484,8 @@ importers:
         specifier: 1.1.1
         version: 1.1.1(@types/node@18.17.14)
       '@vanilla-extract/next-plugin':
-        specifier: 2.1.2
-        version: 2.1.2(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2)
+        specifier: 2.3.1
+        version: 2.3.1(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -659,8 +659,8 @@ importers:
         specifier: 1.1.1
         version: 1.1.1(@types/node@18.17.14)
       '@vanilla-extract/next-plugin':
-        specifier: 2.1.2
-        version: 2.1.2(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2)
+        specifier: 2.3.1
+        version: 2.3.1(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2)
       '@walletconnect/types':
         specifier: ~2.8.1
         version: 2.8.1
@@ -13857,13 +13857,12 @@ packages:
       - terser
     dev: true
 
-  /@vanilla-extract/next-plugin@2.1.2(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2):
-    resolution: {integrity: sha512-k8P2opwu9uGIhWNu1GaTBKdvKRK412/Z9ov0DC82am4JKCqTLo6aWH6UnCodnfI3KqTLKgdqdG3ekrFUpDlR9g==}
+  /@vanilla-extract/next-plugin@2.3.1(@types/node@18.17.14)(next@13.4.5)(webpack@5.88.2):
+    resolution: {integrity: sha512-aoDTnCY3gJXjytoxlA7Xk4A/BDxdzUBeZhHWypauKJ06XJKlV/odjXt8K5FhCrMy8o+nqnCpjOD6KXcg6JmIdw==}
     peerDependencies:
-      next: '>=12.0.5'
+      next: '>=12.1.7'
     dependencies:
-      '@vanilla-extract/webpack-plugin': 2.2.0(@types/node@18.17.14)(webpack@5.88.2)
-      browserslist: 4.21.10
+      '@vanilla-extract/webpack-plugin': 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
       next: 13.4.5(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/node'
@@ -13898,6 +13897,27 @@ packages:
 
   /@vanilla-extract/webpack-plugin@2.2.0(@types/node@18.17.14)(webpack@5.88.2):
     resolution: {integrity: sha512-EQrnT7gIki+Wm57eIRZRw6pi4M4VVnwiSp5OOcQF81XdZvoYXo51Ern7+dHKS+Xxli151BWTUsg/UZSpaAz29Q==}
+    peerDependencies:
+      webpack: ^4.30.0 || ^5.20.2
+    dependencies:
+      '@vanilla-extract/integration': 6.2.1(@types/node@18.17.14)
+      chalk: 4.1.2
+      debug: 4.3.4(supports-color@5.5.0)
+      loader-utils: 2.0.4
+      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
+
+  /@vanilla-extract/webpack-plugin@2.3.1(@types/node@18.17.14)(webpack@5.88.2):
+    resolution: {integrity: sha512-S767iP+S67Uh+BsTe+u60BMbtRqZAxzjK7gYd6a+1hcbMKznYxdQMeP2qs9wr+NhRqZFrNxewo3/ztMnN85TOg==}
     peerDependencies:
       webpack: ^4.30.0 || ^5.20.2
     dependencies:
