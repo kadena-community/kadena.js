@@ -44,7 +44,7 @@ const isMarkDownFile = (name) => {
 };
 
 const getLastModifiedDate = async (root) => {
-  const { stdout, stderr } = await promiseExec(
+  const { stdout } = await promiseExec(
     `git log -1 --pretty="format:%ci" ${root}`,
   );
   return stdout;
@@ -183,7 +183,7 @@ const createTree = async (rootDir, parent = []) => {
 };
 
 const init = async () => {
-  const loader = console.log(
+  console.log(
     '=============================================== START DOCS TREE ==\n\n',
   );
 
