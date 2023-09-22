@@ -7,7 +7,8 @@ export const getName = (key: string): string => `${prefix}:${key}`;
 export const encode = (value: unknown) =>
   encodeURIComponent(JSON.stringify(value));
 
-export const parse = (value: string) => JSON.parse(decodeURIComponent(value));
+export const parse = (value: string): string =>
+  JSON.parse(decodeURIComponent(value)) as string;
 
 export const setItem = (key: string, value: unknown): void => {
   Cookies.set(getName(key), encode(value));
