@@ -72,11 +72,11 @@ const convertFile = async (file) => {
   const lastModifiedDate = await getLastModifiedDate(file);
 
   return {
+    lastModifiedDate,
     ...data,
     ...readTime,
     isMenuOpen: false,
     isActive: false,
-    lastModifiedDate,
   };
 };
 
