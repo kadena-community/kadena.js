@@ -136,16 +136,25 @@ const ModuleExplorerPage = (
     queryKey: ['modules', network],
     queryFn: () => getModules(network),
     initialData: props.data,
+    staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
     refetchOnWindowFocus: false,
   });
 
   const results = useQueries({
     queries: openedModules.map((module, index) => {
       return {
-        queryKey: [network, module.chainId, module.moduleName],
+        queryKey: ['module', network, module.chainId, module.moduleName],
         queryFn: () => getCompleteModule(module, network),
+        initialData: () => {
+          return props.openedModules.find((openedModule) => {
+            return (
+              openedModule.moduleName === module.moduleName &&
+              openedModule.chainId === module.chainId
+            );
+          });
+        },
+        staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
         refetchOnWindowFocus: false,
-        // initialData: props.openedModules[index],
       };
     }),
   });
