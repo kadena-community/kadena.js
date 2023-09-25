@@ -141,7 +141,7 @@ const ModuleExplorerPage = (
   });
 
   const results = useQueries({
-    queries: openedModules.map((module, index) => {
+    queries: openedModules.map((module) => {
       return {
         queryKey: ['module', network, module.chainId, module.moduleName],
         queryFn: () => getCompleteModule(module, network),
