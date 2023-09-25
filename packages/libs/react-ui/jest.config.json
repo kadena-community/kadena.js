@@ -5,7 +5,6 @@
     "@/(.*)": "<rootDir>/src/$1",
     "@components/(.*)": "<rootDir>/src/components/$1",
     "@theme/(.*)": "<rootDir>/src/styles/$1",
-    "@theme": "<rootDir>/src/styles/index.ts",
     "@utils/(.*)": "<rootDir>/src/utils/$1"
   },
   "modulePathIgnorePatterns": ["<rootDir>/dist/"],

@@ -1,10 +1,11 @@
+import type { Sprinkles } from '../../styles';
+import { sprinkles } from '../../styles';
+
 import { tableClass } from './Table.css';
 import { TBody } from './TBody';
 import { THead } from './THead';
 import type { CompoundType } from './types';
 
-import type { Sprinkles } from '@theme';
-import { sprinkles } from '@theme';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';

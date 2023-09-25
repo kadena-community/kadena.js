@@ -1,4 +1,5 @@
-import { sprinkles } from '@theme';
+import { sprinkles } from '../../styles';
+
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const treeWrapperClass = style([

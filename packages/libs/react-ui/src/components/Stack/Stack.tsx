@@ -1,5 +1,6 @@
-import type { Sprinkles } from '@theme';
-import { sprinkles } from '@theme';
+import type { Sprinkles } from '../../styles';
+import { sprinkles } from '../../styles';
+
 import type React from 'react';
 import type { ElementType } from 'react';
 import { createElement } from 'react';

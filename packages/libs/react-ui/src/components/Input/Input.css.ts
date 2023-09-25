@@ -1,6 +1,6 @@
+import { darkThemeClass, sprinkles, vars } from '../../styles';
 import { statusColor } from '../InputWrapper/InputWrapper.css';
 
-import { darkThemeClass, sprinkles, vars } from '@theme';
 import { fallbackVar, style, styleVariants } from '@vanilla-extract/css';
 
 export const containerClass = style([

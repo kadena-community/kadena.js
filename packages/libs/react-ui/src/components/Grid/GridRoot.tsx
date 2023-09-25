@@ -1,3 +1,6 @@
+import type { Sprinkles } from '../../styles';
+import { sprinkles } from '../../styles';
+
 import type { ResponsiveInputType } from './Grid.css';
 import {
   containerColumnVariants,
@@ -6,8 +9,6 @@ import {
   gridContainerClass,
 } from './Grid.css';
 
-import type { Sprinkles } from '@theme';
-import { sprinkles } from '@theme';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';

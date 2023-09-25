@@ -1,4 +1,5 @@
-import { sprinkles, vars } from '@theme';
+import { sprinkles, vars } from '../../../styles';
+
 import { createVar, fallbackVar, style } from '@vanilla-extract/css';
 
 export const helperIconColor = createVar(),

@@ -1,5 +1,6 @@
 /* eslint @typescript-eslint/naming-convention: 0 */
-import { breakpoints, sprinkles } from '@theme';
+import { breakpoints, sprinkles } from '../../styles';
+
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const gridContainerClass = style([

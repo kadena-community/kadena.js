@@ -1,4 +1,5 @@
-import { sprinkles } from '@theme';
+import { sprinkles } from '../../styles';
+
 import { style } from '@vanilla-extract/css';
 
 export const imageContainerClass = style([

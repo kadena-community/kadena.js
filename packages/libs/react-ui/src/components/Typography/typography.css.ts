@@ -1,4 +1,5 @@
-import { sprinkles } from '@theme';
+import { sprinkles } from '../../styles';
+
 import type { ComplexStyleRule } from '@vanilla-extract/css';
 
 export const fontVariants: Record<string, ComplexStyleRule> = {

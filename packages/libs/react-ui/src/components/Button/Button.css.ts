@@ -1,5 +1,6 @@
-import type { ColorType } from '@theme';
-import { colorPalette, sprinkles, vars } from '@theme';
+import type { ColorType } from '../../styles';
+import { colorPalette, sprinkles, vars } from '../../styles';
+
 import {
   createVar,
   keyframes,

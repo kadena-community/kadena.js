@@ -1,4 +1,5 @@
-import { darkThemeClass, sprinkles, vars } from '@theme';
+import { darkThemeClass, sprinkles, vars } from '../../styles';
+
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const layoutVariant = styleVariants({

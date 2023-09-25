@@ -1,7 +1,8 @@
+import { darkThemeClass } from '../../styles';
+
 import { containerClass } from './NavFooter.css';
 import type { INavFooterPanelProps } from './NavFooterPanel';
 
-import { darkThemeClass } from '@theme';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 

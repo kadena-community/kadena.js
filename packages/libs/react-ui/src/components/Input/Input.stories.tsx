@@ -1,10 +1,11 @@
+import { vars } from '../../styles';
+
 import { Button } from '@components/Button';
 import { SystemIcon } from '@components/Icon';
 import type { IInputProps } from '@components/Input';
 import { Input } from '@components/Input';
 import { Stack } from '@components/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme';
 import type { HTMLInputTypeAttribute } from 'react';
 import React from 'react';
 
