@@ -1,5 +1,6 @@
 # generated resources
 src/_generated
+public/sitemap.xml
 src/pages/docs/kadena/kadenajs
 src/pages/docs/kadena/client
 src/pages/docs/pact/cli
