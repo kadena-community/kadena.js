@@ -1,4 +1,5 @@
 import type {
+  ChainId,
   ICommand,
   ITransactionDescriptor,
   IUnsignedCommand,
@@ -14,8 +15,9 @@ import constants from './config';
 
 export interface IAccount {
   publicKey: string;
-  secretKey: string;
+  secretKey?: string;
   account: string;
+  chainId?: ChainId;
 }
 
 const getClient = () =>
@@ -26,6 +28,10 @@ const getClient = () =>
 
 export const submit = (tx: ICommand) => getClient().submit(tx);
 export const listen = (tx: ITransactionDescriptor) => getClient().listen(tx);
+export const pollCreateSpv = (tx: ITransactionDescriptor, chainId: ChainId) =>
+  getClient().pollCreateSpv(tx, chainId);
+export const pollStatus = (tx: ITransactionDescriptor) =>
+  getClient().pollStatus(tx);
 
 export const signTransaction =
   ({ publicKey, secretKey }: { publicKey: string; secretKey: string }) =>
