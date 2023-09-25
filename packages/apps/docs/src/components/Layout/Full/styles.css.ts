@@ -35,7 +35,7 @@ export const asidebackgroundClass = style([
         transform: 'scale(.3, 1)  translate(100%, 0)',
         opacity: 0,
 
-        transition: 'transform 1s ease, opacity 2s ease',
+        transition: 'transform 1s ease, opacity 2s  ease-out',
         transitionDelay: '600ms',
 
         '@media': {
