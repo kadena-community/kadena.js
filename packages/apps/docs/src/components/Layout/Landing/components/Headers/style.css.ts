@@ -26,7 +26,7 @@ export const headerClass = style([
         transform: 'scale(-1, -0.3) translate(0, 100%)',
         opacity: 0,
 
-        transition: 'transform 1s ease, opacity 1s ease',
+        transition: 'transform 1s ease, opacity 2s ease',
         transitionDelay: '600ms',
       },
     },
