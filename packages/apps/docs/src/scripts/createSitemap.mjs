@@ -5,6 +5,7 @@ import {
   getTagsData,
 } from './../utils/staticGeneration/getData.mjs';
 import { getFlatData } from './../utils/staticGeneration/flatPosts.mjs';
+import { format, isValid } from 'date-fns';
 
 const MENUFILE = './public/sitemap.xml';
 const URL = 'https://docs.kadena.io';
@@ -20,13 +21,23 @@ const setPrio = (root) => {
   return '1';
 };
 
+const formatDate = (dateStr) => {
+  const date = new Date();
+  if (!isValid(date)) return '';
+
+  return format(date, 'yyyy-MM-dd');
+};
+
 const getPosts = (root) => {
   return posts
     .map(
       (post) => `
     <url>
       <loc>${root}${post.root}}</loc>
-      <lastmod>${post.lastModifiedDate}</lastmod>
+      ${
+        post.lastModifiedDate &&
+        `<lastmod>${formatDate(post.lastModifiedDate)}</lastmod>`
+      }
       <changefreq>monthly</changefreq>
       <priority>${setPrio(post.root)}</priority>
     </url>`,
