@@ -20,7 +20,7 @@ export const BackgroundGradient: FC<PropsWithChildren> = () => {
     if (router.isReady) {
       setLoaderClass(classNames(backgroundClassnames, loadedClass));
     }
-  }, [router.isReady]);
+  }, [router.isReady, backgroundClassnames]);
 
   return <div className={loaderClass} />;
 };

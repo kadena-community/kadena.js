@@ -1,4 +1,4 @@
-import { basebackgroundClass, baseGridClass } from '../basestyles.css';
+import { baseGridClass } from '../basestyles.css';
 import {
   articleClass,
   contentClass,
@@ -8,7 +8,7 @@ import { Template } from '../components/Template';
 import { globalClass } from '../global.css';
 
 import { BackgroundGradient } from './BackgroundGradient';
-import { codebackgroundClass, pageGridClass } from './styles.css';
+import { pageGridClass } from './styles.css';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
