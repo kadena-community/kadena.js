@@ -1,6 +1,6 @@
 import { Heading } from '@kadena/react-ui';
 
-import { basebackgroundClass, baseGridClass } from '../basestyles.css';
+import { baseGridClass } from '../basestyles.css';
 import {
   articleClass,
   contentClass,
@@ -10,8 +10,8 @@ import { Template } from '../components/Template';
 import { globalClass } from '../global.css';
 
 import { AsideList, ListItem } from './components/Aside';
+import { BackgroundGradient } from './BackgroundGradient';
 import {
-  asidebackgroundClass,
   asideClass,
   pageGridClass,
   stickyAsideClass,
@@ -79,11 +79,6 @@ export const Full: FC<IPageProps> = ({
   const showSideMenu: boolean =
     aSideMenuTree.length > 1 || aSideMenuTree[0]?.children.length > 0;
 
-  const backgroundClassnames = classnames(
-    basebackgroundClass,
-    asidebackgroundClass,
-  );
-
   const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
 
   return (
@@ -100,7 +95,7 @@ export const Full: FC<IPageProps> = ({
             />
           </article>
         </div>
-        <div className={backgroundClassnames} />
+        <BackgroundGradient />
         <aside className={asideClass} data-cy="aside">
           {showSideMenu && (
             <div className={stickyAsideWrapperClass}>

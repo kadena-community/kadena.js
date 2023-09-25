@@ -7,6 +7,7 @@ import {
 import { Template } from '../components/Template';
 import { globalClass } from '../global.css';
 
+import { BackgroundGradient } from './BackgroundGradient';
 import { codebackgroundClass, pageGridClass } from './styles.css';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
@@ -55,11 +56,6 @@ export const Redocly: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
-  const backgroundClassnames = classNames(
-    basebackgroundClass,
-    codebackgroundClass,
-  );
-
   const gridClassNames = classNames(globalClass, baseGridClass, pageGridClass);
 
   return (
@@ -80,7 +76,7 @@ export const Redocly: FC<IPageProps> = ({
             />
           </article>
         </div>
-        <div className={backgroundClassnames} />
+        <BackgroundGradient />
       </Template>
     </div>
   );
