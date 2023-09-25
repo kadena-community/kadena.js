@@ -22,7 +22,7 @@ const setPrio = (root) => {
 };
 
 const formatDate = (dateStr) => {
-  const date = new Date();
+  const date = new Date(dateStr);
   if (!isValid(date)) return '';
 
   return format(date, 'yyyy-MM-dd');
