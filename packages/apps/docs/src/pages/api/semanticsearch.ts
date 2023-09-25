@@ -104,6 +104,14 @@ interface ISemanticSearchRequest extends Omit<NextApiRequest, 'query'> {
   query?: ISemanticSearchQuery;
 }
 
+interface IHitResult extends StreamMetaData {
+  _highlightResult?: {
+    content?: {
+      value?: string;
+    };
+  };
+}
+
 // E.g /api/semanticsearch?search=foo&limit=10
 const semanticSearch = async (
   req: ISemanticSearchRequest,
@@ -124,16 +132,28 @@ const semanticSearch = async (
   );
 
   const index = client.initIndex(process.env.ALGOLIA_INDEX_NAME ?? '');
+  const CONTENT_MAX_LENGTH = 320;
 
   index
     .search(search, { hitsPerPage: limitNumber })
     .then(({ hits }) => {
       const mappedData = hits.map((hit) => {
-        const { filePath, title, content, url, header } = hit as StreamMetaData;
+        const { filePath, title, content, url, header, _highlightResult } =
+          hit as IHitResult;
+        const highlightedContent = _highlightResult?.content?.value ?? content;
+        const hasMoreContent = (highlightedContent || '')?.length > CONTENT_MAX_LENGTH;
+        const substringContent =
+            hasMoreContent
+            ? `${highlightedContent?.substring(0, CONTENT_MAX_LENGTH)}`
+            : highlightedContent;
+
+        //re-trim if we are in the middle of a word
+        const trimWithProperWords = substringContent?.substring(0, Math.min(substringContent.length, substringContent.lastIndexOf(" ")))
+
         return {
           filePath,
           title,
-          content,
+          content: hasMoreContent ? `${trimWithProperWords}...` : substringContent,
           url,
           header,
         };
