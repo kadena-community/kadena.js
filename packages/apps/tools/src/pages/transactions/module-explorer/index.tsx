@@ -123,7 +123,7 @@ export const getServerSideProps: GetServerSideProps<{
   return { props: { data: modules, openedModules } };
 };
 
-const NewerPage = (
+const ModuleExplorerPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
   const { selectedNetwork: network } = useWalletConnectClient();
@@ -208,4 +208,4 @@ const NewerPage = (
   );
 };
 
-export default NewerPage;
+export default ModuleExplorerPage;
