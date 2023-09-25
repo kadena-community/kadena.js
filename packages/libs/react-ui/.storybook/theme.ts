@@ -1,4 +1,4 @@
-import { colorPalette } from '../src/styles/colors';
+import { colorPalette } from '../src/styles';
 import { create } from '@storybook/theming';
 
 export const KadenaTheme = create({
