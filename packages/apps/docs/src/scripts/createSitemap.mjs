@@ -14,6 +14,12 @@ const posts = getFlatData();
 const authors = getAuthorData();
 const tags = getTagsData();
 
+const setPrio = (root) => {
+  if (root.includes('/blogchain')) return '0.5';
+
+  return '1';
+};
+
 const getPosts = (root) => {
   return posts
     .map(
@@ -22,7 +28,7 @@ const getPosts = (root) => {
       <loc>${root}${post.root}}</loc>
       <lastmod>${post.lastModifiedDate}</lastmod>
       <changefreq>monthly</changefreq>
-      <priority>1</priority>
+      <priority>${setPrio(post.root)}</priority>
     </url>`,
     )
     .join('');
