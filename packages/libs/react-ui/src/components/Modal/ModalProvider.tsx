@@ -17,18 +17,24 @@ export const ModalProvider: FC<IModalProviderProps> = ({ children }) => {
   const [title, setTitle] = useState<string | undefined>(undefined);
   const ref = useRef<Element | null>(null);
   const [content, setContent] = useState<ReactNode>();
+  const [onCloseCallback, setOnCloseCallback] = useState<() => void>();
 
   useEffect(() => {
     ref.current = document.querySelector<HTMLElement>('#modalportal');
     setMounted(true);
   }, []);
 
-  const renderModal = useCallback((node: ReactNode, title?: string): void => {
-    setContent(node);
-    setTitle(title);
-  }, []);
+  const renderModal = useCallback(
+    (node: ReactNode, title?: string, onClose?: () => void): void => {
+      setContent(node);
+      setTitle(title);
+      setOnCloseCallback(() => onClose);
+    },
+    [],
+  );
 
   const clearModal = useCallback((): void => {
+    onCloseCallback?.();
     setContent(undefined);
     setTitle(undefined);
   }, []);
@@ -50,7 +56,9 @@ export const ModalProvider: FC<IModalProviderProps> = ({ children }) => {
         ref.current &&
         createPortal(
           <>
-            <Modal title={title}>{content}</Modal>
+            <Modal title={title} onClose={onCloseCallback}>
+              {content}
+            </Modal>
           </>,
           ref.current,
         )}

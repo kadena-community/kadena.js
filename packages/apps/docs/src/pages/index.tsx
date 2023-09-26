@@ -69,7 +69,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   <BrowseSection marker="none">
                     <Link
                       className={docsCardLink}
-                      href="/docs/build/quickstart/5-minute-quickstart"
+                      href="/docs/build/quickstart"
                     >
                       5 minutes quick start
                     </Link>

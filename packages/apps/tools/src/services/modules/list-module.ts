@@ -14,6 +14,7 @@ const debug = Debug('kadena-transfer:services:list-module');
 export interface IModulesResult {
   status?: string;
   data?: string[];
+  chainId: ChainwebChainId;
 }
 
 export const listModules = async (
@@ -49,5 +50,6 @@ export const listModules = async (
   return {
     status: result.status,
     data: 'data' in result ? (result.data as string[]) : [],
+    chainId,
   };
 };

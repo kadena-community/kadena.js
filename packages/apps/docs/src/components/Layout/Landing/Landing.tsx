@@ -29,7 +29,6 @@ export const Landing: FC<IBasePageProps> = ({
         <TitleHeader
           title={frontmatter.title}
           subTitle={frontmatter.subTitle}
-          icon={frontmatter.icon}
         />
 
         <div

@@ -13,7 +13,7 @@ globalStyle('html, body', {
 });
 
 globalStyle('a', {
-  color: vars.colors.$primaryContrast,
+  color: vars.colors.$primaryContrastInverted,
   textDecoration: 'underline',
 });
 globalStyle('a:hover', {

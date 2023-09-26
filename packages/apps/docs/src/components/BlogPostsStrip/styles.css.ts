@@ -83,7 +83,7 @@ export const imageClass = style([
 
 export const headerClass = style([
   sprinkles({
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
     paddingRight: '$4',
   }),
   {

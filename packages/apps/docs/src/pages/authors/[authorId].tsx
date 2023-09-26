@@ -74,7 +74,6 @@ export const getStaticProps: GetStaticProps<{}, { authorId: string }> = async (
         order: 0,
         description: 'who is writing our blogchain posts?',
         layout: 'home',
-        icon: 'BlogChain',
       },
     },
   };

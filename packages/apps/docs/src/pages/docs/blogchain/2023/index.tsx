@@ -27,7 +27,6 @@ const Home: FC<IProps> = ({ frontmatter, posts }) => {
       <TitleHeader
         title={frontmatter.title}
         subTitle={frontmatter.description}
-        icon={frontmatter.icon}
       />
       <div
         className={classNames(contentClass, contentClassVariants.home)}
@@ -58,7 +57,6 @@ export const getStaticProps: GetStaticProps = async () => {
         order: 3,
         description: 'articles..articles...articles 2023',
         layout: 'home',
-        icon: 'BlogChain',
       },
     },
   };

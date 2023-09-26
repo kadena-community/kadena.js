@@ -18,7 +18,7 @@ export const consentButtonColorVariants = styleVariants({
   positive: [
     consentButton,
     sprinkles({
-      color: '$positiveContrast',
+      color: '$positiveContrastInverted',
     }),
     {
       ':hover': {
@@ -29,7 +29,7 @@ export const consentButtonColorVariants = styleVariants({
   negative: [
     consentButton,
     sprinkles({
-      color: '$negativeContrast',
+      color: '$negativeContrastInverted',
     }),
     {
       ':hover': {
