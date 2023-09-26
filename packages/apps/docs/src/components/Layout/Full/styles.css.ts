@@ -32,6 +32,12 @@ export const asidebackgroundClass = style([
         backgroundPositionY: '-100px',
         backgroundPositionX: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${$$shadowWidth}))`,
 
+        transform: 'scale(.3, 1)  translate(100%, 0)',
+        opacity: 0,
+
+        transition: 'transform 1s ease, opacity 2s  ease-out',
+        transitionDelay: '600ms',
+
         '@media': {
           [`screen and ${breakpoints.xxl}`]: {
             backgroundPositionX: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2 ) - (${$$asideMenuWidthLGDefault} +  ${$$shadowWidth}))`,
@@ -57,6 +63,15 @@ export const asidebackgroundClass = style([
     },
   },
 ]);
+
+export const loadedClass = style({
+  selectors: {
+    '&::before': {
+      transform: 'scale(1, 1)  translate(0, 0)',
+      opacity: 1,
+    },
+  },
+});
 
 export const pageGridClass = style({
   '@media': {

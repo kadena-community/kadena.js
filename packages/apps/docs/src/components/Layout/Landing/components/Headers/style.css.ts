@@ -23,11 +23,24 @@ export const headerClass = style([
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
         backgroundPositionY: '0%',
-        transform: 'scale(-1, -1)',
+        transform: 'scale(-1, -0.3) translate(0, 100%)',
+        opacity: 0,
+
+        transition: 'transform 1s ease, opacity 2s  ease-out',
+        transitionDelay: '600ms',
       },
     },
   },
 ]);
+
+export const headerLoadedClass = style({
+  selectors: {
+    '&::before': {
+      transform: 'scale(-1, -1.5) translate(0, 70px)',
+      opacity: 1,
+    },
+  },
+});
 
 export const wrapperClass = style([
   sprinkles({

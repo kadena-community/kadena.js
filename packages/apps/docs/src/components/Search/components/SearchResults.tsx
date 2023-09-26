@@ -151,7 +151,7 @@ export const SearchResults: FC<IProps> = ({
               </Notification.Root>
             )}
 
-            {conversation?.history.map((interaction, idx) => {
+            {conversation.history?.map((interaction, idx) => {
               const metadata = removeUnnecessarySearchRecords(
                 interaction?.metadata,
               );

@@ -52,19 +52,24 @@ export const code = style([
 export const codeLine = style([
   sprinkles({
     width: '100%',
-    display: 'inline-block',
     fontFamily: '$mono',
   }),
   {
+    display: 'inline-flex',
+
     selectors: {
+      '&::marker': {
+        content: '',
+      },
       '&::before': {
         counterIncrement: 'line',
         content: 'counter(line)',
         overflowWrap: 'normal',
-        display: 'inline-block',
+        display: 'inline-flex',
         width: '1rem',
         marginRight: `${vars.sizes.$4}`,
         marginLeft: `${vars.sizes.$4}`,
+        marginTop: '3px', //hack, this just aligns the number the best. with vars or display: flex. the alignment is of
         textAlign: 'right',
         fontSize: `${vars.sizes.$sm}`,
         color: `${vars.colors.$neutral3}`,

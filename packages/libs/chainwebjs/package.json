@@ -42,7 +42,7 @@
     }
   ],
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "dist/chainwebjs.d.ts",
   "files": [
     "dist",
     "lib"

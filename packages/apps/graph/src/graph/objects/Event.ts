@@ -2,7 +2,7 @@ import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Event', {
-  id: { field: 'blockHash_idx_requestkey' },
+  id: { field: 'blockhash_idx_requestkey' },
   fields: (t) => ({
     // database fields
     chainId: t.expose('chainid', { type: 'BigInt' }),
@@ -28,8 +28,8 @@ export default builder.prismaNode('Event', {
       resolve(query, parent, args, context, info) {
         return prismaClient.transaction.findUnique({
           where: {
-            blockHash_requestkey: {
-              blockHash: parent.blockHash,
+            blockhash_requestkey: {
+              blockhash: parent.blockhash,
               requestkey: parent.requestkey,
             },
           },
@@ -44,7 +44,7 @@ export default builder.prismaNode('Event', {
       resolve(query, parent, args, context, info) {
         return prismaClient.block.findUniqueOrThrow({
           where: {
-            hash: parent.blockHash,
+            hash: parent.blockhash,
           },
         });
       },

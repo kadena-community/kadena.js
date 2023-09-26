@@ -14,6 +14,13 @@ const backgroundColorHover = createVar(),
   colorHover = createVar(),
   outlineColorFocus = createVar();
 
+export const activeClass = style({
+  outlineOffset: '2px',
+  outlineWidth: vars.borderWidths.$md,
+  outlineStyle: 'solid',
+  outlineColor: outlineColorFocus,
+});
+
 // Main container
 export const container = style([
   sprinkles({
@@ -41,7 +48,10 @@ export const container = style([
       backgroundColor: backgroundColorHover,
     },
     ':active': {
-      backgroundColor: backgroundColorActive,
+      outlineOffset: '2px',
+      outlineWidth: vars.borderWidths.$md,
+      outlineStyle: 'solid',
+      outlineColor: outlineColorFocus,
     },
     ':focus-visible': {
       outlineOffset: '2px',
@@ -56,7 +66,8 @@ export const container = style([
       cursor: 'not-allowed',
       pointerEvents: 'none',
     },
-    transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out',
+    transition:
+      'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
   },
 ]);
 

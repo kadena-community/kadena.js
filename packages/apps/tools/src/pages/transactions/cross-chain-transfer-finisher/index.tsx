@@ -470,7 +470,7 @@ const CrossChainTransferFinisher: FC = () => {
                         {formattedSigData}
                       </textarea>
                       <IconButton
-                        color="default"
+                        color="primary"
                         icon={'ContentCopy'}
                         onClick={async () => {
                           await navigator.clipboard.writeText(formattedSigData);
