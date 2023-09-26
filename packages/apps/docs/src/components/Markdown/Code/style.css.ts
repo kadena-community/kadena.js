@@ -52,16 +52,20 @@ export const code = style([
 export const codeLine = style([
   sprinkles({
     width: '100%',
-    display: 'inline-flex',
     fontFamily: '$mono',
   }),
   {
+    display: 'inline-flex',
+
     selectors: {
+      '&::marker': {
+        content: '',
+      },
       '&::before': {
         counterIncrement: 'line',
         content: 'counter(line)',
         overflowWrap: 'normal',
-        display: 'flex',
+        display: 'inline-flex',
         width: '1rem',
         marginRight: `${vars.sizes.$4}`,
         marginLeft: `${vars.sizes.$4}`,
