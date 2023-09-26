@@ -83,16 +83,16 @@ export const OptionsModal: FC = () => {
                     <IconButton
                       title="Radio"
                       icon={'RadioboxMarked'}
-                      color="default"
+                      color="primary"
                     />
                   ) : (
                     <IconButton
                       title="Radio"
                       icon={'RadioboxBlank'}
-                      color="default"
+                      color="primary"
                     />
                   )}
-                  <IconButton title="Radio" icon={value.icon} color="default" />
+                  <IconButton title="Radio" icon={value.icon} color="primary" />
                   <Stack direction="column" marginX="$md">
                     <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>
