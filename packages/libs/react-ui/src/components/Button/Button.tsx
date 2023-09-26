@@ -95,14 +95,11 @@ export const Button: FC<IButtonProps> = ({
 
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(children, {
-      ...children.props,
       ...restProps,
+      ...children.props,
       ariaLabel,
       children: getContents(children.props.children),
       className: buttonClassname,
-      href,
-      target,
-      type,
     });
   }
 
