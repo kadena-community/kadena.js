@@ -1,7 +1,7 @@
-import './objects/Account';
+import './objects/ModuleAccount';
 import './objects/Block';
-import './objects/ChainAccount';
-import './objects/FungibleBalance';
+import './objects/ChainModuleAccount';
+import './objects/Guard';
 import './objects/Transaction';
 import './objects/Transfer';
 import './objects/Event';

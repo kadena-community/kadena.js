@@ -1,5 +1,5 @@
 import { builder } from '../builder';
-import Account from '../objects/Account';
+import Account from '../objects/ModuleAccount';
 
 const AccountFilter = builder.inputType('AccountFilter', {
   fields: (t) => ({
@@ -11,7 +11,7 @@ builder.queryField('account', (t) => {
   return t.field({
     args: {
       accountName: t.arg.string({ required: true }),
-      modules: t.arg.stringList({ required: true }),
+      moduleName: t.arg.string({ required: true }),
       filter: t.arg({ type: AccountFilter }),
     },
     type: Account,
@@ -19,8 +19,9 @@ builder.queryField('account', (t) => {
       return {
         id: `Account:${args.accountName}`,
         accountName: args.accountName,
+        moduleName: args.moduleName,
         chainAccounts: [],
-        totalBalances: [],
+        totalBalance: 0,
         transactions: [],
         transfers: [],
       };

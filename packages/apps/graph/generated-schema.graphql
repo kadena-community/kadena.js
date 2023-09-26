@@ -1,34 +1,5 @@
-type Account {
-  accountName: String!
-  chainAccounts(accountName: String!, modules: [String!]!): [ChainAccount!]!
-  id: String!
-  totalBalances(accountName: String!, modules: [String!]!): [FungibleBalance!]!
-  transactions(accountName: String!, after: String, before: String, first: Int, last: Int): AccountTransactionsConnection!
-  transfers(accountName: String!, after: String, before: String, first: Int, last: Int): AccountTransfersConnection!
-}
-
 input AccountFilter {
   chains: [String!]
-}
-
-type AccountTransactionsConnection {
-  edges: [AccountTransactionsConnectionEdge]!
-  pageInfo: PageInfo!
-}
-
-type AccountTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
-}
-
-type AccountTransfersConnection {
-  edges: [AccountTransfersConnectionEdge]!
-  pageInfo: PageInfo!
-}
-
-type AccountTransfersConnectionEdge {
-  cursor: String!
-  node: Transfer!
 }
 
 """
@@ -62,19 +33,32 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
-type ChainAccount {
+type ChainModuleAccount {
+  accountName: String!
   balance: Float!
   chainId: ID!
-  module: String!
-  transfers(accountName: String!, after: String, before: String, first: Int, last: Int, modules: [String!]!): ChainAccountTransfersConnection!
+  guard: Guard!
+  moduleName: String!
+  transactions(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransfersConnection!
 }
 
-type ChainAccountTransfersConnection {
-  edges: [ChainAccountTransfersConnectionEdge]!
+type ChainModuleAccountTransactionsConnection {
+  edges: [ChainModuleAccountTransactionsConnectionEdge]!
   pageInfo: PageInfo!
 }
 
-type ChainAccountTransfersConnectionEdge {
+type ChainModuleAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type ChainModuleAccountTransfersConnection {
+  edges: [ChainModuleAccountTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type ChainModuleAccountTransfersConnectionEdge {
   cursor: String!
   node: Transfer!
 }
@@ -101,9 +85,39 @@ type Event implements Node {
   transaction: Transaction
 }
 
-type FungibleBalance {
-  balance: Float!
-  module: String!
+type Guard {
+  keys: [String!]!
+  predicate: String!
+}
+
+type ModuleAccount {
+  accountName: String!
+  chainAccounts: [ChainModuleAccount!]!
+  id: String!
+  moduleName: String!
+  totalBalance: Decimal!
+  transactions(after: String, before: String, first: Int, last: Int): ModuleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): ModuleAccountTransfersConnection!
+}
+
+type ModuleAccountTransactionsConnection {
+  edges: [ModuleAccountTransactionsConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type ModuleAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type ModuleAccountTransfersConnection {
+  edges: [ModuleAccountTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type ModuleAccountTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
 }
 
 interface Node {
@@ -121,7 +135,7 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
-  account(accountName: String!, filter: AccountFilter, modules: [String!]!): Account!
+  account(accountName: String!, filter: AccountFilter, moduleName: String!): ModuleAccount!
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
   hello(name: String): String!

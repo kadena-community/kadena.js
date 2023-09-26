@@ -1,5 +1,5 @@
 import { prismaClient } from '../db/prismaClient';
-
+import DataloaderPlugin from '@pothos/plugin-dataloader';
 import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
@@ -39,28 +39,27 @@ export interface IContext {
   req: IncomingMessage;
 }
 
-export interface IChainAccount {
+export type IGuard = {
+  keys: string[];
+  predicate: 'keys-all' | 'keys-any' | 'keys-two';
+};
+
+export interface IChainModuleAccount {
   chainId: string;
-  // guard: {
-  //   keys: string[];
-  //   predicate: 'KeysAll' | 'KeysAny' | 'KeysTwo' | string;
-  // };
+  moduleName: string;
+  accountName: string;
+  guard: IGuard;
   balance: number;
-  module: string;
-  // transactions: Transaction[];
+  transactions: Transaction[];
   transfers: Transfer[];
 }
 
-export interface IFungibleBalance {
-  module: string;
-  balance: number;
-}
-
-export interface IAccount {
+export interface IModuleAccount {
   id: string;
+  moduleName: string;
   accountName: string;
-  chainAccounts: IChainAccount[];
-  totalBalances: IFungibleBalance[];
+  chainAccounts: IChainModuleAccount[];
+  totalBalance: number;
   transactions: Transaction[];
   transfers: Transfer[];
 }
@@ -71,13 +70,13 @@ export const builder = new SchemaBuilder<
     PrismaTypes: PrismaTypes;
     Context: IContext;
     Objects: {
-      Account: IAccount;
-      ChainAccount: IChainAccount;
-      FungibleBalance: IFungibleBalance
+      ModuleAccount: IModuleAccount;
+      ChainModuleAccount: IChainModuleAccount;
+      Guard: IGuard;
     };
   }
 >({
-  plugins: [RelayPlugin, PrismaPlugin],
+  plugins: [RelayPlugin, PrismaPlugin, DataloaderPlugin],
 
   relayOptions: {
     clientMutationId: 'optional',
