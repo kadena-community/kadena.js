@@ -140,7 +140,6 @@ export const generate: IGenerate = (program, version) => async (args) => {
 
   const targetDirectory: string = join(
     dirname(targetPackageJson),
-    'node_modules',
     TARGET_PACKAGE,
   );
 
@@ -157,7 +156,6 @@ export const generate: IGenerate = (program, version) => async (args) => {
   moduleDtss.forEach((dts, moduleName) => {
     const targetFilePath: string = join(
       dirname(targetPackageJson),
-      'node_modules',
       TARGET_PACKAGE,
       `${moduleName}.d.ts`,
     );
