@@ -123,7 +123,7 @@ npm run fund -- -k <publickey>
 ### Simulate traffic on the devnet
 
 ```sh
-npm run fund -- -a <accounts> -i <timeInterval> -t <transferAmount>
+npm run simulate -- -a <accounts> -i <timeInterval> -t <transferAmount>
 ```
 
 - accounts - number of accounts to be created in the devnet
