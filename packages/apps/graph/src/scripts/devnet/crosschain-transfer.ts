@@ -1,9 +1,10 @@
-import type { ICommandResult } from '@kadena/chainweb-node-client';
-// import { send } from '@kadena/chainweb-node-client';
-import type { IContinuationPayloadObject } from '@kadena/client';
-import { isSignedTransaction, Pact, readKeyset } from '@kadena/client';
-
-import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
+import type {
+  ICommandResult,
+  IContinuationPayloadObject,
+} from '@kadena/client';
+import { Pact, readKeyset } from '@kadena/client';
+import { PactNumber } from '@kadena/pactjs';
+import type { ChainId, IPactDecimal, IUnsignedCommand } from '@kadena/types';
 
 import config from './config';
 import type { IAccount } from './helper';
@@ -11,18 +12,16 @@ import {
   inspect,
   listen,
   pollCreateSpv,
-  pollStatus,
-  signTransaction,
+  sender00,
+  signAndAssertTransaction,
   submit,
-  asyncPipe,
 } from './helper';
 
 function startInTheFirstChain(
   from: IAccount,
   to: IAccount,
-  amount: string,
+  pactDecimal: IPactDecimal,
 ): IUnsignedCommand {
-  console.log('startInTheFirstChain');
   return Pact.builder
     .execution(
       Pact.modules.coin.defpact['transfer-crosschain'](
@@ -30,9 +29,7 @@ function startInTheFirstChain(
         to.account,
         readKeyset('receiver-guard'),
         to.chainId || config.CHAIN_ID,
-        {
-          decimal: amount.toString(),
-        },
+        pactDecimal,
       ),
     )
     .addSigner(from.publicKey, (withCapability) => [
@@ -41,9 +38,7 @@ function startInTheFirstChain(
         'coin.TRANSFER_XCHAIN',
         from.account,
         to.account,
-        {
-          decimal: amount,
-        },
+        pactDecimal,
         to.chainId || config.CHAIN_ID,
       ),
     ])
@@ -56,16 +51,18 @@ function startInTheFirstChain(
 function finishInTheTargetChain(
   continuation: IContinuationPayloadObject['cont'],
   targetChainId: ChainId,
-  gasPayer: string = 'kadena-xchain-gas',
+  gasPayer: IAccount = sender00,
 ): IUnsignedCommand {
   const builder = Pact.builder
     .continuation(continuation)
     .setNetworkId(config.NETWORK_ID)
     // uncomment this if you want to pay gas yourself
-    .addSigner(gasPayer, (withCapability) => [withCapability('coin.GAS')])
+    .addSigner(gasPayer.publicKey, (withCapability) => [
+      withCapability('coin.GAS'),
+    ])
     .setMeta({
       chainId: targetChainId,
-      senderAccount: gasPayer,
+      senderAccount: gasPayer.account,
       // this need to be less than or equal to 850 if you want to use gas-station, otherwise the gas-station does not pay the gas
       gasLimit: 850,
     });
@@ -73,82 +70,55 @@ function finishInTheTargetChain(
   return builder.createTransaction();
 }
 
-export async function doCrossChainTransfer(
-  from: IAccount,
-  to: IAccount,
-  amount: string,
-): Promise<Record<string, ICommandResult>> {
+export async function crossChainTransfer({
+  from,
+  to,
+  amount,
+}: {
+  from: IAccount;
+  to: IAccount;
+  amount: number;
+}): Promise<ICommandResult> {
   console.log(
-    `Transfering from ${from.account} to ${to.account}\nAmount: ${amount}`,
+    `Crosschain Transfer from ${from.account}, chain ${from.chainId}\nTo ${to.account}, chain ${to.chainId}\nAmount: ${amount}`,
   );
 
-  return (
-    Promise.resolve(startInTheFirstChain(from, to, amount))
-      .then((command) =>
-        signTransaction({
-          publicKey: from.publicKey,
-          secretKey: from.secretKey || '',
-        })(command),
-      )
-      .then((command) =>
-        isSignedTransaction(command)
-          ? command
-          : Promise.reject('CMD_NOT_SIGNED'),
-      )
-      // .then(inspect('EXEC_SIGNED'))
-      .then((cmd) => submit(cmd))
-      .then(inspect('submit'))
-      .then(listen)
-      .then(inspect('listen'))
-      .then((status) =>
-        status.result.status === 'failure'
-          ? Promise.reject(new Error('DEBIT REJECTED'))
-          : status,
-      )
-      .then((status) =>
-        Promise.all([
-          status,
-          pollCreateSpv(
-            {
-              requestKey: status.reqKey,
-              networkId: config.NETWORK_ID,
-              chainId: from.chainId || config.CHAIN_ID,
-            },
-            to.chainId || config.CHAIN_ID,
-          ),
-        ]),
-      )
-      // .then(inspect('POLL_SPV_RESULT'))
-      .then(
-        ([status, proof]) =>
-          finishInTheTargetChain(
-            {
-              pactId: status.continuation?.pactId,
-              proof,
-              rollback: false,
-              step: 1,
-            },
-            to.chainId || config.CHAIN_ID,
-            from.publicKey,
-          ) as ICommand,
-      )
-      // .then(inspect('CONT_TR'))
-      // uncomment the following lines if you want to pay gas from your account not the gas-station
-      .then((command) =>
-        signTransaction({
-          publicKey: from.publicKey,
-          secretKey: from.secretKey || '',
-        })(command),
-      )
-      .then((command) =>
-        isSignedTransaction(command)
-          ? command
-          : Promise.reject('CMD_NOT_SIGNED'),
-      )
-      // .then(inspect('CONT_SIGNED'))
-      .then((cmd) => submit(cmd))
-      .then(inspect('submit'))
-      .then(pollStatus)
-      .then(inspect('final result'))
+  const pactAmount = new PactNumber(amount).toPactDecimal();
+
+  const unsignedTx = startInTheFirstChain(from, to, pactAmount);
+  const signedTx = signAndAssertTransaction(from)(unsignedTx);
+  const submittedTx = await submit(signedTx);
+  inspect('Transfer Submited')(submittedTx);
+  const status = await listen(submittedTx);
+  inspect('Transfer Result')(status);
+  if (status.result.status === 'failure') {
+    throw new Error('DEBIT REJECTED');
+  }
+
+  const proof = await pollCreateSpv(
+    {
+      requestKey: status.reqKey,
+      networkId: config.NETWORK_ID,
+      chainId: from.chainId || config.CHAIN_ID,
+    },
+    to.chainId || config.CHAIN_ID,
   );
+
+  const continuation = {
+    pactId: status.continuation?.pactId,
+    proof,
+    rollback: false,
+    step: 1,
+  };
+  const unsignedTx2 = finishInTheTargetChain(
+    continuation,
+    to.chainId || config.CHAIN_ID,
+  );
+
+  const signedTx2 = signAndAssertTransaction(sender00)(unsignedTx2);
+  const submittedTx2 = await submit(signedTx2);
+  inspect('Transfer Submited')(submittedTx2);
+  const status2 = await listen(submittedTx2);
+  inspect('Transfer Result')(status2);
+  return status2;
 }

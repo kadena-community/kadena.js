@@ -1,6 +1,9 @@
 import type {
   ChainId,
+  IClient,
   ICommand,
+  ICommandResult,
+  IPollRequestPromise,
   ITransactionDescriptor,
   IUnsignedCommand,
 } from '@kadena/client';
@@ -11,31 +14,45 @@ import {
 } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 
-import constants from './config';
+import config from './config';
 
-export interface IAccount {
-  publicKey: string;
-  secretKey?: string;
+export interface IAccount extends IKeyPair {
   account: string;
   chainId?: ChainId;
 }
 
-const getClient = () =>
+export interface IKeyPair {
+  publicKey: string;
+  secretKey?: string;
+}
+
+const getClient = (): IClient =>
   createClient(
     ({ chainId, networkId }) =>
-      `http://localhost:${constants.PORT}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      `http://localhost:${config.PORT}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
   );
 
-export const submit = (tx: ICommand) => getClient().submit(tx);
-export const listen = (tx: ITransactionDescriptor) => getClient().listen(tx);
-export const pollCreateSpv = (tx: ITransactionDescriptor, chainId: ChainId) =>
-  getClient().pollCreateSpv(tx, chainId);
-export const pollStatus = (tx: ITransactionDescriptor) =>
-  getClient().pollStatus(tx);
+export const submit = (tx: ICommand): Promise<ITransactionDescriptor> =>
+  getClient().submit(tx);
+
+export const listen = (tx: ITransactionDescriptor): Promise<ICommandResult> =>
+  getClient().listen(tx);
+
+export const pollCreateSpv = (
+  tx: ITransactionDescriptor,
+  chainId: ChainId,
+): Promise<string> => getClient().pollCreateSpv(tx, chainId);
+
+export const pollStatus = (
+  tx: ITransactionDescriptor,
+): IPollRequestPromise<ICommandResult> => getClient().pollStatus(tx);
+
+export const dirtyRead = (tx: IUnsignedCommand): Promise<ICommandResult> =>
+  getClient().dirtyRead(tx);
 
 export const signTransaction =
-  ({ publicKey, secretKey }: { publicKey: string; secretKey: string }) =>
-  (tx: IUnsignedCommand) => {
+  ({ publicKey, secretKey }: IKeyPair) =>
+  (tx: IUnsignedCommand): IUnsignedCommand | ICommand => {
     const { sig } = sign(tx.cmd, {
       publicKey,
       secretKey,
@@ -44,11 +61,21 @@ export const signTransaction =
     return addSignatures(tx, { sig, pubKey: publicKey });
   };
 
-export const assertTransactionSigned = (tx: IUnsignedCommand | ICommand) => {
+export const assertTransactionSigned = (
+  tx: IUnsignedCommand | ICommand,
+): ICommand => {
   const signed = isSignedTransaction(tx);
   if (!signed) throw Error('Failed to sign transaction');
   return tx;
 };
+
+export const signAndAssertTransaction =
+  ({ publicKey, secretKey }: IKeyPair) =>
+  (tx: IUnsignedCommand): ICommand => {
+    const signedTx = signTransaction({ publicKey, secretKey })(tx);
+    const assertedTx = assertTransactionSigned(signedTx);
+    return assertedTx;
+  };
 
 export const inspect =
   (tag: string): (<T>(data: T) => T) =>
@@ -63,13 +90,14 @@ export const asyncPipe =
     return fns.reduce((acc, fn) => acc.then(fn), Promise.resolve(value));
   };
 
-export const createAccount = (): IAccount => {
+export const createAccount = (chainId: ChainId = config.CHAIN_ID): IAccount => {
   const generatedKeyPair = genKeyPair();
 
   return {
     publicKey: generatedKeyPair.publicKey,
     secretKey: generatedKeyPair.secretKey || '',
     account: `k:${generatedKeyPair.publicKey}`,
+    chainId: chainId,
   };
 };
 
@@ -77,4 +105,32 @@ export const sender00: IAccount = {
   publicKey: '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
   secretKey: '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
   account: 'sender00',
+};
+
+export const getRandomChainId = (): ChainId => {
+  const chainIds: ChainId[] = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+  ];
+
+  const randomIndex = Math.floor(Math.random() * chainIds.length);
+  return chainIds[randomIndex];
 };
