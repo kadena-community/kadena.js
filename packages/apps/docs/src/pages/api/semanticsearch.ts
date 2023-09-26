@@ -141,19 +141,24 @@ const semanticSearch = async (
         const { filePath, title, content, url, header, _highlightResult } =
           hit as IHitResult;
         const highlightedContent = _highlightResult?.content?.value ?? content;
-        const hasMoreContent = (highlightedContent || '')?.length > CONTENT_MAX_LENGTH;
-        const substringContent =
-            hasMoreContent
-            ? `${highlightedContent?.substring(0, CONTENT_MAX_LENGTH)}`
-            : highlightedContent;
+        const hasMoreContent =
+          (highlightedContent || '')?.length > CONTENT_MAX_LENGTH;
+        const substringContent = hasMoreContent
+          ? `${highlightedContent?.substring(0, CONTENT_MAX_LENGTH)}`
+          : highlightedContent;
 
         //re-trim if we are in the middle of a word
-        const trimWithProperWords = substringContent?.substring(0, Math.min(substringContent.length, substringContent.lastIndexOf(" ")))
+        const trimWithProperWords = substringContent?.substring(
+          0,
+          Math.min(substringContent.length, substringContent.lastIndexOf(' ')),
+        );
 
         return {
           filePath,
           title,
-          content: hasMoreContent ? `${trimWithProperWords}...` : substringContent,
+          content: hasMoreContent
+            ? `${trimWithProperWords}...`
+            : substringContent,
           url,
           header,
         };
