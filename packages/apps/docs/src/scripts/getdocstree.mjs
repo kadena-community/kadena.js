@@ -159,9 +159,15 @@ const getFile = async (rootDir, parent, file) => {
     const obj = await convertFile(`${currentFile}/index.tsx`);
     Object.assign(child, obj);
   } else {
-    errors.push(
-      `${currentFile}: there is no index.[md|mdx|tsx] in this directory`,
-    );
+    const files = fs.readdirSync(currentFile);
+
+    // when the directory is empty, just remove the directory.
+    // if there are files or subdirectories and no index file, give error
+    if (files.length > 0) {
+      errors.push(
+        `${currentFile}: there is no index.[md|mdx|tsx] in this directory`,
+      );
+    }
   }
   parent = pushToParent(parent, child);
 
