@@ -1,6 +1,0 @@
-{
-  "files.associations": {
-    "*.json": "jsonc"
-  },
-  "graphql-config.load.rootDir": "packages/apps/graph"
-}

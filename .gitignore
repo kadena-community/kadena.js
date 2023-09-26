@@ -84,6 +84,9 @@ packages/*/*/temp
 .idea
 .idea/*
 
+# Vscode files
+.vscode/settings.json
+
 # Turborepo
 .turbo
 
