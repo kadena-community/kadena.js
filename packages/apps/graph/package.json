@@ -7,7 +7,6 @@
   "license": "ISC",
   "author": "",
   "main": "index.js",
-  "types": "dist/graph.d.ts",
   "scripts": {
     "build": "pnpm prisma:generate && heft build --clean",
     "devnet": "docker rm devnet; docker run -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v $HOME/.devnet/l1:/root/.devenv -v ./cwd-extra-migrations:/cwd-extra-migrations --name devnet kadena/devnet",

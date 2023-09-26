@@ -7,7 +7,6 @@
   "license": "ISC",
   "author": "",
   "main": "index.js",
-  "types": "dist/cookbook.d.ts",
   "scripts": {
     "build": "",
     "build:local": "pnpm run pactjs:coin && heft build --clean",
