@@ -86,6 +86,11 @@ const meta: Meta<
       control: {
         type: 'text',
       },
+      description: 'aria label',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '' },
+      },
     },
     text: {
       description: 'label text',
@@ -107,6 +112,18 @@ const meta: Meta<
         type: 'radio',
       },
       if: { arg: 'as', eq: 'a' },
+    },
+    type: {
+      description: 'type of button',
+      options: ['button', 'submit', 'reset'] as IButtonProps['type'][],
+      control: {
+        type: 'select',
+      },
+      table: {
+        type: { summary: 'button | submit | reset' },
+        defaultValue: { summary: 'button' },
+      },
+      if: { arg: 'as', eq: 'button' },
     },
     as: {
       description: 'render as button or anchor',
@@ -133,6 +150,13 @@ const meta: Meta<
       },
       if: { arg: 'as', eq: 'button' },
     },
+    active: {
+      description: 'set to apply active visual state',
+      control: {
+        type: 'boolean',
+        defaultValue: { summary: false },
+      },
+    },
     asChild: {
       description:
         'Allow users to pass on styles, icons, and additional props to the child component. For example when using next/link in Next.js.',
@@ -149,31 +173,33 @@ type Story = StoryObj<
 export const Dynamic: Story = {
   name: 'Button',
   args: {
+    active: false,
     as: 'button',
     color: 'primary',
-    variant: 'default',
     disabled: false,
     href: 'https://kadena.io',
+    icon: undefined,
     iconAlign: 'right',
     loading: false,
     target: '_self',
-    icon: undefined,
     text: 'Click me',
     title: 'test title',
+    variant: 'default',
   },
   render: ({
+    active,
     as,
     color = 'primary',
-    variant = 'default',
     disabled,
     href,
+    icon,
     iconAlign = 'right',
     loading,
     onClick,
-    icon,
     target,
     text,
     title,
+    variant = 'default',
   }) => {
     if (loading) {
       icon = 'Loading';
@@ -181,17 +207,18 @@ export const Dynamic: Story = {
 
     return (
       <Button
+        active={active}
         as={as}
+        color={color}
         disabled={disabled}
         href={href}
+        icon={icon}
+        iconAlign={iconAlign}
         loading={loading}
         onClick={onClick}
         target={target}
         title={title}
-        color={color}
         variant={variant}
-        icon={icon}
-        iconAlign={iconAlign}
       >
         {text}
       </Button>
