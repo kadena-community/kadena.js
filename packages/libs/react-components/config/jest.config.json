@@ -1,9 +1,3 @@
 {
-  "extends": "@kadena-dev/heft-rig/profiles/default/config/jest.config.json",
-  "globals": {
-    "ts-jest": {
-      "tsConfig": "../tsconfig.json"
-    }
-  },
-  "collectCoverage": false
+  "extends": "@kadena-dev/heft-rig/jest.config.json"
 }

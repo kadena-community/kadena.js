@@ -20,7 +20,7 @@
     "fp"
   ],
   "scripts": {
-    "build": "tsc && api-extractor run --local --verbose",
+    "build": "tsc && api-extractor run --verbose",
     "dev:postinstall": "pnpm run pactjs:retrieve:contract; pnpm run pactjs:generate:contract",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
