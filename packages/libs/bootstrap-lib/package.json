@@ -25,7 +25,7 @@
     }
   ],
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "dist/bootstrap-lib.d.ts",
   "files": [
     "dist",
     "lib"

@@ -18,7 +18,7 @@
     }
   ],
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "dist/chainweb-stream-client.d.ts",
   "files": [
     "dist",
     "lib"
