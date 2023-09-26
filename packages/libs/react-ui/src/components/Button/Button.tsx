@@ -18,7 +18,7 @@ export interface IButtonProps
     ButtonHTMLAttributes<HTMLButtonElement>,
     'as' | 'disabled' | 'className'
   > {
-  active?: false;
+  active?: boolean;
   as?: 'button' | 'a';
   asChild?: boolean;
   children: React.ReactNode;
@@ -48,7 +48,7 @@ export const Button: FC<IButtonProps> = ({
   iconAlign = 'right',
   loading,
   target,
-  title,
+  title = '',
   type,
   variant = 'default',
   ...restProps
