@@ -3,6 +3,5 @@
   "compilerOptions": {
     "types": ["node"],
     "skipLibCheck": true
-  },
-  "include": [".kadena/pactjs-generated"]
+  }
 }

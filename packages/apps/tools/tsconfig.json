@@ -18,6 +18,5 @@
     },
     "allowJs": true
   },
-  "include": [".kadena/pactjs-generated", "src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules"]
 }
