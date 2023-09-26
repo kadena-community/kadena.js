@@ -21,8 +21,14 @@ interface IProps {
 export const useSearch = (limitResults: number = 50): IProps => {
   const [query, setQuery] = useState<string | undefined>();
   const [conversation, dispatch] = useConversation();
-  const [startStream, isStreaming, outputStream, error, isLoading] =
-    useStream();
+  const [
+    startStream,
+    isStreaming,
+    outputStream,
+    streamMetaData,
+    error,
+    isLoading,
+  ] = useStream();
   const router = useRouter();
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -45,9 +51,13 @@ export const useSearch = (limitResults: number = 50): IProps => {
 
   useEffect(() => {
     if (outputStream.length > 0 && !isStreaming) {
-      dispatch({ type: 'commit', value: outputStream });
+      dispatch({
+        type: 'commit',
+        value: outputStream,
+        metadata: streamMetaData,
+      });
     }
-  }, [isStreaming, outputStream, dispatch]);
+  }, [isStreaming, outputStream, dispatch, streamMetaData]);
 
   useEffect(() => {
     if (conversation.input.length > 0) {

@@ -1,5 +1,6 @@
 import type { IConversation } from './useConversation';
 
+import type { StreamMetaData } from '@7-docs/edge';
 import { getDelta, splitTextIntoSentences } from '@7-docs/edge';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -15,11 +16,15 @@ export const useStream = (): [
   StartStream,
   boolean,
   string,
+  undefined | StreamMetaData[],
   undefined | string,
   boolean,
 ] => {
   const [outputStream, setOutputStream] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
+  const [metadata, setMetadata] = useState<undefined | StreamMetaData[]>(
+    undefined,
+  );
   const [error, setError] = useState<undefined | string>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -74,6 +79,18 @@ export const useStream = (): [
         }
       });
 
+      source.addEventListener('metadata', (event) => {
+        setIsLoading(false);
+        try {
+          const data = JSON.parse(event.data);
+          setMetadata(data);
+        } catch (e) {
+          console.warn('metadataListener', e);
+          setError(searchErrorMessage);
+          done();
+        }
+      });
+
       source.addEventListener('error', (e) => {
         setIsLoading(false);
         console.warn('sourceError', e);
@@ -90,5 +107,5 @@ export const useStream = (): [
     }
   }, [isStreaming, outputStream]);
 
-  return [startStream, isStreaming, outputStream, error, isLoading];
+  return [startStream, isStreaming, outputStream, metadata, error, isLoading];
 };
