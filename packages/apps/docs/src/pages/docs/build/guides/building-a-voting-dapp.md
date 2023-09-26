@@ -1136,7 +1136,7 @@ npx pactjs contract-generate --file ../pact/root/coin-v5.pact
 The log shows what has happened. Inside the `node_modules` directory, a new
 package has been created: `.kadena/pactjs-generated`. This package is extending
 the @kadena/client types to give you type information. Make sure to add
-`"types": [".kadena/pactjs-generated"]` to your tsconfig.json.
+`"include": [".kadena/pactjs-generated"]` to your tsconfig.json.
 
 ### Our implementation
 

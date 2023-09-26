@@ -100,7 +100,7 @@ pactjs contract-generate --contract "coin" --api "https://api.chainweb.com/chain
 ```
 
 The log shows what has happened. Inside the `node_modules` directory, a new
-package has been created: `.kadena/pactjs-generated`. This package is referenced
+folder has been created: `.kadena/pactjs-generated`. This package is referenced
 by `@kadena/client` to give you type information.
 
 Now you can use this by [creating a transaction that calls a smart contract
@@ -112,7 +112,7 @@ function][18].
 ```json
 {
   "compilerOptions": {
-    "types": [".kadena/pactjs-generated"]
+    "include": [".kadena/pactjs-generated"]
   }
 }
 ```

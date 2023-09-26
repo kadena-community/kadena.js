@@ -10,7 +10,7 @@ import mkdirp from 'mkdirp';
 import { dirname, join } from 'path';
 import rimraf from 'rimraf';
 
-export const TARGET_PACKAGE: '.kadena/pactjs-generated' =
+export const TARGET_FOLDER: '.kadena/pactjs-generated' =
   '.kadena/pactjs-generated' as const;
 
 const shallowFindFile = (path: string, file: string): string | undefined => {
@@ -36,7 +36,7 @@ function verifyTsconfigTypings(
     if (!tsconfig.includes('.kadena/pactjs-generated')) {
       console.log(
         `\n!!! WARNING: You have not added .kadena/pactjs-generated to tsconfig.json. Add it now.
-{ "compilerOptions": { "types": [".kadena/pactjs-generated"] } }`,
+{ "compilerOptions": { "include": [".kadena/pactjs-generated"] } }`,
       );
     }
   }
@@ -140,7 +140,7 @@ export const generate: IGenerate = (program, version) => async (args) => {
 
   const targetDirectory: string = join(
     dirname(targetPackageJson),
-    TARGET_PACKAGE,
+    TARGET_FOLDER,
   );
 
   if (args.clean === true) {
@@ -156,7 +156,7 @@ export const generate: IGenerate = (program, version) => async (args) => {
   moduleDtss.forEach((dts, moduleName) => {
     const targetFilePath: string = join(
       dirname(targetPackageJson),
-      TARGET_PACKAGE,
+      TARGET_FOLDER,
       `${moduleName}.d.ts`,
     );
 
@@ -183,32 +183,6 @@ export const generate: IGenerate = (program, version) => async (args) => {
       writeFileSync(indexPath, exportStatement);
     }
   });
-
-  // write npm init to package.json
-  const defaultPackageJsonPath: string = join(targetDirectory, 'package.json');
-
-  // if exists, do nothing
-  if (existsSync(defaultPackageJsonPath)) {
-    console.log(`Package.json already exists at ${defaultPackageJsonPath}`);
-  } else {
-    // write default contents to package.json
-    console.log(`Writing default package.json to ${defaultPackageJsonPath}`);
-    writeFileSync(
-      defaultPackageJsonPath,
-      JSON.stringify(
-        {
-          name: TARGET_PACKAGE,
-          version: version,
-          description: 'TypeScript definitions for @kadena/client',
-          types: 'index.d.ts',
-          keywords: ['pact', 'contract', 'pactjs'],
-          author: `@kadena/pactjs-cli@${version}`,
-        },
-        null,
-        2,
-      ),
-    );
-  }
 
   const tsconfigPath: string | undefined = shallowFindFile(
     join(process.cwd()),
