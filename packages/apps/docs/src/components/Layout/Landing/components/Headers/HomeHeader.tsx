@@ -1,14 +1,20 @@
 import { Box, GradientText, Grid, Heading, Stack } from '@kadena/react-ui';
 
-import { headerClass, subheaderClass, wrapperClass } from './style.css';
+import {
+  headerClass,
+  headerLoadedClass,
+  subheaderClass,
+  wrapperClass,
+} from './style.css';
 
 import { MostPopular } from '@/components/MostPopular';
 import { SearchBar } from '@/components/SearchBar';
 import type { IMostPopularPage } from '@/types/MostPopularData';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];
@@ -16,6 +22,8 @@ interface IProps {
 
 export const HomeHeader: FC<IProps> = ({ popularPages }) => {
   const router = useRouter();
+  const [loaderHeaderClass, setLoaderHeaderClass] =
+    useState<string>(headerClass);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
     e.preventDefault();
@@ -30,8 +38,14 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
     }
   };
 
+  useEffect(() => {
+    if (router.isReady) {
+      setLoaderHeaderClass(classNames(headerClass, headerLoadedClass));
+    }
+  }, [router.isReady]);
+
   return (
-    <header className={headerClass}>
+    <header className={loaderHeaderClass}>
       <div className={wrapperClass}>
         <Grid.Root columns={{ sm: 1, md: 2 }}>
           <Grid.Item>

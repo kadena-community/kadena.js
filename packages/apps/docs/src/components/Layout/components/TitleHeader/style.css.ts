@@ -37,12 +37,14 @@ export const headerWrapperClass = style([
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
         backgroundPositionY: '95%',
-        transform: 'scaleX(-1)',
+        transform: 'scaleY(.3) translateY(-100%)',
+        opacity: 0,
+
+        transition: 'transform 1s ease, opacity 2s  ease-out',
+        transitionDelay: '600ms',
 
         '@media': {
-          [`screen and ${breakpoints.md}`]: {
-            transform: 'scaleX(1)',
-          },
+          [`screen and ${breakpoints.md}`]: {},
         },
       },
     },
@@ -54,6 +56,15 @@ export const headerWrapperClass = style([
     },
   },
 ]);
+
+export const headerLoadedClass = style({
+  selectors: {
+    '&::after': {
+      transform: 'scaleY(1) translateY(0) ',
+      opacity: 1,
+    },
+  },
+});
 
 export const headerClass = style([
   sprinkles({
