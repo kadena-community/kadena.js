@@ -18,7 +18,7 @@ export interface IButtonProps
     ButtonHTMLAttributes<HTMLButtonElement>,
     'as' | 'disabled' | 'className'
   > {
-  active: false;
+  active?: false;
   as?: 'button' | 'a';
   asChild?: boolean;
   children: React.ReactNode;
