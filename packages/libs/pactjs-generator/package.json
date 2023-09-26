@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "prebuild": "pnpm run build:lexer && pnpm run build:grammar",
-    "build": "tsc && api-extractor run --local --verbose",
+    "build": "tsc && api-extractor run --verbose",
     "build:grammar": "nearleyc src/grammar.ne -o src/grammar.js",
     "build:grammar:watch": "chokidar src/lexer.js src/grammar.ne src/tests/test.contract.pact -c \"pnpm run build:grammar\"",
     "build:lexer": "tsc src/lexer.ts",

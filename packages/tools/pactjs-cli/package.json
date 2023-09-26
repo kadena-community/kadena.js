@@ -18,7 +18,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc && api-extractor run --local --verbose",
+    "build": "tsc && api-extractor run --verbose",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
