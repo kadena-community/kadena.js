@@ -127,5 +127,5 @@ npm run simulate -- -a <accounts> -i <timeInterval> -t <transferAmount>
 ```
 
 - accounts - number of accounts to be created in the devnet
-- timeInterval - frequency of transactions
-- transferAmount - amount to be transfered in each transaction
+- timeInterval - frequency of transactions in miliseconds
+- transferAmount - amount to be transfered in each transaction (float)

@@ -19,22 +19,17 @@ export async function simulate(
     accounts.push(account);
   }
 
-  // Fund accounts
-  for (let i = 0; i < accounts.length; i++) {
-    const account = accounts[i];
-    await transfer(account);
-  }
-
   while (true) {
     // Transfer between accounts
     for (let i = 0; i < accounts.length; i++) {
       const account = accounts[i];
+      //Fund the account
+      await transfer(account);
       let nextAccount = accounts[(i + 1) % accounts.length];
 
       // This is to simulate cross chain transfers
       // Every nth transfer is a cross chain transfer;
       if (i % Math.floor(Math.random() * accounts.length) === 0) {
-        await transfer(account);
         nextAccount = { ...nextAccount, chainId: getRandomChainId() };
       }
 

@@ -1,5 +1,5 @@
 export default {
   NETWORK_ID: 'fast-development',
-  CHAIN_ID: '1',
+  CHAIN_ID: '0',
   PORT: 8080,
 } as const;
