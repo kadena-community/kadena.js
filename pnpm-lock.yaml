@@ -752,6 +752,9 @@ importers:
       prettier-plugin-packagejson:
         specifier: ^2.4.5
         version: 2.4.5(prettier@3.0.0)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
 
   packages/libs/chainweb-node-client:
     dependencies:
@@ -810,6 +813,9 @@ importers:
       prettier-plugin-packagejson:
         specifier: ^2.4.5
         version: 2.4.5(prettier@3.0.0)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
 
   packages/libs/chainweb-stream-client:
     dependencies:
@@ -859,6 +865,9 @@ importers:
       prettier-plugin-packagejson:
         specifier: ^2.4.5
         version: 2.4.5(prettier@3.0.0)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
 
   packages/libs/chainwebjs:
     dependencies:
@@ -993,6 +1002,9 @@ importers:
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@18.17.14)(typescript@5.2.2)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
 
   packages/libs/client-examples:
     dependencies:
@@ -1097,6 +1109,9 @@ importers:
       prettier-plugin-packagejson:
         specifier: ^2.4.5
         version: 2.4.5(prettier@3.0.0)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
 
   packages/libs/kadena.js:
     dependencies:
@@ -1201,6 +1216,9 @@ importers:
       prettier-plugin-packagejson:
         specifier: ^2.4.5
         version: 2.4.5(prettier@3.0.0)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
 
   packages/libs/pactjs-generator:
     dependencies:
@@ -1649,6 +1667,9 @@ importers:
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@18.17.14)(typescript@5.2.2)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
 
   packages/tools/eslint-config:
     dependencies:

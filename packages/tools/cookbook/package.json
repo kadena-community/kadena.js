@@ -38,6 +38,7 @@
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
     "prettier-plugin-packagejson": "^2.4.5",
-    "ts-node": "~10.8.2"
+    "ts-node": "~10.8.2",
+    "typescript": "5.2.2"
   }
 }
