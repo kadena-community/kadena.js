@@ -3,7 +3,6 @@ import {
   Grid,
   Input,
   InputWrapper,
-  Option,
   Select
 } from '@kadena/react-ui';
 
@@ -108,9 +107,9 @@ const Home: React.FC = () => {
               id="search-type"
               onChange={(event) => setSearchType(event.target.value)}
             >
-              <Option value="request-key">Request Key</Option>
-              <Option value="account">Account</Option>
-              <Option value="event">Event</Option>
+              <option value="request-key">Request Key</option>
+              <option value="account">Account</option>
+              <option value="event">Event</option>
             </Select>
           </Grid.Item>
           <Grid.Item>
