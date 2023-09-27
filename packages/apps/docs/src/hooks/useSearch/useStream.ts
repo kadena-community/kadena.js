@@ -4,8 +4,8 @@ import type { StreamMetaData } from '@7-docs/edge';
 import { getDelta, splitTextIntoSentences } from '@7-docs/edge';
 import { useCallback, useEffect, useState } from 'react';
 
-export const embeddingModels = ['text-embedding-ada-002'];
-export const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];
+const embeddingModels = ['text-embedding-ada-002'];
+const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];
 
 type StartStream = (query: string, conversation: IConversation) => void;
 

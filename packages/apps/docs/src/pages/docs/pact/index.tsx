@@ -1,7 +1,16 @@
-import { Box, Button, Card, Heading, Stack, Text } from '@kadena/react-ui';
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Heading,
+  Stack,
+  Text,
+} from '@kadena/react-ui';
 
-import { BrowseSection, MostPopular } from '@/components';
+import { BrowseSection, DocsCard, MostPopular } from '@/components';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip';
+import { docsCardLink } from '@/components/DocsCard/styles.css';
 import {
   articleClass,
   contentClass,
@@ -33,16 +42,25 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
       id="main"
     >
       <article className={articleClass}>
+        <Box marginRight={{ sm: 0, lg: '$32', xl: '$64' }} marginBottom="$10">
+          <Text>
+            Pact allows anyone to write clearly, directly and safely onto a
+            blockchain — a true innovation for secure and simple smart contract
+            development. Pact will enable you to create entirely new business
+            models and on-chain services.
+          </Text>
+        </Box>
+
         <Stack
           justifyContent="space-between"
           direction={{ sm: 'column', lg: 'row' }}
         >
           <Card>
-            <Heading as="h4">Getting started with Pact</Heading>
+            <Heading as="h4">Learn Pact</Heading>
             <Box marginY="$4">
               <Text>Learn the basics of Pact to create a smart contract</Text>
             </Box>
-            <Button as="a" asChild>
+            <Button as="a" asChild icon="TrailingIcon">
               <Link href={'/docs/pact/beginner'}>Getting started</Link>
             </Button>
           </Card>
@@ -55,28 +73,102 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </Box>
         </Stack>
 
-        <Box marginTop="$4" marginBottom="$10">
-          <BrowseSection title="Learn about Pact" titleAs="h5" direction="row">
-            <BrowseSection.LinkBlock
-              title="Language reference"
-              subtitle="Reference for the Pact smart-contract language, designed for correct, transactional execution on a high-performance blockchain"
-              href="/docs/pact/reference"
-            />
-            <BrowseSection.LinkBlock
-              title="Pact CLI"
-              subtitle="Generate client based on a contract with our Cli"
-              href="/docs/pact/cli"
-            />
-            <BrowseSection.LinkBlock
-              title="White paper"
-              subtitle="Pact is the programming language for writing smart contracts to be executed
-              by the Kadena blockchain"
-              href="/docs/kadena/whitepapers/pact-smart-contract-language"
-            />
-          </BrowseSection>
+        <Box marginBottom="$20">
+          <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
+            <Grid.Item rowSpan={2}>
+              <DocsCard
+                label="Language reference"
+                description="Reference for the Pact smart-contract language, designed for correct, transactional execution on a high-perdormance blockchain."
+                schema="info"
+                background="smartwallet"
+              >
+                <BrowseSection marker="none">
+                  <Link className={docsCardLink} href="/docs/kadena/overview">
+                    Introduction
+                  </Link>
+                  <Link
+                    className={docsCardLink}
+                    href="/docs/pact/reference/rest-api"
+                  >
+                    REST API&apos;s
+                  </Link>
+                  <Link
+                    className={docsCardLink}
+                    href="/docs/pact/reference/concepts"
+                  >
+                    Concepts
+                  </Link>
+                  <Link
+                    className={docsCardLink}
+                    href="/docs/pact/reference/syntax"
+                  >
+                    Syntax
+                  </Link>
+                  <Link
+                    className={docsCardLink}
+                    href="/docs/pact/reference/time-formats"
+                  >
+                    Time Formats
+                  </Link>
+                  <Link
+                    className={docsCardLink}
+                    href="/docs/pact/reference/functions"
+                  >
+                    Built-in functions
+                  </Link>
+                  <Link
+                    className={docsCardLink}
+                    href="/docs/pact/reference/property-checking"
+                  >
+                    Property Checking System
+                  </Link>
+                  <Link
+                    className={docsCardLink}
+                    href="/docs/pact/reference/properties-and-invariants"
+                  >
+                    Property and Invariant Functions
+                  </Link>
+                </BrowseSection>
+              </DocsCard>
+            </Grid.Item>
+            <Grid.Item>
+              <DocsCard
+                label="Tutorials"
+                description="Start learning Pact and how to implement it."
+                schema="warning"
+                background="react"
+              >
+                <BrowseSection marker="none">
+                  <Link className={docsCardLink} href="/docs/pact/beginner">
+                    Beginner tutorials
+                  </Link>
+                  <Link className={docsCardLink} href="/docs/pact/intermediate">
+                    Intermediate tutorials
+                  </Link>
+                </BrowseSection>
+              </DocsCard>
+            </Grid.Item>
+            <Grid.Item>
+              <DocsCard
+                label="Whitepaper"
+                description="Pact is the programming language for writing smart contracts to be executed by the Kadena blockchain."
+                schema="success"
+                background="whitepapers"
+              >
+                <BrowseSection marker="none">
+                  <Link
+                    className={docsCardLink}
+                    href="/docs/kadena/whitepapers/pact-smart-contract-language"
+                  >
+                    Read the whitepaper
+                  </Link>
+                </BrowseSection>
+              </DocsCard>
+            </Grid.Item>
+          </Grid.Root>
         </Box>
 
-        <Heading as="h4">Latest Pact posts</Heading>
+        <Heading as="h6">Stay up-to-date</Heading>
         <BlogPostsStrip
           data={blogPosts}
           link={`/docs/tags/pact`}
@@ -98,12 +190,12 @@ export const getStaticProps: GetStaticProps = async () => {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Learn Pact',
+        subTitle: 'The human-readable smart contract language',
         menu: 'Pact',
         label: 'Pact',
         order: 3,
-        description: 'Kadena makes blockchain work for everyone.',
+        description: 'The human-readable smart contract language',
         layout: 'landing',
-        icon: 'PactLanguage',
       },
     },
   };

@@ -66,6 +66,8 @@ import { SignatureFreehand as SignatureFreehandSvg } from './svgs/SignatureFreeh
 import { SlashForward as SlashForwardSvg } from './svgs/SlashForward';
 import { StopCircle as StopCircleSvg } from './svgs/StopCircle';
 import { ThemeLightDark as ThemeLightDarkSvg } from './svgs/ThemeLightDark';
+import { ThumbDownOutline as ThumbDownOutlineSvg } from './svgs/ThumbDownOutline';
+import { ThumbUpOutline as ThumbUpOutlineSvg } from './svgs/ThumbUpOutline';
 import { TrailingIcon as TrailingIconSvg } from './svgs/TrailingIcon';
 import { Transition as TransitionSvg } from './svgs/Transition';
 import { TransitionMasked as TransitionMaskedSvg } from './svgs/TransitionMasked';
@@ -142,6 +144,8 @@ export const SignatureFreehand = IconWrapper(SignatureFreehandSvg);
 export const SlashForward = IconWrapper(SlashForwardSvg);
 export const StopCircle = IconWrapper(StopCircleSvg);
 export const ThemeLightDark = IconWrapper(ThemeLightDarkSvg);
+export const ThumbUpOutline = IconWrapper(ThumbUpOutlineSvg);
+export const ThumbDownOutline = IconWrapper(ThumbDownOutlineSvg);
 export const TrailingIcon = IconWrapper(TrailingIconSvg);
 export const Transition = IconWrapper(TransitionSvg);
 export const TransitionMasked = IconWrapper(TransitionMaskedSvg);

@@ -30,11 +30,11 @@ export async function getTransactions(options: {
   const { network, chain, account } = options;
 
   try {
-    const result: ITransaction[] = await fetch(
+    const result: ITransaction[] = (await fetch(
       `https://${getKadenaConstantByNetwork(
         network,
       ).estatsHost()}/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
-    ).then((res) => res.json());
+    ).then((res) => res.json())) as ITransaction[];
 
     return result;
   } catch (error) {

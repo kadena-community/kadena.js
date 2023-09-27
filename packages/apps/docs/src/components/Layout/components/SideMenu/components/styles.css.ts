@@ -36,7 +36,7 @@ export const linkClass = style([
         transition: 'transform .2s ease ',
       },
       '&:hover': {
-        color: vars.colors.$primaryContrast,
+        color: vars.colors.$primaryContrastInverted,
       },
       '&:hover::after': {
         opacity: 1,

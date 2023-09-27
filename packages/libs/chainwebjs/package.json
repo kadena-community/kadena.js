@@ -42,7 +42,7 @@
     }
   ],
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "dist/chainwebjs.d.ts",
   "files": [
     "dist",
     "lib"
@@ -50,11 +50,13 @@
   "scripts": {
     "build": "heft build --clean",
     "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
-    "lint:src": "eslint src --ext .js,.ts --fix",
+    "lint:src": "eslint src --ext .js,.ts",
     "test": "heft test"
   },
   "dependencies": {

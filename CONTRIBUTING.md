@@ -120,8 +120,8 @@ the following commands:
 
 ```sh
 pnpm build   # Compile & build (using TypeScript)
-pnpm lint    # Lint (and fix) (using ESLint)
-pnpm format  # Format (using Prettier)
+pnpm lint    # Lint
+pnpm format  # Format
 ```
 
 Run from root to apply to all packages, use `--filter` for a selection, and run

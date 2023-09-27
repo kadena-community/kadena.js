@@ -25,7 +25,7 @@ export const AuthorProfileCard: FC<IProps> = ({ author }) => {
       <Stack direction={{ sm: 'column', md: 'row' }} gap="$10">
         <div className={sectionClass}>
           <Stack alignItems="flex-start" gap="$4">
-            <Avatar name={author.name} avatar={author.avatar} />
+            <Avatar size="large" name={author.name} avatar={author.avatar} />
             <Stack direction="column">
               <Link
                 className={linkClass}

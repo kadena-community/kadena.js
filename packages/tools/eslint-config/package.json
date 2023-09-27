@@ -10,9 +10,10 @@
   "scripts": {
     "build": "",
     "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
-    "lint:src": "eslint ./mixins ./profile --ext .js,.ts --fix",
+    "lint:src": "eslint ./mixins ./profile --ext .js,.ts",
     "test": ""
   },
   "dependencies": {

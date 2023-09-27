@@ -8,6 +8,7 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
 interface IProps {
   results: IQueryResult[];
@@ -50,13 +51,16 @@ const Item: FC<IResultProps> = ({ item }) => {
     <li>
       <Link href={url} passHref legacyBehavior>
         <a className={itemLinkClass} onClick={clearModal}>
-          <Heading color="primaryContrast" as="h5">
+          <Heading color="primaryContrastInverted" as="h5">
             {item.title}
           </Heading>
           <ItemBreadCrumb url={url} />
 
           <Text as="p">
-            <ReactMarkdown>{content}</ReactMarkdown>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            <ReactMarkdown rehypePlugins={[rehypeRaw] as any}>
+              {content}
+            </ReactMarkdown>
           </Text>
         </a>
       </Link>

@@ -14,7 +14,7 @@ const rule: Rule = ({ dir, file, pkg }) => {
     const types = `dist/${name}.d.ts`;
     if (pkg.types === undefined || pkg.types === '' || pkg.types !== types) {
       issues.push([
-        'warn',
+        'error',
         `API Extractor is enabled, "types" in package.json should be "${types}"`,
       ]);
     }

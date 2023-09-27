@@ -39,7 +39,7 @@ export const selectedClass = style([
     fontWeight: '$bold',
   }),
   {
-    color: vars.colors.$primaryContrast,
+    color: vars.colors.$primaryContrastInverted,
   },
 ]);
 

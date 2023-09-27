@@ -36,12 +36,12 @@ export const itemLinkClass = style([
   {
     ':hover': {
       color: '$neutral100',
-      backgroundColor: '$primaryContrast',
+      backgroundColor: '$primaryContrastInverted',
       borderRadius: '$sm',
     },
     ':focus': {
       color: '$neutral100',
-      backgroundColor: '$primaryContrast',
+      backgroundColor: '$primaryContrastInverted',
       borderRadius: '$sm',
     },
   },

@@ -1,3 +1,5 @@
+import { Tag } from '@kadena/react-ui';
+
 import { baseGridClass } from '../basestyles.css';
 import {
   articleClass,
@@ -15,12 +17,14 @@ import {
   headerFigureClass,
   headerImageClass,
   pageGridClass,
+  tagLinkClass,
 } from './styles.css';
 
 import { AuthorProfileCard } from '@/components';
 import type { IPageProps } from '@/types/Layout';
 import { formatDateDistance } from '@/utils/dates';
 import classNames from 'classnames';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -29,8 +33,14 @@ export const Blog: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
-  const { readingTimeInMinutes, title, publishDate, authorInfo, headerImage } =
-    frontmatter;
+  const {
+    readingTimeInMinutes,
+    title,
+    publishDate,
+    authorInfo,
+    headerImage,
+    tags,
+  } = frontmatter;
   const readingTimeLabel =
     readingTimeInMinutes && readingTimeInMinutes > 1 ? 'minutes' : 'minute';
 
@@ -47,7 +57,6 @@ export const Blog: FC<IPageProps> = ({
         <TitleHeader
           title="BlogChain"
           subTitle="The place where the blog meets the chain"
-          icon="BlogChain"
         />
 
         <div id="maincontent" className={contentClassNames}>
@@ -82,6 +91,18 @@ export const Blog: FC<IPageProps> = ({
                     Published {formatDateDistance(new Date(publishDate))}
                   </time>
                 )}
+              </ArticleMetadataItem>
+              <ArticleMetadataItem>
+                {tags &&
+                  tags.map((tag) => (
+                    <Link
+                      className={tagLinkClass}
+                      key={tag}
+                      href={`/tags/${tag}`}
+                    >
+                      <Tag>{tag}</Tag>
+                    </Link>
+                  ))}
               </ArticleMetadataItem>
             </div>
             <div itemProp="articleBody">{children}</div>

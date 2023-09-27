@@ -10,7 +10,11 @@ interface IReturn {
   data: IMenuData[];
 }
 
-export const useGetBlogs = ({ authorId }: IIBlogLoadOptions = {}): IReturn => {
+export const useGetBlogs = ({
+  authorId,
+  year,
+  tagId,
+}: IIBlogLoadOptions = {}): IReturn => {
   const limit = 10;
   const [offset, setOffset] = useState<number>(limit);
   const [isDone, setIsDone] = useState<boolean>(false);
@@ -26,7 +30,7 @@ export const useGetBlogs = ({ authorId }: IIBlogLoadOptions = {}): IReturn => {
       const result = await fetch(
         `/api/blog?offset=${offset}&limit=${limit}${
           authorId ? `&authorId=${authorId}` : ``
-        }`,
+        }${year ? `&year=${year}` : ``}${tagId ? `&tagId=${tagId}` : ``}`,
       );
       const items = (await result.json()) as IMenuData[];
       getData((v) => [...v, ...items]);

@@ -19,6 +19,13 @@ export const directionVariants = styleVariants({
     {
       listStyle: 'none',
       rowGap: 0,
+      flexDirection: 'column',
+
+      '@media': {
+        [`screen and ${breakpoints.md}`]: {
+          flexDirection: 'row',
+        },
+      },
     },
   ],
   column: [
@@ -34,14 +41,14 @@ export const directionVariants = styleVariants({
 
 export const columnLinkListItemClass = style([
   sprinkles({
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
     lineHeight: '$lg',
   }),
 ]);
 
 export const columnLinkClass = style([
   sprinkles({
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
     textDecoration: 'underline',
   }),
   {
@@ -56,7 +63,7 @@ export const listItemClass = style([
   sprinkles({
     display: 'flex',
     gap: '$4',
-    paddingX: 0,
+    paddingRight: '$4',
     paddingY: '$3',
   }),
   {
@@ -69,16 +76,11 @@ export const listItemClass = style([
   },
 ]);
 
-export const itemStackClass = style([
-  {
-    gap: '0 !important',
-  },
-]);
-
 export const listItemLinkClass = style([
   sprinkles({
     display: 'flex',
     textDecoration: 'none',
+    color: '$primaryContrastInverted',
   }),
   {
     ':hover': {
@@ -87,8 +89,10 @@ export const listItemLinkClass = style([
   },
 ]);
 
-export const iconClass = style([
-  sprinkles({
-    marginRight: '$2',
-  }),
-]);
+export const markerVariants = styleVariants({
+  none: {
+    listStyle: 'none',
+    padding: 0,
+  },
+  default: {},
+});

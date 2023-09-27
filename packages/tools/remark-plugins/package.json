@@ -15,10 +15,11 @@
   "scripts": {
     "build": "tsc",
     "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use ./lib/index.js",
     "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
-    "lint:src": "eslint src --ext .ts --fix",
+    "lint:src": "eslint src --ext .ts",
     "test": ""
   },
   "dependencies": {

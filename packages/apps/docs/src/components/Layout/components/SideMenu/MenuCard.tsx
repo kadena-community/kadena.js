@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import type { FC, MouseEventHandler, ReactNode } from 'react';
 import React from 'react';
 
-export interface IMenuCardProps {
+interface IMenuCardProps {
   children?: ReactNode;
   active: number;
   idx: number;

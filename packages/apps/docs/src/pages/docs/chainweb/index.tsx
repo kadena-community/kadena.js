@@ -27,7 +27,6 @@ export const getStaticProps: GetStaticProps = async () => {
         order: 5,
         description: 'Welcome to Chainwebs documentation!',
         layout: 'redocly',
-        icon: 'Chainweb',
       },
     },
   };
