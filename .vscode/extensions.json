@@ -8,6 +8,7 @@
     "eamodio.gitlens",
     "christian-kohler.path-intellisense",
     "prisma.prisma",
-    "graphql.vscode-graphql"
+    "graphql.vscode-graphql",
+    "rohit-gohri.format-code-action"
   ]
 }

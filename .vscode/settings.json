@@ -1,6 +1,16 @@
 {
+  "eslint.format.enable": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "graphql-config.load.rootDir": "packages/apps/graph",
+  "[typescript][typescriptreact]": {
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": [
+      "source.formatDocument",
+      "source.fixAll.eslint"
+    ]
+  },
   "files.associations": {
     "*.json": "jsonc"
-  },
-  "graphql-config.load.rootDir": "packages/apps/graph"
+  }
 }
