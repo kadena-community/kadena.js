@@ -32,25 +32,34 @@ program
   .description('Simulate traffic on the devnet')
   .addOption(
     new Option(
-      '-a, --accounts <number>',
+      '-a, --noAccounts <number>',
       'Number of accounts to create',
-    ).default('2'),
+    ).default(5),
   )
   .addOption(
     new Option(
-      '-i, --timeInterval <number>',
+      '-i, --transferInterval <number>',
       'Transfer interval in milliseconds',
-    ).default('2000'),
+    ).default(3000),
   )
   .addOption(
-    new Option('-t, --transferAmount <number>', 'Transfer amount').default(
-      '10',
+    new Option('-t, --maxAmount <number>', 'Maximumansfer amount').default(25),
+  )
+  .addOption(
+    new Option(
+      '-tp, --tokenPool <number>',
+      'How much tokens are going to be circulating in the simulation',
+    ).default(1000000),
+  )
+  .addOption(
+    new Option('-s, --seed <string>', 'Seed for the random number').default(
+      Date.now().toString(),
     ),
   )
   .action(async (args) => {
     try {
       console.log('Simulation config parameters:', args);
-      await simulate(args.accounts, args.timeInverval, args.transferAmount);
+      await simulate(args);
     } catch (error) {
       console.error(error);
     }

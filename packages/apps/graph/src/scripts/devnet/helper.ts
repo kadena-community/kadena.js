@@ -107,30 +107,12 @@ export const sender00: IAccount = {
   account: 'sender00',
 };
 
-export const getRandomChainId = (): ChainId => {
-  const chainIds: ChainId[] = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-  ];
-
-  const randomIndex = Math.floor(Math.random() * chainIds.length);
-  return chainIds[randomIndex];
+export const getRandomNumber = (
+  randomNumber: number,
+  maxNumber: number,
+): number => {
+  if (randomNumber > 1 || randomNumber < 0)
+    throw new Error('randomNumber must be less than 1 and greater than 0');
+  const generatedNumber = Math.floor(randomNumber * maxNumber);
+  return generatedNumber === 0 ? 1 : generatedNumber;
 };

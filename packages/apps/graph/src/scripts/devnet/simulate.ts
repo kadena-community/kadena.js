@@ -1,14 +1,33 @@
+import type { ChainId } from '@kadena/client';
+
+import config from './config';
 import { crossChainTransfer } from './crosschain-transfer';
+import { getBalance } from './get-balance';
 import type { IAccount } from './helper';
-import { createAccount, getRandomChainId } from './helper';
+import { createAccount, getRandomNumber } from './helper';
 import { transfer } from './transfer';
 
-export async function simulate(
-  noAccounts: number = 2,
-  transferInterval: number = 2000,
-  amount: number = 10,
-): Promise<void> {
+import seedrandom from 'seedrandom';
+
+export async function simulate({
+  noAccounts = 2,
+  transferInterval = 1000,
+  maxAmount = 25,
+  tokenPool = 1000000,
+  seed = Date.now().toString(),
+}: {
+  noAccounts: number;
+  transferInterval: number;
+  maxAmount: number;
+  tokenPool: number;
+  seed: string;
+}): Promise<void> {
   const accounts: IAccount[] = [];
+
+  if (tokenPool < maxAmount || noAccounts < 0) {
+    console.log('Invalid parameters');
+    return;
+  }
 
   // Create accounts
   for (let i = 0; i < noAccounts; i++) {
@@ -17,20 +36,61 @@ export async function simulate(
       `Generated KeyPair\nAccount: ${account.account}\nPublic Key: ${account.publicKey}\nSecret Key: ${account.secretKey}\n`,
     );
     accounts.push(account);
+
+    // Fund account
+    await transfer({
+      publicKey: account.publicKey,
+      amount: tokenPool / noAccounts,
+    });
   }
+  console.log('Seed value: ', seed);
+
+  // Generate first seeded random number
+  let randomNo = seedrandom(seed)();
+  let counter: number = 0;
 
   while (true) {
     // Transfer between accounts
     for (let i = 0; i < accounts.length; i++) {
       const account = accounts[i];
-      //Fund the account
-      await transfer(account);
-      let nextAccount = accounts[(i + 1) % accounts.length];
+      const amount: number = getRandomNumber(randomNo, maxAmount);
+
+      // To avoid underflowing the token pool, we fund an account
+      if (counter >= tokenPool / maxAmount) {
+        await transfer({
+          publicKey: account.publicKey,
+          amount: tokenPool / noAccounts,
+        });
+        counter = 0;
+      }
+
+      const balance = (await getBalance(account)) as number;
+
+      if (amount > balance) {
+        console.log(
+          `Insufficient funds for ${account.account}\nFunds necessary: ${amount}\nFunds available: ${balance}`,
+        );
+        console.log('Skipping transfer');
+        continue;
+      }
+
+      // Generate seeded random number based on the previous number
+      randomNo = seedrandom(`${randomNo}`)();
+
+      let nextAccount = accounts[getRandomNumber(randomNo, accounts.length)];
 
       // This is to simulate cross chain transfers
       // Every nth transfer is a cross chain transfer;
-      if (i % Math.floor(Math.random() * accounts.length) === 0) {
-        nextAccount = { ...nextAccount, chainId: getRandomChainId() };
+      if (i % getRandomNumber(randomNo, accounts.length) === 0) {
+        nextAccount = {
+          ...nextAccount,
+          chainId: `${getRandomNumber(randomNo, config.NO_CHAINS)}` as ChainId,
+        };
+      }
+
+      if (account === nextAccount) {
+        console.log('Skipping transfer to self');
+        continue;
       }
 
       if (account.chainId === nextAccount.chainId) {
@@ -54,7 +114,7 @@ export async function simulate(
 
       await new Promise((resolve) => setTimeout(resolve, transferInterval));
     }
-
+    counter++;
     // Timeout
     await new Promise((resolve) => setTimeout(resolve, transferInterval));
   }
