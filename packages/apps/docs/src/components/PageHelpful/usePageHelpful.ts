@@ -33,8 +33,9 @@ export default function usePageHelpful(
     setIsPageHelpful('up');
     localStorage.setItem(localStorageKey, 'up');
     analyticsEvent(EVENT_NAMES['click:page_helpful'], {
-      pagePath: pathname,
-      isPageHelpful: 'no',
+      page_path: pathname,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      is_page_helpful: 'yes',
     });
   }
 
