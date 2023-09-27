@@ -50,6 +50,10 @@ const getLastModifiedDate = async (root) => {
   return stdout;
 };
 
+const isIndex = (file) => {
+  return file.includes('/index');
+};
+
 const convertFile = async (file) => {
   const doc = fs.readFileSync(`${file}`, 'utf-8');
   let data;
@@ -77,6 +81,7 @@ const convertFile = async (file) => {
     ...readTime,
     isMenuOpen: false,
     isActive: false,
+    isIndex: isIndex(file),
   };
 };
 
