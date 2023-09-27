@@ -8,6 +8,7 @@ import type { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 import type { Network } from '@/constants/kadena';
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import {
   convertIntToChainId,
   validateRequestKey,
@@ -65,10 +66,20 @@ export async function getTransferData({
 
   try {
     const chainInfoPromises = Array.from(new Array(20)).map((item, chainId) => {
-      const host = getKadenaConstantByNetwork(network).apiHost({
-        networkId: chainNetwork[network].network,
+      const { networksData } = useWalletConnectClient();
+
+      const networkDto = networksData.find((item) => item.networkId == network);
+
+      if (!networkDto) {
+        // @ts-ignore
+        return;
+      }
+
+      const host = networkDto.apiHost({
+        networkId: networkDto.networkId,
         chainId: convertIntToChainId(chainId),
       });
+
       const { getStatus } = createClient(host);
       return getStatus({
         requestKey,
@@ -78,7 +89,9 @@ export async function getTransferData({
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 
-    const request = chainInfos.find((chainInfo) => requestKey in chainInfo);
+    const request = chainInfos.find(
+      (chainInfo) => chainInfo && requestKey in chainInfo,
+    );
 
     if (!request) {
       return { error: t('No request key found') };

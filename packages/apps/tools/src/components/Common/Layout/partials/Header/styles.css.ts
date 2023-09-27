@@ -7,3 +7,8 @@ export const walletConnectWrapperStyle = style([
     marginLeft: '$4',
   }),
 ]);
+export const addCustomNetworkWrapperStyle = style([
+  sprinkles({
+    marginLeft: '$4',
+  }),
+]);

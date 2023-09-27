@@ -6,7 +6,7 @@ import {
   getKadenaConstantByNetwork,
   kadenaConstants,
 } from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import Debug from 'debug';
 
 const debug = Debug('kadena-transfer:services:list-module');
@@ -26,10 +26,18 @@ export const listModules = async (
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<IModulesResult> => {
   debug(listModules.name);
-  const networkId = chainNetwork[network].network;
+  const { networksData } = useWalletConnectClient();
+
+  const networkDto = networksData.find((item) => item.networkId == network);
+
+  if (!networkDto) {
+    // @ts-ignore
+    return;
+  }
+
   const { local } = createClient(
-    getKadenaConstantByNetwork(network).apiHost({
-      networkId,
+    networkDto.apiHost({
+      networkId: networkDto.networkId,
       chainId,
     }),
   );
@@ -37,7 +45,7 @@ export const listModules = async (
   const transaction = Pact.builder
     .execution('(list-modules)')
     .setMeta({ gasLimit, gasPrice, ttl, senderAccount, chainId })
-    .setNetworkId(networkId)
+    .setNetworkId(networkDto.networkId)
     .createTransaction();
 
   const response = await local(transaction, {

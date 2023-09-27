@@ -1,16 +1,15 @@
-import type { ChainwebNetworkId } from '@kadena/chainweb-node-client';
-
 import { env } from '@/utils/env';
 
-export type Network = Exclude<ChainwebNetworkId, 'development'>;
+export type DefinedNetwork = 'mainnet01' | 'testnet04';
+export type Network = DefinedNetwork | string;
 export type DevOption = 'BASIC' | 'BACKEND' | 'DAPP';
 
 type KadenaConstants = {
-  [K in Network]: {
+  [K in DefinedNetwork]: {
     label: string;
     API: string;
     apiHost: (params: { networkId: string; chainId: string }) => string;
-    estatsHost: () => string;
+    estatsHost?: () => string;
   };
 } & {
   GAS_LIMIT: number;
@@ -42,7 +41,7 @@ export const kadenaConstants: KadenaConstants = {
 };
 
 export const getKadenaConstantByNetwork = (
-  network: Network,
-): KadenaConstants[Network] => {
+  network: DefinedNetwork,
+): KadenaConstants[DefinedNetwork] => {
   return kadenaConstants[network];
 };
