@@ -1,19 +1,8 @@
 /* eslint-disable @kadena-dev/no-eslint-disable */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @rushstack/typedef-var */
-import type {
-  ICommand,
-  ICommandResult,
-  IUnsignedCommand,
-} from '@kadena/client';
-import {
-  createClient,
-  createTransaction,
-  isSignedTransaction,
-  Pact,
-  readKeyset,
-  signWithChainweaver,
-} from '@kadena/client';
+
+import { createTransaction, Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
   addSigner,
@@ -23,41 +12,8 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-const client = createClient();
-
-const submitOne = (transaction: ICommand) => client.submit(transaction);
-
-// throw if the result is failed ; we might introduce another api for error handling
-const throwIfFailed = (response: ICommandResult) => {
-  if (response.result.status === 'success') {
-    return response;
-  }
-  throw response.result.error;
-};
-
-// run preflight and return the tx if its successful
-const testPreflight = (tx: ICommand) =>
-  asyncPipe(client.preflight, throwIfFailed, () => tx)(tx);
-
-const validateSign = (
-  tx: IUnsignedCommand,
-  signedTx: ICommand | IUnsignedCommand,
-) => {
-  const { sigs, hash } = signedTx;
-  const txWidthSigs = { ...tx, sigs };
-  if (txWidthSigs.hash !== hash) {
-    throw new Error('Hash mismatch');
-  }
-  if (!isSignedTransaction(txWidthSigs)) {
-    throw new Error('Signing failed');
-  }
-  return txWidthSigs;
-};
-
-const safeSigned = async (tx: IUnsignedCommand) => {
-  const signedTx = await signWithChainweaver(tx);
-  return validateSign(tx, signedTx);
-};
+import { listen, preflight, submitOne } from '../util/client';
+import { checkSuccess, safeSigned, throwIfFailed } from '../util/fp-helpers';
 
 const createAccountCommand = (
   account: string,
@@ -78,9 +34,9 @@ const createAccountCommand = (
 const submitAndListen = asyncPipe(
   createTransaction,
   safeSigned,
-  testPreflight,
+  checkSuccess(preflight),
   submitOne,
-  client.listen,
+  listen,
   throwIfFailed,
 );
 

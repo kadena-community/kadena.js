@@ -1,20 +1,16 @@
 import type { ChainId } from '@kadena/client';
-import {
-  createTransaction,
-  isSignedTransaction,
-  Pact,
-  signWithChainweaver,
-} from '@kadena/client';
+import { createTransaction, Pact } from '@kadena/client';
 import {
   addSigner,
+  asyncPipe,
   composePactCommand,
   execution,
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
 
-import { pollStatus, preflight, submit } from '../util/client';
-import { asyncPipe, inspect } from '../util/fp-helpers';
+import { pollStatus, preflight, submitOne } from '../util/client';
+import { checkSuccess, inspect, safeSigned } from '../util/fp-helpers';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getTransferCommand = ({
@@ -58,13 +54,9 @@ const doTransfer = asyncPipe(
   ),
   inspect('command'),
   createTransaction,
-  signWithChainweaver,
-  (tr) => (isSignedTransaction(tr) ? tr : Promise.reject('TR_NOT_SIGNED')),
-  // do preflight first to check if everything is ok without paying gas
-  (tr) => preflight(tr).then((res) => [tr, res]),
-  ([tr, res]) => (res.result.status === 'success' ? tr : Promise.reject(res)),
-  // submit the tr if the preflight is ok
-  submit,
+  safeSigned,
+  checkSuccess(preflight),
+  submitOne,
   pollStatus,
 );
 
