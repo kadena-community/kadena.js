@@ -31,7 +31,7 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
   return (
     <li className={blogitem}>
       <Link className={link} href={item.root}>
-        <Stack>
+        <Stack direction={{ sm: 'column-reverse' }}>
           <Box>
             <Stack direction="column" gap="$3">
               <Stack alignItems="center" gap="$2">
