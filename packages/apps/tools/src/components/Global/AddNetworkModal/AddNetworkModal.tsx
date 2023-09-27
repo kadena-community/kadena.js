@@ -1,6 +1,10 @@
 import { Button, Stack, TextField, useModal } from '@kadena/react-ui';
 
-import { formButtonStyle,formContentStyle,modalOptionsContentStyle  } from './styles.css';
+import {
+  formButtonStyle,
+  formContentStyle,
+  modalOptionsContentStyle,
+} from './styles.css';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -49,11 +53,7 @@ export const AddNetworkModal: FC = () => {
     clearModal();
   };
 
-  const {
-    register,
-    handleSubmit: validateThenSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
+  const { register } = useForm<FormData>({
     resolver: zodResolver(schema),
     values: {
       label: '',

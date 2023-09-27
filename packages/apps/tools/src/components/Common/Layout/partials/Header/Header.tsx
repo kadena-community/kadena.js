@@ -7,7 +7,7 @@ import type { Network } from '@/constants/kadena';
 import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
-import type { NetworkDto } from '@/utils/network';
+import type { INetworkDto } from '@/utils/network';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -80,7 +80,7 @@ const Header: FC<IHeaderProps> = () => {
           onChange={(e) => handleOnChange(e)}
           icon="Earth"
         >
-          {networksData.map((network: NetworkDto) => (
+          {networksData.map((network: INetworkDto) => (
             <option key={network.networkId} value={network.networkId}>
               {network.label}
             </option>

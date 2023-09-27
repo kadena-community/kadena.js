@@ -1,16 +1,16 @@
-import type { DefinedNetwork, Network  } from '@/constants/kadena';
+import type { DefinedNetwork, Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 
-interface ApiHostData {
+interface IApiHostData {
   networkId: string;
   chainId: string;
 }
 
-export interface NetworkDto {
+export interface INetworkDto {
   networkId: Network;
   label: string;
   API: string;
-  apiHost: ({ networkId, chainId }: ApiHostData) => string;
+  apiHost: ({ networkId, chainId }: IApiHostData) => string;
 }
 
 const isNetwork = (x: any): x is Network =>
@@ -23,9 +23,9 @@ export const getConfigNetworkNames = (): DefinedNetwork[] => {
 };
 
 export const getAllNetworks = (
-  localStorageNetworks: NetworkDto[],
-): NetworkDto[] => {
-  const allNetworkObjects: NetworkDto[] = [];
+  localStorageNetworks: INetworkDto[],
+): INetworkDto[] => {
+  const allNetworkObjects: INetworkDto[] = [];
 
   const configNetworks = getConfigNetworkNames();
   configNetworks.forEach((item: DefinedNetwork) => {
@@ -34,7 +34,7 @@ export const getAllNetworks = (
       label: kadenaConstants[item].label,
       API: kadenaConstants[item].API,
       apiHost: kadenaConstants[item].apiHost,
-    } as NetworkDto);
+    } as INetworkDto);
   });
   localStorageNetworks.forEach((item) =>
     allNetworkObjects.push({

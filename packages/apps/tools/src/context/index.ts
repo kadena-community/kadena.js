@@ -4,4 +4,3 @@ export {
   useLayoutContext,
   LayoutContext,
 } from './layout-context';
-export { useWalletConnectClient } from './connect-wallet-context';

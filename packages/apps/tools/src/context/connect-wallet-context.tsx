@@ -3,7 +3,7 @@ import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { Network } from '@/constants/kadena';
 import { useDidUpdateEffect } from '@/hooks';
 import { env } from '@/utils/env';
-import type {NetworkDto } from '@/utils/network';
+import type { INetworkDto } from '@/utils/network';
 import { getAllNetworks } from '@/utils/network';
 import { getItem, setItem } from '@/utils/persist';
 import { WalletConnectModal } from '@walletconnect/modal';
@@ -35,11 +35,14 @@ interface IWalletConnectClientContext {
   setSelectedChain: (selectedChain: ChainwebChainId) => void;
   selectedAccount?: string;
   setSelectedAccount: (selectedAccount?: string) => void;
-  networksData: NetworkDto[];
-  setNetworksData: (data: NetworkDto[]) => void;
+  networksData: INetworkDto[];
+  setNetworksData: (data: INetworkDto[]) => void;
 }
 
-export const StorageKeys: Record<'NETWORK' | 'CHAIN_ID' | 'NETWORKS_DATA', string> = {
+export const StorageKeys: Record<
+  'NETWORK' | 'CHAIN_ID' | 'NETWORKS_DATA',
+  string
+> = {
   NETWORK: 'network',
   CHAIN_ID: 'chainID',
   NETWORKS_DATA: 'networks',
@@ -86,7 +89,7 @@ export const WalletConnectClientContextProvider: FC<
   );
   const [selectedAccount, setSelectedAccount] = useState<string>();
   const [isInitializing, setIsInitializing] = useState(false);
-  const [networksData, setNetworksData] = useState<NetworkDto[]>([]);
+  const [networksData, setNetworksData] = useState<INetworkDto[]>([]);
 
   useLayoutEffect(() => {
     const initialNetwork = getItem(StorageKeys.NETWORK) as Network;
@@ -101,7 +104,7 @@ export const WalletConnectClientContextProvider: FC<
 
     const initialLocalNetworks = getItem(
       StorageKeys.NETWORKS_DATA,
-    ) as NetworkDto[];
+    ) as INetworkDto[];
     const allNetowrks = getAllNetworks(initialLocalNetworks);
     if (initialNetwork) {
       setNetworksData(allNetowrks);

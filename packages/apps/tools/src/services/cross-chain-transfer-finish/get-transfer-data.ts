@@ -6,7 +6,6 @@ import { createClient } from '@kadena/client';
 import type { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import type { Network } from '@/constants/kadena';
-import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import {
@@ -68,7 +67,9 @@ export async function getTransferData({
     const chainInfoPromises = Array.from(new Array(20)).map((item, chainId) => {
       const { networksData } = useWalletConnectClient();
 
-      const networkDto = networksData.find((item) => item.networkId == network);
+      const networkDto = networksData.find(
+        (item) => item.networkId === network,
+      );
 
       if (!networkDto) {
         // @ts-ignore
