@@ -28,7 +28,7 @@ export const options: RedocRawOptions = {
   theme: {
     breakpoints: {
       small: '1024px',
-      medium: '1280px',
+      medium: '1279px',
       large: '1440px',
     },
     sidebar: {

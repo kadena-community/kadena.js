@@ -31,7 +31,7 @@ export const codebackgroundClass = style([
         backgroundPositionY: '-100px',
         backgroundPositionX: '-100px',
 
-        transform: 'scale(.3, 1)  translate(100%, 0)',
+        transform: 'scale(.6, 1)  translate(50%, 0)',
         opacity: 0,
 
         transition: 'transform 1.5s ease, opacity 3s ease-out',
@@ -45,10 +45,9 @@ export const codebackgroundClass = style([
           [`screen and ${breakpoints.lg}`]: {
             backgroundPositionX: `calc(100vw  - (${$$asideMenuWidthCode} + ${$$shadowWidth}))`,
           },
-          [`screen and ${breakpoints.xl}`]: {
-            display: 'block',
-          },
+
           [`screen and ${breakpoints.xxl}`]: {
+            display: 'block',
             backgroundPositionX: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2 ) - (${$$asideMenuWidthCode} + ${$$shadowWidth}))`,
           },
         },
@@ -59,12 +58,15 @@ export const codebackgroundClass = style([
           [`screen and ${breakpoints.md}`]: {
             left: `calc(100vw  - (${$$asideMenuWidthCode} +  ${vars.sizes.$4}))`,
           },
+
           [`screen and ${breakpoints.lg}`]: {
-            left: `calc(100vw  - (${$$asideMenuWidthCode} +  ${vars.sizes.$4}  + ${vars.sizes.$4}))`,
+            left: `calc(100vw  - (${$$asideMenuWidthCode} +  ${vars.sizes.$20} ))`,
           },
+
           [`screen and ${breakpoints.xl}`]: {
             backgroundColor: $$backgroundOverlayColor,
           },
+
           [`screen and ${breakpoints.xxl}`]: {
             left: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2) - (${$$asideMenuWidthCode} + ${vars.sizes.$6} ))`,
           },

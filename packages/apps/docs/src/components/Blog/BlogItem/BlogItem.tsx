@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Stack, Tag } from '@kadena/react-ui';
+import { Box, Heading, Stack, Tag } from '@kadena/react-ui';
 
 import { Avatar } from '../Avatar';
 import { FormatDate } from '..';
