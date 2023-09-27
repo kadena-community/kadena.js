@@ -71,7 +71,7 @@ export interface IMenuItem {
   isActive: boolean; // checks that the actual item is active in the menu
   isMenuOpen: boolean; // makes sure that the parent slide menu is open
   children: IMenuItem[];
-  isIndex: boolean;
+  isIndex?: boolean;
 }
 
 export interface ILayout {
