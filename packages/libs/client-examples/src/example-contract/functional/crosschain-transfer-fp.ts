@@ -8,6 +8,7 @@ import {
 import {
   addKeyset,
   addSigner,
+  asyncPipe,
   composePactCommand,
   continuation,
   execution,
@@ -16,8 +17,9 @@ import {
 } from '@kadena/client/fp';
 import { isSignedCommand } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
-import { listen, pollCreateSpv, submit } from '../util/client';
-import { asyncPipe, inspect } from '../util/fp-helpers';
+
+import { listen, pollCreateSpv, submitOne } from '../util/client';
+import { inspect } from '../util/fp-helpers';
 import { keyFromAccount } from '../util/keyFromAccount';
 
 interface IAccount {
@@ -111,7 +113,7 @@ async function doCrossChainTransfer(
   to: IAccount,
   amount: string,
 ) {
-  return asyncPipe(
+  const debit = asyncPipe(
     startInTheFirstChain(from, to, amount),
     createTransaction,
     inspect('TX_CREATED'),
@@ -119,14 +121,17 @@ async function doCrossChainTransfer(
     inspect('TX_SIGNED'),
     (command) =>
       isSignedCommand(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
-    submit,
+    submitOne,
     inspect('TX_SUBMITTED'),
     listen,
     inspect('TX_RESULT'),
     rejectIfFailed('DEBIT_REJECTED'),
+  );
+
+  const credit = asyncPipe(
     (status: ICommandResult) =>
       Promise.all([
-        status.continuation?.pactId,
+        status.continuation!.pactId,
         pollCreateSpv(
           {
             requestKey: status.reqKey,
@@ -135,17 +140,19 @@ async function doCrossChainTransfer(
           },
           to.chainId,
         ),
-      ]),
+      ] as const),
     inspect('SPV_CREATED'),
     finishInTheTargetChain(to.chainId),
     createTransaction,
     inspect('CONT_CREATED'),
-    submit,
+    submitOne,
     inspect('CONT_SUBMITTED'),
     listen,
     inspect('CONT_RESULT'),
     rejectIfFailed('CREDIT REJECTED'),
-  )({});
+  );
+
+  return asyncPipe(debit, credit)({});
 }
 
 const from: IAccount = {

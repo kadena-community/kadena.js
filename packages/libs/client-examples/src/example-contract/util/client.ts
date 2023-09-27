@@ -1,5 +1,5 @@
-import { createClient } from '@kadena/client';
-import type { ChainId } from '@kadena/types';
+import { ITransactionDescriptor, createClient } from '@kadena/client';
+import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
 // you can edit this function if you want to use different network like dev-net or a private net
 export const apiHostGenerator = ({
@@ -37,3 +37,7 @@ export const {
   getStatus,
   createSpv,
 } = createClient(apiHostGenerator);
+
+export const submitOne = async (
+  transaction: ICommand | IUnsignedCommand,
+): Promise<ITransactionDescriptor> => submit(transaction as ICommand);
