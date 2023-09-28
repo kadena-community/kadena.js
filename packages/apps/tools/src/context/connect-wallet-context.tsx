@@ -4,7 +4,7 @@ import type { Network } from '@/constants/kadena';
 import { useDidUpdateEffect } from '@/hooks';
 import { env } from '@/utils/env';
 import type { INetworkDto } from '@/utils/network';
-import { getAllNetworks } from '@/utils/network';
+import { getAllNetworks, getInitialNetworks } from '@/utils/network';
 import { getItem, setItem } from '@/utils/persist';
 import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
@@ -89,7 +89,7 @@ export const WalletConnectClientContextProvider: FC<
   );
   const [selectedAccount, setSelectedAccount] = useState<string>();
   const [isInitializing, setIsInitializing] = useState(false);
-  const [networksData, setNetworksData] = useState<INetworkDto[]>([]);
+  const [networksData, setNetworksData] = useState<INetworkDto[]>(getInitialNetworks());
 
   useLayoutEffect(() => {
     const initialNetwork = getItem(StorageKeys.NETWORK) as Network;

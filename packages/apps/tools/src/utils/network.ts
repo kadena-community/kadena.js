@@ -58,6 +58,23 @@ export const getAllNetworks = (
       }),
     );
   }
+  return allNetworkObjects;
+}
+
+
+  export const getInitialNetworks = (): INetworkDto[] => {
+    const allNetworkObjects: INetworkDto[] = [];
+    const configNetworks = getConfigNetworkNames();
+
+    configNetworks.forEach((item: DefinedNetwork) => {
+      allNetworkObjects.push({
+        networkId: item,
+        label: kadenaConstants[item].label,
+        API: kadenaConstants[item].API,
+        apiHost: kadenaConstants[item].apiHost,
+        estatsHost: kadenaConstants[item].estatsHost,
+      } as INetworkDto);
+    });
 
   return allNetworkObjects;
 };
