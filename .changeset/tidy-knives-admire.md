@@ -1,8 +1,8 @@
 ---
-'@kadena/pactjs-cli': major
+'@kadena/pactjs-cli': minor
 ---
 
-Move `.kadena/pactjs-generated` one level up, out of `node_modules`
+Move `.kadena/pactjs-generated` one level up, out of `node_modules`.
 
 Migration is done by moving  `.kadena/pactjs-generated` from `types` to `include` in `tsconfig.json`.
 
@@ -27,3 +27,6 @@ After:
   "include": [".kadena/pactjs-generated"]
 }
 ```
+
+Currently the generation is done twice during a graceful deprecation period,
+with the next major bump the "after" situation is the only situation.
