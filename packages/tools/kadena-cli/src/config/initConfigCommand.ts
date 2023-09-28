@@ -103,6 +103,9 @@ export function initCommand(program: Command, version: string): void {
         return;
       }
 
+      // TODO: make this fix nicer
+      await import('./../utils/bootstrap');
+
       await runConfigInitialization(program, version, args);
     });
 }
