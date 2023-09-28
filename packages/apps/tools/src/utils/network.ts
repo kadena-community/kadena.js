@@ -28,11 +28,11 @@ export const getAllNetworks = (
   const allNetworkObjects: INetworkDto[] = [];
   const configNetworks = getConfigNetworkNames();
 
-  const configNetworksAdded = localStorageNetworks.find(
+  const configNetworksAdded = Boolean(localStorageNetworks) &&  localStorageNetworks.find(
     (item) => item.label === 'Mainnet' || item.label === 'Testnet',
   );
 
-  if (!configNetworksAdded && localStorageNetworks.length === 0) {
+  if (!configNetworksAdded) {
     configNetworks.forEach((item: DefinedNetwork) => {
       allNetworkObjects.push({
         networkId: item,
@@ -43,13 +43,15 @@ export const getAllNetworks = (
     });
   }
 
-  localStorageNetworks.forEach((item) =>
-    allNetworkObjects.push({
-      ...item,
-      apiHost: ({ networkId, chainId }) =>
-        `https://${item.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
-    }),
-  );
+  if(Boolean(localStorageNetworks)) {
+    localStorageNetworks.forEach((item) =>
+      allNetworkObjects.push({
+        ...item,
+        apiHost: ({ networkId, chainId }) =>
+          `https://${item.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      }),
+    );
+  }
 
   return allNetworkObjects;
 };
