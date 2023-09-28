@@ -89,7 +89,9 @@ export const WalletConnectClientContextProvider: FC<
   );
   const [selectedAccount, setSelectedAccount] = useState<string>();
   const [isInitializing, setIsInitializing] = useState(false);
-  const [networksData, setNetworksData] = useState<INetworkDto[]>(getInitialNetworks());
+  const [networksData, setNetworksData] = useState<INetworkDto[]>(
+    getInitialNetworks(),
+  );
 
   useLayoutEffect(() => {
     const initialNetwork = getItem(StorageKeys.NETWORK) as Network;
