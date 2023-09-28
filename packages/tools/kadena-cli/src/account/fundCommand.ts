@@ -42,8 +42,6 @@ export function fundCommand(program: Command, version: string): void {
           );
         }
 
-        console.log('projectArgs', projectArgs);
-
         const responses = await collectResponses(
           { ...projectArgs, ...args },
           fundQuestions,

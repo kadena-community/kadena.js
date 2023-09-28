@@ -1,7 +1,9 @@
 import { getCombinedConfig } from '../config/configHelpers';
 import type { TConfigOptions } from '../config/configQuestions';
+import { projectPrefix, projectRootPath } from '../constants/config';
 import { defaultNetworksPath } from '../constants/networks';
 
+import chalk from 'chalk';
 import type { Command, Option } from 'commander';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
@@ -201,7 +203,7 @@ export function createSimpleSubCommand<T>(
       try {
         await actionFn(args);
       } catch (error) {
-        console.error(`Error executing command ${name}:`, error);
+        console.log(chalk.red(`Error executing command ${name}: ${error})`));
         process.exit(1);
       }
     });
@@ -236,6 +238,31 @@ export function getExistingNetworks(): ICustomChoice[] {
       value: path.basename(filename.toLowerCase(), '.yaml'),
       name: path.basename(filename.toLowerCase(), '.yaml'),
     }));
+  } catch (error) {
+    console.error('Error reading networks directory:', error);
+    return [];
+  }
+}
+
+export function getExistingProjects(): ICustomChoice[] {
+  if (!existsSync(projectRootPath)) {
+    return [];
+  }
+
+  try {
+    return readdirSync(projectRootPath)
+      .filter((filename) => {
+        // return filename that is prefixed with prefix from constants and ands with .yaml
+        return (
+          filename.toLowerCase().startsWith(projectPrefix) &&
+          filename.toLowerCase().endsWith('.yaml') &&
+          filename.length > 4
+        );
+      })
+      .map((filename) => ({
+        value: path.basename(filename.toLowerCase(), '.yaml'),
+        name: path.basename(filename.toLowerCase(), '.yaml'),
+      }));
   } catch (error) {
     console.error('Error reading networks directory:', error);
     return [];

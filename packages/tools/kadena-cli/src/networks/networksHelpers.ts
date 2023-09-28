@@ -39,8 +39,6 @@ export function writeNetworks(options: TNetworksCreateOptions): void {
     `${sanitizedNetwork}.yaml`,
   );
 
-  console.log('networkFilePath: ', networkFilePath);
-
   let existingConfig: TNetworksCreateOptions;
 
   if (PathExists(networkFilePath)) {
@@ -123,7 +121,7 @@ export function displayNetworksConfig(): void {
   };
 
   const existingNetworks: ICustomNetworksChoice[] = getExistingNetworks();
-  const standardNetworks: string[] = ['mainnet', 'testnet', 'devnet'];
+  const standardNetworks: string[] = ['mainnet', 'testnet'];
 
   existingNetworks.forEach(({ value }) => {
     const networkFilePath = path.join(defaultNetworksPath, `${value}.yaml`);

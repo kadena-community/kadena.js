@@ -9,7 +9,7 @@ import {
 
 import { createVar, style } from '@vanilla-extract/css';
 
-export const $$shadowWidth = createVar();
+const $$shadowWidth = createVar();
 
 export const codebackgroundClass = style([
   sprinkles({}),
@@ -30,6 +30,13 @@ export const codebackgroundClass = style([
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: '-100px',
         backgroundPositionX: '-100px',
+
+        transform: 'scale(.3, 1)  translate(100%, 0)',
+        opacity: 0,
+
+        transition: 'transform 1.5s ease, opacity 3s ease-out',
+        transitionDelay: '600ms',
+
         '@media': {
           [`screen and ${breakpoints.md}`]: {
             backgroundColor: 'transparent',
@@ -66,6 +73,15 @@ export const codebackgroundClass = style([
     },
   },
 ]);
+
+export const loadedClass = style({
+  selectors: {
+    '&::before': {
+      transform: 'scale(1, 1)  translate(0, 0)',
+      opacity: 1,
+    },
+  },
+});
 
 export const pageGridClass = style({
   gridTemplateColumns: 'auto auto',

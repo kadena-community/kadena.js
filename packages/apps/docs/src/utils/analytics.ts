@@ -11,9 +11,10 @@ export const EVENT_NAMES = {
   'click:newsletter': 'click:newsletter',
   'click:search': 'click:search',
   'click:subscribe': 'click:subscribe',
+  'click:page_helpful': 'click:page_helpful',
 } as const;
 
-export const COOKIE_CONSENTNAME = 'cookie_consent';
+const COOKIE_CONSENTNAME = 'cookie_consent';
 
 type IOptionsType = Record<string, string | undefined>;
 

@@ -2,7 +2,7 @@ import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
-export const consentButton = style([
+const consentButton = style([
   sprinkles({
     display: 'flex',
     alignItems: 'center',
@@ -18,7 +18,7 @@ export const consentButtonColorVariants = styleVariants({
   positive: [
     consentButton,
     sprinkles({
-      color: '$positiveContrast',
+      color: '$positiveContrastInverted',
     }),
     {
       ':hover': {
@@ -29,7 +29,7 @@ export const consentButtonColorVariants = styleVariants({
   negative: [
     consentButton,
     sprinkles({
-      color: '$negativeContrast',
+      color: '$negativeContrastInverted',
     }),
     {
       ':hover': {

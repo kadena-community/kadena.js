@@ -4,9 +4,9 @@ import { style } from '@vanilla-extract/css';
 
 export const linkContainerClass = style([
   sprinkles({
-    display: 'flex',
+    display: 'inline-flex',
     gap: '$2',
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
   }),
   {
     selectors: {
@@ -14,11 +14,15 @@ export const linkContainerClass = style([
         textDecoration: 'none',
       },
       '&:active': {
-        color: vars.colors.$negativeContrast,
+        color: vars.colors.$negativeContrastInverted,
       },
       '&:visited': {
-        color: vars.colors.$tertiaryContrast,
+        color: vars.colors.$tertiaryContrastInverted,
       },
     },
   },
 ]);
+
+export const blockLinkClass = style({
+  display: 'flex',
+});

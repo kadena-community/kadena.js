@@ -22,7 +22,7 @@ export const headerIconLinkClass = style([
   },
 ]);
 
-export const headerClass = style([
+const headerClass = style([
   sprinkles({
     position: 'relative',
     display: 'flex',

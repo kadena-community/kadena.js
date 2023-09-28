@@ -1,8 +1,12 @@
-import { askForNetwork } from '../networks/networksCreateQuestions';
 import type { IQuestion } from '../utils/helpers';
-import { isAlphanumeric, isNumeric } from '../utils/helpers';
+import {
+  capitalizeFirstLetter,
+  getExistingNetworks,
+  isAlphanumeric,
+  isNumeric,
+} from '../utils/helpers';
 
-import { input } from '@inquirer/prompts';
+import { input, select } from '@inquirer/prompts';
 import { z } from 'zod';
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -19,6 +23,32 @@ export const ConfigOptions = z.object({
 });
 
 export type TConfigOptions = z.infer<typeof ConfigOptions>;
+
+interface ICustomChoice {
+  value: string;
+  name?: string;
+  description?: string;
+  disabled?: boolean | string;
+}
+
+export async function askForNetwork(): Promise<string> {
+  const existingNetworks: ICustomChoice[] = getExistingNetworks();
+  existingNetworks
+    .filter((v, i, a) => a.findIndex((v2) => v2.name === v.name) === i)
+    .map((network) => {
+      return {
+        value: network.value,
+        name: capitalizeFirstLetter(network.value),
+      };
+    });
+
+  const networkChoice = await select({
+    message: 'Select an existing network',
+    choices: existingNetworks,
+  });
+
+  return networkChoice.toLowerCase();
+}
 
 export const configQuestions: IQuestion<TConfigOptions>[] = [
   {

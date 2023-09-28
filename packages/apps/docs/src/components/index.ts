@@ -1,6 +1,5 @@
 export * from './Layout';
 export * from './Typography';
-export * from './LandingPageCard';
 export * from './NotFound';
 export * from './Breadcrumbs';
 export * from './BrowseSection';
@@ -15,3 +14,6 @@ export * from './MostPopular';
 export * from './InfiniteScroll';
 export * from './Loading';
 export * from './AuthorProfileCard';
+export * from './TagList';
+export * from './AuthorList';
+export * from './DocsCard';

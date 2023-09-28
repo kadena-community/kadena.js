@@ -1,7 +1,8 @@
 import { SystemIcon } from '..';
 
-import { linkContainerClass } from './Link.css';
+import { blockLinkClass, linkContainerClass } from './Link.css';
 
+import classnames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 
@@ -12,6 +13,7 @@ export interface ILinkProps {
   icon?: keyof typeof SystemIcon;
   iconAlign?: 'left' | 'right';
   asChild?: boolean;
+  block?: boolean;
 }
 
 export const Link: FC<ILinkProps> = ({
@@ -19,9 +21,14 @@ export const Link: FC<ILinkProps> = ({
   icon,
   iconAlign = 'left',
   asChild = false,
+  block = false,
   ...restProps
 }) => {
   const Icon = icon && SystemIcon[icon];
+
+  const linkClasses = classnames(linkContainerClass, {
+    [blockLinkClass]: block,
+  });
 
   const getContents = (linkContents: ReactNode): ReactNode => (
     <>
@@ -35,13 +42,13 @@ export const Link: FC<ILinkProps> = ({
     return React.cloneElement(children, {
       ...restProps,
       ...children.props,
-      className: linkContainerClass,
+      className: linkClasses,
       children: getContents(children.props.children),
     });
   }
 
   return (
-    <a className={linkContainerClass} {...restProps}>
+    <a className={linkClasses} {...restProps}>
       {getContents(children)}
     </a>
   );

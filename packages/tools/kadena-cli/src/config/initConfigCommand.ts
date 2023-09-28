@@ -1,4 +1,4 @@
-import { projectRootPath } from '../constants/config';
+import { projectPrefix, projectRootPath } from '../constants/config';
 import { ensureFileExists } from '../utils/filesystem';
 import { collectResponses } from '../utils/helpers';
 import { processZodErrors } from '../utils/processZodErrors';
@@ -12,6 +12,7 @@ import type { TConfigOptions } from './configQuestions';
 import { ConfigOptions, configQuestions } from './configQuestions';
 
 import { select } from '@inquirer/prompts';
+import chalk from 'chalk';
 import clear from 'clear';
 import type { Command } from 'commander';
 import { Option } from 'commander';
@@ -49,7 +50,10 @@ async function runConfigInitialization(
 
     writeProjectConfig(config);
 
-    displayGeneralConfig(getProjectConfig(config.projectName.toLowerCase()));
+    displayGeneralConfig(
+      // new project don't have a prefix yet
+      getProjectConfig(`${projectPrefix}${config.projectName.toLowerCase()}`),
+    );
 
     const proceed = await select({
       message: 'Is the above configuration correct?',
@@ -61,13 +65,13 @@ async function runConfigInitialization(
 
     if (proceed === 'no') {
       clear(true);
-      console.log("Let's restart the configuration process.");
+      console.log(chalk.yellow("Let's restart the configuration process."));
       await runConfigInitialization(program, version, args);
     } else {
-      console.log('Configuration complete. Goodbye!');
+      console.log(chalk.green('Configuration complete. Goodbye!'));
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     processZodErrors(program, e, args);
   }
 }
@@ -95,7 +99,7 @@ export function initCommand(program: Command, version: string): void {
         args.projectName &&
         !(await shouldProceedWithConfigInit(args.projectName))
       ) {
-        console.log('Config initialization cancelled.');
+        console.log(chalk.yellow('Config initialization cancelled.'));
         return;
       }
 

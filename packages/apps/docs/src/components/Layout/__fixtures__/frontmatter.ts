@@ -58,17 +58,6 @@ export const landingFrontMatter: IBasePageMeta = {
   order: 0,
   description: 'Welcome to Kadena&apos;s documentation!',
   layout: 'landing',
-  icon: 'KadenaOverview',
-};
-
-export const homeFrontMatter: IBasePageMeta = {
-  title: 'Welcome to Kadena docs',
-  menu: 'Pact',
-  label: 'Pact Test',
-  order: 1,
-  description:
-    "Welcome to Kadena's documentation! All our Documentation in 1 place. Pact, ChainWeb, KDA, Marmalade etc",
-  layout: 'home',
 };
 
 export const redoclyFrontMatter: IPageMeta = {
@@ -79,7 +68,6 @@ export const redoclyFrontMatter: IPageMeta = {
   order: 5,
   description: 'Be a part of our ecosystem',
   layout: 'redocly',
-  icon: 'Chainweb',
   editLink: 'XXXX/packages/apps/docs/src/pages/docs/kadena/overview.mdx',
   navigation: {
     previous: {

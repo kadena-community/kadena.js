@@ -1,5 +1,7 @@
 import { Divider, Stack } from '@kadena/react-ui';
 
+import { PageHelpful } from '../PageHelpful/PageHelpful';
+
 import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
 import { bottomWrapperClass, bottomWrapperCodeLayoutClass } from './styles.css';
@@ -66,8 +68,8 @@ export const BottomPageSection: FC<IProps> = ({
         )}
       </Stack>
       <Divider />
-      <Stack justifyContent="flex-end" width="100%">
-        <div />
+      <Stack justifyContent="space-between" width="100%">
+        <PageHelpful editLink={editLink} />
         <Subscribe />
       </Stack>
     </footer>

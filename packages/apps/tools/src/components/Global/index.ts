@@ -8,3 +8,4 @@ export {
   type OnChainSelectChange,
 } from '@/components/Global/ChainSelect';
 export * from '@/components/Global/FormStatusNotification';
+export * from '@/components/Global/ModuleExplorer';

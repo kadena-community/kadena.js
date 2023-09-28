@@ -12,9 +12,9 @@ const rule: Rule = ({ dir, pkg }) => {
     if (typeof pkg.scripts.lint === 'undefined' || pkg.scripts.lint === '') {
       issues.push(['warn', 'Missing "lint" script']);
     } else {
-      const lintScript = pkg.scripts['lint:src'] ?? pkg.scripts.lint;
-      if (!/--fix/.test(lintScript)) {
-        issues.push(['warn', 'Missing --fix argument in "lint" script']);
+      const formatLintScript = pkg.scripts['format:lint'];
+      if (!/--fix/.test(formatLintScript)) {
+        issues.push(['warn', 'Missing --fix argument in "format:lint" script']);
       }
     }
 

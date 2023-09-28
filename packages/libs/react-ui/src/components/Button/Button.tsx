@@ -1,6 +1,10 @@
+import type { colorVariants, typeVariants } from './Button.css';
 import {
+  activeClass,
+  alternativeVariant,
   buttonLoadingClass,
-  colorVariants,
+  compactVariant,
+  defaultVariant,
   iconLoadingClass,
 } from './Button.css';
 
@@ -14,9 +18,11 @@ export interface IButtonProps
     ButtonHTMLAttributes<HTMLButtonElement>,
     'as' | 'disabled' | 'className'
   > {
+  active?: boolean;
   as?: 'button' | 'a';
-  variant?: keyof typeof colorVariants;
+  asChild?: boolean;
   children: React.ReactNode;
+  color?: keyof typeof colorVariants;
   disabled?: boolean;
   href?: string;
   icon?: keyof typeof SystemIcon;
@@ -27,22 +33,27 @@ export interface IButtonProps
     | React.FormEventHandler<HTMLButtonElement>;
   target?: '_blank' | '_self';
   title?: string;
-  asChild?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: keyof typeof typeVariants;
 }
 
 export const Button: FC<IButtonProps> = ({
+  active = false,
   as = 'button',
+  asChild = false,
   children,
-  variant = 'primary',
+  color = 'primary',
   href,
   icon,
   iconAlign = 'right',
   loading,
   target,
-  asChild = false,
+  title = '',
+  type,
+  variant = 'default',
   ...restProps
 }) => {
-  const ariaLabel = restProps['aria-label'] ?? restProps.title;
+  const ariaLabel = restProps['aria-label'] ?? title;
   const renderAsAnchor = as === 'a' && href !== undefined && href !== '';
 
   let Icon = icon && SystemIcon[icon];
@@ -50,8 +61,20 @@ export const Button: FC<IButtonProps> = ({
     Icon = SystemIcon.Loading;
   }
 
-  const buttonClassname = cn(colorVariants[variant], {
+  const buttonVariant = (): string => {
+    switch (variant) {
+      case 'compact':
+        return compactVariant[color];
+      case 'alternative':
+        return alternativeVariant[color];
+      default:
+        return defaultVariant[color];
+    }
+  };
+
+  const buttonClassname = cn(buttonVariant(), {
     [buttonLoadingClass]: loading,
+    [activeClass]: active,
   });
 
   const iconClassname = cn({
@@ -73,12 +96,10 @@ export const Button: FC<IButtonProps> = ({
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(children, {
       ...restProps,
-      href,
-      ariaLabel,
-      target,
       ...children.props,
-      className: buttonClassname,
+      ariaLabel,
       children: getContents(children.props.children),
+      className: buttonClassname,
     });
   }
 
@@ -102,6 +123,7 @@ export const Button: FC<IButtonProps> = ({
       aria-label={ariaLabel}
       className={buttonClassname}
       data-testid="kda-button"
+      type={type}
     >
       {getContents(children)}
     </button>

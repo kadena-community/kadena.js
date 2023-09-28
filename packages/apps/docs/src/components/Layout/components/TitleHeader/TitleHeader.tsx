@@ -1,34 +1,41 @@
-import { Heading, ProductIcon, Stack } from '@kadena/react-ui';
+import { Heading, Stack } from '@kadena/react-ui';
 
 import {
   avatarClass,
   headerClass,
+  headerLoadedClass,
   headerWrapperClass,
   subheaderClass,
   wrapperClass,
 } from './style.css';
 
-import type { ProductIconNames } from '@/types/Layout';
+import classNames from 'classnames';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface IProps {
   title: string;
   subTitle?: string;
-  icon?: ProductIconNames;
   avatar?: string;
 }
 
-export const TitleHeader: FC<IProps> = ({ title, subTitle, icon, avatar }) => {
-  const Icon = icon ? ProductIcon[icon] : null;
+export const TitleHeader: FC<IProps> = ({ title, subTitle, avatar }) => {
+  const router = useRouter();
+  const [loaderHeaderClass, setLoaderHeaderClass] =
+    useState<string>(headerWrapperClass);
 
+  useEffect(() => {
+    if (router.isReady) {
+      setLoaderHeaderClass(classNames(headerWrapperClass, headerLoadedClass));
+    }
+  }, [router.isReady]);
   return (
-    <div data-cy="titleheader" className={headerWrapperClass}>
+    <div data-cy="titleheader" className={loaderHeaderClass}>
       <header className={headerClass}>
         <div className={wrapperClass}>
           <Stack alignItems="center" gap="$4">
-            {Icon && <Icon size="heroHeader" />}
             {avatar && (
               <Image
                 className={avatarClass}

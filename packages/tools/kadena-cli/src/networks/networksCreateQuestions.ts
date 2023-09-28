@@ -1,4 +1,4 @@
-import { standardNetworks } from '../constants/networks';
+// import { standardNetworks } from '../constants/networks';
 import type { IQuestion } from '../utils/helpers';
 import {
   capitalizeFirstLetter,
@@ -33,18 +33,18 @@ interface ICustomChoice {
 export async function askForNetwork(): Promise<string> {
   const existingNetworks: ICustomChoice[] = getExistingNetworks();
 
-  const prefixedStandardNetworks: ICustomChoice[] = standardNetworks.map(
-    (network) => {
-      return {
-        value: network,
-        name: network,
-      } as ICustomChoice;
-    },
-  );
+  // const prefixedStandardNetworks: ICustomChoice[] = standardNetworks.map(
+  //   (network) => {
+  //     return {
+  //       value: network,
+  //       name: network,
+  //     } as ICustomChoice;
+  //   },
+  // );
 
   const allNetworkChoices: ICustomChoice[] = [
     ...existingNetworks,
-    ...prefixedStandardNetworks,
+    // ...prefixedStandardNetworks,
   ]
     .filter((v, i, a) => a.findIndex((v2) => v2.name === v.name) === i)
     .map((network) => {
@@ -55,7 +55,7 @@ export async function askForNetwork(): Promise<string> {
     });
 
   const networkChoice = await select({
-    message: 'Select an existing network or create a new one:',
+    message: 'Select an (default) existing network or create a new one:',
     choices: [
       ...allNetworkChoices,
       { value: 'CREATE_NEW', name: 'Create a New Network' } as ICustomChoice,

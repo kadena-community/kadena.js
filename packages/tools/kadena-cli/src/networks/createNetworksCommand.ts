@@ -11,6 +11,7 @@ import {
 import { displayNetworkConfig, writeNetworks } from './networksHelpers';
 
 import { select } from '@inquirer/prompts';
+import chalk from 'chalk';
 import clear from 'clear';
 import type { Command } from 'commander';
 import debug from 'debug';
@@ -59,13 +60,13 @@ async function runNetworksCreate(
 
     if (proceed === 'no') {
       clear(true);
-      console.log("Let's restart the configuration process.");
+      console.log(chalk.yellow("Let's restart the configuration process."));
       await runNetworksCreate(program, version, args);
     } else {
-      console.log('Configuration complete. Goodbye!');
+      console.log(chalk.green('Configuration complete. Goodbye!'));
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     processZodErrors(program, e, args);
   }
 }
@@ -94,7 +95,7 @@ export function createNetworksCommand(program: Command, version: string): void {
         args.network &&
         !(await shouldProceedWithNetworkCreate(args.network.toLowerCase()))
       ) {
-        console.log('Network creation aborted.');
+        console.log(chalk.red('Network creation aborted.'));
         return;
       }
 

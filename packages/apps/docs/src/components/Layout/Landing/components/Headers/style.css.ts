@@ -1,36 +1,10 @@
-import {
-  breakpoints,
-  darkThemeClass,
-  sprinkles,
-  vars,
-} from '@kadena/react-ui/theme';
+import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import {
   $$backgroundOverlayColor,
   $$pageWidth,
 } from '@/components/Layout/global.css';
 import { style } from '@vanilla-extract/css';
-
-export const mostPopularWrapper = style([
-  sprinkles({
-    display: 'flex',
-  }),
-  {
-    paddingLeft: vars.sizes.$1,
-    '@media': {
-      [`screen and ${breakpoints.lg}`]: {
-        paddingLeft: vars.sizes.$15,
-      },
-
-      [`screen and ${breakpoints.xl}`]: {
-        paddingLeft: vars.sizes.$48,
-      },
-      [`screen and ${breakpoints.xxl}`]: {
-        paddingLeft: vars.sizes.$64,
-      },
-    },
-  },
-]);
 
 export const headerClass = style([
   sprinkles({
@@ -49,11 +23,24 @@ export const headerClass = style([
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
         backgroundPositionY: '0%',
-        transform: 'scale(-1, -1)',
+        transform: 'scale(-1, -0.3) translate(0, 100%)',
+        opacity: 0,
+
+        transition: 'transform 1s ease, opacity 2s  ease-out',
+        transitionDelay: '600ms',
       },
     },
   },
 ]);
+
+export const headerLoadedClass = style({
+  selectors: {
+    '&::before': {
+      transform: 'scale(-1, -1.5) translate(0, 70px)',
+      opacity: 1,
+    },
+  },
+});
 
 export const wrapperClass = style([
   sprinkles({

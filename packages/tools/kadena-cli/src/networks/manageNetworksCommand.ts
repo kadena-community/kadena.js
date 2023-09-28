@@ -13,6 +13,7 @@ import { writeNetworks } from './networksHelpers';
 import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import type { Command } from 'commander';
+import { clear } from 'console';
 import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
@@ -28,7 +29,7 @@ export function manageNetworks(program: Command, version: string): void {
         const existingNetworks: ICustomNetworksChoice[] = getExistingNetworks();
 
         if (existingNetworks.length === 0) {
-          chalk.red('No existing networks found.');
+          console.log(chalk.red('No existing networks found.'));
           return;
         }
 
@@ -53,7 +54,8 @@ export function manageNetworks(program: Command, version: string): void {
         NetworksCreateOptions.parse(networkConfig);
 
         writeNetworks(networkConfig);
-        console.log('Network configurations updated.');
+        clear();
+        console.log(chalk.green('Network configurations updated.'));
       } catch (e) {
         processZodErrors(program, e, args);
       }

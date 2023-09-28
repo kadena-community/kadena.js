@@ -1,4 +1,8 @@
-import { configDefaults, projectRootPath } from '../constants/config';
+import {
+  configDefaults,
+  projectPrefix,
+  projectRootPath,
+} from '../constants/config';
 import { defaultNetworksPath } from '../constants/networks';
 import type { TNetworksCreateOptions } from '../networks/networksCreateQuestions';
 import { PathExists, writeFile } from '../utils/filesystem';
@@ -25,7 +29,7 @@ export function writeProjectConfig(options: TConfigOptions): void {
   const { projectName } = options;
   const projectFilePath = path.join(
     projectRootPath,
-    `/${sanitizeFilename(projectName).toLowerCase()}.yaml`,
+    `/${projectPrefix}${sanitizeFilename(projectName).toLowerCase()}.yaml`,
   );
 
   const existingConfig: TConfigOptions = (PathExists(
@@ -70,7 +74,7 @@ export function displayGeneralConfig(config: TConfigOptions): void {
   displaySeparator();
   log(formatConfig('Project Name', config.projectName));
   log(formatConfig('Network', config.network));
-  log(formatConfig('Chain Id', config.chainId));
+  log(formatConfig('Chain-ID', config.chainId));
   displaySeparator();
 }
 
@@ -113,7 +117,7 @@ export function getCurrentNetworkConfigForProject(
   try {
     return yaml.load(readFileSync(networkConfigPath, 'utf8')) as TConfigOptions;
   } catch (e) {
-    chalk.red(`error loading network config: ${e}`);
+    console.log(chalk.red(`error loading network config: ${e}`));
     throw Error('Network config file not found');
   }
 }

@@ -1,4 +1,5 @@
 import { SystemIcon } from '../Icon';
+import { Stack } from '..';
 
 import type { ILinkProps } from '@components/Link';
 import { Link } from '@components/Link';
@@ -55,6 +56,9 @@ const meta: Meta<
       description:
         "Use this prop when you're using a different Link component and want to pass on styles, icons, and additional props. For example when using next/link in Next.js.",
     },
+    block: {
+      description: 'Set to true to make the link a block element.',
+    },
   },
 };
 
@@ -77,24 +81,29 @@ export const Primary: Story = {
   render: ({ href, target, icon, iconAlign }) => {
     return (
       <>
-        <Link href={href} target={target} asChild>
-          Link without icon
-        </Link>
-        <Link
-          href={`${href}?${Date.now()}`}
-          target={target}
-          iconAlign={iconAlign}
-          icon={icon}
-        >
-          Non-visited
-        </Link>
-        <Link href={href} target={target} icon={icon}>
-          Kadena.io
-        </Link>
-        <Link asChild>
-          <a href={href} target={target}>
-            Link asChild
-          </a>
+        <Stack direction="row" gap="$2">
+          <Link href={href} target={target} asChild>
+            Link without icon
+          </Link>
+          <Link
+            href={`${href}?${Date.now()}`}
+            target={target}
+            iconAlign={iconAlign}
+            icon={icon}
+          >
+            Non-visited
+          </Link>
+          <Link href={href} target={target} icon={icon}>
+            Kadena.io
+          </Link>
+          <Link asChild>
+            <a href={href} target={target}>
+              Link asChild
+            </a>
+          </Link>
+        </Stack>
+        <Link href={href} target={target} icon={icon} block>
+          Block Link
         </Link>
       </>
     );

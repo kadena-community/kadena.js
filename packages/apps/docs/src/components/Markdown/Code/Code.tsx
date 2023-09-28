@@ -19,10 +19,11 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
           return null;
         }
 
-        return React.cloneElement(child, {
-          ...child.props,
-          className: codeLine,
-        });
+        return (
+          <span {...props} className={codeLine}>
+            <span>{child}</span>
+          </span>
+        );
       })}
     </code>
   );

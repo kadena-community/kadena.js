@@ -8,7 +8,7 @@ import { $$leftSideWidth, $$pageWidth, $$sideMenu } from '../global.css';
 
 import { createVar, style } from '@vanilla-extract/css';
 
-export const $$shadowWidth = createVar();
+const $$shadowWidth = createVar();
 
 export const asidebackgroundClass = style([
   sprinkles({
@@ -31,6 +31,12 @@ export const asidebackgroundClass = style([
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: '-100px',
         backgroundPositionX: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${$$shadowWidth}))`,
+
+        transform: 'scale(.3, 1)  translate(100%, 0)',
+        opacity: 0,
+
+        transition: 'transform 1s ease, opacity 2s  ease-out',
+        transitionDelay: '600ms',
 
         '@media': {
           [`screen and ${breakpoints.xxl}`]: {
@@ -57,6 +63,15 @@ export const asidebackgroundClass = style([
     },
   },
 ]);
+
+export const loadedClass = style({
+  selectors: {
+    '&::before': {
+      transform: 'scale(1, 1)  translate(0, 0)',
+      opacity: 1,
+    },
+  },
+});
 
 export const pageGridClass = style({
   '@media': {

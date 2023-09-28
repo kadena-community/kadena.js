@@ -12,3 +12,5 @@ export const configDefaults: TConfigOptions = {
 
 export const workPath: string = `${process.cwd()}/.kadena`;
 export const projectRootPath: string = `${process.cwd()}`;
+
+export const projectPrefix: string = 'kda-';

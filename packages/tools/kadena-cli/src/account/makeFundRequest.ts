@@ -4,7 +4,7 @@ import {
   isSignedTransaction,
   Pact,
 } from '@kadena/client';
-import { PactNumber } from '@kadena/pactjs';
+import type { IPactDecimal } from '@kadena/types';
 
 import { FAUCET_CONSTANTS } from '../constants/faucet';
 import { accountExists } from '../utils/chainHelpers';
@@ -12,6 +12,7 @@ import { pollStatus, submit } from '../utils/client';
 
 import type { TFundQuestions } from './fundQuestions';
 
+import chalk from 'chalk';
 import { stdout } from 'process';
 
 async function fundTestNet({
@@ -20,7 +21,9 @@ async function fundTestNet({
   networkId,
 }: TFundQuestions): Promise<void> {
   const { faucetOpKP, faucetAcct, faucetOpAcct } = FAUCET_CONSTANTS;
-  const amount = 20;
+  const amount = {
+    decimal: '20.0',
+  } as IPactDecimal;
   if (await accountExists(receiver, chainId.toString() as ChainId, networkId)) {
     console.log('not implemented');
     /*
@@ -41,21 +44,13 @@ async function fundTestNet({
 
   const transaction = Pact.builder
     .execution(
-      Pact.modules['user.coin-faucet']['request-coin'](
-        receiver,
-        new PactNumber(amount).toPactDecimal(),
-      ),
+      Pact.modules['user.coin-faucet']['request-coin'](receiver, amount),
     )
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .addSigner(faucetOpKP.publicKey, (withCap: any) => [withCap('coin.GAS')])
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .addSigner(faucetOpKP.publicKey, (withCap: any) => [
-      withCap(
-        'coin.TRANSFER',
-        faucetAcct,
-        receiver,
-        new PactNumber(amount).toPactDecimal(),
-      ),
+      withCap('coin.TRANSFER', faucetAcct, receiver, amount),
     ])
     .setMeta({
       senderAccount: faucetOpAcct,
@@ -72,19 +67,25 @@ async function fundTestNet({
   try {
     if (isSignedTransaction(signedTx)) {
       const transactionDescriptor = await submit(signedTx);
-      console.log('submitted transaction', transactionDescriptor.requestKey);
+      console.log(
+        chalk.green(
+          `submitted transaction - ${transactionDescriptor.requestKey}`,
+        ),
+      );
       stdout.write(`polling ${transactionDescriptor.requestKey}`);
       await pollStatus(transactionDescriptor, {
         onPoll() {
           stdout.write(`.`);
         },
       });
-      console.log(`funding successful`);
+
+      console.log(chalk.green('funding successful'));
     } else {
-      console.log('unsigned', signedTx);
+      console.log(chalk.yellow(`unsigned - ${signedTx}`));
       throw new Error('Failed to sign transaction');
     }
   } catch (e) {
+    console.error(chalk.red(`Failed to fund account: ${e}`));
     throw new Error(`Failed to fund account: ${e}`);
   }
 }

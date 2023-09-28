@@ -7,7 +7,7 @@ export type LabelType =
   | 'caution'
   | 'danger'
   | 'warning';
-export type IconType = 'Information' | 'Bell' | undefined;
+type IconType = 'Information' | 'Bell' | undefined;
 
 export const getColor = (label?: LabelType): INotificationProps['color'] => {
   if (!label) return;

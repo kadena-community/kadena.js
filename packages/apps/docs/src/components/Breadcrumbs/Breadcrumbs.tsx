@@ -1,6 +1,6 @@
 import { Box, Breadcrumbs as StyledBreadcrumbs } from '@kadena/react-ui';
 
-import type { IMenuItem, ProductIconNames } from '@/types/Layout';
+import type { IMenuItem } from '@/types/Layout';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
@@ -12,7 +12,6 @@ interface IProps {
 interface IBreadcrumbItem {
   root: string;
   title: string;
-  icon?: ProductIconNames;
 }
 
 export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
@@ -26,7 +25,6 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
       tree.push({
         root: i.root,
         title: i.menu,
-        icon: i.icon,
       });
 
       return checkSubTree(i.children);
@@ -39,7 +37,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
 
   return (
     <Box data-cy="breadcrumbs" marginTop="$10" marginBottom="$4">
-      <StyledBreadcrumbs.Root icon={items[0]?.icon}>
+      <StyledBreadcrumbs.Root>
         {items.map((item, idx) =>
           idx < items.length - 1 ? (
             <StyledBreadcrumbs.Item key={item.root} asChild>
