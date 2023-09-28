@@ -28,9 +28,11 @@ export const getAllNetworks = (
   const allNetworkObjects: INetworkDto[] = [];
   const configNetworks = getConfigNetworkNames();
 
-  const configNetworksAdded = Boolean(localStorageNetworks) &&  localStorageNetworks.find(
-    (item) => item.label === 'Mainnet' || item.label === 'Testnet',
-  );
+  const configNetworksAdded =
+    Boolean(localStorageNetworks) &&
+    localStorageNetworks.find(
+      (item) => item.label === 'Mainnet' || item.label === 'Testnet',
+    );
 
   if (!configNetworksAdded) {
     configNetworks.forEach((item: DefinedNetwork) => {
@@ -43,7 +45,7 @@ export const getAllNetworks = (
     });
   }
 
-  if(Boolean(localStorageNetworks)) {
+  if (localStorageNetworks) {
     localStorageNetworks.forEach((item) =>
       allNetworkObjects.push({
         ...item,
