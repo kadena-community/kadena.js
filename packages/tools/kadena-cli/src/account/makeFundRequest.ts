@@ -13,6 +13,7 @@ import { pollStatus, submit } from '../utils/client';
 import type { TFundQuestions } from './fundQuestions';
 
 import chalk from 'chalk';
+import clear from 'clear';
 import { stdout } from 'process';
 
 async function fundTestNet({
@@ -67,24 +68,35 @@ async function fundTestNet({
   try {
     if (isSignedTransaction(signedTx)) {
       const transactionDescriptor = await submit(signedTx);
+      clear();
       console.log(
         chalk.green(
-          `submitted transaction - ${transactionDescriptor.requestKey}`,
+          `Submitted transaction - ${transactionDescriptor.requestKey}`,
         ),
       );
-      stdout.write(`polling ${transactionDescriptor.requestKey}`);
+      stdout.write(
+        chalk.yellow(
+          `Processing transaction ${transactionDescriptor.requestKey}`,
+        ),
+      );
       await pollStatus(transactionDescriptor, {
         onPoll() {
-          stdout.write(`.`);
+          stdout.write(chalk.yellow(`.`));
         },
       });
 
-      console.log(chalk.green('funding successful'));
+      console.log(
+        chalk.green(
+          `Funding of wallet ${receiver} with txId: ${transactionDescriptor.requestKey} succesful`,
+        ),
+      );
     } else {
+      clear();
       console.log(chalk.yellow(`unsigned - ${signedTx}`));
       throw new Error('Failed to sign transaction');
     }
   } catch (e) {
+    clear();
     console.error(chalk.red(`Failed to fund account: ${e}`));
     throw new Error(`Failed to fund account: ${e}`);
   }

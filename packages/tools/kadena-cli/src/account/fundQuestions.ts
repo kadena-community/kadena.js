@@ -30,10 +30,7 @@ export const fundQuestions: IQuestion<TFundQuestions>[] = [
     prompt: async (config, prevAnswers, args) => {
       const answer = await select({
         message: 'Which account to use?',
-        choices: [
-          { value: 'fakeaccuntname', name: 'fakeaccountname' },
-          { value: undefined, name: `don't pick from listNot from list` },
-        ],
+        choices: [{ value: undefined, name: `don't select from list` }],
       });
 
       if (answer !== undefined) {
@@ -42,7 +39,7 @@ export const fundQuestions: IQuestion<TFundQuestions>[] = [
 
       return await input({
         message:
-          'Enter the k:receiver wallet address that will receive the funds',
+          'Enter the k:receiver wallet address that will receive the funds:',
       });
     },
   },
