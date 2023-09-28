@@ -10,7 +10,7 @@ import mkdirp from 'mkdirp';
 import { dirname, join } from 'path';
 import rimraf from 'rimraf';
 
-export const TARGET_FOLDER: '.kadena/pactjs-generated' =
+export const TARGET_PACKAGE: '.kadena/pactjs-generated' =
   '.kadena/pactjs-generated' as const;
 
 const shallowFindFile = (path: string, file: string): string | undefined => {
@@ -36,7 +36,7 @@ function verifyTsconfigTypings(
     if (!tsconfig.includes('.kadena/pactjs-generated')) {
       console.log(
         `\n!!! WARNING: You have not added .kadena/pactjs-generated to tsconfig.json. Add it now.
-{ "compilerOptions": { "include": [".kadena/pactjs-generated"] } }`,
+{ "compilerOptions": { "types": [".kadena/pactjs-generated"] } }`,
       );
     }
   }
@@ -118,76 +118,108 @@ async function generator(
 interface IGenerate {
   (program: Command, version: string): (args: IContractGenerateOptions) => void;
 }
-export const generate: IGenerate = (program, version) => async (args) => {
-  // walk up in file tree from process.cwd() to get the package.json
-  const targetPackageJson: string | undefined = shallowFindFile(
-    process.cwd(),
-    'package.json',
-  );
-
-  if (
-    targetPackageJson === undefined ||
-    targetPackageJson.length === 0 ||
-    targetPackageJson === '/'
-  ) {
-    program.error('Could not find package.json');
-    return;
-  }
-
-  const moduleDtss = await generator(args);
-
-  console.log(`Using package.json at ${targetPackageJson}`);
-
-  const targetDirectory: string = join(
-    dirname(targetPackageJson),
-    TARGET_FOLDER,
-  );
-
-  if (args.clean === true) {
-    console.log(`Cleaning ${targetDirectory}`);
-    rimraf.sync(targetDirectory);
-  }
-
-  if (!existsSync(targetDirectory)) {
-    console.log(`Creating directory ${targetDirectory}`);
-    mkdirp.sync(targetDirectory);
-  }
-
-  moduleDtss.forEach((dts, moduleName) => {
-    const targetFilePath: string = join(
-      dirname(targetPackageJson),
-      TARGET_FOLDER,
-      `${moduleName}.d.ts`,
+export const deprecatedGenerate: IGenerate =
+  (program, version) => async (args) => {
+    // walk up in file tree from process.cwd() to get the package.json
+    const targetPackageJson: string | undefined = shallowFindFile(
+      process.cwd(),
+      'package.json',
     );
 
-    // write dts to index.d.ts to file
-    const indexPath: string = join(targetDirectory, 'index.d.ts');
-    const exportStatement: string = `export * from './${moduleName}';`;
-
-    // always overwrite existing file
-    console.log(`Writing to new file ${targetFilePath}`);
-    writeFileSync(targetFilePath, dts);
-
-    // if indexPath exists, append export to existing file
-    if (existsSync(indexPath)) {
-      console.log(`Appending to existing file ${indexPath}`);
-      const indexDts: string = readFileSync(indexPath, 'utf8');
-      // Append the export to the file if it's not already there.
-      if (!indexDts.includes(exportStatement)) {
-        const separator = indexDts.endsWith('\n') ? '' : '\n';
-        const newIndexDts = [indexDts, exportStatement].join(separator);
-        writeFileSync(indexPath, newIndexDts);
-      }
-    } else {
-      console.log(`Writing to new file ${indexPath}`);
-      writeFileSync(indexPath, exportStatement);
+    if (
+      targetPackageJson === undefined ||
+      targetPackageJson.length === 0 ||
+      targetPackageJson === '/'
+    ) {
+      program.error('Could not find package.json');
+      return;
     }
-  });
 
-  const tsconfigPath: string | undefined = shallowFindFile(
-    join(process.cwd()),
-    'tsconfig.json',
-  );
+    const moduleDtss = await generator(args);
 
-  verifyTsconfigTypings(tsconfigPath, program);
-};
+    console.log(`Using package.json at ${targetPackageJson}`);
+
+    const targetDirectory: string = join(
+      dirname(targetPackageJson),
+      'node_modules',
+      TARGET_PACKAGE,
+    );
+
+    if (args.clean === true) {
+      console.log(`Cleaning ${targetDirectory}`);
+      rimraf.sync(targetDirectory);
+    }
+
+    if (!existsSync(targetDirectory)) {
+      console.log(`Creating directory ${targetDirectory}`);
+      mkdirp.sync(targetDirectory);
+    }
+
+    moduleDtss.forEach((dts, moduleName) => {
+      const targetFilePath: string = join(
+        dirname(targetPackageJson),
+        'node_modules',
+        TARGET_PACKAGE,
+        `${moduleName}.d.ts`,
+      );
+
+      // write dts to index.d.ts to file
+      const indexPath: string = join(targetDirectory, 'index.d.ts');
+      const exportStatement: string = `export * from './${moduleName}';`;
+
+      // always overwrite existing file
+      console.log(`Writing to new file ${targetFilePath}`);
+      writeFileSync(targetFilePath, dts);
+
+      // if indexPath exists, append export to existing file
+      if (existsSync(indexPath)) {
+        console.log(`Appending to existing file ${indexPath}`);
+        const indexDts: string = readFileSync(indexPath, 'utf8');
+        // Append the export to the file if it's not already there.
+        if (!indexDts.includes(exportStatement)) {
+          const separator = indexDts.endsWith('\n') ? '' : '\n';
+          const newIndexDts = [indexDts, exportStatement].join(separator);
+          writeFileSync(indexPath, newIndexDts);
+        }
+      } else {
+        console.log(`Writing to new file ${indexPath}`);
+        writeFileSync(indexPath, exportStatement);
+      }
+    });
+
+    // write npm init to package.json
+    const defaultPackageJsonPath: string = join(
+      targetDirectory,
+      'package.json',
+    );
+
+    // if exists, do nothing
+    if (existsSync(defaultPackageJsonPath)) {
+      console.log(`Package.json already exists at ${defaultPackageJsonPath}`);
+    } else {
+      // write default contents to package.json
+      console.log(`Writing default package.json to ${defaultPackageJsonPath}`);
+      writeFileSync(
+        defaultPackageJsonPath,
+        JSON.stringify(
+          {
+            name: TARGET_PACKAGE,
+            version: version,
+            description: 'TypeScript definitions for @kadena/client',
+            types: 'index.d.ts',
+            keywords: ['pact', 'contract', 'pactjs'],
+            author: `@kadena/pactjs-cli@${version}`,
+          },
+          null,
+          2,
+        ),
+      );
+    }
+
+    const tsconfigPath: string | undefined = shallowFindFile(
+      join(process.cwd()),
+      'tsconfig.json',
+    );
+
+    verifyTsconfigTypings(tsconfigPath, program);
+  };

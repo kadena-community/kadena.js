@@ -91,3 +91,5 @@ packages/*/*/temp
 storybook-static
 
 temp
+
+.kadena
