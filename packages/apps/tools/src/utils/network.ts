@@ -28,9 +28,11 @@ export const getAllNetworks = (
   const allNetworkObjects: INetworkDto[] = [];
   const configNetworks = getConfigNetworkNames();
 
-  const configNetworksAdded = localStorageNetworks.find(item => item.label === 'Mainnet' || item.label === 'Testnet');
+  const configNetworksAdded = localStorageNetworks.find(
+    (item) => item.label === 'Mainnet' || item.label === 'Testnet',
+  );
 
-  if(!configNetworksAdded && localStorageNetworks.length === 0) {
+  if (!configNetworksAdded && localStorageNetworks.length === 0) {
     configNetworks.forEach((item: DefinedNetwork) => {
       allNetworkObjects.push({
         networkId: item,

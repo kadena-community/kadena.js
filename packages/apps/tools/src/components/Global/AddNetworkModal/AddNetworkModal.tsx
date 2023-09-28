@@ -78,7 +78,7 @@ export const AddNetworkModal: FC = () => {
                 ...register('label'),
                 onChange: (e) => setLabel(e.target.value),
                 value: label,
-                placeholder: 'devnet'
+                placeholder: 'devnet',
               }}
             />
             <TextField
@@ -88,7 +88,7 @@ export const AddNetworkModal: FC = () => {
                 ...register('networkId'),
                 onChange: (e) => setNetworkId(e.target.value),
                 value: networkId,
-                placeholder: 'fast-development'
+                placeholder: 'fast-development',
               }}
             />
             <TextField
@@ -98,7 +98,7 @@ export const AddNetworkModal: FC = () => {
                 ...register('api'),
                 onChange: (e) => setApi(e.target.value),
                 value: api,
-                placeholder: 'localhost:8080'
+                placeholder: 'localhost:8080',
               }}
             />
           </Stack>
