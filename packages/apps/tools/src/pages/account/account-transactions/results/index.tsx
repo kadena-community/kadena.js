@@ -102,7 +102,7 @@ const CheckTransactions: FC = () => {
       account,
     });
 
-    setResults(result);
+    setResults(result as ITransaction[]);
   }
 
   async function refreshResultsEvent(): Promise<void> {

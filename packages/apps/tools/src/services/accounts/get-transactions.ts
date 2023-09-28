@@ -24,7 +24,7 @@ export async function getTransactions(options: {
   network: Network;
   chain: ChainwebChainId;
   account: string;
-}): Promise<ITransaction[]> {
+}): Promise<ITransaction[] | null> {
   debug(getTransactions.name);
   const { network, chain, account } = options;
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -33,15 +33,13 @@ export async function getTransactions(options: {
   const networkDto = networksData.find((item) => item.networkId === network);
 
   if (!networkDto) {
-    // @ts-ignore
-    return;
+    return null;
   }
 
   try {
-    // @ts-ignore
     return await fetch(
       `https://${networkDto.API}/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
-    ).then((res) => res.json());
+    ).then((res) => res.json() as unknown as ITransaction[]);
   } catch (error) {
     debug(error);
   }

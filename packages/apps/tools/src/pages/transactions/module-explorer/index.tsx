@@ -1,4 +1,7 @@
-import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type {
+  ChainwebChainId,
+  ILocalCommandResult,
+} from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { Breadcrumbs } from '@kadena/react-ui';
 
@@ -17,6 +20,7 @@ import {
 } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { describeModule } from '@/services/modules/describe-module';
+import type { IModulesResult } from '@/services/modules/list-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
 import { useQueries, useQuery } from '@tanstack/react-query';
@@ -46,7 +50,9 @@ export const getModules = async (network: Network): Promise<IModule[]> => {
 
   const results = await Promise.all(promises);
 
-  const transformed = results.map((result) => transformModulesRequest(result));
+  const transformed = results.map((result) =>
+    transformModulesRequest(result as IModulesResult),
+  );
   const flattened = transformed.flat();
   const sorted = flattened.sort((a, b) => {
     if (a.moduleName === b.moduleName) {
@@ -62,14 +68,14 @@ export const getCompleteModule = async (
   { moduleName, chainId }: IModule,
   network: Network,
 ): Promise<IModule & { code: string }> => {
-  const request = await describeModule(
+  const request = (await describeModule(
     moduleName,
     chainId,
     network,
     kadenaConstants.DEFAULT_SENDER,
     kadenaConstants.GAS_PRICE,
     1000,
-  );
+  )) as ILocalCommandResult;
 
   if (request.result.status === 'failure') {
     throw new Error('Something went wrong');
@@ -102,14 +108,14 @@ export const getServerSideProps: GetServerSideProps<{
     (value) => CHAINS.includes(value),
   );
   if (moduleQueryValue && chainQueryValue) {
-    const moduleResponse = await describeModule(
+    const moduleResponse = (await describeModule(
       moduleQueryValue,
       chainQueryValue as ChainwebChainId,
       network,
       kadenaConstants.DEFAULT_SENDER,
       kadenaConstants.GAS_PRICE,
       1000,
-    );
+    )) as ILocalCommandResult;
 
     if (moduleResponse.result.status !== 'failure') {
       openedModules.push({

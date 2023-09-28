@@ -21,7 +21,7 @@ export const listModules = async (
   gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
-): Promise<IModulesResult> => {
+): Promise<IModulesResult | null> => {
   debug(listModules.name);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { networksData } = useWalletConnectClient();
@@ -29,8 +29,7 @@ export const listModules = async (
   const networkDto = networksData.find((item) => item.networkId === network);
 
   if (!networkDto) {
-    // @ts-ignore
-    return;
+    return null;
   }
 
   const { local } = createClient(

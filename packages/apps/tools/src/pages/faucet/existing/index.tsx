@@ -144,7 +144,7 @@ const ExistingAccountFaucetPage: FC = () => {
             expanded={true}
             icon="Information"
             title={t(
-              'The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet.',
+              `The Faucet is not available on Mainnet. On other networks, the Faucet smart contract must be deployed to fund accounts. In the Module Explorer you can see if it's deployed: https://tools.kadena.io/transactions/module-explorer?module=user.coin-faucet&chain=1`,
             )}
           />
         ) : null}
