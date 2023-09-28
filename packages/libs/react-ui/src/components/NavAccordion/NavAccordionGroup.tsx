@@ -1,21 +1,23 @@
 'use client';
 
 import {
+  navAccordionArrowButtonClass,
   navAccordionButtonClass,
-  navAccordionToggleIconClass,
+  navAccordionGroupClass,
+  navAccordionGroupIconClass,
+  navAccordionGroupListClass,
+  navAccordionGroupTitleClass,
 } from './NavAccordion.css';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 
 export interface INavAccordionGroupProps {
   children: FunctionComponentElement<INavAccordionLinkProps>[];
   index?: number;
-  isOpen?: boolean;
-  onClick?: () => void;
   onClose?: () => void;
   onOpen?: () => void;
   title: string;
@@ -23,32 +25,53 @@ export interface INavAccordionGroupProps {
 
 export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
   children,
-  isOpen,
-  onClick,
   onClose,
   onOpen,
   title,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const handleClick = (): void => {
     if (isOpen) {
       onClose?.();
     } else {
       onOpen?.();
     }
-    onClick?.();
+    setIsOpen(!isOpen);
   };
   return (
-    <ul>
-      <button className={navAccordionButtonClass} onClick={handleClick}>
-        {title}
-        <SystemIcon.Close
-          className={classNames(navAccordionToggleIconClass, {
+    <div className={classNames([navAccordionGroupClass])}>
+      <button
+        className={classNames([
+          navAccordionButtonClass,
+          navAccordionArrowButtonClass,
+        ])}
+        onClick={handleClick}
+      >
+        <SystemIcon.ChevronDown
+          className={classNames(navAccordionGroupIconClass, {
             isOpen,
           })}
-          size="xs"
+          size="sm"
         />
+        <span className={navAccordionGroupTitleClass}>{title}</span>
       </button>
-      {isOpen && children && <div>{children}</div>}
-    </ul>
+      {isOpen && children && (
+        <ul className={navAccordionGroupListClass}>
+          {React.Children.map(children, (section) =>
+            React.cloneElement(
+              section as React.ReactElement<
+                HTMLElement | INavAccordionLinkProps,
+                React.JSXElementConstructor<
+                  JSX.Element & INavAccordionLinkProps
+                >
+              >,
+              {
+                deepLink: true,
+              },
+            ),
+          )}
+        </ul>
+      )}
+    </div>
   );
 };

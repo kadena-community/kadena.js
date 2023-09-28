@@ -3,6 +3,7 @@
 import {
   navAccordionButtonClass,
   navAccordionContentClass,
+  navAccordionContentListClass,
   navAccordionSectionWrapperClass,
   navAccordionToggleIconClass,
 } from './NavAccordion.css';
@@ -54,7 +55,14 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
       </button>
 
       {isOpen && children && (
-        <div className={navAccordionContentClass}>{children}</div>
+        <ul
+          className={classNames([
+            navAccordionContentClass,
+            navAccordionContentListClass,
+          ])}
+        >
+          {children}
+        </ul>
       )}
     </section>
   );
