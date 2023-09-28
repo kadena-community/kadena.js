@@ -6,6 +6,7 @@ export const accordionSectionWrapperClass = style([
   sprinkles({
     display: 'block',
     marginBottom: '$6',
+    overflow: 'hidden',
   }),
   {
     borderBottom: `1px solid ${vars.colors.$borderDefault}`,
