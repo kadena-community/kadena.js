@@ -11,7 +11,7 @@ export interface INetworkDto {
   label: string;
   API: string;
   apiHost: ({ networkId, chainId }: IApiHostData) => string;
-  estatsHost: (account: string) => string
+  estatsHost: (account: string) => string;
 }
 
 const isNetwork = (x: any): x is Network =>
@@ -42,7 +42,7 @@ export const getAllNetworks = (
         label: kadenaConstants[item].label,
         API: kadenaConstants[item].API,
         apiHost: kadenaConstants[item].apiHost,
-        estatsHost: kadenaConstants[item].estatsHost
+        estatsHost: kadenaConstants[item].estatsHost,
       } as INetworkDto);
     });
   }
