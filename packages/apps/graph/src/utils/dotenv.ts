@@ -7,6 +7,7 @@ export const dotenv: {
   USE_EMBEDDED_POSTGRES: boolean;
   DATABASE_URL: string | undefined;
   EMBEDDED_DATABASE_URL: string | undefined;
+  LOGGER: 'console' | 'debug' | 'file' | undefined;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   USE_EMBEDDED_POSTGRES: process.env.USE_EMBEDDED_POSTGRES === 'true',

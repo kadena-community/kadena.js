@@ -1,10 +1,10 @@
 import type { Block, Prisma } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
-import debug from 'debug';
+import _debug from 'debug';
 import type { PubSub } from 'graphql-yoga';
 
-const log: debug.Debugger = debug('graph:blocks');
-const performanceLog: debug.Debugger = debug('performance');
+const log: _debug.Debugger = _debug('graph:blocks');
+const performanceLog: _debug.Debugger = _debug('performance');
 class BlocksService {
   private _lastBlocks: Block[] = [];
   private _prisma: PrismaClient<Prisma.PrismaClientOptions, never>;
