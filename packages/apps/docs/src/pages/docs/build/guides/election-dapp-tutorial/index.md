@@ -52,9 +52,9 @@ will be provided at the top of the respective chapter page.
 
  * [Chapter 01: Getting started](/docs/build/guides/election-dapp-tutorial/01-getting-started)
  * [Chapter 02: Running Devnet](/docs/build/guides/election-dapp-tutorial/02-running-devnet)
- * [Chapter 03: Namespaces](/docs/build/guides/election-dapp-tutorial/03-namespaces)
- * [Chapter 04: Keysets](/docs/build/guides/election-dapp-tutorial/04-keysets)
- * [Chapter 05: Admin account](/docs/build/guides/election-dapp-tutorial/05-admin-account)
+ * [Chapter 03: Admin account](/docs/build/guides/election-dapp-tutorial/03-admin-account)
+ * [Chapter 04: Namespaces](/docs/build/guides/election-dapp-tutorial/04-namespaces)
+ * [Chapter 05: Keysets](/docs/build/guides/election-dapp-tutorial/05-keysets)
  * [Chapter 06: Deploy keyset](/docs/build/guides/election-dapp-tutorial/06-deploy-keyset)
  * [Chapter 07: Deploy contract](/docs/build/guides/election-dapp-tutorial/07-deploy-contract)
  * [Chapter 08: Nominate candidates](/docs/build/guides/election-dapp-tutorial/08-nominate-candidates)

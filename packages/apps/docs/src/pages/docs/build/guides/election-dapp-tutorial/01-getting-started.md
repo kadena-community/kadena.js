@@ -62,9 +62,9 @@ notice a `./root` folder that already contains some `.pact` files. They contain
 Pact modules that the smart contracts you will create in later chapters depend
 on. They only need to be there for local testing with `.repl` files. You do not
 need to deploy them to the blockchain alongside your own `.pact` files, because
-they are already deployed on Devnet, Testnet and Mainnet. So, once your Pact module
-is deployed on the blockchain it will be able to load these dependencies from
-the blockchain.
+they are already deployed on Devnet, Testnet and Mainnet by default. So, once
+your Pact module is deployed on the blockchain it will be able to load these
+dependencies from the blockchain.
 
 ### Front-end
 
