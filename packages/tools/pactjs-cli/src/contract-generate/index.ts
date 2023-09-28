@@ -1,6 +1,7 @@
 import type { networkMap } from '../utils/networkMap';
 
 import { generate } from './generate';
+import { deprecatedGenerate } from './generate-deprecated';
 
 import type { Command } from 'commander';
 import { Option } from 'commander';
@@ -118,5 +119,7 @@ export function contractGenerateCommand(
       }
 
       generate(program, version)(args);
+      // TODO Remove with next major bump
+      deprecatedGenerate(program, version)(args);
     });
 }
