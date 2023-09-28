@@ -9,7 +9,7 @@ type KadenaConstants = {
     label: string;
     API: string;
     apiHost: (params: { networkId: string; chainId: string }) => string;
-    estatsHost?: () => string;
+    estatsHost: () => string;
   };
 } & {
   GAS_LIMIT: number;

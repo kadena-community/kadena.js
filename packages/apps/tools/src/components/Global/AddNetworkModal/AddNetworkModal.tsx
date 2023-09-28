@@ -14,14 +14,10 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-// @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
-const DOMAIN_NAME_REGEX: RegExp =
-  /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
-
 const schema = z.object({
   label: z.string().trim(),
   networkId: z.string().trim(),
-  api: z.string().trim().regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name'),
+  api: z.string().trim(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -46,6 +42,8 @@ export const AddNetworkModal: FC = () => {
       API: api,
       apiHost: ({ networkId, chainId }) =>
         `https://${api}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      estatsHost: (account) =>
+        `https://${api}/txs/account/${account}?limit=100`,
     });
     setNetworksData(networks);
 
