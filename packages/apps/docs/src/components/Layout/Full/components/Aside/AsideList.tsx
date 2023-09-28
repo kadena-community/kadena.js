@@ -1,7 +1,7 @@
 import { asideListClass, asideListInnerVariants } from './styles.css';
 
 import classNames from 'classnames';
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import React from 'react';
 
 interface IProps {
