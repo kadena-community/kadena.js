@@ -27,7 +27,7 @@ export const NavAccordionRoot: FC<INavAccordionRootProps> = ({
   }, [linked]);
 
   return (
-    <div data-testid="kda-nav-accordion-sections">
+    <nav data-testid="kda-nav-accordion-sections">
       {React.Children.map(children, (section, sectionIndex) =>
         React.cloneElement(
           section as React.ReactElement<
@@ -49,6 +49,6 @@ export const NavAccordionRoot: FC<INavAccordionRootProps> = ({
           },
         ),
       )}
-    </div>
+    </nav>
   );
 };

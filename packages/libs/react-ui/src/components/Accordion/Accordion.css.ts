@@ -26,7 +26,7 @@ export const accordionButtonClass = style([
     cursor: 'pointer',
     display: 'flex',
     fontSize: '$base',
-    fontWeight: '$medium',
+    fontWeight: '$semiBold',
     justifyContent: 'space-between',
     padding: 0,
     paddingBottom: '$2',
@@ -44,7 +44,7 @@ export const accordionToggleIconClass = style([
     transition: 'transform 0.2s ease',
     selectors: {
       '&.isOpen': {
-        transform: 'rotate(0deg)',
+        transform: 'rotate(180deg)',
       },
     },
   },

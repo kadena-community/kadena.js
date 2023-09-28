@@ -45,17 +45,32 @@ export const Dynamic: IStory = {
   render: ({ linked }) => {
     return (
       <NavAccordion.Root linked={linked} initialOpenSection={-1}>
-        <NavAccordion.Link>Introduction</NavAccordion.Link>
-        <NavAccordion.Group title="Guides">
-          <NavAccordion.Link>Pact Smart Contract</NavAccordion.Link>
-          <NavAccordion.Link>Marmalade Tutorial</NavAccordion.Link>
-          <NavAccordion.Link>Voting dApp Tutorial</NavAccordion.Link>
-        </NavAccordion.Group>
-        <NavAccordion.Group title="Support">
-          <NavAccordion.Link>Developer Program</NavAccordion.Link>
-          <NavAccordion.Link>Technical Grants</NavAccordion.Link>
-        </NavAccordion.Group>
-        <NavAccordion.Link>Pact Reference</NavAccordion.Link>
+        {/* <NavAccordion.Link>Introduction</NavAccordion.Link> */}
+        <NavAccordion.Section title="Developers">
+          <NavAccordion.Group title="Guides">
+            <NavAccordion.Link href="#pact">
+              Pact Smart Contract
+            </NavAccordion.Link>
+            <NavAccordion.Link href="#marmalade">
+              Marmalade Tutorial
+            </NavAccordion.Link>
+            <NavAccordion.Link href="#dapp-tutorial">
+              Voting dApp Tutorial
+            </NavAccordion.Link>
+          </NavAccordion.Group>
+          <NavAccordion.Link href="#get-involved">
+            Getting Involved
+          </NavAccordion.Link>
+        </NavAccordion.Section>
+        <NavAccordion.Section title="Support">
+          <NavAccordion.Link href="#developer-program">
+            Developer Program
+          </NavAccordion.Link>
+          <NavAccordion.Link href="#technical-grants">
+            Technical Grants
+          </NavAccordion.Link>
+        </NavAccordion.Section>
+        {/* <NavAccordion.Link>Pact Reference</NavAccordion.Link> */}
       </NavAccordion.Root>
     );
   },
