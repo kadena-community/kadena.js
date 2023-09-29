@@ -1,7 +1,7 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
 import type { Network } from '@/constants/kadena';
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import type { INetworkData } from '@/utils/network';
 import Debug from 'debug';
 
 export interface ITransaction {
@@ -24,11 +24,10 @@ export async function getTransactions(options: {
   network: Network;
   chain: ChainwebChainId;
   account: string;
+  networksData: INetworkData[];
 }): Promise<ITransaction[] | null> {
   debug(getTransactions.name);
-  const { network, chain, account } = options;
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { networksData } = useWalletConnectClient();
+  const { network, chain, account, networksData } = options;
 
   const networkDto = networksData.find((item) => item.networkId === network);
 

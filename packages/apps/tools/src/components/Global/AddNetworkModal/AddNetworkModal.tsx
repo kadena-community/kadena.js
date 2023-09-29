@@ -39,8 +39,7 @@ export const AddNetworkModal: FC = () => {
     setError('');
   }, [networkId]);
 
-  const handleSave = (e: { preventDefault: () => void }): void => {
-    e.preventDefault();
+  const handleSubmit = async (data: FormData): Promise<void> => {
     const networks = [...networksData];
 
     const isDuplicate = networks.find(
@@ -66,26 +65,17 @@ export const AddNetworkModal: FC = () => {
     clearModal();
   };
 
-  const { register } = useForm<FormData>({
+  const { register, handleSubmit: validateThenSubmit } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: {
-      label: '',
-      api: '',
-      networkId: '',
-    },
-    // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
-    resetOptions: {
-      keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
-    },
   });
 
   return (
     <div className={modalOptionsContentStyle}>
-      <form onSubmit={handleSave}>
+      <form onSubmit={validateThenSubmit(handleSubmit)}>
         <section>
           <Stack direction="column" gap="$sm">
             <TextField
-              label={'Network label'}
+              label={t('Network label')}
               inputProps={{
                 id: 'label',
                 ...register('label'),
@@ -95,7 +85,7 @@ export const AddNetworkModal: FC = () => {
               }}
             />
             <TextField
-              label={'Network ID'}
+              label={t('Network ID')}
               inputProps={{
                 id: 'networkId',
                 ...register('networkId'),
@@ -105,7 +95,7 @@ export const AddNetworkModal: FC = () => {
               }}
             />
             <TextField
-              label={'Network api'}
+              label={t('Network api')}
               inputProps={{
                 id: 'api',
                 ...register('api'),

@@ -163,5 +163,8 @@
   "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!",
   "The Faucet is not available on Mainnet. On other networks, the Faucet smart contract must be deployed to fund accounts. In the Module Explorer you can see if it's deployed: https://tools.kadena.io/transactions/module-explorer?module=user.coin-faucet&chain=1": "The Faucet is not available on Mainnet. On other networks, the Faucet smart contract must be deployed to fund accounts. In the Module Explorer you can see if it's deployed: https://tools.kadena.io/transactions/module-explorer?module=user.coin-faucet&chain=1",
   "+ add network": "+ add network",
-  "Save Network": "Save Network"
+  "Save Network": "Save Network",
+  "Network label": "Network label",
+  "Network ID": "Network ID",
+  "Network api": "Network api"
 }

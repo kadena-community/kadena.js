@@ -122,7 +122,7 @@ const ExistingAccountFaucetPage: FC = () => {
     [chainID, t],
   );
 
-  const showNotification = selectedNetwork === 'mainnet01';
+  const showNotification = selectedNetwork !== 'testnet04';
 
   const {
     register,

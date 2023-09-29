@@ -5,7 +5,7 @@ import { style } from '@vanilla-extract/css';
 export const modalOptionsContentStyle = style([
   sprinkles({
     width: '100%',
-    fontSize: '$xs',
+    paddingTop: '$xs',
   }),
 ]);
 
@@ -20,6 +20,6 @@ export const formButtonStyle = style([
 export const errorMessageStyle = style([
   sprinkles({
     marginTop: '$md',
-    color: '$red40',
+    color: '$red60',
   }),
 ]);

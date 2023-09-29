@@ -7,11 +7,11 @@ import type { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import type { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import {
   convertIntToChainId,
   validateRequestKey,
 } from '@/services/utils/utils';
+import type { INetworkData } from '@/utils/network';
 import Debug from 'debug';
 import type { Translate } from 'next-translate';
 
@@ -51,10 +51,12 @@ export async function getTransferData({
   requestKey,
   network,
   t,
+  networksData,
 }: {
   requestKey: string;
   network: Network;
   t: Translate;
+  networksData: INetworkData[];
 }): Promise<ITransferDataResult> {
   debug(getTransferData.name);
   const validatedRequestKey = validateRequestKey(requestKey);
@@ -65,14 +67,11 @@ export async function getTransferData({
 
   try {
     const chainInfoPromises = Array.from(new Array(20)).map((item, chainId) => {
-      const { networksData } = useWalletConnectClient();
-
       const networkDto = networksData.find(
         (item) => item.networkId === network,
       );
 
       if (!networkDto) {
-        // @ts-ignore
         return;
       }
 

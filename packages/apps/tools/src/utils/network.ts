@@ -6,7 +6,7 @@ interface IApiHostData {
   chainId: string;
 }
 
-export interface INetworkDto {
+export interface INetworkData {
   networkId: Network;
   label: string;
   API: string;
@@ -24,15 +24,15 @@ export const getConfigNetworkNames = (): DefinedNetwork[] => {
 };
 
 export const getAllNetworks = (
-  localStorageNetworks: INetworkDto[],
-): INetworkDto[] => {
-  const allNetworkObjects: INetworkDto[] = [];
+  localStorageNetworks: INetworkData[],
+): INetworkData[] => {
+  const allNetworkObjects: INetworkData[] = [];
   const configNetworks = getConfigNetworkNames();
 
   const configNetworksAdded =
     Boolean(localStorageNetworks) &&
-    localStorageNetworks.find(
-      (item) => item.label === 'Mainnet' || item.label === 'Testnet',
+    localStorageNetworks.find((item) =>
+      getConfigNetworkNames().includes(item.label),
     );
 
   if (!configNetworksAdded) {
@@ -43,7 +43,7 @@ export const getAllNetworks = (
         API: kadenaConstants[item].API,
         apiHost: kadenaConstants[item].apiHost,
         estatsHost: kadenaConstants[item].estatsHost,
-      } as INetworkDto);
+      } as INetworkData);
     });
   }
 
@@ -61,8 +61,8 @@ export const getAllNetworks = (
   return allNetworkObjects;
 };
 
-export const getInitialNetworks = (): INetworkDto[] => {
-  const allNetworkObjects: INetworkDto[] = [];
+export const getInitialNetworks = (): INetworkData[] => {
+  const allNetworkObjects: INetworkData[] = [];
   const configNetworks = getConfigNetworkNames();
 
   configNetworks.forEach((item: DefinedNetwork) => {
@@ -72,7 +72,7 @@ export const getInitialNetworks = (): INetworkDto[] => {
       API: kadenaConstants[item].API,
       apiHost: kadenaConstants[item].apiHost,
       estatsHost: kadenaConstants[item].estatsHost,
-    } as INetworkDto);
+    } as INetworkData);
   });
 
   return allNetworkObjects;

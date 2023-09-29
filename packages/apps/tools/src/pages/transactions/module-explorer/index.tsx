@@ -23,6 +23,7 @@ import { describeModule } from '@/services/modules/describe-module';
 import type { IModulesResult } from '@/services/modules/list-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
+import type { INetworkData } from '@/utils/network';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type {
@@ -37,11 +38,15 @@ const QueryParams = {
   CHAIN: 'chain',
 };
 
-export const getModules = async (network: Network): Promise<IModule[]> => {
+export const getModules = async (
+  network: Network,
+  networksData: INetworkData[],
+): Promise<IModule[]> => {
   const promises = CHAINS.map((chain) => {
     return listModules(
       chain,
       network,
+      networksData,
       kadenaConstants.DEFAULT_SENDER,
       kadenaConstants.GAS_PRICE,
       1000,
@@ -67,11 +72,13 @@ export const getModules = async (network: Network): Promise<IModule[]> => {
 export const getCompleteModule = async (
   { moduleName, chainId }: IModule,
   network: Network,
+  networksData: INetworkData[],
 ): Promise<IModule & { code: string }> => {
   const request = (await describeModule(
     moduleName,
     chainId,
     network,
+    networksData,
     kadenaConstants.DEFAULT_SENDER,
     kadenaConstants.GAS_PRICE,
     1000,
@@ -98,7 +105,10 @@ export const getServerSideProps: GetServerSideProps<{
     DefaultValues.NETWORK,
   ) as Network;
 
-  const modules = await getModules(network);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { networksData } = useWalletConnectClient();
+
+  const modules = await getModules(network, networksData);
 
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
@@ -112,6 +122,7 @@ export const getServerSideProps: GetServerSideProps<{
       moduleQueryValue,
       chainQueryValue as ChainwebChainId,
       network,
+      networksData,
       kadenaConstants.DEFAULT_SENDER,
       kadenaConstants.GAS_PRICE,
       1000,
@@ -132,15 +143,15 @@ export const getServerSideProps: GetServerSideProps<{
 const ModuleExplorerPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const { selectedNetwork: network } = useWalletConnectClient();
+  const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
   const [openedModules, setOpenedModules] = useState<IModule[]>(
     props.openedModules,
   );
 
   const { data: modules } = useQuery({
-    queryKey: ['modules', network],
-    queryFn: () => getModules(network),
+    queryKey: ['modules', network, networksData],
+    queryFn: () => getModules(network, networksData),
     initialData: props.data,
     staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
     refetchOnWindowFocus: false,
@@ -149,8 +160,14 @@ const ModuleExplorerPage = (
   const results = useQueries({
     queries: openedModules.map((module) => {
       return {
-        queryKey: ['module', network, module.chainId, module.moduleName],
-        queryFn: () => getCompleteModule(module, network),
+        queryKey: [
+          'module',
+          network,
+          module.chainId,
+          module.moduleName,
+          networksData,
+        ],
+        queryFn: () => getCompleteModule(module, network, networksData),
         initialData: () => {
           return props.openedModules.find((openedModule) => {
             return (

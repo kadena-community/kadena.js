@@ -6,7 +6,7 @@ import { createClient, Pact } from '@kadena/client';
 
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import type { INetworkData } from '@/utils/network';
 import Debug from 'debug';
 
 const debug = Debug('kadena-transfer:services:describe-module');
@@ -15,14 +15,13 @@ export const describeModule = async (
   moduleName: string,
   chainId: ChainwebChainId,
   network: Network,
+  networksData: INetworkData[],
   senderAccount: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
 ): Promise<ILocalCommandResult | null> => {
   debug(describeModule.name);
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { networksData } = useWalletConnectClient();
 
   const networkDto = networksData.find((item) => item.networkId === network);
 
