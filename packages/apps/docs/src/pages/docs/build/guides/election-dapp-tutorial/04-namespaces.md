@@ -22,7 +22,7 @@ namespace or use it to define keysets and modules inside it. As long as you choo
 unique name for your namespace, all keysets and modules defined inside it will automatically
 be unique, too.
 
-In this chapter, you will use the Pact REPL to test out Pact commands for creating
+In this chapter, you will use the Pact REPL to test out Pact commands for defining
 namespaces. At the end of the chapter you will define a namespace for your project
 on your local Devnet. You will be using that namespace throughout the remainder of
 the tutorial.
@@ -44,7 +44,7 @@ this file.
 (commit-tx)
 ```
 
-if you have the pact executable installed locally, you can run the `namespace.repl`
+If you have the pact executable installed locally, you can run the `namespace.repl`
 file using the following command in a terminal with the current directory set
 to the root of your project.
 
@@ -52,7 +52,7 @@ to the root of your project.
 pact pact/namespace.repl -t
 ```
 
-If you do nat have the pact executable installed locally, you can run the `namespace.repl`
+If you do not have the pact executable installed locally, you can run the `namespace.repl`
 file from the [pact ttyd in your browser](http://localhost:8080/ttyd/pact-cli/).
 Make sure that your local Devnet is running.
 
@@ -81,7 +81,7 @@ function call. Add the following code between the `begin-tx` and `commit-tx` lin
 
 ```pact
 (expect
-  "A namespace can be created"
+  "A namespace can be defined"
   "Namespace defined: election"
   (define-namespace 'election (read-keyset 'user-keyset) (read-keyset 'admin-keyset))
 )
@@ -107,7 +107,7 @@ can be read using the `read-keyset` function. Add the following lines at the top
 ```
 
 At the end of the output you will see `Load successful`, which means that your test has
-passed and you successfully created a namespace called `election` in the Pact REPL.
+passed and you successfully defined a namespace called `election` in the Pact REPL.
 
 ### Update the namespace
 
@@ -244,7 +244,7 @@ You will notice that the code is very similar to the code in `namespace.repl`. T
 differences are that the `ns` module is loaded and the `define-namespace` is called
 with the variable `ns-name` as its first argument, instead of the hardcoded string
 `election`. Run the `principal-namespace.repl` file and verify that the test passed.
-If so, you have successfully created a principal namespace in the Pact REPL and you
+If so, you have successfully defined a principal namespace in the Pact REPL and you
 are ready to define a principal namespace on Devnet with the admin account you
 created in the previous chapter.
 
@@ -272,10 +272,10 @@ Replace `k:account` with your admin account.
 npm run create-namespace:devnet -- k:account
 ```
 
-The Chainweaver usually comes to the foreground as soon as there is a new signing
+The Chainweaver window usually comes to the foreground as soon as there is a new signing
 request for one of your accounts. If not, manually bring the Chainweaver window
 to the foreground. You will see a modal with details of the signing request.
-Click `Sign all` to sign the request and switch back to your terminal window.
+Click `Sign All` to sign the request and switch back to your terminal window.
 If everything went well, you will see something similar to the following output.
 
 ```bash
@@ -294,7 +294,7 @@ In this chapter you learned to define and update a namespace in the Pact REPL,
 allowing you to verify the behavior of Pact namespaces on your local computer
 before defining a namespace on the blockchain. You also learned about the
 difference between a namespace and a principal namespace. Finally, you used
-the Kadena JavaScript client to define a principal namespace to your local Devnet.
+the Kadena JavaScript client to define a principal namespace on your local Devnet.
 In the next chapter you will define a keyset inside your principal namespace. This
 keyset definition will later be used to guard who can govern, i.e update, your
 election smart contract.
