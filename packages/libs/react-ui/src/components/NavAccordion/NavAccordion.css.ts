@@ -28,23 +28,6 @@ export const navAccordionGroupClass = style([
   }),
 ]);
 
-export const navAccordionLinkClass = style([
-  sprinkles({
-    paddingLeft: '$2',
-  }),
-  {
-    color: vars.colors.$gray80,
-    textDecoration: 'none',
-  },
-]);
-
-export const navAccordionDeepLinkClass = style([
-  sprinkles({
-    color: '$gray60',
-    fontSize: '$sm',
-  }),
-]);
-
 export const navAccordionArrowButtonClass = style([
   {
     alignItems: 'center',
@@ -61,8 +44,10 @@ export const navAccordionGroupTitleClass = style([
 ]);
 
 export const navAccordionGroupIconClass = style([
+  sprinkles({
+    color: '$layoutSurfaceOverlay',
+  }),
   {
-    color: vars.colors.$gray60,
     transform: 'rotate(-90deg)',
     transition: 'transform 0.2s ease',
     selectors: {
@@ -75,19 +60,19 @@ export const navAccordionGroupIconClass = style([
 
 export const navAccordionGroupListClass = style([
   sprinkles({
-    paddingLeft: '$2',
-    paddingBottom: '$2',
     margin: 0,
     marginLeft: '$2',
+    paddingBottom: '$2',
+    paddingLeft: '$2',
   }),
   {
-    borderLeft: `1px solid ${vars.colors.$gray20}`,
+    borderLeft: `1px solid ${vars.colors.$layoutSurfaceSubtle}`,
   },
 ]);
 
 export const navAccordionListItemClass = style({
-  display: 'flex',
   alignItems: 'center',
+  display: 'flex',
   lineHeight: 1,
   listStyleType: 'none',
   paddingLeft: '5px',
@@ -99,3 +84,32 @@ export const navAccordionListItemClass = style({
     },
   },
 });
+
+export const navAccordionLinkClass = style([
+  sprinkles({
+    color: '$layoutSurfaceOverlay',
+    paddingLeft: '$2',
+  }),
+  {
+    textDecoration: 'none',
+    selectors: {
+      '&:active': {
+        color: `${vars.colors.$negativeSurface} !important`,
+      },
+      '&:visited': {
+        color: `${vars.colors.$negativeSurface} !important`,
+      },
+    },
+  },
+]);
+
+export const navAccordionLinkActiveClass = style({
+  color: vars.colors.$negativeSurface,
+});
+
+export const navAccordionDeepLinkClass = style([
+  sprinkles({
+    color: '$gray60',
+    fontSize: '$sm',
+  }),
+]);

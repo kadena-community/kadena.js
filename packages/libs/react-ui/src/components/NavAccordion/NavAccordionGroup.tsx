@@ -60,13 +60,12 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
           {React.Children.map(children, (section) =>
             React.cloneElement(
               section as React.ReactElement<
-                HTMLElement | INavAccordionLinkProps,
-                React.JSXElementConstructor<
-                  JSX.Element & INavAccordionLinkProps
-                >
+                INavAccordionLinkProps,
+                React.JSXElementConstructor<INavAccordionLinkProps>
               >,
               {
                 deepLink: true,
+                active: section.props.active,
               },
             ),
           )}

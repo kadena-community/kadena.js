@@ -1,34 +1,39 @@
 import {
   navAccordionDeepLinkClass,
+  navAccordionLinkActiveClass,
   navAccordionLinkClass,
   navAccordionListItemClass,
 } from './NavAccordion.css';
 
+import { Link } from '@components/Link';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 
 export interface INavAccordionLinkProps {
+  active?: boolean;
   children?: string;
-  href: string;
   deepLink?: boolean;
+  href: string;
 }
 
 export const NavAccordionLink: FC<INavAccordionLinkProps> = ({
+  active,
   children,
-  href,
   deepLink,
+  href,
 }) => {
   return (
     <li className={navAccordionListItemClass}>
-      <a
-        className={classNames(navAccordionLinkClass, {
+      <Link
+        _className={classNames(navAccordionLinkClass, {
           [navAccordionDeepLinkClass]: deepLink,
+          [navAccordionLinkActiveClass]: active,
         })}
         href={href}
       >
         {children}
-      </a>
+      </Link>
     </li>
   );
 };
