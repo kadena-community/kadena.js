@@ -52,7 +52,7 @@ const getLastModifiedDate = async (root) => {
   const date = new Date(stdout);
   if (!isValid(date)) return;
 
-  return date.toString();
+  return date.toUTCString();
 };
 
 const isIndex = (file) => {
