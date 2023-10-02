@@ -5,11 +5,8 @@ import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { importReadMes } from './utils.mjs';
 import chalk from 'chalk';
-import { exec } from 'child_process';
-import { promisify } from 'util';
 import { getLastModifiedDate } from './getdocstree.mjs';
 
-const promiseExec = promisify(exec);
 const errors = [];
 
 const DOCSROOT = './src/pages/docs/';

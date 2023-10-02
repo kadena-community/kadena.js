@@ -37,7 +37,6 @@ export const MyApp = ({
 }: AppProps<ImportedPagePropsType> & {
   Component: FC<IPageProps>;
 }): JSX.Element => {
-  console.log(pageProps);
   const props = deserializePageProps(pageProps);
   const Layout = getLayout(props.frontmatter.layout);
 
