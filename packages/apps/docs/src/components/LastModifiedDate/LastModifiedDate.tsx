@@ -3,6 +3,7 @@
 import { Stack, Text } from '@kadena/react-ui';
 
 import { formatISODate } from '@/utils/dates';
+import { isValid } from 'date-fns';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -11,7 +12,7 @@ interface IProps {
 }
 
 export const LastModifiedDate: FC<IProps> = ({ date }) => {
-  if (!date) return null;
+  if (!isValid(date) || !date) return null;
   const dateString = formatISODate(date);
   return (
     <Stack justifyContent="flex-end">
