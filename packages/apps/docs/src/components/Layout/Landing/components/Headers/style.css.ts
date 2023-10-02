@@ -9,8 +9,11 @@ import { style } from '@vanilla-extract/css';
 export const headerClass = style([
   sprinkles({
     position: 'relative',
+    margin: 0,
+    padding: 0,
   }),
   {
+    width: '100vw',
     gridArea: 'pageheader',
     zIndex: 2,
     selectors: {
@@ -50,13 +53,14 @@ export const wrapperClass = style([
     alignItems: 'flex-start',
     width: '100%',
     paddingTop: '$20',
-    paddingRight: '$12',
+
     paddingBottom: '$20',
-    paddingLeft: '$4',
+
     marginX: 'auto',
     marginBottom: '$16',
   }),
   {
+    paddingInline: 0,
     maxWidth: $$pageWidth,
     backgroundColor: $$backgroundOverlayColor,
   },

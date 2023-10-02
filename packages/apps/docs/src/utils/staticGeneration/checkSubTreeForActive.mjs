@@ -1,7 +1,7 @@
 import { getData } from './getData.mjs';
 import path from 'path';
 
-const omit = (obj, ...keysToOmit) =>
+const omit = (obj, keysToOmit) =>
   Object.keys(obj)
     .filter((key) => !keysToOmit.includes(key))
     .reduce((acc, key) => ({ ...acc, [key]: obj[key] }), {});
@@ -46,6 +46,8 @@ const mapSubTree = (pathname, noChildren, isRoot) => (item) => {
     'lastModifiedDate',
     'publishDate',
     'author',
+    'wordCount',
+    'readingTimeInMinutes',
   ]);
 
   if (IsMenuOpen(pathname, newItem.root)) {

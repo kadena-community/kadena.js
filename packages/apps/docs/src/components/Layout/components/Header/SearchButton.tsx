@@ -17,6 +17,7 @@ export const SearchButton: FC = () => {
     <button
       className={classNames(searchButtonClass, headerButtonClass)}
       onClick={handleOpenSearch}
+      aria-label="Open the search modal"
     >
       <SystemIcon.Magnify />
       <span className={searchButtonSlashClass}>

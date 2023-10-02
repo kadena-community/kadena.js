@@ -20,6 +20,7 @@
   "dependencies": {
     "@kadena/react-ui": "workspace:*",
     "@vanilla-extract/css": "1.12.0",
+    "mini-css-extract-plugin": "2.7.6",
     "next": "13.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import type { LayoutType } from '@/types/Layout';
 import { style, styleVariants } from '@vanilla-extract/css';
@@ -7,9 +7,16 @@ export const articleClass = style([
   sprinkles({
     width: '100%',
     paddingY: 0,
-    paddingX: '$10',
+    paddingX: '$4',
     backgroundColor: 'transparent',
   }),
+  {
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        paddingInline: vars.sizes.$10,
+      },
+    },
+  },
 ]);
 
 export const contentClass = style([
