@@ -29,9 +29,8 @@ const ModuleExplorer = ({
     <div className={containerStyle}>
       <SidePanel
         results={results}
-        onResultClick={(result) => {
-          onModuleClick(result);
-        }}
+        onResultClick={onModuleClick}
+        selectedModule={openedModules[0]}
       />
       <Editor openedModules={openedModules} />
     </div>
