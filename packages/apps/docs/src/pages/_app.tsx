@@ -38,7 +38,7 @@ export const MyApp = ({
   Component: FC<IPageProps>;
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
-
+  console.log(props);
   const Layout = getLayout(props.frontmatter.layout);
 
   // check for a router query
