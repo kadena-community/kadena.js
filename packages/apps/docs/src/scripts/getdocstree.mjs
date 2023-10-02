@@ -44,7 +44,25 @@ const isMarkDownFile = (name) => {
   return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
 };
 
-const getLastModifiedDate = async (root) => {
+const formatDate = (dateStr) => {
+  const leadingZero = (num, length = 2) => {
+    let str = `${num}`;
+    while (str.length < length) str = `0${str}`;
+
+    return str;
+  };
+
+  const d = new Date(dateStr);
+  return `${d.getFullYear()}/${leadingZero(d.getMonth() + 1, 2)}/${leadingZero(
+    d.getDate(),
+    2,
+  )} ${leadingZero(d.getHours(), 2)}:${leadingZero(
+    d.getMinutes(),
+    2,
+  )}:${leadingZero(d.getSeconds(), 2)}`;
+};
+
+export const getLastModifiedDate = async (root) => {
   const { stdout } = await promiseExec(
     `git log -1 --pretty="format:%ci" ${root}`,
   );

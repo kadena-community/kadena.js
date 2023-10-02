@@ -7,6 +7,7 @@ import { importReadMes } from './utils.mjs';
 import chalk from 'chalk';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { getLastModifiedDate } from './getdocstree.mjs';
 
 const promiseExec = promisify(exec);
 const errors = [];
@@ -214,13 +215,6 @@ const relinkReferences = (md, pages, root) => {
 
   relinkLinkReferences(linkReferences, definitions, pages, root);
   relinkImageReferences(imageReferences, definitions, pages, root);
-};
-
-const getLastModifiedDate = async (root) => {
-  const { stdout } = await promiseExec(
-    `git log -1 --pretty="format:%ci" ${root}`,
-  );
-  return stdout;
 };
 
 const importDocs = async (filename, destination, parentTitle, options) => {
