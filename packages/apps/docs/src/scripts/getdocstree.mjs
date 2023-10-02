@@ -8,6 +8,7 @@ import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import logUpdate from 'log-update';
+import { isValid } from 'date-fns';
 
 const promiseExec = promisify(exec);
 const errors = [];
@@ -47,7 +48,11 @@ const getLastModifiedDate = async (root) => {
   const { stdout } = await promiseExec(
     `git log -1 --pretty="format:%ci" ${root}`,
   );
-  return stdout;
+
+  const date = new Date(stdout);
+  if (!isValid(date)) return;
+
+  return date.toString();
 };
 
 const isIndex = (file) => {
