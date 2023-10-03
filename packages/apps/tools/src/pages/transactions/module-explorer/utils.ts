@@ -26,7 +26,7 @@ export const getCookieValue = (
   needle: string,
   haystack: NextApiRequestCookies,
   defaultValue?: string | [any],
-): string | [any] | [] | null  => {
+): string | [any] | [] | null => {
   const encoded = encodeURIComponent(getName(needle));
   if (haystack[encoded]) {
     return parse(haystack[encoded]!);

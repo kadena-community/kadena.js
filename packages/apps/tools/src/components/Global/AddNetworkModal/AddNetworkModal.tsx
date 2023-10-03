@@ -15,9 +15,11 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const schema = z.object({
-  label: z.string().trim(),
-  networkId: z.string().trim(),
-  api: z.string().trim(),
+  label: z.string({
+    required_error: "reqired field",
+  }).trim().min(1),
+  networkId: z.string().trim().min(1),
+  api: z.string().trim().min(1),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -62,7 +64,7 @@ export const AddNetworkModal: FC = () => {
     clearModal();
   };
 
-  const { register, handleSubmit: validateThenSubmit } = useForm<FormData>({
+  const { register, handleSubmit: validateThenSubmit, formState: { errors }, } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
@@ -80,6 +82,8 @@ export const AddNetworkModal: FC = () => {
                 value: label,
                 placeholder: 'devnet',
               }}
+              status={errors?.label ? 'negative' : undefined}
+              helperText={errors?.label?.message ?? ''}
             />
             <TextField
               label={t('Network ID')}
@@ -90,6 +94,8 @@ export const AddNetworkModal: FC = () => {
                 value: networkId,
                 placeholder: 'fast-development',
               }}
+              status={errors?.networkId ? 'negative' : undefined}
+              helperText={errors?.networkId?.message ?? ''}
             />
             <TextField
               label={t('Network api')}
@@ -100,6 +106,8 @@ export const AddNetworkModal: FC = () => {
                 value: api,
                 placeholder: 'localhost:8080',
               }}
+              status={errors?.api ? 'negative' : undefined}
+              helperText={errors?.api?.message ?? ''}
             />
           </Stack>
           <div className={errorMessageStyle}>
