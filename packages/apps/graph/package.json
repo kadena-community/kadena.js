@@ -58,7 +58,6 @@
     "@types/debug": "~4.1.7",
     "@types/node": "^18.17.14",
     "@types/pg": "~8.10.2",
-    "embedded-postgres": "~15.1.0-beta.6",
     "prettier": "~3.0.0",
     "prettier-plugin-packagejson": "^2.4.5",
     "ts-node": "~10.8.2",

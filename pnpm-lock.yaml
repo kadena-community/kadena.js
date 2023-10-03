@@ -340,9 +340,6 @@ importers:
       '@types/pg':
         specifier: ~8.10.2
         version: 8.10.2
-      embedded-postgres:
-        specifier: ~15.1.0-beta.6
-        version: 15.1.0-beta.6
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
@@ -5971,70 +5968,6 @@ packages:
       '@effect/io': 0.38.0(@effect/data@0.17.1)
       fast-check: 3.12.1
     dev: true
-
-  /@embedded-postgres/darwin-arm64@15.1.0-beta.6:
-    resolution: {integrity: sha512-qzEGVkjMhLuyyD/7xtL9rBaIMBrKRZbNMI7Ruj+7qrAtGJrTGpPqlIJVAE1hPmFTViWe+pOUrKd7HRCwlJjl0A==}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@embedded-postgres/darwin-x64@15.1.0-beta.6:
-    resolution: {integrity: sha512-ndfnRr2b0kVaT6djreJzgkRGjy225f4QSs/xQA1jmDYxD1DsQke1rteOEa3H55qJHySy8NrtDdx3RsfGfn64Cg==}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@embedded-postgres/linux-arm64@15.1.0-beta.6:
-    resolution: {integrity: sha512-D81xZZuujAoCAG97PcTecp0OogF27kEZe1009d4FVkz2nuKvgHKIsr+LfVb0GdEo3BoO9yXfTRT2M14DyTY4sg==}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@embedded-postgres/linux-arm@15.1.0-beta.6:
-    resolution: {integrity: sha512-BcIJlbtLlcf3f6pTTuzzfFSVOhxweaVxfrUm0BE/TcfAmnbaEKqQPqJGYDHkmV2cAF4b3PDjSGmzBcv11TB3Yw==}
-    cpu: [arm]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@embedded-postgres/linux-ia32@15.1.0-beta.6:
-    resolution: {integrity: sha512-coGtMFhFyKqt5C06fmrCO22VMiGQcna3QUFB1b6j8itkFSO/oFf39SJcbJY7vaYYDB1FKJbkYvvs18nV/QcJpw==}
-    cpu: [ia32]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@embedded-postgres/linux-ppc64@15.1.0-beta.6:
-    resolution: {integrity: sha512-BazEIeL8FdzeyluDwdRXvkM6S2BZoYyzjY4tX/jDWifMHuJ9RfYFtwxSHweERv2DX38KIizEcS3VgKS9Vz0NSg==}
-    cpu: [ppc64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@embedded-postgres/linux-x64@15.1.0-beta.6:
-    resolution: {integrity: sha512-krX7veOMJJUBvcUaFZeepiSD1OjQaDxhCK96oVGxZt4bEPU3Kcb1SPIqdZ/PcK2RpLPpvw2Si+gS4f2EGSdAwg==}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@embedded-postgres/windows-x64@15.1.0-beta.6:
-    resolution: {integrity: sha512-uC2mx8q73hYxwnOqJRJzZ3S5aFoM8OlTceBu1e9iflXPXXSK4SHzDw2hdkhUXUum5ca4LbIMyigXzR813zC/Og==}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
 
   /@emotion/hash@0.9.1:
     resolution: {integrity: sha512-gJB6HLm5rYwSLI6PQa+X1t5CFGrv1J1TWG+sOyMCeKz2ojaj6Fnl/rZEspogG+cvqbt4AE/2eIyD2QfLKTBNlQ==}
@@ -14535,11 +14468,6 @@ packages:
     hasBin: true
     dev: false
 
-  /async-exit-hook@2.0.1:
-    resolution: {integrity: sha512-NW2cX8m1Q7KPA7a5M2ULQeZ2wR5qI5PAbw5L0UOMxdioVk9PMZ0h1TmyZEkPYrCvYjDlFICusOu1dlEKAAeXBw==}
-    engines: {node: '>=0.12.0'}
-    dev: true
-
   /async-limiter@1.0.1:
     resolution: {integrity: sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==}
     dev: true
@@ -15334,11 +15262,6 @@ packages:
 
   /buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
-
-  /buffer-writer@2.0.0:
-    resolution: {integrity: sha512-a7ZpuTZU1TRtnwyCNW3I5dc0wWNC3VR9S++Ewyk2HHZdrO3CQJqSpd+95Us590V6AL7JqUAH2IwZ/398PmNFgw==}
-    engines: {node: '>=4'}
-    dev: true
 
   /buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
@@ -17339,24 +17262,6 @@ packages:
 
   /electron-to-chromium@1.4.480:
     resolution: {integrity: sha512-IXTgg+bITkQv/FLP9FjX6f9KFCs5hQWeh5uNSKxB9mqYj/JXhHDbu+ekS43LVvbkL3eW6/oZy4+r9Om6lan1Uw==}
-
-  /embedded-postgres@15.1.0-beta.6:
-    resolution: {integrity: sha512-ZLupl2cm/sDevkvNjcREo7leGFQMf/qb1b9CPNYUnYjupSZ0p/QO7eEURrpnHcSZWehqORy5IDekaF9byqmcJg==}
-    dependencies:
-      async-exit-hook: 2.0.1
-      pg: 8.11.2
-    optionalDependencies:
-      '@embedded-postgres/darwin-arm64': 15.1.0-beta.6
-      '@embedded-postgres/darwin-x64': 15.1.0-beta.6
-      '@embedded-postgres/linux-arm': 15.1.0-beta.6
-      '@embedded-postgres/linux-arm64': 15.1.0-beta.6
-      '@embedded-postgres/linux-ia32': 15.1.0-beta.6
-      '@embedded-postgres/linux-ppc64': 15.1.0-beta.6
-      '@embedded-postgres/linux-x64': 15.1.0-beta.6
-      '@embedded-postgres/windows-x64': 15.1.0-beta.6
-    transitivePeerDependencies:
-      - pg-native
-    dev: true
 
   /emittery@0.10.2:
     resolution: {integrity: sha512-aITqOwnLanpHLNXZJENbOgjUBeHocD+xsSJmNrjovKBW5HbSpW3d1pEls7GFQPUWXiwG9+0P4GtHfEqC/4M0Iw==}
@@ -25092,10 +24997,6 @@ packages:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
 
-  /packet-reader@1.0.0:
-    resolution: {integrity: sha512-HAKu/fG3HpHFO0AA8WE8q2g+gBJaZ9MG7fcKk+IJPLTGAD6Psw4443l+9DGRbOIh3/aXr7Phy0TjilYivJo5XQ==}
-    dev: true
-
   /pako@0.2.9:
     resolution: {integrity: sha512-NUcwaKxUxWrZLpDG+z/xZaCgQITkA/Dv4V/T6bw7VON6l1Xz/VnrBqrYjZQ12TamKHzITTfOEIYUj48y2KXImA==}
     dev: true
@@ -25330,16 +25231,6 @@ packages:
       is-reference: 3.0.1
     dev: false
 
-  /pg-cloudflare@1.1.1:
-    resolution: {integrity: sha512-xWPagP/4B6BgFO+EKz3JONXv3YDgvkbVrGw2mTo3D6tVDQRh1e7cqVGvyR3BE+eQgAvx1XhW/iEASj4/jCWl3Q==}
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /pg-connection-string@2.6.2:
-    resolution: {integrity: sha512-ch6OwaeaPYcova4kKZ15sbJ2hKb/VP48ZD2gE7i1J+L4MspCtBMAx8nMgz7bksc7IojCIIWuEhHibSMFH8m8oA==}
-    dev: true
-
   /pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
     engines: {node: '>=4.0.0'}
@@ -25350,27 +25241,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /pg-pool@3.6.1(pg@8.11.2):
-    resolution: {integrity: sha512-jizsIzhkIitxCGfPRzJn1ZdcosIt3pz9Sh3V01fm1vZnbnCMgmGl5wvGGdNN2EL9Rmb0EcFoCkixH4Pu+sP9Og==}
-    peerDependencies:
-      pg: '>=8.0'
-    dependencies:
-      pg: 8.11.2
-    dev: true
-
   /pg-protocol@1.6.0:
     resolution: {integrity: sha512-M+PDm637OY5WM307051+bsDia5Xej6d9IR4GwJse1qA1DIhiKlksvrneZOYQq42OM+spubpcNYEo2FcKQrDk+Q==}
-    dev: true
-
-  /pg-types@2.2.0:
-    resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
-    engines: {node: '>=4'}
-    dependencies:
-      pg-int8: 1.0.1
-      postgres-array: 2.0.0
-      postgres-bytea: 1.0.0
-      postgres-date: 1.0.7
-      postgres-interval: 1.2.0
     dev: true
 
   /pg-types@4.0.1:
@@ -25384,32 +25256,6 @@ packages:
       postgres-date: 2.0.1
       postgres-interval: 3.0.0
       postgres-range: 1.1.3
-    dev: true
-
-  /pg@8.11.2:
-    resolution: {integrity: sha512-l4rmVeV8qTIrrPrIR3kZQqBgSN93331s9i6wiUiLOSk0Q7PmUxZD/m1rQI622l3NfqBby9Ar5PABfS/SulfieQ==}
-    engines: {node: '>= 8.0.0'}
-    peerDependencies:
-      pg-native: '>=3.0.1'
-    peerDependenciesMeta:
-      pg-native:
-        optional: true
-    dependencies:
-      buffer-writer: 2.0.0
-      packet-reader: 1.0.0
-      pg-connection-string: 2.6.2
-      pg-pool: 3.6.1(pg@8.11.2)
-      pg-protocol: 1.6.0
-      pg-types: 2.2.0
-      pgpass: 1.0.5
-    optionalDependencies:
-      pg-cloudflare: 1.1.1
-    dev: true
-
-  /pgpass@1.0.5:
-    resolution: {integrity: sha512-FdW9r/jQZhSeohs1Z3sI1yxFQNFvMcnmfuj4WBMUTxOrAyLMaTcE1aAMBiTlbMNaXvBCQuVi0R7hd8udDSP7ug==}
-    dependencies:
-      split2: 4.2.0
     dev: true
 
   /picocolors@0.2.1:
@@ -26326,19 +26172,9 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
-  /postgres-array@2.0.0:
-    resolution: {integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==}
-    engines: {node: '>=4'}
-    dev: true
-
   /postgres-array@3.0.2:
     resolution: {integrity: sha512-6faShkdFugNQCLwucjPcY5ARoW1SlbnrZjmGl0IrrqewpvxvhSLHimCVzqeuULCbG0fQv7Dtk1yDbG3xv7Veog==}
     engines: {node: '>=12'}
-    dev: true
-
-  /postgres-bytea@1.0.0:
-    resolution: {integrity: sha512-xy3pmLuQqRBZBXDULy7KbaitYqLcmxigw14Q5sj8QBVLqEwXfeybIKVWiqAXTlcvdvb0+xkOtDbfQMOf4lST1w==}
-    engines: {node: '>=0.10.0'}
     dev: true
 
   /postgres-bytea@3.0.0:
@@ -26348,21 +26184,9 @@ packages:
       obuf: 1.1.2
     dev: true
 
-  /postgres-date@1.0.7:
-    resolution: {integrity: sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==}
-    engines: {node: '>=0.10.0'}
-    dev: true
-
   /postgres-date@2.0.1:
     resolution: {integrity: sha512-YtMKdsDt5Ojv1wQRvUhnyDJNSr2dGIC96mQVKz7xufp07nfuFONzdaowrMHjlAzY6GDLd4f+LUHHAAM1h4MdUw==}
     engines: {node: '>=12'}
-    dev: true
-
-  /postgres-interval@1.2.0:
-    resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      xtend: 4.0.2
     dev: true
 
   /postgres-interval@3.0.0:
