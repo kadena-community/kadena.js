@@ -54,10 +54,7 @@ export const AddNetworkModal: FC = () => {
       label,
       networkId,
       API: api,
-      apiHost: ({ networkId, chainId }) =>
-        `https://${api}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
-      estatsHost: (account) =>
-        `https://${api}/txs/account/${account}?limit=100`,
+      ESTATS: api,
     });
     setNetworksData(networks);
 
