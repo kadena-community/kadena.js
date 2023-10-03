@@ -16,7 +16,7 @@ jobs:
         options: >-
           --memory 7g
           --cpus 2
-          --health-cmd "/nix/store/dqaylq6faab959nnvs6n666ajdlni91l-curl-8.1.2/bin/curl --verbose --fail http://localhost:8080/info || exit 1"
+          --health-cmd "curl --verbose --fail http://localhost:8080/info || exit 1"
           --health-retries 5
           --health-start-period 10s
         ports:
