@@ -1,4 +1,4 @@
-import { ChainId, IPactDecimal } from '@kadena/types';
+import type { ChainId, IPactDecimal } from '@kadena/types';
 
 import { Pact, readKeyset } from '../../../index';
 import { NetworkId } from '../../support/enums';
