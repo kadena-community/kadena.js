@@ -39,8 +39,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: pnpm build
-        run: pnpm --filter @kadena/client build
+      - name: Build Packages
+        run: pnpm turbo build
 
       - name: pnpm test:integration
         run: pnpm --filter @kadena/client test:integration
