@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "build": "",
-    "format": "pnpm run /^format:.*/",
+    "format": "pnpm run --sequential /^format:.*/",
     "format:src": "prettier . --cache --write",
     "test": ""
   },
