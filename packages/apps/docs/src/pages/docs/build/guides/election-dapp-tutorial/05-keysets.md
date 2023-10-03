@@ -40,7 +40,7 @@ this file.
 (commit-tx)
 ```
 
-if you have the pact executable installed locally, you can run the `namespace.repl`
+if you have the pact executable installed locally, you can run the `keyset.repl`
 file using the following command in a terminal with the current directory set
 to the root of your project.
 

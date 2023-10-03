@@ -638,79 +638,73 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial}</loc>
-      <lastmod>2023-09-27</lastmod>
+      <lastmod>2023-09-28</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/01-getting-started}</loc>
-      <lastmod>2023-09-27</lastmod>
+      <lastmod>2023-09-28</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/02-running-devnet}</loc>
-      <lastmod>2023-09-27</lastmod>
+      <lastmod>2023-09-28</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/03-admin-account}</loc>
-      
+      <lastmod>2023-09-28</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/04-namespaces}</loc>
-      
+      <lastmod>2023-09-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/05-keysets}</loc>
+      <lastmod>2023-09-29</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/06-smart-contract}</loc>
       
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
-      <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/06-deploy-keyset}</loc>
-      <lastmod>2023-09-27</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1</priority>
-    </url>
-    <url>
-      <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/07-deploy-contract}</loc>
-      <lastmod>2023-09-27</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1</priority>
-    </url>
-    <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/08-nominate-candidates}</loc>
-      <lastmod>2023-09-27</lastmod>
+      <lastmod>2023-09-22</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/09-gas-station}</loc>
-      <lastmod>2023-09-27</lastmod>
+      <lastmod>2023-09-22</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/10-voting}</loc>
-      <lastmod>2023-09-27</lastmod>
+      <lastmod>2023-09-22</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/11-deploy-to-testnet}</loc>
-      <lastmod>2023-09-27</lastmod>
+      <lastmod>2023-09-22</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/12-other-signing-methods}</loc>
-      <lastmod>2023-09-27</lastmod>
+      <lastmod>2023-09-22</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
