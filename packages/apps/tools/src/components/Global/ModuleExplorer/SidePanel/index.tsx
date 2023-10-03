@@ -5,7 +5,11 @@ import type { IModule } from '..';
 import Outline from './outline';
 import type { IResultsProps } from './results';
 import Results from './results';
-import { containerStyle, modulesContainerStyle } from './styles.css';
+import {
+  containerStyle,
+  modulesContainerStyle,
+  outlineStyle,
+} from './styles.css';
 
 import React, { useState, useTransition } from 'react';
 
@@ -51,7 +55,7 @@ const SidePanel = ({
         onItemClick={onResultClick}
         className={modulesContainerStyle}
       />
-      <Outline selectedModule={selectedModule} style={{ height: '10rem' }} />
+      <Outline selectedModule={selectedModule} className={outlineStyle} />
     </div>
   );
 };
