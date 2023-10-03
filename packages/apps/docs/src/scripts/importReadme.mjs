@@ -66,11 +66,11 @@ const createTreeRoot = (page) => ({
   children: page,
 });
 
-const createDir = (dir) => {
+export const createDir = (dir) => {
   fs.mkdirSync(dir, { recursive: true });
 };
 
-const divideIntoPages = (md) => {
+export const divideIntoPages = (md) => {
   const pages = md.children.reduce((acc, val) => {
     if (val.type === 'heading' && val.depth === 2) {
       val.depth = 1;
@@ -139,7 +139,7 @@ const recreateUrl = (pages, url, root) => {
   }, '');
 };
 
-const cleanUp = (content, filename) => {
+export const cleanUp = (content, filename) => {
   let hasFirstHeader = false;
   const innerCleanUp = (content, filename) => {
     if (content.type === 'heading' && content.depth === 1) {
@@ -195,7 +195,7 @@ const relinkImageReferences = (refs, definitions) => {
 };
 
 // because we are creating new pages, we need to link the references to the correct pages
-const relinkReferences = (md, pages, root) => {
+export const relinkReferences = (md, pages, root) => {
   const definitions = getTypes(md, 'definition');
   const linkReferences = getTypes(md, 'linkReference');
   const imageReferences = getTypes(md, 'imageReference');
