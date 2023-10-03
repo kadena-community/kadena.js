@@ -2,10 +2,11 @@ import * as fs from 'fs';
 import 'dotenv/config';
 import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
-import { toString } from 'mdast-util-to-string';
+
 import { importReadMes } from './utils.mjs';
 import chalk from 'chalk';
 import { getLastModifiedDate } from './utils/getLastModifiedDate.mjs';
+import { getTitle } from './utils/markdownUtils.mjs';
 
 const errors = [];
 
@@ -58,17 +59,6 @@ export const createSlug = (str) => {
     .replace(/ /g, '-')
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
-};
-
-const getTitle = (pageAST) => {
-  // flatten all children recursively to prevent issue with
-  // E.g. ## some title with `code`
-  const node = pageAST.children[0];
-  if (node.type !== 'heading' || node.depth !== 1) {
-    throw new Error('first node is not a Heading');
-  }
-
-  return node.children.flatMap((child) => toString(child).trim()).join(' ');
 };
 
 const createTreeRoot = (page) => ({

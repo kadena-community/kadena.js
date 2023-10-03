@@ -3,7 +3,6 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 
 export const getSubDirLastModifiedDate = async (root, subdir) => {
-  console.log(root);
   const promiseExec = promisify(exec);
 
   const { stdout } = await promiseExec(
@@ -17,7 +16,6 @@ export const getSubDirLastModifiedDate = async (root, subdir) => {
 };
 
 export const getLastModifiedDate = async (root) => {
-  console.log(root);
   const promiseExec = promisify(exec);
 
   const { stdout } = await promiseExec(

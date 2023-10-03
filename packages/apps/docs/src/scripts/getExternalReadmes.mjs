@@ -6,34 +6,50 @@ import { promisify } from 'util';
 import { Spinner } from './utils/spinner.mjs';
 import { remark } from 'remark';
 import { getSubDirLastModifiedDate } from './utils/getLastModifiedDate.mjs';
+import { getTitle } from './utils/markdownUtils.mjs';
 
 const promiseExec = promisify(exec);
 
 const TEMPDIR = './.tempimport';
 const DOCSROOT = './src/pages/docs';
+const REPOPREFIX = 'git@github.com:';
+const REPOURLPREFIX = 'https://github.com';
 
 const errors = [];
 
 const createFrontMatter = (props) => {
   return `---\n${Object.keys(props)
-    .map((prop) => `    ${prop}: "${props[prop]}", \n`)
+    .map((prop) => `${prop}: ${props[prop]}\n`)
     .join('')}
 ---
 `;
 };
 
-const importDocs = async ({ filename, destination, tempDir }) => {
+const createEditOverwrite = (repo, filename) => {
+  return `${REPOURLPREFIX}/${repo}/blob/main/${filename}`;
+};
+
+const importDocs = async ({ filename, destination, tempDir, repo }) => {
   const doc = fs.readFileSync(`${tempDir}/${filename}`, 'utf-8');
 
   const md = remark.parse(doc);
 
-  console.log(md);
   const lastModifiedDate = await getSubDirLastModifiedDate(filename, tempDir);
-  console.log(111, lastModifiedDate);
+
+  const title = getTitle(md);
+  const index = 1;
 
   fs.writeFileSync(
     `${DOCSROOT}/${destination}/index.md`,
-    createFrontMatter({ title: 'sdf', lastModifiedDate }) + doc,
+    createFrontMatter({
+      title,
+      label: title,
+      menu: 'Quickstart',
+      layout: 'full',
+      index,
+      lastModifiedDate,
+      editLink: createEditOverwrite(repo, filename),
+    }) + doc,
     {
       flag: 'w',
     },
@@ -42,7 +58,7 @@ const importDocs = async ({ filename, destination, tempDir }) => {
 
 const getDirnameFromRepo = (repo) => {
   const arr = repo.split('/');
-  const repoName = arr[arr.length - 1].split('.')[0];
+  const repoName = arr[arr.length - 1];
 
   return repoName;
 };
@@ -50,14 +66,19 @@ const getDirnameFromRepo = (repo) => {
 export const clone = async ({ filename, repo, destination }) => {
   fs.rmSync(TEMPDIR, { recursive: true, force: true });
   const repoName = getDirnameFromRepo(repo);
-  await promiseExec(`git clone ${repo} ${TEMPDIR}/${repoName}`);
+  await promiseExec(`git clone ${REPOPREFIX}${repo} ${TEMPDIR}/${repoName}`);
 
-  importDocs({ filename, destination, tempDir: `${TEMPDIR}/${repoName}` });
+  importDocs({
+    filename,
+    destination,
+    repo,
+    tempDir: `${TEMPDIR}/${repoName}`,
+  });
 };
 
 const init = async () => {
   console.log(
-    '============================================ START EXTERNAL IMPORT ==\n\n',
+    '========================================= START EXTERNAL IMPORT ==\n\n',
   );
 
   const spinner = Spinner();
@@ -65,7 +86,7 @@ const init = async () => {
 
   await clone({
     filename: `README.md`,
-    repo: 'git@github.com:kadena-community/getting-started.git',
+    repo: 'kadena-community/getting-started',
     destination: '/build/quickstart',
   });
 
@@ -80,7 +101,7 @@ const init = async () => {
     console.log(chalk.green('✓'), 'EXTERNAL IMPORT DONE');
   }
   console.log(
-    '\n\n=============================================== END EXTERNAL IMPORT ====',
+    '\n\n============================================ END EXTERNAL IMPORT ====',
   );
 };
 

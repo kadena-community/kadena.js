@@ -12,6 +12,7 @@ src/pages/docs/pact/pactjs
 src/pages/docs/pact/pactjs-generator
 src/pages/docs/kadena/client-examples
 src/pages/docs/build/cookbook/cookbook
+src/pages/docs/build/quickstart/index.md
 src/pages/docs/chainweb/stream-client
 src/pages/docs/chainweb/node-client
 src/pages/docs/chainweb/js-bindings
