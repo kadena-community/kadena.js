@@ -7,7 +7,6 @@ import {
   navAccordionGroupIconClass,
   navAccordionGroupListClass,
   navAccordionGroupTitleClass,
-  navAccordionListItemClass,
 } from './NavAccordion.css';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
 
