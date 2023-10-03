@@ -7,7 +7,7 @@
   "scripts": {
     "build": "turbo run build",
     "format": "pnpm run /^format:.*/ && turbo run format",
-    "format:md": "remark *.md -o --use @kadena-dev/markdown",
+    "format:md": "remark *.md docs/*.md -o --use @kadena-dev/markdown",
     "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",
     "format:src": "prettier . \"!packages\" --cache --write",
     "preinstall": "npx --no-install only-allow pnpm",
