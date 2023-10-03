@@ -16,7 +16,7 @@ jobs:
         options: >-
           --memory 7g
           --cpus 2
-          --health-cmd "curl --silent --fail http://127.0.0.1:8080/info || exit 1"
+          --health-cmd "curl --silent --fail http://localhost:8080/info || exit 1"
         ports:
           - 8080:8080
 
