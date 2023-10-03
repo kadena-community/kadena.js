@@ -11,7 +11,7 @@ const promiseExec = promisify(exec);
 
 const TEMPDIR = './.tempimport';
 const DOCSROOT = './src/pages/docs';
-const REPOPREFIX = 'git@github.com:';
+const REPOPREFIX = 'https://github.com/';
 const REPOURLPREFIX = 'https://github.com';
 
 const errors = [];
