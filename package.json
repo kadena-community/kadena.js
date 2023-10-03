@@ -16,6 +16,7 @@
     "publish": "changeset publish",
     "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
     "test": "turbo run test",
+    "test:integration": "turbo run test:integration",
     "version": "changeset version"
   },
   "devDependencies": {
