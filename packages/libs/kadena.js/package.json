@@ -76,6 +76,7 @@
     "prettier-plugin-packagejson": "^2.4.5",
     "serve": "^13.0.2",
     "ts-loader": "^9.3.0",
+    "typescript": "5.2.2",
     "webpack-cli": "^4.9.2"
   },
   "engines": {

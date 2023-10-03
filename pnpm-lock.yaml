@@ -1185,6 +1185,9 @@ importers:
       ts-loader:
         specifier: ^9.3.0
         version: 9.3.0(typescript@5.2.2)(webpack@5.88.2)
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
       webpack-cli:
         specifier: ^4.9.2
         version: 4.9.2(webpack@5.88.2)
