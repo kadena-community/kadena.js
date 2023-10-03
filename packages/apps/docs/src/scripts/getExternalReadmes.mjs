@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import chalk from 'chalk';
-import yaml from 'js-yaml';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { Spinner } from './utils/spinner.mjs';
