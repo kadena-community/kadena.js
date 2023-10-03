@@ -58,20 +58,18 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
       </button>
       {isOpen && children && (
         <ul className={navAccordionGroupListClass}>
-          {React.Children.map(children, (section) => (
-            <li className={navAccordionListItemClass}>
-              {React.cloneElement(
-                section as React.ReactElement<
-                  INavAccordionLinkProps,
-                  React.JSXElementConstructor<INavAccordionLinkProps>
-                >,
-                {
-                  deepLink: true,
-                  active: section.props.active,
-                },
-              )}
-            </li>
-          ))}
+          {React.Children.map(children, (section) =>
+            React.cloneElement(
+              section as React.ReactElement<
+                INavAccordionLinkProps,
+                React.JSXElementConstructor<INavAccordionLinkProps>
+              >,
+              {
+                deepLink: true,
+                active: section.props.active,
+              },
+            ),
+          )}
         </ul>
       )}
     </div>
