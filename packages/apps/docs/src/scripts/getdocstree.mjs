@@ -5,54 +5,15 @@ import { getReadTime } from './utils.mjs';
 import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import logUpdate from 'log-update';
-import { isValid } from 'date-fns';
 
-const promiseExec = promisify(exec);
+import { Spinner } from './utils/spinner.mjs';
+import { getLastModifiedDate } from './utils/getLastModifiedDate.mjs';
+
 const errors = [];
-
-const Spinner = () => {
-  const elegantSpinner = () => {
-    var i = 0;
-
-    return function () {
-      return frames[(i = ++i % frames.length)];
-    };
-  };
-
-  var frame = elegantSpinner();
-  let interval;
-  const frames = '◴◷◶◵'.split('');
-
-  return {
-    start: () => {
-      interval = setInterval(function () {
-        logUpdate(chalk.cyan(frame()));
-      }, 50);
-    },
-    stop: () => {
-      clearInterval(interval);
-      logUpdate.clear();
-    },
-  };
-};
 
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
   return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
-};
-
-export const getLastModifiedDate = async (root) => {
-  const { stdout } = await promiseExec(
-    `git log -1 --pretty="format:%ci" ${root}`,
-  );
-
-  const date = new Date(stdout);
-  if (!isValid(date)) return;
-
-  return date.toUTCString();
 };
 
 const isIndex = (file) => {

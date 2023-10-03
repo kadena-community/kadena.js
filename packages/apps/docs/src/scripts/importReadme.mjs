@@ -5,7 +5,7 @@ import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { importReadMes } from './utils.mjs';
 import chalk from 'chalk';
-import { getLastModifiedDate } from './getdocstree.mjs';
+import { getLastModifiedDate } from './utils/getLastModifiedDate.mjs';
 
 const errors = [];
 

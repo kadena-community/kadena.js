@@ -18,3 +18,5 @@ src/pages/docs/chainweb/js-bindings
 
 next-env.d.ts
 .env.local
+
+.tempimport
