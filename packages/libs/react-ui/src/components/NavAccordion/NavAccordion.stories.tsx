@@ -45,7 +45,6 @@ export const Dynamic: IStory = {
   render: ({ linked }) => {
     return (
       <NavAccordion.Root linked={linked} initialOpenSection={-1}>
-        {/* <NavAccordion.Link>Introduction</NavAccordion.Link> */}
         <NavAccordion.Section title="Developers">
           <NavAccordion.Group title="Guides">
             <NavAccordion.Link href="#pact">
@@ -70,7 +69,6 @@ export const Dynamic: IStory = {
             Technical Grants
           </NavAccordion.Link>
         </NavAccordion.Section>
-        {/* <NavAccordion.Link>Pact Reference</NavAccordion.Link> */}
       </NavAccordion.Root>
     );
   },

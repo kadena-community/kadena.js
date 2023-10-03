@@ -2,7 +2,6 @@ import {
   navAccordionDeepLinkClass,
   navAccordionLinkActiveClass,
   navAccordionLinkClass,
-  navAccordionListItemClass,
 } from './NavAccordion.css';
 
 import { Link } from '@components/Link';
@@ -24,16 +23,14 @@ export const NavAccordionLink: FC<INavAccordionLinkProps> = ({
   href,
 }) => {
   return (
-    <li className={navAccordionListItemClass}>
-      <Link
-        _className={classNames(navAccordionLinkClass, {
-          [navAccordionDeepLinkClass]: deepLink,
-          [navAccordionLinkActiveClass]: active,
-        })}
-        href={href}
-      >
-        {children}
-      </Link>
-    </li>
+    <Link
+      _className={classNames(navAccordionLinkClass, {
+        [navAccordionDeepLinkClass]: deepLink,
+        [navAccordionLinkActiveClass]: active,
+      })}
+      href={href}
+    >
+      {children}
+    </Link>
   );
 };
