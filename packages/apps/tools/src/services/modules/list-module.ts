@@ -4,6 +4,7 @@ import { createClient, Pact } from '@kadena/client';
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import Debug from 'debug';
 
 const debug = Debug('kadena-transfer:services:list-module');
@@ -32,7 +33,8 @@ export const listModules = async (
   }
 
   const { local } = createClient(
-    networkDto.apiHost({
+    getApiHost({
+      api: networkDto.API,
       networkId: networkDto.networkId,
       chainId,
     }),

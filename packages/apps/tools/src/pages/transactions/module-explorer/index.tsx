@@ -105,8 +105,10 @@ export const getServerSideProps: GetServerSideProps<{
     DefaultValues.NETWORK,
   ) as Network;
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { networksData } = useWalletConnectClient();
+  const networksData = getCookieValue(
+    StorageKeys.NETWORKS_DATA,
+    context.req.cookies,
+  ) as INetworkData[];
 
   const modules = await getModules(network, networksData);
 
