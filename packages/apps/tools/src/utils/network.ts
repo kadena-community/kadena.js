@@ -31,8 +31,8 @@ export const getAllNetworks = (
 
   const configNetworksAdded =
     Boolean(localStorageNetworks) &&
-    localStorageNetworks.find((item) =>
-      getConfigNetworkNames().includes(item.label),
+    localStorageNetworks.some((item) =>
+      getConfigNetworkNames().includes(item.networkId),
     );
 
   if (!configNetworksAdded) {
