@@ -23,7 +23,7 @@ const ModuleExplorer = ({
   modules,
   openedModules,
   onModuleClick,
-}: IModuleExplorerProps) => {
+}: IModuleExplorerProps): React.JSX.Element => {
   const results = getModulesMap(modules);
   return (
     <div className={containerStyle}>

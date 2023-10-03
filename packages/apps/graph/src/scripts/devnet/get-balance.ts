@@ -1,12 +1,13 @@
 import { Pact } from '@kadena/client';
 import type { ChainId, PactValue } from '@kadena/types';
 
-import config from './config';
+import { devnetConfig } from './config';
+import type { IAccount } from './helper';
 import { dirtyRead } from './helper';
 
 export async function getBalance({
   account,
-  chainId = config.CHAIN_ID,
+  chainId = devnetConfig.CHAIN_ID,
 }: {
   account: string;
   chainId?: ChainId;
@@ -17,7 +18,7 @@ export async function getBalance({
     .setMeta({
       chainId: chainId,
     })
-    .setNetworkId(config.NETWORK_ID)
+    .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 
   const response = await dirtyRead(transaction);

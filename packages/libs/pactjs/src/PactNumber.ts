@@ -1,6 +1,11 @@
 /// <reference path="./extend-bignumber.ts" />
 import BigNumber from 'bignumber.js';
 
+// Configure BigNumber to prevent exponential notation (Scientific notation) for numbers.
+// The library supports a maximum of 1e9 digits, which I believe is sufficient for our use case.
+// It is highly unlikely that someone would pass a number with more than 1,000,000,000 digits.
+BigNumber.config({ EXPONENTIAL_AT: [-1e9, 1e9] });
+
 // In order to extend BigNumber methods correctly, I had to add the PactNumber methods to
 // the prototype of BigNumber. Then, something like this works:
 // const decimal = new PactNumber('0.9').plus("1").toPactDecimal()

@@ -2,7 +2,7 @@ import type { ChainId, ICommandResult } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 
-import config from './config';
+import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {
   assertTransactionSigned,
@@ -15,7 +15,7 @@ import {
 
 export async function transfer({
   publicKey,
-  chainId = config.CHAIN_ID,
+  chainId = devnetConfig.CHAIN_ID,
   sender = sender00,
   amount = 100,
 }: {
@@ -50,7 +50,7 @@ export async function transfer({
       chainId,
       senderAccount: sender.account,
     })
-    .setNetworkId(config.NETWORK_ID)
+    .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 
   const signedTx = signAndAssertTransaction(sender)(transaction);

@@ -1,6 +1,6 @@
 import type { ChainId } from '@kadena/client';
 
-import config from './config';
+import { devnetConfig } from './config';
 import { crossChainTransfer } from './crosschain-transfer';
 import { getBalance } from './get-balance';
 import type { IAccount } from './helper';
@@ -10,13 +10,13 @@ import { transfer } from './transfer';
 import seedrandom from 'seedrandom';
 
 export async function simulate({
-  noAccounts = 2,
+  numberOfAccounts = 2,
   transferInterval = 1000,
   maxAmount = 25,
   tokenPool = 1000000,
   seed = Date.now().toString(),
 }: {
-  noAccounts: number;
+  numberOfAccounts: number;
   transferInterval: number;
   maxAmount: number;
   tokenPool: number;
@@ -24,13 +24,13 @@ export async function simulate({
 }): Promise<void> {
   const accounts: IAccount[] = [];
 
-  if (tokenPool < maxAmount || noAccounts < 0) {
+  if (tokenPool < maxAmount || numberOfAccounts < 0) {
     console.log('Invalid parameters');
     return;
   }
 
   // Create accounts
-  for (let i = 0; i < noAccounts; i++) {
+  for (let i = 0; i < numberOfAccounts; i++) {
     const account = createAccount();
     console.log(
       `Generated KeyPair\nAccount: ${account.account}\nPublic Key: ${account.publicKey}\nSecret Key: ${account.secretKey}\n`,
@@ -40,7 +40,7 @@ export async function simulate({
     // Fund account
     await transfer({
       publicKey: account.publicKey,
-      amount: tokenPool / noAccounts,
+      amount: tokenPool / numberOfAccounts,
     });
   }
   console.log('Seed value: ', seed);
@@ -59,7 +59,7 @@ export async function simulate({
       if (counter >= tokenPool / maxAmount) {
         await transfer({
           publicKey: account.publicKey,
-          amount: tokenPool / noAccounts,
+          amount: tokenPool / numberOfAccounts,
         });
         counter = 0;
       }
@@ -84,7 +84,10 @@ export async function simulate({
       if (i % getRandomNumber(randomNo, accounts.length) === 0) {
         nextAccount = {
           ...nextAccount,
-          chainId: `${getRandomNumber(randomNo, config.NO_CHAINS)}` as ChainId,
+          chainId: `${getRandomNumber(
+            randomNo,
+            devnetConfig.NO_CHAINS,
+          )}` as ChainId,
         };
       }
 

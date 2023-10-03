@@ -6,12 +6,12 @@ import { createClient } from '@kadena/client';
 import type { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 
 import type { Network } from '@/constants/kadena';
-import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import {
   convertIntToChainId,
   validateRequestKey,
 } from '@/services/utils/utils';
+import type { INetworkData } from '@/utils/network';
 import Debug from 'debug';
 import type { Translate } from 'next-translate';
 
@@ -51,10 +51,12 @@ export async function getTransferData({
   requestKey,
   network,
   t,
+  networksData,
 }: {
   requestKey: string;
   network: Network;
   t: Translate;
+  networksData: INetworkData[];
 }): Promise<ITransferDataResult> {
   debug(getTransferData.name);
   const validatedRequestKey = validateRequestKey(requestKey);
@@ -65,10 +67,19 @@ export async function getTransferData({
 
   try {
     const chainInfoPromises = Array.from(new Array(20)).map((item, chainId) => {
-      const host = getKadenaConstantByNetwork(network).apiHost({
-        networkId: chainNetwork[network].network,
+      const networkDto = networksData.find(
+        (item) => item.networkId === network,
+      );
+
+      if (!networkDto) {
+        return;
+      }
+
+      const host = networkDto.apiHost({
+        networkId: networkDto.networkId,
         chainId: convertIntToChainId(chainId),
       });
+
       const { getStatus } = createClient(host);
       return getStatus({
         requestKey,
@@ -78,7 +89,9 @@ export async function getTransferData({
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 
-    const request = chainInfos.find((chainInfo) => requestKey in chainInfo);
+    const request = chainInfos.find(
+      (chainInfo) => chainInfo && requestKey in chainInfo,
+    );
 
     if (!request) {
       return { error: t('No request key found') };

@@ -20,13 +20,13 @@ intuitive and efficient.
 
 1. Create docker volume
 
-   ```jsx
+   ```shell
    docker volume create kadena_devnet
    ```
 
 2. start kadena-devnet fat-container
 
-   ```jsx
+   ```shell
    docker run -it -p 8080:8080 -v kadena_devnet:/data --name devnet kadena/devnet
    ```
 
@@ -88,9 +88,9 @@ makes a `keyset`, which is used to `guard` your account.
 1. Send money from "sender00" to your account. Copy your account name from the
    "Accounts" tab and fill it in the command
 
-```jsx
-npm run start -- fund --keys "<your-key>" --predicate "keys-all"
-```
+   ```shell
+   npm run start -- fund --keys "<your-key>" --predicate "keys-all"
+   ```
 
 1. Open the Block Explorer http://localhost:8080/explorer/ to monitor the
    transaction

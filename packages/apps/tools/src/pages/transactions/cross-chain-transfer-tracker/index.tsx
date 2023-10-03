@@ -47,7 +47,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const CrossChainTransferTracker: FC = () => {
-  const { selectedNetwork: network } = useWalletConnectClient();
+  const { selectedNetwork: network, networksData } = useWalletConnectClient();
   const router = useRouter();
   const { t } = useTranslation('common');
 
@@ -139,6 +139,7 @@ const CrossChainTransferTracker: FC = () => {
             }
           },
         },
+        networksData,
       });
     } catch (error) {
       debug(error);

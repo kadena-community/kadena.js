@@ -3,32 +3,7 @@
   "version": "0.1.0",
   "description": "Our own rig package, based on @rushstack/heft-node-rig",
   "license": "MIT",
-  "files": [
-    "profiles"
-  ],
-  "scripts": {
-    "build": "",
-    "format": "pnpm run /^format:.*/",
-    "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier . --cache --write",
-    "test": ""
-  },
   "dependencies": {
-    "@microsoft/api-extractor": "~7.35.0",
-    "@rushstack/heft-jest-plugin": "~0.5.12",
-    "jest-environment-node": "~27.4.2",
-    "typescript": "5.1.6"
-  },
-  "devDependencies": {
-    "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/markdown": "workspace:*",
-    "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
-    "@types/heft-jest": "~1.0.3",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5"
-  },
-  "peerDependencies": {
-    "@rushstack/heft": "~0.50.6"
+    "ts-jest": "^29.1.1"
   }
 }
