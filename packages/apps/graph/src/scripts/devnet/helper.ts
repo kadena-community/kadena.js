@@ -14,7 +14,7 @@ import {
 } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 
-import config from './config';
+import { devnetConfig } from './config';
 
 export interface IAccount extends IKeyPair {
   account: string;
@@ -29,7 +29,7 @@ export interface IKeyPair {
 const getClient = (): IClient =>
   createClient(
     ({ chainId, networkId }) =>
-      `http://localhost:${config.PORT}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      `http://localhost:${devnetConfig.PORT}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
   );
 
 export const submit = (tx: ICommand): Promise<ITransactionDescriptor> =>
@@ -90,7 +90,9 @@ export const asyncPipe =
     return fns.reduce((acc, fn) => acc.then(fn), Promise.resolve(value));
   };
 
-export const createAccount = (chainId: ChainId = config.CHAIN_ID): IAccount => {
+export const createAccount = (
+  chainId: ChainId = devnetConfig.CHAIN_ID,
+): IAccount => {
   const generatedKeyPair = genKeyPair();
 
   return {

@@ -1,7 +1,7 @@
 import { Pact } from '@kadena/client';
 import type { IPactDecimal } from '@kadena/types';
 
-import config from './config';
+import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import { dirtyRead } from './helper';
 
@@ -10,7 +10,7 @@ export async function getBalance(account: IAccount): Promise<IPactDecimal> {
   const transaction = Pact.builder
     .execution(Pact.modules.coin['get-balance'](account.account))
     .setMeta({
-      chainId: account.chainId || config.CHAIN_ID,
+      chainId: account.chainId || devnetConfig.CHAIN_ID,
     })
     .setNetworkId('fast-development')
     .createTransaction();

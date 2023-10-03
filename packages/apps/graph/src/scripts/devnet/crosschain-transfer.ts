@@ -6,7 +6,7 @@ import { Pact, readKeyset } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import type { ChainId, IPactDecimal, IUnsignedCommand } from '@kadena/types';
 
-import config from './config';
+import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {
   inspect,
@@ -28,7 +28,7 @@ function startInTheFirstChain(
         from.account,
         to.account,
         readKeyset('receiver-guard'),
-        to.chainId || config.CHAIN_ID,
+        to.chainId || devnetConfig.CHAIN_ID,
         pactDecimal,
       ),
     )
@@ -39,12 +39,12 @@ function startInTheFirstChain(
         from.account,
         to.account,
         pactDecimal,
-        to.chainId || config.CHAIN_ID,
+        to.chainId || devnetConfig.CHAIN_ID,
       ),
     ])
     .addKeyset('receiver-guard', 'keys-all', to.publicKey)
     .setMeta({ chainId: from.chainId, senderAccount: from.account })
-    .setNetworkId(config.NETWORK_ID)
+    .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 }
 
@@ -55,7 +55,7 @@ function finishInTheTargetChain(
 ): IUnsignedCommand {
   const builder = Pact.builder
     .continuation(continuation)
-    .setNetworkId(config.NETWORK_ID)
+    .setNetworkId(devnetConfig.NETWORK_ID)
     // uncomment this if you want to pay gas yourself
     .addSigner(gasPayer.publicKey, (withCapability) => [
       withCapability('coin.GAS'),
@@ -98,10 +98,10 @@ export async function crossChainTransfer({
   const proof = await pollCreateSpv(
     {
       requestKey: status.reqKey,
-      networkId: config.NETWORK_ID,
-      chainId: from.chainId || config.CHAIN_ID,
+      networkId: devnetConfig.NETWORK_ID,
+      chainId: from.chainId || devnetConfig.CHAIN_ID,
     },
-    to.chainId || config.CHAIN_ID,
+    to.chainId || devnetConfig.CHAIN_ID,
   );
 
   const continuation = {
@@ -112,7 +112,7 @@ export async function crossChainTransfer({
   };
   const unsignedTx2 = finishInTheTargetChain(
     continuation,
-    to.chainId || config.CHAIN_ID,
+    to.chainId || devnetConfig.CHAIN_ID,
   );
 
   const signedTx2 = signAndAssertTransaction(sender00)(unsignedTx2);
