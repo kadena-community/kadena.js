@@ -19,6 +19,7 @@ const contractToTreeItems = (contract: Contract): ITreeProps['items'] => {
   if (interfaces?.length) {
     items.push({
       title: 'Interfaces',
+      isOpen: true,
       items: interfaces.map((i) => ({
         title: (
           <Button variant="compact" icon="ExitToApp">
