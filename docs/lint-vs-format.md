@@ -65,10 +65,10 @@ formatting and linting:
 
 - The `format:lint` script means "format using the linting rules" (using
   `eslint --fix`)
-- The `lint:fmt` script means "lint the formatting" (using `prettier --check`)
+- The `lint:fmt` script means "check the formatting" (using `prettier --check`)
 
-Note that formatting should happen sequentially to prevent , and Prettier should
-have the last word here.
+Note that formatting should happen sequentially to prevent race conditions
+during file writes, and Prettier should have the last word here.
 
 The `format:src` and `lint:src` are the usual suspects here. The common `format`
 and `lint` scripts are reserved for convenience and run multiple other scripts,
