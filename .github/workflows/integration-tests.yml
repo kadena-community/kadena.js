@@ -12,31 +12,35 @@ jobs:
 
     services:
       devnet:
-        image: enof/devnet
+        image: kadena/devnet
         options: >-
           -t
           --memory 7g
           --cpus 2
-          --health-cmd "curl --silent --fail http://devnet:1337/info || exit 1"
+          --health-cmd "curl --silent --fail http://devnet:8080/info || exit 1"
         ports:
-          - 8080:1337
+          - 8080:8080
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          show-progress: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+          run_install: false
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Rush install (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js install
-      - name: Rush Build (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js build -t @kadena/client
-      - name: Run Integration Tests
-        run: |
-          node ./../../../common/scripts/install-run-rushx.js test:integration
-        working-directory: packages/libs/client/
+      - name: pnpm install
+        run: pnpm install
+
+      - name: pnpm build
+        run: pnpm --filter @kadena/client build
+
+      - name: pnpm test:integration
+        run: pnpm --filter @kadena/client test:integration
