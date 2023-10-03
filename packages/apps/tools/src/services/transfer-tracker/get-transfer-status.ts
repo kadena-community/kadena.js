@@ -7,6 +7,7 @@ import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-dat
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
+import type { INetworkData } from '@/utils/network';
 import Debug from 'debug';
 import type { Translate } from 'next-translate';
 
@@ -36,6 +37,7 @@ export async function getTransferStatus({
   network,
   t,
   options,
+  networksData,
 }: {
   requestKey: string;
   network: Network;
@@ -43,6 +45,7 @@ export async function getTransferStatus({
   options?: {
     onPoll?: (status: IStatusData) => void;
   };
+  networksData: INetworkData[];
 }): Promise<void> {
   debug(getTransferStatus.name);
   const { onPoll = () => {} } = { ...options };
@@ -52,6 +55,7 @@ export async function getTransferStatus({
       requestKey,
       network,
       t,
+      networksData,
     });
 
     // If not found or error

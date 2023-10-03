@@ -9,6 +9,7 @@ import {
 import { createVar, globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('html, body', {
+  margin: 0,
   backgroundColor: vars.colors.$background,
 });
 

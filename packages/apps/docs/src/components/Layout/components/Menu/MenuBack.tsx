@@ -15,5 +15,12 @@ export const MenuBack: FC<IProps> = ({ isOpen = false, onClick }) => {
     menuBackOpenVariants[isOpen ? 'isOpen' : 'isClosed'],
   );
 
-  return <button type="button" className={classes} onClick={onClick} />;
+  return (
+    <button
+      type="button"
+      className={classes}
+      onClick={onClick}
+      aria-label="Close the slide menu"
+    />
+  );
 };

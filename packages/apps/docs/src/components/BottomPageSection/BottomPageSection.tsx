@@ -68,7 +68,11 @@ export const BottomPageSection: FC<IProps> = ({
         )}
       </Stack>
       <Divider />
-      <Stack justifyContent="space-between" width="100%">
+      <Stack
+        direction={{ xs: 'column', lg: 'row' }}
+        justifyContent="space-between"
+        width="100%"
+      >
         <PageHelpful editLink={editLink} />
         <Subscribe />
       </Stack>

@@ -38,7 +38,12 @@ const resultsMapToTreeItems = (
   }));
 };
 
-const Results = ({ data, onItemClick, filter, ...rest }: IResultsProps) => {
+const Results = ({
+  data,
+  onItemClick,
+  filter,
+  ...rest
+}: IResultsProps): React.JSX.Element => {
   const items = useMemo(() => {
     let filteredData = data;
     if (filter) {

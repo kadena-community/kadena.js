@@ -12,7 +12,10 @@ export interface ISidePanelProps {
   onResultClick: IResultsProps['onItemClick'];
 }
 
-const SidePanel = ({ results, onResultClick }: ISidePanelProps) => {
+const SidePanel = ({
+  results,
+  onResultClick,
+}: ISidePanelProps): React.JSX.Element => {
   const [text, setText] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>();
   const [isPending, startTransition] = useTransition();

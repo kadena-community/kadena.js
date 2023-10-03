@@ -47,7 +47,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
       </a>
       <div className={innerWrapperClass}>
         <div className={logoClass}>
-          <Link href="/" passHref>
+          <Link href="/" passHref aria-label="Go to the home page">
             <DocsLogo overwriteTheme="dark" />
           </Link>
         </div>
