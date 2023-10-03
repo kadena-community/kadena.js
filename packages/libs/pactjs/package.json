@@ -42,7 +42,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "bignumber.js": "^9.0.2"
+    "bignumber.js": "^9.1.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
