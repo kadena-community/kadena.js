@@ -13,9 +13,12 @@
 // https://stackoverflow.com/a/75907318
 // Decided against this because it's not the expected syntax
 
-type Func<I extends unknown[], O> = (...args: I) => O;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Any = any;
+
+type Func<I extends Any[], O> = (...args: I) => O;
 type UnaryFunction<I, O> = (arg: Awaited<I>) => O;
-type Output<T> = T extends Promise<unknown> ? T : Promise<T>;
+type Output<T> = T extends Promise<Any> ? T : Promise<T>;
 
 /**
  * pipe async functions together, this is general pursue function but as its helpful for composing the client functions specially in FP style, we have it here.
@@ -30,30 +33,30 @@ type Output<T> = T extends Promise<unknown> ? T : Promise<T>;
  * @alpha
  */
 interface IAsyncPipeOverload {
-  <TIn extends unknown[], TOut>(op1: Func<TIn, TOut>): Func<TIn, TOut>;
-  <TIn extends unknown[], T1, TOut>(
+  <TIn extends Any[], TOut>(op1: Func<TIn, TOut>): Func<TIn, TOut>;
+  <TIn extends Any[], T1, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, TOut>(
+  <TIn extends Any[], T1, T2, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, T3, TOut>(
+  <TIn extends Any[], T1, T2, T3, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, T3>,
     op4: UnaryFunction<T3, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, T3, T4, TOut>(
+  <TIn extends Any[], T1, T2, T3, T4, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, T3>,
     op4: UnaryFunction<T3, T4>,
     op5: UnaryFunction<T4, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, T3, T4, T5, TOut>(
+  <TIn extends Any[], T1, T2, T3, T4, T5, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, T3>,
@@ -61,7 +64,7 @@ interface IAsyncPipeOverload {
     op5: UnaryFunction<T4, T5>,
     op6: UnaryFunction<T5, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, T3, T4, T5, T6, TOut>(
+  <TIn extends Any[], T1, T2, T3, T4, T5, T6, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, T3>,
@@ -70,7 +73,7 @@ interface IAsyncPipeOverload {
     op6: UnaryFunction<T5, T6>,
     op7: UnaryFunction<T6, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, T3, T4, T5, T6, T7, TOut>(
+  <TIn extends Any[], T1, T2, T3, T4, T5, T6, T7, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, T3>,
@@ -80,7 +83,7 @@ interface IAsyncPipeOverload {
     op7: UnaryFunction<T6, T7>,
     op8: UnaryFunction<T7, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, T3, T4, T5, T6, T7, T8, TOut>(
+  <TIn extends Any[], T1, T2, T3, T4, T5, T6, T7, T8, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, T3>,
@@ -91,7 +94,7 @@ interface IAsyncPipeOverload {
     op8: UnaryFunction<T7, T8>,
     op9: UnaryFunction<T8, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, T3, T4, T5, T6, T7, T8, T9, TOut>(
+  <TIn extends Any[], T1, T2, T3, T4, T5, T6, T7, T8, T9, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, T3>,
@@ -103,7 +106,7 @@ interface IAsyncPipeOverload {
     op9: UnaryFunction<T8, T9>,
     op10: UnaryFunction<T9, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TOut>(
+  <TIn extends Any[], T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, T3>,
@@ -116,7 +119,7 @@ interface IAsyncPipeOverload {
     op10: UnaryFunction<T9, T10>,
     op11: UnaryFunction<T10, TOut>,
   ): (...args: TIn) => Output<TOut>;
-  <TIn extends unknown[], T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TOut>(
+  <TIn extends Any[], T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TOut>(
     op1: Func<TIn, T1>,
     op2: UnaryFunction<T1, T2>,
     op3: UnaryFunction<T2, T3>,
@@ -136,8 +139,8 @@ interface IAsyncPipeOverload {
  * @public
  */
 export const asyncPipe: IAsyncPipeOverload =
-  (first: (...i: unknown[]) => unknown, ...fns: ((i: unknown) => unknown)[]) =>
-  (...value: unknown[]) => {
+  (first: (...i: Any[]) => Any, ...fns: ((i: Any) => Any)[]) =>
+  (...value: Any[]) => {
     return fns.reduce(
       (acc, fn) => acc.then(fn),
       Promise.resolve(first(...value)),

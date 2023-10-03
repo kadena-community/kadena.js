@@ -2,24 +2,32 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @rushstack/typedef-var */
 
-import { createTransaction, Pact, readKeyset } from '@kadena/client';
+import type { ChainId } from '@kadena/client';
+import { Pact, readKeyset, signWithChainweaver } from '@kadena/client';
 import {
   addKeyset,
   addSigner,
-  asyncPipe,
   composePactCommand,
   execution,
   setMeta,
 } from '@kadena/client/fp';
 
-import { listen, preflight, submitOne } from '../util/client';
-import { checkSuccess, safeSigned, throwIfFailed } from '../util/fp-helpers';
+import type { IClientConfig } from './rich-client';
+import { submitAndListen } from './rich-client';
 
-const createAccountCommand = (
-  account: string,
-  publicKey: string,
-  sender: { account: string; publicKey: string },
-) =>
+interface ICreateAccountCommandInput {
+  account: string;
+  publicKey: string;
+  sender: { account: string; publicKey: string };
+  chainId: ChainId;
+}
+
+const createAccountCommand = ({
+  account,
+  publicKey,
+  sender,
+  chainId,
+}: ICreateAccountCommandInput) =>
   composePactCommand(
     execution(
       Pact.modules.coin['create-account'](account, readKeyset('account-guard')),
@@ -28,26 +36,34 @@ const createAccountCommand = (
     addSigner(sender.publicKey, (withCapability) => [
       withCapability('coin.GAS'),
     ]),
-    setMeta({ senderAccount: sender.account }),
-  )();
-
-const submitAndListen = asyncPipe(
-  createTransaction,
-  safeSigned,
-  checkSuccess(preflight),
-  submitOne,
-  listen,
-  throwIfFailed,
-);
-
-const createAccount = asyncPipe(createAccountCommand, submitAndListen);
+    setMeta({ senderAccount: sender.account, chainId }),
+  );
 
 // create account for "bob"
-export async function test() {
-  const result = await createAccount('bob', 'bob-key', {
-    account: 'gasPayer',
-    publicKey: 'gasPayer-publicKey',
-  });
+export const createAccount = (
+  inputs: ICreateAccountCommandInput,
+  config: IClientConfig,
+) => submitAndListen(config)(createAccountCommand(inputs));
 
-  console.log(result);
+export async function test() {
+  createAccount(
+    {
+      account: 'javad',
+      publicKey: 'test',
+      sender: { account: 'gasPayer', publicKey: '' },
+      chainId: '1',
+    },
+    {
+      host: 'https://api.testnet.chainweb.com',
+      defaults: {
+        networkId: 'testnet04',
+      },
+      sign: signWithChainweaver,
+    },
+  )
+    .on('sign', (data) => console.log(data))
+    .on('preflight', (data) => console.log(data))
+    .on('submit', (data) => console.log(data))
+    .on('listen', (data) => console.log(data))
+    .execute();
 }

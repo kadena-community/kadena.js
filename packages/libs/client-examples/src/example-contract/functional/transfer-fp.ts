@@ -1,5 +1,5 @@
 import type { ChainId } from '@kadena/client';
-import { createTransaction, Pact } from '@kadena/client';
+import { createTransaction, Pact, signWithChainweaver } from '@kadena/client';
 import {
   addSigner,
   asyncPipe,
@@ -10,7 +10,7 @@ import {
 } from '@kadena/client/fp';
 
 import { pollStatus, preflight, submitOne } from '../util/client';
-import { checkSuccess, inspect, safeSigned } from '../util/fp-helpers';
+import { checkSuccess, inspect, safeSign } from '../util/fp-helpers';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getTransferCommand = ({
@@ -54,7 +54,7 @@ const doTransfer = asyncPipe(
   ),
   inspect('command'),
   createTransaction,
-  safeSigned,
+  safeSign(signWithChainweaver),
   checkSuccess(preflight),
   submitOne,
   pollStatus,

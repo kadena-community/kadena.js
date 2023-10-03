@@ -30,7 +30,9 @@
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
-    "@kadena/pactjs": "workspace:*"
+    "@kadena/pactjs": "workspace:*",
+    "@types/ramda": "^0.29.5",
+    "ramda": "^0.29.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

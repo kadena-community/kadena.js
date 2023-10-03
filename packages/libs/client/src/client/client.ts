@@ -18,6 +18,7 @@ import type {
   IPollRequestPromise,
 } from './interfaces/interfaces';
 import {
+  getHostUrl,
   groupByHost,
   kadenaHostGenerator,
   mergeAll,
@@ -213,6 +214,12 @@ export interface IClient extends IBaseClient {
   send: ISubmit;
 
   /**
+   * Alias for `submit` that accepts only one transaction. useful when you want more precise type checking.
+   * {@link IBaseClient.submit | submit() function}
+   */
+  submitOne: (transaction: ICommand) => Promise<ITransactionDescriptor>;
+
+  /**
    * Use {@link IBaseClient.getStatus | getStatus() function}
    * Alias for `getStatus`.
    *
@@ -228,12 +235,12 @@ export interface IClient extends IBaseClient {
  */
 export interface ICreateClient {
   /**
-   * Generates a client instance by passing the URL of the host.
+   * Generates a client instance by passing the base URL of the host.
    *
-   * Useful when you are working with a single network and chainId.
-   * @param hostUrl - the URL to use in the client
+   * Useful when you are working with a single network.
+   * @param hostBaseUrl - the base URL to use in the client
    */
-  (hostUrl: string): IClient;
+  (hostBaseUrl: string): IClient;
 
   /**
    * Generates a client instance by passing a hostUrlGenerator function.
@@ -256,7 +263,7 @@ export interface ICreateClient {
 export const createClient: ICreateClient = (
   host = kadenaHostGenerator,
 ): IClient => {
-  const getHost = typeof host === 'string' ? () => host : host;
+  const getHost = typeof host === 'string' ? getHostUrl(host) : host;
 
   const client: IBaseClient = {
     local(body, options) {
@@ -351,6 +358,7 @@ export const createClient: ICreateClient = (
 
   return {
     ...client,
+    submitOne: client.submit,
     preflight(body) {
       return client.local(body, {
         preflight: true,

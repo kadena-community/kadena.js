@@ -32,18 +32,32 @@ export function getUrl(
   return url.toString();
 }
 
+interface INetworkOptions {
+  networkId: string;
+  chainId: ChainId;
+}
+
+export const getHostUrl =
+  // prettier-ignore
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  (hostBaseUrl: string) => {
+    const base = hostBaseUrl.endsWith('/') ? hostBaseUrl.slice(0, hostBaseUrl.length - 1) : hostBaseUrl;
+    return ({ networkId, chainId }: INetworkOptions) =>
+    `${base}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+  };
+
 export const kadenaHostGenerator = ({
   networkId,
   chainId,
-}: {
-  networkId: string;
-  chainId: ChainId;
-}): string => {
+}: INetworkOptions): string => {
   switch (networkId) {
     case 'mainnet01':
-      return `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+      return getHostUrl('https://api.chainweb.com')({ networkId, chainId });
     case 'testnet04':
-      return `https://api.testnet.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+      return getHostUrl('https://api.testnet.chainweb.com')({
+        networkId,
+        chainId,
+      });
     default:
       throw new Error(`UNKNOWN_NETWORK_ID: ${networkId}`);
   }

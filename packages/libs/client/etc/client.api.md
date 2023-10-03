@@ -94,6 +94,7 @@ export interface IClient extends IBaseClient {
     // @deprecated
     send: ISubmit;
     signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
+    submitOne: (transaction: ICommand) => Promise<ITransactionDescriptor>;
 }
 
 export { ICommand }
@@ -124,7 +125,7 @@ export interface IContinuationPayloadObject {
 
 // @public (undocumented)
 export interface ICreateClient {
-    (hostUrl: string): IClient;
+    (hostBaseUrl: string): IClient;
     (hostAddressGenerator?: (options: {
         chainId: ChainId;
         networkId: string;

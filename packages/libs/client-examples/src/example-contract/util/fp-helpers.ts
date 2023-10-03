@@ -3,9 +3,14 @@ import { isSignedTransaction, signWithChainweaver } from '@kadena/client';
 import { asyncPipe } from '@kadena/client/fp';
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-explicit-any
+type all = any;
+
+export const head = (args: all[]): any => args[0];
+
 export const inspect =
-  (tag: string): (<T extends unknown>(data: T) => T) =>
-  <T extends unknown>(data: T): T => {
+  (tag: string) =>
+  <T extends any>(data: T): T => {
     console.log(tag, data);
     return data;
   };
@@ -25,13 +30,21 @@ export const validateSign = (
   return txWidthSigs;
 };
 
-export const safeSigned = async (tx: IUnsignedCommand): Promise<ICommand> => {
-  const signedTx = await signWithChainweaver(tx);
-  return validateSign(tx, signedTx);
-};
+export const safeSign =
+  // prettier-ignore
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  (
+    sign: (
+      transaction: IUnsignedCommand,
+    ) => Promise<IUnsignedCommand | ICommand>,
+  ) =>
+  async (tx: IUnsignedCommand) => {
+    const signedTx = await sign(tx);
+    return validateSign(tx, signedTx);
+  };
 
 // throw if the result is failed ; we might introduce another api for error handling
-export const throwIfFailed = (response: ICommandResult): ICommandResult => {
+export const throwIfFails = (response: ICommandResult): ICommandResult => {
   if (response.result.status === 'success') {
     return response;
   }
@@ -43,5 +56,5 @@ export const checkSuccess =
   // prettier-ignore
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-explicit-any
   <T extends (...args: any) => any>(preflight: T) =>
-    (tx: ICommand) =>
-      asyncPipe(preflight, throwIfFailed, () => tx)(tx);
+  (tx: ICommand) =>
+    asyncPipe(preflight, throwIfFails, () => tx)(tx);
