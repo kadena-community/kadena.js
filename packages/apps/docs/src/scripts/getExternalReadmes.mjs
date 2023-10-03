@@ -28,7 +28,13 @@ const createEditOverwrite = (repo, filename) => {
   return `${REPOURLPREFIX}/${repo}/blob/main/${filename}`;
 };
 
-const importDocs = async ({ filename, destination, tempDir, repo }) => {
+const importDocs = async ({
+  filename,
+  destination,
+  tempDir,
+  repo,
+  options,
+}) => {
   const doc = fs.readFileSync(`${tempDir}/${filename}`, 'utf-8');
 
   const md = remark.parse(doc);
@@ -48,6 +54,7 @@ const importDocs = async ({ filename, destination, tempDir, repo }) => {
       index,
       lastModifiedDate,
       editLink: createEditOverwrite(repo, filename),
+      tags: options.tags,
     }) + doc,
     {
       flag: 'w',
@@ -62,7 +69,7 @@ const getDirnameFromRepo = (repo) => {
   return repoName;
 };
 
-export const clone = async ({ filename, repo, destination }) => {
+export const clone = async ({ filename, repo, destination, options }) => {
   fs.rmSync(TEMPDIR, { recursive: true, force: true });
   const repoName = getDirnameFromRepo(repo);
   await promiseExec(`git clone ${REPOPREFIX}${repo} ${TEMPDIR}/${repoName}`);
@@ -72,6 +79,7 @@ export const clone = async ({ filename, repo, destination }) => {
     destination,
     repo,
     tempDir: `${TEMPDIR}/${repoName}`,
+    options,
   });
 };
 
@@ -87,6 +95,10 @@ const init = async () => {
     filename: `README.md`,
     repo: 'kadena-community/getting-started',
     destination: '/build/quickstart',
+    options: {
+      order: 0,
+      tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
+    },
   });
 
   spinner.stop();
