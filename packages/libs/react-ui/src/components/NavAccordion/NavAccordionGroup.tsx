@@ -7,6 +7,7 @@ import {
   navAccordionGroupIconClass,
   navAccordionGroupListClass,
   navAccordionGroupTitleClass,
+  navAccordionListItemClass,
 } from './NavAccordion.css';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
 
@@ -57,18 +58,20 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
       </button>
       {isOpen && children && (
         <ul className={navAccordionGroupListClass}>
-          {React.Children.map(children, (section) =>
-            React.cloneElement(
-              section as React.ReactElement<
-                INavAccordionLinkProps,
-                React.JSXElementConstructor<INavAccordionLinkProps>
-              >,
-              {
-                deepLink: true,
-                active: section.props.active,
-              },
-            ),
-          )}
+          {React.Children.map(children, (section) => (
+            <li className={navAccordionListItemClass}>
+              {React.cloneElement(
+                section as React.ReactElement<
+                  INavAccordionLinkProps,
+                  React.JSXElementConstructor<INavAccordionLinkProps>
+                >,
+                {
+                  deepLink: true,
+                  active: section.props.active,
+                },
+              )}
+            </li>
+          ))}
         </ul>
       )}
     </div>

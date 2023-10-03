@@ -7,14 +7,18 @@ import {
   navAccordionSectionWrapperClass,
   navAccordionToggleIconClass,
 } from './NavAccordion.css';
+import type { INavAccordionGroupProps } from './NavAccordionGroup';
+import type { INavAccordionLinkProps } from './NavAccordionLink';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import type { FC } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 
 export interface INavAccordionSectionProps {
-  children?: React.ReactNode;
+  children?: FunctionComponentElement<
+    INavAccordionGroupProps | INavAccordionLinkProps
+  >[];
   index?: number;
   isOpen?: boolean;
   onClick?: () => void;
