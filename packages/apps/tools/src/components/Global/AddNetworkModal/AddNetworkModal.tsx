@@ -15,9 +15,12 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const schema = z.object({
-  label: z.string({
-    required_error: "reqired field",
-  }).trim().min(1),
+  label: z
+    .string({
+      required_error: 'reqired field',
+    })
+    .trim()
+    .min(1),
   networkId: z.string().trim().min(1),
   api: z.string().trim().min(1),
 });
@@ -64,7 +67,11 @@ export const AddNetworkModal: FC = () => {
     clearModal();
   };
 
-  const { register, handleSubmit: validateThenSubmit, formState: { errors }, } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit: validateThenSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
