@@ -261,6 +261,18 @@ importers:
 
   packages/apps/graph:
     dependencies:
+      '@kadena/chainweb-node-client':
+        specifier: workspace:*
+        version: link:../../libs/chainweb-node-client
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
+      '@kadena/cryptography-utils':
+        specifier: workspace:*
+        version: link:../../libs/cryptography-utils
+      '@kadena/pactjs':
+        specifier: workspace:*
+        version: link:../../libs/pactjs
       '@pothos/core':
         specifier: ~3.33.0
         version: 3.33.0(graphql@16.8.0)
@@ -273,6 +285,9 @@ importers:
       '@prisma/client':
         specifier: ^5.1.1
         version: 5.1.1(prisma@5.1.1)
+      commander:
+        specifier: ^11.0.0
+        version: 11.0.0
       debug:
         specifier: ~4.3.4
         version: 4.3.4(supports-color@5.5.0)
@@ -310,6 +325,9 @@ importers:
       '@kadena/pactjs-cli':
         specifier: workspace:*
         version: link:../../tools/pactjs-cli
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
@@ -15966,7 +15984,6 @@ packages:
   /commander@11.0.0:
     resolution: {integrity: sha512-9HMlXtt/BNoYr8ooyjjNRdIilOTkVJXB+GhxMTtOKwk0R4j4lS4NpjuqmRxroBfnfTSHQIHQB7wryHhXarNjmQ==}
     engines: {node: '>=16'}
-    dev: true
 
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
