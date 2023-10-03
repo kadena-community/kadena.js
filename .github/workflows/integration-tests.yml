@@ -27,17 +27,16 @@ jobs:
         with:
           show-progress: false
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v2
         with:
-          version: 7
-          run_install: false
+          version: 8
 
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'pnpm'
 
-      - name: pnpm install
+      - name: Install dependencies
         run: pnpm install
 
       - name: pnpm build
