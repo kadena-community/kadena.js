@@ -49,7 +49,7 @@ export const getAllNetworks = (
         networkId: item,
         label: kadenaConstants[item].label,
         API: kadenaConstants[item].API,
-        ESTATS: kadenaConstants[item].estatsHost()
+        ESTATS: kadenaConstants[item].estatsHost(),
       } as INetworkData);
     });
   }
@@ -81,6 +81,12 @@ export const getInitialNetworks = (): INetworkData[] => {
   return allNetworkObjects;
 };
 
-export const getApiHost = ({ api, networkId, chainId }: IApiHostData): string => `https://${api}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+export const getApiHost = ({ api, networkId, chainId }: IApiHostData): string =>
+  `https://${api}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 
-export const getEstatsHost = ({api, account, chain}: IEstatsHostData): string => `https://${api}/txs/account/${account}?token=coin&chain=${chain}&limit=10`;
+export const getEstatsHost = ({
+  api,
+  account,
+  chain,
+}: IEstatsHostData): string =>
+  `https://${api}/txs/account/${account}?token=coin&chain=${chain}&limit=10`;
