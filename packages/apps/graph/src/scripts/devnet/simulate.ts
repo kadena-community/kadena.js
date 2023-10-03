@@ -4,14 +4,14 @@ import { createAccount, getRandomChainId } from './helper';
 import { transfer } from './transfer';
 
 export async function simulate(
-  noAccounts: number = 2,
+  numberOfAccounts: number = 2,
   transferInterval: number = 2000,
   amount: number = 10,
 ): Promise<void> {
   const accounts: IAccount[] = [];
 
   // Create accounts
-  for (let i = 0; i < noAccounts; i++) {
+  for (let i = 0; i < numberOfAccounts; i++) {
     const account = createAccount();
     console.log(
       `Generated KeyPair\nAccount: ${account.account}\nPublic Key: ${account.publicKey}\nSecret Key: ${account.secretKey}\n`,
