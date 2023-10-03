@@ -21,6 +21,7 @@ import {
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import type { Network } from '@/constants/kadena';
 import Routes from '@/constants/routes';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import type { ITransaction } from '@/services/accounts/get-transactions';
 import { getTransactions } from '@/services/accounts/get-transactions';
@@ -37,6 +38,7 @@ const CheckTransactions: FC = () => {
 
   const { t } = useTranslation('common');
   const router = useRouter();
+  const { networksData } = useWalletConnectClient();
 
   const [results, setResults] = useState<ITransaction[]>([]);
   const [loadingState, setLoadingState] = useState<boolean>(true);
@@ -100,9 +102,10 @@ const CheckTransactions: FC = () => {
       network,
       chain,
       account,
+      networksData,
     });
 
-    setResults(result);
+    setResults(result as ITransaction[]);
   }
 
   async function refreshResultsEvent(): Promise<void> {

@@ -17,7 +17,7 @@ const moduleToTabId = ({ moduleName, chainId }: IModule): string => {
   return `${moduleName}-${chainId}`;
 };
 
-const Editor = ({ openedModules }: IEditorProps) => {
+const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
   if (!openedModules.length) {
     return <div>Nothing loaded</div>;
   }
