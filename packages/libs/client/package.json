@@ -20,7 +20,7 @@
     "fp"
   ],
   "scripts": {
-    "build": "heft build --clean",
+    "build": "tsc && api-extractor run --verbose",
     "dev:postinstall": "pnpm run pactjs:retrieve:contract; pnpm run pactjs:generate:contract",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
@@ -33,7 +33,7 @@
     "pactjs:generate:contract": "pactjs contract-generate --file contracts/coin.contract.pact",
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "heft test"
+    "test": "jest"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -50,15 +50,17 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
+    "@microsoft/api-extractor": "^7.37.0",
     "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",
-    "@types/heft-jest": "~1.0.3",
-    "@types/node": "^16.0.0",
+    "@types/jest": "^29.5.3",
+    "@types/node": "^18.17.14",
     "@walletconnect/types": "~2.8.1",
     "eslint": "^8.45.0",
+    "jest": "^29.7.0",
     "prettier": "~3.0.0",
     "prettier-plugin-packagejson": "^2.4.5",
-    "ts-node": "~10.8.2"
+    "ts-node": "~10.8.2",
+    "typescript": "5.2.2"
   }
 }

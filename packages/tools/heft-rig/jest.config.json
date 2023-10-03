@@ -1,0 +1,38 @@
+{
+  "preset": "ts-jest/presets/js-with-ts",
+  "clearMocks": true,
+  "collectCoverage": true,
+  "coverageDirectory": "<rootDir>/temp/coverage",
+  "coverageThreshold": {
+    "global": {
+      "branches": 90,
+      "functions": 90,
+      "lines": 90,
+      "statements": 90
+    }
+  },
+  "collectCoverageFrom": [
+    "src/**/*.{ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/**/*.test.{ts,tsx}",
+    "!src/**/test/**",
+    "!src/**/__tests__/**",
+    "!src/**/__fixtures__/**",
+    "!src/**/__mocks__/**"
+  ],
+  "coveragePathIgnorePatterns": ["/node_modules/"],
+  "testMatch": ["<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"],
+  "modulePathIgnorePatterns": [
+    "<rootDir>/dist/",
+    "<rootDir>/src/tests/mockdata"
+  ],
+  "moduleDirectories": ["node_modules", "src"],
+  "reporters": ["jest-standard-reporter"],
+  "roots": ["<rootDir>/src"],
+  "testEnvironment": "jest-environment-node",
+  "testEnvironmentOptions": {
+    "url": "http://localhost/",
+    "customExportConditions": ["require", "node"]
+  },
+  "transformIgnorePatterns": ["^.+\\.js$"]
+}

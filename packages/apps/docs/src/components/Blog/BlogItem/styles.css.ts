@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -74,17 +74,35 @@ export const figureClass = style([
     borderRadius: '$md',
   }),
   {
-    width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
-    aspectRatio: '1',
+    width: `100%`,
+
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
+        aspectRatio: '1',
+      },
+    },
   },
 ]);
 
 export const figureVariant = styleVariants({
   default: {
-    width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
+    width: '100%',
+    aspectRatio: '16 / 3',
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
+      },
+    },
   },
   large: {
-    width: `clamp(${vars.sizes.$48}, 20vw, ${vars.sizes.$64})`,
+    width: '100%',
+    aspectRatio: '16 / 7',
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        width: `clamp(${vars.sizes.$48}, 20vw, ${vars.sizes.$64})`,
+      },
+    },
   },
 });
 
@@ -100,4 +118,24 @@ export const authorTitleClass = style([
     fontWeight: '$normal',
     color: '$neutral3',
   }),
+]);
+
+export const gridWrapperClass = style([
+  sprinkles({
+    display: 'grid',
+  }),
+  {
+    gridTemplateAreas: `
+      "image"
+      "header"
+    `,
+
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        gridTemplateAreas: `
+        "header image"
+      `,
+      },
+    },
+  },
 ]);

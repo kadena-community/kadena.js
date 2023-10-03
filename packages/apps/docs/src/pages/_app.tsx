@@ -38,7 +38,6 @@ export const MyApp = ({
   Component: FC<IPageProps>;
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
-
   const Layout = getLayout(props.frontmatter.layout);
 
   // check for a router query
@@ -60,6 +59,7 @@ export const MyApp = ({
         <title>{props.frontmatter.title}</title>
         <meta name="title" content={props.frontmatter.title} />
         <meta name="description" content={props.frontmatter.description} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <MDXProvider components={markDownComponents}>
         <ThemeProvider
