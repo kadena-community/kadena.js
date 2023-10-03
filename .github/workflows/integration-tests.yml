@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  integration-tests:
+  kadena-client:
     runs-on: ubuntu-latest
 
     services:
@@ -17,8 +17,6 @@ jobs:
           --memory 7g
           --cpus 2
           --health-cmd "curl --verbose --fail http://localhost:8080/info || exit 1"
-          --health-retries 5
-          --health-start-period 10s
         ports:
           - 8080:8080
 
@@ -42,5 +40,5 @@ jobs:
       - name: Build client and dependencies
         run: pnpm run build --filter @kadena/client
 
-      - name: pnpm test:integration
+      - name: run integration tests
         run: pnpm --filter @kadena/client test:integration
