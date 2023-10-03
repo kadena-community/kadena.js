@@ -25,7 +25,7 @@
     "cypress:open": "percy exec -- cypress open",
     "cypress:run": "percy exec -- cypress run",
     "dev": "pnpm run build:scripts && next dev",
-    "format": "pnpm run /^format:.*/",
+    "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
