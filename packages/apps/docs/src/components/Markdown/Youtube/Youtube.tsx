@@ -1,6 +1,7 @@
-import { StyledWrapper } from './styles';
+import { wrapperClass } from './styles.css';
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   videoId: string;
@@ -9,7 +10,7 @@ interface IProps {
 
 export const Youtube: FC<IProps> = ({ videoId, title }) => {
   return (
-    <StyledWrapper>
+    <div className={wrapperClass}>
       <iframe
         width="100%"
         height="100%"
@@ -19,6 +20,6 @@ export const Youtube: FC<IProps> = ({ videoId, title }) => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
       ></iframe>
-    </StyledWrapper>
+    </div>
   );
 };

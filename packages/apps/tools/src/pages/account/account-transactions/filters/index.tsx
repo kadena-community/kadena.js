@@ -5,7 +5,6 @@ import {
   Card,
   Grid,
   Heading,
-  SystemIcon,
 } from '@kadena/react-ui';
 
 import { mainContentClass, submitClass } from './styles.css';
@@ -15,14 +14,15 @@ import AccountNameField, {
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
-import { useAppContext } from '@/context';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -39,13 +39,13 @@ const CheckTransactions: FC = () => {
 
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { network } = useAppContext();
+  const { selectedNetwork: network } = useWalletConnectClient();
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
   useToolbar([
     {
       title: t('Account Transactions'),
-      icon: SystemIcon.Account,
+      icon: 'Account',
       href: Routes.ACCOUNT_TRANSACTIONS_FILTERS,
     },
   ]);

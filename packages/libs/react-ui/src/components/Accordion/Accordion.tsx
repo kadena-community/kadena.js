@@ -1,41 +1,54 @@
-import { AccordionSection, IAccordionSectionProps } from './AccordionSection';
+'use client';
 
-import React, { FC, useState } from 'react';
+import type { IAccordionSectionProps } from '.';
+import { accordionContentClass } from './Accordion.css';
 
-export interface IAccordionProps {
-  sections: Omit<IAccordionSectionProps, 'isOpen' | 'onToggle'>[];
+import type { FC, FunctionComponentElement } from 'react';
+import React, { useEffect, useState } from 'react';
+
+export interface IAccordionRootProps {
+  children?: FunctionComponentElement<IAccordionSectionProps>[];
   linked?: boolean;
+  initialOpenSection?: number;
 }
 
-export const Accordion: FC<IAccordionProps> = ({ sections, linked = true }) => {
-  const [expandedSections, setExpandedSections] = useState<number[]>([]);
-  const handleOpen = (index: number): void => {
-    if (linked) setExpandedSections([index]);
-    else setExpandedSections([...expandedSections, index]);
-  };
-  const handleClose = (index: number): void => {
-    setExpandedSections(expandedSections.filter((item) => item !== index));
-  };
+export const AccordionRoot: FC<IAccordionRootProps> = ({
+  children,
+  linked = false,
+  initialOpenSection = undefined,
+}) => {
+  const [openSections, setOpenSections] = useState([initialOpenSection]);
 
-  const isOpen = (index: number): boolean => expandedSections.includes(index);
-
-  const handleToggle = (index: number): void => {
-    if (isOpen(index)) handleClose(index);
-    else handleOpen(index);
-  };
+  useEffect(() => {
+    if (linked && openSections.length > 1) {
+      const lastOpen = openSections.pop() || undefined;
+      setOpenSections([lastOpen]);
+    }
+  }, [linked]);
 
   return (
-    <div data-testid="kda-accordion-wrapper">
-      {sections.map((section, index) => (
-        <AccordionSection
-          {...section}
-          isOpen={isOpen(index)}
-          onToggle={() => handleToggle(index)}
-          key={String(section.title)}
-        >
-          {section.children}
-        </AccordionSection>
-      ))}
+    <div data-testid="kda-accordion-sections">
+      {React.Children.map(children, (section, sectionIndex) =>
+        React.cloneElement(
+          section as React.ReactElement<
+            HTMLElement | IAccordionSectionProps,
+            React.JSXElementConstructor<JSX.Element & IAccordionSectionProps>
+          >,
+          {
+            index: sectionIndex,
+            isOpen: openSections.includes(sectionIndex),
+            className: accordionContentClass,
+            onClick: () =>
+              openSections.includes(sectionIndex)
+                ? setOpenSections(
+                    openSections.filter((i) => i !== sectionIndex),
+                  )
+                : setOpenSections(
+                    linked ? [sectionIndex] : [...openSections, sectionIndex],
+                  ),
+          },
+        ),
+      )}
     </div>
   );
 };

@@ -1,28 +1,12 @@
+'use client';
+
 import { Modal } from './Modal';
 import { openModal } from './Modal.css';
+import { ModalContext } from './useModal';
 
-import React, {
-  createContext,
-  FC,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { FC, ReactNode } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-
-//Defining context
-interface IModalContext {
-  renderModal: (v: ReactNode, title?: string) => void;
-  clearModal: () => void;
-}
-
-export const ModalContext = createContext<IModalContext>({
-  renderModal: (v: ReactNode, title?: string) => {},
-  clearModal: () => {},
-});
 
 export interface IModalProviderProps {
   children?: ReactNode;
@@ -33,18 +17,24 @@ export const ModalProvider: FC<IModalProviderProps> = ({ children }) => {
   const [title, setTitle] = useState<string | undefined>(undefined);
   const ref = useRef<Element | null>(null);
   const [content, setContent] = useState<ReactNode>();
+  const [onCloseCallback, setOnCloseCallback] = useState<() => void>();
 
   useEffect(() => {
     ref.current = document.querySelector<HTMLElement>('#modalportal');
     setMounted(true);
   }, []);
 
-  const renderModal = useCallback((node: ReactNode, title?: string): void => {
-    setContent(node);
-    setTitle(title);
-  }, []);
+  const renderModal = useCallback(
+    (node: ReactNode, title?: string, onClose?: () => void): void => {
+      setContent(node);
+      setTitle(title);
+      setOnCloseCallback(() => onClose);
+    },
+    [],
+  );
 
   const clearModal = useCallback((): void => {
+    onCloseCallback?.();
     setContent(undefined);
     setTitle(undefined);
   }, []);
@@ -66,12 +56,12 @@ export const ModalProvider: FC<IModalProviderProps> = ({ children }) => {
         ref.current &&
         createPortal(
           <>
-            <Modal title={title}>{content}</Modal>
+            <Modal title={title} onClose={onCloseCallback}>
+              {content}
+            </Modal>
           </>,
           ref.current,
         )}
     </ModalContext.Provider>
   );
 };
-
-export const useModal = (): IModalContext => useContext(ModalContext);

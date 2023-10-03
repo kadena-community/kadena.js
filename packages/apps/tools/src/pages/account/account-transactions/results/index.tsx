@@ -1,4 +1,4 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   Box,
   Breadcrumbs,
@@ -6,24 +6,30 @@ import {
   ContentHeader,
   Grid,
   Heading,
-  SystemIcon,
+  ProgressBar,
   Table,
   Text,
+  TrackerCard,
 } from '@kadena/react-ui';
 
-import { filterItemClass, headerButtonGroupClass } from './styles.css';
-
-import { Network } from '@/constants/kadena';
-import Routes from '@/constants/routes';
-import { useToolbar } from '@/context/layout-context';
 import {
-  getTransactions,
-  ITransaction,
-} from '@/services/accounts/get-transactions';
+  filterItemClass,
+  headerButtonGroupClass,
+  mainContentClass,
+} from './styles.css';
+
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import type { Network } from '@/constants/kadena';
+import Routes from '@/constants/routes';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { useToolbar } from '@/context/layout-context';
+import type { ITransaction } from '@/services/accounts/get-transactions';
+import { getTransactions } from '@/services/accounts/get-transactions';
 import Debug from 'debug';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const CheckTransactions: FC = () => {
   const debug = Debug(
@@ -32,9 +38,13 @@ const CheckTransactions: FC = () => {
 
   const { t } = useTranslation('common');
   const router = useRouter();
+  const { networksData } = useWalletConnectClient();
 
   const [results, setResults] = useState<ITransaction[]>([]);
   const [loadingState, setLoadingState] = useState<boolean>(true);
+  const [transactionDetails, setTransactionDetails] = useState<ITransaction>();
+
+  const transactionDetailsRef = useRef<HTMLElement | null>(null);
 
   function displayAccountName(accountName: string): string {
     if (accountName.length > 20) {
@@ -47,7 +57,7 @@ const CheckTransactions: FC = () => {
   useToolbar([
     {
       title: t('Account Transactions'),
-      icon: SystemIcon.Account,
+      icon: 'Account',
       href: Routes.ACCOUNT_TRANSACTIONS_FILTERS,
     },
   ]);
@@ -92,9 +102,10 @@ const CheckTransactions: FC = () => {
       network,
       chain,
       account,
+      networksData,
     });
 
-    setResults(result);
+    setResults(result as ITransaction[]);
   }
 
   async function refreshResultsEvent(): Promise<void> {
@@ -121,8 +132,71 @@ const CheckTransactions: FC = () => {
     await router.push(Routes.ACCOUNT_TRANSACTIONS_FILTERS);
   }
 
+  const handleOpenTransactionDetails = (result: ITransaction): void => {
+    setTransactionDetails(result);
+    // @ts-ignore
+    transactionDetailsRef.openSection(0);
+  };
+
   return (
-    <div>
+    <div className={mainContentClass}>
+      <DrawerToolbar
+        ref={transactionDetailsRef}
+        sections={[
+          {
+            icon: 'Information',
+            title: t('Transaction Details'),
+            children: (
+              <>
+                <TrackerCard
+                  labelValues={[
+                    {
+                      label: 'Sender',
+                      value: transactionDetails?.fromAccount,
+                      isAccount: true,
+                    },
+                    {
+                      label: 'From chain',
+                      value: transactionDetails?.chain,
+                    },
+                  ]}
+                  icon={'QuickStart'}
+                />
+                <Box marginBottom="$5" />
+                <ProgressBar
+                  checkpoints={[
+                    {
+                      title: 'Initiated transaction',
+                      status: 'complete',
+                    },
+                    {
+                      title: 'Transaction complete',
+                      status: 'complete',
+                    },
+                  ]}
+                />
+                <Box marginBottom="$2" />
+                <TrackerCard
+                  labelValues={[
+                    {
+                      label: 'Receiver',
+                      value: transactionDetails?.fromAccount,
+                      isAccount: true,
+                    },
+                    {
+                      label: 'to chain',
+                      value:
+                        transactionDetails?.crossChainId ||
+                        transactionDetails?.chain,
+                    },
+                  ]}
+                  icon={'ReceiverInactive'}
+                />
+              </>
+            ),
+          },
+        ]}
+      />
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Account')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
@@ -175,7 +249,7 @@ const CheckTransactions: FC = () => {
         <Grid.Item>
           <ContentHeader
             heading={t('Incoming transactions')}
-            icon={SystemIcon.ArrowCollapseDown}
+            icon={'ArrowCollapseDown'}
             description="This table is listing all the incoming transaction sorted by date."
           />
           <Box marginBottom="$10" />
@@ -197,7 +271,10 @@ const CheckTransactions: FC = () => {
                 }
 
                 return (
-                  <Table.Tr key={index} url={''}>
+                  <Table.Tr
+                    key={index}
+                    onClick={() => handleOpenTransactionDetails(result)}
+                  >
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
                     </Table.Td>
@@ -214,7 +291,7 @@ const CheckTransactions: FC = () => {
         <Grid.Item>
           <ContentHeader
             heading={t('Outgoing transactions')}
-            icon={SystemIcon.ArrowExpandUp}
+            icon={'ArrowExpandUp'}
             description="This table is listing all the outgoing transaction sorted by date."
           />
           <Box marginBottom="$10" />
@@ -236,7 +313,10 @@ const CheckTransactions: FC = () => {
                 }
 
                 return (
-                  <Table.Tr key={index} url={''}>
+                  <Table.Tr
+                    key={index}
+                    onClick={() => handleOpenTransactionDetails(result)}
+                  >
                     <Table.Td>
                       {new Date(result.blockTime).toLocaleString()}
                     </Table.Td>

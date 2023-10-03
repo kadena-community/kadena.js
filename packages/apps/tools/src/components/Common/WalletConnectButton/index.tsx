@@ -2,7 +2,8 @@ import { Button } from '@kadena/react-ui';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 const WalletConnectButton: FC = () => {
   const { connect, isInitializing, disconnect, session } =
@@ -18,9 +19,7 @@ const WalletConnectButton: FC = () => {
     await connect();
   };
 
-  const buttonTitle = session
-    ? t('Disconnect your wallet')
-    : t('Connect your wallet');
+  const buttonTitle = session ? t('Logout') : t('Connect your wallet');
 
   return (
     <Button

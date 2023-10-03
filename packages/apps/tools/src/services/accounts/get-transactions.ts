@@ -1,6 +1,7 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
-import { getKadenaConstantByNetwork, Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
+import type { INetworkData } from '@/utils/network';
 import Debug from 'debug';
 
 export interface ITransaction {
@@ -23,19 +24,21 @@ export async function getTransactions(options: {
   network: Network;
   chain: ChainwebChainId;
   account: string;
-}): Promise<ITransaction[]> {
+  networksData: INetworkData[];
+}): Promise<ITransaction[] | null> {
   debug(getTransactions.name);
+  const { network, chain, account, networksData } = options;
 
-  const { network, chain, account } = options;
+  const networkDto = networksData.find((item) => item.networkId === network);
+
+  if (!networkDto) {
+    return null;
+  }
 
   try {
-    const result: ITransaction[] = await fetch(
-      `https://${getKadenaConstantByNetwork(
-        network,
-      ).estatsHost()}/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
-    ).then((res) => res.json());
-
-    return result;
+    return await fetch(
+      `https://${networkDto.API}/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
+    ).then((res) => res.json() as unknown as ITransaction[]);
   } catch (error) {
     debug(error);
   }

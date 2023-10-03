@@ -1,0 +1,5 @@
+dist
+etc
+lib
+**/*.md
+tsdoc-metadata.json

@@ -1,4 +1,5 @@
-import { IconButton, SystemIcon, Text } from '@kadena/react-ui';
+import type { SystemIcon } from '@kadena/react-ui';
+import { IconButton, Text } from '@kadena/react-ui';
 
 import {
   buttonWrapperClass,
@@ -8,31 +9,28 @@ import {
 } from './styles.css';
 
 import classNames from 'classnames';
-import React, {
-  type ReactNode,
-  forwardRef,
-  ForwardRefExoticComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import type { ForwardRefExoticComponent, ReactNode } from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 
 export interface IDrawerToolbarSection {
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon: keyof typeof SystemIcon;
   title: string;
   children: ReactNode;
 }
 interface IProps {
+  initialOpenItem?: number | undefined;
   sections: IDrawerToolbarSection[];
 }
 
 export const DrawerToolbar: ForwardRefExoticComponent<
   Omit<IProps, 'ref'> & React.RefAttributes<HTMLElement>
 > = forwardRef<HTMLElement, IProps>(function DrawerToolbar(
-  { sections },
+  { sections, initialOpenItem = undefined },
   ref = null,
 ) {
-  const [visibleSection, setVisibleSection] = useState<number | null>(null);
+  const [visibleSection, setVisibleSection] = useState<number | null>(
+    initialOpenItem !== undefined ? initialOpenItem : null,
+  );
   const isOpen = visibleSection !== null;
 
   const handleOpenSection = useCallback(
@@ -56,12 +54,12 @@ export const DrawerToolbar: ForwardRefExoticComponent<
       {!isOpen && (
         <div>
           {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
-          {sections.map(({ icon: Icon, title }, index) => (
+          {sections.map(({ icon, title }, index) => (
             <div className={buttonWrapperClass} key={title}>
               <IconButton
-                icon={Icon}
+                icon={icon}
                 title={title}
-                onClick={() => setVisibleSection(index)}
+                onClick={() => handleOpenSection(index)}
               />
             </div>
           ))}
@@ -75,7 +73,7 @@ export const DrawerToolbar: ForwardRefExoticComponent<
             </Text>
             <IconButton
               onClick={() => setVisibleSection(null)}
-              icon={SystemIcon.Close}
+              icon="Close"
               title="close"
             />
           </div>

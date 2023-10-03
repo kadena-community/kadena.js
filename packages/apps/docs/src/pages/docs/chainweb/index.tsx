@@ -1,20 +1,18 @@
-import { Heading, Stack } from '@kadena/react-ui';
-
+import { options } from '@/components/Layout/Redocly/Redocly';
+import { Specs } from '@/components/Specs';
+import apiSpecs from '@/specs/chainweb/chainweb.openapi.json';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { GetStaticProps } from 'next';
-import React, { FC } from 'react';
+import type { GetStaticProps } from 'next';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { FC } from 'react';
+import React from 'react';
 
 const Home: FC = () => {
-  return (
-    <Stack direction="column" spacing="$2xl">
-      <div>
-        <Heading as="h2">Chainweb</Heading>
-      </div>
-    </Stack>
-  );
+  const specs = apiSpecs as unknown as OpenAPIV3.Document;
+  return <Specs specs={specs} options={options} />;
 };
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -28,8 +26,7 @@ export const getStaticProps: GetStaticProps = async () => {
         label: 'Introduction',
         order: 5,
         description: 'Welcome to Chainwebs documentation!',
-        layout: 'landing',
-        icon: 'Chainweb',
+        layout: 'redocly',
       },
     },
   };

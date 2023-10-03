@@ -1,16 +1,17 @@
-import { styled } from '@kadena/react-components';
+import { paragraphWrapperClass } from './styles.css';
 
 import { BodyText } from '@/components/Typography';
-import React, { FC } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface IProp {
-  children: string;
+  children: ReactNode;
 }
 
-const StyledBodyText = styled(BodyText, {
-  margin: '$5 0',
-});
-
 export const Paragraph: FC<IProp> = ({ children }) => {
-  return <StyledBodyText as="p">{children}</StyledBodyText>;
+  return (
+    <div className={paragraphWrapperClass}>
+      <BodyText as="p">{children}</BodyText>
+    </div>
+  );
 };

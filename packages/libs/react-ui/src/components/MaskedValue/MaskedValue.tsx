@@ -1,3 +1,5 @@
+'use client';
+
 import {
   iconContainer,
   titleContainer,
@@ -6,7 +8,8 @@ import {
 } from './MaskedValue.css';
 
 import { SystemIcon } from '@components/Icon';
-import React, { FC, useState } from 'react';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 
 export interface IMaskedValueProps {
   title?: string;

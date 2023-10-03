@@ -1,13 +1,14 @@
-import { ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { isExecCommand } from '../../interfaces/isExecCommand';
-import { ISingleSignFunction } from '../ISignFunction';
+import type { ISigningRequest } from '../../interfaces/ISigningRequest';
+import type { ISingleSignFunction } from '../ISignFunction';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
-import { ISigningRequest, TWalletConnectChainId } from './walletConnectTypes';
+import type { TWalletConnectChainId } from './walletConnectTypes';
 
-import Client from '@walletconnect/sign-client';
-import { SessionTypes } from '@walletconnect/types';
+import type Client from '@walletconnect/sign-client';
+import type { SessionTypes } from '@walletconnect/types';
 
 interface ISigningResponse {
   body: ICommand | IUnsignedCommand;

@@ -1,5 +1,7 @@
 import { PactNumber } from '@kadena/pactjs';
-import { PactLiteral } from '@kadena/types';
+import type { PactValue } from '@kadena/types';
+
+import { Literal } from './pact-helpers';
 
 const isDate = (obj: unknown): obj is Date => {
   if (typeof obj === 'object' && obj instanceof Date) return true;
@@ -10,34 +12,37 @@ const isDate = (obj: unknown): obj is Date => {
  * @internal
  */
 export function parseAsPactValue(
-  arg: PactLiteral | (() => string),
+  input: PactValue | (() => string) | Literal,
 ): string | number | boolean {
-  switch (typeof arg) {
+  if (input instanceof Literal) {
+    return input.getValue();
+  }
+  switch (typeof input) {
     case 'object': {
-      if ('decimal' in arg) {
-        return new PactNumber(arg.decimal).toDecimal();
+      if ('decimal' in input) {
+        return new PactNumber(input.decimal).toDecimal();
       }
-      if ('int' in arg) {
-        return new PactNumber(arg.int).toInteger();
+      if ('int' in input) {
+        return new PactNumber(input.int).toInteger();
       }
-      if (isDate(arg)) {
-        const isoTime = `${arg.toISOString().split('.')[0]}Z`;
+      if (isDate(input)) {
+        const isoTime = `${input.toISOString().split('.')[0]}Z`;
         return `(time "${isoTime}")`;
       }
       // to prevent from creating [object Object]
-      return JSON.stringify(arg);
+      return JSON.stringify(input);
     }
     case 'number':
       throw new Error(
         'Type `number` is not allowed in the command. Use `{ decimal: 10 }` or `{ int: 10 }` instead',
       );
     case 'string':
-      return `"${arg}"`;
+      return `"${input}"`;
     case 'function':
-      return arg();
+      return input();
     case 'boolean':
-      return arg;
+      return input;
     default:
-      return arg;
+      return input;
   }
 }

@@ -1,16 +1,12 @@
-import {
-  Notification,
-  NotificationBody,
-  styled,
-} from '@kadena/react-components';
+import { Notification } from '@kadena/react-ui';
 
-import { getColor, getIcon, LabelType } from './utils';
+import { wrapperClass } from '../styles.css';
 
-import React, { FC, ReactNode } from 'react';
+import type { LabelType } from './utils';
+import { getColor, getIcon } from './utils';
 
-const Wrapper = styled('div', {
-  margin: '$5 0',
-});
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface IProps {
   children: ReactNode;
@@ -20,15 +16,15 @@ interface IProps {
 
 export const MDNotification: FC<IProps> = ({ children, title = '', label }) => {
   return (
-    <Wrapper>
-      <Notification
+    <div className={wrapperClass}>
+      <Notification.Root
         color={getColor(label)}
         title={title}
-        expand
+        expanded
         icon={getIcon(label)}
       >
-        <NotificationBody>{children}</NotificationBody>
-      </Notification>
-    </Wrapper>
+        {children}
+      </Notification.Root>
+    </div>
   );
 };

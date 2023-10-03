@@ -1,5 +1,7 @@
 import { isEmailValid } from '@/utils';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import type { ChangeEvent, MouseEvent } from 'react';
+import { useState } from 'react';
 
 interface IReturn {
   hasError: boolean;
@@ -8,11 +10,13 @@ interface IReturn {
   handleSubscribe: (e: MouseEvent<HTMLButtonElement, SubmitEvent>) => void;
   canSubmit: boolean;
   hasSuccess: boolean;
+  isLoading: boolean;
 }
 
 export const useSubscribe = (): IReturn => {
   const [email, setEmail] = useState<string>('');
   const [hasError, setHasError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
 
   const canSubmit = Boolean(email) && !hasError;
@@ -22,6 +26,9 @@ export const useSubscribe = (): IReturn => {
     event: MouseEvent<HTMLButtonElement, SubmitEvent>,
   ): Promise<void> => {
     event.preventDefault();
+
+    setIsLoading(true);
+    analyticsEvent(EVENT_NAMES['click:subscribe']);
 
     try {
       if (!canSubmit) return;
@@ -33,10 +40,12 @@ export const useSubscribe = (): IReturn => {
 
       if (body.status > 200) {
         setHasError(true);
+        setIsLoading(false);
       }
       setMessage(body.message);
     } catch (e) {
       setHasError(true);
+      setIsLoading(false);
       setMessage('There was a problem, please try again later');
     }
   };
@@ -60,5 +69,6 @@ export const useSubscribe = (): IReturn => {
     handleSubscribe,
     canSubmit,
     hasSuccess,
+    isLoading,
   };
 };

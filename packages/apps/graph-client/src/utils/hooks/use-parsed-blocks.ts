@@ -1,11 +1,20 @@
-import { GetBlocksSubscription } from '../../__generated__/sdk';
+import type { GetBlocksSubscription } from '../../__generated__/sdk';
 
 import { useCallback, useState } from 'react';
 
 export interface IBlock
   extends Pick<
     NonNullable<GetBlocksSubscription['newBlocks']>[number],
-    'transactions' | 'creationtime' | 'height' | 'chainid'
+    // TODO: fix transactions from graphql
+    // 'transactions' |
+    | 'creationtime'
+    | 'height'
+    | 'chainid'
+    | 'hash'
+    | 'powhash'
+    | 'epoch'
+    | 'confirmationDepth'
+    | 'parentHash'
   > {}
 interface IUseParseBlocksReturn {
   allBlocks: Record<number, IBlock[]>;
@@ -21,14 +30,14 @@ export function useParsedBlocks(): IUseParseBlocksReturn {
   const addBlocks = useCallback(
     (newBlocks: IBlock[]) => {
       const groupedNewBlocks: Record<number, IBlock[]> = {};
-      newBlocks.forEach((block) =>
+      newBlocks.forEach((block) => {
         groupedNewBlocks[block.height as number]?.length
           ? (groupedNewBlocks[block.height] = [
               ...groupedNewBlocks[block.height],
               block,
             ])
-          : (groupedNewBlocks[block.height] = [block]),
-      );
+          : (groupedNewBlocks[block.height] = [block]);
+      });
 
       setAllBlocks((prevBlocks) => {
         const updatedBlocks = { ...prevBlocks };

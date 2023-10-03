@@ -1,26 +1,6 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { ISigningCap } from '@kadena/types';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
-import { IPactCommand } from '../../interfaces/IPactCommand';
-
-/**
- * This is the interface for the signing request that is sent to the wallet.
- * It differs from the type in @kadena/types. When that is updated, we should
- * use that type instead.
- * @internal
- */
-export interface ISigningRequest {
-  code: string;
-  data?: Record<string, unknown>;
-  caps: ISigningCap[];
-  nonce?: string;
-  chainId?: ChainwebChainId;
-  gasLimit?: number;
-  gasPrice?: number;
-  ttl?: number;
-  sender?: string;
-  extraSigners?: string[];
-}
+import type { IPactCommand } from '../../interfaces/IPactCommand';
 
 /**
  * @internal

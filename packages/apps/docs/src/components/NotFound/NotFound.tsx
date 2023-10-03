@@ -1,14 +1,13 @@
-import { Button, Heading, Stack, Text } from '@kadena/react-ui';
-
-import { contactLinkClass } from './styles.css';
+import { Box, Button, Heading, Stack, Text } from '@kadena/react-ui';
 
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const NotFound: FC = () => {
   return (
     <Stack
-      spacing="$2"
+      gap="$2"
       paddingTop="$20"
       paddingX={0}
       direction="column"
@@ -16,11 +15,11 @@ export const NotFound: FC = () => {
     >
       <Heading as="h5">Not finding the help you need?</Heading>
       <Text>Contact our support desk.</Text>
-      <Link href="/help" passHref legacyBehavior>
-        <Button as="a" title="Contact us" className={contactLinkClass}>
-          Contact us
+      <Box marginTop="$2">
+        <Button title="Contact us" asChild>
+          <Link href="/help">Contact us</Link>
         </Button>
-      </Link>
+      </Box>
     </Stack>
   );
 };

@@ -9,7 +9,10 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -18,19 +21,16 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 20
 
-      - name: Rush install (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js install -t @kadena/docs
+      - name: pnpm install
+        run: pnpm install
 
-      - name: Rush Build
-        run: |
-          node common/scripts/install-run-rush.js build -t @kadena/docs
+      - name: pnpm build
+        run: pnpm --filter @kadena/docs build
 
       - name: Create page tree JSON
-        run: |
-          node ./../../../common/scripts/install-run-rushx.js build:scripts
+        run: pnpm run build:scripts
         working-directory: packages/apps/docs
 
       - name: Cypress tests

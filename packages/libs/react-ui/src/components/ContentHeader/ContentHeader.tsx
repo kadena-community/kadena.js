@@ -2,19 +2,22 @@ import { containerClass, descriptionClass } from './ContentHeader.css';
 
 import { SystemIcon } from '@components/Icon';
 import { Heading, Text } from '@components/Typography';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IContentHeaderProps {
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon: keyof typeof SystemIcon;
   heading: string;
   description?: string;
 }
 
 export const ContentHeader: FC<IContentHeaderProps> = ({
-  icon: Icon,
+  icon,
   heading,
   description,
 }) => {
+  const Icon = icon && SystemIcon[icon];
+
   return (
     <div className={containerClass}>
       <Icon size="md" />

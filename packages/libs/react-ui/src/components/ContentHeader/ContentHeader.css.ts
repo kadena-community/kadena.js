@@ -7,6 +7,7 @@ export const containerClass = style([
     display: 'grid',
     gap: '$md',
     alignItems: 'center',
+    color: '$neutral6',
   }),
   {
     gridRowGap: vars.sizes.$xs,

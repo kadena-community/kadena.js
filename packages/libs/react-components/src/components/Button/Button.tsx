@@ -1,8 +1,9 @@
-import { SystemIcons } from '../Icons';
+import type { SystemIcons } from '../Icons';
 
 import { StyledButton } from './styles';
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IButtonProps
   extends Omit<
@@ -19,6 +20,7 @@ export interface IButtonProps
   title: string;
   disabled?: boolean;
   target?: string;
+  rel?: string;
 }
 
 export const Button: FC<IButtonProps> = ({

@@ -6,11 +6,10 @@
     "src"
   ],
   "scripts": {
-    "build": "heft build --clean",
-    "format": "npm run format:src",
-    "format:ci": "prettier src --check",
-    "format:src": "prettier src --write",
-    "test": "heft test"
+    "build": "",
+    "format": "pnpm run /^format:.*/",
+    "format:src": "prettier . --cache --write",
+    "test": ""
   },
   "dependencies": {
     "@rushstack/eslint-plugin": "~0.11.0",
@@ -18,8 +17,9 @@
     "eslint": "^8.45.0"
   },
   "devDependencies": {
-    "@rushstack/heft": "~0.50.6",
+    "@kadena-dev/heft-rig": "workspace:*",
     "prettier": "~3.0.0",
-    "typescript": "5.1.6"
+    "prettier-plugin-packagejson": "^2.4.5",
+    "typescript": "5.2.2"
   }
 }

@@ -1,53 +1,110 @@
+import { darkThemeClass, vars } from '../../styles';
+
+import { statusColor } from '@components/InputWrapper/InputWrapper.css';
 import { sprinkles } from '@theme/sprinkles.css';
-import { style } from '@vanilla-extract/css';
+import { fallbackVar, style } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
-    backgroundColor: '$neutral1',
-    color: '$neutral5',
-    padding: '$2',
+    alignItems: 'stretch',
+    backgroundColor: {
+      lightMode: '$white',
+      darkMode: '$background',
+    },
+    borderColor: {
+      lightMode: '$white',
+      darkMode: '$gray60',
+    },
     borderRadius: '$sm',
+    color: '$foreground',
+    display: 'flex',
+    flexGrow: 1,
+    gap: '$2',
+    lineHeight: '$lg',
+    overflow: 'hidden',
+    paddingLeft: '$4',
+    paddingRight: '$2',
+    position: 'relative',
   }),
   {
-    position: 'relative',
-    border: 'solid 1px',
+    borderBottom: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid ${fallbackVar(
+          statusColor,
+          vars.colors.$gray60,
+        )}`,
+      },
+    },
   },
 ]);
-export const containerClassDisabled = style([
-  sprinkles({ pointerEvents: 'none' }),
-  { opacity: 0.5 },
-]);
 
-export const selectContainerClass = style([
+export const containerClassDisabled = style([
   sprinkles({
-    display: 'flex',
+    pointerEvents: 'none',
+    backgroundColor: {
+      lightMode: '$gray20',
+      darkMode: '$gray60',
+    },
+    color: {
+      lightMode: '$foreground',
+    },
   }),
+  {
+    opacity: 0.4,
+    selectors: {
+      '.inputGroup &': {
+        opacity: 1,
+      },
+      [`${darkThemeClass} &`]: {
+        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
+      },
+    },
+  },
 ]);
 
 export const iconClass = style([
   sprinkles({
-    marginRight: '$2',
-    marginLeft: '$2',
-    display: 'block',
+    alignItems: 'center',
+    display: 'flex',
   }),
 ]);
 
 export const selectClass = style([
   sprinkles({
+    background: 'none',
     border: 'none',
-    fontSize: '$base',
+    color: '$foreground',
+    flexGrow: 1,
+    outline: 'none',
+    paddingRight: '$2',
+    paddingY: '$2',
   }),
   {
-    padding: '0',
     backgroundColor: 'inherit',
     color: 'inherit',
-    flex: '1',
+    appearance: 'none',
   },
 ]);
 
-export const optionClass = style([
+export const chevronIconClass = style([
   sprinkles({
-    backgroundColor: '$neutral1',
-    color: '$neutral5',
+    display: 'inline-flex',
+    alignItems: 'center',
+    marginRight: '$2',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: '$1',
+    color: '$gray40',
   }),
+  {
+    pointerEvents: 'none',
+    zIndex: 10,
+    selectors: {
+      '&:active': {
+        color: vars.colors.$gray40,
+      },
+    },
+  },
 ]);

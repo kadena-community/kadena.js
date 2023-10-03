@@ -2,8 +2,9 @@ import { Grid } from '../Grid';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Typography';
 
+import type { IIconProps } from './';
 import { sizeVariant } from './styles';
-import { IIconProps, SystemIcons } from './';
+import { SystemIcons } from './';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -44,13 +45,13 @@ export const Primary: Story = {
     const searchRegexp = new RegExp(icon, 'i');
     return (
       <>
-        <Grid.Container spacing="xl" templateColumns="repeat(6, 1fr)">
+        <Grid.Container gap="xl" templateColumns="repeat(6, 1fr)">
           {Object.entries(SystemIcons)
             .filter(([k]) => searchRegexp.test(k))
             // eslint-disable-next-line @typescript-eslint/naming-convention
             .map(([k, Icon]) => (
               <Grid.Item key={k}>
-                <Stack direction="column" alignItems="center" spacing="xs">
+                <Stack direction="column" alignItems="center" gap="xs">
                   <Icon size={size} />
                   <Text size="sm">System.{k}</Text>
                 </Stack>

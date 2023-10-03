@@ -1,114 +1,39 @@
-name: Rush CI (changelog, build, test)
+name: CI (build, lint, test)
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
   pull_request:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-
-env:
-  AFFECTED_OR_ALL: |
-    ${{ github.ref_name == 'main' && ' ' || format('--to git:origin/{0} --from git:origin/{0}', github.base_ref)  }}
 
 jobs:
   build:
-    name: ${{ matrix.os }} - Node.js v${{ matrix.NodeVersion }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        NodeVersion: [16, 18]
+    name: Ubuntu/Node.js v18
+    runs-on: ubuntu-latest
+
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
+          show-progress: false
 
       - name: Fetch base branch
-        if: github.ref_name != 'main'
         run: git fetch origin ${{ github.base_ref }}
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.NodeVersion }}
+          node-version: 18
+          cache: 'pnpm'
 
-      - name: Cache Rush
-        uses: actions/cache@v3
-        with:
-          path: |
-            common/temp/install-run
-            ~/.rush
-          key: cache-rush-${{ runner.os }}-${{ hashFiles('rush.json') }}
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: Cache pnpm
-        uses: actions/cache@v3
-        with:
-          path: |
-            common/temp/pnpm-store
-          key:
-            cache-pnpm-${{ runner.os }}-${{
-            hashFiles('common/config/rush/pnpm-lock.yaml')}}
-          restore-keys: |
-            cache-pnpm-${{runner.os}}-
-            cache-pnpm-
-
-      - name: Rush install (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js install ${{ env.AFFECTED_OR_ALL }}
-
-      - name: Cache builds
-        if: github.ref_name != 'main'
-        uses: actions/cache@v3
-        with:
-          path: |
-            common/temp/build-cache
-          key: cache-build-${{ runner.os }}-${{ github.ref }}
-          restore-keys: |
-            cache-build-${{runner.os}}-
-            cache-build-
-
-      # Separate build cache when running on main
-      # This cache will be used when the first build is run on a PR
-      # Hence ${{ github.ref }} is not included in the key
-      - name: Cache builds
-        if: github.ref_name == 'main'
-        uses: actions/cache@v3
-        with:
-          path: |
-            common/temp/build-cache
-          key: cache-build-${{ runner.os }}
-          restore-keys: |
-            cache-build-
-
-      - name: Cache previous test-lint-format runs
-        if: github.ref_name != 'main'
-        uses: actions/cache@v3
-        with:
-          path: |
-            packages/*/*/.rush/temp/package-deps_format.json
-            packages/*/*/.rush/temp/package-deps_format_ci.json
-            packages/*/*/.rush/temp/package-deps_lint.json
-            packages/*/*/.rush/temp/package-deps_test.json
-          key: cache-build-${{ runner.os }}-${{ github.ref }}
-
-      - name: Rush build + test (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js build --verbose # ${{ env.AFFECTED_OR_ALL }}
-          node common/scripts/install-run-rush.js test --verbose # ${{ env.AFFECTED_OR_ALL }}
-        env:
-          # Prevent time-based browserslist update warning
-          # See https://github.com/microsoft/rushstack/issues/2981
-          BROWSERSLIST_IGNORE_OLD_DATA: 1
-
-      - name: Rush format (install-run-rush)
-        if: github.ref_name != 'main'
-        run: |
-          node common/scripts/install-run-rush.js format:ci --verbose ${{ env.AFFECTED_OR_ALL }}
-
-      - name: Rush verify Change Logs (install-run-rush)
-        if: github.ref_name != 'main'
-        run: |
-          node common/scripts/install-run-rush.js change --verify --target-branch origin/${{ github.base_ref }}
+      - name: Build, lint, test all packages
+        run: pnpm turbo build lint test

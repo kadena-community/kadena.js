@@ -9,10 +9,11 @@ import { Link } from './Link';
 import { MDNotification } from './MDNotification';
 import { Paragraph } from './Paragraph';
 import { Table } from './Table';
+import { Tweet } from './Tweet';
 import { UnorderedList } from './UnorderedList';
 import { Youtube } from './Youtube';
 
-export type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
+type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
   'kda-notification': React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
@@ -21,11 +22,15 @@ export type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   >;
+  'kda-tweet': React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >;
 };
 
 // eslint-disable-next-line @rushstack/no-new-null
 type FunctionComponent<Props> = (props: Props) => JSX.Element | null;
-export type MDXComponents = {
+type MDXComponents = {
   [Key in keyof ExtendedIntrinsicElements]?: FunctionComponent<
     ExtendedIntrinsicElements[Key]
   >;
@@ -60,6 +65,9 @@ export const markDownComponents: MDXComponents = {
   >,
   'kda-youtube': Youtube as FunctionComponent<
     ExtendedIntrinsicElements['kda-youtube']
+  >,
+  'kda-tweet': Tweet as FunctionComponent<
+    ExtendedIntrinsicElements['kda-tweet']
   >,
   a: Link as FunctionComponent<ExtendedIntrinsicElements['a']>,
 };

@@ -1,43 +1,23 @@
-import { menuData } from '@/data/menu.mjs';
-import { IMenuData } from '@/types/Layout';
-import { embed } from '@/utils/createEmbedding';
-import { PineconeClient } from '@pinecone-database/pinecone';
-import { ScoredVector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { menuData } from '@/_generated/menu.mjs';
+import type { IFrontmatterData } from '@/types';
+import type { IMenuData } from '@/types/Layout';
+import { createSlug } from '@/utils';
+import type { StreamMetaData } from '@7-docs/edge';
+import algoliasearch from 'algoliasearch';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-const namespace = 'kda-docs';
-const PINECONE_URL = process.env.PINECONE_URL;
-const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
-const PINECONE_ENVIRONMENT = process.env.PINECONE_ENVIRONMENT;
+interface IQueryResult extends StreamMetaData {
+  content?: string;
+  description?: string;
+}
 
-if (PINECONE_ENVIRONMENT === undefined)
-  throw new Error('Env var PINECONE_ENVIRONMENT missing');
-if (PINECONE_URL === undefined) throw new Error('Env var PINECONE_URL missing');
-if (PINECONE_API_KEY === undefined)
-  throw new Error('Env var PINECONE_API_KEY missing');
-
-let pineconeClient: PineconeClient | undefined;
-
-const getPineconeClient = async (): Promise<PineconeClient> => {
-  if (pineconeClient) {
-    return pineconeClient;
-  } else {
-    pineconeClient = new PineconeClient();
-
-    await pineconeClient.init({
-      apiKey: PINECONE_API_KEY,
-      environment: PINECONE_ENVIRONMENT,
-    });
-  }
-  return pineconeClient;
-};
-
-const filenameToRoute = (filename: string): string => {
+export const filePathToRoute = (filename?: string, header?: string): string => {
+  if (!filename) return '';
   // Remove "src/pages" from the start of the filename
   let route = filename.replace(/^src\/pages/, '');
 
   // Remove file extension from the filename
-  route = route.replace(/\.(mdx|tsx)$/, '');
+  route = route.replace(/\.(md|mdx|tsx)$/, '');
 
   // If the filename ends with "index.*", remove that from the URL
   route = route.replace(/\/index$/, '');
@@ -45,6 +25,10 @@ const filenameToRoute = (filename: string): string => {
   // Add a leading "/" if it's missing
   if (!route.startsWith('/')) {
     route = `/${route}`;
+  }
+
+  if (header) {
+    route = `${route}#${createSlug(header)}`;
   }
 
   return route;
@@ -55,6 +39,7 @@ const getData = (file: string): IFrontmatterData => {
 
   let foundItem: IMenuData;
   const findPage = (tree: IMenuData[], file: string): IMenuData | undefined => {
+    if (!tree) return;
     tree.forEach((item) => {
       if (item.root === file) {
         foundItem = item;
@@ -93,69 +78,99 @@ const cleanUpContent = (content: string): string | undefined => {
   return;
 };
 
-const mapMatches = (match: ScoredVector): ISearchResult => {
-  const metadata = (match.metadata as IScoredVectorMetaData) ?? {};
+export const mapMatches = (metadata: StreamMetaData): IQueryResult => {
+  const content =
+    typeof metadata.content !== 'undefined'
+      ? cleanUpContent(metadata.content)
+      : undefined;
+  const data =
+    typeof metadata.filePath !== 'undefined'
+      ? getData(filePathToRoute(metadata.filePath, metadata.header))
+      : {};
+
   return {
-    id: match.id,
-    score: match.score,
-    filePath: metadata.filePath,
-    content: cleanUpContent(metadata.content),
-    ...getData(filenameToRoute(metadata.filePath)),
-  } as ISearchResult;
+    ...metadata,
+    content,
+    ...data,
+  };
 };
 
-const reduceMatches = (
-  acc: ScoredVector[],
-  val: ScoredVector,
-): ScoredVector[] => {
-  //taking out double results
-  const metadata = (val.metadata as IScoredVectorMetaData) ?? {};
-  if (
-    acc.find((item: ScoredVector) => {
-      const itemMetadata = (item.metadata as IScoredVectorMetaData) ?? {};
-      return itemMetadata.filePath === metadata.filePath;
-    })
-  ) {
-    return acc;
-  }
-  acc.push(val);
+interface ISemanticSearchQuery {
+  search?: string;
+  limit?: string;
+}
 
-  return acc;
-};
+interface ISemanticSearchRequest extends Omit<NextApiRequest, 'query'> {
+  query?: ISemanticSearchQuery;
+}
 
-const search = async (
-  req: NextApiRequest,
-  res: NextApiResponse<ISearchResult[] | IResponseError>,
+interface IHitResult extends StreamMetaData {
+  _highlightResult?: {
+    content?: {
+      value?: string;
+    };
+  };
+}
+
+// E.g /api/semanticsearch?search=foo&limit=10
+const semanticSearch = async (
+  req: ISemanticSearchRequest,
+  res: NextApiResponse,
 ): Promise<void> => {
-  const client = await getPineconeClient();
-  const index = client.Index(namespace);
-  const { query, limit = 50 } = req.query;
+  console.log('req', req.query);
+  const { query: { search = '', limit = '10' } = {} } = req;
 
-  if (query === undefined) {
-    res.status(405).json({
-      status: 400,
-      message: 'No query found',
-    });
-    res.end();
+  const limitNumber = parseInt(limit, 10);
+
+  if (!search) {
+    return res.status(200).json([]);
   }
 
-  const queryEmbedding = await embed(query as string);
+  const client = algoliasearch(
+    process.env.ALGOLIA_APP_ID ?? '',
+    process.env.ALGOLIA_SEARCH_API_KEY ?? '',
+  );
 
-  const result = await index.query({
-    queryRequest: {
-      vector: queryEmbedding.values,
-      topK: parseInt(limit as string, 10),
-      includeMetadata: true,
-      includeValues: false,
-      namespace,
-    },
-  });
+  const index = client.initIndex(process.env.ALGOLIA_INDEX_NAME ?? '');
+  const CONTENT_MAX_LENGTH = 320;
 
-  const newResults =
-    result.matches?.reduce(reduceMatches, []).map(mapMatches) ?? [];
+  index
+    .search(search, { hitsPerPage: limitNumber })
+    .then(({ hits }) => {
+      const mappedData = hits.map((hit) => {
+        const { filePath, title, content, url, header, _highlightResult } =
+          hit as IHitResult;
+        const highlightedContent = _highlightResult?.content?.value ?? content;
+        const hasMoreContent =
+          (highlightedContent || '')?.length > CONTENT_MAX_LENGTH;
+        const substringContent = hasMoreContent
+          ? `${highlightedContent?.substring(0, CONTENT_MAX_LENGTH)}`
+          : highlightedContent;
 
-  res.status(200).json(newResults);
-  res.end();
+        //re-trim if we are in the middle of a word
+        const trimWithProperWords = substringContent?.substring(
+          0,
+          Math.min(substringContent.length, substringContent.lastIndexOf(' ')),
+        );
+
+        return {
+          filePath,
+          title,
+          content: hasMoreContent
+            ? `${trimWithProperWords}...`
+            : substringContent,
+          url,
+          header,
+        };
+      });
+      return res.status(200).json(mappedData);
+    })
+    .catch(() => {
+      return res.status(500).json({
+        status: 500,
+        message: 'Something went wrong, please try again later',
+      });
+    });
 };
 
-export default search;
+export default semanticSearch;

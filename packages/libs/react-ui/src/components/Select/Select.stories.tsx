@@ -1,27 +1,38 @@
-import { Option } from './Option';
-import { ISelectProps, Select } from './Select';
+import type { ISelectProps } from './Select';
+import { Select } from './Select';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
-const meta: Meta<
-  {
-    icon: keyof typeof SystemIcon;
-  } & ISelectProps
-> = {
-  title: 'Components/Select',
+const meta: Meta<ISelectProps> = {
+  title: 'Form/Select',
+  component: Select,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Select component renders a select element with options. The select element can be disabled with the `disabled` prop. The icon of the select element can be set with the `icon` prop.',
+      },
+    },
+  },
   argTypes: {
     disabled: {
+      description: 'toggle disabled state of component',
       control: {
         type: 'boolean',
+        defaultValue: false,
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
     icon: {
       options: [
-        undefined,
-        ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
-      ],
+        ...['-'],
+        ...Object.keys(SystemIcon),
+      ] as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
       },
@@ -45,8 +56,9 @@ export const Dynamic: Story = {
     const [value, setValue] = useState<string>('1');
     return (
       <Select
+        id="select-story"
         ariaLabel={'select'}
-        icon={SystemIcon[icon]}
+        icon={icon}
         onChange={(e) => {
           console.log('clicked on', e.target.value);
           setValue(e.target.value);
@@ -54,8 +66,8 @@ export const Dynamic: Story = {
         disabled={Boolean(disabled)}
         value={value}
       >
-        <Option value={'1'}>option 1</Option>
-        <Option value={'2'}>option 2</Option>
+        <option value={'1'}>option 1</option>
+        <option value={'2'}>option 2</option>
       </Select>
     );
   },

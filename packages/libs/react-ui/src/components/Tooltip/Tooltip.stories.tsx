@@ -1,9 +1,10 @@
+import type { ITooltipProps } from './';
 import { container } from './stories.css';
-import { ITooltipProps, Tooltip } from './';
+import { Tooltip } from './';
 
-import { SystemIcon } from '@components/Icon';
 import { IconButton } from '@components/IconButton';
 import type { Meta, StoryObj } from '@storybook/react';
+import { withCenteredStory } from '@utils/withCenteredStory';
 import React, { useRef } from 'react';
 
 const meta: Meta<
@@ -13,6 +14,15 @@ const meta: Meta<
 > = {
   title: 'Components/Tooltip',
   component: Tooltip.Root,
+  decorators: [withCenteredStory],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Tooltip component renders a tooltip with text. The placement of the tooltip can be set with the `placement` prop. The tooltip can be triggered by hovering over the `IconButton` component.',
+      },
+    },
+  },
   argTypes: {
     text: {
       control: {
@@ -48,7 +58,7 @@ export const Dynamic: Story = {
       <div className={container}>
         <IconButton
           title="hover me"
-          icon={SystemIcon.Information}
+          icon="Information"
           onMouseEnter={(e: React.MouseEvent<HTMLElement>) =>
             Tooltip.handler(e, ref)
           }

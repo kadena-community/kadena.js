@@ -1,8 +1,14 @@
-import { StyledSection } from './styles';
+import {
+  menuCardActiveVariant,
+  menuCardAnimateL2RVariant,
+  menuCardClass,
+} from './menuCard.css';
 
-import React, { FC, MouseEventHandler, ReactNode } from 'react';
+import classNames from 'classnames';
+import type { FC, MouseEventHandler, ReactNode } from 'react';
+import React from 'react';
 
-export interface IMenuCardProps {
+interface IMenuCardProps {
   children?: ReactNode;
   active: number;
   idx: number;
@@ -17,14 +23,15 @@ export const MenuCard: FC<IMenuCardProps> = ({
   idx = 0,
   cyTestId,
 }) => {
+  const classes = classNames(
+    menuCardClass,
+    menuCardActiveVariant[active === idx ? 'true' : 'false'],
+    menuCardAnimateL2RVariant[active !== idx || idx !== 0 ? 'false' : 'true'],
+  );
+
   return (
-    <StyledSection
-      data-cy={cyTestId}
-      animateLeft2Right={idx === 0}
-      active={active === idx}
-      onClick={onClick}
-    >
+    <section className={classes} data-cy={cyTestId} onClick={onClick}>
       {children}
-    </StyledSection>
+    </section>
   );
 };

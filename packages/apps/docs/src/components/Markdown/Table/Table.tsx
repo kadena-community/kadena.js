@@ -1,16 +1,15 @@
-import { styled } from '@kadena/react-components';
-import { ITableProps, Table as StyledTable } from '@kadena/react-ui';
+import type { ITableProps } from '@kadena/react-ui';
+import { Table as StyledTable } from '@kadena/react-ui';
 
-import React, { FC } from 'react';
+import { wrapperClass } from '../styles.css';
 
-const Wrapper = styled('div', {
-  margin: '$5 0',
-});
+import type { FC } from 'react';
+import React from 'react';
 
 export const Table: FC<ITableProps> = ({ children }) => {
   return (
-    <Wrapper>
+    <div className={wrapperClass}>
       <StyledTable.Root>{children}</StyledTable.Root>
-    </Wrapper>
+    </div>
   );
 };

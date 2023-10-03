@@ -1,22 +1,26 @@
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+
+import type { Network } from '@/constants/kadena';
+import { useDidUpdateEffect } from '@/hooks';
 import { env } from '@/utils/env';
+import type { INetworkData } from '@/utils/network';
+import { getAllNetworks, getInitialNetworks } from '@/utils/network';
+import { getItem, setItem } from '@/utils/persist';
 import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
-import { PairingTypes, SessionTypes } from '@walletconnect/types';
+import type { PairingTypes, SessionTypes } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
+import type { FC, ReactNode } from 'react';
 import React, {
   createContext,
-  FC,
-  ReactNode,
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
 
-/**
- * Types
- */
 interface IWalletConnectClientContext {
   client: Client | undefined;
   session: SessionTypes.Struct | undefined;
@@ -25,7 +29,29 @@ interface IWalletConnectClientContext {
   isInitializing: boolean;
   pairings: PairingTypes.Struct[];
   accounts: string[] | undefined;
+  selectedNetwork: string;
+  setSelectedNetwork: (selectedNetwork: string) => void;
+  selectedChain: ChainwebChainId;
+  setSelectedChain: (selectedChain: ChainwebChainId) => void;
+  selectedAccount?: string;
+  setSelectedAccount: (selectedAccount?: string) => void;
+  networksData: INetworkData[];
+  setNetworksData: (data: INetworkData[]) => void;
 }
+
+export const StorageKeys: Record<
+  'NETWORK' | 'CHAIN_ID' | 'NETWORKS_DATA',
+  string
+> = {
+  NETWORK: 'network',
+  CHAIN_ID: 'chainID',
+  NETWORKS_DATA: 'networks',
+};
+
+export const DefaultValues: { NETWORK: Network; CHAIN_ID: ChainwebChainId } = {
+  NETWORK: 'mainnet01',
+  CHAIN_ID: '1',
+};
 
 /**
  * Context
@@ -55,8 +81,47 @@ export const WalletConnectClientContextProvider: FC<
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
   const [accounts, setAccounts] = useState<string[]>();
-
+  const [selectedNetwork, setSelectedNetwork] = useState<Network>(
+    DefaultValues.NETWORK,
+  );
+  const [selectedChain, setSelectedChain] = useState<ChainwebChainId>(
+    DefaultValues.CHAIN_ID,
+  );
+  const [selectedAccount, setSelectedAccount] = useState<string>();
   const [isInitializing, setIsInitializing] = useState(false);
+  const [networksData, setNetworksData] = useState<INetworkData[]>(
+    getInitialNetworks(),
+  );
+
+  useLayoutEffect(() => {
+    const initialNetwork = getItem(StorageKeys.NETWORK) as Network;
+    if (initialNetwork) {
+      setSelectedNetwork(initialNetwork);
+    }
+
+    const initialChain = getItem(StorageKeys.CHAIN_ID) as ChainwebChainId;
+    if (initialChain) {
+      setSelectedChain(initialChain);
+    }
+
+    const initialLocalNetworks = getItem(
+      StorageKeys.NETWORKS_DATA,
+    ) as INetworkData[];
+    const allNetworks = getAllNetworks(initialLocalNetworks);
+    if (initialNetwork) {
+      setNetworksData(allNetworks);
+    }
+  }, []);
+
+  useDidUpdateEffect(() => {
+    setItem(StorageKeys.NETWORK, selectedNetwork);
+    setItem(StorageKeys.CHAIN_ID, selectedChain);
+    setItem(StorageKeys.NETWORKS_DATA, networksData);
+  }, [selectedNetwork, selectedChain, networksData]);
+
+  useEffect(() => {
+    setSelectedAccount(undefined as unknown as string);
+  }, [selectedNetwork]);
 
   const reset = (): void => {
     setSession(undefined as unknown as SessionTypes.Struct);
@@ -72,14 +137,15 @@ export const WalletConnectClientContextProvider: FC<
   );
 
   const connect = useCallback(
-    async (pairing?: { topic: string }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async (pairing: any) => {
       if (typeof client === 'undefined') {
         throw new Error('WalletConnect is not initialized');
       }
 
       try {
         const { uri, approval } = await client.connect({
-          pairingTopic: pairing?.topic ?? '',
+          pairingTopic: pairing?.topic,
 
           requiredNamespaces: {
             kadena: {
@@ -218,8 +284,32 @@ export const WalletConnectClientContextProvider: FC<
       session,
       connect,
       disconnect,
+      selectedNetwork,
+      setSelectedNetwork,
+      selectedChain,
+      setSelectedChain,
+      selectedAccount,
+      setSelectedAccount,
+      networksData,
+      setNetworksData,
     }),
-    [pairings, isInitializing, accounts, client, session, connect, disconnect],
+    [
+      pairings,
+      isInitializing,
+      accounts,
+      client,
+      session,
+      connect,
+      disconnect,
+      selectedNetwork,
+      setSelectedNetwork,
+      selectedChain,
+      setSelectedChain,
+      selectedAccount,
+      setSelectedAccount,
+      networksData,
+      setNetworksData,
+    ],
   );
 
   return (

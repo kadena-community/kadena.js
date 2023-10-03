@@ -1,14 +1,23 @@
-import { Article, Content } from '../components';
+import { baseGridClass } from '../basestyles.css';
+import {
+  articleClass,
+  contentClass,
+  contentClassVariants,
+} from '../components';
 import { Template } from '../components/Template';
+import { globalClass } from '../global.css';
 
-import { CodeBackground, PageGrid } from './styles';
+import { BackgroundGradient } from './BackgroundGradient';
+import { pageGridClass } from './styles.css';
 
 import { BottomPageSection } from '@/components/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate';
-import { IPageProps } from '@/types/Layout';
-import React, { FC } from 'react';
-import { RedocRawOptions } from 'redoc';
+import type { IPageProps } from '@/types/Layout';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
+import type { RedocRawOptions } from 'redoc';
 
 export const options: RedocRawOptions = {
   pathInMiddlePanel: true,
@@ -19,7 +28,7 @@ export const options: RedocRawOptions = {
   theme: {
     breakpoints: {
       small: '1024px',
-      medium: '1280px',
+      medium: '1279px',
       large: '1440px',
     },
     sidebar: {
@@ -47,11 +56,16 @@ export const Redocly: FC<IPageProps> = ({
   frontmatter,
   leftMenuTree,
 }) => {
+  const gridClassNames = classNames(globalClass, baseGridClass, pageGridClass);
+
   return (
-    <PageGrid>
+    <div className={gridClassNames}>
       <Template menuItems={leftMenuTree}>
-        <Content id="maincontent" layout="code">
-          <Article>
+        <div
+          className={classNames(contentClass, contentClassVariants.code)}
+          id="maincontent"
+        >
+          <article className={articleClass}>
             <Breadcrumbs menuItems={leftMenuTree} />
             <LastModifiedDate date={frontmatter.lastModifiedDate} />
             {children}
@@ -60,11 +74,11 @@ export const Redocly: FC<IPageProps> = ({
               navigation={frontmatter.navigation}
               layout="code"
             />
-          </Article>
-        </Content>
-        <CodeBackground />
+          </article>
+        </div>
+        <BackgroundGradient />
       </Template>
-    </PageGrid>
+    </div>
   );
 };
 

@@ -1,11 +1,12 @@
 import { GridContainer as BaseContainer } from './styles';
 
 import type { CSSProperties, VariantProps } from '@stitches/react';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IGridContainerProps {
   children?: ReactNode;
-  spacing?: VariantProps<typeof BaseContainer>['spacing'];
+  gap?: VariantProps<typeof BaseContainer>['gap'];
   templateRows?: CSSProperties['gridTemplateRows'];
   templateColumns?: CSSProperties['gridTemplateColumns'];
   templateAreas?: CSSProperties['gridTemplateAreas'];
@@ -13,7 +14,7 @@ export interface IGridContainerProps {
 
 const GridContainer: FC<IGridContainerProps> = ({
   children,
-  spacing,
+  gap,
   templateAreas,
   templateRows,
   templateColumns,
@@ -24,7 +25,7 @@ const GridContainer: FC<IGridContainerProps> = ({
     gridTemplateColumns: templateColumns,
   };
   return (
-    <BaseContainer css={styles} spacing={spacing}>
+    <BaseContainer css={styles} gap={gap}>
       {children}
     </BaseContainer>
   );

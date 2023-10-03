@@ -12,56 +12,44 @@ Do you want to file a bug? Please [open a new issue][1].
 
 ## Development
 
-[Install Node.js][2] if you haven't already. Then install Rush:
-
-```bash
-npm install --global @microsoft/rush
-```
+[Install Node.js][2] if you haven't already.
 
 As an external contributor, you will need to fork the repo before you can
 contribute. Then you can clone the repository and install dependencies:
 
-```bash
+```sh
 git clone git@github.com:kadena-community/kadena.js.git
 cd kadena.js
-rush install
-rush build
+pnpm install
+pnpm build
 ```
 
-Make sure to read some of the Rush documentation, specifically the "Developer
-tutorials" such as:
+### Troubleshooting
 
-- [Getting started as a developer][3]
-- [Everyday Rush commands][4]
-- [Other helpful commands][5]
+Running into issues? Please see if the issue has a solution in
+[Troubleshooting][3].
 
 ### Switch branches
 
 Depending on the changes, you may need to invoke the following commands when
 switching branches to keep everything in check:
 
-```bash
-rush update
-rush build -t <package name>
+```sh
+pnpm install
+pnpm build --filter <package name>
 ```
 
 ## Tests
 
-```bash
-rush test       # Run all tests
-rushx test      # Run only tests inside a package directory
-rushx test -w   # Keep running tests during development
+```sh
+pnpm test               # Run all tests, or inside package directory
+pnpm run test --watch   # Keep running tests during development
 ```
 
 ## Making a Pull Request
 
-Before making a pull request, please discuss your ideas first.
-
-Make sure to update the changelog before it gets merged:
-
-```bash
-rush change
-```
+Before making a pull request, please discuss your ideas first. This will
+optimize your time and the review process.
 
 ## Conventions
 
@@ -70,10 +58,59 @@ rush change
 - Try to keep pull requests focused and small.
 - Use prefixed branch names such as `feat/feature-title`, `fix/fix-title`,
   `chore/chore-title`
-- Using Asana? [Attach a pull request to the Asana task][6].
+- Using Asana? [Attach a pull request to the Asana task][4].
 - Before merging a pull request, make sure the commit messages are good.
-- Prefer a rebase over merge commits, for both [updating branches][7] and
-  [merging pull requests][8].
+- Prefer a rebase over merge commits, for both [updating branches][5] and
+  [merging pull requests][6].
+
+### Changelogs
+
+#### Add a Changelog
+
+When wrapping up a PR you should add one or more changelog entries:
+
+```sh
+pnpm changeset
+```
+
+Decide for each package wether the changes are relevant to the consumer of the
+package(s) and how their version should be bumped (`patch`, `minor` or `major`).
+You can edit the created Markdown file in the `.changeset` folder. Use `none` to
+not bump the version at all.
+
+Recommended reading: [Introducing Changesets: Simplify Project Versioning with
+Semantic Releases][7]
+
+#### Authoring Changelogs
+
+To keep everything clear for ourselves and our end users, we have a "changelog
+etiquette". Only include changes that affect the consumer of your
+package/app/product. It's not a commit log. Write descriptions that are
+understandable from the consumers' perspective:
+
+- Start descriptions with action verbs like "Add", "Remove", "Deprecate", "Fix",
+  "Improve", "Update".
+- Avoid the term "bug", use "issue" instead.
+- Add GitHub issue numbers when fixing those.
+- When referring to public API changes, use backticks and parentheses for code
+  like function names and classes (e.g. `createClient()`,
+  `new TransactionBuilder()`, `hash`).
+- Upgrades should be documented with old and new version numbers.
+- Avoid trailing periods (unless in a description below the commit title).
+
+Examples:
+
+- Deprecate the `doSomething()` API function.
+- Use `doSomethingBetter()` instead.
+- Fix issue where `ExampleWidget` API did not handle dates correctly (fix #81)
+- Improve the diagnostic logging when running in advanced mode.
+- Upgrade from `react@15` to `react@16-beta` release of the flexible panels
+  feature
+
+(Credits: [rushjs.io/pages/best_practices/change_logs][8])
+
+If you don't see a need for authoring changelogs for your package (e.g. a PoC or
+packages without consumers), add it to [.changeset/config.json#ignore][9].
 
 ### Code
 
@@ -81,13 +118,16 @@ This repository uses a combination of TypeScript, ESLint and Prettier to adhere
 to coding standards. We try to automate and auto-fix as much as possible using
 the following commands:
 
-```bash
-rush build   # Compile & build all packages (using TypeScript)
-rush lint    # Lint (and fix) all packages (using ESLint)
-rush format  # Format all packages (using Prettier)
+```sh
+pnpm build   # Compile & build (using TypeScript)
+pnpm lint    # Lint
+pnpm format  # Format
 ```
 
-Use `rushx` instead of `rush` to do the same for only the current package.
+Run from root to apply to all packages, use `--filter` for a selection, and run
+from any package folder to apply it only there.
+
+See [Filters][10] for more details.
 
 For everything else, please discuss.
 
@@ -97,14 +137,6 @@ You are expected to install your own workflow the way you like it. For example,
 some developers like to auto-format code "on save", others before they commit or
 push their changes. That's why this repository does not auto-install Git hooks.
 
-If you want to make sure you don't forget to update the changelog before you
-push code, here's an example to install a Git hook for that:
-
-```bash
-echo "rush change --verify" > .git/hooks/pre-push
-chmod +x .git/hooks/pre-push
-```
-
 ## Publishing Packages
 
 To publish a new version of updated packages, please make sure you:
@@ -113,26 +145,47 @@ To publish a new version of updated packages, please make sure you:
 - have push rights to this repository's `main` branch
 - are on a clean `main` branch
 
-Follow these steps to publish the updated packages:
+We're using [Changesets][11] for our release process. The manual process in [How
+do I run the version and publish commands?][12] is what we use and repeat here:
 
-- Build and test from root
-- Bump the version
-- Publish updated packages
+1.  Check out and pull `main`
+2.  Update changelogs and bump versions
+3.  Create a new branch and open a "version bump" PR
+4.  Merge PR to `main`
+5.  Build and publish from `main`
 
-```bash
-rush build
-rush test
-rush version --bump -b main
-rush publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch main
+```sh
+git checkout main
+git pull
+git checkout -b chore/release-packages
+pnpm changeset version
+git commit -m "Update changelogs and bump versions"
+git push
+```
+
+Create a pull request and get it merged to `main`. Then we can publish:
+
+```sh
+git checkout main
+git pull
+pnpm turbo build lint test --force
+pnpm changeset publish # Use your npm OTP token
+git push --tags
 ```
 
 [1]: https://github.com/kadena-community/kadena.js/issues/new/choose
 [2]: https://nodejs.org/en/download/package-manager
-[3]: https://rushjs.io/pages/developer/new_developer/
-[4]: https://rushjs.io/pages/developer/everyday_commands/
-[5]: https://rushjs.io/pages/developer/other_commands/
-[6]: https://asana.com/guide/help/api/github#gl-key
-[7]:
+[3]: ./docs/troubleshooting.md
+[4]: https://asana.com/guide/help/api/github#gl-key
+[5]:
   https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/keeping-your-pull-request-in-sync-with-the-base-branch
-[8]:
+[6]:
   https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request
+[7]:
+  https://lirantal.com/blog/introducing-changesets-simplify-project-versioning-with-semantic-releases/
+[8]: https://rushjs.io/pages/best_practices/change_logs
+[9]: .changeset/config.json
+[10]: ./docs/pnpm-turbo-filter.md
+[11]: https://github.com/changesets/changesets
+[12]:
+  https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md#how-do-i-run-the-version-and-publish-commands

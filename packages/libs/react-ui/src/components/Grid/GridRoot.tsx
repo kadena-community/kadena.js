@@ -1,18 +1,38 @@
+import type { ResponsiveInputType } from './Grid.css';
 import {
   containerColumnVariants,
   explicitColumnVariant,
   gapVariants,
   gridContainerClass,
-  ResponsiveInputType,
 } from './Grid.css';
 
+import type { Sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
 import classNames from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
-export interface IGridRootProps {
+export interface IGridRootProps
+  extends Pick<
+    Sprinkles,
+    | 'margin'
+    | 'marginX'
+    | 'marginY'
+    | 'marginTop'
+    | 'marginBottom'
+    | 'marginLeft'
+    | 'marginRight'
+    | 'padding'
+    | 'paddingX'
+    | 'paddingY'
+    | 'paddingTop'
+    | 'paddingBottom'
+    | 'paddingLeft'
+    | 'paddingRight'
+  > {
   children?: ReactNode;
   columns?: ResponsiveInputType;
-  spacing?: keyof typeof gapVariants;
+  gap?: keyof typeof gapVariants;
 }
 
 const assembleColumnVariants = (
@@ -33,15 +53,45 @@ const assembleColumnVariants = (
   ];
 };
 
-const GridRoot: FC<IGridRootProps> = ({
+export const GridRoot: FC<IGridRootProps> = ({
   children,
   columns,
-  spacing = 'md',
+  margin = undefined,
+  marginX = undefined,
+  marginY = undefined,
+  marginTop = undefined,
+  marginBottom = undefined,
+  marginLeft = undefined,
+  marginRight = undefined,
+  gap = '$md',
+  padding = undefined,
+  paddingX = undefined,
+  paddingY = undefined,
+  paddingTop = undefined,
+  paddingBottom = undefined,
+  paddingLeft = undefined,
+  paddingRight = undefined,
 }) => {
   const classList = classNames(
-    gapVariants[spacing],
+    gapVariants[gap],
     gridContainerClass,
     columns && assembleColumnVariants(columns),
+    sprinkles({
+      margin,
+      marginX,
+      marginY,
+      marginTop,
+      marginBottom,
+      marginLeft,
+      marginRight,
+      padding,
+      paddingX,
+      paddingY,
+      paddingTop,
+      paddingBottom,
+      paddingLeft,
+      paddingRight,
+    }),
   );
   return (
     <div className={classList} data-testid="kda-grid-root">
@@ -49,5 +99,3 @@ const GridRoot: FC<IGridRootProps> = ({
     </div>
   );
 };
-
-export default GridRoot;

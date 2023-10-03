@@ -1,0 +1,1 @@
+export { BlogPostsStrip } from './BlogPostsStrip';

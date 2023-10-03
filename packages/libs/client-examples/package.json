@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client-examples",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "private": true,
   "description": "Test project to verify pactjs-cli and pactjs-generator",
   "repository": {
@@ -12,41 +12,39 @@
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "scripts": {
-    "prebuild": "npm run pactjs:generate:contract:file && npm run pactjs:generate:contract:crowdfund",
-    "build": "npm run prebuild && tsc --noEmit",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "prebuild": "pnpm run pactjs:generate:contract:file && pnpm run pactjs:generate:contract:crowdfund",
+    "build": "pnpm run prebuild && tsc --noEmit",
+    "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier config src --write",
-    "lint": "eslint package.json src --ext .js,.ts,.json --fix",
-    "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .js,.ts",
     "pactjs:generate:contract:chain": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
     "pactjs:generate:contract:crowdfund": "pactjs contract-generate --contract=free.crowdfund --api=https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
+    "pactjs:generate:contract:file": "pactjs contract-generate --file src/example-contract/coin.contract.pact && pactjs contract-generate --file src/example-contract/marmalade.module.pact",
     "test": ""
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
-    "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/pactjs": "workspace:*",
-    "@kadena/types": "workspace:*",
-    "debug": "~4.3.4"
+    "@kadena/pactjs": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
+    "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
-    "@types/heft-jest": "~1.0.3",
-    "@types/node": "^16.0.0",
-    "concurrently": "^7.2.2",
+    "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
-    "node-fetch": "~2.6.2",
-    "npm-run-all": "~4.1.5",
     "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
     "ts-node": "~10.8.2",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   }
 }

@@ -1,9 +1,10 @@
 import { Text } from '@kadena/react-ui';
 
-import { StyledFigure } from './styles';
+import { figCaption, figure, figureImg } from './styles.css';
 
 import Image from 'next/image';
-import React, { FC, useState } from 'react';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 
 interface IProps {
   alt: string;
@@ -20,8 +21,9 @@ export const Figure: FC<IProps> = ({ alt, src }) => {
     });
   };
   return (
-    <StyledFigure>
+    <figure className={figure}>
       <Image
+        className={figureImg}
         src={src}
         alt={alt}
         width={dimension.width}
@@ -31,11 +33,11 @@ export const Figure: FC<IProps> = ({ alt, src }) => {
         blurDataURL="/assets/blur.jpg"
         onLoad={handleLoad}
       />
-      <figcaption>
+      <figcaption className={figCaption}>
         <Text size="sm" as="span">
           {alt}
         </Text>
       </figcaption>
-    </StyledFigure>
+    </figure>
   );
 };

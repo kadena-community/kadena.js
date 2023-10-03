@@ -1,19 +1,27 @@
 import { colorVariants } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
-import { INotificationProps, Notification } from '@components/Notification';
+import type { INotificationProps } from '@components/Notification';
+import { Notification } from '@components/Notification';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<
   {
-    selectIcon: keyof typeof SystemIcon;
     text: string;
   } & INotificationProps
 > = {
   title: 'Components/Notification',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The Notification component renders a notification with an icon, title, and text. The color variant of the notification can be set with the `color` prop.',
+      },
+    },
+  },
   argTypes: {
-    selectIcon: {
+    icon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
@@ -25,7 +33,7 @@ const meta: Meta<
       },
     },
     color: {
-      options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
+      options: Object.keys(colorVariants),
       control: {
         type: 'select',
       },
@@ -46,7 +54,6 @@ const meta: Meta<
 export default meta;
 type Story = StoryObj<
   {
-    selectIcon: keyof typeof SystemIcon;
     text: string;
   } & INotificationProps
 >;
@@ -60,15 +67,14 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Notification',
   args: {
-    selectIcon: 'Information',
+    icon: 'Information',
     title: 'Notification title',
     hasCloseButton: true,
     expanded: false,
     color: undefined,
     text: 'Notification text to inform users about the event that occurred!',
   },
-  render: ({ selectIcon, title, hasCloseButton, expanded, color, text }) => {
-    const icon = SystemIcon[selectIcon];
+  render: ({ icon, title, hasCloseButton, expanded, color, text }) => {
     return (
       <Notification.Root
         icon={icon}
@@ -82,10 +88,10 @@ export const Primary: Story = {
       >
         {text}
         <Notification.Actions>
-          <Notification.Button icon={SystemIcon.Check} color={'positive'}>
+          <Notification.Button icon="Check" color={'positive'}>
             Accept
           </Notification.Button>
-          <Notification.Button icon={SystemIcon.Close} color={'negative'}>
+          <Notification.Button icon="Close" color={'negative'}>
             Reject
           </Notification.Button>
         </Notification.Actions>

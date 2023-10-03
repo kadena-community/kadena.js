@@ -1,13 +1,35 @@
+import { getData } from './staticGeneration/getData.mjs';
 import analyticsDataClient from './analyticsDataClient';
 import storeAnalyticsData from './storeAnalyticsData';
 
-import {
+import type { IMenuData } from '@/types/Layout';
+import type {
   IMostPopularPage,
   IRow,
   IRunReportResponse,
 } from '@/types/MostPopularData';
 import fs from 'fs';
 import path from 'path';
+
+const findPost = (url: string, data: IMenuData[]): IMenuData | undefined => {
+  const posts = data.flatMap((item) =>
+    item.children.flatMap((item) => item.children),
+  );
+
+  return posts.find((item) => {
+    if (item.root === url) return true;
+  });
+};
+
+// sometimes the title is not set. lets find them
+// this will also check, if the link still exists
+const setTitle = (item: IMostPopularPage): IMostPopularPage | undefined => {
+  const post = findPost(item.path, getData() as IMenuData[]);
+
+  if (!post) return;
+
+  return { ...item, title: post?.title };
+};
 
 function getStartDateOfLastMonths(lastMonths = 3): string {
   // Get today's date
@@ -67,11 +89,18 @@ function pushToTopPages(
       parseFloat(row.metricValues?.[0]?.value ?? '0');
   } else {
     const views = row.metricValues?.[0].value ?? '0';
-    topPages.push({
+
+    const item = {
       path: row.dimensionValues[0].value ?? '',
       views: parseFloat(views),
       title: row.dimensionValues[1].value ?? '',
-    });
+    };
+
+    const newItem = setTitle(item);
+
+    if (newItem) {
+      topPages.push(newItem);
+    }
   }
 
   return topPages;
@@ -98,6 +127,7 @@ function getTopPages(
 
       if (!value.startsWith(slug)) return;
     }
+
     topPages = pushToTopPages(topPages, row);
   });
 
@@ -108,7 +138,10 @@ export default async function getMostPopularPages(
   slug = '/',
   limit = 5,
 ): Promise<IMostPopularPage[]> {
-  const dataFilePath = path.join(process.cwd(), 'src/data/mostPopular.json');
+  const dataFilePath = path.join(
+    process.cwd(),
+    'src/_generated/mostPopular.json',
+  );
 
   const GOOGLE_ANALYTICS_PROPERTY_ID = process.env.GOOGLE_ANALYTICS_PROPERTY_ID;
   const GOOGLE_APPLICATION_CREDENTIALS =
@@ -123,6 +156,7 @@ export default async function getMostPopularPages(
   if (!validateCache(dataFilePath)) {
     const data: string = fs.readFileSync(dataFilePath, 'utf8');
     const mostPopularPages = getTopPages(JSON.parse(data), slug, limit);
+
     return mostPopularPages;
   }
 

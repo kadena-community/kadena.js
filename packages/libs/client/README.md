@@ -62,8 +62,8 @@ covered in this article. We'll also be exploring the concepts and rationale of
   - [Using FP approach][5]
   - [Send a request to the blockchain][8]
   - [Upgrading from @kadena/client 0.x to 1.0.0][3]
-    - [Sending a transaction `transfer`][23]
-    - [Read from the blockchain `getBalance`][24]
+    - [Sending a transaction 'transfer'][23]
+    - [Read from the blockchain 'getBalance'][24]
   - [Further development][25]
   - [Contact the team][26]
 
@@ -185,7 +185,7 @@ const unsignedTransaction = Pact.builder
       decimal: '231',
     }),
   ])
-  .setMeta({ chainId: '1', sender: 'your-pubkey' })
+  .setMeta({ chainId: '1', senderAccount: 'your-pubkey' })
   .setNetworkId('mainnet01')
   .createTransaction();
 ```
@@ -200,8 +200,8 @@ const unsignedTransaction = Pact.builder
 - The `addSigner` function accepts the `public-key` of the signer and let signer
   add the capabilities they want to sign for. Note that `coin.GAS` doesn't have
   any arguments, but `coin.TRANSFER` does.
-- The `setMeta` argument object has a `sender` property. This is a `public-key`
-  and could be gas station address in some scenarios.
+- The `setMeta` argument object has a `senderAccount` property. This is an
+  `account` and could be `gas station` account in some scenarios.
 - To add an **Unrestricted Signer** ([Unscoped Signature][28]), call `addSigner`
   without extra arguments
 
@@ -266,8 +266,11 @@ const unsignedTransaction = Pact.builder
   .execution('(format "Hello {}!" [(read-msg "person")])')
   // add signer(s) if its required
   .addSigner('your-pubkey')
-  // set chian id and sender
-  .setMeta({ chainId: '8', sender: 'your-pubkey' })
+  // set chain id and sender
+  .setMeta({
+    chainId: '8',
+    senderAccount: 'your-k-or-w-account-or-gas-station',
+  })
   // set networkId
   .setNetworkId('mainnet01')
   // create transaction with hash
@@ -368,7 +371,7 @@ async function transaction(
     .transfer(sender, receiver, amount)
     .addCap('coin.GAS', senderPublicKey)
     .addCap('coin.TRANSFER', senderPublicKey, sender, receiver, amount)
-    .setMeta({ sender }, 'testnet04');
+    .setMeta({ senderAccount: sender }, 'testnet04');
 
   const res = await signWithChainweaver(unsignedTransaction);
 
@@ -413,7 +416,7 @@ async function transfer(
       withCapability('coin.TRANSFER', sender, receiver, amount),
     ])
     // set chainId and sender
-    .setMeta({ chainId: '0', sender })
+    .setMeta({ chainId: '0', senderAccount: sender })
     .setNetworkId(NETWORK_ID)
     // will create a IUnsignedTransaction { cmd, hash, sigs }
     .createTransaction();

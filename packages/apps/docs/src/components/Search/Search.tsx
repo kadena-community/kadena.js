@@ -1,8 +1,11 @@
 import { SearchResults } from './components/SearchResults';
+import useAlgoliaSearch from './useAlgoliaSearch';
 
 import { useSearch } from '@/hooks';
-import { useSemanticSearch } from '@/hooks/useSearch/useSemanticSearch';
-import React, { FC, useEffect, useState } from 'react';
+import { mapMatches } from '@/pages/api/semanticsearch';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import type { FC } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface IProps {
   query?: string;
@@ -11,32 +14,42 @@ interface IProps {
 }
 
 export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
-  const [tabName, setTabName] = useState<string | undefined>();
+  const [tabName, setTabName] = useState<string | undefined>('docs');
   const {
-    outputStream,
-    handleSubmit: handleSearchSubmit,
-    conversation,
+    metadata = [],
+    handleSubmit,
     error,
     isLoading,
-  } = useSearch();
+  } = useAlgoliaSearch(limitResults);
+
   const {
-    results: semanticResults,
-    error: semanticError,
-    isLoading: semanticIsLoading,
-    handleSubmit: handleSemanticSubmit,
-  } = useSemanticSearch(limitResults);
+    outputStream,
+    conversation,
+    error: conversationError,
+    isLoading: conversationIsLoading,
+    handleSubmit: handleConversationSubmit,
+  } = useSearch();
+
+  const semanticResults = metadata.map(mapMatches);
 
   useEffect(() => {
-    if (query !== undefined && query.trim() !== '') {
-      if (tabName === 'qa') {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        handleSearchSubmit(query);
-      }
+    if (
+      query !== undefined &&
+      query.trim() !== '' &&
+      tabName !== undefined &&
+      tabName.trim() !== ''
+    ) {
       if (tabName === 'docs') {
-        handleSemanticSubmit(query);
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        handleSubmit(query);
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        handleConversationSubmit(query);
       }
+      analyticsEvent(EVENT_NAMES['click:search'], { query, tabName });
     }
-  }, [query, tabName, handleSemanticSubmit, handleSearchSubmit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, tabName]);
 
   const onTabSelect = (tabName: string): void => {
     setTabName(tabName);
@@ -46,13 +59,12 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
     <section>
       <SearchResults
         semanticResults={semanticResults}
-        semanticError={semanticError}
-        semanticIsLoading={semanticIsLoading}
+        semanticIsLoading={isLoading}
         conversation={conversation}
         outputStream={outputStream}
         query={query}
-        error={error}
-        isLoading={isLoading}
+        error={error || conversationError}
+        isLoading={conversationIsLoading}
         hasScroll={hasScroll}
         onTabSelect={onTabSelect}
         limitResults={limitResults}

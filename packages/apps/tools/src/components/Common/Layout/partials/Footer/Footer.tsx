@@ -1,12 +1,10 @@
-import { NavFooter, SystemIcon, useModal } from '@kadena/react-ui';
-
-import { linkClass } from './styles.css';
+import { NavFooter, useModal } from '@kadena/react-ui';
 
 import { OptionsModal } from '@/components/Global/OptionsModal';
-import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 const FooterWrapper: FC = () => {
   const { systemTheme, theme, setTheme } = useTheme();
@@ -15,7 +13,7 @@ const FooterWrapper: FC = () => {
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const { t } = useTranslation('common');
-  const openModal = (): void => renderModal(<OptionsModal />);
+  const openModal = (): void => renderModal(<OptionsModal />, 'Settings');
 
   const toggleTheme = (): void => {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -50,36 +48,22 @@ const FooterWrapper: FC = () => {
       <NavFooter.Panel>
         {links.map((item, index) => {
           return (
-            <NavFooter.Link key={index}>
-              {item.href !== undefined ? (
-                <Link
-                  className={linkClass}
-                  href={item.href}
-                  target={item.target}
-                  passHref
-                >
-                  {item.title}
-                </Link>
-              ) : (
-                <span>{item.title}</span>
-              )}
+            <NavFooter.Link key={index} href={item.href} target={item.target}>
+              {item.title}
             </NavFooter.Link>
           );
         })}
       </NavFooter.Panel>
       <NavFooter.Panel>
         <NavFooter.IconButton
-          icon={SystemIcon.ApplicationBrackets}
+          icon={'ApplicationBrackets'}
           onClick={() => openModal()}
         />
         <NavFooter.IconButton
-          icon={SystemIcon.ThemeLightDark}
+          icon={'ThemeLightDark'}
           onClick={() => toggleTheme()}
         />
-        <NavFooter.IconButton
-          icon={SystemIcon.ApplicationBrackets}
-          text="English"
-        />
+        <NavFooter.IconButton icon={'ApplicationBrackets'} text="English" />
       </NavFooter.Panel>
     </NavFooter.Root>
   );

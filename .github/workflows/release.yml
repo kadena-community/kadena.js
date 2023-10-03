@@ -1,52 +1,63 @@
-name: Rush release (version --bump, publish)
+name: Release
+
+# Taken from: https://github.com/changesets/action#with-publishing
+
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
-  build:
-    name: Node.js v${{ matrix.NodeVersion }}
+  release:
+    name: Changelog PR or Release
+    if: ${{ github.repository_owner == 'kadena-community' }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        NodeVersion: [16]
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
-          token: ${{ secrets.ACTIONS_RELEASE_KADENA_JS }}
-      - name: Git config user
-        run: |
-          git config --local user.name "Kadena Rushbot"
-          git config --local user.email "kadena-rushbot@users.noreply.github.com"
+          show-progress: false
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.NodeVersion }}
-      - name: Rush verify Change Logs (install-run-rush)
-        run: node common/scripts/install-run-rush.js change --verify
-      - name: Rush install (install-run-rush)
-        run: node common/scripts/install-run-rush.js install
-      - name: Rush test (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js build --verbose
-          node common/scripts/install-run-rush.js test --verbose
+          node-version: 18
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build, lint, test all packages
+        run: pnpm turbo build lint test
+
+      - name: Create Release PR or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          # Note: pnpm install after versioning is necessary to refresh lockfile
+          version: pnpm run version
+          publish: pnpm run publish
+          commit: 'Update changelogs and bump versions [skip ci]'
+          title: '[ci] Release'
         env:
-          # Prevent time-based browserslist update warning
-          # See https://github.com/microsoft/rushstack/issues/2981
-          BROWSERSLIST_IGNORE_OLD_DATA: 1
+          # Needs "Contents" r+w and "Pull requests" r+w access to open/update PRs and push to main
+          GITHUB_TOKEN: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
+          # Needs r+w access for packages of both orgs to publish to npm
+          NPM_TOKEN: ${{ secrets.RELEASE_ACTION_NPM_TOKEN }}
 
-      # Disabled this step; it's better to run this step locally and submit it
-      # as a PR. This makes a release explicit instead of automatic
-      # - name: Rush version bump (install-run-rush)
-      #   run: node common/scripts/install-run-rush.js version --bump --target-branch main
-
-      - name: Rush publish (install-run-rush)
-        run: |
-          node common/scripts/install-run-rush.js publish --apply --publish --include-all --add-commit-details --set-access-level public --target-branch main
-      # - name: Rush test (rush-lib)
-      #   run: node apps/rush/lib/start-dev.js test --verbose --production --timeline
-      #   env:
-      #     # Prevent time-based browserslist update warning
-      #     # See https://github.com/microsoft/rushstack/issues/2981
-      #     BROWSERSLIST_IGNORE_OLD_DATA: 1
-      # - name: Ensure repo README is up-to-date
-      #   run: node repo-scripts/repo-toolbox/lib/start.js readme --verify
+      - name: Output (debug)
+        if: steps.changesets.outputs.published == 'true'
+        # Do something more interesting when a publish happens.
+        run: echo ${{ steps.changesets.outputs.publishedPackages }}

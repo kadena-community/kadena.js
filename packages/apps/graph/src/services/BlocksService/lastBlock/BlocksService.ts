@@ -1,26 +1,25 @@
-import { Block, Prisma, PrismaClient } from '@prisma/client';
+import type { Block, Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import debug from 'debug';
-import { PubSub } from 'graphql-yoga';
+import type { PubSub } from 'graphql-yoga';
 
 const log: debug.Debugger = debug('graph:blocks');
 const performanceLog: debug.Debugger = debug('performance');
 class BlocksService {
   private _lastBlocks: Block[] = [];
-  private _prisma: PrismaClient<
-    Prisma.PrismaClientOptions,
-    never,
-    Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
-  >;
+  private _prisma: PrismaClient<Prisma.PrismaClientOptions, never>;
   private _interval: NodeJS.Timer | undefined;
   public pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: Block[]] }>;
   private _i: number = 0;
+  private _mocks: Block[];
 
   public constructor(
     pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: Block[]] }>,
     // eslint-disable-next-line @typescript-eslint/no-parameter-properties
-    private _mocks?: Block[],
+    mocks?: Block[],
   ) {
     this._prisma = new PrismaClient();
+    this._mocks = mocks || [];
     this.pubsub = pubsub;
     this.start();
   }
@@ -42,7 +41,7 @@ class BlocksService {
 
   public async getLatestBlocks(): Promise<void> {
     log('getLatestBlocks');
-    if (this._mocks) {
+    if (this._mocks.length > 0) {
       if (this._i % 10 === 0) {
         console.log('publish 2 block');
         this.pubsub.publish('NEW_BLOCKS', [
@@ -62,7 +61,8 @@ class BlocksService {
       this._lastBlocks = await this._prisma.block.findMany({
         orderBy: { id: 'desc' },
         include: {
-          transactions: true,
+          // TODO: fix transactions
+          // transactions: true,
         },
       });
       this.pubsub.publish('NEW_BLOCKS', this._lastBlocks);
@@ -73,7 +73,8 @@ class BlocksService {
         where: { id: { gt: this._lastBlocks[0].id } },
         orderBy: { id: 'desc' },
         include: {
-          transactions: true,
+          // TODO: fix transactions
+          // transactions: true,
         },
       });
 

@@ -1,14 +1,24 @@
-import { ICheckpoint, IProgressBarProps, ProgressBar } from './ProgressBar';
+import type { ICheckpoint, IProgressBarProps } from './ProgressBar';
+import { ProgressBar } from './ProgressBar';
 
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<IProgressBarProps> = {
   title: 'Components/ProgressBar',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'A component that shows the completion status of a task or process.',
+      },
+    },
+  },
   argTypes: {
     checkpoints: {
       control: {
         type: 'object',
+        description: 'Each checkpoint has a <i>title</i> and a <i>status</i>.',
       },
     },
   },

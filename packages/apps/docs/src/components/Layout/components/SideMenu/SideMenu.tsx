@@ -1,23 +1,25 @@
-import { Heading, SystemIcon, TextField } from '@kadena/react-ui';
+import { Box, Heading, Input } from '@kadena/react-ui';
 
 import { MainTreeItem } from '../TreeMenu';
-import { StyledTreeList } from '../TreeMenu/styles';
+import { TreeList } from '../TreeMenu/TreeList';
 
+import { ListLink, ShowOnMobile } from './components';
 import { MenuCard } from './MenuCard';
 import {
-  ShowOnMobile,
-  SideMenuTitle,
-  SideMenuTitleBackButton,
-  StyledItem,
-  StyledLink,
-  StyledSideMenu,
-  StyledUl,
-} from './styles';
+  listClass,
+  listItemClass,
+  sideMenuClass,
+  sideMenuTitleButtonClass,
+  sideMenuTitleClass,
+} from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
 
-import { IMenuItem } from '@/types/Layout';
+import type { IMenuItem } from '@/types/Layout';
+import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import React, { FC, KeyboardEvent } from 'react';
+import type { FC, KeyboardEvent } from 'react';
+import React from 'react';
 
 interface IProps {
   closeMenu: () => void;
@@ -37,6 +39,9 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     e.preventDefault();
     const value = e.currentTarget.value;
     if (e.key === 'Enter') {
+      analyticsEvent(EVENT_NAMES['click:mobile_search'], {
+        query: value,
+      });
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push(`/search?q=${value}`);
       closeMenu();
@@ -45,47 +50,52 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
   };
 
   return (
-    <StyledSideMenu>
+    <div className={sideMenuClass}>
       {active === 0 && (
-        <SideMenuTitle>
+        <div className={sideMenuTitleClass}>
           <Heading as="h5">Kadena Docs</Heading>
-        </SideMenuTitle>
+        </div>
       )}
       {active === 1 && (
-        <>
-          <SideMenuTitleBackButton onClick={() => setActive(0)}>
-            <Heading as="h5">{activeItem?.menu}</Heading>
-          </SideMenuTitleBackButton>
-        </>
+        <button
+          type="button"
+          onClick={() => setActive(0)}
+          className={classNames(sideMenuTitleClass, sideMenuTitleButtonClass)}
+        >
+          <Heading as="h5">{activeItem?.menu}</Heading>
+        </button>
       )}
 
       <ShowOnMobile>
-        <TextField
-          inputProps={{
-            id: 'search',
-            onKeyUp: handleKeyPress,
-            placeholder: 'Search',
-            leftIcon: SystemIcon.Magnify,
-            'aria-label': 'Search',
-          }}
-        ></TextField>
+        <Box marginX="$4" marginBottom="$8" marginTop="$4">
+          <Input
+            id="search"
+            rightIcon="Magnify"
+            onKeyUp={handleKeyPress}
+            placeholder="Search"
+            outlined
+            type="text"
+            aria-label="Search"
+          />
+        </Box>
       </ShowOnMobile>
+
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
-        <StyledUl>
+        <ul className={listClass}>
           {menuItems.map((item) => (
-            <StyledItem key={item.root}>
-              <StyledLink
+            <li key={item.root} className={listItemClass}>
+              <ListLink
                 onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
                   clickMenu(e, item)
                 }
                 href={item.root}
-                data-hassubmenu={!!item.children?.length}
+                hasSubMenu={!!item.children?.length}
               >
                 {item.menu}
-              </StyledLink>
-            </StyledItem>
+              </ListLink>
+            </li>
           ))}
-        </StyledUl>
+        </ul>
       </MenuCard>
       {activeItem && (
         <MenuCard
@@ -94,11 +104,11 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           idx={1}
           onClick={clickSubMenu}
         >
-          <StyledTreeList role="list" root={true}>
+          <TreeList root={true}>
             <MainTreeItem item={activeItem} root={true} />
-          </StyledTreeList>
+          </TreeList>
         </MenuCard>
       )}
-    </StyledSideMenu>
+    </div>
   );
 };

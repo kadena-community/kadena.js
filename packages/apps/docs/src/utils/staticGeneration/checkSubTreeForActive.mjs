@@ -1,6 +1,11 @@
 import { getData } from './getData.mjs';
 import path from 'path';
 
+const omit = (obj, keysToOmit) =>
+  Object.keys(obj)
+    .filter((key) => !keysToOmit.includes(key))
+    .reduce((acc, key) => ({ ...acc, [key]: obj[key] }), {});
+
 const isIndex = (filename) => {
   return filename === 'index';
 };
@@ -31,18 +36,19 @@ const IsMenuOpen = (pathname, itemRoot) =>
 const isPathRoot = (pathname, itemRoot) => itemRoot === pathname;
 
 const mapSubTree = (pathname, noChildren, isRoot) => (item) => {
-  const {
-    description,
-    subTitle,
-    layout,
-    navigation,
-    editLink,
-    order,
-    lastModifiedDate,
-    publishDate,
-    author,
-    ...newItem
-  } = item;
+  const newItem = omit(item, [
+    'description',
+    'subTitle',
+    'layout',
+    'navigation',
+    'editLink',
+    'order',
+    'lastModifiedDate',
+    'publishDate',
+    'author',
+    'wordCount',
+    'readingTimeInMinutes',
+  ]);
 
   if (IsMenuOpen(pathname, newItem.root)) {
     newItem.isMenuOpen = true;
@@ -55,9 +61,6 @@ const mapSubTree = (pathname, noChildren, isRoot) => (item) => {
   } else {
     newItem.isActive = false;
   }
-
-  delete newItem.description;
-  delete newItem.subTitle;
 
   // is the actual item active
   if (!newItem.children || noChildren) newItem.children = [];

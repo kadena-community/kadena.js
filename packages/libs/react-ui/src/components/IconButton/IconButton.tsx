@@ -1,33 +1,88 @@
-import { colorVariants } from './IconButton.css';
+import type { colorVariants, typeVariants } from './IconButton.css';
+import {
+  activeClass,
+  alternativeVariant,
+  compactVariant,
+  defaultVariant,
+} from './IconButton.css';
 
 import { SystemIcon } from '@components/Icon';
-import React, { FC } from 'react';
+import classnames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IIconButtonProps
-  extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'> {
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'color' | 'className'
+  > {
+  active?: boolean;
   as?: 'button' | 'a';
-  icon: (typeof SystemIcon)[keyof typeof SystemIcon];
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  href?: string;
-  title: string;
+  asChild?: boolean;
   color?: keyof typeof colorVariants;
+  href?: string;
+  icon: keyof typeof SystemIcon;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  target?: '_blank' | '_self';
+  title?: string;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: keyof typeof typeVariants;
 }
 
 export const IconButton: FC<IIconButtonProps> = ({
   as = 'button',
-  color = 'default',
+  color = 'primary',
+  variant = 'compact',
   href,
   icon,
-  onClick,
   title,
-  ...props
+  children,
+  target,
+  type,
+  asChild = false,
+  active = false,
+  ...restProps
 }) => {
-  const Icon = icon;
-  const ariaLabel = props['aria-label'] ?? title;
+  const ariaLabel = restProps['aria-label'] ?? title;
+  const renderAsAnchor = as === 'a' && href !== undefined && href !== '';
 
-  if (as === 'a' && href !== undefined && href !== '') {
+  const Icon = icon && SystemIcon[icon];
+
+  const buttonVariant = (): string => {
+    switch (variant) {
+      case 'compact':
+        return compactVariant[color];
+      case 'alternative':
+        return alternativeVariant[color];
+      default:
+        return defaultVariant[color];
+    }
+  };
+
+  const buttonClassname = classnames(buttonVariant(), {
+    [activeClass]: active,
+  });
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ...restProps,
+      href,
+      ariaLabel,
+      type,
+      ...children.props,
+      className: buttonClassname,
+      children: <Icon size="md" />,
+    });
+  }
+
+  if (renderAsAnchor) {
     return (
-      <a className={colorVariants[color]} href={href} aria-label={ariaLabel}>
+      <a
+        className={buttonClassname}
+        href={href}
+        target={target}
+        aria-label={ariaLabel}
+      >
         <Icon size="md" />
       </a>
     );
@@ -35,11 +90,11 @@ export const IconButton: FC<IIconButtonProps> = ({
 
   return (
     <button
-      {...props}
-      className={colorVariants[color]}
-      onClick={onClick}
+      {...restProps}
+      className={buttonClassname}
       aria-label={ariaLabel}
       data-testid="kda-icon-button"
+      type={type}
     >
       <Icon size="md" />
     </button>

@@ -1,35 +1,47 @@
-import { Article, Content, TitleHeader } from '../components';
+import { baseGridClass } from '../basestyles.css';
+import {
+  articleClass,
+  contentClass,
+  contentClassVariants,
+  TitleHeader,
+} from '../components';
 import { Template } from '../components/Template';
+import { globalClass } from '../global.css';
 
-import { PageGrid } from './styles';
+import { pageGridClass } from './styles.css';
 
 import { NotFound } from '@/components/NotFound';
-import { IPageProps } from '@/types/Layout';
-import React, { FC } from 'react';
+import type { IBasePageProps } from '@/types/Layout';
+import classnames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 
-export const Landing: FC<IPageProps> = ({
+export const Landing: FC<IBasePageProps> = ({
   children,
   frontmatter,
   leftMenuTree,
 }) => {
+  const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
+
   return (
-    <PageGrid>
+    <div className={gridClassNames}>
       <Template menuItems={leftMenuTree} layout="landing">
         <TitleHeader
           title={frontmatter.title}
           subTitle={frontmatter.subTitle}
-          icon={frontmatter.icon}
         />
 
-        <Content id="maincontent" layout="code">
-          <Article>
+        <div
+          id="maincontent"
+          className={classnames(contentClass, contentClassVariants.code)}
+        >
+          <article className={articleClass}>
             {children}
-
             <NotFound />
-          </Article>
-        </Content>
+          </article>
+        </div>
       </Template>
-    </PageGrid>
+    </div>
   );
 };
 

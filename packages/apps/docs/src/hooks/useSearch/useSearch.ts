@@ -1,16 +1,14 @@
-import { IConversation, useConversation } from './useConversation';
+import type { IConversation } from './useConversation';
+import { useConversation } from './useConversation';
 import { useStream } from './useStream';
 
+import type { StreamMetaData } from '@7-docs/edge';
 import { useRouter } from 'next/router';
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { MutableRefObject } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface IProps {
+  metadata?: StreamMetaData[];
   //eslint-disable-next-line @rushstack/no-new-null
   searchInputRef: MutableRefObject<HTMLInputElement | null>;
   handleSubmit: (value: string) => Promise<void>;
@@ -20,11 +18,17 @@ interface IProps {
   isLoading: boolean;
 }
 
-export const useSearch = (): IProps => {
+export const useSearch = (limitResults: number = 50): IProps => {
   const [query, setQuery] = useState<string | undefined>();
   const [conversation, dispatch] = useConversation();
-  const [startStream, isStreaming, outputStream, metadata, error, isLoading] =
-    useStream();
+  const [
+    startStream,
+    isStreaming,
+    outputStream,
+    streamMetaData,
+    error,
+    isLoading,
+  ] = useStream();
   const router = useRouter();
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -47,9 +51,13 @@ export const useSearch = (): IProps => {
 
   useEffect(() => {
     if (outputStream.length > 0 && !isStreaming) {
-      dispatch({ type: 'commit', value: outputStream, metadata });
+      dispatch({
+        type: 'commit',
+        value: outputStream,
+        metadata: streamMetaData,
+      });
     }
-  }, [isStreaming, outputStream, dispatch, metadata]);
+  }, [isStreaming, outputStream, dispatch, streamMetaData]);
 
   useEffect(() => {
     if (conversation.input.length > 0) {
@@ -60,7 +68,6 @@ export const useSearch = (): IProps => {
   const handleSubmit = useCallback(
     async (value: string): Promise<void> => {
       if (value === undefined || query === value) return;
-
       dispatch({ type: 'reset' });
       setQuery(value);
       await updateQuery(value);

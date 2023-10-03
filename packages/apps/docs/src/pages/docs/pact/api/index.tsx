@@ -1,18 +1,26 @@
+import { Heading } from '@kadena/react-ui';
+
 import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs';
 import apiSpecs from '@/specs/pact/pact.openapi.json';
-import { ILayout } from '@/types/Layout';
+import type { ILayout } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { GetStaticProps } from 'next';
-import { OpenAPIV3 } from 'openapi-types';
-import React, { FC } from 'react';
+import type { GetStaticProps } from 'next';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { FC } from 'react';
+import React from 'react';
 
 const Home: FC<ILayout> = () => {
   const specs = apiSpecs as unknown as OpenAPIV3.Document;
-  return <Specs specs={specs} options={options} />;
+  return (
+    <>
+      <Heading as="h1">Pact OpenAPI</Heading>
+      <Specs specs={specs} options={options} />;
+    </>
+  );
 };
 
 export const getStaticProps: GetStaticProps = async () => {

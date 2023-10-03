@@ -1,19 +1,24 @@
 import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 
+import type { IQueryResult } from '../../../types';
 import { itemLinkClass, staticResultsListClass } from '../styles.css';
 
-import { createLinkFromMD } from '@/utils';
+import { filePathToRoute } from '@/pages/api/semanticsearch';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
 interface IProps {
-  results: ISearchResult[];
+  results: IQueryResult[];
   limitResults?: number;
 }
 
 interface IResultProps {
-  item: ISearchResult;
+  item: IQueryResult;
 }
+
 interface IBreadCrumbProps {
   url: string;
 }
@@ -35,19 +40,28 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
 };
 
 const Item: FC<IResultProps> = ({ item }) => {
-  const url = createLinkFromMD(item.filePath);
   const { clearModal } = useModal();
+
+  if (!item.filePath) return;
+
+  const url = filePathToRoute(item.filePath, item.header);
+  const content = item.content ?? '';
 
   return (
     <li>
       <Link href={url} passHref legacyBehavior>
         <a className={itemLinkClass} onClick={clearModal}>
-          <Heading color="primaryContrast" as="h5">
+          <Heading color="primaryContrastInverted" as="h5">
             {item.title}
           </Heading>
           <ItemBreadCrumb url={url} />
 
-          <Text as="p">{item.description}</Text>
+          <Text as="p">
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            <ReactMarkdown rehypePlugins={[rehypeRaw] as any}>
+              {content}
+            </ReactMarkdown>
+          </Text>
         </a>
       </Link>
     </li>
@@ -62,7 +76,7 @@ export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
     <Box marginY="$10">
       <ul className={staticResultsListClass}>
         {limitedResults.map((item) => {
-          return <Item item={item} key={item.id} />;
+          return <Item item={item} key={`${item.filePath} + ${item.header}`} />;
         })}
       </ul>
     </Box>

@@ -1,29 +1,33 @@
-import { Heading, IHeadingProps } from '@kadena/react-ui';
+import type { IHeadingProps } from '@kadena/react-ui';
+import { Heading, Link } from '@kadena/react-ui';
 
-import { ILinkBlock, LinkBlock } from './LinkBlock';
-import { ILinkList, LinkList } from './LinkList';
+import type { ILinkBlock } from './LinkBlock';
+import { LinkBlock } from './LinkBlock';
+import type { ILinkList } from './LinkList';
+import { LinkList } from './LinkList';
 import {
   columnLinkClass,
   columnLinkListItemClass,
   directionVariants,
+  markerVariants,
   sectionRowContainerClass,
 } from './styles.css';
 
-import classnames from 'classnames';
-import Link from 'next/link';
-import React, { FC, FunctionComponentElement } from 'react';
+import classNames from 'classnames';
+import NextLink from 'next/link';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
-export interface IBrowseSectionProps {
+interface IBrowseSectionProps {
   title?: string;
   titleAs?: IHeadingProps['as'];
-  children?:
-    | FunctionComponentElement<ILinkBlock>[]
-    | FunctionComponentElement<ILinkBlock>;
+  children?: ReactNode;
   direction?: 'column' | 'row';
   className?: string;
+  marker?: 'none' | 'default';
 }
 
-export type BrowseSectionType = FC<IBrowseSectionProps> & {
+type BrowseSectionType = FC<IBrowseSectionProps> & {
   LinkBlock: FC<ILinkBlock>;
   LinkList: FC<ILinkList>;
 };
@@ -39,25 +43,35 @@ const BrowseSection: BrowseSectionType = ({
   direction = 'column',
   /* eslint-disable-next-line react/prop-types */
   className,
+  // eslint-disable-next-line react/prop-types
+  marker = 'default',
 }) => {
-  const containerClass = classnames(className, {
+  const containerClass = classNames(className, {
     [sectionRowContainerClass]: direction === 'row',
   });
 
-  const listItemClassName = classnames({
+  const listItemClassName = classNames({
     [columnLinkListItemClass]: direction === 'row',
   });
 
   return (
     <section className={containerClass}>
       {Boolean(title) && <Heading as={titleAs}>{title}</Heading>}
-      <ul className={directionVariants[direction]}>
+      <ul
+        className={classNames(
+          directionVariants[direction],
+          markerVariants[marker],
+        )}
+      >
         {React.Children.map(children, (child) => {
+          if (!child) return child;
           if (
             !React.isValidElement(child) ||
             (child.type !== LinkBlock &&
+              child.type !== NextLink &&
               child.type !== Link &&
-              child.type !== 'a')
+              child.type !== 'a' &&
+              child.type !== undefined)
           ) {
             throw new Error('not a child for the BrowseSection Component');
           }
@@ -70,7 +84,7 @@ const BrowseSection: BrowseSectionType = ({
             if (React.isValidElement(child)) {
               const childWithProps = React.cloneElement(child, {
                 // @ts-ignore
-                className: columnLinkClass,
+                className: classNames(columnLinkClass, child.props.className),
               });
 
               return (

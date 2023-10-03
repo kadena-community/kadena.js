@@ -1,5 +1,6 @@
 import {
   containerClass,
+  disabledClass,
   inputClass,
   inputContainerClass,
   leadingTextClass,
@@ -10,8 +11,9 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC, forwardRef, InputHTMLAttributes } from 'react';
-import { vars } from 'src/styles';
+import type { FC, InputHTMLAttributes } from 'react';
+import React, { forwardRef } from 'react';
+import type { vars } from 'src/styles';
 
 export interface IInputProps
   extends Omit<
@@ -20,10 +22,10 @@ export interface IInputProps
   > {
   leadingText?: string;
   leadingTextWidth?: keyof typeof vars.sizes;
-  leftIcon?: (typeof SystemIcon)[keyof typeof SystemIcon];
-  rightIcon?: (typeof SystemIcon)[keyof typeof SystemIcon];
+  leftIcon?: keyof typeof SystemIcon;
+  rightIcon?: keyof typeof SystemIcon;
   disabled?: boolean;
-  type?: string;
+  type?: React.HTMLInputTypeAttribute;
   ref?: React.ForwardedRef<HTMLInputElement>;
   id: string;
   outlined?: boolean;
@@ -42,24 +44,25 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     },
     ref,
   ) {
-    const RightIcon = rightIcon;
-    const LeftIcon = leftIcon;
+    const RightIcon = rightIcon && SystemIcon[rightIcon];
+    const LeftIcon = leftIcon && SystemIcon[leftIcon];
 
     return (
       <div
-        className={classNames(containerClass, { [outlinedClass]: outlined })}
+        className={classNames(containerClass, {
+          [outlinedClass]: outlined,
+          [disabledClass]: disabled,
+        })}
         data-testid="kda-input"
       >
         {Boolean(leadingText) && (
-          <div className={leadingTextWrapperClass}>
-            <span
-              className={classNames(
-                leadingTextClass,
-                leadingTextWidth && leadingTextWidthVariant[leadingTextWidth],
-              )}
-            >
-              {leadingText}
-            </span>
+          <div
+            className={classNames(
+              leadingTextWrapperClass,
+              leadingTextWidth && leadingTextWidthVariant[leadingTextWidth],
+            )}
+          >
+            <span className={leadingTextClass}>{leadingText}</span>
           </div>
         )}
         <div className={inputContainerClass}>

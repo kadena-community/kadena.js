@@ -1,23 +1,30 @@
 import type { IButtonProps } from './Button';
 import { Button } from './Button';
-import { colorVariants } from './Button.css';
+import { colorVariants, typeVariants } from './Button.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
+import { withCenteredStory } from '@utils/withCenteredStory';
 import React from 'react';
 
 const meta: Meta<
   {
-    selectIcon: keyof typeof SystemIcon;
     text: string;
   } & IButtonProps
 > = {
   title: 'Components/Button',
   component: Button,
+  decorators: [withCenteredStory],
   parameters: {
     controls: {
       hideNoControlsWarning: true,
       sort: 'requiredFirst',
+    },
+    docs: {
+      description: {
+        component:
+          'The Button component renders a clickable element that can either be a button or anchor which will be styled according to the variant prop (`primary` being the default).<br /><br />The Button component can include an icon<sup>*</sup> which can be aligned either left or right (default: `right`).<br /><br /><em><sup>*</sup> Please use IconButton when you require a button with only an icon.</em>',
+      },
     },
   },
   argTypes: {
@@ -36,6 +43,9 @@ const meta: Meta<
       control: {
         type: 'select',
       },
+      table: {
+        type: { summary: Object.keys(SystemIcon).join(' | ') },
+      },
       if: { arg: 'loading', eq: false },
     },
     iconAlign: {
@@ -44,17 +54,42 @@ const meta: Meta<
       control: {
         type: 'radio',
       },
-      if: { arg: 'selectIcon', neq: '-' },
+      table: {
+        type: { summary: 'left | right' },
+        defaultValue: { summary: 'right' },
+      },
+      if: { arg: 'icon', neq: '-' },
     },
-    variant: {
+    color: {
       options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
       control: {
         type: 'select',
+      },
+      description: 'color variant',
+      table: {
+        type: { summary: Object.keys(colorVariants).join(' | ') },
+        defaultValue: { summary: 'primary' },
+      },
+    },
+    variant: {
+      options: Object.keys(typeVariants) as (keyof typeof typeVariants)[],
+      control: {
+        type: 'select',
+      },
+      description: 'button style variant',
+      table: {
+        type: { summary: Object.keys(typeVariants).join(' | ') },
+        defaultValue: { summary: 'default' },
       },
     },
     title: {
       control: {
         type: 'text',
+      },
+      description: 'aria label',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '' },
       },
     },
     text: {
@@ -78,11 +113,27 @@ const meta: Meta<
       },
       if: { arg: 'as', eq: 'a' },
     },
+    type: {
+      description: 'type of button',
+      options: ['button', 'submit', 'reset'] as IButtonProps['type'][],
+      control: {
+        type: 'select',
+      },
+      table: {
+        type: { summary: 'button | submit | reset' },
+        defaultValue: { summary: 'button' },
+      },
+      if: { arg: 'as', eq: 'button' },
+    },
     as: {
       description: 'render as button or anchor',
       options: ['button', 'a'] as IButtonProps['as'][],
       control: {
         type: 'radio',
+      },
+      table: {
+        type: { summary: 'button | a' },
+        defaultValue: { summary: 'button' },
       },
     },
     disabled: {
@@ -99,42 +150,56 @@ const meta: Meta<
       },
       if: { arg: 'as', eq: 'button' },
     },
+    active: {
+      description: 'set to apply active visual state',
+      control: {
+        type: 'boolean',
+        defaultValue: { summary: false },
+      },
+    },
+    asChild: {
+      description:
+        'Allow users to pass on styles, icons, and additional props to the child component. For example when using next/link in Next.js.',
+    },
   },
 };
 
 type Story = StoryObj<
   {
     text: string;
-    selectIcon: keyof typeof SystemIcon;
   } & IButtonProps
 >;
 
 export const Dynamic: Story = {
   name: 'Button',
   args: {
+    active: false,
     as: 'button',
-    variant: 'primary',
+    color: 'primary',
     disabled: false,
     href: 'https://kadena.io',
+    icon: undefined,
     iconAlign: 'right',
     loading: false,
     target: '_self',
-    icon: undefined,
     text: 'Click me',
     title: 'test title',
+    variant: 'default',
   },
   render: ({
+    active,
     as,
-    variant = 'primary',
+    color = 'primary',
     disabled,
     href,
+    icon,
     iconAlign = 'right',
     loading,
     onClick,
-    icon,
     target,
     text,
     title,
+    variant = 'default',
   }) => {
     if (loading) {
       icon = 'Loading';
@@ -142,16 +207,18 @@ export const Dynamic: Story = {
 
     return (
       <Button
+        active={active}
         as={as}
+        color={color}
         disabled={disabled}
         href={href}
+        icon={icon}
+        iconAlign={iconAlign}
         loading={loading}
         onClick={onClick}
         target={target}
         title={title}
         variant={variant}
-        icon={icon}
-        iconAlign={iconAlign}
       >
         {text}
       </Button>

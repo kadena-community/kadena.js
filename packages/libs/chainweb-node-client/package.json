@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweb-node-client",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Typed JavaScript wrapper with fetch to call chainweb-node API endpoints",
   "keywords": [],
   "repository": {
@@ -24,39 +24,46 @@
     }
   ],
   "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "dist/chainweb-node-client.d.ts",
   "files": [
     "dist",
     "lib"
   ],
   "scripts": {
-    "build": "heft build --clean",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config openapi src --check",
+    "_postinstall": "pnpm run generate:openapi-types",
+    "build": "tsc && api-extractor run --verbose",
+    "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier config openapi src --write",
+    "format:src": "prettier . --cache --write",
     "generate:openapi-types": "echo 'openapi specs needs fixes' # openapi-typescript \"./openapi/*.json\" --output ./src/openapi",
-    "postinstall": "npm run generate:openapi-types",
-    "lint": "eslint package.json src --ext .js,.ts --fix",
-    "test": "heft test"
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .js,.ts",
+    "test": "jest"
   },
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
-    "@kadena/types": "workspace:*",
-    "@types/isomorphic-fetch": "~0.0.36",
     "cross-fetch": "~3.1.5",
     "node-fetch": "~2.6.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "@microsoft/api-extractor": "^7.37.0",
     "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
-    "@types/heft-jest": "~1.0.3",
-    "@types/node": "^16.0.0",
+    "@types/isomorphic-fetch": "~0.0.36",
+    "@types/jest": "^29.5.3",
+    "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0"
+    "jest": "^29.7.0",
+    "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5",
+    "typescript": "5.2.2"
   }
 }

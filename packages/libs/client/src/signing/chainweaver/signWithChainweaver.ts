@@ -1,12 +1,12 @@
-import { ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
-import {
+import type {
   IQuickSignRequestBody,
   IQuicksignResponse,
   IQuicksignSigner,
 } from '../../signing-api/v1/quicksign';
-import { ISignFunction } from '../ISignFunction';
-import { addSignatures } from '../utils/addSignature';
+import type { ISignFunction } from '../ISignFunction';
+import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 import fetch from 'cross-fetch';

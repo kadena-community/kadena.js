@@ -1,9 +1,10 @@
-import { Accordion, IconButton, SystemIcon, Tree } from '@kadena/react-ui';
+import { Accordion, IconButton, Tree } from '@kadena/react-ui';
 
 import { gridItemMenuStyle, subMenuTitleClass } from './styles.css';
 
 import { useLayoutContext } from '@/context';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export const Menu: FC = () => {
   const { activeMenu, setActiveMenuIndex } = useLayoutContext();
@@ -14,19 +15,18 @@ export const Menu: FC = () => {
       <div className={subMenuTitleClass}>
         <span>{activeMenu.title}</span>
         <IconButton
-          icon={SystemIcon.Close}
+          icon={'Close'}
           onClick={() => setActiveMenuIndex(undefined)}
           title={activeMenu.title}
         />
       </div>
-      <Accordion
-        sections={
-          activeMenu.items?.map((item) => ({
-            title: '', // @todo: fix Type error: Property 'title' does not exist on type 'ISidebarSubMenuItem'.
-            children: <Tree isOpen={true} items={item.items} />,
-          })) ?? []
-        }
-      />
+      <Accordion.Root>
+        {activeMenu.items?.map((item, index) => (
+          <Accordion.Section title="" key={index}>
+            <Tree isOpen={true} items={item.items} />
+          </Accordion.Section>
+        ))}
+      </Accordion.Root>
     </div>
   );
 };

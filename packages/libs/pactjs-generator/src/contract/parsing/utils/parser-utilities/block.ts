@@ -1,7 +1,8 @@
 import { getBlockPointer } from '../getPointer';
 
 import { FAILED, rule } from './rule';
-import { ISeq, seq } from './seq';
+import type { ISeq } from './seq';
+import { seq } from './seq';
 import { skipTheRest } from './skip';
 
 export const block: ISeq = (...parsers) => {

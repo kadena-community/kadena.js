@@ -1,18 +1,18 @@
-import { type ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
-import { type OnChainSelectChange } from '@/components/Global';
-import { useAppContext } from '@/context/app-context';
+import type { OnChainSelectChange } from '@/components/Global';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useCallback } from 'react';
 
 const usePersistentChainID = (): [ChainwebChainId, OnChainSelectChange] => {
-  const { chainID, setChainID } = useAppContext();
+  const { selectedChain, setSelectedChain } = useWalletConnectClient();
   const onChainSelectChange = useCallback<OnChainSelectChange>(
-    (chainID) => {
-      setChainID(chainID);
+    (selectedChain) => {
+      setSelectedChain(selectedChain);
     },
-    [setChainID],
+    [setSelectedChain],
   );
-  return [chainID, onChainSelectChange];
+  return [selectedChain, onChainSelectChange];
 };
 
 export default usePersistentChainID;

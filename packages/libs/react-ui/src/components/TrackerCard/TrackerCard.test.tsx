@@ -1,6 +1,6 @@
-import { ILabelValue, TrackerCard } from './TrackerCard';
+import type { ILabelValue } from './TrackerCard';
+import { TrackerCard } from './TrackerCard';
 
-import { ProductIcon } from '@components/Icon';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
@@ -27,7 +27,7 @@ describe('TrackerCard', () => {
         variant="vertical"
         helperText="helper text"
         helperTextType="mild"
-        icon={ProductIcon.QuickStart}
+        icon="QuickStart"
       />,
     );
 
@@ -63,7 +63,7 @@ describe('TrackerCard', () => {
         variant="vertical"
         helperText="helper text"
         helperTextType="mild"
-        icon={ProductIcon.QuickStart}
+        icon="QuickStart"
       />,
     );
 
@@ -104,7 +104,7 @@ describe('TrackerCard', () => {
         variant="vertical"
         helperText="helper text"
         helperTextType="mild"
-        icon={ProductIcon.QuickStart}
+        icon="QuickStart"
       />,
     );
 
@@ -122,11 +122,7 @@ describe('TrackerCard', () => {
 
   test('empty labelValue prop and helper text results in no label-value containers and no helper text', () => {
     const { getByTestId } = render(
-      <TrackerCard
-        labelValues={[]}
-        variant="vertical"
-        icon={ProductIcon.QuickStart}
-      />,
+      <TrackerCard labelValues={[]} variant="vertical" icon="QuickStart" />,
     );
 
     const trackerCard = getByTestId('kda-tracker-card');
@@ -152,7 +148,7 @@ describe('TrackerCard', () => {
         variant="horizontal"
         helperText="helper text"
         helperTextType="mild"
-        icon={ProductIcon.QuickStart}
+        icon="QuickStart"
       />,
     );
 
@@ -180,7 +176,7 @@ describe('TrackerCard', () => {
           },
         ]}
         variant="horizontal"
-        icon={ProductIcon.QuickStart}
+        icon="QuickStart"
       />,
     );
 

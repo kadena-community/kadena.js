@@ -1,10 +1,11 @@
 import { AsideLink, AsideList } from './';
 
-import { ISubHeaderElement } from '@/types/Layout';
+import type { ISubHeaderElement } from '@/types/Layout';
 import { createSlug } from '@/utils';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { useRouter } from 'next/router';
-import React, { FC, MouseEvent } from 'react';
+import type { FC, MouseEvent } from 'react';
+import React from 'react';
 
 interface IProps {
   // eslint-disable-next-line @rushstack/no-new-null
@@ -23,14 +24,14 @@ export const ListItem: FC<IProps> = ({
   const router = useRouter();
 
   if (item.title === undefined || item.title === '') return null;
-  const slug = `#${createSlug(item.title, item.index, item.parentTitle)}`;
+  const slug = `#${createSlug(item.title)}`;
 
   const handleItemClick = (ev: MouseEvent<HTMLAnchorElement>): void => {
     ev.preventDefault();
 
     analyticsEvent(EVENT_NAMES['click:asidemenu_deeplink'], {
       label: item.title,
-      url: slug,
+      hash: slug,
     });
 
     scrollArea?.querySelector(slug)?.scrollIntoView({

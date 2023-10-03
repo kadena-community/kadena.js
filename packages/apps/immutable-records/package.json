@@ -1,15 +1,18 @@
 {
   "name": "@kadena/immutable-records",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
-    "build": "node build.mjs",
+    "build": "next build",
     "dev": "next dev",
-    "format": "npm run format:src && npm run format:md",
-    "format:ci": "prettier src --check",
+    "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier src --write",
-    "lint": "eslint package.json src --ext .ts,.tsx, --fix",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .ts,.tsx",
     "next_build": "next build",
     "start": "next start",
     "test": "echo 'boilerplate'"
@@ -17,6 +20,7 @@
   "dependencies": {
     "@kadena/react-ui": "workspace:*",
     "@vanilla-extract/css": "1.12.0",
+    "mini-css-extract-plugin": "2.7.6",
     "next": "13.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -24,17 +28,19 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/gtag.js": "~0.0.12",
-    "@types/heft-jest": "~1.0.3",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "@types/react-dom": "18.2.7",
-    "@vanilla-extract/next-plugin": "2.1.2",
+    "@vanilla-extract/jest-transform": "1.1.1",
+    "@vanilla-extract/next-plugin": "2.3.1",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
     "prettier": "~3.0.0",
-    "typescript": "5.1.6"
+    "prettier-plugin-packagejson": "^2.4.5",
+    "typescript": "5.2.2"
   }
 }

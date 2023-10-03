@@ -1,4 +1,4 @@
-import { IPactCommand } from '../IPactCommand';
+import type { IPactCommand } from '../IPactCommand';
 import { isExecCommand } from '../isExecCommand';
 
 describe('isExecCommand', () => {

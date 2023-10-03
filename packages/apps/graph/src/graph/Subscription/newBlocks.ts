@@ -1,9 +1,11 @@
 import { prismaClient } from '../../db/prismaClient';
 import { dotenv } from '../../utils/dotenv';
+import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
 import { builder } from '../builder';
 
-import { Block } from '@prisma/client';
-import _debug, { Debugger } from 'debug';
+import type { Block } from '@prisma/client';
+import type { Debugger } from 'debug';
+import _debug from 'debug';
 
 const log: Debugger = _debug('graph:Subscription:newBlocks');
 
@@ -69,11 +71,4 @@ async function getLastBlocks(
   log("found '%s' blocks", foundblocks.length);
 
   return foundblocks;
-}
-
-function nullishOrEmpty(value: unknown): boolean {
-  if (Array.isArray(value)) {
-    return value.length === 0;
-  }
-  return value === null || value === undefined;
 }

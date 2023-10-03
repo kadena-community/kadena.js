@@ -1,6 +1,7 @@
-import { StyledCode, StyledInlineCode } from './styles';
+import { code, codeLine, inlineCode } from './style.css';
 
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface IProp {
   children: ReactNode;
@@ -8,8 +9,22 @@ interface IProp {
 
 export const Code: FC<IProp> = ({ children, ...props }) => {
   if (typeof children === 'string') {
-    return <StyledInlineCode>{children}</StyledInlineCode>;
+    return <code className={inlineCode}>{children}</code>;
   }
 
-  return <StyledCode {...props}>{children}</StyledCode>;
+  return (
+    <code className={code} {...props}>
+      {React.Children.map(children, (child) => {
+        if (!React.isValidElement(child) || !child) {
+          return null;
+        }
+
+        return (
+          <span {...props} className={codeLine}>
+            <span>{child}</span>
+          </span>
+        );
+      })}
+    </code>
+  );
 };

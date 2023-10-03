@@ -1,1 +1,7 @@
+dist
+etc
+lib
 src/components/Input/InputGroup.mdx
+temp
+**/*.md
+tsdoc-metadata.json

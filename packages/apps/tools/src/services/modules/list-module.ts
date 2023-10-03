@@ -1,12 +1,9 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { createClient, Pact } from '@kadena/client';
 
-import {
-  getKadenaConstantByNetwork,
-  kadenaConstants,
-  Network,
-} from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
+import type { Network } from '@/constants/kadena';
+import { kadenaConstants } from '@/constants/kadena';
+import type { INetworkData } from '@/utils/network';
 import Debug from 'debug';
 
 const debug = Debug('kadena-transfer:services:list-module');
@@ -14,21 +11,29 @@ const debug = Debug('kadena-transfer:services:list-module');
 export interface IModulesResult {
   status?: string;
   data?: string[];
+  chainId: ChainwebChainId;
 }
 
 export const listModules = async (
   chainId: ChainwebChainId,
   network: Network,
+  networksData: INetworkData[],
   senderAccount: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
-): Promise<IModulesResult> => {
+): Promise<IModulesResult | null> => {
   debug(listModules.name);
-  const networkId = chainNetwork[network].network;
+
+  const networkDto = networksData.find((item) => item.networkId === network);
+
+  if (!networkDto) {
+    return null;
+  }
+
   const { local } = createClient(
-    getKadenaConstantByNetwork(network).apiHost({
-      networkId,
+    networkDto.apiHost({
+      networkId: networkDto.networkId,
       chainId,
     }),
   );
@@ -36,7 +41,7 @@ export const listModules = async (
   const transaction = Pact.builder
     .execution('(list-modules)')
     .setMeta({ gasLimit, gasPrice, ttl, senderAccount, chainId })
-    .setNetworkId(networkId)
+    .setNetworkId(networkDto.networkId)
     .createTransaction();
 
   const response = await local(transaction, {
@@ -49,5 +54,6 @@ export const listModules = async (
   return {
     status: result.status,
     data: 'data' in result ? (result.data as string[]) : [],
+    chainId,
   };
 };

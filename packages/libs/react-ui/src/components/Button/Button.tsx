@@ -1,19 +1,28 @@
+import type { colorVariants, typeVariants } from './Button.css';
 import {
+  activeClass,
+  alternativeVariant,
   buttonLoadingClass,
-  colorVariants,
+  compactVariant,
+  defaultVariant,
   iconLoadingClass,
 } from './Button.css';
-import { ButtonIcon } from './ButtonIcon';
 
 import { SystemIcon } from '@components/Icon';
-import cx from 'classnames';
-import React, { ButtonHTMLAttributes, FC } from 'react';
+import cn from 'classnames';
+import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import React from 'react';
 
 export interface IButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as' | 'disabled'> {
+  extends Omit<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    'as' | 'disabled' | 'className'
+  > {
+  active?: boolean;
   as?: 'button' | 'a';
-  variant?: keyof typeof colorVariants;
+  asChild?: boolean;
   children: React.ReactNode;
+  color?: keyof typeof colorVariants;
   disabled?: boolean;
   href?: string;
   icon?: keyof typeof SystemIcon;
@@ -24,21 +33,27 @@ export interface IButtonProps
     | React.FormEventHandler<HTMLButtonElement>;
   target?: '_blank' | '_self';
   title?: string;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: keyof typeof typeVariants;
 }
 
 export const Button: FC<IButtonProps> = ({
+  active = false,
   as = 'button',
+  asChild = false,
   children,
-  variant = 'primary',
+  color = 'primary',
   href,
   icon,
   iconAlign = 'right',
   loading,
-  onClick,
   target,
-  ...props
+  title = '',
+  type,
+  variant = 'default',
+  ...restProps
 }) => {
-  const ariaLabel = props['aria-label'] ?? props.title;
+  const ariaLabel = restProps['aria-label'] ?? title;
   const renderAsAnchor = as === 'a' && href !== undefined && href !== '';
 
   let Icon = icon && SystemIcon[icon];
@@ -46,25 +61,47 @@ export const Button: FC<IButtonProps> = ({
     Icon = SystemIcon.Loading;
   }
 
-  const buttonClassname = cx(colorVariants[variant], {
+  const buttonVariant = (): string => {
+    switch (variant) {
+      case 'compact':
+        return compactVariant[color];
+      case 'alternative':
+        return alternativeVariant[color];
+      default:
+        return defaultVariant[color];
+    }
+  };
+
+  const buttonClassname = cn(buttonVariant(), {
     [buttonLoadingClass]: loading,
+    [activeClass]: active,
   });
 
-  const iconClassname = cx({
+  const iconClassname = cn({
     [iconLoadingClass]: loading,
   });
 
-  const buttonChildren = (
+  const getContents = (linkContents: ReactNode): ReactNode => (
     <>
       {Icon && iconAlign === 'left' && (
-        <ButtonIcon icon={Icon} className={iconClassname} />
+        <Icon size="md" className={iconClassname} />
       )}
-      {children}
+      {linkContents}
       {Icon && iconAlign === 'right' && (
-        <ButtonIcon icon={Icon} className={iconClassname} />
+        <Icon size="md" className={iconClassname} />
       )}
     </>
   );
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ...restProps,
+      ...children.props,
+      ariaLabel,
+      children: getContents(children.props.children),
+      className: buttonClassname,
+    });
+  }
 
   if (renderAsAnchor) {
     return (
@@ -75,20 +112,20 @@ export const Button: FC<IButtonProps> = ({
         href={href}
         target={target}
       >
-        {buttonChildren}
+        {getContents(children)}
       </a>
     );
   }
 
   return (
     <button
-      {...props}
+      {...restProps}
       aria-label={ariaLabel}
       className={buttonClassname}
       data-testid="kda-button"
-      onClick={onClick}
+      type={type}
     >
-      {buttonChildren}
+      {getContents(children)}
     </button>
   );
 };

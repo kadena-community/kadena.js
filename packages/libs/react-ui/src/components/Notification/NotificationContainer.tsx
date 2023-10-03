@@ -1,21 +1,21 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
-  cardTitleClass,
+  cardColorVariants,
   closeButtonClass,
   colorVariants,
   containerClass,
-  containerClassRightPadded,
   contentClass,
+  descriptionClass,
   expandVariants,
-  iconContainerClass,
-  iconContainerExpandedClass,
 } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface INotificationProps {
-  icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
+  icon?: keyof typeof SystemIcon;
   title?: string;
   children?: React.ReactNode;
   expanded?: boolean;
@@ -29,39 +29,35 @@ export const NotificationContainer: FC<INotificationProps> = ({
   title,
   children,
   hasCloseButton = false,
-  color = 'primary',
+  color = 'info',
   expanded = false,
   onClose,
 }) => {
-  const Icon = icon || SystemIcon.HelpCircle;
+  const Icon = icon ? SystemIcon[icon] : SystemIcon.HelpCircle;
 
   const classList = classNames(
-    hasCloseButton ? containerClass : containerClassRightPadded,
-    colorVariants[color],
+    containerClass,
+    cardColorVariants[color],
     expandVariants[expanded ? 'true' : 'false'],
   );
 
   return (
     <div className={classList}>
-      <span className={iconContainerClass}>
-        <Icon size={'md'} />
-      </span>
+      <Icon size="md" />
 
-      <div>
-        <p className={contentClass}>
-          {title !== undefined && <h4 className={cardTitleClass}>{title}</h4>}
-          <p>{children}</p>
-        </p>
+      <div className={contentClass}>
+        {title && <h4>{title}</h4>}
+        <div className={descriptionClass}>{children}</div>
       </div>
 
       {hasCloseButton && (
-        <span
-          className={expanded ? iconContainerExpandedClass : iconContainerClass}
+        <button
+          className={closeButtonClass}
+          onClick={onClose}
+          aria-label="Close Notification"
         >
-          <button className={closeButtonClass} onClick={onClose}>
-            <SystemIcon.Close color={color} size={'md'} />
-          </button>
-        </span>
+          <SystemIcon.Close size="md" />
+        </button>
       )}
     </div>
   );

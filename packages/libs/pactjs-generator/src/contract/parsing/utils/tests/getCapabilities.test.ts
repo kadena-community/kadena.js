@@ -1,4 +1,4 @@
-import { IModule } from '../../pactParser';
+import type { IModule } from '../../pactParser';
 import { getCapabilities } from '../getCapabilities';
 
 describe('getCapabilities', () => {

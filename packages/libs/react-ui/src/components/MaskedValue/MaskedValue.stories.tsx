@@ -1,10 +1,19 @@
-import { IMaskedValueProps, MaskedValue } from './MaskedValue';
+import type { IMaskedValueProps } from './MaskedValue';
+import { MaskedValue } from './MaskedValue';
 
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<IMaskedValueProps> = {
   title: 'Components/MaskedValue',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'This component will visually render the set value with a mask. The mask will hide part of the value and show a number of asterisks in its stead. The number of unmasked characters can be set with the `startUnmaskedValues` and `endUnmaskedValues` props. The default visibility of the value can be set with the `defaultVisibility` prop.',
+      },
+    },
+  },
   argTypes: {
     title: {
       control: {

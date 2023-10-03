@@ -1,5 +1,5 @@
-import { IPactCommand } from '../../../interfaces/IPactCommand';
-import { addSignatures } from '../addSignature';
+import type { IPactCommand } from '../../../interfaces/IPactCommand';
+import { addSignatures } from '../addSignatures';
 
 describe('addSignature', () => {
   it('returns a new transaction object by adding the input signatures to the sigs array', () => {

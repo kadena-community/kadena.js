@@ -1,10 +1,10 @@
 import {
-  getClient,
+  createClient,
   isSignedTransaction,
   Pact,
   signWithChainweaver,
 } from '@kadena/client';
-import { IPactDecimal } from '@kadena/types';
+import type { IPactDecimal } from '@kadena/types';
 
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
@@ -23,20 +23,20 @@ const [sender, receiver, transferAmount] = process.argv.slice(2);
 /**
  * Create a new KDA account and transfer funds to it
  *
- * @param sender - Account sending coins
+ * @param senderAccount - Account sending coins
  * @param receiver - Account being created and receiving coins
  * @param amount - Amount of coins transferred to the new account
  * @return
  */
 async function transferCreate(
-  sender: string,
+  senderAccount: string,
   receiver: string,
   amount: number,
 ): Promise<void> {
   const senderPublicKey = accountKey(sender);
   const pactDecimal: IPactDecimal = { decimal: `${amount}` };
 
-  const { submit, pollStatus } = getClient(API_HOST);
+  const { submit, pollStatus } = createClient(API_HOST);
 
   const transaction = Pact.builder
     .execution(
@@ -51,11 +51,11 @@ async function transferCreate(
       keys: [accountKey(receiver)],
       pred: 'keys-all',
     })
-    .addSigner(senderPublicKey, (withCap: any) => [
+    .addSigner(senderPublicKey, (withCap) => [
       withCap('coin.TRANSFER', sender, receiver, pactDecimal),
       withCap('coin.GAS'),
     ])
-    .setMeta({ chainId: '1', sender: sender })
+    .setMeta({ chainId: '1', senderAccount })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 

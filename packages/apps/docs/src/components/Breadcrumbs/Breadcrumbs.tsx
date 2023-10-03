@@ -1,12 +1,9 @@
-import {
-  Box,
-  Breadcrumbs as StyledBreadcrumbs,
-  ProductIcon,
-} from '@kadena/react-ui';
+import { Box, Breadcrumbs as StyledBreadcrumbs } from '@kadena/react-ui';
 
-import { IMenuItem, ProductIconNames } from '@/types/Layout';
+import type { IMenuItem } from '@/types/Layout';
 import Link from 'next/link';
-import React, { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import React, { useMemo } from 'react';
 
 interface IProps {
   menuItems: IMenuItem[];
@@ -15,48 +12,53 @@ interface IProps {
 interface IBreadcrumbItem {
   root: string;
   title: string;
-  icon?: ProductIconNames;
 }
 
 export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
   const items = useMemo(() => {
     const tree: IBreadcrumbItem[] = [];
+    let lastItem: IMenuItem | undefined;
 
     const checkSubTree = (subTree: IMenuItem[]): void => {
-      const i = subTree.find((item) => item.isMenuOpen);
+      const item = subTree.find((i) => i.isMenuOpen);
 
-      if (!i) return;
+      if (!item) return;
+      lastItem = item;
+      const menuStr = item.children.length > 0 ? item.menu : item.label;
       tree.push({
-        root: i.root,
-        title: i.menu,
-        icon: i.icon,
+        root: item.root,
+        title: menuStr,
       });
 
-      return checkSubTree(i.children);
+      return checkSubTree(item.children);
     };
 
     checkSubTree(menuItems);
 
+    if (lastItem && lastItem.isIndex) {
+      tree.push({
+        root: lastItem.root,
+        title: lastItem.label,
+      });
+    }
+
     return tree;
   }, [menuItems]);
 
-  let Icon;
-  if (items[0]?.icon) {
-    Icon = ProductIcon[items[0]?.icon];
-  }
-
   return (
     <Box data-cy="breadcrumbs" marginTop="$10" marginBottom="$4">
-      <StyledBreadcrumbs.Root icon={Icon}>
-        {items.map((item, idx) => (
-          <StyledBreadcrumbs.Item key={item.root}>
-            {idx < items.length - 1 ? (
-              <Link href={item.root}>{item.title}</Link>
-            ) : (
-              item.title
-            )}
-          </StyledBreadcrumbs.Item>
-        ))}
+      <StyledBreadcrumbs.Root>
+        {items.map((item, idx) =>
+          idx < items.length - 1 ? (
+            <StyledBreadcrumbs.Item key={`${item.root}${idx}`} asChild>
+              <Link href={`${item.root}`}>{item.title}</Link>
+            </StyledBreadcrumbs.Item>
+          ) : (
+            <StyledBreadcrumbs.Item key={`${item.root}${idx}`}>
+              {item.title}
+            </StyledBreadcrumbs.Item>
+          ),
+        )}
       </StyledBreadcrumbs.Root>
     </Box>
   );

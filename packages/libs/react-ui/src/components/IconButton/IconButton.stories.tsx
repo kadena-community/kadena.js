@@ -1,27 +1,61 @@
-import { colorVariants } from './IconButton.css';
+import { colorVariants, typeVariants } from './IconButton.css';
 
 import { SystemIcon } from '@components/Icon';
-import { IconButton, IIconButtonProps } from '@components/IconButton';
+import type { IIconButtonProps } from '@components/IconButton';
+import { IconButton } from '@components/IconButton';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<
-  {
-    selectIcon: keyof typeof SystemIcon;
-  } & IIconButtonProps
-> = {
+const meta: Meta<IIconButtonProps> = {
   title: 'Components/IconButton',
+  component: IconButton,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Use this variation of the Button component if you require a button with only an icon.',
+      },
+    },
+  },
   argTypes: {
-    onClick: { action: 'clicked' },
-    selectIcon: {
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
+    onClick: {
+      action: 'clicked',
+      if: { arg: 'as', eq: 'button' },
+      table: {
+        disable: true,
+      },
+    },
+    icon: {
+      options: [
+        ...['-'],
+        ...Object.keys(SystemIcon),
+      ] as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
+      },
+      table: {
+        type: { summary: Object.keys(SystemIcon).join(' | ') },
       },
     },
     title: {
       control: {
         type: 'text',
+      },
+      description: 'aria label',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '' },
+      },
+    },
+    variant: {
+      options: Object.keys(typeVariants) as (keyof typeof typeVariants)[],
+      control: {
+        type: 'select',
+      },
+      description: 'button style variant',
+      table: {
+        type: { summary: Object.keys(typeVariants).join(' | ') },
+        defaultValue: { summary: 'compact' },
       },
     },
     color: {
@@ -29,34 +63,90 @@ const meta: Meta<
       control: {
         type: 'select',
       },
+      description: 'color variant',
+      table: {
+        type: { summary: Object.keys(colorVariants).join(' | ') },
+        defaultValue: { summary: 'primary' },
+      },
+    },
+    as: {
+      description: 'render as button or anchor',
+      options: ['button', 'a'] as IIconButtonProps['as'][],
+      control: {
+        type: 'radio',
+      },
+      table: {
+        type: { summary: 'button | a' },
+        defaultValue: { summary: 'button' },
+      },
+    },
+    type: {
+      description: 'type of button',
+      options: ['button', 'submit', 'reset'] as IIconButtonProps['type'][],
+      control: {
+        type: 'select',
+      },
+      table: {
+        type: { summary: 'button | submit | reset' },
+        defaultValue: { summary: 'button' },
+      },
+      if: { arg: 'as', eq: 'button' },
+    },
+    href: {
+      description: 'href is required when rendered as anchor',
+      control: {
+        type: 'text',
+      },
+      if: { arg: 'as', eq: 'a' },
+    },
+    target: {
+      description: 'only used when rendered as anchor',
+      options: ['_blank', '_self'] as IIconButtonProps['target'][],
+      control: {
+        type: 'radio',
+      },
+      if: { arg: 'as', eq: 'a' },
+    },
+    active: {
+      description: 'set to apply active visual state',
+      control: {
+        type: 'boolean',
+        defaultValue: { summary: false },
+      },
+    },
+    asChild: {
+      description:
+        'Allow users to pass on styles, icons, and additional props to the child component. For example when using next/link in Next.js.',
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    selectIcon: keyof typeof SystemIcon;
-  } & IIconButtonProps
->;
+type Story = StoryObj<IIconButtonProps>;
 
-/*
- *👇 Render functions are a framework specific feature to allow you control on how the component renders.
- * See https://storybook.js.org/docs/7.0/react/api/csf
- * to learn how to use render functions.
- */
-
-export const Primary: Story = {
+export const Dynamic: Story = {
   name: 'IconButton',
   args: {
-    selectIcon: 'Account',
+    active: false,
+    as: 'button',
+    color: 'primary',
+    icon: 'Account',
     title: 'test title',
-    color: 'default',
+    type: 'button',
+    variant: 'compact',
   },
-  render: ({ selectIcon, onClick, title, color }) => {
-    const Icon = SystemIcon[selectIcon];
+  render: ({ active, as, color, icon, onClick, title, type, variant }) => {
     return (
-      <IconButton title={title} onClick={onClick} icon={Icon} color={color} />
+      <IconButton
+        active={active}
+        as={as}
+        color={color}
+        icon={icon}
+        onClick={onClick}
+        title={title}
+        type={type}
+        variant={variant}
+      />
     );
   },
 };

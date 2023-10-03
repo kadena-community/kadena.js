@@ -1,11 +1,11 @@
 import { linkButtonClass, trClass } from './Table.css';
 import { Td } from './Td';
 import { Th } from './Th';
-import { CompoundType } from './types';
+import type { CompoundType } from './types';
 
-import { SystemIcon } from '@components/Icon';
 import { IconButton } from '@components/IconButton';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface ITrProps {
   children?: CompoundType<typeof Td> | CompoundType<typeof Th>;
@@ -28,12 +28,7 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick }) => {
 
       {url !== undefined ? (
         <td className={linkButtonClass}>
-          <IconButton
-            as="a"
-            href={url}
-            title={url}
-            icon={SystemIcon.TrailingIcon}
-          />
+          <IconButton as="a" href={url} title={url} icon="TrailingIcon" />
         </td>
       ) : onClick !== undefined ? (
         <td className={linkButtonClass}>
@@ -41,7 +36,7 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick }) => {
             as="button"
             title=""
             onClick={onClick}
-            icon={SystemIcon.TrailingIcon}
+            icon="TrailingIcon"
           />
         </td>
       ) : (

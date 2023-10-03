@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/eslint-config",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Kadena monorepo eslint-config",
   "license": "MIT",
   "files": [
@@ -9,32 +9,32 @@
   ],
   "scripts": {
     "build": "",
-    "format": "npm run format:src",
-    "format:ci": "prettier mixins profile --check",
-    "format:src": "prettier mixins profile --write",
-    "lint": "eslint ./mixins ./profile --ext .js,.ts --fix",
+    "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:src": "eslint ./mixins ./profile --ext .js,.ts",
     "test": ""
   },
   "dependencies": {
     "@kadena-dev/eslint-plugin": "workspace:*",
-    "@next/eslint-plugin-next": "^12.0.8",
     "@rushstack/eslint-config": "~3.3.0",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
-    "eslint-config-prettier": "~8.8.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-import": "~2.27.5",
     "eslint-plugin-jsx-a11y": "~6.7.1",
-    "eslint-plugin-prettier": "5.0.0",
     "eslint-plugin-react": "~7.31.11",
     "eslint-plugin-simple-import-sort": "~7.0.0",
     "prettier": "~3.0.0",
     "prettier-eslint": "~12.0.0",
-    "eslint-plugin-json-files": "~3.0.0"
+    "prettier-plugin-packagejson": "^2.4.5"
   },
   "devDependencies": {
-    "typescript": "5.1.6"
+    "@kadena-dev/heft-rig": "workspace:*",
+    "typescript": "5.2.2"
   }
 }

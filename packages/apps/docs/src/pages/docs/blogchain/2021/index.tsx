@@ -1,35 +1,62 @@
-import { Heading, Stack } from '@kadena/react-ui';
-
+import { BlogListWrapper } from '@/components/BlogList';
+import {
+  articleClass,
+  contentClass,
+  contentClassVariants,
+  TitleHeader,
+} from '@/components/Layout/components';
+import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
+import type { IMenuData, IPageProps } from '@/types/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { GetStaticProps } from 'next';
-import React, { FC } from 'react';
+import { getData } from '@/utils/staticGeneration/getData.mjs';
+import classNames from 'classnames';
+import type { GetStaticProps } from 'next';
+import type { FC } from 'react';
+import React from 'react';
 
-const Home: FC = () => {
+interface IProps extends IPageProps {
+  posts: IMenuData[];
+}
+
+const Home: FC<IProps> = ({ frontmatter, posts }) => {
   return (
-    <Stack direction="column" spacing="$2xl">
-      <div>
-        <Heading as="h2">BlogChain 2021</Heading>
+    <>
+      <TitleHeader
+        title={frontmatter.title}
+        subTitle={frontmatter.description}
+      />
+      <div
+        className={classNames(contentClass, contentClassVariants.home)}
+        id="maincontent"
+      >
+        <article className={articleClass}>
+          <BlogListWrapper year={frontmatter.label} initPosts={posts} />
+        </article>
       </div>
-    </Stack>
+    </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  const posts = getInitBlogPosts(getData() as IMenuData[], 0, 10, {
+    year: '2021',
+  });
+
   return {
     props: {
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      posts,
       frontmatter: {
         title: 'BlogChain 2021',
         menu: '2021',
         subTitle: '2021',
         label: '2021',
-        order: 4,
+        order: 3,
         description: 'articles..articles...articles 2021',
-        layout: 'landing',
-        icon: 'BlogChain',
+        layout: 'home',
       },
     },
   };

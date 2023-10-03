@@ -1,6 +1,6 @@
 {
   "name": "@kadena/cookbook",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "private": true,
   "description": "Demonstrates common use cases for @kadena/client and @kadena/pact-cli for smart contracts",
   "keywords": [],
@@ -9,12 +9,15 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "build:local": "npm run pactjs:coin && heft build --clean",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier config src --check",
+    "build:local": "pnpm run pactjs:coin && tsc && api-extractor run --verbose",
+    "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
-    "format:src": "prettier config src --write",
-    "lint": "eslint package.json src --ext .js,.ts,.json --fix",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .js,.ts,.json",
     "pactjs:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact",
     "test": ""
   },
@@ -26,15 +29,16 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
-    "@types/heft-jest": "~1.0.3",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
-    "ts-node": "~10.8.2"
+    "prettier-plugin-packagejson": "^2.4.5",
+    "ts-node": "~10.8.2",
+    "typescript": "5.2.2"
   }
 }

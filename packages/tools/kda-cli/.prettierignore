@@ -1,1 +1,7 @@
 .kda-history.json
+dist
+etc
+lib
+temp
+**/*.md
+tsdoc-metadata.json

@@ -1,9 +1,9 @@
-import { headerClass, infoClass } from './InputHeader.css';
+import { headerClass, infoClass, tagClass } from './InputHeader.css';
 
 import { SystemIcon } from '@components/Icon';
-import { Tag } from '@components/Tag';
 import { Label } from '@components/Typography/Label/Label';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IInputHeaderProps {
   label: string;
@@ -21,7 +21,7 @@ export const InputHeader: FC<IInputHeaderProps> = ({
   return (
     <div className={headerClass}>
       {Boolean(label) && <Label htmlFor={htmlFor}>{label}</Label>}
-      {Boolean(tag) && <Tag>{tag}</Tag>}
+      {Boolean(tag) && <span className={tagClass}>{tag}</span>}
       {Boolean(info) && (
         <span className={infoClass}>
           {info}

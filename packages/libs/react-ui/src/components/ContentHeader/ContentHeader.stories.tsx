@@ -1,4 +1,5 @@
-import { ContentHeader, IContentHeaderProps } from '@components/ContentHeader';
+import type { IContentHeaderProps } from '@components/ContentHeader';
+import { ContentHeader } from '@components/ContentHeader';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -8,9 +9,9 @@ const meta: Meta<
     selectIcon: keyof typeof SystemIcon;
   } & IContentHeaderProps
 > = {
-  title: 'Components/ContentHeader',
+  title: 'Content/ContentHeader',
   argTypes: {
-    selectIcon: {
+    icon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
@@ -45,15 +46,14 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'ContentHeader',
   args: {
-    selectIcon: 'Account',
+    icon: 'Account',
     heading: 'Incoming Transactions',
     description:
       'This table is listing all the incoming transaction sorted by date descending descriptive text.',
   },
-  render: ({ selectIcon, heading, description }) => {
-    const Icon = SystemIcon[selectIcon];
+  render: ({ icon, heading, description }) => {
     return (
-      <ContentHeader heading={heading} icon={Icon} description={description} />
+      <ContentHeader heading={heading} icon={icon} description={description} />
     );
   },
 };

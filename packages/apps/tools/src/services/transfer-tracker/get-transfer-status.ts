@@ -1,13 +1,15 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { ICommand, Pact } from '@kadena/client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ICommand } from '@kadena/client';
+import { Pact } from '@kadena/client';
 
 import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-data';
 
 import client from '@/constants/client';
-import { Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
+import type { INetworkData } from '@/utils/network';
 import Debug from 'debug';
-import { Translate } from 'next-translate';
+import type { Translate } from 'next-translate';
 
 export enum StatusId {
   Error = 'error',
@@ -35,6 +37,7 @@ export async function getTransferStatus({
   network,
   t,
   options,
+  networksData,
 }: {
   requestKey: string;
   network: Network;
@@ -42,6 +45,7 @@ export async function getTransferStatus({
   options?: {
     onPoll?: (status: IStatusData) => void;
   };
+  networksData: INetworkData[];
 }): Promise<void> {
   debug(getTransferStatus.name);
   const { onPoll = () => {} } = { ...options };
@@ -51,6 +55,7 @@ export async function getTransferStatus({
       requestKey,
       network,
       t,
+      networksData,
     });
 
     // If not found or error
@@ -214,7 +219,7 @@ export async function getXChainTransferInfo({
       return {
         id: StatusId.Pending,
         status: t('Pending'),
-        description: t('Transfer pending - waiting for continuation command'),
+        description: t('Transfer pending - waiting for continuation'),
         senderAccount: senderAccount,
         receiverChain: receiverChain,
       };

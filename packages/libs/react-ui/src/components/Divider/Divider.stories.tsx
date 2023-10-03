@@ -6,6 +6,14 @@ import React from 'react';
 
 const meta: Meta = {
   title: 'Layout/Divider',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Component which helps to separate one logical group of element from others.',
+      },
+    },
+  },
   component: Divider,
 };
 

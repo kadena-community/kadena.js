@@ -1,12 +1,12 @@
-import { ICommandResult } from '@kadena/chainweb-node-client';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
+import type { IContinuationPayloadObject } from '@kadena/client';
 import {
-  IContinuationPayloadObject,
   isSignedTransaction,
   Pact,
   readKeyset,
   signWithChainweaver,
 } from '@kadena/client';
-import { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { listen, pollCreateSpv, pollStatus, submit } from './util/client';
 import { inspect } from './util/fp-helpers';
@@ -93,7 +93,6 @@ async function doCrossChainTransfer(
   to: IAccount,
   amount: string,
 ): Promise<Record<string, ICommandResult>> {
-  const state = {};
   return (
     Promise.resolve(startInTheFirstChain(from, to, amount))
       .then((command) => signWithChainweaver(command))

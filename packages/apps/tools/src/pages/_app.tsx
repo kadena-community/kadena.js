@@ -6,31 +6,37 @@ import { darkThemeClass } from '@kadena/react-ui/theme';
 import { Layout } from '@/components/Common';
 import { AppContextProvider, LayoutContextProvider } from '@/context';
 import { WalletConnectClientContextProvider } from '@/context/connect-wallet-context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
+
+const queryClient = new QueryClient();
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => (
-  <ThemeProvider
-    attribute="class"
-    value={{
-      light: 'light',
-      dark: darkThemeClass,
-    }}
-  >
-    <WalletConnectClientContextProvider>
-      <AppContextProvider>
-        <LayoutContextProvider>
-          <ModalProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ModalProvider>
-        </LayoutContextProvider>
-      </AppContextProvider>
-    </WalletConnectClientContextProvider>
-  </ThemeProvider>
+  <QueryClientProvider client={queryClient}>
+    <ThemeProvider
+      attribute="class"
+      value={{
+        light: 'light',
+        dark: darkThemeClass,
+      }}
+    >
+      <WalletConnectClientContextProvider>
+        <AppContextProvider>
+          <LayoutContextProvider>
+            <ModalProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </ModalProvider>
+          </LayoutContextProvider>
+        </AppContextProvider>
+      </WalletConnectClientContextProvider>
+    </ThemeProvider>
+  </QueryClientProvider>
 );
 
 export default App;

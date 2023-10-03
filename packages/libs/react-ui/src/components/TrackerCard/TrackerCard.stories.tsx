@@ -1,54 +1,60 @@
 import { ProductIcon } from '../Icon';
 
-import { ILabelValue, ITrackerCardProps, TrackerCard } from './TrackerCard';
+import type { ILabelValue, ITrackerCardProps } from './TrackerCard';
+import { TrackerCard } from './TrackerCard';
 import { layoutVariant } from './TrackerCard.css';
 
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<{ selectIcon: keyof typeof ProductIcon } & ITrackerCardProps> =
-  {
-    title: 'Components/TrackerCard',
-    argTypes: {
-      variant: {
-        options: Object.keys(layoutVariant) as (keyof typeof layoutVariant)[],
-        control: {
-          type: 'select',
-        },
-      },
-      labelValues: {
-        control: {
-          type: 'object',
-        },
-      },
-      helperText: {
-        control: {
-          type: 'text',
-        },
-      },
-      helperTextType: {
-        control: {
-          type: 'select',
-        },
-        options: ['mild', 'severe'],
-      },
-      selectIcon: {
-        options: [
-          undefined,
-          ...(Object.keys(ProductIcon) as (keyof typeof ProductIcon)[]),
-        ],
-        control: {
-          type: 'select',
-        },
+const meta: Meta<{ icon: keyof typeof ProductIcon } & ITrackerCardProps> = {
+  title: 'Content/TrackerCard',
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The TrackerCard component renders a card with a title, label values, and an optional icon. The layout of the card can be set to either horizonal or vertical with the `variant` prop.',
       },
     },
-  };
+  },
+  argTypes: {
+    variant: {
+      options: Object.keys(layoutVariant) as (keyof typeof layoutVariant)[],
+      control: {
+        type: 'select',
+      },
+    },
+    labelValues: {
+      control: {
+        type: 'object',
+      },
+    },
+    helperText: {
+      control: {
+        type: 'text',
+      },
+    },
+    helperTextType: {
+      control: {
+        type: 'select',
+      },
+      options: ['mild', 'severe'],
+    },
+    icon: {
+      options: [
+        undefined,
+        ...(Object.keys(ProductIcon) as (keyof typeof ProductIcon)[]),
+      ],
+      control: {
+        type: 'select',
+      },
+    },
+  },
+};
 
 export default meta;
 
-type Story = StoryObj<
-  { selectIcon: keyof typeof ProductIcon } & ITrackerCardProps
->;
+type Story = StoryObj<{ icon: keyof typeof ProductIcon } & ITrackerCardProps>;
 
 const labelValues: ILabelValue[] = [
   {
@@ -72,17 +78,10 @@ export const Primary: Story = {
     labelValues: labelValues,
     helperText: 'This is a helper text',
     helperTextType: 'mild',
-    selectIcon: 'QuickStart',
+    icon: 'QuickStart',
     variant: 'vertical',
   },
-  render: ({
-    labelValues,
-    helperText,
-    helperTextType,
-    selectIcon,
-    variant,
-  }) => {
-    const icon = ProductIcon[selectIcon];
+  render: ({ labelValues, helperText, helperTextType, icon, variant }) => {
     return (
       <TrackerCard
         variant={variant}

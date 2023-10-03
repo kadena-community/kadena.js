@@ -1,19 +1,21 @@
 import { containerClass, iconContainer, navClass } from './Breadcrumbs.css';
-import { IBreadcrumbItemProps } from './BreadcrumbsItem';
+import type { IBreadcrumbItemProps } from './BreadcrumbsItem';
 
 import { ProductIcon } from '@components/Icon';
-import React, { FC, FunctionComponentElement } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 export interface IBreadcrumbsProps {
   children?: FunctionComponentElement<IBreadcrumbItemProps>[];
-  icon?: (typeof ProductIcon)[keyof typeof ProductIcon];
+  icon?: keyof typeof ProductIcon;
 }
 
 export const BreadcrumbsContainer: FC<IBreadcrumbsProps> = ({
   children,
   icon,
 }) => {
-  const Icon = icon;
+  const Icon = icon && ProductIcon[icon];
+
   return (
     <nav className={navClass} data-testid="kda-breadcrumbs">
       {Icon && (

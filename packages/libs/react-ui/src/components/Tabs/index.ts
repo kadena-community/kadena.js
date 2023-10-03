@@ -5,7 +5,7 @@ import { TabContent } from './TabContent';
 import type { ITabsContainerProps } from './TabsContainer';
 import { TabsContainer } from './TabsContainer';
 
-import { FC } from 'react';
+import type { FC } from 'react';
 
 interface ITabs {
   Root: FC<ITabsContainerProps>;

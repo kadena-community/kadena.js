@@ -1,15 +1,9 @@
-import {
-  Button,
-  Heading,
-  Notification,
-  Stack,
-  SystemIcon,
-  TextField,
-} from '@kadena/react-ui';
+import { Button, Heading, Input, Notification, Stack } from '@kadena/react-ui';
 
 import { useSubscribe } from './useSubscribe';
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 /**
  * @TODO: when the loading state story is implemented in the UI lib,
@@ -17,32 +11,39 @@ import React, { FC } from 'react';
  *
  */
 export const Subscribe: FC = () => {
-  const { handleFormState, handleSubscribe, message, canSubmit, hasSuccess } =
-    useSubscribe();
+  const {
+    handleFormState,
+    handleSubscribe,
+    message,
+    canSubmit,
+    hasSuccess,
+    isLoading,
+  } = useSubscribe();
 
   return (
     <section data-cy="subscribe">
-      <Stack direction="column" spacing="$sm">
+      <Stack direction="column" gap="$sm">
         <Heading as="h6">Receive important developer updates</Heading>
 
         {!hasSuccess ? (
           <>
             <form>
-              <Stack spacing="$sm">
-                <TextField
-                  inputProps={{
-                    id: 'email',
-                    type: 'email',
-                    placeholder: 'Email address',
-                    onChange: handleFormState,
-                    'aria-label': 'Fill in email address',
-                    leftIcon: SystemIcon.At,
-                  }}
+              <Stack gap="$sm">
+                <Input
+                  id="email"
+                  leftIcon="At"
+                  onChange={handleFormState}
+                  placeholder="Email address"
+                  outlined
+                  type="email"
+                  aria-label="Fill in email address"
                 />
+
                 <Button
                   disabled={!canSubmit}
                   onClick={handleSubscribe}
                   title="Subscribe"
+                  loading={isLoading}
                 >
                   Subscribe
                 </Button>

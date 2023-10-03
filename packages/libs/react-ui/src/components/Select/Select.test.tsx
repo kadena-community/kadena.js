@@ -1,14 +1,18 @@
 import { Select } from '@components/Select';
-import { Option } from '@components/Select/Option';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 
 describe('Select', () => {
   it('renders without errors', () => {
     const { getByTestId } = render(
-      <Select value="1" onChange={() => {}} ariaLabel="select">
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
+      <Select
+        id="select-without-errors"
+        value="1"
+        onChange={() => {}}
+        ariaLabel="select"
+      >
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
       </Select>,
     );
 
@@ -18,9 +22,14 @@ describe('Select', () => {
 
   it('renders the provided children options', () => {
     const { getByTestId } = render(
-      <Select value="1" onChange={() => {}} ariaLabel="select">
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
+      <Select
+        id="renders-child-options"
+        value="1"
+        onChange={() => {}}
+        ariaLabel="select"
+      >
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
       </Select>,
     );
 
@@ -37,9 +46,14 @@ describe('Select', () => {
   it('invokes the onChange event handler when an option is selected', () => {
     const handleChange = jest.fn();
     const { getByTestId } = render(
-      <Select value="1" onChange={handleChange} ariaLabel="select">
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
+      <Select
+        id="on-change-select"
+        value="1"
+        onChange={handleChange}
+        ariaLabel="select"
+      >
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
       </Select>,
     );
 
@@ -54,9 +68,15 @@ describe('Select', () => {
 
   it('disables the select element when disabled prop is true', () => {
     const { getByTestId } = render(
-      <Select value="1" onChange={() => {}} disabled ariaLabel="select">
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
+      <Select
+        id="disabled-select"
+        value="1"
+        onChange={() => {}}
+        disabled
+        ariaLabel="select"
+      >
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
       </Select>,
     );
 
@@ -66,24 +86,5 @@ describe('Select', () => {
     ) as HTMLSelectElement;
 
     expect(selectElement.disabled).toBe(true);
-  });
-
-  it('renders an icon when the "icon" prop is provided', () => {
-    const IconMock = jest.fn(() => <span className="icon">User</span>);
-    const { getByTestId, getByText } = render(
-      <Select value="1" onChange={() => {}} icon={IconMock} ariaLabel="select">
-        <Option value="1">Option 1</Option>
-        <Option value="2">Option 2</Option>
-      </Select>,
-    );
-
-    const selectContainer = getByTestId('kda-select');
-    const selectElement = selectContainer.querySelector('select');
-    const iconElement = selectContainer.querySelector('.icon');
-
-    expect(selectElement).toBeInTheDocument();
-    expect(iconElement).toBeInTheDocument();
-    expect(IconMock).toHaveBeenCalledTimes(1);
-    expect(getByText('User')).toBeInTheDocument();
   });
 });

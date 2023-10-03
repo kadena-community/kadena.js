@@ -1,5 +1,8 @@
-import { Sprinkles, sprinkles } from '@theme/sprinkles.css';
-import React, { createElement, ElementType } from 'react';
+import type { Sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
+import type React from 'react';
+import type { ElementType } from 'react';
+import { createElement } from 'react';
 
 export interface IStackProps
   extends Pick<
@@ -24,13 +27,13 @@ export interface IStackProps
   > {
   direction?: Sprinkles['flexDirection'];
   wrap?: Sprinkles['flexWrap'];
-  spacing?: Sprinkles['gap'];
-  component?: ElementType;
+  gap?: Sprinkles['gap'];
+  as?: ElementType;
   children?: React.ReactNode;
 }
 
 export const Stack = ({
-  component = 'div',
+  as = 'div',
   margin = undefined,
   marginX = undefined,
   marginY = undefined,
@@ -38,7 +41,7 @@ export const Stack = ({
   marginBottom = undefined,
   marginLeft = undefined,
   marginRight = undefined,
-  spacing = undefined,
+  gap = undefined,
   justifyContent = undefined,
   alignItems = undefined,
   wrap = undefined,
@@ -54,7 +57,7 @@ export const Stack = ({
   children,
 }: IStackProps): React.ReactElement => {
   return createElement(
-    component,
+    as,
     {
       className: sprinkles({
         display: 'flex',
@@ -65,7 +68,7 @@ export const Stack = ({
         marginBottom,
         marginLeft,
         marginRight,
-        gap: spacing,
+        gap,
         justifyContent,
         alignItems,
         flexWrap: wrap,

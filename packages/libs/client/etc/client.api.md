@@ -5,24 +5,39 @@
 ```ts
 
 import { ChainId } from '@kadena/types';
-import Client from '@walletconnect/sign-client';
+import type Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { IExecPayload } from '@kadena/types';
-import { ILocalCommandResult } from '@kadena/chainweb-node-client';
-import { ILocalOptions } from '@kadena/chainweb-node-client';
+import type { IExecPayload } from '@kadena/types';
+import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
+import type { ILocalOptions } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { IPreflightResult } from '@kadena/chainweb-node-client';
 import { IUnsignedCommand } from '@kadena/types';
-import { LocalRequestBody } from '@kadena/chainweb-node-client';
-import { LocalResponse } from '@kadena/chainweb-node-client';
-import { SessionTypes } from '@walletconnect/types';
+import type { LocalRequestBody } from '@kadena/chainweb-node-client';
+import type { LocalResponse } from '@kadena/chainweb-node-client';
+import type { SessionTypes } from '@walletconnect/types';
+
+// @public
+export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {
+    sig: string;
+    pubKey?: string;
+}[]) => IUnsignedCommand | ICommand;
 
 export { ChainId }
 
 // @public
 export const createClient: ICreateClient;
+
+// @public
+export function createEckoWalletQuicksign(): IEckoSignFunction;
+
+// @public
+export function createEckoWalletSign(): IEckoSignSingleFunction;
+
+// @public
+export const createSignWithKeypair: ICreateSignWithKeypair;
 
 // @public
 export const createTransaction: (pactCommand: Partial<IPactCommand>) => IUnsignedCommand;
@@ -87,6 +102,16 @@ export { ICommand }
 export { ICommandResult }
 
 // @public
+export interface ICommonEckoFunctions {
+    // (undocumented)
+    connect: (networkId: string) => Promise<boolean>;
+    // (undocumented)
+    isConnected: (networkId: string) => Promise<boolean>;
+    // (undocumented)
+    isInstalled: () => boolean;
+}
+
+// @public
 export interface IContinuationPayloadObject {
     // (undocumented)
     cont: {
@@ -108,12 +133,36 @@ export interface ICreateClient {
 }
 
 // @public
+export interface ICreateSignWithKeypair {
+    // (undocumented)
+    (key: IKeypair): ISignFunction;
+    // (undocumented)
+    (keys: IKeypair[]): ISignFunction;
+}
+
+// @public
+export interface IEckoSignFunction extends ISignFunction, ICommonEckoFunctions {
+}
+
+// @public
+export interface IEckoSignSingleFunction extends ISingleSignFunction, ICommonEckoFunctions {
+}
+
+// @public
 export interface IExecutionPayloadObject {
     // (undocumented)
     exec: {
         code?: string;
         data?: Record<string, unknown>;
     };
+}
+
+// @public
+export interface IKeypair {
+    // (undocumented)
+    publicKey: string;
+    // (undocumented)
+    secretKey: string;
 }
 
 // @public (undocumented)
@@ -317,10 +366,24 @@ export interface IUnsignedQuicksignTransaction {
 }
 
 // @public
-export const literal: <T extends string | Record<string, unknown>>(value: T) => () => T;
+export class Literal {
+    constructor(value: string);
+    // (undocumented)
+    getValue(): string;
+    // (undocumented)
+    toJSON(): string;
+    // (undocumented)
+    toString(): string;
+}
+
+// @public
+export const literal: (value: string) => Literal;
 
 // @public
 export const Pact: IPact;
+
+// @public
+export type PactReference = Literal | (() => string);
 
 // @public
 export const readKeyset: (key: string) => () => string;
@@ -330,6 +393,11 @@ export const signWithChainweaver: ISignFunction;
 
 // @public
 export type TWalletConnectChainId = `kadena:${IPactCommand['networkId']}`;
+
+// Warning: (ae-internal-missing-underscore) The name "unpackLiterals" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function unpackLiterals(value: string): string;
 
 // Warning: (ae-forgotten-export) The symbol "ExtractCapabilityType" needs to be exported by the entry point index.d.ts
 //

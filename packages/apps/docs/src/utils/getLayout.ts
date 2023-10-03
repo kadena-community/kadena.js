@@ -1,17 +1,19 @@
 import * as Layouts from '@/components/Layout';
-import { IPageProps } from '@/types/Layout';
-import { FC } from 'react';
+import type { IBasePageProps, IPageProps } from '@/types/Layout';
+import type { FC } from 'react';
 
-export const getLayout = (layout: string): FC<IPageProps> => {
+type IProps = IBasePageProps | IPageProps;
+
+export const getLayout = (layout: string): FC<IProps> => {
   switch (layout.toLowerCase()) {
     case 'full':
-      return Layouts.Full;
+      return Layouts.Full as unknown as FC<IProps>;
     case 'blog':
-      return Layouts.Blog;
+      return Layouts.Blog as unknown as FC<IProps>;
     case 'home':
-      return Layouts.Home;
+      return Layouts.Home as unknown as FC<IProps>;
     case 'redocly':
-      return Layouts.Redocly;
+      return Layouts.Redocly as unknown as FC<IProps>;
     default:
       return Layouts.Landing;
   }

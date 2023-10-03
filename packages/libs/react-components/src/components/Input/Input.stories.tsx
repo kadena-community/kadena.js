@@ -1,5 +1,6 @@
 import { SystemIcons } from './../../';
-import { IInputProps, Input } from '.';
+import type { IInputProps } from '.';
+import { Input } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';

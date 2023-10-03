@@ -1,67 +1,65 @@
 import {
+  chevronIconClass,
   containerClass,
   containerClassDisabled,
   iconClass,
   selectClass,
-  selectContainerClass,
 } from './Select.css';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC, forwardRef } from 'react';
+import type { FC } from 'react';
+import React, { forwardRef } from 'react';
 
 export interface ISelectProps
   extends Omit<
     React.HTMLAttributes<HTMLSelectElement>,
-    'aria-label' | 'as' | 'className'
+    'aria-label' | 'as' | 'className' | 'children' | 'id'
   > {
-  children: React.ReactNode;
-  icon?: (typeof SystemIcon)[keyof typeof SystemIcon];
-  disabled?: boolean;
-  value: string[] | string | number;
-  onChange: React.ChangeEventHandler<HTMLSelectElement>;
-  ref?: React.ForwardedRef<HTMLSelectElement>;
   ariaLabel: string;
+  children: React.ReactNode;
+  disabled?: boolean;
+  icon?: keyof typeof SystemIcon;
+  ref?: React.ForwardedRef<HTMLSelectElement>;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  id: string;
+  value?: string;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
   HTMLSelectElement,
   ISelectProps
 >(function Select(
-  {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    icon: Icon,
-    disabled = false,
-    children,
-    ariaLabel,
-    ...rest
-  },
+  { ariaLabel, children, disabled = false, icon, ...rest },
   ref,
 ) {
+  const Icon = icon && SystemIcon[icon];
+  const ChevronDown = SystemIcon.ChevronDown;
+
   return (
     <div
-      className={classNames(
-        containerClass,
-        disabled ? containerClassDisabled : '',
-      )}
+      className={classNames(containerClass, {
+        [containerClassDisabled]: disabled,
+      })}
       data-testid="kda-select"
     >
-      <div className={selectContainerClass}>
-        {Icon && (
-          <span className={iconClass}>
-            <Icon size="md" />
-          </span>
-        )}
-        <select
-          aria-label={ariaLabel}
-          ref={ref}
-          className={selectClass}
-          disabled={Boolean(disabled)}
-          {...rest}
-        >
-          {children}
-        </select>
-      </div>
+      {Icon && (
+        <span className={iconClass}>
+          <Icon size="md" />
+        </span>
+      )}
+      <select
+        aria-label={ariaLabel}
+        className={selectClass}
+        disabled={disabled}
+        ref={ref}
+        {...rest}
+      >
+        {children}
+      </select>
+      <span className={chevronIconClass}>
+        <ChevronDown size="md" />
+      </span>
     </div>
   );
 });

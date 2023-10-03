@@ -1,25 +1,20 @@
-import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
 const browseSectionWrapper = style([
   sprinkles({
-    gap: '$4',
-    paddingY: 0,
-    paddingX: '$4',
+    marginBottom: '$6',
   }),
   {
-    flexBasis: '48%',
+    flexBasis: '50%',
+    rowGap: vars.sizes.$4,
     '@media': {
       [breakpoints.md]: {
-        flexBasis: '30%',
+        flexBasis: '33%',
       },
     },
   },
 ]);
-
-export const fullWidth = style({
-  width: '100%',
-});
 
 export { browseSectionWrapper };

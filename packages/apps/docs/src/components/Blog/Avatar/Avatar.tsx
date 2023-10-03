@@ -1,14 +1,34 @@
-import { avatar } from './styles.css';
+import { avatarClass, avatarSizeVariant } from './styles.css';
 
 import { getInitials } from '@/utils';
-import React, { FC } from 'react';
+import classNames from 'classnames';
+import Image from 'next/image';
+import type { FC } from 'react';
+import React from 'react';
 
 interface IProps {
   name?: string;
+  avatar?: string;
+  size?: 'default' | 'large';
 }
 
-export const Avatar: FC<IProps> = ({ name }) => {
-  if (!name) return null;
+export const Avatar: FC<IProps> = ({ name, avatar, size = 'default' }) => {
+  if (avatar) {
+    const avatarSize = size === 'large' ? 60 : 40;
 
-  return <div className={avatar}>{getInitials(name)}</div>;
+    return (
+      <Image
+        className={classNames(avatarClass, avatarSizeVariant[size])}
+        src={avatar}
+        width={avatarSize}
+        height={avatarSize}
+        alt={`avatar: ${name}`}
+      />
+    );
+  }
+  if (name) {
+    return <div className={avatarClass}>{getInitials(name)}</div>;
+  }
+
+  return null;
 };

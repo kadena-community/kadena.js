@@ -1,67 +1,61 @@
+'use client';
+
 import {
-  accordionContentWrapperClass,
-  accordionSectionClass,
-  accordionTitleClass,
-  accordionTitleVariants,
-  toggleButtonClass,
+  accordionButtonClass,
+  accordionContentClass,
+  accordionSectionWrapperClass,
+  accordionToggleIconClass,
 } from './Accordion.css';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
-import React, { FC, useEffect, useRef } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IAccordionSectionProps {
-  title: React.ReactNode;
-  children: React.ReactNode;
-  isOpen: boolean;
-  onToggle: () => void;
-  onOpen?: () => void;
+  children?: React.ReactNode;
+  index?: number;
+  isOpen?: boolean;
+  onClick?: () => void;
   onClose?: () => void;
+  onOpen?: () => void;
+  title: string;
 }
 
 export const AccordionSection: FC<IAccordionSectionProps> = ({
-  isOpen = false,
-  title,
   children,
-  onToggle,
-  onOpen,
+  isOpen,
+  onClick,
   onClose,
+  onOpen,
+  title,
 }) => {
-  const didMountRef = useRef(false);
-
-  useEffect(() => {
-    if (!didMountRef.current) {
-      didMountRef.current = true;
-      return;
+  const handleClick = (): void => {
+    if (isOpen) {
+      onClose?.();
+    } else {
+      onOpen?.();
     }
-
-    if (isOpen) onOpen?.();
-    else onClose?.();
-  }, [isOpen]);
-
+    onClick?.();
+  };
   return (
-    <div className={accordionSectionClass}>
-      <div
-        data-testid="kda-accordion-title"
-        onClick={onToggle}
-        className={classNames(
-          accordionTitleClass,
-          accordionTitleVariants[isOpen ? 'opened' : 'closed'],
-        )}
-      >
-        <span>{title}</span>
-
-        <button
-          role="button"
-          className={classNames(toggleButtonClass, {
+    <section
+      className={accordionSectionWrapperClass}
+      data-testid="kda-accordion-section"
+    >
+      <button className={accordionButtonClass} onClick={handleClick}>
+        {title}
+        <SystemIcon.Close
+          className={classNames(accordionToggleIconClass, {
             isOpen,
           })}
-        >
-          <SystemIcon.Close size="sm" />
-        </button>
-      </div>
+          size="xs"
+        />
+      </button>
 
-      {isOpen && <div className={accordionContentWrapperClass}>{children}</div>}
-    </div>
+      {isOpen && children && (
+        <div className={accordionContentClass}>{children}</div>
+      )}
+    </section>
   );
 };

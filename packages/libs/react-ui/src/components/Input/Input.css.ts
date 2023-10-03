@@ -1,35 +1,29 @@
+import { statusColor } from '../InputWrapper/InputWrapper.css';
+
 import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
-import {
-  createVar,
-  fallbackVar,
-  style,
-  styleVariants,
-} from '@vanilla-extract/css';
-
-export const inputStatusColor = createVar();
+import { fallbackVar, style, styleVariants } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
     alignItems: 'stretch',
+    borderRadius: '$sm',
     display: 'flex',
+    color: '$foreground',
     overflow: 'hidden',
+    lineHeight: '$lg',
     bg: {
       lightMode: '$white',
       darkMode: '$gray100',
     },
-    color: '$foreground',
-    borderRadius: '$sm',
   }),
   {
-    borderBottom: `1px solid ${fallbackVar(
-      inputStatusColor,
-      vars.colors.$gray30,
-    )}`,
+    position: 'relative',
+    borderBottom: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
     selectors: {
       [`${darkThemeClass} &`]: {
         borderBottom: `1px solid ${fallbackVar(
-          inputStatusColor,
+          statusColor,
           vars.colors.$gray60,
         )}`,
       },
@@ -48,25 +42,47 @@ export const containerClass = style([
   },
 ]);
 
+export const disabledClass = style([
+  sprinkles({
+    pointerEvents: 'none',
+    bg: {
+      darkMode: '$gray60',
+      lightMode: '$gray20',
+    },
+  }),
+  {
+    opacity: 0.4,
+    selectors: {
+      '.inputGroup &': {
+        opacity: 1,
+      },
+      [`${darkThemeClass} &`]: {
+        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
+      },
+    },
+  },
+]);
+
 export const inputContainerClass = style([
   sprinkles({
     alignItems: 'center',
-    lineHeight: '$lg',
     display: 'flex',
-    paddingX: '$4',
-    paddingY: '$2',
-    gap: '$2',
     flexGrow: 1,
+    gap: '$2',
+    lineHeight: '$lg',
+    paddingX: '$4',
   }),
 ]);
 
 export const inputClass = style([
   sprinkles({
+    alignItems: 'center',
     background: 'none',
     border: 'none',
     color: '$foreground',
     outline: 'none',
     flexGrow: 1,
+    paddingY: '$2',
   }),
   {
     '::placeholder': {
@@ -94,10 +110,12 @@ export const leadingTextClass = style([
 
 export const leadingTextWrapperClass = style([
   sprinkles({
-    backgroundColor: '$neutral2',
+    backgroundColor: {
+      lightMode: '$gray20',
+      darkMode: '$gray60',
+    },
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
   }),
 ]);
 

@@ -1,31 +1,30 @@
+import type { SystemIcon } from '@kadena/react-ui';
 import {
   Button,
   Card,
   IconButton,
-  Modal,
   Stack,
-  SystemIcon,
   Tag,
   Text,
   useModal,
 } from '@kadena/react-ui';
 
 import {
-  largeIconStyle,
   modalButtonStyle,
   modalOptionsContentStyle,
   radioItemWrapperStyle,
   titleTagStyle,
 } from '@/components/Global/OptionsModal/styles.css';
-import { DevOption } from '@/constants/kadena';
+import type { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useState } from 'react';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 
 export interface IDevOption {
   title: string;
   text: string;
-  icon: React.FC;
+  icon: keyof typeof SystemIcon;
   tag?: string;
 }
 
@@ -44,7 +43,7 @@ export const OptionsModal: FC = () => {
       text: t(
         'This view can be used for basic operations and handling things within the user interface.',
       ),
-      icon: SystemIcon.Application,
+      icon: 'Application',
     },
     BACKEND: {
       title: t('Backend Developers'),
@@ -52,7 +51,7 @@ export const OptionsModal: FC = () => {
       text: t(
         'This option is meant for developers who need more sophisticated options within the user interface.',
       ),
-      icon: SystemIcon.ApplicationBrackets,
+      icon: 'ApplicationBrackets',
     },
     DAPP: {
       title: t('dApp Developers'),
@@ -60,7 +59,7 @@ export const OptionsModal: FC = () => {
       text: t(
         'This option is meant for developers who need more sophisticated options within the user interface.',
       ),
-      icon: SystemIcon.ApplicationBrackets,
+      icon: 'ApplicationBrackets',
     },
   };
 
@@ -83,22 +82,17 @@ export const OptionsModal: FC = () => {
                   {selected === key ? (
                     <IconButton
                       title="Radio"
-                      icon={SystemIcon.RadioboxMarked}
-                      color="default"
+                      icon={'RadioboxMarked'}
+                      color="primary"
                     />
                   ) : (
                     <IconButton
                       title="Radio"
-                      icon={SystemIcon.RadioboxBlank}
-                      color="default"
+                      icon={'RadioboxBlank'}
+                      color="primary"
                     />
                   )}
-                  <IconButton
-                    title="Radio"
-                    icon={value.icon}
-                    color="default"
-                    className={largeIconStyle}
-                  />
+                  <IconButton title="Radio" icon={value.icon} color="primary" />
                   <Stack direction="column" marginX="$md">
                     <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>
@@ -123,20 +117,18 @@ export const OptionsModal: FC = () => {
   };
 
   return (
-    <Modal title="Settings">
-      <div className={modalOptionsContentStyle}>
-        {renderOptions()}
+    <div className={modalOptionsContentStyle}>
+      {renderOptions()}
 
-        <div className={modalButtonStyle}>
-          <Button
-            title={`${t('Save')}`}
-            onClick={() => handleSave()}
-            color="primary"
-          >
-            {`${t('Save')}`}
-          </Button>
-        </div>
+      <div className={modalButtonStyle}>
+        <Button
+          title={`${t('Save')}`}
+          onClick={() => handleSave()}
+          color="primary"
+        >
+          {`${t('Save')}`}
+        </Button>
       </div>
-    </Modal>
+    </div>
   );
 };

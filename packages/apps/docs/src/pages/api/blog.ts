@@ -1,22 +1,32 @@
-import { menuData } from '@/data/menu.mjs';
-import { getInitBlogPosts } from '@/hooks/useBlog/utils';
-import { IMenuData } from '@/types/Layout';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { menuData } from '@/_generated/menu.mjs';
+import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
+import type { IResponseError } from '@/types';
+import type { IMenuData } from '@/types/Layout';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 const search = async (
   req: NextApiRequest,
   res: NextApiResponse<IMenuData[] | IResponseError>,
 ): Promise<void> => {
-  const { limit = 10, offset = 0 } = req.query as unknown as {
+  const {
+    limit = 10,
+    offset = 0,
+    authorId,
+    year,
+    tagId,
+  } = req.query as unknown as {
     limit: number;
     offset: number;
+    authorId?: string;
+    year?: string;
+    tagId?: string;
   };
 
-  const data = getInitBlogPosts(
-    menuData as unknown as IMenuData[],
-    offset,
-    limit,
-  );
+  const data = getInitBlogPosts(menuData as IMenuData[], offset, limit, {
+    authorId,
+    year,
+    tagId,
+  });
 
   res.json(data);
 };

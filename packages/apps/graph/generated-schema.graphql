@@ -5,11 +5,15 @@ scalar BigInt
 
 type Block implements Node {
   chainid: BigInt!
+  confirmationDepth: Int!
   creationtime: DateTime!
   epoch: DateTime!
   hash: ID!
   height: BigInt!
   id: ID!
+  parent: Block
+  parentHash: String
+  parent_old: String!
   powhash: String!
   transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
 }
@@ -29,6 +33,20 @@ type BlockTransactionsConnectionEdge {
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
+
+type Event implements Node {
+  block: Block!
+  chainId: BigInt!
+  eventParameters: [String!]!
+  height: BigInt!
+  id: ID!
+  index: BigInt!
+  module: String!
+  name: String!
+  qualName: String!
+  requestKey: String!
+  transaction: Transaction
+}
 
 interface Node {
   id: ID!
@@ -54,15 +72,36 @@ type Query {
 }
 
 type Subscription {
+  event(eventName: String!): [Event!]
   newBlocks(chainIds: [Int!]): [Block!]
+  transaction(requestKey: String!): Transaction
 }
 
 type Transaction implements Node {
+  badResult: String
   block: Block
+  chainId: BigInt!
   code: String
+  continuation: String
+  creationTime: DateTime!
   data: String
+  events: [Event!]
   gas: BigInt!
+  gasLimit: BigInt!
+  gasPrice: Float!
+  goodResult: String
+  height: BigInt!
   id: ID!
-  nonce: String!
-  reqKey: String! @deprecated(reason: "Use requestkey instead")
+  logs: String
+  metadata: String
+  nonce: String
+  numEvents: BigInt
+  pactId: String
+  proof: String
+  requestKey: String!
+  rollback: Boolean
+  sender: String
+  step: BigInt
+  ttl: BigInt!
+  txId: BigInt
 }

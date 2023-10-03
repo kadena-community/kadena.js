@@ -1,4 +1,4 @@
-import { IFunction, IModule } from '../parsing/pactParser';
+import type { IFunction, IModule, IType } from '../parsing/pactParser';
 import { getModuleFullName } from '../parsing/utils/utils';
 
 import { EOL } from 'os';
@@ -13,9 +13,7 @@ const keywordsMap: Record<string, string> = {
   object: 'object',
 };
 
-const mapType = (
-  inputType?: string | { kind: string; value: string },
-): string => {
+const mapType = (inputType?: string | IType): string => {
   if (inputType === undefined) {
     return 'any';
   }
@@ -25,9 +23,10 @@ const mapType = (
 
   if (typeof inputType === 'object' && inputType.kind === 'module')
     return 'PactReference';
+  const isList = inputType.isList ? '[]' : '';
   // TODO: import the schema as interface to return kind instead of any
-  // return inputType.kind;
-  return keywordsMap[inputType.kind] ?? 'any';
+  const type = keywordsMap[inputType.kind] ?? 'any';
+  return `${type}${isList}`;
 };
 
 const getFuncCapInterfaceName = (func: IFunction): string => {
@@ -76,7 +75,16 @@ function genFunCapsInterface(func: IFunction): string {
   const interfaceName = getFuncCapInterfaceName(func);
 
   const cap = func.allExtractedCaps.map((cap) => {
-    let parameters = [`name: "${cap.fullModuleName}.${cap.name}"`];
+    let capabilityName = 'capabilityName';
+    while (
+      cap.capability.parameters &&
+      cap.capability.parameters.find((p) => p.name === capabilityName)
+    ) {
+      // make sure we don't have a name collision
+      capabilityName = `_${capabilityName}`;
+    }
+
+    let parameters = [`${capabilityName}: "${cap.fullModuleName}.${cap.name}"`];
     if (cap.capability.parameters) {
       const args = getParameters(cap.capability.parameters);
       parameters = [...parameters, ...args];
@@ -139,7 +147,8 @@ export function generateDts(
       .join(EOL.repeat(2)) || '';
 
   const dts = `
-import type { IPactDecimal, IPactInt, PactReference, ICap } from '@kadena/types';
+import type { PactReference } from '@kadena/client';
+import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
 
 interface ICapability_Coin_GAS {
   (name: 'coin.GAS'): ICap;

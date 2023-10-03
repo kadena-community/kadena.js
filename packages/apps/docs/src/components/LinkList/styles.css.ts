@@ -14,14 +14,14 @@ export const listClass = style([
 
 export const listItemClass = style([
   sprinkles({
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
     lineHeight: '$lg',
   }),
 ]);
 
 export const linkClass = style([
   sprinkles({
-    color: '$primaryContrast',
+    color: '$primaryContrastInverted',
     textDecoration: 'none',
   }),
   {

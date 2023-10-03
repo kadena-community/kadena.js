@@ -2,12 +2,6 @@ import { sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const searchFormClass = style([
-  sprinkles({
-    width: '100%',
-  }),
-]);
-
 export const staticResultsListClass = style([
   sprinkles({
     padding: 0,
@@ -42,12 +36,12 @@ export const itemLinkClass = style([
   {
     ':hover': {
       color: '$neutral100',
-      backgroundColor: '$primaryContrast',
+      backgroundColor: '$primaryContrastInverted',
       borderRadius: '$sm',
     },
     ':focus': {
       color: '$neutral100',
-      backgroundColor: '$primaryContrast',
+      backgroundColor: '$primaryContrastInverted',
       borderRadius: '$sm',
     },
   },
@@ -59,9 +53,10 @@ export const loadingWrapperClass = style([
     display: 'flex',
     justifyContent: 'center',
     paddingY: '$10',
-    background: '$layoutSurfaceOverlay',
+    backgroundColor: '$background',
   }),
   {
+    opacity: '.8',
     inset: 0,
   },
 ]);

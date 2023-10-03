@@ -1,4 +1,4 @@
-import { IPactCommand } from '../../interfaces/IPactCommand';
+import type { IPactCommand } from '../../interfaces/IPactCommand';
 
 import { patchCommand } from './patchCommand';
 
@@ -9,8 +9,29 @@ export type ValidDataTypes =
   | boolean
   | Array<ValidDataTypes>;
 
+const getData = (cmd: Partial<IPactCommand>, key: string): unknown => {
+  if (
+    cmd.payload &&
+    'exec' in cmd.payload &&
+    cmd.payload.exec.data !== undefined
+  ) {
+    return cmd.payload.exec.data[key];
+  }
+
+  if (
+    cmd.payload &&
+    'cont' in cmd.payload &&
+    cmd.payload.cont.data !== undefined
+  ) {
+    return cmd.payload.cont.data[key];
+  }
+
+  return undefined;
+};
+
 /**
  * Reducer to add `data` to the {@link IPactCommand.payload}
+ * @throws DUPLICATED_KEY: "$\{key\}" is already available in the data
  *
  * @public
  */
@@ -23,6 +44,11 @@ export const addData: (
     let target: 'exec' | 'cont' = 'exec';
     if (cmd.payload && 'cont' in cmd.payload) {
       target = 'cont';
+    }
+    if (getData(cmd, key) !== undefined) {
+      throw new Error(
+        `DUPLICATED_KEY: "${key}" is already available in the data`,
+      );
     }
     const patch: unknown = {
       payload: {

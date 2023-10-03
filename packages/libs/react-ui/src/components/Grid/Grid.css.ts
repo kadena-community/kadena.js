@@ -15,14 +15,14 @@ export const gridItemClass = style([
 ]);
 
 export const gapVariants = styleVariants({
-  '2xs': [sprinkles({ gridGap: '$2xs' })],
-  xs: [sprinkles({ gridGap: '$xs' })],
-  sm: [sprinkles({ gridGap: '$sm' })],
-  md: [sprinkles({ gridGap: '$md' })],
-  lg: [sprinkles({ gridGap: '$lg' })],
-  xl: [sprinkles({ gridGap: '$xl' })],
-  '2xl': [sprinkles({ gridGap: '$2xl' })],
-  '3xl': [sprinkles({ gridGap: '$3xl' })],
+  $2xs: [sprinkles({ gridGap: '$2xs' })],
+  $xs: [sprinkles({ gridGap: '$xs' })],
+  $sm: [sprinkles({ gridGap: '$sm' })],
+  $md: [sprinkles({ gridGap: '$md' })],
+  $lg: [sprinkles({ gridGap: '$lg' })],
+  $xl: [sprinkles({ gridGap: '$xl' })],
+  $2xl: [sprinkles({ gridGap: '$2xl' })],
+  $3xl: [sprinkles({ gridGap: '$3xl' })],
 });
 
 export const rowSpanVariants = styleVariants({
@@ -61,7 +61,7 @@ const containerColumnVariantsArray = Object.keys(breakpoints).map((key) => {
       {
         '@media': {
           [breakpoints[key]]: {
-            gridTemplateColumns: `repeat(${count}, 1fr)`,
+            gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))`,
           },
         },
       },
@@ -72,7 +72,7 @@ const containerColumnVariantsArray = Object.keys(breakpoints).map((key) => {
 export const explicitColumnVariant = styleVariants(columnCount, (count) => {
   return [
     {
-      gridTemplateColumns: `repeat(${count}, 1fr)`,
+      gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))`,
     },
   ];
 });

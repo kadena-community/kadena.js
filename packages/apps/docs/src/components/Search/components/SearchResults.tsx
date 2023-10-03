@@ -1,11 +1,14 @@
 import {
   Button,
+  Heading,
   Notification,
   Stack,
-  SystemIcon,
   Tabs,
   useModal,
 } from '@kadena/react-ui';
+
+import type { IQueryResult } from '../../../types';
+import { removeUnnecessarySearchRecords } from '../utils';
 
 import {
   loadingWrapperClass,
@@ -15,16 +18,17 @@ import {
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
-import { Loading } from '@/components';
-import { IConversation } from '@/hooks/useSearch/useConversation';
-import { createLinkFromMD } from '@/utils';
+import { BrowseSection, Loading } from '@/components';
+import type { IConversation } from '@/hooks/useSearch/useConversation';
+import { filePathToRoute } from '@/pages/api/semanticsearch';
 import classnames from 'classnames';
 import Link from 'next/link';
-import React, { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {
-  semanticResults: ISearchResult[];
+  semanticResults: IQueryResult[];
   semanticError?: string;
   semanticIsLoading: boolean;
   outputStream: string;
@@ -61,29 +65,33 @@ export const SearchResults: FC<IProps> = ({
   });
 
   const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
-    const buttonName = (e.target as HTMLElement).getAttribute('data-value');
+    const buttonName = (e.target as HTMLElement).getAttribute('data-tab');
     if (buttonName === null) return;
     localStorage.setItem(TABNAME, buttonName);
     onTabSelect(buttonName);
   };
 
   useEffect(() => {
-    const value = localStorage.getItem(TABNAME);
     setIsMounted(true);
-    if (value === null) return;
+  }, [setIsMounted]);
 
+  useEffect(() => {
+    const value = localStorage.getItem(TABNAME);
+    if (value === null) return;
     setSelectedTabName(value);
     onTabSelect(value);
-  }, [setSelectedTabName, setIsMounted, onTabSelect]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
 
   if (!isMounted) return null;
+
   return (
     <section onClick={rememberTab}>
-      <Tabs.Root defaultSelected={selectedTabName}>
-        <Tabs.Tab value="docs">Docs Space </Tabs.Tab>
-        <Tabs.Tab value="qa">QA Space</Tabs.Tab>
+      <Tabs.Root initialTab={selectedTabName}>
+        <Tabs.Tab id="docs">Docs Space </Tabs.Tab>
+        <Tabs.Tab id="qa">QA Space</Tabs.Tab>
 
-        <Tabs.Content value="docs">
+        <Tabs.Content id="docs">
           <div className={scrollBoxClasses}>
             {semanticIsLoading && (
               <div className={loadingWrapperClass}>
@@ -94,7 +102,7 @@ export const SearchResults: FC<IProps> = ({
               <Notification.Root
                 color={'negative'}
                 expanded={true}
-                icon={SystemIcon.AlertBox}
+                icon="AlertBox"
               >
                 {semanticError}
               </Notification.Root>
@@ -105,7 +113,9 @@ export const SearchResults: FC<IProps> = ({
                   limitResults={limitResults}
                   results={semanticResults}
                 />
-                {limitResults !== undefined && query !== undefined ? (
+                {limitResults !== undefined &&
+                limitResults < semanticResults.length &&
+                query !== undefined ? (
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>
                       <Button
@@ -124,7 +134,7 @@ export const SearchResults: FC<IProps> = ({
           </div>
         </Tabs.Content>
 
-        <Tabs.Content value="qa">
+        <Tabs.Content id="qa">
           <div className={scrollBoxClasses}>
             {isLoading && (
               <div className={loadingWrapperClass}>
@@ -135,29 +145,41 @@ export const SearchResults: FC<IProps> = ({
               <Notification.Root
                 color={'negative'}
                 expanded={true}
-                icon={SystemIcon.AlertBox}
+                icon="AlertBox"
               >
                 {error}
               </Notification.Root>
             )}
 
-            {conversation?.history.map((interaction, idx) => (
-              <div key={`${interaction.input}-${idx}`}>
-                <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                <div>
-                  {interaction?.metadata?.map((item, innerIdx) => {
-                    const url = createLinkFromMD(item.title);
-                    return (
-                      <>
-                        <Link key={`${url}-${innerIdx}`} href={url}>
-                          {url}
-                        </Link>
-                      </>
-                    );
-                  })}
+            {conversation.history?.map((interaction, idx) => {
+              const metadata = removeUnnecessarySearchRecords(
+                interaction?.metadata,
+              );
+
+              return (
+                <div key={`${interaction.input}-${idx}`}>
+                  <ReactMarkdown>{interaction?.output}</ReactMarkdown>
+                  <div>
+                    <Heading variant="h4">Sources:</Heading>
+                    {metadata.length > 1 && (
+                      <BrowseSection>
+                        {metadata.map((item, innerIdx) => {
+                          const url = filePathToRoute(
+                            item.filePath,
+                            item.header,
+                          );
+                          return (
+                            <Link key={`${url}`} href={url}>
+                              {item.title}
+                            </Link>
+                          );
+                        })}
+                      </BrowseSection>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             <div>{outputStream}</div>
           </div>

@@ -1,4 +1,4 @@
-import { literal, readKeyset } from '../pact-helpers';
+import { literal, readKeyset, unpackLiterals } from '../pact-helpers';
 
 describe('readKeyset', () => {
   it('returns read-keyset string', () => {
@@ -8,6 +8,17 @@ describe('readKeyset', () => {
 
 describe('literal', () => {
   it('returns a function that returns the input', () => {
-    expect(literal('free.contract')()).toBe('free.contract');
+    expect(literal('free.contract').getValue()).toBe('free.contract');
+  });
+  it('returns a function that returns the input', () => {
+    expect(literal('free.contract').toJSON()).toBe('Literal(free.contract)');
+  });
+});
+
+describe('unpackLiterals', () => {
+  it('returns a function that returns the input', () => {
+    expect(unpackLiterals('["Literal(free.contract)", "Literal(coin)"]')).toBe(
+      '[free.contract, coin]',
+    );
   });
 });

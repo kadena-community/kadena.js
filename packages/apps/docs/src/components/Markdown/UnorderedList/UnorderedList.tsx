@@ -1,11 +1,12 @@
-import { StyledList } from './styles';
+import { ulListClass } from './styles.css';
 
-import React, { FC } from 'react';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 
 interface IProp {
-  children: string;
+  children: FunctionComponentElement<HTMLUListElement>[];
 }
 
 export const UnorderedList: FC<IProp> = ({ children }) => {
-  return <StyledList>{children}</StyledList>;
+  return <ul className={ulListClass}>{children}</ul>;
 };

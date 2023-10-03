@@ -2,9 +2,9 @@ import { generateDts, pactParser } from '@kadena/pactjs-generator';
 
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
 
-import { IContractGenerateOptions } from './';
+import type { IContractGenerateOptions } from './';
 
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import { dirname, join } from 'path';
@@ -104,6 +104,11 @@ async function generator(
   const moduleDtss = new Map();
 
   Object.keys(modules).map((name) => {
+    if (['', undefined, null].includes(modules[name].namespace)) {
+      console.log(`
+      WARNING: No namespace found for module "${name}". You can pass --namespace as a fallback.
+      `);
+    }
     moduleDtss.set(name, generateDts(name, modules));
   });
 

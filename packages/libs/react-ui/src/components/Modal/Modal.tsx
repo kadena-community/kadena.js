@@ -1,3 +1,5 @@
+'use client';
+
 import {
   background,
   closeButton,
@@ -5,21 +7,29 @@ import {
   titleWrapper,
   wrapper,
 } from './Modal.css';
-import { useModal } from './ModalProvider';
+import { useModal } from './useModal';
 
 import { Card } from '@components/Card';
 import { SystemIcon } from '@components/Icon';
 import { Heading } from '@components/Typography/Heading/Heading';
 import FocusTrap from 'focus-trap-react';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface IModalProps {
   children: React.ReactNode;
   title?: string;
+  onClose?: () => void;
 }
 
-export const Modal: FC<IModalProps> = ({ children, title }) => {
+export const Modal: FC<IModalProps> = ({ children, title, onClose }) => {
   const { clearModal } = useModal();
+
+  function handleCloseModal(): void {
+    onClose?.();
+    clearModal();
+  }
+
   return (
     <>
       <FocusTrap
@@ -31,7 +41,7 @@ export const Modal: FC<IModalProps> = ({ children, title }) => {
           <button
             data-cy="modal-background"
             className={background}
-            onClick={clearModal}
+            onClick={handleCloseModal}
           />
           <div className={wrapper} data-cy="modal" data-testid="kda-modal">
             <section className={modal}>
@@ -42,7 +52,7 @@ export const Modal: FC<IModalProps> = ({ children, title }) => {
 
                 <button
                   className={closeButton}
-                  onClick={clearModal}
+                  onClick={handleCloseModal}
                   title="Close modal"
                 >
                   Close

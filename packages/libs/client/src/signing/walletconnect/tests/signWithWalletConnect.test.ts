@@ -1,14 +1,14 @@
-import {
+import type {
   IExecutionPayloadObject,
   IPactCommand,
 } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
-import { ISingleSignFunction } from '../../ISignFunction';
+import type { ISingleSignFunction } from '../../ISignFunction';
 import { createWalletConnectSign } from '../signWithWalletConnect';
-import { TWalletConnectChainId } from '../walletConnectTypes';
+import type { TWalletConnectChainId } from '../walletConnectTypes';
 
-import Client from '@walletconnect/sign-client';
-import { SessionTypes } from '@walletconnect/types';
+import type Client from '@walletconnect/sign-client';
+import type { SessionTypes } from '@walletconnect/types';
 
 jest.spyOn(console, 'log').mockImplementation(() => {});
 

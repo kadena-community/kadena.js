@@ -1,11 +1,35 @@
-import { styled, StyledComponent } from '@kadena/react-components';
+import { Text } from '@kadena/react-ui';
 
-export const FooterLink: StyledComponent<'a'> = styled('a', {
-  textDecoration: 'none',
-  color: '$neutral4',
-  padding: '0 $3',
-  '&:hover': {
-    textDecoration: 'underline',
-    color: '$neutral5',
-  },
+import { linkClass } from './styles.css';
+
+import Link from 'next/link';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
+
+interface IProps {
+  children?: ReactNode;
+  href: string;
+}
+
+export const FooterLink: FC<IProps> = React.forwardRef<
+  HTMLAnchorElement,
+  IProps
+>(({ children, href }, ref) => {
+  const isInnerLink = href.includes('http');
+
+  return (
+    <Text size="md" bold={false}>
+      {isInnerLink ? (
+        <a ref={ref} href={href} className={linkClass}>
+          {children}
+        </a>
+      ) : (
+        <Link ref={ref} href={href} className={linkClass}>
+          {children}
+        </Link>
+      )}
+    </Text>
+  );
 });
+
+FooterLink.displayName = 'FooterLink';

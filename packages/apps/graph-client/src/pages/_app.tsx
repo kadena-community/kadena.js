@@ -1,17 +1,16 @@
-import '../styles/globals.css';
+import { ChainTreeContextProvider } from '../context/chain-tree-context';
 
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  NormalizedCacheObject,
-} from '@apollo/client';
+import type { NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import type { AppProps } from 'next/app';
 import type { ComponentType } from 'react';
 import React from 'react';
+
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
+
+import '../styles/globals.css';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   link: new YogaLink({
@@ -20,13 +19,15 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+// eslint-disable-next-line @typescript-eslint/naming-convention, react/function-component-definition
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
   return (
     <ApolloProvider client={client}>
-      <ReactComponent {...pageProps} />
+      <ChainTreeContextProvider>
+        <ReactComponent {...pageProps} />
+      </ChainTreeContextProvider>
     </ApolloProvider>
   );
 }

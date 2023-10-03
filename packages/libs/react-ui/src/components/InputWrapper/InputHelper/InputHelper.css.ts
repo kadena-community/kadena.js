@@ -15,7 +15,7 @@ export const helperClass = style([
     color: '$foreground',
   }),
   {
-    color: fallbackVar(helperTextColor, vars.colors.$primaryContrast),
+    color: fallbackVar(helperTextColor, vars.colors.$primaryContrastInverted),
   },
 ]);
 

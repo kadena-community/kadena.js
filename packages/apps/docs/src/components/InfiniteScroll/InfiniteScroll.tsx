@@ -1,7 +1,8 @@
 import { Button, Heading, Stack, Text } from '@kadena/react-ui';
 
 import { Loading } from '@/components';
-import React, { FC, useEffect, useRef } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface IProps {
   handleLoad: (isRetry: boolean) => void;
@@ -40,7 +41,7 @@ export const InfiniteScroll: FC<IProps> = ({
 
   return (
     <div ref={loadRef}>
-      <Stack justifyContent="center" alignItems="center" spacing="$10">
+      <Stack justifyContent="center" alignItems="center" gap="$10">
         {isLoading && <Loading />}
         {error && (
           <>

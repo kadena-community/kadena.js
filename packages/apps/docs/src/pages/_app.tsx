@@ -1,8 +1,3 @@
-import {
-  baseGlobalStyles,
-  darkTheme as stitchesDarkTheme,
-  globalCss,
-} from '@kadena/react-components';
 import { ModalProvider } from '@kadena/react-ui';
 // eslint-disable-next-line import/no-unresolved
 import { darkThemeClass } from '@kadena/react-ui/theme';
@@ -10,21 +5,16 @@ import { darkThemeClass } from '@kadena/react-ui/theme';
 import { Analytics, ConsentModal } from '@/components';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
-import { MenuProvider, ThemeProvider } from '@/hooks';
-import { IPageMeta, IPageProps } from '@/types/Layout';
+import { MenuProvider } from '@/hooks';
+import type { IPageMeta, IPageProps } from '@/types/Layout';
 import { getLayout } from '@/utils';
 import { MDXProvider } from '@mdx-js/react';
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import React, { FC } from 'react';
-
-const GlobalStyles = globalCss({
-  ...baseGlobalStyles,
-  body: {
-    background: '$background',
-  },
-});
-GlobalStyles();
+import { useRouter } from 'next/router';
+import { ThemeProvider } from 'next-themes';
+import type { FC } from 'react';
+import React, { useEffect } from 'react';
 
 type ImportedPagePropsType = Omit<IPageProps, 'frontmatter'> & {
   frontmatter: Omit<IPageMeta, 'lastModifiedDate'> & {
@@ -48,8 +38,20 @@ export const MyApp = ({
   Component: FC<IPageProps>;
 }): JSX.Element => {
   const props = deserializePageProps(pageProps);
-
   const Layout = getLayout(props.frontmatter.layout);
+
+  // check for a router query
+  const router = useRouter();
+  useEffect(() => {
+    if (router.isReady) {
+      const { q } = router.query;
+      if (q && router.pathname !== '/search') {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.replace(`/search?q=${q}`);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
 
   return (
     <>
@@ -57,6 +59,7 @@ export const MyApp = ({
         <title>{props.frontmatter.title}</title>
         <meta name="title" content={props.frontmatter.title} />
         <meta name="description" content={props.frontmatter.description} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <MDXProvider components={markDownComponents}>
         <ThemeProvider
@@ -65,7 +68,7 @@ export const MyApp = ({
           defaultTheme="light"
           value={{
             light: 'light',
-            dark: `${darkThemeClass} ${stitchesDarkTheme.className}`,
+            dark: darkThemeClass,
           }}
         >
           <ModalProvider>

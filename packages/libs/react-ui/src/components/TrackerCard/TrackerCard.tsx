@@ -16,14 +16,15 @@ import {
 } from './TrackerCard.css';
 
 import classNames from 'classnames';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface ITrackerCardProps {
   labelValues: ILabelValue[];
   helperText?: string;
   helperTextType?: 'mild' | 'severe';
-  icon?: (typeof ProductIcon)[keyof typeof ProductIcon];
-  variant: keyof typeof layoutVariant;
+  icon?: keyof typeof ProductIcon;
+  variant?: keyof typeof layoutVariant;
 }
 
 export interface ILabelValue {
@@ -40,7 +41,7 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
   icon,
   helperText,
   helperTextType = 'mild',
-  variant,
+  variant = 'vertical',
 }): JSX.Element => {
   const classCardContainer = classNames(
     CardContainer,
@@ -60,11 +61,11 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
     warningVariant[helperTextType],
   );
 
-  const Icon = icon;
+  const Icon = icon && ProductIcon[icon];
 
   return (
     <div className={classCardContainer} data-testid="kda-tracker-card">
-      {Icon ? <Icon data-testid="kda-icon" /> : <div />}
+      {Icon ? <Icon data-testid="kda-icon" size="xl" /> : null}
       <div className={ContentContainer}>
         <div className={DataContainer} data-testid="kda-data-container">
           {labelValues?.map((item, index) => {

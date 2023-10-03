@@ -1,26 +1,34 @@
-import { ICommandResult } from '@kadena/chainweb-node-client';
-import { Breadcrumbs, Button, Heading, SystemIcon } from '@kadena/react-ui';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Card,
+  Grid,
+  Heading,
+  Notification,
+} from '@kadena/react-ui';
 
 import {
-  ChainSelect,
-  FormStatus,
-  FormStatusNotification,
-} from '@/components/Global';
+  buttonContainerClass,
+  containerClass,
+  notificationContainerStyle,
+} from './styles.css';
+
+import type { FormStatus } from '@/components/Global';
+import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import AccountNameField, {
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
-import {
-  StyledAccountForm,
-  StyledForm,
-  StyledFormButton,
-} from '@/pages/transactions/cross-chain-transfer-finisher/styles';
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import React, { FC, useCallback, useState } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -30,8 +38,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-// TODO: This needs to be changed to 100, when the contract is redeployed
-const AMOUNT_OF_COINS_FUNDED: number = 20;
+const AMOUNT_OF_COINS_FUNDED: number = 100;
 
 const isCustomError = (error: unknown): error is ICommandResult => {
   return error !== null && typeof error === 'object' && 'result' in error;
@@ -53,6 +60,7 @@ interface IFundExistingAccountResponse
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
+  const { selectedNetwork } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
@@ -64,7 +72,7 @@ const ExistingAccountFaucetPage: FC = () => {
   useToolbar([
     {
       title: t('Existing'),
-      icon: SystemIcon.History,
+      icon: 'History',
       href: Routes.FAUCET_EXISTING,
     },
   ]);
@@ -114,6 +122,8 @@ const ExistingAccountFaucetPage: FC = () => {
     [chainID, t],
   );
 
+  const showNotification = selectedNetwork !== 'testnet04';
+
   const {
     register,
     handleSubmit,
@@ -121,12 +131,25 @@ const ExistingAccountFaucetPage: FC = () => {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   return (
-    <div>
+    <section className={containerClass}>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
-      <StyledForm onSubmit={handleSubmit(onFormSubmit)}>
+      <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
+      <div className={notificationContainerStyle}>
+        {showNotification ? (
+          <Notification.Root
+            color="warning"
+            expanded={true}
+            icon="Information"
+            title={t(
+              `The Faucet is not available on Mainnet. On other networks, the Faucet smart contract must be deployed to fund accounts. In the Module Explorer you can see if it's deployed: https://tools.kadena.io/transactions/module-explorer?module=user.coin-faucet&chain=1`,
+            )}
+          />
+        ) : null}
+      </div>
+      <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
@@ -134,20 +157,25 @@ const ExistingAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <StyledAccountForm>
-          <Heading as="h3">Account</Heading>
+        <Card fullWidth>
+          <Heading as="h5">Account</Heading>
+          <Box marginBottom="$4" />
           <AccountNameField
             inputProps={register('name')}
             error={errors.name}
             label={t('The account name you would like to fund coins to')}
           />
-          <ChainSelect
-            onChange={onChainSelectChange}
-            value={chainID}
-            ariaLabel="Select Chain ID"
-          />
-        </StyledAccountForm>
-        <StyledFormButton>
+          <Grid.Root columns={2} marginTop="$4">
+            <Grid.Item>
+              <ChainSelect
+                onChange={onChainSelectChange}
+                value={chainID}
+                ariaLabel="Select Chain ID"
+              />
+            </Grid.Item>
+          </Grid.Root>
+        </Card>
+        <div className={buttonContainerClass}>
           <Button
             loading={requestStatus.status === 'processing'}
             icon="TrailingIcon"
@@ -157,9 +185,9 @@ const ExistingAccountFaucetPage: FC = () => {
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
           </Button>
-        </StyledFormButton>
-      </StyledForm>
-    </div>
+        </div>
+      </form>
+    </section>
   );
 };
 

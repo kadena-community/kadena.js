@@ -1,27 +1,24 @@
-import { Heading, ProductIcon, Stack, Text } from '@kadena/react-ui';
+import { Stack, Text } from '@kadena/react-ui';
 
-import { iconClass, listItemClass, listItemLinkClass } from './styles.css';
+import { listItemClass, listItemLinkClass } from './styles.css';
 
-import { ProductIconNames } from '@/types/Layout';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 export interface ILinkBlock {
   title: string;
   subtitle: string;
-  icon: ProductIconNames;
   href: string;
 }
 
-export const LinkBlock: FC<ILinkBlock> = ({ title, subtitle, icon, href }) => {
-  const Icon = ProductIcon[icon];
+export const LinkBlock: FC<ILinkBlock> = ({ title, subtitle, href }) => {
   return (
     <li className={listItemClass}>
       <Link href={href} className={listItemLinkClass}>
-        <Stack direction="row" spacing="$2">
-          <Icon className={iconClass} />
-          <Stack direction="column" spacing={0}>
-            <Heading as="h6">{title}</Heading>
+        <Stack direction="row" gap="$2">
+          <Stack direction="column" gap={0}>
+            <h4>{title}</h4>
             <Text as="span" color="emphasize">
               {subtitle}
             </Text>

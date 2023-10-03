@@ -2,16 +2,5 @@
   "files.associations": {
     "*.json": "jsonc"
   },
-  "eslint.options": {
-    "overrideConfig": {
-      "settings": {
-        "import/resolver": {
-          "typescript": {
-            "project": "packages/*/*/tsconfig.json"
-          }
-        }
-      }
-    }
-  },
   "graphql-config.load.rootDir": "packages/apps/graph"
 }

@@ -9,13 +9,17 @@
   "bin": {
     "remark": "./node_modules/remark-cli/cli.js"
   },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "tsc",
-    "format": "npm run format:md && npm run format:src",
-    "format:ci": "prettier src --check",
+    "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use ./lib/index.js",
-    "format:src": "prettier src --write",
-    "lint": "eslint package.json src --ext .ts --fix",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:src": "eslint src --ext .ts",
     "test": ""
   },
   "dependencies": {
@@ -28,18 +32,19 @@
     "remark-order-reference-links": "^0.0.3",
     "remark-parse": "^10.0.2",
     "remark-reference-links": "^6.0.1",
-    "strip-json-comments": "^5.0.0",
     "unified-prettier": "^1.0.1",
     "unist-util-visit": "^4.1.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/heft-rig": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/mdast": "^3.0.11",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
-    "typescript": "5.1.6",
+    "prettier-plugin-packagejson": "^2.4.5",
+    "typescript": "5.2.2",
     "unified": "^10.1.2",
     "vfile": "5.3.7"
   }

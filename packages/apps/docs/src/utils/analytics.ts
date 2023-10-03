@@ -3,14 +3,21 @@ export const EVENT_NAMES = {
   'click:asidemenu_deeplink': 'click:asidemenu_deeplink',
   'click:change_theme': 'click:change_theme',
   'click:open_searchmodal': 'click:open_searchmodal',
+  'click:mobile_search': 'click:mobile_search',
+  'click:mobile_menu_open': 'click:mobile_menu_open',
+  'click:edit_page': 'click:edit_page',
+  'click:previous_page': 'click:previous_page',
+  'click:next_page': 'click:next_page',
+  'click:newsletter': 'click:newsletter',
+  'click:search': 'click:search',
+  'click:subscribe': 'click:subscribe',
+  'click:page_helpful': 'click:page_helpful',
 } as const;
 
-export const COOKIE_CONSENTNAME = 'cookie_consent';
+const COOKIE_CONSENTNAME = 'cookie_consent';
 
-interface IOptionsType {
-  label?: string;
-  url?: string;
-}
+type IOptionsType = Record<string, string | undefined>;
+
 interface IOptionsPageViewType {
   page_path?: string;
   send_to?: string;

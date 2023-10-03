@@ -1,4 +1,4 @@
-import { ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
 import { ensureSignedCommand, isSignedCommand } from '../isSignedCommand';
 

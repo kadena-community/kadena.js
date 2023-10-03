@@ -1,6 +1,7 @@
 import { colorPalette } from '@theme/colors';
 import { sprinkles } from '@theme/sprinkles.css';
-import { ColorType, darkThemeClass, vars } from '@theme/vars.css';
+import type { ColorType } from '@theme/vars.css';
+import { vars } from '@theme/vars.css';
 import {
   createVar,
   keyframes,
@@ -8,10 +9,19 @@ import {
   styleVariants,
 } from '@vanilla-extract/css';
 
-const bgHoverColor = createVar(),
-  bgActiveColor = createVar(),
-  focusOutlineColor = createVar();
+const backgroundColorHover = createVar(),
+  backgroundColorActive = createVar(),
+  colorHover = createVar(),
+  outlineColorFocus = createVar();
 
+export const activeClass = style({
+  outlineOffset: '2px',
+  outlineWidth: vars.borderWidths.$md,
+  outlineStyle: 'solid',
+  outlineColor: outlineColorFocus,
+});
+
+// Main container
 export const container = style([
   sprinkles({
     border: 'none',
@@ -26,36 +36,28 @@ export const container = style([
     paddingY: '$3',
     placeItems: 'center',
     textDecoration: 'none',
-    color: {
-      lightMode: '$white',
-      darkMode: '$gray80',
-    },
-    backgroundColor: {
-      darkMode: '$blue50',
-    },
   }),
   {
     selectors: {
       '&[href]': {
         display: 'inline-flex',
       },
-      [`${darkThemeClass} &:hover`]: {
-        color: colorPalette.$gray100,
-        backgroundColor: colorPalette.$blue30,
-      },
     },
     ':hover': {
-      backgroundColor: bgHoverColor,
-      color: colorPalette.$white,
+      color: colorHover,
+      backgroundColor: backgroundColorHover,
     },
     ':active': {
-      backgroundColor: bgActiveColor,
+      outlineOffset: '2px',
+      outlineWidth: vars.borderWidths.$md,
+      outlineStyle: 'solid',
+      outlineColor: outlineColorFocus,
     },
     ':focus-visible': {
       outlineOffset: '2px',
       outlineWidth: vars.borderWidths.$md,
       outlineStyle: 'solid',
-      outlineColor: focusOutlineColor,
+      outlineColor: outlineColorFocus,
     },
     ':disabled': {
       opacity: 0.7,
@@ -64,15 +66,95 @@ export const container = style([
       cursor: 'not-allowed',
       pointerEvents: 'none',
     },
-    transition: 'background-color 0.4s ease',
+    transition:
+      'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
   },
 ]);
 
+// Button variants
+export const colorVariants: Omit<
+  Record<ColorType, ColorType>,
+  'info' | 'tertiary'
+> = {
+  primary: 'primary',
+  secondary: 'secondary',
+  positive: 'positive',
+  warning: 'warning',
+  negative: 'negative',
+};
+
+export const typeVariants: {
+  default: 'default';
+  compact: 'compact';
+  alternative: 'alternative';
+} = {
+  default: 'default',
+  compact: 'compact',
+  alternative: 'alternative',
+};
+
+export const defaultVariant = styleVariants(colorVariants, (variant) => {
+  return [
+    container,
+    sprinkles({
+      bg: `$${variant}Surface`,
+      color: `$${variant}Contrast`,
+    }),
+    {
+      vars: {
+        [colorHover]: vars.colors[`$${variant}Contrast`],
+        [backgroundColorHover]: vars.colors[`$${variant}HighContrast`],
+        [backgroundColorActive]: vars.colors[`$${variant}HighContrast`],
+        [outlineColorFocus]: vars.colors[`$${variant}Accent`],
+      },
+    },
+  ];
+});
+
+export const compactVariant = styleVariants(colorVariants, (variant) => {
+  return [
+    container,
+    sprinkles({
+      background: 'none',
+      color: `$${variant}ContrastInverted`,
+    }),
+    {
+      padding: `${vars.sizes.$1} ${vars.sizes.$1}`,
+      vars: {
+        [colorHover]: vars.colors[`$${variant}ContrastInverted`],
+        [backgroundColorHover]: 'none',
+        [backgroundColorActive]: vars.colors[`$${variant}HighContrast`],
+        [outlineColorFocus]: vars.colors[`$${variant}Accent`],
+      },
+    },
+  ];
+});
+
+export const alternativeVariant = styleVariants(colorVariants, (variant) => {
+  return [
+    container,
+    sprinkles({
+      bg: `$${variant}LowContrast`,
+      color: `$${variant}ContrastInverted`,
+    }),
+    {
+      vars: {
+        [colorHover]: vars.colors[`$${variant}ContrastInverted`],
+        [backgroundColorHover]: vars.colors[`$${variant}SurfaceInverted`],
+        [backgroundColorActive]: vars.colors[`$${variant}HighContrast`],
+        [outlineColorFocus]: vars.colors[`$${variant}Accent`],
+      },
+    },
+  ];
+});
+
+// Animations
 const rotate = keyframes({
   '0%': { transform: 'rotate(0deg)' },
   '100%': { transform: 'rotate(360deg)' },
 });
 
+// Loading styles
 export const buttonLoadingClass = style({
   pointerEvents: 'none',
 });
@@ -82,31 +164,4 @@ export const iconLoadingClass = style({
   animationDuration: '1.5s',
   animationIterationCount: 'infinite',
   animationTimingFunction: 'linear',
-});
-
-const variants: Record<ColorType, ColorType> = {
-  primary: 'primary',
-  secondary: 'secondary',
-  tertiary: 'tertiary',
-  info: 'info',
-  positive: 'positive',
-  warning: 'warning',
-  negative: 'negative',
-};
-
-export const colorVariants = styleVariants(variants, (variant) => {
-  return [
-    container,
-    sprinkles({
-      color: `$${variant}Surface`,
-      bg: `$${variant}Contrast`,
-    }),
-    {
-      vars: {
-        [bgHoverColor]: vars.colors[`$${variant}HighContrast`],
-        [bgActiveColor]: vars.colors[`$${variant}Accent`],
-        [focusOutlineColor]: vars.colors[`$${variant}Accent`],
-      },
-    },
-  ];
 });

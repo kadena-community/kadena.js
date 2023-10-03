@@ -1,11 +1,12 @@
-import { Box, SystemIcon, Text, TextField } from '@kadena/react-ui';
+import { Box, Text } from '@kadena/react-ui';
 
 import { Search } from '../Search/';
-import { searchFormClass } from '../Search/styles.css';
+import { SearchBar } from '../SearchBar';
 
-import { Wrapper } from './styles';
+import { wrapperClass } from './styles.css';
 
-import React, { FC, FormEvent, useEffect, useRef, useState } from 'react';
+import type { FC, FormEvent } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export const SearchModal: FC = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -36,26 +37,14 @@ export const SearchModal: FC = () => {
 
   return (
     <>
-      <Wrapper>
+      <div className={wrapperClass}>
         <Text>Search the classic way, or just ask a question</Text>
         <Box marginY="$4">
-          <form onSubmit={handleSubmit} className={searchFormClass}>
-            <TextField
-              inputProps={{
-                id: 'seachinput',
-                outlined: true,
-                ref: searchInputRef,
-                defaultValue: query,
-                placeholder: 'Search',
-                rightIcon: SystemIcon.Magnify,
-                'aria-label': 'Search',
-              }}
-            />
-          </form>
+          <SearchBar ref={searchInputRef} onSubmit={handleSubmit} />
         </Box>
 
         <Search query={query} hasScroll={true} limitResults={10} />
-      </Wrapper>
+      </div>
     </>
   );
 };

@@ -1,1 +1,3 @@
 .github/CODEOWNERS
+.changeset
+pnpm-lock.yaml

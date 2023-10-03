@@ -8,6 +8,7 @@ import remarkAdmonitions from './src/scripts/remarkAdmonitions.mjs';
 import remarkCheckForCodeTitle from './src/scripts/remarkCheckForCodeTitle.mjs';
 import remarkYoutube from './src/scripts/remarkYoutube.mjs';
 import remarkFigureOutOfParagraph from './src/scripts/remarkFigureOutOfParagraph.mjs';
+import remarkTwitter from './src/scripts/remarkTwitter.mjs';
 import remarkGfm from 'remark-gfm';
 import mdx from '@next/mdx';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
@@ -76,6 +77,7 @@ const withMDX = mdx({
       remarkPropsToStaticRender,
       remarkAdmonitions,
       remarkYoutube,
+      remarkTwitter,
       remarkCheckForCodeTitle,
       remarkFigureOutOfParagraph,
     ],
@@ -87,9 +89,15 @@ const withMDX = mdx({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true, // lint is a different task/phase
+  },
+
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
-  transpilePackages: ['@kadena/react-ui'],
+  productionBrowserSourceMaps: true,
+
+  transpilePackages: ['@kadena/react-ui', 'react-tweet'],
   images: {
     remotePatterns: [
       {

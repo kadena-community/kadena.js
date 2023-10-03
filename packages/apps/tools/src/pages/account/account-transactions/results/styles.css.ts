@@ -2,6 +2,12 @@ import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
+export const mainContentClass = style([
+  {
+    width: `calc(100% - ${vars.sizes.$16})`,
+  },
+]);
+
 export const headerButtonGroupClass = style([
   sprinkles({
     display: 'flex',

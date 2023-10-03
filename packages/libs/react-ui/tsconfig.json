@@ -1,11 +1,8 @@
 {
-  "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
-  },
+  "extends": "./node_modules/@kadena-dev/heft-rig/tsconfig-base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "types": ["node", "heft-jest", "@testing-library/jest-dom"],
+    "types": ["node", "jest", "@testing-library/jest-dom"],
     "skipLibCheck": true,
     "module": "ESNext",
     "declarationDir": "types",
@@ -15,7 +12,8 @@
     "removeComments": true,
     "paths": {
       "@components/*": ["src/components/*"],
-      "@theme/*": ["src/styles/*"]
+      "@theme/*": ["src/styles/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "include": ["./src", "./src/**/*"],

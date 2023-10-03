@@ -42,11 +42,10 @@ $ npm install --global @kadena/kda-cli
 To install the executable from this repo:
 
 ```sh
-rush install --to @kadena/kda-cli
-rush build --to @kadena/kda-cli
-chmod +x ./lib/index.js
+pnpm install
+pnpm build --filter @kadena/kda-cli
 # if you are using NVM, you should have this environment variable available
-ln -s $(pwd)/lib/index.js $NVM_BIN/kda
+ln -s $(pwd)/bin/kda.js $NVM_BIN/kda
 # if not, you can replace $NVM_BIN to any path you have added in your $PATH
 ```
 
