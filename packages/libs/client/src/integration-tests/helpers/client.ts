@@ -1,4 +1,4 @@
-import { ChainId, NetworkId } from '@kadena/types';
+import type { ChainId, NetworkId } from '@kadena/types';
 
 import { createClient } from '../../index';
 

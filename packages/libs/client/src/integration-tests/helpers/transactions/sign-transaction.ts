@@ -1,5 +1,5 @@
 import { sign } from '@kadena/cryptography-utils';
-import { ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
 export function signByKeyPair(
   transaction: IUnsignedCommand,
