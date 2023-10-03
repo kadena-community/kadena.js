@@ -3,8 +3,6 @@ import { fundAccount } from './helpers/account/fund-account';
 import { executeCrossChainTransfer } from './helpers/transactions/crosschain-transaction';
 import { sourceAccount, targetAccount } from './test-data/accounts';
 
-import { expect } from '@jest/globals';
-
 let initialSourceBalance: number;
 let initialTargetBalance: number;
 
