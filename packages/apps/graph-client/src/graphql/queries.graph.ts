@@ -97,6 +97,148 @@ export const getRecentHeights: DocumentNode = gql`
   }
 `;
 
+export const getAccount: DocumentNode = gql`
+  query getAccount($moduleName: String!, $accountName: String!) {
+    account(moduleName: $moduleName, accountName: $accountName) {
+      # id
+      accountName
+      moduleName
+
+      totalBalance
+
+      chainAccounts {
+        # accountName
+        balance
+        chainId
+        # guard {
+        #   keys
+        #   predicate
+        # }
+        # moduleName
+        # transactions
+        # transfers
+      }
+      transactions {
+        edges {
+          node {
+            # id
+            # badResult
+            chainId
+            code
+            # continuation
+            creationTime
+            # data
+            # gas
+            # gasLimit
+            # gasPrice
+            # goodResult
+            height
+            # logs
+            # metadata
+            # nonce
+            # numEvents
+            # pactId
+            # proof
+            requestKey
+            # rollback
+            # sender
+            # step
+            # ttl
+            # txId
+          }
+        }
+      }
+      transfers {
+        edges {
+          node {
+            amount
+            # blockHash
+            chainId
+            fromAccount
+            height
+            # id
+            # idx
+            # moduleHash
+            # moduleName
+            requestKey
+            toAccount
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const getChainAccount: DocumentNode = gql`
+  query getChainAccount(
+    $moduleName: String!
+    $accountName: String!
+    $chainId: String!
+  ) {
+    chainAccount(
+      moduleName: $moduleName
+      accountName: $accountName
+      chainId: $chainId
+    ) {
+      accountName
+      balance
+      chainId
+      guard {
+        keys
+        predicate
+      }
+      moduleName
+      transactions {
+        edges {
+          node {
+            # id
+            # badResult
+            chainId
+            code
+            # continuation
+            creationTime
+            # data
+            # gas
+            # gasLimit
+            # gasPrice
+            # goodResult
+            height
+            # logs
+            # metadata
+            # nonce
+            # numEvents
+            # pactId
+            # proof
+            requestKey
+            # rollback
+            # sender
+            # step
+            # ttl
+            # txId
+          }
+        }
+      }
+      transfers {
+        edges {
+          node {
+            amount
+            # blockHash
+            chainId
+            fromAccount
+            height
+            # id
+            # idx
+            # moduleHash
+            # moduleName
+            requestKey
+            toAccount
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const getBlocksSubscription: DocumentNode = gql`
   ${CORE_BLOCK_FIELDS}
 

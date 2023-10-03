@@ -137,6 +137,7 @@ scalar PositiveFloat
 type Query {
   account(accountName: String!, filter: AccountFilter, moduleName: String!): ModuleAccount!
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
+  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
   hello(name: String): String!
   lastBlockHeight: BigInt

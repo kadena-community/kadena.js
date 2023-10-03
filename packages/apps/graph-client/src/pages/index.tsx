@@ -46,7 +46,7 @@ const Home: React.FC = () => {
         break;
       case 'account':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(`/${routes.ACCOUNT}/${searchField}?module=${moduleField}`);
+        router.push(`/${routes.ACCOUNT}/${moduleField}/${searchField}`);
         break;
       case 'event':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -102,7 +102,6 @@ const Home: React.FC = () => {
         <Grid.Root columns={searchType.startsWith('account') ? 4 : 3}>
           <Grid.Item>
             <Select
-              style={{ marginTop: '9px' }}
               ariaLabel="search-type"
               id="search-type"
               onChange={(event) => setSearchType(event.target.value)}
