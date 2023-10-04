@@ -16,6 +16,8 @@ import { genKeyPair, sign } from '@kadena/cryptography-utils';
 
 import { devnetConfig } from './config';
 
+import { createLogger } from 'graphql-yoga';
+
 export interface IAccount extends IKeyPair {
   account: string;
   chainId?: ChainId;
@@ -25,6 +27,8 @@ export interface IKeyPair {
   publicKey: string;
   secretKey?: string;
 }
+
+export const logger = createLogger('info');
 
 const getClient = (): IClient =>
   createClient(
@@ -80,7 +84,7 @@ export const signAndAssertTransaction =
 export const inspect =
   (tag: string): (<T>(data: T) => T) =>
   <T>(data: T): T => {
-    console.log(tag, data);
+    logger.info(tag, data);
     return data;
   };
 

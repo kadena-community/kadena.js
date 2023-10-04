@@ -2,8 +2,7 @@ import { Pact } from '@kadena/client';
 import type { ChainId, PactValue } from '@kadena/types';
 
 import { devnetConfig } from './config';
-import type { IAccount } from './helper';
-import { dirtyRead } from './helper';
+import { dirtyRead, logger } from './helper';
 
 export async function getBalance({
   account,
@@ -12,7 +11,7 @@ export async function getBalance({
   account: string;
   chainId?: ChainId;
 }): Promise<PactValue> {
-  console.log(`Getting balance for ${account} on chain ${chainId}`);
+  logger.info(`Getting balance for ${account} on chain ${chainId}`);
   const transaction = Pact.builder
     .execution(Pact.modules.coin['get-balance'](account))
     .setMeta({

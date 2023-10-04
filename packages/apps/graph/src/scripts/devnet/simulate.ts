@@ -2,9 +2,10 @@ import type { ChainId } from '@kadena/client';
 
 import { devnetConfig } from './config';
 import { crossChainTransfer } from './crosschain-transfer';
+import { appendToFile, createFile } from './file';
 import { getBalance } from './get-balance';
 import type { IAccount } from './helper';
-import { createAccount, getRandomNumber } from './helper';
+import { createAccount, getRandomNumber, logger } from './helper';
 import { transfer } from './transfer';
 
 import seedrandom from 'seedrandom';
@@ -25,25 +26,36 @@ export async function simulate({
   const accounts: IAccount[] = [];
 
   if (tokenPool < maxAmount || numberOfAccounts < 0) {
-    console.log('Invalid parameters');
+    logger.info('Invalid parameters');
     return;
   }
+
+  logger.info('Seed value: ', seed);
+  const filepath = createFile(`${Date.now()}-${seed}.csv`);
 
   // Create accounts
   for (let i = 0; i < numberOfAccounts; i++) {
     const account = createAccount();
-    console.log(
+    logger.info(
       `Generated KeyPair\nAccount: ${account.account}\nPublic Key: ${account.publicKey}\nSecret Key: ${account.secretKey}\n`,
     );
     accounts.push(account);
 
     // Fund account
-    await transfer({
+    const result = await transfer({
       publicKey: account.publicKey,
       amount: tokenPool / numberOfAccounts,
     });
+
+    appendToFile(filepath, {
+      timestamp: Date.now(),
+      from: 'sender00',
+      to: account.account,
+      amount: tokenPool / numberOfAccounts,
+      requestKey: result.reqKey,
+      type: 'fund',
+    });
   }
-  console.log('Seed value: ', seed);
 
   // Generate first seeded random number
   let randomNo = seedrandom(seed)();
@@ -67,10 +79,10 @@ export async function simulate({
       const balance = (await getBalance(account)) as number;
 
       if (amount > balance) {
-        console.log(
+        logger.info(
           `Insufficient funds for ${account.account}\nFunds necessary: ${amount}\nFunds available: ${balance}`,
         );
-        console.log('Skipping transfer');
+        logger.info('Skipping transfer');
         continue;
       }
 
@@ -86,27 +98,43 @@ export async function simulate({
           ...nextAccount,
           chainId: `${getRandomNumber(
             randomNo,
-            devnetConfig.NO_CHAINS,
+            devnetConfig.NUMBER_OF_CHAINS,
           )}` as ChainId,
         };
       }
 
       if (account === nextAccount) {
-        console.log('Skipping transfer to self');
+        logger.info('Skipping transfer to self');
         continue;
       }
 
       if (account.chainId === nextAccount.chainId) {
-        await transfer({
+        const result = await transfer({
           publicKey: nextAccount.publicKey,
           sender: account,
           amount,
         });
+        appendToFile(filepath, {
+          timestamp: Date.now(),
+          from: account.account,
+          to: nextAccount.account,
+          amount,
+          requestKey: result.reqKey,
+          type: 'transfer',
+        });
       } else {
-        await crossChainTransfer({
+        const result = await crossChainTransfer({
           from: account,
           to: nextAccount,
           amount,
+        });
+        appendToFile(filepath, {
+          timestamp: Date.now(),
+          from: account.account,
+          to: nextAccount.account,
+          amount,
+          requestKey: result.reqKey,
+          type: 'xchaintransfer',
         });
       }
 
