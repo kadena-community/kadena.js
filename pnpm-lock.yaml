@@ -38,6 +38,9 @@ importers:
       '@google-analytics/data':
         specifier: ~3.2.2
         version: 3.2.2
+      '@kadena/fonts':
+        specifier: ~0.0.1
+        version: 0.0.1
       '@kadena/react-ui':
         specifier: workspace:*
         version: link:../../libs/react-ui
@@ -318,6 +321,9 @@ importers:
       prisma:
         specifier: ^5.1.1
         version: 5.1.1
+      seedrandom:
+        specifier: ~3.0.5
+        version: 3.0.5
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -346,6 +352,9 @@ importers:
       '@types/pg':
         specifier: ~8.10.2
         version: 8.10.2
+      '@types/seedrandom':
+        specifier: ~3.0.5
+        version: 3.0.6
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
@@ -12594,6 +12603,10 @@ packages:
 
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
+
+  /@types/seedrandom@3.0.6:
+    resolution: {integrity: sha512-3+JLzzsdbTrEDXSKaudKajj3w8x4ZWDk7CunwHnSWxtfMoetnKtIbFXMru7RXw6Hq1dU0td+soPX8vVjdgCPBA==}
+    dev: true
 
   /@types/semver@7.5.0:
     resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
@@ -27938,6 +27951,10 @@ packages:
   /scuid@1.1.0:
     resolution: {integrity: sha512-MuCAyrGZcTLfQoH2XoBlQ8C6bzwN88XT/0slOGz0pn8+gIP85BOAfYa44ZXQUTOwRwPU0QvgU+V+OSajl/59Xg==}
     dev: true
+
+  /seedrandom@3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
+    dev: false
 
   /select-hose@2.0.0:
     resolution: {integrity: sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg==}

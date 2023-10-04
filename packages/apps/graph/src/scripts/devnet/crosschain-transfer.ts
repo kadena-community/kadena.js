@@ -11,6 +11,7 @@ import type { IAccount } from './helper';
 import {
   inspect,
   listen,
+  logger,
   pollCreateSpv,
   sender00,
   signAndAssertTransaction,
@@ -79,7 +80,7 @@ export async function crossChainTransfer({
   to: IAccount;
   amount: number;
 }): Promise<ICommandResult> {
-  console.log(
+  logger.info(
     `Crosschain Transfer from ${from.account}, chain ${from.chainId}\nTo ${to.account}, chain ${to.chainId}\nAmount: ${amount}`,
   );
 
