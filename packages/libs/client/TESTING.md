@@ -30,6 +30,6 @@ Once devnet is up and running execute the following script to execute the integr
 pnpm run test:integration
 ```
 [1]: https://www.docker.com/
-[2]: /packages/tools/heft-rig/profiles/default/config/jest.config.json
+[2]: /packages/tools/heft-rig/jest.config.json
 [3]: http://localhost:8080
 
