@@ -5,11 +5,7 @@ import { getCookieValue, getQueryValue } from './utils';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
 
-const exampleCookies: NextApiRequestCookies = {
-  '_persist%3AdevOption': '%22BASIC%22',
-  '_persist%3AchainID': '%221%22',
-  '_persist%3Anetwork': '%22testnet04%22',
-};
+const exampleCookies: string = `_persist%3AdevOption=%2522BASIC%2522; _persist%3Anetwork=%2522testnet04%2522; _persist%3AchainID=%25221%2522;`;
 const exampleQuery: ParsedUrlQuery = {
   module: 'ab2288bca-3d56-4da0-b363-0df378b9956d.ns-module',
   chain: '0',
@@ -42,11 +38,11 @@ describe('getQueryValue', () => {
 
 describe('getCookieValue', () => {
   it('should return null if the needle is not in the haystack', () => {
-    expect(getCookieValue('needle', {})).toBeNull();
+    expect(getCookieValue('needle', '')).toBeNull();
   });
 
   it('should return the default value if the needle is not in the haystack', () => {
-    expect(getCookieValue('needle', {}, 'my default value')).toBe(
+    expect(getCookieValue('needle', '', 'my default value')).toBe(
       'my default value',
     );
   });
