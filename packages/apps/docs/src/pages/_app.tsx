@@ -17,6 +17,8 @@ import { ThemeProvider } from 'next-themes';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
 
+KodeMono();
+
 type ImportedPagePropsType = Omit<IPageProps, 'frontmatter'> & {
   frontmatter: Omit<IPageMeta, 'lastModifiedDate'> & {
     lastModifiedDate: string;
