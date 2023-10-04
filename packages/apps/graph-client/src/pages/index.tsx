@@ -1,10 +1,4 @@
-import {
-  Button,
-  Grid,
-  Input,
-  InputWrapper,
-  Select
-} from '@kadena/react-ui';
+import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
 
 import {
   useGetBlocksSubscription,

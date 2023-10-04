@@ -1,11 +1,12 @@
-import DataLoader from 'dataloader';
 import { getAccountDetails } from '../../services/node-service';
 
-type AccountDetailsKey = {
+import DataLoader from 'dataloader';
+
+interface AccountDetailsKey {
   moduleName: string;
   accountName: string;
   chainId: string;
-};
+}
 
 export const accountDetailsLoader = new DataLoader<AccountDetailsKey, any>(
   async (keys: readonly AccountDetailsKey[]) => {

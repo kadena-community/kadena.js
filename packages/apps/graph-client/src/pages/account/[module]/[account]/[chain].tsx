@@ -1,11 +1,3 @@
-import { useRouter } from 'next/router';
-import { mainStyle } from '../../../../components/main/styles.css';
-import { Text } from '../../../../components/text';
-
-import Head from 'next/head';
-import React from 'react';
-import { useGetChainAccountQuery } from '../../../../__generated__/sdk';
-import Loader from '../../../../components/loader/loader';
 import {
   Box,
   ContentHeader,
@@ -14,7 +6,16 @@ import {
   Notification,
   Table,
 } from '@kadena/react-ui';
+
+import { useGetChainAccountQuery } from '../../../../__generated__/sdk';
+import Loader from '../../../../components/loader/loader';
+import { mainStyle } from '../../../../components/main/styles.css';
+import { Text } from '../../../../components/text';
 import routes from '../../../../constants/routes';
+
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import React from 'react';
 
 function truncate(text: string): string {
   if (text.length > 12) {
