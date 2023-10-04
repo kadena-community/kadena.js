@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { $$leftSideWidth, $$sideMenu } from '../../global.css';
 
@@ -25,7 +25,9 @@ export const menuClass = style([
         width: $$leftSideWidth,
       },
       [`screen and ${breakpoints.md}`]: {
-        position: 'relative',
+        position: 'sticky',
+        top: vars.sizes.$18,
+        height: `calc(100vh - ${vars.sizes.$18})`,
         transform: 'translateX(0)',
         background: 'transparent',
       },
