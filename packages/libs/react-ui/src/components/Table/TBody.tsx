@@ -14,7 +14,7 @@ export const TBody: FC<ITBodyProps> = ({ children }) => {
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
-          (Boolean(child) && child.type !== Tr && child.type !== React.Fragment)
+          (Boolean(child) && child.type !== Tr)
         ) {
           return null;
         }
