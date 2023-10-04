@@ -16,9 +16,7 @@ import * as z from 'zod';
 
 const schema = z.object({
   label: z
-    .string({
-      required_error: 'reqired field',
-    })
+    .string()
     .trim()
     .min(1),
   networkId: z.string().trim().min(1),
