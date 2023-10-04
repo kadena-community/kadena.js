@@ -56,7 +56,6 @@ const ChainAccount: React.FC = () => {
 
         <div>
           {loadingChainAccount && (
-            // Display a loading spinner next to the text without a gap
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Loader /> <span>Retrieving account information...</span>
             </div>
@@ -80,27 +79,39 @@ const ChainAccount: React.FC = () => {
                     <Table.Body>
                       <Table.Tr>
                         <Table.Td>Account Name</Table.Td>
-                        <Table.Td>{chainAccountQuery.chainAccount.accountName}</Table.Td>
+                        <Table.Td>
+                          {chainAccountQuery.chainAccount.accountName}
+                        </Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>Module</Table.Td>
-                        <Table.Td>{chainAccountQuery.chainAccount.moduleName}</Table.Td>
+                        <Table.Td>
+                          {chainAccountQuery.chainAccount.moduleName}
+                        </Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>Chain ID</Table.Td>
-                        <Table.Td>{chainAccountQuery.chainAccount.chainId}</Table.Td>
+                        <Table.Td>
+                          {chainAccountQuery.chainAccount.chainId}
+                        </Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>Balance</Table.Td>
-                        <Table.Td>{chainAccountQuery.chainAccount.balance}</Table.Td>
+                        <Table.Td>
+                          {chainAccountQuery.chainAccount.balance}
+                        </Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>Guard Predicate</Table.Td>
-                        <Table.Td>{chainAccountQuery.chainAccount.guard.predicate}</Table.Td>
+                        <Table.Td>
+                          {chainAccountQuery.chainAccount.guard.predicate}
+                        </Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>Guard Keys</Table.Td>
-                        <Table.Td>{chainAccountQuery.chainAccount.guard.keys}</Table.Td>
+                        <Table.Td>
+                          {chainAccountQuery.chainAccount.guard.keys}
+                        </Table.Td>
                       </Table.Tr>
                     </Table.Body>
                   </Table.Root>
@@ -187,7 +198,9 @@ const ChainAccount: React.FC = () => {
                                 </Link>
                               </Table.Td>
                               <Table.Td>
-                                {truncate(edge?.node.code as string)}
+                                <span title={edge?.node.code as string}>
+                                  {truncate(edge?.node.code as string)}
+                                </span>
                               </Table.Td>
                             </Table.Tr>
                           );

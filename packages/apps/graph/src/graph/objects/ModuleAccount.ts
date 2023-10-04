@@ -13,25 +13,29 @@ export default builder.objectType('ModuleAccount', {
         const chainAccounts: IChainModuleAccount[] = [];
 
         for (let i = 0; i < 20; i++) {
-          const accountDetails = await getAccountDetails(
-            parent.moduleName,
-            parent.accountName,
-            i.toString(),
-          );
+          try {
+            const accountDetails = await getAccountDetails(
+              parent.moduleName,
+              parent.accountName,
+              i.toString(),
+            );
 
-          if (accountDetails) {
-            chainAccounts.push({
-              chainId: i.toString(),
-              accountName: parent.accountName,
-              moduleName: parent.moduleName,
-              guard: {
-                keys: accountDetails.guard.keys,
-                predicate: accountDetails.guard.pred,
-              },
-              balance: accountDetails.balance,
-              transactions: [],
-              transfers: [],
-            });
+            if (accountDetails) {
+              chainAccounts.push({
+                chainId: i.toString(),
+                accountName: parent.accountName,
+                moduleName: parent.moduleName,
+                guard: {
+                  keys: accountDetails.guard.keys,
+                  predicate: accountDetails.guard.pred,
+                },
+                balance: accountDetails.balance,
+                transactions: [],
+                transfers: [],
+              });
+            }
+          } catch (e) {
+            // console.log(e);
           }
         }
 

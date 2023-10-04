@@ -37,7 +37,6 @@ const RequestKey: React.FC = () => {
 
         <div>
           {loadingTransaction && (
-            // Display a loading spinner next to the text without a gap
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Loader /> <span>Waiting for request key...</span>
             </div>

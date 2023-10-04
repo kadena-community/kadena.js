@@ -55,7 +55,6 @@ const Account: React.FC = () => {
 
         <div>
           {loadingAccount && (
-            // Display a loading spinner next to the text without a gap
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Loader /> <span>Retrieving account information...</span>
             </div>
@@ -94,52 +93,36 @@ const Account: React.FC = () => {
                 </div>
               </div>
               <Box margin={'$4'} />
-              <Table.Root wordBreak="break-word">
-                <Table.Body>
-                  <Table.Tr>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <strong>Chain</strong>
+                    </td>
                     {accountQuery.account.chainAccounts.map(
-                      (chainAccount, index) => {
-                        if (index === 0) {
-                          return (
-                            <Table.Td key={index}>
-                              <strong>Chain</strong>
-                            </Table.Td>
-                          );
-                        } else {
-                          return (
-                            <Table.Td key={index}>
-                              {chainAccount.chainId}
-                            </Table.Td>
-                          );
-                        }
-                      },
+                      (chainAccount, index) => (
+                        <td key={index}>{chainAccount.chainId}</td>
+                      ),
                     )}
-                  </Table.Tr>
-                  <Table.Tr>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Balance</strong>
+                    </td>
                     {accountQuery.account.chainAccounts.map(
-                      (chainAccount, index) => {
-                        if (index === 0) {
-                          return (
-                            <Table.Td key={index}>
-                              <strong>Balance</strong>
-                            </Table.Td>
-                          );
-                        } else {
-                          return (
-                            <Table.Td key={index}>
-                              <Link
-                                href={`${routes.ACCOUNT}/${router.query.module}/${router.query.account}/${chainAccount.chainId}`}
-                              >
-                                {chainAccount.balance}
-                              </Link>
-                            </Table.Td>
-                          );
-                        }
-                      },
+                      (chainAccount, index) => (
+                        <td key={index}>
+                          <Link
+                            href={`${routes.ACCOUNT}/${router.query.module}/${router.query.account}/${chainAccount.chainId}`}
+                          >
+                            {chainAccount.balance}
+                          </Link>
+                        </td>
+                      ),
                     )}
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+                  </tr>
+                </tbody>
+              </table>
               <Box margin={'$4'} />
               <Grid.Root columns={2} gap="$lg">
                 <Grid.Item>
@@ -225,7 +208,9 @@ const Account: React.FC = () => {
                                 </Link>
                               </Table.Td>
                               <Table.Td>
-                                {truncate(edge?.node.code as string)}
+                                <span title={edge?.node.code as string}>
+                                  {truncate(edge?.node.code as string)}
+                                </span>
                               </Table.Td>
                             </Table.Tr>
                           );
