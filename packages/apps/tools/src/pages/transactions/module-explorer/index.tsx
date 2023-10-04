@@ -114,7 +114,7 @@ export const getServerSideProps: GetServerSideProps<{
 
   const modules = await getModules(network, networksData);
 
-  console.log("Modules: ", modules);
+  console.log('Modules: ', modules);
 
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);

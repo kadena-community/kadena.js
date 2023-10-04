@@ -26,7 +26,9 @@ export const listModules = async (
 ): Promise<IModulesResult | null> => {
   debug(listModules.name);
 
-  if (!networksData) { return  null}
+  if (!networksData) {
+    return null;
+  }
 
   const networkDto = networksData.find((item) => item.networkId === network);
 
