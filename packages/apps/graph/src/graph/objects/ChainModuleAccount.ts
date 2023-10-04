@@ -1,6 +1,6 @@
 import { prismaClient } from '../../db/prismaClient';
-import { getAccountDetails } from '../../services/node-service';
 import { builder } from '../builder';
+import { accountDetailsLoader } from '../data-loaders/account-details';
 
 export default builder.objectType('ChainModuleAccount', {
   fields: (t) => ({
@@ -10,11 +10,11 @@ export default builder.objectType('ChainModuleAccount', {
     guard: t.field({
       type: 'Guard',
       resolve: async (parent, args) => {
-        const accountDetails = await getAccountDetails(
-          parent.moduleName,
-          parent.accountName,
-          parent.chainId,
-        );
+        const accountDetails = await accountDetailsLoader.load({
+          moduleName: parent.moduleName,
+          accountName: parent.accountName,
+          chainId: parent.chainId,
+        });
 
         return {
           keys: accountDetails.guard.keys,

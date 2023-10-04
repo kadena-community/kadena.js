@@ -1,6 +1,6 @@
 import { prismaClient } from '../../db/prismaClient';
-import { getAccountDetails } from '../../services/node-service';
 import { builder } from '../builder';
+import { accountDetailsLoader } from '../data-loaders/account-details';
 import type { ChainModuleAccount } from '../types/graphql-types';
 
 export default builder.objectType('ModuleAccount', {
@@ -15,11 +15,11 @@ export default builder.objectType('ModuleAccount', {
 
         for (let i = 0; i < 20; i++) {
           try {
-            const accountDetails = await getAccountDetails(
-              parent.moduleName,
-              parent.accountName,
-              i.toString(),
-            );
+            const accountDetails = await accountDetailsLoader.load({
+              moduleName: parent.moduleName,
+              accountName: parent.accountName,
+              chainId: i.toString(),
+            });
 
             chainAccounts.push({
               chainId: i.toString(),
@@ -48,11 +48,11 @@ export default builder.objectType('ModuleAccount', {
 
         for (let i = 0; i < 20; i++) {
           try {
-            const accountDetails = await getAccountDetails(
-              parent.moduleName,
-              parent.accountName,
-              i.toString(),
-            );
+            const accountDetails = await accountDetailsLoader.load({
+              moduleName: parent.moduleName,
+              accountName: parent.accountName,
+              chainId: i.toString(),
+            });
 
             totalBalance += accountDetails.balance;
           } catch (e) {
