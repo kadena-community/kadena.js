@@ -5,7 +5,7 @@ import type { FC } from 'react';
 import React from 'react';
 
 export interface ITBodyProps {
-  children?: CompoundType<typeof Tr> | (() => React.ReactNode[]);
+  children?: CompoundType<typeof Tr>;
 }
 
 export const TBody: FC<ITBodyProps> = ({ children }) => {
