@@ -28,7 +28,7 @@ export const Template: FC<IProps> = ({
   const [{ y }] = useWindowScroll();
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [initialTopSpacing, setInitialTopSpacing] = useState('');
-  const [menuTopPosition, setMenuTopPosition] = useState(0);
+  const [style, setStyle] = useState<React.CSSProperties>({});
   // Enable position if it's minimum medium device size
   // and layout type is landing
   const enablePositioning = layout === 'landing' && isMediumDevice;
@@ -42,6 +42,11 @@ export const Template: FC<IProps> = ({
     // When we get css from computed style it comes with `px` suffix
     const onlyValue = paddingTop.split('px')[0];
     setInitialTopSpacing(onlyValue);
+
+    // Reset style value when we navigate to different pages
+    return () => {
+      setStyle({});
+    };
   }, []);
 
   useEffect(() => {
@@ -54,15 +59,10 @@ export const Template: FC<IProps> = ({
     const paddingValue = parseInt(initialTopSpacing) - (y || 0);
 
     if (paddingValue <= 0) return;
-
-    setMenuTopPosition(paddingValue);
-  }, [y, initialTopSpacing]);
-
-  const style = enablePositioning
-    ? {
-        paddingTop: menuTopPosition,
-      }
-    : {};
+    setStyle({
+      paddingTop: paddingValue,
+    });
+  }, [y, initialTopSpacing, enablePositioning]);
 
   return (
     <>
