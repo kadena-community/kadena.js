@@ -117,15 +117,32 @@ docker run --rm -it --add-host=devnet:host-gateway enof/devnet:l2-latest --task=
 ### Fund an account on the devnet
 
 ```sh
-npm run fund -- -k <publickey>
+npm run fund -- -k <key> -a <amount>
 ```
+
+- key - public key to fund (default: will generate a new account)
+- amount - amount to be funded (default: 100)
 
 ### Simulate traffic on the devnet
 
+The simulation uses a seeded random number generator. This means each simulation
+is possible to replicate in the exact same order and with the exact same
+amounts, given that the inputs stay the same. Note: the created account keys and
+request keys of the transactions will not stay the same. When a simulation
+starts, some information regarding the transactions is saved on a file. This
+file can be found on `packages/apps/graph/src/scripts/devnet/logs`. The filename
+is determined by `timestamp` and `seed`.
+
+Advanced: In each iteration a new random number is generated, so that the
+transactions are different, with different amounts and to and from different
+chains. The new number is generated using the previous one as seed.
+
 ```sh
-npm run simulate -- -a <accounts> -i <timeInterval> -t <transferAmount>
+npm run simulate -- -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
 ```
 
-- accounts - number of accounts to be created in the devnet
-- timeInterval - frequency of transactions in miliseconds
-- transferAmount - amount to be transfered in each transaction (float)
+- accounts - number of accounts to be created in the devnet (default: 5)
+- timeInterval - frequency of transactions in miliseconds (default: 3000)
+- maxAmount - maximum amount for a single transaction (default: 25)
+- tokenPool - amount of circulating tokens (default: 1000000)
+- seed - seed for random number generation (default: current timestamp)

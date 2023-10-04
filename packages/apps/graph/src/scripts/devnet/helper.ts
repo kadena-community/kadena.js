@@ -16,6 +16,8 @@ import { genKeyPair, sign } from '@kadena/cryptography-utils';
 
 import { devnetConfig } from './config';
 
+import { createLogger } from 'graphql-yoga';
+
 export interface IAccount extends IKeyPair {
   account: string;
   chainId?: ChainId;
@@ -25,6 +27,8 @@ export interface IKeyPair {
   publicKey: string;
   secretKey?: string;
 }
+
+export const logger = createLogger('info');
 
 const getClient = (): IClient =>
   createClient(
@@ -80,7 +84,7 @@ export const signAndAssertTransaction =
 export const inspect =
   (tag: string): (<T>(data: T) => T) =>
   <T>(data: T): T => {
-    console.log(tag, data);
+    logger.info(tag, data);
     return data;
   };
 
@@ -109,30 +113,13 @@ export const sender00: IAccount = {
   account: 'sender00',
 };
 
-export const getRandomChainId = (): ChainId => {
-  const chainIds: ChainId[] = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-  ];
-
-  const randomIndex = Math.floor(Math.random() * chainIds.length);
-  return chainIds[randomIndex];
+/** This function takes a random number between 0 and 1 and returns a random number between 0 and maxNumber */
+export const getRandomNumber = (
+  randomNumber: number,
+  maxNumber: number,
+): number => {
+  if (randomNumber > 1 || randomNumber < 0)
+    throw new Error('randomNumber must be less than 1 and greater than 0');
+  const generatedNumber = Math.floor(randomNumber * maxNumber);
+  return generatedNumber === 0 ? 1 : generatedNumber;
 };
