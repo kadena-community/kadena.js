@@ -1,7 +1,6 @@
-import type { INetworkData } from '@/utils/network';
 import { getName, parse } from '@/utils/persist';
-import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
+import qs from 'querystring';
 
 export const getQueryValue = (
   needle: string,
@@ -25,12 +24,15 @@ export const getQueryValue = (
 
 export const getCookieValue = (
   needle: string,
-  haystack: NextApiRequestCookies,
-  defaultValue?: string,
-): string | Array<INetworkData> | null => {
-  const encoded = encodeURIComponent(getName(needle));
-  if (haystack[encoded]) {
-    return parse(haystack[encoded]!);
+  haystack: string,
+  defaultValue?: any,
+): any | null => {
+
+  const decodedCookieName = decodeURIComponent(getName(needle));
+  const cookies = qs.decode(haystack, "; ")
+
+  if (typeof cookies[decodedCookieName] === 'string' ) {
+    return parse(cookies[decodedCookieName] as string);
   }
   return defaultValue ?? null;
 };
