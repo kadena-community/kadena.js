@@ -1,3 +1,4 @@
+import type { INetworkData } from '@/utils/network';
 import { getName, parse } from '@/utils/persist';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
@@ -25,8 +26,8 @@ export const getQueryValue = (
 export const getCookieValue = (
   needle: string,
   haystack: NextApiRequestCookies,
-  defaultValue?: string | [any],
-): string | [any] | [] | null => {
+  defaultValue?: string,
+): string | Array<INetworkData> | null => {
   const encoded = encodeURIComponent(getName(needle));
   if (haystack[encoded]) {
     return parse(haystack[encoded]!);

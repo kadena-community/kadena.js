@@ -5,7 +5,7 @@ import type { IModule } from '@/components/Global';
 export const transformModulesRequest = (
   modulesRequest: IModulesResult,
 ): Array<IModule> => {
-  if (!modulesRequest.data) {
+  if (!modulesRequest || modulesRequest.data === undefined) {
     return [];
   }
 
