@@ -44,14 +44,18 @@ export default builder.objectType('ModuleAccount', {
         let totalBalance = 0;
 
         for (let i = 0; i < 20; i++) {
-          const accountDetails = await getAccountDetails(
-            parent.moduleName,
-            parent.accountName,
-            i.toString(),
-          );
+          try {
+            const accountDetails = await getAccountDetails(
+              parent.moduleName,
+              parent.accountName,
+              i.toString(),
+            );
 
-          if (accountDetails) {
-            totalBalance += accountDetails.balance;
+            if (accountDetails) {
+              totalBalance += accountDetails.balance;
+            }
+          } catch (e) {
+            // console.log(e);
           }
         }
 
@@ -69,7 +73,7 @@ export default builder.objectType('ModuleAccount', {
               some: {
                 module: parent.moduleName,
               },
-            }
+            },
           },
           orderBy: {
             height: 'desc',
