@@ -11,8 +11,9 @@ import {
   mainRowItemInnerBlock,
   mainRowItemUnavailable,
   modalImage,
+  progressBar,
+  progressVar,
 } from './NftBlock.css';
-import progressClasses from './progress.module.scss';
 
 import Image from 'next/image';
 import type { FC } from 'react';
@@ -32,15 +33,20 @@ export const NftBlock: FC<NftBlockProps> = ({
   progress,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <>
       <div key={day} className={mainRowItem}>
         {active ? (
           <div className={mainRowItemActive} onClick={() => setModalOpen(true)}>
             <div
-              className={progressClasses.progress_bar}
+              className={progressBar}
               // @ts-ignore updating css var works fine
-              style={{ '--progress-value': progress ?? 0 }}
+              style={{
+                [progressVar.substring(4, progressVar.length - 1)]: `${
+                  progress ?? 0
+                }`,
+              }}
             />
             <div className={mainRowItemActiveDot}></div>
           </div>

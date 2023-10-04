@@ -1,4 +1,4 @@
-import { globalStyle, style } from '@vanilla-extract/css';
+import { createVar, globalStyle, style } from '@vanilla-extract/css';
 
 export const mainRowItem = style([
   {
@@ -87,5 +87,26 @@ export const modalImage = style([
     height: '100%',
     maxHeight: '73vh',
     objectFit: 'cover',
+  },
+]);
+
+export const progressVar = createVar();
+
+export const progressBar = style([
+  {
+    position: 'absolute',
+    width: '60px',
+    height: '60px',
+    borderRadius: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 0,
+    background: `radial-gradient(
+      closest-side,
+      #1e1726 66%,
+      transparent 65% 100%,
+      #1e1726 0
+    ), conic-gradient(#9d42fb calc(${progressVar} * 1%), #413949 0)`,
   },
 ]);
