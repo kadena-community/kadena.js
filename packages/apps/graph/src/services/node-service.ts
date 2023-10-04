@@ -1,5 +1,7 @@
-import { ChainId, Pact, createClient } from '@kadena/client';
+import type { ChainId, IClient } from '@kadena/client';
+import { createClient, Pact } from '@kadena/client';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type ChainModuleAccountDetails = {
   account: string;
   balance: number;
@@ -9,7 +11,7 @@ export type ChainModuleAccountDetails = {
   };
 };
 
-function getClient(chainId: string) {
+function getClient(chainId: string): IClient {
   return createClient(
     `http://${process.env.NETWORK_HOST}/chainweb/0.0/${process.env.NETWORK_ID}/chain/${chainId}/pact`,
   );
@@ -24,7 +26,7 @@ export async function getAccountDetails(
     Pact.builder
       .execution(
         // @ts-ignore
-        Pact.modules[module]['details'](accountName),
+        Pact.modules[module].details(accountName),
       )
       .setMeta({
         chainId: chainId as ChainId,
@@ -37,10 +39,11 @@ export async function getAccountDetails(
   );
 
   if (commandResult.result.status !== 'success') {
-    throw {
+    const error = {
       message: 'Failed with error',
       result: JSON.stringify(commandResult),
     };
+    throw error;
   }
 
   return commandResult.result.data as unknown as ChainModuleAccountDetails;

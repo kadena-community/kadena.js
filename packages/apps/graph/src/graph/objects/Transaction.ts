@@ -8,7 +8,9 @@ export default builder.prismaNode('Transaction', {
     badResult: t.string({
       nullable: true,
       resolve({ badresult }) {
-        return !badresult ? undefined : JSON.stringify(badresult);
+        return badresult === undefined || badresult === null || badresult === ''
+          ? undefined
+          : JSON.stringify(badresult);
       },
     }),
     chainId: t.expose('chainid', { type: 'BigInt' }),
@@ -16,14 +18,20 @@ export default builder.prismaNode('Transaction', {
     continuation: t.string({
       nullable: true,
       resolve({ continuation }) {
-        return !continuation ? undefined : JSON.stringify(continuation);
+        return continuation === undefined ||
+          continuation === null ||
+          continuation === ''
+          ? undefined
+          : JSON.stringify(continuation);
       },
     }),
     creationTime: t.expose('creationtime', { type: 'DateTime' }),
     data: t.string({
       nullable: true,
       resolve({ data }) {
-        return !data ? undefined : JSON.stringify(data);
+        return data === undefined || data === null || data === ''
+          ? undefined
+          : JSON.stringify(data);
       },
     }),
     gas: t.expose('gas', { type: 'BigInt' }),
@@ -32,7 +40,11 @@ export default builder.prismaNode('Transaction', {
     goodResult: t.string({
       nullable: true,
       resolve({ goodresult }) {
-        return !goodresult ? undefined : JSON.stringify(goodresult);
+        return goodresult === undefined ||
+          goodresult === null ||
+          goodresult === ''
+          ? undefined
+          : JSON.stringify(goodresult);
       },
     }),
     height: t.expose('height', { type: 'BigInt' }),
@@ -40,7 +52,9 @@ export default builder.prismaNode('Transaction', {
     metadata: t.string({
       nullable: true,
       resolve({ metadata }) {
-        return !metadata ? undefined : JSON.stringify(metadata);
+        return metadata === undefined || metadata === null || metadata === ''
+          ? undefined
+          : JSON.stringify(metadata);
       },
     }),
     nonce: t.exposeString('nonce', { nullable: true }),

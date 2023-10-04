@@ -1,3 +1,4 @@
+// eslint-disable-next-line @rushstack/typedef-var
 export const devnetConfig = {
   NETWORK_ID: 'fast-development',
   CHAIN_ID: '0',

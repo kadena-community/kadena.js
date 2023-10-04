@@ -1,6 +1,6 @@
 import { prismaClient } from '../../db/prismaClient';
-import { builder } from '../builder';
 import { getAccountDetails } from '../../services/node-service';
+import { builder } from '../builder';
 import type { ChainModuleAccount } from '../types/graphql-types';
 
 export default builder.objectType('ModuleAccount', {
@@ -21,20 +21,18 @@ export default builder.objectType('ModuleAccount', {
               i.toString(),
             );
 
-            if (accountDetails) {
-              chainAccounts.push({
-                chainId: i.toString(),
-                accountName: parent.accountName,
-                moduleName: parent.moduleName,
-                guard: {
-                  keys: accountDetails.guard.keys,
-                  predicate: accountDetails.guard.pred,
-                },
-                balance: accountDetails.balance,
-                transactions: [],
-                transfers: [],
-              });
-            }
+            chainAccounts.push({
+              chainId: i.toString(),
+              accountName: parent.accountName,
+              moduleName: parent.moduleName,
+              guard: {
+                keys: accountDetails.guard.keys,
+                predicate: accountDetails.guard.pred,
+              },
+              balance: accountDetails.balance,
+              transactions: [],
+              transfers: [],
+            });
           } catch (e) {
             // console.log(e);
           }
@@ -56,9 +54,7 @@ export default builder.objectType('ModuleAccount', {
               i.toString(),
             );
 
-            if (accountDetails) {
-              totalBalance += accountDetails.balance;
-            }
+            totalBalance += accountDetails.balance;
           } catch (e) {
             // console.log(e);
           }
