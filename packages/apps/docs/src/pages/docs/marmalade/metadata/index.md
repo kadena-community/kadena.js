@@ -23,7 +23,7 @@ individuality of each token.
 ## JSON standard
 
 A significant characteristic of marmalade involves the URI attribute, a pointer
-to an off-chain JSON file. This design ensures the delivery of usefull
+to an off-chain JSON file. This design ensures the delivery of useful
 information on tokens without straining the constraints imposed by on-chain data
 storage fees.
 
