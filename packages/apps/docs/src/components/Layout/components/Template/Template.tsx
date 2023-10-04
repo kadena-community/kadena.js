@@ -1,11 +1,14 @@
+import { breakpoints } from '@kadena/react-ui/theme';
+
 import { Footer } from '../Footer';
 import { Menu, MenuBack } from '../Menu';
 import { SideMenu } from '../SideMenu';
 
-import { useMenu } from '@/hooks';
+import { useMenu, useWindowScroll } from '@/hooks';
 import type { IMenuItem } from '@/types/Layout';
 import type { FC, ReactNode } from 'react';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useMedia } from 'react-use';
 
 interface IProps {
   children?: ReactNode;
@@ -21,6 +24,45 @@ export const Template: FC<IProps> = ({
   hideSideMenu = false,
 }) => {
   const { isMenuOpen, closeMenu } = useMenu();
+  const isMediumDevice = useMedia(breakpoints.md);
+  const [{ y }] = useWindowScroll();
+  const mainContentRef = useRef<HTMLDivElement>(null);
+  const [initialTopSpacing, setInitialTopSpacing] = useState('');
+  const [menuTopPosition, setMenuTopPosition] = useState(0);
+  // Enable position if it's minimum medium device size
+  // and layout type is landing
+  const enablePositioning = layout === 'landing' && isMediumDevice;
+
+  useEffect(() => {
+    if (!enablePositioning) return;
+    // Get the initial paddingTop value at initial rendering
+    const paddingTop = getComputedStyle(
+      mainContentRef.current as HTMLDivElement,
+    )?.paddingTop;
+    // When we get css from computed style it comes with `px` suffix
+    const onlyValue = paddingTop.split('px')[0];
+    setInitialTopSpacing(onlyValue);
+  }, []);
+
+  useEffect(() => {
+    if (!mainContentRef.current || !enablePositioning) {
+      return;
+    }
+
+    // From the initial top spacing subtract the window scroll value
+    //  to maintain the scrolling effect
+    const paddingValue = parseInt(initialTopSpacing) - (y || 0);
+
+    if (paddingValue <= 0) return;
+
+    setMenuTopPosition(paddingValue);
+  }, [y, initialTopSpacing]);
+
+  const style = enablePositioning
+    ? {
+        paddingTop: menuTopPosition,
+      }
+    : {};
 
   return (
     <>
@@ -30,6 +72,8 @@ export const Template: FC<IProps> = ({
         isOpen={isMenuOpen}
         inLayout={!hideSideMenu}
         layout={layout}
+        ref={mainContentRef}
+        style={style}
       >
         <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
       </Menu>
