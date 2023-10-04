@@ -73,58 +73,54 @@ const Account: React.FC = () => {
           )}
           {accountQuery?.account && (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div style={{ width: '800px' }}>
-                  <Table.Root>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>Account Name</Table.Td>
-                        <Table.Td>{accountQuery.account.accountName}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>Module</Table.Td>
-                        <Table.Td>{accountQuery.account.moduleName}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>Balance</Table.Td>
-                        <Table.Td>{accountQuery.account.totalBalance}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </div>
-              </div>
+              <Table.Root>
+                <Table.Body>
+                  <Table.Tr>
+                    <Table.Td><strong>Account Name</strong></Table.Td>
+                    <Table.Td>{accountQuery.account.accountName}</Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td><strong>Module</strong></Table.Td>
+                    <Table.Td>{accountQuery.account.moduleName}</Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td><strong>Balance</strong></Table.Td>
+                    <Table.Td>{accountQuery.account.totalBalance}</Table.Td>
+                  </Table.Tr>
+                </Table.Body>
+              </Table.Root>
               <Box margin={'$4'} />
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
+              <Table.Root>
+                <Table.Body>
+                  <Table.Tr>
+                    <Table.Td>
                       <strong>Chain</strong>
-                    </td>
+                    </Table.Td>
                     {accountQuery.account.chainAccounts.map(
                       (chainAccount, index) => (
-                        <td key={index}>{chainAccount.chainId}</td>
+                        <Table.Td key={index}>{chainAccount.chainId}</Table.Td>
                       ),
                     )}
-                  </tr>
-                  <tr>
-                    <td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>
                       <strong>Balance</strong>
-                    </td>
+                    </Table.Td>
                     {accountQuery.account.chainAccounts.map(
                       (chainAccount, index) => (
-                        <td key={index}>
+                        <Table.Td key={index}>
                           <Link
                             href={`${routes.ACCOUNT}/${router.query.module}/${router.query.account}/${chainAccount.chainId}`}
                           >
                             {chainAccount.balance}
                           </Link>
-                        </td>
+                        </Table.Td>
                       ),
                     )}
-                  </tr>
-                </tbody>
-              </table>
-              <Box margin={'$4'} />
+                  </Table.Tr>
+                </Table.Body>
+              </Table.Root>
+              <Box margin={'$8'} />
               <Grid.Root columns={2} gap="$lg">
                 <Grid.Item>
                   <ContentHeader

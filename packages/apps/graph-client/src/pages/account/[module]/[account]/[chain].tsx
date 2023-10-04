@@ -74,51 +74,59 @@ const ChainAccount: React.FC = () => {
           )}
           {chainAccountQuery?.chainAccount && (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div style={{ width: '800px' }}>
-                  <Table.Root>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>Account Name</Table.Td>
-                        <Table.Td>
-                          {chainAccountQuery.chainAccount.accountName}
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>Module</Table.Td>
-                        <Table.Td>
-                          {chainAccountQuery.chainAccount.moduleName}
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>Chain ID</Table.Td>
-                        <Table.Td>
-                          {chainAccountQuery.chainAccount.chainId}
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>Balance</Table.Td>
-                        <Table.Td>
-                          {chainAccountQuery.chainAccount.balance}
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>Guard Predicate</Table.Td>
-                        <Table.Td>
-                          {chainAccountQuery.chainAccount.guard.predicate}
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>Guard Keys</Table.Td>
-                        <Table.Td>
-                          {chainAccountQuery.chainAccount.guard.keys}
-                        </Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </div>
-              </div>
-              <Box margin={'$4'} />
+              <Table.Root>
+                <Table.Body>
+                  <Table.Tr>
+                    <Table.Td>
+                      <strong>Account Name</strong>
+                    </Table.Td>
+                    <Table.Td>
+                      {chainAccountQuery.chainAccount.accountName}
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>
+                      <strong>Module</strong>
+                    </Table.Td>
+                    <Table.Td>
+                      {chainAccountQuery.chainAccount.moduleName}
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>
+                      <strong>Chain</strong>
+                    </Table.Td>
+                    <Table.Td>
+                      {chainAccountQuery.chainAccount.chainId}
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>
+                      <strong>Balance</strong>
+                    </Table.Td>
+                    <Table.Td>
+                      {chainAccountQuery.chainAccount.balance}
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>
+                      <strong>Guard Predicate</strong>
+                    </Table.Td>
+                    <Table.Td>
+                      {chainAccountQuery.chainAccount.guard.predicate}
+                    </Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>
+                      <strong>Guard Keys</strong>
+                    </Table.Td>
+                    <Table.Td>
+                      {chainAccountQuery.chainAccount.guard.keys}
+                    </Table.Td>
+                  </Table.Tr>
+                </Table.Body>
+              </Table.Root>
+              <Box margin={'$8'} />
               <Grid.Root columns={2} gap="$lg">
                 <Grid.Item>
                   <ContentHeader
