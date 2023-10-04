@@ -15,10 +15,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const schema = z.object({
-  label: z
-    .string()
-    .trim()
-    .min(1),
+  label: z.string().trim().min(1),
   networkId: z.string().trim().min(1),
   api: z.string().trim().min(1),
 });
