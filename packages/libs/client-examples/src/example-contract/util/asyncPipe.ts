@@ -6,7 +6,7 @@ type LastFnReturnType<F extends Array<AnyFunc>> = Last<F> extends (
   ? R
   : never;
 
-type First<T extends any[]> = T extends [infer One]
+export type First<T extends any[]> = T extends [infer One]
   ? One
   : T extends [infer HD, ...any[]]
   ? HD
@@ -18,7 +18,7 @@ type Last<T extends any[]> = T extends [infer One]
   ? LD
   : never;
 
-type Tail<T extends any[]> = T extends [infer _]
+export type Tail<T extends any[]> = T extends [infer _]
   ? []
   : T extends [infer _, ...infer TL]
   ? TL
@@ -45,7 +45,10 @@ type PipeArgsTopToDown<
   ? PipeArgsTopToDown<
       Tail<Unprocessed> extends AnyFunc[] ? Tail<Unprocessed> : [],
       B,
-      [...Acc, (...arg: IsFirst extends true ? I : [LastReturnType]) => B],
+      [
+        ...Acc,
+        (...arg: IsFirst extends true ? I : [Awaited<LastReturnType>]) => B,
+      ],
       false
     >
   : Acc;
@@ -61,7 +64,12 @@ type PipeArgsDownToTop<
   ? PipeArgsDownToTop<
       HEAD<Unprocessed> extends AnyFunc[] ? HEAD<Unprocessed> : [],
       I[0],
-      [(...arg: I) => IsLast extends true ? O : LastInputType, ...Acc],
+      [
+        (
+          ...arg: I
+        ) => IsLast extends true ? O : Promise<LastInputType> | LastInputType,
+        ...Acc,
+      ],
       false
     >
   : Acc;
@@ -95,36 +103,28 @@ type PipeArgs<F extends AnyFunc[]> = PipeArgsWithCorrection<
   PipeArgsDownToTop<F>
 >;
 
-interface IPipe {
+interface IAsyncPipe {
   <F extends AnyFunc[]>(
     ...fns: F extends PipeArgs<F> ? F : PipeArgs<F>
-  ): (...args: Parameters<F[0]>) => LastFnReturnType<F>;
+  ): {
+    fns: F;
+    (
+      ...args: Parameters<F[0]>
+    ): LastFnReturnType<F> extends Promise<any>
+      ? LastFnReturnType<F>
+      : Promise<LastFnReturnType<F>>;
+  };
 }
 
-export const pipe: IPipe = (...fns: any[]) => {
+export const asyncPipe: IAsyncPipe = (...fns: any[]) => {
   const [firstFn, ...restFns] = fns;
   return (...args: any[]) =>
     restFns.reduce((acc, fn) => fn(acc), firstFn(...args));
 };
 
-pipe(
-  (a: number, b: string) => a + 1,
-  (a: number) => 'string',
+asyncPipe(
+  (a: number, b: string) => Promise.resolve(a + 1),
+  (a: number) => Promise.resolve('string'),
   <T>(a: T): T => a,
   (a: string) => 3,
 );
-
-type Input = [
-  (a: number, b: string) => number,
-  (a: string) => string,
-  <T>(a: T) => T,
-  <T>(a: T) => T,
-  (a: number) => number,
-];
-
-type Args = PipeArgsWithCorrection<
-  PipeArgsTopToDown<Input>,
-  PipeArgsDownToTop<Input>
->;
-
-type Z = (<T>(a: T) => T) extends (a: string) => infer R ? R : false;

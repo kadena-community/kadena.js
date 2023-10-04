@@ -20,7 +20,8 @@
     "fp"
   ],
   "scripts": {
-    "build": "tsc && api-extractor run --verbose",
+    "generate-pipe-type":"ts-node src/scripts/create-async-pipe-type.ts 20 && prettier --write src/interfaces/async-pipe-type.ts",
+    "build": "pnpm run generate-pipe-type && tsc && api-extractor run --verbose",
     "dev:postinstall": "pnpm run pactjs:retrieve:contract; pnpm run pactjs:generate:contract",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",

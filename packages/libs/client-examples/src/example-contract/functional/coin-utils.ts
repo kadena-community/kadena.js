@@ -12,8 +12,10 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import type { IClientConfig } from './rich-client';
-import { submitAndListen } from './rich-client';
+import type { IClientConfig } from '../../utils/rich-client';
+import { dirtyRead, submitAndListen } from '../../utils/rich-client';
+
+import { pipe } from 'ramda';
 
 interface ICreateAccountCommandInput {
   account: string;
@@ -39,13 +41,12 @@ const createAccountCommand = ({
     setMeta({ senderAccount: sender.account, chainId }),
   );
 
-// create account for "bob"
 export const createAccount = (
   inputs: ICreateAccountCommandInput,
   config: IClientConfig,
 ) => submitAndListen(config)(createAccountCommand(inputs));
 
-export async function test() {
+export async function consumer() {
   createAccount(
     {
       account: 'javad',
@@ -65,5 +66,24 @@ export async function test() {
     .on('preflight', (data) => console.log(data))
     .on('submit', (data) => console.log(data))
     .on('listen', (data) => console.log(data))
+    .on('data', (data) => console.log(data))
     .execute();
 }
+
+export const getBalance = (
+  account: string,
+  networkId: string,
+  chainId: ChainId,
+) => {
+  const exec = pipe(
+    Pact.modules.coin['get-balance'],
+    execution,
+    dirtyRead({
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
+    }),
+  );
+  return exec(account).execute();
+};

@@ -1,5 +1,5 @@
 import type { ICommandResult } from '@kadena/client';
-import { isSignedTransaction, signWithChainweaver } from '@kadena/client';
+import { isSignedTransaction } from '@kadena/client';
 import { asyncPipe } from '@kadena/client/fp';
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
