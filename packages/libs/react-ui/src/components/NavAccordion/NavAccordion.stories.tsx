@@ -18,7 +18,8 @@ const meta: Meta<StoryProps> = {
     },
     docs: {
       description: {
-        component: '',
+        component:
+          'The NavAccordion component allows the user to show and hide sections of navigational lists on a page that are grouped together.<br /><br />These sections can be expanded and collapsed by clicking the section headers.<br /><br />The component consists of four sub components:<br /><strong><NavAccordion.Root></strong> as the parent container<br /><strong><NavAccordion.Section></strong> for each navigational section (collapsable)<br /><strong><NavAccordion.Group></strong> to create sub sections (lists) that group related navigational links (collapsable)<br /><strong><NavAccordion.Link></strong> to create links that can be used to navigate<br /><br /><strong>initialOpenSection</strong><br />This optional prop can be used on the Root element to set the initially opened section.<br /><em>It defaults to `undefined` and has only been explcitly set to `-1` in the story code for demonstration purposes.</em><br /><br /><em>Note: in times when you need to use a different `Link` component (like next/link in Next.js), you can pass the `asChild` prop to the NavAccordion.Link component to pass on styles, icons, and additional props.</em><br /><br /><em>Note: this variant of the Accordion component is meant to be used to display content.<br />For content purposes, please use the <strong>Accordion</strong> within the Layout subgroup.</em>',
       },
     },
   },
@@ -65,8 +66,10 @@ export const Dynamic: IStory = {
           <NavAccordion.Link href="#developer-program">
             Developer Program
           </NavAccordion.Link>
-          <NavAccordion.Link href="#technical-grants">
-            Technical Grants
+          <NavAccordion.Link asChild>
+            <a id="asChild" href="https://kadena.io/" target="_blank">
+              Kadena.io (asChild)
+            </a>
           </NavAccordion.Link>
         </NavAccordion.Section>
       </NavAccordion.Root>

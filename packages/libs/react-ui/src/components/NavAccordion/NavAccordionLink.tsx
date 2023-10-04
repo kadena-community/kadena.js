@@ -7,18 +7,20 @@ import {
 
 import { Link } from '@components/Link';
 import classNames from 'classnames';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface INavAccordionLinkProps {
   active?: boolean;
-  children?: string;
+  asChild?: boolean;
+  children: ReactNode;
   deepLink?: boolean;
-  href: string;
+  href?: string;
 }
 
 export const NavAccordionLink: FC<INavAccordionLinkProps> = ({
   active,
+  asChild,
   children,
   deepLink,
   href,
@@ -31,6 +33,7 @@ export const NavAccordionLink: FC<INavAccordionLinkProps> = ({
           [navAccordionLinkActiveClass]: active,
         })}
         href={href}
+        asChild={asChild}
       >
         {children}
       </Link>
