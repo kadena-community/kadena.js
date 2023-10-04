@@ -40,12 +40,13 @@ interface IWalletConnectClientContext {
 }
 
 export const StorageKeys: Record<
-  'NETWORK' | 'CHAIN_ID' | 'NETWORKS_DATA',
+  'NETWORK' | 'CHAIN_ID' | 'NETWORKS_DATA' | 'DEV_OPTION',
   string
 > = {
   NETWORK: 'network',
   CHAIN_ID: 'chainID',
   NETWORKS_DATA: 'networks',
+  DEV_OPTION: 'devOption'
 };
 
 export const DefaultValues: { NETWORK: Network; CHAIN_ID: ChainwebChainId } = {
@@ -104,11 +105,11 @@ export const WalletConnectClientContextProvider: FC<
       setSelectedChain(initialChain);
     }
 
-    const initialLocalNetworks = getItem(
+    const initialNetworks = getItem(
       StorageKeys.NETWORKS_DATA,
     ) as INetworkData[];
-    const allNetworks = getAllNetworks(initialLocalNetworks);
-    if (initialNetwork) {
+    const allNetworks = getAllNetworks(initialNetworks);
+    if (initialNetworks) {
       setNetworksData(allNetworks);
     }
   }, []);

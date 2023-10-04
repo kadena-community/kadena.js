@@ -24,6 +24,7 @@ import type { IModulesResult } from '@/services/modules/list-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
 import type { INetworkData } from '@/utils/network';
+import { getAllNetworks } from '@/utils/network';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type {
@@ -99,22 +100,23 @@ export const getServerSideProps: GetServerSideProps<{
   data: IModule[];
   openedModules: IEditorProps['openedModules'];
 }> = async (context) => {
+
   const network = getCookieValue(
     StorageKeys.NETWORK,
-    context.req.cookies,
+    context.req.headers.cookie ?? '',
     DefaultValues.NETWORK,
   ) as Network;
 
-  const networksData = getCookieValue(
+  let networksData = getCookieValue(
     StorageKeys.NETWORKS_DATA,
-    context.req.cookies,
+    context.req.headers.cookie ?? '',
   ) as INetworkData[];
 
-  console.log('NETWORKS DATA: ', networksData);
+  if(!networksData) {
+    networksData = getAllNetworks([])
+  }
 
   const modules = await getModules(network, networksData);
-
-  console.log('Modules: ', modules);
 
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
