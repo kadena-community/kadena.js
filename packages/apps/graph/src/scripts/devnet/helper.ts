@@ -113,6 +113,7 @@ export const sender00: IAccount = {
   account: 'sender00',
 };
 
+/** This function takes a random number between 0 and 1 and returns a random number between 0 and maxNumber */
 export const getRandomNumber = (
   randomNumber: number,
   maxNumber: number,
