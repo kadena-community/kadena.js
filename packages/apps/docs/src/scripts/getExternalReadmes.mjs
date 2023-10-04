@@ -111,10 +111,18 @@ const importDocs = async (item) => {
 };
 
 /**
+ * Removes the tempdir.
+ */
+const deleteTempDir = () => {
+  fs.rmSync(TEMPDIR, { recursive: true, force: true });
+};
+
+/**
  * @param {ImportItem} importItem
  */
 const clone = async ({ repo }) => {
-  fs.rmSync(TEMPDIR, { recursive: true, force: true });
+  deleteTempDir();
+
   await promiseExec(`git clone ${REPOPREFIX}${repo} ${TEMPDIR}/${repo}`);
 };
 
@@ -131,27 +139,27 @@ const init = async () => {
    * @type {Array.<ImportItem>}
    */
   const importArray = [
-    // {
-    //   filename: `README.md`,
-    //   repo: 'kadena-community/getting-started',
-    //   destination: '/build/quickstart',
-    //   parentTitle: 'Quickstart',
-    //   options: {
-    //     order: 0,
-    //     tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
-    //     singlePage: true,
-    //   },
-    // },
     {
       filename: `README.md`,
-      repo: 'kadena-io/pact',
-      destination: '/pact/test',
-      parentTitle: 'Pact start',
+      repo: 'kadena-community/getting-started',
+      destination: '/build/quickstart',
+      parentTitle: 'Quickstart',
       options: {
-        order: 5,
-        tags: ['pact'],
+        order: 0,
+        tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
+        singlePage: true,
       },
     },
+    // {
+    //   filename: `README.md`,
+    //   repo: 'kadena-io/pact',
+    //   destination: '/pact/test',
+    //   parentTitle: 'Pact start',
+    //   options: {
+    //     order: 5,
+    //     tags: ['pact'],
+    //   },
+    // },
     // {
     //   file: '../../libs/chainweb-node-client/README.md',
     //   destination: 'chainweb/node-client',
@@ -163,7 +171,9 @@ const init = async () => {
     // },
   ];
 
-  importArray.forEach(async (item) => {
+  for (let i = 0; i < importArray.length; i++) {
+    const item = importArray[i];
+
     if (item.repo) {
       await clone(item);
 
@@ -171,7 +181,9 @@ const init = async () => {
     }
 
     await importDocs(item);
-  });
+  }
+
+  deleteTempDir();
 
   spinner.stop();
 
@@ -183,6 +195,7 @@ const init = async () => {
   } else {
     console.log(chalk.green('✓'), 'EXTERNAL IMPORT DONE');
   }
+
   console.log(
     '\n\n========================================= END EXTERNAL IMPORT ====',
   );
