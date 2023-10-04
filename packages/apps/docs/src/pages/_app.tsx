@@ -1,3 +1,4 @@
+import { KodeMono } from '@kadena/fonts';
 import { ModalProvider } from '@kadena/react-ui';
 // eslint-disable-next-line import/no-unresolved
 import { darkThemeClass } from '@kadena/react-ui/theme';

@@ -139,6 +139,11 @@ const recreateUrl = (pages, url, root) => {
   }, '');
 };
 
+/**
+ * Function cleans up the just seperated pages.
+ * makes sure that the first header (probably an h2, because we seperate the pages on h2) and turn them in an h1
+ * @returns
+ */
 export const cleanUp = (content, filename) => {
   let hasFirstHeader = false;
   const innerCleanUp = (content, filename) => {

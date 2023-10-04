@@ -70,7 +70,7 @@ const createPage = (item, lastModifiedDate) => (page, idx) => {
   createDir(`${DOCSROOT}${item.destination}`);
 
   fs.writeFileSync(
-    `${DOCSROOT}/${item.destination}/index.md`,
+    `${DOCSROOT}/${item.destination}/${slug}.md`,
     createFrontMatter({
       title,
       label: title,
@@ -104,6 +104,7 @@ const importDocs = async (item) => {
     return;
   }
   const pages = divideIntoPages(md);
+
   relinkReferences(md, pages, `/docs/${item.destination}/`);
 
   pages.forEach(createPage(item, lastModifiedDate));
@@ -130,26 +131,36 @@ const init = async () => {
    * @type {Array.<ImportItem>}
    */
   const importArray = [
+    // {
+    //   filename: `README.md`,
+    //   repo: 'kadena-community/getting-started',
+    //   destination: '/build/quickstart',
+    //   parentTitle: 'Quickstart',
+    //   options: {
+    //     order: 0,
+    //     tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
+    //     singlePage: true,
+    //   },
+    // },
     {
       filename: `README.md`,
-      repo: 'kadena-community/getting-started',
-      destination: '/build/quickstart',
-      parentTitle: 'Quickstart',
+      repo: 'kadena-io/pact',
+      destination: '/pact/test',
+      parentTitle: 'Pact start',
       options: {
-        order: 0,
-        tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
-        singlePage: true,
+        order: 5,
+        tags: ['pact'],
       },
     },
-    {
-      file: '../../libs/chainweb-node-client/README.md',
-      destination: 'chainweb/node-client',
-      parentTitle: 'Node Client',
-      options: {
-        order: 1,
-        tags: ['chainweb', 'pact', 'reference'],
-      },
-    },
+    // {
+    //   file: '../../libs/chainweb-node-client/README.md',
+    //   destination: 'chainweb/node-client',
+    //   parentTitle: 'Node Client',
+    //   options: {
+    //     order: 1,
+    //     tags: ['chainweb', 'pact', 'reference'],
+    //   },
+    // },
   ];
 
   importArray.forEach(async (item) => {
