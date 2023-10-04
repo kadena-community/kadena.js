@@ -2,11 +2,13 @@ import * as fs from 'fs';
 import 'dotenv/config';
 import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
-
+import { getTypes } from './utils/getTypes.mjs';
 import { importReadMes } from './utils.mjs';
 import chalk from 'chalk';
+import { createSlug } from './utils/createSlug.mjs';
 import { getLastModifiedDate } from './utils/getLastModifiedDate.mjs';
 import { getTitle } from './utils/markdownUtils.mjs';
+import { relinkReferences } from './utils/relinkReferences.mjs';
 
 const errors = [];
 
@@ -33,32 +35,10 @@ lastModifiedDate: ${lastModifiedDate}
 ---
 `;
 };
-export const getTypes = (tree, type, arr = []) => {
-  tree.children.forEach((branch) => {
-    if (branch.type === type) {
-      arr.push(branch);
-    }
-    if (!branch.children) return arr;
-
-    return getTypes(branch, type, arr);
-  });
-  return arr;
-};
 
 const createEditOverwrite = (filename, options) => {
   if (options.hideEditLink) return '';
   return `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
-};
-
-export const createSlug = (str) => {
-  if (!str) return '';
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s]+/g, '')
-    .replace(/ /g, '-')
-    .toLowerCase()
-    .replace(/^-+|-+$/g, '');
 };
 
 const createTreeRoot = (page) => ({
@@ -89,61 +69,6 @@ export const divideIntoPages = (md) => {
   return rootedPages;
 };
 
-// find the correct title
-// if the title is a h2 (start of the new page)
-const findHeading = (tree, slug) => {
-  const headings = getTypes(tree, 'heading');
-
-  const heading = headings.find((heading) => {
-    return createSlug(heading.children[0].value) === slug;
-  });
-
-  if (heading && heading.depth === 1) {
-    return tree.children[0];
-  }
-  return;
-};
-
-// when we have a URL starting with '#',
-// we need to recreate it, to send to the correct page
-const recreateUrl = (pages, root) => (definition) => {
-  if (!definition.url.startsWith('#')) return definition;
-
-  const slug = definition.url.substring(1);
-
-  definition.url = pages.reduce((acc, page, idx) => {
-    const headingNode = findHeading(page, slug);
-
-    if (headingNode) {
-      const pageTitle = headingNode.children[0].value;
-      const pageSlug = createSlug(pageTitle);
-
-      let url = `${root}`;
-      if (idx > 0) {
-        url = `${url}/${pageSlug}`;
-      }
-
-      if (pageSlug !== slug) {
-        url = `${url}#${slug}`;
-      }
-
-      // remove double slashes from internal url, if any
-      if (!url.includes('http')) {
-        url = url.replace(/\/\//g, '/');
-      }
-
-      return url;
-    }
-
-    return acc;
-  }, '');
-
-  return definition;
-};
-
-const recreateUrls = (pages, root, definitions) =>
-  definitions.map(recreateUrl(pages, root));
-
 /**
  * Function cleans up the just seperated pages.
  * makes sure that the first header (probably an h2, because we seperate the pages on h2) and turn them in an h1
@@ -170,50 +95,6 @@ export const cleanUp = (content, filename) => {
   };
 
   return innerCleanUp(content, filename);
-};
-
-const relinkLinkReferences = (refs, definitions, pages, root) => {
-  refs.forEach((ref) => {
-    const definition = definitions.find((def) => def.label === ref.label);
-
-    if (!definition) {
-      throw new Error('no definition found');
-    }
-
-    ref.type = 'link';
-    ref.url = definition.url;
-    ref.children[0].value = `${ref.children[0].value} `; // the extra ' ' a hack. if the name is the same as the URL, MD will not render it correctly
-    delete ref.label;
-    delete ref.identifier;
-    delete ref.referenceType;
-  });
-};
-
-const relinkImageReferences = (refs, definitions) => {
-  refs.map((ref) => {
-    const definition = definitions.find((def) => def.label === ref.label);
-    if (!definition) {
-      throw new Error('no definition found');
-    }
-
-    ref.type = 'image';
-    ref.url = definition.url;
-    ref.alt = definition.alt;
-    delete ref.label;
-    delete ref.identifier;
-    delete ref.referenceType;
-  });
-};
-
-// because we are creating new pages, we need to link the references to the correct pages
-export const relinkReferences = (md, pages, root) => {
-  const definitions = recreateUrls(pages, root, getTypes(md, 'definition'));
-
-  const linkReferences = getTypes(md, 'linkReference');
-  const imageReferences = getTypes(md, 'imageReference');
-
-  relinkLinkReferences(linkReferences, definitions, pages, root);
-  relinkImageReferences(imageReferences, definitions, pages, root);
 };
 
 const importDocs = async (filename, destination, parentTitle, options) => {

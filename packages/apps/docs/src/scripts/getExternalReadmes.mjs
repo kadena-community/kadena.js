@@ -10,14 +10,10 @@ import {
   getLastModifiedDate,
 } from './utils/getLastModifiedDate.mjs';
 import { getTitle } from './utils/markdownUtils.mjs';
-import {
-  divideIntoPages,
-  relinkReferences,
-  cleanUp,
-  createSlug,
-  createDir,
-  getTypes,
-} from './importReadme.mjs';
+import { divideIntoPages, cleanUp, createDir } from './importReadme.mjs';
+import { getTypes } from './utils/getTypes.mjs';
+import { relinkReferences } from './utils/relinkReferences.mjs';
+import { createSlug } from './utils/createSlug.mjs';
 
 const promiseExec = promisify(exec);
 
@@ -176,12 +172,11 @@ const importDocs = async (item) => {
   const md = LinksToReferences(remark.parse(doc));
 
   if (item.options.singlePage) {
-    relinkReferences(md, md, `/docs${item.destination}/`);
+    relinkReferences(md, [md], `/docs${item.destination}/`);
     createPage(item, lastModifiedDate)(md, 0);
   } else {
     const pages = divideIntoPages(md);
     relinkReferences(md, pages, `/docs/${item.destination}/`);
-
     pages.forEach(createPage(item, lastModifiedDate));
   }
 };
@@ -190,7 +185,7 @@ const importDocs = async (item) => {
  * Removes the tempdir.
  */
 const deleteTempDir = () => {
-  //fs.rmSync(TEMPDIR, { recursive: true, force: true });
+  fs.rmSync(TEMPDIR, { recursive: true, force: true });
 };
 
 /**
@@ -215,26 +210,27 @@ const init = async () => {
    * @type {Array.<ImportItem>}
    */
   const importArray = [
-    {
-      filename: `README.md`,
-      repo: 'kadena-community/getting-started',
-      destination: '/build/quickstart',
-      parentTitle: 'Quickstart',
-      options: {
-        order: 0,
-        tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
-      },
-    },
     // {
     //   filename: `README.md`,
-    //   repo: 'kadena-io/pact',
-    //   destination: '/pact/test',
-    //   parentTitle: 'Pact start',
+    //   repo: 'kadena-community/getting-started',
+    //   destination: '/build/quickstart',
+    //   parentTitle: 'Quickstart',
     //   options: {
-    //     order: 5,
-    //     tags: ['pact'],
+    //     order: 0,
+    //     tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
+    //     singlePage: true,
     //   },
     // },
+    {
+      filename: `README.md`,
+      repo: 'kadena-io/pact',
+      destination: '/pact/test',
+      parentTitle: 'Pact start',
+      options: {
+        order: 5,
+        tags: ['pact'],
+      },
+    },
     // {
     //   file: '../../libs/chainweb-node-client/README.md',
     //   destination: 'chainweb/node-client',
@@ -250,7 +246,7 @@ const init = async () => {
     const item = importArray[i];
 
     if (item.repo) {
-      //await clone(item);
+      await clone(item);
 
       item.file = `${TEMPDIR}/${item.repo}/${item.filename}`;
     }
