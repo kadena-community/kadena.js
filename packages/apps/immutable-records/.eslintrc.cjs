@@ -6,5 +6,12 @@ module.exports = {
   parserOptions: { tsconfigRootDir: __dirname },
   rules: {
     '@kadena-dev/typedef-var': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/naming-convention': 'off',
+    '@rushstack/no-new-null': 'off',
+    '@typescript-eslint/typedef': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    // TODO: fix tsconfig paths configuration for eslint
+    'import/no-unresolved': 'off',
   },
 };
