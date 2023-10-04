@@ -105,6 +105,11 @@ const nextConfig = {
         hostname: 'github.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'travis-ci.org',
+        port: '',
+      },
     ],
   },
 };

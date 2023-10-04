@@ -16,6 +16,7 @@ import {
   cleanUp,
   createSlug,
   createDir,
+  getTypes,
 } from './importReadme.mjs';
 
 const promiseExec = promisify(exec);
@@ -55,7 +56,29 @@ const createEditOverwrite = (repo, filename) => {
   return `${REPOURLPREFIX}/${repo}/blob/main/${filename}`;
 };
 
-const createPage = (item, lastModifiedDate) => (page, idx) => {
+/**
+ * remove the obsolete markup, before the first header
+ */
+const removeObsoleteMarkup = (content) => {
+  let hasHeader = false;
+  content.children = content.children.reduce((acc, val) => {
+    if (val.type === 'heading') {
+      val.depth = 1;
+      acc.push(val);
+      hasHeader = true;
+    } else if (hasHeader) {
+      acc.push(val);
+    }
+
+    return acc;
+  }, []);
+
+  return content;
+};
+
+const createPage = (item, lastModifiedDate) => (loadedPage, idx) => {
+  const page = removeObsoleteMarkup(loadedPage);
+
   const title = getTitle(page);
   const slug = idx === 0 ? 'index' : createSlug(title);
   const menuTitle = idx === 0 ? item.parentTitle : title;
@@ -87,6 +110,59 @@ const createPage = (item, lastModifiedDate) => (page, idx) => {
   );
 };
 
+const LinksToReferences = (c) => {
+  const definitions = getTypes(c, 'definition');
+  let index = 0;
+
+  const replaceLinkWithReference = (content) => {
+    const idx = definitions.length;
+    definitions.push({
+      type: 'definition',
+      identifier: `${idx}`,
+      label: `${idx}`,
+      title: null,
+      url: content.url,
+      position: {},
+    });
+
+    return {
+      type: 'linkReference',
+      children: [
+        {
+          type: 'text',
+          value: content.children[0].value,
+          position: {},
+        },
+      ],
+      position: {},
+      label: `${idx}`,
+      identifier: `${idx}`,
+      referenceType: 'full',
+    };
+  };
+
+  const innerLinkToReferences = (outerContent) => {
+    let content = { ...outerContent };
+
+    if (content.type === 'link') {
+      content = replaceLinkWithReference(content, index);
+      index++;
+    }
+
+    if (content.children) {
+      content.children = content.children.map((item) => {
+        return innerLinkToReferences(item);
+      });
+    }
+    return content;
+  };
+
+  c = innerLinkToReferences(c);
+
+  c.children.push(...definitions);
+  return c;
+};
+
 const createLastModifiedDate = (item) => {
   if (item.repo) {
     return getSubDirLastModifiedDate(item.filename, `${TEMPDIR}/${item.repo}`);
@@ -97,24 +173,24 @@ const createLastModifiedDate = (item) => {
 const importDocs = async (item) => {
   const doc = fs.readFileSync(`${item.file}`, 'utf-8');
   const lastModifiedDate = await createLastModifiedDate(item);
-  const md = remark.parse(doc);
+  const md = LinksToReferences(remark.parse(doc));
 
   if (item.options.singlePage) {
+    relinkReferences(md, md, `/docs${item.destination}/`);
     createPage(item, lastModifiedDate)(md, 0);
-    return;
+  } else {
+    const pages = divideIntoPages(md);
+    relinkReferences(md, pages, `/docs/${item.destination}/`);
+
+    pages.forEach(createPage(item, lastModifiedDate));
   }
-  const pages = divideIntoPages(md);
-
-  relinkReferences(md, pages, `/docs/${item.destination}/`);
-
-  pages.forEach(createPage(item, lastModifiedDate));
 };
 
 /**
  * Removes the tempdir.
  */
 const deleteTempDir = () => {
-  fs.rmSync(TEMPDIR, { recursive: true, force: true });
+  //fs.rmSync(TEMPDIR, { recursive: true, force: true });
 };
 
 /**
@@ -132,7 +208,7 @@ const init = async () => {
   );
 
   const spinner = Spinner();
-  spinner.start();
+  //spinner.start();
 
   /**
    * @constant
@@ -147,7 +223,6 @@ const init = async () => {
       options: {
         order: 0,
         tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
-        singlePage: true,
       },
     },
     // {
@@ -175,7 +250,7 @@ const init = async () => {
     const item = importArray[i];
 
     if (item.repo) {
-      await clone(item);
+      //await clone(item);
 
       item.file = `${TEMPDIR}/${item.repo}/${item.filename}`;
     }

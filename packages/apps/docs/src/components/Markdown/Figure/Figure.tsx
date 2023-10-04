@@ -21,7 +21,7 @@ export const Figure: FC<IProps> = ({ alt, src }) => {
     });
   };
   return (
-    <figure className={figure}>
+    <span className={figure}>
       <Image
         className={figureImg}
         src={src}
@@ -33,11 +33,11 @@ export const Figure: FC<IProps> = ({ alt, src }) => {
         blurDataURL="/assets/blur.jpg"
         onLoad={handleLoad}
       />
-      <figcaption className={figCaption}>
+      <span className={figCaption}>
         <Text size="sm" as="span">
           {alt}
         </Text>
-      </figcaption>
-    </figure>
+      </span>
+    </span>
   );
 };

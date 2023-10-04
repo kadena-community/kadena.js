@@ -33,7 +33,7 @@ lastModifiedDate: ${lastModifiedDate}
 ---
 `;
 };
-const getTypes = (tree, type, arr = []) => {
+export const getTypes = (tree, type, arr = []) => {
   tree.children.forEach((branch) => {
     if (branch.type === type) {
       arr.push(branch);
@@ -98,7 +98,7 @@ const findHeading = (tree, slug) => {
     return createSlug(heading.children[0].value) === slug;
   });
 
-  if (heading && heading.depth > 1) {
+  if (heading && heading.depth === 1) {
     return tree.children[0];
   }
   return;
@@ -106,12 +106,12 @@ const findHeading = (tree, slug) => {
 
 // when we have a URL starting with '#',
 // we need to recreate it, to send to the correct page
-const recreateUrl = (pages, url, root) => {
-  if (!url.startsWith('#')) return url;
+const recreateUrl = (pages, root) => (definition) => {
+  if (!definition.url.startsWith('#')) return definition;
 
-  const slug = url.substring(1);
+  const slug = definition.url.substring(1);
 
-  return pages.reduce((acc, page, idx) => {
+  definition.url = pages.reduce((acc, page, idx) => {
     const headingNode = findHeading(page, slug);
 
     if (headingNode) {
@@ -137,7 +137,12 @@ const recreateUrl = (pages, url, root) => {
 
     return acc;
   }, '');
+
+  return definition;
 };
+
+const recreateUrls = (pages, root, definitions) =>
+  definitions.map(recreateUrl(pages, root));
 
 /**
  * Function cleans up the just seperated pages.
@@ -168,15 +173,16 @@ export const cleanUp = (content, filename) => {
 };
 
 const relinkLinkReferences = (refs, definitions, pages, root) => {
-  refs.map((ref) => {
+  refs.forEach((ref) => {
     const definition = definitions.find((def) => def.label === ref.label);
+
     if (!definition) {
       throw new Error('no definition found');
     }
 
     ref.type = 'link';
-    ref.url = recreateUrl(pages, definition.url, root);
-    ref.children[0].value = `${ref.children[0].value} `; // a hack. if the name is the same as the URL, MD will not render it correctly
+    ref.url = definition.url;
+    ref.children[0].value = `${ref.children[0].value} `; // the extra ' ' a hack. if the name is the same as the URL, MD will not render it correctly
     delete ref.label;
     delete ref.identifier;
     delete ref.referenceType;
@@ -201,7 +207,8 @@ const relinkImageReferences = (refs, definitions) => {
 
 // because we are creating new pages, we need to link the references to the correct pages
 export const relinkReferences = (md, pages, root) => {
-  const definitions = getTypes(md, 'definition');
+  const definitions = recreateUrls(pages, root, getTypes(md, 'definition'));
+
   const linkReferences = getTypes(md, 'linkReference');
   const imageReferences = getTypes(md, 'imageReference');
 
@@ -272,4 +279,4 @@ const importAll = async (imports) => {
   );
 };
 
-importAll(importReadMes);
+//importAll(importReadMes);
