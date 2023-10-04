@@ -4,7 +4,6 @@ import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
-import type { Transaction, Transfer } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import {
   BigIntResolver,
@@ -13,6 +12,7 @@ import {
   PositiveFloatResolver,
 } from 'graphql-scalars';
 import type { IncomingMessage } from 'http';
+import type { ChainModuleAccount, Guard, ModuleAccount } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
   Scalars: {
@@ -39,40 +39,15 @@ export interface IContext {
   req: IncomingMessage;
 }
 
-export type IGuard = {
-  keys: string[];
-  predicate: 'keys-all' | 'keys-any' | 'keys-two';
-};
-
-export interface IChainModuleAccount {
-  chainId: string;
-  moduleName: string;
-  accountName: string;
-  guard: IGuard;
-  balance: number;
-  transactions: Transaction[];
-  transfers: Transfer[];
-}
-
-export interface IModuleAccount {
-  id: string;
-  moduleName: string;
-  accountName: string;
-  chainAccounts: IChainModuleAccount[];
-  totalBalance: number;
-  transactions: Transaction[];
-  transfers: Transfer[];
-}
-
 // eslint-disable-next-line @rushstack/typedef-var
 export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {
     PrismaTypes: PrismaTypes;
     Context: IContext;
     Objects: {
-      ModuleAccount: IModuleAccount;
-      ChainModuleAccount: IChainModuleAccount;
-      Guard: IGuard;
+      ModuleAccount: ModuleAccount;
+      ChainModuleAccount: ChainModuleAccount;
+      Guard: Guard;
     };
   }
 >({

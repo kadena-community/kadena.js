@@ -1,6 +1,7 @@
 import { prismaClient } from '../../db/prismaClient';
-import { IChainModuleAccount, builder } from '../builder';
+import { builder } from '../builder';
 import { getAccountDetails } from '../../services/node-service';
+import type { ChainModuleAccount } from '../types/graphql-types';
 
 export default builder.objectType('ModuleAccount', {
   fields: (t) => ({
@@ -10,7 +11,7 @@ export default builder.objectType('ModuleAccount', {
     chainAccounts: t.field({
       type: ['ChainModuleAccount'],
       resolve: async (parent) => {
-        const chainAccounts: IChainModuleAccount[] = [];
+        const chainAccounts: ChainModuleAccount[] = [];
 
         for (let i = 0; i < 20; i++) {
           try {
