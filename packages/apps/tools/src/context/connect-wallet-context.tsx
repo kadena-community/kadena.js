@@ -46,7 +46,7 @@ export const StorageKeys: Record<
   NETWORK: 'network',
   CHAIN_ID: 'chainID',
   NETWORKS_DATA: 'networks',
-  DEV_OPTION: 'devOption'
+  DEV_OPTION: 'devOption',
 };
 
 export const DefaultValues: { NETWORK: Network; CHAIN_ID: ChainwebChainId } = {

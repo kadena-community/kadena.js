@@ -27,11 +27,10 @@ export const getCookieValue = (
   haystack: string,
   defaultValue?: any,
 ): any | null => {
-
   const decodedCookieName = decodeURIComponent(getName(needle));
-  const cookies = qs.decode(haystack, "; ")
+  const cookies = qs.decode(haystack, '; ');
 
-  if (typeof cookies[decodedCookieName] === 'string' ) {
+  if (typeof cookies[decodedCookieName] === 'string') {
     return parse(cookies[decodedCookieName] as string);
   }
   return defaultValue ?? null;
