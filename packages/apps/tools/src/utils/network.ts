@@ -6,7 +6,7 @@ import { kadenaConstants } from '@/constants/kadena';
 interface IApiHostData {
   api: string;
   networkId: string;
-  chainId: string;
+  chainId: ChainwebChainId;
 }
 
 interface IEstatsHostData {
