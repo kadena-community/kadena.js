@@ -100,7 +100,6 @@ export const getServerSideProps: GetServerSideProps<{
   data: IModule[];
   openedModules: IEditorProps['openedModules'];
 }> = async (context) => {
-
   const network = getCookieValue(
     StorageKeys.NETWORK,
     context.req.headers.cookie ?? '',
@@ -112,8 +111,8 @@ export const getServerSideProps: GetServerSideProps<{
     context.req.headers.cookie ?? '',
   ) as INetworkData[];
 
-  if(!networksData) {
-    networksData = getAllNetworks([])
+  if (!networksData) {
+    networksData = getAllNetworks([]);
   }
 
   const modules = await getModules(network, networksData);
