@@ -206,7 +206,9 @@ const RequestKey: React.FC = () => {
                                 </Table.Td>
                                 <Table.Td>
                                   <pre>
-                                    {JSON.stringify(event.eventParameters)}
+                                    {JSON.stringify(
+                                      JSON.parse(event.paramtext),
+                                    )}
                                   </pre>
                                 </Table.Td>
                               </Table.Tr>

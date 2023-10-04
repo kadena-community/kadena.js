@@ -12,14 +12,15 @@ export default builder.prismaNode('Event', {
     name: t.exposeString('name'),
     qualName: t.exposeString('qualname'),
     requestKey: t.exposeString('requestkey'),
+    paramtext: t.exposeString('paramtext'),
 
-    // computed fields
-    eventParameters: t.field({
-      type: ['String'],
-      resolve(parent) {
-        return JSON.parse(parent.paramtext);
-      },
-    }),
+    // // computed fields
+    // eventParameters: t.field({
+    //   type: ['String'],
+    //   resolve(parent) {
+    //     return JSON.parse(parent.paramtext);
+    //   },
+    // }),
 
     //relations
     transaction: t.prismaField({

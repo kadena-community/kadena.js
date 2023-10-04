@@ -72,7 +72,7 @@ export const CORE_EVENT_FIELDS: DocumentNode = gql`
     #index
     #module
     #name
-    eventParameters
+    paramtext
     #parameters
     qualName
   }
@@ -117,7 +117,7 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       }
       events {
         qualName
-        eventParameters
+        paramtext
       }
       chainId
       code
@@ -157,7 +157,7 @@ export const getEventByName: DocumentNode = gql`
       index
       # module
       # name
-      eventParameters
+      paramtext
       qualName
       transaction {
         requestKey

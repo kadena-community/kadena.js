@@ -37,12 +37,12 @@ scalar DateTime
 type Event implements Node {
   block: Block!
   chainId: BigInt!
-  eventParameters: [String!]!
   height: BigInt!
   id: ID!
   index: BigInt!
   module: String!
   name: String!
+  paramtext: String!
   qualName: String!
   requestKey: String!
   transaction: Transaction
