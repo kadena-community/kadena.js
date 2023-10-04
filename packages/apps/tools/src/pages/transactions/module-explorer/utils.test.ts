@@ -4,7 +4,7 @@ import { getCookieValue, getQueryValue } from './utils';
 
 import type { ParsedUrlQuery } from 'querystring';
 
-const exampleCookies: string = `_persist%3AdevOption=%2522BASIC%2522; _persist%3Anetwork=%2522testnet04%2522; _persist%3AchainID=%25221%2522;`;
+const exampleCookies: string = `_persist%3AdevOption=%2522BASIC%2522; _persist%3Anetwork=%2522testnet04%2522; _persist%3AchainID=%25221%2522`;
 const exampleQuery: ParsedUrlQuery = {
   module: 'ab2288bca-3d56-4da0-b363-0df378b9956d.ns-module',
   chain: '0',
