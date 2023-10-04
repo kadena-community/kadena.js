@@ -40,7 +40,8 @@ export default builder.objectType('ChainModuleAccount', {
           orderBy: {
             height: 'desc',
           },
-          take: 10,
+          ...query,
+          take: query.take || 10,
         });
       },
     }),
@@ -64,7 +65,8 @@ export default builder.objectType('ChainModuleAccount', {
           orderBy: {
             height: 'desc',
           },
-          take: 10,
+          ...query,
+          take: query.take || 10,
         });
       },
     }),

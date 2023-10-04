@@ -79,7 +79,8 @@ export default builder.objectType('ModuleAccount', {
           orderBy: {
             height: 'desc',
           },
-          take: 10,
+          ...query,
+          take: query.take || 10,
         });
       },
     }),
@@ -101,7 +102,8 @@ export default builder.objectType('ModuleAccount', {
           orderBy: {
             height: 'desc',
           },
-          take: 10,
+          ...query,
+          take: query.take || 10,
         });
       },
     }),
