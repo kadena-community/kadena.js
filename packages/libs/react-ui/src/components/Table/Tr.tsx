@@ -19,7 +19,10 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick }) => {
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
-          (Boolean(child) && child.type !== Th && child.type !== Td)
+          (Boolean(child) &&
+            child.type !== Th &&
+            child.type !== Td &&
+            child.type !== React.Fragment)
         )
           return null;
 

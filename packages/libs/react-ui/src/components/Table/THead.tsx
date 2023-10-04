@@ -14,7 +14,7 @@ export const THead: FC<ITHeadProps> = ({ children }) => {
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
-          (Boolean(child) && child.type !== Tr)
+          (Boolean(child) && child.type !== Tr && child.type !== React.Fragment)
         )
           return null;
 
