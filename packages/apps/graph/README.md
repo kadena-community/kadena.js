@@ -128,7 +128,10 @@ npm run fund -- -k <key> -a <amount>
 The simulation uses a seeded random number generator. This means each simulation
 is possible to replicate in the exact same order and with the exact same
 amounts, given that the inputs stay the same. Note: the created account keys and
-request keys of the transactions will not stay the same.
+request keys of the transactions will not stay the same. When a simulation
+starts, some information regarding the transactions is saved on a file. This
+file can be found on `packages/apps/graph/src/scripts/devnet/logs`. The filename
+is determined by `timestamp` and `seed`.
 
 Advanced: In each iteration a new random number is generated, so that the
 transactions are different, with different amounts and to and from different
