@@ -1,6 +1,6 @@
 'use client';
 
-import { Option, Select } from '@kadena/react-ui';
+import { Select } from '@kadena/react-ui';
 
 import { container } from './Accounts.css';
 
@@ -115,9 +115,9 @@ export const Accounts: FC = () => {
             onChange={(e) => setNetwork(e.target.value)}
           >
             {networks.map((network) => (
-              <Option key={network} value={network}>
+              <option key={network} value={network}>
                 {network}
-              </Option>
+              </option>
             ))}
           </Select>
           <Select
@@ -127,9 +127,9 @@ export const Accounts: FC = () => {
             onChange={(e) => setSelectedAccount(e.target.value)}
           >
             {accounts.map((account) => (
-              <Option key={account} value={account}>
+              <option key={account} value={account}>
                 {account}
-              </Option>
+              </option>
             ))}
           </Select>
         </div>

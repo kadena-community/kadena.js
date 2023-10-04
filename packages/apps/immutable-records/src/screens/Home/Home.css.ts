@@ -2,6 +2,11 @@ import { sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
+// TODO: find a way to integrat mono font with react-ui
+// sprinkles({
+//   fontFamily: '$mono',
+// }),
+
 export const outerContainer = style([
   sprinkles({
     display: 'flex',
@@ -31,9 +36,6 @@ export const leftSideBar = style([
 ]);
 
 export const weekIndicatorBox = style([
-  sprinkles({
-    fontFamily: '$mono',
-  }),
   {
     background: '#372A46',
     width: '6rem',
@@ -46,13 +48,11 @@ export const weekIndicatorBox = style([
 ]);
 
 export const weekIndicator = style([
-  sprinkles({
-    fontFamily: '$mono',
-  }),
   {
     marginTop: '1rem',
     color: '#B1A0C5',
     fontSize: '5rem',
+    lineHeight: '5rem',
     fontWeight: 700,
   },
 ]);
@@ -67,9 +67,6 @@ export const logoClassH1 = style([
 ]);
 
 export const logoClassP = style([
-  sprinkles({
-    fontFamily: '$mono',
-  }),
   {
     color: '#B1A0C5',
     fontSize: '1.25rem',
@@ -111,9 +108,6 @@ export const yearsSidebar = style([
 ]);
 
 export const yearLabel = style([
-  sprinkles({
-    fontFamily: '$mono',
-  }),
   {
     color: '#7D609F',
     margin: '1rem 0',
