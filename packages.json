@@ -166,5 +166,11 @@
     "version": "0.0.1",
     "private": true,
     "path": "packages/libs/kadena.js"
+  },
+  {
+    "name": "playwright",
+    "version": "1.0.0",
+    "private": false,
+    "path": "packages/tools/e2e-tests"
   }
 ]

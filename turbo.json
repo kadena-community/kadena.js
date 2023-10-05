@@ -16,6 +16,11 @@
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
       "outputMode": "new-only"
     },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "inputs": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts"],
+      "outputMode": "new-only"
+    },
     "lint": {
       "dependsOn": ["build"],
       "outputMode": "new-only",
