@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'object operators', 'pact operators']
 
 # Object operators
 
-### at
+## at
 
 ```pact
 (at k o)
@@ -34,7 +34,7 @@ projection
 
 Supported in either invariants or properties.
 
-### \+
+## \+
 
 ```pact
 (+ x y)
@@ -48,7 +48,7 @@ Object merge
 
 Supported in either invariants or properties.
 
-### drop
+## drop
 
 ```pact
 (drop keys o)
@@ -62,7 +62,7 @@ drop entries having the specified keys from an object
 
 Supported in either invariants or properties.
 
-### take
+## take
 
 ```pact
 (take keys o)
@@ -76,7 +76,7 @@ take entries having the specified keys from an object
 
 Supported in either invariants or properties.
 
-### length
+## length
 
 ```pact
 (length o)
