@@ -298,7 +298,7 @@ pact> (filter (compose (length) (< 2)) ["my" "dog" "has" "fleas"])
 ["dog" "has" "fleas"]
 ```
 
-### fold
+### fold {#fold}
 
 _app_&nbsp;`x:<a> y:<b> -> <a>` _init_&nbsp;`<a>` _list_&nbsp;`[<b>]`
 _&rarr;_&nbsp;`<a>`
@@ -315,7 +315,7 @@ pact> (fold (+) 0 [100 10 5])
 
 _template_&nbsp;`string` _vars_&nbsp;`[*]` _&rarr;_&nbsp;`string`
 
-Interpolate VARS into TEMPLATE using `{}`.
+Interpolate VARS into TEMPLATE using {}.
 
 ```lisp
 pact> (format "My {} has {}" ["dog" "fleas"])
@@ -337,7 +337,7 @@ pact> (hash { 'foo: 1 })
 "h9BZgylRf_M4HxcBXr15IcSXXXSz74ZC2IAViGle_z4"
 ```
 
-### identity
+###
 
 _value_&nbsp;`<a>` _&rarr;_&nbsp;`<a>`
 
@@ -477,7 +477,7 @@ Obtain current pact build version.
 
 ```lisp
 pact> (pact-version)
-"4.7.1"
+"4.9"
 ```
 
 Top level only: this function will fail if used in module code.
