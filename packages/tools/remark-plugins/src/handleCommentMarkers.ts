@@ -1,7 +1,6 @@
 import type { Content, Root } from 'mdast';
 import { commentMarker } from 'mdast-comment-marker';
 import { zone } from 'mdast-zone';
-import type { Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
 import type { VFile } from 'vfile';
 
@@ -9,8 +8,7 @@ type Node = Root | Content;
 type CommentMarkers = Record<string, (vFile: VFile) => Node | undefined>;
 
 export const handleCommentMarkers =
-  (commentMarkers: CommentMarkers): Plugin =>
-  (tree, vFile) => {
+  (commentMarkers: CommentMarkers) => (tree: Root, vFile: VFile) => {
     visit(tree, (node) => {
       const info = commentMarker(node);
       if (!info) return;
