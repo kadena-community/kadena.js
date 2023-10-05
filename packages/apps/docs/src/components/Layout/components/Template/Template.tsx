@@ -47,6 +47,7 @@ export const Template: FC<IProps> = ({
     return () => {
       setStyle({});
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
