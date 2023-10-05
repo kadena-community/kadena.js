@@ -21,6 +21,7 @@ export interface INavHeaderSelectProps
   disabled?: boolean;
   icon?: keyof typeof SystemIcon;
   ref?: React.ForwardedRef<HTMLSelectElement>;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   id: string;
   value?: string;
 }
