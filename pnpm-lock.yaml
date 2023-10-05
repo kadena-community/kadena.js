@@ -33,8 +33,8 @@ importers:
   packages/apps/docs:
     dependencies:
       '@7-docs/edge':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.5.0
+        version: 0.5.0
       '@google-analytics/data':
         specifier: ~3.2.2
         version: 3.2.2
@@ -130,8 +130,8 @@ importers:
         version: 5.3.10(@babel/core@7.23.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     devDependencies:
       '@7-docs/cli':
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.5.0
+        version: 0.5.0
       '@kadena-dev/eslint-config':
         specifier: workspace:*
         version: link:../../tools/eslint-config
@@ -2090,12 +2090,12 @@ importers:
 
 packages:
 
-  /@7-docs/cli@0.4.0:
-    resolution: {integrity: sha512-xc7t1lGTRFbOp1gVUzdpK/Ks/ED+FraK7QNdahNz5A0pG1qObk697ydL8Qp32EzuTdfM18gP1D4M/eQ3v09XQQ==}
+  /@7-docs/cli@0.5.0:
+    resolution: {integrity: sha512-yHzkvHX1DXb9N+0APEt1WiccXs8rPI7hwnRBm3vT/CF4+T55WeM3iNbfj3gnzjH9qCLM9KzMo6tsVtVf0Gv01g==}
     hasBin: true
     dependencies:
-      '@7-docs/edge': 0.4.0
-      '@7-docs/shared': 0.4.0
+      '@7-docs/edge': 0.5.0
+      '@7-docs/shared': 0.5.0
       '@octokit/rest': 20.0.1
       '@supabase/supabase-js': 2.33.1
       algoliasearch: 4.20.0
@@ -2121,13 +2121,13 @@ packages:
       - supports-color
     dev: true
 
-  /@7-docs/edge@0.4.0:
-    resolution: {integrity: sha512-zqeDPA1uMEx42GY6PQdLA+9rYHWhkg4694CjStShXWKwSqWNQKGHXCLv0+ww51WI+Cbc9EDpPpuXRwsAecoJPg==}
+  /@7-docs/edge@0.5.0:
+    resolution: {integrity: sha512-LYUHffqieJ0I3CP+8YRI1yYtXoZtR2gzX865MoazYcnarv/xmv4yssxtev4evKBBDUQNRWDKUMmJjvjtPcr1kg==}
     dependencies:
-      '@7-docs/shared': 0.4.0
+      '@7-docs/shared': 0.5.0
 
-  /@7-docs/shared@0.4.0:
-    resolution: {integrity: sha512-p6qFcKoruczICKb7gU263p7XzZ1F4XOmEEgdft/PPGNVQeMzTE4E/iWHHN2T9ALncUdNAxgZ4MpFOO9rBp5slg==}
+  /@7-docs/shared@0.5.0:
+    resolution: {integrity: sha512-HeJMdAbpBD9AdfmfF+0/s3l07Oz8AP1K9K3unAQwicALC45N4ICKuOJCgafzYRsNq/IQtMeApG6NrZzv99zPhw==}
 
   /@aashutoshrathi/word-wrap@1.2.6:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
