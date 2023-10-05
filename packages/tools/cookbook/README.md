@@ -43,10 +43,10 @@ In depth documentation for setting up and using @kadena/client can be found at
 
 ## Setup
 
-1.  [Install dependencies][5]
-2.  [Load contracts from blockchain][5]
-3.  [Generate Interfaces][5]
-4.  Execute commands
+1. [Install dependencies][5]
+2. [Load contracts from blockchain][5]
+3. [Generate Interfaces][5]
+4. Execute commands
 
 Example: Running the transfer-create script:
 
