@@ -3,7 +3,7 @@ title: "06: Smart contract"
 description: "Election dApp tutorial chapter 06: Smart contract"
 menu: Election dApp tutorial
 label: "06: Smart contract"
-order: 7
+order: 6
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
@@ -320,7 +320,8 @@ on Devnet in the previous chapter in both places.
 (module election GOVERNANCE
   (defcap GOVERNANCE ()
     (enforce-keyset "n_fd020525c953aa002f20fb81a920982b175cdf1a.admin-keyset"))
-    (defun list-candidates () [1, 2, 3])
+
+  (defun list-candidates () [1, 2, 3])
 )
 ```
 

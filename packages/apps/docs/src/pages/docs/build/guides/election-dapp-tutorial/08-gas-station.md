@@ -1,14 +1,20 @@
 ---
-title: "09: Gas station"
-description: "Election dApp tutorial chapter 09: Gas station"
+title: "08: Gas station"
+description: "Election dApp tutorial chapter 08: Gas station"
 menu: Election dApp tutorial
-label: "09: Gas station"
-order: 9
+label: "08: Gas station"
+order: 8
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
 
-# Chapter 09: Gas station
+# Chapter 08: Gas station
+
+Kadena created the first crypto gas station on a blockchain in 2020.
+
+## Recommended reading
+
+ * [The First Crypto Gas Station is Now on Kadena’s Blockchain](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836)
 
 ## What is gas?
 
@@ -32,4 +38,4 @@ Watch it on chainweaver
 
 ## Fund the gas station
 
-Using sender00
+Using sender00 or the admin account
