@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps = async () => {
         subTitle: 'Build the future on Kadena',
         label: 'Introduction',
         order: 5,
-        description: 'Welcome to Chainweb\'s documentation!',
+        description: "Welcome to Chainweb's documentation!",
         layout: 'redocly',
       },
     },
