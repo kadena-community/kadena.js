@@ -48,8 +48,8 @@ const NotFoundPage: FC = () => {
   return (
     <>
       <ErrorHeader
-        title="There was an error"
-        subTitle="Sorry for the inconvenience"
+        title="Not Found"
+        subTitle="we couldn't find what you were looking for"
         body="Maybe these results can help you?"
       >
         <SearchBar ref={searchInputRef} onSubmit={handleSubmit} query={query} />
@@ -71,11 +71,11 @@ export const getStaticProps: GetStaticProps = async (context, ...args) => {
     props: {
       leftMenuTree: [],
       frontmatter: {
-        title: 'Error',
-        menu: 'Error',
-        label: 'Error',
+        title: '404 - Not found',
+        menu: '404 - Not found',
+        label: '404 - Not found',
         order: 0,
-        description: 'Sorry, Something went wrong',
+        description: 'Sorry, we did not find what you were looking for',
         layout: 'home',
       },
     },
