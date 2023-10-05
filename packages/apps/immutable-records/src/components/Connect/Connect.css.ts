@@ -1,25 +1,21 @@
-import { sprinkles } from '@kadena/react-ui/theme';
-
 import { globalStyle, style } from '@vanilla-extract/css';
 
-export const container = style([sprinkles({})]);
+export const container = style([{}]);
 
 export const debugContainerButton = style([
-  sprinkles({
-    marginTop: '$2',
-  }),
+  {
+    marginTop: '0.5rem',
+  },
 ]);
 
 export const debugContainer = style([
-  sprinkles({
-    marginY: '$2',
-    backgroundColor: '$gray40',
-    borderColor: '$gray60',
-    borderStyle: 'solid',
-    borderWidth: '$md',
-    padding: '$2',
-  }),
   {
+    margin: '0.5rem 0',
+    backgroundColor: '#ddd',
+    borderColor: '#ccc',
+    borderStyle: 'solid',
+    borderWidth: '2px',
+    padding: '0.5rem',
     display: 'inline-block',
   },
 ]);

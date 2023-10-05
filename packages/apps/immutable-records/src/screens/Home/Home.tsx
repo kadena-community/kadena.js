@@ -58,7 +58,7 @@ export const Home: FC = () => {
             ))}
           </div>
         </main>
-        <div className={yearsSidebar}>
+        <aside className={yearsSidebar}>
           {yearsList.map((year) => (
             <div
               key={year}
@@ -69,7 +69,7 @@ export const Home: FC = () => {
               {year}
             </div>
           ))}
-        </div>
+        </aside>
       </div>
       <Footer />
     </div>

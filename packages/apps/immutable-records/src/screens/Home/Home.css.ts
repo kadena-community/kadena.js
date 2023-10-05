@@ -1,25 +1,21 @@
-import { sprinkles } from '@kadena/react-ui/theme';
-
 import { style } from '@vanilla-extract/css';
 
-// TODO: find a way to integrat mono font with react-ui
+// TODO: find a way to integrate mono font with react-ui
 // sprinkles({
 //   fontFamily: '$mono',
 // }),
 
 export const outerContainer = style([
-  sprinkles({
+  {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-  }),
+  },
 ]);
 
 export const container = style([
-  sprinkles({
-    display: 'flex',
-  }),
   {
+    display: 'flex',
     // make sure footer fits in the viewport
     height: 'calc(100vh - 72px)',
   },
@@ -78,10 +74,8 @@ export const logoClassP = style([
 ]);
 
 export const main = style([
-  sprinkles({
-    margin: '$4',
-  }),
   {
+    margin: '1rem',
     flexGrow: '1',
     color: '#fff',
     display: 'flex',
