@@ -54,7 +54,7 @@ export const getAllNetworks = (
     });
   }
 
-  if (localStorageNetworks) {
+  if (localStorageNetworks.length) {
     localStorageNetworks.forEach((item) =>
       allNetworkObjects.push({
         ...item,

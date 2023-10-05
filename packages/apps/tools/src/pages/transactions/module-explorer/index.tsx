@@ -106,7 +106,7 @@ export const getServerSideProps: GetServerSideProps<{
     DefaultValues.NETWORK,
   );
 
-  let networksData = getCookieValue(
+  const networksData = getCookieValue(
     StorageKeys.NETWORKS_DATA,
     context.req.cookies,
     getAllNetworks([]),
