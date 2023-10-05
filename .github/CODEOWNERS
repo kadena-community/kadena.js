@@ -9,7 +9,7 @@
 /packages/apps/kadena-docs                      @sstraatemans @eileenmguo @realdreamer
 /packages/libs/chainweb-stream-client           @Takadenoshi
 /packages/libs/bootstrap-lib                    @alber70g
-/packages/libs/client                           @alber70g @javadkh2 @webpro
+/packages/libs/client                           @alber70g @javadkh2
 /packages/libs/kadena.js                        @alber70g
 /packages/libs/pactjs-generator                 @alber70g
 /packages/libs/react-ui                         @eileenmguo @sstraatemans @timoheddes

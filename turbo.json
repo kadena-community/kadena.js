@@ -11,6 +11,11 @@
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
       "outputMode": "new-only"
     },
+    "test:integration": {
+      "dependsOn": ["build"],
+      "inputs": ["src/**/*.ts", "src/**/*.tsx"],
+      "outputMode": "new-only"
+    },
     "lint": {
       "dependsOn": ["build"],
       "outputMode": "new-only",

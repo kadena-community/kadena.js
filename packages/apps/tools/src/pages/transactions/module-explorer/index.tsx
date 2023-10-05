@@ -24,6 +24,7 @@ import type { IModulesResult } from '@/services/modules/list-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
 import type { INetworkData } from '@/utils/network';
+import { getAllNetworks } from '@/utils/network';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type {
@@ -103,10 +104,13 @@ export const getServerSideProps: GetServerSideProps<{
     StorageKeys.NETWORK,
     context.req.cookies,
     DefaultValues.NETWORK,
-  ) as Network;
+  );
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { networksData } = useWalletConnectClient();
+  const networksData = getCookieValue(
+    StorageKeys.NETWORKS_DATA,
+    context.req.cookies,
+    getAllNetworks([]),
+  );
 
   const modules = await getModules(network, networksData);
 

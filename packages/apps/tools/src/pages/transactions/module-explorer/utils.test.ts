@@ -10,6 +10,7 @@ const exampleCookies: NextApiRequestCookies = {
   '_persist%3AchainID': '%221%22',
   '_persist%3Anetwork': '%22testnet04%22',
 };
+
 const exampleQuery: ParsedUrlQuery = {
   module: 'ab2288bca-3d56-4da0-b363-0df378b9956d.ns-module',
   chain: '0',
