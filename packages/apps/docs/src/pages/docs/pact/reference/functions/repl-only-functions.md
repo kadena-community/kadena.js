@@ -16,7 +16,7 @@ The following functions are loaded automatically into the interactive REPL, or
 within script files with a `.repl` extension. They are not available for
 blockchain-based execution.
 
-### begin-tx
+## begin-tx
 
 _&rarr;_&nbsp;`string`
 
@@ -29,7 +29,7 @@ pact> (begin-tx "load module")
 "Begin Tx 0: load module"
 ```
 
-### bench
+## bench
 
 _exprs_&nbsp;`*` _&rarr;_&nbsp;`string`
 
@@ -39,7 +39,7 @@ Benchmark execution of EXPRS.
 (bench (+ 1 2))
 ```
 
-### commit-tx
+## commit-tx
 
 _&rarr;_&nbsp;`string`
 
@@ -50,7 +50,7 @@ pact> (begin-tx) (commit-tx)
 "Commit Tx 0"
 ```
 
-### continue-pact
+## continue-pact
 
 _step_&nbsp;`integer` _&rarr;_&nbsp;`string`
 
@@ -75,7 +75,7 @@ exec, if any).
 (continue-pact 2 1 false "[pact-id-hash]" { "rate": 0.9 })
 ```
 
-### env-chain-data
+## env-chain-data
 
 _new-data_&nbsp;`object:~{public-chain-data}` _&rarr;_&nbsp;`string`
 
@@ -87,7 +87,7 @@ pact> (env-chain-data { "chain-id": "TestNet00/2", "block-height": 20 })
 "Updated public metadata"
 ```
 
-### env-data
+## env-data
 
 _json_&nbsp;`<a[integer,string,time,decimal,bool,[<l>],object:<{o}>,keyset]>`
 _&rarr;_&nbsp;`string`
@@ -100,7 +100,7 @@ pact> (env-data { "keyset": { "keys": ["my-key" "admin-key"], "pred": "keys-any"
 "Setting transaction data"
 ```
 
-### env-dynref
+## env-dynref
 
 _iface_&nbsp;`module` _impl_&nbsp;`module{}` _&rarr;_&nbsp;`string`
 
@@ -113,7 +113,7 @@ analysis. With no arguments, remove all substitutions.
 (env-dynref fungible-v2 coin)
 ```
 
-### env-enable-repl-natives
+## env-enable-repl-natives
 
 _enable_&nbsp;`bool` _&rarr;_&nbsp;`string`
 
@@ -125,7 +125,7 @@ pact> (env-enable-repl-natives true)
 "Repl natives enabled"
 ```
 
-### env-entity
+## env-entity
 
 _&rarr;_&nbsp;`string`
 
@@ -138,7 +138,7 @@ Set environment confidential ENTITY id, or unset with no argument.
 (env-entity)
 ```
 
-### env-events
+## env-events
 
 _clear_&nbsp;`bool` _&rarr;_&nbsp;`[object:*]`
 
@@ -150,21 +150,21 @@ parameters), 'module-hash' (hash of emitting module).
 (env-events true)
 ```
 
-### env-exec-config
+## env-exec-config
 
 _flags_&nbsp;`[string]` _&rarr;_&nbsp;`[string]`
 
 _&rarr;_&nbsp;`[string]`
 
 Queries, or with arguments, sets execution config flags. Valid flags:
-["AllowReadInLocal","DisableHistoryInTransactionalMode","DisableInlineMemCheck","DisableModuleInstall","DisableNewTrans","DisablePact40","DisablePact420","DisablePact43","DisablePact431","DisablePact44","DisablePact45","DisablePact46","DisablePact47","DisablePact48","DisablePactEvents","DisableRuntimeReturnTypeChecking","EnforceKeyFormats","OldReadOnlyBehavior","PreserveModuleIfacesBug","PreserveModuleNameBug","PreserveNsModuleInstallBug","PreserveShowDefs"]
+["AllowReadInLocal","DisableHistoryInTransactionalMode","DisableInlineMemCheck","DisableModuleInstall","DisableNewTrans","DisablePact40","DisablePact420","DisablePact43","DisablePact431","DisablePact44","DisablePact45","DisablePact46","DisablePact47","DisablePact48","DisablePact49","DisablePactEvents","DisableRuntimeReturnTypeChecking","EnforceKeyFormats","OldReadOnlyBehavior","PreserveModuleIfacesBug","PreserveModuleNameBug","PreserveNsModuleInstallBug","PreserveShowDefs"]
 
 ```bash
 pact> (env-exec-config ['DisableHistoryInTransactionalMode]) (env-exec-config)
 ["DisableHistoryInTransactionalMode"]
 ```
 
-### env-gas
+## env-gas
 
 _&rarr;_&nbsp;`integer`
 
@@ -179,13 +179,13 @@ pact> (env-gasmodel "table") (env-gaslimit 10) (env-gas 0) (map (+ 1) [1 2 3]) (
 7
 ```
 
-### env-gaslimit
+## env-gaslimit
 
 _limit_&nbsp;`integer` _&rarr;_&nbsp;`string`
 
 Set environment gas limit to LIMIT.
 
-### env-gaslog
+## env-gaslog
 
 _&rarr;_&nbsp;`string`
 
@@ -197,7 +197,7 @@ pact> (env-gasmodel "table") (env-gaslimit 10) (env-gaslog) (map (+ 1) [1 2 3]) 
 ["TOTAL: 7" "map:GUnreduced:currTotalGas=4: 4" "+:GUnreduced:currTotalGas=5: 1" ":GIntegerOpCost:(1, ):(1, ):currTotalGas=5: 0" "+:GUnreduced:currTotalGas=6: 1" ":GIntegerOpCost:(1, ):(2, ):currTotalGas=6: 0" "+:GUnreduced:currTotalGas=7: 1" ":GIntegerOpCost:(1, ):(3, ):currTotalGas=7: 0"]
 ```
 
-### env-gasmodel
+## env-gasmodel
 
 _model_&nbsp;`string` _&rarr;_&nbsp;`string`
 
@@ -217,19 +217,19 @@ pact> (env-gasmodel 'fixed 1)
 "Set gas model to constant rate gas model with fixed rate 1"
 ```
 
-### env-gasprice
+## env-gasprice
 
 _price_&nbsp;`decimal` _&rarr;_&nbsp;`string`
 
 Set environment gas price to PRICE.
 
-### env-gasrate
+## env-gasrate
 
 _rate_&nbsp;`integer` _&rarr;_&nbsp;`string`
 
 Update gas model to charge constant RATE.
 
-### env-hash
+## env-hash
 
 _hash_&nbsp;`string` _&rarr;_&nbsp;`string`
 
@@ -241,7 +241,7 @@ pact> (env-hash (hash "hello"))
 "Set tx hash to Mk3PAn3UowqTLEQfNlol6GsXPe-kuOWJSCU0cbgbcs8"
 ```
 
-### env-keys
+## env-keys
 
 _keys_&nbsp;`[string]` _&rarr;_&nbsp;`string`
 
@@ -253,7 +253,7 @@ pact> (env-keys ["my-key" "admin-key"])
 "Setting transaction keys"
 ```
 
-### env-namespace-policy
+## env-namespace-policy
 
 _allow-root_&nbsp;`bool` _ns-policy-fun_&nbsp;`ns:string ns-admin:guard -> bool`
 _&rarr;_&nbsp;`string`
@@ -264,7 +264,7 @@ Install a managed namespace policy specifying ALLOW-ROOT and NS-POLICY-FUN.
 (env-namespace-policy (my-ns-policy-fun))
 ```
 
-### env-sigs
+## env-sigs
 
 _sigs_&nbsp;`[object:*]` _&rarr;_&nbsp;`string`
 
@@ -276,7 +276,7 @@ capabilities.
 (env-sigs [{'key: "my-key", 'caps: [(accounts.USER_GUARD "my-account")]}, {'key: "admin-key", 'caps: []}
 ```
 
-### env-simulate-onchain
+## env-simulate-onchain
 
 _on-chain_&nbsp;`bool` _&rarr;_&nbsp;`string`
 
@@ -287,7 +287,7 @@ particular for observing things like errors and stack traces.
 (env-simulate-onchain true)
 ```
 
-### expect
+## expect
 
 _doc_&nbsp;`string` _expected_&nbsp;`<a>` _actual_&nbsp;`<a>`
 _&rarr;_&nbsp;`string`
@@ -299,7 +299,7 @@ pact> (expect "Sanity prevails." 4 (+ 2 2))
 "Expect: success: Sanity prevails."
 ```
 
-### expect-failure
+## expect-failure
 
 _doc_&nbsp;`string` _exp_&nbsp;`<a>` _&rarr;_&nbsp;`string`
 
@@ -314,7 +314,7 @@ pact> (expect-failure "Enforce fails with message" "Expected error" (enforce fal
 "Expect failure: success: Enforce fails with message"
 ```
 
-### expect-that
+## expect-that
 
 _doc_&nbsp;`string` _pred_&nbsp;`value:<a> -> bool` _exp_&nbsp;`<a>`
 _&rarr;_&nbsp;`string`
@@ -328,14 +328,14 @@ pact> (expect-that "addition" (> 2) (+ 1 2))
 "FAILURE: addition: did not satisfy (> 2) : 3:integer"
 ```
 
-### format-address
+## format-address
 
 _scheme_&nbsp;`string` _public-key_&nbsp;`string` _&rarr;_&nbsp;`string`
 
 Transform PUBLIC-KEY into an address (i.e. a Pact Runtime Public Key) depending
 on its SCHEME.
 
-### load
+## load
 
 _file_&nbsp;`string` _&rarr;_&nbsp;`string`
 
@@ -348,7 +348,7 @@ true.
 (load "accounts.repl")
 ```
 
-### mock-spv
+## mock-spv
 
 _type_&nbsp;`string` _payload_&nbsp;`object:*` _output_&nbsp;`object:*`
 _&rarr;_&nbsp;`string`
@@ -359,7 +359,7 @@ Mock a successful call to 'spv-verify' with TYPE and PAYLOAD to return OUTPUT.
 (mock-spv "TXOUT" { 'proof: "a54f54de54c54d89e7f" } { 'amount: 10.0, 'account: "Dave", 'chainId: "1" })
 ```
 
-### pact-state
+## pact-state
 
 _&rarr;_&nbsp;`object:*`
 
@@ -375,13 +375,13 @@ With CLEAR argument, erases pact from repl state.
 (pact-state true)
 ```
 
-### print
+## print
 
 _value_&nbsp;`<a>` _&rarr;_&nbsp;`string`
 
 Output VALUE to terminal as unquoted, unescaped text.
 
-### rollback-tx
+## rollback-tx
 
 _&rarr;_&nbsp;`string`
 
@@ -392,14 +392,14 @@ pact> (begin-tx "Third Act") (rollback-tx)
 "Rollback Tx 0: Third Act"
 ```
 
-### sig-keyset
+## sig-keyset
 
 _&rarr;_&nbsp;`keyset`
 
 Convenience function to build a keyset from keys present in message signatures,
 using 'keys-all' as the predicate.
 
-### test-capability
+## test-capability
 
 _capability_&nbsp;` -> bool` _&rarr;_&nbsp;`string`
 
@@ -410,7 +410,7 @@ composed capabilities are in scope for the rest of the transaction.
 (test-capability (MY-CAP))
 ```
 
-### typecheck
+## typecheck
 
 _module_&nbsp;`string` _&rarr;_&nbsp;`string`
 
@@ -418,7 +418,7 @@ _module_&nbsp;`string` _debug_&nbsp;`bool` _&rarr;_&nbsp;`string`
 
 Typecheck MODULE, optionally enabling DEBUG output.
 
-### verify
+## verify
 
 _module_&nbsp;`string` _debug_&nbsp;`bool` _&rarr;_&nbsp;`string`
 
@@ -430,7 +430,7 @@ true, write debug output to "pact-verify-MODULE" directory.
 (verify "module" true)
 ```
 
-### with-applied-env
+## with-applied-env
 
 _exec_&nbsp;`<a>` _&rarr;_&nbsp;`<a>`
 

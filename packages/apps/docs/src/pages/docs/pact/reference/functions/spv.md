@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'spv', 'spv proof verification']
 
 # SPV
 
-### verify-spv
+## verify-spv
 
 _type_&nbsp;`string` _payload_&nbsp;`object:<in>` _&rarr;_&nbsp;`object:<out>`
 
