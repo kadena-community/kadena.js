@@ -159,7 +159,7 @@
     "name": "@kadena-dev/markdown",
     "version": "1.0.0",
     "private": true,
-    "path": "packages/tools/remark-plugins"
+    "path": "packages/tools/markdown"
   },
   {
     "name": "@kadena-dev/scripts",

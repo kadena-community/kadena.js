@@ -27,21 +27,18 @@ Kadena monorepo Remark plugins
 
 ## Format Markdown file
 
-Make sure the package is built (`pnpm build`).
+Markdown formatting is in each package's `format:md` script and included when
+formatting the whole monorepo (from the root):
 
-Format a single Markdown file and output the result to `stdout`:
-
-```sh
-pnpm dlx remark-cli --use ./packages/tools/remark-plugins/lib/index.js README.md
+```
+pnpm format
 ```
 
-Format a single Markdown file and overwrite the same file:
+To format only the Markdown of a single package (from package dir):
 
-```sh
-pnpm dlx remark-cli --use ./packages/tools/remark-plugins/lib/index.js README.md -o
 ```
-
-Use globs (e.g. `*.md`) to format multiple files at once.
+pnpm format:md
+```
 
 ## Add new directive
 
