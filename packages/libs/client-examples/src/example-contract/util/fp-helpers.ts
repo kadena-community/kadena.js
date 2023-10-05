@@ -1,14 +1,12 @@
 import type { ICommandResult } from '@kadena/client';
 import { isSignedTransaction } from '@kadena/client';
-import { asyncPipe } from '@kadena/client/fp';
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-explicit-any
-type all = any;
-
-export const head = (args: all[]): any => args[0];
+// export const head = (args: all[]): any => args[0];
 
 export const inspect =
+  // prettier-ignore
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   (tag: string) =>
   <T extends any>(data: T): T => {
     console.log(tag, data);
@@ -50,11 +48,3 @@ export const throwIfFails = (response: ICommandResult): ICommandResult => {
   }
   throw response.result.error;
 };
-
-// run preflight and return the tx if its successful
-export const checkSuccess =
-  // prettier-ignore
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-explicit-any
-  <T extends (...args: any) => any>(preflight: T) =>
-  (tx: ICommand) =>
-    asyncPipe(preflight, throwIfFails, () => tx)(tx);

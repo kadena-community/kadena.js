@@ -1,45 +1,27 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @rushstack/typedef-var */
-
-import type {
-  ChainId,
-  IClient,
-  IPactCommand,
-  ISignFunction,
-} from '@kadena/client';
+import type { ChainId, IPactCommand, ISignFunction } from '@kadena/client';
 import { createClient, createTransaction } from '@kadena/client';
-import { asyncPipe, composePactCommand, execution } from '@kadena/client/fp';
+import { asyncPipe, composePactCommand } from '@kadena/client/fp';
 
-import type { First, Tail } from '../example-contract/util/asyncPipe';
-import {
-  checkSuccess,
-  safeSign,
-  throwIfFails,
-} from '../example-contract/util/fp-helpers';
+import { safeSign, throwIfFails } from '../example-contract/util/fp-helpers';
+
+import type { Any, AnyFunc, First, IfAny, Tail } from './types';
 
 import EventEmitter from 'events';
-
-type IfAny<T, Y, N> = 0 extends 1 & T ? Y : N;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Any = any;
 
 export interface IEmit {
   <Tag extends string, T>(
     tag: Tag,
-  ): (data: T) => T & { tag: Tag; isEmit: true };
+  ): (data: T) => T & { tag: Tag; isEmit: true; data: T };
 }
 
-type AnyFunc = (...arg: Any) => Any;
-
-type OnFunctionType<
+type EventListenerType<
   Input extends AnyFunc[],
   WrapperType = Any,
-  Acc extends AnyFunc = Any,
+  Acc extends AnyFunc = any,
 > = Input extends []
-  ? Acc
+  ? Acc & ((event: string, cb: (data: unknown) => Any) => WrapperType)
   : First<Input> extends (arg: infer R) => { isEmit: true; tag: infer Tag }
-  ? OnFunctionType<
+  ? EventListenerType<
       Tail<Input> extends AnyFunc[] ? Tail<Input> : [],
       WrapperType,
       IfAny<
@@ -48,16 +30,16 @@ type OnFunctionType<
         Acc & ((event: Tag, cb: (data: R) => Any) => WrapperType)
       >
     >
-  : OnFunctionType<
+  : EventListenerType<
       Tail<Input> extends AnyFunc[] ? Tail<Input> : [],
       WrapperType,
       Acc
     >;
 
-export type RT<T extends AnyFunc> = {
-  on: OnFunctionType<ReturnType<T>['inputs'], RT<T>>;
+export interface RT<T extends AnyFunc> {
+  on: EventListenerType<ReturnType<T>['inputs'], RT<T>>;
   execute: () => ReturnType<ReturnType<T>>;
-};
+}
 
 type WithEmitter = <T extends (emit: IEmit) => Any>(
   fn: T,
@@ -87,6 +69,12 @@ export interface IClientConfig {
   sign: ISignFunction;
 }
 
+const alwaysInput = <I extends Any, T extends { (arg: I): Any; inputs: Any[] }>(
+  fn: T,
+): { (data: I): Promise<I>; inputs: T['inputs'] } =>
+  ((data: I): Promise<I> => Promise.resolve(fn(data)).then(() => data)) as Any;
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const submitAndListen = (
   { host, defaults, sign }: IClientConfig,
   client = createClient(host as Any),
@@ -97,8 +85,7 @@ export const submitAndListen = (
       createTransaction,
       safeSign(sign),
       emit('sign'),
-      checkSuccess(client.preflight),
-      emit('preflight'),
+      alwaysInput(asyncPipe(client.preflight, emit('preflight'), throwIfFails)),
       client.submitOne,
       emit('submit'),
       client.listen,
@@ -108,6 +95,7 @@ export const submitAndListen = (
     ),
   );
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const preflight = (
   { host, defaults, sign }: IClientConfig,
   client = createClient(host as Any),
@@ -124,20 +112,24 @@ export const preflight = (
     ),
   );
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const dirtyRead = (
   { host, defaults }: Omit<IClientConfig, 'sign'>,
   client = createClient(host as Any),
 ) =>
-  withEmitter((emit: IEmit) =>
-    asyncPipe(
+  withEmitter((emit: IEmit) => {
+    const x = asyncPipe(
       composePactCommand(defaults ?? {}),
       createTransaction,
       client.dirtyRead,
       emit('dirtyRead'),
       throwIfFails,
-    ),
-  );
+    );
 
+    return x;
+  });
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const createRichClient = ({
   host,
   defaults,
