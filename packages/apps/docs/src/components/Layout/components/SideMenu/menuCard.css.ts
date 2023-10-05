@@ -1,4 +1,4 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -10,8 +10,12 @@ export const menuCardClass = style([
     paddingX: '$6',
   }),
   {
-    overflowY: 'scroll',
     transition: 'transform .2s ease',
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        overflowY: 'scroll',
+      },
+    },
   },
 ]);
 

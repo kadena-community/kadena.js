@@ -51,6 +51,7 @@ export const Template: FC<IProps> = ({
 
   useEffect(() => {
     if (!mainContentRef.current || !enablePositioning) {
+      setStyle({});
       return;
     }
 
