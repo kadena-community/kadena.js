@@ -102,18 +102,15 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (context) => {
   const network = getCookieValue(
     StorageKeys.NETWORK,
-    context.req.headers.cookie ?? '',
+    context.req.cookies,
     DefaultValues.NETWORK,
-  ) as Network;
+  );
 
   let networksData = getCookieValue(
     StorageKeys.NETWORKS_DATA,
-    context.req.headers.cookie ?? '',
-  ) as INetworkData[];
-
-  if (!networksData) {
-    networksData = getAllNetworks([]);
-  }
+    context.req.cookies,
+    getAllNetworks([]),
+  );
 
   const modules = await getModules(network, networksData);
 
