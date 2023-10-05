@@ -496,13 +496,7 @@ In this chapter, you have upgraded the smart contract for your election
 website. You added a candidates table and functions for listing and adding
 candidates to the table. Furthermore, you connected the front-end of the
 election website to you local Devnet. The only thing left to finish the
-election website is to make it possible to cast a vote on one of the 
-candidates. But here is the tricky part, voting should be free for everyone
-and storing your vote in the database of your smart contract requires
-sending a transacion to the blockchain, which costs gas. This is where
-Kadena's gas stations come in. A gas station is a Pact module that can
-be used to pay gas for certain transaction. In the next chapter, you will
-add the `election-gas-station` module to your smart contract. The election
-admin account will transfer KDA to the gas station account, so this account
-can pay the gas for all voting transactions automatically via the gas station
-mechanism.
+election website is to make it possible to cast a vote on one of the
+candidates. In the next chapter, you will upgrade the election module
+with functionality that enables people to cast a vote on a candidate with
+their Kadena account.

@@ -674,25 +674,25 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/06-smart-contract}</loc>
-      <lastmod>2023-10-03</lastmod>
+      <lastmod>2023-10-04</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/07-nominate-candidates}</loc>
+      <lastmod>2023-10-04</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/08-voting}</loc>
       
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
-      <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/08-gas-station}</loc>
-      
-      <changefreq>monthly</changefreq>
-      <priority>1</priority>
-    </url>
-    <url>
-      <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/10-voting}</loc>
-      <lastmod>2023-09-22</lastmod>
+      <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/09-gas-station}</loc>
+      <lastmod>2023-10-04</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
