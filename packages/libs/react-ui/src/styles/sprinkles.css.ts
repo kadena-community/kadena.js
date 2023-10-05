@@ -2,7 +2,7 @@ import { darkThemeClass, vars } from './vars.css';
 
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
 
-export const breakpoints: Record<string, string> = {
+export const breakpoints = {
   sm: `(min-width: ${640 / 16}rem)`,
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,

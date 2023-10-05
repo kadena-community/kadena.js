@@ -23,9 +23,10 @@ const assembleColumnSpanVariants = (
     return explicitItemColumnVariant[columnSpan];
   }
 
-  const { sm, md, lg, xl, xxl } = columnSpan;
+  const { xs, sm, md, lg, xl, xxl } = columnSpan;
 
   return [
+    itemColumnVariants.xs[xs],
     itemColumnVariants.sm[sm],
     itemColumnVariants.md[md],
     itemColumnVariants.lg[lg],

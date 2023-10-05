@@ -55,8 +55,27 @@ const columnCount: Record<number, number> = {
   12: 12,
 };
 
-const containerColumnVariantsArray = Object.keys(breakpoints).map((key) => {
+export type breakpointOptions = 'xs' | keyof typeof breakpoints;
+export type ResponsiveVariant = Record<
+  breakpointOptions,
+  Record<number, string>
+>;
+
+const breakpointsArray = [
+  'xs',
+  ...Object.keys(breakpoints),
+] as breakpointOptions[];
+
+const containerColumnVariantsArray = breakpointsArray.map((key) => {
   return styleVariants(columnCount, (count) => {
+    if (key === 'xs') {
+      return [
+        {
+          gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))`,
+        },
+      ];
+    }
+
     return [
       {
         '@media': {
@@ -77,18 +96,22 @@ export const explicitColumnVariant = styleVariants(columnCount, (count) => {
   ];
 });
 
-export type ResponsiveVariant = Record<string, Record<number, string>>;
+export const containerColumnVariants: ResponsiveVariant =
+  breakpointsArray.reduce((acc, key, index) => {
+    acc[key] = containerColumnVariantsArray[index];
+    return acc;
+  }, {} as ResponsiveVariant);
 
-export const containerColumnVariants: ResponsiveVariant = {
-  sm: containerColumnVariantsArray[0],
-  md: containerColumnVariantsArray[1],
-  lg: containerColumnVariantsArray[2],
-  xl: containerColumnVariantsArray[3],
-  xxl: containerColumnVariantsArray[4],
-};
-
-const itemColumnVariantsArray = Object.keys(breakpoints).map((key) => {
+const itemColumnVariantsArray = breakpointsArray.map((key) => {
   return styleVariants(columnCount, (count) => {
+    if (key === 'xs') {
+      return [
+        {
+          gridColumn: `span ${count}`,
+        },
+      ];
+    }
+
     return [
       {
         '@media': {
@@ -109,14 +132,14 @@ export const explicitItemColumnVariant = styleVariants(columnCount, (count) => {
   ];
 });
 
-export const itemColumnVariants: ResponsiveVariant = {
-  sm: itemColumnVariantsArray[0],
-  md: itemColumnVariantsArray[1],
-  lg: itemColumnVariantsArray[2],
-  xl: itemColumnVariantsArray[3],
-  xxl: itemColumnVariantsArray[4],
-};
+export const itemColumnVariants: ResponsiveVariant = breakpointsArray.reduce(
+  (acc, key, index) => {
+    acc[key] = itemColumnVariantsArray[index];
+    return acc;
+  },
+  {} as ResponsiveVariant,
+);
 
 export type ResponsiveInputType =
   | number
-  | Record<keyof typeof breakpoints, keyof typeof columnCount>;
+  | Record<breakpointOptions, keyof typeof columnCount>;

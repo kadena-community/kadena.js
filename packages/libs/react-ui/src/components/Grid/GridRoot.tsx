@@ -42,9 +42,10 @@ const assembleColumnVariants = (
     return explicitColumnVariant[columns];
   }
 
-  const { sm, md, lg, xl, xxl } = columns;
+  const { xs, sm, md, lg, xl, xxl } = columns;
 
   return [
+    containerColumnVariants.xs[xs],
     containerColumnVariants.sm[sm],
     containerColumnVariants.md[md],
     containerColumnVariants.lg[lg],
