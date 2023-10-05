@@ -1,0 +1,1108 @@
+openapi: '3.0.0'
+
+# ############################################################################ #
+# Info
+# ############################################################################ #
+
+info:
+  title: Kadena Chainweb Node API
+  description: |
+    API of [chainweb-node](https://github.com/kadena-io/chainweb-node)
+
+    Chainweb is a scalable Proof-Of-Work (PoW) consensus algorithm. It is an
+    conservative extension of Bitcoin's Nakamoto consensus that extends
+    Bitcoin's single chain algorithm to multiple chains. This allows for
+    unlimited transaction throughput by horizontally scaling the number of chains.
+
+    Feedback and bug reports for the content of this site are welcome. Please
+    open an issue at [this github repository](https://github.com/kadena-io/chainweb-openapi/issues).
+  version: '0.0'
+  x-logo:
+    url: 'https://i.imgur.com/bAZFAGF.png'
+    # backgroundColor: '#0033A0'
+    alttext: Kadena Chainweb Logo
+
+# ############################################################################ #
+# Servers
+# ############################################################################ #
+
+servers:
+  - url: 'https://api.chainweb.com/chainweb/{apiVersion}/mainnet01'
+    description: |
+      Chainweb mainnet service API. It also serves some endpoints of the P2P API.
+    variables:
+      apiVersion:
+        default: '0.0'
+
+  - url: 'https://api.testnet.chainweb.com/chainweb/{apiVersion}/testnet04'
+    description: |
+      Chainweb testnet service API. It also serves some endpoints of the P2P API.
+    variables:
+      apiVersion:
+        default: '0.0'
+
+  - url: '{schema}://{domain}:{port}/chainweb/{apiVersion}/{chainwebVersion}'
+    description: |
+      An generic chainweb-node. It may serve only a subset of the endpoints.
+    variables:
+      schema:
+        default: http
+        enum: ['http', 'https']
+      domain:
+        default: api.chainweb.com
+      port:
+        default: '1848'
+      chainwebVersion:
+        default: mainnet01
+        enum: ['test-singleton', 'development', 'mainnet01', 'testnet04']
+      apiVersion:
+        default: '0.0'
+
+  - url: 'https://{location}.chainweb.com/chainweb/{apiVersion}/mainnet01'
+    description:
+      Chainweb mainnet P2P bootstrap node. Only P2P API endpoints are served.
+    variables:
+      location:
+        default: us-e1
+        enum:
+          [
+            'us-e1',
+            'us-e2',
+            'us-e3',
+            'us-w1',
+            'us-w2',
+            'us-w3',
+            'fr1',
+            'fr2',
+            'fr3',
+            'jp1',
+            'jp2',
+            'jp3',
+          ]
+      apiVersion:
+        default: '0.0'
+
+  - url: 'https://{location}.testnet.chainweb.com/chainweb/{apiVersion}/testnet04'
+    description:
+      Chainweb testnet P2P bootstrap node. Only P2P API endpoints are served.
+    variables:
+      location:
+        default: us-e1
+        enum: ['us1', 'us2', 'eu1', 'eu2', 'ap1', 'ap2']
+      apiVersion:
+        default: '0.0'
+
+# ############################################################################ #
+# Tags
+# ############################################################################ #
+
+tags:
+  # ############################################################################ #
+  # Endpoints
+
+  - name: p2p_api
+    x-displayName: P2P API
+    description: |
+      The P2P API is used for inter-node communication in order to establish block
+      chain consensus. Each chainweb-node serves these endpoints via HTTPS on a
+      network interface and port that is available directly on the public
+      internet.
+
+      Additionally, endpoints of the P2P API can be made available for other
+      clients. For this purpose it is possible to expose the endpoints via reverse
+      proxies, load balancers, or authentication frameworks, and similar web
+      technologies.
+
+  - name: service_api
+    x-displayName: Service API
+    description: |
+      The Service API includes endpoints that expose functionality of
+      chainweb-node to clients other than chainweb-nodes, such as mining pools,
+      DAPPs, web applications, exchanges, wallets, etc.
+
+      The endpoints of the service API are optional and can be enabled via
+      respective configuration settings. They are served on a separate port via
+      plain HTTP. Node operators are free to expose those endpoints only locally,
+      or via reverse proxies, load balancers, authentication frameworks, and
+      similar web technologies.
+
+      Some of the endpoints of the service API can require considerable resources
+      on the server side and administrators should be careful when exposing those
+      publicly. Generally, endpoints of the service API are more vulnerable to DOS
+      attacks.
+
+  - name: cut
+    x-displayName: Cut Endpoints
+    description: |
+      A cut represents a distributed state of a chainweb. It references one
+      block header for each chain, such that those blocks are pairwise
+      concurrent.
+
+      Two blocks from two different chains are said to be concurrent if either
+      one of them is an adjacent parent (is a direct dependency) of the other or
+      if the blocks do not depend at all on each other.
+
+  - name: peer
+    x-displayName: Peer Endpoints
+    description: |
+      The P2P communication between chainweb-nodes is sharded into several independent
+      P2P network. The `cut` network is exchanging consensus state. There is also one
+      mempool P2P network for each chain.
+
+  - name: mempool
+    x-displayName: Mempool P2P Endpoints
+    description: |
+      Mempool P2P endpoints for communication between mempools. Endusers are not
+      supposed to use these endpoints directly. Instead, the respective Pact
+      endpoints should be used for submitting transactions into the network.
+
+  - name: payload
+    x-displayName: Block Payload Endpoints
+    description: |
+      Raw literal Block Payloads in the form in which they are stored on the chain.
+      By default only the payload data is returned which is sufficient for validating
+      the blockchain Merkle Tree. It is also sufficient as input to Pact for
+      executing the Pact transactions of the block and recomputing the outputs.
+
+      It is also possible to query the transaction outputs along with the payload data.
+
+  - name: blockhash
+    x-displayName: Block Hashes Endpoints
+    description: |
+      These endpoints return block hashes from the chain database.
+
+      Generally, block hashes are returned in ascending order and include hashes
+      from orphaned blocks.
+
+      For only querying blocks that are included in the winning branch of the
+      chain the `branch` endpoint can be used, which returns blocks in descending
+      order starting from the leafs of branches of the block chain.
+
+  - name: header
+    x-displayName: Block Header Endpoints
+    description: |
+      These endpoints return block headers from the chain database.
+
+      Generally, block headers are returned in ascending order and include headers
+      of orphaned blocks.
+
+      For only querying blocks that are included in the winning branch of the
+      chain the `branch` endpoints can be used, which return blocks in descending
+      order starting from the leafs of branches of the block chain.
+
+      Block headers are returned in three different formats specified in the `accept` header of the request:
+      *   `application/json`, returns block headers in base64Url (without padding)
+          encoded binary.
+      *   `application/json;blockheader-encoding=object`, returns block headers in
+          JSON encoding.
+      *   `application/octet-stream`, when supported by the endpoint, returns block
+          headers as binary.
+
+  - name: config
+    x-displayName: Config Endpoint
+
+  - name: misc
+    x-displayName: Miscellaneous Endpoints
+
+  - name: pact
+    x-displayName: Pact Endpoints
+    description: |
+      The [Pact](https://pactlang.org) endpoints are documented in the [Pact API
+      Specification](./pact.html).
+
+      The Pact endpoints for chain `{chainId}` use the route prefix
+      `/chain/{chainId}/pact/` in addition to the base URL.
+
+      Futher details can also be found in [this section of the Pact Language
+      Reference](https://pact-language.readthedocs.io/en/stable/pact-reference.html#endpoints).
+
+  - name: rosetta
+    x-displayName: Rosetta Endpoints
+    description: |
+      Chainweb node includes an implementation of the
+      [Rosetta API](https://www.rosetta-api.org). The API is disabled by default
+      and can be enabled in the configuration file of a node.
+
+      The following endpoints are supported, which are documented
+      in the [Rosetta Specification](https://www.rosetta-api.org/docs/welcome.html):
+
+      *   `POST rosetta/account/balance`
+      *   `POST rosetta/block/transaction`
+      *   `POST rosetta/block`
+      *   `POST rosetta/construction/metadata`
+      *   `POST rosetta/construction/submit`
+      *   `POST rosetta/mempool/transaction`
+      *   `POST rosetta/mempool`
+      *   `POST rosetta/network/list`
+      *   `POST rosetta/network/options`
+      *   `POST rosetta/network/status`
+
+  - name: mining
+    x-displayName: Mining Endpoints
+    description: |
+      The Mining API of Chainweb node is disabled by default. It can be enabled
+      and configured in the configuration file.
+
+
+      The mining API consists of the following endpoints that
+      are described in detail on the
+      [Chainweb mining wiki page](https://github.com/kadena-io/chainweb-node/wiki/Mining-API)
+
+      *   `GET mining/work`
+      *   `POST mining/solved`
+      *   `GET mining/updates`
+
+  # ############################################################################ #
+  # Binary Encodings
+
+  - name: binaryHeader
+    x-displayName: Block Header Binary Encoding
+    description: |
+      ## Binary Format For Chain Graphs of Degree Three
+
+      defined in `Chainweb.BlockHeader`
+
+      | Size | Bytes   | Value       |
+      | ---- | ------- | ----------- |
+      | 8    | 0-7     | flags       |
+      | 8    | 8-15    | time        |
+      | 32   | 16-47   | parent      |
+      | 110  | 48-157  | adjacents   |
+      | 32   | 158-189 | target      |
+      | 32   | 190-221 | payload     |
+      | 4    | 222-225 | chain       |
+      | 32   | 226-257 | weight      |
+      | 8    | 258-265 | height      |
+      | 4    | 266-269 | version     |
+      | 8    | 270-277 | epoch start |
+      | 8    | 278-285 | nonce       |
+      | 32   | 286-317 | hash        |
+
+      total: 318 bytes
+
+      Adjacent Parents Record (length 3):
+
+      | Bytes | Value     |
+      | ----- | --------- |
+      | 0-1   | length    |
+      | 2-109 | adjacents |
+
+      total: 110 bytes
+
+      Adjacent Parent:
+
+      | Bytes | Value |
+      | ----- | ----- |
+      | 0-3   | chain |
+      | 4-35  | hash  |
+
+      total: 36 bytes
+
+      ## Fields
+
+      **POW related values**:
+
+      Arithmetic operations and comparisons on `parent`, `target`, `weight`, and `hash`
+      interpret the value as unsigned 256 bit integral numbers in little endian encoding.
+      All operations are performed using rational arithmetic of unlimited precision and the final result is rounded.
+      Please consult the code for details of how the result is rounded.
+
+      **Time Stamps**:
+
+      `time` and `epoch start` are a little endian twoth complement encoded integral numbers that count SI microseconds since POSIX epoch (leap seconds are ignored). These numbers are always positive (highest bit is 0).
+
+      **Numbers**:
+
+      * `height` is a little endian encoded unsigned integral 64 bit number.
+      * `length` is a little endian encoded unsigned integral 16 bit number.
+
+      **Version**:
+
+      `version` identifies the chainweb version. It is a 32 bit value in little endian encoding.
+      Values up to 0x0000FFFF are reserved for production versions (which includes `development` and testnets).
+
+      | value      | version     |
+      | ---------- | ----------- |
+      | 0x00000005 | mainnet01   |
+      | 0x00000001 | development |
+      | 0x00000007 | testnet04   |
+
+      **Other**:
+
+      * `nonce` is any sequence of 8 bytes that is only compared for equality.
+      * `chain` is any sequence of 4 bytes that identifies a chain and can be compared for equality.
+      * `payload` is any sequence of 32 bytes that is a cryptographic hash of the payload associated with the block and can be compared for equality.
+      * `flags` are eight bytes of value 0x0 that are reserved for future use.
+
+  - name: binaryWorkHeader
+    x-displayName: Work Header Binary Encoding
+    description: |
+      The work bytes received from the `/miner/work` endpoint is slightly different than the above header format. These headers do not include the block hash, instead prefixing the header above (without hash) with chain id and hash target bytes.
+
+      The first 36 bytes are informational. Only the bytes from position 36 to the end are subject of the POW hash computation.
+
+      The final 8 bytes are the nonce. The creation time is encoded in bytes 44-52 (see above for details of the encoding). Miners are allowed,  but not required, to update the time to reflect the solve time for the block more closely.
+      A larger value for the creation time increases the accuracy of difficulty adjustment which is in the interest of miners -- the high difficulty guarantees that the outcome of the race of winning blocks is determined by actual hash power. However, blocks that are predated (i.e. have a creation time that is in the future) are rejected during block header validation. Leaving the time unchanged is a valid choice.
+
+      Miners must not change or make any assumptions about the content of the "reserved" bytes.
+
+      Defined in `Chainweb.Miner.Core`
+
+      | Size | Bytes   | Work Bytes | Value       |
+      | ---- | ------- | -----------| ----------- |
+      | 4    | 0-3     | NA         | chain       |
+      | 32   | 4-35    | NA         | hash-target |
+      |      |         |            |             |
+      | 8    | 36-43   | 0-7        | reserved    |
+      | 8    | 44-51   | 8-15       | **time**    |
+      | 298  | 52-313  | 16-277     | reserved    |
+      | 8    | 314-321 | 278-285    | **nonce**   |
+
+      total: 322 bytes
+
+
+      For arithmetic comparisons the `hash-target` is interpreted as unsigned 256 bit integral number in little endian encoding.
+
+      `time` is a little endian twoth complement encoded integral number that counts SI microseconds since POSIX epoch (leap seconds are ignored). The value is always positive (highest bit is 0).
+
+  # ############################################################################ #
+  # Data Models
+
+  - name: cut_model
+    x-displayName: Cut Model
+    description: |
+      The `origin` property is required for use with the `PUT /cut` endpoint.
+      <SchemaDefinition schemaRef="#/components/schemas/cut" showReadOnly={true} showWriteOnly={true} />
+
+  - name: payload_model
+    x-displayName: Payload Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/payload" showReadOnly={true} showWriteOnly={true} />
+
+  - name: payloadWithOutputs_model
+    x-displayName: Payload With Outputs Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/payloadWithOutputs" showReadOnly={true} showWriteOnly={true} />
+
+  - name: header_model
+    x-displayName: Block Header Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/blockHeader" showReadOnly={true} showWriteOnly={true} />
+
+  - name: peer_model
+    x-displayName: Peer Info Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/peer" showReadOnly={true} showWriteOnly={true} />
+
+      ## Compute PeerInfo
+
+      Generally, it is easier to query the peer info of a peer using a GET query for a peer database.
+      Otherwise the peer info can be computed as follows.
+
+      For peers that use domain names with valid CA signed SSL certificates the peer id is `null`.
+
+      For peers with self-signed certificates the peer id is the base64Url (without padding) encoded
+      SHA256 fingerprint of the certificate. For a chainweb-node `NODE` it can be computed as follows:
+
+      ```sh
+      echo |
+      openssl s_client -showcerts -servername ${NODE} -connect ${NODE}:443 2>/dev/null |
+      openssl x509 -fingerprint -noout -sha256 |
+      sed 's/://g' |
+      tail -c 65 |
+      xxd -r -p |
+      base64 |
+      tr -d '=' |
+      tr '/+' '_-'
+      ```
+
+  - name: nodeInfo_model
+    x-displayName: Chainweb Node Info Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/nodeInfo" showReadOnly={true} showWriteOnly={true} />
+
+  - name: page_model
+    x-displayName: Collection Page Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/page" showReadOnly={true} showWriteOnly={true} />
+
+  - name: minerInfo_model
+    x-displayName: Miner Info Model
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/minerInfo" showReadOnly={true} showWriteOnly={true} />
+
+  - name: miningUpdateEventStream_model
+    x-displayName: Mining Update Event Stream Model
+    description: |
+      A server-sent event sources that notifies miners when new mining work
+      becomes available. The stream is terminated by the server in regular
+      intervals and it is up to the client to request a new stream.
+
+      Each event consists of a single line: `event:New Cut`.
+      Events are separated by empty lines.
+
+      <SchemaDefinition schemaRef="#/components/schemas/miningUpdateEventStream" showReadOnly={true} showWriteOnly={true} />
+
+  - name: commonResponseHeaders
+    x-displayName: Response Headers
+    description: |
+
+      ## Server Timestamp
+
+      `x-server-timestamp`: The time of the clock of the remote node
+
+      <SchemaDefinition schemaRef="#/components/schemas/posixTimestamp" showReadOnly={true} showWriteOnly={true} />
+
+      ## Chainweb Node Version
+
+      `x-chainweb-node-version`: The version of the remote chainweb node
+
+      <SchemaDefinition schemaRef="#/components/schemas/chainwebVersion" showReadOnly={true} showWriteOnly={true} />
+
+      ## Client Peer Address
+
+      `x-peer-addr`: Host and port of the client as observed by the remote node
+
+      <SchemaDefinition schemaRef="#/components/schemas/hostAddress" showReadOnly={true} showWriteOnly={true} />
+
+# ############################################################################ #
+# Tag Groups
+
+x-tagGroups:
+  - name: chainweb_p2p
+    x-displayName: Chainweb P2P API
+    tags:
+      - p2p_api
+      - cut
+      - blockhash
+      - header
+      - payload
+      - mempool
+      - peer
+      - config
+
+  - name: chainweb_service
+    x-displayName: Chainweb Service API
+    tags:
+      - service_api
+      - misc
+      - mining
+      - pact
+      - rosetta
+
+  - name: Common HTTP Headers
+    tags:
+      - commonResponseHeaders
+
+  - name: Data Models
+    tags:
+      - cut_model
+      - header_model
+      - payload_model
+      - payloadWithOutputs_model
+      - peer_model
+      - nodeInfo_model
+      - page_model
+      - minerInfo_model
+      - miningUpdateEventStream_model
+
+  - name: Binary Encodings
+    tags:
+      - binaryHeader
+      - binaryWorkHeader
+
+# ############################################################################ #
+# Components
+# ############################################################################ #
+
+components:
+  # ########################################################################## #
+  schemas:
+    # POSIX time stamp
+    posixTimestamp:
+      title: POSIX Timestamp
+      type: integer
+      description: Seconds since POSIX epoch
+      example: 1619108524
+      minimum: 0
+
+    posixTimestampMicro:
+      title: POSIX Timestamp in Microseconds
+      type: integer
+      description: Microseconds since POSIX epoch
+      example: 1602382624629329
+      minimum: 0
+
+    # Chainweb Version
+    chainwebVersion:
+      title: Chainweb Version
+      description: The version of the Chainweb network
+      enum: ['test-singleton', 'development', 'mainnet01', 'testnet04']
+
+    # chain id
+    chainId:
+      title: Chain ID
+      description: |
+        A Chainweb chain ID. In Kadena Chainweb chains are named by numbers
+        starting form 0. Valid values depend on the current graph at the
+        respective block height of the chainweb version.
+      type: integer
+      minimum: 0
+      example: 0
+
+    # host address
+    hostAddress:
+      title: Host Address
+      description: Host address containing IPv4 and port
+      type: string
+      pattern: '^\d{4}.\d{4}.\d{4}.\d{4}:\d+$'
+      example: '10.36.1.3:42988'
+
+    # Signed Transaction Text
+    signedTxText:
+      title: Signed Transaction Text
+      type: string
+      description: Text of a JSON encoded signed Pact transaction
+      example:
+        $ref: '#/components/examples/signedTxText'
+
+    # RequestKey
+    requestKey:
+      title: Request Key
+      type: string
+      description: Base64Url-encoded, request key of a Pact transaction
+      pattern: '^[a-zA-Z0-9_-]{43}$'
+      # contentEncoding: base64Url
+      minLength: 43
+      maxLength: 43
+      example: y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw
+
+    # SHA256 Hash
+    sha256Hash:
+      title: SHA256 Hash
+      type: string
+      description: Base64Url (without padding) encoded SHA256 hash
+      pattern: '^[a-zA-Z0-9_-]{43}$'
+      # contentEncoding: base64Url
+      minLength: 43
+      maxLength: 43
+      example: y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw
+
+    # Block Hash
+    blockHash:
+      title: Block Hash
+      description: Base64Url (without padding) encoded block hash
+      example: QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH7
+      allOf:
+        - $ref: '#/components/schemas/sha256Hash'
+
+    # payload Hash
+    payloadHash:
+      title: Block Payload Hash
+      description: Base64Url (without padding) encoded block payload hash
+      example: GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA
+      allOf:
+        - $ref: '#/components/schemas/sha256Hash'
+
+    # height
+    blockHeight:
+      title: Block Height
+      description: |
+        The height of a block is the number of its predecessors in the block chain
+      type: integer
+      minimum: 0
+      example: 1000000
+
+    # weight
+    blockWeight:
+      title: Block Weight
+      description: |
+        The POW weight of a block is the sum of the difficulties of the block
+        and of all of its ancestors. The difficulty of a block is the maximum
+        difficulty divided by the target.
+
+        It represented as the base64Url (without padding) 256 bit little endian
+        encoding of the numerical value.
+      type: string
+      pattern: '^[a-zA-Z0-9_-]{43}$'
+      # contentEncoding: base64Url
+      minLength: 43
+      maxLength: 43
+      example: iil_D0t2MGqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+    # Target
+    target:
+      title: PoW Target
+      description: |
+        The PoW target of a block represented as the base64Url (without
+        padding) 256 bit little endian encoding of the numerical value.
+      type: string
+      pattern: '^[a-zA-Z0-9_-]{43}$'
+      # contentEncoding: base64Url
+      minLength: 43
+      maxLength: 43
+      example: 2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA
+
+    # Nonce
+    nonce:
+      title: PoW Nonce
+      description: |
+        PoW nonce of the block. This is computed by the miner such that the
+        block hash is smaller than the target.
+      type: string
+      pattern: '[0-9]+'
+      minLength: 1
+
+    # Binary block header in base64Url encoding
+    base64Header:
+      title: Base64Url Block Header
+      description: Base64Url (without padding) encoded binary block header
+      type: string
+      pattern: '[a-zA-Z0-9_-]+'
+      # contentEncoding: base64Url
+      # minLength: 424
+      # maxLength: 424
+      example:
+        value:
+          $ref: '#/components/examples/base64HeaderPage/value/items/0'
+
+    backupStatus:
+      title: Backup job status
+      type: string
+      pattern: 'backup-done|backup-in-progress|backup-failed'
+
+    backupId:
+      title: Backup job identifier
+      description: Textual backup job identifier
+      type: string
+      pattern: '[a-zA-Z0-9_-]+'
+      example: 1648665437000
+
+    # Binary encoded Block Header
+    binaryHeader:
+      title: Binary Block Header
+      description: Binary representation of a block header
+      type: string
+      minLength: 318
+      maxLength: 318
+      # contentMediaType: application/octet-stream
+
+    # JSON encoded Block Header
+    blockHeader:
+      title: Block Header
+      description: JSON Encoded Block Header
+      required:
+        [
+          creationTime,
+          parent,
+          height,
+          hash,
+          chainId,
+          weight,
+          featureFlags,
+          epochStart,
+          adjacents,
+          payloadHash,
+          chainwebVersion,
+          target,
+          nonce,
+        ]
+      example:
+        value:
+          $ref: '#/components/examples/blockHeaderPage/value/items/0'
+      properties:
+        creationTime:
+          $ref: '#/components/schemas/posixTimestampMicro'
+        parent:
+          $ref: '#/components/schemas/blockHash'
+        height:
+          $ref: '#/components/schemas/blockHeight'
+        hash:
+          $ref: '#/components/schemas/blockHash'
+        chainId:
+          $ref: '#/components/schemas/chainId'
+        weight:
+          $ref: '#/components/schemas/blockWeight'
+        featureFlags:
+          type: integer
+          description: A reserved value that must be 0.
+        epochStart:
+          $ref: '#/components/schemas/posixTimestampMicro'
+        adjacents:
+          description: |
+            The block hashes of the adjacent parents of the block. This is
+            represented as an associative array that maps the adjancent chain
+            ids to the respective block hash.
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/blockHash'
+        payloadHash:
+          $ref: '#/components/schemas/payloadHash'
+        chainwebVersion:
+          $ref: '#/components/schemas/chainwebVersion'
+        target:
+          $ref: '#/components/schemas/target'
+        nonce:
+          $ref: '#/components/schemas/nonce'
+
+    # Block Payload
+    payload:
+      title: Block Payload
+      description: |
+        Payload of a Block including the Merkle roots for transactions and
+        transaction outputs.
+      required:
+        [transactions, minerData, transactionsHash, outputsHash, payloadHash]
+      example:
+        value:
+          $ref: '#/components/examples/payloads/value/1'
+      properties:
+        transactions:
+          type: array
+          description:
+            Array of base64Url (without padding) encoded JSON texts of signed
+            Pact transactions
+          items:
+            type: string
+            pattern: '[a-zA-Z0-9_-]+'
+            # contentEncoding: base64Url
+            description:
+              Base64Url (without padding) encoded JSON text of a signed Pact
+              transaction
+        minerData:
+          type: string
+          pattern: '[a-zA-Z0-9_-]+'
+          # contentEncoding: base64Url
+
+          description:
+            Base64Url (without padding) encoded JSON text of the miner data of
+            the payload
+        transactionsHash:
+          $ref: '#/components/schemas/sha256Hash'
+        outputsHash:
+          $ref: '#/components/schemas/sha256Hash'
+        payloadHash:
+          $ref: '#/components/schemas/payloadHash'
+
+    # Block Payload With Outputs
+    payloadWithOutputs:
+      title: Block Payload With Outputs
+      description: |
+        Payload with outputs of a Block including the Merkle roots for
+        transactions and transaction outputs
+      required:
+        [
+          transactions,
+          minerData,
+          transactionsHash,
+          outputsHash,
+          payloadHash,
+          coinbase,
+        ]
+      example:
+        $ref: '#/components/examples/emptyPayload'
+      properties:
+        transactions:
+          type: array
+          description: |
+            Array of pairs of transactions and their outputs.
+            Signed Pact transactions and outputs are base64Url-encoded without padding.
+          items:
+            type: array
+            minItems: 2
+            maxItems: 2
+            items:
+              anyOf:
+                - type: string
+                  pattern: '[a-zA-Z0-9_-]+'
+                  # contentEncoding: base64Url
+                  description:
+                    Base64Url (without padding) encoded JSON text of a signed
+                    Pact transaction
+                - type: string
+                  pattern: '[a-zA-Z0-9_-]+'
+                  # contentEncoding: base64Url
+                  description:
+                    Base64Url (without padding) encoded JSON text of a
+                    transaction output
+        minerData:
+          type: string
+          pattern: '[a-zA-Z0-9_-]+'
+          # contentEncoding: base64Url
+          description:
+            Base64Url (without padding) encoded JSON text of the miner data of
+            the payload
+        transactionsHash:
+          $ref: '#/components/schemas/sha256Hash'
+        outputsHash:
+          $ref: '#/components/schemas/sha256Hash'
+        payloadHash:
+          $ref: '#/components/schemas/payloadHash'
+        coinbase:
+          type: string
+          pattern: '[a-zA-Z0-9_-]+'
+          # contentEncoding: base64Url
+          description:
+            Base64Url (without padding) encoded JSON text of coinbase output of
+            the block
+
+    # Peer Info
+    peer:
+      title: Peer
+      description: Peer info object
+      required: [id, address]
+      example:
+        $ref: '#/components/examples/peers/value/items/0'
+      properties:
+        id:
+          description: |
+            The base64Url (without padding) encoded SHA256 fingerprint of the
+            SSL certificate of the node. This can be null only if the node uses
+            an official CA signed certificate
+
+          type: string
+          nullable: true
+          pattern: '[a-zA-Z0-9_-]{43}'
+          # contentEncoding: base64Url
+        address:
+          required: [hostname, port]
+          properties:
+            hostname:
+              description: |
+                A domain name or IP address. This must be a domain name only if
+                the respective node is using a valid CA signed SSL certificate.
+
+              type: string
+              oneOf:
+                - format: hostname
+                - format: ipv4
+                - format: ipv6
+            port:
+              description: Port number
+              type: integer
+              minimum: 1
+              maximum: 65535
+
+    # Cut
+    cut:
+      title: Cut
+      description: Cut datastruction of the chainweb API
+      required: [height, weight, hashes]
+      example:
+        $ref: '#/components/examples/cut'
+      properties:
+        origin:
+          $ref: '#/components/schemas/peer'
+        height:
+          description: |
+            The cut height is the sum of the height of all blocks of the cut.
+            Usage of this value should be avoided, because its semantics may
+            change in the future
+          type: integer
+          minimum: 0
+          # deprecated: true
+        weight:
+          description: The sum of the weights of all blocks in the cut
+          type: string
+          pattern: '[a-zA-Z0-9_-]{43}'
+          # contentEncoding: base64Url
+        hashes:
+          type: object
+          required: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+          description: |
+            An object that maps chain Ids to their respective block hash and
+            block height
+          additionalProperties:
+            $ref: '#/components/schemas/hashWithBlockHeight'
+        instance:
+          type: string
+        id:
+          type: string
+
+    hashWithBlockHeight:
+      title: Hash with block height
+      description: A block hash and the height of that block
+      required: [hash, height]
+      example:
+        {
+          'height': 1539924,
+          'hash': 'uP-pHW4QKrV9fN1mlDGwKuaiIDlJW7xYSj1nW53EHM4',
+        }
+      type: object
+      properties:
+        hash:
+          type: string
+          pattern: '[a-zA-Z0-9_-]{43}'
+        height:
+          type: integer
+          minimum: 0
+
+    # Info
+    nodeInfo:
+      title: Chainweb Node Info
+      description: General information about a chainweb node
+      required:
+        [
+          nodeNumberOfChains,
+          nodeApiVersion,
+          nodeChains,
+          nodeVersion,
+          nodeGraphHistory,
+        ]
+      example:
+        $ref: '#/components/examples/info'
+      properties:
+        nodeNumberOfChains:
+          type: integer
+          minimum: 10
+          example: 20
+        nodeApiVersion:
+          type: string
+          example: '0.0'
+        nodeChains:
+          type: array
+          items:
+            description: Chain identifiers
+            type: string
+          minItems: 0
+          example: ['0']
+        nodeVersion:
+          type: string
+          enum: ['test-singleton', 'development', 'mainnet01', 'testnet04']
+          example: mainnet01
+        nodeGraphHistory:
+          description: |
+            Array of all chain graphs indexed by the height of the first block with the repective
+            graph. Graphs are encoded as adjacency lists.
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            description:
+              A pair consisting of the height of the first block of a chain
+              graph and the adjacency list of the graph.
+            type: array
+            minItems: 2
+            maxItems: 2
+            items:
+              oneOf:
+                - description: height of the first block of the graph
+                  type: integer
+                  minimum: 0
+                - description: adjacency list encoding of the chain graph.
+                  type: array
+                  items:
+                    description:
+                      A pair of the chain identifier and the list of chains
+                      adjacent to it.
+                    minItems: 2
+                    maxItems: 2
+                    type: array
+                    items:
+                      oneOf:
+                        - description: a chain identifier
+                          type: integer
+                          minimum: 0
+                        - description: an adjacency list for that chain
+                          type: array
+                          minItems: 0
+                          items:
+                            type: integer
+                            minimum: 0
+
+    # Page (use with allOf to provide an schema for itmes)
+    page:
+      title: Page
+      description: Page of a collection of items
+      required: [next, limit, items]
+      example:
+        $ref: '#/components/examples/base64HeaderPage'
+      properties:
+        limit:
+          description: |
+            The number of items in the page. This number can be smaller but
+            never be larger than the number of requested items.
+
+          type: integer
+          minimum: 0
+          items:
+            description: Items of the returned collection
+            type: array
+        next:
+          description: |
+            A cursor that can be used to query the next page. It should be used
+            literally as value for the `next` parameter in a follow-up request.
+
+          oneOf:
+            - type: 'null'
+            - type: string
+
+          nullable: true
+          pattern: '^(inclusive|exclusive):.*$'
+        items:
+          description: |
+            The items in the page.
+
+    # Mining Update Event Stream
+    miningUpdateEventStream:
+      title: Mining Update Events
+      description: |
+        A stream of server-sent events. **This is not an JSON array**.
+        Events are separated by empty lines (`\n\n`). Each event
+        consists of a single line:
+
+          event:New Cut
+
+      type: array
+      items:
+        title: New Cut Event
+        description: |
+          A `New Cut` event. **This is not an JSON object**.
+          Each event consists of a single `event` propert.
+        properties:
+          event:
+            type: string
+            enum: ['New Cut']
+      example: |-
+        event:New Cut
+
+        event:New Cut
+
+        event:New Cut
+
+    # Miner Info
+    minerInfo:
+      title: Miner Info
+      properties:
+        account:
+          title: Account Name
+          description:
+            Miner account name. Usually this is the same as the public key.
+          type: string
+          example: 'f880a433d6e2a13a32b6169030f56245efdd8c1b8a5027e9ce98a88e886bef27'
+        predicate:
+          title: Key Predicate
+          enum: ['keys-all', 'keys-any']
+          example: 'keys-all'
+          description:
+            key predicate. For a single key this is usually `keys-all`.
+        public-keys:
+          type: array
+          items:
+            title: Miner Public Key
+            type: string
+            example: 'f880a433d6e2a13a32b6169030f56245efdd8c1b8a5027e9ce98a88e886bef27'
+      example:
+        {
+          'account': 'miner',
+          'predicate': 'keys-all',
+          'public-keys':
+            [
+              'f880a433d6e2a13a32b6169030f56245efdd8c1b8a5027e9ce98a88e886bef27',
+            ],
+        }
+
+    nodeConfig:
+      title: Node Configuration
+      description: |
+        The configuration of a node. Private information regarding certificates
