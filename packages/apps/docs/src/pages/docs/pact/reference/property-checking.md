@@ -63,7 +63,7 @@ Our property states that if the transaction submitted to the blockchain runs
 successfully, it must be the case that the transaction has the proper signatures
 to satisfy the keyset named `admins`:
 
-```pact
+```lisp
 (defun read-account (id)
   @doc   "Read data for account ID"
   @model [(property (authorized-by 'admins))]
@@ -75,7 +75,7 @@ to satisfy the keyset named `admins`:
 There's a set of square brackets around our property because Pact allows
 multiple properties to be defined simultaneously:
 
-```pact
+```lisp
 [p1 p2 p3 ...]
 ```
 
@@ -83,7 +83,7 @@ Next, we see an example of schema invariants. For any table with the following
 schema, if our property checker succeeds, we know that all possible code paths
 will always maintain the invariant that token balances are greater than zero:
 
-```pact
+```lisp
 (defschema tokens
   @doc   "token schema"
   @model [(invariant (> balance 0))]
@@ -120,7 +120,7 @@ invariants for any possible DB modification.
 After supplying any desired invariant and property annotations in your module,
 property checking is run by invoking `verify`:
 
-```pact
+```lisp
 (verify 'module-name)
 ```
 
@@ -134,7 +134,7 @@ properties.
 In properties, we can refer to function arguments directly by their names, and
 return values can be referred to by the name `result`:
 
-```pact
+```lisp
 (defun negate:integer (x:integer)
   @doc   "negate a number"
   @model [(property (= result (* -1 x)))]
@@ -147,7 +147,7 @@ decimals work as they do in normal Pact code.
 
 We can also define properties in terms of the standard comparison operators:
 
-```pact
+```lisp
 (defun abs:integer (x:integer)
   @doc   "absolute value"
   @model [(property (>= result 0))]
@@ -164,7 +164,7 @@ property checking language supports logical implication in the form of `when`,
 where `(when x y)` is equivalent to `(or (not x) y)`. Here we define three
 properties at once:
 
-```pact
+```lisp
 (defun negate:integer (x:integer)
   @doc   "negate a number"
   @model
@@ -183,7 +183,7 @@ By default, every property is predicated on the successful completion of the
 transaction which would contain an invocation of the function being tested. This
 means that properties like the following:
 
-```pact
+```lisp
 (defun ensured-positive:integer (val:integer)
   @doc   "halts when passed a non-positive number"
   @model [(property (!= result 0))]
@@ -203,7 +203,7 @@ However, in some cases it's useful to assert when the function must succeed or
 abort. To write this kind of assertion, instead of `property`, you can use
 `succeeds-when` or `fails-when`, for example:
 
-```pact
+```lisp
 (defun ensured-positive:bool (val:integer)
   @model [
     ; this succeeds exactly when val > 0, and fails exactly when val <= 0
@@ -238,6 +238,27 @@ function arguments and return values. See the API documentation at
 [Property and Invariant Functions](http://pact-language.readthedocs.io/en/latest/pact-properties-api.html)
 for the full listing of functions available in invariant definitions.
 
+<!--- *** This second is disabled until we add `valid`/`satisfiable` alternatives to `property`, which currently assumes tx success ***
+
+### Valid, satisfiable, and explicit transaction abort/success
+
+TODO: more. talk about valid, satisfiable, and the lack of the default
+success condition of property.
+
+Pact's property language supports the notions of `success` and `abort` to
+describe whether programs will successfully run to completion within a
+transaction on the blockchain:
+
+```
+(defun failure-guaranteed:bool ()
+  ("always fails" (valid abort))
+  (enforce false "cannot pass"))
+```
+
+TODO: more
+
+-->
+
 ### Keyset Authorization
 
 In Pact, keys can be referred to by predefined names (defined by
@@ -247,7 +268,7 @@ supports both styles of working with keysets.
 For named keysets, the property `authorized-by` holds only if every possible
 code path enforces the keyset:
 
-```pact
+```lisp
 (defun admins-only (action:string)
   @doc   "Only admins or super-admins can call this function successfully.
   @model
@@ -270,7 +291,7 @@ For the following property to pass, the code must extract the keyset stored in
 the `ks` column in the `accounts` table for the row keyed by the variable
 `name`, and enforce it using `enforce-keyset`:
 
-```pact
+```lisp
 (row-enforced accounts 'ks name)
 ```
 
@@ -298,7 +319,7 @@ the sum of all updates to a column zeroes-out by the end of a transaction. To
 capture this pattern, we can express a "mass conservation" property using
 `column-delta`:
 
-```pact
+```lisp
 (= (column-delta accounts 'balance) 0.0)
 ```
 
@@ -312,13 +333,13 @@ below.
 We can also use `column-delta` to ensure that a column only ever increases
 during a transaction:
 
-```pact
+```lisp
 (>= 0 (column-delta accounts 'balance))
 ```
 
 or that it increases by a set amount during a transaction:
 
-```pact
+```lisp
 (= 1 (column-delta accounts 'balance))
 ```
 
@@ -337,7 +358,7 @@ update a single row?
 In such a situation we could use universal quantification to talk about _any_
 such row:
 
-```pact
+```lisp
 (property
   (forall (key:string)
    (when (row-written accounts key)
@@ -351,7 +372,7 @@ Likewise instead of quantifying over all possible keys, if we wanted to state
 that there merely exists a row that is read during the transaction, we could use
 existential quantification like so:
 
-```pact
+```lisp
 (property
   (exists (key:string)
     (row-read accounts key)))
@@ -364,7 +385,7 @@ is required.
 
 With `defproperty`, properties can be defined at the module level:
 
-```pact
+```lisp
 (module accounts 'admin-keyset
   @model
     [(defproperty conserves-mass
@@ -378,7 +399,7 @@ With `defproperty`, properties can be defined at the module level:
 
 and then used at the function level by referring to the property's name:
 
-```pact
+```lisp
 (defun read-account (id)
   @model [(property auth-required)]
 
@@ -391,7 +412,7 @@ and then used at the function level by referring to the property's name:
 Let's work through an example where we write a function to transfer some amount
 of a balance across two accounts for the given table:
 
-```pact
+```lisp
 (defschema account
   @doc "user accounts with balances"
 
@@ -406,7 +427,7 @@ at first study, but it turns out that there are number of bugs which we can
 eradicate with the help of another property, and by adding an invariant to the
 table.
 
-```pact
+```lisp
 (defun transfer (from:string to:string amount:integer)
   @doc   "Transfer money between accounts"
   @model [(property (row-enforced accounts 'ks from))]
@@ -421,7 +442,7 @@ table.
 
 Let's start by adding an invariant that balances can never drop below zero:
 
-```pact
+```lisp
 (defschema account
   @doc   "user accounts with balances"
   @model [(invariant (>= balance 0))]
@@ -437,7 +458,7 @@ case it's actually possible for the "sender" to steal money from anyone else by
 tranferring a negative amount! Let's fix that by enforcing `(> amount 0)`, and
 try again:
 
-```pact
+```lisp
 (defun transfer (from:string to:string amount:integer)
   @doc   "Transfer money between accounts"
   @model [(property (row-enforced accounts 'ks from))]
@@ -456,14 +477,14 @@ property `conserves-mass` to ensure that it's not possible for the function to
 be used to create or destroy any money. We define it within `@model` at the
 module level:
 
-```pact
+```lisp
 (defproperty conserves-mass
   (= (column-delta accounts 'balance) 0.0))
 ```
 
 And then we can use it within `@model` at the function level:
 
-```pact
+```lisp
 (defun transfer (from:string to:string amount:integer)
   @doc   "Transfer money between accounts"
   @model
@@ -488,7 +509,7 @@ To see how, let's focus on the two `update` calls, where `from` and `to` are set
 to the same value, and `from-bal` and `to-bal` are also set to what we'll call
 `previous-balance`:
 
-```pact
+```lisp
 (update accounts "alice" { "balance": (- previous-balance amount) })
 (update accounts "alice" { "balance": (+ previous-balance amount) })
 ```
@@ -500,7 +521,7 @@ effectively created `amount` tokens for free!
 We can fix this by adding another `enforce` (with `(!= from to)`) to prevent
 this unintended behavior:
 
-```pact
+```lisp
 (defun transfer (from:string to:string amount:integer)
   @doc   "Transfer money between accounts"
   @model

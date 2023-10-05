@@ -15,7 +15,7 @@ tags: ['pact', 'language reference']
 This document is a reference for the Pact smart-contract language, designed for
 correct, transactional execution on a
 [high-performance blockchain](http://kadena.io). For more background, please see
-the [white paper](/docs/kadena) or the
-[pact home page](http://kadena.io/#pactModal).
+the [white paper](/docs/kadena/whitepapers/pact-smart-contract-language) or the
+[pact home page](/docs/pact).
 
 Copyright (c) 2016 - 2018, Stuart Popejoy. All Rights Reserved.

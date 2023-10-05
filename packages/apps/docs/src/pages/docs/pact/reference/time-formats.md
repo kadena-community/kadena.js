@@ -12,9 +12,10 @@ tags: ['pact', 'language reference', 'time formats']
 
 # Time formats
 
-The [parse-time](/docs/pact/reference/functions/time#parsetime) and
-[format-time](/docs/pact/reference/functions/time#formattime) functions accept
-format codes that derive from GNU `strftime` with some extensions, as follows:
+The [parse-time](/docs/pact/reference/functions/time#parse-timeh-1026813529) and
+[format-time](/docs/pact/reference/functions/time#format-timeh1412423395)
+functions accept format codes that derive from GNU `strftime` with some
+extensions, as follows:
 
 `%%` - literal `"%"`
 
@@ -126,11 +127,11 @@ here.
 ## Default format and JSON serialization
 
 The default format is a UTC ISO8601 date+time format: "%Y-%m-%dT%H:%M:%SZ", as
-accepted by the [time](/docs/pact/reference/functions/time#time) function. While
-the time object internally supports up to microsecond resolution, values
-returned from the Pact interpreter as JSON will be serialized with the default
-format. When higher resolution is desired, explicitly format times with `%v` and
-related codes.
+accepted by the [time](/docs/pact/reference/functions/time#timeh3560141)
+function. While the time object internally supports up to microsecond
+resolution, values returned from the Pact interpreter as JSON will be serialized
+with the default format. When higher resolution is desired, explicitly format
+times with `%v` and related codes.
 
 ## Examples
 
