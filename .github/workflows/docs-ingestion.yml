@@ -1,0 +1,32 @@
+name: Docs website data ingestion to Algolia for semantic search
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - packages/apps/docs/**
+
+jobs:
+  ingestion:
+    name: Ingestion docs website data to Algolia
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: pnpm install
+        run: pnpm install
+
+      - name: Ingest docs to Algolia
+        run: pnpm run 7d:ingest-algolia
+        working-directory: packages/apps/docs

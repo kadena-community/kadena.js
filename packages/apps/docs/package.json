@@ -6,7 +6,7 @@
     "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
     "7d:clear": "npx 7d pinecone-clear-namespace --namespace kda-docs",
     "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md' --files 'src/pages/docs/**/*.mdx'  --files 'src/specs/**/*.json' --namespace kda-docs",
-    "7d:ingest-algolia": "npx 7d ingest --files 'src/pages/docs/**/*.md' --files 'src/pages/docs/**/*.mdx'  --files 'src/specs/**/*.json' --db algolia --namespace docs_website_dev",
+    "7d:ingest-algolia": "npx 7d ingest --files 'src/pages/docs/**/*.md' --files 'src/pages/docs/**/*.mdx'  --files 'src/specs/**/*.json' --db algolia --namespace docs_website_dev --skip-embeddings",
     "7d:query": "npx 7d",
     "build": "pnpm run build:scripts && next build",
     "build:blogAuthorInfo": "node src/scripts/createBlogAuthors.mjs",
@@ -37,7 +37,7 @@
     "test": "echo 'No tests, until there is time to debug the build'"
   },
   "dependencies": {
-    "@7-docs/edge": "^0.4.0",
+    "@7-docs/edge": "^0.5.0",
     "@google-analytics/data": "~3.2.2",
     "@kadena/fonts": "~0.0.1",
     "@kadena/react-ui": "workspace:*",
@@ -71,7 +71,7 @@
     "styled-components": "~5.3.10"
   },
   "devDependencies": {
-    "@7-docs/cli": "^0.4.0",
+    "@7-docs/cli": "^0.5.0",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
