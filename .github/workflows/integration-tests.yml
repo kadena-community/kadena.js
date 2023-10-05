@@ -41,4 +41,4 @@ jobs:
         run: pnpm run build --filter @kadena/client
 
       - name: run integration tests
-        run: pnpm --filter @kadena/client test:integration
+        run: pnpm run test:integration --filter @kadena/client
