@@ -11,7 +11,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 
 interface IProps {
-  results: IQueryResult[];
+  results: IQueryResult[] | undefined;
   limitResults?: number;
 }
 

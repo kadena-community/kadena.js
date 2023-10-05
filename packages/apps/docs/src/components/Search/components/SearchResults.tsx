@@ -28,7 +28,7 @@ import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {
-  semanticResults: IQueryResult[];
+  semanticResults: IQueryResult[] | undefined;
   semanticError?: string;
   semanticIsLoading: boolean;
   outputStream: string;
@@ -114,7 +114,7 @@ export const SearchResults: FC<IProps> = ({
                   results={semanticResults}
                 />
                 {limitResults !== undefined &&
-                limitResults < semanticResults.length &&
+                limitResults < (semanticResults?.length ?? 0) &&
                 query !== undefined ? (
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>

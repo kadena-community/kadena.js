@@ -5,16 +5,12 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components';
 import { ErrorHeader } from '@/components/Layout/Landing/components/Headers';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import type { FC, FormEvent } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 interface IQuery {
   q?: string;
@@ -36,9 +32,7 @@ const createSearchQuery = (router: NextRouter): string => {
 
 const NotFoundPage: FC = () => {
   const router = useRouter();
-  const [query, setQuery] = useState<string | undefined>(
-    createSearchQuery(router),
-  );
+  const [query] = useState<string | undefined>(createSearchQuery(router));
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -75,7 +69,7 @@ const NotFoundPage: FC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: [],
       frontmatter: {
         title: '404 - Not found',
         menu: '404 - Not found',

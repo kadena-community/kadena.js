@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 interface IHookResult {
   handleSubmit: (query: string) => void;
-  metadata: StreamMetaData[];
+  metadata: StreamMetaData[] | undefined;
   isLoading: boolean;
   error: string | undefined;
 }
