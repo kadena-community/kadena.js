@@ -1,7 +1,7 @@
 import { prismaClient } from '../../db/prismaClient';
 import { dotenv } from '../../utils/dotenv';
 import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
-import type {IContext } from '../builder';
+import type { IContext } from '../builder';
 import { builder } from '../builder';
 
 import type { Block } from '@prisma/client';
