@@ -292,7 +292,7 @@ export const GridItem: Story = {
     gap: '$xl',
     columns: 12,
     columnSpan: {
-      xs: 12,
+      xs: 5,
       sm: 10,
       md: 6,
       lg: 4,
