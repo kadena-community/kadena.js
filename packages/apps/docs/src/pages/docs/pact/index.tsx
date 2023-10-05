@@ -77,56 +77,26 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
             <Grid.Item rowSpan={2}>
               <DocsCard
-                label="Language reference"
-                description="Reference for the Pact smart-contract language, designed for correct, transactional execution on a high-perdormance blockchain."
+                label="Introduction"
+                description="Pact is a human-readable smart contract language. It allows anyone to write clearly, directly and safely onto a blockchain — a true innovation for secure and simple smart contract development. Pact will enable you to create entirely new business models and on-chain services."
                 schema="info"
                 background="smartwallet"
               >
                 <BrowseSection marker="none">
-                  <Link className={docsCardLink} href="/docs/kadena/overview">
-                    Introduction
+                  <Link className={docsCardLink} href="/docs/pact/overview">
+                    What is Pact?
                   </Link>
                   <Link
                     className={docsCardLink}
-                    href="/docs/pact/reference/rest-api"
+                    href="/docs/pact/reference/pacts"
                   >
-                    REST API&apos;s
+                    What are Pacts?
                   </Link>
-                  <Link
-                    className={docsCardLink}
-                    href="/docs/pact/reference/concepts"
-                  >
-                    Concepts
+                  <Link className={docsCardLink} href="/docs/pact/reference">
+                    Language Reference
                   </Link>
-                  <Link
-                    className={docsCardLink}
-                    href="/docs/pact/reference/syntax"
-                  >
-                    Syntax
-                  </Link>
-                  <Link
-                    className={docsCardLink}
-                    href="/docs/pact/reference/time-formats"
-                  >
-                    Time Formats
-                  </Link>
-                  <Link
-                    className={docsCardLink}
-                    href="/docs/pact/reference/functions"
-                  >
-                    Built-in functions
-                  </Link>
-                  <Link
-                    className={docsCardLink}
-                    href="/docs/pact/reference/property-checking"
-                  >
-                    Property Checking System
-                  </Link>
-                  <Link
-                    className={docsCardLink}
-                    href="/docs/pact/reference/properties-and-invariants"
-                  >
-                    Property and Invariant Functions
+                  <Link className={docsCardLink} href="/docs/pact/api">
+                    Open API
                   </Link>
                 </BrowseSection>
               </DocsCard>
