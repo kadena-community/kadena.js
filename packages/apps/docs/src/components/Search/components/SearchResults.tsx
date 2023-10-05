@@ -108,7 +108,7 @@ export const SearchResults: FC<IProps> = ({
               </Notification.Root>
             ) : (
               <>
-                <ResultCount count={semanticResults.length} />
+                <ResultCount count={semanticResults?.length} />
                 <StaticResults
                   limitResults={limitResults}
                   results={semanticResults}

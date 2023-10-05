@@ -70,12 +70,18 @@ const Item: FC<IResultProps> = ({ item }) => {
 
 export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
   const limitedResults =
-    limitResults !== undefined ? results.slice(0, limitResults) : results;
+    results && limitResults !== undefined
+      ? results.slice(0, limitResults)
+      : results;
+
+  if (results?.length === 0) {
+    return <Box marginY="$10">No results</Box>;
+  }
 
   return (
     <Box marginY="$10">
       <ul className={staticResultsListClass}>
-        {limitedResults.map((item) => {
+        {limitedResults?.map((item) => {
           return <Item item={item} key={`${item.filePath} + ${item.header}`} />;
         })}
       </ul>
