@@ -8,7 +8,7 @@ interface IProps {
 }
 
 export const ResultCount: FC<IProps> = ({ count }) => {
-  if (count === undefined) return null;
+  if (typeof count !== 'number') return null;
   return (
     <Text size="md">
       {count} Documentation items related to your search term found in this
