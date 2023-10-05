@@ -14,14 +14,6 @@ export default builder.prismaNode('Event', {
     requestKey: t.exposeString('requestkey'),
     paramtext: t.exposeString('paramtext'),
 
-    // // computed fields
-    // eventParameters: t.field({
-    //   type: ['String'],
-    //   resolve(parent) {
-    //     return JSON.parse(parent.paramtext);
-    //   },
-    // }),
-
     //relations
     transaction: t.prismaField({
       type: 'Transaction',
