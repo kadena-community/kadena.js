@@ -2,22 +2,22 @@ import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Event', {
-  id: { field: 'blockhash_idx_requestkey' },
+  id: { field: 'blockHash_orderIndex_requestKey' },
   fields: (t) => ({
     // database fields
-    chainId: t.expose('chainid', { type: 'BigInt' }),
+    chainId: t.expose('chainId', { type: 'BigInt' }),
     height: t.expose('height', { type: 'BigInt' }),
-    index: t.expose('idx', { type: 'BigInt' }),
-    module: t.exposeString('module'),
+    index: t.expose('orderIndex', { type: 'BigInt' }),
+    module: t.exposeString('moduleName'),
     name: t.exposeString('name'),
-    qualName: t.exposeString('qualname'),
-    requestKey: t.exposeString('requestkey'),
+    qualName: t.exposeString('qualifiedName'),
+    requestKey: t.exposeString('requestKey'),
 
     // computed fields
     eventParameters: t.field({
       type: ['String'],
       resolve(parent) {
-        return JSON.parse(parent.paramtext);
+        return JSON.parse(parent.parameterText);
       },
     }),
 
@@ -28,9 +28,9 @@ export default builder.prismaNode('Event', {
       resolve(query, parent, args, context, info) {
         return prismaClient.transaction.findUnique({
           where: {
-            blockhash_requestkey: {
-              blockhash: parent.blockhash,
-              requestkey: parent.requestkey,
+            blockHash_requestKey: {
+              blockHash: parent.blockHash,
+              requestKey: parent.requestKey,
             },
           },
         });
@@ -44,7 +44,7 @@ export default builder.prismaNode('Event', {
       resolve(query, parent, args, context, info) {
         return prismaClient.block.findUniqueOrThrow({
           where: {
-            hash: parent.blockhash,
+            hash: parent.blockHash,
           },
         });
       },

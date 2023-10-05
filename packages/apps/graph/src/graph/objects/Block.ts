@@ -10,12 +10,11 @@ export default builder.prismaNode('Block', {
   fields: (t) => ({
     // database fields
     hash: t.exposeID('hash'),
-    chainid: t.expose('chainid', { type: 'BigInt' }),
-    creationtime: t.expose('creationtime', { type: 'DateTime' }),
+    chainid: t.expose('chainId', { type: 'BigInt' }),
+    creationtime: t.expose('creationTime', { type: 'DateTime' }),
     epoch: t.expose('epoch', { type: 'DateTime' }),
     height: t.expose('height', { type: 'BigInt' }),
     powhash: t.exposeString('powhash'),
-    parent_old: t.exposeString('parent'),
 
     // computed fields
     parent: t.prismaField({
@@ -24,7 +23,7 @@ export default builder.prismaNode('Block', {
       resolve(query, parent, args, context, info) {
         return prismaClient.block.findUnique({
           where: {
-            hash: parent.parent,
+            hash: parent.parentBlockHash,
           },
         });
       },
@@ -34,7 +33,7 @@ export default builder.prismaNode('Block', {
       nullable: true,
       resolve: (parent, args, context, info) => {
         // Access the parent block's hash from the parent object
-        return parent.parent;
+        return parent.parentBlockHash;
       },
     }),
 
@@ -44,12 +43,12 @@ export default builder.prismaNode('Block', {
         events: t.arg.stringList({ required: false, defaultValue: [] }),
       },
       type: 'Transaction',
-      cursor: 'blockhash_requestkey',
+      cursor: 'blockHash_requestKey',
       async totalCount(parent, { events }, context, info) {
         return prismaClient.transaction.count({
           where: {
-            blockhash: parent.hash,
-            requestkey: {
+            blockHash: parent.hash,
+            requestKey: {
               in: await getTransactionsRequestkeyByEvent(events || [], parent),
             },
           },
@@ -59,8 +58,8 @@ export default builder.prismaNode('Block', {
         return prismaClient.transaction.findMany({
           ...query,
           where: {
-            blockhash: parent.hash,
-            requestkey: {
+            blockHash: parent.hash,
+            requestKey: {
               in: await getTransactionsRequestkeyByEvent(events || [], parent),
             },
           },

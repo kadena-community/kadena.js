@@ -70,7 +70,7 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
   const foundEvents = await prismaClient.event.findMany({
     ...extendedFilter,
     where: {
-      qualname: eventName,
+      qualifiedName: eventName,
       transaction: {
         NOT: [],
       },
