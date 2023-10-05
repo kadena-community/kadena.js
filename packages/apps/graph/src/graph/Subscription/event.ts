@@ -33,7 +33,7 @@ async function* iteratorFn(
   if (!nullishOrEmpty(eventResult)) {
     lastEvent = eventResult[0];
     yield [lastEvent];
-    log('yielding initial block with id %s', lastEvent.id);
+    log('yielding initial event with id %s', lastEvent.id);
   }
 
   while (!context.req.socket.destroyed) {
@@ -62,7 +62,7 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
     id === undefined
       ? { take: 5, ...defaultFilter }
       : {
-          take: 500,
+          take: 100,
           where: { id: { gt: id } },
         };
 
@@ -70,6 +70,7 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
   const foundEvents = await prismaClient.event.findMany({
     ...extendedFilter,
     where: {
+      ...extendedFilter.where,
       qualname: eventName,
       transaction: {
         NOT: [],
