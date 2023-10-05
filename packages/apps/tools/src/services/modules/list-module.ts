@@ -26,7 +26,7 @@ export const listModules = async (
 ): Promise<IModulesResult | null> => {
   debug(listModules.name);
 
-  if (!networksData) {
+  if (!networksData.length) {
     return null;
   }
 

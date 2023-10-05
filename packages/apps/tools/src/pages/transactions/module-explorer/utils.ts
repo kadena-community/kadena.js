@@ -1,5 +1,5 @@
 import { getName, parse } from '@/utils/persist';
-import { NextApiRequestCookies } from 'next/dist/server/api-utils';
+import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
 
 export const getQueryValue = (
