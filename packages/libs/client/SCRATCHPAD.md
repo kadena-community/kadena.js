@@ -1,5 +1,5 @@
-- [call signature](#call-signature)
-- [Typescript generated dts templates](#typescript-generated-dts-templates)
+- [call signature][1]
+- [Typescript generated dts templates][2]
 
 # Call interface
 
@@ -106,3 +106,6 @@ Pactjs.modules.coin.transfer().generate();
  * {"cmd":"{\"signers\":[{\"pubKey\":\"554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94\",\"clist\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94\",\"k:32ed2605d925520a8bb1f08a96ce0405179ed8ba5fdd0ae3001951bc6b84fa13\",1]}]}],\"meta\":{\"creationTime\":1659096340,\"ttl\":28800,\"chainId\":\"1\",\"gasPrice\":1.0e-6,\"gasLimit\":600,\"sender\":\"\"},\"nonce\":\"chainweaver\",\"networkId\":\"mainnet01\",\"payload\":{\"exec\":{\"code\":\"(coin.transfer \\\"k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94\\\" \\\"k:32ed2605d925520a8bb1f08a96ce0405179ed8ba5fdd0ae3001951bc6b84fa13\\\" 1.0)\",\"data\":null}}}","hash":"JnkmNcQGodlE3mFqOLOYAx56riVtNpWNFGWCaxLVbdY","sigs":{"554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94":}}
  */
 ```
+
+[1]: #call-signature
+[2]: #typescript-generated-dts-templates
