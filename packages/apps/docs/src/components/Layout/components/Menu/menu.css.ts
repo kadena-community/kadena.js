@@ -11,10 +11,10 @@ export const menuClass = style([
     width: '100%',
     background: '$background',
     overflow: 'hidden',
+    top: '$17',
+    bottom: 0,
   }),
   {
-    top: vars.sizes.$17,
-    bottom: 0,
     height: `calc(100vh - ${vars.sizes.$13})`,
     gridArea: 'menu',
     gridRow: '2 / span 3',
