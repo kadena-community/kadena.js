@@ -1,6 +1,6 @@
 import { getName, parse } from '@/utils/persist';
+import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
-import qs from 'querystring';
 
 export const getQueryValue = (
   needle: string,
@@ -22,16 +22,29 @@ export const getQueryValue = (
   return value;
 };
 
-export const getCookieValue = (
+// Function signature when defaultValue is provided
+export function getCookieValue<Expected>(
   needle: string,
-  haystack: string,
-  defaultValue?: any,
-): any | null => {
-  const decodedCookieName = decodeURIComponent(getName(needle));
-  const cookies = qs.decode(haystack, '; ');
+  haystack: NextApiRequestCookies,
+  defaultValue: Expected,
+): Expected;
 
-  if (typeof cookies[decodedCookieName] === 'string') {
-    return parse(cookies[decodedCookieName] as string);
+// Function signature when defaultValue is not provided
+export function getCookieValue<Expected>(
+  needle: string,
+  haystack: NextApiRequestCookies,
+): Expected | null;
+
+// Implementation of the function
+export function getCookieValue<Expected>(
+  needle: string,
+  haystack: NextApiRequestCookies,
+  defaultValue?: Expected,
+): Expected | null {
+  const encoded = encodeURIComponent(getName(needle));
+  const value = haystack[encoded];
+  if (typeof value !== 'undefined') {
+    return parse(value) as Expected;
   }
   return defaultValue ?? null;
-};
+}
