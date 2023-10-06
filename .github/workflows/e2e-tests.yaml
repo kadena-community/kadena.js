@@ -29,4 +29,5 @@ jobs:
       - name: Run Playwright tests
         run: pnpm run test:e2e --filter @kadena/tools
         env:
+          CI: true
           PLAYWRIGHT_BASE_URL: ${{ needs.vercel-ta.outputs.preview_url }}
