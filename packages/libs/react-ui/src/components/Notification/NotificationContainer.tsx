@@ -16,7 +16,7 @@ import {
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useId } from 'react';
 
 export interface INotificationProps {
   icon?: keyof typeof SystemIcon;
@@ -60,13 +60,17 @@ export const NotificationContainer: FC<INotificationProps> = ({
     inlineVariantsClass,
   );
 
+  const id = useId();
+  const labelId = `label-${id}`;
+  const descriptionId = `description-${id}`;
+
   return (
-    <div className={classList}>
+    <div className={classList} role="alert" aria-labelledby={labelId} aria-describedby={descriptionId}>
       <div className={containerWrapperClass}>
         <Icon size="md" />
 
         <div className={contentClassList}>
-          {title && <span className={titleClass}>{title}</span>}
+          {title && <span  id={labelId} className={titleClass}>{title}</span>}
           <div className={descriptionClassList}>{children}</div>
         </div>
 
