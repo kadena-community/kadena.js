@@ -1,5 +1,3 @@
-import { defineConfig } from '@playwright/test';
-
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -9,7 +7,8 @@ import { defineConfig } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export const  defaultConfig = {
+  testDir: 'e2e-tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -19,13 +18,6 @@ export default defineConfig({
     baseURL: process.env.PLAYWRIGHT_BASE_URL
       ? process.env.PLAYWRIGHT_BASE_URL
       : 'http://127.0.0.1:3000',
-    trace: 'retain-on-failure',
     channel: 'chromium',
   },
-  projects: [
-    {
-      name: 'Tools',
-      testDir: './src/tests/tools/',
-    },
-  ],
-});
+};

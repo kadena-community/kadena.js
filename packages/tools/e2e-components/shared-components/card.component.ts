@@ -9,8 +9,12 @@ export default class CardComponent {
     this._componentLocator = this._page.getByTestId("kda-card");
   }
 
-  async setValueForInput(label: string, value: string): Promise<void> {
+  async setValueForTextbox(label: string, value: string): Promise<void> {
     await this._page.getByRole('textbox', {name: label}).fill(value)
+  }
+
+  async setValueForCombobox(label: string, value: string): Promise<void> {
+    await this._page.getByRole('combobox', {name: label}).selectOption(value)
   }
 
   async clickButton(label: string): Promise<void> {

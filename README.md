@@ -102,7 +102,7 @@ Special thanks to the wonderful people who have contributed to this project:
 [40]: https://img.shields.io/npm/v/@kadena/types.svg
 [41]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/tools/e2e-tests
-[42]: packages/tools/e2e-tests/CHANGELOG.md
+[42]: packages/tools/e2e-components/CHANGELOG.md
 [43]: https://img.shields.io/npm/v/playwright.svg
 [44]: https://github.com/kadena-community/kadena.js/graphs/contributors
 [45]: https://contrib.rocks/image?repo=kadena-community/kadena.js

@@ -1,13 +1,12 @@
 import type { Page } from '@playwright/test';
-import ToolsHeader from '../components/toolsHeader.component';
 import ToolsHeaderComponent from '../components/toolsHeader.component';
 
-export default class FaucetPage {
+export default class HomePage {
   private readonly page: Page;
-  private header: ToolsHeaderComponent;
+  public header: ToolsHeaderComponent;
 
   public constructor(page: Page) {
     this.page = page;
-    this.header = new ToolsHeader(this.page);
+    this.header = new ToolsHeaderComponent(this.page);
   }
 }

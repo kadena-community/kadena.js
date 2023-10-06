@@ -168,9 +168,9 @@
     "path": "packages/libs/kadena.js"
   },
   {
-    "name": "playwright",
+    "name": "@kadena/e2e-components",
     "version": "1.0.0",
-    "private": false,
-    "path": "packages/tools/e2e-tests"
+    "private": true,
+    "path": "packages/tools/e2e-components"
   }
 ]
