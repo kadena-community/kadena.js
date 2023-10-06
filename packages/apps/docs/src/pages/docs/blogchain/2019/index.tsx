@@ -7,6 +7,10 @@ import {
 } from '@/components/Layout/components';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
 import type { IMenuData, IPageProps } from '@/types/Layout';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -43,7 +47,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      leftMenuTree: [],
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       posts,
       frontmatter: {
         title: 'BlogChain 2019',
