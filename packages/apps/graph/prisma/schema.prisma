@@ -22,7 +22,7 @@ model Block {
   nonce           Decimal       @db.Decimal(20, 0)
   parentBlockHash String        @db.VarChar @map("parent")
   payload         String        @db.VarChar
-  powhash         String        @db.VarChar
+  powHash         String        @db.VarChar @map("powhash")
   predicate       String        @db.VarChar
   target          Decimal       @db.Decimal(80, 0)
   weight          Decimal       @db.Decimal(80, 0)

@@ -14,7 +14,7 @@ export default builder.prismaNode('Block', {
     creationtime: t.expose('creationTime', { type: 'DateTime' }),
     epoch: t.expose('epoch', { type: 'DateTime' }),
     height: t.expose('height', { type: 'BigInt' }),
-    powhash: t.exposeString('powhash'),
+    powhash: t.exposeString('powHash'),
 
     // computed fields
     parent: t.prismaField({
