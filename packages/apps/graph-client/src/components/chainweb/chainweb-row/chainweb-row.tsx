@@ -17,7 +17,7 @@ export const ChainwebRow = ({
   height,
 }: IChainwebRowProps): JSX.Element => {
   const row: Array<IBlock | undefined> = new Array(20).fill(undefined);
-  blocks.forEach((block) => (row[block.chainid] = block));
+  blocks.forEach((block) => (row[block.chainId] = block));
 
   return (
     <Box
