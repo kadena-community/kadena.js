@@ -19,7 +19,7 @@
     "lint:src": "eslint src --ext .ts,.tsx",
     "start": "next start",
     "test": "jest --silent",
-    "test:e2e": "npx playwright test --ui"
+    "test:e2e": "npx playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "~3.1.1",
