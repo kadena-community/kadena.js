@@ -76,7 +76,7 @@ const Event: React.FC = () => {
                       <Table.Td>
                         <Table.Root>
                           <Table.Body>
-                            {JSON.parse(event.paramtext).map(
+                            {JSON.parse(event.parameterText).map(
                               (parameter: any, index: number) => (
                                 <Table.Tr key={`arguments-${index}`}>
                                   <Table.Td>

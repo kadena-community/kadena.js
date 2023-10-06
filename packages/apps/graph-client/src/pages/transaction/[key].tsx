@@ -210,7 +210,7 @@ const RequestKey: React.FC = () => {
                                 <Table.Td>
                                   <pre>
                                     {JSON.stringify(
-                                      JSON.parse(event.paramtext),
+                                      JSON.parse(event.parameterText),
                                     )}
                                   </pre>
                                 </Table.Td>
