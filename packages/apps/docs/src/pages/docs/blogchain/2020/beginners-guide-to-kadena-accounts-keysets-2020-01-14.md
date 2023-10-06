@@ -134,7 +134,7 @@ defined in the coin contract as the following data:
 ```
 
 And someone attempts to transfer-create (see:
-[getting started with transfers](https://medium.com/kadena-io/kadena-public-blockchain-getting-started-with-transfers-153bf87d6824))
+[getting started with transfers](/docs/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19))
 to your account (which checks the keyset against the one supplied by the sender)
 with the following data:
 
@@ -209,9 +209,9 @@ Account creation happens in the blockchain in a few ways:
   possible with Kadena).
 
 - Someone used
-  [`transfer-create`](https://medium.com/kadena-io/kadena-public-blockchain-getting-started-with-transfers-153bf87d6824)
+  [`transfer-create`](/docs/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19)
   or
-  [`transfer-crosschain`](https://medium.com/kadena-io/kadena-public-blockchain-getting-started-with-transfers-153bf87d6824)
+  [`transfer-crosschain`](/docs/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19)
   to transfer coins to an account that did not exist (those functions
   spontaneously create an account and deposit the transfer amount into it if the
   account doesn’t exist).
@@ -227,7 +227,7 @@ Along with its blockchain, Kadena released a wallet for Mac, called
 [Chainweaver](https://www.kadena.io/chainweaver), and this wallet allows you to
 create accounts easily with the click of a button. We’ve done a full write-up of
 how to create accounts, keys, and make use of the wallet’s numerous features
-[here.](https://medium.com/kadena-io/do-anything-on-the-kadena-blockchain-with-a-single-tool-cf22986a81af)
+[here.](/docs/blogchain/2020/do-anything-on-the-kadena-blockchain-with-a-single-tool-2020-02-21)
 
 ## **Conclusion**
 

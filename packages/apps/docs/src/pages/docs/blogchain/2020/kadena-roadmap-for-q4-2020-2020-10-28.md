@@ -21,7 +21,7 @@ layout: blog
 # Kadena Roadmap for Q4 2020
 
 As announced last month, creating the
-[multi-protocol Kadenaswap DEX](https://medium.com/kadena-io/kadena-embraces-defi-with-multi-protocol-decentralized-exchange-kadenaswap-eee862e80212)
+[multi-protocol Kadenaswap DEX](/docs/blogchain/2020/kadena-embraces-defi-with-multi-protocol-decentralized-exchange-kadenaswap-2020-09-29)
 is the primary focus for Kadena’s blockchain engineers for the rest of the year
 and going forward through 2021. Of course, the team will also be working on
 additional efforts to benefit the ecosystem and community. Some of the
@@ -36,14 +36,14 @@ for delivering on time and as promised.
 
 ![](/assets/blog/2020/1_U-4RpLd3IniJwys-r9Aqlw.webp)
 
-[Click here](https://medium.com/kadena-io/kadenas-roadmap-to-a-hybrid-blockchain-platform-dc0ff7c178a6)
+[Click here](/docs/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14)
 to visit Kadena’s timeline from founding in 2016 through Q1 of 2019.
 
-[Click here](https://medium.com/kadena-io/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-3f93d8d2a6e0)
+[Click here](/docs/blogchain/2019/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-2019-12-04)
 to visit Kadena’s timeline from Q2 through Q4 of 2019.
 
-[Click here](https://medium.com/kadena-io/kadena-roadmap-for-q1-q2-2020-d0a533193d80)
-to visit Kadena’s timeline from Q1 through Q2 of 2020.
+[Click here](/docs/blogchain/2020/kadena-roadmap-for-q1-q2-2020-2020-04-08) to
+visit Kadena’s timeline from Q1 through Q2 of 2020.
 
 ![](/assets/blog/2020/1_AChuT728AgSZfZcFMqanbA.webp)
 

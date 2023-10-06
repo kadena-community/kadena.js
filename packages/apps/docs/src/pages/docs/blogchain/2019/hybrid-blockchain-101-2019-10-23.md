@@ -152,17 +152,17 @@ Kadena’s goal with hybrid blockchain is to empower entrepreneurs and enterpris
 to _build better blockchain apps_, ones that can scale with growing success and
 that people can trust for keeping their money & data safe.
 
-1.  **[Kadena Scalable Permissioned Blockchain](./scalablebft-kadenas-private-blockchain-101-2019-03-09)
+1.  **[Kadena Scalable Permissioned Blockchain](/docs/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09)
     —** Enterprise-ready permissioned blockchain. Community Edition available on
     [AWS](http://kadena.io/aws) and [Azure](http://kadena.io/azure) for free.
 
-2.  **[Kadena Public Blockchain](./all-about-chainweb-101-and-faqs-2019-02-01)
+2.  **[Kadena Public Blockchain](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01)
     —** Scalable Proof of Work public blockchain. Currently in testnet for a
     planned launch in Winter 2019.
 
-3.  **[Pact](./safer-smarter-contracts-with-pact-2019-02-20)** — Simple and safe
-    smart contract language (open source). Easy to learn with industry-leading
-    security features like user code
+3.  **[Pact](/docs/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20)**
+    — Simple and safe smart contract language (open source). Easy to learn with
+    industry-leading security features like user code
     [Formal Verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11).
     Pact facilitates interoperability between Kadena’s permissioned and public
     blockchain.
@@ -172,7 +172,7 @@ that people can trust for keeping their money & data safe.
 - Spin up our Chainweb testnet [binary](http://kadena.io/testnetbinary) and
   check out our new [public dashboard](http://kadena.io/dashboard)!
 
-- Follow us on [Medium](http://medium.com/kadena-io) and
+- Follow us on [Medium](/docs/blogchain) and
   [Twitter](http://twitter.com/kadena_io) for announcements and updates about
   our upcoming public blockchain mainnet launch.
 

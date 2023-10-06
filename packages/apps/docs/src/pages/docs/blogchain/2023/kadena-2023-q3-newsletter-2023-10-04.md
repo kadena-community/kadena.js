@@ -82,7 +82,7 @@ in Q4.
 ## Connecting every Kadena Corner: Community and Marketing
 
 It’s a new chapter for Kadena with the recent addition of
-[Mike Herron](https://medium.com/kadena-io/mike-herron-kadenas-new-chief-marketing-officer-8ac4698aebec)
+[Mike Herron](/docs/blogchain/2023/mike-herron-kadenas-new-chief-marketing-officer-2023-09-08)
 as Kadena’s Chief Marketing Officer. Mike specializes in enhancing branding
 strategies and cultivating meaningful brand collaborations for renowned
 companies spanning a wide array of industries, including sports, airlines,
@@ -165,7 +165,7 @@ We expect Marmalade to be available on Mainnet soon, so keep your eyes peeled
 for more news and updates.
 
 Check out this
-[article](https://medium.com/kadena-io/marmalade-v2-an-architectural-overview-6fc97fb50cde)
+[article](/docs/blogchain/2023/marmalade-v2-an-architectural-overview-2023-09-25)
 for a comprehensive exploration of all the one-of-a-kind features that Marmalade
 has to offer.
 

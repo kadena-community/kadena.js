@@ -58,7 +58,7 @@ subsequent blocks are mined from. A significant tranche of the token economic
 model is the **platform share**. Examples of uses of the platform share include:
 
 - Developer and economic grants, as seen in our
-  [Technical Grant Program](https://medium.com/kadena-io/announcing-kadena-technical-grants-31c4a88284f9)
+  [Technical Grant Program](/docs/blogchain/2020/announcing-kadena-technical-grants.2020-11-25)
 
 - Community-growing initiatives like our upcoming “Community Ambassador” program
 
@@ -66,7 +66,7 @@ model is the **platform share**. Examples of uses of the platform share include:
   [Zel Tech Flux + Kadena node operator program](https://zel.network/kadena-zel-tech-partner-to-host-100-full-nodes-on-flux-network)
 
 - Major ecosystem improvements like the
-  [Core Pact web3 initiative](https://medium.com/kadena-io/polkadot-collaboration-update-researching-pact-core-for-wasm-and-exploring-kadenadot-dbad5c120e26)
+  [Core Pact web3 initiative](/docs/blogchain/2020/polkadot-collaboration-update-researching-pact-core-for-wasm-and-exploring-kadenadot-2020-08-12)
   to run Pact programs on other networks like Polkadot
 
 Even larger initiatives will be announced soon that could involve Decentralized

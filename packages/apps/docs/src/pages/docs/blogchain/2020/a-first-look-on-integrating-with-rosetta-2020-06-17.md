@@ -78,7 +78,7 @@ what we call “guards.” Guards can be everything from a function to a “keys
 list of multiple keys) or even a single key. Guards can represent multiple
 signatures required, or may have time expirations and conditions. For more
 information on Kadena’s guard system, see
-[this article](https://medium.com/kadena-io/beginners-guide-to-kadena-accounts-keysets-fb7f32104291).
+[this article](/docs/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14).
 
 Naturally, Rosetta doesn’t have specific provisions in the spec for Kadena’s
 account-keyset-guard paradigm, so sometimes we had to get creative in turning

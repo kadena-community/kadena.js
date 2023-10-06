@@ -73,9 +73,9 @@ function extractBrokenLinksFromTsFile(filePath) {
 function getDisallowedLinksFromMdFile(links) {
   const blackListedUrls = [
     'medium.com/kadena-io',
-
+    'pact-language.readthedocs.io',
     'docs.kadena.io',
-    'api.chainweb.com/openapi',
+    'api.chainweb.com',
     'kadena-io.github.io',
   ];
   return links.reduce((acc, val) => {

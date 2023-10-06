@@ -36,7 +36,7 @@ the Tendermint protocol, the only fully open source permissioned blockchain with
 a proven consensus protocol. The Tendermint protocol already supports $5 billion
 in value from companies like Binance and Cosmos. Kadenamint brings blockchain
 developers the
-[best smart contract language](./safer-smarter-contracts-with-pact-2019-02-20)
+[best smart contract language](/docs/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20)
 available and further establishes Pact as the industry standard.
 
 ## Why is Kadenamint important?

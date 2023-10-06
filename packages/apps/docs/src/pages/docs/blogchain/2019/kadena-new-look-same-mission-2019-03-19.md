@@ -72,10 +72,10 @@ innovative work we’re doing across industries.
   branding should too.
 
 This year is going to be an exciting year where we bring
-[Chainweb](./all-about-chainweb-101-and-faqs-2019-02-01), our public
-proof-of-work protocol, into testnet and then launch. You may have checked out
-our
-**[recent roadmap](./kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14)**,
+[Chainweb](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01), our
+public proof-of-work protocol, into testnet and then launch. You may have
+checked out our
+**[recent roadmap](/docs/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14)**,
 or heard about our new
 **[blockchain-as-a-service on AWS Marketplace](http://fortune.com/2019/01/23/blockchain-aws-kadena/)**.
 This is just the beginning, and we’re excited to share the rest of the journey

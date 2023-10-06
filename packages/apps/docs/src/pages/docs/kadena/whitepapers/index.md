@@ -55,8 +55,7 @@ support for interoperability, and strong permission and access control.
 :::note
 
 Resources for using Pact are available at the
-[Public chain interaction](https://kadena-io.github.io/kadena-docs/Public-Chain-Docs.html)
-page.
+[Public chain interaction](/docs/kadena/kda/manage-kda#resourcesh20897285) page.
 
 :::
 
@@ -69,8 +68,7 @@ page.
 :::note
 
 Resources for deploying Kuro are available at the
-[Private chain deployment](https://kadena-io.github.io/kadena-docs/Private-Chain-Docs.html)
-page.
+[Private chain deployment](/docs/build/resources) page.
 
 :::
 

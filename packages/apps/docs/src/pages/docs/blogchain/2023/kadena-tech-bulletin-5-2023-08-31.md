@@ -71,7 +71,7 @@ a consistent experience across different browsers and environments.
 [Chainweb-stream-client:](https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-stream-client)
 
 **Official Medium Article**: Chainweb
-[Stream — poll more, do less](https://medium.com/kadena-io/introducing-chainweb-stream-poll-less-do-more-493621e14c11)
+[Stream — poll more, do less](/docs/blogchain/2023/introducing-chainweb-stream-poll-less-do-more-2023-07-19)
 
 ### **4. Launch of the Alpha Version of @kadena/client**
 

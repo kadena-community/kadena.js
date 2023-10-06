@@ -51,7 +51,8 @@ Chainweb Testnet v0 includes:
 legacy and integrity of Bitcoin’s proof-of-work protocol. Chainweb is designed
 to give blockchain scalability AND security through its multi-chain
 configuration; we believe it is the first of its kind. For more about Chainweb,
-check out our [101/FAQ](./all-about-chainweb-101-and-faqs-2019-02-01.mdx) and
+check out our
+[101/FAQ](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01) and
 read the [whitepaper](https://kadena.io/docs/chainweb-v15.pdf).
 
 **How can I participate in testnet?** Beginning with v1 and v2, our testnet will
