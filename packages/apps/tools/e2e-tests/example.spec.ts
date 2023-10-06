@@ -9,8 +9,4 @@ test.only('Fund account using the faucet', async ({ page, home, faucet }) => {
   await faucet.fundAccount(accountsData.publicKey, "0")
   await expect(await faucet.notification.getTitle()).toHaveText('Transaction is being processed...')
   await expect(await faucet.notification.getMessage()).toHaveText('Please have some patience while the transaction is being processed.')
-
-
-
-
 });

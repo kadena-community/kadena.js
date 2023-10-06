@@ -1,0 +1,32 @@
+name: E2E tests
+
+on: [pull_request]
+
+jobs:
+  e2e-tools:
+    name: E2E - Tools
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          show-progress: false
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Show preview url
+        run: echo ${{ needs.vercel-ta.outputs.preview_url }}
+
+      - name: Run Playwright tests
+        run: pnpm run test:e2e --filter @kadena/tools
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ needs.vercel-ta.outputs.preview_url }}
