@@ -16,6 +16,8 @@ started.
 
 ---
 
+## Software Wallets
+
 ### Chainweaver
 
 Official Kadena wallet for advanced blockchain usage and smart contract
