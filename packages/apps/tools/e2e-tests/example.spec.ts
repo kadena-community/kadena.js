@@ -2,7 +2,7 @@ import { test } from './page-objects';
 import {expect} from '@playwright/test'
 import {accountsData} from './fixtures/data/accounts';
 
-test.only('Fund account using the faucet', async ({ page, home, faucet }) => {
+test('Fund account using the faucet', async ({ page, home, faucet }) => {
   await page.goto('/');
   await home.header.setNetwork("Testnet")
   await home.header.goTo('Faucet')
