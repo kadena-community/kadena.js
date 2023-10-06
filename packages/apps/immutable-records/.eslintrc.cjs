@@ -1,6 +1,9 @@
 // This is a workaround for https://github.com/eslint/eslint/issues/3458
 require('@rushstack/eslint-config/patch/modern-module-resolution');
 
+// Note: having trouble with import/no-unresolved in vscode?
+// Configure eslint.workingDirectories in your vscode settings
+
 module.exports = {
   extends: ['@kadena-dev/eslint-config/profile/next', 'next/core-web-vitals'],
   parserOptions: { tsconfigRootDir: __dirname },
@@ -17,8 +20,5 @@ module.exports = {
     '@kadena-dev/typedef-var': 'off',
     // This rule is too strict for our use case
     '@typescript-eslint/strict-boolean-expressions': 'off',
-    // TODO: eslint in vscode does not understand tsconfig paths and gives errors
-    //       even though in the build it works fine
-    'import/no-unresolved': 'off',
   },
 };
