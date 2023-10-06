@@ -14,10 +14,6 @@ import type { IAuthorInfo, IMenuData, IPageProps } from '@/types/Layout';
 import type { IMostPopularPage } from '@/types/MostPopularData';
 import { mostProductiveAuthors } from '@/utils';
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -90,7 +86,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename), true),
+      leftMenuTree: [],
       popularPages: mostPopularPages,
       authors: mostProductiveAuthors(),
       posts,
