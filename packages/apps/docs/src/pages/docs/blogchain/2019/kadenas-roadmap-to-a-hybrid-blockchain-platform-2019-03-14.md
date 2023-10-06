@@ -39,12 +39,12 @@ growth, we have achieved business and technology milestones that are highlighted
 on the timelines below.
 
 In July 2016, Stuart completed a prototype of the first version of
-[Pact](./safer-smarter-contracts-with-pact-2019-02-20) after evaluating many
-blockchain projects. He saw that there was a need for a smart contract language
-designed for use by both business professionals and programmers so he wrote a
-language that would be as accessible as SQL or Excel. Stuart created Pact to
-facilitate smart contract changes and upgrades without needing to hard fork; he
-recognized this as an essential feature for enterprise.
+[Pact](/docs/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20) after
+evaluating many blockchain projects. He saw that there was a need for a smart
+contract language designed for use by both business professionals and
+programmers so he wrote a language that would be as accessible as SQL or Excel.
+Stuart created Pact to facilitate smart contract changes and upgrades without
+needing to hard fork; he recognized this as an essential feature for enterprise.
 
 Pact is an example of how a language creator solves security problems in the
 language itself, taking the burden off of users to audit for buggy surprises in
@@ -53,7 +53,7 @@ sharing, studying, and using it.
 
 Also in July 2016, Will made significant strides with Kadena’s permissioned
 blockchain by
-[building Kadena Kuro](./scalablebft-kadenas-private-blockchain-101-2019-03-09)
+[building Kadena Kuro](/docs/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09)
 from the Juno prototype open-sourced at JP Morgan. He successfully completed
 real-world performance tests and proved that Kadena Kuro could function at 8000
 transactions per second with 500 nodes, which demonstrated scalability without
@@ -68,7 +68,7 @@ blockchain as well as the Pact smart contract language at the
 today known as Stanford Blockchain Conference.
 
 Will and Stuart also designed the initial
-[Kadena public blockchain](./all-about-chainweb-101-and-faqs-2019-02-01)
+[Kadena public blockchain](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01)
 specification for a public proof of work blockchain, acquired our first client,
 and hired our first employee
 ([Monica Quaintance](https://www.linkedin.com/in/monica-quaintance), previously

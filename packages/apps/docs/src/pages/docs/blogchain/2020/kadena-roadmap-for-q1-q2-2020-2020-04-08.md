@@ -30,10 +30,10 @@ blockchain grew to a hash rate above 100 Terahashes per second (that’s 100
 trillion hashes), completed over 75,000 successful token transfers, and mined
 more than 4 million blocks.
 
-[Click here](https://medium.com/kadena-io/kadenas-roadmap-to-a-hybrid-blockchain-platform-dc0ff7c178a6)
+[Click here](/docs/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14)
 to visit Kadena’s timeline from founding in 2016 through Q1 of 2019.
 
-[Click here](https://medium.com/kadena-io/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-3f93d8d2a6e0)
+[Click here](/docs/blogchain/2019/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-2019-12-04)
 to visit Kadena’s timeline from Q2 through Q4 of 2019.
 
 ![](/assets/blog/2020/1__tid1PJH0R_WwpxL0Jvcww.webp)
@@ -41,7 +41,7 @@ to visit Kadena’s timeline from Q2 through Q4 of 2019.
 For the second quarter of 2020, we’re looking forward to sharing updates on our
 collaboration projects with other leading next-generation networks Cosmos and
 Polkadot. Kadena is currently on track to complete
-[Kadenamint](https://medium.com/kadena-io/introducing-kadenamint-and-chainweb-testnet-v2-cde077c02ebc),
+[Kadenamint](/docs/blogchain/2019/introducing-kadenamint-and-chainweb-testnet-v2-2019-08-06),
 the integration of our wallet+IDE
 [Chainweaver](https://www.kadena.io/chainweaver) and the Pact smart contract
 language with the Cosmos ecosystem. Listing the KDA token on a top-tier

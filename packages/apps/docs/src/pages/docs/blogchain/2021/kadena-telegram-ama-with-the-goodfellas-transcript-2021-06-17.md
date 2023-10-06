@@ -179,7 +179,7 @@ easier is better for mainstream adoption.
 **Francesco Melpignano (Kadena):** We are planning on making the user experience
 as seamless as using any web2 application, and this is only possible because of
 Kadena’s gas stations (Read
-[here](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836)),
+[here](/docs/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06)),
 where a contract can pay for a user’s gas. This means that a user interacting
 with blockchain doesn’t even necessarily need to know he is doing so, and thus
 not have to go through the annoyance of buying eth from an exchange and passing

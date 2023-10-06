@@ -227,7 +227,7 @@ We've now seen all three valid forms of model assertions -- `property`,
 
 For the full listing of functionality available in properties, see the API
 documentation at
-[Property and Invariant Functions](http://pact-language.readthedocs.io/en/latest/pact-properties-api.html).
+[Property and Invariant Functions](/docs/pact/reference/properties-and-invariants).
 
 ## Expressing schema invariants
 
@@ -235,7 +235,7 @@ Schema invariants are described by a more restricted subset of the functionality
 available in property definitions -- effectively the functions which are not
 concerned with authorization, DB access, transaction success/failure, and
 function arguments and return values. See the API documentation at
-[Property and Invariant Functions](http://pact-language.readthedocs.io/en/latest/pact-properties-api.html)
+[Property and Invariant Functions](/docs/pact/reference/properties-and-invariants)
 for the full listing of functions available in invariant definitions.
 
 ### Keyset Authorization

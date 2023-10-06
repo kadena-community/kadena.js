@@ -35,9 +35,9 @@ layout: full
 
 ## Guides
 
-- [Beginner's Guide to Accounts & Keysets](https://medium.com/kadena-io/beginners-guide-to-kadena-accounts-keysets-fb7f32104291):
+- [Beginner's Guide to Accounts & Keysets](/docs/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14):
   Brief description of keys, keysets, accounts and how they work in Kadena
-- [Getting Started with Transfers](https://medium.com/kadena-io/kadena-public-blockchain-getting-started-with-transfers-153bf87d6824):
+- [Getting Started with Transfers](/docs/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19):
   Brief description of transfer types and tools
 - [How to generate a KDA address](https://medium.com/kadenacoin/how-to-generate-a-kda-address-fd009a06ea05):
   Article by [Thanos](https://medium.com/@Thanos_42) (Community contribution)

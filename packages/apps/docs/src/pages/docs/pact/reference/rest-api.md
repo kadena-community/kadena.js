@@ -12,7 +12,7 @@ tags: ['pact', 'rest api', 'pact api', 'pact api reference']
 
 # Rest API
 
-See (https://api.chainweb.com/openapi/pact.html) for latest OpenAPI docs.
+See [/docs/pact/api](/docs/pact/api) for latest OpenAPI docs.
 
 ### Pact built-in server
 
@@ -62,9 +62,9 @@ $ pact -a tests/apireq.yaml -l | curl -d @- http://localhost:8080/api/v1/local
 ### Request YAML file format
 
 Request yaml files takes two forms. An _execution_ Request yaml file describes
-the [exec](https://api.chainweb.com/openapi/pact.html#tag/model-payload)
-payload. Meanwhile, a _continuation_ Request yaml file describes the
-[cont](https://api.chainweb.com/openapi/pact.html#tag/model-payload) payload.
+the [exec](/docs/pact/api#tag/model-payload) payload. Meanwhile, a
+_continuation_ Request yaml file describes the
+[cont](/docs/pact/api#tag/model-payload) payload.
 
 #### YAML exec command request
 

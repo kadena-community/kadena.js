@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
 
 const __dirname = path.resolve();
 
@@ -68,6 +69,26 @@ function extractBrokenLinksFromTsFile(filePath) {
   const broken = getBrokenLinks(filePath, links);
   return broken;
 }
+
+function getDisallowedLinksFromMdFile(links) {
+  const blackListedUrls = [
+    'medium.com/kadena-io',
+    //'pact-language.readthedocs.io',  todo when pact docs are approved
+    'docs.kadena.io',
+    //'api.chainweb.com', todo when pact docs are approved
+    // 'kadena-io.github.io' ,todo when pact docs are approved
+  ];
+  return links.reduce((acc, val) => {
+    const found = blackListedUrls.filter((url) => val.includes(url));
+
+    if (found.length) {
+      return [...acc, `${val} (BLACKLISTED)`];
+    }
+
+    return acc;
+  }, []);
+}
+
 function extractBrokenLinksFromMdFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf8');
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -78,9 +99,10 @@ function extractBrokenLinksFromMdFile(filePath) {
     links.push(match[2]);
   }
 
-  const brokenLinks = getBrokenLinks(filePath, links);
-
-  return brokenLinks;
+  return [
+    ...getBrokenLinks(filePath, links),
+    ...getDisallowedLinksFromMdFile(links),
+  ];
 }
 
 const filesWithBrokenLinks = {};
@@ -99,6 +121,7 @@ function processFiles(directory) {
 
       if (fileExtension === '.md') {
         const brokenLinks = extractBrokenLinksFromMdFile(filePath);
+
         if (brokenLinks.length > 0) {
           filesWithBrokenLinks[localFilePath] = brokenLinks;
         }
@@ -106,6 +129,7 @@ function processFiles(directory) {
 
       if (fileExtension === '.tsx') {
         const brokenLinks = extractBrokenLinksFromTsFile(filePath);
+
         if (brokenLinks.length > 0) {
           filesWithBrokenLinks[localFilePath] = brokenLinks;
         }
@@ -121,17 +145,39 @@ const countDeadLinks = (filesWithBrokenLinks) => {
 };
 
 const main = async () => {
+  console.log(
+    '=============================== START CHECKING FOR DEADLINKS ==\n\n',
+  );
+
   const directoryPath = path.join(__dirname, 'src');
   processFiles(directoryPath);
 
   if (Object.keys(filesWithBrokenLinks).length > 0) {
-    throw new Error(
-      `Found broken links : ${JSON.stringify(filesWithBrokenLinks, null, 2)} \n
-      Found deadlinks: (${countDeadLinks(filesWithBrokenLinks)})`,
+    Object.keys(filesWithBrokenLinks).forEach((key) => {
+      filesWithBrokenLinks[key].forEach((link) => {
+        console.warn(
+          chalk.red('⨯'),
+          'file',
+          chalk.red(key),
+          ': link',
+          chalk.red(link),
+        );
+      });
+    });
+
+    console.log('');
+    console.log('');
+    console.warn(
+      chalk.red('⨯'),
+      `${countDeadLinks(filesWithBrokenLinks)} issues found`,
     );
   } else {
-    console.log('No BrokenLinks Found!');
+    console.log(chalk.green('✓'), 'NO BROKENLINKS FOUND!');
   }
+
+  console.log(
+    '\n\n=============================== END CHECKING FOR DEADLINKS ====',
+  );
 };
 
 main();

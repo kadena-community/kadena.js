@@ -46,10 +46,10 @@ reflecting our focus on providing game-changing DeFi infrastructure.
 
 **Launch of the Kadena Chain Relay Bonding program, **which has been a huge
 success with 8.3MM TVL not to mention the 5MM reserve locked up, from the Kadena
-[Platform Share](./update-to-the-kadena-token-economic-model-2021-01-29). This
-is an incredible start for demonstrating Kadena as the most decentralized and
-community-focused DeFi platform, and offering incredible economic security with
-which to launch the Kadena Ethereum Bridge.
+[Platform Share](/docs/blogchain/2021/update-to-the-kadena-token-economic-model-2021-01-29).
+This is an incredible start for demonstrating Kadena as the most decentralized
+and community-focused DeFi platform, and offering incredible economic security
+with which to launch the Kadena Ethereum Bridge.
 
 **Testnet Launch of dao.init. **Adding to our growing stable of core use-cases
 on Kadena,

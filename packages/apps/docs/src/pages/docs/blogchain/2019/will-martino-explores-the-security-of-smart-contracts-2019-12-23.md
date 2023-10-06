@@ -56,9 +56,9 @@ As Will stated during his panel,
 Kadena has designed its hybrid blockchain and the Pact smart contract language
 to address the needs of how data gets shared today, as well as the challenges
 that have come along with it. There’s more to look forward to on
-[Kadena’s roadmap](https://medium.com/kadena-io/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-3f93d8d2a6e0)
+[Kadena’s roadmap](/docs/blogchain/2019/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-2019-12-04)
 going into next year, including the full launch of Kadena’s hybrid blockchain
 platform. Keep in touch with Kadena through
 [Discord](https://discordapp.com/invite/bsUcWmX?utm_source=tropyc) or by
 following announcements shared on [Twitter](https://twitter.com/kadena_io) and
-[Medium](https://medium.com/kadena-io).
+[Medium](/docs/blogchain).

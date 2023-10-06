@@ -19,7 +19,7 @@ layout: blog
 # Exploring Kadena.js — Insights into the Kadena Developer’s Experience
 
 Hello Kadenians! If you’ve been following our recent updates
-(**[Kadena Q2 Newsletter](https://medium.com/kadena-io/kadena-2023-q2-newsletter-a392941a4284)**,
+(**[Kadena Q2 Newsletter](/docs/blogchain/2023/kadena-2023-q2-newsletter-2023-07-06)**,
 **[Kadena Campfire — Community Call with Randy & Anastasia](https://youtu.be/IN8qx_6DgJU)**),
 you’re already in the loop! Our Developer Experience team has expanded
 substantially over the past year. With our incredible team of talented

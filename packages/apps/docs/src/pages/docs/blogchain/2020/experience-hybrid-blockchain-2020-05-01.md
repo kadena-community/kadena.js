@@ -69,9 +69,9 @@ reduced operational complexity.
 _Note: This is a simplified use case designed to illustrate how data moves
 across a hybrid blockchain. To read more industry use cases and discover the
 real-world benefits enabled by hybrid blockchain,
-see[ Hybrid Blockchain 101](https://medium.com/kadena-io/hybrid-blockchain-101-714827d0e77b)
+see[ Hybrid Blockchain 101](/docs/blogchain/2019/hybrid-blockchain-101-2019-10-23)
 and the
-[Smart Contract Sharing Economy](https://medium.com/kadena-io/blockchain-future-smart-contract-sharing-economy-134a318fef55)._
+[Smart Contract Sharing Economy](/docs/blogchain/2018/blockchain-future-smart-contract-sharing-economy-2018-12-17)._
 
 ## Hybrid Demo & Walkthrough
 

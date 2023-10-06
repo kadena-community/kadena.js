@@ -19,7 +19,7 @@ layout: blog
 # Announcing Pact 3.0
 
 > _UPDATE: Pact 3.1 is now released! Read more on the
-> [latest updates here](./pact-3-1-is-unleashed-2019-08-22)._
+> [latest updates here](/docs/blogchain/2019/pact-3-1-is-unleashed-2019-08-22)._
 
 At Kadena, smart contract technology is something we’re very passionate about —
 so we’re excited to

@@ -76,8 +76,8 @@ Turing Completeness when expressing financial transactions.
 
 **Kadena evolves blockchain programming**
 
-Enter Pact. [Pact](https://medium.com/kadena-io/tagged/pact) is a Turing
-Incomplete smart contract language from the Lisp-family, because
+Enter Pact. [Pact](/tags/pact) is a Turing Incomplete smart contract language
+from the Lisp-family, because
 [real hackers use Lisp](http://www.paulgraham.com/avg.html), of course! Thanks
 to Turing-incompleteness, all Pact programs must halt, and powerful tooling like
 Formal Verification are baked in at the language level–think test fuzzing or

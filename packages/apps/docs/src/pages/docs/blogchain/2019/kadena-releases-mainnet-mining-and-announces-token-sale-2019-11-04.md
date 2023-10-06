@@ -71,7 +71,7 @@ smart contracts. The minimum fractional unit of KDA is a “Hop,” a trillionth
 named after Grace Hopper.
 
 For more information on Kadena’s token economics, read a
-[breakdown of the network’s allocations](https://medium.com/kadena-io/the-kadena-token-economic-model-8090d7545eef).
+[breakdown of the network’s allocations](/docs/blogchain/2019/the-kadena-token-economic-model-2019-10-30).
 
 ## Kadena Token Offering: Live on CoinList
 
@@ -93,10 +93,9 @@ founders creating JPMorgan’s first blockchain, which laid the groundwork for
 Kadena’s smart contract language, Pact. Pact is open source and was designed
 with ease-of-use in mind for both developers and business professionals.
 
-We’ve released
-[Pact 3.1](https://medium.com/kadena-io/pact-3-1-is-unleashed-ebfddfb648ce) and
-received a grant from the Interchain Foundation to implement
-[Kadenamint for the Cosmos ecosystem](https://medium.com/kadena-io/introducing-kadenamint-and-chainweb-testnet-v2-cde077c02ebc).
+We’ve released [Pact 3.1](/docs/blogchain/2019/pact-3-1-is-unleashed-2019-08-22)
+and received a grant from the Interchain Foundation to implement
+[Kadenamint for the Cosmos ecosystem](/docs/blogchain/2019/introducing-kadenamint-and-chainweb-testnet-v2-2019-08-06).
 Along the way, we’ve appreciated the feedback from our community. Now, we offer
 an invitation.
 
@@ -156,9 +155,9 @@ PoW Hash, neighbors, and payload.
 
 The continuing development of our blockchain platform brings new names for some
 of our products. Our private blockchain, originally referred to as
-[ScalableBFT](https://medium.com/kadena-io/scalablebft-kadenas-private-blockchain-101-c99895c0fd50),
+[ScalableBFT](/docs/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09),
 will now be known as _Kadena Kuro_. Our public blockchain, which began as
-[Chainweb](https://medium.com/kadena-io/kadena-public-blockchain-releases-fully-public-testnet-v3-hashing-algorithm-and-mining-api-e230a51c7b26?source=collection_home---5------2-----------------------),
+[Chainweb](/docs/blogchain/2019/kadena-public-blockchain-releases-fully-public-testnet-v3-hashing-algorithm-and-mining-api-2019-09-18),
 has been simplified to just _Kadena_ or _Kadena’s public blockchain_.
 
 There’s more to look forward to on Kadena’s roadmap before the year ends,
@@ -166,7 +165,7 @@ including the full launch of Kadena’s hybrid blockchain platform. Keep in touc
 with Kadena through
 [Discord](https://discordapp.com/invite/bsUcWmX?utm_source=tropyc) or by
 following announcements shared on [Twitter](https://twitter.com/kadena_io) and
-[Medium](https://medium.com/kadena-io).
+[Medium](/docs/blogchain).
 
 **_PLEASE BE AWARE:_** Corro LLC, Kadena Public LLC, and Kadena LLC are not
 responsible for, have not approved, and have not been involved in any

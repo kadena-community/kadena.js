@@ -26,7 +26,7 @@ The Kadena token (KDA) secures the Kadena public blockchain through
 Proof-of-Work, and is used to fund gas costs on the network in a similar manner
 to Ethereum. Thanks to Kadena’s scalable Proof-of-Work algorithm, congestion is
 a thing of the past which keeps gas fees affordable, and with
-[Gas Stations](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836),
+[Gas Stations](/docs/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06),
 projects can subsidize gas fees to remove that complexity entirely from the user
 experience. Apps on Kadena are powered by smart contracts written in Pact, which
 avoids the

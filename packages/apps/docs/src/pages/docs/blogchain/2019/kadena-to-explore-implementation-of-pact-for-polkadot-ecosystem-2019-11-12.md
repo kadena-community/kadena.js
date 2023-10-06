@@ -72,4 +72,4 @@ offering on the
 Keep in touch with Kadena through
 [Discord](https://discordapp.com/invite/bsUcWmX?utm_source=tropyc) or by
 following announcements shared on [Twitter](https://twitter.com/kadena_io) and
-[Medium](https://medium.com/kadena-io).
+[Medium](/docs/blogchain).
