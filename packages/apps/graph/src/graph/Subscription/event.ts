@@ -71,7 +71,7 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
     ...extendedFilter,
     where: {
       ...extendedFilter.where,
-      qualname: eventName,
+      qualifiedName: eventName,
       transaction: {
         NOT: [],
       },

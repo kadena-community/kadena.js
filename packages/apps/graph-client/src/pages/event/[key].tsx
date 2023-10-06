@@ -72,7 +72,7 @@ const Event: React.FC = () => {
                       key={index}
                       url={`${routes.TRANSACTION}/${event.transaction?.requestKey}`}
                     >
-                      <Table.Td>{event.qualName}</Table.Td>
+                      <Table.Td>{event.qualifiedName}</Table.Td>
                       <Table.Td>
                         <Table.Root>
                           <Table.Body>

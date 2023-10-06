@@ -5,10 +5,13 @@ import { style } from '@vanilla-extract/css';
 export const sideMenuClass = style([
   sprinkles({
     position: 'relative',
-
     height: '100%',
     paddingBottom: '$25',
   }),
+  {
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
 ]);
 
 export const listClass = style([

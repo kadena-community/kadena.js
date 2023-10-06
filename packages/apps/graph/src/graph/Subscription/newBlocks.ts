@@ -67,7 +67,7 @@ async function getLastBlocks(
 
   const foundblocks = await prismaClient.block.findMany({
     ...extendedFilter,
-    where: { ...extendedFilter.where, chainid: { in: chainIds } },
+    where: { ...extendedFilter.where, chainId: { in: chainIds } },
   });
 
   log("found '%s' blocks", foundblocks.length);

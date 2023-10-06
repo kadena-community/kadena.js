@@ -40,3 +40,4 @@ jobs:
           projectToken: ${{ secrets.DOCS_CHROMATIC_TOKEN }}
           workingDir: /packages/apps/docs
           autoAcceptChanges: 'main'
+          onlyChanged: true # 👈 Required option to enable TurboSnap

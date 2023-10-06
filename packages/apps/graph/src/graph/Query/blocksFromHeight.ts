@@ -34,7 +34,7 @@ builder.queryField('blocksFromHeight', (t) => {
               },
             },
             {
-              chainid: {
+              chainId: {
                 in: chainIds as number[],
               },
             },

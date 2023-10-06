@@ -4,17 +4,16 @@ The `BigInt` scalar type represents non-fractional signed whole numeric values.
 scalar BigInt
 
 type Block implements Node {
-  chainid: BigInt!
+  chainId: BigInt!
   confirmationDepth: Int!
-  creationtime: DateTime!
+  creationTime: DateTime!
   epoch: DateTime!
   hash: ID!
   height: BigInt!
   id: ID!
   parent: Block
   parentHash: String
-  parent_old: String!
-  powhash: String!
+  powHash: String!
   transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
 }
 
@@ -39,11 +38,11 @@ type Event implements Node {
   chainId: BigInt!
   height: BigInt!
   id: ID!
-  index: BigInt!
-  module: String!
+  moduleName: String!
   name: String!
-  paramtext: String!
-  qualName: String!
+  orderIndex: BigInt!
+  parameterText: String!
+  qualifiedName: String!
   requestKey: String!
   transaction: Transaction
 }
@@ -85,6 +84,7 @@ type Transaction implements Node {
   continuation: String
   creationTime: DateTime!
   data: String
+  eventCount: BigInt
   events: [Event!]
   gas: BigInt!
   gasLimit: BigInt!
@@ -95,13 +95,12 @@ type Transaction implements Node {
   logs: String
   metadata: String
   nonce: String
-  numEvents: BigInt
   pactId: String
   proof: String
   requestKey: String!
   rollback: Boolean
   sender: String
   step: BigInt
+  transactionId: BigInt
   ttl: BigInt!
-  txId: BigInt
 }
