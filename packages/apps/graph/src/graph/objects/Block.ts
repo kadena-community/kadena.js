@@ -10,11 +10,11 @@ export default builder.prismaNode('Block', {
   fields: (t) => ({
     // database fields
     hash: t.exposeID('hash'),
-    chainid: t.expose('chainId', { type: 'BigInt' }),
-    creationtime: t.expose('creationTime', { type: 'DateTime' }),
+    chainId: t.expose('chainId', { type: 'BigInt' }),
+    creationTime: t.expose('creationTime', { type: 'DateTime' }),
     epoch: t.expose('epoch', { type: 'DateTime' }),
     height: t.expose('height', { type: 'BigInt' }),
-    powhash: t.exposeString('powHash'),
+    powHash: t.exposeString('powHash'),
 
     // computed fields
     parent: t.prismaField({

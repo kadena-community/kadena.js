@@ -7,10 +7,10 @@ export default builder.prismaNode('Event', {
     // database fields
     chainId: t.expose('chainId', { type: 'BigInt' }),
     height: t.expose('height', { type: 'BigInt' }),
-    index: t.expose('orderIndex', { type: 'BigInt' }),
-    module: t.exposeString('moduleName'),
+    orderIndex: t.expose('orderIndex', { type: 'BigInt' }),
+    moduleName: t.exposeString('moduleName'),
     name: t.exposeString('name'),
-    qualName: t.exposeString('qualifiedName'),
+    qualifiedName: t.exposeString('qualifiedName'),
     requestKey: t.exposeString('requestKey'),
 
     // computed fields

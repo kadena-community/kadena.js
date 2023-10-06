@@ -44,7 +44,7 @@ export default builder.prismaNode('Transaction', {
       },
     }),
     nonce: t.exposeString('nonce', { nullable: true }),
-    numEvents: t.expose('eventCount', { type: 'BigInt', nullable: true }),
+    eventCount: t.expose('eventCount', { type: 'BigInt', nullable: true }),
     pactId: t.exposeString('pactId', { nullable: true }),
     proof: t.exposeString('proof', { nullable: true }),
     requestKey: t.exposeString('requestKey'),
@@ -52,7 +52,10 @@ export default builder.prismaNode('Transaction', {
     sender: t.exposeString('sender', { nullable: true }),
     step: t.expose('step', { type: 'BigInt', nullable: true }),
     ttl: t.expose('ttl', { type: 'BigInt' }),
-    txId: t.expose('transactionId', { type: 'BigInt', nullable: true }),
+    transactionId: t.expose('transactionId', {
+      type: 'BigInt',
+      nullable: true,
+    }),
 
     // relations
     block: t.prismaField({
