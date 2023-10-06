@@ -1,0 +1,4 @@
+{
+  "extends": "./node_modules/@kadena-dev/heft-rig/tsconfig-playwright.json"
+}
+

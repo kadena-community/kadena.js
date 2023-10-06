@@ -5,6 +5,7 @@ module.exports = {
   extends: [
     '@kadena-dev/eslint-config/profile/next',
     'plugin:@tanstack/eslint-plugin-query/recommended',
+    'plugin:playwright/recommended'
   ],
   parserOptions: { tsconfigRootDir: __dirname },
   ignorePatterns: ['**/generated/**'],

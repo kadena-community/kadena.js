@@ -1,8 +1,8 @@
-import NavHeaderComponent from '../../react-ui/navHeader.component';
+import NavHeaderComponent from '@kadena/e2e-components/shared-components/navHeader.component';
 
 import type { Page } from '@playwright/test';
 
-export default class FaucetPage {
+export default class TransactionsPage {
   private readonly page: Page;
   private header: NavHeaderComponent;
 
