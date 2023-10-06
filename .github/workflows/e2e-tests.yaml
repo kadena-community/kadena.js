@@ -23,8 +23,8 @@ jobs:
           node-version: 18
           cache: "pnpm"
 
-      - name: Show preview url
-        run: echo ${{ needs.vercel-ta.outputs.preview_url }}
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Run Playwright tests
         run: pnpm run test:e2e --filter @kadena/tools
