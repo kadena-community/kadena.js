@@ -63,6 +63,29 @@ export const MyApp = ({
         <meta name="title" content={props.frontmatter.title} />
         <meta name="description" content={props.frontmatter.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          rel="icon"
+          href="/assets/light/icon@32.png"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          href="/assets/dark/icon@32.png"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link
+          rel="icon"
+          sizes="any"
+          href="/assets/light/icon@192.png"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          sizes="any"
+          href="/assets/dark/icon@192.png"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link rel="apple-touch-icon" href="/assets/dark/icon@512.png" />
       </Head>
       <MDXProvider components={markDownComponents}>
         <ThemeProvider
