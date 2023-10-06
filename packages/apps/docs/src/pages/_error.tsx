@@ -5,6 +5,10 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components';
 import { ErrorHeader } from '@/components/Layout/Landing/components/Headers';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { NextRouter } from 'next/router';
@@ -69,7 +73,7 @@ const NotFoundPage: FC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
-      leftMenuTree: [],
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename), true),
       frontmatter: {
         title: 'Error',
         menu: 'Error',
