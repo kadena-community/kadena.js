@@ -73,9 +73,9 @@ function extractBrokenLinksFromTsFile(filePath) {
 function getDisallowedLinksFromMdFile(links) {
   const blackListedUrls = [
     'medium.com/kadena-io',
-    'pact-language.readthedocs.io',
+
     'docs.kadena.io',
-    'api.chainweb.com',
+    'api.chainweb.com/openapi',
     'kadena-io.github.io',
   ];
   return links.reduce((acc, val) => {
@@ -138,6 +138,12 @@ function processFiles(directory) {
   });
 }
 
+const countDeadLinks = (filesWithBrokenLinks) => {
+  return Object.keys(filesWithBrokenLinks).reduce((acc, val) => {
+    return acc + filesWithBrokenLinks[val].length;
+  }, 0);
+};
+
 const main = async () => {
   console.log(
     '=============================== START CHECKING FOR DEADLINKS ==\n\n',
@@ -163,7 +169,7 @@ const main = async () => {
     console.log('');
     console.warn(
       chalk.red('⨯'),
-      `${Object.keys(filesWithBrokenLinks).length} issues found`,
+      `${countDeadLinks(filesWithBrokenLinks)} issues found`,
     );
   } else {
     console.log(chalk.green('✓'), 'NO BROKENLINKS FOUND!');

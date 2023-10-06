@@ -24,10 +24,10 @@ scale in production to meet ever-higher demand.
 Informational Resources
 
 - Article:
-  [Kadena’s Public Blockchain 101](https://medium.com/kadena-io/all-about-chainweb-101-and-faqs-6bd88c325b45)
+  [Kadena’s Public Blockchain 101](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01)
 - Whitepapers: [Chainweb layer 1](/docs/kadena/whitepapers/chainweb-layer-1)
 - Article:
-  [How to scale a Proof of Work Blockchain](https://medium.com/kadena-io/how-to-scale-a-proof-of-work-blockchain-9233e5b4b62)&#x20;
+  [How to scale a Proof of Work Blockchain](/docs/blogchain/2021/how-to-scale-a-proof-of-work-blockchain-2021-03-07)&#x20;
 
 :::note
 
@@ -46,7 +46,7 @@ support for interoperability, and strong permission and access control.
 #### Informational Resources
 
 - Article:
-  [Safer, Smarter Contracts with Pact](https://medium.com/kadena-io/safer-smarter-contracts-with-pact-e86b9ccaca9f)
+  [Safer, Smarter Contracts with Pact](/docs/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20.md)
 - Whitepaper: [Pact Smart Contract Language](./pact-smart-contract-language.md)
 - Documentation: [Pact GitHub](https://github.com/kadena-io/pact)
 - Documentation:
@@ -63,7 +63,7 @@ page.
 **Informational Resources**
 
 - Article:
-  [Kadena's layer 2 blockchain 101](https://medium.com/kadena-io/scalablebft-kadenas-private-blockchain-101-c99895c0fd50)
+  [Kadena's layer 2 blockchain 101](/docs/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09.md)
 - Whitepaper: [Kuro layer 2](/docs/kadena/whitepapers/kuro-layer-2)
 
 :::note
@@ -82,9 +82,9 @@ With 20 chains, the Kadena blockchain platform achieves an industry-leading
 **Informational Resources**
 
 - Article:
-  [Kadena completes blockchain scaling to 480,000 TPS on 20 Chains](https://medium.com/kadena-io/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-5a652295533c)
+  [Kadena completes blockchain scaling to 480,000 TPS on 20 Chains](/docs/blogchain/2020/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-2020-08-20.md)
 - Article:
-  [Kadena's layer 2 blockchain 101](https://medium.com/kadena-io/scalablebft-kadenas-private-blockchain-101-c99895c0fd50)
+  [Kadena's layer 2 blockchain 101](/docs/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09.md)
 - Whitepaper: [Kuro layer 2](/docs/kadena/whitepapers/kuro-layer-2)
 
 :::note
