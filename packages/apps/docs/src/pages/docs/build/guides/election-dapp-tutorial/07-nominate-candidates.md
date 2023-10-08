@@ -125,16 +125,43 @@ function in `./pact/election.repl` and run the file.
 
 Now, change the expected output to `[]` and run the file again. You should now have a failing
 test that can be fixed by updating the return value of the `list-candidates` function in
-`./pact/election.pact` with the following statement that selects all values of an existing
-table. Run `./pact/election.repl` again and observe that the test passes.
+`./pact/election.pact` with the following statement that selects all rows of an existing
+table, including the key and the column values of each row. Run `./pact/election.repl` again
+and observe that the test passes.
 
 ```pact
-(select candidates (constantly true))
+(fold-db candidates
+  (lambda (key columnData) true)
+  (lambda (key columnData) (+ { "key": key } columnData))
+)
 ```
 
-Changing `candidates` in the statement above to anything would make the test fail with an
-error containing `Cannot resolve`, which proves that the `candidates` table exists and
-is readable.
+The `fold-db` is like a `SELECT * FROM table` statement in SQL. The major difference is
+that it fetches the value of the identifier column `key` separately from the other column
+values. The first argument of `fold-db` is the table name. The second
+argument is a predicate function that determines which rows should be
+selected. To fetch all rows from a table you can simply return `true` here. The third argument
+is an accumulator function that allows you
+to map the data of each row to a different format. In this example, you will append the `"key"`
+field with the value of each row's `key` to the column data object containing the values for
+each field defined in the candidates-schema. This results in a return value of the
+`fold-db` function with the following structure.
+
+```pact
+[
+  { "key": "1", "name": "Candidate A", "votes": 0 },
+  { "key": "2", "name": "Candidate B", "votes": 0 }
+]
+```
+
+It is not recommended to send transactions that include a call to `fold-db`
+to the blockchain. Instead, you can just make a local request to select
+all rows from a table to save gas. Later in this chapter you will learn how to make such
+a request using the Kadena JavaScript client.
+
+Changing the first argument of `fold-db` to something else than `candidates` would make the
+test fail with an error containing `Cannot resolve`, which proves that the `candidates` table
+exists and is readable.
 
 ## Add candidate
 
@@ -320,12 +347,12 @@ Open up a terminal and change the directory to the `./snippets` folder in the ro
 your project. Execute the `./deploy-module.ts` snippet by running the following command.
 Replace `k:account` with your admin account. Also, make sure that Devnet is running and
 Chainweaver is open so you can sign the transaction. In addition to the account name, you
-need to pass `init-candidates` as an argument. This will add `{"init-candidates": true}` to
-the transaction, which leads to the execution of `(create-table candidates)` at the bottom
-of your `./pact/election.pact`.
+need to pass `upgrade` and `init-candidates` as arguments. This will add
+`{"init-candidates": true, "upgrade": true}` to the transaction, allowing you to upgrade the
+module and execute `(create-table candidates)` at the bottom of your `./pact/election.pact`.
 
 ```bash
-npm run deploy-module:devnet -- k:account init-candidates
+npm run deploy-module:devnet -- k:account upgrade init-candidates
 ```
 
 If all is well, the last line of the output will be as follows.
