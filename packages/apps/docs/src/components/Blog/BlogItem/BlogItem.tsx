@@ -46,6 +46,7 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                     fill
                     style={{ objectFit: 'cover' }}
                     alt={item.title}
+                    sizes="100%"
                   />
                 )}
               </figure>
