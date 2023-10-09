@@ -63,7 +63,7 @@ export const disabledClass = style([
   },
 ]);
 
-export const inputContainerClass = style([
+export const textAreaContainerClass = style([
   sprinkles({
     position: 'relative',
     alignItems: 'center',
@@ -75,7 +75,7 @@ export const inputContainerClass = style([
   }),
 ]);
 
-export const inputClass = style([
+export const textAreaClass = style([
   sprinkles({
     alignItems: 'center',
     background: 'none',

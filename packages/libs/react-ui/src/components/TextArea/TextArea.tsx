@@ -1,9 +1,9 @@
 import {
   containerClass,
   disabledClass,
-  inputClass,
-  inputContainerClass,
   outlinedClass,
+  textAreaClass,
+  textAreaContainerClass,
 } from './TextArea.css';
 
 import type { Sprinkles } from '@theme/sprinkles.css';
@@ -44,10 +44,10 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
       })}
       data-testid="kda-textarea"
     >
-      <div className={inputContainerClass}>
+      <div className={textAreaContainerClass}>
         <textarea
           ref={ref}
-          className={classNames(inputClass, sprinkles({ fontFamily }))}
+          className={classNames(textAreaClass, sprinkles({ fontFamily }))}
           disabled={disabled}
           onChange={handleValueChange}
           value={value}
