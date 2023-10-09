@@ -20,6 +20,7 @@ export const accordionSectionWrapperClass = style([
 
 export const accordionButtonClass = style([
   sprinkles({
+    alignItems: 'center',
     background: 'none',
     border: 'none',
     color: '$neutral5',
