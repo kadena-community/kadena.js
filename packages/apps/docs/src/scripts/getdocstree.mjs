@@ -227,4 +227,6 @@ const init = async () => {
   );
 };
 
-init();
+(async () => {
+  init();
+})();

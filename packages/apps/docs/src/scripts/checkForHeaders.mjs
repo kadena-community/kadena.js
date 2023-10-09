@@ -9,7 +9,7 @@ import { globby } from 'globby';
 
 const filesMissingHeaders = [];
 
-const ROOT = `${path.resolve()}/src/pages/docs`;
+const ROOT = `${path.resolve()}/src/pages`;
 const headerDepth1Regex = /^#\s+(.*?)\s*$/gm;
 
 //we dont want to have the headers that are inside a code block

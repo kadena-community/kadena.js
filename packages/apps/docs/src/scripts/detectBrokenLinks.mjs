@@ -149,7 +149,7 @@ const main = async () => {
     '=============================== START CHECKING FOR DEADLINKS ==\n\n',
   );
 
-  const directoryPath = path.join(__dirname, 'src');
+  const directoryPath = path.join(__dirname, 'src/pages');
   processFiles(directoryPath);
 
   if (Object.keys(filesWithBrokenLinks).length > 0) {

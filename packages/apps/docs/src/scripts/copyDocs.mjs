@@ -2,11 +2,11 @@ import copy from 'recursive-copy';
 
 const DOCSPATH = './src/_docs';
 
-(async function () {
-  try {
-    const results = await copy(DOCSPATH, './src/pages');
-    console.info(`Copy docs ${results.length} files succeeded`);
-  } catch (error) {
-    console.error(`Copy docs failed: ${error}`);
-  }
+(async () => {
+  const options = {
+    overwrite: true,
+  };
+
+  const results = await copy(DOCSPATH, './src/pages', options);
+  console.info(`Copy docs ${results.length} files succeeded`);
 })();

@@ -3,7 +3,7 @@ import { globby } from 'globby';
 import path from 'path';
 import authors from './../data/authors.json' assert { type: 'json' };
 
-const ROOT = `${path.resolve()}/src/pages/docs/blogchain`;
+const ROOT = `${path.resolve()}/src/pages/blogchain`;
 const errorFiles = [];
 
 const getFrontmatterAuthor = (file) => {

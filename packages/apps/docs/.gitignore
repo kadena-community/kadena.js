@@ -25,5 +25,7 @@ src/pages/chainweb
 src/pages/marmalade
 src/pages/blogchain
 
+src/pages/docs
+
 next-env.d.ts
 .env.local

@@ -277,4 +277,6 @@ const importAll = async (imports) => {
   );
 };
 
-importAll(importReadMes);
+(async () => {
+  importAll(importReadMes);
+})();
