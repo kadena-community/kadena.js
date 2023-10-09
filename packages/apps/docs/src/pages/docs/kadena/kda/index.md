@@ -22,9 +22,9 @@ users pay in order to have their transactions included in a block.
 Kadena’s Token Economic Model describes the total supply, liquidity schedule,
 allocation and platform reserve uses of KDA. A full text of Kadena’s Token
 Economic Model is
-[here](https://medium.com/kadena-io/the-kadena-token-economic-model-8090d7545eef),
-and recent update
-[here](https://medium.com/kadena-io/update-to-the-kadena-token-economic-model-21e1ec18f099).
+[here](/docs/blogchain/2019/the-kadena-token-economic-model-2019-10-30), and
+recent update
+[here](/docs/blogchain/2021/update-to-the-kadena-token-economic-model-2021-01-29).
 
 ## What is the total token supply?
 

@@ -24,8 +24,8 @@ layout: full
   Source Linux/Windows Nvidia Cuda miner, 2% fee (Community contribution)
 - [SRBMiner](https://github.com/doktor83/SRBMiner-Multi) (Kadena miner): Closed
   Source Linux/Windows AMD miner, 0.85% fee (Community contribution)
-- [Troubleshooting](https://kadena-io.github.io/kadena-docs/troubleshoot-chainweb):
-  Common issues related to mining KDA
+- [Troubleshooting](/docs/contribute/node/troubleshooting-chainweb): Common
+  issues related to mining KDA
 
 **Guides**
 

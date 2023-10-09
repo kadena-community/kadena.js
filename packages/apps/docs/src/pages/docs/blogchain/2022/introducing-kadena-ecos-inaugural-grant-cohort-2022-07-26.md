@@ -21,11 +21,12 @@ layout: blog
 By Dan Wiggins, Head of Gaming, Kadena Eco
 
 In April, Kadena Eco
-[announced its grants program](./kadena-eco-grants-2022-04-21), spurring
-countless conversations with founders with big ideas for building on Kadena. Our
-team was blown away and at times overwhelmed by the volume and quality of
-applications over the past few months. We’re now ready to share our first cohort
-of grant recipients — and more on why we selected the grantees that we did.
+[announced its grants program](/docs/blogchain/2022/kadena-eco-grants-2022-04-21),
+spurring countless conversations with founders with big ideas for building on
+Kadena. Our team was blown away and at times overwhelmed by the volume and
+quality of applications over the past few months. We’re now ready to share our
+first cohort of grant recipients — and more on why we selected the grantees that
+we did.
 
 But first, a quick reminder of the objectives we had in mind when we kicked off
 the grant program;

@@ -95,7 +95,7 @@ offers to support founders and entrepreneurs:
 We’ve already distributed grant funds to an array of innovative companies in the
 early and concept stages. Our first round of grant recipients will be announced
 in this space in the coming weeks. Continue following us on
-[Medium](https://medium.com/kadena-io) to stay apprised of what’s new.
+[Medium](/docs/blogchain) to stay apprised of what’s new.
 
 So, builders, we’ve got your back. Do your research, investigate blockchain
 partners, and remember that we exist to turbocharge your vision.

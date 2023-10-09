@@ -37,10 +37,10 @@ achieved all of our other milestones on time.
 
 ![](/assets/blog/2020/1_GhtdwmlGhXExzdmPvGuQ4Q.webp)
 
-[Click here](https://medium.com/kadena-io/kadenas-roadmap-to-a-hybrid-blockchain-platform-dc0ff7c178a6)
+[Click here](/docs/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14)
 to visit Kadena’s timeline from founding in 2016 through Q1 of 2019.
 
-[Click here](https://medium.com/kadena-io/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-3f93d8d2a6e0)
+[Click here](/docs/blogchain/2019/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-2019-12-04)
 to visit Kadena’s timeline from Q2 through Q4 of 2019.
 
 ![](/assets/blog/2020/1_CdW37ppe1kqXvhBE3n9O2A.webp)

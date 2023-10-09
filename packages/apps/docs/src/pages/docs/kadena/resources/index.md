@@ -18,7 +18,6 @@ layout: full
 | [Twitter](https://twitter.com/kadena_io)                           | ![twitter](/assets/docs/twitter.png)   |
 | [Website](https://kadena.io/)                                      | ![Website](/assets/docs/website.png)   |
 | [Discord](https://discord.gg/jRn8GwcFCj)                           | ![Discord](/assets/docs/discord.png)   |
-| [Medium](https://medium.com/kadena-io)                             | ![Medium](/assets/docs/medium.png)     |
 | [Youtube](https://www.youtube.com/kadenablockchain)                | ![Youtube](/assets/docs/youtube.png)   |
 | [LinkedIn](https://www.linkedin.com/company/kadena-llc/mycompany/) | ![LinkedIn](/assets/docs/linkedin.png) |
 | [Reddit](https://www.reddit.com/r/kadena/)                         | ![Reddit](/assets/docs/reddit.png)     |

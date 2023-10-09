@@ -35,8 +35,8 @@ transactions and the ability to write smart contracts. The latest
 functionalities of the network complete Kadena’s hybrid blockchain platform.
 [Kadena](https://www.kadena.io) is already delivering interoperability,
 scalability, and security across industries including
-[finance](https://medium.com/kadena-io/uscf-collaborates-with-kadena-on-use-of-blockchain-in-the-investment-space-f8b16f7a38bb),
-[healthcare](https://medium.com/kadena-io/kadena-and-rymedi-validate-quality-of-medicinal-products-on-blockchain-244d5fb8d699),
+[finance](/docs/blogchain/2019/uscf-collaborates-with-kadena-on-use-of-blockchain-in-the-investment-space-2019-05-13),
+[healthcare](/docs/blogchain/2019/kadena-and-rymedi-validate-quality-of-medicinal-products-on-blockchain-2019-12-06),
 and insurance.
 
 The hybrid blockchain supports interoperability using Pact, Kadena’s
@@ -73,7 +73,7 @@ Polkadot are looking to implement the Pact smart contract language. Businesses
 exploring deployment of applications on blockchain were able to utilize the
 speed and security of Kadena Kuro when it got listed on
 [AWS Marketplace](https://fortune.com/2019/01/23/blockchain-aws-kadena) and
-[Azure Marketplace](https://medium.com/kadena-io/kadena-launches-blockchain-as-a-service-baas-on-azure-marketplace-7030ec35f56c)
+[Azure Marketplace](/docs/blogchain/2019/kadena-launches-blockchain-as-a-service-baas-on-azure-marketplace-2019-08-27)
 with free community editions.
 
 **About Kadena**

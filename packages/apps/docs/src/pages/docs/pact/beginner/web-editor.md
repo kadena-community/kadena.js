@@ -32,7 +32,7 @@ gives you access to many useful features for smart contract development. These
 features allow you to easily build and test contracts before deploying them to
 either your private chain or
 
-[Chainweb](https://medium.com/kadena-io/all-about-chainweb-101-and-faqs-6bd88c325b45)
+[Chainweb](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01)
 
 :::
 
@@ -173,7 +173,7 @@ Formal verification is a tremendous innovation for smart contract languages. For
 more information on how this helps you develop safer smart contracts, read our
 Medium post
 
-[Pact Formal Verification: Making Blockchain Smart Contracts Safer.](https://medium.com/kadena-io/pact-formal-verification-for-blockchain-smart-contracts-done-right-889058bd8c3f)
+[Pact Formal Verification: Making Blockchain Smart Contracts Safer.](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
 
 ## Tool Panel
 

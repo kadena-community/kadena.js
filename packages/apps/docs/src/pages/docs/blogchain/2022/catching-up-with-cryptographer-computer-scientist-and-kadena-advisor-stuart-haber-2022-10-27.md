@@ -171,7 +171,7 @@ success of this company.
 Check out these resources to learn more about our PoW Blockchain platform and
 communities:
 
-[Our Blog on Medium](https://medium.com/kadena-io)
+[Our Blog on Medium](/docs/blogchain)
 
 [Platform Documentation](/)
 

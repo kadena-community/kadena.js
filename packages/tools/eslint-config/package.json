@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "",
-    "format": "pnpm run /^format:.*/",
+    "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
