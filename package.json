@@ -10,7 +10,7 @@
     "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",
     "format:src": "prettier . \"!packages\" --cache --write",
     "preinstall": "npx --no-install only-allow pnpm",
-    "knip": "NEXT_TRANSLATE_PATH=packages/apps/tools knip",
+    "knip": "knip",
     "lint": "syncpack list-mismatches",
     "publish": "changeset publish",
     "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
