@@ -14,6 +14,7 @@ export default builder.prismaNode('Block', {
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     epoch: t.expose('epoch', { type: 'DateTime' }),
     height: t.expose('height', { type: 'BigInt' }),
+    payload: t.exposeString('payload'),
     powHash: t.exposeString('powHash'),
 
     // computed fields
@@ -55,6 +56,7 @@ export default builder.prismaNode('Block', {
         });
       },
       async resolve(query, parent, { events }, context, info) {
+        console.log(events);
         return prismaClient.transaction.findMany({
           ...query,
           where: {
@@ -81,6 +83,9 @@ async function getTransactionsRequestkeyByEvent(
     hash: string;
   } & { [prismaModelName]?: 'Block' | undefined },
 ): Promise<string[]> {
+  if (!events?.length) {
+    return [];
+  }
   return (
     await prismaClient.$queryRaw<{ requestkey: string }[]>`
       SELECT t.requestkey

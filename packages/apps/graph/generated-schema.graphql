@@ -13,6 +13,7 @@ type Block implements Node {
   id: ID!
   parent: Block
   parentHash: String
+  payload: String!
   powHash: String!
   transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
 }

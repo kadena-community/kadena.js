@@ -13,7 +13,7 @@ export const CORE_BLOCK_FIELDS: DocumentNode = gql`
     # miner
     # nonce
     # parent
-    # payload
+    payload
     powHash
     # predicate
     # target
