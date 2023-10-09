@@ -5,7 +5,7 @@ import mapValues from 'lodash.mapvalues';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const breakpoints = {
-  xs: undefined,
+  xs: '',
   sm: `(min-width: ${640 / 16}rem)`,
   md: `(min-width: ${768 / 16}rem)`,
   lg: `(min-width: ${1024 / 16}rem)`,
@@ -57,7 +57,7 @@ const colorProperties = defineProperties({
 
 const responsiveProperties = defineProperties({
   conditions: mapValues(breakpoints, (bp?: string) =>
-    bp === undefined ? {} : { '@media': bp },
+    bp === '' ? {} : { '@media': bp },
   ),
   defaultCondition: 'xs',
   properties: {
