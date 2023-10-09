@@ -3,7 +3,7 @@ title: Minting with Marmalade V2 Tutorial
 description: How to mint on marmalade v2
 menu: Guides
 label: Quick Start
-order: 6
+order: 2
 layout: full
 ---
 

@@ -56,6 +56,9 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <Link className={docsCardLink} href="/docs/pact">
                       What are Pact smart contracts?
                     </Link>
+                    <Link className={docsCardLink} href="/docs/marmalade/intro">
+                      What is our NFT solution?
+                    </Link>
                   </BrowseSection>
                 </DocsCard>
               </Grid.Item>
@@ -87,6 +90,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                       href="/docs/build/guides/building-a-voting-dapp"
                     >
                       Build your first dApp
+                    </Link>
+                    <Link
+                      className={docsCardLink}
+                      href="/docs/marmalade/quick-start"
+                    >
+                      Marmalade Quickstart
                     </Link>
                   </BrowseSection>
                 </DocsCard>

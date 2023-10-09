@@ -3,7 +3,7 @@ title: Contract Architecture
 description: Marmalade V2 Architecture
 menu: Contract Architecture
 label: Overview
-order: 2
+order: 3
 layout: full
 ---
 

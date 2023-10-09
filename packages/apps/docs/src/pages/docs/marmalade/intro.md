@@ -3,7 +3,7 @@ title: Marmalade V2
 menu: Marmalade
 subTitle: The NFT Standard on Kadena
 label: Introduction
-order: 6
+order: 1
 description: NFT Standard on Kadena
 layout: landing
 icon: Marmalade
