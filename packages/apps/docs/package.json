@@ -8,7 +8,7 @@
     "7d:ingest": "npx 7d ingest --files 'src/pages/docs/**/*.md' --files 'src/pages/docs/**/*.mdx'  --files 'src/specs/**/*.json' --namespace kda-docs",
     "7d:ingest-algolia": "OPENAI_API_KEY=dummy-key121 npx 7d ingest --files 'src/pages/docs/**/*.md' --files 'src/pages/docs/**/*.mdx'  --files 'src/specs/**/*.json' --db algolia --namespace docs_website_dev --skip-embeddings",
     "7d:query": "npx 7d",
-    "build": "NODE_OPTIONS=--max-old-space-size=8192 && pnpm run build:scripts && next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 && pnpm run build:scripts && next build",
     "build:blogAuthorInfo": "node src/scripts/createBlogAuthors.mjs",
     "build:brokenLinks": "node src/scripts/detectBrokenLinks.mjs",
     "build:checkForHeaders": "node src/scripts/checkForHeaders.mjs && prettier ./src/pages/docs --write",
