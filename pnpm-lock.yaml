@@ -33,8 +33,8 @@ importers:
   packages/apps/docs:
     dependencies:
       '@7-docs/edge':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.5.1
+        version: 0.5.1
       '@google-analytics/data':
         specifier: ~3.2.2
         version: 3.2.2
@@ -133,8 +133,8 @@ importers:
         version: 5.3.10(@babel/core@7.23.0)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
     devDependencies:
       '@7-docs/cli':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.5.1
+        version: 0.5.1
       '@kadena-dev/eslint-config':
         specifier: workspace:*
         version: link:../../tools/eslint-config
@@ -2099,12 +2099,12 @@ importers:
 
 packages:
 
-  /@7-docs/cli@0.5.0:
-    resolution: {integrity: sha512-yHzkvHX1DXb9N+0APEt1WiccXs8rPI7hwnRBm3vT/CF4+T55WeM3iNbfj3gnzjH9qCLM9KzMo6tsVtVf0Gv01g==}
+  /@7-docs/cli@0.5.1:
+    resolution: {integrity: sha512-/hfDkg00ETw0IOU3M7AgxB+8YXuF/9Hec6YvFgdHEz11FY6Uco73arwb0CZGGHNpykFKXpxzicrx4ACv9oq2oA==}
     hasBin: true
     dependencies:
-      '@7-docs/edge': 0.5.0
-      '@7-docs/shared': 0.5.0
+      '@7-docs/edge': 0.5.1
+      '@7-docs/shared': 0.5.1
       '@octokit/rest': 20.0.1
       '@supabase/supabase-js': 2.33.1
       algoliasearch: 4.20.0
@@ -2130,13 +2130,13 @@ packages:
       - supports-color
     dev: true
 
-  /@7-docs/edge@0.5.0:
-    resolution: {integrity: sha512-LYUHffqieJ0I3CP+8YRI1yYtXoZtR2gzX865MoazYcnarv/xmv4yssxtev4evKBBDUQNRWDKUMmJjvjtPcr1kg==}
+  /@7-docs/edge@0.5.1:
+    resolution: {integrity: sha512-gB1s/ajI6+agVxvX7JRF558jE28zVC1/a/gMB/19LkkmQqratBG6wgSqp2MWwUU/PboDp35WchOADEHgZAVfpg==}
     dependencies:
-      '@7-docs/shared': 0.5.0
+      '@7-docs/shared': 0.5.1
 
-  /@7-docs/shared@0.5.0:
-    resolution: {integrity: sha512-HeJMdAbpBD9AdfmfF+0/s3l07Oz8AP1K9K3unAQwicALC45N4ICKuOJCgafzYRsNq/IQtMeApG6NrZzv99zPhw==}
+  /@7-docs/shared@0.5.1:
+    resolution: {integrity: sha512-M6fivdgE+cE6MdJ74eY4Rv0fLpCxQY06YNzvpFdArCbkKv9LxSNfgGx/crRH+y5JaHYNMvq0+IHQ/gZ+vhqnhw==}
 
   /@aashutoshrathi/word-wrap@1.2.6:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
@@ -17253,11 +17253,6 @@ packages:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
 
-  /dotenv@16.3.1:
-    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
-    engines: {node: '>=12'}
-    dev: true
-
   /dotenv@8.6.0:
     resolution: {integrity: sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==}
     engines: {node: '>=10'}
@@ -22571,7 +22566,7 @@ packages:
     engines: {node: '>=14.0.0'}
     dependencies:
       app-root-dir: 1.0.2
-      dotenv: 16.3.1
+      dotenv: 16.0.3
       dotenv-expand: 10.0.0
     dev: true
 

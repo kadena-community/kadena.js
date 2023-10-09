@@ -38,7 +38,7 @@
     "test": "echo 'No tests, until there is time to debug the build'"
   },
   "dependencies": {
-    "@7-docs/edge": "^0.5.0",
+    "@7-docs/edge": "^0.5.1",
     "@google-analytics/data": "~3.2.2",
     "@kadena/fonts": "~0.0.1",
     "@kadena/react-ui": "workspace:*",
@@ -73,7 +73,7 @@
     "styled-components": "~5.3.10"
   },
   "devDependencies": {
-    "@7-docs/cli": "^0.5.0",
+    "@7-docs/cli": "^0.5.1",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
