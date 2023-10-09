@@ -4,14 +4,16 @@
  */
 // require('dotenv').config();
 
+import { PlaywrightTestConfig } from '@playwright/test';
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export const  defaultConfig = {
+export const  defaultConfig: PlaywrightTestConfig = {
   testDir: 'tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 4 : 1,
   reporter: process.env.CI
     ? [
@@ -25,6 +27,7 @@ export const  defaultConfig = {
       ? process.env.PLAYWRIGHT_BASE_URL
       : 'http://127.0.0.1:3000',
     channel: 'chromium',
+    trace: `retain-on-failure`,
   },
   webServer: {
     command: 'pnpm run start',
