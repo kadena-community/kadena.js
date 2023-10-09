@@ -32,7 +32,7 @@ jobs:
         run: pnpm install
 
       - name: Install browsers
-        run: pnpm exec playwright install
+        run: pnpm exec playwright install chromium
         working-directory: packages/apps/tools
 
       - name: Build Tools dApp
