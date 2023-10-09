@@ -96,8 +96,6 @@ export async function crossChainTransfer({
     throw new Error('Transfer failed');
   }
 
-  const originalConsoleLog = console.log;
-  console.log = () => {};
   const proof = await pollCreateSpv(
     {
       requestKey: status.reqKey,
@@ -106,8 +104,6 @@ export async function crossChainTransfer({
     },
     to.chainId || devnetConfig.CHAIN_ID,
   );
-
-  console.log = originalConsoleLog;
 
   const continuation = {
     pactId: status.continuation?.pactId,
