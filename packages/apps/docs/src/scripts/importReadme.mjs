@@ -9,7 +9,7 @@ import { getLastModifiedDate } from './getdocstree.mjs';
 
 const errors = [];
 
-const DOCSROOT = './src/pages/docs/';
+const DOCSROOT = './src/pages/';
 
 const createFrontMatter = (
   title,
@@ -222,7 +222,7 @@ const importDocs = async (filename, destination, parentTitle, options) => {
   const lastModifiedDate = await getLastModifiedDate(`./../../${filename}`);
 
   const pages = divideIntoPages(md);
-  relinkReferences(md, pages, `/docs/${destination}/`);
+  relinkReferences(md, pages, `/${destination}/`);
 
   pages.forEach((page, idx) => {
     const title = getTitle(page);
@@ -232,7 +232,7 @@ const importDocs = async (filename, destination, parentTitle, options) => {
 
     // check that there is just 1 h1.
     // if more, keep only 1 and replace the next with an h2
-    const pageContent = cleanUp(page, `/docs/${destination}/${slug}`);
+    const pageContent = cleanUp(page, `/${destination}/${slug}`);
 
     const doc = toMarkdown(pageContent);
 

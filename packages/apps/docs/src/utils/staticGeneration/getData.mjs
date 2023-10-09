@@ -21,7 +21,7 @@ const PostsPerTag = (tag, data) => {
 };
 
 export const getTagsData = () => {
-  const STARTBRANCH = '/docs/blogchain';
+  const STARTBRANCH = '/blogchain';
   const data = getData();
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);
