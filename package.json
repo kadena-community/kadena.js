@@ -22,13 +22,13 @@
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@kadena-dev/markdown": "workspace:*",
-    "knip": "^2.25.2",
-    "only-allow": "^1.1.1",
-    "prettier": "~3.0.0",
+    "knip": "^2.32.4",
+    "only-allow": "^1.2.1",
+    "prettier": "~3.0.3",
     "prettier-plugin-packagejson": "^2.4.6",
     "syncpack": "^11.2.1",
     "tsx": "^3.12.10",
-    "turbo": "^1.10.14"
+    "turbo": "^1.10.15"
   },
   "engines": {
     "node": ">=18",
