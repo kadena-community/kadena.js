@@ -85,7 +85,6 @@
     "jest-environment-jsdom": "~29.6.1",
     "next-translate-plugin": "~2.0.5",
     "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
     "typescript": "5.2.2"
   },
   "volta": {

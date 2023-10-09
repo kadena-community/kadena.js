@@ -19,7 +19,6 @@
   "devDependencies": {
     "@kadena-dev/heft-rig": "workspace:*",
     "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
     "typescript": "5.2.2"
   }
 }
