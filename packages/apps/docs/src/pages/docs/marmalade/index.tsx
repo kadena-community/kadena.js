@@ -43,34 +43,33 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           thrilled to share the next stage of this adventure.
         </Text>
       </Box>
-      <Stack
-        justifyContent="space-between"
-        direction={{ sm: 'column', lg: 'row' }}
-      >
-        <Card>
-          <Heading as="h4">Quick start</Heading>
-          <Box marginY="$4">
-            <Text>
-              Marmalade is an NFT smart contract system on Kadena’s blockchain.
-              It comprises multiple smart contracts that execute logic
-              configured by the token policies with which the token is built.
-              Marmalade has been in action for several years, and now we’ve
-              diligently upgraded to Marmalade V2, introducing an entirely new
-              system that simplifies the process of engaging with NFTs.
-            </Text>
+      <Grid.Root gap="$lg" columns={{ sm: 1, lg: 5 }}>
+        <Grid.Item columnSpan={{ sm: 1, lg: 3 }}>
+          <Card fullWidth>
+            <Heading as="h4">Quick start</Heading>
+            <Box marginY="$4">
+              <Text>
+                Marmalade is an NFT smart contract system on Kadena’s
+                blockchain. It comprises multiple smart contracts that execute
+                logic configured by the token policies with which the token is
+                built. Marmalade has been in action for several years, and now
+                we’ve diligently upgraded to Marmalade V2, introducing an
+                entirely new system that simplifies the process of engaging with
+                NFTs.
+              </Text>
+            </Box>
+            <Button as="a" asChild icon="TrailingIcon">
+              <Link href={'/docs/marmalade/quick-start'}>Get started</Link>
+            </Button>
+          </Card>
+        </Grid.Item>
+
+        <Grid.Item>
+          <Box marginTop="$8">
+            <MostPopular pages={popularPages} title="Most viewed docs" />
           </Box>
-          <Button as="a" asChild icon="TrailingIcon">
-            <Link href={'/docs/marmalade/quick-start'}>Get started</Link>
-          </Button>
-        </Card>
-        <Box
-          marginTop="$8"
-          marginLeft={{ sm: 0, lg: '$4' }}
-          marginRight={{ sm: 0, xl: '$32' }}
-        >
-          <MostPopular pages={popularPages} title="Most viewed docs" />
-        </Box>
-      </Stack>
+        </Grid.Item>
+      </Grid.Root>
 
       <Box marginBottom="$20">
         <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
