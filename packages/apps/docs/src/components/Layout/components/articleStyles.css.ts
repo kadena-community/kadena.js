@@ -1,6 +1,6 @@
 import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import type { LayoutType } from '@/types/Layout';
+import type { LayoutType } from '@/Layout';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const articleClass = style([

@@ -1,15 +1,17 @@
 import { Card, Stack } from '@kadena/react-ui';
 
-import { AuthorList, AuthorListItem, AuthorProfileCard } from '@/components';
+import { AuthorList } from '@/components/AuthorList/AuthorList';
+import { AuthorListItem } from '@/components/AuthorList/AuthorListItem';
+import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileCard';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-  TitleHeader,
-} from '@/components/Layout/components';
+} from '@/components/Layout/components/articleStyles.css';
+import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import authorsData from '@/data/authors.json';
-import type { IAuthorInfo, IPageProps } from '@/types/Layout';
-import { getLatestBlogPostsOfAuthor } from '@/utils';
+import type { IAuthorInfo, IPageProps } from '@/Layout';
+import { getLatestBlogPostsOfAuthor } from '@/utils/getBlogPosts';
 import {
   checkSubTreeForActive,
   getPathName,

@@ -3,17 +3,17 @@ import {
   articleClass,
   contentClass,
   contentClassVariants,
-} from '../components';
-import { Template } from '../components/Template';
+} from '../components/articleStyles.css';
+import { Template } from '../components/Template/Template';
 import { globalClass } from '../global.css';
 
 import { BackgroundGradient } from './BackgroundGradient';
 import { pageGridClass } from './styles.css';
 
-import { BottomPageSection } from '@/components/BottomPageSection';
-import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { LastModifiedDate } from '@/components/LastModifiedDate';
-import type { IPageProps } from '@/types/Layout';
+import { BottomPageSection } from '@/components/BottomPageSection/BottomPageSection';
+import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
+import { LastModifiedDate } from '@/components/LastModifiedDate/LastModifiedDate';
+import type { IPageProps } from '@/Layout';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';

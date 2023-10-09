@@ -2,7 +2,7 @@ import authors from '../data/authors.json';
 
 import { getLatestBlogPostsOfAuthor } from './getBlogPosts';
 
-import type { IAuthorInfo } from '@/types/Layout';
+import type { IAuthorInfo } from '@/Layout';
 import { add, isAfter } from 'date-fns';
 
 const getYearPostCount = (author: IAuthorInfo): number => {

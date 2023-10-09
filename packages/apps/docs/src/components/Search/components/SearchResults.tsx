@@ -18,7 +18,8 @@ import {
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
-import { BrowseSection, Loading } from '@/components';
+import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
+import { Loading } from '@/components/Loading/Loading';
 import type { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import classnames from 'classnames';

@@ -3,12 +3,13 @@ import { ModalProvider } from '@kadena/react-ui';
 // eslint-disable-next-line import/no-unresolved
 import { darkThemeClass } from '@kadena/react-ui/theme';
 
-import { Analytics, ConsentModal } from '@/components';
+import { Analytics } from '@/components/Analytics/Analytics';
+import { ConsentModal } from '@/components/ConsentModal/ConsentModal';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
-import { MenuProvider } from '@/hooks';
-import type { IPageMeta, IPageProps } from '@/types/Layout';
-import { getLayout } from '@/utils';
+import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
+import type { IPageMeta, IPageProps } from '@/Layout';
+import { getLayout } from '@/utils/getLayout';
 import { MDXProvider } from '@mdx-js/react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
