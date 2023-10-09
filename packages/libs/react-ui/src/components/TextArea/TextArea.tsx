@@ -42,7 +42,6 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
         [outlinedClass]: outlined,
         [disabledClass]: disabled,
       })}
-      data-testid="kda-textarea"
     >
       <div className={textAreaContainerClass}>
         <textarea
