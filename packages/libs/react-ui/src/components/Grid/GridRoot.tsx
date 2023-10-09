@@ -1,7 +1,6 @@
 import type { ResponsiveInputType } from './Grid.css';
 import {
   containerColumnVariants,
-  explicitColumnVariant,
   gapVariants,
   gridContainerClass,
 } from './Grid.css';
@@ -39,7 +38,7 @@ const assembleColumnVariants = (
   columns: ResponsiveInputType,
 ): string | string[] => {
   if (typeof columns === 'number') {
-    return explicitColumnVariant[columns];
+    return containerColumnVariants.xs[columns];
   }
 
   const { xs, sm, md, lg, xl, xxl } = columns;

@@ -1,10 +1,5 @@
 import type { ResponsiveInputType } from './Grid.css';
-import {
-  explicitItemColumnVariant,
-  gridItemClass,
-  itemColumnVariants,
-  rowSpanVariants,
-} from './Grid.css';
+import { gridItemClass, itemColumnVariants, rowSpanVariants } from './Grid.css';
 
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
@@ -20,7 +15,7 @@ const assembleColumnSpanVariants = (
   columnSpan: ResponsiveInputType,
 ): string | string[] => {
   if (typeof columnSpan === 'number') {
-    return explicitItemColumnVariant[columnSpan];
+    return itemColumnVariants.xs[columnSpan];
   }
 
   const { xs, sm, md, lg, xl, xxl } = columnSpan;
