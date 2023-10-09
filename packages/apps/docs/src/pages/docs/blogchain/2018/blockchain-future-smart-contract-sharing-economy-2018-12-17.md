@@ -1,5 +1,5 @@
 ---
-title: The Future of Blockchain is the Smart Contract Sharing Economy
+title: The Future of Blockchain is the Smart Contract Sharing Economy.
 description:
   How Kadena’s stack turns cost centers into revenue generators. Kadena is
   uniquely positioned in the blockchain ecosystem; we provide a complete
