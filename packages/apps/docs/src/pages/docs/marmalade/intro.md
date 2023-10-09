@@ -3,7 +3,7 @@ title: Intro to Marmalade
 menu: Marmalade
 subTitle: Mint a marketplace
 label: Intro to Marmalade
-order: 6,
+order: 1,
 description: Mint a marketplace
 layout: landing
 icon: Marmalade
