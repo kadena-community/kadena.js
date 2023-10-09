@@ -3,6 +3,22 @@ name: E2E tests
 on: [pull_request]
 
 jobs:
+  vercel-ta:
+    name: Wait for Preview deployment
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
+    steps:
+      - name: Wait for Preview environment
+        uses: patrickedqvist/wait-for-vercel-preview
+        id: waitForVercelPreviewDeployment
+        with:
+          environment: "Preview – Tools"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          check_interval: 30
+          max_timeout: 400
+
   e2e-tools:
     name: E2E - Tools
     runs-on: ubuntu-latest
@@ -28,22 +44,18 @@ jobs:
           node-version: 18
           cache: "pnpm"
 
-      - name: Install dependencies
-        run: pnpm install
+      - name: Show preview url
+        run: echo ${{ needs.vercel-ta.outputs.preview_url }}
 
       - name: Install browsers
         run: pnpm exec playwright install chromium
         working-directory: packages/apps/tools
 
-      - name: Build Tools dApp
-        run: pnpm run build --filter @kadena/tools
-
       - name: Run Playwright tests
         run: pnpm run test:e2e --filter @kadena/tools
         env:
           CI: true
-          FAUCET_PUBLIC_KEY: 782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e
-          FAUCET_PRIVATE_KEY: 93fd78bd1e79a3b593d4732b76050b418aeefa5e4e6ea80f351b4c3a5b0dd19f
+          PLAYWRIGHT_BASE_URL: ${{ needs.vercel-ta.outputs.preview_url }}
 
       - uses: actions/upload-artifact@v3
         if: always()
