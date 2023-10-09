@@ -2,6 +2,7 @@ import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
 import type { Network } from '@/constants/kadena';
 import type { INetworkData } from '@/utils/network';
+import { getEstatsHost } from '@/utils/network';
 import Debug from 'debug';
 
 export interface ITransaction {
@@ -37,7 +38,7 @@ export async function getTransactions(options: {
 
   try {
     return await fetch(
-      `https://${networkDto.API}/txs/account/${account}?token=coin&chain=${chain}&limit=10`,
+      getEstatsHost({ api: networkDto.ESTATS, account, chain }),
     ).then((res) => res.json() as unknown as ITransaction[]);
   } catch (error) {
     debug(error);

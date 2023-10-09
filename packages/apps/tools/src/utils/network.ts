@@ -1,17 +1,25 @@
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+
 import type { DefinedNetwork, Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 
 interface IApiHostData {
+  api: string;
   networkId: string;
-  chainId: string;
+  chainId: ChainwebChainId;
+}
+
+interface IEstatsHostData {
+  api: string;
+  account: string;
+  chain: ChainwebChainId;
 }
 
 export interface INetworkData {
   networkId: Network;
   label: string;
   API: string;
-  apiHost: ({ networkId, chainId }: IApiHostData) => string;
-  estatsHost: (account: string) => string;
+  ESTATS: string;
 }
 
 const isNetwork = (x: any): x is Network =>
@@ -41,20 +49,16 @@ export const getAllNetworks = (
         networkId: item,
         label: kadenaConstants[item].label,
         API: kadenaConstants[item].API,
-        apiHost: kadenaConstants[item].apiHost,
-        estatsHost: kadenaConstants[item].estatsHost,
+        ESTATS: kadenaConstants[item].estatsHost(),
       } as INetworkData);
     });
   }
 
-  if (localStorageNetworks) {
+  if (localStorageNetworks.length) {
     localStorageNetworks.forEach((item) =>
       allNetworkObjects.push({
         ...item,
-        apiHost: ({ networkId, chainId }) =>
-          `https://${item.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
-        estatsHost: (account) =>
-          `https://${item.API}/txs/account/${account}?limit=100`,
+        ESTATS: item.API,
       }),
     );
   }
@@ -70,10 +74,19 @@ export const getInitialNetworks = (): INetworkData[] => {
       networkId: item,
       label: kadenaConstants[item].label,
       API: kadenaConstants[item].API,
-      apiHost: kadenaConstants[item].apiHost,
-      estatsHost: kadenaConstants[item].estatsHost,
+      ESTATS: kadenaConstants[item].estatsHost(),
     } as INetworkData);
   });
 
   return allNetworkObjects;
 };
+
+export const getApiHost = ({ api, networkId, chainId }: IApiHostData): string =>
+  `https://${api}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+
+export const getEstatsHost = ({
+  api,
+  account,
+  chain,
+}: IEstatsHostData): string =>
+  `https://${api}/txs/account/${account}?token=coin&chain=${chain}&limit=10`;

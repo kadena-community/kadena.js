@@ -14,7 +14,7 @@
   "scripts": {
     "prebuild": "pnpm run pactjs:generate:contract:file && pnpm run pactjs:generate:contract:crowdfund",
     "build": "pnpm run prebuild && tsc --noEmit",
-    "format": "pnpm run /^format:.*/",
+    "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",

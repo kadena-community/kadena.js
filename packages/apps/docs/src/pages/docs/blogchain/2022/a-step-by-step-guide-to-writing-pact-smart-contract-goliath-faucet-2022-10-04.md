@@ -412,7 +412,7 @@ invariant, use (`invariant`) and provide a predicate; the Z3 theorem prover will
 check that the variables used in your predicate can never have values that would
 fail the predicate. Not all Pact functions can be used in the predicate; you can
 see a list of available ones here
-[#property-and-invariant-functions](https://pact-language.readthedocs.io/en/stable/pact-properties-api.html#property-and-invariant-functions)
+[#property-and-invariant-functions](/docs/pact/reference/properties-and-invariants)
 
 The first invariant ensures that you can never receive more funds than your
 account limit. The second ensures you can never return more funds than you have
@@ -571,7 +571,7 @@ amount. Second, if the transaction succeeded, then the table at the
 ‘funds-requested’ column must have increased by the amount requested. The first
 property is a simple check, but the second uses a property-only function called
 (`column-delta`).
-[#column-delta](https://pact-language.readthedocs.io/en/stable/pact-properties-api.html#column-delta)
+[#column-delta](docs/pact/reference/property-checking#mass-conservation-and-column-deltash445708229)
 
 Recall that due to our schema invariants we have some additional checks that
 verify that our table writes are always within the valid bounds of our account

@@ -39,11 +39,11 @@ With your support, Kadena reached major milestones in 2020.
 
 - [Official listing of KDA on Bittrex Global](https://cointelegraph.com/news/jpmorgans-blockchain-offshoot-kadena-gets-first-ever-token-listing)
 
-- [Collaborating with Web3 Foundation to bring Pact to Polkadot](https://medium.com/kadena-io/polkadot-collaboration-update-researching-pact-core-for-wasm-and-exploring-kadenadot-dbad5c120e26)
+- [Collaborating with Web3 Foundation to bring Pact to Polkadot](/docs/blogchain/2020/polkadot-collaboration-update-researching-pact-core-for-wasm-and-exploring-kadenadot-2020-08-12)
 
 - [Debuting first crypto gas stations (on-chain)](https://www.blockchainmagazine.net/kadena-implements-first-crypto-gas-station-on-blockchain/)
 
-- [Scaling of public blockchain from 10 to 20 chains](https://medium.com/kadena-io/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-5a652295533c)
+- [Scaling of public blockchain from 10 to 20 chains](/docs/blogchain/2020/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-2020-08-20)
 
 - [Introducing formal developer program with grants](https://www.kadena.io/developers)
 
@@ -61,14 +61,14 @@ The Kadena project continues to further its credibility for superior execution.
 [Click here](/docs/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14)
 to visit Kadena’s timeline from founding in 2016 through Q1 of 2019.
 
-[Click here](https://medium.com/kadena-io/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-3f93d8d2a6e0)
+[Click here](/docs/blogchain/2019/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-2019-12-04)
 to visit Kadena’s timeline from Q2 through Q4 of 2019.
 
-[Click here](https://medium.com/kadena-io/kadena-roadmap-for-q1-q2-2020-d0a533193d80)
-to visit Kadena’s timeline from Q1 through Q2 of 2020.
+[Click here](/docs/blogchain/2020/kadena-roadmap-for-q1-q2-2020-2020-04-08) to
+visit Kadena’s timeline from Q1 through Q2 of 2020.
 
-[Click here](https://medium.com/kadena-io/kadena-roadmap-for-q3-2020-7f83aa792119)
-to visit Kadena’s timeline for Q3 of 2020.
+[Click here](/docs/blogchain/2020/kadena-roadmap-for-q3-2020-2020-07-29) to
+visit Kadena’s timeline for Q3 of 2020.
 
 ![Kadena Q1 2021 roadmap](/assets/blog/1_Wchg36UzjZ0CoulBdPdPSA.webp)
 

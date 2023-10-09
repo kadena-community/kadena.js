@@ -10,7 +10,6 @@ import { globalClass } from '../global.css';
 
 import { pageGridClass } from './styles.css';
 
-import { NotFound } from '@/components/NotFound';
 import type { IBasePageProps } from '@/types/Layout';
 import classnames from 'classnames';
 import type { FC } from 'react';
@@ -35,10 +34,7 @@ export const Landing: FC<IBasePageProps> = ({
           id="maincontent"
           className={classnames(contentClass, contentClassVariants.code)}
         >
-          <article className={articleClass}>
-            {children}
-            <NotFound />
-          </article>
+          <article className={articleClass}>{children}</article>
         </div>
       </Template>
     </div>

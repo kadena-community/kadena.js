@@ -12,9 +12,9 @@ layout: full
 
 #### Articles
 
-- [The Story of Kadena's Proof of Work Blockchain](https://medium.com/kadena-io/the-story-of-kadenas-proof-of-work-blockchain-f747b89db3db)
-- [Kadena's Public Blockchain: 101 and FAQs](https://medium.com/kadena-io/all-about-chainweb-101-and-faqs-6bd88c325b45)
-- [Kadena Eco Grants: What You Need To Know](https://medium.com/kadena-io/kadena-eco-grants-e5368b4f4c3a)
+- [The Story of Kadena's Proof of Work Blockchain](/docs/blogchain/2022/the-story-of-kadenas-proof-of-work-blockchain-2022-10-13)
+- [Kadena's Public Blockchain: 101 and FAQs](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01)
+- [Kadena Eco Grants: What You Need To Know](/docs/blogchain/2022/kadena-eco-grants-2022-04-21)
 
 ### Videos
 

@@ -40,7 +40,7 @@ with a dApp to become as easy as filling out a web form.
 ### Additional Resources
 
 - Read more about gas stations
-  [here](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836).
+  [here](/docs/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06).
 - [See the Smart Contract Code for Memory Wall](https://github.com/kadena-io/developer-scripts/tree/master/pact/dapp-contracts/memory-wall)
 
 ## Setup Chainweaver

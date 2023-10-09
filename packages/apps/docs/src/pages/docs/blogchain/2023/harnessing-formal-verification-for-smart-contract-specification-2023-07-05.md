@@ -195,10 +195,9 @@ understand and address any issues or inconsistencies in the smart contract.
 
 Now we can specify win, lose and draw conditions. For simplicity’s sake, I will
 be specifying from player one’s perspective.
-The`[result](https://pact-language.readthedocs.io/en/stable/pact-properties-api.html?highlight=result#result)`
-keyword refers to a value that the function will output. Note that we have
-defined 3 different possible outcomes: `Player 1 wins`,` Player 2 wins` or
-`Draw`.
+The`[result](/docs/pact/reference/properties-and-invariants)` keyword refers to
+a value that the function will output. Note that we have defined 3 different
+possible outcomes: `Player 1 wins`,` Player 2 wins` or `Draw`.
 
 ```pact
 (module rock-paper-scissors GOVERNANCE
