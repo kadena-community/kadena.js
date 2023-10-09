@@ -1,6 +1,7 @@
 import { Button, Heading, Stack, Text } from '@kadena/react-ui';
 
-import { Loading } from '@/components';
+import { Loading } from '../Loading/Loading';
+
 import type { FC } from 'react';
 import React, { useEffect, useRef } from 'react';
 

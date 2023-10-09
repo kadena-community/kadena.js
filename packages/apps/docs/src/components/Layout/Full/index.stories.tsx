@@ -3,9 +3,9 @@ import { fullLayoutLeftMenuTree } from '../__fixtures__/leftMenuTree';
 
 import { Full } from './Full';
 
-import { Heading2 } from '@/components/Markdown/Heading';
-import { Paragraph } from '@/components/Markdown/Paragraph';
-import type { IPageProps, TagNameType } from '@/types/Layout';
+import { Heading2 } from '@/components/Markdown/Heading/Heading2';
+import { Paragraph } from '@/components/Markdown/Paragraph/Paragraph';
+import type { IPageProps, TagNameType } from '@/Layout';
 import type { Meta, StoryObj } from '@storybook/react';
 import Link from 'next/link';
 import React from 'react';

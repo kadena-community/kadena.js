@@ -1,4 +1,4 @@
-import { getLayout } from '..';
+import { getLayout } from '../getLayout';
 
 describe('utils getLayout', () => {
   test('should return layout Code-Component when arg is "code" or "codeside"', () => {

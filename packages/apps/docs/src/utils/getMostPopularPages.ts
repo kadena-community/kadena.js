@@ -2,12 +2,12 @@ import { getData } from './staticGeneration/getData.mjs';
 import analyticsDataClient from './analyticsDataClient';
 import storeAnalyticsData from './storeAnalyticsData';
 
-import type { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/Layout';
 import type {
   IMostPopularPage,
   IRow,
   IRunReportResponse,
-} from '@/types/MostPopularData';
+} from '@/MostPopularData';
 import fs from 'fs';
 import path from 'path';
 

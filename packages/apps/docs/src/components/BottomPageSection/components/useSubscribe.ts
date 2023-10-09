@@ -1,5 +1,5 @@
-import { isEmailValid } from '@/utils';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import { isEmailValid } from '@/utils/isEmailValid';
 import type { ChangeEvent, MouseEvent } from 'react';
 import { useState } from 'react';
 
