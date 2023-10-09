@@ -58,7 +58,7 @@ const columnCount: Record<number, number> = {
 
 export const containerColumnVariants = mapValues(breakpoints, (mediaQuery) => {
   return styleVariants(columnCount, (count) => {
-    if (mediaQuery === undefined) {
+    if (mediaQuery === '') {
       return [
         {
           gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))`,
@@ -80,7 +80,7 @@ export const containerColumnVariants = mapValues(breakpoints, (mediaQuery) => {
 
 export const itemColumnVariants = mapValues(breakpoints, (mediaQuery) => {
   return styleVariants(columnCount, (count) => {
-    if (mediaQuery === undefined) {
+    if (mediaQuery === '') {
       return [
         {
           gridColumn: `span ${count}`,

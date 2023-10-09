@@ -56,7 +56,7 @@ const colorProperties = defineProperties({
 });
 
 const responsiveProperties = defineProperties({
-  conditions: mapValues(breakpoints, (bp?: string) =>
+  conditions: mapValues(breakpoints, (bp) =>
     bp === '' ? {} : { '@media': bp },
   ),
   defaultCondition: 'xs',
