@@ -76,6 +76,7 @@
     "@vanilla-extract/jest-transform": "1.1.1",
     "@vanilla-extract/next-plugin": "2.3.1",
     "@walletconnect/types": "~2.8.1",
+    "@webpro/next-translate-plugin": "^2.6.3",
     "debug": "~4.3.4",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
@@ -83,7 +84,6 @@
     "ignore-loader": "~0.1.2",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "~29.6.1",
-    "next-translate-plugin": "~2.0.5",
     "prettier": "~3.0.0",
     "typescript": "5.2.2"
   },
