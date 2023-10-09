@@ -42,7 +42,7 @@
     "@types/mdast": "^3.0.11",
     "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
+    "prettier": "~3.0.3",
     "typescript": "5.2.2",
     "unified": "^10.1.2",
     "vfile": "5.3.7"
