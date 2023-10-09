@@ -103,7 +103,7 @@ export interface IMenuData {
   children: IMenuData[];
   root: string;
   title: string;
-  description: string;
+  description?: string;
   menu: string;
   label: string;
   order: number;

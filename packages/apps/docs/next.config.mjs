@@ -15,6 +15,11 @@ import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 const withVanillaExtract = createVanillaExtractPlugin();
 import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
 import { readFileSync } from 'fs';
+import withBundleAnalyzer from '@next/bundle-analyzer';
+
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE_BUILD === 'true',
+});
 
 const options = {
   // Use one of Shiki's packaged themes
@@ -108,5 +113,7 @@ const nextConfig = {
     ],
   },
 };
+
+console.log(withBundleAnalyzer.default);
 
 export default withVanillaExtract(withMDX(nextConfig));

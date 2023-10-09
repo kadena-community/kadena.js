@@ -1,1 +1,0 @@
-export { BlockQuote } from './BlockQuote';
