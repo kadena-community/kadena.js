@@ -1,6 +1,6 @@
 import copy from 'recursive-copy';
 
-const DOCSPATH = './src_docs';
+const DOCSPATH = './src/_docs';
 
 (async function () {
   try {

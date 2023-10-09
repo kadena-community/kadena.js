@@ -63,7 +63,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <Text>Learn the basics of Pact to create a smart contract</Text>
             </Box>
             <Button as="a" asChild icon="TrailingIcon">
-              <Link href={'/docs/pact/beginner'}>Getting started</Link>
+              <Link href={'/pact/beginner'}>Getting started</Link>
             </Button>
           </Card>
           <Box
@@ -182,7 +182,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const mostPopularPages = await getMostPopularPages('/docs/pact');
+  const mostPopularPages = await getMostPopularPages('/pact');
   const blogPosts = await getBlogPosts(['pact']);
 
   return {

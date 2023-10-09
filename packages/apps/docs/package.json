@@ -26,7 +26,7 @@
     "cypress:cilocal": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:open",
     "cypress:open": "percy exec -- cypress open",
     "cypress:run": "percy exec -- cypress run",
-    "dev": "pnpm run build:scripts && next dev",
+    "dev": " next dev",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",

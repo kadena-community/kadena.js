@@ -139,6 +139,7 @@ const findPath = (dir) => {
 
   const fileName = file.split('.').at(0);
   if (fileName === 'index') return null;
+  if (!path) return `/${fileName}`;
   return `/${path}/${fileName}`;
 };
 

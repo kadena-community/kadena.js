@@ -88,7 +88,7 @@ const BlogChainHome: FC<IProps> = ({
 export const getStaticProps: GetStaticProps = async () => {
   const posts = getInitBlogPosts(getData() as IMenuData[], 0, 10);
 
-  const mostPopularPages = await getMostPopularPages('/docs/blogchain');
+  const mostPopularPages = await getMostPopularPages('/blogchain');
 
   return {
     props: {

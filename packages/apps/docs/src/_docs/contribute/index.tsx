@@ -36,10 +36,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="contribute"
             >
               <BrowseSection marker="none">
-                <Link
-                  className={docsCardLink}
-                  href={'/docs/contribute/ambassadors'}
-                >
+                <Link className={docsCardLink} href={'/contribute/ambassadors'}>
                   Become an ambassador
                 </Link>
               </BrowseSection>
@@ -92,10 +89,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="whitepapers"
             >
               <BrowseSection marker="none">
-                <Link
-                  className={docsCardLink}
-                  href={'/docs/contribute/contribute'}
-                >
+                <Link className={docsCardLink} href={'/contribute/contribute'}>
                   Fix our docs
                 </Link>
               </BrowseSection>

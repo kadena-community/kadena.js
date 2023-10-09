@@ -13,19 +13,21 @@ const isIndex = (filename) => {
 // we dont want the last option in the path be "index"
 const lastInPath = (filename) => {
   if (isIndex(filename)) return '';
-  return `/${filename}`;
+  return `${filename}`;
 };
 
 export const getPathName = (filename) => {
-  const endPoint = 'docs';
+  const endPoint = 'pages';
 
   const dirArray = filename.split('/');
 
   const newPath = dirArray
     .reverse()
-    .slice(1, dirArray.indexOf(endPoint) + 1)
+    .slice(1, dirArray.indexOf(endPoint))
     .reverse()
     .join('/');
+
+  console.log(111111, `/${newPath}${lastInPath(path.parse(filename).name)}`);
 
   return `/${newPath}${lastInPath(path.parse(filename).name)}`;
 };
