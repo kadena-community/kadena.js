@@ -6,13 +6,17 @@ import {
   containerClass,
   contentClass,
   descriptionClass,
+  displayVariants,
   expandVariants,
+  inlineVariants,
 } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+
+type DisplayVariants = 'standard' | 'outlined';
 
 export interface INotificationProps {
   icon?: keyof typeof SystemIcon;
@@ -22,6 +26,8 @@ export interface INotificationProps {
   color?: keyof typeof colorVariants;
   hasCloseButton?: boolean;
   onClose?: () => void;
+  variant?: DisplayVariants;
+  inline?: boolean;
 }
 
 export const NotificationContainer: FC<INotificationProps> = ({
@@ -32,22 +38,36 @@ export const NotificationContainer: FC<INotificationProps> = ({
   color = 'info',
   expanded = false,
   onClose,
+  variant = 'standard',
+  inline = false,
 }) => {
   const Icon = icon ? SystemIcon[icon] : SystemIcon.HelpCircle;
 
   const classList = classNames(
     containerClass,
     cardColorVariants[color],
+    displayVariants[variant],
     expandVariants[expanded ? 'true' : 'false'],
+    inlineVariants[inline ? 'true' : 'false'],
+  );
+
+  const contentClassList = classNames(
+    contentClass,
+    inlineVariants[inline ? 'true' : 'false'],
+  );
+
+  const descriptionClassList = classNames(
+    descriptionClass,
+    inlineVariants[inline ? 'true' : 'false'],
   );
 
   return (
     <div className={classList}>
       <Icon size="md" />
 
-      <div className={contentClass}>
+      <div className={contentClassList}>
         {title && <h4>{title}</h4>}
-        <div className={descriptionClass}>{children}</div>
+        <div className={descriptionClassList}>{children}</div>
       </div>
 
       {hasCloseButton && (

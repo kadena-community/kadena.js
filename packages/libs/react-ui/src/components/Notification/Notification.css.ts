@@ -1,4 +1,4 @@
-import { sprinkles } from '@theme/sprinkles.css';
+import { breakpoints, sprinkles } from '@theme/sprinkles.css';
 import type { ColorType } from '@theme/vars.css';
 import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
@@ -22,7 +22,6 @@ export const containerClass = style([
     padding: '$md',
     gap: '$md',
     borderStyle: 'solid',
-    borderWidth: '$sm',
   }),
   {
     borderLeftWidth: vars.sizes.$1,
@@ -42,6 +41,29 @@ export const cardColorVariants = styleVariants(colorVariants, (color) => {
 export const expandVariants = styleVariants({
   true: [sprinkles({ width: '100%', maxWidth: '100%' })],
   false: [sprinkles({ width: 'max-content', maxWidth: 'maxContent' })],
+});
+
+export const displayVariants = styleVariants({
+  outlined: [sprinkles({ borderWidth: '$md' })],
+  standard: { borderWidth: 0 },
+});
+
+export const inlineVariants = styleVariants({
+  true: [
+    sprinkles({
+      display: 'flex',
+      flexDirection: 'column',
+    }),
+    {
+      '@media': {
+        [`screen and ${breakpoints.md}`]: {
+          alignItems: 'flex-start',
+          flexDirection: 'row',
+        },
+      },
+    },
+  ],
+  false: [sprinkles({ display: 'flex', flexDirection: 'column' })],
 });
 
 export const closeButtonClass = style([

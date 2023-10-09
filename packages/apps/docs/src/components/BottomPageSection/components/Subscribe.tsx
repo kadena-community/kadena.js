@@ -51,7 +51,7 @@ export const Subscribe: FC = () => {
             </form>
 
             {Boolean(message) && (
-              <Notification.Root color="warning" expanded>
+              <Notification.Root color="warning" expanded variant="outlined">
                 {message}
               </Notification.Root>
             )}

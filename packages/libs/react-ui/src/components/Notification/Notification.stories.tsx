@@ -21,6 +21,12 @@ const meta: Meta<
     },
   },
   argTypes: {
+    variant: {
+      options: ['standard', 'outlined'],
+      control: {
+        type: 'select',
+      },
+    },
     icon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
@@ -44,6 +50,11 @@ const meta: Meta<
       },
     },
     hasCloseButton: {
+      control: {
+        type: 'boolean',
+      },
+    },
+    inline: {
       control: {
         type: 'boolean',
       },
@@ -73,8 +84,19 @@ export const Primary: Story = {
     expanded: false,
     color: undefined,
     text: 'Notification text to inform users about the event that occurred!',
+    variant: 'standard',
+    inline: false,
   },
-  render: ({ icon, title, hasCloseButton, expanded, color, text }) => {
+  render: ({
+    icon,
+    title,
+    hasCloseButton,
+    expanded,
+    color,
+    text,
+    variant,
+    inline,
+  }) => {
     return (
       <Notification.Root
         icon={icon}
@@ -85,6 +107,8 @@ export const Primary: Story = {
         onClose={() => {
           alert('Close button clicked');
         }}
+        variant={variant}
+        inline={inline}
       >
         {text}
         <Notification.Actions>
