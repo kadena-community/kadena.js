@@ -12,7 +12,7 @@
     "build:blogAuthorInfo": "node src/scripts/createBlogAuthors.mjs",
     "build:brokenLinks": "node src/scripts/detectBrokenLinks.mjs",
     "build:checkForHeaders": "node src/scripts/checkForHeaders.mjs && prettier ./src/pages/docs --write",
-    "build:copyFavIcons": "rimraf ./public/assets/favicons && node ./src/scripts/copyFavicons.mjs",
+    "build:copyFavIcons": "rimraf ./public/assets/favicons && node ./src/scripts/copyFavIcons.mjs",
     "build:createSitemap": "node ./src/scripts/createSitemap.mjs && prettier ./public/sitemap.xml --write",
     "build:createSpecJson": "node ./src/scripts/createSpec.mjs && prettier ./src/specs/**/*.json --write",
     "build:createtree": "node ./src/scripts/getdocstree.mjs && prettier ./src/_generated/menu.mjs --write",
