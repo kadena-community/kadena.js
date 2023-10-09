@@ -206,49 +206,49 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/overview}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/kda}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/kda/manage-kda}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/kda/kda-concepts}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/whitepapers}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/whitepapers/chainweb-layer-1}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/whitepapers/pact-smart-contract-language}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/whitepapers/kuro-layer-2}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -260,19 +260,19 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/wallets/chainweaver}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/wallets/chainweaver/chainweaver-troubleshooting}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/wallets/chainweaver/terms-of-service}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -284,25 +284,25 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/exchanges}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/support}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/support/developer-program}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/support/technical-grants}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -320,25 +320,25 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/resources}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/resources/press-kit}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/resources/glossary}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/resources/kadena-content-repository}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -428,7 +428,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/code-of-conduct}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -440,7 +440,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/quickstart}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-03</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -992,61 +992,61 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/node}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/node/start-mining}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/node/interact-with-nodes}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/node/troubleshooting-chainweb}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/ambassadors}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/ambassadors/content-creator}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/ambassadors/moderator}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/ambassadors/community-channel-leader}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/kadena-dao}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/contribute}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-08-29</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1136,7 +1136,109 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/marmalade}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-08-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/architecture}</loc>
+      undefined
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/architecture/ledger}</loc>
+      undefined
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/architecture/policy-manager}</loc>
+      undefined
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/architecture/quote-manager}</loc>
+      undefined
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/architecture/policies}</loc>
+      undefined
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/concrete-policies}</loc>
+      <lastmod>2023-08-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/concrete-policies/collection-policy}</loc>
+      <lastmod>2023-08-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/concrete-policies/guard-policy}</loc>
+      <lastmod>2023-08-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/concrete-policies/non-fungible-policy}</loc>
+      <lastmod>2023-08-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/concrete-policies/royalty-policy}</loc>
+      <lastmod>2023-08-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/sales}</loc>
+      undefined
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/metadata}</loc>
+      <lastmod>2023-10-04</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/metadata/arweave-storage}</loc>
+      undefined
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/quick-start}</loc>
+      undefined
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/marmalade-v1}</loc>
+      <lastmod>2023-08-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/marmalade-v1/why-v2}</loc>
+      <lastmod>2023-08-21</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/marmalade/marmalade-v1/migrating-from-v1-to-v2}</loc>
+      <lastmod>2023-08-21</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>

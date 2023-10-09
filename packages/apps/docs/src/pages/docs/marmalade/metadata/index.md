@@ -1,9 +1,9 @@
 ---
-title: Metadata Standard
+title: Metadata
 description: What is the Marmalade v2 Metadata Standard
-menu: Metadata Standard
-label: Metadata Standard
-order: 6
+menu: Metadata
+label: Metadata
+order: 5
 layout: full
 ---
 

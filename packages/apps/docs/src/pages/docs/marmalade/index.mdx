@@ -1,19 +1,13 @@
 ---
-title: Intro to Marmalade
+title: Marmalade V2
 menu: Marmalade
-subTitle: Mint a marketplace
-label: Intro to Marmalade
-order: 6,
-description: Mint a marketplace
+subTitle: The NFT Standard on Kadena
+label: Introduction
+order: 6
+description: NFT Standard on Kadena
 layout: landing
 icon: Marmalade
 ---
-
-# NFTs on Kadena Marmalade
-
-![](https://github.com/kadena-io/marmalade/assets/1943024/4c70a121-a34f-47dc-988d-ebe064cc5945)
-
-## What is marmalade (v2)
 
 The long-awaited release of Marmalade’s V2 standard has arrived, bringing a host
 of exciting updates and features to the top NFT standard in the industry! If
@@ -22,75 +16,53 @@ we’ve been on a journey from the unstandardised on-chain metadata and
 single-policy token logic in V1 (KIP-13) to a far more robust and dynamic V2
 (KIP-20). We’re thrilled to share the next stage of this adventure.
 
-**Understanding KIP-0020: The Marmalade V2 Standard**
+# What is Marmalade?
 
-Marmalade V1 initially introduced the use of the Haber manifest model and had a
-policy-model token system, allowing tokens to adopt various policies, which adds
-extra logic into the marmalade function such as create-token, mint, burn,
-transfer, sale. With the V1 model, tokens could be programmed to allow
-whitelisted collections, fungible sales with royalties, and more.
+Marmalade is an NFT smart contract system on Kadena’s blockchain. It comprises
+multiple smart contracts that execute logic configured by the token policies
+with which the token is built. Marmalade has been in action for several years,
+and now we’ve diligently upgraded to Marmalade V2, introducing an entirely new
+system that simplifies the process of engaging with NFTs.
 
-Marmalade V2 represents a significant leap forward. It introduces an off-chain
-URI with a standardized metadata format, opening the door for marketplaces to
-easily fetch necessary data.
+## How are tokens configured?
 
-In our continuous pursuit of advancement and refinement, we’ve incorporated an
-enhanced feature in Marmalade V2: the stacking of policies. Unlike in V1, each
-token in V2 isn’t bound by a singular policy. Instead, tokens can accommodate N
-number of policies, providing an unprecedented degree of flexibility and
-functionality. This feature is powered by one of the most notable additions in
-Marmalade V2: “the policy manager”. The policy manager provides token creators
-with the convenience of selecting their preferred features from our
-comprehensive concrete-policies, enabling effortless token creation. For those
-seeking additional rules, policy-list field offers the flexibility to
-incorporate specific requirements.
+In Marmalade V2, every token must include a field called
+[**policies**](/docs/marmalade/architecture/policies). These policies act as
+foundational attributes of the token, reflecting its inherent traits. Once set
+during the creation of the token, these policies become immutable and cannot be
+altered. However, it's worth noting that these policies are based on smart
+contracts. So, if the underlying contract is designed to be upgradable, the
+policy can be updated accordingly.
 
-At the heart of this approach, there are two distinct types of policies:
-**[Concrete-Policies](/docs/marmalade/concrete-policies)**, and
-**Custom-policies**. Let’s dive deeper into what each of these means:
+With the release of Marmalade V2, we've introduced a significant enhancement:
+the ability to stack multiple policies. This departs from previous version where
+tokens were each limited to a single policy. With the help of
+[**policy manager**](/docs/marmalade/architecture/policy-manager) in V2, a token
+can be associated with multiple policies, offering an unprecedented degree of
+flexibility and functionality.
 
-1.  `Concrete-Policies`: These policies serve as foundational features for the
-    token, representing its core characteristics. These policies are immutable;
-    once set, they cannot be altered. More importantly, Concrete policies are
-    written and maintained by Kadena.
+## What is a concrete policy?
 
-2.  `Custom-Policies`: These policies offer additional functionality, and can be
-    provided by 3rd parties. Once established, these policies are also
-    immutable, meaning they cannot be changed post-implementation.
+Marmalade V2 aims to broaden its audience by providing a tool to simplify the
+token creation process, offering a set of policies that encompass commonly used
+token features, referred to as
+[**concrete policies**](/docs/marmalade/concrete-policies). These are 4 primary
+policies written and maintained by Kadena, and token creators simply need to
+pick the policies with desired features, without previous knowledge in Pact.
 
-With respect to concrete policies, we offer five primary concrete policies which
-encapsulate the most commonly used functionalities in token creation. Marmalade
-V2 incorporates these concrete policies to simplify the process of token
-creation, while simultaneously ensuring that the tokens still benefit from rich,
-advanced features. The concrete policies are:
+If projects wish to incorporate customized logic alongside the basic features
+offered by concrete policies, they can also include their own policies.
 
-- **[Collection-policy](/docs/marmalade/concrete-policies/collection-policy)**:
-  This policy facilitates the initiation of a collection with predefined token
-  lists.
+## What is the metadata standard of Marmalade Tokens?
 
-- **[Non-fungible-policy](/docs/marmalade/concrete-policies/non-fungible-policy)**:
-  This policy constrains the token supply to 1 and sets precision to 0, thereby
-  enforcing the token’s non-fungibility.
+Marmalade V2 introduces an off-chain URI with a standardized metadata format,
+opening the door for marketplaces to easily fetch necessary data. Read more
+about the [Marmalade V2 Metadata Standard](/docs/marmalade/metadata)
 
-- **[Royalty-policy](/docs/marmalade/concrete-policies/royalty-policy)** This
-  policy designates the creator account to receive royalties upon each sale of
-  the token.
+## Getting Started
 
-- **[Guard-policy](/docs/marmalade/concrete-policies/guard-policy)**: grants the
-  ability to add optional guards to each marmalade action.
-
-To incorporate these features during token minting, Marmalade users simply need
-to add the policy to the respective `policies` fields at token creation. This
-goes for concrete-policies and custom-policies.
-
-**Migration**
-
-For those seeking to migrate from Marmalade V1 to V2, the `migration-policy-v1`
-policy is specifically built to migrate `marmalade.ledger` tokens to
-`marmalade-v2.ledger`.
-
-For projects that seek to use the v1 manifest model, they can continue using the
-manifest using `onchain-manifest-policy-v1`.
+Dive into your NFT experience on Marmalade by following the
+[Minting with Marmalade V2 Tutorial](/docs/marmalade/quick-start)
 
 ---
 
