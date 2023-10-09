@@ -93,9 +93,11 @@ export async function crossChainTransfer({
   const status = await listen(submittedTx);
   inspect('Transfer Result')(status);
   if (status.result.status === 'failure') {
-    throw new Error('DEBIT REJECTED');
+    throw new Error('Transfer failed');
   }
 
+  const originalConsoleLog = console.log;
+  console.log = () => {};
   const proof = await pollCreateSpv(
     {
       requestKey: status.reqKey,
@@ -104,6 +106,8 @@ export async function crossChainTransfer({
     },
     to.chainId || devnetConfig.CHAIN_ID,
   );
+
+  console.log = originalConsoleLog;
 
   const continuation = {
     pactId: status.continuation?.pactId,
