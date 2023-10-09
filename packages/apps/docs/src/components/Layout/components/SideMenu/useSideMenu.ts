@@ -28,7 +28,6 @@ export const useSideMenu = (
 
     const hasSubMenu = matchingItem?.children?.length ?? 0;
 
-    console.log(111111, matchingItem);
     if (hasSubMenu) {
       setActive(1);
     } else {

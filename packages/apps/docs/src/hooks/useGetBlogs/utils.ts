@@ -19,7 +19,7 @@ export const getInitBlogPosts = (
   limit: number,
   { authorId, year, tagId }: IIBlogLoadOptions = {},
 ): IMenuData[] => {
-  const STARTBRANCH = '/docs/blogchain';
+  const STARTBRANCH = '/blogchain';
 
   let posts: IMenuData[] = [];
   const startBranch = menuData.find(
