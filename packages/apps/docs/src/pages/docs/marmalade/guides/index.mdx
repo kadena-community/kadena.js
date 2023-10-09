@@ -42,32 +42,32 @@ Once you find the contracts, click on "View" to proceed.
 
 ![Screenshot Placeholder](/assets/marmalade/01-create-token-01.png)
 
-`token-id`'s in marmalade are hash value of the token information, such as
-the uri, policies, precision, and creation guard.
-You can create the token-id by clicking on the `create-token-id` function,
-and filling in the token components listed below
+`token-id`'s in marmalade are hash value of the token information, such as the
+uri, policies, precision, and creation guard. You can create the token-id by
+clicking on the `create-token-id` function, and filling in the token components
+listed below
 
 1. **Precision**: Enter `0`, just like you did when creating the token ID.
 2. **URL**: Use the same URI you used when creating the token ID. In our
    example, it was `your-token-uri`.
 3. **Policies**: In this field you can add some of the default or custom
-   policies that you want to apply to the token. We'll be using an utility function
-   , `marmalade-v2.util-v1.create-policies` to create a `DEFAULT` setting token.
-   The DEFAULT refers to tokens with policies, `non-fungible-policy` and `guard-policy`,
-   which allows token-owners to add guards for marmalade functions, and
-   enforce that token is one and only.
-4.**creation-guard**: This guard is not stored but is used to reserve the
-  `token-id`. The guard is required to sign at creation.
+   policies that you want to apply to the token. We'll be using an utility
+   function , `marmalade-v2.util-v1.create-policies` to create a `DEFAULT`
+   setting token. The DEFAULT refers to tokens with policies,
+   `non-fungible-policy` and `guard-policy`, which allows token-owners to add
+   guards for marmalade functions, and enforce that token is one and
+   only. 4.**creation-guard**: This guard is not stored but is used to reserve
+   the `token-id`. The guard is required to sign at creation.
 
 We are not going to submit this transaction, because what we need is the string
-value from the `Preview`.
-If you click `Next` until you see a `Submit button`, you'll see the token ID
-in the preview section. In our example, the `token-id` is `t:YMO4JzGYoQdIIDJHLoGDdOo-Cyin3oCqncT__MAe2qw`.
+value from the `Preview`. If you click `Next` until you see a `Submit button`,
+you'll see the token ID in the preview section. In our example, the `token-id`
+is `t:YMO4JzGYoQdIIDJHLoGDdOo-Cyin3oCqncT__MAe2qw`.
 
 **Step 3: Create a Token**
 
-Once  creating a token ID, the next step is to create a token. You can do this
-by calling the `create-token` function.
+Once creating a token ID, the next step is to create a token. You can do this by
+calling the `create-token` function.
 
 ![Screenshot Placeholder](/assets/marmalade/01-create-token-02.png)
 
@@ -81,9 +81,9 @@ you'll need to enter the following information:
    example, it was `your-token-uri`.
 4. **Policies**: Again, we'll use util-v1.DEFAULT as our token policies.
 
- **Note:** For more information on token policies, please refer to the
- [Marmalade V2 Token Policies](https://github.com/kadena-io/marmalade/tree/v2#token-policies)
- documentation on GitHub.
+**Note:** For more information on token policies, please refer to the
+[Marmalade V2 Token Policies](https://github.com/kadena-io/marmalade/tree/v2#token-policies)
+documentation on GitHub.
 
 Next, go to the Configuration tab. Like last time, paste your account name and
 change the gas settings to match the screenshot below.
@@ -91,20 +91,21 @@ change the gas settings to match the screenshot below.
 In the same tab, click on "Advanced" and add a new keyset. In the field, please
 enter `mint_guard` and hit "Create".
 
-**Mint Guard**: Mint Guards are an optional field that one of our policies, `guard-policy-v1`
-takes in. By adding a `mint-guard` at creation, you're adding a guard that needs to be signed
-at token minting.
+**Mint Guard**: Mint Guards are an optional field that one of our policies,
+`guard-policy-v1` takes in. By adding a `mint-guard` at creation, you're adding
+a guard that needs to be signed at token minting.
 
-Once this is created, you will see your keysets below it. Please tick the keyset that matches
-the account we have been using for this entire process.
+Once this is created, you will see your keysets below it. Please tick the keyset
+that matches the account we have been using for this entire process.
 
 ![Screenshot Placeholder for Gas Settings](/assets/marmalade/01-create-token-01.png)
 
 Then, you can go to the Sign tab and follow the same steps as before.
 
 Finally, go to the Preview tab and submit your transaction if there are no
-errors. This time, we're submitting the transaction, so you'd need a valid gas payer with balance.
-Wait for the transaction to finish. The server result should be true.
+errors. This time, we're submitting the transaction, so you'd need a valid gas
+payer with balance. Wait for the transaction to finish. The server result should
+be true.
 
 **Step 4: Mint the Token**
 
@@ -135,10 +136,9 @@ following into the first field:
 (marmalade-v2.ledger.MINT "{TOKEN_ACCOUNT_IN_QUOTES}" "{RECIEVER_ACCOUNT IN QUOTES}" 1.0)
 ```
 
-You need to choose a key that you've saved as `mint_guard` at step 3, and sign with that key
-for successful mint.
+You need to choose a key that you've saved as `mint_guard` at step 3, and sign
+with that key for successful mint.
 
 ![Screenshot Placeholder](/assets/marmalade/02-mint-token-02.png)
 
-Again, go to the Preview tab and submit your transaction if there are no
-errors!
+Again, go to the Preview tab and submit your transaction if there are no errors!
