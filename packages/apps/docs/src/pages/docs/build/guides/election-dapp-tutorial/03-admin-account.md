@@ -47,7 +47,7 @@ npm run coin-details:devnet -- k:account
 ```
 
 You will see an error logged to your terminal, stating `row not found`, confirming that your
-admin account indeed does not yet exist on Devent.
+admin account indeed does not yet exist on Devnet.
 
 ## Creating the admin account
 

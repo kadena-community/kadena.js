@@ -362,7 +362,7 @@ If everything went well, you will see something similar to the following output.
 ```
 
 Congratulations! You have deployed a smart contract consisting of the `election` module that
-is governed by the `admin-keyset` in your principal namespace on your local Devent.
+is governed by the `admin-keyset` in your principal namespace on your local Devnet.
 If you would now run the `list-modules:devnet` script, you will find your module in the list
 of deployed modules.
 

@@ -318,9 +318,11 @@ Add a transaction at the end of `./pact/voting.repl` to cast a vote for the vote
 still signed by the admin keyset. Run the file.
 
 ```pact
-(begin-tx "Double vote")
+(begin-tx "Vote on behalf of another account")
+  (use n_fd020525c953aa002f20fb81a920982b175cdf1a.election)
   (expect-failure
-    "Double voting not allowed"
+    "Voting on behalf of another account should not be allowed"
+    "Keyset failure (keys-all): [voter]"
     (vote "voter" "1")
   )
 (commit-tx)
@@ -392,7 +394,7 @@ on its own behalf, leading to an increase of the number of votes on `Candidate A
 
 Run the file again and, if all is well, all tests pass, meaning that any account can cast
 only one vote on their own behalf. Congratulations, you are now ready to upgrade the `election`
-module on Devnet
+module on Devnet.
 
 ## Upgrade election module on Devnet
 
