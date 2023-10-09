@@ -1,5 +1,3 @@
-import { TextAreaField } from './TextAreaField';
-
 import type { SystemIcon } from '@components/Icon';
 import type { ITextareaProps } from '@components/TextArea';
 import { Textarea } from '@components/TextArea';
@@ -29,8 +27,7 @@ const meta: Meta<ITextareaProps> = {
       },
     },
     hasCopyButton: {
-      description:
-        'Icon rendered inside the textArea to the right of the input text.',
+      description: 'Whether to show the copy button or not.',
       control: {
         type: 'boolean',
       },
@@ -58,34 +55,13 @@ export const TextAreaStory: Story = {
     disabled: false,
     hasCopyButton: true,
     fontFamily: '$mono',
+    outlined: true,
   },
-  render: ({ disabled, hasCopyButton, fontFamily }) => (
+  render: (props) => (
     <Textarea
+      {...props}
       id="inlineInputStory"
-      disabled={disabled}
-      hasCopyButton={hasCopyButton}
-      fontFamily={fontFamily}
       placeholder="This is a placeholder"
-    />
-  ),
-};
-
-export const TextFieldStory: Story = {
-  name: 'TextField config',
-  args: {
-    disabled: false,
-    hasCopyButton: true,
-    fontFamily: '$mono',
-  },
-  render: ({ disabled, hasCopyButton, fontFamily }) => (
-    <TextAreaField
-      disabled={disabled}
-      textAreaProps={{
-        hasCopyButton,
-        id: 'TextFieldStory',
-        fontFamily,
-        placeholder: 'This is a placeholder',
-      }}
     />
   ),
 };

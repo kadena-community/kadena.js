@@ -1,8 +1,10 @@
-import { copyButtonClass } from './TextArea.css';
+import { copyButtonClass } from './CopyButton.css.ts';
 
 import { IconButton } from '@components/IconButton';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+
+const COPY_DURATION_TIME: number = 1000;
 
 export interface ICopyButtonProps
   extends Omit<
@@ -25,22 +27,21 @@ export const CopyButton: FC<ICopyButtonProps> = ({
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
-    }, 1000);
+    }, COPY_DURATION_TIME);
   };
 
   return (
     shouldShow && (
-      <>
-        <div className={copyButtonClass}>
-          <IconButton
-            color={'primary'}
-            icon={copied ? 'Check' : 'ContentCopy'}
-            onClick={handleClick}
-            title={'ContentCopy'}
-            {...restProps}
-          />
-        </div>
-      </>
+      <div className={copyButtonClass}>
+        <IconButton
+          color={'primary'}
+          icon={copied ? 'Check' : 'ContentCopy'}
+          onClick={handleClick}
+          title={'ContentCopy'}
+          id="kda-text-area-copy-button"
+          {...restProps}
+        />
+      </div>
     )
   );
 };

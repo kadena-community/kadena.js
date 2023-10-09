@@ -2,7 +2,7 @@ import { statusColor } from '../InputWrapper/InputWrapper.css';
 
 import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
-import { fallbackVar, style, styleVariants } from '@vanilla-extract/css';
+import { fallbackVar, style } from '@vanilla-extract/css';
 
 export const containerClass = style([
   sprinkles({
@@ -57,23 +57,10 @@ export const disabledClass = style([
         opacity: 1,
       },
       [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
+        backgroundColor: vars.colors.$gray60,
       },
     },
   },
-]);
-
-export const copyButtonClass = style([
-  sprinkles({
-    position: 'absolute',
-    top: 0,
-    right: '$2',
-    backgroundColor: 'transparent',
-    fontSize: '$base',
-    border: 'none',
-    padding: '$1',
-    cursor: 'pointer',
-  }),
 ]);
 
 export const inputContainerClass = style([
@@ -109,37 +96,6 @@ export const inputClass = style([
     },
   },
 ]);
-
-export const leadingTextClass = style([
-  sprinkles({
-    overflow: 'hidden',
-    display: 'inline-block',
-    minWidth: 0,
-    alignItems: 'center',
-    paddingX: '$4',
-  }),
-  {
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-]);
-
-export const leadingTextWrapperClass = style([
-  sprinkles({
-    backgroundColor: {
-      lightMode: '$gray20',
-      darkMode: '$gray60',
-    },
-    display: 'flex',
-    alignItems: 'center',
-  }),
-]);
-
-export const leadingTextWidthVariant = styleVariants(vars.sizes, (size) => {
-  return {
-    width: size,
-  };
-});
 
 export const outlinedClass = style([
   sprinkles({

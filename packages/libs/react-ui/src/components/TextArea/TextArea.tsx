@@ -29,20 +29,16 @@ export interface ITextareaProps
 export const Textarea: FC<ITextareaProps> = forwardRef<
   HTMLTextAreaElement,
   ITextareaProps
->(function TextArea(props, ref) {
-  const {
-    outlined,
-    hasCopyButton = false,
-    disabled = false,
-    fontFamily,
-    ...rest
-  } = props;
-  const [textAreaValue, setTextAreaValue] = useState<string>('');
+>(function TextArea(
+  { outlined, hasCopyButton = false, disabled = false, fontFamily, ...rest },
+  ref,
+) {
+  const [value, setValue] = useState<string>('');
 
-  const handleValueChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ): void => {
-    setTextAreaValue(event.target.value);
+  const handleValueChange = ({
+    target,
+  }: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    setValue(target.value);
   };
 
   return (
@@ -59,10 +55,10 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
           className={classNames(inputClass, sprinkles({ fontFamily }))}
           disabled={disabled}
           onChange={handleValueChange}
-          value={textAreaValue}
+          value={value}
           {...rest}
         />
-        <CopyButton shouldShow={hasCopyButton} value={textAreaValue} />
+        <CopyButton shouldShow={hasCopyButton} value={value} />
       </div>
     </div>
   );

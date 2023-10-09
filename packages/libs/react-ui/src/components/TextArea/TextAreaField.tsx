@@ -16,10 +16,8 @@ export const TextAreaField: FC<ITextAreaFieldProps> = ({
   textAreaProps,
   ...rest
 }) => {
-  const { id } = textAreaProps;
-
   return (
-    <InputWrapper htmlFor={id} disabled={disabled} {...rest}>
+    <InputWrapper htmlFor={textAreaProps.id} disabled={disabled} {...rest}>
       <Textarea disabled={disabled} {...textAreaProps} />
     </InputWrapper>
   );
