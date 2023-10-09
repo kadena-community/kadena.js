@@ -7,7 +7,7 @@ order: 2
 layout: full
 ---
 
-## Marmalade Architecture
+# Marmalade Architecture
 
 The introduction of the multi-policy model in Marmalade V2, with the inclusion
 of middleware contracts like quote-manager and policy-manager, aims to enhance
