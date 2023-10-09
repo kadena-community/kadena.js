@@ -32,6 +32,17 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
+      <Box marginRight={{ sm: 0, lg: '$32', xl: '$64' }} marginBottom="$10">
+        <Text>
+          The long-awaited release of Marmalade’s V2 standard has arrived,
+          bringing a host of exciting updates and features to the top NFT
+          standard in the industry! If you’ve been tracking the progress of
+          Kadena and its NFT standards, you know we’ve been on a journey from
+          the unstandardised on-chain metadata and single-policy token logic in
+          V1 (KIP-13) to a far more robust and dynamic V2 (KIP-20). We’re
+          thrilled to share the next stage of this adventure.
+        </Text>
+      </Box>
       <Stack
         justifyContent="space-between"
         direction={{ sm: 'column', lg: 'row' }}
@@ -39,7 +50,14 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         <Card>
           <Heading as="h4">Quick start</Heading>
           <Box marginY="$4">
-            <Text>Learn the basics of Marmalade and start your journey</Text>
+            <Text>
+              Marmalade is an NFT smart contract system on Kadena’s blockchain.
+              It comprises multiple smart contracts that execute logic
+              configured by the token policies with which the token is built.
+              Marmalade has been in action for several years, and now we’ve
+              diligently upgraded to Marmalade V2, introducing an entirely new
+              system that simplifies the process of engaging with NFTs.
+            </Text>
           </Box>
           <Button as="a" asChild icon="TrailingIcon">
             <Link href={'/docs/marmalade/quick-start'}>Get started</Link>
@@ -64,8 +82,17 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               background="marmalade"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/docs/marmalade/intro">
-                  Introduction
+                <Link
+                  className={docsCardLink}
+                  href="/docs/marmalade/architecture"
+                >
+                  Architecture
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/docs/marmalade/concrete-policies"
+                >
+                  Policies
                 </Link>
                 <Link className={docsCardLink} href="/docs/marmalade/sales">
                   Sales
@@ -93,7 +120,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           <Grid.Item>
             <DocsCard
               label="Policies"
-              description="A concrete policy in Marmalade V2 is a pre-built, ready-to-use implementation of commonly used features in token creation."
+              description="Marmalade V2 aims to broaden its audience by providing a tool to simplify the token creation process, offering a set of policies that encompass commonly used token features, referred to as /docs/marmalade/concrete-policies."
               schema="success"
               background="whitepapers"
             >
