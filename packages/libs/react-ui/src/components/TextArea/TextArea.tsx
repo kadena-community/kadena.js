@@ -1,4 +1,3 @@
-import { CopyButton } from './CopyButton';
 import {
   containerClass,
   disabledClass,
@@ -23,16 +22,12 @@ export interface ITextareaProps
   ref?: React.ForwardedRef<HTMLTextAreaElement>;
   id: string;
   outlined?: boolean;
-  hasCopyButton?: boolean;
 }
 
 export const Textarea: FC<ITextareaProps> = forwardRef<
   HTMLTextAreaElement,
   ITextareaProps
->(function TextArea(
-  { outlined, hasCopyButton = false, disabled = false, fontFamily, ...rest },
-  ref,
-) {
+>(function TextArea({ outlined, disabled = false, fontFamily, ...rest }, ref) {
   const [value, setValue] = useState<string>('');
 
   const handleValueChange = ({
@@ -58,7 +53,6 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
           value={value}
           {...rest}
         />
-        <CopyButton shouldShow={hasCopyButton} value={value} />
       </div>
     </div>
   );

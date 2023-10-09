@@ -53,7 +53,6 @@ export const TextFieldStory: Story = {
     info: '(optional)',
     label: 'Label',
     textAreaProps: {
-      hasCopyButton: true,
       id: 'TextFieldStory',
       fontFamily: '$mono',
       placeholder: 'This is a placeholder',
