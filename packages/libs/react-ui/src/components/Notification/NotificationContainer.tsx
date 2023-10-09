@@ -43,22 +43,21 @@ export const NotificationContainer: FC<INotificationProps> = ({
 }) => {
   const Icon = icon ? SystemIcon[icon] : SystemIcon.HelpCircle;
 
+  const inlineVariantsClass = inlineVariants[inline ? 'true' : 'false'];
+
   const classList = classNames(
     containerClass,
     cardColorVariants[color],
     displayVariants[variant],
     expandVariants[expanded ? 'true' : 'false'],
-    inlineVariants[inline ? 'true' : 'false'],
+    inlineVariantsClass,
   );
 
-  const contentClassList = classNames(
-    contentClass,
-    inlineVariants[inline ? 'true' : 'false'],
-  );
+  const contentClassList = classNames(contentClass, inlineVariantsClass);
 
   const descriptionClassList = classNames(
     descriptionClass,
-    inlineVariants[inline ? 'true' : 'false'],
+    inlineVariantsClass,
   );
 
   return (
