@@ -1,3 +1,4 @@
+import { createAccount, logger } from './helper';
 import { simulate } from './simulate';
 import { transfer } from './transfer';
 
@@ -8,10 +9,7 @@ program
   .command('fund')
   .description('Fund an account on the devnet')
   .addOption(
-    new Option(
-      '-k, --key <string>',
-      'Public key of the account to fund',
-    ).makeOptionMandatory(true),
+    new Option('-k, --key <string>', 'Public key of the account to fund'),
   )
   .addOption(
     new Option(
@@ -21,7 +19,13 @@ program
   )
   .action(async (args) => {
     try {
-      await transfer({ publicKey: args.key, amount: args.amount });
+      let publicKey = args.key;
+      if (publicKey === undefined) {
+        const account = createAccount();
+        publicKey = account.publicKey;
+        logger.info('Account created:', account);
+      }
+      await transfer({ publicKey: publicKey, amount: args.amount });
     } catch (error) {
       console.error(error);
     }
@@ -32,25 +36,36 @@ program
   .description('Simulate traffic on the devnet')
   .addOption(
     new Option(
-      '-a, --accounts <number>',
+      '-a, --numberOfAccounts <number>',
       'Number of accounts to create',
-    ).default('2'),
+    ).default(5),
   )
   .addOption(
     new Option(
-      '-i, --timeInterval <number>',
+      '-i, --transferInterval <number>',
       'Transfer interval in milliseconds',
-    ).default('2000'),
+    ).default(3000),
   )
   .addOption(
-    new Option('-t, --transferAmount <number>', 'Transfer amount').default(
-      '10',
+    new Option('-t, --maxAmount <number>', 'Maximum transfer amount').default(
+      25,
+    ),
+  )
+  .addOption(
+    new Option(
+      '-tp, --tokenPool <number>',
+      'How much tokens are going to be circulating in the simulation',
+    ).default(1000000),
+  )
+  .addOption(
+    new Option('-s, --seed <string>', 'Seed for the random number').default(
+      Date.now().toString(),
     ),
   )
   .action(async (args) => {
     try {
-      console.log('Simulation config parameters:', args);
-      await simulate(args.accounts, args.timeInverval, args.transferAmount);
+      logger.info('Simulation config parameters:', args);
+      await simulate(args);
     } catch (error) {
       console.error(error);
     }

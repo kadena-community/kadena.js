@@ -62,7 +62,7 @@ available tools.
 ### How are Kadena Accounts Structured?
 
 We’ve written up a
-[Beginner’s Guide to Accounts](https://medium.com/kadena-io/beginners-guide-to-kadena-accounts-keysets-fb7f32104291)
+[Beginner’s Guide to Accounts](/docs/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14)
 in the Kadena blockchain, but let’s do a whirlwind tour here just to refresh.
 The Kadena blockchain is unique in the sense that each chain is a separate
 blockchain for which a global consensus is maintained, and there is no global
@@ -421,7 +421,7 @@ will choose whether to use `coin.transfer`, `coin.transfer-create`, or
 `coin.transfer-crosschain` depending on that context. It will even automate the
 previously manual step of constructing an SPV proof in the case of a cross-chain
 transfer. We’ve written up a
-[thorough tutorial ](https://medium.com/kadena-io/do-anything-on-the-kadena-blockchain-with-a-single-tool-cf22986a81af)to
+[thorough tutorial ](/docs/blogchain/2020/do-anything-on-the-kadena-blockchain-with-a-single-tool-2020-02-21)to
 help you understand all of the snazzy features available in Chainweaver.
 
 ### Additional Wallet Options

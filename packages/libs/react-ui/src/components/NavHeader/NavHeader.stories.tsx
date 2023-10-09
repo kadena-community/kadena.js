@@ -4,7 +4,7 @@ import { NavHeader } from './';
 
 import { logoVariants } from '@components/BrandLogo';
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 const sampleNavItems: INavHeaderLinkProps[] = [
   {
@@ -105,7 +105,7 @@ export const Dynamic: IStory = {
     navHeaderActiveLink,
   }) => {
     const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
-    const selectedNetwork = sampleNetworkItems[0];
+    const [value, setValue] = useState<string>(sampleNetworkItems[0]);
 
     return (
       <NavHeader.Root brand={brand}>
@@ -124,8 +124,11 @@ export const Dynamic: IStory = {
           <NavHeader.Select
             id="network-select"
             ariaLabel="Select Network"
-            value={selectedNetwork as string}
-            onChange={() => {}}
+            value={value}
+            onChange={(e) => {
+              console.log('clicked on', e.target.value);
+              setValue(e.target.value);
+            }}
             icon="Earth"
           >
             {sampleNetworkItems.map((network) => (

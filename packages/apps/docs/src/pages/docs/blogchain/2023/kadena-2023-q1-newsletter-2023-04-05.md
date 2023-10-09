@@ -67,7 +67,7 @@ are:
     decentralized mining pool in history_**! Even more exciting is that NoPool
     has received support from the world’s leading manufacturer of crypto miners,
     Bitmain. Learn more about
-    [NoPool ](https://medium.com/kadena-io/project-spotlight-nopool-powered-by-massive-2f8d220bd34)here.
+    [NoPool ](/docs/blogchain/2023/spotlight-on-nopool-powered-by-massive-2023-02-23)here.
 
 2.  [Tellor](https://tellor.io/) is a decentralized oracle protocol that allows
     smart contracts to trustlessly receive external data. Tellor is working with
@@ -117,7 +117,7 @@ At the beginning of the year, we released Marmalade’s
 [token policies tutorial](./nft-collection-tutorial-on-marmalade-2023-01-25)
 demonstrating how an NFT collection supporting presale could be implemented in
 your NFT marketplace.
-[Chainweaver Wallet 2.2.3](https://medium.com/kadena-io/chainweaver-2-2-3-improving-user-experience-with-quicksign-support-49bedb9e963d)
+[Chainweaver Wallet 2.2.3](docs/blogchain/2023/chainweaver-2-2-3-improving-user-experience-with-quicksign-support-2023-02-10)
 was then released, which allows for quicksign support for desktop applications
 along with various bug fixes, taking user experience to the next level.
 

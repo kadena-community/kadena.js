@@ -53,7 +53,7 @@ Kadena is a braided, PoW network currently in testnet. Based on Bitcoin’s PoW
 protocol, Kadena hash-links multiple chains to provide additional security and
 throughput. For more resources on understanding Kadena’s public blockchain,
 refer to our [whitepaper](https://kadena.io/docs/chainweb-v15.pdf) and
-[101 blog post](./all-about-chainweb-101-and-faqs-2019-02-01).
+[101 blog post](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01).
 
 ![A ten-chain configuration of Kadena’s public blockchain, showing how merkle roots are propagated across chains at different blockheights.](/assets/blog/0_AgUQ6JQqbza3urwU.png)
 

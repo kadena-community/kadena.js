@@ -33,13 +33,12 @@ Bitcoin and Ethereum networks, see public blockchains where anyone can
 participate as the only game in town.
 
 The concept of the
-“[hybrid blockchain](https://medium.com/kadena-io/hybrid-blockchain-101-714827d0e77b)”
-has only recently taken root, and it presents a solution where the
-decentralization advocates can work alongside enterprise technologists to
-deliver meaningful impact on multiple levels. By bridging the divide between
-traditional workflows and emerging business models, hybrid blockchain allows all
-participants to work together to solve problems and enjoy the best of both
-worlds.
+“[hybrid blockchain](/docs/blogchain/2019/hybrid-blockchain-101-2019-10-23)” has
+only recently taken root, and it presents a solution where the decentralization
+advocates can work alongside enterprise technologists to deliver meaningful
+impact on multiple levels. By bridging the divide between traditional workflows
+and emerging business models, hybrid blockchain allows all participants to work
+together to solve problems and enjoy the best of both worlds.
 
 ### Uncovering the Freedom of Decentralization
 
@@ -62,7 +61,7 @@ to the entire blockchain ecosystem.
 
 ### **Conserving Data Integrity Through Private Blockchain**
 
-[Private blockchains](https://medium.com/kadena-io/scalablebft-kadenas-private-blockchain-101-c99895c0fd50)
+[Private blockchains](/docs/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09)
 are similar to public blockchains in that they are distributed and immutable.
 However, these permissioned blockchains offer businesses many benefits: faster
 speeds, greater privacy, and increased peace of mind.

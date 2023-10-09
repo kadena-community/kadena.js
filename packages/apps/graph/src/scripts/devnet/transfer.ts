@@ -8,6 +8,7 @@ import {
   assertTransactionSigned,
   inspect,
   listen,
+  logger,
   sender00,
   signAndAssertTransaction,
   submit,
@@ -27,7 +28,7 @@ export async function transfer({
   const account = `k:${publicKey}`;
   const pactAmount = new PactNumber(amount).toPactDecimal();
 
-  console.log(
+  logger.info(
     `Transfering from ${sender.account} to ${account}\nPublic Key: ${publicKey}\nAmount: ${pactAmount.decimal}`,
   );
 
@@ -65,7 +66,7 @@ export async function transfer({
   if (result.result.status === 'failure') {
     throw result.result.error;
   } else {
-    console.log(result.result);
+    logger.info(result.result);
     return result;
   }
 }

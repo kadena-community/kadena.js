@@ -742,7 +742,7 @@ their transaction. This causes significant friction and a less than ideal
 experience.
 
 To help mitigate this problem Kadena brings an innovation to the game. Hello
-[gas stations](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836)!
+[gas stations](/docs/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06)!
 
 Gas stations are a way for dApps to subsidize gas costs for their users. This
 means that your user doesn't need to know what gas is or how much the gas price

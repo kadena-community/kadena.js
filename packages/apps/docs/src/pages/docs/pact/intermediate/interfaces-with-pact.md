@@ -251,7 +251,7 @@ Chainweb is Kadena’s public blockchain platform. We haven’t discussed this i
 previous tutorials, but we will cover this in more detail in later tutorials.
 You don’t need to know what this is for this tutorial, but if you’d like, you
 can learn more about the basics of Chainweb
-[here](https://medium.com/kadena-io/all-about-chainweb-101-and-faqs-6bd88c325b45).
+[here](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01).
 
 To get started with the demonstration, clone the project and open it in Atom.
 

@@ -113,7 +113,7 @@ and features to the top NFT standard in the industry. Marmalade V2 features:
 - Fixed-issuance policy: fractional NFT
 
 Article:
-[Introducing Marmalade V2: Empowering the Future of NFTs](./introducing-marmalade-v2-empowering-the-future-of-nfts-2023-06-16)
+[Introducing Marmalade V2: Empowering the Future of NFTs](/docs/blogchain/2023/introducing-marmalade-v2-empowering-the-future-of-nfts-2023-06-16)
 
 In the coming weeks, the Kadena team will be hosting the following :
 

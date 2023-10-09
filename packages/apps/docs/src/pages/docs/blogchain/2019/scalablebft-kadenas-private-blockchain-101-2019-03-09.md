@@ -38,8 +38,8 @@ blockchains — issues such as speed, scalability and security limitations:
 - On security: Kadena is a
   [real blockchain](https://www.coindesk.com/evolution-kadena-first-real-private-blockchain)
   with the safest smart contract language,
-  [Pact](./safer-smarter-contracts-with-pact-2019-02-20), purpose-built with
-  blockchains in mind
+  [Pact](/docs/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20),
+  purpose-built with blockchains in mind
 
 ### What is a private blockchain?
 
@@ -47,14 +47,14 @@ A private blockchain, sometimes known as a **“permissioned” blockchain** or 
 enterprise blockchain, is a distributed ledger where only invited users can join
 and access the ledger data within the network. This differs from **public
 blockchains** like Bitcoin, Ethereum, or Kadena’s
-[public blockchain](./all-about-chainweb-101-and-faqs-2019-02-01), where anyone
-can join a public, decentralized network and contribute to the ledger. Both
-types of blockchain provide a means of recording and replicating an immutable,
-cryptographically secure ledger. On private blockchains, this is performed
-through consensus mechanisms like voting; on public blockchains, this is
-performed through various consensus mechanisms including mining. (Extra: find
+[public blockchain](/docs/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01),
+where anyone can join a public, decentralized network and contribute to the
+ledger. Both types of blockchain provide a means of recording and replicating an
+immutable, cryptographically secure ledger. On private blockchains, this is
+performed through consensus mechanisms like voting; on public blockchains, this
+is performed through various consensus mechanisms including mining. (Extra: find
 out more on
-[why mining isn’t compatible with private blockchain](https://medium.com/@will_97412/why-mining-private-blockchains-dont-mix-cbd7e20dd048).)
+[why mining isn’t compatible with private blockchain](/docs/blogchain/2019/why-mining-private-blockchains-dont-mix-2019-02-06).)
 
 ### Why use a private blockchain?
 
@@ -100,7 +100,7 @@ blockchain becomes even more powerful. Here are a few of the additional features
 and benefits that only Kadena can provide to the private blockchain market:
 
 - Automatic bug detection through
-  [formal verification](https://medium.com/kadena-io/tagged/formal-verification)
+  [formal verification](/tags/formal%20verification)
 
 - Human-readable code that is accessible to programmers and executives alike
 

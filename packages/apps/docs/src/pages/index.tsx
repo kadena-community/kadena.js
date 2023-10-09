@@ -71,7 +71,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                       className={docsCardLink}
                       href="/docs/build/quickstart"
                     >
-                      5 minutes quick start
+                      10 minute quick start
                     </Link>
                     <a
                       className={docsCardLink}
