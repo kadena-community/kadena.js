@@ -3,7 +3,7 @@ import { Link } from '@kadena/react-ui';
 import { StripItem } from './StripItem';
 import { stripClass } from './styles.css';
 
-import type { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/Layout';
 import NextLink from 'next/link';
 import type { FC } from 'react';
 import React from 'react';

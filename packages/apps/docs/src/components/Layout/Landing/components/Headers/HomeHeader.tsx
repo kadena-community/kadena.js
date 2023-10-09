@@ -7,9 +7,9 @@ import {
   wrapperClass,
 } from './style.css';
 
-import { MostPopular } from '@/components/MostPopular';
-import { SearchBar } from '@/components/SearchBar';
-import type { IMostPopularPage } from '@/types/MostPopularData';
+import MostPopular from '@/components/MostPopular/MostPopular';
+import { SearchBar } from '@/components/SearchBar/SearchBar';
+import type { IMostPopularPage } from '@/MostPopularData';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';

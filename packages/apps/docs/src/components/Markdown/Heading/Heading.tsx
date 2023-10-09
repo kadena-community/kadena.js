@@ -2,7 +2,7 @@ import { SystemIcon } from '@kadena/react-ui';
 
 import { headerClassVariants, headerIconLinkClass } from './styles.css';
 
-import { createSlug } from '@/utils';
+import { createSlug } from '@/utils/createSlug';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 

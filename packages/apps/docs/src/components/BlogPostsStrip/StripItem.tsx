@@ -9,7 +9,7 @@ import {
   textClass,
 } from './styles.css';
 
-import type { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { FC } from 'react';

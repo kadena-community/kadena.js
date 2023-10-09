@@ -1,7 +1,7 @@
 import { menuData } from '@/_generated/menu.mjs';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
+import type { IMenuData } from '@/Layout';
 import type { IResponseError } from '@/types';
-import type { IMenuData } from '@/types/Layout';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const search = async (

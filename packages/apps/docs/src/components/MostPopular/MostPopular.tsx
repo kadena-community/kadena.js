@@ -1,5 +1,6 @@
-import { BrowseSection } from '@/components/BrowseSection';
-import type { IMostPopularPage } from '@/types/MostPopularData';
+import { BrowseSection } from '../BrowseSection/BrowseSection';
+
+import type { IMostPopularPage } from '@/MostPopularData';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';

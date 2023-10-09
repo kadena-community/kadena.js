@@ -1,4 +1,4 @@
-import { LinkList as InnerLinkList } from '../LinkList';
+import { LinkList as InnerLinkList } from '../LinkList/LinkList';
 
 import { listItemClass } from './styles.css';
 

@@ -1,11 +1,13 @@
 import { breakpoints } from '@kadena/react-ui/theme';
 
-import { Footer } from '../Footer';
-import { Menu, MenuBack } from '../Menu';
-import { SideMenu } from '../SideMenu';
+import { Footer } from '../Footer/Footer';
+import { Menu } from '../Menu/Menu';
+import { MenuBack } from '../Menu/MenuBack';
+import { SideMenu } from '../SideMenu/SideMenu';
 
-import { useMenu, useWindowScroll } from '@/hooks';
-import type { IMenuItem } from '@/types/Layout';
+import { useMenu } from '@/hooks/useMenu/useMenu';
+import { useWindowScroll } from '@/hooks/useWindowScroll';
+import type { IMenuItem } from '@/Layout';
 import type { FC, ReactNode } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useMedia } from 'react-use';

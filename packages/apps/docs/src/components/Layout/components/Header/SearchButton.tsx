@@ -6,7 +6,7 @@ import {
   searchButtonSlashClass,
 } from './styles.css';
 
-import { useOpenSearch } from '@/hooks';
+import { useOpenSearch } from '@/hooks/useOpenSearch';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';

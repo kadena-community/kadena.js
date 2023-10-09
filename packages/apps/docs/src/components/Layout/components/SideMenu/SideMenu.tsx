@@ -1,9 +1,10 @@
 import { Box, Heading, Input } from '@kadena/react-ui';
 
-import { MainTreeItem } from '../TreeMenu';
+import { MainTreeItem } from '../TreeMenu/MainTreeItem';
 import { TreeList } from '../TreeMenu/TreeList';
 
-import { ListLink, ShowOnMobile } from './components';
+import { ListLink } from './components/ListLink';
+import { ShowOnMobile } from './components/ShowOnMobile';
 import { MenuCard } from './MenuCard';
 import {
   listClass,
@@ -14,7 +15,7 @@ import {
 } from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
 
-import type { IMenuItem } from '@/types/Layout';
+import type { IMenuItem } from '@/Layout';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';

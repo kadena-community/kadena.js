@@ -1,19 +1,21 @@
 import { Box, Grid, Stack } from '@kadena/react-ui';
 
-import { BrowseSection, MostPopular } from '@/components';
-import { BlogItem, BlogList } from '@/components/Blog';
-import { BlogListWrapper } from '@/components/BlogList';
+import { BlogItem } from '@/components/Blog/BlogItem/BlogItem';
+import { BlogList } from '@/components/Blog/BlogList';
+import { BlogListWrapper } from '@/components/BlogList/BlogListWrapper';
+import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-  TitleHeader,
-} from '@/components/Layout/components';
+} from '@/components/Layout/components/articleStyles.css';
+import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
+import MostPopular from '@/components/MostPopular/MostPopular';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IAuthorInfo, IMenuData, IPageProps } from '@/types/Layout';
-import type { IMostPopularPage } from '@/types/MostPopularData';
-import { mostProductiveAuthors } from '@/utils';
+import type { IAuthorInfo, IMenuData, IPageProps } from '@/Layout';
+import type { IMostPopularPage } from '@/MostPopularData';
 import getMostPopularPages from '@/utils/getMostPopularPages';
+import { mostProductiveAuthors } from '@/utils/mostProductiveAuthors';
 import {
   checkSubTreeForActive,
   getPathName,
