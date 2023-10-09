@@ -188,13 +188,13 @@ const Account: React.FC = () => {
                           return (
                             <Table.Tr key={index}>
                               <Table.Td>{edge?.node.chainId}</Table.Td>
-                              <Table.Td>{edge?.node.creationTime}</Table.Td>
+                              <Table.Td>{new Date(edge?.node.creationTime).toLocaleString()}</Table.Td>
                               <Table.Td>{edge?.node.height}</Table.Td>
                               <Table.Td>
                                 <Link
                                   href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}
                                 >
-                                  {edge?.node.requestKey}
+                                  {truncate(edge?.node.requestKey)}
                                 </Link>
                               </Table.Td>
                               <Table.Td>
