@@ -24,11 +24,6 @@ export const  defaultConfig: PlaywrightTestConfig = {
     channel: 'chromium',
     trace: `retain-on-failure`,
   },
-  webServer: {
-    command: 'pnpm run start',
-    url: 'http://127.0.0.1:3000',
-    reuseExistingServer: false,
-  },
   expect: {
     timeout: 10 * 1000,
   },
