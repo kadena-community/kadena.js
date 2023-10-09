@@ -1,0 +1,44 @@
+name: Integration Tests
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  kadena-client:
+    runs-on: ubuntu-latest
+
+    services:
+      devnet:
+        image: kadena/devnet
+        options: >-
+          --memory 7g
+          --cpus 2
+          --health-cmd "curl --verbose --fail http://localhost:8080/info || exit 1"
+        ports:
+          - 8080:8080
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build client and dependencies
+        run: pnpm run build --filter @kadena/client
+
+      - name: run integration tests
+        run: pnpm run test:integration --filter @kadena/client

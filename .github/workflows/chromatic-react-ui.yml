@@ -40,3 +40,4 @@ jobs:
           projectToken: ${{ secrets.REACT_UI_CHROMATIC_TOKEN }}
           workingDir: /packages/libs/react-ui
           autoAcceptChanges: 'main'
+          onlyChanged: true # 👈 Required option to enable TurboSnap

@@ -21,7 +21,7 @@
     "build:grammar:watch": "chokidar src/lexer.js src/grammar.ne src/tests/test.contract.pact -c \"pnpm run build:grammar\"",
     "build:lexer": "tsc src/lexer.ts",
     "build:lexer:watch": "chokidar src/lexer.ts -c \"pnpm run build:lexer\"",
-    "format": "pnpm run /^format:.*/",
+    "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
@@ -57,5 +57,8 @@
     "prettier-plugin-packagejson": "^2.4.5",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2"
+  },
+  "publishConfig": {
+    "provenance": true
   }
 }

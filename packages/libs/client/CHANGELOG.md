@@ -20,20 +20,19 @@
 
 ### Patch Changes
 
-- Updated dependencies [8adef240]
-- Updated dependencies [242b5687]
-- Updated dependencies [664140f3]
-  - @kadena/chainweb-node-client@0.4.4
-  - @kadena/cryptography-utils@0.3.8
-  - @kadena/pactjs@0.3.2
+- Updated dependencies \[8adef240]
+- Updated dependencies \[242b5687]
+- Updated dependencies \[664140f3]
+  - @kadena/chainweb-node-client\@0.4.4
+  - @kadena/cryptography-utils\@0.3.8
+  - @kadena/pactjs\@0.3.2
 
 ## 1.2.0
 
 ### Minor Changes
 
 - b8b866145: Add `createEckoWalletSign()` and `createEckoWalletQuicksign()`.
-  This creates a wrapper for the
-  [eckoWALLET API](https://docs.ecko.finance/eckodex/getting-started/eckowallet/eckowallet-api)
+  This creates a wrapper for the [eckoWALLET API][1]
 
 This log was last generated on Mon, 21 Aug 2023 10:31:32 GMT and should not be
 manually modified.
@@ -287,3 +286,5 @@ Fri, 28 Oct 2022 11:53:11 GMT
 ### Updates
 
 - Adds launch-post
+
+[1]: https://docs.ecko.finance/eckodex/getting-started/eckowallet/eckowallet-api

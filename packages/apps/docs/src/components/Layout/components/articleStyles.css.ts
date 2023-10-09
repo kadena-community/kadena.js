@@ -7,10 +7,10 @@ export const articleClass = style([
   sprinkles({
     width: '100%',
     paddingY: 0,
-    paddingX: '$4',
     backgroundColor: 'transparent',
   }),
   {
+    paddingInline: vars.sizes.$4,
     '@media': {
       [`screen and ${breakpoints.md}`]: {
         paddingInline: vars.sizes.$10,

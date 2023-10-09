@@ -20,8 +20,9 @@
     "!src/**/__fixtures__/**",
     "!src/**/__mocks__/**"
   ],
-  "coveragePathIgnorePatterns": ["/node_modules/"],
+  "coveragePathIgnorePatterns": ["/node_modules/", "/src/integration-tests"],
   "testMatch": ["<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"],
+  "testPathIgnorePatterns": ["<rootDir>/src/integration-tests/*"],
   "modulePathIgnorePatterns": [
     "<rootDir>/dist/",
     "<rootDir>/src/tests/mockdata"

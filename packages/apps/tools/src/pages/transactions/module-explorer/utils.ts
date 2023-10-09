@@ -22,14 +22,29 @@ export const getQueryValue = (
   return value;
 };
 
-export const getCookieValue = (
+// Function signature when defaultValue is provided
+export function getCookieValue<Expected>(
   needle: string,
   haystack: NextApiRequestCookies,
-  defaultValue?: string,
-): string | null => {
+  defaultValue: Expected,
+): Expected;
+
+// Function signature when defaultValue is not provided
+export function getCookieValue<Expected>(
+  needle: string,
+  haystack: NextApiRequestCookies,
+): Expected | null;
+
+// Implementation of the function
+export function getCookieValue<Expected>(
+  needle: string,
+  haystack: NextApiRequestCookies,
+  defaultValue?: Expected,
+): Expected | null {
   const encoded = encodeURIComponent(getName(needle));
-  if (haystack[encoded]) {
-    return parse(haystack[encoded]!);
+  const value = haystack[encoded];
+  if (typeof value !== 'undefined') {
+    return parse(value) as Expected;
   }
   return defaultValue ?? null;
-};
+}

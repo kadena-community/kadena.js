@@ -92,7 +92,13 @@ export const baseGridClass = style([
         `,
       },
       [`screen and ${breakpoints.xxl}`]: {
-        gridTemplateColumns: `auto ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthLGDefault})) ${$$asideMenuWidthLGDefault} auto`,
+        gridTemplateAreas: `
+          "header header header header header"
+          "pageheader pageheader pageheader pageheader pageheader"
+          ". menu content aside ."
+          "footer footer footer footer footer"
+        `,
+        gridTemplateColumns: `minmax(1%, auto) ${$$leftSideWidth} calc(${$$pageWidth} - ${$$leftSideWidth}) 0 minmax(1%, auto)`,
       },
     },
   },

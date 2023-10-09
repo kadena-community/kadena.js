@@ -25,7 +25,7 @@ layout: blog
 As Kadena continues working toward the full launch of our hybrid blockchain
 platform in January 2020, we’d like to share the progress we’ve made so far. In
 addition to reaching the business and technology milestones following our
-[last roadmap update](https://medium.com/kadena-io/kadenas-roadmap-to-a-hybrid-blockchain-platform-dc0ff7c178a6),
+[last roadmap update](/docs/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14),
 we have appreciation for the industry-leading conferences and partners that have
 collaborated with us because they see the value in Kadena’s hybrid network.
 Utilizing Kadena’s open-sourced [Pact](https://pact.kadena.io) smart contract
@@ -35,7 +35,7 @@ Stuart Popejoy and Will Martino providing leadership gained from building J.P.
 Morgan’s first blockchain, Kadena is solving the scaling challenges of Bitcoin
 and the security issues of Ethereum.
 
-[Click here](https://medium.com/kadena-io/kadenas-roadmap-to-a-hybrid-blockchain-platform-dc0ff7c178a6)
+[Click here](/docs/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14)
 to visit Kadena’s timeline from founding through to Q1 of 2019.
 
 In April 2019, we passed 10,000 blocks on Kadena Testnet, an early and promising
@@ -78,7 +78,7 @@ Executive Director of J.P. Morgan’s blockchain payments team). Rounding out th
 summer was an announcement that Kadena received a grant from the Interchain
 Foundation to integrate Pact with the Cosmos ecosystem, an implementation we’re
 calling
-[Kadenamint](https://medium.com/kadena-io/introducing-kadenamint-and-chainweb-testnet-v2-cde077c02ebc).
+[Kadenamint](/docs/blogchain/2019/introducing-kadenamint-and-chainweb-testnet-v2-2019-08-06).
 
 Fall of 2019 brought the beginning of our mainnet rollout. First, we released
 Kadena Testnet v3 and revealed our mining hash function (blake2s). Then, as
@@ -88,7 +88,7 @@ other metrics, we provided the
 [Kadena Block Explorer](https://explorer.chainweb.com/mainnet). To correspond
 with mining on Kadena’s mainnet, Anastasia Bez, Will Martino, and Monica
 Quaintance published our
-[token economics model](https://medium.com/kadena-io/the-kadena-token-economic-model-8090d7545eef).
+[token economics model](/docs/blogchain/2019/the-kadena-token-economic-model-2019-10-30).
 
 After mining began, Web3 Foundation and Kadena agreed to explore an
 implementation of Pact for the Polkadot ecosystem. Kadena would like to thank
@@ -109,7 +109,7 @@ develop more advanced mining tools.”
 
 As we approach the close of the year, Kadena Founder and President Stuart
 Popejoy has published the
-[Kadena 1.1 Release Schedule/Chainweb Transfers Roadmap](https://medium.com/kadena-io/kadena-1-1-release-schedule-chainweb-transfers-roadmap-97f29dd5dd33),
+[Kadena 1.1 Release Schedule/Chainweb Transfers Roadmap](/docs/blogchain/2019/kadena-1-1-release-schedule-chainweb-transfers-roadmap-2019-11-25),
 a near-term development schedule. He explains that we will start with a low gas
 limit that defaults to approximately 10 transfers per block with steady
 increases in capacity throughout December. On December 17, the enabling of

@@ -88,7 +88,7 @@ predicate requires that at least 2 keys in the account must sign in order to
 authorize a transaction.
 
 If you would like to learn more about keys and accounts in
-Kadena,[ check out this article](https://medium.com/kadena-io/beginners-guide-to-kadena-accounts-keysets-fb7f32104291).
+Kadena,[ check out this article](/docs/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14).
 
 ## 2. Kadena is a multi-chain network
 
@@ -133,4 +133,4 @@ can be accessed at[ this page](https://transfer.chainweb.com) which provides an
 interface for finishing cross-chain transfers.
 
 If you would like to learn more about transfers in
-Kadena,[ check out this article](https://medium.com/kadena-io/kadena-public-blockchain-getting-started-with-transfers-153bf87d6824).
+Kadena,[ check out this article](/docs/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19).

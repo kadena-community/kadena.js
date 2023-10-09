@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { $$leftSideWidth, $$sideMenu } from '../../global.css';
 
@@ -6,14 +6,16 @@ import { style, styleVariants } from '@vanilla-extract/css';
 
 export const menuClass = style([
   sprinkles({
-    position: 'absolute',
-    paddingBottom: '$40',
+    position: 'fixed',
     height: '100%',
     width: '100%',
     background: '$background',
     overflow: 'hidden',
+    top: '$17',
+    bottom: 0,
   }),
   {
+    height: `calc(100vh - ${vars.sizes.$13})`,
     gridArea: 'menu',
     gridRow: '2 / span 3',
     zIndex: $$sideMenu,
@@ -25,9 +27,13 @@ export const menuClass = style([
         width: $$leftSideWidth,
       },
       [`screen and ${breakpoints.md}`]: {
-        position: 'relative',
+        position: 'sticky',
+        top: vars.sizes.$18,
+        bottom: 'auto',
+        height: `calc(100vh - ${vars.sizes.$18})`,
         transform: 'translateX(0)',
         background: 'transparent',
+        paddingBottom: vars.sizes.$40,
       },
     },
   },
