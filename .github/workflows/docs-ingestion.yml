@@ -28,8 +28,9 @@ jobs:
         run: pnpm install
 
       - name: Ingest docs to Algolia
-        run: pnpm run 7d:ingest-algolia
+        run: pnpm run 7d:ingest-algolia-prod
         working-directory: packages/apps/docs
         env:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_INDEX_NAME: docs_website_prod
