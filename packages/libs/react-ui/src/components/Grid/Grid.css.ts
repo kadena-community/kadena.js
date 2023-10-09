@@ -102,4 +102,4 @@ export const itemColumnVariants = mapValues(breakpoints, (mediaQuery) => {
 
 export type ResponsiveInputType =
   | number
-  | Record<keyof typeof breakpoints, keyof typeof columnCount>;
+  | Partial<Record<keyof typeof breakpoints, keyof typeof columnCount>>;

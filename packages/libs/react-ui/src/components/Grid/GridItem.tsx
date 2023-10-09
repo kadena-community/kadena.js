@@ -18,16 +18,9 @@ const assembleColumnSpanVariants = (
     return itemColumnVariants.xs[columnSpan];
   }
 
-  const { xs, sm, md, lg, xl, xxl } = columnSpan;
-
-  return [
-    itemColumnVariants.xs[xs],
-    itemColumnVariants.sm[sm],
-    itemColumnVariants.md[md],
-    itemColumnVariants.lg[lg],
-    itemColumnVariants.xl[xl],
-    itemColumnVariants.xxl[xxl],
-  ];
+  return Object.entries(columnSpan).map(([key, value]) => {
+    return itemColumnVariants[key as keyof typeof itemColumnVariants][value];
+  });
 };
 
 export const GridItem: FC<IGridItemProps> = ({

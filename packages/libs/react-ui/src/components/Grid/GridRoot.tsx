@@ -41,16 +41,11 @@ const assembleColumnVariants = (
     return containerColumnVariants.xs[columns];
   }
 
-  const { xs, sm, md, lg, xl, xxl } = columns;
-
-  return [
-    containerColumnVariants.xs[xs],
-    containerColumnVariants.sm[sm],
-    containerColumnVariants.md[md],
-    containerColumnVariants.lg[lg],
-    containerColumnVariants.xl[xl],
-    containerColumnVariants.xxl[xxl],
-  ];
+  return Object.entries(columns).map(([key, value]) => {
+    return containerColumnVariants[key as keyof typeof containerColumnVariants][
+      value
+    ];
+  });
 };
 
 export const GridRoot: FC<IGridRootProps> = ({
