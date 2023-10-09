@@ -142,7 +142,7 @@ const findPath = (dir) => {
   return `/${path}/${fileName}`;
 };
 
-const INITIALPATH = './src/pages/docs';
+const INITIALPATH = './src/_docs';
 const MENUFILE = './src/_generated/menu.mjs';
 const TREE = [];
 

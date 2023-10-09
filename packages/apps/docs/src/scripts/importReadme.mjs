@@ -9,7 +9,7 @@ import { getLastModifiedDate } from './getdocstree.mjs';
 
 const errors = [];
 
-const DOCSROOT = './src/pages/';
+const DOCSROOT = './src/_docs/';
 
 const createFrontMatter = (
   title,
