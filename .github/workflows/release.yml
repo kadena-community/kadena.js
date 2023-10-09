@@ -44,7 +44,7 @@ jobs:
         run: pnpm install
 
       - name: Build, lint, test all packages
-        run: pnpm turbo build lint test
+        run: pnpm turbo lint build test
 
       - name: Create Release PR or Publish
         id: changesets
