@@ -2,6 +2,7 @@
 import { accountCommandFactory } from './account';
 import { configCommandFactory } from './config';
 import { contractCommandFactory } from './contract';
+// import { dappCommandFactory } from './dapp';
 import { devnetCommandFactory } from './devnet';
 import { keysCommandFactory } from './keys';
 import { marmaladeCommandFactory } from './marmalade';
@@ -31,6 +32,7 @@ const packageJson: { version: string } = JSON.parse(
   contractCommandFactory,
   marmaladeCommandFactory,
   typescriptCommandFactory,
+  // dappCommandFactory,
 ]
   .flat()
   .forEach((fn) => {
