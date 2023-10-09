@@ -26,16 +26,6 @@ const meta: Meta<ITextareaProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    hasCopyButton: {
-      description: 'Whether to show the copy button or not.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
   },
 };
 
@@ -53,7 +43,6 @@ export const TextAreaStory: Story = {
   name: 'TextArea config',
   args: {
     disabled: false,
-    hasCopyButton: true,
     fontFamily: '$mono',
     outlined: true,
   },
