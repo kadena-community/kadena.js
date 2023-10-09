@@ -6,7 +6,7 @@ export default class NotificationContainerComponent {
 
   public constructor(page: Page) {
     this._page = page;
-    this._componentLocator = this._page.getByTestId("kda-notification-container");
+    this._componentLocator = this._page.getByRole("alert");
   }
 
   async getTitle(): Promise<Locator> {
@@ -14,10 +14,10 @@ export default class NotificationContainerComponent {
   }
 
   async getMessage(): Promise<Locator> {
-    return this._componentLocator.getByTestId('kda-notification-content')
+    return this._componentLocator.getByRole('generic')
   }
 
-  async close(label: string): Promise<void> {
+  async close(): Promise<void> {
     await this._page.getByRole('button', {name: 'Close Notification'}).click()
   }
 

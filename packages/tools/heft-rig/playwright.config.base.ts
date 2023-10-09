@@ -8,7 +8,7 @@
  * See https://playwright.dev/docs/test-configuration.
  */
 export const  defaultConfig = {
-  testDir: 'e2e-tests',
+  testDir: 'tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -25,7 +25,8 @@ export const  defaultConfig = {
     command: 'pnpm run start',
     url: 'http://127.0.0.1:3000',
     reuseExistingServer: false,
-    stdout: 'ignore',
-    stderr: 'pipe',
+  },
+  expect: {
+    timeout: 10 * 1000,
   },
 };
