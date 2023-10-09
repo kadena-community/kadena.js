@@ -15,12 +15,7 @@ export const  defaultConfig: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 4 : 1,
-  reporter: process.env.CI
-    ? [
-      ['github'],
-      ['html', { open: 'never' }],
-    ]
-    : [['list'], ['html', { open: 'never' }]],
+  reporter: [['github'],['list'], ['html', { open: 'never' }]],
   use: {
     headless: !!process.env.CI,
     baseURL: process.env.PLAYWRIGHT_BASE_URL
