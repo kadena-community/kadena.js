@@ -41,6 +41,7 @@ export const Template: FC<IProps> = ({
     const paddingTop = getComputedStyle(
       mainContentRef.current as HTMLDivElement,
     )?.paddingTop;
+
     // When we get css from computed style it comes with `px` suffix
     const onlyValue = paddingTop.split('px')[0];
     setInitialTopSpacing(onlyValue);
@@ -62,7 +63,7 @@ export const Template: FC<IProps> = ({
     //  to maintain the scrolling effect
     const paddingValue = parseInt(initialTopSpacing) - (y || 0);
 
-    if (paddingValue <= 0) return;
+    if (paddingValue <= 0 || isNaN(paddingValue)) return;
     setStyle({
       paddingTop: paddingValue,
     });
