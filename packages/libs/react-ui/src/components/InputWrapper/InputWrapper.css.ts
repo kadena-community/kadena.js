@@ -4,8 +4,13 @@ import {
 } from './InputHelper/InputHelper.css';
 
 import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
-import { createVar, styleVariants } from '@vanilla-extract/css';
+import { darkThemeClass, vars } from '@theme/vars.css';
+import {
+  createVar,
+  fallbackVar,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
 
 export const statusColor = createVar();
 
@@ -31,3 +36,18 @@ export const statusVariant = styleVariants(statusOptions, (status) => {
     },
   };
 });
+
+export const containerClass = style([
+  sprinkles({
+    borderRadius: '$sm',
+    display: 'flex',
+  }),
+  {
+    border: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        border: `1px solid ${fallbackVar(statusColor, vars.colors.$gray60)}`,
+      },
+    },
+  },
+]);

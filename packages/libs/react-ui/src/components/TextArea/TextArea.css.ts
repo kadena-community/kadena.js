@@ -19,7 +19,7 @@ export const containerClass = style([
   }),
   {
     position: 'relative',
-    border: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
+    // border: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
     selectors: {
       [`${darkThemeClass} &`]: {
         border: `1px solid ${fallbackVar(statusColor, vars.colors.$gray60)}`,

@@ -26,14 +26,6 @@ export const containerClass = style([
     paddingRight: '$2',
     position: 'relative',
   }),
-  {
-    border: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        border: `1px solid ${fallbackVar(statusColor, vars.colors.$gray60)}`,
-      },
-    },
-  },
 ]);
 
 export const containerClassDisabled = style([

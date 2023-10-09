@@ -2,9 +2,10 @@ import type { IInputHeaderProps } from './InputHeader/InputHeader';
 import { InputHeader } from './InputHeader/InputHeader';
 import { InputHelper } from './InputHelper/InputHelper';
 import type { Status } from './InputWrapper.css';
-import { statusVariant } from './InputWrapper.css';
+import { containerClass, statusVariant } from './InputWrapper.css';
 
 import type { IInputProps } from '@components/Input';
+import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 import type { vars } from 'src/styles';
@@ -38,7 +39,7 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
       {label !== undefined && (
         <InputHeader htmlFor={htmlFor} label={label} tag={tag} info={info} />
       )}
-      <div className="inputGroup">
+      <div className={classNames('inputGroup', containerClass)}>
         {leadingTextWidth
           ? React.Children.map(children, (child) => {
               if (!React.isValidElement(child)) return null;
