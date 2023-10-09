@@ -1,5 +1,5 @@
-import { deployCommand } from './deployCommand';
-import { retrieveCommand } from './retrieveCommand';
+import { deployCommand } from './deployCommand.js';
+import { retrieveCommand } from './retrieveCommand.js';
 
 import type { Command } from 'commander';
 

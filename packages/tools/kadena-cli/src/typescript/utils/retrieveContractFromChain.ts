@@ -1,5 +1,5 @@
-import { callLocal } from './callLocal';
-import { networkMap } from './networkMap';
+import { callLocal } from './callLocal.js';
+import { networkMap } from './networkMap.js';
 
 export async function retrieveContractFromChain(
   module: string,

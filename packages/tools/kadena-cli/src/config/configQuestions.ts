@@ -1,10 +1,10 @@
-import type { IQuestion } from '../utils/helpers';
+import type { IQuestion } from '../utils/helpers.js';
 import {
   capitalizeFirstLetter,
   getExistingNetworks,
   isAlphanumeric,
   isNumeric,
-} from '../utils/helpers';
+} from '../utils/helpers.js';
 
 import { input, select } from '@inquirer/prompts';
 import { z } from 'zod';

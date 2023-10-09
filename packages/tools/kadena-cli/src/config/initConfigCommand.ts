@@ -1,15 +1,15 @@
-import { projectPrefix, projectRootPath } from '../constants/config';
-import { ensureFileExists } from '../utils/filesystem';
-import { collectResponses } from '../utils/helpers';
-import { processZodErrors } from '../utils/processZodErrors';
+import { projectPrefix, projectRootPath } from '../constants/config.js';
+import { ensureFileExists } from '../utils/filesystem.js';
+import { collectResponses } from '../utils/helpers.js';
+import { processZodErrors } from '../utils/processZodErrors.js';
 
 import {
   displayGeneralConfig,
   getProjectConfig,
   writeProjectConfig,
-} from './configHelpers';
-import type { TConfigOptions } from './configQuestions';
-import { ConfigOptions, configQuestions } from './configQuestions';
+} from './configHelpers.js';
+import type { TConfigOptions } from './configQuestions.js';
+import { ConfigOptions, configQuestions } from './configQuestions.js';
 
 import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
@@ -104,7 +104,7 @@ export function initCommand(program: Command, version: string): void {
       }
 
       // TODO: make this fix nicer
-      await import('./../utils/bootstrap');
+      await import('./../utils/bootstrap.js');
 
       await runConfigInitialization(program, version, args);
     });

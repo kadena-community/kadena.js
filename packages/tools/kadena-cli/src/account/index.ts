@@ -1,4 +1,4 @@
-import { fundCommand } from './fundCommand';
+import { fundCommand } from './fundCommand.js';
 
 import type { Command } from 'commander';
 

@@ -6,8 +6,8 @@ import {
   base64ToArrayBuffer,
   decrypt,
   encrypt,
-} from './encrypt';
-import { deriveKeyPair } from './sign';
+} from './encrypt.js';
+import { deriveKeyPair } from './sign.js';
 
 import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';

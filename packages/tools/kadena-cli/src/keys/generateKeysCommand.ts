@@ -1,6 +1,6 @@
-import { processZodErrors } from '../utils/processZodErrors';
+import { processZodErrors } from '../utils/processZodErrors.js';
 
-import { CryptoService } from './utils/service';
+import { CryptoService } from './utils/service.js';
 
 import type { Command } from 'commander';
 

@@ -1,11 +1,11 @@
-// import { standardNetworks } from '../constants/networks';
-import type { IQuestion } from '../utils/helpers';
+// import { standardNetworks } from '../constants/networks.js';
+import type { IQuestion } from '../utils/helpers.js';
 import {
   capitalizeFirstLetter,
   getExistingNetworks,
   isAlphabetic,
   isAlphanumeric,
-} from '../utils/helpers';
+} from '../utils/helpers.js';
 
 import { input, select } from '@inquirer/prompts';
 import { z } from 'zod';

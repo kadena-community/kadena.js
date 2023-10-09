@@ -1,16 +1,16 @@
-import { projectPrefix } from '../constants/config';
-import type { ICustomChoice, IQuestion } from '../utils/helpers';
+import { projectPrefix } from '../constants/config.js';
+import type { ICustomChoice, IQuestion } from '../utils/helpers.js';
 import {
   capitalizeFirstLetter,
   getExistingProjects,
   isAlphanumeric,
-} from '../utils/helpers';
+} from '../utils/helpers.js';
 
-import type { TConfigOptions } from './configQuestions';
+import type { TConfigOptions } from './configQuestions.js';
 
 import { input, select } from '@inquirer/prompts';
 
-// import { configQuestions } from './configQuestions';
+// import { configQuestions } from './configQuestions.js';
 
 // interface IProjectNameQuestion
 //   extends Pick<IQuestion<TConfigOptions>, 'key' | 'prompt'> {}

@@ -1,14 +1,14 @@
-import { defaultNetworksPath } from '../constants/networks';
-import { collectResponses, getExistingNetworks } from '../utils/helpers';
-import { processZodErrors } from '../utils/processZodErrors';
+import { defaultNetworksPath } from '../constants/networks.js';
+import { collectResponses, getExistingNetworks } from '../utils/helpers.js';
+import { processZodErrors } from '../utils/processZodErrors.js';
 
-import type { TNetworksCreateOptions } from './networksCreateQuestions';
+import type { TNetworksCreateOptions } from './networksCreateQuestions.js';
 import {
   networkManageQuestions,
   NetworksCreateOptions,
-} from './networksCreateQuestions';
-import type { ICustomNetworksChoice } from './networksHelpers';
-import { writeNetworks } from './networksHelpers';
+} from './networksCreateQuestions.js';
+import type { ICustomNetworksChoice } from './networksHelpers.js';
+import { writeNetworks } from './networksHelpers.js';
 
 import { select } from '@inquirer/prompts';
 import chalk from 'chalk';

@@ -1,5 +1,5 @@
-import { mintCommand } from './mintCommand';
-import { storeCommand } from './storeCommand';
+import { mintCommand } from './mintCommand.js';
+import { storeCommand } from './storeCommand.js';
 
 import type { Command } from 'commander';
 

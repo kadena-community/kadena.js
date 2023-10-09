@@ -2,12 +2,12 @@ import {
   collectResponses,
   getQuestionKeys,
   processProject,
-} from '../utils/helpers';
-import { processZodErrors } from '../utils/processZodErrors';
+} from '../utils/helpers.js';
+import { processZodErrors } from '../utils/processZodErrors.js';
 
-import type { TFundQuestions } from './fundQuestions';
-import { FundQuestions, fundQuestions } from './fundQuestions';
-import { makeFundRequest } from './makeFundRequest';
+import type { TFundQuestions } from './fundQuestions.js';
+import { FundQuestions, fundQuestions } from './fundQuestions.js';
+import { makeFundRequest } from './makeFundRequest.js';
 
 import type { Command } from 'commander';
 import { Option } from 'commander';

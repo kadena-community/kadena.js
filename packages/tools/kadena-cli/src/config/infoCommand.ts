@@ -1,9 +1,9 @@
-import { collectResponses } from '../utils/helpers';
+import { collectResponses } from '../utils/helpers.js';
 
-import { displayGeneralConfig, getProjectConfig } from './configHelpers';
-import type { TConfigOptions } from './configQuestions';
-import { ConfigOptions } from './configQuestions';
-import { projectNameQuestions } from './infoQuestions';
+import { displayGeneralConfig, getProjectConfig } from './configHelpers.js';
+import type { TConfigOptions } from './configQuestions.js';
+import { ConfigOptions } from './configQuestions.js';
+import { projectNameQuestions } from './infoQuestions.js';
 
 import chalk from 'chalk';
 import debug from 'debug';

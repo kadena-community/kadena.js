@@ -1,4 +1,4 @@
-import { startCommand } from './start';
+import { startCommand } from './start.js';
 
 import type { Command } from 'commander';
 

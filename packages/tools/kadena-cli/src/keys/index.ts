@@ -1,9 +1,9 @@
-import { createSimpleSubCommand } from '../utils/helpers';
+import { createSimpleSubCommand } from '../utils/helpers.js';
 
-import { generateKeys } from './generateKeysCommand';
-import type { IListKeysArgs } from './listKeysCommand';
-import { listKeysAction } from './listKeysCommand';
-import { manageKeys } from './manageKeysCommand';
+import { generateKeys } from './generateKeysCommand.js';
+import type { IListKeysArgs } from './listKeysCommand.js';
+import { listKeysAction } from './listKeysCommand.js';
+import { manageKeys } from './manageKeysCommand.js';
 
 import type { Command } from 'commander';
 

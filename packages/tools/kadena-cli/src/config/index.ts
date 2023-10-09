@@ -1,8 +1,8 @@
-import { createSimpleSubCommand } from '../utils/helpers';
+import { createSimpleSubCommand } from '../utils/helpers.js';
 
-import type { IShowConfigurationArgs } from './infoCommand';
-import { showConfigurationAction } from './infoCommand';
-import { initCommand } from './initConfigCommand';
+import type { IShowConfigurationArgs } from './infoCommand.js';
+import { showConfigurationAction } from './infoCommand.js';
+import { initCommand } from './initConfigCommand.js';
 
 import type { Command } from 'commander';
 import { Option } from 'commander';

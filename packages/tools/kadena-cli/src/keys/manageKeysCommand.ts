@@ -1,4 +1,4 @@
-import { processZodErrors } from '../utils/processZodErrors';
+import { processZodErrors } from '../utils/processZodErrors.js';
 
 import type { Command } from 'commander';
 

@@ -1,22 +1,21 @@
 #!/usr/bin/env node
-import { accountCommandFactory } from './account';
-import { configCommandFactory } from './config';
-import { contractCommandFactory } from './contract';
-// import { dappCommandFactory } from './dapp';
-import { devnetCommandFactory } from './devnet';
-import { keysCommandFactory } from './keys';
-import { marmaladeCommandFactory } from './marmalade';
-import { networksCommandFactory } from './networks';
-import { txCommandFactory } from './tx';
-import { typescriptCommandFactory } from './typescript';
+import { accountCommandFactory } from './account/index.js';
+import { configCommandFactory } from './config/index.js';
+import { contractCommandFactory } from './contract/index.js';
+// import { dappCommandFactory } from './dapp/index.js';
+import { devnetCommandFactory } from './devnet/index.js';
+import { keysCommandFactory } from './keys/index.js';
+import { marmaladeCommandFactory } from './marmalade/index.js';
+import { networksCommandFactory } from './networks/index.js';
+import { txCommandFactory } from './tx/index.js';
+import { typescriptCommandFactory } from './typescript/index.js';
 
 import clear from 'clear';
 import { program } from 'commander';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { readFileSync } from 'node:fs';
 
 const packageJson: { version: string } = JSON.parse(
-  readFileSync(join(__dirname, '../package.json'), 'utf8'),
+  readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
 );
 
 // TODO: introduce root flag --no-interactive
@@ -35,7 +34,7 @@ const packageJson: { version: string } = JSON.parse(
   // dappCommandFactory,
 ]
   .flat()
-  .forEach((fn) => {
+  .forEach(async (fn) => {
     fn(program, packageJson.version);
   });
 

@@ -1,5 +1,5 @@
-import type { IQuestion } from '../utils/helpers';
-import { getExistingNetworks } from '../utils/helpers';
+import type { IQuestion } from '../utils/helpers.js';
+import { getExistingNetworks } from '../utils/helpers.js';
 
 import { input, select } from '@inquirer/prompts';
 import { z } from 'zod';

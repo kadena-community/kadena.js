@@ -1,14 +1,14 @@
 import { generateDts, pactParser } from '@kadena/pactjs-generator';
 
-import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
+import { retrieveContractFromChain } from '../utils/retrieveContractFromChain.js';
 
-import type { ITypescriptGenerateOptions } from './';
+import type { ITypescriptGenerateOptions } from './index.js';
 
 import type { Command } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import { dirname, join } from 'path';
-import rimraf from 'rimraf';
+import { rimraf } from 'rimraf';
 
 export const TARGET_PACKAGE: '.kadena/pactjs-generated' =
   '.kadena/pactjs-generated' as const;
@@ -167,7 +167,7 @@ export const generate: IGenerate = (program, version) => async (args) => {
 
     // write dts to index.d.ts to file
     const indexPath: string = join(targetDirectory, 'index.d.ts');
-    const exportStatement: string = `export * from './${moduleName}';`;
+    const exportStatement: string = `export * from './${moduleName}.js';`;
 
     // always overwrite existing file
     console.log(`Writing to new file ${targetFilePath}`);

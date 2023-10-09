@@ -1,12 +1,12 @@
-import { defaultNetworksPath, networkDefaults } from '../constants/networks';
-import { PathExists, writeFile } from '../utils/filesystem';
+import { defaultNetworksPath, networkDefaults } from '../constants/networks.js';
+import { PathExists, writeFile } from '../utils/filesystem.js';
 import {
   getExistingNetworks,
   mergeConfigs,
   sanitizeFilename,
-} from '../utils/helpers';
+} from '../utils/helpers.js';
 
-import type { TNetworksCreateOptions } from './networksCreateQuestions';
+import type { TNetworksCreateOptions } from './networksCreateQuestions.js';
 
 import chalk from 'chalk';
 import type { WriteFileOptions } from 'fs';

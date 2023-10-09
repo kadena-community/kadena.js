@@ -1,6 +1,6 @@
-import { processZodErrors } from '../utils/processZodErrors';
+import { processZodErrors } from '../utils/processZodErrors.js';
 
-import { retrieveContract } from './retrieveContract';
+import { retrieveContract } from './retrieveContract.js';
 
 import type { Command } from 'commander';
 import { Option } from 'commander';

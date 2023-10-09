@@ -1,4 +1,4 @@
-import { displayNetworksConfig } from './networksHelpers';
+import { displayNetworksConfig } from './networksHelpers.js';
 
 export interface IListNetworksArgs {}
 

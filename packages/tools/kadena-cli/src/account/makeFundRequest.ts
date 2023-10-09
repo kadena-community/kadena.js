@@ -6,11 +6,11 @@ import {
 } from '@kadena/client';
 import type { IPactDecimal } from '@kadena/types';
 
-import { FAUCET_CONSTANTS } from '../constants/faucet';
-import { accountExists } from '../utils/chainHelpers';
-import { pollStatus, submit } from '../utils/client';
+import { FAUCET_CONSTANTS } from '../constants/faucet.js';
+import { accountExists } from '../utils/chainHelpers.js';
+import { pollStatus, submit } from '../utils/client.js';
 
-import type { TFundQuestions } from './fundQuestions';
+import type { TFundQuestions } from './fundQuestions.js';
 
 import chalk from 'chalk';
 import clear from 'clear';

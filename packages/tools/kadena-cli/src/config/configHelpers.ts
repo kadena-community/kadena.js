@@ -2,13 +2,13 @@ import {
   configDefaults,
   projectPrefix,
   projectRootPath,
-} from '../constants/config';
-import { defaultNetworksPath } from '../constants/networks';
-import type { TNetworksCreateOptions } from '../networks/networksCreateQuestions';
-import { PathExists, writeFile } from '../utils/filesystem';
-import { mergeConfigs, sanitizeFilename } from '../utils/helpers';
+} from '../constants/config.js';
+import { defaultNetworksPath } from '../constants/networks.js';
+import type { TNetworksCreateOptions } from '../networks/networksCreateQuestions.js';
+import { PathExists, writeFile } from '../utils/filesystem.js';
+import { mergeConfigs, sanitizeFilename } from '../utils/helpers.js';
 
-import type { TConfigOptions } from './configQuestions';
+import type { TConfigOptions } from './configQuestions.js';
 
 import chalk from 'chalk';
 import type { WriteFileOptions } from 'fs';

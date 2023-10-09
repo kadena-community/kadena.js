@@ -1,4 +1,4 @@
-import type { TNetworksCreateOptions } from '../networks/networksCreateQuestions';
+import type { TNetworksCreateOptions } from '../networks/networksCreateQuestions.js';
 
 export interface IDefaultNetworkOptions {
   [key: string]: TNetworksCreateOptions;

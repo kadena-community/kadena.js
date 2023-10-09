@@ -1,4 +1,4 @@
-import { generateCommand } from './generate';
+import { generateCommand } from './generate/index.js';
 
 import type { Command } from 'commander';
 

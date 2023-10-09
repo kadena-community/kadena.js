@@ -1,7 +1,7 @@
-import { processZodErrors } from '../../utils/processZodErrors';
-import type { networkMap } from '../utils/networkMap';
+import { processZodErrors } from '../../utils/processZodErrors.js';
+import type { networkMap } from '../utils/networkMap.js';
 
-import { generate } from './generate';
+import { generate } from './generate.js';
 
 import type { Command } from 'commander';
 import { Option } from 'commander';

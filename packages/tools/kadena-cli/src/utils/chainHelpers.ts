@@ -1,7 +1,7 @@
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { Pact } from '@kadena/client';
 
-import { dirtyRead } from './client';
+import { dirtyRead } from './client.js';
 
 /**
  * Fetches the balance of the given account on a specific chain and network.

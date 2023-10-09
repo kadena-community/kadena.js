@@ -1,7 +1,7 @@
-import { getCombinedConfig } from '../config/configHelpers';
-import type { TConfigOptions } from '../config/configQuestions';
-import { projectPrefix, projectRootPath } from '../constants/config';
-import { defaultNetworksPath } from '../constants/networks';
+import { getCombinedConfig } from '../config/configHelpers.js';
+import type { TConfigOptions } from '../config/configQuestions.js';
+import { projectPrefix, projectRootPath } from '../constants/config.js';
+import { defaultNetworksPath } from '../constants/networks.js';
 
 import chalk from 'chalk';
 import type { Command, Option } from 'commander';

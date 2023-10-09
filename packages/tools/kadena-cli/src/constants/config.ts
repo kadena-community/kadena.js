@@ -1,4 +1,4 @@
-import type { TConfigOptions } from '../config/configQuestions';
+import type { TConfigOptions } from '../config/configQuestions.js';
 
 /**
  * @const configDefaults

@@ -1,9 +1,9 @@
-import { createSimpleSubCommand } from '../utils/helpers';
+import { createSimpleSubCommand } from '../utils/helpers.js';
 
-import { createNetworksCommand } from './createNetworksCommand';
-import type { IListNetworksArgs } from './listNetworksCommand';
-import { listNetworksAction } from './listNetworksCommand';
-import { manageNetworks } from './manageNetworksCommand';
+import { createNetworksCommand } from './createNetworksCommand.js';
+import type { IListNetworksArgs } from './listNetworksCommand.js';
+import { listNetworksAction } from './listNetworksCommand.js';
+import { manageNetworks } from './manageNetworksCommand.js';
 
 import type { Command } from 'commander';
 
