@@ -44,7 +44,7 @@ export const expandVariants = styleVariants({
 });
 
 export const displayVariants = styleVariants({
-  outlined: [sprinkles({ borderWidth: '$md' })],
+  outlined: [sprinkles({ borderWidth: '$sm' })],
   standard: { borderWidth: 0 },
 });
 
