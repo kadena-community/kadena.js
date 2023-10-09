@@ -11,7 +11,7 @@ jobs:
       preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
     steps:
       - name: Wait for Preview environment
-        uses: patrickedqvist/wait-for-vercel-preview
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
         id: waitForVercelPreviewDeployment
         with:
           environment: "Preview – Tools"
