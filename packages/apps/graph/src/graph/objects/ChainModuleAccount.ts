@@ -28,6 +28,7 @@ export default builder.objectType('ChainModuleAccount', {
       cursor: 'blockhash_requestkey',
       resolve: (query, parent) => {
         return prismaClient.transaction.findMany({
+          ...query,
           where: {
             sender: parent.accountName,
             events: {
@@ -37,11 +38,6 @@ export default builder.objectType('ChainModuleAccount', {
             },
             chainid: parseInt(parent.chainId),
           },
-          orderBy: {
-            height: 'desc',
-          },
-          ...query,
-          take: query.take || 10,
         });
       },
     }),
@@ -50,6 +46,7 @@ export default builder.objectType('ChainModuleAccount', {
       cursor: 'block_chainid_idx_modulehash_requestkey',
       resolve: async (query, parent) => {
         return prismaClient.transfer.findMany({
+          ...query,
           where: {
             OR: [
               {
@@ -62,11 +59,6 @@ export default builder.objectType('ChainModuleAccount', {
             modulename: parent.moduleName,
             chainid: parseInt(parent.chainId),
           },
-          orderBy: {
-            height: 'desc',
-          },
-          ...query,
-          take: query.take || 10,
         });
       },
     }),

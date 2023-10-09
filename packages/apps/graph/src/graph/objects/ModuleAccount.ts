@@ -68,6 +68,7 @@ export default builder.objectType('ModuleAccount', {
       cursor: 'blockhash_requestkey',
       resolve: (query, parent) => {
         return prismaClient.transaction.findMany({
+          ...query,
           where: {
             sender: parent.accountName,
             events: {
@@ -76,11 +77,6 @@ export default builder.objectType('ModuleAccount', {
               },
             },
           },
-          orderBy: {
-            height: 'desc',
-          },
-          ...query,
-          take: query.take || 10,
         });
       },
     }),
@@ -89,6 +85,7 @@ export default builder.objectType('ModuleAccount', {
       cursor: 'block_chainid_idx_modulehash_requestkey',
       resolve: async (query, parent) => {
         return prismaClient.transfer.findMany({
+          ...query,
           where: {
             OR: [
               {
@@ -99,11 +96,6 @@ export default builder.objectType('ModuleAccount', {
               },
             ],
           },
-          orderBy: {
-            height: 'desc',
-          },
-          ...query,
-          take: query.take || 10,
         });
       },
     }),

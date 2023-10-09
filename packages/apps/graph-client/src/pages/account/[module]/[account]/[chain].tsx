@@ -16,14 +16,7 @@ import routes from '../../../../constants/routes';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-
-function truncate(text: string): string {
-  if (text.length > 12) {
-    return `${text.replace(/(\w{4}).*(\w{4})/, '$1****$2')}`;
-  }
-
-  return text;
-}
+import { truncate } from '../../../../utils/truncate';
 
 const ChainAccount: React.FC = () => {
   const router = useRouter();
@@ -74,7 +67,7 @@ const ChainAccount: React.FC = () => {
           )}
           {chainAccountQuery?.chainAccount && (
             <div>
-              <Table.Root>
+              <Table.Root wordBreak='break-all'>
                 <Table.Body>
                   <Table.Tr>
                     <Table.Td>
@@ -154,12 +147,12 @@ const ChainAccount: React.FC = () => {
                               <Table.Td>{edge?.node.amount}</Table.Td>
                               <Table.Td>
                                 <span title={edge?.node.fromAccount}>
-                                  {truncate(edge?.node.fromAccount as string)}
+                                  {truncate(edge?.node.fromAccount)}
                                 </span>
                               </Table.Td>
                               <Table.Td>
                                 <span title={edge?.node.toAccount}>
-                                  {truncate(edge?.node.toAccount as string)}
+                                  {truncate(edge?.node.toAccount)}
                                 </span>
                               </Table.Td>
                               <Table.Td>
@@ -208,7 +201,7 @@ const ChainAccount: React.FC = () => {
                               </Table.Td>
                               <Table.Td>
                                 <span title={edge?.node.code as string}>
-                                  {truncate(edge?.node.code as string)}
+                                  {truncate(edge?.node.code)}
                                 </span>
                               </Table.Td>
                             </Table.Tr>

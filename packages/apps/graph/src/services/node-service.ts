@@ -38,6 +38,8 @@ export async function getAccountDetails(
     },
   );
 
+  console.log(JSON.stringify(commandResult));
+
   if (commandResult.result.status !== 'success') {
     const error = {
       message: 'Failed with error',
@@ -46,5 +48,11 @@ export async function getAccountDetails(
     throw error;
   }
 
-  return commandResult.result.data as unknown as ChainModuleAccountDetails;
+  const result = commandResult.result.data as unknown as any;
+
+  if (typeof result.balance === 'object') {
+    result.balance = parseFloat(result.balance.decimal);
+  }
+
+  return result as ChainModuleAccountDetails;
 }
