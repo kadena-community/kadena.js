@@ -102,7 +102,6 @@
     "jest-standard-reporter": "~2.0.0",
     "mini-css-extract-plugin": "2.7.6",
     "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
     "prop-types": "^15.8.1",
     "rimraf": "~5.0.1",
     "storybook": "^7.4.0",
