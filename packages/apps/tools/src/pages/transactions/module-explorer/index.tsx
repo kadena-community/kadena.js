@@ -45,7 +45,7 @@ const QueryParams = {
 export const getModules = async (
   network: Network,
   networksData: INetworkData[],
-): Promise<IModule[]> => {
+): Promise<IChainModule[]> => {
   const promises = CHAINS.map((chain) => {
     return listModules(
       chain,
@@ -74,10 +74,10 @@ export const getModules = async (
 };
 
 export const getCompleteModule = async (
-  { moduleName, chainId }: IModule,
+  { moduleName, chainId }: IChainModule,
   network: Network,
   networksData: INetworkData[],
-): Promise<IModule & { code: string }> => {
+): Promise<IChainModule> => {
   const request = (await describeModule(
     moduleName,
     chainId,
@@ -92,15 +92,21 @@ export const getCompleteModule = async (
     throw new Error('Something went wrong');
   }
 
+  const { code, hash } = request.result.data as unknown as {
+    code: string;
+    hash: string;
+  };
+
   return {
-    code: (request.result.data as unknown as { code: string }).code,
+    code,
     moduleName,
     chainId,
+    hash,
   };
 };
 
 export const getServerSideProps: GetServerSideProps<{
-  data: IModule[];
+  data: IChainModule[];
   openedModules: IEditorProps['openedModules'];
 }> = async (context) => {
   const network = getCookieValue(
@@ -152,7 +158,7 @@ const ModuleExplorerPage = (
 ) => {
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
-  const [openedModules, setOpenedModules] = useState<IModule[]>(
+  const [openedModules, setOpenedModules] = useState<IChainModule[]>(
     props.openedModules,
   );
 
@@ -201,7 +207,7 @@ const ModuleExplorerPage = (
 
   const router = useRouter();
 
-  const onModuleClick = useCallback<(selectedModule: IModule) => void>(
+  const openModule = useCallback<(selectedModule: IChainModule) => void>(
     (selectedModule) => {
       setOpenedModules([selectedModule]);
 
