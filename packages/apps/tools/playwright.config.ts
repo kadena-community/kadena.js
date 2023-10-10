@@ -8,10 +8,10 @@ process.env.FAUCET_PRIVATE_KEY = "93fd78bd1e79a3b593d4732b76050b418aeefa5e4e6ea8
 export default defineConfig({
     ...defaultConfig,
     webServer: {
-      command: 'pnpm dev',
+      command: 'pnpm run dev',
       url: 'http://127.0.0.1:3000',
       reuseExistingServer: false,
-      stdout: 'ignore',
+      stdout: 'pipe',
       stderr: 'pipe',
       env: {
         FAUCET_PUBLIC_KEY: "782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e",
