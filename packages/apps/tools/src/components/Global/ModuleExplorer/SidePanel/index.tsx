@@ -1,7 +1,8 @@
 import { Text, TextField } from '@kadena/react-ui';
 
-import type { IModule } from '..';
+import type { IChainModule } from '../types';
 
+import type { IOutlineProps } from './outline';
 import Outline from './outline';
 import type { IResultsProps } from './results';
 import Results from './results';
@@ -16,12 +17,16 @@ import React, { useState, useTransition } from 'react';
 export interface ISidePanelProps {
   results: IResultsProps['data'];
   onResultClick: IResultsProps['onItemClick'];
-  selectedModule?: IModule & { code: string };
+  onModuleExpand: IResultsProps['onModuleExpand'];
+  onInterfaceClick: IOutlineProps['onInterfaceClick'];
+  selectedModule?: IChainModule;
 }
 
 const SidePanel = ({
   results,
   onResultClick,
+  onInterfaceClick,
+  onModuleExpand,
   selectedModule,
 }: ISidePanelProps): React.JSX.Element => {
   const [text, setText] = useState('');
@@ -53,9 +58,14 @@ const SidePanel = ({
         data={results}
         filter={searchQuery}
         onItemClick={onResultClick}
+        onModuleExpand={onModuleExpand}
         className={modulesContainerStyle}
       />
-      <Outline selectedModule={selectedModule} className={outlineStyle} />
+      <Outline
+        selectedModule={selectedModule}
+        className={outlineStyle}
+        onInterfaceClick={onInterfaceClick}
+      />
     </div>
   );
 };
