@@ -3,7 +3,6 @@ lockfileVersion: '6.0'
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
-
 importers:
 
   .:
@@ -23,6 +22,9 @@ importers:
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
+      prettier-plugin-organize-imports:
+        specifier: ^3.2.3
+        version: 3.2.3(prettier@3.0.3)(typescript@5.2.2)
       prettier-plugin-packagejson:
         specifier: ^2.4.6
         version: 2.4.6(prettier@3.0.3)
@@ -1748,9 +1750,6 @@ importers:
       eslint-plugin-react:
         specifier: ~7.31.11
         version: 7.31.11(eslint@8.45.0)
-      eslint-plugin-simple-import-sort:
-        specifier: ~7.0.0
-        version: 7.0.0(eslint@8.45.0)
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
@@ -17843,14 +17842,6 @@ packages:
       semver: 6.3.1
       string.prototype.matchall: 4.0.8
 
-  /eslint-plugin-simple-import-sort@7.0.0(eslint@8.45.0):
-    resolution: {integrity: sha512-U3vEDB5zhYPNfxT5TYR7u01dboFZp+HNpnGhkDB2g/2E4wZ/g1Q9Ton8UwCLfRV9yAKyYqDh62oHOamvkFxsvw==}
-    peerDependencies:
-      eslint: '>=5.0.0'
-    dependencies:
-      eslint: 8.45.0
-    dev: false
-
   /eslint-plugin-storybook@0.6.13(eslint@8.45.0)(typescript@5.2.2):
     resolution: {integrity: sha512-smd+CS0WH1jBqUEJ3znGS7DU4ayBE9z6lkQAK2yrSUv1+rq8BT/tiI5C/rKE7rmiqiAfojtNYZRhzo5HrulccQ==}
     engines: {node: 12.x || 14.x || >= 16}
@@ -26111,6 +26102,23 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: false
+
+  /prettier-plugin-organize-imports@3.2.3(prettier@3.0.3)(typescript@5.2.2):
+    resolution: {integrity: sha512-KFvk8C/zGyvUaE3RvxN2MhCLwzV6OBbFSkwZ2OamCrs9ZY4i5L77jQ/w4UmUr+lqX8qbaqVq6bZZkApn+IgJSg==}
+    peerDependencies:
+      '@volar/vue-language-plugin-pug': ^1.0.4
+      '@volar/vue-typescript': ^1.0.4
+      prettier: '>=2.0'
+      typescript: '>=2.9'
+    peerDependenciesMeta:
+      '@volar/vue-language-plugin-pug':
+        optional: true
+      '@volar/vue-typescript':
+        optional: true
+    dependencies:
+      prettier: 3.0.3
+      typescript: 5.2.2
+    dev: true
 
   /prettier-plugin-packagejson@2.4.6(prettier@3.0.3):
     resolution: {integrity: sha512-5JGfzkJRL0DLNyhwmiAV9mV0hZLHDwddFCs2lc9CNxOChpoWUQVe8K4qTMktmevmDlMpok2uT10nvHUyU59sNw==}
