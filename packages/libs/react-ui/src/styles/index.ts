@@ -1,4 +1,4 @@
-export { breakpoints, responsiveStyle } from './themeUtils';
+export { breakpoints, responsiveStyle, mapToProperty } from './themeUtils';
 export { sprinkles } from './sprinkles.css';
 export type { Sprinkles } from './sprinkles.css';
 export { vars, darkThemeClass } from './vars.css';

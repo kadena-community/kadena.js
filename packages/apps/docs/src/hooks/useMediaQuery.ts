@@ -1,4 +1,4 @@
-import { breakpoints } from '@kadena/react-ui';
+import { breakpoints } from '@kadena/react-ui/theme';
 
 import { useEffect, useState } from 'react';
 
