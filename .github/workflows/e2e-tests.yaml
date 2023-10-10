@@ -38,6 +38,16 @@ jobs:
       - name: Build Tools dApp
         run: pnpm run build --filter @kadena/tools
 
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          FAUCET_PUBLIC_KEY: "782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e",
+          FAUCET_PRIVATE_KEY: "93fd78bd1e79a3b593d4732b76050b418aeefa5e4e6ea80f351b4c3a5b0dd19f"
+          directory: packages/apps/tools/
+          file_name: .env.local
+          fail_on_empty: false
+          sort_keys: false
+
       - name: Run Playwright tests
         run: pnpm run test:e2e --filter @kadena/tools
         env:
