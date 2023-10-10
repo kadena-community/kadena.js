@@ -146,6 +146,7 @@ const ExistingAccountFaucetPage: FC = () => {
             title={t(
               `The Faucet is not available on Mainnet. On other networks, the Faucet smart contract must be deployed to fund accounts. In the Module Explorer you can see if it's deployed: https://tools.kadena.io/transactions/module-explorer?module=user.coin-faucet&chain=1`,
             )}
+            variant="outlined"
           />
         ) : null}
       </div>
