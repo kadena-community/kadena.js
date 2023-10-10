@@ -11,7 +11,7 @@
     "format:src": "prettier . \"!packages\" --cache --write",
     "preinstall": "npx --no-install only-allow pnpm",
     "knip": "knip",
-    "lint": "syncpack list-mismatches",
+    "lint": "syncpack list-mismatches && prettier . \"!packages\" --cache --check",
     "publish": "changeset publish",
     "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
     "test": "turbo run test",
