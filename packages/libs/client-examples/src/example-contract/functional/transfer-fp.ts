@@ -9,10 +9,10 @@ import {
   setNetworkId,
 } from '@kadena/client/fp';
 
+import { checkSuccess } from '../../utils/client-utils/helpers';
 import { pollStatus, preflight, submitOne } from '../util/client';
-import { checkSuccess, inspect, safeSign } from '../util/fp-helpers';
+import { inspect, safeSign } from '../util/fp-helpers';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getTransferCommand = ({
   sender,
   receiver,
@@ -42,7 +42,6 @@ const getTransferCommand = ({
     setNetworkId(networkId),
   );
 
-// eslint-disable-next-line @rushstack/typedef-var
 const doTransfer = asyncPipe(
   // you can edit the command form the input or complete it if it needs more information
   // for example hear we add gasLimit and gasPrice

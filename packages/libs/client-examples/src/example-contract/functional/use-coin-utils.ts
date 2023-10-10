@@ -2,14 +2,16 @@ import { signWithChainweaver } from '@kadena/client';
 
 import { createAccount } from '../../utils/coin-utils/create-account';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function consumer() {
   createAccount(
     {
       account: 'javad',
-      publicKey: 'test',
-      gasPayer: { account: 'gasPayer', publicKey: '' },
-      chainId: '1',
+      keyset: {
+        pred: 'keys-all',
+        keys: ['key-a', 'key-b'],
+      },
+      gasPayer: { account: 'gasPayer', publicKeys: [''] },
+      chainId: '0',
     },
     {
       host: 'https://api.testnet.chainweb.com',

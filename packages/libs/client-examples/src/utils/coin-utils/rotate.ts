@@ -11,9 +11,9 @@ import {
 import type { IClientConfig } from '../client-utils/helpers';
 import { submitClient } from '../client-utils/rich-client';
 
-interface ICreateAccountCommandInput {
-  account: string;
-  keyset: {
+interface IRotateCommandInput {
+  account: { account: string; publicKeys: string[] };
+  newguard: {
     keys: string[];
     pred: 'keys-all' | 'keys-two' | 'keys-one';
   };
@@ -21,24 +21,25 @@ interface ICreateAccountCommandInput {
   chainId: ChainId;
 }
 
-const createAccountCommand = ({
+const rotateCommand = ({
   account,
-  keyset,
-  gasPayer,
+  newguard,
+  gasPayer = account,
   chainId,
-}: ICreateAccountCommandInput) =>
+}: IRotateCommandInput) =>
   composePactCommand(
     execution(
-      Pact.modules.coin['create-account'](account, readKeyset('account-guard')),
+      Pact.modules.coin.rotate(account.account, readKeyset('new-guard')),
     ),
-    addKeyset('account-guard', keyset.pred, ...keyset.keys),
+    addKeyset('new-guard', newguard.pred, ...newguard.keys),
+    addSigner(account.publicKeys, (withCapability) => [
+      withCapability('coin.ROTATE', account.account),
+    ]),
     addSigner(gasPayer.publicKeys, (withCapability) => [
       withCapability('coin.GAS'),
     ]),
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 
-export const createAccount = (
-  inputs: ICreateAccountCommandInput,
-  config: IClientConfig,
-) => submitClient(config)(createAccountCommand(inputs));
+export const rotate = (inputs: IRotateCommandInput, config: IClientConfig) =>
+  submitClient(config)(rotateCommand(inputs));

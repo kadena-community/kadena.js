@@ -40,7 +40,6 @@ const receiverAccount: string =
 
 const NETWORK_ID: string = 'testnet04';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
   return composePactCommand(
     execution(
@@ -73,7 +72,6 @@ function startInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const finishInTheTargetChain = (
   targetChainId: ChainId,
   gasPayer: string = 'kadena-xchain-gas',
@@ -101,13 +99,11 @@ const finishInTheTargetChain = (
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const rejectIfFailed = (message: string) => (response: ICommandResult) =>
   response.result.status === 'failure'
     ? Promise.reject(new Error(message))
     : response;
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function doCrossChainTransfer(
   from: IAccount,
   to: IAccount,

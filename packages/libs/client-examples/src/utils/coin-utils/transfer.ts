@@ -1,7 +1,3 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @rushstack/typedef-var */
-
 import type { ChainId } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import {
@@ -11,8 +7,8 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import type { IClientConfig } from '../rich-client';
-import { submitAndListen } from '../rich-client';
+import type { IClientConfig } from '../client-utils/helpers';
+import { submitClient } from '../client-utils/rich-client';
 
 interface ITransferInput {
   sender: { account: string; publicKeys: string[] };
@@ -47,4 +43,4 @@ const transferCommand = ({
   );
 
 export const createAccount = (inputs: ITransferInput, config: IClientConfig) =>
-  submitAndListen(config)(transferCommand(inputs));
+  submitClient(config)(transferCommand(inputs));

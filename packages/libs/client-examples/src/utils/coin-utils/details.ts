@@ -7,14 +7,14 @@ import { dirtyReadClient } from '../client-utils/rich-client';
 
 import { pipe } from 'ramda';
 
-export const getBalance = (
+export const details = (
   account: string,
   networkId: string,
   chainId: ChainId,
   host?: IClientConfig['host'],
 ) => {
-  const balance = pipe(
-    Pact.modules.coin['get-balance'],
+  const getDetails = pipe(
+    Pact.modules.coin.details,
     execution,
     dirtyReadClient({
       host,
@@ -24,5 +24,5 @@ export const getBalance = (
       },
     }),
   );
-  return balance(account).execute();
+  return getDetails(account).execute();
 };

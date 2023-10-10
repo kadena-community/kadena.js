@@ -1,14 +1,11 @@
-import type { ICommandResult } from '@kadena/client';
 import { isSignedTransaction } from '@kadena/client';
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
-// export const head = (args: all[]): any => args[0];
+import type { Any } from '../../utils/types';
 
 export const inspect =
-  // prettier-ignore
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  (tag: string) =>
-  <T extends any>(data: T): T => {
+  <T extends Any>(tag: string) =>
+  (data: T): T => {
     console.log(tag, data);
     return data;
   };
@@ -29,22 +26,13 @@ export const validateSign = (
 };
 
 export const safeSign =
-  // prettier-ignore
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   (
     sign: (
       transaction: IUnsignedCommand,
     ) => Promise<IUnsignedCommand | ICommand>,
   ) =>
   async (tx: IUnsignedCommand) => {
+    if (tx.sigs.length === 0) return tx as ICommand;
     const signedTx = await sign(tx);
     return validateSign(tx, signedTx);
   };
-
-// throw if the result is failed ; we might introduce another api for error handling
-export const throwIfFails = (response: ICommandResult): ICommandResult => {
-  if (response.result.status === 'success') {
-    return response;
-  }
-  throw response.result.error;
-};

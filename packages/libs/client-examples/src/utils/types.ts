@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Any = any;
 
-export type AnyFunc = (...arg: Any) => Any;
+export type AnyFunc = (...arg: Any[]) => Any;
 
 export type IfAny<T, Y, N> = 0 extends 1 & T ? Y : N;
 
