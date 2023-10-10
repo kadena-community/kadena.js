@@ -3,6 +3,7 @@ import { TreeButton } from './TreeButton';
 import { TreeList } from './TreeList';
 
 import type { IMenuItem, LevelType } from '@/Layout';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -14,8 +15,9 @@ interface IProps {
 }
 
 export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState<boolean>(item.isMenuOpen ?? false);
-  const [isMounted, setIsMounted] = useState<boolean>(false);
+
   const ref = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
     const parentUl = ref.current.closest('ul');
     const ul = ref.current.querySelector('ul');
 
-    const parentScrollHeight = isMounted ? parentUl?.scrollHeight ?? 0 : 0;
+    const parentScrollHeight = router.isReady ? parentUl?.scrollHeight ?? 0 : 0;
     const scrollHeight = ul?.scrollHeight ?? 0;
 
     if (!menuOpen) {
@@ -46,9 +48,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
         `${parentScrollHeight + scrollHeight}px`,
       );
     }
-
-    setIsMounted(true);
-  }, [ref, menuOpen, setIsMounted, isMounted]);
+  }, [ref, menuOpen, router.isReady]);
 
   const nextLevel = (): LevelType => {
     if (root) return level;

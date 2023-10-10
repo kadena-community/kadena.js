@@ -83,7 +83,7 @@ export const Full: FC<IPageProps> = ({
 
   return (
     <div className={gridClassNames}>
-      <Template menuItems={leftMenuTree} articleRef={scrollRef}>
+      <Template menuItems={leftMenuTree}>
         <div className={contentClassNames} id="maincontent">
           <article className={articleClass} ref={scrollRef}>
             <Breadcrumbs menuItems={leftMenuTree} />

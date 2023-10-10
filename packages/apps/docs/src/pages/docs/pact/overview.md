@@ -5,7 +5,7 @@ subTitle: Welcome to the Pact Developer Tutorials
 menu: Overview
 label: Overview
 order: 1
-layout: landing
+layout: full
 tags: ['pact', 'pact definition', 'prerequisites']
 ---
 

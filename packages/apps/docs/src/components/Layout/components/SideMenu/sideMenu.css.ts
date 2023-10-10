@@ -13,7 +13,7 @@ export const sideMenuClass = style([
 
     '@media': {
       [`screen and ${breakpoints.md}`]: {
-        height: `calc(100vh - ${vars.sizes.$40})`,
+        height: `calc(100vh - ${vars.sizes.$48})`,
       },
     },
   },

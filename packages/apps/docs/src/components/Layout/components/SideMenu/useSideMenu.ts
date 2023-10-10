@@ -1,7 +1,7 @@
 import type { IMenuItem } from '@/Layout';
 import { hasSameBasePath } from '@/utils/hasSameBasePath';
 import { useRouter } from 'next/router';
-import type { MouseEventHandler } from 'react';
+import type { MouseEventHandler, RefObject } from 'react';
 import { useEffect, useState } from 'react';
 
 interface IReturn {
@@ -14,10 +14,50 @@ interface IReturn {
 export const useSideMenu = (
   closeMenu: () => void,
   menuItems: IMenuItem[],
+  treeRef: RefObject<HTMLUListElement>,
 ): IReturn => {
   const router = useRouter();
   const [oldPathname, setOldPathname] = useState<string>('');
   const [active, setActive] = useState<number>(1);
+
+  const findParentUlButton = (elm?: Element): HTMLElement | null => {
+    if (!elm) return null;
+
+    let foundElm: HTMLElement | null = elm.parentElement;
+
+    do {
+      if (!foundElm) {
+        break;
+      }
+
+      const foundButton: HTMLElement | null | undefined =
+        foundElm.querySelector('button');
+      if (foundButton) {
+        foundElm = foundButton;
+        break;
+      }
+      foundElm = foundElm.parentElement;
+    } while (
+      foundElm?.tagName.toLowerCase() !== 'button' ||
+      foundElm?.tagName.toLowerCase() !== 'a'
+    );
+
+    return foundElm;
+  };
+
+  useEffect(() => {
+    if (router.isReady && treeRef.current) {
+      const elms = treeRef.current.querySelectorAll('[data-active="true"]');
+      const lastElm = elms[elms.length - 1];
+
+      const elm = findParentUlButton(lastElm);
+      if (!elm) return;
+
+      elm.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
+  }, [router.isReady, treeRef]);
 
   useEffect(() => {
     setOldPathname(router.pathname);
@@ -58,6 +98,23 @@ export const useSideMenu = (
 
   const clickSubMenu: MouseEventHandler<HTMLUListElement> = (e) => {
     const clickedItem = e.target as HTMLAnchorElement;
+
+    if (clickedItem.dataset.active !== 'true') {
+      const tree = treeRef.current;
+      setTimeout(() => {
+        // scrollintoview will not work correctly in a element with overFlow:'scroll'
+
+        const elm = findParentUlButton(clickedItem);
+        if (!elm) return;
+
+        tree?.parentElement?.scroll({
+          top: elm.offsetTop,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }, 250);
+    }
+
     if (clickedItem.tagName.toLowerCase() !== 'a') return;
 
     if (clickedItem.hasAttribute('href')) {
