@@ -2,14 +2,14 @@ import type { ChainId } from '@kadena/client';
 import { createTransaction, Pact, signWithChainweaver } from '@kadena/client';
 import {
   addSigner,
-  asyncPipe,
   composePactCommand,
   execution,
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
 
-import { checkSuccess } from '../../../../client-utils/src/core/utils/helpers';
+import { asyncPipe } from '@kadena/client-utils/core';
+
 import { pollStatus, preflight, submitOne } from '../util/client';
 import { inspect, safeSign } from '../util/fp-helpers';
 
@@ -54,7 +54,6 @@ const doTransfer = asyncPipe(
   inspect('command'),
   createTransaction,
   safeSign(signWithChainweaver),
-  checkSuccess(preflight),
   submitOne,
   pollStatus,
 );

@@ -4,7 +4,7 @@ import { composePactCommand } from '@kadena/client/fp';
 import type { IClientConfig, IEmit } from './utils/helpers';
 import { checkSuccess, safeSign, throwIfFails } from './utils/helpers';
 
-import { asyncPipe } from '../utils/asyncPipe';
+import { asyncPipe } from './utils/asyncPipe';
 import { Any } from './utils/types';
 
 export const submitAndListen =

@@ -1,4 +1,4 @@
-import type { IAsyncPipe } from '../interfaces/async-pipe-type';
+import type { IAsyncPipe } from '../../interfaces/async-pipe-type';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any;

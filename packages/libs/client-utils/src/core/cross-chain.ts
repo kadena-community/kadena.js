@@ -17,7 +17,7 @@ import {
 import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
 import { pickFirst, safeSign, throwIfFails, withInput } from './utils/helpers';
 import { Any } from './utils/types';
-import { asyncPipe } from '../utils/asyncPipe';
+import { asyncPipe } from './utils/asyncPipe';
 
 const requestSpvProof =
   (targetChainId: ChainId, client: IClient, onPoll: (id: string) => void) =>

@@ -1,10 +1,8 @@
 import { isSignedTransaction } from '@kadena/client';
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
-import type { Any } from '../../utils/types';
-
 export const inspect =
-  <T extends Any>(tag: string) =>
+  <T extends any>(tag: string) =>
   (data: T): T => {
     console.log(tag, data);
     return data;
@@ -15,14 +13,14 @@ export const validateSign = (
   signedTx: ICommand | IUnsignedCommand,
 ): ICommand => {
   const { sigs, hash } = signedTx;
-  const txWidthSigs = { ...tx, sigs };
-  if (txWidthSigs.hash !== hash) {
+  const txWithSigs = { ...tx, sigs };
+  if (txWithSigs.hash !== hash) {
     throw new Error('Hash mismatch');
   }
-  if (!isSignedTransaction(txWidthSigs)) {
+  if (!isSignedTransaction(txWithSigs)) {
     throw new Error('Signing failed');
   }
-  return txWidthSigs;
+  return txWithSigs;
 };
 
 export const safeSign =

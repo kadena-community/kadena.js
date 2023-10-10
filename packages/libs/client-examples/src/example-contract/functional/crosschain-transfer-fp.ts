@@ -8,7 +8,6 @@ import {
 import {
   addKeyset,
   addSigner,
-  asyncPipe,
   composePactCommand,
   continuation,
   execution,
@@ -21,6 +20,7 @@ import type { ChainId } from '@kadena/types';
 import { listen, pollCreateSpv, submitOne } from '../util/client';
 import { inspect } from '../util/fp-helpers';
 import { keyFromAccount } from '../util/keyFromAccount';
+import { asyncPipe } from '@kadena/client-utils/core';
 
 interface IAccount {
   account: string;
