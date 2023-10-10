@@ -4,6 +4,7 @@ const ALLOWED_ROOT_DEPENDENCIES = [
   'knip',
   'only-allow',
   'prettier',
+  'prettier-plugin-organize-imports',
   'prettier-plugin-packagejson',
   'syncpack',
   'tsx',
