@@ -54,10 +54,11 @@
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
-    "@kadena/e2e-components": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@kadena/e2e-components": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
+    "@playwright/test": "1.38.1",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@tanstack/eslint-plugin-query": "^4.34.1",
@@ -88,9 +89,7 @@
     "next-translate-plugin": "~2.0.5",
     "prettier": "~3.0.0",
     "prettier-plugin-packagejson": "^2.4.5",
-    "typescript": "5.2.2",
-    "@playwright/test": "1.38.1",
-    "eslint-plugin-playwright": "0.16.0"
+    "typescript": "5.2.2"
   },
   "volta": {
     "node": "16.15.0"
