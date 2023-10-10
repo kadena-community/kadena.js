@@ -7,9 +7,12 @@ import { Breadcrumbs } from '@kadena/react-ui';
 
 import { getCookieValue, getQueryValue } from './utils';
 
-import type { IModule } from '@/components/Global/ModuleExplorer';
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
+import type {
+  IChainModule,
+  IModule,
+} from '@/components/Global/ModuleExplorer/types';
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import Routes from '@/constants/routes';
@@ -25,7 +28,7 @@ import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
 import type { INetworkData } from '@/utils/network';
 import { getAllNetworks } from '@/utils/network';
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type {
   GetServerSideProps,
@@ -186,11 +189,14 @@ const ModuleExplorerPage = (
     }),
   });
 
-  let fetchedModules: IEditorProps['openedModules'] = [];
+  const queryClient = useQueryClient();
+
+  const cached = queryClient.getQueriesData({ queryKey: ['module', network] });
+  let fetchedModules: IEditorProps['openedModules'] = cached
+    .filter(([, data]) => Boolean(data))
+    .map(([, data]) => data as IChainModule);
   if (results.every((result) => result.status === 'success')) {
-    fetchedModules = results.map(
-      (result) => result.data as IModule & { code: string },
-    );
+    fetchedModules = results.map((result) => result.data as IChainModule);
   }
 
   const router = useRouter();
