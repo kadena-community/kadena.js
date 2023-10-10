@@ -65,7 +65,12 @@ export const NotificationContainer: FC<INotificationProps> = ({
   const descriptionId = `description-${id}`;
 
   return (
-    <div className={classList} role="alert" aria-labelledby={labelId} aria-describedby={descriptionId}>
+    <div
+      className={classList}
+      role="alert"
+      aria-labelledby={labelId}
+      aria-describedby={descriptionId}
+    >
       <div className={containerWrapperClass}>
         <Icon size="md" />
 
