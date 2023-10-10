@@ -11,6 +11,7 @@ const customJestConfig = {
     '@/(.*)': '<rootDir>/src/$1',
   },
   moduleDirectories: ['node_modules', 'src'],
+  testPathIgnorePatterns: ['<rootDir>/e2e-tests/*'],
   testEnvironment: 'jsdom',
   globals: {
     'ts-jest': {

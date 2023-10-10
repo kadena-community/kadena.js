@@ -20,7 +20,7 @@
       "outputMode": "new-only",
       "cache": false,
       "persistent": true,
-      "inputs": ["tests/**/*.ts"]
+      "inputs": ["e2e-tests/**/*.ts"]
     },
     "lint": {
       "dependsOn": ["build"],
