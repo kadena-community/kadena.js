@@ -16,8 +16,6 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 
-type DisplayVariants = 'standard' | 'outlined';
-
 export interface INotificationProps {
   icon?: keyof typeof SystemIcon;
   title?: string;
@@ -26,7 +24,7 @@ export interface INotificationProps {
   color?: keyof typeof colorVariants;
   hasCloseButton?: boolean;
   onClose?: () => void;
-  variant?: DisplayVariants;
+  variant?: keyof typeof displayVariants;
   inline?: boolean;
 }
 

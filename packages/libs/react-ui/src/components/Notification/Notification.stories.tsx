@@ -1,4 +1,4 @@
-import { colorVariants } from './Notification.css';
+import { colorVariants, displayVariants } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
 import type { INotificationProps } from '@components/Notification';
@@ -22,7 +22,7 @@ const meta: Meta<
   },
   argTypes: {
     variant: {
-      options: ['standard', 'outlined'],
+      options: Object.keys(displayVariants) as (keyof typeof displayVariants)[],
       control: {
         type: 'select',
       },
