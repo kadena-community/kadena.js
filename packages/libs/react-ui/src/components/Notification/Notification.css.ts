@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
 import type { ColorType } from '@theme/vars.css';
 import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
@@ -52,16 +52,13 @@ export const inlineVariants = styleVariants({
   true: [
     sprinkles({
       display: 'flex',
-      flexDirection: 'column',
-    }),
-    {
-      '@media': {
-        [`screen and ${breakpoints.md}`]: {
-          alignItems: 'flex-start',
-          flexDirection: 'row',
-        },
+      alignItems: {
+        md: 'flex-start',
       },
-    },
+      flexDirection: {
+        md: 'row',
+      },
+    }),
   ],
   false: [sprinkles({ display: 'flex', flexDirection: 'column' })],
 });
