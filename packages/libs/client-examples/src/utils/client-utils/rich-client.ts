@@ -3,8 +3,8 @@ import type { ChainId } from '@kadena/client';
 import { crossChain } from './cross-chain';
 import type { IAccount } from './helpers';
 import { preflight } from './preflight';
-import { dirtyRead } from './readDirty';
-import { submitAndListen } from './submitAndListen';
+import { dirtyRead } from './read-dirty';
+import { submitAndListen } from './submit-and-listen';
 import type { WithEmitter } from './with-emitter';
 import { withEmitter } from './with-emitter';
 
