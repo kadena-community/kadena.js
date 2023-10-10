@@ -9,6 +9,7 @@ interface IReturn {
   clickMenu: (e: React.MouseEvent<HTMLAnchorElement>, item: IMenuItem) => void;
   active: number;
   setActive: React.Dispatch<React.SetStateAction<number>>;
+  treeRef: RefObject<HTMLUListElement>;
 }
 
 export const useSideMenu = (
@@ -46,7 +47,6 @@ export const useSideMenu = (
       console.log(foundElm?.tagName.toLowerCase());
     }
 
-    console.log('found', foundElm);
     return foundElm;
   };
 
@@ -55,11 +55,8 @@ export const useSideMenu = (
       const elms = treeRef.current.querySelectorAll('[data-active="true"]');
       const lastElm = elms[elms.length - 1];
 
-      console.log(1111);
       const elm = findParentUlButton(lastElm);
       if (!elm) return;
-
-      console.log('offset', elm.offsetTop);
 
       setOffsetScroll(elm.offsetTop);
     }
@@ -122,9 +119,8 @@ export const useSideMenu = (
     const clickedItem = e.target as HTMLAnchorElement;
 
     if (clickedItem.dataset.active !== 'true') {
-      const tree = treeRef.current;
       const elm = findParentUlButton(clickedItem);
-      setOffsetScroll(elm?.offsetTop);
+      setOffsetScroll(elm?.offsetTop ?? 0);
     }
 
     if (clickedItem.tagName.toLowerCase() !== 'a') return;
