@@ -93,11 +93,11 @@ export const navAccordionLinkClass = style([
   {
     textDecoration: 'none',
     selectors: {
-      '&:active': {
+      '&:active, &:hover': {
         color: `${vars.colors.$negativeSurface} !important`,
       },
-      '&:visited': {
-        color: `${vars.colors.$negativeSurface} !important`,
+      '&:hover': {
+        textDecoration: 'underline',
       },
     },
   },
@@ -111,5 +111,11 @@ export const navAccordionDeepLinkClass = style([
   sprinkles({
     color: '$gray60',
     fontSize: '$sm',
+  }),
+]);
+
+export const navAccordionShallowLinkClass = style([
+  sprinkles({
+    display: 'none',
   }),
 ]);

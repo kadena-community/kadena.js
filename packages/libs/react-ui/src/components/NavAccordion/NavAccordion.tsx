@@ -1,54 +1,77 @@
 'use client';
 
-import type { INavAccordionSectionProps } from '.';
-import { navAccordionContentClass } from './NavAccordion.css';
+import type { INavAccordionLinkProps, INavAccordionSectionProps } from '.';
+import { NavAccordionLink } from './NavAccordionLink';
+import { NavAccordionSection } from './NavAccordionSection';
 
 import type { FC, FunctionComponentElement } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
+type Child = FunctionComponentElement<
+  INavAccordionSectionProps | INavAccordionLinkProps
+>;
 export interface INavAccordionRootProps {
-  children?: FunctionComponentElement<INavAccordionSectionProps>[];
+  children?: Child[];
   linked?: boolean;
   initialOpenSection?: number;
 }
 
+export const NavAccordionContext = createContext<number[]>([]);
+
 export const NavAccordionRoot: FC<INavAccordionRootProps> = ({
   children,
   linked = false,
-  initialOpenSection = undefined,
+  initialOpenSection = 0,
 }) => {
-  const [openSections, setOpenSections] = useState([initialOpenSection]);
+  const [openSections, setOpenSections] = useState<number[]>([
+    initialOpenSection,
+  ]);
 
   useEffect(() => {
     if (linked && openSections.length > 1) {
-      const lastOpen = openSections.pop() || undefined;
+      const lastOpen = openSections.pop() || 0;
       setOpenSections([lastOpen]);
     }
   }, [linked]);
 
   return (
-    <nav data-testid="kda-nav-accordion-sections">
-      {React.Children.map(children, (section, sectionIndex) =>
-        React.cloneElement(
-          section as React.ReactElement<
-            HTMLElement | INavAccordionSectionProps,
-            React.JSXElementConstructor<JSX.Element & INavAccordionSectionProps>
-          >,
-          {
-            index: sectionIndex,
-            isOpen: openSections.includes(sectionIndex),
-            className: navAccordionContentClass,
-            onClick: () =>
-              openSections.includes(sectionIndex)
-                ? setOpenSections(
-                    openSections.filter((i) => i !== sectionIndex),
-                  )
-                : setOpenSections(
-                    linked ? [sectionIndex] : [...openSections, sectionIndex],
-                  ),
-          },
-        ),
-      )}
+    <nav>
+      <NavAccordionContext.Provider value={openSections}>
+        {React.Children.map(children as Child[], (child: Child, index) => {
+          if (child.type === NavAccordionSection) {
+            const { title, children } =
+              child.props as INavAccordionSectionProps;
+            return (
+              <NavAccordionSection
+                index={index}
+                key={`section-${title}`}
+                title={title}
+                onClick={() =>
+                  openSections.includes(index)
+                    ? setOpenSections(openSections.filter((i) => i !== index))
+                    : setOpenSections(
+                        linked ? [index] : [...openSections, index],
+                      )
+                }
+              >
+                {children}
+              </NavAccordionSection>
+            );
+          } else if (child.type === NavAccordionLink) {
+            const { active, children } = child.props as INavAccordionLinkProps;
+            return (
+              <NavAccordionLink
+                active={active}
+                deepLink={false}
+                href="https://docs.kadena.io/"
+                shallowLink={true}
+              >
+                {children}
+              </NavAccordionLink>
+            );
+          }
+        })}
+      </NavAccordionContext.Provider>
     </nav>
   );
 };
