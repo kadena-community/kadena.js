@@ -1038,6 +1038,9 @@ importers:
       '@kadena/client':
         specifier: workspace:*
         version: link:../client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../client-utils
       '@kadena/pactjs':
         specifier: workspace:*
         version: link:../pactjs
