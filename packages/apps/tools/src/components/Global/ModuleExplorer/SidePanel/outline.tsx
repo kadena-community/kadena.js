@@ -2,17 +2,22 @@ import { contractParser } from '@kadena/pactjs-generator';
 import type { ITreeProps } from '@kadena/react-ui';
 import { Button, Heading, Text, Tree } from '@kadena/react-ui';
 
-import type { IModule } from '..';
+import type { IChainModule } from '../types';
 
 import React from 'react';
 
 export interface IOutlineProps extends React.HTMLAttributes<HTMLDivElement> {
-  selectedModule?: IModule & { code: string };
+  selectedModule?: IChainModule;
+  onInterfaceClick: (module: IChainModule) => void;
 }
 
 type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: fix this because it's ugly/nasty
 
-const contractToTreeItems = (contract: Contract): ITreeProps['items'] => {
+const contractToTreeItems = (
+  contract: Contract,
+  onInterfaceClick: IOutlineProps['onInterfaceClick'],
+  module: IOutlineProps['selectedModule'],
+): ITreeProps['items'] => {
   const { usedInterface: interfaces, capabilities, functions } = contract;
   const items: ITreeProps['items'] = [];
 
@@ -22,7 +27,13 @@ const contractToTreeItems = (contract: Contract): ITreeProps['items'] => {
       isOpen: true,
       items: interfaces.map((i) => ({
         title: (
-          <Button variant="compact" icon="ExitToApp">
+          <Button
+            onClick={() =>
+              onInterfaceClick({ chainId: module!.chainId, moduleName: i.name })
+            }
+            variant="compact"
+            icon="ExitToApp"
+          >
             {i.name}
           </Button>
         ),
@@ -52,12 +63,12 @@ const contractToTreeItems = (contract: Contract): ITreeProps['items'] => {
 };
 
 const Outline = (props: IOutlineProps): React.JSX.Element => {
-  const { selectedModule } = props;
+  const { selectedModule, onInterfaceClick } = props;
 
   let parsedContract: Contract;
   if (selectedModule) {
     const [, namespace] = selectedModule.moduleName.split('.');
-    const [parsedModules] = contractParser(selectedModule.code, namespace);
+    const [parsedModules] = contractParser(selectedModule.code!, namespace);
     parsedContract = parsedModules[0]; // TODO: improve this
   }
 
@@ -70,7 +81,14 @@ const Outline = (props: IOutlineProps): React.JSX.Element => {
           : null}
       </Heading>
       {selectedModule ? (
-        <Tree items={contractToTreeItems(parsedContract!)} isOpen />
+        <Tree
+          items={contractToTreeItems(
+            parsedContract!,
+            onInterfaceClick,
+            selectedModule,
+          )}
+          isOpen
+        />
       ) : (
         <Text>
           Select/open a module to see the outline of the contract/module
