@@ -35,6 +35,9 @@ jobs:
         run: pnpm exec playwright install chromium
         working-directory: packages/apps/tools
 
+      - name: Build Tools dApp
+        run: pnpm run build --filter @kadena/tools
+
       - name: Run Playwright tests
         run: pnpm run test:e2e --filter @kadena/tools
         env:
