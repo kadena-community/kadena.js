@@ -1,5 +1,7 @@
 import { Heading, Stack } from '@kadena/react-ui';
 
+import { globalClass } from '../../global.css';
+
 import {
   avatarClass,
   headerClass,
@@ -28,7 +30,9 @@ export const TitleHeader: FC<IProps> = ({ title, subTitle, avatar }) => {
 
   useEffect(() => {
     if (router.isReady) {
-      setLoaderHeaderClass(classNames(headerWrapperClass, headerLoadedClass));
+      setLoaderHeaderClass(
+        classNames(globalClass, headerWrapperClass, headerLoadedClass),
+      );
     }
   }, [router.isReady]);
   return (

@@ -76,9 +76,7 @@ export const menuInLayoutVariants = styleVariants({
 export const menuLayoutVariants = styleVariants({
   landing: {
     '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        paddingTop: '290px',
-      },
+      [`screen and ${breakpoints.md}`]: {},
     },
   },
   normal: {},

@@ -31,7 +31,7 @@ export const useSideMenu = (
       }
 
       const foundButton: HTMLElement | null | undefined =
-        foundElm.querySelector('button');
+        foundElm.querySelector('button, a');
       if (foundButton) {
         foundElm = foundButton;
         break;
@@ -53,7 +53,9 @@ export const useSideMenu = (
       const elm = findParentUlButton(lastElm);
       if (!elm) return;
 
-      elm.scrollIntoView({
+      treeRef.current?.parentElement?.scroll({
+        top: elm.offsetTop,
+        left: 0,
         behavior: 'smooth',
       });
     }
@@ -103,10 +105,8 @@ export const useSideMenu = (
       const tree = treeRef.current;
       setTimeout(() => {
         // scrollintoview will not work correctly in a element with overFlow:'scroll'
-
         const elm = findParentUlButton(clickedItem);
         if (!elm) return;
-
         tree?.parentElement?.scroll({
           top: elm.offsetTop,
           left: 0,

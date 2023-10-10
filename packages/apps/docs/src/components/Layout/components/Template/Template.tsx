@@ -26,7 +26,7 @@ export const Template: FC<IProps> = ({
   hideSideMenu = false,
 }) => {
   const { isMenuOpen, closeMenu } = useMenu();
-  const isMediumDevice = useMedia(breakpoints.md);
+  const isMediumDevice = useMedia(breakpoints.md, true);
   const [{ y }] = useWindowScroll();
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [initialTopSpacing, setInitialTopSpacing] = useState('');
@@ -57,7 +57,7 @@ export const Template: FC<IProps> = ({
 
   useEffect(() => {
     if (!mainContentRef.current || !enablePositioning) {
-      setStyle({});
+      setStyle({ paddingTop: 0 });
       return;
     }
 
