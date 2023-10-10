@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/naming-convention: 0 */
 import { sprinkles } from '@theme/sprinkles.css';
-import { breakpoints, mapToProperty, responsiveStyle } from '@theme/themeUtils';
+import { breakpoints, mapToProperty } from '@theme/themeUtils';
 import { style, styleVariants } from '@vanilla-extract/css';
 import mapValues from 'lodash.mapvalues';
 
