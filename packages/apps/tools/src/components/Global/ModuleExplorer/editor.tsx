@@ -1,6 +1,6 @@
 import { Tabs } from '@kadena/react-ui';
 
-import type { IModule } from '.';
+import type { IChainModule } from './types';
 
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -10,10 +10,10 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
 });
 
 export interface IEditorProps {
-  openedModules: Array<IModule & { code: string }>;
+  openedModules: IChainModule[];
 }
 
-const moduleToTabId = ({ moduleName, chainId }: IModule): string => {
+const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
   return `${moduleName}-${chainId}`;
 };
 
