@@ -7,8 +7,8 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import type { IClientConfig } from '../client-utils/helpers';
-import { submitClient } from '../client-utils/rich-client';
+import type { IClientConfig } from '../core/utils/helpers';
+import { submitClient } from '../core/rich-client';
 
 interface ITransferInput {
   sender: { account: string; publicKeys: string[] };
@@ -42,5 +42,5 @@ const transferCommand = ({
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 
-export const createAccount = (inputs: ITransferInput, config: IClientConfig) =>
+export const transfer = (inputs: ITransferInput, config: IClientConfig) =>
   submitClient(config)(transferCommand(inputs));

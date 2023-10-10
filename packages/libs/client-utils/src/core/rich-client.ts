@@ -1,14 +1,13 @@
 import type { ChainId } from '@kadena/client';
 
 import { crossChain } from './cross-chain';
-import type { IAccount } from './helpers';
+import type { IAccount } from './utils/helpers';
 import { preflight } from './preflight';
 import { dirtyRead } from './read-dirty';
 import { submitAndListen } from './submit-and-listen';
-import type { WithEmitter } from './with-emitter';
-import { withEmitter } from './with-emitter';
 
 import { pipe } from 'ramda';
+import { WithEmitter, withEmitter } from './utils/with-emitter';
 
 export const submitClient = pipe(submitAndListen, withEmitter);
 export const preflightClient = pipe(preflight, withEmitter);

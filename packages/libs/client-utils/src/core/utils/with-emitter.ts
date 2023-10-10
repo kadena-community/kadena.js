@@ -1,4 +1,4 @@
-import type { Any, AnyFunc, First, IfAny, Tail } from '../types';
+import type { Any, AnyFunc, First, IfAny, Tail } from './types';
 
 import type { IEmit } from './helpers';
 

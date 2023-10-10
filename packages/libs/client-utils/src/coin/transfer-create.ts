@@ -1,64 +1,61 @@
+import type { ChainId } from '@kadena/client';
+import { Pact, readKeyset } from '@kadena/client';
 import {
-  isSignedTransaction,
-  Pact,
-  readKeyset,
-  signWithChainweaver,
-} from '@kadena/client';
-import type { IPactDecimal } from '@kadena/types';
+  addKeyset,
+  addSigner,
+  composePactCommand,
+  execution,
+  setMeta,
+} from '@kadena/client/fp';
 
-import { listen, preflight, submit } from './util/client';
+import type { IClientConfig } from '../core/utils/helpers';
+import { submitClient } from '../core/rich-client';
 
-const NETWORK_ID: string = 'testnet04';
-
-async function main(): Promise<void> {
-  const senderAccount =
-    'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46';
-  const receiverAccount =
-    'k:1a98599ff4677a119565d852b29b0d447c5051cb2c49673c32cba3fae096e209';
-  const amount: IPactDecimal = { decimal: '0.23' };
-  const signerKey = senderAccount.split('k:')[1];
-  const receiverKey = receiverAccount.split('k:')[1];
-
-  const transaction = Pact.builder
-    .execution(
-      Pact.modules.coin['transfer-create'](
-        senderAccount,
-        receiverAccount,
-        readKeyset('ks'),
-        amount,
-      ),
-    )
-    .addSigner(signerKey, (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability('coin.TRANSFER', senderAccount, receiverAccount, amount),
-    ])
-    .addKeyset('ks', 'keys-all', receiverKey)
-    .setMeta({
-      chainId: '1',
-      gasLimit: 1000,
-      gasPrice: 1.0e-6,
-      senderAccount,
-      ttl: 10 * 60, // 10 minutes
-    })
-    .setNetworkId(NETWORK_ID)
-    .createTransaction();
-
-  const signedTx = await signWithChainweaver(transaction);
-
-  const preflightResult = await preflight(signedTx);
-
-  if (preflightResult.result.status === 'failure') {
-    console.error(preflightResult.result.status);
-    throw new Error('failure');
-  }
-
-  console.log('preflight successful');
-
-  if (isSignedTransaction(signedTx)) {
-    const transactionDescriptor = await submit(signedTx);
-    const result = await listen(transactionDescriptor);
-    console.log(result);
-  }
+interface ICreateAccountCommandInput {
+  sender: { account: string; publicKeys: string[] };
+  receiver: {
+    account: string;
+    keyset: {
+      keys: string[];
+      pred: 'keys-all' | 'keys-two' | 'keys-one';
+    };
+  };
+  amount: string;
+  gasPayer?: { account: string; publicKeys: string[] };
+  chainId: ChainId;
 }
 
-main().catch(console.error);
+const transferCreateCommand = ({
+  sender,
+  receiver,
+  amount,
+  gasPayer = sender,
+  chainId,
+}: ICreateAccountCommandInput) =>
+  composePactCommand(
+    execution(
+      Pact.modules.coin['transfer-create'](
+        sender.account,
+        amount,
+        readKeyset('account-guard'),
+        {
+          decimal: amount,
+        },
+      ),
+    ),
+    addKeyset('account-guard', receiver.keyset.pred, ...receiver.keyset.keys),
+    addSigner(sender.publicKeys, (withCapability) => [
+      withCapability('coin.TRANSFER', sender.account, receiver.account, {
+        decimal: amount,
+      }),
+    ]),
+    addSigner(gasPayer.publicKeys, (withCapability) => [
+      withCapability('coin.GAS'),
+    ]),
+    setMeta({ senderAccount: gasPayer.account, chainId }),
+  );
+
+export const transferCreate = (
+  inputs: ICreateAccountCommandInput,
+  config: IClientConfig,
+) => submitClient(config)(transferCreateCommand(inputs));

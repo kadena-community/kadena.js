@@ -9,17 +9,15 @@ import type {
 import { createClient, createTransaction } from '@kadena/client';
 import {
   addSigner,
-  asyncPipe,
   composePactCommand,
   continuation,
   setMeta,
 } from '@kadena/client/fp';
 
-import { safeSign } from '../../example-contract/util/fp-helpers';
-import type { Any } from '../types';
-
-import type { IAccount, IClientConfig, IEmit } from './helpers';
-import { pickFirst, throwIfFails, withInput } from './helpers';
+import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
+import { pickFirst, safeSign, throwIfFails, withInput } from './utils/helpers';
+import { Any } from './utils/types';
+import { asyncPipe } from '../utils/asyncPipe';
 
 const requestSpvProof =
   (targetChainId: ChainId, client: IClient, onPoll: (id: string) => void) =>

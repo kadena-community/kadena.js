@@ -1,27 +1,28 @@
-import { createClient, Pact } from '@kadena/client';
+import type { ChainId } from '@kadena/client';
+import { Pact } from '@kadena/client';
+import { execution } from '@kadena/client/fp';
 
-import type { Account } from '../core/createAccountName';
-import { apiHostGenerator } from '../utils/apiHostGenerator';
+import type { IClientConfig } from '../core/utils/helpers';
+import { dirtyReadClient } from '../core/rich-client';
 
-const { dirtyRead } = createClient(apiHostGenerator);
+import { pipe } from 'ramda';
 
-const NETWORK_ID: string = 'testnet04';
-
-async function getBalance(account: Account): Promise<void> {
-  const tr = Pact.builder
-    .execution(Pact.modules.coin['get-balance'](account))
-    .setMeta({ chainId: '0' })
-    .setNetworkId(NETWORK_ID)
-    .createTransaction();
-
-  // we don't want to submit a transaction for just reading data,
-  // so instead we just read the value from the local data of the blockchain node
-  const res = await dirtyRead(tr);
-
-  console.log(res);
-}
-
-const myAccount: string =
-  'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46';
-
-getBalance(myAccount).catch(console.error);
+export const getBalance = (
+  account: string,
+  networkId: string,
+  chainId: ChainId,
+  host?: IClientConfig['host'],
+) => {
+  const balance = pipe(
+    Pact.modules.coin['get-balance'],
+    execution,
+    dirtyReadClient({
+      host,
+      defaults: {
+        networkId,
+        meta: { chainId },
+      },
+    }),
+  );
+  return balance(account).execute();
+};

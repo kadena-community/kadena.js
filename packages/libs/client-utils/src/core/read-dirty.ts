@@ -1,10 +1,12 @@
 import { createClient, createTransaction } from '@kadena/client';
-import { asyncPipe, composePactCommand } from '@kadena/client/fp';
+import { composePactCommand } from '@kadena/client/fp';
 
-import type { Any } from '../types';
+import type { Any } from './utils/types';
 
-import type { IClientConfig, IEmit } from './helpers';
-import { throwIfFails } from './helpers';
+import type { IClientConfig, IEmit } from './utils/helpers';
+import { throwIfFails } from './utils/helpers';
+
+import { asyncPipe } from '../utils/asyncPipe';
 
 export const dirtyRead =
   (

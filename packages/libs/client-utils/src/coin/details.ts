@@ -2,8 +2,8 @@ import type { ChainId } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { execution } from '@kadena/client/fp';
 
-import type { IClientConfig } from '../client-utils/helpers';
-import { dirtyReadClient } from '../client-utils/rich-client';
+import type { IClientConfig } from '../core/utils/helpers';
+import { dirtyReadClient } from '../core/rich-client';
 
 import { pipe } from 'ramda';
 

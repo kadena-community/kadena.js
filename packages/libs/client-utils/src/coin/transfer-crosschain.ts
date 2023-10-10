@@ -8,10 +8,10 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import type { IClientConfig } from '../client-utils/helpers';
-import { submitClient } from '../client-utils/rich-client';
+import type { IClientConfig } from '../core/utils/helpers';
+import { crossChainClient } from '../core/rich-client';
 
-interface ICreateAccountCommandInput {
+interface ICrossChainInput {
   sender: { account: string; publicKeys: string[] };
   receiver: {
     account: string;
@@ -21,23 +21,27 @@ interface ICreateAccountCommandInput {
     };
   };
   amount: string;
-  gasPayer?: { account: string; publicKeys: string[] };
+  targetChainId: ChainId;
+  targetChainGasPayer: { account: string; publicKeys: string[] };
+  gasPayer: { account: string; publicKeys: string[] };
   chainId: ChainId;
 }
 
-const createAccountCommand = ({
+const createCrossChainCommand = ({
   sender,
   receiver,
   amount,
+  targetChainId,
   gasPayer = sender,
   chainId,
-}: ICreateAccountCommandInput) =>
+}: Omit<ICrossChainInput, 'targetChainGasPayer'>) =>
   composePactCommand(
     execution(
-      Pact.modules.coin['transfer-create'](
+      Pact.modules.coin.defpact['transfer-crosschain'](
         sender.account,
         amount,
         readKeyset('account-guard'),
+        targetChainId,
         {
           decimal: amount,
         },
@@ -45,9 +49,13 @@ const createAccountCommand = ({
     ),
     addKeyset('account-guard', receiver.keyset.pred, ...receiver.keyset.keys),
     addSigner(sender.publicKeys, (withCapability) => [
-      withCapability('coin.TRANSFER', sender.account, receiver.account, {
-        decimal: amount,
-      }),
+      withCapability(
+        'coin.TRANSFER_XCHAIN',
+        sender.account,
+        receiver.account,
+        { decimal: amount },
+        targetChainId,
+      ),
     ]),
     addSigner(gasPayer.publicKeys, (withCapability) => [
       withCapability('coin.GAS'),
@@ -55,7 +63,10 @@ const createAccountCommand = ({
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 
-export const createAccount = (
-  inputs: ICreateAccountCommandInput,
+export const transferCrossChain = (
+  inputs: ICrossChainInput,
   config: IClientConfig,
-) => submitClient(config)(createAccountCommand(inputs));
+) =>
+  crossChainClient(config)(inputs.targetChainId, inputs.targetChainGasPayer)(
+    createCrossChainCommand(inputs),
+  );

@@ -1,1 +1,1 @@
-export * from './createAccountName';
+export * from './rich-client';

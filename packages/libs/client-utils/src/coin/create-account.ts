@@ -8,8 +8,8 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import type { IClientConfig } from '../client-utils/helpers';
-import { submitClient } from '../client-utils/rich-client';
+import type { IClientConfig } from '../core/utils/helpers';
+import { submitClient } from '../core/rich-client';
 
 interface ICreateAccountCommandInput {
   account: string;

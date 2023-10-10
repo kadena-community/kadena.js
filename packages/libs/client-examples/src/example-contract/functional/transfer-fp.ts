@@ -9,7 +9,7 @@ import {
   setNetworkId,
 } from '@kadena/client/fp';
 
-import { checkSuccess } from '../../utils/client-utils/helpers';
+import { checkSuccess } from '../../../../client-utils/src/core/utils/helpers';
 import { pollStatus, preflight, submitOne } from '../util/client';
 import { inspect, safeSign } from '../util/fp-helpers';
 
