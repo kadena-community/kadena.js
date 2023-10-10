@@ -22,9 +22,9 @@ export async function consumer() {
     },
   )
     .on('sign', (data) => console.log(data))
+    .on('preflight', (data) => console.log(data))
     .on('submit', (data) => console.log(data))
     .on('listen', (data) => console.log(data))
     .on('data', (data) => console.log(data))
-    .on('preflight', (data) => console.log(data))
     .execute();
 }
