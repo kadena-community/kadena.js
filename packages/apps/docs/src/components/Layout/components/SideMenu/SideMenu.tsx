@@ -66,7 +66,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           <Heading as="h5">{activeItem?.menu}</Heading>
         </button>
       )}
-
       <ShowOnMobile>
         <Box marginX="$4" marginBottom="$8" marginTop="$4">
           <Input
@@ -80,7 +79,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           />
         </Box>
       </ShowOnMobile>
-
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
         <ul className={listClass}>
           {menuItems.map((item) => (

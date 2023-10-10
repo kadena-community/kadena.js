@@ -14,7 +14,7 @@ export const globalClass = style({
   vars: {
     [$$navMenu]: '998', //zIndex
     [$$modalZIndex]: '1000', //zIndex
-    [$$sideMenu]: '500', //zIndex
+    [$$sideMenu]: '9999', //zIndex
     [$$pageWidth]: '1440px', //sizes
     [$$leftSideWidth]: '265px', //sizes
     [$$backgroundOverlayColor]: 'rgba(250,250,250, .8)', //colors
