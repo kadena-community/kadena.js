@@ -3,9 +3,9 @@ import {
   navAccordionLinkActiveClass,
   navAccordionLinkClass,
   navAccordionListItemClass,
+  navAccordionShallowLinkClass,
 } from './NavAccordion.css';
 
-import { Link } from '@components/Link';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
@@ -16,6 +16,7 @@ export interface INavAccordionLinkProps {
   children: ReactNode;
   deepLink?: boolean;
   href?: string;
+  shallowLink?: boolean;
 }
 
 export const NavAccordionLink: FC<INavAccordionLinkProps> = ({
@@ -24,19 +25,33 @@ export const NavAccordionLink: FC<INavAccordionLinkProps> = ({
   children,
   deepLink,
   href,
+  shallowLink,
+  ...restProps
 }) => {
-  return (
+  const LinkElement = (
+    <a
+      className={classNames(navAccordionLinkClass, {
+        [navAccordionDeepLinkClass]: deepLink,
+        [navAccordionLinkActiveClass]: active,
+        [navAccordionShallowLinkClass]: shallowLink,
+      })}
+      href={href}
+    >
+      {children}
+    </a>
+  );
+  return shallowLink ? (
+    LinkElement
+  ) : (
     <li className={navAccordionListItemClass}>
-      <Link
-        additionalClasses={classNames(navAccordionLinkClass, {
-          [navAccordionDeepLinkClass]: deepLink,
-          [navAccordionLinkActiveClass]: active,
-        })}
-        href={href}
-        asChild={asChild}
-      >
-        {children}
-      </Link>
+      {asChild && React.isValidElement(children)
+        ? React.cloneElement(children, {
+            ...restProps,
+            ...children.props,
+            className: navAccordionLinkClass,
+            children: children.props.children,
+          })
+        : LinkElement}
     </li>
   );
 };

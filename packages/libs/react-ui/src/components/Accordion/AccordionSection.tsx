@@ -54,7 +54,12 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
       </button>
 
       {isOpen && children && (
-        <div className={accordionContentClass}>{children}</div>
+        <div
+          className={accordionContentClass}
+          style={!isOpen ? { display: 'none' } : {}}
+        >
+          {children}
+        </div>
       )}
     </section>
   );

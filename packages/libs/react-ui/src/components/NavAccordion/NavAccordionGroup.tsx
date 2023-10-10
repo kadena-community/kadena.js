@@ -9,6 +9,7 @@ import {
   navAccordionGroupTitleClass,
 } from './NavAccordion.css';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
+import { NavAccordionLink } from './NavAccordionLink';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
@@ -38,8 +39,9 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
     }
     setIsOpen(!isOpen);
   };
+
   return (
-    <div className={classNames([navAccordionGroupClass])}>
+    <li className={classNames([navAccordionGroupClass])}>
       <button
         className={classNames([
           navAccordionButtonClass,
@@ -55,22 +57,22 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
         />
         <span className={navAccordionGroupTitleClass}>{title}</span>
       </button>
-      {isOpen && children && (
-        <ul className={navAccordionGroupListClass}>
-          {React.Children.map(children, (section) =>
-            React.cloneElement(
-              section as React.ReactElement<
-                INavAccordionLinkProps,
-                React.JSXElementConstructor<INavAccordionLinkProps>
-              >,
-              {
-                deepLink: true,
-                active: section.props.active,
-              },
-            ),
-          )}
+      {children && (
+        <ul
+          className={navAccordionGroupListClass}
+          style={!isOpen ? { display: 'none' } : {}}
+        >
+          {React.Children.map(children, (link) => (
+            <NavAccordionLink
+              active={link.props.active}
+              deepLink={true}
+              href="https://docs.kadena.io/"
+            >
+              {link.props.children}
+            </NavAccordionLink>
+          ))}
         </ul>
       )}
-    </div>
+    </li>
   );
 };

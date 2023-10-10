@@ -77,6 +77,9 @@ export const Dynamic: IStory = {
             </a>
           </NavAccordion.Link>
         </NavAccordion.Section>
+        <NavAccordion.Link href="https://docs.kadena.io/">
+          Documentation
+        </NavAccordion.Link>
       </NavAccordion.Root>
     );
   },

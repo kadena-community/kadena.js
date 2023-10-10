@@ -1,5 +1,6 @@
 'use client';
 
+import { NavAccordionContext } from './NavAccordion';
 import {
   navAccordionButtonClass,
   navAccordionContentClass,
@@ -13,14 +14,13 @@ import type { INavAccordionLinkProps } from './NavAccordionLink';
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
-import React from 'react';
+import React, { useContext } from 'react';
 
 export interface INavAccordionSectionProps {
   children?: FunctionComponentElement<
     INavAccordionGroupProps | INavAccordionLinkProps
   >[];
   index?: number;
-  isOpen?: boolean;
   onClick?: () => void;
   onClose?: () => void;
   onOpen?: () => void;
@@ -29,12 +29,13 @@ export interface INavAccordionSectionProps {
 
 export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
   children,
-  isOpen,
+  index = 0,
   onClick,
   onClose,
   onOpen,
   title,
 }) => {
+  const isOpen = useContext(NavAccordionContext).includes(index);
   const handleClick = (): void => {
     if (isOpen) {
       onClose?.();
@@ -43,11 +44,9 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
     }
     onClick?.();
   };
+
   return (
-    <section
-      className={navAccordionSectionWrapperClass}
-      data-testid="kda-nav-accordion-section"
-    >
+    <section className={navAccordionSectionWrapperClass}>
       <button className={navAccordionButtonClass} onClick={handleClick}>
         {title}
         <SystemIcon.Close
@@ -58,8 +57,9 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
         />
       </button>
 
-      {isOpen && children && (
+      {children && (
         <ul
+          style={!isOpen ? { display: 'none' } : {}}
           className={classNames([
             navAccordionContentClass,
             navAccordionContentListClass,
