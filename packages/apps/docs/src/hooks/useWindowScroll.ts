@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export function useWindowScroll(): [
   {
@@ -11,7 +11,7 @@ export function useWindowScroll(): [
     y: 0,
   });
 
-  React.useLayoutEffect((): (() => void) => {
+  useEffect((): (() => void) => {
     const handleScroll = (): void => {
       setState({ x: window.scrollX, y: window.scrollY });
     };
