@@ -248,7 +248,10 @@ const ModuleExplorerPage = (
 
   const queryClient = useQueryClient();
 
-  const cached = queryClient.getQueriesData({ queryKey: ['module', network] });
+  const cached = queryClient.getQueriesData({
+    queryKey: ['module', network],
+    type: 'active',
+  });
   let fetchedModules: IEditorProps['openedModules'] = cached
     .filter(([, data]) => Boolean(data))
     .map(([, data]) => data as IChainModule);
