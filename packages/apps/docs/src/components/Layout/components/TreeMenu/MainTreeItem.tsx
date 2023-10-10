@@ -3,7 +3,6 @@ import { TreeButton } from './TreeButton';
 import { TreeList } from './TreeList';
 
 import type { IMenuItem, LevelType } from '@/Layout';
-import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -15,7 +14,6 @@ interface IProps {
 }
 
 export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
-  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState<boolean>(item.isMenuOpen ?? false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
