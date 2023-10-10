@@ -31,7 +31,7 @@ export const useSideMenu = (
       }
 
       const foundButton: HTMLElement | null | undefined =
-        foundElm.querySelector('button, a');
+        foundElm.querySelector('button, a') as HTMLElement;
       if (foundButton) {
         foundElm = foundButton;
         break;
