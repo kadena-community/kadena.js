@@ -1,28 +1,27 @@
-import type { ChainwebChainId } from '@kadena/chainweb-node-client';
-
 import type { IEditorProps } from './editor';
 import Editor from './editor';
+import type { ISidePanelProps } from './SidePanel';
 import SidePanel from './SidePanel';
 import { containerStyle } from './styles.css';
+import type { IChainModule } from './types';
 import { getModulesMap } from './utils';
 
 import React from 'react';
 
-export interface IModule {
-  chainId: ChainwebChainId;
-  moduleName: string;
-}
-
 export interface IModuleExplorerProps {
-  modules: IModule[];
+  modules: IChainModule[];
   openedModules: IEditorProps['openedModules'];
-  onModuleClick: (module: IModule) => void;
+  onModuleClick: (module: IChainModule) => void;
+  onInterfaceClick: (module: IChainModule) => void;
+  onModuleExpand: ISidePanelProps['onModuleExpand'];
 }
 
 const ModuleExplorer = ({
   modules,
   openedModules,
   onModuleClick,
+  onInterfaceClick,
+  onModuleExpand,
 }: IModuleExplorerProps): React.JSX.Element => {
   const results = getModulesMap(modules);
   return (
@@ -30,6 +29,8 @@ const ModuleExplorer = ({
       <SidePanel
         results={results}
         onResultClick={onModuleClick}
+        onInterfaceClick={onInterfaceClick}
+        onModuleExpand={onModuleExpand}
         selectedModule={openedModules[0]}
       />
       <Editor openedModules={openedModules} />
