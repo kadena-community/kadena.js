@@ -19,6 +19,13 @@ export interface IResultsProps extends React.HTMLAttributes<HTMLDivElement> {
   filter?: string;
 }
 
+const truncateString = (str: string, maxChars: number): string => {
+  if (str.length <= maxChars) return str;
+  return `${str.slice(0, maxChars)}...`;
+};
+
+const CHARCOUNT_BREAKING_POINT = 19; // This char count doesn't "break" the line into multiple lines
+
 const resultsMapToTreeItems = (
   data: IResultsProps['data'],
   onItemClick: IResultsProps['onItemClick'],
@@ -38,8 +45,12 @@ const resultsMapToTreeItems = (
           onClick={() => onItemClick({ chainId, moduleName })}
           variant="compact"
           icon="ExitToApp"
+          title={chainId + (hash ? ` - ${hash}` : '')}
         >
-          {`${chainId} - ${hash ?? 'No hash'}`}
+          {chainId}
+          {`${
+            hash ? ` - ${truncateString(hash, CHARCOUNT_BREAKING_POINT)}` : ''
+          }`}
         </Button>
       ),
     })),
