@@ -35,5 +35,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Lint monorepo root
+        run: pnpm run lint
+
       - name: Build, lint, test all packages
         run: pnpm turbo lint build test
