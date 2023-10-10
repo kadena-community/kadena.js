@@ -1,7 +1,8 @@
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { ITreeProps } from '@kadena/react-ui';
 import { Button, Tree } from '@kadena/react-ui';
 
-import type { IModule } from '..';
+import type { IChainModule } from '../types';
 import type { getModulesMap } from '../utils';
 
 import { moduleTitle } from './styles.css';
@@ -10,21 +11,28 @@ import React, { useMemo } from 'react';
 
 export interface IResultsProps extends React.HTMLAttributes<HTMLDivElement> {
   data: ReturnType<typeof getModulesMap>;
-  onItemClick: (result: IModule) => void;
+  onItemClick: (result: IChainModule) => void;
+  onModuleExpand: (module: {
+    moduleName: string;
+    chains: ChainwebChainId[];
+  }) => void;
   filter?: string;
 }
 
 const resultsMapToTreeItems = (
   data: IResultsProps['data'],
   onItemClick: IResultsProps['onItemClick'],
+  onModuleExpand: IResultsProps['onModuleExpand'],
 ): ITreeProps['items'] => {
-  return Array.from(data, ([moduleName, chains]) => ({
+  return Array.from(data, ([moduleName, chainsInfo]) => ({
     title: (
       <p className={moduleTitle} title={moduleName}>
         {moduleName}
       </p>
     ),
-    items: chains.map((chainId) => ({
+    onOpen: () =>
+      onModuleExpand({ moduleName, chains: chainsInfo.map((x) => x.chainId) }),
+    items: chainsInfo.map(({ chainId, hash }) => ({
       title: (
         <Button
           onClick={() => onItemClick({ chainId, moduleName })}
@@ -41,6 +49,7 @@ const resultsMapToTreeItems = (
 const Results = ({
   data,
   onItemClick,
+  onModuleExpand,
   filter,
   ...rest
 }: IResultsProps): React.JSX.Element => {
@@ -53,8 +62,8 @@ const Results = ({
         }),
       );
     }
-    return resultsMapToTreeItems(filteredData, onItemClick);
-  }, [data, filter, onItemClick]);
+    return resultsMapToTreeItems(filteredData, onItemClick, onModuleExpand);
+  }, [data, filter, onItemClick, onModuleExpand]);
 
   return (
     <div {...rest}>
