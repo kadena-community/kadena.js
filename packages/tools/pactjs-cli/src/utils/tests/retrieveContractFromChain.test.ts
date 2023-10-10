@@ -1,21 +1,26 @@
-jest.mock('../callLocal.ts');
-import { callLocal } from '../callLocal';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import { retrieveContractFromChain } from '../retrieveContractFromChain';
 
-const mockedCallLocal = callLocal as jest.MockedFunction<typeof callLocal>;
+const restHandlers = [
+  rest.post(
+    'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact/api/v1/local',
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({ result: { data: { code: 'some pactCode' } } }),
+      );
+    },
+  ),
+];
+
+const server = setupServer(...restHandlers);
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('retrieveContractFromChain', () => {
-  afterAll(() => {
-    mockedCallLocal.mockRestore();
-  });
-
   it('returns the pactCode on success', async () => {
-    mockedCallLocal.mockResolvedValue({
-      textResponse: 'some pactText',
-      jsonResponse: { result: { data: { code: 'some pactCode' } } },
-      response: { status: 200 } as Response,
-    });
-
     const result = await retrieveContractFromChain(
       'free.crankk01',
       'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
