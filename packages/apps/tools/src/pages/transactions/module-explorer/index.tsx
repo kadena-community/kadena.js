@@ -221,6 +221,24 @@ const ModuleExplorerPage = (
     [router],
   );
 
+  const onInterfaceClick = useCallback<
+    (selectedInterface: IChainModule) => void
+  >((selectedInterface) => {
+    setOpenedModules((prev) => {
+      const alreadyOpened = prev.find((module) => {
+        return (
+          module.moduleName === selectedInterface.moduleName &&
+          module.chainId === selectedInterface.chainId
+        );
+      });
+
+      if (alreadyOpened) {
+        return prev;
+      }
+      return [...prev, selectedInterface];
+    });
+  }, []);
+
   const { t } = useTranslation('common');
 
   useToolbar([
@@ -249,7 +267,8 @@ const ModuleExplorerPage = (
       </Breadcrumbs.Root>
       <ModuleExplorer
         modules={modules}
-        onModuleClick={onModuleClick}
+        onModuleClick={openModule}
+        onInterfaceClick={onInterfaceClick}
         openedModules={fetchedModules}
       />
     </>
