@@ -24,6 +24,7 @@ export const Template: FC<IProps> = ({
   menuItems,
   layout = 'normal',
   hideSideMenu = false,
+  articleRef,
 }) => {
   const { isMenuOpen, closeMenu } = useMenu();
   const isMediumDevice = useMedia(breakpoints.md);
@@ -34,6 +35,12 @@ export const Template: FC<IProps> = ({
   // Enable position if it's minimum medium device size
   // and layout type is landing
   const enablePositioning = layout === 'landing' && isMediumDevice;
+
+  useEffect(() => {
+    if (articleRef.current) {
+      console.log(articleRef.current.getBoundingClientRect());
+    }
+  }, [articleRef]);
 
   useEffect(() => {
     if (!enablePositioning) return;

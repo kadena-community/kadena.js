@@ -1,16 +1,21 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
 export const sideMenuClass = style([
   sprinkles({
     position: 'relative',
-    height: '100%',
-    paddingBottom: '$25',
   }),
   {
+    height: `calc(100vh - ${vars.sizes.$18})`,
     overflowY: 'auto',
     overflowX: 'hidden',
+
+    '@media': {
+      [`screen and ${breakpoints.md}`]: {
+        height: `calc(100vh - ${vars.sizes.$40})`,
+      },
+    },
   },
 ]);
 

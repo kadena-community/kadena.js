@@ -1,6 +1,6 @@
 import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { $$navMenu, $$pageWidth } from '../../global.css';
+import { $$footerMenu, $$pageWidth } from '../../global.css';
 
 import { style } from '@vanilla-extract/css';
 
@@ -11,7 +11,7 @@ export const footerWrapperClass = style([
     marginTop: '$20',
   }),
   {
-    zIndex: $$navMenu,
+    zIndex: $$footerMenu,
     gridArea: 'footer',
     selectors: {
       [`${darkThemeClass} &`]: {
