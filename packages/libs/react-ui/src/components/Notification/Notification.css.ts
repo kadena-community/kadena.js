@@ -60,7 +60,7 @@ export const inlineVariants = styleVariants({
       },
     }),
   ],
-  false: [sprinkles({ display: 'flex', flexDirection: 'column' })],
+  false: [],
 });
 
 export const closeButtonClass = style([
