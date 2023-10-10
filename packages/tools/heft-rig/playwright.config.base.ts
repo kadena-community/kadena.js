@@ -10,7 +10,7 @@ import { PlaywrightTestConfig } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export const  defaultConfig: PlaywrightTestConfig = {
-  testDir: 'tests',
+  testDir: 'e2e-tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
