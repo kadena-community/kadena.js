@@ -22,7 +22,6 @@
 '@kadena/graph': none
 '@kadena/types': none
 '@kadena/docs': none
-'@kadena/js-monorepo': none
 ---
 
 Fix up some config and dependencies
