@@ -168,10 +168,9 @@ const getFile = async (rootDir, parent, file) => {
   if (!child.root) return;
 
   if (
-    fs.statSync(currentFile).isDirectory() &&
-    SEARCHABLE_DIRS.find((item) =>
-      currentFile.startsWith(`${INITIALPATH}${item}`),
-    )
+    SEARCHABLE_DIRS.some((item) => {
+      return currentFile.startsWith(`${INITIALPATH}${item}`);
+    })
   ) {
     if (fs.statSync(`${currentFile}`).isFile()) {
       const obj = await convertFile(currentFile);
@@ -199,12 +198,7 @@ const getFile = async (rootDir, parent, file) => {
 
     parent = pushToParent(parent, child);
 
-    if (
-      fs.statSync(currentFile).isDirectory() &&
-      SEARCHABLE_DIRS.find((item) =>
-        currentFile.startsWith(`${INITIALPATH}${item}`),
-      )
-    ) {
+    if (fs.statSync(currentFile).isDirectory()) {
       child.children = await createTree(currentFile, child.children);
 
       return child.children;
