@@ -1,4 +1,4 @@
-import { Tabs } from '@kadena/react-ui';
+import { Heading, Tabs } from '@kadena/react-ui';
 
 import type { IChainModule } from './types';
 
@@ -19,7 +19,14 @@ const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
 
 const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
   if (!openedModules.length) {
-    return <div>Nothing loaded</div>;
+    return (
+      <section>
+        <Heading variant="h4">No code to be shown yet</Heading>
+        <p>
+          Click on a module from the left panel to see its code in this panel.
+        </p>
+      </section>
+    );
   }
   return (
     <Tabs.Root
