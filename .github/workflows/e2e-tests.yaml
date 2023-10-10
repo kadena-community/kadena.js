@@ -33,7 +33,7 @@ jobs:
 
       - name: Install browsers
         run: pnpm exec playwright install chromium
-        working-directory: packages/apps/tools˚
+        working-directory: packages/apps/tools
 
       - name: Run Playwright tests
         run: pnpm run test:e2e --filter @kadena/tools
