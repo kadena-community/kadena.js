@@ -2,7 +2,7 @@ import type { IMenuItem } from '@/Layout';
 import { hasSameBasePath } from '@/utils/hasSameBasePath';
 import { useRouter } from 'next/router';
 import type { MouseEventHandler, RefObject } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface IReturn {
   clickSubMenu: MouseEventHandler<HTMLUListElement>;
@@ -14,52 +14,72 @@ interface IReturn {
 export const useSideMenu = (
   closeMenu: () => void,
   menuItems: IMenuItem[],
-  treeRef: RefObject<HTMLUListElement>,
 ): IReturn => {
   const router = useRouter();
+  const treeRef = useRef<HTMLUListElement>(null);
   const [oldPathname, setOldPathname] = useState<string>('');
   const [active, setActive] = useState<number>(1);
+
+  const [offsetScroll, setOffsetScroll] = useState<number>(0);
 
   const findParentUlButton = (elm?: Element): HTMLElement | null => {
     if (!elm) return null;
 
     let foundElm: HTMLElement | null = elm.parentElement;
 
-    do {
-      if (!foundElm) {
+    while (
+      foundElm?.tagName.toLowerCase() !== 'button' ||
+      foundElm.tagName.toLowerCase() === 'section'
+    ) {
+      if (!foundElm || foundElm.tagName.toLowerCase() === 'section') {
         break;
       }
 
       const foundButton: HTMLElement | null | undefined =
-        foundElm.querySelector('button, a') as HTMLElement;
+        foundElm.querySelector(':scope > button') as HTMLElement;
       if (foundButton) {
         foundElm = foundButton;
         break;
       }
       foundElm = foundElm.parentElement;
-    } while (
-      foundElm?.tagName.toLowerCase() !== 'button' ||
-      foundElm?.tagName.toLowerCase() !== 'a'
-    );
 
+      console.log(foundElm?.tagName.toLowerCase());
+    }
+
+    console.log('found', foundElm);
     return foundElm;
   };
 
   useEffect(() => {
-    if (router.isReady && treeRef.current) {
+    if (treeRef.current) {
       const elms = treeRef.current.querySelectorAll('[data-active="true"]');
       const lastElm = elms[elms.length - 1];
 
+      console.log(1111);
       const elm = findParentUlButton(lastElm);
       if (!elm) return;
 
-      treeRef.current?.parentElement?.scroll({
-        top: elm.offsetTop,
-        left: 0,
-        behavior: 'smooth',
-      });
+      console.log('offset', elm.offsetTop);
+
+      setOffsetScroll(elm.offsetTop);
     }
-  }, [router.isReady, treeRef]);
+  }, [treeRef, setOffsetScroll]);
+
+  useEffect(() => {
+    if (offsetScroll > 0) {
+      setTimeout(() => {
+        // scrollintoview will not work correctly in a element with overFlow:'scroll'
+
+        treeRef.current?.parentElement?.scroll({
+          top: offsetScroll,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }, 250);
+
+      setOffsetScroll(0);
+    }
+  }, [treeRef, offsetScroll, setOffsetScroll]);
 
   useEffect(() => {
     setOldPathname(router.pathname);
@@ -103,16 +123,8 @@ export const useSideMenu = (
 
     if (clickedItem.dataset.active !== 'true') {
       const tree = treeRef.current;
-      setTimeout(() => {
-        // scrollintoview will not work correctly in a element with overFlow:'scroll'
-        const elm = findParentUlButton(clickedItem);
-        if (!elm) return;
-        tree?.parentElement?.scroll({
-          top: elm.offsetTop,
-          left: 0,
-          behavior: 'smooth',
-        });
-      }, 250);
+      const elm = findParentUlButton(clickedItem);
+      setOffsetScroll(elm?.offsetTop);
     }
 
     if (clickedItem.tagName.toLowerCase() !== 'a') return;
@@ -127,5 +139,6 @@ export const useSideMenu = (
     clickMenu,
     active,
     setActive,
+    treeRef,
   };
 };

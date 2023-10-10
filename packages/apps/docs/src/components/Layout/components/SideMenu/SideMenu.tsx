@@ -20,7 +20,7 @@ import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
-import React, { useRef } from 'react';
+import React from 'react';
 
 interface IProps {
   closeMenu: () => void;
@@ -28,11 +28,9 @@ interface IProps {
 }
 
 export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
-  const treeRef = useRef<HTMLUListElement>(null);
-  const { active, clickMenu, clickSubMenu, setActive } = useSideMenu(
+  const { active, clickMenu, clickSubMenu, setActive, treeRef } = useSideMenu(
     closeMenu,
     menuItems,
-    treeRef,
   );
   const router = useRouter();
 
