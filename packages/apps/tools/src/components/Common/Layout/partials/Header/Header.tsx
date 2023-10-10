@@ -30,7 +30,7 @@ const Header: FC<IHeaderProps> = () => {
   const navItems = [
     {
       label: t('Faucet'),
-      href: routes.FAUCET_EXISTING,
+      href: routes.FAUCET_NEW,
     },
     {
       label: t('Transactions'),

@@ -21,10 +21,11 @@ interface IAccountNameFieldProps
   inputProps: Partial<
     Pick<
       IInputProps,
-      'id' | 'placeholder' | 'ref' | 'name' | 'onChange' | 'onBlur'
+      'id' | 'placeholder' | 'ref' | 'name' | 'onChange' | 'onBlur' | 'value'
     >
   >;
   error?: FieldError;
+  noIcon?: boolean;
 }
 
 export const NAME_VALIDATION = z.string().trim().min(3).max(256);
@@ -34,6 +35,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
   status,
   helperText,
   error,
+  noIcon = false,
   ...rest
 }) => {
   const elementId = 'kd-select-account-input';
@@ -64,7 +66,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
           setSelectedAccount(e.target.value);
           onChange?.(e as unknown as ChangeEvent<HTMLInputElement>);
         }}
-        icon={'KIcon'}
+        icon={noIcon ? 'KIcon' : undefined}
         id={elementId}
       >
         <option value={''}>{t('Select Account')}</option>
@@ -85,7 +87,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
           setSelectedAccount(e.target.value);
           onChange?.(e);
         }}
-        leftIcon={'KIcon'}
+        leftIcon={noIcon ? undefined : 'KIcon'}
       />
     ),
   };
