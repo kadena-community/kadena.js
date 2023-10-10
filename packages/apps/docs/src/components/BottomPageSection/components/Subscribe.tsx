@@ -58,7 +58,7 @@ export const Subscribe: FC = () => {
           </>
         ) : (
           Boolean(message) && (
-            <Notification.Root color="positive" expanded>
+            <Notification.Root color="positive" expanded variant="outlined">
               {message}
             </Notification.Root>
           )
