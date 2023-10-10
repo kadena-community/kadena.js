@@ -2,6 +2,6 @@
   "extends": "./node_modules/@kadena-dev/heft-rig/tsconfig-base.json",
   "compilerOptions": {
     "resolveJsonModule": true,
-    "types": ["jest", "node"]
+    "types": ["vitest/globals", "node"]
   }
 }
