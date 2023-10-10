@@ -2,8 +2,6 @@ import type { Any, AnyFunc, First, IfAny, Tail } from '../types';
 
 import type { IEmit } from './helpers';
 
-import EventEmitter from 'events';
-
 type GeneralEvent<T> = (event: string, cb: (data: unknown) => Any) => T;
 
 type EventListenerType<
@@ -48,14 +46,15 @@ export type WithEmitter<
 export const withEmitter: WithEmitter =
   (fn) =>
   (...args: Any[]): Any => {
-    const emitter = new EventEmitter();
+    const emitter = new EventTarget();
     const execute = fn(((tag: string) => (data: Any) => {
-      emitter.emit(tag, data);
+      emitter.dispatchEvent(new CustomEvent(tag, { detail: data }));
       return data;
     }) as Any);
     const wrapper = {
       on: (event: string, cb: (data: Any) => Any) => {
-        emitter.on(event, cb);
+        // CustomEvent is not typed correctly
+        emitter.addEventListener(event, ({ detail }: Any) => cb(detail));
         return wrapper;
       },
       execute: () => execute(...args),
