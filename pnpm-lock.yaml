@@ -786,7 +786,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -844,7 +844,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -893,7 +893,7 @@ importers:
         specifier: workspace:*
         version: link:../../tools/markdown
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -951,7 +951,7 @@ importers:
         specifier: workspace:*
         version: link:../../tools/markdown
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -1018,7 +1018,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -1128,7 +1128,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -1232,7 +1232,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -1281,7 +1281,7 @@ importers:
         specifier: workspace:*
         version: link:../../tools/markdown
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -1616,7 +1616,7 @@ importers:
         specifier: workspace:*
         version: link:../../tools/markdown
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -1839,7 +1839,7 @@ importers:
         specifier: workspace:*
         version: link:../markdown
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
@@ -2025,7 +2025,7 @@ importers:
         specifier: workspace:*
         version: link:../markdown
       '@microsoft/api-extractor':
-        specifier: ^7.37.0
+        specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
       '@rushstack/eslint-config':
         specifier: ~3.3.0
