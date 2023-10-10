@@ -1,4 +1,3 @@
-// eslint-disable-next-line simple-import-sort/imports
 import React from 'react';
 import type { FC } from 'react';
 import AceEditor from 'react-ace';
