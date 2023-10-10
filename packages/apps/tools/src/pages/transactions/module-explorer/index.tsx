@@ -28,6 +28,7 @@ import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
 import type { INetworkData } from '@/utils/network';
 import { getAllNetworks } from '@/utils/network';
+import type { QueryClient } from '@tanstack/react-query';
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type {
@@ -103,6 +104,56 @@ export const getCompleteModule = async (
     chainId,
     hash,
   };
+};
+
+const replaceOldWithNew = (
+  oldData: IChainModule[],
+  newData: IChainModule[],
+): IChainModule[] => {
+  return oldData.map((old) => {
+    const newModule = newData.find((newM) => {
+      return newM.moduleName === old.moduleName && newM.chainId === old.chainId;
+    });
+
+    if (!newModule) {
+      return old;
+    }
+
+    return {
+      ...old,
+      hash: newModule.hash,
+    };
+  });
+};
+
+/**
+ * In this function we'll add the `hash` property to the module, so that, in the list of modules,
+ * you can see if there are any differences in the module on certain chains.
+ *
+ * @param x
+ * @param network
+ * @param networksData
+ * @returns
+ */
+export const enrichModule = async (
+  x: IModule,
+  network: Network,
+  networksData: INetworkData[],
+  queryClient: QueryClient,
+) => {
+  const promises = x.chains.map((chain) => {
+    return getCompleteModule(
+      { moduleName: x.moduleName, chainId: chain },
+      network,
+      networksData,
+    );
+  });
+
+  const moduleOnAllChains = await Promise.all(promises);
+
+  queryClient.setQueryData(['modules', network, networksData], (oldData) =>
+    replaceOldWithNew(oldData as IChainModule[], moduleOnAllChains),
+  );
 };
 
 export const getServerSideProps: GetServerSideProps<{
@@ -269,6 +320,15 @@ const ModuleExplorerPage = (
         modules={modules}
         onModuleClick={openModule}
         onInterfaceClick={onInterfaceClick}
+        onModuleExpand={({ moduleName, chains }) => {
+          // eslint-disable-next-line no-void
+          void enrichModule(
+            { moduleName, chains },
+            network,
+            networksData,
+            queryClient,
+          );
+        }}
         openedModules={fetchedModules}
       />
     </>
