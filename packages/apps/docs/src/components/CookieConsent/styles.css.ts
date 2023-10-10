@@ -4,9 +4,10 @@ import { style } from '@vanilla-extract/css';
 
 export const notificationClass = style([
   sprinkles({
-    position: 'relative',
+    position: 'sticky',
+    top: '$17',
   }),
   {
-    zIndex: 5,
+    zIndex: 1000,
   },
 ]);
