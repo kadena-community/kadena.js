@@ -1,29 +1,21 @@
 # generated resources
 src/_generated
 public/sitemap.xml
-src/_docs/kadena/kadenajs
-src/_docs/kadena/client
-src/_docs/pact/cli
-src/_docs/pact/pactjs-test-project/api
-src/_docs/pact/pactjs-test-project/project-api
-src/_docs/build/kda-cli
-src/_docs/build/cryptography-utils
-src/_docs/pact/pactjs
-src/_docs/pact/pactjs-generator
-src/_docs/kadena/client-examples
-src/_docs/build/cookbook/cookbook
-src/_docs/chainweb/stream-client
-src/_docs/chainweb/node-client
-src/_docs/chainweb/js-bindings
+src/pages/kadena/kadenajs
+src/pages/kadena/client
+src/pages/pact/cli
+src/pages/pact/pactjs-test-project/api
+src/pages/pact/pactjs-test-project/project-api
+src/pages/build/kda-cli
+src/pages/build/cryptography-utils
+src/pages/pact/pactjs
+src/pages/pact/pactjs-generator
+src/pages/kadena/client-examples
+src/pages/build/cookbook/cookbook
+src/pages/chainweb/stream-client
+src/pages/chainweb/node-client
+src/pages/chainweb/js-bindings
 
-
-src/pages/kadena
-src/pages/build
-src/pages/pact
-src/pages/contribute
-src/pages/chainweb
-src/pages/marmalade
-src/pages/blogchain
 
 src/pages/docs
 

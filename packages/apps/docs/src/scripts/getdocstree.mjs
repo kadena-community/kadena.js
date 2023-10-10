@@ -143,7 +143,17 @@ const findPath = (dir) => {
   return `/${path}/${fileName}`;
 };
 
-const INITIALPATH = './src/_docs';
+const SEARCHABLE_DIRS = [
+  '/blogchain',
+  '/build',
+  '/chainweb',
+  '/contribute',
+  '/kadena',
+  '/marmalade',
+  '/pact',
+];
+
+const INITIALPATH = './src/pages';
 const MENUFILE = './src/_generated/menu.mjs';
 const TREE = [];
 
@@ -157,35 +167,48 @@ const getFile = async (rootDir, parent, file) => {
 
   if (!child.root) return;
 
-  if (fs.statSync(`${currentFile}`).isFile()) {
-    const obj = await convertFile(currentFile);
-    Object.assign(child, obj);
-  } else if (fs.existsSync(`${currentFile}/index.md`)) {
-    const obj = await convertFile(`${currentFile}/index.md`);
-    Object.assign(child, obj);
-  } else if (fs.existsSync(`${currentFile}/index.mdx`)) {
-    const obj = await convertFile(`${currentFile}/index.mdx`);
-    Object.assign(child, obj);
-  } else if (fs.existsSync(`${currentFile}/index.tsx`)) {
-    const obj = await convertFile(`${currentFile}/index.tsx`);
-    Object.assign(child, obj);
-  } else {
-    const files = fs.readdirSync(currentFile);
+  if (
+    fs.statSync(currentFile).isDirectory() &&
+    SEARCHABLE_DIRS.find((item) =>
+      currentFile.startsWith(`${INITIALPATH}${item}`),
+    )
+  ) {
+    if (fs.statSync(`${currentFile}`).isFile()) {
+      const obj = await convertFile(currentFile);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.md`)) {
+      const obj = await convertFile(`${currentFile}/index.md`);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.mdx`)) {
+      const obj = await convertFile(`${currentFile}/index.mdx`);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.tsx`)) {
+      const obj = await convertFile(`${currentFile}/index.tsx`);
+      Object.assign(child, obj);
+    } else {
+      const files = fs.readdirSync(currentFile);
 
-    // when the directory is empty, just remove the directory.
-    // if there are files or subdirectories and no index file, give error
-    if (files.length > 0) {
-      errors.push(
-        `${currentFile}: there is no index.[md|mdx|tsx] in this directory`,
-      );
+      // when the directory is empty, just remove the directory.
+      // if there are files or subdirectories and no index file, give error
+      if (files.length > 0) {
+        errors.push(
+          `${currentFile}: there is no index.[md|mdx|tsx] in this directory`,
+        );
+      }
     }
-  }
-  parent = pushToParent(parent, child);
 
-  if (fs.statSync(currentFile).isDirectory()) {
-    child.children = await createTree(currentFile, child.children);
+    parent = pushToParent(parent, child);
 
-    return child.children;
+    if (
+      fs.statSync(currentFile).isDirectory() &&
+      SEARCHABLE_DIRS.find((item) =>
+        currentFile.startsWith(`${INITIALPATH}${item}`),
+      )
+    ) {
+      child.children = await createTree(currentFile, child.children);
+
+      return child.children;
+    }
   }
 };
 
