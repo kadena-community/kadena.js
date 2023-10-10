@@ -9,21 +9,19 @@
   },
   "license": "MIT",
   "exports": {
-    ".": "./lib/index.js",
     "./coin": "./lib/coin.js",
     "./core": "./lib/core.js"
   },
-  "main": "lib/index.js",
-  "types": "dist/client.d.ts",
   "files": [
     "dist",
     "lib",
     "coin",
-    "core"
+    "core",
+    "src"
   ],
   "scripts": {
     "generate-pipe-type": "ts-node src/scripts/create-async-pipe-type.ts 30 && prettier --write src/interfaces/async-pipe-type.ts",
-    "build": "pnpm run generate-pipe-type && tsc && api-extractor run --verbose",
+    "build": "pnpm run generate-pipe-type && tsc",
     "dev:postinstall": "pnpm run pactjs:generate:contract",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
