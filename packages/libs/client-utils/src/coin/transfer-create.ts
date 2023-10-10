@@ -11,7 +11,7 @@ import {
 import type { IClientConfig } from '../core/utils/helpers';
 import { submitClient } from '../core/rich-client';
 
-interface ICreateAccountCommandInput {
+interface ICreateTransferInput {
   sender: { account: string; publicKeys: string[] };
   receiver: {
     account: string;
@@ -31,7 +31,7 @@ const transferCreateCommand = ({
   amount,
   gasPayer = sender,
   chainId,
-}: ICreateAccountCommandInput) =>
+}: ICreateTransferInput) =>
   composePactCommand(
     execution(
       Pact.modules.coin['transfer-create'](
@@ -56,6 +56,6 @@ const transferCreateCommand = ({
   );
 
 export const transferCreate = (
-  inputs: ICreateAccountCommandInput,
+  inputs: ICreateTransferInput,
   config: IClientConfig,
 ) => submitClient(config)(transferCreateCommand(inputs));
