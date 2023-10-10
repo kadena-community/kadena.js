@@ -13,6 +13,7 @@ export default defineConfig({
       reuseExistingServer: false,
       stdout: 'pipe',
       stderr: 'pipe',
+      timeout: 120 * 1000,
       env: {
         FAUCET_PUBLIC_KEY: "782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e",
         FAUCET_PRIVATE_KEY: "93fd78bd1e79a3b593d4732b76050b418aeefa5e4e6ea80f351b4c3a5b0dd19f"
