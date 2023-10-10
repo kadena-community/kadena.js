@@ -39,7 +39,7 @@ const resultsMapToTreeItems = (
           variant="compact"
           icon="ExitToApp"
         >
-          {chainId}
+          {`${chainId} - ${hash ?? 'No hash'}`}
         </Button>
       ),
     })),
