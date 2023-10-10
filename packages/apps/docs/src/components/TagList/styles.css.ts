@@ -1,6 +1,5 @@
 import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
 
-import { responsiveStyle } from '@theme/themeUtils';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([
