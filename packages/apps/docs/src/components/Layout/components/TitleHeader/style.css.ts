@@ -70,7 +70,7 @@ export const headerClass = style([
   {
     gridArea: 'main',
     zIndex: 3,
-    backgroundColor: $$backgroundOverlayColor,
+    backgroundColor: 'rgba(250,250,250, .8)',
   },
 ]);
 
