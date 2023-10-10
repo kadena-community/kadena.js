@@ -20,7 +20,7 @@
     "src"
   ],
   "scripts": {
-    "generate-pipe-type": "ts-node src/scripts/create-async-pipe-type.ts 30 && prettier --write src/interfaces/async-pipe-type.ts",
+    "generate-pipe-type": "ts-node src/scripts/create-async-pipe-type.ts 30",
     "build": "pnpm run generate-pipe-type && tsc",
     "dev:postinstall": "pnpm run pactjs:generate:contract",
     "format": "pnpm run /^format:.*/",
