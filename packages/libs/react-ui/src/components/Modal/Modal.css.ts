@@ -1,4 +1,5 @@
-import { breakpoints, sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
+import { responsiveStyle } from '@theme/themeUtils';
 import { style } from '@vanilla-extract/css';
 
 export const openModal = style([
@@ -36,18 +37,18 @@ export const wrapper = style([
       md: 'auto',
     },
   }),
-  {
-    maxWidth: '700px',
-    inset: 0,
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        width: '75vw',
-      },
-      [`screen and ${breakpoints.lg}`]: {
-        width: '50vw',
-      },
+  responsiveStyle({
+    xs: {
+      maxWidth: '700px',
+      inset: 0,
     },
-  },
+    md: {
+      width: '75vw',
+    },
+    lg: {
+      width: '50vw',
+    },
+  }),
 ]);
 
 export const modal = style([

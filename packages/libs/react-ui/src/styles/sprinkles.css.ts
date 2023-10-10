@@ -1,17 +1,8 @@
+import { breakpoints } from './themeUtils';
 import { darkThemeClass, vars } from './vars.css';
 
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
 import mapValues from 'lodash.mapvalues';
-
-// eslint-disable-next-line @kadena-dev/typedef-var
-export const breakpoints = {
-  xs: '',
-  sm: `(min-width: ${640 / 16}rem)`,
-  md: `(min-width: ${768 / 16}rem)`,
-  lg: `(min-width: ${1024 / 16}rem)`,
-  xl: `(min-width: ${1280 / 16}rem)`,
-  xxl: `(min-width: ${1536 / 16}rem)`,
-} as const;
 
 const systemProperties = defineProperties({
   properties: {
@@ -56,7 +47,7 @@ const colorProperties = defineProperties({
 });
 
 const responsiveProperties = defineProperties({
-  conditions: mapValues(breakpoints, (bp) =>
+  conditions: mapValues(breakpoints, (bp?: string) =>
     bp === '' ? {} : { '@media': bp },
   ),
   defaultCondition: 'xs',
