@@ -104,6 +104,7 @@ export const SearchResults: FC<IProps> = ({
                 color={'negative'}
                 expanded={true}
                 icon="AlertBox"
+                variant="outlined"
               >
                 {semanticError}
               </Notification.Root>

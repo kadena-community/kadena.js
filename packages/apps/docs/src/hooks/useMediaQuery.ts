@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 
 const useMediaQuery = (queryName: keyof typeof breakpoints): boolean => {
   const query = breakpoints[queryName];
-  const getMatches = (query: string): boolean => {
+  const getMatches = (
+    query: (typeof breakpoints)[keyof typeof breakpoints],
+  ): boolean => {
     // Prevents SSR issues
     if (typeof window !== 'undefined') {
       return window.matchMedia(query).matches;

@@ -22,6 +22,7 @@ export const MDNotification: FC<IProps> = ({ children, title = '', label }) => {
         title={title}
         expanded
         icon={getIcon(label)}
+        variant="outlined"
       >
         {children}
       </Notification.Root>

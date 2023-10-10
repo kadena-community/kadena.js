@@ -43,7 +43,7 @@ const RequestKey: React.FC = () => {
             </div>
           )}
           {error && (
-            <Notification.Root color="negative" icon="Close">
+            <Notification.Root color="negative" icon="Close" variant="outlined">
               Unknown error:
               <br />
               <br />
@@ -58,20 +58,28 @@ const RequestKey: React.FC = () => {
               {/* center content inside the div */}
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 {transactionSubscription?.transaction?.badResult && (
-                  <Notification.Root color="negative" icon="Close">
+                  <Notification.Root
+                    color="negative"
+                    icon="Close"
+                    variant="outlined"
+                  >
                     Transaction failed with status:{' '}
                     {typeof transactionSubscription?.transaction?.badResult}
                   </Notification.Root>
                 )}
                 {transactionSubscription?.transaction?.goodResult && (
-                  <Notification.Root color="positive" icon="Check">
+                  <Notification.Root
+                    color="positive"
+                    icon="Check"
+                    variant="outlined"
+                  >
                     Transaction succeeded with status:{' '}
                     {transactionSubscription?.transaction?.goodResult}
                   </Notification.Root>
                 )}
                 {!transactionSubscription?.transaction?.goodResult &&
                   !transactionSubscription?.transaction?.badResult && (
-                    <Notification.Root color="warning">
+                    <Notification.Root color="warning" variant="outlined">
                       Unknown transaction status
                     </Notification.Root>
                   )}
