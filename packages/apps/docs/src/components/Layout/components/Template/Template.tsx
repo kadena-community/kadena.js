@@ -65,13 +65,7 @@ export const Template: FC<IProps> = ({
     //  to maintain the scrolling effect
     const paddingValue = parseInt(initialTopSpacing) - (y || 0);
 
-    if (paddingValue <= 0) {
-      setStyle({
-        paddingTop: 0,
-      });
-      return;
-    }
-
+    if (paddingValue <= 0 || isNaN(paddingValue)) return;
     setStyle({
       paddingTop: paddingValue,
     });

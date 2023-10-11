@@ -84,6 +84,7 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
         expanded
         title={title ?? titles[status!]}
         onClose={onNotificationCloseClick}
+        variant="outlined"
       >
         {body ?? bodies[status!]}
         {children}
