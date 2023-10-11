@@ -14,7 +14,7 @@ builder.queryField('transactions', (t) => {
       return prismaClient.transaction.findMany({
         ...query,
         where: {
-          sender: args.accountName,
+          senderAccount: args.accountName,
           events: {
             some: {
               moduleName: args.moduleName,

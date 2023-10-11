@@ -63,7 +63,7 @@ export default builder.prismaNode('Transaction', {
     proof: t.exposeString('proof', { nullable: true }),
     requestKey: t.exposeString('requestKey'),
     rollback: t.expose('rollback', { type: 'Boolean', nullable: true }),
-    sender: t.exposeString('sender', { nullable: true }),
+    senderAccount: t.exposeString('senderAccount', { nullable: true }),
     step: t.expose('step', { type: 'BigInt', nullable: true }),
     ttl: t.expose('ttl', { type: 'BigInt' }),
     transactionId: t.expose('transactionId', {

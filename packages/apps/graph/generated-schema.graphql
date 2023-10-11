@@ -134,7 +134,6 @@ type Query {
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
-  hello(name: String): String!
   lastBlockHeight: BigInt
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
@@ -191,7 +190,7 @@ type Transaction implements Node {
   proof: String
   requestKey: String!
   rollback: Boolean
-  sender: String
+  senderAccount: String
   step: BigInt
   transactionId: BigInt
   ttl: BigInt!
@@ -202,12 +201,12 @@ type Transfer implements Node {
   blockHash: String!
   blocks: [Block!]!
   chainId: BigInt!
-  fromAccount: String!
   height: BigInt!
   id: ID!
-  idx: BigInt!
   moduleHash: String!
   moduleName: String!
+  orderIndex: BigInt!
+  receiverAccount: String!
   requestKey: String!
-  toAccount: String!
+  senderAccount: String!
 }

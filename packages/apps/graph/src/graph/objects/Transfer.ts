@@ -8,13 +8,13 @@ export default builder.prismaNode('Transfer', {
     amount: t.expose('amount' as never, { type: 'Decimal' }),
     blockHash: t.exposeString('block'),
     chainId: t.expose('chainId', { type: 'BigInt' }),
-    fromAccount: t.exposeString('senderAccount'),
+    senderAccount: t.exposeString('senderAccount'),
     height: t.expose('height', { type: 'BigInt' }),
-    idx: t.expose('orderIndex', { type: 'BigInt' }),
+    orderIndex: t.expose('orderIndex', { type: 'BigInt' }),
     moduleHash: t.exposeString('moduleHash'),
     moduleName: t.exposeString('moduleName'),
     requestKey: t.exposeString('requestKey'),
-    toAccount: t.exposeString('receiverAccount'),
+    receiverAccount: t.exposeString('receiverAccount'),
 
     // relations
     blocks: t.prismaField({

@@ -50,15 +50,15 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
     # logs
     # metadata
     # nonce
-    # numEvents
+    # eventCount
     # pactId
     # proof
     requestKey
     # rollback
-    # sender
+    # senderAccount
     # step
     ttl
-    # txId
+    # transactionId
   }
 `;
 
@@ -136,15 +136,15 @@ export const getAccount: DocumentNode = gql`
             # logs
             # metadata
             # nonce
-            # numEvents
+            # eventCount
             # pactId
             # proof
             requestKey
             # rollback
-            # sender
+            # senderAccount
             # step
             # ttl
-            # txId
+            # transactionId
           }
         }
       }
@@ -154,14 +154,14 @@ export const getAccount: DocumentNode = gql`
             amount
             # blockHash
             chainId
-            fromAccount
+            senderAccount
             height
             # id
             # idx
             # moduleHash
             # moduleName
             requestKey
-            toAccount
+            receiverAccount
           }
         }
       }
@@ -206,15 +206,15 @@ export const getChainAccount: DocumentNode = gql`
             # logs
             # metadata
             # nonce
-            # numEvents
+            # eventCount
             # pactId
             # proof
             requestKey
             # rollback
-            # sender
+            # senderAccount
             # step
             # ttl
-            # txId
+            # transactionId
           }
         }
       }
@@ -224,14 +224,14 @@ export const getChainAccount: DocumentNode = gql`
             amount
             # blockHash
             chainId
-            fromAccount
+            senderAccount
             height
             # id
             # idx
             # moduleHash
             # moduleName
             requestKey
-            toAccount
+            receiverAccount
           }
         }
       }
@@ -282,15 +282,15 @@ export const getTransactions: DocumentNode = gql`
           # logs
           # metadata
           # nonce
-          # numEvents
+          # eventCount
           # pactId
           # proof
           requestKey
           # rollback
-          # sender
+          # senderAccount
           # step
           # ttl
-          # txId
+          # transactionId
         }
       }
     }
@@ -328,14 +328,14 @@ export const getTransfers: DocumentNode = gql`
           amount
           # blockHash
           chainId
-          fromAccount
+          senderAccount
           height
           # id
           # idx
           # moduleHash
           # moduleName
-          # requestKey
-          toAccount
+          requestKey
+          receiverAccount
         }
       }
     }
@@ -382,7 +382,7 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       proof
       requestKey
       rollback
-      sender
+      senderAccount
       step
       ttl
       transactionId

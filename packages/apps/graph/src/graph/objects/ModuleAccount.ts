@@ -70,7 +70,7 @@ export default builder.objectType('ModuleAccount', {
         return prismaClient.transaction.findMany({
           ...query,
           where: {
-            sender: parent.accountName,
+            senderAccount: parent.accountName,
             events: {
               some: {
                 moduleName: parent.moduleName,

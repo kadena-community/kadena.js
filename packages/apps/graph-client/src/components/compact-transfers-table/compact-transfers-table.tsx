@@ -51,19 +51,19 @@ export const CompactTransfersTable = (
                 <Table.Td>{edge?.node.amount}</Table.Td>
                 <Table.Td>
                   <Link
-                    href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.fromAccount}`}
+                    href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.senderAccount}`}
                   >
-                    <span title={edge?.node.fromAccount}>
-                      {truncate(edge?.node.fromAccount)}
+                    <span title={edge?.node.senderAccount}>
+                      {truncate(edge?.node.senderAccount)}
                     </span>
                   </Link>
                 </Table.Td>
                 <Table.Td>
                   <Link
-                    href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.toAccount}`}
+                    href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.receiverAccount}`}
                   >
-                    <span title={edge?.node.toAccount}>
-                      {truncate(edge?.node.toAccount)}
+                    <span title={edge?.node.receiverAccount}>
+                      {truncate(edge?.node.receiverAccount)}
                     </span>
                   </Link>
                 </Table.Td>
