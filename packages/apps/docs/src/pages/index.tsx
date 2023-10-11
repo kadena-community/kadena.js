@@ -1,16 +1,17 @@
 import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
 
-import { BrowseSection, DocsCard } from '@/components';
-import { BlogPostsStrip } from '@/components/BlogPostsStrip';
+import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
+import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
+import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-} from '@/components/Layout/components';
+} from '@/components/Layout/components/articleStyles.css';
 import { HomeHeader } from '@/components/Layout/Landing/components';
-import type { IMenuData } from '@/types/Layout';
-import type { IMostPopularPage } from '@/types/MostPopularData';
+import type { IMenuData } from '@/Layout';
+import type { IMostPopularPage } from '@/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {

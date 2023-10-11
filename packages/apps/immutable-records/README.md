@@ -16,10 +16,6 @@ A auctioning dApp for NFTs.
 First, run the development server:
 
 ```sh
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
 ```
 

@@ -1,6 +1,6 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import type { LayoutType } from '@/types/Layout';
+import type { LayoutType } from '@/Layout';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const articleClass = style([
@@ -11,11 +11,12 @@ export const articleClass = style([
   }),
   {
     paddingInline: vars.sizes.$4,
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+
+    ...responsiveStyle({
+      md: {
         paddingInline: vars.sizes.$10,
       },
-    },
+    }),
   },
 ]);
 
@@ -32,37 +33,34 @@ export const contentClass = style([
   {
     gridColumn: '1 / span 2',
     gridRow: '3 / span 1',
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+
+    ...responsiveStyle({
+      md: {
         gridColumn: '3 / span 1',
         gridRow: '3 / span 1',
       },
-    },
+    }),
   },
 ]);
 
 export const contentClassVariants: Record<LayoutType, string> = styleVariants({
-  home: {
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        gridColumn: '2 / span 3',
-      },
+  home: responsiveStyle({
+    md: {
+      gridColumn: '2 / span 3',
     },
-  },
-  code: {
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        gridColumn: '3 / span 1',
-      },
+  }),
+  code: responsiveStyle({
+    md: {
+      gridColumn: '3 / span 1',
     },
-  },
+  }),
   landing: {
     gridColumn: '1 / span 1',
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         gridColumn: '3 / span 1',
       },
-    },
+    }),
   },
   full: {},
   blog: {

@@ -1,4 +1,4 @@
-import { createSlug } from '..';
+import { createSlug } from '../createSlug';
 
 describe('utils createSlug', () => {
   it('should return a slug from given string"', () => {

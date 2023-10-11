@@ -1,4 +1,4 @@
-import type { IMenuItem } from '@/types/Layout';
+import type { IMenuItem } from '@/Layout';
 
 export const leftMenuTree: IMenuItem[] = [
   {

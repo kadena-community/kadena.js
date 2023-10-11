@@ -1,7 +1,7 @@
 import { IconButton, Stack } from '@kadena/react-ui';
 
+import { DocsLogo } from '../DocsLogo/DocsLogo';
 import { spacerClass } from '../styles.css';
-import { DocsLogo } from '..';
 
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';

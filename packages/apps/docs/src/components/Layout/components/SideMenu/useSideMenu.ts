@@ -1,5 +1,5 @@
-import type { IMenuItem } from '@/types/Layout';
-import { hasSameBasePath } from '@/utils';
+import type { IMenuItem } from '@/Layout';
+import { hasSameBasePath } from '@/utils/hasSameBasePath';
 import { useRouter } from 'next/router';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';

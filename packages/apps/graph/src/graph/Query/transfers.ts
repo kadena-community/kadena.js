@@ -9,21 +9,21 @@ builder.queryField('transfers', (t) => {
       chainId: t.arg.string({ required: false }),
     },
     type: 'Transfer',
-    cursor: 'block_chainid_idx_modulehash_requestkey',
+    cursor: 'block_chainId_orderIndex_moduleHash_requestKey',
     resolve: async (query, parent, args) => {
       return prismaClient.transfer.findMany({
         ...query,
         where: {
           OR: [
             {
-              from_acct: args.accountName,
+              senderAccount: args.accountName,
             },
             {
-              to_acct: args.accountName,
+              receiverAccount: args.accountName,
             },
           ],
-          modulename: args.moduleName,
-          ...(args.chainId && { chainid: parseInt(args.chainId) }),
+          moduleName: args.moduleName,
+          ...(args.chainId && { chainId: parseInt(args.chainId) }),
         },
       });
     },

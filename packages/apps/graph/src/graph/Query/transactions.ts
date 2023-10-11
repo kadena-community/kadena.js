@@ -9,7 +9,7 @@ builder.queryField('transactions', (t) => {
       chainId: t.arg.string({ required: false }),
     },
     type: 'Transaction',
-    cursor: 'blockhash_requestkey',
+    cursor: 'blockHash_requestKey',
     resolve: (query, parent, args) => {
       return prismaClient.transaction.findMany({
         ...query,
@@ -17,10 +17,10 @@ builder.queryField('transactions', (t) => {
           sender: args.accountName,
           events: {
             some: {
-              module: args.moduleName,
+              moduleName: args.moduleName,
             },
           },
-          ...(args.chainId && { chainid: parseInt(args.chainId) }),
+          ...(args.chainId && { chainId: parseInt(args.chainId) }),
         },
       });
     },

@@ -7,6 +7,13 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: 'picsum.photos',
+      },
+    ],
+  },
 };
 
 export default withVanillaExtract(nextConfig);

@@ -8,16 +8,18 @@ import {
   Text,
 } from '@kadena/react-ui';
 
-import { BrowseSection, DocsCard, MostPopular } from '@/components';
-import { BlogPostsStrip } from '@/components/BlogPostsStrip';
+import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
+import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
+import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-} from '@/components/Layout/components';
-import type { IMenuData } from '@/types/Layout';
-import type { IMostPopularPage } from '@/types/MostPopularData';
+} from '@/components/Layout/components/articleStyles.css';
+import MostPopular from '@/components/MostPopular/MostPopular';
+import type { IMenuData } from '@/Layout';
+import type { IMostPopularPage } from '@/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {

@@ -1,7 +1,7 @@
 import { Box, Text } from '@kadena/react-ui';
 
-import { Search } from '../Search/';
-import { SearchBar } from '../SearchBar';
+import { Search } from '../Search/Search';
+import { SearchBar } from '../SearchBar/SearchBar';
 
 import { wrapperClass } from './styles.css';
 

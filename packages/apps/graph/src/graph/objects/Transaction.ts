@@ -2,18 +2,18 @@ import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {
-  id: { field: 'blockhash_requestkey' },
+  id: { field: 'blockHash_requestKey' },
   fields: (t) => ({
     // database fields
     badResult: t.string({
       nullable: true,
-      resolve({ badresult }) {
-        return badresult === undefined || badresult === null || badresult === ''
+      resolve({ badResult }) {
+        return badResult === undefined || badResult === null || badResult === ''
           ? undefined
-          : JSON.stringify(badresult);
+          : JSON.stringify(badResult);
       },
     }),
-    chainId: t.expose('chainid', { type: 'BigInt' }),
+    chainId: t.expose('chainId', { type: 'BigInt' }),
     code: t.exposeString('code', { nullable: true }),
     continuation: t.string({
       nullable: true,
@@ -25,7 +25,7 @@ export default builder.prismaNode('Transaction', {
           : JSON.stringify(continuation);
       },
     }),
-    creationTime: t.expose('creationtime', { type: 'DateTime' }),
+    creationTime: t.expose('creationTime', { type: 'DateTime' }),
     data: t.string({
       nullable: true,
       resolve({ data }) {
@@ -35,16 +35,16 @@ export default builder.prismaNode('Transaction', {
       },
     }),
     gas: t.expose('gas', { type: 'BigInt' }),
-    gasLimit: t.expose('gaslimit', { type: 'BigInt' }),
-    gasPrice: t.expose('gasprice', { type: 'Float' }),
+    gasLimit: t.expose('gasLimit', { type: 'BigInt' }),
+    gasPrice: t.expose('gasPrice', { type: 'Float' }),
     goodResult: t.string({
       nullable: true,
-      resolve({ goodresult }) {
-        return goodresult === undefined ||
-          goodresult === null ||
-          goodresult === ''
+      resolve({ goodResult }) {
+        return goodResult === undefined ||
+          goodResult === null ||
+          goodResult === ''
           ? undefined
-          : JSON.stringify(goodresult);
+          : JSON.stringify(goodResult);
       },
     }),
     height: t.expose('height', { type: 'BigInt' }),
@@ -58,15 +58,18 @@ export default builder.prismaNode('Transaction', {
       },
     }),
     nonce: t.exposeString('nonce', { nullable: true }),
-    numEvents: t.expose('num_events', { type: 'BigInt', nullable: true }),
-    pactId: t.exposeString('pactid', { nullable: true }),
+    eventCount: t.expose('eventCount', { type: 'BigInt', nullable: true }),
+    pactId: t.exposeString('pactId', { nullable: true }),
     proof: t.exposeString('proof', { nullable: true }),
-    requestKey: t.exposeString('requestkey'),
+    requestKey: t.exposeString('requestKey'),
     rollback: t.expose('rollback', { type: 'Boolean', nullable: true }),
     sender: t.exposeString('sender', { nullable: true }),
     step: t.expose('step', { type: 'BigInt', nullable: true }),
     ttl: t.expose('ttl', { type: 'BigInt' }),
-    txId: t.expose('txid', { type: 'BigInt', nullable: true }),
+    transactionId: t.expose('transactionId', {
+      type: 'BigInt',
+      nullable: true,
+    }),
 
     // relations
     block: t.prismaField({
@@ -76,7 +79,7 @@ export default builder.prismaNode('Transaction', {
       resolve(query, parent, args, context, info) {
         return prismaClient.block.findUnique({
           where: {
-            hash: parent.blockhash,
+            hash: parent.blockHash,
           },
         });
       },
@@ -89,8 +92,8 @@ export default builder.prismaNode('Transaction', {
       resolve(query, parent, args, context, info) {
         return prismaClient.event.findMany({
           where: {
-            requestkey: parent.requestkey,
-            blockhash: parent.blockhash,
+            requestKey: parent.requestKey,
+            blockHash: parent.blockHash,
           },
         });
       },

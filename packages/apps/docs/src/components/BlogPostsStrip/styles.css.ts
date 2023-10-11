@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
 
 import type { ComplexStyleRule } from '@vanilla-extract/css';
 import { style } from '@vanilla-extract/css';
@@ -29,17 +29,16 @@ export const stripItemWrapperClass = style([
       },
     },
 
-    '@media': {
-      [`screen and ${breakpoints.lg}`]: {
+    ...responsiveStyle({
+      lg: {
         flex: '33%',
-
         selectors: {
           '&:last-child': {
             display: 'none',
           },
         },
       },
-    },
+    }),
   },
 ]);
 

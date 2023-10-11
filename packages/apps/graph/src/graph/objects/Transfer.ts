@@ -2,19 +2,19 @@ import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transfer', {
-  id: { field: 'block_chainid_idx_modulehash_requestkey' },
+  id: { field: 'block_chainId_orderIndex_moduleHash_requestKey' },
   fields: (t) => ({
     // database fields
     amount: t.expose('amount' as never, { type: 'Decimal' }),
     blockHash: t.exposeString('block'),
-    chainId: t.expose('chainid', { type: 'BigInt' }),
-    fromAccount: t.exposeString('from_acct'),
+    chainId: t.expose('chainId', { type: 'BigInt' }),
+    fromAccount: t.exposeString('senderAccount'),
     height: t.expose('height', { type: 'BigInt' }),
-    idx: t.expose('idx', { type: 'BigInt' }),
-    moduleHash: t.exposeString('modulehash'),
-    moduleName: t.exposeString('modulename'),
-    requestKey: t.exposeString('requestkey'),
-    toAccount: t.exposeString('to_acct'),
+    idx: t.expose('orderIndex', { type: 'BigInt' }),
+    moduleHash: t.exposeString('moduleHash'),
+    moduleName: t.exposeString('moduleName'),
+    requestKey: t.exposeString('requestKey'),
+    toAccount: t.exposeString('receiverAccount'),
 
     // relations
     blocks: t.prismaField({

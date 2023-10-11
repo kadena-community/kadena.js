@@ -1,5 +1,5 @@
 import { options } from '@/components/Layout/Redocly/Redocly';
-import { Specs } from '@/components/Specs';
+import { Specs } from '@/components/Specs/Specs';
 import apiSpecs from '@/specs/chainweb/chainweb.openapi.json';
 import {
   checkSubTreeForActive,

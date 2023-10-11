@@ -1,12 +1,12 @@
-import { BlogListWrapper } from '@/components/BlogList';
+import { BlogListWrapper } from '@/components/BlogList/BlogListWrapper';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-  TitleHeader,
-} from '@/components/Layout/components';
+} from '@/components/Layout/components/articleStyles.css';
+import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IMenuData, IPageProps } from '@/types/Layout';
+import type { IMenuData, IPageProps } from '@/Layout';
 import {
   checkSubTreeForActive,
   getPathName,

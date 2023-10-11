@@ -25,7 +25,7 @@ export default builder.objectType('ChainModuleAccount', {
     balance: t.exposeFloat('balance'),
     transactions: t.prismaConnection({
       type: 'Transaction',
-      cursor: 'blockhash_requestkey',
+      cursor: 'blockHash_requestKey',
       resolve: (query, parent) => {
         return prismaClient.transaction.findMany({
           ...query,
@@ -33,31 +33,31 @@ export default builder.objectType('ChainModuleAccount', {
             sender: parent.accountName,
             events: {
               some: {
-                module: parent.moduleName,
+                moduleName: parent.moduleName,
               },
             },
-            chainid: parseInt(parent.chainId),
+            chainId: parseInt(parent.chainId),
           },
         });
       },
     }),
     transfers: t.prismaConnection({
       type: 'Transfer',
-      cursor: 'block_chainid_idx_modulehash_requestkey',
+      cursor: 'block_chainId_orderIndex_moduleHash_requestKey',
       resolve: async (query, parent) => {
         return prismaClient.transfer.findMany({
           ...query,
           where: {
             OR: [
               {
-                from_acct: parent.accountName,
+                senderAccount: parent.accountName,
               },
               {
-                to_acct: parent.accountName,
+                receiverAccount: parent.accountName,
               },
             ],
-            modulename: parent.moduleName,
-            chainid: parseInt(parent.chainId),
+            moduleName: parent.moduleName,
+            chainId: parseInt(parent.chainId),
           },
         });
       },

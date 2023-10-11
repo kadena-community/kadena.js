@@ -4,8 +4,8 @@ import { gql } from '@apollo/client';
 export const CORE_BLOCK_FIELDS: DocumentNode = gql`
   fragment CoreBlockFields on Block {
     id
-    chainid
-    creationtime
+    chainId
+    creationTime
     epoch
     # flags
     hash
@@ -14,7 +14,7 @@ export const CORE_BLOCK_FIELDS: DocumentNode = gql`
     # nonce
     # parent
     # payload
-    powhash
+    powHash
     # predicate
     # target
     # weight
@@ -69,12 +69,12 @@ export const CORE_EVENT_FIELDS: DocumentNode = gql`
     requestKey
     chainId
     height
-    #index
+    #orderindex
     #module
     #name
-    eventParameters
+    parameterText
     #parameters
-    qualName
+    qualifiedName
   }
 `;
 
@@ -361,8 +361,8 @@ export const getTransactionByRequestKey: DocumentNode = gql`
         id
       }
       events {
-        qualName
-        eventParameters
+        qualifiedName
+        parameterText
       }
       chainId
       code
@@ -377,7 +377,7 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       logs
       metadata
       nonce
-      numEvents
+      eventCount
       pactId
       proof
       requestKey
@@ -385,7 +385,7 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       sender
       step
       ttl
-      txId
+      transactionId
     }
   }
 `;
@@ -399,11 +399,11 @@ export const getEventByName: DocumentNode = gql`
       }
       chainId
       height
-      index
+      orderIndex
       # module
       # name
-      eventParameters
-      qualName
+      parameterText
+      qualifiedName
       transaction {
         requestKey
       }
