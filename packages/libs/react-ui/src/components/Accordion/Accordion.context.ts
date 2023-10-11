@@ -1,15 +1,15 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { createContext } from 'react';
 
-export type AccordionState = string[];
+export type OpenSections = string[];
 
 interface IAccordionContext {
-  openSections: AccordionState;
-  setOpenSections: Dispatch<SetStateAction<AccordionState>>;
+  openSections: OpenSections;
+  setOpenSections: Dispatch<SetStateAction<OpenSections>>;
   linked: boolean;
 }
 
-export const initialOpenSections: AccordionState = [];
+export const initialOpenSections: OpenSections = [];
 export const AccordionContext = createContext<IAccordionContext>({
   openSections: initialOpenSections,
   setOpenSections: () => {},

@@ -1,8 +1,8 @@
 'use client';
 
 import type { IAccordionSectionProps } from '.';
-import type { AccordionState } from './Accordion.context';
-import { AccordionContext, initialOpenSections } from './Accordion.context';
+import type { OpenSections } from './Accordion.context';
+import { AccordionContext } from './Accordion.context';
 
 import type { FC, FunctionComponentElement } from 'react';
 import React, { useState } from 'react';
@@ -18,8 +18,7 @@ export const AccordionRoot: FC<IAccordionRootProps> = ({
   linked = false,
   initialOpenSection = undefined,
 }) => {
-  const [openSections, setOpenSections] =
-    useState<AccordionState>(initialOpenSections);
+  const [openSections, setOpenSections] = useState<OpenSections>([]);
 
   return (
     <AccordionContext.Provider
