@@ -21,6 +21,7 @@ export interface INavAccordionGroupProps {
   index?: number;
   onClose?: () => void;
   onOpen?: () => void;
+  onClick?: () => void;
   title: string;
 }
 
@@ -28,6 +29,7 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
   children,
   onClose,
   onOpen,
+  onClick,
   title,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,6 +40,7 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
       onOpen?.();
     }
     setIsOpen(!isOpen);
+    onClick?.();
   };
 
   return (

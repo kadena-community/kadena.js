@@ -1,6 +1,6 @@
 'use client';
 
-import { NavAccordionContext } from './NavAccordion';
+import { NavAccordionContext } from './NavAccordion.context';
 import {
   navAccordionButtonClass,
   navAccordionContentClass,
@@ -20,7 +20,6 @@ export interface INavAccordionSectionProps {
   children?: FunctionComponentElement<
     INavAccordionGroupProps | INavAccordionLinkProps
   >[];
-  index?: number;
   onClick?: () => void;
   onClose?: () => void;
   onOpen?: () => void;
@@ -29,17 +28,24 @@ export interface INavAccordionSectionProps {
 
 export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
   children,
-  index = 0,
   onClick,
   onClose,
   onOpen,
   title,
 }) => {
-  const isOpen = useContext(NavAccordionContext).includes(index);
+  const { openSections, setOpenSections, linked } =
+    useContext(NavAccordionContext);
+  const sectionId = title.replace(/\s+/g, '-').toLowerCase();
+  const isOpen = openSections.includes(sectionId);
+
   const handleClick = (): void => {
     if (isOpen) {
+      setOpenSections(
+        linked ? [] : [...openSections.filter((i) => i !== sectionId)],
+      );
       onClose?.();
     } else {
+      setOpenSections(linked ? [sectionId] : [...openSections, sectionId]);
       onOpen?.();
     }
     onClick?.();
