@@ -67,7 +67,7 @@ const Results = ({
     if (filter) {
       filteredData = new Map(
         [...filteredData].filter(([moduleName]) => {
-          return moduleName.includes(filter);
+          return moduleName.toLowerCase().includes(filter.toLowerCase());
         }),
       );
     }
