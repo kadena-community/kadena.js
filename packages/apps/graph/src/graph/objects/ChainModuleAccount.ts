@@ -38,6 +38,9 @@ export default builder.objectType('ChainModuleAccount', {
             },
             chainId: parseInt(parent.chainId),
           },
+          orderBy: {
+            height: 'desc',
+          },
         });
       },
     }),
@@ -58,6 +61,9 @@ export default builder.objectType('ChainModuleAccount', {
             ],
             moduleName: parent.moduleName,
             chainId: parseInt(parent.chainId),
+          },
+          orderBy: {
+            height: 'desc',
           },
         });
       },

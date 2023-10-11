@@ -37,8 +37,8 @@ export const CompactTransfersTable = (
             <Table.Th>Chain</Table.Th>
             <Table.Th>Block Height</Table.Th>
             <Table.Th>Amount</Table.Th>
-            <Table.Th>From Account</Table.Th>
-            <Table.Th>To Account</Table.Th>
+            <Table.Th>Sender Account</Table.Th>
+            <Table.Th>Receiver Account</Table.Th>
             <Table.Th>Request key</Table.Th>
           </Table.Tr>
         </Table.Head>

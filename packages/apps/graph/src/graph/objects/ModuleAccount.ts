@@ -77,6 +77,9 @@ export default builder.objectType('ModuleAccount', {
               },
             },
           },
+          orderBy: {
+            height: 'desc',
+          },
         });
       },
     }),
@@ -95,6 +98,9 @@ export default builder.objectType('ModuleAccount', {
                 receiverAccount: parent.accountName,
               },
             ],
+          },
+          orderBy: {
+            height: 'desc',
           },
         });
       },

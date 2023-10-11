@@ -22,6 +22,9 @@ builder.queryField('transactions', (t) => {
           },
           ...(args.chainId && { chainId: parseInt(args.chainId) }),
         },
+        orderBy: {
+          height: 'desc',
+        }
       });
     },
   });

@@ -1,6 +1,6 @@
 import { Box, Button, Link, Notification, Table } from '@kadena/react-ui';
 
-import { useGetTransactionsQuery } from '../../../../__generated__/sdk';
+import { useGetTransfersQuery } from '../../../../__generated__/sdk';
 import Loader from '../../../../components/loader/loader';
 import { mainStyle } from '../../../../components/main/styles.css';
 import { Text } from '../../../../components/text';
@@ -10,10 +10,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-const AccountTransactions: React.FC = () => {
+const AccountTransfers: React.FC = () => {
   const router = useRouter();
 
-  const { loading, data, error, fetchMore } = useGetTransactionsQuery({
+  const { loading, data, error, fetchMore } = useGetTransfersQuery({
     variables: {
       moduleName: router.query.module as string,
       accountName: router.query.account as string,
@@ -40,7 +40,7 @@ const AccountTransactions: React.FC = () => {
         <div>
           {loading && (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Loader /> <span>Retrieving transactions...</span>
+              <Loader /> <span>Retrieving transfers...</span>
             </div>
           )}
           {error && (
@@ -54,7 +54,7 @@ const AccountTransactions: React.FC = () => {
               Check if the Graph server is running.
             </Notification.Root>
           )}
-          {data?.transactions && (
+          {data?.transfers && (
             <>
               <Box marginBottom="$3">
                 <span>Showing 10 results per page</span>
@@ -65,7 +65,7 @@ const AccountTransactions: React.FC = () => {
                       variables: {
                         first: 10,
                         last: null,
-                        after: data.transactions.pageInfo.endCursor,
+                        after: data.transfers.pageInfo.endCursor,
                         before: null,
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
@@ -74,7 +74,7 @@ const AccountTransactions: React.FC = () => {
                       },
                     })
                   }
-                  disabled={!data.transactions.pageInfo.hasNextPage}
+                  disabled={!data.transfers.pageInfo.hasNextPage}
                   style={{ float: 'right' }}
                 >
                   Next Page
@@ -87,7 +87,7 @@ const AccountTransactions: React.FC = () => {
                         first: null,
                         last: 10,
                         after: null,
-                        before: data.transactions.pageInfo.startCursor,
+                        before: data.transfers.pageInfo.startCursor,
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (!fetchMoreResult) return prev;
@@ -95,7 +95,7 @@ const AccountTransactions: React.FC = () => {
                       },
                     })
                   }
-                  disabled={!data.transactions.pageInfo.hasPreviousPage}
+                  disabled={!data.transfers.pageInfo.hasPreviousPage}
                   style={{ float: 'right', marginRight: '10px' }}
                 >
                   Previous Page
@@ -105,32 +105,48 @@ const AccountTransactions: React.FC = () => {
                 <Table.Head>
                   <Table.Tr>
                     <Table.Th>Chain</Table.Th>
-                    <Table.Th>Timestamp</Table.Th>
                     <Table.Th>Block Height</Table.Th>
-                    <Table.Th>Request Key</Table.Th>
-                    <Table.Th>Code</Table.Th>
+                    <Table.Th>Amount</Table.Th>
+                    <Table.Th>Sender Account</Table.Th>
+                    <Table.Th>Receiver Account</Table.Th>
+                    <Table.Th>Request key</Table.Th>
                   </Table.Tr>
                 </Table.Head>
                 <Table.Body>
-                  {data.transactions.edges.map((edge, index) => {
+                  {data.transfers.edges.map((edge, index) => {
                     return (
                       <Table.Tr key={index}>
                         <Table.Td>{edge?.node.chainId}</Table.Td>
-                        <Table.Td>
-                          {new Date(edge?.node.creationTime).toLocaleString()}
-                        </Table.Td>
                         <Table.Td>{edge?.node.height}</Table.Td>
+                        <Table.Td>{edge?.node.amount}</Table.Td>
+                        <Table.Td>
+                          {edge?.node.senderAccount ? (
+                            <Link
+                              href={`${routes.ACCOUNT}/${router.query.module}/${edge?.node.senderAccount}`}
+                            >
+                              {edge?.node.senderAccount}
+                            </Link>
+                          ) : (
+                            <span style={{ color: 'lightgray' }}>N/A</span>
+                          )}
+                        </Table.Td>
+                        <Table.Td>
+                          {edge?.node.receiverAccount ? (
+                            <Link
+                              href={`${routes.ACCOUNT}/${router.query.module}/${edge?.node.receiverAccount}`}
+                            >
+                              {edge?.node.receiverAccount}
+                            </Link>
+                          ) : (
+                            <span style={{ color: 'lightgray' }}>N/A</span>
+                          )}
+                        </Table.Td>
                         <Table.Td>
                           <Link
                             href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}
                           >
                             {edge?.node.requestKey}
                           </Link>
-                        </Table.Td>
-                        <Table.Td>
-                          {edge?.node.code || (
-                            <span style={{ color: 'lightgray' }}>N/A</span>
-                          )}
                         </Table.Td>
                       </Table.Tr>
                     );
@@ -145,4 +161,4 @@ const AccountTransactions: React.FC = () => {
   );
 };
 
-export default AccountTransactions;
+export default AccountTransfers;

@@ -25,6 +25,9 @@ builder.queryField('transfers', (t) => {
           moduleName: args.moduleName,
           ...(args.chainId && { chainId: parseInt(args.chainId) }),
         },
+        orderBy: {
+          height: 'desc',
+        }
       });
     },
   });
