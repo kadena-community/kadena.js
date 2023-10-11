@@ -2,7 +2,7 @@ import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
-export const accordionSectionWrapperClass = style([
+export const accordionSectionClass = style([
   sprinkles({
     display: 'block',
     marginBottom: '$6',
@@ -55,16 +55,19 @@ export const accordionToggleIconClass = style([
 export const accordionContentClass = style([
   sprinkles({
     color: '$neutral5',
-    display: 'none',
     fontSize: '$base',
     margin: 0,
-    marginLeft: '$2',
     overflow: 'hidden',
     padding: 0,
     paddingBottom: '$2',
   }),
 ]);
 
+export const accordionCollapse = style([
+  sprinkles({
+    display: 'none',
+  }),
+]);
 export const accordionExpand = style([
   sprinkles({
     display: 'block',

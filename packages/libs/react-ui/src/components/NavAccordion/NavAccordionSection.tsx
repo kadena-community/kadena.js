@@ -1,21 +1,19 @@
 'use client';
 
 import { NavAccordionContext } from './NavAccordion.context';
-import {
-  accordionExpand,
-  navAccordionButtonClass,
-  navAccordionContentClass,
-  navAccordionContentListClass,
-  navAccordionSectionWrapperClass,
-  navAccordionToggleIconClass,
-} from './NavAccordion.css';
 import type { INavAccordionGroupProps } from './NavAccordionGroup';
+import { NavAccordionGroup } from './NavAccordionGroup';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
 
-import { SystemIcon } from '@components/Icon';
+import {
+  accordionCollapse,
+  accordionExpand,
+  accordionSectionClass,
+} from '@components/Accordion/Accordion.css';
+import { AccordionHeading } from '@components/Accordion/AccordionHeading';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
-import React, { useContext } from 'react';
+import React, { Children, useContext } from 'react';
 
 export interface INavAccordionSectionProps {
   children?: FunctionComponentElement<
@@ -53,25 +51,24 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
   };
 
   return (
-    <section className={navAccordionSectionWrapperClass}>
-      <button className={navAccordionButtonClass} onClick={handleClick}>
-        {title}
-        <SystemIcon.Close
-          className={classNames(navAccordionToggleIconClass, {
-            isOpen,
-          })}
-          size="xs"
-        />
-      </button>
+    <section className={classNames([accordionSectionClass])}>
+      <AccordionHeading
+        title={title}
+        isOpen={isOpen}
+        icon={'Close'}
+        onClick={handleClick}
+      />
 
       {children && (
         <ul
-          className={classNames({ [accordionExpand]: isOpen }, [
-            navAccordionContentClass,
-            navAccordionContentListClass,
+          className={classNames('list', [
+            isOpen ? accordionExpand : accordionCollapse,
           ])}
         >
-          {children}
+          {Children.map(children, (child) => {
+            const Tag = child.type === NavAccordionGroup ? 'ul' : 'li';
+            return <Tag>{child}</Tag>;
+          })}
         </ul>
       )}
     </section>

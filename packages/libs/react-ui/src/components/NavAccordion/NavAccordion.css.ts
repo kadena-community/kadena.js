@@ -1,125 +1,21 @@
-import {
-  accordionButtonClass as navAccordionButtonClass,
-  accordionContentClass as navAccordionContentClass,
-  accordionExpand,
-  accordionSectionWrapperClass as navAccordionSectionWrapperClass,
-  accordionToggleIconClass as navAccordionToggleIconClass,
-} from '@components/Accordion/Accordion.css';
-import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
-export {
-  navAccordionSectionWrapperClass,
-  navAccordionButtonClass,
-  navAccordionToggleIconClass,
-  navAccordionContentClass,
-  accordionExpand,
-};
+export const navAccordionWrapperClass = style({});
 
-export const navAccordionContentListClass = style([
-  sprinkles({
-    paddingX: 0,
-  }),
-]);
-
-export const navAccordionGroupClass = style([
-  sprinkles({
-    padding: 0,
-    margin: 0,
-  }),
-]);
-
-export const navAccordionArrowButtonClass = style([
-  {
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    textAlign: 'left',
-  },
-]);
-
-export const navAccordionGroupTitleClass = style([
-  sprinkles({
-    fontWeight: '$normal',
-    paddingLeft: '$1',
-  }),
-]);
-
-export const navAccordionGroupIconClass = style([
-  sprinkles({
-    color: '$layoutSurfaceOverlay',
-  }),
-  {
-    transform: 'rotate(-90deg)',
-    transition: 'transform 0.2s ease',
-    selectors: {
-      '&.isOpen': {
-        transform: 'rotate(0deg)',
-      },
-    },
-  },
-]);
-
-export const navAccordionGroupListClass = style([
-  sprinkles({
-    display: 'none',
-    margin: 0,
-    marginBottom: '$2',
-    marginLeft: '$2',
-    overflow: 'hidden',
-    padding: 0,
-  }),
-  {
-    borderLeft: `1px solid ${vars.colors.$layoutSurfaceSubtle}`,
-  },
-]);
-
-export const navAccordionListItemClass = style({
-  alignItems: 'center',
-  display: 'flex',
-  lineHeight: 1,
-  listStyleType: 'none',
-  paddingLeft: '5px',
+export const navAccordionLinkClass = style({
   selectors: {
-    '&:before': {
-      content: '·',
-      verticalAlign: 'middle',
-      fontSize: vars.fontSizes.$xl,
+    'nav > &': {
+      borderBottom: `1px solid ${vars.colors.$borderDefault}`,
+      color: vars.colors.$neutral5,
+      display: 'flex',
+      fontSize: vars.fontSizes.$base,
+      fontWeight: vars.fontWeights.$semiBold,
+      paddingBottom: vars.sizes.$2,
+      textDecoration: 'none',
+    },
+    'nav > &:hover': {
+      textDecoration: 'underline',
     },
   },
 });
-
-export const navAccordionLinkClass = style([
-  sprinkles({
-    color: '$layoutSurfaceOverlay',
-    paddingLeft: '$2',
-  }),
-  {
-    textDecoration: 'none',
-    selectors: {
-      '&:active, &:hover': {
-        color: `${vars.colors.$negativeSurface} !important`,
-      },
-      '&:hover': {
-        textDecoration: 'underline',
-      },
-    },
-  },
-]);
-
-export const navAccordionLinkActiveClass = style({
-  color: vars.colors.$negativeSurface,
-});
-
-export const navAccordionDeepLinkClass = style([
-  sprinkles({
-    color: '$gray60',
-    fontSize: '$sm',
-  }),
-]);
-
-export const navAccordionShallowLinkClass = style([
-  sprinkles({
-    display: 'none',
-  }),
-]);
