@@ -9,6 +9,6 @@ export default class TransactionsPage {
 
   public constructor(page: Page) {
     this.page = page;
-    this.aside = new AsideComponent(this.page)
+    this.aside = new AsideComponent(this.page);
   }
 }

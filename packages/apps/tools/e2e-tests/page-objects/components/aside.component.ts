@@ -11,7 +11,6 @@ export default class AsideComponent {
   }
 
   public async navigateTo(ariaLabel: string): Promise<void> {
-    await this._page.getByRole('button', {name: ariaLabel}).click()
+    await this._page.getByRole('button', { name: ariaLabel }).click();
   }
-
 }
