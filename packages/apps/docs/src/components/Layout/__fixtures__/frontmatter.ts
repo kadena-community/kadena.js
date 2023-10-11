@@ -1,4 +1,4 @@
-import type { IBasePageMeta, IPageMeta } from '@/types/Layout';
+import type { IBasePageMeta, IPageMeta } from '@/Layout';
 
 export const blogFrontMatter: IPageMeta = {
   wordCount: 779,

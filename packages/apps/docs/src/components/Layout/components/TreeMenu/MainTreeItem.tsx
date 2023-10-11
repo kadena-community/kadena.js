@@ -2,7 +2,7 @@ import { Item } from './Item';
 import { TreeButton } from './TreeButton';
 import { TreeList } from './TreeList';
 
-import type { IMenuItem, LevelType } from '@/types/Layout';
+import type { IMenuItem, LevelType } from '@/Layout';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -19,9 +19,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
   const ref = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
-    if (!item.isMenuOpen) {
-      setMenuOpen(false);
-    }
+    setMenuOpen(item.isMenuOpen);
   }, [item.isMenuOpen]);
 
   useEffect(() => {
@@ -48,7 +46,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
     }
 
     setIsMounted(true);
-  }, [ref, menuOpen, setIsMounted, isMounted]);
+  }, [ref, menuOpen, setIsMounted, isMounted, item]);
 
   const nextLevel = (): LevelType => {
     if (root) return level;

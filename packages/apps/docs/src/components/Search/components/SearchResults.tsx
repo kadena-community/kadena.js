@@ -18,7 +18,8 @@ import {
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
-import { BrowseSection, Loading } from '@/components';
+import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
+import { Loading } from '@/components/Loading/Loading';
 import type { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import classnames from 'classnames';
@@ -28,7 +29,7 @@ import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 interface IProps {
-  semanticResults: IQueryResult[];
+  semanticResults: IQueryResult[] | undefined;
   semanticError?: string;
   semanticIsLoading: boolean;
   outputStream: string;
@@ -103,18 +104,19 @@ export const SearchResults: FC<IProps> = ({
                 color={'negative'}
                 expanded={true}
                 icon="AlertBox"
+                variant="outlined"
               >
                 {semanticError}
               </Notification.Root>
             ) : (
               <>
-                <ResultCount count={semanticResults.length} />
+                <ResultCount count={semanticResults?.length} />
                 <StaticResults
                   limitResults={limitResults}
                   results={semanticResults}
                 />
                 {limitResults !== undefined &&
-                limitResults < semanticResults.length &&
+                limitResults < (semanticResults?.length ?? 0) &&
                 query !== undefined ? (
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>

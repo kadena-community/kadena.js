@@ -1,3 +1,5 @@
+import { devnetConfig } from './config';
+
 import fs from 'fs';
 import path from 'path';
 
@@ -12,6 +14,12 @@ export interface IFileData {
 
 export type TransferType = 'fund' | 'transfer' | 'xchaintransfer' | undefined;
 
+export function createDir(directory: string): void {
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory);
+  }
+}
+
 export function createFile(filename: string): string {
   const exampleData: IFileData = {
     timestamp: 0,
@@ -21,7 +29,9 @@ export function createFile(filename: string): string {
     requestKey: '',
     type: undefined,
   };
-  const filepath = path.join(__dirname, 'logs/', filename);
+  const directory = path.join(__dirname, `${devnetConfig.LOG_FOLDERNAME}/`);
+  createDir(directory);
+  const filepath = path.join(directory, filename);
   const headers = `${Object.keys(exampleData).join(',')}\n`;
   fs.writeFileSync(filepath, headers);
   return filepath;

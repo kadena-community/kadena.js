@@ -1,6 +1,6 @@
 import { paragraphWrapperClass } from './styles.css';
 
-import { BodyText } from '@/components/Typography';
+import { BodyText } from '@/components/Typography/BodyText';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 

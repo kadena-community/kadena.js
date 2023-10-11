@@ -12,6 +12,7 @@ import {
   validateRequestKey,
 } from '@/services/utils/utils';
 import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import Debug from 'debug';
 import type { Translate } from 'next-translate';
 
@@ -75,7 +76,8 @@ export async function getTransferData({
         return;
       }
 
-      const host = networkDto.apiHost({
+      const host = getApiHost({
+        api: networkDto.API,
         networkId: networkDto.networkId,
         chainId: convertIntToChainId(chainId),
       });

@@ -1,14 +1,8 @@
+import { breakpoints } from './themeUtils';
 import { darkThemeClass, vars } from './vars.css';
 
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
-
-export const breakpoints: Record<string, string> = {
-  sm: `(min-width: ${640 / 16}rem)`,
-  md: `(min-width: ${768 / 16}rem)`,
-  lg: `(min-width: ${1024 / 16}rem)`,
-  xl: `(min-width: ${1280 / 16}rem)`,
-  xxl: `(min-width: ${1536 / 16}rem)`,
-};
+import mapValues from 'lodash.mapvalues';
 
 const systemProperties = defineProperties({
   properties: {
@@ -53,14 +47,9 @@ const colorProperties = defineProperties({
 });
 
 const responsiveProperties = defineProperties({
-  conditions: {
-    xs: {},
-    sm: { '@media': breakpoints.sm },
-    md: { '@media': breakpoints.md },
-    lg: { '@media': breakpoints.lg },
-    xl: { '@media': breakpoints.xl },
-    xxl: { '@media': breakpoints.xxl },
-  },
+  conditions: mapValues(breakpoints, (bp?: string) =>
+    bp === '' ? {} : { '@media': bp },
+  ),
   defaultCondition: 'xs',
   properties: {
     position: ['fixed', 'static', 'absolute', 'relative', 'sticky'],

@@ -1,4 +1,4 @@
-import { MenuContext } from '.';
+import { MenuContext } from './MenuProvider';
 
 import { useContext } from 'react';
 

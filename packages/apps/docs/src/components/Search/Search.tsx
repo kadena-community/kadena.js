@@ -1,7 +1,7 @@
 import { SearchResults } from './components/SearchResults';
 import useAlgoliaSearch from './useAlgoliaSearch';
 
-import { useSearch } from '@/hooks';
+import { useSearch } from '@/hooks/useSearch/useSearch';
 import { mapMatches } from '@/pages/api/semanticsearch';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import type { FC } from 'react';
@@ -15,12 +15,8 @@ interface IProps {
 
 export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   const [tabName, setTabName] = useState<string | undefined>('docs');
-  const {
-    metadata = [],
-    handleSubmit,
-    error,
-    isLoading,
-  } = useAlgoliaSearch(limitResults);
+  const { metadata, handleSubmit, error, isLoading } =
+    useAlgoliaSearch(limitResults);
 
   const {
     outputStream,
@@ -30,7 +26,7 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
     handleSubmit: handleConversationSubmit,
   } = useSearch();
 
-  const semanticResults = metadata.map(mapMatches);
+  const semanticResults = metadata?.map(mapMatches);
 
   useEffect(() => {
     if (

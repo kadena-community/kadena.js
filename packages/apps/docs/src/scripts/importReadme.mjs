@@ -4,12 +4,13 @@ import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { importReadMes } from './utils.mjs';
-import chalk from 'chalk';
+
 import { getLastModifiedDate } from './getdocstree.mjs';
 
 const errors = [];
+const success = [];
 
-const DOCSROOT = './src/pages/docs/';
+const DOCSROOT = './src/pages/';
 
 const createFrontMatter = (
   title,
@@ -222,7 +223,7 @@ const importDocs = async (filename, destination, parentTitle, options) => {
   const lastModifiedDate = await getLastModifiedDate(`./../../${filename}`);
 
   const pages = divideIntoPages(md);
-  relinkReferences(md, pages, `/docs/${destination}/`);
+  relinkReferences(md, pages, `/${destination}/`);
 
   pages.forEach((page, idx) => {
     const title = getTitle(page);
@@ -232,7 +233,7 @@ const importDocs = async (filename, destination, parentTitle, options) => {
 
     // check that there is just 1 h1.
     // if more, keep only 1 and replace the next with an h2
-    const pageContent = cleanUp(page, `/docs/${destination}/${slug}`);
+    const pageContent = cleanUp(page, `/${destination}/${slug}`);
 
     const doc = toMarkdown(pageContent);
 
@@ -255,26 +256,12 @@ const importDocs = async (filename, destination, parentTitle, options) => {
   });
 };
 
-const importAll = async (imports) => {
-  console.log(
-    '=============================== START IMPORT DOCS FROM MONOREPO ==\n\n',
-  );
-  imports.forEach(async (item) => {
+export const importAllReadmes = async () => {
+  importReadMes.forEach(async (item) => {
     await importDocs(item.file, item.destination, item.title, item.options);
   });
 
-  if (errors.length) {
-    errors.map((error) => {
-      console.warn(chalk.red('⨯'), error);
-    });
-    process.exitCode = 1;
-  } else {
-    console.log(chalk.green('✓'), 'DOCS IMPORTED FROM MONOREPO');
-  }
+  success.push('Docs imported from monorepo');
 
-  console.log(
-    '\n\n=============================== END IMPORT DOCS FROM MONOREPO ====',
-  );
+  return { success, errors };
 };
-
-importAll(importReadMes);

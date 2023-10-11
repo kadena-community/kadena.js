@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import {
   $$backgroundOverlayColor,
@@ -43,12 +43,12 @@ export const basebackgroundClass = style([
       },
     },
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         position: 'fixed',
         transform: 'translateX(0)',
       },
-    },
+    }),
   },
 ]);
 
@@ -81,8 +81,8 @@ export const baseGridClass = style([
 
     minHeight: '100vh',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
         gridTemplateAreas: `
           "header header header header header"
@@ -91,7 +91,7 @@ export const baseGridClass = style([
           "footer footer footer footer footer"
         `,
       },
-      [`screen and ${breakpoints.xxl}`]: {
+      xxl: {
         gridTemplateAreas: `
           "header header header header header"
           "pageheader pageheader pageheader pageheader pageheader"
@@ -100,6 +100,6 @@ export const baseGridClass = style([
         `,
         gridTemplateColumns: `minmax(1%, auto) ${$$leftSideWidth} calc(${$$pageWidth} - ${$$leftSideWidth}) 0 minmax(1%, auto)`,
       },
-    },
+    }),
   },
 ]);

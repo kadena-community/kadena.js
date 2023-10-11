@@ -5,7 +5,7 @@ import {
   linkClass,
 } from './styles.css';
 
-import type { IMenuItem, LevelType } from '@/types/Layout';
+import type { IMenuItem, LevelType } from '@/Layout';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';

@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { $$leftSideWidth, $$sideMenu } from '../../global.css';
 
@@ -6,30 +6,37 @@ import { style, styleVariants } from '@vanilla-extract/css';
 
 export const menuClass = style([
   sprinkles({
-    position: 'absolute',
-    paddingBottom: '$40',
+    position: 'fixed',
     height: '100%',
     width: '100%',
     background: '$background',
     overflow: 'hidden',
+    top: '$17',
+    bottom: 0,
+    paddingBottom: '$4',
   }),
   {
+    height: `calc(100vh - ${vars.sizes.$13})`,
     gridArea: 'menu',
     gridRow: '2 / span 3',
     zIndex: $$sideMenu,
     borderRight: '1px solid $borderColor',
     transform: 'translateX(-100%)',
     transition: 'transform .3s ease, width .3s ease',
-    '@media': {
-      [`screen and ${breakpoints.sm}`]: {
+    ...responsiveStyle({
+      sm: {
         width: $$leftSideWidth,
       },
-      [`screen and ${breakpoints.md}`]: {
-        position: 'relative',
+      md: {
+        position: 'sticky',
+        top: vars.sizes.$18,
+        bottom: 'auto',
+        height: `calc(100vh - ${vars.sizes.$18})`,
         transform: 'translateX(0)',
         background: 'transparent',
+        paddingBottom: vars.sizes.$40,
       },
-    },
+    }),
   },
 ]);
 
@@ -38,11 +45,7 @@ export const menuOpenVariants = styleVariants({
   isClosed: {
     transform: 'translateX(-100%)',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        transform: 'translateX(0)',
-      },
-    },
+    ...responsiveStyle({ md: { transform: 'translateX(0)' } }),
   },
 });
 
@@ -56,24 +59,15 @@ export const menuInLayoutVariants = styleVariants({
     sprinkles({
       display: 'block',
     }),
-    {
-      '@media': {
-        [`screen and ${breakpoints.md}`]: {
-          display: 'none',
-        },
-      },
-    },
+    responsiveStyle({ md: { display: 'none' } }),
   ],
 });
 
 export const menuLayoutVariants = styleVariants({
   landing: {
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        paddingTop: '290px',
-      },
-    },
+    ...responsiveStyle({ md: {} }),
   },
+
   normal: {},
 });
 
@@ -94,12 +88,7 @@ export const menuBackClass = style([
     transition: 'opacity .5s ease, transform .1s ease',
     zIndex: `calc(${$$sideMenu} - 1)`,
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        opacity: 0,
-        pointerEvents: 'none',
-      },
-    },
+    ...responsiveStyle({ md: { opacity: 0, pointerEvents: 'none' } }),
   },
 ]);
 
@@ -107,12 +96,8 @@ export const menuBackOpenVariants = styleVariants({
   isOpen: {
     transform: 'translateX(0)',
     opacity: 1,
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        transform: 'translateX(-100%)',
-        opacity: 0,
-      },
-    },
+
+    ...responsiveStyle({ md: { transform: 'translateX(-100%)', opacity: 0 } }),
   },
   isClosed: {
     transform: 'translateX(-100%)',

@@ -5,7 +5,12 @@ import { crossChainTransfer } from './crosschain-transfer';
 import { appendToFile, createFile } from './file';
 import { getBalance } from './get-balance';
 import type { IAccount } from './helper';
-import { createAccount, getRandomNumber, logger } from './helper';
+import {
+  createAccount,
+  getRandomNumber,
+  isEqualChainAccounts,
+  logger,
+} from './helper';
 import { transfer } from './transfer';
 
 import seedrandom from 'seedrandom';
@@ -39,6 +44,10 @@ export async function simulate({
     logger.info(
       `Generated KeyPair\nAccount: ${account.account}\nPublic Key: ${account.publicKey}\nSecret Key: ${account.secretKey}\n`,
     );
+
+    if (accounts.includes(account)) {
+      throw Error('Duplicate account');
+    }
     accounts.push(account);
 
     // Fund account
@@ -58,16 +67,16 @@ export async function simulate({
   }
 
   // Generate first seeded random number
-  let randomNo = seedrandom(seed)();
+  let seededRandomNo = seedrandom(seed)();
   let counter: number = 0;
 
   while (true) {
     // Transfer between accounts
     for (let i = 0; i < accounts.length; i++) {
       const account = accounts[i];
-      const amount: number = getRandomNumber(randomNo, maxAmount);
+      const amount: number = getRandomNumber(seededRandomNo, maxAmount);
 
-      // To avoid underflowing the token pool, we fund an account
+      // To avoid underflowing the token pool, we fund an account when there has been more iterations than total amount of circulating tokens divided by max amount
       if (counter >= tokenPool / maxAmount) {
         await transfer({
           publicKey: account.publicKey,
@@ -78,7 +87,8 @@ export async function simulate({
 
       const balance = (await getBalance(account)) as number;
 
-      if (amount > balance) {
+      // using a random number safety gap to avoid underflowing the account
+      if (amount + getRandomNumber(seededRandomNo, 1) > balance) {
         logger.info(
           `Insufficient funds for ${account.account}\nFunds necessary: ${amount}\nFunds available: ${balance}`,
         );
@@ -87,23 +97,24 @@ export async function simulate({
       }
 
       // Generate seeded random number based on the previous number
-      randomNo = seedrandom(`${randomNo}`)();
+      seededRandomNo = seedrandom(`${seededRandomNo}`)();
 
-      let nextAccount = accounts[getRandomNumber(randomNo, accounts.length)];
+      let nextAccount =
+        accounts[getRandomNumber(seededRandomNo, accounts.length)];
 
       // This is to simulate cross chain transfers
       // Every nth transfer is a cross chain transfer;
-      if (i % getRandomNumber(randomNo, accounts.length) === 0) {
+      if (i % getRandomNumber(seededRandomNo, accounts.length) === 0) {
         nextAccount = {
           ...nextAccount,
           chainId: `${getRandomNumber(
-            randomNo,
+            seededRandomNo,
             devnetConfig.NUMBER_OF_CHAINS,
           )}` as ChainId,
         };
       }
 
-      if (account === nextAccount) {
+      if (isEqualChainAccounts(account, nextAccount)) {
         logger.info('Skipping transfer to self');
         continue;
       }
@@ -139,9 +150,14 @@ export async function simulate({
       }
 
       // If the account is not in the accountlist, add it
-      if (!accounts.includes(nextAccount)) {
+      const accountExists = accounts.some((existingAccount) =>
+        isEqualChainAccounts(nextAccount, existingAccount),
+      );
+      if (!accountExists) {
         accounts.push(nextAccount);
       }
+
+      logger.info(accounts);
 
       await new Promise((resolve) => setTimeout(resolve, transferInterval));
     }
