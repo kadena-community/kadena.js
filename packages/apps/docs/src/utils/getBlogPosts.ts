@@ -31,7 +31,7 @@ export const getLatestBlogPostsOfAuthor = (
   author: IAuthorInfo,
 ): IMenuData[] => {
   const data = getData() as IMenuData[];
-  const STARTBRANCH = '/docs/blogchain';
+  const STARTBRANCH = '/blogchain';
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);
 
