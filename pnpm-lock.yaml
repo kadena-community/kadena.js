@@ -1319,9 +1319,6 @@ importers:
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
-      '@types/jest':
-        specifier: ^29.5.3
-        version: 29.5.3
       '@types/moo':
         specifier: ~0.5.5
         version: 0.5.5
@@ -1340,9 +1337,6 @@ importers:
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@18.17.14)(ts-node@10.8.2)
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
@@ -1355,6 +1349,9 @@ importers:
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+      vitest:
+        specifier: ^0.34.6
+        version: 0.34.6
 
   packages/libs/react-components:
     dependencies:
