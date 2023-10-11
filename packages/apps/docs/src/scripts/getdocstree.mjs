@@ -12,6 +12,11 @@ const promiseExec = promisify(exec);
 const errors = [];
 const success = [];
 
+const INITIALPATH = './src/pages';
+const MENUFILEDIR = './src/_generated';
+const MENUFILE = 'menu.mjs';
+const TREE = [];
+
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
   return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
@@ -126,10 +131,6 @@ const SEARCHABLE_DIRS = [
   '/pact',
 ];
 
-const INITIALPATH = './src/pages';
-const MENUFILE = './src/_generated/menu.mjs';
-const TREE = [];
-
 const getFile = async (rootDir, parent, file) => {
   const currentFile = `${rootDir}/${file}`;
   const arr = [];
@@ -194,7 +195,9 @@ export const createDocsTree = async () => {
   // write menu file
   const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
   export const menuData = ${JSON.stringify(result, null, 2)}`;
-  fs.writeFileSync(MENUFILE, fileStr);
+
+  fs.mkdirSync(MENUFILEDIR, { recursive: true });
+  fs.writeFileSync(`${MENUFILEDIR}/${MENUFILE}`, fileStr);
 
   success.push('Docs imported from monorepo');
 

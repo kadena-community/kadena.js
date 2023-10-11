@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import {
   getAuthorData,
   getTagsData,
-} from './../utils/staticGeneration/getData.mjs';
+} from './../utils/staticGeneration/getJsonData.mjs';
 import { getFlatData } from './../utils/staticGeneration/flatPosts.mjs';
 import { format, isValid } from 'date-fns';
 
@@ -11,9 +11,8 @@ const URL = 'https://docs.kadena.io';
 
 const errors = [];
 const success = [];
-const posts = getFlatData();
+
 const authors = getAuthorData();
-const tags = getTagsData();
 
 const setPrio = (root) => {
   if (root.includes('/blogchain')) return '0.5';
@@ -28,7 +27,7 @@ const formatDate = (dateStr) => {
   return format(date, 'yyyy-MM-dd');
 };
 
-const getPosts = (root) => {
+const getPosts = (root, posts) => {
   return posts
     .map(
       (post) => `
@@ -45,7 +44,7 @@ const getPosts = (root) => {
     .join('');
 };
 
-const getTags = (root) => {
+const getTags = (root, tags) => {
   return tags
     .map(
       (tag) => `
@@ -68,6 +67,9 @@ const getAuthors = (root) => {
 };
 
 export const createSitemap = async () => {
+  const tags = await getTagsData();
+  const posts = await getFlatData();
+
   const fileStr = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
@@ -79,7 +81,7 @@ export const createSitemap = async () => {
     <url>  
       <loc>${URL}/tags</loc>
     </url>  
-      ${getTags(URL)}
+      ${getTags(URL, tags)}
     <url>  
       <loc>${URL}/authors</loc>
     </url>  
@@ -87,7 +89,7 @@ export const createSitemap = async () => {
     <url>
       <loc>${URL}/help</loc>
     </url>
-    ${getPosts(URL)}
+    ${getPosts(URL, posts)}
     </urlset>`;
 
   if (errors.length) {
