@@ -38,7 +38,6 @@ Overview of the main packages maintained in this repository:
 | [@kadena/pactjs-cli][32]             | [![version][34]][33] |
 | [@kadena/pactjs-generator][35]       | [![version][37]][36] |
 | [@kadena/types][38]                  | [![version][40]][39] |
-| [playwright][41]                     | [![version][43]][42] |
 
 <!--packageTable end -->
 
@@ -46,7 +45,7 @@ Overview of the main packages maintained in this repository:
 
 Special thanks to the wonderful people who have contributed to this project:
 
-[![Contributors][45]][44]
+[![Contributors][42]][41]
 
 [1]: https://docs.kadena.io
 [2]: https://discord.io/kadena
@@ -100,9 +99,5 @@ Special thanks to the wonderful people who have contributed to this project:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/types
 [39]: packages/libs/types/CHANGELOG.md
 [40]: https://img.shields.io/npm/v/@kadena/types.svg
-[41]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/e2e-tests
-[42]: packages/tools/e2e-components/CHANGELOG.md
-[43]: https://img.shields.io/npm/v/playwright.svg
-[44]: https://github.com/kadena-community/kadena.js/graphs/contributors
-[45]: https://contrib.rocks/image?repo=kadena-community/kadena.js
+[41]: https://github.com/kadena-community/kadena.js/graphs/contributors
+[42]: https://contrib.rocks/image?repo=kadena-community/kadena.js
