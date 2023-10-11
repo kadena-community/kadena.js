@@ -7,8 +7,8 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import type { IClientConfig } from '../core/utils/helpers';
 import { submitClient } from '../core/rich-client';
+import type { IClientConfig } from '../core/utils/helpers';
 
 interface ITransferInput {
   sender: { account: string; publicKeys: string[] };

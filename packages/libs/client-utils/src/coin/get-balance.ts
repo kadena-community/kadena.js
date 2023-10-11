@@ -2,8 +2,8 @@ import type { ChainId } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { execution } from '@kadena/client/fp';
 
-import type { IClientConfig } from '../core/utils/helpers';
 import { dirtyReadClient } from '../core/rich-client';
+import type { IClientConfig } from '../core/utils/helpers';
 
 import { pipe } from 'ramda';
 
@@ -14,7 +14,7 @@ export const getBalance = (
   host?: IClientConfig['host'],
 ) => {
   const balance = pipe(
-    Pact.modules.coin['get-balance'],
+    (name) => Pact.modules.coin['get-balance'](name),
     execution,
     dirtyReadClient({
       host,

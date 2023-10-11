@@ -8,8 +8,8 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import type { IClientConfig } from '../core/utils/helpers';
 import { crossChainClient } from '../core/rich-client';
+import type { IClientConfig } from '../core/utils/helpers';
 
 interface ICrossChainInput {
   sender: { account: string; publicKeys: string[] };
@@ -22,8 +22,8 @@ interface ICrossChainInput {
   };
   amount: string;
   targetChainId: ChainId;
-  targetChainGasPayer: { account: string; publicKeys: string[] };
-  gasPayer: { account: string; publicKeys: string[] };
+  targetChainGasPayer?: { account: string; publicKeys: string[] };
+  gasPayer?: { account: string; publicKeys: string[] };
   chainId: ChainId;
 }
 
@@ -39,7 +39,7 @@ const createCrossChainCommand = ({
     execution(
       Pact.modules.coin.defpact['transfer-crosschain'](
         sender.account,
-        amount,
+        receiver.account,
         readKeyset('account-guard'),
         targetChainId,
         {
@@ -67,6 +67,7 @@ export const transferCrossChain = (
   inputs: ICrossChainInput,
   config: IClientConfig,
 ) =>
-  crossChainClient(config)(inputs.targetChainId, inputs.targetChainGasPayer)(
-    createCrossChainCommand(inputs),
-  );
+  crossChainClient(config)(
+    inputs.targetChainId,
+    inputs.targetChainGasPayer ?? inputs.sender,
+  )(createCrossChainCommand(inputs));

@@ -1,6 +1,24 @@
+import type { IEmit } from './helpers';
 import type { Any, AnyFunc, First, IfAny, Tail } from './types';
 
-import type { IEmit } from './helpers';
+// the default EventTarget does not throw errors when dispatching events
+class MyEventTarget {
+  private _listeners: Record<string, ((data: any) => void)[]> = {};
+
+  public addEventListener(event: string, cb: (event: any) => void) {
+    if (this._listeners[event] === undefined) {
+      this._listeners[event] = [];
+    }
+    this._listeners[event].push(cb);
+  }
+
+  public dispatchEvent(event: string, data: any) {
+    if (this._listeners[event] === undefined) {
+      return;
+    }
+    this._listeners[event].forEach((cb) => cb(data));
+  }
+}
 
 type GeneralEvent<T> = (event: string, cb: (data: unknown) => Any) => T;
 
@@ -41,20 +59,20 @@ export type WithEmitter<
   fn: T,
 ) => (
   ...args: Parameters<ReturnType<T>>
-) => IRT<ReturnType<T>['_event_type'], Extra, ReturnType<T>>;
+) => IRT<ReturnType<T>['_event_type'], Extra, ReturnType<ReturnType<T>>>;
 
 export const withEmitter: WithEmitter =
   (fn) =>
   (...args: Any[]): Any => {
-    const emitter = new EventTarget();
-    const execute = fn(((tag: string) => (data: Any) => {
-      emitter.dispatchEvent(new CustomEvent(tag, { detail: data }));
+    const emitter = new MyEventTarget();
+    const execute = fn(((event: string) => (data: Any) => {
+      emitter.dispatchEvent(event, data);
       return data;
     }) as Any);
     const wrapper = {
       on: (event: string, cb: (data: Any) => Any) => {
         // CustomEvent is not typed correctly
-        emitter.addEventListener(event, ({ detail }: Any) => cb(detail));
+        emitter.addEventListener(event, cb);
         return wrapper;
       },
       execute: () => execute(...args),

@@ -36,7 +36,7 @@ const transferCreateCommand = ({
     execution(
       Pact.modules.coin['transfer-create'](
         sender.account,
-        amount,
+        receiver.account,
         readKeyset('account-guard'),
         {
           decimal: amount,

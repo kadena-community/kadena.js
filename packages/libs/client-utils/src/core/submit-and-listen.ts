@@ -1,11 +1,15 @@
 import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 
-import type { IClientConfig, IEmit } from './utils/helpers';
-import { checkSuccess, safeSign, throwIfFails } from './utils/helpers';
-
 import { asyncPipe } from './utils/asyncPipe';
-import { Any } from './utils/types';
+import type { IClientConfig, IEmit } from './utils/helpers';
+import {
+  checkSuccess,
+  extractResult,
+  safeSign,
+  throwIfFails,
+} from './utils/helpers';
+import type { Any } from './utils/types';
 
 export const submitAndListen =
   (
@@ -26,5 +30,5 @@ export const submitAndListen =
       client.listen,
       emit('listen'),
       throwIfFails,
-      emit('data'),
+      extractResult,
     );

@@ -1,12 +1,10 @@
 import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 
-import type { Any } from './utils/types';
-
-import type { IClientConfig, IEmit } from './utils/helpers';
-import { throwIfFails } from './utils/helpers';
-
 import { asyncPipe } from './utils/asyncPipe';
+import type { IClientConfig, IEmit } from './utils/helpers';
+import { extractResult, throwIfFails } from './utils/helpers';
+import type { Any } from './utils/types';
 
 export const dirtyRead =
   (
@@ -20,4 +18,5 @@ export const dirtyRead =
       client.dirtyRead,
       emit('dirtyRead'),
       throwIfFails,
+      extractResult,
     );

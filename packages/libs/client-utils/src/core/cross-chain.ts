@@ -14,10 +14,16 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
-import { pickFirst, safeSign, throwIfFails, withInput } from './utils/helpers';
-import { Any } from './utils/types';
 import { asyncPipe } from './utils/asyncPipe';
+import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
+import {
+  extractResult,
+  pickFirst,
+  safeSign,
+  throwIfFails,
+  withInput,
+} from './utils/helpers';
+import type { Any } from './utils/types';
 
 const requestSpvProof =
   (targetChainId: ChainId, client: IClient, onPoll: (id: string) => void) =>
@@ -29,9 +35,11 @@ const requestSpvProof =
       .then(
         (proof) =>
           ({
-            pactId: txResult.continuation?.pactId,
-            step: txResult.continuation?.step,
+            pactId: txResult.continuation!.pactId,
+            step: txResult.continuation!.step + 1,
             proof,
+            rollback: false,
+            data: {},
           }) as IContinuationPayloadObject['cont'],
       );
   };
@@ -95,6 +103,6 @@ export const crossChain = (
       client.listen,
       emit('listen-continuation'),
       throwIfFails,
-      emit('final-result'),
+      extractResult,
     );
 };
