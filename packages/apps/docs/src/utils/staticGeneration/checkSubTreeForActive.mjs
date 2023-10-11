@@ -27,7 +27,10 @@ export const getPathName = (filename) => {
     .reverse()
     .join('/');
 
-  return `/${newPath}${lastInPath(path.parse(filename).name)}`;
+  const lastPath = lastInPath(path.parse(filename).name);
+  if (newPath) return `/${newPath}/${lastPath}`;
+
+  return `/${lastPath}`;
 };
 
 const IsMenuOpen = (pathname, itemRoot) =>
