@@ -38,7 +38,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
   color = 'info',
   expanded = false,
   onClose,
-  variant = 'standard',
+  variant = 'default',
   inline = false,
 }) => {
   const Icon = icon ? SystemIcon[icon] : SystemIcon.HelpCircle;

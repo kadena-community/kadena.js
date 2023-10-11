@@ -18,11 +18,7 @@ export const containerClass = style([
   sprinkles({
     display: 'flex',
     alignItems: 'flex-start',
-<<<<<<< HEAD
     padding: '$md',
-=======
-    borderRadius: '$sm',
->>>>>>> e7b5557dd (fix(docs): update cookie consent ui changes (#1019))
     borderStyle: 'solid',
     justifyContent: 'center',
   }),
