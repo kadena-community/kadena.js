@@ -20,7 +20,6 @@ export const containerClass = style([
     alignItems: 'flex-start',
     borderRadius: '$sm',
     padding: '$md',
-    gap: '$md',
     borderStyle: 'solid',
     justifyContent: 'center',
   }),
@@ -34,6 +33,7 @@ export const containerWrapperClass = style([
     display: 'flex',
     width: '100%',
     alignItems: 'flex-start',
+    gap: '$md',
   }),
   {
     maxWidth: 1440,
