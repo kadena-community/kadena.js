@@ -4,6 +4,7 @@ import {
   closeButtonClass,
   colorVariants,
   containerClass,
+  containerWrapperClass,
   contentClass,
   descriptionClass,
   displayVariants,
@@ -60,22 +61,24 @@ export const NotificationContainer: FC<INotificationProps> = ({
 
   return (
     <div className={classList}>
-      <Icon size="md" />
+      <div className={containerWrapperClass}>
+        <Icon size="md" />
 
-      <div className={contentClassList}>
-        {title && <h4>{title}</h4>}
-        <div className={descriptionClassList}>{children}</div>
+        <div className={contentClassList}>
+          {title && <h4>{title}</h4>}
+          <div className={descriptionClassList}>{children}</div>
+        </div>
+
+        {hasCloseButton && (
+          <button
+            className={closeButtonClass}
+            onClick={onClose}
+            aria-label="Close Notification"
+          >
+            <SystemIcon.Close size="md" />
+          </button>
+        )}
       </div>
-
-      {hasCloseButton && (
-        <button
-          className={closeButtonClass}
-          onClick={onClose}
-          aria-label="Close Notification"
-        >
-          <SystemIcon.Close size="md" />
-        </button>
-      )}
     </div>
   );
 };
