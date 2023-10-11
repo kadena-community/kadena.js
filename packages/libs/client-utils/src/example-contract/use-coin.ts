@@ -3,7 +3,7 @@ import { signWithChainweaver } from '@kadena/client';
 import { createAccount } from '../coin/create-account';
 
 export async function consumer() {
-  createAccount(
+  const result = await createAccount(
     {
       account: 'javad',
       keyset: {
@@ -25,6 +25,7 @@ export async function consumer() {
     .on('preflight', (data) => console.log(data))
     .on('submit', (data) => console.log(data))
     .on('listen', (data) => console.log(data))
-    .on('data', (data) => console.log(data))
     .execute();
+
+  console.log(result);
 }
