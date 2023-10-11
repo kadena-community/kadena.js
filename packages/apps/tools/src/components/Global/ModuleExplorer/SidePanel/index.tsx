@@ -12,6 +12,7 @@ import {
   outlineStyle,
 } from './styles.css';
 
+import useTranslation from 'next-translate/useTranslation';
 import React, { useState, useTransition } from 'react';
 
 export interface ISidePanelProps {
@@ -32,6 +33,7 @@ const SidePanel = ({
   const [text, setText] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>();
   const [isPending, startTransition] = useTransition();
+  const { t } = useTranslation('common');
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
@@ -46,8 +48,8 @@ const SidePanel = ({
         <TextField
           label="Search"
           inputProps={{
-            id: 'something',
-            placeholder: 'Module name',
+            id: 'module-explorer-search',
+            placeholder: t('Module name'),
             onChange,
             value: text,
           }}

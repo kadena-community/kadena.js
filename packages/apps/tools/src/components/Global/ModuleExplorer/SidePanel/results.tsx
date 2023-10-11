@@ -24,7 +24,7 @@ const truncateString = (str: string, maxChars: number): string => {
   return `${str.slice(0, maxChars)}...`;
 };
 
-const CHARCOUNT_BREAKING_POINT = 19; // This char count doesn't "break" the line into multiple lines
+const CHARCOUNT_BREAKING_POINT = 15;
 
 const resultsMapToTreeItems = (
   data: IResultsProps['data'],
@@ -48,9 +48,7 @@ const resultsMapToTreeItems = (
           title={chainId + (hash ? ` - ${hash}` : '')}
         >
           {chainId}
-          {`${
-            hash ? ` - ${truncateString(hash, CHARCOUNT_BREAKING_POINT)}` : ''
-          }`}
+          {hash ? ` - ${truncateString(hash, CHARCOUNT_BREAKING_POINT)}` : null}
         </Button>
       ),
     })),
