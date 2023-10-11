@@ -54,12 +54,6 @@
     "path": "packages/apps/docs"
   },
   {
-    "name": "@kadena/e2e-components",
-    "version": "1.0.0",
-    "private": false,
-    "path": "packages/tools/e2e-components"
-  },
-  {
     "name": "@kadena/graph",
     "version": "1.0.0",
     "private": true,
@@ -130,6 +124,12 @@
     "version": "0.4.2",
     "private": false,
     "path": "packages/libs/types"
+  },
+  {
+    "name": "@kadena-dev/e2e-tests",
+    "version": "1.0.0",
+    "private": false,
+    "path": "packages/tools/e2e-tests"
   },
   {
     "name": "@kadena-dev/eslint-config",

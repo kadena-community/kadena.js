@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "baseUrl": "packages",
-    "paths": {
-      "@kadena/*": ["packages/tools/e2e-components"] // This mapping is relative to "baseUrl".
-    }
-  }
-}

@@ -1,0 +1,30 @@
+{
+  "name": "@kadena-dev/e2e-tests",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "scripts": {
+    "format": "pnpm run --sequential /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
+    "format:md": "remark *.md -o --use @kadena-dev/markdown",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint . --ext .js,.ts",
+    "test:e2e": "npx playwright test"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@playwright/test": "^1.38.1",
+    "@rushstack/eslint-config": "~3.3.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-playwright": "0.16.0",
+    "prettier": "~3.0.0",
+    "prettier-plugin-packagejson": "^2.4.5"
+  }
+}
