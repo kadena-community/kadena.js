@@ -6,7 +6,6 @@ import {
   leadingTextClass,
   leadingTextWidthVariant,
   leadingTextWrapperClass,
-  outlinedClass,
 } from './Input.css';
 
 import { SystemIcon } from '@components/Icon';
@@ -28,13 +27,11 @@ export interface IInputProps
   type?: React.HTMLInputTypeAttribute;
   ref?: React.ForwardedRef<HTMLInputElement>;
   id: string;
-  outlined?: boolean;
 }
 
 export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
   function Input(
     {
-      outlined,
       leadingText,
       leadingTextWidth,
       leftIcon,
@@ -50,7 +47,6 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     return (
       <div
         className={classNames(containerClass, {
-          [outlinedClass]: outlined,
           [disabledClass]: disabled,
         })}
         data-testid="kda-input"

@@ -44,7 +44,6 @@ export const TextAreaStory: Story = {
   args: {
     disabled: false,
     fontFamily: '$mono',
-    outlined: true,
   },
   render: (props) => (
     <Textarea

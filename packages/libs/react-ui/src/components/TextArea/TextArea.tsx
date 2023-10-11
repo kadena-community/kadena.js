@@ -1,7 +1,6 @@
 import {
   containerClass,
   disabledClass,
-  outlinedClass,
   textAreaClass,
   textAreaContainerClass,
 } from './TextArea.css';
@@ -21,13 +20,12 @@ export interface ITextareaProps
   disabled?: boolean;
   ref?: React.ForwardedRef<HTMLTextAreaElement>;
   id: string;
-  outlined?: boolean;
 }
 
 export const Textarea: FC<ITextareaProps> = forwardRef<
   HTMLTextAreaElement,
   ITextareaProps
->(function TextArea({ outlined, disabled = false, fontFamily, ...rest }, ref) {
+>(function TextArea({ disabled = false, fontFamily, ...rest }, ref) {
   const [value, setValue] = useState<string>('');
 
   const handleValueChange = ({
@@ -39,7 +37,6 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
   return (
     <div
       className={classNames(containerClass, {
-        [outlinedClass]: outlined,
         [disabledClass]: disabled,
       })}
     >

@@ -98,16 +98,6 @@ const meta: Meta<IInputProps> = {
         ...Object.keys(vars.sizes).map((key) => key as keyof typeof vars.sizes),
       ],
     },
-    outlined: {
-      description: 'Option to render the input with an outline.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
   },
 };
 
@@ -129,12 +119,11 @@ export const Dynamic: Story = {
     rightIcon: undefined,
     leadingText: '',
     leadingTextWidth: undefined,
-    outlined: false,
   },
   render: ({
     leftIcon,
     rightIcon,
-    outlined,
+
     leadingText,
     leadingTextWidth,
     onChange,
@@ -149,7 +138,6 @@ export const Dynamic: Story = {
       placeholder="This is a placeholder"
       leadingText={leadingText}
       leadingTextWidth={leadingTextWidth}
-      outlined={outlined}
       disabled={disabled}
       type={type}
     />
@@ -169,7 +157,6 @@ export const InlineWithButton: Story = {
         leftIcon={leftIcon}
         onChange={onChange}
         placeholder="This is a placeholder"
-        outlined
         type={type}
       />
       <Button title="Submit" onClick={() => {}}>
