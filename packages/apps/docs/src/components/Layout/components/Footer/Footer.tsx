@@ -41,8 +41,8 @@ export const Footer: FC = () => {
           <FooterLink href="https://kadena.io">Kadena.io</FooterLink>
           <FooterLink href="https://kadena.io">Privacy Policy</FooterLink>
           <FooterLink href="https://kadena.io">Terms of Service</FooterLink>
-          <Link href="/docs/kadena/code-of-conduct" passHref legacyBehavior>
-            <FooterLink href="/docs/kadena/code-of-conduct">
+          <Link href="/kadena/code-of-conduct" passHref legacyBehavior>
+            <FooterLink href="/kadena/code-of-conduct">
               Code of Conduct
             </FooterLink>
           </Link>

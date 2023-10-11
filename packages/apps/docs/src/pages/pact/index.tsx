@@ -85,19 +85,16 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 background="smartwallet"
               >
                 <BrowseSection marker="none">
-                  <Link className={docsCardLink} href="/docs/pact/overview">
+                  <Link className={docsCardLink} href="/pact/overview">
                     What is Pact?
                   </Link>
-                  <Link
-                    className={docsCardLink}
-                    href="/docs/pact/reference/pacts"
-                  >
+                  <Link className={docsCardLink} href="/pact/reference/pacts">
                     What are Pacts?
                   </Link>
-                  <Link className={docsCardLink} href="/docs/pact/reference">
+                  <Link className={docsCardLink} href="/pact/reference">
                     Language Reference
                   </Link>
-                  <Link className={docsCardLink} href="/docs/pact/api">
+                  <Link className={docsCardLink} href="/pact/api">
                     Open API
                   </Link>
                 </BrowseSection>
@@ -111,10 +108,10 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 background="react"
               >
                 <BrowseSection marker="none">
-                  <Link className={docsCardLink} href="/docs/pact/beginner">
+                  <Link className={docsCardLink} href="/pact/beginner">
                     Beginner tutorials
                   </Link>
-                  <Link className={docsCardLink} href="/docs/pact/intermediate">
+                  <Link className={docsCardLink} href="/pact/intermediate">
                     Intermediate tutorials
                   </Link>
                 </BrowseSection>
@@ -130,7 +127,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <BrowseSection marker="none">
                   <Link
                     className={docsCardLink}
-                    href="/docs/kadena/whitepapers/pact-smart-contract-language"
+                    href="/kadena/whitepapers/pact-smart-contract-language"
                   >
                     Read the whitepaper
                   </Link>
@@ -143,7 +140,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         <Heading as="h6">Stay up-to-date</Heading>
         <BlogPostsStrip
           data={blogPosts}
-          link={`/docs/tags/pact`}
+          link={`/tags/pact`}
           linkLabel="More Pact blogchain..."
         />
       </article>
