@@ -76,11 +76,47 @@ const Event: React.FC = () => {
                       <Table.Td>
                         <Table.Root>
                           <Table.Body>
-                            {event.eventParameters.map((parameter, index) => (
-                              <Table.Tr key={`arguments-${index}`}>
-                                <Table.Td>{parameter}</Table.Td>
-                              </Table.Tr>
-                            ))}
+                            {JSON.parse(event.parameterText).map(
+                              (parameter: any, index: number) => (
+                                <Table.Tr key={`arguments-${index}`}>
+                                  <Table.Td>
+                                    {typeof parameter === 'string' ? (
+                                      parameter
+                                    ) : typeof parameter === 'object' ? (
+                                      <Table.Root>
+                                        <Table.Body>
+                                          {parameter.map(
+                                            (
+                                              subparameter: any,
+                                              index: number,
+                                            ) => (
+                                              <Table.Tr
+                                                key={`arguments-${index}`}
+                                              >
+                                                <Table.Td>
+                                                  {typeof subparameter ===
+                                                  'string' ? (
+                                                    subparameter
+                                                  ) : (
+                                                    <pre>
+                                                      {JSON.stringify(
+                                                        subparameter,
+                                                      )}
+                                                    </pre>
+                                                  )}
+                                                </Table.Td>
+                                              </Table.Tr>
+                                            ),
+                                          )}
+                                        </Table.Body>
+                                      </Table.Root>
+                                    ) : (
+                                      JSON.stringify(parameter)
+                                    )}
+                                  </Table.Td>
+                                </Table.Tr>
+                              ),
+                            )}
                           </Table.Body>
                         </Table.Root>
                       </Table.Td>

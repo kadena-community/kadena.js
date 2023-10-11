@@ -10,16 +10,9 @@ export default builder.prismaNode('Event', {
     orderIndex: t.expose('orderIndex', { type: 'BigInt' }),
     moduleName: t.exposeString('moduleName'),
     name: t.exposeString('name'),
+    parameterText: t.exposeString('parameterText'),
     qualifiedName: t.exposeString('qualifiedName'),
     requestKey: t.exposeString('requestKey'),
-
-    // computed fields
-    eventParameters: t.field({
-      type: ['String'],
-      resolve(parent) {
-        return JSON.parse(parent.parameterText);
-      },
-    }),
 
     //relations
     transaction: t.prismaField({
