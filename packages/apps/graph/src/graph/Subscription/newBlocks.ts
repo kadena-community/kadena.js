@@ -1,6 +1,7 @@
 import { prismaClient } from '../../db/prismaClient';
 import { dotenv } from '../../utils/dotenv';
 import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
+import type { IContext } from '../builder';
 import { builder } from '../builder';
 
 import type { Block } from '@prisma/client';
@@ -17,7 +18,7 @@ builder.subscriptionField('newBlocks', (t) => {
     type: ['Block'],
     nullable: true,
     subscribe: (parent, args, context, info) =>
-      iteratorFn(args.chainIds as number[] | undefined),
+      iteratorFn(args.chainIds as number[] | undefined, context),
     // TODO: find out why this needs `as Block[]`
     // without it we get the error from
     resolve: (__, block) => block as Block[],
@@ -28,13 +29,14 @@ async function* iteratorFn(
   chainIds: number[] = Array.from(new Array(dotenv.CHAIN_COUNT)).map(
     (__, i) => i,
   ),
+  context: IContext,
 ): AsyncGenerator<Block[], void, unknown> {
   let lastBlock = (await getLastBlocks(chainIds))[0];
 
   yield [lastBlock];
   log('yielding initial block with id %s', lastBlock.id);
 
-  while (true) {
+  while (!context.req.socket.destroyed) {
     const newBlocks = await getLastBlocks(chainIds, lastBlock.id);
 
     if (!nullishOrEmpty(newBlocks) && lastBlock.id !== newBlocks?.[0]?.id) {
@@ -65,7 +67,7 @@ async function getLastBlocks(
 
   const foundblocks = await prismaClient.block.findMany({
     ...extendedFilter,
-    where: { ...extendedFilter.where, chainid: { in: chainIds } },
+    where: { ...extendedFilter.where, chainId: { in: chainIds } },
   });
 
   log("found '%s' blocks", foundblocks.length);

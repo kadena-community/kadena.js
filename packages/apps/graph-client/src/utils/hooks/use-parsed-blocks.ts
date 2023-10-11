@@ -7,11 +7,11 @@ export interface IBlock
     NonNullable<GetBlocksSubscription['newBlocks']>[number],
     // TODO: fix transactions from graphql
     // 'transactions' |
-    | 'creationtime'
+    | 'creationTime'
     | 'height'
-    | 'chainid'
+    | 'chainId'
     | 'hash'
-    | 'powhash'
+    | 'powHash'
     | 'epoch'
     | 'confirmationDepth'
     | 'parentHash'
@@ -52,7 +52,7 @@ export function useParsedBlocks(): IUseParseBlocksReturn {
 
           if (index === blocks.length - 1) {
             updatedBlocks[heightNum] = [...updatedBlocks[heightNum]].sort(
-              (a, b) => b.chainid - a.chainid,
+              (a, b) => b.chainId - a.chainId,
             );
           }
         });
