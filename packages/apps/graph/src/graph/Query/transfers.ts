@@ -27,7 +27,7 @@ builder.queryField('transfers', (t) => {
         },
         orderBy: {
           height: 'desc',
-        }
+        },
       });
     },
   });

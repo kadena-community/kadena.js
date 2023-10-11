@@ -24,7 +24,7 @@ builder.queryField('transactions', (t) => {
         },
         orderBy: {
           height: 'desc',
-        }
+        },
       });
     },
   });
