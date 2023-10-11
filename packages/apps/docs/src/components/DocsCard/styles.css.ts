@@ -1,9 +1,4 @@
-import {
-  breakpoints,
-  sprinkles,
-  vars,
-  responsiveStyle,
-} from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
