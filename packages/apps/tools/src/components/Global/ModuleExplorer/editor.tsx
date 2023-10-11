@@ -34,10 +34,7 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
     );
   }
   return (
-    <Tabs.Root
-      initialTab={moduleToTabId(openedModules[0])}
-      currentTab={moduleToTabId(openedModules[0])}
-    >
+    <Tabs.Root initialTab={moduleToTabId(openedModules[0])}>
       {openedModules.map(({ moduleName, chainId }) => {
         return (
           <Tabs.Tab
