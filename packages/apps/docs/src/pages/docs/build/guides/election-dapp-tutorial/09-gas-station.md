@@ -502,5 +502,10 @@ vote more than once by simply creating multiple Kadena accounts. To comply with 
 Kadena accounts that are allowed to vote should somehow be linked to the social security numbers
 of citizens of voting age as stored in legacy government systems. Or, perhaps, everyone should
 just get a Kadena account instead of a social security number at birth. Anyway there are several
-technical and theoretical solutions for such last hurdle. Take a moment to reflect on this, before
-going live with your election website and smart contract on Testnet in the next chapter.
+technical and theoretical solutions for such last hurdle. Food for thought.
+
+As a next step, you could deploy the election website online and deploy the election smart contract
+to Testnet. This will allow anyone to take part in your online election. In the future, more chapters
+will be added to this tutorial, or new tutorials will be created, to teach you how to do that. You can
+also experiment with signing methods other than Chainweaver. If there is anything you feel is missing
+from this tutorial, please let us know, so we can keep improving.
