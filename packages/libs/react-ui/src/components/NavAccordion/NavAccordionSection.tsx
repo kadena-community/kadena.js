@@ -2,6 +2,7 @@
 
 import { NavAccordionContext } from './NavAccordion.context';
 import {
+  accordionExpand,
   navAccordionButtonClass,
   navAccordionContentClass,
   navAccordionContentListClass,
@@ -65,8 +66,7 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
 
       {children && (
         <ul
-          style={!isOpen ? { display: 'none' } : {}}
-          className={classNames([
+          className={classNames({ [accordionExpand]: isOpen }, [
             navAccordionContentClass,
             navAccordionContentListClass,
           ])}

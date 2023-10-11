@@ -1,6 +1,7 @@
 import {
   accordionButtonClass as navAccordionButtonClass,
   accordionContentClass as navAccordionContentClass,
+  accordionExpand,
   accordionSectionWrapperClass as navAccordionSectionWrapperClass,
   accordionToggleIconClass as navAccordionToggleIconClass,
 } from '@components/Accordion/Accordion.css';
@@ -13,6 +14,7 @@ export {
   navAccordionButtonClass,
   navAccordionToggleIconClass,
   navAccordionContentClass,
+  accordionExpand,
 };
 
 export const navAccordionContentListClass = style([
@@ -60,10 +62,12 @@ export const navAccordionGroupIconClass = style([
 
 export const navAccordionGroupListClass = style([
   sprinkles({
+    display: 'none',
     margin: 0,
+    marginBottom: '$2',
     marginLeft: '$2',
-    paddingBottom: '$2',
-    paddingLeft: '$2',
+    overflow: 'hidden',
+    padding: 0,
   }),
   {
     borderLeft: `1px solid ${vars.colors.$layoutSurfaceSubtle}`,
