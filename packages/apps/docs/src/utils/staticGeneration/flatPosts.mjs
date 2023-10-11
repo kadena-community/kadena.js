@@ -8,7 +8,6 @@ export const flatPosts = (acc = [], val) => {
 };
 
 export const getFlatData = async () => {
-  console.log(111);
   const { menuData: data } = await import('./../../_generated/menu.mjs');
   return data.reduce(flatPosts, []).flat();
 };
