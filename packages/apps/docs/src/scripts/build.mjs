@@ -8,6 +8,11 @@ import { createDocsTree } from './getdocstree.mjs';
 import { importAllReadmes } from './importReadme.mjs';
 import chalk from 'chalk';
 import { Spinner } from './spinner.mjs';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const promiseExec = promisify(exec);
+const globalError = false;
 
 const createString = (str, start) => {
   let titleStr = ` END ${chalk.blue(str.toUpperCase())} ====`;
@@ -25,6 +30,23 @@ const createString = (str, start) => {
   return `${line}${titleStr}`;
 };
 
+const runPrettier = async () => {
+  const success = [];
+  const errors = [];
+
+  const { stderr } = await promiseExec(
+    `prettier ./public/sitemap.xml --write && prettier ./src/pages --write`,
+  );
+
+  if (stderr) {
+    errors.push(`Prettier had issues: ${sterr}`);
+  } else {
+    success.push('Prettier done!');
+  }
+
+  return { errors, success };
+};
+
 const initFunc = async (fnc, description) => {
   console.log(createString(description, true));
 
@@ -40,6 +62,7 @@ const initFunc = async (fnc, description) => {
       console.warn(chalk.red('⨯'), error);
     });
     return (process.exitCode = 1);
+    globalError = true;
   } else {
     success.map((succes) => {
       console.log(chalk.green('✓'), succes);
@@ -58,4 +81,9 @@ const initFunc = async (fnc, description) => {
   await initFunc(checkAuthors, 'Check author data for blog');
   await initFunc(createSitemap, 'Create the sitemap');
   await initFunc(copyFavIcons, 'Copy favicons');
+  await initFunc(runPrettier, 'Prettier');
+
+  if (globalError) {
+    process.exitCode = 1;
+  }
 })();

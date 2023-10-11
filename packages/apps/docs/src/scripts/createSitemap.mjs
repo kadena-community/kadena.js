@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import chalk from 'chalk';
 import {
   getAuthorData,
   getTagsData,
