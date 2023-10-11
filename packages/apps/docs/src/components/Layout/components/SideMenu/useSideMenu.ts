@@ -43,8 +43,6 @@ export const useSideMenu = (
         break;
       }
       foundElm = foundElm.parentElement;
-
-      console.log(foundElm?.tagName.toLowerCase());
     }
 
     return foundElm;
@@ -66,7 +64,6 @@ export const useSideMenu = (
     if (offsetScroll > 0) {
       setTimeout(() => {
         // scrollintoview will not work correctly in a element with overFlow:'scroll'
-
         treeRef.current?.parentElement?.scroll({
           top: offsetScroll,
           left: 0,
