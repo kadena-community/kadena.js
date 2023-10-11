@@ -477,7 +477,7 @@ Obtain current pact build version.
 
 ```lisp
 pact> (pact-version)
-"4.7.1"
+"4.9"
 ```
 
 Top level only: this function will fail if used in module code.

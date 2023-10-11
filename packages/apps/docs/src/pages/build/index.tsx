@@ -32,37 +32,34 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="contribute"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/docs/build/quickstart">
+                <Link className={docsCardLink} href="/build/quickstart">
                   10 minute quick start
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/docs/build/quickstart/memorywall"
+                  href="/build/quickstart/memorywall"
                 >
                   Sign the memory wall
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/docs/build/quickstart/setup-chainweaver"
+                  href="/build/quickstart/setup-chainweaver"
                 >
                   Setup Chainweaver
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/docs/build/quickstart/testnet-account-setup"
+                  href="/build/quickstart/testnet-account-setup"
                 >
                   Testnet account setup
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/docs/build/quickstart/pacty-parrots"
+                  href="/build/quickstart/pacty-parrots"
                 >
                   Pacty Parrots
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/docs/build/quickstart/dapp"
-                >
+                <Link className={docsCardLink} href="/build/quickstart/dapp">
                   Build a Dapp
                 </Link>
               </BrowseSection>
@@ -76,13 +73,10 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="quickstart"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/docs/build/cookbook">
+                <Link className={docsCardLink} href="/build/cookbook">
                   Pact Language API
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/docs/build/cookbook/cookbook"
-                >
+                <Link className={docsCardLink} href="/build/cookbook/cookbook">
                   Kadena Client
                 </Link>
               </BrowseSection>
@@ -96,7 +90,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
           <Heading as="h6">Stay up-to-date</Heading>
           <BlogPostsStrip
             data={blogPosts}
-            link={`/docs/tags/kadenajs`}
+            link={`/tags/kadenajs`}
             linkLabel="More Build blogchain..."
           />
         </Box>

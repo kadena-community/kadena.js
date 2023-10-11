@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'function operators', 'pact operators']
 
 # Function operators
 
-### identity
+## identity
 
 ```pact
 (identity a)
@@ -26,7 +26,7 @@ identity returns its argument unchanged
 
 Supported in either invariants or properties.
 
-### constantly
+## constantly
 
 ```pact
 (constantly a)
@@ -40,7 +40,7 @@ constantly returns its first argument, ignoring the second
 
 Supported in either invariants or properties.
 
-### compose
+## compose
 
 ```pact
 (compose f g)
