@@ -1,0 +1,61 @@
+import { copyFavIcons } from './copyFavIcons.mjs';
+import { checkAuthors } from './createBlogAuthors.mjs';
+import { createSitemap } from './createSitemap.mjs';
+import { checkForHeaders } from './checkForHeaders.mjs';
+import { detectBrokenLinks } from './detectBrokenLinks.mjs';
+import { createSpecs } from './createSpec.mjs';
+import { createDocsTree } from './getdocstree.mjs';
+import { importAllReadmes } from './importReadme.mjs';
+import chalk from 'chalk';
+import { Spinner } from './spinner.mjs';
+
+const createString = (str, start) => {
+  let titleStr = ` END ${chalk.blue(str.toUpperCase())} ====`;
+  let line = '\n\n';
+  if (start) {
+    titleStr = ` START ${chalk.blue(str.toUpperCase())} ====\n\n`;
+    line = '';
+  }
+  const maxLineLength = 70;
+
+  while (line.length + titleStr.length < maxLineLength) {
+    line += `=`;
+  }
+
+  return `${line}${titleStr}`;
+};
+
+const initFunc = async (fnc, description) => {
+  console.log(createString(description, true));
+
+  const spinner = Spinner();
+  spinner.start();
+
+  const { success, errors } = await fnc();
+
+  spinner.stop();
+
+  if (errors.length) {
+    errors.map((error) => {
+      console.warn(chalk.red('⨯'), error);
+    });
+    return (process.exitCode = 1);
+  } else {
+    success.map((succes) => {
+      console.log(chalk.green('✓'), succes);
+    });
+  }
+
+  console.log(createString(description));
+};
+
+(async function () {
+  await initFunc(importAllReadmes, 'Import docs from monorepo');
+  await initFunc(createDocsTree, 'Create docs tree');
+  await initFunc(createSpecs, 'Create specs files');
+  await initFunc(detectBrokenLinks, 'Detect broken links');
+  await initFunc(checkForHeaders, 'Detect missing H1 headers');
+  await initFunc(checkAuthors, 'Check author data for blog');
+  await initFunc(createSitemap, 'Create the sitemap');
+  await initFunc(copyFavIcons, 'Copy favicons');
+})();

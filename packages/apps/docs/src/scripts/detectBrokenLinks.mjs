@@ -3,6 +3,8 @@ import path from 'path';
 import chalk from 'chalk';
 
 const __dirname = path.resolve();
+const errors = [];
+const success = [];
 
 const externalLinks = {};
 
@@ -144,40 +146,23 @@ const countDeadLinks = (filesWithBrokenLinks) => {
   }, 0);
 };
 
-const main = async () => {
-  console.log(
-    '=============================== START CHECKING FOR DEADLINKS ==\n\n',
-  );
-
+export const detectBrokenLinks = async () => {
   const directoryPath = path.join(__dirname, 'src/pages');
   processFiles(directoryPath);
 
   if (Object.keys(filesWithBrokenLinks).length > 0) {
     Object.keys(filesWithBrokenLinks).forEach((key) => {
       filesWithBrokenLinks[key].forEach((link) => {
-        console.warn(
-          chalk.red('⨯'),
-          'file',
-          chalk.red(key),
-          ': link',
-          chalk.red(link),
+        errors.push(
+          `brokenlink detected in ${chalk.red(key)} (link: ${chalk.red(link)})`,
         );
       });
     });
 
-    console.log('');
-    console.log('');
-    console.warn(
-      chalk.red('⨯'),
-      `${countDeadLinks(filesWithBrokenLinks)} issues found`,
-    );
+    errors.push(`${countDeadLinks(filesWithBrokenLinks)} issues found`);
   } else {
-    console.log(chalk.green('✓'), 'NO BROKENLINKS FOUND!');
+    success.push('No brokenlinks found!');
   }
 
-  console.log(
-    '\n\n=============================== END CHECKING FOR DEADLINKS ====',
-  );
+  return { success, errors };
 };
-
-main();

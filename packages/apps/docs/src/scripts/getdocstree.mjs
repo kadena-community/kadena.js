@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import chalk from 'chalk';
 import yaml from 'js-yaml';
 import { getReadTime } from './utils.mjs';
 import { frontmatter } from 'micromark-extension-frontmatter';
@@ -7,37 +6,11 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import logUpdate from 'log-update';
 import { isValid } from 'date-fns';
 
 const promiseExec = promisify(exec);
 const errors = [];
-
-const Spinner = () => {
-  const elegantSpinner = () => {
-    var i = 0;
-
-    return function () {
-      return frames[(i = ++i % frames.length)];
-    };
-  };
-
-  var frame = elegantSpinner();
-  let interval;
-  const frames = '◴◷◶◵'.split('');
-
-  return {
-    start: () => {
-      interval = setInterval(function () {
-        logUpdate(chalk.cyan(frame()));
-      }, 50);
-    },
-    stop: () => {
-      clearInterval(interval);
-      logUpdate.clear();
-    },
-  };
-};
+const success = [];
 
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
@@ -216,34 +189,14 @@ const createTree = async (rootDir, parent = []) => {
   return parent;
 };
 
-const init = async () => {
-  console.log(
-    '=============================================== START DOCS TREE ==\n\n',
-  );
-
-  const spinner = Spinner();
-  spinner.start();
+export const createDocsTree = async () => {
   const result = await createTree(INITIALPATH, TREE);
   // write menu file
   const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
   export const menuData = ${JSON.stringify(result, null, 2)}`;
-
   fs.writeFileSync(MENUFILE, fileStr);
-  spinner.stop();
 
-  if (errors.length) {
-    errors.map((error) => {
-      console.warn(chalk.red('⨯'), error);
-    });
-    process.exitCode = 1;
-  } else {
-    console.log(chalk.green('✓'), 'DOCS TREE CREATED');
-  }
-  console.log(
-    '\n\n=============================================== END DOCS TREE ====',
-  );
+  success.push('Docs imported from monorepo');
+
+  return { errors, success };
 };
-
-(async () => {
-  init();
-})();

@@ -4,10 +4,11 @@ import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { importReadMes } from './utils.mjs';
-import chalk from 'chalk';
+
 import { getLastModifiedDate } from './getdocstree.mjs';
 
 const errors = [];
+const success = [];
 
 const DOCSROOT = './src/pages/';
 
@@ -255,28 +256,12 @@ const importDocs = async (filename, destination, parentTitle, options) => {
   });
 };
 
-const importAll = async (imports) => {
-  console.log(
-    '=============================== START IMPORT DOCS FROM MONOREPO ==\n\n',
-  );
-  imports.forEach(async (item) => {
+export const importAllReadmes = async () => {
+  importReadMes.forEach(async (item) => {
     await importDocs(item.file, item.destination, item.title, item.options);
   });
 
-  if (errors.length) {
-    errors.map((error) => {
-      console.warn(chalk.red('⨯'), error);
-    });
-    process.exitCode = 1;
-  } else {
-    console.log(chalk.green('✓'), 'DOCS IMPORTED FROM MONOREPO');
-  }
+  success.push('Docs imported from monorepo');
 
-  console.log(
-    '\n\n=============================== END IMPORT DOCS FROM MONOREPO ====',
-  );
+  return { success, errors };
 };
-
-(async () => {
-  importAll(importReadMes);
-})();

@@ -3,6 +3,9 @@ import { globby } from 'globby';
 import path from 'path';
 import authors from './../data/authors.json' assert { type: 'json' };
 
+const errors = [];
+const success = [];
+
 const ROOT = `${path.resolve()}/src/pages/blogchain`;
 const errorFiles = [];
 
@@ -26,7 +29,7 @@ const getAuthorId = (name) => {
   return authors.find((author) => author.name === name);
 };
 
-const checkAuthors = async () => {
+export const checkAuthors = async () => {
   const paths = await globby([`${ROOT}/**/*.md`]);
 
   paths.forEach((item) => {
@@ -46,14 +49,14 @@ const checkAuthors = async () => {
 
   if (errorFiles.length > 0) {
     errorFiles.forEach((item) => {
-      console.log(`no authorInfo: ${item}`);
+      errors.push(`no authorInfo for file: ${item}`);
     });
-    throw new Error(
+    errors.push(
       `there were ${errorFiles.length} blogposts without author info`,
     );
+  } else {
+    success.push('There were no issues found with author info in the blogs');
   }
-};
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-console.log('Check blog for existing authors');
-checkAuthors();
+  return { errors, success };
+};
