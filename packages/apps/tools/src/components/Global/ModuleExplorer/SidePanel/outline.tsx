@@ -4,6 +4,7 @@ import { Button, Heading, Text, Tree } from '@kadena/react-ui';
 
 import type { IChainModule } from '../types';
 
+import useTranslation from 'next-translate/useTranslation';
 import React from 'react';
 
 export interface IOutlineProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -11,7 +12,7 @@ export interface IOutlineProps extends React.HTMLAttributes<HTMLDivElement> {
   onInterfaceClick: (module: IChainModule) => void;
 }
 
-type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: fix this because it's ugly/nasty
+type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: Should we improve this because it's a bit hacky?
 
 const contractToTreeItems = (
   contract: Contract,
@@ -64,12 +65,12 @@ const contractToTreeItems = (
 
 const Outline = (props: IOutlineProps): React.JSX.Element => {
   const { selectedModule, onInterfaceClick } = props;
+  const { t } = useTranslation('common');
 
   let parsedContract: Contract;
   if (selectedModule) {
     const [, namespace] = selectedModule.moduleName.split('.');
-    const [parsedModules] = contractParser(selectedModule.code!, namespace);
-    parsedContract = parsedModules[0]; // TODO: improve this
+    [[parsedContract]] = contractParser(selectedModule.code!, namespace);
   }
 
   return (
@@ -91,7 +92,7 @@ const Outline = (props: IOutlineProps): React.JSX.Element => {
         />
       ) : (
         <Text>
-          Select/open a module to see the outline of the contract/module
+          {t('Select/open a module to see the outline of the contract/module')}
         </Text>
       )}
     </div>

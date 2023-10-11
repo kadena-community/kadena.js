@@ -11,8 +11,8 @@ import React from 'react';
 export interface IModuleExplorerProps {
   modules: IChainModule[];
   openedModules: IEditorProps['openedModules'];
-  onModuleClick: (module: IChainModule) => void;
-  onInterfaceClick: (module: IChainModule) => void;
+  onModuleClick: ISidePanelProps['onResultClick'];
+  onInterfaceClick: ISidePanelProps['onInterfaceClick'];
   onModuleExpand: ISidePanelProps['onModuleExpand'];
 }
 

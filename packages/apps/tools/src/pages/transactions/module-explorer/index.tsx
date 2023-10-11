@@ -126,24 +126,19 @@ const replaceOldWithNew = (
   });
 };
 
-/**
+/*
  * In this function we'll add the `hash` property to the module, so that, in the list of modules,
  * you can see if there are any differences in the module on certain chains.
- *
- * @param x
- * @param network
- * @param networksData
- * @returns
  */
 export const enrichModule = async (
-  x: IModule,
+  module: IModule,
   network: Network,
   networksData: INetworkData[],
   queryClient: QueryClient,
 ) => {
-  const promises = x.chains.map((chain) => {
+  const promises = module.chains.map((chain) => {
     return getCompleteModule(
-      { moduleName: x.moduleName, chainId: chain },
+      { moduleName: module.moduleName, chainId: chain },
       network,
       networksData,
     );

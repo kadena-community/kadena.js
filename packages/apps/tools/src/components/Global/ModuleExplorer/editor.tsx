@@ -3,6 +3,7 @@ import { Heading, Tabs } from '@kadena/react-ui';
 import type { IChainModule } from './types';
 
 import dynamic from 'next/dynamic';
+import useTranslation from 'next-translate/useTranslation';
 import React from 'react';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
@@ -18,12 +19,16 @@ const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
 };
 
 const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
+  const { t } = useTranslation('common');
+
   if (!openedModules.length) {
     return (
       <section>
-        <Heading variant="h4">No code to be shown yet</Heading>
+        <Heading variant="h4">{t('No code to be shown yet')}</Heading>
         <p>
-          Click on a module from the left panel to see its code in this panel.
+          {t(
+            'Click on a module from the left panel to see its code in this panel.',
+          )}
         </p>
       </section>
     );
