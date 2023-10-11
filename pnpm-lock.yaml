@@ -1844,9 +1844,6 @@ importers:
       '@types/cross-spawn':
         specifier: ~6.0.2
         version: 6.0.2
-      '@types/jest':
-        specifier: ^29.5.3
-        version: 29.5.3
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
@@ -1862,15 +1859,15 @@ importers:
       ink-testing-library:
         specifier: ^3.0.0
         version: 3.0.0(@types/react@18.2.15)
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@18.17.14)(ts-node@10.8.2)
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+      vitest:
+        specifier: ^0.34.6
+        version: 0.34.6
 
   packages/tools/lint-package:
     dependencies:
