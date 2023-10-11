@@ -1,6 +1,7 @@
 import { Box, Grid, Notification, Table } from '@kadena/react-ui';
 
-import { useGetChainAccountQuery } from '../../../../__generated__/sdk';
+import { useGetAccountQuery } from '../../../../__generated__/sdk';
+import { ChainModuleAccountTable } from '../../../../components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '../../../../components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '../../../../components/compact-transfers-table/compact-transfers-table';
 import Loader from '../../../../components/loader/loader';
@@ -11,18 +12,17 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-const ChainAccount: React.FC = () => {
+const Account: React.FC = () => {
   const router = useRouter();
 
   const {
-    loading: loadingChainAccount,
-    data: chainAccountQuery,
+    loading: loadingAccount,
+    data: accountQuery,
     error,
-  } = useGetChainAccountQuery({
+  } = useGetAccountQuery({
     variables: {
       moduleName: router.query.module as string,
       accountName: router.query.account as string,
-      chainId: router.query.chain as string,
     },
   });
 
@@ -42,7 +42,7 @@ const ChainAccount: React.FC = () => {
         </Text>
 
         <div>
-          {loadingChainAccount && (
+          {loadingAccount && (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Loader /> <span>Retrieving account information...</span>
             </div>
@@ -58,7 +58,7 @@ const ChainAccount: React.FC = () => {
               Check if the Graph server is running.
             </Notification.Root>
           )}
-          {chainAccountQuery?.chainAccount && (
+          {accountQuery?.account && (
             <div>
               <Table.Root wordBreak="break-all">
                 <Table.Body>
@@ -66,66 +66,42 @@ const ChainAccount: React.FC = () => {
                     <Table.Td>
                       <strong>Account Name</strong>
                     </Table.Td>
-                    <Table.Td>
-                      {chainAccountQuery.chainAccount.accountName}
-                    </Table.Td>
+                    <Table.Td>{accountQuery.account.accountName}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <strong>Module</strong>
                     </Table.Td>
-                    <Table.Td>
-                      {chainAccountQuery.chainAccount.moduleName}
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
-                      <strong>Chain</strong>
-                    </Table.Td>
-                    <Table.Td>
-                      {chainAccountQuery.chainAccount.chainId}
-                    </Table.Td>
+                    <Table.Td>{accountQuery.account.moduleName}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <strong>Balance</strong>
                     </Table.Td>
-                    <Table.Td>
-                      {chainAccountQuery.chainAccount.balance}
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
-                      <strong>Guard Predicate</strong>
-                    </Table.Td>
-                    <Table.Td>
-                      {chainAccountQuery.chainAccount.guard.predicate}
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
-                      <strong>Guard Keys</strong>
-                    </Table.Td>
-                    <Table.Td>
-                      {chainAccountQuery.chainAccount.guard.keys}
-                    </Table.Td>
+                    <Table.Td>{accountQuery.account.totalBalance}</Table.Td>
                   </Table.Tr>
                 </Table.Body>
               </Table.Root>
+              <Box margin={'$4'} />
+              <ChainModuleAccountTable
+                moduleName={router.query.module as string}
+                accountName={router.query.account as string}
+                chainAccounts={accountQuery.account.chainAccounts}
+              />
               <Box margin={'$8'} />
               <Grid.Root columns={2} gap="$lg">
                 <Grid.Item>
                   <CompactTransfersTable
                     moduleName={router.query.module as string}
                     accountName={router.query.account as string}
-                    transfers={chainAccountQuery.chainAccount.transfers}
+                    transfers={accountQuery.account.transfers}
                   />
                 </Grid.Item>
                 <Grid.Item>
                   <CompactTransactionsTable
                     moduleName={router.query.module as string}
                     accountName={router.query.account as string}
-                    transactions={chainAccountQuery.chainAccount.transactions}
+                    transactions={accountQuery.account.transactions}
                   />
                 </Grid.Item>
               </Grid.Root>
@@ -137,4 +113,4 @@ const ChainAccount: React.FC = () => {
   );
 };
 
-export default ChainAccount;
+export default Account;

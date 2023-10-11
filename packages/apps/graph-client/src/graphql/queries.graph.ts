@@ -239,104 +239,108 @@ export const getChainAccount: DocumentNode = gql`
   }
 `;
 
-// export const getTransactions: DocumentNode = gql`
-//   query getTransactions(
-//     $moduleName: String!
-//     $accountName: String!
-//     $chainId: String
-//     $after: String
-//     $before: String
-//     $first: Int
-//     $last: Int
-//   ) {
-//     transactions(
-//       chainId: $chainId
-//       after: $after
-//       before: $before
-//       first: $first
-//       last: $last
-//     ) {
-//       pageInfo {
-//         startCursor
-//         endCursor
-//         hasPreviousPage
-//         hasNextPage
-//       }
-//       edges {
-//         cursor
-//         node {
-//           amount
-//           # blockHash
-//           chainId
-//           fromAccount
-//           height
-//           # id
-//           # idx
-//           # moduleHash
-//           # moduleName
-//           # requestKey
-//           toAccount
-//         }
-//       }
-//     }
-//   }
-// `;
+export const getTransactions: DocumentNode = gql`
+  query getTransactions(
+    $moduleName: String!
+    $accountName: String!
+    $chainId: String
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+  ) {
+    transactions(
+      moduleName: $moduleName
+      accountName: $accountName
+      chainId: $chainId
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+    ) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          # id
+          # badResult
+          chainId
+          code
+          # continuation
+          creationTime
+          # data
+          # gas
+          # gasLimit
+          # gasPrice
+          # goodResult
+          height
+          # logs
+          # metadata
+          # nonce
+          # numEvents
+          # pactId
+          # proof
+          requestKey
+          # rollback
+          # sender
+          # step
+          # ttl
+          # txId
+        }
+      }
+    }
+  }
+`;
 
-// export const getTransfers: DocumentNode = gql`
-//   query getTransfers(
-//     $moduleName: String!
-//     $accountName: String!
-//     $chainId: String
-//     $after: String
-//     $before: String
-//     $first: Int
-//     $last: Int
-//   ) {
-//     transfers(
-//       chainId: $chainId
-//       after: $after
-//       before: $before
-//       first: $first
-//       last: $last
-//     ) {
-//       pageInfo {
-//         startCursor
-//         endCursor
-//         hasPreviousPage
-//         hasNextPage
-//       }
-//       edges {
-//         cursor
-//         node {
-//           # id
-//           # badResult
-//           chainId
-//           code
-//           # continuation
-//           creationTime
-//           # data
-//           # gas
-//           # gasLimit
-//           # gasPrice
-//           # goodResult
-//           height
-//           # logs
-//           # metadata
-//           # nonce
-//           # numEvents
-//           # pactId
-//           # proof
-//           requestKey
-//           # rollback
-//           # sender
-//           # step
-//           # ttl
-//           # txId
-//         }
-//       }
-//     }
-//   }
-// `;
+export const getTransfers: DocumentNode = gql`
+  query getTransfers(
+    $moduleName: String!
+    $accountName: String!
+    $chainId: String
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+  ) {
+    transfers(
+      moduleName: $moduleName
+      accountName: $accountName
+      chainId: $chainId
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+    ) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          amount
+          # blockHash
+          chainId
+          fromAccount
+          height
+          # id
+          # idx
+          # moduleHash
+          # moduleName
+          # requestKey
+          toAccount
+        }
+      }
+    }
+  }
+`;
 
 export const getBlocksSubscription: DocumentNode = gql`
   ${CORE_BLOCK_FIELDS}

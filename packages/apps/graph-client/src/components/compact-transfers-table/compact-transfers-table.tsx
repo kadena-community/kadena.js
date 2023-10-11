@@ -12,6 +12,7 @@ import React from 'react';
 interface ICompactTransfersTableProps {
   moduleName: string;
   accountName: string;
+  chainId?: string;
   transfers:
     | GetAccountQuery['account']['transfers']
     | GetChainAccountQuery['chainAccount']['transfers'];
@@ -20,7 +21,7 @@ interface ICompactTransfersTableProps {
 export const CompactTransfersTable = (
   props: ICompactTransfersTableProps,
 ): JSX.Element => {
-  const { moduleName, accountName, transfers } = props;
+  const { moduleName, accountName, chainId, transfers } = props;
 
   return (
     <>
@@ -78,7 +79,9 @@ export const CompactTransfersTable = (
       </Table.Root>
       <Button
         variant="compact"
-        href={`${routes.ACCOUNT}/${moduleName}/${accountName}/transfers`}
+        href={`${routes.ACCOUNT_TRANSFERS}/${moduleName}/${accountName}${
+          chainId !== undefined ? `?chainId=${chainId}` : ''
+        }`}
       >
         View all transfers
       </Button>
