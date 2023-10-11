@@ -17,6 +17,9 @@
       <loc>https://docs.kadena.io/tags/ambassador</loc>
     </url>
     <url>
+      <loc>https://docs.kadena.io/tags/architecture</loc>
+    </url>
+    <url>
       <loc>https://docs.kadena.io/tags/bridge</loc>
     </url>
     <url>
@@ -65,10 +68,19 @@
       <loc>https://docs.kadena.io/tags/kda</loc>
     </url>
     <url>
+      <loc>https://docs.kadena.io/tags/ledger</loc>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/tags/marketing</loc>
+    </url>
+    <url>
       <loc>https://docs.kadena.io/tags/marmalade</loc>
     </url>
     <url>
       <loc>https://docs.kadena.io/tags/mining</loc>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/tags/newsletter</loc>
     </url>
     <url>
       <loc>https://docs.kadena.io/tags/nopool</loc>
@@ -83,7 +95,16 @@
       <loc>https://docs.kadena.io/tags/pact</loc>
     </url>
     <url>
+      <loc>https://docs.kadena.io/tags/policies</loc>
+    </url>
+    <url>
       <loc>https://docs.kadena.io/tags/pow</loc>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/tags/project</loc>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/tags/services</loc>
     </url>
     <url>
       <loc>https://docs.kadena.io/tags/smart%20contract</loc>
@@ -195,12 +216,15 @@
       <loc>https://docs.kadena.io/authors/ryan.levy</loc>
     </url>
     <url>
+      <loc>https://docs.kadena.io/authors/glenn.reyes</loc>
+    </url>
+    <url>
       <loc>https://docs.kadena.io/help</loc>
     </url>
     
     <url>
       <loc>https://docs.kadena.io/docs/kadena}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -212,25 +236,25 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/kda}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/kda/manage-kda}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/kda/kda-concepts}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/whitepapers}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -254,13 +278,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/wallets}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/wallets/chainweaver}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -284,7 +308,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/exchanges}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -314,7 +338,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/kadenajs/todo}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -326,7 +350,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/resources}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -344,7 +368,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/resources/kadena-content-repository}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -362,13 +386,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/client/getting-started}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/client/prerequisites}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -380,7 +404,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/client/building-a-simple-transaction-from-the-contract}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -392,7 +416,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/client/signing}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -410,7 +434,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/client/send-a-request-to-the-blockchain}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -422,7 +446,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/client/further-development}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -434,7 +458,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/kadena/client/contact-the-team}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -482,19 +506,19 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/quickstart}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/quickstart/memorywall}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -596,7 +620,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/cookbook/cookbook/setup}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -608,7 +632,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/cookbook/cookbook/notes}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -632,79 +656,73 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/pact-local-api-queries}</loc>
-      <lastmod>2023-09-18</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial}</loc>
-      <lastmod>2023-09-28</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/01-getting-started}</loc>
-      <lastmod>2023-09-28</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/02-running-devnet}</loc>
-      <lastmod>2023-09-28</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/03-admin-account}</loc>
-      <lastmod>2023-10-09</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/04-namespaces}</loc>
-      <lastmod>2023-09-29</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/05-keysets}</loc>
-      <lastmod>2023-10-03</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/06-smart-contract}</loc>
-      <lastmod>2023-10-09</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/07-nominate-candidates}</loc>
-      <lastmod>2023-10-08</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/08-voting}</loc>
-      <lastmod>2023-10-09</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/09-gas-station}</loc>
-      <lastmod>2023-10-09</lastmod>
+      <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
-      <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/11-deploy-to-testnet}</loc>
-      <lastmod>2023-09-22</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1</priority>
-    </url>
-    <url>
-      <loc>https://docs.kadena.io/docs/build/guides/election-dapp-tutorial/12-other-signing-methods}</loc>
-      <lastmod>2023-09-22</lastmod>
+      <loc>https://docs.kadena.io/docs/build/guides/building-a-voting-dapp}</loc>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -734,7 +752,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/pact}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -746,13 +764,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/pact/beginner}</loc>
-      <lastmod>2023-09-18</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/pact/beginner/web-editor}</loc>
-      <lastmod>2023-09-18</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -842,7 +860,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/pact/intermediate/interfaces-with-pact}</loc>
-      <lastmod>2023-09-18</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -860,7 +878,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/pact/reference/rest-api}</loc>
-      <lastmod>2023-09-18</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -950,7 +968,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/pact/reference/property-checking}</loc>
-      <lastmod>2023-09-18</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1040,7 +1058,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/pact/api}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1070,7 +1088,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/pact/cli/retrievecontract}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1082,7 +1100,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/pact/cli/templategenerate}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1124,25 +1142,25 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/node}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/node/start-mining}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/node/interact-with-nodes}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1178,7 +1196,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/contribute/kadena-dao}</loc>
-      <lastmod>2023-08-28</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1190,7 +1208,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/chainweb}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1202,7 +1220,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/chainweb/node-client/pact}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1226,7 +1244,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/chainweb/stream-client/installation}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1238,7 +1256,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/chainweb/stream-client/usage}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1250,7 +1268,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/chainweb/stream-client/constructor-options}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1262,7 +1280,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/chainweb/stream-client/considerations}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1274,7 +1292,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/chainweb/stream-client/events}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1298,7 +1316,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/chainweb/js-bindings/example-values}</loc>
-      
+      undefined
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
@@ -1322,13 +1340,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1352,13 +1370,19 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023/clarification-to-the-2021-token-economics-update-2023-08-22}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023/decentralized-oracles-how-kadena-is-redefining-data-reliability-2023-04-25}</loc>
       <lastmod>2023-09-12</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/blogchain/2023/exploring-kadena-js-insights-into-the-kadena-developers-experience-2023-09-15}</loc>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1376,7 +1400,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023/harnessing-formal-verification-for-smart-contract-specification-2023-07-05}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1394,13 +1418,19 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023/kadena-2023-q1-newsletter-2023-04-05}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023/kadena-2023-q2-newsletter-2023-07-06}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/blogchain/2023/kadena-2023-q3-newsletter-2023-10-04}</loc>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1424,7 +1454,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023/kadena-tech-bulletin-4-2023-06-20}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/blogchain/2023/kadena-tech-bulletin-5-2023-08-31}</loc>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1443,6 +1479,18 @@
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023/language-server-support-for-pact-2023-04-18}</loc>
       <lastmod>2023-09-12</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/blogchain/2023/marmalade-v2-an-architectural-overview-2023-09-25}</loc>
+      <lastmod>2023-10-06</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/blogchain/2023/mike-herron-kadenas-new-chief-marketing-officer-2023-09-08}</loc>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1478,13 +1526,19 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023/project-spotlight-kadenai-2023-08-15}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2023/project-spotlight-swarms-finance-2023-08-11}</loc>
       <lastmod>2023-09-12</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.5</priority>
+    </url>
+    <url>
+      <loc>https://docs.kadena.io/docs/blogchain/2023/project-spotlight-unitt-2023-09-05}</loc>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1562,7 +1616,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1580,13 +1634,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022/a-step-by-step-guide-to-writing-pact-smart-contract-goliath-faucet-2022-10-04}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022/anastasia-bez-kadenas-new-chief-operations-officer-2022-09-09}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1616,13 +1670,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022/calling-web2-builders-kadena-eases-transition-to-web3-2022-03-09}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022/catching-up-with-cryptographer-computer-scientist-and-kadena-advisor-stuart-haber-2022-10-27}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1658,7 +1712,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022/introducing-kadena-ecos-inaugural-grant-cohort-2022-07-26}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1682,7 +1736,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022/kadena-commitment-to-builders-2022-05-27}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1724,7 +1778,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022/kadena-telegram-ama-with-binance-exchange-2022-05-03}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1754,7 +1808,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022/scott-barker-2022-09-22}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1802,7 +1856,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2022/spotlight-on-unmarshal-2022-09-21}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1850,19 +1904,19 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021/2021-year-in-review-2021-12-31}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021/announcing-the-kadena-chain-relay-2021-03-25}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1910,7 +1964,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021/introducing-the-kadena-live-roadmap-2021-07-30}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1928,13 +1982,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021/kadena-roadmap-for-q1-2021-2021-01-14}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021/kadena-roadmap-for-q2-2021-04-05}</loc>
-      <lastmod>2023-09-06</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1946,7 +2000,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021/kadena-telegram-ama-with-tehmoonwalker-transcript-2021-05-29}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -1958,13 +2012,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021/kadena-telegram-ama-with-the-goodfellas-transcript-2021-06-17}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021/kadenas-kda-token-listed-on-kucoin-a-top-ten-exchange-2021-05-10}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2000,19 +2054,19 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2021/update-to-the-kadena-token-economic-model-2021-01-29}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020/a-first-look-on-integrating-with-rosetta-2020-06-17}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2024,7 +2078,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2036,7 +2090,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020/experience-hybrid-blockchain-2020-05-01}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2054,7 +2108,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020/kadena-collaborates-with-chainlink-in-industrys-first-hybrid-blockchain-oracle-integration-2020-05-19}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2084,25 +2138,25 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020/kadena-launches-public-chain-with-smart-contract-transactions-2020-01-15}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020/kadena-roadmap-for-q1-q2-2020-2020-04-08}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020/kadena-roadmap-for-q3-2020-2020-07-29}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020/kadena-roadmap-for-q4-2020-2020-10-28}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2120,13 +2174,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2138,13 +2192,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/announcement-kadena-public-blockchain-testnet-live-2019-03-26}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/announcing-pact-3-0-2019-06-06}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2168,25 +2222,25 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/faq-for-kadenas-public-blockchain-2019-12-02}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/gauntlet-study-finds-kadena-public-blockchain-is-secure-and-scalable-2019-09-06}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/hybrid-blockchain-101-2019-10-23}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/introducing-kadenamint-and-chainweb-testnet-v2-2019-08-06}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2258,19 +2312,19 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/kadena-new-look-same-mission-2019-03-19}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/kadena-private-blockchain-launches-on-amazon-aws-marketplace-2019-01-23}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2282,13 +2336,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/kadena-releases-mainnet-mining-and-announces-token-sale-2019-11-04}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/kadena-to-explore-implementation-of-pact-for-polkadot-ecosystem-2019-11-12}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2300,7 +2354,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/kadenas-roadmap-to-a-hybrid-blockchain-platform-2019-03-14}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2342,7 +2396,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/roadmap-for-kadenas-hybrid-blockchain-launch-in-january-2020-2019-12-04}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2354,7 +2408,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2366,7 +2420,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/the-future-of-blockchain-is-both-public-and-private-2019-11-18}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2390,7 +2444,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/users-shouldnt-pay-for-gas-2019-12-19}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2402,13 +2456,13 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2019/will-martino-explores-the-security-of-smart-contracts-2019-12-23}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2018}</loc>
-      <lastmod>2023-09-21</lastmod>
+      <lastmod>2023-10-09</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
@@ -2426,7 +2480,7 @@
     </url>
     <url>
       <loc>https://docs.kadena.io/docs/blogchain/2018/kadena-raises-12m-for-public-blockchain-2018-04-12}</loc>
-      <lastmod>2023-09-12</lastmod>
+      <lastmod>2023-10-06</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
     </url>
