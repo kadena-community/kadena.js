@@ -43,8 +43,6 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
   const sectionId = title.replace(/\s+/g, '').toLowerCase();
   const isOpen = openSections.includes(sectionId);
 
-  console.log(openSections);
-
   const handleClick = (): void => {
     if (isOpen) {
       setOpenSections(
