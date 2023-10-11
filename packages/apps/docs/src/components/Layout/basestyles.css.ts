@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import {
   $$backgroundOverlayColor,
@@ -9,6 +9,7 @@ import {
 import { createVar, globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('html, body', {
+  margin: 0,
   backgroundColor: vars.colors.$background,
 });
 
@@ -42,12 +43,12 @@ export const basebackgroundClass = style([
       },
     },
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         position: 'fixed',
         transform: 'translateX(0)',
       },
-    },
+    }),
   },
 ]);
 
@@ -80,8 +81,8 @@ export const baseGridClass = style([
 
     minHeight: '100vh',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
         gridTemplateAreas: `
           "header header header header header"
@@ -90,9 +91,15 @@ export const baseGridClass = style([
           "footer footer footer footer footer"
         `,
       },
-      [`screen and ${breakpoints.xxl}`]: {
-        gridTemplateColumns: `auto ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthLGDefault})) ${$$asideMenuWidthLGDefault} auto`,
+      xxl: {
+        gridTemplateAreas: `
+          "header header header header header"
+          "pageheader pageheader pageheader pageheader pageheader"
+          ". menu content aside ."
+          "footer footer footer footer footer"
+        `,
+        gridTemplateColumns: `minmax(1%, auto) ${$$leftSideWidth} calc(${$$pageWidth} - ${$$leftSideWidth}) 0 minmax(1%, auto)`,
       },
-    },
+    }),
   },
 ]);

@@ -4,11 +4,11 @@ import type { FC } from 'react';
 import React from 'react';
 
 interface IProps {
-  count: number;
+  count?: number;
 }
 
 export const ResultCount: FC<IProps> = ({ count }) => {
-  if (count === 0) return null;
+  if (typeof count !== 'number') return null;
   return (
     <Text size="md">
       {count} Documentation items related to your search term found in this

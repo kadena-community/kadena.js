@@ -7,5 +7,6 @@ export {
   ChainSelect,
   type OnChainSelectChange,
 } from '@/components/Global/ChainSelect';
+export { AddNetworkModal } from '@/components/Global/AddNetworkModal';
 export * from '@/components/Global/FormStatusNotification';
 export * from '@/components/Global/ModuleExplorer';

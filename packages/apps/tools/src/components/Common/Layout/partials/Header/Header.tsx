@@ -1,13 +1,13 @@
-import { NavHeader } from '@kadena/react-ui';
+import { NavHeader, useModal } from '@kadena/react-ui';
 
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
+import { AddNetworkModal } from '@/components/Global/AddNetworkModal';
 import type { Network } from '@/constants/kadena';
-import { kadenaConstants } from '@/constants/kadena';
 import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
-import { getNetworks } from '@/utils/wallet';
+import type { INetworkData } from '@/utils/network';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
@@ -23,9 +23,10 @@ export interface IHeaderProps {
 
 const Header: FC<IHeaderProps> = () => {
   const { t } = useTranslation('common');
-  const { accounts, selectedNetwork, setSelectedNetwork, session } =
+  const { selectedNetwork, networksData, setSelectedNetwork } =
     useWalletConnectClient();
   const { pathname, push } = useRouter();
+  const { renderModal } = useModal();
 
   const navItems = [
     {
@@ -42,16 +43,22 @@ const Header: FC<IHeaderProps> = () => {
     },
   ];
 
-  const networks: Network[] = session
-    ? getNetworks(accounts)
-    : ['mainnet01', 'testnet04'];
-
   const handleMenuItemClick = async (
     e: React.MouseEvent<HTMLAnchorElement>,
   ): Promise<void> => {
     e.preventDefault();
 
     await push(e.currentTarget.href);
+  };
+
+  const openNetworkModal = (): void =>
+    renderModal(<AddNetworkModal />, 'Add Network');
+
+  const handleOnChange = (e: React.FormEvent<HTMLSelectElement>): void => {
+    if ((e.target as HTMLSelectElement).value === 'custom') {
+      return openNetworkModal();
+    }
+    setSelectedNetwork((e.target as HTMLSelectElement).value as Network);
   };
 
   return (
@@ -70,16 +77,15 @@ const Header: FC<IHeaderProps> = () => {
           id="network-select"
           ariaLabel={t('Select Network')}
           value={selectedNetwork as string}
-          onChange={(e) =>
-            setSelectedNetwork((e.target as HTMLSelectElement).value as Network)
-          }
+          onChange={(e) => handleOnChange(e)}
           icon="Earth"
         >
-          {networks.map((network) => (
-            <option key={network} value={network}>
-              {kadenaConstants?.[network].label}
+          {networksData.map((network: INetworkData) => (
+            <option key={network.networkId} value={network.networkId}>
+              {network.label}
             </option>
           ))}
+          <option value="custom">{t('+ add network')}</option>
         </NavHeader.Select>
         <div className={walletConnectWrapperStyle}>
           <WalletConnectButton />

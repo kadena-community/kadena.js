@@ -1,8 +1,9 @@
 {
-  "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
+  "extends": "./node_modules/@kadena-dev/heft-rig/tsconfig-base.json",
   "compilerOptions": {
     "rootDir": "./",
-    "types": ["heft-jest", "node", "@types/gtag.js"],
+    "types": ["node", "@types/gtag.js"],
+    "lib": ["ES2022", "DOM"],
     "paths": {
       "@/*": ["./src/*"]
     },

@@ -53,7 +53,7 @@ their ongoing work with technology leaders such as
 and
 [Polkadot](https://polkadot.network/chainlink-reaches-milestone-with-polkadot/).
 Kadena previously announced an
-[agreement with Web3 Foundation](https://medium.com/kadena-io/kadena-to-explore-implementation-of-pact-for-polkadot-ecosystem-be2253d84a6c)
+[agreement with Web3 Foundation](/docs/blogchain/2019/kadena-to-explore-implementation-of-pact-for-polkadot-ecosystem-2019-11-12)
 to examine how its Pact smart contract language can get implemented on Polkadot.
 For blockchain technology to go mainstream, it is important that credible
 projects commit to cooperating on interoperability between ecosystems.
@@ -67,7 +67,7 @@ fiat-denominated price feeds for KDA will become important for enterprises
 wanting to pay for gas in traditional currencies. Dependable and instantaneous
 market data will also be a requirement for launching many decentralized and
 traditional finance applications, such as with Kadena’s ongoing
-[collaboration with $3 billion asset manager USCF](https://medium.com/kadena-io/uscf-collaborates-with-kadena-on-use-of-blockchain-in-the-investment-space-f8b16f7a38bb).
+[collaboration with $3 billion asset manager USCF](/docs/blogchain/2019/uscf-collaborates-with-kadena-on-use-of-blockchain-in-the-investment-space-2019-05-13).
 Furthermore, Kadena can provide a critical tool for addressing the COVID-19
 pandemic by using Chainlink oracles to validate coronavirus testing kits and
 test results. Over time, Kadena and Chainlink look forward to sharing additional

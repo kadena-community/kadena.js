@@ -61,7 +61,7 @@ A private (also known as a permissioned) blockchain is used for cases where you
 want the benefits of having a decentralized database, but need the security of
 knowing exactly who the participants are in your network. Private blockchains
 chains
-[do not use “mining”](./why-mining-private-blockchains-dont-mix-2019-02-06),
+[do not use “mining”](/docs/blogchain/2019/why-mining-private-blockchains-dont-mix-2019-02-06),
 unlike public blockchains.
 
 Kadena’s private blockchain has been used in production by companies in

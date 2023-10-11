@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 interface IHookResult {
   handleSubmit: (query: string) => void;
-  metadata: StreamMetaData[];
+  metadata: StreamMetaData[] | undefined;
   isLoading: boolean;
   error: string | undefined;
 }
@@ -12,7 +12,7 @@ interface IHookResult {
 export default function useAlgoliaSearch(limitResults = 25): IHookResult {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<undefined | string>(undefined);
-  const [metaData, setMetadata] = useState<StreamMetaData[]>([]);
+  const [metaData, setMetadata] = useState<StreamMetaData[]>();
   const router = useRouter();
 
   async function handleSubmit(query: string): Promise<void> {

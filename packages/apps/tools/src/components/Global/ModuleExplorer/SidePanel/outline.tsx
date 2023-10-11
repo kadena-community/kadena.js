@@ -4,7 +4,7 @@ import React from 'react';
 
 interface IOutlineProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const Outline = (props: IOutlineProps) => {
+const Outline = (props: IOutlineProps): React.JSX.Element => {
   return (
     <div {...props}>
       <Heading as="h4">Outline</Heading>

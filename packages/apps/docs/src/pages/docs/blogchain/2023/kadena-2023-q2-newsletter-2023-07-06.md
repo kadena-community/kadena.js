@@ -189,7 +189,7 @@ a dynamic, inclusivity-focused, and perpetually evolving landscape for digital
 assets.
 
 To read more about Marmalade V2, please click
-[here](./introducing-marmalade-v2-empowering-the-future-of-nfts-2023-06-16).
+[here](/docs/blogchain/2023/introducing-marmalade-v2-empowering-the-future-of-nfts-2023-06-16).
 
 ### Curating the Kadena (Dev)Experience
 

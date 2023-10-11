@@ -5,11 +5,9 @@ import type {
 import { createClient, Pact } from '@kadena/client';
 
 import type { Network } from '@/constants/kadena';
-import {
-  getKadenaConstantByNetwork,
-  kadenaConstants,
-} from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
+import { kadenaConstants } from '@/constants/kadena';
+import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import Debug from 'debug';
 
 const debug = Debug('kadena-transfer:services:describe-module');
@@ -18,16 +16,24 @@ export const describeModule = async (
   moduleName: string,
   chainId: ChainwebChainId,
   network: Network,
+  networksData: INetworkData[],
   senderAccount: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
-): Promise<ILocalCommandResult> => {
+): Promise<ILocalCommandResult | null> => {
   debug(describeModule.name);
-  const networkId = chainNetwork[network].network;
+
+  const networkDto = networksData.find((item) => item.networkId === network);
+
+  if (!networkDto) {
+    return null;
+  }
+
   const { local } = createClient(
-    getKadenaConstantByNetwork(network).apiHost({
-      networkId,
+    getApiHost({
+      api: networkDto.API,
+      networkId: networkDto.networkId,
       chainId,
     }),
   );
@@ -35,7 +41,7 @@ export const describeModule = async (
   const transaction = Pact.builder
     .execution(`(describe-module "${moduleName}")`)
     .setMeta({ gasLimit, gasPrice, ttl, senderAccount, chainId })
-    .setNetworkId(networkId)
+    .setNetworkId(networkDto.networkId)
     .createTransaction();
 
   return await local(transaction, {

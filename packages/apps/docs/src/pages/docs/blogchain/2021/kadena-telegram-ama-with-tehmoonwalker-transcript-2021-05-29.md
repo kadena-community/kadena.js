@@ -190,9 +190,9 @@ and — this is new — Ledger integration!
 for enabling massive high-quality liquidity in BTC and ETH.
 
 Partnerships with
-[Celo](https://medium.com/kadena-io/kadena-building-defi-bridge-to-celo-and-joining-alliance-for-prosperity-also-announcing-bounty-9ead803be8c3)
+[Celo](/docs/blogchain/2020/kadena-building-defi-bridge-to-celo-and-joining-alliance-for-prosperity-also-announcing-bounty-2020-12-15)
 and
-[Terra](https://medium.com/kadena-io/kadena-hybrid-blockchain-partners-with-programmable-money-leader-terra-to-expand-defi-ecosystem-47a2ac92edb1)
+[Terra](/docs/blogchain/2020/kadena-hybrid-blockchain-partners-with-programmable-money-leader-terra-to-expand-defi-ecosystem-2020-11-10)
 and native integrations with Cosmos and Polkadot mean that Kadena users will
 eventually be able to reach every platform with the same security and comfort as
 Kadena.

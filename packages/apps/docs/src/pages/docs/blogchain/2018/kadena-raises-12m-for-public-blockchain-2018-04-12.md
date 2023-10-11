@@ -65,7 +65,7 @@ Here’s a round-up of where our team has been recently:
 
 - [Synchronize 2018](https://www.imn.org/investment-management/conference/Synchronize/)
   — April 18, 2018, NYC: Our Head of Growth, Ben Jessel, will
-  [moderate a panel ](https://medium.com/kadena-io/synchronize-2018-blockchain-and-derivatives-panel-sneak-preview-7d6175b8a0de)on
+  [moderate a panel ](https://www.linkedin.com/pulse/synchronize-2018-blockchain-derivatives-panel-sneak-preview-jessel)on
   blockchain and the derivatives market, featuring the CEO of International
   Swaps and Derivatives Association (ISDA) and the Head of Fintech for the
   Depository Trust and Clearing Corporation (DTCC).

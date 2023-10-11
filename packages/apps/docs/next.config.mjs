@@ -12,9 +12,9 @@ import remarkTwitter from './src/scripts/remarkTwitter.mjs';
 import remarkGfm from 'remark-gfm';
 import mdx from '@next/mdx';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
-const withVanillaExtract = createVanillaExtractPlugin();
 import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
 import { readFileSync } from 'fs';
+const withVanillaExtract = createVanillaExtractPlugin();
 
 const options = {
   // Use one of Shiki's packaged themes
@@ -92,8 +92,11 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // lint is a different task/phase
   },
+
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
+  productionBrowserSourceMaps: true,
+
   transpilePackages: ['@kadena/react-ui', 'react-tweet'],
   images: {
     remotePatterns: [

@@ -1,8 +1,9 @@
-import { BlogItem, BlogList } from '../Blog';
-import { InfiniteScroll } from '../InfiniteScroll';
+import { BlogItem } from '../Blog/BlogItem/BlogItem';
+import { BlogList } from '../Blog/BlogList';
+import { InfiniteScroll } from '../InfiniteScroll/InfiniteScroll';
 
-import { useGetBlogs } from '@/hooks';
-import type { IMenuData } from '@/types/Layout';
+import { useGetBlogs } from '@/hooks/useGetBlogs/useGetBlogs';
+import type { IMenuData } from '@/Layout';
 import type { FC } from 'react';
 import React from 'react';
 

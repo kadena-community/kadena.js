@@ -1,4 +1,4 @@
-import { hasSameBasePath } from '..';
+import { hasSameBasePath } from '../hasSameBasePath';
 
 describe('utils hasSameBasePath', () => {
   it('return true when the start of the paths are equal', () => {

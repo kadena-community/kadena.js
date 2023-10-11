@@ -26,7 +26,7 @@ blockchains, including Kadena.
 When withdrawing from exchanges or transferring KDA, be sure to follow the
 k:account protocol to protect your funds on the receiving account.
 
-[Official explanation](https://medium.com/kadena-io/introducing-kadena-account-protocols-kip-0012-303462b77af1)
+[Official explanation](/docs/blogchain/2021/introducing-kadena-account-protocols-kip-0012-2021-09-27)
 
 [Community explanation](https://thanos-42.medium.com/kip-0012-explained-k-accounts-e0cdc71ab455)
 

@@ -5,9 +5,9 @@ import {
   articleClass,
   contentClass,
   contentClassVariants,
-  TitleHeader,
-} from '../components';
-import { Template } from '../components/Template';
+} from '../components/articleStyles.css';
+import { Template } from '../components/Template/Template';
+import { TitleHeader } from '../components/TitleHeader/TitleHeader';
 import { globalClass } from '../global.css';
 
 import { ArticleMetadataItem } from './ArticleMetadataItem';
@@ -20,8 +20,8 @@ import {
   tagLinkClass,
 } from './styles.css';
 
-import { AuthorProfileCard } from '@/components';
-import type { IPageProps } from '@/types/Layout';
+import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileCard';
+import type { IPageProps } from '@/Layout';
 import { formatDateDistance } from '@/utils/dates';
 import classNames from 'classnames';
 import Link from 'next/link';

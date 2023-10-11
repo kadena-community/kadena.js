@@ -1,7 +1,7 @@
 import { menuData } from '@/_generated/menu.mjs';
+import type { IMenuData } from '@/Layout';
 import type { IFrontmatterData } from '@/types';
-import type { IMenuData } from '@/types/Layout';
-import { createSlug } from '@/utils';
+import { createSlug } from '@/utils/createSlug';
 import type { StreamMetaData } from '@7-docs/edge';
 import algoliasearch from 'algoliasearch';
 import type { NextApiRequest, NextApiResponse } from 'next';

@@ -67,8 +67,7 @@ decentralized community than ever before. Since we have only launched the
 Testnet version of the DAO platform, there are many ideas, improvements, and
 proposals that the community is hoping to share. Please be sure to visit our
 [Telegram](https://t.me/kadena_io) or [Discord](https://discord.io/kadena) to
-voice your input as to what the first proposal should be (or to get an account
-on[ dao.forum](https://kadena-io.github.io/dao.init-frontend/?app=forum&topicId=0&ui=topics)).
+voice your input as to what the first proposal should be.
 
 Before we launch the DAO and forum, we’d like community feedback. Some topics
 which we think people will have an opinion of:

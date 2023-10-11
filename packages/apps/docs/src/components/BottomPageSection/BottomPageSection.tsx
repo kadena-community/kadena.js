@@ -6,7 +6,7 @@ import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
 import { bottomWrapperClass, bottomWrapperCodeLayoutClass } from './styles.css';
 
-import type { INavigation } from '@/types/Layout';
+import type { INavigation } from '@/Layout';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classnames from 'classnames';
 import Link from 'next/link';
@@ -68,7 +68,11 @@ export const BottomPageSection: FC<IProps> = ({
         )}
       </Stack>
       <Divider />
-      <Stack justifyContent="space-between" width="100%">
+      <Stack
+        direction={{ xs: 'column', lg: 'row' }}
+        justifyContent="space-between"
+        width="100%"
+      >
         <PageHelpful editLink={editLink} />
         <Subscribe />
       </Stack>

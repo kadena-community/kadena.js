@@ -22,7 +22,7 @@ At [Kadena](https://kadena.io/), we’re proud of our token economic model, as i
 provides robust rewards for the miners who keep our network running, and funds
 all the critical initiatives that drive adoption on the platform. In January
 2021, working closely with our incredible community, Kadena announced a major
-[update to our token economic model in January 2021](https://medium.com/kadena-io/update-to-the-kadena-token-economic-model-21e1ec18f099).
+[update to our token economic model in January 2021](/docs/blogchain/2021/update-to-the-kadena-token-economic-model-2021-01-29).
 
 To briefly recap that article, Kadena’s model offers the most decentralized
 distribution of any modern layer-1, with 70% of all token emissions going to

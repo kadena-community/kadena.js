@@ -82,7 +82,7 @@ const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const { devOption } = useAppContext();
-  const { selectedNetwork: network } = useWalletConnectClient();
+  const { selectedNetwork: network, networksData } = useWalletConnectClient();
   const helpCenterRef = useRef<HTMLElement | null>(null);
 
   const [requestKey, setRequestKey] = useState<string>(
@@ -109,6 +109,7 @@ const CrossChainTransferFinisher: FC = () => {
       requestKey: reqKey,
       network,
       t,
+      networksData,
     });
 
     if (pollResult === undefined) {

@@ -1,4 +1,7 @@
-import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type {
+  ChainwebChainId,
+  ILocalCommandResult,
+} from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { Breadcrumbs } from '@kadena/react-ui';
 
@@ -17,8 +20,11 @@ import {
 } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { describeModule } from '@/services/modules/describe-module';
+import type { IModulesResult } from '@/services/modules/list-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
+import type { INetworkData } from '@/utils/network';
+import { getAllNetworks } from '@/utils/network';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type {
@@ -33,11 +39,15 @@ const QueryParams = {
   CHAIN: 'chain',
 };
 
-export const getModules = async (network: Network): Promise<IModule[]> => {
+export const getModules = async (
+  network: Network,
+  networksData: INetworkData[],
+): Promise<IModule[]> => {
   const promises = CHAINS.map((chain) => {
     return listModules(
       chain,
       network,
+      networksData,
       kadenaConstants.DEFAULT_SENDER,
       kadenaConstants.GAS_PRICE,
       1000,
@@ -46,7 +56,9 @@ export const getModules = async (network: Network): Promise<IModule[]> => {
 
   const results = await Promise.all(promises);
 
-  const transformed = results.map((result) => transformModulesRequest(result));
+  const transformed = results.map((result) =>
+    transformModulesRequest(result as IModulesResult),
+  );
   const flattened = transformed.flat();
   const sorted = flattened.sort((a, b) => {
     if (a.moduleName === b.moduleName) {
@@ -61,15 +73,17 @@ export const getModules = async (network: Network): Promise<IModule[]> => {
 export const getCompleteModule = async (
   { moduleName, chainId }: IModule,
   network: Network,
+  networksData: INetworkData[],
 ): Promise<IModule & { code: string }> => {
-  const request = await describeModule(
+  const request = (await describeModule(
     moduleName,
     chainId,
     network,
+    networksData,
     kadenaConstants.DEFAULT_SENDER,
     kadenaConstants.GAS_PRICE,
     1000,
-  );
+  )) as ILocalCommandResult;
 
   if (request.result.status === 'failure') {
     throw new Error('Something went wrong');
@@ -90,9 +104,15 @@ export const getServerSideProps: GetServerSideProps<{
     StorageKeys.NETWORK,
     context.req.cookies,
     DefaultValues.NETWORK,
-  ) as Network;
+  );
 
-  const modules = await getModules(network);
+  const networksData = getCookieValue(
+    StorageKeys.NETWORKS_DATA,
+    context.req.cookies,
+    getAllNetworks([]),
+  );
+
+  const modules = await getModules(network, networksData);
 
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
@@ -102,14 +122,15 @@ export const getServerSideProps: GetServerSideProps<{
     (value) => CHAINS.includes(value),
   );
   if (moduleQueryValue && chainQueryValue) {
-    const moduleResponse = await describeModule(
+    const moduleResponse = (await describeModule(
       moduleQueryValue,
       chainQueryValue as ChainwebChainId,
       network,
+      networksData,
       kadenaConstants.DEFAULT_SENDER,
       kadenaConstants.GAS_PRICE,
       1000,
-    );
+    )) as ILocalCommandResult;
 
     if (moduleResponse.result.status !== 'failure') {
       openedModules.push({
@@ -126,15 +147,15 @@ export const getServerSideProps: GetServerSideProps<{
 const ModuleExplorerPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const { selectedNetwork: network } = useWalletConnectClient();
+  const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
   const [openedModules, setOpenedModules] = useState<IModule[]>(
     props.openedModules,
   );
 
   const { data: modules } = useQuery({
-    queryKey: ['modules', network],
-    queryFn: () => getModules(network),
+    queryKey: ['modules', network, networksData],
+    queryFn: () => getModules(network, networksData),
     initialData: props.data,
     staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
     refetchOnWindowFocus: false,
@@ -143,8 +164,14 @@ const ModuleExplorerPage = (
   const results = useQueries({
     queries: openedModules.map((module) => {
       return {
-        queryKey: ['module', network, module.chainId, module.moduleName],
-        queryFn: () => getCompleteModule(module, network),
+        queryKey: [
+          'module',
+          network,
+          module.chainId,
+          module.moduleName,
+          networksData,
+        ],
+        queryFn: () => getCompleteModule(module, network, networksData),
         initialData: () => {
           return props.openedModules.find((openedModule) => {
             return (

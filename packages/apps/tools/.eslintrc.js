@@ -8,4 +8,8 @@ module.exports = {
   ],
   parserOptions: { tsconfigRootDir: __dirname },
   ignorePatterns: ['**/generated/**'],
+  rules: {
+    '@kadena-dev/typedef-var': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+  },
 };

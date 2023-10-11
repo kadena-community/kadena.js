@@ -17,7 +17,7 @@ layout: blog
 
 # FAQ for Kadena’s Public Blockchain
 
-[Kadena has released mainnet mining](https://medium.com/kadena-io/kadena-releases-mainnet-mining-and-announces-token-sale-e4a8866da56)
+[Kadena has released mainnet mining](/docs/blogchain/2019/kadena-releases-mainnet-mining-and-announces-token-sale-2019-11-04)
 to the public, inviting the mining community to begin solving blocks on the
 Kadena public blockchain. Kadena’s network has come alive with activity as
 miners from all over the world participate on the Kadena network.
@@ -45,7 +45,7 @@ on for more information.
 ## Where can I find more information about Kadena tokens?
 
 Read the
-[token economics breakdown](https://medium.com/kadena-io/the-kadena-token-economic-model-8090d7545eef)
+[token economics breakdown](/docs/blogchain/2019/the-kadena-token-economic-model-2019-10-30)
 for more information on the Kadena token model.
 
 **What hashing algorithm does Kadena use?**
@@ -123,4 +123,4 @@ over to our
 touch with Kadena through
 [Discord](https://discordapp.com/invite/bsUcWmX?utm_source=tropyc) or by
 following announcements shared on [Twitter](https://twitter.com/kadena_io) and
-[Medium](https://medium.com/kadena-io).
+[Medium](/docs/blogchain).

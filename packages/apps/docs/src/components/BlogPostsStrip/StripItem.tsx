@@ -9,7 +9,7 @@ import {
   textClass,
 } from './styles.css';
 
-import type { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -31,6 +31,7 @@ export const StripItem: FC<IProps> = ({ post }) => {
                 src={post.headerImage}
                 fill
                 style={{ objectFit: 'cover' }}
+                sizes="100%"
                 alt={post.title}
               />
             ) : (

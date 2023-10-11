@@ -2,11 +2,9 @@ import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { createClient, Pact } from '@kadena/client';
 
 import type { Network } from '@/constants/kadena';
-import {
-  getKadenaConstantByNetwork,
-  kadenaConstants,
-} from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
+import { kadenaConstants } from '@/constants/kadena';
+import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import Debug from 'debug';
 
 const debug = Debug('kadena-transfer:services:list-module');
@@ -20,16 +18,28 @@ export interface IModulesResult {
 export const listModules = async (
   chainId: ChainwebChainId,
   network: Network,
+  networksData: INetworkData[],
   senderAccount: string = kadenaConstants.DEFAULT_SENDER,
   gasPrice: number = kadenaConstants.GAS_PRICE,
   gasLimit: number = kadenaConstants.GAS_LIMIT,
   ttl: number = kadenaConstants.API_TTL,
-): Promise<IModulesResult> => {
+): Promise<IModulesResult | null> => {
   debug(listModules.name);
-  const networkId = chainNetwork[network].network;
+
+  if (!networksData.length) {
+    return null;
+  }
+
+  const networkDto = networksData.find((item) => item.networkId === network);
+
+  if (!networkDto) {
+    return null;
+  }
+
   const { local } = createClient(
-    getKadenaConstantByNetwork(network).apiHost({
-      networkId,
+    getApiHost({
+      api: networkDto.API,
+      networkId: networkDto.networkId,
       chainId,
     }),
   );
@@ -37,7 +47,7 @@ export const listModules = async (
   const transaction = Pact.builder
     .execution('(list-modules)')
     .setMeta({ gasLimit, gasPrice, ttl, senderAccount, chainId })
-    .setNetworkId(networkId)
+    .setNetworkId(networkDto.networkId)
     .createTransaction();
 
   const response = await local(transaction, {
