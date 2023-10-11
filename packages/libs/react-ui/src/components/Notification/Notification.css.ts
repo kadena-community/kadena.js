@@ -22,9 +22,21 @@ export const containerClass = style([
     padding: '$md',
     gap: '$md',
     borderStyle: 'solid',
+    justifyContent: 'center',
   }),
   {
     borderLeftWidth: vars.sizes.$1,
+  },
+]);
+
+export const containerWrapperClass = style([
+  sprinkles({
+    display: 'flex',
+    width: '100%',
+    alignItems: 'flex-start',
+  }),
+  {
+    maxWidth: 1440,
   },
 ]);
 
