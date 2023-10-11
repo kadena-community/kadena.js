@@ -22,7 +22,7 @@ export default class ModuleExplorerPage {
 
   async openDeployedContract(moduleName: string, chain: string): Promise<void> {
     await this.page.getByRole('treeitem', { name: moduleName }).click();
-    await this.page.getByRole('button', { name: chain, exact: true}).click();
+    await this.page.getByRole('button', { name: chain, exact: true }).click();
   }
 
   async getEditor(): Promise<Locator> {
