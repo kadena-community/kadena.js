@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -21,11 +21,11 @@ export const directionVariants = styleVariants({
       rowGap: 0,
       flexDirection: 'column',
 
-      '@media': {
-        [`screen and ${breakpoints.md}`]: {
+      ...responsiveStyle({
+        md: {
           flexDirection: 'row',
         },
-      },
+      }),
     },
   ],
   column: [
@@ -68,11 +68,12 @@ export const listItemClass = style([
   }),
   {
     flexBasis: '50%',
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+
+    ...responsiveStyle({
+      md: {
         flexBasis: '33%',
       },
-    },
+    }),
   },
 ]);
 

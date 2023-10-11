@@ -1,5 +1,3 @@
-import { getData } from './getData.mjs';
-
 export const flatPosts = (acc = [], val) => {
   const { children, ...newVal } = val;
 
@@ -9,7 +7,7 @@ export const flatPosts = (acc = [], val) => {
   return [...acc, newVal, ...children.reduce(flatPosts, []).flat()];
 };
 
-export const getFlatData = () => {
-  const data = getData();
+export const getFlatData = async () => {
+  const { menuData: data } = await import('./../../_generated/menu.mjs');
   return data.reduce(flatPosts, []).flat();
 };

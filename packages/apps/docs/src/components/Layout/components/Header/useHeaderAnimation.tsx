@@ -1,5 +1,5 @@
-import { useMediumScreen } from '@/hooks';
-import { hasSameBasePath } from '@/utils';
+import { useMediumScreen } from '@/hooks/useMediumScreen';
+import { hasSameBasePath } from '@/utils/hasSameBasePath';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 

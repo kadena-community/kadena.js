@@ -93,7 +93,7 @@ export async function crossChainTransfer({
   const status = await listen(submittedTx);
   inspect('Transfer Result')(status);
   if (status.result.status === 'failure') {
-    throw new Error('DEBIT REJECTED');
+    throw new Error('Transfer failed');
   }
 
   const proof = await pollCreateSpv(

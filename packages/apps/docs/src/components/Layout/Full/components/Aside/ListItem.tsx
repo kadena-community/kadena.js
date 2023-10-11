@@ -1,8 +1,8 @@
 import { AsideLink, AsideList } from './';
 
-import type { ISubHeaderElement } from '@/types/Layout';
-import { createSlug } from '@/utils';
+import type { ISubHeaderElement } from '@/Layout';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import { createSlug } from '@/utils/createSlug';
 import { useRouter } from 'next/router';
 import type { FC, MouseEvent } from 'react';
 import React from 'react';

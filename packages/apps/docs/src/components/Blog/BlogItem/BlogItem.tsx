@@ -1,7 +1,7 @@
 import { Box, Heading, Stack, Tag } from '@kadena/react-ui';
 
-import { Avatar } from '../Avatar';
-import { FormatDate } from '..';
+import { Avatar } from '../Avatar/Avatar';
+import { FormatDate } from '../FormatDate';
 
 import {
   authorTitleClass,
@@ -16,7 +16,7 @@ import {
   tagLinkClass,
 } from './styles.css';
 
-import type { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/Layout';
 import classNames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -46,6 +46,7 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                     fill
                     style={{ objectFit: 'cover' }}
                     alt={item.title}
+                    sizes="100%"
                   />
                 )}
               </figure>

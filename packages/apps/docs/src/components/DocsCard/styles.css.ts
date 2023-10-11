@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -70,12 +70,12 @@ export const backgroundVariant = styleVariants({
     backgroundPosition: 'right -150px bottom -150px',
     backgroundSize: '300px',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         backgroundPosition: 'right -250px bottom -250px',
         backgroundSize: '500px',
       },
-    },
+    }),
   },
   contribute: {
     backgroundRepeat: 'no-repeat',
@@ -83,12 +83,12 @@ export const backgroundVariant = styleVariants({
     backgroundPosition: 'right -165px bottom -120px',
     backgroundSize: '300px',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         backgroundPosition: 'right -300px bottom -200px',
         backgroundSize: '500px',
       },
-    },
+    }),
   },
   quickstart: {
     backgroundRepeat: 'no-repeat',
@@ -96,12 +96,12 @@ export const backgroundVariant = styleVariants({
     backgroundPosition: 'right -140px bottom -120px',
     backgroundSize: '300px',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         backgroundPosition: 'right -220px bottom -220px',
         backgroundSize: '500px',
       },
-    },
+    }),
   },
   smartwallet: {
     backgroundRepeat: 'no-repeat',
@@ -109,12 +109,12 @@ export const backgroundVariant = styleVariants({
     backgroundPosition: 'right -140px bottom -120px',
     backgroundSize: '300px',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         backgroundPosition: 'right -320px bottom -120px',
         backgroundSize: '500px',
       },
-    },
+    }),
   },
   react: {
     backgroundRepeat: 'no-repeat',
@@ -122,12 +122,12 @@ export const backgroundVariant = styleVariants({
     backgroundPosition: 'right -140px bottom -120px',
     backgroundSize: '300px',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         backgroundPosition: 'right -250px bottom -220px',
         backgroundSize: '450px',
       },
-    },
+    }),
   },
   marmalade: {
     backgroundRepeat: 'no-repeat',
@@ -135,12 +135,12 @@ export const backgroundVariant = styleVariants({
     backgroundPosition: 'right -140px bottom -120px',
     backgroundSize: '300px',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         backgroundPosition: 'right -200px bottom -220px',
         backgroundSize: '450px',
       },
-    },
+    }),
   },
   default: {},
 });

@@ -1,10 +1,15 @@
-import { Search, SearchBar } from '@/components';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-} from '@/components/Layout/components';
+} from '@/components/Layout/components/articleStyles.css';
 import { ErrorHeader } from '@/components/Layout/Landing/components/Headers';
+import { Search } from '@/components/Search/Search';
+import { SearchBar } from '@/components/SearchBar/SearchBar';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { NextRouter } from 'next/router';
@@ -69,7 +74,7 @@ const NotFoundPage: FC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
-      leftMenuTree: [],
+      leftMenuTree: checkSubTreeForActive(getPathName(__filename), true),
       frontmatter: {
         title: 'Error',
         menu: 'Error',

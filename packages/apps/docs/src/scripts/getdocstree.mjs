@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import chalk from 'chalk';
 import yaml from 'js-yaml';
 import { getReadTime } from './utils.mjs';
 import { frontmatter } from 'micromark-extension-frontmatter';
@@ -7,37 +6,16 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import logUpdate from 'log-update';
 import { isValid } from 'date-fns';
 
 const promiseExec = promisify(exec);
 const errors = [];
+const success = [];
 
-const Spinner = () => {
-  const elegantSpinner = () => {
-    var i = 0;
-
-    return function () {
-      return frames[(i = ++i % frames.length)];
-    };
-  };
-
-  var frame = elegantSpinner();
-  let interval;
-  const frames = '◴◷◶◵'.split('');
-
-  return {
-    start: () => {
-      interval = setInterval(function () {
-        logUpdate(chalk.cyan(frame()));
-      }, 50);
-    },
-    stop: () => {
-      clearInterval(interval);
-      logUpdate.clear();
-    },
-  };
-};
+const INITIALPATH = './src/pages';
+const MENUFILEDIR = './src/_generated';
+const MENUFILE = 'menu.mjs';
+const TREE = [];
 
 const isMarkDownFile = (name) => {
   const extension = name.split('.').at(-1);
@@ -139,12 +117,19 @@ const findPath = (dir) => {
 
   const fileName = file.split('.').at(0);
   if (fileName === 'index') return null;
+  if (!path) return `/${fileName}`;
   return `/${path}/${fileName}`;
 };
 
-const INITIALPATH = './src/pages/docs';
-const MENUFILE = './src/_generated/menu.mjs';
-const TREE = [];
+const SEARCHABLE_DIRS = [
+  '/blogchain',
+  '/build',
+  '/chainweb',
+  '/contribute',
+  '/kadena',
+  '/marmalade',
+  '/pact',
+];
 
 const getFile = async (rootDir, parent, file) => {
   const currentFile = `${rootDir}/${file}`;
@@ -156,35 +141,42 @@ const getFile = async (rootDir, parent, file) => {
 
   if (!child.root) return;
 
-  if (fs.statSync(`${currentFile}`).isFile()) {
-    const obj = await convertFile(currentFile);
-    Object.assign(child, obj);
-  } else if (fs.existsSync(`${currentFile}/index.md`)) {
-    const obj = await convertFile(`${currentFile}/index.md`);
-    Object.assign(child, obj);
-  } else if (fs.existsSync(`${currentFile}/index.mdx`)) {
-    const obj = await convertFile(`${currentFile}/index.mdx`);
-    Object.assign(child, obj);
-  } else if (fs.existsSync(`${currentFile}/index.tsx`)) {
-    const obj = await convertFile(`${currentFile}/index.tsx`);
-    Object.assign(child, obj);
-  } else {
-    const files = fs.readdirSync(currentFile);
+  if (
+    SEARCHABLE_DIRS.some((item) => {
+      return currentFile.startsWith(`${INITIALPATH}${item}`);
+    })
+  ) {
+    if (fs.statSync(`${currentFile}`).isFile()) {
+      const obj = await convertFile(currentFile);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.md`)) {
+      const obj = await convertFile(`${currentFile}/index.md`);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.mdx`)) {
+      const obj = await convertFile(`${currentFile}/index.mdx`);
+      Object.assign(child, obj);
+    } else if (fs.existsSync(`${currentFile}/index.tsx`)) {
+      const obj = await convertFile(`${currentFile}/index.tsx`);
+      Object.assign(child, obj);
+    } else {
+      const files = fs.readdirSync(currentFile);
 
-    // when the directory is empty, just remove the directory.
-    // if there are files or subdirectories and no index file, give error
-    if (files.length > 0) {
-      errors.push(
-        `${currentFile}: there is no index.[md|mdx|tsx] in this directory`,
-      );
+      // when the directory is empty, just remove the directory.
+      // if there are files or subdirectories and no index file, give error
+      if (files.length > 0) {
+        errors.push(
+          `${currentFile}: there is no index.[md|mdx|tsx] in this directory`,
+        );
+      }
     }
-  }
-  parent = pushToParent(parent, child);
 
-  if (fs.statSync(currentFile).isDirectory()) {
-    child.children = await createTree(currentFile, child.children);
+    parent = pushToParent(parent, child);
 
-    return child.children;
+    if (fs.statSync(currentFile).isDirectory()) {
+      child.children = await createTree(currentFile, child.children);
+
+      return child.children;
+    }
   }
 };
 
@@ -198,32 +190,16 @@ const createTree = async (rootDir, parent = []) => {
   return parent;
 };
 
-const init = async () => {
-  console.log(
-    '=============================================== START DOCS TREE ==\n\n',
-  );
-
-  const spinner = Spinner();
-  spinner.start();
+export const createDocsTree = async () => {
   const result = await createTree(INITIALPATH, TREE);
   // write menu file
   const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
   export const menuData = ${JSON.stringify(result, null, 2)}`;
 
-  fs.writeFileSync(MENUFILE, fileStr);
-  spinner.stop();
+  fs.mkdirSync(MENUFILEDIR, { recursive: true });
+  fs.writeFileSync(`${MENUFILEDIR}/${MENUFILE}`, fileStr);
 
-  if (errors.length) {
-    errors.map((error) => {
-      console.warn(chalk.red('⨯'), error);
-    });
-    process.exitCode = 1;
-  } else {
-    console.log(chalk.green('✓'), 'DOCS TREE CREATED');
-  }
-  console.log(
-    '\n\n=============================================== END DOCS TREE ====',
-  );
+  success.push('Docs imported from monorepo');
+
+  return { errors, success };
 };
-
-init();

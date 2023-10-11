@@ -45,7 +45,7 @@ const Event: React.FC = () => {
           )}
 
           {error && (
-            <Notification.Root color="negative" icon="Close">
+            <Notification.Root color="negative" icon="Close" variant="outlined">
               Unknown error:
               <br />
               <br />

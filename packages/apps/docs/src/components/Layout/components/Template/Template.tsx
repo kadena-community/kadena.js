@@ -1,11 +1,13 @@
 import { breakpoints } from '@kadena/react-ui/theme';
 
-import { Footer } from '../Footer';
-import { Menu, MenuBack } from '../Menu';
-import { SideMenu } from '../SideMenu';
+import { Footer } from '../Footer/Footer';
+import { Menu } from '../Menu/Menu';
+import { MenuBack } from '../Menu/MenuBack';
+import { SideMenu } from '../SideMenu/SideMenu';
 
-import { useMenu, useWindowScroll } from '@/hooks';
-import type { IMenuItem } from '@/types/Layout';
+import { useMenu } from '@/hooks/useMenu/useMenu';
+import { useWindowScroll } from '@/hooks/useWindowScroll';
+import type { IMenuItem } from '@/Layout';
 import type { FC, ReactNode } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useMedia } from 'react-use';
@@ -24,7 +26,7 @@ export const Template: FC<IProps> = ({
   hideSideMenu = false,
 }) => {
   const { isMenuOpen, closeMenu } = useMenu();
-  const isMediumDevice = useMedia(breakpoints.md);
+  const isMediumDevice = useMedia(breakpoints.md, true);
   const [{ y }] = useWindowScroll();
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [initialTopSpacing, setInitialTopSpacing] = useState('');
@@ -39,6 +41,7 @@ export const Template: FC<IProps> = ({
     const paddingTop = getComputedStyle(
       mainContentRef.current as HTMLDivElement,
     )?.paddingTop;
+
     // When we get css from computed style it comes with `px` suffix
     const onlyValue = paddingTop.split('px')[0];
     setInitialTopSpacing(onlyValue);
@@ -60,7 +63,7 @@ export const Template: FC<IProps> = ({
     //  to maintain the scrolling effect
     const paddingValue = parseInt(initialTopSpacing) - (y || 0);
 
-    if (paddingValue <= 0) return;
+    if (paddingValue <= 0 || isNaN(paddingValue)) return;
     setStyle({
       paddingTop: paddingValue,
     });

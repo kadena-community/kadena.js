@@ -2,7 +2,7 @@ import { Item } from './Item';
 import { TreeButton } from './TreeButton';
 import { TreeList } from './TreeList';
 
-import type { IMenuItem, LevelType } from '@/types/Layout';
+import type { IMenuItem, LevelType } from '@/Layout';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
