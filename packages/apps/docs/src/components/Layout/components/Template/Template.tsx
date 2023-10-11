@@ -44,9 +44,11 @@ export const Template: FC<IProps> = ({
 
     // When we get css from computed style it comes with `px` suffix
     const onlyValue = paddingTop.split('px')[0];
-    setInitialTopSpacing(onlyValue);
+
+    setInitialTopSpacing(`${parseInt(onlyValue, 10) + y}`);
 
     // Reset style value when we navigate to different pages
+
     return () => {
       setStyle({});
     };
@@ -55,7 +57,7 @@ export const Template: FC<IProps> = ({
 
   useEffect(() => {
     if (!mainContentRef.current || !enablePositioning) {
-      setStyle({});
+      setStyle({ paddingTop: 0 });
       return;
     }
 
@@ -72,6 +74,7 @@ export const Template: FC<IProps> = ({
   return (
     <>
       <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
+
       <Menu
         dataCy="menu"
         isOpen={isMenuOpen}
@@ -82,6 +85,7 @@ export const Template: FC<IProps> = ({
       >
         <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
       </Menu>
+
       {children}
       <Footer />
     </>

@@ -117,7 +117,6 @@ const semanticSearch = async (
   req: ISemanticSearchRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  console.log('req', req.query);
   const { query: { search = '', limit = '10' } = {} } = req;
 
   const limitNumber = parseInt(limit, 10);
