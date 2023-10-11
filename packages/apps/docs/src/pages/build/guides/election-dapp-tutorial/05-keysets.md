@@ -25,8 +25,8 @@ on your local Devnet.
 
 ## Recommended reading
 
- * [Beginner’s Guide to Kadena: Accounts + Keysets](https://medium.com/kadena-io/beginners-guide-to-kadena-accounts-keysets-fb7f32104291)
- * [Pact Keysets](https://medium.com/kadena-io/beginners-guide-to-kadena-accounts-keysets-fb7f32104291)
+ * [Beginner’s Guide to Kadena: Accounts + Keysets](/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14)
+ * [Pact Keysets](/pact/beginner/keysets)
 
 ## Exercise: Define a keyset
 

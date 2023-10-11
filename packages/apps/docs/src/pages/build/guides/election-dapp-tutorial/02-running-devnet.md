@@ -80,7 +80,7 @@ As the names of the contracts suggest, they provide the basic functionality
 required for using tokens (coin, fungible), paying transaction fees (gas)
 and organizing contracts in namespaces (ns). Notice the overlap with the
 contracts in the `./pact/root` folder of your project. Do your remember
-from [Chapter 01](/docs/build/guides/election-dapp-tutorial/01-getting-started) why these
+from [Chapter 01](/build/guides/election-dapp-tutorial/01-getting-started) why these
 files need to exist in your project, even though the corresponding contracts
 are already deployed on Mainnet, Testnet, as well as Devnet? Also note that
 there are not contracts related to the election yet. You will be creating

@@ -46,7 +46,7 @@ that can pay the gas fee for every voting transaction, allowing all citizens to 
 
 ## Recommended reading
 
- * [The First Crypto Gas Station is Now on Kadena’s Blockchain](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836)
+ * [The First Crypto Gas Station is Now on Kadena’s Blockchain](/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06)
 
 ## Create a voter account
 

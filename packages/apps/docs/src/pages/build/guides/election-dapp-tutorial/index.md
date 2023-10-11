@@ -46,15 +46,15 @@ chapter. When you are following along with the tutorial, you can compare your so
 with the starter code of the next chapter. The branch name that corresponds to each chapter
 will be provided at the top of the respective chapter page.
 
- * [Chapter 01: Getting started](/docs/build/guides/election-dapp-tutorial/01-getting-started)
- * [Chapter 02: Running Devnet](/docs/build/guides/election-dapp-tutorial/02-running-devnet)
- * [Chapter 03: Admin account](/docs/build/guides/election-dapp-tutorial/03-admin-account)
- * [Chapter 04: Namespaces](/docs/build/guides/election-dapp-tutorial/04-namespaces)
- * [Chapter 05: Keysets](/docs/build/guides/election-dapp-tutorial/05-keysets)
- * [Chapter 06: Smart contract](/docs/build/guides/election-dapp-tutorial/06-smart-contract)
- * [Chapter 07: Nominate candidates](/docs/build/guides/election-dapp-tutorial/07-nominate-candidates)
- * [Chapter 08: Voting](/docs/build/guides/election-dapp-tutorial/08-voting)
- * [Chapter 09: Gas station](/docs/build/guides/election-dapp-tutorial/09-gas-station)
+ * [Chapter 01: Getting started](/build/guides/election-dapp-tutorial/01-getting-started)
+ * [Chapter 02: Running Devnet](/build/guides/election-dapp-tutorial/02-running-devnet)
+ * [Chapter 03: Admin account](/build/guides/election-dapp-tutorial/03-admin-account)
+ * [Chapter 04: Namespaces](/build/guides/election-dapp-tutorial/04-namespaces)
+ * [Chapter 05: Keysets](/build/guides/election-dapp-tutorial/05-keysets)
+ * [Chapter 06: Smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
+ * [Chapter 07: Nominate candidates](/build/guides/election-dapp-tutorial/07-nominate-candidates)
+ * [Chapter 08: Voting](/build/guides/election-dapp-tutorial/08-voting)
+ * [Chapter 09: Gas station](/build/guides/election-dapp-tutorial/09-gas-station)
 
 In the future additional chapters may be added to this tutorial. Some ideas are already floating
 around, but if you have any suggestions for topics you would like to see covered, please
@@ -80,4 +80,4 @@ working knowledge of the software listed below.
 ## Get started
 
 Let's start creating a website for the election of the new president of the Kadena Universe.
-Good luck and have fun with [Chapter 01: Getting started](/docs/build/guides/election-dapp-tutorial/01-getting-started).
+Good luck and have fun with [Chapter 01: Getting started](/build/guides/election-dapp-tutorial/01-getting-started).

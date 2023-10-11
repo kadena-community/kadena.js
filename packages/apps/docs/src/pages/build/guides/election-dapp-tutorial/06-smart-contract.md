@@ -20,9 +20,9 @@ chapters you will gradually add more logic to the module.
 
 ## Recommended reading
 
- * [Pact Modules](https://docs.kadena.io/learn-pact/beginner/modules)
+ * [Pact Modules](/pact/beginner/modules)
  * [Capabilities](https://pact-language.readthedocs.io/en/latest/pact-reference.html#capabilities)
- * [Pact: Solving Smart Contract Governance and Upgradeability](https://medium.com/kadena-io/pact-solving-smart-contract-governance-and-upgradeability-976aac3bbb31)
+ * [Pact: Solving Smart Contract Governance and Upgradeability](/blogchain/2019/pact-solving-smart-contract-governance-and-upgradeability-2019-04-05)
 
 ## Exercise: Define the election Pact module
 

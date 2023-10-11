@@ -46,7 +46,7 @@ and `pact-lsp` installed on your computer. You can configure the path to each
 executable in the plugin settings. If you are using another editor, you may also
 profit from just `pact-lsp` which provides the syntax highlighting. The links
 to the installation instructions are listed on the
-[main page](/docs/build/guides/election-dapp-tutorial) of this tutorial.
+[main page](/build/guides/election-dapp-tutorial) of this tutorial.
 
 ## Project structure
 

@@ -29,7 +29,7 @@ the tutorial.
 
 ## Recommended reading
 
- * [An Introductory Guide to Kadena Namespaces](https://medium.com/kadena-io/an-introductory-guide-to-kadena-namespaces-c6c34f95b902)
+ * [An Introductory Guide to Kadena Namespaces](/blogchain/2023/an-introductory-guide-to-kadena-namespaces-2023-01-11)
  * [Testing in the Pact REPL](https://github.com/thomashoneyman/real-world-pact/blob/main/00-core-concepts/03-Testing-In-The-Pact-REPL.md)
 
 ## Exercise: Define a namespace

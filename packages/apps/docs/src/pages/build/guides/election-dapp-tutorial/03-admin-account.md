@@ -21,8 +21,8 @@ account name, the convention of using the single key of the account prefixed by
 
 ## Recommended reading
 
- * [Beginner’s Guide to Kadena: Accounts + Keysets](https://medium.com/kadena-io/beginners-guide-to-kadena-accounts-keysets-fb7f32104291)
- * [Kadena Public Blockchain: Getting Started with Transfers](https://medium.com/kadena-io/kadena-public-blockchain-getting-started-with-transfers-153bf87d6824)
+ * [Beginner’s Guide to Kadena: Accounts + Keysets](/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14)
+ * [Kadena Public Blockchain: Getting Started with Transfers](/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19)
 
 ## Creating the admin key
 

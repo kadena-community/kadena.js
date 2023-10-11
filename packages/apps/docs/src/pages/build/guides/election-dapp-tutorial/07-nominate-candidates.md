@@ -19,7 +19,7 @@ candidates to the table and listing all candidates that are stored in the table.
 
 ## Recommended reading
 
- * [Pact Schemas and Tables](https://docs.kadena.io/learn-pact/beginner/schemas-and-tables)
+ * [Pact Schemas and Tables](/pact/beginner/schemas-and-tables)
 
 ## Database
 
