@@ -2,7 +2,7 @@
 
 import { KodeMono } from '@kadena/fonts';
 
-import { breakpoints } from './sprinkles.css';
+import { breakpoints } from './themeUtils';
 import { vars } from './vars.css';
 
 import { globalFontFace, globalStyle } from '@vanilla-extract/css';

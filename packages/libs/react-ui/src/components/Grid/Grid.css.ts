@@ -1,5 +1,6 @@
 /* eslint @typescript-eslint/naming-convention: 0 */
-import { breakpoints, sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
+import { breakpoints, mapToProperty } from '@theme/themeUtils';
 import { style, styleVariants } from '@vanilla-extract/css';
 import mapValues from 'lodash.mapvalues';
 
@@ -26,21 +27,6 @@ export const gapVariants = styleVariants({
   $3xl: [sprinkles({ gridGap: '$3xl' })],
 });
 
-export const rowSpanVariants = styleVariants({
-  1: [{ gridRow: 'span 1' }],
-  2: [{ gridRow: 'span 2' }],
-  3: [{ gridRow: 'span 3' }],
-  4: [{ gridRow: 'span 4' }],
-  5: [{ gridRow: 'span 5' }],
-  6: [{ gridRow: 'span 6' }],
-  7: [{ gridRow: 'span 7' }],
-  8: [{ gridRow: 'span 8' }],
-  9: [{ gridRow: 'span 9' }],
-  10: [{ gridRow: 'span 10' }],
-  11: [{ gridRow: 'span 11' }],
-  12: [{ gridRow: 'span 12' }],
-});
-
 const columnCount: Record<number, number> = {
   1: 1,
   2: 2,
@@ -55,6 +41,10 @@ const columnCount: Record<number, number> = {
   11: 11,
   12: 12,
 };
+
+export const rowSpanVariants = styleVariants(columnCount, (count) =>
+  mapToProperty('gridRow')(`span ${count}`),
+);
 
 export const containerColumnVariants = mapValues(breakpoints, (mediaQuery) => {
   return styleVariants(columnCount, (count) => {

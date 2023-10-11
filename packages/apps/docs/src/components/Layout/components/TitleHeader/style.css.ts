@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { $$backgroundOverlayColor, $$pageWidth } from '../../global.css';
 
@@ -42,18 +42,10 @@ export const headerWrapperClass = style([
 
         transition: 'transform 1s ease, opacity 2s  ease-out',
         transitionDelay: '600ms',
-
-        '@media': {
-          [`screen and ${breakpoints.md}`]: {},
-        },
       },
     },
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        zIndex: 101,
-      },
-    },
+    ...responsiveStyle({ md: { zIndex: 101 } }),
   },
 ]);
 

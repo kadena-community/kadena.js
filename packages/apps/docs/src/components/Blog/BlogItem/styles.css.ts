@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -76,12 +76,12 @@ export const figureClass = style([
   {
     width: `100%`,
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
         aspectRatio: '1',
       },
-    },
+    }),
   },
 ]);
 
@@ -89,20 +89,20 @@ export const figureVariant = styleVariants({
   default: {
     width: '100%',
     aspectRatio: '16 / 3',
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
       },
-    },
+    }),
   },
   large: {
     width: '100%',
     aspectRatio: '16 / 7',
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         width: `clamp(${vars.sizes.$48}, 20vw, ${vars.sizes.$64})`,
       },
-    },
+    }),
   },
 });
 
@@ -130,12 +130,12 @@ export const gridWrapperClass = style([
       "header"
     `,
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         gridTemplateAreas: `
         "header image"
       `,
       },
-    },
+    }),
   },
 ]);

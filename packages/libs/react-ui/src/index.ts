@@ -92,5 +92,3 @@ export {
   Tree,
   useModal,
 } from './components';
-
-export { breakpoints } from './styles';
