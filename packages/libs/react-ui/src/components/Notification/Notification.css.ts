@@ -19,7 +19,6 @@ export const containerClass = style([
     display: 'flex',
     alignItems: 'flex-start',
     borderRadius: '$sm',
-    padding: '$md',
     borderStyle: 'solid',
     justifyContent: 'center',
   }),
@@ -30,6 +29,7 @@ export const containerClass = style([
 
 export const containerWrapperClass = style([
   sprinkles({
+    padding: '$md',
     display: 'flex',
     width: '100%',
     alignItems: 'flex-start',
