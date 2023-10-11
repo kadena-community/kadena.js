@@ -35,7 +35,7 @@ const runPrettier = async () => {
   const errors = [];
 
   const { stderr } = await promiseExec(
-    `prettier ./public/sitemap.xml --write && prettier ./src/pages --write`,
+    `prettier ./public/sitemap.xml --write && prettier ./src/pages --write  && prettier ./src/specs/**/*.json --write`,
   );
 
   if (stderr) {
@@ -61,8 +61,8 @@ const initFunc = async (fnc, description) => {
     errors.map((error) => {
       console.warn(chalk.red('⨯'), error);
     });
-    return (process.exitCode = 1);
     globalError = true;
+    return (process.exitCode = 1);
   } else {
     success.map((succes) => {
       console.log(chalk.green('✓'), succes);
