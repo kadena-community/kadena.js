@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'logical operators', 'pact operators']
 
 # Logical operators
 
-### >
+## >
 
 ```pact
 (> x y)
@@ -27,7 +27,7 @@ True if `x` > `y`
 
 Supported in either invariants or properties.
 
-### \<
+## \<
 
 ```pact
 (< x y)
@@ -42,7 +42,7 @@ True if `x` < `y`
 
 Supported in either invariants or properties.
 
-### >=
+## >=
 
 ```pact
 (>= x y)
@@ -57,7 +57,7 @@ True if `x` >= `y`
 
 Supported in either invariants or properties.
 
-### \<=
+## \<=
 
 ```pact
 (<= x y)
@@ -72,7 +72,7 @@ True if `x` \<= `y`
 
 Supported in either invariants or properties.
 
-### =
+## =
 
 ```pact
 (= x y)
@@ -104,7 +104,7 @@ True if `x` != `y`
 
 Supported in either invariants or properties.
 
-### and
+## and
 
 ```pact
 (and x y)
@@ -118,7 +118,7 @@ Short-circuiting logical conjunction
 
 Supported in either invariants or properties.
 
-### or
+## or
 
 ```pact
 (or x y)
@@ -132,7 +132,7 @@ Short-circuiting logical disjunction
 
 Supported in either invariants or properties.
 
-### not
+## not
 
 ```pact
 (not x)
@@ -145,7 +145,7 @@ Logical negation
 
 Supported in either invariants or properties.
 
-### when
+## when
 
 ```pact
 (when x y)
@@ -159,7 +159,7 @@ Logical implication. Equivalent to `(or (not x) y)`.
 
 Supported in either invariants or properties.
 
-### and?
+## and?
 
 ```pact
 (and? f g a)
@@ -174,7 +174,7 @@ Supported in either invariants or properties.
 
 Supported in either invariants or properties.
 
-### or?
+## or?
 
 ```pact
 (or? f g a)
@@ -189,7 +189,7 @@ Supported in either invariants or properties.
 
 Supported in either invariants or properties.
 
-### hash
+## hash
 
 ```pact
 (hash s)

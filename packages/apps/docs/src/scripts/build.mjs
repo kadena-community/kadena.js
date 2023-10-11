@@ -12,7 +12,7 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 
 const promiseExec = promisify(exec);
-const globalError = false;
+let globalError = false;
 
 const createString = (str, start) => {
   let titleStr = ` END ${chalk.blue(str.toUpperCase())} ====`;
@@ -35,7 +35,7 @@ const runPrettier = async () => {
   const errors = [];
 
   const { stderr } = await promiseExec(
-    `prettier ./public/sitemap.xml --write && prettier ./src/pages --write  && prettier ./src/specs/**/*.json --write`,
+    `prettier ./public/sitemap.xml --write && prettier ./src/pages --write  && prettier ./src/_generated/**/*.json --write`,
   );
 
   if (stderr) {

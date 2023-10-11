@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'guards']
 
 # Guards
 
-### create-capability-guard
+## create-capability-guard
 
 _capability_&nbsp;` -> bool` _&rarr;_&nbsp;`guard`
 
@@ -22,7 +22,7 @@ Creates a guard that will enforce that CAPABILITY is acquired.
 (create-capability-guard (BANK_DEBIT 10.0))
 ```
 
-### create-capability-pact-guard
+## create-capability-pact-guard
 
 _capability_&nbsp;` -> bool` _&rarr;_&nbsp;`guard`
 
@@ -33,13 +33,13 @@ currently-executing defpact is operational.
 (create-capability-pact-guard (ESCROW owner))
 ```
 
-### create-module-guard
+## create-module-guard
 
 _name_&nbsp;`string` _&rarr;_&nbsp;`guard`
 
 Defines a guard by NAME that enforces the current module admin predicate.
 
-### create-pact-guard
+## create-pact-guard
 
 _name_&nbsp;`string` _&rarr;_&nbsp;`guard`
 
@@ -48,7 +48,7 @@ enforcement time, the success condition is that at that time 'pact-id' must
 return the same value. In effect this ensures that the guard will only succeed
 within the multi-transaction identified by the pact id.
 
-### create-principal
+## create-principal
 
 _guard_&nbsp;`guard` _&rarr;_&nbsp;`string`
 
@@ -62,14 +62,14 @@ Create a principal which unambiguously identifies GUARD.
 (create-principal (create-pact-guard 'pact-guard))
 ```
 
-### create-user-guard
+## create-user-guard
 
 _closure_&nbsp;` -> bool` _&rarr;_&nbsp;`guard`
 
 Defines a custom guard CLOSURE whose arguments are strictly evaluated at
 definition time, to be supplied to indicated function at enforcement time.
 
-### is-principal
+## is-principal
 
 _principal_&nbsp;`string` _&rarr;_&nbsp;`bool`
 
@@ -80,7 +80,7 @@ validity.
 (enforce   (is-principal 'k:462e97a099987f55f6a2b52e7bfd52a36b4b5b470fed0816a3d9b26f9450ba69)   "Invalid account structure: non-principal account")
 ```
 
-### keyset-ref-guard
+## keyset-ref-guard
 
 _keyset-ref_&nbsp;`string` _&rarr;_&nbsp;`guard`
 
@@ -88,7 +88,7 @@ Creates a guard for the keyset registered as KEYSET-REF with 'define-keyset'.
 Concrete keysets are themselves guard types; this function is specifically to
 store references alongside other guards in the database, etc.
 
-### typeof-principal
+## typeof-principal
 
 _principal_&nbsp;`string` _&rarr;_&nbsp;`string`
 
@@ -99,7 +99,7 @@ principal type, then the empty string is returned.
 (typeof-principal 'k:462e97a099987f55f6a2b52e7bfd52a36b4b5b470fed0816a3d9b26f9450ba69)
 ```
 
-### validate-principal
+## validate-principal
 
 _guard_&nbsp;`guard` _principal_&nbsp;`string` _&rarr;_&nbsp;`bool`
 

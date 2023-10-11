@@ -18,7 +18,7 @@ tags:
 
 # Authorization operators
 
-### authorized-by
+## authorized-by
 
 ```pact
 (authorized-by k)
@@ -31,7 +31,7 @@ Whether the named keyset/guard is satisfied by the executing transaction
 
 Supported in properties only.
 
-### row-enforced
+## row-enforced
 
 ```pact
 (row-enforced t c r)
@@ -48,7 +48,7 @@ Whether the keyset in the row is enforced by the function under analysis
 
 Supported in properties only.
 
-### is-principal
+## is-principal
 
 ```pact
 (is-principal s)
@@ -61,7 +61,7 @@ Whether `s` conforms to the principal format without proving validity.
 
 Supported in either invariants or properties.
 
-### typeof-principal
+## typeof-principal
 
 ```pact
 (typeof-principal s)

@@ -13,6 +13,7 @@ info:
     url: 'https://i.imgur.com/bAZFAGF.png'
     # backgroundColor: '#0033A0'
     alttext: Kadena Chainweb Logo
+    href: 'https://api.chainweb.com/openapi'
 
 # ############################################################################ #
 # Servers
@@ -185,6 +186,16 @@ paths:
                   minItems: 1
                   items:
                     $ref: '#/components/schemas/request-key'
+      parameters:
+        - name: confirmationDepth
+          in: query
+          description: |
+            Configures how many blocks should be mined until the requested transaction is ready.
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+
       responses:
         '200':
           description:
@@ -508,25 +519,25 @@ components:
     # Command Result and related
 
     preflight-result:
-      title: Preflight result
+      title: Preflight /local result
       tags: [model-preflight-result]
       example:
         $ref: '#/components/examples/preflight-result'
       description:
-        The result of attempting to execute a single well-formed Pact /local
-        preflight command.
+        The result of attempting to execute preflight simulation for a single
+        well-formed Pact command.
       type: object
-      required: [preflightWarnings, preflightResult]
+      required: [preflightResult, preflightWarnings]
       properties:
-        preflightWarnings:
-          type: array
-          description:
-            A set of deprecation warnings generated as the result of pact
-            command execution.
-          items:
-            type: string
         preflightResult:
           $ref: '#/components/schemas/command-result'
+        preflightWarnings:
+          description:
+            A list of warnings associated with deprecated features in upcoming
+            pact releases.
+          type: array
+          items:
+            type: string
 
     command-result:
       title: Command Result
@@ -729,10 +740,38 @@ components:
           description:
             Special pact value to directly reference a module or interface.
           type: object
+          required: [refName, refSpec]
+          example:
+            $ref: '#/components/examples/module_reference'
           properties:
             refName:
-              type: string
-              description: 'Fully-qualified module or interface name.'
+              type: object
+              required: [name, namespace]
+              description: The module name
+              properties:
+                name:
+                  type: string
+                  description: Bare name of a module
+                namespace:
+                  type: string
+                  nullable: true
+                  description: Namespace of the indicated module
+            refSpec:
+              type: array
+              description:
+                The module names to substitute for any references present in the
+                module code
+              items:
+                type: object
+                required: [name, namespace]
+                properties:
+                  name:
+                    type: string
+                    description: Bare name of a module
+                  namespace:
+                    type: string
+                    nullable: true
+                    description: Namespace of the indicated module
         - title: Guard
           description: Special pact value for guard types.
           type: object
@@ -886,6 +925,33 @@ components:
   # Examples
 
   examples:
+    preflight-result:
+      {
+        'preflightResult':
+          {
+            'gas': 123,
+            'result': { 'status': 'success', 'data': 3 },
+            'reqKey': 'cQ-guhschk0wTvMBtrqc92M7iYm4S2MYhipQ2vNKxoI',
+            'logs': 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+            'metaData': null,
+            'continuation': null,
+            'txId': '456',
+            'events':
+              [
+                {
+                  'name': 'TRANSFER',
+                  'params': ['Alice', 'Bob', 10.0],
+                  'module': 'coin',
+                  'moduleHash': 'ut_J_ZNkoyaPUEJhiwVeWnkSQn9JT9sQCWKdjjVVrWo',
+                },
+              ],
+          },
+        'preflightWarnings':
+          [
+            'Warning: Using deprecated native +: decimal/integer operator
+            overload is deprecated',
+          ],
+      }
     command:
       {
         'hash': 'H6XjdPHzMai2HLa3_yVkXfkFYMgA0bGfsB0kOsHAMuI',
@@ -943,6 +1009,12 @@ components:
             'sender': '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
           },
         'nonce': 'nonce-value',
+      }
+
+    module_reference:
+      {
+        'refName': { 'namespace': null, 'name': 'coin' },
+        'refSpec': [{ 'namespace': null, 'name': 'fungible-v2' }],
       }
 
 # ############################################################################ #

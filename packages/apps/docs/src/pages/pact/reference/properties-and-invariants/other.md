@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'other operators', 'pact operators']
 
 # Other operators
 
-### where
+## where
 
 ```pact
 (where field f obj)
@@ -27,7 +27,7 @@ utility for use in `filter` and `select` applying `f` to `field` in `obj`
 
 Supported in either invariants or properties.
 
-### typeof
+## typeof
 
 ```pact
 (typeof a)

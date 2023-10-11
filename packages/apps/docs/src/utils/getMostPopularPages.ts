@@ -98,7 +98,7 @@ function pushToTopPages(
     const views = row.metricValues?.[0].value ?? '0';
 
     const item = {
-      path: row.dimensionValues[0].value ?? '',
+      path: cleanSlug(row.dimensionValues[0].value) ?? '',
       views: parseFloat(views),
       title: row.dimensionValues[1].value ?? '',
     };

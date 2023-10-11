@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'time']
 
 # Time
 
-### add-time
+## add-time
 
 _time_&nbsp;`time` _seconds_&nbsp;`decimal` _&rarr;_&nbsp;`time`
 
@@ -25,7 +25,7 @@ pact> (add-time (time "2016-07-22T12:00:00Z") 15)
 "2016-07-22T12:00:15Z"
 ```
 
-### days
+## days
 
 _n_&nbsp;`decimal` _&rarr;_&nbsp;`decimal`
 
@@ -38,7 +38,7 @@ pact> (add-time (time "2016-07-22T12:00:00Z") (days 1))
 "2016-07-23T12:00:00Z"
 ```
 
-### diff-time
+## diff-time
 
 _time1_&nbsp;`time` _time2_&nbsp;`time` _&rarr;_&nbsp;`decimal`
 
@@ -49,7 +49,7 @@ pact> (diff-time (parse-time "%T" "16:00:00") (parse-time "%T" "09:30:00"))
 23400.0
 ```
 
-### format-time
+## format-time
 
 _format_&nbsp;`string` _time_&nbsp;`time` _&rarr;_&nbsp;`string`
 
@@ -61,7 +61,7 @@ pact> (format-time "%F" (time "2016-07-22T12:00:00Z"))
 "2016-07-22"
 ```
 
-### hours
+## hours
 
 _n_&nbsp;`decimal` _&rarr;_&nbsp;`decimal`
 
@@ -74,7 +74,7 @@ pact> (add-time (time "2016-07-22T12:00:00Z") (hours 1))
 "2016-07-22T13:00:00Z"
 ```
 
-### minutes
+## minutes
 
 _n_&nbsp;`decimal` _&rarr;_&nbsp;`decimal`
 
@@ -87,7 +87,7 @@ pact> (add-time (time "2016-07-22T12:00:00Z") (minutes 1))
 "2016-07-22T12:01:00Z"
 ```
 
-### parse-time
+## parse-time
 
 _format_&nbsp;`string` _utcval_&nbsp;`string` _&rarr;_&nbsp;`time`
 
@@ -99,7 +99,7 @@ pact> (parse-time "%F" "2016-09-12")
 "2016-09-12T00:00:00Z"
 ```
 
-### time
+## time
 
 _utcval_&nbsp;`string` _&rarr;_&nbsp;`time`
 
