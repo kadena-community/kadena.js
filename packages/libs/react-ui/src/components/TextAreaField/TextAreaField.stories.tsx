@@ -1,6 +1,5 @@
-import type { ITextAreaFieldProps } from './TextAreaField';
-import { TextAreaField } from './TextAreaField';
-
+import type { ITextAreaFieldProps } from '@components/TextAreaField';
+import { TextAreaField } from '@components/TextAreaField';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
