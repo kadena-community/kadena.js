@@ -23,7 +23,7 @@ interface IProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 }
 
 export const ResourceLinks: FC<IProps> = ({ links, ...rest }: IProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   return (
     <div className={resourceLinksWrapperClass} {...rest}>
       <div className={titleWrapperClass}>
