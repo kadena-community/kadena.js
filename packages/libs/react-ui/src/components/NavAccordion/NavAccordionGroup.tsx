@@ -1,21 +1,16 @@
 'use client';
 
-import {
-  accordionExpand,
-  navAccordionArrowButtonClass,
-  navAccordionButtonClass,
-  navAccordionGroupClass,
-  navAccordionGroupIconClass,
-  navAccordionGroupListClass,
-  navAccordionGroupTitleClass,
-} from './NavAccordion.css';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
-import { NavAccordionLink } from './NavAccordionLink';
 
+import {
+  accordionButtonClass,
+  accordionExpand,
+  accordionToggleIconClass,
+} from '@components/Accordion/Accordion.css';
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
-import React, { useState } from 'react';
+import React, { Children, useState } from 'react';
 
 export interface INavAccordionGroupProps {
   children: FunctionComponentElement<INavAccordionLinkProps>[];
@@ -45,40 +40,24 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
   };
 
   return (
-    <li className={classNames([navAccordionGroupClass])}>
+    <span className={classNames([])}>
       <button
-        className={classNames([
-          navAccordionButtonClass,
-          navAccordionArrowButtonClass,
-        ])}
+        className={classNames([accordionButtonClass])}
         onClick={handleClick}
       >
         <SystemIcon.ChevronDown
-          className={classNames(navAccordionGroupIconClass, {
+          className={classNames(accordionToggleIconClass, {
             isOpen,
           })}
           size="sm"
         />
-        <span className={navAccordionGroupTitleClass}>{title}</span>
+        <span className={''}>{title}</span>
       </button>
-      {children && (
-        <ul
-          className={classNames(
-            { [accordionExpand]: isOpen },
-            navAccordionGroupListClass,
-          )}
-        >
-          {React.Children.map(children, (link) => (
-            <NavAccordionLink
-              active={link.props.active}
-              deepLink={true}
-              href="https://docs.kadena.io/"
-            >
-              {link.props.children}
-            </NavAccordionLink>
-          ))}
-        </ul>
-      )}
-    </li>
+      <span className={classNames({ [accordionExpand]: isOpen }, [])}>
+        {Children.map(children, (child) => (
+          <li>{child}</li>
+        ))}
+      </span>
+    </span>
   );
 };

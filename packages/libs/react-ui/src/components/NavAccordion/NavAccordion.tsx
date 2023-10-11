@@ -6,6 +6,7 @@ import {
   initialOpenSections,
   NavAccordionContext,
 } from './NavAccordion.context';
+import { navAccordionWrapperClass } from './NavAccordion.css';
 
 import type { FC, FunctionComponentElement } from 'react';
 import React, { useState } from 'react';
@@ -29,7 +30,7 @@ export const NavAccordionRoot: FC<INavAccordionRootProps> = ({
     <NavAccordionContext.Provider
       value={{ openSections, setOpenSections, linked }}
     >
-      <nav>{children}</nav>
+      <nav className={navAccordionWrapperClass}>{children}</nav>
     </NavAccordionContext.Provider>
   );
 };
