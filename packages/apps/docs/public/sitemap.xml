@@ -673,12 +673,6 @@
       <priority>1</priority>
     </url>
     <url>
-      <loc>https://docs.kadena.io/build/guides/building-another-voting-dapp}</loc>
-      <lastmod>2023-10-11</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1</priority>
-    </url>
-    <url>
       <loc>https://docs.kadena.io/build/guides/safe-transfer}</loc>
       <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
