@@ -56,7 +56,7 @@ export const expandVariants = styleVariants({
 
 export const displayVariants = styleVariants({
   outlined: [sprinkles({ borderWidth: '$sm', borderRadius: '$sm' })],
-  default: [sprinkles({ border: 'none', borderRadius: 0 })],
+  standard: [sprinkles({ border: 'none', borderRadius: 0 })],
 });
 
 export const inlineVariants = styleVariants({
