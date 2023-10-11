@@ -186,7 +186,10 @@ const RequestKey: React.FC = () => {
                               <strong>Transaction ID</strong>
                             </Table.Td>
                             <Table.Td>
-                              {transactionSubscription?.transaction?.txId}
+                              {
+                                transactionSubscription?.transaction
+                                  ?.transactionId
+                              }
                             </Table.Td>
                           </Table.Tr>
                         </Table.Body>
@@ -206,7 +209,7 @@ const RequestKey: React.FC = () => {
                                 <Table.Td>
                                   <strong>Name</strong>
                                 </Table.Td>
-                                <Table.Td>{event.qualName}</Table.Td>
+                                <Table.Td>{event.qualifiedName}</Table.Td>
                               </Table.Tr>
                               <Table.Tr>
                                 <Table.Td>
@@ -214,7 +217,9 @@ const RequestKey: React.FC = () => {
                                 </Table.Td>
                                 <Table.Td>
                                   <pre>
-                                    {JSON.stringify(event.eventParameters)}
+                                    {JSON.stringify(
+                                      JSON.parse(event.parameterText),
+                                    )}
                                   </pre>
                                 </Table.Td>
                               </Table.Tr>

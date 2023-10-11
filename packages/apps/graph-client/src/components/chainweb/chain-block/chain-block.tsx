@@ -23,7 +23,7 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
   let confirmationDepth = 0;
 
   if (block) {
-    confirmationDepth = chainTree[block.chainid][block.hash].confirmationDepth;
+    confirmationDepth = chainTree[block.chainId][block.hash].confirmationDepth;
   }
 
   return (
@@ -46,14 +46,14 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
             }}
           >
             <TimerIcon />
-            <TimeTicker date={new Date(block.creationtime)} />
+            <TimeTicker date={new Date(block.creationTime)} />
 
             <InfoCircledIcon />
 
             <Text as="span">
               {confirmationDepth >= env.MAX_CALCULATED_CONFIRMATION_DEPTH
-                ? `>${chainTree[block.chainid][block.hash].confirmationDepth}`
-                : chainTree[block.chainid][block.hash].confirmationDepth}
+                ? `>${chainTree[block.chainId][block.hash].confirmationDepth}`
+                : chainTree[block.chainId][block.hash].confirmationDepth}
             </Text>
 
             {/* {block.transactions.totalCount > 0 && (
