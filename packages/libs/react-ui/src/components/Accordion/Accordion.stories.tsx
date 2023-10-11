@@ -64,7 +64,7 @@ export const Dynamic: IStory = {
   render: ({ linked }) => {
     const sections = sampleSections;
     return (
-      <Accordion.Root linked={linked} initialOpenSection={-1}>
+      <Accordion.Root linked={linked} initialOpenSection={[]}>
         {sections.map(
           (
             { title, children, onOpen, onClose }: IAccordionSectionProps,

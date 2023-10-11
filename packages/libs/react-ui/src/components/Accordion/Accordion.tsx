@@ -10,15 +10,16 @@ import React, { useState } from 'react';
 export interface IAccordionRootProps {
   children?: FunctionComponentElement<IAccordionSectionProps>[];
   linked?: boolean;
-  initialOpenSection?: number;
+  initialOpenSection?: OpenSections;
 }
 
 export const AccordionRoot: FC<IAccordionRootProps> = ({
   children,
   linked = false,
-  initialOpenSection = undefined,
+  initialOpenSection = [],
 }) => {
-  const [openSections, setOpenSections] = useState<OpenSections>([]);
+  const [openSections, setOpenSections] =
+    useState<OpenSections>(initialOpenSection);
 
   return (
     <AccordionContext.Provider
