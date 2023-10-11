@@ -273,7 +273,7 @@ const RequestKey: React.FC = () => {
                               <strong>Sender</strong>
                             </Table.Td>
                             <Table.Td>
-                              {transactionSubscription?.transaction?.sender}
+                              {transactionSubscription?.transaction?.senderAccount}
                             </Table.Td>
                           </Table.Tr>
                           <Table.Tr>
