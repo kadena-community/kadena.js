@@ -1,8 +1,8 @@
 <!-- genericHeader start -->
 
-# @kadena/client-examples
+# @kadena/client-utils
 
-Test project to verify pactjs-cli and pactjs-generator
+Utility functions build as a wrapper around @kadena/client
 
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
@@ -30,4 +30,4 @@ Ideas:
   - marmalade
   - principles
   - namespace
-  - 
+  -

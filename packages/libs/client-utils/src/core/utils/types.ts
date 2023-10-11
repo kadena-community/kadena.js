@@ -11,8 +11,10 @@ export type First<T extends Any[]> = T extends [infer One]
   ? HD
   : never;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type Tail<T extends Any[]> = T extends [infer _]
   ? []
-  : T extends [infer _, ...infer TL]
+  : // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  T extends [infer _, ...infer TL]
   ? TL
   : never;

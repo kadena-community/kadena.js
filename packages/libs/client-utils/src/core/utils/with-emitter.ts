@@ -3,16 +3,16 @@ import type { Any, AnyFunc, First, IfAny, Tail } from './types';
 
 // the default EventTarget does not throw errors when dispatching events
 class MyEventTarget {
-  private _listeners: Record<string, ((data: any) => void)[]> = {};
+  private _listeners: Record<string, ((data: Any) => void)[]> = {};
 
-  public addEventListener(event: string, cb: (event: any) => void) {
+  public addEventListener(event: string, cb: (event: Any) => void) {
     if (this._listeners[event] === undefined) {
       this._listeners[event] = [];
     }
     this._listeners[event].push(cb);
   }
 
-  public dispatchEvent(event: string, data: any) {
+  public dispatchEvent(event: string, data: Any) {
     if (this._listeners[event] === undefined) {
       return;
     }

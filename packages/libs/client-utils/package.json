@@ -20,13 +20,13 @@
     "src"
   ],
   "scripts": {
-    "generate-pipe-type": "ts-node src/scripts/create-async-pipe-type.ts 30",
     "build": "pnpm run generate-pipe-type && tsc",
     "dev:postinstall": "pnpm run pactjs:generate:contract",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
+    "generate-pipe-type": "ts-node src/scripts/create-async-pipe-type.ts 30",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",

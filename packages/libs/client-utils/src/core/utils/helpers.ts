@@ -3,12 +3,10 @@ import type {
   IPactCommand,
   ISignFunction,
 } from '@kadena/client';
-import type { ChainId } from '@kadena/types';
+import { isSignedTransaction } from '@kadena/client';
+import type { ChainId , ICommand, IUnsignedCommand } from '@kadena/types';
 
 import type { Any } from './types';
-
-import { isSignedTransaction } from '@kadena/client';
-import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
 export const inspect =
   <T extends Any>(tag: string) =>

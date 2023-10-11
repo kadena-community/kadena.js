@@ -1,8 +1,10 @@
+import type { Any } from '../../core/utils/types';
+
 export const withStepFactory = () => {
   let step = 0;
   return <
-      Args extends any[],
-      Rt extends any,
+      Args extends Any[],
+      Rt extends Any,
       T extends (step: number, ...args: Args) => Rt,
     >(
       cb: T,
