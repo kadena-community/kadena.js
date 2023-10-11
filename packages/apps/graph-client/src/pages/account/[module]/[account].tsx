@@ -1,22 +1,16 @@
-import {
-  Box,
-  ContentHeader,
-  Grid,
-  Link,
-  Notification,
-  Table,
-} from '@kadena/react-ui';
+import { Box, Grid, Notification, Table } from '@kadena/react-ui';
 
 import { useGetAccountQuery } from '../../../__generated__/sdk';
+import { ChainModuleAccountTable } from '../../../components/chain-module-account-table/chain-module-account-table';
+import { CompactTransactionsTable } from '../../../components/compact-transactions-table/compact-transactions-table';
+import { CompactTransfersTable } from '../../../components/compact-transfers-table/compact-transfers-table';
 import Loader from '../../../components/loader/loader';
 import { mainStyle } from '../../../components/main/styles.css';
 import { Text } from '../../../components/text';
-import routes from '../../../constants/routes';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { truncate } from '../../../utils/truncate';
 
 const Account: React.FC = () => {
   const router = useRouter();
@@ -29,6 +23,7 @@ const Account: React.FC = () => {
     variables: {
       moduleName: router.query.module as string,
       accountName: router.query.account as string,
+      first: 5,
     },
   });
 
@@ -66,148 +61,49 @@ const Account: React.FC = () => {
           )}
           {accountQuery?.account && (
             <div>
-              <Table.Root wordBreak='break-all'>
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td><strong>Account Name</strong></Table.Td>
-                    <Table.Td>{accountQuery.account.accountName}</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td><strong>Module</strong></Table.Td>
-                    <Table.Td>{accountQuery.account.moduleName}</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td><strong>Balance</strong></Table.Td>
-                    <Table.Td>{accountQuery.account.totalBalance}</Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
-              <Box margin={'$4'} />
-              <Table.Root wordBreak='break-all'>
+              <Table.Root wordBreak="break-all">
                 <Table.Body>
                   <Table.Tr>
                     <Table.Td>
-                      <strong>Chain</strong>
+                      <strong>Account Name</strong>
                     </Table.Td>
-                    {accountQuery.account.chainAccounts.map(
-                      (chainAccount, index) => (
-                        <Table.Td key={index}>{chainAccount.chainId}</Table.Td>
-                      ),
-                    )}
+                    <Table.Td>{accountQuery.account.accountName}</Table.Td>
+                  </Table.Tr>
+                  <Table.Tr>
+                    <Table.Td>
+                      <strong>Module</strong>
+                    </Table.Td>
+                    <Table.Td>{accountQuery.account.moduleName}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <strong>Balance</strong>
                     </Table.Td>
-                    {accountQuery.account.chainAccounts.map(
-                      (chainAccount, index) => (
-                        <Table.Td key={index}>
-                          <Link
-                            href={`${routes.ACCOUNT}/${router.query.module}/${router.query.account}/${chainAccount.chainId}`}
-                          >
-                            {chainAccount.balance}
-                          </Link>
-                        </Table.Td>
-                      ),
-                    )}
+                    <Table.Td>{accountQuery.account.totalBalance}</Table.Td>
                   </Table.Tr>
                 </Table.Body>
               </Table.Root>
+              <Box margin={'$4'} />
+              <ChainModuleAccountTable
+                moduleName={router.query.module as string}
+                accountName={router.query.account as string}
+                chainAccounts={accountQuery.account.chainAccounts}
+              />
               <Box margin={'$8'} />
               <Grid.Root columns={2} gap="$lg">
                 <Grid.Item>
-                  <ContentHeader
-                    heading="Transfers"
-                    icon="KIcon"
-                    description="All transfers from this fungible."
+                  <CompactTransfersTable
+                    moduleName={router.query.module as string}
+                    accountName={router.query.account as string}
+                    transfers={accountQuery.account.transfers}
                   />
-                  <Box margin={'$4'} />
-                  <Table.Root wordBreak="break-word">
-                    <Table.Head>
-                      <Table.Tr>
-                        <Table.Th>Chain</Table.Th>
-                        <Table.Th>Block Height</Table.Th>
-                        <Table.Th>Amount</Table.Th>
-                        <Table.Th>From Account</Table.Th>
-                        <Table.Th>To Account</Table.Th>
-                        <Table.Th>Request key</Table.Th>
-                      </Table.Tr>
-                    </Table.Head>
-                    <Table.Body>
-                      {accountQuery.account.transfers.edges.map(
-                        (edge, index) => {
-                          return (
-                            <Table.Tr key={index}>
-                              <Table.Td>{edge?.node.chainId}</Table.Td>
-                              <Table.Td>{edge?.node.height}</Table.Td>
-                              <Table.Td>{edge?.node.amount}</Table.Td>
-                              <Table.Td>
-                                <span title={edge?.node.fromAccount}>
-                                  {truncate(edge?.node.fromAccount)}
-                                </span>
-                              </Table.Td>
-                              <Table.Td>
-                                <span title={edge?.node.toAccount}>
-                                  {truncate(edge?.node.toAccount)}
-                                </span>
-                              </Table.Td>
-                              <Table.Td>
-                                <Link
-                                  href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}
-                                >
-                                  {truncate(edge?.node.requestKey)}
-                                </Link>
-                              </Table.Td>
-                            </Table.Tr>
-                          );
-                        },
-                      )}
-                    </Table.Body>
-                  </Table.Root>
                 </Grid.Item>
                 <Grid.Item>
-                  <ContentHeader
-                    heading="Transactions"
-                    icon="KIcon"
-                    description="All transactions where this account is the initiator."
+                  <CompactTransactionsTable
+                    moduleName={router.query.module as string}
+                    accountName={router.query.account as string}
+                    transactions={accountQuery.account.transactions}
                   />
-                  <Box margin={'$4'} />
-                  <Table.Root wordBreak="break-word">
-                    <Table.Head>
-                      <Table.Tr>
-                        <Table.Th>Chain</Table.Th>
-                        <Table.Th>Timestamp</Table.Th>
-                        <Table.Th>Block Height</Table.Th>
-                        <Table.Th>Request Key</Table.Th>
-                        <Table.Th>Code</Table.Th>
-                      </Table.Tr>
-                    </Table.Head>
-                    <Table.Body>
-                      {accountQuery.account.transactions.edges.map(
-                        (edge, index) => {
-                          return (
-                            <Table.Tr key={index}>
-                              <Table.Td>{edge?.node.chainId}</Table.Td>
-                              <Table.Td>{new Date(edge?.node.creationTime).toLocaleString()}</Table.Td>
-                              <Table.Td>{edge?.node.height}</Table.Td>
-                              <Table.Td>
-                                <Link
-                                  href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}
-                                >
-                                  {truncate(edge?.node.requestKey)}
-                                </Link>
-                              </Table.Td>
-                              <Table.Td>
-                                <span title={edge?.node.code as string}>
-                                  {truncate(edge?.node.code)}
-                                </span>
-                              </Table.Td>
-                            </Table.Tr>
-                          );
-                        },
-                      )}
-                    </Table.Body>
-                  </Table.Root>
                 </Grid.Item>
               </Grid.Root>
             </div>

@@ -38,8 +38,6 @@ export async function getAccountDetails(
     },
   );
 
-  console.log(JSON.stringify(commandResult));
-
   if (commandResult.result.status !== 'success') {
     const error = {
       message: 'Failed with error',
