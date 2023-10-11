@@ -33,7 +33,7 @@ describe('pactParser', () => {
         )
       )`;
 
-    const getContract = jest
+    const getContract = vi
       .fn()
       .mockResolvedValue('return invalid module content');
 
@@ -44,7 +44,7 @@ describe('pactParser', () => {
   });
 
   it('should use getContract for fetching contract content', async () => {
-    const getContract = jest.fn().mockResolvedValue(`
+    const getContract = vi.fn().mockResolvedValue(`
       (module coin GOVERNANCE
         (defun transfer:string (sender:string receiver:string amount:number))
       )`);
