@@ -1,6 +1,6 @@
 ---
 title: "07: Nominating candidates"
-description: "Election dApp tutorial chapter 07: Nominating candidates"
+description: "In the seventh chapter of the Election dApp tutorial you will add and list candidates using a table in the election Pact module."
 menu: Election dApp tutorial
 label: "07: Nominating"
 order: 7

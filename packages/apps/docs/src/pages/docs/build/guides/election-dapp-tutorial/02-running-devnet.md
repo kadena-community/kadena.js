@@ -1,6 +1,6 @@
 ---
 title: "02: Running Devnet"
-description: "Election dApp tutorial chapter 02: Running Devnet"
+description: "In the second chapter of the Election dApp tutorial you will use Docker to run a blockchain on your computer."
 menu: Election dApp tutorial
 label: "02: Running Devnet"
 order: 2

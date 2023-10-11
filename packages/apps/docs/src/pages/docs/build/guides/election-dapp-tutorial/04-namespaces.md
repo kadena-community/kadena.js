@@ -1,6 +1,6 @@
 ---
 title: "04: Namespaces"
-description: "Election dApp tutorial chapter 04: Namespaces"
+description: "In the fourth chapter of the Election dApp tutorial you will create a namespace for your keyset and modules."
 menu: Election dApp tutorial
 label: "04: Namespaces"
 order: 4

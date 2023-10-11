@@ -1,6 +1,6 @@
 ---
 title: "05: Keysets"
-description: "Election dApp tutorial chapter 05: Keysets"
+description: "In the fith chapter of the Election dApp tutorial you will create a keyset to protect your modules and specific function calls"
 menu: Election dApp tutorial
 label: "05: Keysets"
 order: 5

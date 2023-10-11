@@ -1,6 +1,6 @@
 ---
 title: "06: Smart contract"
-description: "Election dApp tutorial chapter 06: Smart contract"
+description: "In the sixth chapter of the Election dApp tutorial you will set up the scaffolding for your smart contract."
 menu: Election dApp tutorial
 label: "06: Smart contract"
 order: 6

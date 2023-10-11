@@ -1,6 +1,6 @@
 ---
 title: "08: Voting"
-description: "Election dApp tutorial chapter 08: Voting"
+description: "In the eighth chapter of the Election dApp tutorial you will add voting functionality to the election Pact module."
 menu: Election dApp tutorial
 label: "08: Voting"
 order: 08

@@ -1,6 +1,6 @@
 ---
 title: "09: Gas station"
-description: "Election dApp tutorial chapter 09: Gas station"
+description: "In the ninth chapter of the Election dApp tutorial you will add a gas station module to the election smart contract."
 menu: Election dApp tutorial
 label: "09: Gas station"
 order: 9

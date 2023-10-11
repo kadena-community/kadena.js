@@ -1,6 +1,6 @@
 ---
 title: "03: Admin account"
-description: "Election dApp tutorial chapter 03: Admin account"
+description: "In the third chapter of the Election dApp tutorial you will create an admin account to govern your Pact modules"
 menu: Election dApp tutorial
 label: "03: Admin account"
 order: 3

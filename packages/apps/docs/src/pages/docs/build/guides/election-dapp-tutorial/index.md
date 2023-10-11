@@ -21,10 +21,6 @@ Every vote is a transaction on the blockchain, which comes at the price of a gas
 to the miners. The election organization will utilize a gas station that pays the gas for
 all voting transactions, so the election is accessible for all community members, for free.
 
-In the video below, you can see the finished project in action.
-
-*[insert video here]*
-
 ## What you will learn
 
 The concept of a gas station is a central topic of this tutorial, but definitely not the only
@@ -55,14 +51,18 @@ will be provided at the top of the respective chapter page.
  * [Chapter 03: Admin account](/docs/build/guides/election-dapp-tutorial/03-admin-account)
  * [Chapter 04: Namespaces](/docs/build/guides/election-dapp-tutorial/04-namespaces)
  * [Chapter 05: Keysets](/docs/build/guides/election-dapp-tutorial/05-keysets)
- * [Chapter 06: Deploy keyset](/docs/build/guides/election-dapp-tutorial/06-deploy-keyset)
- * [Chapter 07: Deploy contract](/docs/build/guides/election-dapp-tutorial/07-deploy-contract)
- * [Chapter 08: Nominate candidates](/docs/build/guides/election-dapp-tutorial/08-nominate-candidates)
+ * [Chapter 06: Smart contract](/docs/build/guides/election-dapp-tutorial/06-smart-contract)
+ * [Chapter 07: Nominate candidates](/docs/build/guides/election-dapp-tutorial/07-nominate-candidates)
+ * [Chapter 08: Voting](/docs/build/guides/election-dapp-tutorial/08-voting)
  * [Chapter 09: Gas station](/docs/build/guides/election-dapp-tutorial/09-gas-station)
- * [Chapter 10: Voting](/docs/build/guides/election-dapp-tutorial/10-voting)
- * [Chapter 11: Deploy to Testnet](/docs/build/guides/election-dapp-tutorial/11-deploy-to-testnet)
- * [Chapter 12: Other signing methods](/docs/build/guides/election-dapp-tutorial/12-other-signing-methods)
 
+In the future additional chapters may be added to this tutorial. Some ideas are already floating
+around, but if you have any suggestions for topics you would like to see covered, please
+get in touch.
+
+ * Deploying to Testnet with the functional programming approach
+ * A continuous integration pipeline for deploying your dApp
+ * Other signing methods than Chainweaver
 
 ## Requirements for this tutorial
 
