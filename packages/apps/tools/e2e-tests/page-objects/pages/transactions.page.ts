@@ -1,13 +1,14 @@
 import NavHeaderComponent from '@kadena/e2e-components/shared-components/navHeader.component';
 
 import type { Page } from '@playwright/test';
+import AsideComponent from '../components/aside.component';
 
 export default class TransactionsPage {
   private readonly page: Page;
-  private header: NavHeaderComponent;
+  public aside: AsideComponent;
 
   public constructor(page: Page) {
     this.page = page;
-    this.header = new NavHeaderComponent(this.page);
+    this.aside = new AsideComponent(this.page)
   }
 }
