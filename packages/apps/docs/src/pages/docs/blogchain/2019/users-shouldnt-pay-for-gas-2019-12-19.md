@@ -51,7 +51,7 @@ problem, but all of the solutions remain either centralized or speculative.
 ## Solving the Onboarding Problem
 
 Kadena’s
-[smart contract language Pact](https://medium.com/kadena-io/safer-smarter-contracts-with-pact-e86b9ccaca9f)
+[smart contract language Pact](/docs/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20)
 presents a novel approach to overcoming the impediments associated with
 onboarding to cryptocurrency. Pact has always supported general multi-sig, and
 its signing system is the first smart contract language to bring a generalized

@@ -41,8 +41,8 @@ remove the friction of acquiring tokens in advance of signup, which allows a
 user’s first interaction with a dApp to be as easy as filling out a web form.
 
 _Read more about how gas stations solve blockchain’s usability problem in
-[this article](https://medium.com/kadena-io/users-shouldnt-pay-for-gas-4df989ec8236)
-by Kadena Co-Founder and CEO Will Martino._
+[this article](/docs/blogchain/2019/users-shouldnt-pay-for-gas-2019-12-19) by
+Kadena Co-Founder and CEO Will Martino._
 
 A successful gas station must be easy to use while remaining secure from bad
 actors. Kadena’s smart contract language Pact enables this by supporting

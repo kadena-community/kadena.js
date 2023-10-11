@@ -108,7 +108,7 @@ and improve performance. This feature makes some of the most infamous and costly
 bugs discovered in other platforms not even possible with Pact. For more
 information on this topic, see our blog post -
 
-[Turing Completeness and Smart Contract Security](https://medium.com/kadena-io/turing-completeness-and-smart-contract-security-67e4c41704c)
+[Turing Completeness and Smart Contract Security](/docs/blogchain/2019/turing-completeness-and-smart-contract-security-2019-02-11)
 
 ### Human Readable
 
@@ -176,7 +176,7 @@ inspection.
 
 Pact comes equipped with a powerful validation tool suite in the form of
 
-> [formal verification](https://medium.com/kadena-io/pact-formal-verification-for-blockchain-smart-contracts-done-right-889058bd8c3f).
+> [formal verification](/docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11).
 > Pact uses Z3, an open-source tool developed by Microsoft, to mathematically
 > verify and test for bugs present in the code.
 
@@ -189,7 +189,7 @@ same high level of security in every smart contract you write with Pact.
 Formal verification is a huge topic that’s been covered well in the Kadena blog.
 See the blog post -
 
-[Pact Formal Verification: Making Blockchain Smart Contracts Safer](https://medium.com/kadena-io/pact-formal-verification-for-blockchain-smart-contracts-done-right-889058bd8c3f)
+[Pact Formal Verification: Making Blockchain Smart Contracts Safer](docs/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
 for more information on this topic.
 
 ### Type Inference

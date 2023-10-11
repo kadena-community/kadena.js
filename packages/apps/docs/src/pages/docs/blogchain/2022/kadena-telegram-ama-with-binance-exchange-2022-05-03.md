@@ -227,7 +227,7 @@ bring blockchain to the masses?
 is gas. If your mom wants to do an on-chain swap between BTC and a stable coin,
 it’s really painful if she also has to have ETH to do the transaction. Kadena
 makes it possible to create
-[gas stations](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836)
+[gas stations](/docs/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06)
 that can pay the transaction fees for these transactions autonomously. We are
 also working on innovations that have the potential to allow third parties to
 grant loans for gas and make a small profit on the transaction. This will
@@ -457,7 +457,7 @@ miners.
 **Doug Beardsley (Kadena):** It’s as simple as a single transfer:
 [https://explorer.chainweb.com/mainnet/chain/1/block/-c50pruuuIb2MwCl63Zks1KZDedy2Kb7W2F5Di7U9DQ/txs](https://explorer.chainweb.com/mainnet/chain/1/block/-c50pruuuIb2MwCl63Zks1KZDedy2Kb7W2F5Di7U9DQ/txs).
 Learn more about gas stations
-[here](https://medium.com/kadena-io/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-6dc43b4b3836).
+[here](/docs/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06).
 
 **Community Question 9:** How the developers and entrepreneurs can get access to
 the $100M grant program?

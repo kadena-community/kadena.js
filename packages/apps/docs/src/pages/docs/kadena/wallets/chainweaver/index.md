@@ -289,7 +289,7 @@ is satisfied.
 :::note Help
 
 Learn more about Keys and Accounts in
-[this guide](https://medium.com/kadena-io/beginners-guide-to-kadena-accounts-keysets-fb7f32104291)
+[this guide](/docs/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14)
 for beginners.
 
 :::

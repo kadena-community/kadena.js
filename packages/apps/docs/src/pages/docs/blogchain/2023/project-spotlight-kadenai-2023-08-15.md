@@ -29,7 +29,7 @@ collections. These tools include, but are not limited to, NFT minters, utility
 generators, and AI-powered image generation.
 
 KadenAI is built with
-[Marmalade](https://medium.com/kadena-io/introducing-marmalade-v2-empowering-the-future-of-nfts-33ad2f3c94e8),
+[Marmalade](/docs/blogchain/2023/introducing-marmalade-v2-empowering-the-future-of-nfts-2023-06-16),
 Kadena’s NFT standard. Marmalade provides the flexibility of customizing and
 stacking features, also known as policies, on top of NFTs. The stackable
 policies simplify the NFT creation process, enabling KadenAI to rapidly deploy

@@ -24,7 +24,7 @@ announced in our Q1 Roadmap:
 
 - [Major technical milestones for the Ethereum Bridge including support for proofs in Chainweb 2.4, release of Wrapped KDA contracts to Ethereum Testnet, and a beta Docker image for bridge operations](./tokensoft-wrapped-kadenaswap-the-future-of-digital-value-2021-03-04)
 
-- [Announced a major update to our Token Economic Model with reduced inflation, and improved total circulation reporting in the Block Explorer](./update-to-the-kadena-token-economic-model-2021-01-29)
+- [Announced a major update to our Token Economic Model with reduced inflation, and improved total circulation reporting in the Block Explorer](/docs/blogchain/2021/update-to-the-kadena-token-economic-model-2021-01-29)
 
 - Full integration of the Kadena Signing API with Kadenaswap and ZelCore, and
   fully integrated ZelCore into the DEX

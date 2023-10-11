@@ -15,12 +15,8 @@ interface IProps {
 
 export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
   const [tabName, setTabName] = useState<string | undefined>('docs');
-  const {
-    metadata = [],
-    handleSubmit,
-    error,
-    isLoading,
-  } = useAlgoliaSearch(limitResults);
+  const { metadata, handleSubmit, error, isLoading } =
+    useAlgoliaSearch(limitResults);
 
   const {
     outputStream,
@@ -30,7 +26,7 @@ export const Search: FC<IProps> = ({ query, hasScroll, limitResults }) => {
     handleSubmit: handleConversationSubmit,
   } = useSearch();
 
-  const semanticResults = metadata.map(mapMatches);
+  const semanticResults = metadata?.map(mapMatches);
 
   useEffect(() => {
     if (

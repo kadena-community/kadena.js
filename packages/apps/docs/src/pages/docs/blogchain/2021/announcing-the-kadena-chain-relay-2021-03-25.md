@@ -76,7 +76,8 @@ period will be required to receive the risk fee, to incentivize robust
 participation in the relay.
 
 Fees are paid from a reserve pool of up to 5 million KDA at launch, sourced from
-Kadena [platform share](./update-to-the-kadena-token-economic-model-2021-01-29)
+Kadena
+[platform share](/docs/blogchain/2021/update-to-the-kadena-token-economic-model-2021-01-29)
 tokens. The size of the reserve limits the bonding by twice the risk fee rate,
 which means that in the initial launch, up to 8.3MM KDA in total can be bonded
 over the course of 1 year. With full participation, the total value locked up

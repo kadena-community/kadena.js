@@ -52,10 +52,11 @@ growth of Kadena with her expertise and leadership skills!
 
 ## ABOUT KADENA ECO
 
-[Kadena Eco](./kadena-eco-grants-2022-04-21) is an innovation network fueling
-mainstream adoption of Web3, DeFi and NFTs. We unite technical founders and
-entrepreneurs with the world’s top blockchain leaders, venture capitalists and
-acceleration partners to support startups at every phase of their development
-journey. By leveraging Kadena’s builder-centric blockchain that delivers Web3
-innovation with Web2 usability, Kadena Eco aims to speed the development and
-adoption of meaningful applications that benefit everyday people, worldwide.
+[Kadena Eco](/docs/blogchain/2022/kadena-eco-grants-2022-04-21) is an innovation
+network fueling mainstream adoption of Web3, DeFi and NFTs. We unite technical
+founders and entrepreneurs with the world’s top blockchain leaders, venture
+capitalists and acceleration partners to support startups at every phase of
+their development journey. By leveraging Kadena’s builder-centric blockchain
+that delivers Web3 innovation with Web2 usability, Kadena Eco aims to speed the
+development and adoption of meaningful applications that benefit everyday
+people, worldwide.

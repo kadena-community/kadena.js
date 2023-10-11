@@ -166,5 +166,11 @@
     "name": "Ryan Levy",
     "avatar": "/assets/blog/author/ryan.levy.png",
     "description": "Business Development"
+  },
+  {
+    "id": "glenn.reyes",
+    "name": "Glenn Reyes",
+    "avatar": "/assets/blog/author/glenn.reyes.jpeg",
+    "description": "Developer Relations"
   }
 ]
