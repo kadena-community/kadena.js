@@ -18,8 +18,7 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .ts,.tsx",
     "start": "next start",
-    "test": "jest --silent",
-    "test:e2e": "npx playwright test"
+    "test": "jest --silent"
   },
   "dependencies": {
     "@hookform/resolvers": "~3.1.1",
@@ -55,7 +54,6 @@
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
-    "@kadena/e2e-components": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "@playwright/test": "1.38.1",
