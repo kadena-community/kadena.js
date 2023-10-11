@@ -11,10 +11,12 @@ type Block implements Node {
   hash: ID!
   height: BigInt!
   id: ID!
+  minerKeys: [Minerkey!]
   parent: Block
   parentHash: String
   payload: String!
   powHash: String!
+  predicate: String!
   transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
 }
 
@@ -48,6 +50,13 @@ type Event implements Node {
   transaction: Transaction
 }
 
+type Minerkey implements Node {
+  block: Block!
+  blockHash: String!
+  id: ID!
+  key: String!
+}
+
 interface Node {
   id: ID!
 }
@@ -63,6 +72,7 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
+  block(hash: String!): Block!
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
   hello(name: String): String!

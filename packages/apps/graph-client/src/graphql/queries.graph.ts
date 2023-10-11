@@ -78,6 +78,27 @@ export const CORE_EVENT_FIELDS: DocumentNode = gql`
   }
 `;
 
+export const CORE_MINERKEY_FIELDS: DocumentNode = gql`
+  fragment CoreMinerKeyFields on Minerkey {
+    id
+    key
+    blockHash
+  }
+`;
+
+export const getBlockFromHash: DocumentNode = gql`
+  ${CORE_BLOCK_FIELDS}
+
+  query getBlockFromHash($hash: String!) {
+    block(hash: $hash) {
+      ...CoreBlockFields
+      minerKeys {
+        ...CoreMinerKeyFields
+      }
+    }
+  }
+`;
+
 export const getLastBlock: DocumentNode = gql`
   query getLastBlock {
     lastBlockHeight

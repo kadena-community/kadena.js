@@ -30,8 +30,11 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
 
   const blockClick = () => {
     if (block) {
-      // router.push(`/chain/${block.chainId}/block/${block.hash}`);
-      console.log('block', block);
+      router.push(`/block/${block.hash}`);
+      console.log('block', {
+        ...block,
+        confirmationDepth,
+      });
     }
   };
 

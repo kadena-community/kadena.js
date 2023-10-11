@@ -16,6 +16,7 @@ export default builder.prismaNode('Block', {
     height: t.expose('height', { type: 'BigInt' }),
     payload: t.exposeString('payload'),
     powHash: t.exposeString('powHash'),
+    predicate: t.exposeString('predicate'),
 
     // computed fields
     parent: t.prismaField({
@@ -64,6 +65,18 @@ export default builder.prismaNode('Block', {
             requestKey: {
               in: await getTransactionsRequestkeyByEvent(events || [], parent),
             },
+          },
+        });
+      },
+    }),
+
+    minerKeys: t.prismaField({
+      type: ['Minerkey'],
+      nullable: true,
+      resolve(query, parent, args, context, info) {
+        return prismaClient.minerkey.findMany({
+          where: {
+            blockHash: parent.hash,
           },
         });
       },
