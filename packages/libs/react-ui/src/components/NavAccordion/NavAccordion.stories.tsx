@@ -45,9 +45,27 @@ export const Dynamic: IStory = {
   },
   render: ({ linked }) => {
     return (
-      <NavAccordion.Root linked={linked} initialOpenSection={-1}>
-        <NavAccordion.Section title="Developers">
-          <NavAccordion.Group title="Guides">
+      <NavAccordion.Root linked={linked}>
+        <NavAccordion.Section
+          title="Developers"
+          onClose={() =>
+            console.log('optional section onClose handler example')
+          }
+          onOpen={() => console.log('optional section onOpen handler example')}
+          onClick={() =>
+            console.log('optional section onClick handler example')
+          }
+        >
+          <NavAccordion.Group
+            title="Guides"
+            onClose={() =>
+              console.log('optional group onClose handler example')
+            }
+            onOpen={() => console.log('optional group onOpen handler example')}
+            onClick={() =>
+              console.log('optional group onClick handler example')
+            }
+          >
             <NavAccordion.Link href="#pact">
               Pact Smart Contract
             </NavAccordion.Link>
