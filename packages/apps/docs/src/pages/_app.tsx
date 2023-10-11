@@ -4,7 +4,7 @@ import { ModalProvider } from '@kadena/react-ui';
 import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { Analytics } from '@/components/Analytics/Analytics';
-import { ConsentModal } from '@/components/ConsentModal/ConsentModal';
+import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
@@ -126,10 +126,10 @@ export const MyApp = ({
           <ModalProvider>
             <MenuProvider>
               <Header menuItems={props.leftMenuTree} />
+              <CookieConsent />
               <Layout {...props}>
                 <Component {...props} />
               </Layout>
-              <ConsentModal />
             </MenuProvider>
           </ModalProvider>
         </ThemeProvider>
