@@ -139,6 +139,28 @@ type Query {
   lastBlockHeight: BigInt
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
+  transactions(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransactionsConnection!
+  transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
+}
+
+type QueryTransactionsConnection {
+  edges: [QueryTransactionsConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type QueryTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type QueryTransfersConnection {
+  edges: [QueryTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type QueryTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
 }
 
 type Subscription {

@@ -11,6 +11,8 @@ import './Query/chainAccount';
 import './Query/completedBlockHeights';
 import './Query/hello';
 import './Query/lastBlockHeight';
+import './Query/transactions';
+import './Query/transfers';
 import './Subscription/newBlocks';
 import './Subscription/transaction';
 import './Subscription/event';
