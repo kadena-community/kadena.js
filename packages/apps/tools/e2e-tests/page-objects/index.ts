@@ -12,7 +12,7 @@ export const test = baseTest.extend<{
   faucet: FaucetPage;
   account: AccountPage;
   mockHelper: MockHelper;
-  moduleExplorer: ModuleExplorerPage
+  moduleExplorer: ModuleExplorerPage;
 }>({
   home: async ({ page }, use) => {
     await use(new HomePage(page));

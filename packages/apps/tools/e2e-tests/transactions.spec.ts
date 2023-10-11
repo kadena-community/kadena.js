@@ -19,10 +19,12 @@ test('The Module Explorer shows deployed contracts @mocks', async ({
 
   await test.step('Navigate to Module Explorer and search for deployed contracts', async () => {
     await transactions.aside.navigateTo('Module Explorer');
-    await moduleExplorer.searchModule('coin-faucet')
+    await moduleExplorer.searchModule('coin-faucet');
 
-    await expect(await moduleExplorer.getDeployedContracts()).toHaveText('user.coin-faucet')
-    await moduleExplorer.openDeployedContract('user.coin-faucet', '0')
-    await expect(await moduleExplorer.getEditor()).toBeVisible()
+    await expect(await moduleExplorer.getDeployedContracts()).toHaveText(
+      'user.coin-faucet',
+    );
+    await moduleExplorer.openDeployedContract('user.coin-faucet', '0');
+    await expect(await moduleExplorer.getEditor()).toBeVisible();
   });
 });

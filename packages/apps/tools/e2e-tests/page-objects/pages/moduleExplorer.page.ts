@@ -13,20 +13,19 @@ export default class ModuleExplorerPage {
   }
 
   async searchModule(moduleName: string): Promise<void> {
-    await this.page.getByRole('textbox', {name: 'search'}).fill(moduleName)
+    await this.page.getByRole('textbox', { name: 'search' }).fill(moduleName);
   }
 
   async getDeployedContracts(): Promise<Locator> {
-    return this.page.getByRole('treeitem')
+    return this.page.getByRole('treeitem');
   }
 
- async openDeployedContract(moduleName: string, chain: string): Promise<void>{
-    await this.page.getByRole('paragraph', {name: moduleName}).click();
-    await this.page.getByRole('button', {name: chain}).click();
+  async openDeployedContract(moduleName: string, chain: string): Promise<void> {
+    await this.page.getByRole('paragraph', { name: moduleName }).click();
+    await this.page.getByRole('button', { name: chain }).click();
   }
 
-  async getEditor(): Promise<Locator>{
-    return this.page.locator('id=ace-editor')
+  async getEditor(): Promise<Locator> {
+    return this.page.locator('id=ace-editor');
   }
-
 }
