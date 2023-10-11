@@ -1,11 +1,19 @@
 'use client';
 
+import {
+  navAccordionGroupButtonClass,
+  navAccordionGroupIconClass,
+  navAccordionGroupListClass,
+  navAccordionGroupListItemClass,
+  navAccordionGroupTitleClass,
+  navAccordionListClass,
+} from './NavAccordion.css';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
 
 import {
   accordionButtonClass,
+  accordionCollapse,
   accordionExpand,
-  accordionToggleIconClass,
 } from '@components/Accordion/Accordion.css';
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
@@ -40,24 +48,35 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
   };
 
   return (
-    <span className={classNames([])}>
+    <span>
       <button
-        className={classNames([accordionButtonClass])}
+        className={classNames([
+          accordionButtonClass,
+          navAccordionGroupButtonClass,
+        ])}
         onClick={handleClick}
       >
         <SystemIcon.ChevronDown
-          className={classNames(accordionToggleIconClass, {
+          className={classNames(navAccordionGroupIconClass, {
             isOpen,
           })}
           size="sm"
         />
-        <span className={''}>{title}</span>
+        <span className={navAccordionGroupTitleClass}>{title}</span>
       </button>
-      <span className={classNames({ [accordionExpand]: isOpen }, [])}>
-        {Children.map(children, (child) => (
-          <li>{child}</li>
-        ))}
-      </span>
+
+      {children && (
+        <ul
+          className={classNames(
+            [navAccordionListClass, navAccordionGroupListClass],
+            [isOpen ? accordionExpand : accordionCollapse],
+          )}
+        >
+          {Children.map(children, (child) => (
+            <li className={navAccordionGroupListItemClass}>{child}</li>
+          ))}
+        </ul>
+      )}
     </span>
   );
 };
