@@ -55,9 +55,18 @@ export const accordionToggleIconClass = style([
 export const accordionContentClass = style([
   sprinkles({
     color: '$neutral5',
+    display: 'none',
     fontSize: '$base',
+    margin: 0,
+    marginLeft: '$2',
     overflow: 'hidden',
+    padding: 0,
     paddingBottom: '$2',
-    paddingTop: '$1',
+  }),
+]);
+
+export const accordionExpand = style([
+  sprinkles({
+    display: 'block',
   }),
 ]);

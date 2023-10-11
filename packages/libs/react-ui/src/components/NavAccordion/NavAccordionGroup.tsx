@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  accordionExpand,
   navAccordionArrowButtonClass,
   navAccordionButtonClass,
   navAccordionGroupClass,
@@ -62,8 +63,10 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
       </button>
       {children && (
         <ul
-          className={navAccordionGroupListClass}
-          style={!isOpen ? { display: 'none' } : {}}
+          className={classNames(
+            { [accordionExpand]: isOpen },
+            navAccordionGroupListClass,
+          )}
         >
           {React.Children.map(children, (link) => (
             <NavAccordionLink
