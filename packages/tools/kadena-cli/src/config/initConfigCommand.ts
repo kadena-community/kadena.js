@@ -1,6 +1,6 @@
 import { projectPrefix, projectRootPath } from '../constants/config.js';
 import { ensureFileExists } from '../utils/filesystem.js';
-import { collectResponses } from '../utils/helpers.js';
+import { clearCLI, collectResponses } from '../utils/helpers.js';
 import { processZodErrors } from '../utils/processZodErrors.js';
 
 import {
@@ -13,7 +13,6 @@ import { ConfigOptions, configQuestions } from './configQuestions.js';
 
 import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
-import clear from 'clear';
 import type { Command } from 'commander';
 import { Option } from 'commander';
 import debug from 'debug';
@@ -64,7 +63,7 @@ async function runConfigInitialization(
     });
 
     if (proceed === 'no') {
-      clear(true);
+      clearCLI(true);
       console.log(chalk.yellow("Let's restart the configuration process."));
       await runConfigInitialization(program, version, args);
     } else {

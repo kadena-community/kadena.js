@@ -1,12 +1,7 @@
 import type { IPactCommand, IUnsignedCommand } from '@kadena/client';
 import { sign as cryptoSign } from '@kadena/cryptography-utils';
 
-import {
-  arrayBufferToBase64,
-  base64ToArrayBuffer,
-  decrypt,
-  encrypt,
-} from './encrypt.js';
+import { arrayBufferToBase64 } from './encrypt.js';
 import { deriveKeyPair } from './sign.js';
 
 import * as bip39 from '@scure/bip39';
@@ -25,44 +20,39 @@ export class CryptoService {
   }
 
   /**
-   * Generates seed from mnemonic words and a password.
-   * @param {string} password User password.
-   * @param {string} [words] Mnemonic words. If not provided, a new mnemonic is generated.
-   * @returns {Promise<boolean>} Success status.
+   * Set the internal seed buffer using a given mnemonic phrase.
+   *
+   * @param {string} mnemonic - A mnemonic seed phrase (12 words) to be converted into a seed buffer.
+   * @throws {Error} Throws an error if the provided mnemonic is not valid.
    */
-  public async generateSeed(
-    password: string,
-    words?: string,
-  ): Promise<boolean> {
-    if (typeof password !== 'string' || password.length === 0) {
-      throw Error('No password set.');
+  public async setSeedFromMnemonic(mnemonic: string): Promise<void> {
+    if (!bip39.validateMnemonic(mnemonic, wordlist)) {
+      throw Error('Invalid mnemonic.');
     }
+    this._seedBuffer = await bip39.mnemonicToSeed(mnemonic);
+  }
 
-    // If words are not provided, generate a new mnemonic
-    if (words === undefined) {
-      words = bip39.generateMnemonic(wordlist);
-    }
+  public async generateSeed(): Promise<string> {
+    const words = bip39.generateMnemonic(wordlist);
 
-    // Check for validity of the provided/generated mnemonic
     if (!bip39.validateMnemonic(words, wordlist)) {
       throw Error('Invalid mnemonic.');
     }
 
-    this._seedBuffer = await bip39.mnemonicToSeed(words); // Store seedBuffer in class state
-    const encrypted = await encrypt(this._seedBuffer, password); // Use the stored seedBuffer
-    const cipherText = arrayBufferToBase64(encrypted.cipherText);
-    const iv = arrayBufferToBase64(encrypted.iv);
+    this._seedBuffer = await bip39.mnemonicToSeed(words);
 
-    this._seed = `${cipherText}.${iv}`;
+    // Convert _seedBuffer to Base64 for storage or encrypt based on password
+    if (this._seedBuffer !== undefined) {
+      this._seed = arrayBufferToBase64(Buffer.from(this._seedBuffer));
+    } else {
+      throw Error('Failed to generate seed buffer.');
+    }
+
     this._publicKeys = [];
 
-    return true;
+    return words;
   }
 
-  /**
-   * Generates a public and secret key pair from the current seed.
-   * @returns { {publicKey: string, secretKey: string} } The generated key pair.
-   */
   public generateKeyPair(): { publicKey: string; secretKey: string } {
     if (!this._seedBuffer) throw Error('No seed set.');
 
@@ -75,52 +65,25 @@ export class CryptoService {
     };
   }
 
-  /**
-   * Restores the wallet using the saved seed and the given password.
-   * @param {string} password User password.
-   * @param {number} keyLength Number of keys to generate.
-   * @returns {Promise<boolean>} Success status.
-   */
-  public async restoreWallet(
-    password: string,
-    keyLength: number,
-  ): Promise<boolean> {
-    if (this._seed === undefined) return false;
-    const [cipherText, iv] = this._seed.split('.');
-    const decrypted = await decrypt(
-      {
-        cipherText: base64ToArrayBuffer(cipherText),
-        iv: base64ToArrayBuffer(iv),
-      },
-      password,
-    );
-    if (!decrypted) return false;
-    this._seedBuffer = new Uint8Array(decrypted);
+  public generateKeyPairsFromRandom(
+    count: number = 1,
+  ): { publicKey: string; secretKey: string }[] {
+    const keyPairs = [];
 
-    this._publicKeys = this._generateKeys(this._seedBuffer, keyLength);
+    for (let i = 0; i < count; i++) {
+      const randomSeedBuffer = randomBytes(32);
+      const pair = deriveKeyPair(randomSeedBuffer, this._publicKeys.length + i);
+      this._publicKeys.push(pair.publicKey);
 
-    return true;
+      keyPairs.push({
+        publicKey: pair.publicKey,
+        secretKey: pair.privateKey,
+      });
+    }
+
+    return keyPairs;
   }
 
-  /**
-   * Generates a public and secret key pair from random bytes (no seed phrase required).
-   * @returns { {publicKey: string, secretKey: string} } The generated key pair.
-   */
-  public generateKeyPairFromRandom(): { publicKey: string; secretKey: string } {
-    const randomSeedBuffer = randomBytes(32); // Typically 32 bytes for strong randomness. Adjust as necessary.
-    const pair = deriveKeyPair(randomSeedBuffer, this._publicKeys.length);
-    this._publicKeys.push(pair.publicKey);
-
-    return {
-      publicKey: pair.publicKey,
-      secretKey: pair.privateKey,
-    };
-  }
-
-  /**
-   * Generates and returns a new public key.
-   * @returns {string} Newly generated public key.
-   */
   public generatePublicKey(): string {
     if (!this._seedBuffer) throw Error('No seed set.');
     const pair = deriveKeyPair(this._seedBuffer, this._publicKeys.length);
@@ -128,12 +91,6 @@ export class CryptoService {
     return pair.publicKey;
   }
 
-  /**
-   * Signs a message using the given public key.
-   * @param {string} msg Message to be signed.
-   * @param {string} publicKey Public key to use for signing.
-   * @returns {ReturnType<typeof cryptoSign>} Signature.
-   */
   public sign(msg: string, publicKey: string): ReturnType<typeof cryptoSign> {
     if (!this._seedBuffer) throw Error('No seed set.');
 
@@ -149,11 +106,6 @@ export class CryptoService {
     });
   }
 
-  /**
-   * Signs a transaction.
-   * @param {IUnsignedCommand} tx Transaction to be signed.
-   * @returns {IUnsignedCommand} Signed transaction.
-   */
   public signTransaction(tx: IUnsignedCommand): IUnsignedCommand {
     const command: IPactCommand = JSON.parse(tx.cmd);
     const sigs = command.signers.map((signer) => {
@@ -168,12 +120,6 @@ export class CryptoService {
     return { ...tx, sigs: sigs };
   }
 
-  /**
-   * Utility function to generate keys.
-   * @param {Uint8Array} seedBuffer Seed buffer.
-   * @param {number} length Number of keys to generate.
-   * @returns {string[]} Array of public keys.
-   */
   private _generateKeys(seedBuffer: Uint8Array, length: number): string[] {
     const publicKeys = [];
     for (let i = 0; i < length; i++) {

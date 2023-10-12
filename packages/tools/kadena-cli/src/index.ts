@@ -9,8 +9,8 @@ import { marmaladeCommandFactory } from './marmalade/index.js';
 import { networksCommandFactory } from './networks/index.js';
 import { txCommandFactory } from './tx/index.js';
 import { typescriptCommandFactory } from './typescript/index.js';
+import { clearCLI } from './utils/helpers.js';
 
-import clear from 'clear';
 import { program } from 'commander';
 import { readFileSync } from 'node:fs';
 
@@ -38,7 +38,7 @@ const packageJson: { version: string } = JSON.parse(
     fn(program, packageJson.version);
   });
 
-clear();
+clearCLI();
 
 program
   .description('CLI to interact with Kadena and its ecosystem')

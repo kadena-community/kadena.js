@@ -1,6 +1,6 @@
 import { defaultNetworksPath } from '../constants/networks.js';
 import { ensureFileExists } from '../utils/filesystem.js';
-import { collectResponses } from '../utils/helpers.js';
+import { clearCLI, collectResponses } from '../utils/helpers.js';
 import { processZodErrors } from '../utils/processZodErrors.js';
 
 import type { TNetworksCreateOptions } from './networksCreateQuestions.js';
@@ -12,7 +12,6 @@ import { displayNetworkConfig, writeNetworks } from './networksHelpers.js';
 
 import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
-import clear from 'clear';
 import type { Command } from 'commander';
 import debug from 'debug';
 import path from 'path';
@@ -59,7 +58,7 @@ async function runNetworksCreate(
     });
 
     if (proceed === 'no') {
-      clear(true);
+      clearCLI(true);
       console.log(chalk.yellow("Let's restart the configuration process."));
       await runNetworksCreate(program, version, args);
     } else {

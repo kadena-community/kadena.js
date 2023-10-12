@@ -4,6 +4,7 @@ import { projectPrefix, projectRootPath } from '../constants/config.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 
 import chalk from 'chalk';
+import clear from 'clear';
 import type { Command, Option } from 'commander';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
@@ -56,17 +57,25 @@ export function mergeConfigs<T extends object>(
   return target;
 }
 
-/* Interface defining a question structure.
- * @template T The type to which the question is bound (typically an object of configuration options).
+/**
+ * Interface defining the structure of a question.
+ *
+ * @template T The type the question is bound to. Typically an object of configuration options.
  */
 export interface IQuestion<T> {
-  /** The key representing the property within the type T. */
+  /**
+   * The property key within type T.
+   */
   key: keyof T;
 
   /**
-   * The prompt function to retrieve the answer for this question.
-   * @param previousAnswers Previously provided answers for other questions.
-   * @returns A promise resolving to the answer of the question.
+   * The prompt function responsible for retrieving the answer for this question.
+   *
+   * @param config - Current configuration options.
+   * @param previousAnswers - Answers provided for previous questions.
+   * @param args - Command line arguments.
+   *
+   * @returns A promise that resolves to the answer of the question.
    */
   prompt: (
     config: Partial<TConfigOptions>,
@@ -399,4 +408,19 @@ export async function processProject(
  */
 export function getQuestionKeys<T>(arr: Array<IQuestion<T>>): Array<string> {
   return arr.map((question) => question.key as string);
+}
+
+/**
+ * Clears the CLI. Only executes in production environments.
+ *
+ * @param {boolean} [full=false] - If true, performs a full clear; otherwise, performs a standard clear.
+ */
+export function clearCLI(full: boolean = false): void {
+  if (process.env.NODE_ENV === 'production') {
+    if (full) {
+      clear(true);
+    } else {
+      clear();
+    }
+  }
 }

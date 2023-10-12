@@ -9,11 +9,11 @@ import type { IPactDecimal } from '@kadena/types';
 import { FAUCET_CONSTANTS } from '../constants/faucet.js';
 import { accountExists } from '../utils/chainHelpers.js';
 import { pollStatus, submit } from '../utils/client.js';
+import { clearCLI } from '../utils/helpers.js';
 
 import type { TFundQuestions } from './fundQuestions.js';
 
 import chalk from 'chalk';
-import clear from 'clear';
 import { stdout } from 'process';
 
 async function fundTestNet({
@@ -68,7 +68,7 @@ async function fundTestNet({
   try {
     if (isSignedTransaction(signedTx)) {
       const transactionDescriptor = await submit(signedTx);
-      clear();
+      clearCLI();
       console.log(
         chalk.green(
           `Submitted transaction - ${transactionDescriptor.requestKey}`,
@@ -91,12 +91,12 @@ async function fundTestNet({
         ),
       );
     } else {
-      clear();
+      clearCLI();
       console.log(chalk.yellow(`unsigned - ${signedTx}`));
       throw new Error('Failed to sign transaction');
     }
   } catch (e) {
-    clear();
+    clearCLI();
     console.error(chalk.red(`Failed to fund account: ${e}`));
     throw new Error(`Failed to fund account: ${e}`);
   }

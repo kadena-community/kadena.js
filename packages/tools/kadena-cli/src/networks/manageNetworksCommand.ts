@@ -1,5 +1,9 @@
 import { defaultNetworksPath } from '../constants/networks.js';
-import { collectResponses, getExistingNetworks } from '../utils/helpers.js';
+import {
+  clearCLI,
+  collectResponses,
+  getExistingNetworks,
+} from '../utils/helpers.js';
 import { processZodErrors } from '../utils/processZodErrors.js';
 
 import type { TNetworksCreateOptions } from './networksCreateQuestions.js';
@@ -13,7 +17,6 @@ import { writeNetworks } from './networksHelpers.js';
 import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import type { Command } from 'commander';
-import { clear } from 'console';
 import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
@@ -54,7 +57,7 @@ export function manageNetworks(program: Command, version: string): void {
         NetworksCreateOptions.parse(networkConfig);
 
         writeNetworks(networkConfig);
-        clear();
+        clearCLI();
         console.log(chalk.green('Network configurations updated.'));
       } catch (e) {
         processZodErrors(program, e, args);
