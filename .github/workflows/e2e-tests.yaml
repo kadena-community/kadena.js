@@ -49,7 +49,7 @@ jobs:
         run: pnpm run test:e2e --project=tools-app
         env:
           CI: true
-          TESTOBJECT: @kadena/tools
+          TESTOBJECT: '@kadena/tools'
 
       - uses: actions/upload-artifact@v3
         if: always()
