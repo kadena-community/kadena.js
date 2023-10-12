@@ -31,6 +31,16 @@ export const CompactTransactionsTable = (
         description="All transactions where this account is the initiator."
       />
       <Box margin={'$4'} />
+      <Button
+        variant="compact"
+        as="a"
+        href={`${routes.ACCOUNT_TRANSACTIONS}/${moduleName}/${accountName}${
+          chainId !== undefined ? `?chainId=${chainId}` : ''
+        }`}
+      >
+        View all transactions
+      </Button>
+      <Box margin={'$2'} />
       <Table.Root wordBreak="break-word">
         <Table.Head>
           <Table.Tr>
@@ -56,23 +66,19 @@ export const CompactTransactionsTable = (
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  <span title={edge?.node.code as string}>
-                    {truncate(edge?.node.code)}
-                  </span>
+                  {edge?.node.code ? (
+                    <span title={edge?.node.code as string}>
+                      {truncate(edge?.node.code)}
+                    </span>
+                  ) : (
+                    <span style={{ color: 'lightgray' }}>N/A</span>
+                  )}
                 </Table.Td>
               </Table.Tr>
             );
           })}
         </Table.Body>
       </Table.Root>
-      <Button
-        variant="compact"
-        href={`${routes.ACCOUNT_TRANSACTIONS}/${moduleName}/${accountName}${
-          chainId !== undefined ? `?chainId=${chainId}` : ''
-        }`}
-      >
-        View all transactions
-      </Button>
     </>
   );
 };

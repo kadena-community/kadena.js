@@ -31,6 +31,16 @@ export const CompactTransfersTable = (
         description="All transfers from this fungible."
       />
       <Box margin={'$4'} />
+      <Button
+        variant="compact"
+        as='a'
+        href={`${routes.ACCOUNT_TRANSFERS}/${moduleName}/${accountName}${
+          chainId !== undefined ? `?chainId=${chainId}` : ''
+        }`}
+      >
+        View all transfers
+      </Button>
+      <Box margin={'$2'} />
       <Table.Root wordBreak="break-word">
         <Table.Head>
           <Table.Tr>
@@ -77,14 +87,6 @@ export const CompactTransfersTable = (
           })}
         </Table.Body>
       </Table.Root>
-      <Button
-        variant="compact"
-        href={`${routes.ACCOUNT_TRANSFERS}/${moduleName}/${accountName}${
-          chainId !== undefined ? `?chainId=${chainId}` : ''
-        }`}
-      >
-        View all transfers
-      </Button>
     </>
   );
 };
