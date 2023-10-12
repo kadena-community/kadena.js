@@ -91,7 +91,7 @@ const AccountTransactions: React.FC = () => {
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (!fetchMoreResult) return prev;
-                        
+
                         if (fetchMoreResult.transactions.edges.length < 10) {
                           return {
                             ...prev,

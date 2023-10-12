@@ -33,7 +33,7 @@ export const CompactTransfersTable = (
       <Box margin={'$4'} />
       <Button
         variant="compact"
-        as='a'
+        as="a"
         href={`${routes.ACCOUNT_TRANSFERS}/${moduleName}/${accountName}${
           chainId !== undefined ? `?chainId=${chainId}` : ''
         }`}

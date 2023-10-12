@@ -70,7 +70,7 @@ const AccountTransfers: React.FC = () => {
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (!fetchMoreResult) return prev;
-                        
+
                         if (fetchMoreResult.transfers.edges.length < 10) {
                           return {
                             ...prev,
