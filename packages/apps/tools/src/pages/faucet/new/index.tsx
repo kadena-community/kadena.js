@@ -256,7 +256,7 @@ const NewAccountFaucetPage: FC = () => {
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
-            successful: t('The coins have been funded to the given account.'),
+            successful: `${AMOUNT_OF_COINS_FUNDED } ${t('coins have been funded to ')}${generateAccountName}`,
           }}
           body={requestStatus.message}
         />
@@ -306,11 +306,10 @@ const NewAccountFaucetPage: FC = () => {
           />
           <Grid.Root columns={2} marginTop="$4">
             <Grid.Item>
-              {' '}
               <ChainSelect
                 onChange={onChainSelectChange}
                 value={chainID}
-                ariaLabel="Select Chain ID"
+                ariaLabel="Select Keys Pred"
               />
             </Grid.Item>
           </Grid.Root>
@@ -323,7 +322,7 @@ const NewAccountFaucetPage: FC = () => {
             title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             disabled={requestStatus.status === 'processing'}
           >
-            {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
+            {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
           </Button>
         </div>
       </form>

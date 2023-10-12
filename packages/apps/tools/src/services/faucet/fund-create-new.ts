@@ -35,8 +35,6 @@ export const fundCreateNewAccount = async (
   const keyPair = genKeyPair();
   const KEYSET_NAME = 'new_keyset';
 
-  console.log('ZI PREDICATE: ', pred);
-
   const transaction = Pact.builder
     .execution(
       Pact.modules['user.coin-faucet']['create-and-request-coin'](

@@ -6,7 +6,7 @@ import React, { useCallback } from 'react';
 
 export type PredKey = 'keys-all' | 'keys-any' | 'keys-2';
 
-export type OnChainSelectChange = (value: PredKey) => void;
+export type OnPredSelectChange = (value: PredKey) => void;
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const ELEMENT_ID = 'select-pred';
@@ -14,7 +14,7 @@ const ELEMENT_ID = 'select-pred';
 const PredKeysSelect: FC<
   Omit<ISelectProps, 'children' | 'value' | 'onChange' | 'icon' | 'id'> & {
     value: PredKey;
-    onChange: OnChainSelectChange;
+    onChange: OnPredSelectChange;
   }
 > = ({ value, onChange, ...rest }) => {
   const predicates: Array<PredKey> = ['keys-all', 'keys-any', 'keys-2'];
@@ -31,7 +31,7 @@ const PredKeysSelect: FC<
   );
 
   const options = predicates.map((pred) => {
-    return <option key={`chain-id-${pred}`}>{pred}</option>;
+    return <option key={`id-${pred}`}>{pred}</option>;
   });
 
   return (

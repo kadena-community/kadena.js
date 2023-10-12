@@ -169,5 +169,6 @@
   "Network api": "Network api",
   "The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet.": "The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet.",
   "Insert valid public key": "Insert valid public key",
-  "Duplicate public key": "Duplicate public key"
+  "Duplicate public key": "Duplicate public key",
+  "Create and Fund Account": "Create and Fund Account"
 }

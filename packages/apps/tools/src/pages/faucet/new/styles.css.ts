@@ -22,43 +22,39 @@ export const pubKeysContainerWrapper = style([
 ]);
 
 export const pubKeyInputWrapperStyle = style([
+  sprinkles(
   {
     display: 'flex',
     alignItems: 'flex-start',
-    width: 'auto',
     position: 'relative',
-  },
+  }),
+  {
+    width: 'auto',
+  }
 ]);
 
 export const keyIconWrapperStyle = style([
+  sprinkles(
   {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
     color: '$primaryAccent',
-    // position: 'relative'
-  },
+  }),
 ]);
 
 export const inputWrapperStyle = style([
   {
-    // display: 'flex',
-    // alignItems: 'flex-start',
     width: '90%',
-    // position: 'relative'
   },
 ]);
 
 export const iconButtonWrapper = style([
-  {
+  sprinkles({
     width: '$sm',
     position: 'absolute',
-    // top: 0,
     bottom: 0,
     right: 0,
-    // display: 'flex',
-    // alignItems: 'flex-start',
-    // width: '100%',
-  },
+  }),
 ]);
