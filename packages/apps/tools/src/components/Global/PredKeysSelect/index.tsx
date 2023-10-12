@@ -8,7 +8,6 @@ export type PredKey = 'keys-all' | 'keys-any' | 'keys-2';
 
 export type OnPredSelectChange = (value: PredKey) => void;
 
-// eslint-disable-next-line @kadena-dev/typedef-var
 const ELEMENT_ID = 'select-pred';
 
 const PredKeysSelect: FC<
@@ -35,13 +34,13 @@ const PredKeysSelect: FC<
   });
 
   return (
-    <InputWrapper label="Pred" htmlFor={ELEMENT_ID}>
+    <InputWrapper label="Predicate" htmlFor={ELEMENT_ID}>
       <Select
         {...rest}
         id={ELEMENT_ID}
         onChange={onSelectChange}
         value={value}
-        ariaLabel="Select Pred"
+        ariaLabel="Select Predicate"
       >
         {options}
       </Select>

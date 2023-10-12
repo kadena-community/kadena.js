@@ -21,7 +21,7 @@ interface IAccountNameFieldProps
   inputProps: Partial<
     Pick<
       IInputProps,
-      'id' | 'placeholder' | 'ref' | 'name' | 'onChange' | 'onBlur' | 'value'
+      'id' | 'placeholder' | 'ref' | 'name' | 'onChange' | 'onBlur'
     >
   >;
   error?: FieldError;

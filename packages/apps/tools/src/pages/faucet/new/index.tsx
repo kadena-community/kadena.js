@@ -26,9 +26,7 @@ import {
 
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
-import AccountNameField, {
-  NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
+import AccountNameField from '@/components/Global/AccountNameField';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
 import { PublicKeyField } from '@/components/Global/PublicKeyField';
@@ -37,12 +35,11 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
-import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { blake2sHex } from 'blakejs';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -59,11 +56,7 @@ interface IFundExistingAccountResponseBody {
 interface IFundExistingAccountResponse
   extends Record<string, IFundExistingAccountResponseBody> {}
 
-const schema = z.object({
-  name: NAME_VALIDATION,
-  pubKey: z.string(),
-});
-type FormData = z.infer<typeof schema>;
+
 
 const AMOUNT_OF_COINS_FUNDED: number = 100;
 const isCustomError = (error: unknown): error is ICommandResult => {
@@ -82,10 +75,37 @@ const NewAccountFaucetPage: FC = () => {
   }>({ status: 'idle' });
   const [pubKeys, setPubKeys] = useState<string[]>([]);
   const [currentKey, setCurrentKey] = useState<string>('');
-  const [inputError, setInputError] = useState<string>('');
+
   const [validRequestKey, setValidRequestKey] = useState<
     InputWrapperStatus | undefined
   >();
+
+  const generateAccountName =
+    pubKeys.length === 0
+      ? ''
+      : pubKeys.length === 1
+        ? `k:${pubKeys[0]}`
+        : `w:${blake2sHex(pubKeys.join())}`;
+
+  const schema = z.object({
+    name: z.string(),
+    pubKey: z.string().length(64, t('Insert valid public key')),
+  });
+  type FormData = z.infer<typeof schema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+    setError,
+    trigger
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    values: { name: generateAccountName, pubKey: currentKey },
+  });
+
+  const [inputError, setInputError] = useState<string>('');
 
   useToolbar([
     {
@@ -95,13 +115,25 @@ const NewAccountFaucetPage: FC = () => {
     },
   ]);
 
+  useEffect(() => {
+    setInputError('');
+    setValidRequestKey(undefined)
+  }, [currentKey]);
+
   const onFormSubmit = useCallback(
     async (data: FormData) => {
-      if (!pubKeys.length || !currentKey) {
+      if (!pubKeys.length) {
         setValidRequestKey('negative');
-        setInputError('Empty keys');
+        setInputError(t('Please provide one or more public keys'));
         return;
       }
+
+
+      if(errors?.pubKey?.message) {
+        setInputError(errors?.pubKey?.message)
+      }
+
+      setInputError('');
       setRequestStatus({ status: 'processing' });
       try {
         const result = (await fundCreateNewAccount(
@@ -142,32 +174,20 @@ const NewAccountFaucetPage: FC = () => {
   );
   const showNotification = selectedNetwork !== 'testnet04';
 
-  const generateAccountName =
-    pubKeys.length === 0
-      ? ''
-      : pubKeys.length === 1
-      ? `k:${pubKeys[0]}`
-      : `w:${blake2sHex(pubKeys.join())}`;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    resetField,
-    clearErrors,
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    values: { name: generateAccountName, pubKey: currentKey },
-  });
 
-  const addPublicKey = (
+
+
+  const addPublicKey = async (
     e: React.MouseEvent<HTMLButtonElement>,
     value: string,
-  ): void => {
+  ): Promise<void> => {
     e.preventDefault();
 
-    if (validatePublicKey(value) === undefined) {
-      setInputError(t('Insert valid public key'));
+    const isValidInput = await trigger('pubKey');
+
+    if (!isValidInput) {
+      setError('pubKey', { type: 'invalid', message: t('Insert valid public key') });
       setValidRequestKey('negative');
       return;
     }
@@ -185,11 +205,13 @@ const NewAccountFaucetPage: FC = () => {
     }
 
     copyPubKeys.push(value);
-    resetField('pubKey');
+    setCurrentKey('')
     setPubKeys(copyPubKeys);
   };
 
-  const deletePublicKey = (index: number): void => {
+  const deletePublicKey = (e: React.MouseEvent<HTMLButtonElement>, index: number): void => {
+    e.preventDefault();
+
     const copyPubKeys = [...pubKeys];
     copyPubKeys.splice(index, 1);
 
@@ -203,7 +225,7 @@ const NewAccountFaucetPage: FC = () => {
           <Text size={'md'}>{key}</Text>
           <IconButton
             icon={'TrashCan'}
-            onClick={() => deletePublicKey(index)}
+            onClick={(event) => deletePublicKey(event, index)}
           />
         </div>
       ))}
@@ -269,7 +291,7 @@ const NewAccountFaucetPage: FC = () => {
           <div className={pubKeyInputWrapperStyle}>
             <div className={inputWrapperStyle}>
               <PublicKeyField
-                helperText={inputError || undefined}
+                helperText={inputError || errors?.pubKey?.message}
                 status={validRequestKey}
                 inputProps={{
                   ...register('pubKey'),
@@ -282,6 +304,7 @@ const NewAccountFaucetPage: FC = () => {
               <IconButton
                 icon={'Plus'}
                 onClick={(e) => addPublicKey(e, currentKey)}
+                color="primary"
               />
             </div>
           </div>
@@ -301,8 +324,7 @@ const NewAccountFaucetPage: FC = () => {
           <Box marginBottom="$4" />
           <AccountNameField
             inputProps={register('name')}
-            error={errors.name}
-            label={t('The account name you would like to fund coins to')}
+            label={t('The account name to fund coins to')}
             disabled
             noIcon
           />

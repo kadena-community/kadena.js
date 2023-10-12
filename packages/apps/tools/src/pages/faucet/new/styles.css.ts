@@ -11,14 +11,10 @@ export const buttonContainerClass = style([
   { display: 'flex', flexDirection: 'row-reverse' },
 ]);
 export const notificationContainerStyle = style([
-  sprinkles({ fontSize: '$xs', marginY: '$6' }),
+  sprinkles({ fontSize: '$sm', marginY: '$6' }),
 ]);
 export const notificationLinkStyle = style([
   sprinkles({ color: '$neutral5', fontWeight: '$bold' }),
-]);
-
-export const pubKeysContainerWrapper = style([
-  sprinkles({ color: '$neutral5', fontWeight: '$bold', fontSize: '$xs' }),
 ]);
 
 export const pubKeyInputWrapperStyle = style([
@@ -38,7 +34,6 @@ export const keyIconWrapperStyle = style([
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    color: '$primaryAccent',
   }),
 ]);
 
@@ -52,7 +47,7 @@ export const iconButtonWrapper = style([
   sprinkles({
     width: '$sm',
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    top: '$10',
+    right: '$6',
   }),
 ]);
