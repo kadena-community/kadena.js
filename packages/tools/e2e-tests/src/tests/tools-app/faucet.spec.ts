@@ -2,6 +2,7 @@ import { accountsData } from '../../fixtures/data/accounts';
 import { pollFinished, pollInProgress } from '../../fixtures/mocks/poll';
 import { send } from '../../fixtures/mocks/send';
 import { test } from '../../page-objects';
+
 import { expect } from '@playwright/test';
 
 test('Fund existing account @mocks', async ({ page, toolsApp, mockHelper }) => {

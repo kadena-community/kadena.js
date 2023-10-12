@@ -4,7 +4,7 @@ import { defineConfig } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: 'tests/*',
+  testDir: 'src/tests/*',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
@@ -21,16 +21,16 @@ export default defineConfig({
   expect: {
     timeout: 10 * 1000,
   },
- webServer: {
-   command: `pnpm --filter ${process.env.TESTOBJECT} run start`,
-   url: 'http://127.0.0.1:3000',
-   reuseExistingServer: !process.env.CI,
- },
+  webServer: {
+    command: `pnpm --filter ${process.env.TESTOBJECT} run start`,
+    url: 'http://127.0.0.1:3000',
+    reuseExistingServer: !process.env.CI,
+  },
 
   projects: [
     {
       name: 'tools-app',
-      testDir: 'tests/tools-app',
+      testDir: 'src/tests/tools-app',
     },
   ],
 });
