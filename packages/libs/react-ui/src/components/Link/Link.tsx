@@ -7,7 +7,6 @@ import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface ILinkProps {
-  additionalClasses?: string;
   asChild?: boolean;
   block?: boolean;
   children: ReactNode;
@@ -18,7 +17,6 @@ export interface ILinkProps {
 }
 
 export const Link: FC<ILinkProps> = ({
-  additionalClasses,
   asChild = false,
   block = false,
   children,
@@ -28,7 +26,7 @@ export const Link: FC<ILinkProps> = ({
 }) => {
   const Icon = icon && SystemIcon[icon];
 
-  const linkClasses = classnames(linkContainerClass, additionalClasses, {
+  const linkClasses = classnames(linkContainerClass, {
     [blockLinkClass]: block,
   });
 
