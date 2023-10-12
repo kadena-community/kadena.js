@@ -667,9 +667,6 @@ importers:
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types
-      '@playwright/test':
-        specifier: 1.38.1
-        version: 1.38.1
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
@@ -1840,9 +1837,6 @@ importers:
 
   packages/tools/heft-rig:
     dependencies:
-      '@playwright/test':
-        specifier: 1.38.1
-        version: 1.38.1
       '@types/node':
         specifier: ^20.8.2
         version: 20.8.2
@@ -8375,6 +8369,7 @@ packages:
     hasBin: true
     dependencies:
       playwright: 1.38.1
+    dev: true
 
   /@pmmmwh/react-refresh-webpack-plugin@0.5.10(react-refresh@0.11.0)(webpack-dev-server@4.15.1)(webpack@5.88.2):
     resolution: {integrity: sha512-j0Ya0hCFZPd4x40qLzbhGsh9TMtdb+CJQiso+WxLOPNasohq9cc5SNUcwsZaRH6++Xh91Xkm/xHCkuIiIu0LUA==}
@@ -18744,6 +18739,7 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /fsevents@2.3.3:
@@ -25131,6 +25127,7 @@ packages:
     resolution: {integrity: sha512-tQqNFUKa3OfMf4b2jQ7aGLB8o9bS3bOY0yMEtldtC2+spf8QXG9zvXLTXUeRsoNuxEYMgLYR+NXfAa1rjKRcrg==}
     engines: {node: '>=16'}
     hasBin: true
+    dev: true
 
   /playwright@1.38.1:
     resolution: {integrity: sha512-oRMSJmZrOu1FP5iu3UrCx8JEFRIMxLDM0c/3o4bpzU5Tz97BypefWf7TuTNPWeCe279TPal5RtPPZ+9lW/Qkow==}
@@ -25140,6 +25137,7 @@ packages:
       playwright-core: 1.38.1
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /plimit-lit@1.5.0:
     resolution: {integrity: sha512-Eb/MqCb1Iv/ok4m1FqIXqvUKPISufcjZ605hl3KM/n8GaX8zfhtgdLwZU3vKjuHGh2O9Rjog/bHTq8ofIShdng==}
