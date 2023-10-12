@@ -9,7 +9,6 @@ import React, { useContext } from 'react';
 
 export interface IAccordionSectionProps {
   children?: React.ReactNode;
-  onClick?: () => void;
   onClose?: () => void;
   onOpen?: () => void;
   title: string;
@@ -17,7 +16,6 @@ export interface IAccordionSectionProps {
 
 export const AccordionSection: FC<IAccordionSectionProps> = ({
   children,
-  onClick,
   onClose,
   onOpen,
   title,
@@ -37,7 +35,6 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
       setOpenSections(linked ? [sectionId] : [...openSections, sectionId]);
       onOpen?.();
     }
-    onClick?.();
   };
   return (
     <section

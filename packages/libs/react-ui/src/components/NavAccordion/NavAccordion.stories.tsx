@@ -52,9 +52,6 @@ export const Dynamic: IStory = {
             console.log('optional section onClose handler example')
           }
           onOpen={() => console.log('optional section onOpen handler example')}
-          onClick={() =>
-            console.log('optional section onClick handler example')
-          }
         >
           <NavAccordion.Group
             title="Guides"
@@ -62,9 +59,6 @@ export const Dynamic: IStory = {
               console.log('optional group onClose handler example')
             }
             onOpen={() => console.log('optional group onOpen handler example')}
-            onClick={() =>
-              console.log('optional group onClick handler example')
-            }
           >
             <NavAccordion.Link href="#pact">
               Pact Smart Contract
