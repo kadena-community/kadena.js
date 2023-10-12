@@ -1,6 +1,13 @@
 import { prismaClient } from '../db/prismaClient';
 
+import type {
+  ChainModuleAccount,
+  Guard,
+  ModuleAccount,
+} from './types/graphql-types';
+
 import SchemaBuilder from '@pothos/core';
+import DataloaderPlugin from '@pothos/plugin-dataloader';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
@@ -8,6 +15,7 @@ import { Prisma } from '@prisma/client';
 import {
   BigIntResolver,
   DateTimeResolver,
+  NonNegativeFloatResolver,
   PositiveFloatResolver,
 } from 'graphql-scalars';
 import type { IncomingMessage } from 'http';
@@ -21,6 +29,10 @@ interface IDefaultTypesExtension {
     DateTime: {
       Input: Date;
       Output: Date;
+    };
+    Decimal: {
+      Input: number;
+      Output: number;
     };
     PositiveFloat: {
       Input: number;
@@ -38,9 +50,14 @@ export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {
     PrismaTypes: PrismaTypes;
     Context: IContext;
+    Objects: {
+      ModuleAccount: ModuleAccount;
+      ChainModuleAccount: ChainModuleAccount;
+      Guard: Guard;
+    };
   }
 >({
-  plugins: [RelayPlugin, PrismaPlugin],
+  plugins: [RelayPlugin, PrismaPlugin, DataloaderPlugin],
 
   relayOptions: {
     clientMutationId: 'optional',
@@ -69,6 +86,7 @@ type ScalarTypeResolver<TScalarInputShape, TScalarOutputShape> =
 const SCALARS = [
   ['BigInt', BigIntResolver],
   ['DateTime', DateTimeResolver],
+  ['Decimal', NonNegativeFloatResolver],
   ['PositiveFloat', PositiveFloatResolver],
 ] as const;
 

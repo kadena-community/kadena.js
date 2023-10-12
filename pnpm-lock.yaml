@@ -285,6 +285,9 @@ importers:
       '@pothos/core':
         specifier: ~3.33.0
         version: 3.33.0(graphql@16.8.0)
+      '@pothos/plugin-dataloader':
+        specifier: ^3.17.1
+        version: 3.17.1(@pothos/core@3.33.0)(dataloader@2.2.2)(graphql@16.8.0)
       '@pothos/plugin-prisma':
         specifier: ~3.57.0
         version: 3.57.0(@pothos/core@3.33.0)(@prisma/client@5.1.1)(graphql@16.8.0)(typescript@5.2.2)
@@ -297,6 +300,9 @@ importers:
       commander:
         specifier: ^11.0.0
         version: 11.0.0
+      dataloader:
+        specifier: ^2.2.2
+        version: 2.2.2
       debug:
         specifier: ~4.3.4
         version: 4.3.4(supports-color@5.5.0)
@@ -8450,6 +8456,18 @@ packages:
       graphql: 16.8.0
     dev: false
 
+  /@pothos/plugin-dataloader@3.17.1(@pothos/core@3.33.0)(dataloader@2.2.2)(graphql@16.8.0):
+    resolution: {integrity: sha512-vY1e8Wufk3pq7mOi2AOClu7N22k3J7AIm4Rsb6a4SL4sq4GxxXaYMgYizSQixxDvIrZC2njrUW24pJJn//aLow==}
+    peerDependencies:
+      '@pothos/core': '*'
+      dataloader: '2'
+      graphql: '>=15.1.0'
+    dependencies:
+      '@pothos/core': 3.33.0(graphql@16.8.0)
+      dataloader: 2.2.2
+      graphql: 16.8.0
+    dev: false
+
   /@pothos/plugin-prisma@3.57.0(@pothos/core@3.33.0)(@prisma/client@5.1.1)(graphql@16.8.0)(typescript@5.2.2):
     resolution: {integrity: sha512-TMR7f3vx+2OjqKB6o096QL+w6k2aUY5a2P+aujyJptUPsN2i6OobnSePH7iXxL/2tsObdZvRhM51r7VOBZqatw==}
     hasBin: true
@@ -16173,7 +16191,6 @@ packages:
 
   /dataloader@2.2.2:
     resolution: {integrity: sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==}
-    dev: true
 
   /date-fns@2.30.0:
     resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}

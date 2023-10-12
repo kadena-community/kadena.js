@@ -37,7 +37,6 @@ const RequestKey: React.FC = () => {
 
         <div>
           {loadingTransaction && (
-            // Display a loading spinner next to the text without a gap
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Loader /> <span>Waiting for request key...</span>
             </div>
@@ -274,7 +273,10 @@ const RequestKey: React.FC = () => {
                               <strong>Sender</strong>
                             </Table.Td>
                             <Table.Td>
-                              {transactionSubscription?.transaction?.sender}
+                              {
+                                transactionSubscription?.transaction
+                                  ?.senderAccount
+                              }
                             </Table.Td>
                           </Table.Tr>
                           <Table.Tr>
