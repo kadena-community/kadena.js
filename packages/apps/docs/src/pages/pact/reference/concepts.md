@@ -111,13 +111,13 @@ Interface names must be unique within a namespace.
 
 #### Table Creation
 
-Tables are [created](pact-functions.html#create-table) at the same time as
-modules. While tables are _defined_ in modules, they are _created_ "after"
-modules, so that the module may be redefined later without having to necessarily
-re-create the table.
+Tables are [created](/pact/reference/functions/database#create-tableh447366077)
+at the same time as modules. While tables are _defined_ in modules, they are
+_created_ "after" modules, so that the module may be redefined later without
+having to necessarily re-create the table.
 
 The relationship of modules to tables is important, as described in
-[Table Guards](#module-table-guards).
+[Table Guards](/pact/reference/concepts#module-table-guardsh-1588944812).
 
 There is no restriction on how many tables may be created. Table names are
 namespaced with the module name.
@@ -339,11 +339,11 @@ keyset definition and predicate. Once authorized, the keyset can be easily
 
 ### Module Table Guards
 
-When [creating](pact-functions.html#create-table) a table, a module name must
-also be specified. By this mechanism, tables are "guarded" or "encapsulated" by
-the module, such that direct access to the table via
-[data-access functions](pact-functions.html#database) is authorized only by the
-module's governance. However, _within module functions_, table access is
+When [creating](/pact/reference/functions/database#create-tableh447366077) a
+table, a module name must also be specified. By this mechanism, tables are
+"guarded" or "encapsulated" by the module, such that direct access to the table
+via [data-access functions](pact-functions.html#database) is authorized only by
+the module's governance. However, _within module functions_, table access is
 unconstrained. This gives contract authors great flexibility in designing data
 access, and is intended to enshrine the module as the main "user data access
 API".

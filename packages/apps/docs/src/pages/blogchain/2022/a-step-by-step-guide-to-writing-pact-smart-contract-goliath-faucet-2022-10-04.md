@@ -381,7 +381,7 @@ account at any time.
 
 Before we define any tables, however, we should define schemas for them. The
 schema for a table specifies the table columns and their data types.
-[#defschema](https://pact-language.readthedocs.io/en/stable/pact-reference.html#defschema)
+[#defschema](/pact/reference/syntax#defschemah-1003560474)
 
 The schema will be used to verify we are using the right types when reading or
 writing the table. For example, Pact can typecheck our module and ensure we
@@ -425,7 +425,7 @@ Now that we have our schema we can define a table which uses it with the
 We’ll refer to the table by name when we need to insert, read, or update data.
 When our module is deployed, we’ll also need to create the table using the
 (`create-table`) function (this must be called outside the module).
-[#create-table](https://pact-language.readthedocs.io/en/stable/pact-functions.html#create-table)
+[#create-table](/pact/reference/functions/database#create-tableh447366077)
 
 Pact supplies several data-access functions for working with tables.
 [#database](https://pact-language.readthedocs.io/en/latest/pact-functions.html#database)

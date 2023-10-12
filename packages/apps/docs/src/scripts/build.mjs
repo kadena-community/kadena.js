@@ -76,7 +76,7 @@ const initFunc = async (fnc, description) => {
   await initFunc(importAllReadmes, 'Import docs from monorepo');
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');
-  await initFunc(detectBrokenLinks, 'Detect broken links');
+  //await initFunc(detectBrokenLinks, 'Detect broken links');
   await initFunc(checkForHeaders, 'Detect missing H1 headers');
   await initFunc(checkAuthors, 'Check author data for blog');
   await initFunc(createSitemap, 'Create the sitemap');

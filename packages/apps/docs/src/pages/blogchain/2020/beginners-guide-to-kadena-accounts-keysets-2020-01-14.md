@@ -158,14 +158,14 @@ notion of what an account is. Even the
 network! It turns out that in the Kadena blockchain, every smart contract can
 define their own tables and interact with them in a robust way, defining their
 own data structures, called
-[\*schema](https://pact-language.readthedocs.io/en/stable/pact-reference.html#defschema).
-These schemas\* are used inside the contract to define the table structure, and
-therefore the way the contract will store data. It just so happens that this is
-exactly what the KDA coin contract does — it defines a table called coin-table
-along with a schema called `coin-schema` , which defines the general model for
-interacting with tokens. The schema is rather simple — row keys are account
-names, and the data it points to are a balance and a set of keys governing the
-account. Visually, it looks like this:
+[\*schema](/pact/reference/syntax#defschemah-1003560474). These schemas\* are
+used inside the contract to define the table structure, and therefore the way
+the contract will store data. It just so happens that this is exactly what the
+KDA coin contract does — it defines a table called coin-table along with a
+schema called `coin-schema` , which defines the general model for interacting
+with tokens. The schema is rather simple — row keys are account names, and the
+data it points to are a balance and a set of keys governing the account.
+Visually, it looks like this:
 
 ```shell
     key: Account Name -> value: { Balance, Keyset }

@@ -421,7 +421,8 @@ the form `FIELDNAME[:FIELDTYPE]`.
 ```
 
 Define NAME as a _table_, used in database functions. Note the table must still
-be created with [create-table](pact-functions.html#create-table).
+be created with
+[create-table](/pact/reference/functions/database#create-tableh447366077).
 
 ### let
 
