@@ -3,7 +3,7 @@ import type { IExecutionPayloadObject } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { createTransactionBuilder } from '../createTransactionBuilder';
 
-jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
+vi.useFakeTimers().setSystemTime(new Date('2023-07-27'));
 
 const coin: ICoin = getModule('coin');
 
