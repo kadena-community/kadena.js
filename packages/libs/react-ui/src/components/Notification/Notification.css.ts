@@ -18,7 +18,7 @@ export const containerClass = style([
   sprinkles({
     display: 'flex',
     alignItems: 'flex-start',
-    borderRadius: '$sm',
+    padding: '$md',
     borderStyle: 'solid',
     justifyContent: 'center',
   }),
@@ -56,8 +56,8 @@ export const expandVariants = styleVariants({
 });
 
 export const displayVariants = styleVariants({
-  outlined: [sprinkles({ borderWidth: '$sm' })],
-  standard: { borderWidth: 0 },
+  outlined: [sprinkles({ borderWidth: '$sm', borderRadius: '$sm' })],
+  default: [sprinkles({ border: 'none', borderRadius: 0 })],
 });
 
 export const inlineVariants = styleVariants({
@@ -98,9 +98,18 @@ export const contentClass = style([
   },
 ]);
 
+export const titleClass = style([
+  sprinkles({
+    color: 'inherit',
+    fontSize: '$base',
+    fontWeight: '$bold',
+  }),
+]);
+
 export const descriptionClass = style([
   sprinkles({
     color: '$neutral6',
+    fontSize: '$base',
   }),
 ]);
 
