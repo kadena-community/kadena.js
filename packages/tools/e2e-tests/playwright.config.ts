@@ -21,6 +21,12 @@ export default defineConfig({
   expect: {
     timeout: 10 * 1000,
   },
+ webServer: {
+   command: `pnpm --filter ${process.env.TESTOBJECT} run start`,
+   url: 'http://127.0.0.1:3000',
+   reuseExistingServer: !process.env.CI,
+ },
+
   projects: [
     {
       name: 'tools-app',
