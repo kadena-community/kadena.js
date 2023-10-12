@@ -207,7 +207,7 @@ before.
 **Contract Built-in functions include:**
 
 - [enforce](https://pact-language.readthedocs.io/en/latest/pact-functions.html#enforce)
-- [insert](https://pact-language.readthedocs.io/en/latest/pact-functions.html#insert)
+- [insert](/pact/reference/functions/database#inserth-1183792455)
 - [with-read](https://pact-language.readthedocs.io/en/latest/pact-functions.html#with-read)
 
 We’ll also go over each of these in more detail in later tutorials. You can

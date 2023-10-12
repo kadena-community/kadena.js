@@ -599,7 +599,7 @@ signing a transaction using `env-sigs`.
 REPL-Only Functions `expect-failure` and `env-sigs` are two of the many
 REPL-only functions that we can use in `.repl` files to test Pact
 smart-contracts by simulating blockchain environment. You can check the
-[complete list of REPL-only functions](/pact/reference/functions/repl-only-functions#repl-only-functions)
+[complete list of REPL-only functions](/pact/reference/functions/repl-only-functions)
 in the Pact official documentation.
 
 :::

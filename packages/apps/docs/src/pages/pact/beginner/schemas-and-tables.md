@@ -190,7 +190,7 @@ work with table data.
 
 | function type                                                                       | purpose                       |
 | ----------------------------------------------------------------------------------- | ----------------------------- |
-| [Insert](https://pact-language.readthedocs.io/en/latest/pact-functions.html#insert) | Insert new rows into a table. |
+| [Insert](/pact/reference/functions/database#inserth-1183792455)                     | Insert new rows into a table. |
 | [Read](https://pact-language.readthedocs.io/en/latest/pact-functions.html#read)     | Read values from a table.     |
 | [Update](https://pact-language.readthedocs.io/en/latest/pact-functions.html#update) | Update values within a table. |
 | Delete                                                                              | Not possible in Pact.         |
@@ -208,10 +208,10 @@ insert.
 
 ### Insert
 
-[Insert](https://pact-language.readthedocs.io/en/latest/pact-functions.html#insert)
-functions are used to add new data into a table. These are useful when creating
-new artifacts such as entities, loans, accounts, and in any other case where you
-may want to add data.
+[Insert](/pact/reference/functions/database#inserth-1183792455) functions are
+used to add new data into a table. These are useful when creating new artifacts
+such as entities, loans, accounts, and in any other case where you may want to
+add data.
 
 For an example of an **insert** function, pretend you have the following empty
 table.

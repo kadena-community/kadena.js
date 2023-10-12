@@ -106,11 +106,10 @@ our GitHub.
 ### Create a Keyset
 
 As you can see, the “Hello World” smart contract starts by defining and reading
-a keyset.
-[Keysets](https://pact-language.readthedocs.io/en/latest/pact-reference.html#confidential-keysets)
-are a way to specify credentials for a user of the smart contract. The code you
-write within the smart contract can restrict access to users that own the
-keysets you define. You will see this done in the Hello World module.
+a keyset. [Keysets](/pact/reference/functions/keysets) are a way to specify
+credentials for a user of the smart contract. The code you write within the
+smart contract can restrict access to users that own the keysets you define. You
+will see this done in the Hello World module.
 
 Line 16 (shown below) defines and reads a keyset named admin-keyset.
 

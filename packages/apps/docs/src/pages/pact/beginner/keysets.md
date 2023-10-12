@@ -29,12 +29,10 @@ regulate access to Pact modules.
 
 :::note Key Takeaway
 
-Pact
-[Keysets](https://pact-language.readthedocs.io/en/latest/pact-reference.html#confidential-keysets)
-specify authorization to different parts of the smart contract. They determine
-which accounts have access to which parts of the program. They also contain keys
-which are an important part of acquiring the signatures needed to verify a
-transaction.
+Pact [Keysets](/pact/reference/functions/keysets) specify authorization to
+different parts of the smart contract. They determine which accounts have access
+to which parts of the program. They also contain keys which are an important
+part of acquiring the signatures needed to verify a transaction.
 
 :::
 
@@ -48,10 +46,9 @@ access the latest Pact tutorials.
 
 ### Introduction to Keysets
 
-Pact
-[Keysets](https://pact-language.readthedocs.io/en/latest/pact-reference.html#confidential-keysets)
-specify authorization to different parts of the smart contract. They determine
-which accounts have access to and update various parts of the program.
+Pact [Keysets](/pact/reference/functions/keysets) specify authorization to
+different parts of the smart contract. They determine which accounts have access
+to and update various parts of the program.
 
 ### Create a Keyset
 
@@ -528,7 +525,7 @@ keys.
 That wraps up this tutorial on Pact Keysets.
 
 As you learned, Pact
-[Keysets](https://pact-language.readthedocs.io/en/latest/pact-reference.html#confidential-keysets)
+[Keysets](/pact/reference/functions/keysets/pact-reference.html#confidential-keysets)
 allow you to specify authorization to different parts of the smart contract.
 They help determine which accounts have access to which parts of the programs
 you create.

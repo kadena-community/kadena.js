@@ -220,9 +220,8 @@ user.
 View
 [enforce-keyset](https://pact-language.readthedocs.io/en/latest/pact-functions.html#enforce-keyset)
 
-and
-[insert](https://pact-language.readthedocs.io/en/latest/pact-functions.html#insert)
-for more information related to completing this challenge.
+and [insert](/pact/reference/functions/database#inserth-1183792455) for more
+information related to completing this challenge.
 
 :::
 
