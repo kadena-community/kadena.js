@@ -10,7 +10,7 @@ import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { YogaLink } = require('@graphql-yoga/apollo-link');
 
-import '../styles/globals.css';
+import '@styles/globals.css';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   link: new YogaLink({

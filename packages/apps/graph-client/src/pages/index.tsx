@@ -3,15 +3,14 @@ import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
 import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
-} from '../__generated__/sdk';
-import { ChainwebGraph } from '../components/chainweb';
-import { mainStyle } from '../components/main/styles.css';
-import { Text } from '../components/text';
-import routes from '../constants/routes';
-import { useChainTree } from '../context/chain-tree-context';
-import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
-import { usePrevious } from '../utils/hooks/use-previous';
-
+} from '@/__generated__/sdk';
+import { ChainwebGraph } from '@components/chainweb';
+import { mainStyle } from '@components/main/styles.css';
+import { Text } from '@components/text';
+import routes from '@constants/routes';
+import { useChainTree } from '@context/chain-tree-context';
+import { useParsedBlocks } from '@utils/hooks/use-parsed-blocks';
+import { usePrevious } from '@utils/hooks/use-previous';
 import isEqual from 'lodash.isequal';
 import Head from 'next/head';
 import { useRouter } from 'next/router';

@@ -1,10 +1,9 @@
 import { Link, Notification, Table } from '@kadena/react-ui';
 
-import { useGetTransactionByRequestKeySubscription } from '../../__generated__/sdk';
-import Loader from '../../components/loader/loader';
-import { mainStyle } from '../../components/main/styles.css';
-import { Text } from '../../components/text';
-
+import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
+import Loader from '@components/loader/loader';
+import { mainStyle } from '@components/main/styles.css';
+import { Text } from '@components/text';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
