@@ -216,7 +216,9 @@ const Block: React.FC = () => {
                     <Table.Td>
                       <strong>No. of transactions</strong>
                     </Table.Td>
-                    <Table.Td>{0}</Table.Td>
+                    <Table.Td>
+                      {blockData.block.transactions.totalCount}
+                    </Table.Td>
                   </Table.Tr>
                 </Table.Body>
               </Table.Root>
@@ -250,6 +252,12 @@ const Block: React.FC = () => {
                               </Table.Body>
                             </Table.Root>
                           </Table.Td>
+                        </Table.Tr>
+                        <Table.Tr>
+                          <Table.Td>
+                            <strong>Predicate</strong>
+                          </Table.Td>
+                          <Table.Td>{blockData.block.predicate}</Table.Td>
                         </Table.Tr>
                       </Table.Body>
                     </Table.Root>

@@ -17,7 +17,7 @@ type Block implements Node {
   payload: String!
   powHash: String!
   predicate: String!
-  transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
+  transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
 }
 
 type BlockTransactionsConnection {

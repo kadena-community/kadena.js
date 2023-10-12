@@ -1,37 +1,6 @@
 import type { DocumentNode } from '@apollo/client';
 import { gql } from '@apollo/client';
 
-export const CORE_BLOCK_FIELDS: DocumentNode = gql`
-  fragment CoreBlockFields on Block {
-    id
-    chainId
-    creationTime
-    epoch
-    # flags
-    hash
-    height
-    # miner
-    # nonce
-    # parent
-    payload
-    powHash
-    # predicate
-    # target
-    # weight
-    # transactions {
-    #   totalCount
-    #   edges {
-    #     node {
-    #       id
-    #       reqKey
-    #     }
-    #   }
-    # }
-    confirmationDepth
-    parentHash
-  }
-`;
-
 export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
   fragment CoreTransactionFields on Transaction {
     id
@@ -59,6 +28,42 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
     # step
     ttl
     # txId
+  }
+`;
+
+export const CORE_BLOCK_FIELDS: DocumentNode = gql`
+  fragment CoreBlockFields on Block {
+    id
+    chainId
+    creationTime
+    epoch
+    # flags
+    hash
+    height
+    # miner
+    # nonce
+    # parent
+    payload
+    powHash
+    predicate
+    # target
+    # weight
+    transactions {
+      totalCount
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          ...CoreTransactionFields
+        }
+      }
+    }
+    confirmationDepth
+    parentHash
   }
 `;
 

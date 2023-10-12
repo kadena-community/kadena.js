@@ -41,30 +41,23 @@ export default builder.prismaNode('Block', {
 
     // relations
     transactions: t.prismaConnection({
-      args: {
-        events: t.arg.stringList({ required: false, defaultValue: [] }),
-      },
       type: 'Transaction',
       cursor: 'blockHash_requestKey',
-      async totalCount(parent, { events }, context, info) {
+      async totalCount(parent, args, context, info) {
         return prismaClient.transaction.count({
           where: {
             blockHash: parent.hash,
-            requestKey: {
-              in: await getTransactionsRequestkeyByEvent(events || [], parent),
-            },
           },
         });
       },
-      async resolve(query, parent, { events }, context, info) {
-        console.log(events);
+      resolve: (query, parent, args, context, info) => {
         return prismaClient.transaction.findMany({
           ...query,
           where: {
             blockHash: parent.hash,
-            requestKey: {
-              in: await getTransactionsRequestkeyByEvent(events || [], parent),
-            },
+          },
+          orderBy: {
+            height: 'desc',
           },
         });
       },
