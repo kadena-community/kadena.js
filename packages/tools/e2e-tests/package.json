@@ -15,7 +15,8 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "",
+    "test": "echo \"no test specified\"",
+    "install:chromium": "npx playwright install chromium",
     "test:e2e": "npx playwright test"
   },
   "devDependencies": {
