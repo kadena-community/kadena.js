@@ -22,20 +22,18 @@ export const pubKeysContainerWrapper = style([
 ]);
 
 export const pubKeyInputWrapperStyle = style([
-  sprinkles(
-  {
+  sprinkles({
     display: 'flex',
     alignItems: 'flex-start',
     position: 'relative',
   }),
   {
     width: 'auto',
-  }
+  },
 ]);
 
 export const keyIconWrapperStyle = style([
-  sprinkles(
-  {
+  sprinkles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',

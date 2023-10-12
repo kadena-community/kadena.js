@@ -256,7 +256,9 @@ const NewAccountFaucetPage: FC = () => {
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
-            successful: `${AMOUNT_OF_COINS_FUNDED } ${t('coins have been funded to ')}${generateAccountName}`,
+            successful: `${AMOUNT_OF_COINS_FUNDED} ${t(
+              'coins have been funded to ',
+            )}${generateAccountName}`,
           }}
           body={requestStatus.message}
         />
