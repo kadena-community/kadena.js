@@ -1,22 +1,17 @@
 {
   "name": "@kadena-dev/e2e-tests",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "license": "ISC",
-  "author": "",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "build": "",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
-    "format:md": "remark *.md -o --use @kadena-dev/markdown",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
+    "install:chromium": "npx playwright install chromium",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "echo \"no test specified\"",
-    "install:chromium": "npx playwright install chromium",
     "test:e2e": "npx playwright test"
   },
   "devDependencies": {
