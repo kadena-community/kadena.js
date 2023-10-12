@@ -1,0 +1,121 @@
+import { HDKEY_EXT, KEY_DIR, PLAINKEY_EXT } from '../../constants/config.js';
+import { ensureDirectoryExists } from '../../utils/filesystem.js';
+import { sanitizeFilename } from '../../utils/helpers.js';
+
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+export class StorageService {
+  /**
+   * Saves the given key pair to multiple files based on the provided amount.
+   * Only subsequent files will be postfixed with an index if the amount is greater than 1.
+   *
+   * @param alias The base alias for the key pair.
+   * @param publicKey The public key.
+   * @param privateKey The private key.
+   * @param amount The number of files to write.
+   */
+  public savePlainKeyByAlias(
+    alias: string,
+    publicKey: string,
+    privateKey: string,
+    amount: number = 1,
+  ): void {
+    ensureDirectoryExists(KEY_DIR);
+    const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
+
+    for (let i = 0; i < amount; i++) {
+      let fileName = sanitizedAlias;
+
+      // Append index to the filename if it's not the first file.
+      if (i > 0) {
+        fileName += `-${i}`;
+      }
+
+      fileName += PLAINKEY_EXT;
+
+      const filePath = join(KEY_DIR, fileName);
+
+      const data = {
+        publicKey,
+        privateKey,
+      };
+
+      writeFileSync(filePath, JSON.stringify(data));
+    }
+  }
+
+  /**
+   * Retrieves a key pair based on the given alias.
+   *
+   * @param {string} alias - The alias corresponding to the key file to be fetched.
+   * @returns {{publicKey: string, secretKey: string} | undefined} The key pair if found, otherwise undefined.
+   */
+  public getStoredPlainKeyByAlias(
+    alias: string,
+  ): { publicKey: string; secretKey: string } | undefined {
+    const filePath = join(KEY_DIR, `${alias}${PLAINKEY_EXT}`);
+    if (existsSync(filePath)) {
+      const data = readFileSync(filePath, 'utf-8');
+      const keyPair = JSON.parse(data);
+      return {
+        publicKey: keyPair.publicKey,
+        secretKey: keyPair.privateKey,
+      };
+    }
+    return undefined;
+  }
+
+  /**
+   * Loads the public keys from key files based on their aliases.
+   * Iterates through files in the key directory, and if a file matches the '.key' extension,
+   * its content is parsed, and if it contains a valid public key, it's added to the returned array.
+   * @returns {string[]} Array of public keys.
+   */
+  public loadAllKeysFromAliasFiles(): string[] {
+    ensureDirectoryExists(KEY_DIR);
+    const publicKeys = [];
+    const files = readdirSync(KEY_DIR);
+    for (const file of files) {
+      if (file.endsWith('.key')) {
+        const filePath = join(KEY_DIR, file);
+        const data = readFileSync(filePath, 'utf-8');
+        const keyPair = JSON.parse(data);
+        if (
+          keyPair !== undefined &&
+          typeof keyPair.publicKey === 'string' &&
+          keyPair.publicKey.length > 0
+        ) {
+          publicKeys.push(keyPair.publicKey);
+        }
+      }
+    }
+    return publicKeys;
+  }
+
+  /**
+   * Stores the mnemonic phrase to the filesystem.
+   * @param {string} mnemonic - The mnemonic phrase to store.
+   * @param {string} fileName - The name of the file to store the mnemonic in.
+   */
+  public storeHdKey(mnemonic: string, fileName: string): void {
+    ensureDirectoryExists(KEY_DIR);
+    const sanitizedFilename = sanitizeFilename(fileName).toLowerCase();
+    const storagePath = join(KEY_DIR, `${sanitizedFilename}${HDKEY_EXT}`);
+    writeFileSync(storagePath, mnemonic, 'utf8');
+  }
+
+  /**
+   * Retrieves the stored mnemonic phrase from the filesystem.
+   * @param {string} fileName - The name of the file where the mnemonic is stored.
+   * @returns {string | undefined} The stored mnemonic phrase, or undefined if not found.
+   */
+  public getStoredHdKey(fileName: string): string | undefined {
+    const storagePath = join(KEY_DIR, fileName);
+
+    if (existsSync(storagePath)) {
+      return readFileSync(storagePath, 'utf8');
+    }
+    return undefined;
+  }
+}
