@@ -56,8 +56,6 @@ interface IFundExistingAccountResponseBody {
 interface IFundExistingAccountResponse
   extends Record<string, IFundExistingAccountResponseBody> {}
 
-
-
 const AMOUNT_OF_COINS_FUNDED: number = 100;
 const isCustomError = (error: unknown): error is ICommandResult => {
   return error !== null && typeof error === 'object' && 'result' in error;
@@ -84,8 +82,8 @@ const NewAccountFaucetPage: FC = () => {
     pubKeys.length === 0
       ? ''
       : pubKeys.length === 1
-        ? `k:${pubKeys[0]}`
-        : `w:${blake2sHex(pubKeys.join())}`;
+      ? `k:${pubKeys[0]}`
+      : `w:${blake2sHex(pubKeys.join())}`;
 
   const schema = z.object({
     name: z.string(),
@@ -99,7 +97,7 @@ const NewAccountFaucetPage: FC = () => {
     formState: { errors },
     clearErrors,
     setError,
-    trigger
+    trigger,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     values: { name: generateAccountName, pubKey: currentKey },
@@ -117,7 +115,7 @@ const NewAccountFaucetPage: FC = () => {
 
   useEffect(() => {
     setInputError('');
-    setValidRequestKey(undefined)
+    setValidRequestKey(undefined);
   }, [currentKey]);
 
   const onFormSubmit = useCallback(
@@ -128,9 +126,8 @@ const NewAccountFaucetPage: FC = () => {
         return;
       }
 
-
-      if(errors?.pubKey?.message) {
-        setInputError(errors?.pubKey?.message)
+      if (errors?.pubKey?.message) {
+        setInputError(errors?.pubKey?.message);
       }
 
       setInputError('');
@@ -174,10 +171,6 @@ const NewAccountFaucetPage: FC = () => {
   );
   const showNotification = selectedNetwork !== 'testnet04';
 
-
-
-
-
   const addPublicKey = async (
     e: React.MouseEvent<HTMLButtonElement>,
     value: string,
@@ -187,7 +180,10 @@ const NewAccountFaucetPage: FC = () => {
     const isValidInput = await trigger('pubKey');
 
     if (!isValidInput) {
-      setError('pubKey', { type: 'invalid', message: t('Insert valid public key') });
+      setError('pubKey', {
+        type: 'invalid',
+        message: t('Insert valid public key'),
+      });
       setValidRequestKey('negative');
       return;
     }
@@ -205,11 +201,14 @@ const NewAccountFaucetPage: FC = () => {
     }
 
     copyPubKeys.push(value);
-    setCurrentKey('')
+    setCurrentKey('');
     setPubKeys(copyPubKeys);
   };
 
-  const deletePublicKey = (e: React.MouseEvent<HTMLButtonElement>, index: number): void => {
+  const deletePublicKey = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    index: number,
+  ): void => {
     e.preventDefault();
 
     const copyPubKeys = [...pubKeys];
