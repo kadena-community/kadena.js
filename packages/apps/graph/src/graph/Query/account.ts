@@ -8,7 +8,7 @@ builder.queryField('account', (t) => {
       moduleName: t.arg.string({ required: true }),
     },
     type: Account,
-    resolve: async (root, args) => {
+    resolve: async (parent, args) => {
       return {
         id: `Account:${args.accountName}`,
         accountName: args.accountName,

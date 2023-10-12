@@ -33,9 +33,7 @@ export default builder.objectType('ModuleAccount', {
               transactions: [],
               transfers: [],
             });
-          } catch (e) {
-            // console.log(e);
-          }
+          } catch (e) {}
         }
 
         return chainAccounts;
@@ -55,9 +53,7 @@ export default builder.objectType('ModuleAccount', {
             });
 
             totalBalance += accountDetails.balance;
-          } catch (e) {
-            // console.log(e);
-          }
+          } catch (e) {}
         }
 
         return totalBalance;

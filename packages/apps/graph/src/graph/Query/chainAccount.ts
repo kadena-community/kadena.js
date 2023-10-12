@@ -10,7 +10,7 @@ builder.queryField('chainAccount', (t) => {
       chainId: t.arg.string({ required: true }),
     },
     type: ChainModuleAccount,
-    resolve: async (root, args) => {
+    resolve: async (parent, args) => {
       const accountDetails = await getAccountDetails(
         args.moduleName,
         args.accountName,
