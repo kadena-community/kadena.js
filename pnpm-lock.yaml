@@ -1730,6 +1730,9 @@ importers:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@kadena-dev/heft-rig':
+        specifier: workspace:*
+        version: link:../heft-rig
       '@kadena-dev/lint-package':
         specifier: workspace:*
         version: link:../lint-package
