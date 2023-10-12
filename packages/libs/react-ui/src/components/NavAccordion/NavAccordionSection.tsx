@@ -72,10 +72,12 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
           ])}
         >
           {Children.map(children, (child) => {
-            const Tag = child.type === NavAccordionGroup ? 'ul' : 'li';
+            const Element = child.type === NavAccordionGroup ? 'ul' : 'li';
             const className =
-              Tag === 'ul' ? navAccordionListClass : navAccordionListItemClass;
-            return <Tag className={className}>{child}</Tag>;
+              Element === 'ul'
+                ? navAccordionListClass
+                : navAccordionListItemClass;
+            return <Element className={className}>{child}</Element>;
           })}
         </ul>
       )}
