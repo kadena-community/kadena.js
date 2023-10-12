@@ -29,7 +29,6 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
   children,
   onClose,
   onOpen,
-  onClick,
   title,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +39,6 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
       onOpen?.();
     }
     setIsOpen(!isOpen);
-    onClick?.();
   };
 
   return (

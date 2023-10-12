@@ -20,7 +20,6 @@ export interface INavAccordionSectionProps {
     | FCElement<INavAccordionLinkProps>[]
     | FCElement<INavAccordionGroupProps>
     | FCElement<INavAccordionLinkProps>;
-  onClick?: () => void;
   onClose?: () => void;
   onOpen?: () => void;
   title: string;
@@ -28,7 +27,6 @@ export interface INavAccordionSectionProps {
 
 export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
   children,
-  onClick,
   onClose,
   onOpen,
   title,
@@ -48,7 +46,6 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
       setOpenSections(linked ? [sectionId] : [...openSections, sectionId]);
       onOpen?.();
     }
-    onClick?.();
   };
 
   return (
