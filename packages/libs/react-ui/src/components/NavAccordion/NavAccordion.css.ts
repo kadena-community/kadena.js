@@ -122,6 +122,7 @@ export const navAccordionLinkClass = style([
         fontSize: vars.fontSizes.$base,
         fontWeight: vars.fontWeights.$semiBold,
         paddingBottom: vars.sizes.$2,
+        paddingTop: 0,
         textDecoration: 'none',
       },
       'nav > &:hover': {
