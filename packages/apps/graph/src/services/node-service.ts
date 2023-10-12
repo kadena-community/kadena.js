@@ -22,7 +22,7 @@ export async function getAccountDetails(
   accountName: string,
   chainId: string,
 ): Promise<ChainModuleAccountDetails> {
-  const commandResult = await getClient(chainId).local(
+  const commandResult = await getClient(chainId).dirtyRead(
     Pact.builder
       .execution(
         // @ts-ignore
@@ -33,9 +33,6 @@ export async function getAccountDetails(
       })
       .setNetworkId(process.env.NETWORK_ID as string)
       .createTransaction(),
-    {
-      preflight: false,
-    },
   );
 
   if (commandResult.result.status !== 'success') {
