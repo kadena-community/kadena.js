@@ -6,6 +6,7 @@
   "license": "ISC",
   "author": "",
   "scripts": {
+    "build": "",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",
@@ -14,6 +15,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
+    "test": "",
     "test:e2e": "npx playwright test"
   },
   "devDependencies": {
