@@ -6,11 +6,11 @@ export const navAccordionWrapperClass = style({});
 
 export const navAccordionListClass = style([
   sprinkles({
+    listStyleType: 'none',
     margin: 0,
     padding: 0,
   }),
   {
-    listStyleType: 'none',
     selectors: {
       '&:last-child': {
         marginBottom: vars.sizes.$2,
@@ -24,13 +24,13 @@ export const navAccordionListItemClass = style([
     alignItems: 'center',
     display: 'flex',
     lineHeight: '$normal',
+    listStyleType: 'none',
     margin: 0,
-    position: 'relative',
     padding: 0,
     paddingLeft: '$5',
+    position: 'relative',
   }),
   {
-    listStyleType: 'none',
     selectors: {
       '&:before': {
         content: '·',
