@@ -18,6 +18,12 @@ export const accordionSectionClass = style([
   },
 ]);
 
+export const accordionHeadingTitleClass = style([
+  sprinkles({
+    fontSize: '$base',
+  }),
+]);
+
 export const accordionButtonClass = style([
   sprinkles({
     alignItems: 'center',

@@ -1,5 +1,6 @@
 import {
   accordionButtonClass,
+  accordionHeadingTitleClass,
   accordionToggleIconClass,
 } from './Accordion.css';
 
@@ -24,7 +25,7 @@ export const AccordionHeading: FC<IAccordionHeadingProps> = ({
   const Icon = SystemIcon[icon];
   return (
     <button className={classNames([accordionButtonClass])} onClick={onClick}>
-      <h3>{title}</h3>
+      <h3 className={accordionHeadingTitleClass}>{title}</h3>
       <Icon
         className={classNames(accordionToggleIconClass, {
           isOpen,
