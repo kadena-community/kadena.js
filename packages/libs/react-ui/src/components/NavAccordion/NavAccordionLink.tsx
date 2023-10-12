@@ -5,10 +5,8 @@ import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface INavAccordionLinkProps {
-  active?: boolean;
   asChild?: boolean;
   children: ReactNode;
-  deepLink?: boolean;
   href?: string;
 }
 
@@ -16,7 +14,16 @@ export const NavAccordionLink: FC<INavAccordionLinkProps> = ({
   asChild,
   children,
   href,
+  ...restProps
 }) => {
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ...restProps,
+      ...children.props,
+      className: navAccordionLinkClass,
+      children,
+    });
+  }
   return (
     <a className={classNames(navAccordionLinkClass)} href={href}>
       {children}

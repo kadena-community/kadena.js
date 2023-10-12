@@ -85,12 +85,7 @@ export const Dynamic: IStory = {
             Developer Program
           </NavAccordion.Link>
           <NavAccordion.Link asChild>
-            <a
-              id="asChild"
-              href="https://kadena.io/"
-              rel="noreferrer"
-              target="_blank"
-            >
+            <a href="https://kadena.io/" rel="noreferrer" target="_blank">
               Kadena.io (asChild)
             </a>
           </NavAccordion.Link>
