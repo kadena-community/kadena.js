@@ -113,6 +113,10 @@ export const navAccordionLinkClass = style([
       '&:hover': {
         textDecoration: 'underline',
       },
+      '&:visited': {
+        color: `${vars.colors.$layoutSurfaceOverlay} !important`,
+        textDecoration: 'none !important',
+      },
       // Top level links
       'nav > &': {
         alignItems: 'center',
