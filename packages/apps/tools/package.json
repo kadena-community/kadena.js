@@ -56,7 +56,6 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
-    "@playwright/test": "1.38.1",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@tanstack/eslint-plugin-query": "^4.34.1",
