@@ -19,7 +19,6 @@
     "test:e2e": {
       "outputMode": "new-only",
       "cache": false,
-      "persistent": true,
       "inputs": ["tests/**/*.ts"]
     },
     "lint": {
