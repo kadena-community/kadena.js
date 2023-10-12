@@ -17,7 +17,7 @@ import type { ICoin } from './coin-contract';
 
 const coin: ICoin = getModule('coin');
 
-jest.useFakeTimers().setSystemTime(new Date('2023-07-27'));
+vi.useFakeTimers().setSystemTime(new Date('2023-07-27'));
 
 describe('execution', () => {
   it('returns a payload object of a exec command', () => {

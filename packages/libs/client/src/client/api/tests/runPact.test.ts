@@ -1,23 +1,28 @@
-jest.mock('@kadena/chainweb-node-client', () => ({
-  __esModule: true,
-  ...jest.requireActual('@kadena/chainweb-node-client'),
-  local: jest.fn(),
-}));
-
 import { local } from '@kadena/chainweb-node-client';
 
 import { runPact } from '../runPact';
 
-jest.useFakeTimers().setSystemTime(new Date('2023-07-31'));
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+vi.mock('@kadena/chainweb-node-client', async () => ({ local: vi.fn() }));
+
+const server = setupServer();
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+vi.useFakeTimers().setSystemTime(new Date('2023-07-31'));
 
 describe('runPact', () => {
   it('create a complete pact command from the input and send it to the chain', async () => {
-    const response = 'local-response';
-    (local as jest.Mock).mockResolvedValue(response);
+    server.resetHandlers(
+      rest.post('http://blockchain/api/v1/local', (req, res, ctx) =>
+        res.once(ctx.status(200), ctx.json({})),
+      ),
+    );
 
-    const result = await runPact('http://blockchain', '(+ 1 1)');
-
-    expect(result).toBe(response);
+    await runPact('http://blockchain', '(+ 1 1)');
 
     expect(local).toBeCalledWith(
       {

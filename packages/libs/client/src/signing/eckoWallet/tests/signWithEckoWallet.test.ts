@@ -1,64 +1,64 @@
-/** @jest-environment jsdom */
+/** @vitest-environment jsdom */
 
 import type {
   IExecutionPayloadObject,
   IPactCommand,
 } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
-import type { ISingleSignFunction } from '../../ISignFunction';
+import { deepFreeze } from '../../../utils/deepFreeze';
 import { createEckoWalletSign } from '../signWithEckoWallet';
 
 import { TextDecoder, TextEncoder } from 'util';
 
+type Transaction = IPactCommand & { payload: IExecutionPayloadObject };
+
 Object.assign(global, { TextDecoder, TextEncoder });
 
-const mockEckoRequest = jest.fn();
-
-Object.defineProperty(window, 'kadena', {
-  value: {
-    isKadena: true,
-    request: mockEckoRequest,
-  },
-});
-
 describe('signWithEckoWallet', () => {
-  let transaction: IPactCommand & { payload: IExecutionPayloadObject };
-  let signWithEckoWallet: ISingleSignFunction;
+  const transaction = deepFreeze<Transaction>({
+    payload: {
+      exec: {
+        code: '(coin.transfer "bonnie" "clyde" 1)',
+        data: {
+          test: 'test-data',
+        },
+      },
+    },
+    meta: {
+      chainId: '0',
+      gasLimit: 2300,
+      gasPrice: 0.00000001,
+      sender: 'test-sender',
+      ttl: 3600,
+      creationTime: 123456789,
+    },
+    signers: [
+      {
+        pubKey: '',
+        clist: [
+          {
+            name: 'cap.test-cap-name',
+            args: ['test-cap-arg'],
+          },
+        ],
+      },
+    ],
+    networkId: 'test-network-id',
+    nonce: 'kjs-test',
+  });
+
+  const mockEckoRequest = vi.fn();
+
+  Object.defineProperty(window, 'kadena', {
+    value: {
+      isKadena: true,
+      request: mockEckoRequest,
+    },
+    writable: true,
+  });
 
   beforeEach(() => {
     mockEckoRequest.mockReset();
-
-    transaction = {
-      payload: {
-        exec: {
-          code: '(coin.transfer "bonnie" "clyde" 1)',
-          data: {
-            test: 'test-data',
-          },
-        },
-      },
-      meta: {
-        chainId: '0',
-        gasLimit: 2300,
-        gasPrice: 0.00000001,
-        sender: 'test-sender',
-        ttl: 3600,
-        creationTime: 123456789,
-      },
-      signers: [
-        {
-          pubKey: '',
-          clist: [
-            {
-              name: 'cap.test-cap-name',
-              args: ['test-cap-arg'],
-            },
-          ],
-        },
-      ],
-      networkId: 'test-network-id',
-      nonce: 'kjs-test',
-    };
   });
 
   afterAll(() => {
@@ -71,7 +71,7 @@ describe('signWithEckoWallet', () => {
       signedCmd: { cmd: 'test-cmd', sigs: [{ sig: 'test-sig' }] },
     });
 
-    signWithEckoWallet = createEckoWalletSign();
+    const signWithEckoWallet = createEckoWalletSign();
 
     const signedTransaction = await signWithEckoWallet(
       createTransaction(transaction),
@@ -113,18 +113,15 @@ describe('signWithEckoWallet', () => {
   });
 
   it('throws when there is no signing response', async () => {
-    signWithEckoWallet = createEckoWalletSign();
+    const signWithEckoWallet = createEckoWalletSign();
 
+    const tx = structuredClone(transaction);
     //@ts-expect-error The operand of a 'delete' operator must be optional.
-    delete transaction.payload.exec;
+    delete tx.payload.exec;
 
-    try {
-      await signWithEckoWallet(createTransaction(transaction));
-      // Fail test if signWithWalletConnect() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('`cont` transactions are not supported');
-    }
+    await expect(() =>
+      signWithEckoWallet(createTransaction(tx)),
+    ).rejects.toThrowError('`cont` transactions are not supported');
   });
 
   it('adds an empty clist when signer.clist is undefined', async () => {
@@ -133,11 +130,12 @@ describe('signWithEckoWallet', () => {
       signedCmd: { cmd: 'test-cmd', sigs: [{ sig: 'test-sig' }] },
     });
 
-    signWithEckoWallet = createEckoWalletSign();
+    const signWithEckoWallet = createEckoWalletSign();
 
-    delete transaction.signers[0].clist;
+    const tx = structuredClone(transaction);
+    delete tx.signers[0].clist;
 
-    await signWithEckoWallet(createTransaction(transaction));
+    await signWithEckoWallet(createTransaction(tx));
 
     expect(window.kadena?.request).toHaveBeenCalledWith({
       method: 'kda_requestSign',
@@ -159,15 +157,10 @@ describe('signWithEckoWallet', () => {
   });
 
   it('throws when signing cont command', async () => {
-    signWithEckoWallet = createEckoWalletSign();
+    const signWithEckoWallet = createEckoWalletSign();
 
-    try {
-      await signWithEckoWallet(createTransaction(transaction));
-      // Fail test if signWithEckoWallet() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      console.log(e);
-      expect(e.message).toContain('Error signing transaction');
-    }
+    await expect(() =>
+      signWithEckoWallet(createTransaction(transaction)),
+    ).rejects.toThrowError('Error signing transaction');
   });
 });
