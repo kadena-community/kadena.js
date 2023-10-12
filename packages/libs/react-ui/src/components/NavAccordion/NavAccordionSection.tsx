@@ -9,13 +9,8 @@ import type { INavAccordionGroupProps } from './NavAccordionGroup';
 import { NavAccordionGroup } from './NavAccordionGroup';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
 
-import {
-  accordionCollapse,
-  accordionExpand,
-  accordionSectionClass,
-} from '@components/Accordion/Accordion.css';
+import { accordionSectionClass } from '@components/Accordion/Accordion.css';
 import { AccordionHeading } from '@components/Accordion/AccordionHeading';
-import classNames from 'classnames';
 import type { FC, FunctionComponentElement as FCElement } from 'react';
 import React, { Children, useContext } from 'react';
 
@@ -65,12 +60,8 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
         onClick={handleClick}
       />
 
-      {children && (
-        <ul
-          className={classNames(navAccordionListClass, [
-            isOpen ? accordionExpand : accordionCollapse,
-          ])}
-        >
+      {children && isOpen && (
+        <ul className={navAccordionListClass}>
           {Children.map(children, (child) => {
             const Element = child.type === NavAccordionGroup ? 'ul' : 'li';
             const className =

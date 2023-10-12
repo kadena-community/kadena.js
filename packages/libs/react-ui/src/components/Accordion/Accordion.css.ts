@@ -68,14 +68,3 @@ export const accordionContentClass = style([
     paddingBottom: '$2',
   }),
 ]);
-
-export const accordionCollapse = style([
-  sprinkles({
-    display: 'none',
-  }),
-]);
-export const accordionExpand = style([
-  sprinkles({
-    display: 'block',
-  }),
-]);

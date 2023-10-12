@@ -1,15 +1,9 @@
 'use client';
 
 import { AccordionContext } from './Accordion.context';
-import {
-  accordionCollapse,
-  accordionContentClass,
-  accordionExpand,
-  accordionSectionClass,
-} from './Accordion.css';
+import { accordionContentClass, accordionSectionClass } from './Accordion.css';
 import { AccordionHeading } from './AccordionHeading';
 
-import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useContext } from 'react';
 
@@ -57,14 +51,8 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
         icon={'Close'}
         onClick={handleClick}
       />
-      {children && (
-        <div
-          className={classNames(accordionContentClass, [
-            isOpen ? accordionExpand : accordionCollapse,
-          ])}
-        >
-          {children}
-        </div>
+      {children && isOpen && (
+        <div className={accordionContentClass}>{children}</div>
       )}
     </section>
   );
