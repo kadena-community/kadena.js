@@ -32,7 +32,7 @@ jobs:
         run: pnpm install
 
       - name: Install browsers
-        run:  pnpm --filter @kadena-dev/e2e-tests run install:chromium
+        run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
         working-directory: packages/tools/e2e-tests
 
       - name: Build Tools dApp
