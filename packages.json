@@ -128,7 +128,7 @@
   {
     "name": "@kadena-dev/e2e-tests",
     "version": "1.0.0",
-    "private": false,
+    "private": true,
     "path": "packages/tools/e2e-tests"
   },
   {
