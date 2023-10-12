@@ -1,29 +1,20 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { style } from '@vanilla-extract/css';
 
-export const imageContainerClass = style([
-  sprinkles({
-    borderRadius: '$round',
-    overflow: 'hidden',
-    width: '100%',
-  }),
-]);
-
 export const imageClass = style([
   sprinkles({
-    width: '100%',
-    height: '100%',
     borderRadius: '$round',
-  }),
-  {
+    width: '$24',
+    height: '$24',
     objectFit: 'cover',
-  },
+  }),
 ]);
 
 export const boldTextClass = style([
   sprinkles({
     marginY: '$2',
     fontWeight: '$bold',
+    display: 'block',
   }),
 ]);
 
@@ -42,10 +33,8 @@ export const tagContainerClass = style([
   ulClass,
   sprinkles({
     flexDirection: 'row',
-  }),
-  {
     listStyleType: 'none',
-  },
+  }),
 ]);
 
 export const linkContainerClass = style([
@@ -54,7 +43,6 @@ export const linkContainerClass = style([
     flexDirection: 'column',
     marginLeft: '$4',
   }),
-  {},
 ]);
 
 export const tagClass = style([
@@ -63,8 +51,11 @@ export const tagClass = style([
   }),
 ]);
 
-export const profileCardClass = style([
+export const containerClass = style([
   sprinkles({
     color: '$foreground',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '$6',
   }),
 ]);
