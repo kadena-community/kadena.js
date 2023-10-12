@@ -37,7 +37,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          'The Accordion component allows the user to show and hide sections of content on a page.<br />These sections can be expanded and collapsed by clicking the section headers.<br /><br /><strong>initialOpenSection</strong><br />This optional prop can be used on the Root element to set the initially opened section<br /><em>It defaults to `undefined` and has only been explcitly set to `-1` in the story code for demonstration purposes.</em><br /><br /><em>Note: this variant of the Accordion component is meant to be used to display content.<br />For Navigation purposes, please use the <strong>NavAccordion</strong> within the Navigation subgroup.</em>',
+          'The Accordion component allows the user to show and hide sections of content on a page.<br />These sections can be expanded and collapsed by clicking the section headers.<br /><br /><em>Note: this variant of the Accordion component is meant to be used to display content.<br />For Navigation purposes, please use the <strong>NavAccordion</strong> within the Navigation subgroup.</em>',
       },
     },
   },
@@ -64,7 +64,7 @@ export const Dynamic: IStory = {
   render: ({ linked }) => {
     const sections = sampleSections;
     return (
-      <Accordion.Root linked={linked} initialOpenSection={[]}>
+      <Accordion.Root linked={linked}>
         {sections.map(
           (
             { title, children, onOpen, onClose }: IAccordionSectionProps,
