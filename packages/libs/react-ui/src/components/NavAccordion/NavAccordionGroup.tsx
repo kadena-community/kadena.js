@@ -10,11 +10,7 @@ import {
 } from './NavAccordion.css';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
 
-import {
-  accordionButtonClass,
-  accordionCollapse,
-  accordionExpand,
-} from '@components/Accordion/Accordion.css';
+import { accordionButtonClass } from '@components/Accordion/Accordion.css';
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
@@ -65,12 +61,12 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
         <span className={navAccordionGroupTitleClass}>{title}</span>
       </button>
 
-      {children && (
+      {children && isOpen && (
         <ul
-          className={classNames(
-            [navAccordionListClass, navAccordionGroupListClass],
-            [isOpen ? accordionExpand : accordionCollapse],
-          )}
+          className={classNames([
+            navAccordionListClass,
+            navAccordionGroupListClass,
+          ])}
         >
           {Children.map(children, (child) => (
             <li className={navAccordionGroupListItemClass}>{child}</li>

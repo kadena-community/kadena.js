@@ -81,7 +81,6 @@ export const navAccordionGroupIconClass = style([
 
 export const navAccordionGroupListClass = style([
   sprinkles({
-    display: 'none',
     margin: 0,
     marginTop: '$2',
     marginBottom: '$2',
