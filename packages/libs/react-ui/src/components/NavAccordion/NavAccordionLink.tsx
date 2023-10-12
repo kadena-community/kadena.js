@@ -21,7 +21,6 @@ export const NavAccordionLink: FC<INavAccordionLinkProps> = ({
       ...restProps,
       ...children.props,
       className: navAccordionLinkClass,
-      children,
     });
   }
   return (
