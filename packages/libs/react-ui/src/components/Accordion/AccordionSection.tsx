@@ -9,7 +9,6 @@ import React, { useContext } from 'react';
 
 export interface IAccordionSectionProps {
   children?: React.ReactNode;
-  index?: number;
   onClick?: () => void;
   onClose?: () => void;
   onOpen?: () => void;
