@@ -57,7 +57,7 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
   };
 
   return (
-    <section className={classNames([accordionSectionClass])}>
+    <section className={accordionSectionClass}>
       <AccordionHeading
         title={title}
         isOpen={isOpen}
