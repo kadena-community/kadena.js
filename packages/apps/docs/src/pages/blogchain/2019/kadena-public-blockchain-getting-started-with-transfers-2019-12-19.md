@@ -70,7 +70,7 @@ notion of “account” or “address.” On each chain, however, there is a key
 registry that makes sure that no keyset gets duplicated. This means that the
 final decider for what uniquely identifies a user of the blockchain is their
 keyset on a given chain
-([read here for more on keysets](https://pact-language.readthedocs.io/en/stable/pact-reference.html#keysets-and-authorization)).
+([read here for more on keysets](/pact/reference/concepts#keysets-and-authorizationh960403648)).
 If you choose to have your keyset only exist on chain 0, that’s your prerogative
 and perfectly fine. However, users may find it simplifies things if they define
 their keyset on all chains to avoid confusion, even though there’s a
@@ -211,7 +211,7 @@ request can be broken down as follows:
   escrow continuations. In our case, we’re executing a one-off transaction.
 
 For a more complete specification of the available options, consult the
-[Pact API Request Formatter documentation](https://pact-language.readthedocs.io/en/stable/pact-reference.html#api-request-formatter)
+[Pact API Request Formatter documentation](/pact/reference/rest-api#api-request-formatterh-1762879533)
 and the tutorials on [pact-lang.org](https://pact-lang.org). Here’s a template
 that can be copied and pasted for your requests:
 
@@ -464,7 +464,7 @@ sleeping, there may be a delay.
 ## Glossary
 
 - **Keyset:** Refers to the
-  [Pact Keyset](https://pact-language.readthedocs.io/en/stable/pact-reference.html#keysets-and-authorization)
+  [Pact Keyset](/pact/reference/concepts#keysets-and-authorizationh960403648)
   authorization scheme. These are a set of public keys in addition to a
   predicate function (e.g. `keys-all`, `keys-any` etc.) that decides the
   authorization policy for the keys in the keyset. For example, if I have a set

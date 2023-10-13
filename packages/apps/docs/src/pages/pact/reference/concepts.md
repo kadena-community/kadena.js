@@ -50,8 +50,10 @@ root namespace (which is reserved for built-in contracts like the coin contract)
 and must define code within a namespace, which may or may not be definable (ie,
 users might be restricted to "user" namespaces).
 
-Namespaces are defined using [define-namespace](#define-namespace). Namespaces
-are "entered" by issuing the [namespace](#namespace) command.
+Namespaces are defined using
+[define-namespace](/pact/reference/functions#define-namespaceh-1430035511).
+Namespaces are "entered" by issuing the
+[namespace](/pact/reference/functions#define-namespaceh-1430035511) command.
 
 #### Module declaration
 
@@ -60,7 +62,7 @@ They are comprised of:
 
 - [functions](/pact/reference/syntax#defunh95462750)
 - [schema](#defschema) definitions
-- [table](#deftable) definitions
+- [table](/pact/reference/syntax#deftableh661222121) definitions
 - [pact](/pact/reference/syntax#defpacth1545231271) special functions
 - [constant](/pact/reference/syntax#defconsth645951102) values
 - [models](pact-properties.html)
@@ -294,8 +296,9 @@ keyset-based authorization.
 
 Keysets are
 [defined](/pact/reference/functions/keysets#define-keyseth1939391989) by
-[reading](pact-functions.html#read-keyset) definitions from the message payload.
-Keysets consist of a list of public keys and a _keyset predicate_.
+[reading](/pact/reference/functions/keysets#read-keyseth2039204282) definitions
+from the message payload. Keysets consist of a list of public keys and a _keyset
+predicate_.
 
 Examples of valid keyset JSON productions:
 
@@ -349,14 +352,14 @@ keyset definition and predicate. Once authorized, the keyset can be easily
 When [creating](/pact/reference/functions/database#create-tableh447366077) a
 table, a module name must also be specified. By this mechanism, tables are
 "guarded" or "encapsulated" by the module, such that direct access to the table
-via [data-access functions](pact-functions.html#database) is authorized only by
-the module's governance. However, _within module functions_, table access is
-unconstrained. This gives contract authors great flexibility in designing data
-access, and is intended to enshrine the module as the main "user data access
-API".
+via [data-access functions](/pact/reference/functions/database) is authorized
+only by the module's governance. However, _within module functions_, table
+access is unconstrained. This gives contract authors great flexibility in
+designing data access, and is intended to enshrine the module as the main "user
+data access API".
 
-See also [module guards](#module-guards) for how this concept can be leveraged
-to protect more than just tables.
+See also [module guards](/pact/reference/concepts#module-guardsh-1103833470) for
+how this concept can be leveraged to protect more than just tables.
 
 Note that as of Pact 3.5, the option has been added to selectively allow
 unguarded reads and transaction history access in local mode only, at the
@@ -378,16 +381,18 @@ authorization. The following code indicates how this might be achieved:
 ```
 
 In the example, `create-account` reads a keyset definition from the message
-payload using [read-keyset](pact-functions.html#read-keyset) to store as
-"keyset" in the table. `read-balance` only allows that owner's keyset to read
+payload using
+[read-keyset](/pact/reference/functions/keysets#read-keyseth2039204282) to store
+as "keyset" in the table. `read-balance` only allows that owner's keyset to read
 the balance, by first enforcing the keyset using
-[enforce-keyset](pact-functions.html#enforce-keyset).
+[enforce-keyset](/pact/reference/functions/keysets#enforce-keyseth1553446382).
 
 ## Namespaces
 
-Namespaces are [defined](pact-functions.html#define-namespace) by specifying a
-namespace name and [associating](pact-functions.html#read-keyset) a keyset with
-the namespace. Namespace scope is entered by declaring the namespace
+Namespaces are [defined](/pact/reference/functions#define-namespaceh-1430035511)
+by specifying a namespace name and
+[associating](/pact/reference/functions/keysets#read-keyseth2039204282) a keyset
+with the namespace. Namespace scope is entered by declaring the namespace
 environment. All definitions issued after the namespace scope is entered will be
 accessible by their fully qualified names. These names are of the form
 _namespace.module.definition_. This form can also be used to access code outside
@@ -1479,15 +1484,16 @@ is an example of the performance advantages of a Turing-incomplete language.
 
 ### Single-assignment Variables
 
-Pact allows variable declarations in [let expressions](#let) and
+Pact allows variable declarations in
+[let expressions](/pact/reference/syntax#leth107035) and
 [bindings](/pact/reference/syntax#bindingsh1004766894). Variables are immutable:
 they cannot be re-assigned, or modified in-place.
 
 A common variable declaration occurs in the
 [with-read](/pact/reference/functions/database#with-readh866473533) function,
 assigning variables to column values by name. The
-[bind](pact-functions.html#bind) function offers this same functionality for
-objects.
+[bind](/pact/reference/functions#bindh3023933) function offers this same
+functionality for objects.
 
 Module-global constant values can be declared with
 [defconst](/pact/reference/syntax#defconsth645951102).
@@ -1511,7 +1517,7 @@ Pact's supported types are:
 - [Function](/pact/reference/syntax#defunh95462750),
   [pact](/pact/reference/syntax#defpacth1545231271), and [capability](#defcap)
   definitions
-- [Tables](#deftable)
+- [Tables](/pact/reference/syntax#deftableh661222121)
 - [Schemas](#defschema)
 
 ### Performance
@@ -1571,17 +1577,17 @@ and of course function application.
 #### Use enforce
 
 "If" should never be used to enforce business logic invariants: instead,
-[enforce](pact-functions.html#enforce) is the right choice, which will fail the
-transaction.
+[enforce](/pact/reference/functions#enforceh-1604583454) is the right choice,
+which will fail the transaction.
 
 Indeed, failure is the only _non-local exit_ allowed by Pact. This reflects
 Pact's emphasis on _totality_.
 
-Note that [enforce-one](pact-functions.html#enforce-one) (added in Pact 2.3)
-allows for testing a list of enforcements such that if any pass, the whole
-expression passes. This is the sole example in Pact of "exception catching" in
-that a failed enforcement simply results in the next test being executed,
-short-circuiting on success.
+Note that [enforce-one](/pact/reference/functions#enforce-oneh281764347) (added
+in Pact 2.3) allows for testing a list of enforcements such that if any pass,
+the whole expression passes. This is the sole example in Pact of "exception
+catching" in that a failed enforcement simply results in the next test being
+executed, short-circuiting on success.
 
 #### Use built-in keyset predicates
 

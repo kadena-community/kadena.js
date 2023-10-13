@@ -512,10 +512,10 @@ In this file you will notice the use of a new built-in function named
 **expect-failure**. Both expect-failure and expect allow you to test if the
 outcome of an expression is what you would have expected.
 
-|                                                                                                     |                                                                  |
-| --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| [expect](/pact/reference/functions/repl-only-functions#expecth-1289163687)                          | Evaluate expression and verify that it equals what is expected.  |
-| [expect-failure](https://pact-language.readthedocs.io/en/latest/pact-functions.html#expect-failure) | Evaluates the expression and succeed only if it throws an error. |
+|                                                                                            |                                                                  |
+| ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| [expect](/pact/reference/functions/repl-only-functions#expecth-1289163687)                 | Evaluate expression and verify that it equals what is expected.  |
+| [expect-failure](/pact/reference/functions/repl-only-functions#expect-failureh-1357342698) | Evaluates the expression and succeed only if it throws an error. |
 
 On line 35, notice the line that states that it expects the real-keyset should
 fail.

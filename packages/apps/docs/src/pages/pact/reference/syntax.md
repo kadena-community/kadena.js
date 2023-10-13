@@ -111,7 +111,7 @@ Bindings are dictionary-like forms, also created with curly braces, to bind
 database results to variables using the `:=` operator. They are used in
 [with-read](/pact/reference/functions/database#with-readh866473533),
 [with-default-read](/pact/reference/functions/database#with-default-readh1087687497),
-[bind](pact-functions.html#bind) and
+[bind](/pact/reference/functions#bindh3023933) and
 [resume](/pact/reference/functions#resumeh-934426579) to assign variables to
 named columns in a row, or values in an object.
 
@@ -630,7 +630,7 @@ productions in a module include:
 - [defun](/pact/reference/syntax#defunh95462750)
 - [defpact](/pact/reference/syntax#defpacth1545231271)
 - [defcap](#defcap)
-- [deftable](#deftable)
+- [deftable](/pact/reference/syntax#deftableh661222121)
 - [defschema](#defschema)
 - [defconst](/pact/reference/syntax#defconsth645951102)
 - [implements](#implements)

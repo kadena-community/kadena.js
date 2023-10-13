@@ -25,7 +25,7 @@ started with Pact learning the basics. For a more straightforward and technical
 introduction, just [readthedocs](https://pact-language.readthedocs.io).
 
 In particular, for any script going on Chainweb, you'll need to understand the
-[API request format](https://pact-language.readthedocs.io/en/stable/pact-reference.html#api-request-formatter).
+[API request format](/pact/reference/rest-api#api-request-formatterh-1762879533).
 
 ### Creating A Local API Request
 

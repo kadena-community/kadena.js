@@ -206,14 +206,14 @@ before.
 
 **Contract Built-in functions include:**
 
-- [enforce](https://pact-language.readthedocs.io/en/latest/pact-functions.html#enforce)
+- [enforce](/pact/reference/functions#enforceh-1604583454)
 - [insert](/pact/reference/functions/database#inserth-1183792455)
 - [with-read](/pact/reference/functions/database#with-readh866473533)
 
 We’ll also go over each of these in more detail in later tutorials. You can
 explore the
-[Pact Language Reference built-in functions](https://pact-language.readthedocs.io/en/latest/pact-functions.html)
-to learn more about each of them now if you’d like.
+[Pact Language Reference built-in functions](/pact/reference/functions) to learn
+more about each of them now if you’d like.
 
 ---
 

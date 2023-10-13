@@ -218,7 +218,7 @@ user.
 :::info
 
 View
-[enforce-keyset](https://pact-language.readthedocs.io/en/latest/pact-functions.html#enforce-keyset)
+[enforce-keyset](/pact/reference/functions/keysets#enforce-keyseth1553446382)
 
 and [insert](/pact/reference/functions/database#inserth-1183792455) for more
 information related to completing this challenge.
@@ -262,10 +262,10 @@ with a given id.
 :::info
 
 View
-[enforce-keyset](https://pact-language.readthedocs.io/en/latest/pact-functions.html#enforce-keyset),
+[enforce-keyset](/pact/reference/functions/keysets#enforce-keyseth1553446382),
 [with-read](/pact/reference/functions/database#with-readh866473533), and
-[bind](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=bindings#bind)
-for more information related to completing this challenge.
+[bind](/pact/reference/functions#bindh3023933) for more information related to
+completing this challenge.
 
 :::
 

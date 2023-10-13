@@ -135,7 +135,7 @@ few built-in predicate functions, such as the “keys-all” function above this
 predicate means means that all keys in the set must have signed the transaction.
 You can also write your own predicate functions (for example, to authorize
 access according to a vote).
-[#keysets-and-authorization](/pact/reference/concepts#keysets-and-authorization)
+[#keysets-and-authorization](/pact/reference/concepts#keysets-and-authorizationh960403648)
 
 Keysets are defined via the `(define-keyset)` function. This function takes a
 name and a keyset as arguments. When evaluated, Pact will either register the
@@ -159,7 +159,7 @@ provided via transaction data. You can parse data from the transaction using the
 (read-\*) family of functions:
 
 - [#read-msg](/pact/reference/functions#readmsg)
-- [#read-keyset](/pact/reference/functions/keysets#readkeyset)
+- [#read-keyset](/pact/reference/functions/keysets#read-keyseth2039204282)
 - [#read-string](/pact/reference/functions#readstring)
 - [#read-integer](/pact/reference/functions#readinteger)
 - [#read-decimal](/pact/reference/functions#readdecimal)
@@ -343,7 +343,7 @@ can refer to. To expose a constant value, use (defconst).
 When your smart contract needs to persist some data across multiple calls to
 functions in the contract, it should use a table. Tables in Pact are relational
 databases and have a key-row structure. Keys are always strings. You can define
-a table with `deftable`. [#deftable](/pact/reference/syntax#deftable)
+a table with `deftable`. [#deftable](/pact/reference/syntax#deftableh661222121)
 
 Our smart contract needs to persist four pieces of data. First, we need to
 record how much KDA in total each account has requested and returned so that we
@@ -390,15 +390,15 @@ account limit. The second ensures you can never return more funds than you have
 received. Then, we define our four columns and their types.
 
 Now that we have our schema we can define a table which uses it with the
-(deftable) function. [#deftable](/pact/reference/syntax#deftable)
+(deftable) function. [#deftable](/pact/reference/syntax#deftableh661222121)
 
 We’ll refer to the table by name when we need to insert, read, or update data.
 When our module is deployed, we’ll also need to create the table using the
 (create-table) function (this must be called outside the module).
-[#create-table](/pact/reference/functions/database#create-table)
+[#create-table](/pact/reference/functions/database#create-tableh447366077)
 
 Pact supplies several data-access functions for working with tables.
-[#database](/pact/reference/functions/database#database)
+[#database](/pact/reference/functions/database)
 
 Note that these functions can only be called by functions within the module that
 defined the table, or in a transaction that satisfies the module governance
@@ -442,7 +442,7 @@ satisfied in order to take some action:
 Capabilities can implement more sophisticated rules, such as orchestrating a
 vote to determine whether the contract can be upgraded. You can learn more about
 capabilities in the Pact documentation.
-[#capabilities](/pact/reference/concepts#capabilities)
+[#capabilities](/pact/reference/concepts#capabilitiesh-1323277354#capabilities)
 
 There are four critical things to know about capabilities.
 
@@ -450,8 +450,8 @@ First, you can grant a capability to a function with `(with-capability)`, and
 you can protect some sensitive code with the `(require-capability)` function.
 “Granting” a capability means that calls to `(require-capability)` will succeed
 so long as the capability is in scope.
-[#with-capability](/pact/reference/functions/capabilities#withcapability)
-[#require-capability](/pact/reference/functions/capabilities#requirecapability)
+[#with-capability](/pact/reference/functions/capabilities#with-capabilityh-1711421313)
+[#require-capability](/pact/reference/functions/capabilities#require-capabilityh-544592256)
 
 Second, you can only grant a capability within the module that defined the
 corresponding capability. That means, for example, that protecting code with
@@ -471,7 +471,7 @@ metadata field.
 
 We won’t use managed capabilities in this contract, but you can learn more about
 them here:
-[#signatures-and-managed-capabilities](/pact/reference/concepts#signatures-and-managed-capabilities)
+[#signatures-and-managed-capabilities](/pact/reference/concepts#signatures-and-managed-capabilitiesh-260692187)
 [#what-are-the-semantics-of-capability-manager-functions-in-pact](https://stackoverflow.com/questions/72746446/what-are-the-semantics-of-capability-manager-functions-in-pact)
 
 Finally, signers of a Pact transaction can scope their signature to one or more
@@ -559,7 +559,7 @@ at all, or from writing a value that’s not the exact amount the user requested
 Pact’s formal verification will check that your implementation satisfies the two
 properties above, but we still have to write the code that _prevents_ the
 invalid states. To abort a transaction if it fails to meet a condition, use
-(enforce). [#enforce](/pact/reference/functions#enforce)
+(enforce). [enforce](/pact/reference/functions#enforceh-1604583454)
 
 To see formal verification in action, comment out this line and re-run the REPL
 file.
@@ -601,7 +601,7 @@ variable, `balance`, that records the difference between the total requested
 funds and the total returned funds.
 
 For binding the variable, we can introduce local variables with `(let)`.
-[#let](/pact/reference/syntax#let)
+[#let](/pact/reference/syntax#leth107035)
 
 This balance is what should be checked against the account limit. Now, we can
 finally enforce that the requested amount does not exceed the request limit.
@@ -679,7 +679,7 @@ The second property test verifies that if this transaction succeeded, then the
 accounts table row for this account, at the “request-limit” column, has been
 updated to be the value provided to this function. Similarly to (column-delta),
 we can use this to verify that the table is written correctly.
-[#read](/pact/reference/properties-and-invariants/database#read)
+[#read](/pact/reference/functions/database#readh3496342)
 
 ```pact
 @model

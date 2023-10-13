@@ -85,12 +85,11 @@ This brings us to the notion of Keysets in Kadena.
 ## What Is a Keyset?
 
 Kadena natively supports multiple keys governing the same account (multi-sig),
-so
-[keysets](https://pact-language.readthedocs.io/en/stable/pact-reference.html#keysets-and-authorization)
-are, to some degree, exactly what they sound like: a set of keys. In addition to
-a set of keys, every keyset contains something called a ‘predicate function’
-that determines which keys are allowed to make choices for the account when it
-comes to transactions (do all keys need to be present? only one? two? etc.).
+so [keysets](/pact/reference/concepts#keysets-and-authorizationh960403648) are,
+to some degree, exactly what they sound like: a set of keys. In addition to a
+set of keys, every keyset contains something called a ‘predicate function’ that
+determines which keys are allowed to make choices for the account when it comes
+to transactions (do all keys need to be present? only one? two? etc.).
 Summarily, keysets look like the following as JSON data:
 
 ```shell
@@ -121,7 +120,7 @@ There are 3 out-of-the-box predicate functions that are available:
 Smart contract authors are free to write their own predicate functions if they
 need more fine-grained functionality, but that is beyond the scope of this
 article. Feel free to read up more on predicates in the Pact
-[readthedocs](https://pact-language.readthedocs.io/en/stable/pact-reference.html#keysets-and-authorization).
+[readthedocs](/pact/reference/concepts#keysets-and-authorizationh960403648).
 
 **When Are Two Keysets the Same?**
 

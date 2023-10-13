@@ -290,8 +290,8 @@ counts and one for storing what accounts have already voted to prevent
 double-voting.
 
 :::info To find out about all Pact's supported types you can check the
-[Data Types](/pact/reference/concepts#data-types) section in the Pact official
-documentation. :::
+[Data Types](/pact/reference/concepts#data-typesh1781031043) section in the Pact
+official documentation. :::
 
 :::note
 
@@ -686,7 +686,7 @@ Notice the `let` construct that we used above, it is helpful when you need to
 bind some variables to be in the same scope as other logic that uses them. In
 our case we first loaded the number of votes and binded the result to `count`
 variable which we compared with the new count after submitting a vote. Feel free
-to read more about [`let` and `let*`](/pact/reference/syntax#let) in Pact
+to read more about [`let` and `let*`](/pact/reference/syntax#leth107035) in Pact
 official documentation.
 
 :::info

@@ -523,7 +523,7 @@ Take some time now to create each of the tables for the loans smart contract.
 :::info
 
 Table creation is covered in the
-[Tables and Schemas Tutorial](/pact/beginner/schemas-and-tables#create-tables).
+[Tables and Schemas Tutorial](/pact/reference/functions/database#create-tableh447366077).
 
 :::
 

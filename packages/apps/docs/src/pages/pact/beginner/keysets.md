@@ -78,7 +78,7 @@ After creating a keyset, you need to both define and read this keyset from
 within the smart contract you create. This is done using a pair of built-in
 functions;
 [define-keyset](/pact/reference/functions/keysets#define-keyseth1939391989) and
-[read-keyset](https://pact-language.readthedocs.io/en/latest/pact-functions.html#read-keyset)
+[read-keyset](/pact/reference/functions/keysets#read-keyseth2039204282)
 
 ![2-define-and-read-a-keyset](/assets/docs/2-define-and-read-a-keyset.png)
 
@@ -95,9 +95,8 @@ placed above the module and will fail if written within the module code.
 
 The single quote, ‘, preceding the **admin-keyset** is an alternative way to
 represent a string rather than using double quotes. It is, in this case,
-referred to as a
-[symbol](https://pact-language.readthedocs.io/en/latest/pact-reference.html#symbols)
-and helps syntactically represent a unique item during runtime.
+referred to as a [symbol](/pact/reference/syntax#symbolsh-78785093) and helps
+syntactically represent a unique item during runtime.
 
 :::
 
@@ -320,7 +319,7 @@ set keyset restrictions from within a module.
 ### Enforce-keyset
 
 Throughout the module, you’ll notice the following built-in function.
-[enforce-keyset](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=enforce-keyset#enforce-keyset)
+[enforce-keyset](/pact/reference/functions/keysets#enforce-keyseth1553446382)
 
 This function executes a guard or defined keyset name to enforce desired
 predicate logic.
@@ -383,8 +382,7 @@ In the next section, you will address the remaining errors.
 ### Enforce-one Keyset
 
 Another useful built-in function for checking keysets is known as
-**enforce-one**.
-[enforce-one](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=enforce-one#enforce-one)
+**enforce-one**. [enforce-one](/pact/reference/functions#enforce-oneh281764347)
 
 This built-in function runs a series of tests in a specific order to check that
 one of the following statements are true.
