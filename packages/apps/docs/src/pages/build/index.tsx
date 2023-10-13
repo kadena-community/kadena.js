@@ -1,11 +1,22 @@
-import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Heading,
+  Stack,
+  Text,
+} from '@kadena/react-ui';
 
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
+import MostPopular from '@/components/MostPopular/MostPopular';
 import type { IMenuData } from '@/Layout';
+import type { IMostPopularPage } from '@/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
+import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -16,12 +27,43 @@ import type { FC } from 'react';
 import React from 'react';
 
 interface IProps {
+  popularPages: IMostPopularPage[];
   blogPosts: IMenuData[];
 }
 
-const Home: FC<IProps> = ({ blogPosts }) => {
+const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
+      <Box marginRight={{ sm: 0, lg: '$32', xl: '$64' }} marginBottom="$4">
+        <Text>
+          Getting started is simple.
+          <br />
+          Building useful applications on a blockchain doesn’t have to be hard
+          or expensive. This Developer Quickstart is designed to remove the
+          friction from onboarding so that you can understand how to build with
+          Kadena quickly and easily.
+        </Text>
+      </Box>
+      <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <Grid.Item>
+          <Card fullWidth>
+            <Heading as="h4">Getting started tutorial</Heading>
+            <Box marginY="$4">
+              <Text>Build a dApp and learn all the basics of Kadena</Text>
+            </Box>
+            <Button as="a" asChild icon="TrailingIcon">
+              <Link href={'/build/guides/election-dapp-tutorial'}>
+                Build a dApp
+              </Link>
+            </Button>
+          </Card>
+        </Grid.Item>
+        <Grid.Item>
+          <Box marginY="$8" marginLeft="$12">
+            <MostPopular pages={popularPages} title="Most viewed docs" />
+          </Box>
+        </Grid.Item>
+      </Grid.Root>
       <Box marginBottom="$20">
         <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
           <Grid.Item>
@@ -101,9 +143,10 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const blogPosts = await getBlogPosts(['kadenajs', 'cli']);
-
+  const mostPopularPages = await getMostPopularPages('/build');
   return {
     props: {
+      popularPages: mostPopularPages,
       blogPosts,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {

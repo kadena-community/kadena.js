@@ -71,6 +71,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <Link className={docsCardLink} href="/build/quickstart">
                       10 minute quick start
                     </Link>
+                    <Link
+                      className={docsCardLink}
+                      href="/build/guides/election-dapp-tutorial"
+                    >
+                      Build your first dApp
+                    </Link>
                     <a
                       className={docsCardLink}
                       href="https://academy.kadena.io"
@@ -79,12 +85,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     </a>
                     <Link className={docsCardLink} href="/build/guides">
                       Create a Smart Contract
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/build/guides/building-a-voting-dapp"
-                    >
-                      Build your first dApp
                     </Link>
                   </BrowseSection>
                 </DocsCard>
