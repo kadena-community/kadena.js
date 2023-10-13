@@ -4,7 +4,6 @@
   "description": "Our own rig package, based on @rushstack/heft-node-rig",
   "license": "MIT",
   "dependencies": {
-    "ts-jest": "^29.1.1",
-    "@types/node": "^20.8.2"
+    "ts-jest": "^29.1.1"
   }
 }
