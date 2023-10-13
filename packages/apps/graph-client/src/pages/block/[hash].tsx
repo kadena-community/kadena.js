@@ -2,7 +2,6 @@ import { Accordion, Box, Notification, Table } from '@kadena/react-ui';
 
 import {
   useGetBlockFromHashQuery,
-  useGetMaximumConfirmationDepthLazyQuery,
   useGetMaximumConfirmationDepthQuery,
 } from '../../__generated__/sdk';
 import { CompactTransactionsTable } from '../../components/compact-transactions-table/compact-transactions-table';
@@ -14,7 +13,6 @@ import routes from '../../constants/routes';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { getMaximumCalculatedConfirmationDepth } from '../../graphql/queries.graph';
 
 const Block: React.FC = () => {
   const router = useRouter();

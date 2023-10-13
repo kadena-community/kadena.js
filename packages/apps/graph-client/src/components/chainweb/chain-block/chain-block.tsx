@@ -28,13 +28,9 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
     confirmationDepth = chainTree[block.chainId][block.hash].confirmationDepth;
   }
 
-  const blockClick = () => {
+  const blockClick = async (): Promise<void> => {
     if (block) {
-      router.push(`/block/${block.hash}`);
-      console.log('block', {
-        ...block,
-        confirmationDepth,
-      });
+      await router.push(`/block/${block.hash}`);
     }
   };
 

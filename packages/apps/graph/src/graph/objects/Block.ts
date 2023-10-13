@@ -2,9 +2,6 @@ import { prismaClient } from '../../db/prismaClient';
 import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 
-import type { prismaModelName } from '@pothos/plugin-prisma';
-import { Prisma } from '@prisma/client';
-
 export default builder.prismaNode('Block', {
   id: { field: 'hash' },
   name: 'Block',
