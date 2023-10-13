@@ -26,6 +26,8 @@ const systemProperties = defineProperties({
     textTransform: ['uppercase', 'lowercase', 'capitalize', 'none'],
     textDecoration: ['underline', 'none'],
     wordBreak: ['normal', 'keep-all', 'break-word', 'break-all'],
+    listStyleType: ['none'],
+    objectFit: ['cover', 'contain'],
   },
 });
 

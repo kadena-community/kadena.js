@@ -50,27 +50,27 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="marmalade"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/docs/contribute/node">
+                <Link className={docsCardLink} href="/contribute/node">
                   Run a Node
                 </Link>
 
                 <Link
                   className={docsCardLink}
-                  href="/docs/contribute/node/start-mining"
+                  href="/contribute/node/start-mining"
                 >
                   Start mining
                 </Link>
 
                 <Link
                   className={docsCardLink}
-                  href="/docs/contribute/node/interact-with-nodes"
+                  href="/contribute/node/interact-with-nodes"
                 >
                   Interact with Nodes
                 </Link>
 
                 <Link
                   className={docsCardLink}
-                  href="/docs/contribute/node/troubleshooting-chainweb"
+                  href="/contribute/node/troubleshooting-chainweb"
                 >
                   Troubleshooting Chainweb
                 </Link>

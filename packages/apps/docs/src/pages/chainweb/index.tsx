@@ -1,6 +1,6 @@
+import apiSpecs from '@/_generated/specs/chainweb.openapi.json';
 import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs/Specs';
-import apiSpecs from '@/specs/chainweb/chainweb.openapi.json';
 import {
   checkSubTreeForActive,
   getPathName,

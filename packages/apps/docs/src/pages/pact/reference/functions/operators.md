@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'operators']
 
 # Operators
 
-### !=
+## !=
 
 _x_&nbsp;`<a[integer,string,time,decimal,bool,[<l>],object:<{o}>,keyset,guard,module{}]>`
 _y_&nbsp;`<a[integer,string,time,decimal,bool,[<l>],object:<{o}>,keyset,guard,module{}]>`
@@ -25,7 +25,7 @@ pact> (!= "hello" "goodbye")
 true
 ```
 
-### &
+## &
 
 _x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
 
@@ -38,7 +38,7 @@ pact> (& 5 -7)
 1
 ```
 
-### \*
+## \*
 
 _x_&nbsp;`<a[integer,decimal]>` _y_&nbsp;`<a[integer,decimal]>`
 _&rarr;_&nbsp;`<a[integer,decimal]>`
@@ -55,7 +55,7 @@ pact> (* 3 5)
 15
 ```
 
-### \+
+## \+
 
 _x_&nbsp;`<a[integer,decimal]>` _y_&nbsp;`<a[integer,decimal]>`
 _&rarr;_&nbsp;`<a[integer,decimal]>`
@@ -82,7 +82,7 @@ pact> (+ { "foo": 100 } { "foo": 1, "bar": 2 })
 {"bar": 2,"foo": 100}
 ```
 
-### \-
+## \-
 
 _x_&nbsp;`<a[integer,decimal]>` _y_&nbsp;`<a[integer,decimal]>`
 _&rarr;_&nbsp;`<a[integer,decimal]>`
@@ -101,7 +101,7 @@ pact> (- 3 2)
 1
 ```
 
-### /
+## /
 
 _x_&nbsp;`<a[integer,decimal]>` _y_&nbsp;`<a[integer,decimal]>`
 _&rarr;_&nbsp;`<a[integer,decimal]>`
@@ -118,7 +118,7 @@ pact> (/ 8 3)
 2
 ```
 
-### \<
+## \<
 
 _x_&nbsp;`<a[integer,decimal,string,time]>`
 _y_&nbsp;`<a[integer,decimal,string,time]>` _&rarr;_&nbsp;`bool`
@@ -134,7 +134,7 @@ pact> (< "abc" "def")
 true
 ```
 
-### \<=
+## \<=
 
 _x_&nbsp;`<a[integer,decimal,string,time]>`
 _y_&nbsp;`<a[integer,decimal,string,time]>` _&rarr;_&nbsp;`bool`
@@ -150,7 +150,7 @@ pact> (<= "abc" "def")
 true
 ```
 
-### \=
+## \=
 
 _x_&nbsp;`<a[integer,string,time,decimal,bool,[<l>],object:<{o}>,keyset,guard,module{}]>`
 _y_&nbsp;`<a[integer,string,time,decimal,bool,[<l>],object:<{o}>,keyset,guard,module{}]>`
@@ -169,7 +169,7 @@ pact> (= { 'a: 2 } { 'a: 2})
 true
 ```
 
-### >
+## >
 
 _x_&nbsp;`<a[integer,decimal,string,time]>`
 _y_&nbsp;`<a[integer,decimal,string,time]>` _&rarr;_&nbsp;`bool`
@@ -185,7 +185,7 @@ pact> (> "abc" "def")
 false
 ```
 
-### >=
+## >=
 
 _x_&nbsp;`<a[integer,decimal,string,time]>`
 _y_&nbsp;`<a[integer,decimal,string,time]>` _&rarr;_&nbsp;`bool`
@@ -201,7 +201,7 @@ pact> (>= "abc" "def")
 false
 ```
 
-### ^
+## ^
 
 _x_&nbsp;`<a[integer,decimal]>` _y_&nbsp;`<a[integer,decimal]>`
 _&rarr;_&nbsp;`<a[integer,decimal]>`
@@ -216,7 +216,7 @@ pact> (^ 2 3)
 8
 ```
 
-### abs
+## abs
 
 _x_&nbsp;`decimal` _&rarr;_&nbsp;`decimal`
 
@@ -229,7 +229,7 @@ pact> (abs (- 10 23))
 13
 ```
 
-### and
+## and
 
 _x_&nbsp;`bool` _y_&nbsp;`bool` _&rarr;_&nbsp;`bool`
 
@@ -240,7 +240,7 @@ pact> (and true false)
 false
 ```
 
-### and?
+## and?
 
 _a_&nbsp;`x:<r> -> bool` _b_&nbsp;`x:<r> -> bool` _value_&nbsp;`<r>`
 _&rarr;_&nbsp;`bool`
@@ -253,7 +253,7 @@ pact> (and? (> 20) (> 10) 15)
 false
 ```
 
-### ceiling
+## ceiling
 
 _x_&nbsp;`decimal` _prec_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
 
@@ -268,7 +268,7 @@ pact> (ceiling 100.15234 2)
 100.16
 ```
 
-### dec
+## dec
 
 _x_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
 
@@ -279,7 +279,7 @@ pact> (dec 3)
 3.0
 ```
 
-### exp
+## exp
 
 _x_&nbsp;`<a[integer,decimal]>` _&rarr;_&nbsp;`<a[integer,decimal]>`
 
@@ -290,7 +290,7 @@ pact> (round (exp 3) 6)
 20.085537
 ```
 
-### floor
+## floor
 
 _x_&nbsp;`decimal` _prec_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
 
@@ -305,7 +305,7 @@ pact> (floor 100.15234 2)
 100.15
 ```
 
-### ln
+## ln
 
 _x_&nbsp;`<a[integer,decimal]>` _&rarr;_&nbsp;`<a[integer,decimal]>`
 
@@ -316,7 +316,7 @@ pact> (round (ln 60) 6)
 4.094345
 ```
 
-### log
+## log
 
 _x_&nbsp;`<a[integer,decimal]>` _y_&nbsp;`<a[integer,decimal]>`
 _&rarr;_&nbsp;`<a[integer,decimal]>`
@@ -331,7 +331,7 @@ pact> (log 2 256)
 8
 ```
 
-### mod
+## mod
 
 _x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
 
@@ -342,7 +342,7 @@ pact> (mod 13 8)
 5
 ```
 
-### not
+## not
 
 _x_&nbsp;`bool` _&rarr;_&nbsp;`bool`
 
@@ -353,7 +353,7 @@ pact> (not (> 1 2))
 true
 ```
 
-### not?
+## not?
 
 _app_&nbsp;`x:<r> -> bool` _value_&nbsp;`<r>` _&rarr;_&nbsp;`bool`
 
@@ -364,7 +364,7 @@ pact> (not? (> 20) 15)
 false
 ```
 
-### or
+## or
 
 _x_&nbsp;`bool` _y_&nbsp;`bool` _&rarr;_&nbsp;`bool`
 
@@ -375,7 +375,7 @@ pact> (or true false)
 true
 ```
 
-### or?
+## or?
 
 _a_&nbsp;`x:<r> -> bool` _b_&nbsp;`x:<r> -> bool` _value_&nbsp;`<r>`
 _&rarr;_&nbsp;`bool`
@@ -388,7 +388,7 @@ pact> (or? (> 20) (> 10) 15)
 true
 ```
 
-### round
+## round
 
 _x_&nbsp;`decimal` _prec_&nbsp;`integer` _&rarr;_&nbsp;`decimal`
 
@@ -404,7 +404,7 @@ pact> (round 100.15234 2)
 100.15
 ```
 
-### shift
+## shift
 
 _x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
 
@@ -423,7 +423,7 @@ pact> (shift -255 -1)
 -128
 ```
 
-### sqrt
+## sqrt
 
 _x_&nbsp;`<a[integer,decimal]>` _&rarr;_&nbsp;`<a[integer,decimal]>`
 
@@ -434,7 +434,7 @@ pact> (sqrt 25)
 5.0
 ```
 
-### xor
+## xor
 
 _x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
 
@@ -447,7 +447,7 @@ pact> (xor 5 -7)
 -4
 ```
 
-### |
+## |
 
 _x_&nbsp;`integer` _y_&nbsp;`integer` _&rarr;_&nbsp;`integer`
 
@@ -460,7 +460,7 @@ pact> (| 5 -7)
 -3
 ```
 
-### ~
+## ~
 
 _x_&nbsp;`integer` _&rarr;_&nbsp;`integer`
 

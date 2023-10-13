@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'string operators', 'pact operators']
 
 # String operators
 
-### length
+## length
 
 ```pact
 (length s)
@@ -25,7 +25,7 @@ String length
 
 Supported in either invariants or properties.
 
-### \+
+## \+
 
 ```pact
 (+ s t)
@@ -47,7 +47,7 @@ String / list concatenation
 
 Supported in either invariants or properties.
 
-### str-to-int
+## str-to-int
 
 ```pact
 (str-to-int s)
@@ -68,7 +68,7 @@ String to integer conversion
 
 Supported in either invariants or properties.
 
-### take
+## take
 
 ```pact
 (take n s)
@@ -82,7 +82,7 @@ take the first `n` values from `xs` (taken from the end if `n` is negative)
 
 Supported in either invariants or properties.
 
-### drop
+## drop
 
 ```pact
 (drop n s)
@@ -96,7 +96,7 @@ drop the first `n` values from `xs` (dropped from the end if `n` is negative)
 
 Supported in either invariants or properties.
 
-### hash
+## hash
 
 ```pact
 (hash s)
@@ -109,7 +109,7 @@ BLAKE2b 256-bit hash of string values
 
 Supported in properties only.
 
-### hash
+## hash
 
 ```pact
 (hash s)

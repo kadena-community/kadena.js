@@ -32,13 +32,10 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="contribute"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/docs/kadena/overview">
+                <Link className={docsCardLink} href="/kadena/overview">
                   Overview of Kadena
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/docs/kadena/code-of-conduct"
-                >
+                <Link className={docsCardLink} href="/kadena/code-of-conduct">
                   Code of Conduct
                 </Link>
                 <a className={docsCardLink} href="https://kadena.io">
@@ -57,13 +54,13 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               <BrowseSection marker="none">
                 <Link
                   className={docsCardLink}
-                  href="/docs/kadena/resources/glossary"
+                  href="/kadena/resources/glossary"
                 >
                   Glossary
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/docs/kadena/resources/press-kit"
+                  href="/kadena/resources/press-kit"
                 >
                   Press kit
                 </Link>
@@ -80,19 +77,19 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               <BrowseSection marker="none">
                 <Link
                   className={docsCardLink}
-                  href="/docs/kadena/whitepapers/chainweb-layer-1"
+                  href="/kadena/whitepapers/chainweb-layer-1"
                 >
                   Chainweb layer 1
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/docs/kadena/whitepapers/pact-smart-contract-language"
+                  href="/kadena/whitepapers/pact-smart-contract-language"
                 >
                   Pact Smart Contract
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/docs/kadena/whitepapers/kuro-layer-2"
+                  href="/kadena/whitepapers/kuro-layer-2"
                 >
                   Kuro Layer 2
                 </Link>
@@ -106,7 +103,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
         <Heading as="h6">Stay up-to-date</Heading>
         <BlogPostsStrip
           data={blogPosts}
-          link={`/docs/tags/kadena`}
+          link={`/tags/kadena`}
           linkLabel="More Kadena blogchain..."
         />
       </Box>

@@ -28,7 +28,7 @@ interface IProps {
 }
 
 export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
-  const { active, clickMenu, clickSubMenu, setActive } = useSideMenu(
+  const { active, clickMenu, clickSubMenu, setActive, treeRef } = useSideMenu(
     closeMenu,
     menuItems,
   );
@@ -66,7 +66,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           <Heading as="h5">{activeItem?.menu}</Heading>
         </button>
       )}
-
       <ShowOnMobile>
         <Box marginX="$4" marginBottom="$8" marginTop="$4">
           <Input
@@ -80,7 +79,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           />
         </Box>
       </ShowOnMobile>
-
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
         <ul className={listClass}>
           {menuItems.map((item) => (
@@ -105,7 +103,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           idx={1}
           onClick={clickSubMenu}
         >
-          <TreeList root={true}>
+          <TreeList ref={treeRef} root={true}>
             <MainTreeItem item={activeItem} root={true} />
           </TreeList>
         </MenuCard>

@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'numerical operators', 'pact operators']
 
 # Numerical operators
 
-### \+
+## \+
 
 ```pact
 (+ x y)
@@ -27,7 +27,7 @@ Addition of integers and decimals.
 
 Supported in either invariants or properties.
 
-### \-
+## \-
 
 ```pact
 (- x y)
@@ -42,7 +42,7 @@ Subtraction of integers and decimals.
 
 Supported in either invariants or properties.
 
-### \*
+## \*
 
 ```pact
 (* x y)
@@ -57,7 +57,7 @@ Multiplication of integers and decimals.
 
 Supported in either invariants or properties.
 
-### /
+## /
 
 ```pact
 (/ x y)
@@ -72,7 +72,7 @@ Division of integers and decimals.
 
 Supported in either invariants or properties.
 
-### ^
+## ^
 
 ```pact
 (^ x y)
@@ -87,7 +87,7 @@ Exponentiation of integers and decimals.
 
 Supported in either invariants or properties.
 
-### log
+## log
 
 ```pact
 (log b x)
@@ -102,7 +102,7 @@ Logarithm of `x` base `b`.
 
 Supported in either invariants or properties.
 
-### \-
+## \-
 
 ```pact
 (- x)
@@ -116,7 +116,7 @@ Negation of integers and decimals.
 
 Supported in either invariants or properties.
 
-### sqrt
+## sqrt
 
 ```pact
 (sqrt x)
@@ -130,7 +130,7 @@ Square root of integers and decimals.
 
 Supported in either invariants or properties.
 
-### ln
+## ln
 
 ```pact
 (ln x)
@@ -144,7 +144,7 @@ Logarithm of integers and decimals base e.
 
 Supported in either invariants or properties.
 
-### exp
+## exp
 
 ```pact
 (exp x)
@@ -158,7 +158,7 @@ Exponential of integers and decimals. e raised to the integer or decimal `x`.
 
 Supported in either invariants or properties.
 
-### abs
+## abs
 
 ```pact
 (abs x)
@@ -172,7 +172,7 @@ Absolute value of integers and decimals.
 
 Supported in either invariants or properties.
 
-### round
+## round
 
 ```pact
 (round x)
@@ -194,7 +194,7 @@ decimal.
 
 Supported in either invariants or properties.
 
-### ceiling
+## ceiling
 
 ```pact
 (ceiling x)
@@ -216,7 +216,7 @@ decimal.
 
 Supported in either invariants or properties.
 
-### floor
+## floor
 
 ```pact
 (floor x)
@@ -238,7 +238,7 @@ decimal.
 
 Supported in either invariants or properties.
 
-### dec
+## dec
 
 ```pact
 (dec x)
@@ -251,7 +251,7 @@ Casts the integer `x` to its decimal equivalent.
 
 Supported in either invariants or properties.
 
-### mod
+## mod
 
 ```pact
 (mod x y)
@@ -264,5 +264,3 @@ Supported in either invariants or properties.
 Integer modulus
 
 Supported in either invariants or properties.
-
-## Bitwise

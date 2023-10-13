@@ -997,6 +997,12 @@
       <priority>1</priority>
     </url>
     <url>
+      <loc>https://docs.kadena.io/pact/reference/pacts}</loc>
+      undefined
+      <changefreq>monthly</changefreq>
+      <priority>1</priority>
+    </url>
+    <url>
       <loc>https://docs.kadena.io/pact/api}</loc>
       <lastmod>2023-10-11</lastmod>
       <changefreq>monthly</changefreq>
