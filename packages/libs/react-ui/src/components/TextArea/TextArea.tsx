@@ -9,7 +9,7 @@ import {
 import type { Sprinkles } from '@theme/sprinkles.css';
 import { sprinkles } from '@theme/sprinkles.css';
 import classNames from 'classnames';
-import type { ChangeEvent, FC, TextareaHTMLAttributes } from 'react';
+import type { FC, TextareaHTMLAttributes } from 'react';
 import React, { forwardRef } from 'react';
 
 export interface ITextareaProps
@@ -19,8 +19,6 @@ export interface ITextareaProps
     >,
     Partial<Pick<Sprinkles, 'fontFamily'>> {
   id: string;
-  value: string;
-  onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   disabled?: boolean;
   ref?: React.ForwardedRef<HTMLTextAreaElement>;
   outlined?: boolean;
