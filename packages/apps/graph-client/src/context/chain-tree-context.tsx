@@ -23,23 +23,23 @@ export function addBlockToChainTree(
   let currentBlock = block;
 
   //Check if chain index exists, if not create it
-  if (chainTree[currentBlock.chainid] === undefined) {
-    chainTree[currentBlock.chainid] = {};
+  if (chainTree[currentBlock.chainId] === undefined) {
+    chainTree[currentBlock.chainId] = {};
   }
 
   //Add block to chain
-  chainTree[currentBlock.chainid][currentBlock.hash] = currentBlock;
+  chainTree[currentBlock.chainId][currentBlock.hash] = currentBlock;
 
   //Check if parent block exists, if it does increment confirmation depth
   while (
     currentBlock.parentHash &&
-    chainTree[currentBlock.chainid][currentBlock.parentHash]
+    chainTree[currentBlock.chainId][currentBlock.parentHash]
   ) {
     const childsConfirmationDepth = currentBlock.confirmationDepth;
 
     //set current block to parent block
     currentBlock = {
-      ...chainTree[currentBlock.chainid][currentBlock.parentHash],
+      ...chainTree[currentBlock.chainId][currentBlock.parentHash],
     };
 
     //before incrementing depth check if it is already 6
@@ -50,7 +50,7 @@ export function addBlockToChainTree(
     }
 
     //set the updated block in the chain
-    chainTree[currentBlock.chainid][currentBlock.hash] = currentBlock;
+    chainTree[currentBlock.chainId][currentBlock.hash] = currentBlock;
   }
 
   return chainTree;

@@ -28,7 +28,7 @@ async function* iteratorFn(
   while (!context.req.socket.destroyed) {
     const transaction = await prismaClient.transaction.findFirst({
       where: {
-        requestkey: requestKey,
+        requestKey: requestKey,
       },
     });
 

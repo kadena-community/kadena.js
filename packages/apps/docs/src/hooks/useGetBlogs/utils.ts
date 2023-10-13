@@ -1,6 +1,6 @@
 import type { IAuthorInfo, IMenuData } from '@/Layout';
 import { compareDesc } from '@/utils/dates';
-import { getAuthorData } from '@/utils/staticGeneration/getData.mjs';
+import { getAuthorData } from '@/utils/staticGeneration/getJsonData.mjs';
 
 export interface IIBlogLoadOptions {
   authorId?: string;
@@ -19,7 +19,7 @@ export const getInitBlogPosts = (
   limit: number,
   { authorId, year, tagId }: IIBlogLoadOptions = {},
 ): IMenuData[] => {
-  const STARTBRANCH = '/docs/blogchain';
+  const STARTBRANCH = '/blogchain';
 
   let posts: IMenuData[] = [];
   const startBranch = menuData.find(

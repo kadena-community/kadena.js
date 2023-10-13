@@ -23,21 +23,19 @@ export const Landing: FC<IBasePageProps> = ({
   const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
 
   return (
-    <div className={gridClassNames}>
-      <Template menuItems={leftMenuTree} layout="landing">
-        <TitleHeader
-          title={frontmatter.title}
-          subTitle={frontmatter.subTitle}
-        />
-
-        <div
-          id="maincontent"
-          className={classnames(contentClass, contentClassVariants.code)}
-        >
-          <article className={articleClass}>{children}</article>
-        </div>
-      </Template>
-    </div>
+    <>
+      <TitleHeader title={frontmatter.title} subTitle={frontmatter.subTitle} />
+      <div className={gridClassNames}>
+        <Template menuItems={leftMenuTree} layout="landing">
+          <div
+            id="maincontent"
+            className={classnames(contentClass, contentClassVariants.code)}
+          >
+            <article className={articleClass}>{children}</article>
+          </div>
+        </Template>
+      </div>
+    </>
   );
 };
 
