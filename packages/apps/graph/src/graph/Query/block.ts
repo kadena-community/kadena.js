@@ -1,8 +1,9 @@
+import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
+import Block from '../objects/Block';
+
 import type { Debugger } from 'debug';
 import _debug from 'debug';
-import { prismaClient } from '../../db/prismaClient';
-import Block from '../objects/Block';
 
 const log: Debugger = _debug('graph:Query:block');
 

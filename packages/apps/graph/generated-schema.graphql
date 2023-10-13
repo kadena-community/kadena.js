@@ -17,12 +17,7 @@ type Block implements Node {
   payload: String!
   powHash: String!
   predicate: String!
-  transactions(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): BlockTransactionsConnection!
+  transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
 }
 
 type BlockTransactionsConnection {
@@ -42,18 +37,8 @@ type ChainModuleAccount {
   chainId: ID!
   guard: Guard!
   moduleName: String!
-  transactions(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ChainModuleAccountTransactionsConnection!
-  transfers(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ChainModuleAccountTransfersConnection!
+  transactions(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransfersConnection!
 }
 
 type ChainModuleAccountTransactionsConnection {
@@ -81,9 +66,7 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
-"""
-Floats that will have a value of 0 or more.
-"""
+"""Floats that will have a value of 0 or more."""
 scalar Decimal
 
 type Event implements Node {
@@ -100,16 +83,16 @@ type Event implements Node {
   transaction: Transaction
 }
 
+type Guard {
+  keys: [String!]!
+  predicate: String!
+}
+
 type Minerkey implements Node {
   block: Block!
   blockHash: String!
   id: ID!
   key: String!
-}
-
-type Guard {
-  keys: [String!]!
-  predicate: String!
 }
 
 type ModuleAccount {
@@ -118,18 +101,8 @@ type ModuleAccount {
   id: String!
   moduleName: String!
   totalBalance: Decimal!
-  transactions(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ModuleAccountTransactionsConnection!
-  transfers(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ModuleAccountTransfersConnection!
+  transactions(after: String, before: String, first: Int, last: Int): ModuleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): ModuleAccountTransfersConnection!
 }
 
 type ModuleAccountTransactionsConnection {
@@ -163,46 +136,21 @@ type PageInfo {
   startCursor: String
 }
 
-"""
-Floats that will have a value greater than 0.
-"""
+"""Floats that will have a value greater than 0."""
 scalar PositiveFloat
 
 type Query {
-  block(hash: String!): Block!
   account(accountName: String!, moduleName: String!): ModuleAccount!
+  block(hash: String!): Block!
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
-  chainAccount(
-    accountName: String!
-    chainId: String!
-    moduleName: String!
-  ): ChainModuleAccount!
-  completedBlockHeights(
-    chainIds: [String!]
-    completedHeights: Boolean
-    heightCount: Int
-  ): [Block!]!
+  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
+  completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
   lastBlockHeight: BigInt
+  maximumConfirmationDepth: Int!
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
-  transactions(
-    accountName: String!
-    after: String
-    before: String
-    chainId: String
-    first: Int
-    last: Int
-    moduleName: String!
-  ): QueryTransactionsConnection!
-  transfers(
-    accountName: String!
-    after: String
-    before: String
-    chainId: String
-    first: Int
-    last: Int
-    moduleName: String!
-  ): QueryTransfersConnection!
+  transactions(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransactionsConnection!
+  transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
 }
 
 type QueryTransactionsConnection {

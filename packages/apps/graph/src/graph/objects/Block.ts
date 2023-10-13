@@ -1,4 +1,5 @@
 import { prismaClient } from '../../db/prismaClient';
+import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 
 import type { prismaModelName } from '@pothos/plugin-prisma';
@@ -83,26 +84,6 @@ export default builder.prismaNode('Block', {
   }),
 });
 
-async function getTransactionsRequestkeyByEvent(
-  events: string[] | undefined,
-  parent: {
-    hash: string;
-  } & { [prismaModelName]?: 'Block' | undefined },
-): Promise<string[]> {
-  if (!events?.length) {
-    return [];
-  }
-  return (
-    await prismaClient.$queryRaw<{ requestkey: string }[]>`
-      SELECT t.requestkey
-      FROM transactions t
-      INNER JOIN events e
-      ON e.block = t.block AND e.requestkey = t.requestkey
-      WHERE e.qualname IN (${Prisma.join(events as string[])})
-      AND t.block = ${parent.hash}`
-  ).map((r) => r.requestkey);
-}
-
 async function getConfirmationDepth(blockhash: string): Promise<number> {
   const result = await prismaClient.$queryRaw<{ depth: number }[]>`
     WITH RECURSIVE BlockDescendants AS (
@@ -113,6 +94,7 @@ async function getConfirmationDepth(blockhash: string): Promise<number> {
       SELECT b.hash, b.parent, d.depth + 1 AS depth
       FROM BlockDescendants d
       JOIN blocks b ON d.hash = b.parent
+      WHERE d.depth < ${dotenv.MAX_BLOCK_DEPTH}
     )
     SELECT MAX(depth) AS depth
     FROM BlockDescendants;
