@@ -101,7 +101,7 @@ model Transaction {
   proof         String?   @db.VarChar
   requestKey    String    @db.VarChar @map("requestkey")
   rollback      Boolean?
-  sender        String    @db.VarChar
+  senderAccount String    @db.VarChar @map("sender")
   step          BigInt?
   ttl           BigInt
   transactionId BigInt?   @map("txid")

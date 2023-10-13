@@ -64,10 +64,7 @@ export const menuInLayoutVariants = styleVariants({
 });
 
 export const menuLayoutVariants = styleVariants({
-  landing: {
-    ...responsiveStyle({ md: {} }),
-  },
-
+  landing: {},
   normal: {},
 });
 

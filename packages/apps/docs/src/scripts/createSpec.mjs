@@ -6,20 +6,24 @@ const success = [];
 
 const returnJSON = (filename) => {
   try {
-    const doc = fs.readFileSync(`${filename}.yaml`, 'utf-8');
+    const doc = fs.readFileSync(`./src/specs/${filename}.yaml`, 'utf-8');
     const json = yaml.load(doc);
 
-    fs.writeFileSync(`${filename}.json`, JSON.stringify(json));
+    const DIR = './src/_generated/specs/';
+
+    fs.mkdirSync(DIR, { recursive: true });
+    console.log(`${DIR}${filename}.json`);
+    fs.writeFileSync(`${DIR}${filename}.json`, JSON.stringify(json));
 
     success.push(`Successfully created spec for ${filename}!`);
   } catch (error) {
-    error.push(`creating spec for ${filename} failed: ${error}`);
+    errors.push(`creating spec for ${filename} failed: ${error}`);
   }
 };
 
 export const createSpecs = () => {
-  returnJSON('./src/specs/chainweb/chainweb.openapi');
-  returnJSON('./src/specs/pact/pact.openapi');
+  returnJSON('chainweb.openapi');
+  returnJSON('pact.openapi');
 
   return { success, errors };
 };

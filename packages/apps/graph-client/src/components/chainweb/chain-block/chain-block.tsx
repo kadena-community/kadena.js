@@ -8,6 +8,7 @@ import { Text } from '@components/text';
 import { useChainTree } from '@context/chain-tree-context';
 import { InfoCircledIcon, TimerIcon } from '@radix-ui/react-icons';
 import { env } from '@utils/env';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 interface IChainBlockProps {
@@ -18,6 +19,7 @@ interface IChainBlockProps {
 
 export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
   const { color, textColor, block } = props;
+  const router = useRouter();
 
   const { chainTree } = useChainTree();
   let confirmationDepth = 0;
@@ -26,10 +28,19 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
     confirmationDepth = chainTree[block.chainId][block.hash].confirmationDepth;
   }
 
+  const blockClick = async (): Promise<void> => {
+    if (block) {
+      await router.push(`/block/${block.hash}`);
+    }
+  };
+
   return (
     <Container>
       {block ? (
-        <Content css={{ $$color: color, $$textColor: textColor }}>
+        <Content
+          onClick={blockClick}
+          css={{ $$color: color, $$textColor: textColor, cursor: 'pointer' }}
+        >
           <Box
             css={{
               fontSize: '$xs',

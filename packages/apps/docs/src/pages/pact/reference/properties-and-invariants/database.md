@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'database operators', 'pact operators']
 
 # Database operators
 
-### table-written
+## table-written
 
 ```pact
 (table-written t)
@@ -26,7 +26,7 @@ Whether a table is written in the function under analysis
 
 Supported in properties only.
 
-### table-read
+## table-read
 
 ```pact
 (table-read t)
@@ -40,7 +40,7 @@ Whether a table is read in the function under analysis
 
 Supported in properties only.
 
-### cell-delta
+## cell-delta
 
 ```pact
 (cell-delta t c r)
@@ -58,7 +58,7 @@ The difference in a cell's value before and after the transaction
 
 Supported in properties only.
 
-### column-delta
+## column-delta
 
 ```pact
 (column-delta t c)
@@ -75,7 +75,7 @@ The difference in a column's total summed value before and after the transaction
 
 Supported in properties only.
 
-### column-written
+## column-written
 
 ```pact
 (column-written t c)
@@ -91,7 +91,7 @@ Whether a column is written to in a transaction
 
 Supported in properties only.
 
-### column-read
+## column-read
 
 ```pact
 (column-read t c)
@@ -107,7 +107,7 @@ Whether a column is read from in a transaction
 
 Supported in properties only.
 
-### row-read
+## row-read
 
 ```pact
 (row-read t r)
@@ -122,7 +122,7 @@ Whether a row is read in the function under analysis
 
 Supported in properties only.
 
-### row-written
+## row-written
 
 ```pact
 (row-written t r)
@@ -137,7 +137,7 @@ Whether a row is written in the function under analysis
 
 Supported in properties only.
 
-### row-read-count
+## row-read-count
 
 ```pact
 (row-read-count t r)
@@ -152,7 +152,7 @@ The number of times a row is read during a transaction
 
 Supported in properties only.
 
-### row-write-count
+## row-write-count
 
 ```pact
 (row-write-count t r)
@@ -167,7 +167,7 @@ The number of times a row is written during a transaction
 
 Supported in properties only.
 
-### row-exists
+## row-exists
 
 ```pact
 (row-exists t r time)
@@ -183,7 +183,7 @@ Whether a row exists before or after a transaction
 
 Supported in properties only.
 
-### read
+## read
 
 ```pact
 (read t r)

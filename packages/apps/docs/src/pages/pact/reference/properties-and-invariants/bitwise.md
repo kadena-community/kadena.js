@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'bitwise operators', 'pact operators']
 
 # Bitwise operators
 
-### &
+## &
 
 ```pact
 (& x y)
@@ -26,7 +26,7 @@ Bitwise and
 
 Supported in either invariants or properties.
 
-### |
+## |
 
 ```pact
 (| x y)
@@ -40,7 +40,7 @@ Bitwise or
 
 Supported in either invariants or properties.
 
-### xor
+## xor
 
 ```pact
 (xor x y)
@@ -54,7 +54,7 @@ Bitwise exclusive-or
 
 Supported in either invariants or properties.
 
-### shift
+## shift
 
 ```pact
 (shift x y)
@@ -68,7 +68,7 @@ Shift `x` `y` bits left if `y` is positive, or right by `-y` bits otherwise.
 
 Supported in either invariants or properties.
 
-### ~
+## ~
 
 ```pact
 (~ x)

@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'keysets']
 
 # Keysets
 
-### define-keyset
+## define-keyset
 
 _name_&nbsp;`string` _keyset_&nbsp;`string` _&rarr;_&nbsp;`string`
 
@@ -28,7 +28,7 @@ keyset will be enforced before updating to new value.
 
 Top level only: this function will fail if used in module code.
 
-### enforce-keyset
+## enforce-keyset
 
 _guard_&nbsp;`guard` _&rarr;_&nbsp;`bool`
 
@@ -41,7 +41,7 @@ Execute GUARD, or defined keyset KEYSETNAME, to enforce desired predicate logic.
 (enforce-keyset row-guard)
 ```
 
-### keys-2
+## keys-2
 
 _count_&nbsp;`integer` _matched_&nbsp;`integer` _&rarr;_&nbsp;`bool`
 
@@ -52,7 +52,7 @@ pact> (keys-2 3 1)
 false
 ```
 
-### keys-all
+## keys-all
 
 _count_&nbsp;`integer` _matched_&nbsp;`integer` _&rarr;_&nbsp;`bool`
 
@@ -63,7 +63,7 @@ pact> (keys-all 3 3)
 true
 ```
 
-### keys-any
+## keys-any
 
 _count_&nbsp;`integer` _matched_&nbsp;`integer` _&rarr;_&nbsp;`bool`
 
@@ -74,12 +74,13 @@ pact> (keys-any 10 1)
 true
 ```
 
-### read-keyset
+## read-keyset
 
 _key_&nbsp;`string` _&rarr;_&nbsp;`keyset`
 
-Read KEY from message data body as keyset (\{ "keys": KEYLIST, "pred": PREDFUN
-\}). PREDFUN should resolve to a keys predicate.
+Read KEY from message data body as keyset
+`({ "keys": KEYLIST, "pred": PREDFUN })`. PREDFUN should resolve to a keys
+predicate.
 
 ```pact
 (read-keyset "admin-keyset")
