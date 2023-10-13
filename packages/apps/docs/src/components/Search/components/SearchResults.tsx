@@ -137,6 +137,13 @@ export const SearchResults: FC<IProps> = ({
         </Tabs.Content>
 
         <Tabs.Content id="qa">
+          <Notification.Root
+            expanded={true}
+            icon="AlertBox"
+            title="QA search is in beta"
+          >
+            We are testing with
+          </Notification.Root>
           <div className={scrollBoxClasses}>
             {isLoading && (
               <div className={loadingWrapperClass}>
