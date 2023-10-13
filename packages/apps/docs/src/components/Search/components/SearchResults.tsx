@@ -142,7 +142,23 @@ export const SearchResults: FC<IProps> = ({
             icon="AlertBox"
             title="QA search is in beta"
           >
-            We are testing with
+            QA search our new vector search, where our search modal will give a
+            generated answer on your question.
+            <br />
+            The answer is based on all the documentation and blogposts on this
+            website.
+            <br />
+            Because we are still testing this search, answers could be a bit of
+            or just plain wrong.
+            <p>
+              <br />
+              <strong>So why put it online?</strong>
+              <br />
+              By having our alpha version online, we hope we can gather more
+              feedback on how the QA search performs.
+              <br />
+              And then tweak the results to help you, the users, better.
+            </p>
           </Notification.Root>
           <div className={scrollBoxClasses}>
             {isLoading && (
