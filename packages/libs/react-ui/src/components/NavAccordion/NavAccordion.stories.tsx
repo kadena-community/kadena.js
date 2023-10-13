@@ -37,7 +37,7 @@ const meta: Meta<StoryProps> = {
     darkMode: {
       control: { type: 'boolean' },
       description:
-        'By default the footer switches colors in dark/light mode. This prop allows you to override that behavior and always show dark mode.',
+        'By default, the component switches colors in dark/light mode. This prop allows you to override that behavior and always show dark mode.',
       table: {
         defaultValue: { summary: 'false' },
         type: { summary: 'boolean' },
