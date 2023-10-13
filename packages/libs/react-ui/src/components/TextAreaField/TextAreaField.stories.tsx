@@ -56,7 +56,7 @@ export const TextFieldStory: Story = {
       fontFamily: '$mono',
       placeholder: 'This is a placeholder',
       value: '',
-      onValueChange: () => {},
+      onChange: () => {},
     },
   },
   render: ({ disabled, textAreaProps, ...rest }) => {
@@ -68,7 +68,7 @@ export const TextFieldStory: Story = {
         textAreaProps={{
           ...textAreaProps,
           value,
-          onValueChange: ({ target }) => setValue(target.value),
+          onChange: ({ target }) => setValue(target.value),
         }}
         {...rest}
       />

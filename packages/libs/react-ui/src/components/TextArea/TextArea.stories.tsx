@@ -53,7 +53,7 @@ export const TextAreaStory: Story = {
       <Textarea
         {...props}
         value={value}
-        onValueChange={({ target }) => setValue(target.value)}
+        onChange={({ target }) => setValue(target.value)}
         id="inlineInputStory"
         placeholder="This is a placeholder"
       />

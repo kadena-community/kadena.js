@@ -20,7 +20,7 @@ export interface ITextareaProps
     Partial<Pick<Sprinkles, 'fontFamily'>> {
   id: string;
   value: string;
-  onValueChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
   disabled?: boolean;
   ref?: React.ForwardedRef<HTMLTextAreaElement>;
   outlined?: boolean;
@@ -29,10 +29,7 @@ export interface ITextareaProps
 export const Textarea: FC<ITextareaProps> = forwardRef<
   HTMLTextAreaElement,
   ITextareaProps
->(function TextArea(
-  { outlined, disabled = false, fontFamily, value, onValueChange, ...rest },
-  ref,
-) {
+>(function TextArea({ outlined, disabled = false, fontFamily, ...rest }, ref) {
   return (
     <div
       className={classNames(containerClass, {
@@ -45,8 +42,6 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
           ref={ref}
           className={classNames(textAreaClass, sprinkles({ fontFamily }))}
           disabled={disabled}
-          onChange={onValueChange}
-          value={value}
           {...rest}
         />
       </div>
