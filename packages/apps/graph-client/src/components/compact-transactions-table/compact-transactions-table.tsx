@@ -2,6 +2,7 @@ import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
 
 import type {
   GetAccountQuery,
+  GetBlockFromHashQuery,
   GetChainAccountQuery,
 } from '../../__generated__/sdk';
 import routes from '../../constants/routes';
@@ -10,34 +11,37 @@ import { truncate } from '../../utils/truncate';
 import React from 'react';
 
 interface ICompactTransactionsTableProps {
-  moduleName: string;
-  accountName: string;
-  chainId?: string;
+  // moduleName: string;
+  // accountName: string;
+  // chainId?: string;
+  viewAllHref?: string;
+  description?: string;
   transactions:
     | GetAccountQuery['account']['transactions']
-    | GetChainAccountQuery['chainAccount']['transactions'];
+    | GetChainAccountQuery['chainAccount']['transactions']
+    | GetBlockFromHashQuery['block']['transactions'];
 }
 
 export const CompactTransactionsTable = (
   props: ICompactTransactionsTableProps,
 ): JSX.Element => {
-  const { moduleName, accountName, chainId, transactions } = props;
+  const { viewAllHref, description, transactions } = props;
+
+  // const { moduleName, accountName, chainId, viewAllHref, transactions } = props;
 
   return (
     <>
       <ContentHeader
         heading="Transactions"
         icon="KIcon"
-        description="All transactions where this account is the initiator."
+        description={
+          description
+            ? description
+            : 'All transactions where this account is the initiator.'
+        }
       />
       <Box margin={'$4'} />
-      <Button
-        variant="compact"
-        as="a"
-        href={`${routes.ACCOUNT_TRANSACTIONS}/${moduleName}/${accountName}${
-          chainId !== undefined ? `?chainId=${chainId}` : ''
-        }`}
-      >
+      <Button variant="compact" as="a" href={viewAllHref}>
         View all transactions
       </Button>
       <Box margin={'$2'} />
