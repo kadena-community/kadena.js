@@ -264,7 +264,8 @@ const NewAccountFaucetPage: FC = () => {
           <a
             className={notificationLinkStyle}
             target={'_blank'}
-            href={'https://transfer.chainweb.com/'} rel="noreferrer"
+            href={'https://transfer.chainweb.com/'}
+            rel="noreferrer"
           >
             webpage
           </a>{' '}
@@ -272,7 +273,8 @@ const NewAccountFaucetPage: FC = () => {
           <a
             className={notificationLinkStyle}
             target={'_blank'}
-            href={'https://kadena.io/chainweaver-tos/'} rel="noreferrer"
+            href={'https://kadena.io/chainweaver-tos/'}
+            rel="noreferrer"
           >
             wallet.
           </a>

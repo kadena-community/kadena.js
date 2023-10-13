@@ -15,4 +15,3 @@ export const validateRequestKey = (key: string): string | undefined => {
 
   return undefined;
 };
-
