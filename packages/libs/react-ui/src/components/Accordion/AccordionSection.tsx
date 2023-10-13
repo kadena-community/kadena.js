@@ -1,9 +1,16 @@
 'use client';
 
 import { AccordionContext } from './Accordion.context';
-import { accordionContentClass, accordionSectionClass } from './Accordion.css';
-import { AccordionHeading } from './AccordionHeading';
+import {
+  accordionButtonClass,
+  accordionContentClass,
+  accordionHeadingTitleClass,
+  accordionSectionClass,
+  accordionToggleIconClass,
+} from './Accordion.css';
 
+import { SystemIcon } from '@components/Icon';
+import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useContext } from 'react';
 
@@ -41,12 +48,18 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
       className={accordionSectionClass}
       data-testid="kda-accordion-section"
     >
-      <AccordionHeading
-        title={title}
-        isOpen={isOpen}
-        icon={'Close'}
+      <button
+        className={classNames([accordionButtonClass])}
         onClick={handleClick}
-      />
+      >
+        <h3 className={accordionHeadingTitleClass}>{title}</h3>
+        <SystemIcon.Close
+          className={classNames(accordionToggleIconClass, {
+            isOpen,
+          })}
+          size="sm"
+        />
+      </button>
       {children && isOpen && (
         <div className={accordionContentClass}>{children}</div>
       )}
