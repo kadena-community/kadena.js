@@ -42,7 +42,7 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
   };
 
   return (
-    <span>
+    <div>
       <button
         className={classNames([
           accordionButtonClass,
@@ -71,6 +71,6 @@ export const NavAccordionGroup: FC<INavAccordionGroupProps> = ({
           ))}
         </ul>
       )}
-    </span>
+    </div>
   );
 };
