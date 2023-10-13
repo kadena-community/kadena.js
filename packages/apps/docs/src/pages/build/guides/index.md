@@ -212,7 +212,7 @@ enforce a keyset guard on the transaction that deploys the contract. This guard
 should ensure that any keysets passed to the contract were also used to sign the
 transaction that deploys the contract. If the enforcement fails, the deployment
 is aborted, and you can fix the keyset and try again.
-[#keyset-ref-guard](/pact/reference/functions/guards#keysetrefguard)
+[#keyset-ref-guard](/pact/reference/functions/guards#keyset-ref-guardh2089873729)
 
 ## Interfaces & Modules
 
@@ -227,7 +227,8 @@ Interfaces and modules are both units for organizing Pact code, but they serve
 different purposes. An interface describes the API that a module will implement
 and can supply constants and models for formal verification to aid in that
 implementation, but it doesn’t contain any implementations itself and cannot be
-executed on Chainweb. [#interfaces](/pact/reference/concepts#interfaces)
+executed on Chainweb.
+[#interfaces](/pact/reference/concepts#interfacesh394925690)
 
 Interfaces purely exist as a method of abstraction. An interface can be
 implemented by multiple modules (that means that the module provides an
@@ -236,7 +237,7 @@ blueprint for implementers. Also, Pact functions take a reference to module as
 an argument so long as the module implements a specific interface. That means
 you can write a function that can be used with any module that implements the
 given interface — a powerful form of abstraction.
-[#module-references](/pact/reference/concepts#module-references)
+[#module-references](/pact/reference/concepts#module-referencesh1941667004)
 
 We don’t use interfaces in our contract because it’s quite small and no one else
 is expected to provide another implementation for its API. Instead, we skip
@@ -244,7 +245,7 @@ straight to the implementation: the ‘goliath-faucet’ module.
 
 A module in Pact is the primary unit of organization for Pact code. Modules can
 contain functions, pacts, capabilities, tables, and other Pact code.
-[#module](/pact/reference/syntax#module)
+[#module](/pact/reference/syntax#moduleh-1068784020)
 
 Let’s define a Pact module with the code for our faucet. To define a module we
 must provide a module name, a module governance function, and then the module
@@ -287,7 +288,7 @@ Now, let’s implement the body of our module. We’ll begin with the two forms 
 metadata we can use to annotate our modules, interfaces, functions, table
 schemas, and other Pact code. The @doc metadata field is for documentation
 strings, and the @model metadata field is for formal verification.
-[#docs-and-metadata](/pact/reference/syntax#docs-and-metadata)
+[#docs-and-metadata](/pact/reference/syntax#docs-and-metadatah85265693)
 
 ## Metadata
 
@@ -300,11 +301,11 @@ functions must satisfy and invariants that table schemas must satisfy. Pact, via
 the Z3 theorem prover, can prove that there is no possible set of variable
 assignments in our code that will violate the given property or invariant. Or,
 if it does find a violation, it can tell us so we can fix it!
-[#what-do-properties-and-schema-invariants-look-like](/pact/reference/property-checking#what-do-properties-and-schema-invariants-look-like)
+[#what-do-properties-and-schema-invariants-look-like](/pact/reference/property-checking#what-do-properties-and-schema-invariants-look-likeh1040965298)
 
 Properties (but not invariants) can be defined at the top level of the module so
 they can be reused in multiple functions.
-[#defining-and-reusing-properties](/pact/reference/property-checking#defining-and-reusing-properties)
+[#defining-and-reusing-properties](/pact/reference/property-checking#defining-and-reusing-propertiesh-363561805)
 
 We have a few functions that should never succeed unless they were called in a
 transaction signed by the Goliath faucet keyset. We can capture that property in

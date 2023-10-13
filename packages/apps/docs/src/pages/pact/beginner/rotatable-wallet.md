@@ -154,9 +154,8 @@ keyset.
 
 :::info
 
-View
-[module](https://pact-language.readthedocs.io/en/latest/pact-reference.html?highlight=keysets#module)
-for more information on creating modules.
+View [module](/pact/reference/syntax#moduleh-1068784020) for more information on
+creating modules.
 
 :::
 
@@ -177,11 +176,9 @@ Define the user schema and table.
 
 :::info
 
-View
-[defschema](https://pact-language.readthedocs.io/en/latest/pact-reference.html#defschema)
-and
-[deftable](https://pact-language.readthedocs.io/en/latest/pact-reference.html#defschema)
-for more information on creating schemas and tables.
+View [defschema](/pact/reference/syntax#defschemah-1003560474) and
+[deftable](/pact/reference/syntax#defschemah-1003560474) for more information on
+creating schemas and tables.
 
 :::
 

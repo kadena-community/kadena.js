@@ -57,11 +57,11 @@ Namespaces are "entered" by issuing the
 
 #### Module declaration
 
-[Modules](#module) contain the API and data definitions for smart contracts.
-They are comprised of:
+[Modules](/pact/reference/syntax#moduleh-1068784020) contain the API and data
+definitions for smart contracts. They are comprised of:
 
 - [functions](/pact/reference/syntax#defunh95462750)
-- [schema](#defschema) definitions
+- [schema](/pact/reference/syntax#defschemah-1003560474) definitions
 - [table](/pact/reference/syntax#deftableh661222121) definitions
 - [pact](/pact/reference/syntax#defpacth1545231271) special functions
 - [constant](/pact/reference/syntax#defconsth645951102) values
@@ -91,21 +91,23 @@ Module names must be unique within a namespace.
 
 #### Interface Declaration
 
-[Interfaces](#interfaces) contain an API specification and data definitions for
-smart contracts. They are comprised of:
+[Interfaces](/pact/reference/concepts#interfacesh394925690#interfaces) contain
+an API specification and data definitions for smart contracts. They are
+comprised of:
 
 - [function](/pact/reference/syntax#defunh95462750) specifications (i.e.
   function signatures)
 - [constant](#defconst) values
-- [schema](#defschema) definitions
+- [schema](/pact/reference/syntax#defschemah-1003560474) definitions
 - [pact](#defpact) specifications
 - [models](pact-properties.html)
 - [capabilities](#caps) specifications
 - [imports](/pact/reference/syntax#useh116103)
 
-Interfaces represent an abstract api that a [module](#module) may implement by
-issuing an `implements` statement within the module declaration. Interfaces may
-import definitions from other modules by issuing a
+Interfaces represent an abstract api that a
+[module](/pact/reference/syntax#moduleh-1068784020) may implement by issuing an
+`implements` statement within the module declaration. Interfaces may import
+definitions from other modules by issuing a
 [use](/pact/reference/syntax#useh116103#use) declaration, which may be used to
 construct new constant definitions, or make use of types defined in the imported
 module. Unlike Modules, Interface versioning is not supported. However, modules
@@ -126,7 +128,8 @@ The relationship of modules to tables is important, as described in
 There is no restriction on how many tables may be created. Table names are
 namespaced with the module name.
 
-Tables can be typed with a [schema](#defschema).
+Tables can be typed with a
+[schema](/pact/reference/syntax#defschemah-1003560474).
 
 ### Transaction Execution
 
@@ -244,9 +247,10 @@ With Pact 2.0, Pact gains explicit type specification, albeit optional. Pact 1.0
 code without types still functions as before, and writing code without types is
 attractive for rapid prototyping.
 
-Schemas provide the main impetus for types. A schema [is defined](#defschema)
-with a list of columns that can have types (although this is also not required).
-Tables are then [defined](#deftable) with a particular schema (again, optional).
+Schemas provide the main impetus for types. A schema
+[is defined](/pact/reference/syntax#defschemah-1003560474) with a list of
+columns that can have types (although this is also not required). Tables are
+then [defined](#deftable) with a particular schema (again, optional).
 
 Note that schemas also can be used on/specified for object types.
 
@@ -1338,9 +1342,10 @@ version 1. Sometime later the module is upgraded to version 2. The modref in the
 database will refer to the upgraded version 2 of the module when read back in
 and used.
 
-As described in the [Dependency Management](#dependency-management) section,
-Pact direct references are not late-binding, so this modref behavior might be
-surprising.
+As described in the
+[Dependency Management](/pact/reference/concepts#dependency-managementh304790584)
+section, Pact direct references are not late-binding, so this modref behavior
+might be surprising.
 
 #### Modrefs can introduce untrusted code
 
@@ -1506,19 +1511,20 @@ documented type signatures.
 
 Pact's supported types are:
 
-- [Strings](#strings)
-- [Integers](#integers)
-- [Decimals](#decimals)
-- [Booleans](#booleans)
-- [Time values](#time)
-- [Keysets](#keysets) and [Guards](#guards)
-- [Lists](#lists)
-- [Objects](#objects)
+- [Strings](/pact/reference/syntax#stringsh-217105822)
+- [Integers](/pact/reference/syntax#integersh634718997)
+- [Decimals](/pact/reference/syntax#decimalsh630176610)
+- [Booleans](/pact/reference/syntax#booleansh2070707563)
+- [Time values](/pact/reference/functions/time)
+- [Keysets](/pact/reference/concepts#keysets-and-authorizationh960403648) and
+  [Guards](/pact/reference/concepts#guardsh2143724174)
+- [Lists](/pact/reference/syntax#listsh73429877)
+- [Objects](/pact/reference/syntax#objectsh5004532)
 - [Function](/pact/reference/syntax#defunh95462750),
-  [pact](/pact/reference/syntax#defpacth1545231271), and [capability](#defcap)
-  definitions
+  [pact](/pact/reference/syntax#defpacth1545231271), and
+  [capability](/pact/reference/syntax#defcaph-1335639635) definitions
 - [Tables](/pact/reference/syntax#deftableh661222121)
-- [Schemas](#defschema)
+- [Schemas](/pact/reference/syntax#defschemah-1003560474)
 
 ### Performance
 
@@ -1635,17 +1641,19 @@ the code can be directly verified, but the use of LISP-style
 ### Message Data
 
 Pact expects code to arrive in a message with a JSON payload and signatures.
-Message data is read using [read-msg](pact-functions.html#read-msg) and related
-functions. While signatures are not directly readable or writable, they are
-evaluated as part of [keyset predicate](#keysetpredicates) enforcement.
+Message data is read using
+[read-msg](/pact/reference/functions#read-msgh-868697398) and related functions.
+While signatures are not directly readable or writable, they are evaluated as
+part of [keyset predicate](#keysetpredicates) enforcement.
 
 #### JSON support
 
 Values returned from Pact transactions are expected to be directly represented
 as JSON values.
 
-When reading values from a message via [read-msg](pact-functions.html#read-msg),
-Pact coerces JSON types as follows:
+When reading values from a message via
+[read-msg](/pact/reference/functions#read-msgh-868697398), Pact coerces JSON
+types as follows:
 
 - String -> `string`
 - Number -> `decimal`
@@ -1654,7 +1662,7 @@ Pact coerces JSON types as follows:
 - Array -> `list`
 
 Integer values are represented as objects and read using
-[read-integer](pact-functions.html#read-integer).
+[read-integer](/pact/reference/functions#read-integerh1563412487).
 
 ## Confidentiality
 

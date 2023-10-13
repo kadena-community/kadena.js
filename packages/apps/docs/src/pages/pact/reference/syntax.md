@@ -158,8 +158,8 @@ literal or user type specification.
 
 ### Schema type literals
 
-A schema defined with [defschema](#defschema) is referenced by name enclosed in
-curly braces.
+A schema defined with [defschema](/pact/reference/syntax#defschemah-1003560474)
+is referenced by name enclosed in curly braces.
 
 ```pact
 table:{accounts}
@@ -262,8 +262,9 @@ Specific information on _Properties_ can be found in
 ```
 
 Within a module declaration, bless a previous version of that module as
-identified by HASH. See [Dependency management](#dependency-management) for a
-discussion of the blessing mechanism.
+identified by HASH. See
+[Dependency management](/pact/reference/concepts#dependency-managementh304790584)
+for a discussion of the blessing mechanism.
 
 ```pact
 (module provider 'keyset
@@ -579,9 +580,9 @@ expressions in a module include:
 
 - [defun](/pact/reference/syntax#defunh95462750)
 - [defconst](/pact/reference/syntax#defconsth645951102)
-- [defschema](#defschema)
+- [defschema](/pact/reference/syntax#defschemah-1003560474)
 - [defpact](/pact/reference/syntax#defpacth1545231271)
-- [defcap](#defcap)
+- [defcap](/pact/reference/syntax#defcaph-1335639635)
 - [use](/pact/reference/syntax#useh116103)
 - [models](#pact-properties.html)
 
@@ -629,9 +630,9 @@ productions in a module include:
 
 - [defun](/pact/reference/syntax#defunh95462750)
 - [defpact](/pact/reference/syntax#defpacth1545231271)
-- [defcap](#defcap)
+- [defcap](/pact/reference/syntax#defcaph-1335639635)
 - [deftable](/pact/reference/syntax#deftableh661222121)
-- [defschema](#defschema)
+- [defschema](/pact/reference/syntax#defschemah-1003560474)
 - [defconst](/pact/reference/syntax#defconsth645951102)
 - [implements](#implements)
 - [use](/pact/reference/syntax#useh116103)

@@ -244,8 +244,8 @@ Don't forget to add the snippet above in the `election` module body.
 :::info
 
 To learn more about guards and capabilities, please visit the
-[Guards, Capabilities and Events](/pact/reference/concepts#guards) section of
-the Pact official documentation.
+[Guards, Capabilities and Events](/pact/reference/concepts#guardsh2143724174)
+section of the Pact official documentation.
 
 :::
 
@@ -486,7 +486,7 @@ requirement for defined keysets.
 Access a module's function using the fully qualified name
 `{namespace}.{module-name}.{function-name}`, e.g. `free.election.vote`. See the
 Pact documentation to
-[read more about namespaces](/pact/reference/concepts#namespace-declaration).
+[read more about namespaces](/pact/reference/concepts#namespace-declarationh-1576233451).
 
 The `free` namespace is available to use on both `mainnet` and `testnet`.
 
@@ -763,8 +763,8 @@ module implements an interface using the `(implements INTERFACE)` construct.
 
 Pact interfaces are similar to Java's interfaces, Scala's traits, Haskell's
 typeclasses or Solidity's interfaces. If you're not familiar with this concept
-you can [read more about it](/pact/reference/concepts#interfaces) in Pact
-reference.
+you can [read more about it](/pact/reference/concepts#interfacesh394925690) in
+Pact reference.
 
 :::
 
@@ -809,8 +809,8 @@ function:
 
 `@doc` is a metadata field used to provide documentation and `@model` is used by
 Pact tooling to verify the correctness of the implementation. You can
-[read more about docs and metadata](/pact/reference/syntax#docs-and-metadata) in
-Pact reference.
+[read more about docs and metadata](/pact/reference/syntax#docs-and-metadatah85265693)
+in Pact reference.
 
 :::
 
@@ -957,8 +957,8 @@ been granted.
 To summarize, a gas station is a coin account with a special guard that's valid
 if both `GAS` and `ALLOW_GAS` capabilities are granted. If you're wondering how
 `GAS_PAYER` is granted, the answer is
-[signature capabilities](/pact/reference/concepts#signature-capabilities). We
-will see how this works in the frontend section of this tutorial where we
+[signature capabilities](/pact/reference/concepts#signature-capabilitiesh289463870).
+We will see how this works in the frontend section of this tutorial where we
 interact with the smart contracts.
 
 :::info Guards and capabilities are an entire topic that we cannot cover in

@@ -145,10 +145,8 @@ The error message should now be gone.
 ### Create the Module
 
 Now that you have created a keyset, it’s time to build the module for your smart
-contract.
-[Modules](https://pact-language.readthedocs.io/en/latest/pact-reference.html#module-declaration)
-are essential in Pact. They contain all the logic needed to run your smart
-contract.
+contract. [Modules](/pact/reference/concepts#module-declarationh676938214) are
+essential in Pact. They contain all the logic needed to run your smart contract.
 
 The syntax used to create a module is shown below. This line defines a module
 named helloWorld. It also gives the admin-keyset access to the code within this

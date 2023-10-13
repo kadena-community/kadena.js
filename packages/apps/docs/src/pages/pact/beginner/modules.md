@@ -41,11 +41,9 @@ access the latest Pact tutorials.
 
 ## Introduction to Pact Modules
 
-A Pact
-[Module](https://pact-language.readthedocs.io/en/latest/pact-reference.html#module-declaration)
-contains the logic necessary to create your application. It is where all code is
-written to for a smart contract. All API and data definitions exist within the
-Module.
+A Pact [Module](/pact/reference/concepts#module-declarationh676938214) contains
+the logic necessary to create your application. It is where all code is written
+to for a smart contract. All API and data definitions exist within the Module.
 
 **Modules contain the following code**
 
@@ -85,8 +83,8 @@ smart contract. For that reason, we refer to the logic within a Pact file as a
 module.
 
 For more information see
-[modules](https://pact-language.readthedocs.io/en/latest/pact-reference.html#module-declaration)
-in the developer documentation.
+[modules](/pact/reference/concepts#module-declarationh676938214) in the
+developer documentation.
 
 ### Create a Module
 

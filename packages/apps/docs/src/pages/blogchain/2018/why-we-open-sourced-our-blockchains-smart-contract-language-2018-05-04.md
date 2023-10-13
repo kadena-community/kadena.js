@@ -52,7 +52,7 @@ software development. Pact is hosted on
 commit by [Travis-CI](http://travis-ci.org/), which we further leverage to make
 builds for multiple OSs on our
 [downloads page](http://kadena.io/pact/downloads.html). Our docs are hosted on
-[readthedocs.org](http://pact-language.readthedocs.io/).
+[readthedocs.org](/pact/reference).
 
 All of these amazing resources work together seamlessly and for free — if your
 project is open-source. It’s an excellent example of alternate incentivization
