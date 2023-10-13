@@ -77,8 +77,7 @@ later tutorials.
 After creating a keyset, you need to both define and read this keyset from
 within the smart contract you create. This is done using a pair of built-in
 functions;
-[define-keyset](https://pact-language.readthedocs.io/en/latest/pact-functions.html#define-keyset)
-and
+[define-keyset](/pact/reference/functions/keysets#define-keyseth1939391989) and
 [read-keyset](https://pact-language.readthedocs.io/en/latest/pact-functions.html#read-keyset)
 
 ![2-define-and-read-a-keyset](/assets/docs/2-define-and-read-a-keyset.png)
@@ -524,11 +523,9 @@ keys.
 
 That wraps up this tutorial on Pact Keysets.
 
-As you learned, Pact
-[Keysets](/pact/reference/functions/keysets/pact-reference.html#confidential-keysets)
-allow you to specify authorization to different parts of the smart contract.
-They help determine which accounts have access to which parts of the programs
-you create.
+As you learned, Pact [Keysets](/pact/reference/functions/keysets) allow you to
+specify authorization to different parts of the smart contract. They help
+determine which accounts have access to which parts of the programs you create.
 
 Throughout this tutorial you to created, defined, and read keysets. You also
 created keys, were introduced to predicate functions, and learned a few other

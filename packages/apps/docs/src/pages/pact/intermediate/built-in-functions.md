@@ -150,7 +150,7 @@ and the capability has not yet been granted.
 ## Select
 
 The `select` built-in function can be found
-[here](https://pact-language.readthedocs.io/en/stable/pact-functions.html?highlight=select#select).
+[here](/pact/beginner/schemas-and-tables#selecth-1822154468).
 
 The `select` function is able to pull information from a table under specific
 conditions.

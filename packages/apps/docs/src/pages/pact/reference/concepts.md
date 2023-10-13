@@ -58,14 +58,14 @@ are "entered" by issuing the [namespace](#namespace) command.
 [Modules](#module) contain the API and data definitions for smart contracts.
 They are comprised of:
 
-- [functions](#defun)
+- [functions](/pact/reference/syntax#defunh95462750)
 - [schema](#defschema) definitions
 - [table](#deftable) definitions
-- [pact](#defpact) special functions
-- [constant](#defconst) values
+- [pact](/pact/reference/syntax#defpacth1545231271) special functions
+- [constant](/pact/reference/syntax#defconsth645951102) values
 - [models](pact-properties.html)
 - [capabilities](#caps)
-- [imports](#use)
+- [imports](/pact/reference/syntax#useh116103)
 - [implements](#implements)
 
 When a module is declared, all references to native functions, interfaces, or
@@ -92,20 +92,22 @@ Module names must be unique within a namespace.
 [Interfaces](#interfaces) contain an API specification and data definitions for
 smart contracts. They are comprised of:
 
-- [function](#defun) specifications (i.e. function signatures)
+- [function](/pact/reference/syntax#defunh95462750) specifications (i.e.
+  function signatures)
 - [constant](#defconst) values
 - [schema](#defschema) definitions
 - [pact](#defpact) specifications
 - [models](pact-properties.html)
 - [capabilities](#caps) specifications
-- [imports](#use)
+- [imports](/pact/reference/syntax#useh116103)
 
 Interfaces represent an abstract api that a [module](#module) may implement by
 issuing an `implements` statement within the module declaration. Interfaces may
-import definitions from other modules by issuing a [use](#use) declaration,
-which may be used to construct new constant definitions, or make use of types
-defined in the imported module. Unlike Modules, Interface versioning is not
-supported. However, modules may implement multiple interfaces.
+import definitions from other modules by issuing a
+[use](/pact/reference/syntax#useh116103#use) declaration, which may be used to
+construct new constant definitions, or make use of types defined in the imported
+module. Unlike Modules, Interface versioning is not supported. However, modules
+may implement multiple interfaces.
 
 Interface names must be unique within a namespace.
 
@@ -175,10 +177,11 @@ to the Sales table.
 
 As of Pact 2.3, Pact offers a powerful query mechanism for selecting multiple
 rows from a table. While visually similar to SQL, the
-[select](pact-functions.html#select) and [where](pact-functions.html#where)
-operations offer a _streaming interface_ to a table, where the user provides
-filter functions, and then operates on the rowset as a list data structure using
-[sort](pact-functions.html#sort) and other functions.
+[select](/pact/beginner/schemas-and-tables#selecth-1822154468) and
+[where](/pact/reference/functions#whereh113097959) operations offer a _streaming
+interface_ to a table, where the user provides filter functions, and then
+operates on the rowset as a list data structure using
+[sort](/pact/reference/functions#sorth3536286) and other functions.
 
 ```pact
 
@@ -211,10 +214,11 @@ transactional setting.
 ### No Nulls
 
 Pact has no concept of a NULL value in its database metaphor. The main function
-for computing on database results, [with-read](pact-functions.html#with-read),
-will error if any column value is not found. Authors must ensure that values are
-present for any transactional read. This is a safety feature to ensure
-_totality_ and avoid needless, unsafe control-flow surrounding null values.
+for computing on database results,
+[with-read](/pact/reference/functions/database#with-readh866473533), will error
+if any column value is not found. Authors must ensure that values are present
+for any transactional read. This is a safety feature to ensure _totality_ and
+avoid needless, unsafe control-flow surrounding null values.
 
 ### Versioned History
 
@@ -288,7 +292,8 @@ keyset-based authorization.
 
 ### Keyset definition
 
-Keysets are [defined](pact-functions.html#define-keyset) by
+Keysets are
+[defined](/pact/reference/functions/keysets#define-keyseth1939391989) by
 [reading](pact-functions.html#read-keyset) definitions from the message payload.
 Keysets consist of a list of public keys and a _keyset predicate_.
 
@@ -324,18 +329,20 @@ and is a powerful feature for Bitcoin-style "multisig" contracts (i.e. requiring
 at least two signatures to release funds).
 
 Pact comes with built-in keyset predicates:
-[keys-all](pact-functions.html#keys-all),
-[keys-any](pact-functions.html#keys-any), [keys-2](pact-functions.html#keys-2).
-Module authors are free to define additional predicates.
+[keys-all](/pact/reference/functions/keysets#keys-allh517472840),
+[keys-any](/pact/reference/functions/keysets#keys-anyh517472915),
+[keys-2](/pact/reference/functions/keysets#keys-2h-1134655847). Module authors
+are free to define additional predicates.
 
-If a keyset predicate is not specified, [keys-all](pact-functions.html#keys-all)
-is used by default.
+If a keyset predicate is not specified,
+[keys-all](/pact/reference/functions/keysets#keys-allh517472840) is used by
+default.
 
 ### Key rotation
 
 Keysets can be rotated, but only by messages authorized against the current
 keyset definition and predicate. Once authorized, the keyset can be easily
-[redefined](#define-keyset).
+[redefined](/pact/reference/functions/keysets#define-keyseth1939391989).
 
 ### Module Table Guards
 
@@ -1135,9 +1142,9 @@ qualified name `namespace.interface.const`, and so, they do not have the same
 naming constraints as function signatures.
 
 Additionally, interfaces my make use of module declarations, admitting use of
-the [use](pact-functions.html#use) keyword, allowing interfaces to import
-members of other modules. This allows interface signatures to be defined in
-terms of table types defined in an imported module.
+the [use](/pact/reference/syntax#useh116103) keyword, allowing interfaces to
+import members of other modules. This allows interface signatures to be defined
+in terms of table types defined in an imported module.
 
 #### Example: Declaring and implementing an interface
 
@@ -1170,8 +1177,8 @@ the same way that one would declare them in a module, with the exception that
 not all models are applicable to an interface. Indeed, since there is no
 abstract notion of tables for interfaces, abstract table invariants cannot be
 declared. However, if an interface imports table schema and types from a module
-via the [use](pact-functions.html#use) keyword, then the interface can define
-body and function models that apply directly to the concrete table type.
+via the [use](/pact/reference/syntax#useh116103) keyword, then the interface can
+define body and function models that apply directly to the concrete table type.
 Otherwise, all properties are candidates for declaration in an interface.
 
 When models are declared in an interface, they are appeneded to the list of
@@ -1460,9 +1467,10 @@ Here we cover various aspects of Pact's approach to computation.
 Pact is turing-incomplete, in that there is no recursion (recursion is detected
 before execution and results in an error) and no ability to loop indefinitely.
 Pact does support operation on list structures via
-[map](pact-functions.html#map), [fold](pact-functions.html#fold) and
-[filter](pact-functions.html#filter), but since there is no ability to define
-infinite lists, these are necessarily bounded.
+[map](/pact/reference/functions#maph107868),
+[fold](/pact/reference/functions#foldh3148801#fold) and
+[filter](/pact/reference/functions#filterh-1274492040), but since there is no
+ability to define infinite lists, these are necessarily bounded.
 
 Turing-incompleteness allows Pact module loading to resolve all references in
 advance, meaning that instead of addressing functions in a lookup table, the
@@ -1472,15 +1480,17 @@ is an example of the performance advantages of a Turing-incomplete language.
 ### Single-assignment Variables
 
 Pact allows variable declarations in [let expressions](#let) and
-[bindings](#bindings). Variables are immutable: they cannot be re-assigned, or
-modified in-place.
+[bindings](/pact/reference/syntax#bindingsh1004766894). Variables are immutable:
+they cannot be re-assigned, or modified in-place.
 
 A common variable declaration occurs in the
-[with-read](pact-functions.html#with-read) function, assigning variables to
-column values by name. The [bind](pact-functions.html#bind) function offers this
-same functionality for objects.
+[with-read](/pact/reference/functions/database#with-readh866473533) function,
+assigning variables to column values by name. The
+[bind](pact-functions.html#bind) function offers this same functionality for
+objects.
 
-Module-global constant values can be declared with [defconst](#defconst).
+Module-global constant values can be declared with
+[defconst](/pact/reference/syntax#defconsth645951102).
 
 ### Data Types
 
@@ -1498,7 +1508,9 @@ Pact's supported types are:
 - [Keysets](#keysets) and [Guards](#guards)
 - [Lists](#lists)
 - [Objects](#objects)
-- [Function](#defun), [pact](#defpact), and [capability](#defcap) definitions
+- [Function](/pact/reference/syntax#defunh95462750),
+  [pact](/pact/reference/syntax#defpacth1545231271), and [capability](#defcap)
+  definitions
 - [Tables](#deftable)
 - [Schemas](#defschema)
 
@@ -1517,8 +1529,9 @@ Design transactions so they can be executed with a single function call.
 
 When calling module functions in transactions, use
 [reference syntax](#references) instead of importing the module with
-[use](#use). When defining modules that reference other module functions, `use`
-is fine, as those references will be inlined at module definition time.
+[use](/pact/reference/syntax#useh116103). When defining modules that reference
+other module functions, `use` is fine, as those references will be inlined at
+module definition time.
 
 #### Hardcoded arguments vs. message values
 
@@ -1572,33 +1585,38 @@ short-circuiting on success.
 
 #### Use built-in keyset predicates
 
-The built-in keyset functions [keys-all](pact-functions.html#keys-all),
-[keys-any](pact-functions.html#keys-any), [keys-2](pact-functions.html#keys-2)
-are hardcoded in the interpreter to execute quickly. Custom keysets require
-runtime resolution which is slower.
+The built-in keyset functions
+[keys-all](/pact/reference/functions/keysets#keys-allh517472840),
+[keys-any](/pact/reference/functions/keysets#keys-anyh517472915),
+[keys-2](/pact/reference/functions/keysets#keys-2h-1134655847) are hardcoded in
+the interpreter to execute quickly. Custom keysets require runtime resolution
+which is slower.
 
 ### Functional Concepts
 
 Pact includes the functional-programming "greatest hits":
-[map](pact-functions.html#map), [fold](pact-functions.html#fold) and
-[filter](pact-functions.html#filter). These all employ
-[partial application](#partial-application), where the list item is appended
-onto the application arguments in order to serially execute the function.
+[map](/pact/reference/functions#maph107868),
+[fold](/pact/reference/functions#foldh3148801) and
+[filter](/pact/reference/functions#filterh-1274492040). These all employ
+[partial application](/pact/reference/syntax#partial-applicationh1147799825),
+where the list item is appended onto the application arguments in order to
+serially execute the function.
 
 ```pact
 (map (+ 2) [1 2 3])
 (fold (+) "" ["Concatenate" " " "me"])
 ```
 
-Pact also has [compose](pact-functions.html#compose), which allows "chaining"
-applications in a functional style.
+Pact also has [compose](/pact/reference/functions#composeh950497682), which
+allows "chaining" applications in a functional style.
 
 ### Pure execution
 
 In certain contexts Pact can guarantee that computation is "pure", which simply
 means that the database state will not be modified. Currently, `enforce`,
 `enforce-one` and keyset predicate evaluation are all executed in a pure
-context. [defconst](#defconst) memoization is also pure.
+context. [defconst](/pact/reference/syntax#defconsth645951102) memoization is
+also pure.
 
 ### LISP
 
@@ -1664,23 +1682,25 @@ described in the next section.
 ## Asynchronous Transaction Automation with Pacts
 
 "Pacts" are multi-stage sequential transactions that are defined as a single
-body of code called a [pact](#defpact). Defining a multi-step interaction as a
-pact ensures that transaction participants will enact an agreed sequence of
-operations, and offers a special "execution scope" that can be used to create
-and manage data resources only during the lifetime of a given multi-stage
-interaction.
+body of code called a [pact](/pact/reference/syntax#defpacth1545231271).
+Defining a multi-step interaction as a pact ensures that transaction
+participants will enact an agreed sequence of operations, and offers a special
+"execution scope" that can be used to create and manage data resources only
+during the lifetime of a given multi-stage interaction.
 
 Pacts are a form of _coroutine_, which is a function that has multiple exit and
-re-entry points. Pacts are composed of [steps](#step) such that only a single
-step is executed in a given blockchain transaction. Steps can only be executed
-in strict sequential order.
+re-entry points. Pacts are composed of
+[steps](/pact/reference/syntax#steph3540684) such that only a single step is
+executed in a given blockchain transaction. Steps can only be executed in strict
+sequential order.
 
 A pact is defined with arguments, similarly to function definition. However,
 arguments values are only evaluated in the execution of the initial step, after
 which those values are available unchanged to subsequent steps. To share new
-values with subsequent steps, a step can [yield](pact-functions.html#yield)
-values which the subsequent step can recover using the special
-[resume](pact-functions.html#resume) binding form.
+values with subsequent steps, a step can
+[yield](pact/reference/functions#yieldh114974605) values which the subsequent
+step can recover using the special
+[resume](/pact/reference/functions#resumeh-934426579) binding form.
 
 Pacts are comprised of steps that can only execute in strict sequence. Any
 enforcement of who can execute a step happens within the code of the step
@@ -1700,9 +1720,9 @@ all necessary cancel options.
 ### Yield and Resume
 
 A step can yield values to the following step using
-[yield](pact-functions.html#yield) and [resume](pact-functions.html#resume).
-This is an unforgeable value, as it is maintained within the blockchain pact
-scope.
+[yield](pact/reference/functions#yieldh114974605) and
+[resume](/pact/reference/functions#resumeh-934426579). This is an unforgeable
+value, as it is maintained within the blockchain pact scope.
 
 ### Pact execution scope and pact-id
 
@@ -1736,7 +1756,8 @@ Pact modules.
 Once loaded, a Pact module is associated with a hash computed from the module's
 source code text. This module hash uniquely identifies the version of the
 module. Hashes are base64url-encoded BLAKE2 256-bit hashes. Module hashes can be
-examined with [describe-module](pact-functions.html#describe-module):
+examined with
+[describe-module](/pact/reference/functions/database#describe-moduleh-1618399314):
 
 ```bash
 pact> (at "hash" (describe-module 'accounts))
@@ -1745,10 +1766,11 @@ pact> (at "hash" (describe-module 'accounts))
 
 ### Pinning module versions with use
 
-The [use](#use) special form allows a module hash to be specified, in order to
-pin the dependency version. When used within a module declaration, it introduces
-the dependency hash value into the module's hash. This allows a
-"dependency-only" upgrade to push the upgrade to the module version.
+The [use](/pact/reference/syntax#useh116103) special form allows a module hash
+to be specified, in order to pin the dependency version. When used within a
+module declaration, it introduces the dependency hash value into the module's
+hash. This allows a "dependency-only" upgrade to push the upgrade to the module
+version.
 
 ### Inlined Dependencies: No Leftpad
 

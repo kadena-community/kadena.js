@@ -414,9 +414,8 @@ rather than the variable **from-bal**.
 
 ### Map
 
-[Map](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=at#map)
-allows you to apply a specific operation to all elements within a list and
-return the results.
+[Map](/pact/reference/functions#maph107868) allows you to apply a specific
+operation to all elements within a list and return the results.
 
 To create a mapping, use the keyword **map** followed by the operation and the
 list.
@@ -449,9 +448,9 @@ You can use any of the operators available in Pact when creating a mapping.
 
 ### Format
 
-**[Format](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=format#format)**
-allows you to piece messages together using a mix of strings and variables.
-Formatting is great to use any time you need to send messages to your users.
+**[Format](/pact/reference/functions#formath-1268779017)** allows you to piece
+messages together using a mix of strings and variables. Formatting is great to
+use any time you need to send messages to your users.
 
 To get started with the format function, paste the example from the
 documentation into your terminal. When you run this, you’ll see that what you
@@ -715,7 +714,7 @@ and the capability has not yet been granted.
 ### Select
 
 The `select` built-in funciton can be found
-[here](https://pact-language.readthedocs.io/en/stable/pact-functions.html?highlight=select#select).
+[here](/pact/beginner/schemas-and-tables#selecth-1822154468).
 
 The `select` function is able to pull information from a table under specific
 conditions.

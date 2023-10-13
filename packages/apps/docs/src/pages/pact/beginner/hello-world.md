@@ -163,8 +163,7 @@ module.
 ### Define a Function
 
 The next step is to create the contract functions. Functions are defined within
-Pact modules using the keyword
-(defun)[https://pact-language.readthedocs.io/en/latest/pact-reference.html#defun].
+Pact modules using the keyword (defun)[/pact/reference/syntax#defunh95462750].
 For this smart contract, you’ll define a function named **hello** that takes a
 parameter called **name**.
 
@@ -178,9 +177,8 @@ parameter called **name**.
 
 Within this function, you’ll write a formatted line to output into the REPL. You
 can do this using the keyword
-[format](https://pact-language.readthedocs.io/en/latest/pact-functions.html#format).
-Format allows you to manipulate strings and will help you specify the output of
-the function.
+[format](/pact/reference/functions#formath-1268779017). Format allows you to
+manipulate strings and will help you specify the output of the function.
 
 ```pact title=" "
 (format "Hello {}!" [name])

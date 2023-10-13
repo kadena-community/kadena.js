@@ -168,7 +168,7 @@ Keysets are defined via the (`define-keyset`) function. This function takes a
 name and a keyset as arguments. When evaluated, Pact will either register the
 keyset at the given name on Chainweb or, if the name is already registered, then
 it will “rotate” (ie. update) the keyset to the new value.
-[#define-keyset](https://pact-language.readthedocs.io/en/stable/pact-functions.html#define-keyset)
+[#define-keyset](/pact/reference/functions/keysets#define-keyseth1939391989)
 
 When registering a keyset in a smart contract it’s a common practice to send the
 keyset in the deployment transaction data instead of hardcoding it into the
@@ -354,7 +354,7 @@ Our faucet contract has a specific range of values that it will allow the
 per-request and per-account limits to be set to. It’s useful to capture these
 values in variables that our tests, module code, and other modules on Chainweb
 can refer to. To expose a constant value, use (defconst).
-[#defconst](https://pact-language.readthedocs.io/en/latest/pact-reference.html#defconst)
+[#defconst](/pact/reference/syntax#defconsth645951102)
 
 ```pact
     (defconst FAUCET_ACCOUNT "goliath-faucet
@@ -606,7 +606,7 @@ there (ie. it has requested funds before), or assume the default limits if not.
 There are a number of functions for reading and writing tables. One of the most
 common is (`with-default-read`), which is used to read a row from a table, with
 a fallback value in the case the row does not exist.
-[#with-default-read](https://pact-language.readthedocs.io/en/stable/pact-functions.html#with-default-read)
+[#with-default-read](/pact/reference/functions/database#with-default-readh1087687497)
 
 The `:=` operator indicates that we are storing the value of the column on the
 left-hand side in the variable name on the right-hand side within the scope of
@@ -742,7 +742,7 @@ value in case the account had never requested funds before. This function is
 different: it should not be possible to update the limits for an account that
 hasn’t yet requested anything. (`with-read`) will fail the transaction if the
 given account does not exist in the table, and read the row otherwise.
-[#with-read](https://pact-language.readthedocs.io/en/stable/pact-functions.html#with-read)
+[#with-read](/pact/reference/functions/database#with-readh866473533)
 
 Note that when using (`with-read`) it is not necessary to bind variables to
 every column in the table. You can just use the columns you want.
@@ -760,7 +760,7 @@ every column in the table. You can just use the columns you want.
 We used (`write`) before because we were inserting a new row into the table if
 the account didn’t yet exist. To update one or more columns in an existing row
 you can use (`update`).
-[#update](https://pact-language.readthedocs.io/en/stable/pact-functions.html#update)
+[#update](/pact/beginner/schemas-and-tables#updateh-1754979095)
 
 Like (with-read), it’s only necessary to include the columns that you are
 updating, not all the columns.

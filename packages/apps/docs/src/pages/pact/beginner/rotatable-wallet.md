@@ -131,7 +131,7 @@ Complete define and read the **module-admin-keyset** and the
 
 View
 
-[define-keyset](https://pact-language.readthedocs.io/en/latest/pact-functions.html#define-keyset)
+[define-keyset](/pact/reference/functions/keysets#define-keyseth1939391989#define-keyset)
 
 for more information on defining and reading keysets.
 
@@ -263,8 +263,7 @@ with a given id.
 
 View
 [enforce-keyset](https://pact-language.readthedocs.io/en/latest/pact-functions.html#enforce-keyset),
-[with-read](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=bindings#with-read),
-and
+[with-read](/pact/reference/functions/database#with-readh866473533), and
 [bind](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=bindings#bind)
 for more information related to completing this challenge.
 
@@ -307,11 +306,9 @@ keyset to update their nickname in the **users** table.
 
 :::info
 
-View
-[update](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=update#update)
-and
-[format](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=update#format)
-for more information related to completing this challenge.
+View [update](/pact/beginner/schemas-and-tables#updateh-1754979095) and
+[format](/pact/reference/functions#formath-1268779017) for more information
+related to completing this challenge.
 
 :::
 
@@ -341,11 +338,9 @@ change their keyset.
 
 :::info
 
-View
-[update](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=update#update)
-and
-[format](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=update#format)
-for more information related to completing this challenge.
+View [update](/pact/beginner/schemas-and-tables#updateh-1754979095) and
+[format](/pact/reference/functions#formath-1268779017t) for more information
+related to completing this challenge.
 
 :::
 
