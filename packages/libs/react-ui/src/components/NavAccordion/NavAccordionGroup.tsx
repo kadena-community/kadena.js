@@ -18,10 +18,8 @@ import React, { Children, useState } from 'react';
 
 export interface INavAccordionGroupProps {
   children: FunctionComponentElement<INavAccordionLinkProps>[];
-  index?: number;
   onClose?: () => void;
   onOpen?: () => void;
-  onClick?: () => void;
   title: string;
 }
 
