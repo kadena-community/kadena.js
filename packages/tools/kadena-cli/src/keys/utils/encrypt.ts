@@ -6,7 +6,7 @@ import {
 } from 'crypto';
 
 /** Constant salt value used for deriving keys */
-const SALT: string = 'FkM5B23nB6LVY7mrwDeh';
+const SALT: Buffer = Buffer.from('FkM5B23nB6LVY7mrwDeh');
 
 /**
  * Derive a cryptographic key from the provided password.
@@ -21,55 +21,64 @@ function deriveKey(password: string): Buffer {
  * Encrypt the provided text using AES-256-GCM algorithm.
  * @param {Buffer} text - Text to encrypt.
  * @param {string} password - User's password.
- * @returns {{ cipherText: Buffer; iv: Buffer }} - Returns the encrypted text and initialization vector.
+ * @returns {{ cipherText: Buffer; iv: Buffer; tag: Buffer }} - Returns the encrypted text, initialization vector, and authentication tag.
  */
 export function encrypt(
   text: Buffer,
   password: string,
-): { cipherText: Buffer; iv: Buffer } {
-  const iv = randomBytes(12);
+): { cipherText: Buffer; iv: Buffer; tag: Buffer } {
   const key = deriveKey(password);
+  const iv = randomBytes(12);
   const cipher = createCipheriv('aes-256-gcm', key, iv);
   const cipherText = Buffer.concat([cipher.update(text), cipher.final()]);
-  return { cipherText, iv };
+  const tag = cipher.getAuthTag(); // Capture the authentication tag
+  return {
+    cipherText,
+    iv,
+    tag,
+  };
 }
+
+type Encrypted = ReturnType<typeof encrypt>;
 
 /**
  * Decrypt the provided encrypted text using AES-256-GCM algorithm.
- * @param {Buffer} cipherText - Encrypted text.
- * @param {Buffer} iv - Initialization vector.
+ * @param {Encrypted} encrypted - Encrypted text, initialization vector, and authentication tag.
  * @param {string} password - User's password.
  * @returns {Buffer | undefined} - Returns the decrypted text or undefined if decryption fails.
  */
 export function decrypt(
-  cipherText: Buffer,
-  iv: Buffer,
+  encrypted: Encrypted,
   password: string,
 ): Buffer | undefined {
+  const key = deriveKey(password);
+  const decipher = createDecipheriv('aes-256-gcm', key, encrypted.iv);
+  decipher.setAuthTag(encrypted.tag); // Set the authentication tag
   try {
-    const key = deriveKey(password);
-    const decipher = createDecipheriv('aes-256-gcm', key, iv);
-    return Buffer.concat([decipher.update(cipherText), decipher.final()]);
-  } catch (error) {
+    return Buffer.concat([
+      decipher.update(encrypted.cipherText),
+      decipher.final(),
+    ]);
+  } catch (err) {
     console.warn('Failed to decrypt seed');
     return undefined;
   }
 }
 
 /**
- * Convert an ArrayBuffer to a Base64 encoded string.
+ * Convert a Buffer to a Base64 encoded string.
  * @param {Buffer} buffer - Buffer to convert.
  * @returns {string} - Returns the Base64 encoded string.
  */
-export function arrayBufferToBase64(buffer: Buffer): string {
+export function bufferToBase64(buffer: Buffer): string {
   return buffer.toString('base64');
 }
 
 /**
- * Convert a Base64 encoded string to an ArrayBuffer.
+ * Convert a Base64 encoded string to a Buffer.
  * @param {string} base64 - Base64 encoded string to convert.
- * @returns {Buffer} - Returns the resulting ArrayBuffer.
+ * @returns {Buffer} - Returns the resulting Buffer.
  */
-export function base64ToArrayBuffer(base64: string): Buffer {
+export function base64ToBuffer(base64: string): Buffer {
   return Buffer.from(base64, 'base64');
 }
