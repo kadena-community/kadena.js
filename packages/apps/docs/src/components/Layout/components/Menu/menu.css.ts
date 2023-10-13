@@ -13,6 +13,7 @@ export const menuClass = style([
     overflow: 'hidden',
     top: '$17',
     bottom: 0,
+    paddingBottom: '$4',
   }),
   {
     height: `calc(100vh - ${vars.sizes.$13})`,
@@ -63,7 +64,7 @@ export const menuInLayoutVariants = styleVariants({
 });
 
 export const menuLayoutVariants = styleVariants({
-  landing: responsiveStyle({ md: { paddingTop: '290px' } }),
+  landing: {},
   normal: {},
 });
 

@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'temporal operators', 'pact operators']
 
 # Temporal operators
 
-### add-time
+## add-time
 
 ```pact
 (add-time t s)
@@ -26,3 +26,17 @@ tags: ['pact', 'language reference', 'temporal operators', 'pact operators']
 Add seconds to a time
 
 Supported in either invariants or properties.
+
+## diff-time
+
+```pact
+(diff-time a b)
+```
+
+- takes `a`: `time`
+- takes `b`: `time`
+- produces `decimal`
+
+Time difference in seconds of `a` - `b`
+
+Supported in properties only.

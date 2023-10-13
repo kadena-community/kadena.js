@@ -13,7 +13,7 @@ tags:
 
 # Quantification operators
 
-### forall
+## forall
 
 ```pact
 (forall (x:string) y)
@@ -29,7 +29,7 @@ Bind a universally-quantified variable
 
 Supported in properties only.
 
-### exists
+## exists
 
 ```pact
 (exists (x:string) y)
@@ -45,7 +45,7 @@ Bind an existentially-quantified variable
 
 Supported in properties only.
 
-### column-of
+## column-of
 
 ```pact
 (column-of t)

@@ -13,7 +13,7 @@ tags:
 
 # Transactional operators
 
-### abort
+## abort
 
 ```pact
 abort
@@ -29,7 +29,7 @@ this functionality.
 
 Supported in properties only.
 
-### success
+## success
 
 ```pact
 success
@@ -45,7 +45,7 @@ this functionality.
 
 Supported in properties only.
 
-### governance-passes
+## governance-passes
 
 ```pact
 governance-passes
@@ -63,7 +63,7 @@ describing the scenarios where the predicate passes or fails.
 
 Supported in properties only.
 
-### result
+## result
 
 ```pact
 result

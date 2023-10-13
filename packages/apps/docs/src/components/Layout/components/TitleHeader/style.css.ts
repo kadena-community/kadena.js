@@ -1,10 +1,15 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { $$backgroundOverlayColor, $$pageWidth } from '../../global.css';
+import {
+  $$backgroundOverlayColor,
+  $$pageWidth,
+  globalClass,
+} from '../../global.css';
 
 import { style } from '@vanilla-extract/css';
 
 export const headerWrapperClass = style([
+  globalClass,
   sprinkles({
     position: 'relative',
     display: 'grid',

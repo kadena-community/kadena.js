@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'capabilities']
 
 # Capabilities
 
-### compose-capability
+## compose-capability
 
 _capability_&nbsp;` -> bool` _&rarr;_&nbsp;`bool`
 
@@ -28,7 +28,7 @@ the scope of OUTER-BODY.
 (compose-capability (TRANSFER src dest))
 ```
 
-### emit-event
+## emit-event
 
 _capability_&nbsp;` -> bool` _&rarr;_&nbsp;`bool`
 
@@ -39,7 +39,7 @@ CAPABILITY is not @managed or @event.
 (emit-event (TRANSFER "Bob" "Alice" 12.0))
 ```
 
-### enforce-guard
+## enforce-guard
 
 _guard_&nbsp;`guard` _&rarr;_&nbsp;`bool`
 
@@ -52,7 +52,7 @@ Execute GUARD, or defined keyset KEYSETNAME, to enforce desired predicate logic.
 (enforce-guard row-guard)
 ```
 
-### install-capability
+## install-capability
 
 _capability_&nbsp;` -> bool` _&rarr;_&nbsp;`string`
 
@@ -60,23 +60,23 @@ Specifies, and provisions install of, a _managed_ CAPABILITY, defined in a
 'defcap' in which a '@managed' tag designates a single parameter to be managed
 by a specified function. After install, CAPABILITY must still be brought into
 scope using 'with-capability', at which time the 'manager function' is invoked
-to validate the request. The manager function is of type 'managed:\<p\>
-requested:\<p\> -> \<p\>', where '\<p\>' indicates the type of the managed
-parameter, such that for '(defcap FOO (bar:string baz:integer) @managed baz
-FOO-mgr ...)', the manager function would be '(defun FOO-mgr:integer
-(managed:integer requested:integer) ...)'. Any capability matching the 'static'
-(non-managed) parameters will cause this function to be invoked with the current
-managed value and that of the requested capability. The function should perform
-whatever logic, presumably linear, to validate the request, and return the new
-managed value representing the 'balance' of the request. NOTE that signatures
-scoped to a managed capability cause the capability to be automatically
-provisioned for install similarly to one installed with this function.
+to validate the request. The manager function is of type 'managed:<p>
+requested:<p> -> <p>', where '<p>' indicates the type of the managed parameter,
+such that for '(defcap FOO (bar:string baz:integer) @managed baz FOO-mgr ...)',
+the manager function would be '(defun FOO-mgr:integer (managed:integer
+requested:integer) ...)'. Any capability matching the 'static' (non-managed)
+parameters will cause this function to be invoked with the current managed value
+and that of the requested capability. The function should perform whatever
+logic, presumably linear, to validate the request, and return the new managed
+value representing the 'balance' of the request. NOTE that signatures scoped to
+a managed capability cause the capability to be automatically provisioned for
+install similarly to one installed with this function.
 
 ```pact
 (install-capability (PAY "alice" "bob" 10.0))
 ```
 
-### require-capability
+## require-capability
 
 _capability_&nbsp;` -> bool` _&rarr;_&nbsp;`bool`
 
@@ -87,7 +87,7 @@ environment.
 (require-capability (TRANSFER src dest))
 ```
 
-### with-capability
+## with-capability
 
 _capability_&nbsp;` -> bool` _body_&nbsp;`[*]` _&rarr;_&nbsp;`<a>`
 

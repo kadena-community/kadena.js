@@ -12,7 +12,7 @@ tags: ['pact', 'language reference', 'commitments']
 
 # Commitments
 
-### decrypt-cc20p1305
+## decrypt-cc20p1305
 
 _ciphertext_&nbsp;`string` _nonce_&nbsp;`string` _aad_&nbsp;`string`
 _mac_&nbsp;`string` _public-key_&nbsp;`string` _secret-key_&nbsp;`string`
@@ -30,7 +30,7 @@ is unpadded base64URL.
 (decrypt-cc20p1305 ciphertext nonce aad mac pubkey privkey)
 ```
 
-### validate-keypair
+## validate-keypair
 
 _public_&nbsp;`string` _secret_&nbsp;`string` _&rarr;_&nbsp;`bool`
 

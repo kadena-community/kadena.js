@@ -19,7 +19,7 @@ tags:
 
 # List operators
 
-### at
+## at
 
 ```pact
 (at k l)
@@ -41,7 +41,7 @@ projection
 
 Supported in either invariants or properties.
 
-### length
+## length
 
 ```pact
 (length s)
@@ -54,7 +54,7 @@ List length
 
 Supported in either invariants or properties.
 
-### contains
+## contains
 
 ```pact
 (contains x xs)
@@ -84,7 +84,7 @@ List / string / object contains
 
 Supported in either invariants or properties.
 
-### enumerate
+## enumerate
 
 ```pact
 (enumerate from to step)
@@ -99,7 +99,7 @@ Returns a sequence of numbers as a list
 
 Supported in either invariants or properties.
 
-### reverse
+## reverse
 
 ```pact
 (reverse xs)
@@ -112,7 +112,7 @@ reverse a list of values
 
 Supported in either invariants or properties.
 
-### sort
+## sort
 
 ```pact
 (sort xs)
@@ -125,7 +125,7 @@ sort a list of values
 
 Supported in either invariants or properties.
 
-### drop
+## drop
 
 ```pact
 (drop n xs)
@@ -140,7 +140,7 @@ negative)
 
 Supported in either invariants or properties.
 
-### take
+## take
 
 ```pact
 (take n xs)
@@ -154,7 +154,7 @@ take the first `n` values from `xs` (taken from the end if `n` is negative)
 
 Supported in either invariants or properties.
 
-### make-list
+## make-list
 
 ```pact
 (make-list n a)
@@ -168,7 +168,7 @@ create a new list with `n` copies of `a`
 
 Supported in either invariants or properties.
 
-### map
+## map
 
 ```pact
 (map f as)
@@ -182,7 +182,7 @@ apply `f` to each element in a list
 
 Supported in either invariants or properties.
 
-### filter
+## filter
 
 ```pact
 (filter f as)
@@ -196,7 +196,7 @@ filter a list by keeping the values for which `f` returns `true`
 
 Supported in either invariants or properties.
 
-### distinct
+## distinct
 
 ```pact
 (distinct xs)
@@ -209,7 +209,7 @@ returns a list of distinct values
 
 Supported in either invariants or properties.
 
-### fold
+## fold
 
 ```pact
 (fold f a bs)
@@ -218,13 +218,13 @@ Supported in either invariants or properties.
 - takes `f`: _a_ -> _b_ -> _a_
 - takes `a`: _a_
 - takes `bs`: [_b_]
-- produces [_a_]
+- produces _a_
 
 reduce a list by applying `f` to each element and the previous result
 
 Supported in either invariants or properties.
 
-### hash
+## hash
 
 ```pact
 (hash xs)

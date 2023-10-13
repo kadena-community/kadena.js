@@ -1,9 +1,9 @@
 import { Heading } from '@kadena/react-ui';
 
+import apiSpecs from '@/_generated/specs/pact.openapi.json';
 import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs/Specs';
 import type { ILayout } from '@/Layout';
-import apiSpecs from '@/specs/pact/pact.openapi.json';
 import {
   checkSubTreeForActive,
   getPathName,
