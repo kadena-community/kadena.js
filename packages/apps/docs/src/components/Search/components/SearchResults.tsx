@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Heading,
   Notification,
@@ -137,29 +138,28 @@ export const SearchResults: FC<IProps> = ({
         </Tabs.Content>
 
         <Tabs.Content id="qa">
-          <Notification.Root
-            expanded={true}
-            icon="AlertBox"
-            title="QA search is in beta"
-          >
-            QA search our new vector search, where our search modal will give a
-            generated answer on your question.
-            <br />
-            The answer is based on all the documentation and blogposts on this
-            website.
-            <br />
-            Because we are still testing this search, answers could be a bit of
-            or just plain wrong.
-            <p>
+          <Box marginBottom="$8">
+            <Notification.Root
+              expanded={true}
+              icon="AlertBox"
+              title="QA search is in beta"
+            >
+              QA search our latest AI vector-based search, designed to provide
+              instant answers to your queries.
               <br />
-              <strong>So why put it online?</strong>
+              These responses are generated using information extracted from all
+              the documentation and blog posts available on our website.
               <br />
-              By having our alpha version online, we hope we can gather more
-              feedback on how the QA search performs.
-              <br />
-              And then tweak the results to help you, the users, better.
-            </p>
-          </Notification.Root>
+              Please be aware that, as we are in the process of training our
+              model, the answers provided may not always be accurate.
+              <p>
+                <strong>But why launch it now?</strong>
+                By making this alpha version accessible online, we aim to
+                collect valuable data that will aid us in refining and enhancing
+                the accuracy of our model’s responses in the future.
+              </p>
+            </Notification.Root>
+          </Box>
           <div className={scrollBoxClasses}>
             {isLoading && (
               <div className={loadingWrapperClass}>
@@ -184,7 +184,7 @@ export const SearchResults: FC<IProps> = ({
               return (
                 <div key={`${interaction.input}-${idx}`}>
                   <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                  <div>
+                  <Box marginTop="$8">
                     <Heading variant="h4">Sources:</Heading>
                     {metadata.length > 1 && (
                       <BrowseSection>
@@ -201,7 +201,7 @@ export const SearchResults: FC<IProps> = ({
                         })}
                       </BrowseSection>
                     )}
-                  </div>
+                  </Box>
                 </div>
               );
             })}
