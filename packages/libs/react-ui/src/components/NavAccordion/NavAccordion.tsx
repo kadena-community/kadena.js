@@ -8,6 +8,7 @@ import {
 } from './NavAccordion.context';
 import { navAccordionWrapperClass } from './NavAccordion.css';
 
+import { darkThemeClass } from '@theme/index';
 import type { FC, FunctionComponentElement } from 'react';
 import React, { useState } from 'react';
 
@@ -17,20 +18,32 @@ type Child = FunctionComponentElement<
 export interface INavAccordionRootProps {
   children?: Child[];
   linked?: boolean;
+  darkMode?: boolean;
 }
 
 export const NavAccordionRoot: FC<INavAccordionRootProps> = ({
   children,
   linked = false,
+  darkMode = false,
 }) => {
   const [openSections, setOpenSections] =
     useState<NavAccordionState>(initialOpenSections);
+
+  const NavElement = (): JSX.Element => (
+    <nav className={navAccordionWrapperClass}>{children}</nav>
+  );
 
   return (
     <NavAccordionContext.Provider
       value={{ openSections, setOpenSections, linked }}
     >
-      <nav className={navAccordionWrapperClass}>{children}</nav>
+      {darkMode ? (
+        <div className={darkThemeClass}>
+          <NavElement />
+        </div>
+      ) : (
+        <NavElement />
+      )}
     </NavAccordionContext.Provider>
   );
 };
