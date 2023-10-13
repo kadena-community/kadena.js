@@ -1,20 +1,25 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 
-import type { IModule } from '.';
+import type { IChainModule } from './types';
 
 export const getModulesMap = (
-  modules: IModule[],
-): Map<string, ChainwebChainId[]> => {
-  const modulesMap = new Map();
+  modules: IChainModule[],
+): Map<string, Array<{ chainId: ChainwebChainId; hash?: string }>> => {
+  const modulesMap = new Map<
+    string,
+    Array<{ chainId: ChainwebChainId; hash?: string }>
+  >();
 
   modules.forEach((module) => {
     if (modulesMap.has(module.moduleName)) {
       modulesMap.set(module.moduleName, [
-        ...modulesMap.get(module.moduleName),
-        module.chainId,
+        ...modulesMap.get(module.moduleName)!,
+        { chainId: module.chainId, hash: module.hash },
       ]);
     } else {
-      modulesMap.set(module.moduleName, [module.chainId]);
+      modulesMap.set(module.moduleName, [
+        { chainId: module.chainId, hash: module.hash },
+      ]);
     }
   });
 

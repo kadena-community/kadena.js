@@ -10,6 +10,7 @@ export const articleClass = style([
     backgroundColor: 'transparent',
   }),
   {
+    zIndex: 3,
     paddingInline: vars.sizes.$4,
 
     ...responsiveStyle({

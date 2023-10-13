@@ -1,9 +1,8 @@
 import * as fs from 'fs';
-import chalk from 'chalk';
 import {
   getAuthorData,
   getTagsData,
-} from './../utils/staticGeneration/getData.mjs';
+} from './../utils/staticGeneration/getJsonData.mjs';
 import { getFlatData } from './../utils/staticGeneration/flatPosts.mjs';
 import { format, isValid } from 'date-fns';
 
@@ -11,9 +10,9 @@ const MENUFILE = './public/sitemap.xml';
 const URL = 'https://docs.kadena.io';
 
 const errors = [];
-const posts = getFlatData();
+const success = [];
+
 const authors = getAuthorData();
-const tags = getTagsData();
 
 const setPrio = (root) => {
   if (root.includes('/blogchain')) return '0.5';
@@ -28,7 +27,7 @@ const formatDate = (dateStr) => {
   return format(date, 'yyyy-MM-dd');
 };
 
-const getPosts = (root) => {
+const getPosts = (root, posts) => {
   return posts
     .map(
       (post) => `
@@ -45,7 +44,7 @@ const getPosts = (root) => {
     .join('');
 };
 
-const getTags = (root) => {
+const getTags = (root, tags) => {
   return tags
     .map(
       (tag) => `
@@ -67,10 +66,9 @@ const getAuthors = (root) => {
     .join('');
 };
 
-const init = () => {
-  console.log(
-    '========================================== START CREATE SITEMAP ==\n\n',
-  );
+export const createSitemap = async () => {
+  const tags = await getTagsData();
+  const posts = await getFlatData();
 
   const fileStr = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -83,7 +81,7 @@ const init = () => {
     <url>  
       <loc>${URL}/tags</loc>
     </url>  
-      ${getTags(URL)}
+      ${getTags(URL, tags)}
     <url>  
       <loc>${URL}/authors</loc>
     </url>  
@@ -91,23 +89,18 @@ const init = () => {
     <url>
       <loc>${URL}/help</loc>
     </url>
-    ${getPosts(URL)}
+    ${getPosts(URL, posts)}
     </urlset>`;
 
   if (errors.length) {
     errors.map((error) => {
-      console.warn(chalk.red('⨯'), error);
+      errors.push(error);
     });
-    process.exitCode = 1;
   } else {
     fs.writeFileSync(MENUFILE, fileStr);
 
-    console.log(chalk.green('✓'), 'SITEMAP CREATED');
+    success.push('sitemap successfully created');
   }
 
-  console.log(
-    '========================================== END CREATE SITEMAP ====\n\n',
-  );
+  return { errors, success };
 };
-
-init();

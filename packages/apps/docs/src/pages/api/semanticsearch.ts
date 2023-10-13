@@ -14,7 +14,7 @@ interface IQueryResult extends StreamMetaData {
 export const filePathToRoute = (filename?: string, header?: string): string => {
   if (!filename) return '';
   // Remove "src/pages" from the start of the filename
-  let route = filename.replace(/^src\/pages/, '');
+  let route = filename.replace(/^src\/pages(\/docs)?/, '');
 
   // Remove file extension from the filename
   route = route.replace(/\.(md|mdx|tsx)$/, '');
@@ -117,7 +117,6 @@ const semanticSearch = async (
   req: ISemanticSearchRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  console.log('req', req.query);
   const { query: { search = '', limit = '10' } = {} } = req;
 
   const limitNumber = parseInt(limit, 10);

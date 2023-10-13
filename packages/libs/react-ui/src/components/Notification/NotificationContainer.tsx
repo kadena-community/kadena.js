@@ -10,6 +10,7 @@ import {
   displayVariants,
   expandVariants,
   inlineVariants,
+  titleClass,
 } from './Notification.css';
 
 import { SystemIcon } from '@components/Icon';
@@ -65,7 +66,7 @@ export const NotificationContainer: FC<INotificationProps> = ({
         <Icon size="md" />
 
         <div className={contentClassList}>
-          {title && <h4>{title}</h4>}
+          {title && <span className={titleClass}>{title}</span>}
           <div className={descriptionClassList}>{children}</div>
         </div>
 
