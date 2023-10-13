@@ -9,8 +9,14 @@ import type { INavAccordionGroupProps } from './NavAccordionGroup';
 import { NavAccordionGroup } from './NavAccordionGroup';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
 
-import { accordionSectionClass } from '@components/Accordion/Accordion.css';
-import { AccordionHeading } from '@components/Accordion/AccordionHeading';
+import {
+  accordionButtonClass,
+  accordionHeadingTitleClass,
+  accordionSectionClass,
+  accordionToggleIconClass,
+} from '@components/Accordion/Accordion.css';
+import { SystemIcon } from '@components/Icon';
+import classNames from 'classnames';
 import type { FC, FunctionComponentElement as FCElement } from 'react';
 import React, { Children, useContext } from 'react';
 
@@ -50,12 +56,18 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
 
   return (
     <section className={accordionSectionClass}>
-      <AccordionHeading
-        title={title}
-        isOpen={isOpen}
-        icon={'Close'}
+      <button
+        className={classNames([accordionButtonClass])}
         onClick={handleClick}
-      />
+      >
+        <h3 className={accordionHeadingTitleClass}>{title}</h3>
+        <SystemIcon.Close
+          className={classNames(accordionToggleIconClass, {
+            isOpen,
+          })}
+          size="sm"
+        />
+      </button>
 
       {children && isOpen && (
         <ul className={navAccordionListClass}>
