@@ -1,4 +1,4 @@
-import { HDKEY_EXT } from '../constants/config.js';
+import { HDKEY_ENC_EXT, HDKEY_EXT } from '../constants/config.js';
 import { clearCLI, collectResponses } from '../utils/helpers.js';
 import { processZodErrors } from '../utils/processZodErrors.js';
 
@@ -18,6 +18,10 @@ export function generateHdKeys(program: Command, version: string): void {
       '-f, --fileName <fileName>',
       'Enter a file name to store the key phrase in',
     )
+    .option(
+      '-p, --password <password>',
+      'Enter a password to encrypt the key phrase with',
+    )
     .action(async (args: THdKeygenOptions) => {
       try {
         const responses = await collectResponses(args, hdKeygenQuestions);
@@ -31,13 +35,21 @@ export function generateHdKeys(program: Command, version: string): void {
         // Use the StorageService class
         const storageService = new StorageService();
 
-        const hdKey = await cryptoService.generateSeed();
-        storageService.storeHdKey(hdKey, result.fileName);
+        const hasPassword =
+          result.password !== undefined && result.password.trim() !== '';
+
+        const { words, seed } = await cryptoService.generateSeed(
+          result.password,
+        );
+        storageService.storeHdKey(words, seed, result.fileName, hasPassword);
+
         clearCLI(true);
-        console.log(chalk.green(`Generated HD Key: ${hdKey}${HDKEY_EXT}`));
+        console.log(chalk.green(`Generated HD Key: ${words}`));
         console.log(
           chalk.red(
-            `The HD Key is stored within your keys folder under the filename: ${result.fileName} ! This phrase cannot be recovered if lost!`,
+            `The HD Key is stored within your keys folder under the filename: ${
+              result.fileName
+            }${hasPassword ? HDKEY_ENC_EXT : HDKEY_EXT} !`,
           ),
         );
       } catch (e) {

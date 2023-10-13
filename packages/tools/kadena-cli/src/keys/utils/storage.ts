@@ -1,4 +1,9 @@
-import { HDKEY_EXT, KEY_DIR, PLAINKEY_EXT } from '../../constants/config.js';
+import {
+  HDKEY_ENC_EXT,
+  HDKEY_EXT,
+  KEY_DIR,
+  PLAINKEY_EXT,
+} from '../../constants/config.js';
 import { ensureDirectoryExists } from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 
@@ -92,17 +97,27 @@ export class StorageService {
     }
     return publicKeys;
   }
-
   /**
-   * Stores the mnemonic phrase to the filesystem.
-   * @param {string} mnemonic - The mnemonic phrase to store.
-   * @param {string} fileName - The name of the file to store the mnemonic in.
+   * Stores the mnemonic phrase or seed to the filesystem.
+   * @param {string} words - The mnemonic phrase.
+   * @param {string} seed - The seed.
+   * @param {string} fileName - The name of the file to store the mnemonic or seed in.
+   * @param {boolean} hasPassword - Whether a password was used to generate the seed.
    */
-  public storeHdKey(mnemonic: string, fileName: string): void {
+  public storeHdKey(
+    words: string,
+    seed: string,
+    fileName: string,
+    hasPassword: boolean,
+  ): void {
     ensureDirectoryExists(KEY_DIR);
+
     const sanitizedFilename = sanitizeFilename(fileName).toLowerCase();
-    const storagePath = join(KEY_DIR, `${sanitizedFilename}${HDKEY_EXT}`);
-    writeFileSync(storagePath, mnemonic, 'utf8');
+    const fileExtension = hasPassword ? HDKEY_ENC_EXT : HDKEY_EXT;
+    const dataToStore = hasPassword ? seed : words;
+    const storagePath = join(KEY_DIR, `${sanitizedFilename}${fileExtension}`);
+
+    writeFileSync(storagePath, dataToStore, 'utf8');
   }
 
   /**

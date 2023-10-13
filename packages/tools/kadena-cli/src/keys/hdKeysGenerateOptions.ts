@@ -1,15 +1,35 @@
 import type { IQuestion } from '../utils/helpers.js';
 import { isAlphanumeric } from '../utils/helpers.js';
 
-import { input } from '@inquirer/prompts';
+import { confirm, input, password } from '@inquirer/prompts';
 import { z } from 'zod';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const HdKeygenOptions = z.object({
   fileName: z.string(),
+  password: z.string().optional(),
 });
 
 export type THdKeygenOptions = z.infer<typeof HdKeygenOptions>;
+
+export async function askForPassword(): Promise<string | undefined> {
+  const usePassword = await confirm({
+    message: 'Would you like to protect your seed with a password?',
+  });
+
+  if (!usePassword) {
+    return undefined;
+  }
+  return await password({
+    message: 'Enter a password for your HD key:',
+    validate: function (value) {
+      if (value.length < 8) {
+        return 'Password should be at least 6 characters long.';
+      }
+      return true;
+    },
+  });
+}
 
 export const hdKeygenQuestions: IQuestion<THdKeygenOptions>[] = [
   {
@@ -25,5 +45,9 @@ export const hdKeygenQuestions: IQuestion<THdKeygenOptions>[] = [
         },
       });
     },
+  },
+  {
+    key: 'password',
+    prompt: async () => await askForPassword(),
   },
 ];
