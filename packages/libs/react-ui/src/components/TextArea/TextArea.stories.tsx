@@ -2,7 +2,7 @@ import type { SystemIcon } from '@components/Icon';
 import type { ITextareaProps } from '@components/TextArea';
 import { Textarea } from '@components/TextArea';
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 const meta: Meta<ITextareaProps> = {
   title: 'Form/TextArea',
@@ -46,11 +46,17 @@ export const TextAreaStory: Story = {
     fontFamily: '$mono',
     outlined: true,
   },
-  render: (props) => (
-    <Textarea
-      {...props}
-      id="inlineInputStory"
-      placeholder="This is a placeholder"
-    />
-  ),
+  render: (props) => {
+    const [value, setValue] = useState<string>('');
+
+    return (
+      <Textarea
+        {...props}
+        value={value}
+        onValueChange={({ target }) => setValue(target.value)}
+        id="inlineInputStory"
+        placeholder="This is a placeholder"
+      />
+    );
+  },
 };

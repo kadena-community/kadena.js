@@ -1,7 +1,7 @@
 import type { ITextAreaFieldProps } from '@components/TextAreaField';
 import { TextAreaField } from '@components/TextAreaField';
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 const meta: Meta<ITextAreaFieldProps> = {
   title: 'Form/TextAreaField',
@@ -55,13 +55,23 @@ export const TextFieldStory: Story = {
       id: 'TextFieldStory',
       fontFamily: '$mono',
       placeholder: 'This is a placeholder',
+      value: '',
+      onValueChange: () => {},
     },
   },
-  render: ({ disabled, textAreaProps, ...rest }) => (
-    <TextAreaField
-      disabled={disabled}
-      textAreaProps={textAreaProps}
-      {...rest}
-    />
-  ),
+  render: ({ disabled, textAreaProps, ...rest }) => {
+    const [value, setValue] = useState<string>('');
+
+    return (
+      <TextAreaField
+        disabled={disabled}
+        textAreaProps={{
+          ...textAreaProps,
+          value,
+          onValueChange: ({ target }) => setValue(target.value),
+        }}
+        {...rest}
+      />
+    );
+  },
 };
