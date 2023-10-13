@@ -18,9 +18,15 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-    vi.useFakeTimers().setSystemTime(new Date('2023-07-31'));
-
 describe('runPact', () => {
+  beforeAll(() => {
+    vi.useFakeTimers().setSystemTime(new Date('2023-07-31'));
+  });
+
+  afterAll(() => {
+    vi.useRealTimers();
+  });
+
   it('create a complete pact command from the input and send it to the chain', async () => {
     const mockResponse = {};
 
