@@ -123,7 +123,8 @@ const ExistingAccountFaucetPage: FC = () => {
   );
 
   const testnetNotSelected: boolean = selectedNetwork !== 'testnet04';
-  const disabledButton: boolean = requestStatus.status === 'processing' || testnetNotSelected;
+  const disabledButton: boolean =
+    requestStatus.status === 'processing' || testnetNotSelected;
 
   const {
     register,
