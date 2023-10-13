@@ -17,12 +17,10 @@ test('Fund existing account @mocks', async ({ page, toolsApp, mockHelper }) => {
     await toolsApp.faucetPage.fundAccount(accountsData.publicKey, '0');
 
     await mockHelper.mockResponse('**/poll', pollInProgress);
-    await expect(await toolsApp.faucetPage.notification.getTitle()).toHaveText(
-      'Transaction is being processed...',
-    );
+    await expect(page.getByText('Transaction is being processed...')).toBeVisible();
+
     await mockHelper.mockResponse('**/poll', pollFinished);
-    await expect(await toolsApp.faucetPage.notification.getTitle()).toHaveText(
-      'Transaction successfully completed',
-    );
+    await expect(page.getByText('Transaction successfully completed')).toBeVisible();
+
   });
 });

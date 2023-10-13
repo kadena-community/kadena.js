@@ -8,24 +8,25 @@ export default class ToolsHeaderComponent extends NavHeaderComponent {
 
   public constructor(page: Page) {
     super(page);
+    this._page = page
     this.networkCard = new CardComponent(page);
   }
 
   public async setNetwork(networkLabel: string): Promise<string[]> {
-    return this._componentLocator
+    return this._component
       .getByRole('combobox')
       .selectOption(networkLabel);
   }
 
   public async getNetwork(): Promise<Locator> {
-    return this._componentLocator.getByRole('combobox');
+    return this._component.getByRole('combobox');
   }
   public async addNetwork(
     networkLabel: string,
     chainId: string,
     host: string,
   ): Promise<void> {
-    await this._componentLocator
+    await this._page
       .getByRole('combobox')
       .selectOption('+ add network');
     await this.networkCard.setValueForTextbox('Network Label', networkLabel);

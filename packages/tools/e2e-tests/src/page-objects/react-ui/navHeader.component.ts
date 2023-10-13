@@ -1,16 +1,16 @@
 import type { Locator, Page } from '@playwright/test';
 
 export default class NavHeaderComponent {
-  private _page: Page;
-  public _componentLocator: Locator;
+  protected _page: Page;
+  protected _component: Locator;
 
   public constructor(page: Page) {
     this._page = page;
-    this._componentLocator = this._page.getByTestId('kda-navheader');
+    this._component = this._page.locator('header')
   }
 
   public async goTo(link: string): Promise<void> {
-    return this._componentLocator
+    return this._component
       .getByRole('link', { name: `${link}` })
       .click();
   }
