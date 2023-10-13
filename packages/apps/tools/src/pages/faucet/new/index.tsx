@@ -35,6 +35,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
+import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { blake2sHex } from 'blakejs';
 import useTranslation from 'next-translate/useTranslation';
@@ -87,7 +88,7 @@ const NewAccountFaucetPage: FC = () => {
 
   const schema = z.object({
     name: z.string(),
-    pubKey: z.string().length(64, t('Insert valid public key')),
+    pubKey: z.string().optional(),
   });
   type FormData = z.infer<typeof schema>;
 
@@ -97,10 +98,9 @@ const NewAccountFaucetPage: FC = () => {
     formState: { errors },
     clearErrors,
     setError,
-    trigger,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: { name: generateAccountName, pubKey: currentKey },
+    values: { name: generateAccountName, pubKey: '' },
   });
 
   const [inputError, setInputError] = useState<string>('');
@@ -116,18 +116,14 @@ const NewAccountFaucetPage: FC = () => {
   useEffect(() => {
     setInputError('');
     setValidRequestKey(undefined);
-  }, [currentKey]);
+  }, [currentKey, pubKeys.length]);
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {
       if (!pubKeys.length) {
         setValidRequestKey('negative');
-        setInputError(t('Please provide one or more public keys'));
+        setInputError(t('Please add one or more public keys'));
         return;
-      }
-
-      if (errors?.pubKey?.message) {
-        setInputError(errors?.pubKey?.message);
       }
 
       setInputError('');
@@ -167,20 +163,20 @@ const NewAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID, t],
+    [chainID, pubKeys.length, t],
   );
 
   const testnetNotSelected: boolean = selectedNetwork !== 'testnet04';
   const disabledButton: boolean =
     requestStatus.status === 'processing' || testnetNotSelected;
 
-  const addPublicKey = async (
+  const addPublicKey = (
     e: React.MouseEvent<HTMLButtonElement>,
     value: string,
-  ): Promise<void> => {
+  ): void => {
     e.preventDefault();
 
-    const isValidInput = await trigger('pubKey');
+    const isValidInput = validatePublicKey(value);
 
     if (!isValidInput) {
       setError('pubKey', {
@@ -204,8 +200,8 @@ const NewAccountFaucetPage: FC = () => {
     }
 
     copyPubKeys.push(value);
-    setCurrentKey('');
     setPubKeys(copyPubKeys);
+    setCurrentKey('');
   };
 
   const deletePublicKey = (
