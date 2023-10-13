@@ -46,7 +46,18 @@ const Home: React.FC = () => {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.EVENT}/${searchField}`);
         break;
+      case 'block':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`${routes.BLOCK}/${searchField}`);
+        break;
     }
+  };
+
+  const searchTypePlaceholders: Record<string, string> = {
+    'request-key': 'Request Key',
+    account: 'Account',
+    event: 'Event Name',
+    block: 'Block Hash',
   };
 
   const { addBlockToChain } = useChainTree();
@@ -103,6 +114,7 @@ const Home: React.FC = () => {
               <option value="request-key">Request Key</option>
               <option value="account">Account</option>
               <option value="event">Event</option>
+              <option value="block">Block</option>
             </Select>
           </Grid.Item>
           <Grid.Item>
@@ -110,9 +122,7 @@ const Home: React.FC = () => {
               <Input
                 id="search-field"
                 value={searchField}
-                placeholder={
-                  searchType === 'request-key' ? 'Request Key' : 'Account'
-                }
+                placeholder={searchTypePlaceholders[searchType]}
                 onChange={(event) => setSearchField(event.target.value)}
               />
             </InputWrapper>

@@ -1,33 +1,30 @@
-import { Accordion, Notification, Table } from '@kadena/react-ui';
+import { Accordion, Box, Notification, Table } from '@kadena/react-ui';
 
-import { useGetBlockFromHashQuery } from '../../__generated__/sdk';
+import {
+  useGetBlockFromHashQuery,
+  useGetMaximumConfirmationDepthLazyQuery,
+  useGetMaximumConfirmationDepthQuery,
+} from '../../__generated__/sdk';
+import { CompactTransactionsTable } from '../../components/compact-transactions-table/compact-transactions-table';
 import Loader from '../../components/loader/loader';
 import { mainStyle } from '../../components/main/styles.css';
 import { Text } from '../../components/text';
-import { useChainTree } from '../../context/chain-tree-context';
+import routes from '../../constants/routes';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-
-interface IBlockProps {
-  random: string;
-}
+import { getMaximumCalculatedConfirmationDepth } from '../../graphql/queries.graph';
 
 const Block: React.FC = () => {
   const router = useRouter();
-  const { chainTree } = useChainTree();
 
-  const {
-    loading: loadingBlockData,
-    data: blockData,
-    error,
-  } = useGetBlockFromHashQuery({
-    variables: { hash: router.query.hash as string },
+  const { loading, data, error } = useGetBlockFromHashQuery({
+    variables: { hash: router.query.hash as string, first: 10 },
   });
 
-  // chainTree[router.query.chain as string][router.query.hash as string],
-  console.log('blockData', blockData);
+  const { data: confirmationDepthData } = useGetMaximumConfirmationDepthQuery();
+
   return (
     <div>
       <Head>
@@ -44,10 +41,10 @@ const Block: React.FC = () => {
         </Text>
 
         <div>
-          {loadingBlockData && (
+          {loading && (
             // Display a loading spinner next to the text without a gap
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Loader /> <span>Waiting for event...</span>
+              <Loader /> <span>Waiting for block data...</span>
             </div>
           )}
 
@@ -63,9 +60,9 @@ const Block: React.FC = () => {
             </Notification.Root>
           )}
 
-          {blockData?.block && (
+          {data?.block && (
             <div style={{ maxWidth: '1000px' }}>
-              {/* {JSON.stringify(blockData)} */}
+              {/* {JSON.stringify(data)} */}
               <Text
                 as="h2"
                 css={{
@@ -77,62 +74,6 @@ const Block: React.FC = () => {
               >
                 Block Header
               </Text>
-              {/* <Accordion.Root initialOpenSection={0}>
-                <Accordion.Section title="Block Header">
-                  <Table.Root striped wordBreak="break-word">
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Chain ID</strong>
-                        </Table.Td>
-                        <Table.Td>{blockData.block.chainId}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Height</strong>
-                        </Table.Td>
-                        <Table.Td>{blockData.block.height}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Hash</strong>
-                        </Table.Td>
-                        <Table.Td>{blockData.block.hash}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Confirmation Depth</strong>
-                        </Table.Td>
-                        <Table.Td>{blockData.block.confirmationDepth}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </Accordion.Section>
-                <Accordion.Section title="See more">
-                  <Table.Root>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Parent</strong>
-                        </Table.Td>
-                        <Table.Td>{blockData.block.parentHash}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Pow Hash</strong>
-                        </Table.Td>
-                        <Table.Td>{blockData.block.powHash}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Epoch Start</strong>
-                        </Table.Td>
-                        <Table.Td>{blockData.block.epoch}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </Accordion.Section>
-              </Accordion.Root> */}
 
               <Table.Root striped wordBreak="break-word">
                 <Table.Body>
@@ -140,59 +81,69 @@ const Block: React.FC = () => {
                     <Table.Td>
                       <strong>Chain ID</strong>
                     </Table.Td>
-                    <Table.Td>{blockData.block.chainId}</Table.Td>
+                    <Table.Td>{data.block.chainId}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <strong>Height</strong>
                     </Table.Td>
-                    <Table.Td>{blockData.block.height}</Table.Td>
+                    <Table.Td>{data.block.height}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <strong>Hash</strong>
                     </Table.Td>
-                    <Table.Td>{blockData.block.hash}</Table.Td>
+                    <Table.Td>{data.block.hash}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <strong>Confirmation Depth</strong>
                     </Table.Td>
-                    <Table.Td>{blockData.block.confirmationDepth}</Table.Td>
+                    <Table.Td>
+                      {confirmationDepthData?.maximumConfirmationDepth
+                        ? data.block.confirmationDepth ===
+                          confirmationDepthData?.maximumConfirmationDepth
+                          ? `> ${data.block.confirmationDepth - 1}`
+                          : data.block.confirmationDepth
+                        : data.block.confirmationDepth}
+                    </Table.Td>
                   </Table.Tr>
                 </Table.Body>
               </Table.Root>
-              <br />
+
+              <Box margin={'$3'} />
+
               <Accordion.Root>
                 {[
-                  <Accordion.Section title="See more">
+                  <Accordion.Section title="See more" key={'accordion-header'}>
                     <Table.Root>
                       <Table.Body>
                         <Table.Tr>
                           <Table.Td>
                             <strong>Parent</strong>
                           </Table.Td>
-                          <Table.Td>{blockData.block.parentHash}</Table.Td>
+                          <Table.Td>{data.block.parentHash}</Table.Td>
                         </Table.Tr>
                         <Table.Tr>
                           <Table.Td>
                             <strong>Pow Hash</strong>
                           </Table.Td>
-                          <Table.Td>{blockData.block.powHash}</Table.Td>
+                          <Table.Td>{data.block.powHash}</Table.Td>
                         </Table.Tr>
                         <Table.Tr>
                           <Table.Td>
                             <strong>Epoch Start</strong>
                           </Table.Td>
-                          <Table.Td>{blockData.block.epoch}</Table.Td>
+                          <Table.Td>{data.block.epoch}</Table.Td>
                         </Table.Tr>
                       </Table.Body>
                     </Table.Root>
                   </Accordion.Section>,
                 ]}
               </Accordion.Root>
-              <br />
-              <br />
+
+              <Box margin={'$10'} />
+
               <Text
                 as="h2"
                 css={{
@@ -210,29 +161,27 @@ const Block: React.FC = () => {
                     <Table.Td>
                       <strong>Payload Hash</strong>
                     </Table.Td>
-                    <Table.Td>{blockData.block.payload}</Table.Td>
+                    <Table.Td>{data.block.payload}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <strong>No. of transactions</strong>
                     </Table.Td>
-                    <Table.Td>
-                      {blockData.block.transactions.totalCount}
-                    </Table.Td>
+                    <Table.Td>{data.block.transactions.totalCount}</Table.Td>
                   </Table.Tr>
                 </Table.Body>
               </Table.Root>
-              <br />
+              <Box margin={'$3'} />
               <Accordion.Root>
                 {[
-                  <Accordion.Section title="See more">
+                  <Accordion.Section title="See more" key={'accordion-payload'}>
                     <Table.Root>
                       <Table.Body>
                         <Table.Tr>
                           <Table.Td>
                             <strong>Payload Hash</strong>
                           </Table.Td>
-                          <Table.Td>{blockData.block.payload}</Table.Td>
+                          <Table.Td>{data.block.payload}</Table.Td>
                         </Table.Tr>
 
                         <Table.Tr>
@@ -242,7 +191,7 @@ const Block: React.FC = () => {
                           <Table.Td>
                             <Table.Root>
                               <Table.Body>
-                                {blockData.block.minerKeys?.map(
+                                {data.block.minerKeys?.map(
                                   (minerKey, index) => (
                                     <Table.Tr key={index}>
                                       <Table.Td>{minerKey.key}</Table.Td>
@@ -257,13 +206,24 @@ const Block: React.FC = () => {
                           <Table.Td>
                             <strong>Predicate</strong>
                           </Table.Td>
-                          <Table.Td>{blockData.block.predicate}</Table.Td>
+                          <Table.Td>{data.block.predicate}</Table.Td>
                         </Table.Tr>
                       </Table.Body>
                     </Table.Root>
                   </Accordion.Section>,
                 ]}
               </Accordion.Root>
+
+              <Box margin={'$10'} />
+
+              {data.block.transactions.totalCount > 0 && (
+                <CompactTransactionsTable
+                  viewAllHref={`${routes.BLOCK}/${
+                    router.query.hash as string
+                  }/${routes.BLOCK_TRANSACTIONS_SUFIX}`}
+                  transactions={data.block.transactions}
+                />
+              )}
             </div>
           )}
         </div>
