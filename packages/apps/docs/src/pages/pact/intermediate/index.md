@@ -4,7 +4,7 @@ description:
   The goal of this tutorial is to help you run and deploy a working Pact test
   server locally.
 menu: Intermediate
-label: Intermediate
+label: Deploy to a Local Server
 order: 3
 layout: full
 tags:
