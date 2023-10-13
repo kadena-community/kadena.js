@@ -1,12 +1,10 @@
-import type { Locator, Page } from '@playwright/test';
+import type {  Page } from '@playwright/test';
 
 export default class CardComponent {
   private readonly _page: Page;
-  private _componentLocator: Locator;
 
   public constructor(page: Page) {
     this._page = page;
-    this._componentLocator = this._page.getByTestId('kda-card');
   }
 
   public async setValueForTextbox(label: string, value: string): Promise<void> {
