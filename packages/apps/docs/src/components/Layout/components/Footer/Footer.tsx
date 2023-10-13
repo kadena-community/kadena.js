@@ -16,25 +16,7 @@ export const Footer: FC = () => {
     <footer className={footerWrapperClass}>
       <div className={footerClass}>
         <Stack justifyContent="space-around" alignItems="center" marginY="$2">
-          <DocsLogo />
-          <IconButton
-            title="Go to our Github"
-            icon="Github"
-            as="a"
-            href="https://github.com/kadena-community"
-          />
-          <IconButton
-            title="Go to our Twitter"
-            icon="Twitter"
-            as="a"
-            href="https://twitter.com/kadena_io"
-          />
-          <IconButton
-            as="a"
-            href="https://www.linkedin.com/company/kadena-llc"
-            title="Go to our Linkedin"
-            icon="Linkedin"
-          />
+          <DocsLogo overwriteTheme="dark" />
         </Stack>
         <div className={spacerClass} />
         <Stack justifyContent="space-around" alignItems="center" marginY="$2">

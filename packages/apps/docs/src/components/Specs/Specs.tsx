@@ -16,6 +16,7 @@ export const Specs: FC<IProps> = ({ specs, options }) => {
 
   useEffect(() => {
     setIsMounted(true);
+    document.querySelector('article')?.setAttribute('data-max-width', 'false'); // layout shift to fix specs 3 cols view
   }, [setIsMounted]);
 
   if (!isMounted) {

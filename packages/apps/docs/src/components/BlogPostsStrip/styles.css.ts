@@ -51,7 +51,7 @@ export const stripItemClass = style([
   {
     selectors: {
       '&:hover': {
-        textDecoration: 'underline',
+        textDecoration: 'none',
         opacity: '.8',
       },
     },

@@ -60,7 +60,7 @@ export const wrapperClass = style([
     marginBottom: '$16',
   }),
   {
-    paddingInline: 0,
+    paddingInline: vars.sizes.$10,
     maxWidth: $$pageWidth,
     backgroundColor: $$backgroundOverlayColor,
   },

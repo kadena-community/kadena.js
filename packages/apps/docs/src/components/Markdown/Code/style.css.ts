@@ -14,7 +14,7 @@ export const inlineCode = style([
 
 export const codeWrapper = style([
   sprinkles({
-    backgroundColor: '$neutral2',
+    backgroundColor: '$blue100',
     fontSize: '$sm',
     fontFamily: '$mono',
     lineHeight: '$lg',
@@ -22,8 +22,8 @@ export const codeWrapper = style([
     marginY: '$10',
   }),
   {
-    borderLeft: `4px solid ${vars.colors.$borderDefault}`,
-    borderRadius: `${vars.radii.$sm} 0px 0px ${vars.radii.$sm}`,
+    borderRadius: vars.radii.$lg,
+    overflow: 'hidden',
     wordBreak: 'break-all',
   },
 ]);
@@ -34,6 +34,7 @@ export const code = style([
     fontFamily: '$mono',
     display: 'none',
     paddingY: '$3',
+    position: 'relative',
   }),
   {
     counterReset: 'line',
@@ -45,6 +46,18 @@ export const code = style([
       [`${darkThemeClass} &[data-theme="light"]`]: {
         display: 'none',
       },
+
+      '&::before': {
+        content: "",
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        width: vars.sizes.$10,
+        background: vars.colors.$blue90,
+        zIndex: 0,
+        opacity: 0.6,
+      }
     },
   },
 ]);
@@ -53,11 +66,17 @@ export const codeLine = style([
   sprinkles({
     width: '100%',
     fontFamily: '$mono',
+    zIndex: 1,
+    paddingRight: '$4',
   }),
   {
     display: 'inline-flex',
+    cursor: 'default',
 
     selectors: {
+      '&:hover': {
+        background: vars.colors.$black,
+      },
       '&::marker': {
         content: '',
       },
@@ -71,8 +90,9 @@ export const codeLine = style([
         marginLeft: `${vars.sizes.$4}`,
         marginTop: '3px', //hack, this just aligns the number the best. with vars or display: flex. the alignment is of
         textAlign: 'right',
-        fontSize: `${vars.sizes.$sm}`,
-        color: `${vars.colors.$neutral3}`,
+        fontSize: vars.sizes.$sm,
+        color: vars.colors.$white,
+        zIndex: 1,
       },
     },
   },
@@ -82,13 +102,17 @@ globalStyle(`code span`, {
   fontFamily: vars.fonts.$mono,
 });
 
+globalStyle(`code span::selection`, {
+  background: vars.colors.$blue80,
+});
+
 export const codeTitle = style([
   sprinkles({
     display: 'none',
     alignItems: 'center',
     fontFamily: '$main',
-    backgroundColor: '$neutral3',
-    color: '$neutral1',
+    background: '$blue70',
+    color: '$white',
     fontWeight: '$bold',
     textTransform: 'capitalize',
     padding: '$2',
@@ -107,11 +131,14 @@ export const codeTitle = style([
         justifyContent: 'center',
         alignItems: 'center',
         margin: `0 ${vars.sizes.$2}`,
-        color: `${vars.colors.$background}`,
-        backgroundColor: `${vars.colors.$primaryContrastInverted}`,
-        borderRadius: `${vars.radii.$sm}`,
-        width: `${vars.sizes.$6}`,
-        height: `${vars.sizes.$6}`,
+        color: vars.colors.$white,
+        backgroundColor: vars.colors.$blue90,
+        borderRadius: vars.radii.$sm,
+        width: vars.sizes.$6,
+        height: vars.sizes.$6,
+        fontFamily: vars.fonts.$mono,
+        fontWeight: 'bold',
+        fontSize: 'smaller'
       },
       '&[data-language="pact"]::before': {
         content: 'P',

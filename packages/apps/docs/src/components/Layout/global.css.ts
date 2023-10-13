@@ -6,6 +6,7 @@ export const $$navMenu = createVar();
 export const $$footerMenu = createVar();
 export const $$modalZIndex = createVar();
 export const $$pageWidth = createVar();
+export const $$maxPageContentWidth = createVar();
 export const $$leftSideWidth = createVar();
 export const $$sideMenu = createVar();
 export const $$backgroundOverlayColor = createVar();
@@ -18,6 +19,7 @@ export const globalClass = style({
     [$$modalZIndex]: '1000', //zIndex
     [$$sideMenu]: '500', //zIndex
     [$$pageWidth]: '1440px', //sizes
+    [$$maxPageContentWidth]: '1000px', //sizes
     [$$leftSideWidth]: '265px', //sizes
     [$$backgroundOverlayColor]: 'rgba(250,250,250, .8)', //colors
     [$$borderColor]: 'rgba(112, 121, 123, 0.2)', //colors

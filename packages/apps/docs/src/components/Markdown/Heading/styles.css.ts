@@ -22,12 +22,12 @@ export const headerIconLinkClass = style([
   },
 ]);
 
-const headerClass = style([
+export const headerClass = style([
   sprinkles({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    fontSize: '$2xl',
+    marginTop: '$xl',
   }),
   {
     selectors: {
@@ -40,11 +40,47 @@ const headerClass = style([
   },
 ]);
 
+const h1Class = style([
+  sprinkles({
+    fontSize: '$3xl',
+  })
+])
+
+const h2Class = style([
+  sprinkles({
+    fontSize: '$xl',
+  })
+])
+
+const h3Class = style([
+  sprinkles({
+    fontSize: '$base',
+  })
+])
+
+const h4Class = style([
+  sprinkles({
+    fontSize: '$base',
+  })
+])
+
+const h5Class = style([
+  sprinkles({
+    fontSize: '$base',
+  })
+])
+
+const h6Class = style([
+  sprinkles({
+    fontSize: '$base',
+  })
+])
+
 export const headerClassVariants = styleVariants({
-  h1: [headerClass, sprinkles({ fontSize: '$3xl' })],
-  h2: [headerClass, sprinkles({ fontSize: '$2xl' })],
-  h3: [headerClass, sprinkles({ fontSize: '$xl' })],
-  h4: [headerClass, sprinkles({ fontSize: '$lg' })],
-  h5: [headerClass, sprinkles({ fontSize: '$md' })],
-  h6: [headerClass, sprinkles({ fontSize: '$base' })],
+  h1: [headerClass, h1Class],
+  h2: [headerClass, h2Class],
+  h3: [headerClass, h3Class],
+  h4: [headerClass, h4Class],
+  h5: [headerClass, h5Class],
+  h6: [headerClass, h6Class],
 });

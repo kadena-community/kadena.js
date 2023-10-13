@@ -1,7 +1,9 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
+import { $$maxPageContentWidth } from '../global.css';
+
 import type { LayoutType } from '@/Layout';
-import { style, styleVariants } from '@vanilla-extract/css';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
 export const articleClass = style([
   sprinkles({
@@ -11,6 +13,7 @@ export const articleClass = style([
   }),
   {
     zIndex: 3,
+    maxWidth: $$maxPageContentWidth,
     paddingInline: vars.sizes.$4,
 
     ...responsiveStyle({
@@ -20,6 +23,10 @@ export const articleClass = style([
     }),
   },
 ]);
+
+globalStyle(`article[data-max-width="false"]`, {
+  maxWidth: 'unset !important',
+})
 
 export const contentClass = style([
   sprinkles({

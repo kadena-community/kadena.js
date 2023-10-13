@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { darkThemeClass, responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -25,6 +25,16 @@ export const cardVariants = styleVariants({
         darkMode: '$blue90',
       },
     }),
+    {
+      selectors: {
+        [`${darkThemeClass} &:hover`]: {
+          backgroundColor: vars.colors.$blue80,
+        },
+        [`&:hover`]: {
+          backgroundColor: vars.colors.$blue20,
+        }
+      }
+    }
   ],
   warning: [
     sprinkles({
@@ -33,6 +43,16 @@ export const cardVariants = styleVariants({
         darkMode: '$pink90',
       },
     }),
+    {
+      selectors: {
+        [`${darkThemeClass} &:hover`]: {
+          backgroundColor: vars.colors.$pink80,
+        },
+        [`&:hover`]: {
+          backgroundColor: vars.colors.$pink20,
+        }
+      }
+    }
   ],
   success: [
     sprinkles({
@@ -41,6 +61,16 @@ export const cardVariants = styleVariants({
         darkMode: '$green90',
       },
     }),
+    {
+      selectors: {
+        [`${darkThemeClass} &:hover`]: {
+          backgroundColor: vars.colors.$green80,
+        },
+        [`&:hover`]: {
+          backgroundColor: vars.colors.$green30,
+        }
+      }
+    }
   ],
 });
 
@@ -49,15 +79,14 @@ export const docsCardLink = style([
     textDecoration: 'none',
     fontWeight: '$bold',
     color: {
-      lightMode: '$purple100',
-      darkMode: '$purple20',
+      lightMode: '$primaryContrastInverted',
+      darkMode: '$primaryContrast',
     },
   }),
   {
-    color: vars.colors.$purple100,
     selectors: {
       '&:hover': {
-        textDecoration: 'underline',
+        textDecoration: 'none',
       },
     },
   },

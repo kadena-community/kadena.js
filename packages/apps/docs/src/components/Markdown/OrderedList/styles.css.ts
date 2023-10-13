@@ -2,11 +2,10 @@ import { sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const ulListClass = style([
+export const olListClass = style([
   sprinkles({
-    marginY: 0,
-    marginX: 0,
     paddingY: '$2',
+    marginX: 0,
     position: 'relative',
     color: '$neutral4',
   }),

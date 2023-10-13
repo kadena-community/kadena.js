@@ -43,7 +43,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <Grid.Item rowSpan={2}>
                 <DocsCard
                   label="Introduction"
-                  description="What makes Kadena unique? Learn about our core concepts."
+                  description="Kadena is the only platform offering a complete decentralized infrastructure for builders. Combining a revolutionary chain architecture with the tools needed for widespread adoption, your teams get the full capabilities of blockchain with the ability to go from concept to launch in days vs. months by not having to build from scratch. Learn about our core concepts."
                   schema="info"
                   background="whitepapers"
                 >

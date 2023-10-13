@@ -77,10 +77,7 @@ to be created before it can be used.
 
 ## Fund your account
 
-> Note: we use [NodeJS](https://nodejs.dev/en/learn/how-to-install-nodejs/)
-> (personal recommendation to
-> [install with `n`](https://github.com/tj/n#readme)) and run `npm install` in
-> the root of this project
+> **Note:** we use [NodeJS](https://nodejs.dev/en/learn/how-to-install-nodejs/) (personal recommendation to [install with `n`](https://github.com/tj/n#readme)) and run `npm install` in the root of this project.
 >
 > 1. install nodejs
 > 2. run `npm install`
