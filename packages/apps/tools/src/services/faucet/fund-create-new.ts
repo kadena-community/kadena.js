@@ -89,8 +89,5 @@ export const fundCreateNewAccount = async (
 
   const requestKeys = await submit(transaction);
 
-  console.log('Rrequest keys', requestKeys);
-  console.log(await pollStatus(requestKeys));
-
   return await pollStatus(requestKeys);
 };

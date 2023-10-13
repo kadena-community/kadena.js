@@ -263,14 +263,16 @@ const NewAccountFaucetPage: FC = () => {
           Generate a key pair by visiting this{' '}
           <a
             className={notificationLinkStyle}
-            href={'https://transfer.chainweb.com/'}
+            target={'_blank'}
+            href={'https://transfer.chainweb.com/'} rel="noreferrer"
           >
             webpage
           </a>{' '}
           or by downloading a{' '}
           <a
             className={notificationLinkStyle}
-            href={'https://kadena.io/chainweaver-tos/'}
+            target={'_blank'}
+            href={'https://kadena.io/chainweaver-tos/'} rel="noreferrer"
           >
             wallet.
           </a>

@@ -16,10 +16,3 @@ export const validateRequestKey = (key: string): string | undefined => {
   return undefined;
 };
 
-export const validatePublicKey = (key: string): string | undefined => {
-  if (key.length === 64) {
-    return key;
-  }
-
-  return undefined;
-};
