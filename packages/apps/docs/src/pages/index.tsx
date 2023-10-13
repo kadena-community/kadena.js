@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
+import { Box, Button, Grid, Heading, Stack } from '@kadena/react-ui';
 
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
@@ -67,16 +67,21 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="warning"
                   background="contribute"
                 >
+                  <Box marginY="$4">
+                    <Button
+                      as="a"
+                      href="/build/guides/election-dapp-tutorial"
+                      icon="TrailingIcon"
+                      color="negative"
+                    >
+                      Build your first dApp
+                    </Button>
+                  </Box>
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/build/quickstart">
                       10 minute quick start
                     </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/build/guides/election-dapp-tutorial"
-                    >
-                      Build your first dApp
-                    </Link>
+
                     <a
                       className={docsCardLink}
                       href="https://academy.kadena.io"
