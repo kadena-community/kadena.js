@@ -1,6 +1,6 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { $$maxPageContentWidth } from '../global.css';
+import { $$maxPageContentWidth, $$pageWidth } from '../global.css';
 
 import type { LayoutType } from '@/Layout';
 import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
@@ -26,7 +26,16 @@ export const articleClass = style([
 
 export const landingPageArticleWrapper = style([
   {
-    maxWidth: 'unset !important',
+    maxWidth: $$pageWidth,
+    margin: '0 auto',
+  },
+]);
+
+export const blogchainArticleWrapperClass = style([
+  {
+    width: '100vw',
+    margin: '0 auto',
+    maxWidth: $$pageWidth,
   },
 ]);
 

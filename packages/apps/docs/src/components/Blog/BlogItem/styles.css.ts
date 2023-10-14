@@ -1,19 +1,19 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { style, styleVariants } from '@vanilla-extract/css';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
 export const blogitem = style([
   sprinkles({
-    paddingBottom: '$8',
-    marginTop: '$8',
-    borderRadius: '$md',
+    paddingY: '$10',
+    paddingX: '$10',
     backgroundColor: 'transparent',
   }),
   {
+    marginTop: `${vars.sizes.$8}!important`,
+    marginBottom: `${vars.sizes.$8}!important`,
     willChange: 'background-color',
     transition: 'background-color .2s ease',
 
-    borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
     selectors: {
       '&:hover': {
         backgroundColor: vars.colors.$neutral2,
@@ -21,6 +21,8 @@ export const blogitem = style([
     },
   },
 ]);
+
+export const blogItemThumb = style({});
 
 export const link = style([
   sprinkles({
@@ -139,3 +141,36 @@ export const gridWrapperClass = style([
     }),
   },
 ]);
+
+export const gridBlogItemImage = style({});
+export const gridBlogItemContent = style({});
+export const gridBlogItemContentDescription = style({});
+export const footerTags = style({
+  display: 'block',
+  marginTop: vars.sizes.$3,
+});
+
+globalStyle(`${gridBlogItemContent} > :not(:first-child)`, {
+  marginLeft: vars.sizes.$12,
+});
+
+globalStyle(`${gridBlogItemContent} > :nth-child(2)`, {
+  marginTop: vars.sizes.$2,
+  marginBottom: vars.sizes.$4,
+});
+
+globalStyle(
+  `${blogItemThumb} ${gridBlogItemContent} > :nth-child(1) h4,
+  ${blogItemThumb} ${gridBlogItemContent} > :nth-child(1) h4 span`,
+  {
+    fontSize: vars.sizes.$md,
+  },
+);
+
+globalStyle(`${blogItemThumb} ${gridBlogItemContent} > :nth-child(2)`, {
+  fontSize: vars.sizes.$lg,
+});
+
+globalStyle(`${blogItemThumb} ${gridBlogItemContent} footer`, {
+  fontSize: 'smaller',
+});

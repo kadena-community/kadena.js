@@ -6,6 +6,7 @@ import { BlogListWrapper } from '@/components/BlogList/BlogListWrapper';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import {
   articleClass,
+  blogchainArticleWrapperClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
@@ -48,7 +49,9 @@ const BlogChainHome: FC<IProps> = ({
         className={classNames(contentClass, contentClassVariants.home)}
         id="maincontent"
       >
-        <article className={articleClass}>
+        <article
+          className={classNames(articleClass, blogchainArticleWrapperClass)}
+        >
           {firstPost && (
             <BlogList>
               <BlogItem key={firstPost.root} item={firstPost} size="large" />
@@ -67,7 +70,7 @@ const BlogChainHome: FC<IProps> = ({
                   )}
 
                   <Box>
-                    <BrowseSection title="Productive authors">
+                    <BrowseSection title="Productive authors" titleAs="h6">
                       {authors.map((author) => (
                         <Link key={author.id} href={`/authors/${author.id}`}>
                           {author.name}

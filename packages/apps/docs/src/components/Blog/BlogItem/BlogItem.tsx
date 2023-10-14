@@ -6,9 +6,14 @@ import { FormatDate } from '../FormatDate';
 import {
   authorTitleClass,
   blogitem,
+  blogItemThumb,
   figureClass,
   figureVariant,
   footer,
+  footerTags,
+  gridBlogItemContent,
+  gridBlogItemContentDescription,
+  gridBlogItemImage,
   gridWrapperClass,
   imageClass,
   link,
@@ -30,10 +35,14 @@ interface IProps {
 
 export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
   return (
-    <li className={blogitem}>
+    <li
+      className={classNames(
+        ...[blogitem, size !== 'large' ? blogItemThumb : ''],
+      )}
+    >
       <Link className={link} href={item.root}>
         <div className={gridWrapperClass}>
-          <div style={{ gridArea: 'image' }}>
+          <div className={gridBlogItemImage} style={{ gridArea: 'image' }}>
             <Box
               marginLeft={{ xs: 0, md: '$8' }}
               marginBottom={{ xs: '$8', md: 0 }}
@@ -52,7 +61,7 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
               </figure>
             </Box>
           </div>
-          <div style={{ gridArea: 'header' }}>
+          <div className={gridBlogItemContent} style={{ gridArea: 'header' }}>
             <Stack alignItems="center" gap="$2">
               <Avatar
                 name={item.authorInfo?.name}
@@ -68,18 +77,20 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                 )}
               </Heading>
             </Stack>
-            <Heading as="h3" variant="h5">
+            <Heading as="h3" variant={size === 'large' ? 'h4' : 'h6'}>
               {item.title}
             </Heading>
 
-            <div>{item.description}</div>
+            <div className={gridBlogItemContentDescription}>
+              {item.description}
+            </div>
 
             <footer className={footer}>
               <span className={metaItem}>
                 {item.readingTimeInMinutes} minutes
               </span>
-              <FormatDate className={metaItem} date={item.publishDate} />
-              <span>
+              <FormatDate date={item.publishDate} />
+              <span className={footerTags}>
                 {item.tags &&
                   item.tags.map((tag) => (
                     <span className={tagLinkClass} key={tag}>

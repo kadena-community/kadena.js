@@ -3,6 +3,12 @@ import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
 import type { ComplexStyleRule } from '@vanilla-extract/css';
 import { style } from '@vanilla-extract/css';
 
+export const stripWrapper = style([
+  sprinkles({
+    marginTop: '$md',
+  }),
+]);
+
 export const stripClass = style([
   sprinkles({
     padding: 0,
@@ -17,7 +23,7 @@ export const stripClass = style([
 
 export const stripItemWrapperClass = style([
   sprinkles({
-    paddingRight: '$4',
+    paddingRight: '$8',
     marginBottom: '$8',
   }),
   {
@@ -84,6 +90,8 @@ export const headerClass = style([
   sprinkles({
     color: '$primaryContrastInverted',
     paddingRight: '$4',
+    fontSize: '$lg',
+    marginTop: '$4',
   }),
   {
     flex: 1,

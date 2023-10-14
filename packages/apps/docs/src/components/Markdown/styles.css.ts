@@ -310,7 +310,7 @@ globalStyle(`${darkThemeClass} ${getClassName(tableWrapperClass)} tr:hover`, {
 });
 
 // NAVIGATION
-
+// @TODO: this should be fixed correctly. Just patching it to get the spacings right
 globalStyle(
   `${getClassName(treeListClass)} > li > ul > li > ul > li,
   ${getClassName(treeListClass)} > li > ul > li > ul > li ul li
@@ -320,6 +320,7 @@ globalStyle(
   },
 );
 
+// @TODO: this should be fixed correctly. Just patching it to get the spacings right
 globalStyle(
   `${getClassName(treeListClass)} > li > ul > li > ul > li:last-of-type
   `,

@@ -63,7 +63,11 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               marginLeft={{ sm: 0, lg: '$4' }}
               marginRight={{ sm: 0, xl: '$32' }}
             >
-              <MostPopular pages={popularPages} title="Most viewed docs" />
+              <MostPopular
+                pages={popularPages}
+                title="Most viewed docs"
+                titleAs="h6"
+              />
             </Box>
           </Grid.Item>
         </Grid.Root>

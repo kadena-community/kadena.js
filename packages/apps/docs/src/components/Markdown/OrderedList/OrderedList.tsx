@@ -4,7 +4,7 @@ import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 
 interface IProp {
-  children: FunctionComponentElement<HTMLUListElement>[];
+  children: FunctionComponentElement<HTMLOListElement>[];
 }
 
 export const OrderedList: FC<IProp> = ({ children }) => {

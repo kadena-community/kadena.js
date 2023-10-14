@@ -63,6 +63,7 @@ export const wrapperClass = style([
     paddingInline: vars.sizes.$10,
     maxWidth: $$pageWidth,
     backgroundColor: $$backgroundOverlayColor,
+    boxSizing: 'border-box',
   },
 ]);
 
@@ -79,3 +80,7 @@ export const subheaderClass = style([
     },
   },
 ]);
+
+export const searchInputWrapper = style({
+  maxWidth: `calc(3 * ${vars.sizes.$40})`,
+});

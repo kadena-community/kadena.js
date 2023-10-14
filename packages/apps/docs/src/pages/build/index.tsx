@@ -60,7 +60,11 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         </Grid.Item>
         <Grid.Item>
           <Box marginY="$8" marginLeft="$12">
-            <MostPopular pages={popularPages} title="Most viewed docs" />
+            <MostPopular
+              pages={popularPages}
+              title="Most viewed docs"
+              titleAs="h6"
+            />
           </Box>
         </Grid.Item>
       </Grid.Root>

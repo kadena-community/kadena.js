@@ -132,7 +132,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </Grid.Root>
           </Box>
 
-          <Stack direction="column" gap="$xl">
+          <Stack direction="column" gap="$3xl">
             <BrowseSection title="Useful tools" direction="row">
               <BrowseSection.LinkBlock
                 title="Bootstrap Kadena dApp"
@@ -202,7 +202,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </BrowseSection>
 
             <Box>
-              <Heading as="h6">Stay up-to-date</Heading>
+              <Heading as="h5">Stay up-to-date</Heading>
               <BlogPostsStrip
                 data={blogPosts}
                 link="/blogchain"
