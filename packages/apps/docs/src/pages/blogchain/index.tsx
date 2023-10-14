@@ -48,7 +48,7 @@ const BlogChainHome: FC<IProps> = ({
         className={classNames(contentClass, contentClassVariants.home)}
         id="maincontent"
       >
-        <article className={classNames(articleClass)}>
+        <article className={articleClass}>
           {firstPost && (
             <BlogList>
               <BlogItem key={firstPost.root} item={firstPost} size="large" />

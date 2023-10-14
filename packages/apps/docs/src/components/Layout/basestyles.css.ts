@@ -16,6 +16,7 @@ globalStyle('html, body', {
 
 globalStyle('a', {
   color: vars.colors.$primaryContrastInverted,
+  textDecoration: 'underline',
 });
 globalStyle('a:hover', {
   color: vars.colors.$primaryHighContrast,
