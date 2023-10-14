@@ -21,23 +21,6 @@ export const wrapperClass = style([
   {},
 ]);
 
-globalStyle(
-  `${getClassName(wrapperClass)} ${getClassName(paragraphWrapperClass)}`,
-  {
-    marginTop: 0,
-    marginBottom: 0,
-  },
-);
-
-globalStyle(
-  `${getClassName(wrapperClass)} ${getClassName(
-    paragraphWrapperClass,
-  )} p:empty`,
-  {
-    display: 'none',
-  },
-);
-
 /**
  * Stylings fixes
  */

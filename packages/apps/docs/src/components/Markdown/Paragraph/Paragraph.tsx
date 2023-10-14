@@ -11,6 +11,7 @@ interface IProp {
 export const Paragraph: FC<IProp> = ({ children }) => {
   return (
     <div className={paragraphWrapperClass}>
+      <p></p>
       <BodyText as="p">{children}</BodyText>
     </div>
   );
