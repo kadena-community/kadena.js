@@ -65,7 +65,7 @@ definitions for smart contracts. They are comprised of:
 - [table](/pact/reference/syntax#deftableh661222121) definitions
 - [pact](/pact/reference/syntax#defpacth1545231271) special functions
 - [constant](/pact/reference/syntax#defconsth645951102) values
-- [models](pact-properties.html)
+- [models](/pact/reference/property-checking)
 - [capabilities](#caps)
 - [imports](/pact/reference/syntax#useh116103)
 - [implements](#implements)
@@ -100,7 +100,7 @@ comprised of:
 - [constant](#defconst) values
 - [schema](/pact/reference/syntax#defschemah-1003560474) definitions
 - [pact](#defpact) specifications
-- [models](pact-properties.html)
+- [models](/pact/reference/property-checking)
 - [capabilities](#caps) specifications
 - [imports](/pact/reference/syntax#useh116103)
 
@@ -263,13 +263,14 @@ expression is evaluated.
 
 ### Static Type Inference on Modules
 
-With the [typecheck](pact-functions.html#typecheck) repl command, the Pact
-interpreter will analyze a module and attempt to infer types on every variable,
-function application or const definition. Using this in project repl scripts is
-helpful to aid the developer in adding "just enough types" to make the typecheck
-succeed. Successful typechecking is usually a matter of providing schemas for
-all tables, and argument types for ancillary functions that call ambiguous or
-overloaded native functions.
+With the
+[typecheck](/pact/reference/functions/repl-only-functions#typecheckh522701326)
+repl command, the Pact interpreter will analyze a module and attempt to infer
+types on every variable, function application or const definition. Using this in
+project repl scripts is helpful to aid the developer in adding "just enough
+types" to make the typecheck succeed. Successful typechecking is usually a
+matter of providing schemas for all tables, and argument types for ancillary
+functions that call ambiguous or overloaded native functions.
 
 ### Formal Verification
 
@@ -1179,16 +1180,17 @@ in terms of table types defined in an imported module.
 
 ### Declaring models in an interface
 
-[Formal verification](pact-properties.html) is implemented at multiple levels
-within an interface in order to provide an extra level of security. Models may
-be declared either within the body of the interface or at the function level in
-the same way that one would declare them in a module, with the exception that
-not all models are applicable to an interface. Indeed, since there is no
-abstract notion of tables for interfaces, abstract table invariants cannot be
-declared. However, if an interface imports table schema and types from a module
-via the [use](/pact/reference/syntax#useh116103) keyword, then the interface can
-define body and function models that apply directly to the concrete table type.
-Otherwise, all properties are candidates for declaration in an interface.
+[Formal verification](/pact/reference/property-checking) is implemented at
+multiple levels within an interface in order to provide an extra level of
+security. Models may be declared either within the body of the interface or at
+the function level in the same way that one would declare them in a module, with
+the exception that not all models are applicable to an interface. Indeed, since
+there is no abstract notion of tables for interfaces, abstract table invariants
+cannot be declared. However, if an interface imports table schema and types from
+a module via the [use](/pact/reference/syntax#useh116103) keyword, then the
+interface can define body and function models that apply directly to the
+concrete table type. Otherwise, all properties are candidates for declaration in
+an interface.
 
 When models are declared in an interface, they are appeneded to the list of
 models present in the implementing module at the level of declaration:
@@ -1577,8 +1579,8 @@ call.
 
 ### Control Flow
 
-Pact supports conditionals via [if](pact-functions.html#if), bounded looping,
-and of course function application.
+Pact supports conditionals via [if](/pact/reference/functions#ifh3357), bounded
+looping, and of course function application.
 
 #### Use enforce
 
@@ -1741,24 +1743,24 @@ value, as it is maintained within the blockchain pact scope.
 ### Pact execution scope and pact-id
 
 Every time a pact is initiated, it is given a unique ID which is retrievable
-using the [pact-id](pact-functions.html#pact-id) function, which will return the
-ID of the currently executing pact, or fail if not running within a pact scope.
-This mechanism can thus be used to guard access to resources, analogous to the
-use of keysets and signatures. One typical use of this is to create escrow
-accounts that can only be used within the context of a given pact, eliminating
-the need for a trusted third party for many use-cases.
+using the [pact-id](/pact/reference/functions#pact-idh-806844250) function,
+which will return the ID of the currently executing pact, or fail if not running
+within a pact scope. This mechanism can thus be used to guard access to
+resources, analogous to the use of keysets and signatures. One typical use of
+this is to create escrow accounts that can only be used within the context of a
+given pact, eliminating the need for a trusted third party for many use-cases.
 
 ### Testing pacts
 
 Pacts can be tested in repl scripts using the
-[env-entity](pact-functions.html#env-entity),
-[env-step](pact-functions.html#env-step) and
-[pact-state](pact-functions.html#pact-state) repl functions to simulate pact
-executions.
+[env-entity](/pact/reference/functions/repl-only-functions#env-entityh-146648893),
+[env-step](/pact/reference/functions) and
+[pact-state](/pact/reference/functions/repl-only-functions#pact-stateh-2050254554)
+repl functions to simulate pact executions.
 
 It is also possible to simulate pact execution in the pact server API by
-formatting [continuation Request](#request-yaml) yaml files into API requests
-with a `cont` payload.
+formatting [continuation Request](/pact/reference/functions) yaml files into API
+requests with a `cont` payload.
 
 ## Dependency Management
 

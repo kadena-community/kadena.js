@@ -12,19 +12,19 @@ tags: [pact, typescript, account, transactions, utils]
 
 ## Overview
 
-| Name                                                | Description                                  |
-| --------------------------------------------------- | -------------------------------------------- |
-| **ACCOUNTS**                                        |                                              |
-| [Create Account](#create-account)                   | Create a KDA account.                        |
-| [Create And Fund Account](#create-and-fund-account) | Create and fund a KDA account.               |
-| [Rotate Keys](#rotate-keys)                         | Update the keyset controlling the account.   |
-| [Get Balance](#get-balance)                         | Get the KDA account balance.                 |
-| **TRANSACTIONS**                                    |                                              |
-| [Get Transaction Status](#get-transaction-status)   | Get transaction status using Tx request key. |
-| **UTILS**                                           |                                              |
-| [Deploy contract](#deploy-contract)                 | Deploy a Pact smart contract.                |
-| [Read State](#read-state)                           | Read state of a contract.                    |
-| [Verify Signature](#verify-signature)               | Verify a key pair signature.                 |
+| Name                                                                          | Description                                  |
+| ----------------------------------------------------------------------------- | -------------------------------------------- |
+| **ACCOUNTS**                                                                  |                                              |
+| [Create Account](/build/cookbook#create-accounth278621961)                    | Create a KDA account.                        |
+| [Create And Fund Account](/build/cookbook#create-and-fund-accounth-216351201) | Create and fund a KDA account.               |
+| [Rotate Keys](/build/cookbook#rotate-keysh-822051431)                         | Update the keyset controlling the account.   |
+| [Get Balance](/build/cookbook#get-balanceh646980562)                          | Get the KDA account balance.                 |
+| **TRANSACTIONS**                                                              |                                              |
+| [Get Transaction Status](/build/cookbook#get-transaction-statush155365598)    | Get transaction status using Tx request key. |
+| **UTILS**                                                                     |                                              |
+| [Deploy contract](#deploy-contracth59420715)                                  | Deploy a Pact smart contract.                |
+| [Read State](/build/cookbook#read-stateh2758023)                              | Read state of a contract.                    |
+| [Verify Signature](/build/cookbook#verify-signatureh1418798545)               | Verify a key pair signature.                 |
 
 :::tip For convenience you can find all these scripts in a
 [repository](https://github.com/raduciobanu22/pact-lang-api-cookbook). :::

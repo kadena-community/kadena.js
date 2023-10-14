@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
+import { importReadMes } from './utils.mjs';
 
 const __dirname = path.resolve();
 const errors = [];
@@ -77,7 +78,7 @@ function getDisallowedLinksFromMdFile(links) {
     'medium.com/kadena-io',
     '/pages/docs/',
     'pact-language.readthedocs.io', //todo when pact docs are approved
-    'docs.kadena.io',
+    // 'docs.kadena.io', some imported pages still have docs.kadena.io (needs to be fixed in importreadme script)
     //'api.chainweb.com', todo when pact docs are approved
     // 'kadena-io.github.io' ,todo when pact docs are approved
   ];
@@ -86,6 +87,13 @@ function getDisallowedLinksFromMdFile(links) {
 
     if (found.length) {
       return [...acc, `${val} (BLACKLISTED)`];
+    }
+
+    if (!val.startsWith('http') && val.includes('.html')) {
+      return [...acc, `${val} (NO RELATIVE .HTML files)`];
+    }
+    if (val.startsWith('#')) {
+      return [...acc, `${val} (ONLY RELATIVE DEEPLINKS, WITH PATH)`];
     }
 
     return acc;

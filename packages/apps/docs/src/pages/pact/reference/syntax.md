@@ -253,7 +253,7 @@ Indeed, a bare docstring like `"foo"` is actually just a short form for
 `@doc "foo"`.
 
 Specific information on _Properties_ can be found in
-[The Pact Property Checking System](pact-properties.html).
+[The Pact Property Checking System](/pact/reference/property-checking).
 
 ### bless
 
@@ -584,7 +584,7 @@ expressions in a module include:
 - [defpact](/pact/reference/syntax#defpacth1545231271)
 - [defcap](/pact/reference/syntax#defcaph-1335639635)
 - [use](/pact/reference/syntax#useh116103)
-- [models](#pact-properties.html)
+- [models](/pact/reference/property-checking)
 
 ```pact
 (interface coin-sig
@@ -666,9 +666,9 @@ Specify that containing module _implements_ interface INTERFACE. This requires
 the module to implement all functions, pacts, and capabilities specified in
 INTERFACE with identical signatures (same argument names and declared types).
 
-Note that [models](pact-properties.html) declared for the implemented interface
-and its members will be appended to whatever models are declared within the
-implementing module.
+Note that [models](/pact/reference/property-checking) declared for the
+implemented interface and its members will be appended to whatever models are
+declared within the implementing module.
 
 A module thus specified can be used as a
 [module reference](/pact/reference/concepts#modrefs-and-polymorphismh83727950)
