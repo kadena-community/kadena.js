@@ -9,7 +9,9 @@ export const asideItemLinkClass = style([
   }),
   {
     selectors: {
-      '&:hover': {},
+      '&:hover': {
+        textDecoration: 'underline',
+      },
     },
   },
 ]);

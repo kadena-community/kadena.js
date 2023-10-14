@@ -6,7 +6,6 @@ import { BlogListWrapper } from '@/components/BlogList/BlogListWrapper';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import {
   articleClass,
-  blogchainArticleWrapperClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
@@ -49,9 +48,7 @@ const BlogChainHome: FC<IProps> = ({
         className={classNames(contentClass, contentClassVariants.home)}
         id="maincontent"
       >
-        <article
-          className={classNames(articleClass, blogchainArticleWrapperClass)}
-        >
+        <article className={classNames(articleClass)}>
           {firstPost && (
             <BlogList>
               <BlogItem key={firstPost.root} item={firstPost} size="large" />

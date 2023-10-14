@@ -48,23 +48,12 @@ globalStyle(
 globalStyle(
   `article
   h1${getClassName(headerClass)} +
-  ${getClassName(paragraphWrapperClass)}`,
-  {
-    padding: 0,
-    marginTop: 0,
-    fontSize: vars.sizes.$xl,
-    paddingRight: vars.sizes.$20,
-  },
-);
-
-globalStyle(
-  `article
-  h1${getClassName(headerClass)} +
   ${getClassName(paragraphWrapperClass)}
   > p`,
   {
     fontSize: vars.sizes.$lg,
     marginBottom: `${vars.sizes.$xl} !important`,
+    paddingRight: vars.sizes.$20,
   },
 );
 

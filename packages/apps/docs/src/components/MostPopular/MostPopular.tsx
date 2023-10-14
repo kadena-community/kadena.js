@@ -13,9 +13,9 @@ interface IProps {
   titleAs?: IHeadingProps['as'];
 }
 
-const MostPopular: FC<IProps> = ({ pages = [], title, ...rest }) => {
+const MostPopular: FC<IProps> = ({ pages = [], title, titleAs }) => {
   return (
-    <BrowseSection title={title} {...rest}>
+    <BrowseSection title={title} titleAs={titleAs}>
       {pages.map((page, index) => (
         <Link href={page.path} key={index}>
           {page.title}

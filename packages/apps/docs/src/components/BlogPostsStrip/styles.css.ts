@@ -28,7 +28,7 @@ export const stripItemWrapperClass = style([
   }),
   {
     minWidth: '100px',
-    flex: '50%',
+    flex: '100%',
     selectors: {
       '&:last-child': {
         display: 'block',
@@ -36,6 +36,9 @@ export const stripItemWrapperClass = style([
     },
 
     ...responsiveStyle({
+      md: {
+        flex: '50%',
+      },
       lg: {
         flex: '33%',
         selectors: {
@@ -53,6 +56,7 @@ export const stripItemClass = style([
     display: 'flex',
     flexDirection: 'column',
     textDecoration: 'none',
+    marginBottom: '$8',
   }),
   {
     selectors: {

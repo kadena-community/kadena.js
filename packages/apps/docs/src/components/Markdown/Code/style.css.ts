@@ -100,6 +100,7 @@ export const codeLine = style([
 
 globalStyle(`code span`, {
   fontFamily: vars.fonts.$mono,
+  wordBreak: 'break-word',
 });
 
 globalStyle(`code span::selection`, {

@@ -1,9 +1,7 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { $$maxPageContentWidth, $$pageWidth } from '../global.css';
-
 import type { LayoutType } from '@/Layout';
-import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 
 export const articleClass = style([
   sprinkles({
@@ -13,7 +11,6 @@ export const articleClass = style([
   }),
   {
     zIndex: 3,
-    maxWidth: $$maxPageContentWidth,
     paddingInline: vars.sizes.$4,
 
     ...responsiveStyle({
@@ -23,25 +20,6 @@ export const articleClass = style([
     }),
   },
 ]);
-
-export const landingPageArticleWrapper = style([
-  {
-    maxWidth: $$pageWidth,
-    margin: '0 auto',
-  },
-]);
-
-export const blogchainArticleWrapperClass = style([
-  {
-    width: '100vw',
-    margin: '0 auto',
-    maxWidth: $$pageWidth,
-  },
-]);
-
-globalStyle(`article[data-max-width="false"]`, {
-  maxWidth: 'unset !important',
-});
 
 export const contentClass = style([
   sprinkles({
@@ -85,7 +63,16 @@ export const contentClassVariants: Record<LayoutType, string> = styleVariants({
       },
     }),
   },
-  full: {},
+  full: {
+    ...responsiveStyle({
+      md: {
+        gridColumn: '3 / span 2',
+      },
+      lg: {
+        gridColumn: '3 / span 1',
+      },
+    }),
+  },
   blog: {
     paddingTop: 0,
   },

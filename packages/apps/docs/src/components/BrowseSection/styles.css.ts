@@ -49,7 +49,7 @@ export const columnLinkListItemClass = style([
 export const columnLinkClass = style([
   sprinkles({
     color: '$primaryContrastInverted',
-    textDecoration: 'none',
+    textDecoration: 'underline',
   }),
   {
     ':hover': {

@@ -5,7 +5,6 @@ import { style } from '@vanilla-extract/css';
 export const linkClass = style([
   sprinkles({
     color: '$primarySurface',
-    textDecoration: 'none',
     fontWeight: '$medium',
   }),
 ]);
