@@ -37,7 +37,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         className={classNames(contentClass, contentClassVariants.home)}
         id="maincontent"
       >
-        <article className={classNames(articleClass)}>
+        <article className={articleClass}>
           <Box marginBottom="$20">
             <Grid.Root gap="$lg" columns={{ sm: 1, md: 2 }}>
               <Grid.Item rowSpan={2}>
