@@ -1,4 +1,9 @@
-import { darkThemeClass, responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import {
+  darkThemeClass,
+  responsiveStyle,
+  sprinkles,
+  vars,
+} from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -32,9 +37,9 @@ export const cardVariants = styleVariants({
         },
         [`&:hover`]: {
           backgroundColor: vars.colors.$blue20,
-        }
-      }
-    }
+        },
+      },
+    },
   ],
   warning: [
     sprinkles({
@@ -50,9 +55,9 @@ export const cardVariants = styleVariants({
         },
         [`&:hover`]: {
           backgroundColor: vars.colors.$pink20,
-        }
-      }
-    }
+        },
+      },
+    },
   ],
   success: [
     sprinkles({
@@ -68,9 +73,9 @@ export const cardVariants = styleVariants({
         },
         [`&:hover`]: {
           backgroundColor: vars.colors.$green30,
-        }
-      }
-    }
+        },
+      },
+    },
   ],
 });
 

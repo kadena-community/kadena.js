@@ -1,4 +1,4 @@
-import { IconButton, Stack } from '@kadena/react-ui';
+import { Stack } from '@kadena/react-ui';
 
 import { DocsLogo } from '../DocsLogo/DocsLogo';
 import { spacerClass } from '../styles.css';

@@ -43,38 +43,38 @@ export const headerClass = style([
 const h1Class = style([
   sprinkles({
     fontSize: '$3xl',
-  })
-])
+  }),
+]);
 
 const h2Class = style([
   sprinkles({
     fontSize: '$xl',
-  })
-])
+  }),
+]);
 
 const h3Class = style([
   sprinkles({
     fontSize: '$base',
-  })
-])
+  }),
+]);
 
 const h4Class = style([
   sprinkles({
     fontSize: '$base',
-  })
-])
+  }),
+]);
 
 const h5Class = style([
   sprinkles({
     fontSize: '$base',
-  })
-])
+  }),
+]);
 
 const h6Class = style([
   sprinkles({
     fontSize: '$base',
-  })
-])
+  }),
+]);
 
 export const headerClassVariants = styleVariants({
   h1: [headerClass, h1Class],

@@ -23,6 +23,6 @@ export const figureImg = style([
 export const figCaption = style([
   sprinkles({
     textAlign: 'center',
-    marginBottom: '$8'
+    marginBottom: '$8',
   }),
 ]);

@@ -48,7 +48,7 @@ export const code = style([
       },
 
       '&::before': {
-        content: "",
+        content: '',
         position: 'absolute',
         top: 0,
         left: 0,
@@ -57,7 +57,7 @@ export const code = style([
         background: vars.colors.$blue90,
         zIndex: 0,
         opacity: 0.6,
-      }
+      },
     },
   },
 ]);
@@ -138,7 +138,7 @@ export const codeTitle = style([
         height: vars.sizes.$6,
         fontFamily: vars.fonts.$mono,
         fontWeight: 'bold',
-        fontSize: 'smaller'
+        fontSize: 'smaller',
       },
       '&[data-language="pact"]::before': {
         content: 'P',

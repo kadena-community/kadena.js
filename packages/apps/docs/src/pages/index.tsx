@@ -8,6 +8,7 @@ import {
   articleClass,
   contentClass,
   contentClassVariants,
+  landingPageArticleWrapper,
 } from '@/components/Layout/components/articleStyles.css';
 import { HomeHeader } from '@/components/Layout/Landing/components';
 import type { IMenuData } from '@/Layout';
@@ -37,7 +38,9 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         className={classNames(contentClass, contentClassVariants.home)}
         id="maincontent"
       >
-        <article className={articleClass}>
+        <article
+          className={classNames(articleClass, landingPageArticleWrapper)}
+        >
           <Box marginBottom="$20">
             <Grid.Root gap="$lg" columns={{ sm: 1, md: 2 }}>
               <Grid.Item rowSpan={2}>

@@ -43,7 +43,6 @@ globalStyle(
  * Stylings fixes
  */
 
-
 // H1
 
 globalStyle(
@@ -246,7 +245,7 @@ globalStyle(
   {
     margin: 0,
     marginTop: vars.sizes.$md,
-    marginBottom: vars.sizes.$lg
+    marginBottom: vars.sizes.$lg,
   },
 );
 
@@ -265,13 +264,9 @@ globalStyle(
 
 // A
 
-globalStyle(
-  `${getClassName(treeListClass)} li:first-of-type`,
-  {
-    marginTop: vars.sizes.$2
-  },
-);
-
+globalStyle(`${getClassName(treeListClass)} li:first-of-type`, {
+  marginTop: vars.sizes.$2,
+});
 
 // FIGURE
 
@@ -281,48 +276,38 @@ globalStyle(
   figure
   `,
   {
-    marginTop: vars.sizes.$4
+    marginTop: vars.sizes.$4,
   },
 );
-
 
 // TABLE
 
-globalStyle(
-  `${getClassName(tableWrapperClass)} tr td`,
-  {
-    verticalAlign: 'top',
-  },
-);
+globalStyle(`${getClassName(tableWrapperClass)} tr td`, {
+  verticalAlign: 'top',
+});
 
-globalStyle(
-  `${getClassName(tableWrapperClass)} tr`,
-  { background: vars.colors.$white },
-);
+globalStyle(`${getClassName(tableWrapperClass)} tr`, {
+  background: vars.colors.$white,
+});
 
-globalStyle(
-  `${darkThemeClass} ${getClassName(tableWrapperClass)} tr`,
-  { background: vars.colors.$black },
-);
+globalStyle(`${darkThemeClass} ${getClassName(tableWrapperClass)} tr`, {
+  background: vars.colors.$black,
+});
 
-globalStyle(
-  `${getClassName(tableWrapperClass)} tr:nth-child(even)`,
-  { background: vars.colors.$gray20 },
-);
+globalStyle(`${getClassName(tableWrapperClass)} tr:nth-child(even)`, {
+  background: vars.colors.$gray20,
+});
 globalStyle(
   `${darkThemeClass} ${getClassName(tableWrapperClass)} tr:nth-child(even)`,
   { background: vars.colors.$gray90 },
 );
 
-globalStyle(
-  `${getClassName(tableWrapperClass)} tr:hover`,
-  { background: vars.colors.$blue10 },
-);
-globalStyle(
-  `${darkThemeClass} ${getClassName(tableWrapperClass)} tr:hover`,
-  { background: vars.colors.$blue100 },
-);
-
+globalStyle(`${getClassName(tableWrapperClass)} tr:hover`, {
+  background: vars.colors.$blue10,
+});
+globalStyle(`${darkThemeClass} ${getClassName(tableWrapperClass)} tr:hover`, {
+  background: vars.colors.$blue100,
+});
 
 // NAVIGATION
 
@@ -331,7 +316,7 @@ globalStyle(
   ${getClassName(treeListClass)} > li > ul > li > ul > li ul li
   `,
   {
-    marginTop: vars.sizes.$2
+    marginTop: vars.sizes.$2,
   },
 );
 
@@ -339,25 +324,75 @@ globalStyle(
   `${getClassName(treeListClass)} > li > ul > li > ul > li:last-of-type
   `,
   {
-    marginBottom: vars.sizes.$6
+    marginBottom: vars.sizes.$6,
   },
 );
 
-
 // DOC CARDS
 
-globalStyle(`${getClassName(cardVariants.info)} a`, { color: vars.colors.$primaryContrastInverted });
-globalStyle(`${getClassName(cardVariants.info)} a:hover`, { color: vars.colors.$primaryHighContrast });
-globalStyle(`${darkThemeClass} ${getClassName(cardVariants.info)} a`, { color: vars.colors.$blue30 });
-globalStyle(`${darkThemeClass} ${getClassName(cardVariants.info)} a:hover`, { color: vars.colors.$blue20 });
+globalStyle(
+  `${getClassName(cardVariants.info)} a:not([data-testid="kda-button"])`,
+  { color: vars.colors.$primaryContrastInverted },
+);
+globalStyle(
+  `${getClassName(cardVariants.info)} a:not([data-testid="kda-button"]):hover`,
+  { color: vars.colors.$primaryHighContrast },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(
+    cardVariants.info,
+  )} a:not([data-testid="kda-button"])`,
+  { color: vars.colors.$blue30 },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(
+    cardVariants.info,
+  )} a:not([data-testid="kda-button"]):hover`,
+  { color: vars.colors.$blue20 },
+);
 
-globalStyle(`${getClassName(cardVariants.warning)} a`, { color: vars.colors.$pink90 });
-globalStyle(`${getClassName(cardVariants.warning)} a:hover`, { color: vars.colors.$pink100 });
-globalStyle(`${darkThemeClass} ${getClassName(cardVariants.warning)} a`, { color: vars.colors.$pink30 });
-globalStyle(`${darkThemeClass} ${getClassName(cardVariants.warning)} a:hover`, { color: vars.colors.$pink20 });
+globalStyle(
+  `${getClassName(cardVariants.warning)} a:not([data-testid="kda-button"])`,
+  { color: vars.colors.$pink90 },
+);
+globalStyle(
+  `${getClassName(
+    cardVariants.warning,
+  )} a:not([data-testid="kda-button"]):hover`,
+  { color: vars.colors.$pink100 },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(
+    cardVariants.warning,
+  )} a:not([data-testid="kda-button"])`,
+  { color: vars.colors.$pink30 },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(
+    cardVariants.warning,
+  )} a:not([data-testid="kda-button"]):hover`,
+  { color: vars.colors.$pink20 },
+);
 
-globalStyle(`${getClassName(cardVariants.success)} a`, { color: vars.colors.$green90 });
-globalStyle(`${getClassName(cardVariants.success)} a:hover`, { color: vars.colors.$green100 });
-globalStyle(`${darkThemeClass} ${getClassName(cardVariants.success)} a`, { color: vars.colors.$green30 });
-globalStyle(`${darkThemeClass} ${getClassName(cardVariants.success)} a:hover`, { color: vars.colors.$green20 });
-
+globalStyle(
+  `${getClassName(cardVariants.success)} a:not([data-testid="kda-button"])`,
+  { color: vars.colors.$green90 },
+);
+globalStyle(
+  `${getClassName(
+    cardVariants.success,
+  )} a:not([data-testid="kda-button"]):hover`,
+  { color: vars.colors.$green100 },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(
+    cardVariants.success,
+  )} a:not([data-testid="kda-button"])`,
+  { color: vars.colors.$green30 },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(
+    cardVariants.success,
+  )} a:not([data-testid="kda-button"]):hover`,
+  { color: vars.colors.$green20 },
+);

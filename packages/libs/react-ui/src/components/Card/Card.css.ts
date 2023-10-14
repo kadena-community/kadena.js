@@ -19,7 +19,6 @@ export const container = style([
     borderRadius: '$sm',
     marginY: '$6',
     border: 'none',
-    width: 'max-content',
     position: 'relative',
   }),
   {

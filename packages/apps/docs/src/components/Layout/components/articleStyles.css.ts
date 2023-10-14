@@ -24,9 +24,15 @@ export const articleClass = style([
   },
 ]);
 
+export const landingPageArticleWrapper = style([
+  {
+    maxWidth: 'unset !important',
+  },
+]);
+
 globalStyle(`article[data-max-width="false"]`, {
   maxWidth: 'unset !important',
-})
+});
 
 export const contentClass = style([
   sprinkles({
