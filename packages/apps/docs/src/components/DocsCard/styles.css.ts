@@ -91,7 +91,7 @@ export const docsCardLink = style([
   {
     selectors: {
       '&:hover': {
-        textDecoration: 'none',
+        textDecoration: 'underline',
       },
     },
   },
