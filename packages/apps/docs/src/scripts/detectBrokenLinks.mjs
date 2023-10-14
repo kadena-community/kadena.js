@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import { importReadMes } from './utils.mjs';
 
 const __dirname = path.resolve();
 const errors = [];
