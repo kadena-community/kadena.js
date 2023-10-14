@@ -8,7 +8,6 @@ import { codeWrapper, inlineCode } from './Code/style.css';
 import { headerClass } from './Heading/styles.css';
 import { notificationWrapperClass } from './MDNotification/styles.css';
 import { paragraphWrapperClass } from './Paragraph/styles.css';
-import { tableWrapperClass } from './Table/styles.css';
 import { ulListClass } from './UnorderedList/styles.css';
 
 import { getClassName } from '@/utils/getClassName';
@@ -268,35 +267,6 @@ globalStyle(
     marginTop: vars.sizes.$4,
   },
 );
-
-// TABLE
-
-globalStyle(`${getClassName(tableWrapperClass)} tr td`, {
-  verticalAlign: 'top',
-});
-
-globalStyle(`${getClassName(tableWrapperClass)} tr`, {
-  background: vars.colors.$white,
-});
-
-globalStyle(`${darkThemeClass} ${getClassName(tableWrapperClass)} tr`, {
-  background: vars.colors.$black,
-});
-
-globalStyle(`${getClassName(tableWrapperClass)} tr:nth-child(even)`, {
-  background: vars.colors.$gray20,
-});
-globalStyle(
-  `${darkThemeClass} ${getClassName(tableWrapperClass)} tr:nth-child(even)`,
-  { background: vars.colors.$gray90 },
-);
-
-globalStyle(`${getClassName(tableWrapperClass)} tr:hover`, {
-  background: vars.colors.$blue10,
-});
-globalStyle(`${darkThemeClass} ${getClassName(tableWrapperClass)} tr:hover`, {
-  background: vars.colors.$blue100,
-});
 
 // NAVIGATION
 // @TODO: this should be fixed correctly. Just patching it to get the spacings right
