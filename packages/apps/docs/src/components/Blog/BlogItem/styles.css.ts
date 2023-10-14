@@ -46,6 +46,11 @@ export const footer = style([
   }),
 ]);
 
+export const footerVariant = styleVariants({
+  default: { fontSize: 'smaller' },
+  large: {},
+});
+
 export const metaItem = style([
   sprinkles({}),
   {
@@ -143,34 +148,22 @@ export const gridWrapperClass = style([
 ]);
 
 export const gridBlogItemImage = style({});
-export const gridBlogItemContent = style({});
-export const gridBlogItemContentDescription = style({});
+export const gridBlogItemContent = styleVariants({
+  default: {
+    marginTop: vars.sizes.$2,
+    marginBottom: vars.sizes.$4,
+  },
+  large: {},
+});
+
 export const footerTags = style({
   display: 'block',
   marginTop: vars.sizes.$3,
 });
 
-globalStyle(`${gridBlogItemContent} > :not(:first-child)`, {
-  marginLeft: vars.sizes.$12,
-});
-
-globalStyle(`${gridBlogItemContent} > :nth-child(2)`, {
-  marginTop: vars.sizes.$2,
-  marginBottom: vars.sizes.$4,
-});
-
 globalStyle(
-  `${blogItemThumb} ${gridBlogItemContent} > :nth-child(1) h4,
-  ${blogItemThumb} ${gridBlogItemContent} > :nth-child(1) h4 span`,
+  `${gridBlogItemContent.default}  h4, ${gridBlogItemContent.default}  h4 span`,
   {
     fontSize: vars.sizes.$md,
   },
 );
-
-globalStyle(`${blogItemThumb} ${gridBlogItemContent} > :nth-child(2)`, {
-  fontSize: vars.sizes.$lg,
-});
-
-globalStyle(`${blogItemThumb} ${gridBlogItemContent} footer`, {
-  fontSize: 'smaller',
-});

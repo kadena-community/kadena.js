@@ -6,13 +6,12 @@ import { FormatDate } from '../FormatDate';
 import {
   authorTitleClass,
   blogitem,
-  blogItemThumb,
   figureClass,
   figureVariant,
   footer,
   footerTags,
+  footerVariant,
   gridBlogItemContent,
-  gridBlogItemContentDescription,
   gridBlogItemImage,
   gridWrapperClass,
   imageClass,
@@ -35,11 +34,7 @@ interface IProps {
 
 export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
   return (
-    <li
-      className={classNames(
-        ...[blogitem, size !== 'large' ? blogItemThumb : ''],
-      )}
-    >
+    <li className={blogitem}>
       <Link className={link} href={item.root}>
         <div className={gridWrapperClass}>
           <div className={gridBlogItemImage} style={{ gridArea: 'image' }}>
@@ -61,13 +56,16 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
               </figure>
             </Box>
           </div>
-          <div className={gridBlogItemContent} style={{ gridArea: 'header' }}>
+          <div
+            className={gridBlogItemContent[size]}
+            style={{ gridArea: 'header' }}
+          >
             <Stack alignItems="center" gap="$2">
               <Avatar
                 name={item.authorInfo?.name}
                 avatar={item.authorInfo?.avatar}
               />
-              <Heading as="h4" variant="h6">
+              <Heading as="h4" variant={size === 'large' ? 'h5' : 'h6'}>
                 {item.authorInfo?.name}{' '}
                 {item.authorInfo?.description && (
                   <span className={authorTitleClass}>
@@ -77,28 +75,28 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                 )}
               </Heading>
             </Stack>
-            <Heading as="h3" variant={size === 'large' ? 'h4' : 'h6'}>
-              {item.title}
-            </Heading>
+            <Box marginLeft="$12" marginTop="$4">
+              <Heading as="h3" variant={size === 'large' ? 'h5' : 'h6'}>
+                {item.title}
+              </Heading>
 
-            <div className={gridBlogItemContentDescription}>
-              {item.description}
-            </div>
+              <Box marginY="$4">{item.description}</Box>
 
-            <footer className={footer}>
-              <span className={metaItem}>
-                {item.readingTimeInMinutes} minutes
-              </span>
-              <FormatDate date={item.publishDate} />
-              <span className={footerTags}>
-                {item.tags &&
-                  item.tags.map((tag) => (
-                    <span className={tagLinkClass} key={tag}>
-                      <Tag>{tag}</Tag>
-                    </span>
-                  ))}
-              </span>
-            </footer>
+              <footer className={classNames(footer, footerVariant[size])}>
+                <span className={metaItem}>
+                  {item.readingTimeInMinutes} minutes
+                </span>
+                <FormatDate date={item.publishDate} />
+                <span className={footerTags}>
+                  {item.tags &&
+                    item.tags.map((tag) => (
+                      <span className={tagLinkClass} key={tag}>
+                        <Tag>{tag}</Tag>
+                      </span>
+                    ))}
+                </span>
+              </footer>
+            </Box>
           </div>
         </div>
       </Link>
