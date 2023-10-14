@@ -438,7 +438,7 @@ be created with
 
 Bind variables in BINDPAIRs to be in scope over BODY. Variables within BINDPAIRs
 cannot refer to previously-declared variables in the same let binding; for this
-use [let\*](#letstar).
+use [let\*](/pact/reference/syntax#leth3318127).
 
 ```pact
 (let ((x 2)
@@ -634,9 +634,9 @@ productions in a module include:
 - [deftable](/pact/reference/syntax#deftableh661222121)
 - [defschema](/pact/reference/syntax#defschemah-1003560474)
 - [defconst](/pact/reference/syntax#defconsth645951102)
-- [implements](#implements)
+- [implements](/pact/reference/syntax#implementsh-915384400)
 - [use](/pact/reference/syntax#useh116103)
-- [bless](#bless)
+- [bless](/pact/reference/syntax#blessh93823227)
 
 ```pact
 (module accounts 'accounts-admin

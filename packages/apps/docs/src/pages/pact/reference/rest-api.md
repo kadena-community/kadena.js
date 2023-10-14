@@ -162,9 +162,11 @@ the command and all the signatures on stdout.
 Both `add-sig` and `combine-sigs` will output YAML if the output transaction
 hasn't accumulated enough signatures to be valid. If all the necessary
 signatures are present, then they will output JSON in final form that is ready
-to be sent to the blockchain on the [`/send` endpoint](#send). If you would like
-to do a test run of the transaction, you can use the `-l` flag to generate
-output suitable for use with the [`/local` endpoint](#local).
+to be sent to the blockchain on the
+[`/send` endpoint](/pact/api#tag/endpoint-send/paths/~1send/post). If you would
+like to do a test run of the transaction, you can use the `-l` flag to generate
+output suitable for use with the
+[`/local` endpoint](/pact/api#tag/endpoint-local/paths/~1local/post).
 
 The above example adds signatures in parallel, but the `add-sig` command can
 also be used to add signatures sequentially in separate steps or all at once in
@@ -216,12 +218,12 @@ the full command.
 ### Detached Signature Transaction Format
 
 The YAML input expected by `pact -u` is similar to the
-[Public Blockchain YAML format](#request-yaml-public-chain) described above with
-one major difference. Instead of the `keyPairs` field which requires both the
-public and secret keys, `pact -u` expects a `signers` field that only needs a
-public key. This allows signatures to be added on incrementally as described
-above without needing private keys to all be present when the transaction is
-constructed.
+[Public Blockchain YAML format](/pact/reference/rest-api#detached-signature-transaction-formath-260011505)
+described above with one major difference. Instead of the `keyPairs` field which
+requires both the public and secret keys, `pact -u` expects a `signers` field
+that only needs a public key. This allows signatures to be added on
+incrementally as described above without needing private keys to all be present
+when the transaction is constructed.
 
 Here is an example of how the above `tx.yaml` file might look:
 

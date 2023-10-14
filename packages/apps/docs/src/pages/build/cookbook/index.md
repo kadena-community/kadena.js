@@ -22,7 +22,7 @@ tags: [pact, typescript, account, transactions, utils]
 | **TRANSACTIONS**                                                              |                                              |
 | [Get Transaction Status](/build/cookbook#get-transaction-statush155365598)    | Get transaction status using Tx request key. |
 | **UTILS**                                                                     |                                              |
-| [Deploy contract](#deploy-contracth59420715)                                  | Deploy a Pact smart contract.                |
+| [Deploy contract](/build/cookbook#deploy-contracth59420715)                   | Deploy a Pact smart contract.                |
 | [Read State](/build/cookbook#read-stateh2758023)                              | Read state of a contract.                    |
 | [Verify Signature](/build/cookbook#verify-signatureh1418798545)               | Verify a key pair signature.                 |
 
