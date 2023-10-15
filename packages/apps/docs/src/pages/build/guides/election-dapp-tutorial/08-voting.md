@@ -393,7 +393,7 @@ inside a `with-capability` statement as follows.
 )
 ```
 
-Run `./pact/election.repl` and verify that all tests are passing. This means that it is no
+Run `./pact/voting.repl` and verify that all tests are passing. This means that it is no
 longer possible to vote on behalf of another account. For extra confidence that the `vote`
 function works as expected add a transaction to verify that the `voter` account can vote
 on its own behalf, leading to an increase of the number of votes on `Candidate A` to 2.
