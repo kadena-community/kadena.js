@@ -122,7 +122,7 @@ export const actionsContainerClass = style([
   }),
 ]);
 
-export const actionButtonClass = style([
+const actionButtonClass = style([
   sprinkles({
     display: 'flex',
     justifyContent: 'center',

@@ -8,7 +8,7 @@ import React from 'react';
 export type LogoVariant = 'Kadena' | 'DevTools' | 'Docs';
 export const logoVariants: LogoVariant[] = ['Kadena', 'DevTools', 'Docs'];
 
-export interface IBrandLogoProps {
+interface IBrandLogoProps {
   variant?: LogoVariant;
 }
 
