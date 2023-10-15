@@ -85,11 +85,6 @@ const redirectsConfig = [
     permanent: true,
   },
   {
-    source: '/build/guides/:slug',
-    destination: '/build/guides/:slug',
-    permanent: true,
-  },
-  {
     source: '/build/frontend/pact-lang-api-cookbook',
     destination: '/build/cookbook',
     permanent: true,
