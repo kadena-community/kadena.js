@@ -24,6 +24,30 @@ chapters you will gradually add more logic to the module.
  * [Capabilities](https://pact-language.readthedocs.io/en/latest/pact-reference.html#capabilities)
  * [Pact: Solving Smart Contract Governance and Upgradeability](/blogchain/2019/pact-solving-smart-contract-governance-and-upgradeability-2019-04-05)
 
+## Get the code
+
+If you are following along with the tutorial you can continue working on your current
+branch. In case you started the tutorial with this chapter, clone the tutorial
+project and change the current directory of your terminal to the project folder.
+
+```bash
+git clone git@github.com:kadena-community/voting-dapp.git election-dapp
+cd election-dapp
+```
+
+Switch branches to get the starter code for this chapter.
+
+```bash
+git checkout 06-smart-contract
+```
+
+If you want to skip ahead and see the final solution for this chapter, you can check
+out the branch containing the starter code for the next chapter.
+
+```bash
+git checkout 07-nominate-candidates
+```
+
 ## Exercise: Define the election Pact module
 
 In this exercise you will test the deployment and upgrade of a Pact module in the Pact REPL.

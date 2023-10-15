@@ -28,6 +28,30 @@ on your local Devnet.
  * [Beginner’s Guide to Kadena: Accounts + Keysets](/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14)
  * [Pact Keysets](/pact/beginner/keysets)
 
+## Get the code
+
+If you are following along with the tutorial you can continue working on your current
+branch. In case you started the tutorial with this chapter, clone the tutorial
+project and change the current directory of your terminal to the project folder.
+
+```bash
+git clone git@github.com:kadena-community/voting-dapp.git election-dapp
+cd election-dapp
+```
+
+Switch branches to get the starter code for this chapter.
+
+```bash
+git checkout 05-keysets
+```
+
+If you want to skip ahead and see the final solution for this chapter, you can check
+out the branch containing the starter code for the next chapter.
+
+```bash
+git checkout 05-keysets
+```
+
 ## Exercise: Define a keyset
 
 In the `./pact` folder, create a file `keyset.repl`. Write an empty transaction inside

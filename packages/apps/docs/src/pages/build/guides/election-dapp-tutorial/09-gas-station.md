@@ -48,6 +48,30 @@ that can pay the gas fee for every voting transaction, allowing all citizens to 
 
  * [The First Crypto Gas Station is Now on Kadena’s Blockchain](/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06)
 
+## Get the code
+
+If you are following along with the tutorial you can continue working on your current
+branch. In case you started the tutorial with this chapter, clone the tutorial
+project and change the current directory of your terminal to the project folder.
+
+```bash
+git clone git@github.com:kadena-community/voting-dapp.git election-dapp
+cd election-dapp
+```
+
+Switch branches to get the starter code for this chapter.
+
+```bash
+git checkout 09-gas-station
+```
+
+If you want to skip ahead and see the completed code for this tutorial, you can check
+out the following branch.
+
+```bash
+git checkout 00-complete
+```
+
 ## Create a voter account
 
 In the previous chapter you voted with your admin account. The transaction was successful, because

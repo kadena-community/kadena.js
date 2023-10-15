@@ -18,6 +18,30 @@ functionality that allows anyone with a Kadena account to cast a vote on a candi
 you will use the Devnet implementation of the vote repository in the front-end to enable
 voting on the blockchain via the election website.
 
+## Get the code
+
+If you are following along with the tutorial you can continue working on your current
+branch. In case you started the tutorial with this chapter, clone the tutorial
+project and change the current directory of your terminal to the project folder.
+
+```bash
+git clone git@github.com:kadena-community/voting-dapp.git election-dapp
+cd election-dapp
+```
+
+Switch branches to get the starter code for this chapter.
+
+```bash
+git checkout 08-voting
+```
+
+If you want to skip ahead and see the final solution for this chapter, you can check
+out the branch containing the starter code for the next chapter.
+
+```bash
+git checkout 09-gas-station
+```
+
 ## Increment votes of a candidate
 
 Clicking the `Vote` button on the election website triggers a call to the `vote` function

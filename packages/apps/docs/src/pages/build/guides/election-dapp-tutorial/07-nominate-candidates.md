@@ -21,6 +21,30 @@ candidates to the table and listing all candidates that are stored in the table.
 
  * [Pact Schemas and Tables](/pact/beginner/schemas-and-tables)
 
+## Get the code
+
+If you are following along with the tutorial you can continue working on your current
+branch. In case you started the tutorial with this chapter, clone the tutorial
+project and change the current directory of your terminal to the project folder.
+
+```bash
+git clone git@github.com:kadena-community/voting-dapp.git election-dapp
+cd election-dapp
+```
+
+Switch branches to get the starter code for this chapter.
+
+```bash
+git checkout 07-nominate-candidates
+```
+
+If you want to skip ahead and see the final solution for this chapter, you can check
+out the branch containing the starter code for the next chapter.
+
+```bash
+git checkout 08-voting
+```
+
 ## Database
 
 To prepare the Pact module's database you need to define a schema for the table and define
