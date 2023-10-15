@@ -1,7 +1,6 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { getClassName } from '@/utils/getClassName';
-import { globalStyle, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
 export const blockquote = style([
   sprinkles({
