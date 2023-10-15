@@ -24,6 +24,25 @@ account name, the convention of using the single key of the account prefixed by
  * [Beginner’s Guide to Kadena: Accounts + Keysets](/blogchain/2020/beginners-guide-to-kadena-accounts-keysets-2020-01-14)
  * [Kadena Public Blockchain: Getting Started with Transfers](/blogchain/2019/kadena-public-blockchain-getting-started-with-transfers-2019-12-19)
 
+
+## Get the code
+
+The project files have not been changed since the last chapter, so if you are
+following along with the tutorial you can continue on the `01-getting-started`
+branch. If you started the tutorial with this chapter, clone the tutorial
+project and change the current directory of your terminal to the project folder.
+
+```bash
+git clone git@github.com:kadena-community/voting-dapp.git election-dapp
+cd election-dapp
+```
+
+After cloning the project, switch branches to get the starter code for this chapter.
+
+```bash
+git checkout 03-admin-account
+```
+
 ## Creating the admin key
 
 There are several ways to create a key, but in this tutorial you will create a key
