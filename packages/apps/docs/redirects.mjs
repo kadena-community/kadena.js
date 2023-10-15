@@ -80,6 +80,11 @@ const redirectsConfig = [
     permanent: true,
   },
   {
+    source: '/build/guides/building-a-voting-dapp',
+    destination: '/build/guides/election-dapp-tutorial',
+    permanent: true,
+  },
+  {
     source: '/build/guides/:slug',
     destination: '/build/guides/:slug',
     permanent: true,
