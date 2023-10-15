@@ -537,9 +537,10 @@ in the following format.
 { "key": "1", "name": "Your name" }
 ```
 
-Click `Refresh candidates` to reload the list of candidates and, if all is
-well, the candidate you nominated will be listed with its name and zero
-votes. Great job!
+After signing the request, a loading indicator will be displayed on the
+website while the transaction is in progress. As soon as the transaction
+completes successfully, the loading indicator will disappear and
+the candidate you nominated will be added to the list. Great job!
 
 ## Next steps
 

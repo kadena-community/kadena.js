@@ -460,7 +460,7 @@ npm run start-devnet
 Set the account to your admin account and nominate a candidate if you have not already. Make
 sure that Chainweaver is open so you can sign the transaction. Click the `Vote` button
 behind your favorite candidate, sign the transaction and wait for the transaction to
-finish. Click `Refresh candidates` and verify that the number of votes for the candidate
+finish. Verify that the number of votes for the candidate
 you voted on increased by 1. After you voted, the `Vote` buttons are disabled, because
 the front-end checks if you account has already voted by making a `local` request to
 the `account-voted` function of the `election` Pact module.

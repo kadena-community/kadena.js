@@ -49,7 +49,7 @@ If you want to skip ahead and see the final solution for this chapter, you can c
 out the branch containing the starter code for the next chapter.
 
 ```bash
-git checkout 05-keysets
+git checkout 06-smart-contract
 ```
 
 ## Exercise: Define a keyset
