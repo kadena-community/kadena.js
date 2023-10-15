@@ -22,8 +22,6 @@ export const blogitem = style([
   },
 ]);
 
-export const blogItemThumb = style({});
-
 export const link = style([
   sprinkles({
     display: 'block',
@@ -48,7 +46,7 @@ export const footer = style([
 
 export const footerVariant = styleVariants({
   default: { fontSize: 'smaller' },
-  large: {},
+  large: { fontSize: 'inherit' },
 });
 
 export const metaItem = style([
