@@ -8,14 +8,6 @@ import { Link } from '@components/Link';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 
-export type INavItemTarget = '_self' | '_blank';
-export interface INavItem {
-  label: string;
-  href: string;
-  target?: INavItemTarget;
-}
-export type INavItems = INavItem[];
-
 export interface INavHeaderRootProps {
   brand?: LogoVariant;
   children?: FunctionComponentElement<

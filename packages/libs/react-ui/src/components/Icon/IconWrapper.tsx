@@ -8,7 +8,7 @@ export interface IIconProps {
   size?: keyof typeof sizeVariants;
 }
 
-export type IconType = SVGProps<SVGSVGElement> & IIconProps;
+type IconType = SVGProps<SVGSVGElement> & IIconProps;
 
 export const IconWrapper = (
   // eslint-disable-next-line @typescript-eslint/naming-convention
