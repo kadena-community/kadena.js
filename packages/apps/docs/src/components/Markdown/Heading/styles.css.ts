@@ -1,8 +1,13 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 
+import { paragraphWrapperClass } from '../Paragraph/styles.css';
+import { ulListClass } from '../UnorderedList/styles.css';
+
+import { getClassName } from '@/utils/getClassName';
 import {
   createVar,
   fallbackVar,
+  globalStyle,
   style,
   styleVariants,
 } from '@vanilla-extract/css';
@@ -84,3 +89,39 @@ export const headerClassVariants = styleVariants({
   h5: [headerClass, h5Class],
   h6: [headerClass, h6Class],
 });
+
+// / H2 directly after H1
+
+globalStyle(
+  `article
+  h1${getClassName(headerClass)} +
+  h2${getClassName(headerClass)}`,
+  {
+    marginTop: vars.sizes.$lg,
+  },
+);
+
+// / H2 after H1 + excerpt
+
+globalStyle(
+  `article
+  h1${getClassName(headerClass)} +
+  ${getClassName(paragraphWrapperClass)} +
+  h2${getClassName(headerClass)}`,
+  {
+    marginTop: 0,
+    paddingTop: 0,
+  },
+);
+
+// H3
+
+globalStyle(
+  `article
+  h3${getClassName(headerClass)} +
+  ${getClassName(ulListClass)}`,
+  {
+    marginBottom: `${vars.sizes.$xl} !important`,
+    paddingTop: `${vars.sizes.$xl} !important`,
+  },
+);

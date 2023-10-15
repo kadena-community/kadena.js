@@ -49,6 +49,27 @@ export const linkClass = style([
   },
 ]);
 
+export const listItemClass = style({
+  selectors: {
+    '&:first-of-type': {
+      marginTop: vars.sizes.$2,
+    },
+  },
+});
+
+export const listItemVariants = styleVariants({
+  l1: {},
+  l2: {},
+  l3: {
+    marginTop: vars.sizes.$2,
+    selectors: {
+      '&:last-of-type': {
+        marginBottom: vars.sizes.$6,
+      },
+    },
+  },
+});
+
 export const linkActiveClass = styleVariants({
   false: {},
   true: { color: vars.colors.$primaryContrastInverted },

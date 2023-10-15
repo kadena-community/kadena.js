@@ -5,7 +5,8 @@ import {
   vars,
 } from '@kadena/react-ui/theme';
 
-import { style, styleVariants } from '@vanilla-extract/css';
+import { getClassName } from '@/utils/getClassName';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
 export const cardClass = style([
   sprinkles({
@@ -178,3 +179,92 @@ export const backgroundVariant = styleVariants({
   },
   default: {},
 });
+
+// DOC CARDS
+globalStyle(
+  `${getClassName(cardVariants.info)} ${getClassName(docsCardLink)}`,
+  {
+    color: vars.colors.$primaryContrastInverted,
+  },
+);
+globalStyle(
+  `${getClassName(cardVariants.info)} ${getClassName(docsCardLink)}:hover`,
+  {
+    color: vars.colors.$primaryHighContrast,
+  },
+);
+
+globalStyle(
+  `${darkThemeClass} ${getClassName(cardVariants.info)} ${getClassName(
+    docsCardLink,
+  )}`,
+  {
+    color: vars.colors.$blue30,
+  },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(cardVariants.info)} ${getClassName(
+    docsCardLink,
+  )}:hover`,
+  {
+    color: vars.colors.$blue20,
+  },
+);
+
+globalStyle(
+  `${getClassName(cardVariants.warning)} ${getClassName(docsCardLink)}`,
+  {
+    color: vars.colors.$pink90,
+  },
+);
+globalStyle(
+  `${getClassName(cardVariants.warning)} ${getClassName(docsCardLink)}:hover`,
+  {
+    color: vars.colors.$pink100,
+  },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(cardVariants.warning)} ${getClassName(
+    docsCardLink,
+  )}`,
+  {
+    color: vars.colors.$pink30,
+  },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(cardVariants.warning)} ${getClassName(
+    docsCardLink,
+  )}:hover`,
+  {
+    color: vars.colors.$pink20,
+  },
+);
+
+globalStyle(
+  `${getClassName(cardVariants.success)} ${getClassName(docsCardLink)}`,
+  {
+    color: vars.colors.$green90,
+  },
+);
+globalStyle(
+  `${getClassName(cardVariants.success)} ${getClassName(docsCardLink)}:hover`,
+  {
+    color: vars.colors.$green100,
+  },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(cardVariants.success)} ${getClassName(
+    docsCardLink,
+  )}`,
+  {
+    color: vars.colors.$green30,
+  },
+);
+globalStyle(
+  `${darkThemeClass} ${getClassName(cardVariants.success)} ${getClassName(
+    docsCardLink,
+  )}:hover`,
+  {
+    color: vars.colors.$green20,
+  },
+);
