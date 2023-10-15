@@ -1,6 +1,7 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { style } from '@vanilla-extract/css';
+import { getClassName } from '@/utils/getClassName';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const blockquote = style([
   sprinkles({
@@ -14,6 +15,7 @@ export const blockquote = style([
   {
     borderLeftWidth: '2px',
     borderLeftStyle: 'solid',
+    whiteSpace: 'pre-wrap',
     ...responsiveStyle({
       md: {
         paddingRight: vars.sizes.$8,

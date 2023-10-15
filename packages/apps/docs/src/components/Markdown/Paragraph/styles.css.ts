@@ -1,18 +1,28 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { getClassName } from '@/utils/getClassName';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const paragraphWrapperClass = style([
   sprinkles({
-    marginY: 0,
-    marginX: 0,
+    margin: 0,
   }),
   {
     wordBreak: 'break-word',
+    selectors: {},
   },
 ]);
 
-globalStyle(`${getClassName(paragraphWrapperClass)} p:empty`, {
+globalStyle(`article ${getClassName(paragraphWrapperClass)} p:empty`, {
   display: 'none',
 });
+
+globalStyle(
+  `article
+  ${getClassName(paragraphWrapperClass)} +
+  ${getClassName(paragraphWrapperClass)}
+  `,
+  {
+    marginTop: vars.sizes.$md,
+  },
+);

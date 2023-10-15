@@ -1,16 +1,56 @@
 import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 
+import { headerClass } from '../Heading/styles.css';
+import { paragraphWrapperClass } from '../Paragraph/styles.css';
+
+import { getClassName } from '@/utils/getClassName';
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const inlineCode = style([
   sprinkles({
     borderRadius: '$sm',
     backgroundColor: '$neutral2',
+    marginLeft: '$1',
+    marginRight: '$1',
   }),
   {
+    fontFamily: vars.fonts.$mono,
+    color: vars.colors.$primaryContrastInverted,
     padding: `calc(${vars.sizes.$1} / 4) ${vars.sizes.$1}`,
+    fontSize: 'smaller',
+    fontWeight: 'bolder',
+    backgroundColor: vars.colors.$primaryLowContrast,
   },
 ]);
+
+// CONTENT + INLINE CODE
+// CONTENT + INLINE CODE
+
+globalStyle(
+  `article ${getClassName(headerClass)} ${getClassName(inlineCode)},
+  article
+  h1${getClassName(headerClass)} +
+  ${getClassName(paragraphWrapperClass)} ${getClassName(inlineCode)}`,
+  {
+    paddingLeft: vars.sizes.$2,
+    paddingRight: vars.sizes.$2,
+  },
+);
+
+globalStyle(
+  `
+  article ${getClassName(paragraphWrapperClass)} ${getClassName(inlineCode)},
+  article pre ${getClassName(inlineCode)},
+  article ul ${getClassName(inlineCode)},
+  article ol ${getClassName(inlineCode)}
+  `,
+  {
+    paddingLeft: vars.sizes.$1,
+    paddingRight: vars.sizes.$1,
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+);
 
 export const codeWrapper = style([
   sprinkles({
@@ -18,7 +58,7 @@ export const codeWrapper = style([
     fontSize: '$sm',
     fontFamily: '$mono',
     lineHeight: '$lg',
-    marginX: '$5',
+    marginX: 0,
     marginY: '$10',
   }),
   {
@@ -106,6 +146,19 @@ globalStyle(`code span`, {
 globalStyle(`code span::selection`, {
   background: vars.colors.$blue80,
 });
+
+globalStyle(
+  `ul > li
+  ${getClassName(codeWrapper)},
+  ol > li
+  ${getClassName(codeWrapper)}
+  `,
+  {
+    margin: 0,
+    marginTop: vars.sizes.$md,
+    marginBottom: vars.sizes.$lg,
+  },
+);
 
 export const codeTitle = style([
   sprinkles({
