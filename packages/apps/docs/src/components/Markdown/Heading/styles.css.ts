@@ -101,18 +101,6 @@ globalStyle(
   },
 );
 
-// / H2 after H1 + excerpt
-
-globalStyle(
-  `article
-  h1${getClassName(headerClass)} +
-  ${getClassName(paragraphWrapperClass)} +
-  h2${getClassName(headerClass)}`,
-  {
-    marginTop: 0,
-    paddingTop: 0,
-  },
-);
 
 // H3
 

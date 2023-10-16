@@ -36,21 +36,18 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
       id="main"
     >
       <article className={articleClass}>
-        <Box marginRight={{ sm: 0, lg: '$32', xl: '$64' }} marginBottom="$10">
-          <Text>
-            Pact allows anyone to write clearly, directly and safely onto a
-            blockchain — a true innovation for secure and simple smart contract
-            development. Pact will enable you to create entirely new business
-            models and on-chain services.
-          </Text>
-        </Box>
-
         <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
           <Grid.Item>
             <Card fullWidth>
               <Heading as="h4">Learn Pact</Heading>
               <Box marginY="$4">
-                <Text>Learn the basics of Pact to create a smart contract</Text>
+                <Text>
+                  Pact allows anyone to write clearly, directly and safely onto
+                  a blockchain — a true innovation for secure and simple smart
+                  contract development. Pact will enable you to create entirely
+                  new business models and on-chain services. Learn the basics of
+                  Pact to create a smart contract
+                </Text>
               </Box>
               <Button as="a" asChild icon="TrailingIcon">
                 <Link href={'/pact/beginner'}>Getting started</Link>
