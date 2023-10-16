@@ -8,7 +8,7 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import { submitClient } from '../core/rich-client';
+import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface IRotateCommandInput {

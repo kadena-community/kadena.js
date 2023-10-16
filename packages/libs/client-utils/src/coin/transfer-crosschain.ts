@@ -8,7 +8,7 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import { crossChainClient } from '../core/rich-client';
+import { crossChainClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface ICrossChainInput {
