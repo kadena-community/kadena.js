@@ -24,7 +24,6 @@ import {
   throwIfFails,
   withInput,
 } from './utils/helpers';
-import type { Any } from './utils/types';
 
 const requestSpvProof =
   (targetChainId: ChainId, client: IClient, onPoll: (id: string) => void) =>
