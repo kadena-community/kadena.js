@@ -22,7 +22,7 @@
     "src"
   ],
   "scripts": {
-    "build": "pnpm run generate-pipe-type && tsc",
+    "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc",
     "dev:postinstall": "pnpm run pactjs:generate:contract",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
