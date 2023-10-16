@@ -10,6 +10,7 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import type { KeyboardHandler, Mode, Theme } from './helper';
+import { containerStyle } from './styles.css';
 
 export interface IEditorProps
   extends Pick<IAceEditorProps, 'width' | 'height' | 'onChange' | 'readOnly'> {
@@ -29,25 +30,27 @@ const AceViewerComponent: FC<IEditorProps> = ({
   theme,
   mode,
 }) => (
-  <AceEditor
-    value={code}
-    width={width || '94%'}
-    height={height || '40rem'}
-    readOnly={readOnly !== false}
-    onChange={onChange}
-    keyboardHandler={keyboardHandler}
-    showPrintMargin={false}
-    theme={theme}
-    mode={mode}
-    name="ace-editor"
-    editorProps={{ $blockScrolling: true }}
-    setOptions={{
-      enableSnippets: true,
-      showLineNumbers: true,
-      tabSize: 2,
-    }}
-    fontSize={14}
-  />
+  <div className={containerStyle}>
+    <AceEditor
+      value={code}
+      width={width || '94%'}
+      height={height || '40rem'}
+      readOnly={readOnly !== false}
+      onChange={onChange}
+      keyboardHandler={keyboardHandler}
+      showPrintMargin={false}
+      theme={theme}
+      mode={mode}
+      name="ace-editor"
+      editorProps={{ $blockScrolling: true }}
+      setOptions={{
+        enableSnippets: true,
+        showLineNumbers: true,
+        tabSize: 2,
+      }}
+      fontSize={14}
+    />
+  </div>
 );
 
 export default AceViewerComponent;
