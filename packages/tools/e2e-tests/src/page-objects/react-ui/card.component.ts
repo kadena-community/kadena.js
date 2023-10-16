@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 
-export default class CardComponent {
+export class CardComponent {
   private readonly _page: Page;
 
   public constructor(page: Page) {

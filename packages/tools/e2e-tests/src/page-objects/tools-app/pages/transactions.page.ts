@@ -1,8 +1,8 @@
-import AsideComponent from '../components/aside.component';
+import { AsideComponent } from '../components/aside.component';
 
 import type { Page } from '@playwright/test';
 
-export default class TransactionsPage {
+export class TransactionsPage {
   private readonly _page: Page;
   public aside: AsideComponent;
 

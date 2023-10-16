@@ -2,7 +2,7 @@ import { test } from '../../page-objects';
 
 import { expect } from '@playwright/test';
 
-test('The Module Explorer shows deployed contracts @mocks', async ({
+test('The Module Explorer shows deployed contracts', async ({
   page,
   toolsApp,
 }) => {

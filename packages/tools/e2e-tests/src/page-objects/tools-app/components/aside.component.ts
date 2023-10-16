@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 
-export default class AsideComponent {
+export class AsideComponent {
   private _page: Page;
 
   public constructor(page: Page) {

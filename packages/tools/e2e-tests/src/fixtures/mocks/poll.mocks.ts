@@ -1,5 +1,5 @@
-export const pollInProgress: object = {};
-export const pollFinished: object = {
+export const pollInProgress = {};
+export const pollFinished = {
   rNk4ePNVlJGwjCaVrjKFJbh3A0agpcZq6gYLfivOHYg: {
     gas: 940,
     result: {

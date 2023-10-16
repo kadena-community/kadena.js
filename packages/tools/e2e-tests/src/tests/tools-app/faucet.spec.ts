@@ -1,6 +1,6 @@
 import { accountsData } from '../../fixtures/data/accounts';
-import { pollFinished, pollInProgress } from '../../fixtures/mocks/poll';
-import { send } from '../../fixtures/mocks/send';
+import { pollFinished, pollInProgress } from '../../fixtures/mocks/poll.mocks';
+import { sendMocks } from '../../fixtures/mocks/send.mocks';
 import { test } from '../../page-objects';
 
 import { expect } from '@playwright/test';
@@ -13,7 +13,7 @@ test('Fund existing account @mocks', async ({ page, toolsApp, mockHelper }) => {
   });
 
   await test.step('Fund account on chain 0.', async () => {
-    await mockHelper.mockResponse('**/send', send);
+    await mockHelper.mockResponse('**/send', sendMocks);
     await toolsApp.faucetPage.fundAccount(accountsData.publicKey, '0');
 
     await mockHelper.mockResponse('**/poll', pollInProgress);

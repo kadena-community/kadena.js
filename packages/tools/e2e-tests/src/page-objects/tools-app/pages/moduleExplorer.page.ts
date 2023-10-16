@@ -1,8 +1,8 @@
-import AsideComponent from '../components/aside.component';
+import { AsideComponent } from '../components/aside.component';
 
 import type { Locator, Page } from '@playwright/test';
 
-export default class ModuleExplorerPage {
+export class ModuleExplorerPage {
   private readonly _page: Page;
   public aside: AsideComponent;
 
