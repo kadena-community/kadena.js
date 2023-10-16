@@ -87,7 +87,7 @@ export const baseGridClass = style([
 
     ...responsiveStyle({
       md: {
-        gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
+        gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault}`,
         gridTemplateAreas: `
           "header header header header header"
           "pageheader pageheader pageheader pageheader pageheader"
