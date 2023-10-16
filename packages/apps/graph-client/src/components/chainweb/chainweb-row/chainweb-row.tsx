@@ -24,7 +24,7 @@ export const ChainwebRow = ({
       css={{
         display: 'flex',
         alignItems: 'center',
-        mb: '$12',
+        // mb: '$12',
       }}
     >
       <Text
