@@ -11,8 +11,13 @@ export const menuCardClass = style([
   }),
   {
     transition: 'transform .2s ease',
+    ...responsiveStyle({ md: { overflowY: 'auto' } }),
 
-    ...responsiveStyle({ md: { overflowY: 'scroll' } }),
+    selectors: {
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+    },
   },
 ]);
 
