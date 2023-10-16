@@ -48,11 +48,9 @@ const Block: React.FC = () => {
           {error && (
             <Notification.Root color="negative" icon="Close">
               Unknown error:
-              <br />
-              <br />
+              <Box margin={'$5'} />
               <code>{error.message}</code>
-              <br />
-              <br />
+              <Box margin={'$5'} />
               Check if the Graph server is running.
             </Notification.Root>
           )}
