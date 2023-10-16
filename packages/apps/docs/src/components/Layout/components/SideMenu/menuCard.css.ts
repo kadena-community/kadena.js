@@ -12,7 +12,7 @@ export const menuCardClass = style([
   {
     transition: 'transform .2s ease',
 
-    ...responsiveStyle({ md: { overflowY: 'scroll' } }),
+    ...responsiveStyle({ md: { overflowY: 'auto' } }),
   },
 ]);
 
