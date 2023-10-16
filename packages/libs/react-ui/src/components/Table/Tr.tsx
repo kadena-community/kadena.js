@@ -4,7 +4,7 @@ import { Th } from './Th';
 import type { CompoundType } from './types';
 
 import { IconButton } from '@components/IconButton';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface ITrProps {
@@ -16,7 +16,7 @@ export interface ITrProps {
 export const Tr: FC<ITrProps> = ({ children, url, onClick }) => {
   return (
     <tr className={trClass}>
-      {React.Children.map(children, (child) => {
+      {React.Children.map(children, (child: ReactNode) => {
         if (
           !React.isValidElement(child) ||
           (Boolean(child) && child.type !== Th && child.type !== Td)

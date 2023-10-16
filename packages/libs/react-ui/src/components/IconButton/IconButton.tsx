@@ -8,7 +8,7 @@ import {
 
 import { SystemIcon } from '@components/Icon';
 import classnames from 'classnames';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface IIconButtonProps
@@ -19,6 +19,7 @@ export interface IIconButtonProps
   active?: boolean;
   as?: 'button' | 'a';
   asChild?: boolean;
+  children?: ReactNode;
   color?: keyof typeof colorVariants;
   href?: string;
   icon: keyof typeof SystemIcon;
@@ -69,7 +70,7 @@ export const IconButton: FC<IIconButtonProps> = ({
       href,
       ariaLabel,
       type,
-      ...children.props,
+      ...children?.props,
       className: buttonClassname,
       children: <Icon size="md" />,
     });

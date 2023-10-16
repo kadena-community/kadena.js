@@ -6,7 +6,7 @@ import {
 } from './Card.css';
 
 import className from 'classnames';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface ICardProps {
@@ -32,7 +32,7 @@ export const Card: FC<ICardProps> = ({
   if (disabled) {
     return (
       <div className={classList} data-testid="kda-card">
-        {React.Children.map(children, (child) => {
+        {React.Children.map(children, (child: ReactNode) => {
           if (React.isValidElement(child)) {
             const filteredChild = { ...child, props: child.props };
             return React.cloneElement(filteredChild, { disabled: true });

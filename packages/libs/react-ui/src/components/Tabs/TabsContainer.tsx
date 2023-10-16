@@ -55,7 +55,7 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
     <section>
       <div className={tabsContainerWrapper}>
         <div ref={containerRef} className={tabsContainer}>
-          {React.Children.map(children, (child) => {
+          {React.Children.map(children, (child: ReactNode) => {
             if (!React.isValidElement(child)) return null;
 
             if (child.type === Tab) {
@@ -74,7 +74,7 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
         </div>
       </div>
 
-      {React.Children.map(children, (child) => {
+      {React.Children.map(children, (child: ReactNode) => {
         if (!React.isValidElement(child)) return null;
 
         if (child.type === TabContent) {

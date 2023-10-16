@@ -1,7 +1,7 @@
 import { Tr } from './Tr';
 import type { CompoundType } from './types';
 
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface ITBodyProps {
@@ -11,7 +11,7 @@ export interface ITBodyProps {
 export const TBody: FC<ITBodyProps> = ({ children }) => {
   return (
     <tbody>
-      {React.Children.map(children, (child) => {
+      {React.Children.map(children, (child: ReactNode) => {
         if (
           !React.isValidElement(child) ||
           (Boolean(child) && child.type !== Tr)

@@ -4,7 +4,7 @@ import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface IBreadcrumbItemProps {
-  children?: ReactNode;
+  children?: ReactNode | string;
   href?: string;
   asChild?: boolean;
 }
@@ -14,13 +14,17 @@ export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = ({
   href,
   asChild = false,
 }) => {
-  if (asChild && React.isValidElement(children)) {
+  if (
+    asChild &&
+    React.isValidElement(children) &&
+    typeof children !== 'string'
+  ) {
     return (
       <li className={itemClass}>
         {React.cloneElement(children, {
           href,
           className: linkClass,
-          ...children.props,
+          ...children?.props,
         })}
       </li>
     );

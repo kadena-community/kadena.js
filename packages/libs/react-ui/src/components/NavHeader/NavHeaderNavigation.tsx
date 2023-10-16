@@ -12,7 +12,7 @@ import type { INavHeaderLinkProps } from './NavHeaderLink';
 import useGlow from './useGlow';
 
 import classNames from 'classnames';
-import type { FC, FunctionComponentElement } from 'react';
+import type { FC, FunctionComponentElement, ReactElement } from 'react';
 import React from 'react';
 
 export interface INavHeaderNavigationProps {
@@ -40,7 +40,7 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
         <NavGlow />
       </div>
       <ul className={navListClass}>
-        {React.Children.map(children, (child, index) => (
+        {React.Children.map(children, (child: ReactElement, index: number) => (
           <li key={`navItem-${index}`} onClick={() => setActiveNav(index + 1)}>
             {React.cloneElement(
               child as React.ReactElement<

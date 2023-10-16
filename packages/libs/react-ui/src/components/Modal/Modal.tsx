@@ -31,40 +31,38 @@ export const Modal: FC<IModalProps> = ({ children, title, onClose }) => {
   }
 
   return (
-    <>
-      <FocusTrap
-        focusTrapOptions={{
-          fallbackFocus: '[data-cy="modal-background"]',
-        }}
-      >
-        <div>
-          <button
-            data-cy="modal-background"
-            className={background}
-            onClick={handleCloseModal}
-          />
-          <div className={wrapper} data-cy="modal" data-testid="kda-modal">
-            <section className={modal}>
-              <Card fullWidth>
-                <div className={titleWrapper}>
-                  <Heading as="h3">{title}</Heading>
-                </div>
+    <FocusTrap
+      focusTrapOptions={{
+        fallbackFocus: '[data-cy="modal-background"]',
+      }}
+    >
+      <div>
+        <button
+          data-cy="modal-background"
+          className={background}
+          onClick={handleCloseModal}
+        />
+        <div className={wrapper} data-cy="modal" data-testid="kda-modal">
+          <section className={modal}>
+            <Card fullWidth>
+              <div className={titleWrapper}>
+                <Heading as="h2">{title}</Heading>
+              </div>
 
-                <button
-                  className={closeButton}
-                  onClick={handleCloseModal}
-                  title="Close modal"
-                >
-                  Close
-                  <SystemIcon.Close />
-                </button>
+              <button
+                className={closeButton}
+                onClick={handleCloseModal}
+                title="Close modal"
+              >
+                Close
+                <SystemIcon.Close />
+              </button>
 
-                {children}
-              </Card>
-            </section>
-          </div>
+              {children}
+            </Card>
+          </section>
         </div>
-      </FocusTrap>
-    </>
+      </div>
+    </FocusTrap>
   );
 };

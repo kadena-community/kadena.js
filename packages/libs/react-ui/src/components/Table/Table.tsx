@@ -6,7 +6,7 @@ import type { CompoundType } from './types';
 import type { Sprinkles } from '@theme/sprinkles.css';
 import { sprinkles } from '@theme/sprinkles.css';
 import classNames from 'classnames';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface ITableProps extends Pick<Sprinkles, 'wordBreak'> {
@@ -23,7 +23,7 @@ export const Table: FC<ITableProps> = ({ children, striped, wordBreak }) => {
         sprinkles({ wordBreak }),
       )}
     >
-      {React.Children.map(children, (child) => {
+      {React.Children.map(children, (child: ReactNode) => {
         if (
           !React.isValidElement(child) ||
           (Boolean(child) && child.type !== TBody && child.type !== THead)

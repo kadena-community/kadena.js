@@ -21,7 +21,7 @@ export interface IButtonProps
   active?: boolean;
   as?: 'button' | 'a';
   asChild?: boolean;
-  children: React.ReactNode;
+  children: React.ReactNode | string;
   color?: keyof typeof colorVariants;
   disabled?: boolean;
   href?: string;
@@ -93,7 +93,11 @@ export const Button: FC<IButtonProps> = ({
     </>
   );
 
-  if (asChild && React.isValidElement(children)) {
+  if (
+    asChild &&
+    React.isValidElement(children) &&
+    typeof children !== 'string'
+  ) {
     return React.cloneElement(children, {
       ...restProps,
       ...children.props,
