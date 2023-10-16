@@ -11,6 +11,7 @@ import { Heading4 } from './Heading/Heading4';
 import { Hr } from './Hr/Hr';
 import { Link } from './Link/Link';
 import { MDNotification } from './MDNotification/MDNotification';
+import { OrderedList } from './OrderedList/OrderedList';
 import { Paragraph } from './Paragraph/Paragraph';
 import { Table } from './Table/Table';
 import { UnorderedList } from './UnorderedList/UnorderedList';
@@ -53,6 +54,7 @@ export const markDownComponents: MDXComponents = {
   >,
   code: Code as FunctionComponent<ExtendedIntrinsicElements['code']>,
   ul: UnorderedList as FunctionComponent<ExtendedIntrinsicElements['ul']>,
+  ol: OrderedList as FunctionComponent<ExtendedIntrinsicElements['ol']>,
   div: TitleWrapper as FunctionComponent<ExtendedIntrinsicElements['div']>,
   img: Figure as FunctionComponent<ExtendedIntrinsicElements['img']>,
   table: Table as FunctionComponent<ExtendedIntrinsicElements['table']>,

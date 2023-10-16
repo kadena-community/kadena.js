@@ -1,5 +1,5 @@
 ---
-title: Overview - Marmalade v1
+title: Marmalade v1
 description: A Brief history of marmalade
 menu: Marmalade
 label: Overview
@@ -7,7 +7,7 @@ order: 4
 layout: landing
 ---
 
-# Marmalade v1
+# Overview Marmalade v1
 
 [Marmalade](https://marmalade.art/), a Kadena NFT standard, was born out of a
 need to address an issue common in the NFT space. See, NFTs, by nature, allow

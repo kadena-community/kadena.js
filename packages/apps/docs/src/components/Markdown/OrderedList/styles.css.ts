@@ -1,25 +1,27 @@
 import { sprinkles, vars } from '@kadena/react-ui/theme';
 
+import { paragraphWrapperClass } from '../Paragraph/styles.css';
+
 import { getClassName } from '@/utils/getClassName';
 import { globalStyle, style } from '@vanilla-extract/css';
 
-export const paragraphWrapperClass = style([
+export const olListClass = style([
   sprinkles({
-    margin: 0,
+    paddingY: '$2',
+    marginX: 0,
+    position: 'relative',
+    color: '$neutral4',
   }),
-  {
-    wordBreak: 'break-word',
-    selectors: {},
-  },
 ]);
 
-globalStyle(`article ${getClassName(paragraphWrapperClass)} p:empty`, {
-  display: 'none',
+globalStyle(`article ol > li`, {
+  paddingTop: vars.sizes.$2xs,
+  paddingBottom: vars.sizes.$2xs,
 });
 
 globalStyle(
   `article
-  ${getClassName(paragraphWrapperClass)} +
+  ol +
   ${getClassName(paragraphWrapperClass)}
   `,
   {

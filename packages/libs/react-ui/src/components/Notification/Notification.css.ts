@@ -18,7 +18,6 @@ export const containerClass = style([
   sprinkles({
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '$md',
     borderStyle: 'solid',
     justifyContent: 'center',
   }),
