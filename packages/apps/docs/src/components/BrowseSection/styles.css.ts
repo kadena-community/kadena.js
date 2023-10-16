@@ -47,7 +47,7 @@ export const directionVariants = styleVariants({
 export const columnLinkListItemClass = style([
   sprinkles({
     color: '$primaryContrastInverted',
-    lineHeight: '$lg',
+    paddingY: '$1',
   }),
 ]);
 
