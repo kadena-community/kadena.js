@@ -13,7 +13,8 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@theme/*": ["src/styles/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "react": ["node_modules/@types/react"]
     }
   },
   "include": ["./src", "./src/**/*"],
