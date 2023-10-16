@@ -1,6 +1,5 @@
 import { breakpoints } from '@kadena/react-ui/theme';
 
-import { Footer } from '../Footer/Footer';
 import { Menu } from '../Menu/Menu';
 import { MenuBack } from '../Menu/MenuBack';
 import { SideMenu } from '../SideMenu/SideMenu';
@@ -87,7 +86,6 @@ export const Template: FC<IProps> = ({
       </Menu>
 
       {children}
-      <Footer />
     </>
   );
 };

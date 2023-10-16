@@ -5,6 +5,7 @@ import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
+import { Footer } from '@/components/Footer/Footer';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
@@ -131,6 +132,7 @@ export const MyApp = ({
                 <Component {...props} />
               </Layout>
             </MenuProvider>
+            <Footer />
           </ModalProvider>
         </ThemeProvider>
       </MDXProvider>

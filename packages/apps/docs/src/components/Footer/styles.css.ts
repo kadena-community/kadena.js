@@ -1,6 +1,6 @@
 import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { $$footerMenu, $$pageWidth } from '../../global.css';
+import { $$footerMenu, $$pageWidth } from '../Layout/global.css';
 
 import { style } from '@vanilla-extract/css';
 
