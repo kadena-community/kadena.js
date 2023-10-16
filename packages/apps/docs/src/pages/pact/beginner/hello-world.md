@@ -48,20 +48,20 @@ output from the REPL.
 https://www.youtube.com/watch?v=bUqJJ3q-OLM
 
 Subscribe to our
-[ YouTube channel](https://www.youtube.com/channel/UCB6-MaxD2hlcGLL70ukHotA) to
+[YouTube channel](https://www.youtube.com/channel/UCB6-MaxD2hlcGLL70ukHotA) to
 access the latest Pact tutorials.
 
 ## Hello World Overview
 
 To get started, navigate to the Pact online editor at
-(pact.kadena.io)[http://pact.kadena.io]. Once on the site, you can open the
+[pact.kadena.io](http://pact.kadena.io). Once on the site, you can open the
 “Hello World” module. To do this, navigate to the module explorer on the tool
 panel and open the “Hello World” example.
 
 :::info
 
 If you’re not familiar with the module explorer, you can learn more
-(here)[/learn-pact/beginner/web-editor#module-explorer].
+[here](/learn-pact/beginner/web-editor#module-explorer).
 
 :::
 
@@ -161,7 +161,7 @@ module.
 ### Define a Function
 
 The next step is to create the contract functions. Functions are defined within
-Pact modules using the keyword (defun)[/pact/reference/syntax#defunh95462750].
+Pact modules using the keyword [defun](/pact/reference/syntax#defunh95462750).
 For this smart contract, you’ll define a function named **hello** that takes a
 parameter called **name**.
 

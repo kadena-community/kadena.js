@@ -21,7 +21,7 @@ without necessarily having to spend tokens!
 
 Follow the instructions at the [Welcome to Pact](/pact/beginner) section to get
 started with Pact learning the basics. For a more straightforward and technical
-introduction, just [readthedocs](/pact/reference).
+introduction, just [read the docs](/pact/reference).
 
 In particular, for any script going on Chainweb, you'll need to understand the
 [API request format](/pact/reference/rest-api#api-request-formatterh-1762879533).
