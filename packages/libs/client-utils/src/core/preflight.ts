@@ -1,16 +1,17 @@
-import { createClient, createTransaction } from '@kadena/client';
+import { createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 
 import { asyncPipe } from './utils/asyncPipe';
 import type { IClientConfig, IEmit } from './utils/helpers';
-import { extractResult, safeSign, throwIfFails } from './utils/helpers';
-import type { Any } from './utils/types';
+import {
+  extractResult,
+  getClient,
+  safeSign,
+  throwIfFails,
+} from './utils/helpers';
 
 export const preflight =
-  (
-    { host, defaults, sign }: IClientConfig,
-    client = createClient(host as Any),
-  ) =>
+  ({ host, defaults, sign }: IClientConfig, client = getClient(host)) =>
   (emit: IEmit) =>
     asyncPipe(
       composePactCommand(defaults ?? {}),

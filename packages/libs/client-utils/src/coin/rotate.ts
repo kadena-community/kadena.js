@@ -32,12 +32,10 @@ const rotateCommand = ({
       Pact.modules.coin.rotate(account.account, readKeyset('new-guard')),
     ),
     addKeyset('new-guard', newguard.pred, ...newguard.keys),
-    addSigner(account.publicKeys, (withCapability) => [
-      withCapability('coin.ROTATE', account.account),
+    addSigner(account.publicKeys, (signFor) => [
+      signFor('coin.ROTATE', account.account),
     ]),
-    addSigner(gasPayer.publicKeys, (withCapability) => [
-      withCapability('coin.GAS'),
-    ]),
+    addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 

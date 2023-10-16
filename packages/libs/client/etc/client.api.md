@@ -50,6 +50,9 @@ export function createWalletConnectQuicksign(client: Client, session: SessionTyp
 // @public
 export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISingleSignFunction;
 
+// @public
+export const getHostUrl: (hostBaseUrl: string) => ({ networkId, chainId }: INetworkOptions) => string;
+
 // @public (undocumented)
 export interface IBaseClient {
     createSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId) => Promise<string>;
@@ -125,7 +128,7 @@ export interface IContinuationPayloadObject {
 
 // @public (undocumented)
 export interface ICreateClient {
-    (hostBaseUrl: string): IClient;
+    (hostUrl: string): IClient;
     (hostAddressGenerator?: (options: {
         chainId: ChainId;
         networkId: string;

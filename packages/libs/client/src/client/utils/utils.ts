@@ -1,5 +1,7 @@
-import type { ChainId } from '@kadena/types';
-import type { IPollRequestPromise } from '../interfaces/interfaces';
+import type {
+  INetworkOptions,
+  IPollRequestPromise,
+} from '../interfaces/interfaces';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const jsonRequest = (body: object) => ({
@@ -32,19 +34,23 @@ export function getUrl(
   return url.toString();
 }
 
-interface INetworkOptions {
-  networkId: string;
-  chainId: ChainId;
-}
+/**
+ *
+ * @public
+ * Creates endpoint url based on the baseUrl, networkId and chainId
+ *
+ * @example
+ * const getLocalHostUrl = getHostUrl('http://localhost:8080')
+ * const client = createClient(getLocalHostUrl)
+ */
 
-export const getHostUrl =
-  // prettier-ignore
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  (hostBaseUrl: string) => {
-    const base = hostBaseUrl.endsWith('/') ? hostBaseUrl.slice(0, hostBaseUrl.length - 1) : hostBaseUrl;
-    return ({ networkId, chainId }: INetworkOptions) =>
+export const getHostUrl = (hostBaseUrl: string) => {
+  const base = hostBaseUrl.endsWith('/')
+    ? hostBaseUrl.slice(0, hostBaseUrl.length - 1)
+    : hostBaseUrl;
+  return ({ networkId, chainId }: INetworkOptions) =>
     `${base}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
-  };
+};
 
 export const kadenaHostGenerator = ({
   networkId,

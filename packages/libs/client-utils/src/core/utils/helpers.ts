@@ -1,9 +1,10 @@
 import type {
   ICommandResult,
+  INetworkOptions,
   IPactCommand,
   ISignFunction,
 } from '@kadena/client';
-import { isSignedTransaction } from '@kadena/client';
+import { createClient, getHostUrl, isSignedTransaction } from '@kadena/client';
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
 
 import type { Any } from './types';
@@ -52,7 +53,7 @@ export interface IEmit {
 }
 
 export interface IClientConfig {
-  host?: string | ((arg: { networkId: string; chainId: ChainId }) => string);
+  host?: string | ((arg: INetworkOptions) => string);
   defaults?: Partial<IPactCommand>;
   sign: ISignFunction;
 }
@@ -102,3 +103,10 @@ export const extractResult = (response: ICommandResult) => {
   }
   return undefined;
 };
+
+export const getClient = (
+  host?: string | ((arg: INetworkOptions) => string),
+) =>
+  typeof host === 'string'
+    ? createClient(getHostUrl(host))
+    : createClient(host);

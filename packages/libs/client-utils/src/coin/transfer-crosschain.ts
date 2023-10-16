@@ -48,8 +48,8 @@ const createCrossChainCommand = ({
       ),
     ),
     addKeyset('account-guard', receiver.keyset.pred, ...receiver.keyset.keys),
-    addSigner(sender.publicKeys, (withCapability) => [
-      withCapability(
+    addSigner(sender.publicKeys, (signFor) => [
+      signFor(
         'coin.TRANSFER_XCHAIN',
         sender.account,
         receiver.account,
@@ -57,9 +57,7 @@ const createCrossChainCommand = ({
         targetChainId,
       ),
     ]),
-    addSigner(gasPayer.publicKeys, (withCapability) => [
-      withCapability('coin.GAS'),
-    ]),
+    addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 

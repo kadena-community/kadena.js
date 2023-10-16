@@ -32,9 +32,7 @@ const createAccountCommand = ({
       Pact.modules.coin['create-account'](account, readKeyset('account-guard')),
     ),
     addKeyset('account-guard', keyset.pred, ...keyset.keys),
-    addSigner(gasPayer.publicKeys, (withCapability) => [
-      withCapability('coin.GAS'),
-    ]),
+    addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 

@@ -44,14 +44,12 @@ const transferCreateCommand = ({
       ),
     ),
     addKeyset('account-guard', receiver.keyset.pred, ...receiver.keyset.keys),
-    addSigner(sender.publicKeys, (withCapability) => [
-      withCapability('coin.TRANSFER', sender.account, receiver.account, {
+    addSigner(sender.publicKeys, (signFor) => [
+      signFor('coin.TRANSFER', sender.account, receiver.account, {
         decimal: amount,
       }),
     ]),
-    addSigner(gasPayer.publicKeys, (withCapability) => [
-      withCapability('coin.GAS'),
-    ]),
+    addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 

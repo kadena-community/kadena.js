@@ -6,7 +6,7 @@ import type {
   IPactCommand,
   ITransactionDescriptor,
 } from '@kadena/client';
-import { createClient, createTransaction } from '@kadena/client';
+import { createTransaction } from '@kadena/client';
 import {
   addSigner,
   composePactCommand,
@@ -18,6 +18,7 @@ import { asyncPipe } from './utils/asyncPipe';
 import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
 import {
   extractResult,
+  getClient,
   pickFirst,
   safeSign,
   throwIfFails,
@@ -52,7 +53,7 @@ const signers = (
   publicKeys?: string[],
 ): ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>) =>
   Array.isArray(publicKeys) && publicKeys.length
-    ? addSigner(publicKeys!, (withCapability) => [withCapability('coin.GAS')])
+    ? addSigner(publicKeys!, (signFor) => [signFor('coin.GAS')])
     : (cmd) => cmd;
 
 const createPactCommand = (
@@ -69,7 +70,7 @@ const createPactCommand = (
 
 export const crossChain = (
   { host, defaults, sign }: IClientConfig,
-  client = createClient(host as Any),
+  client = getClient(host),
 ) => {
   return ({
     emit,
