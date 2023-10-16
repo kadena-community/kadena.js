@@ -1,4 +1,4 @@
-import { Link, Notification, Table } from '@kadena/react-ui';
+import { Box, Link, Notification, Table } from '@kadena/react-ui';
 
 import { useGetTransactionByRequestKeySubscription } from '../../__generated__/sdk';
 import Loader from '../../components/loader/loader';
@@ -44,11 +44,9 @@ const RequestKey: React.FC = () => {
           {error && (
             <Notification.Root color="negative" icon="Close" variant="outlined">
               Unknown error:
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               <code>{error.message}</code>
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               Check if the Graph server is running.
             </Notification.Root>
           )}
