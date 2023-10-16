@@ -166,5 +166,13 @@
   "Save Network": "Save Network",
   "Network label": "Network label",
   "Network ID": "Network ID",
-  "Network api": "Network api"
+  "Network api": "Network api",
+  "No code to be shown yet": "No code to be shown yet",
+  "Click on a module from the left panel to see its code in this panel.": "Click on a module from the left panel to see its code in this panel.",
+  "Select/open a module to see the outline of the contract/module": "Select/open a module to see the outline of the contract/module",
+  "Faucet": "Faucet",
+  "Select Network": "Select Network",
+  "Finalize Cross Chain": "Finalize Cross Chain",
+  "Module Explorer": "Module Explorer",
+  "Module name": "Module name"
 }

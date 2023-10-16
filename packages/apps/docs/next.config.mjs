@@ -15,6 +15,7 @@ import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 import { getHighlighter, BUNDLED_LANGUAGES } from 'shiki';
 import { readFileSync } from 'fs';
 const withVanillaExtract = createVanillaExtractPlugin();
+import redirectsConfig from './redirects.mjs';
 
 const options = {
   // Use one of Shiki's packaged themes
@@ -95,8 +96,6 @@ const nextConfig = {
 
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
-  productionBrowserSourceMaps: true,
-
   transpilePackages: ['@kadena/react-ui', 'react-tweet'],
   images: {
     remotePatterns: [
@@ -106,6 +105,9 @@ const nextConfig = {
         port: '',
       },
     ],
+  },
+  async redirects() {
+    return redirectsConfig;
   },
 };
 

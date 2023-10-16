@@ -50,7 +50,7 @@ access the latest Pact tutorials.
 Before starting this tutorial, it helps to have completed the following
 pre-requisites.
 
-- [Pact Development on Atom SDK]/learn-pact/beginner/atom-sdk) : The SDK is
+- [Pact Development on Atom SDK](/pact/beginner/atom-sdk) : The SDK is
   required for testing in the SDK. You can get up and running with the SDK using
   this tutorial.
 

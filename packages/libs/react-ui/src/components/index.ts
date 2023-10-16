@@ -1,4 +1,3 @@
-export type { IAccordionProps, IAccordionSectionProps } from './Accordion';
 export type { IBoxProps } from './Box';
 export type { IBreadcrumbsProps, IBreadcrumbItemProps } from './Breadcrumbs';
 export type { IButtonProps } from './Button';
@@ -23,22 +22,39 @@ export type { ITooltipProps } from './Tooltip';
 export type { ITrackerCardProps, ILabelValue } from './TrackerCard/TrackerCard';
 export type { ITreeProps } from './Tree';
 export type {
+  IAccordionProps,
+  IAccordionRootProps,
+  IAccordionSectionProps,
+} from './Accordion';
+export type {
+  IGradientTextProps,
+  IHeadingProps,
+  ILabelProps,
+  ITextProps,
+} from './Typography';
+export type {
   INavFooterIconButtonProps,
   INavFooterLinkProps,
   INavFooterPanelProps,
+  INavFooterProps,
   INavFooterRootProps,
 } from './NavFooter';
 export type {
   INavHeaderContentProps,
   INavHeaderLinkProps,
   INavHeaderNavigationProps,
-  INavHeaderSelectProps,
   INavHeaderRootProps,
+  INavHeaderSelectProps,
 } from './NavHeader';
 export type {
   INotificationActionsProps,
+  INotificationButtonProps,
   INotificationProps,
 } from './Notification';
+export type {
+  IProfileSummaryLinkProps,
+  IProfileSummaryRootProps,
+} from './ProfileSummary';
 export type {
   ITableProps,
   ITBodyProps,
@@ -47,13 +63,6 @@ export type {
   IThProps,
   ITrProps,
 } from './Table';
-export type {
-  ITextProps,
-  IHeadingProps,
-  IGradientTextProps,
-  ILabelProps,
-} from './Typography';
-export type { IProfileCardProps } from './ProfileCard';
 
 export { Accordion } from './Accordion';
 export { Box } from './Box';
@@ -61,17 +70,19 @@ export { Breadcrumbs } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
-export { NavFooter } from './NavFooter';
-export { NavHeader } from './NavHeader';
+export { Divider } from './Divider/Divider';
 export { Grid } from './Grid';
 export { IconButton } from './IconButton';
 export { Input } from './Input/Input';
 export { InputWrapper } from './InputWrapper';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';
-export { ModalProvider, useModal } from './Modal';
+export { ModalProvider, useModal, Modal } from './Modal';
+export { NavFooter } from './NavFooter';
+export { NavHeader } from './NavHeader';
 export { Notification } from './Notification';
 export { Pagination } from './Pagination';
+export { ProfileSummary } from './ProfileSummary';
 export { ProgressBar } from './ProgressBar';
 export { Select } from './Select/Select';
 export { Stack } from './Stack';
@@ -84,5 +95,3 @@ export { TextField } from './TextField/TextField';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
-export { Divider } from './Divider/Divider';
-export { ProfileCard } from './ProfileCard';
