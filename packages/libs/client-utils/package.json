@@ -44,6 +44,7 @@
     "ramda": "^0.29.0"
   },
   "devDependencies": {
+    "@kadena/pactjs-cli": "workspace:^",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
