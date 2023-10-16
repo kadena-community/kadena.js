@@ -28,7 +28,7 @@ const hostApiGenerator = ({
 }: {
   networkId: string;
   chainId: ChainId;
-}): string => `http://${networkId}/${chainId}`;
+}): string => `http://example.org/${networkId}/${chainId}`;
 
 describe('client', () => {
   it('uses the string input as the host for all requests', async () => {
@@ -78,7 +78,9 @@ describe('client', () => {
   describe('local', () => {
     it('uses the hostApiGenerator function to generate hostUrl for local request', async () => {
       server.resetHandlers(
-        post('http://mainnet01/1/api/v1/local', { reqKey: 'test-key' }),
+        post('http://example.org/mainnet01/1/api/v1/local', {
+          reqKey: 'test-key',
+        }),
       );
 
       const { local } = createClient(hostApiGenerator);
@@ -99,7 +101,9 @@ describe('client', () => {
   describe('submit', () => {
     it('uses the hostApiGenerator function to generate hostUrl for submit request', async () => {
       server.resetHandlers(
-        post('http://mainnet01/1/api/v1/send', { requestKeys: ['test-key'] }),
+        post('http://example.org/mainnet01/1/api/v1/send', {
+          requestKeys: ['test-key'],
+        }),
       );
 
       const { submit } = createClient(hostApiGenerator);
@@ -124,7 +128,9 @@ describe('client', () => {
 
     it('returns requestKey if input is a single command', async () => {
       server.resetHandlers(
-        post('http://mainnet01/1/api/v1/send', { requestKeys: ['test-key'] }),
+        post('http://example.org/mainnet01/1/api/v1/send', {
+          requestKeys: ['test-key'],
+        }),
       );
 
       const { submit } = createClient(hostApiGenerator);
@@ -149,7 +155,9 @@ describe('client', () => {
 
     it('returns requestKeys if input is an array', async () => {
       server.resetHandlers(
-        post('http://mainnet01/1/api/v1/send', { requestKeys: ['test-key'] }),
+        post('http://example.org/mainnet01/1/api/v1/send', {
+          requestKeys: ['test-key'],
+        }),
       );
 
       const { submit } = createClient(hostApiGenerator);
@@ -190,10 +198,12 @@ describe('client', () => {
       ];
 
       server.resetHandlers(
-        post('http://mainnet01/1/api/v1/send', { requestKeys: ['test-key'] }),
-        post('http://mainnet01/1/api/v1/poll', response[0]),
-        post('http://mainnet01/1/api/v1/poll', response[1]),
-        post('http://mainnet01/1/api/v1/poll', response[2]),
+        post('http://example.org/mainnet01/1/api/v1/send', {
+          requestKeys: ['test-key'],
+        }),
+        post('http://example.org/mainnet01/1/api/v1/poll', response[0]),
+        post('http://example.org/mainnet01/1/api/v1/poll', response[1]),
+        post('http://example.org/mainnet01/1/api/v1/poll', response[2]),
       );
 
       const { submit, pollStatus } = createClient(hostApiGenerator);
