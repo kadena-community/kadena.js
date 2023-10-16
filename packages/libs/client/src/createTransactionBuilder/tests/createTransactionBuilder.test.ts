@@ -3,11 +3,17 @@ import type { IExecutionPayloadObject } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';
 import { createTransactionBuilder } from '../createTransactionBuilder';
 
-vi.useFakeTimers().setSystemTime(new Date('2023-07-27'));
-
 const coin: ICoin = getModule('coin');
 
 describe('createTransactionBuilder', () => {
+  beforeEach(() => {
+    vi.useFakeTimers().setSystemTime(new Date('2023-07-27'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('returns exec payload', () => {
     const builder = createTransactionBuilder();
     const command = builder
