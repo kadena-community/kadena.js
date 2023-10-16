@@ -79,7 +79,7 @@ export const pageGridClass = style({
         `,
   ...responsiveStyle({
     md: {
-      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth}))`,
+      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth})) 1%`,
 
       gridTemplateAreas: `
         "header header header header"
