@@ -20,7 +20,7 @@ import redirectsConfig from './redirects.mjs';
 const options = {
   // Use one of Shiki's packaged themes
   theme: {
-    light: 'github-light',
+    light: 'github-dark',
     dark: 'github-dark',
   },
 

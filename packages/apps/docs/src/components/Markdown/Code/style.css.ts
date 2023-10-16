@@ -124,6 +124,7 @@ export const codeLine = style([
         counterIncrement: 'line',
         content: 'counter(line)',
         overflowWrap: 'normal',
+        wordBreak: 'keep-all',
         display: 'inline-flex',
         width: '1rem',
         marginRight: `${vars.sizes.$4}`,
