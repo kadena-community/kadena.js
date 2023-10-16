@@ -9,7 +9,10 @@ export const dotenv: {
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   DATABASE_URL: process.env.DATABASE_URL,
-  MAX_BLOCK_DEPTH: parseInt(or(process.env.MAX_BLOCK_DEPTH, '50'), 10),
+  MAX_BLOCK_DEPTH: parseInt(
+    or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '51'),
+    10,
+  ),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {

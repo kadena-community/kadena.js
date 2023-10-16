@@ -5,6 +5,6 @@ export default {
   HOME: '/',
   TRANSACTION: '/transaction',
   EVENT: '/event',
-  BLOCK: '/block',
-  BLOCK_TRANSACTIONS_SUFIX: '/transactions',
+  BLOCK_OVERVIEW: '/block/overview',
+  BLOCK_TRANSACTIONS: '/block/transactions',
 } as const;

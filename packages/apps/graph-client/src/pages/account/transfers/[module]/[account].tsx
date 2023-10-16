@@ -45,11 +45,9 @@ const AccountTransfers: React.FC = () => {
           {error && (
             <Notification.Root color="negative" icon="Close">
               Unknown error:
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               <code>{error.message}</code>
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               Check if the Graph server is running.
             </Notification.Root>
           )}

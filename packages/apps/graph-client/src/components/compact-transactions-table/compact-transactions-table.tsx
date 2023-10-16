@@ -10,9 +10,6 @@ import { truncate } from '@utils/truncate';
 import React from 'react';
 
 interface ICompactTransactionsTableProps {
-  // moduleName: string;
-  // accountName: string;
-  // chainId?: string;
   viewAllHref?: string;
   description?: string;
   transactions:
@@ -25,8 +22,6 @@ export const CompactTransactionsTable = (
   props: ICompactTransactionsTableProps,
 ): JSX.Element => {
   const { viewAllHref, description, transactions } = props;
-
-  // const { moduleName, accountName, chainId, viewAllHref, transactions } = props;
 
   return (
     <>

@@ -5,6 +5,7 @@ import { Container, Content } from './styles';
 import type { IBlock } from '@/utils/hooks/use-parsed-blocks';
 import { Box } from '@components/box';
 import { Text } from '@components/text';
+import routes from '@constants/routes';
 import { useChainTree } from '@context/chain-tree-context';
 import { InfoCircledIcon, RocketIcon, TimerIcon } from '@radix-ui/react-icons';
 import { env } from '@utils/env';
@@ -30,7 +31,7 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
 
   const blockClick = async (): Promise<void> => {
     if (block) {
-      await router.push(`/block/${block.hash}`);
+      await router.push(`${routes.BLOCK_OVERVIEW}/${block.hash}`);
     }
   };
 
