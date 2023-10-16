@@ -98,8 +98,13 @@ export const stickyAsideClass = style([
     paddingTop: '$10',
   }),
   {
-    overflowY: 'scroll',
+    overflowY: 'auto',
     height: `calc(100vh - ${vars.sizes.$20})`,
+    selectors: {
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+    },
   },
 ]);
 
