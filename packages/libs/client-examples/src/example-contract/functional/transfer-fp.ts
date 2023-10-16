@@ -7,10 +7,9 @@ import {
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
-
 import { asyncPipe } from '@kadena/client-utils/core';
 
-import { pollStatus, preflight, submitOne } from '../util/client';
+import { pollStatus, submitOne } from '../util/client';
 import { inspect, safeSign } from '../util/fp-helpers';
 
 const getTransferCommand = ({
