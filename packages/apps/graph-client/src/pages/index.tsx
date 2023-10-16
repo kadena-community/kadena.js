@@ -48,7 +48,7 @@ const Home: React.FC = () => {
         break;
       case 'block':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(`${routes.BLOCK}/${searchField}`);
+        router.push(`${routes.BLOCK_OVERVIEW}/${searchField}`);
         break;
     }
   };

@@ -3,12 +3,12 @@ import { Accordion, Box, Notification, Table } from '@kadena/react-ui';
 import {
   useGetBlockFromHashQuery,
   useGetMaximumConfirmationDepthQuery,
-} from '../../__generated__/sdk';
-import { CompactTransactionsTable } from '../../components/compact-transactions-table/compact-transactions-table';
-import Loader from '../../components/loader/loader';
-import { mainStyle } from '../../components/main/styles.css';
-import { Text } from '../../components/text';
-import routes from '../../constants/routes';
+} from '../../../__generated__/sdk';
+import { CompactTransactionsTable } from '../../../components/compact-transactions-table/compact-transactions-table';
+import Loader from '../../../components/loader/loader';
+import { mainStyle } from '../../../components/main/styles.css';
+import { Text } from '../../../components/text';
+import routes from '../../../constants/routes';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -71,7 +71,7 @@ const Block: React.FC = () => {
                 Block Header
               </Text>
 
-              <Table.Root striped wordBreak="break-word">
+              <Table.Root wordBreak="break-word">
                 <Table.Body>
                   <Table.Tr>
                     <Table.Td>
@@ -151,7 +151,7 @@ const Block: React.FC = () => {
               >
                 Block Payload
               </Text>
-              <Table.Root striped wordBreak="break-word">
+              <Table.Root wordBreak="break-word">
                 <Table.Body>
                   <Table.Tr>
                     <Table.Td>
@@ -214,9 +214,9 @@ const Block: React.FC = () => {
 
               {data.block.transactions.totalCount > 0 && (
                 <CompactTransactionsTable
-                  viewAllHref={`${routes.BLOCK}/${
+                  viewAllHref={`${routes.BLOCK_TRANSACTIONS}/${
                     router.query.hash as string
-                  }/${routes.BLOCK_TRANSACTIONS_SUFIX}`}
+                  }`}
                   transactions={data.block.transactions}
                 />
               )}

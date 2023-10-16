@@ -100,8 +100,6 @@ const Account: React.FC = () => {
                 </Grid.Item>
                 <Grid.Item>
                   <CompactTransactionsTable
-                    // moduleName={router.query.module as string}
-                    // accountName={router.query.account as string}
                     viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
                       router.query.module as string
                     }/${router.query.account as string}`}
