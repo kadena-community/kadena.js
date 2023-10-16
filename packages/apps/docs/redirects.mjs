@@ -129,6 +129,73 @@ const redirectsConfig = [
     destination: '/pact/intermediate/:slug',
     permanent: true,
   },
+  /* Pact Reference docs redirects */
+  {
+    source: '/en/latest',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    source: '/ja/latest',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    source: '/ko/latest',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    source: '/ja/stable',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    source: '/ko/stable',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    // en/latest/index.html
+    source: '/:slug/:slug1/index.html',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    // en/latest/genindex.html
+    source: '/:slug/:slug1/genindex.html',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    // en/latest/pact-reference.html
+    source: '/:slug/:slug1/pact-reference.html',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    // en/latest/pact-functions.html
+    source: '/:slug/:slug1/pact-functions.html',
+    destination: '/pact/reference/functions',
+    permanent: true,
+  },
+  {
+    // en/latest/pact-properties.html
+    source: '/:slug/:slug1/pact-properties.html',
+    destination: '/pact/reference/property-checking',
+    permanent: true,
+  },
+  {
+    // en/latest/pact-properties-api.html
+    source: '/:slug/:slug1/pact-properties-api.html',
+    destination: '/pact/reference/properties-and-invariants',
+    permanent: true,
+  },
+  {
+    source: '/openapi/pact.html',
+    destination: '/pact/api',
+    permanent: true,
+  },
 ];
 
 export { redirectsConfig as default };
