@@ -6,7 +6,7 @@
     "build": "pnpm run generate:sdk && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"sleep 3; pnpm run generate:sdk -w\"",
     "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\"",
-    "dev:all:generate": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; pnpm run generate:sdk -w\"",
+    "dev:all:generate": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph:generate\" \"sleep 3; pnpm run generate:sdk -w\"",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
