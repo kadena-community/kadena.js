@@ -1,6 +1,5 @@
 import { sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { paragraphWrapperClass } from '../Paragraph/styles.css';
 import { ulListClass } from '../UnorderedList/styles.css';
 
 import { getClassName } from '@/utils/getClassName';
@@ -100,7 +99,6 @@ globalStyle(
     marginTop: vars.sizes.$lg,
   },
 );
-
 
 // H3
 
