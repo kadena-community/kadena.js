@@ -19,7 +19,12 @@ export const Footer: FC = () => {
           <DocsLogo overwriteTheme="dark" />
         </Stack>
         <div className={spacerClass} />
-        <Stack justifyContent="space-around" alignItems="center" marginY="$2">
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          justifyContent="space-around"
+          alignItems={{ xs: 'flex-start', md: 'center' }}
+          marginY="$2"
+        >
           <FooterLink href="https://kadena.io">Kadena.io</FooterLink>
           <FooterLink href="https://kadena.io">Privacy Policy</FooterLink>
           <FooterLink href="https://kadena.io">Terms of Service</FooterLink>

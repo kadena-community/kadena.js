@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import { $$footerMenu, $$pageWidth } from '../../global.css';
 
@@ -20,7 +20,10 @@ export const footerClass = style([
   sprinkles({
     position: 'relative',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: {
+      xs: 'flex-start',
+      md: 'center',
+    },
     paddingY: '$3',
     paddingX: '$4',
 
