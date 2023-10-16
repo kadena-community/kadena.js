@@ -300,7 +300,7 @@ Get started with the basics of Pact by reading the
 [Welcome to Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact)
 docs.
 
-[Reference documentation of Pact](https://pact-language.readthedocs.io/en/latest/)
+[Reference documentation of Pact](/pact/reference)
 
 A very good and complete tutorial on learning pact, with real world scenario's,
 is the
