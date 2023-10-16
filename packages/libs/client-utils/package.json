@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@kadena/pactjs-cli": "workspace:^",
+    "@kadena/types": "workspace:^",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",

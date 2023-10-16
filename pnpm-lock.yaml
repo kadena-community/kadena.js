@@ -1114,7 +1114,13 @@ importers:
         version: link:../../tools/lint-package
       '@kadena-dev/markdown':
         specifier: workspace:*
-        version: link:../../tools/markdown
+        version: link:../../tools/remark-plugins
+      '@kadena/pactjs-cli':
+        specifier: workspace:^
+        version: link:../../tools/pactjs-cli
+      '@kadena/types':
+        specifier: workspace:^
+        version: link:../types
       '@microsoft/api-extractor':
         specifier: ^7.37.0
         version: 7.37.0(@types/node@16.18.48)

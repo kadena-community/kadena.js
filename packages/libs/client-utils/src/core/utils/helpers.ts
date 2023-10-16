@@ -5,7 +5,7 @@ import type {
   ISignFunction,
 } from '@kadena/client';
 import { createClient, getHostUrl, isSignedTransaction } from '@kadena/client';
-import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
 import type { Any } from './types';
 
