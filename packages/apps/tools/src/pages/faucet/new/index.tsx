@@ -1,4 +1,5 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
+import { hash } from '@kadena/cryptography-utils';
 import type { InputWrapperStatus } from '@kadena/react-ui';
 import {
   Box,
@@ -37,7 +38,6 @@ import { usePersistentChainID } from '@/hooks';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { blake2sHex } from 'blakejs';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -84,7 +84,7 @@ const NewAccountFaucetPage: FC = () => {
       ? ''
       : pubKeys.length === 1
       ? `k:${pubKeys[0]}`
-      : `w:${blake2sHex(pubKeys.join())}`;
+      : `w:${hash(pubKeys.join(''))}:${pred}`;
 
   const schema = z.object({
     name: z.string(),
