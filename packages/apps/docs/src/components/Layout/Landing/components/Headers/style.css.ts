@@ -13,7 +13,7 @@ export const headerClass = style([
     padding: 0,
   }),
   {
-    width: '100vw',
+    maxWidth: '100vw',
     gridArea: 'pageheader',
     zIndex: 2,
     selectors: {
