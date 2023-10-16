@@ -1131,7 +1131,7 @@ importers:
         specifier: ^29.5.3
         version: 29.5.3
       '@types/node':
-        specifier: ^16.0.0
+        specifier: ^16.18.48
         version: 16.18.48
       '@types/ramda':
         specifier: ^0.29.5

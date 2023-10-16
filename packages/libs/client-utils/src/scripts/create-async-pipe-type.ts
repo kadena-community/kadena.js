@@ -4,9 +4,9 @@ import * as prettier from 'prettier';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function createAsyncPipeOverload(length: number) {
-  const genericTypes = [];
-  const functions = [];
-  const Events = [];
+  const genericTypes: string[] = [];
+  const functions: string[] = [];
+  const Events: string[] = [];
   for (let i = 1; i <= length; i++) {
     const ext = i === 1 ? ' extends Any[]' : '';
     genericTypes.push(`T${i}${ext}`);
