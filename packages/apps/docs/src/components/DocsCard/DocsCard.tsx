@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from '@kadena/react-ui';
+import { Box, Heading } from '@kadena/react-ui';
 
 import { backgroundVariant, cardClass, cardVariants } from './styles.css';
 
@@ -39,7 +39,7 @@ export const DocsCard: FC<IProps> = ({
         {label}
       </Heading>
       <Box marginY="$4" marginRight={{ sm: '$20', md: '$4', lg: '$20' }}>
-        <Text>{description}</Text>
+        <div>{description}</div>
       </Box>
       {children}
     </section>

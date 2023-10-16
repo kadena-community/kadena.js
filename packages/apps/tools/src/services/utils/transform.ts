@@ -1,10 +1,10 @@
 import type { IModulesResult } from '../modules/list-module';
 
-import type { IModule } from '@/components/Global';
+import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
 
 export const transformModulesRequest = (
   modulesRequest: IModulesResult,
-): Array<IModule> => {
+): Array<IChainModule> => {
   if (modulesRequest.data === undefined) {
     return [];
   }

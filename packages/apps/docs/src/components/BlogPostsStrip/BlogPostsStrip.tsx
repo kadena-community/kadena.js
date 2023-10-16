@@ -1,9 +1,9 @@
 import { Link } from '@kadena/react-ui';
 
 import { StripItem } from './StripItem';
-import { stripClass } from './styles.css';
+import { stripClass, stripWrapper } from './styles.css';
 
-import type { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/Layout';
 import NextLink from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
@@ -16,7 +16,7 @@ interface IProps {
 
 export const BlogPostsStrip: FC<IProps> = ({ data, link, linkLabel }) => {
   return (
-    <section>
+    <section className={stripWrapper}>
       <ul className={stripClass}>
         {data.map((post) => (
           <StripItem key={post.root} post={post} />

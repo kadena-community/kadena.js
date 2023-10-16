@@ -5,8 +5,8 @@ import {
 } from './styles.css';
 
 import classnames from 'classnames';
-import type { FC, ReactNode } from 'react';
-import React from 'react';
+import type { ReactNode } from 'react';
+import React, { forwardRef } from 'react';
 
 interface IProps {
   children: ReactNode;
@@ -15,21 +15,20 @@ interface IProps {
   root?: boolean;
 }
 
-export const TreeList: FC<IProps> = ({
-  children,
-  menuOpen = false,
-  root = false,
-  level = 'l1',
-}) => {
-  const classes = classnames(
-    treeListClass,
-    treeListLevelVariantClass[level],
-    treeListRootVariantClass[root ? 'isRoot' : 'isNotRoot'],
-  );
+export const TreeList = forwardRef<HTMLUListElement, IProps>(
+  ({ children, menuOpen = false, root = false, level = 'l1' }, ref) => {
+    const classes = classnames(
+      treeListClass,
+      treeListLevelVariantClass[level],
+      treeListRootVariantClass[root ? 'isRoot' : 'isNotRoot'],
+    );
 
-  return (
-    <ul role="list" className={classes}>
-      {children}
-    </ul>
-  );
-};
+    return (
+      <ul ref={ref} role="list" className={classes}>
+        {children}
+      </ul>
+    );
+  },
+);
+
+TreeList.displayName = 'TreeList';

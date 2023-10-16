@@ -1,6 +1,9 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { style } from '@vanilla-extract/css';
+import { paragraphWrapperClass } from '../Paragraph/styles.css';
+
+import { getClassName } from '@/utils/getClassName';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const figure = style([
   sprinkles({
@@ -23,5 +26,15 @@ export const figureImg = style([
 export const figCaption = style([
   sprinkles({
     textAlign: 'center',
+    marginBottom: '$8',
   }),
 ]);
+
+globalStyle(
+  `${getClassName(paragraphWrapperClass)} +
+  figure
+  `,
+  {
+    marginTop: vars.sizes.$4,
+  },
+);

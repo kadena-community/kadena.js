@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Heading,
   Notification,
@@ -18,7 +19,8 @@ import {
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
 
-import { BrowseSection, Loading } from '@/components';
+import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
+import { Loading } from '@/components/Loading/Loading';
 import type { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import classnames from 'classnames';
@@ -103,6 +105,7 @@ export const SearchResults: FC<IProps> = ({
                 color={'negative'}
                 expanded={true}
                 icon="AlertBox"
+                variant="outlined"
               >
                 {semanticError}
               </Notification.Root>
@@ -135,6 +138,28 @@ export const SearchResults: FC<IProps> = ({
         </Tabs.Content>
 
         <Tabs.Content id="qa">
+          <Box marginBottom="$8">
+            <Notification.Root
+              expanded={true}
+              icon="AlertBox"
+              title="QA search is in beta"
+            >
+              QA search our latest AI vector-based search, designed to provide
+              instant answers to your queries.
+              <br />
+              These responses are generated using information extracted from all
+              the documentation and blog posts available on our website.
+              <br />
+              Please be aware that, as we are in the process of training our
+              model, the answers provided may not always be accurate.
+              <p>
+                <strong>But why launch it now?</strong>
+                By making this alpha version accessible online, we aim to
+                collect valuable data that will aid us in refining and enhancing
+                the accuracy of our model’s responses in the future.
+              </p>
+            </Notification.Root>
+          </Box>
           <div className={scrollBoxClasses}>
             {isLoading && (
               <div className={loadingWrapperClass}>
@@ -159,7 +184,7 @@ export const SearchResults: FC<IProps> = ({
               return (
                 <div key={`${interaction.input}-${idx}`}>
                   <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                  <div>
+                  <Box marginTop="$8">
                     <Heading variant="h4">Sources:</Heading>
                     {metadata.length > 1 && (
                       <BrowseSection>
@@ -176,7 +201,7 @@ export const SearchResults: FC<IProps> = ({
                         })}
                       </BrowseSection>
                     )}
-                  </div>
+                  </Box>
                 </div>
               );
             })}

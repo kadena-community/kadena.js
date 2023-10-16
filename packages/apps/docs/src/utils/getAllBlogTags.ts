@@ -1,4 +1,4 @@
-import type { IMenuData, ITag } from '@/types/Layout';
+import type { IMenuData, ITag } from '@/Layout';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 
 const PostsPerTag = (tag: string, data?: IMenuData[]): Omit<ITag, 'tag'> => {

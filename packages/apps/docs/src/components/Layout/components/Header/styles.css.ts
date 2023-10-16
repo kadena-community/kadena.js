@@ -1,6 +1,6 @@
 import {
-  breakpoints,
   darkThemeClass,
+  responsiveStyle,
   sprinkles,
   vars,
 } from '@kadena/react-ui/theme';
@@ -60,11 +60,11 @@ export const hamburgerButtonClass = style([
       },
     },
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         display: 'none',
       },
-    },
+    }),
   },
 ]);
 
@@ -169,11 +169,11 @@ export const headerIconGroupClass = style([
 
 export const socialGroupClass = style({
   display: 'none',
-  '@media': {
-    [`screen and ${breakpoints.lg}`]: {
+  ...responsiveStyle({
+    lg: {
       display: 'flex',
     },
-  },
+  }),
 });
 
 export const animationBackgroundClass = style([
@@ -201,13 +201,11 @@ export const navClass = style([
     alignItems: 'center',
     zIndex: 1,
   }),
-  {
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        display: 'flex',
-      },
+  responsiveStyle({
+    md: {
+      display: 'flex',
     },
-  },
+  }),
 ]);
 
 export const ulClass = style([
@@ -268,11 +266,9 @@ export const hideOnMobileClass = style([
   sprinkles({
     display: 'none',
   }),
-  {
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
-        display: 'flex',
-      },
+  responsiveStyle({
+    md: {
+      display: 'flex',
     },
-  },
+  }),
 ]);

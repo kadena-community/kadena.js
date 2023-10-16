@@ -3,13 +3,14 @@ import { Box, GradientText, Grid, Heading, Stack } from '@kadena/react-ui';
 import {
   headerClass,
   headerLoadedClass,
+  searchInputWrapper,
   subheaderClass,
   wrapperClass,
 } from './style.css';
 
-import { MostPopular } from '@/components/MostPopular';
-import { SearchBar } from '@/components/SearchBar';
-import type { IMostPopularPage } from '@/types/MostPopularData';
+import MostPopular from '@/components/MostPopular/MostPopular';
+import { SearchBar } from '@/components/SearchBar/SearchBar';
+import type { IMostPopularPage } from '@/MostPopularData';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
@@ -61,8 +62,10 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
                   Explore our guides and examples to build on Kadena
                 </span>
 
-                <Box marginTop="$5" marginRight="$40">
-                  <SearchBar onKeyUp={handleKeyPress} />
+                <Box marginTop="$5">
+                  <div className={searchInputWrapper}>
+                    <SearchBar onKeyUp={handleKeyPress} />
+                  </div>
                 </Box>
               </Stack>
             </Grid.Item>

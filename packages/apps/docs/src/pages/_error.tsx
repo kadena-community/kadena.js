@@ -1,10 +1,11 @@
-import { Search, SearchBar } from '@/components';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-} from '@/components/Layout/components';
+} from '@/components/Layout/components/articleStyles.css';
 import { ErrorHeader } from '@/components/Layout/Landing/components/Headers';
+import { Search } from '@/components/Search/Search';
+import { SearchBar } from '@/components/SearchBar/SearchBar';
 import {
   checkSubTreeForActive,
   getPathName,

@@ -1,7 +1,7 @@
 import { menuData } from '@/_generated/menu.mjs';
+import type { IMenuData } from '@/Layout';
 import type { IFrontmatterData } from '@/types';
-import type { IMenuData } from '@/types/Layout';
-import { createSlug } from '@/utils';
+import { createSlug } from '@/utils/createSlug';
 import type { StreamMetaData } from '@7-docs/edge';
 import algoliasearch from 'algoliasearch';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -14,7 +14,7 @@ interface IQueryResult extends StreamMetaData {
 export const filePathToRoute = (filename?: string, header?: string): string => {
   if (!filename) return '';
   // Remove "src/pages" from the start of the filename
-  let route = filename.replace(/^src\/pages/, '');
+  let route = filename.replace(/^src\/pages(\/docs)?/, '');
 
   // Remove file extension from the filename
   route = route.replace(/\.(md|mdx|tsx)$/, '');
@@ -117,7 +117,6 @@ const semanticSearch = async (
   req: ISemanticSearchRequest,
   res: NextApiResponse,
 ): Promise<void> => {
-  console.log('req', req.query);
   const { query: { search = '', limit = '10' } = {} } = req;
 
   const limitNumber = parseInt(limit, 10);

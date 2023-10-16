@@ -1,6 +1,6 @@
 import { avatarClass, avatarSizeVariant } from './styles.css';
 
-import { getInitials } from '@/utils';
+import { getInitials } from '@/utils/author';
 import classNames from 'classnames';
 import Image from 'next/image';
 import type { FC } from 'react';

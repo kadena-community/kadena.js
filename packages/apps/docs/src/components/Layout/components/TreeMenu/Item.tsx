@@ -3,9 +3,11 @@ import {
   levelItemVariantClass,
   linkActiveClass,
   linkClass,
+  listItemClass,
+  listItemVariants,
 } from './styles.css';
 
-import type { IMenuItem, LevelType } from '@/types/Layout';
+import type { IMenuItem, LevelType } from '@/Layout';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -24,7 +26,7 @@ export const Item: FC<IItem> = ({ item, level }) => {
   );
 
   return (
-    <li>
+    <li className={classNames(listItemClass, listItemVariants[`l${level}`])}>
       <Link className={classes} href={item.root} data-active={item.isActive}>
         {item.label}
       </Link>

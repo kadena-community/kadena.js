@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
@@ -23,17 +23,17 @@ export const itemClass = style([
   {
     flex: '100%',
 
-    '@media': {
-      [`screen and ${breakpoints.sm}`]: {
+    ...responsiveStyle({
+      sm: {
         flex: '50%',
       },
-      [`screen and ${breakpoints.lg}`]: {
+      lg: {
         flex: '33%',
       },
-      [`screen and ${breakpoints.xl}`]: {
+      xl: {
         flex: '25%',
       },
-    },
+    }),
   },
 ]);
 export const itemLinkClass = style([

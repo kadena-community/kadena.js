@@ -1,1 +1,0 @@
-export { Specs } from './Specs';

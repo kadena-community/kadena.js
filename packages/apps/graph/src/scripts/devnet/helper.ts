@@ -123,3 +123,15 @@ export const getRandomNumber = (
   const generatedNumber = Math.floor(randomNumber * maxNumber);
   return generatedNumber === 0 ? 1 : generatedNumber;
 };
+
+/** This function compares two accounts and checks if they are the same: same account, same public key and same chain id */
+export const isEqualChainAccounts = (
+  account1: IAccount,
+  account2: IAccount,
+): boolean => {
+  return (
+    account1.account === account2.account &&
+    account1.chainId === account2.chainId &&
+    account1.publicKey === account2.publicKey
+  );
+};

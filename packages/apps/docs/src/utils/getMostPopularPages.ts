@@ -2,14 +2,21 @@ import { getData } from './staticGeneration/getData.mjs';
 import analyticsDataClient from './analyticsDataClient';
 import storeAnalyticsData from './storeAnalyticsData';
 
-import type { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/Layout';
 import type {
   IMostPopularPage,
   IRow,
   IRunReportResponse,
-} from '@/types/MostPopularData';
+} from '@/MostPopularData';
 import fs from 'fs';
 import path from 'path';
+
+// to be backwards compatible we need to remove the starting '/docs' from the slug
+const cleanSlug = (slug?: string): string => {
+  if (!slug) return '';
+  const pattern = /^\/docs/; // This regular expression matches '/docs' at the beginning of the string
+  return slug.replace(pattern, '');
+};
 
 const findPost = (url: string, data: IMenuData[]): IMenuData | undefined => {
   const posts = data.flatMap((item) =>
@@ -24,7 +31,7 @@ const findPost = (url: string, data: IMenuData[]): IMenuData | undefined => {
 // sometimes the title is not set. lets find them
 // this will also check, if the link still exists
 const setTitle = (item: IMostPopularPage): IMostPopularPage | undefined => {
-  const post = findPost(item.path, getData() as IMenuData[]);
+  const post = findPost(cleanSlug(item.path), getData() as IMenuData[]);
 
   if (!post) return;
 
@@ -91,7 +98,7 @@ function pushToTopPages(
     const views = row.metricValues?.[0].value ?? '0';
 
     const item = {
-      path: row.dimensionValues[0].value ?? '',
+      path: cleanSlug(row.dimensionValues[0].value) ?? '',
       views: parseFloat(views),
       title: row.dimensionValues[1].value ?? '',
     };
@@ -111,13 +118,14 @@ function getTopPages(
   slug: string,
   limit: number,
 ): IMostPopularPage[] {
+  const cleanedSlug = cleanSlug(slug);
   let topPages: IMostPopularPage[] = [];
   (data?.rows || []).forEach((row: IRow) => {
     if (row.dimensionValues?.[0]) {
-      const value = row.dimensionValues[0].value ?? slug;
+      const value = cleanSlug(row.dimensionValues[0].value) ?? cleanedSlug;
 
       // Not including the current page
-      if (value === slug) return;
+      if (value === cleanedSlug) return;
 
       // Not including search pages
       if (value.startsWith('/search')) return;
@@ -125,7 +133,7 @@ function getTopPages(
       // Not including `__tests` pages
       if (value.includes('/__tests')) return;
 
-      if (!value.startsWith(slug)) return;
+      if (!value.startsWith(cleanedSlug)) return;
     }
 
     topPages = pushToTopPages(topPages, row);

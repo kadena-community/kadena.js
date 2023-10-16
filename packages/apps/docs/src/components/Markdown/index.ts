@@ -1,17 +1,23 @@
 import { Table as TableChildren } from '@kadena/react-ui';
 
-import { BlockQuote } from './BlockQuote';
-import { Code, TitleWrapper } from './Code';
-import { Figure } from './Figure';
-import { Heading1, Heading2, Heading3, Heading4 } from './Heading';
-import { Hr } from './Hr';
-import { Link } from './Link';
-import { MDNotification } from './MDNotification';
-import { Paragraph } from './Paragraph';
-import { Table } from './Table';
-import { Tweet } from './Tweet';
-import { UnorderedList } from './UnorderedList';
-import { Youtube } from './Youtube';
+import { BlockQuote } from './BlockQuote/BlockQuote';
+import { Code } from './Code/Code';
+import { TitleWrapper } from './Code/Title';
+import { Figure } from './Figure/Figure';
+import { Heading1 } from './Heading/Heading1';
+import { Heading2 } from './Heading/Heading2';
+import { Heading3 } from './Heading/Heading3';
+import { Heading4 } from './Heading/Heading4';
+import { Hr } from './Hr/Hr';
+import { Link } from './Link/Link';
+import { MDNotification } from './MDNotification/MDNotification';
+import { OrderedList } from './OrderedList/OrderedList';
+import { Paragraph } from './Paragraph/Paragraph';
+import { Table } from './Table/Table';
+import { UnorderedList } from './UnorderedList/UnorderedList';
+import { Youtube } from './Youtube/Youtube';
+
+import { Tweet } from 'react-tweet';
 
 type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
   'kda-notification': React.DetailedHTMLProps<
@@ -48,6 +54,7 @@ export const markDownComponents: MDXComponents = {
   >,
   code: Code as FunctionComponent<ExtendedIntrinsicElements['code']>,
   ul: UnorderedList as FunctionComponent<ExtendedIntrinsicElements['ul']>,
+  ol: OrderedList as FunctionComponent<ExtendedIntrinsicElements['ol']>,
   div: TitleWrapper as FunctionComponent<ExtendedIntrinsicElements['div']>,
   img: Figure as FunctionComponent<ExtendedIntrinsicElements['img']>,
   table: Table as FunctionComponent<ExtendedIntrinsicElements['table']>,
