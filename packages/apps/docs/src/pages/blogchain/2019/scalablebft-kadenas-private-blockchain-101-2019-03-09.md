@@ -109,9 +109,8 @@ and benefits that only Kadena can provide to the private blockchain market:
 - Easy integration to existing enterprise databases with a native API
 
 - Advanced security options like
-  [key rotation](https://pact-language.readthedocs.io/en/latest/pact-functions.html#define-keyset)
-  and
-  [pluggable encryption](https://pact-language.readthedocs.io/en/latest/pact-reference.html#send)
+  [key rotation](/pact/reference/functions/keysets#define-keyseth1939391989) and
+  [pluggable encryption](/pact/reference/functions/commitments#decrypt-cch-2023605255)
   allow you to dial up security to meet your specs
 
 Kadena’s heritage in JP Morgan and the SEC gives us profound insight into the
