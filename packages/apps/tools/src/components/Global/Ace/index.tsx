@@ -9,12 +9,14 @@ import 'ace-builds/src-noconflict/mode-lisp';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
-import type { KeyboardHandler } from './helper';
+import type { KeyboardHandler, Mode, Theme } from './helper';
 
 export interface IEditorProps
   extends Pick<IAceEditorProps, 'width' | 'height' | 'onChange' | 'readOnly'> {
   code: IAceEditorProps['value'];
   keyboardHandler?: KeyboardHandler;
+  theme?: Theme;
+  mode?: Mode;
 }
 
 const AceViewerComponent: FC<IEditorProps> = ({
@@ -24,6 +26,8 @@ const AceViewerComponent: FC<IEditorProps> = ({
   readOnly,
   onChange,
   keyboardHandler,
+  theme,
+  mode,
 }) => (
   <AceEditor
     value={code}
@@ -33,8 +37,8 @@ const AceViewerComponent: FC<IEditorProps> = ({
     onChange={onChange}
     keyboardHandler={keyboardHandler}
     showPrintMargin={false}
-    // mode="clojure"
-    theme="monokai"
+    theme={theme}
+    mode={mode}
     name="ace-editor"
     editorProps={{ $blockScrolling: true }}
     setOptions={{
