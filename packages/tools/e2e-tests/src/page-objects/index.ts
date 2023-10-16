@@ -1,6 +1,6 @@
-import MockHelper from '../helpers/mock.helper';
+import { MockHelper } from '../helpers/mock.helper';
 
-import ToolsAppIndex from './tools-app/toolsApp.index';
+import { ToolsAppIndex } from './tools-app/toolsApp.index';
 
 import { test as baseTest } from '@playwright/test';
 

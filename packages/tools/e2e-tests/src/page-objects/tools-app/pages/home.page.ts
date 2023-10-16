@@ -1,8 +1,8 @@
-import ToolsHeaderComponent from '../components/toolsHeader.component';
+import { ToolsHeaderComponent } from '../components/toolsHeader.component';
 
 import type { Page } from '@playwright/test';
 
-export default class HomePage {
+export class HomePage {
   private readonly _page: Page;
   public header: ToolsHeaderComponent;
 

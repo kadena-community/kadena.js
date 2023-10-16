@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 
-export default class NotificationContainerComponent {
+export class NotificationContainerComponent {
   private readonly _page: Page;
 
   public constructor(page: Page) {

@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 
-export default class NavHeaderComponent {
+export class NavHeaderComponent {
   protected _page: Page;
   protected _component: Locator;
 

@@ -6,7 +6,7 @@ module.exports = {
     'plugin:playwright/recommended',
   ],
   parserOptions: { tsconfigRootDir: __dirname },
-  ignorePatterns: ['playwright.config.ts'],
+  ignorePatterns: ['playwright.config.ts', '*.mocks.ts'],
   rules: {
     '@kadena-dev/typedef-var': 'off',
   },

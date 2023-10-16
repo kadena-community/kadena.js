@@ -1,12 +1,12 @@
-import AccountPage from './pages/account.page';
-import FaucetPage from './pages/faucet.page';
-import HomePage from './pages/home.page';
-import ModuleExplorerPage from './pages/moduleExplorer.page';
-import TransactionsPage from './pages/transactions.page';
+import { AccountPage } from './pages/account.page';
+import { FaucetPage } from './pages/faucet.page';
+import { HomePage } from './pages/home.page';
+import { ModuleExplorerPage } from './pages/moduleExplorer.page';
+import { TransactionsPage } from './pages/transactions.page';
 
 import type { Page } from '@playwright/test';
 
-export default class ToolsAppIndex {
+export class ToolsAppIndex {
   private readonly _page: Page;
   public homePage: HomePage;
   public faucetPage: FaucetPage;

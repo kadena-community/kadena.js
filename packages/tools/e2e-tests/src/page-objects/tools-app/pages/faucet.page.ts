@@ -1,9 +1,9 @@
-import CardComponent from '../../react-ui/card.component';
-import NotificationContainerComponent from '../../react-ui/notificationContainer.component';
+import { CardComponent } from '../../react-ui/card.component';
+import { NotificationContainerComponent } from '../../react-ui/notificationContainer.component';
 
 import type { Page } from '@playwright/test';
 
-export default class FaucetPage {
+export class FaucetPage {
   private readonly _page: Page;
   private _card: CardComponent;
   public notification: NotificationContainerComponent;

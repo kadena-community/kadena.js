@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 
-export default class AccountPage {
+export class AccountPage {
   private readonly _page: Page;
 
   public constructor(page: Page) {
