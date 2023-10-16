@@ -47,7 +47,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
 
         <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
           <Grid.Item>
-            <Card>
+            <Card fullWidth>
               <Heading as="h4">Learn Pact</Heading>
               <Box marginY="$4">
                 <Text>Learn the basics of Pact to create a smart contract</Text>

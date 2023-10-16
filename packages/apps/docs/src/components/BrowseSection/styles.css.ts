@@ -1,4 +1,9 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import {
+  darkThemeClass,
+  responsiveStyle,
+  sprinkles,
+  vars,
+} from '@kadena/react-ui/theme';
 
 import { style, styleVariants } from '@vanilla-extract/css';
 
@@ -89,6 +94,15 @@ export const listItemLinkClass = style([
     },
   },
 ]);
+
+export const listItemLinkTextClass = style({
+  color: vars.colors.$gray60,
+  selectors: {
+    [`${darkThemeClass} &`]: {
+      color: vars.colors.$gray40,
+    },
+  },
+});
 
 export const markerVariants = styleVariants({
   none: {
