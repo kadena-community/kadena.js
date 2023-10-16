@@ -140,7 +140,7 @@ shows a few things:
    In this example we have an "unscoped signer" as for deploying a smart
    contract, there are no "capabilities" that scope what your signature can be
    used for (read more about this in our
-   [Step-By-Step Guide to Writing Smart Contracts](https://docs.kadena.io/build/guides/a-step-by-step-guide-to-writing-pact-smart-contract#capabilities))
+   [Step-By-Step Guide to Writing Smart Contracts](https://docs.kadena.io/build/guides#capabilitiesh-1323277354))
 
 ```shell
 npm run start -- deploy --keys "<your-key>" --predicate "keys-all"
