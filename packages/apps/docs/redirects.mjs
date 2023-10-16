@@ -131,6 +131,31 @@ const redirectsConfig = [
   },
   /* Pact Reference docs redirects */
   {
+    source: '/en/latest',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    source: '/ja/latest',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    source: '/ko/latest',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    source: '/ja/stable',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
+    source: '/ko/stable',
+    destination: '/pact/reference',
+    permanent: true,
+  },
+  {
     // en/latest/index.html
     source: '/:slug/:slug1/index.html',
     destination: '/pact/reference',
