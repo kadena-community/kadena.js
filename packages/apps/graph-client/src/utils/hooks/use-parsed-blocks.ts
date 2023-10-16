@@ -4,8 +4,6 @@ import { useCallback, useState } from 'react';
 export interface IBlock
   extends Pick<
     NonNullable<GetBlocksSubscription['newBlocks']>[number],
-    // TODO: fix transactions from graphql
-    // 'transactions' |
     | 'creationTime'
     | 'height'
     | 'chainId'
@@ -15,6 +13,7 @@ export interface IBlock
     | 'epoch'
     | 'confirmationDepth'
     | 'parentHash'
+    | 'transactions'
   > {}
 interface IUseParseBlocksReturn {
   allBlocks: Record<number, IBlock[]>;
