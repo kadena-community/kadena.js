@@ -16,8 +16,6 @@ import type { ICoin } from './coin-contract';
 
 const coin: ICoin = getModule('coin');
 
-vi.useFakeTimers().setSystemTime(new Date('2023-07-27'));
-
 describe('execution', () => {
   it('returns a payload object of a exec command', () => {
     const command = execution(
@@ -58,6 +56,14 @@ describe('continuation', () => {
 });
 
 describe('composePactCommand', () => {
+  beforeEach(() => {
+    vi.useFakeTimers().setSystemTime(new Date('2023-07-27'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('returns command object with signers and capabilities', () => {
     const command = composePactCommand(
       execution(coin.transfer('alice', 'bob', { decimal: '12.1' })),
@@ -143,7 +149,7 @@ describe('composePactCommand', () => {
     });
   });
 
-  it('adds kjs nonce  if not presented in the input', () => {
+  it('adds kjs nonce if not presented in the input', () => {
     const command = composePactCommand(
       execution(coin.transfer('bob', 'alice', { decimal: '1' })),
     )();
@@ -371,9 +377,13 @@ describe('mergePayload', () => {
   });
 
   it('adds creationTime to metadata of mataData is presented but does not have creationTime', () => {
+    vi.useFakeTimers().setSystemTime(new Date('2023-07-27'));
+
     const pactCommand = composePactCommand({
       meta: { chainId: '1' } as IPactCommand['meta'],
     })();
     expect(pactCommand.meta?.creationTime).toBe(1690416000);
+
+    vi.useRealTimers();
   });
 });

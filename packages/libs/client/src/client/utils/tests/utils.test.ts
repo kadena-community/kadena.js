@@ -225,14 +225,20 @@ describe('client utils', () => {
   });
 
   describe('sleep', () => {
-    it('returns a promise that resolves after the sleep time', async () => {
+    beforeEach(() => {
       vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('returns a promise that resolves after the sleep time', async () => {
       const start = Date.now();
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       sleep(10).then(() => {
         const end = Date.now();
         expect(end - start).toBe(10);
-        vi.useRealTimers();
       });
       vi.runAllTimers();
     });
