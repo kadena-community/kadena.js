@@ -68,5 +68,3 @@ export const ProgressBar: FC<IProgressBarProps> = ({ checkpoints }) => {
     </div>
   );
 };
-
-export default ProgressBar;

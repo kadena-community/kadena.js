@@ -34,39 +34,42 @@ unit.
 
 #### Keyset definition
 
-[Keysets](#confidential-keysets) are customarily defined first, as they are used
-to specify admin authorization schemes for modules and tables. Definition
-creates the keysets in the runtime environment and stores their definition in
-the global keyset database.
+[Keysets](/pact/reference/functions/keysets) are customarily defined first, as
+they are used to specify admin authorization schemes for modules and tables.
+Definition creates the keysets in the runtime environment and stores their
+definition in the global keyset database.
 
 #### Namespace declaration
 
-[Namespace](#namespaces) declarations provide a unique prefix for modules and
-interfaces defined within the namespace scope. Namespaces are handled
-differently in public and private blockchain contexts: in private they are
-freely definable, and the _root namespace_ (ie, not using a namespace at all) is
-available for user code. In public blockchains, users are not allowed to use the
-root namespace (which is reserved for built-in contracts like the coin contract)
-and must define code within a namespace, which may or may not be definable (ie,
-users might be restricted to "user" namespaces).
+[Namespace](/pact/reference/concepts#namespacesh-2137443688) declarations
+provide a unique prefix for modules and interfaces defined within the namespace
+scope. Namespaces are handled differently in public and private blockchain
+contexts: in private they are freely definable, and the _root namespace_ (ie,
+not using a namespace at all) is available for user code. In public blockchains,
+users are not allowed to use the root namespace (which is reserved for built-in
+contracts like the coin contract) and must define code within a namespace, which
+may or may not be definable (ie, users might be restricted to "user"
+namespaces).
 
-Namespaces are defined using [define-namespace](#define-namespace). Namespaces
-are "entered" by issuing the [namespace](#namespace) command.
+Namespaces are defined using
+[define-namespace](/pact/reference/functions#define-namespaceh-1430035511).
+Namespaces are "entered" by issuing the
+[namespace](/pact/reference/functions#define-namespaceh-1430035511) command.
 
 #### Module declaration
 
-[Modules](#module) contain the API and data definitions for smart contracts.
-They are comprised of:
+[Modules](/pact/reference/syntax#moduleh-1068784020) contain the API and data
+definitions for smart contracts. They are comprised of:
 
-- [functions](#defun)
-- [schema](#defschema) definitions
-- [table](#deftable) definitions
-- [pact](#defpact) special functions
-- [constant](#defconst) values
-- [models](pact-properties.html)
-- [capabilities](#caps)
-- [imports](#use)
-- [implements](#implements)
+- [functions](/pact/reference/syntax#defunh95462750)
+- [schema](/pact/reference/syntax#defschemah-1003560474) definitions
+- [table](/pact/reference/syntax#deftableh661222121) definitions
+- [pact](/pact/reference/syntax#defpacth1545231271) special functions
+- [constant](/pact/reference/syntax#defconsth645951102) values
+- [models](/pact/reference/property-checking)
+- [capabilities](/pact/reference/concepts#capabilitiesh-1323277354)
+- [imports](/pact/reference/syntax#useh116103)
+- [implements](/pact/reference/syntax#implementsh-915384400)
 
 When a module is declared, all references to native functions, interfaces, or
 definitions from other modules are resolved. Resolution failure results in
@@ -76,8 +79,9 @@ Modules can be re-defined as controlled by their governance capabilities. Often,
 such a function is simply a reference to an administrative keyset. Module
 versioning is not supported, except by including a version sigil in the module
 name (e.g., "accounts-v1"). However, _module hashes_ are a powerful feature for
-ensuring code safety. When a module is imported with [use](#use), the module
-hash can be specified, to tie code to a particular release.
+ensuring code safety. When a module is imported with
+[use](/pact/reference/syntax#useh116103), the module hash can be specified, to
+tie code to a particular release.
 
 As of Pact 2.2, `use` statements can be issued within a module declaration. This
 combined with module hashes provides a high level of assurance, as updated
@@ -89,40 +93,46 @@ Module names must be unique within a namespace.
 
 #### Interface Declaration
 
-[Interfaces](#interfaces) contain an API specification and data definitions for
-smart contracts. They are comprised of:
+[Interfaces](/pact/reference/concepts#interfacesh394925690#interfaces) contain
+an API specification and data definitions for smart contracts. They are
+comprised of:
 
-- [function](#defun) specifications (i.e. function signatures)
-- [constant](#defconst) values
-- [schema](#defschema) definitions
-- [pact](#defpact) specifications
-- [models](pact-properties.html)
-- [capabilities](#caps) specifications
-- [imports](#use)
+- [function](/pact/reference/syntax#defunh95462750) specifications (i.e.
+  function signatures)
+- [constant](/pact/reference/syntax#defconsth645951102) values
+- [schema](/pact/reference/syntax#defschemah-1003560474) definitions
+- [pact](/pact/reference/syntax#defpacth1545231271) specifications
+- [models](/pact/reference/property-checking)
+- [capabilities](/pact/reference/concepts#capabilitiesh-1323277354)
+  specifications
+- [imports](/pact/reference/syntax#useh116103)
 
-Interfaces represent an abstract api that a [module](#module) may implement by
-issuing an `implements` statement within the module declaration. Interfaces may
-import definitions from other modules by issuing a [use](#use) declaration,
-which may be used to construct new constant definitions, or make use of types
-defined in the imported module. Unlike Modules, Interface versioning is not
-supported. However, modules may implement multiple interfaces.
+Interfaces represent an abstract api that a
+[module](/pact/reference/syntax#moduleh-1068784020) may implement by issuing an
+`implements` statement within the module declaration. Interfaces may import
+definitions from other modules by issuing a
+[use](/pact/reference/syntax#useh116103#use) declaration, which may be used to
+construct new constant definitions, or make use of types defined in the imported
+module. Unlike Modules, Interface versioning is not supported. However, modules
+may implement multiple interfaces.
 
 Interface names must be unique within a namespace.
 
 #### Table Creation
 
-Tables are [created](pact-functions.html#create-table) at the same time as
-modules. While tables are _defined_ in modules, they are _created_ "after"
-modules, so that the module may be redefined later without having to necessarily
-re-create the table.
+Tables are [created](/pact/reference/functions/database#create-tableh447366077)
+at the same time as modules. While tables are _defined_ in modules, they are
+_created_ "after" modules, so that the module may be redefined later without
+having to necessarily re-create the table.
 
 The relationship of modules to tables is important, as described in
-[Table Guards](#module-table-guards).
+[Table Guards](/pact/reference/concepts#module-table-guardsh-1588944812).
 
 There is no restriction on how many tables may be created. Table names are
 namespaced with the module name.
 
-Tables can be typed with a [schema](#defschema).
+Tables can be typed with a
+[schema](/pact/reference/syntax#defschemah-1003560474).
 
 ### Transaction Execution
 
@@ -155,7 +165,7 @@ blockchain execution, which can be adapted to run on different back-ends.
 A single message sent into the blockchain to be evaluated by Pact is _atomic_:
 the transaction succeeds as a unit, or does not succeed at all, known as
 "transactions" in database literature. There is no explicit support for rollback
-handling, except in [multi-step transactions](#pacts).
+handling, except in [multi-step transactions](/pact/reference/pacts).
 
 ### Key-Row Model
 
@@ -175,10 +185,11 @@ to the Sales table.
 
 As of Pact 2.3, Pact offers a powerful query mechanism for selecting multiple
 rows from a table. While visually similar to SQL, the
-[select](pact-functions.html#select) and [where](pact-functions.html#where)
-operations offer a _streaming interface_ to a table, where the user provides
-filter functions, and then operates on the rowset as a list data structure using
-[sort](pact-functions.html#sort) and other functions.
+[select](/pact/beginner/schemas-and-tables#selecth-1822154468) and
+[where](/pact/reference/functions#whereh113097959) operations offer a _streaming
+interface_ to a table, where the user provides filter functions, and then
+operates on the rowset as a list data structure using
+[sort](/pact/reference/functions#sorth3536286) and other functions.
 
 ```pact
 
@@ -200,9 +211,10 @@ filter functions, and then operates on the rowset as a list data structure using
 
 In a transactional setting, Pact database interactions are optimized for
 single-row reads and writes, meaning such queries can be slow and prohibitively
-expensive computationally. However, using the [local](#local) execution
-capability, Pact can utilize the user filter functions on the streaming results,
-offering excellent performance.
+expensive computationally. However, using the
+[local](/pact/reference/concepts#queries-and-local-executionh-453550016)
+execution capability, Pact can utilize the user filter functions on the
+streaming results, offering excellent performance.
 
 The best practice is therefore to use select operations via local,
 non-transactional operations, and avoid using select on large tables in the
@@ -211,10 +223,11 @@ transactional setting.
 ### No Nulls
 
 Pact has no concept of a NULL value in its database metaphor. The main function
-for computing on database results, [with-read](pact-functions.html#with-read),
-will error if any column value is not found. Authors must ensure that values are
-present for any transactional read. This is a safety feature to ensure
-_totality_ and avoid needless, unsafe control-flow surrounding null values.
+for computing on database results,
+[with-read](/pact/reference/functions/database#with-readh866473533), will error
+if any column value is not found. Authors must ensure that values are present
+for any transactional read. This is a safety feature to ensure _totality_ and
+avoid needless, unsafe control-flow surrounding null values.
 
 ### Versioned History
 
@@ -238,9 +251,11 @@ With Pact 2.0, Pact gains explicit type specification, albeit optional. Pact 1.0
 code without types still functions as before, and writing code without types is
 attractive for rapid prototyping.
 
-Schemas provide the main impetus for types. A schema [is defined](#defschema)
-with a list of columns that can have types (although this is also not required).
-Tables are then [defined](#deftable) with a particular schema (again, optional).
+Schemas provide the main impetus for types. A schema
+[is defined](/pact/reference/syntax#defschemah-1003560474) with a list of
+columns that can have types (although this is also not required). Tables are
+then [defined](/pact/reference/syntax#deftableh661222121) with a particular
+schema (again, optional).
 
 Note that schemas also can be used on/specified for object types.
 
@@ -253,13 +268,14 @@ expression is evaluated.
 
 ### Static Type Inference on Modules
 
-With the [typecheck](pact-functions.html#typecheck) repl command, the Pact
-interpreter will analyze a module and attempt to infer types on every variable,
-function application or const definition. Using this in project repl scripts is
-helpful to aid the developer in adding "just enough types" to make the typecheck
-succeed. Successful typechecking is usually a matter of providing schemas for
-all tables, and argument types for ancillary functions that call ambiguous or
-overloaded native functions.
+With the
+[typecheck](/pact/reference/functions/repl-only-functions#typecheckh522701326)
+repl command, the Pact interpreter will analyze a module and attempt to infer
+types on every variable, function application or const definition. Using this in
+project repl scripts is helpful to aid the developer in adding "just enough
+types" to make the typecheck succeed. Successful typechecking is usually a
+matter of providing schemas for all tables, and argument types for ancillary
+functions that call ambiguous or overloaded native functions.
 
 ### Formal Verification
 
@@ -283,14 +299,17 @@ never assumed: anywhere public-key signatures are used, single-sig and multi-sig
 can interoperate effortlessly. Finally, all crypto is handled by the Pact
 runtime to ensure programmers can't make mistakes "writing their own crypto".
 
-Also see [Guards and Capabilities](#caps) below for how Pact moves beyond just
-keyset-based authorization.
+Also see
+[Guards and Capabilities](/pact/reference/concepts#guards-vs-capabilitiesh100483783)
+below for how Pact moves beyond just keyset-based authorization.
 
 ### Keyset definition
 
-Keysets are [defined](pact-functions.html#define-keyset) by
-[reading](pact-functions.html#read-keyset) definitions from the message payload.
-Keysets consist of a list of public keys and a _keyset predicate_.
+Keysets are
+[defined](/pact/reference/functions/keysets#define-keyseth1939391989) by
+[reading](/pact/reference/functions/keysets#read-keyseth2039204282) definitions
+from the message payload. Keysets consist of a list of public keys and a _keyset
+predicate_.
 
 Examples of valid keyset JSON productions:
 
@@ -324,32 +343,34 @@ and is a powerful feature for Bitcoin-style "multisig" contracts (i.e. requiring
 at least two signatures to release funds).
 
 Pact comes with built-in keyset predicates:
-[keys-all](pact-functions.html#keys-all),
-[keys-any](pact-functions.html#keys-any), [keys-2](pact-functions.html#keys-2).
-Module authors are free to define additional predicates.
+[keys-all](/pact/reference/functions/keysets#keys-allh517472840),
+[keys-any](/pact/reference/functions/keysets#keys-anyh517472915),
+[keys-2](/pact/reference/functions/keysets#keys-2h-1134655847). Module authors
+are free to define additional predicates.
 
-If a keyset predicate is not specified, [keys-all](pact-functions.html#keys-all)
-is used by default.
+If a keyset predicate is not specified,
+[keys-all](/pact/reference/functions/keysets#keys-allh517472840) is used by
+default.
 
 ### Key rotation
 
 Keysets can be rotated, but only by messages authorized against the current
 keyset definition and predicate. Once authorized, the keyset can be easily
-[redefined](#define-keyset).
+[redefined](/pact/reference/functions/keysets#define-keyseth1939391989).
 
 ### Module Table Guards
 
-When [creating](pact-functions.html#create-table) a table, a module name must
-also be specified. By this mechanism, tables are "guarded" or "encapsulated" by
-the module, such that direct access to the table via
-[data-access functions](pact-functions.html#database) is authorized only by the
-module's governance. However, _within module functions_, table access is
-unconstrained. This gives contract authors great flexibility in designing data
-access, and is intended to enshrine the module as the main "user data access
-API".
+When [creating](/pact/reference/functions/database#create-tableh447366077) a
+table, a module name must also be specified. By this mechanism, tables are
+"guarded" or "encapsulated" by the module, such that direct access to the table
+via [data-access functions](/pact/reference/functions/database) is authorized
+only by the module's governance. However, _within module functions_, table
+access is unconstrained. This gives contract authors great flexibility in
+designing data access, and is intended to enshrine the module as the main "user
+data access API".
 
-See also [module guards](#module-guards) for how this concept can be leveraged
-to protect more than just tables.
+See also [module guards](/pact/reference/concepts#module-guardsh-1103833470) for
+how this concept can be leveraged to protect more than just tables.
 
 Note that as of Pact 3.5, the option has been added to selectively allow
 unguarded reads and transaction history access in local mode only, at the
@@ -371,16 +392,18 @@ authorization. The following code indicates how this might be achieved:
 ```
 
 In the example, `create-account` reads a keyset definition from the message
-payload using [read-keyset](pact-functions.html#read-keyset) to store as
-"keyset" in the table. `read-balance` only allows that owner's keyset to read
+payload using
+[read-keyset](/pact/reference/functions/keysets#read-keyseth2039204282) to store
+as "keyset" in the table. `read-balance` only allows that owner's keyset to read
 the balance, by first enforcing the keyset using
-[enforce-keyset](pact-functions.html#enforce-keyset).
+[enforce-keyset](/pact/reference/functions/keysets#enforce-keyseth1553446382).
 
 ## Namespaces
 
-Namespaces are [defined](pact-functions.html#define-namespace) by specifying a
-namespace name and [associating](pact-functions.html#read-keyset) a keyset with
-the namespace. Namespace scope is entered by declaring the namespace
+Namespaces are [defined](/pact/reference/functions#define-namespaceh-1430035511)
+by specifying a namespace name and
+[associating](/pact/reference/functions/keysets#read-keyseth2039204282) a keyset
+with the namespace. Namespace scope is entered by declaring the namespace
 environment. All definitions issued after the namespace scope is entered will be
 accessible by their fully qualified names. These names are of the form
 _namespace.module.definition_. This form can also be used to access code outside
@@ -476,7 +499,8 @@ pact> (more-hello 3)
 Pact 3.0 introduces powerful new concepts to allow programmers to express and
 implement authorization schemes correctly and easily: _guards_, which generalize
 keysets, and _capabilities_, which generalize authorizations or rights. In Pact
-3.7, capabilities also function as [events](#pact-events).
+3.7, capabilities also function as
+[events](/pact/reference/concepts#eventsh2087505209).
 
 ### Guards
 
@@ -852,8 +876,9 @@ module admin outside of the module (e.g. to own coins in an external ledger), or
 "inject" module admin into an internal database representation (e.g. to own an
 internally-managed asset alongside other non-module owners).
 
-See [Module Governance](#module-governance) for more information about module
-admin management.
+See
+[Module Governance](/pact/reference/concepts#generalized-module-governanceh828884046)
+for more information about module admin management.
 
 `create-module-guard` takes a `string` argument to allow naming the guard, to
 indicate the purpose or role of the guard.
@@ -944,9 +969,10 @@ implement atomic swaps.
 
 ### Events
 
-Pact 3.7 introduces [events](#pact-event) which are emitted in the course of a
-transaction and included in the transaction receipt to allow for monitoring and
-proving via SPV that a particular event transpired.
+Pact 3.7 introduces [events](/pact/reference/concepts#eventsh2087505209) which
+are emitted in the course of a transaction and included in the transaction
+receipt to allow for monitoring and proving via SPV that a particular event
+transpired.
 
 In Pact, events are modeled as capabilities, for the following reasons:
 
@@ -984,7 +1010,9 @@ non-managed, eventing capability can fire events an arbitrary amount of times.
 
 #### Testing for events
 
-Use [env-events](#env-events) to test for emitted events in repl scripts.
+Use
+[env-events](/pact/reference/functions/repl-only-functions#env-eventsh-139702791)
+to test for emitted events in repl scripts.
 
 ## Generalized Module Governance
 
@@ -1031,7 +1059,8 @@ It is automatically invoked in the following circumstances:
 
 - A module upgrade is being attempted
 - Module tables are being directly accessed outside the module code
-- A [module guard](#module-guards) for this module is being enforced.
+- A [module guard](/pact/reference/concepts#module-guardsh-1103833470) for this
+  module is being enforced.
 
 In these cases, the transaction is tested for elevated access to "module admin",
 defined as the grant of the _module admin capability_. This capability cannot be
@@ -1115,11 +1144,11 @@ code is upgraded.
 
 An interface, as defined in Pact, is a collection of models used for formal
 verification, constant definitions, and typed function signatures. When a module
-issues an [implements](#implements), then that module is said to 'implement'
-said interface, and must provide an implementation . This allows for abstraction
-in a similar sense to Java's interfaces, Scala's traits, Haskell's typeclasses
-or OCaML's signatures. Multiple interfaces may be implemented in a given module,
-allowing for an expressive layering of behaviors.
+issues an [implements](/pact/reference/syntax#implementsh-915384400), then that
+module is said to 'implement' said interface, and must provide an implementation
+. This allows for abstraction in a similar sense to Java's interfaces, Scala's
+traits, Haskell's typeclasses or OCaML's signatures. Multiple interfaces may be
+implemented in a given module, allowing for an expressive layering of behaviors.
 
 Interfaces are declared using the `interface` keyword, and providing a name for
 the interface. Since interfaces cannot be upgraded, and no function
@@ -1135,9 +1164,9 @@ qualified name `namespace.interface.const`, and so, they do not have the same
 naming constraints as function signatures.
 
 Additionally, interfaces my make use of module declarations, admitting use of
-the [use](pact-functions.html#use) keyword, allowing interfaces to import
-members of other modules. This allows interface signatures to be defined in
-terms of table types defined in an imported module.
+the [use](/pact/reference/syntax#useh116103) keyword, allowing interfaces to
+import members of other modules. This allows interface signatures to be defined
+in terms of table types defined in an imported module.
 
 #### Example: Declaring and implementing an interface
 
@@ -1163,16 +1192,17 @@ terms of table types defined in an imported module.
 
 ### Declaring models in an interface
 
-[Formal verification](pact-properties.html) is implemented at multiple levels
-within an interface in order to provide an extra level of security. Models may
-be declared either within the body of the interface or at the function level in
-the same way that one would declare them in a module, with the exception that
-not all models are applicable to an interface. Indeed, since there is no
-abstract notion of tables for interfaces, abstract table invariants cannot be
-declared. However, if an interface imports table schema and types from a module
-via the [use](pact-functions.html#use) keyword, then the interface can define
-body and function models that apply directly to the concrete table type.
-Otherwise, all properties are candidates for declaration in an interface.
+[Formal verification](/pact/reference/property-checking) is implemented at
+multiple levels within an interface in order to provide an extra level of
+security. Models may be declared either within the body of the interface or at
+the function level in the same way that one would declare them in a module, with
+the exception that not all models are applicable to an interface. Indeed, since
+there is no abstract notion of tables for interfaces, abstract table invariants
+cannot be declared. However, if an interface imports table schema and types from
+a module via the [use](/pact/reference/syntax#useh116103) keyword, then the
+interface can define body and function models that apply directly to the
+concrete table type. Otherwise, all properties are candidates for declaration in
+an interface.
 
 When models are declared in an interface, they are appeneded to the list of
 models present in the implementing module at the level of declaration:
@@ -1326,9 +1356,10 @@ version 1. Sometime later the module is upgraded to version 2. The modref in the
 database will refer to the upgraded version 2 of the module when read back in
 and used.
 
-As described in the [Dependency Management](#dependency-management) section,
-Pact direct references are not late-binding, so this modref behavior might be
-surprising.
+As described in the
+[Dependency Management](/pact/reference/concepts#dependency-managementh304790584)
+section, Pact direct references are not late-binding, so this modref behavior
+might be surprising.
 
 #### Modrefs can introduce untrusted code
 
@@ -1425,8 +1456,9 @@ ns.zzz ;; module reference to `zzz` module, of type 'module{ns.bar}'
 ```
 
 Using a module reference in a function is accomplished by specifying the type of
-the module reference argument, and using the [dereference operator](#deref) `::`
-to invoke a member function of the interfaces specified in the type.
+the module reference argument, and using the
+[dereference operator](/pact/reference/syntax#dereference-operatorh-1211281350)
+`::` to invoke a member function of the interfaces specified in the type.
 
 ```pact
 (interface baz
@@ -1460,9 +1492,10 @@ Here we cover various aspects of Pact's approach to computation.
 Pact is turing-incomplete, in that there is no recursion (recursion is detected
 before execution and results in an error) and no ability to loop indefinitely.
 Pact does support operation on list structures via
-[map](pact-functions.html#map), [fold](pact-functions.html#fold) and
-[filter](pact-functions.html#filter), but since there is no ability to define
-infinite lists, these are necessarily bounded.
+[map](/pact/reference/functions#maph107868),
+[fold](/pact/reference/functions#foldh3148801#fold) and
+[filter](/pact/reference/functions#filterh-1274492040), but since there is no
+ability to define infinite lists, these are necessarily bounded.
 
 Turing-incompleteness allows Pact module loading to resolve all references in
 advance, meaning that instead of addressing functions in a lookup table, the
@@ -1471,16 +1504,19 @@ is an example of the performance advantages of a Turing-incomplete language.
 
 ### Single-assignment Variables
 
-Pact allows variable declarations in [let expressions](#let) and
-[bindings](#bindings). Variables are immutable: they cannot be re-assigned, or
-modified in-place.
+Pact allows variable declarations in
+[let expressions](/pact/reference/syntax#leth107035) and
+[bindings](/pact/reference/syntax#bindingsh1004766894). Variables are immutable:
+they cannot be re-assigned, or modified in-place.
 
 A common variable declaration occurs in the
-[with-read](pact-functions.html#with-read) function, assigning variables to
-column values by name. The [bind](pact-functions.html#bind) function offers this
-same functionality for objects.
+[with-read](/pact/reference/functions/database#with-readh866473533) function,
+assigning variables to column values by name. The
+[bind](/pact/reference/functions#bindh3023933) function offers this same
+functionality for objects.
 
-Module-global constant values can be declared with [defconst](#defconst).
+Module-global constant values can be declared with
+[defconst](/pact/reference/syntax#defconsth645951102).
 
 ### Data Types
 
@@ -1490,24 +1526,27 @@ documented type signatures.
 
 Pact's supported types are:
 
-- [Strings](#strings)
-- [Integers](#integers)
-- [Decimals](#decimals)
-- [Booleans](#booleans)
-- [Time values](#time)
-- [Keysets](#keysets) and [Guards](#guards)
-- [Lists](#lists)
-- [Objects](#objects)
-- [Function](#defun), [pact](#defpact), and [capability](#defcap) definitions
-- [Tables](#deftable)
-- [Schemas](#defschema)
+- [Strings](/pact/reference/syntax#stringsh-217105822)
+- [Integers](/pact/reference/syntax#integersh634718997)
+- [Decimals](/pact/reference/syntax#decimalsh630176610)
+- [Booleans](/pact/reference/syntax#booleansh2070707563)
+- [Time values](/pact/reference/functions/time)
+- [Keysets](/pact/reference/concepts#keysets-and-authorizationh960403648) and
+  [Guards](/pact/reference/concepts#guardsh2143724174)
+- [Lists](/pact/reference/syntax#listsh73429877)
+- [Objects](/pact/reference/syntax#objectsh5004532)
+- [Function](/pact/reference/syntax#defunh95462750),
+  [pact](/pact/reference/syntax#defpacth1545231271), and
+  [capability](/pact/reference/syntax#defcaph-1335639635) definitions
+- [Tables](/pact/reference/syntax#deftableh661222121)
+- [Schemas](/pact/reference/syntax#defschemah-1003560474)
 
 ### Performance
 
 Pact is designed to maximize the performance of
-[transaction execution](#transaction-execution), penalizing queries and module
-definition in favor of fast recording of business events on the blockchain. Some
-tips for fast execution are:
+[transaction execution](/pact/reference/concepts#transaction-executionh1561326614),
+penalizing queries and module definition in favor of fast recording of business
+events on the blockchain. Some tips for fast execution are:
 
 #### Single-function transactions
 
@@ -1516,9 +1555,10 @@ Design transactions so they can be executed with a single function call.
 #### Call with references instead of use
 
 When calling module functions in transactions, use
-[reference syntax](#references) instead of importing the module with
-[use](#use). When defining modules that reference other module functions, `use`
-is fine, as those references will be inlined at module definition time.
+[reference syntax](/pact/reference/syntax#referencesh-916552024) instead of
+importing the module with [use](/pact/reference/syntax#useh116103). When
+defining modules that reference other module functions, `use` is fine, as those
+references will be inlined at module definition time.
 
 #### Hardcoded arguments vs. message values
 
@@ -1552,53 +1592,58 @@ call.
 
 ### Control Flow
 
-Pact supports conditionals via [if](pact-functions.html#if), bounded looping,
-and of course function application.
+Pact supports conditionals via [if](/pact/reference/functions#ifh3357), bounded
+looping, and of course function application.
 
 #### Use enforce
 
 "If" should never be used to enforce business logic invariants: instead,
-[enforce](pact-functions.html#enforce) is the right choice, which will fail the
-transaction.
+[enforce](/pact/reference/functions#enforceh-1604583454) is the right choice,
+which will fail the transaction.
 
 Indeed, failure is the only _non-local exit_ allowed by Pact. This reflects
 Pact's emphasis on _totality_.
 
-Note that [enforce-one](pact-functions.html#enforce-one) (added in Pact 2.3)
-allows for testing a list of enforcements such that if any pass, the whole
-expression passes. This is the sole example in Pact of "exception catching" in
-that a failed enforcement simply results in the next test being executed,
-short-circuiting on success.
+Note that [enforce-one](/pact/reference/functions#enforce-oneh281764347) (added
+in Pact 2.3) allows for testing a list of enforcements such that if any pass,
+the whole expression passes. This is the sole example in Pact of "exception
+catching" in that a failed enforcement simply results in the next test being
+executed, short-circuiting on success.
 
 #### Use built-in keyset predicates
 
-The built-in keyset functions [keys-all](pact-functions.html#keys-all),
-[keys-any](pact-functions.html#keys-any), [keys-2](pact-functions.html#keys-2)
-are hardcoded in the interpreter to execute quickly. Custom keysets require
-runtime resolution which is slower.
+The built-in keyset functions
+[keys-all](/pact/reference/functions/keysets#keys-allh517472840),
+[keys-any](/pact/reference/functions/keysets#keys-anyh517472915),
+[keys-2](/pact/reference/functions/keysets#keys-2h-1134655847) are hardcoded in
+the interpreter to execute quickly. Custom keysets require runtime resolution
+which is slower.
 
 ### Functional Concepts
 
 Pact includes the functional-programming "greatest hits":
-[map](pact-functions.html#map), [fold](pact-functions.html#fold) and
-[filter](pact-functions.html#filter). These all employ
-[partial application](#partial-application), where the list item is appended
-onto the application arguments in order to serially execute the function.
+[map](/pact/reference/functions#maph107868),
+[fold](/pact/reference/functions#foldh3148801) and
+[filter](/pact/reference/functions#filterh-1274492040). These all employ
+[partial application](/pact/reference/syntax#partial-applicationh1147799825),
+where the list item is appended onto the application arguments in order to
+serially execute the function.
 
 ```pact
 (map (+ 2) [1 2 3])
 (fold (+) "" ["Concatenate" " " "me"])
 ```
 
-Pact also has [compose](pact-functions.html#compose), which allows "chaining"
-applications in a functional style.
+Pact also has [compose](/pact/reference/functions#composeh950497682), which
+allows "chaining" applications in a functional style.
 
 ### Pure execution
 
 In certain contexts Pact can guarantee that computation is "pure", which simply
 means that the database state will not be modified. Currently, `enforce`,
 `enforce-one` and keyset predicate evaluation are all executed in a pure
-context. [defconst](#defconst) memoization is also pure.
+context. [defconst](/pact/reference/syntax#defconsth645951102) memoization is
+also pure.
 
 ### LISP
 
@@ -1606,22 +1651,27 @@ Pact's use of LISP syntax is intended to make the code reflect its runtime
 representation directly, allowing contract authors focus directly on program
 execution. Pact code is stored in human-readable form on the ledger, such that
 the code can be directly verified, but the use of LISP-style
-[s-expression syntax](#sexp) allows this code to execute quickly.
+[s-expression syntax](/pact/reference/syntax#s-expressionsh-1188303263) allows
+this code to execute quickly.
 
 ### Message Data
 
 Pact expects code to arrive in a message with a JSON payload and signatures.
-Message data is read using [read-msg](pact-functions.html#read-msg) and related
-functions. While signatures are not directly readable or writable, they are
-evaluated as part of [keyset predicate](#keysetpredicates) enforcement.
+Message data is read using
+[read-msg](/pact/reference/functions#read-msgh-868697398) and related functions.
+While signatures are not directly readable or writable, they are evaluated as
+part of
+[keyset predicate](/pact/reference/concepts#keyset-predicatesh2121179193)
+enforcement.
 
 #### JSON support
 
 Values returned from Pact transactions are expected to be directly represented
 as JSON values.
 
-When reading values from a message via [read-msg](pact-functions.html#read-msg),
-Pact coerces JSON types as follows:
+When reading values from a message via
+[read-msg](/pact/reference/functions#read-msgh-868697398), Pact coerces JSON
+types as follows:
 
 - String -> `string`
 - Number -> `decimal`
@@ -1630,7 +1680,7 @@ Pact coerces JSON types as follows:
 - Array -> `list`
 
 Integer values are represented as objects and read using
-[read-integer](pact-functions.html#read-integer).
+[read-integer](/pact/reference/functions#read-integerh1563412487).
 
 ## Confidentiality
 
@@ -1664,23 +1714,25 @@ described in the next section.
 ## Asynchronous Transaction Automation with Pacts
 
 "Pacts" are multi-stage sequential transactions that are defined as a single
-body of code called a [pact](#defpact). Defining a multi-step interaction as a
-pact ensures that transaction participants will enact an agreed sequence of
-operations, and offers a special "execution scope" that can be used to create
-and manage data resources only during the lifetime of a given multi-stage
-interaction.
+body of code called a [pact](/pact/reference/syntax#defpacth1545231271).
+Defining a multi-step interaction as a pact ensures that transaction
+participants will enact an agreed sequence of operations, and offers a special
+"execution scope" that can be used to create and manage data resources only
+during the lifetime of a given multi-stage interaction.
 
 Pacts are a form of _coroutine_, which is a function that has multiple exit and
-re-entry points. Pacts are composed of [steps](#step) such that only a single
-step is executed in a given blockchain transaction. Steps can only be executed
-in strict sequential order.
+re-entry points. Pacts are composed of
+[steps](/pact/reference/syntax#steph3540684) such that only a single step is
+executed in a given blockchain transaction. Steps can only be executed in strict
+sequential order.
 
 A pact is defined with arguments, similarly to function definition. However,
 arguments values are only evaluated in the execution of the initial step, after
 which those values are available unchanged to subsequent steps. To share new
-values with subsequent steps, a step can [yield](pact-functions.html#yield)
-values which the subsequent step can recover using the special
-[resume](pact-functions.html#resume) binding form.
+values with subsequent steps, a step can
+[yield](pact/reference/functions#yieldh114974605) values which the subsequent
+step can recover using the special
+[resume](/pact/reference/functions#resumeh-934426579) binding form.
 
 Pacts are comprised of steps that can only execute in strict sequence. Any
 enforcement of who can execute a step happens within the code of the step
@@ -1700,31 +1752,31 @@ all necessary cancel options.
 ### Yield and Resume
 
 A step can yield values to the following step using
-[yield](pact-functions.html#yield) and [resume](pact-functions.html#resume).
-This is an unforgeable value, as it is maintained within the blockchain pact
-scope.
+[yield](pact/reference/functions#yieldh114974605) and
+[resume](/pact/reference/functions#resumeh-934426579). This is an unforgeable
+value, as it is maintained within the blockchain pact scope.
 
 ### Pact execution scope and pact-id
 
 Every time a pact is initiated, it is given a unique ID which is retrievable
-using the [pact-id](pact-functions.html#pact-id) function, which will return the
-ID of the currently executing pact, or fail if not running within a pact scope.
-This mechanism can thus be used to guard access to resources, analogous to the
-use of keysets and signatures. One typical use of this is to create escrow
-accounts that can only be used within the context of a given pact, eliminating
-the need for a trusted third party for many use-cases.
+using the [pact-id](/pact/reference/functions#pact-idh-806844250) function,
+which will return the ID of the currently executing pact, or fail if not running
+within a pact scope. This mechanism can thus be used to guard access to
+resources, analogous to the use of keysets and signatures. One typical use of
+this is to create escrow accounts that can only be used within the context of a
+given pact, eliminating the need for a trusted third party for many use-cases.
 
 ### Testing pacts
 
 Pacts can be tested in repl scripts using the
-[env-entity](pact-functions.html#env-entity),
-[env-step](pact-functions.html#env-step) and
-[pact-state](pact-functions.html#pact-state) repl functions to simulate pact
-executions.
+[env-entity](/pact/reference/functions/repl-only-functions#env-entityh-146648893),
+[env-step](/pact/reference/functions) and
+[pact-state](/pact/reference/functions/repl-only-functions#pact-stateh-2050254554)
+repl functions to simulate pact executions.
 
 It is also possible to simulate pact execution in the pact server API by
-formatting [continuation Request](#request-yaml) yaml files into API requests
-with a `cont` payload.
+formatting [continuation Request](/pact/reference/functions) yaml files into API
+requests with a `cont` payload.
 
 ## Dependency Management
 
@@ -1736,7 +1788,8 @@ Pact modules.
 Once loaded, a Pact module is associated with a hash computed from the module's
 source code text. This module hash uniquely identifies the version of the
 module. Hashes are base64url-encoded BLAKE2 256-bit hashes. Module hashes can be
-examined with [describe-module](pact-functions.html#describe-module):
+examined with
+[describe-module](/pact/reference/functions/database#describe-moduleh-1618399314):
 
 ```bash
 pact> (at "hash" (describe-module 'accounts))
@@ -1745,10 +1798,11 @@ pact> (at "hash" (describe-module 'accounts))
 
 ### Pinning module versions with use
 
-The [use](#use) special form allows a module hash to be specified, in order to
-pin the dependency version. When used within a module declaration, it introduces
-the dependency hash value into the module's hash. This allows a
-"dependency-only" upgrade to push the upgrade to the module version.
+The [use](/pact/reference/syntax#useh116103) special form allows a module hash
+to be specified, in order to pin the dependency version. When used within a
+module declaration, it introduces the dependency hash value into the module's
+hash. This allows a "dependency-only" upgrade to push the upgrade to the module
+version.
 
 ### Inlined Dependencies: No Leftpad
 
@@ -1768,7 +1822,8 @@ A trade-off is needed to balance these opposing interests. Pact offers the
 ability for upstream code to break downstream dependent code at runtime. Table
 access is guarded to enforce that the module hash of the inlined dependency
 either matches the runtime version, or is in a set of "blessed" hashes, as
-specified by [bless](#bless) in the module declaration:
+specified by [bless](/pact/reference/syntax#blessh93823227) in the module
+declaration:
 
 ```pact
 (module provider 'keyset

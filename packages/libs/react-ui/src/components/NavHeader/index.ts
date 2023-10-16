@@ -18,7 +18,7 @@ export {
   INavHeaderSelectProps,
 };
 
-export interface INavHeaderProps {
+interface INavHeaderProps {
   Root: FC<INavHeaderRootProps>;
   Navigation: FC<INavHeaderNavigationProps>;
   Link: FC<INavHeaderLinkProps>;

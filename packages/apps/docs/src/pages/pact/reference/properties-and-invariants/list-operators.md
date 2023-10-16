@@ -4,17 +4,10 @@ description:
   Pact comes equipped with the ability for smart contract authors to express and
   automatically check properties -- or, specifications -- of Pact programs.
 menu: List Operators
-label: Object Operators
+label: List Operators
 order: 6
 layout: full
-tags:
-  [
-    'pact',
-    'language reference',
-    'list operators',
-    'object operators',
-    'pact operators',
-  ]
+tags: ['pact', 'language reference', 'list operators', 'pact operators']
 ---
 
 # List operators

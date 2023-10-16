@@ -32,6 +32,32 @@ the tutorial.
  * [An Introductory Guide to Kadena Namespaces](/blogchain/2023/an-introductory-guide-to-kadena-namespaces-2023-01-11)
  * [Testing in the Pact REPL](https://github.com/thomashoneyman/real-world-pact/blob/main/00-core-concepts/03-Testing-In-The-Pact-REPL.md)
 
+## Get the code
+
+The project files have not been changed since the last chapter, so if you are
+following along with the tutorial you can continue on the `01-getting-started`
+branch. If you started the tutorial with this chapter, clone the tutorial
+project and change the current directory of your terminal to the project folder.
+
+```bash
+git clone git@github.com:kadena-community/voting-dapp.git election-dapp
+cd election-dapp
+```
+
+After cloning the project, switch branches to get the starter code for this chapter.
+
+```bash
+git checkout 04-namespaces
+```
+
+In this chapter you will add some code to the project for the first time. If you want
+to skip ahead and see the final solution for this chapter, you can check out the branch
+containing the starter code for the next chapter.
+
+```bash
+git checkout 05-keysets
+```
+
 ## Exercise: Define a namespace
 
 In the `./pact` folder, create a file `namespace.repl`. Write an empty transaction inside

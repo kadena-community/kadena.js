@@ -26,7 +26,7 @@ export const container = style([
   },
 ]);
 
-export const baseArrow = style([
+const baseArrow = style([
   sprinkles({
     position: 'absolute',
     width: '$4',

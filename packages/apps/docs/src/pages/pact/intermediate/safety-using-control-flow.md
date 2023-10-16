@@ -32,10 +32,9 @@ to ensure safety.
 :::note Key Takeaway
 
 When writing Pact smart contracts, avoid using
-[if](https://pact-language.readthedocs.io/en/stable/pact-functions.html#if)
-statements. Instead, use
-[enforce](https://pact-language.readthedocs.io/en/stable/pact-functions.html#enforce)
-to ensure your code is both simpler and safer.
+[if](/pact/reference/functions#ifh3357) statements. Instead, use
+[enforce](/pact/reference/functions#enforceh-1604583454) to ensure your code is
+both simpler and safer.
 
 :::
 
@@ -90,13 +89,13 @@ pact> (enforce (!= (+ 2 2) 4) "Stay Safe. Enforce the law.")
 ```
 
 **If** should never be used to enforce business logic invariants. Instead,
-[enforce](https://pact-language.readthedocs.io/en/stable/pact-functions.html#enforce)
-is the right choice, which will fail the transaction.
+[enforce](/pact/reference/functions#enforceh-1604583454) is the right choice,
+which will fail the transaction.
 
 :::info Note
 
 You can view more on Control Flow
-[here](https://pact-language.readthedocs.io/en/stable/pact-reference.html#control-flow).
+[here](/pact/reference/concepts#control-flowh-1518197167).
 
 :::
 
@@ -550,10 +549,10 @@ that you keep these patterns in mind as you write your own code.
 
 In my-coin.repl file, you can check that the failing cases of **debit-if** and
 **credit-if** are tested with
-[expect ...](https://pact-language.readthedocs.io/en/stable/pact-functions.html#expect)
+[expect ...](/pact/reference/functions/repl-only-functions#expecth-1289163687)
 by checking if the output matches the expected failure message. The refactored
 code allows us to test with
-[expect-failure ...](https://pact-language.readthedocs.io/en/stable/pact-functions.html#expect-failure)to
+[expect-failure ...](/pact/reference/functions/repl-only-functions#expect-failureh-1357342698)to
 check if the function succeeds or not.
 
 :::info Note
