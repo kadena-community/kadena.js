@@ -18,7 +18,6 @@ export const containerClass = style([
   sprinkles({
     display: 'flex',
     alignItems: 'flex-start',
-    padding: '$md',
     borderStyle: 'solid',
     justifyContent: 'center',
   }),
@@ -122,7 +121,7 @@ export const actionsContainerClass = style([
   }),
 ]);
 
-export const actionButtonClass = style([
+const actionButtonClass = style([
   sprinkles({
     display: 'flex',
     justifyContent: 'center',

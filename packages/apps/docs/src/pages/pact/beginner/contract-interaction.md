@@ -35,10 +35,10 @@ multiple Pact modules.
 :::note Key Takeaway
 
 Modules can make use of functions within other modules. This is done first with
-[use](https://pact-language.readthedocs.io/en/latest/pact-reference.html#use),
-and then by calling the functions from within the module you are using. Each of
-these files are then loaded into the REPL where you can specify function calls
-and test interactions between these modules.
+[use](/pact/reference/syntax#useh116103), and then by calling the functions from
+within the module you are using. Each of these files are then loaded into the
+REPL where you can specify function calls and test interactions between these
+modules.
 
 :::
 
@@ -220,8 +220,7 @@ depending on how you prefer to follow along.
 ### 2.1 Use Auth
 
 The first step is to get access to the **auth** module. You can do this with the
-Pact special form
-[use](https://pact-language.readthedocs.io/en/latest/pact-reference.html#use).
+Pact special form [use](/pact/reference/syntax#useh116103).
 
 The syntax for **use** looks like this.
 
@@ -328,7 +327,7 @@ To get started, you need access to the **auth** module from within the
 **payments.repl** file.
 
 This is done using
-[load](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=load#load).
+[load](/pact/reference/functions/repl-only-functions#loadh3327206).
 
 ```pact title=" "
 (load "file.pact")

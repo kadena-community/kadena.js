@@ -126,6 +126,12 @@
     "path": "packages/libs/types"
   },
   {
+    "name": "@kadena-dev/e2e-tests",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/tools/e2e-tests"
+  },
+  {
     "name": "@kadena-dev/eslint-config",
     "version": "1.0.0",
     "private": false,

@@ -44,6 +44,7 @@ export const sideMenuTitleClass = style([
     paddingLeft: '$4',
     marginY: '$4',
     textAlign: 'left',
+    fontSize: '$sm',
   }),
   {
     background: 'transparent',

@@ -63,7 +63,16 @@ export const contentClassVariants: Record<LayoutType, string> = styleVariants({
       },
     }),
   },
-  full: {},
+  full: {
+    ...responsiveStyle({
+      md: {
+        gridColumn: '3 / span 2',
+      },
+      lg: {
+        gridColumn: '3 / span 1',
+      },
+    }),
+  },
   blog: {
     paddingTop: 0,
   },

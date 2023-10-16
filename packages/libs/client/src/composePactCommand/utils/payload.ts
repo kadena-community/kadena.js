@@ -47,7 +47,7 @@ export const execution: IExec = (...codes: string[]) => {
  */
 export const continuation: ICont = (options) => {
   const clone = { ...options, data: options.data ? options.data : {} };
-  if (clone.proof !== undefined) {
+  if (typeof clone.proof === 'string') {
     clone.proof = clone.proof.replace(/\"/gi, '');
   }
   return {

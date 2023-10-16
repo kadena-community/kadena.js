@@ -46,7 +46,7 @@ export const asidebackgroundClass = style([
       },
       '&::after': {
         ...responsiveStyle({
-          md: {
+          lg: {
             left: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${vars.sizes.$4}))`,
           },
           xxl: {
@@ -57,7 +57,7 @@ export const asidebackgroundClass = style([
     },
 
     ...responsiveStyle({
-      md: {
+      lg: {
         display: 'block',
       },
     }),
@@ -75,8 +75,8 @@ export const loadedClass = style({
 
 export const pageGridClass = style(
   responsiveStyle({
-    md: {
-      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
+    lg: {
+      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault}`,
     },
     xxl: {
       gridTemplateColumns: `auto ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthLGDefault})) ${$$asideMenuWidthLGDefault} auto`,
@@ -120,7 +120,7 @@ export const asideClass = style([
     transform: 'translateX(100vw)',
 
     ...responsiveStyle({
-      md: {
+      lg: {
         display: 'block',
         transform: 'translateX(0)',
       },

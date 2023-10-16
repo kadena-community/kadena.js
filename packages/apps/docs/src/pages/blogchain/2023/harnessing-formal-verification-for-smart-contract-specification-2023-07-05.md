@@ -22,8 +22,7 @@ layout: blog
 
 ## What is Formal Verification?
 
-Kadena’s smart contract language,
-[Pact](https://pact-language.readthedocs.io/en/stable/), is a powerful tool at
+Kadena’s smart contract language, [Pact](/pact/reference), is a powerful tool at
 our disposal. Pact assists developers in creating smart contracts on
 the[ Kadena blockchain](https://kadena.io/), called Formal Verification. So what
 is Formal Verification?

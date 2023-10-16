@@ -10,7 +10,7 @@ interface ICapability_Coin_GAS {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     
     "user.test-module": {
     
@@ -42,7 +42,7 @@ interface ICapability_test_func {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     /**
     this is module doc    
     */
@@ -78,7 +78,7 @@ interface ICapability_test_func {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     /**
     this is module doc    
     */
@@ -115,7 +115,7 @@ interface ICapability_defpact_test_func {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     /**
     this is module doc    
     */
@@ -145,7 +145,7 @@ interface ICapability_Coin_GAS {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     
     "user.test-module": {
       "test-func": (
@@ -167,7 +167,7 @@ interface ICapability_Coin_GAS {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     
     "user.test-module": {
       "test": () => string & { capability : ICapability_Coin_GAS} 
@@ -196,7 +196,7 @@ interface ICapability_defpact_test_func {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     /**
     this is module doc    
     */
@@ -233,7 +233,7 @@ interface ICapability_test_func {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     
     "user.test-module": {
       "test-func": (
@@ -255,7 +255,7 @@ interface ICapability_Coin_GAS {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     
     "user.test-module": {
       /**
@@ -285,7 +285,7 @@ interface ICapability_test_func {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     
     "user.test-module": {
       "test-func": (
@@ -314,7 +314,7 @@ interface ICapability_test_func {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     
     "user.test-module": {
       "test-func": (
@@ -336,7 +336,7 @@ interface ICapability_Coin_GAS {
 }
 
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     
     "user.test-module": {
       "test": (param: any) => string & { capability : ICapability_Coin_GAS} 

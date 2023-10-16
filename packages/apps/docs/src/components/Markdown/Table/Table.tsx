@@ -9,7 +9,7 @@ import React from 'react';
 export const Table: FC<ITableProps> = ({ children }) => {
   return (
     <div className={wrapperClass}>
-      <StyledTable.Root>{children}</StyledTable.Root>
+      <StyledTable.Root striped>{children}</StyledTable.Root>
     </div>
   );
 };

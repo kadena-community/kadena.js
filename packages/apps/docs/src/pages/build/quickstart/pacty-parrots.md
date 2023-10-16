@@ -28,11 +28,11 @@ Play the “Pacty Parrots” game to see how dApps and wallets interact.
 4. Select “Start new round” to begin the game
 5. When Chainweaver pops up you will be prompted with a signing request which
    has 3 parts:
+    - Configuration: View transaction info and adjust settings if desired
+    - Sign: Select your public key in each of the 3 “Grant Capabilities” fields
+    - Preview: You should see a Raw Response of “Write succeeded!” and if so select
+      “Submit”
 
-- Configuration: View transaction info and adjust settings if desired
-- Sign: Select your public key in each of the 3 “Grant Capabilities” fields
-- Preview: You should see a Raw Response of “Write succeeded!” and if so select
-  “Submit”
 
 6. Watch the parrots dance and wait for your result
 7. Choose to “Spin again” or “Cash out” which will prompt another transaction to

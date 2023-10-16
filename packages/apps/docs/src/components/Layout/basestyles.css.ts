@@ -11,6 +11,7 @@ import { createVar, globalStyle, style } from '@vanilla-extract/css';
 globalStyle('html, body', {
   margin: 0,
   backgroundColor: vars.colors.$background,
+  overscrollBehavior: 'none',
 });
 
 globalStyle('a', {
@@ -20,6 +21,9 @@ globalStyle('a', {
 globalStyle('a:hover', {
   color: vars.colors.$primaryHighContrast,
   textDecoration: 'none',
+});
+globalStyle('p a', {
+  fontWeight: '500',
 });
 
 export const basebackgroundClass = style([
@@ -83,7 +87,7 @@ export const baseGridClass = style([
 
     ...responsiveStyle({
       md: {
-        gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
+        gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault}`,
         gridTemplateAreas: `
           "header header header header header"
           "pageheader pageheader pageheader pageheader pageheader"

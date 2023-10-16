@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  Grid,
-  Heading,
-  Stack,
-  Text,
-} from '@kadena/react-ui';
+import { Box, Button, Card, Grid, Heading, Text } from '@kadena/react-ui';
 
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
@@ -44,36 +36,38 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
       id="main"
     >
       <article className={articleClass}>
-        <Box marginRight={{ sm: 0, lg: '$32', xl: '$64' }} marginBottom="$10">
-          <Text>
-            Pact allows anyone to write clearly, directly and safely onto a
-            blockchain — a true innovation for secure and simple smart contract
-            development. Pact will enable you to create entirely new business
-            models and on-chain services.
-          </Text>
-        </Box>
-
-        <Stack
-          justifyContent="space-between"
-          direction={{ sm: 'column', lg: 'row' }}
-        >
-          <Card>
-            <Heading as="h4">Learn Pact</Heading>
-            <Box marginY="$4">
-              <Text>Learn the basics of Pact to create a smart contract</Text>
+        <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
+          <Grid.Item>
+            <Card fullWidth>
+              <Heading as="h4">Learn Pact</Heading>
+              <Box marginY="$4">
+                <Text>
+                  Pact allows anyone to write clearly, directly and safely onto
+                  a blockchain — a true innovation for secure and simple smart
+                  contract development. Pact will enable you to create entirely
+                  new business models and on-chain services. Learn the basics of
+                  Pact to create a smart contract
+                </Text>
+              </Box>
+              <Button as="a" asChild icon="TrailingIcon">
+                <Link href={'/pact/beginner'}>Getting started</Link>
+              </Button>
+            </Card>
+          </Grid.Item>
+          <Grid.Item>
+            <Box
+              marginTop="$8"
+              marginLeft={{ sm: 0, lg: '$4' }}
+              marginRight={{ sm: 0, xl: '$32' }}
+            >
+              <MostPopular
+                pages={popularPages}
+                title="Most viewed docs"
+                titleAs="h6"
+              />
             </Box>
-            <Button as="a" asChild icon="TrailingIcon">
-              <Link href={'/pact/beginner'}>Getting started</Link>
-            </Button>
-          </Card>
-          <Box
-            marginTop="$8"
-            marginLeft={{ sm: 0, lg: '$4' }}
-            marginRight={{ sm: 0, xl: '$32' }}
-          >
-            <MostPopular pages={popularPages} title="Most viewed docs" />
-          </Box>
-        </Stack>
+          </Grid.Item>
+        </Grid.Root>
 
         <Box marginBottom="$20">
           <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>

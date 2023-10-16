@@ -49,8 +49,7 @@ support for interoperability, and strong permission and access control.
   [Safer, Smarter Contracts with Pact](/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20.md)
 - Whitepaper: [Pact Smart Contract Language](./pact-smart-contract-language.md)
 - Documentation: [Pact GitHub](https://github.com/kadena-io/pact)
-- Documentation:
-  [Pact Language Reference](https://pact-language.readthedocs.io/en/latest/pact-reference.html)
+- Documentation: [Pact Language Reference](/pact/reference)
 
 :::note
 

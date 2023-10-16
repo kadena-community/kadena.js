@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
+import { Box, Button, Grid, Heading, Stack } from '@kadena/react-ui';
 
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
@@ -43,7 +43,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <Grid.Item rowSpan={2}>
                 <DocsCard
                   label="Introduction"
-                  description="What makes Kadena unique? Learn about our core concepts."
+                  description="Kadena is the only platform offering a complete decentralized infrastructure for builders. Combining a revolutionary chain architecture with the tools needed for widespread adoption, your teams get the full capabilities of blockchain with the ability to go from concept to launch in days vs. months by not having to build from scratch. Learn about our core concepts."
                   schema="info"
                   background="whitepapers"
                 >
@@ -67,10 +67,21 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="warning"
                   background="contribute"
                 >
+                  <Box marginY="$4">
+                    <Button
+                      as="a"
+                      href="/build/guides/election-dapp-tutorial"
+                      icon="TrailingIcon"
+                      color="negative"
+                    >
+                      Build your first dApp
+                    </Button>
+                  </Box>
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/build/quickstart">
                       10 minute quick start
                     </Link>
+
                     <a
                       className={docsCardLink}
                       href="https://academy.kadena.io"
@@ -79,12 +90,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     </a>
                     <Link className={docsCardLink} href="/build/guides">
                       Create a Smart Contract
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/build/guides/building-a-voting-dapp"
-                    >
-                      Build your first dApp
                     </Link>
                   </BrowseSection>
                 </DocsCard>
@@ -124,7 +129,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </Grid.Root>
           </Box>
 
-          <Stack direction="column" gap="$xl">
+          <Stack direction="column" gap="$3xl">
             <BrowseSection title="Useful tools" direction="row">
               <BrowseSection.LinkBlock
                 title="Bootstrap Kadena dApp"
@@ -194,7 +199,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </BrowseSection>
 
             <Box>
-              <Heading as="h6">Stay up-to-date</Heading>
+              <Heading as="h5">Stay up-to-date</Heading>
               <BlogPostsStrip
                 data={blogPosts}
                 link="/blogchain"
