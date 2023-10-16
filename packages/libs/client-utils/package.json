@@ -8,12 +8,12 @@
     "directory": "packages/libs/client-utils"
   },
   "license": "MIT",
-  "main": "./lib/core/index.js",
-  "types": "./lib/core/index.d.ts",
   "exports": {
     "./coin": "./lib/coin/index.js",
     "./core": "./lib/core/index.js"
   },
+  "main": "./lib/core/index.js",
+  "types": "./lib/core/index.d.ts",
   "files": [
     "dist",
     "lib",
