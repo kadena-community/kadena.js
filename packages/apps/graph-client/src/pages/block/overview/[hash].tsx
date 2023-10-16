@@ -48,9 +48,9 @@ const Block: React.FC = () => {
           {error && (
             <Notification.Root color="negative" icon="Close">
               Unknown error:
-              <Box margin={'$5'} />
+              <Box marginBottom="$4" />
               <code>{error.message}</code>
-              <Box margin={'$5'} />
+              <Box marginBottom="$4" />
               Check if the Graph server is running.
             </Notification.Root>
           )}
@@ -70,7 +70,7 @@ const Block: React.FC = () => {
                 Block Header
               </Text>
 
-              <Table.Root striped wordBreak="break-word">
+              <Table.Root wordBreak="break-word">
                 <Table.Body>
                   <Table.Tr>
                     <Table.Td>
@@ -150,7 +150,7 @@ const Block: React.FC = () => {
               >
                 Block Payload
               </Text>
-              <Table.Root striped wordBreak="break-word">
+              <Table.Root wordBreak="break-word">
                 <Table.Body>
                   <Table.Tr>
                     <Table.Td>
@@ -213,9 +213,9 @@ const Block: React.FC = () => {
 
               {data.block.transactions.totalCount > 0 && (
                 <CompactTransactionsTable
-                  viewAllHref={`${routes.BLOCK}/${
+                  viewAllHref={`${routes.BLOCK_TRANSACTIONS}/${
                     router.query.hash as string
-                  }/${routes.BLOCK_TRANSACTIONS_SUFIX}`}
+                  }`}
                   transactions={data.block.transactions}
                 />
               )}

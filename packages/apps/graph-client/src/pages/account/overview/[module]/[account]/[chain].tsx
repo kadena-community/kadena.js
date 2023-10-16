@@ -50,11 +50,9 @@ const ChainAccount: React.FC = () => {
           {error && (
             <Notification.Root color="negative" icon="Close">
               Unknown error:
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               <code>{error.message}</code>
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               Check if the Graph server is running.
             </Notification.Root>
           )}
@@ -124,14 +122,11 @@ const ChainAccount: React.FC = () => {
                 </Grid.Item>
                 <Grid.Item>
                   <CompactTransactionsTable
-                    // moduleName={router.query.module as string}
-                    // accountName={router.query.account as string}
-                    // chainId={router.query.chain as string}
                     viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
                       router.query.module
-                    }/${
-                      router.query.account
-                    }${`?chainId=${router.query.chain}`}`}
+                    }/${router.query.account}${
+                      router.query.chain ? `?chainId=${router.query.chain}` : ''
+                    }`}
                     transactions={chainAccountQuery.chainAccount.transactions}
                   />
                 </Grid.Item>

@@ -50,11 +50,9 @@ const Account: React.FC = () => {
           {error && (
             <Notification.Root color="negative" icon="Close">
               Unknown error:
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               <code>{error.message}</code>
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               Check if the Graph server is running.
             </Notification.Root>
           )}
@@ -99,8 +97,6 @@ const Account: React.FC = () => {
                 </Grid.Item>
                 <Grid.Item>
                   <CompactTransactionsTable
-                    // moduleName={router.query.module as string}
-                    // accountName={router.query.account as string}
                     viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
                       router.query.module as string
                     }/${router.query.account as string}`}

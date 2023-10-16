@@ -1,6 +1,7 @@
+import { env } from '../env';
+
 import type { GetBlocksSubscription } from '@/__generated__/sdk';
 import { useCallback, useState } from 'react';
-import { env } from '../env';
 
 const MAX_HEIGHTS = 7;
 
