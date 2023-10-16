@@ -12,7 +12,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test:e2e": "npx playwright test"
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
