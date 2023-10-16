@@ -2,7 +2,6 @@
 
 import type { IPactCommand } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
-import { deepFreeze } from '../../../utils/deepFreeze';
 import { createEckoWalletQuicksign } from '../quicksignWithEckoWallet';
 
 import { TextDecoder, TextEncoder } from 'util';
@@ -10,7 +9,7 @@ import { TextDecoder, TextEncoder } from 'util';
 Object.assign(global, { TextDecoder, TextEncoder });
 
 describe('quicksignWithEckoWallet', () => {
-  const transaction = deepFreeze<IPactCommand>({
+  const getTransaction = (): IPactCommand => ({
     payload: {
       exec: {
         code: '(coin.transfer "bonnie" "clyde" 1)',
@@ -96,7 +95,7 @@ describe('quicksignWithEckoWallet', () => {
     });
 
     const quicksignWithEckoWallet = createEckoWalletQuicksign();
-
+    const transaction = getTransaction();
     const unsignedTransaction = createTransaction(transaction);
     unsignedTransaction.hash = 'test-hash';
     const result = await quicksignWithEckoWallet(unsignedTransaction);
@@ -176,11 +175,11 @@ describe('quicksignWithEckoWallet', () => {
     });
 
     const quicksignWithEckoWallet = createEckoWalletQuicksign();
-
+    const transaction = getTransaction();
     const unsignedTransactions = [
       createTransaction(transaction),
       createTransaction({
-        ...transaction,
+        ...getTransaction(),
         signers: [
           {
             clist: [
@@ -241,6 +240,7 @@ describe('quicksignWithEckoWallet', () => {
 
   it('throws when there is no signing response', async () => {
     const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
 
     await expect(() =>
       quicksignWithEckoWallet(createTransaction(transaction)),
@@ -253,6 +253,7 @@ describe('quicksignWithEckoWallet', () => {
     });
 
     const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
     const unsignedTransaction = createTransaction(transaction);
 
     await expect(() =>
@@ -262,7 +263,7 @@ describe('quicksignWithEckoWallet', () => {
 
   it('throws when there are no responses', async () => {
     const quicksignWithEckoWallet = createEckoWalletQuicksign();
-
+    const transaction = getTransaction();
     await expect(() =>
       quicksignWithEckoWallet(createTransaction(transaction)),
     ).rejects.toThrowError('Error signing transaction');
@@ -297,6 +298,7 @@ describe('quicksignWithEckoWallet', () => {
     });
 
     const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
 
     await expect(() =>
       quicksignWithEckoWallet(createTransaction(transaction)),
@@ -307,6 +309,7 @@ describe('quicksignWithEckoWallet', () => {
 
   it('throws when the networks of the transactions are not the same', async () => {
     const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
 
     await expect(() =>
       quicksignWithEckoWallet([
