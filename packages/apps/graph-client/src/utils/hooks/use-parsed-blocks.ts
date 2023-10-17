@@ -1,4 +1,5 @@
 import type { GetBlocksSubscription } from '../../__generated__/sdk';
+import { env } from '../env';
 
 import { useCallback, useState } from 'react';
 
@@ -56,6 +57,18 @@ export function useParsedBlocks(): IUseParseBlocksReturn {
             );
           }
         });
+
+        // Use FIFO to keep the last 5 heights
+        if (
+          Object.keys(updatedBlocks).length >
+          env.MAX_CALCULATED_CONFIRMATION_DEPTH + 2
+        ) {
+          const keys = Object.keys(updatedBlocks)
+            .map(Number)
+            .sort((a, b) => b - a);
+          const lastKey = keys[keys.length - 1];
+          delete updatedBlocks[lastKey];
+        }
 
         return updatedBlocks;
       });

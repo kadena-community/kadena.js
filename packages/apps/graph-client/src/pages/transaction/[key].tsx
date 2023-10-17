@@ -1,4 +1,4 @@
-import { Link, Notification, Table } from '@kadena/react-ui';
+import { Box, Link, Notification, Table } from '@kadena/react-ui';
 
 import { useGetTransactionByRequestKeySubscription } from '../../__generated__/sdk';
 import Loader from '../../components/loader/loader';
@@ -37,7 +37,6 @@ const RequestKey: React.FC = () => {
 
         <div>
           {loadingTransaction && (
-            // Display a loading spinner next to the text without a gap
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Loader /> <span>Waiting for request key...</span>
             </div>
@@ -45,11 +44,9 @@ const RequestKey: React.FC = () => {
           {error && (
             <Notification.Root color="negative" icon="Close" variant="outlined">
               Unknown error:
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               <code>{error.message}</code>
-              <br />
-              <br />
+              <Box marginBottom="$4" />
               Check if the Graph server is running.
             </Notification.Root>
           )}
@@ -274,7 +271,10 @@ const RequestKey: React.FC = () => {
                               <strong>Sender</strong>
                             </Table.Td>
                             <Table.Td>
-                              {transactionSubscription?.transaction?.sender}
+                              {
+                                transactionSubscription?.transaction
+                                  ?.senderAccount
+                              }
                             </Table.Td>
                           </Table.Tr>
                           <Table.Tr>
