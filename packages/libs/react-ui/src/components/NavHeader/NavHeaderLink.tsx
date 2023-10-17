@@ -48,11 +48,11 @@ export const NavHeaderLink: FC<INavHeaderLinkProps> = ({
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(children, {
       ...restProps,
+      href,
       ...children.props,
       children: children.props.children,
       className: className,
       onClick: _onClick,
-      href,
       ref,
     });
   }
