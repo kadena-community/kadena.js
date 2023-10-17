@@ -39,7 +39,7 @@ jobs:
         working-directory: packages/tools/e2e-tests
 
       - name: Build Tools dApp
-        run: pnpm --filter @kadena/tools...  build
+        run: pnpm --filter @kadena/tools  build
         env:
           # Dummy values for faucet transactions.
           FAUCET_PUBLIC_KEY: 782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e

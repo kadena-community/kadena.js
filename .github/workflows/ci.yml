@@ -78,10 +78,12 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm run build
+        run: pnpm turbo build
 
       - name: run integration tests
-        run: pnpm run test:integration
+        run: pnpm turbo test:integration
+
+
   e2e-tests:
     name: end-to-end tests
     needs: build
@@ -117,10 +119,9 @@ jobs:
 
       - name: Install browsers
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
-        working-directory: packages/tools/e2e-tests
 
       - name: Build
-        run: pnpm run build
+        run: pnpm turbo build --filter ${{ matrix.package }}
         env:
           # Dummy values for faucet transactions.
           FAUCET_PUBLIC_KEY: 782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e
