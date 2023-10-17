@@ -3,6 +3,7 @@ import { Box, GradientText, Grid, Heading, Stack } from '@kadena/react-ui';
 import {
   headerClass,
   headerLoadedClass,
+  searchInputWrapper,
   subheaderClass,
   wrapperClass,
 } from './style.css';
@@ -61,8 +62,10 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
                   Explore our guides and examples to build on Kadena
                 </span>
 
-                <Box marginTop="$5" marginRight="$40">
-                  <SearchBar onKeyUp={handleKeyPress} />
+                <Box marginTop="$5">
+                  <div className={searchInputWrapper}>
+                    <SearchBar onKeyUp={handleKeyPress} />
+                  </div>
                 </Box>
               </Stack>
             </Grid.Item>

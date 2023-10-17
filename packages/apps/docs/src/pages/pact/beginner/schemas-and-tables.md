@@ -65,16 +65,16 @@ tables are and how they provide value to your Pact smart contracts.
 
 **Pact Language Reference**
 
-- [Table Creation](https://pact-language.readthedocs.io/en/latest/pact-reference.html#table-creation)
-- [Types and Schemas](https://pact-language.readthedocs.io/en/latest/pact-reference.html#types-and-schemas)
+- [Table Creation](/pact/reference/concepts#table-creationh-1731482831)
+- [Types and Schemas](/pact/reference/concepts#types-and-schemash-1143751614)
 
 ### Define Schemas
 
 Before creating a table in Pact, you need to define its schema, which describes
 the structure of the table. Schemas specify the columns and data types that are
 meant to be in a table. Schemas are defined within Pact modules using
-[defschema](https://pact-language.readthedocs.io/en/latest/pact-reference.html?highlight=tables%20and%20schemas#defschema)
-and consist of a series of **field names** and **field types**.
+[defschema](/pact/reference/syntax#defschemah-1003560474) and consist of a
+series of **field names** and **field types**.
 
 Each field name specifies a column in the table, and each field type specifies
 the type of data held in that table.
@@ -110,7 +110,7 @@ Pact.
 :::info
 
 The data types supported by Pact can be found
-[here](https://pact-language.readthedocs.io/en/latest/pact-reference.html?highlight=types#data-types)
+[here](/pact/reference/concepts#data-typesh1781031043)
 
 :::
 
@@ -121,11 +121,11 @@ Tables hold data created by the smart contract.
 These are defined within Pact modules and there is no limit to the number of
 tables you can define. This data can be added, read, or changed using functions,
 and access to this data can be restricted using what is known as
-[table guards](https://pact-language.readthedocs.io/en/latest/pact-reference.html?highlight=table%20guards#module-table-guards).
+[table guards](/pact/reference/concepts#module-table-guardsh-1588944812).
 
 Tables are defined after the prerequisite schema is defined, using
-[deftable](https://pact-language.readthedocs.io/en/latest/pact-reference.html?highlight=deftable#deftable)
-followed by the table name and a reference to the table’s schema.
+[deftable](/pact/reference/syntax#deftableh661222121) followed by the table name
+and a reference to the table’s schema.
 
 **Accounts Example**
 
@@ -168,10 +168,10 @@ outside of the module. This is done to ensure that the module may be redefined
 or updated later without having to re-create the table.
 
 The relationship of modules to tables is important, as described in
-[table guards](https://pact-language.readthedocs.io/en/latest/pact-reference.html?highlight=table%20creation#module-table-guards)
+[table guards](/pact/reference/concepts#module-table-guardsh-1588944812)
 
 Tables are created outside of the module using
-[create-table](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=create-table#create-table)
+[create-table](/pact/reference/functions/database#create-tableh447366077)
 followed by the table name as defined within the module.
 
 ```pact title=" "
@@ -188,12 +188,12 @@ the module.
 When working with tables, there are many built-in functions available for you to
 work with table data.
 
-| function type                                                                       | purpose                       |
-| ----------------------------------------------------------------------------------- | ----------------------------- |
-| [Insert](https://pact-language.readthedocs.io/en/latest/pact-functions.html#insert) | Insert new rows into a table. |
-| [Read](https://pact-language.readthedocs.io/en/latest/pact-functions.html#read)     | Read values from a table.     |
-| [Update](https://pact-language.readthedocs.io/en/latest/pact-functions.html#update) | Update values within a table. |
-| Delete                                                                              | Not possible in Pact.         |
+| function type                                                   | purpose                       |
+| --------------------------------------------------------------- | ----------------------------- |
+| [Insert](/pact/reference/functions/database#inserth-1183792455) | Insert new rows into a table. |
+| [Read](/pact/reference/functions/database#readh3496342)         | Read values from a table.     |
+| [Update](/pact/beginner/schemas-and-tables#updateh-1754979095)  | Update values within a table. |
+| Delete                                                          | Not possible in Pact.         |
 
 Notice that these functions are similar to common options available in other
 databases (CRUD - create, read, update, delete).
@@ -208,10 +208,10 @@ insert.
 
 ### Insert
 
-[Insert](https://pact-language.readthedocs.io/en/latest/pact-functions.html#insert)
-functions are used to add new data into a table. These are useful when creating
-new artifacts such as entities, loans, accounts, and in any other case where you
-may want to add data.
+[Insert](/pact/reference/functions/database#inserth-1183792455) functions are
+used to add new data into a table. These are useful when creating new artifacts
+such as entities, loans, accounts, and in any other case where you may want to
+add data.
 
 For an example of an **insert** function, pretend you have the following empty
 table.
@@ -261,8 +261,8 @@ the following into the **entity-table**.
 
 ### Read
 
-[Read](https://pact-language.readthedocs.io/en/latest/pact-functions.html#read)
-allows you to read rows from a table for a given key.
+[Read](/pact/reference/functions/database#readh3496342) allows you to read rows
+from a table for a given key.
 
 For this example, imagine you had the following table and you wanted to read the
 balance and currency at the key of **entity-1**.
@@ -300,10 +300,10 @@ values.
 
 ### Update
 
-[Update](https://pact-language.readthedocs.io/en/latest/pact-functions.html#update)
-functions can be used to update a values in an existing row of a table. Updating
-is helpful in situations where you need to change the status of a column or
-amend the initial dataset to a new value.
+[Update](/pact/beginner/schemas-and-tables#updateh-1754979095) functions can be
+used to update a values in an existing row of a table. Updating is helpful in
+situations where you need to change the status of a column or amend the initial
+dataset to a new value.
 
 Using **update**, you can specify the row id to update a value within that row.
 This value would generally be passed in by the user as a function parameter.
@@ -352,8 +352,8 @@ status of the asset as it progresses through the process.
 
 ### Select
 
-[Select](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=constantly%20true#select)
-is used to read values from a table.
+[Select](/pact/beginner/schemas-and-tables#selecth-1822154468) is used to read
+values from a table.
 
 This is similar to **read** but select includes more specificity allowing you
 greater flexibility in what information you choose to select. The syntax for
@@ -398,8 +398,8 @@ This query will return the following values from the **assets-table**.
 
 Along with select, you can also use a
 
-[where](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=constantly%20true#where)statement
-to further refine your query as shown below.
+[where](/pact/reference/functions#whereh113097959)statement to further refine
+your query as shown below.
 
 ```pact title=" "
   (select assets-table ['assetName,'assetPrice] (where 'assetName (= "Asset 2")))
@@ -426,8 +426,8 @@ This query would return the following values from the **assets-table**.
 
 ### Keys
 
-[Keys](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=constantly%20true#keys)
-allows you to return all the **key** values in a table.
+[Keys](/pact/reference/functions/database#keysh3288564) allows you to return all
+the **key** values in a table.
 
 Given the previously shown **assets-table**, you could return each of the keys
 using the code below.

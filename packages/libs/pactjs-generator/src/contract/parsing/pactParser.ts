@@ -255,10 +255,33 @@ async function loadModuleDependencies(
     ...(module.usedInterface || []),
   ];
 
+  const parentNamespace = module.namespace;
+
   const mods = await Promise.all(
-    interfaceOrModule.map(async (usedModule) =>
-      loadModuleDependencies(getModuleFullName(usedModule), getModule),
-    ),
+    interfaceOrModule.map(async (usedModule) => {
+      if (typeof usedModule.namespace === 'string') {
+        return loadModuleDependencies(getModuleFullName(usedModule), getModule);
+      }
+      let moduleName: string;
+      try {
+        // if the namespace is not defined, try to load the module with the parent namespace
+        const withParentNamespace = getModuleFullName({
+          name: usedModule.name,
+          namespace: parentNamespace,
+        });
+        // this will store the module in the storage so we can use it later
+        await getModule(withParentNamespace);
+        moduleName = withParentNamespace;
+      } catch {
+        // if the module is not found, continue with without a namespace
+        moduleName = usedModule.name;
+        console.log(
+          `Module ${moduleName} not found. trying to load ${usedModule.name}`,
+        );
+      }
+
+      return loadModuleDependencies(moduleName, getModule);
+    }),
   );
   const dependencies = mods.flat();
 

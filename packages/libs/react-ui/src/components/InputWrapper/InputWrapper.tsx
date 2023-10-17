@@ -39,15 +39,17 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
         <InputHeader htmlFor={htmlFor} label={label} tag={tag} info={info} />
       )}
       <div className="inputGroup">
-        {React.Children.map(children, (child) => {
-          if (!React.isValidElement(child)) return null;
-          const props = {
-            ...child.props,
-            leadingTextWidth,
-          };
+        {leadingTextWidth
+          ? React.Children.map(children, (child) => {
+              if (!React.isValidElement(child)) return null;
+              const props = {
+                ...child.props,
+                leadingTextWidth,
+              };
 
-          return React.cloneElement(child, props);
-        })}
+              return React.cloneElement(child, props);
+            })
+          : children}
       </div>
       {Boolean(helperText) && <InputHelper>{helperText}</InputHelper>}
     </div>

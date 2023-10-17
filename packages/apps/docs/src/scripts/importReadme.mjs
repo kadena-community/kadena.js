@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { remark } from 'remark';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
-import { importReadMes } from './utils.mjs';
+import { importReadMes, getTypes } from './utils.mjs';
 
 import { getLastModifiedDate } from './getdocstree.mjs';
 
@@ -32,17 +32,6 @@ tags: [${tags.toString()}]
 lastModifiedDate: ${lastModifiedDate}
 ---
 `;
-};
-const getTypes = (tree, type, arr = []) => {
-  tree.children.forEach((branch) => {
-    if (branch.type === type) {
-      arr.push(branch);
-    }
-    if (!branch.children) return arr;
-
-    return getTypes(branch, type, arr);
-  });
-  return arr;
 };
 
 const createEditOverwrite = (filename, options) => {

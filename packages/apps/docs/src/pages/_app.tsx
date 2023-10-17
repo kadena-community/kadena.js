@@ -64,6 +64,11 @@ export const MyApp = ({
         <meta name="title" content={props.frontmatter.title} />
         <meta name="description" content={props.frontmatter.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          property="og:image"
+          content="/assets/blog/2023/0_s-vXIU_stFVOsfim.png"
+        />
+
         <link
           rel="icon"
           href="/assets/favicons/light/icon@32.png"
