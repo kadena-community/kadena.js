@@ -85,7 +85,7 @@ jobs:
 
 
   e2e-tests:
-    name: end-to-end tests
+    name: End to end Tests
     needs: build
     runs-on: ubuntu-latest
     strategy:
