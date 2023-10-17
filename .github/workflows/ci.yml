@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Ubuntu/Node.js v18
+    name: Build & Unit Test
     runs-on: ubuntu-latest
 
     env:
