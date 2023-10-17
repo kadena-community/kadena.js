@@ -136,7 +136,7 @@ describe('pactParser', () => {
     expect(mod.namespace).toBe('custom-namespace');
     expect(mod.kind).toBe('module');
 
-    const l2 = modules['l2'];
+    const l2 = modules.l2;
     expect(l2).toBeDefined();
     expect(l2.name).toBe('l2');
     expect(l2.namespace).toBe('');
