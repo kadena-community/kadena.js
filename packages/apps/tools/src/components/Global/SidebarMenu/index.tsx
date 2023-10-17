@@ -53,7 +53,7 @@ export const SidebarMenu: FC = (props) => {
   return (
     <StyledSidebar data-testid={'navigation'}>
       {menu.map((item, index) => (
-        <NavLink key={index} href={item.href}>
+        <NavLink aria-label={item.title} key={index} href={item.href}>
           {item.title}
         </NavLink>
       ))}
