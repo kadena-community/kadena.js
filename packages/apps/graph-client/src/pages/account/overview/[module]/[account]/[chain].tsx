@@ -125,10 +125,8 @@ const ChainAccount: React.FC = () => {
                   <CompactTransactionsTable
                     viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
                       router.query.module as string
-                    }/${router.query.account as string}${
-                      router.query.chain !== undefined
-                        ? `?chain=${router.query.chain as string}`
-                        : ''
+                    }/${router.query.account as string}?chain=${
+                      router.query.chain as string
                     }`}
                     transactions={chainAccountQuery.chainAccount.transactions}
                   />
