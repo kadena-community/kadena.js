@@ -135,7 +135,8 @@ recovery phrase
    you have correctly recorded your recovery phrase.
 
 After creating the wallet you might want to continue
-[creating the account](#create-an-account) on the blockchain.
+[creating the account](/kadena/wallets/chainweaver#create-an-accounth1279555262)
+on the blockchain.
 
 **Restore existing wallet from recovery phrase**
 

@@ -33,6 +33,7 @@ export const MenuButton: FC<IMenuButtonProps> = ({
         onMouseEnter={(e) => Tooltip.handler(e, tooltipRef)}
         onMouseLeave={(e) => Tooltip.handler(e, tooltipRef)}
         {...rest}
+        aria-label={title}
       >
         <Icon />
       </button>

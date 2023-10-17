@@ -8,7 +8,7 @@ import type { FC, ReactNode } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-export interface IModalProviderProps {
+interface IModalProviderProps {
   children?: ReactNode;
 }
 

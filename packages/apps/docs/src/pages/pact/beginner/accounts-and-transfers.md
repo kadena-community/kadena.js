@@ -184,9 +184,8 @@ accounts.
 
 :::info
 
-Try using
-[enforce](https://pact-language.readthedocs.io/en/latest/pact-functions.html?highlight=enforce#enforce)
-to regulate who has access to create an account.
+Try using [enforce](/pact/reference/functions#enforceh-1604583454) to regulate
+who has access to create an account.
 
 :::
 

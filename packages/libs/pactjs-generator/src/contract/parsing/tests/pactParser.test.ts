@@ -59,6 +59,95 @@ describe('pactParser', () => {
     expect(getContract.mock.calls[0][0]).toBe('coin');
   });
 
+  it('should use the parent contract namespace for used contracts if they dont have a namespace', async () => {
+    const getContract = jest.fn((name: string) => {
+      switch (name) {
+        case 'custom-namespace.test':
+          return Promise.resolve(`
+            (module test GOVERNANCE
+              (use l2)
+              (defun transfer:string (sender:string receiver:string amount:number))
+            )`);
+
+        case 'custom-namespace.l2':
+          return Promise.resolve(`
+            (module l2 GOVERNANCE
+              (defun func:string (sender:string receiver:string amount:number))
+            )`);
+        case 'l2':
+          return Promise.reject('This should not be called');
+        default:
+          return Promise.reject(`invalid contract name - ${name}`);
+      }
+    });
+
+    const modules = await pactParser({
+      contractNames: ['custom-namespace.test'],
+      getContract,
+    });
+    expect(Object.keys(modules)).toHaveLength(2);
+    const mod = modules['custom-namespace.test'];
+    expect(mod).toBeDefined();
+    expect(mod.name).toBe('test');
+    expect(mod.namespace).toBe('custom-namespace');
+    expect(mod.kind).toBe('module');
+
+    const l2 = modules['custom-namespace.l2'];
+    expect(l2).toBeDefined();
+    expect(l2.name).toBe('l2');
+    expect(l2.namespace).toBe('custom-namespace');
+    expect(l2.kind).toBe('module');
+
+    expect(getContract.mock.calls).toHaveLength(2);
+    expect(getContract.mock.calls[0][0]).toBe('custom-namespace.test');
+    expect(getContract.mock.calls[1][0]).toBe('custom-namespace.l2');
+  });
+
+  it('should try both with and without parent namespace if module does not have namespace', async () => {
+    const getContract = jest.fn((name: string) => {
+      switch (name) {
+        case 'custom-namespace.test':
+          return Promise.resolve(`
+            (module test GOVERNANCE
+              (use l2)
+              (defun transfer:string (sender:string receiver:string amount:number))
+            )`);
+
+        case 'custom-namespace.l2':
+          return Promise.reject("This module doesn't exist");
+        case 'l2':
+          return Promise.resolve(`
+            (module l2 GOVERNANCE
+              (defun func:string (sender:string receiver:string amount:number))
+            )`);
+        default:
+          return Promise.reject(`invalid contract name - ${name}`);
+      }
+    });
+
+    const modules = await pactParser({
+      contractNames: ['custom-namespace.test'],
+      getContract,
+    });
+    expect(Object.keys(modules)).toHaveLength(2);
+    const mod = modules['custom-namespace.test'];
+    expect(mod).toBeDefined();
+    expect(mod.name).toBe('test');
+    expect(mod.namespace).toBe('custom-namespace');
+    expect(mod.kind).toBe('module');
+
+    const l2 = modules.l2;
+    expect(l2).toBeDefined();
+    expect(l2.name).toBe('l2');
+    expect(l2.namespace).toBe('');
+    expect(l2.kind).toBe('module');
+
+    expect(getContract.mock.calls).toHaveLength(3);
+    expect(getContract.mock.calls[0][0]).toBe('custom-namespace.test');
+    expect(getContract.mock.calls[1][0]).toBe('custom-namespace.l2');
+    expect(getContract.mock.calls[2][0]).toBe('l2');
+  });
+
   it('should add the relevant namespace to the module', async () => {
     const contract = `
       (namespace "test_namespace_1")

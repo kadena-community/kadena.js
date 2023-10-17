@@ -3,8 +3,6 @@ import { env } from '../env';
 import type { GetBlocksSubscription } from '@/__generated__/sdk';
 import { useCallback, useState } from 'react';
 
-const MAX_HEIGHTS = 7;
-
 export interface IBlock
   extends Pick<
     NonNullable<GetBlocksSubscription['newBlocks']>[number],

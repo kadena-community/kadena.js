@@ -22,9 +22,18 @@ you get stuck in a particular chapter.
 
 ## Get the code
 
+Clone the tutorial project if you have not cloned it already and change the
+current directory of your terminal to the project folder.
+
 ```bash
-git clone git@github.com:kadena-community/election-dapp.git
+git clone git@github.com:kadena-community/voting-dapp.git election-dapp
 cd election-dapp
+```
+
+If you are following along with the tutorial, switch branches to get the
+starter code for this chapter.
+
+```bash
 git checkout 01-getting-started
 ```
 
@@ -115,9 +124,7 @@ account name. This can be anything at this point of the tutorial. After you have
 set an account name, you can cast a vote on any of the candidates. You can only
 cast one vote per account. It is also possible to add a candidate or candidates
 in bulk. This operation is not yet limited to certain accounts with a specific
-permission, but we will get to that soon enough.
-
-*[Screenshot of the front-end]*
+permission, but you will get to that soon enough.
 
 ## Next steps
 

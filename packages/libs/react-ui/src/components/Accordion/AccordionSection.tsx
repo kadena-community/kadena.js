@@ -1,22 +1,21 @@
 'use client';
 
+import { AccordionContext } from './Accordion.context';
 import {
   accordionButtonClass,
   accordionContentClass,
-  accordionSectionWrapperClass,
+  accordionHeadingTitleClass,
+  accordionSectionClass,
   accordionToggleIconClass,
 } from './Accordion.css';
 
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useContext } from 'react';
 
 export interface IAccordionSectionProps {
   children?: React.ReactNode;
-  index?: number;
-  isOpen?: boolean;
-  onClick?: () => void;
   onClose?: () => void;
   onOpen?: () => void;
   title: string;
@@ -24,36 +23,44 @@ export interface IAccordionSectionProps {
 
 export const AccordionSection: FC<IAccordionSectionProps> = ({
   children,
-  isOpen,
-  onClick,
   onClose,
   onOpen,
   title,
 }) => {
+  const { openSections, setOpenSections, linked } =
+    useContext(AccordionContext);
+  const sectionId = title.replace(/\s+/g, '-').toLowerCase();
+  const isOpen = openSections.includes(sectionId);
+
   const handleClick = (): void => {
     if (isOpen) {
+      setOpenSections(
+        linked ? [] : [...openSections.filter((i) => i !== sectionId)],
+      );
       onClose?.();
     } else {
+      setOpenSections(linked ? [sectionId] : [...openSections, sectionId]);
       onOpen?.();
     }
-    onClick?.();
   };
   return (
     <section
-      className={accordionSectionWrapperClass}
+      className={accordionSectionClass}
       data-testid="kda-accordion-section"
     >
-      <button className={accordionButtonClass} onClick={handleClick}>
-        {title}
+      <button
+        className={classNames([accordionButtonClass])}
+        onClick={handleClick}
+      >
+        <h3 className={accordionHeadingTitleClass}>{title}</h3>
         <SystemIcon.Close
           className={classNames(accordionToggleIconClass, {
             isOpen,
           })}
-          size="xs"
+          size="sm"
         />
       </button>
-
-      {isOpen && children && (
+      {children && isOpen && (
         <div className={accordionContentClass}>{children}</div>
       )}
     </section>

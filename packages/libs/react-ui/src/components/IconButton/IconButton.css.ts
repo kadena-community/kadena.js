@@ -16,7 +16,7 @@ export const activeClass = style({
   outlineColor: outlineColorFocus,
 });
 
-export const container = style([
+const container = style([
   sprinkles({
     display: 'flex',
     justifyContent: 'center',
@@ -54,14 +54,6 @@ export const container = style([
       'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
   },
 ]);
-
-export const colors: Omit<Record<ColorType, ColorType>, 'info' | 'tertiary'> = {
-  primary: 'primary',
-  secondary: 'secondary',
-  positive: 'positive',
-  warning: 'warning',
-  negative: 'negative',
-};
 
 export const colorVariants: Omit<
   Record<ColorType, ColorType>,

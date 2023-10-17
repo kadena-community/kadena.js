@@ -34,7 +34,7 @@ export const CompactTransfersTable = (
         variant="compact"
         as="a"
         href={`${routes.ACCOUNT_TRANSFERS}/${moduleName}/${accountName}${
-          chainId !== undefined ? `?chainId=${chainId}` : ''
+          chainId !== undefined ? `?chain=${chainId}` : ''
         }`}
       >
         View all transfers
@@ -78,7 +78,9 @@ export const CompactTransfersTable = (
                 </Table.Td>
                 <Table.Td>
                   <Link href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}>
-                    {truncate(edge?.node.requestKey)}
+                    <span title={edge?.node.requestKey}>
+                      {truncate(edge?.node.requestKey)}
+                    </span>
                   </Link>
                 </Table.Td>
               </Table.Tr>

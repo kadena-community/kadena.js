@@ -1,0 +1,17 @@
+{
+  "extends": "./node_modules/@kadena-dev/heft-rig/tsconfig-base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "target": "ES2020",
+    "skipLibCheck": true,
+    "noEmit": true,
+    "incremental": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
+    "declarationMap": false,
+    "jsx": "preserve",
+    "allowJs": true
+  }
+}
