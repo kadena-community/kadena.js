@@ -68,6 +68,10 @@ export const MyApp = ({
           property="og:image"
           content="/assets/blog/2023/0_s-vXIU_stFVOsfim.png"
         />
+        <meta 
+          name="twitter:image" 
+          content="/assets/blog/2023/0_s-vXIU_stFVOsfim.png" 
+        />
 
         <link
           rel="icon"
