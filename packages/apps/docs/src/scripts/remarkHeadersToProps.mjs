@@ -1,4 +1,5 @@
 import { toString } from 'mdast-util-to-string';
+import { getValues } from './utils.mjs';
 
 const getTagName = (depth = 1) => `h${depth}`;
 
@@ -20,6 +21,21 @@ const lastHeading = (parent, newChild) => {
   return nodes[nodes.length - 1];
 };
 
+const cleanupHeading = (item) => {
+  const newChild = {
+    type: 'text',
+    value: '',
+    postion: {
+      start: {},
+      end: {},
+    },
+  };
+
+  const value = getValues(item).join(' ');
+
+  item.children = [{ ...newChild, value }];
+};
+
 const getHeaders = (tree) => {
   return tree.children.filter((branch) => {
     return branch.type === 'heading';
@@ -38,8 +54,10 @@ const remarkHeadersToProps = () => {
       },
     ];
 
-    headers.forEach((item, index) => {
+    headers.forEach((item) => {
       const parent = lastHeading(startArray[0], item);
+
+      cleanupHeading(item);
 
       // we dont want h1 tags in the aside menu
       if (item.depth === 1) {

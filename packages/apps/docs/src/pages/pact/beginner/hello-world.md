@@ -16,7 +16,7 @@ tags:
   ]
 ---
 
-# Hello World `test`
+# Hello World
 
 Welcome to this Hello World with Pact Tutorial!
 
