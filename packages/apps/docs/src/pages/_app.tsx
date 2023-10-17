@@ -60,8 +60,8 @@ export const MyApp = ({
   const { title, description, headerImage, authorInfo } = props.frontmatter;
   const defaultImagePath = '/assets/blog/2023/0_s-vXIU_stFVOsfim.png';
   const ogImage = headerImage
-    ? `${process.env.NEXT_PUBLIC_VERCEL_URL}${headerImage}`
-    : `${process.env.NEXT_PUBLIC_VERCEL_URL}${defaultImagePath}`;
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${headerImage}`
+    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${defaultImagePath}`;
 
   return (
     <>
