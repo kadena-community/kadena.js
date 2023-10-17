@@ -44,10 +44,6 @@ export const MyApp = ({
   const props = deserializePageProps(pageProps);
   const Layout = getLayout(props.frontmatter.layout);
 
-  console.log({
-    frontmatter: props.frontmatter,
-  });
-
   // check for a router query
   const router = useRouter();
   useEffect(() => {
@@ -72,12 +68,18 @@ export const MyApp = ({
         <meta name="title" content={title} />
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta
-          property="og:image"
-          content={ogImage}
-        />
+        <meta property="og:image" content={ogImage} />
+        {/* <!-- Twitter --> */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="" />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={ogImage} />
         {authorInfo && (
           <>
             <meta
@@ -87,19 +89,6 @@ export const MyApp = ({
             <meta name="author" content={authorInfo.name} />
           </>
         )}
-        {/* <!-- Open Graph / Facebook --> */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={headerImage} />
-        {/* <!-- Twitter --> */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="" />
-        <meta property="twitter:title" content={title} />
-        <meta property="twitter:description" content={description} />
-        <meta property="twitter:image" content={headerImage} />
-
         <link
           rel="icon"
           href="/assets/favicons/light/icon@32.png"
