@@ -14,10 +14,9 @@ import { MDNotification } from './MDNotification/MDNotification';
 import { OrderedList } from './OrderedList/OrderedList';
 import { Paragraph } from './Paragraph/Paragraph';
 import { Table } from './Table/Table';
+import { Tweet } from './Tweet/Tweet';
 import { UnorderedList } from './UnorderedList/UnorderedList';
 import { Youtube } from './Youtube/Youtube';
-
-import { Tweet } from 'react-tweet';
 
 type ExtendedIntrinsicElements = JSX.IntrinsicElements & {
   'kda-notification': React.DetailedHTMLProps<
