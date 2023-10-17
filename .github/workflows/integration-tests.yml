@@ -1,7 +1,7 @@
 name: Integration Tests
 on:
   workflow_run:
-    workflows: [ "Build" ]
+    workflows: [ "CI (build, lint, test)" ]
     types:
       - completed
   workflow_dispatch:

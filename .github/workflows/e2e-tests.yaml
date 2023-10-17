@@ -2,7 +2,7 @@ name: E2E tests
 
 on:
   workflow_run:
-    workflows: [ "Build" ]
+    workflows: [ "CI (build, lint, test)" ]
     types:
       - completed
   workflow_dispatch:
