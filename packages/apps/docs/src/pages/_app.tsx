@@ -44,6 +44,10 @@ export const MyApp = ({
   const props = deserializePageProps(pageProps);
   const Layout = getLayout(props.frontmatter.layout);
 
+  console.log({
+    frontmatter: props.frontmatter,
+  });
+
   // check for a router query
   const router = useRouter();
   useEffect(() => {
@@ -57,18 +61,32 @@ export const MyApp = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
+  const { title, description, headerImage, authorInfo } = props.frontmatter;
+  const defaultImagePath = '/assets/blog/2023/0_s-vXIU_stFVOsfim.png';
+  const ogImage = headerImage || defaultImagePath;
+
   return (
     <>
       <Head>
-        <title>{props.frontmatter.title}</title>
-        <meta name="title" content={props.frontmatter.title} />
-        <meta name="description" content={props.frontmatter.description} />
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
         <meta
           property="og:image"
-          content="/assets/blog/2023/0_s-vXIU_stFVOsfim.png"
+          content={ogImage}
         />
-
+        {authorInfo && (
+          <>
+            <meta
+              property="article:author"
+              content={`/authors/${authorInfo.id}`}
+            />
+            <meta name="author" content={authorInfo.name} />
+          </>
+        )}
         <link
           rel="icon"
           href="/assets/favicons/light/icon@32.png"
