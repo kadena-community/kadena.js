@@ -15,8 +15,10 @@ jobs:
     name: Changelog PR or Release
     if: ${{ github.repository_owner == 'kadena-community' }}
     runs-on: ubuntu-latest
-    # permissions:
-    #   id-token: write
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -58,7 +60,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
           # Needs r+w access for packages of both orgs to publish to npm
           NPM_TOKEN: ${{ secrets.RELEASE_ACTION_NPM_TOKEN }}
-          # NPM_CONFIG_PROVENANCE: true
+          NPM_CONFIG_PROVENANCE: true
 
       - name: Output (debug)
         if: steps.changesets.outputs.published == 'true'
