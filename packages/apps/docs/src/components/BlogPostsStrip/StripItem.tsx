@@ -31,6 +31,7 @@ export const StripItem: FC<IProps> = ({ post }) => {
                 src={post.headerImage}
                 fill
                 style={{ objectFit: 'cover' }}
+                sizes="100%"
                 alt={post.title}
               />
             ) : (

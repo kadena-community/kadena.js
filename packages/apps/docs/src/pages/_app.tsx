@@ -4,7 +4,7 @@ import { ModalProvider } from '@kadena/react-ui';
 import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { Analytics } from '@/components/Analytics/Analytics';
-import { ConsentModal } from '@/components/ConsentModal/ConsentModal';
+import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
@@ -64,6 +64,11 @@ export const MyApp = ({
         <meta name="title" content={props.frontmatter.title} />
         <meta name="description" content={props.frontmatter.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          property="og:image"
+          content="/assets/blog/2023/0_s-vXIU_stFVOsfim.png"
+        />
+
         <link
           rel="icon"
           href="/assets/favicons/light/icon@32.png"
@@ -126,10 +131,10 @@ export const MyApp = ({
           <ModalProvider>
             <MenuProvider>
               <Header menuItems={props.leftMenuTree} />
+              <CookieConsent />
               <Layout {...props}>
                 <Component {...props} />
               </Layout>
-              <ConsentModal />
             </MenuProvider>
           </ModalProvider>
         </ThemeProvider>

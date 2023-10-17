@@ -2,6 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { globby } from 'globby';
 
+const errors = [];
+const success = [];
+
 /**
  * This script will check that all MD or MDX files
  * that they have an H1 tag.
@@ -9,7 +12,7 @@ import { globby } from 'globby';
 
 const filesMissingHeaders = [];
 
-const ROOT = `${path.resolve()}/src/pages/docs`;
+const ROOT = `${path.resolve()}/src/pages`;
 const headerDepth1Regex = /^#\s+(.*?)\s*$/gm;
 
 //we dont want to have the headers that are inside a code block
@@ -19,7 +22,7 @@ const removeCodeBlocks = (content) => {
   return content.replace(codeBlockRegex, '');
 };
 
-const checkForHeaders = async () => {
+export const checkForHeaders = async () => {
   const paths = await globby([`${ROOT}/**/*.md`]);
 
   paths.forEach((item) => {
@@ -35,17 +38,15 @@ const checkForHeaders = async () => {
   });
 
   if (filesMissingHeaders.length) {
-    throw new Error(
-      `Found files with missing headers : ${JSON.stringify(
-        filesMissingHeaders,
-        null,
-        2,
-      )} \n
-      Found files: (${filesMissingHeaders.length})`,
-    );
-  } else {
-    console.log('No missing H1 headers');
-  }
-};
+    errors.push('Found files with missing headers');
+    filesMissingHeaders.map((item) => {
+      errors.push(`Missing h1 header in file: ${item}`);
+    });
 
-checkForHeaders();
+    errors.push(`Found files: (${filesMissingHeaders.length})`);
+  } else {
+    success.push('No missing H1 headers');
+  }
+
+  return { errors, success };
+};

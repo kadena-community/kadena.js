@@ -9,10 +9,6 @@ import className from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 
-export interface ICardChildComponentProps {
-  children: React.ReactNode;
-}
-
 export interface ICardProps {
   children: React.ReactNode;
   fullWidth?: boolean;

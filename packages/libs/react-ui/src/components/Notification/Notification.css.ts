@@ -18,14 +18,24 @@ export const containerClass = style([
   sprinkles({
     display: 'flex',
     alignItems: 'flex-start',
-    borderRadius: '$sm',
-    padding: '$md',
-    gap: '$md',
     borderStyle: 'solid',
-    borderWidth: '$sm',
+    justifyContent: 'center',
   }),
   {
     borderLeftWidth: vars.sizes.$1,
+  },
+]);
+
+export const containerWrapperClass = style([
+  sprinkles({
+    padding: '$md',
+    display: 'flex',
+    width: '100%',
+    alignItems: 'flex-start',
+    gap: '$md',
+  }),
+  {
+    maxWidth: 1440,
   },
 ]);
 
@@ -42,6 +52,26 @@ export const cardColorVariants = styleVariants(colorVariants, (color) => {
 export const expandVariants = styleVariants({
   true: [sprinkles({ width: '100%', maxWidth: '100%' })],
   false: [sprinkles({ width: 'max-content', maxWidth: 'maxContent' })],
+});
+
+export const displayVariants = styleVariants({
+  outlined: [sprinkles({ borderWidth: '$sm', borderRadius: '$sm' })],
+  standard: [sprinkles({ border: 'none', borderRadius: 0 })],
+});
+
+export const inlineVariants = styleVariants({
+  true: [
+    sprinkles({
+      display: 'flex',
+      alignItems: {
+        md: 'flex-start',
+      },
+      flexDirection: {
+        md: 'row',
+      },
+    }),
+  ],
+  false: [],
 });
 
 export const closeButtonClass = style([
@@ -67,9 +97,18 @@ export const contentClass = style([
   },
 ]);
 
+export const titleClass = style([
+  sprinkles({
+    color: 'inherit',
+    fontSize: '$base',
+    fontWeight: '$bold',
+  }),
+]);
+
 export const descriptionClass = style([
   sprinkles({
     color: '$neutral6',
+    fontSize: '$base',
   }),
 ]);
 
@@ -82,7 +121,7 @@ export const actionsContainerClass = style([
   }),
 ]);
 
-export const actionButtonClass = style([
+const actionButtonClass = style([
   sprinkles({
     display: 'flex',
     justifyContent: 'center',

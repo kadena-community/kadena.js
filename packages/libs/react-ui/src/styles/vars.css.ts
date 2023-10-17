@@ -39,6 +39,8 @@ export const vars = createGlobalTheme(':root', {
     $bold: '700',
   },
   radii: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    0: '0',
     $xs: '2px',
     $sm: '4px',
     $md: '6px',

@@ -5,7 +5,9 @@ import { ContentClass } from './stories.css';
 
 import { Grid } from '@components/Grid';
 import type { Meta, StoryObj } from '@storybook/react';
+import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
+import classNames from 'classnames';
 import React from 'react';
 
 const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
@@ -39,6 +41,7 @@ const meta: Meta<
       control: { type: 'object' },
       description: 'Defines the number of columns.',
       options: {
+        xs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         sm: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         md: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         lg: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -50,6 +53,7 @@ const meta: Meta<
       control: { type: 'object' },
       description: 'Defines the column span.',
       options: {
+        xs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         sm: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         md: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         lg: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -191,6 +195,7 @@ export const GridRoot: Story = {
   args: {
     gap: '$xl',
     columns: {
+      xs: 1,
       sm: 2,
       md: 4,
       lg: 6,
@@ -287,19 +292,30 @@ export const GridItem: Story = {
     gap: '$xl',
     columns: 12,
     columnSpan: {
-      sm: 2,
-      md: 4,
-      lg: 6,
-      xl: 10,
-      xxl: 12,
+      xs: 5,
+      sm: 10,
+      md: 6,
+      lg: 4,
+      xl: 2,
+      xxl: 1,
     },
   },
   render: ({ gap, columns, columnSpan }) => (
     <>
       <Grid.Root gap={gap} columns={columns}>
-        {Array.from(new Array(12)).map((empty, i) => (
-          <Grid.Item key={i} columnSpan={columnSpan}>
-            <div className={ContentClass}>{i}</div>
+        <Grid.Item columnSpan={columnSpan}>
+          <div
+            className={classNames(
+              ContentClass,
+              sprinkles({ bg: '$primaryAccent' }),
+            )}
+          >
+            dynamic
+          </div>
+        </Grid.Item>
+        {Array.from(new Array(12)).map((_, i) => (
+          <Grid.Item key={i} columnSpan={1}>
+            <div className={ContentClass}>1</div>
           </Grid.Item>
         ))}
       </Grid.Root>

@@ -26,7 +26,7 @@ export const Template: FC<IProps> = ({
   hideSideMenu = false,
 }) => {
   const { isMenuOpen, closeMenu } = useMenu();
-  const isMediumDevice = useMedia(breakpoints.md);
+  const isMediumDevice = useMedia(breakpoints.md, true);
   const [{ y }] = useWindowScroll();
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [initialTopSpacing, setInitialTopSpacing] = useState('');
@@ -41,11 +41,14 @@ export const Template: FC<IProps> = ({
     const paddingTop = getComputedStyle(
       mainContentRef.current as HTMLDivElement,
     )?.paddingTop;
+
     // When we get css from computed style it comes with `px` suffix
     const onlyValue = paddingTop.split('px')[0];
-    setInitialTopSpacing(onlyValue);
+
+    setInitialTopSpacing(`${parseInt(onlyValue, 10) + y}`);
 
     // Reset style value when we navigate to different pages
+
     return () => {
       setStyle({});
     };
@@ -54,7 +57,7 @@ export const Template: FC<IProps> = ({
 
   useEffect(() => {
     if (!mainContentRef.current || !enablePositioning) {
-      setStyle({});
+      setStyle({ paddingTop: 0 });
       return;
     }
 
@@ -62,7 +65,7 @@ export const Template: FC<IProps> = ({
     //  to maintain the scrolling effect
     const paddingValue = parseInt(initialTopSpacing) - (y || 0);
 
-    if (paddingValue <= 0) return;
+    if (paddingValue <= 0 || isNaN(paddingValue)) return;
     setStyle({
       paddingTop: paddingValue,
     });
@@ -71,6 +74,7 @@ export const Template: FC<IProps> = ({
   return (
     <>
       <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />
+
       <Menu
         dataCy="menu"
         isOpen={isMenuOpen}
@@ -81,6 +85,7 @@ export const Template: FC<IProps> = ({
       >
         <SideMenu closeMenu={closeMenu} menuItems={menuItems} />
       </Menu>
+
       {children}
       <Footer />
     </>

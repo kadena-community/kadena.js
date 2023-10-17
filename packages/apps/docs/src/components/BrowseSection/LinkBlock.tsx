@@ -1,6 +1,10 @@
-import { Stack, Text } from '@kadena/react-ui';
+import { Stack } from '@kadena/react-ui';
 
-import { listItemClass, listItemLinkClass } from './styles.css';
+import {
+  listItemClass,
+  listItemLinkClass,
+  listItemLinkTextClass,
+} from './styles.css';
 
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -19,9 +23,7 @@ export const LinkBlock: FC<ILinkBlock> = ({ title, subtitle, href }) => {
         <Stack direction="row" gap="$2">
           <Stack direction="column" gap={0}>
             <h4>{title}</h4>
-            <Text as="span" color="emphasize">
-              {subtitle}
-            </Text>
+            <span className={listItemLinkTextClass}>{subtitle}</span>
           </Stack>
         </Stack>
       </Link>

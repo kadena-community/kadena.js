@@ -1,19 +1,19 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
-import { style, styleVariants } from '@vanilla-extract/css';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
 export const blogitem = style([
   sprinkles({
-    paddingBottom: '$8',
-    marginTop: '$8',
-    borderRadius: '$md',
+    paddingY: '$10',
+    paddingX: '$10',
     backgroundColor: 'transparent',
   }),
   {
+    marginTop: `${vars.sizes.$8}!important`,
+    marginBottom: `${vars.sizes.$8}!important`,
     willChange: 'background-color',
     transition: 'background-color .2s ease',
 
-    borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
     selectors: {
       '&:hover': {
         backgroundColor: vars.colors.$neutral2,
@@ -43,6 +43,11 @@ export const footer = style([
     color: '$neutral3',
   }),
 ]);
+
+export const footerVariant = styleVariants({
+  default: { fontSize: 'smaller' },
+  large: { fontSize: 'inherit' },
+});
 
 export const metaItem = style([
   sprinkles({}),
@@ -76,12 +81,12 @@ export const figureClass = style([
   {
     width: `100%`,
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
         aspectRatio: '1',
       },
-    },
+    }),
   },
 ]);
 
@@ -89,20 +94,20 @@ export const figureVariant = styleVariants({
   default: {
     width: '100%',
     aspectRatio: '16 / 3',
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
       },
-    },
+    }),
   },
   large: {
     width: '100%',
     aspectRatio: '16 / 7',
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         width: `clamp(${vars.sizes.$48}, 20vw, ${vars.sizes.$64})`,
       },
-    },
+    }),
   },
 });
 
@@ -130,12 +135,33 @@ export const gridWrapperClass = style([
       "header"
     `,
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      md: {
         gridTemplateAreas: `
         "header image"
       `,
       },
-    },
+    }),
   },
 ]);
+
+export const gridBlogItemImage = style({});
+export const gridBlogItemContent = styleVariants({
+  default: {
+    marginTop: vars.sizes.$2,
+    marginBottom: vars.sizes.$4,
+  },
+  large: {},
+});
+
+export const footerTags = style({
+  display: 'block',
+  marginTop: vars.sizes.$3,
+});
+
+globalStyle(
+  `${gridBlogItemContent.default}  h4, ${gridBlogItemContent.default}  h4 span`,
+  {
+    fontSize: vars.sizes.$md,
+  },
+);

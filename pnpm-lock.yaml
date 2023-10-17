@@ -249,9 +249,6 @@ importers:
       recursive-copy:
         specifier: ^2.0.14
         version: 2.0.14
-      rimraf:
-        specifier: ~5.0.1
-        version: 5.0.1
       start-server-and-test:
         specifier: ~2.0.0
         version: 2.0.0
@@ -1473,6 +1470,12 @@ importers:
       focus-trap-react:
         specifier: ~10.2.1
         version: 10.2.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+      lodash.mapvalues:
+        specifier: ^4.6.0
+        version: 4.6.0
+      lodash.omit:
+        specifier: ^4.5.0
+        version: 4.5.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1510,9 +1513,6 @@ importers:
       '@storybook/addon-a11y':
         specifier: ^7.4.0
         version: 7.4.0(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-actions':
-        specifier: ^7.4.0
-        version: 7.4.0(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/addon-controls':
         specifier: ^7.4.0
         version: 7.4.0(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
@@ -1528,51 +1528,39 @@ importers:
       '@storybook/addon-links':
         specifier: ^7.4.0
         version: 7.4.0(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-mdx-gfm':
-        specifier: ^7.4.0
-        version: 7.4.0
       '@storybook/addons':
         specifier: ^7.4.0
         version: 7.4.1(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/blocks':
-        specifier: ^7.4.0
-        version: 7.4.0(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/csf':
         specifier: ~0.1.1
         version: 0.1.1
       '@storybook/docs-mdx':
         specifier: ~0.1.0
         version: 0.1.0
-      '@storybook/manager-api':
-        specifier: ^7.4.0
-        version: 7.4.0(react-dom@18.2.0)(react@18.2.0)
       '@storybook/react':
         specifier: ^7.4.0
         version: 7.4.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@storybook/react-webpack5':
         specifier: ^7.4.0
         version: 7.4.0(@babel/core@7.22.9)(@swc/core@1.3.80)(esbuild@0.18.20)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
-      '@storybook/testing-library':
-        specifier: ^0.2.0
-        version: 0.2.0
       '@storybook/theming':
         specifier: ^7.4.0
         version: 7.4.0(react-dom@18.2.0)(react@18.2.0)
-      '@testing-library/dom':
-        specifier: ~9.3.1
-        version: 9.3.1
       '@testing-library/jest-dom':
         specifier: ~5.17.0
         version: 5.17.0
       '@testing-library/react':
         specifier: ~14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@testing-library/user-event':
-        specifier: ~14.4.3
-        version: 14.4.3(@testing-library/dom@9.3.1)
       '@types/jest':
         specifier: ^29.5.3
         version: 29.5.3
+      '@types/lodash.mapvalues':
+        specifier: ^4.6.7
+        version: 4.6.7
+      '@types/lodash.omit':
+        specifier: ^4.5.7
+        version: 4.5.7
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
@@ -1600,6 +1588,9 @@ importers:
       copyfiles:
         specifier: 2.4.1
         version: 2.4.1
+      csstype:
+        specifier: ^3.1.2
+        version: 3.1.2
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -1615,9 +1606,6 @@ importers:
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@18.17.14)(ts-node@10.8.2)
-      jest-environment-jsdom:
-        specifier: ~29.6.1
-        version: 29.6.1
       jest-standard-reporter:
         specifier: ~2.0.0
         version: 2.0.0
@@ -1627,9 +1615,6 @@ importers:
       prettier:
         specifier: ~3.0.0
         version: 3.0.0
-      prettier-plugin-packagejson:
-        specifier: ^2.4.5
-        version: 2.4.5(prettier@3.0.0)
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
@@ -1645,9 +1630,6 @@ importers:
       tsc-alias:
         specifier: ~1.8.7
         version: 1.8.7
-      tsconfig-paths:
-        specifier: 4.2.0
-        version: 4.2.0
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -1739,6 +1721,42 @@ importers:
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+
+  packages/tools/e2e-tests:
+    devDependencies:
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@kadena-dev/heft-rig':
+        specifier: workspace:*
+        version: link:../heft-rig
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../lint-package
+      '@kadena-dev/markdown':
+        specifier: workspace:*
+        version: link:../remark-plugins
+      '@playwright/test':
+        specifier: ^1.39.0
+        version: 1.39.0
+      '@rushstack/eslint-config':
+        specifier: ~3.3.0
+        version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
+      '@types/node':
+        specifier: ^18.17.14
+        version: 18.17.14
+      eslint:
+        specifier: ^8.45.0
+        version: 8.45.0
+      eslint-plugin-playwright:
+        specifier: 0.16.0
+        version: 0.16.0(eslint@8.45.0)
+      prettier:
+        specifier: ~3.0.0
+        version: 3.0.0
+      prettier-plugin-packagejson:
+        specifier: ^2.4.5
+        version: 2.4.5(prettier@3.0.0)
 
   packages/tools/eslint-config:
     dependencies:
@@ -8345,6 +8363,14 @@ packages:
       picocolors: 1.0.0
       tslib: 2.6.2
 
+  /@playwright/test@1.39.0:
+    resolution: {integrity: sha512-3u1iFqgzl7zr004bGPYiN/5EZpRUSFddQBra8Rqll5N0/vfpqlP9I9EXqAoGacuAbX6c9Ulg/Cjqglp5VkK6UQ==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright: 1.39.0
+    dev: true
+
   /@pmmmwh/react-refresh-webpack-plugin@0.5.10(react-refresh@0.11.0)(webpack-dev-server@4.15.1)(webpack@5.88.2):
     resolution: {integrity: sha512-j0Ya0hCFZPd4x40qLzbhGsh9TMtdb+CJQiso+WxLOPNasohq9cc5SNUcwsZaRH6++Xh91Xkm/xHCkuIiIu0LUA==}
     engines: {node: '>= 10.13'}
@@ -11848,6 +11874,18 @@ packages:
       '@types/lodash': 4.14.196
     dev: true
 
+  /@types/lodash.mapvalues@4.6.7:
+    resolution: {integrity: sha512-yGTo9zD60Iw1Q+YBvx4Ad7RDj5rA6EpvYTpVPVsfe6pwHcwDcGChSqL1n2sPBMbCeHJ3R5kcaqpkdlrFe/y4Vg==}
+    dependencies:
+      '@types/lodash': 4.14.197
+    dev: true
+
+  /@types/lodash.omit@4.5.7:
+    resolution: {integrity: sha512-6q6cNg0tQ6oTWjSM+BcYMBhan54P/gLqBldG4AuXd3nKr0oeVekWNS4VrNEu3BhCSDXtGapi7zjhnna0s03KpA==}
+    dependencies:
+      '@types/lodash': 4.14.197
+    dev: true
+
   /@types/lodash@4.14.196:
     resolution: {integrity: sha512-22y3o88f4a94mKljsZcanlNWPzO0uBsBdzLAngf2tp533LzZcQzb6+eZPJ+vCTt+bqF2XnvT9gejTLsAcJAJyQ==}
     dev: true
@@ -12862,7 +12900,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(webpack-cli@4.9.2)
+      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -17457,6 +17495,18 @@ packages:
       object.fromentries: 2.0.6
       semver: 6.3.1
 
+  /eslint-plugin-playwright@0.16.0(eslint@8.45.0):
+    resolution: {integrity: sha512-DcHpF0SLbNeh9MT4pMzUGuUSnJ7q5MWbP8sSEFIMS6j7Ggnduq8ghNlfhURgty4c1YFny7Ge9xYTO1FSAoV2Vw==}
+    peerDependencies:
+      eslint: '>=7'
+      eslint-plugin-jest: '>=25'
+    peerDependenciesMeta:
+      eslint-plugin-jest:
+        optional: true
+    dependencies:
+      eslint: 8.45.0
+    dev: true
+
   /eslint-plugin-promise@6.0.1(eslint@8.45.0):
     resolution: {integrity: sha512-uM4Tgo5u3UWQiroOyDEsYcVMOo7re3zmno0IZmB5auxoaQNIceAbXEkSt8RNrKtaYehARHG06pYK6K1JhtP0Zw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -18657,6 +18707,14 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     deprecated: '"Please update to latest v2.3 or v2.2"'
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /fsevents@2.3.2:
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
@@ -22187,12 +22245,20 @@ packages:
     resolution: {integrity: sha512-N8XRTIMMqqDgSy4VLKPnJ/+hpGZN+PHQiJnSenYqPaVV/NCqEogTnAdZLQiGKhxX+JCs8waWq2t1XHWKOmlY8g==}
     dev: false
 
+  /lodash.mapvalues@4.6.0:
+    resolution: {integrity: sha512-JPFqXFeZQ7BfS00H58kClY7SPVeHertPE0lNuCyZ26/XlN8TvakYD7b9bGyNmXbT/D3BbtPAAmq90gPWqLkxlQ==}
+    dev: false
+
   /lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
     dev: false
 
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+
+  /lodash.omit@4.5.0:
+    resolution: {integrity: sha512-XeqSp49hNGmlkj2EJlfrQFIzQ6lXdNro9sddtQzcJY8QaoC2GO0DT7xaIokHeyM+mIT0mPMlPvkYzg2xCuHdZg==}
+    dev: false
 
   /lodash.once@4.1.1:
     resolution: {integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==}
@@ -23515,7 +23581,7 @@ packages:
       webpack: ^5.0.0
     dependencies:
       schema-utils: 4.2.0
-      webpack: 5.88.2(webpack-cli@4.9.2)
+      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
 
   /minimal-polyfills@2.2.3:
     resolution: {integrity: sha512-oxdmJ9cL+xV72h0xYxp4tP2d5/fTBpP45H8DIOn9pASuF8a3IYTf+25fMGDYGiWW+MFsuog6KD6nfmhZJQ+uUw==}
@@ -24941,6 +25007,22 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       find-up: 3.0.0
+
+  /playwright-core@1.39.0:
+    resolution: {integrity: sha512-+k4pdZgs1qiM+OUkSjx96YiKsXsmb59evFoqv8SKO067qBA+Z2s/dCzJij/ZhdQcs2zlTAgRKfeiiLm8PQ2qvw==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dev: true
+
+  /playwright@1.39.0:
+    resolution: {integrity: sha512-naE5QT11uC/Oiq0BwZ50gDmy8c8WLPRTEWuSSFVG2egBka/1qMoSqYQcROMT9zLwJ86oPofcTH2jBY/5wWOgIw==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright-core: 1.39.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
 
   /plimit-lit@1.5.0:
     resolution: {integrity: sha512-Eb/MqCb1Iv/ok4m1FqIXqvUKPISufcjZ605hl3KM/n8GaX8zfhtgdLwZU3vKjuHGh2O9Rjog/bHTq8ofIShdng==}
@@ -29395,15 +29477,6 @@ packages:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  /tsconfig-paths@4.2.0:
-    resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
-    engines: {node: '>=6'}
-    dependencies:
-      json5: 2.2.3
-      minimist: 1.2.8
-      strip-bom: 3.0.0
-    dev: true
-
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
 
@@ -29696,6 +29769,7 @@ packages:
     resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
     engines: {node: '>=0.8.0'}
     hasBin: true
+    requiresBuild: true
 
   /uint8arrays@3.1.1:
     resolution: {integrity: sha512-+QJa8QRnbdXVpHYjLoTpJIdCTiw9Ir62nocClWuXIq2JIh4Uta0cQsTSpFL678p2CN8B+XSApwcU+pQEqVpKWg==}

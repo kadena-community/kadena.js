@@ -1,0 +1,56 @@
+name: E2E tests
+
+on: [pull_request]
+
+jobs:
+  e2e-tools:
+    name: E2E - Tools
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          show-progress: false
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install browsers
+        run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
+        working-directory: packages/tools/e2e-tests
+
+      - name: Build Tools dApp
+        run: pnpm --filter @kadena/tools...  build
+        env:
+          # Dummy values for faucet transactions.
+          FAUCET_PUBLIC_KEY: 782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e
+          FAUCET_PRIVATE_KEY: 93fd78bd1e79a3b593d4732b76050b418aeefa5e4e6ea80f351b4c3a5b0dd19f
+
+      - name: Run Playwright tests
+        run: pnpm run test:e2e -- --project=tools-app
+        env:
+          CI: true
+          TESTOBJECT: '@kadena/tools'
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: packages/tools/e2e-tests/playwright-report/
+          retention-days: 30

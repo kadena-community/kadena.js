@@ -38,7 +38,7 @@ const getFrontMatter = (node) => {
 const getLatestBlogPostsOfAuthor = (author) => {
   const data = getData();
 
-  const STARTBRANCH = '/docs/blogchain';
+  const STARTBRANCH = '/blogchain';
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);
 

@@ -218,6 +218,7 @@ const CrossChainTransferTracker: FC = () => {
             }}
             title="Warning"
             icon={'AlertBox'}
+            variant="outlined"
           >
             {txError}
             <Notification.Actions>

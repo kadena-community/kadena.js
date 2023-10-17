@@ -1,4 +1,4 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 
 import {
   $$asideMenuWidthLGDefault,
@@ -38,29 +38,29 @@ export const asidebackgroundClass = style([
         transition: 'transform 1s ease, opacity 2s  ease-out',
         transitionDelay: '600ms',
 
-        '@media': {
-          [`screen and ${breakpoints.xxl}`]: {
+        ...responsiveStyle({
+          xxl: {
             backgroundPositionX: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2 ) - (${$$asideMenuWidthLGDefault} +  ${$$shadowWidth}))`,
           },
-        },
+        }),
       },
       '&::after': {
-        '@media': {
-          [`screen and ${breakpoints.md}`]: {
+        ...responsiveStyle({
+          lg: {
             left: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${vars.sizes.$4}))`,
           },
-          [`screen and ${breakpoints.xxl}`]: {
+          xxl: {
             left: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2) - ${$$asideMenuWidthLGDefault})`,
           },
-        },
+        }),
       },
     },
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      lg: {
         display: 'block',
       },
-    },
+    }),
   },
 ]);
 
@@ -73,16 +73,16 @@ export const loadedClass = style({
   },
 });
 
-export const pageGridClass = style({
-  '@media': {
-    [`screen and ${breakpoints.md}`]: {
+export const pageGridClass = style(
+  responsiveStyle({
+    lg: {
       gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
     },
-    [`screen and ${breakpoints.xxl}`]: {
+    xxl: {
       gridTemplateColumns: `auto ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthLGDefault})) ${$$asideMenuWidthLGDefault} auto`,
     },
-  },
-});
+  }),
+);
 
 export const stickyAsideWrapperClass = style([
   sprinkles({
@@ -98,8 +98,13 @@ export const stickyAsideClass = style([
     paddingTop: '$10',
   }),
   {
-    overflowY: 'scroll',
+    overflowY: 'auto',
     height: `calc(100vh - ${vars.sizes.$20})`,
+    selectors: {
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+    },
   },
 ]);
 
@@ -119,11 +124,11 @@ export const asideClass = style([
     zIndex: $$sideMenu,
     transform: 'translateX(100vw)',
 
-    '@media': {
-      [`screen and ${breakpoints.md}`]: {
+    ...responsiveStyle({
+      lg: {
         display: 'block',
         transform: 'translateX(0)',
       },
-    },
+    }),
   },
 ]);

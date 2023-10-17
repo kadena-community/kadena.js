@@ -1,8 +1,9 @@
-import { Tabs } from '@kadena/react-ui';
+import { Heading, Tabs } from '@kadena/react-ui';
 
-import type { IModule } from '.';
+import type { IChainModule } from './types';
 
 import dynamic from 'next/dynamic';
+import useTranslation from 'next-translate/useTranslation';
 import React from 'react';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
@@ -10,22 +11,30 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
 });
 
 export interface IEditorProps {
-  openedModules: Array<IModule & { code: string }>;
+  openedModules: IChainModule[];
 }
 
-const moduleToTabId = ({ moduleName, chainId }: IModule): string => {
+const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
   return `${moduleName}-${chainId}`;
 };
 
 const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
+  const { t } = useTranslation('common');
+
   if (!openedModules.length) {
-    return <div>Nothing loaded</div>;
+    return (
+      <section>
+        <Heading variant="h4">{t('No code to be shown yet')}</Heading>
+        <p>
+          {t(
+            'Click on a module from the left panel to see its code in this panel.',
+          )}
+        </p>
+      </section>
+    );
   }
   return (
-    <Tabs.Root
-      initialTab={moduleToTabId(openedModules[0])}
-      currentTab={moduleToTabId(openedModules[0])}
-    >
+    <Tabs.Root initialTab={moduleToTabId(openedModules[0])}>
       {openedModules.map(({ moduleName, chainId }) => {
         return (
           <Tabs.Tab
