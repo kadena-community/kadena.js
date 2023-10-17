@@ -67,6 +67,7 @@ export const MyApp = ({
         <title>{title}</title>
         <meta name="title" content={title} />
         <meta name="description" content={description} />
+        <meta content="text/html; charset=UTF-8" name="Content-Type" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* <!-- Open Graph / Facebook --> */}
         <meta property="og:type" content="website" />
@@ -79,7 +80,7 @@ export const MyApp = ({
         <meta property="twitter:url" content="" />
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
-        <meta property="twitter:image" content={ogImage} />
+        <meta name="twitter:image" content={`${ogImage}?4362984378`} />
         {authorInfo && (
           <>
             <meta
