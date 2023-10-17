@@ -40,3 +40,45 @@ jobs:
 
       - name: Build, lint, test all packages
         run: pnpm turbo lint build test
+
+  integration-tests:
+    needs: build
+    name: integration-tests
+    runs-on: ubuntu-latest
+
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+    services:
+      devnet:
+        image: kadena/devnet
+        options: >-
+          --memory 7g
+          --cpus 2
+          --health-cmd "curl --verbose --fail http://localhost:8080/info || exit 1"
+        ports:
+          - 8080:8080
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build client and dependencies
+        run: pnpm run build
+
+      - name: run integration tests
+        run: pnpm run test:integration
