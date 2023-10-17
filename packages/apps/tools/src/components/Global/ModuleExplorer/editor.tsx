@@ -1,12 +1,4 @@
-import {
-  Grid,
-  Heading,
-  InputWrapper,
-  Select,
-  SelectField,
-  Stack,
-  Tabs,
-} from '@kadena/react-ui';
+import { Grid, Heading, SelectField, Stack, Tabs } from '@kadena/react-ui';
 
 import type { IChainModule } from './types';
 
@@ -56,39 +48,36 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
     <Stack direction={'column'}>
       <Grid.Root columns={3}>
         <Grid.Item>
-          <InputWrapper
+          <SelectField
             label="Keyboard handler"
-            htmlFor="editor-keyboard-select"
-          >
-            <Select
-              id="editor-keyboard-select"
-              ariaLabel={t('Select which keyboard to use for the code editor')}
-              value={keyboardHandler}
-              onChange={(e) => {
+            selectProps={{
+              id: 'editor-keyboard-select',
+              ariaLabel: t('Select which keyboard to use for the code editor'),
+              onChange: (e) => {
                 setKeyboardHandler(e.target.value as KeyboardHandler);
-              }}
-            >
-              {keyboards.map((keyboard) => (
-                <option key={`editor-keyboard-${keyboard}`}>{keyboard}</option>
-              ))}
-            </Select>
-          </InputWrapper>
+              },
+            }}
+          >
+            {keyboards.map((keyboard) => (
+              <option key={`editor-keyboard-${keyboard}`}>{keyboard}</option>
+            ))}
+          </SelectField>
         </Grid.Item>
         <Grid.Item>
-          <InputWrapper label="Theme" htmlFor="editor-theme-select">
-            <Select
-              id="editor-theme-select"
-              ariaLabel={t('Select which theme to use for the code editor')}
-              value={theme}
-              onChange={(e) => {
+          <SelectField
+            label="Theme"
+            selectProps={{
+              id: 'editor-theme-select',
+              ariaLabel: t('Select which theme to use for the code editor'),
+              onChange: (e) => {
                 setTheme(e.target.value as Theme);
-              }}
-            >
-              {themes.map((theme) => (
-                <option key={`editor-theme-${theme}`}>{theme}</option>
-              ))}
-            </Select>
-          </InputWrapper>
+              },
+            }}
+          >
+            {themes.map((theme) => (
+              <option key={`editor-theme-${theme}`}>{theme}</option>
+            ))}
+          </SelectField>
         </Grid.Item>
         <Grid.Item>
           <SelectField
