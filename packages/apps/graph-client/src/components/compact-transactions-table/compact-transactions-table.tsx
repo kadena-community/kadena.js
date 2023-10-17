@@ -61,12 +61,14 @@ export const CompactTransactionsTable = (
                 <Table.Td>{edge?.node.height}</Table.Td>
                 <Table.Td>
                   <Link href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}>
-                    {truncate(edge?.node.requestKey)}
+                    <span title={edge?.node.requestKey}>
+                      {truncate(edge?.node.requestKey)}
+                    </span>
                   </Link>
                 </Table.Td>
                 <Table.Td>
                   {edge?.node.code ? (
-                    <span title={edge?.node.code as string}>
+                    <span title={edge?.node.code}>
                       {truncate(edge?.node.code)}
                     </span>
                   ) : (

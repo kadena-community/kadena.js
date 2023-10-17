@@ -57,18 +57,41 @@ export const MyApp = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
+  const { title, description, headerImage, authorInfo } = props.frontmatter;
+  const defaultImagePath = '/assets/blog/2023/0_s-vXIU_stFVOsfim.png';
+  const ogImage = headerImage
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${headerImage}`
+    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${defaultImagePath}`;
+
   return (
     <>
       <Head>
-        <title>{props.frontmatter.title}</title>
-        <meta name="title" content={props.frontmatter.title} />
-        <meta name="description" content={props.frontmatter.description} />
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+        <meta content="text/html; charset=UTF-8" name="Content-Type" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          property="og:image"
-          content="/assets/blog/2023/0_s-vXIU_stFVOsfim.png"
-        />
-
+        {/* <!-- Twitter --> */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={ogImage} />
+        {authorInfo && (
+          <>
+            <meta
+              property="article:author"
+              content={`/authors/${authorInfo.id}`}
+            />
+            <meta name="author" content={authorInfo.name} />
+          </>
+        )}
         <link
           rel="icon"
           href="/assets/favicons/light/icon@32.png"
