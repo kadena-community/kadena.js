@@ -2,7 +2,7 @@ import type {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
-import { createClient, isSignedTransaction, Pact } from '@kadena/client';
+import { createClient, isSignedTransaction, Pact, readKeyset } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 
@@ -39,7 +39,7 @@ export const fundCreateNewAccount = async (
     .execution(
       Pact.modules['user.coin-faucet']['create-and-request-coin'](
         account,
-        () => `(read-keyset '${KEYSET_NAME})`,
+        readKeyset(KEYSET_NAME),
         new PactNumber(amount).toPactDecimal(),
       ),
     )
@@ -51,6 +51,12 @@ export const fundCreateNewAccount = async (
         'coin.TRANSFER',
         SENDER_ACCOUNT,
         account,
+        new PactNumber(amount).toPactDecimal(),
+      ),
+      withCap(
+        'coin.TRANSFER',
+        SENDER_ACCOUNT,
+        `create-principal (read-keyset '${KEYSET_NAME})`,
         new PactNumber(amount).toPactDecimal(),
       ),
     ])
