@@ -20,7 +20,7 @@ export class FaucetPage {
   ): Promise<void> {
     await this._page.getByRole('link', { name: ' this page' }).click();
     await this._card.setValueForTextbox(
-      'The account name to fund coins to',
+      'Account',
       account,
     );
     await this._card.setValueForCombobox('Select Chain ID', chainId);
