@@ -121,7 +121,7 @@ jobs:
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
 
       - name: Build
-        run: pnpm turbo build --filter ${{ matrix.package }} --force #We need to force a rebuild with environment variables. Searching for a better solution.
+        run: pnpm turbo build --filter ${{ matrix.package }} --force --no-cache #Force rebuild, do not cache result. We need this rebuild specifically for E2E tests
         env:
           # Dummy values for faucet transactions.
           FAUCET_PUBLIC_KEY: 782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e
