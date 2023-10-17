@@ -5,6 +5,7 @@ import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.mjs';
 import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.mjs';
 import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.mjs';
 import remarkAdmonitions from './src/scripts/remarkAdmonitions.mjs';
+import remarkFixAbsoluteLinks from './src/scripts/remarkFixAbsoluteLinks.mjs';
 import remarkCheckForCodeTitle from './src/scripts/remarkCheckForCodeTitle.mjs';
 import remarkYoutube from './src/scripts/remarkYoutube.mjs';
 import remarkFigureOutOfParagraph from './src/scripts/remarkFigureOutOfParagraph.mjs';
@@ -77,6 +78,7 @@ const withMDX = mdx({
       remarkSideMenuToProps,
       remarkPropsToStaticRender,
       remarkAdmonitions,
+      remarkFixAbsoluteLinks,
       remarkYoutube,
       remarkTwitter,
       remarkCheckForCodeTitle,
