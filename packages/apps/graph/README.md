@@ -14,38 +14,29 @@ uses chainweb-data as the datasource.
 
 ## Kadena GraphQL
 
-A GraphQL endpoint that interacts with chainweb-data.
+A GraphQL endpoint that interacts with chainweb-data and chainweb-node.
 
 # Getting started
 
-First, install dependencies and build up to and including @kadena/graph
+First, install dependencies and build up to and including `@kadena/graph`.
 
 ```sh
 pnpm install --filter @kadena/graph...
 pnpm build --filter @kadena/graph...
 ```
 
-> **NOTE** you need Docker (or an alternative, e.g.
+> **NOTE:** you need Docker (or an alternative, e.g.
 > [podman](https://podman.io/docs/installation)) to be installed
 
-You can run this project without running the devnet (that includes
-chainweb-data) by using the embedded postgres server.
-
-1. copy the `.env.example` to `.env`
+1. Copy the `.env.example` to `.env`
 
    ```sh
    cp .env.example .env
    ```
 
-2. choose between **embedded postgres** or **devnet**
+2. Start devnet:
 
-   1. **embedded postgres**: If you want to use the embedded database then set
-      `USE_EMBEDDED_POSTGRES` to true and uncomment the `DATABASE_URL` from the
-      embedded database section in the `.env` file. Skip step 3.
-   2. **devnet**: if you want to use devnet, with chainweb-node, -miner and
-      -data then set `USE_EMBEDDED_POSTGRES` to false in the `.env` file.
-
-3. In case you choose to run with devnet, start devnet:
+   > **NOTE:** This project has a built-in command to create and start devnet. For the full guide visit the quickstart page on the documentation website [here](https://docs.kadena.io/build/quickstart).
 
    ```sh
    pnpm run devnet
@@ -57,14 +48,14 @@ chainweb-data) by using the embedded postgres server.
    You can run `pnpm run devnet:update` to update the devnet image.
 
    In case you always want to get the latest image, you can force docker to pull
-   the image by adding `--pull always` after `docker run` in the `devnet`
+   the image by adding `--pull=always` after `docker run` in the `devnet`
    script.
 
-   If something goes wrong, you can delete the mounted directory, and try to
+   If something goes wrong, you can delete the volume, and try to
    start again:
 
    ```sh
-   rm -rf ~/.devnet/l1
+   docker volume rm kadena_devnet
    ```
 
    > **Windows alternative**  
@@ -72,19 +63,19 @@ chainweb-data) by using the embedded postgres server.
    > get an error try not mounting the volume by removing the following part:
    > `-v <arg>`
 
-4. Start the project
+3. Start the project
 
    ```sh
    pnpm run start
    ```
 
-5. Go to localhost:4000/graphql and execute this query to see if everything
+4. Go to localhost:4000/graphql and execute this query to see if everything
    works
 
    ```gql
    subscription {
      newBlocks {
-       chainid
+       chainId
        hash
        height
      }
@@ -104,15 +95,6 @@ You need to have `psql` installed
 ```sh
 psql -h localhost -U devnet
 ```
-
-### Fund an account using the faucet
-
-```sh
-docker run --rm -it --add-host=devnet:host-gateway enof/devnet:l2-latest --task=fund
-```
-
-> **Windows alternative**  
-> replace `$(pwd)` with `%cd%`
 
 ### Fund an account on the devnet
 
