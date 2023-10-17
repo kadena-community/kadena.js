@@ -9,6 +9,8 @@ import 'ace-builds/src-noconflict/mode-lisp';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-one_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
+import 'ace-builds/src-noconflict/ext-searchbox';
+
 import type { KeyboardHandler, Mode, Theme } from './helper';
 import { containerStyle } from './styles.css';
 
