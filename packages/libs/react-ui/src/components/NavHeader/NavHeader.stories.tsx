@@ -29,9 +29,7 @@ const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
 
 type StoryProps = {
   linksCount: number;
-  navHeaderActiveLink: number;
-  useCustomNavigation: boolean;
-  customNavigation: INavHeaderLinkProps[];
+  navHeaderActiveLink?: string;
 } & INavHeaderRootProps;
 
 const meta: Meta<StoryProps> = {
@@ -59,30 +57,17 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: logoVariants[0] },
       },
     },
-    useCustomNavigation: {
-      control: { type: 'boolean' },
-      description: 'Add your own navigation items instead of the sample ones?',
-    },
     linksCount: {
       control: { type: 'range', min: 1, max: sampleNavItems.length, step: 1 },
       description: 'Adjust sample navigation items count',
-      if: { arg: 'useCustomNavigation', neq: true },
     },
     navHeaderActiveLink: {
-      control: { disable: true },
-      description:
-        'Which link should be active at start? Set as NavHeader.Navigation prop to change from default',
+      control: { type: 'select' },
+      description: 'Allows users to control the active href',
+      options: Object.values(sampleNavItems).map((item) => item.children),
       table: {
-        defaultValue: { summary: 0 },
+        defaultValue: { summary: undefined },
       },
-    },
-    customNavigation: {
-      defaultValue: [],
-      description: 'Custom navigation items',
-      control: {
-        type: 'array',
-      },
-      if: { arg: 'useCustomNavigation', eq: true },
     },
   },
 };
@@ -94,23 +79,20 @@ export const Dynamic: IStory = {
   args: {
     brand: logoVariants[0],
     linksCount: 3,
-    navHeaderActiveLink: 0,
-    customNavigation: sampleNavItems,
+    navHeaderActiveLink: undefined,
   },
-  render: ({
-    brand,
-    useCustomNavigation,
-    customNavigation,
-    linksCount,
-    navHeaderActiveLink,
-  }) => {
-    const navItems = useCustomNavigation ? customNavigation : sampleNavItems;
+  render: ({ brand, linksCount, navHeaderActiveLink }) => {
+    const activeHref = navHeaderActiveLink
+      ? Object.values(sampleNavItems).find(
+          (item) => item.children === navHeaderActiveLink,
+        )?.href
+      : undefined;
     const [value, setValue] = useState<string>(sampleNetworkItems[0]);
 
     return (
       <NavHeader.Root brand={brand}>
-        <NavHeader.Navigation activeLink={navHeaderActiveLink}>
-          {navItems.slice(0, linksCount).map((item, index) => (
+        <NavHeader.Navigation activeHref={activeHref}>
+          {sampleNavItems.slice(0, linksCount).map((item, index) => (
             <NavHeader.Link
               key={index}
               href={item.href}
