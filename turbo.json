@@ -13,6 +13,7 @@
     },
     "test:integration": {
       "dependsOn": ["build"],
+      "cache": false,
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
       "outputMode": "new-only"
     },

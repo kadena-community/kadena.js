@@ -1,12 +1,16 @@
 name: E2E tests
 
-on: [pull_request]
+on:
+  workflow_run:
+    workflows: [ "Build" ]
+    types:
+      - completed
+  workflow_dispatch:
 
 jobs:
   e2e-tools:
     name: E2E - Tools
     runs-on: ubuntu-latest
-    timeout-minutes: 10
 
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -18,12 +22,14 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.base_ref }}
+
       - uses: pnpm/action-setup@v2
         with:
           version: 8
 
-      - name: Setup node
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'pnpm'

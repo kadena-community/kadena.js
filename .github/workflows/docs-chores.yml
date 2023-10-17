@@ -8,26 +8,34 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 2
           show-progress: false
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.base_ref }}
+
+      - uses: pnpm/action-setup@v2
         with:
-          version: 7
-          run_install: false
+          version: 8
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
+          cache: 'pnpm'
 
-      - name: pnpm install
+      - name: Install dependencies
         run: pnpm install
 
       - name: pnpm build
-        run: pnpm --filter @kadena/docs build
+        run: pnpm run build --filter @kadena/docs
 
       - name: Create page tree JSON
         run: pnpm run build:scripts

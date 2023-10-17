@@ -16,13 +16,14 @@ jobs:
         with:
           show-progress: false
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
       - uses: pnpm/action-setup@v2
         with:
           version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
 
       - name: pnpm install
         run: pnpm install

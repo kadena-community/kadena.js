@@ -10,6 +10,11 @@ jobs:
   chromatic:
     name: Visual Regression Tests
     runs-on: ubuntu-latest
+
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,14 +27,14 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build @kadena/react-ui
-        run: pnpm build --filter @kadena/react-ui
+        run: pnpm run build --filter @kadena/react-ui
 
       - name: Publish Storybook
         uses: chromaui/action@v1
