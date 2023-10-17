@@ -53,6 +53,9 @@ const transferCreateCommand = ({
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 
+/**
+ * @alpha
+ */
 export const transferCreate = (
   inputs: ICreateTransferInput,
   config: IClientConfig,

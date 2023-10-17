@@ -16,7 +16,3 @@ export const asyncPipe: IAsyncPipe = (
       Promise.resolve(first(...value)),
     );
   }) as Any;
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const returnInput = <T>(_: Any, input: [T]): T =>
-  Array.isArray(input) ? input[0] : input;

@@ -40,5 +40,8 @@ const transferCommand = ({
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 
+/**
+ * @alpha
+ */
 export const transfer = (inputs: ITransferInput, config: IClientConfig) =>
   submitClient(config)(transferCommand(inputs));

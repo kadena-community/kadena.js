@@ -1090,12 +1090,18 @@ importers:
 
   packages/libs/client-utils:
     dependencies:
+      '@kadena/chainweb-node-client':
+        specifier: workspace:*
+        version: link:../chainweb-node-client
       '@kadena/client':
         specifier: workspace:^
         version: link:../client
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../cryptography-utils
+      '@kadena/types':
+        specifier: workspace:^
+        version: link:../types
       debug:
         specifier: ~4.3.4
         version: 4.3.4(supports-color@5.5.0)
@@ -1118,9 +1124,6 @@ importers:
       '@kadena/pactjs-cli':
         specifier: workspace:^
         version: link:../../tools/pactjs-cli
-      '@kadena/types':
-        specifier: workspace:^
-        version: link:../types
       '@microsoft/api-extractor':
         specifier: ^7.37.0
         version: 7.37.0(@types/node@16.18.48)

@@ -61,6 +61,9 @@ const createCrossChainCommand = ({
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 
+/**
+ * @alpha
+ */
 export const transferCrossChain = (
   inputs: ICrossChainInput,
   config: IClientConfig,

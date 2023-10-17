@@ -10,9 +10,24 @@ import { submitAndListen } from './submit-and-listen';
 
 import { pipe } from 'ramda';
 
+/**
+ * @alpha
+ */
 export const submitClient = pipe(submitAndListen, withEmitter);
+
+/**
+ * @alpha
+ */
 export const preflightClient = pipe(preflight, withEmitter);
+
+/**
+ * @alpha
+ */
 export const dirtyReadClient = pipe(dirtyRead, withEmitter);
+
+/**
+ * @alpha
+ */
 export const crossChainClient = pipe(
   crossChain,
   (cb) => (targetChainId: ChainId, targetChainGasPayer: IAccount) =>

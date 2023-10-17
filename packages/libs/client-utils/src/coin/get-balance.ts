@@ -7,6 +7,9 @@ import type { IClientConfig } from '../core/utils/helpers';
 
 import { pipe } from 'ramda';
 
+/**
+ * @alpha
+ */
 export const getBalance = (
   account: string,
   networkId: string,

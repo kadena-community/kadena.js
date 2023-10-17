@@ -18,3 +18,7 @@ export type Tail<T extends Any[]> = T extends [infer _]
   T extends [infer _, ...infer TL]
   ? TL
   : never;
+
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};

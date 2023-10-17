@@ -39,5 +39,8 @@ const rotateCommand = ({
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
 
+/**
+ * @alpha
+ */
 export const rotate = (inputs: IRotateCommandInput, config: IClientConfig) =>
   submitClient(config)(rotateCommand(inputs));

@@ -35,7 +35,9 @@ const createAccountCommand = ({
     addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
-
+/**
+ * @alpha
+ */
 export const createAccount = (
   inputs: ICreateAccountCommandInput,
   config: IClientConfig,

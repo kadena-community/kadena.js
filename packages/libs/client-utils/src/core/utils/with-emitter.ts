@@ -44,7 +44,7 @@ type EventListenerType<
       Acc
     >;
 
-export interface IRT<
+export interface IEmitterWrapper<
   T extends Array<{ event: string; data: Any }>,
   Extra extends Array<{ event: string; data: Any }>,
   ExecReturnType,
@@ -59,7 +59,11 @@ export type WithEmitter<
   fn: T,
 ) => (
   ...args: Parameters<ReturnType<T>>
-) => IRT<ReturnType<T>['_event_type'], Extra, ReturnType<ReturnType<T>>>;
+) => IEmitterWrapper<
+  ReturnType<T>['_event_type'],
+  Extra,
+  ReturnType<ReturnType<T>>
+>;
 
 export const withEmitter: WithEmitter =
   (fn) =>
