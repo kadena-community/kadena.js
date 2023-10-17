@@ -6,6 +6,7 @@ import { CompactTransfersTable } from '../../../../../components/compact-transfe
 import Loader from '../../../../../components/loader/loader';
 import { mainStyle } from '../../../../../components/main/styles.css';
 import { Text } from '../../../../../components/text';
+import routes from '../../../../../constants/routes';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -122,9 +123,11 @@ const ChainAccount: React.FC = () => {
                 </Grid.Item>
                 <Grid.Item>
                   <CompactTransactionsTable
-                    moduleName={router.query.module as string}
-                    accountName={router.query.account as string}
-                    chainId={router.query.chain as string}
+                    viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
+                      router.query.module as string
+                    }/${router.query.account as string}?chain=${
+                      router.query.chain as string
+                    }`}
                     transactions={chainAccountQuery.chainAccount.transactions}
                   />
                 </Grid.Item>

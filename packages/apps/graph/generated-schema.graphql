@@ -11,10 +11,13 @@ type Block implements Node {
   hash: ID!
   height: BigInt!
   id: ID!
+  minerKeys: [Minerkey!]
   parent: Block
   parentHash: String
+  payload: String!
   powHash: String!
-  transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
+  predicate: String!
+  transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
 }
 
 type BlockTransactionsConnection {
@@ -85,6 +88,13 @@ type Guard {
   predicate: String!
 }
 
+type Minerkey implements Node {
+  block: Block!
+  blockHash: String!
+  id: ID!
+  key: String!
+}
+
 type ModuleAccount {
   accountName: String!
   chainAccounts: [ChainModuleAccount!]!
@@ -131,10 +141,12 @@ scalar PositiveFloat
 
 type Query {
   account(accountName: String!, moduleName: String!): ModuleAccount!
+  block(hash: String!): Block!
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
   lastBlockHeight: BigInt
+  maximumConfirmationDepth: Int!
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
   transactions(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransactionsConnection!

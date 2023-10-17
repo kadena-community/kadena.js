@@ -1,44 +1,13 @@
 import type { DocumentNode } from '@apollo/client';
 import { gql } from '@apollo/client';
 
-export const CORE_BLOCK_FIELDS: DocumentNode = gql`
-  fragment CoreBlockFields on Block {
-    id
-    chainId
-    creationTime
-    epoch
-    # flags
-    hash
-    height
-    # miner
-    # nonce
-    # parent
-    # payload
-    powHash
-    # predicate
-    # target
-    # weight
-    # transactions {
-    #   totalCount
-    #   edges {
-    #     node {
-    #       id
-    #       reqKey
-    #     }
-    #   }
-    # }
-    confirmationDepth
-    parentHash
-  }
-`;
-
 export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
   fragment CoreTransactionFields on Transaction {
     id
     # badResult
     # block
     chainId
-    # code
+    code
     # continuation
     creationTime
     # data
@@ -62,6 +31,46 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
   }
 `;
 
+export const CORE_BLOCK_FIELDS: DocumentNode = gql`
+  fragment CoreBlockFields on Block {
+    id
+    chainId
+    creationTime
+    epoch
+    # flags
+    hash
+    height
+    # miner
+    # nonce
+    # parent
+    payload
+    powHash
+    predicate
+    # target
+    # weight
+    transactions {
+      totalCount
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          chainId
+          creationTime
+          height
+          requestKey
+          code
+        }
+      }
+    }
+    confirmationDepth
+    parentHash
+  }
+`;
+
 export const CORE_EVENT_FIELDS: DocumentNode = gql`
   fragment CoreEventFields on Event {
     id
@@ -78,9 +87,76 @@ export const CORE_EVENT_FIELDS: DocumentNode = gql`
   }
 `;
 
+export const CORE_MINERKEY_FIELDS: DocumentNode = gql`
+  fragment CoreMinerKeyFields on Minerkey {
+    id
+    key
+    blockHash
+  }
+`;
+
+export const getBlockFromHash: DocumentNode = gql`
+  ${CORE_BLOCK_FIELDS}
+
+  query getBlockFromHash(
+    $hash: String!
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+  ) {
+    block(hash: $hash) {
+      id
+      chainId
+      creationTime
+      epoch
+      # flags
+      hash
+      height
+      # miner
+      # nonce
+      # parent
+      payload
+      powHash
+      predicate
+      # target
+      # weight
+      transactions(after: $after, before: $before, first: $first, last: $last) {
+        totalCount
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+        edges {
+          node {
+            chainId
+            creationTime
+            height
+            requestKey
+            code
+          }
+        }
+      }
+      confirmationDepth
+      parentHash
+      minerKeys {
+        ...CoreMinerKeyFields
+      }
+    }
+  }
+`;
+
 export const getLastBlock: DocumentNode = gql`
   query getLastBlock {
     lastBlockHeight
+  }
+`;
+
+export const getMaximumCalculatedConfirmationDepth: DocumentNode = gql`
+  query getMaximumConfirmationDepth {
+    maximumConfirmationDepth
   }
 `;
 
