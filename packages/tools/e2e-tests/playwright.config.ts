@@ -29,7 +29,7 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'tools-app',
+      name: '@kadena/tools',
       testDir: 'src/tests/tools-app',
     },
   ],
