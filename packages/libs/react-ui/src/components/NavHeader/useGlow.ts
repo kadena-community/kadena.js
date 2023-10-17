@@ -17,7 +17,6 @@ const useGlow = (): IUseGlowReturn => {
   const [glowX, setGlowX] = useState(0);
 
   const prevGlowX = useRef<number>(glowX);
-  const glowAnimationSpeed = useRef<number>(0);
 
   const setGlowPosition = (targetBounds: DOMRect): void => {
     prevGlowX.current = glowX;
@@ -35,11 +34,9 @@ const useGlow = (): IUseGlowReturn => {
     }
   };
 
-  glowAnimationSpeed.current =
-    glowX === 0 ? 0 : Math.abs(glowX - prevGlowX.current) * 2;
-
   return {
-    animationDuration: glowAnimationSpeed.current,
+    animationDuration:
+      glowX === 0 ? 0 : Math.abs(glowX - prevGlowX.current) * 2,
     glowRef,
     glowX,
     setGlowPosition,

@@ -1,3 +1,5 @@
+'use client';
+
 import { activeLinkClass, linkClass } from './NavHeader.css';
 import { NavHeaderNavigationContext } from './NavHeaderNavigation.context';
 
