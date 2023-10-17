@@ -59,20 +59,9 @@ const meta: Meta<IInputProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    leftIcon: {
+    icon: {
       description:
         'Icon rendered inside the input to the left of the input text.',
-      options: [
-        '-',
-        ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
-      ],
-      control: {
-        type: 'select',
-      },
-    },
-    rightIcon: {
-      description:
-        'Icon rendered inside the input to the right of the input text.',
       options: [
         '-',
         ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
@@ -116,7 +105,7 @@ type Story = StoryObj<
   {
     leadingText: string;
     leftIcon: keyof typeof SystemIcon;
-    rightIcon: keyof typeof SystemIcon;
+
     type: React.HTMLInputTypeAttribute;
   } & Omit<IInputProps, 'leftIcon' | 'rightIcon'>
 >;
@@ -124,16 +113,14 @@ type Story = StoryObj<
 export const Dynamic: Story = {
   name: 'Input',
   args: {
-    leftIcon: undefined,
+    icon: undefined,
     type: 'text',
-    rightIcon: undefined,
     leadingText: '',
     leadingTextWidth: undefined,
     outlined: false,
   },
   render: ({
-    leftIcon,
-    rightIcon,
+    icon,
     outlined,
     leadingText,
     leadingTextWidth,
@@ -143,8 +130,7 @@ export const Dynamic: Story = {
   }) => (
     <Input
       id="inlineInputStory"
-      leftIcon={leftIcon}
-      rightIcon={rightIcon}
+      icon={icon}
       onChange={onChange}
       placeholder="This is a placeholder"
       leadingText={leadingText}
@@ -159,14 +145,14 @@ export const Dynamic: Story = {
 export const InlineWithButton: Story = {
   name: 'Inline with button',
   args: {
-    leftIcon: undefined,
+    icon: undefined,
     type: 'text',
   },
-  render: ({ leftIcon, onChange, type }) => (
+  render: ({ icon, onChange, type }) => (
     <Stack gap="$xs" alignItems="stretch">
       <Input
         id="inlineInputStory"
-        leftIcon={leftIcon}
+        icon={icon}
         onChange={onChange}
         placeholder="This is a placeholder"
         outlined

@@ -22,8 +22,7 @@ export interface IInputProps
   > {
   leadingText?: string;
   leadingTextWidth?: keyof typeof vars.sizes;
-  leftIcon?: keyof typeof SystemIcon;
-  rightIcon?: keyof typeof SystemIcon;
+  icon?: keyof typeof SystemIcon;
   disabled?: boolean;
   type?: React.HTMLInputTypeAttribute;
   ref?: React.ForwardedRef<HTMLInputElement>;
@@ -37,15 +36,13 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
       outlined,
       leadingText,
       leadingTextWidth,
-      leftIcon,
-      rightIcon,
+      icon,
       disabled = false,
       ...rest
     },
     ref,
   ) {
-    const RightIcon = rightIcon && SystemIcon[rightIcon];
-    const LeftIcon = leftIcon && SystemIcon[leftIcon];
+    const Icon = icon && SystemIcon[icon];
 
     return (
       <div
@@ -66,14 +63,13 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           </div>
         )}
         <div className={inputContainerClass}>
-          {LeftIcon && <LeftIcon size="md" />}
+          {Icon && <Icon size="md" />}
           <input
             ref={ref}
             className={inputClass}
             disabled={disabled}
             {...rest}
           />
-          {RightIcon && <RightIcon size="md" />}
         </div>
       </div>
     );
