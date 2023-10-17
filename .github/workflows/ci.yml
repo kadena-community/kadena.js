@@ -83,13 +83,12 @@ jobs:
       - name: run integration tests
         run: pnpm run test:integration
   e2e-tests:
-    strategy:
-      matrix:
-        package: [ @kadena/tools ]
     name: end-to-end tests
     needs: build
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        package: [ "@kadena/tools" ]
 
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
