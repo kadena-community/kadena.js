@@ -2,7 +2,5 @@
   "files.associations": {
     "*.json": "jsonc"
   },
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": true
-  }
+  "graphql-config.load.rootDir": "packages/apps/graph"
 }
