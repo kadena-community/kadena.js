@@ -30,12 +30,8 @@ const aSideMenuTree = [
         tag: 'h3' as unknown as TagNameType,
         title: 'Kadena raises $2.25M in first funding round',
         children: [],
-        index: 1,
-        parentTitle: 'Kadena: The Next Generation Blockchain',
       },
     ],
-    index: 0,
-    parentTitle: '',
   },
 ];
 
