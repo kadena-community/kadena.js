@@ -74,7 +74,7 @@ export const MyApp = ({
         <meta name="twitter:url" content="" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={`${ogImage}?4362984378`} />
+        <meta name="twitter:image" content={ogImage} />
         {/* <!-- Open Graph / Facebook --> */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="" />
