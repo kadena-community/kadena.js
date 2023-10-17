@@ -59,7 +59,9 @@ export const MyApp = ({
 
   const { title, description, headerImage, authorInfo } = props.frontmatter;
   const defaultImagePath = '/assets/blog/2023/0_s-vXIU_stFVOsfim.png';
-  const ogImage = headerImage || defaultImagePath;
+  const ogImage = headerImage
+    ? `https://docs.kadena.io${headerImage}`
+    : `https://docs.kadena.io${defaultImagePath}`;
 
   return (
     <>
