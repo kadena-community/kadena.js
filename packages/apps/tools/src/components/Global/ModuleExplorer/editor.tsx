@@ -49,7 +49,7 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
       <Grid.Root columns={3}>
         <Grid.Item>
           <SelectField
-            label="Keyboard handler"
+            label={t('Keyboard handler')}
             selectProps={{
               id: 'editor-keyboard-select',
               ariaLabel: t('Select which keyboard to use for the code editor'),
@@ -65,7 +65,7 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
         </Grid.Item>
         <Grid.Item>
           <SelectField
-            label="Theme"
+            label={t('Theme')}
             selectProps={{
               id: 'editor-theme-select',
               ariaLabel: t('Select which theme to use for the code editor'),
@@ -81,7 +81,7 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
         </Grid.Item>
         <Grid.Item>
           <SelectField
-            label="Mode"
+            label={t('Mode')}
             selectProps={{
               id: 'editor-mode-select',
               ariaLabel: t('Select which mode to use for the code editor'),
