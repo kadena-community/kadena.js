@@ -12,12 +12,10 @@ import { handleCommentMarkers } from './handleCommentMarkers.js';
 const remarkPresetKadena: Preset = {
   settings: {},
   plugins: [
-    // @ts-expect-error Will vanish when upgrading packages
     remarkFrontMatter,
     remarkParse,
     [handleCommentMarkers, commentMarkers],
     unifiedPrettier,
-    // @ts-expect-error Will vanish when upgrading packages
     remarkGFM,
     fencedCodeBlocks,
     remarkReferenceLinks,
