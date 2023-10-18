@@ -1,14 +1,4 @@
 'use client';
-
-import { NavAccordionContext } from './NavAccordion.context';
-import {
-  navAccordionListClass,
-  navAccordionListItemClass,
-} from './NavAccordion.css';
-import type { INavAccordionGroupProps } from './NavAccordionGroup';
-import { NavAccordionGroup } from './NavAccordionGroup';
-import type { INavAccordionLinkProps } from './NavAccordionLink';
-
 import {
   accordionButtonClass,
   accordionHeadingTitleClass,
@@ -19,6 +9,14 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement as FCElement } from 'react';
 import React, { Children, useContext } from 'react';
+import { NavAccordionContext } from './NavAccordion.context';
+import {
+  navAccordionListClass,
+  navAccordionListItemClass,
+} from './NavAccordion.css';
+import type { INavAccordionGroupProps } from './NavAccordionGroup';
+import { NavAccordionGroup } from './NavAccordionGroup';
+import type { INavAccordionLinkProps } from './NavAccordionLink';
 
 export interface INavAccordionSectionProps {
   children?:

@@ -1,10 +1,9 @@
-import { containerClass, contentClass } from './stories.css';
-
 import type { IBoxProps } from '@components/Box';
 import { Box } from '@components/Box';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
+import { containerClass, contentClass } from './stories.css';
 
 const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,

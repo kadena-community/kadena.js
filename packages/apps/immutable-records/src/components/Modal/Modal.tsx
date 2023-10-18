@@ -1,7 +1,6 @@
-import { backdrop, container } from './Modal.css';
-
 import type { FC, PropsWithChildren } from 'react';
 import { useEventListener } from 'usehooks-ts';
+import { backdrop, container } from './Modal.css';
 
 interface ModalProps {
   open: boolean;

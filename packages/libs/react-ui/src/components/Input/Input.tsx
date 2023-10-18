@@ -1,3 +1,8 @@
+import { SystemIcon } from '@components/Icon';
+import classNames from 'classnames';
+import type { FC, InputHTMLAttributes } from 'react';
+import React, { forwardRef } from 'react';
+import type { vars } from 'src/styles';
 import {
   containerClass,
   disabledClass,
@@ -8,12 +13,6 @@ import {
   leadingTextWrapperClass,
   outlinedClass,
 } from './Input.css';
-
-import { SystemIcon } from '@components/Icon';
-import classNames from 'classnames';
-import type { FC, InputHTMLAttributes } from 'react';
-import React, { forwardRef } from 'react';
-import type { vars } from 'src/styles';
 
 export interface IInputProps
   extends Omit<

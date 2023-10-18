@@ -1,7 +1,7 @@
-export { type ITextProps, Text } from './Text/Text';
-export { type IHeadingProps, Heading } from './Heading/Heading';
 export {
-  type IGradientTextProps,
   GradientText,
+  type IGradientTextProps,
 } from './GradientText/GradientText';
-export { type ILabelProps, Label } from './Label/Label';
+export { Heading, type IHeadingProps } from './Heading/Heading';
+export { Label, type ILabelProps } from './Label/Label';
+export { Text, type ITextProps } from './Text/Text';

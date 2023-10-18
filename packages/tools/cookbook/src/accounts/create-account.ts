@@ -4,7 +4,6 @@ import {
   Pact,
   signWithChainweaver,
 } from '@kadena/client';
-
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 

@@ -1,5 +1,4 @@
 import { createCommand } from '../createCommand';
-
 import { command, payload, signature } from './mockdata/execCommand';
 
 test('Takes in signature objects and stringified Pact object, and outputs a Signed Pact Command', () => {

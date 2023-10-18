@@ -1,5 +1,4 @@
 jest.mock('../callLocal.ts');
-
 import { callLocal } from '../callLocal';
 import { retrieveContractFromChain } from '../retrieveContractFromChain';
 

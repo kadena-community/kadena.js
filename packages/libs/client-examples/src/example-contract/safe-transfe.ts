@@ -1,7 +1,6 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import { isSignedTransaction, Pact, signWithChainweaver } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-
 import { listen, submit } from './util/client';
 import { keyFromAccount } from './util/keyFromAccount';
 

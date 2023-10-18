@@ -1,7 +1,6 @@
-import { Tree } from './Tree';
-
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
+import { Tree } from './Tree';
 
 describe('Tree', () => {
   test('renders without title', () => {

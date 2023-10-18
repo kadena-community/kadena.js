@@ -1,8 +1,6 @@
 import { sprinkles, vars } from '@kadena/react-ui/theme';
-
-import { $$borderColor } from '../../global.css';
-
 import { style, styleVariants } from '@vanilla-extract/css';
+import { $$borderColor } from '../../global.css';
 
 export const treeListClass = style([
   sprinkles({

@@ -1,11 +1,9 @@
 import { SystemIcon, Tooltip } from '@kadena/react-ui';
-
-import { gridMiniMenuListButtonStyle } from './styles.css';
-
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes, FC } from 'react';
 import React, { useRef } from 'react';
+import { gridMiniMenuListButtonStyle } from './styles.css';
 
 export interface IMenuButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {

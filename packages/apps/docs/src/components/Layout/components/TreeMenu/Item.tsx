@@ -1,3 +1,8 @@
+import type { IMenuItem, LevelType } from '@/Layout';
+import classNames from 'classnames';
+import Link from 'next/link';
+import type { FC } from 'react';
+import React from 'react';
 import {
   levelItemLinkPseudoVariantClass,
   levelItemVariantClass,
@@ -6,12 +11,6 @@ import {
   listItemClass,
   listItemVariants,
 } from './styles.css';
-
-import type { IMenuItem, LevelType } from '@/Layout';
-import classNames from 'classnames';
-import Link from 'next/link';
-import type { FC } from 'react';
-import React from 'react';
 
 interface IItem {
   item: IMenuItem;

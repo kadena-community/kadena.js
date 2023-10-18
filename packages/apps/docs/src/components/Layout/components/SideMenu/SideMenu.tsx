@@ -1,11 +1,15 @@
+import type { IMenuItem } from '@/Layout';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { Box, Heading, Input } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import { useRouter } from 'next/router';
+import type { FC, KeyboardEvent } from 'react';
+import React from 'react';
 import { MainTreeItem } from '../TreeMenu/MainTreeItem';
 import { TreeList } from '../TreeMenu/TreeList';
-
+import { MenuCard } from './MenuCard';
 import { ListLink } from './components/ListLink';
 import { ShowOnMobile } from './components/ShowOnMobile';
-import { MenuCard } from './MenuCard';
 import {
   listClass,
   listItemClass,
@@ -14,13 +18,6 @@ import {
   sideMenuTitleClass,
 } from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
-
-import type { IMenuItem } from '@/Layout';
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
-import type { FC, KeyboardEvent } from 'react';
-import React from 'react';
 
 interface IProps {
   closeMenu: () => void;

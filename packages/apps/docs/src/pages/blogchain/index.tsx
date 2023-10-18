@@ -1,19 +1,17 @@
-import { Box, Grid, Stack } from '@kadena/react-ui';
-
+import type { IAuthorInfo, IMenuData, IPageProps } from '@/Layout';
+import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogItem } from '@/components/Blog/BlogItem/BlogItem';
 import { BlogList } from '@/components/Blog/BlogList';
 import { BlogListWrapper } from '@/components/BlogList/BlogListWrapper';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
+import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IAuthorInfo, IMenuData, IPageProps } from '@/Layout';
-import type { IMostPopularPage } from '@/MostPopularData';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import { mostProductiveAuthors } from '@/utils/mostProductiveAuthors';
 import {
@@ -21,6 +19,7 @@ import {
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
+import { Box, Grid, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';

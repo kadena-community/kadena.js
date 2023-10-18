@@ -1,17 +1,14 @@
 'use client';
-
+import { useWalletConnect } from '@/hooks/connect.hook';
 import { Button, Tooltip } from '@kadena/react-ui';
-
+import type { FC } from 'react';
+import { useRef, useState } from 'react';
 import {
   container,
   debugContainer,
   debugContainerButton,
   tooltipContainer,
 } from './Connect.css';
-
-import { useWalletConnect } from '@/hooks/connect.hook';
-import type { FC } from 'react';
-import { useRef, useState } from 'react';
 
 // Fix Tooltip handler not being able to tell mouseenter from mouseleave
 const useTooltipHandler = () => {

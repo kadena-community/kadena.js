@@ -1,7 +1,5 @@
 import { createSendRequest } from '@kadena/chainweb-node-client';
-
 import { createContCommand } from '../createContCommand';
-
 import {
   command,
   envData,

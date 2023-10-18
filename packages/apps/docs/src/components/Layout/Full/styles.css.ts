@@ -1,12 +1,10 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import { createVar, style } from '@vanilla-extract/css';
 import {
   $$asideMenuWidthLGDefault,
   $$asideMenuWidthMDDefault,
 } from '../basestyles.css';
 import { $$leftSideWidth, $$pageWidth, $$sideMenu } from '../global.css';
-
-import { createVar, style } from '@vanilla-extract/css';
 
 const $$shadowWidth = createVar();
 

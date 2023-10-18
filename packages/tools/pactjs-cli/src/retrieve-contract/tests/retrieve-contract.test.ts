@@ -1,10 +1,10 @@
 jest.mock('fs');
 jest.mock('../../utils/retrieveContractFromChain');
-
-import { retrieveContractFromChain } from '../../utils/retrieveContractFromChain';
-
+import { Command } from 'commander';
 import { writeFileSync } from 'fs';
 import path from 'path';
+import { retrieveContractFromChain } from '../../utils/retrieveContractFromChain';
+import { retrieveContract } from '../retrieve-contract';
 
 const mockedWriteFileSync = writeFileSync as jest.MockedFunction<
   typeof writeFileSync
@@ -22,10 +22,6 @@ mockedRetrieveContractFromChain.mockImplementation(
     typeof retrieveContractFromChain
   >,
 );
-
-import { retrieveContract } from '../retrieve-contract';
-
-import { Command } from 'commander';
 
 const createAndRunProgram = async (): Promise<void> => {
   const program = new Command('retrieve-contract');

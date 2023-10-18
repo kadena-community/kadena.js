@@ -1,8 +1,7 @@
-import { navAccordionLinkClass } from './NavAccordion.css';
-
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { navAccordionLinkClass } from './NavAccordion.css';
 
 export interface INavAccordionLinkProps {
   asChild?: boolean;

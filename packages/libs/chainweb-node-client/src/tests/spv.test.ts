@@ -1,13 +1,10 @@
 jest.mock('cross-fetch');
-
-import type { SPVResponse } from '../interfaces/PactAPI';
-import { spv } from '../spv';
-
-import { mockFetch } from './mockdata/mockFetch';
-import { testSPVProof, testSPVRequest, testURL } from './mockdata/Pact';
-
 import type { Response } from 'cross-fetch';
 import fetch from 'cross-fetch';
+import type { SPVResponse } from '../interfaces/PactAPI';
+import { spv } from '../spv';
+import { testSPVProof, testSPVRequest, testURL } from './mockdata/Pact';
+import { mockFetch } from './mockdata/mockFetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(

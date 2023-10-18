@@ -1,5 +1,4 @@
 import { createClient, Pact } from '@kadena/client';
-
 import { apiHost } from '../utils/api-host';
 
 const HELP: string = `Usage example: \n\nts-node details.js k:{accountPublicKey}`;

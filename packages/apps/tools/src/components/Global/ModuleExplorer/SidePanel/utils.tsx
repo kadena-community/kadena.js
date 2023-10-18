@@ -1,10 +1,8 @@
 import type { contractParser } from '@kadena/pactjs-generator';
 import type { ITreeProps } from '@kadena/react-ui';
 import { Button } from '@kadena/react-ui';
-
-import type { IOutlineProps } from './outline';
-
 import React from 'react';
+import type { IOutlineProps } from './outline';
 
 export type Contract = ReturnType<typeof contractParser>[0][0]; // TODO: Should we improve this because it's a bit hacky?
 

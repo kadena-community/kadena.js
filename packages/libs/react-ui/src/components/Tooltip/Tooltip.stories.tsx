@@ -1,11 +1,10 @@
-import type { ITooltipProps } from './';
-import { container } from './stories.css';
-import { Tooltip } from './';
-
 import { IconButton } from '@components/IconButton';
 import type { Meta, StoryObj } from '@storybook/react';
 import { withCenteredStory } from '@utils/withCenteredStory';
 import React, { useRef } from 'react';
+import type { ITooltipProps } from './';
+import { Tooltip } from './';
+import { container } from './stories.css';
 
 const meta: Meta<
   {

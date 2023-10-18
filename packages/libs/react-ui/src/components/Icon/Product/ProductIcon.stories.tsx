@@ -1,10 +1,9 @@
-import { sizeVariants } from '../IconWrapper.css';
-import { gridContainer, gridItem } from '../stories.css';
-
 import type { IIconProps } from '@components/Icon';
 import { ProductIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { sizeVariants } from '../IconWrapper.css';
+import { gridContainer, gridItem } from '../stories.css';
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
