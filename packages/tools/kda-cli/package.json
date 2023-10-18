@@ -32,7 +32,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts,.tsx",
-    "test": "jest --silent"
+    "test": "vitest"
   },
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
@@ -53,15 +53,14 @@
     "@microsoft/api-extractor": "^7.38.0",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/cross-spawn": "~6.0.2",
-    "@types/jest": "^29.5.3",
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "chalk": "^5.2.0",
     "eslint": "^8.45.0",
     "ink-testing-library": "^3.0.0",
-    "jest": "^29.7.0",
     "prettier": "~3.0.3",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "vitest": "^0.34.6"
   },
   "engines": {
     "node": ">=16"
