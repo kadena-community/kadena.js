@@ -5,14 +5,15 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+
 jobs:
   build:
     name: Build & Unit Test
     runs-on: ubuntu-latest
-
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     steps:
       - uses: actions/checkout@v4
@@ -45,10 +46,6 @@ jobs:
     needs: build
     name: Integration Tests
     runs-on: ubuntu-latest
-
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     services:
       devnet:
@@ -90,10 +87,6 @@ jobs:
     strategy:
       matrix:
         package: [ "@kadena/tools" ]
-
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     steps:
       - uses: actions/checkout@v4
@@ -152,10 +145,6 @@ jobs:
           - path: packages/apps/docs/**
             package: packages/apps/docs
             projectToken: 'DOCS_CHROMATIC_TOKEN'
-
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     steps:
       - uses: actions/checkout@v4
