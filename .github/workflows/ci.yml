@@ -147,9 +147,9 @@ jobs:
       matrix:
         include:
           - path: packages/libs/react-ui/**
-            projectToken: ${{ secrets.REACT_UI_CHROMATIC_TOKEN }}
+            projectToken: 'REACT_UI_CHROMATIC_TOKEN'
           - path: packages/apps/docs/**
-            projectToken: ${{ secrets.DOCS_CHROMATIC_TOKEN }}
+            projectToken: 'DOCS_CHROMATIC_TOKEN'
 
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -194,7 +194,7 @@ jobs:
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
           exitOnceUploaded: true
           buildScriptName: 'build:storybook'
-          projectToken: ${{ matrix.projectToken }}
-          workingDir: /packages/libs/react-ui
+          projectToken: ${{ secrets[matrix.projectToken] }}
+          workingDir: ${{ matrix.path }}
           autoAcceptChanges: 'main'
           onlyChanged: true # 👈 Required option to enable TurboSnap
