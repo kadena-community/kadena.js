@@ -1,4 +1,3 @@
-import type { SystemIcon } from '@components/Icon';
 import type { ITextareaProps } from '@components/TextArea';
 import { Textarea } from '@components/TextArea';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -34,7 +33,6 @@ export default meta;
 type Story = StoryObj<
   {
     leadingText: string;
-    rightIcon: keyof typeof SystemIcon;
     type: React.HTMLInputTypeAttribute;
   } & ITextareaProps
 >;

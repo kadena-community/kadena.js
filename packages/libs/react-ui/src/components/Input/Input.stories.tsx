@@ -107,7 +107,7 @@ type Story = StoryObj<
     leftIcon: keyof typeof SystemIcon;
 
     type: React.HTMLInputTypeAttribute;
-  } & Omit<IInputProps, 'leftIcon' | 'rightIcon'>
+  } & Omit<IInputProps, 'icon'>
 >;
 
 export const Dynamic: Story = {
