@@ -6,7 +6,7 @@ export default builder.prismaNode('Transfer', {
   fields: (t) => ({
     // database fields
     amount: t.expose('amount' as never, { type: 'Decimal' }),
-    blockHash: t.exposeString('block'),
+    blockHash: t.exposeString('blockHash'),
     chainId: t.expose('chainId', { type: 'BigInt' }),
     senderAccount: t.exposeString('senderAccount'),
     height: t.expose('height', { type: 'BigInt' }),
@@ -23,7 +23,7 @@ export default builder.prismaNode('Transfer', {
       resolve(query, parent, args, context, info) {
         return prismaClient.block.findMany({
           where: {
-            hash: parent.block,
+            hash: parent.blockHash,
           },
         });
       },

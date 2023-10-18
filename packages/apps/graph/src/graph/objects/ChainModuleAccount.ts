@@ -46,7 +46,7 @@ export default builder.objectType('ChainModuleAccount', {
     }),
     transfers: t.prismaConnection({
       type: 'Transfer',
-      cursor: 'block_chainId_orderIndex_moduleHash_requestKey',
+      cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
       resolve: async (query, parent) => {
         return prismaClient.transfer.findMany({
           ...query,

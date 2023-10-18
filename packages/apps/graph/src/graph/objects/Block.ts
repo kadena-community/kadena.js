@@ -12,7 +12,7 @@ export default builder.prismaNode('Block', {
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     epoch: t.expose('epoch', { type: 'DateTime' }),
     height: t.expose('height', { type: 'BigInt' }),
-    payload: t.exposeString('payload'),
+    payloadHash: t.exposeString('payloadHash'),
     powHash: t.exposeString('powHash'),
     predicate: t.exposeString('predicate'),
 
@@ -62,10 +62,10 @@ export default builder.prismaNode('Block', {
     }),
 
     minerKeys: t.prismaField({
-      type: ['Minerkey'],
+      type: ['MinerKey'],
       nullable: true,
       resolve(query, parent, args, context, info) {
-        return prismaClient.minerkey.findMany({
+        return prismaClient.minerKey.findMany({
           where: {
             blockHash: parent.hash,
           },

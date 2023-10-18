@@ -5,7 +5,7 @@ import './objects/Guard';
 import './objects/Transaction';
 import './objects/Transfer';
 import './objects/Event';
-import './objects/Minerkey';
+import './objects/Miner-key';
 import './Query/completedBlockHeights';
 import './Query/account';
 import './Query/blocksFromHeight';
