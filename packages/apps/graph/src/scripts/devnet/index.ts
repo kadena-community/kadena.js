@@ -1,8 +1,7 @@
+import { Command, Option } from 'commander';
 import { createAccount, logger } from './helper';
 import { simulate } from './simulate';
 import { transfer } from './transfer';
-
-import { Command, Option } from 'commander';
 
 const program: Command = new Command();
 program

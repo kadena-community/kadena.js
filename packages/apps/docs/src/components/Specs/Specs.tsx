@@ -1,10 +1,9 @@
-import { specsWrapper } from './styles.css';
-
 import type { OpenAPIV3 } from 'openapi-types';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import type { RedocRawOptions } from 'redoc';
 import { RedocStandalone } from 'redoc';
+import { specsWrapper } from './styles.css';
 
 interface IProps {
   specs: OpenAPIV3.Document;

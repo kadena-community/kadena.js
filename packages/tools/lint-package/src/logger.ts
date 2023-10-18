@@ -1,6 +1,5 @@
-import type { Issues } from './types.js';
-
 import chalk from 'chalk';
+import type { Issues } from './types.js';
 
 const SEPARATOR_WARN = `        ${chalk.yellow('warning')}  `; // Emulate eslint-like output
 const SEPARATOR_ERROR = `        ${chalk.red('error')}    `; // Emulate eslint-like output

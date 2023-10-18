@@ -1,5 +1,4 @@
 import { attachSignature } from '../attachSignature';
-
 import { keyPair, signature, stringifiedPayload } from './mockdata/execCommand';
 
 describe('attachSignature', () => {

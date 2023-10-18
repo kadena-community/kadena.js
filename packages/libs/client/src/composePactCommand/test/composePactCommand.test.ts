@@ -12,7 +12,6 @@ import { createTransaction } from '../../utils/createTransaction';
 import { composePactCommand } from '../composePactCommand';
 import { addData } from '../utils/addData';
 import { mergePayload } from '../utils/patchCommand';
-
 import type { ICoin } from './coin-contract';
 
 const coin: ICoin = getModule('coin');

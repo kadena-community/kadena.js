@@ -2,7 +2,6 @@
   This Decorator can used to center the story.
   More info: https://storybook.js.org/docs/react/writing-stories/decorators
 */
-
 import type { Decorator } from '@storybook/react';
 import type { FC } from 'react';
 import React from 'react';

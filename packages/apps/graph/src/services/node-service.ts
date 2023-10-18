@@ -1,6 +1,5 @@
 import type { ChainId, IClient } from '@kadena/client';
-import { createClient, Pact } from '@kadena/client';
-
+import { Pact, createClient } from '@kadena/client';
 import { dotenv } from '../utils/dotenv';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

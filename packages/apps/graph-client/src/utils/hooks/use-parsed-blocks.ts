@@ -1,7 +1,6 @@
-import { env } from '../env';
-
 import type { GetBlocksSubscription } from '@/__generated__/sdk';
 import { useCallback, useState } from 'react';
+import { env } from '../env';
 
 export interface IBlock
   extends Pick<

@@ -1,8 +1,6 @@
-import { MockHelper } from '../helpers/mock.helper';
-
-import { ToolsAppIndex } from './tools-app/toolsApp.index';
-
 import { test as baseTest } from '@playwright/test';
+import { MockHelper } from '../helpers/mock.helper';
+import { ToolsAppIndex } from './tools-app/toolsApp.index';
 
 export const test = baseTest.extend<{
   toolsApp: ToolsAppIndex;

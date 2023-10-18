@@ -13,10 +13,8 @@ import {
   isSignedTransaction,
 } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
-
-import { devnetConfig } from './config';
-
 import { createLogger } from 'graphql-yoga';
+import { devnetConfig } from './config';
 
 export interface IAccount extends IKeyPair {
   account: string;

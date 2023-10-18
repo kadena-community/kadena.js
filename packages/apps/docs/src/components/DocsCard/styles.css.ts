@@ -1,11 +1,10 @@
+import { getClassName } from '@/utils/getClassName';
 import {
   darkThemeClass,
   responsiveStyle,
   sprinkles,
   vars,
 } from '@kadena/react-ui/theme';
-
-import { getClassName } from '@/utils/getClassName';
 import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
 export const cardClass = style([

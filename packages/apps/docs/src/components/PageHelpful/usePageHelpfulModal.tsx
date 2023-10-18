@@ -1,3 +1,4 @@
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import {
   Button,
   Heading,
@@ -6,12 +7,9 @@ import {
   Text,
   useModal as useUIModal,
 } from '@kadena/react-ui';
-
-import { modalWrapperClass, textAreaClass } from './styles.css';
-
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useRef } from 'react';
+import { modalWrapperClass, textAreaClass } from './styles.css';
 
 interface IUseModalHookResult {
   renderModalComponent: () => void;

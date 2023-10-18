@@ -9,7 +9,6 @@
  * ```
  *
  */
-
 import type {
   IBlockHeader,
   IBlockPayload,
@@ -17,7 +16,6 @@ import type {
   ICutResponse,
   IPagedResponse,
 } from '../types';
-
 import { blockByHeightBranchPageMock } from './mocks/blockByHeightBranchPageMock';
 import { blockByHeightCurrentCutMock } from './mocks/blockByHeightCurrentCutMock';
 import { blockByHeightPayloadsMock } from './mocks/blockByHeightPayloadsMock';

@@ -1,5 +1,3 @@
-import { Accordion, Box, Notification, Table } from '@kadena/react-ui';
-
 import {
   useGetBlockFromHashQuery,
   useGetMaximumConfirmationDepthQuery,
@@ -9,6 +7,7 @@ import Loader from '@components/loader/loader';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
+import { Accordion, Box, Notification, Table } from '@kadena/react-ui';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -156,7 +155,7 @@ const Block: React.FC = () => {
                     <Table.Td>
                       <strong>Payload Hash</strong>
                     </Table.Td>
-                    <Table.Td>{data.block.payload}</Table.Td>
+                    <Table.Td>{data.block.payloadHash}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
@@ -176,7 +175,7 @@ const Block: React.FC = () => {
                           <Table.Td>
                             <strong>Payload Hash</strong>
                           </Table.Td>
-                          <Table.Td>{data.block.payload}</Table.Td>
+                          <Table.Td>{data.block.payloadHash}</Table.Td>
                         </Table.Tr>
 
                         <Table.Tr>

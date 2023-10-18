@@ -1,13 +1,12 @@
+import classnames from 'classnames';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 import {
   levelItemVariantClass,
   treeItemButtonClass,
   treeItemPseudoMenuVariantClass,
   treeItemPseudoVariantClass,
 } from './styles.css';
-
-import classnames from 'classnames';
-import type { FC, ReactNode } from 'react';
-import React from 'react';
 
 interface IProps {
   children: ReactNode;

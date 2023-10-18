@@ -1,5 +1,4 @@
 import { Text } from '@kadena/react-ui';
-
 import type { FC } from 'react';
 import React from 'react';
 

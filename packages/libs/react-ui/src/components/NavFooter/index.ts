@@ -1,3 +1,4 @@
+import type { FC } from 'react';
 import type { INavFooterRootProps } from './NavFooter';
 import { NavFooterContainer } from './NavFooter';
 import type { INavFooterIconButtonProps } from './NavFooterIconButton';
@@ -7,13 +8,11 @@ import { NavFooterLink } from './NavFooterLink';
 import type { INavFooterPanelProps } from './NavFooterPanel';
 import { NavFooterPanel } from './NavFooterPanel';
 
-import type { FC } from 'react';
-
 export {
-  INavFooterRootProps,
   INavFooterIconButtonProps,
   INavFooterLinkProps,
   INavFooterPanelProps,
+  INavFooterRootProps,
 };
 
 export interface INavFooterProps {

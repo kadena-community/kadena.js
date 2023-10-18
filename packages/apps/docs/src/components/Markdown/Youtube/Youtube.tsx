@@ -1,7 +1,6 @@
-import { wrapperClass } from './styles.css';
-
 import type { FC } from 'react';
 import React from 'react';
+import { wrapperClass } from './styles.css';
 
 interface IProps {
   videoId: string;

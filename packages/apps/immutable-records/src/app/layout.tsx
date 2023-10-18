@@ -1,8 +1,7 @@
-import { bodyClass } from './layout.css';
-
 import { WalletConnectProvider } from '@/context/connect.context';
 import localFont from 'next/font/local';
 import type { FC, PropsWithChildren } from 'react';
+import { bodyClass } from './layout.css';
 
 const monoFont = localFont({
   src: '../../public/fonts/KodeMono.woff2',

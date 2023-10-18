@@ -1,8 +1,7 @@
-import { pageNumButtonClass } from './Pagination.css';
-
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import { pageNumButtonClass } from './Pagination.css';
 
 interface IPageNumProps {
   number: number;

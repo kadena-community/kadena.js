@@ -1,10 +1,8 @@
-import type { IQuestion } from '../questions/questions.js';
-
-import { IntermediateAnswers } from './intermediate-answers.js';
-
 import { ConfirmInput, TextInput } from '@inkjs/ui';
 import { Box, Text } from 'ink';
 import React, { useState } from 'react';
+import type { IQuestion } from '../questions/questions.js';
+import { IntermediateAnswers } from './intermediate-answers.js';
 
 export const MultiInput = ({
   name,

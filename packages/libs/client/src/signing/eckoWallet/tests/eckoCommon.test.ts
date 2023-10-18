@@ -1,8 +1,6 @@
 /** @jest-environment jsdom */
-
-import { connect, isConnected, isInstalled } from '../eckoCommon';
-
 import { TextDecoder, TextEncoder } from 'util';
+import { connect, isConnected, isInstalled } from '../eckoCommon';
 
 Object.assign(global, { TextDecoder, TextEncoder });
 

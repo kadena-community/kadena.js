@@ -1,5 +1,3 @@
-import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
-
 import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
@@ -9,6 +7,7 @@ import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
 import { useChainTree } from '@context/chain-tree-context';
+import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
 import { useParsedBlocks } from '@utils/hooks/use-parsed-blocks';
 import { usePrevious } from '@utils/hooks/use-previous';
 import isEqual from 'lodash.isequal';

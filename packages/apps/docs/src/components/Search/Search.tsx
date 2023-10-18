@@ -1,11 +1,10 @@
-import { SearchResults } from './components/SearchResults';
-import useAlgoliaSearch from './useAlgoliaSearch';
-
 import { useSearch } from '@/hooks/useSearch/useSearch';
 import { mapMatches } from '@/pages/api/semanticsearch';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
+import { SearchResults } from './components/SearchResults';
+import useAlgoliaSearch from './useAlgoliaSearch';
 
 interface IProps {
   query?: string;

@@ -1,12 +1,10 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import { createVar, globalStyle, style } from '@vanilla-extract/css';
 import {
   $$backgroundOverlayColor,
   $$leftSideWidth,
   $$pageWidth,
 } from './global.css';
-
-import { createVar, globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('html, body', {
   margin: 0,

@@ -1,13 +1,11 @@
 'use client';
-
-import { NavGlow } from './svg/glow';
+import type { FC, FunctionComponentElement } from 'react';
+import React, { useEffect, useState } from 'react';
 import { glowClass, navListClass, navWrapperClass } from './NavHeader.css';
 import type { INavHeaderLinkProps } from './NavHeaderLink';
 import { NavHeaderNavigationContext } from './NavHeaderNavigation.context';
+import { NavGlow } from './svg/glow';
 import useGlow from './useGlow';
-
-import type { FC, FunctionComponentElement } from 'react';
-import React, { useEffect, useState } from 'react';
 
 export interface INavHeaderNavigationProps {
   children: FunctionComponentElement<INavHeaderLinkProps>[];

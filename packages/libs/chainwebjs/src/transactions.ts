@@ -1,3 +1,4 @@
+import type EventSource from 'eventsource';
 import {
   blockByBlockHash,
   blocks,
@@ -11,8 +12,6 @@ import type {
   IRetryOptions,
   ITransactionElement,
 } from './types';
-
-import type EventSource from 'eventsource';
 
 /**
  * Utility function to filter the transactions from an array of blocks

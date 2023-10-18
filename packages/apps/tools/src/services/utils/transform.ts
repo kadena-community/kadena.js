@@ -1,6 +1,5 @@
-import type { IModulesResult } from '../modules/list-module';
-
 import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
+import type { IModulesResult } from '../modules/list-module';
 
 export const transformModulesRequest = (
   modulesRequest: IModulesResult,

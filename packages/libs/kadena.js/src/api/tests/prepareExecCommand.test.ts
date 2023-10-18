@@ -1,7 +1,5 @@
 import type { ICommand } from '@kadena/types';
-
 import { prepareExecCommand } from '../prepareExecCommand';
-
 import {
   command,
   envData,

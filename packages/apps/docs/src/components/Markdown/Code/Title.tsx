@@ -1,7 +1,6 @@
-import { codeTitle, codeWrapper } from './style.css';
-
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { codeTitle, codeWrapper } from './style.css';
 
 interface IProp {
   children: ReactNode;

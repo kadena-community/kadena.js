@@ -9,8 +9,8 @@ import type {
 } from '@/components/Global/Ace/helper';
 import { keyboards, modes, themes } from '@/components/Global/Ace/helper';
 import { usePersistentState } from '@/hooks/use-persistent-state';
-import dynamic from 'next/dynamic';
 import useTranslation from 'next-translate/useTranslation';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {

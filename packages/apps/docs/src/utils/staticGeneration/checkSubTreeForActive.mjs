@@ -1,5 +1,5 @@
-import { getData } from './getData.mjs';
 import path from 'path';
+import { getData } from './getData.mjs';
 
 const omit = (obj, keysToOmit) =>
   Object.keys(obj)

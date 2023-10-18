@@ -1,3 +1,7 @@
+import { SystemIcon } from '@components/Icon';
+import classnames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 import type { colorVariants, typeVariants } from './IconButton.css';
 import {
   activeClass,
@@ -5,11 +9,6 @@ import {
   compactVariant,
   defaultVariant,
 } from './IconButton.css';
-
-import { SystemIcon } from '@components/Icon';
-import classnames from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface IIconButtonProps
   extends Omit<

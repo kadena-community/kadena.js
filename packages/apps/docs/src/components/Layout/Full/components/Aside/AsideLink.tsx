@@ -1,13 +1,12 @@
+import classNames from 'classnames';
+import Link from 'next/link';
+import type { FC, MouseEventHandler, ReactNode } from 'react';
+import React from 'react';
 import {
   asideItemClass,
   asideItemLinkActiveVariants,
   asideItemLinkClass,
 } from './styles.css';
-
-import classNames from 'classnames';
-import Link from 'next/link';
-import type { FC, MouseEventHandler, ReactNode } from 'react';
-import React from 'react';
 
 interface IProps {
   children?: ReactNode;

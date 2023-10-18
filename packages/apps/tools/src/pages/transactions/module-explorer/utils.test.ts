@@ -1,9 +1,7 @@
 import { CHAINS } from '@kadena/chainweb-node-client';
-
-import { getCookieValue, getQueryValue } from './utils';
-
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { ParsedUrlQuery } from 'querystring';
+import { getCookieValue, getQueryValue } from './utils';
 
 const exampleCookies: NextApiRequestCookies = {
   '_persist%3AdevOption': '%22BASIC%22',

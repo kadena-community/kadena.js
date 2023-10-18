@@ -1,10 +1,9 @@
-import { Notification, Table } from '@kadena/react-ui';
-
 import { useGetEventByNameSubscription } from '@/__generated__/sdk';
 import Loader from '@components/loader/loader';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
+import { Notification, Table } from '@kadena/react-ui';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';

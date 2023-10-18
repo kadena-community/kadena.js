@@ -1,6 +1,5 @@
-import { Button } from '@kadena/react-ui';
-
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { Button } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
