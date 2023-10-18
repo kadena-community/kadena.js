@@ -1,3 +1,7 @@
+import { SystemIcon } from '@components/Icon';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React, { forwardRef } from 'react';
 import {
   chevronIconClass,
   selectClass,
@@ -5,11 +9,6 @@ import {
   selectContainerClassDisabled,
   selectIconClass,
 } from './NavHeader.css';
-
-import { SystemIcon } from '@components/Icon';
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React, { forwardRef } from 'react';
 
 export interface INavHeaderSelectProps
   extends Omit<

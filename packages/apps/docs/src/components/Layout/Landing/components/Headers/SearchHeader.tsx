@@ -1,16 +1,14 @@
 import { GradientText, Heading, Stack } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import { useRouter } from 'next/router';
+import type { FC, ReactNode } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   headerClass,
   headerLoadedClass,
   subheaderClass,
   wrapperClass,
 } from './style.css';
-
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
-import type { FC, ReactNode } from 'react';
-import React, { useEffect, useState } from 'react';
 
 interface IProps {
   children: ReactNode;

@@ -1,11 +1,8 @@
 // NOTE: Refer to https://www.joshwcomeau.com/css/custom-css-reset/ for more detailed explanation
-
 import { KodeMono } from '@kadena/fonts';
-
+import { globalFontFace, globalStyle } from '@vanilla-extract/css';
 import { breakpoints } from './themeUtils';
 import { vars } from './vars.css';
-
-import { globalFontFace, globalStyle } from '@vanilla-extract/css';
 
 /*
     0. Add fonts

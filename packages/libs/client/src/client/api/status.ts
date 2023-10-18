@@ -1,6 +1,5 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import { poll } from '@kadena/chainweb-node-client';
-
 import type {
   IPollOptions,
   IPollRequestPromise,

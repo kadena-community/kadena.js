@@ -1,13 +1,11 @@
 import { signHash } from '@kadena/cryptography-utils';
 import type { IUnsignedCommand } from '@kadena/types';
-
+import type { Debugger } from 'debug';
+import _debug from 'debug';
 import type { IPactCommand } from '../../interfaces/IPactCommand';
 import type { ISignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
-
-import type { Debugger } from 'debug';
-import _debug from 'debug';
 
 const debug: Debugger = _debug('pactjs:signWithKeypair');
 

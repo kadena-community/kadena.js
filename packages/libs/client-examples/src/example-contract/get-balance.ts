@@ -1,5 +1,4 @@
 import { Pact } from '@kadena/client';
-
 import { dirtyRead } from './util/client';
 import type { Account } from './util/keyFromAccount';
 

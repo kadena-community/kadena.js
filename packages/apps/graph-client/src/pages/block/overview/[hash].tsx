@@ -1,5 +1,3 @@
-import { Accordion, Box, Notification, Table } from '@kadena/react-ui';
-
 import {
   useGetBlockFromHashQuery,
   useGetMaximumConfirmationDepthQuery,
@@ -9,6 +7,7 @@ import Loader from '@components/loader/loader';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
+import { Accordion, Box, Notification, Table } from '@kadena/react-ui';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';

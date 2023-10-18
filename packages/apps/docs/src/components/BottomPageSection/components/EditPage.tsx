@@ -1,6 +1,5 @@
-import { Button } from '@kadena/react-ui';
-
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import { Button } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React from 'react';
 

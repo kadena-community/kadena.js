@@ -1,7 +1,6 @@
-import { parseTemplate } from '../parseTemplate';
-
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { parseTemplate } from '../parseTemplate';
 
 describe('parseTemplate', () => {
   it('parses a simple template `Hello {{name}}`', () => {

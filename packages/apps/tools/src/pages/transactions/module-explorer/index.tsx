@@ -1,12 +1,3 @@
-import type {
-  ChainwebChainId,
-  ILocalCommandResult,
-} from '@kadena/chainweb-node-client';
-import { CHAINS } from '@kadena/chainweb-node-client';
-import { Breadcrumbs } from '@kadena/react-ui';
-
-import { getCookieValue, getQueryValue } from './utils';
-
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
 import type {
@@ -28,15 +19,22 @@ import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
 import type { INetworkData } from '@/utils/network';
 import { getAllNetworks } from '@/utils/network';
+import type {
+  ChainwebChainId,
+  ILocalCommandResult,
+} from '@kadena/chainweb-node-client';
+import { CHAINS } from '@kadena/chainweb-node-client';
+import { Breadcrumbs } from '@kadena/react-ui';
 import type { QueryClient } from '@tanstack/react-query';
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
 } from 'next/types';
-import useTranslation from 'next-translate/useTranslation';
 import React, { useCallback, useState } from 'react';
+import { getCookieValue, getQueryValue } from './utils';
 
 const QueryParams = {
   MODULE: 'module',

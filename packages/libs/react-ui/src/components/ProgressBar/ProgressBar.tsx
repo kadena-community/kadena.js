@@ -1,3 +1,6 @@
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 import {
   checkpointContainerStyle,
   circleColorVariant,
@@ -10,10 +13,6 @@ import {
   textColorVariant,
   textContainerStyle,
 } from './ProgressBar.css';
-
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface IProgressBarProps {
   checkpoints: ICheckpoint[];

@@ -1,5 +1,8 @@
 'use client';
-
+import { SystemIcon } from '@components/Icon';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React, { useContext } from 'react';
 import { AccordionContext } from './Accordion.context';
 import {
   accordionButtonClass,
@@ -8,11 +11,6 @@ import {
   accordionSectionClass,
   accordionToggleIconClass,
 } from './Accordion.css';
-
-import { SystemIcon } from '@components/Icon';
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React, { useContext } from 'react';
 
 export interface IAccordionSectionProps {
   children?: React.ReactNode;

@@ -1,3 +1,5 @@
+import type { FC } from 'react';
+import React, { useState } from 'react';
 import {
   StyledAccountContainer,
   StyledAccountNo,
@@ -6,9 +8,6 @@ import {
   StyledEyeOffIcon,
   StyledTitle,
 } from './styles';
-
-import type { FC } from 'react';
-import React, { useState } from 'react';
 
 export interface IAccountTextProps {
   title: string;

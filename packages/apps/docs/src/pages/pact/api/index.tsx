@@ -1,13 +1,12 @@
-import { Heading } from '@kadena/react-ui';
-
+import type { ILayout } from '@/Layout';
 import apiSpecs from '@/_generated/specs/pact.openapi.json';
 import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs/Specs';
-import type { ILayout } from '@/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { Heading } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { FC } from 'react';

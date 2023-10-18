@@ -1,6 +1,5 @@
-import { getAccountDetails } from '../../services/node-service';
-
 import DataLoader from 'dataloader';
+import { getAccountDetails } from '../../services/node-service';
 
 interface AccountDetailsKey {
   moduleName: string;

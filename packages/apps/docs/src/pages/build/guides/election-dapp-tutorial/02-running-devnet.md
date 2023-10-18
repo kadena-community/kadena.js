@@ -162,7 +162,6 @@ from the API.
 
 ```typescript
 // ./snippets/list-modules.ts
-
 import { Pact, createClient } from '@kadena/client';
 import { getApiHost, getChainId, getNetworkId } from './configuration';
 

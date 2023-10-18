@@ -1,15 +1,12 @@
 import { Stack } from '@kadena/react-ui';
-
-import { DocsLogo } from '../DocsLogo/DocsLogo';
-import { spacerClass } from '../styles.css';
-
-import { FooterLink } from './FooterLink';
-import { FooterText } from './FooterText';
-import { footerClass, footerWrapperClass } from './styles.css';
-
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
+import { DocsLogo } from '../DocsLogo/DocsLogo';
+import { spacerClass } from '../styles.css';
+import { FooterLink } from './FooterLink';
+import { FooterText } from './FooterText';
+import { footerClass, footerWrapperClass } from './styles.css';
 
 export const Footer: FC = () => {
   return (

@@ -1,5 +1,4 @@
 import type { ICommand } from '@kadena/types';
-
 import type { ISendRequestBody } from './interfaces/PactAPI';
 
 /**

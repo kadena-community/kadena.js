@@ -1,5 +1,3 @@
-import { NavHeader, useModal } from '@kadena/react-ui';
-
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import { AddNetworkModal } from '@/components/Global/AddNetworkModal';
@@ -8,9 +6,10 @@ import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
+import { NavHeader, useModal } from '@kadena/react-ui';
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import useTranslation from 'next-translate/useTranslation';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 

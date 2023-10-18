@@ -10,7 +10,6 @@ jest.mock('tweetnacl', () => {
     },
   };
 });
-
 import { genKeyPair } from '../genKeyPair';
 
 test('generates a new keyPair', () => {

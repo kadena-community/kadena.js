@@ -4,7 +4,7 @@ jest.mock('cross-fetch', () => {
     default: jest.fn(),
   };
 });
-
+import fetch from 'cross-fetch';
 import type { ICoin } from '../../../composePactCommand/test/coin-contract';
 import type {
   IQuicksignResponse,
@@ -15,8 +15,6 @@ import { getModule } from '../../../pact';
 import { signWithChainweaver } from '../signWithChainweaver';
 
 const coin: ICoin = getModule('coin');
-
-import fetch from 'cross-fetch';
 
 describe('signWithChainweaver', () => {
   jest.setTimeout(1000);

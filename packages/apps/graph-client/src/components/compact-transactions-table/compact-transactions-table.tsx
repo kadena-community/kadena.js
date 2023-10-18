@@ -1,11 +1,10 @@
-import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
-
 import type {
   GetAccountQuery,
   GetBlockFromHashQuery,
   GetChainAccountQuery,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
+import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
 import React from 'react';
 

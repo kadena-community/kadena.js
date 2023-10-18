@@ -1,5 +1,8 @@
 import { SystemIcon } from '@kadena/react-ui';
-
+import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
+import type { FC } from 'react';
+import React from 'react';
 import {
   linkClass,
   linksClass,
@@ -7,11 +10,6 @@ import {
   titleTextClass,
   titleWrapperClass,
 } from './styles.css';
-
-import Link from 'next/link';
-import useTranslation from 'next-translate/useTranslation';
-import type { FC } from 'react';
-import React from 'react';
 
 interface ILinkProps {
   title: string;

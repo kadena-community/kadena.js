@@ -1,8 +1,7 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
-import { styled } from '../../styles';
-
 import type * as Stitches from '@stitches/react';
+import { styled } from '../../styles';
 
 export const styleVariant = {
   primaryFilled: {

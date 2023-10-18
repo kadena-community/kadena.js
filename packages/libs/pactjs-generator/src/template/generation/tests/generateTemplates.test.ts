@@ -1,8 +1,7 @@
-import { parseTemplate } from '../../parsing/parseTemplate';
-import { generateTemplates } from '../generateTemplates';
-
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { parseTemplate } from '../../parsing/parseTemplate';
+import { generateTemplates } from '../generateTemplates';
 
 describe('generateDts', () => {
   it('generates a ts for `Hello, ${name}!`', () => {

@@ -1,17 +1,14 @@
 jest.mock('cross-fetch');
-
+import type { Response } from 'cross-fetch';
+import fetch from 'cross-fetch';
 import type {
   ICommandResult,
   IListenRequestBody,
   ListenResponse,
 } from '../interfaces/PactAPI';
 import { listen } from '../listen';
-
-import { mockFetch } from './mockdata/mockFetch';
 import { testURL } from './mockdata/Pact';
-
-import type { Response } from 'cross-fetch';
-import fetch from 'cross-fetch';
+import { mockFetch } from './mockdata/mockFetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(

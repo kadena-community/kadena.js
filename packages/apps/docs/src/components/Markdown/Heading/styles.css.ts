@@ -1,8 +1,5 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
-
-import { ulListClass } from '../UnorderedList/styles.css';
-
 import { getClassName } from '@/utils/getClassName';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 import {
   createVar,
   fallbackVar,
@@ -10,6 +7,7 @@ import {
   style,
   styleVariants,
 } from '@vanilla-extract/css';
+import { ulListClass } from '../UnorderedList/styles.css';
 
 const articleLinkOpacity = createVar();
 

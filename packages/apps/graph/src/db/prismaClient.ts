@@ -1,6 +1,5 @@
-import { dotenv } from '../utils/dotenv';
-
 import { PrismaClient } from '@prisma/client';
+import { dotenv } from '../utils/dotenv';
 
 const url: string | undefined = dotenv.DATABASE_URL;
 

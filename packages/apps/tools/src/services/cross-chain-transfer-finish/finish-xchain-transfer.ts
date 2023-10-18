@@ -1,11 +1,10 @@
+import client from '@/constants/client';
 import type {
   ChainId,
   ICommand,
   IContinuationPayloadObject,
 } from '@kadena/client';
 import { Pact } from '@kadena/client';
-
-import client from '@/constants/client';
 import Debug from 'debug';
 
 export interface ITransferResult {

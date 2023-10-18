@@ -1,9 +1,7 @@
 import { IconButton, Stack, Text } from '@kadena/react-ui';
-
-import usePageHelpful from './usePageHelpful';
-
 import type { FC } from 'react';
 import React from 'react';
+import usePageHelpful from './usePageHelpful';
 
 interface IProps {
   editLink?: string;

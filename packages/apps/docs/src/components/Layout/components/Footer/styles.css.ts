@@ -1,8 +1,6 @@
 import { sprinkles, vars } from '@kadena/react-ui/theme';
-
-import { $$footerMenu, $$pageWidth } from '../../global.css';
-
 import { style } from '@vanilla-extract/css';
+import { $$footerMenu, $$pageWidth } from '../../global.css';
 
 export const footerWrapperClass = style([
   sprinkles({

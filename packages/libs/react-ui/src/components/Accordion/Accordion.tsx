@@ -1,11 +1,9 @@
 'use client';
-
+import type { FC, FunctionComponentElement } from 'react';
+import React, { useState } from 'react';
 import type { IAccordionSectionProps } from '.';
 import type { OpenSections } from './Accordion.context';
 import { AccordionContext } from './Accordion.context';
-
-import type { FC, FunctionComponentElement } from 'react';
-import React, { useState } from 'react';
 
 export interface IAccordionRootProps {
   children?: FunctionComponentElement<IAccordionSectionProps>[];

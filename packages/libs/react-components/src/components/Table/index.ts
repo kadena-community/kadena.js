@@ -1,1 +1,1 @@
-export { Table, ITable } from './Table';
+export { ITable, Table } from './Table';

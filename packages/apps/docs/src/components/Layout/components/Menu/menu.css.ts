@@ -1,8 +1,6 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
-import { $$leftSideWidth, $$sideMenu } from '../../global.css';
-
 import { style, styleVariants } from '@vanilla-extract/css';
+import { $$leftSideWidth, $$sideMenu } from '../../global.css';
 
 export const menuClass = style([
   sprinkles({

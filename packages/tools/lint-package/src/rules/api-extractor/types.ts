@@ -1,7 +1,6 @@
-import type { Issues, Rule } from '../../types.js';
-
 import { accessSync, constants } from 'fs';
 import { join } from 'path';
+import type { Issues, Rule } from '../../types.js';
 
 const rule: Rule = ({ dir, file, pkg }) => {
   const issues: Issues = [];

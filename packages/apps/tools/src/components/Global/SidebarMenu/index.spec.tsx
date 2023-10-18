@@ -3,11 +3,9 @@ jest.mock('next/router', () => ({
     pathname: '/transactions',
   })),
 }));
-
-import { SidebarMenu } from './index';
-
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { SidebarMenu } from './index';
 
 describe('SidebarMenu', () => {
   it('renders correctly with menu items', () => {

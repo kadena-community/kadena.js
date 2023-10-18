@@ -1,11 +1,11 @@
-import { darkThemeClass } from '../src/styles';
-import { colorPalette } from '../src/styles/colors';
+import { DocsContainer } from '@storybook/addon-docs';
 import { type Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
-import { DocsContainer } from '@storybook/addon-docs';
-import { useDarkMode } from 'storybook-dark-mode';
-import '../src/styles/global.css';
 import React from 'react';
+import { useDarkMode } from 'storybook-dark-mode';
+import { darkThemeClass } from '../src/styles';
+import { colorPalette } from '../src/styles/colors';
+import '../src/styles/global.css';
 
 const preview: Preview = {
   parameters: {

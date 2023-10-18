@@ -1,7 +1,6 @@
 jest.mock('cross-fetch');
-import { callLocal } from '../callLocal';
-
 import fetch, { Response } from 'cross-fetch';
+import { callLocal } from '../callLocal';
 
 const mockedFetch = fetch as jest.MockedFunction<typeof fetch>;
 
