@@ -3,9 +3,7 @@ jest.mock('@kadena/chainweb-node-client', () => ({
   ...jest.requireActual('@kadena/chainweb-node-client'),
   poll: jest.fn(),
 }));
-
 import { poll } from '@kadena/chainweb-node-client';
-
 import { sleep, withCounter } from '../../utils/utils';
 import { pollStatus } from '../status';
 

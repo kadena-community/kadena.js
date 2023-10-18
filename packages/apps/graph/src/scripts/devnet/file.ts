@@ -1,7 +1,6 @@
-import { devnetConfig } from './config';
-
 import fs from 'fs';
 import path from 'path';
+import { devnetConfig } from './config';
 
 export interface IFileData {
   timestamp: number;

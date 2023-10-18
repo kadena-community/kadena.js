@@ -1,18 +1,14 @@
 jest.mock('cross-fetch');
-
 import { pactTestCommand, sign } from '@kadena/cryptography-utils';
 import { ensureSignedCommand } from '@kadena/pactjs';
 import type { ICommand, IUnsignedCommand, SignCommand } from '@kadena/types';
-
+import type { Response } from 'cross-fetch';
+import fetch from 'cross-fetch';
 import { createSendRequest } from '../createSendRequest';
 import type { ISendRequestBody, SendResponse } from '../interfaces/PactAPI';
 import { send } from '../send';
-
-import { mockFetch } from './mockdata/mockFetch';
 import { testURL } from './mockdata/Pact';
-
-import type { Response } from 'cross-fetch';
-import fetch from 'cross-fetch';
+import { mockFetch } from './mockdata/mockFetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(

@@ -1,3 +1,5 @@
+import type { FC } from 'react';
+import { useState } from 'react';
 import {
   body,
   bodyLeft,
@@ -10,9 +12,6 @@ import {
   tabClass,
   tabsClass,
 } from './ModalContent.css';
-
-import type { FC } from 'react';
-import { useState } from 'react';
 
 interface ModalContentProps {
   onClose: () => void;

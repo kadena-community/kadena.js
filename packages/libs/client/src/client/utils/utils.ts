@@ -1,5 +1,4 @@
 import type { ChainId } from '@kadena/types';
-
 import type { IPollRequestPromise } from '../interfaces/interfaces';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

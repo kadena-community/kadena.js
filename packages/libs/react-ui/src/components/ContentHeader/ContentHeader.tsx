@@ -1,9 +1,8 @@
-import { containerClass, descriptionClass } from './ContentHeader.css';
-
 import { SystemIcon } from '@components/Icon';
 import { Heading, Text } from '@components/Typography';
 import type { FC } from 'react';
 import React from 'react';
+import { containerClass, descriptionClass } from './ContentHeader.css';
 
 export interface IContentHeaderProps {
   icon: keyof typeof SystemIcon;

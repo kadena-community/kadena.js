@@ -1,7 +1,6 @@
-import { StyledContainer } from './styles';
-
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { StyledContainer } from './styles';
 
 export interface IContainerProps {
   type?: 'fluid' | 'fixed';

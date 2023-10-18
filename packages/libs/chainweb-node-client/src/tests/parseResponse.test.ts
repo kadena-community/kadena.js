@@ -1,6 +1,5 @@
-import { parseResponse } from '../parseResponse';
-
 import { Response } from 'cross-fetch';
+import { parseResponse } from '../parseResponse';
 
 test('should parse successful Response as expected type', async () => {
   interface IMockTestType {

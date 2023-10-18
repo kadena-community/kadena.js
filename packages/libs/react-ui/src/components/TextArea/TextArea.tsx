@@ -1,3 +1,8 @@
+import type { Sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
+import classNames from 'classnames';
+import type { FC, TextareaHTMLAttributes } from 'react';
+import React, { forwardRef } from 'react';
 import {
   containerClass,
   disabledClass,
@@ -5,12 +10,6 @@ import {
   textAreaClass,
   textAreaContainerClass,
 } from './TextArea.css';
-
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { sprinkles } from '@theme/sprinkles.css';
-import classNames from 'classnames';
-import type { FC, TextareaHTMLAttributes } from 'react';
-import React, { forwardRef } from 'react';
 
 export interface ITextareaProps
   extends Omit<

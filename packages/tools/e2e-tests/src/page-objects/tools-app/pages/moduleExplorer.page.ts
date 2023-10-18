@@ -1,6 +1,5 @@
-import { AsideComponent } from '../components/aside.component';
-
 import type { Locator, Page } from '@playwright/test';
+import { AsideComponent } from '../components/aside.component';
 
 export class ModuleExplorerPage {
   private readonly _page: Page;

@@ -1,9 +1,7 @@
 import { ModalProvider } from '@kadena/react-ui';
-
-import { PageHelpful } from './PageHelpful';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { PageHelpful } from './PageHelpful';
 
 const selectOptions: string[] = ['p', 'span'];
 

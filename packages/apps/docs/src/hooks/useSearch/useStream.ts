@@ -1,8 +1,7 @@
-import type { IConversation } from './useConversation';
-
 import type { StreamMetaData } from '@7-docs/edge';
 import { getDelta, splitTextIntoSentences } from '@7-docs/edge';
 import { useCallback, useEffect, useState } from 'react';
+import type { IConversation } from './useConversation';
 
 const embeddingModels = ['text-embedding-ada-002'];
 const completionModels = ['gpt-3.5-turbo', 'text-davinci-003'];

@@ -1,5 +1,3 @@
-import { statusVariant } from './InputWrapper.css';
-
 import type { SystemIcon } from '@components/Icon';
 import { Input } from '@components/Input';
 import type { IInputWrapperProps } from '@components/InputWrapper';
@@ -7,6 +5,7 @@ import { InputWrapper } from '@components/InputWrapper';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
+import { statusVariant } from './InputWrapper.css';
 
 type StoryProps = {
   helperText: string;

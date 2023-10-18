@@ -18,11 +18,9 @@ jest.mock('@/context/connect-wallet-context', () =>
     setSelectedAccount: jest.fn(),
   })),
 );
-
-import Layout from './index';
-
 import { render } from '@testing-library/react';
 import React from 'react';
+import Layout from './index';
 
 describe('Layout', () => {
   it.skip('renders correctly', () => {

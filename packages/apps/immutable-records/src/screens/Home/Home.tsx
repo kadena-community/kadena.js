@@ -1,3 +1,8 @@
+import { BackgroundGrid } from '@/components/BackgroundGrid/BackgroundGrid';
+import { Footer } from '@/components/Footer/Footer';
+import { NftBlock } from '@/components/NftBlock/NftBlock';
+import { clsx } from 'clsx';
+import type { FC } from 'react';
 import {
   container,
   leftSideBar,
@@ -12,12 +17,6 @@ import {
   yearLabelActive,
   yearsSidebar,
 } from './Home.css';
-
-import { BackgroundGrid } from '@/components/BackgroundGrid/BackgroundGrid';
-import { Footer } from '@/components/Footer/Footer';
-import { NftBlock } from '@/components/NftBlock/NftBlock';
-import { clsx } from 'clsx';
-import type { FC } from 'react';
 
 export const Home: FC = () => {
   // todo: state

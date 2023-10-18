@@ -16,7 +16,6 @@ import {
 } from '@kadena/client/fp';
 import { isSignedCommand } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
-
 import { listen, pollCreateSpv, submit } from '../util/client';
 import { asyncPipe, inspect } from '../util/fp-helpers';
 import { keyFromAccount } from '../util/keyFromAccount';

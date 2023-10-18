@@ -1,14 +1,12 @@
+import type { FC } from 'react';
+import React, { forwardRef } from 'react';
 import type { SystemIcons } from '../Icons';
-
 import {
   StyledIconWrapper,
   StyledInput,
   StyledInputWrapper,
   StyledLeadingText,
 } from './styles';
-
-import type { FC } from 'react';
-import React, { forwardRef } from 'react';
 
 export interface IInputProps
   extends Omit<

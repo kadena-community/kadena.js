@@ -1,10 +1,8 @@
-import { SystemIcon } from '@kadena/react-ui';
-
-import { headerClassVariants, headerIconLinkClass } from './styles.css';
-
 import { createSlug } from '@/utils/createSlug';
+import { SystemIcon } from '@kadena/react-ui';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { headerClassVariants, headerIconLinkClass } from './styles.css';
 
 type TagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 interface IProp {

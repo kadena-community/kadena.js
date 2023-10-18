@@ -1,1 +1,1 @@
-export { type ICardProps, Card } from './Card';
+export { Card, type ICardProps } from './Card';

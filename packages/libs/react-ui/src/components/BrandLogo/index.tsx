@@ -1,9 +1,8 @@
+import type { FC, SVGProps } from 'react';
+import React from 'react';
 import { KadenaLogo } from './svgs/Kadena';
 import { KadenaDevToolsLogo } from './svgs/KadenaDevTools';
 import { KadenaDocsLogo } from './svgs/KadenaDocs';
-
-import type { FC, SVGProps } from 'react';
-import React from 'react';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const logoVariants = ['Kadena', 'DevTools', 'Docs'] as const;

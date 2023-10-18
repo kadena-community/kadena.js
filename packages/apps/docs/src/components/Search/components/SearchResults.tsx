@@ -1,3 +1,7 @@
+import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
+import { Loading } from '@/components/Loading/Loading';
+import type { IConversation } from '@/hooks/useSearch/useConversation';
+import { filePathToRoute } from '@/pages/api/semanticsearch';
 import {
   Box,
   Button,
@@ -7,10 +11,13 @@ import {
   Tabs,
   useModal,
 } from '@kadena/react-ui';
-
+import classnames from 'classnames';
+import Link from 'next/link';
+import type { FC } from 'react';
+import React, { useEffect, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import type { IQueryResult } from '../../../types';
 import { removeUnnecessarySearchRecords } from '../utils';
-
 import {
   loadingWrapperClass,
   scrollBoxClass,
@@ -18,16 +25,6 @@ import {
 } from './../styles.css';
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
-
-import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
-import { Loading } from '@/components/Loading/Loading';
-import type { IConversation } from '@/hooks/useSearch/useConversation';
-import { filePathToRoute } from '@/pages/api/semanticsearch';
-import classnames from 'classnames';
-import Link from 'next/link';
-import type { FC } from 'react';
-import React, { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
 
 interface IProps {
   semanticResults: IQueryResult[] | undefined;

@@ -1,10 +1,8 @@
-import { Notification, Text } from '@kadena/react-ui';
-
-import { notificationClass } from './styles.css';
-
 import { updateConsent } from '@/utils/analytics';
+import { Notification, Text } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
+import { notificationClass } from './styles.css';
 
 export const CookieConsent: FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);

@@ -1,15 +1,20 @@
+import type { IPageProps } from '@/Layout';
+import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileCard';
+import { formatDateDistance } from '@/utils/dates';
 import { Tag } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import Link from 'next/link';
+import type { FC } from 'react';
+import React from 'react';
 import { baseGridClass } from '../basestyles.css';
+import { Template } from '../components/Template/Template';
+import { TitleHeader } from '../components/TitleHeader/TitleHeader';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '../components/articleStyles.css';
-import { Template } from '../components/Template/Template';
-import { TitleHeader } from '../components/TitleHeader/TitleHeader';
 import { globalClass } from '../global.css';
-
 import { ArticleMetadataItem } from './ArticleMetadataItem';
 import {
   articleTopMetadataClass,
@@ -19,14 +24,6 @@ import {
   pageGridClass,
   tagLinkClass,
 } from './styles.css';
-
-import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileCard';
-import type { IPageProps } from '@/Layout';
-import { formatDateDistance } from '@/utils/dates';
-import classNames from 'classnames';
-import Link from 'next/link';
-import type { FC } from 'react';
-import React from 'react';
 
 export const Blog: FC<IPageProps> = ({
   children,

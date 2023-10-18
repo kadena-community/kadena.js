@@ -1,5 +1,4 @@
 import type { IBase64Url } from '@kadena/types';
-
 import { base64UrlDecode } from './base64UrlDecode';
 import { strToUint8Array } from './strToUint8Array';
 

@@ -1,13 +1,12 @@
+import classNames from 'classnames';
+import type { FC, ForwardedRef, ReactNode } from 'react';
+import React, { forwardRef } from 'react';
 import {
   menuClass,
   menuInLayoutVariants,
   menuLayoutVariants,
   menuOpenVariants,
 } from './menu.css';
-
-import classNames from 'classnames';
-import type { FC, ForwardedRef, ReactNode } from 'react';
-import React, { forwardRef } from 'react';
 
 interface IProps {
   children?: ReactNode;

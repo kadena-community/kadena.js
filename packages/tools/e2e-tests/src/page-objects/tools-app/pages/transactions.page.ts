@@ -1,6 +1,5 @@
-import { AsideComponent } from '../components/aside.component';
-
 import type { Page } from '@playwright/test';
+import { AsideComponent } from '../components/aside.component';
 
 export class TransactionsPage {
   private readonly _page: Page;

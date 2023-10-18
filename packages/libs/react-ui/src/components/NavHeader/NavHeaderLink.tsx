@@ -1,11 +1,9 @@
 'use client';
-
-import { activeLinkClass, linkClass } from './NavHeader.css';
-import { NavHeaderNavigationContext } from './NavHeaderNavigation.context';
-
 import classNames from 'classnames';
 import type { FC, HTMLAttributeAnchorTarget, ReactNode } from 'react';
 import React, { useContext, useEffect, useRef } from 'react';
+import { activeLinkClass, linkClass } from './NavHeader.css';
+import { NavHeaderNavigationContext } from './NavHeaderNavigation.context';
 
 export interface INavHeaderLinkProps {
   children: ReactNode;

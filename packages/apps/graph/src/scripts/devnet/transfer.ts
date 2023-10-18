@@ -1,7 +1,6 @@
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-
 import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {

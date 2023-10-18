@@ -1,13 +1,10 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { ITreeProps } from '@kadena/react-ui';
 import { Button, Tree } from '@kadena/react-ui';
-
+import React, { useMemo } from 'react';
 import type { IChainModule } from '../types';
 import type { getModulesMap } from '../utils';
-
 import { moduleTitle } from './styles.css';
-
-import React, { useMemo } from 'react';
 
 export interface IResultsProps extends React.HTMLAttributes<HTMLDivElement> {
   data: ReturnType<typeof getModulesMap>;

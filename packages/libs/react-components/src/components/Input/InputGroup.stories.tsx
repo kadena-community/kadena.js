@@ -1,10 +1,9 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import { Input } from '.';
 import type { SystemIcons } from './../../';
 import type { IInputGroupProps } from './InputGroup';
 import { InputGroup } from './InputGroup';
-import { Input } from '.';
-
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 
 const meta: Meta<
   {

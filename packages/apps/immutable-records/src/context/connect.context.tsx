@@ -1,5 +1,4 @@
 'use client';
-
 import { WalletConnectClient } from '@/services/connect/connect.client';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext } from 'react';

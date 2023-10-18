@@ -1,6 +1,5 @@
 import { pactCommandToSigningRequest } from '../utils/pactCommandToSigningRequest';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
-
 import { connect, isConnected, isInstalled } from './eckoCommon';
 import type { IEckoSignResponse, IEckoSignSingleFunction } from './eckoTypes';
 

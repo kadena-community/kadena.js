@@ -1,9 +1,7 @@
 import { Text } from '@kadena/react-ui';
-
-import { textClass } from './styles.css';
-
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { textClass } from './styles.css';
 
 interface IProps {
   children?: ReactNode;

@@ -1,11 +1,10 @@
+import { IconButton } from '@components/IconButton';
+import type { FC } from 'react';
+import React from 'react';
 import { linkButtonClass, trClass } from './Table.css';
 import { Td } from './Td';
 import { Th } from './Th';
 import type { CompoundType } from './types';
-
-import { IconButton } from '@components/IconButton';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface ITrProps {
   children?: CompoundType<typeof Td> | CompoundType<typeof Th>;

@@ -1,12 +1,9 @@
 jest.mock('cross-fetch');
-
+import fetch from 'cross-fetch';
 import type { IPollRequestBody, IPollResponse } from '../interfaces/PactAPI';
 import { poll } from '../poll';
-
-import { mockFetch } from './mockdata/mockFetch';
 import { testURL } from './mockdata/Pact';
-
-import fetch from 'cross-fetch';
+import { mockFetch } from './mockdata/mockFetch';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(

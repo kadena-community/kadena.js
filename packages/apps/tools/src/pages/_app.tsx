@@ -1,14 +1,12 @@
-import '@/resources/styles/globals.css';
-
-import { ModalProvider } from '@kadena/react-ui';
-import { darkThemeClass } from '@kadena/react-ui/theme';
-
 import { Layout } from '@/components/Common';
 import { AppContextProvider, LayoutContextProvider } from '@/context';
 import { WalletConnectClientContextProvider } from '@/context/connect-wallet-context';
+import '@/resources/styles/globals.css';
+import { ModalProvider } from '@kadena/react-ui';
+import { darkThemeClass } from '@kadena/react-ui/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
+import type { AppProps } from 'next/app';
 import type { FC } from 'react';
 import React from 'react';
 

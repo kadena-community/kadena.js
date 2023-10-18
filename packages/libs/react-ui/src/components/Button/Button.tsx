@@ -1,3 +1,7 @@
+import { SystemIcon } from '@components/Icon';
+import cn from 'classnames';
+import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import React from 'react';
 import type { colorVariants, typeVariants } from './Button.css';
 import {
   activeClass,
@@ -7,11 +11,6 @@ import {
   defaultVariant,
   iconLoadingClass,
 } from './Button.css';
-
-import { SystemIcon } from '@components/Icon';
-import cn from 'classnames';
-import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
-import React from 'react';
 
 export interface IButtonProps
   extends Omit<

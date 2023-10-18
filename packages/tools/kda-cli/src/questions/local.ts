@@ -11,7 +11,6 @@ import {
   signWithChainweaver,
 } from '../pact/pact.js';
 import { isTruthy } from '../utils/bool.js';
-
 import type { IAnswers, IQuestion } from './questions.js';
 
 type ValidSigningAnswers = IAnswers & {

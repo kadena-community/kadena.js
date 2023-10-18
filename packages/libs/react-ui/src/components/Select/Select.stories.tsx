@@ -1,9 +1,8 @@
-import type { ISelectProps } from './Select';
-import { Select } from './Select';
-
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import type { ISelectProps } from './Select';
+import { Select } from './Select';
 
 const meta: Meta<ISelectProps> = {
   title: 'Form/Select',
