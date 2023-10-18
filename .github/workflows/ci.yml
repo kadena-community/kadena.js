@@ -9,7 +9,6 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
-
 jobs:
   build:
     name: Build & Unit Test
@@ -51,9 +50,8 @@ jobs:
       devnet:
         image: kadena/devnet
         options: >-
-          --memory 7g
-          --cpus 2
-          --health-cmd "curl --verbose --fail http://localhost:8080/info || exit 1"
+          --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
+          http://localhost:8080/info || exit 1"
         ports:
           - 8080:8080
 
@@ -86,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: [ "@kadena/tools" ]
+        package: ['@kadena/tools']
 
     steps:
       - uses: actions/checkout@v4
