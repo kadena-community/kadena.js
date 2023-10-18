@@ -1,4 +1,11 @@
-import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
+import {
+  Box,
+  Button,
+  Grid,
+  Input,
+  InputWrapper,
+  Select,
+} from '@kadena/react-ui';
 
 import {
   useGetBlocksSubscription,
@@ -44,7 +51,7 @@ const Home: React.FC = () => {
     switch (searchType) {
       case 'request-key':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(`/${routes.TRANSACTION}/${searchField}`);
+        router.push(`/${routes.TRANSACTIONS}/${searchField}`);
         break;
       case 'account':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -152,12 +159,6 @@ const Home: React.FC = () => {
           </Grid.Item>
         </Grid.Root>
 
-        {txs?.transactions && (
-          <div className={mainStyle}>
-            <CompactTransactionsTable transactions={txs.transactions} />
-          </div>
-        )}
-
         <div>
           {loadingRecentBlocks || loadingNewBlocks ? (
             'Loading...'
@@ -165,6 +166,13 @@ const Home: React.FC = () => {
             <ChainwebGraph blocks={allBlocks} />
           )}
         </div>
+
+        {txs?.transactions && (
+          <div>
+            <Box marginBottom="$10" />
+            <CompactTransactionsTable transactions={txs.transactions} />
+          </div>
+        )}
       </main>
     </div>
   );

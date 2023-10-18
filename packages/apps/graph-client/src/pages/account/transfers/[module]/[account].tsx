@@ -154,7 +154,7 @@ const AccountTransfers: React.FC = () => {
                         </Table.Td>
                         <Table.Td>
                           <Link
-                            href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}
+                            href={`${routes.TRANSACTIONS}/${edge?.node.requestKey}`}
                           >
                             {edge?.node.requestKey}
                           </Link>

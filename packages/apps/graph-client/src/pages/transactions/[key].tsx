@@ -7,6 +7,7 @@ import { Text } from '@components/text';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
+import routes from '@/constants/routes';
 
 const RequestKey: React.FC = () => {
   const router = useRouter();
@@ -111,9 +112,9 @@ const RequestKey: React.FC = () => {
                     </Table.Td>
                     <Table.Td>
                       <Link
-                        href={`/block/${transactionSubscription?.transaction?.block?.id}`}
+                        href={`${routes.BLOCK_OVERVIEW}/${transactionSubscription?.transaction?.block?.hash}`}
                       >
-                        {transactionSubscription?.transaction?.block?.id}
+                        {transactionSubscription?.transaction?.block?.hash}
                       </Link>
                     </Table.Td>
                   </Table.Tr>

@@ -149,7 +149,7 @@ type Query {
   maximumConfirmationDepth: Int!
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
-  transactions(accountName: String, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransactionsConnection!
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransactionsConnection!
   transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
 }
 

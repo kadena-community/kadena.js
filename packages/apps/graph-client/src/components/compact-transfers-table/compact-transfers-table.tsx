@@ -77,7 +77,9 @@ export const CompactTransfersTable = (
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  <Link href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}>
+                  <Link
+                    href={`${routes.TRANSACTIONS}/${edge?.node.requestKey}`}
+                  >
                     <span title={edge?.node.requestKey}>
                       {truncate(edge?.node.requestKey)}
                     </span>

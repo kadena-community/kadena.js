@@ -50,6 +50,7 @@ export async function transfer({
       gasLimit: 1000,
       chainId,
       senderAccount: sender.account,
+      ttl: 8 * 60 * 60, //8 hours
     })
     .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
