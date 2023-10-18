@@ -35,7 +35,7 @@ for informational purposes only.
 
 ### Binance
 
-Binance](https://www.binance.com)
+[https://www.binance.com](https://www.binance.com)
 
 - Official KDA exchange
 - Accessible to non-US residents
@@ -46,7 +46,7 @@ Binance](https://www.binance.com)
 
 ### Gate
 
-[Gate](https://www.gate.io)
+[https://www.gate.io](https://www.gate.io)
 
 - Official KDA exchange
 - Accessible globally
@@ -57,7 +57,7 @@ Binance](https://www.binance.com)
 
 ### OKX
 
-[OKX](https://www.okx.com/)
+[https://www.okx.com](https://www.okx.com/)
 
 - Official KDA exchange
 - Accessible to non-US residents
@@ -68,7 +68,7 @@ Binance](https://www.binance.com)
 
 ### Kucoin
 
-[Kucoin](https://www.kucoin.com)
+[https://www.kucoin.com](https://www.kucoin.com)
 
 - Official KDA exchange
 - Accessible globally
@@ -80,7 +80,7 @@ Binance](https://www.binance.com)
 
 ### CoinMetro
 
-[CoinMetro](https://coinmetro.com)
+[https://coinmetro.com](https://coinmetro.com)
 
 - Official KDA exchange
 - Accessible globally
@@ -93,7 +93,7 @@ Binance](https://www.binance.com)
 
 ### Bittrex Global
 
-[Bittrex Global](https://global.bittrex.com)
+[https://global.bittrex.com](https://global.bittrex.com)
 
 - Official KDA exchange
 - Accessible to non-US residents
@@ -103,7 +103,7 @@ Binance](https://www.binance.com)
 
 ### Coinex
 
-[Coinex](https://www.coinex.com)
+[https://www.coinex.com](https://www.coinex.com)
 
 - Unofficial KDA exchange
 - Accessible globally

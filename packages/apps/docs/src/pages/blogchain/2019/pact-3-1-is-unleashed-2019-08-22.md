@@ -53,8 +53,7 @@ module with that much extra security. This allows users to write the
 specifications and laws for a module. Interfaces can thus provide robust
 hierarchies of safe, secure, and _reusable_ smart contract behaviors with the
 help of Formal Verification. You can read more about interfaces and see example
-code
-[here](https://pact-language.readthedocs.io/en/stable/pact-reference.html#interfaces).
+code [here](/pact/reference/concepts#interfacesh394925690).
 
 ### Verified Governance
 

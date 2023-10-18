@@ -1,6 +1,8 @@
 import type { ChainId, IClient } from '@kadena/client';
 import { createClient, Pact } from '@kadena/client';
 
+import { dotenv } from '../utils/dotenv';
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type ChainModuleAccountDetails = {
   account: string;
@@ -13,7 +15,7 @@ export type ChainModuleAccountDetails = {
 
 function getClient(chainId: string): IClient {
   return createClient(
-    `http://${process.env.NETWORK_HOST}/chainweb/0.0/${process.env.NETWORK_ID}/chain/${chainId}/pact`,
+    `http://${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
   );
 }
 
@@ -31,7 +33,7 @@ export async function getAccountDetails(
       .setMeta({
         chainId: chainId as ChainId,
       })
-      .setNetworkId(process.env.NETWORK_ID as string)
+      .setNetworkId(dotenv.NETWORK_ID as string)
       .createTransaction(),
   );
 

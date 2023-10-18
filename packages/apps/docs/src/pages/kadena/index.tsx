@@ -87,12 +87,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 >
                   Pact Smart Contract
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/kadena/whitepapers/kuro-layer-2"
-                >
-                  Kuro Layer 2
-                </Link>
               </BrowseSection>
             </DocsCard>
           </Grid.Item>

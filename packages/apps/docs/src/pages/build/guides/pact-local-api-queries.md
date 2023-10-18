@@ -11,8 +11,7 @@ tags: [pact, tutorial, local api]
 # Pact Local API queries
 
 Chainweb supports the use of the Pact smart contract language, including the
-`local` API endpoints defined in
-[the documentation](https://pact-language.readthedocs.io/en/stable/pact-reference.html#rest-api).
+`local` API endpoints defined in [the documentation](/pact/reference/rest-api).
 Using the `local` API endpoints on any Chainweb node, you can dry-run Pact smart
 contracts using actual data in the coin contract tables. This is perfect for
 checking the viability of your smart contracts, as well as to check account data
@@ -22,10 +21,10 @@ without necessarily having to spend tokens!
 
 Follow the instructions at the [Welcome to Pact](/pact/beginner) section to get
 started with Pact learning the basics. For a more straightforward and technical
-introduction, just [readthedocs](https://pact-language.readthedocs.io).
+introduction, just [read the docs](/pact/reference).
 
 In particular, for any script going on Chainweb, you'll need to understand the
-[API request format](https://pact-language.readthedocs.io/en/stable/pact-reference.html#api-request-formatter).
+[API request format](/pact/reference/rest-api#api-request-formatterh-1762879533).
 
 ### Creating A Local API Request
 

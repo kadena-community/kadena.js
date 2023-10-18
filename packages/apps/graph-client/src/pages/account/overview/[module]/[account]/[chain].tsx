@@ -123,9 +123,9 @@ const ChainAccount: React.FC = () => {
                 <Grid.Item>
                   <CompactTransactionsTable
                     viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
-                      router.query.module
-                    }/${router.query.account}${
-                      router.query.chain ? `?chainId=${router.query.chain}` : ''
+                      router.query.module as string
+                    }/${router.query.account as string}?chain=${
+                      router.query.chain as string
                     }`}
                     transactions={chainAccountQuery.chainAccount.transactions}
                   />

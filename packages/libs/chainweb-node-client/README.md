@@ -19,9 +19,9 @@ Chainweb Node Client is a typed JavaScript wrapper with fetch to call
 chainweb-node API endpoints. These endpoints are broken down into three
 categories:
 
-1.  blockchain - wrapper around chainweb-node p2p api endpoints
-2.  pact - [https://api.chainweb.com/openapi/pact.html][2]
-3.  rosetta - [https://api.chainweb.com/openapi/#tag/rosetta][3]
+1. blockchain - wrapper around chainweb-node p2p api endpoints
+2. pact - [https://api.chainweb.com/openapi/pact.html][2]
+3. rosetta - [https://api.chainweb.com/openapi/#tag/rosetta][3]
 
 The Pact API will contain the following functions:
 

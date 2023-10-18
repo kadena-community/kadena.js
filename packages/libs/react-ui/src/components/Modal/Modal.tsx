@@ -47,7 +47,7 @@ export const Modal: FC<IModalProps> = ({ children, title, onClose }) => {
             <section className={modal}>
               <Card fullWidth>
                 <div className={titleWrapper}>
-                  <Heading as="h2">{title}</Heading>
+                  <Heading as="h3">{title}</Heading>
                 </div>
 
                 <button

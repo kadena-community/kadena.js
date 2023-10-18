@@ -48,20 +48,20 @@ output from the REPL.
 https://www.youtube.com/watch?v=bUqJJ3q-OLM
 
 Subscribe to our
-[ YouTube channel](https://www.youtube.com/channel/UCB6-MaxD2hlcGLL70ukHotA) to
+[YouTube channel](https://www.youtube.com/channel/UCB6-MaxD2hlcGLL70ukHotA) to
 access the latest Pact tutorials.
 
 ## Hello World Overview
 
 To get started, navigate to the Pact online editor at
-(pact.kadena.io)[http://pact.kadena.io]. Once on the site, you can open the
+[pact.kadena.io](http://pact.kadena.io). Once on the site, you can open the
 “Hello World” module. To do this, navigate to the module explorer on the tool
 panel and open the “Hello World” example.
 
 :::info
 
 If you’re not familiar with the module explorer, you can learn more
-(here)[/learn-pact/beginner/web-editor#module-explorer].
+[here](/pact/beginner/web-editor#module-explorerh-261281933).
 
 :::
 
@@ -106,11 +106,10 @@ our GitHub.
 ### Create a Keyset
 
 As you can see, the “Hello World” smart contract starts by defining and reading
-a keyset.
-[Keysets](https://pact-language.readthedocs.io/en/latest/pact-reference.html#confidential-keysets)
-are a way to specify credentials for a user of the smart contract. The code you
-write within the smart contract can restrict access to users that own the
-keysets you define. You will see this done in the Hello World module.
+a keyset. [Keysets](/pact/reference/functions/keysets) are a way to specify
+credentials for a user of the smart contract. The code you write within the
+smart contract can restrict access to users that own the keysets you define. You
+will see this done in the Hello World module.
 
 Line 16 (shown below) defines and reads a keyset named admin-keyset.
 
@@ -146,10 +145,8 @@ The error message should now be gone.
 ### Create the Module
 
 Now that you have created a keyset, it’s time to build the module for your smart
-contract.
-[Modules](https://pact-language.readthedocs.io/en/latest/pact-reference.html#module-declaration)
-are essential in Pact. They contain all the logic needed to run your smart
-contract.
+contract. [Modules](/pact/reference/concepts#module-declarationh676938214) are
+essential in Pact. They contain all the logic needed to run your smart contract.
 
 The syntax used to create a module is shown below. This line defines a module
 named helloWorld. It also gives the admin-keyset access to the code within this
@@ -164,8 +161,7 @@ module.
 ### Define a Function
 
 The next step is to create the contract functions. Functions are defined within
-Pact modules using the keyword
-(defun)[https://pact-language.readthedocs.io/en/latest/pact-reference.html#defun].
+Pact modules using the keyword [defun](/pact/reference/syntax#defunh95462750).
 For this smart contract, you’ll define a function named **hello** that takes a
 parameter called **name**.
 
@@ -179,9 +175,8 @@ parameter called **name**.
 
 Within this function, you’ll write a formatted line to output into the REPL. You
 can do this using the keyword
-[format](https://pact-language.readthedocs.io/en/latest/pact-functions.html#format).
-Format allows you to manipulate strings and will help you specify the output of
-the function.
+[format](/pact/reference/functions#formath-1268779017). Format allows you to
+manipulate strings and will help you specify the output of the function.
 
 ```pact title=" "
 (format "Hello {}!" [name])

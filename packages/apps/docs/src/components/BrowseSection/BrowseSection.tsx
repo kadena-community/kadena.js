@@ -38,7 +38,7 @@ const BrowseSection: BrowseSectionType = ({
   /* eslint-disable-next-line react/prop-types */
   title,
   /* eslint-disable-next-line react/prop-types */
-  titleAs = 'h6',
+  titleAs = 'h5',
   /* eslint-disable-next-line react/prop-types */
   direction = 'column',
   /* eslint-disable-next-line react/prop-types */

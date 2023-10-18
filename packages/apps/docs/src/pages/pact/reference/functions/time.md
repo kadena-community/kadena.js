@@ -54,7 +54,7 @@ pact> (diff-time (parse-time "%T" "16:00:00") (parse-time "%T" "09:30:00"))
 _format_&nbsp;`string` _time_&nbsp;`time` _&rarr;_&nbsp;`string`
 
 Format TIME using FORMAT. See
-["Time Formats" docs](pact-reference.html#time-formats) for supported formats.
+["Time Formats" docs](/pact/reference/time-formats) for supported formats.
 
 ```pact
 pact> (format-time "%F" (time "2016-07-22T12:00:00Z"))
@@ -92,7 +92,7 @@ pact> (add-time (time "2016-07-22T12:00:00Z") (minutes 1))
 _format_&nbsp;`string` _utcval_&nbsp;`string` _&rarr;_&nbsp;`time`
 
 Construct time from UTCVAL using FORMAT. See
-["Time Formats" docs](pact-reference.html#time-formats) for supported formats.
+["Time Formats" docs](/pact/reference/time-formats) for supported formats.
 
 ```pact
 pact> (parse-time "%F" "2016-09-12")

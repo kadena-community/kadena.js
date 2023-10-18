@@ -7,21 +7,21 @@ import type { FC, ReactNode } from 'react';
 import React from 'react';
 
 export interface ILinkProps {
-  href?: string;
-  target?: '_blank' | '_self' | '_parent' | '_top';
-  children: ReactNode;
-  icon?: keyof typeof SystemIcon;
-  iconAlign?: 'left' | 'right';
   asChild?: boolean;
   block?: boolean;
+  children: ReactNode;
+  href?: string;
+  icon?: keyof typeof SystemIcon;
+  iconAlign?: 'left' | 'right';
+  target?: '_blank' | '_self' | '_parent' | '_top';
 }
 
 export const Link: FC<ILinkProps> = ({
+  asChild = false,
+  block = false,
   children,
   icon,
   iconAlign = 'left',
-  asChild = false,
-  block = false,
   ...restProps
 }) => {
   const Icon = icon && SystemIcon[icon];
