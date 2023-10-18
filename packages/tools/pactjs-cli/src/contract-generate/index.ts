@@ -14,6 +14,7 @@ export interface IContractGenerateOptions {
   namespace?: string;
   api?: string;
   chain?: number;
+  parseTreePath?: string;
   network?: keyof typeof networkMap;
 }
 
@@ -35,6 +36,7 @@ const Options = z
     chain: z.number().optional(),
     namespace: z.string().optional(),
     network: z.enum(['mainnet', 'testnet']),
+    parseTreePath: z.string().optional(),
   })
   .refine(({ file, contract }) => {
     if (file === undefined && contract === undefined) {
@@ -94,6 +96,10 @@ export function contractGenerateCommand(
       '--network <network>',
       'The networkId to retrieve the contract from, e.g. "testnet". Defaults to mainnet',
       'mainnet',
+    )
+    .option(
+      '--parse-tree-path <string>',
+      'path to store parsed three; if empty the three will not be stored',
     )
     .action((args: IContractGenerateOptions) => {
       try {
