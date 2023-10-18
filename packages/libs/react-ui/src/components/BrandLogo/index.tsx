@@ -1,12 +1,13 @@
-import { KadenaLogo } from './variants/Kadena';
-import { KadenaDevToolsLogo } from './variants/KadenaDevTools';
-import { KadenaDocsLogo } from './variants/KadenaDocs';
+import { KadenaLogo } from './svgs/Kadena';
+import { KadenaDevToolsLogo } from './svgs/KadenaDevTools';
+import { KadenaDocsLogo } from './svgs/KadenaDocs';
 
 import type { FC, SVGProps } from 'react';
 import React from 'react';
 
-export type LogoVariant = 'Kadena' | 'DevTools' | 'Docs';
-export const logoVariants: LogoVariant[] = ['Kadena', 'DevTools', 'Docs'];
+// eslint-disable-next-line @kadena-dev/typedef-var
+export const logoVariants = ['Kadena', 'DevTools', 'Docs'] as const;
+export type LogoVariant = (typeof logoVariants)[number];
 
 interface IBrandLogoProps {
   variant?: LogoVariant;
@@ -20,6 +21,7 @@ const renderSwitch = (
       return KadenaDocsLogo;
     case 'DevTools':
       return KadenaDevToolsLogo;
+    case 'Kadena':
     default:
       return KadenaLogo;
   }

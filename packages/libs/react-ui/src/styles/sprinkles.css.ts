@@ -106,7 +106,7 @@ const responsiveProperties = defineProperties({
     },
     gap: vars.sizes,
     gridGap: vars.sizes,
-    overflow: ['hidden'],
+    overflow: ['hidden', 'visible', 'scroll', 'auto'],
     pointerEvents: ['none', 'auto'],
     opacity: [0, 1],
     textAlign: ['left', 'center', 'right'],

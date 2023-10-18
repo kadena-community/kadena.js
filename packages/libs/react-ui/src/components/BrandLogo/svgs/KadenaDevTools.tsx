@@ -8,6 +8,7 @@ const KadenaDevToolsLogo: React.FC<SVGProps<SVGSVGElement>> = () => (
     height="44"
     viewBox="0 0 146 44"
     fill="none"
+    aria-label="Kadena Dev Tools"
   >
     <path
       d="M25.2418 11.3036H18.9678L11.5837 19.0524V25.5088L25.2418 11.3036Z"

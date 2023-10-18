@@ -8,6 +8,7 @@ export const KadenaLogo: React.FC<SVGProps<SVGSVGElement>> = () => (
     height="40"
     viewBox="0 0 40 40"
     fill="none"
+    aria-label="Kadena"
   >
     <g clipPath="url(#clip0_3_15)">
       <path
