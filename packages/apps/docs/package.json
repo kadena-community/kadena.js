@@ -62,7 +62,7 @@
     "rehype-pretty-code": "~0.9.5",
     "rehype-raw": "^7.0.0",
     "remark": "~14.0.3",
-    "remark-frontmatter": "~4.0.1",
+    "remark-frontmatter": "~5.0.0",
     "remark-gfm": "~3.0.1",
     "shiki": "~0.14.2",
     "styled-components": "~5.3.10"
