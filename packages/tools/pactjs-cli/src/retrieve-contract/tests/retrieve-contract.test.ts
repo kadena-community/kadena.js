@@ -1,27 +1,29 @@
-jest.mock('fs');
-jest.mock('../../utils/retrieveContractFromChain');
 import { Command } from 'commander';
 import { writeFileSync } from 'fs';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import path from 'path';
-import { retrieveContractFromChain } from '../../utils/retrieveContractFromChain';
+import * as RCFC from '../../utils/retrieveContractFromChain';
 import { retrieveContract } from '../retrieve-contract';
 
-const mockedWriteFileSync = writeFileSync as jest.MockedFunction<
-  typeof writeFileSync
->;
-mockedWriteFileSync.mockImplementation(
-  mockedWriteFileSync as jest.MockedFunction<typeof writeFileSync>,
-);
+const restHandlers = [
+  rest.post(
+    'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact/api/v1/local',
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({ result: { data: { code: 'some pactCode' } } }),
+      );
+    },
+  ),
+];
 
-const mockedRetrieveContractFromChain =
-  retrieveContractFromChain as jest.MockedFunction<
-    typeof retrieveContractFromChain
-  >;
-mockedRetrieveContractFromChain.mockImplementation(
-  mockedRetrieveContractFromChain as jest.MockedFunction<
-    typeof retrieveContractFromChain
-  >,
-);
+vi.mock('fs', () => ({ writeFileSync: vi.fn() }));
+
+const server = setupServer(...restHandlers);
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 const createAndRunProgram = async (): Promise<void> => {
   const program = new Command('retrieve-contract');
@@ -37,31 +39,26 @@ const createAndRunProgram = async (): Promise<void> => {
 };
 
 describe('retrieve-contract', () => {
-  afterAll(() => {
-    jest.restoreAllMocks();
-  });
-
   it('calls retrieveContractFromChain', async () => {
-    mockedRetrieveContractFromChain.mockResolvedValue('some code');
-    mockedWriteFileSync.mockReturnValue();
+    const spy = vi.spyOn(RCFC, 'retrieveContractFromChain');
+
     await createAndRunProgram();
 
-    expect(mockedRetrieveContractFromChain.mock.calls[0]).toEqual([
+    expect(spy).toHaveBeenCalledWith(
       'free.crankk01',
       'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact',
       0,
       'mainnet',
-    ]);
+    );
   });
 
   it('writes the contract to file', async () => {
-    mockedRetrieveContractFromChain.mockResolvedValue('some code');
-    mockedWriteFileSync.mockReturnValue();
     await createAndRunProgram();
 
-    expect(mockedWriteFileSync.mock.calls[0][0]).toContain(
-      path.join('some', 'path', 'to', 'contract.pact'),
+    expect(writeFileSync).toBeCalledWith(
+      path.resolve('some', 'path', 'to', 'contract.pact'),
+      'some pactCode',
+      'utf8',
     );
-    expect(mockedWriteFileSync.mock.calls[0][1]).toEqual('some code');
   });
 });
