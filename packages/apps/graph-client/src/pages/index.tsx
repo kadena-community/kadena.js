@@ -3,6 +3,7 @@ import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
 import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
+  useGetTransactionsQuery,
 } from '@/__generated__/sdk';
 import { ChainwebGraph } from '@components/chainweb';
 import { mainStyle } from '@components/main/styles.css';
@@ -15,6 +16,7 @@ import isEqual from 'lodash.isequal';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 
 const Home: React.FC = () => {
   const router = useRouter();
@@ -24,6 +26,13 @@ const Home: React.FC = () => {
     useGetRecentHeightsQuery({ variables: { count: 3 } });
   const previousNewBlocks = usePrevious(newBlocks);
   const previousRecentBlocks = usePrevious(recentBlocks);
+
+  const {
+    loading: loadingTxs,
+    data: txs,
+    error: txsError,
+    fetchMore: fetchMoreTxs,
+  } = useGetTransactionsQuery({ variables: { first: 5 } });
 
   const { allBlocks, addBlocks } = useParsedBlocks();
 
@@ -142,6 +151,12 @@ const Home: React.FC = () => {
             <Button onClick={search}>Search</Button>
           </Grid.Item>
         </Grid.Root>
+
+        {txs?.transactions && (
+          <div className={mainStyle}>
+            <CompactTransactionsTable transactions={txs.transactions} />
+          </div>
+        )}
 
         <div>
           {loadingRecentBlocks || loadingNewBlocks ? (
