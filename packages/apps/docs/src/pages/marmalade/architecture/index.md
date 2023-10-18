@@ -46,9 +46,9 @@ Manager provides below.
 In Marmalade v1, fixed-quote-policy served as an example for handling the
 fungible transfers at sales. With the upgrade to Marmalade V2, we have
 integrated this fungible transfer feature inside the Policy Manager, which
-includes various interactions between the Policy Manager, quote manager, and
-external contracts. This allows secure escrowed transfers, creative auctions,
-guaranteed royalties, and standardized processes within marketplaces.
+includes various interactions between the Policy Manager, and sale contracts.
+This allows secure escrowed transfers, creative auctions, guaranteed royalties,
+and standardized processes within marketplaces.
 
 **Escrows**
 
@@ -63,35 +63,12 @@ quoted price from the buyer to an escrow account, disburses a portion of the
 reserved fees to the policies, and then remits the remaining quoted price to the
 seller.
 
-**Reserve Sale**
+## Sale Whitelists
 
-Within the Policy Manager, there exists a function called
-`reserve-sale-at-price`, which is intentionally designed to be called directly,
-rather than through the Ledger. This function is to be executed between the
-‘offer’ and ‘buy’ actions and can only be initiated when the initial ‘quote’ is
-established with the use of ‘quote-guards’, and one of the `quote-guards` signs
-the transaction. Further details on ‘quote guards’ will be provided in the Quote
-Manager section below.
-
-The primary purpose of the function is to update the quote price and reserve the
-buyer. However, it also provides the capability for an external contract,
-particularly one related to bidding, to reserve the sale.
-
-## Quote Manager
-
-The Quote Manager is a contract responsible for adding or updating quotes, and
-these quotes that function within the Quote Manager are exclusively callable by
-the Policy Manager.
-
-**Quote Guards**
-
-As briefly introduced in the `Reserve Sale` section, quote guards are a list of
-guards that have the ability to call the function, `reserve-sale-at-price`. The
-seller adds the quote guards at `offer`, and also has the ability to add or
-remove quote guards after making the offer, which would be analogous to
-participating in multiple auctions simultaneously. If the seller wants the
-quoted price to be unchanged, the quote guards field can be left as an empty
-list.
+The main feature of the sale contracts is that the function controls the final price
+of the quote. By managing safe sale contracts, we can provide Marmalade users a
+safe way to participate in various sale features such as creative auctions,
+while also guaranteeing royalty payout. 
 
 **Offical GitHub Link**:
 https://github.com/kadena-io/marmalade/blob/v2/test-marmalade-v2.md
