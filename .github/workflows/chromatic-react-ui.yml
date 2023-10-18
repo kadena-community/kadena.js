@@ -22,14 +22,14 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build @kadena/react-ui
-        run: pnpm build --filter @kadena/react-ui
+        run: pnpm turbo build --filter @kadena/react-ui
 
       - name: Publish Storybook
         uses: chromaui/action@v1

@@ -10,26 +10,32 @@ jobs:
   chromatic:
     name: Visual Regression Tests
     runs-on: ubuntu-latest
+
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # 👈 Required to retrieve git history, needed to determine diffs.
           show-progress: false
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
       - uses: pnpm/action-setup@v2
         with:
           version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
 
       - name: pnpm install
         run: pnpm install
 
       - name: pnpm build (internal dependencies) # build all internal dependencies of docs but not docs itself
         run: |
-          pnpm run build --filter=@kadena/docs^...
+          pnpm turbo build --filter=@kadena/docs^...
 
       - name: Publish Storybook
         uses: chromaui/action@v1
