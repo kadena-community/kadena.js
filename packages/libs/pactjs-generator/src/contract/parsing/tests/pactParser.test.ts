@@ -60,7 +60,7 @@ describe('pactParser', () => {
   });
 
   it('should use the parent contract namespace for used contracts if they dont have a namespace', async () => {
-    const getContract = jest.fn((name: string) => {
+    const getContract = vi.fn((name: string) => {
       switch (name) {
         case 'custom-namespace.test':
           return Promise.resolve(`
@@ -104,7 +104,7 @@ describe('pactParser', () => {
   });
 
   it('should try both with and without parent namespace if module does not have namespace', async () => {
-    const getContract = jest.fn((name: string) => {
+    const getContract = vi.fn((name: string) => {
       switch (name) {
         case 'custom-namespace.test':
           return Promise.resolve(`
