@@ -142,8 +142,8 @@ export const getTransactions: DocumentNode = gql`
   ${CORE_TRANSACTION_FIELDS}
 
   query getTransactions(
-    $moduleName: String!
-    $accountName: String!
+    $moduleName: String
+    $accountName: String
     $chainId: String
     $after: String
     $before: String
