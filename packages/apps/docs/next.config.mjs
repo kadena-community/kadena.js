@@ -4,12 +4,6 @@ import remarkFrontmatterToProps from './src/scripts/remarkFrontmatterToProps.mjs
 import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.mjs';
 import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.mjs';
 import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.mjs';
-import remarkAdmonitions from './src/scripts/remarkAdmonitions.mjs';
-import remarkFixAbsoluteLinks from './src/scripts/remarkFixAbsoluteLinks.mjs';
-import remarkCheckForCodeTitle from './src/scripts/remarkCheckForCodeTitle.mjs';
-import remarkYoutube from './src/scripts/remarkYoutube.mjs';
-import remarkFigureOutOfParagraph from './src/scripts/remarkFigureOutOfParagraph.mjs';
-import remarkTwitter from './src/scripts/remarkTwitter.mjs';
 import remarkGfm from 'remark-gfm';
 import mdx from '@next/mdx';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
@@ -77,12 +71,6 @@ const withMDX = mdx({
       remarkHeadersToProps,
       remarkSideMenuToProps,
       remarkPropsToStaticRender,
-      remarkAdmonitions,
-      remarkFixAbsoluteLinks,
-      remarkYoutube,
-      remarkTwitter,
-      remarkCheckForCodeTitle,
-      remarkFigureOutOfParagraph,
     ],
     rehypePlugins: [[rehypePrettyCode, options]],
     // If you use `MDXProvider`, uncomment the following line.

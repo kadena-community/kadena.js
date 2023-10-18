@@ -36,7 +36,7 @@ const remarkSideMenuToProps = () => {
     tree.children.push({
       type: 'props',
       data: {
-        leftMenuTree: itemsReduced,
+        leftMenuTree: [],
       },
     });
 
