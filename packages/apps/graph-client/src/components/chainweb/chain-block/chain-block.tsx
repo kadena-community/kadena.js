@@ -7,7 +7,7 @@ import { Box } from '@components/box';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
 import { useChainTree } from '@context/chain-tree-context';
-import { InfoCircledIcon, TimerIcon } from '@radix-ui/react-icons';
+import { InfoCircledIcon, RocketIcon, TimerIcon } from '@radix-ui/react-icons';
 import { env } from '@utils/env';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -68,12 +68,12 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
                 : chainTree[block.chainId][block.hash].confirmationDepth}
             </Text>
 
-            {/* {block.transactions.totalCount > 0 && (
+            {block.transactions.totalCount > 0 && (
               <>
                 <RocketIcon />
                 <Text as="span">{block.transactions.totalCount} txs</Text>
               </>
-            )} */}
+            )}
           </Box>
         </Content>
       ) : null}
