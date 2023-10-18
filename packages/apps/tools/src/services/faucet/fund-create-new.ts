@@ -43,25 +43,18 @@ export const fundCreateNewAccount = async (
   const transaction = Pact.builder
     .execution(
       Pact.modules['user.coin-faucet']['create-and-request-coin'](
-        account,
+        // @ts-ignore
+        () => `(create-principal (read-keyset "${KEYSET_NAME}"))`,
         readKeyset(KEYSET_NAME),
         new PactNumber(amount).toPactDecimal(),
       ),
     )
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .addSigner(FAUCET_PUBLIC_KEY, (withCap: any) => [withCap('coin.GAS')])
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .addSigner(keyPair.publicKey, (withCap: any) => [
       withCap(
         'coin.TRANSFER',
         SENDER_ACCOUNT,
         account,
-        new PactNumber(amount).toPactDecimal(),
-      ),
-      withCap(
-        'coin.TRANSFER',
-        SENDER_ACCOUNT,
-        `create-principal (read-keyset '${KEYSET_NAME})`,
         new PactNumber(amount).toPactDecimal(),
       ),
     ])

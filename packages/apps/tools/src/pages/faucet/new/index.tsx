@@ -84,7 +84,7 @@ const NewAccountFaucetPage: FC = () => {
       ? ''
       : pubKeys.length === 1
       ? `k:${pubKeys[0]}`
-      : `w:${hash(pubKeys.join(''))}:${pred}`;
+      : `w:${hash([...pubKeys].reverse().join(''))}:${pred}`;
 
   const schema = z.object({
     name: z.string(),
