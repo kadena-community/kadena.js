@@ -32,7 +32,7 @@
     "eslint": "^8.45.0",
     "graphql": "~16.8.0",
     "lodash.isequal": "~4.5.0",
-    "next": "13.4.5",
+    "next": "13.5.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -50,11 +50,10 @@
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "@types/react-dom": "18.2.7",
-    "@vanilla-extract/css": "1.12.0",
+    "@vanilla-extract/css": "1.13.0",
     "@vanilla-extract/next-plugin": "2.3.1",
     "concurrently": "^7.2.2",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
+    "prettier": "~3.0.3",
     "typescript": "5.2.2"
   }
 }

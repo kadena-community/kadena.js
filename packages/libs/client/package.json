@@ -51,7 +51,7 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
-    "@microsoft/api-extractor": "^7.37.0",
+    "@microsoft/api-extractor": "^7.38.0",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/debug": "~4.1.7",
     "@types/jest": "^29.5.3",
@@ -59,8 +59,7 @@
     "@walletconnect/types": "~2.8.1",
     "eslint": "^8.45.0",
     "jest": "^29.7.0",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
+    "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2"
   },
