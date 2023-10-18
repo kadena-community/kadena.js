@@ -19,7 +19,7 @@ export const headerButtonClass = style([
     borderRadius: '$lg',
     cursor: 'pointer',
     color: '$neutral2',
-    height: '$11',
+    paddingY: '$2',
     width: '$11',
   }),
   {
@@ -69,9 +69,11 @@ export const hamburgerButtonClass = style([
 export const searchButtonClass = style([
   sprinkles({
     backgroundColor: '$neutral4',
+    paddingX: '$2',
   }),
   {
     width: 'inherit',
+
     selectors: {
       [`${darkThemeClass} &`]: {
         backgroundColor: vars.colors.$neutral3,
@@ -83,6 +85,7 @@ export const searchButtonClass = style([
 export const searchButtonSlashClass = style([
   sprinkles({
     borderRadius: '$lg',
+    marginLeft: '$2',
     backgroundColor: '$neutral3',
     color: '$white',
   }),
