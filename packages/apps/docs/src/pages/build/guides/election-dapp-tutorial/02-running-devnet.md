@@ -15,7 +15,29 @@ running on the Kadena blockchain. The smart contract contains rules for voting
 and nominating candidates and stores the nominated candidates and the votes
 for each candidate. Before publishing your smart contract on a public network,
 like Testnet or Mainnet, it is good practice to test if it works as expected
-on your local computer. Using Docker, you can spin up a fully functional
+on your local computer.
+
+## Get the code
+
+The project files have not been changed since the last chapter, so if you are
+following along with the tutorial you can continue on the `01-getting-started`
+branch. If you started the tutorial with this chapter, clone the tutorial
+project and change the current directory of your terminal to the project folder.
+
+```bash
+git clone git@github.com:kadena-community/voting-dapp.git election-dapp
+cd election-dapp
+```
+
+After cloning the project, switch branches to get the starter code for this chapter.
+
+```bash
+git checkout 02-running-devnet
+```
+
+## Run Devnet with Docker
+
+Using Docker, you can spin up a fully functional
 Kadena blockchain network called Devnet.
 
 ```bash
@@ -138,7 +160,7 @@ json object that is posted to an HTTP API endpoint of your Devnet node.
 The remainder of the main function deals with processing the response
 from the API.
 
-```ts
+```typescript
 // ./snippets/list-modules.ts
 
 import { Pact, createClient } from '@kadena/client';
@@ -181,7 +203,7 @@ npm run list-modules:devnet
 The script will produce the following output, a list of modules deployed on
 your local Devnet:
 
-```ts
+```bash
 [
   'coin',
   'fungible-v1',

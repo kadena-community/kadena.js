@@ -43,12 +43,6 @@ export const treeToggleVariant = styleVariants({
   closed: [{ transform: 'rotate(-90deg)' }],
 });
 
-export const treeBranchWrapperClass = style([
-  {
-    transition: 'all 0.2s ease',
-    overflow: 'hidden',
-  },
-]);
 export const treeBranchWrapperVariant = styleVariants({
   isParent: [
     sprinkles({

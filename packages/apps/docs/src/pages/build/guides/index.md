@@ -135,13 +135,13 @@ few built-in predicate functions, such as the “keys-all” function above this
 predicate means means that all keys in the set must have signed the transaction.
 You can also write your own predicate functions (for example, to authorize
 access according to a vote).
-[#keysets-and-authorization](/pact/reference/concepts#keysets-and-authorization)
+[#keysets-and-authorization](/pact/reference/concepts#keysets-and-authorizationh960403648)
 
 Keysets are defined via the `(define-keyset)` function. This function takes a
 name and a keyset as arguments. When evaluated, Pact will either register the
 keyset at the given name on Chainweb or, if the name is already registered, then
 it will “rotate” (ie. update) the keyset to the new value.
-[#define-keyset](/pact/reference/functions/keysets#define-keyset)
+[#define-keyset](/pact/reference/functions/keysets#define-keyseth1939391989)
 
 When registering a keyset in a smart contract it’s a common practice to send the
 keyset in the deployment transaction data instead of hardcoding it into the
@@ -159,7 +159,7 @@ provided via transaction data. You can parse data from the transaction using the
 (read-\*) family of functions:
 
 - [#read-msg](/pact/reference/functions#readmsg)
-- [#read-keyset](/pact/reference/functions/keysets#readkeyset)
+- [#read-keyset](/pact/reference/functions/keysets#read-keyseth2039204282)
 - [#read-string](/pact/reference/functions#readstring)
 - [#read-integer](/pact/reference/functions#readinteger)
 - [#read-decimal](/pact/reference/functions#readdecimal)
@@ -212,7 +212,7 @@ enforce a keyset guard on the transaction that deploys the contract. This guard
 should ensure that any keysets passed to the contract were also used to sign the
 transaction that deploys the contract. If the enforcement fails, the deployment
 is aborted, and you can fix the keyset and try again.
-[#keyset-ref-guard](/pact/reference/functions/guards#keysetrefguard)
+[#keyset-ref-guard](/pact/reference/functions/guards#keyset-ref-guardh2089873729)
 
 ## Interfaces & Modules
 
@@ -227,7 +227,8 @@ Interfaces and modules are both units for organizing Pact code, but they serve
 different purposes. An interface describes the API that a module will implement
 and can supply constants and models for formal verification to aid in that
 implementation, but it doesn’t contain any implementations itself and cannot be
-executed on Chainweb. [#interfaces](/pact/reference/concepts#interfaces)
+executed on Chainweb.
+[#interfaces](/pact/reference/concepts#interfacesh394925690)
 
 Interfaces purely exist as a method of abstraction. An interface can be
 implemented by multiple modules (that means that the module provides an
@@ -236,7 +237,7 @@ blueprint for implementers. Also, Pact functions take a reference to module as
 an argument so long as the module implements a specific interface. That means
 you can write a function that can be used with any module that implements the
 given interface — a powerful form of abstraction.
-[#module-references](/pact/reference/concepts#module-references)
+[#module-references](/pact/reference/concepts#module-referencesh1941667004)
 
 We don’t use interfaces in our contract because it’s quite small and no one else
 is expected to provide another implementation for its API. Instead, we skip
@@ -244,7 +245,7 @@ straight to the implementation: the ‘goliath-faucet’ module.
 
 A module in Pact is the primary unit of organization for Pact code. Modules can
 contain functions, pacts, capabilities, tables, and other Pact code.
-[#module](/pact/reference/syntax#module)
+[#module](/pact/reference/syntax#moduleh-1068784020)
 
 Let’s define a Pact module with the code for our faucet. To define a module we
 must provide a module name, a module governance function, and then the module
@@ -287,7 +288,7 @@ Now, let’s implement the body of our module. We’ll begin with the two forms 
 metadata we can use to annotate our modules, interfaces, functions, table
 schemas, and other Pact code. The @doc metadata field is for documentation
 strings, and the @model metadata field is for formal verification.
-[#docs-and-metadata](/pact/reference/syntax#docs-and-metadata)
+[#docs-and-metadata](/pact/reference/syntax#docs-and-metadatah85265693)
 
 ## Metadata
 
@@ -300,11 +301,11 @@ functions must satisfy and invariants that table schemas must satisfy. Pact, via
 the Z3 theorem prover, can prove that there is no possible set of variable
 assignments in our code that will violate the given property or invariant. Or,
 if it does find a violation, it can tell us so we can fix it!
-[#what-do-properties-and-schema-invariants-look-like](/pact/reference/property-checking#what-do-properties-and-schema-invariants-look-like)
+[#what-do-properties-and-schema-invariants-look-like](/pact/reference/property-checking#what-do-properties-and-schema-invariants-look-likeh1040965298)
 
 Properties (but not invariants) can be defined at the top level of the module so
 they can be reused in multiple functions.
-[#defining-and-reusing-properties](/pact/reference/property-checking#defining-and-reusing-properties)
+[#defining-and-reusing-properties](/pact/reference/property-checking#defining-and-reusing-propertiesh-363561805)
 
 We have a few functions that should never succeed unless they were called in a
 transaction signed by the Goliath faucet keyset. We can capture that property in
@@ -327,7 +328,7 @@ Our faucet contract has a specific range of values that it will allow the
 per-request and per-account limits to be set to. It’s useful to capture these
 values in variables that our tests, module code, and other modules on Chainweb
 can refer to. To expose a constant value, use (defconst).
-[#defconst](/pact/reference/syntax#defconst)
+[#defconst](/pact/reference/syntax#defconsth645951102)
 
 ```pact
 (defconst FAUCET_ACCOUNT "goliath-faucet
@@ -343,7 +344,7 @@ can refer to. To expose a constant value, use (defconst).
 When your smart contract needs to persist some data across multiple calls to
 functions in the contract, it should use a table. Tables in Pact are relational
 databases and have a key-row structure. Keys are always strings. You can define
-a table with `deftable`. [#deftable](/pact/reference/syntax#deftable)
+a table with `deftable`. [#deftable](/pact/reference/syntax#deftableh661222121)
 
 Our smart contract needs to persist four pieces of data. First, we need to
 record how much KDA in total each account has requested and returned so that we
@@ -390,15 +391,15 @@ account limit. The second ensures you can never return more funds than you have
 received. Then, we define our four columns and their types.
 
 Now that we have our schema we can define a table which uses it with the
-(deftable) function. [#deftable](/pact/reference/syntax#deftable)
+(deftable) function. [#deftable](/pact/reference/syntax#deftableh661222121)
 
 We’ll refer to the table by name when we need to insert, read, or update data.
 When our module is deployed, we’ll also need to create the table using the
 (create-table) function (this must be called outside the module).
-[#create-table](/pact/reference/functions/database#create-table)
+[#create-table](/pact/reference/functions/database#create-tableh447366077)
 
 Pact supplies several data-access functions for working with tables.
-[#database](/pact/reference/functions/database#database)
+[#database](/pact/reference/functions/database)
 
 Note that these functions can only be called by functions within the module that
 defined the table, or in a transaction that satisfies the module governance
@@ -442,7 +443,7 @@ satisfied in order to take some action:
 Capabilities can implement more sophisticated rules, such as orchestrating a
 vote to determine whether the contract can be upgraded. You can learn more about
 capabilities in the Pact documentation.
-[#capabilities](/pact/reference/concepts#capabilities)
+[#capabilities](/pact/reference/concepts#capabilitiesh-1323277354#capabilities)
 
 There are four critical things to know about capabilities.
 
@@ -450,8 +451,8 @@ First, you can grant a capability to a function with `(with-capability)`, and
 you can protect some sensitive code with the `(require-capability)` function.
 “Granting” a capability means that calls to `(require-capability)` will succeed
 so long as the capability is in scope.
-[#with-capability](/pact/reference/functions/capabilities#withcapability)
-[#require-capability](/pact/reference/functions/capabilities#requirecapability)
+[#with-capability](/pact/reference/functions/capabilities#with-capabilityh-1711421313)
+[#require-capability](/pact/reference/functions/capabilities#require-capabilityh-544592256)
 
 Second, you can only grant a capability within the module that defined the
 corresponding capability. That means, for example, that protecting code with
@@ -471,7 +472,7 @@ metadata field.
 
 We won’t use managed capabilities in this contract, but you can learn more about
 them here:
-[#signatures-and-managed-capabilities](/pact/reference/concepts#signatures-and-managed-capabilities)
+[#signatures-and-managed-capabilities](/pact/reference/concepts#signatures-and-managed-capabilitiesh-260692187)
 [#what-are-the-semantics-of-capability-manager-functions-in-pact](https://stackoverflow.com/questions/72746446/what-are-the-semantics-of-capability-manager-functions-in-pact)
 
 Finally, signers of a Pact transaction can scope their signature to one or more
@@ -559,7 +560,7 @@ at all, or from writing a value that’s not the exact amount the user requested
 Pact’s formal verification will check that your implementation satisfies the two
 properties above, but we still have to write the code that _prevents_ the
 invalid states. To abort a transaction if it fails to meet a condition, use
-(enforce). [#enforce](/pact/reference/functions#enforce)
+(enforce). [enforce](/pact/reference/functions#enforceh-1604583454)
 
 To see formal verification in action, comment out this line and re-run the REPL
 file.
@@ -575,7 +576,7 @@ there (ie. it has requested funds before), or assume the default limits if not.
 There are a number of functions for reading and writing tables. One of the most
 common is (with-default-read), which is used to read a row from a table, with a
 fallback value in the case the row does not exist.
-[#with-default-read](/pact/reference/functions/database#withdefaultread)
+[#with-default-read](/pact/reference/functions/database#with-default-readh1087687497)
 
 The `:=` operator indicates that we are storing the value of the column on the
 left-hand side in the variable name on the right-hand side within the scope of
@@ -601,7 +602,7 @@ variable, `balance`, that records the difference between the total requested
 funds and the total returned funds.
 
 For binding the variable, we can introduce local variables with `(let)`.
-[#let](/pact/reference/syntax#let)
+[#let](/pact/reference/syntax#leth107035)
 
 This balance is what should be checked against the account limit. Now, we can
 finally enforce that the requested amount does not exceed the request limit.
@@ -679,7 +680,7 @@ The second property test verifies that if this transaction succeeded, then the
 accounts table row for this account, at the “request-limit” column, has been
 updated to be the value provided to this function. Similarly to (column-delta),
 we can use this to verify that the table is written correctly.
-[#read](/pact/reference/properties-and-invariants/database#read)
+[#read](/pact/reference/functions/database#readh3496342)
 
 ```pact
 @model
@@ -711,7 +712,7 @@ in case the account had never requested funds before. This function is
 different: it should not be possible to update the limits for an account that
 hasn’t yet requested anything. `(with-read)` will fail the transaction if the
 given account does not exist in the table, and read the row otherwise.
-[#with-read](/pact/reference/functions/database#withread)
+[#with-read](/pact/reference/functions/database#with-readh866473533)
 
 Note that when using `(with-read)` it is not necessary to bind variables to
 every column in the table. You can just use the columns you want.
@@ -728,7 +729,8 @@ every column in the table. You can just use the columns you want.
 
 We used `(write)` before because we were inserting a new row into the table if
 the account didn’t yet exist. To update one or more columns in an existing row
-you can use `(update)`. [#update](/pact/reference/functions/database#update)
+you can use `(update)`.
+[#update](/pact/beginner/schemas-and-tables#updateh-1754979095)
 
 Like `(with-read)`, it’s only necessary to include the columns that you are
 updating, not all the columns.

@@ -91,3 +91,8 @@ packages/*/*/temp
 storybook-static
 
 temp
+
+#Playwright
+/packages/*/*/test-results
+/packages/*/*/playwright-report
+

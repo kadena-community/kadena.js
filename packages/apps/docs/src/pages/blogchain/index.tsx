@@ -67,7 +67,7 @@ const BlogChainHome: FC<IProps> = ({
                   )}
 
                   <Box>
-                    <BrowseSection title="Productive authors">
+                    <BrowseSection title="Productive authors" titleAs="h6">
                       {authors.map((author) => (
                         <Link key={author.id} href={`/authors/${author.id}`}>
                           {author.name}

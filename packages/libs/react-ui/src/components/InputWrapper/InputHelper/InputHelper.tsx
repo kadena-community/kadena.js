@@ -4,7 +4,7 @@ import { SystemIcon } from '@components/Icon';
 import type { FC } from 'react';
 import React from 'react';
 
-export interface IInputHelperProps {
+interface IInputHelperProps {
   children: React.ReactNode;
 }
 

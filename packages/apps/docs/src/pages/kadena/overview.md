@@ -39,10 +39,7 @@ Kadena’s advisory team consists of experts such as Dr. Stuart Haber, the
 co-inventor of blockchain and the most cited author in Satoshi Nakamoto’s
 renowned 2008 Bitcoin white paper.
 
-![Scott Stornetta, left and partner Dr. Stuart Haber discuss their
-      ‘time-stamp’ for electronic documents, which they developed in the
-      Bellcore Research Laboratory in Morristown, 20 years before Bitcoin was
-      born.](/assets/docs/stornetta-haber.png)
+![Scott Stornetta, left and partner Dr. Stuart Haber discuss their 'time-stamp' for electronic documents, which they developed in the Bellcore Research Laboratory in Morristown, 20 years before Bitcoin was born.](/assets/docs/stornetta-haber.png)
 
 |                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

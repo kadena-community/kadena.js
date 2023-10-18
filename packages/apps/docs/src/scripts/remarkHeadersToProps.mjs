@@ -1,4 +1,5 @@
 import { toString } from 'mdast-util-to-string';
+import { getValues } from './utils.mjs';
 
 const getTagName = (depth = 1) => `h${depth}`;
 
@@ -20,6 +21,21 @@ const lastHeading = (parent, newChild) => {
   return nodes[nodes.length - 1];
 };
 
+const cleanupHeading = (item) => {
+  const newChild = {
+    type: 'text',
+    value: '',
+    postion: {
+      start: {},
+      end: {},
+    },
+  };
+
+  const value = getValues(item).join(' ');
+
+  item.children = [{ ...newChild, value }];
+};
+
 const getHeaders = (tree) => {
   return tree.children.filter((branch) => {
     return branch.type === 'heading';
@@ -38,34 +54,21 @@ const remarkHeadersToProps = () => {
       },
     ];
 
-    headers.forEach((item, index) => {
+    headers.forEach((item) => {
       const parent = lastHeading(startArray[0], item);
-      const parentTitle = parent.title ?? '';
+
+      cleanupHeading(item);
 
       // we dont want h1 tags in the aside menu
       if (item.depth === 1) {
         return;
       }
 
-      // Heading3 component needs index and parent title as a props
-      // to generate the unique anchor link to match with the sidebar menu
-      // for any special characters
-      item.data = {
-        hProperties: {
-          index,
-          parentTitle,
-        },
-      };
-
       const elm = {
         depth: item.depth,
         tag: getTagName(item.depth),
         title: toString(item) ?? '',
         children: [],
-        // index and parent title is used to generate
-        // the unique anchor link for special characters in sidebar menu
-        index,
-        parentTitle,
       };
       parent.children.push(elm);
     });
