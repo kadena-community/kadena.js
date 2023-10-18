@@ -142,6 +142,7 @@ jobs:
 
   visual-regression-tests:
     name: Visual Regression Tests
+    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
