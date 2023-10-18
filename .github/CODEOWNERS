@@ -5,7 +5,8 @@
 /.changeset
 /common                                         @alber70g @webpro
 /pnpm-lock.yaml
-/packages/apps/graph                            @alber70g
+/packages/apps/graph                            @alber70g @MRVDH @nil-amrutlal-dept
+/packages/apps/graph-client                     @alber70g @MRVDH @nil-amrutlal-dept
 /packages/apps/kadena-docs                      @sstraatemans @eileenmguo @realdreamer
 /packages/libs/chainweb-stream-client           @Takadenoshi
 /packages/libs/bootstrap-lib                    @alber70g
