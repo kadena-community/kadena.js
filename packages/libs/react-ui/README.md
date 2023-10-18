@@ -58,6 +58,7 @@ will need to install the following plugin:
 pnpm add @vanilla-extract/next-plugin --dev
 ```
 
+
 _If you don’t have a next.config.js file in the root of your project, you'll
 need to create one first._ Add the plugin to your next.config.js file and add
 **@kadena/react-ui** to transpilePackages:
