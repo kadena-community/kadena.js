@@ -20,7 +20,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "allowJs": true
+    "allowJs": true,
+    "jsx": "preserve"
   },
   "exclude": ["node_modules"]
 }

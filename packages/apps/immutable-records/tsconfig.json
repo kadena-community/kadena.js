@@ -18,7 +18,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "jsx": "preserve"
   },
   "exclude": ["node_modules", "./cypress"],
   "include": [
