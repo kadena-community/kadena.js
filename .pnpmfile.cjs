@@ -3,6 +3,8 @@ const ALLOWED_ROOT_DEPENDENCIES = [
   '@kadena-dev/markdown',
   'knip',
   'only-allow',
+  'prettier',
+  'prettier-plugin-packagejson',
   'syncpack',
   'tsx',
   'turbo',

@@ -55,8 +55,7 @@
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
+    "prettier": "~3.0.3",
     "storybook": "^7.4.0",
     "storybook-dark-mode": "^3.0.0",
     "typescript": "5.2.2"
