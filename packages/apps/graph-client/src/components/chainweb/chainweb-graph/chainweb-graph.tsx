@@ -1,8 +1,7 @@
-import type { IBlock } from '../../../utils/hooks/use-parsed-blocks';
+import { ChainwebHeader } from '../chainweb-header';
+import { ChainwebRow } from '../chainweb-row';
 
-import { ChainwebHeader } from './../chainweb-header';
-import { ChainwebRow } from './../chainweb-row';
-
+import type { IBlock } from '@utils/hooks/use-parsed-blocks';
 import React from 'react';
 
 interface IChainwebGraphProps {

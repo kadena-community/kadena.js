@@ -1,14 +1,14 @@
-import routes from '../../../constants/routes';
-import { useChainTree } from '../../../context/chain-tree-context';
-import { env } from '../../../utils/env';
-import type { IBlock } from '../../../utils/hooks/use-parsed-blocks';
-import { Box } from '../../box';
-import { Text } from '../../text';
+import { TimeTicker } from '../time-ticker';
 
-import { TimeTicker } from './../time-ticker';
 import { Container, Content } from './styles';
 
+import type { IBlock } from '@/utils/hooks/use-parsed-blocks';
+import { Box } from '@components/box';
+import { Text } from '@components/text';
+import routes from '@constants/routes';
+import { useChainTree } from '@context/chain-tree-context';
 import { InfoCircledIcon, TimerIcon } from '@radix-ui/react-icons';
+import { env } from '@utils/env';
 import { useRouter } from 'next/router';
 import React from 'react';
 
