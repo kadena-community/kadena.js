@@ -313,7 +313,7 @@ export const GridItem: Story = {
             dynamic
           </div>
         </Grid.Item>
-        {Array.from(new Array(12)).map((_, i) => (
+        {Array.from(new Array(12)).map((empty, i) => (
           <Grid.Item key={i} columnSpan={1}>
             <div className={ContentClass}>1</div>
           </Grid.Item>

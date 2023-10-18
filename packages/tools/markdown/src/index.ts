@@ -13,10 +13,12 @@ import unifiedPrettier from 'unified-prettier';
 const remarkPresetKadena: Preset = {
   settings: {},
   plugins: [
+    // @ts-expect-error Will vanish when upgrading packages
     remarkFrontMatter,
     remarkParse,
     [handleCommentMarkers, commentMarkers],
     unifiedPrettier,
+    // @ts-expect-error Will vanish when upgrading packages
     remarkGFM,
     fencedCodeBlocks,
     remarkReferenceLinks,
