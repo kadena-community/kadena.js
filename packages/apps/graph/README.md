@@ -124,7 +124,7 @@ npm run simulate -- -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <
 ```
 
 - accounts - number of accounts to be created in the devnet (default: 5)
-- timeInterval - frequency of transactions in miliseconds (default: 3000)
+- timeInterval - frequency of transactions in miliseconds (default: 100)
 - maxAmount - maximum amount for a single transaction (default: 25)
 - tokenPool - amount of circulating tokens (default: 1000000)
 - seed - seed for random number generation (default: current timestamp)
