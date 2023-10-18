@@ -139,3 +139,62 @@ jobs:
           name: playwright-report
           path: packages/tools/e2e-tests/playwright-report/
           retention-days: 30
+
+  visual-regression-tests:
+    name: Visual Regression Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - path: packages/libs/react-ui/**
+            projectToken: ${{ secrets.REACT_UI_CHROMATIC_TOKEN }}
+          - path: packages/apps/docs/**
+            projectToken: ${{ secrets.DOCS_CHROMATIC_TOKEN }}
+
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 👈 Required to retrieve git history, needed to determine diffs.
+          show-progress: false
+
+      - uses: dorny/paths-filter@v2
+        id: changed
+        with:
+          filters: |
+            pathFilter:
+                - '${{ matrix.path }}'
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+
+      - uses: actions/setup-node@v3
+        if: steps.changed.outputs.pathFilter == 'true'
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        if: steps.changed.outputs.pathFilter == 'true'
+        run: pnpm install
+
+      - name: Build
+        if: steps.changed.outputs.pathFilter == 'true'
+        run: pnpm run build
+
+      - name: Publish Storybook
+        if: steps.changed.outputs.pathFilter == 'true'
+        uses: chromaui/action@v1
+        with:
+          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
+          exitOnceUploaded: true
+          buildScriptName: 'build:storybook'
+          projectToken: ${{ matrix.projectToken }}
+          workingDir: /packages/libs/react-ui
+          autoAcceptChanges: 'main'
+          onlyChanged: true # 👈 Required option to enable TurboSnap
