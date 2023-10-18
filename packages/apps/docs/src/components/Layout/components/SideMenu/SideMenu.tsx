@@ -70,7 +70,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         <Box marginX="$4" marginBottom="$8" marginTop="$4">
           <Input
             id="search"
-            rightIcon="Magnify"
+            icon="Magnify"
             onKeyUp={handleKeyPress}
             placeholder="Search"
             outlined

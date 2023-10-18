@@ -29,7 +29,7 @@ export const SearchBar: FC<IProps> = forwardRef<HTMLInputElement, IProps>(
       <form onSubmit={handleSubmit} className={searchFormClass}>
         <Input
           id="seachinput"
-          rightIcon="Magnify"
+          icon="Magnify"
           onKeyUp={handleKeyUp}
           placeholder="Search"
           outlined
