@@ -2,7 +2,7 @@ import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transfer', {
-  id: { field: 'block_chainId_orderIndex_moduleHash_requestKey' },
+  id: { field: 'blockHash_chainId_orderIndex_moduleHash_requestKey' },
   fields: (t) => ({
     // database fields
     amount: t.expose('amount' as never, { type: 'Decimal' }),

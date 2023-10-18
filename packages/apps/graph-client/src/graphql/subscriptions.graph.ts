@@ -11,6 +11,10 @@ export const getBlocksSubscription: DocumentNode = gql`
   subscription getBlocks {
     newBlocks {
       ...AllBlockFields
+      confirmationDepth
+      transactions {
+        totalCount
+      }
     }
   }
 `;

@@ -10,7 +10,7 @@ export interface IBlock
     | 'height'
     | 'chainId'
     | 'hash'
-    | 'payload'
+    | 'payloadHash'
     | 'powHash'
     | 'epoch'
     | 'confirmationDepth'

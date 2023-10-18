@@ -66,6 +66,10 @@ export const getRecentHeights: DocumentNode = gql`
       heightCount: $count
     ) {
       ...AllBlockFields
+      confirmationDepth
+      transactions {
+        totalCount
+      }
     }
   }
 `;
