@@ -44,7 +44,7 @@ program
     new Option(
       '-i, --transferInterval <number>',
       'Transfer interval in milliseconds',
-    ).default(3000),
+    ).default(100),
   )
   .addOption(
     new Option('-t, --maxAmount <number>', 'Maximum transfer amount').default(
