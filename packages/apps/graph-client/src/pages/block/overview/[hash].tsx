@@ -155,7 +155,7 @@ const Block: React.FC = () => {
                     <Table.Td>
                       <strong>Payload Hash</strong>
                     </Table.Td>
-                    <Table.Td>{data.block.payload}</Table.Td>
+                    <Table.Td>{data.block.payloadHash}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
@@ -175,7 +175,7 @@ const Block: React.FC = () => {
                           <Table.Td>
                             <strong>Payload Hash</strong>
                           </Table.Td>
-                          <Table.Td>{data.block.payload}</Table.Td>
+                          <Table.Td>{data.block.payloadHash}</Table.Td>
                         </Table.Tr>
 
                         <Table.Tr>

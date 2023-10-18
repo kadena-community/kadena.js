@@ -1,9 +1,8 @@
 import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
-export default builder.prismaNode('Minerkey', {
+export default builder.prismaNode('MinerKey', {
   id: { field: 'blockHash_key' },
-  name: 'Minerkey',
   fields: (t) => ({
     // database fields
     blockHash: t.exposeString('blockHash'),
