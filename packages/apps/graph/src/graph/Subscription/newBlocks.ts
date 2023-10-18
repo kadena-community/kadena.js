@@ -1,12 +1,11 @@
+import type { Block } from '@prisma/client';
+import type { Debugger } from 'debug';
+import _debug from 'debug';
 import { prismaClient } from '../../db/prismaClient';
 import { dotenv } from '../../utils/dotenv';
 import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-
-import type { Block } from '@prisma/client';
-import type { Debugger } from 'debug';
-import _debug from 'debug';
 
 const log: Debugger = _debug('graph:Subscription:newBlocks');
 

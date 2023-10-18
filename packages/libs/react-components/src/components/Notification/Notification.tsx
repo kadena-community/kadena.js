@@ -1,18 +1,15 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
-
+import type { VariantProps } from '@stitches/react';
+import type { FC } from 'react';
+import React from 'react';
 import { SystemIcons } from '../Icons';
-
 import {
   StyledHeading,
   StyledIconContainer,
   StyledNotification,
   StyledText,
 } from './styles';
-
-import type { VariantProps } from '@stitches/react';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface INotificationProps {
   icon?: (typeof SystemIcons)[keyof typeof SystemIcons];

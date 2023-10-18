@@ -1,5 +1,4 @@
 import { trim } from '../utils';
-
 import type { IParser } from './rule';
 import { FAILED, rule } from './rule';
 

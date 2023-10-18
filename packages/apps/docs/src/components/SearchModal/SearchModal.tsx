@@ -1,12 +1,9 @@
 import { Box, Text } from '@kadena/react-ui';
-
-import { Search } from '../Search/Search';
-import { SearchBar } from '../SearchBar/SearchBar';
-
-import { wrapperClass } from './styles.css';
-
 import type { FC, FormEvent } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
+import { Search } from '../Search/Search';
+import { SearchBar } from '../SearchBar/SearchBar';
+import { wrapperClass } from './styles.css';
 
 export const SearchModal: FC = () => {
   const [isMounted, setIsMounted] = useState(false);

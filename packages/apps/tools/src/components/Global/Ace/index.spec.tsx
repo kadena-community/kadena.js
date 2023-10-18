@@ -1,8 +1,7 @@
-import AceViewerComponent from './index';
-
 import { render, screen } from '@testing-library/react';
 import * as ace from 'ace-builds/src-noconflict/ace';
 import React from 'react';
+import AceViewerComponent from './index';
 
 beforeAll(() => {
   ace.config.set('basePath', './');

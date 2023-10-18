@@ -1,11 +1,10 @@
+import { sprinkles } from '@theme/sprinkles.css';
+import { style, styleVariants } from '@vanilla-extract/css';
 import {
   colorVariants,
   fontVariants,
   transformVariants,
 } from '../typography.css';
-
-import { sprinkles } from '@theme/sprinkles.css';
-import { style, styleVariants } from '@vanilla-extract/css';
 
 export const elementVariant = styleVariants({
   p: [sprinkles({ fontWeight: '$normal' })],

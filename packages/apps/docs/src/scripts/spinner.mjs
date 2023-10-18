@@ -1,5 +1,5 @@
-import logUpdate from 'log-update';
 import chalk from 'chalk';
+import logUpdate from 'log-update';
 
 export const Spinner = () => {
   const elegantSpinner = () => {

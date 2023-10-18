@@ -1,5 +1,4 @@
 import { styled } from '@kadena/react-components';
-
 import Link from 'next/link';
 
 export const StyledNavItem = styled(Link, {

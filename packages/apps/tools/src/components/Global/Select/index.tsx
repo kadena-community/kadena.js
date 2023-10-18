@@ -1,5 +1,3 @@
-import { SystemIcon } from '@kadena/react-ui';
-
 import {
   StyledHelper,
   StyledIconWrapper,
@@ -13,6 +11,7 @@ import {
   StyledTag,
   StyledText,
 } from '@/components/Global/Select/styles';
+import { SystemIcon } from '@kadena/react-ui';
 import type { ChangeEvent, FC } from 'react';
 import React from 'react';
 

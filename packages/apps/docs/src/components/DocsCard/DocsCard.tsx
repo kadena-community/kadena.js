@@ -1,10 +1,8 @@
 import { Box, Heading } from '@kadena/react-ui';
-
-import { backgroundVariant, cardClass, cardVariants } from './styles.css';
-
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
+import { backgroundVariant, cardClass, cardVariants } from './styles.css';
 
 interface IProps extends PropsWithChildren {
   label: string;

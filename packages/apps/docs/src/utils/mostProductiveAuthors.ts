@@ -1,9 +1,7 @@
-import authors from '../data/authors.json';
-
-import { getLatestBlogPostsOfAuthor } from './getBlogPosts';
-
 import type { IAuthorInfo } from '@/Layout';
 import { add, isAfter } from 'date-fns';
+import authors from '../data/authors.json';
+import { getLatestBlogPostsOfAuthor } from './getBlogPosts';
 
 const getYearPostCount = (author: IAuthorInfo): number => {
   const lastYear = add(new Date(), { days: -365 });

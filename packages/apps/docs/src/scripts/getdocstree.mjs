@@ -1,12 +1,12 @@
+import { exec } from 'child_process';
+import { isValid } from 'date-fns';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
-import { getReadTime } from './utils.mjs';
-import { frontmatter } from 'micromark-extension-frontmatter';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
-import { exec } from 'child_process';
+import { frontmatter } from 'micromark-extension-frontmatter';
 import { promisify } from 'util';
-import { isValid } from 'date-fns';
+import { getReadTime } from './utils.mjs';
 
 const promiseExec = promisify(exec);
 const errors = [];

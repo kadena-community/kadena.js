@@ -1,32 +1,29 @@
+import type { IPageProps } from '@/Layout';
+import { BottomPageSection } from '@/components/BottomPageSection/BottomPageSection';
+import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
+import { LastModifiedDate } from '@/components/LastModifiedDate/LastModifiedDate';
+import { createSlug } from '@/utils/createSlug';
 import { Heading } from '@kadena/react-ui';
-
+import classnames from 'classnames';
+import { useRouter } from 'next/router';
+import type { FC } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { baseGridClass } from '../basestyles.css';
+import { Template } from '../components/Template/Template';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '../components/articleStyles.css';
-import { Template } from '../components/Template/Template';
 import { globalClass } from '../global.css';
-
-import { AsideList, ListItem } from './components/Aside';
 import { BackgroundGradient } from './BackgroundGradient';
+import { AsideList, ListItem } from './components/Aside';
 import {
   asideClass,
   pageGridClass,
   stickyAsideClass,
   stickyAsideWrapperClass,
 } from './styles.css';
-
-import { BottomPageSection } from '@/components/BottomPageSection/BottomPageSection';
-import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
-import { LastModifiedDate } from '@/components/LastModifiedDate/LastModifiedDate';
-import type { IPageProps } from '@/Layout';
-import { createSlug } from '@/utils/createSlug';
-import classnames from 'classnames';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
 
 export const Full: FC<IPageProps> = ({
   children,

@@ -1,10 +1,9 @@
-import { Button, SystemIcons } from './../../';
-import type { ICardProps } from '.';
-import { fullWidthVariant, stackVariant } from './styles';
-import { Card } from '.';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { ICardProps } from '.';
+import { Card } from '.';
+import { Button, SystemIcons } from './../../';
+import { fullWidthVariant, stackVariant } from './styles';
 
 const meta: Meta<ICardProps> = {
   title: 'Layout/Card',

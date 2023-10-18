@@ -1,10 +1,8 @@
 import type { IKeyPair, SignCommand } from '@kadena/types';
-
+import nacl from 'tweetnacl';
 import { base64UrlDecodeArr } from './base64UrlDecodeArr';
 import { binToHex } from './binToHex';
 import { toTweetNaclSecretKey } from './toTweetNaclSecretKey';
-
-import nacl from 'tweetnacl';
 
 /**
  Sign a hash using key pair

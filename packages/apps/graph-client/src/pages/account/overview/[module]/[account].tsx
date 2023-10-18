@@ -1,5 +1,3 @@
-import { Box, Grid, Notification, Table } from '@kadena/react-ui';
-
 import { useGetAccountQuery } from '@/__generated__/sdk';
 import { ChainModuleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
@@ -8,6 +6,7 @@ import Loader from '@components/loader/loader';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
+import { Box, Grid, Notification, Table } from '@kadena/react-ui';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';

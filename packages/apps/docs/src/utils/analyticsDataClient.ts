@@ -1,7 +1,6 @@
 /**
  *   https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries
  */
-
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 
 const GOOGLE_APPLICATION_CREDENTIALS: string | undefined =

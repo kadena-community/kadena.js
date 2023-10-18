@@ -1,5 +1,5 @@
-import { Box, Button, Card, Grid, Heading, Text } from '@kadena/react-ui';
-
+import type { IMenuData } from '@/Layout';
+import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
@@ -10,14 +10,13 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
-import type { IMenuData } from '@/Layout';
-import type { IMostPopularPage } from '@/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { Box, Button, Card, Grid, Heading, Text } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';

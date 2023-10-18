@@ -1,7 +1,3 @@
-import { TimeTicker } from '../time-ticker';
-
-import { Container, Content } from './styles';
-
 import type { IBlock } from '@/utils/hooks/use-parsed-blocks';
 import { Box } from '@components/box';
 import { Text } from '@components/text';
@@ -11,6 +7,8 @@ import { InfoCircledIcon, RocketIcon, TimerIcon } from '@radix-ui/react-icons';
 import { env } from '@utils/env';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { TimeTicker } from '../time-ticker';
+import { Container, Content } from './styles';
 
 interface IChainBlockProps {
   color: string;

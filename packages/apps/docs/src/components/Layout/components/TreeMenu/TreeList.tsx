@@ -1,12 +1,11 @@
+import classnames from 'classnames';
+import type { ReactNode } from 'react';
+import React, { forwardRef } from 'react';
 import {
   treeListClass,
   treeListLevelVariantClass,
   treeListRootVariantClass,
 } from './styles.css';
-
-import classnames from 'classnames';
-import type { ReactNode } from 'react';
-import React, { forwardRef } from 'react';
 
 interface IProps {
   children: ReactNode;

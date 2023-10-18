@@ -1,6 +1,7 @@
+import type { FC } from 'react';
+import React from 'react';
 import { AlertBox } from '../Icons/svgs/AlertBox';
 import { AlertCircleOutline } from '../Icons/svgs/AlertCircleOutline';
-
 import {
   StyledHelper,
   StyledInfo,
@@ -10,9 +11,6 @@ import {
   StyledTag,
   StyledText,
 } from './styles';
-
-import type { FC } from 'react';
-import React from 'react';
 
 export interface IInputGroupProps {
   label?: string;

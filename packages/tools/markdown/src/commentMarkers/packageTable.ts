@@ -1,9 +1,8 @@
-import type { PackageListConfig } from './rush.json';
-
 import type { Link, Table, TableRow } from 'mdast';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import type { PackageListConfig } from './rush.json';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

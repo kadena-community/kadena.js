@@ -1,7 +1,6 @@
 import { wrapData } from '../dataWrapper';
 import type { IPointer } from '../getPointer';
 import type { ExceptKeywords } from '../typeUtilities';
-
 import type { IParser, RuleReturn, RuleReturnType } from './rule';
 import { FAILED, rule } from './rule';
 

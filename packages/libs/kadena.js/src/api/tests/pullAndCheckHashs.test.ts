@@ -1,5 +1,4 @@
 import { pullAndCheckHashs } from '../pullAndCheckHashs';
-
 import { signature as signature1 } from './mockdata/contCommand';
 import { signature } from './mockdata/execCommand';
 

@@ -1,9 +1,8 @@
 #!/usr/bin/env node
-import App from './app.js';
-
 import { render } from 'ink';
 import meow from 'meow';
 import React from 'react';
+import App from './app.js';
 
 interface IFlags {
   flags: {

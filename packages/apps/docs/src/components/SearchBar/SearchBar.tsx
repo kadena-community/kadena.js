@@ -1,9 +1,7 @@
 import { Input } from '@kadena/react-ui';
-
-import { searchFormClass } from './styles.css';
-
 import type { FC, FormEvent, ForwardedRef, KeyboardEvent } from 'react';
 import React, { forwardRef } from 'react';
+import { searchFormClass } from './styles.css';
 
 interface IProps {
   onKeyUp?: (e: KeyboardEvent<HTMLInputElement>) => void;

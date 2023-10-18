@@ -1,10 +1,10 @@
+import { format, isValid } from 'date-fns';
 import * as fs from 'fs';
+import { getFlatData } from './../utils/staticGeneration/flatPosts.mjs';
 import {
   getAuthorData,
   getTagsData,
 } from './../utils/staticGeneration/getJsonData.mjs';
-import { getFlatData } from './../utils/staticGeneration/flatPosts.mjs';
-import { format, isValid } from 'date-fns';
 
 const MENUFILE = './public/sitemap.xml';
 const URL = 'https://docs.kadena.io';

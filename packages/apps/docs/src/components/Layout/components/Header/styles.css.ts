@@ -4,10 +4,8 @@ import {
   sprinkles,
   vars,
 } from '@kadena/react-ui/theme';
-
-import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
-
 import { style, styleVariants } from '@vanilla-extract/css';
+import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
 
 export const logoClass = style({
   zIndex: $$navMenu,

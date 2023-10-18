@@ -1,5 +1,9 @@
 import { Heading, Stack } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import type { FC } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   avatarClass,
   headerClass,
@@ -8,12 +12,6 @@ import {
   subheaderClass,
   wrapperClass,
 } from './style.css';
-
-import classNames from 'classnames';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import React, { useEffect, useState } from 'react';
 
 interface IProps {
   title: string;

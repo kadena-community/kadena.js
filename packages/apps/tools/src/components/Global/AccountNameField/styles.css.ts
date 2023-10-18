@@ -1,5 +1,4 @@
 import { vars } from '@kadena/react-ui/theme';
-
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const accountInputWrapperStyle = style([

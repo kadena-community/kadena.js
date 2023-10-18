@@ -1,5 +1,4 @@
 import { sprinkles, vars } from '@kadena/react-ui/theme';
-
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const avatarClass = style([

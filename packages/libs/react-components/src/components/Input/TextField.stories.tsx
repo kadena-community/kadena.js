@@ -1,9 +1,8 @@
-import { Button, Stack, SystemIcons } from './../../';
-import type { IInputGroupProps, IInputProps } from '.';
-import { TextField } from './TextField';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { IInputGroupProps, IInputProps } from '.';
+import { Button, Stack, SystemIcons } from './../../';
+import { TextField } from './TextField';
 
 const meta: Meta<
   {

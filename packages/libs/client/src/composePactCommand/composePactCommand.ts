@@ -1,5 +1,4 @@
 import type { IPactCommand } from '../interfaces/IPactCommand';
-
 import { patchCommand } from './utils/patchCommand';
 
 type NoPayload<TCommand> = TCommand extends { payload: unknown }

@@ -1,1 +1,1 @@
-export { type IStackProps, Stack } from './Stack';
+export { Stack, type IStackProps } from './Stack';

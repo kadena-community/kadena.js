@@ -1,7 +1,7 @@
 const path = require('path');
+import { StorybookConfig } from '@storybook/react-webpack5';
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { StorybookConfig } from '@storybook/react-webpack5';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(ts|tsx)'],

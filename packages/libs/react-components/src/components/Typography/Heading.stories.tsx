@@ -1,3 +1,5 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import { Heading } from './Heading';
 import {
   boldVariant,
@@ -6,9 +8,6 @@ import {
   fontVariant,
   transformVariant,
 } from './styles';
-
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 
 const meta: Meta<typeof Heading> = {
   title: 'Typography/Heading',

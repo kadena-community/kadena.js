@@ -1,14 +1,12 @@
-import { Box, Heading, Text, useModal } from '@kadena/react-ui';
-
-import type { IQueryResult } from '../../../types';
-import { itemLinkClass, staticResultsListClass } from '../styles.css';
-
 import { filePathToRoute } from '@/pages/api/semanticsearch';
+import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import type { IQueryResult } from '../../../types';
+import { itemLinkClass, staticResultsListClass } from '../styles.css';
 
 interface IProps {
   results: IQueryResult[] | undefined;

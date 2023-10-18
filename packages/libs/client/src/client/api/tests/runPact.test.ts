@@ -3,9 +3,7 @@ jest.mock('@kadena/chainweb-node-client', () => ({
   ...jest.requireActual('@kadena/chainweb-node-client'),
   local: jest.fn(),
 }));
-
 import { local } from '@kadena/chainweb-node-client';
-
 import { runPact } from '../runPact';
 
 jest.useFakeTimers().setSystemTime(new Date('2023-07-31'));

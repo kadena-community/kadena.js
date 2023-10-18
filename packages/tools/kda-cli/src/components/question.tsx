@@ -1,13 +1,11 @@
-import { useHistory } from '../hooks/use-history.js';
-import type { IAnswers, IQuestion } from '../questions/questions.js';
-
-import { Execute } from './execute.js';
-import { MultiInput } from './multi-input.js';
-import { Rerun } from './rerun.js';
-
 import { ConfirmInput, MultiSelect, Select, TextInput } from '@inkjs/ui';
 import { Box, Text } from 'ink';
 import React from 'react';
+import { useHistory } from '../hooks/use-history.js';
+import type { IAnswers, IQuestion } from '../questions/questions.js';
+import { Execute } from './execute.js';
+import { MultiInput } from './multi-input.js';
+import { Rerun } from './rerun.js';
 
 export type OnAnswer = (answer: IAnswers) => IAnswers | void;
 

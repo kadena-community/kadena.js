@@ -1,13 +1,13 @@
+export { baseGlobalStyles } from './baseGlobalStyles';
 export {
-  styled,
-  css,
   config,
-  theme,
+  createTheme,
+  css,
   darkTheme,
   getCssText,
-  createTheme,
   globalCss,
   keyframes,
   media,
+  styled,
+  theme,
 } from './stitches.config';
-export { baseGlobalStyles } from './baseGlobalStyles';
