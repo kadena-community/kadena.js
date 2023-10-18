@@ -1,4 +1,5 @@
-import { DocumentNode, gql } from '@apollo/client';
+import type { DocumentNode } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export const CORE_TRANSFER_FIELDS: DocumentNode = gql`
   fragment CoreTransferFields on Transfer {

@@ -1,4 +1,5 @@
-import { DocumentNode, gql } from '@apollo/client';
+import type { DocumentNode } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export const CORE_CHAIN_ACCOUNT_FIELDS: DocumentNode = gql`
   fragment CoreChainAccountFields on ChainModuleAccount {

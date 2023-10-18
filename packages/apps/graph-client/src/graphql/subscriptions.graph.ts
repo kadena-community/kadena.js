@@ -1,7 +1,9 @@
-import { DocumentNode, gql } from '@apollo/client';
-import { ALL_TRANSACTION_FIELDS } from './fields/transaction.graph';
-import { ALL_EVENT_FIELDS, CORE_EVENT_FIELDS } from './fields/event.graph';
 import { ALL_BLOCK_FIELDS } from './fields/block.graph';
+import { ALL_EVENT_FIELDS, CORE_EVENT_FIELDS } from './fields/event.graph';
+import { ALL_TRANSACTION_FIELDS } from './fields/transaction.graph';
+
+import type { DocumentNode } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export const getBlocksSubscription: DocumentNode = gql`
   ${ALL_BLOCK_FIELDS}

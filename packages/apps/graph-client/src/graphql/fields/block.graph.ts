@@ -1,4 +1,5 @@
-import { DocumentNode, gql } from '@apollo/client';
+import type { DocumentNode } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export const CORE_BLOCK_FIELDS: DocumentNode = gql`
   fragment CoreBlockFields on Block {
@@ -17,13 +18,13 @@ export const ALL_BLOCK_FIELDS: DocumentNode = gql`
     creationTime
     epoch
     id
-    parent
     parentHash
     powHash
     predicate
 
     # confirmationDepth // default excluded since it's a heavy query
     # minerKeys {}
+    # parent {}
     # transactions {}
   }
 `;
