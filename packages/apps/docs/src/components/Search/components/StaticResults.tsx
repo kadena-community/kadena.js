@@ -23,6 +23,10 @@ interface IBreadCrumbProps {
   url: string;
 }
 
+const removeHashFromString = (str: string): string => {
+  return str.split('#')[0];
+};
+
 const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
   const urlArray = url.split('/');
 
@@ -31,7 +35,7 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
       {urlArray.map((str, idx) => {
         return (
           <Text size="sm" bold={idx === 0} key={str + idx}>
-            {str} {idx < urlArray.length - 1 ? ' / ' : ''}
+            {removeHashFromString(str)} {idx < urlArray.length - 1 ? ' / ' : ''}
           </Text>
         );
       })}
