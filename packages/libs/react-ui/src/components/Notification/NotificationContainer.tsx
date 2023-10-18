@@ -3,10 +3,10 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import type { colorVariants } from './Notification.css';
 import {
   cardColorVariants,
   closeButtonClass,
-  colorVariants,
   containerClass,
   containerWrapperClass,
   contentClass,
