@@ -47,26 +47,8 @@ export const ExtendedTransactionsTable = (
 
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  useEffect(() => {
-    refetchTransactions();
-    setCurrentPage(1);
-  }, [itemsPerPage]);
-
-  // Set items per page and page in URL when they change
-  useEffect(() => {
-    if (
-      urlItemsPerPage !== itemsPerPage.toString() ||
-      urlPage !== currentPage.toString()
-    ) {
-      router.push({
-        pathname: router.pathname,
-        query: { page: currentPage, items: itemsPerPage },
-      });
-    }
-  }, [currentPage, itemsPerPage, router]);
-
-  const refetchTransactions = () => {
-    fetchMore({
+  const refetchTransactions = async () => {
+    await fetchMore({
       variables: {
         first: itemsPerPage,
         last: null,
@@ -79,6 +61,30 @@ export const ExtendedTransactionsTable = (
       },
     });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await refetchTransactions();
+      setCurrentPage(1);
+    };
+    fetchData();
+  }, [itemsPerPage]);
+
+  // Set items per page and page in URL when they change
+  useEffect(() => {
+    const updateUrl = async () => {
+      if (
+        urlItemsPerPage !== itemsPerPage.toString() ||
+        urlPage !== currentPage.toString()
+      ) {
+        await router.push({
+          pathname: router.pathname,
+          query: { page: currentPage, items: itemsPerPage },
+        });
+      }
+    };
+    updateUrl();
+  }, [currentPage, itemsPerPage, router, urlItemsPerPage, urlPage]);
 
   return (
     <>
@@ -102,9 +108,9 @@ export const ExtendedTransactionsTable = (
         </div>
         <Button
           variant="compact"
-          onClick={() => {
+          onClick={async () => {
             setCurrentPage(currentPage + 1);
-            fetchMore({
+            await fetchMore({
               variables: {
                 first: itemsPerPage,
                 last: null,
@@ -124,9 +130,9 @@ export const ExtendedTransactionsTable = (
         </Button>
         <Button
           variant="compact"
-          onClick={() => {
+          onClick={async () => {
             setCurrentPage(currentPage - 1);
-            fetchMore({
+            await fetchMore({
               variables: {
                 first: null,
                 last: itemsPerPage,
