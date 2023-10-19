@@ -10,14 +10,14 @@ export type OnPredSelectChange = (value: PredKey) => void;
 
 const ELEMENT_ID = 'select-pred';
 
+const predicates: Array<PredKey> = ['keys-all', 'keys-any', 'keys-2'];
+
 const PredKeysSelect: FC<
   Omit<ISelectProps, 'children' | 'value' | 'onChange' | 'icon' | 'id'> & {
     value: PredKey;
     onChange: OnPredSelectChange;
   }
 > = ({ value, onChange, ...rest }) => {
-  const predicates: Array<PredKey> = ['keys-all', 'keys-any', 'keys-2'];
-
   const onSelectChange = useCallback<FormEventHandler<HTMLSelectElement>>(
     (e) => {
       const pred = predicates.find((pred) => {

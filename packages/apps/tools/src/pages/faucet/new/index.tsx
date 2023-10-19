@@ -168,7 +168,7 @@ const NewAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID, pubKeys.length, t],
+    [chainID, pred, pubKeys, t],
   );
 
   const testnetNotSelected: boolean = selectedNetwork !== 'testnet04';
