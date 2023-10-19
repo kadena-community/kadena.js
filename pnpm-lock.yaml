@@ -48,7 +48,7 @@ importers:
         specifier: ~3.2.2
         version: 3.2.2
       '@kadena/fonts':
-        specifier: ~0.0.1
+        specifier: ~0.0.1 
         version: 0.0.1
       '@kadena/react-ui':
         specifier: workspace:*
