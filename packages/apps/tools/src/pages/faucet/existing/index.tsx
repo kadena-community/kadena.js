@@ -120,9 +120,7 @@ const ExistingAccountFaucetPage: FC = () => {
     [chainID, t],
   );
 
-  const testnetNotSelected: boolean = selectedNetwork !== 'testnet04';
-  const disabledButton: boolean =
-    requestStatus.status === 'processing' || testnetNotSelected;
+  const showNotification = selectedNetwork !== 'testnet04';
 
   const {
     register,
@@ -138,7 +136,7 @@ const ExistingAccountFaucetPage: FC = () => {
       </Breadcrumbs.Root>
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
-        {testnetNotSelected ? (
+        {showNotification ? (
           <Notification.Root
             color="warning"
             expanded={true}
@@ -182,7 +180,7 @@ const ExistingAccountFaucetPage: FC = () => {
             icon="TrailingIcon"
             iconAlign="right"
             title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            disabled={disabledButton}
+            disabled={requestStatus.status === 'processing'}
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
           </Button>

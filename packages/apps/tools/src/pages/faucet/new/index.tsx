@@ -1,5 +1,4 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
-import { hash } from '@kadena/cryptography-utils';
 import type { InputWrapperStatus } from '@kadena/react-ui';
 import {
   Box,
@@ -38,13 +37,13 @@ import { usePersistentChainID } from '@/hooks';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import {createPrincipal} from "../../../services/faucet/create-principal";
-import {useQuery} from "@tanstack/react-query";
+import { createPrincipal } from '../../../services/faucet/create-principal';
 
 interface IFundExistingAccountResponseBody {
   result: {
@@ -89,9 +88,7 @@ const NewAccountFaucetPage: FC = () => {
     initialData: '',
   });
 
-  useEffect(() => {
-
-  }, [pubKeys.length]);
+  useEffect(() => {}, [pubKeys.length]);
 
   const schema = z.object({
     name: z.string(),
@@ -107,7 +104,10 @@ const NewAccountFaucetPage: FC = () => {
     setError,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: { name: typeof accountName === 'string' ? accountName : '', pubKey: '' },
+    values: {
+      name: typeof accountName === 'string' ? accountName : '',
+      pubKey: '',
+    },
   });
 
   const [inputError, setInputError] = useState<string>('');
@@ -135,7 +135,7 @@ const NewAccountFaucetPage: FC = () => {
 
       setInputError('');
       setRequestStatus({ status: 'processing' });
-      console.log(data.name, pubKeys, chainID, pred)
+      console.log(data.name, pubKeys, chainID, pred);
       try {
         const result = (await fundCreateNewAccount(
           data.name,
@@ -325,7 +325,7 @@ const NewAccountFaucetPage: FC = () => {
             <PredKeysSelect
               onChange={onPredSelectChange}
               value={pred}
-              ariaLabel="Select Chain ID"
+              ariaLabel="Select Predicate"
             />
           ) : null}
         </Card>
@@ -343,7 +343,7 @@ const NewAccountFaucetPage: FC = () => {
               <ChainSelect
                 onChange={onChainSelectChange}
                 value={chainID}
-                ariaLabel="Select Keys Pred"
+                ariaLabel="Select Chain ID"
               />
             </Grid.Item>
           </Grid.Root>

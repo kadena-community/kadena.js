@@ -2,11 +2,7 @@ import type {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
-import {
-  createClient,
-  isSignedTransaction,
-  Pact,
-} from '@kadena/client';
+import { Pact, createClient, isSignedTransaction } from '@kadena/client';
 
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import Debug from 'debug';
@@ -43,13 +39,13 @@ export const createPrincipal = async (
   }
 
   const response = await dirtyRead(transaction);
-  console.log(response)
+  console.log(response);
 
-  if (response.result.status === "success") {
+  if (response.result.status === 'success') {
     return response.result.data as string;
   }
 
-  console.log(response.result.error, 'error')
+  console.log(response.result.error, 'error');
 
-  throw new Error((response.result.error as any)?.message || "Unknown error");
+  throw new Error((response.result.error as any)?.message || 'Unknown error');
 };
