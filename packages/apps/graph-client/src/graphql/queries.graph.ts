@@ -142,9 +142,10 @@ export const getTransactions: DocumentNode = gql`
   ${CORE_TRANSACTION_FIELDS}
 
   query getTransactions(
-    $moduleName: String!
-    $accountName: String!
+    $moduleName: String
+    $accountName: String
     $chainId: String
+    $blockHash: String
     $after: String
     $before: String
     $first: Int
@@ -154,6 +155,7 @@ export const getTransactions: DocumentNode = gql`
       moduleName: $moduleName
       accountName: $accountName
       chainId: $chainId
+      blockHash: $blockHash
       after: $after
       before: $before
       first: $first
@@ -169,6 +171,9 @@ export const getTransactions: DocumentNode = gql`
         cursor
         node {
           ...CoreTransactionFields
+          block {
+            hash
+          }
         }
       }
     }

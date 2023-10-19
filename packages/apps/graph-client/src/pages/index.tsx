@@ -1,13 +1,23 @@
 import {
+  Box,
+  Button,
+  Grid,
+  Input,
+  InputWrapper,
+  Select,
+} from '@kadena/react-ui';
+
+import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
+  useGetTransactionsQuery,
 } from '@/__generated__/sdk';
+import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { ChainwebGraph } from '@components/chainweb';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
 import { useChainTree } from '@context/chain-tree-context';
-import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
 import { useParsedBlocks } from '@utils/hooks/use-parsed-blocks';
 import { usePrevious } from '@utils/hooks/use-previous';
 import isEqual from 'lodash.isequal';
@@ -24,6 +34,8 @@ const Home: React.FC = () => {
   const previousNewBlocks = usePrevious(newBlocks);
   const previousRecentBlocks = usePrevious(recentBlocks);
 
+  const { data: txs } = useGetTransactionsQuery({ variables: { first: 10 } });
+
   const { allBlocks, addBlocks } = useParsedBlocks();
 
   const [searchType, setSearchType] = useState<string>('request-key');
@@ -34,7 +46,7 @@ const Home: React.FC = () => {
     switch (searchType) {
       case 'request-key':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(`/${routes.TRANSACTION}/${searchField}`);
+        router.push(`/${routes.TRANSACTIONS}/${searchField}`);
         break;
       case 'account':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -170,6 +182,17 @@ const Home: React.FC = () => {
             <ChainwebGraph blocks={allBlocks} />
           )}
         </div>
+
+        {txs?.transactions && (
+          <div>
+            <Box marginBottom="$10" />
+            <CompactTransactionsTable
+              transactions={txs.transactions}
+              viewAllHref={`${routes.TRANSACTIONS}`}
+              description="Most recent transactions"
+            />
+          </div>
+        )}
       </main>
     </div>
   );
