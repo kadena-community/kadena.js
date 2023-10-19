@@ -1,4 +1,5 @@
 import { Box, Text } from '@kadena/react-ui';
+import dynamic from 'next/dynamic';
 import type { FC, FormEvent } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { Search } from '../Search/Search';
