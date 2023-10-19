@@ -12,63 +12,33 @@ builder.queryField('transactions', (t) => {
     type: 'Transaction',
     cursor: 'blockHash_requestKey',
     resolve: (query, parent, args) => {
-      const conditions: Prisma.TransactionWhereInput[] = [];
-      const conditionsObj: Prisma.TransactionWhereInput = {};
-
-      // conditionsObj.events = {
-      //   some: {
-      //     moduleName: args.moduleName,
-      //   },
-      //   }
-      // }
+      const whereFilter: Prisma.TransactionWhereInput = {};
 
       if (args.accountName) {
-        conditions.push({
-          senderAccount: args.accountName,
-        });
+        whereFilter.senderAccount = args.accountName;
       }
 
       if (args.moduleName) {
-        conditions.push({
-          events: {
-            some: {
-              moduleName: args.moduleName,
-            },
-          },
-        });
+        if (whereFilter.events) {
+          whereFilter.events.some = { moduleName: args.moduleName };
+        } else {
+          whereFilter.events = { some: { moduleName: args.moduleName } };
+        }
       }
 
       if (args.chainId) {
-        conditions.push({
-          chainId: parseInt(args.chainId),
-        });
+        whereFilter.chainId = parseInt(args.chainId);
       }
 
       return prismaClient.transaction.findMany({
         ...query,
         where: {
-          AND: conditions,
+          ...whereFilter,
         },
         orderBy: {
           height: 'desc',
         },
       });
-
-      // return prismaClient.transaction.findMany({
-      //   ...query,
-      //   where: {
-      //     senderAccount: args.accountName,
-      //     events: {
-      //       some: {
-      //         moduleName: args.moduleName,
-      //       },
-      //     },
-      //     ...(args.chainId && { chainId: parseInt(args.chainId) }),
-      //   },
-      //   orderBy: {
-      //     height: 'desc',
-      //   },
-      // });
     },
   });
 });
