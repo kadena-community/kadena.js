@@ -36,7 +36,6 @@ export const accordionButtonClass = style([
     fontWeight: '$semiBold',
     justifyContent: 'space-between',
     padding: 0,
-    paddingBottom: '$2',
     paddingRight: '$1',
     textAlign: 'left',
     width: '100%',
@@ -65,6 +64,10 @@ export const accordionContentClass = style([
     margin: 0,
     overflow: 'hidden',
     padding: 0,
-    paddingBottom: '$2',
+    marginBottom: '$2',
   }),
+  {
+    maxHeight: 0,
+    transition: 'max-height 0.2s ease-in-out',
+  }
 ]);
