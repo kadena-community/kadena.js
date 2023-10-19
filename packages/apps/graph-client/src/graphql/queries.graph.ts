@@ -145,6 +145,7 @@ export const getTransactions: DocumentNode = gql`
     $moduleName: String
     $accountName: String
     $chainId: String
+    $blockHash: String
     $after: String
     $before: String
     $first: Int
@@ -154,6 +155,7 @@ export const getTransactions: DocumentNode = gql`
       moduleName: $moduleName
       accountName: $accountName
       chainId: $chainId
+      blockHash: $blockHash
       after: $after
       before: $before
       first: $first

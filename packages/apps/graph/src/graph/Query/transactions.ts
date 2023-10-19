@@ -8,6 +8,7 @@ builder.queryField('transactions', (t) => {
       accountName: t.arg.string({ required: false }),
       moduleName: t.arg.string({ required: false }),
       chainId: t.arg.string({ required: false }),
+      blockHash: t.arg.string({ required: false }),
     },
     type: 'Transaction',
     cursor: 'blockHash_requestKey',
@@ -28,6 +29,10 @@ builder.queryField('transactions', (t) => {
 
       if (args.chainId) {
         whereFilter.chainId = parseInt(args.chainId);
+      }
+
+      if (args.blockHash) {
+        whereFilter.blockHash = args.blockHash;
       }
 
       return prismaClient.transaction.findMany({

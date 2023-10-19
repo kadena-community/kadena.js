@@ -1,25 +1,18 @@
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
-import Loader from '@components/loader/loader';
-import { mainStyle } from '@components/main/styles.css';
-import { Text } from '@components/text';
-import routes from '@constants/routes';
-import { Box, Button, Link, Notification, Table } from '@kadena/react-ui';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React from 'react';
+import { Text } from '@components/text';
+import { Box, Notification } from '@kadena/react-ui';
+import { mainStyle } from '@/components/main/styles.css';
+import Head from 'next/head';
+import Loader from '@/components/loader/loader';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
 
-const AccountTransactions: React.FC = () => {
-  const router = useRouter();
-
+const Transactions: React.FC = () => {
   const { loading, data, error, fetchMore } = useGetTransactionsQuery({
-    variables: {
-      moduleName: router.query.module as string,
-      accountName: router.query.account as string,
-      ...(router.query.chain && { chainId: router.query.chain as string }),
-      first: 10,
-    },
+    variables: { first: 20 },
   });
+
+  console.log('index', data);
 
   return (
     <div style={{ padding: '0 50px 30px 50px' }}>
@@ -27,7 +20,6 @@ const AccountTransactions: React.FC = () => {
         <title>Kadena Graph Client</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-
       <main className={mainStyle}>
         <Text
           as="h1"
@@ -35,7 +27,6 @@ const AccountTransactions: React.FC = () => {
         >
           Kadena Graph Client
         </Text>
-
         <div>
           {loading && (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -63,4 +54,4 @@ const AccountTransactions: React.FC = () => {
   );
 };
 
-export default AccountTransactions;
+export default Transactions;
