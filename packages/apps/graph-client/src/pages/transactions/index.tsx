@@ -1,19 +1,19 @@
+import { Box, Notification } from '@kadena/react-ui';
+
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
-import Loader from '@components/loader/loader';
-import { mainStyle } from '@components/main/styles.css';
+import Loader from '@/components/loader/loader';
+import { mainStyle } from '@/components/main/styles.css';
 import { Text } from '@components/text';
-import { Box, Notification } from '@kadena/react-ui';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React from 'react';
 
-const BlockTransactions: React.FC = () => {
-  const router = useRouter();
-
+const Transactions: React.FC = () => {
   const { loading, data, error, fetchMore } = useGetTransactionsQuery({
-    variables: { blockHash: router.query.hash as string, first: 10 },
+    variables: { first: 20 },
   });
+
+  console.log('index', data);
 
   return (
     <div style={{ padding: '0 50px 30px 50px' }}>
@@ -55,4 +55,4 @@ const BlockTransactions: React.FC = () => {
   );
 };
 
-export default BlockTransactions;
+export default Transactions;

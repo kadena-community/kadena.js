@@ -67,7 +67,7 @@ const Event: React.FC = () => {
                   {eventSubscription.event.map((event, index) => (
                     <Table.Tr
                       key={index}
-                      url={`${routes.TRANSACTION}/${event.transaction?.requestKey}`}
+                      url={`${routes.TRANSACTIONS}/${event.transaction?.requestKey}`}
                     >
                       <Table.Td>{event.qualifiedName}</Table.Td>
                       <Table.Td>

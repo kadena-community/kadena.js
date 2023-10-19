@@ -1,4 +1,5 @@
 import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
+import routes from '@/constants/routes';
 import Loader from '@components/loader/loader';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
@@ -110,9 +111,9 @@ const RequestKey: React.FC = () => {
                     </Table.Td>
                     <Table.Td>
                       <Link
-                        href={`/block/${transactionSubscription?.transaction?.block?.id}`}
+                        href={`${routes.BLOCK_OVERVIEW}/${transactionSubscription?.transaction?.block?.hash}`}
                       >
-                        {transactionSubscription?.transaction?.block?.id}
+                        {transactionSubscription?.transaction?.block?.hash}
                       </Link>
                     </Table.Td>
                   </Table.Tr>
