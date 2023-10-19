@@ -1,9 +1,9 @@
-import { Box, Button, Grid, Link, Select, Table } from '@kadena/react-ui';
+import { Box, Button, Link, Table } from '@kadena/react-ui';
 
 import type { GetTransactionsQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
-import type { FetchMoreOptions,FetchMoreQueryOptions  } from '@apollo/client';
-import React, { useState } from 'react';
+import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
+import React from 'react';
 
 type DataType = GetTransactionsQuery;
 
@@ -30,7 +30,7 @@ export const ExtendedTransactionsTable = (
   return (
     <>
       <Box marginBottom="$3">
-      <span>Showing 10 results per page</span>
+        <span>Showing 10 results per page</span>
 
         <Button
           variant="compact"
