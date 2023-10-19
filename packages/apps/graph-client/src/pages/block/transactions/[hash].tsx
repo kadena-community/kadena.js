@@ -1,6 +1,7 @@
-import { Box, Button, Link, Notification, Table } from '@kadena/react-ui';
+import { Box, Notification } from '@kadena/react-ui';
 
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
+import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
 import Loader from '@components/loader/loader';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
@@ -8,7 +9,6 @@ import routes from '@constants/routes';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
 
 const BlockTransactions: React.FC = () => {
   const router = useRouter();
