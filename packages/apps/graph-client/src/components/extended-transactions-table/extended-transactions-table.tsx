@@ -26,18 +26,19 @@ export const ExtendedTransactionsTable = (
   props: IExpandedTransactionsTableProps,
 ): JSX.Element => {
   const { transactions, fetchMore } = props;
+  const pageSize: number = 10;
 
   return (
     <>
       <Box marginBottom="$3">
-        <span>Showing 10 results per page</span>
+        <span>{`Showing ${pageSize} results per page`}</span>
 
         <Button
           variant="compact"
           onClick={() =>
             fetchMore({
               variables: {
-                first: 20,
+                first: pageSize,
                 last: null,
                 after: transactions.pageInfo.endCursor,
                 before: null,
@@ -59,14 +60,14 @@ export const ExtendedTransactionsTable = (
             fetchMore({
               variables: {
                 first: null,
-                last: 20,
+                last: pageSize,
                 after: null,
                 before: transactions.pageInfo.startCursor,
               },
               updateQuery: (prev, { fetchMoreResult }) => {
                 if (!fetchMoreResult) return prev;
 
-                if (fetchMoreResult.transactions.edges.length < 10) {
+                if (fetchMoreResult.transactions.edges.length < pageSize) {
                   return {
                     ...prev,
                     transactions: {
@@ -74,7 +75,7 @@ export const ExtendedTransactionsTable = (
                       edges: [
                         ...fetchMoreResult.transactions.edges,
                         ...prev.transactions.edges,
-                      ].slice(0, 10),
+                      ].slice(0, pageSize),
                     },
                   };
                 }
