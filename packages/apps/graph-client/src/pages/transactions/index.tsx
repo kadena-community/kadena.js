@@ -1,11 +1,12 @@
-import { useGetTransactionsQuery } from '@/__generated__/sdk';
-import React from 'react';
-import { Text } from '@components/text';
 import { Box, Notification } from '@kadena/react-ui';
-import { mainStyle } from '@/components/main/styles.css';
-import Head from 'next/head';
-import Loader from '@/components/loader/loader';
+
+import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
+import Loader from '@/components/loader/loader';
+import { mainStyle } from '@/components/main/styles.css';
+import { Text } from '@components/text';
+import Head from 'next/head';
+import React from 'react';
 
 const Transactions: React.FC = () => {
   const { loading, data, error, fetchMore } = useGetTransactionsQuery({

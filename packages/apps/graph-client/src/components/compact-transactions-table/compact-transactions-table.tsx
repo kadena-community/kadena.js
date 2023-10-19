@@ -32,7 +32,7 @@ export const CompactTransactionsTable = (
         description={
           description
             ? description
-            : 'All transactions where this account is the initiator.'
+            : 'All transactions where this account is the initiator'
         }
       />
       <Box margin={'$4'} />

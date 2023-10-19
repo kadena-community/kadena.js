@@ -1,4 +1,5 @@
 import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
+import routes from '@/constants/routes';
 import Loader from '@components/loader/loader';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
@@ -6,7 +7,6 @@ import { Box, Link, Notification, Table } from '@kadena/react-ui';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-import routes from '@/constants/routes';
 
 const RequestKey: React.FC = () => {
   const router = useRouter();

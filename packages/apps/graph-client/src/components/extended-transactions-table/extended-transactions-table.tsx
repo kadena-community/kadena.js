@@ -1,9 +1,9 @@
-import { GetTransactionsQuery } from '@/__generated__/sdk';
-import routes from '@/constants/routes';
-import { FetchMoreQueryOptions } from '@apollo/client';
 import { Box, Button, Grid, Link, Select, Table } from '@kadena/react-ui';
+
+import type { GetTransactionsQuery } from '@/__generated__/sdk';
+import routes from '@/constants/routes';
+import type { FetchMoreOptions,FetchMoreQueryOptions  } from '@apollo/client';
 import React, { useState } from 'react';
-import { FetchMoreOptions } from '@apollo/client';
 
 type DataType = GetTransactionsQuery;
 
@@ -27,23 +27,10 @@ export const ExtendedTransactionsTable = (
 ): JSX.Element => {
   const { transactions, fetchMore } = props;
 
-  const [itemsPerPage, setItemsPerPage] = useState<number>(20);
-
   return (
     <>
       <Box marginBottom="$3">
-        <div style={{ float: 'left', textAlign: 'center', display: '' }}>
-          <span style={{ display: 'inline-block' }}>Ìtems per page: </span>
-
-          <Select
-            ariaLabel="items-per-page"
-            id="items-per-page"
-            onChange={(event) => setItemsPerPage(parseInt(event.target.value))}
-            style={{ display: 'inline-block' }}
-          >
-            <option value={10}>10</option>
-          </Select>
-        </div>
+      <span>Showing 10 results per page</span>
 
         <Button
           variant="compact"
@@ -79,7 +66,7 @@ export const ExtendedTransactionsTable = (
               updateQuery: (prev, { fetchMoreResult }) => {
                 if (!fetchMoreResult) return prev;
 
-                if (fetchMoreResult.transactions.edges.length < 20) {
+                if (fetchMoreResult.transactions.edges.length < 10) {
                   return {
                     ...prev,
                     transactions: {
@@ -87,7 +74,7 @@ export const ExtendedTransactionsTable = (
                       edges: [
                         ...fetchMoreResult.transactions.edges,
                         ...prev.transactions.edges,
-                      ].slice(0, 20),
+                      ].slice(0, 10),
                     },
                   };
                 }

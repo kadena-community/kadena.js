@@ -216,6 +216,7 @@ const Block: React.FC = () => {
                     router.query.hash as string
                   }`}
                   transactions={data.block.transactions}
+                  description='All transactions present in this block'
                 />
               )}
             </div>

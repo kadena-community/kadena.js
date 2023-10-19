@@ -12,6 +12,7 @@ import {
   useGetRecentHeightsQuery,
   useGetTransactionsQuery,
 } from '@/__generated__/sdk';
+import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { ChainwebGraph } from '@components/chainweb';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
@@ -23,7 +24,6 @@ import isEqual from 'lodash.isequal';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 
 const Home: React.FC = () => {
   const router = useRouter();
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
     data: txs,
     error: txsError,
     fetchMore: fetchMoreTxs,
-  } = useGetTransactionsQuery({ variables: { first: 5 } });
+  } = useGetTransactionsQuery({ variables: { first: 10 } });
 
   const { allBlocks, addBlocks } = useParsedBlocks();
 
@@ -170,7 +170,7 @@ const Home: React.FC = () => {
         {txs?.transactions && (
           <div>
             <Box marginBottom="$10" />
-            <CompactTransactionsTable transactions={txs.transactions} />
+            <CompactTransactionsTable transactions={txs.transactions} description='Most recent transactions'/>
           </div>
         )}
       </main>
