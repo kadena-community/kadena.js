@@ -163,7 +163,10 @@ export const spacerClass = style({
 export const headerIconGroupClass = style([
   sprinkles({
     display: 'flex',
-    gap: '$1',
+    gap: {
+      xs: '$3',
+      lg: '$6',
+    },
     marginLeft: '$6',
   }),
 ]);
