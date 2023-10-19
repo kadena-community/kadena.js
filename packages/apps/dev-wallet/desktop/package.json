@@ -1,0 +1,17 @@
+{
+  "name": "@kadena/dev-wallet-desktop",
+  "description": "Kadena developer wallet",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": " tauri build"
+  },
+  "dependencies": {
+    "@kadena/dev-wallet": "workspace:*"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.4.0"
+  }
+}
