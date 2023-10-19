@@ -47,11 +47,11 @@ export const AccordionSection: FC<IAccordionSectionProps> = ({
 
   const handleClick = (): void => {
     if (isOpen) {
-      onClose?.();
       setOpenSections(linked ? [] : [...openSections.filter((i) => i !== sectionId)]);
+      onClose?.();
     } else {
-      onOpen?.();
       setOpenSections(linked ? [sectionId] : [...openSections, sectionId]);
+      onOpen?.();
     }
   };
 
