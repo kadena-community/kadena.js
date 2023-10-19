@@ -28,7 +28,7 @@ export const ExtendedTransactionsTable = (
 ): JSX.Element => {
   const { transactions, fetchMore } = props;
 
-  const itemsPerPageOptions = [1, 10, 50, 100];
+  const itemsPerPageOptions = [10, 50, 100, 200];
 
   // Parse the query parameters from the URL using Next.js router
   const router = useRouter();
