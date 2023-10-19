@@ -1,26 +1,30 @@
-jest.mock('@/components/Common/WalletConnectButton', () =>
-  jest.fn(() => <button>connect wallet</button>),
-);
-jest.mock('@/context/connect-wallet-context', () =>
-  jest.fn(() => ({
-    client: jest.fn(),
+import { render } from '@testing-library/react';
+import React from 'react';
+import Layout from './index';
+
+vi.mock('@/components/Common/WalletConnectButton', () => ({
+  default: vi.fn(() => <button>connect wallet</button>),
+}));
+
+vi.mock('@/context/connect-wallet-context', () => ({
+  useWalletConnectClient: vi.fn(() => ({
+    client: vi.fn(),
     session: undefined,
-    connect: jest.fn(),
-    disconnect: jest.fn(),
+    connect: vi.fn(),
+    disconnect: vi.fn(),
     isInitializing: false,
     pairings: undefined,
     accounts: undefined,
     selectedNetwork: '',
-    setSelectedNetwork: jest.fn(),
+    setSelectedNetwork: vi.fn(),
     selectedChain: '',
-    setSelectedChain: jest.fn(),
+    setSelectedChain: vi.fn(),
     selectedAccount: '',
-    setSelectedAccount: jest.fn(),
+    setSelectedAccount: vi.fn(),
+    networksData: [],
+    setNetworksData: vi.fn(),
   })),
-);
-import { render } from '@testing-library/react';
-import React from 'react';
-import Layout from './index';
+}));
 
 describe('Layout', () => {
   it.skip('renders correctly', () => {
