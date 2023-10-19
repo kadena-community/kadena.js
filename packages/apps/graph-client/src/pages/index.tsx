@@ -59,10 +59,10 @@ const Home: React.FC = () => {
   };
 
   const searchTypePlaceholders: Record<string, string> = {
-    'request-key': '',
+    'request-key': 'vCiATVJgm7...',
     account: 'k:1234...',
     event: 'coin.TRANSFER',
-    block: '',
+    block: 'CA9orP2yM...',
   };
 
   const { addBlockToChain } = useChainTree();
