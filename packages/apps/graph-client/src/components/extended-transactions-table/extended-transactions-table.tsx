@@ -1,9 +1,10 @@
-import { Box, Button, Link, Table } from '@kadena/react-ui';
+import { Box, Button, Link, Select, Table } from '@kadena/react-ui';
 
 import type { GetTransactionsQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 type DataType = GetTransactionsQuery;
 
@@ -26,19 +27,86 @@ export const ExtendedTransactionsTable = (
   props: IExpandedTransactionsTableProps,
 ): JSX.Element => {
   const { transactions, fetchMore } = props;
-  const pageSize: number = 10;
+
+  const itemsPerPageOptions = [1, 10, 50, 100];
+
+  // Parse the query parameters from the URL using Next.js router
+  const router = useRouter();
+  const { page: urlPage, items: urlItemsPerPage } = router.query;
+
+  // Use state to manage itemsPerPage and currentPage
+  const [itemsPerPage, setItemsPerPage] = useState<number>(
+    urlItemsPerPage &&
+      itemsPerPageOptions.includes(parseInt(urlItemsPerPage as string))
+      ? parseInt(urlItemsPerPage as string)
+      : 10,
+  );
+
+  // Calculate the total number of pages available based on the total count
+  const totalPages = Math.ceil(transactions.totalCount / itemsPerPage);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    refetchTransactions();
+    setCurrentPage(1);
+  }, [itemsPerPage]);
+
+  // Set items per page and page in URL when they change
+  useEffect(() => {
+    if (
+      urlItemsPerPage !== itemsPerPage.toString() ||
+      urlPage !== currentPage.toString()
+    ) {
+      router.push({
+        pathname: router.pathname,
+        query: { page: currentPage, items: itemsPerPage },
+      });
+    }
+  }, [currentPage, itemsPerPage, router]);
+
+  const refetchTransactions = () => {
+    fetchMore({
+      variables: {
+        first: itemsPerPage,
+        last: null,
+        after: null,
+        before: null,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return fetchMoreResult;
+      },
+    });
+  };
 
   return (
     <>
       <Box marginBottom="$3">
-        <span>{`Showing ${pageSize} results per page`}</span>
+        <div style={{ float: 'left', textAlign: 'center' }}>
+          <span style={{ display: 'inline-block' }}>Items per page: </span>
 
+          <Select
+            ariaLabel="items-per-page"
+            id="items-per-page"
+            onChange={(event) => setItemsPerPage(parseInt(event.target.value))}
+            style={{ display: 'inline-block' }}
+            defaultValue={itemsPerPage}
+          >
+            {itemsPerPageOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </Select>
+        </div>
         <Button
           variant="compact"
-          onClick={() =>
+          onClick={() => {
+            setCurrentPage(currentPage + 1);
             fetchMore({
               variables: {
-                first: pageSize,
+                first: itemsPerPage,
                 last: null,
                 after: transactions.pageInfo.endCursor,
                 before: null,
@@ -47,8 +115,8 @@ export const ExtendedTransactionsTable = (
                 if (!fetchMoreResult) return prev;
                 return fetchMoreResult;
               },
-            })
-          }
+            });
+          }}
           disabled={!transactions.pageInfo.hasNextPage}
           style={{ float: 'right' }}
         >
@@ -56,18 +124,19 @@ export const ExtendedTransactionsTable = (
         </Button>
         <Button
           variant="compact"
-          onClick={() =>
+          onClick={() => {
+            setCurrentPage(currentPage - 1);
             fetchMore({
               variables: {
                 first: null,
-                last: pageSize,
+                last: itemsPerPage,
                 after: null,
                 before: transactions.pageInfo.startCursor,
               },
               updateQuery: (prev, { fetchMoreResult }) => {
                 if (!fetchMoreResult) return prev;
 
-                if (fetchMoreResult.transactions.edges.length < pageSize) {
+                if (fetchMoreResult.transactions.edges.length < itemsPerPage) {
                   return {
                     ...prev,
                     transactions: {
@@ -75,15 +144,15 @@ export const ExtendedTransactionsTable = (
                       edges: [
                         ...fetchMoreResult.transactions.edges,
                         ...prev.transactions.edges,
-                      ].slice(0, pageSize),
+                      ].slice(0, itemsPerPage),
                     },
                   };
                 }
 
                 return fetchMoreResult;
               },
-            })
-          }
+            });
+          }}
           disabled={!transactions.pageInfo.hasPreviousPage}
           style={{ float: 'right', marginRight: '10px' }}
         >
@@ -126,6 +195,9 @@ export const ExtendedTransactionsTable = (
           })}
         </Table.Body>
       </Table.Root>
+      <span
+        style={{ float: 'right' }}
+      >{`Page ${currentPage} out of ${totalPages}`}</span>
     </>
   );
 };
