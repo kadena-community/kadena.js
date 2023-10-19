@@ -34,7 +34,6 @@
     "@walletconnect/sign-client": "~2.8.1",
     "@walletconnect/utils": "~2.9.2",
     "ace-builds": "~1.30.0",
-    "blakejs": "^1.2.1",
     "classnames": "^2.3.1",
     "jest-standard-reporter": "~2.0.0",
     "js-cookie": "~3.0.5",

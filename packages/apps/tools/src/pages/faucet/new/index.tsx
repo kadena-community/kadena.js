@@ -88,8 +88,6 @@ const NewAccountFaucetPage: FC = () => {
     initialData: '',
   });
 
-  useEffect(() => {}, [pubKeys.length]);
-
   const schema = z.object({
     name: z.string(),
     pubKey: z.string().optional(),
@@ -135,7 +133,6 @@ const NewAccountFaucetPage: FC = () => {
 
       setInputError('');
       setRequestStatus({ status: 'processing' });
-      console.log(data.name, pubKeys, chainID, pred);
       try {
         const result = (await fundCreateNewAccount(
           data.name,

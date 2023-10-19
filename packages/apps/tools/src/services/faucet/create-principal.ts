@@ -39,13 +39,10 @@ export const createPrincipal = async (
   }
 
   const response = await dirtyRead(transaction);
-  console.log(response);
 
   if (response.result.status === 'success') {
     return response.result.data as string;
   }
-
-  console.log(response.result.error, 'error');
 
   throw new Error((response.result.error as any)?.message || 'Unknown error');
 };
