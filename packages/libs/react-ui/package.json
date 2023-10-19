@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@kadena/fonts": "~0.0.1",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@vanilla-extract/css": "1.13.0",
     "@vanilla-extract/recipes": "0.4.0",
     "@vanilla-extract/sprinkles": "1.6.1",

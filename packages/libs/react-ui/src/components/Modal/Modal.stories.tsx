@@ -1,3 +1,4 @@
+import { Button } from '@components/Button';
 import type { IModalRootProps } from '@components/Modal';
 import { Modal } from '@components/Modal';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -36,8 +37,10 @@ export const Primary: Story = {
   render: ({ title }) => {
     return (
       <Modal.Root>
-        <Modal.Trigger>Modal Trigger</Modal.Trigger>
-        <Modal.Content title={title}>
+        <Modal.Trigger asChild>
+          <Button>Modal Trigger</Button>
+        </Modal.Trigger>
+        <Modal.Content>
           Hellooo, . .adsflsjflka jf;ljas f;as flas fjl;as fjlasdjf kasldf
           jl;aksdfj l;adskjf lasdf jalsfdj;alf jsldf jalsd fa;lsjd jsdflsjdf
           kldsj fklsdfj lks jflksdjf lkds fjsdlkf dsjf ksdfjsldfj lsdfj sdlf

@@ -12,24 +12,12 @@ export const openModal = style([
 
 export const underlayClass = style([
   sprinkles({
-    zIndex: '$modal',
     position: 'fixed',
-    cursor: 'pointer',
     inset: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '$neutral5',
   }),
   {
-    selectors: {
-      '&::before': {
-        content: '',
-        position: 'absolute',
-        inset: 0,
-        backgroundColor: vars.colors.$neutral5,
-        opacity: 0.5,
-      },
-    },
+    opacity: 0.5,
   },
 ]);
 
@@ -46,6 +34,9 @@ export const overlayClass = style([
   }),
   responsiveStyle({
     xs: {
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
       maxHeight: '75vh',
       maxWidth: '700px',
       inset: 0,
@@ -70,7 +61,6 @@ export const closeButtonClass = style([
     fontSize: '$base',
     fontWeight: '$light',
     border: 'none',
-    padding: 0,
     cursor: 'pointer',
     color: 'inherit',
   }),

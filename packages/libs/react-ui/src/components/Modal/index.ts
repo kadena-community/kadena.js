@@ -1,21 +1,22 @@
 import type { FC } from 'react';
 import type { IModalContentProps } from './ModalContent';
 import { ModalContent } from './ModalContent';
-import type { IModalRootProps } from './ModalRoot';
-import { ModalRoot } from './ModalRoot';
-import type { IModalTriggerProps } from './ModalTrigger';
-import { ModalTrigger } from './ModalTrigger';
 
-export { IModalContentProps, IModalRootProps, IModalTriggerProps };
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+
+export { IModalContentProps };
+export interface IModalRootProps extends DialogPrimitive.DialogProps {}
+export interface IModalTriggerProps
+  extends DialogPrimitive.DialogTriggerProps {}
 
 export interface IModalProps {
-  Root: FC<IModalRootProps>;
-  Trigger: FC<IModalTriggerProps>;
+  Root: FC<DialogPrimitive.DialogProps>;
+  Trigger: FC<DialogPrimitive.DialogTriggerProps>;
   Content: FC<IModalContentProps>;
 }
 
 export const Modal: IModalProps = {
-  Root: ModalRoot,
-  Trigger: ModalTrigger,
+  Root: DialogPrimitive.Root,
+  Trigger: DialogPrimitive.Trigger,
   Content: ModalContent,
 };
