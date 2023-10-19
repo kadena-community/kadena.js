@@ -167,6 +167,7 @@ const Home: React.FC = () => {
             <Box marginBottom="$10" />
             <CompactTransactionsTable
               transactions={txs.transactions}
+              viewAllHref={`${routes.TRANSACTIONS}`}
               description="Most recent transactions"
             />
           </div>
