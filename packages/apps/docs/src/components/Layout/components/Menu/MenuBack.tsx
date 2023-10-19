@@ -1,8 +1,7 @@
-import { menuBackClass, menuBackOpenVariants } from './menu.css';
-
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import { menuBackClass, menuBackOpenVariants } from './menu.css';
 
 interface IProps {
   isOpen?: boolean;

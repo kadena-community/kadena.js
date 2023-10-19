@@ -1,5 +1,10 @@
 'use client';
-
+import { Card } from '@components/Card';
+import { SystemIcon } from '@components/Icon';
+import { Heading } from '@components/Typography/Heading/Heading';
+import FocusTrap from 'focus-trap-react';
+import type { FC } from 'react';
+import React from 'react';
 import {
   background,
   closeButton,
@@ -8,13 +13,6 @@ import {
   wrapper,
 } from './Modal.css';
 import { useModal } from './useModal';
-
-import { Card } from '@components/Card';
-import { SystemIcon } from '@components/Icon';
-import { Heading } from '@components/Typography/Heading/Heading';
-import FocusTrap from 'focus-trap-react';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface IModalProps {
   children: React.ReactNode;

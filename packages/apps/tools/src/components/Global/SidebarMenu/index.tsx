@@ -1,10 +1,9 @@
-import { SystemIcon } from '@kadena/react-ui';
-
 import { NavLink } from '@/components/Global/NavLink';
 import { StyledSidebar } from '@/components/Global/SidebarMenu/styles';
 import routes from '@/constants/routes';
-import { useRouter } from 'next/router';
+import { SystemIcon } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';
 

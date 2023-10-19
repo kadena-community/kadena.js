@@ -1,16 +1,17 @@
-jest.mock('tweetnacl', () => {
+vi.mock('tweetnacl', () => {
   return {
-    sign: {
-      keyPair: () => {
-        return {
-          publicKey: '1234567abcdefg',
-          secretKey: '1234567abcdefg',
-        };
+    default: {
+      sign: {
+        keyPair: () => {
+          return {
+            publicKey: '1234567abcdefg',
+            secretKey: '1234567abcdefg',
+          };
+        },
       },
     },
   };
 });
-
 import { genKeyPair } from '../genKeyPair';
 
 test('generates a new keyPair', () => {

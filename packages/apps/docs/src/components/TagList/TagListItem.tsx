@@ -1,13 +1,10 @@
-import { Box, Card } from '@kadena/react-ui';
-
-import { BrowseSection } from '../BrowseSection/BrowseSection';
-
-import { headingClass, itemClass, itemLinkClass } from './styles.css';
-
 import type { ITag } from '@/Layout';
+import { Box, Card } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
+import { BrowseSection } from '../BrowseSection/BrowseSection';
+import { headingClass, itemClass, itemLinkClass } from './styles.css';
 
 export const TagListItem: FC<ITag> = ({ tag, count, links }) => {
   return (

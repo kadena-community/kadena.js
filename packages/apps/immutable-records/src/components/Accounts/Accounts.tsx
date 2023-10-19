@@ -1,15 +1,12 @@
 'use client';
-
-import { Select } from '@kadena/react-ui';
-
-import { container } from './Accounts.css';
-
 import { useWalletConnect } from '@/hooks/connect.hook';
 import type { BalanceItem } from '@/services/chainweb/chainweb';
 import { getBalance } from '@/services/chainweb/chainweb';
 import type { KadenaAccount } from '@/services/connect/connect.client';
+import { Select } from '@kadena/react-ui';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
+import { container } from './Accounts.css';
 
 const KadenaAccountBalance: FC<{
   account: KadenaAccount;

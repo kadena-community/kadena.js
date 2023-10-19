@@ -1,9 +1,8 @@
-import { SystemIcons } from './../../';
-import type { IInputProps } from '.';
-import { Input } from '.';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { IInputProps } from '.';
+import { Input } from '.';
+import { SystemIcons } from './../../';
 
 const meta: Meta<
   {

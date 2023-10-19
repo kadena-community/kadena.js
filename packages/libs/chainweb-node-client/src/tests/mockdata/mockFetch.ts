@@ -7,7 +7,6 @@ import type {
   SendResponse,
   SPVResponse,
 } from '../../interfaces/PactAPI';
-
 import { testSPVProof, testURL } from './Pact';
 
 /**

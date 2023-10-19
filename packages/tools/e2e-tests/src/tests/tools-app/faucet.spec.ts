@@ -1,9 +1,8 @@
+import { expect } from '@playwright/test';
 import { accountsData } from '../../fixtures/data/accounts';
 import { pollFinished, pollInProgress } from '../../fixtures/mocks/poll.mocks';
 import { sendMocks } from '../../fixtures/mocks/send.mocks';
 import { test } from '../../page-objects';
-
-import { expect } from '@playwright/test';
 
 test('Fund existing account @mocks', async ({ page, toolsApp, mockHelper }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {

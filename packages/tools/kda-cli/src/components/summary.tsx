@@ -1,8 +1,7 @@
-import type { HistoryValue } from '../hooks/use-history.js';
-import type { IQuestionAnswer } from '../questions/questions.js';
-
 import { Box, Text } from 'ink';
 import React from 'react';
+import type { HistoryValue } from '../hooks/use-history.js';
+import type { IQuestionAnswer } from '../questions/questions.js';
 
 const Answer = ({
   value,

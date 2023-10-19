@@ -5,7 +5,6 @@ import type {
 import { Pact, readKeyset } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import type { ChainId, IPactDecimal, IUnsignedCommand } from '@kadena/types';
-
 import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {

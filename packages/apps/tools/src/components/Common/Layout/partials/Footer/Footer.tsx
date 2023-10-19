@@ -1,6 +1,5 @@
-import { NavFooter, useModal } from '@kadena/react-ui';
-
 import { OptionsModal } from '@/components/Global/OptionsModal';
+import { NavFooter, useModal } from '@kadena/react-ui';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';

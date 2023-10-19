@@ -1,23 +1,22 @@
-import { Box, Button, Grid, Heading, Stack } from '@kadena/react-ui';
-
+import type { IMenuData } from '@/Layout';
+import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
+import { HomeHeader } from '@/components/Layout/Landing/components';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { HomeHeader } from '@/components/Layout/Landing/components';
-import type { IMenuData } from '@/Layout';
-import type { IMostPopularPage } from '@/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { Box, Button, Grid, Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';

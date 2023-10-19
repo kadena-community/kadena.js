@@ -1,17 +1,14 @@
-import { Divider, Stack } from '@kadena/react-ui';
-
-import { PageHelpful } from '../PageHelpful/PageHelpful';
-
-import { EditPage } from './components/EditPage';
-import { Subscribe } from './components/Subscribe';
-import { bottomWrapperClass, bottomWrapperCodeLayoutClass } from './styles.css';
-
 import type { INavigation } from '@/Layout';
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
+import { Divider, Stack } from '@kadena/react-ui';
 import classnames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
+import { PageHelpful } from '../PageHelpful/PageHelpful';
+import { EditPage } from './components/EditPage';
+import { Subscribe } from './components/Subscribe';
+import { bottomWrapperClass, bottomWrapperCodeLayoutClass } from './styles.css';
 
 interface IProps {
   editLink?: string;

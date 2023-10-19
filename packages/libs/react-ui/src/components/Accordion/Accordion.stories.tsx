@@ -1,8 +1,7 @@
-import type { IAccordionProps, IAccordionSectionProps } from './';
-import { Accordion } from './';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { IAccordionProps, IAccordionSectionProps } from './';
+import { Accordion } from './';
 
 const generateSection = (i: number): IAccordionSectionProps => ({
   title: `Section title ${i}`,

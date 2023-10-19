@@ -1,6 +1,5 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
 import type { LayoutType } from '@/Layout';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const articleClass = style([

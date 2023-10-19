@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import type { Reducer } from '../pact/pact.js';
 import {
   addCapability,
@@ -12,10 +13,7 @@ import {
   signWithChainweaver,
   signWithKeypair,
 } from '../pact/pact.js';
-
 import type { IAnswers, IQuestion } from './questions.js';
-
-import { readFileSync } from 'fs';
 
 const isDeployTask = ({ task }: IAnswers): boolean => {
   if (Array.isArray(task)) return task.includes('deploy');

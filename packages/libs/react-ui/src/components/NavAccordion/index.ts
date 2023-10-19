@@ -1,3 +1,4 @@
+import type { FC } from 'react';
 import type { INavAccordionRootProps } from './NavAccordion';
 import { NavAccordionRoot } from './NavAccordion';
 import type { INavAccordionGroupProps } from './NavAccordionGroup';
@@ -7,13 +8,11 @@ import { NavAccordionLink } from './NavAccordionLink';
 import type { INavAccordionSectionProps } from './NavAccordionSection';
 import { NavAccordionSection } from './NavAccordionSection';
 
-import type { FC } from 'react';
-
 export {
-  INavAccordionRootProps,
-  INavAccordionSectionProps,
   INavAccordionGroupProps,
   INavAccordionLinkProps,
+  INavAccordionRootProps,
+  INavAccordionSectionProps,
 };
 
 export interface INavAccordionProps {

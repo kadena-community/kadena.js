@@ -1,7 +1,6 @@
-import { getData } from './staticGeneration/getData.mjs';
-import { compareDesc } from './dates';
-
 import type { IAuthorInfo, IMenuData } from '@/Layout';
+import { compareDesc } from './dates';
+import { getData } from './staticGeneration/getData.mjs';
 
 export const getBlogPosts = async (tags?: string[]): Promise<IMenuData[]> => {
   const menu = getData() as unknown as IMenuData[];

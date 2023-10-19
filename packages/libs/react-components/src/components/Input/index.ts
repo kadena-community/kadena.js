@@ -1,3 +1,3 @@
-export { Input, IInputProps } from './Input';
-export { InputGroup, IInputGroupProps } from './InputGroup';
+export { IInputProps, Input } from './Input';
+export { IInputGroupProps, InputGroup } from './InputGroup';
 export { ITextFieldProps, TextField } from './TextField';

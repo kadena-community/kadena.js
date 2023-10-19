@@ -1,12 +1,10 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import { style } from '@vanilla-extract/css';
 import {
   $$backgroundOverlayColor,
   $$pageWidth,
   globalClass,
 } from '../../global.css';
-
-import { style } from '@vanilla-extract/css';
 
 export const headerWrapperClass = style([
   globalClass,

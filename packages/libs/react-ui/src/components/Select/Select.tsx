@@ -1,3 +1,7 @@
+import { SystemIcon } from '@components/Icon';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React, { forwardRef } from 'react';
 import {
   chevronIconClass,
   containerClass,
@@ -5,11 +9,6 @@ import {
   iconClass,
   selectClass,
 } from './Select.css';
-
-import { SystemIcon } from '@components/Icon';
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React, { forwardRef } from 'react';
 
 export interface ISelectProps
   extends Omit<

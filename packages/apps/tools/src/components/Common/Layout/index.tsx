@@ -1,10 +1,9 @@
-import { FooterWrapper, Header, Sidebar } from './partials';
-import { footerStyle, gridItemMainStyle, headerStyle } from './styles.css';
-
 import { useLayoutContext } from '@/context';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { FooterWrapper, Header, Sidebar } from './partials';
+import { footerStyle, gridItemMainStyle, headerStyle } from './styles.css';
 
 interface IProps {
   children?: ReactNode;

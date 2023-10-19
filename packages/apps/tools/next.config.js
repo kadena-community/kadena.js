@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextTranslate = require('next-translate-plugin');
+const nextTranslate = require('@webpro/next-translate-plugin');
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 
 const withVanillaExtract = createVanillaExtractPlugin();
 
 const config = {
+  nextTranslate: { basePath: __dirname },
   eslint: {
     ignoreDuringBuilds: true, // lint is a different task/phase
   },

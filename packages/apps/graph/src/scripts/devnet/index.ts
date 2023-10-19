@@ -1,8 +1,7 @@
+import { Command, Option } from 'commander';
 import { createAccount, logger } from './helper';
 import { simulate } from './simulate';
 import { transfer } from './transfer';
-
-import { Command, Option } from 'commander';
 
 const program: Command = new Command();
 program
@@ -44,7 +43,7 @@ program
     new Option(
       '-i, --transferInterval <number>',
       'Transfer interval in milliseconds',
-    ).default(3000),
+    ).default(100),
   )
   .addOption(
     new Option('-t, --maxAmount <number>', 'Maximum transfer amount').default(

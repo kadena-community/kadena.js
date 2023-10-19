@@ -1,6 +1,5 @@
-import { arrowVariants, container } from './Tooltip.css';
-
 import React, { forwardRef } from 'react';
+import { arrowVariants, container } from './Tooltip.css';
 
 export interface ITooltipProps {
   placement?: 'top' | 'bottom' | 'left' | 'right';

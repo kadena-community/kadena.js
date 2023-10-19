@@ -1,3 +1,4 @@
+import type EventSource from 'eventsource';
 import {
   headerByBlockHash,
   headers,
@@ -12,8 +13,6 @@ import type {
   IRetryOptions,
   ITransactionElement,
 } from './types';
-
-import type EventSource from 'eventsource';
 
 /* ************************************************************************** */
 /* Blocks */

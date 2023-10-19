@@ -1,20 +1,18 @@
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { useDidUpdateEffect } from '@/hooks';
+import { getAccounts } from '@/utils/wallet';
 import type {
   IInputProps,
   IInputWrapperProps,
   ISelectProps,
 } from '@kadena/react-ui';
 import { IconButton, Input, InputWrapper, Select } from '@kadena/react-ui';
-
-import { accountInputWrapperStyle } from './styles.css';
-
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { useDidUpdateEffect } from '@/hooks';
-import { getAccounts } from '@/utils/wallet';
 import useTranslation from 'next-translate/useTranslation';
 import type { ChangeEvent, FC } from 'react';
 import React, { useState } from 'react';
 import type { FieldError } from 'react-hook-form';
 import * as z from 'zod';
+import { accountInputWrapperStyle } from './styles.css';
 
 interface IAccountNameFieldProps
   extends Partial<Omit<IInputWrapperProps, 'children'>> {

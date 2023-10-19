@@ -1,7 +1,6 @@
+import type { FC } from 'react';
 import Container, { IGridContainerProps } from './GridContainer';
 import Item, { IGridItemProps } from './GridItem';
-
-import type { FC } from 'react';
 
 interface IGrid {
   Container: FC<IGridContainerProps>;

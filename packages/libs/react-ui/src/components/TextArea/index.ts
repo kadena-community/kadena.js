@@ -1,1 +1,1 @@
-export { type ITextareaProps, Textarea } from './TextArea';
+export { Textarea, type ITextareaProps } from './TextArea';

@@ -1,14 +1,13 @@
-import type { ResponsiveInputType } from './Grid.css';
-import { gapVariants } from './Grid.css';
-import type { IGridRootProps } from './GridRoot';
-import { ContentClass } from './stories.css';
-
 import { Grid } from '@components/Grid';
 import type { Meta, StoryObj } from '@storybook/react';
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import classNames from 'classnames';
 import React from 'react';
+import type { ResponsiveInputType } from './Grid.css';
+import { gapVariants } from './Grid.css';
+import type { IGridRootProps } from './GridRoot';
+import { ContentClass } from './stories.css';
 
 const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,
@@ -313,7 +312,7 @@ export const GridItem: Story = {
             dynamic
           </div>
         </Grid.Item>
-        {Array.from(new Array(12)).map((_, i) => (
+        {Array.from(new Array(12)).map((empty, i) => (
           <Grid.Item key={i} columnSpan={1}>
             <div className={ContentClass}>1</div>
           </Grid.Item>

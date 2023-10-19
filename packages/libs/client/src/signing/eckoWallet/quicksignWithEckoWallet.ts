@@ -1,8 +1,6 @@
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
-
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
-
 import { connect, isConnected, isInstalled } from './eckoCommon';
 import type { IEckoQuicksignResponse, IEckoSignFunction } from './eckoTypes';
 

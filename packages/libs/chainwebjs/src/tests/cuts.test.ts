@@ -4,17 +4,14 @@ jest.mock('cross-fetch', () => {
     default: jest.fn(),
   };
 });
-
-import { mockFetch } from './mokker';
-
 import fetch from 'cross-fetch';
+import chainweb from '..';
+import { mockFetch } from './mokker';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
 );
-
-import chainweb from '..';
 
 /* ************************************************************************** */
 /* Test settings */

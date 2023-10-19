@@ -1,6 +1,5 @@
-import { sprinkles, vars } from '../../styles';
-
 import { style } from '@vanilla-extract/css';
+import { sprinkles, vars } from '../../styles';
 
 export const containerClass = style([
   sprinkles({
@@ -121,14 +120,13 @@ export const childrenClass = style([
 ]);
 
 export const glowClass = style([
-  {
+  sprinkles({
     left: 0,
     pointerEvents: 'none',
     position: 'absolute',
     top: 0,
-    transition: 'all 0.3s ease',
     zIndex: 0,
-  },
+  }),
 ]);
 
 export const selectContainerClass = style([

@@ -1,7 +1,6 @@
+import chainweb from '..';
 import { parseResponse } from '../internal';
 import { chainUrl } from '../request';
-import chainweb from '..';
-
 import { config } from './config';
 /* ************************************************************************** */
 /* Retries */

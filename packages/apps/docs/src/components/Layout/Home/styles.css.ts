@@ -1,13 +1,11 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import { createVar, style } from '@vanilla-extract/css';
 import { $$asideMenuWidthCode } from '../basestyles.css';
 import {
   $$backgroundOverlayColor,
   $$leftSideWidth,
   $$pageWidth,
 } from '../global.css';
-
-import { createVar, style } from '@vanilla-extract/css';
 
 export const $$shadowWidth = createVar();
 
@@ -79,7 +77,7 @@ export const pageGridClass = style({
         `,
   ...responsiveStyle({
     md: {
-      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth}))`,
+      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth})) 1%`,
 
       gridTemplateAreas: `
         "header header header header"

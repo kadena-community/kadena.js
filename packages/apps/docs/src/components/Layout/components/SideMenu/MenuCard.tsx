@@ -1,12 +1,11 @@
+import classNames from 'classnames';
+import type { FC, MouseEventHandler, ReactNode } from 'react';
+import React from 'react';
 import {
   menuCardActiveVariant,
   menuCardAnimateL2RVariant,
   menuCardClass,
 } from './menuCard.css';
-
-import classNames from 'classnames';
-import type { FC, MouseEventHandler, ReactNode } from 'react';
-import React from 'react';
 
 interface IMenuCardProps {
   children?: ReactNode;

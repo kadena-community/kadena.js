@@ -1,4 +1,4 @@
-import { keyframes, styled } from '../../../styles/stitches.config';
+import { keyframes, styled } from '@styles/stitches.config';
 
 export const Container = styled('div', {
   borderRadius: '$md',

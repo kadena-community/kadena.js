@@ -1,5 +1,4 @@
 import type { IPollOptions } from '../interfaces/interfaces';
-
 import { sleep } from './utils';
 
 const rejectAfter = (

@@ -1,6 +1,9 @@
 import type { IHeadingProps } from '@kadena/react-ui';
 import { Heading, Link } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import NextLink from 'next/link';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 import type { ILinkBlock } from './LinkBlock';
 import { LinkBlock } from './LinkBlock';
 import type { ILinkList } from './LinkList';
@@ -12,11 +15,6 @@ import {
   markerVariants,
   sectionRowContainerClass,
 } from './styles.css';
-
-import classNames from 'classnames';
-import NextLink from 'next/link';
-import type { FC, ReactNode } from 'react';
-import React from 'react';
 
 interface IBrowseSectionProps {
   title?: string;

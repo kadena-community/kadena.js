@@ -1,13 +1,10 @@
 import { contractParser } from '@kadena/pactjs-generator';
 import { Heading, Text, Tree } from '@kadena/react-ui';
-
-import type { IChainModule } from '../types';
-
-import type { Contract } from './utils';
-import { contractToTreeItems } from './utils';
-
 import useTranslation from 'next-translate/useTranslation';
 import React from 'react';
+import type { IChainModule } from '../types';
+import type { Contract } from './utils';
+import { contractToTreeItems } from './utils';
 
 export interface IOutlineProps extends React.HTMLAttributes<HTMLDivElement> {
   selectedModule?: IChainModule;

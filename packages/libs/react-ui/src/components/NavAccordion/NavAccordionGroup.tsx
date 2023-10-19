@@ -1,5 +1,9 @@
 'use client';
-
+import { accordionButtonClass } from '@components/Accordion/Accordion.css';
+import { SystemIcon } from '@components/Icon';
+import classNames from 'classnames';
+import type { FC, FunctionComponentElement } from 'react';
+import React, { Children, useState } from 'react';
 import {
   navAccordionGroupButtonClass,
   navAccordionGroupIconClass,
@@ -9,12 +13,6 @@ import {
   navAccordionListClass,
 } from './NavAccordion.css';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
-
-import { accordionButtonClass } from '@components/Accordion/Accordion.css';
-import { SystemIcon } from '@components/Icon';
-import classNames from 'classnames';
-import type { FC, FunctionComponentElement } from 'react';
-import React, { Children, useState } from 'react';
 
 export interface INavAccordionGroupProps {
   children: FunctionComponentElement<INavAccordionLinkProps>[];

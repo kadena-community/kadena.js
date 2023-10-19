@@ -1,3 +1,3 @@
 export { Heading, IHeadingProps } from './Heading';
-export { Text, ITextProps } from './Text';
+export { ITextProps, Text } from './Text';
 export { GradientText } from './styles';

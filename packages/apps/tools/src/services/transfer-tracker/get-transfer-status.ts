@@ -1,15 +1,13 @@
-import type { ChainwebChainId } from '@kadena/chainweb-node-client';
-import type { ICommand } from '@kadena/client';
-import { Pact } from '@kadena/client';
-
-import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-data';
-
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import type { INetworkData } from '@/utils/network';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ICommand } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import Debug from 'debug';
 import type { Translate } from 'next-translate';
+import { getTransferData } from '../cross-chain-transfer-finish/get-transfer-data';
 
 export enum StatusId {
   Error = 'error',

@@ -1,10 +1,9 @@
-import { colorVariants, displayVariants } from './Notification.css';
-
 import { SystemIcon } from '@components/Icon';
 import type { INotificationProps } from '@components/Notification';
 import { Notification } from '@components/Notification';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { colorVariants, displayVariants } from './Notification.css';
 
 const meta: Meta<
   {

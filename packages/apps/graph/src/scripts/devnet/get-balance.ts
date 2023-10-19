@@ -1,6 +1,5 @@
 import { Pact } from '@kadena/client';
 import type { ChainId, PactValue } from '@kadena/types';
-
 import { devnetConfig } from './config';
 import { dirtyRead, logger } from './helper';
 

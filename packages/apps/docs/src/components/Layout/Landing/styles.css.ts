@@ -1,8 +1,6 @@
 import { responsiveStyle } from '@kadena/react-ui/theme';
-
-import { $$leftSideWidth, $$pageWidth } from '../global.css';
-
 import { style } from '@vanilla-extract/css';
+import { $$leftSideWidth, $$pageWidth } from '../global.css';
 
 export const pageGridClass = style({
   gridTemplateColumns: 'auto auto',
@@ -15,7 +13,7 @@ export const pageGridClass = style({
 
   ...responsiveStyle({
     md: {
-      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth}))`,
+      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth})) 1%`,
       gridTemplateAreas: `
                 "header header header header"
                 "pageheader pageheader pageheader pageheader"

@@ -1,5 +1,4 @@
 'use client';
-
 import { WalletConnectContext } from '@/context/connect.context';
 import { useRenderhook } from '@/services/connect/connect.utils';
 import { useEvt } from 'evt/hooks';

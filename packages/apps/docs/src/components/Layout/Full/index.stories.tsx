@@ -1,14 +1,12 @@
-import { fullLayoutFrontMatter } from '../__fixtures__/frontmatter';
-import { fullLayoutLeftMenuTree } from '../__fixtures__/leftMenuTree';
-
-import { Full } from './Full';
-
+import type { IPageProps, TagNameType } from '@/Layout';
 import { Heading2 } from '@/components/Markdown/Heading/Heading2';
 import { Paragraph } from '@/components/Markdown/Paragraph/Paragraph';
-import type { IPageProps, TagNameType } from '@/Layout';
 import type { Meta, StoryObj } from '@storybook/react';
 import Link from 'next/link';
 import React from 'react';
+import { fullLayoutFrontMatter } from '../__fixtures__/frontmatter';
+import { fullLayoutLeftMenuTree } from '../__fixtures__/leftMenuTree';
+import { Full } from './Full';
 
 const meta: Meta<IPageProps> = {
   title: 'Layout/Full',
@@ -30,12 +28,8 @@ const aSideMenuTree = [
         tag: 'h3' as unknown as TagNameType,
         title: 'Kadena raises $2.25M in first funding round',
         children: [],
-        index: 1,
-        parentTitle: 'Kadena: The Next Generation Blockchain',
       },
     ],
-    index: 0,
-    parentTitle: '',
   },
 ];
 

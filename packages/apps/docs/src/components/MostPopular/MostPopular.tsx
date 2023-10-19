@@ -1,11 +1,9 @@
-import type { IHeadingProps } from '@kadena/react-ui';
-
-import { BrowseSection } from '../BrowseSection/BrowseSection';
-
 import type { IMostPopularPage } from '@/MostPopularData';
+import type { IHeadingProps } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
+import { BrowseSection } from '../BrowseSection/BrowseSection';
 
 interface IProps {
   pages: IMostPopularPage[];

@@ -1,8 +1,9 @@
 'use client';
-
+import Image from 'next/image';
+import type { FC } from 'react';
+import { useState } from 'react';
 import { Modal } from '../Modal/Modal';
 import { ModalContent } from '../ModalContent/ModalContent';
-
 import {
   mainRowItem,
   mainRowItemActive,
@@ -14,10 +15,6 @@ import {
   progressBar,
   progressVar,
 } from './NftBlock.css';
-
-import Image from 'next/image';
-import type { FC } from 'react';
-import { useState } from 'react';
 
 interface NftBlockProps {
   day: number;

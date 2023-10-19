@@ -1,7 +1,7 @@
 import { Text, TextField } from '@kadena/react-ui';
-
+import useTranslation from 'next-translate/useTranslation';
+import React, { useState, useTransition } from 'react';
 import type { IChainModule } from '../types';
-
 import type { IOutlineProps } from './outline';
 import Outline from './outline';
 import type { IResultsProps } from './results';
@@ -11,9 +11,6 @@ import {
   modulesContainerStyle,
   outlineStyle,
 } from './styles.css';
-
-import useTranslation from 'next-translate/useTranslation';
-import React, { useState, useTransition } from 'react';
 
 export interface ISidePanelProps {
   results: IResultsProps['data'];

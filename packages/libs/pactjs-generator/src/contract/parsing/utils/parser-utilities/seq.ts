@@ -5,7 +5,6 @@ import type {
 } from '../dataWrapper';
 import { isWrappedData, unwrapData, wrapData } from '../dataWrapper';
 import type { UnionToIntersection } from '../typeUtilities';
-
 import type { IParser, RuleReturnType } from './rule';
 import { FAILED, rule } from './rule';
 

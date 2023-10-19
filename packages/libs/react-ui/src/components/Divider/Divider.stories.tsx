@@ -1,8 +1,7 @@
-import { Divider } from './Divider';
-import { ContentClass } from './stories.css';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Divider } from './Divider';
+import { ContentClass } from './stories.css';
 
 const meta: Meta = {
   title: 'Layout/Divider',

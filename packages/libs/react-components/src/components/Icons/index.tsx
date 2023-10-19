@@ -1,6 +1,9 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
-
+import type { VariantProps } from '@stitches/react';
+import type { SVGProps } from 'react';
+import React from 'react';
+import { IconContainer } from './styles';
 import { Account } from './svgs/Account';
 import { AlertBox } from './svgs/AlertBox';
 import { AlertBoxOutline } from './svgs/AlertBoxOutline';
@@ -15,11 +18,11 @@ import { Bell } from './svgs/Bell';
 import { BellRing } from './svgs/BellRing';
 import { CarBrakeParking } from './svgs/CarBrakeParking';
 import { Check } from './svgs/Check';
+import { CheckDecagram } from './svgs/CheckDecagram';
+import { CheckDecagramOutline } from './svgs/CheckDecagramOutline';
 import { CheckboxBlankOutline } from './svgs/CheckboxBlankOutline';
 import { CheckboxIntermediateVariant } from './svgs/CheckboxIntermediateVariant';
 import { CheckboxMarked } from './svgs/CheckboxMarked';
-import { CheckDecagram } from './svgs/CheckDecagram';
-import { CheckDecagramOutline } from './svgs/CheckDecagramOutline';
 import { ChevronDown } from './svgs/ChevronDown';
 import { ChevronUp } from './svgs/ChevronUp';
 import { Close } from './svgs/Close';
@@ -40,9 +43,9 @@ import { Github } from './svgs/Github';
 import { HelpCircle } from './svgs/HelpCircle';
 import { History } from './svgs/History';
 import { Information } from './svgs/Information';
+import { KIcon } from './svgs/KIcon';
 import { KeyIconFilled } from './svgs/KeyIconFilled';
 import { KeyIconOutlined } from './svgs/KeyIconOutlined';
-import { KIcon } from './svgs/KIcon';
 import { LeadingIcon } from './svgs/LeadingIcon';
 import { Link } from './svgs/Link';
 import { Linkedin } from './svgs/Linkedin';
@@ -66,11 +69,6 @@ import { ThemeLightDark } from './svgs/ThemeLightDark';
 import { TrailingIcon } from './svgs/TrailingIcon';
 import { Twitter } from './svgs/Twitter';
 import { UsbFlashDrive } from './svgs/UsbFlashDrive';
-import { IconContainer } from './styles';
-
-import type { VariantProps } from '@stitches/react';
-import type { SVGProps } from 'react';
-import React from 'react';
 
 export interface IIconProps {
   size?: VariantProps<typeof IconContainer>['size'];

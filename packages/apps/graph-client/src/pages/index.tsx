@@ -1,17 +1,15 @@
-import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
-
 import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
-} from '../__generated__/sdk';
-import { ChainwebGraph } from '../components/chainweb';
-import { mainStyle } from '../components/main/styles.css';
-import { Text } from '../components/text';
-import routes from '../constants/routes';
-import { useChainTree } from '../context/chain-tree-context';
-import { useParsedBlocks } from '../utils/hooks/use-parsed-blocks';
-import { usePrevious } from '../utils/hooks/use-previous';
-
+} from '@/__generated__/sdk';
+import { ChainwebGraph } from '@components/chainweb';
+import { mainStyle } from '@components/main/styles.css';
+import { Text } from '@components/text';
+import routes from '@constants/routes';
+import { useChainTree } from '@context/chain-tree-context';
+import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
+import { useParsedBlocks } from '@utils/hooks/use-parsed-blocks';
+import { usePrevious } from '@utils/hooks/use-previous';
 import isEqual from 'lodash.isequal';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -30,15 +28,34 @@ const Home: React.FC = () => {
 
   const [searchType, setSearchType] = useState<string>('request-key');
   const [searchField, setSearchField] = useState<string>('');
+  const [moduleField, setModuleField] = useState<string>('');
 
   const search = (): void => {
-    if (searchType === 'request-key') {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`${routes.TRANSACTION}/${searchField}`);
-    } else if (searchType === 'event') {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      router.push(`${routes.EVENT}/${searchField}`);
+    switch (searchType) {
+      case 'request-key':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`/${routes.TRANSACTION}/${searchField}`);
+        break;
+      case 'account':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`/${routes.ACCOUNT}/${moduleField}/${searchField}`);
+        break;
+      case 'event':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`${routes.EVENT}/${searchField}`);
+        break;
+      case 'block':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`${routes.BLOCK_OVERVIEW}/${searchField}`);
+        break;
     }
+  };
+
+  const searchTypePlaceholders: Record<string, string> = {
+    'request-key': 'Request Key',
+    account: 'Account',
+    event: 'Event Name',
+    block: 'Block Hash',
   };
 
   const { addBlockToChain } = useChainTree();
@@ -85,27 +102,41 @@ const Home: React.FC = () => {
           Kadena Graph Client
         </Text>
 
-        <Grid.Root columns={3}>
+        <Grid.Root columns={searchType.startsWith('account') ? 4 : 3}>
           <Grid.Item>
             <Select
-              style={{ marginTop: '9px' }}
               ariaLabel="search-type"
               id="search-type"
               onChange={(event) => setSearchType(event.target.value)}
             >
               <option value="request-key">Request Key</option>
+              <option value="account">Account</option>
               <option value="event">Event</option>
+              <option value="block">Block</option>
             </Select>
           </Grid.Item>
           <Grid.Item>
             <InputWrapper htmlFor="search-field">
               <Input
-                id="seacrh-field"
+                id="search-field"
                 value={searchField}
+                placeholder={searchTypePlaceholders[searchType]}
                 onChange={(event) => setSearchField(event.target.value)}
               />
             </InputWrapper>
           </Grid.Item>
+          {searchType.startsWith('account') && (
+            <Grid.Item>
+              <InputWrapper htmlFor="module">
+                <Input
+                  id="module"
+                  value={moduleField}
+                  placeholder="Module name (e.g. 'coin')"
+                  onChange={(event) => setModuleField(event.target.value)}
+                />
+              </InputWrapper>
+            </Grid.Item>
+          )}
           <Grid.Item>
             <Button onClick={search}>Search</Button>
           </Grid.Item>

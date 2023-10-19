@@ -1,12 +1,10 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import { createVar, globalStyle, style } from '@vanilla-extract/css';
 import {
   $$backgroundOverlayColor,
   $$leftSideWidth,
   $$pageWidth,
 } from './global.css';
-
-import { createVar, globalStyle, style } from '@vanilla-extract/css';
 
 globalStyle('html, body', {
   margin: 0,
@@ -87,7 +85,7 @@ export const baseGridClass = style([
 
     ...responsiveStyle({
       md: {
-        gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault}`,
+        gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
         gridTemplateAreas: `
           "header header header header header"
           "pageheader pageheader pageheader pageheader pageheader"

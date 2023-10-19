@@ -1,8 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { SystemIcon } from '@components/Icon';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
+import type { colorVariants } from './Notification.css';
 import {
   cardColorVariants,
   closeButtonClass,
-  colorVariants,
   containerClass,
   containerWrapperClass,
   contentClass,
@@ -12,11 +16,6 @@ import {
   inlineVariants,
   titleClass,
 } from './Notification.css';
-
-import { SystemIcon } from '@components/Icon';
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface INotificationProps {
   icon?: keyof typeof SystemIcon;

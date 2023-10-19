@@ -1,5 +1,5 @@
 /** @jest-environment jsdom */
-
+import { TextDecoder, TextEncoder } from 'util';
 import type {
   IExecutionPayloadObject,
   IPactCommand,
@@ -7,8 +7,6 @@ import type {
 import { createTransaction } from '../../../utils/createTransaction';
 import type { ISingleSignFunction } from '../../ISignFunction';
 import { createEckoWalletSign } from '../signWithEckoWallet';
-
-import { TextDecoder, TextEncoder } from 'util';
 
 Object.assign(global, { TextDecoder, TextEncoder });
 
