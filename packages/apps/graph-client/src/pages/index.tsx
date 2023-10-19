@@ -28,7 +28,7 @@ const Home: React.FC = () => {
 
   const [searchType, setSearchType] = useState<string>('request-key');
   const [searchField, setSearchField] = useState<string>('');
-  const [moduleField, setModuleField] = useState<string>('');
+  const [moduleField, setModuleField] = useState<string>('coin');
 
   const search = (): void => {
     switch (searchType) {
@@ -51,11 +51,18 @@ const Home: React.FC = () => {
     }
   };
 
-  const searchTypePlaceholders: Record<string, string> = {
+  const searchTypeLabels: Record<string, string> = {
     'request-key': 'Request Key',
     account: 'Account',
     event: 'Event Name',
     block: 'Block Hash',
+  };
+
+  const searchTypePlaceholders: Record<string, string> = {
+    'request-key': '',
+    account: 'k:1234...',
+    event: 'coin.TRANSFER',
+    block: '',
   };
 
   const { addBlockToChain } = useChainTree();
@@ -104,19 +111,24 @@ const Home: React.FC = () => {
 
         <Grid.Root columns={searchType.startsWith('account') ? 4 : 3}>
           <Grid.Item>
-            <Select
-              ariaLabel="search-type"
-              id="search-type"
-              onChange={(event) => setSearchType(event.target.value)}
-            >
-              <option value="request-key">Request Key</option>
-              <option value="account">Account</option>
-              <option value="event">Event</option>
-              <option value="block">Block</option>
-            </Select>
+            <InputWrapper htmlFor="search-type" label="Search Type">
+              <Select
+                ariaLabel="search-type"
+                id="search-type"
+                onChange={(event) => setSearchType(event.target.value)}
+              >
+                <option value="request-key">Request Key</option>
+                <option value="account">Account</option>
+                <option value="event">Event</option>
+                <option value="block">Block</option>
+              </Select>
+            </InputWrapper>
           </Grid.Item>
           <Grid.Item>
-            <InputWrapper htmlFor="search-field">
+            <InputWrapper
+              htmlFor="search-field"
+              label={searchTypeLabels[searchType]}
+            >
               <Input
                 id="search-field"
                 value={searchField}
@@ -127,18 +139,27 @@ const Home: React.FC = () => {
           </Grid.Item>
           {searchType.startsWith('account') && (
             <Grid.Item>
-              <InputWrapper htmlFor="module">
+              <InputWrapper htmlFor="module" label="Module name">
                 <Input
                   id="module"
                   value={moduleField}
-                  placeholder="Module name (e.g. 'coin')"
+                  placeholder="coin"
                   onChange={(event) => setModuleField(event.target.value)}
                 />
               </InputWrapper>
             </Grid.Item>
           )}
           <Grid.Item>
-            <Button onClick={search}>Search</Button>
+            <Button
+              onClick={search}
+              style={{
+                position: 'relative',
+                top: '50%',
+                transform: 'translateY(-50%)',
+              }}
+            >
+              Search
+            </Button>
           </Grid.Item>
         </Grid.Root>
 
