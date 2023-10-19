@@ -1,4 +1,3 @@
-
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
 import Loader from '@components/loader/loader';
