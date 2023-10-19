@@ -27,7 +27,7 @@ export const getTransactionByRequestKey: DocumentNode = gql`
     transaction(requestKey: $requestKey) {
       ...AllTransactionFields
       block {
-        id
+        hash
       }
       events {
         ...CoreEventFields
