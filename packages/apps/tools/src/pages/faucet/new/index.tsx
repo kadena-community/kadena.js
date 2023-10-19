@@ -43,6 +43,8 @@ import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import {createPrincipal} from "../../../services/faucet/create-principal";
+import {useQuery} from "@tanstack/react-query";
 
 interface IFundExistingAccountResponseBody {
   result: {
@@ -74,17 +76,22 @@ const NewAccountFaucetPage: FC = () => {
   }>({ status: 'idle' });
   const [pubKeys, setPubKeys] = useState<string[]>([]);
   const [currentKey, setCurrentKey] = useState<string>('');
-
   const [validRequestKey, setValidRequestKey] = useState<
     InputWrapperStatus | undefined
   >();
 
-  const generateAccountName =
-    pubKeys.length === 0
-      ? ''
-      : pubKeys.length === 1
-      ? `k:${pubKeys[0]}`
-      : `w:${hash([...pubKeys].reverse().join(''))}:${pred}`;
+  const { data: accountName } = useQuery({
+    queryKey: ['accountName', pubKeys, chainID, pred],
+    queryFn: async () => {
+      if (pubKeys.length === 0) return '';
+      return await createPrincipal(pubKeys, chainID, pred);
+    },
+    initialData: '',
+  });
+
+  useEffect(() => {
+
+  }, [pubKeys.length]);
 
   const schema = z.object({
     name: z.string(),
@@ -100,7 +107,7 @@ const NewAccountFaucetPage: FC = () => {
     setError,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: { name: generateAccountName, pubKey: '' },
+    values: { name: typeof accountName === 'string' ? accountName : '', pubKey: '' },
   });
 
   const [inputError, setInputError] = useState<string>('');
@@ -128,6 +135,7 @@ const NewAccountFaucetPage: FC = () => {
 
       setInputError('');
       setRequestStatus({ status: 'processing' });
+      console.log(data.name, pubKeys, chainID, pred)
       try {
         const result = (await fundCreateNewAccount(
           data.name,
@@ -282,7 +290,7 @@ const NewAccountFaucetPage: FC = () => {
           statusBodies={{
             successful: `${AMOUNT_OF_COINS_FUNDED} ${t(
               'coins have been funded to ',
-            )}${generateAccountName}`,
+            )}${accountName}`,
           }}
           body={requestStatus.message}
         />
