@@ -34,12 +34,7 @@ const Home: React.FC = () => {
   const previousNewBlocks = usePrevious(newBlocks);
   const previousRecentBlocks = usePrevious(recentBlocks);
 
-  const {
-    loading: loadingTxs,
-    data: txs,
-    error: txsError,
-    fetchMore: fetchMoreTxs,
-  } = useGetTransactionsQuery({ variables: { first: 10 } });
+  const { data: txs } = useGetTransactionsQuery({ variables: { first: 10 } });
 
   const { allBlocks, addBlocks } = useParsedBlocks();
 
@@ -170,7 +165,10 @@ const Home: React.FC = () => {
         {txs?.transactions && (
           <div>
             <Box marginBottom="$10" />
-            <CompactTransactionsTable transactions={txs.transactions} description='Most recent transactions'/>
+            <CompactTransactionsTable
+              transactions={txs.transactions}
+              description="Most recent transactions"
+            />
           </div>
         )}
       </main>

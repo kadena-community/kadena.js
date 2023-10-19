@@ -3,8 +3,7 @@ import { ExtendedTransactionsTable } from '@/components/extended-transactions-ta
 import Loader from '@components/loader/loader';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
-import routes from '@constants/routes';
-import { Box, Button, Link, Notification, Table } from '@kadena/react-ui';
+import { Box,  Notification  } from '@kadena/react-ui';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
