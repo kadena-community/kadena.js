@@ -109,10 +109,11 @@ pact> { "foo": (+ 1 2), "bar": "baz" }
 
 Bindings are dictionary-like forms, also created with curly braces, to bind
 database results to variables using the `:=` operator. They are used in
-[with-read](pact-functions.html#with-read),
-[with-default-read](pact-functions.html#with-default-read),
-[bind](pact-functions.html#bind) and [resume](pact-functions.html#resume) to
-assign variables to named columns in a row, or values in an object.
+[with-read](/pact/reference/functions/database#with-readh866473533),
+[with-default-read](/pact/reference/functions/database#with-default-readh1087687497),
+[bind](/pact/reference/functions#bindh3023933) and
+[resume](/pact/reference/functions#resumeh-934426579) to assign variables to
+named columns in a row, or values in an object.
 
 ```pact
 (defun check-balance (id)
@@ -157,8 +158,8 @@ literal or user type specification.
 
 ### Schema type literals
 
-A schema defined with [defschema](#defschema) is referenced by name enclosed in
-curly braces.
+A schema defined with [defschema](/pact/reference/syntax#defschemah-1003560474)
+is referenced by name enclosed in curly braces.
 
 ```pact
 table:{accounts}
@@ -167,8 +168,8 @@ object:{person}
 
 ### Module type literals
 
-[Module references](#modrefs) are specified by the interfaces they demand as a
-comma-delimited list.
+[Module references](/pact/reference/concepts#modrefs-and-polymorphismh83727950)
+are specified by the interfaces they demand as a comma-delimited list.
 
 ```pact
 module:{fungible-v2,user.votable}
@@ -177,7 +178,9 @@ module:{fungible-v2,user.votable}
 ## Dereference operator
 
 The dereference operator `::` allows a member of an interface specified in the
-type of a [module reference](#modrefs) to be invoked at run-time.
+type of a
+[module reference](/pact/reference/concepts#modrefs-and-polymorphismh83727950)
+to be invoked at run-time.
 
 ```pact
 (interface baz
@@ -225,8 +228,8 @@ Tables and objects can only take a schema type literal.
 
 ### Docs and Metadata
 
-Many special forms like [defun](#defun) accept optional documentation strings,
-in the following form:
+Many special forms like [defun](/pact/reference/syntax#defunh95462750) accept
+optional documentation strings, in the following form:
 
 ```pact
 (defun average (a b)
@@ -250,7 +253,7 @@ Indeed, a bare docstring like `"foo"` is actually just a short form for
 `@doc "foo"`.
 
 Specific information on _Properties_ can be found in
-[The Pact Property Checking System](pact-properties.html).
+[The Pact Property Checking System](/pact/reference/property-checking).
 
 ### bless
 
@@ -259,8 +262,9 @@ Specific information on _Properties_ can be found in
 ```
 
 Within a module declaration, bless a previous version of that module as
-identified by HASH. See [Dependency management](#dependency-management) for a
-discussion of the blessing mechanism.
+identified by HASH. See
+[Dependency management](/pact/reference/concepts#dependency-managementh304790584)
+for a discussion of the blessing mechanism.
 
 ```pact
 (module provider 'keyset
@@ -331,8 +335,10 @@ load and "memoized".
 ```
 
 Define NAME as a _pact_, a computation comprised of multiple steps that occur in
-distinct transactions. Identical to [defun](#defun) except body must be
-comprised of [steps](#step) to be executed in strict sequential order.
+distinct transactions. Identical to
+[defun](/pact/reference/syntax#defunh95462750) except body must be comprised of
+[steps](/pact/reference/syntax#steph3540684) to be executed in strict sequential
+order.
 
 ```pact
 (defpact payment (payer payer-entity payee
@@ -421,7 +427,8 @@ the form `FIELDNAME[:FIELDTYPE]`.
 ```
 
 Define NAME as a _table_, used in database functions. Note the table must still
-be created with [create-table](pact-functions.html#create-table).
+be created with
+[create-table](/pact/reference/functions/database#create-tableh447366077).
 
 ### let
 
@@ -431,7 +438,7 @@ be created with [create-table](pact-functions.html#create-table).
 
 Bind variables in BINDPAIRs to be in scope over BODY. Variables within BINDPAIRs
 cannot refer to previously-declared variables in the same let binding; for this
-use [let\*](#letstar).
+use [let\*](/pact/reference/syntax#leth3318127).
 
 ```pact
 (let ((x 2)
@@ -491,11 +498,11 @@ is expanded to:
 (step ENTITY EXPR)
 ```
 
-Define a step within a [defpact](#defpact), such that any prior steps will be
-executed in prior transactions, and later steps in later transactions. Including
-an ENTITY argument indicates that this step is intended for confidential
-transactions. Therefore, only the ENTITY would execute the step, and other
-participants would "skip" it.
+Define a step within a [defpact](/pact/reference/syntax#defpacth1545231271),
+such that any prior steps will be executed in prior transactions, and later
+steps in later transactions. Including an ENTITY argument indicates that this
+step is intended for confidential transactions. Therefore, only the ENTITY would
+execute the step, and other participants would "skip" it.
 
 ### step-with-rollback
 
@@ -504,12 +511,12 @@ participants would "skip" it.
 (step-with-rollback ENTITY EXPR ROLLBACK-EXPR)
 ```
 
-Define a step within a [defpact](#defpact) similarly to [step](#step) but
-specifying ROLLBACK-EXPR. With ENTITY, ROLLBACK-EXPR will only be executed upon
-failure of a subsequent step, as part of a reverse-sequence "rollback cascade"
-going back from the step that failed to the first step. Without ENTITY,
-ROLLBACK-EXPR functions as a "cancel function" to be explicitly executed by a
-participant.
+Define a step within a [defpact](/pact/reference/syntax#defpacth1545231271)
+similarly to [step](/pact/reference/syntax#steph3540684) but specifying
+ROLLBACK-EXPR. With ENTITY, ROLLBACK-EXPR will only be executed upon failure of
+a subsequent step, as part of a reverse-sequence "rollback cascade" going back
+from the step that failed to the first step. Without ENTITY, ROLLBACK-EXPR
+functions as a "cancel function" to be explicitly executed by a participant.
 
 ### use
 
@@ -523,8 +530,9 @@ participant.
 Import an existing MODULE into a namespace. Can only be issued at the top-level,
 or within a module declaration. MODULE can be a string, symbol or bare atom.
 With HASH, validate that the imported module's hash matches HASH, failing if
-not. Use [describe-module](pact-functions.html#describe-module) to query for the
-hash of a loaded module on the chain.
+not. Use
+[describe-module](/pact/reference/functions/database#describe-moduleh-1618399314)
+to query for the hash of a loaded module on the chain.
 
 An optional list of IMPORTS consisting of function, constant, and schema names
 may be supplied. When this explicit import list is present, only those names
@@ -570,13 +578,13 @@ Define and install interface NAME, with optional DOC-OR-META.
 BODY is composed of definitions that will be scoped in the module. Valid
 expressions in a module include:
 
-- [defun](#defun)
-- [defconst](#defconst)
-- [defschema](#defschema)
-- [defpact](#defpact)
-- [defcap](#defcap)
-- [use](#use)
-- [models](#pact-properties.html)
+- [defun](/pact/reference/syntax#defunh95462750)
+- [defconst](/pact/reference/syntax#defconsth645951102)
+- [defschema](/pact/reference/syntax#defschemah-1003560474)
+- [defpact](/pact/reference/syntax#defpacth1545231271)
+- [defcap](/pact/reference/syntax#defcaph-1335639635)
+- [use](/pact/reference/syntax#useh116103)
+- [models](/pact/reference/property-checking)
 
 ```pact
 (interface coin-sig
@@ -620,15 +628,15 @@ required. If KEYSET-OR-GOVERNANCE is an unqualified atom, it references a
 BODY is composed of definitions that will be scoped in the module. Valid
 productions in a module include:
 
-- [defun](#defun)
-- [defpact](#defpact)
-- [defcap](#defcap)
-- [deftable](#deftable)
-- [defschema](#defschema)
-- [defconst](#defconst)
-- [implements](#implements)
-- [use](#use)
-- [bless](#bless)
+- [defun](/pact/reference/syntax#defunh95462750)
+- [defpact](/pact/reference/syntax#defpacth1545231271)
+- [defcap](/pact/reference/syntax#defcaph-1335639635)
+- [deftable](/pact/reference/syntax#deftableh661222121)
+- [defschema](/pact/reference/syntax#defschemah-1003560474)
+- [defconst](/pact/reference/syntax#defconsth645951102)
+- [implements](/pact/reference/syntax#implementsh-915384400)
+- [use](/pact/reference/syntax#useh116103)
+- [bless](/pact/reference/syntax#blessh93823227)
 
 ```pact
 (module accounts 'accounts-admin
@@ -658,37 +666,43 @@ Specify that containing module _implements_ interface INTERFACE. This requires
 the module to implement all functions, pacts, and capabilities specified in
 INTERFACE with identical signatures (same argument names and declared types).
 
-Note that [models](pact-properties.html) declared for the implemented interface
-and its members will be appended to whatever models are declared within the
-implementing module.
+Note that [models](/pact/reference/property-checking) declared for the
+implemented interface and its members will be appended to whatever models are
+declared within the implementing module.
 
-A module thus specified can be used as a [module reference](#modrefs) for the
-specified interface(s).
+A module thus specified can be used as a
+[module reference](/pact/reference/concepts#modrefs-and-polymorphismh83727950)
+for the specified interface(s).
 
 ## Expressions
 
-Expressions may be [literals](#literals), atoms, s-expressions, or references.
+Expressions may be [literals](/pact/reference/syntax#literalsh1425955268),
+atoms, s-expressions, or references.
 
 ### Atoms
 
 Atoms are non-reserved barewords starting with a letter or allowed symbol, and
 containing letters, digits and allowed symbols. Allowed symbols are
-`%#+-_&$@<>=?*!|/`. Atoms must resolve to a variable bound by a [defun](#defun),
-[defpact](#defpact), [binding](#bindings) form, [lambda](#lambda) form, or to
-symbols imported into the namespace with [use](#use).
+`%#+-_&$@<>=?*!|/`. Atoms must resolve to a variable bound by a
+[defun](/pact/reference/syntax#defunh95462750),
+[defpact](/pact/reference/syntax#defpacth1545231271),
+[binding](/pact/reference/syntax#bindingsh1004766894) form,
+[lambda](/pact/reference/syntax#lambdash1611513196) form, or to symbols imported
+into the namespace with [use](/pact/reference/syntax#useh116103).
 
 ### S-expressions
 
 S-expressions are formed with parentheses, with the first atom determining if
-the expression is a [special form](#special-forms) or a function application, in
-which case the first atom must refer to a definition.
+the expression is a
+[special form](/pact/reference/syntax#special-formsh-1564089880) or a function
+application, in which case the first atom must refer to a definition.
 
 #### Partial application
 
 An application with less than the required arguments is in some contexts a valid
 _partial application_ of the function. However, this is only supported in Pact's
-[functional-style functions](#fp); anywhere else this will result in a runtime
-error.
+[functional-style functions](/pact/reference/concepts#functional-conceptsh-276985720);
+anywhere else this will result in a runtime error.
 
 ### References
 

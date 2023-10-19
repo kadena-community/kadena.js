@@ -1,20 +1,19 @@
-import { Box, GradientText, Grid, Heading, Stack } from '@kadena/react-ui';
-
-import {
-  headerClass,
-  headerLoadedClass,
-  subheaderClass,
-  wrapperClass,
-} from './style.css';
-
+import type { IMostPopularPage } from '@/MostPopularData';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
-import type { IMostPopularPage } from '@/MostPopularData';
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
+import { Box, GradientText, Grid, Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
 import React, { useEffect, useState } from 'react';
+import {
+  headerClass,
+  headerLoadedClass,
+  searchInputWrapper,
+  subheaderClass,
+  wrapperClass,
+} from './style.css';
 
 interface IProps {
   popularPages: IMostPopularPage[];
@@ -61,8 +60,10 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
                   Explore our guides and examples to build on Kadena
                 </span>
 
-                <Box marginTop="$5" marginRight="$40">
-                  <SearchBar onKeyUp={handleKeyPress} />
+                <Box marginTop="$5">
+                  <div className={searchInputWrapper}>
+                    <SearchBar onKeyUp={handleKeyPress} />
+                  </div>
                 </Box>
               </Stack>
             </Grid.Item>

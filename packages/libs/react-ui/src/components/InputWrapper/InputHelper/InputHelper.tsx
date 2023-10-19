@@ -1,10 +1,9 @@
-import { helperClass, helperIconClass } from './InputHelper.css';
-
 import { SystemIcon } from '@components/Icon';
 import type { FC } from 'react';
 import React from 'react';
+import { helperClass, helperIconClass } from './InputHelper.css';
 
-export interface IInputHelperProps {
+interface IInputHelperProps {
   children: React.ReactNode;
 }
 

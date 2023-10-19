@@ -1,1 +1,1 @@
-export { type IBoxProps, Box } from './Box';
+export { Box, type IBoxProps } from './Box';

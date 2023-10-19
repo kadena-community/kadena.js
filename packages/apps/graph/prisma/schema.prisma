@@ -13,22 +13,22 @@ datasource db {
 
 model Block {
   chainId         BigInt        @map("chainid")
-  creationTime    DateTime      @db.Timestamptz(6) @map("creationtime")
+  creationTime    DateTime      @map("creationtime") @db.Timestamptz(6)
   epoch           DateTime      @db.Timestamptz(6)
   flags           Decimal       @db.Decimal(20, 0)
   hash            String        @id @db.VarChar
   height          BigInt
-  minerAccount    String        @db.VarChar @map("miner")
+  minerAccount    String        @map("miner") @db.VarChar
   nonce           Decimal       @db.Decimal(20, 0)
-  parentBlockHash String        @db.VarChar @map("parent")
-  payload         String        @db.VarChar
-  powHash         String        @db.VarChar @map("powhash")
+  parentBlockHash String        @map("parent") @db.VarChar
+  payloadHash     String        @map("payload") @db.VarChar
+  powHash         String        @map("powhash") @db.VarChar
   predicate       String        @db.VarChar
   target          Decimal       @db.Decimal(80, 0)
   weight          Decimal       @db.Decimal(80, 0)
   id              Int           @unique(map: "blocks_id_uniq") @default(autoincrement())
   events          Event[]
-  minerKeys       Minerkey[]
+  minerKeys       MinerKey[]
   transactions    Transaction[]
   transfers       Transfer[]
 
@@ -37,20 +37,20 @@ model Block {
 }
 
 model Event {
-  blockHash     String        @db.VarChar @map("block")
-  chainId       BigInt        @map("chainid")
+  blockHash     String       @map("block") @db.VarChar
+  chainId       BigInt       @map("chainid")
   height        BigInt
-  orderIndex    BigInt        @map("idx")
-  moduleName    String        @db.VarChar @map("module")
-  moduleHash    String        @db.VarChar @map("modulehash")
-  name          String        @db.VarChar
-  parameters    Json          @map("params")
-  parameterText String        @db.VarChar @map("paramtext")
-  qualifiedName String        @db.VarChar @map("qualname")
-  requestKey    String        @db.VarChar @map("requestkey")
-  id            Int           @unique(map: "events_id_uniq") @default(autoincrement())
-  transaction   Transaction?  @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey])
-  block         Block         @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  orderIndex    BigInt       @map("idx")
+  moduleName    String       @map("module") @db.VarChar
+  moduleHash    String       @map("modulehash") @db.VarChar
+  name          String       @db.VarChar
+  parameters    Json         @map("params")
+  parameterText String       @map("paramtext") @db.VarChar
+  qualifiedName String       @map("qualname") @db.VarChar
+  requestKey    String       @map("requestkey") @db.VarChar
+  id            Int          @unique(map: "events_id_uniq") @default(autoincrement())
+  transaction   Transaction? @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey])
+  block         Block        @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([blockHash, orderIndex, requestKey])
   @@index([height(sort: Desc), chainId, orderIndex], map: "events_height_chainid_orderIndex")
@@ -58,8 +58,8 @@ model Event {
   @@map("events")
 }
 
-model Minerkey {
-  blockHash String @db.VarChar @map("block")
+model MinerKey {
+  blockHash String @map("block") @db.VarChar
   key       String @db.VarChar
   blocks    Block  @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
@@ -68,43 +68,43 @@ model Minerkey {
 }
 
 model Signer {
-  address       String? @db.VarChar @map("addr")
-  capabilities  Json    @map("caps")
-  orderIndex    Int     @map("idx")
-  publicKey     String  @db.VarChar @map("pubkey")
-  requestKey    String  @db.VarChar @map("requestkey")
-  scheme        String? @db.VarChar
-  signature     String  @db.VarChar @map("sig")
+  address      String? @map("addr") @db.VarChar
+  capabilities Json    @map("caps")
+  orderIndex   Int     @map("idx")
+  publicKey    String  @map("pubkey") @db.VarChar
+  requestKey   String  @map("requestkey") @db.VarChar
+  scheme       String? @db.VarChar
+  signature    String  @map("sig") @db.VarChar
 
   @@id([orderIndex, requestKey])
   @@map("signers")
 }
 
 model Transaction {
-  badResult     Json?     @map("badresult")
-  blockHash     String    @map("block")
-  chainId       BigInt    @map("chainid")
-  code          String?   @db.VarChar
+  badResult     Json?    @map("badresult")
+  blockHash     String   @map("block")
+  chainId       BigInt   @map("chainid")
+  code          String?  @db.VarChar
   continuation  Json?
-  creationTime  DateTime  @db.Timestamptz(6) @map("creationtime")
+  creationTime  DateTime @map("creationtime") @db.Timestamptz(6)
   data          Json?
   gas           BigInt
-  gasLimit      BigInt    @map("gaslimit")
-  gasPrice      Float     @map("gasprice")
-  goodResult    Json?     @map("goodresult")
+  gasLimit      BigInt   @map("gaslimit")
+  gasPrice      Float    @map("gasprice")
+  goodResult    Json?    @map("goodresult")
   height        BigInt
-  logs          String?   @db.VarChar
+  logs          String?  @db.VarChar
   metadata      Json?
-  nonce         String    @db.VarChar
-  eventCount    BigInt?   @map("num_events")
-  pactId        String?   @db.VarChar @map("pactid")
-  proof         String?   @db.VarChar
-  requestKey    String    @db.VarChar @map("requestkey")
+  nonce         String   @db.VarChar
+  eventCount    BigInt?  @map("num_events")
+  pactId        String?  @map("pactid") @db.VarChar
+  proof         String?  @db.VarChar
+  requestKey    String   @map("requestkey") @db.VarChar
   rollback      Boolean?
-  sender        String    @db.VarChar
+  senderAccount String   @map("sender") @db.VarChar
   step          BigInt?
   ttl           BigInt
-  transactionId BigInt?   @map("txid")
+  transactionId BigInt?  @map("txid")
   events        Event[]
   block         Block    @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
@@ -116,18 +116,18 @@ model Transaction {
 
 model Transfer {
   amount          Decimal @db.Decimal
-  block           String  @db.VarChar
+  blockHash       String  @map("block") @db.VarChar
   chainId         BigInt  @map("chainid")
-  senderAccount   String  @db.VarChar @map("from_acct")
+  senderAccount   String  @map("from_acct") @db.VarChar
   height          BigInt
   orderIndex      BigInt  @map("idx")
-  moduleHash      String  @db.VarChar @map("modulehash")
-  moduleName      String  @db.VarChar @map("modulename")
-  requestKey      String  @db.VarChar @map("requestkey")
-  receiverAccount String  @db.VarChar @map("to_acct")
-  blocks          Block   @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  moduleHash      String  @map("modulehash") @db.VarChar
+  moduleName      String  @map("modulename") @db.VarChar
+  requestKey      String  @map("requestkey") @db.VarChar
+  receiverAccount String  @map("to_acct") @db.VarChar
+  blocks          Block   @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([block, chainId, orderIndex, moduleHash, requestKey])
+  @@id([blockHash, chainId, orderIndex, moduleHash, requestKey])
   @@index([senderAccount, height(sort: Desc), orderIndex], map: "transfers_senderAccount_height_orderIndex")
   @@index([receiverAccount, height(sort: Desc), orderIndex])
   @@map("transfers")
@@ -145,5 +145,3 @@ model schema_migrations {
 
   @@ignore
 }
-
-

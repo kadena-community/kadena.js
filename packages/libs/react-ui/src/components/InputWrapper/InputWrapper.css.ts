@@ -1,11 +1,10 @@
+import { sprinkles } from '@theme/sprinkles.css';
+import { vars } from '@theme/vars.css';
+import { createVar, styleVariants } from '@vanilla-extract/css';
 import {
   helperIconColor,
   helperTextColor,
 } from './InputHelper/InputHelper.css';
-
-import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
-import { createVar, styleVariants } from '@vanilla-extract/css';
 
 export const statusColor = createVar();
 

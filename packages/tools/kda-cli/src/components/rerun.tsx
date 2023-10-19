@@ -1,11 +1,9 @@
+import React, { useCallback, useState } from 'react';
 import { useHistory } from '../hooks/use-history.js';
 import { questions } from '../questions/init.js';
 import type { IAnswers, IQuestion } from '../questions/questions.js';
-
 import { QuestionWrapper } from './question.js';
 import { SummaryView } from './summary.js';
-
-import React, { useCallback, useState } from 'react';
 
 const getExecutionAction = ({ name }: IQuestion): (() => Promise<IAnswers>) =>
   questions.find((question) => question.name === name)

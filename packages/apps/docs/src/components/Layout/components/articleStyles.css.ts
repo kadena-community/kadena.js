@@ -1,6 +1,5 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
 import type { LayoutType } from '@/Layout';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const articleClass = style([
@@ -10,6 +9,7 @@ export const articleClass = style([
     backgroundColor: 'transparent',
   }),
   {
+    zIndex: 3,
     paddingInline: vars.sizes.$4,
 
     ...responsiveStyle({
@@ -62,7 +62,16 @@ export const contentClassVariants: Record<LayoutType, string> = styleVariants({
       },
     }),
   },
-  full: {},
+  full: {
+    ...responsiveStyle({
+      md: {
+        gridColumn: '3 / span 2',
+      },
+      lg: {
+        gridColumn: '3 / span 1',
+      },
+    }),
+  },
   blog: {
     paddingTop: 0,
   },

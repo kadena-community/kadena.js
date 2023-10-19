@@ -429,7 +429,6 @@ Pact from the Pact-lang-api, as well as the TodoItem and TodoFooter.
 import * as React from 'react';
 import uuidv4 from 'uuid/v4';
 import Pact from 'Pact-lang-api';
-
 import { TodoItem } from './todo-item.jsx';
 import { TodoFooter } from './footer.jsx';
 ```

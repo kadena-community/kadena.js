@@ -1,40 +1,73 @@
-import { activeLinkClass, linkClass } from './NavHeader.css';
-
+'use client';
 import classNames from 'classnames';
 import type { FC, HTMLAttributeAnchorTarget, ReactNode } from 'react';
-import React from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
+import { activeLinkClass, linkClass } from './NavHeader.css';
+import { NavHeaderNavigationContext } from './NavHeaderNavigation.context';
 
 export interface INavHeaderLinkProps {
-  active?: boolean;
   children: ReactNode;
-  href?: string;
+  href: string;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   target?: HTMLAttributeAnchorTarget;
   asChild?: boolean;
 }
 
+function hasPath(path: string, basePath: string): boolean {
+  return path.indexOf(basePath) === 0;
+}
+
 export const NavHeaderLink: FC<INavHeaderLinkProps> = ({
-  active,
   children,
+  onClick,
   asChild = false,
+  href,
   ...restProps
 }) => {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const { setGlowPosition, setActiveHref, activeHref } = useContext(
+    NavHeaderNavigationContext,
+  );
+
   const className = classNames(linkClass, {
-    [activeLinkClass]: active,
+    [activeLinkClass]: activeHref ? hasPath(activeHref, href) : false,
   });
+
+  useEffect(() => {
+    if (activeHref && hasPath(activeHref, href) && ref.current) {
+      setGlowPosition(ref.current.getBoundingClientRect());
+    }
+  }, [activeHref, href, setGlowPosition]);
+
+  const _onClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    setGlowPosition(e.currentTarget.getBoundingClientRect());
+    setActiveHref(href);
+    if (onClick) onClick(e);
+  };
 
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(children, {
       ...restProps,
+      href,
       ...children.props,
-      className: className,
       children: children.props.children,
+      className: className,
+      onClick: _onClick,
+      ref,
     });
   }
 
   return (
-    <a className={className} {...restProps}>
-      {children}
-    </a>
+    <li>
+      <a
+        ref={ref}
+        className={className}
+        onClick={_onClick}
+        href={href}
+        {...restProps}
+      >
+        {children}
+      </a>
+    </li>
   );
 };

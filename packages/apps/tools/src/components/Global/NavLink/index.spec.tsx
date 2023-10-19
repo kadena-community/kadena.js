@@ -1,12 +1,10 @@
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
-
-import { NavLink } from './index';
-
 import { render, screen } from '@testing-library/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { NavLink } from './index';
 
 describe('NavLink', () => {
   const mockUseRouter = useRouter as jest.Mock;

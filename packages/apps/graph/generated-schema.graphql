@@ -11,10 +11,13 @@ type Block implements Node {
   hash: ID!
   height: BigInt!
   id: ID!
+  minerKeys: [MinerKey!]
   parent: Block
   parentHash: String
+  payloadHash: String!
   powHash: String!
-  transactions(after: String, before: String, events: [String!] = [], first: Int, last: Int): BlockTransactionsConnection!
+  predicate: String!
+  transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
 }
 
 type BlockTransactionsConnection {
@@ -28,10 +31,43 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
+type ChainModuleAccount {
+  accountName: String!
+  balance: Float!
+  chainId: ID!
+  guard: Guard!
+  moduleName: String!
+  transactions(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransfersConnection!
+}
+
+type ChainModuleAccountTransactionsConnection {
+  edges: [ChainModuleAccountTransactionsConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type ChainModuleAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type ChainModuleAccountTransfersConnection {
+  edges: [ChainModuleAccountTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type ChainModuleAccountTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
+
+"""Floats that will have a value of 0 or more."""
+scalar Decimal
 
 type Event implements Node {
   block: Block!
@@ -45,6 +81,48 @@ type Event implements Node {
   qualifiedName: String!
   requestKey: String!
   transaction: Transaction
+}
+
+type Guard {
+  keys: [String!]!
+  predicate: String!
+}
+
+type MinerKey implements Node {
+  block: Block!
+  blockHash: String!
+  id: ID!
+  key: String!
+}
+
+type ModuleAccount {
+  accountName: String!
+  chainAccounts: [ChainModuleAccount!]!
+  id: String!
+  moduleName: String!
+  totalBalance: Decimal!
+  transactions(after: String, before: String, first: Int, last: Int): ModuleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): ModuleAccountTransfersConnection!
+}
+
+type ModuleAccountTransactionsConnection {
+  edges: [ModuleAccountTransactionsConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type ModuleAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type ModuleAccountTransfersConnection {
+  edges: [ModuleAccountTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type ModuleAccountTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
 }
 
 interface Node {
@@ -62,12 +140,37 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
+  account(accountName: String!, moduleName: String!): ModuleAccount!
+  block(hash: String!): Block!
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
+  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
-  hello(name: String): String!
   lastBlockHeight: BigInt
+  maximumConfirmationDepth: Int!
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransactionsConnection!
+  transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
+}
+
+type QueryTransactionsConnection {
+  edges: [QueryTransactionsConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type QueryTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type QueryTransfersConnection {
+  edges: [QueryTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type QueryTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
 }
 
 type Subscription {
@@ -99,8 +202,23 @@ type Transaction implements Node {
   proof: String
   requestKey: String!
   rollback: Boolean
-  sender: String
+  senderAccount: String
   step: BigInt
   transactionId: BigInt
   ttl: BigInt!
+}
+
+type Transfer implements Node {
+  amount: Decimal!
+  blockHash: String!
+  blocks: [Block!]!
+  chainId: BigInt!
+  height: BigInt!
+  id: ID!
+  moduleHash: String!
+  moduleName: String!
+  orderIndex: BigInt!
+  receiverAccount: String!
+  requestKey: String!
+  senderAccount: String!
 }

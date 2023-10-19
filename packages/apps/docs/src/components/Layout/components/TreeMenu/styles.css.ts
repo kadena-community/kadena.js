@@ -1,12 +1,11 @@
 import { sprinkles, vars } from '@kadena/react-ui/theme';
-
-import { $$borderColor } from '../../global.css';
-
 import { style, styleVariants } from '@vanilla-extract/css';
+import { $$borderColor } from '../../global.css';
 
 export const treeListClass = style([
   sprinkles({
     padding: 0,
+    fontSize: '$sm',
   }),
   {
     overflowX: 'hidden',
@@ -42,10 +41,32 @@ export const linkClass = style([
     selectors: {
       '&:hover': {
         color: vars.colors.$primaryHighContrast,
+        textDecoration: 'none',
       },
     },
   },
 ]);
+
+export const listItemClass = style({
+  selectors: {
+    '&:first-of-type': {
+      marginTop: vars.sizes.$2,
+    },
+  },
+});
+
+export const listItemVariants = styleVariants({
+  l1: {},
+  l2: {},
+  l3: {
+    marginTop: vars.sizes.$2,
+    selectors: {
+      '&:last-of-type': {
+        marginBottom: vars.sizes.$6,
+      },
+    },
+  },
+});
 
 export const linkActiveClass = styleVariants({
   false: {},
@@ -63,7 +84,7 @@ export const levelItemVariantClass = styleVariants({
   l2: {
     display: 'block',
     cursor: 'pointer',
-    padding: `${vars.sizes.$2} 0`,
+    padding: `${vars.sizes.$1} 0`,
     border: 0,
   },
   l3: {
@@ -127,7 +148,7 @@ export const treeItemButtonClass = style([
     textAlign: 'left',
     backgroundColor: 'transparent',
     textTransform: 'capitalize',
-    fontSize: '$base',
+    fontSize: '$sm',
     color: '$foreground',
   }),
   {

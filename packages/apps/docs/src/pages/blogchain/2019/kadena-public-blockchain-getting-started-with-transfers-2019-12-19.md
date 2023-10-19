@@ -70,7 +70,7 @@ notion of “account” or “address.” On each chain, however, there is a key
 registry that makes sure that no keyset gets duplicated. This means that the
 final decider for what uniquely identifies a user of the blockchain is their
 keyset on a given chain
-([read here for more on keysets](https://pact-language.readthedocs.io/en/stable/pact-reference.html#keysets-and-authorization)).
+([read here for more on keysets](/pact/reference/concepts#keysets-and-authorizationh960403648)).
 If you choose to have your keyset only exist on chain 0, that’s your prerogative
 and perfectly fine. However, users may find it simplifies things if they define
 their keyset on all chains to avoid confusion, even though there’s a
@@ -129,12 +129,12 @@ total to address varying use-cases:
 - `coin.transfer-crosschain`: This function is especially interesting in that it
   is the only way to transfer tokens from one chain to another, and is a more
   involved process that requires you to learn about
-  [`defpact` continuations](https://pact-language.readthedocs.io/en/stable/pact-reference.html#defcap)
-  in Pact. I plan to cover this in a separate tutorial, where I have the
-  opportunity to explain both `defpact` and Simple Payment Verification (SPV) in
-  Pact and how cool it is (sorry Thanos!). In the meantime, just know that there
-  is a way of transporting tokens across blockchains natively, available in
-  Kadena (and Pact).
+  [`defpact` continuations](/pact/reference/syntax#defcaph-1335639635) in Pact.
+  I plan to cover this in a separate tutorial, where I have the opportunity to
+  explain both `defpact` and Simple Payment Verification (SPV) in Pact and how
+  cool it is (sorry Thanos!). In the meantime, just know that there is a way of
+  transporting tokens across blockchains natively, available in Kadena (and
+  Pact).
 
 ## Smart Contracts with Pact
 
@@ -148,14 +148,13 @@ done with Pact 3.3, the currently available version of Pact.
 
 Smart contracts are written in Pact. To actually get them into a block on the
 blockchain, they need to be sent to a blockchain node. This is done by
-formatting an
-[API request](https://pact-language.readthedocs.io/en/stable/pact-reference.html#rest-api)
-and sending the request to the appropriate endpoint. Pact has this functionality
-built into the language in the form of the `pact -a` family of commands. To make
-use of `pact -a`, one must create an API request template that takes the form of
-a YAML script pointing at (or containing) Pact code, which is then converted
-into the appropriate JSON representation. A user may then submit this JSON in a
-cURL request (or e.g., a Postman request) to the blockchain for processing.
+formatting an [API request](/pact/reference/rest-api) and sending the request to
+the appropriate endpoint. Pact has this functionality built into the language in
+the form of the `pact -a` family of commands. To make use of `pact -a`, one must
+create an API request template that takes the form of a YAML script pointing at
+(or containing) Pact code, which is then converted into the appropriate JSON
+representation. A user may then submit this JSON in a cURL request (or e.g., a
+Postman request) to the blockchain for processing.
 
 For example, if I wanted to transfer 1.0 KDA from my vanity account, `emily` to
 `nick-cage` because I’m such a huge fan, I would construct a YAML template
@@ -211,7 +210,7 @@ request can be broken down as follows:
   escrow continuations. In our case, we’re executing a one-off transaction.
 
 For a more complete specification of the available options, consult the
-[Pact API Request Formatter documentation](https://pact-language.readthedocs.io/en/stable/pact-reference.html#api-request-formatter)
+[Pact API Request Formatter documentation](/pact/reference/rest-api#api-request-formatterh-1762879533)
 and the tutorials on [pact-lang.org](https://pact-lang.org). Here’s a template
 that can be copied and pasted for your requests:
 
@@ -464,7 +463,7 @@ sleeping, there may be a delay.
 ## Glossary
 
 - **Keyset:** Refers to the
-  [Pact Keyset](https://pact-language.readthedocs.io/en/stable/pact-reference.html#keysets-and-authorization)
+  [Pact Keyset](/pact/reference/concepts#keysets-and-authorizationh960403648)
   authorization scheme. These are a set of public keys in addition to a
   predicate function (e.g. `keys-all`, `keys-any` etc.) that decides the
   authorization policy for the keys in the keyset. For example, if I have a set
@@ -485,11 +484,11 @@ sleeping, there may be a delay.
   [the coin contract](https://github.com/kadena-io/chainweb-node/blob/master/pact/coin-contract/v2/coin.pact)!
 
 - **Smart Contract:**
-  [Pact modules](https://pact-language.readthedocs.io/en/stable/pact-reference.html#module-declaration)
-  define smart contracts.
+  [Pact modules](/pact/reference/concepts#module-declarationh676938214) define
+  smart contracts.
 
 - **API Request:** An HTTP request sent to one of the
-  [endpoints](https://pact-language.readthedocs.io/en/stable/pact-reference.html#endpoints)
+  [endpoints](/pact/reference/concepts#queries-and-local-executionh-453550016)
   available on any Kadena Blockchain Node.
 
 - **Transaction: **An API Request sent to the `/send` or `/local` endpoints of a
@@ -498,7 +497,7 @@ sleeping, there may be a delay.
   `/local` will not.
 
 - **Capability:** This refers to the
-  [capability permissions system](https://pact-language.readthedocs.io/en/stable/pact-reference.html#guards-and-capabilities)
+  [capability permissions system](/pact/reference/concepts#guards-vs-capabilitiesh100483783)
   baked into the Pact language. More on this to come.
 
 - **Dry-run:** A transaction sent to the `/local` endpoint.

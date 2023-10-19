@@ -1,20 +1,3 @@
-import type { ICommandResult } from '@kadena/chainweb-node-client';
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  Card,
-  Grid,
-  Heading,
-  Notification,
-} from '@kadena/react-ui';
-
-import {
-  buttonContainerClass,
-  containerClass,
-  notificationContainerStyle,
-} from './styles.css';
-
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import AccountNameField, {
@@ -26,11 +9,26 @@ import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Card,
+  Grid,
+  Heading,
+  Notification,
+} from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import {
+  buttonContainerClass,
+  containerClass,
+  notificationContainerStyle,
+} from './styles.css';
 
 const schema = z.object({
   name: NAME_VALIDATION,

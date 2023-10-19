@@ -1,14 +1,13 @@
-import { iconContainer, sizeVariants } from './IconWrapper.css';
-
 import classNames from 'classnames';
 import type { SVGProps } from 'react';
 import React from 'react';
+import { iconContainer, sizeVariants } from './IconWrapper.css';
 
 export interface IIconProps {
   size?: keyof typeof sizeVariants;
 }
 
-export type IconType = SVGProps<SVGSVGElement> & IIconProps;
+type IconType = SVGProps<SVGSVGElement> & IIconProps;
 
 export const IconWrapper = (
   // eslint-disable-next-line @typescript-eslint/naming-convention

@@ -1,16 +1,15 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import { createVar, globalStyle, style } from '@vanilla-extract/css';
 import {
   $$backgroundOverlayColor,
   $$leftSideWidth,
   $$pageWidth,
 } from './global.css';
 
-import { createVar, globalStyle, style } from '@vanilla-extract/css';
-
 globalStyle('html, body', {
   margin: 0,
   backgroundColor: vars.colors.$background,
+  overscrollBehavior: 'none',
 });
 
 globalStyle('a', {
@@ -20,6 +19,9 @@ globalStyle('a', {
 globalStyle('a:hover', {
   color: vars.colors.$primaryHighContrast,
   textDecoration: 'none',
+});
+globalStyle('p a', {
+  fontWeight: '500',
 });
 
 export const basebackgroundClass = style([

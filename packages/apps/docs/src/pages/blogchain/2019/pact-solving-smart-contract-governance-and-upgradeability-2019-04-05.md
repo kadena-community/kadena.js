@@ -154,4 +154,4 @@ language that solves the problems that Pact can.
   tools baked-in
 
 - Additional [Resources](https://kadena.io/resources/) and
-  [Read the Docs](https://pact-language.readthedocs.io/en/latest/)
+  [Read the Docs](/pact/reference)

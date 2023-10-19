@@ -1,9 +1,8 @@
-import { retrieveContract } from './retrieve-contract';
-
 import type { Command } from 'commander';
 import { Option } from 'commander';
 import debug from 'debug';
 import { z } from 'zod';
+import { retrieveContract } from './retrieve-contract';
 
 // eslint-disable-next-line @rushstack/typedef-var
 const Options = z.object({

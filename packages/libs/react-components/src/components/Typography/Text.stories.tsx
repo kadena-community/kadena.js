@@ -1,3 +1,6 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import { Text } from './Text';
 import {
   boldVariant,
   colorVariant,
@@ -6,10 +9,6 @@ import {
   textSizeVariant,
   transformVariant,
 } from './styles';
-import { Text } from './Text';
-
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 
 const meta: Meta<typeof Text> = {
   title: 'Typography/Text',

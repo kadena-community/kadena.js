@@ -1,10 +1,8 @@
-import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
-
-import type { TOptions } from '.';
-
 import type { Command } from 'commander';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
+import type { TOptions } from '.';
+import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
 
 export function retrieveContract(
   program: Command,

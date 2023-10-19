@@ -1,6 +1,6 @@
 ---
 title: 10 Minute Quickstart
-description: Learn Kadena’s core concepts & tools for development in 5 minutes
+description: Learn Kadena’s core concepts & tools for development in 10 minutes
 menu: Quickstart
 label: 10 Minute Quickstart
 order: 1
@@ -140,7 +140,7 @@ shows a few things:
    In this example we have an "unscoped signer" as for deploying a smart
    contract, there are no "capabilities" that scope what your signature can be
    used for (read more about this in our
-   [Step-By-Step Guide to Writing Smart Contracts](/build/guides#capabilitiesh-1323277354))
+   [Step-By-Step Guide to Writing Smart Contracts](https://docs.kadena.io/build/guides#capabilitiesh-1323277354))
 
 ```shell
 npm run start -- deploy --keys "<your-key>" --predicate "keys-all"
@@ -295,6 +295,12 @@ Execute the following function, and deploy to read the keys from the table.
    ```
 
 ## Further reading
+
+Get started with the basics of Pact by reading the
+[Welcome to Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact)
+docs.
+
+[Reference documentation of Pact](/pact/reference)
 
 A very good and complete tutorial on learning pact, with real world scenario's,
 is the

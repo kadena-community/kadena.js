@@ -1,5 +1,4 @@
 import { IconWrapper } from '../IconWrapper';
-
 import { BlogChain as BlogChainIcon } from './svgs/BlogChain';
 import { Chainweb as ChainwebIcon } from './svgs/Chainweb';
 import { Concepts as ConceptsIcon } from './svgs/Concepts';

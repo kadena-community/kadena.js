@@ -6,27 +6,31 @@
   "license": "ISC",
   "scripts": {
     "build": "turbo run build",
-    "format": "pnpm run /^format:.*/ && turbo run format",
+    "format": "pnpm run /^format:.*/",
     "format:md": "remark *.md docs/*.md -o --use @kadena-dev/markdown",
     "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",
     "format:src": "prettier . \"!packages\" --cache --write",
     "preinstall": "npx --no-install only-allow pnpm",
-    "knip": "NEXT_TRANSLATE_PATH=packages/apps/tools knip",
-    "lint": "syncpack list-mismatches && turbo run lint",
+    "knip": "knip",
+    "lint": "syncpack list-mismatches && prettier . \"!packages\" --cache --check",
     "publish": "changeset publish",
     "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
     "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
     "test:integration": "turbo run test:integration",
     "version": "changeset version"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@kadena-dev/markdown": "workspace:*",
-    "knip": "^2.25.2",
-    "only-allow": "^1.1.1",
+    "knip": "^2.32.4",
+    "only-allow": "^1.2.1",
+    "prettier": "~3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "prettier-plugin-packagejson": "^2.4.6",
     "syncpack": "^11.2.1",
     "tsx": "^3.12.10",
-    "turbo": "^1.10.14"
+    "turbo": "^1.10.15"
   },
   "engines": {
     "node": ">=18",

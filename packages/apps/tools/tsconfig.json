@@ -17,12 +17,11 @@
     "isolatedModules": true,
     "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
     "declarationMap": false,
-    "jsx": "preserve",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "allowJs": true
+    "allowJs": true,
+    "jsx": "preserve"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules"]
 }

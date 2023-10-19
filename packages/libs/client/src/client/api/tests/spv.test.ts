@@ -3,9 +3,7 @@ jest.mock('@kadena/chainweb-node-client', () => ({
   ...jest.requireActual('@kadena/chainweb-node-client'),
   spv: jest.fn(),
 }));
-
 import { spv } from '@kadena/chainweb-node-client';
-
 import { withCounter } from '../../utils/utils';
 import { getSpv, pollSpv } from '../spv';
 

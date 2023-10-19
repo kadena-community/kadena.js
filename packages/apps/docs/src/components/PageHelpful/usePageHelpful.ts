@@ -1,8 +1,7 @@
-import usePageHelpfulModal from './usePageHelpfulModal';
-
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import usePageHelpfulModal from './usePageHelpfulModal';
 
 interface IPageHelpfulHookResult {
   handlePageHelpful(): void;

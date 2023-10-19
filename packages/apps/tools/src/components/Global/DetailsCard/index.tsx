@@ -1,5 +1,6 @@
+import type { FC } from 'react';
+import React from 'react';
 import { AccountText } from '../AccountText';
-
 import {
   StyledContentContainer,
   StyledInfoContainer,
@@ -8,9 +9,6 @@ import {
   StyledInfoItemTitle,
   StyledWarningContainer,
 } from './styles';
-
-import type { FC } from 'react';
-import React from 'react';
 
 export interface IDetailCardProps {
   firstTitle: string;

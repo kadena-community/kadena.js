@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`parseTemplate parses a YAML template 1`] = `
+exports[`parseTemplate > parses a YAML template 1`] = `
 {
   "holes": [
     "from-acct",
@@ -16,9 +16,9 @@ exports[`parseTemplate parses a YAML template 1`] = `
   ],
   "parts": [
     "code: |-
-  (coin.transfer "",
-    "" "",
-    "" ",
+  (coin.transfer \\"",
+    "\\" \\"",
+    "\\" ",
     ")
 data:
 publicMeta:
@@ -51,7 +51,7 @@ docs:
   to-acct: Account that you want to send to
   amount: The amount of KDA that you want to transfer
   chain: The chain that you want to execute the transaction on
-  network: The network that you want to use ("testnet04", "mainnet")
+  network: The network that you want to use (\\"testnet04\\", \\"mainnet\\")
   from-key: The key (without k:) that signs the caps
 ",
   ],

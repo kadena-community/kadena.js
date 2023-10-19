@@ -1,9 +1,8 @@
-import { Heading } from '@kadena/react-ui';
-
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { Heading } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
 import React from 'react';

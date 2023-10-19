@@ -1,15 +1,15 @@
+import chalk from 'chalk';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { checkForHeaders } from './checkForHeaders.mjs';
 import { copyFavIcons } from './copyFavIcons.mjs';
 import { checkAuthors } from './createBlogAuthors.mjs';
 import { createSitemap } from './createSitemap.mjs';
-import { checkForHeaders } from './checkForHeaders.mjs';
-import { detectBrokenLinks } from './detectBrokenLinks.mjs';
 import { createSpecs } from './createSpec.mjs';
+import { detectBrokenLinks } from './detectBrokenLinks.mjs';
 import { createDocsTree } from './getdocstree.mjs';
 import { importAllReadmes } from './importReadme.mjs';
-import chalk from 'chalk';
 import { Spinner } from './spinner.mjs';
-import { exec } from 'child_process';
-import { promisify } from 'util';
 
 const promiseExec = promisify(exec);
 let globalError = false;

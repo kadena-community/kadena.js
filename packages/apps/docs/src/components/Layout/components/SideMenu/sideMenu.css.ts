@@ -1,5 +1,4 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
 import { style } from '@vanilla-extract/css';
 
 export const sideMenuClass = style([
@@ -44,6 +43,7 @@ export const sideMenuTitleClass = style([
     paddingLeft: '$4',
     marginY: '$4',
     textAlign: 'left',
+    fontSize: '$sm',
   }),
   {
     background: 'transparent',

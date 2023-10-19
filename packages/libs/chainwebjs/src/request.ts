@@ -1,8 +1,7 @@
-import ResponseError from './ResponseError';
-import type { IRetryOptions } from './types';
-
 import type { Response } from 'cross-fetch';
 import pRetry, { AbortError } from 'p-retry';
+import ResponseError from './ResponseError';
+import type { IRetryOptions } from './types';
 
 export function transFormUrl(url: URL): string {
   return url as unknown as string;

@@ -4,10 +4,8 @@ import {
   sprinkles,
   vars,
 } from '@kadena/react-ui/theme';
-
-import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
-
 import { style, styleVariants } from '@vanilla-extract/css';
+import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
 
 export const logoClass = style({
   zIndex: $$navMenu,
@@ -21,7 +19,7 @@ export const headerButtonClass = style([
     borderRadius: '$lg',
     cursor: 'pointer',
     color: '$neutral2',
-    height: '$11',
+    paddingY: '$2',
     width: '$11',
   }),
   {
@@ -71,9 +69,11 @@ export const hamburgerButtonClass = style([
 export const searchButtonClass = style([
   sprinkles({
     backgroundColor: '$neutral4',
+    paddingX: '$2',
   }),
   {
     width: 'inherit',
+
     selectors: {
       [`${darkThemeClass} &`]: {
         backgroundColor: vars.colors.$neutral3,
@@ -85,6 +85,7 @@ export const searchButtonClass = style([
 export const searchButtonSlashClass = style([
   sprinkles({
     borderRadius: '$lg',
+    marginLeft: '$2',
     backgroundColor: '$neutral3',
     color: '$white',
   }),
@@ -162,7 +163,10 @@ export const spacerClass = style({
 export const headerIconGroupClass = style([
   sprinkles({
     display: 'flex',
-    gap: '$1',
+    gap: {
+      xs: '$3',
+      lg: '$6',
+    },
     marginLeft: '$6',
   }),
 ]);

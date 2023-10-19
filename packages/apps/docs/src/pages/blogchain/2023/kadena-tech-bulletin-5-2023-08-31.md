@@ -94,8 +94,8 @@ our first Pact K:ourse — “Mastering Functions in Pact”.
 Elevate your developer skills and don’t forget to collect your Kadena Learning
 Points along the way.
 
-**Official Link:[
-**https://academy.kadena.io/courses/mastering-functions-in-pact](https://academy.kadena.io/courses/mastering-functions-in-pact)
+**Official Link:**
+[https://academy.kadena.io/courses/mastering-functions-in-pact](https://academy.kadena.io/courses/mastering-functions-in-pact)
 
 ### **6. GitHub supports Syntax Highlight for Pact**
 

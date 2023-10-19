@@ -4,7 +4,6 @@ import type {
   IUnsignedCommand,
   SignatureWithHash,
 } from '@kadena/types';
-
 import { pullAndCheckHashs } from './pullAndCheckHashs';
 
 /**

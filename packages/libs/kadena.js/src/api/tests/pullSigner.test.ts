@@ -1,5 +1,4 @@
 import { pullSigner } from '../pullSigner';
-
 import { keyPair } from './mockdata/execCommand';
 
 describe('pullSigner', () => {

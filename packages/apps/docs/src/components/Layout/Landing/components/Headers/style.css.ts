@@ -1,9 +1,8 @@
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
-
 import {
   $$backgroundOverlayColor,
   $$pageWidth,
 } from '@/components/Layout/global.css';
+import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const headerClass = style([
@@ -13,7 +12,7 @@ export const headerClass = style([
     padding: 0,
   }),
   {
-    width: '100vw',
+    maxWidth: '100vw',
     gridArea: 'pageheader',
     zIndex: 2,
     selectors: {
@@ -60,9 +59,10 @@ export const wrapperClass = style([
     marginBottom: '$16',
   }),
   {
-    paddingInline: 0,
+    paddingInline: vars.sizes.$10,
     maxWidth: $$pageWidth,
     backgroundColor: $$backgroundOverlayColor,
+    boxSizing: 'border-box',
   },
 ]);
 
@@ -79,3 +79,7 @@ export const subheaderClass = style([
     },
   },
 ]);
+
+export const searchInputWrapper = style({
+  maxWidth: `calc(3 * ${vars.sizes.$40})`,
+});

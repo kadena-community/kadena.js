@@ -1,3 +1,5 @@
+import EventEmitter from 'eventemitter2';
+import EventSource from 'eventsource';
 import {
   ConnectTimeoutError,
   HeartbeatTimeoutError,
@@ -16,9 +18,6 @@ import type {
 } from './types';
 import { ConnectionState } from './types';
 import { isNotUndefined } from './util';
-
-import EventEmitter from 'eventemitter2';
-import EventSource from 'eventsource';
 
 export * from './types';
 

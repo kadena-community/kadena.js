@@ -1,8 +1,7 @@
-import type { IAnswers, IQuestion } from '../questions/questions.js';
-
 import { Spinner } from '@inkjs/ui';
 import { Text } from 'ink';
 import React, { useEffect, useState } from 'react';
+import type { IAnswers, IQuestion } from '../questions/questions.js';
 
 export const Execute = ({
   message,

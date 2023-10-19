@@ -1,5 +1,9 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import {
+  darkThemeClass,
+  responsiveStyle,
+  sprinkles,
+  vars,
+} from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const sectionRowContainerClass = style([
@@ -42,7 +46,7 @@ export const directionVariants = styleVariants({
 export const columnLinkListItemClass = style([
   sprinkles({
     color: '$primaryContrastInverted',
-    lineHeight: '$lg',
+    paddingY: '$1',
   }),
 ]);
 
@@ -85,10 +89,19 @@ export const listItemLinkClass = style([
   }),
   {
     ':hover': {
-      textDecoration: 'underline',
+      textDecoration: 'none',
     },
   },
 ]);
+
+export const listItemLinkTextClass = style({
+  color: vars.colors.$gray60,
+  selectors: {
+    [`${darkThemeClass} &`]: {
+      color: vars.colors.$gray40,
+    },
+  },
+});
 
 export const markerVariants = styleVariants({
   none: {

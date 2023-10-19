@@ -1,7 +1,12 @@
 import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
-
 import type { ComplexStyleRule } from '@vanilla-extract/css';
 import { style } from '@vanilla-extract/css';
+
+export const stripWrapper = style([
+  sprinkles({
+    marginTop: '$md',
+  }),
+]);
 
 export const stripClass = style([
   sprinkles({
@@ -17,12 +22,12 @@ export const stripClass = style([
 
 export const stripItemWrapperClass = style([
   sprinkles({
-    paddingRight: '$4',
+    paddingRight: '$8',
     marginBottom: '$8',
   }),
   {
     minWidth: '100px',
-    flex: '50%',
+    flex: '100%',
     selectors: {
       '&:last-child': {
         display: 'block',
@@ -30,6 +35,9 @@ export const stripItemWrapperClass = style([
     },
 
     ...responsiveStyle({
+      md: {
+        flex: '50%',
+      },
       lg: {
         flex: '33%',
         selectors: {
@@ -47,11 +55,12 @@ export const stripItemClass = style([
     display: 'flex',
     flexDirection: 'column',
     textDecoration: 'none',
+    marginBottom: '$8',
   }),
   {
     selectors: {
       '&:hover': {
-        textDecoration: 'underline',
+        textDecoration: 'none',
         opacity: '.8',
       },
     },
@@ -84,6 +93,8 @@ export const headerClass = style([
   sprinkles({
     color: '$primaryContrastInverted',
     paddingRight: '$4',
+    fontSize: '$lg',
+    marginTop: '$4',
   }),
   {
     flex: 1,

@@ -1,19 +1,19 @@
 import Cookies from 'js-cookie';
 
-export const prefix: string = '_persist';
+export const prefix = '_persist';
 
-export const getName = (key: string): string => `${prefix}:${key}`;
+export const getName = (key: string) => `${prefix}:${key}`;
 
 export const encode = (value: unknown) =>
   encodeURIComponent(JSON.stringify(value));
 
 export const parse = (value: string) => JSON.parse(decodeURIComponent(value));
 
-export const setItem = (key: string, value: unknown): void => {
+export const setItem = (key: string, value: unknown) => {
   Cookies.set(getName(key), encode(value));
 };
 
-export const getItem = (key: string): unknown | undefined => {
+export const getItem = (key: string) => {
   try {
     const cookie = Cookies.get(getName(key));
     return cookie !== undefined ? parse(cookie) : undefined;
@@ -22,15 +22,13 @@ export const getItem = (key: string): unknown | undefined => {
   }
 };
 
-export const deleteItem = (key: string): void => {
+export const deleteItem = (key: string) => {
   Cookies.remove(getName(key));
 };
 
-export const getItems = (): { [key: string]: unknown } => {
+export const getItems = () => {
   const cookies = Cookies.get();
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  if (!cookies) return {};
   return Object.keys(cookies).reduce(
     (results, key) => {
       const match: null | string[] = key.match(getName('(.*)'));
@@ -41,7 +39,7 @@ export const getItems = (): { [key: string]: unknown } => {
   );
 };
 
-export const purge = (): void => {
+export const purge = () => {
   const cookies = getItems();
   Object.keys(cookies).forEach((key) => {
     deleteItem(key);

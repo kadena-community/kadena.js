@@ -22,7 +22,7 @@ export const activeClass = style({
 });
 
 // Main container
-export const container = style([
+const container = style([
   sprinkles({
     border: 'none',
     borderRadius: '$sm',

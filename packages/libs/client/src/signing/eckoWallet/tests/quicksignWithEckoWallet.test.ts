@@ -1,11 +1,9 @@
 /** @jest-environment jsdom */
-
+import { TextDecoder, TextEncoder } from 'util';
 import type { IPactCommand } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
 import type { ISignFunction } from '../../ISignFunction';
 import { createEckoWalletQuicksign } from '../quicksignWithEckoWallet';
-
-import { TextDecoder, TextEncoder } from 'util';
 
 Object.assign(global, { TextDecoder, TextEncoder });
 

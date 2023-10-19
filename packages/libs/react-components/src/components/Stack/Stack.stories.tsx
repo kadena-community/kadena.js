@@ -1,16 +1,14 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import { styled } from '../../styles/stitches.config';
-
 import {
+  Stack,
   alignItemsVariant,
   directionVariant,
   flexWrapVariant,
   justifyContentVariant,
   spacingVariant,
-  Stack,
 } from './Stack';
-
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 
 const Item = styled('div', {
   backgroundColor: '$primarySurface',

@@ -123,11 +123,11 @@ continue to improve.
 Links to the Pact tutorials, developer documentation and Kadena homepage can
 also be found on the navigation bar.
 
-|                                                                  |                                                                                            |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [Documentation](https://pact-language.readthedocs.io/en/latest/) | Provides an in-depth look at the Pact programming language.                                |
-| [Tutorials](/pact)                                               | Learn more about Pact by completing tutorials like this.                                   |
-| [Kadena](https://kadena.io/)                                     | Explore the Kadena blockchain, which is the enterprise-grade blockchain that Pact runs on. |
+|                                  |                                                                                            |
+| -------------------------------- | ------------------------------------------------------------------------------------------ |
+| [Documentation](/pact/reference) | Provides an in-depth look at the Pact programming language.                                |
+| [Tutorials](/pact)               | Learn more about Pact by completing tutorials like this.                                   |
+| [Kadena](https://kadena.io/)     | Explore the Kadena blockchain, which is the enterprise-grade blockchain that Pact runs on. |
 
 :::info Join the Newsletter
 
@@ -299,11 +299,9 @@ pact > (+ "Hello" " REPL")
 
 You can view many more commands in the
 
-[Pact Syntax Documentation](https://pact-language.readthedocs.io/en/latest/pact-reference.html#syntax)
-and
-[Built-in Functions Documentation](https://pact-language.readthedocs.io/en/latest/pact-functions.html).
-Try running a few for yourself to learn more about the Pact programming
-language.
+[Pact Syntax Documentation](/pact/reference/syntax) and
+[Built-in Functions Documentation](/pact/reference/functions). Try running a few
+for yourself to learn more about the Pact programming language.
 
 :::
 

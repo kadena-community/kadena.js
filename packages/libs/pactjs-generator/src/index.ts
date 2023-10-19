@@ -15,4 +15,4 @@ export * from './template/generation/generateTemplates';
 /**
  * @alpha
  */
-export { pactParser, contractParser } from './contract/parsing/pactParser';
+export { contractParser, pactParser } from './contract/parsing/pactParser';

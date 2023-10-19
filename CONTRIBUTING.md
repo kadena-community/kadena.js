@@ -151,11 +151,11 @@ To publish a new version of updated packages, please make sure you:
 We're using [Changesets][12] for our release process. The manual process in [How
 do I run the version and publish commands?][13] is what we use and repeat here:
 
-1.  Check out and pull `main`
-2.  Update changelogs and bump versions
-3.  Create a new branch and open a "version bump" PR
-4.  Merge PR to `main`
-5.  Build and publish from `main`
+1. Check out and pull `main`
+2. Update changelogs and bump versions
+3. Create a new branch and open a "version bump" PR
+4. Merge PR to `main`
+5. Build and publish from `main`
 
 ```sh
 git checkout main

@@ -1,12 +1,10 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import { createVar, style } from '@vanilla-extract/css';
 import {
   $$asideMenuWidthLGDefault,
   $$asideMenuWidthMDDefault,
 } from '../basestyles.css';
 import { $$leftSideWidth, $$pageWidth, $$sideMenu } from '../global.css';
-
-import { createVar, style } from '@vanilla-extract/css';
 
 const $$shadowWidth = createVar();
 
@@ -46,7 +44,7 @@ export const asidebackgroundClass = style([
       },
       '&::after': {
         ...responsiveStyle({
-          md: {
+          lg: {
             left: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${vars.sizes.$4}))`,
           },
           xxl: {
@@ -57,7 +55,7 @@ export const asidebackgroundClass = style([
     },
 
     ...responsiveStyle({
-      md: {
+      lg: {
         display: 'block',
       },
     }),
@@ -75,7 +73,7 @@ export const loadedClass = style({
 
 export const pageGridClass = style(
   responsiveStyle({
-    md: {
+    lg: {
       gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth} - ${$$asideMenuWidthMDDefault})) ${$$asideMenuWidthMDDefault} 1%`,
     },
     xxl: {
@@ -98,8 +96,13 @@ export const stickyAsideClass = style([
     paddingTop: '$10',
   }),
   {
-    overflowY: 'scroll',
+    overflowY: 'auto',
     height: `calc(100vh - ${vars.sizes.$20})`,
+    selectors: {
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+    },
   },
 ]);
 
@@ -120,7 +123,7 @@ export const asideClass = style([
     transform: 'translateX(100vw)',
 
     ...responsiveStyle({
-      md: {
+      lg: {
         display: 'block',
         transform: 'translateX(0)',
       },

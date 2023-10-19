@@ -1,6 +1,6 @@
-export { AppContextProvider, useAppContext, AppContext } from './app-context';
+export { AppContext, AppContextProvider, useAppContext } from './app-context';
 export {
+  LayoutContext,
   LayoutContextProvider,
   useLayoutContext,
-  LayoutContext,
 } from './layout-context';

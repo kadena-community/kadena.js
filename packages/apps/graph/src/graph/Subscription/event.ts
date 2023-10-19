@@ -1,11 +1,10 @@
+import type { Event } from '@prisma/client';
+import type { Debugger } from 'debug';
+import _debug from 'debug';
 import { prismaClient } from '../../db/prismaClient';
 import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-
-import type { Event } from '@prisma/client';
-import type { Debugger } from 'debug';
-import _debug from 'debug';
 
 const log: Debugger = _debug('graph:Subscription:event');
 

@@ -4,20 +4,17 @@ jest.mock('cross-fetch', () => {
     default: jest.fn(),
   };
 });
-
-import { makeFetchResponse, mockFetch, urlHelper } from './mokker';
-
 import fetch from 'cross-fetch';
+import chainweb from '..';
+import type { IBlockHeader, IBlockPayload, IPagedResponse } from '../types';
+import { config } from './config';
+import { header } from './mocks/header';
+import { makeFetchResponse, mockFetch, urlHelper } from './mokker';
 
 const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
 mockedFunctionFetch.mockImplementation(
   mockFetch as jest.MockedFunction<typeof fetch>,
 );
-import type { IBlockHeader, IBlockPayload, IPagedResponse } from '../types';
-import chainweb from '..';
-
-import { header } from './mocks/header';
-import { config } from './config';
 /* ************************************************************************** */
 /* Test settings */
 
