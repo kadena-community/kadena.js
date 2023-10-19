@@ -1,5 +1,6 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { responsiveStyle } from '@theme/themeUtils';
+import { vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
 export const openModal = style([
@@ -9,27 +10,33 @@ export const openModal = style([
   },
 ]);
 
-export const background = style([
+export const underlayClass = style([
   sprinkles({
+    zIndex: '$modal',
     position: 'fixed',
-    backgroundColor: '$neutral4',
-    padding: 0,
     cursor: 'pointer',
+    inset: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }),
   {
-    inset: 0,
-    opacity: '.8',
+    selectors: {
+      '&::before': {
+        content: '',
+        position: 'absolute',
+        inset: 0,
+        backgroundColor: vars.colors.$neutral5,
+        opacity: 0.5,
+      },
+    },
   },
 ]);
 
-export const wrapper = style([
+export const overlayClass = style([
   sprinkles({
-    position: 'fixed',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    pointerEvents: 'none',
+    position: 'relative',
+    pointerEvents: 'initial',
     width: '100%',
     marginX: {
       xs: 0,
@@ -39,6 +46,7 @@ export const wrapper = style([
   }),
   responsiveStyle({
     xs: {
+      maxHeight: '75vh',
       maxWidth: '700px',
       inset: 0,
     },
@@ -51,20 +59,7 @@ export const wrapper = style([
   }),
 ]);
 
-export const modal = style([
-  sprinkles({
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-  }),
-  {
-    maxHeight: '75vh',
-    pointerEvents: 'initial',
-  },
-]);
-
-export const closeButton = style([
+export const closeButtonClass = style([
   sprinkles({
     position: 'absolute',
     top: '$8',
@@ -77,18 +72,13 @@ export const closeButton = style([
     border: 'none',
     padding: 0,
     cursor: 'pointer',
+    color: 'inherit',
   }),
-  {
-    alignSelf: 'end',
-  },
 ]);
 
-export const titleWrapper = style([
+export const titleWrapperClass = style([
   sprinkles({
-    height: '$12',
     marginBottom: '$4',
+    marginRight: '$20',
   }),
-  {
-    width: 'calc(100% - 100px)',
-  },
 ]);

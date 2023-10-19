@@ -1,3 +1,4 @@
+import { IModalContentProps } from './Modal/ModalContent';
 export type {
   IAccordionProps,
   IAccordionRootProps,
@@ -15,7 +16,12 @@ export type { IInputProps } from './Input/Input';
 export type { IInputWrapperProps, InputWrapperStatus } from './InputWrapper';
 export type { ILinkProps } from './Link';
 export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
-export type { IModalProps } from './Modal';
+export type {
+  IModalContentProps,
+  IModalProps,
+  IModalRootProps,
+  IModalTriggerProps,
+} from './Modal';
 export type {
   INavFooterIconButtonProps,
   INavFooterLinkProps,
@@ -81,7 +87,7 @@ export { Input } from './Input/Input';
 export { InputWrapper } from './InputWrapper';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';
-export { Modal, ModalProvider, useModal } from './Modal';
+export { Modal } from './Modal';
 export { NavFooter } from './NavFooter';
 export { NavHeader } from './NavHeader';
 export { Notification } from './Notification';

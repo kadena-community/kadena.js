@@ -19,7 +19,7 @@ const systemProperties = defineProperties({
     right: vars.sizes,
     flexShrink: [0],
     flexGrow: [0, 1],
-    zIndex: [-1, 0, 1],
+    zIndex: vars.elevation,
     border: ['none'],
     outline: ['none'],
     textTransform: ['uppercase', 'lowercase', 'capitalize', 'none'],
@@ -27,6 +27,8 @@ const systemProperties = defineProperties({
     wordBreak: ['normal', 'keep-all', 'break-word', 'break-all'],
     listStyleType: ['none'],
     objectFit: ['cover', 'contain'],
+    inset: [0],
+    pointerEvents: ['none', 'auto', 'initial'],
   },
 });
 
@@ -106,7 +108,6 @@ const responsiveProperties = defineProperties({
     gap: vars.sizes,
     gridGap: vars.sizes,
     overflow: ['hidden', 'visible', 'scroll', 'auto'],
-    pointerEvents: ['none', 'auto'],
     opacity: [0, 1],
     textAlign: ['left', 'center', 'right'],
     fontSize: vars.fontSizes,

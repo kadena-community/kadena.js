@@ -1,10 +1,11 @@
-import type { IModalProps } from '@components/Modal';
-import { ModalProvider } from '@components/Modal';
+import type { IModalRootProps } from '@components/Modal';
+import { Modal } from '@components/Modal';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Content } from './StoryComponents';
 
-const meta: Meta<{ title?: string } & IModalProps> = {
+type StoryType = { title?: string } & IModalRootProps;
+
+const meta: Meta<StoryType> = {
   title: 'Layout/Modal',
   parameters: {
     docs: {
@@ -25,7 +26,7 @@ const meta: Meta<{ title?: string } & IModalProps> = {
 };
 
 export default meta;
-type Story = StoryObj<{ title?: string } & IModalProps>;
+type Story = StoryObj<StoryType>;
 
 export const Primary: Story = {
   name: 'Modal',
@@ -34,12 +35,15 @@ export const Primary: Story = {
   },
   render: ({ title }) => {
     return (
-      <>
-        <div id="modalportal" />
-        <ModalProvider>
-          <Content title={title} />
-        </ModalProvider>
-      </>
+      <Modal.Root>
+        <Modal.Trigger>Modal Trigger</Modal.Trigger>
+        <Modal.Content title={title}>
+          Hellooo, . .adsflsjflka jf;ljas f;as flas fjl;as fjlasdjf kasldf
+          jl;aksdfj l;adskjf lasdf jalsfdj;alf jsldf jalsd fa;lsjd jsdflsjdf
+          kldsj fklsdfj lks jflksdjf lkds fjsdlkf dsjf ksdfjsldfj lsdfj sdlf
+          dsjlf ks
+        </Modal.Content>
+      </Modal.Root>
     );
   },
 };

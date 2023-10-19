@@ -4,7 +4,7 @@ import { createVar, style } from '@vanilla-extract/css';
 
 const textColor = createVar();
 
-export const container = style([
+export const containerClass = style([
   sprinkles({
     backgroundColor: {
       lightMode: '$gray10',

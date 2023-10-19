@@ -36,22 +36,24 @@ export interface IButtonProps
   variant?: keyof typeof typeVariants;
 }
 
-export const Button: FC<IButtonProps> = ({
-  active = false,
-  as = 'button',
-  asChild = false,
-  children,
-  color = 'primary',
-  href,
-  icon,
-  iconAlign = 'right',
-  loading,
-  target,
-  title = '',
-  type,
-  variant = 'default',
-  ...restProps
-}) => {
+export const Button: FC<IButtonProps> = (
+  {
+    active = false,
+    as = 'button',
+    asChild = false,
+    children,
+    color = 'primary',
+    href,
+    icon,
+    iconAlign = 'right',
+    loading,
+    target,
+    title = '',
+    type,
+    variant = 'default',
+    ...restProps
+  },
+) => {
   const ariaLabel = restProps['aria-label'] ?? title;
   const renderAsAnchor = as === 'a' && href !== undefined && href !== '';
 

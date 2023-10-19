@@ -6,6 +6,14 @@ export const vars = createGlobalTheme(':root', {
     $main: "'Haas Grotesk Display', -apple-system, sans-serif",
     $mono: "'Kode Mono', Menlo, monospace",
   },
+  elevation: {
+    $modal: '100',
+    '-1': '-1',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    0: '0',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    1: '1',
+  },
   fontSizes: {
     $xs: '0.75rem', // 12px
     $sm: '0.875rem', // 14px
