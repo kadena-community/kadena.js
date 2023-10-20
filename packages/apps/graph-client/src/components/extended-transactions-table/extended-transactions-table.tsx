@@ -67,7 +67,9 @@ export const ExtendedTransactionsTable = (
       await refetchTransactions();
       setCurrentPage(1);
     };
-    fetchData();
+    fetchData().catch((err) => {
+      console.error(err);
+    });
   }, [itemsPerPage]);
 
   // Set items per page and page in URL when they change
@@ -83,7 +85,9 @@ export const ExtendedTransactionsTable = (
         });
       }
     };
-    updateUrl();
+    updateUrl().catch((err) => {
+      console.error(err);
+    });
   }, [currentPage, itemsPerPage, router, urlItemsPerPage, urlPage]);
 
   return (
