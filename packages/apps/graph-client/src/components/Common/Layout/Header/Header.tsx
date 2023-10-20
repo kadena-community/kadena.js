@@ -7,10 +7,12 @@ import React, { useState } from 'react';
 import { mainStyle } from '../../main/styles.css';
 
 export interface IHeaderProps {
-  appTitle?: string;
+  title?: string;
 }
 
-const Header: FC<IHeaderProps> = () => {
+const Header: FC<IHeaderProps> = (props) => {
+  const { title } = props;
+
   const router = useRouter();
 
   const [searchType, setSearchType] = useState<string>('request-key');
@@ -110,7 +112,7 @@ const Header: FC<IHeaderProps> = () => {
           }}
           onClick={() => router.push(routes.HOME)}
         >
-          Kadena Graph Client
+          {title}
         </Text>
 
         <Grid.Root columns={searchType.startsWith('account') ? 4 : 3}>

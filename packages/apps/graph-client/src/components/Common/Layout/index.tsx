@@ -15,7 +15,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         <title>Kadena Graph Client</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <Header />
+      <Header title="Kadena Graph Client" />
       <main className={mainStyle}>{children}</main>
     </div>
   );
