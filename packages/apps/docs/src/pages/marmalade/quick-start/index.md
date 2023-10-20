@@ -9,6 +9,7 @@ layout: full
 
 # Minting with Marmalade V2 Tutorial
 
+
 Welcome to the Minting with Marmalade V2 tutorial! Marmalade is a revolutionary
 NFT marketplace infrastructure built on the Kadena blockchain. It offers 100%
 on-chain transactions, high-quality provenance, low gas fees, and shared
@@ -25,16 +26,12 @@ Let's get started!
 
 **Step 1: Authenticate and Locate Marmalade v2 in Chainweaver**
 
-First, authenticate yourself on Chainweaver. After authentication, make your way to the Module Explorer and search for the Marmalade V2 contracts.
+First, authenticate yourself on Chainweaver and make your way to the Module Explorer and search for the Marmalade V2 contracts.
 
-Specifically, enter this string into the Module Explorer:
+Specifically, enter this string into the Module Explorer: `marmalade-v2.util-v1`
 
-```
-marmalade-v2.util-v1
-```
-
-This leads you to the Marmalade V2 util contract, which boasts easy mint functions for your convenience.
-The contract lives on chain 1 for testnet, and chain 8 for mainnet.
+This leads you to the Marmalade V2 util contract, which is a contract that wraps around marmalade
+functions to provide easy minting process for users.
 
 Once located, select "View" to continue.
 
@@ -53,10 +50,8 @@ listed below.
    `(read-keyset "my-keyset")`
 
  **Note:** By default, `mint-basic-NFT` mints a non-fungible token without
- any rules programmed. If you wish to choose different policy options, read
- [advanced tutorial](todo). For more information on token policies, please refer to the
- [Marmalade V2 Token Policies](https://github.com/kadena-io/marmalade/tree/v2#token-policies)
- documentation on GitHub.
+ any rules programmed. If you wish to program your tokens with more policies,
+ read more about our [concrete policies](../concrete-policies/index.md)
 
 
 **Step 3: Configure Gas Setting**
@@ -99,4 +94,4 @@ Wait for the transaction to finish. The server result should
 be true.
 
 You've minted your first NFT on marmalade! Investigate the transaction on
-the [block explorer](explorer.chainweb.com), and find your token information.
+the [block explorer](explorer.chainweb.com), to find your token information.
