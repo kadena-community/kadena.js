@@ -1,5 +1,5 @@
-import { colorPalette, gradients, hexToRgba } from '@theme/colors';
 import { createGlobalTheme, createTheme } from '@vanilla-extract/css';
+import { colorPalette, gradients, hexToRgba } from 'src/theme/colors';
 
 export const vars = createGlobalTheme(':root', {
   fonts: {

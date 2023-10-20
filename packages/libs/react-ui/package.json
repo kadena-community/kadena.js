@@ -5,6 +5,9 @@
   "description": "A react component library built on Kadena's Design System",
   "license": "ISC",
   "author": "",
+  "sideEffects": [
+    "*.css.*"
+  ],
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
@@ -26,7 +29,7 @@
     "theme"
   ],
   "scripts": {
-    "build": "rimraf theme && tsc && tsc-alias && tsc -p ./tsconfig.cjs.json && tsc-alias -p ./tsconfig.cjs.json && copyfiles -f \"./types/styles/*\" theme",
+    "build": "rimraf theme && tsc && tsc-alias && tsc -p ./tsconfig.cjs.json && tsc-alias -p ./tsconfig.cjs.json && copyfiles -f \"./types/theme/*\" theme",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "chromatic": "chromatic -b build:storybook",
