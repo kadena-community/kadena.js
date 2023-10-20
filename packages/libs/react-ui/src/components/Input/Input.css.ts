@@ -20,7 +20,7 @@ export const containerClass = style([
     position: 'relative',
     borderBottom: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
     selectors: {
-      [`${darkThemeClass} &`]: {
+      [`.${darkThemeClass} &`]: {
         borderBottom: `1px solid ${fallbackVar(
           statusColor,
           vars.colors.$gray60,
@@ -55,7 +55,7 @@ export const disabledClass = style([
       '.inputGroup &': {
         opacity: 1,
       },
-      [`${darkThemeClass} &`]: {
+      [`.${darkThemeClass} &`]: {
         backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
       },
     },
@@ -87,7 +87,7 @@ export const inputClass = style([
     '::placeholder': {
       color: vars.colors.$gray40,
     },
-    [`${darkThemeClass} &::placeholder`]: {
+    [`.${darkThemeClass} &::placeholder`]: {
       color: vars.colors.$gray50,
     },
   },

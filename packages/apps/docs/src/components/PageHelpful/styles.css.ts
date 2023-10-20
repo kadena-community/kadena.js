@@ -23,7 +23,7 @@ export const textAreaClass = style([
     '::placeholder': {
       color: vars.colors.$gray40,
     },
-    [`${darkThemeClass} &::placeholder`]: {
+    [`.${darkThemeClass} &::placeholder`]: {
       color: vars.colors.$gray50,
     },
   },
