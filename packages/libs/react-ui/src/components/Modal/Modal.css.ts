@@ -25,6 +25,7 @@ export const overlayClass = style([
   sprinkles({
     position: 'relative',
     pointerEvents: 'initial',
+    overflow: 'auto',
     width: '100%',
     marginX: {
       xs: 0,

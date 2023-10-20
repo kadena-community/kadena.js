@@ -6,7 +6,7 @@ import type { FC } from 'react';
 import React, { forwardRef } from 'react';
 import { closeButtonClass, overlayClass, underlayClass } from './Modal.css';
 
-export interface IModalContentProps {
+export interface IModalContentProps extends DialogPrimitive.DialogContentProps {
   children: React.ReactNode;
 }
 
