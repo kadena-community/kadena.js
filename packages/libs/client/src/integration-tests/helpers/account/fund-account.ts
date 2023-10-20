@@ -11,7 +11,7 @@ export async function fundAccount(
   amount: IPactDecimal,
   chain: ChainId,
 ): Promise<string | undefined> {
-  const transaction = Pact.sePact.builder
+  const transaction = Pact.builder
     .execution(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (Pact.modules as any).coin['transfer-create'](
