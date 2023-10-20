@@ -34,16 +34,17 @@ marmalade-v2.util-v1
 ```
 
 This leads you to the Marmalade V2 util contract, which boasts easy mint functions for your convenience.
+The contract lives on chain 1 for testnet, and chain 8 for mainnet.
 
 Once located, select "View" to continue.
 
 **Step 2: Enter token details**
 
-![Screenshot Placeholder](/assets/marmalade/1.easy-mint.png)
+![Mint with URI and Guard](/assets/marmalade/mint_1.png)
 
-``
+
 We will start by adding the required data for toke creation.
-Click on the `create-mint-nft` function, and filling in the token components
+Click on the `mint-basic-NFT` function, and filling in the token components
 listed below.
 
 1. **URI**: Enter the off-chain URI that stores the token metadata.
@@ -51,40 +52,51 @@ listed below.
    locate the keyset information in the transaction data field, by adding in
    `(read-keyset "my-keyset")`
 
- **Note:** By default, `create-mint-nft` mints a non-fungible token without
+ **Note:** By default, `mint-basic-NFT` mints a non-fungible token without
  any rules programmed. If you wish to choose different policy options, read
  [advanced tutorial](todo). For more information on token policies, please refer to the
  [Marmalade V2 Token Policies](https://github.com/kadena-io/marmalade/tree/v2#token-policies)
  documentation on GitHub.
 
 
-**Step 3: Add keyset information**
+**Step 3: Configure Gas Setting**
 
-![Screenshot Placeholder](/assets/marmalade/2.easy-mint.png)
+![Add "my-keyset"](/assets/marmalade/mint_gas.png)
 
-After filling in token details, click on the "configuration" tab to enter
-keyset information. Enter "my-keyset" as keyset name and click "Create".
-Once this is created, you will see your keysets below it. Please tick the keyset
+Now you're ready to mint the NFT, but before you submit, you need to pay gas for the
+transaction.
+
+Prepare a coin account, and add into gas configuration as `Transaction Sender`.
+
+
+**Step 4: Add keyset information**
+
+![Add "my-keyset"](/assets/marmalade/mint_keyset.png)
+
+After filling in token details, click on the 'configuration' tab to enter
+keyset information. Open "Advanced" at the bottom and enter `my-keyset` as keyset
+name and click `Create`.
+
+Once this is created, you will see your keysets below it. Please tick the public Key
 that matches the account we have been using for this entire process.
+
 
 **Step 5: Sign Transaction**
 
-![Screenshot Placeholder for Gas Settings](/assets/marmalade/4.easy-mint.png)
+![Unrestricted Signing](/assets/marmalade/mint_unrestricted_signing.png)
 
-Now click on the Sign tab. The boxes refer to the code that you would like to
-scope your signature to. Add the gas payer's public key to the first field,
-and enter "(marmalade-v2.util-v1.UTIL-SIGN)", and select the public key that will
-be minted the token.
+For simplicity, click on unrestricted signing. Note that this requires the key
+to also sign for the gas payment.
+
 
 **Step 4: Submit to Network**
 
-![Screenshot Placeholder for Gas Settings](/assets/marmalade/5.easy-mint.png)
+![Screenshot Placeholder for Gas Settings](/assets/marmalade/mint_submit.png)
 
-Finally, go to the Preview tab and submit your transaction if there are no
-errors. This time, we're submitting the transaction, so you'd need a valid gas
-payer with balance. Wait for the transaction to finish. The server result should
+Finally, go to the Preview tab and submit your transaction.
+
+Wait for the transaction to finish. The server result should
 be true.
-
 
 You've minted your first NFT on marmalade! Investigate the transaction on
 the [block explorer](explorer.chainweb.com), and find your token information.
