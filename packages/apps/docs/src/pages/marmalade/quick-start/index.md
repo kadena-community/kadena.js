@@ -50,8 +50,7 @@ listed below.
    `(read-keyset "my-keyset")`
 
  **Note:** By default, `mint-basic-NFT` mints a non-fungible token without
- any rules programmed. If you wish to program your tokens with more policies,
- read more about our [concrete policies](../concrete-policies/index.md)
+ any rules programmed.
 
 
 **Step 3: Configure Gas Setting**
@@ -94,4 +93,4 @@ Wait for the transaction to finish. The server result should
 be true.
 
 You've minted your first NFT on marmalade! Investigate the transaction on
-the [block explorer](explorer.chainweb.com), to find your token information.
+the [block explorer](explorer.chainweb.com), and find your token information.
