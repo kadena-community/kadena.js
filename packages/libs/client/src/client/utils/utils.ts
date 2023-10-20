@@ -32,13 +32,9 @@ export function getUrl(
   return url.toString();
 }
 
-export const kadenaHostGenerator = ({
-  networkId,
-  chainId,
-}: {
-  networkId: string;
-  chainId: ChainId;
-}): string => {
+export const kadenaHostGenerator = (
+  { networkId, chainId }: { networkId: string; chainId: ChainId },
+): string => {
   switch (networkId) {
     case 'mainnet01':
       return `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;

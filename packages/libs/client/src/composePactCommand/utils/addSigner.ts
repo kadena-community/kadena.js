@@ -65,8 +65,10 @@ export const addSigner: IAddSigner = ((
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
 
-type ExtractType<TCmdReducer> = TCmdReducer extends (cmd: {
-  payload: infer TPayload;
-}) => unknown
+type ExtractType<TCmdReducer> = TCmdReducer extends (
+  cmd: {
+    payload: infer TPayload;
+  },
+) => unknown
   ? ExtractCapabilityType<{ payload: TPayload }>
   : IGeneralCapability;
