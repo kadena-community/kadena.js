@@ -25,120 +25,66 @@ Let's get started!
 
 **Step 1: Authenticate and Locate Marmalade v2 in Chainweaver**
 
-To begin, you need to authenticate on Chainweaver. Once you're authenticated,
-navigate to the Module Explorer to find the Marmalade v2 contracts.
+First, authenticate yourself on Chainweaver. After authentication, make your way to the Module Explorer and search for the Marmalade V2 contracts.
 
-In the Module Explorer, search for the following string:
+Specifically, enter this string into the Module Explorer:
 
 ```
-marmalade-v2.ledger
+marmalade-v2.util-v1
 ```
 
-This will locate the Marmalade v2 contracts.
+This leads you to the Marmalade V2 util contract, which boasts easy mint functions for your convenience.
 
-Once you find the contracts, click on "View" to proceed.
+Once located, select "View" to continue.
 
-**Step 2: Create a Token ID**
+**Step 2: Enter token details**
 
-![Screenshot Placeholder](/assets/marmalade/01-create-token-01.png)
+![Screenshot Placeholder](/assets/marmalade/1.easy-mint.png)
 
-`token-id`'s in marmalade are hash value of the token information, such as the
-uri, policies, precision, and creation guard. You can create the token-id by
-clicking on the `create-token-id` function, and filling in the token components
-listed below
+``
+We will start by adding the required data for toke creation.
+Click on the `create-mint-nft` function, and filling in the token components
+listed below.
 
-1. **Precision**: Enter `0`, just like you did when creating the token ID.
-2. **URL**: Use the same URI you used when creating the token ID. In our
-   example, it was `your-token-uri`.
-3. **Policies**: In this field you can add some of the default or custom
-   policies that you want to apply to the token. We'll be using an utility
-   function , `marmalade-v2.util-v1.create-policies` to create a `DEFAULT`
-   setting token. The DEFAULT refers to tokens with policies,
-   `non-fungible-policy` and `guard-policy`, which allows token-owners to add
-   guards for marmalade functions, and enforce that token is one and
-   only. 4.**creation-guard**: This guard is not stored but is used to reserve
-   the `token-id`. The guard is required to sign at creation.
+1. **URI**: Enter the off-chain URI that stores the token metadata.
+2. **guard**: This guard will be account guard of the minted token. We need to
+   locate the keyset information in the transaction data field, by adding in
+   `(read-keyset "my-keyset")`
 
-We are not going to submit this transaction, because what we need is the string
-value from the `Preview`. If you click `Next` until you see a `Submit button`,
-you'll see the token ID in the preview section. In our example, the `token-id`
-is `t:YMO4JzGYoQdIIDJHLoGDdOo-Cyin3oCqncT__MAe2qw`.
+ **Note:** By default, `create-mint-nft` mints a non-fungible token without
+ any rules programmed. If you wish to choose different policy options, read
+ [advanced tutorial](todo). For more information on token policies, please refer to the
+ [Marmalade V2 Token Policies](https://github.com/kadena-io/marmalade/tree/v2#token-policies)
+ documentation on GitHub.
 
-**Step 3: Create a Token**
 
-Once creating a token ID, the next step is to create a token. You can do this by
-calling the `create-token` function.
+**Step 3: Add keyset information**
 
-![Screenshot Placeholder](/assets/marmalade/01-create-token-02.png)
+![Screenshot Placeholder](/assets/marmalade/2.easy-mint.png)
 
-You can find this function in the same menu as the `create-token-id` function.
-Click on "Call" to bring up a similar popup as before. In the Parameters screen,
-you'll need to enter the following information:
-
-1. **Token ID**: Fill in the token-id created in step 2.
-2. **Precision**: Enter `0`, just like you did when creating the token ID.
-3. **URL**: Use the same URI you used when creating the token ID. In our
-   example, it was `your-token-uri`.
-4. **Policies**: Again, we'll use util-v1.DEFAULT as our token policies.
-
-**Note:** For more information on token policies, please refer to the
-[Marmalade V2 Token Policies](https://github.com/kadena-io/marmalade/tree/v2#token-policies)
-documentation on GitHub.
-
-Next, go to the Configuration tab. Like last time, paste your account name and
-change the gas settings to match the screenshot below.
-
-In the same tab, click on "Advanced" and add a new keyset. In the field, please
-enter `mint_guard` and hit "Create".
-
-**Mint Guard**: Mint Guards are an optional field that one of our policies,
-`guard-policy-v1` takes in. By adding a `mint-guard` at creation, you're adding
-a guard that needs to be signed at token minting.
-
+After filling in token details, click on the "configuration" tab to enter
+keyset information. Enter "my-keyset" as keyset name and click "Create".
 Once this is created, you will see your keysets below it. Please tick the keyset
 that matches the account we have been using for this entire process.
 
-![Screenshot Placeholder for Gas Settings](/assets/marmalade/01-create-token-01.png)
+**Step 5: Sign Transaction**
 
-Then, you can go to the Sign tab and follow the same steps as before.
+![Screenshot Placeholder for Gas Settings](/assets/marmalade/4.easy-mint.png)
+
+Now click on the Sign tab. The boxes refer to the code that you would like to
+scope your signature to. Add the gas payer's public key to the first field,
+and enter "(marmalade-v2.util-v1.UTIL-SIGN)", and select the public key that will
+be minted the token.
+
+**Step 4: Submit to Network**
+
+![Screenshot Placeholder for Gas Settings](/assets/marmalade/5.easy-mint.png)
 
 Finally, go to the Preview tab and submit your transaction if there are no
 errors. This time, we're submitting the transaction, so you'd need a valid gas
 payer with balance. Wait for the transaction to finish. The server result should
 be true.
 
-**Step 4: Mint the Token**
 
-The final step is to mint the token. You can do this by calling the `mint`
-function.
-
-![Screenshot Placeholder](/assets/marmalade/02-mint-token-01.png)
-
-You can find this function in the same menu as the previous functions. Click on
-"Call" to bring up a popup. In the Parameters screen, you'll need to enter the
-following information, each on a separate line:
-
-1. **Token ID**: This is the token ID you received in Step X.
-2. **Account Address**: This is the address of the account you have been using.
-3. **Guards**: Copy and paste `(read-keyset "account")` into this field.
-4. **Amount**: Set this to `1.0` as this is an NFT.
-
-Next, navigate to the Configuration tab. As before, paste your account name in
-the relevant field and check the gas settings. Also, the guard we created should
-have carried over, please check this on the Advanced tab.
-
-Now, navigate to the Sign tab. This time, things will be slightly different. We
-need to add new capabilities. On the Grant Capabilities section, there is a plus
-button on the right-hand side. Click that to add the first one. Please paste the
-following into the first field:
-
-```pact
-(marmalade-v2.ledger.MINT "{TOKEN_ACCOUNT_IN_QUOTES}" "{RECIEVER_ACCOUNT IN QUOTES}" 1.0)
-```
-
-You need to choose a key that you've saved as `mint_guard` at step 3, and sign
-with that key for successful mint.
-
-![Screenshot Placeholder](/assets/marmalade/02-mint-token-02.png)
-
-Again, go to the Preview tab and submit your transaction if there are no errors!
+You've minted your first NFT on marmalade! Investigate the transaction on
+the [block explorer](explorer.chainweb.com), and find your token information.

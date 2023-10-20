@@ -13,8 +13,6 @@ The introduction of the multi-policy model in Marmalade V2, with the inclusion
 of middleware contracts like quote-manager and policy-manager, aims to enhance
 the user experience by simplifying token creation and management.
 
-![Screenshot Placeholder](/assets/marmalade/architecture.png)
-
 ## Ledger
 
 The ledger functions as the primary contract responsible for user interaction,
@@ -46,9 +44,9 @@ Manager provides below.
 In Marmalade v1, fixed-quote-policy served as an example for handling the
 fungible transfers at sales. With the upgrade to Marmalade V2, we have
 integrated this fungible transfer feature inside the Policy Manager, which
-includes various interactions between the Policy Manager, and sale contracts.
-This allows secure escrowed transfers, creative auctions, guaranteed royalties,
-and standardized processes within marketplaces.
+includes various interactions between the Policy Manager, policies, and
+sale contracts. This allows secure escrowed transfers, creative auctions,
+guaranteed royalties, and standardized processes within marketplaces.
 
 **Escrows**
 
@@ -63,12 +61,11 @@ quoted price from the buyer to an escrow account, disburses a portion of the
 reserved fees to the policies, and then remits the remaining quoted price to the
 seller.
 
+
 ## Sale Whitelists
 
-The main feature of the sale contracts is that the function controls the final price
-of the quote. By managing safe sale contracts, we can provide Marmalade users a
-safe way to participate in various sale features such as creative auctions,
-while also guaranteeing royalty payout. 
+The Sale Contract is a contract responsible for updating quotes, thereby allowing
+auction system.
 
 **Offical GitHub Link**:
 https://github.com/kadena-io/marmalade/blob/v2/test-marmalade-v2.md
