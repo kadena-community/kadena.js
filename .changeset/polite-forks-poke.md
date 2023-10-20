@@ -3,4 +3,4 @@
 '@kadena/docs': minor
 ---
 
-updated input props
+Updated leftIcon prop to icon
