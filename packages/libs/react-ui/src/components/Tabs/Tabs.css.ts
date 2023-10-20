@@ -13,7 +13,7 @@ export const tabsContainer = style([
   {
     borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral2}`,
     selectors: {
-      [`${darkThemeClass} &`]: {
+      [`.${darkThemeClass} &`]: {
         borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral3}`,
       },
     },
