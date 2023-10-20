@@ -13,7 +13,7 @@
     "algolia-prod": "ALGOLIA_INDEX_NAME=docs_website_prod OPENAI_API_KEY=dummy-key121 npx 7d ingest --files 'src/pages/**/*.md' --files 'src/pages/**/*.mdx'  --files 'src/specs/**/*.json' --db algolia --skip-embeddings",
     "build": "NODE_OPTIONS=--max-old-space-size=8192 pnpm run build:scripts && next build",
     "build:next": "pnpm run build:scripts && next build",
-    "build:scripts": "node ./src/scripts/build.mjs",
+    "build:scripts": "tsx ./build/index.mts",
     "build:storybook": "pnpm run build:scripts && storybook build",
     "chromatic": "chromatic -b build:storybook",
     "cypress:ci": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:run",
