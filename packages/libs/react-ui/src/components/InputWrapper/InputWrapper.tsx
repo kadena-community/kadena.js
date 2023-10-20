@@ -1,7 +1,7 @@
 import type { IInputProps } from '@components/Input';
+import type { vars } from '@theme/vars.css';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
-import type { vars } from 'src/styles';
 import type { IInputHeaderProps } from './InputHeader/InputHeader';
 import { InputHeader } from './InputHeader/InputHeader';
 import { InputHelper } from './InputHelper/InputHelper';
@@ -19,17 +19,19 @@ export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {
   leadingTextWidth?: keyof typeof vars.sizes;
 }
 
-export const InputWrapper: FC<IInputWrapperProps> = ({
-  status,
-  disabled,
-  children,
-  label,
-  leadingTextWidth = undefined,
-  htmlFor,
-  tag,
-  info,
-  helperText,
-}) => {
+export const InputWrapper: FC<IInputWrapperProps> = (
+  {
+    status,
+    disabled,
+    children,
+    label,
+    leadingTextWidth = undefined,
+    htmlFor,
+    tag,
+    info,
+    helperText,
+  },
+) => {
   const statusVal = disabled === true ? 'disabled' : status;
 
   return (

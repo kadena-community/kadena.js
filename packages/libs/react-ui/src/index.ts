@@ -1,4 +1,4 @@
-import './theme/global.css';
+import './styles/global.css';
 
 export type {
   IAccordionProps,

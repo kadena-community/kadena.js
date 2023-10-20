@@ -12,7 +12,7 @@
     "removeComments": true,
     "paths": {
       "@components/*": ["src/components/*"],
-      "@theme/*": ["src/theme/*"],
+      "@theme/*": ["src/styles/*"],
       "@utils/*": ["src/utils/*"]
     }
   },

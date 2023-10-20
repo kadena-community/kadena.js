@@ -1,5 +1,6 @@
+import { sprinkles } from '@theme/sprinkles.css';
+import { vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
-import { sprinkles, vars } from '../../styles';
 
 export const containerClass = style([
   sprinkles({
