@@ -24,7 +24,7 @@ const RequestKey: React.FC = () => {
         <Breadcrumbs.Item href={`${routes.TRANSACTIONS}`}>
           Transactions
         </Breadcrumbs.Item>
-        <Breadcrumbs.Item>Request Key</Breadcrumbs.Item>
+        <Breadcrumbs.Item>Transaction</Breadcrumbs.Item>
       </Breadcrumbs.Root>
 
       <Box marginBottom="$8" />
