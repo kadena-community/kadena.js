@@ -101,7 +101,14 @@ const Header: FC<IHeaderProps> = () => {
       <main className={mainStyle}>
         <Text
           as="h1"
-          css={{ display: 'block', color: '$mauve12', fontSize: 48, my: '$12' }}
+          css={{
+            display: 'block',
+            color: '$mauve12',
+            fontSize: 48,
+            my: '$12',
+            cursor: 'pointer',
+          }}
+          onClick={() => router.push(routes.HOME)}
         >
           Kadena Graph Client
         </Text>
