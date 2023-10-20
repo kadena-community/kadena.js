@@ -8,14 +8,16 @@ interface IProps {
   children?: ReactNode;
 }
 
+const appName = 'Kadena Graph Client';
+
 export const Layout: FC<IProps> = ({ children }: IProps) => {
   return (
     <div>
       <Head>
-        <title>Kadena Graph Client</title>
+        <title>{appName}</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <Header title="Kadena Graph Client" />
+      <Header title={appName} />
       <main className={mainStyle}>{children}</main>
     </div>
   );

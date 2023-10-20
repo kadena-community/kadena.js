@@ -2,7 +2,7 @@ import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
 import routes from '@/constants/routes';
-import { Box, Link, Notification, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Link, Notification, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -19,6 +19,15 @@ const RequestKey: React.FC = () => {
 
   return (
     <div>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item href={`${routes.TRANSACTIONS}`}>
+          Transactions
+        </Breadcrumbs.Item>
+        <Breadcrumbs.Item>Request Key</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
+
+      <Box marginBottom="$8" />
       <main className={mainStyle}>
         <div>
           {loadingTransaction && (

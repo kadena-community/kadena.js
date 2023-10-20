@@ -7,7 +7,13 @@ import { mainStyle } from '@/components/Common/main/styles.css';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
-import { Accordion, Box, Notification, Table } from '@kadena/react-ui';
+import {
+  Accordion,
+  Box,
+  Breadcrumbs,
+  Notification,
+  Table,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -22,6 +28,12 @@ const Block: React.FC = () => {
 
   return (
     <div>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item>Block Overview</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
+
+      <Box marginBottom="$8" />
       <main className={mainStyle}>
         <div>
           {loading && (

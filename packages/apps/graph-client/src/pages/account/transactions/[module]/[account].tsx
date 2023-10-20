@@ -2,7 +2,8 @@ import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
-import { Box, Notification } from '@kadena/react-ui';
+import routes from '@/constants/routes';
+import { Box, Breadcrumbs, Notification } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -20,6 +21,20 @@ const AccountTransactions: React.FC = () => {
 
   return (
     <div style={{ padding: '0 50px 30px 50px' }}>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item
+          href={`${routes.ACCOUNT}/${router.query.module as string}/${
+            router.query.account as string
+          }`}
+        >
+          Account Overview
+        </Breadcrumbs.Item>
+        <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
+
+      <Box marginBottom="$8" />
+
       <main className={mainStyle}>
         <div>
           {loading && (
