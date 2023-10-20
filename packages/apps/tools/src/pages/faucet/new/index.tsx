@@ -171,9 +171,9 @@ const NewAccountFaucetPage: FC = () => {
     [chainID, pred, pubKeys, t],
   );
 
-  const testnetNotSelected: boolean = selectedNetwork !== 'testnet04';
+  const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
   const disabledButton: boolean =
-    requestStatus.status === 'processing' || testnetNotSelected;
+    requestStatus.status === 'processing' || mainnetSelected;
 
   const addPublicKey = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -243,7 +243,7 @@ const NewAccountFaucetPage: FC = () => {
       </Breadcrumbs.Root>{' '}
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
-        {testnetNotSelected ? (
+        {mainnetSelected ? (
           <Notification.Root
             color="warning"
             expanded={true}
