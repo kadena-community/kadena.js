@@ -533,7 +533,7 @@ importers:
         version: 2.3.2(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2)
       '@vanilla-extract/vite-plugin':
         specifier: ^3.9.2
-        version: 3.9.2(@types/node@18.17.14)(vite@4.4.8)
+        version: 3.9.2(@types/node@18.17.14)(ts-node@10.8.2)(vite@4.4.8)
       '@vanilla-extract/webpack-plugin':
         specifier: 2.3.1
         version: 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
@@ -705,7 +705,7 @@ importers:
         version: 2.3.2(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2)
       '@vanilla-extract/vite-plugin':
         specifier: ^3.9.2
-        version: 3.9.2(@types/node@18.17.14)(vite@4.4.8)
+        version: 3.9.2(@types/node@18.17.14)(ts-node@10.8.2)(vite@4.4.8)
       '@vitest/coverage-v8':
         specifier: ^0.34.6
         version: 0.34.6(vitest@0.34.6)
@@ -733,6 +733,9 @@ importers:
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
+      ts-node:
+        specifier: ~10.8.2
+        version: 10.8.2(@types/node@18.17.14)(typescript@5.2.2)
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -1658,7 +1661,7 @@ importers:
         version: 18.2.7
       '@vanilla-extract/vite-plugin':
         specifier: ^3.9.2
-        version: 3.9.2(@types/node@18.17.14)(vite@4.4.8)
+        version: 3.9.2(@types/node@18.17.14)(ts-node@10.8.2)(vite@4.4.8)
       '@vanilla-extract/webpack-plugin':
         specifier: 2.3.1
         version: 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
@@ -12134,7 +12137,7 @@ packages:
       '@vanilla-extract/css': 1.14.0
     dev: false
 
-  /@vanilla-extract/vite-plugin@3.9.2(@types/node@18.17.14)(vite@4.4.8):
+  /@vanilla-extract/vite-plugin@3.9.2(@types/node@18.17.14)(ts-node@10.8.2)(vite@4.4.8):
     resolution: {integrity: sha512-WYgWiEs+nw+lNazyW0Ixp0MMgtNgPL+8fFKrol1V5XoNIzRrYPGfuLhRI7PwheSWQVGF7OOer0kUWQcLey1vOQ==}
     peerDependencies:
       vite: ^2.2.3 || ^3.0.0 || ^4.0.3 || ^5.0.0
@@ -12142,7 +12145,7 @@ packages:
       '@vanilla-extract/integration': 6.2.4(@types/node@18.17.14)
       outdent: 0.8.0
       postcss: 8.4.31
-      postcss-load-config: 4.0.2(postcss@8.4.31)
+      postcss-load-config: 4.0.2(postcss@8.4.31)(ts-node@10.8.2)
       vite: 4.4.8(@types/node@18.17.14)
     transitivePeerDependencies:
       - '@types/node'
@@ -22552,7 +22555,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.15
 
-  /postcss-load-config@4.0.2(postcss@8.4.31):
+  /postcss-load-config@4.0.2(postcss@8.4.31)(ts-node@10.8.2):
     resolution: {integrity: sha512-bSVhyJGL00wMVoPUzAVAnbEoWyqRxkjv64tUl427SKnPrENtq6hJwUojroMz2VB+Q1edmi4IfrAPpami5VVgMQ==}
     engines: {node: '>= 14'}
     peerDependencies:
@@ -22566,6 +22569,7 @@ packages:
     dependencies:
       lilconfig: 3.0.0
       postcss: 8.4.31
+      ts-node: 10.8.2(@types/node@18.17.14)(typescript@5.2.2)
       yaml: 2.3.4
     dev: true
 

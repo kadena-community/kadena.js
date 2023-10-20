@@ -1,0 +1,201 @@
+(begin-tx "Load modules")
+
+(load "root/fungible-v2.pact")
+(load "root/fungible-xchain-v1.pact")
+(load "root/coin-v5.pact")
+
+(create-table coin.coin-table)
+
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [{"key": "whatever", "caps": []}])
+(env-data {"contract-admins": ["whatever"]})
+
+(begin-tx "Define namespace")
+(define-namespace 'user (read-keyset 'contract-admins) (read-keyset 'contract-admins))
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [{"key": "whatever", "caps": []}])
+(env-data {"contract-admins": ["whatever"]})
+
+(begin-tx "Create coins for the Faucet")
+
+(test-capability (coin.COINBASE))
+(coin.coinbase 'contract-admins (read-keyset 'contract-admins) 1000000.0)
+
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [{"key": "whatever", "caps": []}])
+(env-data {"contract-admins": ["whatever"]})
+
+(begin-tx "Load the Faucet pact")
+
+(load "testnet-faucet.pact")
+(create-table history-table)
+
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [{"key": "whatever", "caps": [(coin.TRANSFER "contract-admins" "coin-faucet" 1000000.0)]}])
+
+(begin-tx "Fund the Faucet itself")
+(coin.transfer-create "contract-admins" "coin-faucet" (user.coin-faucet.faucet-guard) 1000000.0)
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(begin-tx "Test the current time function")
+
+(env-chain-data {"block-time": (time "2019-08-27T12:00:00Z")})
+(expect "Can call via public function." (time "2019-08-27T12:00:00Z") (user.coin-faucet.curr-time))
+
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [{"key": "test-0-key", "caps": []}]);
+(env-data {"test-0-keyset": ["test-0-key"]})
+
+(begin-tx "Create account")
+
+(coin.create-account "test-0" (read-keyset "test-0-keyset"))
+
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(begin-tx "Request more coins than allowed")
+
+(expect-failure "exceeded request limit" "Has reached maximum coin amount per request" (user.coin-faucet.request-coin "test-0" 100.1))
+
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [
+  {"key": "test-0-key", "caps": [(coin.TRANSFER "coin-faucet" "test-0" 100.0)]},
+  {"key": "whatever", "caps": []}
+]);
+(env-data {"test-0-keyset": ["test-0-key"]})
+
+(begin-tx "Do a successful request")
+
+(expect "Write succeeded" "Write succeeded" (user.coin-faucet.request-coin "test-0" 100.0))
+
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [
+  {"key": "test-0-key", "caps": [(coin.TRANSFER "coin-faucet" "test-0" 100.0)]},
+  {"key": "whatever", "caps": []}
+]);
+(env-data {"test-0-keyset": ["test-0-key"]})
+
+(begin-tx "Request more coins too soon")
+
+(expect-failure "Coin can be requested every 30 minutes" "Coin can be requested every 30 minutes" (user.coin-faucet.request-coin "test-0" 100.0))
+
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [
+  {"key": "test-0-key", "caps": [(coin.TRANSFER "coin-faucet" "test-0" 100.0)]},
+  {"key": "whatever", "caps": []}
+])
+
+(env-chain-data {"block-time": (time "2019-08-27T12:30:00Z")})
+
+(begin-tx "Try funding same account after 30 minutes")
+
+(expect "Write succeeded" "Write succeeded" (user.coin-faucet.request-coin "test-0" 100.0))
+
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [{"key": "test-1-key", "caps": []}])
+(env-data {"test-1-keyset": ["test-1-key"]})
+
+(begin-tx "Fail Create account and request coin method with too much coins")
+;;Test create-and-request-coin
+(expect-failure "exceeded request limit" "Has reached maximum coin amount per request" (user.coin-faucet.create-and-request-coin "test-1" (read-keyset "test-1-keyset") 100.1))
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [
+  {"key": "test-1-key", "caps": [(coin.TRANSFER "coin-faucet" "test-1" 100.0)]},
+  {"key": "whatever", "caps": []}
+])
+(env-data {"test-1-keyset": ["test-1-key"]})
+
+(begin-tx "Create account and request coin method")
+(expect "Write succeeded" "Write succeeded" (user.coin-faucet.create-and-request-coin "test-1" (read-keyset "test-1-keyset") 100.0))
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [{"key": "test-1-key", "caps": [(coin.TRANSFER "test-1" "coin-faucet" 10.0)]}])
+
+(begin-tx "Test return-coin")
+(expect "Write succeeded" "Write succeeded" (user.coin-faucet.return-coin "test-1" 10.0))
+(commit-tx)
+
+;; New Testcase
+
+(env-sigs [])
+(env-data {})
+
+(env-sigs [{"key": "test-1-key", "caps": [(coin.TRANSFER "test-1" "coin-faucet" 90.1)]}])
+
+(begin-tx "Fail return coin")
+(expect-failure "Insufficient funds" "Insufficient funds" (user.coin-faucet.return-coin "test-1" 90.1))
+(commit-tx)

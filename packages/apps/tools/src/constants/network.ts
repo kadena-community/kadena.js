@@ -12,4 +12,8 @@ export const chainNetwork: {
     server: kadenaConstants.testnet04.API,
     network: 'testnet04',
   },
+  DEVNET: {
+    server: kadenaConstants.DEVNET.API,
+    network: kadenaConstants.DEVNET.NETWORKS.DEVNET,
+  },
 };

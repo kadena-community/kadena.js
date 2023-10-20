@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm run generate:contracts && next build",
+    "deploy:faucet": "ts-node src/pact/faucet/deploy.ts",
     "dev": "next dev",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
@@ -78,6 +79,7 @@
     "happy-dom": "^12.9.1",
     "next-router-mock": "^0.9.10",
     "prettier": "~3.0.3",
+    "ts-node": "~10.8.2",
     "typescript": "5.2.2",
     "vitest": "^0.34.6",
     "vitest-dom": "^0.1.1"

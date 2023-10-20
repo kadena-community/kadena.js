@@ -34,6 +34,15 @@ export const kadenaConstants: KadenaConstants = {
     estatsHost: () =>
       env('KADENA_TESTNET_ESTATS', 'estats.testnet.chainweb.com'),
   },
+  DEVNET: {
+    API: 'localhost:8080',
+    NETWORKS: {
+      DEVNET: 'devnet',
+    },
+    apiHost: ({ networkId, chainId }) =>
+      `http://${kadenaConstants.DEVNET.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+    estatsHost: () => '',
+  },
   GAS_LIMIT: Number(env('GAS_LIMIT', 850)),
   GAS_PRICE: Number(env('GAS_PRICE', 0.00000001)),
   API_TTL: Number(env('KADENA_API_TTIL', 600000)),
