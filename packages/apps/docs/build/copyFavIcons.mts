@@ -1,13 +1,14 @@
 import fs from 'fs';
 import copy from 'recursive-copy';
+import { BuildReturn, ErrorsReturn, SucccessReturn } from './types.mjs';
 
-const errors = [];
-const success = [];
+const errors: ErrorsReturn = [];
+const success: SucccessReturn = [];
 
 const COMMON_FAV_ICONS_PATH = '../../../common/images/icons/internal';
 const PUBLIC_DIR = 'public/assets/favicons';
 
-export const copyFavIcons = async () => {
+export const copyFavIcons = async (): Promise<BuildReturn> => {
   try {
     if (fs.existsSync(PUBLIC_DIR)) {
       fs.rmSync(PUBLIC_DIR, {

@@ -1,10 +1,11 @@
 import * as fs from 'fs';
 import yaml from 'js-yaml';
+import { BuildReturn, ErrorsReturn, SucccessReturn } from './types.mjs';
 
-const errors = [];
-const success = [];
+const errors: ErrorsReturn = [];
+const success: SucccessReturn = [];
 
-const returnJSON = (filename) => {
+const returnJSON = (filename: string): void => {
   try {
     const doc = fs.readFileSync(`./src/specs/${filename}.yaml`, 'utf-8');
     const json = yaml.load(doc);
@@ -21,7 +22,7 @@ const returnJSON = (filename) => {
   }
 };
 
-export const createSpecs = () => {
+export const createSpecs = async (): Promise<BuildReturn> => {
   returnJSON('chainweb.openapi');
   returnJSON('pact.openapi');
 

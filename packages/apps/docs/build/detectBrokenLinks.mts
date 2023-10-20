@@ -1,17 +1,18 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
+import { BuildReturn, ErrorsReturn, SucccessReturn } from './types.mjs';
 
 const __dirname = path.resolve();
-const errors = [];
-const success = [];
+const errors: ErrorsReturn = [];
+const success: SucccessReturn = [];
 
-const externalLinks = {};
+const externalLinks: Record<string, string[]> = {};
 
-function getBrokenLinks(filePath, links) {
-  const brokenLinks = [];
+function getBrokenLinks(filePath: string, links: string[]) {
+  const brokenLinks: string[] = [];
   //const directory = path.dirname(filePath);
-  links.forEach((link, index) => {
+  links.forEach((link, index: number) => {
     // clean the link of hash fragments
     link = link.split('#')[0];
     if (link.length === 0) {
@@ -61,8 +62,8 @@ function getBrokenLinks(filePath, links) {
 function extractBrokenLinksFromTsFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf8');
   const linkRegex = /<a href="([^"]+)">/g;
-  const links = [];
-  let match;
+  const links: string[] = [];
+  let match: RegExpExecArray | null;
 
   while ((match = linkRegex.exec(fileContent))) {
     links.push(match[1]);
@@ -102,7 +103,7 @@ function getDisallowedLinksFromMdFile(links) {
 function extractBrokenLinksFromMdFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf8');
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  const links = [];
+  const links: string[] = [];
   let match;
 
   while ((match = linkRegex.exec(fileContent))) {
@@ -154,7 +155,7 @@ const countDeadLinks = (filesWithBrokenLinks) => {
   }, 0);
 };
 
-export const detectBrokenLinks = async () => {
+export const detectBrokenLinks = async (): Promise<BuildReturn> => {
   const directoryPath = path.join(__dirname, 'src/pages');
   processFiles(directoryPath);
 

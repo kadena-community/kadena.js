@@ -1,16 +1,17 @@
 import { format, isValid } from 'date-fns';
 import * as fs from 'fs';
-import { getFlatData } from './../utils/staticGeneration/flatPosts.mjs';
 import {
   getAuthorData,
   getTagsData,
-} from './../utils/staticGeneration/getJsonData.mjs';
+} from './../src/utils/staticGeneration/getJsonData.mjs';
+import { BuildReturn, ErrorsReturn, SucccessReturn } from './types.mjs';
+import { getFlatData } from './utils/flatData.mjs';
 
 const MENUFILE = './public/sitemap.xml';
 const URL = 'https://docs.kadena.io';
 
-const errors = [];
-const success = [];
+const errors: ErrorsReturn = [];
+const success: SucccessReturn = [];
 
 const authors = getAuthorData();
 
@@ -32,7 +33,7 @@ const getPosts = (root, posts) => {
     .map(
       (post) => `
     <url>
-      <loc>${root}${post.root}}</loc>
+      <loc>${root}${post.root}</loc>
       ${
         post.lastModifiedDate &&
         `<lastmod>${formatDate(post.lastModifiedDate)}</lastmod>`
@@ -66,7 +67,7 @@ const getAuthors = (root) => {
     .join('');
 };
 
-export const createSitemap = async () => {
+export const createSitemap = async (): Promise<BuildReturn> => {
   const tags = await getTagsData();
   const posts = await getFlatData();
 

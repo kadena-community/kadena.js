@@ -1,5 +1,5 @@
 import type { ISubHeaderElement, TagNameType } from '@/Layout';
-import { createSlug } from '@/utils/createSlug';
+import { createSlug } from '@/utils/createSlug.mjs';
 import { getParentHeading } from '@/utils/getParentHeading';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';

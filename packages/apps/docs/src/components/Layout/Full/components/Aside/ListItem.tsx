@@ -1,6 +1,6 @@
 import type { ISubHeaderElement } from '@/Layout';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { createSlug } from '@/utils/createSlug';
+import { createSlug } from '@/utils/createSlug.mjs';
 import { useRouter } from 'next/router';
 import type { FC, MouseEvent } from 'react';
 import React from 'react';

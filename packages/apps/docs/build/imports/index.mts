@@ -1,28 +1,32 @@
 import 'dotenv/config';
 import * as fs from 'fs';
+import type { Content, Heading, Root } from 'mdast';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
-import { getLastModifiedDate } from './getdocstree.mjs';
-import { getTypes, importReadMes } from './utils.mjs';
+import { IPageMeta } from '../../src/Layout';
+import { ErrorsReturn, ImportReadMe, SucccessReturn } from '../types.mjs';
+import { getTypes } from '../utils/getTypes.mjs';
+import { createSlug } from './../../src/utils/createSlug.mjs';
+import { getLastModifiedDate } from './../utils/getLastModifiedDate.mjs';
+import { importReadMes } from './data.mjs';
 
-const errors = [];
-const success = [];
-
+const errors: ErrorsReturn = [];
+const success: SucccessReturn = [];
 const DOCSROOT = './src/pages/';
 
-const createFrontMatter = (
+const createFrontMatter = ({
   title,
-  menuTitle,
+  menu,
   order,
   editLink,
   tags = [],
   lastModifiedDate,
-) => {
+}: IPageMeta) => {
   return `---
 title: ${title}
 description: Kadena makes blockchain work for everyone.
-menu: ${menuTitle}
+menu: ${menu}
 label: ${title}
 order: ${order}
 editLink: ${editLink}
@@ -33,23 +37,15 @@ lastModifiedDate: ${lastModifiedDate}
 `;
 };
 
-const createEditOverwrite = (filename, options) => {
+const createEditOverwrite = (
+  filename: string,
+  options: ImportReadMe['options'],
+) => {
   if (options.hideEditLink) return '';
   return `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
 };
 
-export const createSlug = (str) => {
-  if (!str) return '';
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\w\s]+/g, '')
-    .replace(/ /g, '-')
-    .toLowerCase()
-    .replace(/^-+|-+$/g, '');
-};
-
-const getTitle = (pageAST) => {
+const getTitle = (pageAST: Root): string => {
   // flatten all children recursively to prevent issue with
   // E.g. ## some title with `code`
   const node = pageAST.children[0];
@@ -60,28 +56,31 @@ const getTitle = (pageAST) => {
   return node.children.flatMap((child) => toString(child).trim()).join(' ');
 };
 
-const createTreeRoot = (page) => ({
+const createTreeRoot = (page: Content[]): Root => ({
   type: 'root',
   children: page,
 });
 
-const createDir = (dir) => {
+const createDir = (dir: string) => {
   fs.mkdirSync(dir, { recursive: true });
 };
 
-const divideIntoPages = (md) => {
-  const pages = md.children.reduce((acc, val) => {
-    if (val.type === 'heading' && val.depth === 2) {
-      val.depth = 1;
-      acc.push([val]);
-    } else {
-      if (acc.length) {
-        acc[acc.length - 1].push(val);
+const divideIntoPages = (md: Root) => {
+  const pages: [Heading][] = md.children.reduce(
+    (acc: [Heading][], val: Content) => {
+      if (val.type === 'heading' && val.depth === 2) {
+        val.depth = 1;
+        acc.push([val]);
+      } else {
+        if (acc.length) {
+          acc[acc.length - 1].push(val as Heading);
+        }
       }
-    }
 
-    return acc;
-  }, []);
+      return acc;
+    },
+    [],
+  );
 
   const rootedPages = pages.map((page) => createTreeRoot(page));
 
@@ -138,9 +137,9 @@ const recreateUrl = (pages, url, root) => {
   }, '');
 };
 
-const cleanUp = (content, filename) => {
+const cleanUp = (content: Root, filename: string): Root => {
   let hasFirstHeader = false;
-  const innerCleanUp = (content, filename) => {
+  const innerCleanUp = (content: Content, filename: string): Root => {
     if (content.type === 'heading' && content.depth === 1) {
       if (hasFirstHeader) {
         content.depth = 2;
@@ -155,7 +154,7 @@ const cleanUp = (content, filename) => {
       });
     }
 
-    return content;
+    return content as Root;
   };
 
   return innerCleanUp(content, filename);
@@ -203,40 +202,40 @@ const relinkReferences = (md, pages, root) => {
   relinkImageReferences(imageReferences, definitions, pages, root);
 };
 
-const importDocs = async (filename, destination, parentTitle, options) => {
-  const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
+const importDocs = async (item: ImportReadMe) => {
+  const doc = fs.readFileSync(`./../../${item.file}`, 'utf-8');
 
-  const md = remark.parse(doc);
+  const md = remark.parse(doc) as Root;
 
-  const lastModifiedDate = await getLastModifiedDate(`./../../${filename}`);
+  const lastModifiedDate = await getLastModifiedDate(`./../../${item.file}`);
 
   const pages = divideIntoPages(md);
-  relinkReferences(md, pages, `/${destination}/`);
+  relinkReferences(md, pages, `/${item.destination}/`);
 
   pages.forEach((page, idx) => {
     const title = getTitle(page);
     const slug = idx === 0 ? 'index' : createSlug(title);
-    const menuTitle = idx === 0 ? parentTitle : title;
-    const order = idx === 0 ? options.RootOrder : idx;
+    const menuTitle = idx === 0 ? item.title : title;
+    const order = idx === 0 ? item.options.RootOrder : idx;
 
     // check that there is just 1 h1.
     // if more, keep only 1 and replace the next with an h2
-    const pageContent = cleanUp(page, `/${destination}/${slug}`);
+    const pageContent = cleanUp(page, `/${item.destination}/${slug}`);
 
     const doc = toMarkdown(pageContent);
 
-    createDir(`${DOCSROOT}${destination}`);
+    createDir(`${DOCSROOT}${item.destination}`);
 
     fs.writeFileSync(
-      `${DOCSROOT}${destination}/${slug}.md`,
-      createFrontMatter(
+      `${DOCSROOT}${item.destination}/${slug}.md`,
+      createFrontMatter({
         title,
-        menuTitle,
+        menu: menuTitle,
         order,
-        createEditOverwrite(filename, options),
-        options.tags,
+        editLink: createEditOverwrite(item.file, item.options),
+        tags: item.options.tags,
         lastModifiedDate,
-      ) + doc,
+      }) + doc,
       {
         flag: 'w',
       },
@@ -245,9 +244,7 @@ const importDocs = async (filename, destination, parentTitle, options) => {
 };
 
 export const importAllReadmes = async () => {
-  importReadMes.forEach(async (item) => {
-    await importDocs(item.file, item.destination, item.title, item.options);
-  });
+  importReadMes.forEach(async (item) => await importDocs(item));
 
   success.push('Docs imported from monorepo');
 

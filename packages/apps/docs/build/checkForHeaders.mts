@@ -1,16 +1,17 @@
 import fs from 'fs';
 import { globby } from 'globby';
 import path from 'path';
+import { BuildReturn, ErrorsReturn, SucccessReturn } from './types.mjs';
 
-const errors = [];
-const success = [];
+const errors: ErrorsReturn = [];
+const success: SucccessReturn = [];
 
 /**
  * This script will check that all MD or MDX files
  * that they have an H1 tag.
  */
 
-const filesMissingHeaders = [];
+const filesMissingHeaders: string[] = [];
 
 const ROOT = `${path.resolve()}/src/pages`;
 const headerDepth1Regex = /^#\s+(.*?)\s*$/gm;
@@ -22,7 +23,7 @@ const removeCodeBlocks = (content) => {
   return content.replace(codeBlockRegex, '');
 };
 
-export const checkForHeaders = async () => {
+export const checkForHeaders = async (): Promise<BuildReturn> => {
   const paths = await globby([`${ROOT}/**/*.md`]);
 
   paths.forEach((item) => {

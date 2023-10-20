@@ -1,43 +1,32 @@
-import { exec } from 'child_process';
-import { isValid } from 'date-fns';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
-import { promisify } from 'util';
-import { getReadTime } from './utils.mjs';
+import { IMenuData } from '../src/Layout';
+import { ErrorsReturn, SucccessReturn } from './types.mjs';
+import { getLastModifiedDate } from './utils/getLastModifiedDate.mjs';
+import { getReadTime } from './utils/getReadTime.mjs';
 
-const promiseExec = promisify(exec);
-const errors = [];
-const success = [];
+const errors: ErrorsReturn = [];
+const success: SucccessReturn = [];
 
 const INITIALPATH = './src/pages';
 const MENUFILEDIR = './src/_generated';
-const MENUFILE = 'menu.mjs';
+const MENUFILE = 'menu';
 const TREE = [];
 
-const isMarkDownFile = (name) => {
-  const extension = name.split('.').at(-1);
+const isMarkDownFile = (name: string): boolean => {
+  const arr = name.split('.');
+  const extension = arr[arr.length - 1];
   return extension.toLowerCase() === 'md' || extension.toLowerCase() === 'mdx';
 };
 
-export const getLastModifiedDate = async (root) => {
-  const { stdout } = await promiseExec(
-    `git log -1 --pretty="format:%ci" ${root}`,
-  );
-
-  const date = new Date(stdout);
-  if (!isValid(date)) return;
-
-  return date.toUTCString();
-};
-
-const isIndex = (file) => {
+const isIndex = (file: string): boolean => {
   return file.includes('/index');
 };
 
-const convertFile = async (file) => {
+const convertFile = async (file: string): Promise<IMenuData | undefined> => {
   const doc = fs.readFileSync(`${file}`, 'utf-8');
   let data;
   if (isMarkDownFile(file)) {
@@ -68,7 +57,7 @@ const convertFile = async (file) => {
   };
 };
 
-const getFrontMatter = (doc, file) => {
+const getFrontMatter = (doc: string, file: string): IMenuData | undefined => {
   const tree = fromMarkdown(doc.toString(), {
     extensions: [frontmatter()],
     mdastExtensions: [frontmatterFromMarkdown()],
@@ -82,7 +71,7 @@ const getFrontMatter = (doc, file) => {
   return yaml.load(tree.children[0].value);
 };
 
-const minimumZeroValue = (value) => {
+const minimumZeroValue = (value: number): number => {
   return value <= 0 ? 0 : value;
 };
 
@@ -110,13 +99,13 @@ const pushToParent = (parent, child) => {
   return parent;
 };
 
-const findPath = (dir) => {
+const findPath = (dir: string): string | undefined => {
   const [, ...dirArray] = dir.split('/');
-  let file = dirArray.pop();
+  let file = dirArray.pop()?.split('.') ?? [];
   let path = dirArray.splice(2, dir.length - 1).join('/');
 
-  const fileName = file.split('.').at(0);
-  if (fileName === 'index') return null;
+  const fileName = file[0];
+  if (fileName === 'index') return;
   if (!path) return `/${fileName}`;
   return `/${path}/${fileName}`;
 };
@@ -134,7 +123,7 @@ const SEARCHABLE_DIRS = [
 const getFile = async (rootDir, parent, file) => {
   const currentFile = `${rootDir}/${file}`;
   const arr = [];
-  let child = {
+  let child: any = {
     children: arr,
   };
   child.root = findPath(currentFile);
@@ -190,14 +179,34 @@ const createTree = async (rootDir, parent = []) => {
   return parent;
 };
 
-export const createDocsTree = async () => {
-  const result = await createTree(INITIALPATH, TREE);
+const createMJS = (result) => {
   // write menu file
-  const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
-  export const menuData = ${JSON.stringify(result, null, 2)}`;
+  const fileStr = `
+    /* eslint @kadena-dev/typedef-var: "off" */
+    export const menuData = ${JSON.stringify(result, null, 2)}
+  `;
 
   fs.mkdirSync(MENUFILEDIR, { recursive: true });
-  fs.writeFileSync(`${MENUFILEDIR}/${MENUFILE}`, fileStr);
+  fs.writeFileSync(`${MENUFILEDIR}/${MENUFILE}.mjs`, fileStr);
+};
+
+const createTJS = (result) => {
+  // write menu file
+  const fileStr = `
+    import { IMenuData } from '@/Layout';
+
+    export const menuData = ${JSON.stringify(result, null, 2)}
+  `;
+
+  fs.mkdirSync(MENUFILEDIR, { recursive: true });
+  fs.writeFileSync(`${MENUFILEDIR}/${MENUFILE}.mts`, fileStr);
+};
+
+export const createDocsTree = async () => {
+  const result = await createTree(INITIALPATH, TREE);
+
+  createMJS(result);
+  createTJS(result);
 
   success.push('Docs imported from monorepo');
 

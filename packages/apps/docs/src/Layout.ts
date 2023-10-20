@@ -102,7 +102,7 @@ export interface IMenuData {
   root: string;
   title: string;
   description?: string;
-  menu: string;
+  menu?: string;
   label: string;
   order: number;
   layout: LayoutType;
@@ -115,7 +115,10 @@ export interface IMenuData {
   authorId?: string;
   authorInfo?: IAuthorInfo;
   wordCount?: number;
+  lastModifiedDate?: string;
   readingTimeInMinutes?: number;
+  isIndex?: boolean;
+  editLink?: string;
 }
 
 export interface ITag {

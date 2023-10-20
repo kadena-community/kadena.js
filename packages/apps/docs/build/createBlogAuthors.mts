@@ -1,13 +1,14 @@
 import fs from 'fs';
 import { globby } from 'globby';
 import path from 'path';
-import authors from './../data/authors.json' assert { type: 'json' };
+import authors from './../src/data/authors.json' assert { type: 'json' };
+import { BuildReturn, ErrorsReturn, SucccessReturn } from './types.mjs';
 
-const errors = [];
-const success = [];
+const errors: ErrorsReturn = [];
+const success: SucccessReturn = [];
 
 const ROOT = `${path.resolve()}/src/pages/blogchain`;
-const errorFiles = [];
+const errorFiles: string[] = [];
 
 const getFrontmatterAuthor = (file) => {
   const regExp = /author:\s*(.+)/;
@@ -29,7 +30,7 @@ const getAuthorId = (name) => {
   return authors.find((author) => author.name === name);
 };
 
-export const checkAuthors = async () => {
+export const checkAuthors = async (): Promise<BuildReturn> => {
   const paths = await globby([`${ROOT}/**/*.md`]);
 
   paths.forEach((item) => {

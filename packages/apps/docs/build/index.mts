@@ -8,13 +8,14 @@ import { createSitemap } from './createSitemap.mjs';
 import { createSpecs } from './createSpec.mjs';
 import { detectBrokenLinks } from './detectBrokenLinks.mjs';
 import { createDocsTree } from './getdocstree.mjs';
-import { importAllReadmes } from './importReadme.mjs';
+import { importAllReadmes } from './imports/index.mjs';
 import { Spinner } from './spinner.mjs';
+import { BuildReturn, ErrorsReturn, SucccessReturn } from './types.mjs';
 
 const promiseExec = promisify(exec);
 let globalError = false;
 
-const createString = (str, start) => {
+const createString = (str: string, start?: boolean): string => {
   let titleStr = ` END ${chalk.blue(str.toUpperCase())} ====`;
   let line = '\n\n';
   if (start) {
@@ -30,16 +31,14 @@ const createString = (str, start) => {
   return `${line}${titleStr}`;
 };
 
-const runPrettier = async () => {
-  const success = [];
-  const errors = [];
+const runPrettier = async (): Promise<BuildReturn> => {
+  const success: SucccessReturn = [];
+  const errors: ErrorsReturn = [];
 
-  const { stderr } = await promiseExec(
-    `prettier ./public/sitemap.xml --write && prettier ./src/pages --write  && prettier ./src/_generated/**/*.json --write`,
-  );
+  const { stderr } = await promiseExec(`pnpm format:src`);
 
   if (stderr) {
-    errors.push(`Prettier had issues: ${sterr}`);
+    errors.push(`Prettier had issues: ${stderr}`);
   } else {
     success.push('Prettier done!');
   }
@@ -47,7 +46,11 @@ const runPrettier = async () => {
   return { errors, success };
 };
 
-const initFunc = async (fnc, description) => {
+interface InitFuncProps {
+  (fnc: () => Promise<BuildReturn>, description: string): Promise<void>;
+}
+
+const initFunc: InitFuncProps = async (fnc, description): Promise<void> => {
   console.log(createString(description, true));
 
   const spinner = Spinner();
@@ -62,7 +65,8 @@ const initFunc = async (fnc, description) => {
       console.warn(chalk.red('⨯'), error);
     });
     globalError = true;
-    return (process.exitCode = 1);
+    process.exitCode = 1;
+    return;
   } else {
     success.map((succes) => {
       console.log(chalk.green('✓'), succes);

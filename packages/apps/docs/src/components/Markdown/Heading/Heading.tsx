@@ -1,4 +1,4 @@
-import { createSlug } from '@/utils/createSlug';
+import { createSlug } from '@/utils/createSlug.mjs';
 import { SystemIcon } from '@kadena/react-ui';
 import type { FC, ReactNode } from 'react';
 import React from 'react';

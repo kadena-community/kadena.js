@@ -3,7 +3,6 @@ import yaml from 'js-yaml';
 import authors from './../data/authors.json' assert { type: 'json' };
 import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from './../utils/staticGeneration/getData.mjs';
-import { getReadTime } from './utils.mjs';
 
 const flat = (acc, val) => {
   const { children, ...newVal } = val;
@@ -118,7 +117,8 @@ const remarkFrontmatterToProps = () => {
         data: {
           frontmatter: {
             lastModifiedDate: menuData.lastModifiedDate,
-            ...getReadTime(file.value),
+            wordCount: menuData.wordCount,
+            readingTimeInMinutes: menuData.readingTimeInMinutes,
             editLink:
               process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
               getFileNameInPackage(file),
