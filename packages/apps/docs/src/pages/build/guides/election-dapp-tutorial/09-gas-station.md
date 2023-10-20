@@ -11,7 +11,7 @@ tags: [pact, smart contract, typescript, tutorial]
 # Chapter 09: Gas station
 
 In a traditional government election, all citizens usually receive a paper invitation
-to vote from their government in the tradidtional mail. They would take their invitation
+to vote from their government in the traditional mail. They would take their invitation
 to a nearby election office. There, they will receive an anonymous voting ballot from
 an election official upon showing their invitation and a matching ID. In a voting booth,
 they anonymously select the name of their favorite candidate and cast the voting ballot
@@ -21,8 +21,8 @@ of voting ballots from the stack of unused voting ballots and use them to cast e
 any given candidate. In many countries, the votes are counted and submitted manually, leaving
 even more room for human error. Even though the votes can be cast anonymously in traditional
 election, the process is inherently unreliable. It is also inconvenient for voters to physically
-vote at an election office. Moreover, a traditional election costs a lot of tax payer money
-to organisze.
+vote at an election office. Moreover, a traditional election costs a lot of taxpayer money
+to organize.
 
 An election on the blockchain would be more convenient, transparent and reliable. Namely,
 everyone who owns a smartphone or computer could vote from the comfort of their own home.
@@ -40,7 +40,7 @@ a transaction comes at the price of a gas fee. At the time of the election, some
 may have run out of money and would not be able to pay this gas fee and thus would not be
 able to vote. That is not very democratic. Kadena solves this with the concept of gas stations.
 Kadena created the first crypto gas station on a blockchain in 2020. A gas station is an
-account that exists only to make gas payments on behalf of other users under specific conditions.
+account that exists only to make gas payments on behalf of other accounts under specific conditions.
 The government could use a fraction of the traditional election budget to fund a gas station
 that can pay the gas fee for every voting transaction, allowing all citizens to vote for free.
 
@@ -87,21 +87,21 @@ via the top section of the
 navigation bar on the left side of the window. When you click `+ Generate Key` on the
 top right, a new public key will be added to the list of public keys. Click `Add k: Account`
 on the right of this new public key and your k:account will be added to the accounts
-that you are watching via Chainweaver. Expand the row of the account you justed added
+that you are watching via Chainweaver. Expand the row of the account you just added
 by clicking the arrow on the left side of the account name. You will see that no KDA balance
 exists for this account on any of the chains and the information about the owner and keyset
 of the account is missing. This indicates that your account does not yet exist on Devnet.
 
 The Kadena JavaScript client will tell you the same. Open up a terminal and change the directory
 to the `./snippets` folder in the root of your project. Execute the `./coin-details.ts`
-snippet by running the following command. Replace `k:account` with your admin account.
+snippet by running the following command. Replace `k:account` with your voter account.
 
 ```bash
 npm run coin-details:devnet -- k:account
 ```
 
 You will see an error logged to your terminal, stating `row not found`, confirming that your
-admin account indeed does not yet exist on Devnett.
+voter account indeed does not yet exist on Devnet.
 
 ### Create voter account on Devnet
 
@@ -158,7 +158,7 @@ proving that it is indeed not possible to vote with an account that has zero bal
 
 The `election-gas-station` will become the second module in your `election` smart contract.
 Create a file `./pact/election-gas-station.pact` with the following content. Replace the
-namespace with your own principle namespace. Just like the `election` module, this module
+namespace with your own principal namespace. Just like the `election` module, this module
 will be governed by the `admin-keyset`.
 
 ```pact
@@ -186,7 +186,7 @@ loads correctly. Run the file.
 ```
 
 You will notice that the module does not load correctly. Because you merely defined that
-the module should implement the `gas-payer-v1` interface, but not actually implemented
+the module should implement the `gas-payer-v1` interface, but you have not actually implemented
 that interface yet, the error
 `Error: found unimplemented member while resolving model constraints: GAS_PAYER` appears.
 You can find the signature of this capability in `./pact/root/gas-payer-v1.pact`. It is
@@ -213,7 +213,7 @@ capability with it as follows. Then, run `./pact/election-gas-station.repl` agai
 The test will now fail with
 `Error: found unimplemented member while resolving model constraints: create-gas-payer-guard`.
 Indeed, there is a function `create-gas-payer-guard` defined in the `gas-payer-v1` interface
-that still needs to be implemented. The documentation inside is a bit cryptic, but its suggests
+that still needs to be implemented. The documentation inside is a bit cryptic, but it suggests
 to require something like the `GAS_PAYER` capability without the parameters. You can use
 the `GAS` capability from the `coin` module here. After all, in Chainweaver's module explorer
 you can find that this capability is documented as `Magic capability to protect gas buy and redeem`.
@@ -264,7 +264,7 @@ Open up a terminal and change the directory to the `./snippets` folder in the ro
 your project. Execute the `./deploy-gas-station.ts` snippet by running the following command.
 Replace `k:account` with your admin account. The content of `./deploy-gas-station.ts` is
 roughly the same as `./deploy-module.ts`, except that it deploys the 
-`./pact/election-gas-station.repl` file
+`./pact/election-gas-station.repl` file.
 
 ```bash
 npm run deploy-gas-station:devnet -- k:account
@@ -283,8 +283,8 @@ If everything went well, you will see something similar to the following output.
 }
 ```
 
-Congratulations! You have added a second module to your smart contract. deployed a smart contract consisting of the `election` module that
-is governed by the `admin-keyset` in your principal namespace on your local Devnet.
+Congratulations! You have added a second module to your smart contract. You deployed the
+`election-gas-station` module that is governed by the `admin-keyset` in your principal namespace on your local Devnet.
 If you would now run the `list-modules:devnet` script, you will find your new module in the list
 of deployed modules.
 
@@ -313,7 +313,7 @@ Also, change the `senderAccount` in the transaction's metadata to `'election-gas
 
 Return to the election website and try to vote again with the voter account. The transaction will still fail
 with the error: `Failure: Tx Failed: Insufficient funds`. Apparently, the gas station does not work as it is
-supposed to yet. The reason is that the gas station module attempts to pay for gas using the `senderAccount`,
+supposed to, yet. The reason is that the gas station module attempts to pay for gas using the `senderAccount`,
 but this account does not exist. It has to be created first. It also needs to have a positive KDA balance.
 Otherwise, the transaction will still fail due to insufficient funds in the gas station account.
 
@@ -380,10 +380,10 @@ If everything went well, you should see output similar to this.
 Execute the `./transfer.ts` snippet by running the following command to transfer 1 KDA from your admin
 account to the gas station account. Replace `k:account` with your admin account. The transaction
 inside this file is similar to `./transfer-create.ts`, except that it does not use the special
-`sender00` account, but your own election admin account to transfer KDA. Therefore, the transaction
+`sender00` account, but your own election admin account to transfer KDA from. Therefore, the transaction
 needs to be signed with Chainweaver instead of a private key. Also, the `transfer` function of the
 `coin` module is used. This function requires that the receiving account already exists on the
-blockchain and will not create the account if it does not exist like `transfer-create`.
+blockchain and will not create the account if it does not exist like `transfer-create` would.
 
 ```bash
 npm run transfer:devnet -- k:account election-gas-station 1
@@ -396,7 +396,7 @@ following script again.
 npm run coin-details:devnet -- election-gas-station
 ```
 
-Now, everything should set to allow voters to vote for free because the `election-gas-station`
+Now, everything should be set to allow voters to vote for free, because the `election-gas-station`
 account can pay the gas fee charged for the voting transaction.
 
 ## Vote again
@@ -430,7 +430,7 @@ The `caps` field in the signature passed to `env-sigs` is an empty array. As a c
 signature of the transaction is not scoped to any capability and the signer automatically
 approves all capabilities required for the function execution. In the `vote` function of
 `frontend/src/repositories/vote/DevnetVoteRepository.ts` you scoped the signature of the
-transaction to two gas related capabilities, but not for the `ACCOUNT-OWNER` capability. When
+transaction to two gas related capabilities, but not to the `ACCOUNT-OWNER` capability. When
 you sign for some capabilities but not all capabilities required for execution of a transaction,
 the execution will fail at the point where a capability is required that you did not sign for.
 Therefore, you need to add a third capability to the array passed to `addSigners` in
@@ -472,12 +472,12 @@ Then, call `(enforce-below-or-at-gas-price 0.000001)` right before `(compose-cap
 ### Limit accessibility
 
 Second, any module can use your gas station as it is, which can become quite costly when the
-word spreads. Especially, since any kind of transaction is allowed and heavy transaction cost even
-more gas than lighter transaction.
+word spreads. Especially, since any kind of transaction is allowed and heavy transactions cost even
+more gas than lighter transactions.
 
 There are two types of Pact transactions: `exec` and `cont`. `cont` transaction
 is used for multi-step pacts, while `exec` is for regular transactions. Limit the usage to `exec`
-transactions by adding the following line to the start of body of the `GAS_PAYER` `defcap`.
+transactions by adding the following line to the start of the body of the `GAS_PAYER` `defcap`.
 
 ```pact
 (enforce (= "exec" (at "tx-type" (read-msg))) "Can only be used inside an exec")
@@ -521,11 +521,12 @@ Kadena's gas station mechanism allows someone else to automatically pay the gas 
 of others under certain conditions. This enables voters to vote for free via a website that uses
 a smart contract on the blockchain as its back-end. By completing this project, you are able to
 demonstrate and explain that online elections on the blockchain are more efficient, transparent
-and reliable than traditional elections. The only remaining challenge is that it is possible to
+and reliable than traditional elections. The only remaining challenge is that it is currently
+possible to
 vote more than once by simply creating multiple Kadena accounts. To comply with the law, the
 Kadena accounts that are allowed to vote should somehow be linked to the social security numbers
 of citizens of voting age as stored in legacy government systems. Or, perhaps, everyone should
-just get a Kadena account instead of a social security number at birth. Anyway there are several
+just get a Kadena account instead of a social security number at birth. Anyway, there are several
 technical and theoretical solutions for such last hurdle. Food for thought.
 
 As a next step, you could deploy the election website online and deploy the election smart contract
