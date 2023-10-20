@@ -8,6 +8,7 @@
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
     "install:chromium": "npx playwright install chromium",
+    "generate:faucet:contract": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
@@ -15,6 +16,7 @@
     "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@kadena/client": "workspace:*",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
@@ -24,6 +26,10 @@
     "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
     "eslint-plugin-playwright": "0.16.0",
-    "prettier": "~3.0.3"
+    "prettier": "~3.0.3",
+    "@kadena/cryptography-utils": "^0.3.8",
+    "@kadena/chainweb-node-client": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*",
+    "@kadena/types": "workspace:*"
   }
 }

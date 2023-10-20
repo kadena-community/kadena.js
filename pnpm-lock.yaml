@@ -1682,6 +1682,21 @@ importers:
       '@kadena-dev/markdown':
         specifier: workspace:*
         version: link:../markdown
+      '@kadena/chainweb-node-client':
+        specifier: workspace:*
+        version: link:../../libs/chainweb-node-client
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
+      '@kadena/cryptography-utils':
+        specifier: ^0.3.8
+        version: link:../../libs/cryptography-utils
+      '@kadena/pactjs-cli':
+        specifier: workspace:*
+        version: link:../pactjs-cli
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
       '@playwright/test':
         specifier: ^1.39.0
         version: 1.39.0
