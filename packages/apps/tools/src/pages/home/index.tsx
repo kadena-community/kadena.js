@@ -19,7 +19,7 @@ const Home: FC = () => {
     {
       title: t('Faucet'),
       icon: 'Earth',
-      href: Routes.FAUCET_EXISTING,
+      href: Routes.FAUCET_NEW,
     },
     {
       title: t('Transactions'),
