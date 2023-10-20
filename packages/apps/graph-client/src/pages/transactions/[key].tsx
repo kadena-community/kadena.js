@@ -1,10 +1,8 @@
 import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
+import Loader from '@/components/Common/loader/loader';
+import { mainStyle } from '@/components/Common/main/styles.css';
 import routes from '@/constants/routes';
-import Loader from '@components/loader/loader';
-import { mainStyle } from '@components/main/styles.css';
-import { Text } from '@components/text';
 import { Box, Link, Notification, Table } from '@kadena/react-ui';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -21,19 +19,7 @@ const RequestKey: React.FC = () => {
 
   return (
     <div>
-      <Head>
-        <title>Kadena Graph Client</title>
-        <link rel="icon" href="/favicon.png" />
-      </Head>
-
       <main className={mainStyle}>
-        <Text
-          as="h1"
-          css={{ display: 'block', color: '$mauve12', fontSize: 48, my: '$12' }}
-        >
-          Kadena Graph Client
-        </Text>
-
         <div>
           {loadingTransaction && (
             <div style={{ display: 'flex', alignItems: 'center' }}>
