@@ -13,7 +13,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
   const { isMenuOpen } = useLayoutContext();
 
   return (
-    <div>
+    <div data-testid="layout-container">
       <header className={headerStyle}>
         <Header />
       </header>
