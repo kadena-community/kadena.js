@@ -1,19 +1,48 @@
-jest.mock('cross-fetch');
 import { pactTestCommand, sign } from '@kadena/cryptography-utils';
 import { ensureSignedCommand } from '@kadena/pactjs';
 import type { ICommand, IUnsignedCommand, SignCommand } from '@kadena/types';
-import type { Response } from 'cross-fetch';
-import fetch from 'cross-fetch';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import { createSendRequest } from '../createSendRequest';
 import type { ISendRequestBody, SendResponse } from '../interfaces/PactAPI';
 import { send } from '../send';
 import { testURL } from './mockdata/Pact';
-import { mockFetch } from './mockdata/mockFetch';
 
-const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
-mockedFunctionFetch.mockImplementation(
-  mockFetch as jest.MockedFunction<typeof fetch>,
-);
+const restHandlers = [
+  rest.post(`${testURL}/api/v1/send`, async (req, res, ctx) => {
+    const body = await req.json<ISendRequestBody>();
+    const requestKeys = body.cmds.map((cmd) => cmd.hash);
+    return res.once(ctx.status(200), ctx.json({ requestKeys }));
+  }),
+  rest.post(`${testURL}/wrongChain/api/v1/send`, async (req, res, ctx) => {
+    const body = await req.json<ISendRequestBody>();
+    const requestKeys = body.cmds.map((cmd) => cmd.hash);
+    const errorMsg = requestKeys
+      .map(
+        (rk) =>
+          `Error: Validation failed for hash "${rk}": Transaction metadata (chain id, chainweb version) conflicts with this endpoint`,
+      )
+      .join('\n');
+    return res.once(ctx.status(403), ctx.text(errorMsg));
+  }),
+  rest.post(`${testURL}/duplicate/api/v1/send`, async (req, res, ctx) => {
+    const body = await req.json<ISendRequestBody>();
+    const requestKeys = body.cmds.map((cmd) => cmd.hash);
+    const errorMsg = requestKeys
+      .map(
+        (rk) =>
+          `Error: Validation failed for hash "${rk}": Transaction already exists on chain`,
+      )
+      .join('\n');
+    return res.once(ctx.status(403), ctx.text(errorMsg));
+  }),
+];
+
+const server = setupServer(...restHandlers);
+
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 test('/send should return request keys of txs submitted', async () => {
   const commandStr = JSON.stringify(pactTestCommand);
