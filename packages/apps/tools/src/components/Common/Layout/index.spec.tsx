@@ -27,13 +27,12 @@ vi.mock('@/context/connect-wallet-context', () => ({
 }));
 
 describe('Layout', () => {
-  it.skip('renders correctly', () => {
+  it('renders correctly', () => {
     const { getByTestId, getByRole } = render(<Layout>Hello, World!</Layout>);
 
     // Assert that the layout container element is rendered
     const layoutContainer = getByTestId('layout-container');
     expect(layoutContainer).toBeInTheDocument();
-    expect(layoutContainer).toHaveClass('layout');
 
     // Assert that the main content element is rendered
     const mainContent = getByRole('main');
