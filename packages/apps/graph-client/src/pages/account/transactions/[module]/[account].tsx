@@ -1,9 +1,9 @@
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
+import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
 import Loader from '@components/loader/loader';
 import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
-import routes from '@constants/routes';
-import { Box, Button, Link, Notification, Table } from '@kadena/react-ui';
+import { Box, Notification } from '@kadena/react-ui';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -51,103 +51,10 @@ const AccountTransactions: React.FC = () => {
             </Notification.Root>
           )}
           {data?.transactions && (
-            <>
-              <Box marginBottom="$3">
-                <span>Showing 10 results per page</span>
-                <Button
-                  variant="compact"
-                  onClick={() =>
-                    fetchMore({
-                      variables: {
-                        first: 10,
-                        last: null,
-                        after: data.transactions.pageInfo.endCursor,
-                        before: null,
-                      },
-                      updateQuery: (prev, { fetchMoreResult }) => {
-                        if (!fetchMoreResult) return prev;
-                        return fetchMoreResult;
-                      },
-                    })
-                  }
-                  disabled={!data.transactions.pageInfo.hasNextPage}
-                  style={{ float: 'right' }}
-                >
-                  Next Page
-                </Button>
-                <Button
-                  variant="compact"
-                  onClick={() =>
-                    fetchMore({
-                      variables: {
-                        first: null,
-                        last: 10,
-                        after: null,
-                        before: data.transactions.pageInfo.startCursor,
-                      },
-                      updateQuery: (prev, { fetchMoreResult }) => {
-                        if (!fetchMoreResult) return prev;
-
-                        if (fetchMoreResult.transactions.edges.length < 10) {
-                          return {
-                            ...prev,
-                            transactions: {
-                              ...fetchMoreResult.transactions,
-                              edges: [
-                                ...fetchMoreResult.transactions.edges,
-                                ...prev.transactions.edges,
-                              ].slice(0, 10),
-                            },
-                          };
-                        }
-
-                        return fetchMoreResult;
-                      },
-                    })
-                  }
-                  disabled={!data.transactions.pageInfo.hasPreviousPage}
-                  style={{ float: 'right', marginRight: '10px' }}
-                >
-                  Previous Page
-                </Button>
-              </Box>
-              <Table.Root wordBreak="break-word">
-                <Table.Head>
-                  <Table.Tr>
-                    <Table.Th>Chain</Table.Th>
-                    <Table.Th>Timestamp</Table.Th>
-                    <Table.Th>Block Height</Table.Th>
-                    <Table.Th>Request Key</Table.Th>
-                    <Table.Th>Code</Table.Th>
-                  </Table.Tr>
-                </Table.Head>
-                <Table.Body>
-                  {data.transactions.edges.map((edge, index) => {
-                    return (
-                      <Table.Tr key={index}>
-                        <Table.Td>{edge?.node.chainId}</Table.Td>
-                        <Table.Td>
-                          {new Date(edge?.node.creationTime).toLocaleString()}
-                        </Table.Td>
-                        <Table.Td>{edge?.node.height}</Table.Td>
-                        <Table.Td>
-                          <Link
-                            href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}
-                          >
-                            {edge?.node.requestKey}
-                          </Link>
-                        </Table.Td>
-                        <Table.Td>
-                          {edge?.node.code || (
-                            <span style={{ color: 'lightgray' }}>N/A</span>
-                          )}
-                        </Table.Td>
-                      </Table.Tr>
-                    );
-                  })}
-                </Table.Body>
-              </Table.Root>
-            </>
+            <ExtendedTransactionsTable
+              transactions={data.transactions}
+              fetchMore={fetchMore}
+            />
           )}
         </div>
       </main>

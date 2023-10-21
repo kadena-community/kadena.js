@@ -13,7 +13,11 @@ export class FaucetPage {
     this.notification = new NotificationContainerComponent(this._page);
   }
 
-  public async fundAccount(account: string, chainId: string): Promise<void> {
+  public async fundExistingAccount(
+    account: string,
+    chainId: string,
+  ): Promise<void> {
+    await this._page.getByRole('link', { name: ' this page' }).click();
     await this._card.setValueForTextbox(
       'The Account Name You Would Like To Fund Coins To',
       account,

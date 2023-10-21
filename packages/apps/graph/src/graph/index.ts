@@ -15,7 +15,7 @@ import './objects/Block';
 import './objects/ChainModuleAccount';
 import './objects/Event';
 import './objects/Guard';
-import './objects/Minerkey';
+import './objects/MinerKey';
 import './objects/ModuleAccount';
 import './objects/Transaction';
 import './objects/Transfer';

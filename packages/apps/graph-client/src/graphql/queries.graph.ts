@@ -1,102 +1,20 @@
+import { ALL_ACCOUNT_FIELDS } from './fields/account.graph';
+import { ALL_BLOCK_FIELDS } from './fields/block.graph';
+import {
+  ALL_CHAIN_ACCOUNT_FIELDS,
+  CORE_CHAIN_ACCOUNT_FIELDS,
+} from './fields/chain-account.graph';
+import { CORE_MINER_KEY_FIELDS } from './fields/miner-key.graph';
+import { CORE_TRANSACTION_FIELDS } from './fields/transaction.graph';
+import { CORE_TRANSFER_FIELDS } from './fields/transfer.graph';
+
 import type { DocumentNode } from '@apollo/client';
 import { gql } from '@apollo/client';
 
-export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
-  fragment CoreTransactionFields on Transaction {
-    id
-    # badResult
-    # block
-    chainId
-    code
-    # continuation
-    creationTime
-    # data
-    gas
-    gasLimit
-    gasPrice
-    # goodResult
-    height
-    # logs
-    # metadata
-    # nonce
-    # eventCount
-    # pactId
-    # proof
-    requestKey
-    # rollback
-    # senderAccount
-    # step
-    ttl
-    # transactionId
-  }
-`;
-
-export const CORE_BLOCK_FIELDS: DocumentNode = gql`
-  fragment CoreBlockFields on Block {
-    id
-    chainId
-    creationTime
-    epoch
-    # flags
-    hash
-    height
-    # miner
-    # nonce
-    # parent
-    payload
-    powHash
-    predicate
-    # target
-    # weight
-    transactions {
-      totalCount
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
-      }
-      edges {
-        node {
-          chainId
-          creationTime
-          height
-          requestKey
-          code
-        }
-      }
-    }
-    confirmationDepth
-    parentHash
-  }
-`;
-
-export const CORE_EVENT_FIELDS: DocumentNode = gql`
-  fragment CoreEventFields on Event {
-    id
-    #block{}
-    requestKey
-    chainId
-    height
-    #orderindex
-    #module
-    #name
-    parameterText
-    #parameters
-    qualifiedName
-  }
-`;
-
-export const CORE_MINERKEY_FIELDS: DocumentNode = gql`
-  fragment CoreMinerKeyFields on Minerkey {
-    id
-    key
-    blockHash
-  }
-`;
-
 export const getBlockFromHash: DocumentNode = gql`
-  ${CORE_BLOCK_FIELDS}
+  ${ALL_BLOCK_FIELDS}
+  ${CORE_TRANSACTION_FIELDS}
+  ${CORE_MINER_KEY_FIELDS}
 
   query getBlockFromHash(
     $hash: String!
@@ -106,21 +24,7 @@ export const getBlockFromHash: DocumentNode = gql`
     $last: Int
   ) {
     block(hash: $hash) {
-      id
-      chainId
-      creationTime
-      epoch
-      # flags
-      hash
-      height
-      # miner
-      # nonce
-      # parent
-      payload
-      powHash
-      predicate
-      # target
-      # weight
+      ...AllBlockFields
       transactions(after: $after, before: $before, first: $first, last: $last) {
         totalCount
         pageInfo {
@@ -131,16 +35,11 @@ export const getBlockFromHash: DocumentNode = gql`
         }
         edges {
           node {
-            chainId
-            creationTime
-            height
-            requestKey
-            code
+            ...CoreTransactionFields
           }
         }
       }
       confirmationDepth
-      parentHash
       minerKeys {
         ...CoreMinerKeyFields
       }
@@ -161,83 +60,43 @@ export const getMaximumCalculatedConfirmationDepth: DocumentNode = gql`
 `;
 
 export const getRecentHeights: DocumentNode = gql`
-  ${CORE_BLOCK_FIELDS}
-
   query getRecentHeights($completedOnly: Boolean = true, $count: Int!) {
     completedBlockHeights(
       completedHeights: $completedOnly
       heightCount: $count
     ) {
-      ...CoreBlockFields
+      ...AllBlockFields
+      confirmationDepth
+      transactions {
+        totalCount
+      }
     }
   }
 `;
 
 export const getAccount: DocumentNode = gql`
+  ${ALL_ACCOUNT_FIELDS}
+  ${CORE_CHAIN_ACCOUNT_FIELDS}
+  ${CORE_TRANSACTION_FIELDS}
+  ${CORE_TRANSFER_FIELDS}
+
   query getAccount($moduleName: String!, $accountName: String!) {
     account(moduleName: $moduleName, accountName: $accountName) {
-      # id
-      accountName
-      moduleName
-
-      totalBalance
-
+      ...AllAccountFields
       chainAccounts {
-        # accountName
-        balance
-        chainId
-        # guard {
-        #   keys
-        #   predicate
-        # }
-        # moduleName
-        # transactions
-        # transfers
+        ...CoreChainAccountFields
       }
       transactions {
         edges {
           node {
-            # id
-            # badResult
-            chainId
-            code
-            # continuation
-            creationTime
-            # data
-            # gas
-            # gasLimit
-            # gasPrice
-            # goodResult
-            height
-            # logs
-            # metadata
-            # nonce
-            # eventCount
-            # pactId
-            # proof
-            requestKey
-            # rollback
-            # senderAccount
-            # step
-            # ttl
-            # transactionId
+            ...CoreTransactionFields
           }
         }
       }
       transfers {
         edges {
           node {
-            amount
-            # blockHash
-            chainId
-            senderAccount
-            height
-            # id
-            # idx
-            # moduleHash
-            # moduleName
-            requestKey
-            receiverAccount
+            ...CoreTransferFields
           }
         }
       }
@@ -246,6 +105,10 @@ export const getAccount: DocumentNode = gql`
 `;
 
 export const getChainAccount: DocumentNode = gql`
+  ${CORE_TRANSACTION_FIELDS}
+  ${CORE_TRANSFER_FIELDS}
+  ${ALL_CHAIN_ACCOUNT_FIELDS}
+
   query getChainAccount(
     $moduleName: String!
     $accountName: String!
@@ -256,58 +119,18 @@ export const getChainAccount: DocumentNode = gql`
       accountName: $accountName
       chainId: $chainId
     ) {
-      accountName
-      balance
-      chainId
-      guard {
-        keys
-        predicate
-      }
-      moduleName
+      ...AllChainAccountFields
       transactions {
         edges {
           node {
-            # id
-            # badResult
-            chainId
-            code
-            # continuation
-            creationTime
-            # data
-            # gas
-            # gasLimit
-            # gasPrice
-            # goodResult
-            height
-            # logs
-            # metadata
-            # nonce
-            # eventCount
-            # pactId
-            # proof
-            requestKey
-            # rollback
-            # senderAccount
-            # step
-            # ttl
-            # transactionId
+            ...CoreTransactionFields
           }
         }
       }
       transfers {
         edges {
           node {
-            amount
-            # blockHash
-            chainId
-            senderAccount
-            height
-            # id
-            # idx
-            # moduleHash
-            # moduleName
-            requestKey
-            receiverAccount
+            ...CoreTransferFields
           }
         }
       }
@@ -316,10 +139,13 @@ export const getChainAccount: DocumentNode = gql`
 `;
 
 export const getTransactions: DocumentNode = gql`
+  ${CORE_TRANSACTION_FIELDS}
+
   query getTransactions(
-    $moduleName: String!
-    $accountName: String!
+    $moduleName: String
+    $accountName: String
     $chainId: String
+    $blockHash: String
     $after: String
     $before: String
     $first: Int
@@ -329,6 +155,7 @@ export const getTransactions: DocumentNode = gql`
       moduleName: $moduleName
       accountName: $accountName
       chainId: $chainId
+      blockHash: $blockHash
       after: $after
       before: $before
       first: $first
@@ -343,30 +170,10 @@ export const getTransactions: DocumentNode = gql`
       edges {
         cursor
         node {
-          # id
-          # badResult
-          chainId
-          code
-          # continuation
-          creationTime
-          # data
-          # gas
-          # gasLimit
-          # gasPrice
-          # goodResult
-          height
-          # logs
-          # metadata
-          # nonce
-          # eventCount
-          # pactId
-          # proof
-          requestKey
-          # rollback
-          # senderAccount
-          # step
-          # ttl
-          # transactionId
+          ...CoreTransactionFields
+          block {
+            hash
+          }
         }
       }
     }
@@ -374,6 +181,8 @@ export const getTransactions: DocumentNode = gql`
 `;
 
 export const getTransfers: DocumentNode = gql`
+  ${CORE_TRANSFER_FIELDS}
+
   query getTransfers(
     $moduleName: String!
     $accountName: String!
@@ -401,87 +210,8 @@ export const getTransfers: DocumentNode = gql`
       edges {
         cursor
         node {
-          amount
-          # blockHash
-          chainId
-          senderAccount
-          height
-          # id
-          # idx
-          # moduleHash
-          # moduleName
-          requestKey
-          receiverAccount
+          ...CoreTransferFields
         }
-      }
-    }
-  }
-`;
-
-export const getBlocksSubscription: DocumentNode = gql`
-  ${CORE_BLOCK_FIELDS}
-
-  subscription getBlocks {
-    newBlocks {
-      ...CoreBlockFields
-    }
-  }
-`;
-
-export const getTransactionByRequestKey: DocumentNode = gql`
-  subscription getTransactionByRequestKey($requestKey: String!) {
-    transaction(requestKey: $requestKey) {
-      id
-      badResult
-      block {
-        id
-      }
-      events {
-        qualifiedName
-        parameterText
-      }
-      chainId
-      code
-      continuation
-      creationTime
-      data
-      gas
-      gasLimit
-      gasPrice
-      goodResult
-      height
-      logs
-      metadata
-      nonce
-      eventCount
-      pactId
-      proof
-      requestKey
-      rollback
-      senderAccount
-      step
-      ttl
-      transactionId
-    }
-  }
-`;
-
-export const getEventByName: DocumentNode = gql`
-  subscription getEventByName($eventName: String!) {
-    event(eventName: $eventName) {
-      # id
-      block {
-        id
-      }
-      chainId
-      height
-      orderIndex
-      # module
-      # name
-      parameterText
-      qualifiedName
-      transaction {
-        requestKey
       }
     }
   }

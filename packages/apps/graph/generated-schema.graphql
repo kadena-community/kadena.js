@@ -11,10 +11,10 @@ type Block implements Node {
   hash: ID!
   height: BigInt!
   id: ID!
-  minerKeys: [Minerkey!]
+  minerKeys: [MinerKey!]
   parent: Block
   parentHash: String
-  payload: String!
+  payloadHash: String!
   powHash: String!
   predicate: String!
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
@@ -88,7 +88,7 @@ type Guard {
   predicate: String!
 }
 
-type Minerkey implements Node {
+type MinerKey implements Node {
   block: Block!
   blockHash: String!
   id: ID!
@@ -149,7 +149,7 @@ type Query {
   maximumConfirmationDepth: Int!
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
-  transactions(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransactionsConnection!
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransactionsConnection!
   transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
 }
 

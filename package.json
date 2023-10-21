@@ -5,6 +5,7 @@
   "description": "Kadena JS monorepo",
   "license": "ISC",
   "scripts": {
+    "build": "turbo run build",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark *.md docs/*.md -o --use @kadena-dev/markdown",
     "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",

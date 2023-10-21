@@ -9,7 +9,7 @@ builder.queryField('transfers', (t) => {
       chainId: t.arg.string({ required: false }),
     },
     type: 'Transfer',
-    cursor: 'block_chainId_orderIndex_moduleHash_requestKey',
+    cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
     resolve: async (query, parent, args) => {
       return prismaClient.transfer.findMany({
         ...query,
