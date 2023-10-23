@@ -6,7 +6,14 @@ import {
   helpCenterButtonClass,
   homeWrapperClass,
 } from '@/pages/home/styles.css';
-import { Accordion, Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
+import {
+  Accordion,
+  Box,
+  Breadcrumbs,
+  Card,
+  Heading,
+  Table,
+} from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
@@ -122,6 +129,7 @@ const Home: FC = () => {
         </Card>
         <Card fullWidth>
           <Heading variant="h5">Frequently Asked Questions</Heading>
+          <Box marginBottom="$4" />
           <Accordion.Root>
             {faqs.map((faq) => (
               <Accordion.Section title={faq.title} key={faq.title}>
