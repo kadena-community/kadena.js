@@ -26,7 +26,10 @@ export interface ITextareaProps
 export const Textarea: FC<ITextareaProps> = forwardRef<
   HTMLTextAreaElement,
   ITextareaProps
->(function TextArea({ outlined, disabled = false, fontFamily, ...rest }, ref) {
+>(function TextArea(
+  { outlined = false, disabled = false, fontFamily, ...rest },
+  ref,
+) {
   return (
     <div
       className={classNames(containerClass, {

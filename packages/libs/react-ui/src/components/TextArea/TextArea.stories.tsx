@@ -44,7 +44,7 @@ export const TextAreaStory: Story = {
   args: {
     disabled: false,
     fontFamily: '$mono',
-    outlined: true,
+    outlined: false,
   },
   render: (props) => {
     const [value, setValue] = useState<string>('');
