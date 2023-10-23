@@ -47,7 +47,7 @@ const blockHash = header.hash;
 /* By Height */
 
 describe('chainweb.transaction', () => {
-  it.only('get transaction items by height and validate', async () => {
+  it('get transaction items by height and validate', async () => {
     server.resetHandlers(
       rest.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
@@ -83,7 +83,7 @@ describe('chainweb.transaction', () => {
   /* ************************************************************************** */
   /* By Block Hash */
 
-  it.only('get transaction items by blockhash and validate', async () => {
+  it('get transaction items by blockhash and validate', async () => {
     server.resetHandlers(
       rest.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
@@ -129,7 +129,7 @@ describe('chainweb.transaction', () => {
    * return whatever fits into a server page.
    */
 
-  it.only.each([0, 10, 100])(
+  it.each([0, 10, 100])(
     'should get transactions by maximum number og blocks %p and validate',
     async (n) => {
       server.resetHandlers(
@@ -171,7 +171,7 @@ describe('chainweb.transaction', () => {
       });
     },
   );
-  it.only('should get recents when default dept is set and limited to 10', async () => {
+  it('should get recents when default dept is set and limited to 10', async () => {
     server.resetHandlers(
       rest.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
@@ -203,7 +203,7 @@ describe('chainweb.transaction', () => {
     logg('Transactions:', r);
     expect(r).toBeTruthy();
   });
-  it.only('should get recents when default dept is set', async () => {
+  it('should get recents when default dept is set', async () => {
     server.resetHandlers(
       rest.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
@@ -235,13 +235,13 @@ describe('chainweb.transaction', () => {
 });
 
 describe('Transaction filter', () => {
-  it.only('should filter data and return formatted', () => {
+  it('should filter data and return formatted', () => {
     const data = filterTxs(
       filterData as unknown as IBlockPayloads<ITransactionElement>[],
     );
     expect(data).toEqual(filterDataFormatted);
   });
-  it.only('should filter data and return formatted without transactions', () => {
+  it('should filter data and return formatted without transactions', () => {
     const data = filterTxs(
       filterDataNoTx as unknown as IBlockPayloads<ITransactionElement>[],
     );
@@ -266,7 +266,7 @@ describe('Transaction filter', () => {
  */
 
 describe('chainweb.transaction', () => {
-  it.only('should get transactions by range n', async () => {
+  it('should get transactions by range n', async () => {
     server.resetHandlers(
       rest.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
