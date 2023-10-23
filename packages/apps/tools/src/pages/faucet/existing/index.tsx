@@ -20,6 +20,7 @@ import {
   Notification,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
+import Head from 'next/head';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -132,6 +133,9 @@ const ExistingAccountFaucetPage: FC = () => {
 
   return (
     <section className={containerClass}>
+      <Head>
+        <title>Kadena Developer Tools - Faucet</title>
+      </Head>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
