@@ -69,9 +69,9 @@ and `votes` of type integer.
 ### Create candidates table
 
 Add the following lines at the end of `./pact/election.pact`, after the `election` module
-definition. With `read-msg`, the field `init-candidates` is read from the transaction data.
-If you set this field to `true` in the data of your module deployment transaction, the
-statement between the square brackets will be executed. This will create the table
+definition. With `read-msg`, the field `init-candidates` is read from the transaction data
+object. If you set this field to `true` in the data of your module deployment transaction, the
+statement between the first square brackets will be executed. This will create the table
 `candidates` based on its definitions inside the module.
 
 ```pact
@@ -102,7 +102,7 @@ test environment with transactions you can borrow from previous chapters.
   }]
 )
 
-(begin-tx "Define principle namespace")
+(begin-tx "Define principal namespace")
   (define-namespace 'n_fd020525c953aa002f20fb81a920982b175cdf1a (read-keyset 'admin-keyset ) (read-keyset 'admin-keyset ))
 (commit-tx)
 
@@ -119,13 +119,13 @@ test environment with transactions you can borrow from previous chapters.
 You will recognize `env-data` and `env-sigs`. Be sure to replace the keys with the public
 key of your own admin account. Notice that `'init-candidates: true` is included in the data.
 This ensures that the `(create-table candidates)` command is executed when you load the
-`election` module into the Pact REPL. The first two transactions define your principle
-namespace and an `admin-keyset` therein. Replace the principle namespace with the namespace
+`election` module into the Pact REPL. The first two transactions define your principal
+namespace and an `admin-keyset` therein. Replace the principal namespace with the namespace
 used in your `election.pact` file. The last transaction, loading `election.pact`, would
 fail without this namespace and keyset being defined, because inside `election.pact` you 
 defined the `election` module in that principal namespace and it is governed by the
 `admin-keyset` in that same namespace. Try removing either or both of the first two 
-transactions and run `election.repl` to see what happens. Then, restore the file and run it
+transactions and run `election.repl` to see what would happen. Then, restore the file and run it
 again. You will see that it loads successfully. In the output you should also see a
 message containing `TableCreated`, proving that the table was indeed created.
 
@@ -141,7 +141,7 @@ function in `./pact/election.repl` and run the file.
   (use n_fd020525c953aa002f20fb81a920982b175cdf1a.election)
   (expect
     "There should be no candidates in the candidates table"
-    []
+    [1, 2, 3]
     (list-candidates)
   )
 (commit-tx)
@@ -180,7 +180,8 @@ each field defined in the candidates-schema. This results in a return value of t
 
 It is not recommended to send transactions that include a call to `fold-db`
 to the blockchain. Instead, you can just make a local request to select
-all rows from a table to save gas. Later in this chapter you will learn how to make such
+all rows from a table to save gas, similar to the preview functionality in Chainweaver
+that you used in the previous chapter. Later in this chapter you will learn how to make such
 a request using the Kadena JavaScript client.
 
 Changing the first argument of `fold-db` to something else than `candidates` would make the
@@ -189,7 +190,7 @@ exists and is readable.
 
 ## Add candidate
 
-Without any candidates the election website would not be very interesting. There would
+Without any candidates the election website would not be very interesting, as there would
 not be anyone to vote on. Add the following test that will fail because the
 `add-candidate` function cannot be resolved. You will fix the test later by
 implementing this function in the `election` module.
@@ -222,33 +223,12 @@ in json format. Notice that this object has the fields `key` and `name`, while t
 of `0` when a new candidate is added, so it is not necessary to send the amount of
 votes along with the transaction. The value of `key` will be used as a unique
 index for the table row that is added. It cannot be automatically generated, so you have
-to pass a value yourself. Add the following test to `./pact/election.repl` and run the file.
+to pass a value yourself.
 
-```pact
-(begin-tx "Add candidates")
-  (use n_fd020525c953aa002f20fb81a920982b175cdf1a.election)
-  (expect
-    "Add Candidate A"
-    "Write succeeded"
-    (add-candidate { "key": "1", "name": "Candidate A" })
-  )
-  (expect
-    "Add Candidate B"
-    "Write succeeded"
-    (add-candidate { "key": "2", "name": "Candidate B" })
-  )
-  (expect
-    "Add Candidate C"
-    "Write succeeded"
-    (add-candidate { "key": "3", "name": "Candidate C" })
-  )
-(commit-tx)
-```
-
-You should now have a failing test that you can fix by implementing the `add-candidates`
+You should now have a failing test that you can fix by implementing the `add-candidate`
 function in `./pact/election.pact`. The function will receive one argument `candidates`,
 which is a json object like the ones specified in your test. The function body consists
-of a single call to the built-in `insert` function that takes three argument. The first
+of a single call to the built-in `insert` function that takes three arguments. The first
 argument is a reference to the table you want to use, the `candidates` table in this
 case. The second argument is the value for the key of the row to be inserted. In the
 example below, the value of the `key` field is extracted from the `candidate` object
@@ -275,7 +255,7 @@ Add the function above to the `./pact/election.pact` file, run the `./pact/elect
 file again and verify that all tests are now passing. Remember that the key of each row
 in a table must be unique. Add the following code to `./pact/election.repl` to test that
 adding another candidate with key `1` will fail with a `Database exception` and run the
-file.
+file again.
 
 ```pact
 (begin-tx "Add candidate with existing key")
@@ -289,7 +269,8 @@ file.
 ```
 
 At this point, there should still be only three candidates in the table. You can verify
-that by adding the following assertion to `./pact/election.repl` and running the file.
+that by adding the following assertion to `./pact/election.repl` and running the file
+once more.
 
 ```pact
 (begin-tx "List candidates")
@@ -303,16 +284,16 @@ that by adding the following assertion to `./pact/election.repl` and running the
 ```
 
 This demonstration of the unique key constraint for database tables also provides more
-confidence that the `list-candidates` function works as expect. Before upgrading the
+confidence that the `list-candidates` function works as expected. Before upgrading the
 `election` module on Devnet, there is just one more thing that must be added.
 
 ## Guard adding candidates with a capability
 
-Right now, the `add-candidates` function is publically accessible, meaning that anyone
+Right now, the `add-candidate` function is publically accessible, meaning that anyone
 with a Kadena account would be able nominate a candidate. What kind of democracy would
 that be, where everyone has the right to vote and to be nominated for election? No, no, no,
 in the real world, you have to know the right people to get elected, like the holder
-of the `admin-keyset`. To that end, the `add-candidates` function can be guarded by the
+of the `admin-keyset`. To that end, the `add-candidate` function can be guarded by the
 `GOVERNANCE` capability that enforces the `admin-keyset`. At the end of
 `./pact/election.repl`, define another keyset and add a failing test in which you
 expect adding a fourth candidate to fail. Run the file when you are done.
@@ -362,8 +343,8 @@ Fix the test by implementing the capability guard in `./pact/election.pact` as f
 
 The `with-capability` function will try to bring the `GOVERNANCE` in scope of the code block
 that it wraps. If it fails to do so, because of a keyset failure in this case, the wrapped
-code block will not be executed. Thus, the `add-capability` is now guarded by the `GOVERNANCE`
-capability.
+code block will not be executed. Thus, the `add-candidate` function is now guarded by the
+`GOVERNANCE` capability.
 
 ## Upgrade election module on Devnet
 
@@ -386,7 +367,7 @@ If all is well, the last line of the output will be as follows.
 ```
 
 Look up your `election` module in the Module Explorer of Chainweaver. Click the refresh button
-at the top right of the table and view the module. You should see the `add-candidates` being
+at the top right of the table and view the module. You should see the `add-candidate` being
 added to the list of functions in the right pane. Click the `Open` button on the top right
 to load the Pact code into the editor in the left pane and verify that the `election` module
 on Devnet is in sync with the version on your local computer.
@@ -410,9 +391,8 @@ Open `frontend/src/repositories/candidate/DevnetCandidateRepository.ts` in your 
 now, you only need to focus on the `listCandidates` and `addCandidates`. The implementation
 of these repository method is slightly more complex than the in-memory implementation in
 `frontend/src/repositories/candidate/InMemoryCandidateRepository.ts`, but the pattern
-should look familiar to the snippets you have used in the previous chapters.
-function using components from the `@kadena/client` library. Start easy by replacing the
-value `NAMESPACE` constant with your own principal namespace.
+should look familiar to the snippets you have used in the previous chapters. Start easy by
+replacing the value `NAMESPACE` constant with your own principal namespace.
 
 ```typescript
 const NAMESPACE = 'n_fd020525c953aa002f20fb81a920982b175cdf1a';
@@ -442,7 +422,7 @@ Before the transaction is created, only the chain id and network id are configur
 a remarkably high gas limit is set. Apparently, sending a full table read transaction to
 the blockchain is quite expensive. Fortunately, you can preview the result, like you
 did in Chainweaver earlier, without actually sending a transaction to the blockchain. The
-`dirtyRead` method of the client is used conveniently handles this preview request. The rest
+`dirtyRead` method of the client conveniently handles this preview request. The rest
 of the `listCandidates` function deals with processing the response from Devnet. If the
 transaction was successful, a list of candidates is returned, otherwise an empty list.
 
@@ -466,9 +446,9 @@ make sure you understand the `addCandidate` implementation. The function receive
 candidate object and the account of the transaction sender. These will be provided by
 you via the form on the website. Remove the `@ts-ignore` comment and observe that the
 `insert-candidate` function of your `election` module will be called with the candidate
-object when the transaction is executed. Recall that the `add-candidates` function is
+object when the transaction is executed. Recall that the `add-candidate` function is
 guarded by the `GOVERNANCE` capability that enforces the `admin-keyset`. That is why
-the following data and signer are added to the transaction.
+the following data and signer need to be added to the transaction.
 
 ```typescript
 .addData('admin-keyset', {
@@ -500,8 +480,8 @@ In contrast to when you listed candidates, the transaction for adding candidates
 sent to the blockchain, so gas must be paid for processing the transaction. The value of the
 `senderAccount` field of the metadata specifies the account that will pay for gas. This is
 important to remember, because in the next chapters you will specify the account of a
-gas statiion to pay for the gas of a transaction that is signed by the account of a voter.
-The transaction to add a candidate will be signed and paid by the same account.
+gas station to pay for the gas of a transaction that is signed by the account of a voter.
+The transaction to add a candidate will be signed and paid by the same account, though.
 
 ```typescript
 .addSigner(accountKey(sender))
@@ -511,12 +491,12 @@ The transaction to add a candidate will be signed and paid by the same account.
 })
 ```
 
-Another difference between the `listCandidates` and `addCandidates` implementation is the use
-of a preflight request in the `addCandidates` function. This allows you to dry run the
+Another difference between the `listCandidates` and `addCandidate` implementation is the use
+of a preflight request in the `addCandidate` function. This allows you to dry run the
 transaction without actually sending the transaction and paying for gas. The preflight
 response contains information about the expected success of the transaction and the
 amount of gas it will cost. If the transaction would fail or the gas fee is higher than you
-like, you can choose not to send the transaction. This helps to prevent unnecessary loss
+would like, you can choose not to send the transaction. This helps to prevent unnecessary loss
 of KDA paid for gas.
 
 ```typescript
@@ -527,7 +507,8 @@ if (preflightResponse.result.status === 'failure') {
 }
 ```
 
-The remainder of of the `addCandidates` function deals with sending the transaction and processing the response. An error will be thrown if the transaction fails.
+The remainder of the `addCandidate` function deals with sending the transaction and processing
+the response. An error will be thrown if the transaction fails.
 
 Make sure that Chainweaver is open so you can sign the request. Then, enter your admin account
 name on the election website. Click the `Add candidate` button that appears and add a candidate
