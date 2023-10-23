@@ -6,10 +6,17 @@ import {
   helpCenterButtonClass,
   homeWrapperClass,
 } from '@/pages/home/styles.css';
-import { Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
+import { Accordion, Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
+
+const faqs: Array<{ title: string; body: string }> = [
+  { title: 'FAQ Title #1', body: 'FAQ Body #1' },
+  { title: 'FAQ Title #2', body: 'FAQ Body #2' },
+  { title: 'FAQ Title #3', body: 'FAQ Body #3' },
+  { title: 'FAQ Title #4', body: 'FAQ Body #4' },
+];
 
 const Home: FC = () => {
   const helpCenterRef = useRef<HTMLElement | null>(null);
@@ -107,6 +114,16 @@ const Home: FC = () => {
               </Table.Tr>
             </Table.Body>
           </Table.Root>
+        </Card>
+        <Card fullWidth>
+          <Heading variant="h5">Frequently Asked Questions</Heading>
+          <Accordion.Root>
+            {faqs.map((faq) => (
+              <Accordion.Section title={faq.title} key={faq.title}>
+                {faq.body}
+              </Accordion.Section>
+            ))}
+          </Accordion.Root>
         </Card>
       </div>
     </div>
