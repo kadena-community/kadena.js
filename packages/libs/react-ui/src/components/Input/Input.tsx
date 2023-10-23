@@ -44,7 +44,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     ref,
   ) {
     const RightIcon = rightIcon && SystemIcon[rightIcon];
-    const icon = icon && SystemIcon[icon];
+    const Icon = icon && SystemIcon[icon];
 
     return (
       <div
@@ -65,7 +65,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           </div>
         )}
         <div className={inputContainerClass}>
-          {icon && <icon size="md" />}
+          {Icon && <Icon size="md" />}
           <input
             ref={ref}
             className={inputClass}
