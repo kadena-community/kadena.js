@@ -8,6 +8,8 @@ import {
 } from '@/pages/home/styles.css';
 import { Accordion, Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
+import Head from 'next/head';
+
 import type { FC } from 'react';
 import React, { useRef } from 'react';
 
@@ -47,6 +49,9 @@ const Home: FC = () => {
 
   return (
     <div className={homeWrapperClass}>
+      <Head>
+        <title>Kadena Developer Tools</title>
+      </Head>
       <DrawerToolbar
         ref={helpCenterRef}
         sections={[
