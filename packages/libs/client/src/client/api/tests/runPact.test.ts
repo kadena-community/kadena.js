@@ -1,21 +1,44 @@
-jest.mock('@kadena/chainweb-node-client', () => ({
-  __esModule: true,
-  ...jest.requireActual('@kadena/chainweb-node-client'),
-  local: jest.fn(),
-}));
+import type * as ChainWebNodeClient from '@kadena/chainweb-node-client';
 import { local } from '@kadena/chainweb-node-client';
+
 import { runPact } from '../runPact';
 
-jest.useFakeTimers().setSystemTime(new Date('2023-07-31'));
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+// Hack to spy on exported function
+vi.mock('@kadena/chainweb-node-client', async (importOriginal) => {
+  const mod: typeof ChainWebNodeClient = await importOriginal();
+  const local = vi.fn().mockImplementation(mod.local);
+  return { ...mod, local };
+});
+
+const server = setupServer();
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('runPact', () => {
+  beforeAll(() => {
+    vi.useFakeTimers().setSystemTime(new Date('2023-07-31'));
+  });
+
+  afterAll(() => {
+    vi.useRealTimers();
+  });
+
   it('create a complete pact command from the input and send it to the chain', async () => {
-    const response = 'local-response';
-    (local as jest.Mock).mockResolvedValue(response);
+    const mockResponse = {};
+
+    server.resetHandlers(
+      rest.post('http://blockchain/api/v1/local', (req, res, ctx) =>
+        res.once(ctx.status(200), ctx.json(mockResponse)),
+      ),
+    );
 
     const result = await runPact('http://blockchain', '(+ 1 1)');
 
-    expect(result).toBe(response);
+    expect(result).toStrictEqual(mockResponse);
 
     expect(local).toBeCalledWith(
       {
