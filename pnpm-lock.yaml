@@ -794,24 +794,21 @@ importers:
       '@types/isomorphic-fetch':
         specifier: ~0.0.36
         version: 0.0.36
-      '@types/jest':
-        specifier: ^29.5.3
-        version: 29.5.3
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@18.17.14)
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+      vitest:
+        specifier: ^0.34.6
+        version: 0.34.6
 
   packages/libs/chainweb-node-client:
     dependencies:
@@ -852,24 +849,24 @@ importers:
       '@types/isomorphic-fetch':
         specifier: ~0.0.36
         version: 0.0.36
-      '@types/jest':
-        specifier: ^29.5.3
-        version: 29.5.3
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@18.17.14)
+      msw:
+        specifier: ^1.3.2
+        version: 1.3.2(typescript@5.2.2)
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+      vitest:
+        specifier: ^0.34.6
+        version: 0.34.6
 
   packages/libs/chainweb-stream-client:
     dependencies:
@@ -901,24 +898,21 @@ importers:
       '@types/eventsource':
         specifier: 1.1.11
         version: 1.1.11
-      '@types/jest':
-        specifier: ^29.5.3
-        version: 29.5.3
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@18.17.14)
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+      vitest:
+        specifier: ^0.34.6
+        version: 0.34.6
 
   packages/libs/chainwebjs:
     dependencies:
