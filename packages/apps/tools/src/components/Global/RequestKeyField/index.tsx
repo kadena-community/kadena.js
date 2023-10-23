@@ -50,7 +50,7 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
       inputProps={{
         id: 'request-key-input',
         placeholder: t('Enter Request Key'),
-        leftIcon: 'KeyIconFilled',
+        icon: 'KeyIconFilled',
         ...inputProps,
       }}
     />

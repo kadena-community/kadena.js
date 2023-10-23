@@ -29,7 +29,7 @@ export const Subscribe: FC = () => {
               <Stack gap="$sm">
                 <Input
                   id="email"
-                  leftIcon="At"
+                  icon="At"
                   onChange={handleFormState}
                   placeholder="Email address"
                   outlined
