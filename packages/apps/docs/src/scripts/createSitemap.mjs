@@ -32,7 +32,7 @@ const getPosts = (root, posts) => {
     .map(
       (post) => `
     <url>
-      <loc>${root}${post.root}}</loc>
+      <loc>${root}${post.root}</loc>
       ${
         post.lastModifiedDate &&
         `<lastmod>${formatDate(post.lastModifiedDate)}</lastmod>`
