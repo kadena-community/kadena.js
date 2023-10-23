@@ -242,12 +242,10 @@ export interface ICreateClient {
    * @param hostAddressGenerator - the function that generates the URL based on `chainId` and `networkId` from the transaction
    */
   (
-    hostAddressGenerator?: (
-      options: {
-        chainId: ChainId;
-        networkId: string;
-      },
-    ) => string,
+    hostAddressGenerator?: (options: {
+      chainId: ChainId;
+      networkId: string;
+    }) => string,
   ): IClient;
 }
 

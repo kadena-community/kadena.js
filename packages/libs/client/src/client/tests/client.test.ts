@@ -1,9 +1,7 @@
 import type { ChainId } from '@kadena/types';
-
-import { createClient } from '../client';
-
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { createClient } from '../client';
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -22,9 +20,13 @@ const post = (
     ),
   );
 
-const hostApiGenerator = (
-  { networkId, chainId }: { networkId: string; chainId: ChainId },
-): string => `http://example.org/${networkId}/${chainId}`;
+const hostApiGenerator = ({
+  networkId,
+  chainId,
+}: {
+  networkId: string;
+  chainId: ChainId;
+}): string => `http://example.org/${networkId}/${chainId}`;
 
 describe('client', () => {
   it('uses the string input as the host for all requests', async () => {
