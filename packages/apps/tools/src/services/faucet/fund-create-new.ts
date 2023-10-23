@@ -1,7 +1,4 @@
-import type {
-  ChainwebChainId,
-  ChainwebNetworkId,
-} from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   Pact,
   createClient,
@@ -15,7 +12,7 @@ import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import { env } from '@/utils/env';
 import Debug from 'debug';
 
-const NETWORK_ID: ChainwebNetworkId = 'testnet04';
+const NETWORK_ID = 'fast-development';
 const SENDER_ACCOUNT: string = 'coin-faucet';
 const SENDER_OPERATION_ACCOUNT: string = 'faucet-operation';
 const FAUCET_PUBLIC_KEY = env(
@@ -61,7 +58,7 @@ export const fundCreateNewAccount = async (
     .setMeta({ senderAccount: SENDER_OPERATION_ACCOUNT, chainId })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
-
+  console.log('FAUCET KEY ==== ' + FAUCET_PUBLIC_KEY);
   const signature1 = sign(transaction.cmd, {
     publicKey: FAUCET_PUBLIC_KEY,
     secretKey: FAUCET_PRIVATE_KEY,
@@ -77,7 +74,8 @@ export const fundCreateNewAccount = async (
     throw new Error('Failed to sign transaction');
   }
 
-  const apiHost = getKadenaConstantByNetwork('testnet04').apiHost({
+  // manually select DEVNET here for now. Should be flexible
+  const apiHost = getKadenaConstantByNetwork('DEVNET').apiHost({
     networkId: NETWORK_ID,
     chainId,
   });

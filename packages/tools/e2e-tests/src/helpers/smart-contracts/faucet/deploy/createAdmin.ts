@@ -1,6 +1,5 @@
 import { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { createClient, Pact, readKeyset } from '@kadena/client';
-
 import {
   ADMINS,
   COIN_ACCOUNT,
@@ -28,7 +27,6 @@ export const createAdmin = async ({
     .execution(
       Pact.modules.coin['create-account'](receiver, readKeyset(keysetName)),
     )
-    // .addKeyset(keysetName, 'keys-any', ADMINS.map((admin) => admin.publicKey))
     .addData(keysetName, {
       keys: ADMINS.map((admin) => admin.publicKey),
       pred: 'keys-any',
@@ -51,13 +49,14 @@ export const createAdmin = async ({
     secretKey: GAS_PROVIDER.privateKey,
   });
 
-  const { submit, pollStatus } = createClient(({ chainId, networkId }) => {
+  const { submit, listen } = createClient(({ chainId, networkId }) => {
     return `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
   });
 
   const requestKeys = await submit(signedTx);
 
-  console.log('createAdmins', requestKeys);
+  // console.log('createAdmins', requestKeys);
 
-  return pollStatus(requestKeys);
+  const response = await listen(requestKeys);
+  return response.result.status;
 };

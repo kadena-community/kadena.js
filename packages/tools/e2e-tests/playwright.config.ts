@@ -30,8 +30,14 @@ export default defineConfig({
 
   projects: [
     {
+      name: 'faucet-setup',
+      testDir: 'src/tests/faucet-setup',
+      testMatch: 'deploy-faucet.setup.ts',
+    },
+    {
       name: 'tools-app',
       testDir: 'src/tests/tools-app',
+      dependencies: ['faucet-setup'],
     },
     {
       name: 'test',

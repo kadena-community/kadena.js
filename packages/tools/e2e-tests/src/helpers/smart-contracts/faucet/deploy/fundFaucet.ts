@@ -12,17 +12,7 @@ import {
 import { signTransaction } from './utils';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const fundFaucet = async ({
-  chainId,
-  upgrade,
-}: {
-  chainId: ChainwebChainId;
-  upgrade: boolean;
-}) => {
-  if (upgrade) {
-    return 'The step "fundFaucet" is skipped for upgrades';
-  }
-
+export const fundFaucet = async ({ chainId }: { chainId: ChainwebChainId }) => {
   const sender = 'sender00';
   const receiverA = 'coin-faucet';
   const receiverB = 'faucet-operation';
@@ -75,7 +65,7 @@ export const fundFaucet = async ({
     secretKey: GAS_PROVIDER.privateKey,
   });
 
-  const { submit, pollStatus } = createClient(({ chainId, networkId }) => {
+  const { submit, listen } = createClient(({ chainId, networkId }) => {
     return `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
   });
 
@@ -83,5 +73,6 @@ export const fundFaucet = async ({
 
   console.log('fundFaucet', requestKeys);
 
-  return await pollStatus(requestKeys);
+  const response = await listen(requestKeys);
+  return response.result.status;
 };

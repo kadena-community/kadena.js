@@ -43,7 +43,7 @@ export const deployFaucet = async ({
 
   console.log(signedTx);
 
-  const { submit, pollStatus } = createClient(({ chainId, networkId }) => {
+  const { submit, listen } = createClient(({ chainId, networkId }) => {
     return `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
   });
 
@@ -51,5 +51,7 @@ export const deployFaucet = async ({
 
   console.log('deployFaucet', requestKeys);
 
-  return await pollStatus(requestKeys);
+  const response = await listen(requestKeys);
+  console.log(response);
+  return response.result.status;
 };

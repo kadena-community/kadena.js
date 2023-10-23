@@ -7,7 +7,13 @@ export const ADMINS: IAdmin[] = [
   {
     name: 'Faucet Operation',
     publicKey:
-      'dc28d70fceb519b61b4a797876a3dee07de78cebd6eddc171aef92f9a95d706e',
+      '019e6a6d8e0dee90ee600a22df82eccdd9ecfbb2400f64e6eb64d5eee8e876da',
+    // privateKey: 'a3487e979f54cabfe43097f39bd6f9fc297c5dc76b66b12f905acfb375ba6a00'
+  },
+  {
+    name: 'sender00',
+    publicKey:
+      '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
   },
 ];
 
@@ -29,4 +35,4 @@ export const GAS_PROVIDER: {
 };
 
 // eslint-disable-next-line @kadena-dev/typedef-var
-export const InitialFunding = { COIN_FAUCET: 10000, FAUCET_OPERATION: 20 };
+export const InitialFunding = { COIN_FAUCET: 10000, FAUCET_OPERATION: 5000 };
