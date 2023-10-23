@@ -68,7 +68,9 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           {LeftIcon && <LeftIcon size="md" />}
           <input
             ref={ref}
-            className={inputClass}
+            className={classNames(inputClass, {
+              // [baseOutlinedClass]: outlined,
+            })}
             disabled={disabled}
             {...rest}
           />
