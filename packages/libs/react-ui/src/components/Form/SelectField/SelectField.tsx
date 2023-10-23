@@ -1,7 +1,5 @@
-import type { IInputWrapperProps } from '@components/InputWrapper';
-import { InputWrapper } from '@components/InputWrapper';
-import type { ISelectProps } from '@components/Select';
-import { Select } from '@components/Select';
+import type { IInputWrapperProps, ISelectProps } from '@components/Form';
+import { InputWrapper, Select } from '@components/Form';
 import type { FC } from 'react';
 import React from 'react';
 

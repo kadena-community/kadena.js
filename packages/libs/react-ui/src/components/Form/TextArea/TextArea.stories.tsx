@@ -1,6 +1,6 @@
+import type { ITextareaProps } from '@components/Form';
+import { Textarea } from '@components/Form';
 import type { SystemIcon } from '@components/Icon';
-import type { ITextareaProps } from '@components/TextArea';
-import { Textarea } from '@components/TextArea';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 

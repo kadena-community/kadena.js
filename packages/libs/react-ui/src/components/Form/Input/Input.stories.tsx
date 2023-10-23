@@ -1,7 +1,7 @@
 import { Button } from '@components/Button';
+import type { IInputProps } from '@components/Form';
+import { Input } from '@components/Form';
 import { SystemIcon } from '@components/Icon';
-import type { IInputProps } from '@components/Input';
-import { Input } from '@components/Input';
 import { Stack } from '@components/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';

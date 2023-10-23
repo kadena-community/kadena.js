@@ -1,4 +1,4 @@
-import { Select } from '@components/Select';
+import { Select } from '@components/Form';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 

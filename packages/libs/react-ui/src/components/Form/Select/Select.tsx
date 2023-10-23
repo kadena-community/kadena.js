@@ -2,12 +2,12 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
+import { baseOutlinedClass } from '../Form.css';
 import {
   chevronIconClass,
   containerClass,
   containerClassDisabled,
   iconClass,
-  outlinedClass,
   selectClass,
 } from './Select.css';
 
@@ -41,7 +41,7 @@ export const Select: FC<ISelectProps> = forwardRef<
     <div
       className={classNames(containerClass, {
         [containerClassDisabled]: disabled,
-        [outlinedClass]: outlined,
+        [baseOutlinedClass]: outlined,
       })}
       data-testid="kda-select"
     >
