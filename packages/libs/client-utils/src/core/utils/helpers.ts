@@ -53,7 +53,7 @@ export interface IEmit {
 }
 
 export interface IClientConfig {
-  host?: string | ((arg: INetworkOptions) => string);
+  host?: string | ((options: INetworkOptions) => string);
   defaults?: Partial<IPactCommand>;
   sign: ISignFunction;
 }

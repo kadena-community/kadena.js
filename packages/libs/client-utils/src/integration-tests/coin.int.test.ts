@@ -111,13 +111,13 @@ describe('getBalance', () => {
 
 describe('getDetails', () => {
   it("should return the account's details", async () => {
-    const balance = await details(
+    const data = await details(
       accountOne.account,
       'fast-development',
       '0',
       'http://localhost:8080',
     );
-    expect(balance).toEqual({
+    expect(data).toEqual({
       account: accountOne.account,
       balance: 100,
       guard: {
