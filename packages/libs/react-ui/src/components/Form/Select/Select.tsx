@@ -2,6 +2,7 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
+import { baseOutlinedClass } from '../Form.css';
 import {
   chevronIconClass,
   containerClass,
@@ -23,13 +24,14 @@ export interface ISelectProps
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   id: string;
   value?: string;
+  outlined?: boolean;
 }
 
 export const Select: FC<ISelectProps> = forwardRef<
   HTMLSelectElement,
   ISelectProps
 >(function Select(
-  { ariaLabel, children, disabled = false, icon, ...rest },
+  { ariaLabel, children, disabled = false, outlined = false, icon, ...rest },
   ref,
 ) {
   const Icon = icon && SystemIcon[icon];
@@ -39,6 +41,7 @@ export const Select: FC<ISelectProps> = forwardRef<
     <div
       className={classNames(containerClass, {
         [containerClassDisabled]: disabled,
+        [baseOutlinedClass]: outlined,
       })}
       data-testid="kda-select"
     >

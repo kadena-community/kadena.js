@@ -1,4 +1,4 @@
-import { Input } from '@components/Input';
+import { Input } from '@components/Form/Input';
 import { Stack } from '@components/Stack';
 import { Label } from '@components/Typography/Label/Label';
 import type { Meta, StoryObj } from '@storybook/react';

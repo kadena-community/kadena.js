@@ -1,7 +1,5 @@
-import type { IInputWrapperProps } from '@components/InputWrapper';
-import { InputWrapper } from '@components/InputWrapper';
-import type { ITextareaProps } from '@components/TextArea';
-import { Textarea } from '@components/TextArea';
+import type { IInputWrapperProps, ITextareaProps } from '@components/Form';
+import { InputWrapper, Textarea } from '@components/Form';
 import type { FC } from 'react';
 import React from 'react';
 

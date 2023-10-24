@@ -4,6 +4,7 @@ import { fallbackVar, style, styleVariants } from '@vanilla-extract/css';
 import { statusColor } from '../InputWrapper/InputWrapper.css';
 
 export const containerClass = style([
+  // base container class
   sprinkles({
     alignItems: 'stretch',
     borderRadius: '$sm',
@@ -123,12 +124,3 @@ export const leadingTextWidthVariant = styleVariants(vars.sizes, (size) => {
     width: size,
   };
 });
-
-export const outlinedClass = style([
-  sprinkles({
-    borderRadius: '$sm',
-  }),
-  {
-    border: `1px solid ${vars.colors.$neutral3}`,
-  },
-]);

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import type { FC, InputHTMLAttributes } from 'react';
 import React, { forwardRef } from 'react';
 import type { vars } from 'src/styles';
+import { baseOutlinedClass } from '../Form.css';
 import {
   containerClass,
   disabledClass,
@@ -11,7 +12,6 @@ import {
   leadingTextClass,
   leadingTextWidthVariant,
   leadingTextWrapperClass,
-  outlinedClass,
 } from './Input.css';
 
 export interface IInputProps
@@ -49,7 +49,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     return (
       <div
         className={classNames(containerClass, {
-          [outlinedClass]: outlined,
+          [baseOutlinedClass]: outlined,
           [disabledClass]: disabled,
         })}
         data-testid="kda-input"

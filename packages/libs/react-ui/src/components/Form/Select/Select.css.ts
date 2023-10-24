@@ -1,7 +1,7 @@
-import { statusColor } from '@components/InputWrapper/InputWrapper.css';
+import { statusColor } from '@components/Form/InputWrapper/InputWrapper.css';
 import { sprinkles } from '@theme/sprinkles.css';
+import { darkThemeClass, vars } from '@theme/vars.css';
 import { fallbackVar, style } from '@vanilla-extract/css';
-import { darkThemeClass, vars } from '../../styles';
 
 export const containerClass = style([
   sprinkles({
