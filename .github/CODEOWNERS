@@ -1,13 +1,12 @@
 # About code owners: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-/*.*                                            @alber70g @webpro
-/*.md                                           @webpro
+/*.*                                            @alber70g
 /.changeset
-/common                                         @alber70g @webpro
+/common                                         @alber70g
 /pnpm-lock.yaml
 /packages/apps/graph                            @alber70g @MRVDH @nil-amrutlal-dept
 /packages/apps/graph-client                     @alber70g @MRVDH @nil-amrutlal-dept
-/packages/apps/kadena-docs                      @sstraatemans @eileenmguo @realdreamer
+/packages/apps/docs                             @sstraatemans @eileenmguo @realdreamer
 /packages/libs/chainweb-stream-client           @Takadenoshi
 /packages/libs/bootstrap-lib                    @alber70g
 /packages/libs/client                           @alber70g @javadkh2
@@ -19,4 +18,3 @@
 /packages/tools/eslint-config                   @alber70g
 /packages/tools/eslint-plugin                   @alber70g
 /packages/tools/heft-rig                        @alber70g
-/packages/tools/markdown                        @webpro
