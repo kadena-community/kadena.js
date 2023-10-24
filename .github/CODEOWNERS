@@ -7,6 +7,7 @@
 /packages/apps/docs                             @sstraatemans @eileenmguo @realdreamer
 /packages/apps/graph                            @alber70g @MRVDH @nil-amrutlal-dept
 /packages/apps/graph-client                     @alber70g @MRVDH @nil-amrutlal-dept
+/packages/apps/tools                            @sanderlooijenga @KristinaSpasevska
 /packages/libs/bootstrap-lib                    @alber70g
 /packages/libs/chainweb-stream-client           @Takadenoshi
 /packages/libs/client                           @alber70g @javadkh2
