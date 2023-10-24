@@ -13,8 +13,6 @@ const Transactions: React.FC = () => {
     variables: { first: 20 },
   });
 
-  console.log('index', data);
-
   return (
     <div style={{ padding: '0 50px 30px 50px' }}>
       <Head>

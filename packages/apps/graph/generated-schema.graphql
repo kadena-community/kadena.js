@@ -44,6 +44,7 @@ type ChainModuleAccount {
 type ChainModuleAccountTransactionsConnection {
   edges: [ChainModuleAccountTransactionsConnectionEdge]!
   pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type ChainModuleAccountTransactionsConnectionEdge {
@@ -54,6 +55,7 @@ type ChainModuleAccountTransactionsConnectionEdge {
 type ChainModuleAccountTransfersConnection {
   edges: [ChainModuleAccountTransfersConnectionEdge]!
   pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type ChainModuleAccountTransfersConnectionEdge {
@@ -108,6 +110,7 @@ type ModuleAccount {
 type ModuleAccountTransactionsConnection {
   edges: [ModuleAccountTransactionsConnectionEdge]!
   pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type ModuleAccountTransactionsConnectionEdge {
@@ -118,6 +121,7 @@ type ModuleAccountTransactionsConnectionEdge {
 type ModuleAccountTransfersConnection {
   edges: [ModuleAccountTransfersConnectionEdge]!
   pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type ModuleAccountTransfersConnectionEdge {
@@ -156,6 +160,7 @@ type Query {
 type QueryTransactionsConnection {
   edges: [QueryTransactionsConnectionEdge]!
   pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type QueryTransactionsConnectionEdge {
@@ -166,6 +171,7 @@ type QueryTransactionsConnectionEdge {
 type QueryTransfersConnection {
   edges: [QueryTransfersConnectionEdge]!
   pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type QueryTransfersConnectionEdge {
