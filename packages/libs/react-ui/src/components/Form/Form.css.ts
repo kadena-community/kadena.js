@@ -6,7 +6,6 @@ export const baseOutlinedClass = style([
   sprinkles({
     borderRadius: '$sm',
   }),
-  // focus class
   {
     outline: `2px solid ${vars.colors.$gray30}`,
     outlineOffset: '1px',
