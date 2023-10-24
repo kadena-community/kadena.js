@@ -1,6 +1,5 @@
 import type { ITextFieldProps } from '@components/Form';
 import { TextField } from '@components/Form';
-// what do we want this to look like
 import { statusVariant } from '@components/Form/InputWrapper/InputWrapper.css';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
