@@ -36,4 +36,4 @@ jobs:
 
       - name: Lost Pixel
         uses: lost-pixel/lost-pixel@v3.8.0
-        working-directory: packages/libs/react-ui
+
