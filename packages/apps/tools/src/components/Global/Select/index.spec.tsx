@@ -6,7 +6,7 @@ import { Select } from './index';
 
 describe('Select', () => {
   it.skip('renders correctly with all props', async () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
 
     const { getByTestId } = render(
       <Select

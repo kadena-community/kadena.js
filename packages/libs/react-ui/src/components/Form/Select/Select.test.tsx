@@ -44,7 +44,7 @@ describe('Select', () => {
   });
 
   it('invokes the onChange event handler when an option is selected', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     const { getByTestId } = render(
       <Select
         id="on-change-select"

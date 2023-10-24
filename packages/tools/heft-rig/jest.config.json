@@ -28,7 +28,6 @@
     "<rootDir>/src/tests/mockdata"
   ],
   "moduleDirectories": ["node_modules", "src"],
-  "reporters": ["jest-standard-reporter"],
   "roots": ["<rootDir>/src"],
   "testEnvironment": "jest-environment-node",
   "testEnvironmentOptions": {
