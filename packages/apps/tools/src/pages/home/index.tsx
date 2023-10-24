@@ -11,6 +11,7 @@ import {
   Box,
   Breadcrumbs,
   Card,
+  Grid,
   Heading,
   Table,
 } from '@kadena/react-ui';
@@ -99,6 +100,76 @@ const Home: FC = () => {
           We&apos;re constantly adding new Developer Tools to make it easier for
           our builders to utilize all Kadena has to offer.
         </Heading>
+        <Card fullWidth>
+          <Grid.Root columns={2}>
+            <Grid.Item>
+              <Heading variant="h5">General Links</Heading>
+              <Box marginBottom="$4" />
+              <ul>
+                <li>
+                  <a
+                    href="https://docs.kadena.io/kadena"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Overview of Kadena
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://docs.kadena.io/kadena/kda/manage-kda"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Manage your KDA
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://kadena.io/grants/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Contribute to the network
+                  </a>
+                </li>
+              </ul>
+            </Grid.Item>
+            <Grid.Item>
+              <Heading variant="h5">Developers Links</Heading>
+              <Box marginBottom="$4" />
+              <ul>
+                <li>
+                  <a
+                    href="https://docs.kadena.io/build/quickstart"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Quick start
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://docs.kadena.io/pact"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Pact language resources
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://docs.kadena.io/build/guides/election-dapp-tutorial"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Build your first dApp
+                  </a>
+                </li>
+              </ul>
+            </Grid.Item>
+          </Grid.Root>
+        </Card>
         <Card fullWidth>
           <Heading variant="h5">Frequently Asked Questions</Heading>
           <Box marginBottom="$4" />
