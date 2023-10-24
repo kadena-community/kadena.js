@@ -26,7 +26,7 @@ export const trClass = style([
       '.stripedClass &:hover': {
         background: vars.colors.$blue10,
       },
-      [`.${darkThemeClass} .stripedClass &:hover`]: {
+      [`${darkThemeClass} .stripedClass &:hover`]: {
         background: vars.colors.$blue100,
       },
     },
@@ -66,7 +66,7 @@ export const tableClass = style([
     border: `1px solid ${vars.colors.$gray30}`,
     borderSpacing: 0,
     selectors: {
-      [`.${darkThemeClass} &`]: {
+      [`${darkThemeClass} &`]: {
         border: `1px solid ${vars.colors.$gray60}`,
       },
     },

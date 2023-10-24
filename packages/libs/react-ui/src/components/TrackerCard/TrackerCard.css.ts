@@ -90,7 +90,7 @@ export const CardContainer = style([
   {
     border: `1px solid ${vars.colors.$borderDefault}`,
     selectors: {
-      [`.${darkThemeClass} &`]: {
+      [`${darkThemeClass} &`]: {
         border: `1px solid ${vars.colors.$gray60}`,
       },
     },

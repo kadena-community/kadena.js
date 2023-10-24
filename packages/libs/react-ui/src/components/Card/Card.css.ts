@@ -25,7 +25,7 @@ export const container = style([
   {
     border: `1px solid ${vars.colors.$gray30}`,
     selectors: {
-      [`.${darkThemeClass} &`]: {
+      [`${darkThemeClass} &`]: {
         border: `1px solid ${vars.colors.$gray60}`,
       },
     },
