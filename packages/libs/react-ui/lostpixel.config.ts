@@ -1,8 +1,9 @@
 import { CustomProjectConfig } from 'lost-pixel';
 
 export const config: CustomProjectConfig = {
-  storybookShots: {
-    storybookUrl: './storybook-static',
+  ladleShots: {
+    //ip should be localhost when running locally & 172.17.0.1 when running in GitHub action
+    ladleUrl: 'http://172.17.0.1:61000',
   },
   // OSS mode
   generateOnly: true,
