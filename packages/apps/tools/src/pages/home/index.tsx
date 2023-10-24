@@ -21,11 +21,44 @@ import Head from 'next/head';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
 
-const faqs: Array<{ title: string; body: string }> = [
-  { title: 'FAQ Title #1', body: 'FAQ Body #1' },
-  { title: 'FAQ Title #2', body: 'FAQ Body #2' },
-  { title: 'FAQ Title #3', body: 'FAQ Body #3' },
-  { title: 'FAQ Title #4', body: 'FAQ Body #4' },
+const faqs: Array<{ title: string; body: React.ReactNode }> = [
+  {
+    title: 'What can I do with the Faucet?',
+    body: (
+      <div>
+        You can use faucet to fund a Kadena account. You can either{' '}
+        <a href="/faucet/existing">fund an existing account</a> or{' '}
+        <a href="/faucet/new">create and fund a new account</a> all in one flow.
+      </div>
+    ),
+  },
+  {
+    title: 'How do I generate a key pair?',
+    body: (
+      <div>
+        Before you start using Faucet, you&apos;ll need to generate a key pair
+        which you can do one of two ways. You can use our{' '}
+        <a
+          href="https://transfer.chainweb.com/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Chainweb tool
+        </a>{' '}
+        and click on <strong>Generate KeyPair</strong> to create an individual
+        key pair, or you can use{' '}
+        <a
+          href="https://kadena.io/chainweaver-tos/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Chainweaver
+        </a>{' '}
+        to download a wallet and use it to generate a key pair.
+      </div>
+    ),
+  },
+  { title: "Additional FAQ's", body: 'FAQ Body #3' },
 ];
 
 const Home: FC = () => {
