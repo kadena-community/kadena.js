@@ -136,7 +136,9 @@ const Home: FC = () => {
         <Card fullWidth>
           <Grid.Root columns={2}>
             <Grid.Item>
-              <Heading variant="h5">General Links</Heading>
+              <Heading variant="h5" as="h3">
+                General Links
+              </Heading>
               <Box marginBottom="$4" />
               <ul>
                 <li>
@@ -169,7 +171,9 @@ const Home: FC = () => {
               </ul>
             </Grid.Item>
             <Grid.Item>
-              <Heading variant="h5">Developers Links</Heading>
+              <Heading variant="h5" as="h3">
+                Developers Links
+              </Heading>
               <Box marginBottom="$4" />
               <ul>
                 <li>
