@@ -7,8 +7,14 @@ import { mainStyle } from '@/components/Common/main/styles.css';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
-import { Accordion, Box, Link, Notification, Table } from '@kadena/react-ui';
-import Head from 'next/head';
+import {
+  Accordion,
+  Box,
+  Breadcrumbs,
+  Link,
+  Notification,
+  Table,
+} from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
 import React from 'react';
