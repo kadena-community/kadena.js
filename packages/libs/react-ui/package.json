@@ -38,11 +38,9 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts,.tsx",
+    "ladle:build": "ladle build -o ladl-static",
     "storybook": "ladle serve",
-    "test": "vitest",
-    "test:visual:dev": "TYPE=dev pnpm exec playwright test",
-    "test:visual": "playwright test",
-    "test:visual:update": "playwright test -u"
+    "test": "vitest"
   },
   "dependencies": {
     "@kadena/fonts": "~0.0.1",
@@ -97,7 +95,6 @@
     "vitest": "^0.34.6",
     "vitest-dom": "^0.1.1",
     "webpack": "~5.88.2",
-    "@playwright/test": "1.39.0",
-    "sync-fetch": "0.5.2"
+    "lost-pixel": "3.8.0"
   }
 }

@@ -1,0 +1,38 @@
+on:
+  push:
+    paths:
+      - packages/libs/react-ui/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          show-progress: false
+
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.base_ref }}
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Ladle
+        run: pnpm --filter @kadena/react-ui run ladle:build
+
+      - name: Lost Pixel
+        uses: lost-pixel/lost-pixel@v3.8.0
