@@ -189,7 +189,7 @@ type Transaction implements Node {
   badResult: String
   block: Block
   chainId: BigInt!
-  code: String
+  code: String!
   continuation: String
   creationTime: DateTime!
   data: String
@@ -211,6 +211,7 @@ type Transaction implements Node {
   senderAccount: String
   step: BigInt
   transactionId: BigInt
+  transfers: [Transfer!]
   ttl: BigInt!
 }
 
@@ -227,4 +228,5 @@ type Transfer implements Node {
   receiverAccount: String!
   requestKey: String!
   senderAccount: String!
+  transaction: Transaction
 }

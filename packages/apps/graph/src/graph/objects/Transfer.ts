@@ -28,5 +28,21 @@ export default builder.prismaNode('Transfer', {
         });
       },
     }),
+
+    transaction: t.prismaField({
+      type: 'Transaction',
+      nullable: true,
+      // eslint-disable-next-line @typescript-eslint/typedef
+      resolve(query, parent, args, context, info) {
+        return prismaClient.transaction.findUnique({
+          where: {
+            blockHash_requestKey: {
+              blockHash: parent.blockHash,
+              requestKey: parent.requestKey,
+            },
+          },
+        });
+      },
+    }),
   }),
 });
