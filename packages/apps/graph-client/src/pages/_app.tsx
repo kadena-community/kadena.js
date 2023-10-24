@@ -1,3 +1,4 @@
+import Layout from '@/components/Common/Layout';
 import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import '@styles/globals.css';
@@ -23,9 +24,11 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const ReactComponent = Component as ComponentType;
   return (
     <ApolloProvider client={client}>
-      <ChainTreeContextProvider>
-        <ReactComponent {...pageProps} />
-      </ChainTreeContextProvider>
+      <Layout>
+        <ChainTreeContextProvider>
+          <ReactComponent {...pageProps} />
+        </ChainTreeContextProvider>
+      </Layout>
     </ApolloProvider>
   );
 }

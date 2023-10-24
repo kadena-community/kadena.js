@@ -3,7 +3,7 @@ import { withCounter } from '../utils';
 
 describe('retry', () => {
   it('should calls the first try without waiting for interval', async () => {
-    const task = jest.fn().mockResolvedValue(true);
+    const task = vi.fn().mockResolvedValue(true);
     const runTask = retry(task);
 
     const result = await runTask();
@@ -13,7 +13,7 @@ describe('retry', () => {
   });
 
   it('should retry a task till it returns the result', async () => {
-    const task = jest.fn(
+    const task = vi.fn(
       withCounter((idx) => {
         if (idx === 5) return Promise.resolve(true);
         return Promise.reject();
@@ -28,7 +28,7 @@ describe('retry', () => {
   });
 
   it('throws timeout exception if task does not return value after the timeout', async () => {
-    const task = jest.fn(
+    const task = vi.fn(
       withCounter((idx) => {
         if (idx === 5) return Promise.resolve(true);
         return Promise.reject(new Error('its not ready'));

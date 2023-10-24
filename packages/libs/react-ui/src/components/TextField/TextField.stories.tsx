@@ -9,7 +9,7 @@ import React from 'react';
 type StoryProps = {
   helperText: string;
   leadingText: string;
-  leftIcon: keyof typeof SystemIcon;
+  icon: keyof typeof SystemIcon;
   rightIcon: keyof typeof SystemIcon;
 } & ITextFieldProps;
 
@@ -87,7 +87,7 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    leftIcon: {
+    icon: {
       description:
         'Icon rendered inside the input to the left of the input text.',
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
@@ -123,14 +123,14 @@ export const Group: Story = {
     label: 'Label',
     disabled: false,
     status: undefined,
-    leftIcon: 'Account',
+    icon: 'Account',
     rightIcon: undefined,
     leadingText: 'Leading',
     leadingTextWidth: undefined,
   },
   render: ({
     leadingText,
-    leftIcon,
+    icon,
     rightIcon,
     disabled,
     status,
@@ -152,7 +152,7 @@ export const Group: Story = {
         inputProps={{
           id: 'inputStory',
           leadingText,
-          leftIcon,
+          icon,
           rightIcon,
           placeholder: 'This is a placeholder',
         }}

@@ -10,7 +10,7 @@ import { statusVariant } from './InputWrapper.css';
 type StoryProps = {
   helperText: string;
   leadingText: string;
-  leftIcon: keyof typeof SystemIcon;
+  icon: keyof typeof SystemIcon;
   rightIcon: keyof typeof SystemIcon;
 } & IInputWrapperProps;
 

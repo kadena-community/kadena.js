@@ -62,7 +62,6 @@ export const WalletConnectClientContext =
 /**
  * walletConnectModal Config
  */
-// eslint-disable-next-line @kadena-dev/typedef-var
 const walletConnectModal = new WalletConnectModal({
   projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
   themeMode: 'light',
@@ -71,6 +70,7 @@ const walletConnectModal = new WalletConnectModal({
 interface IWalletConnectClientContextProviderProps {
   children: ReactNode;
 }
+
 /**
  * Provider
  */

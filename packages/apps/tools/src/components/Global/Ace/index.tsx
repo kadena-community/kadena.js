@@ -18,7 +18,7 @@ export interface IEditorProps
   code: IAceEditorProps['value'];
   keyboardHandler?: KeyboardHandler;
   theme?: Theme;
-  mode?: Mode;
+  mode: Mode;
 }
 
 const AceViewerComponent: FC<IEditorProps> = ({
