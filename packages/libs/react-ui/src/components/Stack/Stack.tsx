@@ -7,23 +7,27 @@ import { createElement } from 'react';
 export interface IStackProps
   extends Pick<
     Sprinkles,
+    | 'alignItems'
+    | 'justifyContent'
     | 'margin'
-    | 'marginX'
-    | 'marginY'
-    | 'marginTop'
     | 'marginBottom'
     | 'marginLeft'
     | 'marginRight'
-    | 'justifyContent'
-    | 'alignItems'
-    | 'width'
+    | 'marginTop'
+    | 'marginX'
+    | 'marginY'
+    | 'maxHeight'
+    | 'maxWidth'
+    | 'minHeight'
+    | 'minWidth'
     | 'padding'
-    | 'paddingX'
-    | 'paddingY'
-    | 'paddingTop'
     | 'paddingBottom'
     | 'paddingLeft'
     | 'paddingRight'
+    | 'paddingTop'
+    | 'paddingX'
+    | 'paddingY'
+    | 'width'
   > {
   direction?: Sprinkles['flexDirection'];
   wrap?: Sprinkles['flexWrap'];
@@ -33,53 +37,61 @@ export interface IStackProps
 }
 
 export const Stack = ({
+  children,
+  alignItems = undefined,
   as = 'div',
+  direction = undefined,
+  gap = undefined,
+  justifyContent = undefined,
   margin = undefined,
-  marginX = undefined,
-  marginY = undefined,
-  marginTop = undefined,
   marginBottom = undefined,
   marginLeft = undefined,
   marginRight = undefined,
-  gap = undefined,
-  justifyContent = undefined,
-  alignItems = undefined,
-  wrap = undefined,
-  direction = undefined,
-  width = undefined,
+  marginTop = undefined,
+  marginX = undefined,
+  marginY = undefined,
+  maxHeight = undefined,
+  maxWidth = undefined,
+  minHeight = undefined,
+  minWidth = undefined,
   padding = undefined,
-  paddingX = undefined,
-  paddingY = undefined,
-  paddingTop = undefined,
   paddingBottom = undefined,
   paddingLeft = undefined,
   paddingRight = undefined,
-  children,
+  paddingTop = undefined,
+  paddingX = undefined,
+  paddingY = undefined,
+  width = undefined,
+  wrap = undefined,
 }: IStackProps): React.ReactElement => {
   return createElement(
     as,
     {
       className: sprinkles({
+        alignItems,
         display: 'flex',
+        flexDirection: direction,
+        flexWrap: wrap,
+        gap,
+        justifyContent,
         margin,
-        marginX,
-        marginY,
-        marginTop,
         marginBottom,
         marginLeft,
         marginRight,
-        gap,
-        justifyContent,
-        alignItems,
-        flexWrap: wrap,
-        flexDirection: direction,
+        marginTop,
+        marginX,
+        marginY,
+        maxHeight,
+        maxWidth,
+        minHeight,
+        minWidth,
         padding,
-        paddingX,
-        paddingY,
-        paddingTop,
         paddingBottom,
         paddingLeft,
         paddingRight,
+        paddingTop,
+        paddingX,
+        paddingY,
         width,
       }),
       'data-testid': 'kda-stack',
