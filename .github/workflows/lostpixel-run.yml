@@ -1,7 +1,5 @@
 on:
   push:
-    paths:
-      - packages/libs/react-ui/**
 
 jobs:
   build:
