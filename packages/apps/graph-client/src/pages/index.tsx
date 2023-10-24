@@ -41,6 +41,8 @@ const Home: React.FC = () => {
   const [searchType, setSearchType] = useState<string>('request-key');
   const [searchField, setSearchField] = useState<string>('');
   const [moduleField, setModuleField] = useState<string>('coin');
+  const [defaultHashOption, setDefaultHashOption] =
+    useState<string>('request-key');
 
   const search = (): void => {
     switch (searchType) {
@@ -60,6 +62,48 @@ const Home: React.FC = () => {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.BLOCK_OVERVIEW}/${searchField}`);
         break;
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      search();
+    }
+  };
+
+  const handleSearchFieldChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setSearchField(event.target.value);
+    const fieldValue = event.target.value;
+
+    if (
+      fieldValue.startsWith('k:') ||
+      fieldValue.startsWith('w:') ||
+      fieldValue.startsWith('K:') ||
+      fieldValue.startsWith('W:')
+    ) {
+      setSearchType('account');
+    }
+
+    if (fieldValue.includes('.')) {
+      setSearchType('event');
+    }
+
+    if (fieldValue.length === 43) {
+      setSearchType(defaultHashOption);
+    }
+  };
+
+  const handleSearchTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setSearchType(event.target.value);
+    if (event.target.value === 'request-key') {
+      setDefaultHashOption('request-key');
+    }
+    if (event.target.value === 'block') {
+      setDefaultHashOption('block');
     }
   };
 
@@ -127,7 +171,8 @@ const Home: React.FC = () => {
               <Select
                 ariaLabel="search-type"
                 id="search-type"
-                onChange={(event) => setSearchType(event.target.value)}
+                onChange={handleSearchTypeChange}
+                value={searchType}
               >
                 <option value="request-key">Request Key</option>
                 <option value="account">Account</option>
@@ -145,7 +190,8 @@ const Home: React.FC = () => {
                 id="search-field"
                 value={searchField}
                 placeholder={searchTypePlaceholders[searchType]}
-                onChange={(event) => setSearchField(event.target.value)}
+                onChange={handleSearchFieldChange}
+                onKeyDown={handleKeyPress}
               />
             </InputWrapper>
           </Grid.Item>
