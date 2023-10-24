@@ -1,67 +1,63 @@
-import type Client from '@walletconnect/sign-client';
-import type { SessionTypes } from '@walletconnect/types';
 import type {
   IExecutionPayloadObject,
   IPactCommand,
 } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
-import type { ISingleSignFunction } from '../../ISignFunction';
 import { createWalletConnectSign } from '../signWithWalletConnect';
 import type { TWalletConnectChainId } from '../walletConnectTypes';
 
-jest.spyOn(console, 'log').mockImplementation(() => {});
+import type Client from '@walletconnect/sign-client';
+import type { SessionTypes } from '@walletconnect/types';
+
+type Transaction = IPactCommand & { payload: IExecutionPayloadObject };
 
 describe('signWithWalletConnect', () => {
-  let transaction: IPactCommand & { payload: IExecutionPayloadObject };
+  const transaction = Object.freeze<Transaction>({
+    payload: {
+      exec: {
+        code: '(coin.transfer "bonnie" "clyde" 1)',
+        data: {
+          test: 'test-data',
+        },
+      },
+    },
+    meta: {
+      chainId: '0',
+      gasLimit: 2300,
+      gasPrice: 0.00000001,
+      sender: 'test-sender',
+      ttl: 3600,
+      creationTime: 123456789,
+    },
+    signers: [
+      {
+        pubKey: '',
+        clist: [
+          {
+            name: 'cap.test-cap-name',
+            args: ['test-cap-arg'],
+          },
+        ],
+      },
+    ],
+    networkId: 'test-network-id',
+    nonce: 'kjs-test',
+  });
+
   const session = { topic: 'test-topic' } as unknown as SessionTypes.Struct;
   const walletConnectChainId: TWalletConnectChainId = 'kadena:testnet04';
-  let signWithWalletConnect: ISingleSignFunction;
-
-  beforeEach(() => {
-    transaction = {
-      payload: {
-        exec: {
-          code: '(coin.transfer "bonnie" "clyde" 1)',
-          data: {
-            test: 'test-data',
-          },
-        },
-      },
-      meta: {
-        chainId: '0',
-        gasLimit: 2300,
-        gasPrice: 0.00000001,
-        sender: 'test-sender',
-        ttl: 3600,
-        creationTime: 123456789,
-      },
-      signers: [
-        {
-          pubKey: '',
-          clist: [
-            {
-              name: 'cap.test-cap-name',
-              args: ['test-cap-arg'],
-            },
-          ],
-        },
-      ],
-      networkId: 'test-network-id',
-      nonce: 'kjs-test',
-    };
-  });
 
   it('signs a transaction', async () => {
     const client = {
-      request: jest.fn(() =>
+      request: vi.fn(() =>
         Promise.resolve({
           body: { cmd: 'test-cmd', sigs: [{ sig: 'test-sig' }] },
-          catch: jest.fn(),
+          catch: vi.fn(),
         }),
       ),
     };
 
-    signWithWalletConnect = createWalletConnectSign(
+    const signWithWalletConnect = createWalletConnectSign(
       client as unknown as Client,
       session,
       walletConnectChainId,
@@ -111,51 +107,48 @@ describe('signWithWalletConnect', () => {
 
   it('throws when there is no signing response', async () => {
     const client = {
-      request: jest.fn(() =>
+      request: vi.fn(() =>
         Promise.resolve({
-          catch: jest.fn(),
+          catch: vi.fn(),
         }),
       ),
     };
 
-    signWithWalletConnect = createWalletConnectSign(
+    const signWithWalletConnect = createWalletConnectSign(
       client as unknown as Client,
       session,
       walletConnectChainId,
     );
 
-    //@ts-ignore
-    delete transaction.payload.exec;
+    const tx = structuredClone(transaction);
+    // @ts-ignore
+    delete tx.payload.exec;
 
-    try {
-      await signWithWalletConnect(createTransaction(transaction));
-      // Fail test if signWithWalletConnect() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('`cont` transactions are not supported');
-    }
+    await expect(() =>
+      signWithWalletConnect(createTransaction(tx)),
+    ).rejects.toThrowError('`cont` transactions are not supported');
   });
 
   it('adds an empty clist when signer.clist is undefined', async () => {
     const client = {
-      request: jest.fn(() =>
+      request: vi.fn(() =>
         Promise.resolve({
           body: { cmd: 'test-cmd', sigs: [{ sig: 'test-sig' }] },
-          catch: jest.fn(),
+          catch: vi.fn(),
         }),
       ),
     };
 
-    signWithWalletConnect = createWalletConnectSign(
+    const signWithWalletConnect = createWalletConnectSign(
       client as unknown as Client,
       session,
       walletConnectChainId,
     );
 
-    //@ts-ignore
-    delete transaction.signers[0].clist;
+    const tx = structuredClone(transaction);
+    delete tx.signers[0].clist;
 
-    await signWithWalletConnect(createTransaction(transaction));
+    await signWithWalletConnect(createTransaction(tx));
 
     expect(client.request).toHaveBeenCalledWith({
       topic: session.topic,
@@ -181,25 +174,21 @@ describe('signWithWalletConnect', () => {
 
   it('throws when signing cont command', async () => {
     const client = {
-      request: jest.fn(() =>
+      request: vi.fn(() =>
         Promise.resolve({
-          catch: jest.fn(),
+          catch: vi.fn(),
         }),
       ),
     };
 
-    signWithWalletConnect = createWalletConnectSign(
+    const signWithWalletConnect = createWalletConnectSign(
       client as unknown as Client,
       session,
       walletConnectChainId,
     );
 
-    try {
-      await signWithWalletConnect(createTransaction(transaction));
-      // Fail test if signWithWalletConnect() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('Error signing transaction');
-    }
+    await expect(() =>
+      signWithWalletConnect(createTransaction(transaction)),
+    ).rejects.toThrowError('Error signing transaction');
   });
 });

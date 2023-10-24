@@ -1,7 +1,6 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
-// use this in all our inputs
 
 export const baseOutlinedClass = style([
   sprinkles({

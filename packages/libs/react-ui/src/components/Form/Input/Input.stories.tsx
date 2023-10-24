@@ -59,7 +59,7 @@ const meta: Meta<IInputProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    leftIcon: {
+    icon: {
       description:
         'Icon rendered inside the input to the left of the input text.',
       options: [
@@ -115,16 +115,16 @@ export default meta;
 type Story = StoryObj<
   {
     leadingText: string;
-    leftIcon: keyof typeof SystemIcon;
+    icon: keyof typeof SystemIcon;
     rightIcon: keyof typeof SystemIcon;
     type: React.HTMLInputTypeAttribute;
-  } & Omit<IInputProps, 'leftIcon' | 'rightIcon'>
+  } & Omit<IInputProps, 'icon' | 'rightIcon'>
 >;
 
 export const Dynamic: Story = {
   name: 'Input',
   args: {
-    leftIcon: undefined,
+    icon: undefined,
     type: 'text',
     rightIcon: undefined,
     leadingText: '',
@@ -132,7 +132,7 @@ export const Dynamic: Story = {
     outlined: false,
   },
   render: ({
-    leftIcon,
+    icon,
     rightIcon,
     outlined,
     leadingText,
@@ -143,7 +143,7 @@ export const Dynamic: Story = {
   }) => (
     <Input
       id="inlineInputStory"
-      leftIcon={leftIcon}
+      icon={icon}
       rightIcon={rightIcon}
       onChange={onChange}
       placeholder="This is a placeholder"
@@ -159,14 +159,14 @@ export const Dynamic: Story = {
 export const InlineWithButton: Story = {
   name: 'Inline with button',
   args: {
-    leftIcon: undefined,
+    icon: undefined,
     type: 'text',
   },
-  render: ({ leftIcon, onChange, type }) => (
+  render: ({ icon, onChange, type }) => (
     <Stack gap="$xs" alignItems="stretch">
       <Input
         id="inlineInputStory"
-        leftIcon={leftIcon}
+        icon={icon}
         onChange={onChange}
         placeholder="This is a placeholder"
         outlined
