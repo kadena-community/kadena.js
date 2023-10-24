@@ -3,9 +3,8 @@ import { sprinkles } from '@theme/sprinkles.css';
 import classNames from 'classnames';
 import type { FC, TextareaHTMLAttributes } from 'react';
 import React, { forwardRef } from 'react';
-import { baseOutlinedClass } from '../Form.css';
+import { baseContainerClass, baseOutlinedClass } from '../Form.css';
 import {
-  containerClass,
   disabledClass,
   textAreaClass,
   textAreaContainerClass,
@@ -32,7 +31,7 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
 ) {
   return (
     <div
-      className={classNames(containerClass, {
+      className={classNames(baseContainerClass, {
         [baseOutlinedClass]: outlined,
         [disabledClass]: disabled,
       })}

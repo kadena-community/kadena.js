@@ -3,9 +3,8 @@ import classNames from 'classnames';
 import type { FC, InputHTMLAttributes } from 'react';
 import React, { forwardRef } from 'react';
 import type { vars } from 'src/styles';
-import { baseOutlinedClass } from '../Form.css';
+import { baseContainerClass, baseOutlinedClass } from '../Form.css';
 import {
-  containerClass,
   disabledClass,
   inputClass,
   inputContainerClass,
@@ -48,7 +47,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
 
     return (
       <div
-        className={classNames(containerClass, {
+        className={classNames(baseContainerClass, {
           [baseOutlinedClass]: outlined,
           [disabledClass]: disabled,
         })}
@@ -68,9 +67,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           {Icon && <Icon size="md" />}
           <input
             ref={ref}
-            className={classNames(inputClass, {
-              // [baseOutlinedClass]: outlined,
-            })}
+            className={inputClass}
             disabled={disabled}
             {...rest}
           />
