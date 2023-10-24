@@ -9,20 +9,26 @@ export interface IBoxProps
     Pick<
       Sprinkles,
       | 'display'
+      | 'height'
       | 'margin'
-      | 'marginX'
-      | 'marginY'
-      | 'marginTop'
       | 'marginBottom'
       | 'marginLeft'
       | 'marginRight'
+      | 'marginTop'
+      | 'marginX'
+      | 'marginY'
+      | 'maxHeight'
+      | 'maxWidth'
+      | 'minHeight'
+      | 'minWidth'
       | 'padding'
-      | 'paddingX'
-      | 'paddingY'
-      | 'paddingTop'
       | 'paddingBottom'
       | 'paddingLeft'
       | 'paddingRight'
+      | 'paddingTop'
+      | 'paddingX'
+      | 'paddingY'
+      | 'width'
     >
   > {
   as?: ElementType;
@@ -30,23 +36,27 @@ export interface IBoxProps
 }
 
 export const Box = ({
+  children,
   as = 'div',
   display = 'block',
   margin = undefined,
-  marginX = undefined,
-  marginY = undefined,
-  marginTop = undefined,
   marginBottom = undefined,
   marginLeft = undefined,
   marginRight = undefined,
+  marginTop = undefined,
+  marginX = undefined,
+  marginY = undefined,
+  maxHeight = undefined,
+  maxWidth = undefined,
+  minHeight = undefined,
+  minWidth = undefined,
   padding = undefined,
-  paddingX = undefined,
-  paddingY = undefined,
-  paddingTop = undefined,
   paddingBottom = undefined,
   paddingLeft = undefined,
   paddingRight = undefined,
-  children,
+  paddingTop = undefined,
+  paddingX = undefined,
+  paddingY = undefined,
 }: IBoxProps): React.ReactElement => {
   return createElement(
     as,
@@ -54,19 +64,23 @@ export const Box = ({
       className: sprinkles({
         display,
         margin,
-        marginX,
-        marginY,
-        marginTop,
         marginBottom,
         marginLeft,
         marginRight,
+        marginTop,
+        marginX,
+        marginY,
+        maxHeight,
+        maxWidth,
+        minHeight,
+        minWidth,
         padding,
-        paddingX,
-        paddingY,
-        paddingTop,
         paddingBottom,
         paddingLeft,
         paddingRight,
+        paddingTop,
+        paddingX,
+        paddingY,
       }),
       'data-testid': 'kda-box',
     },

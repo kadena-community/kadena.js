@@ -103,6 +103,10 @@ const responsiveProperties = defineProperties({
       'min-content': 'min-content',
       'max-content': 'max-content',
     },
+    maxHeight: {
+      '100%': '100%',
+      maxContent: 'auto',
+    },
     gap: vars.sizes,
     gridGap: vars.sizes,
     overflow: ['hidden', 'visible', 'scroll', 'auto'],
