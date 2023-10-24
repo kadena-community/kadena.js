@@ -3,6 +3,7 @@ import './Query/block';
 import './Query/blocksFromHeight';
 import './Query/chainAccount';
 import './Query/completedBlockHeights';
+import './Query/executePact';
 import './Query/lastBlockHeight';
 import './Query/maximumConfirmationDepth';
 import './Query/transactions';

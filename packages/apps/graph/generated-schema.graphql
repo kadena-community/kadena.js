@@ -145,6 +145,7 @@ type Query {
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+  executePact(query: String!): String!
   lastBlockHeight: BigInt
   maximumConfirmationDepth: Int!
   node(id: ID!): Node
