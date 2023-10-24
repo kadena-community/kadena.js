@@ -99,6 +99,17 @@ const Home: FC = () => {
       </Heading>
       <div style={{ width: '680px' }}>
         <Card fullWidth>
+          <Heading variant="h5">Frequently Asked Questions</Heading>
+          <Box marginBottom="$4" />
+          <Accordion.Root>
+            {faqs.map((faq) => (
+              <Accordion.Section title={faq.title} key={faq.title}>
+                {faq.body}
+              </Accordion.Section>
+            ))}
+          </Accordion.Root>
+        </Card>
+        <Card fullWidth>
           <Heading variant="h5">Latest Updates</Heading>
           <p>
             {/* eslint-disable-next-line react/no-unescaped-entities */}
@@ -126,17 +137,6 @@ const Home: FC = () => {
               </Table.Tr>
             </Table.Body>
           </Table.Root>
-        </Card>
-        <Card fullWidth>
-          <Heading variant="h5">Frequently Asked Questions</Heading>
-          <Box marginBottom="$4" />
-          <Accordion.Root>
-            {faqs.map((faq) => (
-              <Accordion.Section title={faq.title} key={faq.title}>
-                {faq.body}
-              </Accordion.Section>
-            ))}
-          </Accordion.Root>
         </Card>
       </div>
     </div>
