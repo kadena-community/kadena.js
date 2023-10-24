@@ -161,6 +161,7 @@ export const getTransactions: DocumentNode = gql`
       first: $first
       last: $last
     ) {
+      totalCount
       pageInfo {
         startCursor
         endCursor
