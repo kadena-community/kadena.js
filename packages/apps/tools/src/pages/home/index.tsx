@@ -91,13 +91,14 @@ const Home: FC = () => {
         <Breadcrumbs.Item>{t('Startpage')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
       <br />
-      <Heading bold={false} variant="h3">
-        Kadena Developer Tools
-      </Heading>
-      <Heading bold={false} variant="h4" color="default">
-        Explore the developer tools platform.
-      </Heading>
       <div style={{ width: '680px' }}>
+        <Heading bold={false} variant="h3">
+          Kadena Developer Tools
+        </Heading>
+        <Heading bold={false} as="h2" variant="h5" color="default">
+          We&apos;re constantly adding new Developer Tools to make it easier for
+          our builders to utilize all Kadena has to offer.
+        </Heading>
         <Card fullWidth>
           <Heading variant="h5">Frequently Asked Questions</Heading>
           <Box marginBottom="$4" />
