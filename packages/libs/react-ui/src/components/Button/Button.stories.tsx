@@ -1,18 +1,13 @@
 import { SystemIcon } from '@components/Icon';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, Story, StoryDefault } from '@ladle/react';
 import { withCenteredStory } from '@utils/withCenteredStory';
 import React from 'react';
 import type { IButtonProps } from './Button';
 import { Button } from './Button';
 import { colorVariants, typeVariants } from './Button.css';
 
-const meta: Meta<
-  {
-    text: string;
-  } & IButtonProps
-> = {
+const meta: StoryDefault = {
   title: 'Components/Button',
-  component: Button,
   decorators: [withCenteredStory],
   parameters: {
     controls: {
@@ -156,73 +151,65 @@ const meta: Meta<
         defaultValue: { summary: false },
       },
     },
-    asChild: {
-      description:
-        'Allow users to pass on styles, icons, and additional props to the child component. For example when using next/link in Next.js.',
-    },
+    // asChild: {
+    //   description:
+    //     'Allow users to pass on styles, icons, and additional props to the child component. For example when using next/link in Next.js.',
+    // },
   },
 };
 
-type Story = StoryObj<
-  {
-    text: string;
-  } & IButtonProps
->;
+export const Dynamic: Story<IButtonProps & { text: string }> = ({
+  active,
+  as,
+  color = 'primary',
+  disabled,
+  href,
+  icon,
+  iconAlign = 'right',
+  loading,
+  onClick,
+  target,
+  text,
+  title,
+  variant = 'default',
+}) => {
+  if (loading) {
+    icon = 'Loading';
+  }
 
-export const Dynamic: Story = {
-  name: 'Button',
-  args: {
-    active: false,
-    as: 'button',
-    color: 'primary',
-    disabled: false,
-    href: 'https://kadena.io',
-    icon: undefined,
-    iconAlign: 'right',
-    loading: false,
-    target: '_self',
-    text: 'Click me',
-    title: 'test title',
-    variant: 'default',
-  },
-  render: ({
-    active,
-    as,
-    color = 'primary',
-    disabled,
-    href,
-    icon,
-    iconAlign = 'right',
-    loading,
-    onClick,
-    target,
-    text,
-    title,
-    variant = 'default',
-  }) => {
-    if (loading) {
-      icon = 'Loading';
-    }
+  return (
+    <Button
+      active={active}
+      as={as}
+      color={color}
+      disabled={disabled}
+      href={href}
+      icon={icon}
+      iconAlign={iconAlign}
+      loading={loading}
+      onClick={onClick}
+      target={target}
+      title={title}
+      variant={variant}
+    >
+      {text}
+    </Button>
+  );
+};
 
-    return (
-      <Button
-        active={active}
-        as={as}
-        color={color}
-        disabled={disabled}
-        href={href}
-        icon={icon}
-        iconAlign={iconAlign}
-        loading={loading}
-        onClick={onClick}
-        target={target}
-        title={title}
-        variant={variant}
-      >
-        {text}
-      </Button>
-    );
-  },
+Dynamic.args = {
+  active: false,
+  as: 'button',
+  color: 'primary',
+  disabled: false,
+  href: 'https://kadena.io',
+  icon: undefined,
+  iconAlign: 'right',
+  loading: false,
+  target: '_self',
+  text: 'Click me',
+  title: 'test title',
+  variant: 'default',
 };
 
 export default meta;

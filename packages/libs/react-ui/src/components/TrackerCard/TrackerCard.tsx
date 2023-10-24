@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
-import { MaskedValue, ProductIcon } from '..';
+import { ProductIcon } from '../Icon';
+import { MaskedValue } from '../MaskedValue';
 import {
   CardContainer,
   ContentContainer,

@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Story, StoryDefault } from '@ladle/react';
 import React from 'react';
 import { ProductIcon } from '../Icon';
 import type { ILabelValue, ITrackerCardProps } from './TrackerCard';
 import { TrackerCard } from './TrackerCard';
 import { layoutVariant } from './TrackerCard.css';
 
-const meta: Meta<{ icon: keyof typeof ProductIcon } & ITrackerCardProps> = {
+const meta: StoryDefault = {
   title: 'Content/TrackerCard',
   parameters: {
     docs: {
@@ -22,11 +22,11 @@ const meta: Meta<{ icon: keyof typeof ProductIcon } & ITrackerCardProps> = {
         type: 'select',
       },
     },
-    labelValues: {
-      control: {
-        type: 'object',
-      },
-    },
+    // labelValues: {
+    //   control: {
+    //     type: 'object',
+    //   },
+    // },
     helperText: {
       control: {
         type: 'text',
@@ -52,8 +52,6 @@ const meta: Meta<{ icon: keyof typeof ProductIcon } & ITrackerCardProps> = {
 
 export default meta;
 
-type Story = StoryObj<{ icon: keyof typeof ProductIcon } & ITrackerCardProps>;
-
 const labelValues: ILabelValue[] = [
   {
     label: 'Account Label',
@@ -70,24 +68,22 @@ const labelValues: ILabelValue[] = [
   },
 ];
 
-export const Primary: Story = {
-  name: 'TrackerCard',
-  args: {
-    labelValues: labelValues,
-    helperText: 'This is a helper text',
-    helperTextType: 'mild',
-    icon: 'QuickStart',
-    variant: 'vertical',
-  },
-  render: ({ labelValues, helperText, helperTextType, icon, variant }) => {
-    return (
-      <TrackerCard
-        variant={variant}
-        labelValues={labelValues}
-        helperText={helperText}
-        helperTextType={helperTextType}
-        icon={icon}
-      />
-    );
-  },
+export const Primary: Story<
+  ITrackerCardProps & { icon: keyof typeof ProductIcon }
+> = ({ labelValues, helperText, helperTextType, icon, variant }) => (
+  <TrackerCard
+    variant={variant}
+    labelValues={labelValues}
+    helperText={helperText}
+    helperTextType={helperTextType}
+    icon={icon}
+  />
+);
+
+Primary.args = {
+  labelValues: labelValues,
+  helperText: 'This is a helper text',
+  helperTextType: 'mild',
+  icon: 'QuickStart',
+  variant: 'vertical',
 };
