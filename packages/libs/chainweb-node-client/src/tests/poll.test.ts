@@ -3,24 +3,14 @@ import { setupServer } from 'msw/node';
 import type { IPollRequestBody, IPollResponse } from '../interfaces/PactAPI';
 import { poll } from '../poll';
 import { testURL } from './mockdata/Pact';
+import { localCommandResult } from './mockdata/execCommand';
 
 const restHandlers = [
   rest.post(`${testURL}/api/v1/poll`, (req, res, ctx) => {
     return res.once(
       ctx.status(200),
       ctx.json({
-        pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik: {
-          reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
-          txId: null,
-          result: {
-            data: 3,
-            status: 'success',
-          },
-          gas: 0,
-          continuation: null,
-          metaData: null,
-          logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
-        },
+        pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik: localCommandResult,
       }),
     );
   }),
@@ -39,18 +29,7 @@ test('/poll should return request keys of txs submitted', async () => {
   };
 
   const commandResult: IPollResponse = {
-    pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik: {
-      reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
-      txId: null,
-      result: {
-        data: 3,
-        status: 'success',
-      },
-      gas: 0,
-      continuation: null,
-      metaData: null,
-      logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
-    },
+    pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik: localCommandResult,
   };
   const localReq: IPollRequestBody = signedCommand;
   const responseExpected: IPollResponse = commandResult;
