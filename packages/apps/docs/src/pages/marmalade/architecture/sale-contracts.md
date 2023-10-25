@@ -58,7 +58,7 @@ under `pact/sale-contracts`. Just create a pull request and we will review your
 sale contract and take care of deployment and whitelisting it in the Policy
 Manager.
 
-**Conventional Auction** (Mainnet deployment pending)
+**Conventional Auction**
 
 A conventional auction is a sale contract that allows for the sale of a token
 through a conventional auction. The seller can set a reserve price which will
