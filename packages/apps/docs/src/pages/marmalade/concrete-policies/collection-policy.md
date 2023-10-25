@@ -47,7 +47,7 @@ seamlessly implements the `kip.token-policy-v2` interface.
   - `TOKEN-COLLECTION` @event: Manages token addition to collections and
     announces such additions.
 
-**Policy Functions**:
+**Functions**:
 
 - **`create-collection:`** Initiates a collection by defining its name, size,
   and overseeing entity.
