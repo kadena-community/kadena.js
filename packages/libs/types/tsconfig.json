@@ -1,4 +1,4 @@
 {
-  "extends": "./node_modules/@kadena-dev/heft-rig/tsconfig-base.json",
+  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {}
 }

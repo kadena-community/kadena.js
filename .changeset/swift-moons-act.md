@@ -18,7 +18,7 @@
 '@kadena/cookbook': patch
 '@kadena-dev/eslint-config': patch
 '@kadena-dev/eslint-plugin': patch
-'@kadena-dev/heft-rig': patch
+'@kadena-dev/shared-config': patch
 '@kadena/kda-cli': patch
 '@kadena-dev/lint-package': patch
 '@kadena/pactjs-cli': patch

@@ -17,7 +17,7 @@
     "eslint": "^8.45.0"
   },
   "devDependencies": {
-    "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
     "prettier": "~3.0.3",
     "typescript": "5.2.2"
   }

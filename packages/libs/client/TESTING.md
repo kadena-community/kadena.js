@@ -15,12 +15,12 @@ pnpm run build
 
 ## Unit Tests
 
-Kadena Client uses the default code coverage profile, found [here][2].
+Kadena Client uses the default code coverage profile.
 
 ## Integration Tests (with devnet)
 
 To run integration tests against devnet it requires starting devnet and exposing
-the pact endpoints at [http://localhost:8080][3]. To do this, simply execute the
+the pact endpoints at [http://localhost:8080][2]. To do this, simply execute the
 following command: Always pulling will ensure you're always using the latest
 available version of devnet.
 
@@ -38,5 +38,4 @@ pnpm run test:integration
 ```
 
 [1]: https://www.docker.com/
-[2]: /packages/tools/heft-rig/jest.config.json
-[3]: http://localhost:8080
+[2]: http://localhost:8080
