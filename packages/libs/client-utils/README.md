@@ -2,7 +2,7 @@
 
 # @kadena/client-utils
 
-Utility functions build as a wrapper around @kadena/client
+Utility functions built as a wrapper around @kadena/client.
 
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
@@ -12,6 +12,8 @@ Utility functions build as a wrapper around @kadena/client
 <!-- genericHeader end -->
 
 ## Kadena client utils
+
+TODO: write a proper readme
 
 Ideas:
 
