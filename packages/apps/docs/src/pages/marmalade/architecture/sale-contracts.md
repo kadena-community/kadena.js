@@ -31,13 +31,13 @@ The function `enforce-quote-update` is called in from the `buy` step in the ledg
 - price (type: decimal): This parameter represents the finale price associated with the sale.
 
 ## Available Sale Contracts
+The available sale contracts are listed below. More sale contracts will follow but in the meantime, you can also create your own sale contract. The sale contracts can be found in the [Marmalade Github repository](https://github.com/kadena-io/marmalade/tree/v2/pact/sale-contracts) under `pact/sale-contracts`. Just create a pull request and we will review your sale contract and take care of deployment and whitelisting it in the Policy Manager.
 
-**Conventional Auction**
+**Conventional Auction** (Mainnet deployment pending)
 
 A conventional auction is a sale contract that allows for the sale of a token through a conventional auction. The seller can set a reserve price which will ensure that the token is not sold below a certain price. The auction will run for a set amount of time and the highest bidder will win the auction. If the reserve price is not met, the seller can choose to cancel the auction and the token will be returned to the seller.
 The contract is deployed at `marmalade-sale.conventional-auction`.
 
-More sale contracts will follow but in the meantime, you can also create your own sale contract. The sale contracts can be found in the [Marmalade Github repository](https://github.com/kadena-io/marmalade) under `pact/sale-contracts`. Just create a pull request and we will review your sale contract and take care of deployment and whitelisting it in the Policy Manager.
 
 ## Using a Sale Contract
 The sale contract can be used by providing the sale contract's module name as part of the quote specification when calling the `offer` function in the ledger. Here's an example of the quote specification with the sale contract's module name mentioned under the key `sale-type`.
@@ -55,3 +55,5 @@ The sale contract can be used by providing the sale contract's module name as pa
 ```
 
 **_Note:_** When using a sale contract the `sale-price` during `offer` must always be `0.0`, since the sale contract will be responsible for updating the price during the `buy` step.
+
+[Sale Interface Code](https://github.com/kadena-io/marmalade/blob/v2/pact/policy-manager/sale.interface.pact)
