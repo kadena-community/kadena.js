@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@kadena/chainweb-stream-client",
+      "comment": "Changed default export at index to named export",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@kadena/chainweb-stream-client"
+}
