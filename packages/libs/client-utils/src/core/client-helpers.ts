@@ -1,14 +1,14 @@
 import type { ChainId } from '@kadena/client';
 
-import type { IAccount } from './utils/helpers';
-import type { WithEmitter } from './utils/with-emitter';
-import { withEmitter } from './utils/with-emitter';
 import { crossChain } from './cross-chain';
 import { preflight } from './preflight';
 import { dirtyRead } from './read-dirty';
 import { submitAndListen } from './submit-and-listen';
+import type { IAccount } from './utils/helpers';
+import type { WithEmitter } from './utils/with-emitter';
+import { withEmitter } from './utils/with-emitter';
 
-import { pipe } from 'ramda';
+import pipe from 'ramda/es/pipe';
 
 /**
  * @alpha
