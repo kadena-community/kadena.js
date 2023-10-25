@@ -150,12 +150,6 @@
     "path": "packages/tools/eslint-plugin"
   },
   {
-    "name": "@kadena-dev/heft-rig",
-    "version": "0.1.0",
-    "private": false,
-    "path": "packages/tools/heft-rig"
-  },
-  {
     "name": "@kadena-dev/lint-package",
     "version": "0.1.0",
     "private": true,
@@ -172,6 +166,12 @@
     "version": "0.0.0",
     "private": true,
     "path": "packages/tools/scripts"
+  },
+  {
+    "name": "@kadena-dev/shared-config",
+    "version": "0.1.0",
+    "private": false,
+    "path": "packages/tools/shared-config"
   },
   {
     "name": "kadena.js",

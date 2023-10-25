@@ -1,5 +1,5 @@
 {
-  "name": "@kadena-dev/heft-rig",
+  "name": "@kadena-dev/shared-config",
   "version": "0.1.0",
   "description": "Our own rig package, based on @rushstack/heft-node-rig",
   "license": "MIT",

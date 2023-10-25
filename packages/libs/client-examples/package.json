@@ -35,9 +35,9 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",

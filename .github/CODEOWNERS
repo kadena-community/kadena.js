@@ -16,5 +16,5 @@
 /packages/libs/types                            @alber70g
 /packages/tools/eslint-config                   @alber70g
 /packages/tools/eslint-plugin                   @alber70g
-/packages/tools/heft-rig                        @alber70g
 /packages/tools/pactjs-cli                      @alber70g
+/packages/tools/shared-config                   @alber70g
