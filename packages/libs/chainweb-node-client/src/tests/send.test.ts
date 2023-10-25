@@ -9,19 +9,19 @@ import { send } from '../send';
 import { testURL } from './mockdata/Pact';
 
 const httpHandlers = [
-  http.post(
+  http.post<never, ISendRequestBody>(
     `${testURL}/api/v1/send`,
     async ({ request }) => {
-      const body = (await request.json()) as ISendRequestBody;
+      const body = await request.json();
       const requestKeys = body.cmds.map((cmd) => cmd.hash);
       return HttpResponse.json({ requestKeys });
     },
     { once: true },
   ),
-  http.post(
+  http.post<never, ISendRequestBody>(
     `${testURL}/wrongChain/api/v1/send`,
     async ({ request }) => {
-      const body = (await request.json()) as ISendRequestBody;
+      const body = await request.json();
       const requestKeys = body.cmds.map((cmd) => cmd.hash);
       const errorMsg = requestKeys
         .map(
@@ -33,10 +33,10 @@ const httpHandlers = [
     },
     { once: true },
   ),
-  http.post(
+  http.post<never, ISendRequestBody>(
     `${testURL}/duplicate/api/v1/send`,
     async ({ request }) => {
-      const body = (await request.json()) as ISendRequestBody;
+      const body = await request.json();
       const requestKeys = body.cmds.map((cmd) => cmd.hash);
       const errorMsg = requestKeys
         .map(
