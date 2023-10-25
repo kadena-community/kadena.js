@@ -11,7 +11,7 @@ const PactQuery = builder.inputType('PactQuery', {
   }),
 });
 
-builder.queryField('executePact', (t) => {
+builder.queryField('executePacts', (t) => {
   return t.field({
     type: ['String'],
     args: {
@@ -37,6 +37,32 @@ builder.queryField('executePact', (t) => {
       });
 
       return result;
+    },
+  });
+});
+
+builder.queryField('executePact', (t) => {
+  return t.field({
+    type: 'String',
+    args: {
+      pactQuery: t.arg({ type: PactQuery, required: true }),
+    },
+    resolve: async (parent, args, context, info) => {
+      const transaction = Pact.builder
+        .execution(args.pactQuery.code)
+        .setMeta({
+          chainId: args.pactQuery.chainId as ChainId,
+        })
+        .setNetworkId(devnetConfig.NETWORK_ID)
+        .createTransaction();
+
+      const response = await dirtyRead(transaction);
+
+      if (response.result.status === 'failure') {
+        return String(response.result.status);
+      }
+
+      return JSON.stringify(response.result.data);
     },
   });
 });
