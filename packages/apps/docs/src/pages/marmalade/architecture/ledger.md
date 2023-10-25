@@ -9,14 +9,13 @@ layout: full
 
 # The Marmalade Ledger Explained
 
-**What is the Marmalade Ledger?**
+## What is the Marmalade Ledger?
 
-What is it and what is it used for. Think of a
-[Ledger](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact) as
-your personal bank statement, only in this case its not just for you, it's for
-everybody participating in the system. It's this big ol' record that keeps track
-of the things within marmalade that happen. You can look at the ledger as the
-heart of marmalade, the place where most of the action happens.
+What is it and what is it used for. Think of a Ledger as your personal bank
+statement, only in this case its not just for you, it's for everybody
+participating in the system. It's this big ol' record that keeps track of the
+things within marmalade that happen. You can look at the ledger as the heart of
+marmalade, the place where most of the action happens.
 
 In the context of NFTs, the Marmalade Ledger plays a crucial role in managing
 the lifecycle of these unique digital assets. It provides the underlying
@@ -39,31 +38,125 @@ transactions.
 When delving further into the ledger's workings, we find each function and
 capability playing a unique role in its operation and management.
 
-**Capabilities**
+## Marmalade functions
 
-There are capabilities like `TRANSFER`, which work similarly to the transfer
-feature on your online banking application. They help move tokens between
-accounts. There are also capabilities for updates and checks, such as `SUPPLY`,
-`TOKEN`, `ACCOUNT_GUARD`, and `RECONCILE`.
+**Create Token**
 
-Some more specific capabilities include `DEBIT` and `CREDIT`, which gives the
-power to use debit or credit functions, and `UPDATE_SUPPLY` allows adjustments
-to a token's total circulation.
+A Token is created in marmalade via running `create-token`. Arguments include:
 
-Capabilities like `MINT` and `BURN` enable creation and removal of tokens
-respectively.
+- `id`: token-id, formatted in `t:{token-detail-hash}`. Should be created using
+  `create-token-id`
+- `precision`: Number of decimals allowed for for the token amount. For one-off
+  token, precision must be 0, and should be enforced in the policy's
+  `enforce-init`.
+- `uri`: url to external JSON containing metadata
+- `policies`: policies contracts with custom functions to execute at marmalade
+  functions
+- `creation-guard`: Non stored guard (usally a Keyset). Must be used to reserve
+  a `token-id`
 
-**Marketplace related capabilities**
+`policy-manager.enforce-init` calls `policy::enforce-init` in stored
+token-policies, and the function is executed in `ledger.create-token`.
 
-Special marketplace-related capabilities like `SALE`, `OFFER`, `WITHDRAW`, and
-`BUY` facilitate the trading of tokens within the marketplace.
+**Creation guard usage**
 
-**Core functions**
+Before creating a token, the creator must choose a temporary guard, which can be
 
-Core functions such as `create-token`, `create-account`, `mint`, `burn`,
-`offer`, `withdraw`, `buy`, `transfer`, `get-balance`, `details`,
-`total-supply`, and `get-uri` offer a variety of operations from creating new
-tokens and accounts to managing token trading in the marketplace.
+- An usual keyset. (eg: one already used in the guard-policy).
+- But also a single-use keyset, since it isn't stored and won't be needed
+  anymore.
+- Some more complex setups could involve other guard types (eg: when token
+  creations are managed by a SC).
+
+This guard will be part of the `token-id` (starting `t:`) creation. As a
+consequence, it protects the legit creator from being front-runned during token
+creation. With this mechanism, only the legit creator who owns the creation key
+can create a specific `token-id`.
+
+Creation steps:
+
+- Generate a unique `token-id` by calling
+  `(ledger.create-token-id details creation-guard)`
+- Create the token by calling `(ledger.create-token ... creation-guard)`
+  - This transaction must include the `TOKEN` capability signed with the keyset
+    `creation-guard`
+
+**Mint Token**
+
+Token amount is minted to an account at `mint`. Arguments include:
+
+- `id`: token-id
+- `account`: account that will receive the minted token
+- `guard`: guard of the minted account
+- `amount`: amount to be minted
+
+`policy-manager.enforce-mint` calls `policy:enforce-mint` in stored
+token-policies, and the function is executed at `ledger.mint`.
+
+**Burn Token**
+
+Token amount is burnt from an account at `burn`. Arguments include:
+
+- `id`: token-id
+- `account`: account where the token will be burnt from
+- `amount`: amount to be burnt
+
+`policy-manager.enforce-burn` calls `policy:enforce-burn` in stored
+token-policies, and the function is executed at `ledger.burn`.
+
+**Transfer**
+
+Token amount is transferred from sender to receiver at `transfer`. Arguments
+include:
+
+- `id`: token-id
+- `sender`: sender account
+- `receiver`: receiver account
+- `amount`: amount to be transferred
+
+`policy-manager.enforce-transfer` calls `policy:enforce-transfer` in stored
+token-policies, and the function is executed at `ledger.transfer`.
+
+**Sale**
+
+`sale` allows a two-step offer - buy escrow system using
+[defpact](https://pact-language.readthedocs.io/en/latest/pact-reference.html#defpact).
+Arguments include:
+
+- `id`: token-id
+- `seller`: seller account
+- `amount`: amount to be sold
+- `timeout`: timeout of the offer
+
+**offer**
+
+Step 0 of `sale` executes `offer`. `offer` transfers the token from the seller
+to the escrow account.
+
+`policy-manager.enforce-offer` calls `policy:enforce-offer` in stored
+token-policies, and the function is executed at step 0 of `sale`.
+
+**withdraw (cont)**
+
+Step 0-rollback executes `withdraw`. `withdraw` transfers token from the escrow
+back to the seller. `withdraw` can be executed after timeout, by sending in
+`cont` command with `rollback: true`, `step: 0`. Formatting `cont` commands can
+be read in
+[here](https://pact-language.readthedocs.io/en/latest/pact-reference.html?highlight=continuation#yaml-continuation-command-request)
+
+`policy-manager.enforce-withdraw` calls `policy:enforce-withdraw` in stored
+token-policies, and the function is executed at step 0-rollback of `sale`.
+
+**buy (cont)**
+
+Step 1 executes `buy`. `buy` transfers token from the escrow to the buyer. `buy`
+can be executed before `timeout`. The `buyer` and `buyer-guard` information is
+read from the `env-data` of the command instead of passing in arguments. Just
+like `withdraw`, `buy` is executed using `cont` command with `rollback:false`,
+`step: 0`.
+
+`policy-manager.enforce-buy` calls `policy:enforce-buy` in stored
+token-policies, and the function is executed at step 1 of `sale`.
 
 ---
 
@@ -77,5 +170,6 @@ We hope you've got a sense of what the marmalade ledger is all about.
 Whether you're a code whizz or a crypto newbie, we hope this journey into the
 workings of this ledger has helped to unravel some of the mysteries behind it.
 You could be buying a new digital art piece today or selling some tomorrow.
+Marmalade makes it possible.
 
-**Marmalade makes it possible.**
+[Leder code](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact)

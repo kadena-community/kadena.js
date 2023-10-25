@@ -33,8 +33,8 @@ from each policy as we used to, we now call them from this central hub, making
 policy enforcement smoother and more streamlined.
 
 We've made the move from On-chain manifest to Off-chain URI to standardise token
-data retrieval. We've also encouraged the use of IPFS for off-chain data hosting
-for a more decentralized approach, which many of you advocated for.
+data retrieval. We've also encouraged the use of IPFS / ARWeave for off-chain
+data hosting for a more decentralized approach, which many of you advocated for.
 
 And remember, we respect and value the diversity of our community. We know some
 of you prefer to stick with on-chain manifests. Don't worry, we've got you
