@@ -40,6 +40,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -364,9 +365,9 @@ const NewAccountFaucetPage: FC = () => {
       <Stack marginY={'$md'}>
         <Text>
           If you want to fund an existing account, visit{' '}
-          <a className={notificationLinkStyle} href={'/faucet/existing'}>
+          <Link className={notificationLinkStyle} href={'/faucet/existing'}>
             this page
-          </a>
+          </Link>
           .
         </Text>
       </Stack>
