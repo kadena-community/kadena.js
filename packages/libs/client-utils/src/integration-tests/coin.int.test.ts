@@ -9,6 +9,7 @@ import {
   transferCrossChain,
 } from '../coin';
 
+import { NetworkIds } from './support/NetworkIds';
 import { withStepFactory } from './support/helpers';
 import {
   sender00Account,
@@ -75,7 +76,7 @@ describe('transferCreate', () => {
         'submit',
         withStep((step, trDesc) => {
           expect(step).toBe(3);
-          expect(trDesc.networkId).toBe('fast-development');
+          expect(trDesc.networkId).toBe(NetworkIds.fast_development);
           expect(trDesc.chainId).toBe('0');
           expect(trDesc.requestKey).toBeTruthy();
         }),
