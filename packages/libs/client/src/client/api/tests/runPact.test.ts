@@ -1,10 +1,8 @@
 import type * as ChainWebNodeClient from '@kadena/chainweb-node-client';
 import { local } from '@kadena/chainweb-node-client';
-
-import { runPact } from '../runPact';
-
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { runPact } from '../runPact';
 
 // Hack to spy on exported function
 vi.mock('@kadena/chainweb-node-client', async (importOriginal) => {
@@ -31,8 +29,10 @@ describe('runPact', () => {
     const mockResponse = {};
 
     server.resetHandlers(
-      rest.post('http://blockchain/api/v1/local', (req, res, ctx) =>
-        res.once(ctx.status(200), ctx.json(mockResponse)),
+      http.post(
+        'http://blockchain/api/v1/local',
+        () => HttpResponse.json(mockResponse),
+        { once: true },
       ),
     );
 

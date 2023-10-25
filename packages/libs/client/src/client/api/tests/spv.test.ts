@@ -1,7 +1,6 @@
-import { getSpv, pollSpv } from '../spv';
-
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { getSpv, pollSpv } from '../spv';
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -12,12 +11,14 @@ const post = (
   path: string,
   response: string | Record<string, unknown>,
   status = 200,
-): ReturnType<typeof rest.post> =>
-  rest.post(path, (req, res, ctx) =>
-    res.once(
-      ctx.status(status),
-      typeof response === 'string' ? ctx.text(response) : ctx.json(response),
-    ),
+): ReturnType<typeof http.post> =>
+  http.post(
+    path,
+    () =>
+      typeof response === 'string'
+        ? new HttpResponse(response, { status })
+        : HttpResponse.json(response, { status }),
+    { once: true },
   );
 
 describe('getSpv', () => {

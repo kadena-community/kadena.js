@@ -1,26 +1,21 @@
 import { Command } from 'commander';
 import { writeFileSync } from 'fs';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import path from 'path';
 import * as RCFC from '../../utils/retrieveContractFromChain';
 import { retrieveContract } from '../retrieve-contract';
 
-const restHandlers = [
-  rest.post(
+const httpHandlers = [
+  http.post(
     'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact/api/v1/local',
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({ result: { data: { code: 'some pactCode' } } }),
-      );
-    },
+    () => HttpResponse.json({ result: { data: { code: 'some pactCode' } } }),
   ),
 ];
 
 vi.mock('fs', () => ({ writeFileSync: vi.fn() }));
 
-const server = setupServer(...restHandlers);
+const server = setupServer(...httpHandlers);
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());

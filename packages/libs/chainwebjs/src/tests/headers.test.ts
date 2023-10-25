@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import chainweb from '..';
 import { config } from './config';
@@ -36,15 +36,15 @@ const height = 1511601;
 describe('chainweb.header', () => {
   it('should return the correct header by height', async () => {
     server.resetHandlers(
-      rest.get(
+      http.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(blockByHeightCurrentCutMock)),
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(blockByHeightBranchPageMock)),
+        () => HttpResponse.json(blockByHeightBranchPageMock),
+        { once: true },
       ),
     );
 

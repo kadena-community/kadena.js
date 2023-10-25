@@ -1,3 +1,5 @@
+import { HttpResponse, delay, http } from 'msw';
+import { setupServer } from 'msw/node';
 import type { ICoin } from '../../../composePactCommand/test/coin-contract';
 import type { IQuicksignResponseOutcomes } from '../../../index';
 import { Pact } from '../../../index';
@@ -5,9 +7,6 @@ import { getModule } from '../../../pact';
 import { signWithChainweaver } from '../signWithChainweaver';
 
 const coin: ICoin = getModule('coin');
-
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -18,14 +17,17 @@ const post = (
   path: string,
   response: string | IQuicksignResponseOutcomes,
   status = 200,
-  delay?: number,
-): ReturnType<typeof rest.post> =>
-  rest.post(path, (req, res, ctx) =>
-    res.once(
-      ctx.status(status),
-      ctx.delay(delay ?? 0),
-      typeof response === 'string' ? ctx.text(response) : ctx.json(response),
-    ),
+  wait?: number,
+): ReturnType<typeof http.post> =>
+  http.post(
+    path,
+    async () => {
+      await delay(wait ?? 0);
+      return typeof response === 'string'
+        ? new HttpResponse(response, { status })
+        : HttpResponse.json(response, { status });
+    },
+    { once: true },
   );
 
 describe('signWithChainweaver', () => {
@@ -65,10 +67,10 @@ describe('signWithChainweaver', () => {
     });
 
     server.resetHandlers(
-      rest.post('http://127.0.0.1:9467/v1/quicksign', async (req, res, ctx) => {
-        const body = await req.json();
+      http.post('http://127.0.0.1:9467/v1/quicksign', async ({ request }) => {
+        const body = await request.json();
 
-        expect(req.headers.get('content-type')).toEqual(
+        expect(request.headers.get('content-type')).toEqual(
           'application/json;charset=utf-8',
         );
 
@@ -76,7 +78,7 @@ describe('signWithChainweaver', () => {
           cmdSigDatas: [{ cmd: unsignedTransaction.cmd, sigs }],
         });
 
-        return res.once(ctx.status(200), ctx.json({ responses: [] }));
+        return HttpResponse.json({ responses: [] });
       }),
     );
 

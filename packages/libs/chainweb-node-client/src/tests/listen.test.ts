@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import type {
   ICommandResult,
@@ -6,16 +6,18 @@ import type {
   ListenResponse,
 } from '../interfaces/PactAPI';
 import { listen } from '../listen';
-import { testURL } from './mockdata/Pact';
 import { localCommandResult } from './mockdata/execCommand';
+import { testURL } from './mockdata/Pact';
 
-const restHandlers = [
-  rest.post(`${testURL}/api/v1/listen`, (req, res, ctx) => {
-    return res.once(ctx.status(200), ctx.json(localCommandResult));
-  }),
+const httpHandlers = [
+  http.post(
+    `${testURL}/api/v1/listen`,
+    () => HttpResponse.json(localCommandResult),
+    { once: true },
+  ),
 ];
 
-const server = setupServer(...restHandlers);
+const server = setupServer(...httpHandlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
