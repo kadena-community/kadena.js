@@ -53,9 +53,9 @@
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
-    "@kadena/client": "workspace:^",
+    "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/types": "workspace:^",
+    "@kadena/types": "workspace:*",
     "debug": "~4.3.4",
     "ramda": "^0.29.0"
   },
@@ -65,15 +65,15 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:^",
-    "@microsoft/api-extractor": "^7.37.0",
+    "@microsoft/api-extractor": "^7.38.0",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",
-    "@types/node": "^16.18.48",
+    "@types/node": "^18.17.14",
     "@types/ramda": "^0.29.5",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
+    "prettier": "~3.0.3",
+    "prettier-plugin-packagejson": "^2.4.6",
     "ts-node": "~10.8.2",
     "vitest": "^0.34.6"
   }
