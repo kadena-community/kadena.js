@@ -196,7 +196,9 @@ export const ExtendedTransactionsTable = (
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  {edge?.node.code || (
+                  {edge?.node.code ? (
+                    JSON.parse(edge.node.code)
+                  ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
                 </Table.Td>
