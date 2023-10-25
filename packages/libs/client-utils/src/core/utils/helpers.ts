@@ -16,7 +16,8 @@ export const inspect =
     return data;
   };
 
-export const validateSign = (
+// TODO: check if its possible to check the correctness of the signature as well
+  export const validateSign = (
   tx: IUnsignedCommand,
   signedTx: ICommand | IUnsignedCommand,
 ): ICommand => {

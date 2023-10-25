@@ -48,8 +48,8 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact",
-    "test": "jest",
-    "test:integration": "jest --silent -c ./jest.integration.config.js"
+    "test": "vitest",
+    "test:integration": "vitest run -c ./vitest.integration.config.ts"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -69,13 +69,12 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",
-    "@types/jest": "^29.5.3",
     "@types/node": "^16.18.48",
     "@types/ramda": "^0.29.5",
     "eslint": "^8.45.0",
-    "jest": "^29.7.0",
     "prettier": "~3.0.0",
     "prettier-plugin-packagejson": "^2.4.5",
-    "ts-node": "~10.8.2"
+    "ts-node": "~10.8.2",
+    "vitest": "^0.34.6"
   }
 }
