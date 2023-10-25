@@ -12,7 +12,6 @@ import {
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
-
 import { pollStatus, preflight, submit } from '../util/client';
 import { asyncPipe, inspect } from '../util/fp-helpers';
 

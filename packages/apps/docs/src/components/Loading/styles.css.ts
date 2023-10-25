@@ -1,5 +1,4 @@
 import { sprinkles } from '@kadena/react-ui/theme';
-
 import { keyframes, style } from '@vanilla-extract/css';
 
 const rotate = keyframes({

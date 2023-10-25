@@ -1,7 +1,6 @@
+import type { IAuthorInfo, IMenuData } from '@/Layout';
+import { compareDesc } from './dates';
 import { getData } from './staticGeneration/getData.mjs';
-
-import type { IAuthorInfo, IMenuData } from '@/types/Layout';
-import { compareDesc } from '@/utils';
 
 export const getBlogPosts = async (tags?: string[]): Promise<IMenuData[]> => {
   const menu = getData() as unknown as IMenuData[];
@@ -31,7 +30,7 @@ export const getLatestBlogPostsOfAuthor = (
   author: IAuthorInfo,
 ): IMenuData[] => {
   const data = getData() as IMenuData[];
-  const STARTBRANCH = '/docs/blogchain';
+  const STARTBRANCH = '/blogchain';
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);
 

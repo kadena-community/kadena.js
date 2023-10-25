@@ -1,20 +1,20 @@
-import type { GetBlocksSubscription } from '../../__generated__/sdk';
-
+import type { GetBlocksSubscription } from '@/__generated__/sdk';
 import { useCallback, useState } from 'react';
+import { env } from '../env';
 
 export interface IBlock
   extends Pick<
     NonNullable<GetBlocksSubscription['newBlocks']>[number],
-    // TODO: fix transactions from graphql
-    // 'transactions' |
-    | 'creationtime'
+    | 'creationTime'
     | 'height'
-    | 'chainid'
+    | 'chainId'
     | 'hash'
-    | 'powhash'
+    | 'payloadHash'
+    | 'powHash'
     | 'epoch'
     | 'confirmationDepth'
     | 'parentHash'
+    | 'transactions'
   > {}
 interface IUseParseBlocksReturn {
   allBlocks: Record<number, IBlock[]>;
@@ -52,10 +52,22 @@ export function useParsedBlocks(): IUseParseBlocksReturn {
 
           if (index === blocks.length - 1) {
             updatedBlocks[heightNum] = [...updatedBlocks[heightNum]].sort(
-              (a, b) => b.chainid - a.chainid,
+              (a, b) => b.chainId - a.chainId,
             );
           }
         });
+
+        // Use FIFO to keep the last 5 heights
+        if (
+          Object.keys(updatedBlocks).length >
+          env.MAX_CALCULATED_CONFIRMATION_DEPTH + 2
+        ) {
+          const keys = Object.keys(updatedBlocks)
+            .map(Number)
+            .sort((a, b) => b - a);
+          const lastKey = keys[keys.length - 1];
+          delete updatedBlocks[lastKey];
+        }
 
         return updatedBlocks;
       });

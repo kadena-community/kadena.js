@@ -1,11 +1,10 @@
-import { StyledTable } from './styles';
+import type { FC } from 'react';
+import React from 'react';
 import { TBody } from './TBody';
 import { THead } from './THead';
 import { Tr } from './Tr';
+import { StyledTable } from './styles';
 import type { CompoundType } from './types';
-
-import type { FC } from 'react';
-import React from 'react';
 
 export interface ITable {
   children?: CompoundType<typeof TBody> | CompoundType<typeof THead>;

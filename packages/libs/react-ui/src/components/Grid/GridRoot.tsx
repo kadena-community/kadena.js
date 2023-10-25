@@ -1,16 +1,14 @@
-import type { ResponsiveInputType } from './Grid.css';
-import {
-  containerColumnVariants,
-  explicitColumnVariant,
-  gapVariants,
-  gridContainerClass,
-} from './Grid.css';
-
 import type { Sprinkles } from '@theme/sprinkles.css';
 import { sprinkles } from '@theme/sprinkles.css';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import type { ResponsiveInputType } from './Grid.css';
+import {
+  containerColumnVariants,
+  gapVariants,
+  gridContainerClass,
+} from './Grid.css';
 
 export interface IGridRootProps
   extends Pick<
@@ -39,18 +37,14 @@ const assembleColumnVariants = (
   columns: ResponsiveInputType,
 ): string | string[] => {
   if (typeof columns === 'number') {
-    return explicitColumnVariant[columns];
+    return containerColumnVariants.xs[columns];
   }
 
-  const { sm, md, lg, xl, xxl } = columns;
-
-  return [
-    containerColumnVariants.sm[sm],
-    containerColumnVariants.md[md],
-    containerColumnVariants.lg[lg],
-    containerColumnVariants.xl[xl],
-    containerColumnVariants.xxl[xxl],
-  ];
+  return Object.entries(columns).map(([key, value]) => {
+    return containerColumnVariants[key as keyof typeof containerColumnVariants][
+      value
+    ];
+  });
 };
 
 export const GridRoot: FC<IGridRootProps> = ({

@@ -1,8 +1,7 @@
-import { templateGenerate } from './template-generate';
-
 import type { Command } from 'commander';
 import debug from 'debug';
 import { z } from 'zod';
+import { templateGenerate } from './template-generate';
 
 // eslint-disable-next-line @rushstack/typedef-var
 const TemplateGenerateOptions = z.object({

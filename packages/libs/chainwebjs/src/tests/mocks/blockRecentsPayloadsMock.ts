@@ -4,9 +4,8 @@
 interface mockBlocks {
   [key: number]: [];
 }
-
-import { tenpl } from './10payloads';
 import { hundredpl } from './100payloads';
+import { tenpl } from './10payloads';
 import { threehundredfiftyninepl } from './359payloads';
 import { sevenhundredthirty } from './730payloads';
 

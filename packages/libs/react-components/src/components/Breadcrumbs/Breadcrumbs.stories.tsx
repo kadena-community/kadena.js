@@ -1,10 +1,8 @@
-import { ProductIcons } from '../ProductIcons';
-
-import type { IBreadcrumbs } from '.';
-import { BreadcrumbItem, Breadcrumbs } from '.';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { IBreadcrumbs } from '.';
+import { BreadcrumbItem, Breadcrumbs } from '.';
+import { ProductIcons } from '../ProductIcons';
 
 const ItemArray: string[] = [
   'He-man',

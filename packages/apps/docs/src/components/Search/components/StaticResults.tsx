@@ -1,17 +1,15 @@
-import { Box, Heading, Text, useModal } from '@kadena/react-ui';
-
-import type { IQueryResult } from '../../../types';
-import { itemLinkClass, staticResultsListClass } from '../styles.css';
-
 import { filePathToRoute } from '@/pages/api/semanticsearch';
+import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import type { IQueryResult } from '../../../types';
+import { itemLinkClass, staticResultsListClass } from '../styles.css';
 
 interface IProps {
-  results: IQueryResult[];
+  results: IQueryResult[] | undefined;
   limitResults?: number;
 }
 
@@ -23,6 +21,10 @@ interface IBreadCrumbProps {
   url: string;
 }
 
+const removeHashFromString = (str: string): string => {
+  return str.split('#')[0];
+};
+
 const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
   const urlArray = url.split('/');
 
@@ -31,7 +33,7 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
       {urlArray.map((str, idx) => {
         return (
           <Text size="sm" bold={idx === 0} key={str + idx}>
-            {str} {idx < urlArray.length - 1 ? ' / ' : ''}
+            {removeHashFromString(str)} {idx < urlArray.length - 1 ? ' / ' : ''}
           </Text>
         );
       })}
@@ -70,12 +72,18 @@ const Item: FC<IResultProps> = ({ item }) => {
 
 export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
   const limitedResults =
-    limitResults !== undefined ? results.slice(0, limitResults) : results;
+    results && limitResults !== undefined
+      ? results.slice(0, limitResults)
+      : results;
+
+  if (results?.length === 0) {
+    return <Box marginY="$10">No results</Box>;
+  }
 
   return (
     <Box marginY="$10">
       <ul className={staticResultsListClass}>
-        {limitedResults.map((item) => {
+        {limitedResults?.map((item) => {
           return <Item item={item} key={`${item.filePath} + ${item.header}`} />;
         })}
       </ul>

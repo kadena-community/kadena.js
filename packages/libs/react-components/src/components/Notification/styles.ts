@@ -1,5 +1,4 @@
 /* eslint @kadena-dev/typedef-var: 0 */
-
 import { styled } from '../../styles';
 import { Heading, Text } from '../Typography';
 

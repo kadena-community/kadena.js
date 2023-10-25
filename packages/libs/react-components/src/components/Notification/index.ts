@@ -1,6 +1,6 @@
 export {
-  NotificationFooter,
-  NotificationBody,
-  Notification,
   INotificationProps,
+  Notification,
+  NotificationBody,
+  NotificationFooter,
 } from './Notification';

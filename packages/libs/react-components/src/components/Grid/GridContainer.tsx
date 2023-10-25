@@ -1,8 +1,7 @@
-import { GridContainer as BaseContainer } from './styles';
-
 import type { CSSProperties, VariantProps } from '@stitches/react';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { GridContainer as BaseContainer } from './styles';
 
 export interface IGridContainerProps {
   children?: ReactNode;

@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "",
-    "format": "pnpm run /^format:.*/",
+    "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
@@ -28,12 +28,11 @@
     "eslint-plugin-import": "~2.27.5",
     "eslint-plugin-jsx-a11y": "~6.7.1",
     "eslint-plugin-react": "~7.31.11",
-    "eslint-plugin-simple-import-sort": "~7.0.0",
-    "prettier": "~3.0.0",
-    "prettier-eslint": "~12.0.0",
-    "prettier-plugin-packagejson": "^2.4.5"
+    "prettier": "~3.0.3",
+    "prettier-eslint": "~12.0.0"
   },
   "devDependencies": {
-    "typescript": "5.1.6"
+    "@kadena-dev/heft-rig": "workspace:*",
+    "typescript": "5.2.2"
   }
 }

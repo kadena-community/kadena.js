@@ -22,8 +22,8 @@ API Reference can be found here [cryptography-utils.api.md][1]
 ### Usage Examples
 
 ```ts
-import { IKeyPair } from '@kadena/types';
 import { hash, sign } from '@kadena/cryptography-utils';
+import { IKeyPair } from '@kadena/types';
 
 // Create a command
 let commandPayload: string = 'Hello world!';

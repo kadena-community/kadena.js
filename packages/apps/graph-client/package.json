@@ -6,8 +6,8 @@
     "build": "pnpm run generate:sdk && next build",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"sleep 3; pnpm run generate:sdk -w\"",
     "dev:all": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\"",
-    "dev:all:generate": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph\" \"sleep 3; pnpm run generate:sdk -w\"",
-    "format": "pnpm run /^format:.*/",
+    "dev:all:generate": "concurrently --kill-others \"npm:next:dev\" \"npm:start:graph:generate\" \"sleep 3; pnpm run generate:sdk -w\"",
+    "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
@@ -32,10 +32,9 @@
     "eslint": "^8.45.0",
     "graphql": "~16.8.0",
     "lodash.isequal": "~4.5.0",
-    "next": "13.4.5",
+    "next": "13.5.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "5.1.6"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.16.1",
@@ -47,16 +46,14 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
-    "@types/heft-jest": "~1.0.3",
     "@types/lodash.isequal": "~4.5.6",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "@types/react-dom": "18.2.7",
-    "@vanilla-extract/css": "1.12.0",
-    "@vanilla-extract/next-plugin": "2.1.2",
+    "@vanilla-extract/css": "1.13.0",
+    "@vanilla-extract/next-plugin": "2.3.1",
     "concurrently": "^7.2.2",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5"
+    "prettier": "~3.0.3",
+    "typescript": "5.2.2"
   }
 }

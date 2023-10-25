@@ -1,5 +1,3 @@
-import { Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
-
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import Routes from '@/constants/routes';
@@ -8,6 +6,7 @@ import {
   helpCenterButtonClass,
   homeWrapperClass,
 } from '@/pages/home/styles.css';
+import { Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
@@ -20,7 +19,7 @@ const Home: FC = () => {
     {
       title: t('Faucet'),
       icon: 'Earth',
-      href: Routes.FAUCET_EXISTING,
+      href: Routes.FAUCET_NEW,
     },
     {
       title: t('Transactions'),

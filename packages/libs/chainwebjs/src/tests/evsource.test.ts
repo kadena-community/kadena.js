@@ -4,10 +4,10 @@ jest.mock('eventsource', () => {
     default: jest.fn(),
   };
 });
+import chainweb from '..';
 import * as utils from '../utils';
-
-import { blockStream } from './mocks/blockStream';
 import { config } from './config';
+import { blockStream } from './mocks/blockStream';
 
 const buildEventSourceSpy = jest.spyOn(utils, 'buildEventSource');
 const data =
@@ -41,8 +41,6 @@ buildEventSourceSpy.mockReturnValue(evtsmock);
 jest.setTimeout(25000);
 const debug: boolean = false;
 const streamTest = test.concurrent;
-
-import chainweb from '..';
 
 /* ************************************************************************** */
 /* Test Utils */

@@ -1,14 +1,7 @@
-import { darkThemeClass, vars } from './vars.css';
-
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
-
-export const breakpoints: Record<string, string> = {
-  sm: `(min-width: ${640 / 16}rem)`,
-  md: `(min-width: ${768 / 16}rem)`,
-  lg: `(min-width: ${1024 / 16}rem)`,
-  xl: `(min-width: ${1280 / 16}rem)`,
-  xxl: `(min-width: ${1536 / 16}rem)`,
-};
+import mapValues from 'lodash.mapvalues';
+import { breakpoints } from './themeUtils';
+import { darkThemeClass, vars } from './vars.css';
 
 const systemProperties = defineProperties({
   properties: {
@@ -32,6 +25,8 @@ const systemProperties = defineProperties({
     textTransform: ['uppercase', 'lowercase', 'capitalize', 'none'],
     textDecoration: ['underline', 'none'],
     wordBreak: ['normal', 'keep-all', 'break-word', 'break-all'],
+    listStyleType: ['none'],
+    objectFit: ['cover', 'contain'],
   },
 });
 
@@ -53,14 +48,9 @@ const colorProperties = defineProperties({
 });
 
 const responsiveProperties = defineProperties({
-  conditions: {
-    xs: {},
-    sm: { '@media': breakpoints.sm },
-    md: { '@media': breakpoints.md },
-    lg: { '@media': breakpoints.lg },
-    xl: { '@media': breakpoints.xl },
-    xxl: { '@media': breakpoints.xxl },
-  },
+  conditions: mapValues(breakpoints, (bp?: string) =>
+    bp === '' ? {} : { '@media': bp },
+  ),
   defaultCondition: 'xs',
   properties: {
     position: ['fixed', 'static', 'absolute', 'relative', 'sticky'],
@@ -107,9 +97,15 @@ const responsiveProperties = defineProperties({
       maxContent: '42.5rem', // 680px
     },
     height: { ...vars.sizes, '100%': '100%', 'min-content': 'min-content' },
+    minHeight: {
+      ...vars.sizes,
+      '100%': '100%',
+      'min-content': 'min-content',
+      'max-content': 'max-content',
+    },
     gap: vars.sizes,
     gridGap: vars.sizes,
-    overflow: ['hidden'],
+    overflow: ['hidden', 'visible', 'scroll', 'auto'],
     pointerEvents: ['none', 'auto'],
     opacity: [0, 1],
     textAlign: ['left', 'center', 'right'],

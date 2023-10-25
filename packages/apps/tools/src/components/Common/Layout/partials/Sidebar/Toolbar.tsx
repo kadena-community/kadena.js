@@ -1,14 +1,13 @@
+import { useLayoutContext } from '@/context';
+import { useRouter } from 'next/router';
+import type { FC } from 'react';
+import React from 'react';
 import { MenuButton } from './MenuButton';
 import {
   gridItemMiniMenuStyle,
   gridMiniMenuListItemStyle,
   gridMiniMenuListStyle,
 } from './styles.css';
-
-import { useLayoutContext } from '@/context';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface IMiniMenuProps {}
 

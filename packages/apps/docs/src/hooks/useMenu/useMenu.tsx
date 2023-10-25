@@ -1,6 +1,5 @@
-import { MenuContext } from '.';
-
 import { useContext } from 'react';
+import { MenuContext } from './MenuProvider';
 
 const defaultContext: IUseMenuProps = {
   toggleMenu: () => {},

@@ -1,8 +1,6 @@
-import { breakpoints } from '@kadena/react-ui/theme';
-
-import { $$leftSideWidth, $$pageWidth } from '../global.css';
-
+import { responsiveStyle } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
+import { $$leftSideWidth, $$pageWidth } from '../global.css';
 
 export const pageGridClass = style({
   gridTemplateColumns: 'auto auto',
@@ -12,10 +10,10 @@ export const pageGridClass = style({
             "content content"
             "footer footer"
           `,
-  '@media': {
-    [`screen and ${breakpoints.md}`]: {
-      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth})) 1%`,
 
+  ...responsiveStyle({
+    md: {
+      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth})) 1%`,
       gridTemplateAreas: `
                 "header header header header"
                 "pageheader pageheader pageheader pageheader"
@@ -23,8 +21,8 @@ export const pageGridClass = style({
                 "footer footer footer footer"
               `,
     },
-    [`screen and ${breakpoints.xxl}`]: {
+    xxl: {
       gridTemplateColumns: `minmax(1%, auto) ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth})) minmax(1%, auto)`,
     },
-  },
+  }),
 });

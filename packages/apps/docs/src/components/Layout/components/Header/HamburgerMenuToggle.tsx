@@ -1,11 +1,9 @@
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { SystemIcon } from '@kadena/react-ui';
-
-import { hamburgerButtonClass, headerButtonClass } from './styles.css';
-
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import { hamburgerButtonClass, headerButtonClass } from './styles.css';
 
 interface IProps {
   toggleMenu: () => void;

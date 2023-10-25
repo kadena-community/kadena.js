@@ -1,9 +1,9 @@
-import yaml from 'js-yaml';
 import { compareDesc } from 'date-fns';
-import { getReadTime } from './utils.mjs';
+import yaml from 'js-yaml';
+import authors from './../data/authors.json' assert { type: 'json' };
 import { getPathName } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from './../utils/staticGeneration/getData.mjs';
-import authors from './../data/authors.json' assert { type: 'json' };
+import { getReadTime } from './utils.mjs';
 
 const flat = (acc, val) => {
   const { children, ...newVal } = val;
@@ -38,7 +38,7 @@ const getFrontMatter = (node) => {
 const getLatestBlogPostsOfAuthor = (author) => {
   const data = getData();
 
-  const STARTBRANCH = '/docs/blogchain';
+  const STARTBRANCH = '/blogchain';
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);
 

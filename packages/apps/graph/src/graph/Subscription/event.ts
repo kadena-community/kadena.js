@@ -1,11 +1,10 @@
+import type { Event } from '@prisma/client';
+import type { Debugger } from 'debug';
+import _debug from 'debug';
 import { prismaClient } from '../../db/prismaClient';
 import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-
-import type { Event } from '@prisma/client';
-import type { Debugger } from 'debug';
-import _debug from 'debug';
 
 const log: Debugger = _debug('graph:Subscription:event');
 
@@ -33,7 +32,7 @@ async function* iteratorFn(
   if (!nullishOrEmpty(eventResult)) {
     lastEvent = eventResult[0];
     yield [lastEvent];
-    log('yielding initial block with id %s', lastEvent.id);
+    log('yielding initial event with id %s', lastEvent.id);
   }
 
   while (!context.req.socket.destroyed) {
@@ -62,7 +61,7 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
     id === undefined
       ? { take: 5, ...defaultFilter }
       : {
-          take: 500,
+          take: 100,
           where: { id: { gt: id } },
         };
 
@@ -70,7 +69,8 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
   const foundEvents = await prismaClient.event.findMany({
     ...extendedFilter,
     where: {
-      qualname: eventName,
+      ...extendedFilter.where,
+      qualifiedName: eventName,
       transaction: {
         NOT: [],
       },

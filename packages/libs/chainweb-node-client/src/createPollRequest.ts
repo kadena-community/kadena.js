@@ -1,5 +1,4 @@
 import { unique } from '@kadena/cryptography-utils';
-
 import type { IPollRequestBody, ISendRequestBody } from './interfaces/PactAPI';
 
 /**

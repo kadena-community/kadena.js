@@ -1,3 +1,5 @@
+import base64url from 'base64url';
+import fetch from 'cross-fetch';
 import { currentCut } from './cut';
 import { pageIterator } from './paging';
 import { baseUrl, chainUrl, retryFetch, transFormUrl } from './request';
@@ -11,9 +13,6 @@ import type {
   ITransactionElement,
   ITransactionPayload,
 } from './types';
-
-import base64url from 'base64url';
-import fetch from 'cross-fetch';
 
 /**
  * Yields items from pages in reverse order.

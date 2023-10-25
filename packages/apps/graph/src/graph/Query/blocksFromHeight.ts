@@ -1,10 +1,9 @@
+import type { Debugger } from 'debug';
+import _debug from 'debug';
 import { prismaClient } from '../../db/prismaClient';
 import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 import Block from '../objects/Block';
-
-import type { Debugger } from 'debug';
-import _debug from 'debug';
 
 const log: Debugger = _debug('graph:Query:blocksFromHeight');
 
@@ -34,7 +33,7 @@ builder.queryField('blocksFromHeight', (t) => {
               },
             },
             {
-              chainid: {
+              chainId: {
                 in: chainIds as number[],
               },
             },

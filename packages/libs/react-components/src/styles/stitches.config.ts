@@ -1,10 +1,8 @@
 /* eslint @typescript-eslint/naming-convention: 0 */
-
-import { colors, colorsDark } from './colors';
-
-import type { CSS as StitchesCSS, PropertyValue } from '@stitches/react';
+import type { PropertyValue, CSS as StitchesCSS } from '@stitches/react';
 import { createStitches } from '@stitches/react';
 import type { ConfigType } from '@stitches/react/types/config';
+import { colors, colorsDark } from './colors';
 
 const sizes: Record<string, string> = {
   1: '0.25rem', // 4px

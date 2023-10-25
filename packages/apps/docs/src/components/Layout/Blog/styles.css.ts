@@ -1,5 +1,4 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const bottomWrapperClass = style([
@@ -38,28 +37,27 @@ export const pageGridClass = style({
             "footer footer"
           `,
 
-  '@media': {
-    [`screen and ${breakpoints.md}`]: {
+  ...responsiveStyle({
+    md: {
       gridTemplateColumns: '0% 5% auto 5%',
 
       gridTemplateAreas: `
-              "header header header header"
-              "pageheader pageheader pageheader pageheader"
-              ". content . ."
-              "footer footer footer footer"
-            `,
+                      "header header header header"
+                      "pageheader pageheader pageheader pageheader"
+                      ". content . ."
+                      "footer footer footer footer"
+                    `,
     },
-
-    [`screen and ${breakpoints.xxl}`]: {
+    xxl: {
       gridTemplateColumns: '0% minmax(20%, auto) auto minmax(20%, auto)',
       gridTemplateAreas: `
-              "header header header header"
-              "pageheader pageheader pageheader pageheader"
-              ". content ."
-              "footer footer footer footer"
-            `,
+                      "header header header header"
+                      "pageheader pageheader pageheader pageheader"
+                      ". content ."
+                      "footer footer footer footer"
+                    `,
     },
-  },
+  }),
 });
 
 export const articleMetaDataItemClass = style({

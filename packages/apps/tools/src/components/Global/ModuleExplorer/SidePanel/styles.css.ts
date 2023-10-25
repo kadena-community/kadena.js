@@ -1,5 +1,4 @@
-import { vars } from '@kadena/react-ui/theme';
-
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const containerStyle = style([
@@ -18,3 +17,12 @@ export const moduleTitle = style({
   textOverflow: 'ellipsis',
   maxWidth: `calc(${vars.sizes.$64} + ${vars.sizes.$8})`, // 2rem less than the width of the column
 });
+
+export const outlineStyle = style([
+  sprinkles({
+    height: '$64',
+  }),
+  {
+    overflow: 'scroll',
+  },
+]);

@@ -1,8 +1,8 @@
-import type { IMenuItem } from '@/types/Layout';
+import type { IMenuItem } from '@/Layout';
 
 export const leftMenuTree: IMenuItem[] = [
   {
-    root: '/docs/kadena',
+    root: '/kadena',
     title: 'Intro to Kadena',
     menu: 'Kadena',
     label: 'Introduction',
@@ -11,7 +11,7 @@ export const leftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/build',
+    root: '/build',
     title: 'Build on Kadena',
     menu: 'Build',
     label: 'Introduction',
@@ -20,7 +20,7 @@ export const leftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/pact',
+    root: '/pact',
     title: 'Learn Pact',
     menu: 'Pact',
     label: 'Pact',
@@ -29,7 +29,7 @@ export const leftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/contribute',
+    root: '/contribute',
     title: 'Contribute',
     menu: 'Contribute',
     label: 'Contribute',
@@ -38,7 +38,7 @@ export const leftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/chainweb',
+    root: '/chainweb',
     title: 'Intro to Chainweb',
     menu: 'Chainweb',
     label: 'Introduction',
@@ -47,7 +47,7 @@ export const leftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/marmalade',
+    root: '/marmalade',
     title: 'Intro to Marmalade',
     menu: 'Marmalade',
     label: 's',
@@ -62,7 +62,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
     children: [
       {
         children: [],
-        root: '/docs/kadena/overview',
+        root: '/kadena/overview',
         title: 'Overview of Kadena',
         menu: 'Kadena',
         label: 'Overview',
@@ -73,7 +73,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
         children: [
           {
             children: [],
-            root: '/docs/kadena/kda/manage-kda',
+            root: '/kadena/kda/manage-kda',
             title: 'Manage KDA',
             menu: 'Manage KDA',
             label: 'Manage KDA',
@@ -82,7 +82,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
           },
           {
             children: [],
-            root: '/docs/kadena/kda/kda-concepts',
+            root: '/kadena/kda/kda-concepts',
             title: 'KDA Concepts',
             menu: 'KDA Concepts',
             label: 'KDA Concepts',
@@ -90,7 +90,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
             isActive: false,
           },
         ],
-        root: '/docs/kadena/kda',
+        root: '/kadena/kda',
         title: 'What is KDA?',
         menu: 'KDA',
         label: 'What is KDA?',
@@ -101,7 +101,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
         children: [
           {
             children: [],
-            root: '/docs/kadena/whitepapers/chainweb-layer-1',
+            root: '/kadena/whitepapers/chainweb-layer-1',
             title: 'Chainweb Layer 1',
             menu: 'Whitepapers',
             label: 'Chainweb Layer 1',
@@ -110,7 +110,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
           },
           {
             children: [],
-            root: '/docs/kadena/whitepapers/pact-smart-contract-language',
+            root: '/kadena/whitepapers/pact-smart-contract-language',
             title: 'Pact Smart Contract Language',
             menu: 'Whitepapers',
             label: 'Pact Smart Contract',
@@ -119,7 +119,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
           },
           {
             children: [],
-            root: '/docs/kadena/whitepapers/kuro-layer-2',
+            root: '/kadena/whitepapers/kuro-layer-2',
             title: 'Kuro Layer 2',
             menu: 'Whitepapers',
             label: 'Kuro Layer 2',
@@ -127,7 +127,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
             isActive: false,
           },
         ],
-        root: '/docs/kadena/whitepapers',
+        root: '/kadena/whitepapers',
         title: 'Whitepapers Overview',
         menu: 'Whitepapers',
         label: 'Overview',
@@ -136,7 +136,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
       },
       {
         children: [],
-        root: '/docs/kadena/wallets',
+        root: '/kadena/wallets',
         title: 'Kadena Wallets',
         menu: 'Kadena Wallets',
         label: 'Overview',
@@ -145,7 +145,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
       },
       {
         children: [],
-        root: '/docs/kadena/exchanges',
+        root: '/kadena/exchanges',
         title: 'Kadena Exchanges',
         menu: 'Exchanges',
         label: 'Exchanges',
@@ -154,7 +154,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
       },
       {
         children: [],
-        root: '/docs/kadena/support',
+        root: '/kadena/support',
         title: 'FAQ',
         menu: 'Support',
         label: 'FAQ',
@@ -163,7 +163,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
       },
       {
         children: [],
-        root: '/docs/kadena/kadenajs',
+        root: '/kadena/kadenajs',
         title: 'Running Tests',
         menu: 'KadenaJS',
         label: 'Running Tests',
@@ -172,7 +172,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
       },
       {
         children: [],
-        root: '/docs/kadena/resources',
+        root: '/kadena/resources',
         title: 'Kadena Resources',
         menu: 'Resources',
         label: 'Resources',
@@ -181,7 +181,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
       },
       {
         children: [],
-        root: '/docs/kadena/client',
+        root: '/kadena/client',
         title: 'Package @kadena/client',
         menu: 'Client',
         label: 'Package @kadena/client',
@@ -190,7 +190,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
       },
       {
         children: [],
-        root: '/docs/kadena/client-examples',
+        root: '/kadena/client-examples',
         title: 'Client examples',
         menu: 'Client examples',
         label: 'Client examples',
@@ -199,7 +199,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
       },
       {
         children: [],
-        root: '/docs/kadena/code-of-conduct',
+        root: '/kadena/code-of-conduct',
         menu: 'Code of Conduct',
         title: 'Code of Conduct',
         label: 'Code of Conduct',
@@ -207,7 +207,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
         isActive: false,
       },
     ],
-    root: '/docs/kadena',
+    root: '/kadena',
     title: 'Intro to Kadena',
     menu: 'Kadena',
     label: 'Introduction',
@@ -215,7 +215,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
     isActive: false,
   },
   {
-    root: '/docs/build',
+    root: '/build',
     title: 'Build on Kadena',
     menu: 'Build',
     label: 'Introduction',
@@ -224,7 +224,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/pact',
+    root: '/pact',
     title: 'Learn Pact',
     menu: 'Pact',
     label: 'Pact',
@@ -233,7 +233,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/contribute',
+    root: '/contribute',
     title: 'Contribute',
     menu: 'Contribute',
     label: 'Contribute',
@@ -242,7 +242,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/chainweb',
+    root: '/chainweb',
     title: 'Intro to Chainweb',
     menu: 'Chainweb',
     label: 'Introduction',
@@ -251,7 +251,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/marmalade',
+    root: '/marmalade',
     title: 'Intro to Marmalade',
     menu: 'Marmalade',
     label: 's',
@@ -260,7 +260,7 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
     children: [],
   },
   {
-    root: '/docs/blogchain',
+    root: '/blogchain',
     title: 'BlogChain',
     menu: 'BlogChain',
     label: 'BlogChain',

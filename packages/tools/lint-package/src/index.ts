@@ -1,10 +1,9 @@
-import { loadContents, loadJSON, loadJSONC, loadRules } from './helpers.js';
-import { logger } from './logger.js';
-import type { Rules, TSConfig } from './types.js';
-
 import type { PackageJson } from '@npmcli/package-json';
 import fg from 'fast-glob';
 import { join } from 'node:path';
+import { loadContents, loadJSON, loadJSONC, loadRules } from './helpers.js';
+import { logger } from './logger.js';
+import type { Rules, TSConfig } from './types.js';
 
 const PACKAGE_DIR = process.cwd();
 const PACKAGE_JSON = join(PACKAGE_DIR, 'package.json');

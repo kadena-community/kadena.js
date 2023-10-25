@@ -1,17 +1,15 @@
-import * as fs from 'fs';
 import 'dotenv/config';
-import { remark } from 'remark';
+import * as fs from 'fs';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
-import { importReadMes } from './utils.mjs';
-import chalk from 'chalk';
-import { exec } from 'child_process';
-import { promisify } from 'util';
+import { remark } from 'remark';
+import { getLastModifiedDate } from './getdocstree.mjs';
+import { getTypes, importReadMes } from './utils.mjs';
 
-const promiseExec = promisify(exec);
 const errors = [];
+const success = [];
 
-const DOCSROOT = './src/pages/docs/';
+const DOCSROOT = './src/pages/';
 
 const createFrontMatter = (
   title,
@@ -33,17 +31,6 @@ tags: [${tags.toString()}]
 lastModifiedDate: ${lastModifiedDate}
 ---
 `;
-};
-const getTypes = (tree, type, arr = []) => {
-  tree.children.forEach((branch) => {
-    if (branch.type === type) {
-      arr.push(branch);
-    }
-    if (!branch.children) return arr;
-
-    return getTypes(branch, type, arr);
-  });
-  return arr;
 };
 
 const createEditOverwrite = (filename, options) => {
@@ -216,13 +203,6 @@ const relinkReferences = (md, pages, root) => {
   relinkImageReferences(imageReferences, definitions, pages, root);
 };
 
-const getLastModifiedDate = async (root) => {
-  const { stdout } = await promiseExec(
-    `git log -1 --pretty="format:%ci" ${root}`,
-  );
-  return stdout;
-};
-
 const importDocs = async (filename, destination, parentTitle, options) => {
   const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
 
@@ -231,7 +211,7 @@ const importDocs = async (filename, destination, parentTitle, options) => {
   const lastModifiedDate = await getLastModifiedDate(`./../../${filename}`);
 
   const pages = divideIntoPages(md);
-  relinkReferences(md, pages, `/docs/${destination}/`);
+  relinkReferences(md, pages, `/${destination}/`);
 
   pages.forEach((page, idx) => {
     const title = getTitle(page);
@@ -241,7 +221,7 @@ const importDocs = async (filename, destination, parentTitle, options) => {
 
     // check that there is just 1 h1.
     // if more, keep only 1 and replace the next with an h2
-    const pageContent = cleanUp(page, `/docs/${destination}/${slug}`);
+    const pageContent = cleanUp(page, `/${destination}/${slug}`);
 
     const doc = toMarkdown(pageContent);
 
@@ -264,26 +244,12 @@ const importDocs = async (filename, destination, parentTitle, options) => {
   });
 };
 
-const importAll = async (imports) => {
-  console.log(
-    '=============================== START IMPORT DOCS FROM MONOREPO ==\n\n',
-  );
-  imports.forEach(async (item) => {
+export const importAllReadmes = async () => {
+  importReadMes.forEach(async (item) => {
     await importDocs(item.file, item.destination, item.title, item.options);
   });
 
-  if (errors.length) {
-    errors.map((error) => {
-      console.warn(chalk.red('⨯'), error);
-    });
-    process.exitCode = 1;
-  } else {
-    console.log(chalk.green('✓'), 'DOCS IMPORTED FROM MONOREPO');
-  }
+  success.push('Docs imported from monorepo');
 
-  console.log(
-    '\n\n=============================== END IMPORT DOCS FROM MONOREPO ====',
-  );
+  return { success, errors };
 };
-
-importAll(importReadMes);

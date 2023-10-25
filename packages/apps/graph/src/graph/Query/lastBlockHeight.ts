@@ -5,12 +5,10 @@
 //     PositiveFloatTypeDefinition,
 //     loadFileAsString('./schema.graphql'),
 //   ],
-
-import { builder } from '../builder';
-
 import { PrismaClient } from '@prisma/client';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
+import { builder } from '../builder';
 
 const log: Debugger = _debug('graph:Query:lastBlockHeight');
 

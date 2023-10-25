@@ -1,10 +1,8 @@
-import type { networkMap } from '../utils/networkMap';
-
-import { generate } from './generate';
-
 import type { Command } from 'commander';
 import { Option } from 'commander';
 import { z } from 'zod';
+import type { networkMap } from '../utils/networkMap';
+import { generate } from './generate';
 
 export interface IContractGenerateOptions {
   clean?: boolean;
@@ -38,9 +36,6 @@ const Options = z
   })
   .refine(({ file, contract }) => {
     if (file === undefined && contract === undefined) {
-      return false;
-    }
-    if (file !== undefined && contract !== undefined) {
       return false;
     }
     return true;

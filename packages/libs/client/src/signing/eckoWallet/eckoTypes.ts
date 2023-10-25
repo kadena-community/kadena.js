@@ -1,5 +1,4 @@
 import type { ICommand } from '@kadena/types';
-
 import type { IQuicksignResponseOutcomes } from '../../signing-api/v1/quicksign';
 import type { ISignFunction, ISingleSignFunction } from '../ISignFunction';
 

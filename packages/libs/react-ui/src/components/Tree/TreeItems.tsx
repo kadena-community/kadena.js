@@ -1,5 +1,8 @@
 'use client';
-
+import { SystemIcon } from '@components/Icon';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React, { useState } from 'react';
 import {
   treeBranchWrapperVariant,
   treeTitleClass,
@@ -10,12 +13,7 @@ import {
   treeWrapperClass,
 } from './Tree.css';
 
-import { SystemIcon } from '@components/Icon';
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React, { useState } from 'react';
-
-export interface ITreeItemProps {
+interface ITreeItemProps {
   title?: React.ReactNode;
   items?: Omit<ITreeItemProps, 'linked'>[];
   isOpen?: boolean;

@@ -119,15 +119,18 @@ to coding standards. We try to automate and auto-fix as much as possible using
 the following commands:
 
 ```sh
-pnpm build   # Compile & build (using TypeScript)
-pnpm lint    # Lint
-pnpm format  # Format
+pnpm build
+pnpm lint
+pnpm format
 ```
+
+Note that lint and format are separated tasks (read more at [linting vs
+formatting][10]).
 
 Run from root to apply to all packages, use `--filter` for a selection, and run
 from any package folder to apply it only there.
 
-See [Filters][10] for more details.
+See [Filters][11] for more details.
 
 For everything else, please discuss.
 
@@ -145,14 +148,14 @@ To publish a new version of updated packages, please make sure you:
 - have push rights to this repository's `main` branch
 - are on a clean `main` branch
 
-We're using [Changesets][11] for our release process. The manual process in [How
-do I run the version and publish commands?][12] is what we use and repeat here:
+We're using [Changesets][12] for our release process. The manual process in [How
+do I run the version and publish commands?][13] is what we use and repeat here:
 
-1.  Check out and pull `main`
-2.  Update changelogs and bump versions
-3.  Create a new branch and open a "version bump" PR
-4.  Merge PR to `main`
-5.  Build and publish from `main`
+1. Check out and pull `main`
+2. Update changelogs and bump versions
+3. Create a new branch and open a "version bump" PR
+4. Merge PR to `main`
+5. Build and publish from `main`
 
 ```sh
 git checkout main
@@ -185,7 +188,8 @@ git push --tags
   https://lirantal.com/blog/introducing-changesets-simplify-project-versioning-with-semantic-releases/
 [8]: https://rushjs.io/pages/best_practices/change_logs
 [9]: .changeset/config.json
-[10]: ./docs/pnpm-turbo-filter.md
-[11]: https://github.com/changesets/changesets
-[12]:
+[10]: ./docs/lint-vs-format.md
+[11]: ./docs/pnpm-turbo-filter.md
+[12]: https://github.com/changesets/changesets
+[13]:
   https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md#how-do-i-run-the-version-and-publish-commands

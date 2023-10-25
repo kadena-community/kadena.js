@@ -1,5 +1,4 @@
 import { IconWrapper } from '../IconWrapper';
-
 import { Account as AccountSvg } from './svgs/Account';
 import { AlertBox as AlertBoxSvg } from './svgs/AlertBox';
 import { AlertBoxOutline as AlertBoxOutlineSvg } from './svgs/AlertBoxOutline';

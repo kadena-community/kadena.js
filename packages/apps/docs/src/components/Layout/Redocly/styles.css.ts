@@ -1,13 +1,11 @@
-import { breakpoints, sprinkles, vars } from '@kadena/react-ui/theme';
-
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { createVar, style } from '@vanilla-extract/css';
 import { $$asideMenuWidthCode } from '../basestyles.css';
 import {
   $$backgroundOverlayColor,
   $$leftSideWidth,
   $$pageWidth,
 } from '../global.css';
-
-import { createVar, style } from '@vanilla-extract/css';
 
 const $$shadowWidth = createVar();
 
@@ -37,40 +35,36 @@ export const codebackgroundClass = style([
         transition: 'transform 1.5s ease, opacity 3s ease-out',
         transitionDelay: '600ms',
 
-        '@media': {
-          [`screen and ${breakpoints.md}`]: {
+        ...responsiveStyle({
+          md: {
             backgroundColor: 'transparent',
             backgroundPositionX: `calc(100vw  - (${$$asideMenuWidthCode} + ${$$shadowWidth}))`,
           },
-          [`screen and ${breakpoints.lg}`]: {
+          lg: {
             backgroundPositionX: `calc(100vw  - (${$$asideMenuWidthCode} + ${$$shadowWidth}))`,
           },
-
-          [`screen and ${breakpoints.xxl}`]: {
+          xxl: {
             display: 'block',
             backgroundPositionX: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2 ) - (${$$asideMenuWidthCode} + ${$$shadowWidth}))`,
           },
-        },
+        }),
       },
       '&::after': {
         backgroundColor: 'transparent',
-        '@media': {
-          [`screen and ${breakpoints.md}`]: {
+        ...responsiveStyle({
+          md: {
             left: `calc(100vw  - (${$$asideMenuWidthCode} +  ${vars.sizes.$4}))`,
           },
-
-          [`screen and ${breakpoints.lg}`]: {
+          lg: {
             left: `calc(100vw  - (${$$asideMenuWidthCode} +  ${vars.sizes.$20} ))`,
           },
-
-          [`screen and ${breakpoints.xl}`]: {
+          xl: {
             backgroundColor: $$backgroundOverlayColor,
           },
-
-          [`screen and ${breakpoints.xxl}`]: {
+          xxl: {
             left: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2) - (${$$asideMenuWidthCode} + ${vars.sizes.$6} ))`,
           },
-        },
+        }),
       },
     },
   },
@@ -93,19 +87,19 @@ export const pageGridClass = style({
           "content content"
           "footer footer"
         `,
-  '@media': {
-    [`screen and ${breakpoints.md}`]: {
-      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth})) 1%`,
 
+  ...responsiveStyle({
+    md: {
+      gridTemplateColumns: `1% ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth})) 1%`,
       gridTemplateAreas: `
-      "header header header header"
-      "pageheader pageheader pageheader pageheader"
-      ". menu content ."
-      "footer footer footer footer"
-      `,
+            "header header header header"
+            "pageheader pageheader pageheader pageheader"
+            ". menu content ."
+            "footer footer footer footer"
+            `,
     },
-    [`screen and ${breakpoints.xxl}`]: {
+    xxl: {
       gridTemplateColumns: `minmax(1%, auto) ${$$leftSideWidth} minmax(auto, calc(${$$pageWidth} - ${$$leftSideWidth})) minmax(1%, auto)`,
     },
-  },
+  }),
 });

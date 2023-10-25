@@ -9,8 +9,8 @@
   "main": "index.js",
   "scripts": {
     "build": "",
-    "build:local": "pnpm run pactjs:coin && heft build --clean",
-    "format": "pnpm run /^format:.*/",
+    "build:local": "pnpm run pactjs:coin && tsc && api-extractor run --verbose",
+    "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
@@ -34,12 +34,10 @@
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
-    "@types/heft-jest": "~1.0.3",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
-    "ts-node": "~10.8.2"
+    "prettier": "~3.0.3",
+    "ts-node": "~10.8.2",
+    "typescript": "5.2.2"
   }
 }

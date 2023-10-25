@@ -5,7 +5,6 @@ import {
   signWithChainweaver,
 } from '@kadena/client';
 import type { IPactDecimal } from '@kadena/types';
-
 import { listen, preflight, submit } from './util/client';
 
 const NETWORK_ID: string = 'testnet04';

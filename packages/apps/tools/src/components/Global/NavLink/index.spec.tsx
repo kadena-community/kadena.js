@@ -1,19 +1,11 @@
-jest.mock('next/router', () => ({
-  useRouter: jest.fn(),
-}));
-
+import { render, screen } from '@testing-library/react';
+import mock from 'next-router-mock';
+import React from 'react';
 import { NavLink } from './index';
 
-import { render, screen } from '@testing-library/react';
-import { useRouter } from 'next/router';
-import React from 'react';
-
 describe('NavLink', () => {
-  const mockUseRouter = useRouter as jest.Mock;
-  it('renders correctly when active', () => {
-    mockUseRouter.mockImplementation(() => ({
-      pathname: '/active',
-    }));
+  it('renders correctly when active', async () => {
+    await mock.push('/active');
 
     render(
       <NavLink href="/active" className="custom-class">
@@ -34,10 +26,8 @@ describe('NavLink', () => {
     expect(navLinkText).toBeInTheDocument();
   });
 
-  it('renders correctly when not active', () => {
-    mockUseRouter.mockImplementation(() => ({
-      pathname: '/not-active',
-    }));
+  it('renders correctly when not active', async () => {
+    await mock.push('/not-active');
 
     render(
       <NavLink href="/active" className="custom-class">

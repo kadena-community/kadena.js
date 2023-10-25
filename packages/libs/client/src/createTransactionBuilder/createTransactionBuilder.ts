@@ -1,5 +1,4 @@
 import type { ICap, IExecPayload, IUnsignedCommand } from '@kadena/types';
-
 import {
   addData,
   addKeyset,

@@ -1,7 +1,6 @@
+import { EOL } from 'os';
 import type { IFunction, IModule, IType } from '../parsing/pactParser';
 import { getModuleFullName } from '../parsing/utils/utils';
-
-import { EOL } from 'os';
 
 const keywordsMap: Record<string, string> = {
   decimal: 'IPactDecimal',
@@ -155,7 +154,7 @@ interface ICapability_Coin_GAS {
 }
 ${capsInterfaces ? `${EOL}${capsInterfaces}${EOL}` : ''}
 declare module '@kadena/client' {
-  export interface IPactModules {
+  interface IPactModules {
     ${module.doc ? `/**${EOL}${indent(module.doc, 2)}${indent(EOL, 2)}*/` : ''}
     "${getModuleFullName(module)}": {
 ${indent(functions.map(getFunctionType).join(`,${EOL}${EOL}`), 2)}

@@ -1,14 +1,14 @@
-import { useChainTree } from '../../../context/chain-tree-context';
-import { env } from '../../../utils/env';
-import type { IBlock } from '../../../utils/hooks/use-parsed-blocks';
-import { Box } from '../../box';
-import { Text } from '../../text';
-
-import { TimeTicker } from './../time-ticker';
-import { Container, Content } from './styles';
-
-import { InfoCircledIcon, TimerIcon } from '@radix-ui/react-icons';
+import type { IBlock } from '@/utils/hooks/use-parsed-blocks';
+import { Box } from '@components/box';
+import { Text } from '@components/text';
+import routes from '@constants/routes';
+import { useChainTree } from '@context/chain-tree-context';
+import { InfoCircledIcon, RocketIcon, TimerIcon } from '@radix-ui/react-icons';
+import { env } from '@utils/env';
+import { useRouter } from 'next/router';
 import React from 'react';
+import { TimeTicker } from '../time-ticker';
+import { Container, Content } from './styles';
 
 interface IChainBlockProps {
   color: string;
@@ -18,18 +18,28 @@ interface IChainBlockProps {
 
 export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
   const { color, textColor, block } = props;
+  const router = useRouter();
 
   const { chainTree } = useChainTree();
   let confirmationDepth = 0;
 
   if (block) {
-    confirmationDepth = chainTree[block.chainid][block.hash].confirmationDepth;
+    confirmationDepth = chainTree[block.chainId][block.hash].confirmationDepth;
   }
+
+  const blockClick = async (): Promise<void> => {
+    if (block) {
+      await router.push(`${routes.BLOCK_OVERVIEW}/${block.hash}`);
+    }
+  };
 
   return (
     <Container>
       {block ? (
-        <Content css={{ $$color: color, $$textColor: textColor }}>
+        <Content
+          onClick={blockClick}
+          css={{ $$color: color, $$textColor: textColor, cursor: 'pointer' }}
+        >
           <Box
             css={{
               fontSize: '$xs',
@@ -46,22 +56,22 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
             }}
           >
             <TimerIcon />
-            <TimeTicker date={new Date(block.creationtime)} />
+            <TimeTicker date={new Date(block.creationTime)} />
 
             <InfoCircledIcon />
 
             <Text as="span">
               {confirmationDepth >= env.MAX_CALCULATED_CONFIRMATION_DEPTH
-                ? `>${chainTree[block.chainid][block.hash].confirmationDepth}`
-                : chainTree[block.chainid][block.hash].confirmationDepth}
+                ? `>${chainTree[block.chainId][block.hash].confirmationDepth}`
+                : chainTree[block.chainId][block.hash].confirmationDepth}
             </Text>
 
-            {/* {block.transactions.totalCount > 0 && (
+            {block.transactions.totalCount > 0 && (
               <>
                 <RocketIcon />
                 <Text as="span">{block.transactions.totalCount} txs</Text>
               </>
-            )} */}
+            )}
           </Box>
         </Content>
       ) : null}

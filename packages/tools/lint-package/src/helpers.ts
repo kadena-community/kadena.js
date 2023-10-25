@@ -1,9 +1,8 @@
-import type { Rules } from './types.js';
-
 import JSONC from 'jsonc-parser';
 import fs from 'node:fs/promises';
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import type { Rules } from './types.js';
 
 const DIRNAME = dirname(fileURLToPath(import.meta.url));
 const RULES_DIR = join(DIRNAME, 'rules');

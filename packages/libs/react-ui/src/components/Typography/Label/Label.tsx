@@ -1,7 +1,6 @@
-import { labelClass } from './Label.css';
-
 import type { FC } from 'react';
 import React from 'react';
+import { labelClass } from './Label.css';
 
 export interface ILabelProps {
   htmlFor: string;

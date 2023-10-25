@@ -1,10 +1,9 @@
-import { colorVariants, typeVariants } from './IconButton.css';
-
 import { SystemIcon } from '@components/Icon';
 import type { IIconButtonProps } from '@components/IconButton';
 import { IconButton } from '@components/IconButton';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { colorVariants, typeVariants } from './IconButton.css';
 
 const meta: Meta<IIconButtonProps> = {
   title: 'Components/IconButton',
