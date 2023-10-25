@@ -95,12 +95,3 @@ export const textAreaClass = style([
     },
   },
 ]);
-
-export const outlinedClass = style([
-  sprinkles({
-    borderRadius: '$sm',
-  }),
-  {
-    border: `1px solid ${vars.colors.$neutral3}`,
-  },
-]);

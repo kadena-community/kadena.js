@@ -51,7 +51,7 @@ export const Dynamic: Story = {
   args: {
     icon: undefined,
   },
-  render: ({ icon, disabled }) => {
+  render: ({ icon, disabled, outlined }) => {
     const [value, setValue] = useState<string>('1');
     return (
       <Select
@@ -63,6 +63,7 @@ export const Dynamic: Story = {
           setValue(e.target.value);
         }}
         disabled={Boolean(disabled)}
+        outlined={Boolean(outlined)}
         value={value}
       >
         <option value={'1'}>option 1</option>

@@ -1,4 +1,4 @@
-import type { IInputProps } from '@components/Input';
+import type { IInputProps } from '@components/Form';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 import type { vars } from 'src/styles';

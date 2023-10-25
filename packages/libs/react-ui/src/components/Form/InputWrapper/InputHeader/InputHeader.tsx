@@ -1,5 +1,5 @@
 import { SystemIcon } from '@components/Icon';
-import { Label } from '@components/Typography/Label/Label';
+import { Label } from '@components/Typography';
 import type { FC } from 'react';
 import React from 'react';
 import { headerClass, infoClass, tagClass } from './InputHeader.css';
