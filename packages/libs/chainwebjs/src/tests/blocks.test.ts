@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import chainweb from '..';
 import { config } from './config';
@@ -41,33 +41,20 @@ describe('chainweb.block', () => {
 
   it('gets the block by height an validates', async () => {
     server.resetHandlers(
-      rest.get(
+      http.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
-        (req, res, ctx) => {
-          return res.once(
-            ctx.status(200),
-            ctx.json(blockByHeightCurrentCutMock),
-          );
-        },
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
-        (req, res, ctx) => {
-          return res.once(
-            ctx.status(200),
-            ctx.json({
-              limit: 1,
-              items: [header],
-              next: null,
-            }),
-          );
-        },
+        () => HttpResponse.json({ limit: 1, items: [header], next: null }),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
-        (req, res, ctx) => {
-          return res.once(ctx.status(200), ctx.json(blockByHeightPayloadsMock));
-        },
+        () => HttpResponse.json(blockByHeightPayloadsMock),
+        { once: true },
       ),
     );
 
@@ -89,24 +76,15 @@ describe('chainweb.block', () => {
 
   it('gets the block by block hash an validates', async () => {
     server.resetHandlers(
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
-        (req, res, ctx) => {
-          return res.once(
-            ctx.status(200),
-            ctx.json({
-              limit: 1,
-              items: [header],
-              next: null,
-            }),
-          );
-        },
+        () => HttpResponse.json({ limit: 1, items: [header], next: null }),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
-        (req, res, ctx) => {
-          return res.once(ctx.status(200), ctx.json(blockByHeightPayloadsMock));
-        },
+        () => HttpResponse.json(blockByHeightPayloadsMock),
+        { once: true },
       ),
     );
 
@@ -125,24 +103,15 @@ describe('chainweb.block', () => {
 
   it('throws on fetching Block by blockhash without payload', async () => {
     server.resetHandlers(
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
-        (req, res, ctx) => {
-          return res.once(
-            ctx.status(200),
-            ctx.json({
-              limit: 1,
-              items: [header],
-              next: null,
-            }),
-          );
-        },
+        () => HttpResponse.json({ limit: 1, items: [header], next: null }),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
-        (req, res, ctx) => {
-          return res.once(ctx.status(200), ctx.json(blockByHeightPayloadsMock));
-        },
+        () => HttpResponse.json(blockByHeightPayloadsMock),
+        { once: true },
       ),
     );
 
@@ -182,20 +151,18 @@ describe('chainweb.block', () => {
 
   it('gets block by range and validates', async () => {
     server.resetHandlers(
-      rest.get(
+      http.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(blockByHeightCurrentCutMock)),
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(rangeHeadersMock(20010))),
+        () => HttpResponse.json(rangeHeadersMock(20010)),
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(rangePayloadsMock(20010))),
+        () => HttpResponse.json(rangePayloadsMock(20010)),
       ),
     );
 
@@ -232,31 +199,27 @@ describe('chainweb.block', () => {
     'gets recent blocks with limit %p',
     async (n) => {
       server.resetHandlers(
-        rest.get(
-          'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
-          (req, res, ctx) =>
-            res(ctx.status(200), ctx.json(blockByHeightCurrentCutMock)),
+        http.get('https://api.chainweb.com/chainweb/0.0/mainnet01/cut', () =>
+          HttpResponse.json(blockByHeightCurrentCutMock),
         ),
-        rest.post(
+        http.post(
           'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
-          (req, res, ctx) => {
+          ({ request }) => {
             let m = n;
             if (n === 730) {
-              const limit = req.url.searchParams.get('limit');
+              const url = new URL(request.url);
+              const limit = url.searchParams.get('limit');
               if (limit === '730') m = 730360;
               if (limit === '370') m = 730720;
               if (limit === '10') m = 730730;
             }
-            return res(
-              ctx.status(200),
-              ctx.json(blockRecentsRecentHeadersMock(m)),
-            );
+            return HttpResponse.json(blockRecentsRecentHeadersMock(m));
           },
         ),
-        rest.post(
+        http.post(
           'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
-          (req, res, ctx) =>
-            res.once(ctx.status(200), ctx.json(blockRecentsPayloadsMock(n))),
+          () => HttpResponse.json(blockRecentsPayloadsMock(n)),
+          { once: true },
         ),
       );
 
@@ -286,23 +249,20 @@ describe('chainweb.block', () => {
 
   it('recgets recent blocks with low dept', async () => {
     server.resetHandlers(
-      rest.get(
+      http.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(blockByHeightCurrentCutMock)),
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
-        (req, res, ctx) =>
-          res.once(
-            ctx.status(200),
-            ctx.json(blockRecentsRecentHeadersMock(10)),
-          ),
+        () => HttpResponse.json(blockRecentsRecentHeadersMock(10)),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(blockRecentsPayloadsMock(10))),
+        () => HttpResponse.json(blockRecentsPayloadsMock(10)),
+        { once: true },
       ),
     );
 
@@ -320,20 +280,20 @@ describe('chainweb.block', () => {
 
   it('throws when payload is not in sync with headers', async () => {
     server.resetHandlers(
-      rest.get(
+      http.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(blockByHeightCurrentCutMock)),
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(blockRecentsRecentHeadersMock(9))),
+        () => HttpResponse.json(blockRecentsRecentHeadersMock(9)),
+        { once: true },
       ),
-      rest.post(
+      http.post(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(blockRecentsPayloadsMock(9))),
+        () => HttpResponse.json(blockRecentsPayloadsMock(9)),
+        { once: true },
       ),
     );
 
