@@ -1,7 +1,7 @@
 {
-  "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
+  "extends": "./node_modules/@kadena-dev/heft-rig/tsconfig-base.json",
   "compilerOptions": {
     "module": "NodeNext",
-    "types": ["heft-jest", ".kadena/pactjs-generated"]
+    "types": [".kadena/pactjs-generated"]
   }
 }
