@@ -44,9 +44,9 @@ Manager provides below.
 In Marmalade v1, fixed-quote-policy served as an example for handling the
 fungible transfers at sales. With the upgrade to Marmalade V2, we have
 integrated this fungible transfer feature inside the Policy Manager, which
-includes various interactions between the Policy Manager, policies, and
-sale contracts. This allows secure escrowed transfers, creative auctions,
-guaranteed royalties, and standardized processes within marketplaces.
+includes various interactions between the Policy Manager, policies, and sale
+contracts. This allows secure escrowed transfers, creative auctions, guaranteed
+royalties, and standardized processes within marketplaces.
 
 **Escrows**
 
@@ -63,9 +63,11 @@ seller.
 
 ## Sale Contracts
 
-The Sale Contract is a contract responsible for updating the final price
-of the quote during the buy process. By managing sale contracts within Marmalade, we can provide users a
-safe way to participate in various sale features such as creative auctions, while also guaranteeing royalty payout.
+The Sale Contract is a contract responsible for updating the final price of the
+quote during the buy process. By managing sale contracts within Marmalade, we
+can provide users a safe way to participate in various sale features such as
+creative auctions, while also guaranteeing royalty payout.
+
+---
 
 **[Marmalade on GitHub](https://github.com/kadena-io/marmalade)**
-

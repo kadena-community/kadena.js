@@ -89,4 +89,7 @@ trust, control, and peace of mind in the digital assets realm.
   amount.
 
 In summary, the Guard policy ensures the safety and integrity of digital assets.
+
+---
+
 [Guard Policy Code](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/guard-policy/guard-policy-v1.pact)

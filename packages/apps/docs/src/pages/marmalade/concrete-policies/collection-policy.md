@@ -74,6 +74,8 @@ seamlessly implements the `kip.token-policy-v2` interface.
 With the Collection Policy, you have the power to showcase your creativity and
 share your favorite tokens in a safe and organised way.
 
+---
+
 [Quick guide: Creating a collection]: (/)
 
 [Collection Policy Code](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/collection-policy/collection-policy-v1.pact)

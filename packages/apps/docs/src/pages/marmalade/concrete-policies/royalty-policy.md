@@ -28,7 +28,7 @@ sold to a new owner.
 
 Consider a digital artwork with a royalty specification as:
 
-```
+```pact
 "royalty_spec": {
   "fungible": "coin",
   "creator": "k:creator",
@@ -94,3 +94,7 @@ payment is made to the token's creator. Emitting line:
 In conclusion, the Royalty Policy revolutionizes how digital artists benefit
 from their work. With each transaction, artists are rewarded, emphasizing the
 ongoing value of their creations.
+
+---
+
+[Royalty Policy Code](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/non-fungible-policy/non-fungible-policy-v1.pact)
