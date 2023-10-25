@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "build": "tsc && api-extractor run --verbose",
-    "dev": "heft build -w",
+    "dev": "tsc -w",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
