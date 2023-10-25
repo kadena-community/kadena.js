@@ -17,6 +17,7 @@ import {
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
+import Link from 'next/link';
 
 import type { FC } from 'react';
 import React, { useRef } from 'react';
@@ -27,8 +28,9 @@ const faqs: Array<{ title: string; body: React.ReactNode }> = [
     body: (
       <div>
         You can use faucet to fund a Kadena account. You can either{' '}
-        <a href="/faucet/existing">fund an existing account</a> or{' '}
-        <a href="/faucet/new">create and fund a new account</a> all in one flow.
+        <Link href="/faucet/existing">fund an existing account</Link> or{' '}
+        <Link href="/faucet/new">create and fund a new account</Link> all in one
+        flow.
       </div>
     ),
   },
