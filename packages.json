@@ -36,6 +36,12 @@
     "path": "packages/libs/client-examples"
   },
   {
+    "name": "@kadena/client-utils",
+    "version": "0.0.1",
+    "private": false,
+    "path": "packages/libs/client-utils"
+  },
+  {
     "name": "@kadena/cookbook",
     "version": "0.0.3",
     "private": true,
