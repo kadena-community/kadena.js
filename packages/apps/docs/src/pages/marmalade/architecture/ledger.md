@@ -173,4 +173,4 @@ Marmalade makes it possible.
 
 ---
 
-[Ledger Code](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact)
+[Ledger Contract](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact)

@@ -74,6 +74,6 @@ share your favorite tokens in a safe and organised way.
 
 ---
 
-[Quick guide: Creating a collection]: (/)
+[Quick guide: Creating a collection]: Coming soon
 
-[Collection Policy Code](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/collection-policy/collection-policy-v1.pact)
+[Collection Policy Contract](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/collection-policy/collection-policy-v1.pact)

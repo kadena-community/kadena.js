@@ -135,4 +135,4 @@ Marmalade ecosystem. Happy crafting!
 
 ---
 
-[Policy Manager Code](https://github.com/kadena-io/marmalade/blob/v2/pact/policy-manager/policy-manager.pact)
+[Policy Manager Contract](https://github.com/kadena-io/marmalade/blob/v2/pact/policy-manager/policy-manager.pact)

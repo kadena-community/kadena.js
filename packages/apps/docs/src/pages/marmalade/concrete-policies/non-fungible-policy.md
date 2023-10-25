@@ -42,4 +42,4 @@ creation.
 
 ---
 
-[Non Fungible Policy Code](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/non-fungible-policy/non-fungible-policy-v1.pact)
+[Non Fungible Policy Contract](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/non-fungible-policy/non-fungible-policy-v1.pact)

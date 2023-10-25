@@ -16,7 +16,15 @@ the user experience by simplifying token creation and management.
 ## Ledger
 
 The ledger functions as the primary contract responsible for user interaction.
+
+Marmalade is a system of multiple contracts, that calls functions in layers. The
+main contract in Marmalade is `marmalade-v2.ledger`, which stores the token
+information, token's accounts, and the policies associated with it. The main
+functions are `create-token`, `mint`, `burn`, `transfer`, `sale`.
+
 For more info on the ledger please click [here](/marmalade/architecture/ledger)
+
+![Leder meets Policy Manager](/assets/marmalade/mint_flow.png)
 
 ## Policy Manager
 
