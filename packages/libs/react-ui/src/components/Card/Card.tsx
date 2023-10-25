@@ -1,13 +1,12 @@
+import className from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 import {
   container,
   disabledClass,
   fullWidthClass,
   stackClass,
 } from './Card.css';
-
-import className from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface ICardProps {
   children: React.ReactNode;

@@ -1,8 +1,7 @@
-import type { ITable } from '.';
-import { Table } from '.';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { ITable } from '.';
+import { Table } from '.';
 
 const meta: Meta<
   {

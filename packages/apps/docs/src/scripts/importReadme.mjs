@@ -1,11 +1,10 @@
-import * as fs from 'fs';
 import 'dotenv/config';
-import { remark } from 'remark';
+import * as fs from 'fs';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
-import { importReadMes, getTypes } from './utils.mjs';
-
+import { remark } from 'remark';
 import { getLastModifiedDate } from './getdocstree.mjs';
+import { getTypes, importReadMes } from './utils.mjs';
 
 const errors = [];
 const success = [];

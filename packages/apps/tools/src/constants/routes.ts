@@ -7,5 +7,6 @@ export default {
   ACCOUNT_TRANSACTIONS_RESULTS: '/account/account-transactions/results',
   MODULE_EXPLORER: '/transactions/module-explorer',
   FAUCET_EXISTING: '/faucet/existing',
+  FAUCET_NEW: '/faucet/new',
   BALANCE: '/balance',
 } as const;

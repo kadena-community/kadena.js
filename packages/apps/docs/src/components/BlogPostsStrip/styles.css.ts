@@ -1,5 +1,4 @@
 import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
-
 import type { ComplexStyleRule } from '@vanilla-extract/css';
 import { style } from '@vanilla-extract/css';
 

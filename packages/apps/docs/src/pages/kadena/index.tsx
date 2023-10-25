@@ -1,15 +1,14 @@
-import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
-
+import type { IMenuData } from '@/Layout';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
-import type { IMenuData } from '@/Layout';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -86,12 +85,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                   href="/kadena/whitepapers/pact-smart-contract-language"
                 >
                   Pact Smart Contract
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/kadena/whitepapers/kuro-layer-2"
-                >
-                  Kuro Layer 2
                 </Link>
               </BrowseSection>
             </DocsCard>

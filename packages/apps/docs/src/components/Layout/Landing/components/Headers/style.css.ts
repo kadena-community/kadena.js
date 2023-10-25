@@ -1,9 +1,8 @@
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
-
 import {
   $$backgroundOverlayColor,
   $$pageWidth,
 } from '@/components/Layout/global.css';
+import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const headerClass = style([

@@ -1,9 +1,8 @@
+import type { FC } from 'react';
 import type { IAccordionRootProps } from './Accordion';
 import { AccordionRoot } from './Accordion';
 import type { IAccordionSectionProps } from './AccordionSection';
 import { AccordionSection } from './AccordionSection';
-
-import type { FC } from 'react';
 
 export { IAccordionRootProps, IAccordionSectionProps };
 

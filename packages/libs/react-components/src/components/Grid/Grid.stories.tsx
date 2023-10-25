@@ -1,10 +1,8 @@
-import { styled } from '../../styles';
-
-import { spacingVariant } from './styles';
-import { Grid } from './';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { styled } from '../../styles';
+import { Grid } from './';
+import { spacingVariant } from './styles';
 
 const Content = styled('div', {
   bg: '$primarySurface',

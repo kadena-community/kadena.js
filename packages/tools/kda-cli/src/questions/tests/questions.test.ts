@@ -1,7 +1,7 @@
 import {
+  getNextQuestion,
   type IAnswers,
   type IQuestion,
-  getNextQuestion,
 } from '../questions.ts';
 
 const questions: IQuestion[] = [

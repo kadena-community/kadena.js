@@ -1,3 +1,6 @@
+import { Tag } from '@components/Tag';
+import type { FC, FunctionComponentElement } from 'react';
+import React from 'react';
 import {
   boldTextClass,
   containerClass,
@@ -7,10 +10,6 @@ import {
   tagContainerClass,
 } from './ProfileSummary.css';
 import type { IProfileSummaryLinkProps } from './ProfileSummaryLink';
-
-import { Tag } from '@components/Tag';
-import type { FC, FunctionComponentElement } from 'react';
-import React from 'react';
 
 export interface IProfileSummaryRootProps {
   name: string;

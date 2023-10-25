@@ -1,7 +1,6 @@
-import { Tree } from './Tree';
-
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
+import { Tree } from './Tree';
 
 describe('Tree', () => {
   test('renders without title', () => {
@@ -17,8 +16,8 @@ describe('Tree', () => {
   });
 
   test('expands/collapses on click', () => {
-    const onOpen = jest.fn();
-    const onClose = jest.fn();
+    const onOpen = vi.fn();
+    const onClose = vi.fn();
 
     const { getAllByTestId } = render(
       <Tree
@@ -44,10 +43,10 @@ describe('Tree', () => {
   });
 
   test('expands/collapses on click while linked prop is true', () => {
-    const onOpenFirst = jest.fn();
-    const onCloseFirst = jest.fn();
-    const onOpenSecond = jest.fn();
-    const onCloseSecond = jest.fn();
+    const onOpenFirst = vi.fn();
+    const onCloseFirst = vi.fn();
+    const onOpenSecond = vi.fn();
+    const onCloseSecond = vi.fn();
 
     const { getAllByTestId } = render(
       <Tree
@@ -96,8 +95,8 @@ describe('Tree', () => {
   });
 
   test('renders child items when expanded, and callbacks should not get called when there is no grand child', () => {
-    const onChildOpen = jest.fn();
-    const onChildClose = jest.fn();
+    const onChildOpen = vi.fn();
+    const onChildClose = vi.fn();
 
     const { getAllByTestId } = render(
       <Tree
@@ -125,8 +124,8 @@ describe('Tree', () => {
   });
 
   test('renders child items when expanded, and callbacks should get called when there is grand child', () => {
-    const onChildOpen = jest.fn();
-    const onChildClose = jest.fn();
+    const onChildOpen = vi.fn();
+    const onChildClose = vi.fn();
 
     const { getAllByTestId } = render(
       <Tree

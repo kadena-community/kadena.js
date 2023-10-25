@@ -1,5 +1,5 @@
-import { darkTheme, globalCss, baseGlobalStyles } from '../src/styles';
 import { themes } from '@storybook/theming';
+import { baseGlobalStyles, darkTheme, globalCss } from '../src/styles';
 
 const globalStyles = globalCss({
   ...baseGlobalStyles,

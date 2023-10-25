@@ -1,8 +1,7 @@
-import type { INavAccordionProps, INavAccordionSectionProps } from './';
-import { NavAccordion } from './';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { INavAccordionProps, INavAccordionSectionProps } from './';
+import { NavAccordion } from './';
 
 type StoryProps = {
   customSections: INavAccordionSectionProps[];

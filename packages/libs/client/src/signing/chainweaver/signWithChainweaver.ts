@@ -1,5 +1,7 @@
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
-
+import fetch from 'cross-fetch';
+import type { Debugger } from 'debug';
+import _debug from 'debug';
 import type {
   IQuickSignRequestBody,
   IQuicksignResponse,
@@ -8,10 +10,6 @@ import type {
 import type { ISignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
-
-import fetch from 'cross-fetch';
-import type { Debugger } from 'debug';
-import _debug from 'debug';
 
 const debug: Debugger = _debug('pactjs:signWithChainweaver');
 

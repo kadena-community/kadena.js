@@ -1,8 +1,7 @@
-import type { ICheckpoint } from './ProgressBar';
-import { ProgressBar } from './ProgressBar';
-
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import type { ICheckpoint } from './ProgressBar';
+import { ProgressBar } from './ProgressBar';
 
 describe('ProgressBar', () => {
   let checkpoints: ICheckpoint[];

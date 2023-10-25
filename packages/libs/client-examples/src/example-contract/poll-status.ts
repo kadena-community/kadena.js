@@ -1,5 +1,4 @@
 import type { ChainId } from '@kadena/types';
-
 import { pollStatus } from './util/client';
 
 export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> {

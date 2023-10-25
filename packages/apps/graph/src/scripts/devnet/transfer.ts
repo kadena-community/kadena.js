@@ -1,7 +1,6 @@
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-
 import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {
@@ -50,6 +49,7 @@ export async function transfer({
       gasLimit: 1000,
       chainId,
       senderAccount: sender.account,
+      ttl: 8 * 60 * 60, //8 hours
     })
     .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();

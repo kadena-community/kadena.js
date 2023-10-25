@@ -1,5 +1,12 @@
+import type { IMostPopularPage } from '@/MostPopularData';
+import MostPopular from '@/components/MostPopular/MostPopular';
+import { SearchBar } from '@/components/SearchBar/SearchBar';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { Box, GradientText, Grid, Heading, Stack } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import { useRouter } from 'next/router';
+import type { FC, KeyboardEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   headerClass,
   headerLoadedClass,
@@ -7,15 +14,6 @@ import {
   subheaderClass,
   wrapperClass,
 } from './style.css';
-
-import MostPopular from '@/components/MostPopular/MostPopular';
-import { SearchBar } from '@/components/SearchBar/SearchBar';
-import type { IMostPopularPage } from '@/MostPopularData';
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
-import type { FC, KeyboardEvent } from 'react';
-import React, { useEffect, useState } from 'react';
 
 interface IProps {
   popularPages: IMostPopularPage[];

@@ -1,5 +1,4 @@
 import { getBlockPointer } from '../getPointer';
-
 import { FAILED, rule } from './rule';
 import type { ISeq } from './seq';
 import { seq } from './seq';

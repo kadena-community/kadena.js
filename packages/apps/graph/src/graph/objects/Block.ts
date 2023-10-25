@@ -1,8 +1,6 @@
 import { prismaClient } from '../../db/prismaClient';
+import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
-
-import type { prismaModelName } from '@pothos/plugin-prisma';
-import { Prisma } from '@prisma/client';
 
 export default builder.prismaNode('Block', {
   id: { field: 'hash' },
@@ -14,7 +12,9 @@ export default builder.prismaNode('Block', {
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     epoch: t.expose('epoch', { type: 'DateTime' }),
     height: t.expose('height', { type: 'BigInt' }),
+    payloadHash: t.exposeString('payloadHash'),
     powHash: t.exposeString('powHash'),
+    predicate: t.exposeString('predicate'),
 
     // computed fields
     parent: t.prismaField({
@@ -39,29 +39,35 @@ export default builder.prismaNode('Block', {
 
     // relations
     transactions: t.prismaConnection({
-      args: {
-        events: t.arg.stringList({ required: false, defaultValue: [] }),
-      },
       type: 'Transaction',
       cursor: 'blockHash_requestKey',
-      async totalCount(parent, { events }, context, info) {
+      async totalCount(parent, args, context, info) {
         return prismaClient.transaction.count({
           where: {
             blockHash: parent.hash,
-            requestKey: {
-              in: await getTransactionsRequestkeyByEvent(events || [], parent),
-            },
           },
         });
       },
-      async resolve(query, parent, { events }, context, info) {
+      resolve: (query, parent, args, context, info) => {
         return prismaClient.transaction.findMany({
           ...query,
           where: {
             blockHash: parent.hash,
-            requestKey: {
-              in: await getTransactionsRequestkeyByEvent(events || [], parent),
-            },
+          },
+          orderBy: {
+            height: 'desc',
+          },
+        });
+      },
+    }),
+
+    minerKeys: t.prismaField({
+      type: ['MinerKey'],
+      nullable: true,
+      resolve(query, parent, args, context, info) {
+        return prismaClient.minerKey.findMany({
+          where: {
+            blockHash: parent.hash,
           },
         });
       },
@@ -75,23 +81,6 @@ export default builder.prismaNode('Block', {
   }),
 });
 
-async function getTransactionsRequestkeyByEvent(
-  events: string[] | undefined,
-  parent: {
-    hash: string;
-  } & { [prismaModelName]?: 'Block' | undefined },
-): Promise<string[]> {
-  return (
-    await prismaClient.$queryRaw<{ requestkey: string }[]>`
-      SELECT t.requestkey
-      FROM transactions t
-      INNER JOIN events e
-      ON e.block = t.block AND e.requestkey = t.requestkey
-      WHERE e.qualname IN (${Prisma.join(events as string[])})
-      AND t.block = ${parent.hash}`
-  ).map((r) => r.requestkey);
-}
-
 async function getConfirmationDepth(blockhash: string): Promise<number> {
   const result = await prismaClient.$queryRaw<{ depth: number }[]>`
     WITH RECURSIVE BlockDescendants AS (
@@ -102,6 +91,7 @@ async function getConfirmationDepth(blockhash: string): Promise<number> {
       SELECT b.hash, b.parent, d.depth + 1 AS depth
       FROM BlockDescendants d
       JOIN blocks b ON d.hash = b.parent
+      WHERE d.depth < ${dotenv.MAX_BLOCK_DEPTH}
     )
     SELECT MAX(depth) AS depth
     FROM BlockDescendants;

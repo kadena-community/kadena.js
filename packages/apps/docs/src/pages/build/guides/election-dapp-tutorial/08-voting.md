@@ -51,7 +51,7 @@ function will execute the vote function of the election module using the Kadena 
 client. Some of the lines
 of the `vote` function have been commented out. You will gradually add these lines back in
 as you add more logic to the election Pact module. The uncommented lines in this function
-are highly similar to the `addCandidates` function in the `DevnetCandidateRepository`,
+are highly similar to the `addCandidate` function in the `DevnetCandidateRepository`,
 except for a different function being called. You will now implement the `vote` function
 in the `election` Pact module, using a test-driven approach in the Pact REPL.
 
@@ -82,8 +82,8 @@ Run `./pact/candidates.repl` to verify that your tests still pass. Also, make su
 The election website now displays a table of candidates all having 0 votes.
 Everytime someone clicks the `Vote` button in a row of the table, the number of votes displayed
 in that row should be increased by 1. The table is rendered based on the result of a call to
-the the `list-modules` function of the `election` Pact module. So, in the Pact REPL you can
-test the behavior of the new `vote` function against the return value of `list-modules`. Add
+the `list-candidates` function of the `election` Pact module. So, in the Pact REPL you can
+test the behavior of the new `vote` function against the return value of `list-candidates`. Add
 the following code to `./pact/voting.repl`, replace the namespace with your own principal
 namespace and run the file. The first two transactions load the `election` Pact module and add
 a candidate to the candidates table. Then, in the `Voting for a candidate` transaction, the
@@ -167,7 +167,7 @@ In `./pact/voting.repl`, add a line below `"Cannot vote for a non-existing candi
 specify the expected error message: `"Candidate does not exist"`.
 This first argument of `expect-failure` is the name of the test, while the second line you
 just added is the expected output of the third argument: the actual function call. Now, when
-your run the test again, it fails with the message `Failed: with-read: row not found: 2`. To
+you run the test again, it fails with the message `Failed: with-read: row not found: 2`. To
 prevent the read operation from failing with a standard message, you can leverage the built-in
 `with-default-read` function that does not throw an error if no row is found with the specified
 key, but returns a default object instead. The default will be an object containing the
@@ -203,7 +203,7 @@ will also add checks against the keyset used to sign the voting transaction.
 ### Define votes schema and table
 
 Add the following lines to `./pact/election.pact`, inside the `election` module definition,
-below the definition of the `votes` schema and table.
+below the definition of the `candidates` schema and table.
 
 ```pact
   (defschema votes-schema
@@ -270,14 +270,15 @@ The test will fail with the error
 Remember that all transactions in `./pact/voting.repl` so far are signed with the
 `admin-keyset`, as defined in `./pact/setup.repl`. This means that your admin account
 is able to cast more than one vote on `Candidate A`, which makes the election unfair. To fix
-this, insert a row into the `votes` table with the account name as key and the candidate key
-as value for the column `candidateKey`. In addition, add the account of the voter as the
+this, insert a new row into the `votes` table with the account name as key and the candidate key
+as value for the column `candidateKey`, every time the `vote` function is called. In addition,
+add the account of the voter as the
 first parameter of the `vote` function and enforce that there is no row in the `votes` table
 that is keyed with the account name, using the `with-default-read` pattern that you just used
 to prevent voting on a non-existing candidate. Create a separate function `account-voted`
 for the checking if
 an account has already voted, so the front-end of the election website can fetch this
-information to determine of the voting buttons should be enabled. Within the `vote` function,
+information to determine if the voting buttons should be enabled. Within the `vote` function,
 the result of `account-voted` is stored in a variable `double-vote` before the condition is
 enforced. Update the implementation of the `vote` function as follows.
 
@@ -319,7 +320,7 @@ add a `voter-keyset` to `env-data` in `./pact/setup.repl`.
 , 'voter-keyset: { "keys": ["voter"], "pred": "keys-all" },
 ```
 
-While you are editing this file, load the `coin` module and the interaces it implements at
+While you are editing this file, load the `coin` module and the interfaces it implements at
 the end of it. After that, create the `coin.coin-table` and `coin.allocation-table` required
 to create the voter account. Also, create the voter account and your admin account in the
 `coin` module's database. Remember to replace the admin account name with your own.
@@ -417,7 +418,7 @@ on its own behalf, leading to an increase of the number of votes on `Candidate A
 ```
 
 Run the file again and, if all is well, all tests pass, meaning that any account can cast
-only one vote on their own behalf. Congratulations, you are now ready to upgrade the `election`
+only one vote on its own behalf. Congratulations, you are now ready to upgrade the `election`
 module on Devnet.
 
 ## Upgrade election module on Devnet
@@ -462,18 +463,18 @@ sure that Chainweaver is open so you can sign the transaction. Click the `Vote` 
 behind your favorite candidate, sign the transaction and wait for the transaction to
 finish. Verify that the number of votes for the candidate
 you voted on increased by 1. After you voted, the `Vote` buttons are disabled, because
-the front-end checks if you account has already voted by making a `local` request to
+the front-end checks if your account has already voted by making a `local` request to
 the `account-voted` function of the `election` Pact module.
 
 ## Next steps
 
 Congratulations! You have completed the `election` Pact module, deployed it to your local
-Devnet and demonstrated that the front-end of election website can use it as its back-end.
+Devnet and demonstrated that the front-end of the election website can use it as its back-end.
 If you paid close attention during the signing of the transaction, though, you may have
 noticed that your admin account still has to pay for gas to cast a vote. To make the
 election accessible for everyone, however, it should be possible to cast a vote without
 having to pay anything. In the next chapter, you will add a gas station module to the
 `election` smart contract that can be funded by the election organisation so it can
-pay the gas fee for voting transaction of voters.
+pay the gas fee for voting transactions of voters.
 
 

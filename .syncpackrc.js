@@ -12,6 +12,7 @@ const config = {
         '@kadena/fonts',
         '@kadena/pactjs-cli',
         '@kadena-dev/eslint-plugin',
+        'remark-gfm',
       ],
       isIgnored: true, // Toggle flag or or remove group to see inconsistencies
     },

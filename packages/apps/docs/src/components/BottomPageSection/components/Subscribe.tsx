@@ -1,9 +1,7 @@
 import { Button, Heading, Input, Notification, Stack } from '@kadena/react-ui';
-
-import { useSubscribe } from './useSubscribe';
-
 import type { FC } from 'react';
 import React from 'react';
+import { useSubscribe } from './useSubscribe';
 
 /**
  * @TODO: when the loading state story is implemented in the UI lib,
@@ -31,7 +29,7 @@ export const Subscribe: FC = () => {
               <Stack gap="$sm">
                 <Input
                   id="email"
-                  leftIcon="At"
+                  icon="At"
                   onChange={handleFormState}
                   placeholder="Email address"
                   outlined

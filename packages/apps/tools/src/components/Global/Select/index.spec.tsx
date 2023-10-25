@@ -1,14 +1,12 @@
 import { SystemIcon } from '@kadena/react-ui';
-
-import { Select } from './index';
-
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { Select } from './index';
 
 describe('Select', () => {
   it.skip('renders correctly with all props', async () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
 
     const { getByTestId } = render(
       <Select

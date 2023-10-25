@@ -1,5 +1,4 @@
-import { Text } from '../../text';
-
+import { Text } from '@components/text';
 import React, { useEffect, useState } from 'react';
 
 interface ITimeTickerProps {

@@ -52,7 +52,7 @@ via the top section of the
 navigation bar on the left side of the window. When you click `+ Generate Key` on the
 top right, a new public key will be added to the list of public keys. Click `Add k: Account`
 on the right of this new public key and your k:account will be added to the accounts
-that you are watching via Chainweaver. Expand the row of the account you justed added
+that you are watching via Chainweaver. Expand the row of the account you just added
 by clicking the arrow on the left side of the account name. You will see that no KDA balance
 exists for this account on any of the chains and the information about the owner and keyset
 of the account is missing. This indicates that your account does not yet exist on Devnet.
@@ -95,16 +95,16 @@ npm run generate-types:coin:devnet
 
 Now you are ready to run the npm script that executes the snippet `./transferCreate.ts`. Open up this
 file in your editor to learn how the Kadena JavaScript client is used to call the `transfer-create`
-function of the `coin` module to create and fund your admin account. After importing the depencies
+function of the `coin` module to create and fund your admin account. After importing the dependencies
 and creating the client with the right (Devnet) configuration, the
 main function is called with information about the sender, the receiver and the amount. The amount
-of KDA to transfer to the receiver is hardcoded to 20. The receiver will be you admin account name,
+of KDA to transfer to the receiver is hardcoded to 20. The receiver will be your admin account name,
 which you will specify as an argument when running the script. The sender, `sender00`, is one
 of the pre-installed Devnet test accounts that holds some KDA on all chains. The public and private
 key for this account were copied over from GitHub. Inside the main function, the amount to transfer
-is converted to a PactDecimal, which boils down to this format: `{ decimal: '20.0' }`. Then, the
+is converted to a `PactDecimal`, which boils down to this format: `{ decimal: '20.0' }`. Then, the
 transaction is created. Creating this transaction is slightly more complex than the `list-modules`
-you learned about in the previous chapter.
+transaction you learned about in the previous chapter.
 
 Instead of passing raw Pact code as a string to `Pact.builder.execution()`, the `coin['transferCreate']`
 function is called on `Pact.modules` to generate the correct Pact code for you, based on the
@@ -126,7 +126,8 @@ admin account. Replace `k:account` with your admin account.
 npm run transfer-create:devnet -- k:account
 ```
 
-After a few seconds, `Write succeeded` should be printed in the terminal window. Verify that your account was created by checking the account details using the Kadena JavaScript client.
+After a few seconds, `Write succeeded` should be printed in the terminal window. Verify that
+your account was created by checking the account details using the Kadena JavaScript client.
 Replace `k:account` with your admin account.
 
 ```bash
@@ -134,14 +135,17 @@ npm run coin-details:devnet -- k:account
 ```
 
 This time, the script should print out the account name, the KDA balance and the receiver guard
-of the account. Chainweaver will tell the same story. Navigate to `Accounts` in the top section of the left menu bar. Expand your admin account to view the information on all chains. You will
+of the account. Chainweaver will tell the same story. Navigate to `Accounts` in the top section
+of the left menu bar. Expand your admin account to view the information on all chains. You will
 see that on chain 1 you are the owner, one keyset is defined and the balance is 20 KDA.
 
 ## Next steps
 
 In this chapter you learned how to create a key for a Kadena account using Chainweaver and to
 create and fund this account using the Kadena JavaScript client. You verified the creation
-of the account in `Accounts` view of Chainweaver and by calling the `details` function of the `coin` module on Devnet using the Kadena JavaScript client. The admin user will use its KDA
-to pay gas fees charged for deploying keysets, deploying smart contracts and sending transactions to nominate candidates for the election. In the following chapter you will learn
+of the account in `Accounts` view of Chainweaver and by calling the `details` function of the
+`coin` module on Devnet using the Kadena JavaScript client. The admin user will use its KDA
+to pay gas fees charged for deploying keysets, deploying smart contract modules and sending
+transactions to nominate candidates for the election. In the following chapter you will learn
 how to create a namespace in which you will later define an admin keyset and deploy your
 smart contracts.

@@ -30,7 +30,7 @@ scalar BigInt
 type Query {
   lastBlockHeight: Int!
   """
-  accountName is mandatory, default use module "coin"
+  accountName is mandatory
   An Account is specific to fungible modules
   """
   account(accountName: String!, filter: AccountFilter): Account!
@@ -118,7 +118,9 @@ input BlocksFilterInput {
 # }
 
 input AccountFilter {
-  module: String = "coin"
+  module: String
+  # amount: Float
+  # chainId: Int
 }
 
 interface Node {
@@ -133,8 +135,14 @@ type Account {
   id: ID!
   accountName: String!
   chainAccounts: [ChainAccount!]!
-  totalBalance: Float!
+  totalBalances: [FungibleBalance!]!
   transactions: [Transaction!]!
+  transfers: [Transfer!]!
+}
+
+type FungibleBalance {
+  module: String!
+  balance: Float!
 }
 
 # query TheTransactions {
@@ -169,7 +177,7 @@ type ChainAccount {
   All transfers where the sender or receiver is this account
   Based on fungible.TRANSFER
   """
-  transfers(module: String! = "coin"): [Transfer!]!
+  transfers(module: String): [Transfer!]!
 }
 
 type Transaction {

@@ -1,4 +1,5 @@
 import { prismaClient } from '../../db/prismaClient';
+import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {
@@ -8,22 +9,31 @@ export default builder.prismaNode('Transaction', {
     badResult: t.string({
       nullable: true,
       resolve({ badResult }) {
-        return !badResult ? undefined : JSON.stringify(badResult);
+        return nullishOrEmpty(badResult)
+          ? undefined
+          : JSON.stringify(badResult);
       },
     }),
     chainId: t.expose('chainId', { type: 'BigInt' }),
-    code: t.exposeString('code', { nullable: true }),
+    // code: t.exposeString('code', { nullable: true }),
+    code: t.string({
+      resolve({ code }) {
+        return code === null ? JSON.stringify('cont') : JSON.stringify(code);
+      },
+    }),
     continuation: t.string({
       nullable: true,
       resolve({ continuation }) {
-        return !continuation ? undefined : JSON.stringify(continuation);
+        return nullishOrEmpty(continuation)
+          ? undefined
+          : JSON.stringify(continuation);
       },
     }),
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     data: t.string({
       nullable: true,
       resolve({ data }) {
-        return !data ? undefined : JSON.stringify(data);
+        return nullishOrEmpty(data) ? undefined : JSON.stringify(data);
       },
     }),
     gas: t.expose('gas', { type: 'BigInt' }),
@@ -32,7 +42,9 @@ export default builder.prismaNode('Transaction', {
     goodResult: t.string({
       nullable: true,
       resolve({ goodResult }) {
-        return !goodResult ? undefined : JSON.stringify(goodResult);
+        return nullishOrEmpty(goodResult)
+          ? undefined
+          : JSON.stringify(goodResult);
       },
     }),
     height: t.expose('height', { type: 'BigInt' }),
@@ -40,7 +52,7 @@ export default builder.prismaNode('Transaction', {
     metadata: t.string({
       nullable: true,
       resolve({ metadata }) {
-        return !metadata ? undefined : JSON.stringify(metadata);
+        return nullishOrEmpty(metadata) ? undefined : JSON.stringify(metadata);
       },
     }),
     nonce: t.exposeString('nonce', { nullable: true }),
@@ -49,7 +61,7 @@ export default builder.prismaNode('Transaction', {
     proof: t.exposeString('proof', { nullable: true }),
     requestKey: t.exposeString('requestKey'),
     rollback: t.expose('rollback', { type: 'Boolean', nullable: true }),
-    sender: t.exposeString('sender', { nullable: true }),
+    senderAccount: t.exposeString('senderAccount', { nullable: true }),
     step: t.expose('step', { type: 'BigInt', nullable: true }),
     ttl: t.expose('ttl', { type: 'BigInt' }),
     transactionId: t.expose('transactionId', {
@@ -77,6 +89,20 @@ export default builder.prismaNode('Transaction', {
       // eslint-disable-next-line @typescript-eslint/typedef
       resolve(query, parent, args, context, info) {
         return prismaClient.event.findMany({
+          where: {
+            requestKey: parent.requestKey,
+            blockHash: parent.blockHash,
+          },
+        });
+      },
+    }),
+
+    transfers: t.prismaField({
+      type: ['Transfer'],
+      nullable: true,
+      // eslint-disable-next-line @typescript-eslint/typedef
+      resolve(query, parent, args, context, info) {
+        return prismaClient.transfer.findMany({
           where: {
             requestKey: parent.requestKey,
             blockHash: parent.blockHash,

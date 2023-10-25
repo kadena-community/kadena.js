@@ -1,8 +1,7 @@
-import { GridItem as BaseGridItem } from './styles';
-
 import type { CSSProperties } from '@stitches/react';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { GridItem as BaseGridItem } from './styles';
 
 export type ColSpanType = number | 'auto';
 

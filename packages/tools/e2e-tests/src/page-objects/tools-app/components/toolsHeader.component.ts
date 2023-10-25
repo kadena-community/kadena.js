@@ -1,7 +1,6 @@
+import type { Locator, Page } from '@playwright/test';
 import { CardComponent } from '../../react-ui/card.component';
 import { NavHeaderComponent } from '../../react-ui/navHeader.component';
-
-import type { Locator, Page } from '@playwright/test';
 
 export class ToolsHeaderComponent extends NavHeaderComponent {
   public networkCard: CardComponent;

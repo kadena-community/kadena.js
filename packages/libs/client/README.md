@@ -211,8 +211,8 @@ Signing can be done in various ways. Either manually, by signing the hash of the
 transaction or with a wallet. There's currently two options in `@kadena/client`
 to sign with a wallet:
 
-1.  [WalletConnect (preferred)][22]
-2.  [Chainweaver][7]
+1. [WalletConnect (preferred)][22]
+2. [Chainweaver][7]
 
 ### Manually signing the transaction
 
@@ -245,9 +245,9 @@ const signedTransaction = signWithChainweaver(unsignedTransaction)
 There's several steps to setup a WalletConnect connections and sign with
 WalletConnect.
 
-1.  Setting up the connection using [`ClientContextProvider.tsx`][30]
-2.  Use `signWithWalletConnect` to request a signature from the wallet
-    (`Transaction.tsx`)\[[https://github.com/kadena-io/wallet-connect-example/blob/2efc34296f845aea75f37ab401a5c49081f75b47/src/components/Transaction.tsx#L104][31]]
+1. Setting up the connection using [`ClientContextProvider.tsx`][30]
+2. Use `signWithWalletConnect` to request a signature from the wallet
+   (`Transaction.tsx`)\[[https://github.com/kadena-io/wallet-connect-example/blob/2efc34296f845aea75f37ab401a5c49081f75b47/src/components/Transaction.tsx#L104][31]]
 
 ## Using the commandBuilder
 

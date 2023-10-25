@@ -1,23 +1,21 @@
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 import { MaskedValue, ProductIcon } from '..';
-
 import {
   CardContainer,
   ContentContainer,
   DataContainer,
-  displayVariant,
-  gapValueLabelVariant,
-  gridVariant,
   LabelTitle,
   LabelValue,
   LabelValueContainer,
-  layoutVariant,
   TrackerWarningContainer,
+  displayVariant,
+  gapValueLabelVariant,
+  gridVariant,
+  layoutVariant,
   warningVariant,
 } from './TrackerCard.css';
-
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface ITrackerCardProps {
   labelValues: ILabelValue[];

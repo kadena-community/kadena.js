@@ -1,7 +1,6 @@
-import { olListClass } from './styles.css';
-
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
+import { olListClass } from './styles.css';
 
 interface IProp {
   children: FunctionComponentElement<HTMLOListElement>[];

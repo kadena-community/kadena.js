@@ -167,6 +167,11 @@
   "Network label": "Network label",
   "Network ID": "Network ID",
   "Network api": "Network api",
+  "The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet.": "The Faucet only runs on Testnet. The Network toggle in the topbar has no effect on the Faucet. It will not fund accounts on Mainnet, only on Testnet.",
+  "Insert valid public key": "Insert valid public key",
+  "Duplicate public key": "Duplicate public key",
+  "Create and Fund Account": "Create and Fund Account",
+  "Please provide one or more public keys": "Please provide one or more public keys",
   "No code to be shown yet": "No code to be shown yet",
   "Click on a module from the left panel to see its code in this panel.": "Click on a module from the left panel to see its code in this panel.",
   "Select/open a module to see the outline of the contract/module": "Select/open a module to see the outline of the contract/module",
@@ -174,5 +179,11 @@
   "Select Network": "Select Network",
   "Finalize Cross Chain": "Finalize Cross Chain",
   "Module Explorer": "Module Explorer",
-  "Module name": "Module name"
+  "Module name": "Module name",
+  "Select which keyboard to use for the code editor": "Select which keyboard to use for the code editor",
+  "Select which theme to use for the code editor": "Select which theme to use for the code editor",
+  "Select which mode to use for the code editor": "Select which mode to use for the code editor",
+  "Keyboard handler": "Keyboard handler",
+  "Mode": "Mode",
+  "Theme": "Theme"
 }

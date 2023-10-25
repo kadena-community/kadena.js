@@ -1,7 +1,6 @@
+import type { Page } from '@playwright/test';
 import { CardComponent } from '../../react-ui/card.component';
 import { NotificationContainerComponent } from '../../react-ui/notificationContainer.component';
-
-import type { Page } from '@playwright/test';
 
 export class FaucetPage {
   private readonly _page: Page;
@@ -14,7 +13,11 @@ export class FaucetPage {
     this.notification = new NotificationContainerComponent(this._page);
   }
 
-  public async fundAccount(account: string, chainId: string): Promise<void> {
+  public async fundExistingAccount(
+    account: string,
+    chainId: string,
+  ): Promise<void> {
+    await this._page.getByRole('link', { name: ' this page' }).click();
     await this._card.setValueForTextbox(
       'The Account Name You Would Like To Fund Coins To',
       account,

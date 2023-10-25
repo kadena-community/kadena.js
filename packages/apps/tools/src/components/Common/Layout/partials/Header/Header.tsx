@@ -1,5 +1,3 @@
-import { NavHeader, useModal } from '@kadena/react-ui';
-
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import { AddNetworkModal } from '@/components/Global/AddNetworkModal';
@@ -8,9 +6,10 @@ import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
+import { NavHeader, useModal } from '@kadena/react-ui';
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import useTranslation from 'next-translate/useTranslation';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 
@@ -31,7 +30,7 @@ const Header: FC<IHeaderProps> = () => {
   const navItems = [
     {
       label: t('Faucet'),
-      href: routes.FAUCET_EXISTING,
+      href: routes.FAUCET_NEW,
     },
     {
       label: t('Transactions'),
@@ -63,11 +62,14 @@ const Header: FC<IHeaderProps> = () => {
 
   return (
     <NavHeader.Root brand="DevTools">
-      <NavHeader.Navigation
-        activeLink={navItems.findIndex((item) => item.href === pathname) + 1}
-      >
+      <NavHeader.Navigation activeHref={pathname}>
         {navItems.map((item, index) => (
-          <NavHeader.Link key={index} onClick={handleMenuItemClick} asChild>
+          <NavHeader.Link
+            key={index}
+            href={item.href}
+            onClick={handleMenuItemClick}
+            asChild
+          >
             <Link href={item.href}>{item.label}</Link>
           </NavHeader.Link>
         ))}

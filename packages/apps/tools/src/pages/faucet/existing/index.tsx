@@ -1,20 +1,3 @@
-import type { ICommandResult } from '@kadena/chainweb-node-client';
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  Card,
-  Grid,
-  Heading,
-  Notification,
-} from '@kadena/react-ui';
-
-import {
-  buttonContainerClass,
-  containerClass,
-  notificationContainerStyle,
-} from './styles.css';
-
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import AccountNameField, {
@@ -26,11 +9,26 @@ import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Card,
+  Grid,
+  Heading,
+  Notification,
+} from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import {
+  buttonContainerClass,
+  containerClass,
+  notificationContainerStyle,
+} from './styles.css';
 
 const schema = z.object({
   name: NAME_VALIDATION,
@@ -122,7 +120,9 @@ const ExistingAccountFaucetPage: FC = () => {
     [chainID, t],
   );
 
-  const showNotification = selectedNetwork !== 'testnet04';
+  const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
+  const disabledButton: boolean =
+    requestStatus.status === 'processing' || mainnetSelected;
 
   const {
     register,
@@ -138,7 +138,7 @@ const ExistingAccountFaucetPage: FC = () => {
       </Breadcrumbs.Root>
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
-        {showNotification ? (
+        {mainnetSelected ? (
           <Notification.Root
             color="warning"
             expanded={true}
@@ -182,7 +182,7 @@ const ExistingAccountFaucetPage: FC = () => {
             icon="TrailingIcon"
             iconAlign="right"
             title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            disabled={requestStatus.status === 'processing'}
+            disabled={disabledButton}
           >
             {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
           </Button>

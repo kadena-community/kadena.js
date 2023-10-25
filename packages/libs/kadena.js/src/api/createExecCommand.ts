@@ -9,7 +9,6 @@ import type {
   Nonce,
   PactCode,
 } from '@kadena/types';
-
 import { prepareExecCommand } from './prepareExecCommand';
 
 /**

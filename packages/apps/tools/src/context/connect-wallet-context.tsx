@@ -1,11 +1,10 @@
-import type { ChainwebChainId } from '@kadena/chainweb-node-client';
-
 import type { Network } from '@/constants/kadena';
 import { useDidUpdateEffect } from '@/hooks';
 import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
 import { getAllNetworks, getInitialNetworks } from '@/utils/network';
 import { getItem, setItem } from '@/utils/persist';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
 import type { PairingTypes, SessionTypes } from '@walletconnect/types';
@@ -63,7 +62,6 @@ export const WalletConnectClientContext =
 /**
  * walletConnectModal Config
  */
-// eslint-disable-next-line @kadena-dev/typedef-var
 const walletConnectModal = new WalletConnectModal({
   projectId: env('WALLET_CONNECT_PROJECT_ID', ''),
   themeMode: 'light',
@@ -72,6 +70,7 @@ const walletConnectModal = new WalletConnectModal({
 interface IWalletConnectClientContextProviderProps {
   children: ReactNode;
 }
+
 /**
  * Provider
  */

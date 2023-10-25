@@ -10,7 +10,6 @@ import {
   setNetworkId,
   signWithKeypair,
 } from '../pact/pact.js';
-
 import type { IAnswers, IQuestion } from './questions.js';
 
 const fundCondition = ({ task }: IAnswers): boolean => {

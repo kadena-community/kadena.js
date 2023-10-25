@@ -1,15 +1,14 @@
+import type { Sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
+import classNames from 'classnames';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 import type { ResponsiveInputType } from './Grid.css';
 import {
   containerColumnVariants,
   gapVariants,
   gridContainerClass,
 } from './Grid.css';
-
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { sprinkles } from '@theme/sprinkles.css';
-import classNames from 'classnames';
-import type { FC, ReactNode } from 'react';
-import React from 'react';
 
 export interface IGridRootProps
   extends Pick<

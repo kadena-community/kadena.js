@@ -1,9 +1,8 @@
-import type { Target } from './NavFooterLink';
-
 import type { SystemIcon } from '@components/Icon';
 import { NavFooter } from '@components/NavFooter';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { Target } from './NavFooterLink';
 
 const meta: Meta<{
   linksCount: number;

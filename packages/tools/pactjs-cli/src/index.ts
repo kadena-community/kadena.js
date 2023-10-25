@@ -1,10 +1,9 @@
-import { contractGenerateCommand } from './contract-generate';
-import { retrieveContractCommand } from './retrieve-contract';
-import { templateGenerateCommand } from './template-generate';
-
 import { program } from 'commander';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { contractGenerateCommand } from './contract-generate';
+import { retrieveContractCommand } from './retrieve-contract';
+import { templateGenerateCommand } from './template-generate';
 
 const packageJson: { version: string } = JSON.parse(
   readFileSync(join(__dirname, '../package.json'), 'utf8'),
