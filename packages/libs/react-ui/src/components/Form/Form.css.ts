@@ -41,19 +41,6 @@ export const baseContainerClass = style([
         outline: `2px solid ${vars.colors.$blue60}`,
         outlineOffset: '2px',
       },
-      '.inputGroup &': {
-        borderRadius: 0,
-      },
-      '.inputGroup &:first-child': {
-        borderTopRightRadius: vars.radii.$sm,
-        borderTopLeftRadius: vars.radii.$sm,
-      },
-      '.inputGroup &:last-child': {
-        borderBottomRightRadius: vars.radii.$sm,
-        borderBottomLeftRadius: vars.radii.$sm,
-      },
     },
   },
 ]);
-
-// base container class
