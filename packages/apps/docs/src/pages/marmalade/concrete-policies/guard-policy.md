@@ -7,72 +7,86 @@ order: 2
 layout: full
 ---
 
-# The Guard Policy: Securing the Lifecycle of Digital Assets in the Crypto Landscape
+# Guard Policy
 
-In the ever-evolving landscape of digital assets, security has emerged as a
-paramount concern.
-[The Guard Policy](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/guard-policy/guard-policy-v1.pact)
-is an essential mechanism that ensures that token-related actions such as
-minting, burning, transferring, and buying/selling tokens, are performed
-securely and by the authorized entities only.
+The Guard Policy is designed to ensure that all token-related actions - minting,
+burning, transferring, and buying/selling - are done securely and only by
+authorized parties.
 
-Visualize being an owner of a valuable Non-Fungible Token (NFT). You want to
-ensure that all operations involving your asset - minting new tokens, burning
-existing ones, transferring ownership, or even facilitating buying/selling
-actions - are fully guarded against unauthorized usage. The Guard Policy acts
-like an invisible fortress that ensures the secure transaction of your NFT,
-allowing only authorized parties to perform certain actions on the token.
+**The Role of Guard Policy in Digital Asset Protection**:
 
-The brilliance of the Guard Policy is embedded in its comprehensive coverage and
-meticulous attention to each aspect of a token's lifecycle. It defines a schema
-for "guards", which entails keysets for various actions, thus ensuring robust
-security checks for every transaction related to your token.
+1.  **Token Creation and Initialization**:
 
-To get a sense of the Guard Policy, let's navigate through the journey of an
-NFT - from creation to secure transactions. For illustrative purposes, we can
-refer to a sample guard configuration:
+    - Envision owning a unique Non-Fungible Token (NFT). When initiating your
+      token, you apply the Guard Policy. This policy outlines specific guards or
+      rules for different actions, from minting to transfer.
+    - A typical configuration for guards looks like:
 
-```pact
+    ```pact
     'mint-guard': {"keys": ["mint"], "pred": "keys-all"},
     'burn-guard': {"keys": ["burn"], "pred": "keys-all"},
     'sale-guard': {"keys": ["sale"], "pred": "keys-all"},
     'transfer-guard': {"keys": ["transfer"], "pred": "keys-all"}
-```
+    ```
 
-**Token Creation and Initialization**: As the owner of a unique digital asset,
-your journey begins with the creation of your NFT. While defining the creation
-terms, you configure the Guard Policy, which sets the rules for minting,
-burning, selling, and transferring your NFT. Each of these operations is
-assigned a unique guard. A keyset, which comprises a set of keys and predicates
-is one type of a guard, and Pact provides various types of guards including pact
-guards, user guards, and capability guards.
+2.  **Token Minting**:
 
-**Token Minting**: Once your token is created, you may want to mint new tokens.
-The Guard Policy ensures that only the entities possessing the mint key can
-execute this operation.
+    - After creation, you might want to produce new tokens. The Guard Policy
+      ensures that only those with the appropriate 'mint' key can do this.
 
-**Token Burning**: When it comes to diminishing the supply of your tokens, the
-Guard Policy guarantees that only the holders of the burn key are authorized to
-burn your tokens.
+3.  **Token Burning**:
 
-**Token Transfer**: When you transfer your token, the Guard Policy steps in to
-ensure the process's security. Only the entities holding the transfer key are
-allowed to perform this operation, safeguarding your tokens from unauthorized
-transfers.
+    - If you wish to reduce your token's supply, only those with the 'burn' key
+      can proceed with this action under the Guard Policy.
 
-**Token Sale**: As you enter the marketplace to sell your token, the Guard
-Policy serves as your gatekeeper, ensuring that only the holders of the sale key
-can sell your token. It verifies the sale ID against the currently executing
-pact, ensuring that only authorized sales proceed.
+4.  **Token Transfer**:
 
-While the mechanics of this process may sound complex, they're handled smoothly
-in the background by the crypto platform where you create and transact with your
-NFT. As a token owner, you're only required to set up your preferred guard
-configuration, and the platform takes care of the rest.
+    - When moving your token to another party, the Guard Policy verifies the
+      transfer, ensuring only those with the 'transfer' key can execute it.
 
-In summary, the Guard Policy fundamentally redefines the security of digital
-assets in the crypto world. It empowers you with robust control over every
-action associated with your token, ensuring that your asset's value and
-integrity remain uncompromised. The Guard Policy is not just about security;
-it's about trust, control, and the peace of mind knowing your digital assets are
-securely shielded.
+5.  **Token Sale**:
+
+    - When you're ready to sell, the Guard Policy checks that only entities with
+      the 'sale' key can complete this action. It also confirms the sale ID with
+      the ongoing pact to guarantee only authorized sales.
+
+While this might seem intricate, the platform simplifies the process, taking
+most of the weight off token owners. All you need to do is set up your guard
+configuration.
+
+In essence, the Guard Policy isn't just a security tool; it's a means to ensure
+trust, control, and peace of mind in the digital assets realm.
+
+## Technical Components
+
+### Schemas and Tables:
+
+- **Schemas**: Contains `guards` that specify values for `mint`, `burn`, `sale`,
+  and `transfer`.
+- **Tables**: The `policy-guards` table connects token IDs to their guard
+  values.
+
+### Capabilities:
+
+- **GOVERNANCE**: Governs contract upgrade access.
+- **GUARDS** @event: Emits guard info during `enforce-init`.
+- **MINT**: Applies the `mint-guard` in `enforce-mint`.
+- **BURN**: Applies the `burn-guard` in `enforce-burn`.
+- **SALE**: Uses the `sale-guard` during `enforce-offer`, `enforce-withdraw`,
+  and `enforce-buy`.
+- **TRANSFER**: Uses the `sale-guard` in `enforce-transfer`.
+
+## Functions:
+
+- **enforce-init**: Initializes the `policy-guards` table with token ID and
+  guard values.
+- **enforce-mint**: Validates minting processes.
+- **enforce-burn**: Validates burning processes.
+- **enforce-offer**: Confirms sale offers with guards and verifies the sale-id.
+- **enforce-withdraw**: Checks sale withdrawals and the sale-id.
+- **enforce-buy**: Validates buying processes and the sale-id.
+- **enforce-transfer**: Validates transfers, checking sender, receiver, and
+  amount.
+
+In summary, the Guard policy ensures the safety and integrity of digital assets.
+[Guard Policy Code](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/guard-policy/guard-policy-v1.pact)

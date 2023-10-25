@@ -9,7 +9,7 @@ layout: full
 
 # Collection Policy
 
-Marmalade's Collection Policyis a policy designed for creators or operators to
+Marmalade's Collection Policy is a policy designed for creators or operators to
 organise their tokens into a curated group, just like creating an art gallery or
 a collection of precious items. Imagine you have a bunch of unique tokens, each
 representing something special to you. With the Collection Policy, you can
@@ -22,7 +22,8 @@ together unique creations under a single theme or concept.
 in shorts these steps are as followed:
 
 - **The Birth of the Collection**: Establishing a new digital space to host
-  unique tokens, similar to naming an art exhibition.
+  unique tokens, similar to naming an art exhibition. It's as simple as calling
+  the create-collection function and setting the parameters.
 - **Crafting the Tokens**: Assigning each token a unique ID and defining its
   rules, like ownership and transfer rights.
 - **Minting - The Final Touch**: Embedding the token onto the kadena blockchain,
@@ -63,9 +64,6 @@ seamlessly implements the `kip.token-policy-v2` interface.
 - **`get-token:`** Gleans token details, focusing on its association with a
   collection, via the token ID.
 
-**Enabling the Policy**: To activate the `collection-policy-v1`, designate its
-value as `true` in the concrete policies catalog.
-
 **Capabilities Overview**:
 
 - `GOVERNANCE`: Restricts authority to the `marmalade-admin` keyset.
@@ -75,5 +73,7 @@ value as `true` in the concrete policies catalog.
 
 With the Collection Policy, you have the power to showcase your creativity and
 share your favorite tokens in a safe and organised way.
+
+[Quick guide: Creating a collection]: (/)
 
 [Collection Policy Code](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/collection-policy/collection-policy-v1.pact)

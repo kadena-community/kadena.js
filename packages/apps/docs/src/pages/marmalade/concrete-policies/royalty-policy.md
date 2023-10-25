@@ -7,73 +7,90 @@ order: 4
 layout: full
 ---
 
-# The Royalty Policy: Ensuring Enduring Benefits for Artists in the Digital Era
+# Royalty Policy: Ensuring Benefits for Digital Artists
 
-In the dynamic world of digital art, creators are continuously exploring new
-avenues to express their creativity and capitalize on their work.
-[The Royalty Policy](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/royalty-policy/royalty-policy-v1.pact)
-is a powerful policy ensuring that these artists enjoy benefits from their
-creations far beyond the initial sale.
+The Royalty Policy ensures that digital artists continue to benefit from their
+creations even after their initial sale. This powerful mechanism connects
+creators to their digital assets, guaranteeing them a portion of the profits
+with every subsequent sale.
 
-Imagine being a digital artist. You've poured your heart into creating a unique
-digital asset – a one-of-a-kind piece of art. The relationship with your work,
-however, does not end with its first sale. The Royalty Policy is like an
-invisible tether that connects you with your creation, assuring you a portion of
-the profits every time it is sold.
+## Concept:
 
-The Royalty Policy is essentially an agreement that entitles you, the creator,
-to a cut from any future sales of your artwork. This mechanism ensures you reap
-continuous rewards from your creative work, even after it has been sold to a new
-owner. A predetermined fraction of each sale, known as the royalty, is
-automatically transferred to you every time your work is purchased by a new
-owner.
+In the realm of digital art, the Royalty Policy acts like a tether between
+artists and their creations. Once an artist crafts a unique digital asset,
+represented as an NFT (Non-Fungible Token), the relationship doesn't end with
+its initial sale. By defining royalty terms using the Royalty Policy, artists
+ensure a predetermined royalty rate from every subsequent sale. This royalty is
+automatically calculated and transferred to the artist whenever their art is
+sold to a new owner.
 
-To put this into context, let's walk through a simplified journey of an artwork
-– from creation to sale – in the digital art space. And let's use a sample
-royalty specification as an example:
+### Example:
 
-```json
-    "royalty_spec": {
-      "fungible": "coin",
-      "creator": "k:creator",
-      "creator-guard": {"keys": ["creator"], "pred": "keys-all"},
-      "royalty-rate": 0.05
-    }
+Consider a digital artwork with a royalty specification as:
+
+```
+"royalty_spec": {
+  "fungible": "coin",
+  "creator": "k:creator",
+  "creator-guard": {"keys": ["creator"], "pred": "keys-all"},
+  "royalty-rate": 0.05
+}
 ```
 
-**Creation of Artwork**: As an artist, your creative journey commences with the
-creation of a unique piece of digital art, materialising as an NFT (Non-Fungible
-Token). Part of this creative process is defining your royalty terms. To do
-this, you add the Royalty Policy to the
-**[policies](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact#L201C20-L201C20)**
-field at token creation and provide the royalty specification. The royalty
-specification should indicate a royalty rate of 5% (0.05), ensuring that you, as
-the creator, will receive 5% of all future sales. It also stipulates in what
-fungible form these royalties will be compensated. This ensures that with every
-resale, a portion of the proceeds finds its way back to you, recognising your
-enduring contribution.
+Here, a royalty rate of 5% (0.05) ensures that the artist will receive 5% of all
+future sales. This allows the artist to continually benefit from their creation.
 
-2.  **Listing Artwork for Sale**: Once your artwork has been created, you list
-    it for sale, much like displaying your work in a gallery. You include
-    details of the sale such as price and duration.
+## Technical Specifications:
 
-3.  **Artwork Purchase**: An interested buyer purchases your artwork, akin to a
-    collector acquiring your piece from a gallery.
+### Policy:
 
-4.  **Royalty Application**: After the sale is completed, the royalty kicks in.
-    The smart contract (think of it as the digital contract between the buyer
-    and the seller) automatically calculates your 5% royalty from the sale and
-    transfers it to you.
+`royalty-policy-v1` extends the functionality of the base `kip.token-policy-v2`
+interface. It provides specific rules for token actions and royalty payouts
+during the sale of a non-fungible token.
 
-While the mechanics of this process may sound technical, they are handled
-seamlessly in the background by the digital platform where you create and sell
-your NFT. As an artist, you only need to set your preferred royalty percentage,
-and the platform takes care of the rest.
+### Royalty Specification and Table:
 
-To sum it up, the Royalty Policy is a game changer in how artists interact with
-their work in the digital realm. It acknowledges the enduring value of your
-artistic endeavour and rewards you with each subsequent sale of your creation.
-Remember, your artwork is not a one-off transaction; it's an enduring asset
-echoing your creativity, continually rewarding you through the Royalty Policy.
-In the world of digital art, your creation keeps reverberating with each
-transaction, continually singing the tune of royalties.
+- `royalty-schema`: Stores royalty-related information for NFTs, like the
+  creator, royalty rate, and the associated fungible token.
+- `royalties` Table: Maintains royalty configurations for NFTs managed under the
+  policy, including the token ID and its associated royalty details.
+
+### Capabilities:
+
+- `GOVERNANCE`: Governs contract upgrades.
+- `ROYALTY` @event: Emits the token-id and registered royalty information during
+  `enforce-init`.
+- `ROYALTY-PAYOUT` @event: Emits royalty payout information during `enforce-buy`
+  if a royalty is paid.
+
+### Key Functions:
+
+- `enforce-init`: Sets initial royalty information for a token, ensuring artists
+  get their royalties.
+- `enforce-buy`: Manages royalty payouts during sales. Validates and abides by
+  the agreed terms between buyer and seller.
+
+### Enabling:
+
+Activate `royalty-policy-v1` by marking it as `true` within the concrete
+policies list.
+
+### Payload Message:
+
+#### ROYALTY_SPEC:
+
+Initializes and validates a royalty for a fungible token. The `royalty-schema`
+object contains necessary fields like `fungible`, `creator`, `creator-guard`,
+`royalty-rate`, and `quote-policy`.
+
+### Events:
+
+#### `ROYALTY` Event:
+
+Triggered within the `enforce-buy` function when a sale concludes, and a royalty
+payment is made to the token's creator. Emitting line:
+`(emit-event (ROYALTY sale-id (at 'id token) royalty-payout creator))`
+
+In conclusion, the Royalty Policy revolutionizes how digital artists benefit
+from their work. With each transaction, artists are rewarded, emphasizing the
+ongoing value of their creations.
