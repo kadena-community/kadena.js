@@ -48,6 +48,9 @@ Custom policies allow creators to implement unique rules and checks tailored to
 their requirements. The utilization of custom policies offer more flexibility
 and can be altered as per the token creator's vision.
 
+\* When creating a custom policy it should always adhere to
+[`kip.token-policy-v2`](https://github.com/kadena-io/marmalade/blob/v2/pact/kip/token-policy-v2.pact)
+
 ## Technical Overview: Implementing Policies
 
 Regardless of whether a policy is concrete or custom, its implementation
