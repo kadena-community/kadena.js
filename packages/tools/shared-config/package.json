@@ -1,9 +1,6 @@
 {
   "name": "@kadena-dev/shared-config",
-  "version": "0.1.0",
-  "description": "Our own rig package, based on @rushstack/heft-node-rig",
-  "license": "MIT",
-  "dependencies": {
-    "ts-jest": "^29.1.1"
-  }
+  "version": "1.0.0",
+  "description": "Shared configurations",
+  "license": "MIT"
 }
