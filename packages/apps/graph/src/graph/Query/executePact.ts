@@ -1,21 +1,27 @@
-import { Pact } from '@kadena/client';
+import { ChainId, Pact } from '@kadena/client';
 import { devnetConfig } from '../../scripts/devnet/config';
 import { dirtyRead } from '../../scripts/devnet/helper';
 import { builder } from '../builder';
+
+const PactQuery = builder.inputType('PactQuery', {
+  fields: (t) => ({
+    code: t.field({ type: 'String', required: true }),
+    chainId: t.field({ type: 'String', required: true }),
+  }),
+});
 
 builder.queryField('executePact', (t) => {
   return t.field({
     type: ['String'],
     args: {
-      pactQuery: t.arg.stringList({ required: true }),
-      chainId: t.arg.string({ required: true }),
+      pactQuery: t.arg({ type: [PactQuery], required: true }),
     },
     resolve: async (parent, args, context, info) => {
-      return args.pactQuery.map(async (query) => {
+      const result = args.pactQuery.map(async (query) => {
         const transaction = Pact.builder
-          .execution(query)
+          .execution(query.code)
           .setMeta({
-            chainId: devnetConfig.CHAIN_ID,
+            chainId: query.chainId as ChainId,
           })
           .setNetworkId(devnetConfig.NETWORK_ID)
           .createTransaction();
@@ -26,8 +32,11 @@ builder.queryField('executePact', (t) => {
           return String(response.result.status);
         }
 
-        return response.result.data.toString();
+        console.log(response);
+        return JSON.stringify(response.result.data);
       });
+
+      return result;
     },
   });
 });

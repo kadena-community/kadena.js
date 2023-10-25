@@ -133,6 +133,11 @@ interface Node {
   id: ID!
 }
 
+input PactQuery {
+  chainId: String!
+  code: String!
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -149,7 +154,7 @@ type Query {
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
-  executePact(chainId: String!, pactQuery: [String!]!): [String!]!
+  executePact(pactQuery: [PactQuery!]!): [String!]!
   lastBlockHeight: BigInt
   maximumConfirmationDepth: Int!
   node(id: ID!): Node
