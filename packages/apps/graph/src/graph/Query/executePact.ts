@@ -1,4 +1,5 @@
-import { ChainId, Pact } from '@kadena/client';
+import type { ChainId } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import { devnetConfig } from '../../scripts/devnet/config';
 import { dirtyRead } from '../../scripts/devnet/helper';
 import { builder } from '../builder';
@@ -32,7 +33,6 @@ builder.queryField('executePact', (t) => {
           return String(response.result.status);
         }
 
-        console.log(response);
         return JSON.stringify(response.result.data);
       });
 
