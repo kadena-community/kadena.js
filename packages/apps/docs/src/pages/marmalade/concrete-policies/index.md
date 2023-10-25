@@ -1,7 +1,7 @@
 ---
-title: Policies
+title: Concrete Policies
 description: What are policies
-menu: Policies
+menu: Concrete Policies
 label: Overview
 order: 4
 layout: full
