@@ -1,5 +1,7 @@
-import type { ChainId } from '@kadena/types';
-import type { IPollRequestPromise } from '../interfaces/interfaces';
+import type {
+  INetworkOptions,
+  IPollRequestPromise,
+} from '../interfaces/interfaces';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const jsonRequest = (body: object) => ({
@@ -32,18 +34,36 @@ export function getUrl(
   return url.toString();
 }
 
+/**
+ *
+ * @public
+ * Creates endpoint url based on the baseUrl, networkId and chainId
+ *
+ * @example
+ * const getLocalHostUrl = getHostUrl('http://localhost:8080')
+ * const client = createClient(getLocalHostUrl)
+ */
+
+export const getHostUrl = (hostBaseUrl: string) => {
+  const base = hostBaseUrl.endsWith('/')
+    ? hostBaseUrl.slice(0, hostBaseUrl.length - 1)
+    : hostBaseUrl;
+  return ({ networkId, chainId }: INetworkOptions) =>
+    `${base}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+};
+
 export const kadenaHostGenerator = ({
   networkId,
   chainId,
-}: {
-  networkId: string;
-  chainId: ChainId;
-}): string => {
+}: INetworkOptions): string => {
   switch (networkId) {
     case 'mainnet01':
-      return `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+      return getHostUrl('https://api.chainweb.com')({ networkId, chainId });
     case 'testnet04':
-      return `https://api.testnet.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+      return getHostUrl('https://api.testnet.chainweb.com')({
+        networkId,
+        chainId,
+      });
     default:
       throw new Error(`UNKNOWN_NETWORK_ID: ${networkId}`);
   }
