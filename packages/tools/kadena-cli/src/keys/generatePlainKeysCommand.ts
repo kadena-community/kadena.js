@@ -2,8 +2,8 @@ import { PLAINKEY_EXT } from '../constants/config.js';
 import { clearCLI, collectResponses } from '../utils/helpers.js';
 import { processZodErrors } from '../utils/processZodErrors.js';
 
-import * as cryptoService from './utils/service.pure.js';
-import { StorageService } from './utils/storage.js';
+import * as cryptoService from './utils/service.js';
+import * as storageService from './utils/storage.js';
 import type { TPlainKeygenOptions } from './plainKeysGenerateOptions.js';
 import {
   // PlainKeygenOptions,
@@ -32,11 +32,6 @@ export function generatePlainKeys(program: Command, version: string): void {
         const result = { ...args, ...responses };
 
         // PlainKeygenOptions.parse(result);
-
-        // Use the CryptoService class
-        // const cryptoService = new CryptoService();
-        // Use the StorageService class
-        const storageService = new StorageService();
 
         const plainKeyPairs = cryptoService.generateKeyPairsFromRandom(
           result.amount,

@@ -81,3 +81,26 @@ export const signWithSeed = (
   const { publicKey, privateKey } = deriveKeyPair(seed, index);
   return signWithKeyPair(publicKey, privateKey);
 };
+
+// TO-DO: Implement.
+
+/**
+ * Placeholder function for signing with Chainweaver.
+ */
+export const signWithChainweaver = (): string => {
+  return 'signWithChainweaver';
+};
+
+/**
+ * Placeholder function for signing with WalletConnect.
+ */
+export const signWithWalletConnect = (): string => {
+  return 'signWithWalletConnect';
+};
+
+/**
+ * Placeholder function for signing with Ledger.
+ */
+export const signWithLedger = (): string => {
+  return 'signWithWalletConnect';
+};
