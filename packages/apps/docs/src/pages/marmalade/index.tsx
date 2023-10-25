@@ -84,9 +84,6 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 >
                   Policies
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/sales">
-                  Sales
-                </Link>
                 <Link className={docsCardLink} href="/marmalade/metadata">
                   Metadata
                 </Link>
