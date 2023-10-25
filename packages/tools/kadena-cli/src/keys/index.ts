@@ -1,3 +1,4 @@
+import { generateFromHdKeys } from './generateFromHdKeysCommand.js';
 import { generateHdKeys } from './generateHdKeysCommand.js';
 import { generatePlainKeys } from './generatePlainKeysCommand.js';
 import { listKeys } from './listKeysCommand.js';
@@ -13,6 +14,7 @@ export function generate(program: Command, version: string): void {
     .description(`Generate keys`);
 
   generateHdKeys(generateProgram, version);
+  generateFromHdKeys(generateProgram, version);
   generatePlainKeys(generateProgram, version);
 }
 

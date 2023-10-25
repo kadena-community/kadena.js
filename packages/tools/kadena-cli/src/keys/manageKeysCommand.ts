@@ -4,6 +4,20 @@ import type { Command } from 'commander';
 
 export interface IManageKeysOptions {}
 
+// TO-DO: Implement this command
+// choices: [
+//   'Encrypt an unencrypted HD key',
+//       '> List of unencrypted HD keys',
+//          '> select and encrypt an unencrypted HD key',
+//   'Re-encrypt a key with a new password',
+//       '> List of encrypted HD keys',
+//          '> select and encrypt with given password',
+//   'Delete a key',
+//       '> List of all keys',
+//          '> select and delete a key',
+//   'Exit'
+// ],
+
 export function manageKeys(program: Command, version: string): void {
   program
     .command('manage')
