@@ -70,6 +70,34 @@ export function getPublicKeyAtIndex(
 }
 
 /**
+ * Function to get an array of public keys within a specified range of indices.
+ *
+ * @param {Uint8Array} seedBuffer - The seed buffer used for key generation.
+ * @param {number} startIndex - The starting index of the range (inclusive).
+ * @param {number} endIndex - The ending index of the range (exclusive).
+ * @returns {string[]} An array of public keys.
+ * @throws {Error} If startIndex is greater than or equal to endIndex.
+ */
+export function getPublicKeysInRange(
+  seedBuffer: Uint8Array,
+  startIndex: number,
+  endIndex: number,
+): string[] {
+  if (startIndex >= endIndex) {
+    throw new Error('startIndex must be less than endIndex');
+  }
+
+  const publicKeys: string[] = [];
+
+  for (let index = startIndex; index < endIndex; index++) {
+    const publicKey = deriveKeyPair(seedBuffer, index).publicKey;
+    publicKeys.push(publicKey);
+  }
+
+  return publicKeys;
+}
+
+/**
  * Function to restore a wallet using a stored seed.
  *
  * @param {string} storedSeed - The stored seed string, which may be encrypted.
