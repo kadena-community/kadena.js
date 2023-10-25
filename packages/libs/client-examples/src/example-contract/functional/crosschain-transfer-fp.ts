@@ -5,6 +5,7 @@ import {
   readKeyset,
   signWithChainweaver,
 } from '@kadena/client';
+import { asyncPipe } from '@kadena/client-utils/core';
 import {
   addKeyset,
   addSigner,
@@ -14,7 +15,6 @@ import {
   setMeta,
   setNetworkId,
 } from '@kadena/client/fp';
-import { asyncPipe } from '@kadena/client-utils/core';
 import { isSignedCommand } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
 
