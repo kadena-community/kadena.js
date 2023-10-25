@@ -137,4 +137,4 @@ functionality. As you embark on this exciting journey, we await your innovative
 ideas and creativity to further enrich the NFT experience within Kadena's
 Marmalade ecosystem. Happy crafting!
 
-[Policy manager code](https://github.com/kadena-io/marmalade/blob/v2/pact/policy-manager/policy-manager.pact)
+[Policy Manager Code](https://github.com/kadena-io/marmalade/blob/v2/pact/policy-manager/policy-manager.pact)

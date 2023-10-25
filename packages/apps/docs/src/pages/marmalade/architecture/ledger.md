@@ -172,4 +172,4 @@ workings of this ledger has helped to unravel some of the mysteries behind it.
 You could be buying a new digital art piece today or selling some tomorrow.
 Marmalade makes it possible.
 
-[Leder code](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact)
+[Ledger Code](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact)

@@ -1,13 +1,26 @@
 ---
-title: Concrete Policies
-description: What are concrete-policies
-menu: Concrete Policies
+title: Policies
+description: What are policies
+menu: Policies
 label: Overview
 order: 4
 layout: full
 ---
 
-# What are concrete policies?
+# Policies and Implementations
+
+In Marmalade V2, policies play a pivotal role in defining the behavior and
+attributes of tokens. Policies enable creators to exercise granular control over
+token functionalities, including minting, burning, transferring, buying.
+
+## Introduction
+
+The Marmalade V2 ecosystem introduces two types of policies: **Concrete
+Policies** and **Custom Policies**. Both types adhere to the same
+[`kip.token-policy-v2`](https://github.com/kadena-io/marmalade/blob/v2/pact/kip/token-policy-v2.pact)
+interface, ensuring consistency and versatility in token behavior.
+
+### **Concrete Policies**
 
 A concrete policy in Marmalade V2 is a pre-built, ready-to-use implementation of
 commonly used features in token creation. It simplifies the process of adding
@@ -15,38 +28,64 @@ functionality to NFTs and offers convenience for token creators. With concrete
 policies, Marmalade aims to provide a rich set of features that can be easily
 added to tokens without the need for extensive custom development.
 
-When using a concrete policy, token creators can simply activate a policy by
-adding the policy to the respective
-**[policies](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact#L201C20-L201C20)**
-fields at token creation. This goes for concrete-policies and custom-policies.
-The concrete policies available in Marmalade V2 are the Guard Policy, Collection
-Policy, Non-fungible Policy, and Royalty Policy.
+**Available Concrete Policies:**
 
-**[Guard Policy](/marmalade/concrete-policies/guard-policy)**
+1.  **Guard Policy**: Ensures initiation of a guard with each activity,
+    bolstering security against unauthorized minting.
+2.  **Collection Policy**: Facilitates the creation of predefined token lists
+    for easier categorization.
+3.  **Non-fungible Policy**: Renders a token unique by setting its supply to 1
+    and precision to 0.
+4.  **Royalty Policy**: Allows creators to designate a royalties recipient
+    account, fostering an ongoing revenue stream from NFT sales.
 
-This policy ensures the initiation of a guard with each Marmalade activity.
-Guards are optional but recommended, as they help prevent unauthorised entities
-from minting tokens without permission.
+These policies streamline token creation, allowing creators to enhance their
+NFTs with capabilities effortlessly.
 
-**[The Collection Policy](/marmalade/concrete-policies/collection-policy)**
+### **Custom Policies**
 
-This policy allows the creation of collections with pre-defined token lists,
-enabling easier organisation and categorisation of NFTs.
+Custom policies allow creators to implement unique rules and checks tailored to
+their requirements. The utilization of custom policies offer more flexibility
+and can be altered as per the token creator's vision.
 
-**[The Non-fungible Policy](/marmalade/concrete-policies/non-fungible-policy)**
+## Technical Overview: Implementing Policies
 
-This policy sets the token supply to 1 and precision to 0, effectively making
-the token non-fungible. This is useful when creating unique, one-of-a-kind
-digital assets.
+Regardless of whether a policy is concrete or custom, its implementation
+revolves around the `token-policy-v2` interface, which outlines specific
+functions that govern token behavior.
 
-**[The Royalty Policy](/marmalade/concrete-policies/royalty-policy)**
+**Getting Started**:  
+To use this interface, you first need to import it into your Pact code using the
+following command:
 
-This policy allows creators to define an account that receives royalties
-whenever an NFT is sold. This provides a mechanism for creators to earn ongoing
-rewards from the sales of their NFTs.
+```pact
+(namespace 'my-namespace)
+(import 'marmalade.token-policy-v2)
+```
 
-The great thing about concrete policies is that they offer a straightforward and
-flexible ways to enhance their NFTs with new and exciting capabilities. With
-concrete policies, Marmalade V2 makes the process of creating and managing NFTs
-more accessible and efficient, enabling a wider range of individuals and
-projects to participate in Kadena's NFT ecosystem.
+To get started, you will need to define the schema for your token using the
+token-info data type. The token-info data type should include the id, supply,
+precision, and manifest fields.
+
+```pact
+ (defschema token-info
+  id:string
+  supply:decimal
+  precision:integer
+  manifest:object{kip.token-manifest.manifest})
+```
+
+**Policy Enforcement Functions**:  
+Once the interface is integrated, you can enforce policies through these
+functions:
+
+- **enforce-mint**: Governs token minting.
+- **enforce-burn**: Regulates token burning.
+- **enforce-init**: Handles token initialization.
+- **enforce-offer**: Manages token offering for sale.
+- **enforce-buy**: Controls purchasing of tokens offered for sale.
+- **enforce-transfer**: Administers token transfers between accounts.
+
+Each function requires specific parameters related to the token objec. By
+implementing custom checks within these functions, creators can tailor their
+tokens' behavior.
