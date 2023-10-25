@@ -27,14 +27,14 @@
     "lib"
   ],
   "scripts": {
-    "build": "heft build --clean",
+    "build": "tsc",
     "build:generate": "pnpm run generate:ts && pnpm run build",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "generate:ts": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "lint": "eslint package.json src --ext .js,.ts --fix",
-    "test": "heft test"
+    "test": ""
   },
   "dependencies": {
     "@inquirer/prompts": "^3.0.4",
