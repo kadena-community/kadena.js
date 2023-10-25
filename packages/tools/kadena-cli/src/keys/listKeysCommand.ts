@@ -9,6 +9,18 @@ import { ListKeysOptions, listKeysQuestions } from './listKeysOptions.js';
 // import chalk from 'chalk';
 import type { Command } from 'commander';
 
+// TO-DO: Implement this command
+// choices: [
+//   'List all keys',
+//      > HD keys encrypted with password
+//         > select and show key
+//      > HD keys unencrypted
+//         > select and show key
+//      > Plain keys
+//         > select and show key
+//   'Exit'
+// ],
+
 export function listKeys(program: Command, version: string): void {
   program
     .command('list-keys')

@@ -10,127 +10,129 @@ import { sanitizeFilename } from '../../utils/helpers.js';
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-export class StorageService {
-  /**
-   * Saves the given key pair to multiple files based on the provided amount.
-   * Only subsequent files will be postfixed with an index if the amount is greater than 1.
-   *
-   * @param alias The base alias for the key pair.
-   * @param publicKey The public key.
-   * @param privateKey The private key.
-   * @param amount The number of files to write.
-   */
-  public savePlainKeyByAlias(
-    alias: string,
-    publicKey: string,
-    privateKey: string,
-    amount: number = 1,
-  ): void {
-    ensureDirectoryExists(KEY_DIR);
-    const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
+/**
+ * Saves the given key pair to multiple files based on the provided amount.
+ * Only subsequent files will be postfixed with an index if the amount is greater than 1.
+ *
+ * @param {string} alias - The base alias for the key pair.
+ * @param {string} publicKey - The public key.
+ * @param {string} privateKey - The private key.
+ * @param {number} [amount=1] - The number of files to write.
+ */
+export function savePlainKeyByAlias(
+  alias: string,
+  publicKey: string,
+  privateKey: string,
+  amount: number = 1,
+): void {
+  ensureDirectoryExists(KEY_DIR);
+  const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
 
-    for (let i = 0; i < amount; i++) {
-      let fileName = sanitizedAlias;
+  for (let i = 0; i < amount; i++) {
+    let fileName = sanitizedAlias;
 
-      // Append index to the filename if it's not the first file.
-      if (i > 0) {
-        fileName += `-${i}`;
-      }
-
-      fileName += PLAINKEY_EXT;
-
-      const filePath = join(KEY_DIR, fileName);
-
-      const data = {
-        publicKey,
-        privateKey,
-      };
-
-      writeFileSync(filePath, JSON.stringify(data));
+    // Append index to the filename if it's not the first file.
+    if (i > 0) {
+      fileName += `-${i}`;
     }
-  }
 
-  /**
-   * Retrieves a key pair based on the given alias.
-   *
-   * @param {string} alias - The alias corresponding to the key file to be fetched.
-   * @returns {{publicKey: string, secretKey: string} | undefined} The key pair if found, otherwise undefined.
-   */
-  public getStoredPlainKeyByAlias(
-    alias: string,
-  ): { publicKey: string; secretKey: string } | undefined {
-    const filePath = join(KEY_DIR, `${alias}${PLAINKEY_EXT}`);
-    if (existsSync(filePath)) {
+    fileName += PLAINKEY_EXT;
+
+    const filePath = join(KEY_DIR, fileName);
+
+    const data = {
+      publicKey,
+      privateKey,
+    };
+
+    writeFileSync(filePath, JSON.stringify(data));
+  }
+}
+
+/**
+ * Retrieves a key pair based on the given alias.
+ *
+ * @param {string} alias - The alias corresponding to the key file to be fetched.
+ * @returns {{publicKey: string; secretKey: string} | undefined} The key pair if found, otherwise undefined.
+ */
+export function getStoredPlainKeyByAlias(
+  alias: string,
+): { publicKey: string; secretKey: string } | undefined {
+  const filePath = join(KEY_DIR, `${alias}${PLAINKEY_EXT}`);
+  if (existsSync(filePath)) {
+    const data = readFileSync(filePath, 'utf-8');
+    const keyPair = JSON.parse(data);
+    return {
+      publicKey: keyPair.publicKey,
+      secretKey: keyPair.privateKey,
+    };
+  }
+  return undefined;
+}
+
+/**
+ * Loads the public keys from key files based on their aliases.
+ * Iterates through files in the key directory, and if a file matches the '.key' extension,
+ * its content is parsed, and if it contains a valid public key, it's added to the returned array.
+ *
+ * @returns {string[]} Array of public keys.
+ */
+export function loadAllKeysFromAliasFiles(): string[] {
+  ensureDirectoryExists(KEY_DIR);
+  const publicKeys = [];
+  const files = readdirSync(KEY_DIR);
+  for (const file of files) {
+    if (file.endsWith('.key')) {
+      const filePath = join(KEY_DIR, file);
       const data = readFileSync(filePath, 'utf-8');
       const keyPair = JSON.parse(data);
-      return {
-        publicKey: keyPair.publicKey,
-        secretKey: keyPair.privateKey,
-      };
-    }
-    return undefined;
-  }
-
-  /**
-   * Loads the public keys from key files based on their aliases.
-   * Iterates through files in the key directory, and if a file matches the '.key' extension,
-   * its content is parsed, and if it contains a valid public key, it's added to the returned array.
-   * @returns {string[]} Array of public keys.
-   */
-  public loadAllKeysFromAliasFiles(): string[] {
-    ensureDirectoryExists(KEY_DIR);
-    const publicKeys = [];
-    const files = readdirSync(KEY_DIR);
-    for (const file of files) {
-      if (file.endsWith('.key')) {
-        const filePath = join(KEY_DIR, file);
-        const data = readFileSync(filePath, 'utf-8');
-        const keyPair = JSON.parse(data);
-        if (
-          keyPair !== undefined &&
-          typeof keyPair.publicKey === 'string' &&
-          keyPair.publicKey.length > 0
-        ) {
-          publicKeys.push(keyPair.publicKey);
-        }
+      if (
+        keyPair !== undefined &&
+        typeof keyPair.publicKey === 'string' &&
+        keyPair.publicKey.length > 0
+      ) {
+        publicKeys.push(keyPair.publicKey);
       }
     }
-    return publicKeys;
   }
-  /**
-   * Stores the mnemonic phrase or seed to the filesystem.
-   * @param {string} words - The mnemonic phrase.
-   * @param {string} seed - The seed.
-   * @param {string} fileName - The name of the file to store the mnemonic or seed in.
-   * @param {boolean} hasPassword - Whether a password was used to generate the seed.
-   */
-  public storeHdKey(
-    words: string,
-    seed: string,
-    fileName: string,
-    hasPassword: boolean,
-  ): void {
-    ensureDirectoryExists(KEY_DIR);
+  return publicKeys;
+}
 
-    const sanitizedFilename = sanitizeFilename(fileName).toLowerCase();
-    const fileExtension = hasPassword ? HDKEY_ENC_EXT : HDKEY_EXT;
-    const dataToStore = hasPassword ? seed : words;
-    const storagePath = join(KEY_DIR, `${sanitizedFilename}${fileExtension}`);
+/**
+ * Stores the mnemonic phrase or seed to the filesystem.
+ *
+ * @param {string} words - The mnemonic phrase.
+ * @param {string} seed - The seed.
+ * @param {string} fileName - The name of the file to store the mnemonic or seed in.
+ * @param {boolean} hasPassword - Whether a password was used to generate the seed.
+ */
+export function storeHdKey(
+  words: string,
+  seed: string,
+  fileName: string,
+  hasPassword: boolean,
+): void {
+  ensureDirectoryExists(KEY_DIR);
 
-    writeFileSync(storagePath, dataToStore, 'utf8');
+  const sanitizedFilename = sanitizeFilename(fileName).toLowerCase();
+  const fileExtension = hasPassword ? HDKEY_ENC_EXT : HDKEY_EXT;
+  const dataToStore = hasPassword ? seed : words;
+  const storagePath = join(KEY_DIR, `${sanitizedFilename}${fileExtension}`);
+
+  writeFileSync(storagePath, dataToStore, 'utf8');
+}
+
+/**
+ * Retrieves the stored mnemonic phrase from the filesystem.
+ *
+ * @param {string} fileName - The name of the file where the mnemonic is stored.
+ * @returns {string | undefined} The stored mnemonic phrase, or undefined if not found.
+ */
+export function getStoredHdKey(fileName: string): string | undefined {
+  const storagePath = join(KEY_DIR, fileName);
+
+  if (existsSync(storagePath)) {
+    return readFileSync(storagePath, 'utf8');
   }
-
-  /**
-   * Retrieves the stored mnemonic phrase from the filesystem.
-   * @param {string} fileName - The name of the file where the mnemonic is stored.
-   * @returns {string | undefined} The stored mnemonic phrase, or undefined if not found.
-   */
-  public getStoredHdKey(fileName: string): string | undefined {
-    const storagePath = join(KEY_DIR, fileName);
-
-    if (existsSync(storagePath)) {
-      return readFileSync(storagePath, 'utf8');
-    }
-    return undefined;
-  }
+  return undefined;
 }
