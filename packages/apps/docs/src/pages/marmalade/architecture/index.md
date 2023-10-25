@@ -10,7 +10,7 @@ layout: full
 # Marmalade Architecture
 
 The introduction of the multi-policy model in Marmalade V2, with the inclusion
-of middleware contracts like quote-manager and policy-manager, aims to enhance
+of middleware contracts like policy-manager and sale-contracts, aims to enhance
 the user experience by simplifying token creation and management.
 
 ## Ledger
@@ -22,7 +22,7 @@ and it offers the following main functions:
 token\
 **mint**: mints token\
 **burn**: burns token\
-**Transfer**: transfers token from a Marmalade account to another Marmalade account\
+**transfer**: transfers token from a Marmalade account to another Marmalade account\
 **[sale] offer**: 1st step of sale, transfers the token from the seller to an
 escrow\
 **[sale] buy**: 2nd step of sale, transfers the token to from escrow to the buyer\
@@ -61,11 +61,11 @@ quoted price from the buyer to an escrow account, disburses a portion of the
 reserved fees to the policies, and then remits the remaining quoted price to the
 seller.
 
+## Sale Contracts
 
-## Sale Whitelists
+The Sale Contract is a contract responsible for updating the final price
+of the quote during the buy process. By managing sale contracts within Marmalade, we can provide users a
+safe way to participate in various sale features such as creative auctions, while also guaranteeing royalty payout.
 
-The Sale Contract is a contract responsible for updating quotes, thereby allowing
-auction system.
+**[Marmalade on GitHub](https://github.com/kadena-io/marmalade)**
 
-**Offical GitHub Link**:
-https://github.com/kadena-io/marmalade/blob/v2/test-marmalade-v2.md
