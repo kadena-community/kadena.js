@@ -15,29 +15,18 @@ the user experience by simplifying token creation and management.
 
 ## Ledger
 
-The ledger functions as the primary contract responsible for user interaction,
-and it offers the following main functions:
-
-**create-token**: creates the token with URI, policies, and precision of the
-token\
-**mint**: mints token\
-**burn**: burns token\
-**transfer**: transfers token from a Marmalade account to another Marmalade account\
-**[sale] offer**: 1st step of sale, transfers the token from the seller to an
-escrow\
-**[sale] buy**: 2nd step of sale, transfers the token to from escrow to the buyer\
-**[sale] withdraw**: 1st rollback step, transfers the token from escrow back to
-the seller
-
-Marmalade V1 tokens were designed to be governed by a single policy that allows
-customization of the core Marmalade functions. In Marmalade V2, token creators
-can now use multiple policies to program the tokens.
+The ledger functions as the primary contract responsible for user interaction.
+For more info on the ledger please click [here](/marmalade/architecture/ledger)
 
 ## Policy Manager
 
-We introduce a new contract, policy-manager, which acts as a middleware between
-the ledger and the policies. We will explain key concepts that the Policy
-Manager provides below.
+Marmalade V1 tokens were designed to be governed by a single policy that allows
+customization of the core Marmalade functions. In Marmalade V2, token creators
+can now use multiple policies to program the tokens. This is done via the policy
+manager.
+
+The policy-manager, which acts as a middleware between the ledger and the
+policies.
 
 **Quoted Sale**
 
@@ -61,12 +50,18 @@ quoted price from the buyer to an escrow account, disburses a portion of the
 reserved fees to the policies, and then remits the remaining quoted price to the
 seller.
 
+for more info on the policy manager please click
+[here](/marmalade/architecture/policy-manager)
+
 ## Sale Contracts
 
 The Sale Contract is a contract responsible for updating the final price of the
 quote during the buy process. By managing sale contracts within Marmalade, we
 can provide users a safe way to participate in various sale features such as
 creative auctions, while also guaranteeing royalty payout.
+
+for more info on the sale contracts please click
+[here](/marmalade/architecture/sale-contracts)
 
 ---
 

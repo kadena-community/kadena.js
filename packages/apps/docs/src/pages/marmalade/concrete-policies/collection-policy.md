@@ -29,14 +29,12 @@ in shorts these steps are as followed:
 - **Minting - The Final Touch**: Embedding the token onto the kadena blockchain,
   utilizing marmalade, marking its official entry into the digital world.
 
-### Diving Deeper: Technical Specifications
+## Technical Specifications
 
 The Collection Policy in Marmalade v2 emphasizes ease of use. Contrasting its
 predecessor Marmalade v1, Marmalade v2 opts for simplicity, delegating the
 whitelist to a separate policy. It's crucial to highlight that this policy
 seamlessly implements the `kip.token-policy-v2` interface.
-
-**Specifications**:
 
 - **Schemas**: Uses `collection` and `token` schemas to store the collection and
   token-related narratives.

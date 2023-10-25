@@ -120,10 +120,6 @@ the associated policies.
 - **write-concrete-policy**: Registers concrete policy modref into the
   concrete-policies table.
 
-      Required Capability
-      	Capability: (CONCRETE-POLICY policy-field policy)
-      	Signer: (keyset-ref-guard marmalade-v2.marmalade-admin)
-
 - **get-concrete-policy**: Returns the modref of the concrete policy.
 - **enforce-sale-pact**: Ensures that the sale parameter provided to the
   function is equal to the ID of the currently executing pact. It does this by

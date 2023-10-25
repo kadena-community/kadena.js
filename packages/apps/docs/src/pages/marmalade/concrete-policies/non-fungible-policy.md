@@ -14,7 +14,7 @@ Digital Uniqueness ) of digital assets, known as Non-Fungible Tokens (NFTs).
 This policy guarantees the authenticity and uniqueness of every digital
 creation.
 
-## Technical Specification
+## Technical Specifications
 
 **Non-fungible-policy-v1**:
 
@@ -30,15 +30,15 @@ creation.
 
 ### Capabilities:
 
-- **GOVERNANCE**: Oversees access control for contract modifications.
+- `GOVERNANCE`: Oversees access control for contract modifications.
 
 ### Functions:
 
-- **enforce-init**: Ensures proper initiation of tokens using a ledger guard.
-  This sets the stage for minting by storing the mint guard associated with the
+- `enforce-init`: Ensures proper initiation of tokens using a ledger guard. This
+  sets the stage for minting by storing the mint guard associated with the
   token.
-- **enforce-mint**: Regulates the minting process, maintaining a fixed supply of
-  1 for each token, thus preserving its non-fungible nature.
+- `enforce-mint`: Regulates the minting process, maintaining a fixed supply of 1
+  for each token, thus preserving its non-fungible nature.
 
 ---
 

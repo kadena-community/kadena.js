@@ -7,7 +7,7 @@ order: 4
 layout: full
 ---
 
-# Royalty Policy: Ensuring Benefits for Digital Artists
+# Royalty Policy
 
 The Royalty Policy ensures that digital artists continue to benefit from their
 creations even after their initial sale. This powerful mechanism connects
@@ -40,7 +40,7 @@ Consider a digital artwork with a royalty specification as:
 Here, a royalty rate of 5% (0.05) ensures that the artist will receive 5% of all
 future sales. This allows the artist to continually benefit from their creation.
 
-## Technical Specifications:
+## Technical Specifications
 
 ### Policy:
 
@@ -63,21 +63,16 @@ during the sale of a non-fungible token.
 - `ROYALTY-PAYOUT` @event: Emits royalty payout information during `enforce-buy`
   if a royalty is paid.
 
-### Key Functions:
+### Functions:
 
 - `enforce-init`: Sets initial royalty information for a token, ensuring artists
   get their royalties.
 - `enforce-buy`: Manages royalty payouts during sales. Validates and abides by
   the agreed terms between buyer and seller.
 
-### Enabling:
-
-Activate `royalty-policy-v1` by marking it as `true` within the concrete
-policies list.
-
 ### Payload Message:
 
-#### ROYALTY_SPEC:
+**`ROYALTY_SPEC`**:
 
 Initializes and validates a royalty for a fungible token. The `royalty-schema`
 object contains necessary fields like `fungible`, `creator`, `creator-guard`,
@@ -85,7 +80,7 @@ object contains necessary fields like `fungible`, `creator`, `creator-guard`,
 
 ### Events:
 
-#### `ROYALTY` Event:
+**`ROYALTY`**:
 
 Triggered within the `enforce-buy` function when a sale concludes, and a royalty
 payment is made to the token's creator. Emitting line:

@@ -57,35 +57,36 @@ configuration.
 In essence, the Guard Policy isn't just a security tool; it's a means to ensure
 trust, control, and peace of mind in the digital assets realm.
 
-## Technical Components
+## Technical Specifications
 
 ### Schemas and Tables:
 
 - **Schemas**: Contains `guards` that specify values for `mint`, `burn`, `sale`,
   and `transfer`.
+
 - **Tables**: The `policy-guards` table connects token IDs to their guard
   values.
 
 ### Capabilities:
 
-- **GOVERNANCE**: Governs contract upgrade access.
-- **GUARDS** @event: Emits guard info during `enforce-init`.
-- **MINT**: Applies the `mint-guard` in `enforce-mint`.
-- **BURN**: Applies the `burn-guard` in `enforce-burn`.
-- **SALE**: Uses the `sale-guard` during `enforce-offer`, `enforce-withdraw`,
-  and `enforce-buy`.
-- **TRANSFER**: Uses the `sale-guard` in `enforce-transfer`.
+- `GOVERNANCE`: Governs contract upgrade access.
+- `GUARDS` @event: Emits guard info during `enforce-init`.
+- `MINT`: Applies the `mint-guard` in `enforce-mint`.
+- `BURN`: Applies the `burn-guard` in `enforce-burn`.
+- `SALE`: Uses the `sale-guard` during `enforce-offer`, `enforce-withdraw`, and
+  `enforce-buy`.
+- `TRANSFER`: Uses the `sale-guard` in `enforce-transfer`.
 
 ## Functions:
 
-- **enforce-init**: Initializes the `policy-guards` table with token ID and
-  guard values.
-- **enforce-mint**: Validates minting processes.
-- **enforce-burn**: Validates burning processes.
-- **enforce-offer**: Confirms sale offers with guards and verifies the sale-id.
-- **enforce-withdraw**: Checks sale withdrawals and the sale-id.
-- **enforce-buy**: Validates buying processes and the sale-id.
-- **enforce-transfer**: Validates transfers, checking sender, receiver, and
+- `enforce-init`: Initializes the `policy-guards` table with token ID and guard
+  values.
+- `enforce-mint`: Validates minting processes.
+- `enforce-burn`: Validates burning processes.
+- `enforce-offer`: Confirms sale offers with guards and verifies the sale-id.
+- `enforce-withdraw`: Checks sale withdrawals and the sale-id.
+- `enforce-buy`: Validates buying processes and the sale-id.
+- `enforce-transfer`: Validates transfers, checking sender, receiver, and
   amount.
 
 In summary, the Guard policy ensures the safety and integrity of digital assets.
