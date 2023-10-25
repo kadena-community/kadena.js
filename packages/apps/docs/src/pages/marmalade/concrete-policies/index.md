@@ -60,19 +60,7 @@ following command:
 
 ```pact
 (namespace 'my-namespace)
-(import 'marmalade.token-policy-v2)
-```
-
-To get started, you will need to define the schema for your token using the
-token-info data type. The token-info data type should include the id, supply,
-precision, and manifest fields.
-
-```pact
- (defschema token-info
-  id:string
-  supply:decimal
-  precision:integer
-  manifest:object{kip.token-manifest.manifest})
+(import 'marmalade-v2.token-policy-v2)
 ```
 
 **Policy Enforcement Functions**:  
