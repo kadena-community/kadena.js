@@ -2,7 +2,7 @@
 
 # @kadena/client-utils
 
-Utility functions built as a wrapper around @kadena/client.
+Utility functions build as a wrapper around @kadena/client
 
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
@@ -13,23 +13,70 @@ Utility functions built as a wrapper around @kadena/client.
 
 ## Kadena client utils
 
-TODO: write a proper readme
+Introducing `@kadena/client-utils`, a library that aims to provide a
+higher-level API for interacting with smart contracts. This PR includes helpers
+for the `coin` module, which can be imported using `@kadena/client-utils/coin`.
+The library also exports utilities under `/core` for smart contract developers
+to develop APIs, including some functions that can be used for any kind of smart
+contracts.
 
-Ideas:
+- asyncPipe
+- submitClient
+- preflightClient
+- dirtyReadClient
+- crossChainClient
 
-- wrapper around @kadena/client
-  - exposed via `import { ... } from '@kadena/client-utils/coin'`
+examples
+
+```TS
+import { getBalance, transferCrossChain } from "@kadena/client-utils/coin"
+import { signWithChainweaver } from "@kadena/client"
+
+const balance = await getBalance(
+  accountOne.account,
+  'fast-development',
+  '0',
+  'http://localhost:8080',
+ );
+
+ const result = await createAccount(
+  {
+    account: 'javad',
+    keyset: {
+      pred: 'keys-all',
+      keys: ['key-a', 'key-b'],
+    },
+    gasPayer: { account: 'gasPayer', publicKeys: [''] },
+    chainId: '0',
+  },
+  {
+    host: 'https://api.testnet.chainweb.com',
+    defaults: {
+      networkId: 'testnet04',
+    },
+    sign: signWithChainweaver,
+  },
+)
+   // signed Tx
+  .on('sign', (data) => console.log(data))
+  // preflight result
+  .on('preflight', (data) => console.log(data))
+  // submit result
+  .on('submit', (data) => console.log(data))
+  // listen result
+  .on('listen', (data) => console.log(data))
+  .execute();
+```
+
+### Future work
+
 - `npx create @kadena/client-utils`
+
   - to allow community members to create their own interfaces for their
     smart-contracts
-  -
-
-### Ideas for contents
 
 - @kadena/client-utils/
-  - coin
   - faucet
   - marmalade
   - principles
   - namespace
-  -
