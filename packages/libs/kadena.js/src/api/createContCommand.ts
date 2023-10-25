@@ -12,7 +12,6 @@ import type {
   Rollback,
   Step,
 } from '@kadena/types';
-
 import { prepareContCommand } from './prepareContCommand';
 
 /**

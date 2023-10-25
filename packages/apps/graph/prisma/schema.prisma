@@ -12,124 +12,126 @@ datasource db {
 }
 
 model Block {
-  chainid      BigInt
-  creationtime DateTime      @db.Timestamptz(6)
-  epoch        DateTime      @db.Timestamptz(6)
-  flags        Decimal       @db.Decimal(20, 0)
-  hash         String        @id @db.VarChar
-  height       BigInt
-  miner        String        @db.VarChar
-  nonce        Decimal       @db.Decimal(20, 0)
-  parent       String        @db.VarChar
-  payload      String        @db.VarChar
-  powhash      String        @db.VarChar
-  predicate    String        @db.VarChar
-  target       Decimal       @db.Decimal(80, 0)
-  weight       Decimal       @db.Decimal(80, 0)
-  id           Int           @unique(map: "blocks_id_uniq") @default(autoincrement())
-  events       Event[]
-  minerkeys    Minerkey[]
-  transactions Transaction[]
-  transfers    Transfer[]
+  chainId         BigInt        @map("chainid")
+  creationTime    DateTime      @map("creationtime") @db.Timestamptz(6)
+  epoch           DateTime      @db.Timestamptz(6)
+  flags           Decimal       @db.Decimal(20, 0)
+  hash            String        @id @db.VarChar
+  height          BigInt
+  minerAccount    String        @map("miner") @db.VarChar
+  nonce           Decimal       @db.Decimal(20, 0)
+  parentBlockHash String        @map("parent") @db.VarChar
+  payloadHash     String        @map("payload") @db.VarChar
+  powHash         String        @map("powhash") @db.VarChar
+  predicate       String        @db.VarChar
+  target          Decimal       @db.Decimal(80, 0)
+  weight          Decimal       @db.Decimal(80, 0)
+  id              Int           @unique(map: "blocks_id_uniq") @default(autoincrement())
+  events          Event[]
+  minerKeys       MinerKey[]
+  transactions    Transaction[]
+  transfers       Transfer[]
 
-  @@index([height(sort: Desc), chainid])
+  @@index([height(sort: Desc), chainId])
   @@map("blocks")
 }
 
 model Event {
-  blockhash  String @db.VarChar @map("block")
-  chainid    BigInt
-  height     BigInt
-  idx        BigInt
-  module     String @db.VarChar
-  modulehash String @db.VarChar
-  name       String @db.VarChar
-  params     Json
-  paramtext  String @db.VarChar
-  qualname   String @db.VarChar
-  requestkey String @db.VarChar
-  id         Int    @unique(map: "events_id_uniq") @default(autoincrement())
-  transaction Transaction? @relation(fields: [blockhash, requestkey], references: [blockhash, requestkey])
-  block     Block  @relation(fields: [blockhash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  blockHash     String       @map("block") @db.VarChar
+  chainId       BigInt       @map("chainid")
+  height        BigInt
+  orderIndex    BigInt       @map("idx")
+  moduleName    String       @map("module") @db.VarChar
+  moduleHash    String       @map("modulehash") @db.VarChar
+  name          String       @db.VarChar
+  parameters    Json         @map("params")
+  parameterText String       @map("paramtext") @db.VarChar
+  qualifiedName String       @map("qualname") @db.VarChar
+  requestKey    String       @map("requestkey") @db.VarChar
+  id            Int          @unique(map: "events_id_uniq") @default(autoincrement())
+  transaction   Transaction? @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey])
+  block         Block        @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([blockhash, idx, requestkey])
-  @@index([height(sort: Desc), chainid, idx], map: "events_height_chainid_idx")
-  @@index([requestkey])
+  @@id([blockHash, orderIndex, requestKey])
+  @@index([height(sort: Desc), chainId, orderIndex], map: "events_height_chainid_orderIndex")
+  @@index([requestKey])
   @@map("events")
 }
 
-model Minerkey {
-  block  String @db.VarChar
-  key    String @db.VarChar
-  blocks Block  @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+model MinerKey {
+  blockHash String @map("block") @db.VarChar
+  key       String @db.VarChar
+  blocks    Block  @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([block, key])
+  @@id([blockHash, key])
   @@map("minerkeys")
 }
 
 model Signer {
-  addr       String? @db.VarChar
-  caps       Json
-  idx        Int
-  pubkey     String  @db.VarChar
-  requestkey String  @db.VarChar
-  scheme     String? @db.VarChar
-  sig        String  @db.VarChar
+  address      String? @map("addr") @db.VarChar
+  capabilities Json    @map("caps")
+  orderIndex   Int     @map("idx")
+  publicKey    String  @map("pubkey") @db.VarChar
+  requestKey   String  @map("requestkey") @db.VarChar
+  scheme       String? @db.VarChar
+  signature    String  @map("sig") @db.VarChar
 
-  @@id([idx, requestkey])
+  @@id([orderIndex, requestKey])
   @@map("signers")
 }
 
 model Transaction {
-  badresult    Json?
-  blockhash    String   @db.VarChar @map("block")
-  chainid      BigInt
-  code         String?  @db.VarChar
-  continuation Json?
-  creationtime DateTime @db.Timestamptz(6)
-  data         Json?
-  gas          BigInt
-  gaslimit     BigInt
-  gasprice     Float
-  goodresult   Json?
-  height       BigInt
-  logs         String?  @db.VarChar
-  metadata     Json?
-  nonce        String   @db.VarChar
-  num_events   BigInt?
-  pactid       String?  @db.VarChar
-  proof        String?  @db.VarChar
-  requestkey   String   @db.VarChar
-  rollback     Boolean?
-  sender       String   @db.VarChar
-  step         BigInt?
-  ttl          BigInt
-  txid         BigInt?
-  events       Event[]
-  block        Block    @relation(fields: [blockhash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  badResult     Json?       @map("badresult")
+  blockHash     String      @map("block")
+  chainId       BigInt      @map("chainid")
+  code          String?     @db.VarChar
+  continuation  Json?
+  creationTime  DateTime    @map("creationtime") @db.Timestamptz(6)
+  data          Json?
+  gas           BigInt
+  gasLimit      BigInt      @map("gaslimit")
+  gasPrice      Float       @map("gasprice")
+  goodResult    Json?       @map("goodresult")
+  height        BigInt
+  logs          String?     @db.VarChar
+  metadata      Json?
+  nonce         String      @db.VarChar
+  eventCount    BigInt?     @map("num_events")
+  pactId        String?     @map("pactid") @db.VarChar
+  proof         String?     @db.VarChar
+  requestKey    String      @map("requestkey") @db.VarChar
+  rollback      Boolean?
+  senderAccount String      @map("sender") @db.VarChar
+  step          BigInt?
+  ttl           BigInt
+  transactionId BigInt?     @map("txid")
+  events        Event[]
+  block         Block       @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  transfers     Transfer[]
 
-  @@id([blockhash, requestkey], map: "transaction_pkey")
+  @@id([blockHash, requestKey], map: "transaction_pkey")
   @@index([height])
-  @@index([requestkey])
+  @@index([requestKey])
   @@map("transactions")
 }
 
 model Transfer {
-  amount     Decimal @db.Decimal
-  block      String  @db.VarChar
-  chainid    BigInt
-  from_acct  String  @db.VarChar
-  height     BigInt
-  idx        BigInt
-  modulehash String  @db.VarChar
-  modulename String  @db.VarChar
-  requestkey String  @db.VarChar
-  to_acct    String  @db.VarChar
-  blocks     Block   @relation(fields: [block], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  amount          Decimal       @db.Decimal
+  blockHash       String        @map("block") @db.VarChar
+  chainId         BigInt        @map("chainid")
+  senderAccount   String        @map("from_acct") @db.VarChar
+  height          BigInt
+  orderIndex      BigInt        @map("idx")
+  moduleHash      String        @map("modulehash") @db.VarChar
+  moduleName      String        @map("modulename") @db.VarChar
+  requestKey      String        @map("requestkey") @db.VarChar
+  receiverAccount String        @map("to_acct") @db.VarChar
+  blocks          Block         @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  Transaction     Transaction?  @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([block, chainid, idx, modulehash, requestkey])
-  @@index([from_acct, height(sort: Desc), idx], map: "transfers_from_acct_height_idx")
-  @@index([to_acct, height(sort: Desc), idx])
+  @@id([blockHash, chainId, orderIndex, moduleHash, requestKey])
+  @@index([senderAccount, height(sort: Desc), orderIndex], map: "transfers_senderAccount_height_orderIndex")
+  @@index([receiverAccount, height(sort: Desc), orderIndex])
   @@map("transfers")
 }
 
@@ -145,5 +147,3 @@ model schema_migrations {
 
   @@ignore
 }
-
-

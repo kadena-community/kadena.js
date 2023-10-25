@@ -1,24 +1,3 @@
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  Grid,
-  Heading,
-  IconButton,
-  Stack,
-  TextField,
-  TrackerCard,
-} from '@kadena/react-ui';
-
-import {
-  formButtonStyle,
-  formContentStyle,
-  notificationContainerStyle,
-  sidebarLinksStyle,
-  textareaContainerStyle,
-  textAreaStyle,
-} from './styles.css';
-
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { FormStatusNotification } from '@/components/Global';
 import {
@@ -44,13 +23,32 @@ import type { ITransferDataResult } from '@/services/cross-chain-transfer-finish
 import { getTransferData } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Grid,
+  Heading,
+  IconButton,
+  Stack,
+  TextField,
+  TrackerCard,
+} from '@kadena/react-ui';
 import Debug from 'debug';
-import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import {
+  formButtonStyle,
+  formContentStyle,
+  notificationContainerStyle,
+  sidebarLinksStyle,
+  textAreaStyle,
+  textareaContainerStyle,
+} from './styles.css';
 
 // @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
 const DOMAIN_NAME_REGEX: RegExp =
@@ -82,7 +80,7 @@ const CrossChainTransferFinisher: FC = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const { devOption } = useAppContext();
-  const { selectedNetwork: network } = useWalletConnectClient();
+  const { selectedNetwork: network, networksData } = useWalletConnectClient();
   const helpCenterRef = useRef<HTMLElement | null>(null);
 
   const [requestKey, setRequestKey] = useState<string>(
@@ -109,6 +107,7 @@ const CrossChainTransferFinisher: FC = () => {
       requestKey: reqKey,
       network,
       t,
+      networksData,
     });
 
     if (pollResult === undefined) {

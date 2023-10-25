@@ -1,5 +1,4 @@
-import { breakpoints, sprinkles } from '@kadena/react-ui/theme';
-
+import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const bottomWrapperClass = style([
@@ -9,15 +8,13 @@ export const bottomWrapperClass = style([
   }),
 ]);
 
-export const bottomWrapperCodeLayoutClass = style([
-  {
-    '@media': {
-      [`screen and ${breakpoints.xl}`]: {
-        width: '56%',
-      },
-      [`screen and ${breakpoints.xxl}`]: {
-        width: '60%',
-      },
+export const bottomWrapperCodeLayoutClass = style(
+  responsiveStyle({
+    xl: {
+      width: '56%',
     },
-  },
-]);
+    xxl: {
+      width: '60%',
+    },
+  }),
+);

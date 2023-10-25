@@ -1,1 +1,0 @@
-export { DocsCard } from './DocsCard';

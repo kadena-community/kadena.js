@@ -7,7 +7,7 @@ import type { TWalletConnectChainId } from '../walletConnectTypes';
 import type Client from '@walletconnect/sign-client';
 import type { SessionTypes } from '@walletconnect/types';
 
-jest.spyOn(console, 'log').mockImplementation(() => {});
+vi.spyOn(console, 'log').mockImplementation(() => {});
 
 describe('quicksignWithWalletConnect', () => {
   let transaction: IPactCommand;
@@ -49,9 +49,9 @@ describe('quicksignWithWalletConnect', () => {
 
   it('throws when no transactions are passed', async () => {
     const client = {
-      request: jest.fn(() =>
+      request: vi.fn(() =>
         Promise.resolve({
-          catch: jest.fn(),
+          catch: vi.fn(),
         }),
       ),
     };
@@ -63,19 +63,15 @@ describe('quicksignWithWalletConnect', () => {
         walletConnectChainId,
       );
 
-    try {
-      // @ts-ignore
-      await quicksignWithWalletConnect();
-      // Fail test if signWithWalletConnect() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('No transaction(s) to sign');
-    }
+    // @ts-expect-error - Expected 1 arguments, but got 0.
+    await expect(() => quicksignWithWalletConnect()).rejects.toThrowError(
+      'No transaction(s) to sign',
+    );
   });
 
   it('signs a transaction', async () => {
     const client = {
-      request: jest.fn(() =>
+      request: vi.fn(() =>
         Promise.resolve({
           responses: [
             {
@@ -100,7 +96,7 @@ describe('quicksignWithWalletConnect', () => {
               },
             },
           ],
-          catch: jest.fn(),
+          catch: vi.fn(),
         }),
       ),
     };
@@ -147,7 +143,7 @@ describe('quicksignWithWalletConnect', () => {
 
   it('throws when there is no signing response', async () => {
     const client = {
-      request: jest.fn(() => Promise.resolve()),
+      request: vi.fn(() => Promise.resolve()),
     };
 
     quicksignWithWalletConnect = createWalletConnectQuicksign(
@@ -156,20 +152,16 @@ describe('quicksignWithWalletConnect', () => {
       walletConnectChainId,
     );
 
-    try {
-      await quicksignWithWalletConnect(createTransaction(transaction));
-      // Fail test if quicksignWithWalletConnect() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('Error signing transaction');
-    }
+    await expect(() =>
+      quicksignWithWalletConnect(createTransaction(transaction)),
+    ).rejects.toThrowError('Error signing transaction');
   });
 
   it('throws when there are no responses', async () => {
     const client = {
-      request: jest.fn(() =>
+      request: vi.fn(() =>
         Promise.resolve({
-          catch: jest.fn(),
+          catch: vi.fn(),
         }),
       ),
     };
@@ -180,18 +172,14 @@ describe('quicksignWithWalletConnect', () => {
       walletConnectChainId,
     );
 
-    try {
-      await quicksignWithWalletConnect(createTransaction(transaction));
-      // Fail test if quicksignWithWalletConnect() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('Error signing transaction');
-    }
+    await expect(() =>
+      quicksignWithWalletConnect(createTransaction(transaction)),
+    ).rejects.toThrowError('Error signing transaction');
   });
 
   it('throws when the hash of the unsigned and signed transaction do not match', async () => {
     const client = {
-      request: jest.fn(() =>
+      request: vi.fn(() =>
         Promise.resolve({
           responses: [
             {
@@ -216,7 +204,7 @@ describe('quicksignWithWalletConnect', () => {
               },
             },
           ],
-          catch: jest.fn(),
+          catch: vi.fn(),
         }),
       ),
     };
@@ -227,14 +215,10 @@ describe('quicksignWithWalletConnect', () => {
       walletConnectChainId,
     );
 
-    try {
-      await quicksignWithWalletConnect(createTransaction(transaction));
-      // Fail test if quicksignWithWalletConnect() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain(
-        'Hash of the transaction signed by the wallet does not match. Our hash',
-      );
-    }
+    await expect(() =>
+      quicksignWithWalletConnect(createTransaction(transaction)),
+    ).rejects.toThrowError(
+      'Hash of the transaction signed by the wallet does not match. Our hash',
+    );
   });
 });

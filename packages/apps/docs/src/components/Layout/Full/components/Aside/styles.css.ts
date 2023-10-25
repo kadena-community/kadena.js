@@ -1,10 +1,10 @@
 import { sprinkles, vars } from '@kadena/react-ui/theme';
-
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const asideItemLinkClass = style([
   sprinkles({
     textDecoration: 'none',
+    fontSize: '$sm',
   }),
   {
     selectors: {
@@ -18,16 +18,15 @@ export const asideItemLinkClass = style([
 export const asideItemLinkActiveVariants = styleVariants({
   true: {
     color: vars.colors.$neutral6,
-    textDecoration: 'underline',
   },
   false: {
-    color: vars.colors.$primaryHighContrast,
+    color: vars.colors.$neutral6,
+    opacity: 0.6,
   },
 });
 
 export const asideItemClass = style([
   sprinkles({
-    lineHeight: '$base',
     paddingY: '$1',
   }),
   {

@@ -1,1 +1,0 @@
-export { BlogItem } from './BlogItem';

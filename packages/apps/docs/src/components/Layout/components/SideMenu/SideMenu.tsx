@@ -1,10 +1,15 @@
+import type { IMenuItem } from '@/Layout';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import { Box, Heading, Input } from '@kadena/react-ui';
-
-import { MainTreeItem } from '../TreeMenu';
+import classNames from 'classnames';
+import { useRouter } from 'next/router';
+import type { FC, KeyboardEvent } from 'react';
+import React from 'react';
+import { MainTreeItem } from '../TreeMenu/MainTreeItem';
 import { TreeList } from '../TreeMenu/TreeList';
-
-import { ListLink, ShowOnMobile } from './components';
 import { MenuCard } from './MenuCard';
+import { ListLink } from './components/ListLink';
+import { ShowOnMobile } from './components/ShowOnMobile';
 import {
   listClass,
   listItemClass,
@@ -14,20 +19,13 @@ import {
 } from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
 
-import type { IMenuItem } from '@/types/Layout';
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
-import type { FC, KeyboardEvent } from 'react';
-import React from 'react';
-
 interface IProps {
   closeMenu: () => void;
   menuItems: IMenuItem[];
 }
 
 export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
-  const { active, clickMenu, clickSubMenu, setActive } = useSideMenu(
+  const { active, clickMenu, clickSubMenu, setActive, treeRef } = useSideMenu(
     closeMenu,
     menuItems,
   );
@@ -65,7 +63,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           <Heading as="h5">{activeItem?.menu}</Heading>
         </button>
       )}
-
       <ShowOnMobile>
         <Box marginX="$4" marginBottom="$8" marginTop="$4">
           <Input
@@ -79,7 +76,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           />
         </Box>
       </ShowOnMobile>
-
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
         <ul className={listClass}>
           {menuItems.map((item) => (
@@ -104,7 +100,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           idx={1}
           onClick={clickSubMenu}
         >
-          <TreeList root={true}>
+          <TreeList ref={treeRef} root={true}>
             <MainTreeItem item={activeItem} root={true} />
           </TreeList>
         </MenuCard>

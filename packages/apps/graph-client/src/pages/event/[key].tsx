@@ -1,12 +1,8 @@
-import { Notification, Table } from '@kadena/react-ui';
-
-import { useGetEventByNameSubscription } from '../../__generated__/sdk';
-import Loader from '../../components/loader/loader';
-import { mainStyle } from '../../components/main/styles.css';
-import { Text } from '../../components/text';
-import routes from '../../constants/routes';
-
-import Head from 'next/head';
+import { useGetEventByNameSubscription } from '@/__generated__/sdk';
+import Loader from '@/components/Common/loader/loader';
+import { mainStyle } from '@/components/Common/main/styles.css';
+import routes from '@constants/routes';
+import { Box, Breadcrumbs, Notification, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -23,29 +19,23 @@ const Event: React.FC = () => {
 
   return (
     <div>
-      <Head>
-        <title>Kadena Graph Client</title>
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item>Events</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
+
+      <Box marginBottom="$8" />
 
       <main className={mainStyle}>
-        <Text
-          as="h1"
-          css={{ display: 'block', color: '$mauve12', fontSize: 48, my: '$12' }}
-        >
-          Kadena Graph Client
-        </Text>
-
         <div>
           {eventLoading && (
-            // Display a loading spinner next to the text without a gap
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Loader /> <span>Waiting for event...</span>
             </div>
           )}
 
           {error && (
-            <Notification.Root color="negative" icon="Close">
+            <Notification.Root color="negative" icon="Close" variant="outlined">
               Unknown error:
               <br />
               <br />
@@ -70,17 +60,53 @@ const Event: React.FC = () => {
                   {eventSubscription.event.map((event, index) => (
                     <Table.Tr
                       key={index}
-                      url={`${routes.TRANSACTION}/${event.transaction?.requestKey}`}
+                      url={`${routes.TRANSACTIONS}/${event.transaction?.requestKey}`}
                     >
-                      <Table.Td>{event.qualName}</Table.Td>
+                      <Table.Td>{event.qualifiedName}</Table.Td>
                       <Table.Td>
                         <Table.Root>
                           <Table.Body>
-                            {event.eventParameters.map((parameter, index) => (
-                              <Table.Tr key={`arguments-${index}`}>
-                                <Table.Td>{parameter}</Table.Td>
-                              </Table.Tr>
-                            ))}
+                            {JSON.parse(event.parameterText).map(
+                              (parameter: any, index: number) => (
+                                <Table.Tr key={`arguments-${index}`}>
+                                  <Table.Td>
+                                    {typeof parameter === 'string' ? (
+                                      parameter
+                                    ) : typeof parameter === 'object' ? (
+                                      <Table.Root>
+                                        <Table.Body>
+                                          {parameter.map(
+                                            (
+                                              subparameter: any,
+                                              index: number,
+                                            ) => (
+                                              <Table.Tr
+                                                key={`arguments-${index}`}
+                                              >
+                                                <Table.Td>
+                                                  {typeof subparameter ===
+                                                  'string' ? (
+                                                    subparameter
+                                                  ) : (
+                                                    <pre>
+                                                      {JSON.stringify(
+                                                        subparameter,
+                                                      )}
+                                                    </pre>
+                                                  )}
+                                                </Table.Td>
+                                              </Table.Tr>
+                                            ),
+                                          )}
+                                        </Table.Body>
+                                      </Table.Root>
+                                    ) : (
+                                      JSON.stringify(parameter)
+                                    )}
+                                  </Table.Td>
+                                </Table.Tr>
+                              ),
+                            )}
                           </Table.Body>
                         </Table.Root>
                       </Table.Td>

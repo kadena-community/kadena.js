@@ -1,7 +1,6 @@
-import { StyledGridRow } from './styles';
-
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { StyledGridRow } from './styles';
 
 export interface IGridRowProps {
   className?: string;

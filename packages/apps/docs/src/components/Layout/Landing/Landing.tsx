@@ -1,20 +1,17 @@
+import type { IBasePageProps } from '@/Layout';
+import classnames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 import { baseGridClass } from '../basestyles.css';
+import { Template } from '../components/Template/Template';
+import { TitleHeader } from '../components/TitleHeader/TitleHeader';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-  TitleHeader,
-} from '../components';
-import { Template } from '../components/Template';
+} from '../components/articleStyles.css';
 import { globalClass } from '../global.css';
-
 import { pageGridClass } from './styles.css';
-
-import { NotFound } from '@/components/NotFound';
-import type { IBasePageProps } from '@/types/Layout';
-import classnames from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
 
 export const Landing: FC<IBasePageProps> = ({
   children,
@@ -24,24 +21,19 @@ export const Landing: FC<IBasePageProps> = ({
   const gridClassNames = classnames(globalClass, baseGridClass, pageGridClass);
 
   return (
-    <div className={gridClassNames}>
-      <Template menuItems={leftMenuTree} layout="landing">
-        <TitleHeader
-          title={frontmatter.title}
-          subTitle={frontmatter.subTitle}
-        />
-
-        <div
-          id="maincontent"
-          className={classnames(contentClass, contentClassVariants.code)}
-        >
-          <article className={articleClass}>
-            {children}
-            <NotFound />
-          </article>
-        </div>
-      </Template>
-    </div>
+    <>
+      <TitleHeader title={frontmatter.title} subTitle={frontmatter.subTitle} />
+      <div className={gridClassNames}>
+        <Template menuItems={leftMenuTree} layout="landing">
+          <div
+            id="maincontent"
+            className={classnames(contentClass, contentClassVariants.code)}
+          >
+            <article className={articleClass}>{children}</article>
+          </div>
+        </Template>
+      </div>
+    </>
   );
 };
 

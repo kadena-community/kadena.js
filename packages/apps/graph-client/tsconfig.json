@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/@kadena-dev/heft-rig/profiles/default/tsconfig-base.json",
+  "extends": "./node_modules/@kadena-dev/heft-rig/tsconfig-base.json",
   "compilerOptions": {
     "types": ["node"],
     "target": "ES2020",
@@ -12,7 +12,18 @@
     "isolatedModules": true,
     "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
     "declarationMap": false,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@context/*": ["./src/context/*"],
+      "@graphql/*": ["./src/graphql/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@utils/*": ["./src/utils/*"]
+    }
   },
+
   "exclude": ["node_modules"]
 }

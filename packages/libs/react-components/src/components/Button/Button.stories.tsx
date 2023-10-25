@@ -1,10 +1,9 @@
-import { SystemIcons } from './../../';
-import type { IButtonProps } from '.';
-import type { StyledButtonVariants } from './styles';
-import { Button } from '.';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { IButtonProps } from '.';
+import { Button } from '.';
+import { SystemIcons } from './../../';
+import type { StyledButtonVariants } from './styles';
 
 const meta: Meta<
   {

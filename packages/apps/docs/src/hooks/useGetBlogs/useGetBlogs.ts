@@ -1,5 +1,5 @@
 import type { IIBlogLoadOptions } from '@/hooks/useGetBlogs/utils';
-import type { IMenuData } from '@/types/Layout';
+import type { IMenuData } from '@/Layout';
 import { useEffect, useState } from 'react';
 
 interface IReturn {

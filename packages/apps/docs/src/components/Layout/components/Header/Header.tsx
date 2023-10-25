@@ -1,11 +1,16 @@
+import type { IMenuItem, LayoutType } from '@/Layout';
+import { useMenu } from '@/hooks/useMenu/useMenu';
 import { SystemIcon } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import Link from 'next/link';
+import type { FC } from 'react';
+import React from 'react';
 import { globalClass } from '../../global.css';
-import { DocsLogo } from '..';
-
+import { DocsLogo } from '../DocsLogo/DocsLogo';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
 import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { SearchButton } from './SearchButton';
+import { ThemeToggle } from './ThemeToggle';
 import {
   headerButtonClass,
   headerClass,
@@ -21,15 +26,7 @@ import {
   spacerClass,
   ulClass,
 } from './styles.css';
-import { ThemeToggle } from './ThemeToggle';
 import { useHeaderAnimation } from './useHeaderAnimation';
-
-import { useMenu } from '@/hooks';
-import type { IMenuItem, LayoutType } from '@/types/Layout';
-import classNames from 'classnames';
-import Link from 'next/link';
-import type { FC } from 'react';
-import React from 'react';
 
 interface IProps {
   menuItems: IMenuItem[];
@@ -47,7 +44,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
       </a>
       <div className={innerWrapperClass}>
         <div className={logoClass}>
-          <Link href="/" passHref>
+          <Link href="/" passHref aria-label="Go to the home page">
             <DocsLogo overwriteTheme="dark" />
           </Link>
         </div>

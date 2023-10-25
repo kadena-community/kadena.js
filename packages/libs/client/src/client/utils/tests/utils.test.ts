@@ -81,70 +81,67 @@ describe('client utils', () => {
       expect(obj.reject).toBeDefined();
     });
 
-    it('resolves the promise if resolve function is called', (done) => {
+    it('resolves the promise if resolve function is called', () => {
       const pr = getPromise();
       pr.promise
         .then((result) => {
           expect(result).toBe('result');
-          done();
         })
         .catch(() => {
           expect('this should not happen').toBe(true);
-          done();
         });
       pr.resolve('result');
+      return pr;
     });
 
-    it('rejects the promise if reject function is called', (done) => {
+    it('rejects the promise if reject function is called', () => {
       const pr = getPromise();
       pr.promise
         .then(() => {
           expect('this should not happen').toBe(true);
-          done();
         })
         .catch((result) => {
           expect(result).toBe('rejected');
-          done();
         });
       pr.reject('rejected');
+      return pr;
     });
 
-    it('sets fullfiled to true resolve is called', (done) => {
+    it('sets fullfiled to true resolve is called', () => {
       const pr = getPromise();
       pr.promise
         .then((result) => {
           expect(pr.fulfilled).toBe(true);
-          done();
         })
         .catch(() => {
           expect('this should not happen').toBe(true);
-          done();
         });
       pr.resolve('result');
+      return pr;
     });
 
-    it('sets fullfiled to true if reject is called', (done) => {
+    it('sets fullfiled to true if reject is called', () => {
       const pr = getPromise();
       pr.promise
         .then(() => {})
         .catch((result) => {
           expect(pr.fulfilled).toBe(true);
-          done();
         });
       pr.reject('rejected');
+      return pr;
     });
 
-    it('sets data if resolve is called', (done) => {
-      const pr2 = getPromise();
-      pr2.promise
+    it('sets data if resolve is called', () => {
+      const pr = getPromise();
+      pr.promise
         .then((result) => {
-          expect(pr2.fulfilled).toBe(true);
-          expect(pr2.data).toBe('result');
+          expect(pr.fulfilled).toBe(true);
+          expect(pr.data).toBe('result');
           expect(result).toBe('result');
-          done();
         })
         .catch(() => {});
-      pr2.resolve('result');
+      pr.resolve('result');
+      return pr;
     });
   });
 
@@ -216,7 +213,7 @@ describe('client utils', () => {
 
   describe('withCounter', () => {
     it('pass counter as the first are to the input function that counts the call numbers', () => {
-      const fn = jest.fn();
+      const fn = vi.fn();
       const wrappedFunction = withCounter(fn);
       wrappedFunction('arg1', 'arg2');
       wrappedFunction('arg1', 'arg2');
@@ -228,17 +225,22 @@ describe('client utils', () => {
   });
 
   describe('sleep', () => {
-    it('returns a promise that resolves after the sleep time', (done) => {
-      jest.useFakeTimers();
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('returns a promise that resolves after the sleep time', async () => {
       const start = Date.now();
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       sleep(10).then(() => {
         const end = Date.now();
         expect(end - start).toBe(10);
-        done();
-        jest.useRealTimers();
       });
-      jest.runAllTimers();
+      vi.runAllTimers();
     });
   });
 });

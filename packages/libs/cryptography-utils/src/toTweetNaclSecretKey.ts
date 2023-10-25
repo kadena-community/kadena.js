@@ -1,5 +1,4 @@
 import type { IKeyPair } from '@kadena/types';
-
 import { hexToBin } from './hexToBin';
 
 /**

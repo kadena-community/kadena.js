@@ -9,10 +9,13 @@ const getPath = (filename) => {
     .reduce((acc, val) => {
       const fileName = val.split('.')[0];
       if (fileName.includes('index') || complete) return acc;
-      if (fileName === 'docs') {
+      if (fileName === 'pages') {
         complete = true;
       }
-      acc.push(fileName);
+      //this will exclude pages dir
+      if (!complete) {
+        acc.push(fileName);
+      }
       return acc;
     }, [])
     .reverse()

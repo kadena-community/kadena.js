@@ -1,13 +1,12 @@
-import { landingFrontMatter } from '../__fixtures__/frontmatter';
-import { leftMenuTree } from '../__fixtures__/leftMenuTree';
-import { Landing } from '../Landing';
-
-import { Heading2 } from '@/components/Markdown/Heading';
-import { Paragraph } from '@/components/Markdown/Paragraph';
-import type { IBasePageProps } from '@/types/Layout';
+import type { IBasePageProps } from '@/Layout';
+import { Heading2 } from '@/components/Markdown/Heading/Heading2';
+import { Paragraph } from '@/components/Markdown/Paragraph/Paragraph';
 import type { Meta, StoryObj } from '@storybook/react';
 import Link from 'next/link';
 import React from 'react';
+import { landingFrontMatter } from '../__fixtures__/frontmatter';
+import { leftMenuTree } from '../__fixtures__/leftMenuTree';
+import { Landing } from './Landing';
 
 const meta: Meta<IBasePageProps> = {
   title: 'Layout/Landing',

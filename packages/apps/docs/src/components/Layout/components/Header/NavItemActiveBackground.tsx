@@ -1,11 +1,10 @@
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 import {
   animationBackgroundClass,
   animationBackgroundShowVariant,
 } from './styles.css';
-
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
 
 interface IProps {
   ref: React.ForwardedRef<HTMLDivElement>;

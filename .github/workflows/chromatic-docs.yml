@@ -29,7 +29,7 @@ jobs:
 
       - name: pnpm build (internal dependencies) # build all internal dependencies of docs but not docs itself
         run: |
-          pnpm run build --filter=@kadena/docs^...
+          pnpm turbo run build --filter=@kadena/docs^...
 
       - name: Publish Storybook
         uses: chromaui/action@v1
@@ -40,3 +40,4 @@ jobs:
           projectToken: ${{ secrets.DOCS_CHROMATIC_TOKEN }}
           workingDir: /packages/apps/docs
           autoAcceptChanges: 'main'
+          onlyChanged: true # 👈 Required option to enable TurboSnap

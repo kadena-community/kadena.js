@@ -1,6 +1,5 @@
-import { parseResponseTEXT } from '../parseResponseTEXT';
-
 import { Response } from 'cross-fetch';
+import { parseResponseTEXT } from '../parseResponseTEXT';
 
 test('should parse successful Response as expected type', async () => {
   type MockTestType = string;

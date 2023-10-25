@@ -1,20 +1,18 @@
 import { generateTemplates, parseTemplate } from '@kadena/pactjs-generator';
-
-import type { TTemplateGenerateOptions } from '.';
-
 import type { Command } from 'commander';
 import debug from 'debug';
 import {
   existsSync,
   lstatSync,
   mkdirSync,
-  readdirSync,
   readFileSync,
+  readdirSync,
   writeFileSync,
 } from 'fs';
 import { basename, extname, join } from 'path';
 import { sync as rimrafSync } from 'rimraf';
 import type { z } from 'zod';
+import type { TTemplateGenerateOptions } from '.';
 
 export const templateGenerate =
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

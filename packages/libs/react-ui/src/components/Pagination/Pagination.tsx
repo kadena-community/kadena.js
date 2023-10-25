@@ -1,12 +1,10 @@
 'use client';
-
-import { PageNav } from './PageNav';
-import { PageNum } from './PageNum';
-import { paginate } from './paginate';
-import { listClass } from './Pagination.css';
-
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { PageNav } from './PageNav';
+import { PageNum } from './PageNum';
+import { listClass } from './Pagination.css';
+import { paginate } from './paginate';
 
 export interface IPaginationProps {
   totalPages: number;

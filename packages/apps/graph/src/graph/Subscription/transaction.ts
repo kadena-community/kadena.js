@@ -1,10 +1,9 @@
-import { prismaClient } from '../../db/prismaClient';
-import type { IContext } from '../builder';
-import { builder } from '../builder';
-
 import type { Transaction } from '@prisma/client';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
+import { prismaClient } from '../../db/prismaClient';
+import type { IContext } from '../builder';
+import { builder } from '../builder';
 
 const log: Debugger = _debug('graph:Subscription:transaction');
 
@@ -28,7 +27,7 @@ async function* iteratorFn(
   while (!context.req.socket.destroyed) {
     const transaction = await prismaClient.transaction.findFirst({
       where: {
-        requestkey: requestKey,
+        requestKey: requestKey,
       },
     });
 

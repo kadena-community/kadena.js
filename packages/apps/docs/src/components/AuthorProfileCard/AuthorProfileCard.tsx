@@ -1,19 +1,16 @@
+import type { IAuthorInfo } from '@/Layout';
 import { Box, Stack } from '@kadena/react-ui';
-
-import { Avatar } from '../Blog/Avatar';
-import { BrowseSection } from '../BrowseSection';
-
+import Link from 'next/link';
+import type { FC } from 'react';
+import React from 'react';
+import { Avatar } from '../Blog/Avatar/Avatar';
+import { BrowseSection } from '../BrowseSection/BrowseSection';
 import {
   descriptionClass,
   linkClass,
   sectionClass,
   sectionExtraClass,
 } from './styles.css';
-
-import type { IAuthorInfo } from '@/types/Layout';
-import Link from 'next/link';
-import type { FC } from 'react';
-import React from 'react';
 
 interface IProps {
   author: IAuthorInfo;

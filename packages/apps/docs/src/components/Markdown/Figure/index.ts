@@ -1,1 +1,0 @@
-export { Figure } from './Figure';

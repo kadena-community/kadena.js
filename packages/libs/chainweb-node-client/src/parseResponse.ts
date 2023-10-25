@@ -1,6 +1,5 @@
-import type { ILocalCommandResult, ILocalResult } from './interfaces/PactAPI';
-
 import type { Response } from 'cross-fetch';
+import type { ILocalCommandResult, ILocalResult } from './interfaces/PactAPI';
 /**
  * Parses raw `fetch` response into a typed JSON value.
  *

@@ -1,7 +1,7 @@
-import { getData } from './getData.mjs';
 import path from 'path';
+import { getData } from './getData.mjs';
 
-const omit = (obj, ...keysToOmit) =>
+const omit = (obj, keysToOmit) =>
   Object.keys(obj)
     .filter((key) => !keysToOmit.includes(key))
     .reduce((acc, key) => ({ ...acc, [key]: obj[key] }), {});
@@ -13,21 +13,24 @@ const isIndex = (filename) => {
 // we dont want the last option in the path be "index"
 const lastInPath = (filename) => {
   if (isIndex(filename)) return '';
-  return `/${filename}`;
+  return `${filename}`;
 };
 
 export const getPathName = (filename) => {
-  const endPoint = 'docs';
+  const endPoint = 'pages';
 
   const dirArray = filename.split('/');
 
   const newPath = dirArray
     .reverse()
-    .slice(1, dirArray.indexOf(endPoint) + 1)
+    .slice(1, dirArray.indexOf(endPoint))
     .reverse()
     .join('/');
 
-  return `/${newPath}${lastInPath(path.parse(filename).name)}`;
+  const lastPath = lastInPath(path.parse(filename).name);
+  if (newPath) return `/${newPath}/${lastPath}`;
+
+  return `/${lastPath}`;
 };
 
 const IsMenuOpen = (pathname, itemRoot) =>
@@ -46,6 +49,8 @@ const mapSubTree = (pathname, noChildren, isRoot) => (item) => {
     'lastModifiedDate',
     'publishDate',
     'author',
+    'wordCount',
+    'readingTimeInMinutes',
   ]);
 
   if (IsMenuOpen(pathname, newItem.root)) {

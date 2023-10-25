@@ -1,18 +1,18 @@
-import { Stack } from '@kadena/react-ui';
-
-import { TagList, TagListItem } from '@/components';
+import type { IPageProps, ITag } from '@/Layout';
+import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-  TitleHeader,
-} from '@/components/Layout/components';
-import type { IPageProps, ITag } from '@/types/Layout';
-import { getAllBlogTags } from '@/utils';
+} from '@/components/Layout/components/articleStyles.css';
+import { TagList } from '@/components/TagList/TagList';
+import { TagListItem } from '@/components/TagList/TagListItem';
+import { getAllBlogTags } from '@/utils/getAllBlogTags';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';

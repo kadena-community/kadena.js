@@ -1,24 +1,25 @@
-import { asideListClass, asideListInnerVariants } from './styles.css';
-
 import classNames from 'classnames';
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import React from 'react';
+import { asideListClass, asideListInnerVariants } from './styles.css';
 
 interface IProps {
   children: ReactNode;
   inner?: boolean;
-  // eslint-disable-next-line @rushstack/no-new-null
-  ref?: React.MutableRefObject<HTMLUListElement | null>;
 }
 
-export const AsideList: FC<IProps> = ({ children, inner = false, ref }) => {
-  const classes = classNames(
-    asideListClass,
-    asideListInnerVariants[inner ? 'true' : 'false'],
-  );
-  return (
-    <ul ref={ref} className={classes}>
-      {children}
-    </ul>
-  );
-};
+export const AsideList = React.forwardRef<HTMLUListElement, IProps>(
+  ({ children, inner = false }, ref) => {
+    const classes = classNames(
+      asideListClass,
+      asideListInnerVariants[inner ? 'true' : 'false'],
+    );
+    return (
+      <ul ref={ref} className={classes}>
+        {children}
+      </ul>
+    );
+  },
+);
+
+AsideList.displayName = 'AsideList';

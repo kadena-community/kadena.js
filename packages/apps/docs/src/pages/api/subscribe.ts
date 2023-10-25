@@ -1,4 +1,4 @@
-import { isEmailValid } from '@/utils';
+import { isEmailValid } from '@/utils/isEmailValid';
 import mailchimp from '@mailchimp/mailchimp_marketing';
 import type { NextApiRequest, NextApiResponse } from 'next';
 

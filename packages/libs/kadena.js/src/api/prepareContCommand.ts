@@ -12,7 +12,6 @@ import type {
   Rollback,
   Step,
 } from '@kadena/types';
-
 import { attachSignature } from './attachSignature';
 import { createCommand } from './createCommand';
 import { pullSigner } from './pullSigner';

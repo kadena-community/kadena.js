@@ -1,21 +1,3 @@
-import type { InputWrapperStatus } from '@kadena/react-ui';
-import {
-  Breadcrumbs,
-  Button,
-  Grid,
-  Notification,
-  ProgressBar,
-  Stack,
-  TrackerCard,
-} from '@kadena/react-ui';
-
-import {
-  formButtonStyle,
-  headerTextStyle,
-  infoBoxStyle,
-  mainContentStyle,
-} from './styles.css';
-
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { FormItemCard } from '@/components/Global/FormItemCard';
 import RequestKeyField, {
@@ -27,18 +9,34 @@ import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
 import type { IStatusData } from '@/services/transfer-tracker/get-transfer-status';
 import {
-  getTransferStatus,
   StatusId,
+  getTransferStatus,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { InputWrapperStatus } from '@kadena/react-ui';
+import {
+  Breadcrumbs,
+  Button,
+  Grid,
+  Notification,
+  ProgressBar,
+  Stack,
+  TrackerCard,
+} from '@kadena/react-ui';
 import Debug from 'debug';
-import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import {
+  formButtonStyle,
+  headerTextStyle,
+  infoBoxStyle,
+  mainContentStyle,
+} from './styles.css';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
@@ -47,7 +45,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const CrossChainTransferTracker: FC = () => {
-  const { selectedNetwork: network } = useWalletConnectClient();
+  const { selectedNetwork: network, networksData } = useWalletConnectClient();
   const router = useRouter();
   const { t } = useTranslation('common');
 
@@ -139,6 +137,7 @@ const CrossChainTransferTracker: FC = () => {
             }
           },
         },
+        networksData,
       });
     } catch (error) {
       debug(error);
@@ -217,6 +216,7 @@ const CrossChainTransferTracker: FC = () => {
             }}
             title="Warning"
             icon={'AlertBox'}
+            variant="outlined"
           >
             {txError}
             <Notification.Actions>

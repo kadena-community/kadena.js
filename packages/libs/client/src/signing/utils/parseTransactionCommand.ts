@@ -1,5 +1,4 @@
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
-
 import type { IPactCommand } from '../../interfaces/IPactCommand';
 
 /**

@@ -1,6 +1,5 @@
+import type { IMenuItem } from '@/Layout';
 import { Box, Breadcrumbs as StyledBreadcrumbs } from '@kadena/react-ui';
-
-import type { IMenuItem } from '@/types/Layout';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';

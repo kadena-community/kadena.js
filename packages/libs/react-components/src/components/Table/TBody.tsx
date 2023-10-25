@@ -1,8 +1,7 @@
-import { Tr } from './Tr';
-import type { CompoundType } from './types';
-
 import type { FC } from 'react';
 import React from 'react';
+import { Tr } from './Tr';
+import type { CompoundType } from './types';
 
 export interface ITBody {
   children?: CompoundType<typeof Tr>;

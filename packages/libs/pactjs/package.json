@@ -30,8 +30,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "heft build --clean && cat src/extend-bignumber.ts >> dist/pactjs.d.ts",
-    "format": "pnpm run /^format:.*/",
+    "build": "tsc && api-extractor run --verbose && cat src/extend-bignumber.ts >> dist/pactjs.d.ts",
+    "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
@@ -39,10 +39,10 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "heft test"
+    "test": "vitest"
   },
   "dependencies": {
-    "bignumber.js": "^9.0.2"
+    "bignumber.js": "^9.1.2"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -50,12 +50,15 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena/types": "workspace:*",
+    "@microsoft/api-extractor": "^7.38.0",
     "@rushstack/eslint-config": "~3.3.0",
-    "@rushstack/heft": "~0.50.6",
-    "@types/heft-jest": "~1.0.3",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5"
+    "prettier": "~3.0.3",
+    "typescript": "5.2.2",
+    "vitest": "^0.34.6"
+  },
+  "publishConfig": {
+    "provenance": true
   }
 }

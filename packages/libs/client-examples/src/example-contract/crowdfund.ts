@@ -7,7 +7,6 @@ import {
   signWithChainweaver,
 } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-
 import { keyFromAccount } from './util/keyFromAccount';
 
 export async function createProject(

@@ -1,22 +1,22 @@
-import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
-
-import { BrowseSection, DocsCard } from '@/components';
-import { BlogPostsStrip } from '@/components/BlogPostsStrip';
+import type { IMenuData } from '@/Layout';
+import type { IMostPopularPage } from '@/MostPopularData';
+import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
+import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
+import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
+import { HomeHeader } from '@/components/Layout/Landing/components';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
-} from '@/components/Layout/components';
-import { HomeHeader } from '@/components/Layout/Landing/components';
-import type { IMenuData } from '@/types/Layout';
-import type { IMostPopularPage } from '@/types/MostPopularData';
+} from '@/components/Layout/components/articleStyles.css';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { Box, Button, Grid, Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -42,18 +42,18 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <Grid.Item rowSpan={2}>
                 <DocsCard
                   label="Introduction"
-                  description="What makes Kadena unique? Learn about our core concepts."
+                  description="Kadena is the only platform offering a complete decentralized infrastructure for builders. Combining a revolutionary chain architecture with the tools needed for widespread adoption, your teams get the full capabilities of blockchain with the ability to go from concept to launch in days vs. months by not having to build from scratch. Learn about our core concepts."
                   schema="info"
                   background="whitepapers"
                 >
                   <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/docs/kadena/overview">
+                    <Link className={docsCardLink} href="/kadena/overview">
                       What is the Kadena Blockchain?
                     </Link>
-                    <Link className={docsCardLink} href="/docs/kadena/kda">
+                    <Link className={docsCardLink} href="/kadena/kda">
                       What is KDA token?
                     </Link>
-                    <Link className={docsCardLink} href="/docs/pact">
+                    <Link className={docsCardLink} href="/pact">
                       What are Pact smart contracts?
                     </Link>
                   </BrowseSection>
@@ -66,27 +66,29 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="warning"
                   background="contribute"
                 >
-                  <BrowseSection marker="none">
-                    <Link
-                      className={docsCardLink}
-                      href="/docs/build/quickstart"
+                  <Box marginY="$4">
+                    <Button
+                      as="a"
+                      href="/build/guides/election-dapp-tutorial"
+                      icon="TrailingIcon"
+                      color="negative"
                     >
-                      5 minutes quick start
+                      Build your first dApp
+                    </Button>
+                  </Box>
+                  <BrowseSection marker="none">
+                    <Link className={docsCardLink} href="/build/quickstart">
+                      10 minute quick start
                     </Link>
+
                     <a
                       className={docsCardLink}
                       href="https://academy.kadena.io"
                     >
                       Learn on the Academy
                     </a>
-                    <Link className={docsCardLink} href="/docs/build/guides">
+                    <Link className={docsCardLink} href="/build/guides">
                       Create a Smart Contract
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/docs/build/guides/building-a-voting-dapp"
-                    >
-                      Build your first dApp
                     </Link>
                   </BrowseSection>
                 </DocsCard>
@@ -101,23 +103,23 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   <BrowseSection marker="none">
                     <Link
                       className={docsCardLink}
-                      href="/docs/kadena/wallets/chainweaver"
+                      href="/kadena/wallets/chainweaver"
                     >
                       Development wallet
                     </Link>
                     <Link
                       className={docsCardLink}
-                      href="/docs/contribute/ambassadors"
+                      href="/contribute/ambassadors"
                     >
                       Local devnet
                     </Link>
                     <Link
                       className={docsCardLink}
-                      href="/docs/pact/beginner/test-in-the-sdk"
+                      href="/pact/beginner/test-in-the-sdk"
                     >
                       Pact REPL
                     </Link>
-                    <Link className={docsCardLink} href="/docs/pact/vscode">
+                    <Link className={docsCardLink} href="/pact/vscode">
                       Visual Studio Code
                     </Link>
                   </BrowseSection>
@@ -126,7 +128,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </Grid.Root>
           </Box>
 
-          <Stack direction="column" gap="$xl">
+          <Stack direction="column" gap="$3xl">
             <BrowseSection title="Useful tools" direction="row">
               <BrowseSection.LinkBlock
                 title="Bootstrap Kadena dApp"
@@ -163,12 +165,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <BrowseSection.LinkBlock
                 title="Overview of Kadena"
                 subtitle="Find out what we are about"
-                href="/docs/kadena"
+                href="/kadena"
               />
               <BrowseSection.LinkBlock
                 title="Manage your KDA"
                 subtitle="Wallets & patforms"
-                href="/docs/kadena/kda/manage-kda"
+                href="/kadena/kda/manage-kda"
               />
               <BrowseSection.LinkBlock
                 title="Kadena.io"
@@ -181,7 +183,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <BrowseSection.LinkBlock
                 title="Ambassador program"
                 subtitle="Apply for some Ambassador privileges"
-                href="/docs/contribute/ambassadors"
+                href="/contribute/ambassadors"
               />
               <BrowseSection.LinkBlock
                 title="Technical grants"
@@ -191,15 +193,15 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <BrowseSection.LinkBlock
                 title="Docs"
                 subtitle="Help to improve our docs"
-                href="/docs/contribute/contribute"
+                href="/contribute/contribute"
               />
             </BrowseSection>
 
             <Box>
-              <Heading as="h6">Stay up-to-date</Heading>
+              <Heading as="h5">Stay up-to-date</Heading>
               <BlogPostsStrip
                 data={blogPosts}
-                link="/docs/blogchain"
+                link="/blogchain"
                 linkLabel="More Blogchain posts"
               />
             </Box>
@@ -208,17 +210,17 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <BrowseSection.LinkBlock
                 title="Overview of Pact"
                 subtitle="Learn the basics of Pact to create a smart contract"
-                href="/docs/pact"
+                href="/pact"
               />
               <BrowseSection.LinkBlock
                 title="Chainweb"
                 subtitle="Chainweb is our scalable Proof-Of-Work (PoW) consensus algorithm"
-                href="/docs/chainweb"
+                href="/chainweb"
               />
               <BrowseSection.LinkBlock
                 title="Marmalade"
                 subtitle="Marmalade provides the complete NFT infrastructure."
-                href="/docs/marmalade"
+                href="/marmalade"
               />
             </BrowseSection>
           </Stack>

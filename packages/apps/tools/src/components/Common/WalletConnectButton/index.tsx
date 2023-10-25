@@ -1,6 +1,5 @@
-import { Button } from '@kadena/react-ui';
-
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { Button } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
@@ -8,7 +7,7 @@ import React from 'react';
 const WalletConnectButton: FC = () => {
   const { connect, isInitializing, disconnect, session } =
     useWalletConnectClient();
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const handleClick = async (): Promise<void> => {
     if (session) {

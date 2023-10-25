@@ -1,10 +1,7 @@
+import { PrismaClient } from '@prisma/client';
 import { dotenv } from '../utils/dotenv';
 
-import { PrismaClient } from '@prisma/client';
-
-const url: string | undefined = dotenv.USE_EMBEDDED_POSTGRES
-  ? dotenv.EMBEDDED_DATABASE_URL
-  : dotenv.DATABASE_URL;
+const url: string | undefined = dotenv.DATABASE_URL;
 
 const options:
   | {

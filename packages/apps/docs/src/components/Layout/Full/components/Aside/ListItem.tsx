@@ -1,11 +1,10 @@
-import { AsideLink, AsideList } from './';
-
-import type { ISubHeaderElement } from '@/types/Layout';
-import { createSlug } from '@/utils';
-import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import type { ISubHeaderElement } from '@/Layout';
+import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
+import { createSlug } from '@/utils/createSlug';
 import { useRouter } from 'next/router';
 import type { FC, MouseEvent } from 'react';
 import React from 'react';
+import { AsideLink, AsideList } from './';
 
 interface IProps {
   // eslint-disable-next-line @rushstack/no-new-null

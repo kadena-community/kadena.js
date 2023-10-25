@@ -1,16 +1,14 @@
 import type { SystemIcon } from '@kadena/react-ui';
 import { IconButton, Text } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import type { ForwardRefExoticComponent, ReactNode } from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import {
   buttonWrapperClass,
   expandedDrawerContentClass,
   expandedDrawerTitleClass,
   gridItemCollapsedSidebarStyle,
 } from './styles.css';
-
-import classNames from 'classnames';
-import type { ForwardRefExoticComponent, ReactNode } from 'react';
-import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 
 export interface IDrawerToolbarSection {
   icon: keyof typeof SystemIcon;

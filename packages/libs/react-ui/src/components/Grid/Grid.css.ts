@@ -1,6 +1,8 @@
 /* eslint @typescript-eslint/naming-convention: 0 */
-import { breakpoints, sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
+import { breakpoints, mapToProperty } from '@theme/themeUtils';
 import { style, styleVariants } from '@vanilla-extract/css';
+import mapValues from 'lodash.mapvalues';
 
 export const gridContainerClass = style([
   {
@@ -25,21 +27,6 @@ export const gapVariants = styleVariants({
   $3xl: [sprinkles({ gridGap: '$3xl' })],
 });
 
-export const rowSpanVariants = styleVariants({
-  1: [{ gridRow: 'span 1' }],
-  2: [{ gridRow: 'span 2' }],
-  3: [{ gridRow: 'span 3' }],
-  4: [{ gridRow: 'span 4' }],
-  5: [{ gridRow: 'span 5' }],
-  6: [{ gridRow: 'span 6' }],
-  7: [{ gridRow: 'span 7' }],
-  8: [{ gridRow: 'span 8' }],
-  9: [{ gridRow: 'span 9' }],
-  10: [{ gridRow: 'span 10' }],
-  11: [{ gridRow: 'span 11' }],
-  12: [{ gridRow: 'span 12' }],
-});
-
 const columnCount: Record<number, number> = {
   1: 1,
   2: 2,
@@ -55,12 +42,24 @@ const columnCount: Record<number, number> = {
   12: 12,
 };
 
-const containerColumnVariantsArray = Object.keys(breakpoints).map((key) => {
+export const rowSpanVariants = styleVariants(columnCount, (count) =>
+  mapToProperty('gridRow')(`span ${count}`),
+);
+
+export const containerColumnVariants = mapValues(breakpoints, (mediaQuery) => {
   return styleVariants(columnCount, (count) => {
+    if (mediaQuery === '') {
+      return [
+        {
+          gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))`,
+        },
+      ];
+    }
+
     return [
       {
         '@media': {
-          [breakpoints[key]]: {
+          [mediaQuery]: {
             gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))`,
           },
         },
@@ -69,30 +68,20 @@ const containerColumnVariantsArray = Object.keys(breakpoints).map((key) => {
   });
 });
 
-export const explicitColumnVariant = styleVariants(columnCount, (count) => {
-  return [
-    {
-      gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))`,
-    },
-  ];
-});
-
-export type ResponsiveVariant = Record<string, Record<number, string>>;
-
-export const containerColumnVariants: ResponsiveVariant = {
-  sm: containerColumnVariantsArray[0],
-  md: containerColumnVariantsArray[1],
-  lg: containerColumnVariantsArray[2],
-  xl: containerColumnVariantsArray[3],
-  xxl: containerColumnVariantsArray[4],
-};
-
-const itemColumnVariantsArray = Object.keys(breakpoints).map((key) => {
+export const itemColumnVariants = mapValues(breakpoints, (mediaQuery) => {
   return styleVariants(columnCount, (count) => {
+    if (mediaQuery === '') {
+      return [
+        {
+          gridColumn: `span ${count}`,
+        },
+      ];
+    }
+
     return [
       {
         '@media': {
-          [breakpoints[key]]: {
+          [mediaQuery]: {
             gridColumn: `span ${count}`,
           },
         },
@@ -101,22 +90,6 @@ const itemColumnVariantsArray = Object.keys(breakpoints).map((key) => {
   });
 });
 
-export const explicitItemColumnVariant = styleVariants(columnCount, (count) => {
-  return [
-    {
-      gridColumn: `span ${count}`,
-    },
-  ];
-});
-
-export const itemColumnVariants: ResponsiveVariant = {
-  sm: itemColumnVariantsArray[0],
-  md: itemColumnVariantsArray[1],
-  lg: itemColumnVariantsArray[2],
-  xl: itemColumnVariantsArray[3],
-  xxl: itemColumnVariantsArray[4],
-};
-
 export type ResponsiveInputType =
   | number
-  | Record<keyof typeof breakpoints, keyof typeof columnCount>;
+  | Partial<Record<keyof typeof breakpoints, keyof typeof columnCount>>;

@@ -8,6 +8,9 @@ export const tdClass = style([
     paddingX: '$4',
     color: '$neutral5',
   }),
+  {
+    verticalAlign: 'top',
+  },
 ]);
 
 export const trClass = style([
@@ -21,7 +24,10 @@ export const trClass = style([
         background: vars.colors.$neutral2,
       },
       '.stripedClass &:hover': {
-        background: vars.colors.$primarySurface,
+        background: vars.colors.$blue10,
+      },
+      [`${darkThemeClass} .stripedClass &:hover`]: {
+        background: vars.colors.$blue100,
       },
     },
   },

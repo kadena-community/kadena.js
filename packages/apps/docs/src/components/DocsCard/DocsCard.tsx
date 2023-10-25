@@ -1,10 +1,8 @@
-import { Box, Heading, Text } from '@kadena/react-ui';
-
-import { backgroundVariant, cardClass, cardVariants } from './styles.css';
-
+import { Box, Heading } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
+import { backgroundVariant, cardClass, cardVariants } from './styles.css';
 
 interface IProps extends PropsWithChildren {
   label: string;
@@ -39,7 +37,7 @@ export const DocsCard: FC<IProps> = ({
         {label}
       </Heading>
       <Box marginY="$4" marginRight={{ sm: '$20', md: '$4', lg: '$20' }}>
-        <Text>{description}</Text>
+        <div>{description}</div>
       </Box>
       {children}
     </section>

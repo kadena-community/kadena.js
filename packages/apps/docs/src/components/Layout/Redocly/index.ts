@@ -1,1 +1,0 @@
-export { Redocly } from './Redocly';

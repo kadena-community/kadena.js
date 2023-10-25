@@ -1,8 +1,7 @@
-import type { ITreeProps } from './';
-import { Tree } from './';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { ITreeProps } from './';
+import { Tree } from './';
 
 const meta: Meta<{} & ITreeProps> = {
   title: 'Components/Tree',
@@ -10,7 +9,7 @@ const meta: Meta<{} & ITreeProps> = {
     docs: {
       description: {
         component:
-          'The Tree component renders a tree structure with a root node and child nodes. The tree can be expanded and collapsed by clicking on the root node. The tree can be set to open by default with the `isOpen` prop. The tree can be set to close its siblings when opened with the `linked` prop.',
+          '<strong>Deprecated. Do not use.</strong><br />Will be refactored as it does not meet our standards.<br /><br /><em>The Tree component renders a tree structure with a root node and child nodes. The tree can be expanded and collapsed by clicking on the root node. The tree can be set to open by default with the `isOpen` prop. The tree can be set to close its siblings when opened with the `linked` prop.</em>',
       },
     },
   },

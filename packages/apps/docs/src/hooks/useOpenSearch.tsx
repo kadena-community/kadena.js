@@ -1,7 +1,6 @@
-import { useModal } from '@kadena/react-ui';
-
-import { SearchModal } from '@/components';
+import { SearchModal } from '@/components/SearchModal/SearchModal';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
+import { useModal } from '@kadena/react-ui';
 import React, { useCallback, useEffect } from 'react';
 
 interface IReturnProps {

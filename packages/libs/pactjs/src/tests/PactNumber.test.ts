@@ -114,4 +114,27 @@ describe('Pact Number', () => {
     const pactDecimal = actual.minus('0.9').toPactDecimal();
     expect(pactDecimal).toStrictEqual({ decimal: '0.0007199254740991192919' });
   });
+
+  it('does not return scientific notation for large integer', () => {
+    const number = new PactNumber(
+      '0x584712a2542d5c1ab3cd25dec0b14e53aef270e6948140656a8fbf3d2829c729',
+    );
+    const int = number.toPactInteger();
+
+    expect(int).toEqual({
+      int: '39929105424737202205146861475763790532040240744253228361760383139526688229161',
+    });
+  });
+
+  it('does not return scientific notation for large decimals', () => {
+    const number = new PactNumber(
+      '3.9929105424737202205146861475763790532040240744253228361760383139526688229161',
+    );
+    const decimal = number.toPactDecimal();
+
+    expect(decimal).toEqual({
+      decimal:
+        '3.9929105424737202205146861475763790532040240744253228361760383139526688229161',
+    });
+  });
 });

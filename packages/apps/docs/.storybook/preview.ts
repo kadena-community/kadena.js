@@ -1,7 +1,7 @@
 import { darkThemeClass } from '@kadena/react-ui/theme';
 
 import { themes } from '@storybook/theming';
-import { RouterContext } from 'next/dist/shared/lib/router-context'; // next 12
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime'; // next 13
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

@@ -1,5 +1,4 @@
-import { sprinkles } from '@kadena/react-ui/theme';
-
+import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const menuCardClass = style([
@@ -10,8 +9,14 @@ export const menuCardClass = style([
     paddingX: '$6',
   }),
   {
-    overflowY: 'scroll',
     transition: 'transform .2s ease',
+    ...responsiveStyle({ md: { overflowY: 'auto' } }),
+
+    selectors: {
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+    },
   },
 ]);
 

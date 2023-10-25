@@ -1,18 +1,18 @@
-import type { IBasePageMeta, IPageMeta } from '@/types/Layout';
+import type { IBasePageMeta, IPageMeta } from '@/Layout';
 
 export const blogFrontMatter: IPageMeta = {
   wordCount: 779,
   readingTimeInMinutes: 4,
   editLink:
-    'XXXX/packages/apps/docs/src/pages/docs/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-02-07.mdx',
+    'XXXX/packages/apps/docs/src/pages/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-02-07.mdx',
   lastModifiedDate: new Date('2023-08-22T15:00:04.405Z'),
   navigation: {
     previous: {
-      root: '/docs/blogchain/2018/security-kadena-chainweb-blockchain-2018-11-01',
+      root: '/blogchain/2018/security-kadena-chainweb-blockchain-2018-11-01',
       title: "Security in Kadena's Public Blockchain",
     },
     next: {
-      root: '/docs/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-12-13',
+      root: '/blogchain/2018/the-evm-is-fundamentally-unsafe-2018-12-13',
       title: 'The EVM Is Fundamentally Unsafe',
     },
   },
@@ -30,15 +30,15 @@ export const blogFrontMatter: IPageMeta = {
 export const fullLayoutFrontMatter: IPageMeta = {
   wordCount: 809,
   readingTimeInMinutes: 5,
-  editLink: 'XXXX/packages/apps/docs/src/pages/docs/kadena/overview.mdx',
+  editLink: 'XXXX/packages/apps/docs/src/pages/kadena/overview.mdx',
   lastModifiedDate: new Date('2023-08-22T15:00:04.405Z'),
   navigation: {
     previous: {
-      root: '/docs/kadena',
+      root: '/kadena',
       title: 'Intro to Kadena',
     },
     next: {
-      root: '/docs/kadena/kda',
+      root: '/kadena/kda',
       title: 'What is KDA?',
     },
   },
@@ -68,14 +68,14 @@ export const redoclyFrontMatter: IPageMeta = {
   order: 5,
   description: 'Be a part of our ecosystem',
   layout: 'redocly',
-  editLink: 'XXXX/packages/apps/docs/src/pages/docs/kadena/overview.mdx',
+  editLink: 'XXXX/packages/apps/docs/src/pages/kadena/overview.mdx',
   navigation: {
     previous: {
-      root: '/docs/kadena',
+      root: '/kadena',
       title: 'Intro to Kadena',
     },
     next: {
-      root: '/docs/kadena/kda',
+      root: '/kadena/kda',
       title: 'What is KDA?',
     },
   },

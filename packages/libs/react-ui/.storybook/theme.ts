@@ -1,5 +1,5 @@
-import { colorPalette } from '../src/styles/colors';
 import { create } from '@storybook/theming';
+import { colorPalette } from '../src/styles/colors';
 
 export const KadenaTheme = create({
   base: 'light',
