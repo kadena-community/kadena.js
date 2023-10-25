@@ -11,9 +11,9 @@ const uint8ArrayToHex = (uint8Array: Uint8Array): string => {
   return [...uint8Array].map((x) => x.toString(16).padStart(2, '0')).join('');
 };
 
-export const deriveKeyPair = (seed: Uint8Array, index: number) => {
+export const deriveKeyPair = (seed: Uint8Array, accountIndex: number) => {
   const key = HDKey.fromMasterSeed(seed).derive(
-    `m/44'/${KDA_COIN_TYPE}'/0'/0/${index}`,
+    `m/44'/${KDA_COIN_TYPE}'/${accountIndex}'/0/0`,
     true,
   );
 
