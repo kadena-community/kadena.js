@@ -14,7 +14,7 @@
     "test:integration": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
-      "outputMode": "new-only",
+      "outputMode": "new-only"
     },
     "test:e2e": {
       "outputMode": "new-only",
