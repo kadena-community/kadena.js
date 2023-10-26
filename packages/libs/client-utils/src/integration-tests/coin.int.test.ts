@@ -18,12 +18,12 @@ import {
 } from './test-data/accounts';
 
 const accountOne = {
-  account: `receiver${Date.now()}`,
-  publicKey: sourceAccount.publicKey,
+  ...sourceAccount,
+  account: `one-${Date.now()}`,
 };
 const accountTwo = {
-  account: `new${Date.now()}`,
-  publicKey: targetAccount.publicKey,
+  ...targetAccount,
+  account: `two-${Date.now()}`,
 };
 
 describe('transferCreate', () => {
@@ -139,8 +139,8 @@ describe('createAccount', () => {
           pred: 'keys-all',
         },
         gasPayer: {
-          account: sourceAccount.account,
-          publicKeys: [sourceAccount.publicKey],
+          account: sender00Account.account,
+          publicKeys: [sender00Account.publicKey],
         },
         chainId: '0',
       },
@@ -149,7 +149,7 @@ describe('createAccount', () => {
         defaults: {
           networkId: 'fast-development',
         },
-        sign: createSignWithKeypair([sourceAccount]),
+        sign: createSignWithKeypair([sender00Account]),
       },
     ).execute();
 
@@ -162,8 +162,8 @@ describe('transfer', () => {
     const result = await transfer(
       {
         sender: {
-          account: sourceAccount.account,
-          publicKeys: [sourceAccount.publicKey],
+          account: accountOne.account,
+          publicKeys: [accountOne.publicKey],
         },
         receiver: accountTwo.account,
         amount: '10',
@@ -174,7 +174,7 @@ describe('transfer', () => {
         defaults: {
           networkId: 'fast-development',
         },
-        sign: createSignWithKeypair([sourceAccount]),
+        sign: createSignWithKeypair([accountOne]),
       },
     ).execute();
 
