@@ -82,6 +82,7 @@ const Account: React.FC = () => {
               <Grid.Root columns={2} gap="$lg">
                 <Grid.Item>
                   <CompactTransfersTable
+                    description="All transfers from or to this account"
                     moduleName={router.query.module as string}
                     accountName={router.query.account as string}
                     transfers={accountQuery.account.transfers}
