@@ -60,7 +60,6 @@ const faqs: Array<{ title: string; body: React.ReactNode }> = [
       </div>
     ),
   },
-  { title: "Additional FAQ's", body: 'FAQ Body #3' },
 ];
 
 const Home: FC = () => {
