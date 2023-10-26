@@ -8,6 +8,7 @@ on:
 
 jobs:
   integration-tests:
+    name: ${{ matrix.package }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
