@@ -52,6 +52,18 @@ describe('maskValue', () => {
         maskLength: 'abcdefghijklmnopqrstuvwxyz'.length,
       }),
     ).toEqual('**************************');
+    expect(maskValue('abcdefghijklmnopqrstuvwxyz', { headLength: 0 })).toEqual(
+      '****wxyz',
+    );
+    expect(maskValue('abcdefghijklmnopqrstuvwxyz', { tailLength: 0 })).toEqual(
+      'abcdef****',
+    );
+    expect(maskValue('abcdefghijklmnopqrstuvwxyz', { headLength: -5 })).toEqual(
+      '****wxyz',
+    );
+    expect(maskValue('abcdefghijklmnopqrstuvwxyz', { tailLength: -8 })).toEqual(
+      'abcdef****',
+    );
   });
 
   it('should throw an error if character is longer than 1', () => {
