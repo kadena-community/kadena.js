@@ -9,7 +9,6 @@ export default mergeConfig(
     test: {
       setupFiles: ['vitest.setup.ts'],
       environment: 'happy-dom',
-      globals: true,
       coverage: {
         lines: 50,
         functions: 30,

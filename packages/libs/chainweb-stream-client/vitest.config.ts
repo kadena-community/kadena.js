@@ -5,7 +5,6 @@ export default mergeConfig(
   baseConfig,
   defineConfig({
     test: {
-      globals: true,
       coverage: {
         lines: 90,
         functions: 50,

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import type { IAst, IAstNode } from '../createAst';
 import { createAst } from '../createAst';
 

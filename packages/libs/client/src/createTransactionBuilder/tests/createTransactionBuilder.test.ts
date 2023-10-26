@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ICoin } from '../../composePactCommand/test/coin-contract';
 import type { IExecutionPayloadObject } from '../../interfaces/IPactCommand';
 import { getModule } from '../../pact';

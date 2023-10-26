@@ -1,5 +1,6 @@
 import { HttpResponse, delay, http } from 'msw';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import type { ICoin } from '../../../composePactCommand/test/coin-contract';
 import type { IQuicksignResponseOutcomes } from '../../../index';
 import { Pact } from '../../../index';

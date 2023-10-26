@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { Pact } from '../pact';
 import { literal, readKeyset } from '../utils/pact-helpers';
 

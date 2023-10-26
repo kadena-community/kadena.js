@@ -1,3 +1,5 @@
+import { expect, test, vi } from 'vitest';
+import { genKeyPair } from '../genKeyPair';
 vi.mock('tweetnacl', () => {
   return {
     default: {
@@ -12,7 +14,6 @@ vi.mock('tweetnacl', () => {
     },
   };
 });
-import { genKeyPair } from '../genKeyPair';
 
 test('generates a new keyPair', () => {
   const actual = genKeyPair();

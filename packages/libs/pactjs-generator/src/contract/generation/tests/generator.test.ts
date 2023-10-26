@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { pactParser } from '../../parsing/pactParser';
 import { generateDts } from '../generator';
 

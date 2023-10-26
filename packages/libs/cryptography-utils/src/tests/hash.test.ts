@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { hash } from '../hash';
 
 const pactTestCommand: {

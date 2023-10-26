@@ -2,7 +2,7 @@
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "types": ["node", "vitest/globals", "vitest-dom/extend-expect"],
+    "types": ["node", "vitest-dom/extend-expect"],
     "skipLibCheck": true,
     "module": "ESNext",
     "declarationDir": "types",

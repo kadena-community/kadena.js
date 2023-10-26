@@ -1,4 +1,5 @@
 import type { ICommand } from '@kadena/types';
+import { expect, test } from 'vitest';
 import { prepareExecCommand } from '../prepareExecCommand';
 import {
   command,

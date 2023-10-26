@@ -1,4 +1,5 @@
 import { createSignWithKeypair } from '@kadena/client';
+import { describe, expect, it } from 'vitest';
 
 import {
   createAccount,
