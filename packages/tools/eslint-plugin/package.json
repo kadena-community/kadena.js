@@ -1,6 +1,11 @@
 {
   "name": "@kadena-dev/eslint-plugin",
   "version": "0.0.7",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/tools/eslint-plugin"
+  },
   "main": "src/index.js",
   "files": [
     "src"
