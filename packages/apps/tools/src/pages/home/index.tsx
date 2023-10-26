@@ -137,7 +137,7 @@ const Home: FC = () => {
         <Card fullWidth>
           <Grid.Root columns={2}>
             <Grid.Item>
-              <Heading variant="h5" as="h3">
+              <Heading as="h3" variant="h5">
                 General Links
               </Heading>
               <Box marginBottom="$4" />
@@ -172,7 +172,7 @@ const Home: FC = () => {
               </ul>
             </Grid.Item>
             <Grid.Item>
-              <Heading variant="h5" as="h3">
+              <Heading as="h3" variant="h5">
                 Developers Links
               </Heading>
               <Box marginBottom="$4" />
@@ -209,7 +209,9 @@ const Home: FC = () => {
           </Grid.Root>
         </Card>
         <Card fullWidth>
-          <Heading variant="h5">Frequently Asked Questions</Heading>
+          <Heading as="h3" variant="h5">
+            Frequently Asked Questions
+          </Heading>
           <Box marginBottom="$4" />
           <Accordion.Root>
             {faqs.map((faq) => (
@@ -220,7 +222,9 @@ const Home: FC = () => {
           </Accordion.Root>
         </Card>
         <Card fullWidth>
-          <Heading variant="h5">Latest Updates</Heading>
+          <Heading as="h3" variant="h5">
+            Latest Updates
+          </Heading>
           <p>
             {/* eslint-disable-next-line react/no-unescaped-entities */}
             If you're seeking Help click{' '}
