@@ -21,7 +21,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
     const checkSubTree = (subTree: IMenuItem[]): void => {
       const item = subTree.find((i) => i.isMenuOpen);
 
-      if (!item) return;
+      if (!item || item.root === lastItem?.root) return;
       lastItem = item;
       const menuStr = item.children.length > 0 ? item.menu : item.label;
       tree.push({
@@ -34,7 +34,11 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
 
     checkSubTree(menuItems);
 
-    if (lastItem && lastItem.isIndex) {
+    if (
+      lastItem &&
+      lastItem.isIndex &&
+      tree[tree.length - 1].title.toLowerCase() !== lastItem.label.toLowerCase()
+    ) {
       tree.push({
         root: lastItem.root,
         title: lastItem.label,
