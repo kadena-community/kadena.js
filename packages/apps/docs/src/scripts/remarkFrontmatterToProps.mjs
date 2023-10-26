@@ -96,7 +96,7 @@ const createNavigation = (file) => {
   const flatData = getFlatData();
 
   const itemIdx = flatData.findIndex((i) => {
-    return i && i.root === path;
+    return i && (i.root === path || `${i.root}/` === path);
   });
 
   return {
