@@ -16,7 +16,7 @@ import {
 export interface IButtonProps
   extends Omit<
     ButtonHTMLAttributes<HTMLButtonElement>,
-    'as' | 'disabled' | 'className' | 'onClick'
+    'as' | 'disabled' | 'className'
   > {
   active?: boolean;
   as?: 'button' | 'a';
@@ -28,7 +28,6 @@ export interface IButtonProps
   icon?: keyof typeof SystemIcon;
   iconAlign?: 'left' | 'right';
   loading?: boolean;
-  onPress?: (e: PressEvent) => void;
   onClick?:
     | React.MouseEventHandler<HTMLButtonElement>
     | React.FormEventHandler<HTMLButtonElement>;
