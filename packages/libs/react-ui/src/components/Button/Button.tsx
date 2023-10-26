@@ -28,10 +28,10 @@ export interface IButtonProps
   icon?: keyof typeof SystemIcon;
   iconAlign?: 'left' | 'right';
   loading?: boolean;
+  onPress?: (e: PressEvent) => void;
   onClick?:
     | React.MouseEventHandler<HTMLButtonElement>
-    | React.FormEventHandler<HTMLButtonElement>
-    | ((e: PressEvent) => void);
+    | React.FormEventHandler<HTMLButtonElement>;
   target?: string;
   title?: string;
   type?: 'button' | 'submit' | 'reset';
