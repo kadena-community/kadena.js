@@ -35,7 +35,7 @@ export const Dialog: FC<IDialogProps> = ({
         <button
           className={closeButtonClass}
           onClick={onClose}
-          title="Close modal"
+          aria-label="Close Modal"
         >
           <SystemIcon.Close />
         </button>
