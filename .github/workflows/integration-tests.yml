@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: [ '@kadena/client', '@kadena/client-utils' ]
+        package: ['@kadena/client', '@kadena/client-utils']
 
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
