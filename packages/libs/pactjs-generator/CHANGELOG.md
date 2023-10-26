@@ -1,5 +1,18 @@
 # Change Log - @kadena/pactjs-generator
 
+## 1.5.0
+
+### Minor Changes
+
+- d62a23ffe: Generate provenance statement during npm publish
+
+### Patch Changes
+
+- 3873e73c4: Fix no namesapce issue for used modules
+- 99ce19b47: Fix index.d.ts by using import instead of export since we use
+  interface merging for types
+- fec8dfafd: Upgrade `typescript` and `@types/node` dependencies
+
 ## 1.4.0
 
 ### Patch Changes
