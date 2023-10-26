@@ -1,5 +1,16 @@
 # Change Log - @kadena-dev/eslint-config
 
+## 1.0.1
+
+### Patch Changes
+
+- fec8dfafd: Upgrade `typescript` and `@types/node` dependencies
+- Updated dependencies [831c022c8]
+- Updated dependencies [a664a9535]
+- Updated dependencies [fec8dfafd]
+- Updated dependencies [a664a9535]
+  - @kadena-dev/eslint-plugin@0.0.7
+
 ## 1.0.0
 
 ### Major Changes
