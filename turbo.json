@@ -18,7 +18,7 @@
     },
     "test:e2e": {
       "outputMode": "new-only",
-      "inputs": ["src/**/*.ts", "src/**/*.tsx" ,"src/tests/**/*.ts"]
+      "inputs": ["src/**/*.ts", "src/**/*.tsx", "src/tests/**/*.ts"]
     },
     "lint": {
       "dependsOn": ["build"],
