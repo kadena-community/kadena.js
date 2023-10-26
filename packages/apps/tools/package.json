@@ -5,7 +5,6 @@
   "scripts": {
     "build": "pnpm run generate:contracts && next build",
     "dev": "next dev",
-    "eject": "react-scripts eject",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -74,7 +73,6 @@
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
     "happy-dom": "^12.9.1",
-    "ignore-loader": "~0.1.2",
     "next-router-mock": "^0.9.10",
     "prettier": "~3.0.3",
     "typescript": "5.2.2",
