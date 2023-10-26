@@ -1,4 +1,3 @@
-import { IModalContentProps } from './Modal/ModalContent';
 export type {
   IAccordionProps,
   IAccordionRootProps,
@@ -16,12 +15,7 @@ export type { IInputProps } from './Input/Input';
 export type { IInputWrapperProps, InputWrapperStatus } from './InputWrapper';
 export type { ILinkProps } from './Link';
 export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
-export type {
-  IModalContentProps,
-  IModalProps,
-  IModalRootProps,
-  IModalTriggerProps,
-} from './Modal';
+export type { IModalProps } from './Modal';
 export type {
   INavFooterIconButtonProps,
   INavFooterLinkProps,

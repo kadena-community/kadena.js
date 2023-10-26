@@ -1,9 +1,9 @@
-import type { IModalRootProps } from '@components/Modal';
+import { Button } from '@components/Button';
 import { Modal } from '@components/Modal';
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
-type StoryType = { title?: string } & IModalRootProps;
+type StoryType = typeof Modal;
 
 const meta: Meta<StoryType> = {
   title: 'Layout/Modal',
@@ -34,16 +34,15 @@ export const Primary: Story = {
     title: 'Default Title',
   },
   render: ({ title }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
-      <Modal.Root>
-        <Modal.Trigger>Modal Trigger</Modal.Trigger>
-        <Modal.Content title={title}>
-          Hellooo, . .adsflsjflka jf;ljas f;as flas fjl;as fjlasdjf kasldf
-          jl;aksdfj l;adskjf lasdf jalsfdj;alf jsldf jalsd fa;lsjd jsdflsjdf
-          kldsj fklsdfj lks jflksdjf lkds fjsdlkf dsjf ksdfjsldfj lsdfj sdlf
-          dsjlf ks
-        </Modal.Content>
-      </Modal.Root>
+      <>
+        <Button onClick={() => setIsOpen(!isOpen)}>Modal Trigger</Button>
+        <Modal title="Modal Title" isOpen={isOpen} setOpen={setIsOpen}>
+          This it the content of the modal
+        </Modal>
+      </>
     );
   },
 };
