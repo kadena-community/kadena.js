@@ -1,17 +1,22 @@
+import baseConfig from '@kadena-dev/shared-config/vitest.config';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import { defineConfig } from 'vitest/config';
+import { defineConfig, mergeConfig } from 'vitest/config';
 
-export default defineConfig({
-  plugins: [
-    tsconfigPaths({ projects: ['./tsconfig.json'] }),
-    vanillaExtractPlugin({ emitCssInSsr: true }),
-  ],
-  test: {
-    setupFiles: ['vitest.setup.ts'],
-    globals: true,
-    environment: 'happy-dom',
-    threads: false,
-    include: ['src/**/*.{test,spec}.{ts,tsx}'],
-  },
-});
+export default mergeConfig(
+  baseConfig,
+  defineConfig({
+    plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
+    test: {
+      setupFiles: ['vitest.setup.ts'],
+      globals: true,
+      environment: 'happy-dom',
+      threads: false,
+      coverage: {
+        lines: 70,
+        functions: 40,
+        branches: 80,
+        statements: 70,
+      },
+    },
+  }),
+);
