@@ -2,6 +2,11 @@
   "name": "@kadena-dev/eslint-config",
   "version": "1.0.1",
   "description": "Kadena monorepo eslint-config",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/tools/eslint-config"
+  },
   "license": "MIT",
   "files": [
     "mixins",
