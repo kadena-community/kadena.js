@@ -7,7 +7,7 @@
 import EventEmitter from 'eventemitter2';
 
 // @alpha (undocumented)
-class ChainwebStream extends EventEmitter {
+export class ChainwebStreamClient extends EventEmitter {
     constructor({ network, host, type, id, limit, connectTimeout, maxReconnects, heartbeatTimeout, confirmationDepth, }: IChainwebStreamConstructorArgs);
     // (undocumented)
     confirmationDepth: number;
@@ -31,7 +31,6 @@ class ChainwebStream extends EventEmitter {
     // (undocumented)
     type: ChainwebStreamType;
 }
-export default ChainwebStream;
 
 // @alpha (undocumented)
 export type ChainwebStreamType = 'event' | 'account';

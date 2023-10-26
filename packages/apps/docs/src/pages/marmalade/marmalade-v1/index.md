@@ -1,10 +1,10 @@
 ---
 title: Marmalade v1
 description: A Brief history of marmalade
-menu: Marmalade
+menu: V1
 label: Overview
-order: 4
-layout: landing
+order: 10
+layout: full
 ---
 
 # Overview Marmalade v1

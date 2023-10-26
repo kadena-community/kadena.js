@@ -45,7 +45,7 @@ yarn add @kadena/chainweb-stream-client
 ## Usage
 
 ```js
-import ChainwebStreamClient from '@kadena/chainweb-stream-client';
+import  { ChainwebStreamClient } from '@kadena/chainweb-stream-client';
 
 const client = new ChainwebStreamClient({
   network: 'mainnet01',
@@ -63,17 +63,17 @@ Find more detailed examples under `src/examples`.
 
 ## Constructor Options
 
-| Key               | Required | Description                                                     | Example Values          |           |       |
-| ----------------- | :------: | --------------------------------------------------------------- | ----------------------- | --------- | ----- |
-| network           |   Yes    | Chainweb network                                                | \`mainnet01             | testnet04 | ...\` |
-| type              |   Yes    | Transaction type to stream (event/account)                      | \`event                 | account\` |       |
-| id                |   Yes    | Account ID or module/event name                                 | `k:abcdef01234..`       |           |       |
-| host              |   Yes    | Chainweb-stream backend URL                                     | `http://localhost:4000` |           |       |
-| limit             |    No    | Initial data load limit                                         | 100                     |           |       |
-| connectTimeout    |    No    | Connection timeout in ms                                        | 10_000                  |           |       |
-| heartbeatTimeout  |    No    | Stale connection timeout in ms                                  | 30_000                  |           |       |
-| maxReconnects     |    No    | How many reconnections to attempt before giving up              | 5                       |           |       |
-| confirmationDepth |    No    | How many confirmations for a transaction to be considered final | 6                       |           |       |
+| Key               | Required | Description                                                     | Example Values              |
+| ----------------- | :------: | --------------------------------------------------------------- | --------------------------- |
+| network           | Yes      | Chainweb network                                                | `mainnet01`/`testnet04`/... |
+| type              | Yes      | Transaction type to stream (event/account)                      | `event`/`account`           |
+| id                | Yes      | Account ID or module/event name                                 | `k:abcdef01234..`           |
+| host              | Yes      | Chainweb-stream backend URL                                     | `http://localhost:4000`     |
+| limit             | No       | Initial data load limit                                         | 100                         |
+| connectTimeout    | No       | Connection timeout in ms                                        | 10_000                      |
+| heartbeatTimeout  | No       | Stale connection timeout in ms                                  | 30_000                      |
+| maxReconnects     | No       | How many reconnections to attempt before giving up              | 5                           |
+| confirmationDepth | No       | How many confirmations for a transaction to be considered final | 6                           |
 
 ## Considerations ⚠️
 

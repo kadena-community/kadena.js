@@ -33,7 +33,7 @@ const DEFAULT_LIMIT: number = 100;
 /**
  * @alpha
  */
-class ChainwebStream extends EventEmitter {
+export class ChainwebStreamClient extends EventEmitter {
   // chainweb network, e.g. mainnet01
   public network: string;
 
@@ -492,5 +492,3 @@ class ChainwebStream extends EventEmitter {
     this.emit('debug', debugMsg);
   }
 }
-
-export default ChainwebStream;

@@ -7,24 +7,11 @@ import type {
 } from '../interfaces/PactAPI';
 import { listen } from '../listen';
 import { testURL } from './mockdata/Pact';
+import { localCommandResult } from './mockdata/execCommand';
 
 const restHandlers = [
   rest.post(`${testURL}/api/v1/listen`, (req, res, ctx) => {
-    return res.once(
-      ctx.status(200),
-      ctx.json({
-        reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
-        txId: null,
-        result: {
-          data: 3,
-          status: 'success',
-        },
-        gas: 0,
-        continuation: null,
-        metaData: null,
-        logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
-      }),
-    );
+    return res.once(ctx.status(200), ctx.json(localCommandResult));
   }),
 ];
 
@@ -40,18 +27,7 @@ test('/listen should return result of tx queried', async () => {
     listen: 'ATGCYPMNzdGcFh9Iik73KfMkgURIxaF91Ze4sHFsH8Q',
   };
 
-  const commandResult1: ListenResponse = {
-    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
-    txId: null,
-    result: {
-      data: 3,
-      status: 'success',
-    },
-    gas: 0,
-    continuation: null,
-    metaData: null,
-    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
-  };
+  const commandResult1: ListenResponse = localCommandResult;
   const localReq: IListenRequestBody = requestKey;
   const responseExpected: ListenResponse = commandResult1;
   const responseActual: ICommandResult | Response = await listen(
