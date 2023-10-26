@@ -24,7 +24,7 @@ interact with the Kadena blockchain in a user-friendly way.
 
 Let's get started!
 
-**Step 1: Authenticate and Locate Marmalade v2 in Chainweaver**
+## Step 1: Authenticate and Locate Marmalade v2 in Chainweaver
 
 First, authenticate yourself on Chainweaver and make your way to the Module Explorer and search for the Marmalade V2 contracts.
 
@@ -35,7 +35,7 @@ functions to provide easy minting process for users.
 
 Once located, select "View" to continue.
 
-**Step 2: Enter token details**
+## Step 2: Enter token details
 
 ![Mint with URI and Guard](/assets/marmalade/mint_1.png)
 
@@ -53,7 +53,7 @@ listed below.
  any rules programmed.
 
 
-**Step 3: Configure Gas Setting**
+## Step 3: Configure Gas Setting
 
 ![Add "my-keyset"](/assets/marmalade/mint_gas.png)
 
@@ -63,7 +63,7 @@ transaction.
 Prepare a coin account, and add into gas configuration as `Transaction Sender`.
 
 
-**Step 4: Add keyset information**
+## Step 4: Add keyset information
 
 ![Add "my-keyset"](/assets/marmalade/mint_keyset.png)
 
@@ -75,7 +75,7 @@ Once this is created, you will see your keysets below it. Please tick the public
 that matches the account we have been using for this entire process.
 
 
-**Step 5: Sign Transaction**
+## Step 5: Sign Transaction
 
 ![Unrestricted Signing](/assets/marmalade/mint_unrestricted_signing.png)
 
@@ -83,7 +83,7 @@ For simplicity, click on unrestricted signing. Note that this requires the key
 to also sign for the gas payment.
 
 
-**Step 4: Submit to Network**
+## Step 4: Submit to Network
 
 ![Screenshot Placeholder for Gas Settings](/assets/marmalade/mint_submit.png)
 
