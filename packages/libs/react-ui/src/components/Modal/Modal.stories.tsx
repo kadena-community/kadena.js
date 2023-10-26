@@ -1,8 +1,11 @@
+import { Button } from '@components/Button';
 import type { IModalProps } from '@components/Modal';
-import { ModalProvider } from '@components/Modal';
+import { Modal } from '@components/Modal';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Content } from './StoryComponents';
+import { ModalContent } from './StoryComponents';
+
+import { useModal } from './useModal';
 
 const meta: Meta<{ title?: string } & IModalProps> = {
   title: 'Layout/Modal',
@@ -33,15 +36,17 @@ type Story = StoryObj<{ title?: string } & IModalProps>;
 export const Primary: Story = {
   name: 'Modal',
   args: {
-    title: 'Default Title',
+    title: 'Modal Title',
   },
   render: ({ title }) => {
+    const { triggerProps, modalProps } = useModal();
+
     return (
       <>
-        <div id="modalportal" />
-        <ModalProvider>
-          <Content title={title} />
-        </ModalProvider>
+        <Button {...triggerProps}>Modal Trigger</Button>
+        <Modal {...modalProps} title={title}>
+          <ModalContent />
+        </Modal>
       </>
     );
   },

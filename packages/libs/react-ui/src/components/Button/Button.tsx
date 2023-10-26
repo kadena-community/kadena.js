@@ -2,6 +2,7 @@ import { SystemIcon } from '@components/Icon';
 import cn from 'classnames';
 import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
 import React from 'react';
+import type { PressEvent } from 'react-aria';
 import type { colorVariants, typeVariants } from './Button.css';
 import {
   activeClass,
@@ -15,7 +16,7 @@ import {
 export interface IButtonProps
   extends Omit<
     ButtonHTMLAttributes<HTMLButtonElement>,
-    'as' | 'disabled' | 'className'
+    'as' | 'disabled' | 'className' | 'onClick'
   > {
   active?: boolean;
   as?: 'button' | 'a';
@@ -29,8 +30,9 @@ export interface IButtonProps
   loading?: boolean;
   onClick?:
     | React.MouseEventHandler<HTMLButtonElement>
-    | React.FormEventHandler<HTMLButtonElement>;
-  target?: '_blank' | '_self';
+    | React.FormEventHandler<HTMLButtonElement>
+    | ((e: PressEvent) => void);
+  target?: string;
   title?: string;
   type?: 'button' | 'submit' | 'reset';
   variant?: keyof typeof typeVariants;

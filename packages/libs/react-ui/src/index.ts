@@ -86,7 +86,6 @@ export {
   Label,
   Link,
   MaskedValue,
-  ModalProvider,
   NavFooter,
   NavHeader,
   Notification,
@@ -113,5 +112,4 @@ export {
   TrackerCard,
   Tree,
   maskValue,
-  useModal,
 } from './components';

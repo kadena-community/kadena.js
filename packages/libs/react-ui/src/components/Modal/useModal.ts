@@ -1,23 +1,26 @@
-'use client';
-import type { ReactNode } from 'react';
-import { createContext, useContext } from 'react';
+import type { DOMProps } from '@react-types/shared';
 
-interface IModalContext {
-  renderModal: (
-    v: ReactNode,
-    title?: string,
-    onCloseCallback?: () => void,
-  ) => void;
-  clearModal: () => void;
+import type { AriaButtonProps, PressEvent } from 'react-aria';
+import { useOverlayTrigger } from 'react-aria';
+import type { OverlayTriggerProps, OverlayTriggerState } from 'react-stately';
+import { useOverlayTriggerState } from 'react-stately';
+
+interface IModalReturn {
+  triggerProps: Omit<AriaButtonProps, 'onPress'> & {
+    onClick?: (e: PressEvent) => void;
+  };
+  modalProps: OverlayTriggerState & DOMProps;
 }
 
-export const ModalContext = createContext<IModalContext>({
-  renderModal: (
-    v: ReactNode,
-    title?: string,
-    onCloseCallback?: () => void,
-  ) => {},
-  clearModal: () => {},
-});
+export const useModal = (props?: OverlayTriggerProps): IModalReturn => {
+  const state = useOverlayTriggerState(props || {});
+  const { triggerProps, overlayProps } = useOverlayTrigger(
+    { type: 'dialog' },
+    state,
+  );
 
-export const useModal = (): IModalContext => useContext(ModalContext);
+  return {
+    triggerProps: { ...triggerProps, onClick: triggerProps.onPress },
+    modalProps: { ...state, ...overlayProps },
+  };
+};

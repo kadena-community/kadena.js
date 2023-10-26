@@ -1,68 +1,66 @@
 'use client';
-import { Card } from '@components/Card';
-import { SystemIcon } from '@components/Icon';
-import { Heading } from '@components/Typography/Heading/Heading';
-import FocusTrap from 'focus-trap-react';
+
 import type { FC } from 'react';
 import React from 'react';
-import {
-  background,
-  closeButton,
-  modal,
-  titleWrapper,
-  wrapper,
-} from './Modal.css';
-import { useModal } from './useModal';
 
-export interface IModalProps {
+import type { AriaDialogProps, AriaModalOverlayProps } from 'react-aria';
+import { Overlay, useModalOverlay } from 'react-aria';
+import type { OverlayTriggerState } from 'react-stately';
+import { Dialog } from './Dialog';
+import { underlayClass } from './Modal.css';
+
+export interface IModalProps
+  extends AriaModalOverlayProps,
+    Omit<OverlayTriggerState, 'open' | 'close' | 'toggle'>,
+    AriaDialogProps {
   children: React.ReactNode;
   title?: string;
-  onClose?: () => void;
+  open?: () => void;
+  close?: () => void;
+  toggle?: () => void;
 }
 
-export const Modal: FC<IModalProps> = ({ children, title, onClose }) => {
-  const { clearModal } = useModal();
+export const Modal: FC<IModalProps> = ({
+  title,
+  children,
+  isOpen,
+  setOpen,
+  isDismissable = true,
+  isKeyboardDismissDisabled = false,
+  open = () => setOpen(true),
+  close = () => setOpen(false),
+  toggle = () => setOpen(!isOpen),
+  ...dialogProps
+}) => {
+  const state = {
+    isOpen,
+    setOpen,
+    open,
+    close,
+    toggle,
+  };
+  const modalRef = React.useRef(null);
+  const { modalProps, underlayProps } = useModalOverlay(
+    { isDismissable, isKeyboardDismissDisabled },
+    state,
+    modalRef,
+  );
 
-  function handleCloseModal(): void {
-    onClose?.();
-    clearModal();
-  }
+  if (!state.isOpen) return null;
 
   return (
-    <>
-      <FocusTrap
-        focusTrapOptions={{
-          fallbackFocus: '[data-cy="modal-background"]',
-        }}
-      >
-        <div>
-          <button
-            data-cy="modal-background"
-            className={background}
-            onClick={handleCloseModal}
-          />
-          <div className={wrapper} data-cy="modal" data-testid="kda-modal">
-            <section className={modal}>
-              <Card fullWidth>
-                <div className={titleWrapper}>
-                  <Heading as="h3">{title}</Heading>
-                </div>
-
-                <button
-                  className={closeButton}
-                  onClick={handleCloseModal}
-                  title="Close modal"
-                >
-                  Close
-                  <SystemIcon.Close />
-                </button>
-
-                {children}
-              </Card>
-            </section>
-          </div>
+    <Overlay>
+      <div {...underlayProps} className={underlayClass}>
+        <div {...modalProps} ref={modalRef}>
+          <Dialog
+            {...dialogProps}
+            title={title}
+            onClose={isDismissable ? close : undefined}
+          >
+            {children}
+          </Dialog>
         </div>
-      </FocusTrap>
-    </>
+      </div>
+    </Overlay>
   );
 };

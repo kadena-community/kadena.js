@@ -98,7 +98,7 @@ export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';
 export { maskValue } from './MaskedValue/utils';
-export { Modal, ModalProvider, useModal } from './Modal';
+export { Modal } from './Modal';
 export { NavFooter } from './NavFooter';
 export { NavHeader } from './NavHeader';
 export {
