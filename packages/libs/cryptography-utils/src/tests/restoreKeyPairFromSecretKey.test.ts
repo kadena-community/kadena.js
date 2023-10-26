@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { restoreKeyPairFromSecretKey } from '../restoreKeyPairFromSecretKey';
 
 test('restores keypair from secretkey', () => {

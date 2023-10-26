@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { uniqMap } from '../uniqMap';
 
 describe('uniqMap', () => {

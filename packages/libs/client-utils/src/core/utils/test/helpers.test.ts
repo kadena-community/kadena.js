@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { inspect, safeSign, validateSign } from '../helpers';
 
 describe('inspect', () => {
@@ -29,7 +30,7 @@ describe('safeSign', () => {
       hash: 'hash',
       sigs: [{ sig: 'sig' }],
     };
-    const sign = vitest.fn().mockResolvedValue(signedTx);
+    const sign = vi.fn().mockResolvedValue(signedTx);
     const signFn = safeSign(sign);
 
     const result = await signFn({

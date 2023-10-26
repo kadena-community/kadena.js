@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { unique } from '../unique';
 
 test('Takes in an array of hashes and remove duplicate', () => {

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 // Original source: https://github.com/seek-oss/braid-design-system/blob/master/packages/braid-design-system/src/lib/components/Pagination/paginate.ts
 import { paginate } from './paginate';
 

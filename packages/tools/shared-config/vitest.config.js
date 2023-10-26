@@ -5,6 +5,7 @@ module.exports = defineConfig({
   plugins: [tsconfigPaths({ projects: ['./tsconfig.json'] })],
   test: {
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    globals: false,
     coverage: {
       enabled: false, // It's enabled in CI (root package.json)
       provider: 'v8',

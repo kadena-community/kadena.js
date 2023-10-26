@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { binToHex } from '../binToHex';
 
 test('should convert binary object to an hex string', () => {

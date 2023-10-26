@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { unwrapData, wrapData } from '../dataWrapper';
 
 // test for dataWrapper function

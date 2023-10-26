@@ -1,4 +1,5 @@
 import { Response } from 'cross-fetch';
+import { expect, test } from 'vitest';
 import { parseResponseTEXT } from '../parseResponseTEXT';
 
 test('should parse successful Response as expected type', async () => {

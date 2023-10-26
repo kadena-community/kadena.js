@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { getBlockPointer, getPointer } from '../getPointer';
 
 const contract = `(namespace free)(module test GOVERNANCE @doc "test module")`;

@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { sign } from '../sign';
 import { pactTestCommand } from './mockdata/Pact';
 
