@@ -2,7 +2,7 @@ import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
 import routes from '@/constants/routes';
-import { formatCode } from '@/utils/formatter';
+import { formatCode, formatLisp } from '@/utils/formatter';
 import { Box, Breadcrumbs, Link, Notification, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -123,7 +123,13 @@ const RequestKey: React.FC = () => {
                       <strong>Code</strong>
                     </Table.Td>
                     <Table.Td>
-                      {JSON.parse(transactionSubscription?.transaction?.code)}
+                      <pre>
+                        {formatLisp(
+                          JSON.parse(
+                            transactionSubscription?.transaction?.code,
+                          ),
+                        )}
+                      </pre>
                     </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
