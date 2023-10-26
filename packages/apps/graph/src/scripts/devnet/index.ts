@@ -1,5 +1,6 @@
 import { Command, Option } from 'commander';
-import { createAccount, logger } from './helper';
+import { createPrincipal } from './create-principal';
+import { createAccount, logger, sender00 } from './helper';
 import { simulate } from './simulate';
 import { transfer } from './transfer';
 
@@ -64,7 +65,14 @@ program
   .action(async (args) => {
     try {
       logger.info('Simulation config parameters:', args);
-      await simulate(args);
+      const principal = await createPrincipal({
+        keys: [
+          sender00.publicKey,
+          '7bafb3968d7e57e832b450a873e9f562fbbdb109ef4b50575a9297cb8e37b140',
+        ],
+      });
+      console.log(principal);
+      // await simulate(args);
     } catch (error) {
       console.error(error);
     }
