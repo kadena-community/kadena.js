@@ -40,8 +40,8 @@ export const maskValue = (
     return character.repeat(value.length);
   }
 
-  const leftHandSide = value.slice(0, headLength);
-  const rightHandSide = value.slice(-tailLength);
+  const leftHandSide = headLength === 0 ? '' : value.slice(0, headLength);
+  const rightHandSide = tailLength === 0 ? '' : value.slice(-tailLength);
   const restLength = value.length - (headLength + tailLength);
 
   const mask = character.repeat(Math.min(restLength, maskLength));
