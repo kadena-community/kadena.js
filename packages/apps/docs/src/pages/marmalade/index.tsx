@@ -37,8 +37,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           thrilled to share the next stage of this adventure.
         </Text>
       </Box>
-      <Grid.Root gap="$lg" columns={{ sm: 1, lg: 5 }}>
-        <Grid.Item columnSpan={{ sm: 1, lg: 3 }}>
+      <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <Grid.Item>
           <Card fullWidth>
             <Heading as="h4">Quick start</Heading>
             <Box marginY="$4">
