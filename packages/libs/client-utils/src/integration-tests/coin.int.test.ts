@@ -46,7 +46,7 @@ describe('transferCreate', () => {
         chainId: '0',
       },
       {
-        host: 'http://localhost:8080',
+        host: 'http://127.0.0.1:8080',
         defaults: {
           networkId: 'fast-development',
         },
@@ -104,7 +104,7 @@ describe('getBalance', () => {
       accountOne.account,
       'fast-development',
       '0',
-      'http://localhost:8080',
+      'http://127.0.0.1:8080',
     );
     expect(balance).toBe(100);
   });
@@ -116,7 +116,7 @@ describe('getDetails', () => {
       accountOne.account,
       'fast-development',
       '0',
-      'http://localhost:8080',
+      'http://127.0.0.1:8080',
     );
     expect(data).toEqual({
       account: accountOne.account,
@@ -145,7 +145,7 @@ describe('createAccount', () => {
         chainId: '0',
       },
       {
-        host: 'http://localhost:8080',
+        host: 'http://127.0.0.1:8080',
         defaults: {
           networkId: 'fast-development',
         },
@@ -170,7 +170,7 @@ describe('transfer', () => {
         chainId: '0',
       },
       {
-        host: 'http://localhost:8080',
+        host: 'http://127.0.0.1:8080',
         defaults: {
           networkId: 'fast-development',
         },
@@ -184,7 +184,7 @@ describe('transfer', () => {
       accountTwo.account,
       'fast-development',
       '0',
-      'http://localhost:8080',
+      'http://127.0.0.1:8080',
     );
 
     expect(balance).toBe(10);
@@ -211,7 +211,7 @@ describe('cross chain transfer', () => {
         targetChainId: '1',
       },
       {
-        host: 'http://localhost:8080',
+        host: 'http://127.0.0.1:8080',
         defaults: {
           networkId: 'fast-development',
         },
@@ -225,7 +225,7 @@ describe('cross chain transfer', () => {
       accountOne.account,
       'fast-development',
       '1',
-      'http://localhost:8080',
+      'http://127.0.0.1:8080',
     );
 
     expect(balance).toBe(10);
