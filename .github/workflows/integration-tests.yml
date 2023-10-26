@@ -43,5 +43,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: run client integration tests
+      - name: run integration tests
         run: pnpm run test:integration --filter ${{ matrix.package }}
