@@ -1,5 +1,7 @@
+import { getClassName } from '@/utils/getClassName';
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 import { createVar, globalStyle, style } from '@vanilla-extract/css';
+import { paragraphWrapperClass } from '../Markdown/Paragraph/styles.css';
 import {
   $$backgroundOverlayColor,
   $$leftSideWidth,
@@ -10,6 +12,10 @@ globalStyle('html, body', {
   margin: 0,
   backgroundColor: vars.colors.$background,
   overscrollBehavior: 'none',
+});
+
+globalStyle(`article strong  ${getClassName(paragraphWrapperClass)} > p`, {
+  fontWeight: '900',
 });
 
 globalStyle('a', {
