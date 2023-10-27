@@ -5,6 +5,7 @@ import './Query/chainAccount';
 import './Query/completedBlockHeights';
 import './Query/lastBlockHeight';
 import './Query/maximumConfirmationDepth';
+import './Query/pactQuery';
 import './Query/transactions';
 import './Query/transfers';
 import './Subscription/event';
