@@ -15,10 +15,6 @@ jobs:
       matrix:
         package: [ '@kadena/tools' ]
 
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,7 +38,7 @@ jobs:
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
 
       - name: build dApp
-        run: pnpm run build --filter ${{ matrix.package }}
+        run: pnpm --filter ${{ matrix.package }} build
         env:
           # Dummy values for faucet transactions.
           FAUCET_PUBLIC_KEY: 782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e
