@@ -2,4 +2,4 @@
 '@kadena/graph': patch
 ---
 
-Added executePact query
+Added pactQuery and pactQueries for arbitrary PACT code execution
