@@ -1,13 +1,11 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import { Grid } from '../Grid';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Typography';
-
 import type { IIconProps } from './';
-import { sizeVariant } from './styles';
 import { SystemIcons } from './';
-
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import { sizeVariant } from './styles';
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.

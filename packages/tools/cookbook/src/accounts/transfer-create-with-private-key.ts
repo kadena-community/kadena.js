@@ -5,7 +5,6 @@ import {
   Pact,
 } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
-
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 

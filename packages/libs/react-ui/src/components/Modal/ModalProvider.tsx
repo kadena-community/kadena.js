@@ -1,12 +1,10 @@
 'use client';
-
-import { Modal } from './Modal';
-import { openModal } from './Modal.css';
-import { ModalContext } from './useModal';
-
 import type { FC, ReactNode } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Modal } from './Modal';
+import { openModal } from './Modal.css';
+import { ModalContext } from './useModal';
 
 interface IModalProviderProps {
   children?: ReactNode;

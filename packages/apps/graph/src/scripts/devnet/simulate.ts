@@ -1,5 +1,5 @@
 import type { ChainId } from '@kadena/client';
-
+import seedrandom from 'seedrandom';
 import { devnetConfig } from './config';
 import { crossChainTransfer } from './crosschain-transfer';
 import { appendToFile, createFile } from './file';
@@ -12,8 +12,6 @@ import {
   logger,
 } from './helper';
 import { transfer } from './transfer';
-
-import seedrandom from 'seedrandom';
 
 export async function simulate({
   numberOfAccounts = 2,

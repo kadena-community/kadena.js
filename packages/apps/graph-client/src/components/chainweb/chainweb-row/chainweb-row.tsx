@@ -1,11 +1,9 @@
-import type { IBlock } from '../../../utils/hooks/use-parsed-blocks';
-import { selectColor } from '../../../utils/selectColor';
-import { Box } from '../../box';
-import { Text } from '../../text';
-
-import { ChainBlock } from './../chain-block';
-
+import { Box } from '@components/box';
+import { Text } from '@components/text';
+import type { IBlock } from '@utils/hooks/use-parsed-blocks';
+import { selectColor } from '@utils/selectColor';
 import React from 'react';
+import { ChainBlock } from './../chain-block';
 
 interface IChainwebRowProps {
   blocks: IBlock[];

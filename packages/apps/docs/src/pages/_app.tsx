@@ -1,20 +1,19 @@
 import { KodeMono } from '@kadena/fonts';
 import { ModalProvider } from '@kadena/react-ui';
 // eslint-disable-next-line import/no-unresolved
-import { darkThemeClass } from '@kadena/react-ui/theme';
-
+import type { IPageMeta, IPageProps } from '@/Layout';
 import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
-import type { IPageMeta, IPageProps } from '@/Layout';
 import { getLayout } from '@/utils/getLayout';
+import { darkThemeClass } from '@kadena/react-ui/theme';
 import { MDXProvider } from '@mdx-js/react';
+import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { ThemeProvider } from 'next-themes';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
 
@@ -58,7 +57,7 @@ export const MyApp = ({
   }, [router.isReady]);
 
   const { title, description, headerImage, authorInfo } = props.frontmatter;
-  const defaultImagePath = '/assets/blog/2023/0_s-vXIU_stFVOsfim.png';
+  const defaultImagePath = '/assets/og_banner.jpeg';
   const ogImage = headerImage
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${headerImage}`
     : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${defaultImagePath}`;

@@ -1,3 +1,11 @@
+import {
+  modalButtonStyle,
+  modalOptionsContentStyle,
+  radioItemWrapperStyle,
+  titleTagStyle,
+} from '@/components/Global/OptionsModal/styles.css';
+import type { DevOption } from '@/constants/kadena';
+import { useAppContext } from '@/context/app-context';
 import type { SystemIcon } from '@kadena/react-ui';
 import {
   Button,
@@ -8,15 +16,6 @@ import {
   Text,
   useModal,
 } from '@kadena/react-ui';
-
-import {
-  modalButtonStyle,
-  modalOptionsContentStyle,
-  radioItemWrapperStyle,
-  titleTagStyle,
-} from '@/components/Global/OptionsModal/styles.css';
-import type { DevOption } from '@/constants/kadena';
-import { useAppContext } from '@/context/app-context';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useState } from 'react';

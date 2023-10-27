@@ -1,10 +1,9 @@
-import { SystemIcon } from '../Icon';
-import { Stack } from '..';
-
 import type { ILinkProps } from '@components/Link';
 import { Link } from '@components/Link';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Stack } from '..';
+import { SystemIcon } from '../Icon';
 
 const meta: Meta<
   {

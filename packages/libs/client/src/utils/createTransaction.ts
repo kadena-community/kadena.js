@@ -1,6 +1,5 @@
 import { hash as blakeHash } from '@kadena/cryptography-utils';
 import type { IUnsignedCommand } from '@kadena/types';
-
 import type { IPactCommand } from '../interfaces/IPactCommand';
 
 /**

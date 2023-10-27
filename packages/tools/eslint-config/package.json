@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/eslint-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Kadena monorepo eslint-config",
   "license": "MIT",
   "files": [
@@ -28,13 +28,11 @@
     "eslint-plugin-import": "~2.27.5",
     "eslint-plugin-jsx-a11y": "~6.7.1",
     "eslint-plugin-react": "~7.31.11",
-    "eslint-plugin-simple-import-sort": "~7.0.0",
-    "prettier": "~3.0.0",
-    "prettier-eslint": "~12.0.0",
-    "prettier-plugin-packagejson": "^2.4.5"
+    "prettier": "~3.0.3",
+    "prettier-eslint": "~12.0.0"
   },
   "devDependencies": {
-    "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
     "typescript": "5.2.2"
   }
 }

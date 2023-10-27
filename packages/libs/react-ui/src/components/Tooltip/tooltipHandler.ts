@@ -1,6 +1,5 @@
-import { visibleClass } from './Tooltip.css';
-
 import type React from 'react';
+import { visibleClass } from './Tooltip.css';
 
 export const tooltipHandler = (
   event: React.MouseEvent<HTMLElement>,

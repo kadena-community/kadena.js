@@ -1,8 +1,7 @@
-import { linkClass } from './styles.css';
-
 import { default as NextLink } from 'next/link';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { linkClass } from './styles.css';
 
 interface IProp {
   children: ReactNode;

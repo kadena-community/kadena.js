@@ -1,7 +1,3 @@
-import { getData } from './staticGeneration/getData.mjs';
-import analyticsDataClient from './analyticsDataClient';
-import storeAnalyticsData from './storeAnalyticsData';
-
 import type { IMenuData } from '@/Layout';
 import type {
   IMostPopularPage,
@@ -10,6 +6,9 @@ import type {
 } from '@/MostPopularData';
 import fs from 'fs';
 import path from 'path';
+import analyticsDataClient from './analyticsDataClient';
+import { getData } from './staticGeneration/getData.mjs';
+import storeAnalyticsData from './storeAnalyticsData';
 
 // to be backwards compatible we need to remove the starting '/docs' from the slug
 const cleanSlug = (slug?: string): string => {

@@ -2,11 +2,11 @@ import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transfer', {
-  id: { field: 'block_chainId_orderIndex_moduleHash_requestKey' },
+  id: { field: 'blockHash_chainId_orderIndex_moduleHash_requestKey' },
   fields: (t) => ({
     // database fields
     amount: t.expose('amount' as never, { type: 'Decimal' }),
-    blockHash: t.exposeString('block'),
+    blockHash: t.exposeString('blockHash'),
     chainId: t.expose('chainId', { type: 'BigInt' }),
     senderAccount: t.exposeString('senderAccount'),
     height: t.expose('height', { type: 'BigInt' }),
@@ -23,7 +23,23 @@ export default builder.prismaNode('Transfer', {
       resolve(query, parent, args, context, info) {
         return prismaClient.block.findMany({
           where: {
-            hash: parent.block,
+            hash: parent.blockHash,
+          },
+        });
+      },
+    }),
+
+    transaction: t.prismaField({
+      type: 'Transaction',
+      nullable: true,
+      // eslint-disable-next-line @typescript-eslint/typedef
+      resolve(query, parent, args, context, info) {
+        return prismaClient.transaction.findUnique({
+          where: {
+            blockHash_requestKey: {
+              blockHash: parent.blockHash,
+              requestKey: parent.requestKey,
+            },
           },
         });
       },

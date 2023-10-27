@@ -1,5 +1,4 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
-
 import type { IChainModule } from './types';
 
 export const getModulesMap = (

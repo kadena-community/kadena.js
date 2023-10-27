@@ -1,16 +1,14 @@
-import routes from '../../../constants/routes';
-import { useChainTree } from '../../../context/chain-tree-context';
-import { env } from '../../../utils/env';
-import type { IBlock } from '../../../utils/hooks/use-parsed-blocks';
-import { Box } from '../../box';
-import { Text } from '../../text';
-
-import { TimeTicker } from './../time-ticker';
-import { Container, Content } from './styles';
-
-import { InfoCircledIcon, TimerIcon } from '@radix-ui/react-icons';
+import type { IBlock } from '@/utils/hooks/use-parsed-blocks';
+import { Box } from '@components/box';
+import { Text } from '@components/text';
+import routes from '@constants/routes';
+import { useChainTree } from '@context/chain-tree-context';
+import { InfoCircledIcon, RocketIcon, TimerIcon } from '@radix-ui/react-icons';
+import { env } from '@utils/env';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { TimeTicker } from '../time-ticker';
+import { Container, Content } from './styles';
 
 interface IChainBlockProps {
   color: string;
@@ -68,12 +66,12 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
                 : chainTree[block.chainId][block.hash].confirmationDepth}
             </Text>
 
-            {/* {block.transactions.totalCount > 0 && (
+            {block.transactions.totalCount > 0 && (
               <>
                 <RocketIcon />
                 <Text as="span">{block.transactions.totalCount} txs</Text>
               </>
-            )} */}
+            )}
           </Box>
         </Content>
       ) : null}

@@ -1,9 +1,7 @@
 import type { IKeyPair } from '@kadena/types';
-
+import nacl from 'tweetnacl';
 import { binToHex } from './binToHex';
 import { hexToBin } from './hexToBin';
-
-import nacl from 'tweetnacl';
 
 /**
  * Generate a deterministic ED25519 keypair from a given Kadena secretKey

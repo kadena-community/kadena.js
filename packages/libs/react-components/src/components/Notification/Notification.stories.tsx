@@ -1,10 +1,9 @@
-import { Button, SystemIcons } from './../../';
-import type { INotificationProps } from '.';
-import { colorVariant } from './styles';
-import { Notification, NotificationBody, NotificationFooter } from '.';
-
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { INotificationProps } from '.';
+import { Notification, NotificationBody, NotificationFooter } from '.';
+import { Button, SystemIcons } from './../../';
+import { colorVariant } from './styles';
 
 const meta: Meta<
   {

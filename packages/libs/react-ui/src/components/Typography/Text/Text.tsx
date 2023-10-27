@@ -1,3 +1,6 @@
+import cn from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 import {
   boldClass,
   colorVariant,
@@ -6,10 +9,6 @@ import {
   sizeVariant,
   transformVariant,
 } from './Text.css';
-
-import cn from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface ITextProps {
   as?: keyof typeof elementVariant;

@@ -10,16 +10,14 @@ module.exports = {
     // '@rushstack/eslint-config/mixins/friendly-locals',
     '../mixins/strict-boolean-expressions.js',
     '../mixins/import-no-duplicates.js',
-    '../mixins/simple-import-sort.js',
     '../mixins/typedef-allow-implicitly-typed-parameters.js',
     'prettier',
   ],
-  plugins: ['@kadena-dev/eslint-plugin', 'import', 'simple-import-sort'],
+  plugins: ['@kadena-dev/eslint-plugin', 'import'],
   rules: {
     '@kadena-dev/no-eslint-disable': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     'prefer-template': 'warn',
-    'import/newline-after-import': 'error',
     'import/no-unresolved': 'error',
     '@typescript-eslint/consistent-type-imports': [
       'error',

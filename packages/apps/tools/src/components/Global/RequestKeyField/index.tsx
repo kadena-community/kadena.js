@@ -1,6 +1,5 @@
 import type { ITextFieldProps } from '@kadena/react-ui';
 import { TextField } from '@kadena/react-ui';
-
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
@@ -51,7 +50,7 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
       inputProps={{
         id: 'request-key-input',
         placeholder: t('Enter Request Key'),
-        leftIcon: 'KeyIconFilled',
+        icon: 'KeyIconFilled',
         ...inputProps,
       }}
     />

@@ -58,8 +58,8 @@ In this exercise you will test the deployment and upgrade of a Pact module in
 the Pact REPL. You will start with debugging the minimal requirements for
 deploying a Pact module until you have a working deployment. Then, you will
 refactor the Pact module to be governed with a capability instead of a keyset
-directly. In the `./pact` folder, create a `module.repl` file. Write the
-following in the file: a transaction to define a module named `election`.
+directly. In the `./pact` folder, create a `module.repl` file. Add a transaction
+that defines a module named `election` to this file, using the following code.
 
 ```pact
 (begin-tx
@@ -111,8 +111,8 @@ error: Unexpected end of input, Expected: list
 ```
 
 This error means that it is not possible to create an empty Pact module. Add a
-function `list-candidates` that will be used later to list the candidates in the
-respective database tables. For now, this function will just return an empty
+function `list-candidates` that will be used later to list the candidates stored
+in the respective database table. For now, this function will just return an empty
 list `[]`.
 
 ```pact
@@ -221,16 +221,14 @@ be publically accessible.
 
 ## Exercise: Upgrade the election Pact module
 
-The `election` module was defined with a keyset to govern the module. Every
-subsequent upgrade
-
-- i.e. change - of the module will only be allowed if the upgrade transaction is
-  signed with that keyset. In this exercise you will examine two scenarios for
-  upgrading a Pact module: with the correct keyset and with an incorrect keyset.
-  Add the following code after the last transaction in `module.repl`. This code
-  reloads the correct keyset and signature into the Pact REPL, redefines the
-  `election` module with the `list-candidates` function returns a different
-  list, and tests that `list-candidates` now returns the new list.
+The `election` module was defined with a keyset to govern it. Every
+subsequent upgrade - i.e. change - of the module will only be allowed if the upgrade
+transaction is signed with that keyset. In this exercise you will examine two scenarios for
+upgrading a Pact module: with the correct keyset and with an incorrect keyset.
+Add the following code after the last transaction in `module.repl`. This code
+reloads the correct keyset and signature into the Pact REPL, redefines the
+`election` module with the `list-candidates` function returns a different
+list, and tests that `list-candidates` now returns the new list.
 
 ```pact
 (env-data
@@ -312,6 +310,7 @@ If all is well, the last line of the output should be `Load failed`. A few lines
 up you will notice a `Keyset failure` error. This means that another keyset than
 the `election.admin-keyset` cannot update the `election` module. So, you have
 proven that you can govern a Pact module with a keyset. Remove the code to
+make sure that the `module.repl` file can load successfully again before you
 continue with the next exercise.
 
 ## Exercise: Governance with Capability
@@ -351,7 +350,7 @@ that the following requirements are met:
 
 - your admin account exists on chain 1 of Devnet
 - your admin account has a positive KDA balance
-- the `admin-keyset` is defined in your principle namespace on Devnet
+- the `admin-keyset` is defined in your principal namespace on Devnet
 
 If these requirements are not met, repeat the steps in the previous chapters.
 Create a file `election.pact` in the `./pact/` folder of your project and add
@@ -379,7 +378,7 @@ specified in the metadata of the transaction. This is necessary, because
 deploying a Pact module costs a lot of gas and the transaction will fail if you
 use the default gas limit. Finally, after signing the transaction, a preflight
 request for the signed transaction is sent to the blockchain using the Kadena
-client. This The response contains feedback about the expected success of the
+client. The response contains feedback about the expected success of the
 transaction and the amount of gas the transaction will cost. If the feedback is
 negative, the snippet will not send the actual transaction to the blockchain.
 This is economical, because you would have to pay for gas, even if a transaction
@@ -474,8 +473,8 @@ implemented governance of the module with a keyset and with a capability.
 Moreover, you verified that it is impossible for others to make changes to a
 Pact module governed by your keyset. In the next chapter, you will add a schema
 and a database table to the `election` module. The table will store the names of
-election candidates and the number of votes they received. The `list-candidates`
-function will remain public and will read data from the database table. You will
+election candidates and the number of votes they have received. The `list-candidates`
+function will remain public, but will return data from the database table. You will
 add another function to nominate candidates, guarded by the governance
 capability you defined in this chapter. The election website will come to life
 as you will connect the front-end to the `election` module on Devnet.

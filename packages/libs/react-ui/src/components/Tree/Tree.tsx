@@ -1,5 +1,4 @@
 'use client';
-
 import { TreeItem } from '@components/Tree/TreeItems';
 import type { FC } from 'react';
 import React, { useState } from 'react';

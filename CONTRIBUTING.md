@@ -148,8 +148,11 @@ To publish a new version of updated packages, please make sure you:
 - have push rights to this repository's `main` branch
 - are on a clean `main` branch
 
-We're using [Changesets][12] for our release process. The manual process in [How
-do I run the version and publish commands?][13] is what we use and repeat here:
+We're using [Changesets][12] for our release process. The default process is
+enabled by merging [the latest open pull request titled "\[ci\] Release"][13].
+
+The manual process in [How do I run the version and publish commands?][14] is
+repeated here:
 
 1. Check out and pull `main`
 2. Update changelogs and bump versions
@@ -192,4 +195,6 @@ git push --tags
 [11]: ./docs/pnpm-turbo-filter.md
 [12]: https://github.com/changesets/changesets
 [13]:
+  https://github.com/search?q=repo%3Akadena-community%2Fkadena.js+%5Bci%5D+Release++&type=pullrequests&state=open
+[14]:
   https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md#how-do-i-run-the-version-and-publish-commands

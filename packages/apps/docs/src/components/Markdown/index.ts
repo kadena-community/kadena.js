@@ -1,5 +1,4 @@
 import { Table as TableChildren } from '@kadena/react-ui';
-
 import { BlockQuote } from './BlockQuote/BlockQuote';
 import { Code } from './Code/Code';
 import { TitleWrapper } from './Code/Title';

@@ -1,6 +1,9 @@
 /* eslint @kadena-dev/typedef-var: 0 */
 // TODO: Remove this when this issue is resolved: https://github.com/kadena-community/kadena.js/issues/201
-
+import type { VariantProps } from '@stitches/react';
+import type { SVGProps } from 'react';
+import React from 'react';
+import { ProductIconContainer } from './styles';
 import { Concepts } from './svgs/Concepts';
 import { Contribute } from './svgs/Contribute';
 import { KadenaOverview } from './svgs/KadenaOverview';
@@ -14,11 +17,6 @@ import { SmartContract } from './svgs/SmartContract';
 import { Syntax } from './svgs/Syntax';
 import { UsefulTools } from './svgs/UsefulTools';
 import { Whitepapers } from './svgs/Whitepapers';
-import { ProductIconContainer } from './styles';
-
-import type { VariantProps } from '@stitches/react';
-import type { SVGProps } from 'react';
-import React from 'react';
 
 export interface IProductIconProps {
   size?: VariantProps<typeof ProductIconContainer>['size'];

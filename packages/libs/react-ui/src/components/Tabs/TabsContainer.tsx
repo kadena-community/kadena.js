@@ -1,11 +1,9 @@
 'use client';
-
+import type { FC, ReactNode } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Tab } from './Tab';
 import { TabContent } from './TabContent';
 import { selectorLine, tabsContainer, tabsContainerWrapper } from './Tabs.css';
-
-import type { FC, ReactNode } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
 
 export interface ITabsContainerProps {
   children?: ReactNode;

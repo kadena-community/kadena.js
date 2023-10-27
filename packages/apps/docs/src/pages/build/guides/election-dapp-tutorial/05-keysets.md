@@ -83,8 +83,8 @@ Make sure that your local Devnet is running.
 If all is well, you should see the following output.
 
 ```bash
-pact/namespace.repl:2:0:Trace: Begin Tx 0: Define a namespace called 'election
-pact/namespace.repl:5:0:Trace: Commit Tx 0: Define a namespace called 'election
+pact/keyset.repl:2:0:Trace: Begin Tx 0: Define a new keyset
+pact/keyset.repl:5:0:Trace: Commit Tx 0: Define a new keyset
 Load successful
 ```
 
@@ -108,7 +108,7 @@ function call. Add the following code between the `begin-tx` and `commit-tx` lin
 ```
 
 The test will fail with the message `No such key in message: admin-keyset`. You will need
-to load the `admin-keyset` into the context of the Pact REPL so they
+to load the `admin-keyset` into the context of the Pact REPL so it
 can be read using the `read-keyset` function. Add the following lines at the top of the
 `keyset.repl` file and run it again.
 
@@ -165,8 +165,8 @@ run the file again.
 ```
 
 Finally, `Load successful` will be printed at the end of the output in your terminal,
-which means that your test has passed and you successfully defined a keyset called `election`
-in the `election` namespace using the Pact REPL.
+which means that your test has passed and you successfully defined a keyset called
+`admin-keyset` in the `election` namespace using the Pact REPL.
 
 ### Redefine the keyset with a different keyset
 
@@ -257,13 +257,14 @@ governed by an `admin-keyset` that contains the public key `other-public-key`.
 In the previous chapter you defined a principal namespace on your local Devnet. At the end
 of this chapter you will define an `admin-keyset` in that principal namespace. Before sending
 the transaction to Devnet, it is a good idea to first test if the transaction will work in the
-Pact REPL. Open the (*other*) `./pact/principal-namespace.repl` file in your editor and add the
-transaction displayed below. The main difference from the previous `Define a new keyset` transaction 
-is that the name of the keyset passed to the `define-keyset` function is not passed as the hardcoded
+Pact REPL. In the `./pact` folder, create a file `./pact/principal-namespace.repl` and add the
+transaction displayed below into it. The main difference from the previous `Define a new keyset` transaction 
+is that the name of the keyset passed to the `define-keyset` function is no longer passed as the hardcoded
 string `election.admin-keyset`. Instead, it is composed of the principal namespace name stored
 in the `ns-name` variable and the string `admin-keyset`. The `ns-name` variable, in turn, gets its
-value assigned from the return value of a call to the `ns.create-principal-namespace` function. Also note that, before calling `define-keyset` you need to enter the principal namespace first, using
-the the statement `(namespace ns-name)`. Finally, you need to add a signature for the transaction
+value assigned from the return value of a call to the `ns.create-principal-namespace` function.
+Also note that, before calling `define-keyset` you need to enter the principal namespace first, using
+the statement `(namespace ns-name)`. Finally, you need to add a signature for the transaction
 to succeed.
 
 ```pact
@@ -289,7 +290,7 @@ to succeed.
 ```
 
 At the end of the output you will see `Load successful`, which means that your test has
-passed and you successfully defined the `admin-keyset` in the principal namespace You are now
+passed and you successfully defined the `admin-keyset` in the principal namespace. You are now
 ready to define the admin keyset that holds your own admin account's public key in the principal
 namespace on your local Devnet.
 
@@ -301,7 +302,7 @@ and holds KDA on chain 1. Otherwise, repeat the steps in the previous chapters t
 and fund your admin account. Chainweaver needs to remain open, because you will use
 it to sign the transaction for defining the keyset. Switch to your editor and open
 the file `./snippets/define-keyset.ts`. The `pactCommand` variable contains the
-crucial bit of Pact code for defining the keyset in your principle namespace. The code
+crucial bit of Pact code for defining the keyset in your principal namespace. The code
 should look familiar if you followed along with the exercises in this chapter. At this point
 in thet tutorial, you should be able to explain how the the `Pact.builder` constructs the
 transaction, on what line the transaction is signed, on what line the transaction is sent to
@@ -325,7 +326,7 @@ If everything went well, you will see something similar to the following output.
 { status: 'success', data: 'Keyset defined' }
 ```
 
-Congratulations! You have defined a keyset in your principle namespace on your local Devnet.
+Congratulations! You have defined a keyset in your principal namespace on your local Devnet.
 This keyset is governed by your admin account.
 
 ## Next steps
@@ -335,7 +336,7 @@ allowing you to verify the behavior of Pact keysets on your local computer
 before defining a keyset on the blockchain. You used
 the Kadena JavaScript client to define a keyset in the principal namespace to your local Devnet.
 In the next chapter you will create the election Pact module that will become the back-end of the
-election website. The pact module will be defined in your principle namespace and it will be
+election website. The pact module will be defined in your principal namespace and it will be
 governed by the keyset you defined in this chapter. In later chapters, the keyset will also
 be used to guard high impact functions inside the election Pact module, such as nominating
 candidates that can receive votes.

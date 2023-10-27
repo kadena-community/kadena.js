@@ -1,8 +1,12 @@
+import type { IMenuData } from '@/Layout';
 import { Box, Heading, Stack, Tag } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import Image from 'next/image';
+import Link from 'next/link';
+import type { FC } from 'react';
+import React from 'react';
 import { Avatar } from '../Avatar/Avatar';
 import { FormatDate } from '../FormatDate';
-
 import {
   authorTitleClass,
   blogitem,
@@ -19,13 +23,6 @@ import {
   metaItem,
   tagLinkClass,
 } from './styles.css';
-
-import type { IMenuData } from '@/Layout';
-import classNames from 'classnames';
-import Image from 'next/image';
-import Link from 'next/link';
-import type { FC } from 'react';
-import React from 'react';
 
 interface IProps {
   item: IMenuData;

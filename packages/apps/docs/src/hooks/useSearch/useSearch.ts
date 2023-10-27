@@ -1,11 +1,10 @@
-import type { IConversation } from './useConversation';
-import { useConversation } from './useConversation';
-import { useStream } from './useStream';
-
 import type { StreamMetaData } from '@7-docs/edge';
 import { useRouter } from 'next/router';
 import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { IConversation } from './useConversation';
+import { useConversation } from './useConversation';
+import { useStream } from './useStream';
 
 interface IProps {
   metadata?: StreamMetaData[];

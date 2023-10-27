@@ -1,3 +1,10 @@
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import type { Network } from '@/constants/kadena';
+import Routes from '@/constants/routes';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { useToolbar } from '@/context/layout-context';
+import type { ITransaction } from '@/services/accounts/get-transactions';
+import { getTransactions } from '@/services/accounts/get-transactions';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   Box,
@@ -11,25 +18,16 @@ import {
   Text,
   TrackerCard,
 } from '@kadena/react-ui';
-
+import Debug from 'debug';
+import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
+import type { FC } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   filterItemClass,
   headerButtonGroupClass,
   mainContentClass,
 } from './styles.css';
-
-import DrawerToolbar from '@/components/Common/DrawerToolbar';
-import type { Network } from '@/constants/kadena';
-import Routes from '@/constants/routes';
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { useToolbar } from '@/context/layout-context';
-import type { ITransaction } from '@/services/accounts/get-transactions';
-import { getTransactions } from '@/services/accounts/get-transactions';
-import Debug from 'debug';
-import { useRouter } from 'next/router';
-import useTranslation from 'next-translate/useTranslation';
-import type { FC } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
 
 const CheckTransactions: FC = () => {
   const debug = Debug(

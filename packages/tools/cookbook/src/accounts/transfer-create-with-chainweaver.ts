@@ -5,7 +5,6 @@ import {
   signWithChainweaver,
 } from '@kadena/client';
 import type { IPactDecimal } from '@kadena/types';
-
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 

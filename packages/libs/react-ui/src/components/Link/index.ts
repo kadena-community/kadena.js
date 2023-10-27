@@ -1,1 +1,1 @@
-export { type ILinkProps, Link } from './Link';
+export { Link, type ILinkProps } from './Link';

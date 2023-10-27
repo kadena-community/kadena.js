@@ -1,13 +1,12 @@
-import { tableClass } from './Table.css';
-import { TBody } from './TBody';
-import { THead } from './THead';
-import type { CompoundType } from './types';
-
 import type { Sprinkles } from '@theme/sprinkles.css';
 import { sprinkles } from '@theme/sprinkles.css';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import { TBody } from './TBody';
+import { THead } from './THead';
+import { tableClass } from './Table.css';
+import type { CompoundType } from './types';
 
 export interface ITableProps extends Pick<Sprinkles, 'wordBreak'> {
   children?: CompoundType<typeof TBody> | CompoundType<typeof THead>;

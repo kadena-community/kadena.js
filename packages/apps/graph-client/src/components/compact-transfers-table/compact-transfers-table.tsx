@@ -1,12 +1,10 @@
-import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
-
 import type {
   GetAccountQuery,
   GetChainAccountQuery,
-} from '../../__generated__/sdk';
-import routes from '../../constants/routes';
-import { truncate } from '../../utils/truncate';
-
+} from '@/__generated__/sdk';
+import routes from '@constants/routes';
+import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
+import { truncate } from '@utils/truncate';
 import React from 'react';
 
 interface ICompactTransfersTableProps {
@@ -78,7 +76,9 @@ export const CompactTransfersTable = (
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  <Link href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}>
+                  <Link
+                    href={`${routes.TRANSACTIONS}/${edge?.node.requestKey}`}
+                  >
                     <span title={edge?.node.requestKey}>
                       {truncate(edge?.node.requestKey)}
                     </span>

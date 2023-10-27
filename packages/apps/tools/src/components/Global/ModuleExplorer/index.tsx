@@ -1,12 +1,11 @@
-import type { IEditorProps } from './editor';
-import Editor from './editor';
+import React from 'react';
 import type { ISidePanelProps } from './SidePanel';
 import SidePanel from './SidePanel';
+import type { IEditorProps } from './editor';
+import Editor from './editor';
 import { containerStyle } from './styles.css';
 import type { IChainModule } from './types';
 import { getModulesMap } from './utils';
-
-import React from 'react';
 
 export interface IModuleExplorerProps {
   modules: IChainModule[];

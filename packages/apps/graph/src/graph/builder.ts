@@ -1,11 +1,3 @@
-import { prismaClient } from '../db/prismaClient';
-
-import type {
-  ChainModuleAccount,
-  Guard,
-  ModuleAccount,
-} from './types/graphql-types';
-
 import SchemaBuilder from '@pothos/core';
 import DataloaderPlugin from '@pothos/plugin-dataloader';
 import PrismaPlugin from '@pothos/plugin-prisma';
@@ -19,6 +11,12 @@ import {
   PositiveFloatResolver,
 } from 'graphql-scalars';
 import type { IncomingMessage } from 'http';
+import { prismaClient } from '../db/prismaClient';
+import type {
+  ChainModuleAccount,
+  Guard,
+  ModuleAccount,
+} from './types/graphql-types';
 
 interface IDefaultTypesExtension {
   Scalars: {
@@ -54,6 +52,9 @@ export const builder = new SchemaBuilder<
       ModuleAccount: ModuleAccount;
       ChainModuleAccount: ChainModuleAccount;
       Guard: Guard;
+    };
+    Connection: {
+      totalCount: number;
     };
   }
 >({

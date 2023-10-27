@@ -1,15 +1,13 @@
+import { useOpenSearch } from '@/hooks/useOpenSearch';
 import { SystemIcon } from '@kadena/react-ui';
-
+import classNames from 'classnames';
+import type { FC } from 'react';
+import React from 'react';
 import {
   headerButtonClass,
   searchButtonClass,
   searchButtonSlashClass,
 } from './styles.css';
-
-import { useOpenSearch } from '@/hooks/useOpenSearch';
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
 
 export const SearchButton: FC = () => {
   const { handleOpenSearch } = useOpenSearch();

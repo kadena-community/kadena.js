@@ -1,14 +1,12 @@
-import { Box, Heading, Text, useModal } from '@kadena/react-ui';
-
-import type { IQueryResult } from '../../../types';
-import { itemLinkClass, staticResultsListClass } from '../styles.css';
-
 import { filePathToRoute } from '@/pages/api/semanticsearch';
+import { Box, Heading, Text, useModal } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import type { IQueryResult } from '../../../types';
+import { itemLinkClass, staticResultsListClass } from '../styles.css';
 
 interface IProps {
   results: IQueryResult[] | undefined;
@@ -23,6 +21,10 @@ interface IBreadCrumbProps {
   url: string;
 }
 
+const removeHashFromString = (str: string): string => {
+  return str.split('#')[0];
+};
+
 const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
   const urlArray = url.split('/');
 
@@ -31,7 +33,7 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
       {urlArray.map((str, idx) => {
         return (
           <Text size="sm" bold={idx === 0} key={str + idx}>
-            {str} {idx < urlArray.length - 1 ? ' / ' : ''}
+            {removeHashFromString(str)} {idx < urlArray.length - 1 ? ' / ' : ''}
           </Text>
         );
       })}

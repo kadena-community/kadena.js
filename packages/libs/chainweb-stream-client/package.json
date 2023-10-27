@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweb-stream-client",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Chainweb-stream client for browsers and node.js",
   "keywords": [],
   "repository": {
@@ -33,7 +33,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "jest"
+    "test": "vitest"
   },
   "dependencies": {
     "eventemitter2": "~6.4.9",
@@ -41,19 +41,17 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
-    "@microsoft/api-extractor": "^7.37.0",
+    "@kadena-dev/shared-config": "workspace:*",
+    "@microsoft/api-extractor": "^7.38.0",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/eventsource": "1.1.11",
-    "@types/jest": "^29.5.3",
     "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
-    "jest": "^29.7.0",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
-    "typescript": "5.2.2"
+    "prettier": "~3.0.3",
+    "typescript": "5.2.2",
+    "vitest": "^0.34.6"
   },
   "publishConfig": {
     "provenance": true

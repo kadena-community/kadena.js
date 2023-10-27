@@ -11,6 +11,17 @@ interface IQueryResult extends StreamMetaData {
   description?: string;
 }
 
+const jsonFilePathMapper = [
+  {
+    srcFilePath: 'src/specs/pact/pact.openapi.json',
+    generatedFilePath: 'src/pages/pact/api',
+  },
+  {
+    srcFilePath: 'src/specs/chainweb/chainweb.openapi.json',
+    generatedFilePath: 'src/pages/chainweb',
+  },
+];
+
 export const filePathToRoute = (filename?: string, header?: string): string => {
   if (!filename) return '';
   // Remove "src/pages" from the start of the filename
@@ -35,7 +46,7 @@ export const filePathToRoute = (filename?: string, header?: string): string => {
 };
 
 const getData = (file: string): IFrontmatterData => {
-  const tree = menuData as IMenuData[];
+  const tree = menuData as unknown as IMenuData[];
 
   let foundItem: IMenuData;
   const findPage = (tree: IMenuData[], file: string): IMenuData | undefined => {
@@ -83,6 +94,13 @@ export const mapMatches = (metadata: StreamMetaData): IQueryResult => {
     typeof metadata.content !== 'undefined'
       ? cleanUpContent(metadata.content)
       : undefined;
+
+  const isJSON = jsonFilePathMapper.find(
+    (item) => item.srcFilePath === metadata.filePath,
+  );
+
+  metadata.filePath = isJSON ? isJSON.generatedFilePath : metadata.filePath;
+
   const data =
     typeof metadata.filePath !== 'undefined'
       ? getData(filePathToRoute(metadata.filePath, metadata.header))

@@ -1,14 +1,3 @@
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  Card,
-  Grid,
-  Heading,
-} from '@kadena/react-ui';
-
-import { mainContentClass, submitClass } from './styles.css';
-
 import { ChainSelect } from '@/components/Global';
 import AccountNameField, {
   NAME_VALIDATION,
@@ -18,13 +7,22 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Card,
+  Grid,
+  Heading,
+} from '@kadena/react-ui';
 import Debug from 'debug';
-import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { mainContentClass, submitClass } from './styles.css';
 
 const schema = z.object({
   name: NAME_VALIDATION,

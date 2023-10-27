@@ -1,4 +1,4 @@
-import { theme } from '../styles/stitches.config';
+import { theme } from '@styles/stitches.config';
 
 export function selectColor(chainId: number, level: number = 11): string {
   return theme.colors[

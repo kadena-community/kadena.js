@@ -1,8 +1,7 @@
-import { breakpoints } from './themeUtils';
-import { darkThemeClass, vars } from './vars.css';
-
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
 import mapValues from 'lodash.mapvalues';
+import { breakpoints } from './themeUtils';
+import { darkThemeClass, vars } from './vars.css';
 
 const systemProperties = defineProperties({
   properties: {
@@ -106,7 +105,7 @@ const responsiveProperties = defineProperties({
     },
     gap: vars.sizes,
     gridGap: vars.sizes,
-    overflow: ['hidden'],
+    overflow: ['hidden', 'visible', 'scroll', 'auto'],
     pointerEvents: ['none', 'auto'],
     opacity: [0, 1],
     textAlign: ['left', 'center', 'right'],

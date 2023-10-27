@@ -1,10 +1,8 @@
-import { SystemIcon } from '..';
-
-import { blockLinkClass, linkContainerClass } from './Link.css';
-
 import classnames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { SystemIcon } from '..';
+import { blockLinkClass, linkContainerClass } from './Link.css';
 
 export interface ILinkProps {
   asChild?: boolean;

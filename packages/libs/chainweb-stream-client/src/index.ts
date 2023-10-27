@@ -1,3 +1,5 @@
+import EventEmitter from 'eventemitter2';
+import EventSource from 'eventsource';
 import {
   ConnectTimeoutError,
   HeartbeatTimeoutError,
@@ -17,9 +19,6 @@ import type {
 import { ConnectionState } from './types';
 import { isNotUndefined } from './util';
 
-import EventEmitter from 'eventemitter2';
-import EventSource from 'eventsource';
-
 export * from './types';
 
 const CLIENT_PROTOCOL_VERSION: string = '0.0.3';
@@ -34,7 +33,7 @@ const DEFAULT_LIMIT: number = 100;
 /**
  * @alpha
  */
-class ChainwebStream extends EventEmitter {
+export class ChainwebStreamClient extends EventEmitter {
   // chainweb network, e.g. mainnet01
   public network: string;
 
@@ -493,5 +492,3 @@ class ChainwebStream extends EventEmitter {
     this.emit('debug', debugMsg);
   }
 }
-
-export default ChainwebStream;

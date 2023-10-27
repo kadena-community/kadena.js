@@ -1,5 +1,4 @@
 import type { ICap, IExecPayload, IUnsignedCommand } from '@kadena/types';
-
 import {
   addData,
   addKeyset,
@@ -12,6 +11,7 @@ import {
   setNonce,
 } from '../composePactCommand';
 import type { ValidDataTypes } from '../composePactCommand/utils/addData';
+import type { ISigner } from '../composePactCommand/utils/addSigner';
 import { patchCommand } from '../composePactCommand/utils/patchCommand';
 import type {
   IContinuationPayloadObject,
@@ -27,11 +27,7 @@ interface IAddSigner<TCommand> {
   /**
    * Add signer without capability
    */
-  (
-    first:
-      | string
-      | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
-  ): IBuilder<TCommand>;
+  (first: ISigner | ISigner[]): IBuilder<TCommand>;
   /**
    * Add a signer including capabilities. The withCapability function is obtained from
    * the function you call in the execution part.
@@ -44,9 +40,7 @@ interface IAddSigner<TCommand> {
    * ])
    */
   (
-    first:
-      | string
-      | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string },
+    first: ISigner | ISigner[],
     capability: (withCapability: ExtractCapabilityType<TCommand>) => ICap[],
   ): IBuilder<TCommand>;
 }

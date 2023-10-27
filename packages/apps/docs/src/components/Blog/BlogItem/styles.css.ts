@@ -1,5 +1,4 @@
 import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
-
 import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
 export const blogitem = style([

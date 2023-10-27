@@ -5,6 +5,7 @@ import {
   readKeyset,
   signWithChainweaver,
 } from '@kadena/client';
+import { asyncPipe } from '@kadena/client-utils/core';
 import {
   addKeyset,
   addSigner,
@@ -17,8 +18,8 @@ import {
 import { isSignedCommand } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
 
-import { listen, pollCreateSpv, submit } from '../util/client';
-import { asyncPipe, inspect } from '../util/fp-helpers';
+import { listen, pollCreateSpv, submitOne } from '../util/client';
+import { inspect } from '../util/fp-helpers';
 import { keyFromAccount } from '../util/keyFromAccount';
 
 interface IAccount {
@@ -39,7 +40,6 @@ const receiverAccount: string =
 
 const NETWORK_ID: string = 'testnet04';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function startInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
   return composePactCommand(
     execution(
@@ -72,7 +72,6 @@ function startInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const finishInTheTargetChain = (
   targetChainId: ChainId,
   gasPayer: string = 'kadena-xchain-gas',
@@ -100,19 +99,17 @@ const finishInTheTargetChain = (
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const rejectIfFailed = (message: string) => (response: ICommandResult) =>
   response.result.status === 'failure'
     ? Promise.reject(new Error(message))
     : response;
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function doCrossChainTransfer(
   from: IAccount,
   to: IAccount,
   amount: string,
 ) {
-  return asyncPipe(
+  const debit = asyncPipe(
     startInTheFirstChain(from, to, amount),
     createTransaction,
     inspect('TX_CREATED'),
@@ -120,14 +117,17 @@ async function doCrossChainTransfer(
     inspect('TX_SIGNED'),
     (command) =>
       isSignedCommand(command) ? command : Promise.reject('CMD_NOT_SIGNED'),
-    submit,
+    submitOne,
     inspect('TX_SUBMITTED'),
     listen,
     inspect('TX_RESULT'),
     rejectIfFailed('DEBIT_REJECTED'),
+  );
+
+  const credit = asyncPipe(
     (status: ICommandResult) =>
       Promise.all([
-        status.continuation?.pactId,
+        status.continuation!.pactId,
         pollCreateSpv(
           {
             requestKey: status.reqKey,
@@ -136,17 +136,19 @@ async function doCrossChainTransfer(
           },
           to.chainId,
         ),
-      ]),
+      ] as const),
     inspect('SPV_CREATED'),
     finishInTheTargetChain(to.chainId),
     createTransaction,
     inspect('CONT_CREATED'),
-    submit,
+    submitOne,
     inspect('CONT_SUBMITTED'),
     listen,
     inspect('CONT_RESULT'),
     rejectIfFailed('CREDIT REJECTED'),
-  )({});
+  );
+
+  return asyncPipe(debit, credit)({});
 }
 
 const from: IAccount = {

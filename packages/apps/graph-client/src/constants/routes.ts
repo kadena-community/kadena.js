@@ -3,7 +3,7 @@ export default {
   ACCOUNT_TRANSACTIONS: '/account/transactions',
   ACCOUNT_TRANSFERS: '/account/transfers',
   HOME: '/',
-  TRANSACTION: '/transaction',
+  TRANSACTIONS: '/transactions',
   EVENT: '/event',
   BLOCK_OVERVIEW: '/block/overview',
   BLOCK_TRANSACTIONS: '/block/transactions',

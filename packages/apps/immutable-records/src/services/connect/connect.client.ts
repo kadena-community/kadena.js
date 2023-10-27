@@ -1,3 +1,4 @@
+import { Evt, to } from 'evt';
 import type { WalletConnectModal } from './connect.modal';
 import { createModalInstance } from './connect.modal';
 import type { ClientEvents } from './connect.utils';
@@ -7,8 +8,6 @@ import {
   getAccountsRequest,
   timeout,
 } from './connect.utils';
-
-import { Evt, to } from 'evt';
 
 export type SignClient = Awaited<
   ReturnType<

@@ -1,5 +1,5 @@
-import copy from 'recursive-copy';
 import fs from 'fs';
+import copy from 'recursive-copy';
 
 const errors = [];
 const success = [];

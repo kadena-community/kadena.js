@@ -1,8 +1,6 @@
+import type { GetAccountQuery } from '@/__generated__/sdk';
+import routes from '@constants/routes';
 import { Link, Table } from '@kadena/react-ui';
-
-import type { GetAccountQuery } from '../../__generated__/sdk';
-import routes from '../../constants/routes';
-
 import React from 'react';
 
 interface IChainModuleAccountTableProps {

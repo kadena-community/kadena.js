@@ -1,14 +1,12 @@
 import { Stack } from '@kadena/react-ui';
-
+import Link from 'next/link';
+import type { FC } from 'react';
+import React from 'react';
 import {
   listItemClass,
   listItemLinkClass,
   listItemLinkTextClass,
 } from './styles.css';
-
-import Link from 'next/link';
-import type { FC } from 'react';
-import React from 'react';
 
 export interface ILinkBlock {
   title: string;

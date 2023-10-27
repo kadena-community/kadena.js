@@ -1,6 +1,6 @@
 {
   "name": "@kadena/types",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "",
   "keywords": [],
   "repository": {
@@ -43,14 +43,13 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
-    "@microsoft/api-extractor": "^7.37.0",
+    "@kadena-dev/shared-config": "workspace:*",
+    "@microsoft/api-extractor": "^7.38.0",
     "@rushstack/eslint-config": "~3.3.0",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
+    "prettier": "~3.0.3",
     "typescript": "5.2.2"
   },
   "publishConfig": {

@@ -1,13 +1,12 @@
-import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
-
 import type {
   GetAccountQuery,
   GetBlockFromHashQuery,
   GetChainAccountQuery,
-} from '../../__generated__/sdk';
-import routes from '../../constants/routes';
-import { truncate } from '../../utils/truncate';
-
+  GetTransactionsQuery,
+} from '@/__generated__/sdk';
+import routes from '@constants/routes';
+import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
+import { truncate } from '@utils/truncate';
 import React from 'react';
 
 interface ICompactTransactionsTableProps {
@@ -16,7 +15,8 @@ interface ICompactTransactionsTableProps {
   transactions:
     | GetAccountQuery['account']['transactions']
     | GetChainAccountQuery['chainAccount']['transactions']
-    | GetBlockFromHashQuery['block']['transactions'];
+    | GetBlockFromHashQuery['block']['transactions']
+    | GetTransactionsQuery['transactions'];
 }
 
 export const CompactTransactionsTable = (
@@ -32,7 +32,7 @@ export const CompactTransactionsTable = (
         description={
           description
             ? description
-            : 'All transactions where this account is the initiator.'
+            : 'All transactions where this account is the initiator'
         }
       />
       <Box margin={'$4'} />
@@ -60,7 +60,9 @@ export const CompactTransactionsTable = (
                 </Table.Td>
                 <Table.Td>{edge?.node.height}</Table.Td>
                 <Table.Td>
-                  <Link href={`${routes.TRANSACTION}/${edge?.node.requestKey}`}>
+                  <Link
+                    href={`${routes.TRANSACTIONS}/${edge?.node.requestKey}`}
+                  >
                     <span title={edge?.node.requestKey}>
                       {truncate(edge?.node.requestKey)}
                     </span>

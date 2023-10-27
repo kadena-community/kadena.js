@@ -1,5 +1,4 @@
 import { darkThemeClass } from '@kadena/react-ui/theme';
-
 import { createVar, style } from '@vanilla-extract/css';
 
 export const $$navMenu = createVar();

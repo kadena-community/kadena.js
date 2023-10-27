@@ -1,13 +1,26 @@
-jest.mock('@kadena/chainweb-node-client', () => ({
-  __esModule: true,
-  ...jest.requireActual('@kadena/chainweb-node-client'),
-  poll: jest.fn(),
-}));
-
-import { poll } from '@kadena/chainweb-node-client';
-
-import { sleep, withCounter } from '../../utils/utils';
 import { pollStatus } from '../status';
+
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+const server = setupServer();
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+const post = (
+  path: string,
+  response: string | Record<string, unknown>,
+  status = 200,
+  delay?: number,
+): ReturnType<typeof rest.post> =>
+  rest.post(path, (req, res, ctx) =>
+    res.once(
+      ctx.status(status),
+      ctx.delay(delay ?? 0),
+      typeof response === 'string' ? ctx.text(response) : ctx.json(response),
+    ),
+  );
 
 describe('pollStatus', () => {
   it('calls the /poll endpoint several times till it gets the status of all request keys', async () => {
@@ -18,11 +31,14 @@ describe('pollStatus', () => {
       { 'key-2': { reqKey: 'key-2' } },
     ];
 
-    (poll as jest.Mock).mockImplementation(
-      withCounter((counter) => responses[counter - 1] ?? {}),
+    server.resetHandlers(
+      post('http://test-blockchain-host.com/api/v1/poll', responses[0]),
+      post('http://test-blockchain-host.com/api/v1/poll', responses[1]),
+      post('http://test-blockchain-host.com/api/v1/poll', responses[2]),
+      post('http://test-blockchain-host.com/api/v1/poll', responses[3]),
     );
 
-    const hostUrl = "http://test-blockchain-host.com'";
+    const hostUrl = 'http://test-blockchain-host.com';
 
     const requestKeys = ['key-1', 'key-2'];
 
@@ -34,32 +50,20 @@ describe('pollStatus', () => {
       'key-1': { reqKey: 'key-1' },
       'key-2': { reqKey: 'key-2' },
     });
-
-    expect(poll).toHaveBeenCalledTimes(4);
   });
 
-  it('throws TIME_OUT_REJECT if the task get longer that in timeout option', async () => {
-    const responses = [
-      {},
-      { 'key-1': { reqKey: 'key-1' } },
-      {},
-      { 'key-2': { reqKey: 'key-2' } },
-    ];
-
-    (poll as jest.Mock).mockImplementation(
-      withCounter(async (counter) => {
-        await sleep(501);
-        return responses[counter - 1] ?? {};
-      }),
+  it('throws TIME_OUT_REJECT if the task get longer than set in timeout option', async () => {
+    server.resetHandlers(
+      post('http://test-blockchain-host.com/api/v1/poll', {}, 200, 75),
     );
 
-    const hostUrl = "http://test-blockchain-host.com'";
+    const hostUrl = 'http://test-blockchain-host.com';
 
     const requestKeys = ['key-1', 'key-2'];
 
     const promise = pollStatus(hostUrl, requestKeys, {
       interval: 10,
-      timeout: 500,
+      timeout: 50,
     });
 
     await expect(promise).rejects.toEqual(new Error('TIME_OUT_REJECT'));
@@ -73,13 +77,16 @@ describe('pollStatus', () => {
       { 'key-2': { reqKey: 'key-2' } },
     ];
 
-    (poll as jest.Mock).mockImplementation(
-      withCounter((counter) => responses[counter - 1] ?? {}),
+    server.resetHandlers(
+      post('http://test-blockchain-host.com/api/v1/poll', responses[0]),
+      post('http://test-blockchain-host.com/api/v1/poll', responses[1]),
+      post('http://test-blockchain-host.com/api/v1/poll', responses[2]),
+      post('http://test-blockchain-host.com/api/v1/poll', responses[3]),
     );
 
-    const onPoll = jest.fn();
+    const onPoll = vi.fn();
 
-    const hostUrl = "http://test-blockchain-host.com'";
+    const hostUrl = 'http://test-blockchain-host.com';
 
     const requestKeys = ['key-1', 'key-2'];
 
@@ -110,11 +117,11 @@ describe('pollStatus', () => {
       { 'key-1': { reqKey: 'key-1' }, 'key-2': { reqKey: 'key-2' } },
     ];
 
-    (poll as jest.Mock).mockImplementation(
-      withCounter((counter) => responses[counter - 1] ?? {}),
+    server.resetHandlers(
+      post('http://test-blockchain-host.com/api/v1/poll', responses[0]),
     );
 
-    const hostUrl = "http://test-blockchain-host.com'";
+    const hostUrl = 'http://test-blockchain-host.com';
 
     const requestKeys = ['key-1', 'key-2'];
 
@@ -124,7 +131,5 @@ describe('pollStatus', () => {
       'key-1': { reqKey: 'key-1' },
       'key-2': { reqKey: 'key-2' },
     });
-
-    expect(poll).toHaveBeenCalledTimes(1);
   });
 });

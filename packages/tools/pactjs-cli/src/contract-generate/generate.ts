@@ -1,14 +1,11 @@
 import { generateDts, pactParser } from '@kadena/pactjs-generator';
-
-import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
-
-import type { IContractGenerateOptions } from './';
-
 import type { Command } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import { dirname, join } from 'path';
 import rimraf from 'rimraf';
+import { retrieveContractFromChain } from '../utils/retrieveContractFromChain';
+import type { IContractGenerateOptions } from './';
 
 export const TARGET_PACKAGE: '.kadena/pactjs-generated' =
   '.kadena/pactjs-generated' as const;

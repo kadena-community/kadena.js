@@ -1,7 +1,6 @@
+import { EOL } from 'os';
 import type { IFunction, IModule, IType } from '../parsing/pactParser';
 import { getModuleFullName } from '../parsing/utils/utils';
-
-import { EOL } from 'os';
 
 const keywordsMap: Record<string, string> = {
   decimal: 'IPactDecimal',
