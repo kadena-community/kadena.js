@@ -10,14 +10,10 @@ export function formatCode(code: string): string {
 }
 
 export function formatLisp(code: string): string {
-  console.log('code\n', code);
-
   const formattedCode = formatDocument(code, {
     tabSize: 2,
     insertSpaces: true,
   });
-
-  console.log('formattedCode\n', formattedCode);
 
   return formattedCode;
 }
