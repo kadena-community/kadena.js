@@ -11,7 +11,7 @@ const PactQuery = builder.inputType('PactQuery', {
   }),
 });
 
-builder.queryField('executePacts', (t) => {
+builder.queryField('pactQueries', (t) => {
   return t.field({
     type: ['String'],
     args: {
@@ -41,7 +41,7 @@ builder.queryField('executePacts', (t) => {
   });
 });
 
-builder.queryField('executePact', (t) => {
+builder.queryField('pactQuery', (t) => {
   return t.field({
     type: 'String',
     args: {
