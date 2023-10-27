@@ -24,6 +24,7 @@
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/fonts": "~0.0.1",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
     "@kadena/react-components": "workspace:*",
