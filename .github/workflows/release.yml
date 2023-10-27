@@ -4,7 +4,6 @@ name: Release
 
 on:
   workflow_dispatch:
-git p
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
