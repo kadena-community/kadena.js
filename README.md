@@ -28,7 +28,7 @@ Overview of the main packages maintained in this repository:
 | :----------------------------------- | :------------------- |
 | [@kadena-dev/eslint-config][5]       | [![version][7]][6]   |
 | [@kadena-dev/eslint-plugin][8]       | [![version][10]][9]  |
-| [@kadena-dev/heft-rig][11]           | [![version][13]][12] |
+| [@kadena-dev/shared-config][11]      | [![version][13]][12] |
 | [@kadena/chainweb-node-client][14]   | [![version][16]][15] |
 | [@kadena/chainweb-stream-client][17] | [![version][19]][18] |
 | [@kadena/chainwebjs][20]             | [![version][22]][21] |
@@ -61,9 +61,9 @@ Special thanks to the wonderful people who have contributed to this project:
 [9]: packages/tools/eslint-plugin/CHANGELOG.md
 [10]: https://img.shields.io/npm/v/@kadena-dev/eslint-plugin.svg
 [11]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/heft-rig
-[12]: packages/tools/heft-rig/CHANGELOG.md
-[13]: https://img.shields.io/npm/v/@kadena-dev/heft-rig.svg
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/shared-config
+[12]: packages/tools/shared-config/CHANGELOG.md
+[13]: https://img.shields.io/npm/v/@kadena-dev/shared-config.svg
 [14]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-node-client
 [15]: packages/libs/chainweb-node-client/CHANGELOG.md

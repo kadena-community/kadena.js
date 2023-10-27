@@ -17,6 +17,7 @@ import './objects/Event';
 import './objects/Guard';
 import './objects/MinerKey';
 import './objects/ModuleAccount';
+import './objects/Signer';
 import './objects/TotalCount';
 import './objects/Transaction';
 import './objects/Transfer';

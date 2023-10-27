@@ -1,7 +1,7 @@
 import type { Issues, Rule } from '../../types.js';
 
 const tsConfigBasePath =
-  './node_modules/@kadena-dev/heft-rig/tsconfig-base.json';
+  './node_modules/@kadena-dev/shared-config/tsconfig-base.json';
 
 const rule: Rule = ({ dir, file, tsConfig }) => {
   const issues: Issues = [];

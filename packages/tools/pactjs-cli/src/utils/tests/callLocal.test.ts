@@ -1,17 +1,18 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { callLocal } from '../callLocal';
 
-const restHandlers = [
-  rest.post('https://json-api.chainweb.com/api/v1/local', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ json: 'some json' }));
-  }),
-  rest.post('https://text-api.chainweb.com/api/v1/local', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.text('some text'));
-  }),
+const httpHandlers = [
+  http.post('https://json-api.chainweb.com/api/v1/local', () =>
+    HttpResponse.json({ json: 'some json' }),
+  ),
+  http.post(
+    'https://text-api.chainweb.com/api/v1/local',
+    () => new HttpResponse('some text'),
+  ),
 ];
 
-const server = setupServer(...restHandlers);
+const server = setupServer(...httpHandlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());

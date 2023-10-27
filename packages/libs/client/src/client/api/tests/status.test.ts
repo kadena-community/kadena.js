@@ -1,7 +1,6 @@
-import { pollStatus } from '../status';
-
-import { rest } from 'msw';
+import { HttpResponse, delay, http } from 'msw';
 import { setupServer } from 'msw/node';
+import { pollStatus } from '../status';
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -12,14 +11,17 @@ const post = (
   path: string,
   response: string | Record<string, unknown>,
   status = 200,
-  delay?: number,
-): ReturnType<typeof rest.post> =>
-  rest.post(path, (req, res, ctx) =>
-    res.once(
-      ctx.status(status),
-      ctx.delay(delay ?? 0),
-      typeof response === 'string' ? ctx.text(response) : ctx.json(response),
-    ),
+  wait?: number,
+): ReturnType<typeof http.post> =>
+  http.post(
+    path,
+    async () => {
+      await delay(wait ?? 0);
+      return typeof response === 'string'
+        ? new HttpResponse(response, { status })
+        : HttpResponse.json(response, { status });
+    },
+    { once: true },
   );
 
 describe('pollStatus', () => {
