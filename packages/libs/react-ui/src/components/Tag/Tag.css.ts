@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 
 export const tagClass = style([
   sprinkles({
-    backgroundColor: '$neutral1',
+    backgroundColor: '$layoutSurfaceCard',
     color: '$neutral6',
     borderRadius: '$xs',
     padding: '$1',
