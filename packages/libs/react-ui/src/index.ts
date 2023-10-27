@@ -1,4 +1,7 @@
+import { KodeMono } from '@kadena/fonts';
 import './styles/global.css';
+
+KodeMono();
 
 export type {
   IAccordionProps,
