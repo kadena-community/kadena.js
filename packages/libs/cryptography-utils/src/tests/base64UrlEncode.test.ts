@@ -1,4 +1,5 @@
 import { throws } from 'assert';
+import { describe, expect, it } from 'vitest';
 import { base64UrlEncode } from '../base64UrlEncode';
 import { uint8ArrayToStr } from '../uint8ArrayToStr';
 

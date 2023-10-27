@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { literal, readKeyset, unpackLiterals } from '../pact-helpers';
 
 describe('readKeyset', () => {

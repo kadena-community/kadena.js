@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { uint8ArrayToStr } from '../uint8ArrayToStr';
 
 test('should convert Uint8 array to a string', () => {

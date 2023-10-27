@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import * as ace from 'ace-builds/src-noconflict/ace';
 import React from 'react';
+import { beforeAll, describe, expect, it } from 'vitest';
 import AceViewerComponent from './index';
 
 beforeAll(() => {

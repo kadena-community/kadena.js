@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { getLexerOutput } from '../lexer';
 
 describe('lexer', () => {

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import * as thisModule from '../index';
 
 describe('MyLib', () => {

@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { strToUint8Array } from '../strToUint8Array';
 import { uint8ArrayToStr } from '../uint8ArrayToStr';
 

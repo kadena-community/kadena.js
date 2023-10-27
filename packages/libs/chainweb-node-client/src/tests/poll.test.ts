@@ -1,22 +1,23 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import type { IPollRequestBody, IPollResponse } from '../interfaces/PactAPI';
 import { poll } from '../poll';
-import { testURL } from './mockdata/Pact';
 import { localCommandResult } from './mockdata/execCommand';
+import { testURL } from './mockdata/Pact';
 
-const restHandlers = [
-  rest.post(`${testURL}/api/v1/poll`, (req, res, ctx) => {
-    return res.once(
-      ctx.status(200),
-      ctx.json({
+const httpHandlers = [
+  http.post(
+    `${testURL}/api/v1/poll`,
+    () =>
+      HttpResponse.json({
         pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik: localCommandResult,
       }),
-    );
-  }),
+    { once: true },
+  ),
 ];
 
-const server = setupServer(...restHandlers);
+const server = setupServer(...httpHandlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());

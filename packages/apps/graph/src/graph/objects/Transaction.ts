@@ -110,5 +110,18 @@ export default builder.prismaNode('Transaction', {
         });
       },
     }),
+
+    signers: t.prismaField({
+      type: ['Signer'],
+      nullable: true,
+      // eslint-disable-next-line @typescript-eslint/typedef
+      resolve(query, parent, args, context, info) {
+        return prismaClient.signer.findMany({
+          where: {
+            requestKey: parent.requestKey,
+          },
+        });
+      },
+    }),
   }),
 });

@@ -5,8 +5,9 @@ import type {
   IUnsignedCommand,
   SignatureWithHash,
 } from '@kadena/types';
-import { rest } from 'msw';
+import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import type {
   ICommandResult,
   ILocalCommandResult,
@@ -16,20 +17,18 @@ import { local } from '../local';
 import { pactTestCommand, testURL } from './mockdata/Pact';
 import { localCommandResult } from './mockdata/execCommand';
 
-const restHandlers = [
-  rest.post(`${testURL}/api/v1/local`, (req, res, ctx) => {
-    const isPreflight = req.url.searchParams.get('preflight') === 'true';
-    return res(
-      ctx.status(200),
-      ctx.json({
-        preflightResult: localCommandResult,
-        ...(isPreflight ? { preflightWarnings: [] } : {}),
-      }),
-    );
+const httpHandlers = [
+  http.post(`${testURL}/api/v1/local`, ({ request }) => {
+    const url = new URL(request.url);
+    const isPreflight = url.searchParams.get('preflight') === 'true';
+    return HttpResponse.json({
+      preflightResult: localCommandResult,
+      ...(isPreflight ? { preflightWarnings: [] } : {}),
+    });
   }),
 ];
 
-const server = setupServer(...restHandlers);
+const server = setupServer(...httpHandlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());

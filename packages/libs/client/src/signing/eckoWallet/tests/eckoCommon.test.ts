@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 /** @vitest-environment jsdom */
 
 import { connect, isConnected, isInstalled } from '../eckoCommon';

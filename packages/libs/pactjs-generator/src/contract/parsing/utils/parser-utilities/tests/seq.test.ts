@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { getPointer } from '../../getPointer';
 import { atom } from '../atom';
 import { id } from '../id';

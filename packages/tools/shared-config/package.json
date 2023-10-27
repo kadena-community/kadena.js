@@ -2,5 +2,14 @@
   "name": "@kadena-dev/shared-config",
   "version": "1.0.0",
   "description": "Shared configurations",
-  "license": "MIT"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/tools/shared-config"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "vite-tsconfig-paths": "^4.2.1",
+    "vitest": "^0.34.6"
+  }
 }

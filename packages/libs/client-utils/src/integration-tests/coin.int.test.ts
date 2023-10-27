@@ -1,4 +1,5 @@
 import { createSignWithKeypair } from '@kadena/client';
+import { describe, expect, it } from 'vitest';
 
 import {
   createAccount,
@@ -18,12 +19,12 @@ import {
 } from './test-data/accounts';
 
 const accountOne = {
-  account: `receiver${Date.now()}`,
-  publicKey: sourceAccount.publicKey,
+  ...sourceAccount,
+  account: `one-${Date.now()}`,
 };
 const accountTwo = {
-  account: `new${Date.now()}`,
-  publicKey: targetAccount.publicKey,
+  ...targetAccount,
+  account: `two-${Date.now()}`,
 };
 
 describe('transferCreate', () => {
@@ -46,7 +47,7 @@ describe('transferCreate', () => {
         chainId: '0',
       },
       {
-        host: 'http://localhost:8080',
+        host: 'http://127.0.0.1:8080',
         defaults: {
           networkId: 'fast-development',
         },
@@ -104,7 +105,7 @@ describe('getBalance', () => {
       accountOne.account,
       'fast-development',
       '0',
-      'http://localhost:8080',
+      'http://127.0.0.1:8080',
     );
     expect(balance).toBe(100);
   });
@@ -116,7 +117,7 @@ describe('getDetails', () => {
       accountOne.account,
       'fast-development',
       '0',
-      'http://localhost:8080',
+      'http://127.0.0.1:8080',
     );
     expect(data).toEqual({
       account: accountOne.account,
@@ -139,17 +140,17 @@ describe('createAccount', () => {
           pred: 'keys-all',
         },
         gasPayer: {
-          account: sourceAccount.account,
-          publicKeys: [sourceAccount.publicKey],
+          account: sender00Account.account,
+          publicKeys: [sender00Account.publicKey],
         },
         chainId: '0',
       },
       {
-        host: 'http://localhost:8080',
+        host: 'http://127.0.0.1:8080',
         defaults: {
           networkId: 'fast-development',
         },
-        sign: createSignWithKeypair([sourceAccount]),
+        sign: createSignWithKeypair([sender00Account]),
       },
     ).execute();
 
@@ -162,19 +163,19 @@ describe('transfer', () => {
     const result = await transfer(
       {
         sender: {
-          account: sourceAccount.account,
-          publicKeys: [sourceAccount.publicKey],
+          account: accountOne.account,
+          publicKeys: [accountOne.publicKey],
         },
         receiver: accountTwo.account,
         amount: '10',
         chainId: '0',
       },
       {
-        host: 'http://localhost:8080',
+        host: 'http://127.0.0.1:8080',
         defaults: {
           networkId: 'fast-development',
         },
-        sign: createSignWithKeypair([sourceAccount]),
+        sign: createSignWithKeypair([accountOne]),
       },
     ).execute();
 
@@ -184,7 +185,7 @@ describe('transfer', () => {
       accountTwo.account,
       'fast-development',
       '0',
-      'http://localhost:8080',
+      'http://127.0.0.1:8080',
     );
 
     expect(balance).toBe(10);
@@ -211,7 +212,7 @@ describe('cross chain transfer', () => {
         targetChainId: '1',
       },
       {
-        host: 'http://localhost:8080',
+        host: 'http://127.0.0.1:8080',
         defaults: {
           networkId: 'fast-development',
         },
@@ -225,7 +226,7 @@ describe('cross chain transfer', () => {
       accountOne.account,
       'fast-development',
       '1',
-      'http://localhost:8080',
+      'http://127.0.0.1:8080',
     );
 
     expect(balance).toBe(10);

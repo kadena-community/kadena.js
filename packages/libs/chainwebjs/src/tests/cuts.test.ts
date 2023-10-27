@@ -1,5 +1,6 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import chainweb from '..';
 import { blockByHeightCurrentCutMock } from './mocks/blockByHeightCurrentCutMock';
 import { cutPeersMock } from './mocks/cutPeers';
@@ -32,9 +33,10 @@ describe('chainweb.cut', () => {
 
   it('gets p2p cuts of network and validates', async () => {
     server.resetHandlers(
-      rest.get(
+      http.get(
         'https://us-e1.chainweb.com/chainweb/0.0/mainnet01/cut/peer',
-        (req, res, ctx) => res.once(ctx.status(200), ctx.json(cutPeersMock)),
+        () => HttpResponse.json(cutPeersMock),
+        { once: true },
       ),
     );
 
@@ -52,10 +54,10 @@ describe('chainweb.cut', () => {
 
   it('gets current cut from chainweb node', async () => {
     server.resetHandlers(
-      rest.get(
+      http.get(
         'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
-        (req, res, ctx) =>
-          res.once(ctx.status(200), ctx.json(blockByHeightCurrentCutMock)),
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
       ),
     );
 

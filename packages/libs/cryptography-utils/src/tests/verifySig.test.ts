@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { base64UrlDecodeArr } from '../base64UrlDecodeArr';
 import { hexToBin } from '../hexToBin';
 import { verifySig } from '../verifySig';

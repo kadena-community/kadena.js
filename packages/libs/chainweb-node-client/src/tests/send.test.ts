@@ -1,44 +1,57 @@
 import { pactTestCommand, sign } from '@kadena/cryptography-utils';
 import { ensureSignedCommand } from '@kadena/pactjs';
 import type { ICommand, IUnsignedCommand, SignCommand } from '@kadena/types';
-import { rest } from 'msw';
+import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import { createSendRequest } from '../createSendRequest';
 import type { ISendRequestBody, SendResponse } from '../interfaces/PactAPI';
 import { send } from '../send';
 import { testURL } from './mockdata/Pact';
 
-const restHandlers = [
-  rest.post(`${testURL}/api/v1/send`, async (req, res, ctx) => {
-    const body = await req.json<ISendRequestBody>();
-    const requestKeys = body.cmds.map((cmd) => cmd.hash);
-    return res.once(ctx.status(200), ctx.json({ requestKeys }));
-  }),
-  rest.post(`${testURL}/wrongChain/api/v1/send`, async (req, res, ctx) => {
-    const body = await req.json<ISendRequestBody>();
-    const requestKeys = body.cmds.map((cmd) => cmd.hash);
-    const errorMsg = requestKeys
-      .map(
-        (rk) =>
-          `Error: Validation failed for hash "${rk}": Transaction metadata (chain id, chainweb version) conflicts with this endpoint`,
-      )
-      .join('\n');
-    return res.once(ctx.status(403), ctx.text(errorMsg));
-  }),
-  rest.post(`${testURL}/duplicate/api/v1/send`, async (req, res, ctx) => {
-    const body = await req.json<ISendRequestBody>();
-    const requestKeys = body.cmds.map((cmd) => cmd.hash);
-    const errorMsg = requestKeys
-      .map(
-        (rk) =>
-          `Error: Validation failed for hash "${rk}": Transaction already exists on chain`,
-      )
-      .join('\n');
-    return res.once(ctx.status(403), ctx.text(errorMsg));
-  }),
+const httpHandlers = [
+  http.post<never, ISendRequestBody>(
+    `${testURL}/api/v1/send`,
+    async ({ request }) => {
+      const body = await request.json();
+      const requestKeys = body.cmds.map((cmd) => cmd.hash);
+      return HttpResponse.json({ requestKeys });
+    },
+    { once: true },
+  ),
+  http.post<never, ISendRequestBody>(
+    `${testURL}/wrongChain/api/v1/send`,
+    async ({ request }) => {
+      const body = await request.json();
+      const requestKeys = body.cmds.map((cmd) => cmd.hash);
+      const errorMsg = requestKeys
+        .map(
+          (rk) =>
+            `Error: Validation failed for hash "${rk}": Transaction metadata (chain id, chainweb version) conflicts with this endpoint`,
+        )
+        .join('\n');
+      return new HttpResponse(errorMsg, { status: 403 });
+    },
+    { once: true },
+  ),
+  http.post<never, ISendRequestBody>(
+    `${testURL}/duplicate/api/v1/send`,
+    async ({ request }) => {
+      const body = await request.json();
+      const requestKeys = body.cmds.map((cmd) => cmd.hash);
+      const errorMsg = requestKeys
+        .map(
+          (rk) =>
+            `Error: Validation failed for hash "${rk}": Transaction already exists on chain`,
+        )
+        .join('\n');
+      return new HttpResponse(errorMsg, { status: 403 });
+    },
+    { once: true },
+  ),
 ];
 
-const server = setupServer(...restHandlers);
+const server = setupServer(...httpHandlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());

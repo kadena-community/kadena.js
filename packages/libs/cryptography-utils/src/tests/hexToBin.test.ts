@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { hexToBin } from '../hexToBin';
 
 test('should convert hex string to Uint8Array binary object', () => {

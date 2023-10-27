@@ -32,6 +32,10 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       events {
         ...CoreEventFields
       }
+      signers {
+        publicKey
+        signature
+      }
     }
   }
 `;
