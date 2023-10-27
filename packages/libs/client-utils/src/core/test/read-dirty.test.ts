@@ -1,3 +1,5 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { IClient } from '@kadena/client';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
@@ -14,7 +16,7 @@ describe('dirtyReadClient', () => {
 
   it('calls the dirtyRead endpoint and returns the result', async () => {
     const client: IClient = {
-      dirtyRead: vitest.fn().mockResolvedValue({
+      dirtyRead: vi.fn().mockResolvedValue({
         result: { status: 'success', data: 'test-data' },
       } as ILocalCommandResult),
     } as any;

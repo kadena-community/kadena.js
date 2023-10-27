@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { asyncPipe } from '../asyncPipe';
 import { withEmitter } from '../with-emitter';
 

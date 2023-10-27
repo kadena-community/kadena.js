@@ -1,3 +1,5 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { IClient, ITransactionDescriptor } from '@kadena/client';
 import {
@@ -24,48 +26,44 @@ describe('crossChainClient', () => {
 
   it('runs a cross chain flow including exec and cont', async () => {
     const client: IClient = {
-      preflight: vitest.fn(
-        calls(
-          vitest.fn().mockResolvedValue({
-            result: { status: 'success' },
-            continuation: {
-              pactId: 'test-pact-id',
-              step: 0,
-              stepCount: 1,
-            },
-          } as ILocalCommandResult),
-        ),
-      ),
+      preflight: vi.fn().mockResolvedValue({
+        result: { status: 'success' },
+        continuation: {
+          pactId: 'test-pact-id',
+          step: 0,
+          stepCount: 1,
+        },
+      } as ILocalCommandResult),
+
       submitOne: calls(
-        vitest.fn().mockResolvedValue({
+        vi.fn().mockResolvedValue({
           chainId: '1',
           networkId: 'test-network',
           requestKey: 'first-request-key',
         } as ITransactionDescriptor),
-        vitest.fn().mockResolvedValue({
+        vi.fn().mockResolvedValue({
           chainId: '2',
           networkId: 'test-network',
           requestKey: 'second-request-key',
         } as ITransactionDescriptor),
       ),
-      listen: vitest.fn(
-        calls(
-          vitest.fn().mockResolvedValue({
-            result: { status: 'success' },
-            continuation: {
-              pactId: 'test-pact-id',
-              step: 0,
-              stepCount: 1,
-            },
-          } as ILocalCommandResult),
-          vitest.fn().mockResolvedValue({
-            result: { status: 'success', data: 'test-data' },
-          } as ILocalCommandResult),
-        ),
+      listen: calls(
+        vi.fn().mockResolvedValue({
+          result: { status: 'success' },
+          continuation: {
+            pactId: 'test-pact-id',
+            step: 0,
+            stepCount: 1,
+          },
+        } as ILocalCommandResult),
+        vi.fn().mockResolvedValue({
+          result: { status: 'success', data: 'test-data' },
+        } as ILocalCommandResult),
       ),
-      pollCreateSpv: vitest.fn().mockResolvedValue('test-spv-proof'),
+
+      pollCreateSpv: vi.fn().mockResolvedValue('test-spv-proof'),
     } as Partial<IClient> as any;
-    const sign = vitest.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] }));
+    const sign = vi.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] }));
     const crossChain = crossChainClient(
       { sign, defaults: { networkId: 'test-network' } },
       client,
@@ -157,53 +155,48 @@ describe('crossChainClient', () => {
 
   it('runs a cross chain flow including exec and cont and call the sign if gas payer is not a gas station ', async () => {
     const client: IClient = {
-      preflight: vitest.fn(
-        calls(
-          vitest.fn().mockResolvedValue({
-            result: { status: 'success' },
-            continuation: {
-              pactId: 'test-pact-id',
-              step: 0,
-              stepCount: 1,
-            },
-          } as ILocalCommandResult),
-        ),
-      ),
+      preflight: vi.fn().mockResolvedValue({
+        result: { status: 'success' },
+        continuation: {
+          pactId: 'test-pact-id',
+          step: 0,
+          stepCount: 1,
+        },
+      } as ILocalCommandResult),
+
       submitOne: calls(
-        vitest.fn().mockResolvedValue({
+        vi.fn().mockResolvedValue({
           chainId: '1',
           networkId: 'test-network',
           requestKey: 'first-request-key',
         } as ITransactionDescriptor),
-        vitest.fn().mockResolvedValue({
+        vi.fn().mockResolvedValue({
           chainId: '2',
           networkId: 'test-network',
           requestKey: 'second-request-key',
         } as ITransactionDescriptor),
       ),
-      listen: vitest.fn(
-        calls(
-          vitest.fn().mockResolvedValue({
-            result: { status: 'success' },
-            continuation: {
-              pactId: 'test-pact-id',
-              step: 0,
-              stepCount: 1,
-            },
-          } as ILocalCommandResult),
-          vitest.fn().mockResolvedValue({
-            result: { status: 'success', data: 'test-data' },
-          } as ILocalCommandResult),
-        ),
+      listen: calls(
+        vi.fn().mockResolvedValue({
+          result: { status: 'success' },
+          continuation: {
+            pactId: 'test-pact-id',
+            step: 0,
+            stepCount: 1,
+          },
+        } as ILocalCommandResult),
+        vi.fn().mockResolvedValue({
+          result: { status: 'success', data: 'test-data' },
+        } as ILocalCommandResult),
       ),
-      pollCreateSpv: vitest.fn().mockResolvedValue('test-spv-proof'),
+
+      pollCreateSpv: vi.fn().mockResolvedValue('test-spv-proof'),
     } as Partial<IClient> as any;
-    const sign = vitest.fn(
-      calls(
-        (tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] }),
-        (tx) => ({ ...tx, sigs: [{ sig: 'sig-cont-hash' }] }),
-      ),
+    const sign = calls(
+      vi.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] })),
+      vi.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-cont-hash' }] })),
     );
+
     const crossChain = crossChainClient(
       { sign, defaults: { networkId: 'test-network' } },
       client,
