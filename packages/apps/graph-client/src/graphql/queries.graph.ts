@@ -175,6 +175,10 @@ export const getTransactions: DocumentNode = gql`
           block {
             hash
           }
+          signers {
+            publicKey
+            signature
+          }
         }
       }
     }

@@ -354,13 +354,25 @@ const RequestKey: React.FC = () => {
                     <Table.Td>
                       <strong>Signers</strong>
                     </Table.Td>
-                    <Table.Td>TODO</Table.Td>
+                    <Table.Td>
+                      {transactionSubscription?.transaction?.signers?.map(
+                        (signer) => {
+                          return signer.publicKey;
+                        },
+                      )}
+                    </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Td>
                       <strong>Signatures</strong>
                     </Table.Td>
-                    <Table.Td>TODO</Table.Td>
+                    <Table.Td>
+                      {transactionSubscription?.transaction?.signers?.map(
+                        (signer) => {
+                          return signer.signature;
+                        },
+                      )}
+                    </Table.Td>
                   </Table.Tr>
                 </Table.Body>
               </Table.Root>
