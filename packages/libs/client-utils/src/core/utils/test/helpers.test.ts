@@ -89,7 +89,7 @@ describe('safeSign', () => {
       hash: 'hash',
       sigs: [{ sig: 'sig' }],
     };
-    const sign = vitest.fn().mockResolvedValue(signedTx);
+    const sign = vi.fn().mockResolvedValue(signedTx);
     const signFn = safeSign(sign);
 
     await expect(

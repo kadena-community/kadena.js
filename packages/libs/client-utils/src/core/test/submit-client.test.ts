@@ -1,3 +1,5 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { IClient, ITransactionDescriptor } from '@kadena/client';
 import {
@@ -19,19 +21,19 @@ describe('submitClient', () => {
 
   it('calls the submit endpoint and returns the result', async () => {
     const client: IClient = {
-      preflight: vitest.fn().mockResolvedValue({
+      preflight: vi.fn().mockResolvedValue({
         result: { status: 'success', data: 'test-data' },
       } as ILocalCommandResult),
-      submitOne: vitest.fn().mockResolvedValue({
+      submitOne: vi.fn().mockResolvedValue({
         chainId: '1',
         networkId: 'test-network',
         requestKey: 'test-request-key',
       } as ITransactionDescriptor),
-      listen: vitest.fn().mockResolvedValue({
+      listen: vi.fn().mockResolvedValue({
         result: { status: 'success', data: 'test-data' },
       } as ILocalCommandResult),
     } as any;
-    const sign = vitest.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] }));
+    const sign = vi.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] }));
     const submit = submitClient(
       { sign, defaults: { networkId: 'test-network' } },
       client,
