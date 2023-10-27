@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 // Start of copied styles from @kadena/react-ui Tag component
 export const tagClass = style([
   sprinkles({
-    backgroundColor: '$neutral1',
+    backgroundColor: '$layoutSurfaceCard',
     color: '$neutral6',
     borderRadius: '$xs',
     padding: '$1',
