@@ -30,15 +30,17 @@ import AccountNameField from '@/components/Global/AccountNameField';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
 import { PublicKeyField } from '@/components/Global/PublicKeyField';
-import Routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
+import type { ISidebarToolbarItem } from '@/types/Layout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -65,6 +67,7 @@ const isCustomError = (error: unknown): error is ICommandResult => {
 
 const NewAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
+  const router = useRouter();
   const { selectedNetwork } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
@@ -110,13 +113,7 @@ const NewAccountFaucetPage: FC = () => {
 
   const [inputError, setInputError] = useState<string>('');
 
-  useToolbar([
-    {
-      title: t('New'),
-      icon: 'History',
-      href: Routes.FAUCET_NEW,
-    },
-  ]);
+  useToolbar(menuData as ISidebarToolbarItem[], router.pathname);
 
   useEffect(() => {
     setInputError('');

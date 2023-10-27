@@ -1,6 +1,5 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
-import Routes from '@/constants/routes';
 import { useToolbar } from '@/context/layout-context';
 import {
   helpCenterButtonClass,
@@ -10,28 +9,14 @@ import { Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
+import { menuData } from '@/constants/side-menu-items';
+import type { ISidebarToolbarItem } from '@/types/Layout';
 
 const Home: FC = () => {
   const helpCenterRef = useRef<HTMLElement | null>(null);
   const { t } = useTranslation('common');
 
-  useToolbar([
-    {
-      title: t('Faucet'),
-      icon: 'Earth',
-      href: Routes.FAUCET_NEW,
-    },
-    {
-      title: t('Transactions'),
-      icon: 'Transition',
-      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      title: t('Account'),
-      icon: 'Account',
-      href: Routes.ACCOUNT_TRANSACTIONS,
-    },
-  ]);
+  useToolbar(menuData as ISidebarToolbarItem[]);
 
   const handleOpenHelpCenter = (): void => {
     // @ts-ignore

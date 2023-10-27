@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const sidebarClass = style([
@@ -7,7 +7,7 @@ export const sidebarClass = style([
     left: 0,
     top: '$16',
     bottom: '$10',
-    backgroundColor: '$gray90',
+    backgroundColor: '$neutral1',
     display: 'flex',
   }),
 ]);
@@ -16,6 +16,8 @@ export const gridItemMiniMenuStyle = style([
   {
     height: '100%',
     borderRight: `1px solid ${vars.colors.$borderSubtle}`,
+    flexDirection: 'column',
+    position: 'relative',
   },
 ]);
 
@@ -25,29 +27,68 @@ export const gridMiniMenuListButtonStyle = style([
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    color: '$gray20',
     padding: '$5',
   }),
   {
     transition: 'all 0.1s ease',
     width: '100%',
     selectors: {
-      '&:hover': {
-        color: vars.colors.$white,
+      [`${darkThemeClass} &:hover`]: {
+        color: vars.colors.$blue60,
       },
-      '&:active': {
-        color: vars.colors.$red20,
+      [`&:hover`]: {
+        color: vars.colors.$blue60,
       },
-      '&.active': {
-        backgroundColor: vars.colors.$pink80,
+      [`${darkThemeClass} &.active`]: {
+        backgroundColor: vars.colors.$blue80,
       },
-      '&.active:hover': {
-        color: vars.colors.$pink40,
+      [`&.active`]: {
+        backgroundColor: vars.colors.$blue20,
+      },
+      [`${darkThemeClass} &.active:hover`]: {
+        color: vars.colors.$blue20,
+      },
+      ['&.active:hover']: {
+        color: vars.colors.$blue60,
       },
     },
   },
 ]);
 
+export const gridMiniMenuLinkButtonStyle = style([
+  sprinkles({
+    outline: 'none',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: '$5',
+    textAlign: 'left',
+  }),
+  {
+    transition: 'all 0.1s ease',
+    width: '100%',
+    selectors: {
+      [`${darkThemeClass} &:hover`]: {
+        color: vars.colors.$blue60,
+      },
+      [`&:hover`]: {
+        color: vars.colors.$blue60,
+      },
+      [`${darkThemeClass} &.active`]: {
+        backgroundColor: vars.colors.$blue80,
+      },
+      [`&.active`]: {
+        backgroundColor: vars.colors.$blue20,
+      },
+      [`${darkThemeClass} &.active:hover`]: {
+        color: vars.colors.$blue20,
+      },
+      ['&.active:hover']: {
+        color: vars.colors.$blue60,
+      },
+    },
+  },
+]);
 export const gridMiniMenuListItemStyle = style([
   {
     borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
@@ -61,6 +102,18 @@ export const gridMiniMenuListStyle = style([
   }),
   {
     listStyle: 'none',
+  },
+]);
+
+export const bottomIconsContainerStyle = style([
+  sprinkles({
+    padding: 0,
+    margin: 0,
+    position: 'absolute',
+    bottom: 0,
+  }),
+  {
+    borderTop: `1px solid ${vars.colors.$borderSubtle}`,
   },
 ]);
 
@@ -86,5 +139,17 @@ export const subMenuTitleClass = style([
   }),
   {
     borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
+  },
+]);
+
+export const iconLeftStyle = style([
+  {
+    transform: 'rotate(270deg)',
+  },
+]);
+
+export const iconRightStyle = style([
+  {
+    transform: 'rotate(90deg)',
   },
 ]);

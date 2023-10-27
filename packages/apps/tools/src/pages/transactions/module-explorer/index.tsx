@@ -6,7 +6,6 @@ import type {
 } from '@/components/Global/ModuleExplorer/types';
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
-import Routes from '@/constants/routes';
 import {
   DefaultValues,
   StorageKeys,
@@ -34,6 +33,8 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback, useState } from 'react';
+import { menuData } from '@/constants/side-menu-items';
+import type { ISidebarToolbarItem } from '@/types/Layout';
 import { getCookieValue, getQueryValue } from './utils';
 
 const QueryParams = {
@@ -288,23 +289,7 @@ const ModuleExplorerPage = (
 
   const { t } = useTranslation('common');
 
-  useToolbar([
-    {
-      title: t('Cross Chain'),
-      icon: 'Transition',
-      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      title: t('Finalize Cross Chain'),
-      icon: 'TransitionMasked',
-      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
-    },
-    {
-      title: t('Module Explorer'),
-      icon: 'Earth',
-      href: Routes.MODULE_EXPLORER,
-    },
-  ]);
+  useToolbar(menuData as ISidebarToolbarItem[], router.pathname);
 
   return (
     <>

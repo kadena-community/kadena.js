@@ -8,6 +8,8 @@ export interface IMenuItem {
 
 export interface ISidebarSubMenuItem
   extends Omit<IAccordionProps, 'isOpen' | 'onToggle' | 'children'> {
+  title: string;
+  href: string;
   items: ITreeProps[];
 }
 export interface ISidebarToolbarItem {

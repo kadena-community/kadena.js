@@ -3,9 +3,11 @@ import AccountNameField, {
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
+import type { ISidebarToolbarItem } from '@/types/Layout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
@@ -40,13 +42,7 @@ const CheckTransactions: FC = () => {
   const { selectedNetwork: network } = useWalletConnectClient();
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
-  useToolbar([
-    {
-      title: t('Account Transactions'),
-      icon: 'Account',
-      href: Routes.ACCOUNT_TRANSACTIONS_FILTERS,
-    },
-  ]);
+  useToolbar(menuData as ISidebarToolbarItem[], router.pathname);
 
   async function checkTransactionsEvent(data: FormData): Promise<void> {
     debug(checkTransactionsEvent.name);
