@@ -1,12 +1,19 @@
 name: E2E tests
 
-on: [pull_request]
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
-  e2e-tools:
-    name: E2E - Tools
+  end-to-end-tests:
+    name: ${{ matrix.package }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    strategy:
+      matrix:
+        package: [ '@kadena/tools' ]
 
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -33,20 +40,19 @@ jobs:
 
       - name: Install browsers
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
-        working-directory: packages/tools/e2e-tests
 
-      - name: Build Tools dApp
-        run: pnpm --filter @kadena/tools...  build
+      - name: build dApp
+        run: pnpm --filter ${{ matrix.package }} build
         env:
           # Dummy values for faucet transactions.
           FAUCET_PUBLIC_KEY: 782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e
           FAUCET_PRIVATE_KEY: 93fd78bd1e79a3b593d4732b76050b418aeefa5e4e6ea80f351b4c3a5b0dd19f
 
-      - name: Run Playwright tests
-        run: pnpm run test:e2e -- --project=tools-app
+      - name: Run E2E tests
+        run: pnpm run test:e2e -- --project=${{ matrix.package }}
         env:
           CI: true
-          TESTOBJECT: '@kadena/tools'
+          TESTOBJECT: ${{ matrix.package }}
 
       - uses: actions/upload-artifact@v3
         if: always()

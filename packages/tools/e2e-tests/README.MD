@@ -44,7 +44,7 @@ pnpm --filter @kadena-dev/e2e-tests run install:chromium
     described in the [playwright.config.ts][4]
 
 ```sh
- pnpm --filter @kadena-dev/e2e-tests run test:e2e --project=tools-app
+ pnpm --filter @kadena-dev/e2e-tests run test:e2e --project=@kadena/tools
 ```
 
 [1]: #table-of-contents
