@@ -8,6 +8,7 @@ import clear from 'clear';
 import type { Command, Option } from 'commander';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
+import { defaultDevnetsPath } from '../constants/devnets.js';
 
 export interface ICustomChoice {
   value: string;
@@ -237,20 +238,28 @@ export function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function getExistingNetworks(): ICustomChoice[] {
-  if (!existsSync(defaultNetworksPath)) {
-    mkdirSync(defaultNetworksPath, { recursive: true });
+function getConfiguration(configurationPath: string): ICustomChoice[] {
+  if (!existsSync(configurationPath)) {
+    mkdirSync(configurationPath, { recursive: true });
   }
 
   try {
-    return readdirSync(defaultNetworksPath).map((filename) => ({
+    return readdirSync(configurationPath).map((filename) => ({
       value: path.basename(filename.toLowerCase(), '.yaml'),
       name: path.basename(filename.toLowerCase(), '.yaml'),
     }));
   } catch (error) {
-    console.error('Error reading networks directory:', error);
+    console.error(`Error reading ${configurationPath} directory:`, error);
     return [];
   }
+}
+
+export function getExistingNetworks(): ICustomChoice[] {
+  return getConfiguration(defaultNetworksPath);
+}
+
+export function getExistingDevnets(): ICustomChoice[] {
+  return getConfiguration(defaultDevnetsPath);
 }
 
 export function getExistingProjects(): ICustomChoice[] {
