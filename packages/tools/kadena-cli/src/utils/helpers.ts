@@ -9,6 +9,7 @@ import { globalOptions } from './globalOptions.js';
 import { defaultKeypairsPath } from '../constants/keypairs.js';
 import { defaultKeysetsPath } from '../constants/keysets.js';
 import { defaultAccountsPath } from '../constants/accounts.js';
+import { defaultDevnetsPath } from '../constants/devnets.js';
 
 export interface ICustomChoice {
   value: string;
@@ -318,14 +319,22 @@ export async function getExistingNetworks(): Promise<ICustomChoice[]> {
   await ensureNetworksConfiguration();
 
   try {
-    return readdirSync(defaultNetworksPath).map((filename) => ({
+    return readdirSync(configurationPath).map((filename) => ({
       value: path.basename(filename.toLowerCase(), '.yaml'),
       name: path.basename(filename.toLowerCase(), '.yaml'),
     }));
   } catch (error) {
-    console.error('Error reading networks directory:', error);
+    console.error(`Error reading ${configurationPath} directory:`, error);
     return [];
   }
+}
+
+export function getExistingNetworks(): ICustomChoice[] {
+  return getConfiguration(defaultNetworksPath);
+}
+
+export function getExistingDevnets(): ICustomChoice[] {
+  return getConfiguration(defaultDevnetsPath);
 }
 
 export function getExistingProjects(): ICustomChoice[] {
