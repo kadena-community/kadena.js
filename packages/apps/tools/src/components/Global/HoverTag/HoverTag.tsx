@@ -18,7 +18,7 @@ export const HoverTag = ({ value }: IHoverTagProps) => {
   return (
     <>
       <span
-        data-testid="kda-masked-value-tag"
+        data-testid="kda-hover-tag"
         className={tagClass}
         onMouseEnter={(e: React.MouseEvent<HTMLElement>) =>
           Tooltip.handler(e, ref)
