@@ -87,7 +87,7 @@ const Header: FC<IHeaderProps> = () => {
               {network.label}
             </option>
           ))}
-          <option value="custom">{t('+ add network')}</option>
+          {/* <option value="custom">{t('+ add network')}</option> */}
         </NavHeader.Select>
         <div className={walletConnectWrapperStyle}>
           <WalletConnectButton />
