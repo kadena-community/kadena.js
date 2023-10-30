@@ -1,6 +1,5 @@
 import { Command, Option } from 'commander';
-import { createPrincipal } from './create-principal';
-import { createAccount, logger, sender00 } from './helper';
+import { generateKeyPair, logger } from './helper';
 import { simulate } from './simulate';
 import { transfer } from './transfer';
 
@@ -21,7 +20,7 @@ program
     try {
       let publicKey = args.key;
       if (publicKey === undefined) {
-        const account = createAccount();
+        const account = generateKeyPair();
         publicKey = account.publicKey;
         logger.info('Account created:', account);
       }
@@ -38,7 +37,7 @@ program
     new Option(
       '-a, --numberOfAccounts <number>',
       'Number of accounts to create',
-    ).default(5),
+    ).default(6),
   )
   .addOption(
     new Option(
@@ -65,14 +64,7 @@ program
   .action(async (args) => {
     try {
       logger.info('Simulation config parameters:', args);
-      const principal = await createPrincipal({
-        keys: [
-          sender00.publicKey,
-          '7bafb3968d7e57e832b450a873e9f562fbbdb109ef4b50575a9297cb8e37b140',
-        ],
-      });
-      console.log(principal);
-      // await simulate(args);
+      await simulate(args);
     } catch (error) {
       console.error(error);
     }
