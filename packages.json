@@ -78,6 +78,12 @@
     "path": "."
   },
   {
+    "name": "@kadena/kadena-cli",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/tools/kadena-cli"
+  },
+  {
     "name": "@kadena/kda-cli",
     "version": "0.0.1",
     "private": true,

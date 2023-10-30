@@ -1783,18 +1783,12 @@ importers:
       '@scure/bip39':
         specifier: ^1.2.1
         version: 1.2.1
-      '@types/clear':
-        specifier: ^0.1.2
-        version: 0.1.3
-      '@types/js-yaml':
-        specifier: ^4.0.5
-        version: 4.0.5
       cardano-crypto.js:
         specifier: https://github.com/kadena-io/cardano-crypto.js.git#jam@chainweaver-keygen
         version: github.com/kadena-io/cardano-crypto.js/c50fb8c2fcd4e8d396506fb0c07de9d658aa1bae
       chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
+        specifier: ^5.2.0
+        version: 5.3.0
       clear:
         specifier: ^0.1.0
         version: 0.1.0
@@ -1852,7 +1846,10 @@ importers:
         version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
       '@rushstack/heft':
         specifier: ~0.50.6
-        version: 0.50.6(@types/node@16.18.48)
+        version: 0.50.6(@types/node@18.17.14)
+      '@types/clear':
+        specifier: ^0.1.2
+        version: 0.1.3
       '@types/cross-spawn':
         specifier: ~6.0.2
         version: 6.0.3
@@ -1865,12 +1862,15 @@ importers:
       '@types/isomorphic-fetch':
         specifier: ~0.0.36
         version: 0.0.36
+      '@types/js-yaml':
+        specifier: ^4.0.5
+        version: 4.0.5
       '@types/mkdirp':
         specifier: ~1.0.2
         version: 1.0.2
       '@types/node':
-        specifier: ^16.0.0
-        version: 16.18.48
+        specifier: ^18.17.14
+        version: 18.17.14
       '@types/rimraf':
         specifier: ~3.0.2
         version: 3.0.2
@@ -1878,8 +1878,11 @@ importers:
         specifier: ^8.45.0
         version: 8.45.0
       prettier:
-        specifier: ~3.0.0
+        specifier: ~3.0.3
         version: 3.0.3
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
 
   packages/tools/kda-cli:
     dependencies:
@@ -8827,17 +8830,6 @@ packages:
       - supports-color
       - typescript
 
-  /@rushstack/heft-config-file@0.12.2(@types/node@16.18.48):
-    resolution: {integrity: sha512-luAU7LLtW50A3wv3U5YaFCpu0zn9TrAt6rcN28B3eD1sgCFbYH+VCmrPYzJEbzWXJhl1WpGbvObR6avVh5cc8w==}
-    engines: {node: '>=10.13.0'}
-    dependencies:
-      '@rushstack/node-core-library': 3.59.1(@types/node@16.18.48)
-      '@rushstack/rig-package': 0.3.19
-      jsonpath-plus: 4.0.0
-    transitivePeerDependencies:
-      - '@types/node'
-    dev: true
-
   /@rushstack/heft-config-file@0.12.2(@types/node@18.17.14):
     resolution: {integrity: sha512-luAU7LLtW50A3wv3U5YaFCpu0zn9TrAt6rcN28B3eD1sgCFbYH+VCmrPYzJEbzWXJhl1WpGbvObR6avVh5cc8w==}
     engines: {node: '>=10.13.0'}
@@ -8845,29 +8837,6 @@ packages:
       '@rushstack/node-core-library': 3.59.1(@types/node@18.17.14)
       '@rushstack/rig-package': 0.3.19
       jsonpath-plus: 4.0.0
-    transitivePeerDependencies:
-      - '@types/node'
-    dev: true
-
-  /@rushstack/heft@0.50.6(@types/node@16.18.48):
-    resolution: {integrity: sha512-Y7vD26LF64ZBbLn3jXq3/b8tUY1JqYxQJip1PrqWUXfMFwnIgiHwrntklTKOJ5xLYSY9TcNZcdP1XSb7jDrEjg==}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
-    dependencies:
-      '@rushstack/heft-config-file': 0.12.2(@types/node@16.18.48)
-      '@rushstack/node-core-library': 3.59.1(@types/node@16.18.48)
-      '@rushstack/rig-package': 0.3.19
-      '@rushstack/ts-command-line': 4.13.3
-      '@types/tapable': 1.0.6
-      argparse: 1.0.10
-      chokidar: 3.4.3
-      fast-glob: 3.2.12
-      glob: 7.0.6
-      glob-escape: 0.0.2
-      prettier: 2.3.2
-      semver: 7.3.8
-      tapable: 1.1.3
-      true-case-path: 2.2.1
     transitivePeerDependencies:
       - '@types/node'
     dev: true
@@ -8893,24 +8862,6 @@ packages:
       true-case-path: 2.2.1
     transitivePeerDependencies:
       - '@types/node'
-    dev: true
-
-  /@rushstack/node-core-library@3.59.1(@types/node@16.18.48):
-    resolution: {integrity: sha512-iy/xaEhXGpX+DY1ZzAtNA+QPw+9+TJh773Im+JxG4R1fu00/vWq470UOEj6upxlUxmp0JxhnmNRxzfptHrn/Uw==}
-    peerDependencies:
-      '@types/node': '*'
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-    dependencies:
-      '@types/node': 16.18.48
-      colors: 1.2.5
-      fs-extra: 7.0.1
-      import-lazy: 4.0.0
-      jju: 1.4.0
-      resolve: 1.22.4
-      semver: 7.3.8
-      z-schema: 5.0.5
     dev: true
 
   /@rushstack/node-core-library@3.59.1(@types/node@18.17.14):
@@ -11079,7 +11030,7 @@ packages:
 
   /@types/clear@0.1.3:
     resolution: {integrity: sha512-T9pwLqQsOl5Sd1QGGkVbzHQkIvVIBUJkh8r9XcOxy5dukshynYRQx5mU4KVWYAVkakKwpJ4DWNYdT7LMFJlTxg==}
-    dev: false
+    dev: true
 
   /@types/concat-stream@2.0.0:
     resolution: {integrity: sha512-t3YCerNM7NTVjLuICZo5gYAXYoDvpuuTceCcFQWcDQz26kxUR5uIWolxbIR5jRNIXpMqhOpW/b8imCR1LEmuJw==}
@@ -11285,6 +11236,7 @@ packages:
 
   /@types/js-yaml@4.0.5:
     resolution: {integrity: sha512-FhpRzf927MNQdRZP0J5DLIdTXhjLYzeUTmLAu69mnVksLH9CJY3IuSeEgbKUki7GQZm0WqDkGzyxju2EZGD2wA==}
+    dev: true
 
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}
