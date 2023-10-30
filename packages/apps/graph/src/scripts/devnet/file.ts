@@ -11,7 +11,12 @@ export interface IFileData {
   type: TransferType;
 }
 
-export type TransferType = 'fund' | 'transfer' | 'xchaintransfer' | undefined;
+export type TransferType =
+  | 'fund'
+  | 'transfer'
+  | 'xchaintransfer'
+  | 'safe-transfer'
+  | undefined;
 
 export function createDir(directory: string): void {
   if (!fs.existsSync(directory)) {
