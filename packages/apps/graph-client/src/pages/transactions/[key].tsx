@@ -2,6 +2,7 @@ import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
 import routes from '@/constants/routes';
+import { formatCode, formatLisp } from '@/utils/formatter';
 import { Box, Breadcrumbs, Link, Notification, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -64,8 +65,13 @@ const RequestKey: React.FC = () => {
                     icon="Check"
                     variant="outlined"
                   >
-                    Transaction succeeded with status:{' '}
-                    {transactionSubscription?.transaction?.goodResult}
+                    Transaction succeeded with status:
+                    <br />
+                    <pre>
+                      {formatCode(
+                        transactionSubscription?.transaction?.goodResult,
+                      )}
+                    </pre>
                   </Notification.Root>
                 )}
                 {!transactionSubscription?.transaction?.goodResult &&
@@ -117,7 +123,13 @@ const RequestKey: React.FC = () => {
                       <strong>Code</strong>
                     </Table.Td>
                     <Table.Td>
-                      {transactionSubscription?.transaction?.code}
+                      <pre>
+                        {formatLisp(
+                          JSON.parse(
+                            transactionSubscription?.transaction?.code,
+                          ),
+                        )}
+                      </pre>
                     </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
@@ -140,9 +152,21 @@ const RequestKey: React.FC = () => {
                               <strong>Result</strong>
                             </Table.Td>
                             <Table.Td>
-                              {transactionSubscription?.transaction
-                                ?.goodResult ||
-                                transactionSubscription?.transaction?.badResult}
+                              <pre>
+                                {transactionSubscription?.transaction
+                                  ?.goodResult
+                                  ? formatCode(
+                                      transactionSubscription.transaction
+                                        .goodResult,
+                                    )
+                                  : transactionSubscription?.transaction
+                                      ?.badResult
+                                  ? formatCode(
+                                      transactionSubscription.transaction
+                                        .badResult,
+                                    )
+                                  : 'Unknown'}
+                              </pre>
                             </Table.Td>
                           </Table.Tr>
                           <Table.Tr>
@@ -166,10 +190,15 @@ const RequestKey: React.FC = () => {
                               <strong>Continuation</strong>
                             </Table.Td>
                             <Table.Td>
-                              {
-                                transactionSubscription?.transaction
+                              <pre>
+                                {transactionSubscription?.transaction
                                   ?.continuation
-                              }
+                                  ? formatCode(
+                                      transactionSubscription.transaction
+                                        .continuation,
+                                    )
+                                  : 'None'}
+                              </pre>
                             </Table.Td>
                           </Table.Tr>
                           <Table.Tr>
@@ -207,11 +236,7 @@ const RequestKey: React.FC = () => {
                                   <strong>Parameters</strong>
                                 </Table.Td>
                                 <Table.Td>
-                                  <pre>
-                                    {JSON.stringify(
-                                      JSON.parse(event.parameterText),
-                                    )}
-                                  </pre>
+                                  <pre>{formatCode(event.parameterText)}</pre>
                                 </Table.Td>
                               </Table.Tr>
                             </Table.Body>

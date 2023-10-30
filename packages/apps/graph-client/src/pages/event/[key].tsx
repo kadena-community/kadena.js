@@ -1,6 +1,7 @@
 import { useGetEventByNameSubscription } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
+import { formatCode } from '@/utils/formatter';
 import routes from '@constants/routes';
 import { Box, Breadcrumbs, Notification, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
@@ -89,8 +90,10 @@ const Event: React.FC = () => {
                                                     subparameter
                                                   ) : (
                                                     <pre>
-                                                      {JSON.stringify(
-                                                        subparameter,
+                                                      {formatCode(
+                                                        JSON.stringify(
+                                                          subparameter,
+                                                        ),
                                                       )}
                                                     </pre>
                                                   )}

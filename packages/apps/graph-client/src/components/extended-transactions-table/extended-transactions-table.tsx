@@ -2,6 +2,7 @@ import { Box, Button, Link, Select, Table } from '@kadena/react-ui';
 
 import type { GetTransactionsQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
+import { formatLisp } from '@/utils/formatter';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -196,7 +197,9 @@ export const ExtendedTransactionsTable = (
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  {edge?.node.code || (
+                  {edge?.node.code ? (
+                    <pre>{formatLisp(JSON.parse(edge.node.code))}</pre>
+                  ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
                 </Table.Td>
