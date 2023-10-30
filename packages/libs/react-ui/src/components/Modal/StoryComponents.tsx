@@ -1,8 +1,8 @@
-import { Link } from '@components/Link';
-import { Stack } from '@components/Stack';
-import { Text } from '@components/Typography';
 import type { FC } from 'react';
 import React from 'react';
+import { Link } from '../Link';
+import { Stack } from '../Stack';
+import { Text } from '../Typography';
 
 export const ModalContent: FC = () => {
   return (

@@ -2,7 +2,6 @@ import { SystemIcon } from '@components/Icon';
 import cn from 'classnames';
 import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
 import React from 'react';
-import type { PressEvent } from 'react-aria';
 import type { colorVariants, typeVariants } from './Button.css';
 import {
   activeClass,

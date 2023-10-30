@@ -1,14 +1,15 @@
-import { Button } from '@components/Button';
-import type { IModalProps } from '@components/Modal';
-import { Modal } from '@components/Modal';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Button } from '../Button';
+import type { IModalProps } from '../Modal';
+import { Modal } from './Modal';
 import { ModalContent } from './StoryComponents';
 
-import { useModal } from './useModal';
+import { useOverlayTrigger } from 'react-aria';
+import { useOverlayTriggerState } from 'react-stately';
 
 const meta: Meta<{ title?: string } & IModalProps> = {
-  title: 'Layout/Modal',
+  title: 'Overlays/Modal',
   parameters: {
     status: {
       type: ['inDevelopment'],
@@ -16,36 +17,49 @@ const meta: Meta<{ title?: string } & IModalProps> = {
     docs: {
       description: {
         component:
-          'The component library exposes a `ModalProvider` and `useModal` hook that can be used with an element with id "modalportal" to display content in a modal.<br><br>To render a modal you need to add `<div id="modalportal" />` as the last child of the document body and wrap your content in the `ModalProvider` component. Then you can pass jsx and a title to the `renderModal` function from the `useModal` hook to render content in the modal.<br><br>See the code for this story for an example.',
+          'This is a generic modal component that can be used to render any content inside a modal., if you want to render a modal with a specific layout, you can use the `Dialog` component.',
       },
-    },
-  },
-  argTypes: {
-    title: {
-      control: {
-        type: 'text',
-      },
-      description: 'Title of the modal.',
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<{ title?: string } & IModalProps>;
+type Story = StoryObj<IModalProps>;
 
 export const Primary: Story = {
   name: 'Modal',
-  args: {
-    title: 'Modal Title',
-  },
-  render: ({ title }) => {
-    const { triggerProps, modalProps } = useModal();
+  render: () => {
+    const state = useOverlayTriggerState({});
+    const { triggerProps, overlayProps } = useOverlayTrigger(
+      { type: 'dialog' },
+      state,
+    );
 
     return (
       <>
-        <Button {...triggerProps}>Modal Trigger</Button>
-        <Modal {...modalProps} title={title}>
-          <ModalContent />
+        <Button
+          {...triggerProps}
+          onClick={() => {
+            state.open();
+          }}
+        >
+          Modal Trigger
+        </Button>
+        <Modal {...overlayProps} state={state}>
+          {(ariaModalProps, ref) => (
+            <div
+              ref={ref}
+              {...ariaModalProps}
+              style={{
+                width: '70%',
+                backgroundColor: 'white',
+                padding: 20,
+              }}
+            >
+              <ModalContent />
+              <Button onClick={state.close}>Close Button</Button>
+            </div>
+          )}
         </Modal>
       </>
     );

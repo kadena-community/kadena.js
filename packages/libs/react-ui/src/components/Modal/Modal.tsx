@@ -1,65 +1,62 @@
 'use client';
 
-import type { FC } from 'react';
-import React from 'react';
-
-import type { AriaDialogProps, AriaModalOverlayProps } from 'react-aria';
+import { mergeRefs } from '@react-aria/utils';
+import clsx from 'classnames';
+import type { FC, ReactElement, Ref } from 'react';
+import React, { cloneElement, useRef } from 'react';
+import type { AriaModalOverlayProps, ModalOverlayAria } from 'react-aria';
 import { Overlay, useModalOverlay } from 'react-aria';
 import type { OverlayTriggerState } from 'react-stately';
-import { Dialog } from './Dialog';
 import { underlayClass } from './Modal.css';
 
-export interface IModalProps
-  extends AriaModalOverlayProps,
-    Omit<OverlayTriggerState, 'open' | 'close' | 'toggle'>,
-    AriaDialogProps {
-  children: React.ReactNode;
-  title?: string;
-  open?: () => void;
-  close?: () => void;
-  toggle?: () => void;
+export interface IModalProps extends AriaModalOverlayProps {
+  className?: string;
+  state: OverlayTriggerState;
+  children:
+    | ReactElement
+    | ((
+        modalProps: ModalOverlayAria['modalProps'],
+        ref: Ref<HTMLDivElement>,
+      ) => ReactElement);
 }
 
 export const Modal: FC<IModalProps> = ({
-  title,
+  className,
   children,
-  isOpen,
-  setOpen,
+  state,
   isDismissable = true,
-  isKeyboardDismissDisabled = false,
-  open = () => setOpen(true),
-  close = () => setOpen(false),
-  toggle = () => setOpen(!isOpen),
-  ...dialogProps
+  isKeyboardDismissDisabled,
 }) => {
-  const state = {
-    isOpen,
-    setOpen,
-    open,
-    close,
-    toggle,
-  };
-  const modalRef = React.useRef(null);
+  const nodeRef = useRef<HTMLDivElement | null>(null);
+  const underlayRef = useRef<HTMLDivElement | null>(null);
   const { modalProps, underlayProps } = useModalOverlay(
-    { isDismissable, isKeyboardDismissDisabled },
+    {
+      isDismissable,
+      isKeyboardDismissDisabled,
+    },
     state,
-    modalRef,
+    nodeRef,
   );
 
-  if (!state.isOpen) return null;
+  if (!state.isOpen) {
+    return null;
+  }
 
   return (
     <Overlay>
-      <div {...underlayProps} className={underlayClass}>
-        <div {...modalProps} ref={modalRef}>
-          <Dialog
-            {...dialogProps}
-            title={title}
-            onClose={isDismissable ? close : undefined}
-          >
-            {children}
-          </Dialog>
-        </div>
+      <div
+        ref={underlayRef}
+        className={clsx(underlayClass, className)}
+        {...underlayProps}
+      >
+        {typeof children === 'function'
+          ? children(modalProps, nodeRef)
+          : cloneElement(children, {
+              ...children.props,
+              ...modalProps,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ref: mergeRefs(nodeRef, (children as any).ref),
+            })}
       </div>
     </Overlay>
   );
