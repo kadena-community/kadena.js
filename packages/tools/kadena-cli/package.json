@@ -46,6 +46,7 @@
     "@scure/bip39": "^1.2.1",
     "@types/clear": "^0.1.2",
     "@types/js-yaml": "^4.0.5",
+    "cardano-crypto.js": "https://github.com/kadena-io/cardano-crypto.js.git#jam@chainweaver-keygen",
     "chalk": "^4.1.2",
     "clear": "^0.1.0",
     "commander": "^11.0.0",
@@ -56,11 +57,10 @@
     "js-yaml": "~4.1.0",
     "mkdirp": "~1.0.4",
     "node-fetch": "~2.6.2",
+    "pact-lang-api": "^4.2.0",
     "rimraf": "~5.0.1",
     "yaml": "~2.1.1",
-    "zod": "~3.18.0",
-    "pact-lang-api": "^4.2.0",
-    "cardano-crypto.js": "https://github.com/kadena-io/cardano-crypto.js.git#jam@chainweaver-keygen"
+    "zod": "~3.18.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -77,6 +77,7 @@
     "@types/node": "^16.0.0",
     "@types/rimraf": "~3.0.2",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.0"
+    "prettier": "~3.0.0",
+    "typescript": "5.2.2"
   }
 }
