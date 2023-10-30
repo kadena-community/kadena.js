@@ -86,7 +86,7 @@ export async function crossChainTransfer({
   const pactAmount = new PactNumber(amount).toPactDecimal();
 
   const unsignedTx = startInTheFirstChain(from, to, pactAmount);
-  const signedTx = signAndAssertTransaction(from)(unsignedTx);
+  const signedTx = signAndAssertTransaction([from])(unsignedTx);
   const submittedTx = await submit(signedTx);
   inspect('Transfer Submited')(submittedTx);
   const status = await listen(submittedTx);
@@ -115,7 +115,7 @@ export async function crossChainTransfer({
     to.chainId || devnetConfig.CHAIN_ID,
   );
 
-  const signedTx2 = signAndAssertTransaction(sender00)(unsignedTx2);
+  const signedTx2 = signAndAssertTransaction([sender00])(unsignedTx2);
   const submittedTx2 = await submit(signedTx2);
   inspect('Transfer Submited')(submittedTx2);
   const status2 = await listen(submittedTx2);

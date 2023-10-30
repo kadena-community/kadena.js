@@ -53,14 +53,17 @@ export const dirtyRead = (tx: IUnsignedCommand): Promise<ICommandResult> =>
   getClient().dirtyRead(tx);
 
 export const signTransaction =
-  ({ publicKey, secretKey }: IKeyPair) =>
+  (keyPairs: IKeyPair[]) =>
   (tx: IUnsignedCommand): IUnsignedCommand | ICommand => {
-    const { sig } = sign(tx.cmd, {
-      publicKey,
-      secretKey,
-    });
-    if (!sig) throw Error('Failed to sign transaction');
-    return addSignatures(tx, { sig, pubKey: publicKey });
+    const signedTx = keyPairs.reduce((acc, keyPair) => {
+      const { sig } = sign(acc.cmd, {
+        publicKey: keyPair.publicKey,
+        secretKey: keyPair.secretKey,
+      });
+      if (!sig) throw Error('Failed to sign transaction');
+      return addSignatures(acc, { sig, pubKey: keyPair.publicKey });
+    }, tx);
+    return signedTx;
   };
 
 export const assertTransactionSigned = (
@@ -72,9 +75,9 @@ export const assertTransactionSigned = (
 };
 
 export const signAndAssertTransaction =
-  ({ publicKey, secretKey }: IKeyPair) =>
+  (keyPairs: IKeyPair[]) =>
   (tx: IUnsignedCommand): ICommand => {
-    const signedTx = signTransaction({ publicKey, secretKey })(tx);
+    const signedTx = signTransaction(keyPairs)(tx);
     const assertedTx = assertTransactionSigned(signedTx);
     return assertedTx;
   };
@@ -92,7 +95,7 @@ export const asyncPipe =
     return fns.reduce((acc, fn) => acc.then(fn), Promise.resolve(value));
   };
 
-export const createAccount = (
+export const generateKeyPair = (
   chainId: ChainId = devnetConfig.CHAIN_ID,
 ): IAccount => {
   const generatedKeyPair = genKeyPair();
@@ -115,11 +118,17 @@ export const sender00: IAccount = {
 export const getRandomNumber = (
   randomNumber: number,
   maxNumber: number,
+  canBeZero: boolean = false,
 ): number => {
   if (randomNumber > 1 || randomNumber < 0)
     throw new Error('randomNumber must be less than 1 and greater than 0');
   const generatedNumber = Math.floor(randomNumber * maxNumber);
-  return generatedNumber === 0 ? 1 : generatedNumber;
+
+  return generatedNumber === 0
+    ? canBeZero
+      ? generatedNumber
+      : 1
+    : generatedNumber;
 };
 
 /** This function compares two accounts and checks if they are the same: same account, same public key and same chain id */
