@@ -1,5 +1,5 @@
 import { Pact, isSignedTransaction } from '@kadena/client';
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { devnetConfig } from './config';
 import { dirtyRead } from './helper';
 
