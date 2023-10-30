@@ -1,16 +1,16 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
+import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
 import {
   helpCenterButtonClass,
   homeWrapperClass,
 } from '@/pages/home/styles.css';
+import type { ISidebarToolbarItem } from '@/types/Layout';
 import { Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
-import { menuData } from '@/constants/side-menu-items';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 
 const Home: FC = () => {
   const helpCenterRef = useRef<HTMLElement | null>(null);

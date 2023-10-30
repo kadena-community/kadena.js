@@ -6,6 +6,7 @@ import type {
 } from '@/components/Global/ModuleExplorer/types';
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
+import { menuData } from '@/constants/side-menu-items';
 import {
   DefaultValues,
   StorageKeys,
@@ -16,6 +17,7 @@ import { describeModule } from '@/services/modules/describe-module';
 import type { IModulesResult } from '@/services/modules/list-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
+import type { ISidebarToolbarItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
 import { getAllNetworks } from '@/utils/network';
 import type {
@@ -33,8 +35,6 @@ import type {
   InferGetServerSidePropsType,
 } from 'next/types';
 import React, { useCallback, useState } from 'react';
-import { menuData } from '@/constants/side-menu-items';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import { getCookieValue, getQueryValue } from './utils';
 
 const QueryParams = {

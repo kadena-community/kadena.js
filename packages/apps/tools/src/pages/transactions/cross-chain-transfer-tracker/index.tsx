@@ -3,6 +3,7 @@ import { FormItemCard } from '@/components/Global/FormItemCard';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
 } from '@/components/Global/RequestKeyField';
+import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
@@ -12,6 +13,7 @@ import {
   getTransferStatus,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
+import type { ISidebarToolbarItem } from '@/types/Layout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { InputWrapperStatus } from '@kadena/react-ui';
 import {
@@ -30,8 +32,6 @@ import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { menuData } from '@/constants/side-menu-items';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import {
   formButtonStyle,
   headerTextStyle,

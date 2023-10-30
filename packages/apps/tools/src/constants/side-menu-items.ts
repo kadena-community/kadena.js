@@ -8,11 +8,11 @@ export const menuData = [
     items: [
       {
         title: 'Fund New Account',
-        href: '/faucet/new',
+        href: Routes.FAUCET_NEW,
       },
       {
         title: 'Fund Existing Account',
-        href: '/faucet/existing',
+        href: Routes.FAUCET_EXISTING,
       },
     ],
   },

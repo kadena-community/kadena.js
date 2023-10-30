@@ -12,6 +12,7 @@ import ResourceLinks from '@/components/Global/ResourceLinks';
 import client from '@/constants/client';
 import { kadenaConstants } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
+import { menuData } from '@/constants/side-menu-items';
 import { useAppContext } from '@/context/app-context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
@@ -21,6 +22,7 @@ import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/fin
 import type { ITransferDataResult } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { getTransferData } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { validateRequestKey } from '@/services/utils/utils';
+import type { ISidebarToolbarItem } from '@/types/Layout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
@@ -40,8 +42,6 @@ import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { menuData } from '@/constants/side-menu-items';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import {
   formButtonStyle,
   formContentStyle,

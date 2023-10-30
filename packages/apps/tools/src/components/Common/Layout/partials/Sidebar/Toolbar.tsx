@@ -1,9 +1,10 @@
+import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext } from '@/context';
+import type { ISidebarSubMenuItem } from '@/types/Layout';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';
-import { menuData } from '../../../../../constants/side-menu-items';
 import { MenuButton } from './MenuButton';
 import {
   bottomIconsContainerStyle,
@@ -13,24 +14,18 @@ import {
   iconLeftStyle,
   iconRightStyle,
 } from './styles.css';
-import {ISidebarSubMenuItem} from "../../../../../types/Layout";
-import {useToolbar} from "../../../../../context/layout-context";
-import {number} from "zod";
 
 export interface IMiniMenuProps {}
 
 export const Toolbar: FC<IMiniMenuProps> = () => {
-  const { toolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen  } =
+  const { toolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen } =
     useLayoutContext();
   const router = useRouter();
 
-  const handleItemClick = (
-    index: number,
-  ): void => {
+  const handleItemClick = (index: number): void => {
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
     }
-
   };
 
   const handleOpenCloseDrawer = (): void => {
@@ -41,21 +36,24 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     const mainPath = router.pathname.split('/')[1];
     const activeMenu = menuData.find((item) => item.href.includes(mainPath));
 
-    if(!activeMenu) return;
+    if (!activeMenu) return;
 
-    const activeMenuIndex = menuData.indexOf(
-      activeMenu
-    );
+    const activeMenuIndex = menuData.indexOf(activeMenu);
 
     setActiveMenuIndex(activeMenuIndex);
   };
 
-  const isMenuActive = (item: { title: string, href?: string, items?: ISidebarSubMenuItem[]}, index: number) => {
+  const isMenuActive = (
+    item: { title: string; href?: string; items?: ISidebarSubMenuItem[] },
+    index: number,
+  ) => {
     if (router.pathname === '/') return false;
-    const isUrlParam = item.href !== undefined && item.href.includes(router.pathname.split("/")[1]);
+    const isUrlParam =
+      item.href !== undefined &&
+      item.href.includes(router.pathname.split('/')[1]);
 
     return index === activeMenuIndex || isUrlParam;
-  }
+  };
 
   return (
     <nav className={gridItemMiniMenuStyle}>
@@ -66,9 +64,7 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
               {...item}
               href={'#'}
               onClick={() => handleItemClick(index)}
-              active={
-                isMenuActive(item, index)
-              }
+              active={isMenuActive(item, index)}
             />
           </li>
         ))}
