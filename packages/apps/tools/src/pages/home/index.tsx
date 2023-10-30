@@ -15,6 +15,7 @@ import {
   Heading,
   Table,
 } from '@kadena/react-ui';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -22,49 +23,47 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
 
-const faqs: Array<{ title: string; body: React.ReactNode }> = [
-  {
-    title: 'What can I do with the Faucet?',
-    body: (
-      <div>
-        You can use faucet to fund a Kadena account. You can either{' '}
-        <Link href="/faucet/existing">fund an existing account</Link> or{' '}
-        <Link href="/faucet/new">create and fund a new account</Link> all in one
-        flow.
-      </div>
-    ),
-  },
-  {
-    title: 'How do I generate a key pair?',
-    body: (
-      <div>
-        Before you start using Faucet, you&apos;ll need to generate a key pair
-        which you can do one of two ways. You can use our{' '}
-        <a
-          href="https://transfer.chainweb.com/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Chainweb tool
-        </a>{' '}
-        and click on <strong>Generate KeyPair</strong> to create an individual
-        key pair, or you can use{' '}
-        <a
-          href="https://kadena.io/chainweaver-tos/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Chainweaver
-        </a>{' '}
-        to download a wallet and use it to generate a key pair.
-      </div>
-    ),
-  },
-];
-
 const Home: FC = () => {
   const helpCenterRef = useRef<HTMLElement | null>(null);
   const { t } = useTranslation('common');
+
+  const faqs: Array<{ title: string; body: React.ReactNode }> = [
+    {
+      title: t('What can I do with the Faucet?'),
+      body: (
+        <Trans
+          i18nKey="common:faucet-description"
+          components={[
+            <Link href="/faucet/existing" key="faucet-existing-link" />,
+            <Link href="/faucet/new" key="faucet-new-link" />,
+          ]}
+        />
+      ),
+    },
+    {
+      title: t('How do I generate a key pair?'),
+      body: (
+        <Trans
+          i18nKey="common:how-to-keypair"
+          components={[
+            <a
+              href="https://transfer.chainweb.com/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweb-transfer-link"
+            />,
+            <strong key="generate-keypair" />,
+            <a
+              href="https://kadena.io/chainweaver-tos/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweaver-link"
+            />,
+          ]}
+        />
+      ),
+    },
+  ];
 
   useToolbar([
     {
