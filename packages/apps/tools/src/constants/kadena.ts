@@ -20,7 +20,7 @@ type KadenaConstants = {
 
 export const kadenaConstants: KadenaConstants = {
   mainnet01: {
-    label: 'Mainnet',
+    label: 'Coming soon… Mainnet',
     API: env('KADENA_MAINNET_API', 'api.chainweb.com'),
     apiHost: ({ networkId, chainId }) =>
       `https://${kadenaConstants.mainnet01.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
