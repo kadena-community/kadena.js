@@ -1,6 +1,6 @@
 import type { INavigation } from '@/Layout';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { Divider, Stack } from '@kadena/react-ui';
+import { Divider, Grid, Stack } from '@kadena/react-ui';
 import classnames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -41,41 +41,42 @@ export const BottomPageSection: FC<IProps> = ({
 
   return (
     <footer className={classes}>
-      <Stack
-        direction={{ xs: 'column', lg: 'row' }}
-        alignItems={{ xs: 'flex-start', lg: 'center' }}
-        justifyContent="space-between"
-        gap="$4"
-      >
-        <EditPage editLink={editLink} />
+      <Grid.Root columns={{ sm: 1, lg: 3, xl: 4 }}>
+        <Grid.Item columnSpan={1}>
+          <EditPage editLink={editLink} />
+        </Grid.Item>
+        <Grid.Item columnSpan={{ sm: 1, lg: 2, xl: 3 }}>
+          <Stack
+            width={{ xs: '100%', lg: '100%' }}
+            direction="row"
+            justifyContent="space-between"
+          >
+            {navigation?.previous !== undefined && (
+              <Link
+                onClick={() =>
+                  onClickAction('prev', navigation?.previous?.root)
+                }
+                href={navigation?.previous.root}
+              >
+                previous:
+                <br />
+                {navigation?.previous.title}
+              </Link>
+            )}
+            {navigation?.next !== undefined && (
+              <Link
+                onClick={() => onClickAction('next', navigation?.next?.root)}
+                href={navigation?.next.root}
+              >
+                next:
+                <br />
+                {navigation?.next.title}
+              </Link>
+            )}
+          </Stack>
+        </Grid.Item>
+      </Grid.Root>
 
-        <Stack
-          width={{ xs: '100%', lg: '100%' }}
-          direction="row"
-          justifyContent="space-between"
-        >
-          {navigation?.previous !== undefined && (
-            <Link
-              onClick={() => onClickAction('prev', navigation?.previous?.root)}
-              href={navigation?.previous.root}
-            >
-              previous:
-              <br />
-              {navigation?.previous.title}
-            </Link>
-          )}
-          {navigation?.next !== undefined && (
-            <Link
-              onClick={() => onClickAction('next', navigation?.next?.root)}
-              href={navigation?.next.root}
-            >
-              next:
-              <br />
-              {navigation?.next.title}
-            </Link>
-          )}
-        </Stack>
-      </Stack>
       <Divider />
       <Stack
         direction={{ xs: 'column', lg: 'row' }}
