@@ -1,9 +1,9 @@
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC, InputHTMLAttributes } from 'react';
-import React, { forwardRef } from 'react';
-import type { vars } from 'src/styles';
+import React, { forwardRef, useContext } from 'react';
 import { baseContainerClass, baseOutlinedClass } from '../Form.css';
+import { InputWrapperContext } from '../InputWrapper/InputWrapper.context';
 import {
   disabledClass,
   inputClass,
@@ -19,7 +19,6 @@ export interface IInputProps
     'as' | 'disabled' | 'children' | 'className' | 'id'
   > {
   leadingText?: string;
-  leadingTextWidth?: keyof typeof vars.sizes;
   icon?: keyof typeof SystemIcon;
   rightIcon?: keyof typeof SystemIcon;
   disabled?: boolean;
@@ -31,24 +30,17 @@ export interface IInputProps
 
 export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
   function Input(
-    {
-      outlined,
-      leadingText,
-      leadingTextWidth,
-      icon,
-      rightIcon,
-      disabled = false,
-      ...rest
-    },
+    { outlined, leadingText, icon, rightIcon, disabled = false, ...rest },
     ref,
   ) {
+    const { status, leadingTextWidth } = useContext(InputWrapperContext);
     const RightIcon = rightIcon && SystemIcon[rightIcon];
     const Icon = icon && SystemIcon[icon];
 
     return (
       <div
         className={classNames(baseContainerClass, {
-          [baseOutlinedClass]: outlined,
+          [baseOutlinedClass]: outlined || status,
           [disabledClass]: disabled,
         })}
         data-testid="kda-input"

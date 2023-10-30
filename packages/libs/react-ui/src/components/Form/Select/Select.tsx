@@ -1,8 +1,10 @@
 import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
-import React, { forwardRef } from 'react';
-import { baseOutlinedClass } from '../Form.css';
+import React, { forwardRef, useContext } from 'react';
+import type { Status } from '../Form.css';
+import { baseOutlinedClass, outlinedStatusClass } from '../Form.css';
+import { InputWrapperContext } from '../InputWrapper/InputWrapper.context';
 import {
   chevronIconClass,
   containerClass,
@@ -34,13 +36,15 @@ export const Select: FC<ISelectProps> = forwardRef<
   { ariaLabel, children, disabled = false, outlined = false, icon, ...rest },
   ref,
 ) {
+  const { status } = useContext(InputWrapperContext);
+
   const Icon = icon && SystemIcon[icon];
   const ChevronDown = SystemIcon.ChevronDown;
 
   return (
     <div
       className={classNames(containerClass, {
-        [containerClassDisabled]: disabled,
+        [containerClassDisabled]: disabled || status,
         [baseOutlinedClass]: outlined,
       })}
       data-testid="kda-select"
