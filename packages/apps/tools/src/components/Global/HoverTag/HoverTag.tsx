@@ -6,13 +6,13 @@ import {
   tagClass,
   tagStyles,
   tooltipStyles,
-} from './MaskedValueTag.css';
+} from './HoverTag.css';
 
-export interface IMaskedValueTagProps {
+export interface IHoverTagProps {
   value: IMaskedValueProps['value'];
 }
 
-export const MaskedValueTag = ({ value }: IMaskedValueTagProps) => {
+export const HoverTag = ({ value }: IHoverTagProps) => {
   const [tooltipContent, setTooltipContent] = React.useState<string>(value);
   const ref = useRef<HTMLDivElement>(null);
   return (
