@@ -60,12 +60,9 @@ const Header: FC<IHeaderProps> = () => {
     setSelectedNetwork((e.target as HTMLSelectElement).value as Network);
   };
 
-  const activePathname = `/${pathname.split('/')[1]}`;
-  console.log(activePathname)
-
   return (
     <NavHeader.Root brand="DevTools">
-      <NavHeader.Navigation activeHref={activePathname}>
+      <NavHeader.Navigation activeHref={pathname}>
         {navItems.map((item, index) => (
           <NavHeader.Link
             key={index}
