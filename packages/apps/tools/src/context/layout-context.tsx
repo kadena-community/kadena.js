@@ -10,8 +10,6 @@ interface ILayoutContext {
   activeMenuIndex?: number;
   setActiveMenuIndex: (index?: number) => void;
   activeMenu?: ISidebarToolbarItem;
-  selectedSubMenu?: string;
-  setSelectedSubMenu: (path: string) => void;
   resetLayout: () => void;
 }
 
@@ -22,8 +20,6 @@ const LayoutContext = createContext<ILayoutContext>({
   setActiveMenuIndex: () => {},
   activeMenu: undefined,
   resetLayout: () => {},
-  selectedSubMenu: undefined,
-  setSelectedSubMenu: () => {},
 });
 
 const useLayoutContext = (): ILayoutContext => {
@@ -40,7 +36,7 @@ export const useToolbar = (
   toolbar: ISidebarToolbarItem[],
   pathName?: string,
 ): void => {
-  const { setToolbar, setActiveMenuIndex, setSelectedSubMenu } =
+  const { setToolbar, setActiveMenuIndex } =
     useLayoutContext();
   useEffect(() => {
     setToolbar(toolbar);
@@ -51,13 +47,9 @@ export const useToolbar = (
 
       const activeMenu = menuData.find((item) => item.href.includes(mainPath));
       if (!activeMenu) return;
+
       const index = menuData.indexOf(activeMenu);
       setActiveMenuIndex(index);
-
-      if (!activeMenu.items) return;
-      const submenu = activeMenu.items.find((item) => item.href === mainPath);
-      if (!submenu) return;
-      setSelectedSubMenu(submenu?.href);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,7 +60,6 @@ const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
   const [toolbar, setToolbar] = useState<ISidebarToolbarItem[]>([]);
   const [activeMenuIndex, setActiveMenuIndex] = useState<number | undefined>();
   const isMenuOpen = Number.isInteger(activeMenuIndex);
-  const [selectedSubMenu, setSelectedSubMenu] = useState<string>('');
 
   const resetLayout = (): void => {
     setToolbar([]);
@@ -84,8 +75,6 @@ const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
         isMenuOpen,
         activeMenuIndex,
         setActiveMenuIndex,
-        selectedSubMenu,
-        setSelectedSubMenu,
         activeMenu:
           activeMenuIndex !== undefined ? toolbar[activeMenuIndex] : undefined,
         resetLayout,

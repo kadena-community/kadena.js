@@ -13,21 +13,24 @@ import {
   iconLeftStyle,
   iconRightStyle,
 } from './styles.css';
+import {ISidebarSubMenuItem} from "../../../../../types/Layout";
+import {useToolbar} from "../../../../../context/layout-context";
+import {number} from "zod";
 
 export interface IMiniMenuProps {}
 
 export const Toolbar: FC<IMiniMenuProps> = () => {
-  const { toolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen } =
+  const { toolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen  } =
     useLayoutContext();
   const router = useRouter();
 
   const handleItemClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     index: number,
   ): void => {
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
     }
+
   };
 
   const handleOpenCloseDrawer = (): void => {
@@ -36,12 +39,23 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     }
 
     const mainPath = router.pathname.split('/')[1];
-    // @ts-ignore
+    const activeMenu = menuData.find((item) => item.href.includes(mainPath));
+
+    if(!activeMenu) return;
+
     const activeMenuIndex = menuData.indexOf(
-      menuData.find((item) => item.href.includes(mainPath)),
+      activeMenu
     );
+
     setActiveMenuIndex(activeMenuIndex);
   };
+
+  const isMenuActive = (item: { title: string, href?: string, items?: ISidebarSubMenuItem[]}, index: number) => {
+    if (router.pathname === '/') return false;
+    const isUrlParam = item.href !== undefined && item.href.includes(router.pathname.split("/")[1]);
+
+    return index === activeMenuIndex || isUrlParam;
+  }
 
   return (
     <nav className={gridItemMiniMenuStyle}>
@@ -50,9 +64,10 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
           <li key={String(item.title)} className={gridMiniMenuListItemStyle}>
             <MenuButton
               {...item}
-              onClick={(e) => handleItemClick(e, index)}
+              href={'#'}
+              onClick={() => handleItemClick(index)}
               active={
-                index === activeMenuIndex || item.href === router.pathname
+                isMenuActive(item, index)
               }
             />
           </li>

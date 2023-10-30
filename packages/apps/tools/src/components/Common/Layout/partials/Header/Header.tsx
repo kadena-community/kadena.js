@@ -32,14 +32,14 @@ const Header: FC<IHeaderProps> = () => {
       label: t('Faucet'),
       href: routes.FAUCET_NEW,
     },
-    {
-      label: t('Transactions'),
-      href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      label: t('Account'),
-      href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
-    },
+    // {
+    //   label: t('Transactions'),
+    //   href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    // },
+    // {
+    //   label: t('Account'),
+    //   href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
+    // },
   ];
 
   const handleMenuItemClick = async (
@@ -60,9 +60,12 @@ const Header: FC<IHeaderProps> = () => {
     setSelectedNetwork((e.target as HTMLSelectElement).value as Network);
   };
 
+  const activePathname = `/${pathname.split('/')[1]}`;
+  console.log(activePathname)
+
   return (
     <NavHeader.Root brand="DevTools">
-      <NavHeader.Navigation activeHref={pathname}>
+      <NavHeader.Navigation activeHref={activePathname}>
         {navItems.map((item, index) => (
           <NavHeader.Link
             key={index}

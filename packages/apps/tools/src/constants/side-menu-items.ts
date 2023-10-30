@@ -4,7 +4,7 @@ export const menuData = [
   {
     title: 'Faucet',
     icon: 'QrcodeScan',
-    href: Routes.FAUCET_NEW,
+    href: 'faucet',
     items: [
       {
         title: 'Fund New Account',
