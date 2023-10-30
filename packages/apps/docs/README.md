@@ -1,4 +1,4 @@
-# Contribute
+# Contribute to the docs
 
 In this document you can find all the info you need to contribute to the docs.
 
@@ -35,13 +35,114 @@ documentation files and you can do basically do anything with them
 
 ## Adding a page
 
+A new page can be placed anywhere in the `src/pages` tree.  
+Be aware that the tree can not be deeper than **3** folders.
+
+Create a `.md` file. The name of the file is also the name of the URL. Make it a
+good one. Best is to make it the title of the document. For `spaces`, please use
+`-`. Correct file name:
+
+- `new-docs-application.md`
+- `new-version-pact.mdx`
+
+Incorrect file name:
+
+- `newDOCSApplication.md`
+- `new_pact_version.ts`
+- `language reference.tsx`
+
+### Frontmatter
+
+Every `.md` file should start with some meta data about the document. This is
+called the frontmatter. For the docs application it looks something like this:
+
+```yaml
+---
+title: New docs application
+subTitle: It's new!
+description: The new documentation website is better than ever
+menu: New docs
+label: New docs
+publishDate: 1977-10-13
+headerImage: /assets/blog/2020/1_b97oiC8M_ePx83B-PW0Cfg.webp
+author: He-man
+authorId: h.man
+layout: blog
+---
+```
+
+Lets go over them 1 by 1.  
+`title`: the title of the document  
+`subTitle`: not required. Only used when on landing page layout. `description`:
+a short description on what the page is about. This will be used as meta data
+for SEO, but can also be used as an excerpt in the search results.  
+`menu`: the name used in the side or header menu's.  
+`label`: the name used in the breadcrumbs.  
+`publishDate`: not required. only used for blogchain, at the moment. And used to
+show the user what date the article was first published.  
+`headerImage`: not required. only used for the blogchain as the main header on
+top of the article.  
+`author`: _depricated_! not required. for blogchain we used to JUST show the
+author name.  
+`authorID`: not required. replaced the above `author` field. The ID then reads
+the author info from the `./src/data/authors.json`  
+`layout`: checks what layout the page will use to show the data.  
+`tags`: not required. An Array of strings that clarify what the content is
+about. It is shown on blogchain pages, but is also used in the search indexing
+to get better search results.
+
+### H1
+
+Every page's content should also start with an `h1` header.  
+If the `h1` header does not exist, the build scripts will give you a warning.
+
+### Layout
+
+There are a couple of different layouts that can be used in the application.  
+`full`, `landing`, `blog`, `home` and `redocly`.
+
+#### Full layout
+
+![the layout](./public/assets/layout_full.png) Most pages will use this layout.
+It has the left sidemenu and a table of content on the right. And it has the
+most room for the actual content.
+
+#### Landing layout
+
+![the layout](./public/assets/layout_landing.png) If a section needs a special
+page landing page, to give it a bit more visibility we can use the landing
+layout.  
+It has a large header that uses the `title` and `subTitle` from the frontmatter.
+
+#### Blog layout
+
+![the layout](./public/assets/layout_blog.png) This layout is actually only used
+for blog posts. It shows the large `headerImage` from the frontmatter, if
+available.  
+It also shows the author info and `tags` from the frontmatter, if available.
+Itdoes not have any sidemenus.
+
+#### Redocly layout
+
+![the layout](./public/assets/layout_redocly.png) Only used for pages that show
+swagger API info. Not to be used for other documentation.
+
+#### Home layout
+
+![the layout](./public/assets/layout_home.png) The `home` layout is not really
+used together with `md` files. It is only used for landing pages of sections and
+the actual home page.  
+It has a header that needs to be custom made for that page and we can do with
+the rest of the layout what ever we want.
+
 ## Moving pages around
 
 Moving a page to another place in the tree is as simple as moving a file
 somewhere inside the `src/pages` directory.  
 When the build then runs it is automatically is put in the correct position.  
-Somethings to consider:
+**Important:**
 
+- Renaming a file will ALSO change the URL.
 - It could be that some internal links are now broken. You will get a warning
   from the build scripts.
 - It could be that some external websites were linking to this page and will now
@@ -94,15 +195,9 @@ craweled. Important for SEO.
 `copyFavIcons.mjs`  
 copy all the fav icons from `/common/images/icons` package in the monorepo.
 
-### What do the build scripts do for you?
-
-SO why are the build scripts for any importance for docs writers?  
-The scripts are going through all the docs on run time. Looking for things that
-can hur
-
 ## Cli
 
-TODO Create a CLI for the docs page
+The CLI is a TODO.
 
 - bootstrap a page
 - run build scripts more finegrained (only the import scripts for example)
