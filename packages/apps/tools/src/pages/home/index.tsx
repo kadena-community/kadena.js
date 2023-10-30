@@ -92,7 +92,7 @@ const Home: FC = () => {
   return (
     <div className={homeWrapperClass}>
       <Head>
-        <title>Kadena Developer Tools</title>
+        <title>{t('Kadena Developer Tools')}</title>
       </Head>
       <DrawerToolbar
         ref={helpCenterRef}
@@ -128,17 +128,18 @@ const Home: FC = () => {
       <br />
       <div style={{ width: '680px' }}>
         <Heading bold={false} variant="h3">
-          Kadena Developer Tools
+          {t('Kadena Developer Tools')}
         </Heading>
         <Heading bold={false} as="h2" variant="h5" color="default">
-          We&apos;re constantly adding new Developer Tools to make it easier for
-          our builders to utilize all Kadena has to offer.
+          {t(
+            "We're constantly adding new Developer Tools to make it easier for our builders to utilize all Kadena has to offer.",
+          )}
         </Heading>
         <Card fullWidth>
           <Grid.Root columns={2}>
             <Grid.Item>
               <Heading as="h3" variant="h5">
-                General Links
+                {t('General Links')}
               </Heading>
               <Box marginBottom="$4" />
               <ul>
@@ -148,7 +149,7 @@ const Home: FC = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Overview of Kadena
+                    {t('Overview of Kadena')}
                   </a>
                 </li>
                 <li>
@@ -157,7 +158,7 @@ const Home: FC = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Manage your KDA
+                    {t('Manage your KDA')}
                   </a>
                 </li>
                 <li>
@@ -166,14 +167,14 @@ const Home: FC = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Contribute to the network
+                    {t('Contribute to the network')}
                   </a>
                 </li>
               </ul>
             </Grid.Item>
             <Grid.Item>
               <Heading as="h3" variant="h5">
-                Developers Links
+                {t('Developers Links')}
               </Heading>
               <Box marginBottom="$4" />
               <ul>
@@ -183,7 +184,7 @@ const Home: FC = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Quick start
+                    {t('Quick start')}
                   </a>
                 </li>
                 <li>
@@ -192,7 +193,7 @@ const Home: FC = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Pact language resources
+                    {t('Pact language resources')}
                   </a>
                 </li>
                 <li>
@@ -201,7 +202,7 @@ const Home: FC = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Build your first dApp
+                    {t('Build your first dApp')}
                   </a>
                 </li>
               </ul>
@@ -210,7 +211,7 @@ const Home: FC = () => {
         </Card>
         <Card fullWidth>
           <Heading as="h3" variant="h5">
-            Frequently Asked Questions
+            {t('Frequently Asked Questions')}
           </Heading>
           <Box marginBottom="$4" />
           <Accordion.Root>
