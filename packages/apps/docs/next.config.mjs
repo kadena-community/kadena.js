@@ -77,6 +77,12 @@ const withMDX = mdx({
       remarkHeadersToProps,
       remarkSideMenuToProps,
       remarkPropsToStaticRender,
+      remarkAdmonitions,
+      remarkFixAbsoluteLinks,
+      remarkYoutube,
+      remarkTwitter,
+      remarkCheckForCodeTitle,
+      remarkFigureOutOfParagraph,
     ],
     rehypePlugins: [[rehypePrettyCode, options]],
     // If you use `MDXProvider`, uncomment the following line.

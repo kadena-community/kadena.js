@@ -35,6 +35,22 @@ documentation files and you can do basically do anything with them
 
 ## Adding a page
 
+## Moving pages around
+
+Moving a page to another place in the tree is as simple as moving a file
+somewhere inside the `src/pages` directory.  
+When the build then runs it is automatically is put in the correct position.  
+Somethings to consider:
+
+- It could be that some internal links are now broken. You will get a warning
+  from the build scripts.
+- It could be that some external websites were linking to this page and will now
+  get a 404.
+  - Please check analytics how many visits does this page get?
+  - If the page gets a lot of visits you can at a 301 redirect in
+    `next.confing.mjs`.  
+    This will redirect all the old links to the new URL.
+
 ## Build scripts
 
 There are a couple of build scripts running just before the site is put live.
@@ -74,6 +90,9 @@ information is valid for our website.
 Creates a sitemap of all the pages and creates a `sitemap.xml`.  
 This file is later imported by search engines to know what is needed to be
 craweled. Important for SEO.
+
+`copyFavIcons.mjs`  
+copy all the fav icons from `/common/images/icons` package in the monorepo.
 
 ### What do the build scripts do for you?
 
