@@ -4,3 +4,5 @@
 .vscode/
 #Kadena
 .kadena/
+
+*.js
