@@ -38,6 +38,11 @@ documentation files and you can do basically do anything with them
 A new page can be placed anywhere in the `src/pages` tree.  
 Be aware that the tree can not be deeper than **3** folders.
 
+All the documentation is written in markdown.  
+Markdown is a lightweight markup language that you can use to add formatting
+elements to plaintext text documents. You can learn more about
+[Markdown here](https://www.markdownguide.org/).
+
 Create a `.md` file. The name of the file is also the name of the URL. Make it a
 good one. Best is to make it the title of the document. For `spaces`, please use
 `-`. Correct file name:
@@ -90,6 +95,11 @@ the author info from the `./src/data/authors.json`
 `tags`: not required. An Array of strings that clarify what the content is
 about. It is shown on blogchain pages, but is also used in the search indexing
 to get better search results.
+
+### Assets
+
+Assets like images can be saved in the following folder `/public/assets`.  
+You can make as many subfolders as you see fit.
 
 ### H1
 
@@ -151,6 +161,15 @@ When the build then runs it is automatically is put in the correct position.
   - If the page gets a lot of visits you can at a 301 redirect in
     `next.confing.mjs`.  
     This will redirect all the old links to the new URL.
+
+## Checking documentation validity
+
+To check that all the files are valid and ready to build, but you don't want to
+run the complete build run:
+
+```bash
+pnpm build:scripts
+```
 
 ## Build scripts
 
