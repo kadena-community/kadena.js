@@ -44,7 +44,7 @@ export function generateHdKeys(program: Command, version: string): void {
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const pairs = await getKeyPairsFromSeedPhrase(
-          '***REMOVED***',
+          '',
         );
 
         console.log(pairs.publicKey);

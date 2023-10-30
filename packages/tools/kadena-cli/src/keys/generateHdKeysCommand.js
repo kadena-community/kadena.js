@@ -1,7 +1,7 @@
 import { HDKEY_ENC_EXT, HDKEY_EXT } from '../constants/config.js';
 import { collectResponses } from '../utils/helpers.js'; // clearCLI
 import { processZodErrors } from '../utils/processZodErrors.js';
-import { 
+import {
 // generateSeedPhrase,
 getKeyPairsFromSeedPhrase, } from './legacy/chainweaver.js';
 import * as cryptoService from './utils/service.js';
@@ -23,7 +23,7 @@ export function generateHdKeys(program, version) {
             const { words, seed } = await cryptoService.generateSeed(result.password);
             storageService.storeHdKey(words, seed, result.fileName, hasPassword);
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const pairs = await getKeyPairsFromSeedPhrase('***REMOVED***');
+            const pairs = await getKeyPairsFromSeedPhrase('');
             console.log(pairs.publicKey);
             // console.log(generateSeedPhrase());
             // const testP1 = await cryptoService.processStoredSeed(
