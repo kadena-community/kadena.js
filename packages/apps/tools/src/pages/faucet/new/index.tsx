@@ -36,7 +36,6 @@ import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
@@ -113,7 +112,7 @@ const NewAccountFaucetPage: FC = () => {
 
   const [inputError, setInputError] = useState<string>('');
 
-  useToolbar(menuData as ISidebarToolbarItem[], router.pathname);
+  useToolbar(menuData, router.pathname);
 
   useEffect(() => {
     setInputError('');

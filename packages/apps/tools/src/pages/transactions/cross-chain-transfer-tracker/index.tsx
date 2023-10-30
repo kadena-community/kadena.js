@@ -13,7 +13,6 @@ import {
   getTransferStatus,
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { InputWrapperStatus } from '@kadena/react-ui';
 import {
@@ -50,7 +49,7 @@ const CrossChainTransferTracker: FC = () => {
   const router = useRouter();
   const { t } = useTranslation('common');
 
-  useToolbar(menuData as ISidebarToolbarItem[], router.pathname);
+  useToolbar(menuData, router.pathname);
 
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',

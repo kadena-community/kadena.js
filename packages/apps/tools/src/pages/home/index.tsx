@@ -6,7 +6,6 @@ import {
   helpCenterButtonClass,
   homeWrapperClass,
 } from '@/pages/home/styles.css';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import { Breadcrumbs, Card, Heading, Table } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
@@ -16,7 +15,7 @@ const Home: FC = () => {
   const helpCenterRef = useRef<HTMLElement | null>(null);
   const { t } = useTranslation('common');
 
-  useToolbar(menuData as ISidebarToolbarItem[]);
+  useToolbar(menuData);
 
   const handleOpenHelpCenter = (): void => {
     // @ts-ignore

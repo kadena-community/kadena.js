@@ -44,7 +44,9 @@ export const useToolbar = (
     if (pathName) {
       const mainPath = pathName.split('/')[1];
 
-      const activeMenu = menuData.find((item) => item.href.includes(mainPath));
+      const activeMenu = menuData.find(
+        (item) => item.href && item.href.includes(mainPath),
+      );
       if (!activeMenu) return;
 
       const index = menuData.indexOf(activeMenu);

@@ -26,7 +26,7 @@ export const Menu: FC = () => {
         {activeMenu.items?.map((item, index) => (
           <MenuLinkButton
             title={item.title}
-            key={index}
+            key={`menu-link-${index}`}
             href={item.href}
             active={item.href === router.pathname}
           />

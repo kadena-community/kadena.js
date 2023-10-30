@@ -8,7 +8,6 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { fundExistingAccount } from '@/services/faucet';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
@@ -70,7 +69,7 @@ const ExistingAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
 
-  useToolbar(menuData as ISidebarToolbarItem[], router.pathname);
+  useToolbar(menuData, router.pathname);
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {

@@ -22,7 +22,6 @@ import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/fin
 import type { ITransferDataResult } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { getTransferData } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { validateRequestKey } from '@/services/utils/utils';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
@@ -199,7 +198,7 @@ const CrossChainTransferFinisher: FC = () => {
     [],
   );
 
-  useToolbar(menuData as ISidebarToolbarItem[], router.pathname);
+  useToolbar(menuData, router.pathname);
 
   useDidUpdateEffect(async () => {
     if (!router.isReady) {

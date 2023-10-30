@@ -18,8 +18,6 @@ export const MenuLinkButton: FC<IMenuLinkButtonProps> = ({
   href,
   ...rest
 }) => {
-  // eslint-disable-next-line
-  // @ts-ignore
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   const button = (

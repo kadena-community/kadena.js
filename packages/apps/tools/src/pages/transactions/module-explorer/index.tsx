@@ -17,7 +17,6 @@ import { describeModule } from '@/services/modules/describe-module';
 import type { IModulesResult } from '@/services/modules/list-module';
 import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
 import { getAllNetworks } from '@/utils/network';
 import type {
@@ -289,7 +288,7 @@ const ModuleExplorerPage = (
 
   const { t } = useTranslation('common');
 
-  useToolbar(menuData as ISidebarToolbarItem[], router.pathname);
+  useToolbar(menuData, router.pathname);
 
   return (
     <>

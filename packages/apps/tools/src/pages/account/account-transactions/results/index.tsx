@@ -6,7 +6,6 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import type { ITransaction } from '@/services/accounts/get-transactions';
 import { getTransactions } from '@/services/accounts/get-transactions';
-import type { ISidebarToolbarItem } from '@/types/Layout';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   Box,
@@ -54,7 +53,7 @@ const CheckTransactions: FC = () => {
     return accountName;
   }
 
-  useToolbar(menuData as ISidebarToolbarItem[], router.pathname);
+  useToolbar(menuData, router.pathname);
 
   useEffect(() => {
     if (router.isReady) {

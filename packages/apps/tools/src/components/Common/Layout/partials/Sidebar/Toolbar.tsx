@@ -34,7 +34,9 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     }
 
     const mainPath = router.pathname.split('/')[1];
-    const activeMenu = menuData.find((item) => item.href.includes(mainPath));
+    const activeMenu = menuData.find(
+      (item) => item.href && item.href.includes(mainPath),
+    );
 
     if (!activeMenu) return;
 

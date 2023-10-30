@@ -1,6 +1,7 @@
+import type { ISidebarToolbarItem } from '../types/Layout';
 import Routes from './routes';
 
-export const menuData = [
+export const menuData: ISidebarToolbarItem[] = [
   {
     title: 'Faucet',
     icon: 'QrcodeScan',
