@@ -20,8 +20,8 @@ import {
   Notification,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';

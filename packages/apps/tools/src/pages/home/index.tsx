@@ -65,7 +65,7 @@ const Home: FC = () => {
     },
   ];
 
-    useToolbar(menuData);
+  useToolbar(menuData);
 
   const handleOpenHelpCenter = (): void => {
     // @ts-ignore
