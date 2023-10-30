@@ -1,15 +1,11 @@
 import { HDKEY_ENC_EXT, HDKEY_EXT } from '../constants/config.js';
-import { collectResponses } from '../utils/helpers.js'; // clearCLI
+import { clearCLI, collectResponses } from '../utils/helpers.js'; // clearCLI
 import { processZodErrors } from '../utils/processZodErrors.js';
 
-import {
-  // generateSeedPhrase,
-  getKeyPairsFromSeedPhrase,
-} from './legacy/chainweaver.js';
-import * as cryptoService from './utils/service.js';
-import * as storageService from './utils/storage.js';
 import type { THdKeygenOptions } from './hdKeysGenerateOptions.js';
 import { HdKeygenOptions, hdKeygenQuestions } from './hdKeysGenerateOptions.js';
+import * as cryptoService from './utils/service.js';
+import * as storageService from './utils/storage.js';
 
 import chalk from 'chalk';
 import type { Command } from 'commander';
@@ -42,20 +38,7 @@ export function generateHdKeys(program: Command, version: string): void {
         );
         storageService.storeHdKey(words, seed, result.fileName, hasPassword);
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const pairs = await getKeyPairsFromSeedPhrase(
-          '',
-        );
-
-        console.log(pairs.publicKey);
-        // console.log(generateSeedPhrase());
-
-        // const testP1 = await cryptoService.processStoredSeed(
-        //   seed,
-        //   result.password,
-        // );
-
-        // clearCLI(true);
+        clearCLI(true);
         console.log(chalk.green(`Generated HD Key: ${words}`));
         console.log(
           chalk.red(
