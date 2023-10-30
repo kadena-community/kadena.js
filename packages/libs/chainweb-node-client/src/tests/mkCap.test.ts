@@ -1,4 +1,5 @@
 import { PactNumber } from '@kadena/pactjs';
+import { expect, test } from 'vitest';
 import { mkCap } from '../mkCap';
 
 test('should create a baseline cap with empty args', () => {

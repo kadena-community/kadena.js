@@ -1,10 +1,9 @@
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
+import Loader from '@/components/Common/loader/loader';
+import { mainStyle } from '@/components/Common/main/styles.css';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
-import Loader from '@components/loader/loader';
-import { mainStyle } from '@components/main/styles.css';
-import { Text } from '@components/text';
-import { Box, Notification } from '@kadena/react-ui';
-import Head from 'next/head';
+import routes from '@/constants/routes';
+import { Box, Breadcrumbs, Notification } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -22,19 +21,21 @@ const AccountTransactions: React.FC = () => {
 
   return (
     <div style={{ padding: '0 50px 30px 50px' }}>
-      <Head>
-        <title>Kadena Graph Client</title>
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item
+          href={`${routes.ACCOUNT}/${router.query.module as string}/${
+            router.query.account as string
+          }`}
+        >
+          Account Overview
+        </Breadcrumbs.Item>
+        <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
+
+      <Box marginBottom="$8" />
 
       <main className={mainStyle}>
-        <Text
-          as="h1"
-          css={{ display: 'block', color: '$mauve12', fontSize: 48, my: '$12' }}
-        >
-          Kadena Graph Client
-        </Text>
-
         <div>
           {loading && (
             <div style={{ display: 'flex', alignItems: 'center' }}>

@@ -85,7 +85,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
           setSelectedAccount(e.target.value);
           onChange?.(e);
         }}
-        leftIcon={noIcon ? undefined : 'KIcon'}
+        icon={noIcon ? undefined : 'KIcon'}
       />
     ),
   };

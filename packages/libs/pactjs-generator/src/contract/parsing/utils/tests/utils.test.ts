@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { pushUnique, trim } from '../utils';
 
 describe('trim', () => {

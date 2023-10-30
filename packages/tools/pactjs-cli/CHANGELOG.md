@@ -1,5 +1,25 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.5.0
+
+### Patch Changes
+
+- 99ce19b47: Fix index.d.ts by using import instead of export since we use
+  interface merging for types
+- c8bbec395: Fix `types` in package.json
+- fec8dfafd: Upgrade `typescript` and `@types/node` dependencies
+- Updated dependencies [3873e73c4]
+- Updated dependencies [badc7c2a3]
+- Updated dependencies [831c022c8]
+- Updated dependencies [3e00cf2ac]
+- Updated dependencies [99ce19b47]
+- Updated dependencies [a664a9535]
+- Updated dependencies [d62a23ffe]
+- Updated dependencies [fec8dfafd]
+- Updated dependencies [a664a9535]
+- Updated dependencies [c375cb124]
+  - @kadena/pactjs-generator@1.5.0
+
 ## 1.4.0
 
 ### Patch Changes

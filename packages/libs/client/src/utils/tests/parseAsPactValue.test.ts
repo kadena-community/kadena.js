@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { parseAsPactValue } from '../parseAsPactValue';
 
 describe('parseType', () => {
@@ -10,9 +11,10 @@ describe('parseType', () => {
   });
 
   it('parses a Date object', () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     const start = new Date('2023-07-20T14:55:11.139Z');
     expect(parseAsPactValue(start)).toEqual(`(time "2023-07-20T14:55:11Z")`);
+    vi.useRealTimers();
   });
 
   it('throws exception if number is not integer', () => {

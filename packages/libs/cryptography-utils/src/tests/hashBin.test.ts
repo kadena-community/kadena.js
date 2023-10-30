@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { hashBin } from '../hashBin';
 
 const pactTestCommand: {

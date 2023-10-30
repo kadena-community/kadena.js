@@ -33,6 +33,7 @@ module.exports = {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     'import/resolver': {
+      node: true,
       typescript: {
         project: [join(process.cwd(), 'tsconfig.json')],
       },

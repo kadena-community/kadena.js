@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { parseAsPactValue } from '../utils/parseAsPactValue'; // Replace with the actual module path
 
 describe('parseType', () => {

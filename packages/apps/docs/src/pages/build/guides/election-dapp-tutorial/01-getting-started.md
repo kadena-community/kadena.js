@@ -52,8 +52,8 @@ workspace. Kadena has developed a "PACT" extension for this editor. It features
 syntax highlighting, error reporting and code coverage reporting to improve your
 smart contract development workflow. The extension does require you to have `pact`
 and `pact-lsp` installed on your computer. You can configure the path to each
-executable in the plugin settings. If you are using another editor, you may also
-profit from just `pact-lsp` which provides the syntax highlighting. The links
+executable in the extension's settings. If you are using another editor, you may also
+profit from just `pact-lsp` which provides syntax highlighting for Pact code. The links
 to the installation instructions are listed on the
 [main page](/build/guides/election-dapp-tutorial) of this tutorial.
 
@@ -67,7 +67,7 @@ Let's explore these folders one by one.
 
 This is where the `.pact` files for your smart contracts go, as well as `.repl`
 files that will be used to test your smart contracts in isolation. You will
-notice a `./root` folder that already contains some `.pact` files. They contain
+notice a `./root` folder that already contains some `.pact` files. These files contain
 Pact modules that the smart contracts you will create in later chapters depend
 on. They only need to be there for local testing with `.repl` files. You do not
 need to deploy them to the blockchain alongside your own `.pact` files, because
@@ -81,11 +81,11 @@ For the front-end of the election website, a basic React app was created. You
 could use any other framework to create the front-end, because the connection
 with the blockchain is established through the
 [Kadena Client](https://www.npmjs.com/package/@kadena/client) npm package
-that can be imported in any JavaScript project. At the end of the line, this
+that can be imported in any JavaScript project. In the end, this
 package simply makes HTTP API requests to the blockchain.
-Inside of the React components, data is manipulated by calling service methods
-the services get a specific implementation of repositories injected, depending
-on the projects configuration. Initially, the project is configured to use
+Inside of the React components, data is manipulated by calling service methods.
+The services get a specific implementation of repositories injected, depending
+on the project's configuration. Initially, the project is configured to use
 the in-memory implementation of repositories. The in-memory repositories
 simply perform all data operations on JavaScript arrays and objects defined
 in the same file. This implementation was created for you to have a simple
@@ -99,9 +99,9 @@ repository implementation will be provided later in this chapter.
 
 In this folder you will find several JavaScript snippets that use the Kadena
 Client library to perform actions against the blockchain that are not directly
-related to the functionality of the election dApp per se, like deploy and
+related to the functionality of the election dApp per se, like deploying and
 upgrading smart contracts, creating and funding accounts, and more. You will
-learn more about these snippets in the following chapters.
+learn more about these snippets in the upcoming chapters.
 
 ## Run the front-end
 
@@ -115,7 +115,7 @@ npm install
 npm run start
 ```
 
-Open a browser window and visit `http://localhost:3000`. You will see the working
+Open a browser window and visit `http://localhost:5173`. You will see the working
 front-end of the election website. Because all data is manipulated in memory,
 you can freely click around and submit data. The state of the front-end will be
 reset as soon as you refresh the page. The website shows a list of candidates
@@ -132,5 +132,5 @@ At this point you should have a working development environment and an understan
 of the project structure. You have installed and run the front-end of the election
 website, and you have an understanding of its features. In the next chapter of this
 tutorial you will run a blockchain on your own computer using Docker. After that,
-you will be ready to start developing smart contracts and creating the Devnet
+you will be ready to start developing smart contracts and work on the Devnet
 implementations of the front-end repositories.

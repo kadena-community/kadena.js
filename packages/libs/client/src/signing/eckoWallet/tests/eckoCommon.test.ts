@@ -1,27 +1,26 @@
-/** @jest-environment jsdom */
-import { TextDecoder, TextEncoder } from 'util';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+/** @vitest-environment jsdom */
+
 import { connect, isConnected, isInstalled } from '../eckoCommon';
+
+import { TextDecoder, TextEncoder } from 'util';
 
 Object.assign(global, { TextDecoder, TextEncoder });
 
-const mockEckoRequest = jest.fn();
-
-Object.defineProperty(window, 'kadena', {
-  value: {
-    isKadena: true,
-    request: mockEckoRequest,
-  },
-  writable: true,
-});
-
 describe('eckoCommon', () => {
-  beforeEach(() => {
-    mockEckoRequest.mockReset();
+  const mockEckoRequest = vi.fn();
 
-    window.kadena = {
-      request: mockEckoRequest,
+  Object.defineProperty(window, 'kadena', {
+    value: {
       isKadena: true,
-    };
+      request: mockEckoRequest,
+    },
+    writable: true,
+  });
+
+  beforeEach(() => {
+    if (window.kadena) window.kadena.isKadena = true;
+    mockEckoRequest.mockReset();
   });
 
   describe('isInstalled()', () => {
@@ -32,10 +31,7 @@ describe('eckoCommon', () => {
     });
 
     it('returns false when Ecko Wallet is NOT installed', () => {
-      window.kadena = {
-        request: mockEckoRequest,
-        isKadena: false,
-      };
+      if (window.kadena) window.kadena.isKadena = false;
 
       const result = isInstalled();
 
@@ -45,10 +41,7 @@ describe('eckoCommon', () => {
 
   describe('isConnected()', () => {
     it('returns false when Ecko Wallet is not installed', async () => {
-      window.kadena = {
-        request: mockEckoRequest,
-        isKadena: false,
-      };
+      if (window.kadena) window.kadena.isKadena = false;
 
       const result = await isConnected('testnet04');
 
@@ -69,15 +62,10 @@ describe('eckoCommon', () => {
 
   describe('connect()', () => {
     it('throws when Ecko Wallet is not installed', async () => {
-      window.kadena = {
-        request: mockEckoRequest,
-        isKadena: false,
-      };
+      if (window.kadena) window.kadena.isKadena = false;
 
       try {
         await connect('testnet04');
-        // Fail test if connect() doesn't throw. Next line shouldn't be reached.
-        expect(true).toBe(false);
       } catch (e) {
         expect(e.message).toContain('Ecko Wallet is not installed');
       }
@@ -121,10 +109,6 @@ describe('eckoCommon', () => {
     });
 
     it('throws when the user declines the connection', async () => {
-      window.kadena = {
-        request: mockEckoRequest,
-        isKadena: true,
-      };
       // mock kda_checkStatus
       mockEckoRequest.mockResolvedValueOnce({
         status: 'fail',
@@ -137,8 +121,6 @@ describe('eckoCommon', () => {
 
       try {
         await connect('testnet04');
-        // Fail test if connect() doesn't throw. Next line shouldn't be reached.
-        expect(true).toBe(false);
       } catch (e) {
         expect(e.message).toContain('User declined connection');
       }

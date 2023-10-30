@@ -81,32 +81,33 @@ model Signer {
 }
 
 model Transaction {
-  badResult     Json?    @map("badresult")
-  blockHash     String   @map("block")
-  chainId       BigInt   @map("chainid")
-  code          String?  @db.VarChar
+  badResult     Json?       @map("badresult")
+  blockHash     String      @map("block")
+  chainId       BigInt      @map("chainid")
+  code          String?     @db.VarChar
   continuation  Json?
-  creationTime  DateTime @map("creationtime") @db.Timestamptz(6)
+  creationTime  DateTime    @map("creationtime") @db.Timestamptz(6)
   data          Json?
   gas           BigInt
-  gasLimit      BigInt   @map("gaslimit")
-  gasPrice      Float    @map("gasprice")
-  goodResult    Json?    @map("goodresult")
+  gasLimit      BigInt      @map("gaslimit")
+  gasPrice      Float       @map("gasprice")
+  goodResult    Json?       @map("goodresult")
   height        BigInt
-  logs          String?  @db.VarChar
+  logs          String?     @db.VarChar
   metadata      Json?
-  nonce         String   @db.VarChar
-  eventCount    BigInt?  @map("num_events")
-  pactId        String?  @map("pactid") @db.VarChar
-  proof         String?  @db.VarChar
-  requestKey    String   @map("requestkey") @db.VarChar
+  nonce         String      @db.VarChar
+  eventCount    BigInt?     @map("num_events")
+  pactId        String?     @map("pactid") @db.VarChar
+  proof         String?     @db.VarChar
+  requestKey    String      @map("requestkey") @db.VarChar
   rollback      Boolean?
-  senderAccount String   @map("sender") @db.VarChar
+  senderAccount String      @map("sender") @db.VarChar
   step          BigInt?
   ttl           BigInt
-  transactionId BigInt?  @map("txid")
+  transactionId BigInt?     @map("txid")
   events        Event[]
-  block         Block    @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  block         Block       @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  transfers     Transfer[]
 
   @@id([blockHash, requestKey], map: "transaction_pkey")
   @@index([height])
@@ -115,17 +116,18 @@ model Transaction {
 }
 
 model Transfer {
-  amount          Decimal @db.Decimal
-  blockHash       String  @map("block") @db.VarChar
-  chainId         BigInt  @map("chainid")
-  senderAccount   String  @map("from_acct") @db.VarChar
+  amount          Decimal       @db.Decimal
+  blockHash       String        @map("block") @db.VarChar
+  chainId         BigInt        @map("chainid")
+  senderAccount   String        @map("from_acct") @db.VarChar
   height          BigInt
-  orderIndex      BigInt  @map("idx")
-  moduleHash      String  @map("modulehash") @db.VarChar
-  moduleName      String  @map("modulename") @db.VarChar
-  requestKey      String  @map("requestkey") @db.VarChar
-  receiverAccount String  @map("to_acct") @db.VarChar
-  blocks          Block   @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  orderIndex      BigInt        @map("idx")
+  moduleHash      String        @map("modulehash") @db.VarChar
+  moduleName      String        @map("modulename") @db.VarChar
+  requestKey      String        @map("requestkey") @db.VarChar
+  receiverAccount String        @map("to_acct") @db.VarChar
+  blocks          Block         @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  Transaction     Transaction?  @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([blockHash, chainId, orderIndex, moduleHash, requestKey])
   @@index([senderAccount, height(sort: Desc), orderIndex], map: "transfers_senderAccount_height_orderIndex")

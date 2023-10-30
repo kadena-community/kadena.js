@@ -87,7 +87,7 @@ Chainweaver will be executed against Devnet.
 
 In Chainweaver, expand the left navigation bar and click contracts. Select
 `Module Explorer` at the top of the right panel to reveal a list of contracts
-that are already deployed on your Devnet. Next to the search box on top of
+that are already deployed on your Devnet. Next to the search box above
 that list, change `All chains` to any particular chain to narrow down the
 list to the unique contracts that are deployed to Devnet by default:
 
@@ -119,7 +119,7 @@ documentation of the following functions:
 
  * transfer
  * transfer-create
- * get-balance
+ * details
  * create-account
 
 These are some of the first smart contract functions that you will interact
@@ -214,7 +214,7 @@ your local Devnet:
 ```
 
 Notice that the list is exactly the same as the list displayed in the module
-explorer of Chainweaver. Both these tools can be used interchangably to interact
+explorer of Chainweaver. Both these tools can be used interchangeably to interact
 with the Kadena blockchain. They both support the execution of simple read
 operations as well as the execution of complex multi-step transactions, as will
 become clear when you will be using both approaches to test the smart contracts
@@ -229,7 +229,7 @@ are deployed on the Kadena networks by default and how you can explore them usin
 either Chainweaver or the Kadena JavaScript client. In the next chapter, you will
 create an account on Devnet. This account will govern several aspects of the smart
 contracts you will create in this tutorial: the namespace, keyset definition and
-module. The account will also get exclusive permission to call certain functions in the
+modules. The account will also get exclusive permission to call certain functions in the
 election smart contract, such as adding candidates. After setting up this account,
 namespace and keyset definitions, all will be in place to deploy the smart contract
 that will become the new back-end of the election website.

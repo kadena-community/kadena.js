@@ -1,24 +1,24 @@
-jest.mock('cross-fetch', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
-import fetch from 'cross-fetch';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import chainweb from '..';
-import type { IBlockHeader, IBlockPayload, IPagedResponse } from '../types';
 import { config } from './config';
+import { blockByHeightCurrentCutMock } from './mocks/blockByHeightCurrentCutMock';
+import { blockByHeightPayloadsMock } from './mocks/blockByHeightPayloadsMock';
+import { blockRecentsPayloadsMock } from './mocks/blockRecentsPayloadsMock';
+import { blockRecentsRecentHeadersMock } from './mocks/blockRecentsRecentHeaders';
 import { header } from './mocks/header';
-import { makeFetchResponse, mockFetch, urlHelper } from './mokker';
+import { rangeHeadersMock } from './mocks/rangeHeaderMock';
+import { rangePayloadsMock } from './mocks/rangePayloadsMock';
 
-const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
-mockedFunctionFetch.mockImplementation(
-  mockFetch as jest.MockedFunction<typeof fetch>,
-);
+const server = setupServer();
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
 /* ************************************************************************** */
 /* Test settings */
 
-jest.setTimeout(25000);
 const debug: boolean = false;
 
 /* ************************************************************************** */
@@ -30,11 +30,6 @@ const logg = (...args: unknown[]): void => {
   }
 };
 
-beforeEach(() => {
-  mockedFunctionFetch.mockImplementation(
-    mockFetch as jest.MockedFunction<typeof fetch>,
-  );
-});
 /* ************************************************************************** */
 /* Blocks */
 
@@ -46,6 +41,24 @@ describe('chainweb.block', () => {
   /* By Height */
 
   it('gets the block by height an validates', async () => {
+    server.resetHandlers(
+      http.get(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json({ limit: 1, items: [header], next: null }),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+        () => HttpResponse.json(blockByHeightPayloadsMock),
+        { once: true },
+      ),
+    );
+
     const r = await chainweb.block.height(
       0,
       height,
@@ -63,6 +76,19 @@ describe('chainweb.block', () => {
   /* By Block Hash */
 
   it('gets the block by block hash an validates', async () => {
+    server.resetHandlers(
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json({ limit: 1, items: [header], next: null }),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+        () => HttpResponse.json(blockByHeightPayloadsMock),
+        { once: true },
+      ),
+    );
+
     const r = await chainweb.block.blockHash(
       0,
       blockHash,
@@ -77,48 +103,19 @@ describe('chainweb.block', () => {
   });
 
   it('throws on fetching Block by blockhash without payload', async () => {
-    const localMockFetch = (url: URL | string, init?: RequestInit): unknown => {
-      const path = urlHelper(url);
-      switch (path) {
-        case 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch':
-          return makeFetchResponse<IBlockPayload<string[]>[]>(
-            [] as unknown as IBlockPayload<string[]>[],
-          );
-        default:
-          return makeFetchResponse<IPagedResponse<IBlockHeader>>({
-            limit: 1,
-            items: [
-              {
-                nonce: '299775665679630368',
-                creationTime: 1617745627822054,
-                parent: 'XtgUmsnF20vMX4Dx9kN2W8cIXXiLNtDdFZLugMoDjrY',
-                adjacents: {
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  '15': 'ZoBvuaVZWBOKLaDZfM51A9LaKb5B1f2fW83VLftQa3Y',
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  '10': 'oT8NLW-IZSziaOgI_1AfCdJ18u3epFpGONrkQ_F6w_Y',
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  '5': 'SDj4sXByWVqi9epbPAiz1zqhmBGJrzSY2bPk9-IMaA0',
-                },
-                target: '9sLMdbnd1x6vtRGpIw5tKMt_1hgprJS0oQkAAAAAAAA',
-                payloadHash: '2Skc1JkkBdLPkj5ZoV27nzhR3WjGD-tJiztCFGTaKIQ',
-                chainId: 0,
-                weight: 'iFU5b59ACHSOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-                height: 1511601,
-                chainwebVersion: 'mainnet01',
-                epochStart: 1617743254198411,
-                featureFlags: 0,
-                hash: 'BsxyrIDE0to4Kn9bjdgR_Q7Ha9bYkzd7Yso8r0zrdOc',
-              },
-            ],
-            next: null,
-          } as unknown as IPagedResponse<IBlockHeader>);
-      }
-    };
-
-    mockedFunctionFetch.mockImplementation(
-      localMockFetch as jest.MockedFunction<typeof fetch>,
+    server.resetHandlers(
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json({ limit: 1, items: [header], next: null }),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+        () => HttpResponse.json(blockByHeightPayloadsMock),
+        { once: true },
+      ),
     );
+
     try {
       const r = await chainweb.block.blockHash(
         0,
@@ -154,6 +151,22 @@ describe('chainweb.block', () => {
   /* By Range */
 
   it('gets block by range and validates', async () => {
+    server.resetHandlers(
+      http.get(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json(rangeHeadersMock(20010)),
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+        () => HttpResponse.json(rangePayloadsMock(20010)),
+      ),
+    );
+
     const n = 10;
     const r = await chainweb.block.range(
       0,
@@ -186,6 +199,31 @@ describe('chainweb.block', () => {
   it.each([10, 100, 359, 360, 730])(
     'gets recent blocks with limit %p',
     async (n) => {
+      server.resetHandlers(
+        http.get('https://api.chainweb.com/chainweb/0.0/mainnet01/cut', () =>
+          HttpResponse.json(blockByHeightCurrentCutMock),
+        ),
+        http.post(
+          'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+          ({ request }) => {
+            let m = n;
+            if (n === 730) {
+              const url = new URL(request.url);
+              const limit = url.searchParams.get('limit');
+              if (limit === '730') m = 730360;
+              if (limit === '370') m = 730720;
+              if (limit === '10') m = 730730;
+            }
+            return HttpResponse.json(blockRecentsRecentHeadersMock(m));
+          },
+        ),
+        http.post(
+          'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+          () => HttpResponse.json(blockRecentsPayloadsMock(n)),
+          { once: true },
+        ),
+      );
+
       const cur = (await chainweb.cut.current(config.network, config.host))
         .hashes[0].height;
       const r = await chainweb.block.recent(
@@ -211,6 +249,24 @@ describe('chainweb.block', () => {
   );
 
   it('recgets recent blocks with low dept', async () => {
+    server.resetHandlers(
+      http.get(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json(blockRecentsRecentHeadersMock(10)),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+        () => HttpResponse.json(blockRecentsPayloadsMock(10)),
+        { once: true },
+      ),
+    );
+
     const r = await chainweb.block.recent(
       0,
       0,
@@ -224,6 +280,24 @@ describe('chainweb.block', () => {
   });
 
   it('throws when payload is not in sync with headers', async () => {
+    server.resetHandlers(
+      http.get(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json(blockRecentsRecentHeadersMock(9)),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+        () => HttpResponse.json(blockRecentsPayloadsMock(9)),
+        { once: true },
+      ),
+    );
+
     await expect(async () => {
       const r = await chainweb.block.recent(
         0,

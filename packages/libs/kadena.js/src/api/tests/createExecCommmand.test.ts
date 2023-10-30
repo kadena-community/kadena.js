@@ -1,4 +1,5 @@
 import { createSendRequest } from '@kadena/chainweb-node-client';
+import { expect, test } from 'vitest';
 import { createExecCommand } from '../createExecCommand';
 import {
   command,

@@ -1,24 +1,37 @@
-jest.mock('cross-fetch', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
-import fetch from 'cross-fetch';
+import { HttpResponse, delay, http } from 'msw';
+import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import type { ICoin } from '../../../composePactCommand/test/coin-contract';
-import type {
-  IQuicksignResponse,
-  IQuicksignResponseOutcomes,
-} from '../../../index';
+import type { IQuicksignResponseOutcomes } from '../../../index';
 import { Pact } from '../../../index';
 import { getModule } from '../../../pact';
 import { signWithChainweaver } from '../signWithChainweaver';
 
 const coin: ICoin = getModule('coin');
 
-describe('signWithChainweaver', () => {
-  jest.setTimeout(1000);
+const server = setupServer();
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
+const post = (
+  path: string,
+  response: string | IQuicksignResponseOutcomes,
+  status = 200,
+  wait?: number,
+): ReturnType<typeof http.post> =>
+  http.post(
+    path,
+    async () => {
+      await delay(wait ?? 0);
+      return typeof response === 'string'
+        ? new HttpResponse(response, { status })
+        : HttpResponse.json(response, { status });
+    },
+    { once: true },
+  );
+
+describe('signWithChainweaver', () => {
   it('throws an error when nothing is to be signed', async () => {
     try {
       await (signWithChainweaver as (arg: unknown) => {})(undefined);
@@ -28,26 +41,18 @@ describe('signWithChainweaver', () => {
   });
 
   it('throws when an error is returned', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      text: () => JSON.stringify({ responses: [] } as IQuicksignResponse),
-      json: () => {},
-    });
+    server.resetHandlers(
+      post('http://127.0.0.1:9467/v1/quicksign', { responses: [] }),
+    );
 
     try {
-      await (signWithChainweaver as (arg: unknown) => {})(undefined);
+      await (signWithChainweaver as (arg: unknown) => {})([]);
     } catch (e) {
       expect(e).toBeTruthy();
     }
   });
 
   it('makes a call on 127.0.0.1:9467/v1/quicksign with transaction', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      text: () => JSON.stringify({ responses: [] } as IQuicksignResponse),
-      json: () => {},
-    });
-
     const builder = Pact.builder
       .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
       .addSigner('signer-key', (withCap) => [withCap('coin.GAS')]);
@@ -62,25 +67,29 @@ describe('signWithChainweaver', () => {
       };
     });
 
-    const body = JSON.stringify({
-      cmdSigDatas: [{ cmd: unsignedTransaction.cmd, sigs }],
-    });
-    await signWithChainweaver(unsignedTransaction);
+    server.resetHandlers(
+      http.post('http://127.0.0.1:9467/v1/quicksign', async ({ request }) => {
+        const body = await request.json();
 
-    expect(fetch).toBeCalledWith('http://127.0.0.1:9467/v1/quicksign', {
-      body,
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      method: 'POST',
-    });
+        expect(request.headers.get('content-type')).toEqual(
+          'application/json;charset=utf-8',
+        );
+
+        expect(body).toStrictEqual({
+          cmdSigDatas: [{ cmd: unsignedTransaction.cmd, sigs }],
+        });
+
+        return HttpResponse.json({ responses: [] });
+      }),
+    );
+
+    await signWithChainweaver(unsignedTransaction);
   });
 
   it('throws when call fails', async () => {
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 500,
-      statusText: 'A system error occurred',
-      text: () => {},
-      json: () => {},
-    });
+    server.resetHandlers(
+      post('http://127.0.0.1:9467/v1/quicksign', 'A system error occured', 500),
+    );
 
     const unsignedTransaction = Pact.builder
       .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
@@ -92,9 +101,7 @@ describe('signWithChainweaver', () => {
       .createTransaction();
 
     // expected: throws an error
-    signWithChainweaver(unsignedTransaction).catch((e) => {
-      expect(e).toBeDefined();
-    });
+    await expect(signWithChainweaver(unsignedTransaction)).rejects.toThrow();
   });
 
   it('adds signatures in multisig fashion to the transactions', async () => {
@@ -112,10 +119,29 @@ describe('signWithChainweaver', () => {
         },
       ],
     };
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      text: () => JSON.stringify(mockedResponse),
-    });
+
+    // set a new mock response for the second signature
+    const mockedResponse2: IQuicksignResponseOutcomes = {
+      responses: [
+        {
+          commandSigData: {
+            cmd: '',
+            sigs: [
+              { pubKey: 'transfer-signer-pubkey', sig: 'transfer-key-sig' },
+            ],
+          },
+          outcome: {
+            hash: '',
+            result: 'success',
+          },
+        },
+      ],
+    };
+
+    server.resetHandlers(
+      post('http://127.0.0.1:9467/v1/quicksign', mockedResponse),
+      post('http://127.0.0.1:9467/v1/quicksign', mockedResponse2),
+    );
 
     const unsignedTransaction = Pact.builder
       .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
@@ -135,28 +161,6 @@ describe('signWithChainweaver', () => {
       { sig: 'gas-key-sig' },
       undefined,
     ]);
-
-    // set a new mock response for the second signature
-    const mockedResponse2: IQuicksignResponseOutcomes = {
-      responses: [
-        {
-          commandSigData: {
-            cmd: '',
-            sigs: [
-              { pubKey: 'transfer-signer-pubkey', sig: 'transfer-key-sig' },
-            ],
-          },
-          outcome: {
-            hash: '',
-            result: 'success',
-          },
-        },
-      ],
-    };
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      text: () => JSON.stringify(mockedResponse2),
-    });
 
     const signedTx = await signWithChainweaver(txWithOneSig);
     expect(signedTx.sigs).toEqual([
@@ -178,10 +182,9 @@ describe('signWithChainweaver', () => {
       ],
     };
 
-    (fetch as jest.Mock).mockResolvedValue({
-      status: 200,
-      text: () => JSON.stringify(mockedResponse),
-    });
+    server.resetHandlers(
+      post('http://127.0.0.1:9467/v1/quicksign', mockedResponse),
+    );
 
     const unsignedTransaction = Pact.builder
       .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))

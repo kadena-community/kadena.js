@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { pullSigner } from '../pullSigner';
 import { keyPair } from './mockdata/execCommand';
 

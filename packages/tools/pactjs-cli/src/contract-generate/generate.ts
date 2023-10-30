@@ -91,11 +91,8 @@ async function generator(
     namespace: args.namespace,
   });
 
-  if (process.env.DEBUG === 'dev') {
-    writeFileSync(
-      join(process.cwd(), 'modules.json'),
-      JSON.stringify(modules, undefined, 2),
-    );
+  if (typeof args.parseTreePath === 'string' && args.parseTreePath !== '') {
+    writeFileSync(args.parseTreePath, JSON.stringify(modules, undefined, 2));
   }
 
   const moduleDtss = new Map();
@@ -176,7 +173,7 @@ export const generate: IGenerate = (program, version) => async (args) => {
   // add doNotEdit comment to index.d.ts
   indexDts = `${doNotEdit}\n${indexDts}`;
 
-  moduleDtss.forEach((_, moduleName) => {
+  moduleDtss.forEach((content, moduleName) => {
     const importStatement: string = `import './${moduleName}';`;
     // We have used "export * ..." previously, which wasn't necessary and caused some bugs.
     const exportStatement: string = `export * from './${moduleName}';`;

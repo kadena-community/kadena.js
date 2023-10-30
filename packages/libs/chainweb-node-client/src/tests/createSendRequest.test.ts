@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { createSendRequest } from '../createSendRequest';
 import { command } from './mockdata/execCommand';
 

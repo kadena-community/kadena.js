@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { beforeEach, describe, expect, test } from 'vitest';
 import type { ICheckpoint } from './ProgressBar';
 import { ProgressBar } from './ProgressBar';
 

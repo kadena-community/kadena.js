@@ -34,7 +34,11 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
 
     checkSubTree(menuItems);
 
-    if (lastItem && lastItem.isIndex) {
+    if (
+      lastItem &&
+      lastItem.isIndex &&
+      tree[tree.length - 1].title.toLowerCase() !== lastItem.label.toLowerCase()
+    ) {
       tree.push({
         root: lastItem.root,
         title: lastItem.label,

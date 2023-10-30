@@ -1,57 +1,57 @@
-/** @jest-environment jsdom */
-import { TextDecoder, TextEncoder } from 'util';
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
+/** @vitest-environment jsdom */
+
 import type { IPactCommand } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
-import type { ISignFunction } from '../../ISignFunction';
 import { createEckoWalletQuicksign } from '../quicksignWithEckoWallet';
+
+import { TextDecoder, TextEncoder } from 'util';
 
 Object.assign(global, { TextDecoder, TextEncoder });
 
-const mockEckoRequest = jest.fn();
-
-Object.defineProperty(window, 'kadena', {
-  value: {
-    isKadena: true,
-    request: mockEckoRequest,
-  },
-});
-
 describe('quicksignWithEckoWallet', () => {
-  let transaction: IPactCommand;
-  let quicksignWithEckoWallet: ISignFunction;
+  const getTransaction = (): IPactCommand => ({
+    payload: {
+      exec: {
+        code: '(coin.transfer "bonnie" "clyde" 1)',
+        data: { 'test-data': 'test-data' },
+      },
+    },
+    meta: {
+      chainId: '1',
+      gasLimit: 10000,
+      gasPrice: 1e-8,
+      sender: 'test-sender',
+      ttl: 30 * 6,
+      creationTime: 1234,
+    },
+    signers: [
+      {
+        clist: [
+          {
+            name: 'test-cap-name',
+            args: ['test-cap-arg'],
+          },
+        ],
+        pubKey: 'test-pub-key',
+      },
+    ],
+    networkId: 'testnet-id',
+    nonce: '',
+  });
+
+  const mockEckoRequest = vi.fn();
+
+  Object.defineProperty(window, 'kadena', {
+    value: {
+      isKadena: true,
+      request: mockEckoRequest,
+    },
+    writable: true,
+  });
 
   beforeEach(() => {
     mockEckoRequest.mockReset();
-
-    transaction = {
-      payload: {
-        exec: {
-          code: '(coin.transfer "bonnie" "clyde" 1)',
-          data: { 'test-data': 'test-data' },
-        },
-      },
-      meta: {
-        chainId: '1',
-        gasLimit: 10000,
-        gasPrice: 1e-8,
-        sender: 'test-sender',
-        ttl: 30 * 6,
-        creationTime: 1234,
-      },
-      signers: [
-        {
-          clist: [
-            {
-              name: 'test-cap-name',
-              args: ['test-cap-arg'],
-            },
-          ],
-          pubKey: 'test-pub-key',
-        },
-      ],
-      networkId: 'testnet-id',
-      nonce: '',
-    };
   });
 
   afterAll(() => {
@@ -61,14 +61,10 @@ describe('quicksignWithEckoWallet', () => {
   it('throws when no transactions are passed', async () => {
     const quicksignWithEckoWallet = createEckoWalletQuicksign();
 
-    try {
-      // @ts-expect-error - Expected 1 arguments, but got 0.
-      await quicksignWithEckoWallet();
-      // Fail test if signWithWalletConnect() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('No transaction(s) to sign');
-    }
+    // @ts-expect-error - Expected 1 arguments, but got 0.
+    await expect(() => quicksignWithEckoWallet()).rejects.toThrowError(
+      'No transaction(s) to sign',
+    );
   });
 
   it('signs a transaction', async () => {
@@ -99,8 +95,8 @@ describe('quicksignWithEckoWallet', () => {
       ],
     });
 
-    quicksignWithEckoWallet = createEckoWalletQuicksign();
-
+    const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
     const unsignedTransaction = createTransaction(transaction);
     unsignedTransaction.hash = 'test-hash';
     const result = await quicksignWithEckoWallet(unsignedTransaction);
@@ -179,12 +175,12 @@ describe('quicksignWithEckoWallet', () => {
       ],
     });
 
-    quicksignWithEckoWallet = createEckoWalletQuicksign();
-
+    const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
     const unsignedTransactions = [
       createTransaction(transaction),
       createTransaction({
-        ...transaction,
+        ...getTransaction(),
         signers: [
           {
             clist: [
@@ -244,15 +240,12 @@ describe('quicksignWithEckoWallet', () => {
   });
 
   it('throws when there is no signing response', async () => {
-    quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
 
-    try {
-      await quicksignWithEckoWallet(createTransaction(transaction));
-      // Fail test if quicksignWithEckoWallet() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('Error signing transaction');
-    }
+    await expect(() =>
+      quicksignWithEckoWallet(createTransaction(transaction)),
+    ).rejects.toThrowError('Error signing transaction');
   });
 
   it('throws when there is no quickSignData in the response from Ecko', async () => {
@@ -260,27 +253,21 @@ describe('quicksignWithEckoWallet', () => {
       status: 'success',
     });
 
-    quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
     const unsignedTransaction = createTransaction(transaction);
 
-    try {
-      await quicksignWithEckoWallet(unsignedTransaction);
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('Error signing transaction');
-    }
+    await expect(() =>
+      quicksignWithEckoWallet(unsignedTransaction),
+    ).rejects.toThrowError('Error signing transaction');
   });
 
   it('throws when there are no responses', async () => {
-    quicksignWithEckoWallet = createEckoWalletQuicksign();
-
-    try {
-      await quicksignWithEckoWallet(createTransaction(transaction));
-      // Fail test if quicksignWithEckoWallet() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain('Error signing transaction');
-    }
+    const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
+    await expect(() =>
+      quicksignWithEckoWallet(createTransaction(transaction)),
+    ).rejects.toThrowError('Error signing transaction');
   });
 
   it('throws when the hash of the unsigned and signed transaction do not match', async () => {
@@ -311,30 +298,25 @@ describe('quicksignWithEckoWallet', () => {
       ],
     });
 
-    quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
 
-    try {
-      await quicksignWithEckoWallet(createTransaction(transaction));
-      // Fail test if quicksignWithEckoWallet() doesn't throw. Next line shouldn't be reached.
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toContain(
-        'Hash of the transaction signed by the wallet does not match. Our hash',
-      );
-    }
+    await expect(() =>
+      quicksignWithEckoWallet(createTransaction(transaction)),
+    ).rejects.toThrowError(
+      'Hash of the transaction signed by the wallet does not match. Our hash',
+    );
   });
 
   it('throws when the networks of the transactions are not the same', async () => {
-    quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const quicksignWithEckoWallet = createEckoWalletQuicksign();
+    const transaction = getTransaction();
 
-    try {
-      await quicksignWithEckoWallet([
+    await expect(() =>
+      quicksignWithEckoWallet([
         createTransaction(transaction),
         createTransaction({ ...transaction, networkId: 'testnet-id-2' }),
-      ]);
-      expect(true).toBe(false);
-    } catch (e) {
-      expect(e.message).toBe('Network is not equal for all transactions');
-    }
+      ]),
+    ).rejects.toThrowError('Network is not equal for all transactions');
   });
 });

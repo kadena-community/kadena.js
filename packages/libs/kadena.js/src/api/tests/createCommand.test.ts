@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { createCommand } from '../createCommand';
 import { command, payload, signature } from './mockdata/execCommand';
 

@@ -1,14 +1,13 @@
-jest.mock('next/router', () => ({
-  useRouter: jest.fn(() => ({
-    pathname: '/transactions',
-  })),
-}));
 import { render, screen } from '@testing-library/react';
+import mock from 'next-router-mock';
 import React from 'react';
+import { describe, expect, it } from 'vitest';
 import { SidebarMenu } from './index';
 
 describe('SidebarMenu', () => {
-  it('renders correctly with menu items', () => {
+  it('renders correctly with menu items', async () => {
+    await mock.push('/transactions');
+
     const { getByTestId } = render(<SidebarMenu />);
 
     // Assert that the SidebarMenu component is rendered

@@ -57,7 +57,7 @@ export const MyApp = ({
   }, [router.isReady]);
 
   const { title, description, headerImage, authorInfo } = props.frontmatter;
-  const defaultImagePath = '/assets/blog/2023/0_s-vXIU_stFVOsfim.png';
+  const defaultImagePath = '/assets/og_banner.jpeg';
   const ogImage = headerImage
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${headerImage}`
     : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${defaultImagePath}`;

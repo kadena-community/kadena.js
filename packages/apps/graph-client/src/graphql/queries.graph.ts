@@ -161,6 +161,7 @@ export const getTransactions: DocumentNode = gql`
       first: $first
       last: $last
     ) {
+      totalCount
       pageInfo {
         startCursor
         endCursor
@@ -173,6 +174,10 @@ export const getTransactions: DocumentNode = gql`
           ...CoreTransactionFields
           block {
             hash
+          }
+          signers {
+            publicKey
+            signature
           }
         }
       }

@@ -26,10 +26,10 @@ export const Subscribe: FC = () => {
         {!hasSuccess ? (
           <>
             <form>
-              <Stack gap="$sm">
+              <Stack gap="$sm" paddingY="$1">
                 <Input
                   id="email"
-                  leftIcon="At"
+                  icon="At"
                   onChange={handleFormState}
                   placeholder="Email address"
                   outlined

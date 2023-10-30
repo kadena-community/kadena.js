@@ -1,8 +1,9 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 describe('env', () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
     process.env = { ...originalEnv };
   });
 
@@ -17,7 +18,7 @@ describe('env', () => {
     };
 
     // load module
-    const env = require('../env').env;
+    const { env } = await import('../env');
     const result = env('KADENA_TESTNET_API', 'default-api');
 
     expect(result).toEqual('testnet-api');
@@ -27,7 +28,8 @@ describe('env', () => {
     delete process.env.KADENA_TESTNET_API;
 
     // load module
-    const result = require('../env').env('KADENA_TESTNET_API', 'default-api');
+    const { env } = await import('../env');
+    const result = env('KADENA_TESTNET_API', 'default-api');
 
     expect(result).toEqual('default-api');
   });
@@ -36,7 +38,8 @@ describe('env', () => {
     delete process.env.GAS_PRICE;
 
     // load module
-    const result = require('../env').env('GAS_PRICE', 0.0001);
+    const { env } = await import('../env');
+    const result = env('GAS_PRICE', 0.0001);
 
     expect(result).toEqual(0.0001);
   });
@@ -45,7 +48,8 @@ describe('env', () => {
     process.env.KADENA_TESTNET_API = '';
 
     // load module
-    const result = require('../env').env('KADENA_TESTNET_API', 'default-api');
+    const { env } = await import('../env');
+    const result = env('KADENA_TESTNET_API', 'default-api');
 
     expect(result).toEqual('default-api');
   });

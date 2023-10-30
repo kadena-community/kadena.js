@@ -10,12 +10,13 @@ tags: [pact, smart contract, typescript, tutorial]
 
 # Chapter 04: Namespaces
 
-Toward the end of this tutorial you will deploy your election smart contract
-to Testnet. Everyone else who is following along with this tutorial will do the same.
-If everyone would deploy Pact modules with the same name, however, it would become impossible
-to distinguish your Pact module from all the others. Therefore, it is not allowed to
+After you have completed this entire tutorial, you may want to deploy your election
+smart contract to Testnet. Many others like you would perhaps like to do the same.
+If everyone would deploy Pact modules with the same name to the same network, however,
+it would become impossible to distinguish your Pact module from all the others. Therefore,
+it is not allowed to
 deploy a Pact module with a name that already exists on the chain you are deploying to
-and your deployment transaction will fail with an error if you would try. Fortunately,
+and your deployment transaction will fail with an error if you try. Fortunately,
 Kadena offers a solution to this problem by introducing namespaces. You can create
 your own unique namespace on the blockchain and you get to decide who can update the
 namespace or use it to define keysets and modules inside it. As long as you choose a
@@ -195,7 +196,7 @@ bottom of the `namespace.yml` file and run it.
 ### Redefine the namespace as the new admin
 
 To further prove that the namespace was successfully updated in the previous steps, it should
-be tested that the `user-keyset` will now be able to redefine the contract. You will need
+be tested that the `user-keyset` will now be able to redefine the namespace. You will need
 to load the signature of the `user-keyset` into the context of the Pact REPL and write a
 transaction to redefine the namespace. The transaction will be the same as the previous one,
 but this time it is wrapped inside an `expect` function instead of `expect-failure`.
@@ -221,21 +222,23 @@ Add the following transaction at the bottom of the `namespace.yml` file and run 
 If all is well, `Load successful` will be displayed at the bottom of the output. In conclusion,
 you defined a namespace `election` and specified a keyset that is allowed to govern the
 namespace and a keyset that is allowed to use the namespace. You wrote an automated test
-script to verify that indeed only the governance keyset can redefine the namespace. The
-namespace was redefined in a way that handed over governance permissions to another keyset.
-Great work.
+script to verify that indeed only the governance keyset can redefine the namespace. Finally, the
+namespace was redefined in such a way that governance permissions were handed over to another
+keyset. Great work!
 
 ## Exercise: Define a principal namespace
 
 Choosing an arbitrary namespace name like `election-your-name` still provides no guarantee
 that, by coincidence, this namespace is not already defined by someone else. To ensure
 that your namespace will be unique, you can create a principal namespace. The
-`create-principal-namespace` from the `ns` module creates a principle namespace name
+`create-principal-namespace` from the `ns` module creates a principal namespace name
 that is a hash of a keyset, prefixed with `n_`. In this example, you will use an `admin-keyset`
 that contains the public key of the `sender00` account, because `ns.create-principal-namespace`
 only accepts valid public keys inside the keyset. The `ns` module is readily available
 on Mainnet, Testnet and Devnet, but to use it in the Pact REPL it needs to be loaded
-from the local filesystem. The output of `ns.create-principal-namespace` called with the
+from the local filesystem. To that end, the `ns` module should be loaded from the local
+`./pact/root` folder of the project for testing purposes.The output of
+`ns.create-principal-namespace` called with the
 `admin-keyset` can be stored in a variable (`ns-name`) and passed to the `define-namespace`
 as the first argument. In the `./pact` folder create `principal-namespace.repl` file and paste the following
 code into it.
@@ -282,7 +285,7 @@ and holds KDA on chain 1. Otherwise, repeat the steps in the previous chapter to
 and fund your admin account. Chainweaver needs to remain open, because you will use
 it to sign the transaction for defining the namespace. Switch to your editor and open
 the file `./snippets/principal-namespace.ts`. The `pactCommand` variable contains the
-crucial bit of Pact code for defining a principle namespace, which you just tested in
+crucial bit of Pact code for defining a principal namespace, which you just tested in
 the Pact REPL. Also, recognize how the keyset data is added in a similar fashion as in
 the `.repl` file, with slightly different syntax. For the transaction on Devnet, a signer
 is also added, which was not required in the Pact REPL. After the transaction is defined,
@@ -311,7 +314,7 @@ If everything went well, you will see something similar to the following output.
 }
 ```
 
-Congratulations! You have defined a principle namespace on your local Devnet that
+Congratulations! You have defined a principal namespace on your local Devnet that
 can be governed and used by your admin account.
 
 ## Next steps
