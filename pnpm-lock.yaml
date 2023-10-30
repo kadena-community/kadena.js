@@ -1829,6 +1829,9 @@ importers:
         specifier: ~3.18.0
         version: 3.18.0
     devDependencies:
+      '@gmrchk/cli-testing-library':
+        specifier: ^0.1.2
+        version: 0.1.2
       '@kadena-dev/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
@@ -1883,6 +1886,9 @@ importers:
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+      vitest:
+        specifier: ^0.34.6
+        version: 0.34.6(happy-dom@12.9.1)
 
   packages/tools/kda-cli:
     dependencies:
@@ -5817,6 +5823,12 @@ packages:
 
   /@floating-ui/utils@0.1.1:
     resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
+    dev: true
+
+  /@gmrchk/cli-testing-library@0.1.2:
+    resolution: {integrity: sha512-/oALX+4Zti+92hJaR7trZlDPzI2EekIHEYoDXH3oGTdCdgq5lDT3vHAMDzTjbIfUA0X/XC8sVA2tbtSoUPB5xw==}
+    dependencies:
+      keycode: 2.2.1
     dev: true
 
   /@google-analytics/data@3.2.2:
@@ -20298,6 +20310,10 @@ packages:
       jwa: 2.0.0
       safe-buffer: 5.2.1
     dev: false
+
+  /keycode@2.2.1:
+    resolution: {integrity: sha512-Rdgz9Hl9Iv4QKi8b0OlCRQEzp4AgVxyCtz5S/+VIHezDmrDhkp2N2TqBWOLz0/gbeREXOOiI9/4b8BY9uw2vFg==}
+    dev: true
 
   /keyv@4.5.3:
     resolution: {integrity: sha512-QCiSav9WaX1PgETJ+SpNnx2PRRapJ/oRSXM4VO5OGYGSjrxbKPVFVhB3l2OCbLCk329N8qyAtsJjSjvVBWzEug==}
