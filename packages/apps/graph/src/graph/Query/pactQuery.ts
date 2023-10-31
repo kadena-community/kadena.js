@@ -64,10 +64,13 @@ builder.queryField('pactQuery', (t) => {
         .setMeta({
           chainId: args.pactQuery.chainId as ChainId,
         })
-        .setNetworkId(devnetConfig.NETWORK_ID)
-        .createTransaction();
+        .setNetworkId(devnetConfig.NETWORK_ID);
 
-      const response = await dirtyRead(transaction);
+      if (args.pactQuery.data) {
+        transaction.addData(args.pactQuery.data.key, args.pactQuery.data.value);
+      }
+
+      const response = await dirtyRead(transaction.createTransaction());
 
       if (response.result.status === 'failure') {
         return String(response.result.status);
