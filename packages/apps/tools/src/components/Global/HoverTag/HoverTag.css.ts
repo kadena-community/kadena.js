@@ -9,9 +9,3 @@ export const copyButtonClass = style([
     cursor: 'pointer',
   }),
 ]);
-
-export const monoFontTextStyles = style([
-  sprinkles({
-    fontFamily: '$mono',
-  }),
-]);

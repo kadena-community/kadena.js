@@ -1,7 +1,7 @@
 import type { IMaskedValueProps } from '@kadena/react-ui';
-import { SystemIcon, Tag, Tooltip, maskValue } from '@kadena/react-ui';
+import { SystemIcon, Tag, Text, Tooltip, maskValue } from '@kadena/react-ui';
 import React, { useRef } from 'react';
-import { copyButtonClass, monoFontTextStyles } from './HoverTag.css';
+import { copyButtonClass } from './HoverTag.css';
 
 export interface IHoverTagProps {
   value: IMaskedValueProps['value'];
@@ -22,7 +22,7 @@ export const HoverTag = ({ value }: IHoverTagProps) => {
         }
       >
         <Tag>
-          <span className={monoFontTextStyles}>{maskValue(value)}</span>
+          <Text variant="code">{maskValue(value)}</Text>
           <button
             className={copyButtonClass}
             onClick={async () => {
@@ -38,7 +38,7 @@ export const HoverTag = ({ value }: IHoverTagProps) => {
         </Tag>
       </span>
       <Tooltip.Root placement="top" ref={ref}>
-        <span className={monoFontTextStyles}>{tooltipContent}</span>
+        <Text variant="code">{tooltipContent}</Text>
       </Tooltip.Root>
     </>
   );
