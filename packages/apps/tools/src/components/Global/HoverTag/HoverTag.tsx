@@ -1,12 +1,7 @@
 import type { IMaskedValueProps } from '@kadena/react-ui';
-import { SystemIcon, Tooltip, maskValue } from '@kadena/react-ui';
+import { SystemIcon, Tag, Tooltip, maskValue } from '@kadena/react-ui';
 import React, { useRef } from 'react';
-import {
-  closeButtonClass,
-  tagClass,
-  tagStyles,
-  tooltipStyles,
-} from './HoverTag.css';
+import { copyButtonClass, monoFontTextStyles } from './HoverTag.css';
 
 export interface IHoverTagProps {
   value: IMaskedValueProps['value'];
@@ -19,7 +14,6 @@ export const HoverTag = ({ value }: IHoverTagProps) => {
     <>
       <span
         data-testid="kda-hover-tag"
-        className={tagClass}
         onMouseEnter={(e: React.MouseEvent<HTMLElement>) =>
           Tooltip.handler(e, ref)
         }
@@ -27,22 +21,24 @@ export const HoverTag = ({ value }: IHoverTagProps) => {
           Tooltip.handler(e, ref)
         }
       >
-        <span className={tagStyles}>{maskValue(value)}</span>
-        <button
-          className={closeButtonClass}
-          onClick={async () => {
-            await navigator.clipboard.writeText(value);
-            setTooltipContent('Copied!');
-            setTimeout(() => {
-              setTooltipContent(value);
-            }, 1000);
-          }}
-        >
-          <SystemIcon.ContentCopy size="sm" />
-        </button>
+        <Tag>
+          <span className={monoFontTextStyles}>{maskValue(value)}</span>
+          <button
+            className={copyButtonClass}
+            onClick={async () => {
+              await navigator.clipboard.writeText(value);
+              setTooltipContent('Copied!');
+              setTimeout(() => {
+                setTooltipContent(value);
+              }, 1000);
+            }}
+          >
+            <SystemIcon.ContentCopy size="sm" />
+          </button>
+        </Tag>
       </span>
       <Tooltip.Root placement="top" ref={ref}>
-        <span className={tooltipStyles}>{tooltipContent}</span>
+        <span className={monoFontTextStyles}>{tooltipContent}</span>
       </Tooltip.Root>
     </>
   );
