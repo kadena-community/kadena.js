@@ -107,8 +107,6 @@ export const gridMiniMenuListStyle = style([
 
 export const bottomIconsContainerStyle = style([
   sprinkles({
-    padding: 0,
-    margin: 0,
     position: 'absolute',
     bottom: 0,
   }),
@@ -129,7 +127,6 @@ export const gridItemMenuStyle = style([
 
 export const subMenuTitleClass = style([
   sprinkles({
-    color: '$gray10',
     fontSize: '$md',
     display: 'flex',
     justifyContent: 'space-between',

@@ -11,8 +11,6 @@ import {
   gridItemMiniMenuStyle,
   gridMiniMenuListItemStyle,
   gridMiniMenuListStyle,
-  iconLeftStyle,
-  iconRightStyle,
 } from './styles.css';
 
 export interface IMiniMenuProps {}
@@ -70,23 +68,24 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
             />
           </li>
         ))}
+
       </ul>
       <ul
         className={classNames(gridMiniMenuListStyle, bottomIconsContainerStyle)}
       >
         <li
           key={String('openDrawer')}
-          className={classNames(
-            gridMiniMenuListItemStyle,
-            isMenuOpen ? iconLeftStyle : iconRightStyle,
-          )}
+          className={gridMiniMenuListItemStyle}
         >
-          <MenuButton
-            title={'Drawer'}
-            href={'#'}
-            icon={'ArrowExpandUp'}
-            onClick={() => handleOpenCloseDrawer()}
-          />
+          <div >
+            <MenuButton
+              rotateClass={isMenuOpen ? 'left' : 'right'}
+              title={isMenuOpen ? 'Close' : 'Open'}
+              href={'#'}
+              icon={'ArrowExpandUp'}
+              onClick={() => handleOpenCloseDrawer()}
+            />
+          </div>
         </li>
       </ul>
     </nav>
