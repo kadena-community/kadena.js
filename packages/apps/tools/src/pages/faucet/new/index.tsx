@@ -39,6 +39,8 @@ import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
+import Head from 'next/head';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -237,6 +239,9 @@ const NewAccountFaucetPage: FC = () => {
 
   return (
     <section className={containerClass}>
+      <Head>
+        <title>Kadena Developer Tools - Faucet</title>
+      </Head>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('New')}</Breadcrumbs.Item>
@@ -360,9 +365,9 @@ const NewAccountFaucetPage: FC = () => {
       <Stack marginY={'$md'}>
         <Text>
           If you want to fund an existing account, visit{' '}
-          <a className={notificationLinkStyle} href={'/faucet/existing'}>
+          <Link className={notificationLinkStyle} href={'/faucet/existing'}>
             this page
-          </a>
+          </Link>
           .
         </Text>
       </Stack>

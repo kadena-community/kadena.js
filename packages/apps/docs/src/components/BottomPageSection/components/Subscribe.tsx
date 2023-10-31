@@ -26,7 +26,7 @@ export const Subscribe: FC = () => {
         {!hasSuccess ? (
           <>
             <form>
-              <Stack gap="$sm">
+              <Stack gap="$sm" paddingY="$1">
                 <Input
                   id="email"
                   icon="At"
