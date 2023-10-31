@@ -1,17 +1,26 @@
 import type { ChainId } from '@kadena/client';
-import seedrandom from 'seedrandom';
 import { devnetConfig } from './config';
 import { crossChainTransfer } from './crosschain-transfer';
+import type { TransferType } from './file';
 import { appendToFile, createFile } from './file';
 import { getBalance } from './get-balance';
 import type { IAccount } from './helper';
 import {
-  createAccount,
+  generateKeyPair,
   getRandomNumber,
+  getRandomOption,
   isEqualChainAccounts,
   logger,
+  seedRandom,
 } from './helper';
+import { safeTransfer } from './safe-transfer';
 import { transfer } from './transfer';
+
+const simualtionTransferOptions: TransferType[] = [
+  'xchaintransfer',
+  'transfer',
+  'safe-transfer',
+];
 
 export async function simulate({
   numberOfAccounts = 2,
@@ -38,7 +47,7 @@ export async function simulate({
 
   // Create accounts
   for (let i = 0; i < numberOfAccounts; i++) {
-    const account = createAccount();
+    const account = generateKeyPair();
     logger.info(
       `Generated KeyPair\nAccount: ${account.account}\nPublic Key: ${account.publicKey}\nSecret Key: ${account.secretKey}\n`,
     );
@@ -65,7 +74,7 @@ export async function simulate({
   }
 
   // Generate first seeded random number
-  let seededRandomNo = seedrandom(seed)();
+  let seededRandomNo = seedRandom(seed);
   let counter: number = 0;
 
   while (true) {
@@ -95,57 +104,73 @@ export async function simulate({
       }
 
       // Generate seeded random number based on the previous number
-      seededRandomNo = seedrandom(`${seededRandomNo}`)();
+      seededRandomNo = seedRandom(`${seededRandomNo}`);
 
       let nextAccount =
         accounts[getRandomNumber(seededRandomNo, accounts.length)];
 
+      // Random select a transfer type
+      const transferType = getRandomOption(
+        seededRandomNo,
+        simualtionTransferOptions,
+      );
+
+      let result;
+
       // This is to simulate cross chain transfers
-      // Every nth transfer is a cross chain transfer;
-      if (i % getRandomNumber(seededRandomNo, accounts.length) === 0) {
-        nextAccount = {
-          ...nextAccount,
-          chainId: `${getRandomNumber(
-            seededRandomNo,
-            devnetConfig.NUMBER_OF_CHAINS,
-          )}` as ChainId,
-        };
-      }
-
-      if (isEqualChainAccounts(account, nextAccount)) {
-        logger.info('Skipping transfer to self');
-        continue;
-      }
-
-      if (account.chainId === nextAccount.chainId) {
-        const result = await transfer({
-          publicKey: nextAccount.publicKey,
-          sender: account,
-          amount,
-        });
-        appendToFile(filepath, {
-          timestamp: Date.now(),
-          from: account.account,
-          to: nextAccount.account,
-          amount,
-          requestKey: result.reqKey,
-          type: 'transfer',
-        });
-      } else {
-        const result = await crossChainTransfer({
+      if (transferType === 'xchaintransfer') {
+        if (account.chainId === nextAccount.chainId) {
+          nextAccount = {
+            ...nextAccount,
+            chainId: `${getRandomNumber(
+              seededRandomNo,
+              devnetConfig.NUMBER_OF_CHAINS,
+            )}` as ChainId,
+          };
+        }
+        result = await crossChainTransfer({
           from: account,
           to: nextAccount,
           amount,
         });
-        appendToFile(filepath, {
-          timestamp: Date.now(),
-          from: account.account,
-          to: nextAccount.account,
-          amount,
-          requestKey: result.reqKey,
-          type: 'xchaintransfer',
-        });
+      } else {
+        // Make sure the chain id is the same if the transfer type is transfer or safe-transfer
+        if (account.chainId !== nextAccount.chainId) {
+          nextAccount = { ...nextAccount, chainId: account.chainId };
+        }
+
+        if (isEqualChainAccounts(account, nextAccount)) {
+          logger.info('Skipping transfer to self');
+          continue;
+        }
+
+        // Using a random number to determine if the transfer is a safe transfer or not
+        if (transferType === 'transfer') {
+          result = await transfer({
+            publicKey: nextAccount.publicKey,
+            sender: account,
+            amount,
+            chainId: account.chainId,
+          });
+        }
+        if (transferType === 'safe-transfer') {
+          result = await safeTransfer({
+            receiverKeyPair: nextAccount,
+            sender: account,
+            amount,
+            chainId: account.chainId,
+          });
+        }
       }
+
+      appendToFile(filepath, {
+        timestamp: Date.now(),
+        from: account.account,
+        to: nextAccount.account,
+        amount,
+        requestKey: result?.reqKey || '',
+        type: transferType,
+      });
 
       // If the account is not in the accountlist, add it
       const accountExists = accounts.some((existingAccount) =>
