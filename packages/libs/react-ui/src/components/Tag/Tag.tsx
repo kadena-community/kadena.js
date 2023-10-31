@@ -4,7 +4,7 @@ import React from 'react';
 import { closeButtonClass, tagClass, tagLabelClass } from './Tag.css';
 
 export interface ITagProps {
-  children: string;
+  children: React.ReactNode;
   onClose?: () => void;
 }
 
