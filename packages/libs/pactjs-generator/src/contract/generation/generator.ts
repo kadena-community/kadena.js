@@ -123,7 +123,11 @@ const getFunctionType = (func: IFunction): string => {
   return indent(
     `${comment}"${func.name}": (${nl}${parameters
       .map((d) => (lnBreak ? indent(d) : d))
-      .join(`,${nl}`)}) => string & { capability : ${caps}} `,
+      .join(
+        `,${nl}`,
+      )}) => string & { capability : ${caps}; returnType : ${mapType(
+      func.returnType,
+    )}} `,
   );
 };
 

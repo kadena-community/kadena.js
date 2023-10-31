@@ -73,3 +73,14 @@ export function unpackLiterals(value: string): string {
  * @public
  */
 export type PactReference = Literal | (() => string);
+
+/**
+ * @public
+ */
+export type PactReturnType<T extends (...args: any[]) => any> = T extends (
+  ...args: any[]
+) => infer R
+  ? R extends { returnType: infer RR }
+    ? RR
+    : any
+  : any;
