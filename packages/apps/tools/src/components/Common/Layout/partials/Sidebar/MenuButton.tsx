@@ -3,7 +3,11 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes, FC } from 'react';
 import React, { useRef } from 'react';
-import {gridMiniMenuListButtonStyle, iconLeftStyle, iconRightStyle} from './styles.css';
+import {
+  gridMiniMenuListButtonStyle,
+  iconLeftStyle,
+  iconRightStyle,
+} from './styles.css';
 
 export interface IMenuButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -26,12 +30,19 @@ export const MenuButton: FC<IMenuButtonProps> = ({
   // eslint-disable-next-line
   // @ts-ignore
   const tooltipRef = useRef(null);
-  const rotationClass = rotateClass === undefined ? '' : rotateClass === 'left' ? iconLeftStyle : iconRightStyle;
+  const rotationClass =
+    rotateClass === undefined
+      ? ''
+      : rotateClass === 'left'
+      ? iconLeftStyle
+      : iconRightStyle;
 
   const button = (
     <>
       <button
-        className={classNames(gridMiniMenuListButtonStyle, rotationClass, { active })}
+        className={classNames(gridMiniMenuListButtonStyle, rotationClass, {
+          active,
+        })}
         onMouseEnter={(e) => Tooltip.handler(e, tooltipRef)}
         onMouseLeave={(e) => Tooltip.handler(e, tooltipRef)}
         {...rest}

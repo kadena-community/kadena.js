@@ -68,16 +68,12 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
             />
           </li>
         ))}
-
       </ul>
       <ul
         className={classNames(gridMiniMenuListStyle, bottomIconsContainerStyle)}
       >
-        <li
-          key={String('openDrawer')}
-          className={gridMiniMenuListItemStyle}
-        >
-          <div >
+        <li key={String('openDrawer')} className={gridMiniMenuListItemStyle}>
+          <div>
             <MenuButton
               rotateClass={isMenuOpen ? 'left' : 'right'}
               title={isMenuOpen ? 'Close' : 'Open'}
