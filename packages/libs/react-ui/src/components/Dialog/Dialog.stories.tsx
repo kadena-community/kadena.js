@@ -1,9 +1,10 @@
+import { Button } from '@components/Button';
+import { Dialog } from '@components/Dialog';
+import type { IModalProps } from '@components/Modal';
+import { Stack } from '@components/Stack';
+import { Text } from '@components/Typography';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { Button } from '../Button';
-import type { IModalProps } from '../Modal';
-import { Text } from '../Typography';
-import { Dialog } from './Dialog';
 
 const meta: Meta<{ title?: string } & IModalProps> = {
   title: 'Overlays/Dialog',
@@ -25,21 +26,17 @@ export const DialogStory: Story = {
   name: 'Dialog',
   render: () => {
     const [isOpen, setIsOpen] = useState(false);
+
     return (
       <>
         <Button onClick={() => setIsOpen(true)}>Modal Trigger</Button>
         <Dialog
           isOpen={isOpen}
           onOpenChange={(isOpen) => setIsOpen(isOpen)}
-          title={
-            <>
-              <h2>Dialog Title</h2>
-              <p>Dialog description</p>
-            </>
-          }
+          title="Dialog Title"
         >
           {(state) => (
-            <>
+            <Stack direction="column" gap="$6" alignItems="flex-end">
               <Text>
                 Dessert gummies pie biscuit chocolate bar cheesecake. Toffee
                 chocolate bar ice cream cake jujubes pudding fruitcake marzipan.
@@ -56,7 +53,7 @@ export const DialogStory: Story = {
                 chups wafer fruitcake lollipop apple pie bonbon tart bonbon.
               </Text>
               <Button onClick={state.close}>Close Button</Button>
-            </>
+            </Stack>
           )}
         </Dialog>
       </>

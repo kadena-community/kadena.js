@@ -20,21 +20,13 @@ import {
 interface IBaseDialogProps
   extends Omit<IModalProps, 'children'>,
     AriaDialogProps {
-  className?: string;
   title?: ReactNode;
   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;
 }
 
 const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
   (props, ref) => {
-    const {
-      title,
-      className,
-      children,
-      isDismissable = true,
-      state,
-      ...rest
-    } = props;
+    const { title, children, isDismissable = true, state, ...rest } = props;
     const dialogRef = useObjectRef<HTMLDivElement | null>(ref);
     const { dialogProps, titleProps } = useDialog(
       {
@@ -47,7 +39,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
     return (
       <div
         ref={dialogRef}
-        className={classNames(cardContainerClass, overlayClass, className)}
+        className={classNames(cardContainerClass, overlayClass)}
         {...mergeProps(rest, dialogProps)}
       >
         {isDismissable && (
@@ -87,7 +79,6 @@ export interface IDialogProps extends Omit<IBaseDialogProps, 'state'> {
 
 export const Dialog: FC<IDialogProps> = ({
   title,
-  className,
   children,
   isDismissable = true,
   isKeyboardDismissDisabled,
@@ -107,7 +98,6 @@ export const Dialog: FC<IDialogProps> = ({
       <BaseDialog
         state={state}
         title={title}
-        className={className}
         isDismissable={isDismissable}
         {...props}
       >

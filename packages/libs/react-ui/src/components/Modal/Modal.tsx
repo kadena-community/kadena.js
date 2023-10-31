@@ -1,7 +1,6 @@
 'use client';
 
 import { mergeRefs } from '@react-aria/utils';
-import clsx from 'classnames';
 import type { FC, ReactElement, Ref } from 'react';
 import React, { cloneElement, useRef } from 'react';
 import type { AriaModalOverlayProps, ModalOverlayAria } from 'react-aria';
@@ -10,7 +9,6 @@ import type { OverlayTriggerState } from 'react-stately';
 import { underlayClass } from './Modal.css';
 
 export interface IModalProps extends AriaModalOverlayProps {
-  className?: string;
   state: OverlayTriggerState;
   children:
     | ReactElement
@@ -21,14 +19,12 @@ export interface IModalProps extends AriaModalOverlayProps {
 }
 
 export const Modal: FC<IModalProps> = ({
-  className,
   children,
   state,
   isDismissable = true,
   isKeyboardDismissDisabled,
 }) => {
   const nodeRef = useRef<HTMLDivElement | null>(null);
-  const underlayRef = useRef<HTMLDivElement | null>(null);
   const { modalProps, underlayProps } = useModalOverlay(
     {
       isDismissable,
@@ -44,11 +40,7 @@ export const Modal: FC<IModalProps> = ({
 
   return (
     <Overlay>
-      <div
-        ref={underlayRef}
-        className={clsx(underlayClass, className)}
-        {...underlayProps}
-      >
+      <div className={underlayClass} {...underlayProps}>
         {typeof children === 'function'
           ? children(modalProps, nodeRef)
           : cloneElement(children, {
