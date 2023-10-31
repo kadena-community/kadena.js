@@ -1,6 +1,7 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import type { Network } from '@/constants/kadena';
 import Routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import type { ITransaction } from '@/services/accounts/get-transactions';
@@ -52,13 +53,7 @@ const CheckTransactions: FC = () => {
     return accountName;
   }
 
-  useToolbar([
-    {
-      title: t('Account Transactions'),
-      icon: 'Account',
-      href: Routes.ACCOUNT_TRANSACTIONS_FILTERS,
-    },
-  ]);
+  useToolbar(menuData, router.pathname);
 
   useEffect(() => {
     if (router.isReady) {

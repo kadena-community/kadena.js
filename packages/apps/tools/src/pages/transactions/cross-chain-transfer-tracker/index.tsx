@@ -3,7 +3,7 @@ import { FormItemCard } from '@/components/Global/FormItemCard';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
 } from '@/components/Global/RequestKeyField';
-import Routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
@@ -49,23 +49,7 @@ const CrossChainTransferTracker: FC = () => {
   const router = useRouter();
   const { t } = useTranslation('common');
 
-  useToolbar([
-    {
-      title: t('Cross Chain'),
-      icon: 'Transition',
-      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      title: t('Finalize Cross Chain'),
-      icon: 'TransitionMasked',
-      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
-    },
-    {
-      title: t('Module Explorer'),
-      icon: 'Earth',
-      href: Routes.MODULE_EXPLORER,
-    },
-  ]);
+  useToolbar(menuData, router.pathname);
 
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
