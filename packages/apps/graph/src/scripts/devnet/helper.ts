@@ -14,6 +14,7 @@ import {
 } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { createLogger } from 'graphql-yoga';
+import seedrandom from 'seedrandom';
 import { devnetConfig } from './config';
 
 export interface IAccount extends IKeyPair {
@@ -141,4 +142,30 @@ export const isEqualChainAccounts = (
     account1.chainId === account2.chainId &&
     account1.publicKey === account2.publicKey
   );
+};
+
+/** This function will seed a random number */
+export const seedRandom = (seed: string): number => {
+  const random = seedrandom(seed);
+  return random();
+};
+
+/** This function will receive a random seeded number and return one random option based on the number
+ * The same inputs will have the output
+ */
+export const getRandomOption = <T>(randomSeed: number, options: T[]): T => {
+  if (randomSeed > 1 || randomSeed < 0)
+    throw new Error('randomSeed must be less than 1 and greater than 0');
+
+  const gap = 1 / options.length;
+
+  let index = 0;
+  let currentGap = gap;
+
+  while (currentGap < randomSeed) {
+    index++;
+    currentGap += gap;
+  }
+
+  return options[index];
 };
