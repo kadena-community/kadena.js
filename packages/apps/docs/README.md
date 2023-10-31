@@ -68,6 +68,7 @@ subTitle: It's new!
 description: The new documentation website is better than ever
 menu: New docs
 label: New docs
+editLink: https://github.com/kadena-community/kadena.js/edit/main/packages/tools/cookbook/README.md
 publishDate: 1977-10-13
 headerImage: /assets/blog/2020/1_b97oiC8M_ePx83B-PW0Cfg.webp
 author: He-man
@@ -83,8 +84,12 @@ a short description on what the page is about. This will be used as meta data
 for SEO, but can also be used as an excerpt in the search results.  
 `menu`: the name used in the side or header menu's.  
 `label`: the name used in the breadcrumbs.  
-`publishDate`: not required. only used for blogchain, at the moment. And used to
-show the user what date the article was first published.  
+`editLink`: this is the place where the actual document lives. This particular
+`md` file has been imported from somewhere else. The editlink is used at almost
+every page, at the bottom. It will show a link to everyone visiting the page.
+And they can create a PR with changes. `publishDate`: not required. only used
+for blogchain, at the moment. And used to show the user what date the article
+was first published.  
 `headerImage`: not required. only used for the blogchain as the main header on
 top of the article.  
 `author`: _depricated_! not required. for blogchain we used to JUST show the
@@ -95,6 +100,17 @@ the author info from the `./src/data/authors.json`
 `tags`: not required. An Array of strings that clarify what the content is
 about. It is shown on blogchain pages, but is also used in the search indexing
 to get better search results.
+
+### Edit link
+
+For the documentation website we want the community to help out. It would be
+great if they help out improving the documentation. Whether it is spelling
+mistakes or clarifying sections.  
+The `editLink` frontmatter property, when available, will show an `edit page`
+button at the bottom of the screen. This will send the user to the appropriate
+github repo page where they can edit and create a PR with their changes. The
+`editLink` will be added to the frontmatter on runtime or, when the doc is
+imported from outside the package, it will be added during import.
 
 ### Assets
 
@@ -162,6 +178,29 @@ When the build then runs it is automatically is put in the correct position.
     `next.confing.mjs`.  
     This will redirect all the old links to the new URL.
 
+## Imported docs
+
+Most of the documentation files live in the docs package and can be editted in
+place as described. But there are also documentation files that live outside of
+this package and are maintained in other packages or repos. These are then
+imported and copied in their correct position during build time.  
+If you have ran the build script once you can see them in your `src/pages` tree.
+If you make changes in these files they will be over written the next time you
+make a build.
+
+So how do you know if this is an imported file and how can you make changes to
+them? In these files there will be a frontmatter property called `editLink`.
+When this property exists, this means that this is an imported document. And the
+link will be the place where you can edit this particular file.
+
+### Multipage import
+
+Some docs, that are imported, are enourmously lengthy pages that are just to big
+to show on 1 page. There we can say, during the import, that it needs to be
+broken up. This is done automatically by checking `h2` headers. Every `h2`
+header will now be the start of a new page.  
+The `editLink` frontmatter prop is the same for all these pages.
+
 ## Checking documentation validity
 
 To check that all the files are valid and ready to build, but you don't want to
@@ -224,15 +263,5 @@ The CLI is a TODO.
 
 ## Adding issues
 
-If there are issues with the docs, or you see room for improvements. You can add
-stories to the
-[asana board](https://app.asana.com/share/kadena/docs-website/392126137019801/549bac730050e5c629d673df5e0e950f)
-backlog or ask the questions in the (docs slack
-channel)[https://kadena-io.slack.com/archives/C04QZH1562X].
-
-Sorry these links are for internal Kadena use only. If you want to contribute to
-the docs as a communitymember, that would be great of course. We would really
-appreciate it. All the things mentioned above should work as expected. And if
-you have any questions or suggestions. Found any issues you can put them
-(here)[https://github.com/kadena-community/kadena.js/issues]. And we try to
-contact you there as soon as possible.
+If there are issues with the docs, or you see room for improvements, you can add
+stories to: https://github.com/kadena-community/kadena.js/issue
