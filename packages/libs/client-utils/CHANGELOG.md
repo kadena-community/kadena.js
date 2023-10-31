@@ -1,5 +1,18 @@
 # @kadena/client-utils
 
+## 0.0.3
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [d15a6231f]
+- Updated dependencies [fa6b84e22]
+  - @kadena/chainweb-node-client@0.5.1
+  - @kadena/cryptography-utils@0.4.1
+  - @kadena/client@1.6.0
+  - @kadena/types@0.5.1
+
 ## 0.0.2
 
 ### Patch Changes

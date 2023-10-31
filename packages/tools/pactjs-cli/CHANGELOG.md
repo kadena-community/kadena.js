@@ -1,5 +1,18 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.6.0
+
+### Minor Changes
+
+- e62a9505e: add option to store modules parse tree to dist
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [fa6b84e22]
+  - @kadena/pactjs-generator@1.6.0
+
 ## 1.5.0
 
 ### Patch Changes

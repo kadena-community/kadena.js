@@ -1,5 +1,14 @@
 # Change Log - @kadena-dev/eslint-config
 
+## 1.0.2
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1907e5ef2]
+- Updated dependencies [fa6b84e22]
+  - @kadena-dev/eslint-plugin@0.0.8
+
 ## 1.0.1
 
 ### Patch Changes
