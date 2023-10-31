@@ -22,44 +22,47 @@ function createAsyncListener() {
   };
 }
 
-export function asIterator(
-  task: (emit: IEmit) => (...args: any[]) => Promise<any>,
-) {
-  const asyncBuffer = createAsyncListener();
+export const asIterator =
+  (task: (emit: IEmit) => (...args: any[]) => Promise<any>) =>
+  (...args: any[]) => {
+    const asyncBuffer = createAsyncListener();
 
-  const pipeline = task(
-    ((name: string) => (data: any) =>
-      asyncBuffer
-        .push({ done: false, value: { name, data } })
-        ?.then(() => data)) as IEmit,
-  );
-  let started = false;
-  let ended = false;
-  const start = () => {
-    if (started) return;
-    pipeline()
-      .then((result) => {
-        asyncBuffer.push({ done: false, value: result }, true) as undefined;
-        ended = true;
-      })
-      .catch((error) => {
-        asyncBuffer.push({ done: false, value: { error } }, true) as undefined;
-        ended = true;
-      });
-    started = true;
-  };
+    const pipeline = task(
+      ((name: string) => (data: any) =>
+        asyncBuffer
+          .push({ done: false, value: { name, data } })
+          ?.then(() => data)) as IEmit,
+    );
+    let started = false;
+    let ended = false;
+    const start = () => {
+      if (started) return;
+      pipeline(...args)
+        .then((result) => {
+          asyncBuffer.push({ done: false, value: result }, true) as undefined;
+          ended = true;
+        })
+        .catch((error) => {
+          asyncBuffer.push(
+            { done: false, value: { error } },
+            true,
+          ) as undefined;
+          ended = true;
+        });
+      started = true;
+    };
 
-  const next = async (): Promise<{ done: boolean; value: any }> => {
-    if (ended) return { done: true, value: undefined };
-    const listen = asyncBuffer.listen();
-    start();
-    return listen;
-  };
+    const next = async (): Promise<{ done: boolean; value: any }> => {
+      if (ended) return { done: true, value: undefined };
+      const listen = asyncBuffer.listen();
+      start();
+      return listen;
+    };
 
-  return {
-    next,
-    [Symbol.asyncIterator]: () => ({
+    return {
       next,
-    }),
+      [Symbol.asyncIterator]: () => ({
+        next,
+      }),
+    };
   };
-}
