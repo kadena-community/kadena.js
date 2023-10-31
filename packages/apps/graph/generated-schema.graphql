@@ -133,9 +133,15 @@ interface Node {
   id: ID!
 }
 
+input PactData {
+  key: String!
+  value: String!
+}
+
 input PactQuery {
   chainId: String!
   code: String!
+  data: PactData
 }
 
 type PageInfo {
