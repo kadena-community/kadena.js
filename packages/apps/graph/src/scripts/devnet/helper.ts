@@ -151,7 +151,7 @@ export const seedRandom = (seed: string): number => {
 };
 
 /** This function will receive a random seeded number and return one random option based on the number
- * The same inputs will have the output
+ * The same inputs will have the same output
  */
 export const getRandomOption = <T>(randomSeed: number, options: T[]): T => {
   if (randomSeed > 1 || randomSeed < 0)
