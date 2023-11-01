@@ -5,7 +5,6 @@ import {
   Breadcrumbs,
   Button,
   Card,
-  Grid,
   Heading,
   IconButton,
   Notification,
@@ -52,6 +51,11 @@ import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import {
+  accountNameContainerClass,
+  chainSelectContainerClass,
+  inputContainerClass,
+} from '../styles.css';
 
 interface IFundExistingAccountResponseBody {
   result: {
@@ -357,21 +361,23 @@ const NewAccountFaucetPage: FC = () => {
         <Card fullWidth>
           <Heading as="h5">{t('Account')}</Heading>
           <Box marginBottom="$4" />
-          <AccountNameField
-            inputProps={register('name')}
-            label={t('The account name to fund coins to')}
-            disabled
-            noIcon
-          />
-          <Grid.Root columns={2} marginTop="$4">
-            <Grid.Item>
+          <div className={inputContainerClass}>
+            <div className={accountNameContainerClass}>
+              <AccountNameField
+                inputProps={register('name')}
+                label={t('The account name to fund coins to')}
+                disabled
+                noIcon
+              />
+            </div>
+            <div className={chainSelectContainerClass}>
               <ChainSelect
                 onChange={onChainSelectChange}
                 value={chainID}
                 ariaLabel="Select Chain ID"
               />
-            </Grid.Item>
-          </Grid.Root>
+            </div>
+          </div>
         </Card>
         <div className={buttonContainerClass}>
           <Button
