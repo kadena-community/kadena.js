@@ -32,14 +32,14 @@ const Header: FC<IHeaderProps> = () => {
       label: t('Faucet'),
       href: routes.FAUCET_NEW,
     },
-    {
-      label: t('Transactions'),
-      href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      label: t('Account'),
-      href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
-    },
+    // {
+    //   label: t('Transactions'),
+    //   href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    // },
+    // {
+    //   label: t('Account'),
+    //   href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
+    // },
   ];
 
   const handleMenuItemClick = async (
