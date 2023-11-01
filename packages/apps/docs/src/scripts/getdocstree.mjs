@@ -31,6 +31,9 @@ export const getLastModifiedDate = async (root) => {
     `cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
   );
 
+  console.log({ filename, newRoot });
+  console.log({ stdout });
+
   const date = new Date(stdout);
   if (!isValid(date)) return;
 
