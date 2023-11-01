@@ -1,10 +1,14 @@
 import { useLayoutContext } from '@/context';
-import { Accordion, IconButton, Tree } from '@kadena/react-ui';
+import { Accordion, IconButton } from '@kadena/react-ui';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';
+import { MenuLinkButton } from './MenuLinkButton';
 import { gridItemMenuStyle, subMenuTitleClass } from './styles.css';
 
 export const Menu: FC = () => {
+  const router = useRouter();
+
   const { activeMenu, setActiveMenuIndex } = useLayoutContext();
   if (!activeMenu) return null;
 
@@ -20,9 +24,12 @@ export const Menu: FC = () => {
       </div>
       <Accordion.Root>
         {activeMenu.items?.map((item, index) => (
-          <Accordion.Section title="" key={index}>
-            <Tree isOpen={true} items={item.items} />
-          </Accordion.Section>
+          <MenuLinkButton
+            title={item.title}
+            key={`menu-link-${index}`}
+            href={item.href}
+            active={item.href === router.pathname}
+          />
         ))}
       </Accordion.Root>
     </div>
