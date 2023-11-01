@@ -14,6 +14,7 @@ import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prismaClient';
 import type {
   ChainModuleAccount,
+  GeneralInfo,
   Guard,
   ModuleAccount,
 } from './types/graphql-types';
@@ -52,6 +53,7 @@ export const builder = new SchemaBuilder<
       ModuleAccount: ModuleAccount;
       ChainModuleAccount: ChainModuleAccount;
       Guard: Guard;
+      GeneralInfo: GeneralInfo;
     };
     Connection: {
       totalCount: number;
