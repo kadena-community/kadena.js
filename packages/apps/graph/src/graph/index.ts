@@ -3,8 +3,8 @@ import './Query/block';
 import './Query/blocksFromHeight';
 import './Query/chainAccount';
 import './Query/completedBlockHeights';
-import './Query/generalInfo';
 import './Query/lastBlockHeight';
+import './Query/maximumConfirmationDepth';
 import './Query/pactQuery';
 import './Query/transactions';
 import './Query/transfers';
@@ -15,7 +15,6 @@ import { builder } from './builder';
 import './objects/Block';
 import './objects/ChainModuleAccount';
 import './objects/Event';
-import './objects/GeneralInfo';
 import './objects/Guard';
 import './objects/MinerKey';
 import './objects/ModuleAccount';
@@ -23,6 +22,7 @@ import './objects/Signer';
 import './objects/TotalCount';
 import './objects/Transaction';
 import './objects/Transfer';
+
 builder.queryType({});
 // no mutation fields defined yet, hence commented
 // builder.mutationType({});
