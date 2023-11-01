@@ -1,6 +1,6 @@
 import {
   useGetBlockFromHashQuery,
-  useGetMaximumConfirmationDepthQuery,
+  useGetGraphAndChainwebDataQuery,
 } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
@@ -26,7 +26,7 @@ const Block: React.FC = () => {
     variables: { hash: router.query.hash as string, first: 10 },
   });
 
-  const { data: confirmationDepthData } = useGetMaximumConfirmationDepthQuery();
+  const { data: graphAndCwQuery } = useGetGraphAndChainwebDataQuery();
 
   const viewAllTransactionsPage: string = `${routes.BLOCK_TRANSACTIONS}/${
     router.query.hash as string
@@ -99,9 +99,11 @@ const Block: React.FC = () => {
                       <strong>Confirmation Depth</strong>
                     </Table.Td>
                     <Table.Td>
-                      {confirmationDepthData?.maximumConfirmationDepth
+                      {graphAndCwQuery?.graphAndChainwebData
+                        ?.maximumConfirmationDepth
                         ? data.block.confirmationDepth ===
-                          confirmationDepthData?.maximumConfirmationDepth
+                          graphAndCwQuery.graphAndChainwebData
+                            ?.maximumConfirmationDepth
                           ? `> ${data.block.confirmationDepth - 1}`
                           : data.block.confirmationDepth
                         : data.block.confirmationDepth}
