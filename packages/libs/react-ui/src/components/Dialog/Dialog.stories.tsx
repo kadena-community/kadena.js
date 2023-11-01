@@ -1,12 +1,11 @@
 import { Button } from '@components/Button';
-import { Dialog } from '@components/Dialog';
-import type { IModalProps } from '@components/Modal';
+import { Dialog, IDialogProps } from '@components/Dialog';
 import { Stack } from '@components/Stack';
 import { Text } from '@components/Typography';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
-const meta: Meta<{ title?: string } & IModalProps> = {
+const meta: Meta<IDialogProps> = {
   title: 'Overlays/Dialog',
   parameters: {
     docs: {
@@ -17,14 +16,42 @@ A Dialog is a type of modal that is used to display information or prompt the us
       },
     },
   },
+  argTypes: {
+    isOpen: {
+      description:
+        'Controls whether the dialog is open or closed. If true, the dialog will be open. If false, the dialog will be closed.',
+      table: {
+        defaultValue: { summary: 'false' },
+        type: { summary: 'boolean' },
+      },
+    },
+    onOpenChange: {
+      control: { type: 'function' },
+      description:
+        'Function that is called when the dialog is opened or closed. It is passed a boolean value that indicates whether the dialog is open or closed.',
+      table: {
+        type: { summary: 'function' },
+      },
+    },
+    title: {
+      control: { type: 'text' },
+      description: 'Title of the dialog.',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+  },
 };
 
 export default meta;
-type Story = StoryObj<IModalProps>;
+type Story = StoryObj<IDialogProps>;
 
 export const DialogStory: Story = {
   name: 'Dialog',
-  render: () => {
+  args: {
+    title: 'Dialog Title',
+  },
+  render: ({ title }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -33,7 +60,7 @@ export const DialogStory: Story = {
         <Dialog
           isOpen={isOpen}
           onOpenChange={(isOpen) => setIsOpen(isOpen)}
-          title="Dialog Title"
+          title={title}
         >
           {(state) => (
             <Stack direction="column" gap="$6" alignItems="flex-end">
