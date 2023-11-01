@@ -86,7 +86,7 @@ type Event implements Node {
 }
 
 """General information about the graph and chainweb-data"""
-type GraphAndChainwebData {
+type GraphConfiguration {
   maximumConfirmationDepth: Int!
   minimumBlockHeight: BigInt
 }
@@ -166,7 +166,7 @@ type Query {
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
-  graphAndChainwebData: GraphAndChainwebData!
+  graphConfiguration: GraphConfiguration!
   lastBlockHeight: BigInt
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!

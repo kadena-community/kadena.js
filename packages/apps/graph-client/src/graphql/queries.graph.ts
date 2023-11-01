@@ -54,8 +54,8 @@ export const getLastBlock: DocumentNode = gql`
 `;
 
 export const getGraphAndChainwebData: DocumentNode = gql`
-  query getGraphAndChainwebData {
-    graphAndChainwebData {
+  query getGraphConfiguration {
+    graphConfiguration {
       maximumConfirmationDepth
       minimumBlockHeight
     }
