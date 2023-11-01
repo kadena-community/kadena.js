@@ -100,5 +100,6 @@ export {
   Tooltip,
   TrackerCard,
   Tree,
+  maskValue,
   useModal,
 } from './components';

@@ -91,6 +91,7 @@ export { ProductIcon, SystemIcon } from './Icon';
 export { IconButton } from './IconButton';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';
+export { maskValue } from './MaskedValue/utils';
 export { Modal, ModalProvider, useModal } from './Modal';
 export { NavFooter } from './NavFooter';
 export { NavHeader } from './NavHeader';

@@ -12,7 +12,7 @@ import ResourceLinks from '@/components/Global/ResourceLinks';
 import client from '@/constants/client';
 import { kadenaConstants } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
-import Routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
 import { useAppContext } from '@/context/app-context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
@@ -198,23 +198,7 @@ const CrossChainTransferFinisher: FC = () => {
     [],
   );
 
-  useToolbar([
-    {
-      title: t('Cross Chain'),
-      icon: 'Transition',
-      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      title: t('Finalize Cross Chain'),
-      icon: 'TransitionMasked',
-      href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
-    },
-    {
-      title: t('Module Explorer'),
-      icon: 'Earth',
-      href: Routes.MODULE_EXPLORER,
-    },
-  ]);
+  useToolbar(menuData, router.pathname);
 
   useDidUpdateEffect(async () => {
     if (!router.isReady) {

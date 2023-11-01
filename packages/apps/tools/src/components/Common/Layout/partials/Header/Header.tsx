@@ -32,14 +32,14 @@ const Header: FC<IHeaderProps> = () => {
       label: t('Faucet'),
       href: routes.FAUCET_NEW,
     },
-    {
-      label: t('Transactions'),
-      href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      label: t('Account'),
-      href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
-    },
+    // {
+    //   label: t('Transactions'),
+    //   href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
+    // },
+    // {
+    //   label: t('Account'),
+    //   href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
+    // },
   ];
 
   const handleMenuItemClick = async (
@@ -83,11 +83,15 @@ const Header: FC<IHeaderProps> = () => {
           icon="Earth"
         >
           {networksData.map((network: INetworkData) => (
-            <option key={network.networkId} value={network.networkId}>
+            <option
+              key={network.networkId}
+              value={network.networkId}
+              disabled={network.networkId === 'mainnet01'}
+            >
               {network.label}
             </option>
           ))}
-          <option value="custom">{t('+ add network')}</option>
+          {/* <option value="custom">{t('+ add network')}</option> */}
         </NavHeader.Select>
         <div className={walletConnectWrapperStyle}>
           <WalletConnectButton />

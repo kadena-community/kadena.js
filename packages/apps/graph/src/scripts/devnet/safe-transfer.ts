@@ -1,6 +1,7 @@
-import type { ChainId, ICommandResult } from '@kadena/client';
+import type { ICommandResult } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import type { ChainId, IKeyPair } from '@kadena/types';
 import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {
@@ -12,40 +13,47 @@ import {
   submit,
 } from './helper';
 
-export async function transfer({
-  publicKey,
+export async function safeTransfer({
+  receiverKeyPair,
   chainId = devnetConfig.CHAIN_ID,
   sender = sender00,
   amount = 100,
 }: {
-  publicKey: string;
+  receiverKeyPair: IKeyPair;
   chainId?: ChainId;
   sender?: IAccount;
   amount?: number;
 }): Promise<ICommandResult> {
-  const account = `k:${publicKey}`;
-  const pactAmount = new PactNumber(amount).toPactDecimal();
+  const fromAccount = `k:${receiverKeyPair.publicKey}`;
+  const extraAmount = new PactNumber('0.001').toPactDecimal();
+  const pactAmount = new PactNumber(amount)
+    .plus(extraAmount.decimal)
+    .toPactDecimal();
 
   logger.info(
-    `Transfering from ${sender.account} to ${account}\nPublic Key: ${publicKey}\nAmount: ${pactAmount.decimal}`,
+    `Safe Transfer from ${sender.account} to ${fromAccount}\nPublic Key: ${receiverKeyPair.publicKey}\nAmount: ${pactAmount.decimal}`,
   );
 
   const transaction = Pact.builder
     .execution(
       Pact.modules.coin['transfer-create'](
         sender.account,
-        account,
+        fromAccount,
         () => '(read-keyset "ks")',
         pactAmount,
       ),
+      Pact.modules.coin.transfer(fromAccount, sender.account, extraAmount),
     )
-    .addData('ks', { keys: [publicKey], pred: 'keys-all' })
+    .addData('ks', { keys: [receiverKeyPair.publicKey], pred: 'keys-all' })
     .addSigner(sender.publicKey, (withCap) => [
       withCap('coin.GAS'),
-      withCap('coin.TRANSFER', sender.account, account, pactAmount),
+      withCap('coin.TRANSFER', sender.account, fromAccount, pactAmount),
+    ])
+    .addSigner(receiverKeyPair.publicKey, (withCap) => [
+      withCap('coin.TRANSFER', fromAccount, sender.account, extraAmount),
     ])
     .setMeta({
-      gasLimit: 1000,
+      gasLimit: 1500,
       chainId,
       senderAccount: sender.account,
       ttl: 8 * 60 * 60, //8 hours
@@ -53,7 +61,9 @@ export async function transfer({
     .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 
-  const signedTx = signAndAssertTransaction([sender])(transaction);
+  const signedTx = signAndAssertTransaction([sender, receiverKeyPair])(
+    transaction,
+  );
 
   const transactionDescriptor = await submit(signedTx);
   inspect('Transfer Submited')(transactionDescriptor);

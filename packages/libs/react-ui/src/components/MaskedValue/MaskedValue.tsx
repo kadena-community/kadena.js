@@ -8,6 +8,7 @@ import {
   valueContainer,
   valueIconContainer,
 } from './MaskedValue.css';
+import { maskValue } from './utils';
 
 export interface IMaskedValueProps {
   title?: string;
@@ -30,14 +31,10 @@ export const MaskedValue: FC<IMaskedValueProps> = ({
     setVisible(!visible);
   };
 
-  let maskedValue = value;
-
-  // If the value size is shorter than the unmasked chars, we don't mask it
-  if (startUnmaskedValues + endUnmaskedValues <= value.length - 1) {
-    maskedValue = `${value.slice(0, startUnmaskedValues)}****${value.slice(
-      -endUnmaskedValues,
-    )}`;
-  }
+  const maskedValue = maskValue(value, {
+    headLength: startUnmaskedValues,
+    tailLength: endUnmaskedValues,
+  });
 
   return (
     <div data-testid="kda-masked-value">

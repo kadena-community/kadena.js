@@ -1,6 +1,6 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
-import Routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
 import {
   helpCenterButtonClass,
@@ -65,23 +65,7 @@ const Home: FC = () => {
     },
   ];
 
-  useToolbar([
-    {
-      title: t('Faucet'),
-      icon: 'Earth',
-      href: Routes.FAUCET_NEW,
-    },
-    {
-      title: t('Transactions'),
-      icon: 'Transition',
-      href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    },
-    {
-      title: t('Account'),
-      icon: 'Account',
-      href: Routes.ACCOUNT_TRANSACTIONS,
-    },
-  ]);
+  useToolbar(menuData);
 
   const handleOpenHelpCenter = (): void => {
     // @ts-ignore
