@@ -1,10 +1,10 @@
 import { builder } from '../builder';
 
-export default builder.objectType('GeneralInfo', {
+export default builder.objectType('GraphAndChainwebData', {
   description: 'General information about the graph and chainweb-data',
   fields: (t) => ({
     maximumConfirmationDepth: t.exposeInt('maximumConfirmationDepth'),
-    minimumBlockHeigh: t.expose('minimumBlockHeigh', {
+    minimumBlockHeight: t.expose('minimumBlockHeight', {
       type: 'BigInt',
       nullable: true,
     }),
