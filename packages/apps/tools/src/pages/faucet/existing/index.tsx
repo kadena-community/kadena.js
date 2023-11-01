@@ -19,8 +19,10 @@ import {
   Heading,
   Notification,
 } from '@kadena/react-ui';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
@@ -143,11 +145,19 @@ const ExistingAccountFaucetPage: FC = () => {
             color="warning"
             expanded={true}
             icon="Information"
-            title={t(
-              `The Faucet is not available on Mainnet. On other networks, the Faucet smart contract must be deployed to fund accounts. In the Module Explorer you can see if it's deployed: https://tools.kadena.io/transactions/module-explorer?module=user.coin-faucet&chain=1`,
-            )}
+            title={t('The Faucet is not available on Mainnet')}
             variant="outlined"
-          />
+          >
+            <Trans
+              i18nKey="common:faucet-unavailable-warning"
+              components={[
+                <Link
+                  href="/transactions/module-explorer?module=user.coin-faucet&chain=1"
+                  key="link-to-module-explorer"
+                />,
+              ]}
+            />
+          </Notification.Root>
         ) : null}
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
