@@ -4,7 +4,7 @@ import { devnetConfig } from '../../scripts/devnet/config';
 import { dirtyRead } from '../../scripts/devnet/helper';
 import { builder } from '../builder';
 
-const PactData = builder.inputType('PactData', {
+const PactData = builder.inputType('PactQueryData', {
   fields: (t) => ({
     key: t.field({ type: 'String', required: true }),
     value: t.field({ type: 'String', required: true }),
@@ -15,7 +15,7 @@ const PactQuery = builder.inputType('PactQuery', {
   fields: (t) => ({
     code: t.field({ type: 'String', required: true }),
     chainId: t.field({ type: 'String', required: true }),
-    data: t.field({ type: PactData }),
+    data: t.field({ type: [PactData] }),
   }),
 });
 
@@ -34,9 +34,9 @@ builder.queryField('pactQueries', (t) => {
           })
           .setNetworkId(devnetConfig.NETWORK_ID);
 
-        if (query.data) {
-          transaction.addData(query.data.key, query.data.value);
-        }
+        query.data?.forEach((data) => {
+          transaction.addData(data.key, data.value);
+        });
 
         const response = await dirtyRead(transaction.createTransaction());
 
@@ -66,9 +66,9 @@ builder.queryField('pactQuery', (t) => {
         })
         .setNetworkId(devnetConfig.NETWORK_ID);
 
-      if (args.pactQuery.data) {
-        transaction.addData(args.pactQuery.data.key, args.pactQuery.data.value);
-      }
+      args.pactQuery.data?.forEach((data) => {
+        transaction.addData(data.key, data.value);
+      });
 
       const response = await dirtyRead(transaction.createTransaction());
 
