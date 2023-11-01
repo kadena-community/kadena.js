@@ -8,7 +8,7 @@ export interface ICloseableNotificationProps
 export const CloseableNotification = ({
   onClose,
   ...rest
-}: Omit<INotificationProps, 'hasCloseButton'>) => {
+}: ICloseableNotificationProps) => {
   const [show, setShow] = React.useState(true);
   if (!show) return null;
   return (
