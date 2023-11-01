@@ -1,5 +1,6 @@
 import type { Sprinkles } from '@theme/sprinkles.css';
 import { sprinkles } from '@theme/sprinkles.css';
+import classnames from 'classnames';
 import type React from 'react';
 import type { ElementType } from 'react';
 import { createElement } from 'react';
@@ -30,6 +31,7 @@ export interface IStackProps
     | 'paddingY'
     | 'width'
   > {
+  className?: string;
   direction?: Sprinkles['flexDirection'];
   wrap?: Sprinkles['flexWrap'];
   as?: ElementType;
@@ -37,6 +39,7 @@ export interface IStackProps
 }
 
 export const Stack = ({
+  className,
   children,
   alignItems,
   as = 'div',
@@ -67,33 +70,36 @@ export const Stack = ({
   return createElement(
     as,
     {
-      className: sprinkles({
-        alignItems,
-        display: 'flex',
-        flexDirection: direction,
-        flexWrap: wrap,
-        gap,
-        justifyContent,
-        margin,
-        marginBottom,
-        marginLeft,
-        marginRight,
-        marginTop,
-        marginX,
-        marginY,
-        maxHeight,
-        maxWidth,
-        minHeight,
-        minWidth,
-        padding,
-        paddingBottom,
-        paddingLeft,
-        paddingRight,
-        paddingTop,
-        paddingX,
-        paddingY,
-        width,
-      }),
+      className: classnames(
+        sprinkles({
+          alignItems,
+          display: 'flex',
+          flexDirection: direction,
+          flexWrap: wrap,
+          gap,
+          justifyContent,
+          margin,
+          marginBottom,
+          marginLeft,
+          marginRight,
+          marginTop,
+          marginX,
+          marginY,
+          maxHeight,
+          maxWidth,
+          minHeight,
+          minWidth,
+          padding,
+          paddingBottom,
+          paddingLeft,
+          paddingRight,
+          paddingTop,
+          paddingX,
+          paddingY,
+          width,
+        }),
+        className,
+      ),
     },
     children,
   );

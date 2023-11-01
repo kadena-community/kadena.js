@@ -32,6 +32,7 @@ export interface IGridRootProps
     | 'paddingX'
     | 'paddingY'
   > {
+  className?: string;
   children?: ReactNode;
   columns?: ResponsiveInputType;
   gap?: keyof typeof gapVariants;
@@ -52,6 +53,7 @@ const assembleColumnVariants = (
 };
 
 export const GridRoot: FC<IGridRootProps> = ({
+  className,
   children,
   columns,
   gap = '$md',
@@ -98,6 +100,7 @@ export const GridRoot: FC<IGridRootProps> = ({
       paddingX,
       paddingY,
     }),
+    className,
   );
   return <div className={classList}>{children}</div>;
 };

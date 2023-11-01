@@ -1,5 +1,6 @@
 import type { Sprinkles } from '@theme/sprinkles.css';
 import { sprinkles } from '@theme/sprinkles.css';
+import classnames from 'classnames';
 import type React from 'react';
 import type { ElementType } from 'react';
 import { createElement } from 'react';
@@ -31,11 +32,13 @@ export interface IBoxProps
       | 'width'
     >
   > {
+  className?: string;
   as?: ElementType;
   children?: React.ReactNode;
 }
 
 export const Box = ({
+  className,
   children,
   as = 'div',
   display = 'block',
@@ -61,27 +64,30 @@ export const Box = ({
   return createElement(
     as,
     {
-      className: sprinkles({
-        display,
-        margin,
-        marginBottom,
-        marginLeft,
-        marginRight,
-        marginTop,
-        marginX,
-        marginY,
-        maxHeight,
-        maxWidth,
-        minHeight,
-        minWidth,
-        padding,
-        paddingBottom,
-        paddingLeft,
-        paddingRight,
-        paddingTop,
-        paddingX,
-        paddingY,
-      }),
+      className: classnames(
+        sprinkles({
+          display,
+          margin,
+          marginBottom,
+          marginLeft,
+          marginRight,
+          marginTop,
+          marginX,
+          marginY,
+          maxHeight,
+          maxWidth,
+          minHeight,
+          minWidth,
+          padding,
+          paddingBottom,
+          paddingLeft,
+          paddingRight,
+          paddingTop,
+          paddingX,
+          paddingY,
+        }),
+        className,
+      ),
     },
     children,
   );
