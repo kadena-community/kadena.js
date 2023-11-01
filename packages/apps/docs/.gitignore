@@ -1,5 +1,6 @@
 # generated resources
 src/_generated
+src/_generated/specs
 public/sitemap.xml
 src/pages/kadena/kadenajs
 src/pages/build/quickstart/index.md

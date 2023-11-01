@@ -4,14 +4,14 @@ import { promisify } from 'util';
 import { importDocs } from './createDoc.mjs';
 
 const REPOPREFIX = 'https://github.com/';
-const TEMPDIR = './.tempimport';
+export const TEMPDIR = './.tempimport';
 
 const promiseExec = promisify(exec);
 
 /**
  * Removes the tempdir.
  */
-const deleteTempDir = () => {
+export const deleteTempDir = () => {
   fs.rmSync(TEMPDIR, { recursive: true, force: true });
 };
 
