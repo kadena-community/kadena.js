@@ -39,6 +39,7 @@ import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -262,24 +263,31 @@ const NewAccountFaucetPage: FC = () => {
           icon="Information"
           title={t(`Before you start`)}
         >
-          Generate a key pair by visiting this{' '}
-          <a
-            className={notificationLinkStyle}
-            target={'_blank'}
-            href={'https://transfer.chainweb.com/'}
-            rel="noreferrer"
-          >
-            webpage
-          </a>{' '}
-          or by downloading a{' '}
-          <a
-            className={notificationLinkStyle}
-            target={'_blank'}
-            href={'https://kadena.io/chainweaver-tos/'}
-            rel="noreferrer"
-          >
-            wallet.
-          </a>
+          <Trans
+            i18nKey="common:faucet-how-to-start"
+            components={[
+              <a
+                className={notificationLinkStyle}
+                target={'_blank'}
+                href={'https://transfer.chainweb.com/'}
+                rel="noreferrer"
+                key="chainweb-transfer-link"
+              />,
+              <a
+                className={notificationLinkStyle}
+                target={'_blank'}
+                href={'https://kadena.io/chainweaver-tos/'}
+                rel="noreferrer"
+                key="chainweaver-link"
+              />,
+              <p key="text-wrapper" />,
+              <Link
+                className={notificationLinkStyle}
+                href={'/faucet/existing'}
+                key="faucet-existing-link"
+              />,
+            ]}
+          />
         </Notification.Root>
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
@@ -358,15 +366,6 @@ const NewAccountFaucetPage: FC = () => {
           </Button>
         </div>
       </form>
-      <Stack marginY={'$md'}>
-        <Text>
-          If you want to fund an existing account, visit{' '}
-          <Link className={notificationLinkStyle} href={'/faucet/existing'}>
-            this page
-          </Link>
-          .
-        </Text>
-      </Stack>
     </section>
   );
 };
