@@ -16,10 +16,12 @@ import {
 import {
   buttonContainerClass,
   containerClass,
+  hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
   keyIconWrapperStyle,
   notificationContainerStyle,
+  notificationContentStyle,
   notificationLinkStyle,
   pubKeyInputWrapperStyle,
 } from './styles.css';
@@ -28,6 +30,7 @@ import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import AccountNameField from '@/components/Global/AccountNameField';
 import { CloseableNotification } from '@/components/Global/CloseableNotification';
+import { HoverTag } from '@/components/Global/HoverTag';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
 import { PublicKeyField } from '@/components/Global/PublicKeyField';
@@ -305,9 +308,14 @@ const NewAccountFaucetPage: FC = () => {
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
-            successful: `${AMOUNT_OF_COINS_FUNDED} ${t(
-              'coins have been funded to ',
-            )}${accountName}`,
+            successful: (
+              <span className={notificationContentStyle}>
+                {`${AMOUNT_OF_COINS_FUNDED} ${t('coins have been funded to')}`}
+                <span className={hoverTagContainerStyle}>
+                  <HoverTag value={accountName as string} />
+                </span>
+              </span>
+            ),
           }}
           body={requestStatus.message}
         />
