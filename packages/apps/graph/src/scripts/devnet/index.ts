@@ -61,6 +61,12 @@ program
       Date.now().toString(),
     ),
   )
+  .addOption(
+    new Option(
+      '-d, --duration <number>',
+      'duration for which simulation should run in ms',
+    ),
+  )
   .action(async (args) => {
     try {
       logger.info('Simulation config parameters:', args);

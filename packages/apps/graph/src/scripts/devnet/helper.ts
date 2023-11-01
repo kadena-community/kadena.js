@@ -31,7 +31,7 @@ export const logger = createLogger('info');
 const getClient = (): IClient =>
   createClient(
     ({ chainId, networkId }) =>
-      `http://localhost:${devnetConfig.PORT}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      `http://127.0.0.1:${devnetConfig.PORT}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
   );
 
 export const submit = (tx: ICommand): Promise<ITransactionDescriptor> =>

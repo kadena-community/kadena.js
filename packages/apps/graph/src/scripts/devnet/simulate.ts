@@ -19,12 +19,14 @@ export async function simulate({
   maxAmount = 25,
   tokenPool = 1000000,
   seed = Date.now().toString(),
+  duration = 28800000,
 }: {
   numberOfAccounts: number;
   transferInterval: number;
   maxAmount: number;
   tokenPool: number;
   seed: string;
+  duration: number;
 }): Promise<void> {
   const accounts: IAccount[] = [];
 
@@ -68,7 +70,9 @@ export async function simulate({
   let seededRandomNo = seedrandom(seed)();
   let counter: number = 0;
 
-  while (true) {
+  logger.info(`Simulating transfers for ${duration}ns`);
+  const startTime = Date.now();
+  while (Date.now() - startTime < duration) {
     // Transfer between accounts
     for (let i = 0; i < accounts.length; i++) {
       const account = accounts[i];
@@ -161,6 +165,6 @@ export async function simulate({
     }
     counter++;
     // Timeout
-    await new Promise((resolve) => setTimeout(resolve, transferInterval));
+    await new Promise((resolve) => setTimeout(resolve, duration));
   }
 }
