@@ -87,25 +87,31 @@ const responsiveProperties = defineProperties({
       'max-content': 'max-content',
     },
     minWidth: {
-      ...vars.sizes,
       '100%': '100%',
       'min-content': 'min-content',
       'max-content': 'max-content',
     },
     maxWidth: {
       '100%': '100%',
-      maxContent: '42.5rem', // 680px
+      'min-content': 'min-content',
+      'max-content': 'max-content',
+      $maxContent: '42.5rem', // 680px
     },
-    height: { ...vars.sizes, '100%': '100%', 'min-content': 'min-content' },
-    minHeight: {
+    height: {
       ...vars.sizes,
+      '100%': '100%',
+      'min-content': 'min-content',
+      'max-content': 'max-content',
+    },
+    minHeight: {
       '100%': '100%',
       'min-content': 'min-content',
       'max-content': 'max-content',
     },
     maxHeight: {
       '100%': '100%',
-      maxContent: 'auto',
+      'min-content': 'min-content',
+      'max-content': 'max-content',
     },
     gap: vars.sizes,
     gridGap: vars.sizes,

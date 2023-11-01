@@ -55,24 +55,24 @@ export const GridRoot: FC<IGridRootProps> = ({
   children,
   columns,
   gap = '$md',
-  margin = undefined,
-  marginBottom = undefined,
-  marginLeft = undefined,
-  marginRight = undefined,
-  marginTop = undefined,
-  marginX = undefined,
-  marginY = undefined,
-  maxHeight = undefined,
-  maxWidth = undefined,
-  minHeight = undefined,
-  minWidth = undefined,
-  padding = undefined,
-  paddingBottom = undefined,
-  paddingLeft = undefined,
-  paddingRight = undefined,
-  paddingTop = undefined,
-  paddingX = undefined,
-  paddingY = undefined,
+  margin,
+  marginBottom,
+  marginLeft,
+  marginRight,
+  marginTop,
+  marginX,
+  marginY,
+  maxHeight,
+  maxWidth,
+  minHeight,
+  minWidth,
+  padding,
+  paddingBottom,
+  paddingLeft,
+  paddingRight,
+  paddingTop,
+  paddingX,
+  paddingY,
 }) => {
   const classList = classNames(
     gapVariants[gap],
@@ -99,9 +99,5 @@ export const GridRoot: FC<IGridRootProps> = ({
       paddingY,
     }),
   );
-  return (
-    <div className={classList} data-testid="kda-grid-root">
-      {children}
-    </div>
-  );
+  return <div className={classList}>{children}</div>;
 };

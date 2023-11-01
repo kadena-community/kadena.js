@@ -1,20 +1,18 @@
 import { Grid } from '@components/Grid';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, test } from 'vitest';
 
 describe('Grid', () => {
   test('root renders correctly', () => {
-    const { getByTestId } = render(<Grid.Root>Hello, Grid!</Grid.Root>);
+    render(<Grid.Root>Hello, Grid Root!</Grid.Root>);
 
-    const cardContainer = getByTestId('kda-grid-root');
-    expect(cardContainer).toBeInTheDocument();
+    expect(screen.getByText('Hello, Grid Root!')).toBeInTheDocument();
   });
 
   test('item renders correctly', () => {
-    const { getByTestId } = render(<Grid.Item>Hello, Grid!</Grid.Item>);
+    render(<Grid.Item>Hello, Grid Item!</Grid.Item>);
 
-    const cardContainer = getByTestId('kda-grid-item');
-    expect(cardContainer).toBeInTheDocument();
+    expect(screen.getByText('Hello, Grid Item!')).toBeInTheDocument();
   });
 });

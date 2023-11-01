@@ -1,13 +1,12 @@
-import { Box } from '@components/Box';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, test } from 'vitest';
 
-describe('Box', () => {
-  test('renders correctly', () => {
-    const { getByTestId } = render(<Box>Hello, Box!</Box>);
+import { Box } from '@components/Box';
 
-    const boxContainer = getByTestId('kda-box');
-    expect(boxContainer).toBeInTheDocument();
+describe('Box', () => {
+  test('renders a box', () => {
+    render(<Box>Box</Box>);
+    expect(screen.getByText('Box')).toBeInTheDocument();
   });
 });
