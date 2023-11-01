@@ -32,6 +32,7 @@ export const gridMiniMenuListButtonStyle = style([
     border: 'none',
     cursor: 'pointer',
     padding: '$5',
+    color: '$gray50',
   }),
   {
     transition: 'width 0.1s ease',
