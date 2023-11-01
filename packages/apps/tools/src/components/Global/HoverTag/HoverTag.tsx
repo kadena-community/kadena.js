@@ -32,6 +32,7 @@ export const HoverTag = ({ value }: IHoverTagProps) => {
                 setTooltipContent(value);
               }, 1000);
             }}
+            type="button"
           >
             <SystemIcon.ContentCopy size="sm" />
           </button>
