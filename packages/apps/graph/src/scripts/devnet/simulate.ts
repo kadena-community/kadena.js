@@ -165,6 +165,6 @@ export async function simulate({
     }
     counter++;
     // Timeout
-    await new Promise((resolve) => setTimeout(resolve, duration));
+    await new Promise((resolve) => setTimeout(resolve, transferInterval));
   }
 }
