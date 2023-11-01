@@ -32,9 +32,5 @@ export const GridItem: FC<IGridItemProps> = ({
     rowSpanVariants[rowSpan],
     columnSpan && assembleColumnSpanVariants(columnSpan),
   );
-  return (
-    <div className={className} data-testid="kda-grid-item">
-      {children}
-    </div>
-  );
+  return <div className={className}>{children}</div>;
 };

@@ -7,6 +7,7 @@ import { createElement } from 'react';
 export interface IStackProps
   extends Pick<
     Sprinkles,
+    | 'gap'
     | 'alignItems'
     | 'justifyContent'
     | 'margin'
@@ -31,38 +32,37 @@ export interface IStackProps
   > {
   direction?: Sprinkles['flexDirection'];
   wrap?: Sprinkles['flexWrap'];
-  gap?: Sprinkles['gap'];
   as?: ElementType;
   children?: React.ReactNode;
 }
 
 export const Stack = ({
   children,
-  alignItems = undefined,
+  alignItems,
   as = 'div',
-  direction = undefined,
-  gap = undefined,
-  justifyContent = undefined,
-  margin = undefined,
-  marginBottom = undefined,
-  marginLeft = undefined,
-  marginRight = undefined,
-  marginTop = undefined,
-  marginX = undefined,
-  marginY = undefined,
-  maxHeight = undefined,
-  maxWidth = undefined,
-  minHeight = undefined,
-  minWidth = undefined,
-  padding = undefined,
-  paddingBottom = undefined,
-  paddingLeft = undefined,
-  paddingRight = undefined,
-  paddingTop = undefined,
-  paddingX = undefined,
-  paddingY = undefined,
-  width = undefined,
-  wrap = undefined,
+  direction,
+  gap,
+  justifyContent,
+  margin,
+  marginBottom,
+  marginLeft,
+  marginRight,
+  marginTop,
+  marginX,
+  marginY,
+  maxHeight,
+  maxWidth,
+  minHeight,
+  minWidth,
+  padding,
+  paddingBottom,
+  paddingLeft,
+  paddingRight,
+  paddingTop,
+  paddingX,
+  paddingY,
+  width,
+  wrap,
 }: IStackProps): React.ReactElement => {
   return createElement(
     as,
@@ -94,7 +94,6 @@ export const Stack = ({
         paddingY,
         width,
       }),
-      'data-testid': 'kda-stack',
     },
     children,
   );
