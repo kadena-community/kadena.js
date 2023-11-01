@@ -6,6 +6,7 @@ import './Query/completedBlockHeights';
 import './Query/lastBlockHeight';
 import './Query/maximumConfirmationDepth';
 import './Query/pactQuery';
+import './Query/transactionByPublicKey';
 import './Query/transactions';
 import './Query/transfers';
 import './Subscription/event';
