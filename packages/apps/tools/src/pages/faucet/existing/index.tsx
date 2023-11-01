@@ -15,7 +15,6 @@ import {
   Breadcrumbs,
   Button,
   Card,
-  Grid,
   Heading,
   Notification,
 } from '@kadena/react-ui';
@@ -33,6 +32,12 @@ import {
   containerClass,
   notificationContainerStyle,
 } from './styles.css';
+
+import {
+  accountNameContainerClass,
+  chainSelectContainerClass,
+  inputContainerClass,
+} from '../styles.css';
 
 const schema = z.object({
   name: NAME_VALIDATION,
@@ -171,20 +176,22 @@ const ExistingAccountFaucetPage: FC = () => {
         <Card fullWidth>
           <Heading as="h5">Account</Heading>
           <Box marginBottom="$4" />
-          <AccountNameField
-            inputProps={register('name')}
-            error={errors.name}
-            label={t('The account name you would like to fund coins to')}
-          />
-          <Grid.Root columns={2} marginTop="$4">
-            <Grid.Item>
+          <div className={inputContainerClass}>
+            <div className={accountNameContainerClass}>
+              <AccountNameField
+                inputProps={register('name')}
+                error={errors.name}
+                label={t('The account name you would like to fund coins to')}
+              />
+            </div>
+            <div className={chainSelectContainerClass}>
               <ChainSelect
                 onChange={onChainSelectChange}
                 value={chainID}
                 ariaLabel="Select Chain ID"
               />
-            </Grid.Item>
-          </Grid.Root>
+            </div>
+          </div>
         </Card>
         <div className={buttonContainerClass}>
           <Button
