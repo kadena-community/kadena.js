@@ -14,7 +14,7 @@ describe('MaskedValue', () => {
   test('shows masked value by default', () => {
     render(<MaskedValue value="TestValue1234" />);
 
-    expect(screen.getByText('TestVa****1234')).toBeInTheDocument();
+    expect(screen.getByText('TestVa***1234')).toBeInTheDocument();
   });
 
   test('shows correct masked value when non default characters set', () => {

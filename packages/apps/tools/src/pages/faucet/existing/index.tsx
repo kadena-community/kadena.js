@@ -3,7 +3,7 @@ import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import AccountNameField, {
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
-import Routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
@@ -21,6 +21,7 @@ import {
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -59,6 +60,7 @@ interface IFundExistingAccountResponse
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
+  const router = useRouter();
   const { selectedNetwork } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
@@ -68,13 +70,7 @@ const ExistingAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
 
-  useToolbar([
-    {
-      title: t('Existing'),
-      icon: 'History',
-      href: Routes.FAUCET_EXISTING,
-    },
-  ]);
+  useToolbar(menuData, router.pathname);
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {

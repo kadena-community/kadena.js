@@ -14,6 +14,7 @@ import {
 } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { createLogger } from 'graphql-yoga';
+import seedrandom from 'seedrandom';
 import { devnetConfig } from './config';
 
 export interface IAccount extends IKeyPair {
@@ -53,14 +54,17 @@ export const dirtyRead = (tx: IUnsignedCommand): Promise<ICommandResult> =>
   getClient().dirtyRead(tx);
 
 export const signTransaction =
-  ({ publicKey, secretKey }: IKeyPair) =>
+  (keyPairs: IKeyPair[]) =>
   (tx: IUnsignedCommand): IUnsignedCommand | ICommand => {
-    const { sig } = sign(tx.cmd, {
-      publicKey,
-      secretKey,
-    });
-    if (!sig) throw Error('Failed to sign transaction');
-    return addSignatures(tx, { sig, pubKey: publicKey });
+    const signedTx = keyPairs.reduce((acc, keyPair) => {
+      const { sig } = sign(acc.cmd, {
+        publicKey: keyPair.publicKey,
+        secretKey: keyPair.secretKey,
+      });
+      if (!sig) throw Error('Failed to sign transaction');
+      return addSignatures(acc, { sig, pubKey: keyPair.publicKey });
+    }, tx);
+    return signedTx;
   };
 
 export const assertTransactionSigned = (
@@ -72,9 +76,9 @@ export const assertTransactionSigned = (
 };
 
 export const signAndAssertTransaction =
-  ({ publicKey, secretKey }: IKeyPair) =>
+  (keyPairs: IKeyPair[]) =>
   (tx: IUnsignedCommand): ICommand => {
-    const signedTx = signTransaction({ publicKey, secretKey })(tx);
+    const signedTx = signTransaction(keyPairs)(tx);
     const assertedTx = assertTransactionSigned(signedTx);
     return assertedTx;
   };
@@ -92,7 +96,7 @@ export const asyncPipe =
     return fns.reduce((acc, fn) => acc.then(fn), Promise.resolve(value));
   };
 
-export const createAccount = (
+export const generateKeyPair = (
   chainId: ChainId = devnetConfig.CHAIN_ID,
 ): IAccount => {
   const generatedKeyPair = genKeyPair();
@@ -115,11 +119,17 @@ export const sender00: IAccount = {
 export const getRandomNumber = (
   randomNumber: number,
   maxNumber: number,
+  canBeZero: boolean = false,
 ): number => {
   if (randomNumber > 1 || randomNumber < 0)
     throw new Error('randomNumber must be less than 1 and greater than 0');
   const generatedNumber = Math.floor(randomNumber * maxNumber);
-  return generatedNumber === 0 ? 1 : generatedNumber;
+
+  return generatedNumber === 0
+    ? canBeZero
+      ? generatedNumber
+      : 1
+    : generatedNumber;
 };
 
 /** This function compares two accounts and checks if they are the same: same account, same public key and same chain id */
@@ -132,4 +142,30 @@ export const isEqualChainAccounts = (
     account1.chainId === account2.chainId &&
     account1.publicKey === account2.publicKey
   );
+};
+
+/** This function will seed a random number */
+export const seedRandom = (seed: string): number => {
+  const random = seedrandom(seed);
+  return random();
+};
+
+/** This function will receive a random seeded number and return one random option based on the number
+ * The same inputs will have the same output
+ */
+export const getRandomOption = <T>(randomSeed: number, options: T[]): T => {
+  if (randomSeed > 1 || randomSeed < 0)
+    throw new Error('randomSeed must be less than 1 and greater than 0');
+
+  const gap = 1 / options.length;
+
+  let index = 0;
+  let currentGap = gap;
+
+  while (currentGap < randomSeed) {
+    index++;
+    currentGap += gap;
+  }
+
+  return options[index];
 };
