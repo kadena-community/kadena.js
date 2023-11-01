@@ -150,3 +150,28 @@ export const iconRightStyle = style([
     transform: 'rotate(90deg)',
   },
 ]);
+
+export const linksContainerStyle = style([
+  sprinkles({
+    position: 'absolute',
+    bottom: 0,
+
+    padding: '$xs',
+    display: 'flex',
+    flexDirection: 'column'
+  }),
+  {
+    borderTop: `1px solid ${vars.colors.$borderSubtle}`,
+    width: 'auto',
+  },
+]);
+
+export const linksMenuTitleClass = style([
+  sprinkles({
+    fontSize: '$md',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '$4',
+  }),
+]);

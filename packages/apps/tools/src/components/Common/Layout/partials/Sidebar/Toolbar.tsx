@@ -12,13 +12,16 @@ import {
   gridMiniMenuListItemStyle,
   gridMiniMenuListStyle,
 } from './styles.css';
+import {OptionsModal} from "@/components/Global/OptionsModal";
+import {useModal} from "@kadena/react-ui";
 
 export interface IMiniMenuProps {}
 
 export const Toolbar: FC<IMiniMenuProps> = () => {
-  const { toolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen } =
+  const { toolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen, visibleLinks, setVisibleLinks } =
     useLayoutContext();
   const router = useRouter();
+  const { renderModal } = useModal();
 
   const handleItemClick = (index: number): void => {
     if (toolbar[index]?.items?.length) {
@@ -55,6 +58,17 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     return index === activeMenuIndex || isUrlParam;
   };
 
+  const handleLinksClick = (): void => {
+    handleOpenCloseDrawer();
+    if(!visibleLinks) {
+      setVisibleLinks(true);
+    }
+  };
+
+  const handleDevOptionsClick = (): void => {
+    renderModal(<OptionsModal />, 'Settings');
+  };
+
   return (
     <nav className={gridItemMiniMenuStyle}>
       <ul className={classNames(gridMiniMenuListStyle)}>
@@ -72,6 +86,26 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
       <ul
         className={classNames(gridMiniMenuListStyle, bottomIconsContainerStyle)}
       >
+        <li key={String('links')} className={gridMiniMenuListItemStyle}>
+          <div>
+            <MenuButton
+              title={'Links'}
+              href={'#'}
+              icon={'Link'}
+              onClick={() => handleLinksClick()}
+            />
+          </div>
+        </li>
+        <li key={String('Dev Options')} className={gridMiniMenuListItemStyle}>
+          <div>
+            <MenuButton
+              title={'DevOptions'}
+              href={'#'}
+              icon={'ApplicationBrackets'}
+              onClick={() => handleDevOptionsClick()}
+            />
+          </div>
+        </li>
         <li key={String('openDrawer')} className={gridMiniMenuListItemStyle}>
           <div>
             <MenuButton

@@ -6,12 +6,17 @@ import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
-import { NavHeader, useModal } from '@kadena/react-ui';
+import {IconButton, NavHeader, Tooltip, useModal} from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import {MenuButton} from "@/components/Common/Layout/partials/Sidebar/MenuButton";
+import {useTheme} from "next-themes";
+import classNames from "classnames";
+import {gridMiniMenuListButtonStyle} from "@/components/Common/Layout/partials/Sidebar/styles.css";
+import {HeaderMenuButton} from "@/components/Common/Layout/partials/Header/HeaderMenuButton";
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -26,6 +31,11 @@ const Header: FC<IHeaderProps> = () => {
     useWalletConnectClient();
   const { pathname, push } = useRouter();
   const { renderModal } = useModal();
+
+  const { systemTheme, theme, setTheme } = useTheme();
+
+  const currentTheme = theme === 'system' ? systemTheme : theme;
+
 
   const navItems = [
     {
@@ -60,6 +70,11 @@ const Header: FC<IHeaderProps> = () => {
     setSelectedNetwork((e.target as HTMLSelectElement).value as Network);
   };
 
+  const toggleTheme = (): void => {
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  };
+
   return (
     <NavHeader.Root brand="DevTools">
       <NavHeader.Navigation activeHref={pathname}>
@@ -75,6 +90,12 @@ const Header: FC<IHeaderProps> = () => {
         ))}
       </NavHeader.Navigation>
       <NavHeader.Content>
+        <HeaderMenuButton
+          title={'Links'}
+          href={'#'}
+          icon={'ThemeLightDark'}
+          onClick={() => toggleTheme()}
+        />
         <NavHeader.Select
           id="network-select"
           ariaLabel={t('Select Network')}
