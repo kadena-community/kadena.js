@@ -18,7 +18,7 @@
     "test": "turbo run test -- run --coverage",
     "test:e2e": "turbo run test:e2e",
     "test:integration": "turbo run test:integration",
-    "version": "changeset version"
+    "version": "changeset version && pnpm run format:pkgs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
