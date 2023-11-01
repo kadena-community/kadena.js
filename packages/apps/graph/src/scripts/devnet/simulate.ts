@@ -29,6 +29,7 @@ export async function simulate({
   tokenPool = 1000000,
   seed = Date.now().toString(),
   duration = 28800000,
+  maxTransfers = 1000,
 }: {
   numberOfAccounts: number;
   transferInterval: number;
@@ -36,6 +37,7 @@ export async function simulate({
   tokenPool: number;
   seed: string;
   duration: number;
+  maxTransfers: number;
 }): Promise<void> {
   const accounts: IAccount[] = [];
 
@@ -78,10 +80,13 @@ export async function simulate({
   // Generate first seeded random number
   let seededRandomNo = seedRandom(seed);
   let counter: number = 0;
+  let totalTransfers: number = 0;
 
   logger.info(`Simulating transfers for ${duration}ns`);
   const startTime = Date.now();
-  while (Date.now() - startTime < duration) {
+
+  // While the duration has not been reached and the max transfers has not been reached
+  while (Date.now() - startTime < duration && totalTransfers < maxTransfers) {
     // Transfer between accounts
     for (let i = 0; i < accounts.length; i++) {
       const account = accounts[i];
@@ -176,6 +181,18 @@ export async function simulate({
         type: transferType,
       });
 
+      // Increase total transfers
+      totalTransfers++;
+
+      // Check if max transfers or duration has been reached
+      if (
+        totalTransfers >= maxTransfers ||
+        Date.now() - startTime >= duration
+      ) {
+        logger.info('Maximal number of transfers or duration reached');
+        break;
+      }
+
       // If the account is not in the accountlist, add it
       const accountExists = accounts.some((existingAccount) =>
         isEqualChainAccounts(nextAccount, existingAccount),
@@ -188,7 +205,9 @@ export async function simulate({
 
       await new Promise((resolve) => setTimeout(resolve, transferInterval));
     }
+
     counter++;
+
     // Timeout
     await new Promise((resolve) => setTimeout(resolve, transferInterval));
   }

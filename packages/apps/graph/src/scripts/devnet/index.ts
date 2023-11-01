@@ -67,6 +67,12 @@ program
       'duration for which simulation should run in ms',
     ),
   )
+  .addOption(
+    new Option(
+      '-mt, --maxTransfers <number>',
+      'Maximum number of transfers between accounts the simulation should perform',
+    ),
+  )
   .action(async (args) => {
     try {
       logger.info('Simulation config parameters:', args);
