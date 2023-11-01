@@ -85,6 +85,12 @@ type Event implements Node {
   transaction: Transaction
 }
 
+"""General information about the graph and chainweb-data"""
+type GeneralInfo {
+  maximumConfirmationDepth: Int!
+  minimumBlockHeigh: BigInt
+}
+
 type Guard {
   keys: [String!]!
   predicate: String!
@@ -154,8 +160,8 @@ type Query {
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+  generalInfo: GeneralInfo!
   lastBlockHeight: BigInt
-  maximumConfirmationDepth: Int!
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
   pactQueries(pactQuery: [PactQuery!]!): [String!]!
