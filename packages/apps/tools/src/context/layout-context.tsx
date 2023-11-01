@@ -1,7 +1,7 @@
+import { menuData } from '@/constants/side-menu-items';
 import type { ISidebarToolbarItem } from '@/types/Layout';
 import type { PropsWithChildren } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { menuData } from '../constants/side-menu-items';
 
 interface ILayoutContext {
   toolbar: ISidebarToolbarItem[];

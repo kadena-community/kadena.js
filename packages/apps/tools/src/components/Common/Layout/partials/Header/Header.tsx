@@ -1,3 +1,4 @@
+import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import { AddNetworkModal } from '@/components/Global/AddNetworkModal';
@@ -6,17 +7,13 @@ import routes from '@/constants/routes';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
-import {IconButton, NavHeader, Tooltip, useModal} from '@kadena/react-ui';
+import { NavHeader, useModal } from '@kadena/react-ui';
+import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
-import {MenuButton} from "@/components/Common/Layout/partials/Sidebar/MenuButton";
-import {useTheme} from "next-themes";
-import classNames from "classnames";
-import {gridMiniMenuListButtonStyle} from "@/components/Common/Layout/partials/Sidebar/styles.css";
-import {HeaderMenuButton} from "@/components/Common/Layout/partials/Header/HeaderMenuButton";
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -35,7 +32,6 @@ const Header: FC<IHeaderProps> = () => {
   const { systemTheme, theme, setTheme } = useTheme();
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
-
 
   const navItems = [
     {

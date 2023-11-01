@@ -7,7 +7,7 @@ export const headerStyle = style([
     top: 0,
     width: '100%',
     height: '$16',
-    alignItems: 'center'
+    alignItems: 'center',
   }),
 ]);
 
@@ -25,14 +25,4 @@ export const gridItemMainStyle = style([
       },
     },
   },
-]);
-
-export const footerStyle = style([
-  sprinkles({
-    backgroundColor: '$neutral2',
-    width: '100%',
-    bottom: 0,
-    position: 'fixed',
-    height: '$10',
-  }),
 ]);

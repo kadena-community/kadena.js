@@ -1,6 +1,8 @@
+import { OptionsModal } from '@/components/Global/OptionsModal';
 import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext } from '@/context';
 import type { ISidebarSubMenuItem } from '@/types/Layout';
+import { useModal } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -12,18 +14,23 @@ import {
   gridMiniMenuListItemStyle,
   gridMiniMenuListStyle,
 } from './styles.css';
-import {OptionsModal} from "@/components/Global/OptionsModal";
-import {useModal} from "@kadena/react-ui";
 
 export interface IMiniMenuProps {}
 
 export const Toolbar: FC<IMiniMenuProps> = () => {
-  const { toolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen, visibleLinks, setVisibleLinks } =
-    useLayoutContext();
+  const {
+    toolbar,
+    setActiveMenuIndex,
+    activeMenuIndex,
+    isMenuOpen,
+    visibleLinks,
+    setVisibleLinks,
+  } = useLayoutContext();
   const router = useRouter();
   const { renderModal } = useModal();
 
   const handleItemClick = (index: number): void => {
+    setVisibleLinks(false);
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
     }
@@ -59,8 +66,8 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
   };
 
   const handleLinksClick = (): void => {
-    handleOpenCloseDrawer();
-    if(!visibleLinks) {
+    setActiveMenuIndex(-1);
+    if (!visibleLinks) {
       setVisibleLinks(true);
     }
   };
@@ -93,6 +100,7 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
               href={'#'}
               icon={'Link'}
               onClick={() => handleLinksClick()}
+              active={visibleLinks}
             />
           </div>
         </li>

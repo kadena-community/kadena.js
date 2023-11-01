@@ -1,11 +1,8 @@
-import { SystemIcon, Tooltip } from '@kadena/react-ui';
-import classNames from 'classnames';
+import { SystemIcon } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes, FC } from 'react';
-import React, { useRef } from 'react';
-import {
-  headerButtonStyle,
-} from './styles.css';
+import React from 'react';
+import { headerButtonStyle } from './styles.css';
 
 export interface IHeaderMenuButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,20 +12,16 @@ export interface IHeaderMenuButtonProps
 }
 
 export const HeaderMenuButton: FC<IHeaderMenuButtonProps> = ({
- title,
- href,
- icon,
- ...rest
+  title,
+  href,
+  icon,
+  ...rest
 }) => {
   const Icon = SystemIcon[icon];
 
   const button = (
     <>
-      <button
-        className={headerButtonStyle}
-        {...rest}
-        aria-label={title}
-      >
+      <button className={headerButtonStyle} {...rest} aria-label={title}>
         <Icon />
       </button>
     </>

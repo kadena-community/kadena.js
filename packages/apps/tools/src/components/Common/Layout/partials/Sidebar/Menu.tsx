@@ -1,16 +1,19 @@
 import { useLayoutContext } from '@/context';
-import {Accordion, Box, Heading, IconButton} from '@kadena/react-ui';
+import { Accordion, IconButton } from '@kadena/react-ui';
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';
 import { MenuLinkButton } from './MenuLinkButton';
-import {gridItemMenuStyle, linksContainerStyle, linksMenuTitleClass, subMenuTitleClass} from './styles.css';
-import useTranslation from "next-translate/useTranslation";
+import {
+  gridItemMenuStyle,
+  subMenuContentStyle,
+  subMenuTitleClass,
+} from './styles.css';
 
 export const Menu: FC = () => {
   const router = useRouter();
   const { t } = useTranslation('common');
-
 
   const links = [
     {
@@ -35,47 +38,70 @@ export const Menu: FC = () => {
     },
   ];
 
-  const { activeMenu, setActiveMenuIndex } = useLayoutContext();
-  if (!activeMenu) return null;
+  const {
+    activeMenu,
+    isMenuOpen,
+    setActiveMenuIndex,
+    visibleLinks,
+    setVisibleLinks,
+  } = useLayoutContext();
+
+  const handleCLoseMenu = () => {
+    setActiveMenuIndex(undefined);
+    setVisibleLinks(false);
+  };
+
+  if (!isMenuOpen) return null;
 
   return (
     <div className={gridItemMenuStyle}>
-      <div className={subMenuTitleClass}>
-        <span>{activeMenu.title}</span>
-        <IconButton
-          icon={'Close'}
-          onClick={() => setActiveMenuIndex(undefined)}
-          title={activeMenu.title}
-        />
-      </div>
-      <Accordion.Root>
-        {activeMenu.items?.map((item, index) => (
-          <MenuLinkButton
-            title={item.title}
-            key={`menu-link-${index}`}
-            href={item.href}
-            active={item.href === router.pathname}
-          />
-        ))}
-      </Accordion.Root>
-      <div className={linksContainerStyle}>
-        <div className={linksMenuTitleClass}>
-          <span>{'Links'}</span>
-        </div>
-        <ul>
-          {links.map(link => (
-            <li key={link.title}>
-              <a
-                href={link.href}
-                target={link.target}
-                rel="noreferrer"
-              >
-                {link.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {visibleLinks ? (
+        <>
+          <div className={subMenuTitleClass}>
+            <span>{t('Resource links')}</span>
+            <IconButton
+              icon={'Close'}
+              onClick={() => handleCLoseMenu()}
+              title={t('Resource links')}
+            />
+          </div>
+          <div className={subMenuContentStyle}>
+            <Accordion.Root>
+              {links.map((item, index) => (
+                <MenuLinkButton
+                  title={item.title}
+                  key={`menu-link-${index}`}
+                  href={item.href}
+                  active={item.href === router.pathname}
+                />
+              ))}
+            </Accordion.Root>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={subMenuTitleClass}>
+            <span>{activeMenu?.title}</span>
+            <IconButton
+              icon={'Close'}
+              onClick={() => handleCLoseMenu()}
+              title={activeMenu?.title}
+            />
+          </div>
+          <div className={subMenuContentStyle}>
+            <Accordion.Root>
+              {activeMenu?.items?.map((item, index) => (
+                <MenuLinkButton
+                  title={item.title}
+                  key={`menu-link-${index}`}
+                  href={item.href}
+                  active={item.href === router.pathname}
+                />
+              ))}
+            </Accordion.Root>
+          </div>
+        </>
+      )}
     </div>
   );
 };
