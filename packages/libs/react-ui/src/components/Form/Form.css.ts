@@ -5,6 +5,7 @@ import { createVar, fallbackVar, style } from '@vanilla-extract/css';
 
 export type Status = 'disabled' | 'positive' | 'warning' | 'negative';
 export const statusColor = createVar();
+export const statusOutlineColor = createVar();
 
 export const baseOutlinedClass = style([
   sprinkles({
@@ -21,15 +22,27 @@ export const baseOutlinedClass = style([
   },
 ]);
 
-// export const outlinedStatusClass = style([
-//   sprinkles({
-//     borderRadius: '$sm',
-//   }),
-//   {
-//     outline: `2px solid ${statusColor}`,
-//     outlineOffset: '2px',
-//   },
-// ]);
+export const statusClass = style([
+  sprinkles({
+    borderRadius: '$sm',
+  }),
+  {
+    outline: `2px solid ${fallbackVar(
+      statusOutlineColor,
+      vars.colors.$blue60,
+    )}`,
+
+    outlineOffset: '2px',
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        outline: `2px solid ${fallbackVar(
+          statusOutlineColor,
+          vars.colors.$blue60,
+        )}`,
+      },
+    },
+  },
+]);
 
 export const baseContainerClass = style([
   sprinkles({

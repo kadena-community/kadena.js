@@ -19,7 +19,7 @@ export const TextField: FC<ITextFieldProps> = ({
 
   return (
     <InputWrapper htmlFor={id} disabled={disabled} status={status} {...rest}>
-      <Input disabled={disabled} status={status} {...inputProps} />
+      <Input disabled={disabled} {...inputProps} />
     </InputWrapper>
   );
 };
