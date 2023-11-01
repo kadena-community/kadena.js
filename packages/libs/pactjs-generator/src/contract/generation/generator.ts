@@ -1,6 +1,6 @@
 import { EOL } from 'os';
 import type { IFunction, IModule, IType } from '../parsing/pactParser';
-import { getModuleFullName } from '../parsing/utils/utils';
+import { getModuleFullName, trim } from '../parsing/utils/utils';
 
 const keywordsMap: Record<string, string> = {
   decimal: 'IPactDecimal',
@@ -39,12 +39,6 @@ const getFuncCapInterfaceName = (func: IFunction): string => {
 
   return `ICapability_${prefix}${func.name.replace(/-/g, '_')}`;
 };
-
-const indent = (str: string, depth = 1): string =>
-  str
-    .split(EOL)
-    .map((line) => `${' '.repeat(depth * 2)}${line}`)
-    .join(EOL);
 
 const getParameters = (
   list?: Array<{
@@ -99,36 +93,38 @@ function genFunCapsInterface(func: IFunction): string {
       cap.capability.doc !== undefined
         ? `/**${EOL}* ${cap.capability.doc}${EOL}*/`
         : '';
-    const addCap = `(${EOL}${parameters
-      .map((line) => indent(line))
-      .join(`, ${EOL}`)}): ICap`;
+    const addCap = `(${parameters.join(',')}): ICap`;
     return { comment, addCap };
   });
 
   const capStr = cap.map((c) => `${c.comment}${EOL}${c.addCap},`).join(EOL);
-  return `interface ${interfaceName} {${EOL}${indent(capStr)}${EOL}}`;
+  return `interface ${interfaceName} {${capStr}}`;
 }
+
+const asDocComment = (doc?: string): string => {
+  if (!doc) return '';
+  return `/**${EOL}${doc
+    .split(EOL)
+    .filter(Boolean)
+    // trim backslashes and all spaces
+    .map((line) => `* ${trim(line.trim(), '\\')}`)
+    .join(EOL)}${EOL}*/`;
+};
 
 const getFunctionType = (func: IFunction): string => {
   const capInterfaceName = getFuncCapInterfaceName(func) || '';
   const comment =
-    func.doc !== undefined ? `/**${EOL}* ${func.doc}${EOL}*/${EOL}` : '';
+    func.doc !== undefined ? `${asDocComment(func.doc)}${EOL}` : '';
 
   const parameters = getParameters(func.parameters, false);
-  const lnBreak = parameters.length > 1;
-  const nl = lnBreak ? EOL : '';
   const caps = capInterfaceName
     ? `${capInterfaceName} & ICommonCapabilities`
     : 'ICommonCapabilities';
-  return indent(
-    `${comment}"${func.name}": (${nl}${parameters
-      .map((d) => (lnBreak ? indent(d) : d))
-      .join(
-        `,${nl}`,
-      )}) => string & { capability : ${caps}; returnType : ${mapType(
-      func.returnType,
-    )}} `,
-  );
+  return `${comment}"${func.name}": (${parameters.join(
+    ',',
+  )}) => string & { capability : ${caps}; returnType : ${mapType(
+    func.returnType,
+  )}} `;
 };
 
 /**
@@ -168,14 +164,14 @@ interface ICommonCapabilities {
 ${capsInterfaces ? `${EOL}${capsInterfaces}${EOL}` : ''}
 declare module '@kadena/client' {
   interface IPactModules {
-    ${module.doc ? `/**${EOL}${indent(module.doc, 2)}${indent(EOL, 2)}*/` : ''}
+    ${asDocComment(module.doc)}
     "${getModuleFullName(module)}": {
-${indent(functions.map(getFunctionType).join(`,${EOL}${EOL}`), 2)}
+${functions.map(getFunctionType).join(`,${EOL}${EOL}`)}
 ${
   defpacts.length > 0
     ? `
       "defpact":{
-${indent(defpacts.map(getFunctionType).join(`,${EOL}${EOL}`), 3)}
+${defpacts.map(getFunctionType).join(`,${EOL}${EOL}`)}
       }`
     : ''
 }
