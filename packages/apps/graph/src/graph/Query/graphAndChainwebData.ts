@@ -2,14 +2,13 @@ import { prismaClient } from '../../db/prismaClient';
 import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 
-builder.queryField('generalInfo', (t) => {
+builder.queryField('graphAndChainwebData', (t) => {
   return t.field({
-    type: 'GeneralInfo',
-    nullable: false,
+    type: 'GraphAndChainwebData',
     resolve: async () => {
       return {
         maximumConfirmationDepth: dotenv.MAX_BLOCK_DEPTH,
-        minimumBlockHeigh: await getMinimumBlockHeight(),
+        minimumBlockHeight: await getMinimumBlockHeight(),
       };
     },
   });

@@ -29,7 +29,7 @@ export interface ModuleAccount {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface GeneralInfo {
+export interface GraphAndChainwebData {
   maximumConfirmationDepth: number;
-  minimumBlockHeigh: bigint;
+  minimumBlockHeight: bigint;
 }
