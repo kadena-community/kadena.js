@@ -1,6 +1,7 @@
 import type { ISidebarToolbarItem } from '@/types/Layout';
 import type { PropsWithChildren } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { menuData } from '../constants/side-menu-items';
 
 interface ILayoutContext {
   toolbar: ISidebarToolbarItem[];
@@ -15,7 +16,7 @@ interface ILayoutContext {
 const LayoutContext = createContext<ILayoutContext>({
   toolbar: [],
   setToolbar: () => {},
-  isMenuOpen: false,
+  isMenuOpen: true,
   setActiveMenuIndex: () => {},
   activeMenu: undefined,
   resetLayout: () => {},
@@ -31,12 +32,27 @@ const useLayoutContext = (): ILayoutContext => {
   return context;
 };
 
-export const useToolbar = (toolbar: ISidebarToolbarItem[]): void => {
-  const { setToolbar, resetLayout } = useLayoutContext();
+export const useToolbar = (
+  toolbar: ISidebarToolbarItem[],
+  pathName?: string,
+): void => {
+  const { setToolbar, setActiveMenuIndex } = useLayoutContext();
   useEffect(() => {
     setToolbar(toolbar);
 
-    return resetLayout;
+    // set menu from URL param
+    if (pathName) {
+      const mainPath = pathName.split('/')[1];
+
+      const activeMenu = menuData.find(
+        (item) => item.href && item.href.includes(mainPath),
+      );
+      if (!activeMenu) return;
+
+      const index = menuData.indexOf(activeMenu);
+      setActiveMenuIndex(index);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
@@ -49,8 +65,6 @@ const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
   const resetLayout = (): void => {
     setToolbar([]);
 
-    // eslint-disable-next-line
-    // @ts-ignore
     setActiveMenuIndex(undefined);
   };
 
