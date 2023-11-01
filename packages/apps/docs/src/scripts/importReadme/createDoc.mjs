@@ -3,13 +3,11 @@ import * as fs from 'fs';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
-import { getLastModifiedDate } from './getdocstree.mjs';
-import { getTypes, importReadMes } from './utils.mjs';
-
-const errors = [];
-const success = [];
+import { getLastModifiedDate } from './../getdocstree.mjs';
+import { getTypes } from './../utils.mjs';
 
 const DOCSROOT = './src/pages/';
+const TEMPDIR = './.tempimport';
 
 const createFrontMatter = (
   title,
@@ -203,38 +201,74 @@ const relinkReferences = (md, pages, root) => {
   relinkImageReferences(imageReferences, definitions, pages, root);
 };
 
-const importDocs = async (filename, destination, parentTitle, options) => {
-  const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
+export const importDocs = async (filename, item) => {
+  const doc = fs.readFileSync(filename, 'utf-8');
 
   const md = remark.parse(doc);
 
-  const lastModifiedDate = await getLastModifiedDate(`./../../${filename}`);
+  const lastModifiedDate = await getLastModifiedDate(filename);
 
-  const pages = divideIntoPages(md);
-  relinkReferences(md, pages, `/${destination}/`);
+  if (item.options.singlePage) {
+    relinkReferences(md, [md], `/${item.destination}/`);
 
-  pages.forEach((page, idx) => {
-    const title = getTitle(page);
-    const slug = idx === 0 ? 'index' : createSlug(title);
-    const menuTitle = idx === 0 ? parentTitle : title;
-    const order = idx === 0 ? options.RootOrder : idx;
+    const title = getTitle(md);
+    const menuTitle = item.title;
+    const order = item.options.RootOrder;
+    const slug = createSlug(title);
 
     // check that there is just 1 h1.
     // if more, keep only 1 and replace the next with an h2
-    const pageContent = cleanUp(page, `/${destination}/${slug}`);
+
+    const pageContent = cleanUp(
+      md,
+      `/${item.destination}/${order === 0 ? '' : slug}`,
+    );
 
     const doc = toMarkdown(pageContent);
 
-    createDir(`${DOCSROOT}${destination}`);
-
     fs.writeFileSync(
-      `${DOCSROOT}${destination}/${slug}.md`,
+      `${DOCSROOT}${item.destination}/${order === 0 ? 'index' : slug}.md`,
       createFrontMatter(
         title,
         menuTitle,
         order,
-        createEditOverwrite(filename, options),
-        options.tags,
+        createEditOverwrite(filename, item.options),
+        item.options.tags,
+        lastModifiedDate,
+      ) + doc,
+      {
+        flag: 'w',
+      },
+    );
+
+    return;
+  }
+
+  const pages = divideIntoPages(md);
+  relinkReferences(md, pages, `/${item.destination}/`);
+
+  pages.forEach((page, idx) => {
+    const title = getTitle(page);
+    const slug = idx === 0 ? 'index' : createSlug(title);
+    const menuTitle = idx === 0 ? item.title : title;
+    const order = idx === 0 ? item.options.RootOrder : idx;
+
+    // check that there is just 1 h1.
+    // if more, keep only 1 and replace the next with an h2
+    const pageContent = cleanUp(page, `/${item.destination}/${slug}`);
+
+    const doc = toMarkdown(pageContent);
+
+    createDir(`${DOCSROOT}${item.destination}`);
+
+    fs.writeFileSync(
+      `${DOCSROOT}${item.destination}/${slug}.md`,
+      createFrontMatter(
+        title,
+        menuTitle,
+        order,
+        createEditOverwrite(filename, item.options),
+        item.options.tags,
         lastModifiedDate,
       ) + doc,
       {
@@ -242,14 +276,4 @@ const importDocs = async (filename, destination, parentTitle, options) => {
       },
     );
   });
-};
-
-export const importAllReadmes = async () => {
-  importReadMes.forEach(async (item) => {
-    await importDocs(item.file, item.destination, item.title, item.options);
-  });
-
-  success.push('Docs imported from monorepo');
-
-  return { success, errors };
 };

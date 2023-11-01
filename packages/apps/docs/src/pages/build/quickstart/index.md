@@ -1,13 +1,14 @@
 ---
-title: 10 Minute Quickstart
-description: Learn Kadena’s core concepts & tools for development in 10 minutes
-menu: Quickstart
-label: 10 Minute Quickstart
-order: 1
+title: 10 minute quickstart with Kadena
+description: Kadena makes blockchain work for everyone.
+menu: undefined
+label: 10 minute quickstart with Kadena
+order: 0
+editLink: https://github.com/kadena-community/kadena.js/edit/main/packages/./.tempimport/kadena-community/getting-started/README.md
 layout: full
-tags: [devnet, chainweaver, tutorial, docker, transactions]
+tags: [devnet,chainweaver,tutorial,docker,transactions]
+lastModifiedDate: Thu, 19 Oct 2023 13:23:55 GMT
 ---
-
 # 10 minute quickstart with Kadena
 
 Welcome to the world of Kadena, a powerful blockchain platform that combines
@@ -21,25 +22,25 @@ blockchain in 10 minutes
 
 ## Start fat-container `kadena/devnet`
 
-1. Create docker volume
+1.  Create docker volume
 
-   ```shell
-   docker volume create kadena_devnet
-   ```
+    ```shell
+    docker volume create kadena_devnet
+    ```
 
-2. start kadena-devnet fat-container
+2.  start kadena-devnet fat-container
 
-   ```shell
-   docker run -it -p 8080:8080 -v kadena_devnet:/data --name devnet kadena/devnet
-   # restart with
-   docker start devnet
-   ```
+    ```shell
+    docker run -it -p 8080:8080 -v kadena_devnet:/data --name devnet kadena/devnet
+    # restart with
+    docker start devnet
+    ```
 
 ## Monitor the blockchain
 
 In the fat-container we expose an explorer that connects to the devnet
 
-1. Go to http://localhost:8080/explorer/
+1.  Go to http://localhost:8080/explorer/
 
 Here you can see the blocks that are mined, and the transactions that are
 executed
@@ -49,28 +50,28 @@ workflow, the devnet mines a block in 5 seconds.
 
 ## Chainweaver wallet
 
-1. Use Chainweaver
-   1. Download and install from
-      https://github.com/kadena-io/chainweaver/releases
-   2. Or, use the web version: https://chainweaver.kadena.network
-2. Launch Chainweaver and create your mnemonic key
+1.  Use Chainweaver
+    1.  Download and install from
+        https://github.com/kadena-io/chainweaver/releases
+    2.  Or, use the web version: https://chainweaver.kadena.network
+2.  Launch Chainweaver and create your mnemonic key
 
 ## Add devnet to Chainweaver
 
-1. Click "Settings" tab in the bottom left
-2. Select "Network"
-3. Fill in the network name: "Devnet"
-4. Open the network you created "> Devnet"
-5. Add a node: "127.0.0.1:8080", the red dot on the right, should become green
-   now.
+1.  Click "Settings" tab in the bottom left
+2.  Select "Network"
+3.  Fill in the network name: "Devnet"
+4.  Open the network you created "> Devnet"
+5.  Add a node: "127.0.0.1:8080", the red dot on the right, should become green
+    now.
 
 ## Create keys to sign transactions
 
-1. Go to "Keys" on the left and click "+ Generate" on the top-right. This is
-   your first key-pair.
-2. To show the balance of this account, click "Add k: Account".
-3. Go back to the "Accounts" tab on the left. Notice that the "Balance (KDA)"
-   says "Does not exist".
+1.  Go to "Keys" on the left and click "+ Generate" on the top-right. This is
+    your first key-pair.
+2.  To show the balance of this account, click "Add k: Account".
+3.  Go back to the "Accounts" tab on the left. Notice that the "Balance (KDA)"
+    says "Does not exist".
 
 In Kadena, keys and accounts do not represent the same thing. An account needs
 to be created before it can be used.
@@ -82,8 +83,8 @@ to be created before it can be used.
 > [install with `n`](https://github.com/tj/n#readme)) and run `npm install` in
 > the root of this project
 >
-> 1. install nodejs
-> 2. run `npm install`
+> 1.  install nodejs
+> 2.  run `npm install`
 
 Before we can create an account, you need to have KDA to pay for the gas-fees
 (transaction fee).
@@ -95,16 +96,28 @@ In this process, we’ll submit a transaction that creates an account based on t
 "keys" and "predicate" that you supply. The combination of `keys` + `predicate`
 makes a `keyset`, which is used to `guard` your account.
 
-1. Send money from "sender00" to your account. Copy your account name from the
-   "Accounts" tab and fill it in the command
+0.  Clone the repository. It has scripts to make your life easier
 
-   ```shell
-   npm run start -- fund --keys "<your-key>" --predicate "keys-all"
-   ```
+    ```shell
+    git clone https://github.com/kadena-community/getting-started.git
+    # or
+    git clone git@github.com:kadena-community/getting-started.git
+    # and install dependencies (you need to have nodejs preinstalled)
+    cd getting-started
+    npm install
+    ```
 
-2. Open the Block Explorer http://localhost:8080/explorer/ to monitor the
-   transaction
-3. In Chainweaver, click "Refresh" to update the account balances
+1.  Send money from "sender00" to your account. Copy your account name from the
+    "Accounts" tab and fill it in the command
+
+    ```shell
+    npm run start -- fund --keys "<your-key>" --predicate "keys-all"
+    ```
+
+2.  Open the Block Explorer http://localhost:8080/explorer/ to monitor the
+    transaction
+
+3.  In Chainweaver, click "Refresh" to update the account balances
 
 ## Deploy a contract
 
@@ -126,21 +139,21 @@ run the following command. Make sure to have Chainweaver open, as it's required
 to sign with your private key.
 
 **Important**: the web version of Chainweaver does not have an automated signing
-flow. Use the **Chainweaver Web** command. **_Follow the instructions in the
-terminal_**.
+flow. Use the **Chainweaver Web** command. ***Follow the instructions in the
+terminal***.
 
 Once you run the command you'll see a modal open in Chainweaver. This modal
 shows a few things:
 
-1. Transaction metadata like who pays for the transaction, etc.
-2. The "code" that's executed when the transaction
-3. The "data" that's available for the functions that are executed (in this case
-   nothing)
-4. The "signers" needed to sign for the transaction  
-   In this example we have an "unscoped signer" as for deploying a smart
-   contract, there are no "capabilities" that scope what your signature can be
-   used for (read more about this in our
-   [Step-By-Step Guide to Writing Smart Contracts](https://docs.kadena.io/build/guides#capabilitiesh-1323277354))
+1.  Transaction metadata like who pays for the transaction, etc.
+2.  The "code" that's executed when the transaction
+3.  The "data" that's available for the functions that are executed (in this case
+    nothing)
+4.  The "signers" needed to sign for the transaction\
+    In this example we have an "unscoped signer" as for deploying a smart
+    contract, there are no "capabilities" that scope what your signature can be
+    used for (read more about this in our
+    [Step-By-Step Guide to Writing Smart Contracts](https://docs.kadena.io/build/guides/a-step-by-step-guide-to-writing-pact-smart-contract#capabilities))
 
 ```shell
 npm run start -- deploy --keys "<your-key>" --predicate "keys-all"
@@ -160,11 +173,11 @@ Now you can interact with the smart contract
 
 ## Interacting with a smart contract
 
-1. Open Chainweaver
-2. Navigate to the "Contracts" on the left
-3. Open the "Module Explorer"-tab on the right
-4. Search in "Deployed Contracts" for the `hello-world` contract
-5. Click the "View" button to show details of the smart contract
+1.  Open Chainweaver
+2.  Navigate to the "Contracts" on the left
+3.  Open the "Module Explorer"-tab on the right
+4.  Search in "Deployed Contracts" for the `hello-world` contract
+5.  Click the "View" button to show details of the smart contract
 
 If everything went correctly, you should be able to see the smart contract and
 its details.
@@ -183,12 +196,12 @@ deployed. Write it in the left side of your Chainweaver inside "Contracts" page.
 (free.hello-world.say-hello "Albert")
 ```
 
-1. Click the "deploy" button on the top right.
-2. Click next twice
-3. You'll get an error "A 'Gas Payer' has not been selected for this
-   transaction. Are you sure this is correct?", but you can ignore that since
-   you're executing a read-only command.
-4. Scroll to the bottom. Here you'll see the "Raw Response"
+1.  Click the "deploy" button on the top right.
+2.  Click next twice
+3.  You'll get an error "A 'Gas Payer' has not been selected for this
+    transaction. Are you sure this is correct?", but you can ignore that since
+    you're executing a read-only command.
+4.  Scroll to the bottom. Here you'll see the "Raw Response"
 
 > "Hello, Albert!"
 
@@ -222,7 +235,7 @@ npm run start -- deploy \
 You'll walk through the same process as before in Chainweaver.
 
 > Yes you read that correctly. **You can redeploy and update a smart
-> contract!**  
+> contract!**\
 > This is one of the many cool features of Pact and Kadena, however, you cannot
 > change the schema (yet)
 
@@ -250,19 +263,28 @@ We also created a function that allows you to write to the schema:
 
 ### Executing a write function
 
-1. Go to the "contracts" page in Chainweaver
-2. Write the following snippet
-   ```lisp
-   (free.hello-world.write-hello "Albert")
-   ```
-3. Click "Deploy"
-4. Select Chain ID "0"
-5. In "Transaction Sender" select "Account" that corresponds with the account
-   that you funded. It should be `k:<public-key>`
-6. Other settings should be correctly filled in as default
-7. Click "next"
-8. In "Unrestricted Signing Keys" select the `public-key` of your account
-9. Click "next"
+1.  Go to the "contracts" page in Chainweaver
+
+2.  Write the following snippet
+    ```lisp
+    (free.hello-world.write-hello "Albert")
+    ```
+
+3.  Click "Deploy"
+
+4.  Select Chain ID "0"
+
+5.  In "Transaction Sender" select "Account" that corresponds with the account
+    that you funded. It should be `k:<public-key>`
+
+6.  Other settings should be correctly filled in as default
+
+7.  Click "next"
+
+8.  In "Unrestricted Signing Keys" select the `public-key` of your account
+
+9.  Click "next"
+
 10. You'll see a Notice:
 
     > A 'Gas Payer' has not been selected for this transaction. Are you sure
@@ -281,18 +303,16 @@ Execute the following function, and deploy to read the keys from the table.
 > **Note:** this function costs a lot as this is not something you'd usually do
 > in a regular transaction.
 
-1. Paste the snippet in the editor
-   ```lisp
-   (map (read free.hello-world.hello-world-table) (keys free.hello-world.hello-world-table))
-   ```
-2. Click "deploy"
-3. Change the Chain ID to 0 (as we only deployed the contract on Chain 0)
-4. Change the gas limit to `99999`
-5. Click next to the end
-6. In "Raw Response" you should be able to see
-   ```
-   [{"text": "Hello, Albert!"}]
-   ```
+1.  Paste the snippet in the editor
+    ```lisp
+    (map (read free.hello-world.hello-world-table) (keys free.hello-world.hello-world-table))
+    ```
+2.  Click "deploy"
+3.  Change the Chain ID to 0 (as we only deployed the contract on Chain 0)
+4.  Change the gas limit to `99999`
+5.  Click next to the end
+6.  In "Raw Response" you should be able to see
+        [{"text": "Hello, Albert!"}]
 
 ## Further reading
 
@@ -300,7 +320,7 @@ Get started with the basics of Pact by reading the
 [Welcome to Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact)
 docs.
 
-[Reference documentation of Pact](/pact/reference)
+[Reference documentation of Pact](https://docs.kadena.io/pact/reference)
 
 A very good and complete tutorial on learning pact, with real world scenario's,
 is the

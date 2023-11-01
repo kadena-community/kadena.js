@@ -39,6 +39,17 @@ export const getTypes = (tree, type, arr = []) => {
 export const importReadMes = [
   /** /libs/chainweb-node-client */
   {
+    file: `README.md`,
+    repo: 'kadena-community/getting-started',
+    destination: '/build/quickstart',
+    parentTitle: 'Quickstart',
+    options: {
+      RootOrder: 0,
+      tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
+      singlePage: true,
+    },
+  },
+  {
     file: 'libs/chainweb-node-client/README.md',
     destination: 'chainweb/node-client',
     title: 'Node Client',

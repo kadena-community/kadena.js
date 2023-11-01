@@ -8,7 +8,7 @@ import { createSitemap } from './createSitemap.mjs';
 import { createSpecs } from './createSpec.mjs';
 import { detectBrokenLinks } from './detectBrokenLinks.mjs';
 import { createDocsTree } from './getdocstree.mjs';
-import { importAllReadmes } from './importReadme.mjs';
+import { importAllReadmes } from './importReadme/index.mjs';
 import { Spinner } from './spinner.mjs';
 
 const promiseExec = promisify(exec);

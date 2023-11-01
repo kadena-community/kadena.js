@@ -23,8 +23,12 @@ const isMarkDownFile = (name) => {
 };
 
 export const getLastModifiedDate = async (root) => {
+  const rootArray = root.split('/');
+  const filename = rootArray.pop();
+  const newRoot = rootArray.join('/');
+
   const { stdout } = await promiseExec(
-    `git log -1 --pretty="format:%ci" ${root}`,
+    `cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
   );
 
   const date = new Date(stdout);

@@ -17,6 +17,7 @@ src/pages/chainweb/node-client
 src/pages/chainweb/js-bindings
 
 
+.tempimport
 src/pages/docs
 
 next-env.d.ts
