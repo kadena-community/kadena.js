@@ -27,6 +27,7 @@ import {
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import AccountNameField from '@/components/Global/AccountNameField';
+import { CloseableNotification } from '@/components/Global/CloseableNotification';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
 import { PublicKeyField } from '@/components/Global/PublicKeyField';
@@ -257,11 +258,12 @@ const NewAccountFaucetPage: FC = () => {
         ) : null}
       </div>
       <div className={notificationContainerStyle}>
-        <Notification.Root
+        <CloseableNotification
           color="warning"
           expanded={true}
           icon="Information"
           title={t(`Before you start`)}
+          variant="outlined"
         >
           <Trans
             i18nKey="common:faucet-how-to-start"
@@ -288,7 +290,7 @@ const NewAccountFaucetPage: FC = () => {
               />,
             ]}
           />
-        </Notification.Root>
+        </CloseableNotification>
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
