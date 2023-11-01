@@ -29,7 +29,7 @@ export async function simulate({
   tokenPool = 1000000,
   seed = Date.now().toString(),
   duration = 28800000,
-  maxTransfers = 1000,
+  maxTransfers = 10000,
 }: {
   numberOfAccounts: number;
   transferInterval: number;
@@ -184,12 +184,15 @@ export async function simulate({
       // Increase total transfers
       totalTransfers++;
 
-      // Check if max transfers or duration has been reached
-      if (
-        totalTransfers >= maxTransfers ||
-        Date.now() - startTime >= duration
-      ) {
-        logger.info('Maximal number of transfers or duration reached');
+      // Check if max transfers has been reached
+      if (totalTransfers >= maxTransfers) {
+        logger.info('Maximum number of transfers reached');
+        break;
+      }
+
+      // Check if duration has been reached
+      if (Date.now() - startTime >= duration) {
+        logger.info('Duration reached');
         break;
       }
 

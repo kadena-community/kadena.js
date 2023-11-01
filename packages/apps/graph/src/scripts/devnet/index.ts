@@ -65,13 +65,13 @@ program
     new Option(
       '-d, --duration <number>',
       'duration for which simulation should run in ms',
-    ),
+    ).default(28800000),
   )
   .addOption(
     new Option(
       '-mt, --maxTransfers <number>',
       'Maximum number of transfers between accounts the simulation should perform',
-    ),
+    ).default(10000),
   )
   .action(async (args) => {
     try {
