@@ -2,4 +2,4 @@
 '@kadena/react-ui': minor
 ---
 
-Imporve `Dialog` and `Modal` components
+Used react-aria to recreate the `Dialog` and `Modal` components
