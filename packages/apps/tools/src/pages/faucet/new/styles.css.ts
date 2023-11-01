@@ -51,3 +51,16 @@ export const iconButtonWrapper = style([
     right: '$6',
   }),
 ]);
+
+export const notificationContentStyle = style([
+  sprinkles({
+    display: 'inline-flex',
+    alignItems: 'center',
+  }),
+]);
+
+export const hoverTagContainerStyle = style([
+  sprinkles({
+    marginX: '$1',
+  }),
+]);
