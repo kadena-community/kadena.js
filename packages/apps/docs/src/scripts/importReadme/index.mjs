@@ -6,15 +6,23 @@ const errors = [];
 const success = [];
 
 export const importAllReadmes = async () => {
-  importReadMes.forEach(async (item) => {
+  let monorepoCount = 0;
+  let outsideCount = 0;
+  const promises = importReadMes.map((item) => {
     if (item.repo) {
-      await importRepo(item);
+      outsideCount++;
+      return importRepo(item);
     } else {
-      await importDocs(`./../../${item.file}`, item);
+      monorepoCount++;
+      return importDocs(`./../../${item.file}`, item);
     }
   });
 
-  success.push('Docs imported from monorepo');
+  await Promise.all(promises);
+
+  success.push(
+    `Docs imported from monorepo(${monorepoCount}) and outside repos(${outsideCount})`,
+  );
 
   return { success, errors };
 };

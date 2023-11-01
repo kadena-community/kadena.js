@@ -42,7 +42,7 @@ export const importReadMes = [
     file: `README.md`,
     repo: 'kadena-community/getting-started',
     destination: '/build/quickstart',
-    parentTitle: 'Quickstart',
+    title: 'Quickstart',
     options: {
       RootOrder: 0,
       tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],

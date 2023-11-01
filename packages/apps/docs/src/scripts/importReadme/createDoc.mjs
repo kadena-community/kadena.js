@@ -212,6 +212,7 @@ export const importDocs = async (filename, item) => {
     relinkReferences(md, [md], `/${item.destination}/`);
 
     const title = getTitle(md);
+
     const menuTitle = item.title;
     const order = item.options.RootOrder;
     const slug = createSlug(title);

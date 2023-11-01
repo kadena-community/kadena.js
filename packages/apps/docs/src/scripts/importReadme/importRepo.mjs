@@ -4,7 +4,6 @@ import { promisify } from 'util';
 import { importDocs } from './createDoc.mjs';
 
 const REPOPREFIX = 'https://github.com/';
-const REPOURLPREFIX = 'https://github.com';
 const TEMPDIR = './.tempimport';
 
 const promiseExec = promisify(exec);
