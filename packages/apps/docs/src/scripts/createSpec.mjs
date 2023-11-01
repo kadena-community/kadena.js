@@ -2,7 +2,8 @@ import { exec } from 'child_process';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
 import { promisify } from 'util';
-import { deleteTempDir, TEMPDIR } from './importReadme/importRepo.mjs';
+import { TEMPDIR } from './importReadme/createDoc.mjs';
+import { deleteTempDir } from './importReadme/importRepo.mjs';
 
 const errors = [];
 const success = [];

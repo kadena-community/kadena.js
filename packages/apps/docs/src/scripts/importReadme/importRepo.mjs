@@ -1,10 +1,7 @@
 import { exec } from 'child_process';
 import * as fs from 'fs';
 import { promisify } from 'util';
-import { importDocs } from './createDoc.mjs';
-
-const REPOPREFIX = 'https://github.com/';
-export const TEMPDIR = './.tempimport';
+import { REPOPREFIX, TEMPDIR, importDocs } from './createDoc.mjs';
 
 const promiseExec = promisify(exec);
 

@@ -7,7 +7,8 @@ import { getLastModifiedDate } from './../getdocstree.mjs';
 import { getTypes } from './../utils.mjs';
 
 const DOCSROOT = './src/pages/';
-const TEMPDIR = './.tempimport';
+export const REPOPREFIX = 'https://github.com/';
+export const TEMPDIR = './.tempimport';
 
 const createFrontMatter = (
   title,
@@ -31,8 +32,11 @@ lastModifiedDate: ${lastModifiedDate}
 `;
 };
 
-const createEditOverwrite = (filename, options) => {
+const createEditOverwrite = (filename, options, repo) => {
   if (options.hideEditLink) return '';
+  if (repo) {
+    return `${REPOPREFIX}${repo}/edit/main/${filename}`;
+  }
   return `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
 };
 
@@ -233,7 +237,7 @@ export const importDocs = async (filename, item) => {
         title,
         menuTitle,
         order,
-        createEditOverwrite(filename, item.options),
+        createEditOverwrite(item.file, item.options, item.repo),
         item.options.tags,
         lastModifiedDate,
       ) + doc,
@@ -268,7 +272,7 @@ export const importDocs = async (filename, item) => {
         title,
         menuTitle,
         order,
-        createEditOverwrite(filename, item.options),
+        createEditOverwrite(item.file, item.options),
         item.options.tags,
         lastModifiedDate,
       ) + doc,
