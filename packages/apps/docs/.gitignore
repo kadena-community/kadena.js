@@ -2,6 +2,7 @@
 src/_generated
 public/sitemap.xml
 src/pages/kadena/kadenajs
+src/pages/build/quickstart/index.md
 src/pages/kadena/client
 src/pages/pact/cli
 src/pages/pact/pactjs-test-project/api
