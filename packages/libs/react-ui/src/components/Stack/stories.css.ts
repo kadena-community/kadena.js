@@ -6,14 +6,11 @@ export const itemClass = style([
   sprinkles({
     borderRadius: '$sm',
     backgroundColor: '$primarySurface',
-    color: '$neutral6',
-    size: '$32',
-  }),
-  {
+    padding: '$6',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  }),
 ]);
 
 export const itemSizeClass = styleVariants(vars.sizes, (size) => {
@@ -24,3 +21,18 @@ export const itemSizeClass = styleVariants(vars.sizes, (size) => {
     },
   ];
 });
+
+export const containerClass = style([
+  sprinkles({
+    backgroundColor: 'transparent',
+    borderColor: '$primaryAccent',
+    borderStyle: 'solid',
+    borderWidth: '$sm',
+  }),
+]);
+
+export const stackClass = style([
+  sprinkles({
+    backgroundColor: '$primaryContrast',
+  }),
+]);

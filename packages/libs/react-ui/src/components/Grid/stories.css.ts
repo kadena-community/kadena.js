@@ -1,16 +1,28 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { style } from '@vanilla-extract/css';
 
-export const ContentClass = style([
+export const itemClass = style([
   sprinkles({
-    backgroundColor: '$primarySurface',
     borderRadius: '$sm',
-    padding: '$2',
-    color: '$neutral6',
+    backgroundColor: '$primarySurface',
+    padding: '$6',
     display: 'flex',
-    width: '100%',
-    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  }),
+]);
+
+export const containerClass = style([
+  sprinkles({
+    backgroundColor: 'transparent',
+    borderColor: '$primaryAccent',
+    borderStyle: 'solid',
+    borderWidth: '$sm',
+  }),
+]);
+
+export const gridClass = style([
+  sprinkles({
+    backgroundColor: '$primaryContrast',
   }),
 ]);

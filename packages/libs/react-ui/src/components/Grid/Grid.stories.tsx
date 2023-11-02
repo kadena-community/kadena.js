@@ -7,18 +7,23 @@ import React from 'react';
 import type { ResponsiveInputType } from './Grid.css';
 import { gapVariants } from './Grid.css';
 import type { IGridRootProps } from './GridRoot';
-import { ContentClass } from './stories.css';
+import { containerClass, gridClass, itemClass } from './stories.css';
 
-const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
+const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,
   ...(Object.keys(vars.sizes) as (keyof typeof vars.sizes)[]),
 ];
+const contentWidthOptions: (keyof typeof vars.contentWidth | undefined)[] = [
+  undefined,
+  ...(Object.keys(vars.contentWidth) as (keyof typeof vars.contentWidth)[]),
+];
+const dimensionOptions: string[] = ['100%', 'min-content', 'max-content'];
 
-const meta: Meta<
-  {
-    columnSpan: ResponsiveInputType;
-  } & IGridRootProps
-> = {
+type StoryType = {
+  columnSpan: ResponsiveInputType;
+} & IGridRootProps;
+
+const meta: Meta<StoryType> = {
   title: 'Layout/Grid',
   parameters: {
     docs: {
@@ -61,7 +66,7 @@ const meta: Meta<
       },
     },
     margin: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -69,7 +74,7 @@ const meta: Meta<
         'Set value for margin property with pre-defined size values.',
     },
     marginX: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -77,7 +82,7 @@ const meta: Meta<
         'Set value for margin property on X axis with pre-defined size values.',
     },
     marginY: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -85,7 +90,7 @@ const meta: Meta<
         'Set value for margin property on Y axis with pre-defined size values.',
     },
     marginTop: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -93,7 +98,7 @@ const meta: Meta<
         'Set value for top margin property with pre-defined size values.',
     },
     marginBottom: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -102,7 +107,7 @@ const meta: Meta<
     },
 
     marginLeft: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -110,7 +115,7 @@ const meta: Meta<
         'Set value for left margin property with pre-defined size values.',
     },
     marginRight: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -118,7 +123,7 @@ const meta: Meta<
         'Set value for right margin property with pre-defined size values.',
     },
     padding: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -126,7 +131,7 @@ const meta: Meta<
         'Set value for padding property with pre-defined size values.',
     },
     paddingX: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -134,7 +139,7 @@ const meta: Meta<
         'Set value for padding property on X axis with pre-defined size values.',
     },
     paddingY: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -142,7 +147,7 @@ const meta: Meta<
         'Set value for padding property on Y axis with pre-defined size values.',
     },
     paddingTop: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -150,7 +155,7 @@ const meta: Meta<
         'Set value for top padding property with pre-defined size values.',
     },
     paddingBottom: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -158,7 +163,7 @@ const meta: Meta<
         'Set value for bottom padding property with pre-defined size values.',
     },
     paddingLeft: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -166,32 +171,90 @@ const meta: Meta<
         'Set value for left padding property with pre-defined size values.',
     },
     paddingRight: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
       description:
         'Set value for right padding property with pre-defined size values.',
     },
+    width: {
+      options: [...spaceOptions, ...dimensionOptions, ...contentWidthOptions],
+      control: {
+        type: 'select',
+      },
+      description: 'Value for width property with pre-defined size values.',
+    },
+    minWidth: {
+      options: dimensionOptions,
+      control: {
+        type: 'select',
+      },
+      description: 'Value for minWidth property with pre-defined size values.',
+    },
+    maxWidth: {
+      options: [...dimensionOptions, ...contentWidthOptions],
+      control: {
+        type: 'select',
+      },
+      description: 'Value for maxWidth property with pre-defined size values.',
+    },
+    height: {
+      options: [...spaceOptions, ...dimensionOptions],
+      control: {
+        type: 'select',
+      },
+      description: 'Value for height property with pre-defined size values.',
+    },
+    minHeight: {
+      options: dimensionOptions,
+      control: {
+        type: 'select',
+      },
+      description: 'Value for minHeight property with pre-defined size values.',
+    },
+    maxHeight: {
+      options: dimensionOptions,
+      control: {
+        type: 'select',
+      },
+      description: 'Value for maxHeight property with pre-defined size values.',
+    },
   },
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    columnSpan: ResponsiveInputType;
-  } & IGridRootProps
->;
+type Story = StoryObj<StoryType>;
 
-/*
- *👇 Render functions are a framework specific feature to allow you control on how the component renders.
- * See https://storybook.js.org/docs/7.0/react/api/csf
- * to learn how to use render functions.
- */
+const defaultArgs: Record<string, string | undefined> = {
+  width: undefined,
+  minWidth: undefined,
+  maxWidth: undefined,
+  height: undefined,
+  minHeight: undefined,
+  maxHeight: undefined,
+  margin: undefined,
+  marginX: undefined,
+  marginY: undefined,
+  marginTop: undefined,
+  marginBottom: undefined,
+  marginLeft: undefined,
+  marginRight: undefined,
+  gap: undefined,
+  columns: undefined,
+  padding: undefined,
+  paddingX: undefined,
+  paddingY: undefined,
+  paddingTop: undefined,
+  paddingBottom: undefined,
+  paddingLeft: undefined,
+  paddingRight: undefined,
+};
 
 export const GridRoot: Story = {
   name: 'Grid',
   args: {
+    ...defaultArgs,
     gap: '$xl',
     columns: {
       xs: 1,
@@ -201,93 +264,46 @@ export const GridRoot: Story = {
       xl: 10,
       xxl: 12,
     },
-    margin: undefined,
-    marginX: undefined,
-    marginY: undefined,
-    marginTop: undefined,
-    marginBottom: undefined,
-    marginLeft: undefined,
-    marginRight: undefined,
-    padding: undefined,
-    paddingX: undefined,
-    paddingY: undefined,
-    paddingTop: undefined,
-    paddingBottom: undefined,
-    paddingLeft: undefined,
-    paddingRight: undefined,
   },
-  render: ({
-    gap,
-    columns,
-    margin,
-    marginX,
-    marginY,
-    marginTop,
-    marginBottom,
-    marginLeft,
-    marginRight,
-    padding,
-    paddingX,
-    paddingY,
-    paddingTop,
-    paddingBottom,
-    paddingLeft,
-    paddingRight,
-  }) => (
-    <>
-      <Grid.Root
-        gap={gap}
-        columns={columns}
-        margin={margin}
-        marginX={marginX}
-        marginY={marginY}
-        marginTop={marginTop}
-        marginBottom={marginBottom}
-        marginLeft={marginLeft}
-        marginRight={marginRight}
-        padding={padding}
-        paddingX={paddingX}
-        paddingY={paddingY}
-        paddingTop={paddingTop}
-        paddingBottom={paddingBottom}
-        paddingLeft={paddingLeft}
-        paddingRight={paddingRight}
-      >
+  render: ({ gap, columns, ...rest }) => (
+    <div className={containerClass}>
+      <Grid.Root gap={gap} columns={columns} className={gridClass} {...rest}>
         {Array.from(new Array(12)).map((empty, i) => (
-          <Grid.Item key={i}>
-            <div className={ContentClass}>{i}</div>
+          <Grid.Item key={i} className={itemClass}>
+            <div className={itemClass}>{i}</div>
           </Grid.Item>
         ))}
 
-        <Grid.Item>
-          <div className={ContentClass}>2</div>
+        <Grid.Item className={itemClass}>
+          <div className={itemClass}>2</div>
         </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>3</div>
+        <Grid.Item className={itemClass}>
+          <div className={itemClass}>3</div>
         </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>4</div>
+        <Grid.Item className={itemClass}>
+          <div className={itemClass}>4</div>
         </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>5</div>
+        <Grid.Item className={itemClass}>
+          <div className={itemClass}>5</div>
         </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>6</div>
+        <Grid.Item className={itemClass}>
+          <div className={itemClass}>6</div>
         </Grid.Item>
-        <Grid.Item>
-          <div className={ContentClass}>7</div>
+        <Grid.Item className={itemClass}>
+          <div className={itemClass}>7</div>
         </Grid.Item>
 
-        <Grid.Item>
-          <div className={ContentClass}>8</div>
+        <Grid.Item className={itemClass}>
+          <div className={itemClass}>8</div>
         </Grid.Item>
       </Grid.Root>
-    </>
+    </div>
   ),
 };
 
 export const GridItem: Story = {
   args: {
+    ...defaultArgs,
     gap: '$xl',
     columns: 12,
     columnSpan: {
@@ -299,25 +315,24 @@ export const GridItem: Story = {
       xxl: 1,
     },
   },
-  render: ({ gap, columns, columnSpan }) => (
-    <>
-      <Grid.Root gap={gap} columns={columns}>
-        <Grid.Item columnSpan={columnSpan}>
-          <div
-            className={classNames(
-              ContentClass,
-              sprinkles({ bg: '$primaryAccent' }),
-            )}
-          >
-            dynamic
-          </div>
+  render: ({ gap, columns, columnSpan, ...rest }) => (
+    <div className={containerClass}>
+      <Grid.Root gap={gap} columns={columns} className={gridClass} {...rest}>
+        <Grid.Item
+          className={classNames(
+            itemClass,
+            sprinkles({ bg: '$primaryHighContrast' }),
+          )}
+          columnSpan={columnSpan}
+        >
+          dynamic
         </Grid.Item>
         {Array.from(new Array(12)).map((empty, i) => (
-          <Grid.Item key={i} columnSpan={1}>
-            <div className={ContentClass}>1</div>
+          <Grid.Item key={i} columnSpan={1} className={itemClass}>
+            1
           </Grid.Item>
         ))}
       </Grid.Root>
-    </>
+    </div>
   ),
 };
