@@ -9,7 +9,7 @@ export type { IButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
-  FormStatus,
+  FormFieldStatus,
   IInputProps,
   IInputWrapperProps,
   ISelectFieldProps,

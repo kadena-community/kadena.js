@@ -1,5 +1,5 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
-import type { FormStatus } from '@kadena/react-ui';
+import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Box,
   Breadcrumbs,
@@ -88,7 +88,7 @@ const NewAccountFaucetPage: FC = () => {
   const [pubKeys, setPubKeys] = useState<string[]>([]);
   const [currentKey, setCurrentKey] = useState<string>('');
   const [validRequestKey, setValidRequestKey] = useState<
-    FormStatus | undefined
+    FormFieldStatus | undefined
   >();
 
   const { data: accountName } = useQuery({

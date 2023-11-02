@@ -1,4 +1,4 @@
-export type { Status as FormStatus } from './Form.css';
+export type { Status as FormFieldStatus } from './Form.css';
 export { Input, type IInputProps } from './Input';
 export { InputWrapper, type IInputWrapperProps } from './InputWrapper';
 export { Select, type ISelectProps } from './Select';

@@ -3,7 +3,7 @@ import './styles/global.css';
 KodeMono();
 
 export type {
-  FormStatus,
+  FormFieldStatus,
   IAccordionProps,
   IAccordionRootProps,
   IAccordionSectionProps,
