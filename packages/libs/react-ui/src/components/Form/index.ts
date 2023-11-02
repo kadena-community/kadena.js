@@ -1,8 +1,7 @@
 export { Input, type IInputProps } from './Input';
 export {
   InputWrapper,
-  type IInputWrapperProps,
-  type InputWrapperStatus,
+  type IInputWrapperProps
 } from './InputWrapper';
 export { Select, type ISelectProps } from './Select';
 export { SelectField, type ISelectFieldProps } from './SelectField';
