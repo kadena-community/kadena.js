@@ -24,10 +24,11 @@
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
-    "simulate": "ts-node -T src/scripts/devnet/index.ts traffic",
+    "simulate": "ts-node -T src/scripts/devnet/index.ts traffic -mt 10",
     "start": "npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "start:generate": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
-    "test": "echo \"no test specified\""
+    "test": "echo \"no test specified\"",
+    "test:integration": "vitest run -c ./vitest.integration.config.ts"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -49,7 +50,10 @@
     "graphql-yoga": "~4.0.4",
     "json-bigint-patch": "~0.0.8",
     "prisma": "^5.1.1",
-    "seedrandom": "~3.0.5"
+    "seedrandom": "~3.0.5",
+    "@graphql-tools/executor-http": "^1.0.3",
+    "@graphql-tools/load": "^8.0.0",
+    "@graphql-tools/load-files": "^7.0.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -64,6 +68,9 @@
     "@types/seedrandom": "~3.0.5",
     "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
-    "typescript": "5.2.2"
+    "ts-node-dev": "^2.0.0",
+    "typescript": "5.2.2",
+    "vitest": "^0.34.6",
+    "easygraphql-tester": "6.0.1"
   }
 }
