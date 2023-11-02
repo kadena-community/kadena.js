@@ -1,6 +1,6 @@
 etc
 lib
 temp
-vendor/**/*
+src/vendor/**/*
 **/*.md
 tsdoc-metadata.json
