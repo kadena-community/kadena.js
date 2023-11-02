@@ -167,7 +167,19 @@ type Query {
   pactQueries(pactQuery: [PactQuery!]!): [String!]!
   pactQuery(pactQuery: PactQuery!): String!
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransactionsConnection!
+  transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
   transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
+}
+
+type QueryTransactionsByPublicKeyConnection {
+  edges: [QueryTransactionsByPublicKeyConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryTransactionsByPublicKeyConnectionEdge {
+  cursor: String!
+  node: Transaction!
 }
 
 type QueryTransactionsConnection {
