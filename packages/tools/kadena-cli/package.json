@@ -13,10 +13,13 @@
   "license": "ISC",
   "contributors": [
     {
-      "name": "Albert"
+      "name": "Albert Groothedde"
     },
     {
-      "name": "Danillo"
+      "name": "Danillo Felixdaal"
+    },
+    {
+      "name": "Jesse van Muijden"
     }
   ],
   "bin": {
