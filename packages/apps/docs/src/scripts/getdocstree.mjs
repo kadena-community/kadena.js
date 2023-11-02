@@ -153,10 +153,13 @@ const getFile = async (rootDir, parent, file) => {
   let child = {
     children: arr,
   };
+
   child.root = findPath(currentFile);
 
   if (!child.root) return;
-
+  console.log({
+    currentFile,
+  });
   if (
     SEARCHABLE_DIRS.some((item) => {
       return currentFile.startsWith(`${INITIALPATH}${item}`);
@@ -219,3 +222,5 @@ export const createDocsTree = async () => {
 
   return { errors, success };
 };
+
+await createDocsTree();

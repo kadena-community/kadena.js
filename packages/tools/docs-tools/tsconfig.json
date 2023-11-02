@@ -1,0 +1,10 @@
+{
+  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "types": ["node"],
+    "module": "NodeNext",
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  }
+}

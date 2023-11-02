@@ -1,5 +1,6 @@
 import { toString } from 'mdast-util-to-string';
 import { getValues } from './utils.mjs';
+import { Root } from 'remark-gfm';
 
 const getTagName = (depth = 1) => `h${depth}`;
 
@@ -37,14 +38,13 @@ const cleanupHeading = (item) => {
 };
 
 const getHeaders = (tree) => {
-  return tree.children.filter((branch) => {
+  return tree.children.filter((branch: Root) => {
     return branch.type === 'heading';
   });
 };
 
 const remarkHeadersToProps = () => {
   return async (tree) => {
-
     const headers = getHeaders(tree);
 
     let startArray = [
