@@ -1,25 +1,11 @@
-import { exec } from 'child_process';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
-import { promisify } from 'util';
 import { TEMPDIR } from './importReadme/createDoc.mjs';
+import { clone } from './importReadme/index.mjs';
 
 const errors = [];
 const success = [];
 const REPO = '/kadena-io/chainweb-openapi';
-
-const promiseExec = promisify(exec);
-
-/**
- * @param {ImportItem} importItem
- */
-const clone = async () => {
-  try {
-    await promiseExec(`git clone https://github.com${REPO} ${TEMPDIR}${REPO}`);
-  } catch (e) {
-    Promise.resolve();
-  }
-};
 
 const returnJSON = (filename) => {
   try {
@@ -38,7 +24,7 @@ const returnJSON = (filename) => {
 };
 
 export const createSpecs = async () => {
-  await clone();
+  await clone(REPO);
   returnJSON('chainweb.openapi');
   returnJSON('pact.openapi');
 

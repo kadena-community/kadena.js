@@ -12,7 +12,7 @@ import { deleteTempDir } from './importReadme/importRepo.mjs';
 import { importAllReadmes } from './importReadme/index.mjs';
 import { Spinner } from './spinner.mjs';
 
-const promiseExec = promisify(exec);
+export const promiseExec = promisify(exec);
 let globalError = false;
 
 const createString = (str, start) => {

@@ -1,15 +1,12 @@
-import { exec } from 'child_process';
 import 'dotenv/config';
 import * as fs from 'fs';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
-import { promisify } from 'util';
 import { getLastModifiedDate } from './../getdocstree.mjs';
 import { getTypes } from './../utils.mjs';
 import { removeRepoDomain } from './index.mjs';
 
-const promiseExec = promisify(exec);
 const DOCSROOT = './src/pages';
 export const TEMPDIR = './.tempimport';
 

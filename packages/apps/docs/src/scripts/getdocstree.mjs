@@ -1,15 +1,13 @@
-import { exec } from 'child_process';
 import { isValid } from 'date-fns';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
-import { promisify } from 'util';
+import { promiseExec } from './build.mjs';
 import { TEMPDIR } from './importReadme/createDoc.mjs';
 import { getReadTime } from './utils.mjs';
 
-const promiseExec = promisify(exec);
 const errors = [];
 const success = [];
 

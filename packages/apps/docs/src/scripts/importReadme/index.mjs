@@ -1,4 +1,6 @@
+import { promiseExec } from './../build.mjs';
 import { importReadMes } from './../utils.mjs';
+import { TEMPDIR } from './createDoc.mjs';
 import { importRepo } from './importRepo.mjs';
 
 const errors = [];
@@ -6,6 +8,18 @@ const success = [];
 
 export const removeRepoDomain = (repo) =>
   repo.replace(/https:\/\/github.com/, '');
+
+export const clone = async (repo) => {
+  try {
+    await promiseExec(
+      `git clone https://github.com${removeRepoDomain(
+        repo,
+      )} ${TEMPDIR}/${removeRepoDomain(repo)}`,
+    );
+  } catch (e) {
+    Promise.resolve();
+  }
+};
 
 export const importAllReadmes = async () => {
   let monorepoCount = 0;
