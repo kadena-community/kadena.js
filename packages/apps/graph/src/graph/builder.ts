@@ -3,6 +3,10 @@ import DataloaderPlugin from '@pothos/plugin-dataloader';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
+import TracingPlugin, {
+  isRootField,
+  wrapResolver,
+} from '@pothos/plugin-tracing';
 import { Prisma } from '@prisma/client';
 import {
   BigIntResolver,
@@ -58,7 +62,18 @@ export const builder = new SchemaBuilder<
     };
   }
 >({
-  plugins: [RelayPlugin, PrismaPlugin, DataloaderPlugin],
+  plugins: [RelayPlugin, PrismaPlugin, DataloaderPlugin, TracingPlugin],
+  tracing: {
+    // Enable tracing
+    default: true,
+    // Log resolver execution duration
+    wrap: (resolver, options, config) =>
+      wrapResolver(resolver, (error, duration) => {
+        console.log(
+          `Executed resolver ${config.parentType}.${config.name} in ${duration}ms`,
+        );
+      }),
+  },
 
   relayOptions: {
     clientMutationId: 'optional',

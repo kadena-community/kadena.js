@@ -309,6 +309,9 @@ importers:
       '@pothos/plugin-relay':
         specifier: ~3.43.1
         version: 3.43.1(@pothos/core@3.33.0)(graphql@16.8.0)
+      '@pothos/plugin-tracing':
+        specifier: ^0.5.8
+        version: 0.5.8(@pothos/core@3.33.0)(graphql@16.8.0)
       '@prisma/client':
         specifier: ^5.1.1
         version: 5.1.1(prisma@5.1.1)
@@ -6709,6 +6712,16 @@ packages:
 
   /@pothos/plugin-relay@3.43.1(@pothos/core@3.33.0)(graphql@16.8.0):
     resolution: {integrity: sha512-T5oFVpTIQW69v2FhXhaxmX3BkqJqONy/wnvtBY110JhpbE8Qa04lDglufr56q0Kkv8CGXxl4387ZeX7NgGrZ7A==}
+    peerDependencies:
+      '@pothos/core': '*'
+      graphql: '>=15.1.0'
+    dependencies:
+      '@pothos/core': 3.33.0(graphql@16.8.0)
+      graphql: 16.8.0
+    dev: false
+
+  /@pothos/plugin-tracing@0.5.8(@pothos/core@3.33.0)(graphql@16.8.0):
+    resolution: {integrity: sha512-18Gv8z9AS76ylGPDTSlRA7vx0ar1gwRUJwyjuI0wCeSkPegKV2TO1nRtlzk57SaRsnPWbFpSxxWyW/F4ECv4XQ==}
     peerDependencies:
       '@pothos/core': '*'
       graphql: '>=15.1.0'
