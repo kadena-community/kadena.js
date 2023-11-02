@@ -74,7 +74,7 @@ const initFunc = async (fnc, description) => {
 };
 
 (async function () {
-  //starting with a cleanslate, removing the tempdir
+  //starting with a cleanslate, removing the tempdir.
   deleteTempDir();
   await initFunc(importAllReadmes, 'Import docs from monorepo');
   await initFunc(createDocsTree, 'Create docs tree');
