@@ -1,4 +1,4 @@
-import { Stack } from '@components/Stack';
+import { Stack } from '@components/Layout/Stack';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, test } from 'vitest';

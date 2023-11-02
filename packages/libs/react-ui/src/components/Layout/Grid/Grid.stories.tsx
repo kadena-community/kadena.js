@@ -1,13 +1,13 @@
-import { Grid } from '@components/Grid';
+import { Grid } from '@components/Layout/Grid';
 import type { Meta, StoryObj } from '@storybook/react';
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import classNames from 'classnames';
 import React from 'react';
+import { componentClass, containerClass, itemClass } from '../stories.css';
 import type { ResponsiveInputType } from './Grid.css';
 import { gapVariants } from './Grid.css';
 import type { IGridRootProps } from './GridRoot';
-import { containerClass, gridClass, itemClass } from './stories.css';
 
 const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,
@@ -267,7 +267,12 @@ export const GridRoot: Story = {
   },
   render: ({ gap, columns, ...rest }) => (
     <div className={containerClass}>
-      <Grid.Root gap={gap} columns={columns} className={gridClass} {...rest}>
+      <Grid.Root
+        gap={gap}
+        columns={columns}
+        className={componentClass}
+        {...rest}
+      >
         {Array.from(new Array(12)).map((empty, i) => (
           <Grid.Item key={i} className={itemClass}>
             <div className={itemClass}>{i}</div>
@@ -317,7 +322,12 @@ export const GridItem: Story = {
   },
   render: ({ gap, columns, columnSpan, ...rest }) => (
     <div className={containerClass}>
-      <Grid.Root gap={gap} columns={columns} className={gridClass} {...rest}>
+      <Grid.Root
+        gap={gap}
+        columns={columns}
+        className={componentClass}
+        {...rest}
+      >
         <Grid.Item
           className={classNames(
             itemClass,
