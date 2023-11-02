@@ -41,10 +41,36 @@ async function runConfigInitialization(
   args: TConfigOptions,
 ): Promise<void> {
   try {
+    // ./bin/kadena-cli.js contract deploy --network mainnet
+    // args
+    // missign args via collectResponses
+    // - chainId
+    // - keys
     const responses = await collectResponses(args, configQuestions);
 
+    // - chainId 1-5
+    // - keys hd blaat
+    // - keys-hd-index 0-50
     const config = { ...args, ...responses };
+    // final arguments
+    // show command with all arguments
 
+    // build/extend config based on arguments
+    // nework: mainnet
+    // - networkId: mainnet01
+    // - networkHost: http://risetnirsetn
+    // keys:
+    // -  public: irestn secret: riest
+    // -  public: irestn secret: riest
+    // -  public: irestn secret: riest
+    // -  public: irestn secret: riest
+    // -  public: irestn secret: riest
+    // -  public: irestn secret: riest
+    // -  public: irestn secret: riest
+    // -  public: irestn secret: riest
+    // const commandConfig = postProcessing(finalResponses)
+
+    // execute command
     ConfigOptions.parse(config);
 
     writeProjectConfig(config);
@@ -93,6 +119,23 @@ export function initCommand(program: Command, version: string): void {
     )
     .action(async (args: TConfigOptions) => {
       debug('init:action')({ args });
+      /**
+       * 1. config init voor bootstrap `.kadena`
+       * 2. bootstrap doen we alleen bij `config init` OF
+       *    - elke call van een ander commando moet checken of de folder bestaat,
+       *      zo niet automatisch aanmaken,
+       *      - directories: devnet, keys, networks
+       *      - in networks: mainnet.yml, testnet.yml, devnet.yml
+       * 3. project.yml kan weg
+       * 4. elke action bestaat uit de volgende stappen
+       *    - args komen binnen
+       *    - `collectResponses` obv missing args
+       *        - arg name is globally unique, overal betekent een arg hetzelfde
+       *        - per command worden dus een subset van questions gesteld
+       *    - convert "args + responses + config" => "commandConfig"
+       *    - show final command obv args + responses
+       *    - show overzicht van alle configuratie opties
+       */
 
       if (
         args.projectName &&
