@@ -1,6 +1,6 @@
 etc
 lib
 temp
-src/vendor/**/*
+src/chainweaver/vendor/**/*
 **/*.md
 tsdoc-metadata.json

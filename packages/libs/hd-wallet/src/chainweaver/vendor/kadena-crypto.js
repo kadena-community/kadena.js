@@ -232,8 +232,8 @@ module.exports = {
 }).call(this,require("buffer").Buffer)
 },{"../lib.js":6,"../utils/validation":33,"buffer":37}],2:[function(require,module,exports){
 (function (Buffer){
-const signing = require("./signing")
-const derivation = require("./key-derivation")
+const signing = require("./signing.js")
+const derivation = require("./key-derivation.js")
 const Module = require('../lib.js')
 
 function kadenaMnemonicToRootKeypair(pwd, mnemonic) {
@@ -303,7 +303,7 @@ module.exports = {
 const bip39 = require('bip39')
 
 const {validateBuffer, validateDerivationIndex, validateDerivationScheme, validateMnemonic} = require("../utils/validation")
-const crypto = require("./crypto-primitives")
+const crypto = require("./crypto-primitives.js")
 const pbkdf2 = require('../utils/pbkdf2')
 const Module = require('../lib.js')
 
@@ -644,7 +644,7 @@ module.exports = {
 
 }).call(this,require("buffer").Buffer)
 },{"../lib.js":6,"../utils/validation":33,"buffer":37}],5:[function(require,module,exports){
-const kadena = require('./features/kadena-features')
+const kadena = require('./features/kadena-features.js')
 const Module = require('./lib.js')
 
 module.exports = {
@@ -738,7 +738,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const createHash = require("create-hash");
 const pbkdf2_1 = require("pbkdf2");
 const randomBytes = require("randombytes");
-const _wordlists_1 = require("./_wordlists");
+const _wordlists_1 = require("./_wordlists.js");
 let DEFAULT_WORDLIST = _wordlists_1._default;
 const INVALID_MNEMONIC = 'Invalid mnemonic';
 const INVALID_ENTROPY = 'Invalid entropy';
@@ -890,7 +890,7 @@ function getDefaultWordlist() {
     })[0];
 }
 exports.getDefaultWordlist = getDefaultWordlist;
-var _wordlists_2 = require("./_wordlists");
+var _wordlists_2 = require("./_wordlists.js");
 exports.wordlists = _wordlists_2.wordlists;
 
 }).call(this,require("buffer").Buffer)
@@ -3358,14 +3358,14 @@ module.exports = MD5
 
 }).call(this,require("buffer").Buffer)
 },{"buffer":37,"hash-base":13,"inherits":14}],16:[function(require,module,exports){
-exports.pbkdf2 = require('./lib/async')
-exports.pbkdf2Sync = require('./lib/sync')
+exports.pbkdf2 = require('./lib/async.js')
+exports.pbkdf2Sync = require('./lib/sync.js')
 
 },{"./lib/async":17,"./lib/sync":20}],17:[function(require,module,exports){
 (function (process,global){
-var checkParameters = require('./precondition')
-var defaultEncoding = require('./default-encoding')
-var sync = require('./sync')
+var checkParameters = require('./precondition.js')
+var defaultEncoding = require('./default-encoding.js')
+var sync = require('./sync.js')
 var Buffer = require('safe-buffer').Buffer
 
 var ZERO_BUF
@@ -3516,8 +3516,8 @@ var md5 = require('create-hash/md5')
 var RIPEMD160 = require('ripemd160')
 var sha = require('sha.js')
 
-var checkParameters = require('./precondition')
-var defaultEncoding = require('./default-encoding')
+var checkParameters = require('./precondition.js')
+var defaultEncoding = require('./default-encoding.js')
 var Buffer = require('safe-buffer').Buffer
 var ZEROS = Buffer.alloc(128)
 var sizes = {
@@ -3993,12 +3993,12 @@ var exports = module.exports = function SHA (algorithm) {
   return new Algorithm()
 }
 
-exports.sha = require('./sha')
-exports.sha1 = require('./sha1')
-exports.sha224 = require('./sha224')
-exports.sha256 = require('./sha256')
-exports.sha384 = require('./sha384')
-exports.sha512 = require('./sha512')
+exports.sha = require('./sha.js')
+exports.sha1 = require('./sha1.js')
+exports.sha224 = require('./sha224.js')
+exports.sha256 = require('./sha256.js')
+exports.sha384 = require('./sha384.js')
+exports.sha512 = require('./sha512.js')
 
 },{"./sha":26,"./sha1":27,"./sha224":28,"./sha256":29,"./sha384":30,"./sha512":31}],26:[function(require,module,exports){
 /*
@@ -4010,7 +4010,7 @@ exports.sha512 = require('./sha512')
  */
 
 var inherits = require('inherits')
-var Hash = require('./hash')
+var Hash = require('./hash.js')
 var Buffer = require('safe-buffer').Buffer
 
 var K = [
@@ -4107,7 +4107,7 @@ module.exports = Sha
  */
 
 var inherits = require('inherits')
-var Hash = require('./hash')
+var Hash = require('./hash.js')
 var Buffer = require('safe-buffer').Buffer
 
 var K = [
@@ -4207,8 +4207,8 @@ module.exports = Sha1
  */
 
 var inherits = require('inherits')
-var Sha256 = require('./sha256')
-var Hash = require('./hash')
+var Sha256 = require('./sha256.js')
+var Hash = require('./hash.js')
 var Buffer = require('safe-buffer').Buffer
 
 var W = new Array(64)
@@ -4262,7 +4262,7 @@ module.exports = Sha224
  */
 
 var inherits = require('inherits')
-var Hash = require('./hash')
+var Hash = require('./hash.js')
 var Buffer = require('safe-buffer').Buffer
 
 var K = [
@@ -4391,8 +4391,8 @@ module.exports = Sha256
 
 },{"./hash":24,"inherits":14,"safe-buffer":23}],30:[function(require,module,exports){
 var inherits = require('inherits')
-var SHA512 = require('./sha512')
-var Hash = require('./hash')
+var SHA512 = require('./sha512.js')
+var Hash = require('./hash.js')
 var Buffer = require('safe-buffer').Buffer
 
 var W = new Array(160)
@@ -4450,7 +4450,7 @@ module.exports = Sha384
 
 },{"./hash":24,"./sha512":31,"inherits":14,"safe-buffer":23}],31:[function(require,module,exports){
 var inherits = require('inherits')
-var Hash = require('./hash')
+var Hash = require('./hash.js')
 var Buffer = require('safe-buffer').Buffer
 
 var K = [
@@ -8148,8 +8148,8 @@ var util = Object.create(require('core-util-is'));
 util.inherits = require('inherits');
 /*</replacement>*/
 
-var Readable = require('./_stream_readable');
-var Writable = require('./_stream_writable');
+var Readable = require('./_stream_readable.js');
+var Writable = require('./_stream_writable.js');
 
 util.inherits(Duplex, Readable);
 
@@ -8260,7 +8260,7 @@ Duplex.prototype._destroy = function (err, cb) {
 
 module.exports = PassThrough;
 
-var Transform = require('./_stream_transform');
+var Transform = require('./_stream_transform.js');
 
 /*<replacement>*/
 var util = Object.create(require('core-util-is'));
@@ -8329,7 +8329,7 @@ var EElistenerCount = function (emitter, type) {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = require('./internal/streams/stream');
+var Stream = require('./internal/streams/stream.js');
 /*</replacement>*/
 
 /*<replacement>*/
@@ -8360,8 +8360,8 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-var BufferList = require('./internal/streams/BufferList');
-var destroyImpl = require('./internal/streams/destroy');
+var BufferList = require('./internal/streams/BufferList.js');
+var destroyImpl = require('./internal/streams/destroy.js');
 var StringDecoder;
 
 util.inherits(Readable, Stream);
@@ -8381,7 +8381,7 @@ function prependListener(emitter, event, fn) {
 }
 
 function ReadableState(options, stream) {
-  Duplex = Duplex || require('./_stream_duplex');
+  Duplex = Duplex || require('./_stream_duplex.js');
 
   options = options || {};
 
@@ -8458,7 +8458,7 @@ function ReadableState(options, stream) {
 }
 
 function Readable(options) {
-  Duplex = Duplex || require('./_stream_duplex');
+  Duplex = Duplex || require('./_stream_duplex.js');
 
   if (!(this instanceof Readable)) return new Readable(options);
 
@@ -9368,7 +9368,7 @@ function indexOf(xs, x) {
 
 module.exports = Transform;
 
-var Duplex = require('./_stream_duplex');
+var Duplex = require('./_stream_duplex.js');
 
 /*<replacement>*/
 var util = Object.create(require('core-util-is'));
@@ -9594,7 +9594,7 @@ var internalUtil = {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = require('./internal/streams/stream');
+var Stream = require('./internal/streams/stream.js');
 /*</replacement>*/
 
 /*<replacement>*/
@@ -9610,14 +9610,14 @@ function _isUint8Array(obj) {
 
 /*</replacement>*/
 
-var destroyImpl = require('./internal/streams/destroy');
+var destroyImpl = require('./internal/streams/destroy.js');
 
 util.inherits(Writable, Stream);
 
 function nop() {}
 
 function WritableState(options, stream) {
-  Duplex = Duplex || require('./_stream_duplex');
+  Duplex = Duplex || require('./_stream_duplex.js');
 
   options = options || {};
 
@@ -9767,7 +9767,7 @@ if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.protot
 }
 
 function Writable(options) {
-  Duplex = Duplex || require('./_stream_duplex');
+  Duplex = Duplex || require('./_stream_duplex.js');
 
   // Writable ctor is applied to Duplexes, too.
   // `realHasInstance` is necessary because using plain `instanceof`
@@ -10663,7 +10663,7 @@ function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
 },{"safe-buffer":56}],58:[function(require,module,exports){
-module.exports = require('./readable').PassThrough
+module.exports = require('./readable.js').PassThrough
 
 },{"./readable":59}],59:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
@@ -10675,7 +10675,7 @@ exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
 },{"./lib/_stream_duplex.js":48,"./lib/_stream_passthrough.js":49,"./lib/_stream_readable.js":50,"./lib/_stream_transform.js":51,"./lib/_stream_writable.js":52}],60:[function(require,module,exports){
-module.exports = require('./readable').Transform
+module.exports = require('./readable.js').Transform
 
 },{"./readable":59}],61:[function(require,module,exports){
 module.exports = require('./lib/_stream_writable.js');

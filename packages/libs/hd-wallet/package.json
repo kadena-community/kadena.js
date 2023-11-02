@@ -1,6 +1,7 @@
 {
   "name": "@kadena/hd-wallet",
   "version": "0.0.1",
+  "private": true,
   "description": "HD Wallet; key derivation",
   "repository": {
     "type": "git",
@@ -9,16 +10,22 @@
   },
   "license": "MIT",
   "exports": {
-    ".": "./lib/index.js"
+    "./chainweaver": "./lib/chainweaver/index.js"
   },
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "./lib/index.d.ts",
+  "main": "./lib/index.js",
+  "typesVersions": {
+    "*": {
+      "chainweaver": [
+        "./lib/chainweaver/index.d.ts"
+      ]
+    }
+  },
   "files": [
-    "lib",
-    "vendor"
+    "lib"
   ],
   "scripts": {
-    "build": "tsc && cpy ./src/vendor/**/* ./lib/vendor/",
+    "build": "tsc && cpy ./src/chainweaver/vendor/**/* ./lib/chainweaver/vendor/",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",

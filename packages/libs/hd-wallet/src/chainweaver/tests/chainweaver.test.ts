@@ -3,8 +3,8 @@ import {
   kadenaGenKeypair,
   kadenaGenMnemonic,
   kadenaMnemonicToRootKeypair,
-} from '../chainweaver';
-import { harden } from '../utils';
+} from '..';
+import { harden } from '../../utils';
 
 const toHexStr = (bytes: Uint8Array) => Buffer.from(bytes).toString('hex');
 
