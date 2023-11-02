@@ -74,6 +74,7 @@ const initFunc = async (fnc, description) => {
 };
 
 (async function () {
+  //starting with a cleanslate, removing the tempdir
   deleteTempDir();
   await initFunc(importAllReadmes, 'Import docs from monorepo');
   await initFunc(createDocsTree, 'Create docs tree');
@@ -83,8 +84,9 @@ const initFunc = async (fnc, description) => {
   await initFunc(checkAuthors, 'Check author data for blog');
   await initFunc(createSitemap, 'Create the sitemap');
   await initFunc(copyFavIcons, 'Copy favicons');
-  deleteTempDir();
   await initFunc(runPrettier, 'Prettier');
+  //cleanup, removing the tempdir
+  deleteTempDir();
 
   if (globalError) {
     process.exitCode = 1;

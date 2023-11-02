@@ -202,82 +202,62 @@ const relinkReferences = (md, pages, root) => {
   relinkImageReferences(imageReferences, definitions, pages, root);
 };
 
-export const importDocs = async (filename, item) => {
-  const doc = fs.readFileSync(`${filename}`, 'utf-8');
-
-  const md = remark.parse(doc);
+const createPage = async (page, filename, item, hasMulitplePages, idx) => {
+  if (hasMulitplePages) {
+    createDir(`${DOCSROOT}/${item.destination}`);
+  }
 
   const lastModifiedDate = await getLastModifiedDate(
     `.${removeRepoDomain(item.repo)}${item.file}`,
   );
 
+  const title = getTitle(page);
+  const slug =
+    idx === 0 || item.options.RootOrder === 0 ? 'index' : createSlug(title);
+  const menuTitle =
+    idx === 0 || item.options.RootOrder === 0 ? item.title : title;
+  const order = idx === 0 ? item.options.RootOrder : idx ? idx : 0;
+
+  // check that there is just 1 h1.
+  // if more, keep only 1 and replace the next with an h2
+  const pageContent = cleanUp(
+    page,
+    `/${item.destination}/${order === 0 ? '' : slug}`,
+  );
+
+  const doc = toMarkdown(pageContent);
+
+  fs.writeFileSync(
+    `${DOCSROOT}/${item.destination}/${order === 0 ? 'index' : slug}.md`,
+    createFrontMatter(
+      title,
+      menuTitle,
+      order,
+      createEditOverwrite(item),
+      item.options.tags,
+      lastModifiedDate,
+    ) + doc,
+    {
+      flag: 'w',
+    },
+  );
+};
+
+export const importDocs = async (filename, item) => {
+  const doc = fs.readFileSync(`${filename}`, 'utf-8');
+
+  const md = remark.parse(doc);
+
   if (item.options.singlePage) {
     relinkReferences(md, [md], `/${item.destination}/`);
-
-    const title = getTitle(md);
-
-    const menuTitle = item.title;
-    const order = item.options.RootOrder;
-    const slug = createSlug(title);
-
-    // check that there is just 1 h1.
-    // if more, keep only 1 and replace the next with an h2
-
-    const pageContent = cleanUp(
-      md,
-      `/${item.destination}/${order === 0 ? '' : slug}`,
-    );
-
-    const doc = toMarkdown(pageContent);
-
-    fs.writeFileSync(
-      `${DOCSROOT}/${item.destination}/${order === 0 ? 'index' : slug}.md`,
-      createFrontMatter(
-        title,
-        menuTitle,
-        order,
-        createEditOverwrite(item),
-        item.options.tags,
-        lastModifiedDate,
-      ) + doc,
-      {
-        flag: 'w',
-      },
-    );
-
+    await createPage(md, filename, item);
     return;
   }
 
   const pages = divideIntoPages(md);
   relinkReferences(md, pages, `/${item.destination}/`);
 
-  pages.forEach((page, idx) => {
-    const title = getTitle(page);
-    const slug = idx === 0 ? 'index' : createSlug(title);
-    const menuTitle = idx === 0 ? item.title : title;
-    const order = idx === 0 ? item.options.RootOrder : idx;
-
-    // check that there is just 1 h1.
-    // if more, keep only 1 and replace the next with an h2
-    const pageContent = cleanUp(page, `/${item.destination}/${slug}`);
-
-    const doc = toMarkdown(pageContent);
-
-    createDir(`${DOCSROOT}/${item.destination}`);
-
-    fs.writeFileSync(
-      `${DOCSROOT}/${item.destination}/${slug}.md`,
-      createFrontMatter(
-        title,
-        menuTitle,
-        order,
-        createEditOverwrite(item),
-        item.options.tags,
-        lastModifiedDate,
-      ) + doc,
-      {
-        flag: 'w',
-      },
-    );
+  pages.forEach(async (page, idx) => {
+    await createPage(page, filename, item, true, idx);
   });
 };
