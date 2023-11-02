@@ -4,5 +4,5 @@
     "allowJs": false,
     "lib": ["es2019", "DOM"]
   },
-  "exclude": ["**/tests/**/*", "**/vendor/**/*"]
+  "exclude": ["**/vendor/**/*"]
 }

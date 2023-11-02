@@ -1,5 +1,5 @@
 export declare const kadenaChangePassword: (
-  key: string,
+  privateKey: string | Uint8Array,
   oldPassword: string,
   newPassword: string,
 ) => Uint8Array;
@@ -8,7 +8,7 @@ export declare const kadenaCheckMnemonic: (mnemonic: string) => boolean;
 
 export declare const kadenaGenKeypair: (
   password: string,
-  rootKey: string,
+  rootKey: string | Uint8Array,
   index: number,
 ) => [Uint8Array, Uint8Array];
 
@@ -19,7 +19,7 @@ export declare const kadenaGetPublic: (secretKey: Uint8Array) => Uint8Array;
 export declare const kadenaMnemonicToRootKeypair: (
   password: string,
   mnemonic: string,
-) => [Uint8Array, Uint8Array];
+) => Uint8Array;
 
 export declare const kadenaSign: (
   password: string,
@@ -33,4 +33,4 @@ export declare const kadenaVerify: (
   signature: string,
 ) => boolean;
 
-// Path: ./kadena-crypto.ts
+// Path: ./kadena-crypto.js
