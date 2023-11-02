@@ -1,5 +1,5 @@
-import { sendRawQuery } from '@/services/node-service';
-import { normalizeError } from '@/utils/errors';
+import { sendRawQuery } from '@src/services/node-service';
+import { normalizeError } from '@src/utils/errors';
 import { builder } from '../builder';
 
 const PactQuery = builder.inputType('PactQuery', {
@@ -17,8 +17,8 @@ builder.queryField('pactQueries', (t) => {
     },
     async resolve(__parent, args) {
       try {
-        return args.pactQuery.map(async (query) =>
-          sendRawQuery(query.code, query.chainId),
+        return args.pactQuery.map(
+          async (query) => await sendRawQuery(query.code, query.chainId),
         );
       } catch (error) {
         throw normalizeError(error);
@@ -35,7 +35,7 @@ builder.queryField('pactQuery', (t) => {
     },
     async resolve(__parent, args) {
       try {
-        return sendRawQuery(args.pactQuery.code, args.pactQuery.chainId);
+        return await sendRawQuery(args.pactQuery.code, args.pactQuery.chainId);
       } catch (error) {
         throw normalizeError(error);
       }

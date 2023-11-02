@@ -22,18 +22,26 @@ export function normalizeError(error: any): GraphQLError {
   if (error instanceof PactCommandError) {
     let description: string | undefined;
 
-    if (error.pactError.message.includes('with-read: row not found')) {
+    if (error.pactError?.message.includes('with-read: row not found')) {
       description =
         'The requested resource (account, e.g.) was most likely not found.';
-    } else if (error.pactError.message.startsWith('Cannot resolve')) {
+    } else if (error.pactError?.message.startsWith('Cannot resolve')) {
       description =
         'The requested module or function was most likely not found.';
+    } else if (
+      (error.commandResult as any).message.includes('Failed reading: mzero')
+    ) {
+      description =
+        'Empty code was most likely sent to the Chainweb Node. Please check your arguments.';
     }
 
     return new GraphQLError('Chainweb Node Command Failure', {
       extensions: {
-        type: error.pactError.type,
-        message: error.pactError.message,
+        type: error.pactError?.type || 'UnknownType',
+        message:
+          error.pactError?.message ||
+          (error.commandResult as any).message ||
+          error.message,
         description,
         data: error.commandResult,
       },

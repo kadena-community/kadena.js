@@ -1,5 +1,5 @@
-import { prismaClient } from '@/db/prismaClient';
-import { normalizeError } from '@/utils/errors';
+import { prismaClient } from '@src/db/prismaClient';
+import { normalizeError } from '@src/utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 

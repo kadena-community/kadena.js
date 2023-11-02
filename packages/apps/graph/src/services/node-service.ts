@@ -1,12 +1,12 @@
-import { dotenv } from '@/utils/dotenv';
 import type { ChainId, IClient, ICommandResult } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
+import { dotenv } from '@src/utils/dotenv';
 
 export class PactCommandError extends Error {
   public commandResult: ICommandResult;
   public pactError: any;
 
-  constructor(message: string, commandResult: ICommandResult, pactError: any) {
+  constructor(message: string, commandResult: ICommandResult, pactError?: any) {
     super(message);
     this.commandResult = commandResult;
     this.pactError = pactError;
@@ -71,19 +71,19 @@ export async function getAccountDetails(
 }
 
 export async function sendRawQuery(code: string, chainId: string) {
-  const commandResult = await getClient(chainId as ChainId).dirtyRead(
-    Pact.builder
-      .execution(code)
-      .setMeta({
-        chainId: chainId as ChainId,
-      })
-      .setNetworkId(dotenv.NETWORK_ID)
-      .createTransaction(),
-  );
+  try {
+    const commandResult = await getClient(chainId as ChainId).dirtyRead(
+      Pact.builder
+        .execution(code)
+        .setMeta({
+          chainId: chainId as ChainId,
+        })
+        .setNetworkId(dotenv.NETWORK_ID)
+        .createTransaction(),
+    );
 
-  if (commandResult.result.status === 'failure') {
-    return String(commandResult.result.status);
+    return JSON.stringify(commandResult.result);
+  } catch (error) {
+    throw new PactCommandError('Pact Command failed with error', error);
   }
-
-  return JSON.stringify(commandResult.result.data);
 }

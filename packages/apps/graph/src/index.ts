@@ -1,3 +1,4 @@
+require('module-alias/register');
 import { createYoga } from 'graphql-yoga';
 import 'json-bigint-patch';
 import { createServer } from 'node:http';

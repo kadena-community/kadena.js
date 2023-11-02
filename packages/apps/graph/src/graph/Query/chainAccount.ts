@@ -1,5 +1,5 @@
-import { getAccountDetails } from '@/services/node-service';
-import { normalizeError } from '@/utils/errors';
+import { getAccountDetails } from '@src/services/node-service';
+import { normalizeError } from '@src/utils/errors';
 import { builder } from '../builder';
 import ChainModuleAccount from '../objects/ChainModuleAccount';
 

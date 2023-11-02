@@ -1,4 +1,4 @@
-import { getAccountDetails } from '@/services/node-service';
+import { getAccountDetails } from '@src/services/node-service';
 import DataLoader from 'dataloader';
 
 interface AccountDetailsKey {

@@ -1,4 +1,4 @@
-import { dotenv } from '@/utils/dotenv';
+import { dotenv } from '@src/utils/dotenv';
 import { builder } from '../builder';
 
 builder.queryField('maximumConfirmationDepth', (t) => {
