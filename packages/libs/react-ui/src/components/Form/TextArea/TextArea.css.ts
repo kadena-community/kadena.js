@@ -83,9 +83,9 @@ export const textAreaClass = style([
     outline: 'none',
     flexGrow: 1,
     paddingY: '$2',
-    minHeight: '$20',
   }),
   {
+    minHeight: vars.sizes.$20,
     resize: 'none',
     '::placeholder': {
       color: vars.colors.$gray40,

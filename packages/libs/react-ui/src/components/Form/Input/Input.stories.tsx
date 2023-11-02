@@ -2,7 +2,7 @@ import { Button } from '@components/Button';
 import type { IInputProps } from '@components/Form';
 import { Input } from '@components/Form';
 import { SystemIcon } from '@components/Icon';
-import { Stack } from '@components/Stack';
+import { Stack } from '@components/Layout/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import type { HTMLInputTypeAttribute } from 'react';

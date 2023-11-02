@@ -1,14 +1,19 @@
-import type { IBoxProps } from '@components/Box';
-import { Box } from '@components/Box';
+import type { IBoxProps } from '@components/Layout/Box';
+import { Box } from '@components/Layout/Box';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
-import { containerClass, contentClass } from './stories.css';
+import { containerClass, itemClass } from '../stories.css';
 
-const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
+const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,
   ...(Object.keys(vars.sizes) as (keyof typeof vars.sizes)[]),
 ];
+const contentWidthOptions: (keyof typeof vars.contentWidth | undefined)[] = [
+  undefined,
+  ...(Object.keys(vars.contentWidth) as (keyof typeof vars.contentWidth)[]),
+];
+const dimensionOptions: string[] = ['100%', 'min-content', 'max-content'];
 
 const meta: Meta<IBoxProps> = {
   title: 'Layout/Box',
@@ -22,15 +27,57 @@ const meta: Meta<IBoxProps> = {
     },
   },
   argTypes: {
+    width: {
+      options: [...spaceOptions, ...dimensionOptions, ...contentWidthOptions],
+      control: {
+        type: 'select',
+      },
+      description: 'Value for width property with pre-defined size values.',
+    },
+    minWidth: {
+      options: dimensionOptions,
+      control: {
+        type: 'select',
+      },
+      description: 'Value for minWidth property with pre-defined size values.',
+    },
+    maxWidth: {
+      options: [...dimensionOptions, ...contentWidthOptions],
+      control: {
+        type: 'select',
+      },
+      description: 'Value for maxWidth property with pre-defined size values.',
+    },
+    height: {
+      options: [...spaceOptions, ...dimensionOptions],
+      control: {
+        type: 'select',
+      },
+      description: 'Value for height property with pre-defined size values.',
+    },
+    minHeight: {
+      options: dimensionOptions,
+      control: {
+        type: 'select',
+      },
+      description: 'Value for minHeight property with pre-defined size values.',
+    },
+    maxHeight: {
+      options: dimensionOptions,
+      control: {
+        type: 'select',
+      },
+      description: 'Value for maxHeight property with pre-defined size values.',
+    },
     margin: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
       description: 'Value for margin property with pre-defined size values.',
     },
     marginX: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -38,7 +85,7 @@ const meta: Meta<IBoxProps> = {
         'Value for margin property on X axis with pre-defined size values.',
     },
     marginY: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -46,7 +93,7 @@ const meta: Meta<IBoxProps> = {
         'Value for margin property on Y axis with pre-defined size values.',
     },
     marginTop: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -54,7 +101,7 @@ const meta: Meta<IBoxProps> = {
         'Value for top margin property with pre-defined size values.',
     },
     marginBottom: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -63,7 +110,7 @@ const meta: Meta<IBoxProps> = {
     },
 
     marginLeft: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -71,7 +118,7 @@ const meta: Meta<IBoxProps> = {
         'Value for left margin property with pre-defined size values.',
     },
     marginRight: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -79,14 +126,14 @@ const meta: Meta<IBoxProps> = {
         'Value for right margin property with pre-defined size values.',
     },
     padding: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
       description: 'Value for padding property with pre-defined size values.',
     },
     paddingX: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -94,7 +141,7 @@ const meta: Meta<IBoxProps> = {
         'Value for padding property on X axis with pre-defined size values.',
     },
     paddingY: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -102,7 +149,7 @@ const meta: Meta<IBoxProps> = {
         'Value for padding property on Y axis with pre-defined size values.',
     },
     paddingTop: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -110,7 +157,7 @@ const meta: Meta<IBoxProps> = {
         'Value for top padding property with pre-defined size values.',
     },
     paddingBottom: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -118,7 +165,7 @@ const meta: Meta<IBoxProps> = {
         'Value for bottom padding property with pre-defined size values.',
     },
     paddingLeft: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -126,7 +173,7 @@ const meta: Meta<IBoxProps> = {
         'Value for left padding property with pre-defined size values.',
     },
     paddingRight: {
-      options: selectOptions,
+      options: spaceOptions,
       control: {
         type: 'select',
       },
@@ -138,12 +185,6 @@ const meta: Meta<IBoxProps> = {
 
 export default meta;
 type Story = StoryObj<IBoxProps>;
-
-/*
- *👇 Render functions are a framework specific feature to allow you control on how the component renders.
- * See https://storybook.js.org/docs/7.0/react/api/csf
- * to learn how to use render functions.
- */
 
 export const Primary: Story = {
   name: 'Box - Margin',
@@ -162,6 +203,12 @@ export const Primary: Story = {
     paddingBottom: undefined,
     paddingLeft: undefined,
     paddingRight: undefined,
+    width: undefined,
+    minWidth: undefined,
+    maxWidth: undefined,
+    height: undefined,
+    minHeight: undefined,
+    maxHeight: undefined,
   },
   render: ({
     margin,
@@ -171,13 +218,19 @@ export const Primary: Story = {
     marginBottom,
     marginLeft,
     marginRight,
-    padding,
+    padding = '$6',
     paddingX,
     paddingY,
     paddingTop,
     paddingBottom,
     paddingLeft,
     paddingRight,
+    width,
+    minWidth,
+    maxWidth,
+    height,
+    minHeight,
+    maxHeight,
   }) => (
     <div className={containerClass}>
       <Box
@@ -195,8 +248,15 @@ export const Primary: Story = {
         paddingBottom={paddingBottom}
         paddingLeft={paddingLeft}
         paddingRight={paddingRight}
+        width={width}
+        minWidth={minWidth}
+        maxWidth={maxWidth}
+        height={height}
+        minHeight={minHeight}
+        maxHeight={maxHeight}
+        className={itemClass}
       >
-        <div className={contentClass}>Box Content</div>
+        Box Content
       </Box>
     </div>
   ),

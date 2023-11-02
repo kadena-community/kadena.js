@@ -13,21 +13,28 @@ import {
 export interface IGridRootProps
   extends Pick<
     Sprinkles,
+    | 'height'
     | 'margin'
-    | 'marginX'
-    | 'marginY'
-    | 'marginTop'
     | 'marginBottom'
     | 'marginLeft'
     | 'marginRight'
+    | 'marginTop'
+    | 'marginX'
+    | 'marginY'
+    | 'maxHeight'
+    | 'maxWidth'
+    | 'minHeight'
+    | 'minWidth'
     | 'padding'
-    | 'paddingX'
-    | 'paddingY'
-    | 'paddingTop'
     | 'paddingBottom'
     | 'paddingLeft'
     | 'paddingRight'
+    | 'paddingTop'
+    | 'paddingX'
+    | 'paddingY'
+    | 'width'
   > {
+  className?: string;
   children?: ReactNode;
   columns?: ResponsiveInputType;
   gap?: keyof typeof gapVariants;
@@ -48,48 +55,58 @@ const assembleColumnVariants = (
 };
 
 export const GridRoot: FC<IGridRootProps> = ({
+  className,
   children,
   columns,
-  margin = undefined,
-  marginX = undefined,
-  marginY = undefined,
-  marginTop = undefined,
-  marginBottom = undefined,
-  marginLeft = undefined,
-  marginRight = undefined,
   gap = '$md',
-  padding = undefined,
-  paddingX = undefined,
-  paddingY = undefined,
-  paddingTop = undefined,
-  paddingBottom = undefined,
-  paddingLeft = undefined,
-  paddingRight = undefined,
+  height,
+  margin,
+  marginBottom,
+  marginLeft,
+  marginRight,
+  marginTop,
+  marginX,
+  marginY,
+  maxHeight,
+  maxWidth,
+  minHeight,
+  minWidth,
+  padding,
+  paddingBottom,
+  paddingLeft,
+  paddingRight,
+  paddingTop,
+  paddingX,
+  paddingY,
+  width,
 }) => {
   const classList = classNames(
     gapVariants[gap],
     gridContainerClass,
     columns && assembleColumnVariants(columns),
     sprinkles({
+      height,
       margin,
-      marginX,
-      marginY,
-      marginTop,
       marginBottom,
       marginLeft,
       marginRight,
+      marginTop,
+      marginX,
+      marginY,
+      maxHeight,
+      maxWidth,
+      minHeight,
+      minWidth,
       padding,
-      paddingX,
-      paddingY,
-      paddingTop,
       paddingBottom,
       paddingLeft,
       paddingRight,
+      paddingTop,
+      paddingX,
+      paddingY,
+      width,
     }),
+    className,
   );
-  return (
-    <div className={classList} data-testid="kda-grid-root">
-      {children}
-    </div>
-  );
+  return <div className={classList}>{children}</div>;
 };
