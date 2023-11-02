@@ -38,10 +38,11 @@ export interface IBoxProps
 }
 
 export const Box = ({
-  className,
-  children,
   as = 'div',
+  children,
+  className,
   display = 'block',
+  height,
   margin,
   marginBottom,
   marginLeft,
@@ -60,6 +61,7 @@ export const Box = ({
   paddingTop,
   paddingX,
   paddingY,
+  width,
 }: IBoxProps): React.ReactElement => {
   return createElement(
     as,
@@ -67,6 +69,7 @@ export const Box = ({
       className: classnames(
         sprinkles({
           display,
+          height,
           margin,
           marginBottom,
           marginLeft,
@@ -85,6 +88,7 @@ export const Box = ({
           paddingTop,
           paddingX,
           paddingY,
+          width,
         }),
         className,
       ),
