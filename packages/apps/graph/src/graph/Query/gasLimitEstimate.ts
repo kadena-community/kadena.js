@@ -26,3 +26,23 @@ builder.queryField('gasLimitEstimate', (t) => {
     },
   });
 });
+
+builder.queryField('gasLimitEstimates', (t) => {
+  return t.field({
+    type: ['Int'],
+    args: {
+      transactions: t.arg({ type: [PactTransaction], required: true }),
+    },
+    resolve: async (parent, args, context, info) => {
+      return args.transactions.map(async (transaction) => {
+        if (transaction.cmd.includes('//')) {
+          transaction.cmd = transaction.cmd.replace(/\/\//g, '/');
+        }
+        const result = await localReadTransfer({
+          cmd: transaction.cmd,
+        });
+        return result.gas;
+      });
+    },
+  });
+});

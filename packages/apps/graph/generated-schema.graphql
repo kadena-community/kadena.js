@@ -173,6 +173,7 @@ type Query {
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
   gasLimitEstimate(transaction: PactTransaction!): Int!
+  gasLimitEstimates(transactions: [PactTransaction!]!): [Int!]!
   graphConfiguration: GraphConfiguration!
   lastBlockHeight: BigInt
   node(id: ID!): Node
