@@ -8,9 +8,10 @@ import { createElement } from 'react';
 export interface IStackProps
   extends Pick<
     Sprinkles,
-    | 'gap'
     | 'alignItems'
+    | 'gap'
     | 'justifyContent'
+    | 'height'
     | 'margin'
     | 'marginBottom'
     | 'marginLeft'
@@ -46,6 +47,7 @@ export const Stack = ({
   direction,
   gap,
   justifyContent,
+  height,
   margin,
   marginBottom,
   marginLeft,
@@ -78,6 +80,7 @@ export const Stack = ({
           flexWrap: wrap,
           gap,
           justifyContent,
+          height,
           margin,
           marginBottom,
           marginLeft,

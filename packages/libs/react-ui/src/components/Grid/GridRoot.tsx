@@ -13,6 +13,7 @@ import {
 export interface IGridRootProps
   extends Pick<
     Sprinkles,
+    | 'height'
     | 'margin'
     | 'marginBottom'
     | 'marginLeft'
@@ -31,6 +32,7 @@ export interface IGridRootProps
     | 'paddingTop'
     | 'paddingX'
     | 'paddingY'
+    | 'width'
   > {
   className?: string;
   children?: ReactNode;
@@ -57,6 +59,7 @@ export const GridRoot: FC<IGridRootProps> = ({
   children,
   columns,
   gap = '$md',
+  height,
   margin,
   marginBottom,
   marginLeft,
@@ -75,12 +78,14 @@ export const GridRoot: FC<IGridRootProps> = ({
   paddingTop,
   paddingX,
   paddingY,
+  width,
 }) => {
   const classList = classNames(
     gapVariants[gap],
     gridContainerClass,
     columns && assembleColumnVariants(columns),
     sprinkles({
+      height,
       margin,
       marginBottom,
       marginLeft,
@@ -99,6 +104,7 @@ export const GridRoot: FC<IGridRootProps> = ({
       paddingTop,
       paddingX,
       paddingY,
+      width,
     }),
     className,
   );
