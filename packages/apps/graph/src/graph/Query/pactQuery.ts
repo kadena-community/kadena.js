@@ -1,7 +1,5 @@
-import type { ChainId } from '@kadena/client';
-import { Pact } from '@kadena/client';
-import { devnetConfig } from '../../scripts/devnet/config';
-import { dirtyRead } from '../../scripts/devnet/helper';
+import { sendRawQuery } from '@/services/node-service';
+import { normalizeError } from '@/utils/errors';
 import { builder } from '../builder';
 
 const PactQuery = builder.inputType('PactQuery', {
@@ -17,26 +15,14 @@ builder.queryField('pactQueries', (t) => {
     args: {
       pactQuery: t.arg({ type: [PactQuery], required: true }),
     },
-    resolve: async (parent, args, context, info) => {
-      const result = args.pactQuery.map(async (query) => {
-        const transaction = Pact.builder
-          .execution(query.code)
-          .setMeta({
-            chainId: query.chainId as ChainId,
-          })
-          .setNetworkId(devnetConfig.NETWORK_ID)
-          .createTransaction();
-
-        const response = await dirtyRead(transaction);
-
-        if (response.result.status === 'failure') {
-          return String(response.result.status);
-        }
-
-        return JSON.stringify(response.result.data);
-      });
-
-      return result;
+    async resolve(__parent, args) {
+      try {
+        return args.pactQuery.map(async (query) =>
+          sendRawQuery(query.code, query.chainId),
+        );
+      } catch (error) {
+        throw normalizeError(error);
+      }
     },
   });
 });
@@ -47,22 +33,12 @@ builder.queryField('pactQuery', (t) => {
     args: {
       pactQuery: t.arg({ type: PactQuery, required: true }),
     },
-    resolve: async (parent, args, context, info) => {
-      const transaction = Pact.builder
-        .execution(args.pactQuery.code)
-        .setMeta({
-          chainId: args.pactQuery.chainId as ChainId,
-        })
-        .setNetworkId(devnetConfig.NETWORK_ID)
-        .createTransaction();
-
-      const response = await dirtyRead(transaction);
-
-      if (response.result.status === 'failure') {
-        return String(response.result.status);
+    async resolve(__parent, args) {
+      try {
+        return sendRawQuery(args.pactQuery.code, args.pactQuery.chainId);
+      } catch (error) {
+        throw normalizeError(error);
       }
-
-      return JSON.stringify(response.result.data);
     },
   });
 });

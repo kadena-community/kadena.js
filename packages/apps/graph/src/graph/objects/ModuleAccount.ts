@@ -1,5 +1,5 @@
-import { prismaClient } from '../../db/prismaClient';
-import { isRowNotFoundError, normalizeError } from '../../utils/errors';
+import { prismaClient } from '@/db/prismaClient';
+import { normalizeError } from '@/utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import type { ChainModuleAccount } from '../types/graphql-types';
@@ -11,7 +11,7 @@ export default builder.objectType('ModuleAccount', {
     moduleName: t.exposeString('moduleName'),
     chainAccounts: t.field({
       type: ['ChainModuleAccount'],
-      resolve: async (parent) => {
+      async resolve(parent) {
         const chainAccounts: ChainModuleAccount[] = [];
 
         for (let i = 0; i < 20; i++) {
@@ -22,22 +22,22 @@ export default builder.objectType('ModuleAccount', {
               chainId: i.toString(),
             });
 
-            chainAccounts.push({
-              chainId: i.toString(),
-              accountName: parent.accountName,
-              moduleName: parent.moduleName,
-              guard: {
-                keys: accountDetails.guard.keys,
-                predicate: accountDetails.guard.pred,
-              },
-              balance: accountDetails.balance,
-              transactions: [],
-              transfers: [],
-            });
-          } catch (error) {
-            if (!isRowNotFoundError(error)) {
-              throw normalizeError(error);
+            if (accountDetails !== null) {
+              chainAccounts.push({
+                chainId: i.toString(),
+                accountName: parent.accountName,
+                moduleName: parent.moduleName,
+                guard: {
+                  keys: accountDetails.guard.keys,
+                  predicate: accountDetails.guard.pred,
+                },
+                balance: accountDetails.balance,
+                transactions: [],
+                transfers: [],
+              });
             }
+          } catch (error) {
+            throw normalizeError(error);
           }
         }
 
@@ -46,7 +46,7 @@ export default builder.objectType('ModuleAccount', {
     }),
     totalBalance: t.field({
       type: 'Decimal',
-      resolve: async (parent) => {
+      async resolve(parent) {
         let totalBalance = 0;
 
         for (let i = 0; i < 20; i++) {
@@ -57,11 +57,11 @@ export default builder.objectType('ModuleAccount', {
               chainId: i.toString(),
             });
 
-            totalBalance += accountDetails.balance;
-          } catch (error) {
-            if (!isRowNotFoundError(error)) {
-              throw normalizeError(error);
+            if (accountDetails !== null) {
+              totalBalance += accountDetails.balance;
             }
+          } catch (error) {
+            throw normalizeError(error);
           }
         }
 
@@ -71,7 +71,7 @@ export default builder.objectType('ModuleAccount', {
     transactions: t.prismaConnection({
       type: 'Transaction',
       cursor: 'blockHash_requestKey',
-      resolve: async (query, parent) => {
+      async resolve(query, parent) {
         try {
           return await prismaClient.transaction.findMany({
             ...query,
@@ -95,7 +95,7 @@ export default builder.objectType('ModuleAccount', {
     transfers: t.prismaConnection({
       type: 'Transfer',
       cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
-      resolve: async (query, parent) => {
+      async resolve(query, parent) {
         try {
           return await prismaClient.transfer.findMany({
             ...query,

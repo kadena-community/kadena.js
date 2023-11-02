@@ -1,6 +1,6 @@
+import { dotenv } from '@/utils/dotenv';
 import type { ChainId, IClient, ICommandResult } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
-import { dotenv } from '../utils/dotenv';
 
 export class PactCommandError extends Error {
   public commandResult: ICommandResult;
@@ -33,23 +33,32 @@ export async function getAccountDetails(
   module: string,
   accountName: string,
   chainId: string,
-): Promise<ChainModuleAccountDetails> {
+): Promise<ChainModuleAccountDetails | null> {
   const commandResult = await getClient(chainId as ChainId).dirtyRead(
     Pact.builder
       .execution(Pact.modules[module as 'fungible-v2'].details(accountName))
       .setMeta({
         chainId: chainId as ChainId,
       })
-      .setNetworkId(dotenv.NETWORK_ID as string)
+      .setNetworkId(dotenv.NETWORK_ID)
       .createTransaction(),
   );
 
   if (commandResult.result.status !== 'success') {
-    throw new PactCommandError(
-      'Pact Command failed with error',
-      commandResult,
-      commandResult.result.error,
-    );
+    // If the account does not exist on a chain, we get a row not found error.
+    if (
+      (commandResult.result.error as any).message?.includes(
+        'with-read: row not found',
+      )
+    ) {
+      return null;
+    } else {
+      throw new PactCommandError(
+        'Pact Command failed with error',
+        commandResult,
+        commandResult.result.error,
+      );
+    }
   }
 
   const result = commandResult.result.data as unknown as any;
@@ -59,4 +68,22 @@ export async function getAccountDetails(
   }
 
   return result as ChainModuleAccountDetails;
+}
+
+export async function sendRawQuery(code: string, chainId: string) {
+  const commandResult = await getClient(chainId as ChainId).dirtyRead(
+    Pact.builder
+      .execution(code)
+      .setMeta({
+        chainId: chainId as ChainId,
+      })
+      .setNetworkId(dotenv.NETWORK_ID)
+      .createTransaction(),
+  );
+
+  if (commandResult.result.status === 'failure') {
+    return String(commandResult.result.status);
+  }
+
+  return JSON.stringify(commandResult.result.data);
 }

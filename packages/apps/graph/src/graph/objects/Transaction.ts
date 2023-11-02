@@ -1,5 +1,6 @@
-import { prismaClient } from '../../db/prismaClient';
-import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
+import { prismaClient } from '@/db/prismaClient';
+import { normalizeError } from '@/utils/errors';
+import { nullishOrEmpty } from '@/utils/nullishOrEmpty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {
@@ -73,54 +74,66 @@ export default builder.prismaNode('Transaction', {
     block: t.prismaField({
       type: 'Block',
       nullable: true,
-      // eslint-disable-next-line @typescript-eslint/typedef
-      resolve(query, parent, args, context, info) {
-        return prismaClient.block.findUnique({
-          where: {
-            hash: parent.blockHash,
-          },
-        });
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.block.findUnique({
+            where: {
+              hash: parent.blockHash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
 
     events: t.prismaField({
       type: ['Event'],
       nullable: true,
-      // eslint-disable-next-line @typescript-eslint/typedef
-      resolve(query, parent, args, context, info) {
-        return prismaClient.event.findMany({
-          where: {
-            requestKey: parent.requestKey,
-            blockHash: parent.blockHash,
-          },
-        });
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.event.findMany({
+            where: {
+              requestKey: parent.requestKey,
+              blockHash: parent.blockHash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
 
     transfers: t.prismaField({
       type: ['Transfer'],
       nullable: true,
-      // eslint-disable-next-line @typescript-eslint/typedef
-      resolve(query, parent, args, context, info) {
-        return prismaClient.transfer.findMany({
-          where: {
-            requestKey: parent.requestKey,
-            blockHash: parent.blockHash,
-          },
-        });
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.transfer.findMany({
+            where: {
+              requestKey: parent.requestKey,
+              blockHash: parent.blockHash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
 
     signers: t.prismaField({
       type: ['Signer'],
       nullable: true,
-      // eslint-disable-next-line @typescript-eslint/typedef
-      resolve(query, parent, args, context, info) {
-        return prismaClient.signer.findMany({
-          where: {
-            requestKey: parent.requestKey,
-          },
-        });
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.signer.findMany({
+            where: {
+              requestKey: parent.requestKey,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
   }),
