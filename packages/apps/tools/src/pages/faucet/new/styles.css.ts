@@ -28,6 +28,15 @@ export const pubKeyInputWrapperStyle = style([
   },
 ]);
 
+export const pubKeysContainerStyle = style([
+  sprinkles({
+    display: 'flex',
+    gap: '$2',
+    marginY: '$4',
+    flexWrap: 'wrap',
+  }),
+]);
+
 export const keyIconWrapperStyle = style([
   sprinkles({
     display: 'flex',
