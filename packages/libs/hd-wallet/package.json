@@ -9,6 +9,7 @@
     "directory": "packages/libs/hd-wallet"
   },
   "license": "MIT",
+  "contributors": ["Javad Khalilian <javad@kadena.io>"],
   "exports": {
     "./chainweaver": "./lib/chainweaver/index.js"
   },
