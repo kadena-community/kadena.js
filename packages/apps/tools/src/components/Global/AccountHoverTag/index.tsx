@@ -3,6 +3,7 @@ import { HoverTag } from '../HoverTag';
 import type { IHoverTagProps } from '../HoverTag/HoverTag';
 
 export interface IAccountHoverTagProps extends Pick<IHoverTagProps, 'value'> {}
+
 export const AccountHoverTag = ({ value }: IAccountHoverTagProps) => {
   const [tooltipContent, setTooltipContent] = useState<string>(value);
   return (
