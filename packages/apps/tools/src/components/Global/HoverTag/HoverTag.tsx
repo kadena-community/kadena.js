@@ -1,7 +1,7 @@
 import type { IMaskedValueProps, MaskOptions } from '@kadena/react-ui';
 import { SystemIcon, Tag, Text, Tooltip, maskValue } from '@kadena/react-ui';
 import React, { useRef } from 'react';
-import { iconButtonClass } from './HoverTag.css';
+import { containerClass, iconButtonClass } from './HoverTag.css';
 
 export interface IHoverTagProps {
   value: IMaskedValueProps['value'];
@@ -37,21 +37,23 @@ export const HoverTag = ({
         }
       >
         <Tag>
-          <Text variant="code">{tagValue}</Text>
-          {Icon ? (
-            <button
-              className={iconButtonClass}
-              onClick={() => {
-                onIconButtonClick?.({
-                  tagValue: tagValue,
-                  tooltipValue: tooltipContent,
-                });
-              }}
-              type="button"
-            >
-              <Icon size="sm" />
-            </button>
-          ) : null}
+          <div className={containerClass}>
+            <Text variant="code">{tagValue}</Text>
+            {Icon ? (
+              <button
+                className={iconButtonClass}
+                onClick={() => {
+                  onIconButtonClick?.({
+                    tagValue: tagValue,
+                    tooltipValue: tooltipContent,
+                  });
+                }}
+                type="button"
+              >
+                <Icon size="sm" />
+              </button>
+            ) : null}
+          </div>
         </Tag>
       </span>
       <Tooltip.Root placement="top" ref={ref}>

@@ -9,3 +9,5 @@ export const iconButtonClass = style([
     cursor: 'pointer',
   }),
 ]);
+
+export const containerClass = style([sprinkles({ display: 'flex' })]);
