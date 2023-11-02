@@ -1,7 +1,9 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
+    "allowJs": true,
     "types": [],
     "lib": ["es2019", "DOM"]
-  }
+  },
+  "exclude": ["src/vendor/**/*"]
 }
