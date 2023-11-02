@@ -14,19 +14,22 @@ interface ICompactTransfersTableProps {
   transfers:
     | GetAccountQuery['account']['transfers']
     | GetChainAccountQuery['chainAccount']['transfers'];
+  description?: string;
 }
 
 export const CompactTransfersTable = (
   props: ICompactTransfersTableProps,
 ): JSX.Element => {
-  const { moduleName, accountName, chainId, transfers } = props;
+  const { moduleName, accountName, chainId, transfers, description } = props;
 
   return (
     <>
       <ContentHeader
         heading="Transfers"
         icon="KIcon"
-        description="All transfers from this fungible."
+        description={
+          description ? description : 'All transfers from this fungible'
+        }
       />
       <Box margin={'$4'} />
       <Button

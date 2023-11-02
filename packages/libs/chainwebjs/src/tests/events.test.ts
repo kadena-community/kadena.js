@@ -1,23 +1,21 @@
-jest.mock('cross-fetch', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
-import fetch from 'cross-fetch';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import chainweb from '..';
 import { config } from './config';
+import { blockByHeightBranchPageMock } from './mocks/blockByHeightBranchPageMock';
+import { blockByHeightCurrentCutMock } from './mocks/blockByHeightCurrentCutMock';
+import { blockByHeightPayloadsMock } from './mocks/blockByHeightPayloadsMock';
 import { header } from './mocks/header';
-import { mockFetch } from './mokker';
 
-const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
-mockedFunctionFetch.mockImplementation(
-  mockFetch as jest.MockedFunction<typeof fetch>,
-);
+const server = setupServer();
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
 /* ************************************************************************** */
 /* Test settings */
 
-jest.setTimeout(25000);
 const debug: boolean = false;
 
 /* ************************************************************************** */
@@ -55,6 +53,24 @@ describe('chainweb.event', () => {
   /* By Height */
 
   it('gets event by height and validates', async () => {
+    server.resetHandlers(
+      http.get(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json(blockByHeightBranchPageMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+        () => HttpResponse.json(blockByHeightPayloadsMock),
+        { once: true },
+      ),
+    );
+
     const r = await chainweb.event.height(
       0,
       height,
@@ -70,6 +86,24 @@ describe('chainweb.event', () => {
   /* By Block Hash */
 
   it('Gets event blockhash and validates', async () => {
+    server.resetHandlers(
+      http.get(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json(blockByHeightBranchPageMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+        () => HttpResponse.json(blockByHeightPayloadsMock),
+        { once: true },
+      ),
+    );
+
     const r = await chainweb.event.blockHash(
       0,
       blockHash,
@@ -98,6 +132,22 @@ describe('chainweb.event', () => {
   /* By Recent */
 
   it('gets items from recent block by event', async () => {
+    server.resetHandlers(
+      http.get('https://api.chainweb.com/chainweb/0.0/mainnet01/cut', () =>
+        HttpResponse.json(blockByHeightCurrentCutMock),
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json(blockByHeightBranchPageMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/payload/outputs/batch',
+        () => HttpResponse.json(blockByHeightPayloadsMock),
+        { once: true },
+      ),
+    );
+
     const cur = (await chainweb.cut.current(config.network, config.host))
       .hashes[0].height;
     const r = await chainweb.event.recent(

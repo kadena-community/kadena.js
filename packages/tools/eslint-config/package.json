@@ -1,7 +1,12 @@
 {
   "name": "@kadena-dev/eslint-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Kadena monorepo eslint-config",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/tools/eslint-config"
+  },
   "license": "MIT",
   "files": [
     "mixins",
@@ -32,7 +37,7 @@
     "prettier-eslint": "~12.0.0"
   },
   "devDependencies": {
-    "@kadena-dev/heft-rig": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
     "typescript": "5.2.2"
   }
 }

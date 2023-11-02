@@ -1,4 +1,6 @@
+import { KodeMono } from '@kadena/fonts';
 import './styles/global.css';
+KodeMono();
 
 export type {
   IAccordionProps,
@@ -98,5 +100,6 @@ export {
   Tooltip,
   TrackerCard,
   Tree,
+  maskValue,
   useModal,
 } from './components';

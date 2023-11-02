@@ -1,22 +1,18 @@
-jest.mock('cross-fetch', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
-import fetch from 'cross-fetch';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import chainweb from '..';
-import { mockFetch } from './mokker';
+import { blockByHeightCurrentCutMock } from './mocks/blockByHeightCurrentCutMock';
+import { cutPeersMock } from './mocks/cutPeers';
 
-const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
-mockedFunctionFetch.mockImplementation(
-  mockFetch as jest.MockedFunction<typeof fetch>,
-);
+const server = setupServer();
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 /* ************************************************************************** */
 /* Test settings */
 
-jest.setTimeout(25000);
 const debug: boolean = false;
 
 /* ************************************************************************** */
@@ -36,6 +32,14 @@ describe('chainweb.cut', () => {
   /* By Peers */
 
   it('gets p2p cuts of network and validates', async () => {
+    server.resetHandlers(
+      http.get(
+        'https://us-e1.chainweb.com/chainweb/0.0/mainnet01/cut/peer',
+        () => HttpResponse.json(cutPeersMock),
+        { once: true },
+      ),
+    );
+
     const r = await chainweb.cut.peers(
       'mainnet01',
       'https://us-e1.chainweb.com',
@@ -49,6 +53,14 @@ describe('chainweb.cut', () => {
   /* By Current */
 
   it('gets current cut from chainweb node', async () => {
+    server.resetHandlers(
+      http.get(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
+      ),
+    );
+
     const r = await chainweb.cut.current(
       'mainnet01',
       'https://api.chainweb.com',

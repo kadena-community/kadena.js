@@ -4,7 +4,6 @@ import { PactNumber } from '@kadena/pactjs';
 import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {
-  assertTransactionSigned,
   inspect,
   listen,
   logger,
@@ -54,11 +53,9 @@ export async function transfer({
     .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 
-  const signedTx = signAndAssertTransaction(sender)(transaction);
+  const signedTx = signAndAssertTransaction([sender])(transaction);
 
-  const confirmedSignedTx = assertTransactionSigned(signedTx);
-
-  const transactionDescriptor = await submit(confirmedSignedTx);
+  const transactionDescriptor = await submit(signedTx);
   inspect('Transfer Submited')(transactionDescriptor);
 
   const result = await listen(transactionDescriptor);

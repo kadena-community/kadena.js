@@ -26,16 +26,6 @@ const config = {
     WALLET_CONNECT_PROJECT_ID: process.env.WALLET_CONNECT_PROJECT_ID,
     WALLET_CONNECT_RELAY_URL: process.env.WALLET_CONNECT_RELAY_URL,
   },
-  webpack: (config, { isServer }) => {
-    config.module.rules.push({
-      test: /\.(spec|test).*$/,
-      loader: 'ignore-loader',
-    });
-    if (!isServer) {
-      config.resolve.fallback.fs = false;
-    }
-    return config;
-  },
 };
 
 module.exports = withVanillaExtract(nextTranslate(config));

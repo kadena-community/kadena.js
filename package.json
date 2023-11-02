@@ -15,15 +15,15 @@
     "lint": "syncpack list-mismatches && prettier . \"!packages\" --cache --check",
     "publish": "changeset publish",
     "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
-    "test": "turbo run test",
+    "test": "turbo run test -- run --coverage",
     "test:e2e": "turbo run test:e2e",
     "test:integration": "turbo run test:integration",
-    "version": "changeset version"
+    "version": "changeset version && pnpm run format:pkgs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@kadena-dev/markdown": "workspace:*",
-    "knip": "^2.32.4",
+    "knip": "^2.38.1",
     "only-allow": "^1.2.1",
     "prettier": "~3.0.3",
     "prettier-plugin-organize-imports": "^3.2.3",

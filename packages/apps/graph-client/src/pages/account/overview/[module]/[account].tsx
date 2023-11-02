@@ -1,13 +1,11 @@
 import { useGetAccountQuery } from '@/__generated__/sdk';
+import Loader from '@/components/Common/loader/loader';
+import { mainStyle } from '@/components/Common/main/styles.css';
 import { ChainModuleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
-import Loader from '@components/loader/loader';
-import { mainStyle } from '@components/main/styles.css';
-import { Text } from '@components/text';
 import routes from '@constants/routes';
-import { Box, Grid, Notification, Table } from '@kadena/react-ui';
-import Head from 'next/head';
+import { Box, Breadcrumbs, Grid, Notification, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -27,19 +25,14 @@ const Account: React.FC = () => {
 
   return (
     <div style={{ padding: '0 50px 30px 50px' }}>
-      <Head>
-        <title>Kadena Graph Client</title>
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
+
+      <Box marginBottom="$8" />
 
       <main className={mainStyle}>
-        <Text
-          as="h1"
-          css={{ display: 'block', color: '$mauve12', fontSize: 48, my: '$12' }}
-        >
-          Kadena Graph Client
-        </Text>
-
         <div>
           {loadingAccount && (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -89,6 +82,7 @@ const Account: React.FC = () => {
               <Grid.Root columns={2} gap="$lg">
                 <Grid.Item>
                   <CompactTransfersTable
+                    description="All transfers from or to this account"
                     moduleName={router.query.module as string}
                     accountName={router.query.account as string}
                     transfers={accountQuery.account.transfers}

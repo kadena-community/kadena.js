@@ -53,6 +53,9 @@ export const builder = new SchemaBuilder<
       ChainModuleAccount: ChainModuleAccount;
       Guard: Guard;
     };
+    Connection: {
+      totalCount: number;
+    };
   }
 >({
   plugins: [RelayPlugin, PrismaPlugin, DataloaderPlugin],

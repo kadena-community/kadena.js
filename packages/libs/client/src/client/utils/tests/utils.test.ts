@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { IPollRequestPromise } from '../../interfaces/interfaces';
 import {
   getPromise,

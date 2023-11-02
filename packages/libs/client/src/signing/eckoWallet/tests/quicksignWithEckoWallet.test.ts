@@ -1,3 +1,4 @@
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 /** @vitest-environment jsdom */
 
 import type { IPactCommand } from '../../../interfaces/IPactCommand';

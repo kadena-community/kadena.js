@@ -5,6 +5,8 @@ import './Query/chainAccount';
 import './Query/completedBlockHeights';
 import './Query/lastBlockHeight';
 import './Query/maximumConfirmationDepth';
+import './Query/pactQuery';
+import './Query/transactionByPublicKey';
 import './Query/transactions';
 import './Query/transfers';
 import './Subscription/event';
@@ -17,6 +19,8 @@ import './objects/Event';
 import './objects/Guard';
 import './objects/MinerKey';
 import './objects/ModuleAccount';
+import './objects/Signer';
+import './objects/TotalCount';
 import './objects/Transaction';
 import './objects/Transfer';
 

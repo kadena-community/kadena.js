@@ -1,3 +1,4 @@
+import { describe, expect, it, test } from 'vitest';
 import { formatNumberAsString } from '../number';
 
 describe('formatNumberAsString', () => {

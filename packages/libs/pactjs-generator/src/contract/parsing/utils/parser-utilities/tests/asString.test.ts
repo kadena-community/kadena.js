@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { getPointer } from '../../getPointer';
 import { asString } from '../asString';
 import { block } from '../block';

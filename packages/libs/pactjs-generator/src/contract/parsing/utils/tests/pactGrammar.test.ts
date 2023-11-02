@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { unwrapData } from '../dataWrapper';
 import { getPointer } from '../getPointer';
 import { defcap, defun, method, moduleRule, typeRule } from '../pactGrammar';

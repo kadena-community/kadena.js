@@ -2,13 +2,20 @@ import {
   useGetBlockFromHashQuery,
   useGetMaximumConfirmationDepthQuery,
 } from '@/__generated__/sdk';
+import Loader from '@/components/Common/loader/loader';
+import { mainStyle } from '@/components/Common/main/styles.css';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
-import Loader from '@components/loader/loader';
-import { mainStyle } from '@components/main/styles.css';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
-import { Accordion, Box, Notification, Table } from '@kadena/react-ui';
-import Head from 'next/head';
+import {
+  Accordion,
+  Box,
+  Breadcrumbs,
+  Link,
+  Notification,
+  Table,
+} from '@kadena/react-ui';
+
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -21,21 +28,19 @@ const Block: React.FC = () => {
 
   const { data: confirmationDepthData } = useGetMaximumConfirmationDepthQuery();
 
+  const viewAllTransactionsPage: string = `${routes.BLOCK_TRANSACTIONS}/${
+    router.query.hash as string
+  }`;
+
   return (
     <div>
-      <Head>
-        <title>Kadena Graph Client</title>
-        <link rel="icon" href="/favicon.png" />
-      </Head>
+      <Breadcrumbs.Root>
+        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+        <Breadcrumbs.Item>Block Overview</Breadcrumbs.Item>
+      </Breadcrumbs.Root>
 
+      <Box marginBottom="$8" />
       <main className={mainStyle}>
-        <Text
-          as="h1"
-          css={{ display: 'block', color: '$mauve12', fontSize: 48, my: '$12' }}
-        >
-          Kadena Graph Client
-        </Text>
-
         <div>
           {loading && (
             // Display a loading spinner next to the text without a gap
@@ -116,7 +121,13 @@ const Block: React.FC = () => {
                           <Table.Td>
                             <strong>Parent</strong>
                           </Table.Td>
-                          <Table.Td>{data.block.parentHash}</Table.Td>
+                          <Table.Td>
+                            <Link
+                              href={`${routes.BLOCK_OVERVIEW}/${data.block.parentHash}`}
+                            >
+                              {data.block.parentHash}
+                            </Link>
+                          </Table.Td>
                         </Table.Tr>
                         <Table.Tr>
                           <Table.Td>
@@ -157,7 +168,7 @@ const Block: React.FC = () => {
                     </Table.Td>
                     <Table.Td>{data.block.payloadHash}</Table.Td>
                   </Table.Tr>
-                  <Table.Tr>
+                  <Table.Tr url={viewAllTransactionsPage}>
                     <Table.Td>
                       <strong>No. of transactions</strong>
                     </Table.Td>
@@ -212,9 +223,7 @@ const Block: React.FC = () => {
 
               {data.block.transactions.totalCount > 0 && (
                 <CompactTransactionsTable
-                  viewAllHref={`${routes.BLOCK_TRANSACTIONS}/${
-                    router.query.hash as string
-                  }`}
+                  viewAllHref={viewAllTransactionsPage}
                   transactions={data.block.transactions}
                   description="All transactions present in this block"
                 />

@@ -15,7 +15,12 @@ export default builder.prismaNode('Transaction', {
       },
     }),
     chainId: t.expose('chainId', { type: 'BigInt' }),
-    code: t.exposeString('code', { nullable: true }),
+    // code: t.exposeString('code', { nullable: true }),
+    code: t.string({
+      resolve({ code }) {
+        return code === null ? JSON.stringify('cont') : JSON.stringify(code);
+      },
+    }),
     continuation: t.string({
       nullable: true,
       resolve({ continuation }) {
@@ -87,6 +92,33 @@ export default builder.prismaNode('Transaction', {
           where: {
             requestKey: parent.requestKey,
             blockHash: parent.blockHash,
+          },
+        });
+      },
+    }),
+
+    transfers: t.prismaField({
+      type: ['Transfer'],
+      nullable: true,
+      // eslint-disable-next-line @typescript-eslint/typedef
+      resolve(query, parent, args, context, info) {
+        return prismaClient.transfer.findMany({
+          where: {
+            requestKey: parent.requestKey,
+            blockHash: parent.blockHash,
+          },
+        });
+      },
+    }),
+
+    signers: t.prismaField({
+      type: ['Signer'],
+      nullable: true,
+      // eslint-disable-next-line @typescript-eslint/typedef
+      resolve(query, parent, args, context, info) {
+        return prismaClient.signer.findMany({
+          where: {
+            requestKey: parent.requestKey,
           },
         });
       },

@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { signHash } from '../signHash';
 
 test('Takes in a hash and keypair, outputs an object with with "hash", "sig", and "pubKey" in hex format', () => {

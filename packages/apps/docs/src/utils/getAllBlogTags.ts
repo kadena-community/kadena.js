@@ -13,7 +13,7 @@ const PostsPerTag = (tag: string, data?: IMenuData[]): Omit<ITag, 'tag'> => {
 };
 
 export const getAllBlogTags = (): ITag[] => {
-  const STARTBRANCH = '/docs/blogchain';
+  const STARTBRANCH = '/blogchain';
   const data = getData() as IMenuData[];
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);

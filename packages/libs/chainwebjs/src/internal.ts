@@ -65,7 +65,7 @@ export async function parseResponse<T>(response: Response): Promise<T> {
  *
  * @alpha
  */
-export function base64json(txt: string): string {
+function base64json(txt: string): string {
   return JSON.parse(base64url.decode(txt));
 }
 

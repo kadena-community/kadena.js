@@ -5,8 +5,9 @@ import type {
   IUnsignedCommand,
   SignatureWithHash,
 } from '@kadena/types';
-import { rest } from 'msw';
+import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import type {
   ICommandResult,
   ILocalCommandResult,
@@ -14,32 +15,20 @@ import type {
 } from '../interfaces/PactAPI';
 import { local } from '../local';
 import { pactTestCommand, testURL } from './mockdata/Pact';
+import { localCommandResult } from './mockdata/execCommand';
 
-const restHandlers = [
-  rest.post(`${testURL}/api/v1/local`, (req, res, ctx) => {
-    const isPreflight = req.url.searchParams.get('preflight') === 'true';
-    return res(
-      ctx.status(200),
-      ctx.json({
-        preflightResult: {
-          reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
-          txId: null,
-          result: {
-            data: 3,
-            status: 'success',
-          },
-          gas: 0,
-          continuation: null,
-          metaData: null,
-          logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
-        },
-        ...(isPreflight ? { preflightWarnings: [] } : {}),
-      }),
-    );
+const httpHandlers = [
+  http.post(`${testURL}/api/v1/local`, ({ request }) => {
+    const url = new URL(request.url);
+    const isPreflight = url.searchParams.get('preflight') === 'true';
+    return HttpResponse.json({
+      preflightResult: localCommandResult,
+      ...(isPreflight ? { preflightWarnings: [] } : {}),
+    });
   }),
 ];
 
-const server = setupServer(...restHandlers);
+const server = setupServer(...httpHandlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
@@ -66,16 +55,7 @@ test('local should return preflight result of tx queried ', async () => {
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
 
   const commandResult1: ILocalCommandResult = {
-    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
-    txId: null,
-    result: {
-      data: 3,
-      status: 'success',
-    },
-    gas: 0,
-    continuation: null,
-    metaData: null,
-    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+    ...localCommandResult,
     preflightWarnings: [],
   };
   const responseExpected: ILocalCommandResult = commandResult1;
@@ -107,18 +87,7 @@ test('local with `{preflight: false}` option returns non-preflight result', asyn
   };
   const signedCommand1: ICommand = ensureSignedCommand(sampleCommand1);
 
-  const commandResult1: ILocalCommandResult = {
-    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
-    txId: null,
-    result: {
-      data: 3,
-      status: 'success',
-    },
-    gas: 0,
-    continuation: null,
-    metaData: null,
-    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
-  };
+  const commandResult1: ILocalCommandResult = localCommandResult;
   const responseExpected: LocalResultWithoutPreflight = commandResult1;
   const responseActual = await local(signedCommand1, testURL, {
     preflight: false,
@@ -143,16 +112,7 @@ test('local with `{signatureVerification: false}` option returns preflight resul
   };
 
   const commandResult1: ILocalCommandResult = {
-    reqKey: 'pMohh9G2NT1jQn4byK1iwvoLopbnU86NeNPSUq8I0ik',
-    txId: null,
-    result: {
-      data: 3,
-      status: 'success',
-    },
-    gas: 0,
-    continuation: null,
-    metaData: null,
-    logs: 'wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8',
+    ...localCommandResult,
     preflightWarnings: [],
   };
   const responseExpected = commandResult1;

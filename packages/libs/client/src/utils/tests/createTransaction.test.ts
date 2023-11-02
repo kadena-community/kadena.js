@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import type { IPactCommand } from '../../interfaces/IPactCommand';
 import { Pact } from '../../pact';
 import { createTransaction } from '../createTransaction';

@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { toTweetNaclSecretKey } from '../toTweetNaclSecretKey';
 
 test('Takes in a keyPair object and returns tweetnacl secretkey format in Uint8Array', () => {

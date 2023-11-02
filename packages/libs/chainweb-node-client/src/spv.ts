@@ -1,4 +1,3 @@
-import type { Response } from 'cross-fetch';
 import fetch from 'cross-fetch';
 import type { ISPVRequestBody, SPVResponse } from './interfaces/PactAPI';
 import { parseResponseTEXT } from './parseResponseTEXT';

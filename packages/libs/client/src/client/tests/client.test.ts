@@ -1,6 +1,7 @@
 import type { ChainId } from '@kadena/types';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { createClient } from '../client';
 
 const server = setupServer();
@@ -12,12 +13,14 @@ const post = (
   path: string,
   response: string | Record<string, unknown>,
   status = 200,
-): ReturnType<typeof rest.post> =>
-  rest.post(path, (req, res, ctx) =>
-    res.once(
-      ctx.status(status),
-      typeof response === 'string' ? ctx.text(response) : ctx.json(response),
-    ),
+): ReturnType<typeof http.post> =>
+  http.post(
+    path,
+    () =>
+      typeof response === 'string'
+        ? new HttpResponse(response, { status })
+        : HttpResponse.json(response, { status }),
+    { once: true },
   );
 
 const hostApiGenerator = ({
