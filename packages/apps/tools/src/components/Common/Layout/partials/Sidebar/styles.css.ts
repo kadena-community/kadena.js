@@ -161,6 +161,6 @@ export const iconRightStyle = style([
 export const subMenuContentStyle = style([
   sprinkles({
     backgroundColor: '$neutral2',
-    height: '100%'
+    height: '100%',
   }),
 ]);
