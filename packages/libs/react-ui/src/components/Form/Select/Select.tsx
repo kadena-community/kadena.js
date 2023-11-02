@@ -2,7 +2,6 @@ import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { forwardRef, useContext } from 'react';
-import type { Status } from '../Form.css';
 import { baseOutlinedClass, statusClass } from '../Form.css';
 import { InputWrapperContext } from '../InputWrapper/InputWrapper.context';
 import {
