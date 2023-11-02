@@ -1,47 +1,141 @@
-# Contribute to the docs
+---
+title: Contribute to Kadena documentation
+description: Follow this guide to learn how you can contribute changes to Kadena documentation.
+keywords:
+  - developer documentation
+  - Kadena blockchain
+---
 
-In this document you can find all the info you need to contribute to the docs.
+We encourage everyone with an interest in improving Kadena documentation to contribute content, submit issues, and suggest changes.
+This guide describes how you can make changes to the documentation website directly by editing source files or indirectly by requesting updates.
+You can follow these instructions whether you are an internal or external contributor.
 
-## Structure of the app
+## Prerequisites
 
-When you have cloned the repo and found this package, you are almost good to go.
-run the following
+Before you begin, verify that you meet the following basic requirements:
 
-```
-pnpm install
-```
+- You have a code editor, a GitHub account, and experience using command-line programs, including `git` commands and command line options.
+- You are familiar with using the Markdown markup language to add formatting elements to plain text documents. 
+  For information about using Markdown, see the [Markdown Guide](https://www.markdownguide.org/).
 
-to run the app on `http://localhost:3000`
+- You have the `pnpm` package manager installed.
+  
+  Depending on your development environment, you can install `pnpm` using a standalone script or using a package manager.
+  For example, you can run the command `brew install pnpm` or `npm install --global pnpm` to install `pnpm` on your local computer.
+  For more information about installing `pnpm` on different operating systems, see [Installation](https://pnpm.io/installation).
+  
+  Run `pnpm --version` to verify that you have `pnpm` installed and the version you are running. 
 
-```
-pnpm dev
-```
+## Set up a local development environment
 
-Most of the files are just there for the application it self.
-For writing the actual docs, the only real important folder is `/src/pages`.
-This is basically the root of the application. The folders create the menu
-structure you can find in the application it self. Most of the folders in the
-`/src/pages` folder are also in the mainheader menu.
+To set up a local development environment for contributing to Kadena documentation:
 
-Some things to consider:
+1. Open a terminal shell on your computer.
 
-- `/api` this is not a place to add documentation. This folder is used by the
-  application itself, to do REST API calls.
-- `/search` is normally also not used to put documentation. Here you can find
-  the files for the actual search of the application.
+1. Clone the `kadena-js` repository by running the following command:
 
-All the other files (especially with the extension `md` or `mdx`) are the actual
-documentation files and you can do basically do anything with them
+   ```code
+   git clone https://github.com/kadena-community/kadena.js.git
+   ```
 
-## Adding a page
+   This command clones the entire public repository for the TypeScript and JavaScript tools that enable you to interact with the Kadena ecosystem, including the documentation package.
 
-A new page can be placed anywhere in the `src/pages` tree.
-Be aware that the tree can not be deeper than **3** folders.
+2. Change to the root of the `docs` directory by running the following command:
+   
+   ```code
+   cd kadena.js/packages/apps/docs
+   ```
 
-All the documentation is written in markdown.
-Markdown is a lightweight markup language that you can use to add formatting
-elements to plaintext text documents. You can learn more about
-[Markdown here](https://www.markdownguide.org/).
+3. Install the documentation package dependencies by running the following commands:
+
+   ```code
+   pnpm install
+   ```
+
+   This command installs all of the package dependencies used to build the documentation website and provide basic features, like navigation and search functionality.
+   To contribute to documentation, you typically only need to work in the `/src/pages` folder and its subfolders.
+   Most of the sub-folders and files in the `/src/pages` folder define the structure and operation of the application.
+   For example:
+
+   - `/api` contains scripts to interact with the website using REST API calls.
+   - `/authors` contains scripts to capture blog post authors.
+   - `/blogchain` maintains the archive of blog post articles.
+   - `/build` contains sub-folders and Markdown files with information for builders.
+   - `/chainweb` contains a script to include Chainweb documentation that is generated automatically in the website.
+   - `/contribute` contains documentation related to community activities.
+   - `/help` contains a placeholder for displaying help topics.
+   - `/kadena` contains sub-folders and Markdown files with information about Kadena, including core concepts and terminology.
+   - `/marmalade` contains sub-folders and Markdown files with information about Marmalade, including architecture and metadata.
+   - `/pact` contains sub-folders and Markdown files with information about the PACT language, including tutorials, examples, and reference.
+   - `/search` contains the script used to search for information in the application.
+   - `/tags` contains scripts to capture blog post tags.
+   
+   Within these folders, the Markdown files—files with the `md` or `mdx` extension—contain the documentation content.
+   After you explore these folders, create a local working branch of the repository for your contribution.
+
+4. Create a local branch with a prefix that identifies you as the author and a branch name that describes the content you intend to add or change.
+   For example, if your git handle is `lola-pistola` and you are fixing a typo in the kadena folder, you might create a branch like this:
+
+   ```code
+   git switch -c lola-pistola/typo-kadena-kda-concepts
+   ```
+   
+## Start a local development server
+
+As you make changes to the content in your local branch, it's helpful to see how the changes will be 
+rendered when the documentation is published.
+
+You can use `pnpm dev` to run a local development server that detects changes to the documentation and displays them automatically in the browser.
+
+To start the development server in your local environment:
+
+1. Change to the React component library by running the following command:
+   
+   ```code
+   cd kadena.js/packages/libs/react-ui
+   ```
+
+1. Build the component library locally by running the following command:
+   
+   ```code
+   pnpm build
+   ```
+
+1. Change your current working directory to `kadena-js/packages/apps/docs`.
+   
+   ```code
+   cd ../../apps/docs
+   ```
+
+2. Start the development server by running the following command:
+   
+   ```code
+   pnpm dev
+   ```
+
+3. Open a web browser and navigate to the documentation using the URL `localhost:3000/docs`. 
+
+## Adding a new page
+
+You can add a new page anywhere in the `src/pages` folder to add a topic to the structure of the information architecture.
+You can build a navigational structure up to three levels deep.
+
+The top navigation header is constructed from folders in the `src/pages` folder.
+Currently, the top navigation has the following top-level sections:
+
+- Kadena
+- Build
+- Pact
+- Chainweb
+- Marmalade
+- Contribute
+- BlogChain
+
+Quick start > Brief intro to Hello, World! to navigating the documentation:
+Engage > Learn > Concepts
+Onboard > Discover > Tutorials (guided journey)
+Coach > Build > Guides > How-to (task-based scenarios)
+Propel > Advance > Deeper dives and reference
 
 Create a `.md` file. The name of the file is also the name of the URL. Make it a
 good one. Best is to make it the title of the document. For `spaces`, please use
