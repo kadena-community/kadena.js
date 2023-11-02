@@ -28,12 +28,12 @@ export const pubKeyInputWrapperStyle = style([
   },
 ]);
 
-export const keyIconWrapperStyle = style([
+export const pubKeysContainerStyle = style([
   sprinkles({
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    gap: '$2',
+    marginY: '$4',
+    flexWrap: 'wrap',
   }),
 ]);
 

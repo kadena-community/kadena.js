@@ -22,6 +22,7 @@ export type { IGridContainerProps, IGridItemProps } from './Grid';
 export type { IIconProps } from './Icon';
 export type { IIconButtonProps } from './IconButton';
 export type { ILinkProps } from './Link';
+export type { MaskOptions } from './MaskedValue';
 export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
 export type { IModalProps } from './Modal';
 export type {
