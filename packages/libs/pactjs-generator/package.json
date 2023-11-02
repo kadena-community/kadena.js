@@ -8,6 +8,7 @@
     "directory": "packages/libs/pactjs-generator"
   },
   "license": "MIT",
+  "contributors": ["Albert Groothedde <albert@kadena.io>", "Javad Khalilian <javad@kadena.io>"],
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "files": [

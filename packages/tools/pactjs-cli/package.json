@@ -8,6 +8,7 @@
     "directory": "packages/tools/pactjs-cli"
   },
   "license": "MIT",
+  "contributors": ["Albert Groothedde <albert@kadena.io>", "Javad Khalilian <javad@kadena.io>"],
   "types": "dist/pactjs-cli.d.ts",
   "bin": {
     "pactjs": "bin/pactjs.js"
