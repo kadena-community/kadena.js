@@ -1,37 +1,28 @@
-import { localReadForGasEstimation } from '../../devnet/helper';
+import { localReadTransfer } from '../../devnet/transfer';
 import { builder } from '../builder';
 
-const Transaction = builder.inputType('Transaction', {
+const PactTransaction = builder.inputType('PactTransaction', {
   fields: (t) => ({
-    code: t.field({ type: 'String', required: true }),
+    cmd: t.field({ type: 'String', required: true }),
     hash: t.field({ type: 'String' }),
-    sigs: t.field({ type: 'String' }),
+    sigs: t.field({ type: ['String'] }),
   }),
 });
 
 builder.queryField('gasLimitEstimate', (t) => {
   return t.field({
-    type: 'String',
+    type: 'Int',
     args: {
-      transaction: t.arg({ type: Transaction, required: true }),
+      transaction: t.arg({ type: PactTransaction, required: true }),
     },
     resolve: async (parent, args, context, info) => {
-      const transaction = Pact.builder
-        .execution(args.transaction.code)
-        .setMeta({
-          chainId: '0',
-        })
-        .setNetworkId('fast-development');
-
-      const response = await localReadForGasEstimation(
-        transaction.createTransaction(),
-      );
-
-      if (response.result.status === 'failure') {
-        return String(response.result.status);
+      if (args.transaction.cmd.includes('//')) {
+        args.transaction.cmd = args.transaction.cmd.replace(/\/\//g, '/');
       }
-
-      return JSON.stringify(response.result.data);
+      const result = await localReadTransfer({
+        cmd: args.transaction.cmd,
+      });
+      return result.gas;
     },
   });
 });

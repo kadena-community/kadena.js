@@ -150,6 +150,12 @@ input PactQueryData {
   value: String!
 }
 
+input PactTransaction {
+  cmd: String!
+  hash: String
+  sigs: [String!]
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -166,6 +172,7 @@ type Query {
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+  gasLimitEstimate(transaction: PactTransaction!): Int!
   graphConfiguration: GraphConfiguration!
   lastBlockHeight: BigInt
   node(id: ID!): Node
