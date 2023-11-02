@@ -6,7 +6,7 @@ export const gridItemCollapsedSidebarStyle = style([
     position: 'fixed',
     right: 0,
     top: '$16',
-    bottom: '$10',
+    bottom: 0,
     backgroundColor: '$neutral1',
     width: '$16',
     zIndex: 1,

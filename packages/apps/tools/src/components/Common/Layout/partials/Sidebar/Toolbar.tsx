@@ -1,6 +1,8 @@
+import { OptionsModal } from '@/components/Global/OptionsModal';
 import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext } from '@/context';
 import type { ISidebarSubMenuItem } from '@/types/Layout';
+import { useModal } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -16,11 +18,19 @@ import {
 export interface IMiniMenuProps {}
 
 export const Toolbar: FC<IMiniMenuProps> = () => {
-  const { toolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen } =
-    useLayoutContext();
+  const {
+    toolbar,
+    setActiveMenuIndex,
+    activeMenuIndex,
+    isMenuOpen,
+    visibleLinks,
+    setVisibleLinks,
+  } = useLayoutContext();
   const router = useRouter();
+  const { renderModal } = useModal();
 
   const handleItemClick = (index: number): void => {
+    setVisibleLinks(false);
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
     }
@@ -28,6 +38,7 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
 
   const handleOpenCloseDrawer = (): void => {
     if (isMenuOpen) {
+      setVisibleLinks(false);
       return setActiveMenuIndex(undefined);
     }
 
@@ -55,6 +66,17 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     return index === activeMenuIndex || isUrlParam;
   };
 
+  const handleLinksClick = (): void => {
+    setActiveMenuIndex(-1);
+    if (!visibleLinks) {
+      setVisibleLinks(true);
+    }
+  };
+
+  const handleDevOptionsClick = (): void => {
+    renderModal(<OptionsModal />, 'Settings');
+  };
+
   return (
     <nav className={gridItemMiniMenuStyle}>
       <ul className={classNames(gridMiniMenuListStyle)}>
@@ -72,6 +94,27 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
       <ul
         className={classNames(gridMiniMenuListStyle, bottomIconsContainerStyle)}
       >
+        <li key={String('links')} className={gridMiniMenuListItemStyle}>
+          <div>
+            <MenuButton
+              title={'Links'}
+              href={'#'}
+              icon={'Link'}
+              onClick={() => handleLinksClick()}
+              active={visibleLinks}
+            />
+          </div>
+        </li>
+        <li key={String('Dev Options')} className={gridMiniMenuListItemStyle}>
+          <div>
+            <MenuButton
+              title={'DevOptions'}
+              href={'#'}
+              icon={'ApplicationBrackets'}
+              onClick={() => handleDevOptionsClick()}
+            />
+          </div>
+        </li>
         <li key={String('openDrawer')} className={gridMiniMenuListItemStyle}>
           <div>
             <MenuButton
