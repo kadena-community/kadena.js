@@ -37,15 +37,6 @@ export const pubKeysContainerStyle = style([
   }),
 ]);
 
-export const keyIconWrapperStyle = style([
-  sprinkles({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-  }),
-]);
-
 export const inputWrapperStyle = style([
   {
     width: '90%',
