@@ -1,16 +1,12 @@
-import { Stack } from '@components/Stack';
+import { Stack } from '@components/Layout/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { Sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import { withCenteredStory } from '@utils/withCenteredStory';
 import className from 'classnames';
 import React from 'react';
-import {
-  containerClass,
-  itemClass,
-  itemSizeClass,
-  stackClass,
-} from './stories.css';
+import { componentClass, containerClass, itemClass } from '../stories.css';
+import { itemSizeClass } from './stories.css';
 
 const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,
@@ -280,7 +276,12 @@ export const Horizontal: Story = {
     console.log({ rest });
     return (
       <div className={containerClass}>
-        <Stack gap={gap} direction={direction} className={stackClass} {...rest}>
+        <Stack
+          gap={gap}
+          direction={direction}
+          className={componentClass}
+          {...rest}
+        >
           <div className={itemClass}>Item 1</div>
           <div className={itemClass}>Item 2</div>
           <div className={itemClass}>Item 3</div>
@@ -302,7 +303,12 @@ export const Vertical: Story = {
   },
   render: ({ gap, direction, ...rest }) => (
     <div className={containerClass}>
-      <Stack gap={gap} direction={direction} className={stackClass} {...rest}>
+      <Stack
+        gap={gap}
+        direction={direction}
+        className={componentClass}
+        {...rest}
+      >
         <div className={itemClass}>Item 1</div>
         <div className={itemClass}>Item 2</div>
         <div className={itemClass}>Item 3</div>
@@ -330,7 +336,7 @@ export const Centered: Story = {
         direction={direction}
         alignItems={alignItems}
         justifyContent={justifyContent}
-        className={stackClass}
+        className={componentClass}
         {...rest}
       >
         <div className={className(itemClass, itemSizeClass.$40)}>Item 1</div>
@@ -360,7 +366,7 @@ export const SpaceBetween: Story = {
         direction={direction}
         alignItems={alignItems}
         justifyContent={justifyContent}
-        className={stackClass}
+        className={componentClass}
         {...rest}
       >
         <div className={className(itemClass, itemSizeClass.$40)}>Item 1</div>
@@ -392,7 +398,7 @@ export const Wrapped: Story = {
         alignItems={alignItems}
         justifyContent={justifyContent}
         wrap={wrap}
-        className={stackClass}
+        className={componentClass}
         {...rest}
       >
         <div className={className(itemClass, itemSizeClass.$64)}>Item 1</div>

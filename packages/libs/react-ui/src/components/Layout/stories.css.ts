@@ -3,8 +3,8 @@ import { style } from '@vanilla-extract/css';
 
 export const itemClass = style([
   sprinkles({
-    borderRadius: '$sm',
-    backgroundColor: '$primarySurface',
+    backgroundColor: '$primaryContrast',
+    color: '$primarySurface',
     padding: '$6',
     display: 'flex',
     alignItems: 'center',
@@ -18,11 +18,13 @@ export const containerClass = style([
     borderColor: '$primaryAccent',
     borderStyle: 'solid',
     borderWidth: '$sm',
+    width: '100%',
   }),
 ]);
 
-export const gridClass = style([
+export const componentClass = style([
   sprinkles({
-    backgroundColor: '$primaryContrast',
+    backgroundColor: '$primarySurface',
+    color: '$primaryContrast',
   }),
 ]);

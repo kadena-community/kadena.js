@@ -1,9 +1,9 @@
-import type { IBoxProps } from '@components/Box';
-import { Box } from '@components/Box';
+import type { IBoxProps } from '@components/Layout/Box';
+import { Box } from '@components/Layout/Box';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
-import { containerClass, contentClass } from './stories.css';
+import { containerClass, itemClass } from '../stories.css';
 
 const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,
@@ -218,7 +218,7 @@ export const Primary: Story = {
     marginBottom,
     marginLeft,
     marginRight,
-    padding,
+    padding = '$6',
     paddingX,
     paddingY,
     paddingTop,
@@ -254,7 +254,7 @@ export const Primary: Story = {
         height={height}
         minHeight={minHeight}
         maxHeight={maxHeight}
-        className={contentClass}
+        className={itemClass}
       >
         Box Content
       </Box>

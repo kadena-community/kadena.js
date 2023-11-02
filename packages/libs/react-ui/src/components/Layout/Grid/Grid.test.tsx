@@ -1,4 +1,4 @@
-import { Grid } from '@components/Grid';
+import { Grid } from '@components/Layout/Grid';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, test } from 'vitest';
