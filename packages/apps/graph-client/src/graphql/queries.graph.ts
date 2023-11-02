@@ -53,7 +53,7 @@ export const getLastBlock: DocumentNode = gql`
   }
 `;
 
-export const getGraphAndChainwebData: DocumentNode = gql`
+export const getGraphConfiguration: DocumentNode = gql`
   query getGraphConfiguration {
     graphConfiguration {
       maximumConfirmationDepth
@@ -222,5 +222,11 @@ export const getTransfers: DocumentNode = gql`
         }
       }
     }
+  }
+`;
+
+export const estimateGasLimit: DocumentNode = gql`
+  query estimateGasLimit($transaction: PactTransaction!) {
+    gasLimitEstimate(transaction: $transaction)
   }
 `;
