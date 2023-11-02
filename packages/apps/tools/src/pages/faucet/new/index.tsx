@@ -8,8 +8,6 @@ import {
   Heading,
   IconButton,
   Notification,
-  Stack,
-  Text,
 } from '@kadena/react-ui';
 
 import {
@@ -18,15 +16,16 @@ import {
   hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
-  keyIconWrapperStyle,
   notificationContainerStyle,
   notificationContentStyle,
   notificationLinkStyle,
   pubKeyInputWrapperStyle,
+  pubKeysContainerStyle,
 } from './styles.css';
 
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
+import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
 import AccountNameField from '@/components/Global/AccountNameField';
 import { CloseableNotification } from '@/components/Global/CloseableNotification';
 import { HoverTag } from '@/components/Global/HoverTag';
@@ -216,12 +215,7 @@ const NewAccountFaucetPage: FC = () => {
     setCurrentKey('');
   };
 
-  const deletePublicKey = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    index: number,
-  ): void => {
-    e.preventDefault();
-
+  const deletePublicKey = (index: number) => {
     const copyPubKeys = [...pubKeys];
     copyPubKeys.splice(index, 1);
 
@@ -229,17 +223,19 @@ const NewAccountFaucetPage: FC = () => {
   };
 
   const renderPubKeys = () => (
-    <Stack direction={'column'}>
+    <div className={pubKeysContainerStyle}>
       {pubKeys.map((key, index) => (
-        <div key={index} className={keyIconWrapperStyle}>
-          <Text size={'md'}>{key}</Text>
-          <IconButton
-            icon={'TrashCan'}
-            onClick={(event) => deletePublicKey(event, index)}
-          />
-        </div>
+        <HoverTag
+          key={`public-key-${key}`}
+          value={key}
+          onIconButtonClick={() => {
+            deletePublicKey(index);
+          }}
+          icon="TrashCan"
+          maskOptions={{ headLength: 4 }}
+        />
       ))}
-    </Stack>
+    </div>
   );
 
   return (
@@ -316,7 +312,7 @@ const NewAccountFaucetPage: FC = () => {
               <span className={notificationContentStyle}>
                 {`${AMOUNT_OF_COINS_FUNDED} ${t('coins have been funded to')}`}
                 <span className={hoverTagContainerStyle}>
-                  <HoverTag value={accountName as string} />
+                  <AccountHoverTag value={accountName as string} />
                 </span>
               </span>
             ),
