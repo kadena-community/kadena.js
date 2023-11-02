@@ -8,8 +8,6 @@ import {
   Heading,
   IconButton,
   Notification,
-  Stack,
-  Text,
 } from '@kadena/react-ui';
 
 import {
@@ -18,7 +16,6 @@ import {
   hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
-  keyIconWrapperStyle,
   notificationContainerStyle,
   notificationContentStyle,
   notificationLinkStyle,
