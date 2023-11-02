@@ -61,6 +61,7 @@ export type {
   ITrackerCardProps,
   ITreeProps,
   InputWrapperStatus,
+  MaskOptions,
 } from './components';
 
 export {

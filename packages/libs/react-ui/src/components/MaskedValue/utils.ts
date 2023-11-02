@@ -8,7 +8,7 @@ const defaultOptions = {
   tailLength: 4,
 };
 
-type MaskOptions = typeof defaultOptions;
+export type MaskOptions = typeof defaultOptions;
 
 export const maskValue = (
   value: string,
