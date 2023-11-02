@@ -38,6 +38,7 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
 
   const handleOpenCloseDrawer = (): void => {
     if (isMenuOpen) {
+      setVisibleLinks(false);
       return setActiveMenuIndex(undefined);
     }
 

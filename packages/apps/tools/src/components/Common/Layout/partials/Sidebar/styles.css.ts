@@ -19,7 +19,6 @@ export const sidebarClass = style([
 export const gridItemMiniMenuStyle = style([
   {
     height: '100%',
-    borderRight: `1px solid ${vars.colors.$borderSubtle}`,
     flexDirection: 'column',
     position: 'relative',
   },
@@ -128,6 +127,7 @@ export const bottomIconsContainerStyle = style([
 export const gridItemMenuStyle = style([
   {
     width: `calc(${vars.sizes.$64} + ${vars.sizes.$6})`,
+    borderLeft: `1px solid ${vars.colors.$borderSubtle}`,
   },
 ]);
 
@@ -138,7 +138,6 @@ export const subMenuTitleClass = style([
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-
     paddingX: '$4',
   }),
   {
@@ -162,8 +161,6 @@ export const iconRightStyle = style([
 export const subMenuContentStyle = style([
   sprinkles({
     backgroundColor: '$neutral2',
+    height: '100%'
   }),
-  {
-    height: '-webkit-fill-available',
-  },
 ]);

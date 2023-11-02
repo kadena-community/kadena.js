@@ -87,8 +87,7 @@ const Header: FC<IHeaderProps> = () => {
       </NavHeader.Navigation>
       <NavHeader.Content>
         <HeaderMenuButton
-          title={'Links'}
-          href={'#'}
+          title={'Toggle theme'}
           icon={'ThemeLightDark'}
           onClick={() => toggleTheme()}
         />

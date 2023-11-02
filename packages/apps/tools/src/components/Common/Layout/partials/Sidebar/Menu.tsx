@@ -32,7 +32,7 @@ export const Menu: FC = () => {
       target: '_blank',
     },
     {
-      title: 'Terms of use',
+      title: t('Terms of use'),
       href: 'https://kadena.io/',
       target: '_blank',
     },
@@ -46,7 +46,7 @@ export const Menu: FC = () => {
     setVisibleLinks,
   } = useLayoutContext();
 
-  const handleCLoseMenu = () => {
+  const handleCloseMenu = () => {
     setActiveMenuIndex(undefined);
     setVisibleLinks(false);
   };
@@ -61,7 +61,7 @@ export const Menu: FC = () => {
             <span>{t('Resource links')}</span>
             <IconButton
               icon={'Close'}
-              onClick={() => handleCLoseMenu()}
+              onClick={() => handleCloseMenu()}
               title={t('Resource links')}
             />
           </div>
@@ -84,7 +84,7 @@ export const Menu: FC = () => {
             <span>{activeMenu?.title}</span>
             <IconButton
               icon={'Close'}
-              onClick={() => handleCLoseMenu()}
+              onClick={() => handleCloseMenu()}
               title={activeMenu?.title}
             />
           </div>
