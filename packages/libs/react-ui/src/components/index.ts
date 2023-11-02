@@ -9,6 +9,7 @@ export type { IButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
+  FormStatus,
   IInputProps,
   IInputWrapperProps,
   ISelectFieldProps,
@@ -16,7 +17,6 @@ export type {
   ITextAreaFieldProps,
   ITextFieldProps,
   ITextareaProps,
-  InputWrapperStatus,
 } from './Form';
 export type { IGridContainerProps, IGridItemProps } from './Grid';
 export type { IIconProps } from './Icon';

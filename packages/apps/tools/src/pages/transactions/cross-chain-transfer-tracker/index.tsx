@@ -14,7 +14,7 @@ import {
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { InputWrapperStatus } from '@kadena/react-ui';
+import type { FormStatus } from '@kadena/react-ui';
 import {
   Breadcrumbs,
   Button,
@@ -62,7 +62,7 @@ const CrossChainTransferTracker: FC = () => {
   const [txError, setTxError] = useState<string>('');
   const [inputError, setInputError] = useState<string>('');
   const [validRequestKey, setValidRequestKey] = useState<
-    InputWrapperStatus | undefined
+    FormStatus | undefined
   >();
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 

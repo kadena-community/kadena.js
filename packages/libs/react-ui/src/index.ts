@@ -3,6 +3,7 @@ import './styles/global.css';
 KodeMono();
 
 export type {
+  FormStatus,
   IAccordionProps,
   IAccordionRootProps,
   IAccordionSectionProps,
@@ -60,7 +61,6 @@ export type {
   ITrProps,
   ITrackerCardProps,
   ITreeProps,
-  InputWrapperStatus,
   MaskOptions,
 } from './components';
 
