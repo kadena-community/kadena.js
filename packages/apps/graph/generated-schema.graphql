@@ -136,6 +136,12 @@ interface Node {
 input PactQuery {
   chainId: String!
   code: String!
+  data: [PactQueryData!]
+}
+
+input PactQueryData {
+  key: String!
+  value: String!
 }
 
 type PageInfo {

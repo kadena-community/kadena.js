@@ -4,10 +4,18 @@ import { devnetConfig } from '../../scripts/devnet/config';
 import { dirtyRead } from '../../scripts/devnet/helper';
 import { builder } from '../builder';
 
+const PactData = builder.inputType('PactQueryData', {
+  fields: (t) => ({
+    key: t.field({ type: 'String', required: true }),
+    value: t.field({ type: 'String', required: true }),
+  }),
+});
+
 const PactQuery = builder.inputType('PactQuery', {
   fields: (t) => ({
     code: t.field({ type: 'String', required: true }),
     chainId: t.field({ type: 'String', required: true }),
+    data: t.field({ type: [PactData] }),
   }),
 });
 
@@ -24,10 +32,13 @@ builder.queryField('pactQueries', (t) => {
           .setMeta({
             chainId: query.chainId as ChainId,
           })
-          .setNetworkId(devnetConfig.NETWORK_ID)
-          .createTransaction();
+          .setNetworkId(devnetConfig.NETWORK_ID);
 
-        const response = await dirtyRead(transaction);
+        query.data?.forEach((data) => {
+          transaction.addData(data.key, data.value);
+        });
+
+        const response = await dirtyRead(transaction.createTransaction());
 
         if (response.result.status === 'failure') {
           return String(response.result.status);
@@ -53,10 +64,13 @@ builder.queryField('pactQuery', (t) => {
         .setMeta({
           chainId: args.pactQuery.chainId as ChainId,
         })
-        .setNetworkId(devnetConfig.NETWORK_ID)
-        .createTransaction();
+        .setNetworkId(devnetConfig.NETWORK_ID);
 
-      const response = await dirtyRead(transaction);
+      args.pactQuery.data?.forEach((data) => {
+        transaction.addData(data.key, data.value);
+      });
+
+      const response = await dirtyRead(transaction.createTransaction());
 
       if (response.result.status === 'failure') {
         return String(response.result.status);
