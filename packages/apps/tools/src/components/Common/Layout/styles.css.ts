@@ -7,6 +7,7 @@ export const headerStyle = style([
     top: 0,
     width: '100%',
     height: '$16',
+    alignItems: 'center',
   }),
 ]);
 
@@ -17,21 +18,14 @@ export const gridItemMainStyle = style([
     paddingRight: '$6',
   }),
   {
+    width: '680px',
     paddingLeft: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
     selectors: {
       '&.isMenuOpen': {
+        width: `calc(${vars.sizes.$20} + ${vars.sizes.$2}) + 680px`,
         paddingLeft: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$6})`,
+        borderRight: `1px solid ${vars.colors.$borderSubtle}`,
       },
     },
   },
-]);
-
-export const footerStyle = style([
-  sprinkles({
-    backgroundColor: '$neutral2',
-    width: '100%',
-    bottom: 0,
-    position: 'fixed',
-    height: '$10',
-  }),
 ]);

@@ -1,3 +1,4 @@
+import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import { AddNetworkModal } from '@/components/Global/AddNetworkModal';
@@ -7,6 +8,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
 import { NavHeader, useModal } from '@kadena/react-ui';
+import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -26,6 +28,10 @@ const Header: FC<IHeaderProps> = () => {
     useWalletConnectClient();
   const { pathname, push } = useRouter();
   const { renderModal } = useModal();
+
+  const { systemTheme, theme, setTheme } = useTheme();
+
+  const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const navItems = [
     {
@@ -60,6 +66,11 @@ const Header: FC<IHeaderProps> = () => {
     setSelectedNetwork((e.target as HTMLSelectElement).value as Network);
   };
 
+  const toggleTheme = (): void => {
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  };
+
   return (
     <NavHeader.Root brand="DevTools">
       <NavHeader.Navigation activeHref={pathname}>
@@ -75,6 +86,11 @@ const Header: FC<IHeaderProps> = () => {
         ))}
       </NavHeader.Navigation>
       <NavHeader.Content>
+        <HeaderMenuButton
+          title={'Toggle theme'}
+          icon={'ThemeLightDark'}
+          onClick={() => toggleTheme()}
+        />
         <NavHeader.Select
           id="network-select"
           ariaLabel={t('Select Network')}
