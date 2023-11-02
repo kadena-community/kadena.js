@@ -1,7 +1,7 @@
 import type { ChainId } from '@kadena/client';
 import { Pact } from '@kadena/client';
-import { devnetConfig } from '../../scripts/devnet/config';
-import { dirtyRead } from '../../scripts/devnet/helper';
+import { devnetConfig } from '../../devnet/config';
+import { dirtyRead } from '../../devnet/helper';
 import { builder } from '../builder';
 
 const PactData = builder.inputType('PactQueryData', {

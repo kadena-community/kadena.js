@@ -1,11 +1,13 @@
-import type { ChainId, ICommandResult } from '@kadena/client';
+import type { ChainId, ICommandResult, IUnsignedCommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
+import { hash } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {
   inspect,
   listen,
+  localReadForGasEstimation,
   logger,
   sender00,
   signAndAssertTransaction,
@@ -53,6 +55,8 @@ export async function transfer({
     .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 
+  logger.info('TRANSACTION', transaction);
+
   const signedTx = signAndAssertTransaction([sender])(transaction);
 
   const transactionDescriptor = await submit(signedTx);
@@ -67,3 +71,23 @@ export async function transfer({
     return result;
   }
 }
+
+export const dummyTransaction = async (cmd: string): Promise<void> => {
+  // const transaction = Pact.builder
+  //   .execution(jsonTransaction)
+  //   .createTransaction();
+
+  const generatedHash = hash(cmd);
+
+  const transaction: IUnsignedCommand = {
+    cmd,
+    hash: generatedHash,
+    sigs: [],
+  };
+
+  // hash = crypto.getRandomValues
+  console.log(transaction);
+
+  const localRead = await localReadForGasEstimation(transaction);
+  console.log(localRead);
+};
