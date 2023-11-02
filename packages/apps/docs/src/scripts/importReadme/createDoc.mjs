@@ -1,13 +1,16 @@
+import { exec } from 'child_process';
 import 'dotenv/config';
 import * as fs from 'fs';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
+import { promisify } from 'util';
 import { getLastModifiedDate } from './../getdocstree.mjs';
 import { getTypes } from './../utils.mjs';
+import { removeRepoDomain } from './index.mjs';
 
-const DOCSROOT = './src/pages/';
-export const REPOPREFIX = 'https://github.com/';
+const promiseExec = promisify(exec);
+const DOCSROOT = './src/pages';
 export const TEMPDIR = './.tempimport';
 
 const createFrontMatter = (
@@ -32,12 +35,9 @@ lastModifiedDate: ${lastModifiedDate}
 `;
 };
 
-const createEditOverwrite = (filename, options, repo) => {
-  if (options.hideEditLink) return '';
-  if (repo) {
-    return `${REPOPREFIX}${repo}/edit/main/${filename}`;
-  }
-  return `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
+const createEditOverwrite = (item) => {
+  if (item.options.hideEditLink) return '';
+  return `${item.repo}/edit/main${item.file}`;
 };
 
 export const createSlug = (str) => {
@@ -206,11 +206,13 @@ const relinkReferences = (md, pages, root) => {
 };
 
 export const importDocs = async (filename, item) => {
-  const doc = fs.readFileSync(filename, 'utf-8');
+  const doc = fs.readFileSync(`${filename}`, 'utf-8');
 
   const md = remark.parse(doc);
 
-  const lastModifiedDate = await getLastModifiedDate(filename);
+  const lastModifiedDate = await getLastModifiedDate(
+    `.${removeRepoDomain(item.repo)}${item.file}`,
+  );
 
   if (item.options.singlePage) {
     relinkReferences(md, [md], `/${item.destination}/`);
@@ -232,12 +234,12 @@ export const importDocs = async (filename, item) => {
     const doc = toMarkdown(pageContent);
 
     fs.writeFileSync(
-      `${DOCSROOT}${item.destination}/${order === 0 ? 'index' : slug}.md`,
+      `${DOCSROOT}/${item.destination}/${order === 0 ? 'index' : slug}.md`,
       createFrontMatter(
         title,
         menuTitle,
         order,
-        createEditOverwrite(item.file, item.options, item.repo),
+        createEditOverwrite(item),
         item.options.tags,
         lastModifiedDate,
       ) + doc,
@@ -264,15 +266,15 @@ export const importDocs = async (filename, item) => {
 
     const doc = toMarkdown(pageContent);
 
-    createDir(`${DOCSROOT}${item.destination}`);
+    createDir(`${DOCSROOT}/${item.destination}`);
 
     fs.writeFileSync(
-      `${DOCSROOT}${item.destination}/${slug}.md`,
+      `${DOCSROOT}/${item.destination}/${slug}.md`,
       createFrontMatter(
         title,
         menuTitle,
         order,
-        createEditOverwrite(item.file, item.options),
+        createEditOverwrite(item),
         item.options.tags,
         lastModifiedDate,
       ) + doc,

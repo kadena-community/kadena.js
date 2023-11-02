@@ -24,18 +24,12 @@ const isMarkDownFile = (name) => {
 };
 
 export const getLastModifiedDate = async (root) => {
-  try {
-    await promiseExec(
-      `git clone https://github.com/kadena-community/kadena.js.git ${TEMPDIR}/kadena-community/kadena.js`,
-    );
-  } catch (e) {}
-
   const rootArray = root.split('/');
   const filename = rootArray.pop();
   const newRoot = rootArray.join('/');
 
   const { stdout } = await promiseExec(
-    `cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
+    `cd ${TEMPDIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
   );
 
   const date = new Date(stdout);
@@ -67,7 +61,14 @@ const convertFile = async (file) => {
   if (!data) return;
 
   const readTime = getReadTime(doc);
-  const lastModifiedDate = await getLastModifiedDate(file);
+  const lastModifiedDate = data.lastModifiedDate
+    ? data.lastModifiedDate
+    : await getLastModifiedDate(
+        `./kadena-community/kadena.js/packages/apps/docs/${file.substr(
+          2,
+          file.length - 1,
+        )}`,
+      );
 
   return {
     lastModifiedDate,

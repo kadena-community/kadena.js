@@ -1,24 +1,20 @@
 import { importReadMes } from './../utils.mjs';
-import { importDocs } from './createDoc.mjs';
 import { importRepo } from './importRepo.mjs';
 
 const errors = [];
 const success = [];
 
+export const removeRepoDomain = (repo) =>
+  repo.replace(/https:\/\/github.com/, '');
+
 export const importAllReadmes = async () => {
   let monorepoCount = 0;
   let outsideCount = 0;
-  const promises = importReadMes.map((item) => {
-    if (item.repo) {
-      outsideCount++;
-      return importRepo(item);
-    } else {
-      monorepoCount++;
-      return importDocs(`./../../${item.file}`, item);
-    }
-  });
 
-  await Promise.all(promises);
+  for (const item of importReadMes) {
+    outsideCount++;
+    await importRepo(item);
+  }
 
   success.push(
     `Docs imported from monorepo(${monorepoCount}) and outside repos(${outsideCount})`,

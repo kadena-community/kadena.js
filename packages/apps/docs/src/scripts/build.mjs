@@ -8,6 +8,7 @@ import { createSitemap } from './createSitemap.mjs';
 import { createSpecs } from './createSpec.mjs';
 import { detectBrokenLinks } from './detectBrokenLinks.mjs';
 import { createDocsTree } from './getdocstree.mjs';
+import { deleteTempDir } from './importReadme/importRepo.mjs';
 import { importAllReadmes } from './importReadme/index.mjs';
 import { Spinner } from './spinner.mjs';
 
@@ -73,6 +74,7 @@ const initFunc = async (fnc, description) => {
 };
 
 (async function () {
+  deleteTempDir();
   await initFunc(importAllReadmes, 'Import docs from monorepo');
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');
@@ -81,6 +83,7 @@ const initFunc = async (fnc, description) => {
   await initFunc(checkAuthors, 'Check author data for blog');
   await initFunc(createSitemap, 'Create the sitemap');
   await initFunc(copyFavIcons, 'Copy favicons');
+  deleteTempDir();
   await initFunc(runPrettier, 'Prettier');
 
   if (globalError) {

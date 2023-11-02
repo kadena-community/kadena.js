@@ -1,7 +1,8 @@
 import { exec } from 'child_process';
 import * as fs from 'fs';
 import { promisify } from 'util';
-import { REPOPREFIX, TEMPDIR, importDocs } from './createDoc.mjs';
+import { TEMPDIR, importDocs } from './createDoc.mjs';
+import { removeRepoDomain } from './index.mjs';
 
 const promiseExec = promisify(exec);
 
@@ -16,14 +17,18 @@ export const deleteTempDir = () => {
  * @param {ImportItem} importItem
  */
 const clone = async ({ repo }) => {
-  deleteTempDir();
-
-  await promiseExec(`git clone ${REPOPREFIX}${repo} ${TEMPDIR}/${repo}`);
+  try {
+    await promiseExec(`git clone ${repo} ${TEMPDIR}/${removeRepoDomain(repo)}`);
+  } catch (e) {
+    Promise.resolve();
+  }
 };
 
 export const importRepo = async (item) => {
   await clone(item);
-  await importDocs(`${TEMPDIR}/${item.repo}/${item.file}`, item);
 
-  deleteTempDir();
+  await importDocs(
+    `${TEMPDIR}${removeRepoDomain(item.repo)}${item.file}`,
+    item,
+  );
 };

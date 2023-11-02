@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import yaml from 'js-yaml';
 import { promisify } from 'util';
 import { TEMPDIR } from './importReadme/createDoc.mjs';
-import { deleteTempDir } from './importReadme/importRepo.mjs';
 
 const errors = [];
 const success = [];
@@ -15,7 +14,11 @@ const promiseExec = promisify(exec);
  * @param {ImportItem} importItem
  */
 const clone = async () => {
-  await promiseExec(`git clone https://github.com${REPO} ${TEMPDIR}${REPO}`);
+  try {
+    await promiseExec(`git clone https://github.com${REPO} ${TEMPDIR}${REPO}`);
+  } catch (e) {
+    Promise.resolve();
+  }
 };
 
 const returnJSON = (filename) => {
@@ -30,7 +33,6 @@ const returnJSON = (filename) => {
 
     success.push(`Successfully created spec for ${filename}!`);
   } catch (error) {
-    deleteTempDir();
     errors.push(`creating spec for ${filename} failed: ${error}`);
   }
 };
@@ -40,6 +42,5 @@ export const createSpecs = async () => {
   returnJSON('chainweb.openapi');
   returnJSON('pact.openapi');
 
-  deleteTempDir();
   return { success, errors };
 };
