@@ -82,6 +82,7 @@ const responsiveProperties = defineProperties({
     marginRight: { ...vars.sizes, auto: 'auto' },
     width: {
       ...vars.sizes,
+      ...vars.contentWidth,
       '100%': '100%',
       'min-content': 'min-content',
       'max-content': 'max-content',
@@ -92,10 +93,10 @@ const responsiveProperties = defineProperties({
       'max-content': 'max-content',
     },
     maxWidth: {
+      ...vars.contentWidth,
       '100%': '100%',
       'min-content': 'min-content',
       'max-content': 'max-content',
-      $maxContentWidth: vars.sizes.$maxContentWidth,
     },
     height: {
       ...vars.sizes,
