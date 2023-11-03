@@ -26,6 +26,7 @@ const Header: FC<IHeaderProps> = (props) => {
     account: 'Account',
     event: 'Event Name',
     block: 'Block Hash',
+    gasEstimate: 'Transaction (JSON)',
   };
 
   const searchTypePlaceholders: Record<string, string> = {
@@ -33,6 +34,7 @@ const Header: FC<IHeaderProps> = (props) => {
     account: 'k:1234...',
     event: 'coin.TRANSFER',
     block: 'CA9orP2yM...',
+    gasEstimate: `{"chainId":"chainweb0","gasPrice":0,"gasLimit":0,"pactCode":"(coin.transfer \"k:1234\" \"k:5678\" 1.0)"}`,
   };
 
   const search = (): void => {
@@ -52,6 +54,9 @@ const Header: FC<IHeaderProps> = (props) => {
       case 'block':
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.BLOCK_OVERVIEW}/${searchField}`);
+        break;
+      case 'gasEstimate':
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         break;
     }
   };
@@ -128,10 +133,26 @@ const Header: FC<IHeaderProps> = (props) => {
                 <option value="account">Account</option>
                 <option value="event">Event</option>
                 <option value="block">Block</option>
+                <option value="gasEstimate">Gas Estimate</option>
               </Select>
             </InputWrapper>
           </Grid.Item>
           <Grid.Item>
+            {searchType.startsWith('gasEstimate') && (
+              <TextAreaField
+                helperText="This is helper text"
+                info="(optional)"
+                label="Label"
+                tag="tag"
+                textAreaProps={{
+                  fontFamily: '$mono',
+                  id: 'TextFieldStory',
+                  onChange: () => {},
+                  placeholder: 'This is a placeholder',
+                  value: '',
+                }}
+              />
+            )}
             <InputWrapper
               htmlFor="search-field"
               label={searchTypeLabels[searchType]}
