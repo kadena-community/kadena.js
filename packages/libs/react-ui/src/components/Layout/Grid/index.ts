@@ -4,7 +4,7 @@ import { GridItem } from './GridItem';
 import type { IGridRootProps } from './GridRoot';
 import { GridRoot } from './GridRoot';
 
-export type { IGridRootProps as IGridContainerProps, IGridItemProps };
+export type { IGridItemProps, IGridRootProps };
 
 interface IGrid {
   Root: FC<IGridRootProps>;
