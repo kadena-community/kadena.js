@@ -1,15 +1,14 @@
 import { Editor } from '@/components/Editor/Editor';
 import { useTheme } from 'next-themes';
-import type { FC, ReactNode } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { code, codeLine, inlineCode } from './style.css';
 
-interface IProp {
-  children: ReactNode;
+interface IProps extends PropsWithChildren {
   'data-theme': string;
 }
 
-export const Code: FC<IProp> = ({ children, ...props }) => {
+export const Code: FC<IProps> = ({ children, ...props }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isInteractive, setInterctive] = useState<boolean>(false);
   const theme = useTheme();
