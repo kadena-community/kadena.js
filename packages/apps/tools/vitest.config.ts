@@ -12,10 +12,10 @@ export default mergeConfig(
       threads: false,
       coverage: {
         provider: 'v8',
-        lines: 70,
-        functions: 40,
+        lines: 73.76,
+        functions: 40.27,
         branches: 70.51,
-        statements: 70,
+        statements: 73.76,
         thresholdAutoUpdate: true,
       },
     },
