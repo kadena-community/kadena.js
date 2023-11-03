@@ -214,12 +214,9 @@ The test will now fail with
 `Error: found unimplemented member while resolving model constraints: create-gas-payer-guard`.
 Indeed, there is a function `create-gas-payer-guard` defined in the `gas-payer-v1` interface
 that still needs to be implemented. The documentation inside is a bit cryptic, but it suggests
-to require something like the `GAS_PAYER` capability without the parameters. You can use
-the `GAS` capability from the `coin` module here. After all, in Chainweaver's module explorer
-you can find that this capability is documented as `Magic capability to protect gas buy and redeem`.
-Sounds legit! Implement `create-gas-payer-guard` as follows, using the built-in functions
-`create-user-guard` and `require-capability`. You can use `GAS` directly if you load the
-`coin` module in the `election-gas-station` module.
+to require something like the `GAS_PAYER` capability without the parameters. To achieve this,
+you can leverage the built-in function `create-capability-guard` and pass the `ALLOW_GAS`
+capability into it. The function will return a guard that requires the respective capability.
 
 ```pact
 (namespace 'n_fd020525c953aa002f20fb81a920982b175cdf1a)
@@ -230,8 +227,6 @@ Sounds legit! Implement `create-gas-payer-guard` as follows, using the built-in 
   )
 
   (implements gas-payer-v1)
-
-  (use coin)
 
   (defcap GAS_PAYER:bool
     ( user:string
@@ -244,11 +239,7 @@ Sounds legit! Implement `create-gas-payer-guard` as follows, using the built-in 
   (defcap ALLOW_GAS () true)
 
   (defun create-gas-payer-guard:guard ()
-    (create-user-guard (gas-payer-guard))
-  )
-
-  (defun gas-payer-guard ()
-    (require-capability (GAS))
+    (create-capability-guard (ALLOW_GAS))
   )
 )
 ```
@@ -300,16 +291,12 @@ function change the line `.addSigner(accountKey(account))` into the following.
 ```pact
 .addSigner(accountKey(account), (withCapability) => [
   withCapability(`${NAMESPACE}.election-gas-station.GAS_PAYER`, account, { int: 0 }, { decimal: '0.0' }),
-  withCapability('coin.GAS'),
 ])
 ```
 
-This scopes the signature of the account that votes to two capabilities. The `coin.GAS` capability is used
-in the `create-gas-payer-guard` function of the `election-gas-station` module. The voter account name and
-zero (unlimited) limits for the amount of gas and the gas price are passed into the
-`${NAMESPACE}.election-gas-station.GAS_PAYER` capability.
-
-Also, change the `senderAccount` in the transaction's metadata to `'election-gas-station'`.
+This scopes the signature of the account that votes to the `GAS_PAYER` capability. The voter account name and
+zero (unlimited) limits for the amount of gas and the gas price are passed as arguments. Also, change the
+`senderAccount` in the transaction's metadata to `'election-gas-station'`.
 
 Return to the election website and try to vote again with the voter account. The transaction will still fail
 with the error: `Failure: Tx Failed: Insufficient funds`. Apparently, the gas station does not work as it is
@@ -319,8 +306,8 @@ Otherwise, the transaction will still fail due to insufficient funds in the gas 
 
 ## Create and fund the gas station account
 
-The `coin` module is already imported inside the `election-gas-station` module. You can use it to create the
-`election-gas-station` account in a function called `init`, as follows.
+You can use the `create-account` function of the `coin` module to create the
+`election-gas-station` account in a function called `init` in the `election-gas-station` module, as follows.
 
 ```pact
 (defconst GAS_STATION_ACCOUNT "election-gas-station")
@@ -430,10 +417,10 @@ The `caps` field in the signature passed to `env-sigs` is an empty array. As a c
 signature of the transaction is not scoped to any capability and the signer automatically
 approves all capabilities required for the function execution. In the `vote` function of
 `frontend/src/repositories/vote/DevnetVoteRepository.ts` you scoped the signature of the
-transaction to two gas related capabilities, but not to the `ACCOUNT-OWNER` capability. When
+transaction to the `GAS_PAYER` capability, but not to the `ACCOUNT-OWNER` capability. When
 you sign for some capabilities but not all capabilities required for execution of a transaction,
 the execution will fail at the point where a capability is required that you did not sign for.
-Therefore, you need to add a third capability to the array passed to `addSigners` in
+Therefore, you need to add a second capability to the array passed to `addSigners` in
 the `vote` function in `frontend/src/repositories/vote/DevnetVoteRepository.ts`.
 
 ```typescript
