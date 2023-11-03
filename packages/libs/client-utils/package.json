@@ -53,6 +53,7 @@
     "lint:src": "eslint src --ext .js,.ts",
     "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact",
     "test": "vitest run",
+    "test:watch": "vitest",
     "test:integration": "vitest run -c ./vitest.integration.config.ts"
   },
   "dependencies": {
