@@ -123,6 +123,7 @@ function substitute(template: string, values: IValues): string {
       : val;
   });
 }
+
 /**
  * Fills a YAML template string using the provided values.
  * @param {string} yamlTemplate - The YAML template to fill.
