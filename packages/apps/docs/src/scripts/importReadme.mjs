@@ -3,12 +3,13 @@ import * as fs from 'fs';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
-import { getLastModifiedDate } from './../getdocstree.mjs';
-import { getTypes } from './../utils.mjs';
-import { removeRepoDomain } from './index.mjs';
+import { getLastModifiedDate } from './getdocstree.mjs';
+import { getTypes, importReadMes } from './utils.mjs';
 
-const DOCSROOT = './src/pages';
-export const TEMPDIR = './.tempimport';
+const errors = [];
+const success = [];
+
+const DOCSROOT = './src/pages/';
 
 const createFrontMatter = (
   title,
@@ -32,9 +33,9 @@ lastModifiedDate: ${lastModifiedDate}
 `;
 };
 
-const createEditOverwrite = (item) => {
-  if (item.options.hideEditLink) return '';
-  return `${item.repo}/edit/main${item.file}`;
+const createEditOverwrite = (filename, options) => {
+  if (options.hideEditLink) return '';
+  return `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/${filename}`;
 };
 
 export const createSlug = (str) => {
@@ -202,62 +203,53 @@ const relinkReferences = (md, pages, root) => {
   relinkImageReferences(imageReferences, definitions, pages, root);
 };
 
-const createPage = async (page, filename, item, hasMulitplePages, idx) => {
-  if (hasMulitplePages) {
-    createDir(`${DOCSROOT}/${item.destination}`);
-  }
-
-  const lastModifiedDate = await getLastModifiedDate(
-    `.${removeRepoDomain(item.repo)}${item.file}`,
-  );
-
-  const title = getTitle(page);
-  const slug =
-    idx === 0 || item.options.RootOrder === 0 ? 'index' : createSlug(title);
-  const menuTitle =
-    idx === 0 || item.options.RootOrder === 0 ? item.title : title;
-  const order = idx === 0 ? item.options.RootOrder : idx ? idx : 0;
-
-  // check that there is just 1 h1.
-  // if more, keep only 1 and replace the next with an h2
-  const pageContent = cleanUp(
-    page,
-    `/${item.destination}/${order === 0 ? '' : slug}`,
-  );
-
-  const doc = toMarkdown(pageContent);
-
-  fs.writeFileSync(
-    `${DOCSROOT}/${item.destination}/${order === 0 ? 'index' : slug}.md`,
-    createFrontMatter(
-      title,
-      menuTitle,
-      order,
-      createEditOverwrite(item),
-      item.options.tags,
-      lastModifiedDate,
-    ) + doc,
-    {
-      flag: 'w',
-    },
-  );
-};
-
-export const importDocs = async (filename, item) => {
-  const doc = fs.readFileSync(`${filename}`, 'utf-8');
+const importDocs = async (filename, destination, parentTitle, options) => {
+  const doc = fs.readFileSync(`./../../${filename}`, 'utf-8');
 
   const md = remark.parse(doc);
 
-  if (item.options.singlePage) {
-    relinkReferences(md, [md], `/${item.destination}/`);
-    await createPage(md, filename, item);
-    return;
-  }
+  const lastModifiedDate = await getLastModifiedDate(`./../../${filename}`);
 
   const pages = divideIntoPages(md);
-  relinkReferences(md, pages, `/${item.destination}/`);
+  relinkReferences(md, pages, `/${destination}/`);
 
-  pages.forEach(async (page, idx) => {
-    await createPage(page, filename, item, true, idx);
+  pages.forEach((page, idx) => {
+    const title = getTitle(page);
+    const slug = idx === 0 ? 'index' : createSlug(title);
+    const menuTitle = idx === 0 ? parentTitle : title;
+    const order = idx === 0 ? options.RootOrder : idx;
+
+    // check that there is just 1 h1.
+    // if more, keep only 1 and replace the next with an h2
+    const pageContent = cleanUp(page, `/${destination}/${slug}`);
+
+    const doc = toMarkdown(pageContent);
+
+    createDir(`${DOCSROOT}${destination}`);
+
+    fs.writeFileSync(
+      `${DOCSROOT}${destination}/${slug}.md`,
+      createFrontMatter(
+        title,
+        menuTitle,
+        order,
+        createEditOverwrite(filename, options),
+        options.tags,
+        lastModifiedDate,
+      ) + doc,
+      {
+        flag: 'w',
+      },
+    );
   });
+};
+
+export const importAllReadmes = async () => {
+  importReadMes.forEach(async (item) => {
+    await importDocs(item.file, item.destination, item.title, item.options);
+  });
+
+  success.push('Docs imported from monorepo');
+
+  return { success, errors };
 };

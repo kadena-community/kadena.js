@@ -1,20 +1,18 @@
 import * as fs from 'fs';
 import yaml from 'js-yaml';
-import { TEMPDIR } from './importReadme/createDoc.mjs';
-import { clone } from './importReadme/index.mjs';
 
 const errors = [];
 const success = [];
-const REPO = '/kadena-io/chainweb-openapi';
 
 const returnJSON = (filename) => {
   try {
-    const doc = fs.readFileSync(`${TEMPDIR}${REPO}/${filename}.yaml`, 'utf-8');
+    const doc = fs.readFileSync(`./src/specs/${filename}.yaml`, 'utf-8');
     const json = yaml.load(doc);
 
     const DIR = './src/_generated/specs/';
 
     fs.mkdirSync(DIR, { recursive: true });
+    console.log(`${DIR}${filename}.json`);
     fs.writeFileSync(`${DIR}${filename}.json`, JSON.stringify(json));
 
     success.push(`Successfully created spec for ${filename}!`);
@@ -23,8 +21,7 @@ const returnJSON = (filename) => {
   }
 };
 
-export const createSpecs = async () => {
-  await clone(REPO);
+export const createSpecs = () => {
   returnJSON('chainweb.openapi');
   returnJSON('pact.openapi');
 

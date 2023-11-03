@@ -8,7 +8,7 @@ import type { IAccount } from './utils/helpers';
 import type { WithEmitter } from './utils/with-emitter';
 import { withEmitter } from './utils/with-emitter';
 
-import { pipe } from 'ramda';
+import pipe from 'ramda/es/pipe';
 
 /**
  * @alpha

@@ -23,7 +23,7 @@ const getCurrentPostFromJson = (root) => {
   const data = getFlatData();
 
   return data.find((item) => {
-    return item && (item.root === root || `${item.root}/` === root);
+    return item && item.root === root;
   });
 };
 

@@ -5,7 +5,7 @@ import { execution } from '@kadena/client/fp';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
-import { pipe } from 'ramda';
+import pipe from 'ramda/es/pipe';
 
 /**
  * @alpha

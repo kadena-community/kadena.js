@@ -74,9 +74,7 @@ export const withInput = <
   _event_type: T['_event_type'];
 } =>
   ((input: I): Promise<[input: I, output: Awaited<ReturnType<T>>]> =>
-    Promise.resolve()
-      .then(() => fn(input))
-      .then((output) => [input, output])) as Any;
+    Promise.resolve(fn(input)).then((output) => [input, output])) as Any;
 
 export const checkSuccess = <
   I extends Any,
@@ -88,9 +86,7 @@ export const checkSuccess = <
   _event_type: T['_event_type'];
 } =>
   ((input: I): Promise<I> =>
-    Promise.resolve()
-      .then(() => fn(input))
-      .then(() => input)) as Any;
+    Promise.resolve(fn(input)).then((output) => input)) as Any;
 
 // throw if the result is failed ; we might introduce another api for error handling
 export const throwIfFails = (response: ICommandResult): ICommandResult => {

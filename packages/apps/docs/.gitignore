@@ -1,9 +1,7 @@
 # generated resources
 src/_generated
-src/_generated/specs
 public/sitemap.xml
 src/pages/kadena/kadenajs
-src/pages/build/quickstart/index.md
 src/pages/kadena/client
 src/pages/pact/cli
 src/pages/pact/pactjs-test-project/api
@@ -19,7 +17,6 @@ src/pages/chainweb/node-client
 src/pages/chainweb/js-bindings
 
 
-.tempimport
 src/pages/docs
 
 next-env.d.ts

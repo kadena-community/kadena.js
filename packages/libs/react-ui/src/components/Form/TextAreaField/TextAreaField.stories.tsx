@@ -1,16 +1,16 @@
-import type { ITextareaFieldProps } from '@components/Form';
-import { TextareaField } from '@components/Form';
+import type { ITextAreaFieldProps } from '@components/Form';
+import { TextAreaField } from '@components/Form';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
-const meta: Meta<ITextareaFieldProps> = {
-  title: 'Form/TextareaField',
-  component: TextareaField,
+const meta: Meta<ITextAreaFieldProps> = {
+  title: 'Form/TextAreaField',
+  component: TextAreaField,
   parameters: {
     docs: {
       description: {
         component:
-          'The TextareaField component is a wrapper around the native textarea element that provides the ability to add additional information.',
+          'The TextAreaField component is a wrapper around the native textarea element that provides the ability to add additional information.',
       },
     },
   },
@@ -41,7 +41,7 @@ const meta: Meta<ITextareaFieldProps> = {
 
 export default meta;
 
-type Story = StoryObj<ITextareaFieldProps>;
+type Story = StoryObj<ITextAreaFieldProps>;
 
 export const TextFieldStory: Story = {
   name: 'TextField config',
@@ -63,7 +63,7 @@ export const TextFieldStory: Story = {
     const [value, setValue] = useState<string>('');
 
     return (
-      <TextareaField
+      <TextAreaField
         disabled={disabled}
         textAreaProps={{
           ...textAreaProps,

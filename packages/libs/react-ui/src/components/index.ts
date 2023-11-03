@@ -12,8 +12,8 @@ export type {
   IInputWrapperProps,
   ISelectFieldProps,
   ISelectProps,
+  ITextAreaFieldProps,
   ITextFieldProps,
-  ITextareaFieldProps,
   ITextareaProps,
   InputWrapperStatus,
 } from './Form';
@@ -85,9 +85,9 @@ export {
   InputWrapper,
   Select,
   SelectField,
+  TextAreaField,
   TextField,
   Textarea,
-  TextareaField,
 } from './Form';
 export { ProductIcon, SystemIcon } from './Icon';
 export { IconButton } from './IconButton';

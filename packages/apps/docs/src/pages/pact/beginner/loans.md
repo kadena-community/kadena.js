@@ -539,7 +539,7 @@ inside of the repository you cloned.
 For help getting started and deploying in each of these environments, try the
 following tutorials.
 
-- [Pact Online Editor](/pact/beginner/web-editor)
+- [Pact Online Editor](//pact/beginner/web-editor)
 - [Pact Development on Atom SDK Tutorial](/pact/beginner/atom-sdk)
 
 ## Review
