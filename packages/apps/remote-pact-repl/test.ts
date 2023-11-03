@@ -14,9 +14,7 @@ function startServer() {
     console.log('Client connected');
 
     ws.on('message', async (message) => {
-      const cmdRes = await executeCommand(
-        message.split('\n').join('\\\n').toString(),
-      );
+      const cmdRes = await executeCommand(message);
 
       ws.send(JSON.stringify(cmdRes));
     });
