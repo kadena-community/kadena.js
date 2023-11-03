@@ -8,6 +8,10 @@
     "directory": "packages/libs/client-utils"
   },
   "license": "MIT",
+  "contributors": [
+    "Javad Khalilian <javad@kadena.io>",
+    "Albert Groothedde <albert@kadena.io>"
+  ],
   "exports": {
     "./coin": "./lib/coin/index.js",
     "./core": "./lib/core/index.js"
