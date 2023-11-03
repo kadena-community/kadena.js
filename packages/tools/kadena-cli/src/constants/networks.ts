@@ -21,6 +21,12 @@ export const networkDefaults: IDefaultNetworkOptions = {
     networkHost: 'https://api.testnet.chainweb.com',
     networkExplorerUrl: 'https://explorer.chainweb.com/testnet/tx/',
   },
+  devnet: {
+    network: 'devnet',
+    networkId: 'fast-development',
+    networkHost: 'http://localhost:8080/',
+    networkExplorerUrl: 'http://localhost:8080/explorer',
+  },
   other: {
     network: '',
     networkId: '',
@@ -30,5 +36,5 @@ export const networkDefaults: IDefaultNetworkOptions = {
 };
 
 export const defaultNetworksPath: string = `${process.cwd()}/.kadena/networks`;
-export const standardNetworks: string[] = ['mainnet', 'testnet'];
-export const defaultNetwork: string = 'testnet';
+export const standardNetworks: string[] = ['mainnet', 'testnet', 'devnet'];
+export const defaultNetwork: string = 'devnet';

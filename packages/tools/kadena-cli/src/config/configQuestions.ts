@@ -32,7 +32,7 @@ interface ICustomChoice {
 }
 
 export async function askForNetwork(): Promise<string> {
-  const existingNetworks: ICustomChoice[] = getExistingNetworks();
+  const existingNetworks: ICustomChoice[] = await getExistingNetworks();
   existingNetworks
     .filter((v, i, a) => a.findIndex((v2) => v2.name === v.name) === i)
     .map((network) => {

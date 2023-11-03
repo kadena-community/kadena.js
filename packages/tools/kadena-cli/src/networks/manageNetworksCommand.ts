@@ -23,13 +23,13 @@ import path from 'path';
 
 export interface IManageNetworksOptions {}
 
-export function manageNetworks(program: Command, version: string): void {
+export async function manageNetworks(program: Command, version: string): Promise<void> {
   program
     .command('manage')
     .description('Manage network(s)')
     .action(async (args: IManageNetworksOptions) => {
       try {
-        const existingNetworks: ICustomNetworksChoice[] = getExistingNetworks();
+        const existingNetworks: ICustomNetworksChoice[] = await getExistingNetworks();
 
         if (existingNetworks.length === 0) {
           console.log(chalk.red('No existing networks found.'));
