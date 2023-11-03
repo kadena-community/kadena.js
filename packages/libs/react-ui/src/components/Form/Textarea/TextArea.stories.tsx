@@ -5,13 +5,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 const meta: Meta<ITextareaProps> = {
-  title: 'Form/TextArea',
+  title: 'Form/Textarea',
   component: Textarea,
   parameters: {
     docs: {
       description: {
         component:
-          'The TextArea component is a wrapper around the native textArea element that provides the ability to add additional information.',
+          'The Textarea component is a wrapper around the native textArea element that provides the ability to add additional information.',
       },
     },
   },
@@ -39,8 +39,8 @@ type Story = StoryObj<
   } & ITextareaProps
 >;
 
-export const TextAreaStory: Story = {
-  name: 'TextArea config',
+export const TextareaStory: Story = {
+  name: 'Textarea',
   args: {
     disabled: false,
     fontFamily: '$mono',
