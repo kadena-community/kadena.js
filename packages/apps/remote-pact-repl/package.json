@@ -1,16 +1,26 @@
 {
-  "name": "remote-pact-repl",
+  "name": "@kadena/remote-pact-repl",
   "version": "0.0.1",
   "private": true,
   "description": "Minimal remote pact repl. Requires `pact` to be installed",
   "keywords": [],
   "license": "ISC",
   "scripts": {
-    "dev": "chokidar \"./test.ts\" -c \"clear && ts-node -T test.ts\" --initial",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "bun run ./scripts/download-pact.ts",
+    "build": "make-dedicated-lockfile && docker build -t remote-pact-repl .",
+    "dev": "chokidar \"./server.ts\" -c \"clear && ts-node -T ./src/server.ts\" --initial --debounce 500 --throttle 1500"
+  },
+  "dependencies": {
+    "chokidar-cli": "^3.0.0",
+    "express": "^4.18.2",
+    "ts-node": "~10.8.2",
+    "typescript": "5.2.2",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
-    "chokidar-cli": "^3.0.0"
+    "@pnpm/make-dedicated-lockfile": "^0.5.11",
+    "@types/express": "^4.17.20",
+    "@types/ws": "^8.5.8"
   },
   "authors": [
     "Steven <steven.straatemans@kadena.io>",

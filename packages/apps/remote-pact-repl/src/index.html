@@ -15,16 +15,23 @@
       // Create a new WebSocket connection
       let ws;
       function connect() {
-        ws = new WebSocket('ws://localhost:3000');
+        let retryInterval = 1000; // initial retry interval is 1 second
+        ws = new WebSocket(
+          `${location.protocol === 'http:' ? 'ws' : 'wss'}://${
+            location.hostname
+          }:${location.port}/ws`,
+        );
         ws.addEventListener('open', () => {
           console.log('WebSocket connection established');
+          retryInterval = 1000; // reset retry interval to 1 second on successful connection
         });
         ws.addEventListener('close', () => {
           console.log('WebSocket connection closed');
           setTimeout(() => {
             console.log('WebSocket connection retrying...');
             connect();
-          }, 1000);
+            retryInterval = Math.min(retryInterval * 2, 10000); // double retry interval, up to a maximum of 10 seconds
+          }, retryInterval);
         });
         ws.addEventListener('message', (event) => {
           console.log(
@@ -32,13 +39,24 @@
           );
           const message = JSON.parse(event.data);
           if (message.error) {
-            output.innerHTML +=
-              '<pre>' + JSON.stringify(message.error, null, 2) + '</pre>';
+            output.innerHTML =
+              '<pre>' +
+              JSON.stringify(message.error, null, 2) +
+              '</pre>' +
+              output.innerHTML;
             if (message.stderr) {
-              output.innerHTML += '<pre>' + message.stderr.split('\n').join('<br>') + '</pre><br>';
+              output.innerHTML =
+                '<pre>' +
+                message.stderr.split('\n').join('<br>') +
+                '</pre><br>' +
+                output.innerHTML;
             }
           } else {
-            output.innerHTML += '<pre>' + message.stdout.split('\n').join('<br>') + '</pre><br>';
+            output.innerHTML =
+              '<pre>' +
+              message.stdout.split('\n').join('<br>') +
+              '</pre><br>' +
+              output.innerHTML;
           }
         });
       }
@@ -50,12 +68,26 @@
         input.value = intermediateCode;
       }
 
+      // Get the query string parameter value for 'input' and set it as the prefilled value for the input
+      const urlParams = new URLSearchParams(window.location.search);
+      const inputParam = urlParams.get('input');
+      if (inputParam) {
+        input.value = inputParam;
+      }
+
       // Send the contents of the textarea to the WebSocket endpoint when the user hits enter
       input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
           const message = input.value;
           ws.send(message);
+          // Update the query string parameter value for 'input' with the new input value
+          urlParams.set('input', message);
+          window.history.replaceState(
+            {},
+            '',
+            `${location.pathname}?${urlParams}`,
+          );
         }
       });
 
