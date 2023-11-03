@@ -1,1 +1,1 @@
-export { TextAreaField, type ITextAreaFieldProps } from './TextAreaField';
+export { TextAreaField, type ITextAreaFieldProps } from './TextareaField';
