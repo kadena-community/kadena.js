@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>WebSocket Example</title>
+    <style>
+      /* Add CSS to separate each output */
+      .output-div {
+        border: 1px solid black;
+        margin-bottom: 10px;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="input" rows="10" cols="50"></textarea>
+    <div id="output"></div>
+
+    <script>
+      const input = document.getElementById('input');
+      const output = document.getElementById('output');
+
+      // Create a new WebSocket connection
+      let ws;
+      function connect() {
+        let retryInterval = 1000; // initial retry interval is 1 second
+        ws = new WebSocket(
+          `${location.protocol === 'http:' ? 'ws' : 'wss'}://${
+            location.hostname
+          }:${location.port}/ws`,
+        );
+        ws.addEventListener('open', () => {
+          console.log('WebSocket connection established');
+          retryInterval = 1000; // reset retry interval to 1 second on successful connection
+        });
+        ws.addEventListener('close', () => {
+          console.log('WebSocket connection closed');
+          setTimeout(() => {
+            console.log('WebSocket connection retrying...');
+            connect();
+            retryInterval = Math.min(retryInterval * 2, 10000); // double retry interval, up to a maximum of 10 seconds
+          }, retryInterval);
+        });
+        ws.addEventListener('message', (event) => {
+          console.log(
+            'msg: ' + JSON.stringify(JSON.parse(event.data), null, 2),
+          );
+          const message = JSON.parse(event.data);
+          if (message.error) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'output-div'; // Add class to separate each output
+            errorDiv.innerHTML =
+              '<pre>' +
+              JSON.stringify(message.error, null, 2) +
+              '</pre>';
+            output.prepend(errorDiv);
+            if (message.stderr) {
+              const stderrDiv = document.createElement('div');
+              stderrDiv.className = 'output-div'; // Add class to separate each output
+              stderrDiv.innerHTML =
+                '<pre>' +
+                message.stderr.split('\n').join('<br />') +
+                '</pre>';
+              output.prepend(stderrDiv);
+            }
+          } else {
+            const stdoutDiv = document.createElement('div');
+            stdoutDiv.className = 'output-div'; // Add class to separate each output
+            stdoutDiv.innerHTML =
+              '<pre>' +
+              message.stdout.split('\n').join('<br />') +
+              '</pre>';
+            output.prepend(stdoutDiv);
+          }
+        });
+      }
+      connect();
+
+      // Load the intermediate code from local storage, if it exists
+      const intermediateCode = localStorage.getItem('intermediateCode');
+      if (intermediateCode) {
+        input.value = intermediateCode;
+      }
+
+      // Get the query string parameter value for 'input' and set it as the prefilled value for the input
+      const urlParams = new URLSearchParams(window.location.search);
+      const inputParam = urlParams.get('input');
+      if (inputParam) {
+        input.value = inputParam;
+      }
+
+      // Send the contents of the textarea to the WebSocket endpoint when the user hits enter
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          const message = input.value;
+          ws.send(message);
+          // Update the query string parameter value for 'input' with the new input value
+          urlParams.set('input', message);
+          window.history.replaceState(
+            {},
+            '',
+            `${location.pathname}?${urlParams}`,
+          );
+        }
+      });
+
+      // Save the intermediate code to local storage when the user types in the textarea
+      input.addEventListener('input', () => {
+        const intermediateCode = input.value;
+        localStorage.setItem('intermediateCode', intermediateCode);
+      });
+    </script>
+  </body>
+</html>
