@@ -39,7 +39,7 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts,.tsx",
     "storybook": "storybook dev -p 6006",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "@kadena/fonts": "~0.0.1",

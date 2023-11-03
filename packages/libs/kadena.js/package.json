@@ -54,7 +54,7 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "serve-coverage": "python -m SimpleHTTPServer",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",

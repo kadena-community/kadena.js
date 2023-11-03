@@ -32,7 +32,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts,.tsx",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "@inkjs/ui": "^1.0.0",
