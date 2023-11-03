@@ -30,9 +30,9 @@ We have chosen to implement the [BIP44][4] protocol, defining the path
 restriction for BIP32 as `m/44'/626'/${index}'/0'/0'`. This decision is based on
 the following considerations:
 
-- KDA (Kadena) utilizes the coin-type [626][5].
+- KDA (Kadena) coin-type is [626][5].
 - KDA follows an account-model coin approach, and for each key, we modify the
-  **'account** (third component in BIP44).
+  **'account** (third level in BIP44).
 - We exclusively use BIP44 for **private key** generation.
 - Extended public keys are beyond the scope of this decision.
 - All private keys are **hardened** in accordance with the [ed25519][6]
