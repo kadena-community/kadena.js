@@ -13,7 +13,6 @@ module.exports = defineConfig({
       functions: 90,
       branches: 90,
       statements: 90,
-      thresholdAutoUpdate: false, // Should be enabled? Too precise though, annoying in CI if missed by 0.01%
     },
   },
 });
