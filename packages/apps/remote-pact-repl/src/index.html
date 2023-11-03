@@ -3,6 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>WebSocket Example</title>
+    <style>
+      /* Add CSS to separate each output */
+      .output-div {
+        border: 1px solid black;
+        margin-bottom: 10px;
+        padding: 5px;
+      }
+    </style>
   </head>
   <body>
     <textarea id="input" rows="10" cols="50"></textarea>
@@ -39,24 +47,30 @@
           );
           const message = JSON.parse(event.data);
           if (message.error) {
-            output.innerHTML =
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'output-div'; // Add class to separate each output
+            errorDiv.innerHTML =
               '<pre>' +
               JSON.stringify(message.error, null, 2) +
-              '</pre>' +
-              output.innerHTML;
+              '</pre>';
+            output.prepend(errorDiv);
             if (message.stderr) {
-              output.innerHTML =
+              const stderrDiv = document.createElement('div');
+              stderrDiv.className = 'output-div'; // Add class to separate each output
+              stderrDiv.innerHTML =
                 '<pre>' +
-                message.stderr.split('\n').join('<br>') +
-                '</pre><br>' +
-                output.innerHTML;
+                message.stderr.split('\n').join('<br />') +
+                '</pre>';
+              output.prepend(stderrDiv);
             }
           } else {
-            output.innerHTML =
+            const stdoutDiv = document.createElement('div');
+            stdoutDiv.className = 'output-div'; // Add class to separate each output
+            stdoutDiv.innerHTML =
               '<pre>' +
-              message.stdout.split('\n').join('<br>') +
-              '</pre><br>' +
-              output.innerHTML;
+              message.stdout.split('\n').join('<br />') +
+              '</pre>';
+            output.prepend(stdoutDiv);
           }
         });
       }

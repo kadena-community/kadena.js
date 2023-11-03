@@ -70,15 +70,18 @@ let pactExecutable = './pact-bin/pact';
 
 function executeCommand(pactCode: string) {
   return new Promise((resolve) => {
-    exec(`echo "${pactCode}" | ${pactExecutable}`, (error, stdout, stderr) => {
-      console.log(`stdout: ${stdout}`);
-      console.log(`stderr: ${stderr}`);
-      console.log(`error: ${error}`);
-      if(stderr.includes('cannot execute binary file')) {
-        pactExecutable = 'pact';
-      }
-      return resolve({ error, stdout, stderr });
-    });
+    exec(
+      `echo "${pactCode.replace(/"/g, '\\"')}" | ${pactExecutable}`,
+      (error, stdout, stderr) => {
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
+        console.log(`error: ${error}`);
+        if (stderr.includes('cannot execute binary file')) {
+          pactExecutable = 'pact';
+        }
+        return resolve({ error, stdout, stderr });
+      },
+    );
   });
 }
 
