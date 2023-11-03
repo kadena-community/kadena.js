@@ -3,12 +3,12 @@ import { InputWrapper, Textarea } from '@components/Form';
 import type { FC } from 'react';
 import React from 'react';
 
-export interface ITextAreaFieldProps
+export interface ITextareaFieldProps
   extends Omit<IInputWrapperProps, 'htmlFor' | 'children'> {
   textAreaProps: Omit<ITextareaProps, 'disabled'>;
 }
 
-export const TextAreaField: FC<ITextAreaFieldProps> = ({
+export const TextareaField: FC<ITextareaFieldProps> = ({
   disabled = false,
   textAreaProps,
   ...rest
