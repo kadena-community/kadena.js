@@ -5,7 +5,7 @@
   "description": "Kadena JS monorepo",
   "license": "ISC",
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build --force",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark *.md docs/*.md -o --use @kadena-dev/markdown",
     "format:pkgs": "tsx packages/tools/scripts/generate-packages-json.ts",
@@ -15,7 +15,7 @@
     "lint": "syncpack list-mismatches && prettier . \"!packages\" --cache --check",
     "publish": "changeset publish",
     "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
-    "test": "turbo run test",
+    "test": "turbo run test --force",
     "test:e2e": "turbo run test:e2e",
     "test:integration": "turbo run test:integration",
     "version": "changeset version && pnpm run format:pkgs"
