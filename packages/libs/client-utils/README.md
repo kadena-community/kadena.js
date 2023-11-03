@@ -14,11 +14,11 @@ Utility functions build as a wrapper around @kadena/client
 ## Kadena client utils
 
 Introducing `@kadena/client-utils`, a library that aims to provide a
-higher-level API for interacting with smart contracts. This PR includes helpers
-for the `coin` module, which can be imported using `@kadena/client-utils/coin`.
-The library also exports utilities under `/core` for smart contract developers
-to develop APIs, including some functions that can be used for any kind of smart
-contracts.
+higher-level API for interacting with smart contracts. The library includes
+helpers for the `coin` module, which can be imported using
+`@kadena/client-utils/coin`. The library also exports utilities under `/core`
+for smart contract developers to develop APIs, including some functions that can
+be used for any kind of smart contracts.
 
 - asyncPipe
 - submitClient
