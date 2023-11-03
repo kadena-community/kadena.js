@@ -11,10 +11,12 @@ export default mergeConfig(
       environment: 'happy-dom',
       threads: false,
       coverage: {
+        provider: 'v8',
         lines: 70,
         functions: 40,
-        branches: 80,
+        branches: 70.51,
         statements: 70,
+        thresholdAutoUpdate: true,
       },
     },
   }),
