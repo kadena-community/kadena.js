@@ -8,7 +8,11 @@
     "directory": "packages/libs/client"
   },
   "license": "MIT",
-  "contributors": ["Albert Groothedde <albert@kadena.io>", "Javad Khalilian <javad@kadena.io>", "Ashwin van Dijk <ashwin@kadena.io>"],
+  "contributors": [
+    "Albert Groothedde <albert@kadena.io>",
+    "Javad Khalilian <javad@kadena.io>",
+    "Ashwin van Dijk <ashwin@kadena.io>"
+  ],
   "exports": {
     ".": "./lib/index.js",
     "./fp": "./lib/fp.js"
