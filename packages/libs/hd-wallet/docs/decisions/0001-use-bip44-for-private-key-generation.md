@@ -32,7 +32,7 @@ the following considerations:
 
 - KDA (Kadena) coin-type is [626][5].
 - KDA follows an account-model coin approach, and for each key, we modify the
-  **'account** (third level in BIP44).
+  **account** (third level in BIP44).
 - We exclusively use BIP44 for **private key** generation.
 - Extended public keys are beyond the scope of this decision.
 - All private keys are **hardened** in accordance with the [ed25519][6]
