@@ -9,7 +9,7 @@ import {
   disabledClass,
   textAreaClass,
   textAreaContainerClass,
-} from './TextArea.css';
+} from './Textarea.css';
 
 export interface ITextareaProps
   extends Omit<
