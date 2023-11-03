@@ -2,15 +2,52 @@ import type { OnMount } from '@monaco-editor/react';
 import MNEditor from '@monaco-editor/react';
 import type monaco from 'monaco-editor';
 import type { FC } from 'react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ErrorLine } from './ErrorLine';
+import { SuccessLine } from './SuccessLine';
+
+interface IConsoleLine {
+  type: 'error' | 'success';
+  message: string | object;
+}
+
+interface IMessage {
+  data: string;
+}
 
 export const Editor: FC = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const consoleRef = useRef<HTMLDivElement>(null);
   const [socket, setSocket] = useState<WebSocket>();
+  const [consoleContent, setConsoleContent] = useState<IConsoleLine[]>([]);
 
-  const connect = () => {
-    const ws = new WebSocket('ws://localhost:3000');
+  const setMessage = useCallback(
+    (event: IMessage) => {
+      const msg = JSON.parse(event.data);
+      if (msg.error) {
+        setConsoleContent((v) => [...v, { type: 'error', message: msg.error }]);
+      }
+      if (msg.stderr) {
+        setConsoleContent((v) => [
+          ...v,
+          { type: 'error', message: msg.stderr },
+        ]);
+      }
+      if (msg.stdout) {
+        setConsoleContent((v) => [
+          ...v,
+          { type: 'error', message: msg.stdout },
+        ]);
+      }
+    },
+    [setConsoleContent],
+  );
+
+  const connect = useCallback((): void => {
+    if (!process.env.NEXT_PUBLIC_PACTSERVER) {
+      console.warn('no ws server defined');
+      return;
+    }
+    const ws = new WebSocket(process.env.NEXT_PUBLIC_PACTSERVER);
 
     ws.addEventListener('open', () => {
       console.log('WebSocket connection established');
@@ -22,23 +59,25 @@ export const Editor: FC = () => {
         connect();
       }, 1000);
     });
-    ws.addEventListener('message', (event) => {
-      console.log(`msg: ${JSON.stringify(JSON.parse(event.data), null, 2)}`);
-    });
+
+    ws.addEventListener('message', setMessage);
 
     setSocket(ws);
-  };
+  }, []);
 
   useEffect(() => {
     connect();
-  }, []);
+  }, [connect]);
 
   const handleEditorDidMount: OnMount = (editor): void => {
     editorRef.current = editor;
   };
 
   const handleEditorChange = (input?: string): void => {
-    if (socket && input) {
+    if (!input) return;
+
+    const lastChar = input.at(-1);
+    if (socket && lastChar === '\n') {
       socket.send(input);
     }
   };
@@ -53,7 +92,21 @@ export const Editor: FC = () => {
         onMount={handleEditorDidMount}
         onChange={handleEditorChange}
       ></MNEditor>
-      <div ref={consoleRef}></div>
+      <div>
+        {consoleContent.map((item, idx) => {
+          if (item.type === 'success')
+            return (
+              <SuccessLine key={idx}>
+                {JSON.stringify(item.message, null, 2)}
+              </SuccessLine>
+            );
+          return (
+            <ErrorLine key={idx}>
+              {JSON.stringify(item.message, null, 2)}
+            </ErrorLine>
+          );
+        })}
+      </div>
     </>
   );
 };

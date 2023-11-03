@@ -6,6 +6,7 @@ import { code, codeLine, inlineCode } from './style.css';
 
 interface IProp {
   children: ReactNode;
+  'data-theme': string;
 }
 
 export const Code: FC<IProp> = ({ children, ...props }) => {
@@ -19,7 +20,6 @@ export const Code: FC<IProp> = ({ children, ...props }) => {
     if (ref.current.innerText.includes('# interactive')) {
       setInterctive(true);
     }
-    // const isInteractive = ref.current.querySelector('')
   }, [ref]);
 
   if (isInteractive) {
