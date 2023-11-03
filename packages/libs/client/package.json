@@ -39,6 +39,7 @@
     "pactjs:retrieve:contract": "pactjs retrieve-contract --out contracts/coin.contract.pact --module coin",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "vitest run",
+    "test:watch": "vitest",
     "test:integration": "vitest run -c ./vitest.integration.config.ts"
   },
   "dependencies": {

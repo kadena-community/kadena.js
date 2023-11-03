@@ -35,6 +35,7 @@
     "lint:src": "eslint src --ext .js,.ts",
     "start": "ts-node --transpile-only src/index.ts",
     "test": "vitest run",
+    "test:watch": "vitest",
     "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch"
   },
   "dependencies": {
