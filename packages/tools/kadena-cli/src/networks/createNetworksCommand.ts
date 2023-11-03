@@ -1,4 +1,5 @@
 import { defaultNetworksPath } from '../constants/networks.js';
+import { network, networkExplorerUrl, networkHost, networkId } from '../constants/options.js';
 import { ensureFileExists } from '../utils/filesystem.js';
 import { clearCLI, collectResponses } from '../utils/helpers.js';
 import { processZodErrors } from '../utils/processZodErrors.js';
@@ -33,13 +34,13 @@ async function shouldProceedWithNetworkCreate(
   return true;
 }
 
-async function runNetworksCreate(
-  program: Command,
-  version: string,
-  args: TNetworksCreateOptions,
-): Promise<void> {
+export async function runNetworksCreate(
+  program?: Command,
+  version?: string,
+  args?: TNetworksCreateOptions,
+): Promise<string | void> {
   try {
-    const responses = await collectResponses(args, networksCreateQuestions);
+    const responses = await collectResponses(args || {}, networksCreateQuestions);
 
     const networkConfig = { ...args, ...responses };
 
@@ -62,11 +63,14 @@ async function runNetworksCreate(
       console.log(chalk.yellow("Let's restart the configuration process."));
       await runNetworksCreate(program, version, args);
     } else {
-      console.log(chalk.green('Configuration complete. Goodbye!'));
+      console.log(chalk.green('Network configuration complete!'));
+      return networkConfig.network
     }
   } catch (e) {
     console.error(e);
-    processZodErrors(program, e, args);
+    if (program) {
+      processZodErrors(program, e, args);
+    }
   }
 }
 
@@ -74,19 +78,10 @@ export function createNetworksCommand(program: Command, version: string): void {
   program
     .command('create')
     .description('Create new network')
-    .option('-n, --network <network>', 'Kadena network (e.g. "mainnet")')
-    .option(
-      '-nid, --networkId <networkId>',
-      'Kadena network Id (e.g. "mainnet01")',
-    )
-    .option(
-      '-h, --networkHost <networkHost>',
-      'Kadena network host (e.g. "https://api.chainweb.com")',
-    )
-    .option(
-      '-e, --networkExplorerUrl <networkExplorerUrl>',
-      'Kadena network explorer (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
-    )
+    .addOption(network)
+    .addOption(networkId)
+    .addOption(networkHost)
+    .addOption(networkExplorerUrl)
     .action(async (args: TNetworksCreateOptions) => {
       debug('network-create:action')({ args });
 

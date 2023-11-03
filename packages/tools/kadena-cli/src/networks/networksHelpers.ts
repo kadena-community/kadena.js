@@ -96,7 +96,19 @@ export function displayNetworkConfig(
   displaySeparator();
 }
 
-export function displayNetworksConfig(): void {
+export function loadNetworkConfig(network: string): TNetworksCreateOptions | never {
+  const networkFilePath = path.join(defaultNetworksPath, `${network}.yaml`);
+
+  if (! existsSync(networkFilePath)) {
+    throw new Error('Network configuration file not found.')
+  }
+
+  return (yaml.load(
+    readFileSync(networkFilePath, 'utf8'),
+  ) as TNetworksCreateOptions);
+}
+
+export async function displayNetworksConfig(): Promise<void> {
   const log = console.log;
   const formatLength = 80; // Maximum width for the display
 
@@ -120,7 +132,7 @@ export function displayNetworksConfig(): void {
     return `  ${keyValue}${' '.repeat(remainingWidth)}  `;
   };
 
-  const existingNetworks: ICustomNetworksChoice[] = getExistingNetworks();
+  const existingNetworks: ICustomNetworksChoice[] = await getExistingNetworks();
   const standardNetworks: string[] = ['mainnet', 'testnet'];
 
   existingNetworks.forEach(({ value }) => {

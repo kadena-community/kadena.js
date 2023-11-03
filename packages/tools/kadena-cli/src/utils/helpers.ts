@@ -237,10 +237,17 @@ export function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function getExistingNetworks(): ICustomChoice[] {
-  if (!existsSync(defaultNetworksPath)) {
-    mkdirSync(defaultNetworksPath, { recursive: true });
+export async function ensureNetworksConfiguration(): Promise<void> {
+  if (existsSync(defaultNetworksPath)) {
+    return;
   }
+
+  mkdirSync(defaultNetworksPath, { recursive: true });
+  await import('./../networks/init.js');
+}
+
+export async function getExistingNetworks(): Promise<ICustomChoice[]> {
+  await ensureNetworksConfiguration();
 
   try {
     return readdirSync(defaultNetworksPath).map((filename) => ({

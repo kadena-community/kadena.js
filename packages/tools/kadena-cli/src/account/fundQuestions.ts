@@ -48,7 +48,7 @@ export const fundQuestions: IQuestion<TFundQuestions>[] = [
     prompt: async () =>
       await select({
         message: 'Choose your network',
-        choices: getExistingNetworks(),
+        choices: await getExistingNetworks(),
       }),
   },
   {

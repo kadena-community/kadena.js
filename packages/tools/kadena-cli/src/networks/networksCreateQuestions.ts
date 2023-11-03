@@ -31,7 +31,7 @@ interface ICustomChoice {
 }
 
 export async function askForNetwork(): Promise<string> {
-  const existingNetworks: ICustomChoice[] = getExistingNetworks();
+  const existingNetworks: ICustomChoice[] = await getExistingNetworks();
 
   // const prefixedStandardNetworks: ICustomChoice[] = standardNetworks.map(
   //   (network) => {
@@ -69,9 +69,9 @@ export async function askForNetwork(): Promise<string> {
         if (input === '') {
           return 'Network name cannot be empty! Please enter something.';
         }
-        if (!isAlphabetic(input)) {
-          return 'Network name must be alphabetic! Please enter a valid name.';
-        }
+        // if (!isAlphabetic(input)) {
+        //   return 'Network name must be alphabetic! Please enter a valid name.';
+        // }
         return true;
       },
       message: 'Enter the name for your new network:',
@@ -98,9 +98,9 @@ export const networksCreateQuestions: IQuestion<TNetworksCreateOptions>[] = [
         default: `${network}01`,
         message: `Enter ${network} network Id (e.g. "${network}01")`,
         validate: function (input) {
-          if (!isAlphanumeric(input)) {
-            return 'NetworkId must be alphanumeric! Please enter a valid name.';
-          }
+          // if (!isAlphanumeric(input)) {
+          //   return 'NetworkId must be alphanumeric! Please enter a valid name.';
+          // }
           return true;
         },
       });
