@@ -1,6 +1,7 @@
 import { useGetAccountQuery } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
+import { ErrorBox } from '@/components/error-box/error-box';
 import { ChainModuleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
@@ -39,15 +40,18 @@ const Account: React.FC = () => {
               <Loader /> <span>Retrieving account information...</span>
             </div>
           )}
-          {error && (
-            <Notification.Root color="negative" icon="Close">
-              Unknown error:
-              <Box marginBottom="$4" />
-              <code>{error.message}</code>
-              <Box marginBottom="$4" />
-              Check if the Graph server is running.
-            </Notification.Root>
-          )}
+          {error && <ErrorBox error={error} />}
+          {accountQuery?.account &&
+            accountQuery?.account?.totalBalance === 0 &&
+            accountQuery?.account?.chainAccounts.length === 0 && (
+              <>
+                <Notification.Root color="info">
+                  We could not find any data on this account. Please check the
+                  module and account name.
+                </Notification.Root>
+                <Box margin={'$4'} />
+              </>
+            )}
           {accountQuery?.account && (
             <div>
               <Table.Root wordBreak="break-all">
