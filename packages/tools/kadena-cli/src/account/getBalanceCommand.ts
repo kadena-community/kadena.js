@@ -12,6 +12,7 @@ import { Questions } from '../constants/questions.js';
 import { displayNetworkConfig, loadNetworkConfig } from '../networks/networksHelpers.js';
 
 import { Pact, createClient } from '@kadena/client';
+import { getBalance } from '@kadena/client-utils/coin';
 
 import chalk from 'chalk';
 import { ChainId } from '@kadena/types';
@@ -65,23 +66,11 @@ export function getBalanceCommand(program: Command, version: string): void {
 const makeGetBalanceRequest = async (account: string, network: string, chainId: number) => {
   const networkConfiguration = loadNetworkConfig(network);
   displayNetworkConfig(networkConfiguration);
-  const client = createClient(`${networkConfiguration.networkHost}chainweb/0.0/${networkConfiguration.networkId}/chain/${chainId}/pact`);
-  const transaction = Pact.builder
-    .execution(Pact.modules.coin['get-balance'](account))
-    .setMeta({ chainId: (chainId || 0).toString() as unknown as ChainId })
-    .setNetworkId(networkConfiguration.networkId || '')
-    .createTransaction();
-
-  try {
-    const response = await client.dirtyRead(transaction);
-    const { result } = response;
-
-    if (result.status === 'success') {
-      console.log(chalk.green(`The balance of ${account} on chain ${chainId} of ${network} is ${result.data}`));
-    } else {
-      console.error(result.error);
-    }
-  } catch (e: unknown) {
-    console.error((e as Error).message);
-  }
+  const balance = await getBalance(
+    account,
+    networkConfiguration.networkId || '',
+    (chainId.toString() || '0') as ChainId,
+    networkConfiguration.networkHost,
+  )
+  console.log(chalk.green(`The balance of ${account} on chain ${chainId} of ${network} is ${balance}`));
 };
