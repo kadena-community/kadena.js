@@ -1,14 +1,14 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import { styleVariants } from '@vanilla-extract/css';
-import type { Status } from '../Form.css';
+import type { FormFieldStatus } from '../Form.css';
 import { statusColor, statusOutlineColor } from '../Form.css';
 import {
   helperIconColor,
   helperTextColor,
 } from './InputHelper/InputHelper.css';
 
-const statusOptions: Record<Status, Status> = {
+const statusOptions: Record<FormFieldStatus, FormFieldStatus> = {
   disabled: 'disabled',
   positive: 'positive',
   warning: 'warning',

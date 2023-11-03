@@ -1,12 +1,12 @@
 import type { vars } from '@theme/vars.css';
 
 import { createContext } from 'react';
-import type { Status } from '../Form.css';
+import type { FormFieldStatus } from '../Form.css';
 
 export type OpenSections = string[];
 
 interface IInputWrapperContext {
-  status?: Status;
+  status?: FormFieldStatus;
   leadingTextWidth?: keyof typeof vars.sizes;
 }
 

@@ -2,7 +2,7 @@ import type { IInputProps } from '@components/Form';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 import type { vars } from 'src/styles';
-import type { Status } from '../Form.css';
+import type { FormFieldStatus } from '../Form.css';
 import type { IInputHeaderProps } from './InputHeader/InputHeader';
 import { InputHeader } from './InputHeader/InputHeader';
 import { InputHelper } from './InputHelper/InputHelper';
@@ -13,7 +13,7 @@ export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {
   children:
     | FunctionComponentElement<IInputProps>
     | FunctionComponentElement<IInputProps>[];
-  status?: Status;
+  status?: FormFieldStatus;
   disabled?: boolean;
   helperText?: string;
   label?: string;

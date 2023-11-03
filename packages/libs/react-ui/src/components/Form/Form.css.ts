@@ -3,42 +3,16 @@ import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
 import { createVar, fallbackVar, style } from '@vanilla-extract/css';
 
-export type Status = 'disabled' | 'positive' | 'warning' | 'negative';
+export type FormFieldStatus = 'disabled' | 'positive' | 'warning' | 'negative';
 export const statusColor = createVar();
 export const statusOutlineColor = createVar();
 
 export const baseOutlinedClass = style([
-  sprinkles({
-    borderRadius: '$sm',
-  }),
   {
     outline: `2px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
-    outlineOffset: '2px',
     selectors: {
       [`${darkThemeClass} &`]: {
         outline: `2px solid ${fallbackVar(statusColor, vars.colors.$gray60)}`,
-      },
-    },
-  },
-]);
-
-export const statusClass = style([
-  sprinkles({
-    borderRadius: '$sm',
-  }),
-  {
-    outline: `2px solid ${fallbackVar(
-      statusOutlineColor,
-      vars.colors.$blue60,
-    )}`,
-
-    outlineOffset: '2px',
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        outline: `2px solid ${fallbackVar(
-          statusOutlineColor,
-          vars.colors.$blue60,
-        )}`,
       },
     },
   },
@@ -60,6 +34,7 @@ export const baseContainerClass = style([
   {
     position: 'relative',
     boxShadow: `0px 1px 0 0 ${colorPalette.$gray30}`,
+    outlineOffset: '2px',
     selectors: {
       [`${darkThemeClass} &`]: {
         boxShadow: `0px 1px 0 0 ${colorPalette.$gray60}`,

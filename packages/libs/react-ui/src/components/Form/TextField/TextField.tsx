@@ -15,7 +15,6 @@ export const TextField: FC<ITextFieldProps> = ({
   ...rest
 }) => {
   const { id } = inputProps;
-  console.log(status);
 
   return (
     <InputWrapper htmlFor={id} disabled={disabled} status={status} {...rest}>
