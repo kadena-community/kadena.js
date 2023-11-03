@@ -2,5 +2,6 @@ dist
 etc
 lib
 temp
+coverage
 **/*.md
 tsdoc-metadata.json
