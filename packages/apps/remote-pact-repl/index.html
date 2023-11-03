@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>WebSocket Example</title>
+  </head>
+  <body>
+    <textarea id="input" rows="10" cols="50"></textarea>
+    <div id="output"></div>
+
+    <script>
+      const input = document.getElementById('input');
+      const output = document.getElementById('output');
+
+      // Create a new WebSocket connection
+      let ws;
+      function connect() {
+        ws = new WebSocket('ws://localhost:3000');
+        ws.addEventListener('open', () => {
+          console.log('WebSocket connection established');
+        });
+        ws.addEventListener('close', () => {
+          console.log('WebSocket connection closed');
+          setTimeout(() => {
+            console.log('WebSocket connection retrying...');
+            connect();
+          }, 1000);
+        });
+        ws.addEventListener('message', (event) => {
+          console.log(
+            'msg: ' + JSON.stringify(JSON.parse(event.data), null, 2),
+          );
+          const message = JSON.parse(event.data);
+          if (message.error) {
+            output.innerHTML +=
+              '<pre>' + JSON.stringify(message.error, null, 2) + '</pre>';
+            if (message.stderr) {
+              output.innerHTML += '<pre>' + message.stderr.split('\n').join('<br>') + '</pre><br>';
+            }
+          } else {
+            output.innerHTML += '<pre>' + message.stdout.split('\n').join('<br>') + '</pre><br>';
+          }
+        });
+      }
+      connect();
+
+      // Load the intermediate code from local storage, if it exists
+      const intermediateCode = localStorage.getItem('intermediateCode');
+      if (intermediateCode) {
+        input.value = intermediateCode;
+      }
+
+      // Send the contents of the textarea to the WebSocket endpoint when the user hits enter
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          const message = input.value;
+          ws.send(message);
+        }
+      });
+
+      // Save the intermediate code to local storage when the user types in the textarea
+      input.addEventListener('input', () => {
+        const intermediateCode = input.value;
+        localStorage.setItem('intermediateCode', intermediateCode);
+      });
+    </script>
+  </body>
+</html>
