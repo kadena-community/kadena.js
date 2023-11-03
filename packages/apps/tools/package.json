@@ -17,7 +17,7 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .ts,.tsx",
     "start": "next start",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "@hookform/resolvers": "~3.1.1",
