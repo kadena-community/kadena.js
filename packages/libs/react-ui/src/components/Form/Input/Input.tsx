@@ -1,4 +1,5 @@
 import { SystemIcon } from '@components/Icon';
+import type { vars } from '@theme/vars.css';
 import classNames from 'classnames';
 import type { FC, InputHTMLAttributes } from 'react';
 import React, { forwardRef, useContext } from 'react';
@@ -21,6 +22,7 @@ export interface IInputProps
   leadingText?: string;
   icon?: keyof typeof SystemIcon;
   rightIcon?: keyof typeof SystemIcon;
+  leadingTextWidth?: keyof typeof vars.sizes;
   disabled?: boolean;
   type?: React.HTMLInputTypeAttribute;
   ref?: React.ForwardedRef<HTMLInputElement>;
@@ -30,10 +32,22 @@ export interface IInputProps
 
 export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
   function Input(
-    { outlined, leadingText, icon, rightIcon, disabled = false, ...rest },
+    {
+      outlined,
+      leadingText,
+      icon,
+      rightIcon,
+      leadingTextWidth: propLeadingTextWidth,
+      disabled = false,
+      ...rest
+    },
     ref,
   ) {
-    const { status, leadingTextWidth } = useContext(InputWrapperContext);
+    const { status, leadingTextWidth: contextLeadingTextWidth } =
+      useContext(InputWrapperContext);
+
+    const leadingTextWidth = propLeadingTextWidth || contextLeadingTextWidth;
+
     const RightIcon = rightIcon && SystemIcon[rightIcon];
     const Icon = icon && SystemIcon[icon];
 

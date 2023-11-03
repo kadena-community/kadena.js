@@ -4,6 +4,7 @@ import { Input } from '@components/Form';
 import { SystemIcon } from '@components/Icon';
 import { Stack } from '@components/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
+import { vars } from '@theme/vars.css';
 import type { HTMLInputTypeAttribute } from 'react';
 import React from 'react';
 
@@ -86,6 +87,17 @@ const meta: Meta<IInputProps> = {
         type: 'text',
       },
     },
+    leadingTextWidth: {
+      description:
+        'Width of the leading text. Defaults to the size of the text itself.',
+      control: {
+        type: 'select',
+      },
+      options: [
+        '- Omit this property to auto-size the leading text',
+        ...Object.keys(vars.sizes).map((key) => key as keyof typeof vars.sizes),
+      ],
+    },
     outlined: {
       description: 'Option to render the input with an outline.',
       control: {
@@ -115,6 +127,7 @@ export const Dynamic: Story = {
     icon: undefined,
     type: 'text',
     rightIcon: undefined,
+    leadingTextWidth: undefined,
     leadingText: '',
     outlined: false,
   },
@@ -123,6 +136,7 @@ export const Dynamic: Story = {
     rightIcon,
     outlined,
     leadingText,
+    leadingTextWidth,
     onChange,
     disabled,
     type,
@@ -133,6 +147,7 @@ export const Dynamic: Story = {
       rightIcon={rightIcon}
       onChange={onChange}
       placeholder="This is a placeholder"
+      leadingTextWidth={leadingTextWidth}
       leadingText={leadingText}
       outlined={outlined}
       disabled={disabled}
