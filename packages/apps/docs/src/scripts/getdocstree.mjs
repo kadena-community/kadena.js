@@ -1,14 +1,13 @@
-import { exec } from 'child_process';
 import { isValid } from 'date-fns';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
-import { promisify } from 'util';
+import { promiseExec } from './build.mjs';
+import { TEMPDIR } from './importReadme/createDoc.mjs';
 import { getReadTime } from './utils.mjs';
 
-const promiseExec = promisify(exec);
 const errors = [];
 const success = [];
 
@@ -23,8 +22,12 @@ const isMarkDownFile = (name) => {
 };
 
 export const getLastModifiedDate = async (root) => {
+  const rootArray = root.split('/');
+  const filename = rootArray.pop();
+  const newRoot = rootArray.join('/');
+
   const { stdout } = await promiseExec(
-    `git log -1 --pretty="format:%ci" ${root}`,
+    `cd ${TEMPDIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
   );
 
   const date = new Date(stdout);
@@ -56,7 +59,14 @@ const convertFile = async (file) => {
   if (!data) return;
 
   const readTime = getReadTime(doc);
-  const lastModifiedDate = await getLastModifiedDate(file);
+  const lastModifiedDate = data.lastModifiedDate
+    ? data.lastModifiedDate
+    : await getLastModifiedDate(
+        `./kadena-community/kadena.js/packages/apps/docs/${file.substr(
+          2,
+          file.length - 1,
+        )}`,
+      );
 
   return {
     lastModifiedDate,
