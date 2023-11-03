@@ -98,6 +98,9 @@ export const vars = createGlobalTheme(':root', {
     $2xl: 'var(--spacing-2xl)',
     $3xl: 'var(--spacing-3xl)',
   },
+  contentWidth: {
+    $maxContentWidth: '42.5rem', // 680px (max content width for readability in applications)
+  },
   colors: {
     ...colorPalette,
     ...gradients,

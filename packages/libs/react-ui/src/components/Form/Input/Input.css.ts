@@ -58,7 +58,6 @@ export const leadingTextClass = style([
   sprinkles({
     overflow: 'hidden',
     display: 'inline-block',
-    minWidth: 0,
     alignItems: 'center',
     paddingX: '$4',
   }),
