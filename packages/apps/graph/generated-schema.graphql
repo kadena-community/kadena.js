@@ -85,6 +85,12 @@ type Event implements Node {
   transaction: Transaction
 }
 
+"""General information about the graph and chainweb-data"""
+type GraphConfiguration {
+  maximumConfirmationDepth: Int!
+  minimumBlockHeight: BigInt
+}
+
 type Guard {
   keys: [String!]!
   predicate: String!
@@ -133,6 +139,17 @@ interface Node {
   id: ID!
 }
 
+input PactQuery {
+  chainId: String!
+  code: String!
+  data: [PactQueryData!]
+}
+
+input PactQueryData {
+  key: String!
+  value: String!
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -149,12 +166,26 @@ type Query {
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+  graphConfiguration: GraphConfiguration!
   lastBlockHeight: BigInt
-  maximumConfirmationDepth: Int!
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
+  pactQueries(pactQuery: [PactQuery!]!): [String!]!
+  pactQuery(pactQuery: PactQuery!): String!
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransactionsConnection!
+  transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
   transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
+}
+
+type QueryTransactionsByPublicKeyConnection {
+  edges: [QueryTransactionsByPublicKeyConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryTransactionsByPublicKeyConnectionEdge {
+  cursor: String!
+  node: Transaction!
 }
 
 type QueryTransactionsConnection {
@@ -177,6 +208,17 @@ type QueryTransfersConnection {
 type QueryTransfersConnectionEdge {
   cursor: String!
   node: Transfer!
+}
+
+type Signer implements Node {
+  address: String
+  capabilities: String
+  id: ID!
+  orderIndex: Int!
+  publicKey: String!
+  requestKey: String!
+  scheme: String
+  signature: String!
 }
 
 type Subscription {
@@ -209,6 +251,7 @@ type Transaction implements Node {
   requestKey: String!
   rollback: Boolean
   senderAccount: String
+  signers: [Signer!]
   step: BigInt
   transactionId: BigInt
   transfers: [Transfer!]

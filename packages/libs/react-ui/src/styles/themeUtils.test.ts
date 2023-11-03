@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { mapToProperty, responsiveStyle } from './themeUtils';
 
 describe('responsiveStyle function', () => {

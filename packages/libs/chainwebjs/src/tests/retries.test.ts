@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import chainweb from '..';
 import { parseResponse } from '../internal';
 import { chainUrl } from '../request';

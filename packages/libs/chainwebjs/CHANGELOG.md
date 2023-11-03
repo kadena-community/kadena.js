@@ -1,5 +1,16 @@
 # Change Log - @kadena/chainwebjs
 
+## 0.1.0
+
+### Minor Changes
+
+- d62a23ffe: Generate provenance statement during npm publish
+
+### Patch Changes
+
+- c8bbec395: Fix `types` in package.json
+- fec8dfafd: Upgrade `typescript` and `@types/node` dependencies
+
 ## 0.0.6
 
 ### Patch Changes

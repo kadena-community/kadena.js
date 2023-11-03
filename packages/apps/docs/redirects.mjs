@@ -5,6 +5,16 @@ const redirectsConfig = [
     permanent: true,
   },
   {
+    source: '/exchanges',
+    destination: '/kadena/exchange',
+    permanent: true,
+  },
+  {
+    source: '/kadena-wallets/overview',
+    destination: '/kadena/wallets',
+    permanent: true,
+  },
+  {
     source: '/basics/kda/:slug',
     destination: '/kadena/kda/:slug',
     permanent: true,

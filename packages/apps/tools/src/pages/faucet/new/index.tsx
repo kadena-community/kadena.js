@@ -5,45 +5,56 @@ import {
   Breadcrumbs,
   Button,
   Card,
-  Grid,
   Heading,
   IconButton,
   Notification,
-  Stack,
-  Text,
 } from '@kadena/react-ui';
 
 import {
   buttonContainerClass,
   containerClass,
+  hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
-  keyIconWrapperStyle,
   notificationContainerStyle,
+  notificationContentStyle,
   notificationLinkStyle,
   pubKeyInputWrapperStyle,
+  pubKeysContainerStyle,
 } from './styles.css';
 
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
+import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
 import AccountNameField from '@/components/Global/AccountNameField';
+import { CloseableNotification } from '@/components/Global/CloseableNotification';
+import { HoverTag } from '@/components/Global/HoverTag';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
 import { PublicKeyField } from '@/components/Global/PublicKeyField';
-import Routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
+import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { createPrincipal } from '../../../services/faucet/create-principal';
+import {
+  accountNameContainerClass,
+  chainSelectContainerClass,
+  inputContainerClass,
+} from '../styles.css';
 
 interface IFundExistingAccountResponseBody {
   result: {
@@ -65,6 +76,7 @@ const isCustomError = (error: unknown): error is ICommandResult => {
 
 const NewAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
+  const router = useRouter();
   const { selectedNetwork } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
@@ -110,13 +122,7 @@ const NewAccountFaucetPage: FC = () => {
 
   const [inputError, setInputError] = useState<string>('');
 
-  useToolbar([
-    {
-      title: t('New'),
-      icon: 'History',
-      href: Routes.FAUCET_NEW,
-    },
-  ]);
+  useToolbar(menuData, router.pathname);
 
   useEffect(() => {
     setInputError('');
@@ -209,12 +215,7 @@ const NewAccountFaucetPage: FC = () => {
     setCurrentKey('');
   };
 
-  const deletePublicKey = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    index: number,
-  ): void => {
-    e.preventDefault();
-
+  const deletePublicKey = (index: number) => {
     const copyPubKeys = [...pubKeys];
     copyPubKeys.splice(index, 1);
 
@@ -222,21 +223,26 @@ const NewAccountFaucetPage: FC = () => {
   };
 
   const renderPubKeys = () => (
-    <Stack direction={'column'}>
+    <div className={pubKeysContainerStyle}>
       {pubKeys.map((key, index) => (
-        <div key={index} className={keyIconWrapperStyle}>
-          <Text size={'md'}>{key}</Text>
-          <IconButton
-            icon={'TrashCan'}
-            onClick={(event) => deletePublicKey(event, index)}
-          />
-        </div>
+        <HoverTag
+          key={`public-key-${key}`}
+          value={key}
+          onIconButtonClick={() => {
+            deletePublicKey(index);
+          }}
+          icon="TrashCan"
+          maskOptions={{ headLength: 4 }}
+        />
       ))}
-    </Stack>
+    </div>
   );
 
   return (
     <section className={containerClass}>
+      <Head>
+        <title>Kadena Developer Tools - Faucet</title>
+      </Head>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
         <Breadcrumbs.Item>{t('New')}</Breadcrumbs.Item>
@@ -248,46 +254,68 @@ const NewAccountFaucetPage: FC = () => {
             color="warning"
             expanded={true}
             icon="Information"
-            title={t(
-              `The Faucet is not available on Mainnet. On other networks, the Faucet smart contract must be deployed to fund accounts. In the Module Explorer you can see if it's deployed: https://tools.kadena.io/transactions/module-explorer?module=user.coin-faucet&chain=1`,
-            )}
-          />
+            title={t('The Faucet is not available on Mainnet')}
+            variant="outlined"
+          >
+            <Trans
+              i18nKey="common:faucet-unavailable-warning"
+              components={[
+                <Link
+                  href="/transactions/module-explorer?module=user.coin-faucet&chain=1"
+                  key="link-to-module-explorer"
+                />,
+              ]}
+            />
+          </Notification.Root>
         ) : null}
       </div>
       <div className={notificationContainerStyle}>
-        <Notification.Root
+        <CloseableNotification
           color="warning"
           expanded={true}
           icon="Information"
           title={t(`Before you start`)}
+          variant="outlined"
         >
-          Generate a key pair by visiting this{' '}
-          <a
-            className={notificationLinkStyle}
-            target={'_blank'}
-            href={'https://transfer.chainweb.com/'}
-            rel="noreferrer"
-          >
-            webpage
-          </a>{' '}
-          or by downloading a{' '}
-          <a
-            className={notificationLinkStyle}
-            target={'_blank'}
-            href={'https://kadena.io/chainweaver-tos/'}
-            rel="noreferrer"
-          >
-            wallet.
-          </a>
-        </Notification.Root>
+          <Trans
+            i18nKey="common:faucet-how-to-start"
+            components={[
+              <a
+                className={notificationLinkStyle}
+                target={'_blank'}
+                href={'https://transfer.chainweb.com/'}
+                rel="noreferrer"
+                key="chainweb-transfer-link"
+              />,
+              <a
+                className={notificationLinkStyle}
+                target={'_blank'}
+                href={'https://kadena.io/chainweaver-tos/'}
+                rel="noreferrer"
+                key="chainweaver-link"
+              />,
+              <p key="text-wrapper" />,
+              <Link
+                className={notificationLinkStyle}
+                href={'/faucet/existing'}
+                key="faucet-existing-link"
+              />,
+            ]}
+          />
+        </CloseableNotification>
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
           status={requestStatus.status}
           statusBodies={{
-            successful: `${AMOUNT_OF_COINS_FUNDED} ${t(
-              'coins have been funded to ',
-            )}${accountName}`,
+            successful: (
+              <span className={notificationContentStyle}>
+                {`${AMOUNT_OF_COINS_FUNDED} ${t('coins have been funded to')}`}
+                <span className={hoverTagContainerStyle}>
+                  <AccountHoverTag value={accountName as string} />
+                </span>
+              </span>
+            ),
           }}
           body={requestStatus.message}
         />
@@ -329,21 +357,23 @@ const NewAccountFaucetPage: FC = () => {
         <Card fullWidth>
           <Heading as="h5">{t('Account')}</Heading>
           <Box marginBottom="$4" />
-          <AccountNameField
-            inputProps={register('name')}
-            label={t('The account name to fund coins to')}
-            disabled
-            noIcon
-          />
-          <Grid.Root columns={2} marginTop="$4">
-            <Grid.Item>
+          <div className={inputContainerClass}>
+            <div className={accountNameContainerClass}>
+              <AccountNameField
+                inputProps={register('name')}
+                label={t('The account name to fund coins to')}
+                disabled
+                noIcon
+              />
+            </div>
+            <div className={chainSelectContainerClass}>
               <ChainSelect
                 onChange={onChainSelectChange}
                 value={chainID}
                 ariaLabel="Select Chain ID"
               />
-            </Grid.Item>
-          </Grid.Root>
+            </div>
+          </div>
         </Card>
         <div className={buttonContainerClass}>
           <Button
@@ -357,15 +387,6 @@ const NewAccountFaucetPage: FC = () => {
           </Button>
         </div>
       </form>
-      <Stack marginY={'$md'}>
-        <Text>
-          If you want to fund an existing account, visit{' '}
-          <a className={notificationLinkStyle} href={'/faucet/existing'}>
-            this page
-          </a>
-          .
-        </Text>
-      </Stack>
     </section>
   );
 };

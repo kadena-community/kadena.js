@@ -53,9 +53,12 @@ export const getLastBlock: DocumentNode = gql`
   }
 `;
 
-export const getMaximumCalculatedConfirmationDepth: DocumentNode = gql`
-  query getMaximumConfirmationDepth {
-    maximumConfirmationDepth
+export const getGraphAndChainwebData: DocumentNode = gql`
+  query getGraphConfiguration {
+    graphConfiguration {
+      maximumConfirmationDepth
+      minimumBlockHeight
+    }
   }
 `;
 
@@ -174,6 +177,10 @@ export const getTransactions: DocumentNode = gql`
           ...CoreTransactionFields
           block {
             hash
+          }
+          signers {
+            publicKey
+            signature
           }
         }
       }

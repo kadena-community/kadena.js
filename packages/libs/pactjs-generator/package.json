@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs-generator",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Generates TypeScript definitions of Pact contracts, for use in @kadena/pactjs",
   "repository": {
     "type": "git",
@@ -8,6 +8,10 @@
     "directory": "packages/libs/pactjs-generator"
   },
   "license": "MIT",
+  "contributors": [
+    "Albert Groothedde <albert@kadena.io>",
+    "Javad Khalilian <javad@kadena.io>"
+  ],
   "main": "lib/index.js",
   "types": "dist/pactjs-generator.d.ts",
   "files": [
@@ -40,14 +44,15 @@
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
     "@microsoft/api-extractor": "^7.38.0",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/moo": "~0.5.5",
     "@types/nearley": "~2.11.2",
     "@types/node": "^18.17.14",
+    "@vitest/coverage-v8": "^0.34.6",
     "chokidar": "^3.5.3",
     "concurrently": "^7.2.2",
     "eslint": "^8.45.0",

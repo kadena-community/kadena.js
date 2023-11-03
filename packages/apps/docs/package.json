@@ -1,6 +1,6 @@
 {
   "name": "@kadena/docs",
-  "version": "0.3.1",
+  "version": "0.4.2",
   "private": true,
   "scripts": {
     "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
@@ -70,8 +70,8 @@
   "devDependencies": {
     "@7-docs/cli": "^0.5.1",
     "@kadena-dev/eslint-config": "workspace:*",
-    "@kadena-dev/heft-rig": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
     "@percy/cli": "~1.24.0",
     "@percy/cypress": "~3.1.2",
     "@rushstack/eslint-config": "~3.3.0",

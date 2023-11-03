@@ -1,9 +1,0 @@
-{
-  "name": "@kadena-dev/heft-rig",
-  "version": "0.1.0",
-  "description": "Our own rig package, based on @rushstack/heft-node-rig",
-  "license": "MIT",
-  "dependencies": {
-    "ts-jest": "^29.1.1"
-  }
-}

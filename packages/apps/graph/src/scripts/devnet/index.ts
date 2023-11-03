@@ -1,5 +1,5 @@
 import { Command, Option } from 'commander';
-import { createAccount, logger } from './helper';
+import { generateKeyPair, logger } from './helper';
 import { simulate } from './simulate';
 import { transfer } from './transfer';
 
@@ -20,7 +20,7 @@ program
     try {
       let publicKey = args.key;
       if (publicKey === undefined) {
-        const account = createAccount();
+        const account = generateKeyPair();
         publicKey = account.publicKey;
         logger.info('Account created:', account);
       }
@@ -37,7 +37,7 @@ program
     new Option(
       '-a, --numberOfAccounts <number>',
       'Number of accounts to create',
-    ).default(5),
+    ).default(6),
   )
   .addOption(
     new Option(

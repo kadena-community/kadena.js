@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import type { IModule } from '../../pactParser';
 import { getCapabilities } from '../getCapabilities';
 

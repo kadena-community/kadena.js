@@ -98,6 +98,15 @@ globalStyle(
   },
 );
 
+globalStyle(
+  `${getClassName(headerClass)} +
+  figure
+  `,
+  {
+    marginTop: vars.sizes.$4,
+  },
+);
+
 // H3
 
 globalStyle(

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import mock from 'next-router-mock';
 import React from 'react';
+import { describe, expect, it } from 'vitest';
 import { NavLink } from './index';
 
 describe('NavLink', () => {

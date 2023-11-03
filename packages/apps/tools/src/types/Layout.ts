@@ -1,4 +1,4 @@
-import type { IAccordionProps, ITreeProps, SystemIcon } from '@kadena/react-ui';
+import type { ITreeProps, SystemIcon } from '@kadena/react-ui';
 
 export interface IMenuItem {
   title: string;
@@ -6,9 +6,10 @@ export interface IMenuItem {
   target?: '_self' | '_blank' | '_parent' | '_top';
 }
 
-export interface ISidebarSubMenuItem
-  extends Omit<IAccordionProps, 'isOpen' | 'onToggle' | 'children'> {
-  items: ITreeProps[];
+export interface ISidebarSubMenuItem {
+  title: string;
+  href: string;
+  items?: ITreeProps[];
 }
 export interface ISidebarToolbarItem {
   title: string;

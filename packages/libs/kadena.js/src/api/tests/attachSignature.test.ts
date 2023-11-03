@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { attachSignature } from '../attachSignature';
 import { keyPair, signature, stringifiedPayload } from './mockdata/execCommand';
 

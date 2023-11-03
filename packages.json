@@ -7,67 +7,73 @@
   },
   {
     "name": "@kadena/chainweb-node-client",
-    "version": "0.4.4",
+    "version": "0.5.0",
     "private": false,
     "path": "packages/libs/chainweb-node-client"
   },
   {
     "name": "@kadena/chainweb-stream-client",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "private": false,
     "path": "packages/libs/chainweb-stream-client"
   },
   {
     "name": "@kadena/chainwebjs",
-    "version": "0.0.6",
+    "version": "0.1.0",
     "private": false,
     "path": "packages/libs/chainwebjs"
   },
   {
     "name": "@kadena/client",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "private": false,
     "path": "packages/libs/client"
   },
   {
     "name": "@kadena/client-examples",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "private": true,
     "path": "packages/libs/client-examples"
   },
   {
+    "name": "@kadena/client-utils",
+    "version": "0.0.2",
+    "private": false,
+    "path": "packages/libs/client-utils"
+  },
+  {
     "name": "@kadena/cookbook",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "private": true,
     "path": "packages/tools/cookbook"
   },
   {
     "name": "@kadena/cryptography-utils",
-    "version": "0.3.8",
+    "version": "0.4.0",
     "private": false,
     "path": "packages/libs/cryptography-utils"
   },
   {
     "name": "@kadena/docs",
-    "version": "0.3.1",
+    "version": "0.4.1",
     "private": true,
     "path": "packages/apps/docs"
   },
   {
     "name": "@kadena/graph",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "private": true,
     "path": "packages/apps/graph"
   },
   {
     "name": "@kadena/graph-client",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "private": true,
     "path": "packages/apps/graph-client"
   },
   {
     "name": "@kadena/immutable-records",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "private": true,
     "path": "packages/apps/immutable-records"
   },
@@ -79,37 +85,37 @@
   },
   {
     "name": "@kadena/kda-cli",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "path": "packages/tools/kda-cli"
   },
   {
     "name": "@kadena/pactjs",
-    "version": "0.3.2",
+    "version": "0.4.0",
     "private": false,
     "path": "packages/libs/pactjs"
   },
   {
     "name": "@kadena/pactjs-cli",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "private": false,
     "path": "packages/tools/pactjs-cli"
   },
   {
     "name": "@kadena/pactjs-generator",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "private": false,
     "path": "packages/libs/pactjs-generator"
   },
   {
     "name": "@kadena/react-components",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": true,
     "path": "packages/libs/react-components"
   },
   {
     "name": "@kadena/react-ui",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "private": true,
     "path": "packages/libs/react-ui"
   },
@@ -121,7 +127,7 @@
   },
   {
     "name": "@kadena/types",
-    "version": "0.4.2",
+    "version": "0.5.0",
     "private": false,
     "path": "packages/libs/types"
   },
@@ -133,43 +139,43 @@
   },
   {
     "name": "@kadena-dev/eslint-config",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "private": false,
     "path": "packages/tools/eslint-config"
   },
   {
     "name": "@kadena-dev/eslint-plugin",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "private": false,
     "path": "packages/tools/eslint-plugin"
   },
   {
-    "name": "@kadena-dev/heft-rig",
-    "version": "0.1.0",
-    "private": false,
-    "path": "packages/tools/heft-rig"
-  },
-  {
     "name": "@kadena-dev/lint-package",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": true,
     "path": "packages/tools/lint-package"
   },
   {
     "name": "@kadena-dev/markdown",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "private": true,
     "path": "packages/tools/markdown"
   },
   {
     "name": "@kadena-dev/scripts",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "private": true,
     "path": "packages/tools/scripts"
   },
   {
+    "name": "@kadena-dev/shared-config",
+    "version": "1.0.0",
+    "private": false,
+    "path": "packages/tools/shared-config"
+  },
+  {
     "name": "kadena.js",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "path": "packages/libs/kadena.js"
   }

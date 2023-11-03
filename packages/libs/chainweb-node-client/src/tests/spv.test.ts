@@ -1,24 +1,24 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
 import type { SPVResponse } from '../interfaces/PactAPI';
 import { spv } from '../spv';
 import { testSPVProof, testSPVRequest, testURL } from './mockdata/Pact';
 
-const restHandlers = [
-  rest.post(`${testURL}/spv`, (req, res, ctx) => {
-    return res.once(ctx.status(200), ctx.text(testSPVProof));
-  }),
-  rest.post(`${testURL}/tooyoung/spv`, (req, res, ctx) => {
-    return res.once(
-      ctx.status(400),
-      ctx.text(
+const httpHandlers = [
+  http.post(`${testURL}/spv`, () => new HttpResponse(testSPVProof)),
+  http.post(
+    `${testURL}/tooyoung/spv`,
+    () =>
+      new HttpResponse(
         'SPV target not reachable: target chain not reachable. Chainweb instance is too young',
+        { status: 400 },
       ),
-    );
-  }),
+    { once: true },
+  ),
 ];
 
-const server = setupServer(...restHandlers);
+const server = setupServer(...httpHandlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());

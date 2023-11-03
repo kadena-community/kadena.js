@@ -9,5 +9,6 @@ module.exports = {
   ignorePatterns: ['playwright.config.ts', '*.mocks.ts'],
   rules: {
     '@kadena-dev/typedef-var': 'off',
+    '@rushstack/typedef-var': 'off',
   },
 };

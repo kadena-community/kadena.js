@@ -51,7 +51,7 @@ export const cardColorVariants = styleVariants(colorVariants, (color) => {
 
 export const expandVariants = styleVariants({
   true: [sprinkles({ width: '100%', maxWidth: '100%' })],
-  false: [sprinkles({ width: 'max-content', maxWidth: 'maxContent' })],
+  false: [sprinkles({ width: 'max-content', maxWidth: '$maxContentWidth' })],
 });
 
 export const displayVariants = styleVariants({

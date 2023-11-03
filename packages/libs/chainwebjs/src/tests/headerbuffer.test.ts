@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { HeaderBuffer } from '../HeaderBuffer';
 import type { IBufferHeader } from '../types';
 /* ************************************************************************** */

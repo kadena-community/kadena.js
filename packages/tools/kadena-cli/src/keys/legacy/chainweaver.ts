@@ -2,8 +2,6 @@ import { binToHex, hexToBin } from '@kadena/cryptography-utils';
 
 import lib from 'cardano-crypto.js/kadena-crypto.js';
 
-// import lib from 'kadena-crypto.js/kadena-crypto.js';
-
 export function generateSeedPhrase(): string {
   const seedPhrase = lib.kadenaGenMnemonic();
   return seedPhrase;

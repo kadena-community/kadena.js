@@ -1,4 +1,4 @@
-name: Integration Tests
+name: Integration tests
 on:
   pull_request:
   workflow_dispatch:
@@ -7,8 +7,16 @@ on:
       - main
 
 jobs:
-  kadena-client:
+  integration-tests:
+    name: ${{ matrix.package }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: ['@kadena/client', '@kadena/client-utils']
+
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     services:
       devnet:
@@ -36,8 +44,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build client and dependencies
-        run: pnpm turbo build --filter @kadena/client
-
       - name: run integration tests
-        run: pnpm run test:integration --filter @kadena/client
+        run: pnpm run test:integration --filter ${{ matrix.package }}

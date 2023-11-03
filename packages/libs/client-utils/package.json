@@ -1,0 +1,86 @@
+{
+  "name": "@kadena/client-utils",
+  "version": "0.0.2",
+  "description": "Utility functions build as a wrapper around @kadena/client",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/client-utils"
+  },
+  "license": "MIT",
+  "contributors": [
+    "Javad Khalilian <javad@kadena.io>",
+    "Albert Groothedde <albert@kadena.io>"
+  ],
+  "exports": {
+    "./coin": "./lib/coin/index.js",
+    "./core": "./lib/core/index.js"
+  },
+  "main": "./lib/core/index.js",
+  "typesVersions": {
+    "*": {
+      "core": [
+        "./lib/core/index.d.ts"
+      ],
+      "coin": [
+        "./lib/coin/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "lib",
+    "coin",
+    "core",
+    "src"
+  ],
+  "scripts": {
+    "ae": "pnpm run ae:core && pnpm run ae:coin",
+    "ae:coin": "api-extractor run --verbose -c ./config/api-extractor-coin.json",
+    "ae:core": "api-extractor run --verbose -c ./config/api-extractor-core.json",
+    "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc && pnpm run ae",
+    "dev:ae:coin": "api-extractor run --local --verbose -c ./config/api-extractor-coin.json",
+    "dev:ae:core": "api-extractor run --local --verbose -c ./config/api-extractor-core.json",
+    "dev:postinstall": "pnpm run pactjs:generate:contract",
+    "format": "pnpm run /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:src": "prettier . --cache --write",
+    "generate-pipe-type": "ts-node src/scripts/create-async-pipe-type.ts 30",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .js,.ts",
+    "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact",
+    "test": "vitest",
+    "test:integration": "vitest run -c ./vitest.integration.config.ts"
+  },
+  "dependencies": {
+    "@kadena/chainweb-node-client": "workspace:*",
+    "@kadena/client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "debug": "~4.3.4",
+    "ramda": "^0.29.0"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:^",
+    "@microsoft/api-extractor": "^7.38.0",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
+    "@types/debug": "~4.1.7",
+    "@types/node": "^18.17.14",
+    "@types/ramda": "^0.29.5",
+    "@vitest/coverage-v8": "^0.34.6",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.3",
+    "prettier-plugin-packagejson": "^2.4.6",
+    "ts-node": "~10.8.2",
+    "typescript": "5.2.2",
+    "vitest": "^0.34.6"
+  }
+}

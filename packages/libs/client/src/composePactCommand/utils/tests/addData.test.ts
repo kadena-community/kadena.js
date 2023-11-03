@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { addData } from '../addData';
 
 describe('addData', () => {

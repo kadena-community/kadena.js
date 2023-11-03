@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { base64UrlEncodeArr } from '../base64UrlEncodeArr';
 
 test('Takes in Uint8Array binary object and outputs Base 64 URL encoded string', () => {

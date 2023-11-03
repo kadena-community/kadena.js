@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { stringifyAndMakePOSTRequest } from '../stringifyAndMakePOSTRequest';
 
 test('should stringify body and create POST request', () => {

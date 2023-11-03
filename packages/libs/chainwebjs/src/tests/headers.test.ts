@@ -1,23 +1,20 @@
-jest.mock('cross-fetch', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
-import fetch from 'cross-fetch';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import chainweb from '..';
 import { config } from './config';
+import { blockByHeightBranchPageMock } from './mocks/blockByHeightBranchPageMock';
+import { blockByHeightCurrentCutMock } from './mocks/blockByHeightCurrentCutMock';
 import { header } from './mocks/header';
-import { mockFetch } from './mokker';
 
-const mockedFunctionFetch = fetch as jest.MockedFunction<typeof fetch>;
-mockedFunctionFetch.mockImplementation(
-  mockFetch as jest.MockedFunction<typeof fetch>,
-);
+const server = setupServer();
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
 /* ************************************************************************** */
 /* Test settings */
 
-jest.setTimeout(25000);
 const debug: boolean = false;
 
 /* ************************************************************************** */
@@ -39,6 +36,19 @@ const height = 1511601;
 
 describe('chainweb.header', () => {
   it('should return the correct header by height', async () => {
+    server.resetHandlers(
+      http.get(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/cut',
+        () => HttpResponse.json(blockByHeightCurrentCutMock),
+        { once: true },
+      ),
+      http.post(
+        'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/header/branch',
+        () => HttpResponse.json(blockByHeightBranchPageMock),
+        { once: true },
+      ),
+    );
+
     const r = await chainweb.header.height(
       0,
       height,

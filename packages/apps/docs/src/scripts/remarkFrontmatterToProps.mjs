@@ -23,7 +23,7 @@ const getCurrentPostFromJson = (root) => {
   const data = getFlatData();
 
   return data.find((item) => {
-    return item && item.root === root;
+    return item && (item.root === root || `${item.root}/` === root);
   });
 };
 
@@ -96,7 +96,7 @@ const createNavigation = (file) => {
   const flatData = getFlatData();
 
   const itemIdx = flatData.findIndex((i) => {
-    return i && i.root === path;
+    return i && (i.root === path || `${i.root}/` === path);
   });
 
   return {
