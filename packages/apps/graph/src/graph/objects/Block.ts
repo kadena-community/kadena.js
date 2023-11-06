@@ -1,5 +1,6 @@
-import { prismaClient } from '../../db/prismaClient';
-import { dotenv } from '../../utils/dotenv';
+import { prismaClient } from '@db/prismaClient';
+import { dotenv } from '@utils/dotenv';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Block', {
@@ -20,18 +21,21 @@ export default builder.prismaNode('Block', {
     parent: t.prismaField({
       type: 'Block',
       nullable: true,
-      resolve(query, parent, args, context, info) {
-        return prismaClient.block.findUnique({
-          where: {
-            hash: parent.parentBlockHash,
-          },
-        });
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.block.findUnique({
+            where: {
+              hash: parent.parentBlockHash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
-
     parentHash: t.string({
       nullable: true,
-      resolve: (parent, args, context, info) => {
+      resolve(parent) {
         // Access the parent block's hash from the parent object
         return parent.parentBlockHash;
       },
@@ -41,41 +45,57 @@ export default builder.prismaNode('Block', {
     transactions: t.prismaConnection({
       type: 'Transaction',
       cursor: 'blockHash_requestKey',
-      async totalCount(parent, args, context, info) {
-        return prismaClient.transaction.count({
-          where: {
-            blockHash: parent.hash,
-          },
-        });
+      async totalCount(parent) {
+        try {
+          return await prismaClient.transaction.count({
+            where: {
+              blockHash: parent.hash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
-      resolve: (query, parent, args, context, info) => {
-        return prismaClient.transaction.findMany({
-          ...query,
-          where: {
-            blockHash: parent.hash,
-          },
-          orderBy: {
-            height: 'desc',
-          },
-        });
+      async resolve(query, parent) {
+        try {
+          return await prismaClient.transaction.findMany({
+            ...query,
+            where: {
+              blockHash: parent.hash,
+            },
+            orderBy: {
+              height: 'desc',
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
 
     minerKeys: t.prismaField({
       type: ['MinerKey'],
       nullable: true,
-      resolve(query, parent, args, context, info) {
-        return prismaClient.minerKey.findMany({
-          where: {
-            blockHash: parent.hash,
-          },
-        });
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.minerKey.findMany({
+            where: {
+              blockHash: parent.hash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
 
     confirmationDepth: t.int({
-      resolve: async (parent, args, context, info) => {
-        return getConfirmationDepth(parent.hash);
+      async resolve(parent) {
+        try {
+          return await getConfirmationDepth(parent.hash);
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
   }),

@@ -1,9 +1,10 @@
 import { useGetEventByNameSubscription } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
+import { ErrorBox } from '@/components/error-box/error-box';
 import { formatCode } from '@/utils/formatter';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Notification, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -35,17 +36,7 @@ const Event: React.FC = () => {
             </div>
           )}
 
-          {error && (
-            <Notification.Root color="negative" icon="Close" variant="outlined">
-              Unknown error:
-              <br />
-              <br />
-              <code>{error.message}</code>
-              <br />
-              <br />
-              Check if the Graph server is running.
-            </Notification.Root>
-          )}
+          {error && <ErrorBox error={error} />}
 
           {eventSubscription?.event && (
             <div style={{ maxWidth: '1000px' }}>

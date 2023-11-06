@@ -1,8 +1,8 @@
 import type {
-  GetAccountQuery,
-  GetBlockFromHashQuery,
-  GetChainAccountQuery,
-  GetTransactionsQuery,
+  BlockTransactionsConnection,
+  ChainModuleAccountTransactionsConnection,
+  ModuleAccountTransactionsConnection,
+  QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
@@ -13,10 +13,10 @@ interface ICompactTransactionsTableProps {
   viewAllHref?: string;
   description?: string;
   transactions:
-    | GetAccountQuery['account']['transactions']
-    | GetChainAccountQuery['chainAccount']['transactions']
-    | GetBlockFromHashQuery['block']['transactions']
-    | GetTransactionsQuery['transactions'];
+    | ModuleAccountTransactionsConnection
+    | ChainModuleAccountTransactionsConnection
+    | BlockTransactionsConnection
+    | QueryTransactionsConnection;
 }
 
 export const CompactTransactionsTable = (

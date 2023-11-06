@@ -1,7 +1,8 @@
+import { prismaClient } from '@db/prismaClient';
+import { dotenv } from '@utils/dotenv';
+import { normalizeError } from '@utils/errors';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
-import { prismaClient } from '../../db/prismaClient';
-import { dotenv } from '../../utils/dotenv';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
@@ -13,36 +14,38 @@ builder.queryField('blocksFromHeight', (t) => {
       startHeight: t.arg.int({ required: true }),
       chainIds: t.arg.intList({ required: false }),
     },
-
     type: [Block],
-
-    resolve: async (
+    async resolve(
       __query,
       __parent,
       {
         startHeight,
         chainIds = Array.from(new Array(dotenv.CHAIN_COUNT)).map((__, i) => i),
       },
-    ) => {
-      const blocksFromHeight = await prismaClient.block.findMany({
-        where: {
-          AND: [
-            {
-              height: {
-                gte: startHeight,
+    ) {
+      try {
+        const blocksFromHeight = await prismaClient.block.findMany({
+          where: {
+            AND: [
+              {
+                height: {
+                  gte: startHeight,
+                },
               },
-            },
-            {
-              chainId: {
-                in: chainIds as number[],
+              {
+                chainId: {
+                  in: chainIds as number[],
+                },
               },
-            },
-          ],
-        },
-      });
+            ],
+          },
+        });
 
-      log("found '%s' blocks", blocksFromHeight.length);
-      return blocksFromHeight;
+        log("found '%s' blocks", blocksFromHeight.length);
+        return blocksFromHeight;
+      } catch (error) {
+        throw normalizeError(error);
+      }
     },
   });
 });

@@ -1,6 +1,6 @@
 import type {
-  GetAccountQuery,
-  GetChainAccountQuery,
+  ChainModuleAccountTransfersConnection,
+  ModuleAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
@@ -12,8 +12,9 @@ interface ICompactTransfersTableProps {
   accountName: string;
   chainId?: string;
   transfers:
-    | GetAccountQuery['account']['transfers']
-    | GetChainAccountQuery['chainAccount']['transfers'];
+    | ModuleAccountTransfersConnection
+    | ChainModuleAccountTransfersConnection;
+
   description?: string;
 }
 
