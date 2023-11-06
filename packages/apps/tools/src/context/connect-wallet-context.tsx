@@ -149,15 +149,15 @@ export const WalletConnectClientContextProvider: FC<
           pairingTopic: undefined,
           requiredNamespaces: {
             kadena: {
-              methods: [
-                'kadena_getAccounts_v1',
-                'kadena_sign_v1',
-                'kadena_quicksign_v1',
-              ],
               chains: [
                 'kadena:mainnet01',
                 'kadena:testnet04',
                 'kadena:development',
+              ],
+              methods: [
+                'kadena_getAccounts_v1',
+                'kadena_sign_v1',
+                'kadena_quicksign_v1',
               ],
               events: [],
             },
@@ -172,19 +172,24 @@ export const WalletConnectClientContextProvider: FC<
         const session = await approval();
         await onSessionConnected(session);
 
+        console.log('Session: ', session);
+
         // NOTE: this doesn't work yet
         const accountsRequest = {
           id: 1,
           jsonrpc: '2.0',
           method: 'kadena_getAccounts_v1',
           params: {
-            accounts: session.namespaces?.kadena?.accounts.find((acc) =>
-              acc.includes('testnet04'),
-            ),
+            accounts: [
+              {
+                account: session.namespaces?.kadena?.accounts[1],
+                contracts: ['coin'],
+              },
+            ],
           },
         };
 
-        const response = client.request<{
+        const response = await client.request<{
           accounts: IWalletConnectAccount[];
         }>({
           topic: session.topic,
