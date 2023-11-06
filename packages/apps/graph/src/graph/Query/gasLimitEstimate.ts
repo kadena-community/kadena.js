@@ -1,4 +1,4 @@
-import { localReadTransfer } from '../../devnet/transfer';
+import { localReadTransfer } from '@devnet/transfer';
 import { builder } from '../builder';
 
 const PactTransaction = builder.inputType('PactTransaction', {

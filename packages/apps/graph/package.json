@@ -70,6 +70,7 @@
   "_moduleAliases": {
     "@db": "src/db",
     "@services": "src/services",
-    "@utils": "src/utils"
+    "@utils": "src/utils",
+    "@devnet": "src/devnet"
   }
 }
