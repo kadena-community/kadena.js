@@ -1,5 +1,18 @@
 # @kadena/graph-client
 
+## 0.1.3
+
+### Patch Changes
+
+- 96e321d8a: Changed the transaction overview page to display signer related
+  information
+- bcac940f7: Apply formatting to all json's and code in client
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [fa98adaa8]
+- Updated dependencies [fa6b84e22]
+  - @kadena/react-ui@0.2.1
+
 ## 0.1.2
 
 ### Patch Changes

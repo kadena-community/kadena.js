@@ -1,5 +1,12 @@
 # @kadena/react-ui
 
+## 0.2.1
+
+### Patch Changes
+
+- fa98adaa8: Fixed the KodeMono font
+- fa6b84e22: No auto-globals for vitest specs
+
 ## 0.2.0
 
 ### Minor Changes

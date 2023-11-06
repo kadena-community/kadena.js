@@ -1,5 +1,14 @@
 # @kadena/kda-cli
 
+## 0.0.3
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [fa6b84e22]
+  - @kadena/cryptography-utils@0.4.1
+
 ## 0.0.2
 
 ### Patch Changes

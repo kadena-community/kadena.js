@@ -1,6 +1,21 @@
 # @kadena/docs
 
+## 0.5.0
+
+### Minor Changes
+
+- 7544606f2: next/prev navigation fix
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [fa98adaa8]
+- Updated dependencies [fa6b84e22]
+  - @kadena/react-ui@0.2.1
+
 ## 0.4.1
+
 - fix the next/prev page navigation
 
 ## 0.4.0
