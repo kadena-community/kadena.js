@@ -1,7 +1,5 @@
-import { harden } from '../utils';
+import { HARDENED_OFFSET, harden } from '../utils';
 import { kadenaGenKeypair as kadenaGenKeypairOriginal } from './vendor/kadena-crypto';
-
-const HARDENED_OFFSET = 0x80000000;
 
 export function kadenaGenOneKeypair(
   password: string,
