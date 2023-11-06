@@ -12,7 +12,16 @@ layout: full
 
 ```pact
 # interactive
-(+ 1 2)
+(module hello-world G
+
+  (defcap G () true)
+
+  (defun say-hello (name:string)
+    (format "Hello, {}!" [name])
+  )
+)
+
+(say-hello "DevEx Team!")
 ```
 
 ## What does the KDA token do?

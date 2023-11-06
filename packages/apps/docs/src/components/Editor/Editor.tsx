@@ -1,11 +1,14 @@
-import type { OnMount } from '@monaco-editor/react';
-import MNEditor, { useMonaco } from '@monaco-editor/react';
-import type monaco from 'monaco-editor';
-import type { FC, PropsWithChildren } from 'react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import 'ace-builds/src-noconflict/ace';
+import 'ace-builds/src-noconflict/mode-lisp';
+import 'ace-builds/src-noconflict/theme-github_dark';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+
+import AceEditor from 'react-ace';
+import { isArray } from 'redoc';
 import { ErrorLine } from './ErrorLine';
 import { SuccessLine } from './SuccessLine';
-import { consoleClass } from './styles.css';
+import { consoleClass, editorClass } from './styles.css';
 import { cleanOutput } from './utils';
 
 interface IConsoleLine {
@@ -18,11 +21,9 @@ interface IMessage {
 }
 
 export const Editor: FC<PropsWithChildren> = ({ children }) => {
-  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const [editor, setEditor] =
-    useState<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [socket, setSocket] = useState<WebSocket>();
   const [consoleContent, setConsoleContent] = useState<IConsoleLine[]>([]);
+  const [value, setValue] = useState<string>();
 
   const setMessage = useCallback(
     (event: IMessage) => {
@@ -76,31 +77,54 @@ export const Editor: FC<PropsWithChildren> = ({ children }) => {
     connect();
   }, [connect]);
 
-  useEffect(() => {
-    console.log(1, editor);
-    editor?.onKeyUp((event) => {
-      if (event.keyCode === 3 && editorRef.current?.getValue()) {
-        socket?.send(editorRef.current?.getValue());
-      }
-    });
-  }, [socket, editor]);
+  const getContent = (child: any): ReactNode => {
+    if (!child) return;
+    if (
+      typeof child === 'string' ||
+      typeof child === 'number' ||
+      typeof child === 'boolean'
+    ) {
+      if (child === '# interactive') return '';
+      return child;
+    }
 
-  const handleEditorDidMount: OnMount = (editor): void => {
-    console.log(111, editor);
-    editorRef.current = editor;
-    setEditor(editor);
+    if (isArray(child.props?.children)) {
+      return child.props?.children.map((item: any) => getContent(item));
+    }
+
+    return getContent(child.props?.children);
   };
 
+  useEffect(() => {
+    console.log(children);
+    if (React.isValidElement(children)) return;
+    const content = React.Children.map(children, (child) => getContent(child));
+
+    setValue(content?.join(''));
+  }, [children]);
+
+  const onChange = (v: string): void => {
+    setValue(v);
+    socket?.send(v);
+  };
+
+  console.log(1, value, 1);
   return (
     <>
-      <MNEditor
-        theme="vs-dark"
-        height="250px"
-        width="100%"
-        saveViewState={false}
-        onMount={handleEditorDidMount}
-        defaultValue={`(+ 1 1)\n(* 2 2)`}
-      ></MNEditor>
+      <AceEditor
+        mode="lisp"
+        cursorStart={-1}
+        focus
+        fontSize={14}
+        theme="github_dark"
+        showGutter={false}
+        onChange={onChange}
+        debounceChangePeriod={300}
+        name="UNIQUE_ID_OF_DIV"
+        keyboardHandler="normal"
+        className={editorClass}
+        value={value}
+      />
       <div className={consoleClass}>
         {consoleContent.map((item, idx) => {
           if (item.type === 'success')

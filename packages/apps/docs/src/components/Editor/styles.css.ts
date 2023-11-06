@@ -1,5 +1,5 @@
-import { sprinkles } from '@kadena/react-ui/theme';
-import { style } from '@vanilla-extract/css';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const lineSuccessClass = style({
   color: 'black',
@@ -17,3 +17,15 @@ export const consoleClass = style([
     overflowY: 'scroll',
   },
 ]);
+
+export const editorClass = style([
+  sprinkles({}),
+  {
+    fontFamily: vars.fonts.$mono,
+    fontSize: 'inherit',
+  },
+]);
+
+globalStyle(`${editorClass} span`, {
+  fontFamily: vars.fonts.$mono,
+});
