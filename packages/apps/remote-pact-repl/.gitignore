@@ -169,3 +169,5 @@ dist
 .pnp.\*
 
 pact-bin
+
+pnpm-lock.yaml
