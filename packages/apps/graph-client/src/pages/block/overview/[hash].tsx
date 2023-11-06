@@ -8,14 +8,7 @@ import { ErrorBox } from '@/components/error-box/error-box';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
-import {
-  Accordion,
-  Box,
-  Breadcrumbs,
-  Link,
-  Notification,
-  Table,
-} from '@kadena/react-ui';
+import { Accordion, Box, Breadcrumbs, Link, Table } from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
 import React from 'react';

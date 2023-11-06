@@ -4,7 +4,7 @@ import { mainStyle } from '@/components/Common/main/styles.css';
 import { ErrorBox } from '@/components/error-box/error-box';
 import { formatCode } from '@/utils/formatter';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Notification, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
