@@ -10,12 +10,12 @@ We encourage everyone with an interest in improving Kadena documentation to cont
 This guide describes how you can make changes to the documentation website directly by editing source files or indirectly by requesting updates.
 You can follow these instructions whether you are an internal or external contributor.
 
-## Prerequisites
+## Before you begin
 
-Before you begin, verify that you meet the following basic requirements:
+To follow the steps in this guide, verify the following basic requirements:
 
 - You have a code editor, a GitHub account, and experience using command-line programs, including `git` commands and command line options.
-- You are familiar with using the Markdown markup language to add formatting elements to plain text documents. 
+- You are familiar with using Markdown to add formatting elements to plain text documents. 
   For information about using Markdown, see the [Markdown Guide](https://www.markdownguide.org/).
 
 - You have the `pnpm` package manager installed.
@@ -25,6 +25,8 @@ Before you begin, verify that you meet the following basic requirements:
   For more information about installing `pnpm` on different operating systems, see [Installation](https://pnpm.io/installation).
   
   Run `pnpm --version` to verify that you have `pnpm` installed and the version you are running. 
+
+- You have run `pnpm setup` to add pnpm to your PATH environment variable and updated your terminal to use the new PATH.
 
 ## Set up a local development environment
 
@@ -38,23 +40,40 @@ To set up a local development environment for contributing to Kadena documentati
    git clone https://github.com/kadena-community/kadena.js.git
    ```
 
-   This command clones the entire public repository for the TypeScript and JavaScript tools that enable you to interact with the Kadena ecosystem, including the documentation package.
+   This command clones the entire public repository for the TypeScript and JavaScript tools that enable you to interact with the Kadena ecosystem, including the documentation engine and user interface components.
 
-2. Change to the root of the `docs` directory by running the following command:
+2. Change to the root of the `kadena-js` repository by running the following command:
    
    ```code
-   cd kadena.js/packages/apps/docs
+   cd kadena.js
    ```
 
-3. Install the documentation package dependencies by running the following commands:
+3. Install the workspace dependencies by running the following command:
 
    ```code
    pnpm install
    ```
 
-   This command installs all of the package dependencies used to build the documentation website and provide basic features, like navigation and search functionality.
-   To contribute to documentation, you typically only need to work in the `/src/pages` folder and its subfolders.
-   Most of the sub-folders and files in the `/src/pages` folder define the structure and operation of the application.
+   This command installs all of the workspace dependencies used to build the documentation as a web application, including shared user interface components.
+
+
+4. Install the `turbo` virtualization software by running the following command:
+   
+   ```
+   pnpm install --global turbo
+   ```
+
+   After you run this command, your local workspace has everything you need to build the documentation locally.
+
+5. Change to the root of the `docs` application directory by running the following command:
+   
+   ```code
+   cd kadena.js/packages/apps/docs
+   ```
+   
+   If you explore the contents of the `docs` directory, you'll see the files and subfolders used to build the documentation as a web application.
+   To contribute to documentation, you typically only need to work in the `/src/pages` folder and its subfolders and individual pages.
+   The `/src/pages` folder includes files and subfolders that define the structure of the content and the operation of the application.
    For example:
 
    - `/api` contains scripts to interact with the website using REST API calls.
@@ -73,7 +92,7 @@ To set up a local development environment for contributing to Kadena documentati
    Within these folders, the Markdown files—files with the `md` or `mdx` extension—contain the documentation content.
    After you explore these folders, create a local working branch of the repository for your contribution.
 
-4. Create a local branch with a prefix that identifies you as the author and a branch name that describes the content you intend to add or change.
+6. Create a local branch with a prefix that identifies you as the author and a branch name that describes the content you intend to add or change.
    For example, if your git handle is `lola-pistola` and you are fixing a typo in the kadena folder, you might create a branch like this:
 
    ```code
@@ -89,39 +108,41 @@ You can use `pnpm dev` to run a local development server that detects changes to
 
 To start the development server in your local environment:
 
-1. Change to the React component library by running the following command:
+1. Open a terminal shell and switch to your working branch, if necessary.
+   For example:
    
    ```code
-   cd kadena.js/packages/libs/react-ui
+   git switch lola-pistola/typo-kadena-kda-concepts
    ```
 
-1. Build the component library locally by running the following command:
+1. Build the docs application by running the following command:
+   
+   ```
+   turbo run build --filter @kadena/docs^...
+   ```
+
+2. Change to the `docs` application directory by running the following command:
    
    ```code
-   pnpm build
+   cd kadena.js/packages/apps/docs
    ```
-
-1. Change your current working directory to `kadena-js/packages/apps/docs`.
    
-   ```code
-   cd ../../apps/docs
-   ```
-
-2. Start the development server by running the following command:
+3. Start the development server by running the following command:
    
    ```code
    pnpm dev
    ```
 
-3. Open a web browser and navigate to the documentation using the URL `localhost:3000/docs`. 
+   This step imports files from multiple locations and can take some time to complete.
 
-## Adding a new page
+4. Open a web browser and navigate to the documentation using the URL `localhost:3000`. 
+   
+   This step compiles the application and displays the top-level landing page.
 
-You can add a new page anywhere in the `src/pages` folder to add a topic to the structure of the information architecture.
-You can build a navigational structure up to three levels deep.
+## Structure content using folders and pages
 
-The top navigation header is constructed from folders in the `src/pages` folder.
-Currently, the top navigation has the following top-level sections:
+The top-level landing page—including the text and curated links—is defined in the file `packages/apps/docs/src/pages/index.tsx`.
+Currently, the top navigation header has the following top-level sections:
 
 - Kadena
 - Build
@@ -131,174 +152,143 @@ Currently, the top navigation has the following top-level sections:
 - Contribute
 - BlogChain
 
-Quick start > Brief intro to Hello, World! to navigating the documentation:
-Engage > Learn > Concepts
-Onboard > Discover > Tutorials (guided journey)
-Coach > Build > Guides > How-to (task-based scenarios)
-Propel > Advance > Deeper dives and reference
+These top navigation links correspond to folders in the `src/pages` folder. 
+The landing page for each section also contains hard-coded text in the index.tsx file for that section.
+For example, the Build section landing page is `packages/apps/docs/src/pages/build/index.tsx`.
+Subsections within each top-level folder are grouped into folders and each folder has an `index.md` file for its first page of content.
 
-Create a `.md` file. The name of the file is also the name of the URL. Make it a
-good one. Best is to make it the title of the document. For `spaces`, please use
-`-`. Correct file name:
+You can add pages to the existing structure to add a topic to the current information architecture.
+The navigational structure can be up to three levels deep.
+For example:
 
-- `new-docs-application.md`
+- Top level (1) folder: Build
+- Second level (2) folder: Cookbooks
+- Third level (3) page: index.md
+
+### Naming pages
+
+If you create a new `.md` file, use the intended topic title as the name of the file.
+The name you specify defines the UR, so it should be descriptive but not too long. 
+Replace spaces between words with a hyphen (-). 
+For example, use files names that look like this:
+
+- `create-a-new-pplication.md`
 - `new-version-pact.mdx`
 
-Incorrect file name:
+Not file names that look like this:
 
 - `newDOCSApplication.md`
 - `new_pact_version.ts`
 - `language reference.tsx`
 
-### Frontmatter
+### Specifying frontmatter
 
-Every `.md` file should start with some meta data about the document. This is
-called the frontmatter. For the docs application it looks something like this:
+Every Markdown file includes a **frontmatter** section with some metadata about the document. 
+The frontmatter is always defined at the start of the file before any of the topic content.
+For the docs web application, the frontmatter looks something like this:
 
 ```yaml
 ---
-title: New docs application
+title: Short topic title
 subTitle: It's new!
-description: The new documentation website is better than ever
-menu: New docs
-label: New docs
+description: Provides a brief description of the content of this page.
+menu: Nav section
+label: Nav title
 editLink: https://github.com/kadena-community/kadena.js/edit/main/packages/tools/cookbook/README.md
 publishDate: 1977-10-13
 headerImage: /assets/blog/2020/1_b97oiC8M_ePx83B-PW0Cfg.webp
-author: He-man
-authorId: h.man
-layout: blog
+author: Author name
+authorId: AuthorID
+layout: Layout type
 ---
 ```
 
-Lets go over them 1 by 1.
-`title`: the title of the document
-`subTitle`: not required. Only used when on landing page layout. `description`:
-a short description on what the page is about. This will be used as meta data
-for SEO, but can also be used as an excerpt in the search results.
-`menu`: the name used in the side or header menu's.
-`label`: the name used in the breadcrumbs.
-`editLink`: this is the place where the actual document lives. This particular
-`md` file has been imported from somewhere else. The editlink is used at almost
-every page, at the bottom. It will show a link to everyone visiting the page.
-And they can create a PR with changes. `publishDate`: not required. only used
-for blogchain, at the moment. And used to show the user what date the article
-was first published.
-`headerImage`: not required. only used for the blogchain as the main header on
-top of the article.
-`author`: _depricated_! not required. for blogchain we used to JUST show the
-author name.
-`authorID`: not required. replaced the above `author` field. The ID then reads
-the author info from the `./src/data/authors.json`
-`layout`: checks what layout the page will use to show the data.
-`tags`: not required. An Array of strings that clarify what the content is
-about. It is shown on blogchain pages, but is also used in the search indexing
+| Keyword | Description
+| ------- | -----------
+| `title` | Specifies the user-face title of the topic. It should match the file name.
+| `subTitle`| Specifies a subtitle for the topic. It's only used in the landing page layout.
+| `description`| Specifies a short description on what the page is about. This information is used as metadata for SEO and can  be used as an excerpt in the search results.
+| `menu` | Specifies the name used in the side or header menus.
+| `label` | Specifies the name used in the breadcrumbs.
+| `editLink` | Specifies the location of the content for the page. In this example, the content has been imported from somewhere else. The `editlink` is used at the bottom of almost every page to show a link for editing to everyone who visits the page to enable content changes from external contributors. The `editLink` is added to the frontmatter at runtime or when doc is imported from outside the package.
+| `publishDate` | Specifies the date an article was first published. It's only used for BlogChain articles.
+| `headerImage` | Specifies an image to use at the top of an article. It's only used for the BlogChain main header.
+| `author` | Deprecated. 
+| `authorID` | Replaces the `author` field for BlogChain articles using the information from the `./src/data/authors.json` file.
+| `layout` | Checks what layout the page will use to show the data.
+| `tags` | Specifies an array of strings to clarify what the content is about. It's used for BlogChain articles and in the search indexing
 to get better search results.
 
-### Edit link
+### Adding images
 
-For the documentation website we want the community to help out. It would be
-great if they help out improving the documentation. Whether it is spelling
-mistakes or clarifying sections.
-The `editLink` frontmatter property, when available, will show an `edit page`
-button at the bottom of the screen. This will send the user to the appropriate
-github repo page where they can edit and create a PR with their changes. The
-`editLink` will be added to the frontmatter on runtime or, when the doc is
-imported from outside the package, it will be added during import.
-
-### Assets
-
-Assets like images can be saved in the following folder `/public/assets`.
+You can add images—like diagrams and screenshots—in the following folder `/public/assets`.
 You can make as many subfolders as you see fit.
 
-### H1
+### Selecting a layout
 
-Every page's content should also start with an `h1` header.
-If the `h1` header does not exist, the build scripts will give you a warning.
+Pages can use different layouts to address different content requirements:
 
-### Layout
+| Layout keyword | Description
+| -------------- | -----------
+| `full` | Use the `full` layout with the left and right side menus for the most content pages. 
+| `landing` | Use the `landing` layout for section introductions that require more navigation and less content.
+| `blog` | Use the `blog` layout for blog post articles.
+| `home` | Use the `home` layout for top-level landing pages with multiple sections and the site home page.
+| `redocly` | Use the `redocly` layout for generated swagger API output.
 
-There are a couple of different layouts that can be used in the application.
-`full`, `landing`, `blog`, `home` and `redocly`.
+#### Full layout example
 
-#### Full layout
+![Full](./public/assets/layout_full.png) 
 
-![the layout](./public/assets/layout_full.png) Most pages will use this layout.
-It has the left sidemenu and a table of content on the right. And it has the
-most room for the actual content.
+#### Landing layout example
 
-#### Landing layout
+![the layout](./public/assets/layout_landing.png)
 
-![the layout](./public/assets/layout_landing.png) If a section needs a special
-page landing page, to give it a bit more visibility we can use the landing
-layout.
-It has a large header that uses the `title` and `subTitle` from the frontmatter.
+#### Blog layout example
 
-#### Blog layout
+![the layout](./public/assets/layout_blog.png)
 
-![the layout](./public/assets/layout_blog.png) This layout is actually only used
-for blog posts. It shows the large `headerImage` from the frontmatter, if
-available.
-It also shows the author info and `tags` from the frontmatter, if available.
-Itdoes not have any sidemenus.
+#### Redocly layout example
 
-#### Redocly layout
+![the layout](./public/assets/layout_redocly.png) Only 
 
-![the layout](./public/assets/layout_redocly.png) Only used for pages that show
-swagger API info. Not to be used for other documentation.
+#### Home layout example
 
-#### Home layout
-
-![the layout](./public/assets/layout_home.png) The `home` layout is not really
-used together with `md` files. It is only used for landing pages of sections and
-the actual home page.
-It has a header that needs to be custom made for that page and we can do with
-the rest of the layout what ever we want.
+![the layout](./public/assets/layout_home.png) 
 
 ## Moving pages around
 
-Moving a page to another place in the tree is as simple as moving a file
-somewhere inside the `src/pages` directory.
-When the build then runs it is automatically is put in the correct position.
-**Important:**
+Moving a page to another place in the tree is as simple as moving a file somewhere inside the `src/pages` directory.
+When the build runs, the page is automatically is put in the correct position.
+However, keep in mind that renaming a file changes its URL and can have the following consequences:
 
-- Renaming a file will ALSO change the URL.
-- It could be that some internal links are now broken. You will get a warning
+- Internal links might be broken. You will get a warning
   from the build scripts.
-- It could be that some external websites were linking to this page and will now
-  get a 404.
-  - Please check analytics how many visits does this page get?
-  - If the page gets a lot of visits you can at a 301 redirect in
-    `next.confing.mjs`.
-    This will redirect all the old links to the new URL.
+- External pages or websites linking to the page might return 404 errors.
 
-## Imported docs
+Before renaming a file, check Google analytics to see how frequently the page is visited.
+If the page gets a lot of views or visitors, define a 301 redirect in the `next.confing.mjs` file to redirect from the old URL to the new URL.
 
-Most of the documentation files live in the docs package and can be editted in
-place as described. But there are also documentation files that live outside of
-this package and are maintained in other packages or repos. These are then
-imported and copied in their correct position during build time.
-If you have ran the build script once you can see them in your `src/pages` tree.
-If you make changes in these files they will be over written the next time you
-make a build.
+## Importing content from external sources
 
-So how do you know if this is an imported file and how can you make changes to
-them? In these files there will be a frontmatter property called `editLink`.
-When this property exists, this means that this is an imported document. And the
-link will be the place where you can edit this particular file.
+Most of the documentation files live in the `docs` package and can be edited directly in place. 
+However, some documentation files live outside of the `docs` package and are maintained in other packages or repositories. 
+Build scripts import and copy external documentation files into their correct position during the build.
+After you run the build script once, the imported files are visible in the `src/pages` subfolder.
+If you make changes in these files locally, your changes are overwritten the next time you run a build.
 
-### Multipage import
+If a file has the `editLink` frontmatter property, go to the location specified by this property to edit the file.
 
-Some docs, that are imported, are enourmously lengthy pages that are just to big
-to show on 1 page. There we can say, during the import, that it needs to be
-broken up. This is done automatically by checking `h2` headers. Every `h2`
-header will now be the start of a new page.
+### Multi-page import
+
+Some imported files are just too big to display as a single page. 
+These files are automatically broken up into multiple pages during the import process by checking the `h2` headings. 
+For these files, every `h2` heading is the start of a new page.
 The `editLink` frontmatter prop is the same for all these pages.
 
 ## Checking documentation validity
 
-To check that all the files are valid and ready to build, but you don't want to
-run the complete build run:
+If you want to check that all the files are valid and ready to build without run the complete build, run the following command:
 
 ```bash
 pnpm build:scripts
@@ -306,46 +296,23 @@ pnpm build:scripts
 
 ## Build scripts
 
-There are a couple of build scripts running just before the site is put live.
-These scripts help us with importing some docs, identifying issues with the
-markdown files etc.
+To help a build run smoothly by importing files and identifying issues like broken links or errors in Markdown, the following build scripts run before the site goes live: 
 
-`importAllReadmes.mjs`
-This script will import some documentation from other packages of this repo.
+- `importAllReadmes.mjs` imports documentation from other packages in the current repo.
+- `createDocsTree.mjs` create a large `json` file with the complete menu structure of the whole application, together with some extra metadata. This file is used for navigational features such as finding the next and previous pages for navigation.
+- `createSpecs.mjs` creates the `json` files for the swagger-like pages for Pact and Chainweb API documentation.
+- `detectBrokenLinks.mjs` checks all of the internal documentation links to verify that they are pointing to a file and prevent 404 errors.
+  This script also checks for domains that aren't used anymore, such as `pact-language.readthedocs.io` and `medium.com/kadena-io`.
+  The script renames some links from https://docs.kadena.io to internal links.
+- `checkForHeaders.mjs` checks that every page uses at least an h1 header at the top of the page. Important for SEO.
+- `checkAuthors.mjs` checks that blog posts have valid author information.
+- `createSitemap.mjs` creates a sitemap of all the pages and creates a `sitemap.xml`.
+  This file is later imported by search engines to know what is needed to be crawled. Important for SEO.
+- `copyFavIcons.mjs` copies all the favicons from the `/common/images/icons` package in the monorepo.
 
-`createDocsTree.mjs`
-This will create a large `json` file with the complete menu structure of the
-whole app, together with some extra meta data. This file is super useful in the
-app. For instance in finding the next and previous page, so we can use that at
-the bottom of the page for easy navigation.
+## Adding issues
 
-`createSpecs.mjs` This creates the `json` files for the swagger-like pages for
-pact and chainweb api documentation.
-
-`detectBrokenLinks.mjs` This will walk through all the documentation and check
-all the internal links. To check if they are pointing to an actual file. This
-will prevent 404's in our page when documentation is removed or moved to a
-different menu/folder.
-It will also check for certain domains that are not allowed anymore. Think about
-`pact-language.readthedocs.io` or `medium.com/kadena-io`. Also it will rename
-some links (from documentation that was imported) from https://docs.kadena.io to
-internal links.
-
-`checkForHeaders.mjs`
-Checks that every page uses at least an h1 header at the top of the page.
-Important for SEO.
-
-`checkAuthors.mjs`
-Blog posts have author information. This script checks that this author
-information is valid for our website.
-
-`createSitemap.mjs`
-Creates a sitemap of all the pages and creates a `sitemap.xml`.
-This file is later imported by search engines to know what is needed to be
-craweled. Important for SEO.
-
-`copyFavIcons.mjs`
-copy all the fav icons from `/common/images/icons` package in the monorepo.
+If there are any issues with the docs or you suggestions for improvements, submit an [issue](https://github.com/kadena-community/kadena.js/issues).
 
 ## Cli
 
@@ -354,8 +321,3 @@ The CLI is a TODO.
 - bootstrap a page
 - run build scripts more fine-grained (only the import scripts for example)
 - can we do something like 'docs-prettier'?
-
-## Adding issues
-
-If there are any issues with the docs, or you see room for improvements, you can add
-stories to: https://github.com/kadena-community/kadena.js/issues
