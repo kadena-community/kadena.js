@@ -172,7 +172,7 @@ The name you specify defines the UR, so it should be descriptive but not too lon
 Replace spaces between words with a hyphen (-). 
 For example, use files names that look like this:
 
-- `create-a-new-pplication.md`
+- `create-a-new-application.md`
 - `new-version-pact.mdx`
 
 Not file names that look like this:
