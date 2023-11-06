@@ -1,5 +1,20 @@
 # @kadena/react-ui
 
+## 0.3.0
+
+### Minor Changes
+
+- 11747cde4: Exported the Textarea and TextareaField components
+- 8a719c647: Add new width, height, and className properties to sprinkles and
+  update Box, Stack and Grid components to use them
+- df7044cac: Corrected `Tag` background color Extracted `maskValue` string
+  utility function from `MaskedValue` component Accept ReactNode as `children`
+  prop for `Tag` component
+
+### Patch Changes
+
+- 6491589b5: Exported MaskOptions type
+
 ## 0.2.1
 
 ### Patch Changes

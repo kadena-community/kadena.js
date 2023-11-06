@@ -1,5 +1,11 @@
 # Change Log - @kadena/client
 
+## 1.6.1
+
+### Patch Changes
+
+- 445fb2c7d: Fix pred type for keysets
+
 ## 1.6.0
 
 ### Patch Changes

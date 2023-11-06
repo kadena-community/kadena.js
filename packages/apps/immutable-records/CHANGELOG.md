@@ -1,5 +1,17 @@
 # @kadena/immutable-records
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [11747cde4]
+- Updated dependencies [445fb2c7d]
+- Updated dependencies [6491589b5]
+- Updated dependencies [8a719c647]
+- Updated dependencies [df7044cac]
+  - @kadena/react-ui@0.3.0
+  - @kadena/client@1.6.1
+
 ## 0.1.3
 
 ### Patch Changes

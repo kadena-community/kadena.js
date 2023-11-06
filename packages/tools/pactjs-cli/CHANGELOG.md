@@ -1,5 +1,11 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.6.1
+
+### Patch Changes
+
+- @kadena/pactjs-generator@1.6.1
+
 ## 1.6.0
 
 ### Minor Changes

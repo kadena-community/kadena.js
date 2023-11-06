@@ -1,5 +1,18 @@
 # @kadena/graph-client
 
+## 0.1.4
+
+### Patch Changes
+
+- 6e4895050: Added proper error logging for the graph and client
+- 39a870cea: Changed queries to adjust to new endpoint for getting graph and
+  chainweb-data info
+- Updated dependencies [11747cde4]
+- Updated dependencies [6491589b5]
+- Updated dependencies [8a719c647]
+- Updated dependencies [df7044cac]
+  - @kadena/react-ui@0.3.0
+
 ## 0.1.3
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @kadena/client-utils
 
+## 0.0.4
+
+### Patch Changes
+
+- 7a0b62119: change the sign event that happens for continuation transaction
+  from "sign" to "sign-continuation"
+- 445fb2c7d: Fix pred type for keysets
+- Updated dependencies [445fb2c7d]
+  - @kadena/client@1.6.1
+
 ## 0.0.3
 
 ### Patch Changes
