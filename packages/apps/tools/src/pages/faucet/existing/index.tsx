@@ -15,12 +15,13 @@ import {
   Breadcrumbs,
   Button,
   Card,
-  Grid,
   Heading,
   Notification,
 } from '@kadena/react-ui';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
@@ -31,6 +32,12 @@ import {
   containerClass,
   notificationContainerStyle,
 } from './styles.css';
+
+import {
+  accountNameContainerClass,
+  chainSelectContainerClass,
+  inputContainerClass,
+} from '../styles.css';
 
 const schema = z.object({
   name: NAME_VALIDATION,
@@ -143,11 +150,19 @@ const ExistingAccountFaucetPage: FC = () => {
             color="warning"
             expanded={true}
             icon="Information"
-            title={t(
-              `The Faucet is not available on Mainnet. On other networks, the Faucet smart contract must be deployed to fund accounts. In the Module Explorer you can see if it's deployed: https://tools.kadena.io/transactions/module-explorer?module=user.coin-faucet&chain=1`,
-            )}
+            title={t('The Faucet is not available on Mainnet')}
             variant="outlined"
-          />
+          >
+            <Trans
+              i18nKey="common:faucet-unavailable-warning"
+              components={[
+                <Link
+                  href="/transactions/module-explorer?module=user.coin-faucet&chain=1"
+                  key="link-to-module-explorer"
+                />,
+              ]}
+            />
+          </Notification.Root>
         ) : null}
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
@@ -161,20 +176,22 @@ const ExistingAccountFaucetPage: FC = () => {
         <Card fullWidth>
           <Heading as="h5">Account</Heading>
           <Box marginBottom="$4" />
-          <AccountNameField
-            inputProps={register('name')}
-            error={errors.name}
-            label={t('The account name you would like to fund coins to')}
-          />
-          <Grid.Root columns={2} marginTop="$4">
-            <Grid.Item>
+          <div className={inputContainerClass}>
+            <div className={accountNameContainerClass}>
+              <AccountNameField
+                inputProps={register('name')}
+                error={errors.name}
+                label={t('The account name you would like to fund coins to')}
+              />
+            </div>
+            <div className={chainSelectContainerClass}>
               <ChainSelect
                 onChange={onChainSelectChange}
                 value={chainID}
                 ariaLabel="Select Chain ID"
               />
-            </Grid.Item>
-          </Grid.Root>
+            </div>
+          </div>
         </Card>
         <div className={buttonContainerClass}>
           <Button

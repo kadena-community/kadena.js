@@ -50,7 +50,7 @@ data?: Record<string, unknown> | undefined;
 proof?: string | undefined;
 };
 }, {
-event: "sign" | "gas-station";
+event: "gas-station" | "sign-continuation";
 data: ICommand;
 }, {
 event: "submit-continuation";

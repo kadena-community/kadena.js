@@ -8,7 +8,7 @@ import { containerStyle } from './styles.css';
 export type FormStatus = 'idle' | 'successful' | 'erroneous' | 'processing';
 
 export type Titles = Record<FormStatus, string>;
-export type Bodies = Record<FormStatus, string>;
+export type Bodies = Record<FormStatus, React.ReactNode>;
 
 const statusToColorMap: Record<FormStatus, INotificationProps['color']> = {
   erroneous: 'negative',
@@ -27,7 +27,7 @@ const statusToIconMap: Record<FormStatus, INotificationProps['icon']> = {
 export interface IFormStatusNotificationProps {
   status?: FormStatus;
   title?: string;
-  body?: string;
+  body?: React.ReactNode;
   statusTitles?: Partial<Titles>;
   statusBodies?: Partial<Bodies>;
   children?: INotificationProps['children'];

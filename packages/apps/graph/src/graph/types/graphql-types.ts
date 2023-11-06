@@ -27,3 +27,9 @@ export interface ModuleAccount {
   transactions: Transaction[];
   transfers: Transfer[];
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface GraphConfiguration {
+  maximumConfirmationDepth: number;
+  minimumBlockHeight: bigint;
+}

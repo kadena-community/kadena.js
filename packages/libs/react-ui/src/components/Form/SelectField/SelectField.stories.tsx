@@ -10,7 +10,7 @@ type StoryProps = {
 } & ISelectFieldProps;
 
 const meta: Meta<StoryProps> = {
-  title: 'Components/SelectField',
+  title: 'Form/SelectField',
   parameters: {
     docs: {
       description: {

@@ -28,12 +28,12 @@ export const pubKeyInputWrapperStyle = style([
   },
 ]);
 
-export const keyIconWrapperStyle = style([
+export const pubKeysContainerStyle = style([
   sprinkles({
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    gap: '$2',
+    marginY: '$4',
+    flexWrap: 'wrap',
   }),
 ]);
 
@@ -49,5 +49,18 @@ export const iconButtonWrapper = style([
     position: 'absolute',
     top: '$10',
     right: '$6',
+  }),
+]);
+
+export const notificationContentStyle = style([
+  sprinkles({
+    display: 'inline-flex',
+    alignItems: 'center',
+  }),
+]);
+
+export const hoverTagContainerStyle = style([
+  sprinkles({
+    marginX: '$1',
   }),
 ]);
