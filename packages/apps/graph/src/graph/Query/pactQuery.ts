@@ -1,4 +1,5 @@
-import { CommandData, sendRawQuery } from '@src/services/node-service';
+import type { CommandData } from '@src/services/node-service';
+import { sendRawQuery } from '@src/services/node-service';
 import { normalizeError } from '@src/utils/errors';
 import { builder } from '../builder';
 

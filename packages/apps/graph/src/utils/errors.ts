@@ -1,4 +1,3 @@
-import type { ICommandResult } from '@kadena/chainweb-node-client';
 import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
 import { GraphQLError } from 'graphql';
 import { PactCommandError } from '../services/node-service';

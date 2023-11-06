@@ -80,7 +80,7 @@ export async function sendRawQuery(
   code: string,
   chainId: string,
   data?: CommandData[],
-) {
+): Promise<string> {
   const commandBuilder = Pact.builder
     .execution(code)
     .setMeta({
