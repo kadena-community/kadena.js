@@ -263,6 +263,7 @@ type Transfer implements Node {
   blockHash: String!
   blocks: [Block!]!
   chainId: BigInt!
+  crossChainTransfer: [Transfer!]
   height: BigInt!
   id: ID!
   moduleHash: String!
