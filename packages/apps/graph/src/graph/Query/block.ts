@@ -1,5 +1,5 @@
-import { prismaClient } from '@src/db/prismaClient';
-import { normalizeError } from '@src/utils/errors';
+import { prismaClient } from '@db/prismaClient';
+import { normalizeError } from '@utils/errors';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
 import { builder } from '../builder';

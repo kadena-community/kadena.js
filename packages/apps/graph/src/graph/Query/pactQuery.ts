@@ -1,6 +1,6 @@
-import type { CommandData } from '@src/services/node-service';
-import { sendRawQuery } from '@src/services/node-service';
-import { normalizeError } from '@src/utils/errors';
+import type { CommandData } from '@services/node-service';
+import { sendRawQuery } from '@services/node-service';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 const PactData = builder.inputType('PactQueryData', {

@@ -68,6 +68,8 @@
     "typescript": "5.2.2"
   },
   "_moduleAliases": {
-    "@src": "src"
+    "@db": "src/db",
+    "@services": "src/services",
+    "@utils": "src/utils"
   }
 }

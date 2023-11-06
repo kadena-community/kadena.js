@@ -1,6 +1,6 @@
-import { prismaClient } from '@src/db/prismaClient';
-import { normalizeError } from '@src/utils/errors';
-import { nullishOrEmpty } from '@src/utils/nullishOrEmpty';
+import { prismaClient } from '@db/prismaClient';
+import { normalizeError } from '@utils/errors';
+import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {

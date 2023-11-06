@@ -1,6 +1,6 @@
+import { prismaClient } from '@db/prismaClient';
 import type { Prisma } from '@prisma/client';
-import { prismaClient } from '@src/db/prismaClient';
-import { normalizeError } from '@src/utils/errors';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 builder.queryField('transactions', (t) => {

@@ -1,6 +1,6 @@
 import type { ChainId, IClient, ICommandResult } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
-import { dotenv } from '@src/utils/dotenv';
+import { dotenv } from '@utils/dotenv';
 
 export class PactCommandError extends Error {
   public commandResult: ICommandResult;
