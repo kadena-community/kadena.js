@@ -1,15 +1,9 @@
 import { useGetTransfersQuery } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
+import { ErrorBox } from '@/components/error-box/error-box';
 import routes from '@constants/routes';
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  Link,
-  Notification,
-  Table,
-} from '@kadena/react-ui';
+import { Box, Breadcrumbs, Button, Link, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -47,15 +41,7 @@ const AccountTransfers: React.FC = () => {
               <Loader /> <span>Retrieving transfers...</span>
             </div>
           )}
-          {error && (
-            <Notification.Root color="negative" icon="Close">
-              Unknown error:
-              <Box marginBottom="$4" />
-              <code>{error.message}</code>
-              <Box marginBottom="$4" />
-              Check if the Graph server is running.
-            </Notification.Root>
-          )}
+          {error && <ErrorBox error={error} />}
           {data?.transfers && (
             <>
               <Box marginBottom="$3">

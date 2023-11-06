@@ -48,6 +48,7 @@
     "graphql-scalars": "~1.22.2",
     "graphql-yoga": "~4.0.4",
     "json-bigint-patch": "~0.0.8",
+    "module-alias": "^2.2.3",
     "prisma": "^5.1.1",
     "seedrandom": "~3.0.5"
   },
@@ -65,5 +66,10 @@
     "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2"
+  },
+  "_moduleAliases": {
+    "@db": "src/db",
+    "@services": "src/services",
+    "@utils": "src/utils"
   }
 }
