@@ -1,9 +1,10 @@
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
+import { ErrorBox } from '@/components/error-box/error-box';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
 import routes from '@/constants/routes';
-import { Box, Breadcrumbs, Notification } from '@kadena/react-ui';
+import { Box, Breadcrumbs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -42,15 +43,7 @@ const AccountTransactions: React.FC = () => {
               <Loader /> <span>Retrieving transactions...</span>
             </div>
           )}
-          {error && (
-            <Notification.Root color="negative" icon="Close">
-              Unknown error:
-              <Box marginBottom="$4" />
-              <code>{error.message}</code>
-              <Box marginBottom="$4" />
-              Check if the Graph server is running.
-            </Notification.Root>
-          )}
+          {error && <ErrorBox error={error} />}
           {data?.transactions && (
             <ExtendedTransactionsTable
               transactions={data.transactions}

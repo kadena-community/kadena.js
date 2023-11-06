@@ -13,8 +13,8 @@ export type {
   ICardProps,
   IContentHeaderProps,
   IGradientTextProps,
-  IGridContainerProps,
   IGridItemProps,
+  IGridRootProps,
   IHeadingProps,
   IIconButtonProps,
   IIconProps,
@@ -55,12 +55,15 @@ export type {
   ITdProps,
   ITextFieldProps,
   ITextProps,
+  ITextareaFieldProps,
+  ITextareaProps,
   IThProps,
   ITooltipProps,
   ITrProps,
   ITrackerCardProps,
   ITreeProps,
   InputWrapperStatus,
+  MaskOptions,
 } from './components';
 
 export {
@@ -97,8 +100,11 @@ export {
   Tag,
   Text,
   TextField,
+  Textarea,
+  TextareaField,
   Tooltip,
   TrackerCard,
   Tree,
+  maskValue,
   useModal,
 } from './components';

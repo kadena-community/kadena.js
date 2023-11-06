@@ -1,4 +1,5 @@
-import { prismaClient } from '../../db/prismaClient';
+import { prismaClient } from '@db/prismaClient';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import type { ChainModuleAccount } from '../types/graphql-types';
@@ -10,7 +11,7 @@ export default builder.objectType('ModuleAccount', {
     moduleName: t.exposeString('moduleName'),
     chainAccounts: t.field({
       type: ['ChainModuleAccount'],
-      resolve: async (parent) => {
+      async resolve(parent) {
         const chainAccounts: ChainModuleAccount[] = [];
 
         for (let i = 0; i < 20; i++) {
@@ -21,19 +22,23 @@ export default builder.objectType('ModuleAccount', {
               chainId: i.toString(),
             });
 
-            chainAccounts.push({
-              chainId: i.toString(),
-              accountName: parent.accountName,
-              moduleName: parent.moduleName,
-              guard: {
-                keys: accountDetails.guard.keys,
-                predicate: accountDetails.guard.pred,
-              },
-              balance: accountDetails.balance,
-              transactions: [],
-              transfers: [],
-            });
-          } catch (e) {}
+            if (accountDetails !== null) {
+              chainAccounts.push({
+                chainId: i.toString(),
+                accountName: parent.accountName,
+                moduleName: parent.moduleName,
+                guard: {
+                  keys: accountDetails.guard.keys,
+                  predicate: accountDetails.guard.pred,
+                },
+                balance: accountDetails.balance,
+                transactions: [],
+                transfers: [],
+              });
+            }
+          } catch (error) {
+            throw normalizeError(error);
+          }
         }
 
         return chainAccounts;
@@ -41,7 +46,7 @@ export default builder.objectType('ModuleAccount', {
     }),
     totalBalance: t.field({
       type: 'Decimal',
-      resolve: async (parent) => {
+      async resolve(parent) {
         let totalBalance = 0;
 
         for (let i = 0; i < 20; i++) {
@@ -52,8 +57,12 @@ export default builder.objectType('ModuleAccount', {
               chainId: i.toString(),
             });
 
-            totalBalance += accountDetails.balance;
-          } catch (e) {}
+            if (accountDetails !== null) {
+              totalBalance += accountDetails.balance;
+            }
+          } catch (error) {
+            throw normalizeError(error);
+          }
         }
 
         return totalBalance;
@@ -62,43 +71,51 @@ export default builder.objectType('ModuleAccount', {
     transactions: t.prismaConnection({
       type: 'Transaction',
       cursor: 'blockHash_requestKey',
-      resolve: (query, parent) => {
-        return prismaClient.transaction.findMany({
-          ...query,
-          where: {
-            senderAccount: parent.accountName,
-            events: {
-              some: {
-                moduleName: parent.moduleName,
+      async resolve(query, parent) {
+        try {
+          return await prismaClient.transaction.findMany({
+            ...query,
+            where: {
+              senderAccount: parent.accountName,
+              events: {
+                some: {
+                  moduleName: parent.moduleName,
+                },
               },
             },
-          },
-          orderBy: {
-            height: 'desc',
-          },
-        });
+            orderBy: {
+              height: 'desc',
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
     transfers: t.prismaConnection({
       type: 'Transfer',
       cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
-      resolve: async (query, parent) => {
-        return prismaClient.transfer.findMany({
-          ...query,
-          where: {
-            OR: [
-              {
-                senderAccount: parent.accountName,
-              },
-              {
-                receiverAccount: parent.accountName,
-              },
-            ],
-          },
-          orderBy: {
-            height: 'desc',
-          },
-        });
+      async resolve(query, parent) {
+        try {
+          return await prismaClient.transfer.findMany({
+            ...query,
+            where: {
+              OR: [
+                {
+                  senderAccount: parent.accountName,
+                },
+                {
+                  receiverAccount: parent.accountName,
+                },
+              ],
+            },
+            orderBy: {
+              height: 'desc',
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
   }),

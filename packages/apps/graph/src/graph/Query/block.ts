@@ -1,6 +1,7 @@
+import { prismaClient } from '@db/prismaClient';
+import { normalizeError } from '@utils/errors';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
-import { prismaClient } from '../../db/prismaClient';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
@@ -11,23 +12,24 @@ builder.queryField('block', (t) => {
     args: {
       hash: t.arg.string({ required: true }),
     },
-
     type: Block,
+    nullable: true,
+    async resolve(__query, __parent, args) {
+      try {
+        log('searching for block with hash:', args.hash);
 
-    resolve: async (__query, __parent, { hash }) => {
-      log('searching for block with hash:', hash);
+        const block = await prismaClient.block.findUnique({
+          where: {
+            hash: args.hash,
+          },
+        });
 
-      const block = await prismaClient.block.findUnique({
-        where: {
-          hash,
-        },
-      });
+        log(`block with hash '${args.hash}' ${block ? '' : 'not'} found`);
 
-      log('found block', block);
-      if (!block) {
-        throw new Error(`Block not found for hash: ${hash}`);
+        return block;
+      } catch (error) {
+        throw normalizeError(error);
       }
-      return block;
     },
   });
 });

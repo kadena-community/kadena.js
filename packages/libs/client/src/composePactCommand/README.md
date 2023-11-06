@@ -166,11 +166,11 @@ const command = {
 
 add keyset to the data part
 
-| parameter     | type                                             | description                                  |
-| ------------- | ------------------------------------------------ | -------------------------------------------- |
-| name          | string                                           | name of the keyset                           |
-| pred          | "keys-all" \| "keys-one" \| "keys-two" \| string | type of pred                                 |
-| ...publicKeys | string[]                                         | list of the public keys to add to the keyset |
+| parameter     | type                                           | description                                  |
+| ------------- | ---------------------------------------------- | -------------------------------------------- |
+| name          | string                                         | name of the keyset                           |
+| pred          | "keys-all" \| "keys-any" \| "keys-2" \| string | type of pred                                 |
+| ...publicKeys | string[]                                       | list of the public keys to add to the keyset |
 
 <details>
 <summary>examples</summary>
@@ -180,7 +180,7 @@ const command = composePactCommand(
   execution(
     coin.transfer(readKeyset("senderKey"), "bob", { decimal: "1.1" })
   ),
-  addKeyset("senderKey","keys-one", "the_public_key")
+  addKeyset("senderKey","keys-any", "the_public_key")
 )()
 
 //
@@ -190,7 +190,7 @@ const command = {
     data: {
       senderKey: {
         publicKeys: ['the_public_key'],
-        pred: "keys-one"
+        pred: "keys-any"
       }
     }
   }

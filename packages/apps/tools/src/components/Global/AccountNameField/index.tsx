@@ -6,7 +6,13 @@ import type {
   IInputWrapperProps,
   ISelectProps,
 } from '@kadena/react-ui';
-import { IconButton, Input, InputWrapper, Select } from '@kadena/react-ui';
+import {
+  IconButton,
+  Input,
+  InputWrapper,
+  Select,
+  maskValue,
+} from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { ChangeEvent, FC } from 'react';
 import React, { useState } from 'react';
@@ -70,7 +76,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
         <option value={''}>{t('Select Account')}</option>
         {getAccounts(accounts, selectedNetwork).map((account) => (
           <option key={account} value={account}>
-            {account.slice(0, 4)}****{account.slice(-4)}
+            {maskValue(account)}
           </option>
         ))}
       </Select>

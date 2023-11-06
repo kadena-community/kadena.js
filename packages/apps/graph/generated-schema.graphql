@@ -85,6 +85,12 @@ type Event implements Node {
   transaction: Transaction
 }
 
+"""General information about the graph and chainweb-data"""
+type GraphConfiguration {
+  maximumConfirmationDepth: Int!
+  minimumBlockHeight: BigInt
+}
+
 type Guard {
   keys: [String!]!
   predicate: String!
@@ -136,6 +142,12 @@ interface Node {
 input PactQuery {
   chainId: String!
   code: String!
+  data: [PactQueryData!]
+}
+
+input PactQueryData {
+  key: String!
+  value: String!
 }
 
 type PageInfo {
@@ -150,18 +162,30 @@ scalar PositiveFloat
 
 type Query {
   account(accountName: String!, moduleName: String!): ModuleAccount!
-  block(hash: String!): Block!
+  block(hash: String!): Block
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
-  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
+  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+  graphConfiguration: GraphConfiguration!
   lastBlockHeight: BigInt
-  maximumConfirmationDepth: Int!
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
   pactQueries(pactQuery: [PactQuery!]!): [String!]!
   pactQuery(pactQuery: PactQuery!): String!
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransactionsConnection!
+  transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
   transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
+}
+
+type QueryTransactionsByPublicKeyConnection {
+  edges: [QueryTransactionsByPublicKeyConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryTransactionsByPublicKeyConnectionEdge {
+  cursor: String!
+  node: Transaction!
 }
 
 type QueryTransactionsConnection {

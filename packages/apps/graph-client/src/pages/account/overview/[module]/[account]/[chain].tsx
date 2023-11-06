@@ -1,10 +1,15 @@
+import type {
+  ChainModuleAccountTransactionsConnection,
+  ChainModuleAccountTransfersConnection,
+} from '@/__generated__/sdk';
 import { useGetChainAccountQuery } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
+import { ErrorBox } from '@/components/error-box/error-box';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Grid, Notification, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Grid, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -46,15 +51,7 @@ const ChainAccount: React.FC = () => {
               <Loader /> <span>Retrieving account information...</span>
             </div>
           )}
-          {error && (
-            <Notification.Root color="negative" icon="Close">
-              Unknown error:
-              <Box marginBottom="$4" />
-              <code>{error.message}</code>
-              <Box marginBottom="$4" />
-              Check if the Graph server is running.
-            </Notification.Root>
-          )}
+          {error && <ErrorBox error={error} />}
           {chainAccountQuery?.chainAccount && (
             <div>
               <Table.Root wordBreak="break-all">
@@ -116,7 +113,10 @@ const ChainAccount: React.FC = () => {
                     moduleName={router.query.module as string}
                     accountName={router.query.account as string}
                     chainId={router.query.chain as string}
-                    transfers={chainAccountQuery.chainAccount.transfers}
+                    transfers={
+                      chainAccountQuery.chainAccount
+                        .transfers as ChainModuleAccountTransfersConnection
+                    }
                   />
                 </Grid.Item>
                 <Grid.Item>
@@ -126,7 +126,10 @@ const ChainAccount: React.FC = () => {
                     }/${router.query.account as string}?chain=${
                       router.query.chain as string
                     }`}
-                    transactions={chainAccountQuery.chainAccount.transactions}
+                    transactions={
+                      chainAccountQuery.chainAccount
+                        .transactions as ChainModuleAccountTransactionsConnection
+                    }
                   />
                 </Grid.Item>
               </Grid.Root>

@@ -1,5 +1,5 @@
 import { Input } from '@components/Form/Input';
-import { Stack } from '@components/Stack';
+import { Stack } from '@components/Layout/Stack';
 import { Label } from '@components/Typography/Label/Label';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
