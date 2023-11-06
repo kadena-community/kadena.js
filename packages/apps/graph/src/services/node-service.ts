@@ -14,6 +14,12 @@ export class PactCommandError extends Error {
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type CommandData = {
+  key: string;
+  value: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type ChainModuleAccountDetails = {
   account: string;
   balance: number;
@@ -70,15 +76,26 @@ export async function getAccountDetails(
   return result as ChainModuleAccountDetails;
 }
 
-export async function sendRawQuery(code: string, chainId: string) {
+export async function sendRawQuery(
+  code: string,
+  chainId: string,
+  data?: CommandData[],
+) {
+  const commandBuilder = Pact.builder
+    .execution(code)
+    .setMeta({
+      chainId: chainId as ChainId,
+    })
+    .setNetworkId(dotenv.NETWORK_ID);
+
+  if (data) {
+    data.forEach((data) => {
+      commandBuilder.addData(data.key, data.value);
+    });
+  }
+
   const commandResult = await getClient(chainId as ChainId).dirtyRead(
-    Pact.builder
-      .execution(code)
-      .setMeta({
-        chainId: chainId as ChainId,
-      })
-      .setNetworkId(dotenv.NETWORK_ID)
-      .createTransaction(),
+    commandBuilder.createTransaction(),
   );
 
   if (commandResult.result.status !== 'success') {
