@@ -180,8 +180,6 @@ export async function simulate({
         accounts.push(nextAccount);
       }
 
-      logger.info(accounts);
-
       await new Promise((resolve) => setTimeout(resolve, transferInterval));
     }
     counter++;
