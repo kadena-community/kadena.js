@@ -71,19 +71,23 @@ export async function getAccountDetails(
 }
 
 export async function sendRawQuery(code: string, chainId: string) {
-  try {
-    const commandResult = await getClient(chainId as ChainId).dirtyRead(
-      Pact.builder
-        .execution(code)
-        .setMeta({
-          chainId: chainId as ChainId,
-        })
-        .setNetworkId(dotenv.NETWORK_ID)
-        .createTransaction(),
-    );
+  const commandResult = await getClient(chainId as ChainId).dirtyRead(
+    Pact.builder
+      .execution(code)
+      .setMeta({
+        chainId: chainId as ChainId,
+      })
+      .setNetworkId(dotenv.NETWORK_ID)
+      .createTransaction(),
+  );
 
-    return JSON.stringify(commandResult.result);
-  } catch (error) {
-    throw new PactCommandError('Pact Command failed with error', error);
+  if (commandResult.result.status !== 'success') {
+    throw new PactCommandError(
+      'Pact Command failed with error',
+      commandResult,
+      commandResult.result.error,
+    );
   }
+
+  return JSON.stringify(commandResult.result.data);
 }
