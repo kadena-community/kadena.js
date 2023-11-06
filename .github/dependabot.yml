@@ -1,21 +1,20 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
       interval: weekly
       day: monday
-      time: "06:00"
-      timezone: "Europe/Amsterdam"
+      time: '06:00'
+      timezone: 'Europe/Amsterdam'
     target-branch: main
     groups:
       monorepo-tooling:
         patterns:
-          - "*"
+          - '*'
     ignore:
-      - dependency-name: "prettier" # Prettier is also used in packages, due to SyncPack we can't just update it in just the root.
+      - dependency-name: 'prettier' # Prettier is also used in packages, due to SyncPack we can't just update it in just the root.
     reviewers:
-      - "ghislain89"
-      - "alber70g"
+      - 'ghislain89'
+      - 'alber70g'
     open-pull-requests-limit: 1
-
