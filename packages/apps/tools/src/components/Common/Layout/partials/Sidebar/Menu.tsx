@@ -73,6 +73,7 @@ export const Menu: FC = () => {
                   key={`menu-link-${index}`}
                   href={item.href}
                   active={item.href === router.pathname}
+                  target={item.target}
                 />
               ))}
             </Accordion.Root>

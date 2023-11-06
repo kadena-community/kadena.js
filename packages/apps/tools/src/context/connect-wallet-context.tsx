@@ -19,6 +19,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import type {IWalletConnectAccount} from "@kadena/client/lib/signing/walletconnect/walletConnectTypes";
 
 interface IWalletConnectClientContext {
   client: Client | undefined;
@@ -145,8 +146,7 @@ export const WalletConnectClientContextProvider: FC<
 
       try {
         const { uri, approval } = await client.connect({
-          pairingTopic: pairing?.topic,
-
+          pairingTopic: undefined,
           requiredNamespaces: {
             kadena: {
               methods: [
@@ -171,6 +171,27 @@ export const WalletConnectClientContextProvider: FC<
 
         const session = await approval();
         await onSessionConnected(session);
+
+        // NOTE: this doesn't work yet
+        const accountsRequest = {
+          id: 1,
+          jsonrpc: '2.0',
+          method: 'kadena_getAccounts_v1',
+          params: {
+            accounts: session.namespaces?.kadena?.accounts.find(acc => acc.includes('testnet04')),
+          },
+        };
+
+        const response = client.request<{
+          accounts:IWalletConnectAccount[],
+        }>({
+          topic: session.topic,
+          chainId: "kadena:testnet04",
+          request: accountsRequest,
+        });
+
+        console.log('Response: ', response);
+
         // Update known pairings after session is connected.
         setPairings(client.pairing.getAll({ active: true }));
       } catch (e) {
