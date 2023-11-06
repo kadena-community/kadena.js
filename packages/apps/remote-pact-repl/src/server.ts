@@ -79,6 +79,9 @@ function executeCommand(pactCode: string) {
         if (stderr.includes('cannot execute binary file')) {
           pactExecutable = 'pact';
         }
+        if (error) {
+          delete error.cmd;
+        }
         return resolve({ error, stdout, stderr });
       },
     );
