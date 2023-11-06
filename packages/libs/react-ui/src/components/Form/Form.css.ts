@@ -9,10 +9,16 @@ export const statusOutlineColor = createVar();
 
 export const baseOutlinedClass = style([
   {
-    outline: `2px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
+    outline: `2px solid ${fallbackVar(
+      statusOutlineColor,
+      vars.colors.$gray30,
+    )}`,
     selectors: {
       [`${darkThemeClass} &`]: {
-        outline: `2px solid ${fallbackVar(statusColor, vars.colors.$gray60)}`,
+        outline: `2px solid ${fallbackVar(
+          statusOutlineColor,
+          vars.colors.$gray60,
+        )}`,
       },
     },
   },
