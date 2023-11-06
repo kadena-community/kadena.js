@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { accountPrompt } from "./prompts.js";
+import { account } from "./options.js";
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const Questions = z.object({
@@ -18,6 +20,20 @@ export const Questions = z.object({
   networkHost: z.string().optional(),
   networkExplorerUrl: z.string().optional(),
 });
+
+export const options = {
+  account: {
+    prompt: accountPrompt,
+    validation: z.string(),
+    option: new Option('-a, --account <account>', 'Receiver (k:) wallet address'),
+  },
+  chainId: {
+
+  },
+  network: z.string({}),
+};
+
+export const chainId = z.number();
 
 export type TQuestions = z.infer<typeof Questions>;
 

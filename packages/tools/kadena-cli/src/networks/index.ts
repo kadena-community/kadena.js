@@ -18,11 +18,11 @@ export function networksCommandFactory(
     .description(`Tool to create and manage networks`);
 
   // Attach list subcommands to the networksProgram
-  createSimpleSubCommand<IListNetworksArgs>(
-    'list',
-    'List all available networks',
-    listNetworksAction,
-  )(networksProgram);
+  // createSimpleSubCommand<IListNetworksArgs>(
+  //   'list',
+  //   'List all available networks',
+  //   listNetworksAction,
+  // )(networksProgram);
 
   manageNetworks(networksProgram, version);
   createNetworksCommand(networksProgram, version);

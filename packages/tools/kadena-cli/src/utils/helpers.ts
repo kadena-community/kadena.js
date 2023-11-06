@@ -5,9 +5,14 @@ import { defaultNetworksPath } from '../constants/networks.js';
 
 import chalk from 'chalk';
 import clear from 'clear';
-import type { Command, Option } from 'commander';
+import { Command, Option } from 'commander';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
+import { accountPrompt, chainIdPrompt, networkPrompt } from '../constants/prompts.js';
+import { z } from 'zod';
+import { ICustomNetworksChoice, loadNetworkConfig } from '../networks/networksHelpers.js';
+import { select } from '@inquirer/prompts';
+import { runNetworksCreate } from '../networks/createNetworksCommand.js';
 
 export interface ICustomChoice {
   value: string;
@@ -198,6 +203,7 @@ export function getPubKeyFromAccount(account: string): string {
  */
 
 export function createSimpleSubCommand<T>(
+  subject: string,
   name: string,
   description: string,
   actionFn: (args: T) => Promise<void> | void,
@@ -218,6 +224,118 @@ export function createSimpleSubCommand<T>(
     });
   };
 }
+
+
+const createOption = <T extends {
+  prompt: any,
+  validation: any,
+  option: Option,
+  expand?: (label: string) => any
+}>(option: T) => {
+  return (optional: boolean = false) => ({
+    ...option,
+    validation: optional
+      ? option.validation.optional()
+      : option.validation
+  })
+}
+
+export const globalOptions = {
+  account: createOption({
+    key: 'account',
+    prompt: accountPrompt,
+    validation: z.string(),
+    option: new Option('-a, --account <account>', 'Receiver (k:) wallet address'),
+  }),
+  chainId: createOption({
+    key: 'chainId',
+    prompt: chainIdPrompt,
+    validation: z.number({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -c, --chain must be a number',
+    }).min(0).max(19),
+    option: new Option('-c, --chain <chainId>',)
+  }),
+  network: createOption({
+    key: 'network',
+    prompt: networkPrompt, // mainnet, testnet, devnet
+    validation: z.string(),
+    option:  new Option('-n, --network <network>', 'Kadena network (e.g. "mainnet")'),
+    expand(networkName: string) {
+      return loadNetworkConfig(networkName)
+    },
+  })
+};
+
+type GlobalOptions = typeof globalOptions;
+
+export function createCommand<T extends (ReturnType<GlobalOptions[keyof GlobalOptions]>)[]>(
+  name: string,
+  description: string,
+  options: T,
+  action: (finalConfig: any) => any
+) {
+  return (program: Command, version: string)  => {
+
+    const command = program.command(name).description(description);
+
+    options.forEach((option) => {
+      command.addOption(option.option);
+    });
+
+    command.action(async (args, ...rest) => {
+      try {
+        // collectResponses
+        const questionsMap = options.map(({prompt, key}) => ({key, prompt}))
+        const responses = collectResponses(args, questionsMap)
+        const newArgs = {...args, ...responses }
+        // zod validatie
+        const zodValidationObject= options.reduce((zObject, {key, validation}) => {
+          zObject[key] = validation;
+          return zObject;
+        }, {} as Record<string, any>)
+
+        z.object(zodValidationObject).parse(newArgs)
+
+        // const config =  getFullConfigFromArgs(newArgs)
+        const config = {...newArgs};
+        options.forEach((option) => {
+          if('expand' in option) {
+            // key: network
+            // config[networkConfig]
+            config[option.key] = option.expand(args[option.key])
+          }
+        })
+
+        // execute action(finalConfig)
+        await action(config);
+        /** get-balance --chainId 0
+         *
+         * args: { chainId: 0}
+         * > colletResponses
+         * which network to use
+         * () testnet
+         * (x) mainnet
+         * newArgs: { chainId: 0, network: 'mainnet' }
+         *
+         * > expandConfig
+         * network.expand() < ...
+         *
+         * config: { chainId: 0, network: 'mainnet', networkConfig: {
+         *   networkHost: 'http://api.chainweb.com',
+         *   explorer:  'explorer.chainweb.com',
+         *   networkId: 'mainnet01'
+         * }}
+         */
+      } catch (error) {
+        console.log(chalk.red(`Error executing command ${name}: ${error})`));
+        process.exit(1);
+      }
+    });
+  }
+}
+
+
 
 /**
  * Capitalizes the first letter of a string.
