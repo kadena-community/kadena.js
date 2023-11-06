@@ -3,16 +3,23 @@ import type { TConfigOptions } from '../config/configQuestions.js';
 import { projectPrefix, projectRootPath } from '../constants/config.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 
+import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import clear from 'clear';
 import { Command, Option } from 'commander';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
-import { accountPrompt, chainIdPrompt, networkPrompt } from '../constants/prompts.js';
 import { z } from 'zod';
-import { ICustomNetworksChoice, loadNetworkConfig } from '../networks/networksHelpers.js';
-import { select } from '@inquirer/prompts';
+import {
+  accountPrompt,
+  chainIdPrompt,
+  networkPrompt,
+} from '../constants/prompts.js';
 import { runNetworksCreate } from '../networks/createNetworksCommand.js';
+import {
+  ICustomNetworksChoice,
+  loadNetworkConfig,
+} from '../networks/networksHelpers.js';
 
 export interface ICustomChoice {
   value: string;
@@ -225,58 +232,70 @@ export function createSimpleSubCommand<T>(
   };
 }
 
-
-const createOption = <T extends {
-  prompt: any,
-  validation: any,
-  option: Option,
-  expand?: (label: string) => any
-}>(option: T) => {
-  return (optional: boolean = false) => ({
+const createOption = <
+  T extends {
+    prompt: any;
+    validation: any;
+    option: Option;
+    expand?: (label: string) => any;
+  },
+>(
+  option: T,
+) => {
+  return (optional: boolean = true) => ({
     ...option,
-    validation: optional
-      ? option.validation.optional()
-      : option.validation
-  })
-}
+    validation: optional ? option.validation.optional() : option.validation,
+  });
+};
 
+// eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   account: createOption({
     key: 'account',
     prompt: accountPrompt,
     validation: z.string(),
-    option: new Option('-a, --account <account>', 'Receiver (k:) wallet address'),
+    option: new Option(
+      '-a, --account <account>',
+      'Receiver (k:) wallet address',
+    ),
   }),
   chainId: createOption({
     key: 'chainId',
     prompt: chainIdPrompt,
-    validation: z.number({
-      /* eslint-disable-next-line @typescript-eslint/naming-convention */
-      invalid_type_error: 'Error: -c, --chain must be a number',
-    }).min(0).max(19),
-    option: new Option('-c, --chain <chainId>',)
+    validation: z
+      .string({
+        /* eslint-disable-next-line @typescript-eslint/naming-convention */
+        invalid_type_error: 'Error: -c, --chain-id must be a number',
+      })
+      .min(0)
+      .max(19),
+    option: new Option('-c, --chain-id <chainId>'),
   }),
   network: createOption({
     key: 'network',
     prompt: networkPrompt, // mainnet, testnet, devnet
     validation: z.string(),
-    option:  new Option('-n, --network <network>', 'Kadena network (e.g. "mainnet")'),
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
     expand(networkName: string) {
-      return loadNetworkConfig(networkName)
+      return loadNetworkConfig(networkName);
     },
-  })
+  }),
 };
 
 type GlobalOptions = typeof globalOptions;
 
-export function createCommand<T extends (ReturnType<GlobalOptions[keyof GlobalOptions]>)[]>(
+export function createCommand<
+  T extends ReturnType<GlobalOptions[keyof GlobalOptions]>[],
+>(
   name: string,
   description: string,
   options: T,
-  action: (finalConfig: any) => any
+  action: (finalConfig: Record<any, any>) => any,
 ) {
-  return (program: Command, version: string)  => {
-
+  return (program: Command, version: string) => {
     const command = program.command(name).description(description);
 
     options.forEach((option) => {
@@ -286,26 +305,32 @@ export function createCommand<T extends (ReturnType<GlobalOptions[keyof GlobalOp
     command.action(async (args, ...rest) => {
       try {
         // collectResponses
-        const questionsMap = options.map(({prompt, key}) => ({key, prompt}))
-        const responses = collectResponses(args, questionsMap)
-        const newArgs = {...args, ...responses }
+        const questionsMap = options.map(({ prompt, key }) => ({
+          key,
+          prompt,
+        }));
+        const responses = await collectResponses(args, questionsMap);
+        const newArgs = { ...args, ...responses };
         // zod validatie
-        const zodValidationObject= options.reduce((zObject, {key, validation}) => {
-          zObject[key] = validation;
-          return zObject;
-        }, {} as Record<string, any>)
+        const zodValidationObject = options.reduce(
+          (zObject, { key, validation }) => {
+            zObject[key] = validation;
+            return zObject;
+          },
+          {} as Record<string, any>,
+        );
 
-        z.object(zodValidationObject).parse(newArgs)
+        z.object(zodValidationObject).parse(newArgs);
 
         // const config =  getFullConfigFromArgs(newArgs)
-        const config = {...newArgs};
+        const config = { ...newArgs };
         options.forEach((option) => {
-          if('expand' in option) {
+          if ('expand' in option) {
             // key: network
             // config[networkConfig]
-            config[option.key] = option.expand(args[option.key])
+            config[`${option.key}Config`] = option.expand(args[option.key]);
           }
-        })
+        });
 
         // execute action(finalConfig)
         await action(config);
@@ -328,14 +353,13 @@ export function createCommand<T extends (ReturnType<GlobalOptions[keyof GlobalOp
          * }}
          */
       } catch (error) {
+        console.error(error);
         console.log(chalk.red(`Error executing command ${name}: ${error})`));
         process.exit(1);
       }
     });
-  }
+  };
 }
-
-
 
 /**
  * Capitalizes the first letter of a string.
