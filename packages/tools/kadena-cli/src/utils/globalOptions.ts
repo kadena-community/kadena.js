@@ -27,7 +27,7 @@ export const createOption = <
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   account: createOption({
-    key: 'account',
+    key: 'account' as const,
     prompt: accountPrompt,
     validation: z.string(),
     option: new Option(
@@ -36,7 +36,7 @@ export const globalOptions = {
     ),
   }),
   chainId: createOption({
-    key: 'chainId',
+    key: 'chainId' as const,
     prompt: chainIdPrompt,
     validation: z
       .string({
@@ -48,7 +48,7 @@ export const globalOptions = {
     option: new Option('-c, --chain-id <chainId>'),
   }),
   network: createOption({
-    key: 'network',
+    key: 'network' as const,
     prompt: networkPrompt,
     validation: z.string(),
     option: new Option(

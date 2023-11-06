@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { z } from 'zod';
+import { globalOptions } from './globalOptions.js';
 import type { GlobalOptions } from './helpers.js';
 import { collectResponses } from './helpers.js';
 
@@ -16,14 +17,73 @@ const formatConfig = (key: string, value?: string | number): string => {
   return `  ${keyValue}${' '.repeat(remainingWidth)}  `;
 };
 
+export type First<T extends any[]> = T extends [infer One]
+  ? One
+  : T extends [infer HD, ...any[]]
+  ? HD
+  : never;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type Tail<T extends any[]> = T extends [infer _]
+  ? []
+  : // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  T extends [infer _, ...infer TL]
+  ? TL
+  : never;
+
+type Pure<T> = T extends Promise<infer R> ? R : T;
+
+type AsOption<T> = T extends {
+  key: infer K;
+  prompt: (...arg: any[]) => infer R;
+}
+  ? K extends string
+    ? {
+        [P in K]: T extends { expand: (...args: any[]) => infer Ex }
+          ? Ex
+          : Pure<R>;
+      }
+    : never
+  : never;
+
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
+type Combine2<A, B> = {
+  [K in keyof (A | B)]: A[K] | B[K];
+} & Omit<A, keyof B> &
+  Omit<B, keyof A>;
+
+type Combine<Tuple extends any[]> = Tuple extends [infer one]
+  ? AsOption<one>
+  : Combine2<
+      AsOption<First<Tuple>>,
+      Tail<Tuple> extends any[] ? Combine<Tail<Tuple>> : {}
+    >;
+
+type Test = Prettify<
+  Combine<
+    [
+      {
+        key: 'sd';
+        prompt: () => Promise<string>;
+        expand: (label: string) => { networkId: string };
+      },
+      { key: 'network'; prompt: () => string },
+      { key: 'network'; prompt: () => number },
+    ]
+  >
+>; // { account : string, network: string}
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createCommand<
   T extends ReturnType<GlobalOptions[keyof GlobalOptions]>[],
 >(
   name: string,
   description: string,
-  options: T,
-  action: (finalConfig: Record<any, any>) => any,
+  options: [...T],
+  action: (finalConfig: Prettify<Combine<T>>) => any,
 ) {
   return (program: Command, version: string) => {
     const command = program.command(name).description(description);
