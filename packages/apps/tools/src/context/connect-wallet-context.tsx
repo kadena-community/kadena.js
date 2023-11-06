@@ -5,6 +5,7 @@ import type { INetworkData } from '@/utils/network';
 import { getAllNetworks, getInitialNetworks } from '@/utils/network';
 import { getItem, setItem } from '@/utils/persist';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { IWalletConnectAccount } from '@kadena/client/lib/signing/walletconnect/walletConnectTypes';
 import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
 import type { PairingTypes, SessionTypes } from '@walletconnect/types';
@@ -19,7 +20,6 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import type {IWalletConnectAccount} from "@kadena/client/lib/signing/walletconnect/walletConnectTypes";
 
 interface IWalletConnectClientContext {
   client: Client | undefined;
@@ -178,15 +178,17 @@ export const WalletConnectClientContextProvider: FC<
           jsonrpc: '2.0',
           method: 'kadena_getAccounts_v1',
           params: {
-            accounts: session.namespaces?.kadena?.accounts.find(acc => acc.includes('testnet04')),
+            accounts: session.namespaces?.kadena?.accounts.find((acc) =>
+              acc.includes('testnet04'),
+            ),
           },
         };
 
         const response = client.request<{
-          accounts:IWalletConnectAccount[],
+          accounts: IWalletConnectAccount[];
         }>({
           topic: session.topic,
-          chainId: "kadena:testnet04",
+          chainId: 'kadena:testnet04',
           request: accountsRequest,
         });
 

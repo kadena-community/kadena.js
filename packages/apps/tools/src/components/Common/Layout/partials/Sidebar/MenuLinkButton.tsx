@@ -31,6 +31,11 @@ export const MenuLinkButton: FC<IMenuLinkButtonProps> = ({
     </>
   );
 
-  if (href) return <Link href={href} target={target}>{button}</Link>;
+  if (href)
+    return (
+      <Link href={href} target={target}>
+        {button}
+      </Link>
+    );
   return button;
 };
