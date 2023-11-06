@@ -84,16 +84,18 @@ export const localReadTransfer = async ({
     hash = hashFunction(cmd);
   }
 
-  console.log('COMAND', cmd);
+  let existingSigs: IUnsignedCommand['sigs'] = [];
 
-  if (!sigs) {
-    sigs = [];
+  if (sigs && sigs?.length > 0) {
+    existingSigs = sigs.map((sig) => ({
+      sig: sig,
+    }));
   }
 
   const transaction: IUnsignedCommand = {
     cmd,
     hash,
-    sigs: sigs.map((sig) => (sig ? JSON.parse(sig) : undefined)),
+    sigs: existingSigs,
   };
 
   return await localReadForGasEstimation(transaction);
