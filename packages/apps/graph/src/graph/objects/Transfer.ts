@@ -17,6 +17,24 @@ export default builder.prismaNode('Transfer', {
     requestKey: t.exposeString('requestKey'),
     receiverAccount: t.exposeString('receiverAccount'),
 
+    // computed fields
+    crossChainTransfer: t.prismaField({
+      type: ['Transfer'],
+      nullable: true,
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.transfer.findMany({
+            where: {
+              requestKey: parent.requestKey,
+              orderIndex: { not: parent.orderIndex },
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
+      },
+    }),
+
     // relations
     blocks: t.prismaField({
       type: ['Block'],
