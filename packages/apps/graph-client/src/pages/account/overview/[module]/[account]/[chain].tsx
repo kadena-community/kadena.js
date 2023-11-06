@@ -1,3 +1,7 @@
+import type {
+  ChainModuleAccountTransactionsConnection,
+  ChainModuleAccountTransfersConnection,
+} from '@/__generated__/sdk';
 import { useGetChainAccountQuery } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
@@ -109,7 +113,10 @@ const ChainAccount: React.FC = () => {
                     moduleName={router.query.module as string}
                     accountName={router.query.account as string}
                     chainId={router.query.chain as string}
-                    transfers={chainAccountQuery.chainAccount.transfers}
+                    transfers={
+                      chainAccountQuery.chainAccount
+                        .transfers as ChainModuleAccountTransfersConnection
+                    }
                   />
                 </Grid.Item>
                 <Grid.Item>
@@ -119,7 +126,10 @@ const ChainAccount: React.FC = () => {
                     }/${router.query.account as string}?chain=${
                       router.query.chain as string
                     }`}
-                    transactions={chainAccountQuery.chainAccount.transactions}
+                    transactions={
+                      chainAccountQuery.chainAccount
+                        .transactions as ChainModuleAccountTransactionsConnection
+                    }
                   />
                 </Grid.Item>
               </Grid.Root>

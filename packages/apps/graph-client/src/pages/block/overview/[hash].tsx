@@ -1,3 +1,4 @@
+import type { BlockTransactionsConnection } from '@/__generated__/sdk';
 import {
   useGetBlockFromHashQuery,
   useGetGraphConfigurationQuery,
@@ -211,7 +212,9 @@ const Block: React.FC = () => {
               {data.block.transactions.totalCount > 0 && (
                 <CompactTransactionsTable
                   viewAllHref={viewAllTransactionsPage}
-                  transactions={data.block.transactions}
+                  transactions={
+                    data.block.transactions as BlockTransactionsConnection
+                  }
                   description="All transactions present in this block"
                 />
               )}

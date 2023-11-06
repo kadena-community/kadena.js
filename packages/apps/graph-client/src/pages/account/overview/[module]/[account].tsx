@@ -1,3 +1,7 @@
+import type {
+  ModuleAccountTransactionsConnection,
+  ModuleAccountTransfersConnection,
+} from '@/__generated__/sdk';
 import { useGetAccountQuery } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
@@ -89,7 +93,10 @@ const Account: React.FC = () => {
                     description="All transfers from or to this account"
                     moduleName={router.query.module as string}
                     accountName={router.query.account as string}
-                    transfers={accountQuery.account.transfers}
+                    transfers={
+                      accountQuery.account
+                        .transfers as ModuleAccountTransfersConnection
+                    }
                   />
                 </Grid.Item>
                 <Grid.Item>
@@ -97,7 +104,10 @@ const Account: React.FC = () => {
                     viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
                       router.query.module as string
                     }/${router.query.account as string}`}
-                    transactions={accountQuery.account.transactions}
+                    transactions={
+                      accountQuery.account
+                        .transactions as ModuleAccountTransactionsConnection
+                    }
                   />
                 </Grid.Item>
               </Grid.Root>
