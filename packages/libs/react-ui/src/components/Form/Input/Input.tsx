@@ -43,10 +43,10 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     },
     ref,
   ) {
-    const { status, leadingTextWidth: contextLeadingTextWidth } =
+    const { status, leadingTextWidth: wrapperLeadingTextWidth } =
       useContext(InputWrapperContext);
 
-    const leadingTextWidth = propLeadingTextWidth || contextLeadingTextWidth;
+    const leadingTextWidth = propLeadingTextWidth || wrapperLeadingTextWidth;
 
     const RightIcon = rightIcon && SystemIcon[rightIcon];
     const Icon = icon && SystemIcon[icon];
