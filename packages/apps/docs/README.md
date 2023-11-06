@@ -230,33 +230,49 @@ Pages can use different layouts to address different content requirements:
 
 | Layout keyword | Description
 | -------------- | -----------
-| `full` | Use the `full` layout with the left and right side menus for the most content pages. 
-| `landing` | Use the `landing` layout for section introductions that require more navigation and less content.
-| `blog` | Use the `blog` layout for blog post articles.
 | `home` | Use the `home` layout for top-level landing pages with multiple sections and the site home page.
+| `landing` | Use the `landing` layout for section introductions that require more navigation and less content.
+| `full` | Use the `full` layout with the left and right side menus for the most content pages. 
 | `redocly` | Use the `redocly` layout for generated swagger API output.
-
-#### Full layout example
-
-![Full](./public/assets/layout_full.png) 
-
-#### Landing layout example
-
-![the layout](./public/assets/layout_landing.png)
-
-#### Blog layout example
-
-![the layout](./public/assets/layout_blog.png)
-
-#### Redocly layout example
-
-![the layout](./public/assets/layout_redocly.png) Only 
+| `blog` | Use the `blog` layout for blog post articles.
 
 #### Home layout example
 
-![the layout](./public/assets/layout_home.png) 
+The `home` layout use TypeScript and React instead of Markdown. 
+The text displayed is hardcoded. 
+The header and layout are customized for the page.
 
-## Moving pages around
+![Home layout](./public/assets/layout_home.png) 
+
+#### Landing layout example
+
+Section-level `landing` pages are similar to the `home` page.
+They can provide a visual entry point to a large content set.
+The layout uses the `title` and `subTitle` from the frontmatter.
+
+![Landing layout](./public/assets/layout_landing.png)
+
+#### Full layout example
+
+Most content pages use this layout with left peer and child navigation and a _On this page_ content on the right.
+
+![Full layout](./public/assets/layout_full.png) 
+
+#### Redocly layout example
+
+The `redocly` layout should only be used for swagger API pages.
+
+![Redocly layout](./public/assets/layout_redocly.png) 
+
+#### Blog layout example
+
+The `blog` layout should only be used for blog post articles. 
+It shows the large `headerImage` from the frontmatter, if available.
+It also shows the `author` and `tags` from the frontmatter, if available.
+
+![Blog layout](./public/assets/layout_blog.png)
+
+## Renaming and moving pages
 
 Moving a page to another place in the tree is as simple as moving a file somewhere inside the `src/pages` directory.
 When the build runs, the page is automatically is put in the correct position.
@@ -312,7 +328,7 @@ To help a build run smoothly by importing files and identifying issues like brok
 
 ## Adding issues
 
-If there are any issues with the docs or you suggestions for improvements, submit an [issue](https://github.com/kadena-community/kadena.js/issues).
+If you find issues with the documentation content or format or have suggestions for improvement, submit an [issue](https://github.com/kadena-community/kadena.js/issues).
 
 ## Cli
 
