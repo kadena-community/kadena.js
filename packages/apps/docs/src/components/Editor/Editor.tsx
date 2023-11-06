@@ -1,10 +1,12 @@
 import type { OnMount } from '@monaco-editor/react';
-import MNEditor from '@monaco-editor/react';
+import MNEditor, { useMonaco } from '@monaco-editor/react';
 import type monaco from 'monaco-editor';
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ErrorLine } from './ErrorLine';
 import { SuccessLine } from './SuccessLine';
+import { consoleClass } from './styles.css';
+import { cleanOutput } from './utils';
 
 interface IConsoleLine {
   type: 'error' | 'success';
@@ -15,8 +17,10 @@ interface IMessage {
   data: string;
 }
 
-export const Editor: FC = () => {
+export const Editor: FC<PropsWithChildren> = ({ children }) => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const [editor, setEditor] =
+    useState<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [socket, setSocket] = useState<WebSocket>();
   const [consoleContent, setConsoleContent] = useState<IConsoleLine[]>([]);
 
@@ -24,18 +28,21 @@ export const Editor: FC = () => {
     (event: IMessage) => {
       const msg = JSON.parse(event.data);
       if (msg.error) {
+        console.log(msg.error);
         setConsoleContent((v) => [...v, { type: 'error', message: msg.error }]);
       }
       if (msg.stderr) {
+        console.log(msg.stderr);
         setConsoleContent((v) => [
-          ...v,
           { type: 'error', message: msg.stderr },
+          ...v,
         ]);
       }
       if (msg.stdout) {
+        console.log(msg.stdout);
         setConsoleContent((v) => [
+          { type: 'success', message: msg.stdout },
           ...v,
-          { type: 'error', message: msg.stdout },
         ]);
       }
     },
@@ -69,17 +76,19 @@ export const Editor: FC = () => {
     connect();
   }, [connect]);
 
+  useEffect(() => {
+    console.log(1, editor);
+    editor?.onKeyUp((event) => {
+      if (event.keyCode === 3 && editorRef.current?.getValue()) {
+        socket?.send(editorRef.current?.getValue());
+      }
+    });
+  }, [socket, editor]);
+
   const handleEditorDidMount: OnMount = (editor): void => {
+    console.log(111, editor);
     editorRef.current = editor;
-  };
-
-  const handleEditorChange = (input?: string): void => {
-    if (!input) return;
-
-    const lastChar = input.at(-1);
-    if (socket && lastChar === '\n') {
-      socket.send(input);
-    }
+    setEditor(editor);
   };
 
   return (
@@ -90,21 +99,15 @@ export const Editor: FC = () => {
         width="100%"
         saveViewState={false}
         onMount={handleEditorDidMount}
-        onChange={handleEditorChange}
+        defaultValue={`(+ 1 1)\n(* 2 2)`}
       ></MNEditor>
-      <div>
+      <div className={consoleClass}>
         {consoleContent.map((item, idx) => {
           if (item.type === 'success')
             return (
-              <SuccessLine key={idx}>
-                {JSON.stringify(item.message, null, 2)}
-              </SuccessLine>
+              <SuccessLine key={idx}>{cleanOutput(item.message)}</SuccessLine>
             );
-          return (
-            <ErrorLine key={idx}>
-              {JSON.stringify(item.message, null, 2)}
-            </ErrorLine>
-          );
+          return <ErrorLine key={idx}>{cleanOutput(item.message)}</ErrorLine>;
         })}
       </div>
     </>

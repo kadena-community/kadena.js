@@ -22,7 +22,7 @@ export const Code: FC<IProps> = ({ children, ...props }) => {
   }, [ref]);
 
   if (isInteractive) {
-    if (props['data-theme'] === theme.theme) return <Editor></Editor>;
+    if (props['data-theme'] === theme.theme) return <Editor>{children}</Editor>;
   }
 
   if (typeof children === 'string') {
