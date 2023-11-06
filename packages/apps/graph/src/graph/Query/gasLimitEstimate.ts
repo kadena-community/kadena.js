@@ -1,4 +1,5 @@
 import { localReadTransfer } from '@devnet/transfer';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 const PactTransaction = builder.inputType('PactTransaction', {
@@ -16,16 +17,20 @@ builder.queryField('gasLimitEstimate', (t) => {
       transaction: t.arg({ type: PactTransaction, required: true }),
     },
     resolve: async (parent, args, context, info) => {
-      if (args.transaction.cmd.includes(`\\`)) {
-        args.transaction.cmd = args.transaction.cmd.replace(/\\\\/g, '\\');
-      }
+      try {
+        if (args.transaction.cmd.includes(`\\`)) {
+          args.transaction.cmd = args.transaction.cmd.replace(/\\\\/g, '\\');
+        }
 
-      const result = await localReadTransfer({
-        cmd: args.transaction.cmd,
-        hash: args.transaction.hash,
-        sigs: args.transaction.sigs,
-      });
-      return result.gas;
+        const result = await localReadTransfer({
+          cmd: args.transaction.cmd,
+          hash: args.transaction.hash,
+          sigs: args.transaction.sigs,
+        });
+        return result.gas;
+      } catch (error) {
+        throw normalizeError(error);
+      }
     },
   });
 });
@@ -37,17 +42,21 @@ builder.queryField('gasLimitEstimates', (t) => {
       transactions: t.arg({ type: [PactTransaction], required: true }),
     },
     resolve: async (parent, args, context, info) => {
-      return args.transactions.map(async (transaction) => {
-        if (transaction.cmd.includes('//')) {
-          transaction.cmd = transaction.cmd.replace(/\/\//g, '/');
-        }
-        const result = await localReadTransfer({
-          cmd: transaction.cmd,
-          hash: transaction.hash,
-          sigs: transaction.sigs,
+      try {
+        return args.transactions.map(async (transaction) => {
+          if (transaction.cmd.includes('//')) {
+            transaction.cmd = transaction.cmd.replace(/\/\//g, '/');
+          }
+          const result = await localReadTransfer({
+            cmd: transaction.cmd,
+            hash: transaction.hash,
+            sigs: transaction.sigs,
+          });
+          return result.gas;
         });
-        return result.gas;
-      });
+      } catch (error) {
+        throw normalizeError(error);
+      }
     },
   });
 });
