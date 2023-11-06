@@ -2,7 +2,6 @@ import { useEstimateGasLimitQuery } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
 import routes from '@/constants/routes';
-import { formatCode } from '@/utils/formatter';
 import { Box, Breadcrumbs, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -16,7 +15,7 @@ const GasEstimation: React.FC = () => {
   const sigsString = sigs as string;
   const sigsArray = sigsString ? sigsString.split(',') : [];
 
-  const { loading, data, error } = useEstimateGasLimitQuery({
+  const { loading, data } = useEstimateGasLimitQuery({
     variables: {
       transaction: { cmd: cmdString, hash: hashString, sigs: sigsArray },
     },
