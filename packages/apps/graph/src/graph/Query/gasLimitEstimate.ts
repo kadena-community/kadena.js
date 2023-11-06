@@ -19,8 +19,11 @@ builder.queryField('gasLimitEstimate', (t) => {
       if (args.transaction.cmd.includes(`\\`)) {
         args.transaction.cmd = args.transaction.cmd.replace(/\\\\/g, '\\');
       }
+
       const result = await localReadTransfer({
         cmd: args.transaction.cmd,
+        hash: args.transaction.hash,
+        sigs: args.transaction.sigs,
       });
       return result.gas;
     },
@@ -40,6 +43,8 @@ builder.queryField('gasLimitEstimates', (t) => {
         }
         const result = await localReadTransfer({
           cmd: transaction.cmd,
+          hash: transaction.hash,
+          sigs: transaction.sigs,
         });
         return result.gas;
       });
