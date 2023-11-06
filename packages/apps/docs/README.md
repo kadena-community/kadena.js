@@ -336,4 +336,4 @@ The CLI is a TODO.
 
 - bootstrap a page
 - run build scripts more fine-grained (only the import scripts for example)
-- can we do something like 'docs-prettier'?
+- add formatting and spellcheck ('docs-prettier', remark plugins)
