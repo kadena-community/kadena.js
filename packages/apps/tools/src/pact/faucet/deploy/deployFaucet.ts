@@ -1,4 +1,4 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { createClient, Pact } from '@kadena/client';
 
 import { DOMAIN, GAS_PROVIDER, NETWORK_ID } from './constants';

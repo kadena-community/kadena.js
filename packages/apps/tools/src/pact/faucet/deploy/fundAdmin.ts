@@ -1,11 +1,6 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
-import {
-  createClient,
-  ICommand,
-  IUnsignedCommand,
-  Pact,
-  readKeyset,
-} from '@kadena/client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ICommand, IUnsignedCommand } from '@kadena/client';
+import { Pact, createClient, readKeyset } from '@kadena/client';
 
 import {
   ADMINS,

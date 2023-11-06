@@ -1,6 +1,6 @@
-import { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { createClient, Pact } from '@kadena/client';
-import { IPactDecimal } from '@kadena/types';
+import type { IPactDecimal } from '@kadena/types';
 
 import {
   ADMINS,

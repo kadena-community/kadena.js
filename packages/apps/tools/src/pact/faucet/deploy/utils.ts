@@ -1,6 +1,6 @@
 import { isSignedTransaction } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
-import { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 export const signTransaction = (
   transaction: IUnsignedCommand,
