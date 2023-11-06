@@ -4,7 +4,6 @@ import {
   kadenaGenMnemonic,
   kadenaMnemonicToRootKeypair,
 } from '..';
-import { harden } from '../../utils';
 
 const toHexStr = (bytes: Uint8Array) => Buffer.from(bytes).toString('hex');
 
@@ -65,12 +64,21 @@ describe('kadenaGenKeypair', () => {
       'bubble fade wasp analyst then panel desert hold spatial sound lucky weekend';
     const password = 'password';
     const rootKey = kadenaMnemonicToRootKeypair(password, mnemonic);
-    const [encryptedSecret, publicKey] = kadenaGenKeypair(
-      password,
-      rootKey,
-      harden(1),
-    );
+    const [encryptedSecret, publicKey] = kadenaGenKeypair(password, rootKey, 1);
     expect(encryptedSecret.byteLength).toEqual(128);
     expect(publicKey.byteLength).toBe(32);
+  });
+
+  it('should generate a range of keypairs frpm the rootKey', () => {
+    const mnemonic: string =
+      'bubble fade wasp analyst then panel desert hold spatial sound lucky weekend';
+    const password = 'password';
+    const rootKey = kadenaMnemonicToRootKeypair(password, mnemonic);
+    const keyPairs = kadenaGenKeypair(password, rootKey, [0, 3]);
+    expect(keyPairs).toHaveLength(4);
+    keyPairs.forEach(([encryptedSecret, publicKey]) => {
+      expect(encryptedSecret.byteLength).toEqual(128);
+      expect(publicKey.byteLength).toBe(32);
+    });
   });
 });
