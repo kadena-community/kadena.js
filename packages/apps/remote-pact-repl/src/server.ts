@@ -19,6 +19,18 @@ function startServer() {
     });
   });
 
+  app.get('/index.js', (__req, res) => {
+    const filePath = path.join(__dirname, 'index.js');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error(`Error reading file: ${err}`);
+        res.status(500).send('Internal server error');
+      } else {
+        res.send(data);
+      }
+    });
+  });
+
   const server = app.listen(3000, () => {
     console.log('Server listening on http://localhost:3000');
   });

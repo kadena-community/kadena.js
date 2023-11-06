@@ -3,6 +3,76 @@
   <head>
     <meta charset="UTF-8" />
     <title>WebSocket Example</title>
+
+    <!-- Load the Ace editor library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+  </head>
+  <body>
+    <!-- Replace the textarea with an Ace editor instance -->
+    <div>
+      <div class="toolbar">
+        <div class="toolbar__left">
+          <label for="keyboard-mode-select">Keyboard Mode:</label>
+          <select id="keyboard-mode-select" class="kbd">
+            <option value="normal">Normal</option>
+            <option value="emacs">Emacs</option>
+            <option value="vim">Vim</option>
+          </select>
+          <label for="theme-select">Theme:</label>
+          <select id="theme-select" class="kbd">
+            <option value="chrome">Chrome</option>
+            <option value="clouds">Clouds</option>
+            <option value="crimson_editor">Crimson Editor</option>
+            <option value="dawn">Dawn</option>
+            <option value="dreamweaver">Dreamweaver</option>
+            <option value="eclipse">Eclipse</option>
+            <option value="github">GitHub</option>
+            <option value="iplastic">IPlastic</option>
+            <option value="solarized_light">Solarized Light</option>
+            <option value="textmate">TextMate</option>
+            <option value="tomorrow">Tomorrow</option>
+            <option value="xcode">XCode</option>
+            <option value="kuroir">Kuroir</option>
+            <option value="katzenmilch">KatzenMilch</option>
+            <option value="sqlserver">SQL Server</option>
+            <option value="ambiance">Ambiance</option>
+            <option value="chaos">Chaos</option>
+            <option value="clouds_midnight">Clouds Midnight</option>
+            <option value="cobalt">Cobalt</option>
+            <option value="gruvbox">Gruvbox</option>
+            <option value="idle_fingers">idle Fingers</option>
+            <option value="kr_theme">krTheme</option>
+            <option value="merbivore">Merbivore</option>
+            <option value="merbivore_soft">Merbivore Soft</option>
+            <option value="mono_industrial">Mono Industrial</option>
+            <option value="monokai">Monokai</option>
+            <option value="pastel_on_dark">Pastel on dark</option>
+            <option value="solarized_dark">Solarized Dark</option>
+            <option value="terminal">Terminal</option>
+            <option value="tomorrow_night">Tomorrow Night</option>
+            <option value="tomorrow_night_blue">Tomorrow Night Blue</option>
+            <option value="tomorrow_night_bright">Tomorrow Night Bright</option>
+            <option value="tomorrow_night_eighties">Tomorrow Night 80s</option>
+            <option value="twilight">Twilight</option>
+            <option value="vibrant_ink">Vibrant Ink</option>
+          </select>
+        </div>
+        <div class="toolbar__right">
+          <span
+            ><kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd> = execute
+            code</span
+          >
+          <span
+            ><kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>S</kbd> = copy link to
+            clipboard</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div id="editor"></div>
+
+    <div id="output"></div>
     <style>
       /* Add CSS to separate each output */
       .output-div {
@@ -10,37 +80,121 @@
         margin-bottom: 10px;
         padding: 5px;
       }
+
       #editor {
-        height: 300px;
+        min-height: 300px;
+        height: 40vh;
         min-width: 500px;
         width: auto;
       }
-    </style>
-    <!-- Load the Ace editor library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
-  </head>
-  <body>
-    <!-- Replace the textarea with an Ace editor instance -->
-    <div>
-      <label for="keyboard-mode-select">Keyboard Mode:</label>
-      <select id="keyboard-mode-select">
-        <option value="normal">Normal</option>
-        <option value="emacs">Emacs</option>
-        <option value="vim">Vim</option>
-      </select>
-    </div>
-    <div id="editor"></div>
-    <div id="output"></div>
 
+      /* Add CSS for keyboard mode select */
+      #keyboard-mode-select {
+        margin-right: 10px;
+        background-color: #f5f5f5;
+        border: none;
+        padding: 5px;
+        font-size: 16px;
+        font-family: inherit;
+        border-radius: 20px;
+        color: #007bff;
+        font-weight: bold;
+      }
+
+      #keyboard-mode-select:focus {
+        outline: none;
+      }
+
+      /* Add CSS for theme select */
+      #theme-select {
+        margin-right: 10px;
+        background-color: #f5f5f5;
+        border: none;
+        padding: 5px;
+        font-size: 16px;
+        font-family: inherit;
+        border-radius: 20px;
+        color: #007bff;
+        font-weight: bold;
+      }
+
+      #theme-select:focus {
+        outline: none;
+      }
+
+      .keyboard-shortcuts span {
+        margin-right: 10px;
+      }
+
+      /* Add CSS for kbd tags */
+      kbd {
+        display: inline-block;
+        padding: 0.2em 0.4em;
+        font-size: 90%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        background-color: #007bff;
+        border-radius: 0.2rem;
+        margin: 0 0.1rem;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f5f5f5;
+        padding: 10px;
+      }
+
+      .toolbar .toolbar__left {
+        display: flex;
+        align-items: center;
+      }
+
+      .toolbar__right {
+        display: flex;
+        align-items: center;
+      }
+
+      .toolbar__right span {
+        margin-right: 10px;
+      }
+
+      label {
+        margin-right: 10px;
+      }
+    </style>
     <script>
       const editor = ace.edit('editor');
-      editor.setTheme('ace/theme/monokai');
       editor.session.setMode('ace/mode/lisp');
       setTimeout(() => {
         editor.focus();
       }, 200);
 
       const output = document.getElementById('output');
+
+      editor.setTheme(
+        'ace/theme/' + (localStorage.getItem('theme') || 'monokai'),
+      );
+      localStorage.setItem('theme', editor.getTheme().split('/').pop());
+      document.getElementById('theme-select').value = editor
+        .getTheme()
+        .split('/')
+        .pop();
+      localStorage.setItem('theme', editor.getTheme().split('/').pop());
+      editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+      });
+
+      // Add event listener to theme select
+      document
+        .getElementById('theme-select')
+        .addEventListener('change', function () {
+          editor.setTheme('ace/theme/' + this.value);
+          localStorage.setItem('theme', this.value);
+        });
 
       // Create a new WebSocket connection
       let ws;
@@ -74,6 +228,7 @@
             errorDiv.innerHTML =
               '<pre>' + JSON.stringify(message.error, null, 2) + '</pre>';
             output.prepend(errorDiv);
+
             if (message.stderr) {
               const stderrDiv = document.createElement('div');
               stderrDiv.className = 'output-div'; // Add class to separate each output
@@ -114,7 +269,7 @@
       // Send the contents of the Ace editor to the WebSocket endpoint when the user hits enter
       editor.commands.addCommand({
         name: 'sendToWebSocket',
-        bindKey: { win: 'Enter', mac: 'Enter' },
+        bindKey: { win: 'Ctrl-Enter', mac: 'Cmd-Enter' },
         exec: function (editor) {
           const message = editor.getValue();
           ws.send(message);
@@ -178,7 +333,7 @@
           const trimmedUrl =
             url.length > 150 ? url.substring(0, 150) + '...' : url;
           clipboardDiv.innerHTML =
-            'Saved to clipboard: <pre>' + trimmedUrl + '</pre>';
+            'Saved to clipboard: <a href="' + url + '">' + trimmedUrl + '</a>';
           output.prepend(clipboardDiv);
         },
         readOnly: false,

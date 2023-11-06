@@ -589,12 +589,18 @@ importers:
         specifier: ^8.14.2
         version: 8.14.2
     devDependencies:
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
       '@pnpm/make-dedicated-lockfile':
         specifier: ^0.5.11
         version: 0.5.11
       '@types/express':
         specifier: ^4.17.20
         version: 4.17.20
+      '@types/node':
+        specifier: ^18.17.14
+        version: 18.17.14
       '@types/ws':
         specifier: ^8.5.8
         version: 8.5.8
