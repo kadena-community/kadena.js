@@ -2,7 +2,7 @@ import 'ace-builds/src-noconflict/ace';
 import 'ace-builds/src-noconflict/mode-lisp';
 import 'ace-builds/src-noconflict/theme-github_dark';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import AceEditor from 'react-ace';
 import { isArray } from 'redoc';
@@ -24,6 +24,8 @@ export const Editor: FC<PropsWithChildren> = ({ children }) => {
   const [socket, setSocket] = useState<WebSocket>();
   const [consoleContent, setConsoleContent] = useState<IConsoleLine[]>([]);
   const [value, setValue] = useState<string>();
+  const editorRef = useRef<AceEditor>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   const setMessage = useCallback(
     (event: IMessage) => {
@@ -77,6 +79,18 @@ export const Editor: FC<PropsWithChildren> = ({ children }) => {
     connect();
   }, [connect]);
 
+  useEffect(() => {
+    if (editorRef.current && value && !isMounted) {
+      const editor = editorRef.current.editor;
+      console.log(1111);
+      const row = editor.session.getLength() - 1;
+      const column = editor.session.getLine(row).length; // or simply Infinity
+
+      editor.gotoLine(row + 1, column, true);
+      setIsMounted(true);
+    }
+  }, [editorRef, value]);
+
   const getContent = (child: any): ReactNode => {
     if (!child) return;
     if (
@@ -85,13 +99,13 @@ export const Editor: FC<PropsWithChildren> = ({ children }) => {
       typeof child === 'boolean'
     ) {
       if (child === '# interactive') return '';
+
       return child;
     }
 
     if (isArray(child.props?.children)) {
       return child.props?.children.map((item: any) => getContent(item));
     }
-
     return getContent(child.props?.children);
   };
 
@@ -108,12 +122,11 @@ export const Editor: FC<PropsWithChildren> = ({ children }) => {
     socket?.send(v);
   };
 
-  console.log(1, value, 1);
   return (
     <>
       <AceEditor
+        ref={editorRef}
         mode="lisp"
-        cursorStart={-1}
         focus
         fontSize={14}
         theme="github_dark"
@@ -123,6 +136,7 @@ export const Editor: FC<PropsWithChildren> = ({ children }) => {
         name="UNIQUE_ID_OF_DIV"
         keyboardHandler="normal"
         className={editorClass}
+        maxLines={Infinity}
         value={value}
       />
       <div className={consoleClass}>
