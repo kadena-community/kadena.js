@@ -16,7 +16,7 @@ export const MenuLinkButton: FC<IMenuLinkButtonProps> = ({
   active,
   title,
   href,
-  target = '_blank',
+  target = '_self',
   ...rest
 }) => {
   const button = (
