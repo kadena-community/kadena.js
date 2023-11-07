@@ -31,11 +31,12 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
-type ChainModuleAccount {
+type ChainModuleAccount implements Node {
   accountName: String!
   balance: Float!
   chainId: ID!
   guard: Guard!
+  id: ID!
   moduleName: String!
   transactions(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransactionsConnection!
   transfers(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransfersConnection!

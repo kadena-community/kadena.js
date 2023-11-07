@@ -1,4 +1,6 @@
 import { prismaClient } from '@db/prismaClient';
+import { getChainModuleAccount } from '@services/account-service';
+import { chainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
@@ -12,60 +14,48 @@ export default builder.objectType('ModuleAccount', {
     chainAccounts: t.field({
       type: ['ChainModuleAccount'],
       async resolve(parent) {
-        const chainAccounts: ChainModuleAccount[] = [];
-
-        for (let i = 0; i < 20; i++) {
-          try {
-            const accountDetails = await accountDetailsLoader.load({
-              moduleName: parent.moduleName,
-              accountName: parent.accountName,
-              chainId: i.toString(),
-            });
-
-            if (accountDetails !== null) {
-              chainAccounts.push({
-                chainId: i.toString(),
-                accountName: parent.accountName,
-                moduleName: parent.moduleName,
-                guard: {
-                  keys: accountDetails.guard.keys,
-                  predicate: accountDetails.guard.pred,
-                },
-                balance: accountDetails.balance,
-                transactions: [],
-                transfers: [],
-              });
-            }
-          } catch (error) {
-            throw normalizeError(error);
-          }
+        try {
+          return (
+            await Promise.all(
+              chainIds.map(async (chainId) => {
+                return await getChainModuleAccount({
+                  chainId: chainId,
+                  moduleName: parent.moduleName,
+                  accountName: parent.accountName,
+                });
+              }),
+            )
+          ).filter(
+            (chainAccount) => chainAccount !== null,
+          ) as ChainModuleAccount[];
+        } catch (error) {
+          throw normalizeError(error);
         }
-
-        return chainAccounts;
       },
     }),
     totalBalance: t.field({
       type: 'Decimal',
       async resolve(parent) {
-        let totalBalance = 0;
-
-        for (let i = 0; i < 20; i++) {
-          try {
-            const accountDetails = await accountDetailsLoader.load({
-              moduleName: parent.moduleName,
-              accountName: parent.accountName,
-              chainId: i.toString(),
-            });
-
+        try {
+          return (
+            await Promise.all(
+              chainIds.map(async (chainId) => {
+                return accountDetailsLoader.load({
+                  moduleName: parent.moduleName,
+                  accountName: parent.accountName,
+                  chainId: chainId,
+                });
+              }),
+            )
+          ).reduce((acc, accountDetails) => {
             if (accountDetails !== null) {
-              totalBalance += accountDetails.balance;
+              return acc + accountDetails.balance;
             }
-          } catch (error) {
-            throw normalizeError(error);
-          }
+            return acc;
+          }, 0);
+        } catch (error) {
+          throw normalizeError(error);
         }
-
-        return totalBalance;
       },
     }),
     transactions: t.prismaConnection({
