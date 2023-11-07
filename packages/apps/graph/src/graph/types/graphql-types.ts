@@ -19,7 +19,6 @@ export interface ChainModuleAccount {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface ModuleAccount {
-  id: string;
   moduleName: string;
   accountName: string;
   chainAccounts: ChainModuleAccount[];
