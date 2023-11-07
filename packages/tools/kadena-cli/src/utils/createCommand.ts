@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { z } from 'zod';
-import { globalOptions } from './globalOptions.js';
 import type { GlobalOptions } from './helpers.js';
 import { collectResponses } from './helpers.js';
 
@@ -39,10 +38,12 @@ type AsOption<T> = T extends {
 }
   ? K extends string
     ? {
-        [P in K]: T extends { expand: (...args: any[]) => infer Ex }
-          ? Ex
-          : Pure<R>;
-      }
+        [P in K]: Pure<R>;
+      } & (T extends { expand: (...args: any[]) => infer Ex }
+        ? {
+            [P in `${K}Config`]: Ex;
+          }
+        : {})
     : never
   : never;
 
@@ -61,20 +62,6 @@ type Combine<Tuple extends any[]> = Tuple extends [infer one]
       AsOption<First<Tuple>>,
       Tail<Tuple> extends any[] ? Combine<Tail<Tuple>> : {}
     >;
-
-type Test = Prettify<
-  Combine<
-    [
-      {
-        key: 'sd';
-        prompt: () => Promise<string>;
-        expand: (label: string) => { networkId: string };
-      },
-      { key: 'network'; prompt: () => string },
-      { key: 'network'; prompt: () => number },
-    ]
-  >
->; // { account : string, network: string}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createCommand<
