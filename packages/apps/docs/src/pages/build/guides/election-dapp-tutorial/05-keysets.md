@@ -189,7 +189,7 @@ file and run it.
 
 ```pact
 (env-data
-  { 'admin-key :
+  { 'admin-keyset :
     { 'keys : [ 'other-public-key ]
     , 'pred : 'keys-all
     }
@@ -268,6 +268,10 @@ the statement `(namespace ns-name)`. Finally, you need to add a signature for th
 to succeed.
 
 ```pact
+(begin-tx)
+  (load "root/ns.pact")
+(commit-tx)
+
 (env-sigs
   [{ 'key  : "368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca"
    , 'caps : []
