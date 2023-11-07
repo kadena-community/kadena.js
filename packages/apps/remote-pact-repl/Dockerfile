@@ -14,18 +14,18 @@ WORKDIR /app
 COPY ./pact-bin ./pact-bin
 
 # copy package.json and lockfile
-COPY package.json pnpm-lock.yaml ./
+COPY package.json ./
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # copy source code
 COPY ./src ./src
 COPY ./tsconfig.json ./tsconfig.json
 
-RUN ./node_modules/.bin/tsc
+RUN pnpm run build:app
 
 EXPOSE 3000
 
 # Start the application
-CMD ["node", "./src/server.js"]
+CMD ["node", "./lib/server.js"]

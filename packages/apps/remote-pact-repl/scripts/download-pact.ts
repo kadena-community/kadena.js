@@ -12,10 +12,14 @@ const downloadFile = async (url, folder = '.') => {
   await finished(Readable.fromWeb(res.body).pipe(fileStream));
 };
 async function main() {
-  await downloadFile(
-    'https://github.com/kadena-io/pact/releases/download/v4.9.0/pact-4.9.0-linux-20.04.zip',
-    'pact.zip',
-  );
+  if (!fs.existsSync('pact-bin') && !fs.existsSync('pact.zip')) {
+    await downloadFile(
+      'https://github.com/kadena-io/pact/releases/download/v4.9.0/pact-4.9.0-linux-20.04.zip',
+      'pact.zip',
+    );
+  } else {
+    console.log('Skipping download of pact.zip');
+  }
 
   function runCommand(command: string, args: string[]): Promise<void> {
     return new Promise<void>((resolve, reject) => {
@@ -34,7 +38,12 @@ async function main() {
     });
   }
 
-  await runCommand('unzip', ['-o', 'pact.zip', '-d', 'pact-bin']);
+  if (!fs.existsSync('pact-bin/pact')) {
+    await runCommand('unzip', ['-o', 'pact.zip', '-d', 'pact-bin']);
+  } else {
+    console.log('Skipping unzip of pact.zip');
+  }
+
   await runCommand('chmod', ['+x', 'pact-bin/pact']);
 
   unlink('pact.zip', () => {});
@@ -42,4 +51,4 @@ async function main() {
 
 main()
   .catch(console.error)
-  .finally(() => {});
+  .finally(() => { });

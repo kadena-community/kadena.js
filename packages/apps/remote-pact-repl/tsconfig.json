@@ -1,5 +1,6 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {},
-  "files": ["src/server.ts", "scripts/download-pact.ts"]
+  "files": ["src/server.ts"]
+
 }
