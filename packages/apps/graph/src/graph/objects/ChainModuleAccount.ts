@@ -32,21 +32,6 @@ export default builder.node(
         throw normalizeError(error);
       }
     },
-    async loadMany(ids) {
-      try {
-        return await Promise.all(
-          ids.map(async (id) => {
-            return await getChainModuleAccount({
-              chainId: id.chainId,
-              moduleName: id.moduleName,
-              accountName: id.accountName,
-            });
-          }),
-        );
-      } catch (error) {
-        throw normalizeError(error);
-      }
-    },
     fields: (t) => ({
       chainId: t.exposeID('chainId'),
       accountName: t.exposeString('accountName'),
