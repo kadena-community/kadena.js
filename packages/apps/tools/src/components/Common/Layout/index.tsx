@@ -18,7 +18,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         <Header />
       </header>
       <aside className={classNames(sidebarStyle, { isMenuOpen })}>
-          <Sidebar />
+        <Sidebar />
       </aside>
       <main className={classNames(gridItemMainStyle, { isMenuOpen })}>
         {children}
