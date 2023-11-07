@@ -16,15 +16,29 @@ export const gridItemMainStyle = style([
     paddingTop: '$20',
     paddingBottom: '$16',
     paddingRight: '$6',
+    width: 'max-content',
   }),
   {
-    width: '680px',
     paddingLeft: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
     selectors: {
       '&.isMenuOpen': {
         width: `calc(${vars.sizes.$20} + ${vars.sizes.$2}) + 680px`,
         paddingLeft: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$6})`,
         borderRight: `1px solid ${vars.colors.$borderSubtle}`,
+      },
+    },
+  },
+]);
+
+export const sidebarStyle = style([
+  sprinkles({
+    width: '$16',
+  }),
+  {
+    transition: 'width 0.1s ease',
+    selectors: {
+      '&.isMenuOpen': {
+        width: `calc(${vars.sizes.$64} + ${vars.sizes.$35})`,
       },
     },
   },

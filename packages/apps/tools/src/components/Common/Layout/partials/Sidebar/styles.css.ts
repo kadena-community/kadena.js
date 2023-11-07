@@ -70,7 +70,6 @@ export const gridMiniMenuLinkButtonStyle = style([
     fontWeight: '$bold',
   }),
   {
-    transition: 'all 0.1s ease',
     width: '100%',
     borderBottom: `1px solid ${vars.colors.$borderDefault}`,
     selectors: {
