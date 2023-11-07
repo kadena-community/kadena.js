@@ -14,8 +14,8 @@ After you have completed this entire tutorial, you may want to deploy your elect
 smart contract to Testnet. Many others like you would perhaps like to do the same.
 If everyone would deploy Pact modules with the same name to the same network, however,
 it would become impossible to distinguish your Pact module from all the others. Therefore,
-it is not allowed to
-deploy a Pact module with a name that already exists on the chain you are deploying to
+it is not allowed to deploy a Pact module with a name that is already used by someone
+else on the chain you are deploying to
 and your deployment transaction will fail with an error if you try. Fortunately,
 Kadena offers a solution to this problem by introducing namespaces. You can create
 your own unique namespace on the blockchain and you get to decide who can update the
