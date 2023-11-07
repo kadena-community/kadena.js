@@ -1,10 +1,68 @@
 (namespace "user")
-(module coin-faucet GOVERNANCE
+(module coin-faucet-v2 GOVERNANCE
 
   "'coin-faucet' represents Kadena's Coin Faucet Contract."
 
+  (implements gas-payer-v1)
+
   ;; TODO - use hashed import
   (use coin)
+
+  ; --------------------------------------------------------------------------
+  ; Gas station
+  ; --------------------------------------------------------------------------
+
+  (defcap ALLOW_GAS () true)
+
+  (defun chain-gas-price ()
+    (at 'gas-price (chain-data))
+  )
+
+  (defun enforce-below-or-at-gas-price:bool (gasPrice:decimal)
+    (enforce (<= (chain-gas-price) gasPrice)
+      (format "Gas Price must be smaller than or equal to {}" [gasPrice]))
+  )
+
+  (defcap GAS_PAYER:bool
+    ( user:string
+      limit:integer
+      price:decimal
+    )
+    @doc
+    " Provide a capability indicating that declaring module supports \
+    \ gas payment for USER for gas LIMIT and PRICE. Functionality \
+    \ should require capability (coin.FUND_TX), and should validate \
+    \ the spend of (limit * price), possibly updating some database \
+    \ entry. \
+    \ Should compose capability required for 'create-gas-payer-guard'."
+    ;  @model
+    ;  [ (property (user != ""))
+    ;    (property (limit > 0))
+    ;    (property (price > 0.0))
+    ;  ]
+    (enforce (= "exec" (at "tx-type" (read-msg))) "Can only be used inside an exec")
+    (enforce (= 1 (length (at "exec-code" (read-msg)))) "Can only be used to call one pact function")
+    (enforce (= "(user.coin-faucet-v2." (take 21 (at 0 (at "exec-code" (read-msg))))) "only coin faucet smart contract")
+    (enforce-below-or-at-gas-price 0.0000001)
+    (compose-capability (ALLOW_GAS))
+  )
+
+  (defun create-gas-payer-guard:guard ()
+    @doc
+    " Provide a guard suitable for controlling a coin account that can \
+    \ pay gas via GAS_PAYER mechanics. Generally this is accomplished \
+    \ by having GAS_PAYER compose an unparameterized, unmanaged capability \
+    \ that is required in this guard. Thus, if coin contract is able to \
+    \ successfully acquire GAS_PAYER, the composed 'anonymous' cap required \
+    \ here will be in scope, and gas buy will succeed."
+    (create-capability-guard (ALLOW_GAS))
+  )
+
+  (defconst GAS_STATION_ACCOUNT (create-principal (create-gas-payer-guard)))
+
+  (defun init ()
+    (coin.create-account GAS_STATION_ACCOUNT (create-gas-payer-guard))
+  )
 
   ; --------------------------------------------------------------------------
   ; Governance
@@ -111,4 +169,7 @@
 )
 (if (read-msg 'upgrade)
   ["Upgrade successful"]
-  [(create-table history-table)])
+  [
+    (create-table history-table)
+    (init)
+  ])

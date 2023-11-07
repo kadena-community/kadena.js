@@ -1,5 +1,6 @@
 (begin-tx "Load modules")
 
+(load "root/gas-payer-v1.pact")
 (load "root/fungible-v2.pact")
 (load "root/fungible-xchain-v1.pact")
 (load "root/coin-v5.pact")
@@ -41,12 +42,11 @@
 (env-data {})
 
 (env-sigs [{"key": "whatever", "caps": []}])
-(env-data {"contract-admins": ["whatever"]})
+(env-data {"contract-admins": ["whatever"], "upgrade": false})
 
 (begin-tx "Load the Faucet pact")
 
 (load "testnet-faucet.pact")
-(create-table history-table)
 
 (commit-tx)
 
