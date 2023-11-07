@@ -29,6 +29,8 @@ export const DOMAIN:
 
 export const COIN_ACCOUNT: string = 'contract-admins';
 
+export const GAS_STATION = 'c:clGP4RWyk9pvJHO6-f1DOMEknZGtqHtjkKn4NT2hMf0';
+
 export const GAS_PROVIDER: {
   publicKey: string;
   privateKey: string;

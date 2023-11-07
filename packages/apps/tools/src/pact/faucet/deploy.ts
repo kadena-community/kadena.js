@@ -4,6 +4,7 @@ import { createAdmin } from './deploy/createAdmin';
 import { deployFaucet } from './deploy/deployFaucet';
 import { fundAdmin } from './deploy/fundAdmin';
 import { fundFaucet } from './deploy/fundFaucet';
+import { fundGasStation } from './deploy/fundGasStation';
 import { rotateKeyset } from './deploy/rotate-keyset';
 
 const deployInOrder = () => {
@@ -21,6 +22,9 @@ const deployInOrder = () => {
 
     // console.log('fundFaucet', chain, upgrade);
     // await fundFaucet({ chainId: chain, upgrade });
+
+    // console.log('fundGasStation', chain, upgrade);
+    // await fundGasStation({ chainId: chain, upgrade });
 
     // console.log('rotateKeyset', chain, upgrade);
     // await rotateKeyset('faucet-operation', chain);
