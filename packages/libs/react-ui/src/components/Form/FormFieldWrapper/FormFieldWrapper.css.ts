@@ -6,7 +6,7 @@ import { statusColor, statusOutlineColor } from '../Form.css';
 import {
   helperIconColor,
   helperTextColor,
-} from './InputHelper/InputHelper.css';
+} from './FormFieldHelper/FormFieldHelper.css';
 
 const statusOptions: Record<FormFieldStatus, FormFieldStatus> = {
   disabled: 'disabled',

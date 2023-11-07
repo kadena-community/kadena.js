@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import type { FC, InputHTMLAttributes } from 'react';
 import React, { forwardRef, useContext } from 'react';
 import { baseContainerClass, baseOutlinedClass } from '../Form.css';
-import { InputWrapperContext } from '../InputWrapper/InputWrapper.context';
+import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
 import {
   disabledClass,
   inputClass,
@@ -43,8 +43,9 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     },
     ref,
   ) {
-    const { status, leadingTextWidth: wrapperLeadingTextWidth } =
-      useContext(InputWrapperContext);
+    const { status, leadingTextWidth: wrapperLeadingTextWidth } = useContext(
+      FormFieldWrapperContext,
+    );
 
     const leadingTextWidth = propLeadingTextWidth || wrapperLeadingTextWidth;
 

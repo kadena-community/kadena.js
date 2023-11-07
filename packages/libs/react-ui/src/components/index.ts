@@ -9,8 +9,8 @@ export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
   FormFieldStatus,
+  IFormFieldWrapperProps,
   IInputProps,
-  IInputWrapperProps,
   ISelectFieldProps,
   ISelectProps,
   ITextFieldProps,
@@ -81,8 +81,8 @@ export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
 export { Divider } from './Divider/Divider';
 export {
+  FormFieldWrapper,
   Input,
-  InputWrapper,
   Select,
   SelectField,
   TextField,

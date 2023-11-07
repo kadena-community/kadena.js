@@ -3,13 +3,15 @@ import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 import type { vars } from 'src/styles';
 import type { FormFieldStatus } from '../Form.css';
-import type { IInputHeaderProps } from './InputHeader/InputHeader';
-import { InputHeader } from './InputHeader/InputHeader';
-import { InputHelper } from './InputHelper/InputHelper';
-import { InputWrapperContext } from './InputWrapper.context';
-import { statusVariant } from './InputWrapper.css';
 
-export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {
+import type { IFormFieldHeaderProps } from './FormFieldHeader/FormFieldHeader';
+import { FormFieldHeader } from './FormFieldHeader/FormFieldHeader';
+import { FormFieldHelper } from './FormFieldHelper/FormFieldHelper';
+import { FormFieldWrapperContext } from './FormFieldWrapper.context';
+import { statusVariant } from './FormFieldWrapper.css';
+
+export interface IFormFieldWrapperProps
+  extends Omit<IFormFieldHeaderProps, 'label'> {
   children:
     | FunctionComponentElement<IInputProps>
     | FunctionComponentElement<IInputProps>[];
@@ -20,7 +22,7 @@ export interface IInputWrapperProps extends Omit<IInputHeaderProps, 'label'> {
   leadingTextWidth?: keyof typeof vars.sizes;
 }
 
-export const InputWrapper: FC<IInputWrapperProps> = ({
+export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
   status,
   disabled,
   children,
@@ -34,14 +36,19 @@ export const InputWrapper: FC<IInputWrapperProps> = ({
   const statusVal = disabled === true ? 'disabled' : status;
 
   return (
-    <InputWrapperContext.Provider value={{ status, leadingTextWidth }}>
+    <FormFieldWrapperContext.Provider value={{ status, leadingTextWidth }}>
       <div className={statusVal ? statusVariant[statusVal] : undefined}>
         {label !== undefined && (
-          <InputHeader htmlFor={htmlFor} label={label} tag={tag} info={info} />
+          <FormFieldHeader
+            htmlFor={htmlFor}
+            label={label}
+            tag={tag}
+            info={info}
+          />
         )}
         <div className="inputGroup">{children}</div>
-        {Boolean(helperText) && <InputHelper>{helperText}</InputHelper>}
+        {Boolean(helperText) && <FormFieldHelper>{helperText}</FormFieldHelper>}
       </div>
-    </InputWrapperContext.Provider>
+    </FormFieldWrapperContext.Provider>
   );
 };
