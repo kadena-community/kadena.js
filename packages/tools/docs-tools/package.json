@@ -34,5 +34,9 @@
     "mdast": "^3.0.0",
     "prettier": "~3.0.3",
     "typescript": "5.2.2"
+  },
+  "dependencies": {
+    "mdast-util-to-string": "~3.2.0",
+    "remark-gfm": "^4.0.0"
   }
 }

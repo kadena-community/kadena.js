@@ -1,13 +1,7 @@
-import type { Root, RootContentMap, RootContent, RootData, PhrasingContent, Resource, Link } from 'mdast';
-import type { Parent } from 'unist';
+import type { Root, RootContent } from 'mdast';
 
 interface Tree extends Omit<Root, 'children'> {
   children: RootContent[];
-}
-
-interface Children extends RootContentMap {
-  paragraph: PhrasingContent[];
-  link: Link[];
 }
 
 const getTwitterStatusId = (url: string): string | undefined => {
@@ -26,7 +20,7 @@ const getTwitterStatusId = (url: string): string | undefined => {
 };
 
 const remarkTwitter = () => {
-  return async (tree: Tree):  => {
+  return async (tree: Tree) => {
     const children = tree.children.map((node) => {
       if (node.type === 'paragraph' && node.children?.length === 1) {
         const leaf = node.children?.[0] ?? null;
@@ -57,7 +51,7 @@ const remarkTwitter = () => {
       return node;
     });
 
-    tree.children = children;
+    tree.children = children as RootContent[];
     return tree;
   };
 };

@@ -1,6 +1,10 @@
 import { toString } from 'mdast-util-to-string';
 import { getValues } from './utils.mjs';
-import { Root } from 'remark-gfm';
+import type { Root, RootContent, Heading } from 'mdast';
+
+interface Tree extends Omit<Root, 'children'> {
+  children: RootContent[];
+}
 
 const getTagName = (depth = 1) => `h${depth}`;
 
@@ -37,14 +41,15 @@ const cleanupHeading = (item) => {
   item.children = [{ ...newChild, value }];
 };
 
-const getHeaders = (tree) => {
-  return tree.children.filter((branch: Root) => {
+
+const getHeaders = (tree: Root) => {
+  return tree.children.filter((branch: RootContent) => {
     return branch.type === 'heading';
-  });
+  }) as Heading[] ?? [];
 };
 
 const remarkHeadersToProps = () => {
-  return async (tree) => {
+  return async (tree: Tree) => {
     const headers = getHeaders(tree);
 
     let startArray = [
