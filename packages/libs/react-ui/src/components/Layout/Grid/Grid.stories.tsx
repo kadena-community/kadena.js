@@ -35,6 +35,13 @@ const meta: Meta<StoryType> = {
   },
   component: Grid.Root,
   argTypes: {
+    overflow: {
+      options: ['hidden', 'visible', 'scroll', 'auto'],
+      control: {
+        type: 'select',
+      },
+      description: 'Overflow css property.',
+    },
     gap: {
       options: Object.keys(gapVariants) as (keyof typeof gapVariants)[],
       control: { type: 'select' },
@@ -249,6 +256,7 @@ const defaultArgs: Record<string, string | undefined> = {
   paddingBottom: undefined,
   paddingLeft: undefined,
   paddingRight: undefined,
+  overflow: undefined,
 };
 
 export const GridRoot: Story = {
