@@ -104,10 +104,10 @@ type MinerKey implements Node {
   key: String!
 }
 
-type ModuleAccount {
+type ModuleAccount implements Node {
   accountName: String!
   chainAccounts: [ChainModuleAccount!]!
-  id: String!
+  id: ID!
   moduleName: String!
   totalBalance: Decimal!
   transactions(after: String, before: String, first: Int, last: Int): ModuleAccountTransactionsConnection!

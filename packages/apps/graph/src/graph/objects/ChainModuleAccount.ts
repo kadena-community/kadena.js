@@ -9,8 +9,8 @@ export default builder.node(
   builder.objectRef<ChainModuleAccount>('ChainModuleAccount'),
   {
     id: {
-      resolve(parent, __args, __context, info) {
-        return `${info.parentType}/${parent.chainId}/${parent.moduleName}/${parent.accountName}`;
+      resolve(parent) {
+        return `ChainModuleAccount/${parent.chainId}/${parent.moduleName}/${parent.accountName}`;
       },
       parse(id) {
         return {
@@ -21,12 +21,12 @@ export default builder.node(
       },
     },
     isTypeOf: () => true,
-    async loadOne(id) {
+    async loadOne({ chainId, moduleName, accountName }) {
       try {
         return getChainModuleAccount({
-          chainId: id.chainId,
-          moduleName: id.moduleName,
-          accountName: id.accountName,
+          chainId: chainId,
+          moduleName: moduleName,
+          accountName: accountName,
         });
       } catch (error) {
         throw normalizeError(error);
