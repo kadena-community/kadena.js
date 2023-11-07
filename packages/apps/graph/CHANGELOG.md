@@ -1,5 +1,17 @@
 # @kadena/graph
 
+## 1.0.3
+
+### Patch Changes
+
+- 2e18fe50c: Added query to get transactions by public key
+- 39a870cea: Added endpoint for graph and chainweb-data general info
+- aced46632: Updated simulate command to now incorporate safe-transfers
+- 6e4895050: Added proper error logging for the graph and client
+- 9de5d550c: Added PactData as optional argument to PactQueries
+- Updated dependencies [445fb2c7d]
+  - @kadena/client@1.6.1
+
 ## 1.0.2
 
 ### Patch Changes
