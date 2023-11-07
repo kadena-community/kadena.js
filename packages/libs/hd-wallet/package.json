@@ -43,6 +43,9 @@
   },
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/client": "workspace:^",
+    "@scure/bip39": "^1.2.1",
+    "ed25519-keygen": "^0.4.8",
     "debug": "~4.3.4"
   },
   "devDependencies": {

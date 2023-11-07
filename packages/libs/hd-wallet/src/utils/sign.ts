@@ -10,7 +10,7 @@ const KDA_COIN_TYPE: number = 626;
  * @param {Uint8Array} uint8Array - The array to convert.
  * @returns {string} - Returns the hexadecimal representation of the input.
  */
-const uint8ArrayToHex = (uint8Array: Uint8Array): string => {
+export const uint8ArrayToHex = (uint8Array: Uint8Array): string => {
   if (uint8Array.length === 33 && uint8Array.at(0) === 0) {
     uint8Array = uint8Array.slice(1);
   }
