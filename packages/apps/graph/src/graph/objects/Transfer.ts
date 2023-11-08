@@ -1,6 +1,5 @@
 import { prismaClient } from '@db/prismaClient';
 import { normalizeError } from '@utils/errors';
-import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transfer', {
