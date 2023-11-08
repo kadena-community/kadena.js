@@ -6,8 +6,12 @@ export interface Guard {
   predicate: 'keys-all' | 'keys-any' | 'keys-two';
 }
 
+export const ChainModuleAccountName: 'ChainModuleAccount' =
+  'ChainModuleAccount';
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface ChainModuleAccount {
+  __typename: typeof ChainModuleAccountName;
   chainId: string;
   moduleName: string;
   accountName: string;
@@ -17,8 +21,11 @@ export interface ChainModuleAccount {
   transfers: Transfer[];
 }
 
+export const ModuleAccountName: 'ModuleAccount' = 'ModuleAccount';
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface ModuleAccount {
+  __typename: typeof ModuleAccountName;
   moduleName: string;
   accountName: string;
   chainAccounts: ChainModuleAccount[];

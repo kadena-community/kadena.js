@@ -2,6 +2,7 @@ import { getAccountDetails } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import ChainModuleAccount from '../objects/ChainModuleAccount';
+import { ChainModuleAccountName } from '../types/graphql-types';
 
 builder.queryField('chainAccount', (t) => {
   return t.field({
@@ -22,6 +23,7 @@ builder.queryField('chainAccount', (t) => {
 
         return accountDetails
           ? {
+              __typename: ChainModuleAccountName,
               chainId: args.chainId,
               accountName: args.accountName,
               moduleName: args.moduleName,
