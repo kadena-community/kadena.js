@@ -174,7 +174,7 @@ type Query {
   pactQuery(pactQuery: PactQuery!): String!
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String, requestKey: String): QueryTransactionsConnection!
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
-  transfers(accountName: String, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String, requestKey: String): QueryTransfersConnection!
+  transfers(accountName: String, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransfersConnection!
 }
 
 type QueryTransactionsByPublicKeyConnection {
