@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prismaClient';
 import { normalizeError } from '@utils/errors';
+import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transfer', {
@@ -19,14 +20,58 @@ export default builder.prismaNode('Transfer', {
 
     // computed fields
     crossChainTransfer: t.prismaField({
-      type: ['Transfer'],
+      type: 'Transfer',
       nullable: true,
       async resolve(__query, parent) {
         try {
-          return await prismaClient.transfer.findMany({
+          let counterTransaction;
+
+          // Try to find finisher transfer
+          const finisherTransfer = await prismaClient.transaction.findFirst({
             where: {
-              requestKey: parent.requestKey,
-              orderIndex: { not: parent.orderIndex },
+              pactId: parent.requestKey,
+            },
+          });
+
+          if (finisherTransfer) {
+            counterTransaction = finisherTransfer;
+          } else {
+            // If not found, try to find the initiating transfer
+            // First find the corresponding transaction
+            const finisherTransaction =
+              await prismaClient.transaction.findFirst({
+                where: {
+                  blockHash: parent.blockHash,
+                  requestKey: parent.requestKey,
+                },
+              });
+
+            if (
+              !finisherTransaction ||
+              finisherTransaction.pactId === undefined ||
+              finisherTransaction.pactId === null
+            ) {
+              return null;
+            }
+
+            // Then find the initiating transaction with the pactId
+            const initiatingTransaction =
+              await prismaClient.transaction.findFirstOrThrow({
+                where: {
+                  requestKey: finisherTransaction.pactId,
+                  pactId: undefined,
+                },
+              });
+
+            counterTransaction = initiatingTransaction;
+          }
+
+          return await prismaClient.transfer.findFirst({
+            where: {
+              blockHash: counterTransaction.blockHash,
+              requestKey: counterTransaction.requestKey,
+              OR: [{ senderAccount: '' }, { receiverAccount: '' }],
+              amount: parent.amount,
             },
           });
         } catch (error) {

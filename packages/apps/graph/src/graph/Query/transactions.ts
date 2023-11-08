@@ -10,6 +10,7 @@ builder.queryField('transactions', (t) => {
       moduleName: t.arg.string({ required: false }),
       chainId: t.arg.string({ required: false }),
       blockHash: t.arg.string({ required: false }),
+      requestKey: t.arg.string({ required: false }),
     },
     type: 'Transaction',
     cursor: 'blockHash_requestKey',
@@ -47,6 +48,7 @@ function generateTransactionFilter(args: {
   moduleName?: string | null | undefined;
   chainId?: string | null | undefined;
   blockHash?: string | null | undefined;
+  requestKey?: string | null | undefined;
 }): Prisma.TransactionWhereInput {
   const whereFilter: Prisma.TransactionWhereInput = {};
 
@@ -68,6 +70,10 @@ function generateTransactionFilter(args: {
 
   if (args.blockHash) {
     whereFilter.blockHash = args.blockHash;
+  }
+
+  if (args.requestKey) {
+    whereFilter.requestKey = args.requestKey;
   }
 
   return whereFilter;

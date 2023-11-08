@@ -128,6 +128,7 @@ export async function simulate({
             )}` as ChainId,
           };
         }
+        logger.info('Cross chain transfer', account, nextAccount);
         result = await crossChainTransfer({
           from: account,
           to: nextAccount,
