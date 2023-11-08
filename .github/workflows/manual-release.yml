@@ -1,4 +1,4 @@
-name: Release
+name: Manual Release
 
 # Taken from: https://github.com/changesets/action#with-publishing
 
