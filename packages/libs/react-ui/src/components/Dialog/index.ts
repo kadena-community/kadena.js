@@ -8,7 +8,14 @@ import { DialogHeader } from './DialogHeader';
 import type { IDialogRootProps } from './DialogRoot';
 import { DialogRoot } from './DialogRoot';
 
-export interface IDialogProps {
+export {
+  IDialogContentProps,
+  IDialogFooterProps,
+  IDialogHeaderProps,
+  IDialogRootProps,
+};
+
+interface IDialogProps {
   Root: FC<IDialogRootProps>;
   Header: FC<IDialogHeaderProps>;
   Content: FC<IDialogContentProps>;

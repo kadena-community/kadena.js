@@ -8,6 +8,12 @@ export type { IButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
+  IDialogContentProps,
+  IDialogFooterProps,
+  IDialogHeaderProps,
+  IDialogRootProps,
+} from './Dialog';
+export type {
   FormFieldStatus,
   IFormFieldWrapperProps,
   IInputProps,
@@ -80,7 +86,7 @@ export { Breadcrumbs } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
-export { Dialog, type IDialogProps } from './Dialog';
+export { Dialog } from './Dialog';
 export { Divider } from './Divider/Divider';
 export {
   FormFieldWrapper,
