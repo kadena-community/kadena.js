@@ -1,6 +1,6 @@
 import type { Root, RootContent } from 'mdast';
 
-interface Tree extends Omit<Root, 'children'> {
+interface ITree extends Omit<Root, 'children'> {
   children: RootContent[];
 }
 
@@ -20,7 +20,7 @@ const getTwitterStatusId = (url: string): string | undefined => {
 };
 
 const remarkTwitter = () => {
-  return async (tree: Tree) => {
+  return async (tree: ITree) => {
     const children = tree.children.map((node) => {
       if (node.type === 'paragraph' && node.children?.length === 1) {
         const leaf = node.children?.[0] ?? null;
@@ -42,8 +42,7 @@ const remarkTwitter = () => {
               },
             };
 
-            // @ts-ignore
-            delete newNode.children;
+            newNode.children = [];
             return newNode;
           }
         }
