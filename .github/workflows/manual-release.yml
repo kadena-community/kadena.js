@@ -1,0 +1,60 @@
+name: Release
+
+# Taken from: https://github.com/changesets/action#with-publishing
+
+on:
+  workflow_dispatch:
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Changelog PR or Release
+    if: ${{ github.repository_owner == 'kadena-community' }}
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint monorepo root
+        run: pnpm run lint
+
+      - name: Build, lint, test all packages
+        run: pnpm turbo lint build test
+
+      - name: Create Release PR or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          # Note: pnpm install after versioning is necessary to refresh lockfile
+          publish: pnpm run publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
+          # Needs r+w access for packages of both orgs to publish to npm
+          NPM_TOKEN: ${{ secrets.RELEASE_ACTION_NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+      - name: Output (debug)
+        if: steps.changesets.outputs.published == 'true'
+        # Do something more interesting when a publish happens.
+        run: echo ${{ steps.changesets.outputs.publishedPackages }}
