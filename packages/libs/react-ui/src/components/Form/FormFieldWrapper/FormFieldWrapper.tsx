@@ -1,4 +1,9 @@
-import type { IInputProps } from '@components/Form';
+import type {
+  IInputProps,
+  ISelectFieldProps,
+  ISelectProps,
+  ITextareaProps,
+} from '@components/Form';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 import type { vars } from 'src/styles';
@@ -14,8 +19,8 @@ import { statusVariant } from './FormFieldWrapper.css';
 export interface IFormFieldWrapperProps
   extends Omit<IFormFieldHeaderProps, 'label'> {
   children:
-    | FunctionComponentElement<IInputProps>
-    | FunctionComponentElement<IInputProps>[];
+    | FunctionComponentElement<IInputProps | ISelectProps | ITextareaProps>
+    | FunctionComponentElement<IInputProps | ISelectProps | ITextareaProps>[];
   status?: FormFieldStatus;
   disabled?: boolean;
   helperText?: string;
