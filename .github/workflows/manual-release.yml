@@ -44,12 +44,9 @@ jobs:
       - name: Build, lint, test all packages
         run: pnpm turbo lint build test
 
-      - name: Publish unpublished packages
+      - name: Build, lint, test all packages
         id: changesets
-        uses: changesets/action@v1
-        with:
-          # Note: pnpm install after versioning is necessary to refresh lockfile
-          publish: pnpm run publish
+        run: pnpm publish
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
           # Needs r+w access for packages of both orgs to publish to npm
