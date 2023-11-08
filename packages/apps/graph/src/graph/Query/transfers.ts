@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prismaClient';
-import { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
