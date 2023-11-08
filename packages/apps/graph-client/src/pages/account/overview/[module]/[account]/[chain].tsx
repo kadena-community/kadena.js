@@ -22,7 +22,7 @@ const ChainAccount: React.FC = () => {
     error,
   } = useGetChainAccountQuery({
     variables: {
-      moduleName: router.query.module as string,
+      moduleName: router.query.moduleName as string,
       accountName: router.query.account as string,
       chainId: router.query.chain as string,
     },
@@ -142,3 +142,4 @@ const ChainAccount: React.FC = () => {
 };
 
 export default ChainAccount;
+module;
