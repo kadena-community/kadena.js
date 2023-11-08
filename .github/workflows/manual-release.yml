@@ -9,7 +9,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Changelog PR or Release
+    name: Publish unpublished packages
     if:
       ${{ github.repository_owner == 'kadena-community' && github.ref ==
       'refs/heads/main'}}
