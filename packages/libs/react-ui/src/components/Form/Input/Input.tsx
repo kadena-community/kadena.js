@@ -5,6 +5,7 @@ import type { FC, InputHTMLAttributes } from 'react';
 import React, { forwardRef, useContext } from 'react';
 import { baseContainerClass, baseOutlinedClass } from '../Form.css';
 import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
+import { formFieldContainerClass } from '../FormFieldWrapper/FormFieldWrapper.css';
 import {
   disabledClass,
   inputClass,
@@ -54,7 +55,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
 
     return (
       <div
-        className={classNames(baseContainerClass, {
+        className={classNames(baseContainerClass, formFieldContainerClass, {
           [baseOutlinedClass]: outlined || status,
           [disabledClass]: disabled,
         })}

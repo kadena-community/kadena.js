@@ -1,6 +1,6 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
-import { styleVariants } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 import type { FormFieldStatus } from '../Form.css';
 import { statusColor, statusOutlineColor } from '../Form.css';
 import {

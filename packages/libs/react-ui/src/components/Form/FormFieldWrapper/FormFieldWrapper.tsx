@@ -4,6 +4,7 @@ import React from 'react';
 import type { vars } from 'src/styles';
 import type { FormFieldStatus } from '../Form.css';
 
+import { Stack } from '@components/Layout';
 import type { IFormFieldHeaderProps } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHeader } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHelper } from './FormFieldHelper/FormFieldHelper';
@@ -12,8 +13,8 @@ import { statusVariant } from './FormFieldWrapper.css';
 
 export interface IFormFieldWrapperProps
   extends Omit<IFormFieldHeaderProps, 'label'> {
-  children:
-    | FunctionComponentElement<IInputProps>
+  children: // combine types for all input types
+  | FunctionComponentElement<IInputProps>
     | FunctionComponentElement<IInputProps>[];
   status?: FormFieldStatus;
   disabled?: boolean;
@@ -46,7 +47,9 @@ export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
             info={info}
           />
         )}
-        <div className="inputGroup">{children}</div>
+        <Stack gap="$2" direction="column">
+          {children}
+        </Stack>
         {Boolean(helperText) && <FormFieldHelper>{helperText}</FormFieldHelper>}
       </div>
     </FormFieldWrapperContext.Provider>
