@@ -128,6 +128,7 @@ export async function simulate({
             )}` as ChainId,
           };
         }
+        logger.info('Cross chain transfer', account, nextAccount);
         result = await crossChainTransfer({
           from: account,
           to: nextAccount,
@@ -179,8 +180,6 @@ export async function simulate({
       if (!accountExists) {
         accounts.push(nextAccount);
       }
-
-      logger.info(accounts);
 
       await new Promise((resolve) => setTimeout(resolve, transferInterval));
     }

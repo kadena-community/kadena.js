@@ -172,9 +172,9 @@ type Query {
   nodes(ids: [ID!]!): [Node]!
   pactQueries(pactQuery: [PactQuery!]!): [String!]!
   pactQuery(pactQuery: PactQuery!): String!
-  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransactionsConnection!
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String, requestKey: String): QueryTransactionsConnection!
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
-  transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
+  transfers(accountName: String, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String, requestKey: String): QueryTransfersConnection!
 }
 
 type QueryTransactionsByPublicKeyConnection {
@@ -263,7 +263,7 @@ type Transfer implements Node {
   blockHash: String!
   blocks: [Block!]!
   chainId: BigInt!
-  crossChainTransfer: [Transfer!]
+  crossChainTransfer: Transfer
   height: BigInt!
   id: ID!
   moduleHash: String!
