@@ -100,9 +100,6 @@ export const getAccount: DocumentNode = gql`
         edges {
           node {
             ...CoreTransferFields
-            crossChainTransfer {
-              ...CoreTransferFields
-            }
           }
         }
       }
@@ -137,9 +134,6 @@ export const getChainAccount: DocumentNode = gql`
         edges {
           node {
             ...CoreTransferFields
-            crossChainTransfer {
-              ...CoreTransferFields
-            }
           }
         }
       }
@@ -225,9 +219,6 @@ export const getTransfers: DocumentNode = gql`
         cursor
         node {
           ...CoreTransferFields
-          crossChainTransfer {
-            ...CoreTransferFields
-          }
         }
       }
     }
