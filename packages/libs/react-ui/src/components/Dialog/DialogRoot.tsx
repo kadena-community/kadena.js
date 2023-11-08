@@ -36,6 +36,8 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
           className={overlayClass}
           {...mergeProps(rest, dialogProps)}
         >
+          {typeof children === 'function' ? children(state) : children}
+
           {isDismissable && (
             <button
               className={closeButtonClass}
@@ -46,8 +48,6 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
               <SystemIcon.Close />
             </button>
           )}
-
-          {typeof children === 'function' ? children(state) : children}
         </div>
       </DialogContext.Provider>
     );

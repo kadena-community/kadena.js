@@ -38,8 +38,8 @@ export const overlayClass = style([
 export const closeButtonClass = style([
   sprinkles({
     position: 'absolute',
-    top: '$md',
-    right: '$md',
+    top: '$sm',
+    right: '$sm',
     display: 'flex',
     alignItems: 'center',
     background: 'none',
@@ -65,7 +65,8 @@ export const footerClass = style([
 
 export const contentClass = style([
   sprinkles({
-    paddingX: '$10',
+    paddingLeft: '$10',
+    paddingRight: '$15',
     overflow: 'auto',
     flex: 1,
   }),

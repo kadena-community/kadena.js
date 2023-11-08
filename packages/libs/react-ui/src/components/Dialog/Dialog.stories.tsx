@@ -71,7 +71,7 @@ export const DialogStory: Story = {
               </Dialog.Content>
               <Dialog.Footer>
                 <Button onClick={state.close}>Close Button</Button>
-                <Button onClick={state.close}>Close Button</Button>
+                <Button onClick={state.close}>Second Close Button</Button>
               </Dialog.Footer>
             </>
           )}
