@@ -1,9 +1,9 @@
+import { prismaClient } from '@db/prismaClient';
 import type { Block } from '@prisma/client';
+import { dotenv } from '@utils/dotenv';
+import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
-import { prismaClient } from '../../db/prismaClient';
-import { dotenv } from '../../utils/dotenv';
-import { nullishOrEmpty } from '../../utils/nullishOrEmpty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 

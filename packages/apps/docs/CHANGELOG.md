@@ -1,5 +1,19 @@
 # @kadena/docs
 
+## 0.6.0
+
+### Minor Changes
+
+- d03a5b762: import docs from external repos
+
+### Patch Changes
+
+- Updated dependencies [11747cde4]
+- Updated dependencies [6491589b5]
+- Updated dependencies [8a719c647]
+- Updated dependencies [df7044cac]
+  - @kadena/react-ui@0.3.0
+
 ## 0.5.0
 
 ### Minor Changes

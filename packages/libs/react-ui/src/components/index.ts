@@ -8,6 +8,7 @@ export type { IButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
+  FormFieldStatus,
   IInputProps,
   IInputWrapperProps,
   ISelectFieldProps,
@@ -15,7 +16,6 @@ export type {
   ITextFieldProps,
   ITextareaFieldProps,
   ITextareaProps,
-  InputWrapperStatus,
 } from './Form';
 export type { IIconProps } from './Icon';
 export type { IIconButtonProps } from './IconButton';

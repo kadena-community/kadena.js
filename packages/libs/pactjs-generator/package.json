@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs-generator",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Generates TypeScript definitions of Pact contracts, for use in @kadena/pactjs",
   "repository": {
     "type": "git",
@@ -34,7 +34,8 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "util:lexer-grammar:watch": "concurrently --kill-others npm:build:*:watch # npm:test:grammar:watch"
   },
   "dependencies": {

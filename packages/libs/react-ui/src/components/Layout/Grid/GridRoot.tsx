@@ -25,6 +25,7 @@ export interface IGridRootProps
     | 'maxWidth'
     | 'minHeight'
     | 'minWidth'
+    | 'overflow'
     | 'padding'
     | 'paddingBottom'
     | 'paddingLeft'
@@ -71,6 +72,7 @@ export const GridRoot: FC<IGridRootProps> = ({
   maxWidth,
   minHeight,
   minWidth,
+  overflow,
   padding,
   paddingBottom,
   paddingLeft,
@@ -97,6 +99,7 @@ export const GridRoot: FC<IGridRootProps> = ({
       maxWidth,
       minHeight,
       minWidth,
+      overflow,
       padding,
       paddingBottom,
       paddingLeft,

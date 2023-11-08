@@ -6,10 +6,8 @@ export default mergeConfig(
   defineConfig({
     test: {
       coverage: {
-        lines: 90,
-        functions: 90,
-        branches: 90,
-        statements: 90,
+        provider: 'v8',
+        exclude: ['src/tests/**'], // This packages uses a non standard location for tests, explicitly ignoring them for code coverage
       },
     },
   }),

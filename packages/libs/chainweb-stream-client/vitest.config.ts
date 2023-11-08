@@ -6,10 +6,12 @@ export default mergeConfig(
   defineConfig({
     test: {
       coverage: {
-        lines: 90,
-        functions: 50,
-        branches: 70,
-        statements: 90,
+        provider: 'v8',
+        lines: 92.21,
+        functions: 60,
+        branches: 80,
+        statements: 92.21,
+        thresholdAutoUpdate: true,
       },
     },
   }),

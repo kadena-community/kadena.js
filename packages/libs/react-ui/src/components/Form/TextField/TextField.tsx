@@ -11,12 +11,13 @@ export interface ITextFieldProps
 export const TextField: FC<ITextFieldProps> = ({
   disabled = false,
   inputProps,
+  status,
   ...rest
 }) => {
   const { id } = inputProps;
 
   return (
-    <InputWrapper htmlFor={id} disabled={disabled} {...rest}>
+    <InputWrapper htmlFor={id} disabled={disabled} status={status} {...rest}>
       <Input disabled={disabled} {...inputProps} />
     </InputWrapper>
   );

@@ -39,7 +39,8 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "blakejs": "^1.2.1",

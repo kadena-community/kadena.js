@@ -1,6 +1,6 @@
 import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
+import { PactCommandError } from '@services/node-service';
 import { GraphQLError } from 'graphql';
-import { PactCommandError } from '../services/node-service';
 
 /**
  * Checks what type of error it is and returns a normalized GraphQLError with the correct type, message and a description that clearly translates to the user what the error means.

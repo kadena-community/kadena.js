@@ -31,6 +31,13 @@ const meta: Meta<typeof Stack> = {
     },
   },
   argTypes: {
+    overflow: {
+      options: ['hidden', 'visible', 'scroll', 'auto'],
+      control: {
+        type: 'select',
+      },
+      description: 'Overflow css property',
+    },
     width: {
       options: [...spaceOptions, ...dimensionOptions, ...contentWidthOptions],
       control: {
@@ -263,6 +270,7 @@ const defaultArgs: Record<keyof typeof Stack, string | undefined> = {
   paddingBottom: undefined,
   paddingLeft: undefined,
   paddingRight: undefined,
+  overflow: undefined,
 };
 
 export const Horizontal: Story = {

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/graph",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "",
   "keywords": [],
@@ -24,7 +24,7 @@
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
-    "simulate": "ts-node -T src/scripts/devnet/index.ts traffic",
+    "simulate": "ts-node -T src/devnet/simulation/index.ts traffic",
     "start": "npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "start:generate": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"no test specified\""
@@ -70,6 +70,7 @@
   "_moduleAliases": {
     "@db": "src/db",
     "@services": "src/services",
-    "@utils": "src/utils"
+    "@utils": "src/utils",
+    "@devnet": "src/devnet"
   }
 }

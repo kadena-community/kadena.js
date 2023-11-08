@@ -1,6 +1,6 @@
 {
   "name": "@kadena/pactjs-cli",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "CLI tool accompanying @kadena/pactjs-core and @kadena/pactjs-client to generate TypeScript definitions and Pact client",
   "repository": {
     "type": "git",
@@ -31,7 +31,8 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@kadena/pactjs-generator": "workspace:*",

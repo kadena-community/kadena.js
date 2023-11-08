@@ -1,16 +1,4 @@
 import baseConfig from '@kadena-dev/shared-config/vitest.config';
-import { defineConfig, mergeConfig } from 'vitest/config';
+import { defineConfig } from 'vitest/config';
 
-export default mergeConfig(
-  baseConfig,
-  defineConfig({
-    test: {
-      coverage: {
-        lines: 90,
-        functions: 90,
-        branches: 90,
-        statements: 90,
-      },
-    },
-  }),
-);
+export default defineConfig(baseConfig);

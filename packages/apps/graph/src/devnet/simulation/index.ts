@@ -1,7 +1,7 @@
 import { Command, Option } from 'commander';
-import { generateKeyPair, logger } from './helper';
+import { generateKeyPair, logger } from '../helper';
+import { transfer } from '../transfer';
 import { simulate } from './simulate';
-import { transfer } from './transfer';
 
 const program: Command = new Command();
 program
