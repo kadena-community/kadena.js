@@ -116,30 +116,21 @@ const AccountTransfers: React.FC = () => {
                 </Table.Head>
                 <Table.Body>
                   {data.transfers.edges.map((edge, index) => {
-                    // This way we avoid repeated transfers
-                    if (!edge?.node.senderAccount) {
-                      return <></>;
-                    }
-
-                    const chainIdDisplay = edge?.node.crossChainTransfer
-                      ? `${edge.node.chainId} / ${edge.node.crossChainTransfer.chainId}`
-                      : edge?.node.chainId;
-
-                    const heightDisplay = edge?.node.crossChainTransfer
-                      ? `${edge.node.height} / ${edge.node.crossChainTransfer.height}`
-                      : edge?.node.height;
-
                     return (
                       <Table.Tr key={index}>
-                        <Table.Td>{chainIdDisplay}</Table.Td>
-                        <Table.Td>{heightDisplay}</Table.Td>
+                        <Table.Td>{edge?.node.chainId}</Table.Td>
+                        <Table.Td>{edge?.node.height}</Table.Td>
                         <Table.Td>{edge?.node.amount}</Table.Td>
                         <Table.Td>
-                          <Link
-                            href={`${routes.ACCOUNT}/${router.query.module}/${edge?.node.senderAccount}`}
-                          >
-                            {edge?.node.senderAccount}
-                          </Link>
+                          {edge?.node.senderAccount ? (
+                            <Link
+                              href={`${routes.ACCOUNT}/${router.query.module}/${edge?.node.senderAccount}`}
+                            >
+                              {edge?.node.senderAccount}
+                            </Link>
+                          ) : (
+                            <span style={{ color: 'lightgray' }}>N/A</span>
+                          )}
                         </Table.Td>
                         <Table.Td>
                           {edge?.node.receiverAccount ? (
@@ -147,12 +138,6 @@ const AccountTransfers: React.FC = () => {
                               href={`${routes.ACCOUNT}/${router.query.module}/${edge?.node.receiverAccount}`}
                             >
                               {edge?.node.receiverAccount}
-                            </Link>
-                          ) : edge.node.crossChainTransfer?.receiverAccount ? (
-                            <Link
-                              href={`${routes.ACCOUNT}/${router.query.module}/${edge?.node.crossChainTransfer.receiverAccount}`}
-                            >
-                              {edge?.node.crossChainTransfer.receiverAccount}
                             </Link>
                           ) : (
                             <span style={{ color: 'lightgray' }}>N/A</span>
@@ -164,14 +149,6 @@ const AccountTransfers: React.FC = () => {
                           >
                             {edge?.node.requestKey}
                           </Link>
-                          /
-                          {edge?.node.crossChainTransfer && (
-                            <Link
-                              href={`${routes.TRANSACTIONS}/${edge?.node.crossChainTransfer.requestKey}`}
-                            >
-                              {edge?.node.crossChainTransfer.requestKey}
-                            </Link>
-                          )}
                         </Table.Td>
                       </Table.Tr>
                     );

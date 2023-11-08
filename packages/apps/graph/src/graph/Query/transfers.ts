@@ -9,6 +9,7 @@ builder.queryField('transfers', (t) => {
       accountName: t.arg.string({ required: false }),
       moduleName: t.arg.string({ required: false }),
       chainId: t.arg.string({ required: false }),
+      requestKey: t.arg.string({ required: false }),
     },
     type: 'Transfer',
     cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
@@ -45,6 +46,7 @@ function geerateTransferFilter(args: {
   accountName?: string | null | undefined;
   moduleName?: string | null | undefined;
   chainId?: string | null | undefined;
+  requestKey?: string | null | undefined;
 }): Prisma.TransferWhereInput {
   const whereFilter: Prisma.TransferWhereInput = {};
 
@@ -65,6 +67,10 @@ function geerateTransferFilter(args: {
 
   if (args.chainId) {
     whereFilter.chainId = parseInt(args.chainId);
+  }
+
+  if (args.requestKey) {
+    whereFilter.requestKey = args.requestKey;
   }
 
   return whereFilter;
