@@ -15,8 +15,8 @@ export default builder.node(
       parse(id) {
         return {
           chainId: id.split('/')[1],
-          accountName: id.split('/')[3],
           moduleName: id.split('/')[2],
+          accountName: id.split('/')[3],
         };
       },
     },
