@@ -98,11 +98,7 @@ export async function kadenaGenSeedFromMnemonic(
  * @throws {Error} If the generated mnemonic is invalid.
  */
 export function kadenaGenMnemonic(): string {
-  const words = bip39.generateMnemonic(wordlist);
-  if (bip39.validateMnemonic(words, wordlist) === false) {
-    throw Error('Invalid mnemonic.');
-  }
-  return words;
+  return bip39.generateMnemonic(wordlist);
 }
 
 /**
