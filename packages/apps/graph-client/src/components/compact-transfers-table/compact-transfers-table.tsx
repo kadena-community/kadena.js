@@ -23,6 +23,8 @@ export const CompactTransfersTable = (
 ): JSX.Element => {
   const { moduleName, accountName, chainId, transfers, description } = props;
 
+  const addedTransfers: Set<string> = new Set();
+
   return (
     <>
       <ContentHeader
@@ -56,10 +58,24 @@ export const CompactTransfersTable = (
         </Table.Head>
         <Table.Body>
           {transfers.edges.map((edge, index) => {
+            if (!edge?.node.senderAccount) {
+              return <></>;
+            }
+
+            addedTransfers.add(edge?.node.requestKey as string);
+
+            const chainIdDisplay = edge?.node.crossChainTransfer
+              ? `${edge.node.chainId} / ${edge.node.crossChainTransfer.chainId}`
+              : edge?.node.chainId;
+
+            const heightDisplay = edge?.node.crossChainTransfer
+              ? `${edge.node.height} / ${edge.node.crossChainTransfer.height}`
+              : edge?.node.height;
+
             return (
               <Table.Tr key={index}>
-                <Table.Td>{edge?.node.chainId}</Table.Td>
-                <Table.Td>{edge?.node.height}</Table.Td>
+                <Table.Td>{chainIdDisplay}</Table.Td>
+                <Table.Td>{heightDisplay}</Table.Td>
                 <Table.Td>{edge?.node.amount}</Table.Td>
                 <Table.Td>
                   <Link
@@ -71,13 +87,27 @@ export const CompactTransfersTable = (
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  <Link
-                    href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.receiverAccount}`}
-                  >
-                    <span title={edge?.node.receiverAccount}>
-                      {truncate(edge?.node.receiverAccount)}
-                    </span>
-                  </Link>
+                  {!edge?.node.crossChainTransfer ? (
+                    <Link
+                      href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.receiverAccount}`}
+                    >
+                      <span title={edge?.node.receiverAccount}>
+                        {truncate(edge?.node.receiverAccount)}
+                      </span>
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.crossChainTransfer.receiverAccount}`}
+                    >
+                      <span
+                        title={edge?.node.crossChainTransfer.receiverAccount}
+                      >
+                        {truncate(
+                          edge?.node.crossChainTransfer.receiverAccount,
+                        )}
+                      </span>
+                    </Link>
+                  )}
                 </Table.Td>
                 <Table.Td>
                   <Link
@@ -87,6 +117,16 @@ export const CompactTransfersTable = (
                       {truncate(edge?.node.requestKey)}
                     </span>
                   </Link>
+                  /
+                  {edge?.node.crossChainTransfer && (
+                    <Link
+                      href={`${routes.TRANSACTIONS}/${edge?.node.crossChainTransfer.requestKey}`}
+                    >
+                      <span title={edge?.node.crossChainTransfer.requestKey}>
+                        {truncate(edge?.node.crossChainTransfer.requestKey)}
+                      </span>
+                    </Link>
+                  )}
                 </Table.Td>
               </Table.Tr>
             );
