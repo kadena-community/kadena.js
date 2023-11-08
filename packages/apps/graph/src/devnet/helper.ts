@@ -53,6 +53,11 @@ export const pollStatus = (
 export const dirtyRead = (tx: IUnsignedCommand): Promise<ICommandResult> =>
   getClient().dirtyRead(tx);
 
+export const localReadForGasEstimation = (
+  tx: IUnsignedCommand,
+): Promise<ICommandResult> =>
+  getClient().local(tx, { preflight: true, signatureVerification: false });
+
 export const signTransaction =
   (keyPairs: IKeyPair[]) =>
   (tx: IUnsignedCommand): IUnsignedCommand | ICommand => {

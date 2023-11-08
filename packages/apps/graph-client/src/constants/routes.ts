@@ -7,4 +7,5 @@ export default {
   EVENT: '/event',
   BLOCK_OVERVIEW: '/block/overview',
   BLOCK_TRANSACTIONS: '/block/transactions',
+  GAS_ESTIMATION: '/gas/estimation',
 } as const;
