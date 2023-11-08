@@ -1,4 +1,4 @@
-import { prismaClient } from '../../db/prismaClient';
+import { prismaClient } from '@db/prismaClient';
 import { builder } from '../builder';
 
 builder.queryField('transactionsByPublicKey', (t) => {

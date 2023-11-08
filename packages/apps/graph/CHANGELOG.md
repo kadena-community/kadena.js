@@ -1,5 +1,32 @@
 # @kadena/graph
 
+## 1.0.3
+
+### Patch Changes
+
+- 2e18fe50c: Added query to get transactions by public key
+- 39a870cea: Added endpoint for graph and chainweb-data general info
+- aced46632: Updated simulate command to now incorporate safe-transfers
+- 6e4895050: Added proper error logging for the graph and client
+- 9de5d550c: Added PactData as optional argument to PactQueries
+- Updated dependencies [445fb2c7d]
+  - @kadena/client@1.6.1
+
+## 1.0.2
+
+### Patch Changes
+
+- 18a8f5574: Added pactQuery and pactQueries for arbitrary PACT code execution
+- b348a6899: Added signer object and signer fields on transactions (graph)
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [d15a6231f]
+- Updated dependencies [fa6b84e22]
+  - @kadena/chainweb-node-client@0.5.1
+  - @kadena/cryptography-utils@0.4.1
+  - @kadena/client@1.6.0
+  - @kadena/pactjs@0.4.1
+
 ## 1.0.1
 
 ### Patch Changes

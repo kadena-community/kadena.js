@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kda-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "description": "CLI tool to assist development on the kadena blockchain",
   "keywords": [
@@ -32,7 +32,8 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts,.tsx",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@inkjs/ui": "^1.0.0",

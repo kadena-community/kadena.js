@@ -1,10 +1,8 @@
 import type { ChainId } from '@kadena/client';
-import { devnetConfig } from './config';
-import { crossChainTransfer } from './crosschain-transfer';
-import type { TransferType } from './file';
-import { appendToFile, createFile } from './file';
-import { getBalance } from './get-balance';
-import type { IAccount } from './helper';
+import { devnetConfig } from '../config';
+import { crossChainTransfer } from '../crosschain-transfer';
+import { getBalance } from '../get-balance';
+import type { IAccount } from '../helper';
 import {
   generateKeyPair,
   getRandomNumber,
@@ -12,9 +10,11 @@ import {
   isEqualChainAccounts,
   logger,
   seedRandom,
-} from './helper';
-import { safeTransfer } from './safe-transfer';
-import { transfer } from './transfer';
+} from '../helper';
+import { safeTransfer } from '../safe-transfer';
+import { transfer } from '../transfer';
+import type { TransferType } from './file';
+import { appendToFile, createFile } from './file';
 
 const simualtionTransferOptions: TransferType[] = [
   'xchaintransfer',
@@ -179,8 +179,6 @@ export async function simulate({
       if (!accountExists) {
         accounts.push(nextAccount);
       }
-
-      logger.info(accounts);
 
       await new Promise((resolve) => setTimeout(resolve, transferInterval));
     }

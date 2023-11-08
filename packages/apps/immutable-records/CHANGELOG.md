@@ -1,5 +1,29 @@
 # @kadena/immutable-records
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [11747cde4]
+- Updated dependencies [445fb2c7d]
+- Updated dependencies [6491589b5]
+- Updated dependencies [8a719c647]
+- Updated dependencies [df7044cac]
+  - @kadena/react-ui@0.3.0
+  - @kadena/client@1.6.1
+
+## 0.1.3
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [fa98adaa8]
+- Updated dependencies [d15a6231f]
+- Updated dependencies [fa6b84e22]
+  - @kadena/react-ui@0.2.1
+  - @kadena/client@1.6.0
+
 ## 0.1.2
 
 ### Patch Changes

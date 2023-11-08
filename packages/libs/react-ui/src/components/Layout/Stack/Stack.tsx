@@ -23,6 +23,7 @@ export interface IStackProps
     | 'maxWidth'
     | 'minHeight'
     | 'minWidth'
+    | 'overflow'
     | 'padding'
     | 'paddingBottom'
     | 'paddingLeft'
@@ -59,6 +60,7 @@ export const Stack = ({
   maxWidth,
   minHeight,
   minWidth,
+  overflow,
   padding,
   paddingBottom,
   paddingLeft,
@@ -92,6 +94,7 @@ export const Stack = ({
           maxWidth,
           minHeight,
           minWidth,
+          overflow,
           padding,
           paddingBottom,
           paddingLeft,

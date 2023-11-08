@@ -1,5 +1,6 @@
 import { Box } from '@kadena/react-ui';
 
+import type { QueryTransactionsConnection } from '@/__generated__/sdk';
 import {
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
@@ -71,7 +72,7 @@ const Home: React.FC = () => {
           <div>
             <Box marginBottom="$10" />
             <CompactTransactionsTable
-              transactions={txs.transactions}
+              transactions={txs.transactions as QueryTransactionsConnection}
               viewAllHref={`${routes.TRANSACTIONS}`}
               description="Most recent transactions"
             />

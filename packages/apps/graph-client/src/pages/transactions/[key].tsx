@@ -1,6 +1,7 @@
 import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
+import { ErrorBox } from '@/components/error-box/error-box';
 import routes from '@/constants/routes';
 import { formatCode, formatLisp } from '@/utils/formatter';
 import { Box, Breadcrumbs, Link, Notification, Table } from '@kadena/react-ui';
@@ -36,15 +37,7 @@ const RequestKey: React.FC = () => {
               <Loader /> <span>Waiting for request key...</span>
             </div>
           )}
-          {error && (
-            <Notification.Root color="negative" icon="Close" variant="outlined">
-              Unknown error:
-              <Box marginBottom="$4" />
-              <code>{error.message}</code>
-              <Box marginBottom="$4" />
-              Check if the Graph server is running.
-            </Notification.Root>
-          )}
+          {error && <ErrorBox error={error} />}
           {transactionSubscription?.transaction && (
             <div style={{ maxWidth: '1000px' }}>
               {/* center content inside the div */}

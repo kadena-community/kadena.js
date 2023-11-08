@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweb-node-client",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Typed JavaScript wrapper with fetch to call chainweb-node API endpoints",
   "keywords": [],
   "repository": {
@@ -41,7 +41,8 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@kadena/cryptography-utils": "workspace:*",

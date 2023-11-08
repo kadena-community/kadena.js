@@ -150,6 +150,12 @@ input PactQueryData {
   value: String!
 }
 
+input PactTransaction {
+  cmd: String!
+  hash: String
+  sigs: [String!]
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -162,10 +168,12 @@ scalar PositiveFloat
 
 type Query {
   account(accountName: String!, moduleName: String!): ModuleAccount!
-  block(hash: String!): Block!
+  block(hash: String!): Block
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
-  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
+  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+  gasLimitEstimate(transaction: PactTransaction!): Int!
+  gasLimitEstimates(transactions: [PactTransaction!]!): [Int!]!
   graphConfiguration: GraphConfiguration!
   lastBlockHeight: BigInt
   node(id: ID!): Node

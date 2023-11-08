@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/eslint-config",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Kadena monorepo eslint-config",
   "repository": {
     "type": "git",

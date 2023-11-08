@@ -1,6 +1,6 @@
 {
   "name": "kadena.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "description": "A practical util library for JavaScript programmers who are building on the Kadena blockchain",
   "keywords": [
@@ -54,7 +54,8 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "serve-coverage": "python -m SimpleHTTPServer",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",

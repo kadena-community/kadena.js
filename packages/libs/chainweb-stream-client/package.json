@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweb-stream-client",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Chainweb-stream client for browsers and node.js",
   "keywords": [],
   "repository": {
@@ -33,7 +33,8 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "eventemitter2": "~6.4.9",

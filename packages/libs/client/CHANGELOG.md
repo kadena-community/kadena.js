@@ -1,5 +1,23 @@
 # Change Log - @kadena/client
 
+## 1.6.1
+
+### Patch Changes
+
+- 445fb2c7d: Fix pred type for keysets
+
+## 1.6.0
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [d15a6231f]
+- Updated dependencies [fa6b84e22]
+  - @kadena/chainweb-node-client@0.5.1
+  - @kadena/cryptography-utils@0.4.1
+  - @kadena/pactjs@0.4.1
+
 ## 1.5.0
 
 ### Minor Changes

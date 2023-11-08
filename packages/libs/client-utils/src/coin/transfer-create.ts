@@ -17,7 +17,7 @@ interface ICreateTransferInput {
     account: string;
     keyset: {
       keys: string[];
-      pred: 'keys-all' | 'keys-two' | 'keys-one';
+      pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
   };
   amount: string;
