@@ -49,14 +49,18 @@ export default builder.node(builder.objectRef<ModuleAccount>('ModuleAccount'), {
     //   return acc;
     // }, 0);
 
-    return {
-      accountName: '',
-      moduleName: '',
-      chainAccounts: [],
-      totalBalance: 0,
-      transactions: [],
-      transfers: [],
-    };
+    try {
+      return {
+        accountName,
+        moduleName,
+        chainAccounts: [],
+        totalBalance: 0,
+        transactions: [],
+        transfers: [],
+      };
+    } catch (error) {
+      throw normalizeError(error);
+    }
   },
   fields: (t) => ({
     accountName: t.exposeString('accountName'),
