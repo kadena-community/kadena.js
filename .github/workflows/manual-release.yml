@@ -42,7 +42,7 @@ jobs:
       - name: Build, lint, test all packages
         run: pnpm turbo lint build test
 
-      - name: Manually publish packages
+      - name: Publish unpublished packages
         id: changesets
         uses: changesets/action@v1
         with:
