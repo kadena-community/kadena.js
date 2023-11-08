@@ -7,7 +7,11 @@ import {
   kadenaGenSeedFromMnemonic,
   kadenaGetPublic,
   kadenaRestoreSeedBufferFromSeed,
+  kadenaSignWithKeyPair,
+  kadenaSignWithSeed,
 } from '..';
+
+import type { IUnsignedCommand } from '@kadena/client';
 
 import { decryptPrivateKey, encryptPrivateKey } from '../utils/encrypt';
 import { deriveKeyPair, uint8ArrayToHex } from '../utils/sign';
@@ -507,5 +511,52 @@ describe('kadenaChangePassword', () => {
     expect(() =>
       kadenaChangePassword(testUnint8Array, oldPassword, testNull),
     ).toThrow();
+  });
+});
+
+describe.only('kadenaSignWithKeyPair', async () => {
+  const mnemonic = kadenaGenMnemonic();
+  const { seedBuffer } = await kadenaGenSeedFromMnemonic(mnemonic);
+
+  const [publicKey, privateKey] = kadenaGenKeypair(seedBuffer, 0) as [
+    string,
+    string,
+  ];
+
+  const mockUnsignedCommand: IUnsignedCommand = {
+    cmd: '{"command":"value"}',
+    hash: 'kadena-hash',
+    sigs: [],
+  };
+  it('should sign a transaction with a public and private key pair', () => {
+    const signer = kadenaSignWithKeyPair(publicKey, privateKey);
+
+    const signedTx = signer(mockUnsignedCommand);
+
+    expect(signedTx).toHaveProperty('sigs');
+    expect(signedTx.sigs).toBeInstanceOf(Array);
+    expect(signedTx.sigs.length).toBeGreaterThan(0);
+    expect(signedTx.sigs[0]).toHaveProperty('sig');
+    expect(signedTx.sigs[0].sig).toBeTruthy();
+  });
+});
+
+describe('kadenaSignWithSeed', () => {
+  const mockSeed = new Uint8Array(32);
+  const mockIndex = 0;
+  const mockUnsignedCommand: IUnsignedCommand = {
+    cmd: '{"commands":"value"}',
+    hash: 'kadena-hash',
+    sigs: [],
+  };
+
+  it('should sign a transaction with a seed and index', () => {
+    const signer = kadenaSignWithSeed(mockSeed, mockIndex);
+    const signedTx = signer(mockUnsignedCommand);
+    expect(signedTx).toHaveProperty('sigs');
+    expect(signedTx.sigs).toBeInstanceOf(Array);
+    expect(signedTx.sigs[0]).toHaveProperty('sig');
+
+    expect(signedTx.sigs[0].sig).toBeTruthy();
   });
 });
