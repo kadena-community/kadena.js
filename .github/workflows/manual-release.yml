@@ -10,7 +10,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   release:
     name: Changelog PR or Release
-    if: ${{ github.repository_owner == 'kadena-community' }}
+    if: ${{ github.repository_owner == 'kadena-community' && github.ref == 'refs/heads/main'}}
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
