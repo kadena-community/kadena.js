@@ -3,30 +3,31 @@ import { getChainModuleAccount } from '@services/account-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
-import { ChainModuleAccount } from '../types/graphql-types';
+import type { ChainModuleAccount } from '../types/graphql-types';
+import { ChainModuleAccountName } from '../types/graphql-types';
 
 export default builder.node(
-  builder.objectRef<ChainModuleAccount>('ChainModuleAccount'),
+  builder.objectRef<ChainModuleAccount>(ChainModuleAccountName),
   {
     id: {
       resolve(parent) {
-        return `ChainModuleAccount/${parent.chainId}/${parent.moduleName}/${parent.accountName}`;
+        return `${ChainModuleAccountName}/${parent.chainId}/${parent.moduleName}/${parent.accountName}`;
       },
-      parse(id) {
-        return {
-          chainId: id.split('/')[1],
-          moduleName: id.split('/')[2],
-          accountName: id.split('/')[3],
-        };
-      },
+      // Do not use parse here since there is a bug in the pothos relay plugin which can cause incorrect results. Parse the ID directly in the loadOne function.
     },
-    isTypeOf: () => true,
-    async loadOne({ chainId, moduleName, accountName }) {
+    isTypeOf(source) {
+      return (source as any).__typename === ChainModuleAccountName;
+    },
+    async loadOne(id) {
       try {
+        const chainId = id.split('/')[1];
+        const moduleName = id.split('/')[2];
+        const accountName = id.split('/')[3];
+
         return getChainModuleAccount({
-          chainId: chainId,
-          moduleName: moduleName,
-          accountName: accountName,
+          chainId,
+          moduleName,
+          accountName,
         });
       } catch (error) {
         throw normalizeError(error);

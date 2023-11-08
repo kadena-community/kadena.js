@@ -1,5 +1,6 @@
 import { accountDetailsLoader } from '../graph/data-loaders/account-details';
-import { ChainModuleAccount } from '../graph/types/graphql-types';
+import type { ChainModuleAccount } from '../graph/types/graphql-types';
+import { ChainModuleAccountName } from '../graph/types/graphql-types';
 
 export async function getChainModuleAccount({
   chainId,
@@ -18,6 +19,7 @@ export async function getChainModuleAccount({
 
   return accountDetails !== null
     ? {
+        __typename: ChainModuleAccountName,
         chainId,
         accountName,
         moduleName,
