@@ -13,8 +13,8 @@ import { statusVariant } from './FormFieldWrapper.css';
 
 export interface IFormFieldWrapperProps
   extends Omit<IFormFieldHeaderProps, 'label'> {
-  children: // combine types for all input types
-  | FunctionComponentElement<IInputProps>
+  children:
+    | FunctionComponentElement<IInputProps>
     | FunctionComponentElement<IInputProps>[];
   status?: FormFieldStatus;
   disabled?: boolean;
