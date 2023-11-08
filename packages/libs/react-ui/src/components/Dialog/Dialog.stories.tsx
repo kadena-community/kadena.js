@@ -1,6 +1,5 @@
 import { Button } from '@components/Button';
 import { Dialog, IDialogProps } from '@components/Dialog';
-import { Stack } from '@components/Stack';
 import { Text } from '@components/Typography';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
@@ -57,32 +56,102 @@ export const DialogStory: Story = {
     return (
       <>
         <Button onClick={() => setIsOpen(true)}>Modal Trigger</Button>
-        <Dialog
+        <Dialog.Root
           isOpen={isOpen}
           onOpenChange={(isOpen) => setIsOpen(isOpen)}
-          title={title}
         >
           {(state) => (
-            <Stack direction="column" gap="$6" alignItems="flex-end">
-              <Text>
-                Dessert gummies pie biscuit chocolate bar cheesecake. Toffee
-                chocolate bar ice cream cake jujubes pudding fruitcake marzipan.
-                Donut sweet oat cake dragée candy cupcake biscuit. Carrot cake
-                sesame snaps marzipan gummies marshmallow topping cake apple pie
-                pudding. Toffee sweet halvah cake liquorice chupa chups sugar
-                plum. Tootsie roll marshmallow gummi bears apple pie cake
-                jujubes pudding. Halvah apple pie tiramisu bear claw caramels
-                cookie dessert cotton candy. Jelly-o sweet sugar plum topping
-                topping jujubes powder shortbread lemon drops. Chupa chups
-                muffin oat cake chupa chups cookie liquorice oat cake tootsie
-                roll. Gingerbread dessert donut pastry muffin powder sugar plum.
-                Chupa chups bonbon topping jelly beans pastry. Soufflé chupa
-                chups wafer fruitcake lollipop apple pie bonbon tart bonbon.
-              </Text>
-              <Button onClick={state.close}>Close Button</Button>
-            </Stack>
+            <>
+              <Dialog.Header>{title}</Dialog.Header>
+              <Dialog.Content>
+                <Text>
+                  Dessert gummies pie biscuit chocolate bar cheesecake. Toffee
+                  chocolate bar ice cream cake jujubes pudding fruitcake
+                  marzipan. Donut sweet oat cake dragée candy cupcake biscuit.
+                  Carrot cake sesame snaps marzipan gummies marshmallow topping
+                  cake apple pie pudding. Toffee sweet halvah cake liquorice
+                  chupa chups sugar plum. Tootsie roll marshmallow gummi bears
+                  apple pie cake jujubes pudding. Halvah apple pie tiramisu bear
+                  claw caramels cookie dessert cotton candy. Jelly-o sweet sugar
+                  plum topping topping jujubes powder shortbread lemon drops.
+                  Chupa chups muffin oat cake chupa chups cookie liquorice oat
+                  cake tootsie roll. Gingerbread dessert donut pastry muffin
+                  powder sugar plum. Chupa chups bonbon topping jelly beans
+                  pastry. Soufflé chupa chups wafer fruitcake lollipop apple pie
+                  bonbon tart bonbon.
+                </Text>
+                <Text>
+                  Dessert gummies pie biscuit chocolate bar cheesecake. Toffee
+                  chocolate bar ice cream cake jujubes pudding fruitcake
+                  marzipan. Donut sweet oat cake dragée candy cupcake biscuit.
+                  Carrot cake sesame snaps marzipan gummies marshmallow topping
+                  cake apple pie pudding. Toffee sweet halvah cake liquorice
+                  chupa chups sugar plum. Tootsie roll marshmallow gummi bears
+                  apple pie cake jujubes pudding. Halvah apple pie tiramisu bear
+                  claw caramels cookie dessert cotton candy. Jelly-o sweet sugar
+                  plum topping topping jujubes powder shortbread lemon drops.
+                  Chupa chups muffin oat cake chupa chups cookie liquorice oat
+                  cake tootsie roll. Gingerbread dessert donut pastry muffin
+                  powder sugar plum. Chupa chups bonbon topping jelly beans
+                  pastry. Soufflé chupa chups wafer fruitcake lollipop apple pie
+                  bonbon tart bonbon.
+                </Text>
+                <Text>
+                  Dessert gummies pie biscuit chocolate bar cheesecake. Toffee
+                  chocolate bar ice cream cake jujubes pudding fruitcake
+                  marzipan. Donut sweet oat cake dragée candy cupcake biscuit.
+                  Carrot cake sesame snaps marzipan gummies marshmallow topping
+                  cake apple pie pudding. Toffee sweet halvah cake liquorice
+                  chupa chups sugar plum. Tootsie roll marshmallow gummi bears
+                  apple pie cake jujubes pudding. Halvah apple pie tiramisu bear
+                  claw caramels cookie dessert cotton candy. Jelly-o sweet sugar
+                  plum topping topping jujubes powder shortbread lemon drops.
+                  Chupa chups muffin oat cake chupa chups cookie liquorice oat
+                  cake tootsie roll. Gingerbread dessert donut pastry muffin
+                  powder sugar plum. Chupa chups bonbon topping jelly beans
+                  pastry. Soufflé chupa chups wafer fruitcake lollipop apple pie
+                  bonbon tart bonbon.
+                </Text>
+                <Text>
+                  Dessert gummies pie biscuit chocolate bar cheesecake. Toffee
+                  chocolate bar ice cream cake jujubes pudding fruitcake
+                  marzipan. Donut sweet oat cake dragée candy cupcake biscuit.
+                  Carrot cake sesame snaps marzipan gummies marshmallow topping
+                  cake apple pie pudding. Toffee sweet halvah cake liquorice
+                  chupa chups sugar plum. Tootsie roll marshmallow gummi bears
+                  apple pie cake jujubes pudding. Halvah apple pie tiramisu bear
+                  claw caramels cookie dessert cotton candy. Jelly-o sweet sugar
+                  plum topping topping jujubes powder shortbread lemon drops.
+                  Chupa chups muffin oat cake chupa chups cookie liquorice oat
+                  cake tootsie roll. Gingerbread dessert donut pastry muffin
+                  powder sugar plum. Chupa chups bonbon topping jelly beans
+                  pastry. Soufflé chupa chups wafer fruitcake lollipop apple pie
+                  bonbon tart bonbon.
+                </Text>
+                <Text>
+                  Dessert gummies pie biscuit chocolate bar cheesecake. Toffee
+                  chocolate bar ice cream cake jujubes pudding fruitcake
+                  marzipan. Donut sweet oat cake dragée candy cupcake biscuit.
+                  Carrot cake sesame snaps marzipan gummies marshmallow topping
+                  cake apple pie pudding. Toffee sweet halvah cake liquorice
+                  chupa chups sugar plum. Tootsie roll marshmallow gummi bears
+                  apple pie cake jujubes pudding. Halvah apple pie tiramisu bear
+                  claw caramels cookie dessert cotton candy. Jelly-o sweet sugar
+                  plum topping topping jujubes powder shortbread lemon drops.
+                  Chupa chups muffin oat cake chupa chups cookie liquorice oat
+                  cake tootsie roll. Gingerbread dessert donut pastry muffin
+                  powder sugar plum. Chupa chups bonbon topping jelly beans
+                  pastry. Soufflé chupa chups wafer fruitcake lollipop apple pie
+                  bonbon tart bonbon.
+                </Text>
+              </Dialog.Content>
+              <Dialog.Footer>
+                <Button onClick={state.close}>Close Button</Button>
+                <Button onClick={state.close}>Close Button</Button>
+              </Dialog.Footer>
+            </>
           )}
-        </Dialog>
+        </Dialog.Root>
       </>
     );
   },

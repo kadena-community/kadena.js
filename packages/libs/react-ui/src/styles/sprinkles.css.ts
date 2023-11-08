@@ -10,6 +10,7 @@ const systemProperties = defineProperties({
     borderStyle: ['solid', 'none'],
     borderWidth: vars.borderWidths,
     bottom: vars.sizes,
+    boxShadow: vars.shadows,
     cursor: ['pointer', 'not-allowed'],
     flex: [1],
     flexGrow: [0, 1],
