@@ -1,21 +1,6 @@
 import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
-export const sidebarClass = style([
-  sprinkles({
-    position: 'fixed',
-    left: 0,
-    top: '$16',
-    bottom: 0,
-    backgroundColor: '$neutral1',
-    display: 'flex',
-    zIndex: 1,
-  }),
-  {
-    borderRight: `1px solid ${vars.colors.$borderSubtle}`,
-  },
-]);
-
 export const gridItemMiniMenuStyle = style([
   {
     height: '100%',
@@ -30,12 +15,10 @@ export const gridMiniMenuListButtonStyle = style([
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    padding: '$5',
+    padding: '$4',
     color: '$gray50',
   }),
   {
-    transition: 'width 0.1s ease',
-    width: '100%',
     selectors: {
       [`${darkThemeClass} &:hover`]: {
         color: vars.colors.$white,
@@ -71,8 +54,12 @@ export const gridMiniMenuLinkButtonStyle = style([
   }),
   {
     width: '100%',
-    borderBottom: `1px solid ${vars.colors.$borderDefault}`,
+    borderBottom: `1px solid #E3E1E5`,
+
     selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid #27232999`,
+      },
       [`${darkThemeClass} &:hover`]: {
         color: vars.colors.$white,
       },
@@ -99,7 +86,12 @@ export const gridMiniMenuLinkButtonStyle = style([
 ]);
 export const gridMiniMenuListItemStyle = style([
   {
-    borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
+    borderBottom: `1px solid #E3E1E5`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid #27232999`,
+      },
+    },
   },
 ]);
 
@@ -119,14 +111,23 @@ export const bottomIconsContainerStyle = style([
     bottom: 0,
   }),
   {
-    borderTop: `1px solid ${vars.colors.$borderSubtle}`,
+    borderTop: `1px solid #E3E1E5`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderTop: `1px solid #27232999`,
+      },
+    },
   },
 ]);
 
 export const gridItemMenuStyle = style([
   {
-    width: `calc(${vars.sizes.$64} + ${vars.sizes.$6})`,
-    borderLeft: `1px solid ${vars.colors.$borderSubtle}`,
+    borderLeft: `1px solid #E3E1E5`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderLeft: `1px solid #27232999`,
+      },
+    },
   },
 ]);
 
@@ -137,11 +138,17 @@ export const subMenuTitleClass = style([
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingX: '$4',
+    paddingX: '$3',
   }),
   {
-    borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
-    padding: '0.625rem 1rem',
+    padding: '0.125rem 1rem',
+    borderBottom: `1px solid #E3E1E5`,
+
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid #27232999`,
+      },
+    },
   },
 ]);
 
@@ -159,7 +166,14 @@ export const iconRightStyle = style([
 
 export const subMenuContentStyle = style([
   sprinkles({
-    backgroundColor: '$neutral2',
     height: '100%',
   }),
+  {
+    backgroundColor: '#F5F2F7',
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        backgroundColor: '#171519',
+      },
+    },
+  },
 ]);

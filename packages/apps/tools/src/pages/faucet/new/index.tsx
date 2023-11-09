@@ -12,7 +12,6 @@ import {
 
 import {
   buttonContainerClass,
-  containerClass,
   hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
@@ -53,6 +52,7 @@ import * as z from 'zod';
 import {
   accountNameContainerClass,
   chainSelectContainerClass,
+  containerClass,
   inputContainerClass,
 } from '../styles.css';
 

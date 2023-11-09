@@ -1,3 +1,4 @@
+import { DrawerIconButton } from '@/components/Common/DrawerToolbar/DrawerIcon';
 import type { SystemIcon } from '@kadena/react-ui';
 import { IconButton, Text } from '@kadena/react-ui';
 import classNames from 'classnames';
@@ -54,9 +55,8 @@ export const DrawerToolbar: ForwardRefExoticComponent<
           {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
           {sections.map(({ icon, title }, index) => (
             <div className={buttonWrapperClass} key={title}>
-              <IconButton
+              <DrawerIconButton
                 icon={icon}
-                title={title}
                 onClick={() => handleOpenSection(index)}
               />
             </div>

@@ -48,7 +48,7 @@ export const MenuButton: FC<IMenuButtonProps> = ({
         {...rest}
         aria-label={title}
       >
-        <Icon />
+        <Icon size={'sm'} />
       </button>
       {!!title && (
         <Tooltip.Root placement="right" ref={tooltipRef}>

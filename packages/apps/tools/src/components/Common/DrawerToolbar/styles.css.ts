@@ -8,7 +8,7 @@ export const gridItemCollapsedSidebarStyle = style([
     top: '$16',
     bottom: 0,
     backgroundColor: '$neutral1',
-    width: '$16',
+    width: '$12',
     zIndex: 1,
   }),
   {
@@ -24,10 +24,11 @@ export const gridItemCollapsedSidebarStyle = style([
 
 export const buttonWrapperClass = style([
   sprinkles({
-    paddingTop: '$3',
-    paddingBottom: '$3',
-    paddingLeft: '$2',
-    paddingRight: '$2',
+    outline: 'none',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    color: '$gray50',
   }),
   {
     borderBottom: `solid 1px ${vars.colors.$borderSubtle}`,
