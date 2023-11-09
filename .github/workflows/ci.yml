@@ -77,7 +77,7 @@ jobs:
         run: pnpm run test:integration --filter ${{ matrix.package }}
 
   end-to-end-tests:
-    name: E2E ${{ matrix.package }}
+    name: E2E - ${{ matrix.package }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
