@@ -116,9 +116,9 @@ const AccountTransfers: React.FC = () => {
                 </Table.Head>
                 <Table.Body>
                   {data.transfers.edges.map((edge, index) => {
-                    // This way we avoid repeated transfers
-                    // These transfers are going to be added to their crosschain counterpart
-                    if (!edge?.node.senderAccount) {
+                    /**  These transfers are going to be added to their crosschain counterpart and
+                     this way we avoid repeated transfers in the table */
+                    if (edge?.node.transaction?.pactId) {
                       return <></>;
                     }
 
@@ -149,7 +149,7 @@ const AccountTransfers: React.FC = () => {
                             >
                               {edge?.node.receiverAccount}
                             </Link>
-                          ) : edge.node.crossChainTransfer?.receiverAccount ? (
+                          ) : edge?.node.crossChainTransfer?.receiverAccount ? (
                             <Link
                               href={`${routes.ACCOUNT}/${router.query.module}/${edge?.node.crossChainTransfer.receiverAccount}`}
                             >

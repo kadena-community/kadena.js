@@ -103,6 +103,9 @@ export const getAccount: DocumentNode = gql`
             crossChainTransfer {
               ...CoreTransferFields
             }
+            transaction {
+              pactId
+            }
           }
         }
       }
@@ -139,6 +142,9 @@ export const getChainAccount: DocumentNode = gql`
             ...CoreTransferFields
             crossChainTransfer {
               ...CoreTransferFields
+            }
+            transaction {
+              pactId
             }
           }
         }
@@ -227,6 +233,9 @@ export const getTransfers: DocumentNode = gql`
           ...CoreTransferFields
           crossChainTransfer {
             ...CoreTransferFields
+          }
+          transaction {
+            pactId
           }
         }
       }
