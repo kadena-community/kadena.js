@@ -1,5 +1,16 @@
 # @kadena/graph-client
 
+## 0.1.5
+
+### Patch Changes
+
+- 6f79f73dd: Created gas estimation page and ajusted header component to
+  incorporate option for gas. Also added necessary graph references to consume
+  the endpoint
+- Updated dependencies [6f79f73dd]
+- Updated dependencies [6f79f73dd]
+  - @kadena/react-ui@0.3.1
+
 ## 0.1.4
 
 ### Patch Changes

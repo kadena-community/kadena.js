@@ -1,5 +1,12 @@
 # @kadena/react-ui
 
+## 0.3.1
+
+### Patch Changes
+
+- 6f79f73dd: Added overflow prop to the Box, Stack, and Grid components
+- 6f79f73dd: Added focus state and improved visuals for inputs
+
 ## 0.3.0
 
 ### Minor Changes
