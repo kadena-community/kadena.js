@@ -74,13 +74,30 @@ export async function crossChainTransfer({
   from,
   to,
   amount,
+  gasPayer = sender00,
 }: {
   from: IAccount;
   to: IAccount;
   amount: number;
+  gasPayer?: IAccount;
 }): Promise<ICommandResult> {
+  // Gas Payer validations
+  if (gasPayer.chainId !== to.chainId) {
+    logger.info(
+      `Gas payer ${gasPayer.account} does not for sure have an account on the receiver chain; using sender00 as gas payer`,
+    );
+    gasPayer = sender00;
+  }
+
+  if (!gasPayer.secretKey) {
+    logger.info(
+      `Gas payer ${gasPayer.account} does not have a secret key; using sender00 as gas payer`,
+    );
+    gasPayer = sender00;
+  }
+
   logger.info(
-    `Crosschain Transfer from ${from.account}, chain ${from.chainId}\nTo ${to.account}, chain ${to.chainId}\nAmount: ${amount}`,
+    `Crosschain Transfer from ${from.account}, chain ${from.chainId}\nTo ${to.account}, chain ${to.chainId}\nAmount: ${amount}\nGas Payer: ${gasPayer.account}`,
   );
 
   const pactAmount = new PactNumber(amount).toPactDecimal();
@@ -113,9 +130,10 @@ export async function crossChainTransfer({
   const unsignedTx2 = finishInTheTargetChain(
     continuation,
     to.chainId || devnetConfig.CHAIN_ID,
+    gasPayer,
   );
 
-  const signedTx2 = signAndAssertTransaction([sender00])(unsignedTx2);
+  const signedTx2 = signAndAssertTransaction([gasPayer])(unsignedTx2);
   const submittedTx2 = await submit(signedTx2);
   inspect('Transfer Submited')(submittedTx2);
   const status2 = await listen(submittedTx2);
