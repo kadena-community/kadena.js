@@ -60,10 +60,10 @@ export const globalOptions = {
       '-n, --network <network>',
       'Kadena network (e.g. "mainnet")',
     ),
-    expand: async (networkName: string) => {
+    expand: async (network: string) => {
       await ensureNetworksConfiguration();
       try {
-        return loadNetworkConfig(networkName).network;
+        return loadNetworkConfig(network).network;
       } catch (e) {
         // await runNetworksCreate();
       }

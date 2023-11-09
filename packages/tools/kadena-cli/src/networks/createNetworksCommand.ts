@@ -15,7 +15,7 @@ import { networkOverwritePrompt } from '../constants/prompts.js';
 export const createNetworksCommand = createCommand(
   'create',
   'Create network',
-  [globalOptions.network(), globalOptions.networkId(), globalOptions.networkHost(), globalOptions.networkExplorerUrl()],
+  [globalOptions.networkName(), globalOptions.networkId(), globalOptions.networkHost(), globalOptions.networkExplorerUrl()],
   async (config) => {
     debug('network-create:action')({config});
 

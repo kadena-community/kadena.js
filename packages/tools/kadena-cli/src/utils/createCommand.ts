@@ -75,7 +75,7 @@ export function createCommand<
         const config = { ...newArgs };
         for (let option of options) {
           if ('expand' in option) {
-            config[`${option.key}Config`] = await option.expand(args[option.key]);
+            config[`${option.key}Config`] = await option.expand(newArgs[option.key]);
           }
         }
 
