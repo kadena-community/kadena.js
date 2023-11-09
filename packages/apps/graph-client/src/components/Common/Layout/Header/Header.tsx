@@ -223,7 +223,7 @@ const Header: FC<IHeaderProps> = (props) => {
 
           {searchType.startsWith('gas') && (
             <Grid.Item>
-              <InputWrapper
+              <FormFieldWrapper
                 htmlFor="third-search-field"
                 label={thirdSeachTypeLabels[searchType]}
               >
