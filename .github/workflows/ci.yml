@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: [ '@kadena/client', '@kadena/client-utils' ]
+        package: ['@kadena/client', '@kadena/client-utils']
 
     services:
       devnet:
@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: [ '@kadena/tools' ]
+        package: ['@kadena/tools']
 
     steps:
       - uses: actions/checkout@v4
@@ -126,5 +126,3 @@ jobs:
           name: playwright-report
           path: packages/tools/e2e-tests/playwright-report/
           retention-days: 30
-
-
