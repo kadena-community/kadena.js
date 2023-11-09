@@ -41,7 +41,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             <Grid.Root gap="$lg" columns={{ sm: 1, md: 2 }}>
               <Grid.Item rowSpan={2}>
                 <DocsCard
-                  label="Introduction"
+                  label="Start with core concepts"
                   description="Kadena is the only platform offering a complete decentralized infrastructure for builders. Combining a revolutionary chain architecture with the tools needed for widespread adoption, your teams get the full capabilities of blockchain with the ability to go from concept to launch in days vs. months by not having to build from scratch. Learn about our core concepts."
                   schema="info"
                   background="whitepapers"
@@ -62,7 +62,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <Grid.Item>
                 <DocsCard
                   label="Learn through tutorials"
-                  description="Find training and documentation and discover resources to assist you in learning. Whether you are just starting or an experienced professional, our hands-on approach helps you reach your goals faster, more confidently, and at your own pace."
+                  description="Get hands-on experience and step-by-step instructions to start your journey from Hello, World! to smart contracts and full stack applications. Whether you are just starting out or an experienced professional, follow simple tutorials and in-depth workshops to reach your goals at your own pace."
                   schema="warning"
                   background="contribute"
                 >
@@ -95,8 +95,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               </Grid.Item>
               <Grid.Item>
                 <DocsCard
-                  label="Setup"
-                  description="Use the right tools and platforms for building many types of decentralized applications."
+                  label="Set up your development environment"
+                  description="If you're ready to start coding, you'll want to set up a local development environment with the tools and resources you'll need to build decentralized applications."
                   schema="success"
                   background="quickstart"
                 >
