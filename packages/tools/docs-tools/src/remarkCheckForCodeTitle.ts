@@ -1,8 +1,4 @@
-import type { Root, RootContent } from 'mdast';
-
-interface Tree extends Omit<Root, 'children'> {
-  children: RootContent[];
-}
+import { ITree, Plugin } from './types';
 
 const replaceOrConcatString = (str?: string | null): string => {
   if (!str) str = '';
@@ -18,12 +14,12 @@ const replaceOrConcatString = (str?: string | null): string => {
   return str;
 };
 
-const remarkCheckForCodeTitle = () => {
-  return async (tree: Tree) => {
+const remarkCheckForCodeTitle = (): Plugin => {
+  return async (tree: ITree): Promise<ITree> => {
     const children = tree.children.map((node) => {
       const { type } = node;
 
-      if (type == 'code') {
+      if (type === 'code') {
         node.meta = replaceOrConcatString(node.meta);
       }
 

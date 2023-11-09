@@ -1,14 +1,11 @@
 import { toString } from 'mdast-util-to-string';
 import { getValues } from './utils.mjs';
-import type { Root, RootContent, Heading } from 'mdast';
+import type { Heading, PhrasingContent } from 'mdast';
+import type { DocsRootContent, IStartArray, ITree, Plugin, TagNameType } from './types';
 
-interface Tree extends Omit<Root, 'children'> {
-  children: RootContent[];
-}
+const getTagName = (depth = 1) => `h${depth}` as TagNameType;
 
-const getTagName = (depth = 1) => `h${depth}`;
-
-const lastHeading = (parent, newChild) => {
+const lastHeading = (parent: IStartArray, newChild: Heading): IStartArray => {
   const nodes = [parent];
   let child = parent.children[parent.children.length - 1] ?? parent;
 
@@ -26,34 +23,31 @@ const lastHeading = (parent, newChild) => {
   return nodes[nodes.length - 1];
 };
 
-const cleanupHeading = (item) => {
+const cleanupHeading = (item: Heading): void => {
   const newChild = {
     type: 'text',
     value: '',
-    postion: {
-      start: {},
-      end: {},
-    },
   };
 
   const value = getValues(item).join(' ');
 
-  item.children = [{ ...newChild, value }];
+  item.children = [{ ...newChild, value }] as PhrasingContent[];
 };
 
 
-const getHeaders = (tree: Root) => {
-  return tree.children.filter((branch: RootContent) => {
-    return branch.type === 'heading';
-  }) as Heading[] ?? [];
+const getHeaders = (tree: ITree): Heading[]  => {
+  return tree.children.filter((child: DocsRootContent) => {
+    return child.type === 'heading';
+  }) as Heading[];
 };
 
-const remarkHeadersToProps = () => {
-  return async (tree: Tree) => {
+const remarkHeadersToProps = (): Plugin => {
+  return async (tree: ITree): Promise<ITree> => {
     const headers = getHeaders(tree);
 
-    let startArray = [
+    const startArray:IStartArray[] = [
       {
+        type: 'heading',
         tag: 'h1',
         depth: 1,
         children: [],
@@ -70,7 +64,8 @@ const remarkHeadersToProps = () => {
         return;
       }
 
-      const elm = {
+      const elm: IStartArray = {
+        type: item.type,
         depth: item.depth,
         tag: getTagName(item.depth),
         title: toString(item) ?? '',

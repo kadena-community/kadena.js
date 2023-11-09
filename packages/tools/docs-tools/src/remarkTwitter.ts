@@ -1,8 +1,4 @@
-import type { Root, RootContent } from 'mdast';
-
-interface ITree extends Omit<Root, 'children'> {
-  children: RootContent[];
-}
+import type { ITree, Plugin, RootContent } from './types';
 
 const getTwitterStatusId = (url: string): string | undefined => {
   if (!url) return;
@@ -19,32 +15,31 @@ const getTwitterStatusId = (url: string): string | undefined => {
   return;
 };
 
-const remarkTwitter = () => {
-  return async (tree: ITree) => {
+const remarkTwitter = (): Plugin => {
+  return async (tree: ITree): Promise<ITree> => {
     const children = tree.children.map((node) => {
       if (node.type === 'paragraph' && node.children?.length === 1) {
         const leaf = node.children?.[0] ?? null;
-        if(leaf.type === 'link') {
-          const twitterStatusId = getTwitterStatusId(leaf.url);
+        if(leaf.type !== 'link') return node;
 
-          if (twitterStatusId) {
-            const newNode = {
-              ...leaf,
-              ...node,
-              type: 'element',
-              value: leaf.url,
-              data: {
-                ...node.data,
-                hName: 'kda-tweet',
-                hProperties: {
-                  tweetId: twitterStatusId,
-                },
+        const twitterStatusId = getTwitterStatusId(leaf.url);
+        if (twitterStatusId) {
+          const newNode = {
+            ...leaf,
+            ...node,
+            type: 'element',
+            value: leaf.url,
+            data: {
+              ...node.data,
+              hName: 'kda-tweet',
+              hProperties: {
+                tweetId: twitterStatusId,
               },
-            };
+            },
+          };
 
-            newNode.children = [];
-            return newNode;
-          }
+          newNode.children = [];
+          return newNode;
         }
       }
       return node;

@@ -1,9 +1,4 @@
-import type { Root, RootContent } from 'mdast';
-
-interface Tree extends Omit<Root, 'children'> {
-  children: RootContent[];
-}
-
+import type { ITree, Plugin, RootContent } from "./types";
 
 const getYouTubeVideoId = (link: string): string | undefined => {
   if (!link) return;
@@ -17,8 +12,8 @@ const getYouTubeVideoId = (link: string): string | undefined => {
   return;
 };
 
-const remarkYoutube = () => {
-  return async (tree: Tree) => {
+const remarkYoutube = (): Plugin => {
+  return async (tree: ITree) => {
     const children = tree.children.map((node) => {
       if (node.type === 'paragraph' && node.children?.length === 1) {
         const leaf = node.children[0] ?? null;
