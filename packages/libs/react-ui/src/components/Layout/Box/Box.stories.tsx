@@ -23,7 +23,7 @@ const meta: Meta<IBoxProps> = {
       description: {
         component:
           'Box is the most basic building block of application layout.\n' +
-          '\nThis component allows for passing the <i>display</i>, <i>margin</i> and <i>padding</i> properties.',
+          '\nThis component accepts an `as` prop which allows the user to pass what html element the `Box` will render as well as many style attributes that are mapped to css utility classes.',
       },
     },
   },
