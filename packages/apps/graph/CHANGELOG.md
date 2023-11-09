@@ -1,5 +1,12 @@
 # @kadena/graph
 
+## 1.0.4
+
+### Patch Changes
+
+- 6f79f73dd: Added gas estimation query and adjusted folder structure for devnet
+  files
+
 ## 1.0.3
 
 ### Patch Changes
