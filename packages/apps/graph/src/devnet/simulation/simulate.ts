@@ -119,7 +119,7 @@ export async function simulate({
 
       // This is to simulate cross chain transfers
       if (transferType === 'xchaintransfer') {
-        while (account.chainId === nextAccount.chainId) {
+        if (account.chainId === nextAccount.chainId) {
           nextAccount = {
             ...nextAccount,
             chainId: `${getRandomNumber(
@@ -128,6 +128,12 @@ export async function simulate({
             )}` as ChainId,
           };
         }
+
+        if (account.chainId === nextAccount.chainId) {
+          logger.info('Skipping cross chain transfer to same chain');
+          continue;
+        }
+
         logger.info('Cross chain transfer', account, nextAccount);
         result = await crossChainTransfer({
           from: account,
