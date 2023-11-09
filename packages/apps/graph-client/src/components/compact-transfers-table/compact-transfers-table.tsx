@@ -56,9 +56,9 @@ export const CompactTransfersTable = (
         </Table.Head>
         <Table.Body>
           {transfers.edges.map((edge, index) => {
-            // This way we avoid repeated transfers
-            // These transfers are going to be added to their crosschain counterpart
-            if (!edge?.node.senderAccount) {
+            /**  These transfers are going to be added to their crosschain counterpart and
+             this way we avoid repeated transfers in the table */
+            if (!chainId && edge?.node.transaction?.pactId) {
               return <></>;
             }
 
