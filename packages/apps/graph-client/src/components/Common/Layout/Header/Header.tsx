@@ -1,6 +1,12 @@
 import routes from '@/constants/routes';
 import { Text } from '@components/text';
-import { Button, Grid, Input, InputWrapper, Select } from '@kadena/react-ui';
+import {
+  Button,
+  FormFieldWrapper,
+  Grid,
+  Input,
+  Select,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -166,7 +172,7 @@ const Header: FC<IHeaderProps> = (props) => {
 
         <Grid.Root columns={gridColumns}>
           <Grid.Item>
-            <InputWrapper htmlFor="search-type" label="Search Type">
+            <FormFieldWrapper htmlFor="search-type" label="Search Type">
               <Select
                 ariaLabel="search-type"
                 id="search-type"
@@ -179,11 +185,11 @@ const Header: FC<IHeaderProps> = (props) => {
                 <option value="block">Block</option>
                 <option value="gasEstimation">Gas Estimation</option>
               </Select>
-            </InputWrapper>
+            </FormFieldWrapper>
           </Grid.Item>
 
           <Grid.Item>
-            <InputWrapper
+            <FormFieldWrapper
               htmlFor="search-field"
               label={searchTypeLabels[searchType]}
             >
@@ -194,13 +200,13 @@ const Header: FC<IHeaderProps> = (props) => {
                 onChange={handleSearchFieldChange}
                 onKeyDown={handleKeyPress}
               />
-            </InputWrapper>
+            </FormFieldWrapper>
           </Grid.Item>
 
           {(searchType.startsWith('account') ||
             searchType.startsWith('gas')) && (
             <Grid.Item>
-              <InputWrapper
+              <FormFieldWrapper
                 htmlFor="second-search-field"
                 label={secondSearchTypeLabels[searchType]}
               >
@@ -211,13 +217,13 @@ const Header: FC<IHeaderProps> = (props) => {
                   onChange={(event) => setSecondSearchField(event.target.value)}
                   onKeyDown={handleKeyPress}
                 />
-              </InputWrapper>
+              </FormFieldWrapper>
             </Grid.Item>
           )}
 
           {searchType.startsWith('gas') && (
             <Grid.Item>
-              <InputWrapper
+              <FormFieldWrapper
                 htmlFor="third-search-field"
                 label={thirdSeachTypeLabels[searchType]}
               >
@@ -228,7 +234,7 @@ const Header: FC<IHeaderProps> = (props) => {
                   onChange={(event) => setThirdSearchField(event.target.value)}
                   onKeyDown={handleKeyPress}
                 />
-              </InputWrapper>
+              </FormFieldWrapper>
             </Grid.Item>
           )}
           <Grid.Item>

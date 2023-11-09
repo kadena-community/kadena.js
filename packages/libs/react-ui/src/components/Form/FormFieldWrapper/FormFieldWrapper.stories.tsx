@@ -1,25 +1,25 @@
-import type { IInputWrapperProps } from '@components/Form';
-import { Input, InputWrapper } from '@components/Form';
+import type { IFormFieldWrapperProps } from '@components/Form';
+import { FormFieldWrapper, Input } from '@components/Form';
 import type { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
-import { statusVariant } from './InputWrapper.css';
+import { statusVariant } from './FormFieldWrapper.css';
 
 type StoryProps = {
   helperText: string;
   leadingText: string;
   icon: keyof typeof SystemIcon;
   rightIcon: keyof typeof SystemIcon;
-} & IInputWrapperProps;
+} & IFormFieldWrapperProps;
 
 const meta: Meta<StoryProps> = {
-  title: 'Form/InputWrapper',
+  title: 'Form/FormFieldWrapper',
   parameters: {
     docs: {
       description: {
         component:
-          'The InputWrapper component is intended to be used to wrap one or more form input components to provide them with a shared and optional label, tag, info, helper text and status colors.',
+          'The FormFieldWrapper component is intended to be used to wrap one or more form input components to provide them with a shared and optional label, tag, info, helper text and status colors.',
       },
     },
   },
@@ -113,7 +113,7 @@ export const Group: Story = {
     leadingTextWidth,
   }) => {
     return (
-      <InputWrapper
+      <FormFieldWrapper
         tag={tag}
         info={info}
         label={label}
@@ -135,7 +135,7 @@ export const Group: Story = {
           disabled={disabled}
           leadingText="Leading 2"
         />
-      </InputWrapper>
+      </FormFieldWrapper>
     );
   },
 };

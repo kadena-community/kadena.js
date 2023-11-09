@@ -1,13 +1,13 @@
 import { SystemIcon } from '@components/Icon';
 import type { FC } from 'react';
 import React from 'react';
-import { helperClass, helperIconClass } from './InputHelper.css';
+import { helperClass, helperIconClass } from './FormFieldHelper.css';
 
-interface IInputHelperProps {
+interface IFormFieldHelperProps {
   children: React.ReactNode;
 }
 
-export const InputHelper: FC<IInputHelperProps> = ({ children }) => {
+export const FormFieldHelper: FC<IFormFieldHelperProps> = ({ children }) => {
   return (
     <span className={helperClass}>
       <span className={helperIconClass}>

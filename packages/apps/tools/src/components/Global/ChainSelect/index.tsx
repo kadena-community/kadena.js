@@ -1,7 +1,7 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import type { ISelectProps } from '@kadena/react-ui';
-import { InputWrapper, Select } from '@kadena/react-ui';
+import { FormFieldWrapper, Select } from '@kadena/react-ui';
 import type { FC, FormEventHandler } from 'react';
 import React, { useCallback } from 'react';
 
@@ -32,7 +32,7 @@ const ChainSelect: FC<
   });
 
   return (
-    <InputWrapper label="Chain ID" htmlFor={ELEMENT_ID}>
+    <FormFieldWrapper label="Chain ID" htmlFor={ELEMENT_ID}>
       <Select
         {...rest}
         id={ELEMENT_ID}
@@ -43,7 +43,7 @@ const ChainSelect: FC<
       >
         {options}
       </Select>
-    </InputWrapper>
+    </FormFieldWrapper>
   );
 };
 

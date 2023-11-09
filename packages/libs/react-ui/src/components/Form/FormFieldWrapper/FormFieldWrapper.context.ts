@@ -5,12 +5,12 @@ import type { FormFieldStatus } from '../Form.css';
 
 export type OpenSections = string[];
 
-interface IInputWrapperContext {
+interface IFormFieldWrapperContext {
   status?: FormFieldStatus;
   leadingTextWidth?: keyof typeof vars.sizes;
 }
 
-export const InputWrapperContext = createContext<IInputWrapperContext>({
+export const FormFieldWrapperContext = createContext<IFormFieldWrapperContext>({
   status: undefined,
   leadingTextWidth: undefined,
 });
