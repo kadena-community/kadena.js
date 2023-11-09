@@ -1,6 +1,5 @@
 import { useGetEventByNameSubscription } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
-import { mainStyle } from '@/components/Common/main/styles.css';
 import { ErrorBox } from '@/components/error-box/error-box';
 import { formatCode } from '@/utils/formatter';
 import routes from '@constants/routes';
@@ -20,7 +19,7 @@ const Event: React.FC = () => {
   });
 
   return (
-    <div>
+    <>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
         <Breadcrumbs.Item>Events</Breadcrumbs.Item>
@@ -28,92 +27,84 @@ const Event: React.FC = () => {
 
       <Box marginBottom="$8" />
 
-      <main className={mainStyle}>
-        <div>
-          {eventLoading && (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Loader /> <span>Waiting for event...</span>
-            </div>
-          )}
-
-          {error && <ErrorBox error={error} />}
-
-          {eventSubscription?.event && (
-            <div style={{ maxWidth: '1000px' }}>
-              <Table.Root striped wordBreak="break-word">
-                <Table.Head>
-                  <Table.Tr>
-                    <Table.Th>Event Name</Table.Th>
-                    <Table.Th>Parameters</Table.Th>
-                    <Table.Th>Request Key</Table.Th>
-                  </Table.Tr>
-                </Table.Head>
-                <Table.Body>
-                  {eventSubscription.event.map((event, index) => (
-                    <Table.Tr
-                      key={index}
-                      url={`${routes.TRANSACTIONS}/${event.transaction?.requestKey}`}
-                    >
-                      <Table.Td>{event.qualifiedName}</Table.Td>
-                      <Table.Td>
-                        <Table.Root>
-                          <Table.Body>
-                            {JSON.parse(event.parameterText).map(
-                              (parameter: any, index: number) => (
-                                <Table.Tr key={`arguments-${index}`}>
-                                  <Table.Td>
-                                    {typeof parameter === 'string' ? (
-                                      parameter
-                                    ) : typeof parameter === 'object' ? (
-                                      <Table.Root>
-                                        <Table.Body>
-                                          {parameter.map(
-                                            (
-                                              subparameter: any,
-                                              index: number,
-                                            ) => (
-                                              <Table.Tr
-                                                key={`arguments-${index}`}
-                                              >
-                                                <Table.Td>
-                                                  {typeof subparameter ===
-                                                  'string' ? (
-                                                    subparameter
-                                                  ) : (
-                                                    <pre>
-                                                      {formatCode(
-                                                        JSON.stringify(
-                                                          subparameter,
-                                                        ),
-                                                      )}
-                                                    </pre>
-                                                  )}
-                                                </Table.Td>
-                                              </Table.Tr>
-                                            ),
-                                          )}
-                                        </Table.Body>
-                                      </Table.Root>
-                                    ) : (
-                                      JSON.stringify(parameter)
-                                    )}
-                                  </Table.Td>
-                                </Table.Tr>
-                              ),
-                            )}
-                          </Table.Body>
-                        </Table.Root>
-                      </Table.Td>
-                      <Table.Td>{event.transaction?.requestKey}</Table.Td>
-                    </Table.Tr>
-                  ))}
-                </Table.Body>
-              </Table.Root>
-            </div>
-          )}
+      {eventLoading && (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Loader /> <span>Waiting for event...</span>
         </div>
-      </main>
-    </div>
+      )}
+
+      {error && <ErrorBox error={error} />}
+
+      {eventSubscription?.event && (
+        <>
+          <Table.Root striped wordBreak="break-word">
+            <Table.Head>
+              <Table.Tr>
+                <Table.Th>Event Name</Table.Th>
+                <Table.Th>Parameters</Table.Th>
+                <Table.Th>Request Key</Table.Th>
+                <Table.Th></Table.Th>
+              </Table.Tr>
+            </Table.Head>
+            <Table.Body>
+              {eventSubscription.event.map((event, index) => (
+                <Table.Tr
+                  key={index}
+                  url={`${routes.TRANSACTIONS}/${event.transaction?.requestKey}`}
+                >
+                  <Table.Td>{event.qualifiedName}</Table.Td>
+                  <Table.Td>
+                    <Table.Root>
+                      <Table.Body>
+                        {JSON.parse(event.parameterText).map(
+                          (parameter: any, index: number) => (
+                            <Table.Tr key={`arguments-${index}`}>
+                              <Table.Td>
+                                {typeof parameter === 'string' ? (
+                                  parameter
+                                ) : typeof parameter === 'object' ? (
+                                  <Table.Root>
+                                    <Table.Body>
+                                      {parameter.map(
+                                        (subparameter: any, index: number) => (
+                                          <Table.Tr key={`arguments-${index}`}>
+                                            <Table.Td>
+                                              {typeof subparameter ===
+                                              'string' ? (
+                                                subparameter
+                                              ) : (
+                                                <pre>
+                                                  {formatCode(
+                                                    JSON.stringify(
+                                                      subparameter,
+                                                    ),
+                                                  )}
+                                                </pre>
+                                              )}
+                                            </Table.Td>
+                                          </Table.Tr>
+                                        ),
+                                      )}
+                                    </Table.Body>
+                                  </Table.Root>
+                                ) : (
+                                  JSON.stringify(parameter)
+                                )}
+                              </Table.Td>
+                            </Table.Tr>
+                          ),
+                        )}
+                      </Table.Body>
+                    </Table.Root>
+                  </Table.Td>
+                  <Table.Td>{event.transaction?.requestKey}</Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </>
+      )}
+    </>
   );
 };
 

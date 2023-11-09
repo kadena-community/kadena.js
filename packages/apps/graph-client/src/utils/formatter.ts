@@ -15,5 +15,5 @@ export function formatLisp(code: string): string {
     insertSpaces: true,
   });
 
-  return formattedCode;
+  return formattedCode.slice(1);
 }

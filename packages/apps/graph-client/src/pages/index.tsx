@@ -6,7 +6,6 @@ import {
   useGetRecentHeightsQuery,
   useGetTransactionsQuery,
 } from '@/__generated__/sdk';
-import { mainStyle } from '@/components/Common/main/styles.css';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { ChainwebGraph } from '@components/chainweb';
 import routes from '@constants/routes';
@@ -58,28 +57,26 @@ const Home: React.FC = () => {
   }, [recentBlocks, addBlocks, previousRecentBlocks, addBlockToChain]);
 
   return (
-    <div>
-      <main className={mainStyle}>
-        <div>
-          {loadingRecentBlocks || loadingNewBlocks ? (
-            'Loading...'
-          ) : (
-            <ChainwebGraph blocks={allBlocks} />
-          )}
-        </div>
-
-        {txs?.transactions && (
-          <div>
-            <Box marginBottom="$10" />
-            <CompactTransactionsTable
-              transactions={txs.transactions as QueryTransactionsConnection}
-              viewAllHref={`${routes.TRANSACTIONS}`}
-              description="Most recent transactions"
-            />
-          </div>
+    <>
+      <div>
+        {loadingRecentBlocks || loadingNewBlocks ? (
+          'Loading...'
+        ) : (
+          <ChainwebGraph blocks={allBlocks} />
         )}
-      </main>
-    </div>
+      </div>
+
+      {txs?.transactions && (
+        <div>
+          <Box marginBottom="$10" />
+          <CompactTransactionsTable
+            transactions={txs.transactions as QueryTransactionsConnection}
+            viewAllHref={`${routes.TRANSACTIONS}`}
+            description="Most recent transactions"
+          />
+        </div>
+      )}
+    </>
   );
 };
 

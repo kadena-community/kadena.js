@@ -11,6 +11,7 @@ interface ICompactTransfersTableProps {
   moduleName: string;
   accountName: string;
   chainId?: string;
+  truncateColumns?: boolean;
   transfers:
     | ModuleAccountTransfersConnection
     | ChainModuleAccountTransfersConnection;
@@ -21,7 +22,14 @@ interface ICompactTransfersTableProps {
 export const CompactTransfersTable = (
   props: ICompactTransfersTableProps,
 ): JSX.Element => {
-  const { moduleName, accountName, chainId, transfers, description } = props;
+  const {
+    moduleName,
+    accountName,
+    chainId,
+    truncateColumns,
+    transfers,
+    description,
+  } = props;
 
   return (
     <>
@@ -55,7 +63,7 @@ export const CompactTransfersTable = (
           </Table.Tr>
         </Table.Head>
         <Table.Body>
-          {transfers.edges.map((edge, index) => {
+          {transfers.edges.slice(0, 10).map((edge, index) => {
             /**  These transfers are going to be added to their crosschain counterpart and
              this way we avoid repeated transfers in the table */
             if (!chainId && edge?.node.transaction?.pactId) {
@@ -80,7 +88,9 @@ export const CompactTransfersTable = (
                     href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.senderAccount}`}
                   >
                     <span title={edge?.node.senderAccount}>
-                      {truncate(edge?.node.senderAccount)}
+                      {truncateColumns
+                        ? truncate(edge?.node.senderAccount)
+                        : edge?.node.senderAccount}
                     </span>
                   </Link>
                 </Table.Td>
@@ -90,7 +100,9 @@ export const CompactTransfersTable = (
                       href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.receiverAccount}`}
                     >
                       <span title={edge?.node.receiverAccount}>
-                        {truncate(edge?.node.receiverAccount)}
+                        {truncateColumns
+                          ? truncate(edge?.node.receiverAccount)
+                          : edge?.node.receiverAccount}
                       </span>
                     </Link>
                   ) : (
@@ -100,9 +112,11 @@ export const CompactTransfersTable = (
                       <span
                         title={edge?.node.crossChainTransfer.receiverAccount}
                       >
-                        {truncate(
-                          edge?.node.crossChainTransfer.receiverAccount,
-                        )}
+                        {truncateColumns
+                          ? truncate(
+                              edge?.node.crossChainTransfer.receiverAccount,
+                            )
+                          : edge?.node.crossChainTransfer.receiverAccount}
                       </span>
                     </Link>
                   )}
@@ -112,18 +126,24 @@ export const CompactTransfersTable = (
                     href={`${routes.TRANSACTIONS}/${edge?.node.requestKey}`}
                   >
                     <span title={edge?.node.requestKey}>
-                      {truncate(edge?.node.requestKey)}
+                      {truncateColumns
+                        ? truncate(edge?.node.requestKey)
+                        : edge?.node.requestKey}
                     </span>
                   </Link>
-                  /
                   {edge?.node.crossChainTransfer && (
-                    <Link
-                      href={`${routes.TRANSACTIONS}/${edge?.node.crossChainTransfer.requestKey}`}
-                    >
-                      <span title={edge?.node.crossChainTransfer.requestKey}>
-                        {truncate(edge?.node.crossChainTransfer.requestKey)}
-                      </span>
-                    </Link>
+                    <>
+                      /
+                      <Link
+                        href={`${routes.TRANSACTIONS}/${edge?.node.crossChainTransfer.requestKey}`}
+                      >
+                        <span title={edge?.node.crossChainTransfer.requestKey}>
+                          {truncateColumns
+                            ? truncate(edge?.node.crossChainTransfer.requestKey)
+                            : edge?.node.crossChainTransfer.requestKey}
+                        </span>
+                      </Link>
+                    </>
                   )}
                 </Table.Td>
               </Table.Tr>
