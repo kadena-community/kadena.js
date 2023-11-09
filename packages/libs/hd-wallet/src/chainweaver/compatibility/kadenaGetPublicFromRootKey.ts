@@ -1,6 +1,6 @@
 import { kadenaGenKeypair } from './kadenaGenKeypair';
 
-export function getPublicKeyFormRootKey(
+export function kadenaGetPublicFromRootKey(
   password: string,
   rootKey: string | Uint8Array,
   index: number,
