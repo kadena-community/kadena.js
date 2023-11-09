@@ -96,10 +96,3 @@ temp
 /packages/*/*/test-results
 /packages/*/*/playwright-report
 
-packages/tools/lint-package/src/helpers.js
-packages/tools/lint-package/src/index.js
-packages/tools/lint-package/src/logger.js
-packages/tools/lint-package/src/rules/api-extractor/types.js
-packages/tools/lint-package/src/rules/eslint/config.js
-packages/tools/lint-package/src/rules/package-json/scripts.js
-packages/tools/lint-package/src/rules/typescript/extends.js
