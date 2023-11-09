@@ -1,6 +1,5 @@
 import type {
   IInputProps,
-  ISelectFieldProps,
   ISelectProps,
   ITextareaProps,
 } from '@components/Form';
