@@ -27,5 +27,5 @@ export const getBalance = (
       },
     }),
   );
-  return balance(account).execute();
+  return balance(account).execute().catch(e => console.log(e.message));
 };

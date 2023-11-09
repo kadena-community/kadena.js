@@ -7,9 +7,9 @@ import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import clear from 'clear';
 import { Command, Option } from 'commander';
-import { existsSync, mkdirSync, readdirSync } from 'fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs';
 import path from 'path';
-import { runNetworksCreate } from '../networks/createNetworksCommand.js';
+// import { runNetworksCreate } from '../networks/createNetworksCommand.js';
 import {
   ICustomNetworksChoice,
 } from '../networks/networksHelpers.js';
@@ -439,4 +439,11 @@ export function clearCLI(full: boolean = false): void {
       clear();
     }
   }
+}
+
+export function getVersion(): string {
+  const packageJson: { version: string } = JSON.parse(
+    readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
+  );
+  return packageJson.version;
 }
