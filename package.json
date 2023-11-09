@@ -15,9 +15,9 @@
     "lint": "syncpack list-mismatches && prettier . \"!packages\" --cache --check",
     "publish": "changeset publish",
     "select": "git checkout .changeset/config.json && tsx --no-warnings ./packages/tools/scripts/publish-set.ts",
-    "test": "turbo run test",
-    "test:e2e": "turbo run test:e2e",
-    "test:integration": "turbo run test:integration",
+    "test": "turbo run test --force",
+    "test:e2e": "turbo run test:e2e --force",
+    "test:integration": "turbo run test:integration --force",
     "version": "changeset version && pnpm run format:pkgs"
   },
   "devDependencies": {
