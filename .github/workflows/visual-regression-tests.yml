@@ -35,6 +35,7 @@ jobs:
                 - '${{ matrix.path }}/**'
 
       - uses: pnpm/action-setup@v2
+        if: steps.changed.outputs.pathFilter == 'true'
         with:
           version: 8
 
