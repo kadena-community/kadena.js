@@ -15,7 +15,7 @@ builder.queryField('transfers', (t) => {
     async totalCount(__parent, args) {
       try {
         return await prismaClient.transfer.count({
-          where: geerateTransferFilter(args),
+          where: generateTransferFilter(args),
         });
       } catch (error) {
         throw normalizeError(error);
@@ -23,7 +23,7 @@ builder.queryField('transfers', (t) => {
     },
     async resolve(query, __parent, args) {
       try {
-        const whereFilter = geerateTransferFilter(args);
+        const whereFilter = generateTransferFilter(args);
 
         return await prismaClient.transfer.findMany({
           ...query,
@@ -41,7 +41,7 @@ builder.queryField('transfers', (t) => {
   });
 });
 
-function geerateTransferFilter(args: {
+function generateTransferFilter(args: {
   accountName?: string | null | undefined;
   moduleName?: string | null | undefined;
   chainId?: string | null | undefined;
