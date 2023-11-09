@@ -20,9 +20,6 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - name: Fetch base branch
-        run: git fetch origin ${{ github.base_ref }}
-
       - uses: pnpm/action-setup@v2
         with:
           version: 8
