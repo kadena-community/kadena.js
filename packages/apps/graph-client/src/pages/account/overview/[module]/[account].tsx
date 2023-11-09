@@ -9,7 +9,7 @@ import { ChainModuleAccountTable } from '@components/chain-module-account-table/
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Grid, Notification, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Notification, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
