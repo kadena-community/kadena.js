@@ -57,7 +57,15 @@ const RequestKey: React.FC = () => {
                       variant="outlined"
                     >
                       Transaction failed with status:{' '}
-                      {transactionSubscription?.transaction?.badResult}
+                      <pre>
+                        {JSON.stringify(
+                          JSON.parse(
+                            transactionSubscription?.transaction?.badResult,
+                          ),
+                          null,
+                          4,
+                        )}
+                      </pre>
                     </Notification.Root>
                   )}
                   {transactionSubscription?.transaction?.goodResult && (
