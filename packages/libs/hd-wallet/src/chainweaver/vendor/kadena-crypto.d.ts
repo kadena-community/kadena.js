@@ -24,7 +24,7 @@ export declare const kadenaMnemonicToRootKeypair: (
 export declare const kadenaSign: (
   password: string,
   message: string,
-  privateKey: string,
+  privateKey: string | Uint8Array,
 ) => Uint8Array;
 
 export declare const kadenaVerify: (

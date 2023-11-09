@@ -1,8 +1,8 @@
 # Supporting Chainweaver Key Derivation
 
-Date: 2023-10-31
+**Date**: 2023-10-31
 
-Status: Accepted
+**Status**: Accepted
 
 ## Context
 

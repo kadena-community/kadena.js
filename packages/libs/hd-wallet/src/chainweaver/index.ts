@@ -8,4 +8,4 @@ export {
   kadenaVerify,
 } from './vendor/kadena-crypto';
 
-export { kadenaGenKeypair } from './kadenaGenKeypair';
+export * from './compatibility';

@@ -1,7 +1,7 @@
-import { HARDENED_OFFSET, harden } from '../utils';
-import { kadenaGenKeypair as kadenaGenKeypairOriginal } from './vendor/kadena-crypto';
+import { HARDENED_OFFSET, harden } from '../../utils';
+import { kadenaGenKeypair as kadenaGenKeypairOriginal } from '../vendor/kadena-crypto';
 
-export function kadenaGenOneKeypair(
+function kadenaGenOneKeypair(
   password: string,
   rootKey: string | Uint8Array,
   index: number,
