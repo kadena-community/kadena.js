@@ -39,7 +39,7 @@ data: ICommandResult;
 export const details: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host']) => Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>;
 
 // @alpha (undocumented)
-export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host']) => Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>;
+export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host']) => Promise<void | undefined> | Promise<string | void> | Promise<number | void> | Promise<false | void> | Promise<true | void> | Promise<void | IPactInt> | Promise<void | IPactDecimal> | Promise<void | Date> | Promise<void | PactValue[]>;
 
 // Warning: (ae-forgotten-export) The symbol "IRotateCommandInput" needs to be exported by the entry point index.d.ts
 //
