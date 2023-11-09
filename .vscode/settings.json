@@ -2,5 +2,9 @@
   "files.associations": {
     "*.json": "jsonc"
   },
-  "graphql-config.load.rootDir": "packages/apps/graph"
+  "graphql-config.load.rootDir": "packages/apps/graph",
+  "cSpell.words": [
+    "Kadena",
+    "subfolders"
+  ]
 }
