@@ -162,13 +162,15 @@ const AccountTransfers: React.FC = () => {
                       >
                         {edge?.node.requestKey}
                       </Link>
-                      /
                       {edge?.node.crossChainTransfer && (
-                        <Link
-                          href={`${routes.TRANSACTIONS}/${edge?.node.crossChainTransfer.requestKey}`}
-                        >
-                          {edge?.node.crossChainTransfer.requestKey}
-                        </Link>
+                        <>
+                          &nbsp;/&nbsp;
+                          <Link
+                            href={`${routes.TRANSACTIONS}/${edge?.node.crossChainTransfer.requestKey}`}
+                          >
+                            {edge?.node.crossChainTransfer.requestKey}
+                          </Link>
+                        </>
                       )}
                     </Table.Td>
                   </Table.Tr>

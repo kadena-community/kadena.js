@@ -133,7 +133,7 @@ export const CompactTransfersTable = (
                   </Link>
                   {edge?.node.crossChainTransfer && (
                     <>
-                      /
+                      &nbsp;/&nbsp;
                       <Link
                         href={`${routes.TRANSACTIONS}/${edge?.node.crossChainTransfer.requestKey}`}
                       >

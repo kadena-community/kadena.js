@@ -75,15 +75,11 @@ export const CompactTransactionsTable = (
                 <Table.Td>
                   {edge?.node.code ? (
                     <span title={edge?.node.code}>
-                      <pre>
-                        {formatLisp(
-                          JSON.parse(
-                            truncateColumns
-                              ? truncate(edge.node.code)!
-                              : edge.node.code,
-                          ),
-                        )}
-                      </pre>
+                      {JSON.parse(
+                        truncateColumns
+                          ? truncate(edge.node.code)!
+                          : edge.node.code,
+                      )}
                     </span>
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
