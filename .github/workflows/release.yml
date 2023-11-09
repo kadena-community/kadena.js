@@ -56,7 +56,7 @@ jobs:
           # Note: pnpm install after versioning is necessary to refresh lockfile
           version: pnpm run version
           publish: pnpm run publish
-          commit: 'Update changelogs and bump versions [skip ci]'
+          commit: 'Update changelogs and bump versions'
           title: '[ci] Release'
         env:
           # Needs "Contents" r+w and "Pull requests" r+w access to open/update PRs and push to main
