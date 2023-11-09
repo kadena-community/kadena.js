@@ -14,8 +14,6 @@ jobs:
     name: Build & unit test
     runs-on: ubuntu-latest
 
-
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,10 +46,6 @@ jobs:
       matrix:
         package: [ '@kadena/client', '@kadena/client-utils' ]
 
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-
     services:
       devnet:
         image: kadena/devnet
@@ -64,6 +58,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 2
           show-progress: false
 
       - uses: pnpm/action-setup@v2
