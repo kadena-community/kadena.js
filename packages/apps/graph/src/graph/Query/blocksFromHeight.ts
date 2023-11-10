@@ -1,12 +1,9 @@
 import { prismaClient } from '@db/prismaClient';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import type { Debugger } from 'debug';
 import _debug from 'debug';
 import { builder } from '../builder';
 import Block from '../objects/Block';
-
-const log: Debugger = _debug('graph:Query:blocksFromHeight');
 
 builder.queryField('blocksFromHeight', (t) => {
   return t.prismaField({
@@ -41,7 +38,6 @@ builder.queryField('blocksFromHeight', (t) => {
           },
         });
 
-        log("found '%s' blocks", blocksFromHeight.length);
         return blocksFromHeight;
       } catch (error) {
         throw normalizeError(error);

@@ -1,12 +1,9 @@
 import { prismaClient } from '@db/prismaClient';
 import type { Event } from '@prisma/client';
 import { nullishOrEmpty } from '@utils/nullishOrEmpty';
-import type { Debugger } from 'debug';
 import _debug from 'debug';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-
-const log: Debugger = _debug('graph:Subscription:event');
 
 builder.subscriptionField('event', (t) => {
   return t.prismaField({
@@ -32,7 +29,6 @@ async function* iteratorFn(
   if (!nullishOrEmpty(eventResult)) {
     lastEvent = eventResult[0];
     yield [lastEvent];
-    log('yielding initial event with id %s', lastEvent.id);
   }
 
   while (!context.req.socket.destroyed) {
@@ -76,8 +72,6 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
       },
     },
   });
-
-  log("found '%s' events", foundEvents.length);
 
   return foundEvents;
 }

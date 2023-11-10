@@ -1,11 +1,8 @@
 import { prismaClient } from '@db/prismaClient';
 import type { Transaction } from '@prisma/client';
-import type { Debugger } from 'debug';
 import _debug from 'debug';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-
-const log: Debugger = _debug('graph:Subscription:transaction');
 
 builder.subscriptionField('transaction', (t) => {
   return t.prismaField({
@@ -32,12 +29,10 @@ async function* iteratorFn(
     });
 
     if (transaction) {
-      log('transaction found', transaction);
       yield transaction;
       return;
     }
 
-    log(`waiting for transaction ${requestKey}`);
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }

@@ -45,6 +45,7 @@ export default builder.prismaNode('Block', {
     transactions: t.prismaConnection({
       type: 'Transaction',
       cursor: 'blockHash_requestKey',
+      edgesNullable: false,
       async totalCount(parent) {
         try {
           return await prismaClient.transaction.count({
