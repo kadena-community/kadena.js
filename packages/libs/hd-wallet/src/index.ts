@@ -4,15 +4,18 @@ import { verifySig } from '@kadena/cryptography-utils';
 import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 import {
-  decryptPrivateKey,
-  encryptOrEncodeSeed,
-  encryptPrivateKey,
-  extractSeedBuffer,
-} from './utils/encrypt';
-import { deriveKeyPair, signWithKeyPair, signWithSeed } from './utils/sign';
+  deriveKeyPair,
+  signWithKeyPair,
+  signWithSeed,
+} from './bip44/utils/sign';
+import { kadenaDecrypt, kadenaEncrypt } from './utils/kadenaEncryption';
+
+export function kadenaGetDerivationPath(index: number): string {
+  return `m'/44'/626'/${index}'/0'/0'`;
+}
 
 /**
- * Changes the password of an encrypted private key.
+ * Changes the password of an encrypted data.
  *
  * @param {string} privateKey - The encrypted private key as a Base64 encoded string.
  * @param {string} oldPassword - The current password used to encrypt the private key.
@@ -21,14 +24,17 @@ import { deriveKeyPair, signWithKeyPair, signWithSeed } from './utils/sign';
  * @throws {Error} - Throws an error if the old password is empty, new password is incorrect empty passwords are empty, or if encryption with the new password fails.
  */
 export function kadenaChangePassword(
-  privateKey: string,
+  encryptedData: string,
   oldPassword: string,
   newPassword: string,
 ): string {
-  if (oldPassword === '' || oldPassword === undefined) {
+  if (typeof oldPassword !== 'string' || typeof newPassword !== 'string') {
+    throw new Error('The old and new passwords must be strings.');
+  }
+  if (oldPassword === '') {
     throw new Error('The old password cannot be empty.');
   }
-  if (newPassword === '' || newPassword === undefined) {
+  if (newPassword === '') {
     throw new Error('The new password cannot be empty.');
   }
   if (oldPassword === newPassword) {
@@ -37,28 +43,22 @@ export function kadenaChangePassword(
     );
   }
 
-  let decryptedPrivateKey;
+  let decryptedPrivateKey: Uint8Array;
   try {
-    decryptedPrivateKey = decryptPrivateKey(privateKey, oldPassword);
+    decryptedPrivateKey = kadenaDecrypt(encryptedData, oldPassword);
   } catch (error) {
     throw new Error(
       `Failed to decrypt the private key with the old password: ${error.message}`,
     );
   }
 
-  let newEncryptedPrivateKey;
   try {
-    newEncryptedPrivateKey = encryptPrivateKey(
-      decryptedPrivateKey,
-      newPassword,
-    );
+    return kadenaEncrypt(decryptedPrivateKey, newPassword);
   } catch (error) {
     throw new Error(
       `Failed to encrypt the private key with the new password: ${error.message}`,
     );
   }
-
-  return newEncryptedPrivateKey;
 }
 
 /**
@@ -69,26 +69,18 @@ export function kadenaChangePassword(
  * @throws {Error} Throws an error if the provided mnemonic is not valid.
  * @returns {Promise<{ seedBuffer: Uint8Array, seed: string }>} - Returns the seed buffer and processed seed.
  */
-export async function kadenaGenSeedFromMnemonic(
+export async function kadenaMnemonicToSeed(
+  password: string,
   mnemonic: string,
-  password?: string,
-): Promise<{ seedBuffer: Uint8Array; seed: string }> {
+  // wordList: string[] = wordlist,
+): Promise<string> {
   if (bip39.validateMnemonic(mnemonic, wordlist) === false) {
     throw Error('Invalid mnemonic.');
   }
 
   const seedBuffer = await bip39.mnemonicToSeed(mnemonic);
-  let seed: string;
 
-  if (typeof password === 'string' && password.length > 0) {
-    seed = encryptOrEncodeSeed(seedBuffer, password);
-  } else {
-    seed = encryptOrEncodeSeed(seedBuffer);
-  }
-  return {
-    seedBuffer,
-    seed,
-  };
+  return kadenaEncrypt(seedBuffer, password);
 }
 
 /**
@@ -101,8 +93,50 @@ export function kadenaGenMnemonic(): string {
   return bip39.generateMnemonic(wordlist);
 }
 
+function genKeypairFromSeed(
+  password: string,
+  seed: string,
+  index: number,
+  derivationPathTemplate: string,
+): [string, string] {
+  if (typeof seed !== 'string' || seed === '') {
+    throw new Error('No seed provided.');
+  }
+
+  const derivationPath = derivationPathTemplate.replace(
+    '<index>',
+    index.toString(),
+  );
+
+  const seedBuffer = kadenaDecrypt(seed, password);
+
+  const { publicKey, privateKey } = deriveKeyPair(seedBuffer, derivationPath);
+
+  const encryptedPrivateKey = kadenaEncrypt(
+    Buffer.from(privateKey, 'hex'),
+    password,
+  );
+
+  return [publicKey, encryptedPrivateKey];
+}
+
+export function kadenaGenKeypairFromSeed(
+  password: string,
+  seed: string,
+  index: number,
+  derivationPathTemplate?: string,
+): [string, string];
+
+export function kadenaGenKeypairFromSeed(
+  password: string,
+  seed: string,
+  indexRange: [number, number],
+  derivationPathTemplate?: string,
+): Array<[string, string]>;
+
 /**
  * Generates a key pair from a seed buffer and an index or range of indices, and optionally encrypts the private key.
+ * it uses bip44 m'/44'/626'/${index}'/0'/0' derivation path
  *
  * @param {Uint8Array} seedBuffer - The seed buffer to use for key generation.
  * @param {number | [number, number]} indexOrRange - Either a single index or a tuple with start and end indices for key pair generation.
@@ -110,63 +144,46 @@ export function kadenaGenMnemonic(): string {
  * @returns {([string, string] | [string, string][])} - Depending on the input, either a tuple for a single key pair or an array of tuples for a range of key pairs, with the private key encrypted if a password is provided.
  * @throws {Error} Throws an error if the seed buffer is not provided, if the indices are invalid, or if encryption fails.
  */
-export function kadenaGenKeypair(
-  seedBuffer: Uint8Array,
-  indexOrRange: number | [number, number],
-  password?: string,
-): [string, string] | [string, string][] {
-  if (seedBuffer === undefined) throw new Error('No seed provided.');
-
-  if (Array.isArray(indexOrRange)) {
-    const [start, end] = indexOrRange;
-    if (start > end)
-      throw new Error(
-        'Invalid range: start index must be less than or equal to end index.',
-      );
-
-    const keyPairs: [string, string][] = [];
-    for (let i = start; i <= end; i++) {
-      const { publicKey, privateKey } = deriveKeyPair(seedBuffer, i);
-      const privatekeyToUse =
-        password !== undefined
-          ? encryptPrivateKey(Buffer.from(privateKey, 'hex'), password)
-          : privateKey;
-      keyPairs.push([publicKey, privatekeyToUse]);
-    }
-    return keyPairs;
-  } else {
-    const { publicKey, privateKey } = deriveKeyPair(seedBuffer, indexOrRange);
-
-    const privatekeyToUse =
-      password !== undefined
-        ? encryptPrivateKey(Buffer.from(privateKey, 'hex'), password)
-        : privateKey;
-    return [publicKey, privatekeyToUse];
-  }
-}
-
-/**
- * Decrypts an encrypted private key using the provided password.
- * This function is a wrapper for the internal decryption logic, intended
- * for public-facing API usage where the private key encryption follows
- *
- * @param {string} encryptedPrivateKey - The encrypted private key as a Base64 encoded string.
- * @param {string} password - The password used to encrypt the private key.
- * @returns {Uint8Array} The decrypted private key.
- * @throws {Error} Throws an error if decryption fails.
- */
-export function kadenaDecryptPrivateKey(
-  encryptedPrivateKey: string,
+export function kadenaGenKeypairFromSeed(
   password: string,
-): Uint8Array {
-  try {
-    return decryptPrivateKey(encryptedPrivateKey, password);
-  } catch (error) {
-    console.error('Failed to decrypt the private key:', error);
-    throw new Error(
-      'Decryption failed. The provided password may be incorrect, or the encrypted key is corrupted.',
+  seed: string,
+  indexOrRange: number | [number, number],
+  derivationPathTemplate: string = `m'/44'/626'/<index>'/0'/0'`,
+): [string, string] | Array<[string, string]> {
+  if (typeof seed !== 'string' || seed === '') {
+    throw new Error('No seed provided.');
+  }
+
+  if (typeof indexOrRange === 'number') {
+    return genKeypairFromSeed(
+      password,
+      seed,
+      indexOrRange,
+      derivationPathTemplate,
     );
   }
+  if (Array.isArray(indexOrRange)) {
+    const [startIndex, endIndex] = indexOrRange;
+    if (startIndex > endIndex) {
+      throw new Error('The start index must be less than the end index.');
+    }
+
+    const keyPairs: [string, string][] = [];
+
+    for (let index = startIndex; index <= endIndex; index++) {
+      const [publicKey, encryptedPrivateKey] = genKeypairFromSeed(
+        password,
+        seed,
+        index,
+        derivationPathTemplate,
+      );
+
+      keyPairs.push([publicKey, encryptedPrivateKey]);
+    }
+
+    return keyPairs;
+  }
+  throw new Error('Invalid index or range.');
 }
 
 /**
@@ -178,29 +195,19 @@ export function kadenaDecryptPrivateKey(
  * @throws {Error} Throws an error if the seed buffer is not provided or if the index is invalid.
  */
 export function kadenaGetPublic(
-  seedBuffer: Uint8Array,
-  index: number = 0,
-): string {
-  const keyPair = deriveKeyPair(seedBuffer, index);
-  return keyPair.publicKey;
-}
-
-/**
- *  Restores buffer from seed string, potentially decrypting it if a password is provided.
- *
- * @param {string} seed - The seed string, which may be encrypted.
- * @param {string} password - The password for decrypting the seed.
- * @returns {Uint8Array} The restored seed buffer to use for key generation
- */
-export function kadenaRestoreSeedBufferFromSeed(
+  password: string,
   seed: string,
-  password?: string,
-): Uint8Array {
-  if (typeof password !== 'undefined') {
-    return extractSeedBuffer(seed, password);
-  } else {
-    return extractSeedBuffer(seed);
+  derivationPath: string,
+): string {
+  if (typeof seed !== 'string' || seed === '') {
+    throw new Error('No seed provided.');
   }
+
+  const seedBuffer = kadenaDecrypt(seed, password);
+
+  const { publicKey } = deriveKeyPair(seedBuffer, derivationPath);
+
+  return publicKey;
 }
 
 /**

@@ -3,8 +3,6 @@ import { sign } from '@kadena/cryptography-utils';
 
 import { HDKey } from 'ed25519-keygen/hdkey';
 
-const KDA_COIN_TYPE: number = 626;
-
 /**
  * Convert a Uint8Array to a hexadecimal string.
  * @param {Uint8Array} uint8Array - The array to convert.
@@ -25,12 +23,9 @@ export const uint8ArrayToHex = (uint8Array: Uint8Array): string => {
  */
 export const deriveKeyPair = (
   seed: Uint8Array,
-  index: number,
+  derivationPath: string,
 ): { privateKey: string; publicKey: string } => {
-  const key = HDKey.fromMasterSeed(seed).derive(
-    `m/44'/${KDA_COIN_TYPE}'/0'/0/${index}`,
-    true,
-  );
+  const key = HDKey.fromMasterSeed(seed).derive(derivationPath, true);
 
   return {
     privateKey: uint8ArrayToHex(key.privateKey),
@@ -76,8 +71,8 @@ export const signWithKeyPair = (
  */
 export const signWithSeed = (
   seed: Uint8Array,
-  index: number,
+  derivationPath: string,
 ): ((tx: IUnsignedCommand) => { sigs: { sig: string }[] }) => {
-  const { publicKey, privateKey } = deriveKeyPair(seed, index);
+  const { publicKey, privateKey } = deriveKeyPair(seed, derivationPath);
   return signWithKeyPair(publicKey, privateKey);
 };
