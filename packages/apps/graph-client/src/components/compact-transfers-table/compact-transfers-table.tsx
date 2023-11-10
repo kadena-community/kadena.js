@@ -1,6 +1,9 @@
 import type {
   ChainModuleAccountTransfersConnection,
+  ChainModuleAccountTransfersConnectionEdge,
   ModuleAccountTransfersConnection,
+  ModuleAccountTransfersConnectionEdge,
+  Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
@@ -18,10 +21,31 @@ interface ICompactTransfersTableProps {
   description?: string;
 }
 
+interface ITransfer {
+  transfer: Transfer;
+  crossChainCounterPart?: Transfer;
+}
+
 export const CompactTransfersTable = (
   props: ICompactTransfersTableProps,
 ): JSX.Element => {
   const { moduleName, accountName, chainId, transfers, description } = props;
+
+  const determineCrossChain = (
+    edge:
+      | ModuleAccountTransfersConnectionEdge
+      | ChainModuleAccountTransfersConnectionEdge,
+  ): ITransfer => {
+    if (edge.node.transaction?.pactId && edge.node.crossChainTransfer) {
+      // This means that the transfer on this chain is the finishing one
+      const transfer = edge.node;
+      const crossChainCounterPart = edge.node.crossChainTransfer;
+
+      return { transfer, crossChainCounterPart };
+    }
+
+    return { transfer: edge.node };
+  };
 
   return (
     <>
@@ -56,10 +80,22 @@ export const CompactTransfersTable = (
         </Table.Head>
         <Table.Body>
           {transfers.edges.map((edge, index) => {
-            /**  These transfers are going to be added to their crosschain counterpart and
+            // This means all chains are going to be displayed
+            if (!chainId) {
+              /**  These transfers are going to be added to their crosschain counterpart and
              this way we avoid repeated transfers in the table */
-            if (!chainId && edge.node.transaction?.pactId) {
-              return <></>;
+              if (edge.node.transaction?.pactId) return <></>;
+            } else {
+              // This means only one chain is going to be displayed
+              if (
+                edge.node.transaction?.pactId &&
+                edge.node.crossChainTransfer
+              ) {
+                // This means that the transfer on this chain is the finishing one
+                const tempStorage = edge.node;
+                edge.node.crossChainTransfer = edge.node;
+                edge.node = tempStorage;
+              }
             }
 
             const chainIdDisplay = edge.node.crossChainTransfer
