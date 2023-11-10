@@ -1151,9 +1151,6 @@ importers:
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
-      prettier-plugin-packagejson:
-        specifier: ^2.4.6
-        version: 2.4.6(prettier@3.0.3)
       ts-node:
         specifier: ~10.8.2
         version: 10.8.2(@types/node@18.17.14)(typescript@5.2.2)
