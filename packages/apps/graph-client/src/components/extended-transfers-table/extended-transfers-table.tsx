@@ -1,14 +1,10 @@
-import { Box, Button, Link, Select, Table } from '@kadena/react-ui';
-
-import type { GetTransactionsQuery } from '@/__generated__/sdk';
+import { GetTransfersQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
-import { formatLisp } from '@/utils/formatter';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
+import { Box, Button, Link, Select, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-
-type DataType = GetTransactionsQuery;
-
+import { useEffect, useState } from 'react';
+type DataType = GetTransfersQuery;
 interface IVariableType {
   first: number | null;
   last: number | null;
@@ -16,18 +12,18 @@ interface IVariableType {
   before: string | null;
 }
 
-interface IExpandedTransactionsTableProps {
-  transactions: GetTransactionsQuery['transactions'];
+interface IExpandedTransfersTableProps {
+  transfers: GetTransfersQuery['transfers'];
   fetchMore: (
     fetchMoreOptions: FetchMoreQueryOptions<IVariableType, DataType> &
       FetchMoreOptions,
   ) => Promise<any>;
 }
 
-export const ExtendedTransactionsTable = (
-  props: IExpandedTransactionsTableProps,
+export const ExtendedTransfersTable = (
+  props: IExpandedTransfersTableProps,
 ): JSX.Element => {
-  const { transactions, fetchMore } = props;
+  const { transfers, fetchMore } = props;
 
   const itemsPerPageOptions = [10, 50, 100, 200];
 
@@ -46,7 +42,7 @@ export const ExtendedTransactionsTable = (
   );
 
   // Calculate the total number of pages available based on the total count
-  const totalPages = Math.ceil(transactions.totalCount / itemsPerPage);
+  const totalPages = Math.ceil(transfers.totalCount / itemsPerPage);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -121,58 +117,56 @@ export const ExtendedTransactionsTable = (
         </div>
         <Button
           variant="compact"
-          onClick={async () => {
-            setCurrentPage(currentPage + 1);
-            await fetchMore({
+          onClick={() =>
+            fetchMore({
               variables: {
-                first: itemsPerPage,
+                first: 10,
                 last: null,
-                after: transactions.pageInfo.endCursor,
+                after: transfers.pageInfo.endCursor,
                 before: null,
               },
               updateQuery: (prev, { fetchMoreResult }) => {
                 if (!fetchMoreResult) return prev;
-                return fetchMoreResult;
-              },
-            });
-          }}
-          disabled={!transactions.pageInfo.hasNextPage}
-          style={{ float: 'right' }}
-        >
-          Next Page
-        </Button>
-        <Button
-          variant="compact"
-          onClick={async () => {
-            setCurrentPage(currentPage - 1);
-            await fetchMore({
-              variables: {
-                first: null,
-                last: itemsPerPage,
-                after: null,
-                before: transactions.pageInfo.startCursor,
-              },
-              updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev;
 
-                if (fetchMoreResult.transactions.edges.length < itemsPerPage) {
+                if (fetchMoreResult.transfers.edges.length < 10) {
                   return {
                     ...prev,
                     transactions: {
-                      ...fetchMoreResult.transactions,
+                      ...fetchMoreResult.transfers,
                       edges: [
-                        ...fetchMoreResult.transactions.edges,
-                        ...prev.transactions.edges,
-                      ].slice(0, itemsPerPage),
+                        ...fetchMoreResult.transfers.edges,
+                        ...prev.transfers.edges,
+                      ].slice(0, 10),
                     },
                   };
                 }
 
                 return fetchMoreResult;
               },
-            });
-          }}
-          disabled={!transactions.pageInfo.hasPreviousPage}
+            })
+          }
+          disabled={!transfers.pageInfo.hasNextPage}
+          style={{ float: 'right' }}
+        >
+          Next Page
+        </Button>
+        <Button
+          variant="compact"
+          onClick={() =>
+            fetchMore({
+              variables: {
+                first: null,
+                last: 10,
+                after: null,
+                before: transfers.pageInfo.startCursor,
+              },
+              updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+                return fetchMoreResult;
+              },
+            })
+          }
+          disabled={!transfers.pageInfo.hasPreviousPage}
           style={{ float: 'right', marginRight: '10px' }}
         >
           Previous Page
@@ -182,31 +176,69 @@ export const ExtendedTransactionsTable = (
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>
-            <Table.Th>Timestamp</Table.Th>
             <Table.Th>Block Height</Table.Th>
-            <Table.Th>Request Key</Table.Th>
-            <Table.Th>Code</Table.Th>
+            <Table.Th>Amount</Table.Th>
+            <Table.Th>Sender Account</Table.Th>
+            <Table.Th>Receiver Account</Table.Th>
+            <Table.Th>Request key</Table.Th>
           </Table.Tr>
         </Table.Head>
         <Table.Body>
-          {transactions.edges.map((edge, index) => {
+          {transfers.edges.map((edge, index) => {
+            /**  These transfers are going to be added to their crosschain counterpart and
+           this way we avoid repeated transfers in the table */
+            if (edge.node.transaction?.pactId) {
+              return <></>;
+            }
+
+            const chainIdDisplay = edge.node.crossChainTransfer
+              ? `${edge.node.chainId} / ${edge.node.crossChainTransfer.chainId}`
+              : edge.node.chainId;
+
+            const heightDisplay = edge.node.crossChainTransfer
+              ? `${edge.node.height} / ${edge.node.crossChainTransfer.height}`
+              : edge.node.height;
+
             return (
               <Table.Tr key={index}>
-                <Table.Td>{edge.node.chainId}</Table.Td>
+                <Table.Td>{chainIdDisplay}</Table.Td>
+                <Table.Td>{heightDisplay}</Table.Td>
+                <Table.Td>{edge.node.amount}</Table.Td>
                 <Table.Td>
-                  {new Date(edge.node.creationTime).toLocaleString()}
+                  <Link
+                    href={`${routes.ACCOUNT}/${router.query.module}/${edge.node.senderAccount}`}
+                  >
+                    {edge.node.senderAccount}
+                  </Link>
                 </Table.Td>
-                <Table.Td>{edge.node.height}</Table.Td>
+                <Table.Td>
+                  {edge.node.receiverAccount ? (
+                    <Link
+                      href={`${routes.ACCOUNT}/${router.query.module}/${edge.node.receiverAccount}`}
+                    >
+                      {edge.node.receiverAccount}
+                    </Link>
+                  ) : edge.node.crossChainTransfer?.receiverAccount ? (
+                    <Link
+                      href={`${routes.ACCOUNT}/${router.query.module}/${edge.node.crossChainTransfer.receiverAccount}`}
+                    >
+                      {edge.node.crossChainTransfer.receiverAccount}
+                    </Link>
+                  ) : (
+                    <span style={{ color: 'lightgray' }}>N/A</span>
+                  )}
+                </Table.Td>
                 <Table.Td>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
                     {edge.node.requestKey}
                   </Link>
-                </Table.Td>
-                <Table.Td>
-                  {edge.node.code ? (
-                    <pre>{formatLisp(JSON.parse(edge.node.code))}</pre>
-                  ) : (
-                    <span style={{ color: 'lightgray' }}>N/A</span>
+                  /
+                  {edge.node.crossChainTransfer && (
+                    <Link
+                      href={`${routes.TRANSACTIONS}/${edge.node.crossChainTransfer.requestKey}`}
+                    >
+                      {edge.node.crossChainTransfer.requestKey}
+                    </Link>
                   )}
                 </Table.Td>
               </Table.Tr>
@@ -214,9 +246,6 @@ export const ExtendedTransactionsTable = (
           })}
         </Table.Body>
       </Table.Root>
-      <span
-        style={{ float: 'right' }}
-      >{`Page ${currentPage} out of ${totalPages}`}</span>
     </>
   );
 };
