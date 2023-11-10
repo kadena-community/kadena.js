@@ -1,4 +1,4 @@
-import { HARDENED_OFFSET, harden } from '../../utils';
+import { HARDENED_OFFSET, harden } from '../../utils/utils';
 import { kadenaGenKeypair as kadenaGenKeypairOriginal } from '../vendor/kadena-crypto';
 
 function kadenaGenOneKeypair(
