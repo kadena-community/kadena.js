@@ -1,66 +1,26 @@
-import { defaultNetworksPath } from '../constants/networks.js';
-import {
-  clearCLI,
-  collectResponses,
-  getExistingNetworks,
-} from '../utils/helpers.js';
-import { processZodErrors } from '../utils/processZodErrors.js';
-
-import type { TNetworksCreateOptions } from './networksCreateQuestions.js';
-import {
-  networkManageQuestions,
-  NetworksCreateOptions,
-} from './networksCreateQuestions.js';
-import type { ICustomNetworksChoice } from './networksHelpers.js';
+import debug from 'debug';
+import { networkOverwritePrompt } from '../constants/prompts.js';
+import { globalOptions } from '../utils/globalOptions.js';
 import { writeNetworks } from './networksHelpers.js';
 
-import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
-import type { Command } from 'commander';
-import { readFileSync } from 'fs';
-import yaml from 'js-yaml';
-import path from 'path';
+import { createCommand } from '../utils/createCommand.js';
 
-export interface IManageNetworksOptions {}
+export const manageNetworksCommand = createCommand(
+  'manage',
+  'Manage networks',
+  [globalOptions.networkSelect(), globalOptions.networkId(), globalOptions.networkHost(), globalOptions.networkExplorerUrl()],
+  async (config) => {
+    debug('network-manage:action')({config});
 
-export async function manageNetworks(program: Command, version: string): Promise<void> {
-  program
-    .command('manage')
-    .description('Manage network(s)')
-    .action(async (args: IManageNetworksOptions) => {
-      try {
-        const existingNetworks: ICustomNetworksChoice[] = await getExistingNetworks();
+    const overwrite = await networkOverwritePrompt(config.network);
+    if (overwrite === 'no') {
+      console.log(chalk.yellow(`\nThe network configuration "${config.network}" will not be updated.\n`));
+      return;
+    }
 
-        if (existingNetworks.length === 0) {
-          console.log(chalk.red('No existing networks found.'));
-          return;
-        }
+    writeNetworks(config);
 
-        const selectedNetwork = await select({
-          message: 'Select the network you want to manage:',
-          choices: existingNetworks,
-        });
-        const networkFilePath = path.join(
-          defaultNetworksPath,
-          `${selectedNetwork}.yaml`,
-        );
-        const existingConfig: TNetworksCreateOptions = yaml.load(
-          readFileSync(networkFilePath, 'utf8'),
-        ) as TNetworksCreateOptions;
-
-        const responses = await collectResponses(
-          { network: selectedNetwork },
-          networkManageQuestions,
-        );
-        const networkConfig = { ...existingConfig, ...responses };
-
-        NetworksCreateOptions.parse(networkConfig);
-
-        writeNetworks(networkConfig);
-        clearCLI();
-        console.log(chalk.green('Network configurations updated.'));
-      } catch (e) {
-        processZodErrors(program, e, args);
-      }
-    });
-}
+    console.log(chalk.green(`\nThe network configuration "${config.network}" has been updated.\n`));
+  },
+);

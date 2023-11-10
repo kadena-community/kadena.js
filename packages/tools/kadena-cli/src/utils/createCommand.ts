@@ -3,6 +3,7 @@ import type { Command } from 'commander';
 import { z } from 'zod';
 import type { GlobalOptions } from './helpers.js';
 import { collectResponses } from './helpers.js';
+import { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 
 const formatLength: 80 = 80;
 const formatConfig = (key: string, value?: string | number, prefix: string = ''): string => {
@@ -27,14 +28,37 @@ const displayConfig = (config: Record<string, string | number | object>, indenta
     }
   });
 }
+
+type AsOption<T> = T extends {
+  key: infer K;
+  prompt: (...arg: any[]) => infer R;
+}
+  ? K extends string
+    ? {
+        [P in K]: Pure<R>;
+      } & (T extends { expand: (...args: any[]) => infer Ex }
+        ? {
+            [P in `${K}Config`]: Pure<Ex>;
+          }
+        : {})
+    : never
+  : never;
+
+type Combine<Tuple extends any[]> = Tuple extends [infer one]
+  ? AsOption<one>
+  : Combine2<
+      AsOption<First<Tuple>>,
+      Tail<Tuple> extends any[] ? Combine<Tail<Tuple>> : {}
+    >;
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createCommand<
   T extends ReturnType<GlobalOptions[keyof GlobalOptions]>[],
 >(
   name: string,
   description: string,
-  options: T,
-  action: (finalConfig: Record<any, any>) => Promise<any>,
+  options: [...T],
+  action: (finalConfig: Prettify<Combine<T>>) => any,
 ) {
   return async (program: Command, version: string) => {
     const command = program.command(name).description(description);

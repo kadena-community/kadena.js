@@ -1,7 +1,7 @@
-import type { TNetworksCreateOptions } from '../networks/networksCreateQuestions.js';
+import { INetworksCreateOptions } from "../networks/networksHelpers.js";
 
 export interface IDefaultNetworkOptions {
-  [key: string]: TNetworksCreateOptions;
+  [key: string]: INetworksCreateOptions;
 }
 
 /**

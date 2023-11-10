@@ -27,7 +27,7 @@ export type TFundQuestions = z.infer<typeof FundQuestions>;
 export const fundQuestions: IQuestion<TFundQuestions>[] = [
   {
     key: 'receiver',
-    prompt: async (config, prevAnswers, args) => {
+    prompt: async (prevAnswers, args) => {
       const answer = await select({
         message: 'Which account to use?',
         choices: [{ value: undefined, name: `don't select from list` }],

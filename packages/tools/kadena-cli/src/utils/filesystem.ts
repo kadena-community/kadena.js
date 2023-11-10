@@ -1,5 +1,5 @@
 import type { PathLike, WriteFileOptions } from 'fs';
-import { accessSync, existsSync, mkdirSync, writeFileSync } from 'fs';
+import { accessSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'fs';
 import path from 'path';
 
 /**
@@ -33,7 +33,6 @@ export function ensureFileExists(filePath: string): boolean {
  * @param {string | NodeJS.ArrayBufferView} data - The data to be written to the file. Can be a string or a buffer view.
  * @param {string | BaseEncodingOptions | undefined} options - Encoding options or a string specifying the encoding. Can be undefined.
  */
-
 export function writeFile(
   filePath: string,
   data: string | NodeJS.ArrayBufferView,
@@ -44,6 +43,15 @@ export function writeFile(
     mkdirSync(dirname, { recursive: true });
   }
   writeFileSync(filePath, data, options);
+}
+
+/**
+ * Removes a file.
+ *
+ * @param {string} filePath - The path to the file.
+ */
+export function removeFile(filePath: string): void {
+  rmSync(filePath);
 }
 
 /**

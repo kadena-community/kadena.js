@@ -1,7 +1,5 @@
 import { defaultNetworksPath } from '../constants/networks.js';
 import { ensureFileExists } from '../utils/filesystem.js';
-
-import type { TNetworksCreateOptions } from './networksCreateQuestions.js';
 import { writeNetworks } from './networksHelpers.js';
 
 import debug from 'debug';
@@ -22,14 +20,14 @@ export const createNetworksCommand = createCommand(
     const filePath = path.join(defaultNetworksPath, `${config.network}.yaml`);
 
     if (ensureFileExists(filePath)) {
-      const overwrite = await networkOverwritePrompt();
+      const overwrite = await networkOverwritePrompt(config.network);
       if (overwrite === 'no') {
         console.log(chalk.yellow(`\nThe existing network configuration "${config.network}" will not be updated.\n`));
         return;
       }
     }
 
-    writeNetworks(config as TNetworksCreateOptions);
+    writeNetworks(config);
 
     console.log(chalk.green(`\nThe network configuration "${config.network}" has been saved.\n`));
   },

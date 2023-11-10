@@ -1,12 +1,11 @@
 import { defaultNetworksPath, networkDefaults } from '../constants/networks.js';
-import { PathExists, writeFile } from '../utils/filesystem.js';
+import { PathExists, removeFile, writeFile } from '../utils/filesystem.js';
 import {
+  GlobalOptions,
   getExistingNetworks,
   mergeConfigs,
   sanitizeFilename,
 } from '../utils/helpers.js';
-
-import type { TNetworksCreateOptions } from './networksCreateQuestions.js';
 
 import chalk from 'chalk';
 import type { WriteFileOptions } from 'fs';
@@ -21,17 +20,24 @@ export interface ICustomNetworksChoice {
   disabled?: boolean | string;
 }
 
+export interface INetworksCreateOptions {
+  network: string;
+  networkId: string;
+  networkHost: string;
+  networkExplorerUrl: string;
+}
+
 /**
  * Writes the given network setting to the networks folder
  *
- * @param {TNetworksCreateOptions} options - The set of configuration options.
+ * @param {INetworksCreateOptions} options - The set of configuration options.
  * @param {string} options.network - The network (e.g., 'mainnet', 'testnet') or custom network.
  * @param {number} options.networkId - The ID representing the network.
  * @param {string} options.networkHost - The hostname for the network.
  * @param {string} options.networkExplorerUrl - The URL for the network explorer.
  * @returns {void} - No return value; the function writes directly to a file.
  */
-export function writeNetworks(options: TNetworksCreateOptions): void {
+export function writeNetworks(options: INetworksCreateOptions): void {
   const { network } = options;
   const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
   const networkFilePath = path.join(
@@ -39,12 +45,12 @@ export function writeNetworks(options: TNetworksCreateOptions): void {
     `${sanitizedNetwork}.yaml`,
   );
 
-  let existingConfig: TNetworksCreateOptions;
+  let existingConfig: INetworksCreateOptions;
 
   if (PathExists(networkFilePath)) {
     existingConfig = yaml.load(
       readFileSync(networkFilePath, 'utf8'),
-    ) as TNetworksCreateOptions;
+    ) as INetworksCreateOptions;
   } else {
     // Explicitly check if network key exists in networkDefaults and is not undefined
     existingConfig =
@@ -63,12 +69,29 @@ export function writeNetworks(options: TNetworksCreateOptions): void {
 }
 
 /**
+ * Removes the given network setting from the networks folder
+ *
+ * @param {Pick<INetworksCreateOptions, 'network'>} options - The set of configuration options.
+ * @param {string} options.network - The network (e.g., 'mainnet', 'testnet') or custom network.
+ */
+export function removeNetwork(options: Pick<INetworksCreateOptions, 'network'>): void {
+  const { network } = options;
+  const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
+  const networkFilePath = path.join(
+    defaultNetworksPath,
+    `${sanitizedNetwork}.yaml`,
+  );
+
+  removeFile(networkFilePath);
+}
+
+/**
  * Displays the network configuration in a formatted manner.
  *
- * @param {TNetworksCreateOptions} networkConfig - The network configuration to display.
+ * @param {INetworksCreateOptions} networkConfig - The network configuration to display.
  */
 export function displayNetworkConfig(
-  networkConfig: TNetworksCreateOptions,
+  networkConfig: INetworksCreateOptions,
 ): void {
   const log = console.log;
   const formatLength = 80; // Maximum width for the display
@@ -96,7 +119,7 @@ export function displayNetworkConfig(
   displaySeparator();
 }
 
-export function loadNetworkConfig(network: string): TNetworksCreateOptions | never {
+export function loadNetworkConfig(network: string): INetworksCreateOptions | never {
   const networkFilePath = path.join(defaultNetworksPath, `${network}.yaml`);
 
   if (! existsSync(networkFilePath)) {
@@ -105,7 +128,7 @@ export function loadNetworkConfig(network: string): TNetworksCreateOptions | nev
 
   return (yaml.load(
     readFileSync(networkFilePath, 'utf8'),
-  ) as TNetworksCreateOptions);
+  ) as INetworksCreateOptions);
 }
 
 export async function displayNetworksConfig(): Promise<void> {
@@ -132,8 +155,8 @@ export async function displayNetworksConfig(): Promise<void> {
     return `  ${keyValue}${' '.repeat(remainingWidth)}  `;
   };
 
+
   const existingNetworks: ICustomNetworksChoice[] = await getExistingNetworks();
-  const standardNetworks: string[] = ['mainnet', 'testnet'];
 
   existingNetworks.forEach(({ value }) => {
     const networkFilePath = path.join(defaultNetworksPath, `${value}.yaml`);
@@ -141,7 +164,7 @@ export async function displayNetworksConfig(): Promise<void> {
     const networkConfig = fileExists
       ? (yaml.load(
           readFileSync(networkFilePath, 'utf8'),
-        ) as TNetworksCreateOptions)
+        ) as INetworksCreateOptions)
       : networkDefaults[value];
 
     displaySeparator();
@@ -155,23 +178,6 @@ export async function displayNetworksConfig(): Promise<void> {
         !fileExists,
       ),
     );
-  });
-
-  standardNetworks.forEach((network) => {
-    if (!existingNetworks.some(({ value }) => value === network)) {
-      const networkConfig = networkDefaults[network];
-      displaySeparator();
-      log(formatConfig('Network', network, true)); // as it is a standard network and does not exist in existingNetworks
-      log(formatConfig('Network ID', networkConfig.networkId, true));
-      log(formatConfig('Network Host', networkConfig.networkHost, true));
-      log(
-        formatConfig(
-          'Network Explorer URL',
-          networkConfig.networkExplorerUrl,
-          true,
-        ),
-      );
-    }
   });
 
   displaySeparator();

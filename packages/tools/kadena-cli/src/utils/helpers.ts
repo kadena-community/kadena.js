@@ -1,18 +1,10 @@
-import { getCombinedConfig } from '../config/configHelpers.js';
-import type { TConfigOptions } from '../config/configQuestions.js';
 import { projectPrefix, projectRootPath } from '../constants/config.js';
 import { defaultNetworksPath } from '../constants/networks.js';
-
-import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import clear from 'clear';
 import { Command, Option } from 'commander';
 import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs';
 import path from 'path';
-// import { runNetworksCreate } from '../networks/createNetworksCommand.js';
-import {
-  ICustomNetworksChoice,
-} from '../networks/networksHelpers.js';
 import { globalOptions } from './globalOptions.js';
 
 export interface ICustomChoice {
@@ -77,14 +69,12 @@ export interface IQuestion<T> {
   /**
    * The prompt function responsible for retrieving the answer for this question.
    *
-   * @param config - Current configuration options.
    * @param previousAnswers - Answers provided for previous questions.
    * @param args - Command line arguments.
    *
    * @returns A promise that resolves to the answer of the question.
    */
   prompt: (
-    config: Partial<TConfigOptions>,
     previousAnswers: Partial<T>,
     args: Partial<T>,
   ) => Promise<T[keyof T]>;
@@ -119,7 +109,6 @@ export function* questionGenerator<T>(
 export async function collectResponses<T>(
   args: Partial<T>,
   questions: IQuestion<T>[],
-  config?: Partial<TConfigOptions>,
 ): Promise<T> {
   const responses: Partial<T> = {
     ...args,
@@ -129,9 +118,7 @@ export async function collectResponses<T>(
   let result = generator.next();
   while (result.done === false) {
     const question = result.value;
-    const currentConfig = config || {};
     responses[question.key as keyof T] = await question.prompt(
-      currentConfig,
       responses,
       args,
     );
@@ -397,16 +384,7 @@ export async function processProject(
   projectName: string,
   keys?: string[],
 ): Promise<Record<string, unknown>> {
-  const combinedConfig = getCombinedConfig(projectName);
-
-  if (!keys || keys.length === 0) return {};
-
   const filteredConfig: Record<string, unknown> = {};
-  for (const key of keys) {
-    if (key in combinedConfig) {
-      filteredConfig[key] = combinedConfig[key as keyof typeof combinedConfig];
-    }
-  }
 
   return filteredConfig;
 }

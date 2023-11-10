@@ -1,7 +1,15 @@
 import { displayNetworksConfig } from './networksHelpers.js';
 
-export interface IListNetworksArgs {}
+import debug from 'debug';
+import { createCommand } from '../utils/createCommand.js';
 
-export const listNetworksAction = (args: IListNetworksArgs): void => {
-  displayNetworksConfig();
-};
+export const listNetworksCommand = createCommand(
+  'list',
+  'List all available networks',
+  [],
+  async (config) => {
+    debug('network-list:action')({config});
+
+    displayNetworksConfig();
+  },
+);

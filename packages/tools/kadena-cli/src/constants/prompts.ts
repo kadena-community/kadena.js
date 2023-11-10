@@ -1,18 +1,17 @@
 import { input, select } from '@inquirer/prompts';
-import { execSync } from 'child_process';
 import { program } from 'commander';
 import path from 'path';
-import { createNetworksCommand } from '../networks/createNetworksCommand.js';
 import { ICustomNetworksChoice } from '../networks/networksHelpers.js';
 import { ensureFileExists } from '../utils/filesystem.js';
 import { getExistingNetworks, getVersion } from '../utils/helpers.js';
 import { defaultNetworksPath } from './networks.js';
+import { ChainId } from '@kadena/types';
 
 export const accountPrompt = async () =>
   await input({ message: 'Enter the Kadena k:account' });
 
-export const chainIdPrompt = async () =>
-  await input({ message: 'Enter chainId (0-19)' });
+export const chainIdPrompt = async (): Promise<ChainId> =>
+  await input({ message: 'Enter chainId (0-19)' }) as ChainId;
 
 export const networkPrompt = async (): Promise<string> => {
   const existingNetworks: ICustomNetworksChoice[] = await getExistingNetworks();
@@ -34,24 +33,26 @@ export const networkPrompt = async (): Promise<string> => {
   // At this point there is either no network defined yet,
   // or the user chose to define a new network.
   // Create and select new network.
-
-  // TODO call programmatically
-  // execSync(`ts-node-esm -T src/index.ts networks create`, { stdio: 'inherit' })
-  // program.parse(['networks', 'create'], { from: 'user' });
   await program.parseAsync(['', '', 'networks', 'create']);
 
   return await networkPrompt();
+};
 
-  // await createNetworksCommand(program, getVersion());
-  // program.parse(['', '', 'networks create']);
+export const networkSelectPrompt = async (): Promise<string> => {
+  const existingNetworks: ICustomNetworksChoice[] = await getExistingNetworks();
 
-  // const networks = program.commands.find(command => command.name() === 'networks');
-  // const create = networks?.commands.find(command => command.name() === 'create');
-  // // console.log(create);
-  // await create?.parseAsync(['', '', 'networks create']);
-  // await networkPrompt()
+  if (existingNetworks.length > 0) {
+    return await select({
+      message: 'Select a network',
+      choices: existingNetworks,
+    });
+  }
 
-  // return ''; // network?.network || '';
+  // At this point there is either no network defined yet.
+  // Create and select new network.
+  await program.parseAsync(['', '', 'networks', 'create']);
+
+  return await networkSelectPrompt();
 };
 
 export const networkNamePrompt = async (): Promise<string> => {
@@ -70,9 +71,23 @@ export const networkNamePrompt = async (): Promise<string> => {
   return networkName;
 };
 
-export const networkOverwritePrompt = async () =>
+export const networkOverwritePrompt = async (network?: string) => {
+  const message = network
+    ? `Are you sure you want to save this configuration for network "${network}"?`
+    : 'A network configuration with this name already exists. Do you want to update it?'
+
+  return await select({
+    message,
+    choices: [
+      { value: 'yes', name: 'Yes' },
+      { value: 'no', name: 'No' },
+    ],
+  });
+}
+
+export const networkDeletePrompt = async (network: string) =>
   await select({
-    message: `A network configuration with this name already exists. Do you want to update it?`,
+    message: `Are you sure you want to delete the configuration for network "${network}"?`,
     choices: [
       { value: 'yes', name: 'Yes' },
       { value: 'no', name: 'No' },
