@@ -1,5 +1,15 @@
 # @kadena/docs
 
+## 0.6.1
+
+### Patch Changes
+
+- 6f79f73dd: refactor voting dapp tutorial gas station implementation
+- 6f79f73dd: fix small errors in election dapp tutorial
+- Updated dependencies [6f79f73dd]
+- Updated dependencies [6f79f73dd]
+  - @kadena/react-ui@0.3.1
+
 ## 0.6.0
 
 ### Minor Changes

@@ -1,16 +1,14 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
-import { createVar, styleVariants } from '@vanilla-extract/css';
+import { styleVariants } from '@vanilla-extract/css';
+import type { FormFieldStatus } from '../Form.css';
+import { statusColor, statusOutlineColor } from '../Form.css';
 import {
   helperIconColor,
   helperTextColor,
-} from './InputHelper/InputHelper.css';
+} from './FormFieldHelper/FormFieldHelper.css';
 
-export const statusColor = createVar();
-
-export type Status = 'disabled' | 'positive' | 'warning' | 'negative';
-
-const statusOptions: Record<Status, Status> = {
+const statusOptions: Record<FormFieldStatus, FormFieldStatus> = {
   disabled: 'disabled',
   positive: 'positive',
   warning: 'warning',
@@ -26,6 +24,8 @@ export const statusVariant = styleVariants(statusOptions, (status) => {
     vars: {
       [helperIconColor]: vars.colors[`$${status}Accent`],
       [statusColor]: vars.colors[`$${status}Accent`],
+      // TODO update the color to match the new design system tokens
+      [statusOutlineColor]: vars.colors[`$${status}Surface`],
       [helperTextColor]: vars.colors[`$${status}ContrastInverted`],
     },
   };

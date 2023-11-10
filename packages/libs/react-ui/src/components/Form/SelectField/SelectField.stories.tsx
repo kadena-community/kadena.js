@@ -1,6 +1,6 @@
 import type { ISelectFieldProps } from '@components/Form';
 import { SelectField } from '@components/Form';
-import { statusVariant } from '@components/Form/InputWrapper/InputWrapper.css';
+import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -15,7 +15,7 @@ const meta: Meta<StoryProps> = {
     docs: {
       description: {
         component:
-          'SelectField is the composition of the Select and InputWrapper components to provide a select with a label, helper text, and other peripheral information.',
+          'SelectField is the composition of the Select and FormFieldWrapper components to provide a select with a label, helper text, and other peripheral information.',
       },
     },
   },

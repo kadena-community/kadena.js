@@ -3,6 +3,7 @@ import './styles/global.css';
 KodeMono();
 
 export type {
+  FormFieldStatus,
   IAccordionProps,
   IAccordionRootProps,
   IAccordionSectionProps,
@@ -12,6 +13,7 @@ export type {
   IButtonProps,
   ICardProps,
   IContentHeaderProps,
+  IFormFieldWrapperProps,
   IGradientTextProps,
   IGridItemProps,
   IGridRootProps,
@@ -19,7 +21,6 @@ export type {
   IIconButtonProps,
   IIconProps,
   IInputProps,
-  IInputWrapperProps,
   ILabelProps,
   ILabelValue,
   ILinkProps,
@@ -62,7 +63,6 @@ export type {
   ITrProps,
   ITrackerCardProps,
   ITreeProps,
-  InputWrapperStatus,
   MaskOptions,
 } from './components';
 
@@ -74,12 +74,12 @@ export {
   Card,
   ContentHeader,
   Divider,
+  FormFieldWrapper,
   GradientText,
   Grid,
   Heading,
   IconButton,
   Input,
-  InputWrapper,
   Label,
   Link,
   MaskedValue,

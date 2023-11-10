@@ -1,11 +1,11 @@
 import { SystemIcon } from '@components/Icon';
+import type { vars } from '@theme/vars.css';
 import classNames from 'classnames';
 import type { FC, InputHTMLAttributes } from 'react';
-import React, { forwardRef } from 'react';
-import type { vars } from 'src/styles';
-import { baseOutlinedClass } from '../Form.css';
+import React, { forwardRef, useContext } from 'react';
+import { baseContainerClass, baseOutlinedClass } from '../Form.css';
+import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
 import {
-  containerClass,
   disabledClass,
   inputClass,
   inputContainerClass,
@@ -20,9 +20,9 @@ export interface IInputProps
     'as' | 'disabled' | 'children' | 'className' | 'id'
   > {
   leadingText?: string;
-  leadingTextWidth?: keyof typeof vars.sizes;
   icon?: keyof typeof SystemIcon;
   rightIcon?: keyof typeof SystemIcon;
+  leadingTextWidth?: keyof typeof vars.sizes;
   disabled?: boolean;
   type?: React.HTMLInputTypeAttribute;
   ref?: React.ForwardedRef<HTMLInputElement>;
@@ -35,21 +35,27 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     {
       outlined,
       leadingText,
-      leadingTextWidth,
       icon,
       rightIcon,
+      leadingTextWidth: propLeadingTextWidth,
       disabled = false,
       ...rest
     },
     ref,
   ) {
+    const { status, leadingTextWidth: wrapperLeadingTextWidth } = useContext(
+      FormFieldWrapperContext,
+    );
+
+    const leadingTextWidth = propLeadingTextWidth || wrapperLeadingTextWidth;
+
     const RightIcon = rightIcon && SystemIcon[rightIcon];
     const Icon = icon && SystemIcon[icon];
 
     return (
       <div
-        className={classNames(containerClass, {
-          [baseOutlinedClass]: outlined,
+        className={classNames(baseContainerClass, {
+          [baseOutlinedClass]: outlined || status,
           [disabledClass]: disabled,
         })}
         data-testid="kda-input"

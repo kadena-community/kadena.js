@@ -22,6 +22,7 @@ export interface IBoxProps
       | 'maxWidth'
       | 'minHeight'
       | 'minWidth'
+      | 'overflow'
       | 'padding'
       | 'paddingBottom'
       | 'paddingLeft'
@@ -54,6 +55,7 @@ export const Box = ({
   maxWidth,
   minHeight,
   minWidth,
+  overflow,
   padding,
   paddingBottom,
   paddingLeft,
@@ -81,6 +83,7 @@ export const Box = ({
           maxWidth,
           minHeight,
           minWidth,
+          overflow,
           padding,
           paddingBottom,
           paddingLeft,

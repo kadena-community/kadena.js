@@ -8,14 +8,14 @@ export type { IButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
+  FormFieldStatus,
+  IFormFieldWrapperProps,
   IInputProps,
-  IInputWrapperProps,
   ISelectFieldProps,
   ISelectProps,
   ITextFieldProps,
   ITextareaFieldProps,
   ITextareaProps,
-  InputWrapperStatus,
 } from './Form';
 export type { IIconProps } from './Icon';
 export type { IIconButtonProps } from './IconButton';
@@ -81,8 +81,8 @@ export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
 export { Divider } from './Divider/Divider';
 export {
+  FormFieldWrapper,
   Input,
-  InputWrapper,
   Select,
   SelectField,
   TextField,

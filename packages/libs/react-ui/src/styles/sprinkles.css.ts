@@ -8,7 +8,6 @@ const systemProperties = defineProperties({
     fontFamily: vars.fonts,
     lineHeight: vars.lineHeights,
     borderRadius: vars.radii,
-    boxShadow: vars.shadows,
     borderWidth: vars.borderWidths,
     borderStyle: ['solid', 'none'],
     cursor: ['pointer', 'not-allowed'],

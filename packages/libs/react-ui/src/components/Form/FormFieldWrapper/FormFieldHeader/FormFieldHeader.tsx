@@ -2,16 +2,16 @@ import { SystemIcon } from '@components/Icon';
 import { Label } from '@components/Typography';
 import type { FC } from 'react';
 import React from 'react';
-import { headerClass, infoClass, tagClass } from './InputHeader.css';
+import { headerClass, infoClass, tagClass } from './FormFieldHeader.css';
 
-export interface IInputHeaderProps {
+export interface IFormFieldHeaderProps {
   label: string;
   htmlFor: string;
   tag?: string;
   info?: string;
 }
 
-export const InputHeader: FC<IInputHeaderProps> = ({
+export const FormFieldHeader: FC<IFormFieldHeaderProps> = ({
   label,
   htmlFor,
   tag,
