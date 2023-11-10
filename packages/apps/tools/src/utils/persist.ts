@@ -21,27 +21,3 @@ export const getItem = (key: string) => {
     return undefined;
   }
 };
-
-export const deleteItem = (key: string) => {
-  Cookies.remove(getName(key));
-};
-
-export const getItems = () => {
-  const cookies = Cookies.get();
-
-  return Object.keys(cookies).reduce(
-    (results, key) => {
-      const match: null | string[] = key.match(getName('(.*)'));
-      if (match) results[match[1]] = cookies[key];
-      return results;
-    },
-    {} as { [key: string]: string },
-  );
-};
-
-export const purge = () => {
-  const cookies = getItems();
-  Object.keys(cookies).forEach((key) => {
-    deleteItem(key);
-  });
-};
