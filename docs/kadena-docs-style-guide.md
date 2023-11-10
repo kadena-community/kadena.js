@@ -84,7 +84,7 @@ For example, avoid adding links to other pages or to other sections in the same 
 Avoid inserting notices, tips, admonishments, or other stylized and potentially distracting components unless absolutely necessary.
 
 If you include links to external documentation, explain why the reason to go there or what information the reader should expect to find there.
-For example, use explicit information like "Follow the installation instructions in the AWS documentation" instead of "Read the AWS documentation for more information".
+For example, use explicit information like "For more information about launching an EC2 instance, see Launch your instance in the AWS documentation" instead of "Read the AWS documentation for more information".
 
 ## Tutorials
 
@@ -115,10 +115,10 @@ Typically, a tutorial includes:
 - Task steps that the reader must follow in sequence to successfully complete the lesson.
   The same rules for task sections and steps for how-to guide apply for tutorials.
 
-- A "Next steps" section is optional because tutorials are often self-contained standalone topics
-  However, you can used a "Next steps" section to add links to logically related topics or to recommend related topics for further reading, such as reference topics related to the lesson just completed.
+- A "Next steps" section is optional because tutorials are often self-contained standalone topics.
+  However, you can use a "Next steps" section to add links to logically related topics or to recommend related topics for further reading, such as reference topics related to the lesson just completed.
 
-## Conceptual guides
+## Conceptual explanation guides
 
 **Conceptual guides** explain core concepts and how Kadena, Chainweb, and other tools work at system, component, and operational levels.
 Conceptual guides can include information about software architecture, blockchain technology, network concepts and protocols, or cryptography.
@@ -130,7 +130,7 @@ Conceptual guides typically contain the following sections:
 
 - Frontmatter with a guide title, description, and other information.
 
-- Body paragraphs that explain that explain concepts, components, system operations, and context to help the reader understand what something is, why it's important, and how it works.
+- Subsections and body paragraphs that explain that explain concepts, components, system operations, and context to help the reader understand what something is, why it's important, and how it works.
 
 - Diagrams to illustrate component relationships, system architecture, or flow of operations.
 
@@ -244,7 +244,7 @@ All heading levels should use the following conventions:
 - Minimize the number of words you include in a heading text whenever possible.
 
 - Avoid generic headings like "Overview" and "Introduction", if possible. 
-  While generic headings can be conceptually useful, they don't add value to the content or the navigational experience.
+  Generic headings can be conceptually useful, but they don't add value to the content or the navigational experience.
 
 - Include at least two sentences of content.
   A heading should never be immediately followed by another heading. 
@@ -267,19 +267,17 @@ In most cases, concept and reference topics that aren't related to tasks are nam
 
 Introduce lists with a heading, a sentence, or a fragment that ends with a colon. 
 
-- Use **bulleted lists** for items that don't need to appear in order. 
-  Make all list items parallel in structure. 
-  For example, start each item in the list using a noun or a phrase that starts with a verb.
+- Use **bulleted lists** for items that don't need to appear in order.
 
 - Use **numbered lists** only for processes and procedures that must be completed in sequential order.
 
 ### Bullets
 
-Bullets are for unordered lists. 
+Use the same bullet type for all items in unordered lists. 
 The order of items in a bulleted list can imply importance, but generally all list items are peers. 
 Each list item should start with a capital letter and end with a period unless all of the list items are single words or short phrases of no more than four words. 
-Use parallel structure in phrasing the items in a list. 
-For example, each list item might start with a verb, noun, or gerund. 
+Use parallel sentence structure in phrasing the items in a list. 
+For example, start each item in the list using a noun or a phrase that starts with a verb.
 
 ### Numbered steps
 
@@ -343,32 +341,29 @@ However, most topics in documentation should have a neutral conversational tone 
 
 ### Diagrams
 
-Use the [Kadena chart library]() to create diagrams with a consistent design language.
+Use the [Kadena visual library]() to create diagrams with a consistent design language.
 
 ### Product names and capitalization
 
 Full product names are treated as proper nouns and capitalized. 
 For example, Chainweaver and Pact are proper nouns.
-  
 Don't capitalize terms that are common words and not proper nouns.
 For example, don't capitalize common terms like server, node, agent, and so on. 
 Overuse of capitalization makes text more difficult to read.
 
 ### Technical concepts and acronyms
 
-- Avoid using acronyms whenever possible.
+Avoid using acronyms if possible.
+If you use acronyms, be consistent and use the same acronym for any given concept, protocol, or process throughout the entire page. 
+For example, don't use a combination of "multifactor", "2-factor," "two-factor", "2fa," or "tfa" within a given page.
 
-- If you use acronyms, be consistent and use the same acronym for any given concept, protocol, or process throughout the entire page. 
-  For example, don't use a combination of "multifactor", "2-factor," "two-factor", "2fa," or "tfa" within a given page.
+Always use the full definition followed by the acronym in parentheses before using the acronym thereafter. 
+For example, use "Network Level Authentication (NLA)", not "NLA (Network Level Authentication)" or "NLA" on its own without its full definition. 
 
-- Always use the full definition followed by the acronym in parentheses before using the acronym thereafter. 
-  For example, use "Network Level Authentication (NLA)", not "NLA (Network Level Authentication)" or "NLA" on its own without its full definition. 
+### Search engine optimization (SEO)
 
-### SEO
-
-- Every page should have a clearly-worded description in the frontmatter.
-- Descriptions should be full sentences and end with a period.
-- Description should include common keywords related to the subject matter whenever possible. 
+Every page should have a clearly-worded description in the frontmatter. Descriptions should be full sentences and end with a period.
+Descriptions should include common keywords related to the subject matter if possible. 
 
 ## Terminology and usage conventions
 
@@ -421,7 +416,7 @@ Many modern web-based applications use *sign in*.
 - Use *sign in* or *log in* as two words with no hyphen when describing an action (verb usage).
 - Use *sign in* and *sign out* as the preferred terminology for actions involving web-based applications unless it contradicts the user interface.
 - Use *login* as one word only when it's used as a noun, for example, when using *login* to mean a user profile or an identity.
-- Use *log-in* with a hyphen when modifying a noun, for example, when describing a *log-in window* (adjective usage).
+- Use *log-in* with a hyphen only when modifying a noun, for example, when describing a *log-in window* (adjective usage).
 
 ### Optional steps
 
@@ -431,7 +426,7 @@ Use *(Optional)* at the beginning of steps that are optional. For example:
 
 ### Punctuation and writing mechanics
 
-Use the guidelines in this section for punctuation marks.
+Use the following guidelines for punctuation marks.
 
 | Punctuation	| Usage
 | ----------- | -----
@@ -453,13 +448,23 @@ Use *or later* or *and later* to refer to multiple versions of software. For exa
 ### Special notice paragraphs
 
 If there's text that requires more attention than the surrounding body, consider isolating it as a standalone note or tip. 
-However, **think twice** before adding any type of special notice, embedding details, or using tabbed boxes. 
-These elements can all be distracting and too many of them make text unreadable. 
+However, **think twice** before adding any type of special notice components or tabbed boxes. 
+These elements can be distracting and too many of them can make the text unreadable. 
 
 Because they are generally **disruptive** to the reader's experience, ask yourself if it is 
-really necessary to stop the reader's forward progress by adding any other special component. 
+really necessary to stop the reader's forward progress by adding a special component. 
 In most cases, it's more effective to integrate the information in the main body of the text. 
 If you use any special notice components at all, use them sparingly.
+
+**Note**—Indicates neutral or positive information that emphasizes or supplements important points of the main text. 
+A note supplies information that may apply only in special cases. 
+Examples are memory limitations, equipment configurations, or details that apply to specific versions of a program.
+
+**Tip**—Helps users apply the techniques and procedures described in the text to their specific needs. 
+A tip suggests alternative methods that may not be obvious and helps users understand the benefits and capabilities of the product. 
+A tip is not essential to the basic understanding of the text.
+
+**Caution**—Advises users that failure to take or avoid a specific action could result in loss of data.
 
 ### Tense
 
@@ -469,7 +474,7 @@ Use future tense only if you must describe something that has not yet occurred b
 
 ### User interface elements
 
-In general, you should avoid writing about user interface elements themselves. 
+In general, you should avoid referring to user interface elements by describing them as menus, buttons, tabs, dropdown lists, and so on. 
 Instead, documentation should always focus on what the audience needs to do or wants to accomplish—that is, the user interaction—and not the widgets displayed on the screen.
 
 When referring to interactions in the user interface, you should generally follow the capitalization that is used for the element unless it is rendered as all capital letters. 
@@ -501,6 +506,8 @@ Use the following guidelines for common verbs.
 
 ### Word choice
 
+Use the following guidelines to select the right word based on context.
+
 | Word in question | How to use it
 | ---------------- | -------------
 | affect, effect	| Use *affect* as a verb and use *effect* as a noun.
@@ -525,10 +532,12 @@ Concise sentences are easier to read, comprehend, and translate.
 
 - Use simple words with precise meanings.
 - Remove words that don't add substance.
-- Avoid using passive *to be verbs* like *been*, and *being*.
-- Avoid weak or vague verbs, such as *have*, *make*, and *do*.
+- Avoid using passive, weak, or vague verb constructions—like “have been” or “is done”—if possible.
 
-Whenever possible, choose words that have one clear meaning. When in doubt, choose the simple word or phrase over a more formal or complex one.
+Choose words that have one clear meaning. 
+If you use words that can be both nouns and verbs—for example, words like *file*, *post*, *mark*, *screen*, *record*, and *report*—use sentence structure and context to eliminate ambiguity.
+
+When in doubt, choose the simple word or phrase over a more formal or complex one.
 Avoid flowery language and unnecessary words whenever possible.
 For example:
 
@@ -548,17 +557,15 @@ Unless they're important to the meaning of a statement, leave them out.
 ### Be consistent
 
 Use one term consistently to represent one concept. 
-For example, if you use *tenant*, *cluster*, and *proxy* interchangeably or ambiguously, you'll leave the reader confused and uncertain. 
+For example, avoid using overloaded terms like accounts, keys, and wallets interchangeably or ambiguously. 
+Use the glossary to standardize how terminology should be used. 
 If terminology changes, be prepared to root out old terminology.
-
-If you use words that can be both nouns and verbs—for example, words like *file*, *post*, *mark*, *screen*, *record*, and *report*—use sentence structure and context to eliminate ambiguity.
 
 ### Dangling prepositions
 
 In modern English, it's perfectly acceptable to end a sentence with a preposition. 
 
 - This is something you might be interested in.
-- This is an example you should pay attention to.
 
 ### Cross-reference formats
 
