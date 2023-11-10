@@ -1,5 +1,5 @@
 import { randomBytes } from 'crypto';
-import { decrypt, encrypt } from './utils';
+import { decrypt, encrypt } from './crypto';
 
 /**
  * Encrypts the message with a password .
