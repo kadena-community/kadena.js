@@ -22,6 +22,13 @@ import {
   pubKeysContainerStyle,
 } from './styles.css';
 
+import {
+  accountNameContainerClass,
+  chainSelectContainerClass,
+  containerClass,
+  inputContainerClass,
+} from '../styles.css';
+
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
@@ -49,12 +56,6 @@ import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import {
-  accountNameContainerClass,
-  chainSelectContainerClass,
-  containerClass,
-  inputContainerClass,
-} from '../styles.css';
 
 interface IFundExistingAccountResponseBody {
   result: {

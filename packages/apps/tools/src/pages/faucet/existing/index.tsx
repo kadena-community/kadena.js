@@ -171,7 +171,7 @@ const ExistingAccountFaucetPage: FC = () => {
           body={requestStatus.message}
         />
         <Card fullWidth>
-          <Heading as="h5">Account</Heading>
+          <Heading as="h5">{t('Account')}</Heading>
           <Box marginBottom="$4" />
           <div className={inputContainerClass}>
             <div className={accountNameContainerClass}>

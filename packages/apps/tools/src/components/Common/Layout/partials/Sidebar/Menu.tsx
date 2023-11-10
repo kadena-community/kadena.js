@@ -1,5 +1,6 @@
+import { MenuButton } from '@/components/Common/Layout/partials/Sidebar/MenuButton';
 import { useLayoutContext } from '@/context';
-import { Accordion, IconButton } from '@kadena/react-ui';
+import { Accordion } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -59,10 +60,10 @@ export const Menu: FC = () => {
         <>
           <div className={subMenuTitleClass}>
             <span>{t('Resource links')}</span>
-            <IconButton
+            <MenuButton
+              title={t('Resource links')}
               icon={'Close'}
               onClick={() => handleCloseMenu()}
-              title={t('Resource links')}
             />
           </div>
           <div className={subMenuContentStyle}>
@@ -83,10 +84,10 @@ export const Menu: FC = () => {
         <>
           <div className={subMenuTitleClass}>
             <span>{activeMenu?.title}</span>
-            <IconButton
+            <MenuButton
+              title={activeMenu?.title}
               icon={'Close'}
               onClick={() => handleCloseMenu()}
-              title={activeMenu?.title}
             />
           </div>
           <div className={subMenuContentStyle}>

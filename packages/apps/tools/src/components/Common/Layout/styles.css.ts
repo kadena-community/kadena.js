@@ -8,6 +8,7 @@ export const headerStyle = style([
     width: '100%',
     height: '$16',
     alignItems: 'center',
+    zIndex: 1,
   }),
 ]);
 
@@ -16,6 +17,7 @@ export const mainStyle = style([
     width: '100%',
   }),
   {
+    height: '100vh',
     backgroundColor: '#E3E1E5',
     selectors: {
       [`${darkThemeClass} &`]: {
@@ -30,11 +32,11 @@ export const gridItemMainStyle = style([
     paddingTop: '$20',
     paddingBottom: '$16',
     paddingRight: '$6',
-    width: '100%',
   }),
   {
-    // width: `calc(${vars.sizes.$20} + ${vars.sizes.$8} + 680px)`,
     width: 'auto',
+    height: '100%',
+    overflowY: 'scroll',
     paddingLeft: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
     borderRight: `1px solid #E3E1E5`,
     selectors: {
@@ -43,9 +45,7 @@ export const gridItemMainStyle = style([
       },
 
       '&.isMenuOpen': {
-        // width: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$12} + 680px)`,
-        width: 'auto',
-        paddingLeft: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$6})`,
+        paddingLeft: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$2})`,
       },
       [`${darkThemeClass} &.isMenuOpen`]: {
         borderRight: `1px solid #27232999`,
@@ -71,7 +71,7 @@ export const sidebarStyle = style([
     borderRight: `1px solid #E3E1E5`,
     selectors: {
       '&.isMenuOpen': {
-        width: `calc(${vars.sizes.$64} + ${vars.sizes.$20})`,
+        width: `calc(${vars.sizes.$64} + ${vars.sizes.$10})`,
       },
       [`${darkThemeClass} &`]: {
         borderRight: `1px solid #27232999`,

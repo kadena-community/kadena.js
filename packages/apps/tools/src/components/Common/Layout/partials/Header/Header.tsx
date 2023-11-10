@@ -3,7 +3,7 @@ import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/H
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import { AddNetworkModal } from '@/components/Global/AddNetworkModal';
 import type { Network } from '@/constants/kadena';
-import routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
@@ -33,21 +33,6 @@ const Header: FC<IHeaderProps> = () => {
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
-  const navItems = [
-    {
-      label: t('Faucet'),
-      href: routes.FAUCET_NEW,
-    },
-    // {
-    //   label: t('Transactions'),
-    //   href: routes.CROSS_CHAIN_TRANSFER_TRACKER,
-    // },
-    // {
-    //   label: t('Account'),
-    //   href: routes.ACCOUNT_TRANSACTIONS_FILTERS,
-    // },
-  ];
-
   const handleMenuItemClick = async (
     e: React.MouseEvent<HTMLAnchorElement>,
   ): Promise<void> => {
@@ -71,17 +56,41 @@ const Header: FC<IHeaderProps> = () => {
     setTheme(newTheme);
   };
 
+  const getHref = (itemHref?: string): string => {
+    if (!itemHref) return '#';
+
+    const basePath = pathname.split('/')[1];
+
+    if (!basePath) {
+      const currentItem = menuData.find((item) => item.href === itemHref);
+      if (!currentItem) return '#';
+      if (!currentItem.items) return '#';
+
+      return currentItem.items[0].href;
+    }
+
+    const itemFromMenu = menuData.find((item) => item.href === basePath);
+    if (!itemFromMenu) return '#';
+
+    const activeHref = itemFromMenu.items?.find(
+      (item) => item.href === pathname,
+    );
+    if (!activeHref) return '#';
+
+    return activeHref.href;
+  };
+
   return (
     <NavHeader.Root brand="DevTools">
       <NavHeader.Navigation activeHref={pathname}>
-        {navItems.map((item, index) => (
+        {menuData.map((item, index) => (
           <NavHeader.Link
             key={index}
-            href={item.href}
+            href={getHref(item.href)}
             onClick={handleMenuItemClick}
             asChild
           >
-            <Link href={item.href}>{item.label}</Link>
+            <Link href={getHref(item.href)}>{item.title}</Link>
           </NavHeader.Link>
         ))}
       </NavHeader.Navigation>

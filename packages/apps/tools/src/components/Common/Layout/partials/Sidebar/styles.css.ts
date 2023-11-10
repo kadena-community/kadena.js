@@ -51,6 +51,7 @@ export const gridMiniMenuLinkButtonStyle = style([
     padding: '$5',
     textAlign: 'left',
     fontWeight: '$bold',
+    fontSize: '$sm',
   }),
   {
     width: '100%',
@@ -133,15 +134,14 @@ export const gridItemMenuStyle = style([
 
 export const subMenuTitleClass = style([
   sprinkles({
-    fontSize: '$md',
+    fontSize: '$sm',
     fontWeight: '$bold',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingX: '$3',
+    paddingLeft: '$3',
   }),
   {
-    padding: '0.125rem 1rem',
     borderBottom: `1px solid #E3E1E5`,
 
     selectors: {

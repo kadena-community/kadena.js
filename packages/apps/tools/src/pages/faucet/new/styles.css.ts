@@ -19,7 +19,7 @@ export const pubKeyInputWrapperStyle = style([
     position: 'relative',
   }),
   {
-    width: 'auto',
+    width: '100%',
   },
 ]);
 
