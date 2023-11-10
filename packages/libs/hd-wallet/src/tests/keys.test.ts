@@ -4,7 +4,6 @@ import { kadenaGetPublic, kadenaMnemonicToSeed } from '..';
 describe('kadenaGetPublic', async () => {
   it('should get the public key', async () => {
     const password = 'pass';
-    const getPath = (index: number) => `m/44'/626'/${index}'/0'/0'`;
     const seed = await kadenaMnemonicToSeed(
       password,
       'coyote utility final warfare thumb symbol mule scale final nominee behave crumble',
