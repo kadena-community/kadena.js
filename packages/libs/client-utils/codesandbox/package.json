@@ -2,10 +2,14 @@
   "name": "simple-use-of-client-utils",
   "version": "1.0.0",
   "description": "",
+  "keywords": [],
   "main": "index.html",
   "scripts": {
-    "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "start": "parcel index.html --open"
+  },
+  "resolutions": {
+    "@babel/preset-env": "7.13.8"
   },
   "dependencies": {
     "@kadena/client-utils": "0.0.2",
@@ -13,9 +17,5 @@
   },
   "devDependencies": {
     "@babel/core": "7.2.0"
-  },
-  "resolutions": {
-    "@babel/preset-env": "7.13.8"
-  },
-  "keywords": []
+  }
 }

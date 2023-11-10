@@ -20,8 +20,7 @@ helpers for the `coin` module, which can be imported using
 for smart contract developers to develop APIs, including some functions that can
 be used for any kind of smart contracts.
 
-Find a
-[minimal interactive example at CodeSandbox](https://githubbox.com/kadena-community/kadena.js/tree/main/packages/libs/client-utils/codesandbox)
+Find a [minimal interactive example at CodeSandbox][1]
 
 - asyncPipe
 - submitClient
@@ -83,3 +82,6 @@ const balance = await getBalance(
   - marmalade
   - principles
   - namespace
+
+[1]:
+  https://githubbox.com/kadena-community/kadena.js/tree/main/packages/libs/client-utils/codesandbox
