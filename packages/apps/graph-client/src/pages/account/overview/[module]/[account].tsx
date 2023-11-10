@@ -9,7 +9,7 @@ import { ChainModuleAccountTable } from '@components/chain-module-account-table/
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Notification, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Notification, Table, Tabs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -78,30 +78,43 @@ const Account: React.FC = () => {
             </Table.Body>
           </Table.Root>
           <Box margin={'$8'} />
-          <ChainModuleAccountTable
-            moduleName={router.query.module as string}
-            accountName={router.query.account as string}
-            chainAccounts={accountQuery.account.chainAccounts}
-          />
-          <Box margin={'$8'} />
-          <CompactTransfersTable
-            description="All transfers from or to this account"
-            moduleName={router.query.module as string}
-            accountName={router.query.account as string}
-            transfers={
-              accountQuery.account.transfers as ModuleAccountTransfersConnection
-            }
-          />
-          <Box margin={'$8'} />
-          <CompactTransactionsTable
-            viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
-              router.query.module as string
-            }/${router.query.account as string}`}
-            transactions={
-              accountQuery.account
-                .transactions as ModuleAccountTransactionsConnection
-            }
-          />
+          <Tabs.Root initialTab="Chain Accounts">
+            <Tabs.Tab id="Chain Accounts">Chain Accounts</Tabs.Tab>
+            <Tabs.Content id="Chain Accounts">
+              <Box margin={'$4'} />
+              <ChainModuleAccountTable
+                moduleName={router.query.module as string}
+                accountName={router.query.account as string}
+                chainAccounts={accountQuery.account.chainAccounts}
+              />
+            </Tabs.Content>
+            <Tabs.Tab id="Transfers">Transfers</Tabs.Tab>
+            <Tabs.Content id="Transfers">
+              <Box margin={'$4'} />
+              <CompactTransfersTable
+                description="All transfers from or to this account"
+                moduleName={router.query.module as string}
+                accountName={router.query.account as string}
+                transfers={
+                  accountQuery.account
+                    .transfers as ModuleAccountTransfersConnection
+                }
+              />
+            </Tabs.Content>
+            <Tabs.Tab id="Transactions">Transactions</Tabs.Tab>
+            <Tabs.Content id="Transactions">
+              <Box margin={'$4'} />
+              <CompactTransactionsTable
+                viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
+                  router.query.module as string
+                }/${router.query.account as string}`}
+                transactions={
+                  accountQuery.account
+                    .transactions as ModuleAccountTransactionsConnection
+                }
+              />
+            </Tabs.Content>
+          </Tabs.Root>
         </div>
       )}
     </>

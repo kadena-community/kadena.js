@@ -4,7 +4,6 @@ import type {
   ModuleAccountTransactionsConnection,
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
-import { formatLisp } from '@/utils/formatter';
 import routes from '@constants/routes';
 import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
