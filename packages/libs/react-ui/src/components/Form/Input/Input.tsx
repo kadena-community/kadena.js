@@ -17,7 +17,7 @@ import {
 export interface IInputProps
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
-    'as' | 'disabled' | 'children' | 'className' | 'id'
+    'as' | 'disabled' | 'className' | 'id'
   > {
   leadingText?: string;
   icon?: keyof typeof SystemIcon;
@@ -78,6 +78,8 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
             disabled={disabled}
             {...rest}
           />
+                  <div>{children}</div>
+
           {RightIcon && <RightIcon size="md" />}
         </div>
       </div>
