@@ -17,10 +17,8 @@ export const HeaderMenuButton: FC<IHeaderMenuButtonProps> = ({
   const Icon = SystemIcon[icon];
 
   return (
-    <>
-      <button className={headerButtonStyle} {...rest} aria-label={title}>
-        <Icon />
-      </button>
-    </>
+    <button className={headerButtonStyle} {...rest} aria-label={title}>
+      <Icon />
+    </button>
   );
 };

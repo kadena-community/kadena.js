@@ -1,11 +1,11 @@
 import { MenuButton } from '@/components/Common/Layout/partials/Sidebar/MenuButton';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { useLayoutContext } from '@/context';
 import { Accordion } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';
-import { MenuLinkButton } from './MenuLinkButton';
 import {
   gridItemMenuStyle,
   subMenuContentStyle,
@@ -20,22 +20,18 @@ export const Menu: FC = () => {
     {
       title: t('Tutorial'),
       href: 'https://kadena.io/',
-      target: '_blank',
     },
     {
       title: t('Documentation'),
       href: 'https://kadena.io/',
-      target: '_blank',
     },
     {
       title: t('Privacy & Policy'),
       href: 'https://kadena.io/',
-      target: '_blank',
     },
     {
       title: t('Terms of use'),
       href: 'https://kadena.io/',
-      target: '_blank',
     },
   ];
 
@@ -74,7 +70,7 @@ export const Menu: FC = () => {
                   key={`menu-link-${index}`}
                   href={item.href}
                   active={item.href === router.pathname}
-                  target={item.target}
+                  target="_blank"
                 />
               ))}
             </Accordion.Root>

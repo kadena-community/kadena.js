@@ -20,15 +20,13 @@ export const MenuLinkButton: FC<IMenuLinkButtonProps> = ({
   ...rest
 }) => {
   const button = (
-    <>
-      <button
-        className={classNames(gridMiniMenuLinkButtonStyle, { active })}
-        {...rest}
-        aria-label={title}
-      >
-        {title}
-      </button>
-    </>
+    <button
+      className={classNames(gridMiniMenuLinkButtonStyle, { active })}
+      {...rest}
+      aria-label={title}
+    >
+      {title}
+    </button>
   );
 
   if (href)

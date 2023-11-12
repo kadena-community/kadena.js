@@ -50,23 +50,21 @@ const Header: FC<IHeaderProps> = () => {
 
   const getHref = (itemHref?: string): string => {
     if (!itemHref) return '#';
-
     const basePath = pathname.split('/')[1];
 
     if (!basePath) {
       const currentItem = menuData.find((item) => item.href === itemHref);
-      if (!currentItem) return '#';
-      if (!currentItem.items) return '#';
-
-      return currentItem.items[0].href;
+      return currentItem?.items ? currentItem.items[0].href : '#';
     }
 
     const itemFromMenu = menuData.find((item) => item.href === basePath);
+
     if (!itemFromMenu) return '#';
 
     const activeHref = itemFromMenu.items?.find(
       (item) => item.href === pathname,
     );
+
     if (!activeHref) return '#';
 
     return activeHref.href;
