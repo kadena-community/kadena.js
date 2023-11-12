@@ -1,5 +1,11 @@
 # @kadena/react-components
 
+## 0.1.2
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+
 ## 0.1.1
 
 ### Patch Changes

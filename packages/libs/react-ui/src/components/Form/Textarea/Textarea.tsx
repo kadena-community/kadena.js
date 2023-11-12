@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import type { FC, TextareaHTMLAttributes } from 'react';
 import React, { forwardRef, useContext } from 'react';
 import { baseContainerClass, baseOutlinedClass } from '../Form.css';
-import { InputWrapperContext } from '../InputWrapper/InputWrapper.context';
+import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
 import {
   disabledClass,
   textAreaClass,
@@ -30,7 +30,7 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
   { outlined = false, disabled = false, fontFamily, children, ...rest },
   ref,
 ) {
-  const { status } = useContext(InputWrapperContext);
+  const { status } = useContext(FormFieldWrapperContext);
 
   return (
     <div

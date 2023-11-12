@@ -1,5 +1,42 @@
 # @kadena/graph-client
 
+## 0.1.5
+
+### Patch Changes
+
+- 6f79f73dd: Created gas estimation page and ajusted header component to
+  incorporate option for gas. Also added necessary graph references to consume
+  the endpoint
+- Updated dependencies [6f79f73dd]
+- Updated dependencies [6f79f73dd]
+  - @kadena/react-ui@0.3.1
+
+## 0.1.4
+
+### Patch Changes
+
+- 6e4895050: Added proper error logging for the graph and client
+- 39a870cea: Changed queries to adjust to new endpoint for getting graph and
+  chainweb-data info
+- Updated dependencies [11747cde4]
+- Updated dependencies [6491589b5]
+- Updated dependencies [8a719c647]
+- Updated dependencies [df7044cac]
+  - @kadena/react-ui@0.3.0
+
+## 0.1.3
+
+### Patch Changes
+
+- 96e321d8a: Changed the transaction overview page to display signer related
+  information
+- bcac940f7: Apply formatting to all json's and code in client
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [fa98adaa8]
+- Updated dependencies [fa6b84e22]
+  - @kadena/react-ui@0.2.1
+
 ## 0.1.2
 
 ### Patch Changes

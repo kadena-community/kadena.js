@@ -1,20 +1,15 @@
+import type { BlockTransactionsConnection } from '@/__generated__/sdk';
 import {
   useGetBlockFromHashQuery,
   useGetGraphConfigurationQuery,
 } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
 import { mainStyle } from '@/components/Common/main/styles.css';
+import { ErrorBox } from '@/components/error-box/error-box';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
-import {
-  Accordion,
-  Box,
-  Breadcrumbs,
-  Link,
-  Notification,
-  Table,
-} from '@kadena/react-ui';
+import { Accordion, Box, Breadcrumbs, Link, Table } from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -49,15 +44,7 @@ const Block: React.FC = () => {
             </div>
           )}
 
-          {error && (
-            <Notification.Root color="negative" icon="Close">
-              Unknown error:
-              <Box marginBottom="$4" />
-              <code>{error.message}</code>
-              <Box marginBottom="$4" />
-              Check if the Graph server is running.
-            </Notification.Root>
-          )}
+          {error && <ErrorBox error={error} />}
 
           {data?.block && (
             <div style={{ maxWidth: '1000px' }}>
@@ -225,7 +212,9 @@ const Block: React.FC = () => {
               {data.block.transactions.totalCount > 0 && (
                 <CompactTransactionsTable
                   viewAllHref={viewAllTransactionsPage}
-                  transactions={data.block.transactions}
+                  transactions={
+                    data.block.transactions as BlockTransactionsConnection
+                  }
                   description="All transactions present in this block"
                 />
               )}

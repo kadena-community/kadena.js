@@ -29,11 +29,7 @@ export const containerClassDisabled = style([
     },
   }),
   {
-    opacity: 0.4,
     selectors: {
-      '.inputGroup &': {
-        opacity: 1,
-      },
       [`${darkThemeClass} &`]: {
         backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
       },

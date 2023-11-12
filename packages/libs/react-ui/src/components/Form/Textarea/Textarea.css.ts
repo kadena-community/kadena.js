@@ -11,11 +11,7 @@ export const disabledClass = style([
     },
   }),
   {
-    opacity: 0.4,
     selectors: {
-      '.inputGroup &': {
-        opacity: 1,
-      },
       [`${darkThemeClass} &`]: {
         backgroundColor: vars.colors.$gray60,
       },

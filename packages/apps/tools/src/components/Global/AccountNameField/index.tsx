@@ -2,14 +2,14 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useDidUpdateEffect } from '@/hooks';
 import { getAccounts } from '@/utils/wallet';
 import type {
+  IFormFieldWrapperProps,
   IInputProps,
-  IInputWrapperProps,
   ISelectProps,
 } from '@kadena/react-ui';
 import {
+  FormFieldWrapper,
   IconButton,
   Input,
-  InputWrapper,
   Select,
   maskValue,
 } from '@kadena/react-ui';
@@ -21,7 +21,7 @@ import * as z from 'zod';
 import { accountInputWrapperStyle } from './styles.css';
 
 interface IAccountNameFieldProps
-  extends Partial<Omit<IInputWrapperProps, 'children'>> {
+  extends Partial<Omit<IFormFieldWrapperProps, 'children'>> {
   inputProps: Partial<
     Pick<
       IInputProps,
@@ -98,7 +98,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
 
   return (
     <div className={accountInputWrapperStyle}>
-      <InputWrapper
+      <FormFieldWrapper
         label={t('Account')}
         htmlFor={elementId}
         status={error ? 'negative' : status}
@@ -106,7 +106,7 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
         {...rest}
       >
         {lookup[mode]}
-      </InputWrapper>
+      </FormFieldWrapper>
       {accounts?.length && (
         <IconButton
           icon={mode === 'input' ? 'Close' : 'Edit'}

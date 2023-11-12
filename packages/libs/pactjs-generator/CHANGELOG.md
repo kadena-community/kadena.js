@@ -1,5 +1,13 @@
 # Change Log - @kadena/pactjs-generator
 
+## 1.6.1
+
+## 1.6.0
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+
 ## 1.5.0
 
 ### Minor Changes

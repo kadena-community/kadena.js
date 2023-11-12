@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client-utils",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Utility functions build as a wrapper around @kadena/client",
   "repository": {
     "type": "git",
@@ -52,8 +52,9 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact",
-    "test": "vitest",
-    "test:integration": "vitest run -c ./vitest.integration.config.ts"
+    "test": "vitest run",
+    "test:integration": "vitest run -c ./vitest.integration.config.ts",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
@@ -78,7 +79,6 @@
     "@vitest/coverage-v8": "^0.34.6",
     "eslint": "^8.45.0",
     "prettier": "~3.0.3",
-    "prettier-plugin-packagejson": "^2.4.6",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2",
     "vitest": "^0.34.6"

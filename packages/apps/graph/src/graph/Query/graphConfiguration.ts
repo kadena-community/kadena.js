@@ -1,7 +1,6 @@
-import { prismaClient } from '../../db/prismaClient';
-import { dotenv } from '../../utils/dotenv';
+import { prismaClient } from '@db/prismaClient';
+import { dotenv } from '@utils/dotenv';
 import { builder } from '../builder';
-
 const getMinimumBlockHeight = async (): Promise<bigint> => {
   const lowestBlock = await prismaClient.block.findFirst({
     orderBy: {

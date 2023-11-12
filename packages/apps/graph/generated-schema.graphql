@@ -31,11 +31,12 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
-type ChainModuleAccount {
+type ChainModuleAccount implements Node {
   accountName: String!
   balance: Float!
   chainId: ID!
   guard: Guard!
+  id: ID!
   moduleName: String!
   transactions(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransactionsConnection!
   transfers(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransfersConnection!
@@ -103,10 +104,10 @@ type MinerKey implements Node {
   key: String!
 }
 
-type ModuleAccount {
+type ModuleAccount implements Node {
   accountName: String!
   chainAccounts: [ChainModuleAccount!]!
-  id: String!
+  id: ID!
   moduleName: String!
   totalBalance: Decimal!
   transactions(after: String, before: String, first: Int, last: Int): ModuleAccountTransactionsConnection!
@@ -150,6 +151,12 @@ input PactQueryData {
   value: String!
 }
 
+input PactTransaction {
+  cmd: String!
+  hash: String
+  sigs: [String!]
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -162,19 +169,21 @@ scalar PositiveFloat
 
 type Query {
   account(accountName: String!, moduleName: String!): ModuleAccount!
-  block(hash: String!): Block!
+  block(hash: String!): Block
   blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
-  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount!
+  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+  gasLimitEstimate(transaction: PactTransaction!): Int!
+  gasLimitEstimates(transactions: [PactTransaction!]!): [Int!]!
   graphConfiguration: GraphConfiguration!
   lastBlockHeight: BigInt
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
   pactQueries(pactQuery: [PactQuery!]!): [String!]!
   pactQuery(pactQuery: PactQuery!): String!
-  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransactionsConnection!
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String, requestKey: String): QueryTransactionsConnection!
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
-  transfers(accountName: String!, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String!): QueryTransfersConnection!
+  transfers(accountName: String, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransfersConnection!
 }
 
 type QueryTransactionsByPublicKeyConnection {
@@ -263,6 +272,7 @@ type Transfer implements Node {
   blockHash: String!
   blocks: [Block!]!
   chainId: BigInt!
+  crossChainTransfer: Transfer
   height: BigInt!
   id: ID!
   moduleHash: String!
