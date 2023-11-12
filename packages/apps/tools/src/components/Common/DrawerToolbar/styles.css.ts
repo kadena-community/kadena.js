@@ -59,6 +59,7 @@ export const expandedDrawerContentClass = style([
     paddingRight: '$6',
     display: 'flex',
     flexDirection: 'column',
+    color: '$gray60',
   }),
   {
     overflowY: 'auto',
