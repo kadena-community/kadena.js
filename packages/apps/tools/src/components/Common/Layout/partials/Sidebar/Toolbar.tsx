@@ -1,8 +1,6 @@
-import { OptionsModal } from '@/components/Global/OptionsModal';
 import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext } from '@/context';
 import type { ISidebarSubMenuItem } from '@/types/Layout';
-import { useModal } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -27,7 +25,6 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     setVisibleLinks,
   } = useLayoutContext();
   const router = useRouter();
-  const { renderModal } = useModal();
 
   const handleItemClick = (index: number): void => {
     setVisibleLinks(false);
@@ -73,10 +70,6 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     }
   };
 
-  const handleDevOptionsClick = (): void => {
-    renderModal(<OptionsModal />, 'Settings');
-  };
-
   return (
     <nav className={gridItemMiniMenuStyle}>
       <ul className={classNames(gridMiniMenuListStyle)}>
@@ -102,16 +95,6 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
               icon={'Link'}
               onClick={() => handleLinksClick()}
               active={visibleLinks}
-            />
-          </div>
-        </li>
-        <li key={String('Dev Options')} className={gridMiniMenuListItemStyle}>
-          <div>
-            <MenuButton
-              title={'DevOptions'}
-              href={'#'}
-              icon={'ApplicationBrackets'}
-              onClick={() => handleDevOptionsClick()}
             />
           </div>
         </li>

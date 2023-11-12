@@ -1,7 +1,6 @@
 import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import WalletConnectButton from '@/components/Common/WalletConnectButton';
-import { AddNetworkModal } from '@/components/Global/AddNetworkModal';
 import type { Network } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';

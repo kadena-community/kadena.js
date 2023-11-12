@@ -1,6 +1,6 @@
-import {gridMiniMenuListButtonStyle} from '@/components/Common/Layout/partials/Sidebar/styles.css';
-import {SystemIcon} from '@kadena/react-ui';
-import type {ButtonHTMLAttributes, FC} from 'react';
+import { gridMiniMenuListButtonStyle } from '@/components/Common/Layout/partials/Sidebar/styles.css';
+import { SystemIcon } from '@kadena/react-ui';
+import type { ButtonHTMLAttributes, FC } from 'react';
 import React from 'react';
 
 export interface IMenuButtonProps
@@ -21,14 +21,14 @@ export const DrawerIconButton: FC<IMenuButtonProps> = ({
   const Icon = SystemIcon[icon];
 
   return (
-      <>
-        <button
-            className={gridMiniMenuListButtonStyle}
-            {...rest}
-            aria-label={title}
-        >
-          <Icon size={'sm'}/>
-        </button>
-      </>
+    <>
+      <button
+        className={gridMiniMenuListButtonStyle}
+        {...rest}
+        aria-label={title}
+      >
+        <Icon size={'sm'} />
+      </button>
+    </>
   );
 };
