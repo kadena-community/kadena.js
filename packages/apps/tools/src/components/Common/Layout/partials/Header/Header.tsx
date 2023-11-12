@@ -7,7 +7,7 @@ import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
-import { NavHeader, useModal } from '@kadena/react-ui';
+import { NavHeader } from '@kadena/react-ui';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
@@ -27,7 +27,6 @@ const Header: FC<IHeaderProps> = () => {
   const { selectedNetwork, networksData, setSelectedNetwork } =
     useWalletConnectClient();
   const { pathname, push } = useRouter();
-  const { renderModal } = useModal();
 
   const { systemTheme, theme, setTheme } = useTheme();
 
@@ -41,13 +40,7 @@ const Header: FC<IHeaderProps> = () => {
     await push(e.currentTarget.href);
   };
 
-  const openNetworkModal = (): void =>
-    renderModal(<AddNetworkModal />, 'Add Network');
-
   const handleOnChange = (e: React.FormEvent<HTMLSelectElement>): void => {
-    if ((e.target as HTMLSelectElement).value === 'custom') {
-      return openNetworkModal();
-    }
     setSelectedNetwork((e.target as HTMLSelectElement).value as Network);
   };
 
@@ -116,7 +109,6 @@ const Header: FC<IHeaderProps> = () => {
               {network.label}
             </option>
           ))}
-          {/* <option value="custom">{t('+ add network')}</option> */}
         </NavHeader.Select>
         <div className={walletConnectWrapperStyle}>
           <WalletConnectButton />

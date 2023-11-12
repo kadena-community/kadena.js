@@ -50,9 +50,8 @@ export const DrawerToolbar: ForwardRefExoticComponent<
 
   return (
     <aside className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
-      {!isOpen && (
+      {!isOpen ? (
         <div>
-          {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
           {sections.map(({ icon, title }, index) => (
             <div className={buttonWrapperClass} key={title}>
               <DrawerIconButton
@@ -62,8 +61,7 @@ export const DrawerToolbar: ForwardRefExoticComponent<
             </div>
           ))}
         </div>
-      )}
-      {isOpen && (
+      ) : (
         <>
           <div className={expandedDrawerTitleClass}>
             <Text size="lg" bold>
