@@ -1,3 +1,4 @@
+import { CopyButton } from '@components/ActionButtons/CoppyButton';
 import type { ITextareaProps } from '@components/Form';
 import { Textarea } from '@components/Form';
 import type { SystemIcon } from '@components/Icon';
@@ -56,7 +57,9 @@ export const TextareaStory: Story = {
         onChange={({ target }) => setValue(target.value)}
         id="inlineInputStory"
         placeholder="This is a placeholder"
-      />
+      >
+        <CopyButton value={value} />
+      </Textarea>
     );
   },
 };
