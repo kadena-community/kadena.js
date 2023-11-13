@@ -21,9 +21,9 @@ interface ICompactTransfersTableProps {
   description?: string;
 }
 
-interface ITransfer {
-  transfer: Transfer;
-  crossChainCounterPart?: Transfer;
+interface XChainTransfer {
+  startingTransfer: Transfer;
+  finishingTransfer: Transfer;
 }
 
 export const CompactTransfersTable = (
@@ -31,20 +31,23 @@ export const CompactTransfersTable = (
 ): JSX.Element => {
   const { moduleName, accountName, chainId, transfers, description } = props;
 
-  const determineCrossChain = (
-    edge:
-      | ModuleAccountTransfersConnectionEdge
-      | ChainModuleAccountTransfersConnectionEdge,
-  ): ITransfer => {
-    if (edge.node.transaction?.pactId && edge.node.crossChainTransfer) {
+  // This function determines if the transfer is the starting one or the finishing one
+  const determineXChainTransferOrder = (
+    transfer: Transfer,
+    crossChainTransfer: Transfer,
+  ): XChainTransfer => {
+    if (transfer.transaction?.pactId) {
       // This means that the transfer on this chain is the finishing one
-      const transfer = edge.node;
-      const crossChainCounterPart = edge.node.crossChainTransfer;
-
-      return { transfer, crossChainCounterPart };
+      return {
+        startingTransfer: crossChainTransfer,
+        finishingTransfer: transfer,
+      };
+    } else {
+      return {
+        startingTransfer: transfer,
+        finishingTransfer: crossChainTransfer,
+      };
     }
-
-    return { transfer: edge.node };
   };
 
   return (
@@ -80,26 +83,27 @@ export const CompactTransfersTable = (
         </Table.Head>
         <Table.Body>
           {transfers.edges.map((edge, index) => {
-            // This means all chains are going to be displayed
+            let transfer = edge.node;
+            let crossChainCounterPart = edge.node.crossChainTransfer;
+
             if (!chainId) {
               /**  These transfers are going to be added to their crosschain counterpart and
              this way we avoid repeated transfers in the table */
-              if (edge.node.transaction?.pactId) return <></>;
+              if (transfer.transaction?.pactId) return <></>;
             } else {
-              // This means only one chain is going to be displayed
-              if (
-                edge.node.transaction?.pactId &&
-                edge.node.crossChainTransfer
-              ) {
-                // This means that the transfer on this chain is the finishing one
-                const tempStorage = edge.node;
-                edge.node.crossChainTransfer = edge.node;
-                edge.node = tempStorage;
+              if (crossChainCounterPart) {
+                const { startingTransfer, finishingTransfer } =
+                  determineXChainTransferOrder(transfer, crossChainCounterPart);
+                transfer = startingTransfer;
+                crossChainCounterPart = finishingTransfer;
               }
             }
 
-            const chainIdDisplay = edge.node.crossChainTransfer
-              ? `${edge.node.chainId} / ${edge.node.crossChainTransfer.chainId}`
+            console.log('transfer', transfer);
+            console.log('crossChainCounterPart', crossChainCounterPart);
+
+            const chainIdDisplay = crossChainCounterPart
+              ? `${transfer.chainId} / ${crossChainCounterPart.chainId}`
               : edge.node.chainId;
 
             const heightDisplay = edge.node.crossChainTransfer
