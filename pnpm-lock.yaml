@@ -1859,6 +1859,9 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.2.0
+      tsc-alias:
+        specifier: ~1.8.7
+        version: 1.8.7
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
