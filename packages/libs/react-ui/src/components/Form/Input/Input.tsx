@@ -39,6 +39,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
       rightIcon,
       leadingTextWidth: propLeadingTextWidth,
       disabled = false,
+      children,
       ...rest
     },
     ref,
@@ -78,8 +79,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
             disabled={disabled}
             {...rest}
           />
-                  <div>{children}</div>
-
+          <div>{children}</div>
           {RightIcon && <RightIcon size="md" />}
         </div>
       </div>

@@ -1,6 +1,3 @@
-import { copyButtonClass } from './CopyButton.css.ts';
-
-import type { SystemIcon } from '@components/Icon';
 import { IconButton } from '@components/IconButton';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -13,14 +10,9 @@ export interface ICopyButtonProps
     'color' | 'className'
   > {
   value: string;
-  icon: keyof typeof SystemIcon;
 }
 
-export const CopyButton: FC<ICopyButtonProps> = ({
-  value,
-  icon,
-  ...restProps
-}) => {
+export const CopyButton: FC<ICopyButtonProps> = ({ value, ...restProps }) => {
   const [click, setClick] = useState<boolean>(false);
 
   const handleClick = async (): Promise<void> => {
@@ -32,14 +24,12 @@ export const CopyButton: FC<ICopyButtonProps> = ({
   };
 
   return (
-    <div className={copyButtonClass}>
-      <IconButton
-        {...restProps}
-        color={'primary'}
-        icon={click ? successIcon : icon}
-        onClick={handleClick}
-        title={'ContentCopy'}
-      />
-    </div>
+    <IconButton
+      {...restProps}
+      color={'primary'}
+      icon={click ? 'Check' : 'ContentCopy'}
+      onClick={handleClick}
+      title={'ContentCopy'}
+    />
   );
 };

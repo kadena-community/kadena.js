@@ -1,3 +1,4 @@
+import { InputCopy } from './Form/ActionComponents/TextField/InputCopy';
 export type {
   IAccordionProps,
   IAccordionRootProps,
@@ -83,10 +84,12 @@ export { Divider } from './Divider/Divider';
 export {
   FormFieldWrapper,
   Input,
+  InputCopy,
   Select,
   SelectField,
   TextField,
   Textarea,
+  TextareaCopy,
   TextareaField,
 } from './Form';
 export { ProductIcon, SystemIcon } from './Icon';
