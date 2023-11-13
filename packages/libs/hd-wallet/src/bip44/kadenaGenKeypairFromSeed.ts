@@ -1,3 +1,4 @@
+import type { EncryptedString } from '../utils/kadenaEncryption';
 import { kadenaDecrypt, kadenaEncrypt } from '../utils/kadenaEncryption';
 import { deriveKeyPair } from './utils/sign';
 
@@ -6,7 +7,7 @@ function genKeypairFromSeed(
   seedBuffer: Uint8Array,
   index: number,
   derivationPathTemplate: string,
-): [string, string] {
+): [string, EncryptedString] {
   const derivationPath = derivationPathTemplate.replace(
     '<index>',
     index.toString(),
@@ -15,8 +16,8 @@ function genKeypairFromSeed(
   const { publicKey, privateKey } = deriveKeyPair(seedBuffer, derivationPath);
 
   const encryptedPrivateKey = kadenaEncrypt(
-    Buffer.from(privateKey, 'hex'),
     password,
+    Buffer.from(privateKey, 'hex'),
   );
 
   return [publicKey, encryptedPrivateKey];
@@ -24,17 +25,17 @@ function genKeypairFromSeed(
 
 export function kadenaGenKeypairFromSeed(
   password: string,
-  seed: string,
+  seed: EncryptedString,
   index: number,
   derivationPathTemplate?: string,
-): [string, string];
+): [string, EncryptedString];
 
 export function kadenaGenKeypairFromSeed(
   password: string,
-  seed: string,
+  seed: EncryptedString,
   indexRange: [number, number],
   derivationPathTemplate?: string,
-): Array<[string, string]>;
+): Array<[string, EncryptedString]>;
 
 /**
  * Generates a key pair from a seed buffer and an index or range of indices, and optionally encrypts the private key.
@@ -48,15 +49,15 @@ export function kadenaGenKeypairFromSeed(
  */
 export function kadenaGenKeypairFromSeed(
   password: string,
-  seed: string,
+  seed: EncryptedString,
   indexOrRange: number | [number, number],
   derivationPathTemplate: string = `m'/44'/626'/<index>'/0'/0'`,
-): [string, string] | Array<[string, string]> {
+): [string, EncryptedString] | Array<[string, EncryptedString]> {
   if (typeof seed !== 'string' || seed === '') {
     throw new Error('No seed provided.');
   }
 
-  const seedBuffer = kadenaDecrypt(seed, password);
+  const seedBuffer = kadenaDecrypt(password, seed);
 
   if (typeof indexOrRange === 'number') {
     return genKeypairFromSeed(
@@ -72,7 +73,7 @@ export function kadenaGenKeypairFromSeed(
       throw new Error('The start index must be less than the end index.');
     }
 
-    const keyPairs: [string, string][] = [];
+    const keyPairs: [string, EncryptedString][] = [];
 
     for (let index = startIndex; index <= endIndex; index++) {
       const [publicKey, encryptedPrivateKey] = genKeypairFromSeed(

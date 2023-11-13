@@ -1,3 +1,4 @@
+import type { EncryptedString } from '../utils/kadenaEncryption';
 import { kadenaDecrypt } from '../utils/kadenaEncryption';
 import { deriveKeyPair } from './utils/sign';
 
@@ -18,14 +19,14 @@ function genPublicKeyFromSeed(
 
 export function kadenaGetPublic(
   password: string,
-  seed: string,
+  seed: EncryptedString,
   index: number,
   derivationPathTemplate?: string,
 ): string;
 
 export function kadenaGetPublic(
   password: string,
-  seed: string,
+  seed: EncryptedString,
   indexRange: [number, number],
   derivationPathTemplate?: string,
 ): string[];
@@ -42,7 +43,7 @@ export function kadenaGetPublic(
  */
 export function kadenaGetPublic(
   password: string,
-  seed: string,
+  seed: EncryptedString,
   indexOrRange: number | [number, number],
   derivationPathTemplate: string = `m'/44'/626'/<index>'/0'/0'`,
 ): string | string[] {
@@ -50,7 +51,7 @@ export function kadenaGetPublic(
     throw new Error('No seed provided.');
   }
 
-  const seedBuffer = kadenaDecrypt(seed, password);
+  const seedBuffer = kadenaDecrypt(password, seed);
 
   if (typeof indexOrRange === 'number') {
     return genPublicKeyFromSeed(

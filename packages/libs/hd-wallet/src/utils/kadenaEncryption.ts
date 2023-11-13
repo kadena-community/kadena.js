@@ -1,19 +1,25 @@
 import { randomBytes } from 'crypto';
 import { decrypt, encrypt } from './crypto';
 
+export type EncryptedString = string & { _brand: 'EncryptedString' };
+
 /**
  * Encrypts the message with a password .
  * @param {Uint8Array} message - The message to be encrypted.
  * @param {string} password - password used for encryption.
- * @returns {string} - The encrypted string
+ * @returns {string} The encrypted string
  */
-
-export function kadenaEncrypt(message: Uint8Array, password: string): string {
+export function kadenaEncrypt(
+  password: string,
+  message: Uint8Array,
+): EncryptedString {
   // Using randomBytes for the salt is fine here because the salt is not secret but should be unique.
   const salt = randomBytes(16);
   const { cipherText, iv, tag } = encrypt(Buffer.from(message), password, salt);
 
-  return [salt, iv, tag, cipherText].map((x) => x.toString('base64')).join('.');
+  return Buffer.from(
+    [salt, iv, tag, cipherText].map((x) => x.toString('base64')).join('.'),
+  ).toString('base64') as EncryptedString;
 }
 
 /**
@@ -27,12 +33,19 @@ export function kadenaEncrypt(message: Uint8Array, password: string): string {
  * @throws {Error} Throws an error if decryption fails.
  */
 export function kadenaDecrypt(
-  encryptedData: string,
   password: string,
+  encryptedData: EncryptedString,
 ): Uint8Array {
-  const [saltBase64, ivBase64, tagBase64, encryptedBase64] =
-    encryptedData.split('.');
-  console.log({ saltBase64, ivBase64, tagBase64, encryptedBase64 });
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  if (!encryptedData) {
+    throw new Error('Encrypted data is empty');
+  }
+  const [saltBase64, ivBase64, tagBase64, encryptedBase64] = Buffer.from(
+    encryptedData,
+    'base64',
+  )
+    .toString()
+    .split('.');
 
   // Convert from Base64.
   const salt = Buffer.from(saltBase64, 'base64');
@@ -45,33 +58,33 @@ export function kadenaDecrypt(
   if (!decrypted) {
     throw new Error('Decryption failed');
   }
-  return new Uint8Array(decrypted);
+  return decrypted;
 }
 
 /**
  * Changes the password of an encrypted data.
  *
  * @param {string} privateKey - The encrypted private key as a Base64 encoded string.
- * @param {string} oldPassword - The current password used to encrypt the private key.
+ * @param {string} password - The current password used to encrypt the private key.
  * @param {string} newPassword - The new password to encrypt the private key with.
  * @returns {string} - The newly encrypted private key as a Base64 encoded string.
  * @throws {Error} - Throws an error if the old password is empty, new password is incorrect empty passwords are empty, or if encryption with the new password fails.
  */
 export function kadenaChangePassword(
-  encryptedData: string,
-  oldPassword: string,
+  password: string,
+  encryptedData: EncryptedString,
   newPassword: string,
-): string {
-  if (typeof oldPassword !== 'string' || typeof newPassword !== 'string') {
+): EncryptedString {
+  if (typeof password !== 'string' || typeof newPassword !== 'string') {
     throw new Error('The old and new passwords must be strings.');
   }
-  if (oldPassword === '') {
+  if (password === '') {
     throw new Error('The old password cannot be empty.');
   }
   if (newPassword === '') {
     throw new Error('The new password cannot be empty.');
   }
-  if (oldPassword === newPassword) {
+  if (password === newPassword) {
     throw new Error(
       'The new password must be different from the old password.',
     );
@@ -79,7 +92,7 @@ export function kadenaChangePassword(
 
   let decryptedPrivateKey: Uint8Array;
   try {
-    decryptedPrivateKey = kadenaDecrypt(encryptedData, oldPassword);
+    decryptedPrivateKey = kadenaDecrypt(password, encryptedData);
   } catch (error) {
     throw new Error(
       `Failed to decrypt the private key with the old password: ${error.message}`,
@@ -87,7 +100,7 @@ export function kadenaChangePassword(
   }
 
   try {
-    return kadenaEncrypt(decryptedPrivateKey, newPassword);
+    return kadenaEncrypt(newPassword, decryptedPrivateKey);
   } catch (error) {
     throw new Error(
       `Failed to encrypt the private key with the new password: ${error.message}`,

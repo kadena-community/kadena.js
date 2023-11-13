@@ -1,19 +1,25 @@
 import type { IUnsignedCommand } from '@kadena/client';
 import { verifySig } from '@kadena/cryptography-utils';
+import type { EncryptedString } from '../utils/kadenaEncryption';
+import { kadenaDecrypt } from '../utils/kadenaEncryption';
 import { signWithKeyPair, signWithSeed } from './utils/sign';
 
 /**
  * Signs a Kadena transaction with a given public and private key pair.
  *
  * @param {string} publicKey - The public key to be used for signing the transaction.
- * @param {string} privateKey - The private key to be used for signing the transaction.
+ * @param {string} encryptedPrivateKey - The private key to be used for signing the transaction.
  * @returns {Function} A function that takes an unsigned command (`IUnsignedCommand`) and returns an object with an array of signatures.
  */
 export function kadenaSignWithKeyPair(
+  password: string,
   publicKey: string,
-  privateKey: string,
+  encryptedPrivateKey: EncryptedString,
 ): (tx: IUnsignedCommand) => { sigs: { sig: string }[] } {
-  return signWithKeyPair(publicKey, privateKey);
+  return signWithKeyPair(
+    publicKey,
+    Buffer.from(kadenaDecrypt(password, encryptedPrivateKey)).toString('hex'),
+  );
 }
 
 /**
@@ -24,12 +30,13 @@ export function kadenaSignWithKeyPair(
  * @returns {Function} A function that takes an unsigned command (`IUnsignedCommand`) and returns an object with an array of signatures.
  */
 export function kadenaSignWithSeed(
-  seed: Uint8Array,
+  password: string,
+  seed: EncryptedString,
   index: number,
   derivationPathTemplate: string = `m'/44'/626'/<index>'/0'/0'`,
 ): (tx: IUnsignedCommand) => { sigs: { sig: string }[] } {
   return signWithSeed(
-    seed,
+    kadenaDecrypt(password, seed),
     derivationPathTemplate.replace('<index>', index.toString()),
   );
 }
