@@ -22,7 +22,6 @@ const getTwitterStatusId = (url) => {
 const remarkTwitter = () => {
   return async (tree) => {
     const children = tree.children.map((node) => {
-      console.log(node);
       if (node.children && node.children[0]) {
         const leaf = node.children[0] ?? null;
 

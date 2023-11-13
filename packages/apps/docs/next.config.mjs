@@ -3,6 +3,7 @@ import {
   remarkCheckForCodeTitle,
   remarkFigureOutOfParagraph,
   remarkFixAbsoluteLinks,
+  remarkPropsToStaticRender,
   remarkTwitter,
   remarkYoutube,
 } from '@kadena/docs-tools';
@@ -16,7 +17,6 @@ import { BUNDLED_LANGUAGES, getHighlighter } from 'shiki';
 import redirectsConfig from './redirects.mjs';
 import remarkFrontmatterToProps from './src/scripts/remarkFrontmatterToProps.mjs';
 import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.mjs';
-import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.mjs';
 import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.mjs';
 const withVanillaExtract = createVanillaExtractPlugin();
 
