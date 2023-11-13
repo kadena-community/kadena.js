@@ -8,13 +8,9 @@ import type { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 import { accountInputWrapperStyle } from './styles.css';
 
-interface IAccountNameFieldProps
-  extends Partial<Omit<IFormFieldWrapperProps, 'children'>> {
+interface IAccountNameFieldProps extends Partial<Omit<IFormFieldWrapperProps, 'children'>> {
   inputProps: Partial<
-    Pick<
-      IInputProps,
-      'id' | 'placeholder' | 'ref' | 'name' | 'onChange' | 'onBlur'
-    >
+    Pick<IInputProps, 'id' | 'placeholder' | 'ref' | 'name' | 'onChange' | 'onBlur'>
   >;
   error?: FieldError;
   noIcon?: boolean;

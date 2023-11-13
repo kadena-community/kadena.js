@@ -3,12 +3,7 @@ import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 import { Header, Sidebar } from './partials';
-import {
-  gridItemMainStyle,
-  headerStyle,
-  mainStyle,
-  sidebarStyle,
-} from './styles.css';
+import { gridItemMainStyle, headerStyle, mainStyle, sidebarStyle } from './styles.css';
 
 interface IProps {
   children?: ReactNode;
@@ -26,9 +21,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
         <Sidebar />
       </aside>
       <main className={mainStyle}>
-        <div className={classNames(gridItemMainStyle, { isMenuOpen })}>
-          {children}
-        </div>
+        <div className={classNames(gridItemMainStyle, { isMenuOpen })}>{children}</div>
       </main>
     </div>
   );

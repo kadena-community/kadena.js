@@ -2,31 +2,21 @@ import { SystemIcon, Tooltip } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { ButtonHTMLAttributes, FC } from 'react';
 import React, { useRef } from 'react';
-import {
-  gridMiniMenuListButtonStyle,
-  iconLeftStyle,
-  iconRightStyle,
-} from './styles.css';
+import { gridMiniMenuListButtonStyle, iconLeftStyle, iconRightStyle } from './styles.css';
 
-export interface IMenuButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IMenuButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   title?: string;
   active?: boolean;
   icon: keyof typeof SystemIcon;
   rotateClass?: string;
 }
 
-export const MenuButton: FC<IMenuButtonProps> = ({
-  active,
-  title,
-  icon,
-  rotateClass,
-  ...rest
-}) => {
+export const MenuButton: FC<IMenuButtonProps> = ({ active, title, icon, rotateClass, ...rest }) => {
   const Icon = SystemIcon[icon];
   // @ts-ignore
   const tooltipRef = useRef(null);
-  const rotationClass = rotateClass === undefined ? '' : rotateClass === 'left' ? iconLeftStyle : iconRightStyle;
+  const rotationClass =
+    rotateClass === undefined ? '' : rotateClass === 'left' ? iconLeftStyle : iconRightStyle;
 
   return (
     <>

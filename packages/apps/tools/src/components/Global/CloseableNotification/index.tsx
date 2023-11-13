@@ -2,13 +2,9 @@ import type { INotificationProps } from '@kadena/react-ui';
 import { Notification } from '@kadena/react-ui';
 import React from 'react';
 
-export interface ICloseableNotificationProps
-  extends Omit<INotificationProps, 'hasCloseButton'> {}
+export interface ICloseableNotificationProps extends Omit<INotificationProps, 'hasCloseButton'> {}
 
-export const CloseableNotification = ({
-  onClose,
-  ...rest
-}: ICloseableNotificationProps) => {
+export const CloseableNotification = ({ onClose, ...rest }: ICloseableNotificationProps) => {
   const [show, setShow] = React.useState(true);
   if (!show) return null;
   return (

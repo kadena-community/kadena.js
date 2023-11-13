@@ -7,15 +7,7 @@ import {
 import type { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
 import type { SystemIcon } from '@kadena/react-ui';
-import {
-  Button,
-  Card,
-  IconButton,
-  Stack,
-  Tag,
-  Text,
-  useModal,
-} from '@kadena/react-ui';
+import { Button, Card, IconButton, Stack, Tag, Text, useModal } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -79,17 +71,9 @@ export const OptionsModal: FC = () => {
               <Card fullWidth>
                 <Stack>
                   {selected === key ? (
-                    <IconButton
-                      title="Radio"
-                      icon={'RadioboxMarked'}
-                      color="primary"
-                    />
+                    <IconButton title="Radio" icon={'RadioboxMarked'} color="primary" />
                   ) : (
-                    <IconButton
-                      title="Radio"
-                      icon={'RadioboxBlank'}
-                      color="primary"
-                    />
+                    <IconButton title="Radio" icon={'RadioboxBlank'} color="primary" />
                   )}
                   <IconButton title="Radio" icon={value.icon} color="primary" />
                   <Stack direction="column" marginX="$md">
@@ -120,11 +104,7 @@ export const OptionsModal: FC = () => {
       {renderOptions()}
 
       <div className={modalButtonStyle}>
-        <Button
-          title={`${t('Save')}`}
-          onClick={() => handleSave()}
-          color="primary"
-        >
+        <Button title={`${t('Save')}`} onClick={() => handleSave()} color="primary">
           {`${t('Save')}`}
         </Button>
       </div>

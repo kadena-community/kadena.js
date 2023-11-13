@@ -6,10 +6,7 @@ import { containerClass, iconButtonClass } from './HoverTag.css';
 export interface IHoverTagProps {
   value: IMaskedValueProps['value'];
   icon?: keyof typeof SystemIcon;
-  onIconButtonClick?: (param: {
-    tagValue: string;
-    tooltipValue: string;
-  }) => void;
+  onIconButtonClick?: (param: { tagValue: string; tooltipValue: string }) => void;
   tooltipValue?: string;
   maskOptions?: Partial<MaskOptions>;
 }
@@ -29,12 +26,8 @@ export const HoverTag = ({
     <>
       <span
         data-testid="kda-hover-tag"
-        onMouseEnter={(e: React.MouseEvent<HTMLElement>) =>
-          Tooltip.handler(e, ref)
-        }
-        onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) =>
-          Tooltip.handler(e, ref)
-        }
+        onMouseEnter={(e: React.MouseEvent<HTMLElement>) => Tooltip.handler(e, ref)}
+        onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => Tooltip.handler(e, ref)}
       >
         <Tag>
           <div className={containerClass}>

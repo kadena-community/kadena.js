@@ -2,12 +2,8 @@ import { sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const buttonContainerClass = style([
-  { display: 'flex', flexDirection: 'row-reverse' },
-]);
-export const notificationContainerStyle = style([
-  sprinkles({ fontSize: '$sm', marginY: '$6' }),
-]);
+export const buttonContainerClass = style([{ display: 'flex', flexDirection: 'row-reverse' }]);
+export const notificationContainerStyle = style([sprinkles({ fontSize: '$sm', marginY: '$6' })]);
 export const notificationLinkStyle = style([
   sprinkles({ color: '$neutral5', fontWeight: '$bold' }),
 ]);

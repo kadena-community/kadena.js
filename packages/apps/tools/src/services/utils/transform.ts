@@ -1,9 +1,7 @@
 import type { IChainModule } from '@/components/Global/ModuleExplorer/types';
 import type { IModulesResult } from '../modules/list-module';
 
-export const transformModulesRequest = (
-  modulesRequest: IModulesResult,
-): Array<IChainModule> => {
+export const transformModulesRequest = (modulesRequest: IModulesResult): Array<IChainModule> => {
   if (modulesRequest.data === undefined) {
     return [];
   }

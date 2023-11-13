@@ -1,13 +1,8 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { FormStatusNotification } from '@/components/Global';
-import {
-  AccountNameField,
-  NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
+import { AccountNameField, NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormItemCard } from '@/components/Global/FormItemCard';
-import RequestKeyField, {
-  REQUEST_KEY_VALIDATION,
-} from '@/components/Global/RequestKeyField';
+import RequestKeyField, { REQUEST_KEY_VALIDATION } from '@/components/Global/RequestKeyField';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import client from '@/constants/client';
 import { kadenaConstants } from '@/constants/kadena';
@@ -51,17 +46,12 @@ import {
 } from './styles.css';
 
 // @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
-const DOMAIN_NAME_REGEX: RegExp =
-  /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
+const DOMAIN_NAME_REGEX: RegExp = /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
   advancedOptions: z.boolean().optional(),
-  server: z
-    .string()
-    .trim()
-    .regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name')
-    .optional(),
+  server: z.string().trim().regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name').optional(),
   gasPayer: NAME_VALIDATION.optional(),
   gasLimit: z.number().optional(),
   gasPrice: z.string().optional(),
@@ -74,18 +64,14 @@ interface IErrorObject {
 }
 
 const CrossChainTransferFinisher: FC = () => {
-  const debug = Debug(
-    'kadena-transfer:pages:transfer:cross-chain-transfer-finisher',
-  );
+  const debug = Debug('kadena-transfer:pages:transfer:cross-chain-transfer-finisher');
   const { t } = useTranslation('common');
   const router = useRouter();
   const { devOption } = useAppContext();
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
   const helpCenterRef = useRef<HTMLElement | null>(null);
 
-  const [requestKey, setRequestKey] = useState<string>(
-    (router.query?.reqKey as string) || '',
-  );
+  const [requestKey, setRequestKey] = useState<string>((router.query?.reqKey as string) || '');
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
@@ -121,9 +107,7 @@ const CrossChainTransferFinisher: FC = () => {
     }
   };
 
-  const onCheckRequestKey = async (
-    e: React.KeyboardEvent<HTMLInputElement>,
-  ): Promise<void> => {
+  const onCheckRequestKey = async (e: React.KeyboardEvent<HTMLInputElement>): Promise<void> => {
     e.preventDefault();
     debug(onCheckRequestKey.name);
 
@@ -145,10 +129,7 @@ const CrossChainTransferFinisher: FC = () => {
       chainId: pollResults.tx.sender.chain,
     };
 
-    const proof = await client.pollCreateSpv(
-      requestObject,
-      pollResults.tx.receiver.chain,
-    );
+    const proof = await client.pollCreateSpv(requestObject, pollResults.tx.receiver.chain);
 
     const status = await client.listen(requestObject);
 
@@ -191,12 +172,9 @@ const CrossChainTransferFinisher: FC = () => {
     }
   };
 
-  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      setRequestKey(e.target.value);
-    },
-    [],
-  );
+  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
+    setRequestKey(e.target.value);
+  }, []);
 
   useToolbar(menuData, router.pathname);
 
@@ -238,10 +216,8 @@ const CrossChainTransferFinisher: FC = () => {
 
   const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const isAdvancedOptions = devOption !== 'BASIC';
-  const showInputError =
-    pollResults.error === undefined ? undefined : 'negative';
-  const showInputHelper =
-    pollResults.error !== undefined ? pollResults.error : '';
+  const showInputError = pollResults.error === undefined ? undefined : 'negative';
+  const showInputHelper = pollResults.error !== undefined ? pollResults.error : '';
   const showNotification = Object.keys(finalResults).length > 0;
 
   const formattedSigData = `{
@@ -251,10 +227,7 @@ const CrossChainTransferFinisher: FC = () => {
 
   const renderNotification =
     txError.toString() === '' ? (
-      <FormStatusNotification
-        status="successful"
-        title={t('Notification title')}
-      >
+      <FormStatusNotification status="successful" title={t('Notification title')}>
         {t('XChain transfer has been successfully finalized!')}
       </FormStatusNotification>
     ) : (
@@ -335,9 +308,7 @@ const CrossChainTransferFinisher: FC = () => {
                   ]}
                 />
                 <div className={sidebarLinksStyle}>
-                  <ResourceLinks
-                    links={[{ title: t('Transactions link'), href: '#' }]}
-                  />
+                  <ResourceLinks links={[{ title: t('Transactions link'), href: '#' }]} />
                 </div>
               </>
             ),

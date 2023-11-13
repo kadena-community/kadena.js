@@ -33,10 +33,7 @@ const GridCol: FC<IGridRowProps> = ({
   css['@2xl'] = getColumnStyles(xxl);
 
   return (
-    <StyledGridCol
-      className={className}
-      css={{ ...getColumnStyles(xs), ...css }}
-    >
+    <StyledGridCol className={className} css={{ ...getColumnStyles(xs), ...css }}>
       {children}
     </StyledGridCol>
   );

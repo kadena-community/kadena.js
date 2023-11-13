@@ -2,11 +2,7 @@ import { Grid, Heading, SelectField, Stack, Tabs } from '@kadena/react-ui';
 
 import type { IChainModule } from './types';
 
-import type {
-  KeyboardHandler,
-  Mode,
-  Theme,
-} from '@/components/Global/Ace/helper';
+import type { KeyboardHandler, Mode, Theme } from '@/components/Global/Ace/helper';
 import { keyboards, modes, themes } from '@/components/Global/Ace/helper';
 import { usePersistentState } from '@/hooks/use-persistent-state';
 import useTranslation from 'next-translate/useTranslation';
@@ -27,8 +23,10 @@ const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
 
 const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
   const { t } = useTranslation('common');
-  const [keyboardHandler, setKeyboardHandler] =
-    usePersistentState<KeyboardHandler>('keyboard-handler', keyboards[0]);
+  const [keyboardHandler, setKeyboardHandler] = usePersistentState<KeyboardHandler>(
+    'keyboard-handler',
+    keyboards[0],
+  );
   const [theme, setTheme] = usePersistentState<Theme>('theme', 'monokai');
   const [mode, setMode] = usePersistentState<Mode>('mode', 'lisp');
 
@@ -36,11 +34,7 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
     return (
       <section>
         <Heading variant="h4">{t('No code to be shown yet')}</Heading>
-        <p>
-          {t(
-            'Click on a module from the left panel to see its code in this panel.',
-          )}
-        </p>
+        <p>{t('Click on a module from the left panel to see its code in this panel.')}</p>
       </section>
     );
   }

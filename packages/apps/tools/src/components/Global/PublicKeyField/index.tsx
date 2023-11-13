@@ -7,13 +7,9 @@ import React from 'react';
 import type { FieldError } from 'react-hook-form';
 import { publicKeyFieldStyles } from './styles.css';
 
-interface IPublicKeyFieldProps
-  extends Partial<Omit<IFormFieldWrapperProps, 'children'>> {
+interface IPublicKeyFieldProps extends Partial<Omit<IFormFieldWrapperProps, 'children'>> {
   inputProps: Partial<
-    Pick<
-      IInputProps,
-      'id' | 'placeholder' | 'ref' | 'name' | 'onChange' | 'onBlur'
-    >
+    Pick<IInputProps, 'id' | 'placeholder' | 'ref' | 'name' | 'onChange' | 'onBlur'>
   >;
   error?: FieldError;
 }

@@ -6,11 +6,7 @@ import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import {
-  errorMessageStyle,
-  formButtonStyle,
-  modalOptionsContentStyle,
-} from './styles.css';
+import { errorMessageStyle, formButtonStyle, modalOptionsContentStyle } from './styles.css';
 
 const schema = z.object({
   label: z.string().trim().min(1),
@@ -22,8 +18,7 @@ type FormData = z.infer<typeof schema>;
 
 export const AddNetworkModal: FC = () => {
   const { t } = useTranslation('common');
-  const { setSelectedNetwork, setNetworksData, networksData } =
-    useWalletConnectClient();
+  const { setSelectedNetwork, setNetworksData, networksData } = useWalletConnectClient();
 
   const [label, setLabel] = useState('');
   const [networkId, setNetworkId] = useState('');

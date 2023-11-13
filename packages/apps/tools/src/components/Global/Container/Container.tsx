@@ -8,11 +8,7 @@ export interface IContainerProps {
   children: ReactNode;
 }
 
-const Container: FC<IContainerProps> = ({
-  children,
-  type = 'fluid',
-  className,
-}) => (
+const Container: FC<IContainerProps> = ({ children, type = 'fluid', className }) => (
   <StyledContainer type={type} className={className}>
     {children}
   </StyledContainer>

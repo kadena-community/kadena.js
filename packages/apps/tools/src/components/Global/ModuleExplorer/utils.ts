@@ -4,10 +4,7 @@ import type { IChainModule } from './types';
 export const getModulesMap = (
   modules: IChainModule[],
 ): Map<string, Array<{ chainId: ChainwebChainId; hash?: string }>> => {
-  const modulesMap = new Map<
-    string,
-    Array<{ chainId: ChainwebChainId; hash?: string }>
-  >();
+  const modulesMap = new Map<string, Array<{ chainId: ChainwebChainId; hash?: string }>>();
 
   modules.forEach((module) => {
     if (modulesMap.has(module.moduleName)) {
@@ -16,9 +13,7 @@ export const getModulesMap = (
         { chainId: module.chainId, hash: module.hash },
       ]);
     } else {
-      modulesMap.set(module.moduleName, [
-        { chainId: module.chainId, hash: module.hash },
-      ]);
+      modulesMap.set(module.moduleName, [{ chainId: module.chainId, hash: module.hash }]);
     }
   });
 

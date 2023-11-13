@@ -9,16 +9,11 @@ export const getNetworks = (accounts: string[] = []): Network[] =>
     ),
   ) as Network[];
 
-export const getAccounts = (
-  accounts: string[] = [],
-  selectedNetwork?: string,
-): string[] =>
+export const getAccounts = (accounts: string[] = [], selectedNetwork?: string): string[] =>
   Array.from(
     new Set(
       accounts
-        ?.filter((account: string): boolean =>
-          account.includes(`kadena:${selectedNetwork}`),
-        )
+        ?.filter((account: string): boolean => account.includes(`kadena:${selectedNetwork}`))
         ?.map((account) => account.split(':')[2]),
     ),
   );

@@ -54,10 +54,7 @@ export const DrawerToolbar: ForwardRefExoticComponent<
         <div>
           {sections.map(({ icon, title }, index) => (
             <div className={buttonWrapperClass} key={title}>
-              <DrawerIconButton
-                icon={icon}
-                onClick={() => handleOpenSection(index)}
-              />
+              <DrawerIconButton icon={icon} onClick={() => handleOpenSection(index)} />
             </div>
           ))}
         </div>
@@ -67,15 +64,9 @@ export const DrawerToolbar: ForwardRefExoticComponent<
             <Text size="lg" bold>
               {sections[visibleSection].title}
             </Text>
-            <IconButton
-              onClick={() => setVisibleSection(null)}
-              icon="Close"
-              title="close"
-            />
+            <IconButton onClick={() => setVisibleSection(null)} icon="Close" title="close" />
           </div>
-          <div className={expandedDrawerContentClass}>
-            {sections[visibleSection].children}
-          </div>
+          <div className={expandedDrawerContentClass}>{sections[visibleSection].children}</div>
         </>
       )}
     </aside>

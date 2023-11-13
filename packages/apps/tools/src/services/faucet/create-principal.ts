@@ -1,7 +1,4 @@
-import type {
-  ChainwebChainId,
-  ChainwebNetworkId,
-} from '@kadena/chainweb-node-client';
+import type { ChainwebChainId, ChainwebNetworkId } from '@kadena/chainweb-node-client';
 import { Pact, createClient, isSignedTransaction } from '@kadena/client';
 
 import { getKadenaConstantByNetwork } from '@/constants/kadena';

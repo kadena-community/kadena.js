@@ -38,9 +38,7 @@ export const Toolbar: FC = () => {
     }
 
     const mainPath = pathname.split('/')[1];
-    const activeMenu = menuData.find(
-      (item) => item.href && item.href.includes(mainPath),
-    );
+    const activeMenu = menuData.find((item) => item.href && item.href.includes(mainPath));
 
     if (!activeMenu) return;
 
@@ -54,8 +52,7 @@ export const Toolbar: FC = () => {
     index: number,
   ) => {
     if (pathname === '/') return false;
-    const isUrlParam =
-      item.href !== undefined && item.href.includes(pathname.split('/')[1]);
+    const isUrlParam = item.href !== undefined && item.href.includes(pathname.split('/')[1]);
 
     return index === activeMenuIndex || isUrlParam;
   };
@@ -80,9 +77,7 @@ export const Toolbar: FC = () => {
           </li>
         ))}
       </ul>
-      <ul
-        className={classNames(gridMiniMenuListStyle, bottomIconsContainerStyle)}
-      >
+      <ul className={classNames(gridMiniMenuListStyle, bottomIconsContainerStyle)}>
         <li key={String('links')} className={gridMiniMenuListItemStyle}>
           <div>
             <MenuButton

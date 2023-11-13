@@ -2,10 +2,7 @@ import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
-import type {
-  ChainwebChainId,
-  ILocalCommandResult,
-} from '@kadena/chainweb-node-client';
+import type { ChainwebChainId, ILocalCommandResult } from '@kadena/chainweb-node-client';
 import { Pact, createClient } from '@kadena/client';
 import Debug from 'debug';
 

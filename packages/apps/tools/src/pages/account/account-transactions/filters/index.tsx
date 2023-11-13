@@ -1,21 +1,12 @@
 import { ChainSelect } from '@/components/Global';
-import AccountNameField, {
-  NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
+import AccountNameField, { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  Card,
-  Grid,
-  Heading,
-} from '@kadena/react-ui';
+import { Box, Breadcrumbs, Button, Card, Grid, Heading } from '@kadena/react-ui';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
@@ -32,9 +23,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const CheckTransactions: FC = () => {
-  const debug = Debug(
-    'kadena-transfer:pages:transfer:account-transactions:filters',
-  );
+  const debug = Debug('kadena-transfer:pages:transfer:account-transactions:filters');
 
   const { t } = useTranslation('common');
   const router = useRouter();

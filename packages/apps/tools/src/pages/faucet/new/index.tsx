@@ -67,8 +67,7 @@ interface IFundExistingAccountResponseBody {
         };
   };
 }
-interface IFundExistingAccountResponse
-  extends Record<string, IFundExistingAccountResponseBody> {}
+interface IFundExistingAccountResponse extends Record<string, IFundExistingAccountResponseBody> {}
 
 const AMOUNT_OF_COINS_FUNDED: number = 100;
 const isCustomError = (error: unknown): error is ICommandResult => {
@@ -88,9 +87,7 @@ const NewAccountFaucetPage: FC = () => {
   }>({ status: 'idle' });
   const [pubKeys, setPubKeys] = useState<string[]>([]);
   const [currentKey, setCurrentKey] = useState<string>('');
-  const [validRequestKey, setValidRequestKey] = useState<
-    FormFieldStatus | undefined
-  >();
+  const [validRequestKey, setValidRequestKey] = useState<FormFieldStatus | undefined>();
 
   const { data: accountName } = useQuery({
     queryKey: ['accountName', pubKeys, chainID, pred],
@@ -179,13 +176,9 @@ const NewAccountFaucetPage: FC = () => {
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
-  const disabledButton: boolean =
-    requestStatus.status === 'processing' || mainnetSelected;
+  const disabledButton: boolean = requestStatus.status === 'processing' || mainnetSelected;
 
-  const addPublicKey = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    value: string,
-  ): void => {
+  const addPublicKey = (e: React.MouseEvent<HTMLButtonElement>, value: string): void => {
     e.preventDefault();
 
     const isValidInput = validatePublicKey(value);

@@ -6,11 +6,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';
-import {
-  gridItemMenuStyle,
-  subMenuContentStyle,
-  subMenuTitleClass,
-} from './styles.css';
+import { gridItemMenuStyle, subMenuContentStyle, subMenuTitleClass } from './styles.css';
 
 export const Menu: FC = () => {
   const router = useRouter();
@@ -35,13 +31,8 @@ export const Menu: FC = () => {
     },
   ];
 
-  const {
-    activeMenu,
-    isMenuOpen,
-    setActiveMenuIndex,
-    visibleLinks,
-    setVisibleLinks,
-  } = useLayoutContext();
+  const { activeMenu, isMenuOpen, setActiveMenuIndex, visibleLinks, setVisibleLinks } =
+    useLayoutContext();
 
   const handleCloseMenu = () => {
     setActiveMenuIndex(undefined);
