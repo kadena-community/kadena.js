@@ -1,7 +1,7 @@
 import { GetTransfersQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
-import { Box, Button, Link, Select, Table } from '@kadena/react-ui';
+import { Box, Link, Pagination, Select, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 type DataType = GetTransfersQuery;
@@ -95,6 +95,52 @@ export const ExtendedTransfersTable = (
     });
   }, [currentPage, itemsPerPage, router, urlItemsPerPage, urlPage]);
 
+  const handlePaginationClick = async (newPageNumber: number) => {
+    if (newPageNumber > currentPage) {
+      await fetchMore({
+        variables: {
+          first: itemsPerPage,
+          last: null,
+          after: transfers.pageInfo.endCursor,
+          before: null,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+
+          return fetchMoreResult;
+        },
+      });
+    } else if (newPageNumber < currentPage) {
+      fetchMore({
+        variables: {
+          first: null,
+          last: itemsPerPage,
+          after: null,
+          before: transfers.pageInfo.startCursor,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          if (fetchMoreResult.transfers.edges.length < itemsPerPage) {
+            return {
+              ...prev,
+              transfers: {
+                ...fetchMoreResult.transfers,
+                edges: [
+                  ...fetchMoreResult.transfers.edges,
+                  ...prev.transfers.edges,
+                ].slice(0, itemsPerPage),
+              },
+            };
+          }
+
+          return fetchMoreResult;
+        },
+      });
+    }
+
+    setCurrentPage(newPageNumber);
+  };
+
   return (
     <>
       <Box marginBottom="$3">
@@ -115,62 +161,14 @@ export const ExtendedTransfersTable = (
             ))}
           </Select>
         </div>
-        <Button
-          variant="compact"
-          onClick={() =>
-            fetchMore({
-              variables: {
-                first: 10,
-                last: null,
-                after: transfers.pageInfo.endCursor,
-                before: null,
-              },
-              updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev;
-
-                if (fetchMoreResult.transfers.edges.length < 10) {
-                  return {
-                    ...prev,
-                    transactions: {
-                      ...fetchMoreResult.transfers,
-                      edges: [
-                        ...fetchMoreResult.transfers.edges,
-                        ...prev.transfers.edges,
-                      ].slice(0, 10),
-                    },
-                  };
-                }
-
-                return fetchMoreResult;
-              },
-            })
-          }
-          disabled={!transfers.pageInfo.hasNextPage}
-          style={{ float: 'right' }}
-        >
-          Next Page
-        </Button>
-        <Button
-          variant="compact"
-          onClick={() =>
-            fetchMore({
-              variables: {
-                first: null,
-                last: 10,
-                after: null,
-                before: transfers.pageInfo.startCursor,
-              },
-              updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev;
-                return fetchMoreResult;
-              },
-            })
-          }
-          disabled={!transfers.pageInfo.hasPreviousPage}
-          style={{ float: 'right', marginRight: '10px' }}
-        >
-          Previous Page
-        </Button>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Pagination
+            totalPages={totalPages}
+            label="pagination"
+            currentPage={currentPage}
+            onPageChange={handlePaginationClick}
+          />
+        </div>
       </Box>
       <Table.Root wordBreak="break-word">
         <Table.Head>
