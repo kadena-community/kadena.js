@@ -1,7 +1,6 @@
 import { prismaClient } from '@db/prismaClient';
 import type { Event } from '@prisma/client';
 import { nullishOrEmpty } from '@utils/nullishOrEmpty';
-import _debug from 'debug';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 

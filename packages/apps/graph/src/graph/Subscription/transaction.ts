@@ -1,6 +1,5 @@
 import { prismaClient } from '@db/prismaClient';
 import type { Transaction } from '@prisma/client';
-import _debug from 'debug';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 

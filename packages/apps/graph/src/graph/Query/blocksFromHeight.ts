@@ -1,7 +1,6 @@
 import { prismaClient } from '@db/prismaClient';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import _debug from 'debug';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
