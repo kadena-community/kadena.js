@@ -47,6 +47,9 @@ importers:
       '@google-analytics/data':
         specifier: ~3.2.2
         version: 3.2.2
+      '@kadena/docs-tools':
+        specifier: workspace:^
+        version: link:../../tools/docs-tools
       '@kadena/fonts':
         specifier: ~0.0.1
         version: 0.0.1
