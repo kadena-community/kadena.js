@@ -8,6 +8,7 @@ const meta: Meta<ISelectProps> = {
   title: 'Form/Select',
   component: Select,
   parameters: {
+    status: { type: 'inDevelopment' },
     docs: {
       description: {
         component:

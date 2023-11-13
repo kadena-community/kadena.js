@@ -7,6 +7,11 @@ import React from 'react';
 const meta: Meta<typeof Label> = {
   title: 'Typography/Label',
   component: Label,
+  parameters: {
+    status: {
+      type: ['needsRevision'],
+    },
+  },
   argTypes: {
     children: {
       control: { type: 'text' },

@@ -9,6 +9,9 @@ const meta: Meta<IIconButtonProps> = {
   title: 'Components/IconButton',
   component: IconButton,
   parameters: {
+    status: {
+      type: ['deprecated'],
+    },
     docs: {
       description: {
         component:

@@ -12,6 +12,9 @@ const meta: Meta<
 > = {
   title: 'Components/Notification',
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:

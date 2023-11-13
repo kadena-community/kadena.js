@@ -4,8 +4,11 @@ import type { IMaskedValueProps } from './MaskedValue';
 import { MaskedValue } from './MaskedValue';
 
 const meta: Meta<IMaskedValueProps> = {
-  title: 'Components/MaskedValue',
+  title: 'Patterns/MaskedValue',
   parameters: {
+    status: {
+      type: ['experimental'],
+    },
     docs: {
       description: {
         component:

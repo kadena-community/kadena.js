@@ -6,8 +6,11 @@ import { TrackerCard } from './TrackerCard';
 import { layoutVariant } from './TrackerCard.css';
 
 const meta: Meta<{ icon: keyof typeof ProductIcon } & ITrackerCardProps> = {
-  title: 'Content/TrackerCard',
+  title: 'Patterns/TrackerCard',
   parameters: {
+    status: {
+      type: ['experimental'],
+    },
     docs: {
       description: {
         component:

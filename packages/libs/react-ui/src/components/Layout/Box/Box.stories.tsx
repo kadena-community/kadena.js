@@ -19,6 +19,9 @@ const meta: Meta<IBoxProps> = {
   title: 'Layout/Box',
   component: Box,
   parameters: {
+    status: {
+      type: 'stable',
+    },
     docs: {
       description: {
         component:

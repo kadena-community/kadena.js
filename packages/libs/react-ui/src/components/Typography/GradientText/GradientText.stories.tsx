@@ -5,6 +5,11 @@ import React from 'react';
 const meta: Meta<typeof GradientText> = {
   title: 'Typography/GradientText',
   component: GradientText,
+  parameters: {
+    status: {
+      type: ['stable'],
+    },
+  },
   argTypes: {
     children: {
       control: { type: 'text' },

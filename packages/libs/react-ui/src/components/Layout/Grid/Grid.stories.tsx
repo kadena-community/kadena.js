@@ -26,6 +26,9 @@ type StoryType = {
 const meta: Meta<StoryType> = {
   title: 'Layout/Grid',
   parameters: {
+    status: {
+      type: 'releaseCandidate',
+    },
     docs: {
       description: {
         component:

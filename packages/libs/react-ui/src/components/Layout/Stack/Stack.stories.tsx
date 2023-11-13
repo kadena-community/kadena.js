@@ -23,6 +23,9 @@ const meta: Meta<typeof Stack> = {
   component: Stack,
   decorators: [withCenteredStory],
   parameters: {
+    status: {
+      type: 'releaseCandidate',
+    },
     docs: {
       description: {
         component:

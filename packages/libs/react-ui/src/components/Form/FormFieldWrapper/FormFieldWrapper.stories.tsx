@@ -16,6 +16,7 @@ type StoryProps = {
 const meta: Meta<StoryProps> = {
   title: 'Form/FormFieldWrapper',
   parameters: {
+    status: { type: 'stable' },
     docs: {
       description: {
         component:
