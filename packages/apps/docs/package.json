@@ -35,7 +35,7 @@
   "dependencies": {
     "@7-docs/edge": "^0.5.1",
     "@google-analytics/data": "~3.2.2",
-    "@kadena/docs-tools": "workspace:^",
+    "@kadena/docs-tools": "workspace:*",
     "@kadena/fonts": "~0.0.1",
     "@kadena/react-ui": "workspace:*",
     "@mailchimp/mailchimp_marketing": "~3.0.80",

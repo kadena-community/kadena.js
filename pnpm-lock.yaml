@@ -48,7 +48,7 @@ importers:
         specifier: ~3.2.2
         version: 3.2.2
       '@kadena/docs-tools':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../tools/docs-tools
       '@kadena/fonts':
         specifier: ~0.0.1
@@ -1811,30 +1811,30 @@ importers:
         specifier: ~8.11.2
         version: 8.11.2
       mdast-util-to-string:
-        specifier: ~4.0.0
-        version: 4.0.0
+        specifier: ~3.2.0
+        version: 3.2.0
       remark-gfm:
         specifier: ^4.0.0
         version: 4.0.0
     devDependencies:
       '@kadena-dev/eslint-config':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../eslint-config
       '@kadena-dev/lint-package':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../lint-package
       '@kadena-dev/shared-config':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../shared-config
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
       '@types/mdast':
-        specifier: ^4.0.3
+        specifier: ^4.0.1
         version: 4.0.3
       '@types/node':
-        specifier: ^20.9.0
-        version: 20.9.0
+        specifier: ^18.17.14
+        version: 18.17.14
       '@types/react':
         specifier: ^18.2.15
         version: 18.2.15
@@ -1845,7 +1845,7 @@ importers:
         specifier: ~2.30.0
         version: 2.30.0
       eslint:
-        specifier: ^8.53.0
+        specifier: ^8.45.0
         version: 8.53.0
       js-yaml:
         specifier: ~4.1.0
@@ -1866,10 +1866,10 @@ importers:
         specifier: ~1.8.7
         version: 1.8.7
       typescript:
-        specifier: ^5.2.2
+        specifier: 5.2.2
         version: 5.2.2
       unified:
-        specifier: ^11.0.4
+        specifier: ^11.0.3
         version: 11.0.4
 
   packages/tools/e2e-tests:
@@ -11008,7 +11008,7 @@ packages:
   /@types/concat-stream@2.0.0:
     resolution: {integrity: sha512-t3YCerNM7NTVjLuICZo5gYAXYoDvpuuTceCcFQWcDQz26kxUR5uIWolxbIR5jRNIXpMqhOpW/b8imCR1LEmuJw==}
     dependencies:
-      '@types/node': 20.9.0
+      '@types/node': 18.17.14
     dev: false
 
   /@types/connect@3.4.36:
@@ -11340,6 +11340,7 @@ packages:
     resolution: {integrity: sha512-nekiGu2NDb1BcVofVcEKMIwzlx4NjHlcjhoxxKBNLtz15Y1z7MYf549DFvkHSId02Ax6kGwWntIBPC3l/JZcmw==}
     dependencies:
       undici-types: 5.26.5
+    dev: false
 
   /@types/normalize-package-data@2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -26373,6 +26374,7 @@ packages:
 
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+    dev: false
 
   /undici@5.28.1:
     resolution: {integrity: sha512-xcIIvj1LOQH9zAL54iWFkuDEaIVEjLrru7qRpa3GrEEHk6OBhb/LycuUY2m7VCcTuDeLziXCxobQVyKExyGeIA==}

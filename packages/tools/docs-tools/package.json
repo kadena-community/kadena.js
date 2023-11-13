@@ -36,27 +36,27 @@
   },
   "dependencies": {
     "acorn": "~8.11.2",
-    "mdast-util-to-string": "~4.0.0",
+    "mdast-util-to-string": "~3.2.0",
     "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
-    "@kadena-dev/eslint-config": "workspace:^",
-    "@kadena-dev/lint-package": "workspace:^",
-    "@kadena-dev/shared-config": "workspace:^",
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
     "@types/js-yaml": "^4.0.9",
-    "@types/mdast": "^4.0.3",
-    "@types/node": "^20.9.0",
+    "@types/mdast": "^4.0.1",
+    "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "@types/unist": "^3.0.2",
     "date-fns": "~2.30.0",
-    "eslint": "^8.53.0",
+    "eslint": "^8.45.0",
     "js-yaml": "~4.1.0",
     "mdast": "^3.0.0",
     "prettier": "~3.0.3",
     "react": "^18.2.0",
     "rimraf": "~5.0.1",
     "tsc-alias": "~1.8.7",
-    "typescript": "^5.2.2",
-    "unified": "^11.0.4"
+    "typescript": "5.2.2",
+    "unified": "^11.0.3"
   }
 }
