@@ -14,8 +14,8 @@ Do you want to file a bug? Please [open a new issue][1].
 
 [Install Node.js][2] if you haven't already.
 
-As an external contributor, you will need to fork the repo before you can contribute. Then you can
-clone the repository and install dependencies:
+As an external contributor, you will need to fork the repo before you can
+contribute. Then you can clone the repository and install dependencies:
 
 ```sh
 git clone git@github.com:kadena-community/kadena.js.git
@@ -26,12 +26,13 @@ pnpm build
 
 ### Troubleshooting
 
-Running into issues? Please see if the issue has a solution in [Troubleshooting][3].
+Running into issues? Please see if the issue has a solution in
+[Troubleshooting][3].
 
 ### Switch branches
 
-Depending on the changes, you may need to invoke the following commands when switching branches to
-keep everything in check:
+Depending on the changes, you may need to invoke the following commands when
+switching branches to keep everything in check:
 
 ```sh
 pnpm install
@@ -47,19 +48,20 @@ pnpm run test --watch   # Keep running tests during development
 
 ## Making a Pull Request
 
-Before making a pull request, please discuss your ideas first. This will optimize your time and the
-review process.
+Before making a pull request, please discuss your ideas first. This will
+optimize your time and the review process.
 
 ## Conventions
 
 ### Git/GitHub
 
 - Try to keep pull requests focused and small.
-- Use prefixed branch names such as `feat/feature-title`, `fix/fix-title`, `chore/chore-title`
+- Use prefixed branch names such as `feat/feature-title`, `fix/fix-title`,
+  `chore/chore-title`
 - Using Asana? [Attach a pull request to the Asana task][4].
 - Before merging a pull request, make sure the commit messages are good.
-- Prefer a rebase over merge commits, for both [updating branches][5] and [merging pull
-  requests][6].
+- Prefer a rebase over merge commits, for both [updating branches][5] and
+  [merging pull requests][6].
 
 ### Changelogs
 
@@ -71,24 +73,28 @@ When wrapping up a PR you should add one or more changelog entries:
 pnpm changeset
 ```
 
-Decide for each package wether the changes are relevant to the consumer of the package(s) and how
-their version should be bumped (`patch`, `minor` or `major`). You can edit the created Markdown file
-in the `.changeset` folder. Use `none` to not bump the version at all.
+Decide for each package wether the changes are relevant to the consumer of the
+package(s) and how their version should be bumped (`patch`, `minor` or `major`).
+You can edit the created Markdown file in the `.changeset` folder. Use `none` to
+not bump the version at all.
 
-Recommended reading: [Introducing Changesets: Simplify Project Versioning with Semantic Releases][7]
+Recommended reading: [Introducing Changesets: Simplify Project Versioning with
+Semantic Releases][7]
 
 #### Authoring Changelogs
 
-To keep everything clear for ourselves and our end users, we have a "changelog etiquette". Only
-include changes that affect the consumer of your package/app/product. It's not a commit log. Write
-descriptions that are understandable from the consumers' perspective:
+To keep everything clear for ourselves and our end users, we have a "changelog
+etiquette". Only include changes that affect the consumer of your
+package/app/product. It's not a commit log. Write descriptions that are
+understandable from the consumers' perspective:
 
-- Start descriptions with action verbs like "Add", "Remove", "Deprecate", "Fix", "Improve",
-  "Update".
+- Start descriptions with action verbs like "Add", "Remove", "Deprecate", "Fix",
+  "Improve", "Update".
 - Avoid the term "bug", use "issue" instead.
 - Add GitHub issue numbers when fixing those.
-- When referring to public API changes, use backticks and parentheses for code like function names
-  and classes (e.g. `createClient()`, `new TransactionBuilder()`, `hash`).
+- When referring to public API changes, use backticks and parentheses for code
+  like function names and classes (e.g. `createClient()`,
+  `new TransactionBuilder()`, `hash`).
 - Upgrades should be documented with old and new version numbers.
 - Avoid trailing periods (unless in a description below the commit title).
 
@@ -98,17 +104,19 @@ Examples:
 - Use `doSomethingBetter()` instead.
 - Fix issue where `ExampleWidget` API did not handle dates correctly (fix #81)
 - Improve the diagnostic logging when running in advanced mode.
-- Upgrade from `react@15` to `react@16-beta` release of the flexible panels feature
+- Upgrade from `react@15` to `react@16-beta` release of the flexible panels
+  feature
 
 (Credits: [rushjs.io/pages/best_practices/change_logs][8])
 
-If you don't see a need for authoring changelogs for your package (e.g. a PoC or packages without
-consumers), add it to [.changeset/config.json#ignore][9].
+If you don't see a need for authoring changelogs for your package (e.g. a PoC or
+packages without consumers), add it to [.changeset/config.json#ignore][9].
 
 ### Code
 
-This repository uses a combination of TypeScript, ESLint and Prettier to adhere to coding standards.
-We try to automate and auto-fix as much as possible using the following commands:
+This repository uses a combination of TypeScript, ESLint and Prettier to adhere
+to coding standards. We try to automate and auto-fix as much as possible using
+the following commands:
 
 ```sh
 pnpm build
@@ -116,10 +124,11 @@ pnpm lint
 pnpm format
 ```
 
-Note that lint and format are separated tasks (read more at [linting vs formatting][10]).
+Note that lint and format are separated tasks (read more at [linting vs
+formatting][10]).
 
-Run from root to apply to all packages, use `--filter` for a selection, and run from any package
-folder to apply it only there.
+Run from root to apply to all packages, use `--filter` for a selection, and run
+from any package folder to apply it only there.
 
 See [Filters][11] for more details.
 
@@ -127,9 +136,9 @@ For everything else, please discuss.
 
 ## Workflow
 
-You are expected to install your own workflow the way you like it. For example, some developers like
-to auto-format code "on save", others before they commit or push their changes. That's why this
-repository does not auto-install Git hooks.
+You are expected to install your own workflow the way you like it. For example,
+some developers like to auto-format code "on save", others before they commit or
+push their changes. That's why this repository does not auto-install Git hooks.
 
 ## Publishing Packages
 
@@ -139,10 +148,11 @@ To publish a new version of updated packages, please make sure you:
 - have push rights to this repository's `main` branch
 - are on a clean `main` branch
 
-We're using [Changesets][12] for our release process. The default process is enabled by merging [the
-latest open pull request titled "\[ci\] Release"][13].
+We're using [Changesets][12] for our release process. The default process is
+enabled by merging [the latest open pull request titled "\[ci\] Release"][13].
 
-The manual process in [How do I run the version and publish commands?][14] is repeated here:
+The manual process in [How do I run the version and publish commands?][14] is
+repeated here:
 
 1. Check out and pull `main`
 2. Update changelogs and bump versions

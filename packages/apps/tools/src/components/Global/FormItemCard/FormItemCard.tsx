@@ -1,4 +1,7 @@
-import { helperStyle, helperTextIconStyle } from '@/components/Global/FormItemCard/styles.css';
+import {
+  helperStyle,
+  helperTextIconStyle,
+} from '@/components/Global/FormItemCard/styles.css';
 import { Card, Grid, Heading, SystemIcon, Text } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { ChangeEvent, FC } from 'react';

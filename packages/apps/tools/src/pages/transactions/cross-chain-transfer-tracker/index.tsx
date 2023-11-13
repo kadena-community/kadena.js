@@ -1,12 +1,17 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { FormItemCard } from '@/components/Global/FormItemCard';
-import RequestKeyField, { REQUEST_KEY_VALIDATION } from '@/components/Global/RequestKeyField';
+import RequestKeyField, {
+  REQUEST_KEY_VALIDATION,
+} from '@/components/Global/RequestKeyField';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
 import type { IStatusData } from '@/services/transfer-tracker/get-transfer-status';
-import { StatusId, getTransferStatus } from '@/services/transfer-tracker/get-transfer-status';
+import {
+  StatusId,
+  getTransferStatus,
+} from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { FormFieldStatus } from '@kadena/react-ui';
@@ -26,7 +31,12 @@ import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { formButtonStyle, headerTextStyle, infoBoxStyle, mainContentStyle } from './styles.css';
+import {
+  formButtonStyle,
+  headerTextStyle,
+  infoBoxStyle,
+  mainContentStyle,
+} from './styles.css';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
@@ -41,13 +51,19 @@ const CrossChainTransferTracker: FC = () => {
 
   useToolbar(menuData, router.pathname);
 
-  const debug = Debug('kadena-transfer:pages:transfer:cross-chain-transfer-tracker');
+  const debug = Debug(
+    'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
+  );
 
-  const [requestKey, setRequestKey] = useState<string>((router.query?.reqKey as string) || '');
+  const [requestKey, setRequestKey] = useState<string>(
+    (router.query?.reqKey as string) || '',
+  );
   const [data, setData] = useState<IStatusData>({});
   const [txError, setTxError] = useState<string>('');
   const [inputError, setInputError] = useState<string>('');
-  const [validRequestKey, setValidRequestKey] = useState<FormFieldStatus | undefined>();
+  const [validRequestKey, setValidRequestKey] = useState<
+    FormFieldStatus | undefined
+  >();
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   useDidUpdateEffect(() => {
@@ -125,9 +141,12 @@ const CrossChainTransferTracker: FC = () => {
     },
   });
 
-  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
-    setRequestKey(e.target.value);
-  }, []);
+  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (e) => {
+      setRequestKey(e.target.value);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (errors.requestKey?.message) {
@@ -138,14 +157,25 @@ const CrossChainTransferTracker: FC = () => {
 
   return (
     <div className={mainContentStyle}>
-      <Stack direction="column" paddingTop={'$2'} paddingBottom={'$10'} gap={'$6'}>
+      <Stack
+        direction="column"
+        paddingTop={'$2'}
+        paddingBottom={'$10'}
+        gap={'$6'}
+      >
         <Stack direction="column" gap={'$2'}>
           <Breadcrumbs.Root>
             <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
             <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
           </Breadcrumbs.Root>
-          <Stack gap={'$6'} justifyContent={'space-between'} alignItems={'flex-end'}>
-            <div className={headerTextStyle}>{t('Track & trace transactions')}</div>
+          <Stack
+            gap={'$6'}
+            justifyContent={'space-between'}
+            alignItems={'flex-end'}
+          >
+            <div className={headerTextStyle}>
+              {t('Track & trace transactions')}
+            </div>
             {data.id === StatusId.Pending ? (
               <Button
                 title={t('Finish Transaction')}
@@ -207,7 +237,12 @@ const CrossChainTransferTracker: FC = () => {
             </Grid.Root>
           </FormItemCard>
           <div className={formButtonStyle}>
-            <Button type="submit" title={t('Search')} icon="Magnify" iconAlign="right">
+            <Button
+              type="submit"
+              title={t('Search')}
+              icon="Magnify"
+              iconAlign="right"
+            >
               {t('Search')}
             </Button>
           </div>
@@ -248,18 +283,28 @@ const CrossChainTransferTracker: FC = () => {
                           title: t('Initiated transaction'),
                         },
                         {
-                          status: data?.id === StatusId.Success ? 'complete' : 'pending',
+                          status:
+                            data?.id === StatusId.Success
+                              ? 'complete'
+                              : 'pending',
                           title: data.description || 'An error has occurred',
                         },
                         {
-                          status: data.id === StatusId.Pending ? 'incomplete' : 'complete',
+                          status:
+                            data.id === StatusId.Pending
+                              ? 'incomplete'
+                              : 'complete',
                           title: t('Transfer complete'),
                         },
                       ]}
                     />
                     <TrackerCard
                       variant="vertical"
-                      icon={data?.id === StatusId.Success ? 'Receiver' : 'ReceiverInactive'}
+                      icon={
+                        data?.id === StatusId.Success
+                          ? 'Receiver'
+                          : 'ReceiverInactive'
+                      }
                       labelValues={[
                         {
                           label: t('Receiver'),

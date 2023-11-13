@@ -23,14 +23,17 @@ export interface IHeaderProps {
 
 const Header: FC<IHeaderProps> = () => {
   const { t } = useTranslation('common');
-  const { selectedNetwork, networksData, setSelectedNetwork } = useWalletConnectClient();
+  const { selectedNetwork, networksData, setSelectedNetwork } =
+    useWalletConnectClient();
   const { pathname, push } = useRouter();
 
   const { systemTheme, theme, setTheme } = useTheme();
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
-  const handleMenuItemClick = async (e: React.MouseEvent<HTMLAnchorElement>): Promise<void> => {
+  const handleMenuItemClick = async (
+    e: React.MouseEvent<HTMLAnchorElement>,
+  ): Promise<void> => {
     e.preventDefault();
 
     await push(e.currentTarget.href);
@@ -57,7 +60,9 @@ const Header: FC<IHeaderProps> = () => {
 
     if (!itemFromMenu) return '#';
 
-    const activeHref = itemFromMenu.items?.find((item) => item.href === pathname);
+    const activeHref = itemFromMenu.items?.find(
+      (item) => item.href === pathname,
+    );
 
     if (!activeHref) return '#';
 

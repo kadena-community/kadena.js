@@ -1,6 +1,9 @@
 import ModuleExplorer from '@/components/Global/ModuleExplorer';
 import type { IEditorProps } from '@/components/Global/ModuleExplorer/editor';
-import type { IChainModule, IModule } from '@/components/Global/ModuleExplorer/types';
+import type {
+  IChainModule,
+  IModule,
+} from '@/components/Global/ModuleExplorer/types';
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
@@ -16,14 +19,20 @@ import { listModules } from '@/services/modules/list-module';
 import { transformModulesRequest } from '@/services/utils/transform';
 import type { INetworkData } from '@/utils/network';
 import { getAllNetworks } from '@/utils/network';
-import type { ChainwebChainId, ILocalCommandResult } from '@kadena/chainweb-node-client';
+import type {
+  ChainwebChainId,
+  ILocalCommandResult,
+} from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { Breadcrumbs } from '@kadena/react-ui';
 import type { QueryClient } from '@tanstack/react-query';
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next/types';
+import type {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+} from 'next/types';
 import React, { useCallback, useState } from 'react';
 import { getCookieValue, getQueryValue } from './utils';
 
@@ -49,7 +58,9 @@ export const getModules = async (
 
   const results = await Promise.all(promises);
 
-  const transformed = results.map((result) => transformModulesRequest(result as IModulesResult));
+  const transformed = results.map((result) =>
+    transformModulesRequest(result as IModulesResult),
+  );
   const flattened = transformed.flat();
   const sorted = flattened.sort((a, b) => {
     if (a.moduleName === b.moduleName) {
@@ -93,7 +104,10 @@ export const getCompleteModule = async (
   };
 };
 
-const replaceOldWithNew = (oldData: IChainModule[], newData: IChainModule[]): IChainModule[] => {
+const replaceOldWithNew = (
+  oldData: IChainModule[],
+  newData: IChainModule[],
+): IChainModule[] => {
   return oldData.map((old) => {
     const newModule = newData.find((newM) => {
       return newM.moduleName === old.moduleName && newM.chainId === old.chainId;
@@ -139,7 +153,11 @@ export const getServerSideProps: GetServerSideProps<{
   data: IChainModule[];
   openedModules: IEditorProps['openedModules'];
 }> = async (context) => {
-  const network = getCookieValue(StorageKeys.NETWORK, context.req.cookies, DefaultValues.NETWORK);
+  const network = getCookieValue(
+    StorageKeys.NETWORK,
+    context.req.cookies,
+    DefaultValues.NETWORK,
+  );
 
   const networksData = getCookieValue(
     StorageKeys.NETWORKS_DATA,
@@ -151,8 +169,10 @@ export const getServerSideProps: GetServerSideProps<{
 
   const openedModules: IEditorProps['openedModules'] = [];
   const moduleQueryValue = getQueryValue(QueryParams.MODULE, context.query);
-  const chainQueryValue = getQueryValue(QueryParams.CHAIN, context.query, (value) =>
-    CHAINS.includes(value),
+  const chainQueryValue = getQueryValue(
+    QueryParams.CHAIN,
+    context.query,
+    (value) => CHAINS.includes(value),
   );
   if (moduleQueryValue && chainQueryValue) {
     const moduleResponse = (await describeModule(
@@ -177,10 +197,14 @@ export const getServerSideProps: GetServerSideProps<{
   return { props: { data: modules, openedModules } };
 };
 
-const ModuleExplorerPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const ModuleExplorerPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>,
+) => {
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
-  const [openedModules, setOpenedModules] = useState<IChainModule[]>(props.openedModules);
+  const [openedModules, setOpenedModules] = useState<IChainModule[]>(
+    props.openedModules,
+  );
 
   const { data: modules } = useQuery({
     queryKey: ['modules', network, networksData],
@@ -193,7 +217,13 @@ const ModuleExplorerPage = (props: InferGetServerSidePropsType<typeof getServerS
   const results = useQueries({
     queries: openedModules.map((module) => {
       return {
-        queryKey: ['module', network, module.chainId, module.moduleName, networksData],
+        queryKey: [
+          'module',
+          network,
+          module.chainId,
+          module.moduleName,
+          networksData,
+        ],
         queryFn: () => getCompleteModule(module, network, networksData),
         initialData: () => {
           return props.openedModules.find((openedModule) => {
@@ -238,24 +268,23 @@ const ModuleExplorerPage = (props: InferGetServerSidePropsType<typeof getServerS
     [router],
   );
 
-  const onInterfaceClick = useCallback<(selectedInterface: IChainModule) => void>(
-    (selectedInterface) => {
-      setOpenedModules((prev) => {
-        const alreadyOpened = prev.find((module) => {
-          return (
-            module.moduleName === selectedInterface.moduleName &&
-            module.chainId === selectedInterface.chainId
-          );
-        });
-
-        if (alreadyOpened) {
-          return prev;
-        }
-        return [...prev, selectedInterface];
+  const onInterfaceClick = useCallback<
+    (selectedInterface: IChainModule) => void
+  >((selectedInterface) => {
+    setOpenedModules((prev) => {
+      const alreadyOpened = prev.find((module) => {
+        return (
+          module.moduleName === selectedInterface.moduleName &&
+          module.chainId === selectedInterface.chainId
+        );
       });
-    },
-    [],
-  );
+
+      if (alreadyOpened) {
+        return prev;
+      }
+      return [...prev, selectedInterface];
+    });
+  }, []);
 
   const { t } = useTranslation('common');
 
@@ -273,7 +302,12 @@ const ModuleExplorerPage = (props: InferGetServerSidePropsType<typeof getServerS
         onInterfaceClick={onInterfaceClick}
         onModuleExpand={({ moduleName, chains }) => {
           // eslint-disable-next-line no-void
-          void enrichModule({ moduleName, chains }, network, networksData, queryClient);
+          void enrichModule(
+            { moduleName, chains },
+            network,
+            networksData,
+            queryClient,
+          );
         }}
         openedModules={fetchedModules}
       />

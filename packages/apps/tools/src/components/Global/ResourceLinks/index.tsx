@@ -31,7 +31,11 @@ export const ResourceLinks: FC<IProps> = ({ links, ...rest }: IProps) => {
       <ul className={linksClass}>
         {links.map((link) => (
           <li key={link.title}>
-            <Link className={linkClass} href={link.href} target={link?.target ?? '_blank'}>
+            <Link
+              className={linkClass}
+              href={link.href}
+              target={link?.target ?? '_blank'}
+            >
               {link.title}
             </Link>
           </li>

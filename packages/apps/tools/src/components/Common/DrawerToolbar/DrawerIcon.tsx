@@ -3,7 +3,8 @@ import { SystemIcon } from '@kadena/react-ui';
 import type { ButtonHTMLAttributes, FC } from 'react';
 import React from 'react';
 
-export interface IMenuButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IMenuButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   title?: string;
   active?: boolean;
   icon: keyof typeof SystemIcon;
@@ -21,7 +22,11 @@ export const DrawerIconButton: FC<IMenuButtonProps> = ({
 
   return (
     <>
-      <button className={gridMiniMenuListButtonStyle} {...rest} aria-label={title}>
+      <button
+        className={gridMiniMenuListButtonStyle}
+        {...rest}
+        aria-label={title}
+      >
         <Icon size={'sm'} />
       </button>
     </>

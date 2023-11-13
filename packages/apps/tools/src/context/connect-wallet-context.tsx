@@ -38,13 +38,15 @@ interface IWalletConnectClientContext {
   setNetworksData: (data: INetworkData[]) => void;
 }
 
-export const StorageKeys: Record<'NETWORK' | 'CHAIN_ID' | 'NETWORKS_DATA' | 'DEV_OPTION', string> =
-  {
-    NETWORK: 'network',
-    CHAIN_ID: 'chainID',
-    NETWORKS_DATA: 'networks',
-    DEV_OPTION: 'devOption',
-  };
+export const StorageKeys: Record<
+  'NETWORK' | 'CHAIN_ID' | 'NETWORKS_DATA' | 'DEV_OPTION',
+  string
+> = {
+  NETWORK: 'network',
+  CHAIN_ID: 'chainID',
+  NETWORKS_DATA: 'networks',
+  DEV_OPTION: 'devOption',
+};
 
 export const DefaultValues: { NETWORK: Network; CHAIN_ID: ChainwebChainId } = {
   NETWORK: 'testnet04',
@@ -54,9 +56,8 @@ export const DefaultValues: { NETWORK: Network; CHAIN_ID: ChainwebChainId } = {
 /**
  * Context
  */
-export const WalletConnectClientContext = createContext<IWalletConnectClientContext>(
-  {} as IWalletConnectClientContext,
-);
+export const WalletConnectClientContext =
+  createContext<IWalletConnectClientContext>({} as IWalletConnectClientContext);
 
 /**
  * walletConnectModal Config
@@ -73,18 +74,24 @@ interface IWalletConnectClientContextProviderProps {
 /**
  * Provider
  */
-export const WalletConnectClientContextProvider: FC<IWalletConnectClientContextProviderProps> = ({
-  children,
-}) => {
+export const WalletConnectClientContextProvider: FC<
+  IWalletConnectClientContextProviderProps
+> = ({ children }) => {
   const [client, setClient] = useState<Client>();
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([]);
   const [session, setSession] = useState<SessionTypes.Struct>();
   const [accounts, setAccounts] = useState<string[]>();
-  const [selectedNetwork, setSelectedNetwork] = useState<Network>(DefaultValues.NETWORK);
-  const [selectedChain, setSelectedChain] = useState<ChainwebChainId>(DefaultValues.CHAIN_ID);
+  const [selectedNetwork, setSelectedNetwork] = useState<Network>(
+    DefaultValues.NETWORK,
+  );
+  const [selectedChain, setSelectedChain] = useState<ChainwebChainId>(
+    DefaultValues.CHAIN_ID,
+  );
   const [selectedAccount, setSelectedAccount] = useState<string>();
   const [isInitializing, setIsInitializing] = useState(false);
-  const [networksData, setNetworksData] = useState<INetworkData[]>(getInitialNetworks());
+  const [networksData, setNetworksData] = useState<INetworkData[]>(
+    getInitialNetworks(),
+  );
 
   useLayoutEffect(() => {
     const initialNetwork = getItem(StorageKeys.NETWORK) as Network;
@@ -97,7 +104,9 @@ export const WalletConnectClientContextProvider: FC<IWalletConnectClientContextP
       setSelectedChain(initialChain);
     }
 
-    const initialNetworks = getItem(StorageKeys.NETWORKS_DATA) as INetworkData[];
+    const initialNetworks = getItem(
+      StorageKeys.NETWORKS_DATA,
+    ) as INetworkData[];
     const allNetworks = getAllNetworks(initialNetworks || []);
     if (initialNetworks) {
       setNetworksData(allNetworks);
@@ -119,10 +128,13 @@ export const WalletConnectClientContextProvider: FC<IWalletConnectClientContextP
     setAccounts(undefined as unknown as string[]);
   };
 
-  const onSessionConnected = useCallback(async (clientSession: SessionTypes.Struct) => {
-    setSession(clientSession);
-    setAccounts(clientSession?.namespaces?.kadena?.accounts);
-  }, []);
+  const onSessionConnected = useCallback(
+    async (clientSession: SessionTypes.Struct) => {
+      setSession(clientSession);
+      setAccounts(clientSession?.namespaces?.kadena?.accounts);
+    },
+    [],
+  );
 
   const connect = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -137,8 +149,16 @@ export const WalletConnectClientContextProvider: FC<IWalletConnectClientContextP
 
           requiredNamespaces: {
             kadena: {
-              methods: ['kadena_getAccounts_v1', 'kadena_sign_v1', 'kadena_quicksign_v1'],
-              chains: ['kadena:mainnet01', 'kadena:testnet04', 'kadena:development'],
+              methods: [
+                'kadena_getAccounts_v1',
+                'kadena_sign_v1',
+                'kadena_quicksign_v1',
+              ],
+              chains: [
+                'kadena:mainnet01',
+                'kadena:testnet04',
+                'kadena:development',
+              ],
               events: [],
             },
           },
@@ -195,7 +215,9 @@ export const WalletConnectClientContextProvider: FC<IWalletConnectClientContextP
         const { namespaces } = params;
         const clientSession = signClient.session.get(topic);
         const updatedSession = { ...clientSession, namespaces };
-        onSessionConnected(updatedSession).then(console.log).catch(console.error);
+        onSessionConnected(updatedSession)
+          .then(console.log)
+          .catch(console.error);
       });
 
       signClient.on('session_delete', () => {
@@ -217,7 +239,9 @@ export const WalletConnectClientContextProvider: FC<IWalletConnectClientContextP
       // populates (the last) existing session to state
       if (signClient.session.length) {
         const lastKeyIndex = signClient.session.keys.length - 1;
-        const clientSession = signClient.session.get(signClient.session.keys[lastKeyIndex]);
+        const clientSession = signClient.session.get(
+          signClient.session.keys[lastKeyIndex],
+        );
         await onSessionConnected(clientSession);
         return clientSession;
       }

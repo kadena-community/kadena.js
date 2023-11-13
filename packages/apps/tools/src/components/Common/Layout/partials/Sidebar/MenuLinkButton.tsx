@@ -4,7 +4,8 @@ import type { ButtonHTMLAttributes, FC } from 'react';
 import React from 'react';
 import { gridMiniMenuLinkButtonStyle } from './styles.css';
 
-export interface IMenuLinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IMenuLinkButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   title?: string;
   href?: string;
   active?: boolean;

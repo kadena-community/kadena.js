@@ -190,14 +190,19 @@ export async function getXChainTransferInfo({
       .setMeta({ chainId: receiverChain })
       .createTransaction();
 
-    const response = await client.dirtyRead(continuationTransaction as ICommand);
+    const response = await client.dirtyRead(
+      continuationTransaction as ICommand,
+    );
 
     if ('error' in response?.result) {
       const error = response.result as unknown as {
         type: string;
         message: string;
       };
-      if (String(error.type) === 'EvalError' && String(error.message).includes('pact completed')) {
+      if (
+        String(error.type) === 'EvalError' &&
+        String(error.message).includes('pact completed')
+      ) {
         return {
           id: StatusId.Success,
           status: t('Success'),

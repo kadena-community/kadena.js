@@ -24,10 +24,16 @@ import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
-import { filterItemClass, headerButtonGroupClass, mainContentClass } from './styles.css';
+import {
+  filterItemClass,
+  headerButtonGroupClass,
+  mainContentClass,
+} from './styles.css';
 
 const CheckTransactions: FC = () => {
-  const debug = Debug('kadena-transfer:pages:transfer:account-transactions:results');
+  const debug = Debug(
+    'kadena-transfer:pages:transfer:account-transactions:results',
+  );
 
   const { t } = useTranslation('common');
   const router = useRouter();
@@ -51,7 +57,11 @@ const CheckTransactions: FC = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      if (!router.query.network || !router.query.chain || !router.query.account) {
+      if (
+        !router.query.network ||
+        !router.query.chain ||
+        !router.query.account
+      ) {
         router.push(Routes.ACCOUNT_TRANSACTIONS_FILTERS).catch((e) => {
           debug(e);
         });
@@ -168,7 +178,9 @@ const CheckTransactions: FC = () => {
                     },
                     {
                       label: 'to chain',
-                      value: transactionDetails?.crossChainId || transactionDetails?.chain,
+                      value:
+                        transactionDetails?.crossChainId ||
+                        transactionDetails?.chain,
                     },
                   ]}
                   icon={'ReceiverInactive'}
@@ -216,7 +228,11 @@ const CheckTransactions: FC = () => {
         ) : (
           ''
         )}
-        {router.query.network ? <div className={filterItemClass}>{router.query.network}</div> : ''}
+        {router.query.network ? (
+          <div className={filterItemClass}>{router.query.network}</div>
+        ) : (
+          ''
+        )}
       </Text>
       <Box marginBottom="$10" />
 
@@ -248,10 +264,17 @@ const CheckTransactions: FC = () => {
                 }
 
                 return (
-                  <Table.Tr key={index} onClick={() => handleOpenTransactionDetails(result)}>
-                    <Table.Td>{new Date(result.blockTime).toLocaleString()}</Table.Td>
+                  <Table.Tr
+                    key={index}
+                    onClick={() => handleOpenTransactionDetails(result)}
+                  >
+                    <Table.Td>
+                      {new Date(result.blockTime).toLocaleString()}
+                    </Table.Td>
                     <Table.Td>{result.amount}</Table.Td>
-                    <Table.Td>{displayAccountName(result.fromAccount as string)}</Table.Td>
+                    <Table.Td>
+                      {displayAccountName(result.fromAccount as string)}
+                    </Table.Td>
                   </Table.Tr>
                 );
               })}
@@ -283,10 +306,17 @@ const CheckTransactions: FC = () => {
                 }
 
                 return (
-                  <Table.Tr key={index} onClick={() => handleOpenTransactionDetails(result)}>
-                    <Table.Td>{new Date(result.blockTime).toLocaleString()}</Table.Td>
+                  <Table.Tr
+                    key={index}
+                    onClick={() => handleOpenTransactionDetails(result)}
+                  >
+                    <Table.Td>
+                      {new Date(result.blockTime).toLocaleString()}
+                    </Table.Td>
                     <Table.Td>{result.amount}</Table.Td>
-                    <Table.Td>{displayAccountName(result.toAccount as string)}</Table.Td>
+                    <Table.Td>
+                      {displayAccountName(result.toAccount as string)}
+                    </Table.Td>
                   </Table.Tr>
                 );
               })}

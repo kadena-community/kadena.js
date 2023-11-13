@@ -1,5 +1,5 @@
 {
-  "printWidth": 100,
+  "printWidth": 80,
   "tabWidth": 2,
   "useTabs": false,
   "semi": true,
@@ -7,6 +7,9 @@
   "trailingComma": "all",
   "arrowParens": "always",
   "proseWrap": "always",
-  "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-packagejson"],
+  "plugins": [
+    "prettier-plugin-organize-imports",
+    "prettier-plugin-packagejson"
+  ],
   "organizeImportsSkipDestructiveCodeActions": true
 }

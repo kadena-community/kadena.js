@@ -1,6 +1,8 @@
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
-import AccountNameField, { NAME_VALIDATION } from '@/components/Global/AccountNameField';
+import AccountNameField, {
+  NAME_VALIDATION,
+} from '@/components/Global/AccountNameField';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
@@ -8,7 +10,14 @@ import { usePersistentChainID } from '@/hooks';
 import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { ICommandResult } from '@kadena/chainweb-node-client';
-import { Box, Breadcrumbs, Button, Card, Heading, Notification } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Card,
+  Heading,
+  Notification,
+} from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
@@ -50,7 +59,8 @@ interface IFundExistingAccountResponseBody {
   };
 }
 
-interface IFundExistingAccountResponse extends Record<string, IFundExistingAccountResponseBody> {}
+interface IFundExistingAccountResponse
+  extends Record<string, IFundExistingAccountResponseBody> {}
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
@@ -112,7 +122,8 @@ const ExistingAccountFaucetPage: FC = () => {
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
-  const disabledButton: boolean = requestStatus.status === 'processing' || mainnetSelected;
+  const disabledButton: boolean =
+    requestStatus.status === 'processing' || mainnetSelected;
 
   const {
     register,

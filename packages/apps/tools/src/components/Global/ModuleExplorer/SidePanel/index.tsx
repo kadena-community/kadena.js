@@ -6,7 +6,11 @@ import type { IOutlineProps } from './outline';
 import Outline from './outline';
 import type { IResultsProps } from './results';
 import Results from './results';
-import { containerStyle, modulesContainerStyle, outlineStyle } from './styles.css';
+import {
+  containerStyle,
+  modulesContainerStyle,
+  outlineStyle,
+} from './styles.css';
 
 export interface ISidePanelProps {
   results: IResultsProps['data'];

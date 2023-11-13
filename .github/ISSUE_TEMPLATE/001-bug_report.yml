@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value:
-        Thank you for taking the time to file a bug report. Please fill out this form as completely
-        as possible.
+        Thank you for taking the time to file a bug report. Please fill out this
+        form as completely as possible.
 
   - type: checkboxes
     id: initial-checks
@@ -68,8 +68,8 @@ body:
     attributes:
       label: Steps to reproduce the behavior
       description:
-        A clear and concise description how to reproduce the error. It helps to add
-        screenshots/videos/gifs.
+        A clear and concise description how to reproduce the error. It helps to
+        add screenshots/videos/gifs.
     validations:
       required: true
 
@@ -77,7 +77,8 @@ body:
     id: expected-behavior
     attributes:
       label: What did you expect to happen?
-      description: A clear and concise description of what you expected to happen.
+      description:
+        A clear and concise description of what you expected to happen.
     validations:
       required: true
 

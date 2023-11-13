@@ -36,9 +36,9 @@ export async function getTransactions(options: {
   }
 
   try {
-    return await fetch(getEstatsHost({ api: networkDto.ESTATS, account, chain })).then(
-      (res) => res.json() as unknown as ITransaction[],
-    );
+    return await fetch(
+      getEstatsHost({ api: networkDto.ESTATS, account, chain }),
+    ).then((res) => res.json() as unknown as ITransaction[]);
   } catch (error) {
     debug(error);
   }

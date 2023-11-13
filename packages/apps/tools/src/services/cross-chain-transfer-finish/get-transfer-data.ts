@@ -1,9 +1,15 @@
 import type { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
-import { convertIntToChainId, validateRequestKey } from '@/services/utils/utils';
+import {
+  convertIntToChainId,
+  validateRequestKey,
+} from '@/services/utils/utils';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
-import type { ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
+import type {
+  ChainwebChainId,
+  ICommandResult,
+} from '@kadena/chainweb-node-client';
 import { createClient } from '@kadena/client';
 import type { IPactEvent, IPactExec, PactValue } from '@kadena/types';
 import Debug from 'debug';
@@ -61,7 +67,9 @@ export async function getTransferData({
 
   try {
     const chainInfoPromises = Array.from(new Array(20)).map((item, chainId) => {
-      const networkDto = networksData.find((item) => item.networkId === network);
+      const networkDto = networksData.find(
+        (item) => item.networkId === network,
+      );
 
       if (!networkDto) {
         return;
@@ -82,7 +90,9 @@ export async function getTransferData({
     });
     const chainInfos = await Promise.all(chainInfoPromises);
 
-    const request = chainInfos.find((chainInfo) => chainInfo && requestKey in chainInfo);
+    const request = chainInfos.find(
+      (chainInfo) => chainInfo && requestKey in chainInfo,
+    );
 
     if (!request) {
       return { error: t('No request key found') };

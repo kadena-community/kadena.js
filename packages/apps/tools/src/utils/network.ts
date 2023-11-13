@@ -21,19 +21,26 @@ export interface INetworkData {
   ESTATS: string;
 }
 
-const isNetwork = (x: any): x is Network => ['mainnet01', 'testnet04'].includes(x);
+const isNetwork = (x: any): x is Network =>
+  ['mainnet01', 'testnet04'].includes(x);
 
 export const getConfigNetworkNames = (): DefinedNetwork[] => {
-  return Object.keys(kadenaConstants).filter((key) => isNetwork(key)) as DefinedNetwork[];
+  return Object.keys(kadenaConstants).filter((key) =>
+    isNetwork(key),
+  ) as DefinedNetwork[];
 };
 
-export const getAllNetworks = (localStorageNetworks: INetworkData[]): INetworkData[] => {
+export const getAllNetworks = (
+  localStorageNetworks: INetworkData[],
+): INetworkData[] => {
   const allNetworkObjects: INetworkData[] = [];
   const configNetworks = getConfigNetworkNames();
 
   const configNetworksAdded =
     Boolean(localStorageNetworks) &&
-    localStorageNetworks.some((item) => getConfigNetworkNames().includes(item.networkId));
+    localStorageNetworks.some((item) =>
+      getConfigNetworkNames().includes(item.networkId),
+    );
 
   if (!configNetworksAdded) {
     configNetworks.forEach((item: DefinedNetwork) => {
@@ -76,5 +83,9 @@ export const getInitialNetworks = (): INetworkData[] => {
 export const getApiHost = ({ api, networkId, chainId }: IApiHostData): string =>
   `https://${api}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 
-export const getEstatsHost = ({ api, account, chain }: IEstatsHostData): string =>
+export const getEstatsHost = ({
+  api,
+  account,
+  chain,
+}: IEstatsHostData): string =>
   `https://${api}/txs/account/${account}?token=coin&chain=${chain}&limit=10`;

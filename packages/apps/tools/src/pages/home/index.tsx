@@ -2,8 +2,20 @@ import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
-import { helpCenterButtonClass, homeWrapperClass, linkStyle } from '@/pages/home/styles.css';
-import { Accordion, Box, Breadcrumbs, Card, Grid, Heading, Table } from '@kadena/react-ui';
+import {
+  helpCenterButtonClass,
+  homeWrapperClass,
+  linkStyle,
+} from '@/pages/home/styles.css';
+import {
+  Accordion,
+  Box,
+  Breadcrumbs,
+  Card,
+  Grid,
+  Heading,
+  Table,
+} from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
@@ -23,8 +35,16 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:faucet-description"
           components={[
-            <Link className={linkStyle} href="/faucet/existing" key="faucet-existing-link" />,
-            <Link className={linkStyle} href="/faucet/new" key="faucet-new-link" />,
+            <Link
+              className={linkStyle}
+              href="/faucet/existing"
+              key="faucet-existing-link"
+            />,
+            <Link
+              className={linkStyle}
+              href="/faucet/new"
+              key="faucet-new-link"
+            />,
           ]}
         />
       ),
@@ -77,10 +97,11 @@ const Home: FC = () => {
             children: (
               <>
                 <p>
-                  Blockchain transactions are irreversible. If you make a mistake, your coins may
-                  not be recoverable. Before you transfer large sums, it is always best to do a
-                  small test transaction first and then send those coins back to the sender to
-                  verify that the receiver account works as expected.
+                  Blockchain transactions are irreversible. If you make a
+                  mistake, your coins may not be recoverable. Before you
+                  transfer large sums, it is always best to do a small test
+                  transaction first and then send those coins back to the sender
+                  to verify that the receiver account works as expected.
                 </p>
                 <ResourceLinks
                   links={[
@@ -208,11 +229,16 @@ const Home: FC = () => {
           <p>
             {/* eslint-disable-next-line react/no-unescaped-entities */}
             If you're seeking Help click{' '}
-            <span className={helpCenterButtonClass} onClick={handleOpenHelpCenter}>
+            <span
+              className={helpCenterButtonClass}
+              onClick={handleOpenHelpCenter}
+            >
               HERE
             </span>
           </p>
-          <p>Changelog with the latest updates to the Kadena Development Tools.</p>
+          <p>
+            Changelog with the latest updates to the Kadena Development Tools.
+          </p>
           <br />
           <Table.Root striped>
             <Table.Body>

@@ -2,7 +2,12 @@ import type { DevOption } from '@/constants/kadena';
 import { useDidUpdateEffect } from '@/hooks';
 import { getItem, setItem } from '@/utils/persist';
 import type { PropsWithChildren } from 'react';
-import React, { createContext, useContext, useLayoutEffect, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useState,
+} from 'react';
 
 interface INetworkState {
   devOption: DevOption;

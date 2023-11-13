@@ -33,7 +33,9 @@ describe('getQueryValue', () => {
     expect(getQueryValue('chain', { chain: '1337' })).toBe('1337');
 
     expect(
-      getQueryValue('chain', { chain: '1337' }, (value) => CHAINS.includes(value)),
+      getQueryValue('chain', { chain: '1337' }, (value) =>
+        CHAINS.includes(value),
+      ),
     ).toBeUndefined();
   });
 });
@@ -44,7 +46,9 @@ describe('getCookieValue', () => {
   });
 
   it('should return the default value if the needle is not in the haystack', () => {
-    expect(getCookieValue('needle', {}, 'my default value')).toBe('my default value');
+    expect(getCookieValue('needle', {}, 'my default value')).toBe(
+      'my default value',
+    );
   });
 
   it('should be able to get an existing value from the cookies', () => {

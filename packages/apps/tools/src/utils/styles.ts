@@ -5,7 +5,9 @@ const getPropInPercentage = (prop: number | string): string => {
   return `${(value / 12) * 100}%`;
 };
 
-export const getColumnStyles = (prop: IGridColMediaType): IGridColMediaStyles => {
+export const getColumnStyles = (
+  prop: IGridColMediaType,
+): IGridColMediaStyles => {
   if (typeof prop === 'string') {
     return {
       width: getPropInPercentage(parseInt(prop)),
@@ -23,8 +25,10 @@ export const getColumnStyles = (prop: IGridColMediaType): IGridColMediaStyles =>
 
   if (size !== undefined) styles.width = getPropInPercentage(size).toString();
   if (span !== undefined) styles.flex = `0 0 ${getPropInPercentage(span)}`;
-  if (offset !== undefined) styles.marginLeft = getPropInPercentage(offset).toString();
-  if (push !== undefined) styles.marginRight = getPropInPercentage(push).toString();
+  if (offset !== undefined)
+    styles.marginLeft = getPropInPercentage(offset).toString();
+  if (push !== undefined)
+    styles.marginRight = getPropInPercentage(push).toString();
   if (pull !== undefined) styles.order = pull.toString();
   if (hidden !== undefined) styles.display = hidden ? 'none' : 'unset';
 

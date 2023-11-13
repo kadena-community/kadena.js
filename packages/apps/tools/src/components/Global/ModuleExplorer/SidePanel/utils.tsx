@@ -21,7 +21,9 @@ export const contractToTreeItems = (
       items: interfaces.map((i) => ({
         title: (
           <Button
-            onClick={() => onInterfaceClick({ chainId: module!.chainId, moduleName: i.name })}
+            onClick={() =>
+              onInterfaceClick({ chainId: module!.chainId, moduleName: i.name })
+            }
             variant="compact"
             icon="ExitToApp"
           >

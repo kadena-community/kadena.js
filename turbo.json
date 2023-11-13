@@ -23,7 +23,15 @@
     "lint": {
       "dependsOn": ["build"],
       "outputMode": "new-only",
-      "inputs": ["**/*.css", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.cjs", "**/*.mjs", "**/*.json"]
+      "inputs": [
+        "**/*.css",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.js",
+        "**/*.cjs",
+        "**/*.mjs",
+        "**/*.json"
+      ]
     },
     "format": {
       "dependsOn": ["build"],

@@ -15,7 +15,8 @@ This monorepo contains libraries and tooling for frontend development.
 
 ## Contributing
 
-New contributors are welcome! If you're interested, please see [our guide to contributing][4].
+New contributors are welcome! If you're interested, please see [our guide to
+contributing][4].
 
 ## Packages
 
@@ -51,43 +52,56 @@ Special thanks to the wonderful people who have contributed to this project:
 [2]: https://discord.io/kadena
 [3]: https://stackoverflow.com/questions/tagged/kadena
 [4]: ./CONTRIBUTING.md
-[5]: https://github.com/kadena-community/kadena.js/tree/main/packages/tools/eslint-config
+[5]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/eslint-config
 [6]: packages/tools/eslint-config/CHANGELOG.md
 [7]: https://img.shields.io/npm/v/@kadena-dev/eslint-config.svg
-[8]: https://github.com/kadena-community/kadena.js/tree/main/packages/tools/eslint-plugin
+[8]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/eslint-plugin
 [9]: packages/tools/eslint-plugin/CHANGELOG.md
 [10]: https://img.shields.io/npm/v/@kadena-dev/eslint-plugin.svg
-[11]: https://github.com/kadena-community/kadena.js/tree/main/packages/tools/shared-config
+[11]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/shared-config
 [12]: packages/tools/shared-config/CHANGELOG.md
 [13]: https://img.shields.io/npm/v/@kadena-dev/shared-config.svg
-[14]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-node-client
+[14]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-node-client
 [15]: packages/libs/chainweb-node-client/CHANGELOG.md
 [16]: https://img.shields.io/npm/v/@kadena/chainweb-node-client.svg
-[17]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-stream-client
+[17]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainweb-stream-client
 [18]: packages/libs/chainweb-stream-client/CHANGELOG.md
 [19]: https://img.shields.io/npm/v/@kadena/chainweb-stream-client.svg
-[20]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainwebjs
+[20]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/chainwebjs
 [21]: packages/libs/chainwebjs/CHANGELOG.md
 [22]: https://img.shields.io/npm/v/@kadena/chainwebjs.svg
-[23]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client
+[23]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client
 [24]: packages/libs/client/CHANGELOG.md
 [25]: https://img.shields.io/npm/v/@kadena/client.svg
-[26]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-utils
+[26]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/client-utils
 [27]: packages/libs/client-utils/CHANGELOG.md
 [28]: https://img.shields.io/npm/v/@kadena/client-utils.svg
-[29]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/cryptography-utils
+[29]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/cryptography-utils
 [30]: packages/libs/cryptography-utils/CHANGELOG.md
 [31]: https://img.shields.io/npm/v/@kadena/cryptography-utils.svg
-[32]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs
+[32]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs
 [33]: packages/libs/pactjs/CHANGELOG.md
 [34]: https://img.shields.io/npm/v/@kadena/pactjs.svg
-[35]: https://github.com/kadena-community/kadena.js/tree/main/packages/tools/pactjs-cli
+[35]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/pactjs-cli
 [36]: packages/tools/pactjs-cli/CHANGELOG.md
 [37]: https://img.shields.io/npm/v/@kadena/pactjs-cli.svg
-[38]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs-generator
+[38]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs-generator
 [39]: packages/libs/pactjs-generator/CHANGELOG.md
 [40]: https://img.shields.io/npm/v/@kadena/pactjs-generator.svg
-[41]: https://github.com/kadena-community/kadena.js/tree/main/packages/libs/types
+[41]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/types
 [42]: packages/libs/types/CHANGELOG.md
 [43]: https://img.shields.io/npm/v/@kadena/types.svg
 [44]: https://github.com/kadena-community/kadena.js/graphs/contributors

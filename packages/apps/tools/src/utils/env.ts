@@ -40,5 +40,7 @@ export const env = <T extends keyof RequiredEnv, TDefault>(
     dotenv[key] === undefined ||
     dotenv[key] === '';
 
-  return falsyKey ? (defaultValue as TDefault) : (dotenv[key] as NonNullable<RequiredEnv[T]>);
+  return falsyKey
+    ? (defaultValue as TDefault)
+    : (dotenv[key] as NonNullable<RequiredEnv[T]>);
 };

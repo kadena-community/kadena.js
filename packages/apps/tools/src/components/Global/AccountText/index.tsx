@@ -32,7 +32,9 @@ export const AccountText: FC<IAccountTextProps> = ({
     <StyledAccountText>
       <StyledTitle>{title}</StyledTitle>
       <StyledAccountContainer>
-        <StyledAccountNo>{visible ? account : hiddenAccountValue}</StyledAccountNo>
+        <StyledAccountNo>
+          {visible ? account : hiddenAccountValue}
+        </StyledAccountNo>
         {visible ? (
           <StyledEyeOffIcon onClick={toggleVisibility} />
         ) : (

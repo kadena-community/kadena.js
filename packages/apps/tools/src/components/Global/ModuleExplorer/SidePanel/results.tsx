@@ -9,7 +9,10 @@ import { moduleTitle } from './styles.css';
 export interface IResultsProps extends React.HTMLAttributes<HTMLDivElement> {
   data: ReturnType<typeof getModulesMap>;
   onItemClick: (result: IChainModule) => void;
-  onModuleExpand: (module: { moduleName: string; chains: ChainwebChainId[] }) => void;
+  onModuleExpand: (module: {
+    moduleName: string;
+    chains: ChainwebChainId[];
+  }) => void;
   filter?: string;
 }
 
@@ -31,7 +34,8 @@ const resultsMapToTreeItems = (
         {moduleName}
       </p>
     ),
-    onOpen: () => onModuleExpand({ moduleName, chains: chainsInfo.map((x) => x.chainId) }),
+    onOpen: () =>
+      onModuleExpand({ moduleName, chains: chainsInfo.map((x) => x.chainId) }),
     items: chainsInfo.map(({ chainId, hash }) => ({
       title: (
         <Button

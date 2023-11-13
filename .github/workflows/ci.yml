@@ -50,8 +50,8 @@ jobs:
       devnet:
         image: kadena/devnet
         options:
-          --memory 7g --cpus 2 --health-cmd "curl --verbose --fail http://localhost:8080/info ||
-          exit 1"
+          --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
+          http://localhost:8080/info || exit 1"
         ports:
           - 8080:8080
 

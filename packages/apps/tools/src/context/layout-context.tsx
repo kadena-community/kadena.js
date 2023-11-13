@@ -36,7 +36,10 @@ const useLayoutContext = (): ILayoutContext => {
   return context;
 };
 
-export const useToolbar = (toolbar: ISidebarToolbarItem[], pathName?: string): void => {
+export const useToolbar = (
+  toolbar: ISidebarToolbarItem[],
+  pathName?: string,
+): void => {
   const { setToolbar, setActiveMenuIndex } = useLayoutContext();
   useEffect(() => {
     setToolbar(toolbar);
@@ -45,7 +48,9 @@ export const useToolbar = (toolbar: ISidebarToolbarItem[], pathName?: string): v
     if (pathName) {
       const mainPath = pathName.split('/')[1];
 
-      const activeMenu = menuData.find((item) => item.href && item.href.includes(mainPath));
+      const activeMenu = menuData.find(
+        (item) => item.href && item.href.includes(mainPath),
+      );
       if (!activeMenu) return;
 
       const index = menuData.indexOf(activeMenu);
@@ -76,7 +81,8 @@ const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
         isMenuOpen,
         activeMenuIndex,
         setActiveMenuIndex,
-        activeMenu: activeMenuIndex !== undefined ? toolbar[activeMenuIndex] : undefined,
+        activeMenu:
+          activeMenuIndex !== undefined ? toolbar[activeMenuIndex] : undefined,
         resetLayout,
         visibleLinks,
         setVisibleLinks,

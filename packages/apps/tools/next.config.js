@@ -10,7 +10,8 @@ const config = {
     ignoreDuringBuilds: true, // lint is a different task/phase
   },
   reactStrictMode: true,
-  pageExtensions: process.env.NODE_ENV === 'production' ? ['(?<!(spec|test).)tsx'] : ['tsx'],
+  pageExtensions:
+    process.env.NODE_ENV === 'production' ? ['(?<!(spec|test).)tsx'] : ['tsx'],
   transpilePackages: ['@kadena/react-ui'],
   env: {
     KADENA_API_TTIL: process.env.KADENA_API_TTIL,

@@ -5,7 +5,8 @@ import type { FC } from 'react';
 import React from 'react';
 
 const WalletConnectButton: FC = () => {
-  const { connect, isInitializing, disconnect, session } = useWalletConnectClient();
+  const { connect, isInitializing, disconnect, session } =
+    useWalletConnectClient();
   const { t } = useTranslation('common');
 
   const handleClick = async (): Promise<void> => {
