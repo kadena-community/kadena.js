@@ -36,7 +36,9 @@ pnpm build --filter @kadena/graph...
 
 2. Start devnet:
 
-   > **NOTE:** This project has a built-in command to create and start devnet. For the full guide visit the quickstart page on the documentation website [here](https://docs.kadena.io/build/quickstart).
+   > **NOTE:** This project has a built-in command to create and start devnet.
+   > For the full guide visit the quickstart page on the documentation website
+   > [here](https://docs.kadena.io/build/quickstart).
 
    ```sh
    pnpm run devnet
@@ -51,8 +53,7 @@ pnpm build --filter @kadena/graph...
    the image by adding `--pull=always` after `docker run` in the `devnet`
    script.
 
-   If something goes wrong, you can delete the volume, and try to
-   start again:
+   If something goes wrong, you can delete the volume, and try to start again:
 
    ```sh
    docker volume rm kadena_devnet
@@ -120,10 +121,10 @@ transactions are different, with different amounts and to and from different
 chains. The new number is generated using the previous one as seed.
 
 ```sh
-npm run simulate -- -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
+npm run simulate -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
 ```
 
-- accounts - number of accounts to be created in the devnet (default: 5)
+- numberOfAccounts - number of accounts to be created in the devnet (default: 6)
 - timeInterval - frequency of transactions in miliseconds (default: 100)
 - maxAmount - maximum amount for a single transaction (default: 25)
 - tokenPool - amount of circulating tokens (default: 1000000)
