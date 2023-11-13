@@ -3,6 +3,5 @@ contact_links:
   - name: Kadena Discord
     url: https://discord.io/kadena
     about:
-      Contact us on Discord if you're having trouble with the library. We have a
-      specific channel for Kadena.js. "#kadena-js" can be found in the "Buidler
-      Zone".
+      Contact us on Discord if you're having trouble with the library. We have a specific channel
+      for Kadena.js. "#kadena-js" can be found in the "Buidler Zone".

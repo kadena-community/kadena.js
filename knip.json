@@ -5,10 +5,7 @@
       "eslint": ["profile/*.js"]
     },
     "packages/libs/client-examples": {
-      "entry": [
-        "src/example-contract/*.ts",
-        "src/example-contract/functional/*.ts"
-      ]
+      "entry": ["src/example-contract/*.ts", "src/example-contract/functional/*.ts"]
     }
   }
 }

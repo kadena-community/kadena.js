@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value:
-        Thank you for taking the time to suggest an improvement to our
-        documentation. Please fill out this form as completely as possible.
+        Thank you for taking the time to suggest an improvement to our documentation. Please fill
+        out this form as completely as possible.
 
   - type: checkboxes
     id: initial-checks
@@ -46,8 +46,7 @@ body:
     attributes:
       label: Additional information
       description:
-        Add any other details, context or screenshots about the feature request
-        you may have here.
+        Add any other details, context or screenshots about the feature request you may have here.
     validations:
       required: false
 
