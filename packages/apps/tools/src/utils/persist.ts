@@ -13,6 +13,10 @@ export const setItem = (key: string, value: unknown) =>
   Cookies.set(getName(key), encode(value));
 
 export const getItem = (key: string) => {
-  const cookie = Cookies.get(getName(key));
-  return cookie !== undefined ? parse(cookie) : undefined;
+  try {
+    const cookie = Cookies.get(getName(key));
+    return cookie !== undefined ? parse(cookie) : undefined;
+  } catch (e) {
+    return undefined;
+  }
 };
