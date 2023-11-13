@@ -44,7 +44,6 @@ const getHeaders = (tree) => {
 
 const remarkHeadersToProps = () => {
   return async (tree) => {
-
     const headers = getHeaders(tree);
 
     let startArray = [
