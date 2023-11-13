@@ -1,7 +1,11 @@
-import { Definition, Link } from 'mdast';
-import { DocsRootContent, ITree, Plugin } from './types';
+import type { Definition, Link } from 'mdast';
+import type { DocsRootContent, ITree, Plugin } from './types';
 
-export const getTypes = <T>(tree: ITree | DocsRootContent, type: string, arr: T[] = []): T[] => {
+export const getTypes = <T>(
+  tree: ITree | DocsRootContent,
+  type: string,
+  arr: T[] = [],
+): T[] => {
   if ('children' in tree) {
     tree.children.forEach((branch: DocsRootContent) => {
       if (branch.type === type) {
@@ -15,10 +19,10 @@ export const getTypes = <T>(tree: ITree | DocsRootContent, type: string, arr: T[
 
 const remarkFixAbsoluteLinks = (): Plugin => {
   return async (tree): Promise<ITree> => {
-    const links= getTypes<Link>(tree, 'link');
+    const links = getTypes<Link>(tree, 'link');
     const references = getTypes<Definition>(tree, 'definition');
 
-    var regExp = /^(https?:\/\/docs\.kadena\.io)/;
+    const regExp = /^(https?:\/\/docs\.kadena\.io)/;
 
     [links, references].flat().forEach((link) => {
       if (link.url.match(regExp)) {

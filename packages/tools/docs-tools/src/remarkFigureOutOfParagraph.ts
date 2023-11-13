@@ -4,7 +4,7 @@
  * @returns
  */
 
-import { DocsRootContent, ITree, Plugin } from "./types";
+import type { DocsRootContent, ITree, Plugin } from './types';
 
 const remarkFigureOutOfParagraph = (): Plugin => {
   return async (tree): Promise<ITree> => {

@@ -1,4 +1,4 @@
-import { ITree, Plugin } from './types';
+import type { ITree, Plugin } from './types';
 
 const replaceOrConcatString = (str?: string | null): string => {
   if (!str) str = '';

@@ -12,6 +12,6 @@ export {
   remarkFixAbsoluteLinks,
   remarkTwitter,
   remarkYoutube,
-}
+};
 
 export type * from './types';

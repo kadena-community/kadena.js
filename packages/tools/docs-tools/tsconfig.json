@@ -11,7 +11,7 @@
     "moduleResolution": "NodeNext",
     "outDir": "dist/esm",
     "allowSyntheticDefaultImports": true,
-    "removeComments": true,
+    "removeComments": true
   },
   "include": ["./src", "./src/**/*"],
   "exclude": ["node_modules"]

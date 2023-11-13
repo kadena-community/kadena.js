@@ -1,4 +1,14 @@
-import type { Root, RootContent, Heading, RootContentMap, PhrasingContent, InlineCode, Text, Yaml, Html, Code } from 'mdast';
+import type {
+  Code,
+  Heading,
+  Html,
+  InlineCode,
+  Root,
+  RootContent,
+  RootContentMap,
+  Text,
+  Yaml,
+} from 'mdast';
 import type { ReactNode } from 'react';
 
 export interface ITopDoc {
@@ -138,7 +148,7 @@ export interface ITag {
 }
 
 interface IPropsData {
-  frontmatter: IPageMeta
+  frontmatter: IPageMeta;
 }
 
 interface IAsideMenuData {
@@ -146,37 +156,35 @@ interface IAsideMenuData {
 }
 
 export interface IPropsType {
-  type: "props",
-  children: [],
-  data: IPropsData | IAsideMenuData,
+  type: 'props';
+  children: [];
+  data: IPropsData | IAsideMenuData;
 }
 
-export type typeWithValue = InlineCode | Text | Yaml | Html | Code;
+export type TypeWithValue = InlineCode | Text | Yaml | Html | Code;
 
-export type ChildrenWithValues = typeWithValue[];
+export type ChildrenWithValues = TypeWithValue[];
 
 export interface IElementType {
-  type: "element",
-  children: typeWithValue[],
+  type: 'element';
+  children: TypeWithValue[];
   data: {
-    hName: string,
+    hName: string;
     hProperties: {
-      [key: string]: any,
-    },
-  },
+      [key: string]: any;
+    };
+  };
 }
 
 export interface IEsTree {
-  type: 'Program',
-  sourceType: 'module',
-  body: any[],
+  type: 'Program';
+  sourceType: 'module';
+  body: any[];
 }
 
 export interface IMdxJSEsm {
-  type: 'mdxjsEsm',
-  data: {
-
-  }
+  type: 'mdxjsEsm';
+  data: {};
 }
 
 export interface IDocsRootContentMap extends RootContentMap {
@@ -197,4 +205,4 @@ export interface IHeadingTree extends Omit<Root, 'children'> {
 
 export type Plugin = (tree: ITree, file: any) => Promise<ITree | void>;
 
-export { RootContent, Root }
+export { Root, RootContent };

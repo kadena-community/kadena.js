@@ -1,4 +1,4 @@
-import type { ITree, Plugin, RootContent } from "./types";
+import type { ITree, Plugin, RootContent } from './types';
 
 const getYouTubeVideoId = (link: string): string | undefined => {
   if (!link) return;
@@ -18,7 +18,7 @@ const remarkYoutube = (): Plugin => {
       if (node.type === 'paragraph' && node.children?.length === 1) {
         const leaf = node.children[0] ?? null;
 
-        if(leaf.type !== 'link') return node;
+        if (leaf.type !== 'link') return node;
 
         const videoId = getYouTubeVideoId(leaf.url);
 

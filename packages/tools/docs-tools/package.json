@@ -1,7 +1,7 @@
 {
   "name": "@kadena/docs-tools",
-  "private": true,
   "version": "0.0.1",
+  "private": true,
   "description": "Helper utils to docs generation and adding extra context to markdown files",
   "repository": {
     "type": "git",
@@ -31,6 +31,10 @@
     "lint:src": "eslint src --ext .ts",
     "test": "echo 'No tests, until there is time to debug the build'"
   },
+  "dependencies": {
+    "mdast-util-to-string": "~4.0.0",
+    "remark-gfm": "^4.0.0"
+  },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:^",
     "@kadena-dev/lint-package": "workspace:^",
@@ -50,9 +54,5 @@
     "tsc-alias": "~1.8.7",
     "typescript": "^5.2.2",
     "unified": "^11.0.4"
-  },
-  "dependencies": {
-    "mdast-util-to-string": "~4.0.0",
-    "remark-gfm": "^4.0.0"
   }
 }

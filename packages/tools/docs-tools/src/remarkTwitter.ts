@@ -20,7 +20,7 @@ const remarkTwitter = (): Plugin => {
     const children = tree.children.map((node) => {
       if (node.type === 'paragraph' && node.children?.length === 1) {
         const leaf = node.children?.[0] ?? null;
-        if(leaf.type !== 'link') return node;
+        if (leaf.type !== 'link') return node;
 
         const twitterStatusId = getTwitterStatusId(leaf.url);
         if (twitterStatusId) {
