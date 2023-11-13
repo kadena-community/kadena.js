@@ -1,9 +1,10 @@
-import { GetTransfersQuery } from '@/__generated__/sdk';
+import type { GetTransfersQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
 import { Box, Link, Pagination, Select, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 type DataType = GetTransfersQuery;
 interface IVariableType {
   first: number | null;
@@ -111,7 +112,7 @@ export const ExtendedTransfersTable = (
         },
       });
     } else if (newPageNumber < currentPage) {
-      fetchMore({
+      await fetchMore({
         variables: {
           first: null,
           last: itemsPerPage,

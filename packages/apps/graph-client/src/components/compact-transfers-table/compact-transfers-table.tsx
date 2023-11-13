@@ -1,8 +1,6 @@
 import type {
   ChainModuleAccountTransfersConnection,
-  ChainModuleAccountTransfersConnectionEdge,
   ModuleAccountTransfersConnection,
-  ModuleAccountTransfersConnectionEdge,
   Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
@@ -99,65 +97,60 @@ export const CompactTransfersTable = (
               }
             }
 
-            console.log('transfer', transfer);
-            console.log('crossChainCounterPart', crossChainCounterPart);
-
             const chainIdDisplay = crossChainCounterPart
               ? `${transfer.chainId} / ${crossChainCounterPart.chainId}`
-              : edge.node.chainId;
+              : transfer.chainId;
 
-            const heightDisplay = edge.node.crossChainTransfer
-              ? `${edge.node.height} / ${edge.node.crossChainTransfer.height}`
-              : edge.node.height;
+            const heightDisplay = crossChainCounterPart
+              ? `${transfer.height} / ${crossChainCounterPart.height}`
+              : transfer.height;
 
             return (
               <Table.Tr key={index}>
                 <Table.Td>{chainIdDisplay}</Table.Td>
                 <Table.Td>{heightDisplay}</Table.Td>
-                <Table.Td>{edge.node.amount}</Table.Td>
+                <Table.Td>{transfer.amount}</Table.Td>
                 <Table.Td>
                   <Link
-                    href={`${routes.ACCOUNT}/${moduleName}/${edge.node.senderAccount}`}
+                    href={`${routes.ACCOUNT}/${moduleName}/${transfer.senderAccount}`}
                   >
-                    <span title={edge.node.senderAccount}>
-                      {truncate(edge.node.senderAccount)}
+                    <span title={transfer.senderAccount}>
+                      {truncate(transfer.senderAccount)}
                     </span>
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  {!edge.node.crossChainTransfer ? (
+                  {!crossChainCounterPart ? (
                     <Link
-                      href={`${routes.ACCOUNT}/${moduleName}/${edge.node.receiverAccount}`}
+                      href={`${routes.ACCOUNT}/${moduleName}/${transfer.receiverAccount}`}
                     >
-                      <span title={edge.node.receiverAccount}>
-                        {truncate(edge.node.receiverAccount)}
+                      <span title={transfer.receiverAccount}>
+                        {truncate(transfer.receiverAccount)}
                       </span>
                     </Link>
                   ) : (
                     <Link
-                      href={`${routes.ACCOUNT}/${moduleName}/${edge.node.crossChainTransfer.receiverAccount}`}
+                      href={`${routes.ACCOUNT}/${moduleName}/${crossChainCounterPart.receiverAccount}`}
                     >
-                      <span
-                        title={edge.node.crossChainTransfer.receiverAccount}
-                      >
-                        {truncate(edge.node.crossChainTransfer.receiverAccount)}
+                      <span title={crossChainCounterPart.receiverAccount}>
+                        {truncate(crossChainCounterPart.receiverAccount)}
                       </span>
                     </Link>
                   )}
                 </Table.Td>
                 <Table.Td>
-                  <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
-                    <span title={edge.node.requestKey}>
-                      {truncate(edge.node.requestKey)}
+                  <Link href={`${routes.TRANSACTIONS}/${transfer.requestKey}`}>
+                    <span title={transfer.requestKey}>
+                      {truncate(transfer.requestKey)}
                     </span>
                   </Link>
                   /
-                  {edge.node.crossChainTransfer && (
+                  {crossChainCounterPart && (
                     <Link
-                      href={`${routes.TRANSACTIONS}/${edge.node.crossChainTransfer.requestKey}`}
+                      href={`${routes.TRANSACTIONS}/${crossChainCounterPart.requestKey}`}
                     >
-                      <span title={edge.node.crossChainTransfer.requestKey}>
-                        {truncate(edge.node.crossChainTransfer.requestKey)}
+                      <span title={crossChainCounterPart.requestKey}>
+                        {truncate(crossChainCounterPart.requestKey)}
                       </span>
                     </Link>
                   )}
