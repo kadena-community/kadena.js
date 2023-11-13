@@ -4,7 +4,7 @@ import { mainStyle } from '@/components/Common/main/styles.css';
 import { ErrorBox } from '@/components/error-box/error-box';
 import { ExtendedTransfersTable } from '@/components/extended-transfers-table/extended-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Button, Link, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
