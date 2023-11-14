@@ -21,9 +21,7 @@ export const getItem = (key: string) => {
   }
 };
 
-export const deleteItem = (key: string) => {
-  Cookies.remove(getName(key));
-};
+export const deleteItem = (key: string) => Cookies.remove(getName(key));
 export const getItems = () => {
   const cookies = Cookies.get();
   return Object.keys(cookies).reduce(
