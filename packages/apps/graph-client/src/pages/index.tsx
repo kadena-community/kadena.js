@@ -23,19 +23,14 @@ const Home: React.FC = () => {
     data: newBlocks,
     error: newBlocksError,
   } = useGetBlocksSubscription();
-  const {
-    loading: loadingRecentBlocks,
-    data: recentBlocks,
-    error: recentBlocksError,
-  } = useGetRecentHeightsQuery({ variables: { count: 3 } });
+  const { data: recentBlocks, error: recentBlocksError } =
+    useGetRecentHeightsQuery({ variables: { count: 3 } });
   const previousNewBlocks = usePrevious(newBlocks);
   const previousRecentBlocks = usePrevious(recentBlocks);
 
-  const {
-    loading: loadingTxs,
-    data: txs,
-    error: txError,
-  } = useGetTransactionsQuery({ variables: { first: 10 } });
+  const { data: txs, error: txError } = useGetTransactionsQuery({
+    variables: { first: 10 },
+  });
 
   const { allBlocks, addBlocks } = useParsedBlocks();
 

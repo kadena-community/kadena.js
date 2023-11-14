@@ -1,5 +1,4 @@
 import { useGetEventByNameSubscription } from '@/__generated__/sdk';
-import Loader from '@/components/Common/loader/loader';
 import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import { ErrorBox } from '@/components/error-box/error-box';
 import { formatCode } from '@/utils/formatter';
