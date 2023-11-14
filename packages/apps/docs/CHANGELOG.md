@@ -1,5 +1,12 @@
 # @kadena/docs
 
+## 0.6.2
+
+### Patch Changes
+
+- Updated dependencies [49d8366c7]
+  - @kadena/react-ui@0.4.0
+
 ## 0.6.1
 
 ### Patch Changes
