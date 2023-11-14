@@ -1,5 +1,12 @@
 # @kadena/react-ui
 
+## 0.4.0
+
+### Minor Changes
+
+- 49d8366c7: Refactor InputFieldWrapper for the new FormFieldWrapper component
+  with stacked items
+
 ## 0.3.1
 
 ### Patch Changes

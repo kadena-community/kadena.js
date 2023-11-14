@@ -1,5 +1,14 @@
 # @kadena/graph-client
 
+## 0.1.6
+
+### Patch Changes
+
+- f4ac431f4: Edited the pages containing transfers to display cross-chain
+  transfers as one entry
+- Updated dependencies [49d8366c7]
+  - @kadena/react-ui@0.4.0
+
 ## 0.1.5
 
 ### Patch Changes
