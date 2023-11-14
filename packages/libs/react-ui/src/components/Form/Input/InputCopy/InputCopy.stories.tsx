@@ -1,11 +1,11 @@
-import type { IInputProps, ITextareaProps } from '@components/Form';
+import type { IInputProps } from '@components/Form';
 import { InputCopy } from '@components/Form';
 
 import type { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-const meta: Meta<ITextareaProps> = {
+const meta: Meta<IInputProps> = {
   title: 'Form/InputCopy',
   component: InputCopy,
   parameters: {

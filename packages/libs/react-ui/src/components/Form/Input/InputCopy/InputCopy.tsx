@@ -1,5 +1,6 @@
 import type { IInputProps } from '@components/Form';
-import { CopyButton, Input } from '@components/Form';
+import { Input } from '@components/Form';
+import { CopyButton } from '@components/Form/ActionButtons/CopyButton';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 
