@@ -52,3 +52,11 @@ export const textAreaClass = style([
     },
   },
 ]);
+
+export const buttonContainerClass = style([
+  sprinkles({
+    top: '$1',
+    right: '$2',
+    position: 'absolute',
+  }),
+]);

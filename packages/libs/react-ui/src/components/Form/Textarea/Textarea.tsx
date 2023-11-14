@@ -6,6 +6,7 @@ import React, { forwardRef, useContext } from 'react';
 import { baseContainerClass, baseOutlinedClass } from '../Form.css';
 import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
 import {
+  buttonContainerClass,
   disabledClass,
   textAreaClass,
   textAreaContainerClass,
@@ -46,7 +47,7 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
           disabled={disabled}
           {...rest}
         />
-        <div>{children}</div>
+        <div className={buttonContainerClass}>{children}</div>
       </div>
     </div>
   );
