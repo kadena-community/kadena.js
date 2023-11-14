@@ -11,7 +11,7 @@
 /packages/apps/tools                            @sanderlooijenga @KristinaSpasevska
 /packages/libs/bootstrap-lib                    @alber70g
 /packages/libs/chainweb-stream-client           @Takadenoshi
-/packages/libs/client                           @alber70g @javadkh2
+/packages/libs/client                           @alber70g @javadkh2 @nillo
 /packages/libs/client-utils                     @alber70g @javadkh2
 /packages/libs/kadena.js                        @alber70g
 /packages/libs/pactjs-generator                 @alber70g @javadkh2
