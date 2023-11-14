@@ -10,6 +10,7 @@ import {
   isEqualChainAccounts,
   logger,
   seedRandom,
+  sender00,
 } from '../helper';
 import { safeTransfer } from '../safe-transfer';
 import { transfer } from '../transfer';
@@ -23,8 +24,8 @@ const simualtionTransferOptions: TransferType[] = [
 ];
 
 export async function simulate({
-  numberOfAccounts = 2,
-  transferInterval = 1000,
+  numberOfAccounts = 6,
+  transferInterval = 100,
   maxAmount = 25,
   tokenPool = 1000000,
   seed = Date.now().toString(),
@@ -119,7 +120,7 @@ export async function simulate({
 
       // This is to simulate cross chain transfers
       if (transferType === 'xchaintransfer') {
-        while (account.chainId === nextAccount.chainId) {
+        if (account.chainId === nextAccount.chainId) {
           nextAccount = {
             ...nextAccount,
             chainId: `${getRandomNumber(
@@ -128,11 +129,23 @@ export async function simulate({
             )}` as ChainId,
           };
         }
-        logger.info('Cross chain transfer', account, nextAccount);
+
+        if (account.chainId === nextAccount.chainId) {
+          logger.info('Skipping cross chain transfer to same chain');
+          continue;
+        }
+
+        // Get a random account to potentially pay for the gas
+        const possibleGasPayer = getRandomOption(seededRandomNo, accounts);
+
         result = await crossChainTransfer({
           from: account,
           to: nextAccount,
           amount,
+          gasPayer:
+            possibleGasPayer.chainId === nextAccount.chainId
+              ? possibleGasPayer
+              : sender00,
         });
       } else {
         // Make sure the chain id is the same if the transfer type is transfer or safe-transfer
