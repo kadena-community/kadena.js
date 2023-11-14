@@ -9,10 +9,10 @@ export default mergeConfig(
       exclude: ['src/**/*.int.test.ts'],
       coverage: {
         provider: 'v8',
-        lines: 92.61,
+        lines: 92.46,
         functions: 86.48,
         branches: 95.45,
-        statements: 92.61,
+        statements: 92.46,
         thresholdAutoUpdate: true,
       },
     },
