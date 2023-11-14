@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { networkDeletePrompt, networkOverwritePrompt } from '../constants/prompts.js';
+import { networkDeletePrompt } from '../constants/prompts.js';
 import { globalOptions } from '../utils/globalOptions.js';
 import { removeNetwork } from './networksHelpers.js';
 
@@ -11,7 +11,7 @@ export const deleteNetworksCommand = createCommand(
   'Delete network',
   [globalOptions.networkSelect()],
   async (config) => {
-    debug('network-manage:action')({config});
+    debug('network-delete:action')({config});
 
     const overwrite = await networkDeletePrompt(config.network);
     if (overwrite === 'no') {

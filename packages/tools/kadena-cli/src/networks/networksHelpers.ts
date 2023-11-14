@@ -1,7 +1,6 @@
 import { defaultNetworksPath, networkDefaults } from '../constants/networks.js';
 import { PathExists, removeFile, writeFile } from '../utils/filesystem.js';
 import {
-  GlobalOptions,
   getExistingNetworks,
   mergeConfigs,
   sanitizeFilename,

@@ -4,14 +4,14 @@ import { globalOptions } from '../utils/globalOptions.js';
 import chalk from 'chalk';
 
 // eslint-disable-next-line @rushstack/typedef-var
-export const createGetBalanceCommand = createCommand(
+export const getBalanceCommand = createCommand(
   'get-balance',
   'Get the balance of an account',
   [globalOptions.account(), globalOptions.network(), globalOptions.chainId()],
   async (config) => {
     try {
       const balance = await getBalance(
-        config.account,
+        config.accountConfig.account,
         config.networkConfig.networkId,
         config.chainId,
         config.networkConfig.networkHost,

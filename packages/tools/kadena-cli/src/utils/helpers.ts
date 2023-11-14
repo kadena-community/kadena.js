@@ -6,6 +6,9 @@ import { Command, Option } from 'commander';
 import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs';
 import path from 'path';
 import { globalOptions } from './globalOptions.js';
+import { defaultKeypairsPath } from '../constants/keypairs.js';
+import { defaultKeysetsPath } from '../constants/keysets.js';
+import { defaultAccountsPath } from '../constants/accounts.js';
 
 export interface ICustomChoice {
   value: string;
@@ -231,6 +234,75 @@ export function capitalizeFirstLetter(str: string): string {
   if (typeof str !== 'string' || str.length === 0) return '';
 
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export async function ensureAccountsConfiguration(): Promise<void> {
+  if (existsSync(defaultAccountsPath)) {
+    return;
+  }
+
+  mkdirSync(defaultAccountsPath, { recursive: true });
+  await import('./../account/init.js');
+}
+
+export async function getExistingAccounts(): Promise<ICustomChoice[]> {
+  await ensureAccountsConfiguration();
+
+  try {
+    return readdirSync(defaultAccountsPath).map((filename) => ({
+      value: path.basename(filename.toLowerCase(), '.yaml'),
+      name: path.basename(filename.toLowerCase(), '.yaml'),
+    }));
+  } catch (error) {
+    console.error('Error reading account directory:', error);
+    return [];
+  }
+}
+
+export async function ensureKeypairsConfiguration(): Promise<void> {
+  if (existsSync(defaultKeypairsPath)) {
+    return;
+  }
+
+  mkdirSync(defaultKeypairsPath, { recursive: true });
+  await import('./../keypair/init.js');
+}
+
+export async function getExistingKeypairs(): Promise<ICustomChoice[]> {
+  await ensureKeypairsConfiguration();
+
+  try {
+    return readdirSync(defaultKeypairsPath).map((filename) => ({
+      value: path.basename(filename.toLowerCase(), '.yaml'),
+      name: path.basename(filename.toLowerCase(), '.yaml'),
+    }));
+  } catch (error) {
+    console.error('Error reading keypair directory:', error);
+    return [];
+  }
+}
+
+export async function ensureKeysetsConfiguration(): Promise<void> {
+  if (existsSync(defaultKeysetsPath)) {
+    return;
+  }
+
+  mkdirSync(defaultKeysetsPath, { recursive: true });
+  await import('./../keyset/init.js');
+}
+
+export async function getExistingKeysets(): Promise<ICustomChoice[]> {
+  await ensureKeysetsConfiguration();
+
+  try {
+    return readdirSync(defaultKeysetsPath).map((filename) => ({
+      value: path.basename(filename.toLowerCase(), '.yaml'),
+      name: path.basename(filename.toLowerCase(), '.yaml'),
+    }));
+  } catch (error) {
+    console.error('Error reading keyset directory:', error);
+    return [];
+  }
 }
 
 export async function ensureNetworksConfiguration(): Promise<void> {

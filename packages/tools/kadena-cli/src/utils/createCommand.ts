@@ -19,12 +19,16 @@ const formatConfig = (key: string, value?: string | number, prefix: string = '')
 const displayConfig = (config: Record<string, string | number | object>, indentation: string = ''): void => {
   Object.getOwnPropertyNames(config).forEach((key) => {
     const value = config[key];
-    const isObject = typeof value === 'object';
+    const isArray = Array.isArray(value)
+    const displayValue = isArray
+      ? JSON.stringify(value)
+      : value
+    const isObject = typeof displayValue === 'object';
     console.log(
-      formatConfig(indentation + key, isObject ? '' : value),
+      formatConfig(indentation + key, isObject ? '' : displayValue),
     );
     if (isObject) {
-      displayConfig(value as unknown as Record<string, string | number | object>, indentation + '  ');
+      displayConfig(displayValue as unknown as Record<string, string | number | object>, indentation + '  ');
     }
   });
 }
@@ -81,7 +85,24 @@ export function createCommand<
           `\nexecuting: kadena ${program.name()} ${name} ${Object.getOwnPropertyNames(
             newArgs,
           )
-            .map((arg) => `--${arg.replace(/[A-Z]/g, (match: string) => '-' + match.toLowerCase())} ${newArgs[arg]}`)
+            .map((arg) => {
+              let displayValue: string | null = null;
+              const value = newArgs[arg];
+
+              if (Array.isArray(value)) {
+                displayValue = value.join(' ');
+              }
+
+              if (typeof value === 'string') {
+                displayValue = `"${value}"`
+              }
+
+              if (typeof value === 'number') {
+                displayValue = value.toString();
+              }
+
+              return `--${arg.replace(/[A-Z]/g, (match: string) => '-' + match.toLowerCase())} ${displayValue || ''}`;
+            })
             .join(' ')}`,
         ));
 

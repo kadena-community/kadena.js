@@ -4,7 +4,9 @@ import { configCommandFactory } from './config/index.js';
 import { contractCommandFactory } from './contract/index.js';
 // import { dappCommandFactory } from './dapp/index.js';
 import { devnetCommandFactory } from './devnet/index.js';
+import { keypairCommandFactory } from './keypair/index.js';
 import { keysCommandFactory } from './keys/index.js';
+import { keysetCommandFactory } from './keyset/index.js';
 import { marmaladeCommandFactory } from './marmalade/index.js';
 import { networksCommandFactory } from './networks/index.js';
 import { txCommandFactory } from './tx/index.js';
@@ -25,7 +27,9 @@ const packageJson: { version: string } = JSON.parse(
   configCommandFactory,
   networksCommandFactory,
   devnetCommandFactory,
+  keypairCommandFactory,
   keysCommandFactory,
+  keysetCommandFactory,
   accountCommandFactory,
   txCommandFactory,
   contractCommandFactory,

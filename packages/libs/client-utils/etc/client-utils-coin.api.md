@@ -35,6 +35,31 @@ event: "listen";
 data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
 
+// Warning: (ae-forgotten-export) The symbol "TCreatePrincipalAccountCommandInput" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const createPrincipalAccount: (inputs: TCreatePrincipalAccountCommandInput, config: IClientConfig) => Promise<IEmitterWrapper<[{
+event: "sign";
+data: ICommand;
+}, {
+event: "preflight";
+data: ILocalCommandResult;
+}, {
+event: "submit";
+data: ITransactionDescriptor;
+}, {
+event: "listen";
+data: ICommandResult;
+}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>>;
+
+// Warning: (ae-forgotten-export) The symbol "ICreatePrincipalCommandInput" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const createPrincipalCommand: (inputs: ICreatePrincipalCommandInput, config: Omit<IClientConfig, 'sign'>) => Promise<() => IEmitterWrapper<[{
+event: "dirtyRead";
+data: ICommandResult;
+}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>>;
+
 // @alpha (undocumented)
 export const details: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host']) => Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>;
 
