@@ -1,15 +1,15 @@
 import { SystemIcon } from '@components/Icon';
-import type { INotificationProps } from '@components/Notification';
+import type { INotificationRootProps } from '@components/Notification';
 import { Notification } from '@components/Notification';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { colorVariants, displayVariants } from './Notification.css';
 
-const meta: Meta<
-  {
-    text: string;
-  } & INotificationProps
-> = {
+type StoryType = {
+  heading: string;
+} & INotificationRootProps;
+
+const meta: Meta<StoryType> = {
   title: 'Components/Notification',
   parameters: {
     status: {
@@ -18,26 +18,20 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'The Notification component renders a notification with an icon, title, and text. The color variant of the notification can be set with the `color` prop.',
+          'The Notification component renders a notification with an icon, heading, body, and action buttons. This component is used to announce dynamic changes in the content of a live region by asserting a discreet alert or notification. The appropriate role should be used to ensure that assistive technologies announce these dynamic changes. In the case where a user wants to use the Notification component purely for visual purposes, the role can be set to `none`.',
       },
     },
   },
   argTypes: {
-    variant: {
-      options: Object.keys(displayVariants) as (keyof typeof displayVariants)[],
+    styleVariant: {
+      description:
+        'The Notification component has bordered and borderless variants. The borderless variant is used for notifications that located within a card or content body, while the bordered variant can be used in all other cases. ',
+      options: Object.keys(displayVariants),
       control: {
         type: 'select',
       },
-    },
-    icon: {
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
-      control: {
-        type: 'select',
-      },
-    },
-    title: {
-      control: {
-        type: 'text',
+      table: {
+        defaultValue: { summary: 'bordered' },
       },
     },
     color: {
@@ -46,78 +40,62 @@ const meta: Meta<
         type: 'select',
       },
     },
-    expanded: {
-      control: {
-        type: 'boolean',
-      },
-    },
     hasCloseButton: {
       control: {
         type: 'boolean',
       },
     },
-    inline: {
+    children: {
       control: {
-        type: 'boolean',
+        type: 'text',
+      },
+    },
+    role: {
+      description:
+        "The Notification component has a role attribute that can be set to 'alert', 'status', or 'none'.",
+      options: ['alert', 'status', 'none'],
+      control: {
+        type: 'select',
+      },
+      table: {
+        defaultValue: { summary: 'status' },
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    text: string;
-  } & INotificationProps
->;
-
-/*
- *👇 Render functions are a framework specific feature to allow you control on how the component renders.
- * See https://storybook.js.org/docs/7.0/react/api/csf
- * to learn how to use render functions.
- */
+type Story = StoryObj<StoryType>;
 
 export const Primary: Story = {
   name: 'Notification',
   args: {
-    icon: 'Information',
-    title: 'Notification title',
+    heading: 'Notification Heading',
     hasCloseButton: true,
-    expanded: false,
     color: undefined,
-    text: 'Notification text to inform users about the event that occurred!',
-    variant: 'standard',
-    inline: false,
+    children:
+      'Notification children to inform users about the event that occurred!',
+    styleVariant: 'bordered',
   },
-  render: ({
-    icon,
-    title,
-    hasCloseButton,
-    expanded,
-    color,
-    text,
-    variant,
-    inline,
-  }) => {
+  render: ({ heading, hasCloseButton, color, children, styleVariant }) => {
     return (
       <Notification.Root
-        icon={icon}
-        expanded={expanded}
         color={color}
-        title={title}
         hasCloseButton={hasCloseButton}
         onClose={() => {
           alert('Close button clicked');
         }}
-        variant={variant}
-        inline={inline}
+        icon={<SystemIcon.AlertBox />}
+        styleVariant={styleVariant}
+        role="none"
       >
-        {text}
+        <Notification.Heading>{heading}</Notification.Heading>
+        {children}
         <Notification.Actions>
-          <Notification.Button icon="Check" color={'positive'}>
+          <Notification.Button icon="Check" color="positive">
             Accept
           </Notification.Button>
-          <Notification.Button icon="Close" color={'negative'}>
+          <Notification.Button icon="Close" color="negative">
             Reject
           </Notification.Button>
         </Notification.Actions>

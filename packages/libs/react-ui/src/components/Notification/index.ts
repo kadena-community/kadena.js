@@ -1,25 +1,26 @@
 import type { FC } from 'react';
-import type { INotificationActionsProps } from './NotificationActions';
-import { NotificationActions } from './NotificationActions';
 import type { INotificationButtonProps } from './NotificationButton';
 import { NotificationButton } from './NotificationButton';
-import type { INotificationProps } from './NotificationContainer';
-import { NotificationContainer } from './NotificationContainer';
+import type { INotificationRootProps } from './NotificationRoot';
+import { NotificationRoot } from './NotificationRoot';
+import type { IBaseProps } from './NotificationSubComponents';
+import {
+  NotificationActions,
+  NotificationHeading,
+} from './NotificationSubComponents';
 
-export type {
-  INotificationActionsProps,
-  INotificationButtonProps,
-  INotificationProps,
-};
+export type { INotificationButtonProps, INotificationRootProps };
 
 interface INotification {
-  Root: FC<INotificationProps>;
-  Actions: FC<INotificationActionsProps>;
+  Root: FC<INotificationRootProps>;
+  Actions: FC<IBaseProps>;
   Button: FC<INotificationButtonProps>;
+  Heading: FC<IBaseProps>;
 }
 
 export const Notification: INotification = {
-  Root: NotificationContainer,
+  Root: NotificationRoot,
   Actions: NotificationActions,
   Button: NotificationButton,
+  Heading: NotificationHeading,
 };
