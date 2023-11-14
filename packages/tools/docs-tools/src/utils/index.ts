@@ -1,3 +1,5 @@
+import type { PhrasingContent } from 'mdast';
+
 export interface IContentReadTime {
   wordCount?: number;
   readingTimeInMinutes?: number;
@@ -14,4 +16,18 @@ export const getReadTime = (content?: string): IContentReadTime => {
   result.readingTimeInMinutes = Math.ceil(result.wordCount / WORDS_PER_MINUTE);
 
   return result;
+};
+
+export const getValues = (
+  children: PhrasingContent[],
+  arr: string[] = [],
+): string[] => {
+  children.forEach((branch) => {
+    if ('value' in branch) arr.push(branch.value.trim());
+
+    if ('children' in branch) return getValues(branch.children, arr);
+
+    return arr;
+  });
+  return arr;
 };

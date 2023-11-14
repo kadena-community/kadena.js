@@ -194,7 +194,7 @@ export interface IElementType {
 export interface IEsTree {
   type: 'Program';
   sourceType: 'module';
-  body: any[];
+  body: Record<string, any>[];
 }
 
 export interface IMdxJSEsm {
