@@ -159,6 +159,10 @@ interface IPropsData {
   frontmatter: IPageMeta;
 }
 
+interface ILeftMenuTreeData {
+  leftMenuTree: IMenuItem[];
+}
+
 interface IAsideMenuData {
   aSideMenuTree: ISubHeaderElement[];
 }
@@ -173,7 +177,7 @@ export interface IFile {
 export interface IPropsType {
   type: 'props';
   children: [];
-  data: IPropsData | IAsideMenuData;
+  data: IPropsData | IAsideMenuData | ILeftMenuTreeData;
 }
 
 export type TypeWithValue = InlineCode | Text | Yaml | Html | Code;

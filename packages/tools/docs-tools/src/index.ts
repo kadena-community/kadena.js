@@ -5,6 +5,7 @@ import remarkFixAbsoluteLinks from './remarkFixAbsoluteLinks';
 import remarkFrontmatterToProps from './remarkFrontmatterToProps';
 import remarkHeadersToProps from './remarkHeadersToProps';
 import remarkPropsToStaticRender from './remarkPropsToStaticRender';
+import remarkSideMenuToProps from './remarkSideMenuToProps';
 import remarkTwitter from './remarkTwitter';
 import remarkYoutube from './remarkYoutube';
 
@@ -16,6 +17,7 @@ export {
   remarkFrontmatterToProps,
   remarkHeadersToProps,
   remarkPropsToStaticRender,
+  remarkSideMenuToProps,
   remarkTwitter,
   remarkYoutube,
 };

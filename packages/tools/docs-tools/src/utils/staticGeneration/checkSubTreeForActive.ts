@@ -1,6 +1,6 @@
 import path from 'path';
 
-import type { IMenuData } from '../../types';
+import type { IMenuData, IMenuItem } from '../../types';
 import { getData } from './getData';
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -45,9 +45,15 @@ const IsMenuOpen = (pathname: string, itemRoot: string): boolean =>
 const isPathRoot = (pathname: string, itemRoot: string): boolean =>
   itemRoot === pathname;
 
+type MapSubTreeReturnType = (item: IMenuData | IMenuItem) => IMenuItem;
+
 const mapSubTree =
-  (pathname: string, noChildren: boolean, isRoot = false) =>
-  (item: IMenuData): IMenuData => {
+  (
+    pathname: string,
+    noChildren: boolean,
+    isRoot = false,
+  ): MapSubTreeReturnType =>
+  (item: IMenuData | IMenuItem): IMenuItem => {
     const newItem = omit(item, [
       'description',
       'subTitle',
@@ -60,7 +66,7 @@ const mapSubTree =
       'author',
       'wordCount',
       'readingTimeInMinutes',
-    ]) as unknown as IMenuData;
+    ]) as unknown as IMenuItem;
 
     if (IsMenuOpen(pathname, newItem.root)) {
       newItem.isMenuOpen = true;
@@ -85,7 +91,7 @@ const mapSubTree =
 export const checkSubTreeForActive = async (
   path: string,
   noChildren = false,
-) => {
+): Promise<IMenuItem[]> => {
   const tree = await getData();
 
   if (!path) {
