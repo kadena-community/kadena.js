@@ -1,7 +1,6 @@
+import Cookies from 'js-cookie';
 import { describe, expect, test, vi } from 'vitest';
 import * as persist from '../persist';
-import Cookies from "js-cookie";
-
 
 describe('getName', () => {
   test('getting a prefixed name', () => {
@@ -13,7 +12,9 @@ describe('getName', () => {
 
 describe('getItem', () => {
   test('get cookie item', () => {
-    const getSpy = vi.spyOn(Cookies, 'get').mockReturnValueOnce({ '_persist:myCookie': 'omnomnom'});
+    const getSpy = vi
+      .spyOn(Cookies, 'get')
+      .mockReturnValueOnce({ '_persist:myCookie': 'omnomnom' });
     const cookieName = 'myCookie';
     persist.getItem(cookieName);
 
@@ -24,7 +25,9 @@ describe('getItem', () => {
 
 describe('purge', () => {
   test('remove cookies', () => {
-    vi.spyOn(persist, 'getItems').mockImplementation(() => ({ 'cookie': 'some_random_cookie' }));
+    vi.spyOn(persist, 'getItems').mockImplementation(() => ({
+      cookie: 'some_random_cookie',
+    }));
 
     vi.spyOn(persist, 'deleteItem').mockImplementation(() => {});
 
