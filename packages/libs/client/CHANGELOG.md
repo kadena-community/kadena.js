@@ -1,5 +1,11 @@
 # Change Log - @kadena/client
 
+## 1.6.3
+
+### Patch Changes
+
+- 4bd53128d: Fix createEckoWalletQuicksign to work with updated interface
+
 ## 1.6.1
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @kadena/graph
 
+## 1.0.5
+
+### Patch Changes
+
+- f4ac431f4: Included cross-chain transfers in transfer object
+- 66338bfa0: Enabled option for different gas payers in simulation
+- d58bce7ef: acount and chainAccount now implement the Node type, meaning that
+  they can be used in the node and nodes queries. Besides this, several
+  optimizations with async data retrieval.
+- 0a36ed900: Fix simulate script edge case (when it attempts cross-chain
+  transfers to the same chain). Add build step in start:generate script
+- Updated dependencies [4bd53128d]
+  - @kadena/client@1.6.3
+
 ## 1.0.4
 
 ### Patch Changes
