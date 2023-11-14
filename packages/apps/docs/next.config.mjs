@@ -6,6 +6,7 @@ import {
   remarkPropsToStaticRender,
   remarkTwitter,
   remarkYoutube,
+  remarkFrontmatterToProps,
 } from '@kadena/docs-tools';
 import mdx from '@next/mdx';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
@@ -15,7 +16,6 @@ import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import { BUNDLED_LANGUAGES, getHighlighter } from 'shiki';
 import redirectsConfig from './redirects.mjs';
-import remarkFrontmatterToProps from './src/scripts/remarkFrontmatterToProps.mjs';
 import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.mjs';
 import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.mjs';
 const withVanillaExtract = createVanillaExtractPlugin();
