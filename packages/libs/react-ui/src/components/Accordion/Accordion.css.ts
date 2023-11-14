@@ -52,7 +52,7 @@ export const accordionToggleIconClass = style([
     transition: 'transform 0.2s ease',
     selectors: {
       '&.isOpen': {
-        transform: 'rotate(180deg)',
+        transform: 'rotate(90deg)',
       },
     },
   },
