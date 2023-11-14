@@ -1,6 +1,5 @@
 import type { ITextareaProps } from '@components/Form';
-import { Textarea } from '@components/Form';
-import { CopyButton } from '@components/Form/ActionButtons/CopyButton';
+import { CopyButton, Textarea } from '@components/Form';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 
