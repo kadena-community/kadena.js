@@ -62,6 +62,13 @@ export interface IBasePageMeta {
   lastModifiedDate?: Date;
 }
 
+export interface IFrontMatterYaml extends IBasePageMeta {
+  publishDate?: string;
+  tags?: string[];
+  author?: string;
+  authorId?: string;
+}
+
 export interface IAuthorInfo {
   id: string;
   name: string;
@@ -139,6 +146,7 @@ export interface IMenuData {
   authorInfo?: IAuthorInfo;
   wordCount?: number;
   readingTimeInMinutes?: number;
+  lastModifiedDate: Date;
 }
 
 export interface ITag {
@@ -153,6 +161,13 @@ interface IPropsData {
 
 interface IAsideMenuData {
   aSideMenuTree: ISubHeaderElement[];
+}
+
+export interface IFile {
+  data: Record<string, any>;
+  messages: string[];
+  history: string[];
+  value: string;
 }
 
 export interface IPropsType {
@@ -199,10 +214,17 @@ export interface ITree extends Omit<Root, 'children'> {
   children: DocsRootContent[];
 }
 
+export interface IPropsTree extends Omit<Root, 'children'> {
+  children: IPropsType[];
+}
+
 export interface IHeadingTree extends Omit<Root, 'children'> {
   children: Heading[];
 }
 
-export type Plugin = (tree: ITree, file: any) => Promise<ITree | void>;
+export type Plugin = (
+  tree: ITree,
+  file: any,
+) => Promise<ITree | void | IPropsTree>;
 
 export { Root, RootContent };

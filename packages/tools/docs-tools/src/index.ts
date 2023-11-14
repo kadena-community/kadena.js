@@ -2,6 +2,7 @@ import remarkAdmonitions from './remarkAdmonition';
 import remarkCheckForCodeTitle from './remarkCheckForCodeTitle';
 import remarkFigureOutOfParagraph from './remarkFigureOutOfParagraph';
 import remarkFixAbsoluteLinks from './remarkFixAbsoluteLinks';
+import remarkFrontmatterToProps from './remarkFrontmatterToProps';
 import remarkPropsToStaticRender from './remarkPropsToStaticRender';
 import remarkTwitter from './remarkTwitter';
 import remarkYoutube from './remarkYoutube';
@@ -11,6 +12,7 @@ export {
   remarkCheckForCodeTitle,
   remarkFigureOutOfParagraph,
   remarkFixAbsoluteLinks,
+  remarkFrontmatterToProps,
   remarkPropsToStaticRender,
   remarkTwitter,
   remarkYoutube,
