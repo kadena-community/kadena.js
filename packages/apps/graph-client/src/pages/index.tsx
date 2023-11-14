@@ -6,6 +6,8 @@ import {
   useGetRecentHeightsQuery,
   useGetTransactionsQuery,
 } from '@/__generated__/sdk';
+import { centerBlockStyle } from '@/components/Common/center-block/styles.css';
+import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { ChainwebGraph } from '@components/chainweb';
 import routes from '@constants/routes';
@@ -16,14 +18,24 @@ import isEqual from 'lodash.isequal';
 import React, { useEffect } from 'react';
 
 const Home: React.FC = () => {
-  const { loading: loadingNewBlocks, data: newBlocks } =
-    useGetBlocksSubscription();
-  const { loading: loadingRecentBlocks, data: recentBlocks } =
-    useGetRecentHeightsQuery({ variables: { count: 3 } });
+  const {
+    loading: loadingNewBlocks,
+    data: newBlocks,
+    error: newBlocksError,
+  } = useGetBlocksSubscription();
+  const {
+    loading: loadingRecentBlocks,
+    data: recentBlocks,
+    error: recentBlocksError,
+  } = useGetRecentHeightsQuery({ variables: { count: 3 } });
   const previousNewBlocks = usePrevious(newBlocks);
   const previousRecentBlocks = usePrevious(recentBlocks);
 
-  const { data: txs } = useGetTransactionsQuery({ variables: { first: 10 } });
+  const {
+    loading: loadingTxs,
+    data: txs,
+    error: txError,
+  } = useGetTransactionsQuery({ variables: { first: 10 } });
 
   const { allBlocks, addBlocks } = useParsedBlocks();
 
@@ -58,12 +70,14 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <div>
-        {loadingRecentBlocks || loadingNewBlocks ? (
-          'Loading...'
-        ) : (
-          <ChainwebGraph blocks={allBlocks} />
-        )}
+      <LoaderAndError
+        error={newBlocksError || recentBlocksError || txError}
+        loading={loadingNewBlocks}
+        loaderText="Loading..."
+      />
+
+      <div className={centerBlockStyle}>
+        {allBlocks && <ChainwebGraph blocks={allBlocks} />}
       </div>
 
       {txs?.transactions && (

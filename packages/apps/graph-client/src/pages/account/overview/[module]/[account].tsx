@@ -3,8 +3,7 @@ import type {
   ModuleAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetAccountQuery } from '@/__generated__/sdk';
-import Loader from '@/components/Common/loader/loader';
-import { ErrorBox } from '@/components/error-box/error-box';
+import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import { ChainModuleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
@@ -16,11 +15,7 @@ import React from 'react';
 const Account: React.FC = () => {
   const router = useRouter();
 
-  const {
-    loading: loadingAccount,
-    data: accountQuery,
-    error,
-  } = useGetAccountQuery({
+  const { loading, data, error } = useGetAccountQuery({
     variables: {
       moduleName: router.query.module as string,
       accountName: router.query.account as string,
@@ -36,15 +31,15 @@ const Account: React.FC = () => {
 
       <Box marginBottom="$8" />
 
-      {loadingAccount && (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Loader /> <span>Retrieving account information...</span>
-        </div>
-      )}
-      {error && <ErrorBox error={error} />}
-      {accountQuery?.account &&
-        accountQuery?.account?.totalBalance === 0 &&
-        accountQuery?.account?.chainAccounts.length === 0 && (
+      <LoaderAndError
+        error={error}
+        loading={loading}
+        loaderText="Retrieving account information..."
+      />
+
+      {data?.account &&
+        data?.account?.totalBalance === 0 &&
+        data?.account?.chainAccounts.length === 0 && (
           <>
             <Notification.Root color="info">
               We could not find any data on this account. Please check the
@@ -53,7 +48,7 @@ const Account: React.FC = () => {
             <Box margin={'$4'} />
           </>
         )}
-      {accountQuery?.account && (
+      {data?.account && (
         <div>
           <Table.Root wordBreak="break-all">
             <Table.Body>
@@ -61,19 +56,19 @@ const Account: React.FC = () => {
                 <Table.Td>
                   <strong>Account Name</strong>
                 </Table.Td>
-                <Table.Td>{accountQuery.account.accountName}</Table.Td>
+                <Table.Td>{data.account.accountName}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Module</strong>
                 </Table.Td>
-                <Table.Td>{accountQuery.account.moduleName}</Table.Td>
+                <Table.Td>{data.account.moduleName}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Balance</strong>
                 </Table.Td>
-                <Table.Td>{accountQuery.account.totalBalance}</Table.Td>
+                <Table.Td>{data.account.totalBalance}</Table.Td>
               </Table.Tr>
             </Table.Body>
           </Table.Root>
@@ -85,7 +80,7 @@ const Account: React.FC = () => {
               <ChainModuleAccountTable
                 moduleName={router.query.module as string}
                 accountName={router.query.account as string}
-                chainAccounts={accountQuery.account.chainAccounts}
+                chainAccounts={data.account.chainAccounts}
               />
             </Tabs.Content>
             <Tabs.Tab id="Transfers">Transfers</Tabs.Tab>
@@ -96,8 +91,7 @@ const Account: React.FC = () => {
                 moduleName={router.query.module as string}
                 accountName={router.query.account as string}
                 transfers={
-                  accountQuery.account
-                    .transfers as ModuleAccountTransfersConnection
+                  data.account.transfers as ModuleAccountTransfersConnection
                 }
               />
             </Tabs.Content>
@@ -109,7 +103,7 @@ const Account: React.FC = () => {
                   router.query.module as string
                 }/${router.query.account as string}`}
                 transactions={
-                  accountQuery.account
+                  data.account
                     .transactions as ModuleAccountTransactionsConnection
                 }
               />

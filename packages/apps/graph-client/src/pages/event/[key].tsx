@@ -1,5 +1,6 @@
 import { useGetEventByNameSubscription } from '@/__generated__/sdk';
 import Loader from '@/components/Common/loader/loader';
+import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import { ErrorBox } from '@/components/error-box/error-box';
 import { formatCode } from '@/utils/formatter';
 import routes from '@constants/routes';
@@ -10,11 +11,7 @@ import React from 'react';
 const Event: React.FC = () => {
   const router = useRouter();
 
-  const {
-    loading: eventLoading,
-    data: eventSubscription,
-    error,
-  } = useGetEventByNameSubscription({
+  const { loading, data, error } = useGetEventByNameSubscription({
     variables: { eventName: router.query.key as string },
   });
 
@@ -27,15 +24,15 @@ const Event: React.FC = () => {
 
       <Box marginBottom="$8" />
 
-      {eventLoading && (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Loader /> <span>Waiting for event...</span>
-        </div>
-      )}
+      <LoaderAndError
+        error={error}
+        loading={loading}
+        loaderText="Waiting for event..."
+      />
 
       {error && <ErrorBox error={error} />}
 
-      {eventSubscription?.event && (
+      {data?.event && (
         <>
           <Table.Root striped wordBreak="break-word">
             <Table.Head>
@@ -47,7 +44,7 @@ const Event: React.FC = () => {
               </Table.Tr>
             </Table.Head>
             <Table.Body>
-              {eventSubscription.event.map((event, index) => (
+              {data.event.map((event, index) => (
                 <Table.Tr
                   key={index}
                   url={`${routes.TRANSACTIONS}/${event.transaction?.requestKey}`}

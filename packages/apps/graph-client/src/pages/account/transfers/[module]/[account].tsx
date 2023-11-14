@@ -1,6 +1,5 @@
 import { useGetTransfersQuery } from '@/__generated__/sdk';
-import Loader from '@/components/Common/loader/loader';
-import { ErrorBox } from '@/components/error-box/error-box';
+import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import routes from '@constants/routes';
 import { Box, Breadcrumbs, Button, Link, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
@@ -33,12 +32,13 @@ const AccountTransfers: React.FC = () => {
       </Breadcrumbs.Root>
 
       <Box marginBottom="$8" />
-      {loading && (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Loader /> <span>Retrieving transfers...</span>
-        </div>
-      )}
-      {error && <ErrorBox error={error} />}
+
+      <LoaderAndError
+        error={error}
+        loading={loading}
+        loaderText="Retrieving transfers..."
+      />
+
       {data?.transfers && (
         <>
           <Box marginBottom="$3">
