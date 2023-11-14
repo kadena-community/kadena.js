@@ -27,12 +27,12 @@ export const deleteItem = (key: string) => {
 export const getItems = () => {
   const cookies = Cookies.get();
   return Object.keys(cookies).reduce(
-      (results, key) => {
-        const match: null | string[] = key.match(getName('(.*)'));
-        if (match) results[match[1]] = cookies[key];
-        return results;
-      },
-      {} as { [key: string]: string },
+    (results, key) => {
+      const match: null | string[] = key.match(getName('(.*)'));
+      if (match) results[match[1]] = cookies[key];
+      return results;
+    },
+    {} as { [key: string]: string },
   );
 };
 
