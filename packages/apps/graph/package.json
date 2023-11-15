@@ -14,7 +14,7 @@
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
-    "fund": "npx ts-node -T src/scripts/devnet/index.ts fund",
+    "fund": "npx ts-node -T src/devnet/simulation/index.ts fund",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
