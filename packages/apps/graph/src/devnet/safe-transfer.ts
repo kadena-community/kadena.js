@@ -45,7 +45,8 @@ export async function safeTransfer({
       Pact.modules.coin.transfer(fromAccount, sender.account, extraAmount),
     )
     .addData('ks', { keys: [receiverKeyPair.publicKey], pred: 'keys-all' })
-    .addSigner(sender.publicKey, (withCap) => [
+    //TODO: find a way to add multiple signers
+    .addSigner(sender.keys[0].publicKey, (withCap) => [
       withCap('coin.GAS'),
       withCap('coin.TRANSFER', sender.account, fromAccount, pactAmount),
     ])
@@ -61,7 +62,8 @@ export async function safeTransfer({
     .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 
-  const signedTx = signAndAssertTransaction([sender, receiverKeyPair])(
+  //TODO : Find if there is a way to sign with multiple keys
+  const signedTx = signAndAssertTransaction([sender.keys[0], receiverKeyPair])(
     transaction,
   );
 

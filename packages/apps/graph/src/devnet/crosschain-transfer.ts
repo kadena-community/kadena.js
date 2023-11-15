@@ -22,30 +22,37 @@ function startInTheFirstChain(
   to: IAccount,
   pactDecimal: IPactDecimal,
 ): IUnsignedCommand {
-  return Pact.builder
-    .execution(
-      Pact.modules.coin.defpact['transfer-crosschain'](
-        from.account,
-        to.account,
-        readKeyset('receiver-guard'),
-        to.chainId || devnetConfig.CHAIN_ID,
-        pactDecimal,
-      ),
-    )
-    .addSigner(from.publicKey, (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability(
-        'coin.TRANSFER_XCHAIN',
-        from.account,
-        to.account,
-        pactDecimal,
-        to.chainId || devnetConfig.CHAIN_ID,
-      ),
-    ])
-    .addKeyset('receiver-guard', 'keys-all', to.publicKey)
-    .setMeta({ chainId: from.chainId, senderAccount: from.account })
-    .setNetworkId(devnetConfig.NETWORK_ID)
-    .createTransaction();
+  return (
+    Pact.builder
+      .execution(
+        Pact.modules.coin.defpact['transfer-crosschain'](
+          from.account,
+          to.account,
+          readKeyset('receiver-guard'),
+          to.chainId || devnetConfig.CHAIN_ID,
+          pactDecimal,
+        ),
+      )
+      //TODO: find a way to add multiple signers
+      .addSigner(from.keys[0].publicKey, (withCapability) => [
+        withCapability('coin.GAS'),
+        withCapability(
+          'coin.TRANSFER_XCHAIN',
+          from.account,
+          to.account,
+          pactDecimal,
+          to.chainId || devnetConfig.CHAIN_ID,
+        ),
+      ])
+      .addKeyset(
+        'receiver-guard',
+        'keys-all',
+        ...to.keys.map((key) => key.publicKey),
+      ) //TODO: find a way to add multiple signers
+      .setMeta({ chainId: from.chainId, senderAccount: from.account })
+      .setNetworkId(devnetConfig.NETWORK_ID)
+      .createTransaction()
+  );
 }
 
 function finishInTheTargetChain(
@@ -57,7 +64,8 @@ function finishInTheTargetChain(
     .continuation(continuation)
     .setNetworkId(devnetConfig.NETWORK_ID)
     // uncomment this if you want to pay gas yourself
-    .addSigner(gasPayer.publicKey, (withCapability) => [
+    // TODO: find a way to add multiple signers
+    .addSigner(gasPayer.keys[0].publicKey, (withCapability) => [
       withCapability('coin.GAS'),
     ])
     .setMeta({
@@ -89,7 +97,8 @@ export async function crossChainTransfer({
     gasPayer = sender00;
   }
 
-  if (!gasPayer.secretKey) {
+  //TODO: find a way to add multiple signers or to check for this
+  if (!gasPayer.keys[0].secretKey) {
     logger.info(
       `Gas payer ${gasPayer.account} does not have a secret key; using sender00 as gas payer`,
     );
@@ -103,7 +112,7 @@ export async function crossChainTransfer({
   const pactAmount = new PactNumber(amount).toPactDecimal();
 
   const unsignedTx = startInTheFirstChain(from, to, pactAmount);
-  const signedTx = signAndAssertTransaction([from])(unsignedTx);
+  const signedTx = signAndAssertTransaction(from.keys)(unsignedTx);
   const submittedTx = await submit(signedTx);
   inspect('Transfer Submited')(submittedTx);
   const status = await listen(submittedTx);
@@ -133,7 +142,7 @@ export async function crossChainTransfer({
     gasPayer,
   );
 
-  const signedTx2 = signAndAssertTransaction([gasPayer])(unsignedTx2);
+  const signedTx2 = signAndAssertTransaction(gasPayer.keys)(unsignedTx2);
   const submittedTx2 = await submit(signedTx2);
   inspect('Transfer Submited')(submittedTx2);
   const status2 = await listen(submittedTx2);
