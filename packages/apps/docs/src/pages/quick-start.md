@@ -54,6 +54,7 @@ However, every blockchain has its own distinct block explorer. For this tutorial
 
 Before you start this tutorial, verify the following basic requirements:
 
+- You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, access to an interactive terminal shell, and are generally familiar with using command-line programs.
 - You have Docker installed and are generally familiar with using Docker commands for containerized applications.
  
@@ -266,39 +267,48 @@ To deploy the smart contract:
 
 Now that you have uploaded the smart contract, you can interact with it on the development network.
 
-## Interacting with a smart contract
+## Interact with a smart contract
 
 To interact with the `hello-world` smart contract:
 
 1. In Chainweaver, click **Contracts** in the navigation panel.
-2. Click Module Explorer.
+   
+   After you click Contracts, Chainweaver displays two working areas.
+   The left side enables you to edit a contract interactively.
+   The right side enables you to navigate, view, and test contracts you have deployed.
+
+2. Click **Module Explorer**.
+
 3. Under Deployed Contracts, search for the `hello-world` contract.
+
 4. Click **View**  to show details of the smart contract.
 
-Now on the left side you can write a command. You can write any command and
-execute it on the blockchain. Each command requires at least someone to pay the
-transaction fee, often called "gas".
+5. Click **Open**. 
+   
+   On the left side, you can write a command to execute it on the blockchain. 
+   Most commands require you to pay a transaction fee because they change the state of the information stored in the blockchain.
+   However, you can also write commands that  only **read** information from the blockchain.
+   Read-only commands don't require transaction fees.
 
-You can also write a command that **does not require transaction fee** as it
-doesn't write, but **only read** from the database of the blockchain.
+1. In the left side under Contracts, type the following command:
+   
+   ```lisp
+   (free.hello-world.say-hello "Albert")
+   ```
 
-This is a read command that you can execute that uses the contract that you just
-deployed. Write it in the left side of your Chainweaver inside "Contracts" page.
+1. Click **Deploy** to display the transaction details, then click **Next**.
 
-```lisp
-(free.hello-world.say-hello "Albert")
-```
+2. Review the signing information, but leave the Signing Key empty because you're executing a read-only command, then click **Next**.
 
-1.  Click the "deploy" button on the top right.
-2.  Click next twice
-3.  You'll get an error "A 'Gas Payer' has not been selected for this
+3. You'll get an error "A 'Gas Payer' has not been selected for this
     transaction. Are you sure this is correct?", but you can ignore that since
     you're executing a read-only command.
-4.  Scroll to the bottom. Here you'll see the "Raw Response"
 
-> "Hello, Albert!"
+4. Scroll to see the Raw Response:
+   
+   "Hello, Albert!"
 
-## Writing to the blockchain
+## Write to the blockchain
 
 Actually, you've already written to the blockchain. When you deployed your smart
 contract, you executed a write. But that's not a write from within the smart
@@ -313,13 +323,13 @@ Run the following command to **redeploy** the `hello-world` smart contract:
 
 ```shell
 npm run start -- deploy \
-  --keys "your-key" \
+  --keys "your-account-key" \
   --predicate keys-all \
   --file ./src/pact/hello-world.pact
 
 # chainweaver web: follow the instructions in the terminal
 npm run start -- deploy \
-  --keys "your-key" \
+  --keys "your-account-key" \
   --predicate keys-all \
   --file ./src/pact/hello-world.pact \
   --sign-manually
