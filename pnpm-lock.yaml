@@ -201,6 +201,9 @@ importers:
       '@types/gtag.js':
         specifier: ~0.0.12
         version: 0.0.18
+      '@types/js-yaml':
+        specifier: ^4.0.9
+        version: 4.0.9
       '@types/mailchimp__mailchimp_marketing':
         specifier: ~3.0.10
         version: 3.0.17
@@ -11201,6 +11204,10 @@ packages:
 
   /@types/js-levenshtein@1.1.1:
     resolution: {integrity: sha512-qC4bCqYGy1y/NP7dDVr7KJarn+PbX1nSpwA7JXdu0HxT3QYjO8MJ+cntENtHFVy2dRAyBV23OZ6MxsW1AM1L8g==}
+    dev: true
+
+  /@types/js-yaml@4.0.5:
+    resolution: {integrity: sha512-FhpRzf927MNQdRZP0J5DLIdTXhjLYzeUTmLAu69mnVksLH9CJY3IuSeEgbKUki7GQZm0WqDkGzyxju2EZGD2wA==}
     dev: true
 
   /@types/js-yaml@4.0.9:
