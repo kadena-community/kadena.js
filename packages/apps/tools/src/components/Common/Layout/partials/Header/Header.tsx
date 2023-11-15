@@ -1,6 +1,5 @@
 import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
-import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import type { Network } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
@@ -107,7 +106,7 @@ const Header: FC<IHeaderProps> = () => {
           ))}
         </NavHeader.Select>
         <div className={walletConnectWrapperStyle}>
-          <WalletConnectButton />
+          {/*<WalletConnectButton />*/}
         </div>
       </NavHeader.Content>
     </NavHeader.Root>

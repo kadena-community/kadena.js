@@ -19,7 +19,7 @@ export const titleWrapperClass = style([
 
 export const titleTextClass = style([
   sprinkles({
-    fontSize: '$base',
+    fontSize: '$sm',
     fontWeight: '$bold',
     marginRight: '$2',
   }),

@@ -39,8 +39,8 @@ export const MenuButton: FC<IMenuButtonProps> = ({
         className={classNames(gridMiniMenuListButtonStyle, rotationClass, {
           active,
         })}
-        onMouseEnter={(e) => Tooltip.handler(e, tooltipRef)}
-        onMouseLeave={(e) => Tooltip.handler(e, tooltipRef)}
+        onMouseEnter={(e) => (title ? Tooltip.handler(e, tooltipRef) : null)}
+        onMouseLeave={(e) => (title ? Tooltip.handler(e, tooltipRef) : null)}
         {...rest}
         aria-label={title}
       >
