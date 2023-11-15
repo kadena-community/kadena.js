@@ -27,15 +27,12 @@ import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import {
-  buttonContainerClass,
-  containerClass,
-  notificationContainerStyle,
-} from './styles.css';
+import { buttonContainerClass, notificationContainerStyle } from './styles.css';
 
 import {
   accountNameContainerClass,
   chainSelectContainerClass,
+  containerClass,
   inputContainerClass,
 } from '../styles.css';
 
@@ -174,7 +171,7 @@ const ExistingAccountFaucetPage: FC = () => {
           body={requestStatus.message}
         />
         <Card fullWidth>
-          <Heading as="h5">Account</Heading>
+          <Heading as="h5">{t('Account')}</Heading>
           <Box marginBottom="$4" />
           <div className={inputContainerClass}>
             <div className={accountNameContainerClass}>
