@@ -1869,8 +1869,8 @@ importers:
         specifier: 5.2.2
         version: 5.2.2
       unified:
-        specifier: ^11.0.3
-        version: 11.0.4
+        specifier: 11.0.3
+        version: 11.0.3
 
   packages/tools/e2e-tests:
     devDependencies:
@@ -2159,7 +2159,7 @@ importers:
         specifier: 5.2.2
         version: 5.2.2
       unified:
-        specifier: ^11.0.3
+        specifier: 11.0.3
         version: 11.0.3
       vfile:
         specifier: 6.0.1
@@ -24079,7 +24079,7 @@ packages:
       micromark-extension-gfm: 3.0.0
       remark-parse: 11.0.0
       remark-stringify: 11.0.0
-      unified: 11.0.4
+      unified: 11.0.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -24124,7 +24124,7 @@ packages:
       '@types/mdast': 4.0.3
       mdast-util-from-markdown: 2.0.0
       micromark-util-types: 2.0.0
-      unified: 11.0.4
+      unified: 11.0.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -24165,7 +24165,7 @@ packages:
     dependencies:
       '@types/mdast': 4.0.3
       mdast-util-to-markdown: 2.1.0
-      unified: 11.0.4
+      unified: 11.0.3
     dev: false
 
   /remark@14.0.3:
@@ -24184,7 +24184,7 @@ packages:
       '@types/mdast': 4.0.3
       remark-parse: 11.0.0
       remark-stringify: 11.0.0
-      unified: 11.0.4
+      unified: 11.0.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -26465,7 +26465,7 @@ packages:
       prettier: ^3.0.0
     dependencies:
       prettier: 3.0.3
-      unified: 11.0.4
+      unified: 11.0.3
     dev: false
 
   /unified@10.1.2:
@@ -26489,7 +26489,6 @@ packages:
       is-plain-obj: 4.1.0
       trough: 2.1.0
       vfile: 6.0.1
-    dev: true
 
   /unified@11.0.4:
     resolution: {integrity: sha512-apMPnyLjAX+ty4OrNap7yumyVAMlKx5IWU2wlzzUdYJO9A8f1p9m/gywF/GM2ZDFcjQPrx59Mc90KwmxsoklxQ==}
@@ -26501,6 +26500,7 @@ packages:
       is-plain-obj: 4.1.0
       trough: 2.1.0
       vfile: 6.0.1
+    dev: false
 
   /unique-string@2.0.0:
     resolution: {integrity: sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==}

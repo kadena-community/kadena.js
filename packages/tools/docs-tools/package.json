@@ -57,6 +57,6 @@
     "rimraf": "~5.0.1",
     "tsc-alias": "~1.8.7",
     "typescript": "5.2.2",
-    "unified": "^11.0.3"
+    "unified": "11.0.3"
   }
 }
