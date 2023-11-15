@@ -7,6 +7,9 @@ import { Content } from './StoryComponents';
 const meta: Meta<{ title?: string } & IModalProps> = {
   title: 'Layout/Modal',
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:

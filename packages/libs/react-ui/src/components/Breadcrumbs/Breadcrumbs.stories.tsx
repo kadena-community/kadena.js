@@ -21,6 +21,7 @@ const meta: Meta<
 > = {
   title: 'Navigation/Breadcrumbs',
   parameters: {
+    status: { type: 'needsRevision' },
     docs: {
       description: {
         component:

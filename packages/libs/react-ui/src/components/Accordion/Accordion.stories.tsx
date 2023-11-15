@@ -29,6 +29,9 @@ type StoryProps = {
 const meta: Meta<StoryProps> = {
   title: 'Layout/Accordion',
   parameters: {
+    status: {
+      type: 'inDevelopment',
+    },
     controls: {
       hideNoControlsWarning: true,
       sort: 'requiredFirst',

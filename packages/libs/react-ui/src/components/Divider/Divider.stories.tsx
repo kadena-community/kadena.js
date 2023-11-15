@@ -6,6 +6,7 @@ import { ContentClass } from './stories.css';
 const meta: Meta = {
   title: 'Layout/Divider',
   parameters: {
+    status: { type: 'stable' },
     docs: {
       description: {
         component:

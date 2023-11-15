@@ -9,6 +9,9 @@ import React from 'react';
 const meta: Meta<ICardProps> = {
   title: 'Layout/Card',
   parameters: {
+    status: {
+      type: ['needsRevision'],
+    },
     docs: {
       description: {
         component: 'A component used for grouping items in a card.',

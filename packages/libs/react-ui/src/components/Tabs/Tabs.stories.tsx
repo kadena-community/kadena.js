@@ -22,6 +22,9 @@ const meta: Meta<
   title: 'Layout/Tabs',
   decorators: [withCenteredStory],
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:

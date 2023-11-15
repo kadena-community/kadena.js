@@ -12,6 +12,11 @@ import { gridContainer, gridItem } from '../stories.css';
  */
 const meta: Meta<{ icon: string } & IIconProps> = {
   title: 'Icons/ProductIcons',
+  parameters: {
+    status: {
+      type: ['needsRevision'],
+    },
+  },
   argTypes: {
     icon: {
       control: {

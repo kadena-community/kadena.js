@@ -42,6 +42,22 @@ const preview: Preview = {
         return React.createElement(DocsContainer, props);
       },
     },
+    status: {
+      statuses: {
+        needsRevision: {
+          background: colorPalette.$yellow70,
+          color: colorPalette.$white,
+        },
+        inDevelopment: {
+          background: colorPalette.$blue70,
+          color: colorPalette.$white,
+        },
+        experimental: {
+          background: colorPalette.$pink70,
+          color: colorPalette.$white,
+        },
+      },
+    },
   },
 };
 

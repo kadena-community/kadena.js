@@ -15,6 +15,9 @@ const meta: Meta<
   component: Tooltip.Root,
   decorators: [withCenteredStory],
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:

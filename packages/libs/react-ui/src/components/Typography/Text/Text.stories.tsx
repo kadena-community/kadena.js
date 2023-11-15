@@ -12,6 +12,11 @@ import {
 const meta: Meta<typeof Text> = {
   title: 'Typography/Text',
   component: Text,
+  parameters: {
+    status: {
+      type: ['needsRevision'],
+    },
+  },
   argTypes: {
     children: {
       control: { type: 'text' },

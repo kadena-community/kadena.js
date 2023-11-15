@@ -56,6 +56,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@etchteam/storybook-addon-status": "^4.2.4",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
