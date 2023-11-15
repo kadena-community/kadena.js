@@ -143,7 +143,6 @@ export const subMenuTitleClass = style([
   }),
   {
     borderBottom: `1px solid #E3E1E5`,
-
     selectors: {
       [`${darkThemeClass} &`]: {
         borderBottom: `1px solid #27232999`,

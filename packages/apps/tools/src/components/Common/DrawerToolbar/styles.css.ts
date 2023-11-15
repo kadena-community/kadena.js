@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const gridItemCollapsedSidebarStyle = style([
@@ -9,6 +9,7 @@ export const gridItemCollapsedSidebarStyle = style([
     bottom: 0,
     backgroundColor: '$neutral1',
     width: '$12',
+    fontSize: '$sm',
     zIndex: 1,
   }),
   {
@@ -28,7 +29,6 @@ export const buttonWrapperClass = style([
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    color: '$gray50',
   }),
   {
     borderBottom: `solid 1px ${vars.colors.$borderSubtle}`,
@@ -40,14 +40,17 @@ export const expandedDrawerTitleClass = style([
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: '$4',
-    paddingBottom: '$4',
-    paddingLeft: '$6',
-    paddingRight: '$4',
-    height: '$20',
+    fontWeight: '$bold',
   }),
   {
-    borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
+    borderBottom: `1px solid #E3E1E5`,
+    padding: '0.125rem 0.75rem',
+    paddingLeft: '1.25rem',
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid #27232999`,
+      },
+    },
   },
 ]);
 
@@ -59,7 +62,6 @@ export const expandedDrawerContentClass = style([
     paddingRight: '$6',
     display: 'flex',
     flexDirection: 'column',
-    color: '$gray60',
   }),
   {
     overflowY: 'auto',
