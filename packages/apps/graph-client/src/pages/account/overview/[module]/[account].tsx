@@ -41,7 +41,7 @@ const Account: React.FC = () => {
         data?.account?.totalBalance === 0 &&
         data?.account?.chainAccounts.length === 0 && (
           <>
-            <Notification.Root color="info">
+            <Notification.Root color="info" role="status">
               We could not find any data on this account. Please check the
               module and account name.
             </Notification.Root>

@@ -2,7 +2,14 @@ import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
 import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import routes from '@/constants/routes';
 import { formatCode, formatLisp } from '@/utils/formatter';
-import { Box, Breadcrumbs, Link, Notification, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  Link,
+  Notification,
+  SystemIcon,
+  Table,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -49,8 +56,8 @@ const RequestKey: React.FC = () => {
                   {data?.transaction?.badResult && (
                     <Notification.Root
                       color="negative"
-                      icon="Close"
-                      variant="outlined"
+                      icon={<SystemIcon.Close />}
+                      role="status"
                     >
                       Transaction failed with status:{' '}
                       <pre>
@@ -65,8 +72,8 @@ const RequestKey: React.FC = () => {
                   {data?.transaction?.goodResult && (
                     <Notification.Root
                       color="positive"
-                      icon="Check"
-                      variant="outlined"
+                      icon={<SystemIcon.Check />}
+                      role="status"
                     >
                       Transaction succeeded with status:
                       <br />
@@ -75,7 +82,7 @@ const RequestKey: React.FC = () => {
                   )}
                   {!data?.transaction?.goodResult &&
                     !data?.transaction?.badResult && (
-                      <Notification.Root color="warning" variant="outlined">
+                      <Notification.Root color="warning" role="status">
                         Unknown transaction status
                       </Notification.Root>
                     )}
