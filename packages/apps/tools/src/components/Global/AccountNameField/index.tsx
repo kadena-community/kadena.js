@@ -17,7 +17,6 @@ interface IAccountNameFieldProps
     >
   >;
   error?: FieldError;
-  noIcon?: boolean;
 }
 
 export const NAME_VALIDATION = z.string().trim().min(3).max(256);
@@ -27,7 +26,6 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
   status,
   helperText,
   error,
-  noIcon = false,
   ...rest
 }) => {
   const elementId = 'kd-select-account-input';
@@ -48,7 +46,6 @@ export const AccountNameField: FC<IAccountNameFieldProps> = ({
           setSelectedAccount(e.target.value);
           onChange?.(e);
         }}
-        icon={noIcon ? undefined : 'KIcon'}
       />
     ),
   };

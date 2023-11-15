@@ -179,7 +179,6 @@ const ExistingAccountFaucetPage: FC = () => {
                 inputProps={register('name')}
                 error={errors.name}
                 label={t('The account name you would like to fund coins to')}
-                noIcon={true}
               />
             </div>
             <div className={chainSelectContainerClass}>
