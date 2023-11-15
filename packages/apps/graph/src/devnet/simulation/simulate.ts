@@ -4,7 +4,7 @@ import { crossChainTransfer } from '../crosschain-transfer';
 import { getBalance } from '../get-balance';
 import type { IAccount } from '../helper';
 import {
-  generateKeyPair,
+  generateAccount,
   getRandomNumber,
   getRandomOption,
   isEqualChainAccounts,
@@ -48,9 +48,15 @@ export async function simulate({
 
   // Create accounts
   for (let i = 0; i < numberOfAccounts; i++) {
-    const account = generateKeyPair();
+    const account = await generateAccount();
     logger.info(
-      `Generated KeyPair\nAccount: ${account.account}\nPublic Key: ${account.publicKey}\nSecret Key: ${account.secretKey}\n`,
+      `Generated KeyPair\nAccount: ${
+        account.account
+      }\nPublic Key: ${account.keys
+        .map((key) => key.publicKey)
+        .join(',')}\nSecret Key: ${account.keys
+        .map((key) => key.secretKey)
+        .join(',')}\n`,
     );
 
     if (accounts.includes(account)) {
@@ -60,7 +66,7 @@ export async function simulate({
 
     // Fund account
     const result = await transfer({
-      publicKey: account.publicKey,
+      receiver: account,
       amount: tokenPool / numberOfAccounts,
     });
 
@@ -87,7 +93,7 @@ export async function simulate({
       // To avoid underflowing the token pool, we fund an account when there has been more iterations than total amount of circulating tokens divided by max amount
       if (counter >= tokenPool / maxAmount) {
         await transfer({
-          publicKey: account.publicKey,
+          receiver: account,
           amount: tokenPool / numberOfAccounts,
         });
         counter = 0;
@@ -161,7 +167,7 @@ export async function simulate({
         // Using a random number to determine if the transfer is a safe transfer or not
         if (transferType === 'transfer') {
           result = await transfer({
-            publicKey: nextAccount.publicKey,
+            receiver: nextAccount,
             sender: account,
             amount,
             chainId: account.chainId,
@@ -169,7 +175,8 @@ export async function simulate({
         }
         if (transferType === 'safe-transfer') {
           result = await safeTransfer({
-            receiverKeyPair: nextAccount,
+            //TODO: find a way to add multiple signers
+            receiverKeyPair: nextAccount.keys[0],
             sender: account,
             amount,
             chainId: account.chainId,
