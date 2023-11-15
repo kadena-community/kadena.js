@@ -19,7 +19,6 @@ const mapType = (inputType?: string | IType): string => {
   if (typeof inputType === 'string') {
     return keywordsMap[inputType] ?? 'any';
   }
-
   if (typeof inputType === 'object' && inputType.kind === 'module')
     return 'PactReference';
   const isList = inputType.isList ? '[]' : '';
@@ -57,10 +56,18 @@ const getParameters = (
           value: string;
         };
   }>,
+  isCapability = false,
 ): string[] => {
   if (!list) return [];
   return list.map((arg) => {
-    return `${arg.name.replace(/-/g, '')}: ${mapType(arg.type)}`;
+    let argType = mapType(arg.type);
+    if (isCapability && argType === 'PactReference') {
+      argType = 'string | object';
+    }
+    if (!isCapability && argType !== 'PactReference' && argType !== 'any') {
+      argType = `${argType} | PactReference`;
+    }
+    return `${arg.name.replace(/-/g, '')}: ${argType}`;
   });
 };
 
@@ -85,7 +92,7 @@ function genFunCapsInterface(func: IFunction): string {
 
     let parameters = [`${capabilityName}: "${cap.fullModuleName}.${cap.name}"`];
     if (cap.capability.parameters) {
-      const args = getParameters(cap.capability.parameters);
+      const args = getParameters(cap.capability.parameters, true);
       parameters = [...parameters, ...args];
     }
     const comment =
@@ -107,12 +114,12 @@ const getFunctionType = (func: IFunction): string => {
   const comment =
     func.doc !== undefined ? `/**${EOL}* ${func.doc}${EOL}*/${EOL}` : '';
 
-  const parameters = getParameters(func.parameters);
+  const parameters = getParameters(func.parameters, false);
   const lnBreak = parameters.length > 1;
   const nl = lnBreak ? EOL : '';
   const caps = capInterfaceName
-    ? `${capInterfaceName} & ICapability_Coin_GAS`
-    : 'ICapability_Coin_GAS';
+    ? `${capInterfaceName} & ICommonCapabilities`
+    : 'ICommonCapabilities';
   return indent(
     `${comment}"${func.name}": (${nl}${parameters
       .map((d) => (lnBreak ? indent(d) : d))
@@ -149,8 +156,10 @@ export function generateDts(
 import type { PactReference } from '@kadena/client';
 import type { IPactDecimal, IPactInt, ICap } from '@kadena/types';
 
-interface ICapability_Coin_GAS {
+interface ICommonCapabilities {
   (name: 'coin.GAS'): ICap;
+  // let users use any other capabilities that can not be inferred
+  (name: string, ...args: any[]): ICap;
 }
 ${capsInterfaces ? `${EOL}${capsInterfaces}${EOL}` : ''}
 declare module '@kadena/client' {
