@@ -1,6 +1,8 @@
 import { Button } from '@components/Button';
 import type { ICardProps } from '@components/Card';
 import { Card } from '@components/Card';
+import { Stack } from '@components/Layout';
+import { Heading, Text } from '@components/Typography';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -15,17 +17,6 @@ const meta: Meta<ICardProps> = {
   },
   component: Card,
   argTypes: {
-    stack: {
-      control: {
-        type: 'boolean',
-      },
-      description:
-        'If true, the component vertically stacks multiple card together and applies styles that combine them into a single card with separators.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
     fullWidth: {
       control: {
         type: 'boolean',
@@ -37,6 +28,7 @@ const meta: Meta<ICardProps> = {
         defaultValue: { summary: 'false' },
       },
     },
+
     disabled: {
       control: {
         type: 'boolean',
@@ -56,30 +48,31 @@ type Story = StoryObj<ICardProps>;
 export const Primary: Story = {
   name: 'Card',
   args: {
-    stack: false,
     fullWidth: false,
     disabled: false,
   },
-  render: ({ stack, fullWidth, disabled }) => {
+  render: ({ fullWidth, disabled }) => {
     return (
       <>
-        <Card stack={stack} fullWidth={fullWidth} disabled={disabled}>
-          <h4>Getting Started is Simple</h4>
-          <div>
-            Learn Kadena&apos;s core concepts & tools for development in 15
-            minutes
-          </div>
-
-          <Button title={'Button'}>Hello World Tutorial</Button>
-        </Card>
-        <Card stack={stack} fullWidth={fullWidth} disabled={disabled}>
-          <h4>Getting Started is Simple</h4>
-          <div>
-            Learn Kadena&apos;s core concepts & tools for development in 15
-            minutes
-          </div>
-
-          <Button title={'Button'}>Hello World Tutorial</Button>
+        <Card fullWidth={fullWidth} disabled={disabled}>
+          <Stack
+            direction="column"
+            gap="$2"
+            alignItems="flex-start"
+            marginBottom="$6"
+            maxWidth="$maxContentWidth"
+          >
+            <Heading as="h5">Intro to Kadena</Heading>
+            <Text>
+              Kadena is the only platform offering a complete decentralized
+              infrastructure for builders. Combining a revolutionary chain
+              architecture with the tools needed for widespread adoption, your
+              teams get the full capabilities of blockchain with the ability to
+              go from concept to launch in days vs. months by not having to
+              build from scratch. Learn about our core concepts.
+            </Text>
+          </Stack>
+          <Button title={'Button'}>Kadena Docs</Button>
         </Card>
       </>
     );
