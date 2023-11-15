@@ -48,8 +48,6 @@ export const DrawerToolbar: ForwardRefExoticComponent<
     }
   }, [handleOpenSection, ref]);
 
-  console.log('AM I EVIL: ', isOpen);
-
   return (
     <aside className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
       {!isOpen ? (
