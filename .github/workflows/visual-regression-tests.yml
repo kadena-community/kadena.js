@@ -42,7 +42,7 @@ jobs:
       - uses: actions/setup-node@v3
         if: steps.changed.outputs.pathFilter == 'true'
         with:
-          node-version: 18
+          node-version: 20
           cache: 'pnpm'
 
       - name: Install dependencies
