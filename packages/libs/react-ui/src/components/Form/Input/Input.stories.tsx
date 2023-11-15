@@ -34,13 +34,13 @@ const HTMLInputTypes: HTMLInputTypeAttribute[] = [
 ];
 
 const meta: Meta<IInputProps> = {
-  title: 'Form/Input',
+  title: 'Form/Input/Input',
   component: Input,
   parameters: {
     docs: {
       description: {
         component:
-          'The Input component is a wrapper around the native input element that provides the ability to add additional information.',
+          'The Input component is a wrapper around the native input element that provides the ability to add additional information. This handles any kind of children that will be rendered inside the input on the right side of it.',
       },
     },
   },
@@ -62,17 +62,6 @@ const meta: Meta<IInputProps> = {
     icon: {
       description:
         'Icon rendered inside the input to the left of the input text.',
-      options: [
-        '-',
-        ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
-      ],
-      control: {
-        type: 'select',
-      },
-    },
-    rightIcon: {
-      description:
-        'Icon rendered inside the input to the right of the input text.',
       options: [
         '-',
         ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
@@ -116,7 +105,6 @@ type Story = StoryObj<
   {
     leadingText: string;
     icon: keyof typeof SystemIcon;
-    rightIcon: keyof typeof SystemIcon;
     type: React.HTMLInputTypeAttribute;
   } & Omit<IInputProps, 'icon' | 'rightIcon'>
 >;
@@ -126,14 +114,12 @@ export const Dynamic: Story = {
   args: {
     icon: undefined,
     type: 'text',
-    rightIcon: undefined,
     leadingTextWidth: undefined,
     leadingText: '',
     outlined: false,
   },
   render: ({
     icon,
-    rightIcon,
     outlined,
     leadingText,
     leadingTextWidth,
@@ -144,7 +130,6 @@ export const Dynamic: Story = {
     <Input
       id="inlineInputStory"
       icon={icon}
-      rightIcon={rightIcon}
       onChange={onChange}
       placeholder="This is a placeholder"
       leadingTextWidth={leadingTextWidth}

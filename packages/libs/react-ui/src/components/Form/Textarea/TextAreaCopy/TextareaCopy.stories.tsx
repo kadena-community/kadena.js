@@ -7,7 +7,7 @@ import React from 'react';
 import { TextareaCopy } from './TextareaCopy';
 
 const meta: Meta<ITextareaProps> = {
-  title: 'Form/TextareaCopy',
+  title: 'Form/Textarea/TextareaCopy',
   component: TextareaCopy,
   parameters: {
     docs: {
@@ -33,13 +33,7 @@ const meta: Meta<ITextareaProps> = {
 
 export default meta;
 
-type Story = StoryObj<
-  {
-    leadingText: string;
-    rightIcon: keyof typeof SystemIcon;
-    type: React.HTMLInputTypeAttribute;
-  } & ITextareaProps
->;
+type Story = StoryObj<ITextareaProps>;
 
 export const TextareaCopyStory: Story = {
   name: 'TextareaCopy',

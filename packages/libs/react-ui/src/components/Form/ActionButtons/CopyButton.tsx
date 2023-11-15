@@ -1,4 +1,4 @@
-import { IconButton } from '@components/IconButton';
+import { SystemIcon } from '@components/Icon';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 
@@ -23,13 +23,12 @@ export const CopyButton: FC<ICopyButtonProps> = ({ value, ...restProps }) => {
     }, COPY_DURATION_TIME);
   };
 
+  const CheckIcon = SystemIcon.Check;
+  const ContentCopyIcon = SystemIcon.ContentCopy;
+
   return (
-    <IconButton
-      {...restProps}
-      color={'primary'}
-      icon={click ? 'Check' : 'ContentCopy'}
-      onClick={handleClick}
-      title={'ContentCopy'}
-    />
+    <button {...restProps} aria-label={'ContentCopy'} onClick={handleClick}>
+      {click ? <CheckIcon size="md" /> : <ContentCopyIcon size="md" />}
+    </button>
   );
 };

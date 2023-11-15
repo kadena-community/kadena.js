@@ -1,11 +1,10 @@
 import type { ITextareaProps } from '@components/Form';
 import { Textarea } from '@components/Form';
-import type { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 const meta: Meta<ITextareaProps> = {
-  title: 'Form/Textarea',
+  title: 'Form/Textarea/Textarea',
   component: Textarea,
   parameters: {
     docs: {
@@ -31,13 +30,7 @@ const meta: Meta<ITextareaProps> = {
 
 export default meta;
 
-type Story = StoryObj<
-  {
-    leadingText: string;
-    rightIcon: keyof typeof SystemIcon;
-    type: React.HTMLInputTypeAttribute;
-  } & ITextareaProps
->;
+type Story = StoryObj<ITextareaProps>;
 
 export const TextareaStory: Story = {
   name: 'Textarea',

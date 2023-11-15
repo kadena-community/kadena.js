@@ -21,7 +21,6 @@ export interface IInputProps
   > {
   leadingText?: string;
   icon?: keyof typeof SystemIcon;
-  rightIcon?: keyof typeof SystemIcon;
   leadingTextWidth?: keyof typeof vars.sizes;
   disabled?: boolean;
   type?: React.HTMLInputTypeAttribute;
@@ -36,7 +35,6 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
       outlined,
       leadingText,
       icon,
-      rightIcon,
       leadingTextWidth: propLeadingTextWidth,
       disabled = false,
       children,
@@ -47,10 +45,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     const { status, leadingTextWidth: wrapperLeadingTextWidth } = useContext(
       FormFieldWrapperContext,
     );
-
     const leadingTextWidth = propLeadingTextWidth || wrapperLeadingTextWidth;
-
-    const RightIcon = rightIcon && SystemIcon[rightIcon];
     const Icon = icon && SystemIcon[icon];
 
     return (
@@ -59,7 +54,6 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           [baseOutlinedClass]: outlined || status,
           [disabledClass]: disabled,
         })}
-        data-testid="kda-input"
       >
         {Boolean(leadingText) && (
           <div
@@ -80,7 +74,6 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
             {...rest}
           />
           <div>{children}</div>
-          {RightIcon && <RightIcon size="md" />}
         </div>
       </div>
     );
