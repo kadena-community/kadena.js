@@ -7,6 +7,6 @@ describe('Card', () => {
   test('renders correctly', () => {
     render(<Card>Hello, Card!</Card>);
 
-    expect(screen.getByText('Item 1')).toBeInTheDocument();
+    expect(screen.getByText('Hello, Card!')).toBeInTheDocument();
   });
 });
