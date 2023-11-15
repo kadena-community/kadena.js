@@ -10,7 +10,7 @@ import type {
   TagNameType,
 } from './types';
 
-const getTagName = (depth = 1) => `h${depth}` as TagNameType;
+const getTagName = (depth = 1): TagNameType => `h${depth}` as TagNameType;
 
 const lastHeading = (parent: IStartArray, newChild: Heading): IStartArray => {
   const nodes = [parent];

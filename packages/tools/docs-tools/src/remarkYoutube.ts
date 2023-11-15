@@ -35,10 +35,9 @@ const remarkYoutube = (): Plugin => {
                 title: leaf.title,
               },
             },
+            children: [],
           };
 
-          // @ts-ignore
-          delete newNode.children;
           return newNode;
         }
       }

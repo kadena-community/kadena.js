@@ -186,6 +186,7 @@ export type ChildrenWithValues = TypeWithValue[];
 
 export interface IElementType {
   type: 'element';
+  value?: string;
   children: TypeWithValue[];
   data: {
     hName: string;

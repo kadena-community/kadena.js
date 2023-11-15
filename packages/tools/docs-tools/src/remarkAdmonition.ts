@@ -14,6 +14,7 @@ let STARTELM: Paragraph | undefined;
 
 // check the branch with the start of a notification
 // notifications start with ':::' followed by a label and maybe a title
+// eslint-disable-next-line @rushstack/no-new-null
 const isStart = (branch: DocsRootContent): null | RegExpMatchArray => {
   if ('children' in branch === false) return null;
 

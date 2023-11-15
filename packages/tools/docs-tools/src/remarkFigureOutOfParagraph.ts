@@ -8,7 +8,7 @@ import type { DocsRootContent, ITree, Plugin } from './types';
 
 const remarkFigureOutOfParagraph = (): Plugin => {
   return async (tree): Promise<ITree> => {
-    const children = tree.children.map((node) => {
+    const children = tree.children.map((node: Partial<DocsRootContent>) => {
       const { type } = node;
 
       if (
@@ -24,7 +24,6 @@ const remarkFigureOutOfParagraph = (): Plugin => {
           type: 'image',
         };
 
-        // @ts-ignore
         delete newNode.children;
         return newNode;
       }

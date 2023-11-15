@@ -1,6 +1,6 @@
 import type { ITree, Plugin } from './types';
 
-const replaceOrConcatString = (str?: string | null): string => {
+const replaceOrConcatString = (str?: string): string => {
   if (!str) str = '';
   const emptyTitleRegex = /title=""/g;
   const emptyTitleReplacement = 'title=" "';
@@ -20,7 +20,7 @@ const remarkCheckForCodeTitle = (): Plugin => {
       const { type } = node;
 
       if (type === 'code') {
-        node.meta = replaceOrConcatString(node.meta);
+        node.meta = replaceOrConcatString(node.meta ?? '');
       }
 
       return node;
