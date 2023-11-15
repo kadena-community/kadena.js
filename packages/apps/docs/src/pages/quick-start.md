@@ -235,13 +235,13 @@ To deploy the smart contract:
    cd getting-started
    ```
 
-3. Deploy the smart contract from the getting-started repository by running a command similar to the following:
+3. Deploy the smart contract from the `getting-started` repository by running a command similar to the following:
    
    ```shell
    npm run start -- deploy --keys "<your-account-key>" --predicate "keys-all" --sign-manually
    ```
 
-   In the next steps, you copy and paste information between the terminal and the Chainweaver applications.
+   In the next steps, you copy and paste information between the terminal and the Chainweaver application.
    The instructions for signing the transaction using Chainweaver in the browser are also displayed in the terminal.
 
 1. In Chainweaver, click **SigBuilder** in the navigation panel.
@@ -267,28 +267,33 @@ To deploy the smart contract:
 
 Now that you have uploaded the smart contract, you can interact with it on the development network.
 
-## Interact with a smart contract
+## View the smart contract
 
-To interact with the `hello-world` smart contract:
+After you deploy the `hello-world` smart contract, you can view and interact with it on the development network using Chainweaver.
+
+To view the `hello-world` smart contract:
 
 1. In Chainweaver, click **Contracts** in the navigation panel.
    
    After you click Contracts, Chainweaver displays two working areas.
-   The left side enables you to edit a contract interactively.
-   The right side enables you to navigate, view, and test contracts you have deployed.
+   The left side enables you to view and edit contract code and execute commands interactively.
+   The right side enables you to navigate, view details, and test operations for contracts you have deployed.
 
-2. Click **Module Explorer**.
+2. On the right side in Contracts, click **Module Explorer**.
 
 3. Under Deployed Contracts, search for the `hello-world` contract.
 
-4. Click **View**  to show details of the smart contract.
+4. Click **View**  to display details about the smart contract.
+   For example, you can see that this contract has two functions—`set-message` and `greet`—and one capability defined.
 
-5. Click **Open**. 
-   
-   On the left side, you can write a command to execute it on the blockchain. 
-   Most commands require you to pay a transaction fee because they change the state of the information stored in the blockchain.
-   However, you can also write commands that  only **read** information from the blockchain.
-   Read-only commands don't require transaction fees.
+## Execute a read-only command
+
+On the left side of the Contracts tab, you can write commands you want to execute on the blockchain. 
+Most commands require you to pay a transaction fee because they change the state of the information stored in the blockchain.
+However, you can also write commands that only **read** information from the blockchain.
+Read-only commands don't require transaction fees.
+
+To execute a command using the `hello-world` contract:
 
 1. In the left side under Contracts, type the following command:
    
@@ -296,13 +301,12 @@ To interact with the `hello-world` smart contract:
    (free.hello-world.say-hello "Albert")
    ```
 
-1. Click **Deploy** to display the transaction details, then click **Next**.
+2. Click **Deploy** to display the transaction details, then click **Next**.
 
-2. Review the signing information, but leave the Signing Key empty because you're executing a read-only command, then click **Next**.
+3. Review the signing information, but leave the Signing Key empty because you're executing a read-only command, then click **Next**.
 
-3. You'll get an error "A 'Gas Payer' has not been selected for this
-    transaction. Are you sure this is correct?", but you can ignore that since
-    you're executing a read-only command.
+   After you click Next, You'll see an error message that "A 'Gas Payer' has not been selected for this transaction. Are you sure this is correct?"
+   You can ignore this message because you're executing a read-only command.
 
 4. Scroll to see the Raw Response:
    
@@ -310,44 +314,46 @@ To interact with the `hello-world` smart contract:
 
 ## Write to the blockchain
 
-Actually, you've already written to the blockchain. When you deployed your smart
-contract, you executed a write. But that's not a write from within the smart
-contract, but a "native" one.
+You've actually already written to the blockchain by deploying your `hello-world` smart contract. 
+You changed the **state** of the blockchain from not having the `hello-world` contract to having the `hello-world` contract included in a specific block.
+However, that state change transaction didn't take place from within the context of the smart contract itself.
+No contract logic was executed in the transaction.
 
-To write on the blockchain via a smart contract, we need to make a few
-adjustments to our smart contract.
+To illustrate how you can change the state of information stored on the blockchain using the logic in a smart contract, we make a few adjustments to the content of the `hello-world` smart contract.
+The modified version of the smart contract looks like this:
 
-We've created an updated smart contract for you that you can use for that.
-[Check it out here](https://github.com/kadena-community/getting-started/blob/main/src/pact/hello-world.pact).
-Run the following command to **redeploy** the `hello-world` smart contract:
+```lisp
+(namespace 'free)
+(module hello-world G
+  (defcap G () true)
 
-```shell
-npm run start -- deploy \
-  --keys "your-account-key" \
-  --predicate keys-all \
-  --file ./src/pact/hello-world.pact
+  (defschema hello-world-schema
+    @doc "The schema for hello world"
 
-# chainweaver web: follow the instructions in the terminal
-npm run start -- deploy \
-  --keys "your-account-key" \
-  --predicate keys-all \
-  --file ./src/pact/hello-world.pact \
-  --sign-manually
+    text:string)
+
+  (deftable hello-world-table:{hello-world-schema})
+
+  (defun say-hello(name:string)
+    (format "Hello, {}!" [name]))
+
+  (defun write-hello(name:string)
+    (write hello-world-table name
+      { "text": (say-hello name) }))
+
+)
+
+(create-table hello-world-table)
 ```
+### Review contract changes
 
-You'll walk through the same process as before in Chainweaver.
+Before moving on, let's take a closer look at what's changed in the sample `hello-world` contract.
 
-> Yes you read that correctly. **You can redeploy and update a smart
-> contract!**\
-> This is one of the many cool features of Pact and Kadena, however, you cannot
-> change the schema (yet)
+The updated `hello-world` contract creates a simple schema of what you want deployed on the blockchain. 
+This schema assigns a value to each key when you execute the `(write <table> <key> { })` command.
+Anything between the curly braces (`{ }`) must comply with the schema.
 
-We've created a schema that'll show the structure of what you post on the
-blockchain. This is the "value"-side of a "key-value-pair". Each value is
-assigned to a key that you pass when you execute a `(write <table> <key> { })`.
-Anything between `{}` must comply with the schema.
-
-The schema is very simple, and looks like this:
+The schema for this contract is defined in the following lines:
 
 ```lisp
 (defschema hello-world-schema
@@ -356,7 +362,7 @@ The schema is very simple, and looks like this:
   text:string)
 ```
 
-We also created a function that allows you to write to the schema:
+The updated contract also includes a function that allows you to write to the schema in the following lines:
 
 ```lisp
 (defun write-hello(name:string)
@@ -364,7 +370,36 @@ We also created a function that allows you to write to the schema:
     { "text": (say-hello name) }))
 ```
 
-### Executing a write function
+### Deploy the modified contract
+
+After making these changes, you need to redeploy the contract.
+
+To redeploy the `hello-world` smart contract:
+
+1. Verify you have Chainweaver open in the browser.
+
+2. Open a terminal shell on your computer.
+
+1. Change to the root of the `getting-started` repository, if necessary, by running the following command:
+   
+   ```shell
+   cd getting-started
+   ```
+
+3. Redeploy the smart contract from the `getting-started` repository by running a command similar to the following:
+   
+   ```shell
+   npm run start -- deploy \
+   --keys "your-account-key" \
+   --predicate keys-all \
+   --file ./src/pact/hello-world.pact
+   --sign-manually
+   ```
+
+   As you saw in the previous deployment, you'll copy and paste information between the terminal and the Chainweaver application.
+   The instructions for signing the transaction using Chainweaver in the browser are also displayed in the terminal.
+
+### Execute a write function
 
 1.  Go to the "contracts" page in Chainweaver
 
