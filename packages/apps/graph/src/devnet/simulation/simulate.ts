@@ -102,9 +102,10 @@ export async function simulate({
       const balance = (await getBalance(account)) as number;
 
       // using a random number safety gap to avoid underflowing the account
-      if (amount + getRandomNumber(seededRandomNo, 1) > balance) {
+      const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
+      if (amountWithSafetyGap > balance) {
         logger.info(
-          `Insufficient funds for ${account.account}\nFunds necessary: ${amount}\nFunds available: ${balance}`,
+          `Insufficient funds for ${account.account}\nFunds necessary: ${amountWithSafetyGap}\nFunds available: ${balance}`,
         );
         logger.info('Skipping transfer');
         continue;
