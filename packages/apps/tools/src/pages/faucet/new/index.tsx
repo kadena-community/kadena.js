@@ -364,7 +364,6 @@ const NewAccountFaucetPage: FC = () => {
                 inputProps={register('name')}
                 label={t('The account name to fund coins to')}
                 disabled
-                noIcon
               />
             </div>
             <div className={chainSelectContainerClass}>
