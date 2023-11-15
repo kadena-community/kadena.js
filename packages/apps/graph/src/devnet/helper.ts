@@ -16,10 +16,12 @@ import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { createLogger } from 'graphql-yoga';
 import seedrandom from 'seedrandom';
 import { devnetConfig } from './config';
+import { createPrincipal } from './create-principal';
 
-export interface IAccount extends IKeyPair {
+export interface IAccount {
   account: string;
   chainId?: ChainId;
+  keys: IKeyPair[];
 }
 
 export interface IKeyPair {
@@ -101,22 +103,37 @@ export const asyncPipe =
     return fns.reduce((acc, fn) => acc.then(fn), Promise.resolve(value));
   };
 
-export const generateKeyPair = (
+export const generateAccount = async (
   chainId: ChainId = devnetConfig.CHAIN_ID,
-): IAccount => {
-  const generatedKeyPair = genKeyPair();
+  keys: number = 1,
+): Promise<IAccount> => {
+  const keyPairs = Array.from({ length: keys }, () => genKeyPair());
+  let account = `k:${keyPairs[0].publicKey}`;
+
+  if (keyPairs.length > 1) {
+    account = await createPrincipal({
+      keys: keyPairs.map((keyPair) => keyPair.publicKey),
+      pred: 'keys-all',
+      chainId: chainId,
+    });
+  }
 
   return {
-    publicKey: generatedKeyPair.publicKey,
-    secretKey: generatedKeyPair.secretKey || '',
-    account: `k:${generatedKeyPair.publicKey}`,
-    chainId: chainId,
+    keys: keyPairs,
+    account,
+    chainId,
   };
 };
 
 export const sender00: IAccount = {
-  publicKey: '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
-  secretKey: '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
+  keys: [
+    {
+      publicKey:
+        '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+      secretKey:
+        '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
+    },
+  ],
   account: 'sender00',
 };
 
@@ -145,7 +162,7 @@ export const isEqualChainAccounts = (
   return (
     account1.account === account2.account &&
     account1.chainId === account2.chainId &&
-    account1.publicKey === account2.publicKey
+    account1.keys === account2.keys
   );
 };
 
@@ -173,4 +190,8 @@ export const getRandomOption = <T>(randomSeed: number, options: T[]): T => {
   }
 
   return options[index];
+};
+
+export const stringifyProperty = <T>(keys: T[], property: keyof T) => {
+  return keys.map((key) => key[property]).join(', ');
 };
