@@ -3,19 +3,27 @@ import type { INotificationButtonProps } from './NotificationButton';
 import { NotificationButton } from './NotificationButton';
 import type { INotificationRootProps } from './NotificationRoot';
 import { NotificationRoot } from './NotificationRoot';
-import type { IBaseProps } from './NotificationSubComponents';
+import type {
+  INotificationActionsProps,
+  INotificationHeadingProps,
+} from './NotificationSubComponents';
 import {
   NotificationActions,
   NotificationHeading,
 } from './NotificationSubComponents';
 
-export type { INotificationButtonProps, INotificationRootProps };
+export type {
+  INotificationActionsProps,
+  INotificationButtonProps,
+  INotificationHeadingProps,
+  INotificationRootProps,
+};
 
 interface INotification {
   Root: FC<INotificationRootProps>;
-  Actions: FC<IBaseProps>;
+  Actions: FC<INotificationActionsProps>;
   Button: FC<INotificationButtonProps>;
-  Heading: FC<IBaseProps>;
+  Heading: FC<INotificationHeadingProps>;
 }
 
 export const Notification: INotification = {

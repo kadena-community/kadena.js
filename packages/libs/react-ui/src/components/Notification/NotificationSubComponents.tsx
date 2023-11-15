@@ -1,15 +1,23 @@
-import type { FC } from 'react';
+import type { ComponentPropsWithRef, FC } from 'react';
 import React from 'react';
 import { actionsContainerClass, titleClass } from './Notification.css';
 
-export interface IBaseProps {
+export interface INotificationHeadingProps
+  extends ComponentPropsWithRef<'h5'> {}
+
+export const NotificationHeading: FC<INotificationHeadingProps> = ({
+  children,
+  ...restProps
+}) => (
+  <h5 className={titleClass} {...restProps}>
+    {children}
+  </h5>
+);
+
+export interface INotificationActionsProps {
   children: React.ReactNode;
 }
 
-export const NotificationHeading: FC<IBaseProps> = ({ children }) => (
-  <span className={titleClass}>{children}</span>
-);
-
-export const NotificationActions: FC<IBaseProps> = ({ children }) => (
-  <div className={actionsContainerClass}>{children}</div>
-);
+export const NotificationActions: FC<INotificationActionsProps> = ({
+  children,
+}) => <div className={actionsContainerClass}>{children}</div>;

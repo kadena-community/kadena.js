@@ -85,7 +85,6 @@ export const Primary: Story = {
         onClose={() => {
           alert('Close button clicked');
         }}
-        icon={<SystemIcon.AlertBox />}
         styleVariant={styleVariant}
         role="none"
       >

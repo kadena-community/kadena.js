@@ -1,5 +1,5 @@
 import { updateConsent } from '@/utils/analytics';
-import { Notification, Text } from '@kadena/react-ui';
+import { Notification, SystemIcon, Text } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { notificationClass } from './styles.css';
@@ -31,14 +31,16 @@ export const CookieConsent: FC = () => {
   if (cookieConsent !== null || !mounted) return null;
 
   return (
-    <div className={notificationClass}>
+    <section aria-labelledby="cookie-heading" className={notificationClass}>
       <Notification.Root
-        title="Cookie Consent"
         color="info"
-        expanded
-        variant="standard"
-        icon="Cookie"
+        styleVariant="borderless"
+        icon={<SystemIcon.Cookie />}
+        role="none"
       >
+        <Notification.Heading id="cookie-heading">
+          Cookie Consent
+        </Notification.Heading>
         <Text>
           This notification concerns the cookie policy requirement to ask users
           for their consent to use <strong>Google Analytics</strong> or other
@@ -61,6 +63,6 @@ export const CookieConsent: FC = () => {
           </Notification.Button>
         </Notification.Actions>
       </Notification.Root>
-    </div>
+    </section>
   );
 };

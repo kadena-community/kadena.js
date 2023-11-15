@@ -1,5 +1,5 @@
 import type { INotificationProps } from '@kadena/react-ui';
-import { Notification } from '@kadena/react-ui';
+import { Notification, SystemIcon } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -18,10 +18,10 @@ const statusToColorMap: Record<FormStatus, INotificationProps['color']> = {
 };
 
 const statusToIconMap: Record<FormStatus, INotificationProps['icon']> = {
-  erroneous: 'AlertBox',
-  idle: 'AlertCircleOutline',
-  processing: 'Information',
-  successful: 'Check',
+  erroneous: <SystemIcon.AlertBox />,
+  idle: <SystemIcon.AlertCircleOutline />,
+  processing: <SystemIcon.Information />,
+  successful: <SystemIcon.Check />,
 };
 
 export interface IFormStatusNotificationProps {
@@ -79,11 +79,12 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
         color={statusToColorMap[status!]}
         hasCloseButton
         icon={statusToIconMap[status!]}
-        expanded
-        title={title ?? titles[status!]}
         onClose={onNotificationCloseClick}
-        variant="outlined"
+        role="status"
       >
+        {title ? (
+          <Notification.Heading>{titles[status!]}</Notification.Heading>
+        ) : null}
         {body ?? bodies[status!]}
         {children}
       </Notification.Root>

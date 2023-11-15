@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { Close, HelpCircle } from '@components/Icon/System/SystemIcon';
+import { Close, Information } from '@components/Icon/System/SystemIcon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -45,7 +45,7 @@ export const NotificationRoot: FC<INotificationRootProps> = ({
       {icon ? (
         <span className={iconClass}>{icon}</span>
       ) : (
-        <HelpCircle size="md" />
+        <Information size="md" />
       )}
 
       <div className={contentClass}>{children}</div>

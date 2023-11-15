@@ -44,7 +44,9 @@ export type {
   INavHeaderSelectProps,
 } from './NavHeader';
 export type {
+  INotificationActionsProps,
   INotificationButtonProps,
+  INotificationHeadingProps,
   INotificationRootProps,
 } from './Notification';
 export type { IPaginationProps } from './Pagination';

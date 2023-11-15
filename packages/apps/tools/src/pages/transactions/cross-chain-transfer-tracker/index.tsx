@@ -22,6 +22,7 @@ import {
   Notification,
   ProgressBar,
   Stack,
+  SystemIcon,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
@@ -198,10 +199,10 @@ const CrossChainTransferTracker: FC = () => {
             onClose={() => {
               setTxError('');
             }}
-            title="Warning"
-            icon={'AlertBox'}
-            variant="outlined"
+            icon={<SystemIcon.AlertBox />}
+            role="status"
           >
+            <Notification.Heading>Warning</Notification.Heading>
             {txError}
             <Notification.Actions>
               <Notification.Button

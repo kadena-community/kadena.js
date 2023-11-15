@@ -8,6 +8,7 @@ import {
   Heading,
   Notification,
   Stack,
+  SystemIcon,
   Tabs,
   useModal,
 } from '@kadena/react-ui';
@@ -100,9 +101,8 @@ export const SearchResults: FC<IProps> = ({
             {semanticError ? (
               <Notification.Root
                 color={'negative'}
-                expanded={true}
-                icon="AlertBox"
-                variant="outlined"
+                icon={<SystemIcon.AlertBox />}
+                role="status"
               >
                 {semanticError}
               </Notification.Root>
@@ -136,11 +136,8 @@ export const SearchResults: FC<IProps> = ({
 
         <Tabs.Content id="qa">
           <Box marginBottom="$8">
-            <Notification.Root
-              expanded={true}
-              icon="AlertBox"
-              title="QA search is in beta"
-            >
+            <Notification.Root icon={<SystemIcon.AlertBox />} role="none">
+              <Notification.Heading>QA search is in beta</Notification.Heading>
               QA search our latest AI vector-based search, designed to provide
               instant answers to your queries.
               <br />
@@ -166,8 +163,8 @@ export const SearchResults: FC<IProps> = ({
             {error && (
               <Notification.Root
                 color={'negative'}
-                expanded={true}
-                icon="AlertBox"
+                icon={<SystemIcon.AlertBox />}
+                role="status"
               >
                 {error}
               </Notification.Root>

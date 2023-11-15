@@ -17,6 +17,7 @@ import {
   Card,
   Heading,
   Notification,
+  SystemIcon,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -143,13 +144,10 @@ const ExistingAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification.Root
-            color="warning"
-            expanded={true}
-            icon="Information"
-            title={t('The Faucet is not available on Mainnet')}
-            variant="outlined"
-          >
+          <Notification.Root color="warning" role="status">
+            <Notification.Heading>
+              {t('The Faucet is not available on Mainnet')}
+            </Notification.Heading>
             <Trans
               i18nKey="common:faucet-unavailable-warning"
               components={[
