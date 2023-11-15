@@ -49,6 +49,7 @@ describe('continuation', () => {
       cont: {
         pactId: '1',
         proof: 'test-proof',
+        rollback: false,
         step: 1,
         data: {},
       },
@@ -315,6 +316,7 @@ describe('mergePayload', () => {
     ).toEqual({
       exec: {
         code: '(one)(two)',
+        data: {},
       },
     });
   });

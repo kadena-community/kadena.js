@@ -18,14 +18,10 @@ export const mergePayload = (
     return {
       exec: {
         code: (payload.exec.code ?? '') + (newPayload.exec.code ?? ''),
-        ...(payload.exec.data || newPayload.exec.data
-          ? {
-              data: {
-                ...payload.exec.data,
-                ...newPayload.exec.data,
-              },
-            }
-          : {}),
+        data: {
+          ...payload.exec.data,
+          ...newPayload.exec.data,
+        },
       },
     };
   }
@@ -35,14 +31,10 @@ export const mergePayload = (
       cont: {
         ...payload.cont,
         ...newPayload.cont,
-        ...(payload.cont.data || newPayload.cont.data
-          ? {
-              data: {
-                ...payload.cont.data,
-                ...newPayload.cont.data,
-              },
-            }
-          : {}),
+        data: {
+          ...payload.cont.data,
+          ...newPayload.cont.data,
+        },
       },
     };
   }

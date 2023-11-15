@@ -22,7 +22,9 @@ export interface IContinuationPayloadObject {
     step?: number;
     rollback?: boolean;
     data?: Record<string, unknown>;
-    proof?: string;
+    // for none cross-chain tx, proof is null
+    // eslint-disable-next-line @rushstack/no-new-null
+    proof?: string | null;
   };
 }
 

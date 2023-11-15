@@ -40,7 +40,9 @@ describe('createTransactionBuilder', () => {
       .getCommand();
 
     expect(command).toStrictEqual({
-      payload: { cont: { pactId: '1', proof: 'proof', data: {} } },
+      payload: {
+        cont: { pactId: '1', proof: 'proof', data: {}, rollback: false },
+      },
       signers: [],
       nonce: 'kjs:nonce:1690416000000',
     });
@@ -200,6 +202,8 @@ describe('createTransactionBuilder', () => {
         cont: {
           pactId: '1',
           data: { test: 'value' },
+          rollback: false,
+          proof: null,
         },
       },
       signers: [],
