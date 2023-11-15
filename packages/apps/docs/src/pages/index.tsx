@@ -42,7 +42,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <Grid.Item rowSpan={2}>
                 <DocsCard
                   label="Start with core concepts"
-                  description="Kadena is a secure and decentralized Layer one blockchain with a revolutionary chain architecture and the tools designed for builders to get the results they expect, faster. If you want to build better user experiences and more diverse applications for blockchain adoption, explore Kadena. From core concepts to developer tooling, Kadena provides everything you need to develop blockchain applications—from concept to launch—in days or weeks instead of months or years."
+                  description="Kadena is a secure and decentralized public blockchain with a revolutionary chain architecture and the tools designed for builders to get the results they expect, faster. If you want to build better user experiences and more diverse applications for blockchain adoption, explore Kadena. From core concepts to developer tooling, Kadena provides everything you need to develop blockchain applications—from concept to launch—in days or weeks instead of months or years."
                   schema="info"
                   background="whitepapers"
                 >
