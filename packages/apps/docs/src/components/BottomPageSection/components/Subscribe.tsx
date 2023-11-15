@@ -1,11 +1,4 @@
-import {
-  Button,
-  Heading,
-  Input,
-  Notification,
-  Stack,
-  SystemIcon,
-} from '@kadena/react-ui';
+import { Button, Heading, Input, Notification, Stack } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { useSubscribe } from './useSubscribe';
@@ -56,22 +49,14 @@ export const Subscribe: FC = () => {
             </form>
 
             {Boolean(message) && (
-              <Notification.Root
-                color="warning"
-                role="status"
-                icon={<SystemIcon.HelpCircle />}
-              >
+              <Notification.Root color="warning" role="status">
                 {message}
               </Notification.Root>
             )}
           </>
         ) : (
           Boolean(message) && (
-            <Notification.Root
-              color="positive"
-              role="status"
-              icon={<SystemIcon.HelpCircle />}
-            >
+            <Notification.Root color="positive" role="status">
               {message}
             </Notification.Root>
           )
