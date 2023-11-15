@@ -1,4 +1,4 @@
-import type { INotificationProps } from '@kadena/react-ui';
+import type { INotificationRootProps } from '@kadena/react-ui';
 import { Notification, SystemIcon } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
@@ -10,14 +10,14 @@ export type FormStatus = 'idle' | 'successful' | 'erroneous' | 'processing';
 export type Titles = Record<FormStatus, string>;
 export type Bodies = Record<FormStatus, React.ReactNode>;
 
-const statusToColorMap: Record<FormStatus, INotificationProps['color']> = {
+const statusToColorMap: Record<FormStatus, INotificationRootProps['color']> = {
   erroneous: 'negative',
   idle: 'warning',
   processing: 'info',
   successful: 'positive',
 };
 
-const statusToIconMap: Record<FormStatus, INotificationProps['icon']> = {
+const statusToIconMap: Record<FormStatus, INotificationRootProps['icon']> = {
   erroneous: <SystemIcon.AlertBox />,
   idle: <SystemIcon.AlertCircleOutline />,
   processing: <SystemIcon.Information />,
@@ -30,7 +30,7 @@ export interface IFormStatusNotificationProps {
   body?: React.ReactNode;
   statusTitles?: Partial<Titles>;
   statusBodies?: Partial<Bodies>;
-  children?: INotificationProps['children'];
+  children?: INotificationRootProps['children'];
 }
 
 export const FormStatusNotification: FC<IFormStatusNotificationProps> = (

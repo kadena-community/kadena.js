@@ -8,7 +8,6 @@ import {
   Heading,
   IconButton,
   Notification,
-  SystemIcon,
 } from '@kadena/react-ui';
 
 import {
@@ -34,7 +33,6 @@ import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
 import AccountNameField from '@/components/Global/AccountNameField';
-import { CloseableNotification } from '@/components/Global/CloseableNotification';
 import { HoverTag } from '@/components/Global/HoverTag';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';

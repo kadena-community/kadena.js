@@ -1,5 +1,6 @@
 import type { INotificationRootProps } from '@kadena/react-ui';
 import { SystemIcon } from '@kadena/react-ui';
+import React from 'react';
 
 export type LabelType =
   | 'info'
