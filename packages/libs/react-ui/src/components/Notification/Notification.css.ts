@@ -70,8 +70,6 @@ export const contentClass = style([
   sprinkles({
     color: '$neutral6',
     fontSize: '$base',
-    display: 'flex',
-    flexDirection: 'column',
     gap: '$xs',
     maxWidth: '$maxContentWidth',
   }),
@@ -84,6 +82,7 @@ export const titleClass = style([
   sprinkles({
     fontSize: '$base',
     fontWeight: '$bold',
+    marginBottom: '$xs',
   }),
   {
     color: accentVar,
