@@ -1,14 +1,14 @@
-import { ensureFileExists } from '../utils/filesystem.js';
+import { ensureFileExists } from '../../utils/filesystem.js';
 
 import debug from 'debug';
 import path from 'path';
 
 import chalk from 'chalk';
 import type { Command } from 'commander';
-import { defaultKeysetsPath } from '../constants/keysets.js';
-import { keysetOverwritePrompt } from '../prompts/index.js';
-import { createCommand } from '../utils/createCommand.js';
-import { globalOptions } from '../utils/globalOptions.js';
+import { defaultKeysetsPath } from '../../constants/keysets.js';
+import { keysetOverwritePrompt } from '../../prompts/index.js';
+import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 import { writeKeyset } from './keysetHelpers.js';
 
 export const createKeysetCommand: (program: Command, version: string) => void =

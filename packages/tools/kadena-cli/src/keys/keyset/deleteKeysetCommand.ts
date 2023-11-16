@@ -1,10 +1,10 @@
 import debug from 'debug';
-import { keysetDeletePrompt } from '../prompts/index.js';
-import { globalOptions } from '../utils/globalOptions.js';
+import { keysetDeletePrompt } from '../../prompts/index.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 
 import chalk from 'chalk';
 import type { Command } from 'commander';
-import { createCommand } from '../utils/createCommand.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { removeKeyset } from './keysetHelpers.js';
 
 export const deleteKeysetCommand: (program: Command, version: string) => void =

@@ -285,7 +285,7 @@ export function ensureKeysetsConfiguration(): void {
   }
 
   mkdirSync(defaultKeysetsPath, { recursive: true });
-  import('./../keyset/init.js');
+  import('../keys/keyset/init.js');
 }
 
 export function getExistingKeysets(): ICustomChoice[] {

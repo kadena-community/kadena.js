@@ -8,11 +8,13 @@ import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
 type AsOption<T> = T extends {
   key: infer K;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prompt: (...arg: any[]) => infer R;
 }
   ? K extends string
     ? {
         [P in K]: Pure<R>;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } & (T extends { expand: (...args: any[]) => infer Ex }
         ? {
             [P in `${K}Config`]: Pure<Ex>;
@@ -21,10 +23,12 @@ type AsOption<T> = T extends {
     : never
   : never;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Combine<Tuple extends any[]> = Tuple extends [infer one]
   ? AsOption<one>
   : Combine2<
       AsOption<First<Tuple>>,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       Tail<Tuple> extends any[] ? Combine<Tail<Tuple>> : {}
     >;
 
@@ -35,6 +39,7 @@ export function createCommand<
   name: string,
   description: string,
   options: [...T],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   action: (finalConfig: Prettify<Combine<T>>) => any,
 ): (program: Command, version: string) => void {
   return async (program: Command, version: string) => {
@@ -78,7 +83,11 @@ export function createCommand<
                 return `--${arg.replace(
                   /[A-Z]/g,
                   (match: string) => `-${match.toLowerCase()}`,
-                )} ${displayValue || ''}`;
+                )} ${
+                  displayValue !== null && displayValue !== undefined
+                    ? displayValue
+                    : ''
+                }`;
               })
               .join(' ')}`,
           ),
@@ -90,6 +99,7 @@ export function createCommand<
             zObject[key] = validation;
             return zObject;
           },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           {} as Record<string, any>,
         );
 

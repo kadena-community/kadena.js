@@ -1,7 +1,7 @@
 import { generateFromHdKeysCommand } from './generateFromHdKeysCommand.js';
 import { generateHdKeysCommand } from './generateHdKeysCommand.js';
 import { generatePlainKeysCommand } from './generatePlainKeysCommand.js';
-// import { generateKeySetCommand } from ./keyset/generateKeySetCommand.js';
+import { generateKeySet } from './keyset/index.js';
 import { listKeys } from './listKeysCommand.js';
 import { manageKeys } from './manageKeysCommand.js';
 
@@ -17,7 +17,7 @@ export function generate(program: Command, version: string): void {
   generateHdKeysCommand(generateProgram, version);
   generateFromHdKeysCommand(generateProgram, version);
   generatePlainKeysCommand(generateProgram, version);
-  // generateKeySetCommand(generateProgram, version);
+  generateKeySet(generateProgram, version);
 }
 
 export function keysCommandFactory(program: Command, version: string): void {

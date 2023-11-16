@@ -6,7 +6,7 @@ import {
 } from '@kadena/client-utils/coin';
 import chalk from 'chalk';
 import { loadKeypairConfig } from '../keypair/keypairHelpers.js';
-import { loadKeysetConfig } from '../keyset/keysetHelpers.js';
+import { loadKeysetConfig } from '../keys/keyset/keysetHelpers.js';
 import { createCommand } from '../utils/createCommand.js';
 import { globalOptions } from '../utils/globalOptions.js';
 import type { IAccountCreateOptions } from './accountHelpers.js';

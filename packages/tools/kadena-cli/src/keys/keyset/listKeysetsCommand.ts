@@ -1,6 +1,6 @@
 import type { Command } from 'commander';
 import debug from 'debug';
-import { createCommand } from '../utils/createCommand.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { displayKeysetsConfig } from './keysetHelpers.js';
 
 export const listKeysetsCommand: (program: Command, version: string) => void =

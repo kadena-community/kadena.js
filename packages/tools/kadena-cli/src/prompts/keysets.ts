@@ -3,7 +3,7 @@ import { input, select } from '@inquirer/prompts';
 import { program } from 'commander';
 import path from 'path';
 
-import type { ICustomKeysetsChoice } from '../keyset/keysetHelpers.js';
+import type { ICustomKeysetsChoice } from '../keys/keyset/keysetHelpers.js';
 
 import { ensureFileExists } from '../utils/filesystem.js';
 import { getExistingKeysets } from '../utils/helpers.js';

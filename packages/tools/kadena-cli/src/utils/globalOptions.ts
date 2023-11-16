@@ -1,10 +1,9 @@
-/* eslint-disable @rushstack/typedef-var */
 import chalk from 'chalk';
 import { Option, program } from 'commander';
 import { z } from 'zod';
 import { loadAccountConfig } from '../account/accountHelpers.js';
 import { loadKeypairConfig } from '../keypair/keypairHelpers.js';
-import { loadKeysetConfig } from '../keyset/keysetHelpers.js';
+import { loadKeysetConfig } from '../keys/keyset/keysetHelpers.js';
 import { loadNetworkConfig } from '../networks/networksHelpers.js';
 import {
   accountNamePrompt,
@@ -37,9 +36,12 @@ import {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const createOption = <
   T extends {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     prompt: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     validation: any;
     option: Option;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expand?: (label: string) => any;
   },
 >(
@@ -51,10 +53,7 @@ export const createOption = <
   });
 };
 
-// interface IGlobalOptions {
-//   [key: string]: ReturnType<typeof createOption>;
-// }
-
+// eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   account: createOption({
     key: 'account' as const,
