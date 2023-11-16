@@ -1,11 +1,16 @@
 import { Button } from '@components/Button';
-import type { IDialogRootProps } from '@components/Dialog';
-import { Dialog } from '@components/Dialog';
+import type { IDialogProps } from '@components/Dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from '@components/Dialog';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { ModalContent } from './StoryComponents';
 
-type DialogStoryProps = IDialogRootProps & { title: string };
+type DialogStoryProps = IDialogProps & { title: string };
 
 const meta: Meta<DialogStoryProps> = {
   title: 'Overlays/Dialog',
@@ -59,23 +64,20 @@ export const DialogStory: Story = {
     return (
       <>
         <Button onClick={() => setIsOpen(true)}>Modal Trigger</Button>
-        <Dialog.Root
-          isOpen={isOpen}
-          onOpenChange={(isOpen) => setIsOpen(isOpen)}
-        >
+        <Dialog isOpen={isOpen} onOpenChange={(isOpen) => setIsOpen(isOpen)}>
           {(state) => (
             <>
-              <Dialog.Header>{title}</Dialog.Header>
-              <Dialog.Content>
+              <DialogHeader>{title}</DialogHeader>
+              <DialogContent>
                 <ModalContent />
-              </Dialog.Content>
-              <Dialog.Footer>
+              </DialogContent>
+              <DialogFooter>
                 <Button onClick={state.close}>Close Button</Button>
                 <Button onClick={state.close}>Second Close Button</Button>
-              </Dialog.Footer>
+              </DialogFooter>
             </>
           )}
-        </Dialog.Root>
+        </Dialog>
       </>
     );
   },

@@ -56,14 +56,14 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
 
 BaseDialog.displayName = 'BaseDialog';
 
-export interface IDialogRootProps extends Omit<IBaseDialogProps, 'state'> {
+export interface IDialogProps extends Omit<IBaseDialogProps, 'state'> {
   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;
   isOpen?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
 }
 
-export const DialogRoot: FC<IDialogRootProps> = ({
+export const Dialog: FC<IDialogProps> = ({
   children,
   isDismissable = true,
   isKeyboardDismissDisabled,

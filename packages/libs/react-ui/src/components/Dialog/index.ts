@@ -1,30 +1,8 @@
-import type { FC } from 'react';
-import type { IDialogContentProps } from './DialogContent';
-import { DialogContent } from './DialogContent';
-import type { IDialogFooterProps } from './DialogFooter';
-import { DialogFooter } from './DialogFooter';
-import type { IDialogHeaderProps } from './DialogHeader';
-import { DialogHeader } from './DialogHeader';
-import type { IDialogRootProps } from './DialogRoot';
-import { DialogRoot } from './DialogRoot';
-
-export {
-  IDialogContentProps,
-  IDialogFooterProps,
-  IDialogHeaderProps,
-  IDialogRootProps,
-};
-
-interface IDialogProps {
-  Root: FC<IDialogRootProps>;
-  Header: FC<IDialogHeaderProps>;
-  Content: FC<IDialogContentProps>;
-  Footer: FC<IDialogFooterProps>;
-}
-
-export const Dialog: IDialogProps = {
-  Root: DialogRoot,
-  Header: DialogHeader,
-  Content: DialogContent,
-  Footer: DialogFooter,
-};
+export { Dialog } from './Dialog';
+export type { IDialogProps } from './Dialog';
+export { DialogContent } from './DialogContent';
+export type { IDialogContentProps } from './DialogContent';
+export { DialogFooter } from './DialogFooter';
+export type { IDialogFooterProps } from './DialogFooter';
+export { DialogHeader } from './DialogHeader';
+export type { IDialogHeaderProps } from './DialogHeader';

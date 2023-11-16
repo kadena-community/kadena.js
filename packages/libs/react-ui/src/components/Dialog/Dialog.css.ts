@@ -22,8 +22,8 @@ export const overlayClass = style([
   }),
   responsiveStyle({
     xs: {
-      paddingLeft: 0,
-      paddingRight: 0,
+      // paddingLeft: 0,
+      // paddingRight: 0,
       maxHeight: '100svh',
       maxWidth: '100vw',
       inset: 0,
@@ -55,13 +55,10 @@ export const titleWrapperClass = style([
     marginBottom: '$4',
     marginRight: '$20',
     flexShrink: 0,
-    paddingX: '$10',
   }),
 ]);
 
-export const footerClass = style([
-  sprinkles({ flexShrink: 0, paddingX: '$10' }),
-]);
+export const footerClass = style([sprinkles({ flexShrink: 0 })]);
 
 export const contentClass = style([
   sprinkles({
@@ -70,4 +67,8 @@ export const contentClass = style([
     overflow: 'auto',
     flex: 1,
   }),
+  {
+    marginLeft: `-2.5rem`,
+    marginRight: `-2.5rem`,
+  },
 ]);

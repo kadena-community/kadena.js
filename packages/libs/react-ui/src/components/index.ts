@@ -11,7 +11,7 @@ export type {
   IDialogContentProps,
   IDialogFooterProps,
   IDialogHeaderProps,
-  IDialogRootProps,
+  IDialogProps,
 } from './Dialog';
 export type {
   FormFieldStatus,
@@ -86,7 +86,7 @@ export { Breadcrumbs } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
-export { Dialog } from './Dialog';
+export { Dialog, DialogContent, DialogFooter, DialogHeader } from './Dialog';
 export { Divider } from './Divider/Divider';
 export {
   FormFieldWrapper,
