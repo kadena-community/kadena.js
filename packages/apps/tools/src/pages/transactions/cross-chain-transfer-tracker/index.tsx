@@ -19,6 +19,7 @@ import {
   Breadcrumbs,
   Button,
   Grid,
+  GridItem,
   Notification,
   ProgressBar,
   Stack,
@@ -221,8 +222,8 @@ const CrossChainTransferTracker: FC = () => {
             helperHref="#"
             disabled={false}
           >
-            <Grid.Root>
-              <Grid.Item>
+            <Grid>
+              <GridItem>
                 <RequestKeyField
                   helperText={inputError || undefined}
                   status={validRequestKey}
@@ -233,8 +234,8 @@ const CrossChainTransferTracker: FC = () => {
                   }}
                   error={errors.requestKey}
                 />
-              </Grid.Item>
-            </Grid.Root>
+              </GridItem>
+            </Grid>
           </FormItemCard>
           <div className={formButtonStyle}>
             <Button

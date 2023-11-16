@@ -13,6 +13,7 @@ import {
   Button,
   ContentHeader,
   Grid,
+  GridItem,
   Heading,
   ProgressBar,
   Table,
@@ -196,13 +197,13 @@ const CheckTransactions: FC = () => {
         <Breadcrumbs.Item>{t('Results')}</Breadcrumbs.Item>
       </Breadcrumbs.Root>
       <Box marginBottom="$3" />
-      <Grid.Root columns={2}>
-        <Grid.Item>
+      <Grid columns={2}>
+        <GridItem>
           <Heading bold={false} as="h5">
             {t('Account Transactions')}
           </Heading>
-        </Grid.Item>
-        <Grid.Item>
+        </GridItem>
+        <GridItem>
           <div className={headerButtonGroupClass}>
             <Button icon="TrashCan" onClick={resetFiltersEvent}>
               {t('Reset all filters')}
@@ -211,8 +212,8 @@ const CheckTransactions: FC = () => {
               {t('Reload')}
             </Button>
           </div>
-        </Grid.Item>
-      </Grid.Root>
+        </GridItem>
+      </Grid>
       <Box marginBottom="$1" />
       <Text color="emphasize">
         {t('Filtered by')}:
@@ -238,8 +239,8 @@ const CheckTransactions: FC = () => {
 
       {loadingState ? 'LOADING' : ''}
 
-      <Grid.Root columns={2}>
-        <Grid.Item>
+      <Grid columns={2}>
+        <GridItem>
           <ContentHeader
             heading={t('Incoming transactions')}
             icon={'ArrowCollapseDown'}
@@ -280,8 +281,8 @@ const CheckTransactions: FC = () => {
               })}
             </Table.Body>
           </Table.Root>
-        </Grid.Item>
-        <Grid.Item>
+        </GridItem>
+        <GridItem>
           <ContentHeader
             heading={t('Outgoing transactions')}
             icon={'ArrowExpandUp'}
@@ -322,8 +323,8 @@ const CheckTransactions: FC = () => {
               })}
             </Table.Body>
           </Table.Root>
-        </Grid.Item>
-      </Grid.Root>
+        </GridItem>
+      </Grid>
     </div>
   );
 };

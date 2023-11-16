@@ -28,6 +28,7 @@ import {
   Breadcrumbs,
   Button,
   Grid,
+  GridItem,
   Heading,
   IconButton,
   Stack,
@@ -361,15 +362,15 @@ const CrossChainTransferFinisher: FC = () => {
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
           <Stack direction="column">
-            <FormItemCard
+            <ForItemCard
               heading={t('Search Request')}
               helper={t('Where can I find the request key?')}
               helperHref="#"
               disabled={false}
             >
               <Box marginBottom="$4" />
-              <Grid.Root>
-                <Grid.Item>
+              <Grid>
+                <GridItem>
                   <RequestKeyField
                     helperText={showInputHelper}
                     status={showInputError}
@@ -381,19 +382,19 @@ const CrossChainTransferFinisher: FC = () => {
                     }}
                     error={errors.requestKey}
                   />
-                </Grid.Item>
-              </Grid.Root>
-            </FormItemCard>
+                </GridItem>
+              </Grid>
+            </ForItemCard>
 
-            <FormItemCard
+            <ForItemCard
               heading={t('Gas Settings')}
               helper={t('What is a gas payer?')}
               helperHref="#"
               disabled={false}
             >
               <Box marginBottom="$4" />
-              <Grid.Root columns={1}>
-                <Grid.Item>
+              <Grid columns={1}>
+                <GridItem>
                   <AccountNameField
                     label={t('Gas Payer')}
                     inputProps={{
@@ -403,12 +404,12 @@ const CrossChainTransferFinisher: FC = () => {
                     }}
                     error={errors.gasPayer}
                   />
-                </Grid.Item>
-              </Grid.Root>
+                </GridItem>
+              </Grid>
 
               <Box marginBottom="$4" />
-              <Grid.Root columns={2}>
-                <Grid.Item>
+              <Grid columns={2}>
+                <GridItem>
                   <TextField
                     disabled={true}
                     label={t('Gas Price')}
@@ -421,8 +422,8 @@ const CrossChainTransferFinisher: FC = () => {
                       leadingText: t('KDA'),
                     }}
                   />
-                </Grid.Item>
-                <Grid.Item>
+                </GridItem>
+                <GridItem>
                   <TextField
                     disabled={!isAdvancedOptions}
                     helperText={t(
@@ -435,9 +436,9 @@ const CrossChainTransferFinisher: FC = () => {
                       placeholder: t('Enter Gas Limit'),
                     }}
                   />
-                </Grid.Item>
-              </Grid.Root>
-            </FormItemCard>
+                </GridItem>
+              </Grid>
+            </ForItemCard>
 
             {pollResults.tx !== undefined ? (
               <FormItemCard
