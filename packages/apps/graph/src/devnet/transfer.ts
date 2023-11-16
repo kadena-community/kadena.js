@@ -49,10 +49,13 @@ export async function transfer({
       keys: receiver.keys.map((key) => key.publicKey),
       pred: 'keys-all',
     })
-    .addSigner(sender.keys[0].publicKey, (withCap) => [
-      withCap('coin.GAS'),
-      withCap('coin.TRANSFER', sender.account, receiver.account, pactAmount),
-    ])
+    .addSigner(
+      sender.keys.map((key) => key.publicKey),
+      (withCap) => [
+        withCap('coin.GAS'),
+        withCap('coin.TRANSFER', sender.account, receiver.account, pactAmount),
+      ],
+    )
     .setMeta({
       gasLimit: 1000,
       chainId,
