@@ -1,5 +1,9 @@
-import type { INotificationRootProps } from '@kadena/react-ui';
-import { Notification, SystemIcon } from '@kadena/react-ui';
+import type { INotificationProps } from '@kadena/react-ui';
+import {
+  Notification,
+  NotificationHeading,
+  SystemIcon,
+} from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -10,14 +14,14 @@ export type FormStatus = 'idle' | 'successful' | 'erroneous' | 'processing';
 export type Titles = Record<FormStatus, string>;
 export type Bodies = Record<FormStatus, React.ReactNode>;
 
-const statusToColorMap: Record<FormStatus, INotificationRootProps['color']> = {
+const statusToColorMap: Record<FormStatus, INotificationProps['color']> = {
   erroneous: 'negative',
   idle: 'warning',
   processing: 'info',
   successful: 'positive',
 };
 
-const statusToIconMap: Record<FormStatus, INotificationRootProps['icon']> = {
+const statusToIconMap: Record<FormStatus, INotificationProps['icon']> = {
   erroneous: <SystemIcon.AlertBox />,
   idle: <SystemIcon.AlertCircleOutline />,
   processing: <SystemIcon.Information />,
@@ -30,7 +34,7 @@ export interface IFormStatusNotificationProps {
   body?: React.ReactNode;
   statusTitles?: Partial<Titles>;
   statusBodies?: Partial<Bodies>;
-  children?: INotificationRootProps['children'];
+  children?: INotificationProps['children'];
 }
 
 export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
@@ -75,17 +79,17 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
 
   return (
     <div className={containerStyle}>
-      <Notification.Root
+      <Notification
         color={statusToColorMap[status!]}
         hasCloseButton
         icon={statusToIconMap[status!]}
         onClose={onNotificationCloseClick}
         role="status"
       >
-        <Notification.Heading>{title ?? titles[status!]}</Notification.Heading>
+        <NotificationHeading>{title ?? titles[status!]}</NotificationHeading>
         {body ?? bodies[status!]}
         {children}
-      </Notification.Root>
+      </Notification>
     </div>
   );
 };

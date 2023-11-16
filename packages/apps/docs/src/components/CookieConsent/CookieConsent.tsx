@@ -1,5 +1,12 @@
 import { updateConsent } from '@/utils/analytics';
-import { Box, Notification, SystemIcon, Text } from '@kadena/react-ui';
+import {
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+  SystemIcon,
+  Text,
+} from '@kadena/react-ui';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { containerClass, notificationWrapperClass } from './styles.css';
@@ -33,37 +40,31 @@ export const CookieConsent: FC = () => {
   return (
     <section aria-labelledby="cookie-heading" className={containerClass}>
       <div className={notificationWrapperClass}>
-        <Notification.Root
+        <Notification
           color="info"
           styleVariant="borderless"
           icon={<SystemIcon.Cookie />}
           role="none"
         >
-          <Notification.Heading id="cookie-heading">
+          <NotificationHeading id="cookie-heading">
             Cookie Consent
-          </Notification.Heading>
+          </NotificationHeading>
           <Text>
             This notification concerns the cookie policy requirement to ask
             users for their consent to use <strong>Google Analytics</strong> or
             other tracking tools for better optimizations/performances.
           </Text>
-          <Notification.Actions>
-            <Notification.Button
-              icon="Check"
-              color={'positive'}
-              onClick={handleAccept}
-            >
+          <NotificationFooter>
+            <NotificationButton color={'positive'} onClick={handleAccept}>
               Accept
-            </Notification.Button>
-            <Notification.Button
-              icon="Close"
-              color={'negative'}
-              onClick={handleReject}
-            >
+              <SystemIcon.Check />
+            </NotificationButton>
+            <NotificationButton color={'negative'} onClick={handleReject}>
               Reject
-            </Notification.Button>
-          </Notification.Actions>
-        </Notification.Root>
+              <SystemIcon.Close />
+            </NotificationButton>
+          </NotificationFooter>
+        </Notification>
       </div>
     </section>
   );

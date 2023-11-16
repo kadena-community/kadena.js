@@ -8,6 +8,7 @@ import {
   Heading,
   IconButton,
   Notification,
+  NotificationHeading,
 } from '@kadena/react-ui';
 
 import {
@@ -250,10 +251,10 @@ const NewAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification.Root color="warning" role="status">
-            <Notification.Heading>
+          <Notification color="warning" role="status">
+            <NotificationHeading>
               {t('The Faucet is not available on Mainnet')}
-            </Notification.Heading>
+            </NotificationHeading>
             <Trans
               i18nKey="common:faucet-unavailable-warning"
               components={[
@@ -263,12 +264,12 @@ const NewAccountFaucetPage: FC = () => {
                 />,
               ]}
             />
-          </Notification.Root>
+          </Notification>
         ) : null}
       </div>
       <div className={notificationContainerStyle}>
-        <Notification.Root color="warning" role="none">
-          <Notification.Heading>{t(`Before you start`)}</Notification.Heading>
+        <Notification color="warning" role="none">
+          <NotificationHeading>{t(`Before you start`)}</NotificationHeading>
           <Trans
             i18nKey="common:faucet-how-to-start"
             components={[
@@ -294,7 +295,7 @@ const NewAccountFaucetPage: FC = () => {
               />,
             ]}
           />
-        </Notification.Root>
+        </Notification>
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification

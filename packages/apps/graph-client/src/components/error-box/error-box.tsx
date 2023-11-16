@@ -28,11 +28,7 @@ export const ErrorBox = (props: IErrorBoxProps): JSX.Element => {
   }
 
   return (
-    <Notification.Root
-      color="negative"
-      icon={<SystemIcon.Close />}
-      role="status"
-    >
+    <Notification color="negative" icon={<SystemIcon.Close />} role="status">
       {errorTitle}
       <Box marginBottom="$4" />
       {errorMessage}
@@ -42,6 +38,6 @@ export const ErrorBox = (props: IErrorBoxProps): JSX.Element => {
           <code>{errorExtra}</code>
         </>
       )}
-    </Notification.Root>
+    </Notification>
   );
 };

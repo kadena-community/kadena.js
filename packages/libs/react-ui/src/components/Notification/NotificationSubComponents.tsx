@@ -14,10 +14,10 @@ export const NotificationHeading: FC<INotificationHeadingProps> = ({
   </h5>
 );
 
-export interface INotificationActionsProps {
+export interface INotificationFooterProps {
   children: React.ReactNode;
 }
 
-export const NotificationActions: FC<INotificationActionsProps> = ({
+export const NotificationFooter: FC<INotificationFooterProps> = ({
   children,
 }) => <div className={actionsContainerClass}>{children}</div>;

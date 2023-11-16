@@ -1,13 +1,18 @@
-import { SystemIcon } from '@components/Icon';
-import type { INotificationRootProps } from '@components/Notification';
-import { Notification } from '@components/Notification';
+import type { INotificationProps } from '@components/Notification';
+import {
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+} from '@components/Notification';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { SystemIcon } from '..';
 import { colorVariants, displayVariants } from './Notification.css';
 
 type StoryType = {
   heading: string;
-} & INotificationRootProps;
+} & INotificationProps;
 
 const meta: Meta<StoryType> = {
   title: 'Components/Notification',
@@ -79,7 +84,7 @@ export const Primary: Story = {
   },
   render: ({ heading, hasCloseButton, color, children, styleVariant }) => {
     return (
-      <Notification.Root
+      <Notification
         color={color}
         hasCloseButton={hasCloseButton}
         onClose={() => {
@@ -88,17 +93,19 @@ export const Primary: Story = {
         styleVariant={styleVariant}
         role="none"
       >
-        <Notification.Heading>{heading}</Notification.Heading>
+        <NotificationHeading>{heading}</NotificationHeading>
         {children}
-        <Notification.Actions>
-          <Notification.Button icon="Check" color="positive">
+        <NotificationFooter>
+          <NotificationButton color="positive">
             Accept
-          </Notification.Button>
-          <Notification.Button icon="Close" color="negative">
+            <SystemIcon.Check />
+          </NotificationButton>
+          <NotificationButton color="negative">
             Reject
-          </Notification.Button>
-        </Notification.Actions>
-      </Notification.Root>
+            <SystemIcon.Close />
+          </NotificationButton>
+        </NotificationFooter>
+      </Notification>
     );
   },
 };

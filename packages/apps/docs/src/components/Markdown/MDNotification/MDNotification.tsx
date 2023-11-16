@@ -1,4 +1,4 @@
-import { Notification, SystemIcon } from '@kadena/react-ui';
+import { Notification, NotificationHeading } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
@@ -16,15 +16,15 @@ interface IProps {
 export const MDNotification: FC<IProps> = ({ children, title = '', label }) => {
   return (
     <div className={classNames(wrapperClass, notificationWrapperClass)}>
-      <Notification.Root
+      <Notification
         color={getColor(label)}
         icon={getIcon(label)}
         styleVariant="borderless"
         role="none"
       >
-        <Notification.Heading>{title}</Notification.Heading>
+        <NotificationHeading>{title}</NotificationHeading>
         {children}
-      </Notification.Root>
+      </Notification>
     </div>
   );
 };

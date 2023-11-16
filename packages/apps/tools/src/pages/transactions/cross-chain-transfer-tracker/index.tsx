@@ -20,6 +20,9 @@ import {
   Button,
   Grid,
   Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
   ProgressBar,
   Stack,
   SystemIcon,
@@ -193,7 +196,7 @@ const CrossChainTransferTracker: FC = () => {
         </Stack>
 
         {txError ? (
-          <Notification.Root
+          <Notification
             hasCloseButton
             color="negative"
             onClose={() => {
@@ -202,18 +205,18 @@ const CrossChainTransferTracker: FC = () => {
             icon={<SystemIcon.AlertBox />}
             role="status"
           >
-            <Notification.Heading>Warning</Notification.Heading>
+            <NotificationHeading>Warning</NotificationHeading>
             {txError}
-            <Notification.Actions>
-              <Notification.Button
+            <NotificationFooter>
+              <NotificationButton
                 color="negative"
-                icon={'Refresh'}
                 onClick={validateThenSubmit(handleSubmit)}
               >
                 {t('Retry')}
-              </Notification.Button>
-            </Notification.Actions>
-          </Notification.Root>
+                <SystemIcon.Refresh />
+              </NotificationButton>
+            </NotificationFooter>
+          </Notification>
         ) : null}
         <form onSubmit={validateThenSubmit(handleSubmit)}>
           <FormItemCard

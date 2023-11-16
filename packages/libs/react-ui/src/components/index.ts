@@ -44,10 +44,10 @@ export type {
   INavHeaderSelectProps,
 } from './NavHeader';
 export type {
-  INotificationActionsProps,
   INotificationButtonProps,
+  INotificationFooterProps,
   INotificationHeadingProps,
-  INotificationRootProps,
+  INotificationProps,
 } from './Notification';
 export type { IPaginationProps } from './Pagination';
 export type {
@@ -99,7 +99,12 @@ export { maskValue } from './MaskedValue/utils';
 export { Modal, ModalProvider, useModal } from './Modal';
 export { NavFooter } from './NavFooter';
 export { NavHeader } from './NavHeader';
-export { Notification } from './Notification';
+export {
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+} from './Notification';
 export { Pagination } from './Pagination';
 export { ProfileSummary } from './ProfileSummary';
 export { ProgressBar } from './ProgressBar';

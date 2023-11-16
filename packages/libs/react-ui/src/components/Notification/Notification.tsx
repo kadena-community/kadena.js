@@ -12,7 +12,7 @@ import {
   iconClass,
 } from './Notification.css';
 
-export interface INotificationRootProps {
+export interface INotificationProps {
   children?: React.ReactNode;
   color?: keyof typeof cardColorVariants;
   styleVariant?: keyof typeof displayVariants;
@@ -22,7 +22,7 @@ export interface INotificationRootProps {
   role: 'alert' | 'status' | 'none';
 }
 
-export const NotificationRoot: FC<INotificationRootProps> = ({
+export const Notification: FC<INotificationProps> = ({
   children,
   hasCloseButton = false,
   color = 'info',
