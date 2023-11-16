@@ -1,4 +1,4 @@
-import type { IPactCommand } from '@kadena/client';
+import type { PartialPactCommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import {
   addSigner,
@@ -9,7 +9,7 @@ import {
 } from '@kadena/client/fp';
 
 // you can compose command by using the createPactCommand util
-export function composeCommands(): Partial<IPactCommand> {
+export function composeCommands(): PartialPactCommand {
   const mainnetConfig = composePactCommand(
     setMeta({ chainId: '1' }),
     setNetworkId('mainnet04'),

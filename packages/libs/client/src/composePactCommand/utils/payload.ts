@@ -14,12 +14,16 @@ interface IExec {
     >,
   >(
     ...codes: [...TCodes]
-  ): { payload: IExecutionPayloadObject & { funs: [...TCodes] } };
+  ): {
+    payload: { exec: Required<IExecutionPayloadObject['exec']> } & {
+      funs: [...TCodes];
+    };
+  };
 }
 
 interface ICont {
-  (options: IContinuationPayloadObject['cont']): {
-    payload: IContinuationPayloadObject;
+  (options: Partial<IContinuationPayloadObject['cont']>): {
+    payload: { cont: Partial<IContinuationPayloadObject['cont']> };
   };
 }
 

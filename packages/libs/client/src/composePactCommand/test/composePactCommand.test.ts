@@ -279,7 +279,7 @@ describe('composePactCommand', () => {
   });
 
   it('adds does not set sender if its not presented', () => {
-    const command: Partial<IPactCommand> = composePactCommand(
+    const command = composePactCommand(
       composePactCommand(
         execution('(test)'),
         setMeta({ senderAccount: 'test' }),

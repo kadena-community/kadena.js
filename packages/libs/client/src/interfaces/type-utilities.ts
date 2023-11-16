@@ -47,3 +47,7 @@ export type Prettify<T extends Record<string, unknown>> = {
 export type WithRequired<T, K extends keyof T> = Prettify<
   T & { [P in K]-?: T[P] }
 >;
+
+export type AllPartial<T> = {
+  [P in keyof T]?: T[P] extends {} ? AllPartial<T[P]> : T[P];
+} & {};

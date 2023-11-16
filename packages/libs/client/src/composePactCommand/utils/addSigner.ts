@@ -1,5 +1,5 @@
 import type { ICap } from '@kadena/types';
-import type { IPactCommand } from '../../interfaces/IPactCommand';
+import type { PartialPactCommand } from '../../interfaces/IPactCommand';
 import type {
   ExtractCapabilityType,
   IGeneralCapability,
@@ -11,7 +11,7 @@ export type ISigner =
   | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string };
 
 interface IAddSigner {
-  (first: ISigner | ISigner[]): () => Partial<IPactCommand>;
+  (first: ISigner | ISigner[]): () => PartialPactCommand;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   <TCommand extends any>(
     first: ISigner | ISigner[],
@@ -42,7 +42,7 @@ export const addSigner: IAddSigner = ((
     }));
   }
 
-  return (cmd: Partial<IPactCommand>) =>
+  return (cmd: PartialPactCommand) =>
     patchCommand(cmd, {
       signers: signers.map((item) => {
         const {

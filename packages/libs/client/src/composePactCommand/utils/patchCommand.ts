@@ -1,26 +1,22 @@
-import type {
-  IContinuationPayloadObject,
-  IExecutionPayloadObject,
-  IPactCommand,
-} from '../../interfaces/IPactCommand';
+import type { PartialPactCommand } from '../../interfaces/IPactCommand';
 
 /**
  * @internal
  */
 export const mergePayload = (
-  payload: IPactCommand['payload'] | undefined,
-  newPayload: IPactCommand['payload'] | undefined,
-): IExecutionPayloadObject | IContinuationPayloadObject | undefined => {
+  payload: PartialPactCommand['payload'] | undefined,
+  newPayload: PartialPactCommand['payload'],
+): PartialPactCommand['payload'] => {
   if (payload === undefined || newPayload === undefined)
     return newPayload ?? payload;
 
   if ('exec' in payload && 'exec' in newPayload) {
     return {
       exec: {
-        code: (payload.exec.code ?? '') + (newPayload.exec.code ?? ''),
+        code: (payload.exec?.code ?? '') + (newPayload.exec?.code ?? ''),
         data: {
-          ...payload.exec.data,
-          ...newPayload.exec.data,
+          ...payload.exec?.data,
+          ...newPayload.exec?.data,
         },
       },
     };
@@ -32,8 +28,8 @@ export const mergePayload = (
         ...payload.cont,
         ...newPayload.cont,
         data: {
-          ...payload.cont.data,
-          ...newPayload.cont.data,
+          ...payload.cont?.data,
+          ...newPayload.cont?.data,
         },
       },
     };
@@ -53,9 +49,9 @@ export const mergePayload = (
  * @public
  */
 export function patchCommand(
-  command: Partial<IPactCommand>,
-  patch: Partial<IPactCommand>,
-): Partial<IPactCommand> {
+  command: PartialPactCommand,
+  patch: PartialPactCommand,
+): PartialPactCommand {
   const state = { ...command };
   if (patch.payload !== undefined) {
     state.payload = mergePayload(state.payload, patch.payload);
@@ -72,13 +68,13 @@ export function patchCommand(
   if (patch.signers !== undefined) {
     patch.signers.forEach((signer) => {
       state.signers ??= [];
-      const foundSigner = state.signers.find(
-        ({ pubKey }) => signer.pubKey === pubKey,
-      );
+      const foundSigner = state.signers
+        .filter(Boolean)
+        .find((item) => signer?.pubKey === item?.pubKey);
       if (foundSigner !== undefined) {
         foundSigner.clist = [
           ...(foundSigner.clist ?? []),
-          ...(signer.clist ?? []),
+          ...(signer?.clist ?? []),
         ];
       } else {
         state.signers.push(signer);

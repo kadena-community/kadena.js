@@ -126,11 +126,11 @@ data: ICommandResult;
 }, {
 event: "spv-proof";
 data: {
-pactId?: string | undefined;
-step?: number | undefined;
-rollback?: boolean | undefined;
+pactId: string;
+step: number;
+rollback: boolean;
 data?: Record<string, unknown> | undefined;
-proof?: string | undefined;
+proof?: string | null | undefined;
 };
 }, {
 event: "gas-station" | "sign-continuation";
