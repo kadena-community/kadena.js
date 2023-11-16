@@ -329,9 +329,10 @@ export const createTransactionBuilder = (
       return getBuilder(init);
     },
     continuation: (contOptions: IContinuationPayloadObject['cont']) => {
+      const contWithDefaults = { proof: null, ...contOptions };
       const init = initial
-        ? patchCommand(initial, continuation(contOptions))
-        : continuation(contOptions);
+        ? patchCommand(initial, continuation(contWithDefaults))
+        : continuation(contWithDefaults);
 
       return getBuilder(init);
     },

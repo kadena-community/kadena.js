@@ -315,6 +315,7 @@ describe('composePactCommand', () => {
           pactId: '1',
           step: 1,
           rollback: false,
+          proof: null,
           data: { direct: 'test' },
         }),
         addData('one', 'test'),
@@ -387,6 +388,27 @@ describe('mergePayload', () => {
     ).toEqual({
       cont: {
         pactId: '1',
+        data: { one: 'test', two: 'test' },
+      },
+    });
+
+    expect(
+      mergePayload(undefined, {
+        exec: { code: '(one)', data: { one: 'test' } },
+      }),
+    ).toEqual({ exec: { code: '(one)', data: { one: 'test' } } });
+  });
+
+  it('should not override input data', () => {
+    expect(
+      mergePayload(
+        { cont: { proof: 'proof', data: { one: 'test' } } },
+        { cont: { pactId: '1', data: { two: 'test' } } },
+      ),
+    ).toEqual({
+      cont: {
+        pactId: '1',
+        proof: 'proof',
         data: { one: 'test', two: 'test' },
       },
     });

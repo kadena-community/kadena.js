@@ -46,7 +46,6 @@ export const execution: IExec = (...codes: string[]) => {
  */
 export const continuation: ICont = (options) => {
   const clone = {
-    proof: null,
     data: {},
     ...options,
   };
