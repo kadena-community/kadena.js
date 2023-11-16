@@ -59,13 +59,14 @@ export const createAccountCommand = createCommand(
         secretKey: gasPayerKeypair.secretKey,
       });
 
-      const c = await createPrincipalAccount(
+      const c = await createAccount(
         {
+          account: account as string,
           keyset: {
-            pred: 'keys-all',
-            keys: ['1827389ca64cb5c3c77352eb2087c2bb503061d22fb1edcadb5d90ad1dee80f5'],
+            pred: config.keysetConfig.predicate as 'keys-all' | 'keys-two' | 'keys-one',
+            keys: publicKeys,
           },
-          gasPayer: { account: 'sender00', publicKeys: [gasPayerKeypair.publicKey] },
+          gasPayer: { account: config.gasPayerConfig.account, publicKeys: [gasPayerKeypair.publicKey] },
           chainId: config.chainId as ChainId,
         },
         {
