@@ -22,8 +22,6 @@ export const overlayClass = style([
   }),
   responsiveStyle({
     xs: {
-      // paddingLeft: 0,
-      // paddingRight: 0,
       maxHeight: '100svh',
       maxWidth: '100vw',
       inset: 0,
