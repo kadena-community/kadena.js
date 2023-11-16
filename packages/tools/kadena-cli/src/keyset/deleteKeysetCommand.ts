@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { keysetDeletePrompt } from '../constants/prompts.js';
+import { keysetDeletePrompt } from '../prompts/index.js';
 import { globalOptions } from '../utils/globalOptions.js';
 
 import chalk from 'chalk';

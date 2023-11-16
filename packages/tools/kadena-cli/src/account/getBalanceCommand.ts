@@ -8,7 +8,8 @@ export const getBalanceCommand = createCommand(
   'get-balance',
   'Get the balance of an account',
   [globalOptions.account(), globalOptions.network(), globalOptions.chainId()],
-  async (config) => {
+  async (bla) => {
+    const config = bla as unknown as {} as any;
     try {
       const balance = await getBalance(
         config.accountConfig.account,

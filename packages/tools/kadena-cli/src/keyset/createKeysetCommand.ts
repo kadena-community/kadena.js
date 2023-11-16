@@ -6,7 +6,7 @@ import path from 'path';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { defaultKeysetsPath } from '../constants/keysets.js';
-import { keysetOverwritePrompt } from '../constants/prompts.js';
+import { keysetOverwritePrompt } from '../prompts/index.js';
 import { createCommand } from '../utils/createCommand.js';
 import { globalOptions } from '../utils/globalOptions.js';
 import { writeKeyset } from './keysetHelpers.js';

@@ -9,7 +9,8 @@ import { loadKeypairConfig } from '../keypair/keypairHelpers.js';
 import { loadKeysetConfig } from '../keyset/keysetHelpers.js';
 import { createCommand } from '../utils/createCommand.js';
 import { globalOptions } from '../utils/globalOptions.js';
-import { IAccountCreateOptions, writeAccount } from './accountHelpers.js';
+import type { IAccountCreateOptions } from './accountHelpers.js';
+import { writeAccount } from './accountHelpers.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const createAccountCommand = createCommand(
@@ -22,12 +23,13 @@ export const createAccountCommand = createCommand(
     globalOptions.chainId(),
     globalOptions.gasPayer(),
   ],
-  async (config) => {
+  async (bla) => {
+    const config = bla as unknown as {} as any;
     try {
       const publicKeys = config.keysetConfig.publicKeys
         .split(',')
-        .map((value) => value.trim())
-        .filter((value) => value.length);
+        .map((value: string) => value.trim())
+        .filter((value: string | any[]) => value.length);
       for (const keypair of config.keysetConfig.publicKeysFromKeypairs) {
         const keypairConfig = await loadKeypairConfig(keypair);
         publicKeys.push(keypairConfig.publicKey || '');

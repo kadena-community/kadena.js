@@ -109,10 +109,8 @@ export function createCommand<
           }
         }
 
-        console.log();
         displayConfig(config);
 
-        // execute action with config
         await action(config);
       } catch (error) {
         console.error(error);

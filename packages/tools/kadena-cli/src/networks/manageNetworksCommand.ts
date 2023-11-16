@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { networkOverwritePrompt } from '../constants/prompts.js';
+import { networkOverwritePrompt } from '../prompts/index.js';
 import { globalOptions } from '../utils/globalOptions.js';
 import { writeNetworks } from './networksHelpers.js';
 

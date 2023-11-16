@@ -1,7 +1,11 @@
+/* eslint-disable @rushstack/typedef-var */
 import chalk from 'chalk';
 import { Option, program } from 'commander';
 import { z } from 'zod';
 import { loadAccountConfig } from '../account/accountHelpers.js';
+import { loadKeypairConfig } from '../keypair/keypairHelpers.js';
+import { loadKeysetConfig } from '../keyset/keysetHelpers.js';
+import { loadNetworkConfig } from '../networks/networksHelpers.js';
 import {
   accountNamePrompt,
   accountPrompt,
@@ -22,10 +26,7 @@ import {
   networkSelectPrompt,
   publicKeysPrompt,
   selectKeypairsPrompt,
-} from '../constants/prompts.js';
-import { loadKeypairConfig } from '../keypair/keypairHelpers.js';
-import { loadKeysetConfig } from '../keyset/keysetHelpers.js';
-import { loadNetworkConfig } from '../networks/networksHelpers.js';
+} from '../prompts/index.js';
 import {
   ensureAccountsConfiguration,
   ensureKeypairsConfiguration,
@@ -50,18 +51,18 @@ export const createOption = <
   });
 };
 
-interface IGlobalOptions {
-  [key: string]: ReturnType<typeof createOption>;
-}
+// interface IGlobalOptions {
+//   [key: string]: ReturnType<typeof createOption>;
+// }
 
-export const globalOptions: IGlobalOptions = {
+export const globalOptions = {
   account: createOption({
     key: 'account' as const,
     prompt: accountPrompt,
     validation: z.string(),
     option: new Option('-k, --account <account>', 'Keypair name'),
     expand: async (account: string) => {
-      await ensureAccountsConfiguration();
+      ensureAccountsConfiguration();
       try {
         return loadAccountConfig(account);
       } catch (e) {
@@ -85,6 +86,9 @@ export const globalOptions: IGlobalOptions = {
       'Receiver (k:) wallet address',
     ),
   }),
+  password: createOption({
+    key: 'password' as const,
+  }),
   chainId: createOption({
     key: 'chainId' as const,
     prompt: chainIdPrompt,
@@ -103,7 +107,7 @@ export const globalOptions: IGlobalOptions = {
     validation: z.string(),
     option: new Option('-k, --keypair <keypair>', 'Keypair name'),
     expand: async (keypair: string) => {
-      await ensureKeypairsConfiguration();
+      ensureKeypairsConfiguration();
       try {
         return loadKeypairConfig(keypair);
       } catch (e) {
@@ -124,7 +128,7 @@ export const globalOptions: IGlobalOptions = {
     validation: z.string(),
     option: new Option('-g, --gas-payer <gasPayer>', 'Gas payer account'),
     expand: async (gasPayer: string) => {
-      await ensureAccountsConfiguration();
+      ensureAccountsConfiguration();
       try {
         return loadAccountConfig(gasPayer);
       } catch (e) {
@@ -157,7 +161,7 @@ export const globalOptions: IGlobalOptions = {
     validation: z.string(),
     option: new Option('-k, --keyset <keyset>', 'Keyset name'),
     expand: async (keyset: string) => {
-      await ensureKeysetsConfiguration();
+      ensureKeysetsConfiguration();
       try {
         return loadKeysetConfig(keyset);
       } catch (e) {
@@ -199,7 +203,7 @@ export const globalOptions: IGlobalOptions = {
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
-      await ensureNetworksConfiguration();
+      ensureNetworksConfiguration();
       try {
         return loadNetworkConfig(network);
       } catch (e) {
@@ -282,7 +286,7 @@ export const globalOptions: IGlobalOptions = {
     expand: async (publicKeysFromKeypairs) => {
       const publicKeys: string[] = [];
       for (const keypair of publicKeysFromKeypairs) {
-        const keypairConfig = await loadKeypairConfig(keypair);
+        const keypairConfig = loadKeypairConfig(keypair);
         publicKeys.push(keypairConfig.publicKey || '');
       }
       return publicKeys;

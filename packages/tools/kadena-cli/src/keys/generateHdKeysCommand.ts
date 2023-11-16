@@ -10,6 +10,23 @@ import * as storageService from './utils/storage.js';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 
+// import { createCommand } from '../utils/createCommand.js';
+// import { globalOptions } from '../utils/globalOptions.js';
+
+// export const generateHdKeysCommand: (
+//   program: Command,
+//   version: string,
+// ) => void = createCommand(
+//   'create',
+//   'Create network',
+//   [
+//     globalOptions.networkName(),
+//     globalOptions.networkId(),
+//     globalOptions.networkHost(),
+//     globalOptions.networkExplorerUrl(),
+//   ],
+//   async (config) => {
+
 export function generateHdKeys(program: Command, version: string): void {
   program
     .command('hd')

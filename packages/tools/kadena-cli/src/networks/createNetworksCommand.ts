@@ -7,7 +7,7 @@ import path from 'path';
 
 import chalk from 'chalk';
 import type { Command } from 'commander';
-import { networkOverwritePrompt } from '../constants/prompts.js';
+import { networkOverwritePrompt } from '../prompts/index.js';
 import { createCommand } from '../utils/createCommand.js';
 import { globalOptions } from '../utils/globalOptions.js';
 

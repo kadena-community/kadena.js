@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { networkDeletePrompt } from '../constants/prompts.js';
+import { networkDeletePrompt } from '../prompts/index.js';
 import { globalOptions } from '../utils/globalOptions.js';
 import { removeNetwork } from './networksHelpers.js';
 

@@ -81,9 +81,7 @@ export function removeNetwork(
   removeFile(networkFilePath);
 }
 
-export function loadNetworkConfig(
-  network: string,
-): INetworksCreateOptions | never {
+export function loadNetworkConfig(network: string): INetworksCreateOptions {
   const networkFilePath = path.join(defaultNetworksPath, `${network}.yaml`);
 
   if (!existsSync(networkFilePath)) {
