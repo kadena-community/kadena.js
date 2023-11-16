@@ -35,20 +35,18 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
 
   return (
     <div
-      className={classNames(baseContainerClass, {
+      className={classNames(baseContainerClass, textAreaContainerClass, {
         [baseOutlinedClass]: outlined || status,
         [disabledClass]: disabled,
       })}
     >
-      <div className={textAreaContainerClass}>
-        <textarea
-          ref={ref}
-          className={classNames(textAreaClass, sprinkles({ fontFamily }))}
-          disabled={disabled}
-          {...rest}
-        />
-        <div className={buttonContainerClass}>{children}</div>
-      </div>
+      <textarea
+        ref={ref}
+        className={classNames(textAreaClass, sprinkles({ fontFamily }))}
+        disabled={disabled}
+        {...rest}
+      />
+      <div className={buttonContainerClass}>{children}</div>
     </div>
   );
 });
