@@ -86,9 +86,6 @@ export const globalOptions = {
       'Receiver (k:) wallet address',
     ),
   }),
-  password: createOption({
-    key: 'password' as const,
-  }),
   chainId: createOption({
     key: 'chainId' as const,
     prompt: chainIdPrompt,
