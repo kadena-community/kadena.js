@@ -10,7 +10,6 @@ type StoryProps = {
   helperText: string;
   leadingText: string;
   icon: keyof typeof SystemIcon;
-  rightIcon: keyof typeof SystemIcon;
 } & ITextFieldProps;
 
 const meta: Meta<StoryProps> = {
@@ -95,14 +94,6 @@ const meta: Meta<StoryProps> = {
         type: 'select',
       },
     },
-    rightIcon: {
-      description:
-        'Icon rendered inside the input to the right of the input text.',
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
@@ -124,14 +115,12 @@ export const Group: Story = {
     disabled: false,
     status: undefined,
     icon: 'Account',
-    rightIcon: undefined,
     leadingText: 'Leading',
     leadingTextWidth: undefined,
   },
   render: ({
     leadingText,
     icon,
-    rightIcon,
     disabled,
     status,
     tag,
@@ -153,7 +142,6 @@ export const Group: Story = {
           id: 'inputStory',
           leadingText,
           icon,
-          rightIcon,
           placeholder: 'This is a placeholder',
         }}
       />
