@@ -82,9 +82,7 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
         onClose={onNotificationCloseClick}
         role="status"
       >
-        {title ? (
-          <Notification.Heading>{titles[status!]}</Notification.Heading>
-        ) : null}
+        <Notification.Heading>{title ?? titles[status!]}</Notification.Heading>
         {body ?? bodies[status!]}
         {children}
       </Notification.Root>
