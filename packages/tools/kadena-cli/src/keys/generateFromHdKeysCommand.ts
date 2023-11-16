@@ -16,7 +16,10 @@ import type { Command } from 'commander';
 //   'Exit'
 // ],
 
-export function generateFromHdKeys(program: Command, version: string): void {
+export function generateFromHdKeysCommand(
+  program: Command,
+  version: string,
+): void {
   program
     .command('gen-from-hd')
     .description('generate keys from an HD-key')

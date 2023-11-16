@@ -2,18 +2,21 @@ import { PLAINKEY_EXT } from '../constants/config.js';
 import { clearCLI, collectResponses } from '../utils/helpers.js';
 import { processZodErrors } from '../utils/processZodErrors.js';
 
-import * as cryptoService from './utils/service.js';
-import * as storageService from './utils/storage.js';
 import type { TPlainKeygenOptions } from './plainKeysGenerateOptions.js';
 import {
   // PlainKeygenOptions,
   plainKeygenQuestions,
 } from './plainKeysGenerateOptions.js';
+import * as cryptoService from './utils/service.js';
+import * as storageService from './utils/storage.js';
 
 import chalk from 'chalk';
 import type { Command } from 'commander';
 
-export function generatePlainKeys(program: Command, version: string): void {
+export function generatePlainKeysCommand(
+  program: Command,
+  version: string,
+): void {
   program
     .command('plain')
     .description('generate (plain) public-private key-pair')

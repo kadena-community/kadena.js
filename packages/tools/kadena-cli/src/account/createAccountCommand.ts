@@ -23,8 +23,7 @@ export const createAccountCommand = createCommand(
     globalOptions.chainId(),
     globalOptions.gasPayer(),
   ],
-  async (bla) => {
-    const config = bla as unknown as {} as any;
+  async (config) => {
     try {
       const publicKeys = config.keysetConfig.publicKeys
         .split(',')

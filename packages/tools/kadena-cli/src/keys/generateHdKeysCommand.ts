@@ -27,7 +27,7 @@ import type { Command } from 'commander';
 //   ],
 //   async (config) => {
 
-export function generateHdKeys(program: Command, version: string): void {
+export function generateHdKeysCommand(program: Command, version: string): void {
   program
     .command('hd')
     .description('generate an HD-key or public-private key-pair')

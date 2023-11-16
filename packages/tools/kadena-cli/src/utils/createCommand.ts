@@ -6,15 +6,14 @@ import { collectResponses } from './helpers.js';
 import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 
 import { displayConfig } from './createCommandDisplayHelper.js';
-
 type AsOption<T> = T extends {
   key: infer K;
-  prompt: (...arg: unknown[]) => infer R;
+  prompt: (...arg: any[]) => infer R;
 }
   ? K extends string
     ? {
         [P in K]: Pure<R>;
-      } & (T extends { expand: (...args: unknown[]) => infer Ex }
+      } & (T extends { expand: (...args: any[]) => infer Ex }
         ? {
             [P in `${K}Config`]: Pure<Ex>;
           }
@@ -22,20 +21,21 @@ type AsOption<T> = T extends {
     : never
   : never;
 
-type Combine<Tuple extends unknown[]> = Tuple extends [infer one]
+type Combine<Tuple extends any[]> = Tuple extends [infer one]
   ? AsOption<one>
   : Combine2<
       AsOption<First<Tuple>>,
-      Tail<Tuple> extends unknown[] ? Combine<Tail<Tuple>> : {}
+      Tail<Tuple> extends any[] ? Combine<Tail<Tuple>> : {}
     >;
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createCommand<
   T extends ReturnType<GlobalOptions[keyof GlobalOptions]>[],
 >(
   name: string,
   description: string,
   options: [...T],
-  action: (finalConfig: Prettify<Combine<T>>) => unknown,
+  action: (finalConfig: Prettify<Combine<T>>) => any,
 ): (program: Command, version: string) => void {
   return async (program: Command, version: string) => {
     const command = program.command(name).description(description);
@@ -75,15 +75,10 @@ export function createCommand<
                   displayValue = value.toString();
                 }
 
-                // Explicitly handle null or empty strings
-                if (displayValue === null || displayValue === '') {
-                  displayValue = 'no value';
-                }
-
                 return `--${arg.replace(
                   /[A-Z]/g,
                   (match: string) => `-${match.toLowerCase()}`,
-                )} ${displayValue}`;
+                )} ${displayValue || ''}`;
               })
               .join(' ')}`,
           ),
@@ -95,7 +90,7 @@ export function createCommand<
             zObject[key] = validation;
             return zObject;
           },
-          {} as Record<string, z.ZodTypeAny>,
+          {} as Record<string, any>,
         );
 
         z.object(zodValidationObject).parse(newArgs);
@@ -109,8 +104,10 @@ export function createCommand<
           }
         }
 
+        console.log();
         displayConfig(config);
 
+        // execute action with config
         await action(config);
       } catch (error) {
         console.error(error);
