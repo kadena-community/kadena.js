@@ -8,12 +8,11 @@ export const buttonClass = style([
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: '$lg',
+    borderRadius: '$md',
     cursor: 'pointer',
-    size: '$11',
+    size: '$9',
     border: 'none',
   }),
-
   {
     selectors: {
       [`${darkThemeClass} &`]: {
