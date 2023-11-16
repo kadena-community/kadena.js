@@ -1,11 +1,12 @@
-import { getExistingAccounts, sanitizeFilename } from "../utils/helpers.js";
-import { defaultAccountsPath, accountDefaults } from "../constants/accounts.js";
-import { removeFile, writeFile } from "../utils/filesystem.js";
-import { existsSync, readFileSync, type WriteFileOptions } from 'fs';
+import type { ChainId } from '@kadena/types';
+import chalk from 'chalk';
+import type { WriteFileOptions } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
-import chalk from 'chalk';
-import { ChainId } from "@kadena/types";
+import { defaultAccountsPath } from '../constants/accounts.js';
+import { removeFile, writeFile } from '../utils/filesystem.js';
+import { getExistingAccounts, sanitizeFilename } from '../utils/helpers.js';
 
 export interface ICustomAccountsChoice {
   value: string;
@@ -28,7 +29,9 @@ export interface IAccountCreateOptions {
  * @param {Pick<IAccountCreateOptions, 'name'>} options - The account configuration.
  * @param {string} options.name - The name of the account.
  */
-export function removeAccount(options: Pick<IAccountCreateOptions, 'name'>): void {
+export function removeAccount(
+  options: Pick<IAccountCreateOptions, 'name'>,
+): void {
   const { name } = options;
   const sanitizedName = sanitizeFilename(name).toLowerCase();
   const accountFilePath = path.join(
@@ -47,11 +50,7 @@ export function writeAccount(options: IAccountCreateOptions): void {
     `${sanitizedName}.yaml`,
   );
 
-  writeFile(
-    accountFilePath,
-    yaml.dump(options),
-    'utf8' as WriteFileOptions,
-  );
+  writeFile(accountFilePath, yaml.dump(options), 'utf8' as WriteFileOptions);
 }
 
 export async function displayAccountsConfig(): Promise<void> {
@@ -78,18 +77,17 @@ export async function displayAccountsConfig(): Promise<void> {
     return `  ${keyValue}${' '.repeat(remainingWidth)}  `;
   };
 
-
   const existingAccounts: ICustomAccountsChoice[] = await getExistingAccounts();
 
   existingAccounts.forEach(({ value }) => {
     const filePath = path.join(defaultAccountsPath, `${value}.yaml`);
-    if (! existsSync) {
+    if (!existsSync(filePath)) {
       return;
     }
 
-    const accountConfig = (yaml.load(
-        readFileSync(filePath, 'utf8'),
-      ) as IAccountCreateOptions);
+    const accountConfig = yaml.load(
+      readFileSync(filePath, 'utf8'),
+    ) as IAccountCreateOptions;
 
     displaySeparator();
     log(formatConfig('Name', value));
@@ -100,16 +98,14 @@ export async function displayAccountsConfig(): Promise<void> {
   });
 
   displaySeparator();
-};
+}
 
 export function loadAccountConfig(name: string): IAccountCreateOptions | never {
   const filePath = path.join(defaultAccountsPath, `${name}.yaml`);
 
-  if (! existsSync(filePath)) {
-    throw new Error('Account file not found.')
+  if (!existsSync(filePath)) {
+    throw new Error('Account file not found.');
   }
 
-  return (yaml.load(
-    readFileSync(filePath, 'utf8'),
-  ) as IAccountCreateOptions);
-};
+  return yaml.load(readFileSync(filePath, 'utf8')) as IAccountCreateOptions;
+}

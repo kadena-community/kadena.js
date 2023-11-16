@@ -1,16 +1,46 @@
 import { checkbox, input, select } from '@inquirer/prompts';
+import type { ChainId } from '@kadena/types';
 import { program } from 'commander';
 import path from 'path';
-import { ICustomNetworksChoice } from '../networks/networksHelpers.js';
+import type { ICustomAccountsChoice } from '../account/accountHelpers.js';
+import type { ICustomKeypairsChoice } from '../keypair/keypairHelpers.js';
+import type { ICustomKeysetsChoice } from '../keyset/keysetHelpers.js';
+import type { ICustomNetworksChoice } from '../networks/networksHelpers.js';
 import { ensureFileExists } from '../utils/filesystem.js';
-import { getExistingAccounts, getExistingKeypairs, getExistingKeysets, getExistingNetworks } from '../utils/helpers.js';
-import { defaultNetworksPath } from './networks.js';
-import { ChainId } from '@kadena/types';
+import {
+  getExistingAccounts,
+  getExistingKeypairs,
+  getExistingKeysets,
+  getExistingNetworks,
+} from '../utils/helpers.js';
 import { defaultKeypairsPath } from './keypairs.js';
-import { ICustomKeypairsChoice } from '../keypair/keypairHelpers.js';
 import { defaultKeysetsPath } from './keysets.js';
-import { ICustomKeysetsChoice } from '../keyset/keysetHelpers.js';
-import { ICustomAccountsChoice } from '../account/accountHelpers.js';
+import { defaultNetworksPath } from './networks.js';
+
+export const keypairPrompt = async (): Promise<string> => {
+  const existingKeypairs: ICustomKeypairsChoice[] = getExistingKeypairs();
+
+  if (existingKeypairs.length > 0) {
+    const selectedKeypair = await select({
+      message: 'Select a keypair',
+      choices: [
+        ...existingKeypairs,
+        { value: undefined, name: 'Create a new keypair' },
+      ],
+    });
+
+    if (selectedKeypair !== undefined) {
+      return selectedKeypair;
+    }
+  }
+
+  // At this point there is either no keypair defined yet,
+  // or the user chose to create a new keypair.
+  // Create and select new keypair.
+  await program.parseAsync(['', '', 'keypair', 'create']);
+
+  return await keypairPrompt();
+};
 
 export const gasPayerPrompt = async (): Promise<string> => {
   const existingAccounts: ICustomAccountsChoice[] = await getExistingAccounts();
@@ -62,13 +92,13 @@ export const accountPrompt = async (): Promise<string> => {
   return await keypairPrompt();
 };
 
-export const accountNamePrompt = async () =>
+export const accountNamePrompt = async (): Promise<string> =>
   await input({ message: 'Enter the name of the account configuration' });
 
 export const chainIdPrompt = async (): Promise<ChainId> =>
-  await input({ message: 'Enter chainId (0-19)' }) as ChainId;
+  (await input({ message: 'Enter chainId (0-19)' })) as ChainId;
 
-export const keypairDeletePrompt = async (name: string) =>
+export const keypairDeletePrompt = async (name: string): Promise<string> =>
   await select({
     message: `Are you sure you want to delete the keypair "${name}"?`,
     choices: [
@@ -76,6 +106,23 @@ export const keypairDeletePrompt = async (name: string) =>
       { value: 'no', name: 'No' },
     ],
   });
+
+export const keypairOverwritePrompt = async (
+  name?: string,
+): Promise<string> => {
+  const message =
+    name === 'string' && name.length > 0
+      ? `Are you sure you want to save this keypair "${name}"?`
+      : 'A keypair with this name already exists. Do you want to update it?';
+
+  return await select({
+    message,
+    choices: [
+      { value: 'yes', name: 'Yes' },
+      { value: 'no', name: 'No' },
+    ],
+  });
+};
 
 export const keypairNamePrompt = async (): Promise<string> => {
   const name = await input({
@@ -93,10 +140,20 @@ export const keypairNamePrompt = async (): Promise<string> => {
   return name;
 };
 
-export const keypairOverwritePrompt = async (name?: string) => {
-  const message = name
-    ? `Are you sure you want to save this keypair "${name}"?`
-    : 'A keypair with this name already exists. Do you want to update it?'
+export const keysetDeletePrompt = async (name: string): Promise<string> =>
+  await select({
+    message: `Are you sure you want to delete the keyset "${name}"?`,
+    choices: [
+      { value: 'yes', name: 'Yes' },
+      { value: 'no', name: 'No' },
+    ],
+  });
+
+export const keysetOverwritePrompt = async (name?: string): Promise<string> => {
+  const message =
+    typeof name === 'string' && name.length > 0
+      ? `Are you sure you want to save the keyset "${name}"?`
+      : 'A keyset with this name already exists. Do you want to update it?';
 
   return await select({
     message,
@@ -106,57 +163,6 @@ export const keypairOverwritePrompt = async (name?: string) => {
     ],
   });
 };
-
-export const keypairPrompt = async (): Promise<string> => {
-  const existingKeypairs: ICustomKeypairsChoice[] = await getExistingKeypairs();
-
-  if (existingKeypairs.length > 0) {
-    const selectedKeypair = await select({
-      message: 'Select a keypair',
-      choices: [
-        ...existingKeypairs,
-        { value: undefined, name: 'Create a new keypair' },
-      ],
-    });
-
-    if (selectedKeypair !== undefined) {
-      return selectedKeypair;
-    }
-  }
-
-  // At this point there is either no keypair defined yet,
-  // or the user chose to create a new keypair.
-  // Create and select new keypair.
-  await program.parseAsync(['', '', 'keypair', 'create']);
-
-  return await keypairPrompt();
-};
-
-export const keypairSelectPrompt = async (): Promise<string> => {
-  const existingKeypairs: ICustomKeypairsChoice[] = await getExistingKeypairs();
-
-  if (existingKeypairs.length > 0) {
-    return await select({
-      message: 'Select a keypair',
-      choices: existingKeypairs,
-    });
-  }
-
-  // At this point there is no keypair defined yet.
-  // Create and select a new keypair.
-  await program.parseAsync(['', '', 'keypair', 'create']);
-
-  return await networkSelectPrompt();
-};
-
-export const keysetDeletePrompt = async (name: string) =>
-  await select({
-    message: `Are you sure you want to delete the keyset "${name}"?`,
-    choices: [
-      { value: 'yes', name: 'Yes' },
-      { value: 'no', name: 'No' },
-    ],
-  });
 
 export const keysetNamePrompt = async (): Promise<string> => {
   const name = await input({
@@ -174,20 +180,6 @@ export const keysetNamePrompt = async (): Promise<string> => {
   return name;
 };
 
-export const keysetOverwritePrompt = async (name?: string) => {
-  const message = name
-    ? `Are you sure you want to save the keyset "${name}"?`
-    : 'A keyset with this name already exists. Do you want to update it?'
-
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes' },
-      { value: 'no', name: 'No' },
-    ],
-  });
-};
-
 export const keysetPredicatePrompt = async (): Promise<string> =>
   await select({
     message: 'Select a keyset predicate',
@@ -199,7 +191,7 @@ export const keysetPredicatePrompt = async (): Promise<string> =>
   });
 
 export const keysetPrompt = async (): Promise<string> => {
-  const existingKeysets: ICustomKeysetsChoice[] = await getExistingKeysets();
+  const existingKeysets: ICustomKeysetsChoice[] = getExistingKeysets();
 
   if (existingKeysets.length > 0) {
     const selectedKeyset = await select({
@@ -223,25 +215,8 @@ export const keysetPrompt = async (): Promise<string> => {
   return await keysetPrompt();
 };
 
-export const keysetSelectPrompt = async (): Promise<string> => {
-  const existingKeysets: ICustomKeysetsChoice[] = await getExistingKeysets();
-
-  if (existingKeysets.length > 0) {
-    return await select({
-      message: 'Select a keyset',
-      choices: existingKeysets,
-    });
-  }
-
-  // At this point there is no keyset defined yet.
-  // Create and select a new keyset.
-  await program.parseAsync(['', '', 'keyset', 'create']);
-
-  return await networkSelectPrompt();
-};
-
 export const networkPrompt = async (): Promise<string> => {
-  const existingNetworks: ICustomNetworksChoice[] = await getExistingNetworks();
+  const existingNetworks: ICustomNetworksChoice[] = getExistingNetworks();
 
   if (existingNetworks.length > 0) {
     const selectedNetwork = await select({
@@ -266,7 +241,7 @@ export const networkPrompt = async (): Promise<string> => {
 };
 
 export const networkSelectPrompt = async (): Promise<string> => {
-  const existingNetworks: ICustomNetworksChoice[] = await getExistingNetworks();
+  const existingNetworks: ICustomNetworksChoice[] = getExistingNetworks();
 
   if (existingNetworks.length > 0) {
     return await select({
@@ -280,6 +255,57 @@ export const networkSelectPrompt = async (): Promise<string> => {
   await program.parseAsync(['', '', 'networks', 'create']);
 
   return await networkSelectPrompt();
+};
+
+export const keypairSelectPrompt = async (): Promise<string> => {
+  const existingKeypairs: ICustomKeypairsChoice[] = getExistingKeypairs();
+
+  if (existingKeypairs.length > 0) {
+    return await select({
+      message: 'Select a keypair',
+      choices: existingKeypairs,
+    });
+  }
+
+  // At this point there is no keypair defined yet.
+  // Create and select a new keypair.
+  await program.parseAsync(['', '', 'keypair', 'create']);
+
+  return await networkSelectPrompt();
+};
+
+export const keysetSelectPrompt = async (): Promise<string> => {
+  const existingKeysets: ICustomKeysetsChoice[] = getExistingKeysets();
+
+  if (existingKeysets.length > 0) {
+    return await select({
+      message: 'Select a keyset',
+      choices: existingKeysets,
+    });
+  }
+
+  // At this point there is no keyset defined yet.
+  // Create and select a new keyset.
+  await program.parseAsync(['', '', 'keyset', 'create']);
+
+  return await networkSelectPrompt();
+};
+
+export const networkOverwritePrompt = async (
+  network?: string,
+): Promise<string> => {
+  const message =
+    typeof network === 'string' && network.length > 0
+      ? `Are you sure you want to save this configuration for network "${network}"?`
+      : 'A network configuration with this name already exists. Do you want to update it?';
+
+  return await select({
+    message,
+    choices: [
+      { value: 'yes', name: 'Yes' },
+      { value: 'no', name: 'No' },
+    ],
+  });
 };
 
 export const networkNamePrompt = async (): Promise<string> => {
@@ -298,21 +324,7 @@ export const networkNamePrompt = async (): Promise<string> => {
   return networkName;
 };
 
-export const networkOverwritePrompt = async (network?: string) => {
-  const message = network
-    ? `Are you sure you want to save this configuration for network "${network}"?`
-    : 'A network configuration with this name already exists. Do you want to update it?'
-
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes' },
-      { value: 'no', name: 'No' },
-    ],
-  });
-}
-
-export const networkDeletePrompt = async (network: string) =>
+export const networkDeletePrompt = async (network: string): Promise<string> =>
   await select({
     message: `Are you sure you want to delete the configuration for network "${network}"?`,
     choices: [
@@ -321,28 +333,27 @@ export const networkDeletePrompt = async (network: string) =>
     ],
   });
 
-export const networkIdPrompt = async () =>
+export const networkIdPrompt = async (): Promise<string> =>
   await input({ message: `Enter a network id (e.g. "mainnet01")` });
 
-export const networkHostPrompt = async () =>
+export const networkHostPrompt = async (): Promise<string> =>
   await input({
     message: 'Enter Kadena network host (e.g. "https://api.chainweb.com")',
   });
 
-export const networkExplorerUrlPrompt = async () =>
+export const networkExplorerUrlPrompt = async (): Promise<string> =>
   await input({
     message:
       'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
   });
 
-export const publicKeysPrompt = async () =>
+export const publicKeysPrompt = async (): Promise<string> =>
   await input({
-    message:
-      'Enter zero or more public keys (comma separated).',
+    message: 'Enter zero or more public keys (comma separated).',
   });
 
-export const selectKeypairsPrompt = async () => {
-  const existingKeypairs: ICustomKeypairsChoice[] = await getExistingKeypairs();
+export const selectKeypairsPrompt = async (): Promise<string[]> => {
+  const existingKeypairs: ICustomKeypairsChoice[] = getExistingKeypairs();
 
   if (existingKeypairs.length === 0) {
     return [];
@@ -351,5 +362,5 @@ export const selectKeypairsPrompt = async () => {
   return await checkbox({
     message: 'Select zero or more keypairs',
     choices: existingKeypairs,
-  })
-}
+  });
+};

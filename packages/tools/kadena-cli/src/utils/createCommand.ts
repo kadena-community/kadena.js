@@ -3,44 +3,18 @@ import type { Command } from 'commander';
 import { z } from 'zod';
 import type { GlobalOptions } from './helpers.js';
 import { collectResponses } from './helpers.js';
-import { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
+import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 
-const formatLength: 80 = 80;
-const formatConfig = (key: string, value?: string | number, prefix: string = ''): string => {
-  const valueDisplay = value === undefined
-    ? chalk.red('Not Set')
-    : chalk.green(value.toString());
-  const keyValue = `${key}: ${valueDisplay}`;
-  const remainingWidth =
-    formatLength - keyValue.length > 0 ? formatLength - keyValue.length : 0;
-  return `  ${keyValue}${' '.repeat(remainingWidth)}  `;
-};
-
-const displayConfig = (config: Record<string, string | number | object>, indentation: string = ''): void => {
-  Object.getOwnPropertyNames(config).forEach((key) => {
-    const value = config[key];
-    const isArray = Array.isArray(value)
-    const displayValue = isArray
-      ? JSON.stringify(value)
-      : value
-    const isObject = typeof displayValue === 'object';
-    console.log(
-      formatConfig(indentation + key, isObject ? '' : displayValue),
-    );
-    if (isObject) {
-      displayConfig(displayValue as unknown as Record<string, string | number | object>, indentation + '  ');
-    }
-  });
-}
+import { displayConfig } from './createCommandDisplayHelper.js';
 
 type AsOption<T> = T extends {
   key: infer K;
-  prompt: (...arg: any[]) => infer R;
+  prompt: (...arg: unknown[]) => infer R;
 }
   ? K extends string
     ? {
         [P in K]: Pure<R>;
-      } & (T extends { expand: (...args: any[]) => infer Ex }
+      } & (T extends { expand: (...args: unknown[]) => infer Ex }
         ? {
             [P in `${K}Config`]: Pure<Ex>;
           }
@@ -48,22 +22,21 @@ type AsOption<T> = T extends {
     : never
   : never;
 
-type Combine<Tuple extends any[]> = Tuple extends [infer one]
+type Combine<Tuple extends unknown[]> = Tuple extends [infer one]
   ? AsOption<one>
   : Combine2<
       AsOption<First<Tuple>>,
-      Tail<Tuple> extends any[] ? Combine<Tail<Tuple>> : {}
+      Tail<Tuple> extends unknown[] ? Combine<Tail<Tuple>> : {}
     >;
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createCommand<
   T extends ReturnType<GlobalOptions[keyof GlobalOptions]>[],
 >(
   name: string,
   description: string,
   options: [...T],
-  action: (finalConfig: Prettify<Combine<T>>) => any,
-) {
+  action: (finalConfig: Prettify<Combine<T>>) => unknown,
+): (program: Command, version: string) => void {
   return async (program: Command, version: string) => {
     const command = program.command(name).description(description);
 
@@ -81,30 +54,40 @@ export function createCommand<
         const responses = await collectResponses(args, questionsMap);
         const newArgs = { ...args, ...responses };
 
-        console.log(chalk.yellow(
-          `\nexecuting: kadena ${program.name()} ${name} ${Object.getOwnPropertyNames(
-            newArgs,
-          )
-            .map((arg) => {
-              let displayValue: string | null = null;
-              const value = newArgs[arg];
+        console.log(
+          chalk.yellow(
+            `\nexecuting: kadena ${program.name()} ${name} ${Object.getOwnPropertyNames(
+              newArgs,
+            )
+              .map((arg) => {
+                let displayValue: string | null = null;
+                const value = newArgs[arg];
 
-              if (Array.isArray(value)) {
-                displayValue = value.join(' ');
-              }
+                if (Array.isArray(value)) {
+                  displayValue = value.join(' ');
+                }
 
-              if (typeof value === 'string') {
-                displayValue = `"${value}"`
-              }
+                if (typeof value === 'string') {
+                  displayValue = `"${value}"`;
+                }
 
-              if (typeof value === 'number') {
-                displayValue = value.toString();
-              }
+                if (typeof value === 'number') {
+                  displayValue = value.toString();
+                }
 
-              return `--${arg.replace(/[A-Z]/g, (match: string) => '-' + match.toLowerCase())} ${displayValue || ''}`;
-            })
-            .join(' ')}`,
-        ));
+                // Explicitly handle null or empty strings
+                if (displayValue === null || displayValue === '') {
+                  displayValue = 'no value';
+                }
+
+                return `--${arg.replace(
+                  /[A-Z]/g,
+                  (match: string) => `-${match.toLowerCase()}`,
+                )} ${displayValue}`;
+              })
+              .join(' ')}`,
+          ),
+        );
 
         // zod validation
         const zodValidationObject = options.reduce(
@@ -112,15 +95,17 @@ export function createCommand<
             zObject[key] = validation;
             return zObject;
           },
-          {} as Record<string, any>,
+          {} as Record<string, z.ZodTypeAny>,
         );
 
         z.object(zodValidationObject).parse(newArgs);
 
         const config = { ...newArgs };
-        for (let option of options) {
+        for (const option of options) {
           if ('expand' in option) {
-            config[`${option.key}Config`] = await option.expand(newArgs[option.key]);
+            config[`${option.key}Config`] = await option.expand(
+              newArgs[option.key],
+            );
           }
         }
 

@@ -1,4 +1,5 @@
-import { ChainId } from "@kadena/types";
+/* eslint-disable @rushstack/typedef-var */
+import type { ChainId } from '@kadena/types';
 
 export const accountDefaults = {
   sender00: {

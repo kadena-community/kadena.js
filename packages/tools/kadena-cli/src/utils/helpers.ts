@@ -1,14 +1,14 @@
-import { projectPrefix, projectRootPath } from '../constants/config.js';
-import { defaultNetworksPath } from '../constants/networks.js';
 import chalk from 'chalk';
 import clear from 'clear';
-import { Command, Option } from 'commander';
-import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs';
+import type { Command, Option } from 'commander';
+import { existsSync, mkdirSync, readFileSync, readdirSync } from 'fs';
 import path from 'path';
-import { globalOptions } from './globalOptions.js';
+import { defaultAccountsPath } from '../constants/accounts.js';
+import { projectPrefix, projectRootPath } from '../constants/config.js';
 import { defaultKeypairsPath } from '../constants/keypairs.js';
 import { defaultKeysetsPath } from '../constants/keysets.js';
-import { defaultAccountsPath } from '../constants/accounts.js';
+import { defaultNetworksPath } from '../constants/networks.js';
+import type { globalOptions } from './globalOptions.js';
 
 export interface ICustomChoice {
   value: string;
@@ -121,10 +121,7 @@ export async function collectResponses<T>(
   let result = generator.next();
   while (result.done === false) {
     const question = result.value;
-    responses[question.key as keyof T] = await question.prompt(
-      responses,
-      args,
-    );
+    responses[question.key as keyof T] = await question.prompt(responses, args);
 
     result = generator.next();
   }
@@ -236,17 +233,17 @@ export function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export async function ensureAccountsConfiguration(): Promise<void> {
+export function ensureAccountsConfiguration(): void {
   if (existsSync(defaultAccountsPath)) {
     return;
   }
 
   mkdirSync(defaultAccountsPath, { recursive: true });
-  await import('./../account/init.js');
+  import('./../account/init.js');
 }
 
-export async function getExistingAccounts(): Promise<ICustomChoice[]> {
-  await ensureAccountsConfiguration();
+export function getExistingAccounts(): ICustomChoice[] {
+  ensureAccountsConfiguration();
 
   try {
     return readdirSync(defaultAccountsPath).map((filename) => ({
@@ -259,17 +256,17 @@ export async function getExistingAccounts(): Promise<ICustomChoice[]> {
   }
 }
 
-export async function ensureKeypairsConfiguration(): Promise<void> {
+export function ensureKeypairsConfiguration(): void {
   if (existsSync(defaultKeypairsPath)) {
     return;
   }
 
   mkdirSync(defaultKeypairsPath, { recursive: true });
-  await import('./../keypair/init.js');
+  import('./../keypair/init.js');
 }
 
-export async function getExistingKeypairs(): Promise<ICustomChoice[]> {
-  await ensureKeypairsConfiguration();
+export function getExistingKeypairs(): ICustomChoice[] {
+  ensureKeypairsConfiguration();
 
   try {
     return readdirSync(defaultKeypairsPath).map((filename) => ({
@@ -282,17 +279,17 @@ export async function getExistingKeypairs(): Promise<ICustomChoice[]> {
   }
 }
 
-export async function ensureKeysetsConfiguration(): Promise<void> {
+export function ensureKeysetsConfiguration(): void {
   if (existsSync(defaultKeysetsPath)) {
     return;
   }
 
   mkdirSync(defaultKeysetsPath, { recursive: true });
-  await import('./../keyset/init.js');
+  import('./../keyset/init.js');
 }
 
-export async function getExistingKeysets(): Promise<ICustomChoice[]> {
-  await ensureKeysetsConfiguration();
+export function getExistingKeysets(): ICustomChoice[] {
+  ensureKeysetsConfiguration();
 
   try {
     return readdirSync(defaultKeysetsPath).map((filename) => ({
@@ -305,17 +302,17 @@ export async function getExistingKeysets(): Promise<ICustomChoice[]> {
   }
 }
 
-export async function ensureNetworksConfiguration(): Promise<void> {
+export function ensureNetworksConfiguration(): void {
   if (existsSync(defaultNetworksPath)) {
     return;
   }
 
   mkdirSync(defaultNetworksPath, { recursive: true });
-  await import('./../networks/init.js');
+  import('./../networks/init.js');
 }
 
-export async function getExistingNetworks(): Promise<ICustomChoice[]> {
-  await ensureNetworksConfiguration();
+export function getExistingNetworks(): ICustomChoice[] {
+  ensureNetworksConfiguration();
 
   try {
     return readdirSync(defaultNetworksPath).map((filename) => ({

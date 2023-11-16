@@ -1,5 +1,7 @@
-import { Option } from 'commander';
+import chalk from 'chalk';
+import { Option, program } from 'commander';
 import { z } from 'zod';
+import { loadAccountConfig } from '../account/accountHelpers.js';
 import {
   accountNamePrompt,
   accountPrompt,
@@ -21,13 +23,15 @@ import {
   publicKeysPrompt,
   selectKeypairsPrompt,
 } from '../constants/prompts.js';
-import { loadNetworkConfig } from '../networks/networksHelpers.js';
-import { ensureAccountsConfiguration, ensureKeypairsConfiguration, ensureKeysetsConfiguration, ensureNetworksConfiguration } from './helpers.js';
-import { program } from 'commander';
-import chalk from 'chalk';
 import { loadKeypairConfig } from '../keypair/keypairHelpers.js';
 import { loadKeysetConfig } from '../keyset/keysetHelpers.js';
-import { loadAccountConfig } from '../account/accountHelpers.js';
+import { loadNetworkConfig } from '../networks/networksHelpers.js';
+import {
+  ensureAccountsConfiguration,
+  ensureKeypairsConfiguration,
+  ensureKeysetsConfiguration,
+  ensureNetworksConfiguration,
+} from './helpers.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const createOption = <
@@ -46,21 +50,26 @@ export const createOption = <
   });
 };
 
-export const globalOptions = {
+interface IGlobalOptions {
+  [key: string]: ReturnType<typeof createOption>;
+}
+
+export const globalOptions: IGlobalOptions = {
   account: createOption({
     key: 'account' as const,
     prompt: accountPrompt,
     validation: z.string(),
-    option: new Option(
-      '-k, --account <account>',
-      'Keypair name',
-    ),
+    option: new Option('-k, --account <account>', 'Keypair name'),
     expand: async (account: string) => {
       await ensureAccountsConfiguration();
       try {
         return loadAccountConfig(account);
       } catch (e) {
-        console.log(chalk.yellow(`\nNo account "${account}" found. Please create the account.\n`));
+        console.log(
+          chalk.yellow(
+            `\nNo account "${account}" found. Please create the account.\n`,
+          ),
+        );
         await program.parseAsync(['', '', 'account', 'create']);
         const accountName = await accountPrompt();
         return loadAccountConfig(accountName);
@@ -92,16 +101,17 @@ export const globalOptions = {
     key: 'keypair' as const,
     prompt: keypairPrompt,
     validation: z.string(),
-    option: new Option(
-      '-k, --keypair <keypair>',
-      'Keypair name',
-    ),
+    option: new Option('-k, --keypair <keypair>', 'Keypair name'),
     expand: async (keypair: string) => {
       await ensureKeypairsConfiguration();
       try {
         return loadKeypairConfig(keypair);
       } catch (e) {
-        console.log(chalk.yellow(`\nNo keypair "${keypair}" found. Please create the keypair.\n`));
+        console.log(
+          chalk.yellow(
+            `\nNo keypair "${keypair}" found. Please create the keypair.\n`,
+          ),
+        );
         await program.parseAsync(['', '', 'keypair', 'create']);
         const keypairName = await keypairPrompt();
         return loadKeypairConfig(keypairName);
@@ -112,16 +122,17 @@ export const globalOptions = {
     key: 'gasPayer' as const,
     prompt: gasPayerPrompt,
     validation: z.string(),
-    option: new Option(
-      '-g, --gas-payer <gasPayer>',
-      'Gas payer account',
-    ),
+    option: new Option('-g, --gas-payer <gasPayer>', 'Gas payer account'),
     expand: async (gasPayer: string) => {
       await ensureAccountsConfiguration();
       try {
         return loadAccountConfig(gasPayer);
       } catch (e) {
-        console.log(chalk.yellow(`\nNo account "${gasPayer}" found. Please create the account.\n`));
+        console.log(
+          chalk.yellow(
+            `\nNo account "${gasPayer}" found. Please create the account.\n`,
+          ),
+        );
         await program.parseAsync(['', '', 'account', 'create']);
         const accountName = await accountPrompt();
         return loadAccountConfig(accountName);
@@ -144,16 +155,17 @@ export const globalOptions = {
     key: 'keyset' as const,
     prompt: keysetPrompt,
     validation: z.string(),
-    option: new Option(
-      '-k, --keyset <keyset>',
-      'Keyset name',
-    ),
+    option: new Option('-k, --keyset <keyset>', 'Keyset name'),
     expand: async (keyset: string) => {
       await ensureKeysetsConfiguration();
       try {
         return loadKeysetConfig(keyset);
       } catch (e) {
-        console.log(chalk.yellow(`\nNo keyset "${keyset}" found. Please create the keyset.\n`));
+        console.log(
+          chalk.yellow(
+            `\nNo keyset "${keyset}" found. Please create the keyset.\n`,
+          ),
+        );
         await program.parseAsync(['', '', 'keyset', 'create']);
         const keysetName = await keysetPrompt();
         return loadKeysetConfig(keysetName);
@@ -191,7 +203,11 @@ export const globalOptions = {
       try {
         return loadNetworkConfig(network);
       } catch (e) {
-        console.log(chalk.yellow(`\nNo configuration for network "${network}" found. Please configure the network.\n`));
+        console.log(
+          chalk.yellow(
+            `\nNo configuration for network "${network}" found. Please configure the network.\n`,
+          ),
+        );
         await program.parseAsync(['', '', 'networks', 'create']);
         const networkName = await networkPrompt();
         return loadNetworkConfig(networkName);
@@ -202,53 +218,74 @@ export const globalOptions = {
     key: 'network' as const,
     prompt: networkSelectPrompt,
     validation: z.string(),
-    option: new Option('-n, --network <network>', 'Kadena network (e.g. "mainnet")'),
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
   }),
   networkName: createOption({
     key: 'network' as const,
     prompt: networkNamePrompt,
     validation: z.string(),
-    option: new Option('-n, --network <network>', 'Kadena network (e.g. "mainnet")'),
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
   }),
   networkId: createOption({
     key: 'networkId' as const,
     prompt: networkIdPrompt,
     validation: z.string(),
-    option: new Option('-nid, --network-id <networkId>', 'Kadena network Id (e.g. "mainnet01")'),
+    option: new Option(
+      '-nid, --network-id <networkId>',
+      'Kadena network Id (e.g. "mainnet01")',
+    ),
   }),
   networkHost: createOption({
     key: 'networkHost' as const,
     prompt: networkHostPrompt,
     validation: z.string(),
-    option: new Option('-h, --network-host <networkHost>', 'Kadena network host (e.g. "https://api.chainweb.com")'),
+    option: new Option(
+      '-h, --network-host <networkHost>',
+      'Kadena network host (e.g. "https://api.chainweb.com")',
+    ),
   }),
   networkExplorerUrl: createOption({
     key: 'networkExplorerUrl' as const,
     prompt: networkExplorerUrlPrompt,
     validation: z.string().optional(),
-    option: new Option('-e, --network-explorer-url <networkExplorerUrl>', 'Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")'),
+    option: new Option(
+      '-e, --network-explorer-url <networkExplorerUrl>',
+      'Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
+    ),
   }),
   otherPublicKeys: createOption({
     key: 'publicKeys' as const,
     prompt: publicKeysPrompt,
     validation: z.string().optional(),
-    option: new Option('-p, --public-keys <publicKeys>', 'Public keys (comma separated)'),
+    option: new Option(
+      '-p, --public-keys <publicKeys>',
+      'Public keys (comma separated)',
+    ),
     expand: async (publicKeys: string) => {
-      return publicKeys.split(',').map(value => value.trim());
+      return publicKeys.split(',').map((value) => value.trim());
     },
   }),
   publicKeysFromKeypairs: createOption({
     key: 'publicKeysFromKeypairs' as const,
     prompt: selectKeypairsPrompt,
     validation: z.array(z.string()),
-    option: new Option('-k, --public-keys-from-keypairs <publicKeysFromKeypairs...>', 'Public keys from keypairs'),
+    option: new Option(
+      '-k, --public-keys-from-keypairs <publicKeysFromKeypairs...>',
+      'Public keys from keypairs',
+    ),
     expand: async (publicKeysFromKeypairs) => {
-      let publicKeys: string[] = []
-      for (let keypair of publicKeysFromKeypairs) {
-        const keypairConfig = await loadKeypairConfig(keypair)
+      const publicKeys: string[] = [];
+      for (const keypair of publicKeysFromKeypairs) {
+        const keypairConfig = await loadKeypairConfig(keypair);
         publicKeys.push(keypairConfig.publicKey || '');
       }
-      return publicKeys
+      return publicKeys;
     },
   }),
 } as const;

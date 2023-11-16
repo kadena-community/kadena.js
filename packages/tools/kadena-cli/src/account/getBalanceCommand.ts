@@ -1,7 +1,7 @@
 import { getBalance } from '@kadena/client-utils/coin';
+import chalk from 'chalk';
 import { createCommand } from '../utils/createCommand.js';
 import { globalOptions } from '../utils/globalOptions.js';
-import chalk from 'chalk';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const getBalanceCommand = createCommand(
@@ -16,7 +16,11 @@ export const getBalanceCommand = createCommand(
         config.chainId,
         config.networkConfig.networkHost,
       );
-      console.log(chalk.green(`\nThe balance of ${config.account} on chain ${config.chainId} on ${config.network} is: ${balance}.\n`));
+      console.log(
+        chalk.green(
+          `\nThe balance of ${config.account} on chain ${config.chainId} on ${config.network} is: ${balance}.\n`,
+        ),
+      );
     } catch (e) {
       console.log(chalk.red(e.message));
     }

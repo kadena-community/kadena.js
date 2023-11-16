@@ -1,4 +1,4 @@
-import { INetworksCreateOptions } from "../networks/networksHelpers.js";
+import type { INetworksCreateOptions } from '../networks/networksHelpers.js';
 
 export interface IDefaultNetworkOptions {
   [key: string]: INetworksCreateOptions;
