@@ -1,4 +1,4 @@
-import type { PartialPactCommand } from '../interfaces/IPactCommand';
+import type { IPartialPactCommand } from '../interfaces/IPactCommand';
 import { patchCommand } from './utils/patchCommand';
 
 type NoPayload<TCommand> = TCommand extends { payload: unknown }
@@ -8,32 +8,32 @@ type NoPayload<TCommand> = TCommand extends { payload: unknown }
 type DataOrFunction<TData> = TData | ((a: TData) => TData);
 
 type InitialInput =
-  | Partial<PartialPactCommand>
-  | (() => Partial<PartialPactCommand>);
+  | Partial<IPartialPactCommand>
+  | (() => Partial<IPartialPactCommand>);
 
 // TODO : improve the return value to merge all of the inputs as an object
 interface IComposePactCommand {
-  <TPayload extends Pick<PartialPactCommand, 'payload'>>(
+  <TPayload extends Pick<IPartialPactCommand, 'payload'>>(
     payload: TPayload,
     ...rest: [
       ...Array<
-        | Partial<PartialPactCommand>
+        | Partial<IPartialPactCommand>
         | ((
-            payload: TPayload & Partial<PartialPactCommand>,
-          ) => Partial<PartialPactCommand>)
+            payload: TPayload & Partial<IPartialPactCommand>,
+          ) => Partial<IPartialPactCommand>)
       >,
     ]
-  ): (cmd?: InitialInput) => Partial<PartialPactCommand>;
+  ): (cmd?: InitialInput) => Partial<IPartialPactCommand>;
 
   (
-    first: DataOrFunction<NoPayload<Partial<PartialPactCommand>>>,
-    ...rest: Array<DataOrFunction<Partial<PartialPactCommand>>>
-  ): (cmd?: InitialInput) => Partial<PartialPactCommand>;
+    first: DataOrFunction<NoPayload<Partial<IPartialPactCommand>>>,
+    ...rest: Array<DataOrFunction<Partial<IPartialPactCommand>>>
+  ): (cmd?: InitialInput) => Partial<IPartialPactCommand>;
 }
 
 const finalizeCommand = (
-  command: Partial<PartialPactCommand>,
-): Partial<PartialPactCommand> => {
+  command: Partial<IPartialPactCommand>,
+): Partial<IPartialPactCommand> => {
   const dateInMs = Date.now();
   const finalCommand = { ...command };
   finalCommand.nonce ??= `kjs:nonce:${dateInMs}`;
@@ -60,19 +60,19 @@ const finalizeCommand = (
  */
 export const composePactCommand: IComposePactCommand =
   (
-    first: DataOrFunction<Partial<PartialPactCommand>>,
-    ...rest: Array<DataOrFunction<Partial<PartialPactCommand>>>
-  ): ((cmd?: InitialInput) => Partial<PartialPactCommand>) =>
+    first: DataOrFunction<Partial<IPartialPactCommand>>,
+    ...rest: Array<DataOrFunction<Partial<IPartialPactCommand>>>
+  ): ((cmd?: InitialInput) => Partial<IPartialPactCommand>) =>
   (initial: InitialInput = {}) => {
     const args: Array<
-      | Partial<PartialPactCommand>
-      | ((cmd: Partial<PartialPactCommand>) => Partial<PartialPactCommand>)
+      | Partial<IPartialPactCommand>
+      | ((cmd: Partial<IPartialPactCommand>) => Partial<IPartialPactCommand>)
     > = [first, ...rest];
-    const command = args.reduce<Partial<PartialPactCommand>>(
+    const command = args.reduce<Partial<IPartialPactCommand>>(
       (acc, next: unknown) => {
         return typeof next === 'function'
           ? next(acc)
-          : patchCommand(acc, next as Partial<PartialPactCommand>);
+          : patchCommand(acc, next as Partial<IPartialPactCommand>);
       },
       typeof initial === 'function' ? initial() : initial,
     );

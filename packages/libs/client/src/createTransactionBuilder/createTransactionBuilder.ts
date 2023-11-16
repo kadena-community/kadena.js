@@ -16,7 +16,7 @@ import { patchCommand } from '../composePactCommand/utils/patchCommand';
 import type {
   IContinuationPayloadObject,
   IPactCommand,
-  PartialPactCommand,
+  IPartialPactCommand,
 } from '../interfaces/IPactCommand';
 import type {
   ExtractCapabilityType,
@@ -56,7 +56,7 @@ interface ISetNonce<TCommand> {
    * Overriding the default nonce by calling this function. The `nonceGenerator` function will receive the command object
    * and should return the nonce as a string.
    */
-  (nonceGenerator: (cmd: PartialPactCommand) => string): IBuilder<TCommand>;
+  (nonceGenerator: (cmd: IPartialPactCommand) => string): IBuilder<TCommand>;
 }
 
 interface IAddKeyset<TCommand> {
@@ -245,13 +245,13 @@ export interface ITransactionBuilder {
 interface IStatefulCompose {
   composeWith: (
     patch:
-      | PartialPactCommand
-      | ((cmd: PartialPactCommand) => PartialPactCommand),
+      | IPartialPactCommand
+      | ((cmd: IPartialPactCommand) => IPartialPactCommand),
   ) => void;
-  readonly finalize: (command: PartialPactCommand) => PartialPactCommand;
+  readonly finalize: (command: IPartialPactCommand) => IPartialPactCommand;
 }
 
-const statefulCompose = (init: PartialPactCommand): IStatefulCompose => {
+const statefulCompose = (init: IPartialPactCommand): IStatefulCompose => {
   let reducer = composePactCommand(init);
 
   return {
@@ -264,7 +264,7 @@ const statefulCompose = (init: PartialPactCommand): IStatefulCompose => {
   };
 };
 
-const getBuilder = <T>(init: PartialPactCommand): IBuilder<T> => {
+const getBuilder = <T>(init: IPartialPactCommand): IBuilder<T> => {
   const state = statefulCompose(init);
   const builder: IBuilder<T> = {
     addData: (key: string, value: ValidDataTypes) => {
@@ -280,7 +280,7 @@ const getBuilder = <T>(init: PartialPactCommand): IBuilder<T> => {
         addSigner(
           pubKey,
           cap as (withCapability: IGeneralCapability) => ICap[],
-        ) as (cmd: PartialPactCommand) => PartialPactCommand,
+        ) as (cmd: IPartialPactCommand) => IPartialPactCommand,
       );
       return builder;
     },
@@ -292,7 +292,7 @@ const getBuilder = <T>(init: PartialPactCommand): IBuilder<T> => {
       state.composeWith(setNetworkId(id));
       return builder;
     },
-    setNonce: (arg: string | ((cmd: PartialPactCommand) => string)) => {
+    setNonce: (arg: string | ((cmd: IPartialPactCommand) => string)) => {
       state.composeWith((cmd) => {
         const nonce = typeof arg === 'function' ? arg(cmd) : arg;
         return patchCommand(cmd, setNonce(nonce));
@@ -314,7 +314,7 @@ const getBuilder = <T>(init: PartialPactCommand): IBuilder<T> => {
  * @public
  */
 export const createTransactionBuilder = (
-  initial?: PartialPactCommand,
+  initial?: IPartialPactCommand,
 ): ITransactionBuilder => {
   return {
     execution: (...pactExpressions: string[]) => {

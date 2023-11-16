@@ -1,12 +1,12 @@
-import type { PartialPactCommand } from '../../interfaces/IPactCommand';
+import type { IPartialPactCommand } from '../../interfaces/IPactCommand';
 
 /**
  * @internal
  */
 export const mergePayload = (
-  payload: PartialPactCommand['payload'] | undefined,
-  newPayload: PartialPactCommand['payload'],
-): PartialPactCommand['payload'] => {
+  payload: IPartialPactCommand['payload'] | undefined,
+  newPayload: IPartialPactCommand['payload'],
+): IPartialPactCommand['payload'] => {
   if (payload === undefined || newPayload === undefined)
     return newPayload ?? payload;
 
@@ -49,9 +49,9 @@ export const mergePayload = (
  * @public
  */
 export function patchCommand(
-  command: PartialPactCommand,
-  patch: PartialPactCommand,
-): PartialPactCommand {
+  command: IPartialPactCommand,
+  patch: IPartialPactCommand,
+): IPartialPactCommand {
   const state = { ...command };
   if (patch.payload !== undefined) {
     state.payload = mergePayload(state.payload, patch.payload);

@@ -40,10 +40,10 @@ export function createEckoWalletSign(): IEckoSignSingleFunction;
 export const createSignWithKeypair: ICreateSignWithKeypair;
 
 // @public
-export const createTransaction: (pactCommand: PartialPactCommand) => IUnsignedCommand;
+export const createTransaction: (pactCommand: IPartialPactCommand) => IUnsignedCommand;
 
 // @public
-export const createTransactionBuilder: (initial?: PartialPactCommand) => ITransactionBuilder;
+export const createTransactionBuilder: (initial?: IPartialPactCommand) => ITransactionBuilder;
 
 // @public
 export function createWalletConnectQuicksign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
@@ -213,6 +213,18 @@ export interface IPactCommand {
 
 // @public
 export interface IPactModules {
+}
+
+// Warning: (ae-forgotten-export) The symbol "AllPartial" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface IPartialPactCommand extends AllPartial<IPactCommand> {
+    // (undocumented)
+    payload?: {
+        exec: Partial<IExecutionPayloadObject['exec']>;
+    } | {
+        cont: Partial<IContinuationPayloadObject['cont']>;
+    };
 }
 
 // @public
@@ -388,17 +400,6 @@ export const Pact: IPact;
 
 // @public
 export type PactReference = Literal | (() => string);
-
-// Warning: (ae-forgotten-export) The symbol "AllPartial" needs to be exported by the entry point index.d.ts
-//
-// @public
-export type PartialPactCommand = AllPartial<IPactCommand> & {
-    payload?: {
-        exec: Partial<IExecutionPayloadObject['exec']>;
-    } | {
-        cont: Partial<IContinuationPayloadObject['cont']>;
-    };
-};
 
 // @public
 export const readKeyset: (key: string) => () => string;

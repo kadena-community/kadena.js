@@ -3,8 +3,8 @@ import type {
   IClient,
   ICommandResult,
   IContinuationPayloadObject,
+  IPartialPactCommand,
   ITransactionDescriptor,
-  PartialPactCommand,
 } from '@kadena/client';
 import { createTransaction } from '@kadena/client';
 import {
@@ -50,7 +50,7 @@ const useGasStation = (targetChainGasPayer: IAccount) =>
 
 const signers = (
   publicKeys?: string[],
-): ((cmd: PartialPactCommand) => PartialPactCommand) =>
+): ((cmd: IPartialPactCommand) => IPartialPactCommand) =>
   Array.isArray(publicKeys) && publicKeys.length
     ? addSigner(publicKeys!, (signFor) => [signFor('coin.GAS')])
     : (cmd) => cmd;

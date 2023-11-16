@@ -1,4 +1,4 @@
-import type { PartialPactCommand } from '../../interfaces/IPactCommand';
+import type { IPartialPactCommand } from '../../interfaces/IPactCommand';
 import { patchCommand } from './patchCommand';
 
 export type ValidDataTypes =
@@ -8,7 +8,7 @@ export type ValidDataTypes =
   | boolean
   | Array<ValidDataTypes>;
 
-const getData = (cmd: PartialPactCommand, key: string): unknown => {
+const getData = (cmd: IPartialPactCommand, key: string): unknown => {
   if (
     cmd.payload &&
     'exec' in cmd.payload &&
@@ -37,9 +37,9 @@ const getData = (cmd: PartialPactCommand, key: string): unknown => {
 export const addData: (
   key: string,
   value: ValidDataTypes,
-) => (cmd: PartialPactCommand) => PartialPactCommand =
+) => (cmd: IPartialPactCommand) => IPartialPactCommand =
   (key: string, value: ValidDataTypes) =>
-  (cmd: PartialPactCommand): PartialPactCommand => {
+  (cmd: IPartialPactCommand): IPartialPactCommand => {
     let target: 'exec' | 'cont' = 'exec';
     if (cmd.payload && 'cont' in cmd.payload) {
       target = 'cont';
@@ -57,7 +57,7 @@ export const addData: (
           },
         },
       },
-    } as PartialPactCommand;
+    } as IPartialPactCommand;
     return patchCommand(cmd, patch);
   };
 
@@ -66,11 +66,11 @@ export interface IAddKeyset {
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]
-  ): (cmd: PartialPactCommand) => PartialPactCommand;
+  ): (cmd: IPartialPactCommand) => IPartialPactCommand;
 
   <TKey extends string, PRED extends string>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]
-  ): (cmd: PartialPactCommand) => PartialPactCommand;
+  ): (cmd: IPartialPactCommand) => IPartialPactCommand;
 }

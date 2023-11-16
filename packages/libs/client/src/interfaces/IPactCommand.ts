@@ -61,35 +61,12 @@ export interface IPactCommand {
   nonce: string;
 }
 
-// export interface PartialPactCommand {
-//   payload?:
-//     | { exec: Partial<IExecutionPayloadObject['exec']> }
-//     | { cont: Partial<IContinuationPayloadObject['cont']> };
-//   // the builder will add all default values
-//   meta?: {
-//     chainId?: ChainId;
-//     sender?: string;
-//     gasLimit?: number;
-//     gasPrice?: number;
-//     ttl?: number;
-//     creationTime?: number;
-//   };
-//   signers?: Array<{
-//     pubKey?: string;
-//     address?: string;
-//     scheme?: 'ED25519' | 'ETH';
-//     clist?: ICap[];
-//   }>;
-//   networkId?: string;
-//   nonce?: string;
-// }
-
 /**
  * The the Partial type of {@link IPactCommand}
  * @public
  */
-export type PartialPactCommand = AllPartial<IPactCommand> & {
+export interface IPartialPactCommand extends AllPartial<IPactCommand> {
   payload?:
     | { exec: Partial<IExecutionPayloadObject['exec']> }
     | { cont: Partial<IContinuationPayloadObject['cont']> };
-};
+}
