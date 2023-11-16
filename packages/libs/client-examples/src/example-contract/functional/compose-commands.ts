@@ -19,9 +19,9 @@ export function composeCommands(): PartialPactCommand {
     execution(
       Pact.modules.coin.transfer('javad', 'albert', { decimal: '0.1' }),
     ),
-    addSigner('javadPublicKey', (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
+    addSigner('javadPublicKey', (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', 'javad', 'albert', { decimal: '0.1' }),
     ]),
   );
 
