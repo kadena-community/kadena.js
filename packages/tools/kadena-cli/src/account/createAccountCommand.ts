@@ -28,6 +28,7 @@ export const createAccountCommand = createCommand(
       const publicKeys = config.keysetConfig.publicKeys
         .split(',')
         .map((value: string) => value.trim())
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .filter((value: string | any[]) => value.length);
       for (const keypair of config.keysetConfig.publicKeysFromKeypairs) {
         const keypairConfig = await loadKeypairConfig(keypair);

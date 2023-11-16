@@ -7,5 +7,5 @@ export const listKeypairsCommand: (program: Command, version: string) => void =
   createCommand('list', 'List all available keypairs', [], async (config) => {
     debug('keypair-list:action')({ config });
 
-    displayKeypairsConfig();
+    await displayKeypairsConfig();
   });

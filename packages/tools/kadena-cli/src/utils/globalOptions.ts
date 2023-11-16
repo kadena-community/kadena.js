@@ -61,7 +61,7 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-k, --account <account>', 'Keypair name'),
     expand: async (account: string) => {
-      ensureAccountsConfiguration();
+      await ensureAccountsConfiguration();
       try {
         return loadAccountConfig(account);
       } catch (e) {
@@ -103,7 +103,7 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-k, --keypair <keypair>', 'Keypair name'),
     expand: async (keypair: string) => {
-      ensureKeypairsConfiguration();
+      await ensureKeypairsConfiguration();
       try {
         return loadKeypairConfig(keypair);
       } catch (e) {
@@ -124,7 +124,7 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-g, --gas-payer <gasPayer>', 'Gas payer account'),
     expand: async (gasPayer: string) => {
-      ensureAccountsConfiguration();
+      await ensureAccountsConfiguration();
       try {
         return loadAccountConfig(gasPayer);
       } catch (e) {
@@ -157,7 +157,7 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-k, --keyset <keyset>', 'Keyset name'),
     expand: async (keyset: string) => {
-      ensureKeysetsConfiguration();
+      await ensureKeysetsConfiguration();
       try {
         return loadKeysetConfig(keyset);
       } catch (e) {
@@ -199,7 +199,7 @@ export const globalOptions = {
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
-      ensureNetworksConfiguration();
+      await ensureNetworksConfiguration();
       try {
         return loadNetworkConfig(network);
       } catch (e) {

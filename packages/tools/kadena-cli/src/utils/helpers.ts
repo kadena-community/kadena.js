@@ -233,17 +233,17 @@ export function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function ensureAccountsConfiguration(): void {
+export async function ensureAccountsConfiguration(): Promise<void> {
   if (existsSync(defaultAccountsPath)) {
     return;
   }
 
   mkdirSync(defaultAccountsPath, { recursive: true });
-  import('./../account/init.js');
+  await import('./../account/init.js');
 }
 
-export function getExistingAccounts(): ICustomChoice[] {
-  ensureAccountsConfiguration();
+export async function getExistingAccounts(): Promise<ICustomChoice[]> {
+  await ensureAccountsConfiguration();
 
   try {
     return readdirSync(defaultAccountsPath).map((filename) => ({
@@ -256,17 +256,17 @@ export function getExistingAccounts(): ICustomChoice[] {
   }
 }
 
-export function ensureKeypairsConfiguration(): void {
+export async function ensureKeypairsConfiguration(): Promise<void> {
   if (existsSync(defaultKeypairsPath)) {
     return;
   }
 
   mkdirSync(defaultKeypairsPath, { recursive: true });
-  import('./../keypair/init.js');
+  await import('./../keypair/init.js');
 }
 
-export function getExistingKeypairs(): ICustomChoice[] {
-  ensureKeypairsConfiguration();
+export async function getExistingKeypairs(): Promise<ICustomChoice[]> {
+  await ensureKeypairsConfiguration();
 
   try {
     return readdirSync(defaultKeypairsPath).map((filename) => ({
@@ -279,17 +279,17 @@ export function getExistingKeypairs(): ICustomChoice[] {
   }
 }
 
-export function ensureKeysetsConfiguration(): void {
+export async function ensureKeysetsConfiguration(): Promise<void> {
   if (existsSync(defaultKeysetsPath)) {
     return;
   }
 
   mkdirSync(defaultKeysetsPath, { recursive: true });
-  import('../keys/keyset/init.js');
+  await import('./../account/init.js');
 }
 
-export function getExistingKeysets(): ICustomChoice[] {
-  ensureKeysetsConfiguration();
+export async function getExistingKeysets(): Promise<ICustomChoice[]> {
+  await ensureKeysetsConfiguration();
 
   try {
     return readdirSync(defaultKeysetsPath).map((filename) => ({
@@ -302,17 +302,17 @@ export function getExistingKeysets(): ICustomChoice[] {
   }
 }
 
-export function ensureNetworksConfiguration(): void {
+export async function ensureNetworksConfiguration(): Promise<void> {
   if (existsSync(defaultNetworksPath)) {
     return;
   }
 
   mkdirSync(defaultNetworksPath, { recursive: true });
-  import('./../networks/init.js');
+  await import('./../networks/init.js');
 }
 
-export function getExistingNetworks(): ICustomChoice[] {
-  ensureNetworksConfiguration();
+export async function getExistingNetworks(): Promise<ICustomChoice[]> {
+  await ensureNetworksConfiguration();
 
   try {
     return readdirSync(defaultNetworksPath).map((filename) => ({

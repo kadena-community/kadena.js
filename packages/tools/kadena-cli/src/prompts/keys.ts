@@ -12,7 +12,7 @@ import { networkSelectPrompt } from './network.js';
 import { defaultKeypairsPath } from '../constants/keypairs.js';
 
 export const keypairSelectPrompt = async (): Promise<string> => {
-  const existingKeypairs: ICustomKeypairsChoice[] = getExistingKeypairs();
+  const existingKeypairs: ICustomKeypairsChoice[] = await getExistingKeypairs();
 
   if (existingKeypairs.length > 0) {
     return await select({
@@ -29,7 +29,7 @@ export const keypairSelectPrompt = async (): Promise<string> => {
 };
 
 export const keypairPrompt = async (): Promise<string> => {
-  const existingKeypairs: ICustomKeypairsChoice[] = getExistingKeypairs();
+  const existingKeypairs: ICustomKeypairsChoice[] = await getExistingKeypairs();
 
   if (existingKeypairs.length > 0) {
     const selectedKeypair = await select({
@@ -59,7 +59,7 @@ export const publicKeysPrompt = async (): Promise<string> =>
   });
 
 export const selectKeypairsPrompt = async (): Promise<string[]> => {
-  const existingKeypairs: ICustomKeypairsChoice[] = getExistingKeypairs();
+  const existingKeypairs: ICustomKeypairsChoice[] = await getExistingKeypairs();
 
   if (existingKeypairs.length === 0) {
     return [];

@@ -50,7 +50,7 @@ export function writeKeypair(options: IKeypairCreateOptions): void {
   writeFile(keypairFilePath, yaml.dump(options), 'utf8' as WriteFileOptions);
 }
 
-export function displayKeypairsConfig(): void {
+export async function displayKeypairsConfig(): Promise<void> {
   const log = console.log;
   const formatLength = 80; // Maximum width for the display
 
@@ -74,7 +74,7 @@ export function displayKeypairsConfig(): void {
     return `  ${keyValue}${' '.repeat(remainingWidth)}  `;
   };
 
-  const existingKeypairs: ICustomKeypairsChoice[] = getExistingKeypairs();
+  const existingKeypairs: ICustomKeypairsChoice[] = await getExistingKeypairs();
 
   existingKeypairs.forEach(({ value }) => {
     const filePath = path.join(defaultKeypairsPath, `${value}.yaml`);
