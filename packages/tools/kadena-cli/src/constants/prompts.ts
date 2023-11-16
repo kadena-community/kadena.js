@@ -3,7 +3,7 @@ import { program } from 'commander';
 import path from 'path';
 import { ICustomNetworksChoice } from '../networks/networksHelpers.js';
 import { ensureFileExists } from '../utils/filesystem.js';
-import { getExistingAccounts, getExistingKeypairs, getExistingKeysets, getExistingNetworks } from '../utils/helpers.js';
+import { getExistingAccounts, getExistingDevnets, getExistingKeypairs, getExistingKeysets, getExistingNetworks } from '../utils/helpers.js';
 import { defaultNetworksPath } from './networks.js';
 import { ChainId } from '@kadena/types';
 import { defaultKeypairsPath } from './keypairs.js';
@@ -11,6 +11,8 @@ import { ICustomKeypairsChoice } from '../keypair/keypairHelpers.js';
 import { defaultKeysetsPath } from './keysets.js';
 import { ICustomKeysetsChoice } from '../keyset/keysetHelpers.js';
 import { ICustomAccountsChoice } from '../account/accountHelpers.js';
+import { defaultDevnetsPath } from './devnets.js';
+import { ICustomDevnetsChoice } from '../devnet/devnetHelpers.js';
 
 export const gasPayerPrompt = async (): Promise<string> => {
   const existingAccounts: ICustomAccountsChoice[] = await getExistingAccounts();
@@ -353,3 +355,122 @@ export const selectKeypairsPrompt = async () => {
     choices: existingKeypairs,
   })
 }
+
+export const devnetNamePrompt = async (): Promise<string> => {
+  const containerName = await input({
+    message: 'Enter a devnet name (e.g. "devnet")',
+  });
+
+  const filePath = path.join(defaultDevnetsPath, `${containerName}.yaml`);
+  if (ensureFileExists(filePath)) {
+    const overwrite = await devnetOverwritePrompt();
+    if (overwrite === 'no') {
+      return await devnetNamePrompt();
+    }
+  }
+
+  return containerName;
+};
+
+export const devnetOverwritePrompt = async (name?: string) => {
+  const message = name
+    ? `Are you sure you want to save this configuration for devnet "${name}"?`
+    : 'A devnet configuration with this name already exists. Do you want to update it?'
+
+  return await select({
+    message,
+    choices: [
+      { value: 'yes', name: 'Yes' },
+      { value: 'no', name: 'No' },
+    ],
+  });
+};
+
+export const devnetPortPrompt = async (): Promise<number> => {
+  const port = await input({
+    default: '8080',
+    message: 'Enter a port number to forward to the Chainweb node API',
+    validate: function (input) {
+      const port = parseInt(input);
+      if (isNaN(port)) {
+        return 'Port must be a number! Please enter a valid port number.';
+      }
+      return true;
+    },
+  });
+  return parseInt(port);
+};
+
+export const devnetUseVolumePrompt = async (): Promise<boolean> =>
+  await select({
+    message: 'Would you like to create a persistent volume?',
+    choices: [
+      { value: false, name: 'No' },
+      { value: true, name: 'Yes' },
+    ],
+  });
+
+export const devnetMountPactFolderPrompt = async (): Promise<string> =>
+  await input({
+    default: '',
+    message:
+      'Enter the relative path to a folder containing your Pact files to mount (e.g. ./pact) or leave empty to skip.',
+  });
+
+  export const devnetVersionPrompt = async (): Promise<string> =>
+  await input({
+    default: 'latest',
+    message:
+    'Enter the version of the kadena/devnet image you would like to use.',
+  });
+
+export const devnetSelectPrompt = async (): Promise<string> => {
+  const existingDevnets: ICustomDevnetsChoice[] = await getExistingDevnets();
+
+  if (existingDevnets.length > 0) {
+    return await select({
+      message: 'Select a devnet',
+      choices: existingDevnets,
+    });
+  }
+
+  // At this point there is no devnet defined yet.
+  // Create and select a new devnet.
+  await program.parseAsync(['', '', 'devnet', 'create']);
+
+  return await networkSelectPrompt();
+};
+
+export const devnetDeletePrompt = async (name: string) =>
+  await select({
+    message: `Are you sure you want to delete the devnet "${name}"?`,
+    choices: [
+      { value: 'yes', name: 'Yes' },
+      { value: 'no', name: 'No' },
+    ],
+  });
+
+export const devnetPrompt = async (): Promise<string> => {
+  const existingDevnets: ICustomDevnetsChoice[] = await getExistingDevnets();
+
+  if (existingDevnets.length > 0) {
+    const selectedDevnet = await select({
+      message: 'Select a devnet',
+      choices: [
+        ...existingDevnets,
+        { value: undefined, name: 'Create a new devnet' },
+      ],
+    });
+
+    if (selectedDevnet !== undefined) {
+      return selectedDevnet;
+    }
+  }
+
+  // At this point there is either no devnet defined yet,
+  // or the user chose to create a new devnet.
+  // Create and select new devnet.
+  await program.parseAsync(['', '', 'devnet', 'create']);
+
+  return await devnetPrompt();
+};

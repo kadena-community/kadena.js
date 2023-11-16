@@ -1,34 +1,26 @@
 import chalk from 'chalk';
-import { type Command } from 'commander';
 import debug from 'debug';
-import { processZodErrors } from '../utils/processZodErrors.js';
+import { createCommand } from '../utils/createCommand.js';
+import { globalOptions } from '../utils/globalOptions.js';
 import { isDockerInstalled, updateDevnet } from './docker.js';
 
-export function updateDevnetCommand(program: Command, version: string): void {
-  program
-    .command('update')
-    .description('Update devnet container image')
-    .option(
-      '-v, --version <version>',
-      'The version of kadena/devnet to update (e.g. "latest")',
-    )
-    .action(async (args: { version?: string }) => {
-      debug('devnet-update:action')({ args });
+export const updateDevnetCommand = createCommand(
+  'update',
+  'Update the Docker image of a given devnet container image',
+  [globalOptions.devnetVersion()],
+  async (config) => {
+    debug('devnet-update:action')({config});
 
-      try {
-        // Abort if Docker is not installed
-        if (!isDockerInstalled()) {
-          console.log(
-            chalk.red(
-              'Stopping devnet requires Docker. Please install Docker and try again.',
-            ),
-          );
-          return;
-        }
+    // Abort if Docker is not installed
+    if (!isDockerInstalled()) {
+      console.log(
+        chalk.red(
+          'Updating devnet requires Docker. Please install Docker and try again.',
+        ),
+      );
+      return;
+    }
 
-        updateDevnet(args.version || 'latest');
-      } catch (e) {
-        processZodErrors(program, e, args);
-      }
-    });
-}
+    updateDevnet(config.version || 'latest');
+  },
+);

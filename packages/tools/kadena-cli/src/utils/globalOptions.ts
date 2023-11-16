@@ -4,6 +4,13 @@ import {
   accountNamePrompt,
   accountPrompt,
   chainIdPrompt,
+  devnetPrompt,
+  devnetMountPactFolderPrompt,
+  devnetNamePrompt,
+  devnetPortPrompt,
+  devnetSelectPrompt,
+  devnetUseVolumePrompt,
+  devnetVersionPrompt,
   gasPayerPrompt,
   keypairNamePrompt,
   keypairPrompt,
@@ -22,12 +29,13 @@ import {
   selectKeypairsPrompt,
 } from '../constants/prompts.js';
 import { loadNetworkConfig } from '../networks/networksHelpers.js';
-import { ensureAccountsConfiguration, ensureKeypairsConfiguration, ensureKeysetsConfiguration, ensureNetworksConfiguration } from './helpers.js';
+import { ensureAccountsConfiguration, ensureDevnetsConfiguration, ensureKeypairsConfiguration, ensureKeysetsConfiguration, ensureNetworksConfiguration } from './helpers.js';
 import { program } from 'commander';
 import chalk from 'chalk';
 import { loadKeypairConfig } from '../keypair/keypairHelpers.js';
 import { loadKeysetConfig } from '../keyset/keysetHelpers.js';
 import { loadAccountConfig } from '../account/accountHelpers.js';
+import { loadDevnetConfig } from '../devnet/devnetHelpers.js';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const createOption = <
@@ -87,6 +95,74 @@ export const globalOptions = {
       .min(0)
       .max(19),
     option: new Option('-c, --chain-id <chainId>'),
+  }),
+  devnet: createOption({
+    key: 'devnet' as const,
+    prompt: devnetPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-d, --devnet <devnet>',
+      'Devnet name',
+    ),
+    expand: async (devnet: string) => {
+      await ensureDevnetsConfiguration();
+      try {
+        return loadDevnetConfig(devnet);
+      } catch (e) {
+        console.log(chalk.yellow(`\nNo devnet "${devnet}" found. Please create the devnet.\n`));
+        await program.parseAsync(['', '', 'devnet', 'create']);
+        const devnetName = await devnetPrompt();
+        return loadDevnetConfig(devnetName);
+      }
+    },
+  }),
+  devnetName: createOption({
+    key: 'name' as const,
+    prompt: devnetNamePrompt,
+    validation: z.string(),
+    option: new Option('-n, --name <name>', 'Devnet name (e.g. "devnet")'),
+  }),
+  devnetPort: createOption({
+    key: 'port' as const,
+    prompt: devnetPortPrompt,
+    validation: z.number(),
+    option: new Option(
+      '-p, --port <port>',
+      'Port to forward to the Chainweb node API (e.g. 8080)',
+    ).argParser((value) => parseInt(value, 10)),
+  }),
+  devnetUseVolume: createOption({
+    key: 'useVolume' as const,
+    prompt: devnetUseVolumePrompt,
+    validation: z.boolean(),
+    option: new Option(
+      '-u, --useVolume',
+      'Create a persistent volume to mount to the container'
+    ),
+  }),
+  devnetMountPactFolder: createOption({
+    key: 'mountPactFolder' as const,
+    prompt: devnetMountPactFolderPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-m, --mountPactFolder <mountPactFolder>',
+      'Mount a folder containing Pact files to the container (e.g. "./pact")',
+    ),
+  }),
+  devnetSelect: createOption({
+    key: 'name' as const,
+    prompt: devnetSelectPrompt,
+    validation: z.string(),
+    option: new Option('-n, --name <name>', 'Devnet name'),
+  }),
+  devnetVersion: createOption({
+    key: 'version' as const,
+    prompt: devnetVersionPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-v, --version <version>',
+      'Version of the kadena/devnet Docker image to use (e.g. "latest")',
+    ),
   }),
   keypair: createOption({
     key: 'keypair' as const,

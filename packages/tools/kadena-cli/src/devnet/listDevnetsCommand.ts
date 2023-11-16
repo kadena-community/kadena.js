@@ -1,7 +1,15 @@
-import { displayDevnetsConfig } from './devnetsHelpers.js';
+import { displayDevnetsConfig } from './devnetHelpers.js';
 
-export interface IListDevnetsArgs {}
+import debug from 'debug';
+import { createCommand } from '../utils/createCommand.js';
 
-export const listDevnetsAction = (args: IListDevnetsArgs): void => {
-  displayDevnetsConfig();
-};
+export const listDevnetsCommand = createCommand(
+  'list',
+  'List all available devnets',
+  [],
+  async (config) => {
+    debug('devnet-list:action')({config});
+
+    displayDevnetsConfig();
+  },
+);

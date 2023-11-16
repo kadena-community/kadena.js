@@ -3,7 +3,7 @@ import { accountCommandFactory } from './account/index.js';
 import { configCommandFactory } from './config/index.js';
 import { contractCommandFactory } from './contract/index.js';
 // import { dappCommandFactory } from './dapp/index.js';
-import { devnetCommandFactory } from './devnet/index.js';
+import { devnetsCommandFactory } from './devnet/index.js';
 import { keypairCommandFactory } from './keypair/index.js';
 import { keysCommandFactory } from './keys/index.js';
 import { keysetCommandFactory } from './keyset/index.js';
@@ -26,7 +26,7 @@ const packageJson: { version: string } = JSON.parse(
 [
   configCommandFactory,
   networksCommandFactory,
-  devnetCommandFactory,
+  devnetsCommandFactory,
   keypairCommandFactory,
   keysCommandFactory,
   keysetCommandFactory,

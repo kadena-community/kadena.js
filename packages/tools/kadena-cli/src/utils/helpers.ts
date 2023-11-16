@@ -315,9 +315,7 @@ export async function ensureNetworksConfiguration(): Promise<void> {
   await import('./../networks/init.js');
 }
 
-export async function getExistingNetworks(): Promise<ICustomChoice[]> {
-  await ensureNetworksConfiguration();
-
+export async function getConfiguration(configurationPath: string): Promise<ICustomChoice[]> {
   try {
     return readdirSync(configurationPath).map((filename) => ({
       value: path.basename(filename.toLowerCase(), '.yaml'),
@@ -329,11 +327,24 @@ export async function getExistingNetworks(): Promise<ICustomChoice[]> {
   }
 }
 
-export function getExistingNetworks(): ICustomChoice[] {
+export async function getExistingNetworks(): Promise<ICustomChoice[]> {
+  await ensureNetworksConfiguration();
+
   return getConfiguration(defaultNetworksPath);
 }
 
-export function getExistingDevnets(): ICustomChoice[] {
+export async function ensureDevnetsConfiguration(): Promise<void> {
+  if (existsSync(defaultDevnetsPath)) {
+    return;
+  }
+
+  mkdirSync(defaultDevnetsPath, { recursive: true });
+  await import('./../devnet/init.js');
+}
+
+export async function getExistingDevnets(): Promise<ICustomChoice[]> {
+  await ensureDevnetsConfiguration();
+
   return getConfiguration(defaultDevnetsPath);
 }
 

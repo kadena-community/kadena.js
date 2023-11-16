@@ -12,6 +12,9 @@ export function initCommand(program: Command, version: string): void {
       await import('./../networks/init.js');
       console.log(chalk.green('Configured default networks.'));
 
+      await import('./../devnet/init.js');
+      console.log(chalk.green('Configured default devnets.'));
+
       console.log(chalk.green('Configuration complete!'));
     });
 }

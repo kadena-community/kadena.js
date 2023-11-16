@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { execSync } from 'child_process';
-import { TDevnetsCreateOptions } from './devnetsCreateQuestions.js';
+import { IDevnetsCreateOptions } from './devnetHelpers.js';
 
 const volumePrefix = 'kadena_';
 const containerDataFolder = '/data';
@@ -57,7 +57,7 @@ const maybeCreateVolume = (useVolume: boolean, containerName: string): void => {
 };
 
 const formatDockerRunOptions = (
-  configuration: TDevnetsCreateOptions,
+  configuration: IDevnetsCreateOptions,
 ): string => {
   const options = ['-d'];
 
@@ -107,7 +107,7 @@ const containerExists = (name: string): boolean => {
   }
 };
 
-export function runDevnet(configuration: TDevnetsCreateOptions): void {
+export function runDevnet(configuration: IDevnetsCreateOptions): void {
   maybeCreateVolume(!!configuration.useVolume, configuration.name);
   const dockerRunOptions = formatDockerRunOptions(configuration);
 

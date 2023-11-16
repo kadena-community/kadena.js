@@ -1,7 +1,7 @@
-import type { TDevnetsCreateOptions } from '../devnet/devnetsCreateQuestions.js';
+import { IDevnetsCreateOptions } from "../devnet/devnetHelpers.js";
 
 export interface IDefaultDevnetOptions {
-  [key: string]: TDevnetsCreateOptions;
+  [key: string]: IDevnetsCreateOptions;
 }
 
 /**
@@ -15,13 +15,6 @@ export const devnetDefaults: IDefaultDevnetOptions = {
     useVolume: false,
     mountPactFolder: '',
     version: 'latest',
-  },
-  other: {
-    name: '',
-    port: 8080,
-    useVolume: false,
-    mountPactFolder: '',
-    version: '',
   },
 };
 

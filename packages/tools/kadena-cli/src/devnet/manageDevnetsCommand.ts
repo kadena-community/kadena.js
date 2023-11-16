@@ -1,66 +1,32 @@
-import { defaultDevnetsPath } from '../constants/devnets.js';
-import {
-  clearCLI,
-  collectResponses,
-  getExistingDevnets,
-} from '../utils/helpers.js';
-import { processZodErrors } from '../utils/processZodErrors.js';
+import debug from 'debug';
+import { devnetOverwritePrompt } from '../constants/prompts.js';
+import { globalOptions } from '../utils/globalOptions.js';
+import { writeDevnet } from './devnetHelpers.js';
 
-import type { TDevnetsCreateOptions } from './devnetsCreateQuestions.js';
-import {
-  devnetManageQuestions,
-  DevnetsCreateOptions,
-} from './devnetsCreateQuestions.js';
-import type { ICustomDevnetsChoice } from './devnetsHelpers.js';
-import { writeDevnets } from './devnetsHelpers.js';
-
-import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
-import type { Command } from 'commander';
-import { readFileSync } from 'fs';
-import yaml from 'js-yaml';
-import path from 'path';
+import { createCommand } from '../utils/createCommand.js';
 
-export interface IManageDevnetsOptions {}
+export const manageDevnetsCommand = createCommand(
+  'manage',
+  'Manage devnets',
+  [
+    globalOptions.devnetSelect(),
+    globalOptions.devnetPort(),
+    globalOptions.devnetUseVolume(),
+    globalOptions.devnetMountPactFolder(),
+    globalOptions.devnetVersion(),
+  ],
+  async (config) => {
+    debug('devnet-manage:action')({config});
 
-export function manageDevnets(program: Command, version: string): void {
-  program
-    .command('manage')
-    .description('Manage devnet(s)')
-    .action(async (args: IManageDevnetsOptions) => {
-      try {
-        const existingDevnets: ICustomDevnetsChoice[] = getExistingDevnets();
+    const overwrite = await devnetOverwritePrompt(config.name);
+    if (overwrite === 'no') {
+      console.log(chalk.yellow(`\nThe devnet configuration "${config.name}" will not be updated.\n`));
+      return;
+    }
 
-        if (existingDevnets.length === 0) {
-          console.log(chalk.red('No existing devnets found.'));
-          return;
-        }
+    writeDevnet(config);
 
-        const selectedDevnet = await select({
-          message: 'Select the devnet you want to manage:',
-          choices: existingDevnets,
-        });
-        const devnetFilePath = path.join(
-          defaultDevnetsPath,
-          `${selectedDevnet}.yaml`,
-        );
-        const existingConfig: TDevnetsCreateOptions = yaml.load(
-          readFileSync(devnetFilePath, 'utf8'),
-        ) as TDevnetsCreateOptions;
-
-        const responses = await collectResponses(
-          { name: selectedDevnet },
-          devnetManageQuestions,
-        );
-        const devnetConfig = { ...existingConfig, ...responses };
-
-        DevnetsCreateOptions.parse(devnetConfig);
-
-        writeDevnets(devnetConfig);
-        clearCLI();
-        console.log(chalk.green('Devnet configurations updated.'));
-      } catch (e) {
-        processZodErrors(program, e, args);
-      }
-    });
-}
+    console.log(chalk.green(`\nThe devnet configuration "${config.name}" has been updated.\n`));
+  },
+);
