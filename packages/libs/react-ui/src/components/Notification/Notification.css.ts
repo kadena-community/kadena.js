@@ -1,5 +1,4 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { responsiveStyle } from '@theme/themeUtils';
 import type { ColorType } from '@theme/vars.css';
 import { vars } from '@theme/vars.css';
 import { createVar, style, styleVariants } from '@vanilla-extract/css';
