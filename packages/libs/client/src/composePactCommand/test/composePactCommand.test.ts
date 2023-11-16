@@ -44,6 +44,7 @@ describe('continuation', () => {
       pactId: '1',
       proof: 'test-proof',
       step: 1,
+      rollback: false,
     });
     expect(command.payload).toEqual({
       cont: {
@@ -305,6 +306,30 @@ describe('composePactCommand', () => {
       gasPrice: 1,
       creationTime: 0,
       ttl: 1,
+    });
+  });
+  it('merge data if they are continuation', () => {
+    expect(
+      composePactCommand(
+        continuation({
+          pactId: '1',
+          step: 1,
+          rollback: false,
+          data: { direct: 'test' },
+        }),
+        addData('one', 'test'),
+      )().payload,
+    ).toEqual({
+      cont: {
+        pactId: '1',
+        step: 1,
+        rollback: false,
+        proof: null,
+        data: {
+          one: 'test',
+          direct: 'test',
+        },
+      },
     });
   });
 });

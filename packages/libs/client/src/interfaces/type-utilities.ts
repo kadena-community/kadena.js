@@ -39,3 +39,11 @@ export type ExtractCapabilityType<TCommand> = TCommand extends {
       : IGeneralCapability
     : IGeneralCapability
   : IGeneralCapability;
+
+export type Prettify<T extends Record<string, unknown>> = {
+  [K in keyof T]: T[K];
+} & {};
+
+export type WithRequired<T, K extends keyof T> = Prettify<
+  T & { [P in K]-?: T[P] }
+>;

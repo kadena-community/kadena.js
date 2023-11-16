@@ -20,6 +20,7 @@ import type {
 import type {
   ExtractCapabilityType,
   IGeneralCapability,
+  WithRequired,
 } from '../interfaces/type-utilities';
 import { createTransaction } from '../utils/createTransaction';
 
@@ -205,7 +206,12 @@ interface IExecution {
  * @internal
  */
 interface IContinuation {
-  (options: IContinuationPayloadObject['cont']): IBuilder<{
+  (
+    options: WithRequired<
+      IContinuationPayloadObject['cont'],
+      'pactId' | 'rollback' | 'step'
+    >,
+  ): IBuilder<{
     payload: IContinuationPayloadObject;
   }>;
 }

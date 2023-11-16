@@ -48,7 +48,6 @@ export const continuation: ICont = (options) => {
   const clone = {
     proof: null,
     data: {},
-    rollback: false,
     ...options,
   };
   if (typeof clone.proof === 'string') {
