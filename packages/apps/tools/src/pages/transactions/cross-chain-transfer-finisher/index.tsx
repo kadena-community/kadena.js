@@ -362,7 +362,7 @@ const CrossChainTransferFinisher: FC = () => {
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
           <Stack direction="column">
-            <ForItemCard
+            <FormItemCard
               heading={t('Search Request')}
               helper={t('Where can I find the request key?')}
               helperHref="#"
@@ -384,9 +384,9 @@ const CrossChainTransferFinisher: FC = () => {
                   />
                 </GridItem>
               </Grid>
-            </ForItemCard>
+            </FormItemCard>
 
-            <ForItemCard
+            <FormItemCard
               heading={t('Gas Settings')}
               helper={t('What is a gas payer?')}
               helperHref="#"
@@ -438,7 +438,7 @@ const CrossChainTransferFinisher: FC = () => {
                   />
                 </GridItem>
               </Grid>
-            </ForItemCard>
+            </FormItemCard>
 
             {pollResults.tx !== undefined ? (
               <FormItemCard
@@ -447,8 +447,8 @@ const CrossChainTransferFinisher: FC = () => {
                 helperHref="#"
               >
                 <Box marginBottom="$4" />
-                <Grid.Root columns={1}>
-                  <Grid.Item>
+                <Grid columns={1}>
+                  <GridItem>
                     <div className={textareaContainerStyle}>
                       <textarea rows={4} className={textAreaStyle}>
                         {formattedSigData}
@@ -462,8 +462,8 @@ const CrossChainTransferFinisher: FC = () => {
                         title={t('copySigData')}
                       />
                     </div>
-                  </Grid.Item>
-                </Grid.Root>
+                  </GridItem>
+                </Grid>
               </FormItemCard>
             ) : null}
           </Stack>
