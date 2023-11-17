@@ -6,7 +6,8 @@ import {
   useGetRecentHeightsQuery,
   useGetTransactionsQuery,
 } from '@/__generated__/sdk';
-import { mainStyle } from '@/components/Common/main/styles.css';
+import { centerBlockStyle } from '@/components/Common/center-block/styles.css';
+import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { ChainwebGraph } from '@components/chainweb';
 import routes from '@constants/routes';
@@ -17,14 +18,19 @@ import isEqual from 'lodash.isequal';
 import React, { useEffect } from 'react';
 
 const Home: React.FC = () => {
-  const { loading: loadingNewBlocks, data: newBlocks } =
-    useGetBlocksSubscription();
-  const { loading: loadingRecentBlocks, data: recentBlocks } =
+  const {
+    loading: loadingNewBlocks,
+    data: newBlocks,
+    error: newBlocksError,
+  } = useGetBlocksSubscription();
+  const { data: recentBlocks, error: recentBlocksError } =
     useGetRecentHeightsQuery({ variables: { count: 3 } });
   const previousNewBlocks = usePrevious(newBlocks);
   const previousRecentBlocks = usePrevious(recentBlocks);
 
-  const { data: txs } = useGetTransactionsQuery({ variables: { first: 10 } });
+  const { data: txs, error: txError } = useGetTransactionsQuery({
+    variables: { first: 10 },
+  });
 
   const { allBlocks, addBlocks } = useParsedBlocks();
 
@@ -58,28 +64,28 @@ const Home: React.FC = () => {
   }, [recentBlocks, addBlocks, previousRecentBlocks, addBlockToChain]);
 
   return (
-    <div>
-      <main className={mainStyle}>
-        <div>
-          {loadingRecentBlocks || loadingNewBlocks ? (
-            'Loading...'
-          ) : (
-            <ChainwebGraph blocks={allBlocks} />
-          )}
-        </div>
+    <>
+      <LoaderAndError
+        error={newBlocksError || recentBlocksError || txError}
+        loading={loadingNewBlocks}
+        loaderText="Loading..."
+      />
 
-        {txs?.transactions && (
-          <div>
-            <Box marginBottom="$10" />
-            <CompactTransactionsTable
-              transactions={txs.transactions as QueryTransactionsConnection}
-              viewAllHref={`${routes.TRANSACTIONS}`}
-              description="Most recent transactions"
-            />
-          </div>
-        )}
-      </main>
-    </div>
+      <div className={centerBlockStyle}>
+        {allBlocks && <ChainwebGraph blocks={allBlocks} />}
+      </div>
+
+      {txs?.transactions && (
+        <div>
+          <Box marginBottom="$10" />
+          <CompactTransactionsTable
+            transactions={txs.transactions as QueryTransactionsConnection}
+            viewAllHref={`${routes.TRANSACTIONS}`}
+            description="Most recent transactions"
+          />
+        </div>
+      )}
+    </>
   );
 };
 

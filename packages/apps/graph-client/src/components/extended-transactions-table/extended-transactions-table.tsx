@@ -129,7 +129,7 @@ export const ExtendedTransactionsTable = (
             });
           }}
           disabled={!transactions.pageInfo.hasNextPage}
-          style={{ float: 'right' }}
+          style={{ float: 'right', marginTop: '25px' }}
         >
           Next Page
         </Button>
@@ -165,7 +165,7 @@ export const ExtendedTransactionsTable = (
             });
           }}
           disabled={!transactions.pageInfo.hasPreviousPage}
-          style={{ float: 'right', marginRight: '10px' }}
+          style={{ float: 'right', marginTop: '25px', marginRight: '10px' }}
         >
           Previous Page
         </Button>
