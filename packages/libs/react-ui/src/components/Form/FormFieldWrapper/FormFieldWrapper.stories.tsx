@@ -10,7 +10,6 @@ type StoryProps = {
   helperText: string;
   leadingText: string;
   icon: keyof typeof SystemIcon;
-  rightIcon: keyof typeof SystemIcon;
 } & IFormFieldWrapperProps;
 
 const meta: Meta<StoryProps> = {

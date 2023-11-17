@@ -106,7 +106,7 @@ type Story = StoryObj<
     leadingText: string;
     icon: keyof typeof SystemIcon;
     type: React.HTMLInputTypeAttribute;
-  } & Omit<IInputProps, 'icon' | 'rightIcon'>
+  } & Omit<IInputProps, 'icon'>
 >;
 
 export const Dynamic: Story = {
