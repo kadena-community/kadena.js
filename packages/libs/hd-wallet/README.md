@@ -2,27 +2,7 @@
 
 # @kadena/hd-wallet
 
-The library for managing seed generation and key derivation for hd wallets.
-Chainweaver protocol: supports legacy chainweaver bip39/bip32 with a custom
-derivation path
-
-## BIP39
-
-Seed generation based on bip39 and 12 words
-
-## Chainweaver protocol:
-
-it uses the bundle file from
-[kadena-crypto](https://github.com/kadena-io/cardano-crypto.js/tree/jam%40chainweaver-keygen)
-repo
-
-## BIP44:
-
-derivation path: `m/44'/626'/${index}'/0'/0'`; all keys hardened
-
-## Public Key
-
-public key generation algorithm: `ed25519`
+HD Wallet; key derivation
 
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
@@ -33,4 +13,6 @@ public key generation algorithm: `ed25519`
 
 ### Architectural decisions
 
-Check [ADRs](./docs/decisions/) documents for more information
+Check [ADRs][1] documents for more information
+
+[1]: ./docs/decisions/
