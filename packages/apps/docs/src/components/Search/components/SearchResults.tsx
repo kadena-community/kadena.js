@@ -100,13 +100,13 @@ export const SearchResults: FC<IProps> = ({
               </div>
             )}
             {semanticError ? (
-              <Notification.Root
+              <Notification
                 color={'negative'}
                 icon={<SystemIcon.AlertBox />}
                 role="status"
               >
                 {semanticError}
-              </Notification.Root>
+              </Notification>
             ) : (
               <>
                 <ResultCount count={semanticResults?.length} />
