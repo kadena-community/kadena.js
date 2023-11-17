@@ -12,15 +12,11 @@
   "type": "module",
   "license": "ISC",
   "contributors": [
-    {
-      "name": "Albert Groothedde"
-    },
-    {
-      "name": "Danillo Felixdaal"
-    },
-    {
-      "name": "Jesse van Muijden"
-    }
+    "Danillo Felixdaal <danillo@kadena.io>",
+    "Albert Groothedde <albert@kadena.io",
+    "Jesse van Muijden <jesse@kadena.io",
+    "Jermaine Jong <jermaine@kadena.io",
+    "Javad Khalilian <javad@kadena.io>"
   ],
   "bin": {
     "kadena": "./bin/kadena-cli.js"
