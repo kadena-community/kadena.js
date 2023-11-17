@@ -1,4 +1,4 @@
-import { startCommand } from './start.js';
+import { devnetStartCommand } from './commands/start.js';
 
 import type { Command } from 'commander';
 
@@ -9,5 +9,5 @@ export function devnetCommandFactory(program: Command, version: string): void {
     .command(SUBCOMMAND_ROOT)
     .description(`Tool for starting, stopping and managing the local devnet`);
 
-  startCommand(devnetProgram, version);
+  devnetStartCommand(devnetProgram, version);
 }

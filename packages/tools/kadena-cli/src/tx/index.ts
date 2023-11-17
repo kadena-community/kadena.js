@@ -1,4 +1,4 @@
-import { sendCommand } from './send.js';
+import { sendCommand } from './commands/txSend.js';
 
 import type { Command } from 'commander';
 

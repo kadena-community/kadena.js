@@ -1,14 +1,19 @@
+import type { WriteFileOptions } from 'fs';
+import yaml from 'js-yaml';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import {
   HDKEY_ENC_EXT,
-  HDKEY_EXT,
   KEY_DIR,
   PLAINKEY_EXT,
 } from '../../constants/config.js';
-import { ensureDirectoryExists } from '../../utils/filesystem.js';
+import { ensureDirectoryExists, writeFile } from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+interface IKeyPair {
+  publicKey: string;
+  privateKey: string;
+}
 
 /**
  * Saves the given key pair to multiple files based on the provided amount.
@@ -45,7 +50,7 @@ export function savePlainKeyByAlias(
       privateKey,
     };
 
-    writeFileSync(filePath, JSON.stringify(data));
+    writeFile(filePath, yaml.dump(data), 'utf8' as WriteFileOptions);
   }
 }
 
@@ -60,8 +65,7 @@ export function getStoredPlainKeyByAlias(
 ): { publicKey: string; secretKey: string } | undefined {
   const filePath = join(KEY_DIR, `${alias}${PLAINKEY_EXT}`);
   if (existsSync(filePath)) {
-    const data = readFileSync(filePath, 'utf-8');
-    const keyPair = JSON.parse(data);
+    const keyPair = yaml.load(readFileSync(filePath, 'utf8')) as IKeyPair;
     return {
       publicKey: keyPair.publicKey,
       secretKey: keyPair.privateKey,
@@ -77,24 +81,25 @@ export function getStoredPlainKeyByAlias(
  *
  * @returns {string[]} Array of public keys.
  */
-export function loadAllKeysFromAliasFiles(): string[] {
-  ensureDirectoryExists(KEY_DIR);
-  const publicKeys = [];
+export function getAllPublicKeysFromAliasFiles(): string[] {
+  ensureDirectoryExists(KEY_DIR); // Ensure this function is defined elsewhere in your code
+  const publicKeys: string[] = [];
   const files = readdirSync(KEY_DIR);
+
   for (const file of files) {
     if (file.endsWith('.key')) {
       const filePath = join(KEY_DIR, file);
-      const data = readFileSync(filePath, 'utf-8');
-      const keyPair = JSON.parse(data);
+      const keyPair = yaml.load(readFileSync(filePath, 'utf8')) as IKeyPair;
+
       if (
-        keyPair !== undefined &&
-        typeof keyPair.publicKey === 'string' &&
+        typeof keyPair?.publicKey === 'string' &&
         keyPair.publicKey.length > 0
       ) {
         publicKeys.push(keyPair.publicKey);
       }
     }
   }
+
   return publicKeys;
 }
 
@@ -106,20 +111,15 @@ export function loadAllKeysFromAliasFiles(): string[] {
  * @param {string} fileName - The name of the file to store the mnemonic or seed in.
  * @param {boolean} hasPassword - Whether a password was used to generate the seed.
  */
-export function storeHdKey(
-  words: string,
-  seed: string,
-  fileName: string,
-  hasPassword: boolean,
-): void {
+export function storeHdKey(seed: string, fileName: string): void {
   ensureDirectoryExists(KEY_DIR);
 
   const sanitizedFilename = sanitizeFilename(fileName).toLowerCase();
-  const fileExtension = hasPassword ? HDKEY_ENC_EXT : HDKEY_EXT;
-  const dataToStore = hasPassword ? seed : words;
+  const fileExtension = HDKEY_ENC_EXT;
+  const dataToStore = seed;
   const storagePath = join(KEY_DIR, `${sanitizedFilename}${fileExtension}`);
 
-  writeFileSync(storagePath, dataToStore, 'utf8');
+  writeFile(storagePath, yaml.dump(dataToStore), 'utf8' as WriteFileOptions);
 }
 
 /**
@@ -132,7 +132,7 @@ export function getStoredHdKey(fileName: string): string | undefined {
   const storagePath = join(KEY_DIR, fileName);
 
   if (existsSync(storagePath)) {
-    return readFileSync(storagePath, 'utf8');
+    return yaml.load(readFileSync(storagePath, 'utf8')) as string;
   }
   return undefined;
 }

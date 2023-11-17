@@ -1,7 +1,7 @@
-import type { TNetworksCreateOptions } from '../networks/networksCreateQuestions.js';
+import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js';
 
 export interface IDefaultNetworkOptions {
-  [key: string]: TNetworksCreateOptions;
+  [key: string]: INetworkCreateOptions;
 }
 
 /**
@@ -20,6 +20,12 @@ export const networkDefaults: IDefaultNetworkOptions = {
     networkId: 'testnet04',
     networkHost: 'https://api.testnet.chainweb.com',
     networkExplorerUrl: 'https://explorer.chainweb.com/testnet/tx/',
+  },
+  devnet: {
+    network: 'devnet',
+    networkId: 'fast-development',
+    networkHost: 'http://localhost:8080/',
+    networkExplorerUrl: 'http://localhost:8080/explorer',
   },
   other: {
     network: '',

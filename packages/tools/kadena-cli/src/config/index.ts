@@ -1,11 +1,6 @@
-import { createSimpleSubCommand } from '../utils/helpers.js';
-
-import type { IShowConfigurationArgs } from './infoCommand.js';
-import { showConfigurationAction } from './infoCommand.js';
-import { initCommand } from './initConfigCommand.js';
+import { createConfigInitCommand } from './commands/configInit.js';
 
 import type { Command } from 'commander';
-import { Option } from 'commander';
 
 /**
  * Represents the root command for the configuration CLI.
@@ -26,14 +21,8 @@ export function configCommandFactory(program: Command, version: string): void {
       `Tool for setting up and managing the CLI configuration and contexts`,
     );
 
-  // create project configuration
-  initCommand(configProgram, version);
-
-  // show configuration
-  createSimpleSubCommand<IShowConfigurationArgs>(
-    'show',
-    'displays configuration ',
-    showConfigurationAction,
-    [new Option('-p, --projectName <projectName>', 'Name of project')],
-  )(configProgram);
+  /* Create project configuration
+      all projects bootstrap comes from this configuration
+  */
+  createConfigInitCommand(configProgram, version);
 }

@@ -1,20 +1,8 @@
-import { getCombinedConfig } from '../config/configHelpers.js';
-import type { TConfigOptions } from '../config/configQuestions.js';
-import { projectPrefix, projectRootPath } from '../constants/config.js';
-import { defaultNetworksPath } from '../constants/networks.js';
-
-import chalk from 'chalk';
 import clear from 'clear';
-import type { Command, Option } from 'commander';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
-
-export interface ICustomChoice {
-  value: string;
-  name?: string;
-  description?: string;
-  disabled?: boolean | string;
-}
+import { defaultNetworksPath } from '../constants/networks.js';
+import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 
 /**
  * Assigns a value to an object's property if the value is neither undefined nor an empty string.
@@ -78,7 +66,6 @@ export interface IQuestion<T> {
    * @returns A promise that resolves to the answer of the question.
    */
   prompt: (
-    config: Partial<TConfigOptions>,
     previousAnswers: Partial<T>,
     args: Partial<T>,
   ) => Promise<T[keyof T]>;
@@ -113,7 +100,6 @@ export function* questionGenerator<T>(
 export async function collectResponses<T>(
   args: Partial<T>,
   questions: IQuestion<T>[],
-  config?: Partial<TConfigOptions>,
 ): Promise<T> {
   const responses: Partial<T> = {
     ...args,
@@ -123,12 +109,7 @@ export async function collectResponses<T>(
   let result = generator.next();
   while (result.done === false) {
     const question = result.value;
-    const currentConfig = config || {};
-    responses[question.key as keyof T] = await question.prompt(
-      currentConfig,
-      responses,
-      args,
-    );
+    responses[question.key as keyof T] = await question.prompt(responses, args);
 
     result = generator.next();
   }
@@ -160,66 +141,6 @@ export function getPubKeyFromAccount(account: string): string {
 }
 
 /**
- * Creates and attaches a new sub-command with specified arguments and options to the provided Commander program.
- *
- * @template T - The type of the arguments that the sub-command will receive.
- *
- * @param {string} name - The name identifier of the sub-command.
- * @param {string} description - A brief description of the sub-command, displayed in help messages.
- * @param {(args: T) => Promise<void> | void} actionFn - A function defining the actions to be executed when the sub-command is invoked.
- *   It may be either synchronous or asynchronous and receives the arguments passed to the sub-command.
- * @param {Array<Option>} [options] - An optional array of Commander Option instances to be associated with the sub-command.
- *
- * @returns {(program: Command) => void} - A function that, when invoked with a Commander program, attaches the
- *   created sub-command to that program.
- *
- * @throws Will throw an error if the actionFn results in a rejected promise.
- *
- * @example
- * // Define command-specific options
- * const myOptions = [
- *   new Option('-v, --verbose', 'output extra debugging'),
- *   new Option('-s, --silent', 'suppress output')
- * ];
- *
- * // Define the action function to be executed when the sub-command is invoked
- * interface MyArgs {
- *   verbose: boolean;
- * }
- * const myAction = async (args: MyArgs) => {
- *   if (args.verbose) {
- *     await someAsyncFunction();
- *     console.log("Verbose mode activated!");
- *   }
- * };
- *
- * // Create and attach the sub-command to the Commander program
- * createSimpleSubCommand('my-command', 'This is a sample command', myAction, myOptions)(program);
- */
-
-export function createSimpleSubCommand<T>(
-  name: string,
-  description: string,
-  actionFn: (args: T) => Promise<void> | void,
-  options: Option[] = [],
-): (program: Command) => void {
-  return (program: Command) => {
-    const command = program.command(name).description(description);
-    options.forEach((option) => {
-      command.addOption(option);
-    });
-    command.action(async (args, ...rest) => {
-      try {
-        await actionFn(args);
-      } catch (error) {
-        console.log(chalk.red(`Error executing command ${name}: ${error})`));
-        process.exit(1);
-      }
-    });
-  };
-}
-
-/**
  * Capitalizes the first letter of a string.
  *
  * @function
@@ -237,7 +158,7 @@ export function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function getExistingNetworks(): ICustomChoice[] {
+export function getExistingNetworks(): ICustomNetworkChoice[] {
   if (!existsSync(defaultNetworksPath)) {
     mkdirSync(defaultNetworksPath, { recursive: true });
   }
@@ -247,31 +168,6 @@ export function getExistingNetworks(): ICustomChoice[] {
       value: path.basename(filename.toLowerCase(), '.yaml'),
       name: path.basename(filename.toLowerCase(), '.yaml'),
     }));
-  } catch (error) {
-    console.error('Error reading networks directory:', error);
-    return [];
-  }
-}
-
-export function getExistingProjects(): ICustomChoice[] {
-  if (!existsSync(projectRootPath)) {
-    return [];
-  }
-
-  try {
-    return readdirSync(projectRootPath)
-      .filter((filename) => {
-        // return filename that is prefixed with prefix from constants and ands with .yaml
-        return (
-          filename.toLowerCase().startsWith(projectPrefix) &&
-          filename.toLowerCase().endsWith('.yaml') &&
-          filename.length > 4
-        );
-      })
-      .map((filename) => ({
-        value: path.basename(filename.toLowerCase(), '.yaml'),
-        name: path.basename(filename.toLowerCase(), '.yaml'),
-      }));
   } catch (error) {
     console.error('Error reading networks directory:', error);
     return [];
@@ -360,39 +256,6 @@ export function isAlphanumeric(str: string): boolean {
 export function isNumeric(str: string): boolean {
   const regex = /^[0-9]+$/;
   return regex.test(str);
-}
-
-/**
- * Processes a project and returns configuration options.
- *
- * @async
- * @function
- * @param {string} projectName - The name of the project.
- * @param {string[]} [keys] - The keys of the configuration options to return.
- * If not provided or if the array is empty, an empty object is returned.
- * @returns {Promise<Record<string, unknown>>} A promise that resolves to an object
- * containing the requested configuration options.
- *
- * @example
- * // Get 'chainId', 'network' configuration options of 'myProject'
- * processProject('myProject', ['chainId', 'network'])
- */
-export async function processProject(
-  projectName: string,
-  keys?: string[],
-): Promise<Record<string, unknown>> {
-  const combinedConfig = getCombinedConfig(projectName);
-
-  if (!keys || keys.length === 0) return {};
-
-  const filteredConfig: Record<string, unknown> = {};
-  for (const key of keys) {
-    if (key in combinedConfig) {
-      filteredConfig[key] = combinedConfig[key as keyof typeof combinedConfig];
-    }
-  }
-
-  return filteredConfig;
 }
 
 /**

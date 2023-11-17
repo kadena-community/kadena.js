@@ -1,8 +1,8 @@
-import { generateFromHdKeys } from './generateFromHdKeysCommand.js';
-import { generateHdKeys } from './generateHdKeysCommand.js';
-import { generatePlainKeys } from './generatePlainKeysCommand.js';
-import { listKeys } from './listKeysCommand.js';
-import { manageKeys } from './manageKeysCommand.js';
+import { createGenerateFromHdCommand } from './commands/keysGenrateFromHd.js';
+import { createGenerateHdKeysCommand } from './commands/keysHdGenerate.js';
+import { createListKeysCommand } from './commands/keysList.js';
+import { createManageKeysCommand } from './commands/keysManage.js';
+import { createGeneratePlainKeysCommand } from './commands/keysPlainGenerate.js';
 
 import type { Command } from 'commander';
 
@@ -13,9 +13,9 @@ export function generate(program: Command, version: string): void {
     .command('generate')
     .description(`Generate keys`);
 
-  generateHdKeys(generateProgram, version);
-  generateFromHdKeys(generateProgram, version);
-  generatePlainKeys(generateProgram, version);
+  createGenerateHdKeysCommand(generateProgram, version);
+  createGeneratePlainKeysCommand(generateProgram, version);
+  createGenerateFromHdCommand(generateProgram, version);
 }
 
 export function keysCommandFactory(program: Command, version: string): void {
@@ -24,6 +24,6 @@ export function keysCommandFactory(program: Command, version: string): void {
     .description(`Tool to generate and manage keys`);
 
   generate(keysProgram, version);
-  listKeys(keysProgram, version);
-  manageKeys(keysProgram, version);
+  createManageKeysCommand(keysProgram, version);
+  createListKeysCommand(keysProgram, version);
 }

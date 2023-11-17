@@ -1,9 +1,7 @@
-import { createSimpleSubCommand } from '../utils/helpers.js';
-
-import { createNetworksCommand } from './createNetworksCommand.js';
-import type { IListNetworksArgs } from './listNetworksCommand.js';
-import { listNetworksAction } from './listNetworksCommand.js';
-import { manageNetworks } from './manageNetworksCommand.js';
+import { createNetworksCommand } from './commands/networkCreate.js';
+import { deleteNetworksCommand } from './commands/networkDelete.js';
+import { listNetworksCommand } from './commands/networkList.js';
+import { manageNetworksCommand } from './commands/networkManage.js';
 
 import type { Command } from 'commander';
 
@@ -17,13 +15,8 @@ export function networksCommandFactory(
     .command(SUBCOMMAND_ROOT)
     .description(`Tool to create and manage networks`);
 
-  // Attach list subcommands to the networksProgram
-  createSimpleSubCommand<IListNetworksArgs>(
-    'list',
-    'List all available networks',
-    listNetworksAction,
-  )(networksProgram);
-
-  manageNetworks(networksProgram, version);
+  listNetworksCommand(networksProgram, version);
+  manageNetworksCommand(networksProgram, version);
   createNetworksCommand(networksProgram, version);
+  deleteNetworksCommand(networksProgram, version);
 }
