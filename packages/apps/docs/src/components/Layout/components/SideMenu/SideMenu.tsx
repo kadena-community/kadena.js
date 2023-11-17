@@ -30,7 +30,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     menuItems,
   );
   const router = useRouter();
-  const MagnifierIcon = SystemIcon.Magnifier;
+  const MagnifierIcon = SystemIcon.Magnify;
 
   const activeItem = menuItems.find((item) => item.isMenuOpen);
 
@@ -74,7 +74,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
             type="text"
             aria-label="Search"
           >
-            <MagnifierIcon size="md" />
+            <MagnifierIcon size="sm" />
           </Input>
         </Box>
       </ShowOnMobile>

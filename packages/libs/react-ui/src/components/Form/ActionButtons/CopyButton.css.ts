@@ -10,8 +10,9 @@ export const buttonClass = style([
     alignItems: 'center',
     borderRadius: '$md',
     cursor: 'pointer',
-    size: '$9',
     border: 'none',
+    width: '$8',
+    height: '$8',
   }),
   {
     selectors: {

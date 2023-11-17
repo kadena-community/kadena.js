@@ -1,5 +1,5 @@
 import type { IInputProps } from '@components/Form';
-import { InputCopy } from '@components/Form';
+import { Input, InputCopy } from '@components/Form';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
@@ -32,11 +32,18 @@ export const InputCopyStory: Story = {
   },
   render: (props) => {
     return (
-      <InputCopy
-        {...props}
-        id="InputCopyStory"
-        placeholder="This is a placeholder"
-      />
+      <>
+        <InputCopy
+          {...props}
+          id="InputCopyStory"
+          placeholder="This is a placeholder"
+        />
+        {/* <Input
+          {...props}
+          id="InputCopyStory2"
+          placeholder="This is a placeholder"
+        /> */}
+      </>
     );
   },
 };

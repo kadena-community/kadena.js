@@ -13,7 +13,7 @@ interface IProps {
 export const SearchBar: FC<IProps> = forwardRef<HTMLInputElement, IProps>(
   // eslint-disable-next-line react/prop-types
   ({ onSubmit = () => {}, onKeyUp = () => {}, query }, ref) => {
-    const MagnifierIcon = SystemIcon.Magnifier;
+    const MagnifierIcon = SystemIcon.Magnify;
 
     const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>): void => {
       e.preventDefault();
@@ -37,7 +37,7 @@ export const SearchBar: FC<IProps> = forwardRef<HTMLInputElement, IProps>(
           type="text"
           aria-label="Search"
         >
-          <MagnifierIcon size="md" />
+          <MagnifierIcon size="sm" />
         </Input>
       </form>
     );

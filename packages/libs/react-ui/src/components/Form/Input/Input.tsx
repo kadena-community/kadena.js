@@ -7,6 +7,7 @@ import { baseContainerClass, baseOutlinedClass } from '../Form.css';
 import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
 import {
   disabledClass,
+  inputChildrenClass,
   inputClass,
   inputContainerClass,
   leadingTextClass,
@@ -73,7 +74,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
             disabled={disabled}
             {...rest}
           />
-          <div>{children}</div>
+          {children && <div className={inputChildrenClass}>{children}</div>}
         </div>
       </div>
     );

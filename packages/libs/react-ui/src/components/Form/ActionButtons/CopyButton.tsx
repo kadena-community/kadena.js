@@ -34,7 +34,7 @@ export const CopyButton: FC<ICopyButtonProps> = ({ value, ...restProps }) => {
       onClick={handleClick}
       className={buttonClass}
     >
-      {click ? <CheckIcon size="md" /> : <ContentCopyIcon size="md" />}
+      {click ? <CheckIcon size="sm" /> : <ContentCopyIcon size="sm" />}
     </button>
   );
 };

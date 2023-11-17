@@ -46,7 +46,7 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
         disabled={disabled}
         {...rest}
       />
-      <div className={buttonContainerClass}>{children}</div>
+      {children && <div className={buttonContainerClass}>{children}</div>}
     </div>
   );
 });
