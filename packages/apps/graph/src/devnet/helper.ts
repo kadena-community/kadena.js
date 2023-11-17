@@ -104,8 +104,8 @@ export const asyncPipe =
   };
 
 export const generateAccount = async (
-  chainId: ChainId = devnetConfig.CHAIN_ID,
   keys: number = 1,
+  chainId: ChainId = devnetConfig.CHAIN_ID,
 ): Promise<IAccount> => {
   const keyPairs = Array.from({ length: keys }, () => genKeyPair());
   let account = `k:${keyPairs[0].publicKey}`;
