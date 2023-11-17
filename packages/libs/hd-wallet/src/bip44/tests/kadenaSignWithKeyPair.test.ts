@@ -9,7 +9,7 @@ import {
 
 import type { IUnsignedCommand } from '@kadena/client';
 
-describe.only('kadenaSignWithKeyPair', async () => {
+describe('kadenaSignWithKeyPair', async () => {
   const password = 'password';
   const mnemonic = kadenaGenMnemonic();
   const seed = await kadenaMnemonicToSeed(password, mnemonic);
