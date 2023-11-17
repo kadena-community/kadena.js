@@ -2,7 +2,7 @@
 
 **Date:** 2023-10-31
 
-**Status:** Accepted
+**Status:** Proposal
 
 ## Context
 
