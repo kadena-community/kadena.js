@@ -1,7 +1,7 @@
 import type { ICommandResult } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-import type { ChainId, IKeyPair } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {
@@ -10,49 +10,61 @@ import {
   logger,
   sender00,
   signAndAssertTransaction,
+  stringifyProperty,
   submit,
 } from './helper';
 
 export async function safeTransfer({
-  receiverKeyPair,
+  receiver,
   chainId = devnetConfig.CHAIN_ID,
   sender = sender00,
   amount = 100,
 }: {
-  receiverKeyPair: IKeyPair;
+  receiver: IAccount;
   chainId?: ChainId;
   sender?: IAccount;
   amount?: number;
 }): Promise<ICommandResult> {
-  const fromAccount = `k:${receiverKeyPair.publicKey}`;
   const extraAmount = new PactNumber('0.001').toPactDecimal();
   const pactAmount = new PactNumber(amount)
     .plus(extraAmount.decimal)
     .toPactDecimal();
 
   logger.info(
-    `Safe Transfer from ${sender.account} to ${fromAccount}\nPublic Key: ${receiverKeyPair.publicKey}\nAmount: ${pactAmount.decimal}`,
+    `Safe Transfer from ${sender.account} to ${
+      receiver.account
+    }\nPublic Key: ${stringifyProperty(receiver.keys, 'publicKey')}\nAmount: ${
+      pactAmount.decimal
+    }`,
   );
 
   const transaction = Pact.builder
     .execution(
       Pact.modules.coin['transfer-create'](
         sender.account,
-        fromAccount,
+        receiver.account,
         () => '(read-keyset "ks")',
         pactAmount,
       ),
-      Pact.modules.coin.transfer(fromAccount, sender.account, extraAmount),
+      Pact.modules.coin.transfer(receiver.account, sender.account, extraAmount),
     )
-    .addData('ks', { keys: [receiverKeyPair.publicKey], pred: 'keys-all' })
-    //TODO: find a way to add multiple signers
-    .addSigner(sender.keys[0].publicKey, (withCap) => [
-      withCap('coin.GAS'),
-      withCap('coin.TRANSFER', sender.account, fromAccount, pactAmount),
-    ])
-    .addSigner(receiverKeyPair.publicKey, (withCap) => [
-      withCap('coin.TRANSFER', fromAccount, sender.account, extraAmount),
-    ])
+    .addData('ks', {
+      keys: receiver.keys.map((key) => key.publicKey),
+      pred: 'keys-all',
+    })
+    .addSigner(
+      sender.keys.map((key) => key.publicKey),
+      (withCap) => [
+        withCap('coin.GAS'),
+        withCap('coin.TRANSFER', sender.account, receiver.account, pactAmount),
+      ],
+    )
+    .addSigner(
+      receiver.keys.map((key) => key.publicKey),
+      (withCap) => [
+        withCap('coin.TRANSFER', receiver.account, sender.account, extraAmount),
+      ],
+    )
     .setMeta({
       gasLimit: 1500,
       chainId,
@@ -62,8 +74,7 @@ export async function safeTransfer({
     .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 
-  //TODO : Find if there is a way to sign with multiple keys
-  const signedTx = signAndAssertTransaction([sender.keys[0], receiverKeyPair])(
+  const signedTx = signAndAssertTransaction([...sender.keys, ...receiver.keys])(
     transaction,
   );
 
