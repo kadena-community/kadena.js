@@ -1,6 +1,6 @@
 import { Command, Option } from 'commander';
-import { IAccount, generateAccount, logger } from '../helper';
-import { multiSigTransfer } from '../multisig-transfer';
+import type { IAccount } from '../helper';
+import { generateAccount, logger } from '../helper';
 import { transfer } from '../transfer';
 import { simulate } from './simulate';
 
@@ -70,7 +70,7 @@ program
   .action(async (args) => {
     try {
       logger.info('Simulation config parameters:', args);
-      simulate(args);
+      await simulate(args);
     } catch (error) {
       console.error(error);
     }
