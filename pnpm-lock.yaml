@@ -1216,7 +1216,7 @@ importers:
   packages/libs/hd-wallet:
     dependencies:
       '@kadena/client':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../client
       '@kadena/cryptography-utils':
         specifier: workspace:*
