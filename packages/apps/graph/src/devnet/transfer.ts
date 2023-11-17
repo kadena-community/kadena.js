@@ -26,7 +26,6 @@ export async function transfer({
   sender?: IAccount;
   amount?: number;
 }): Promise<ICommandResult> {
-  // const account = `k:${publicKey}`;
   const pactAmount = new PactNumber(amount).toPactDecimal();
 
   logger.info(
