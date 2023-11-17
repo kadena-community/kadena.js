@@ -11,6 +11,7 @@ import {
   logger,
   sender00,
   signAndAssertTransaction,
+  stringifyProperty,
   submit,
 } from './helper';
 
@@ -31,9 +32,9 @@ export async function transfer({
   logger.info(
     `Transfering from ${sender.account} to ${
       receiver.account
-    }\nPublic Key: ${receiver.keys
-      .map((key) => key.publicKey)
-      .join(', ')}\nAmount: ${pactAmount.decimal}`,
+    }\nPublic Key: ${stringifyProperty(receiver.keys, 'publicKey')}\nAmount: ${
+      pactAmount.decimal
+    }`,
   );
 
   const transaction = Pact.builder
