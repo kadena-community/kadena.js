@@ -11,6 +11,7 @@ import {
   logger,
   seedRandom,
   sender00,
+  stringifyProperty,
 } from '../helper';
 import { safeTransfer } from '../safe-transfer';
 import { transfer } from '../transfer';
@@ -48,15 +49,16 @@ export async function simulate({
 
   // Create accounts
   for (let i = 0; i < numberOfAccounts; i++) {
-    const account = await generateAccount();
+    // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
+    const noOfKeys = i % 2 === 0 ? 1 : 2;
+    const account = await generateAccount(noOfKeys);
     logger.info(
       `Generated KeyPair\nAccount: ${
         account.account
-      }\nPublic Key: ${account.keys
-        .map((key) => key.publicKey)
-        .join(',')}\nSecret Key: ${account.keys
-        .map((key) => key.secretKey)
-        .join(',')}\n`,
+      }\nPublic Key: ${stringifyProperty(
+        account.keys,
+        'publicKey',
+      )}\nSecret Key: ${stringifyProperty(account.keys, 'secretKey')}\n`,
     );
 
     if (accounts.includes(account)) {
@@ -146,8 +148,8 @@ export async function simulate({
         const possibleGasPayer = getRandomOption(seededRandomNo, accounts);
 
         result = await crossChainTransfer({
-          from: account,
-          to: nextAccount,
+          sender: account,
+          receiver: nextAccount,
           amount,
           gasPayer:
             possibleGasPayer.chainId === nextAccount.chainId
@@ -176,8 +178,7 @@ export async function simulate({
         }
         if (transferType === 'safe-transfer') {
           result = await safeTransfer({
-            //TODO: find a way to add multiple signers
-            receiverKeyPair: nextAccount.keys[0],
+            receiver: nextAccount,
             sender: account,
             amount,
             chainId: account.chainId,

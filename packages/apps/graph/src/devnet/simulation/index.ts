@@ -71,7 +71,6 @@ program
     try {
       logger.info('Simulation config parameters:', args);
       simulate(args);
-      // multiSigTransfer({});
     } catch (error) {
       console.error(error);
     }
