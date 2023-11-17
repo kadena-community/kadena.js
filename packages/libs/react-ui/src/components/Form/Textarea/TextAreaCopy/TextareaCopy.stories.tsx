@@ -1,6 +1,4 @@
 import type { ITextareaProps } from '@components/Form';
-
-import type { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
