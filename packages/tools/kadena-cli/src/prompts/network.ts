@@ -1,14 +1,22 @@
-import { select } from '@inquirer/prompts';
+import { input, select } from '@inquirer/prompts';
 import type { ChainId } from '@kadena/types';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
-import { getExistingNetworks } from '../utils/helpers.js';
+import { getExistingNetworks, isAlphabetic } from '../utils/helpers.js';
 import { getInput } from './generic.js';
 
 export const chainIdPrompt = async (): Promise<ChainId> =>
   (await getInput('Enter chainId (0-19)')) as ChainId;
 
 export async function networkNamePrompt(): Promise<string> {
-  return await getInput('Enter a network name (e.g. "mainnet")');
+  return await input({
+    message: 'Enter a network name (e.g. "mainnet")',
+    validate: function (input) {
+      if (!isAlphabetic(input)) {
+        return 'Network names must be alphanumeric! Please enter a valid network name.';
+      }
+      return true;
+    },
+  });
 }
 
 export async function networkIdPrompt(): Promise<string> {

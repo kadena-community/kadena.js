@@ -1,6 +1,7 @@
 import clear from 'clear';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
+import sanitize from 'sanitize-filename';
 import { defaultKeysetsPath } from '../constants/keysets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomKeysetsChoice } from '../keys/utils/keysetHelpers.js';
@@ -202,27 +203,7 @@ export async function getExistingKeysets(): Promise<ICustomKeysetsChoice[]> {
  * console.log(sanitizedString); // Outputs: This-is-a--sample--string-file-name
  */
 export function sanitizeFilename(str: string): string {
-  const illegalRe = /[\/\?<>\\:\*\|":\s]/g;
-  /* eslint-disable-next-line */
-  const controlRe = /[\x00-\x1f\x80-\x9f]/g;
-  const reservedRe = /^\.+$/;
-  const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
-  const windowsTrailingRe = /[\. ]+$/;
-
-  if (typeof str !== 'string') {
-    throw new Error('Input must be string');
-  }
-
-  str = str.replace(illegalRe, '-');
-  str = str.replace(controlRe, '-');
-  str = str.replace(reservedRe, '-');
-  str = str.replace(windowsReservedRe, '-');
-  str = str.replace(windowsTrailingRe, '-');
-
-  // Ensure that the filename does not end with a hyphen
-  str = str.replace(/-+$/, '').toLowerCase();
-
-  return str;
+  return sanitize(str);
 }
 
 /**

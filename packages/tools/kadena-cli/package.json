@@ -33,7 +33,7 @@
     "format:src": "prettier config src --write",
     "generate:ts": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "lint": "eslint src --ext .js,.ts --fix",
-    "test": ""
+    "test": "vitest"
   },
   "dependencies": {
     "@inquirer/prompts": "^3.0.4",
@@ -58,6 +58,7 @@
     "node-fetch": "~2.6.2",
     "pact-lang-api": "^4.2.0",
     "rimraf": "~5.0.1",
+    "sanitize-filename": "^1.6.3",
     "yaml": "~2.1.1",
     "zod": "~3.18.0"
   },
@@ -77,6 +78,7 @@
     "@types/rimraf": "~3.0.2",
     "eslint": "^8.45.0",
     "prettier": "~3.0.0",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "vitest": "^0.34.6"
   }
 }

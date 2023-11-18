@@ -65,7 +65,6 @@ export const globalOptions = {
       '-n, --network <network>',
       'Kadena network (e.g. "mainnet")',
     ),
-    expand: async (network: string) => {},
     dependsOn: [
       {
         condition: () => checkHasNetworksConfiguration(),
@@ -73,7 +72,7 @@ export const globalOptions = {
           await program.parseAsync(['', '', 'networks', 'create']);
         },
         message:
-          'No network configuration found. A network configuration is required to continue.',
+          'No network configuration found. A network configuration is required to continue. Lets create a network configuration.',
       },
     ],
   }),
