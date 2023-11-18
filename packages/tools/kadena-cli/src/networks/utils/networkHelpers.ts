@@ -6,7 +6,7 @@ import { PathExists, removeFile, writeFile } from '../../utils/filesystem.js';
 import { mergeConfigs, sanitizeFilename } from '../../utils/helpers.js';
 
 import type { WriteFileOptions } from 'fs';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
 
@@ -82,4 +82,13 @@ export function removeNetwork(
   );
 
   removeFile(networkFilePath);
+}
+
+export function checkHasNetworksConfiguration(): boolean {
+  if (!existsSync(defaultNetworksPath)) {
+    return false;
+  }
+
+  const files = readdirSync(defaultNetworksPath);
+  return files.some((file) => path.extname(file).toLowerCase() === '.yaml');
 }

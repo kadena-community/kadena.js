@@ -1,4 +1,4 @@
-export const CLIRootName: string = 'bin/kadena.js';
+export const CLIRootName: string = 'bin/kadena-cli.js';
 
 export const workPath: string = `${process.cwd()}/.kadena`;
 export const projectRootPath: string = `${process.cwd()}`;

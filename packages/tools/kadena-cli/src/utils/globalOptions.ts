@@ -1,4 +1,4 @@
-import { Option } from 'commander';
+import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
   // account,
@@ -12,10 +12,11 @@ import {
   security,
 } from '../prompts/index.js';
 
+import { checkHasNetworksConfiguration } from '../networks/utils/networkHelpers.js';
 import { createOption } from './createOption.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type PreviousQuestions = Record<string, string | number | object | any[]>;
+// type PreviousQuestions = Record<string, string | number | object | any[]>;
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
@@ -65,6 +66,28 @@ export const globalOptions = {
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {},
+    dependsOn: [
+      {
+        condition: () => checkHasNetworksConfiguration(),
+        action: async () => {
+          await program.parseAsync(['', '', 'networks', 'create']);
+        },
+        message:
+          'No network configuration found. A network configuration is required to continue.',
+      },
+    ],
+  }),
+  networkChainId: createOption({
+    key: 'chainId' as const,
+    prompt: networks.chainIdPrompt,
+    validation: z
+      .string({
+        /* eslint-disable-next-line @typescript-eslint/naming-convention */
+        invalid_type_error: 'Error: -c, --chain-id must be a number',
+      })
+      .min(0)
+      .max(19),
+    option: new Option('-c, --chain-id <chainId>'),
   }),
 
   // Keys
@@ -83,22 +106,12 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option(
       '-n, --key-amount <keyAmount>',
-      'Enter the number of key pairs you want to generate. (aliases can only be used when generating one key pair) (optional) (default: 1)',
+      'Enter the number of key pairs you want to generate (default: 1)',
     ),
   }),
   keyPassword: createOption({
     key: 'keyPassword' as const,
-    prompt: (previousQuestions: PreviousQuestions = {}) => {
-      for (const key in previousQuestions) {
-        if (
-          Object.prototype.hasOwnProperty.call(previousQuestions, key) &&
-          previousQuestions[key] === 'no'
-        ) {
-          return Promise.resolve('');
-        }
-      }
-      return security.securityPassword();
-    },
+    prompt: security.securityPassword,
     validation: z.string(),
     option: new Option(
       '-p, --key-password <keyPassword>',
@@ -122,6 +135,15 @@ export const globalOptions = {
       '-f, --key-filename <keyFilename>',
       'Enter filename to store your key in',
     ),
+  }),
+
+  // key keyset
+
+  keyKeyset: createOption({
+    key: 'keyset' as const,
+    prompt: keys.keySelectKeyset,
+    validation: z.string(),
+    option: new Option('-k, --keyset <keyset>', 'Keyset name'),
   }),
 
   // account: createOption({
@@ -154,86 +176,7 @@ export const globalOptions = {
   //     'Receiver (k:) wallet address',
   //   ),
   // }),
-  // chainId: createOption({
-  //   key: 'chainId' as const,
-  //   prompt: chainIdPrompt,
-  //   validation: z
-  //     .string({
-  //       /* eslint-disable-next-line @typescript-eslint/naming-convention */
-  //       invalid_type_error: 'Error: -c, --chain-id must be a number',
-  //     })
-  //     .min(0)
-  //     .max(19),
-  //   option: new Option('-c, --chain-id <chainId>'),
-  // }),
-  // gasPayer: createOption({
-  //   key: 'gasPayer' as const,
-  //   prompt: gasPayerPrompt,
-  //   validation: z.string(),
-  //   option: new Option('-g, --gas-payer <gasPayer>', 'Gas payer account'),
-  //   expand: async (gasPayer: string) => {
-  //     await ensureAccountsConfiguration();
-  //     try {
-  //       return loadAccountConfig(gasPayer);
-  //     } catch (e) {
-  //       console.log(
-  //         chalk.yellow(
-  //           `\nNo account "${gasPayer}" found. Please create the account.\n`,
-  //         ),
-  //       );
-  //       await program.parseAsync(['', '', 'account', 'create']);
-  //       const accountName = await accountPrompt();
-  //       return loadAccountConfig(accountName);
-  //     }
-  //   },
-  // }),
-  // plainKeyAmount: createOption({
-  //   key: 'plainKeyAmount' as const,
-  //   prompt: plainKeyAmount,
-  //   validation: z.number(),
-  //   option: new Option(
-  //     '-n, --plainkeyAmount <plainkeyAmount>',
-  //     'Enter the amount of key pairs you want to generate. (aliases can only be used when generating one key pair) (optional) (default: 1)',
-  //   ),
-  // }),
-  // plainKeyAlias: createOption({
-  //   key: 'plainKeyAlias' as const,
-  //   prompt: plainKeyAlias,
-  //   validation: z.string(),
-  //   option: new Option(
-  //     '-a, --plainkeyAlias <plainkeyAlias>',
-  //     'Enter an alias to store the key pair under (optional)',
-  //   ),
-  // }),
-  // keyset: createOption({
-  //   key: 'keyset' as const,
-  //   prompt: keysetPrompt,
-  //   validation: z.string(),
-  //   option: new Option('-k, --keyset <keyset>', 'Keyset name'),
-  //   expand: async (keyset: string) => {
-  //     await ensureKeysetsConfiguration();
-  //     try {
-  //       return loadKeysetConfig(keyset);
-  //     } catch (e) {
-  //       console.log(
-  //         chalk.yellow(
-  //           `\nNo keyset "${keyset}" found. Please create the keyset.\n`,
-  //         ),
-  //       );
-  //       await program.parseAsync(['', '', 'keyset', 'create']);
-  //       const keysetName = await keysetPrompt();
-  //       return loadKeysetConfig(keysetName);
-  //     }
-  //   },
-  // }),
-  keysetName: createOption({
-    key: 'name' as const,
-    prompt: async () => {
-      return await Promise.resolve('default');
-    },
-    validation: z.string(),
-    option: new Option('-n, --name <name>', 'Keyset name'),
-  }),
+
   // keysetPredicate: createOption({
   //   key: 'predicate' as const,
   //   prompt: keysetPredicatePrompt,

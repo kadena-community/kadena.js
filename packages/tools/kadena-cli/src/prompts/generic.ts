@@ -13,3 +13,10 @@ export async function genericFileName(type?: string): Promise<string> {
     },
   });
 }
+
+// Utility function to get user input
+export async function getInput(message: string): Promise<string> {
+  return await input({
+    message,
+  });
+}

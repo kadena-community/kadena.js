@@ -1,6 +1,11 @@
 import { input, select } from '@inquirer/prompts';
+import type { ICustomKeysetsChoice } from '../keys/utils/keysetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
-import { capitalizeFirstLetter, isAlphabetic } from '../utils/helpers.js';
+import {
+  capitalizeFirstLetter,
+  getExistingKeysets,
+  isAlphabetic,
+} from '../utils/helpers.js';
 
 export async function keyAlias(): Promise<string> {
   return await input({
@@ -35,3 +40,19 @@ export async function keyAskForKeyType(): Promise<string> {
 
   return keyTypeChoice.toLowerCase();
 }
+
+export const keySelectKeyset = async (): Promise<string | undefined> => {
+  const existingKeysets: ICustomKeysetsChoice[] = await getExistingKeysets();
+
+  if (existingKeysets.length > 0) {
+    const selectedKeyset = await select({
+      message: 'Select a keyset',
+      choices: existingKeysets,
+    });
+
+    if (selectedKeyset !== undefined) {
+      return selectedKeyset;
+    }
+  }
+  return undefined;
+};

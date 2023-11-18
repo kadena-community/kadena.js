@@ -1,7 +1,9 @@
 import clear from 'clear';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
+import { defaultKeysetsPath } from '../constants/keysets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
+import type { ICustomKeysetsChoice } from '../keys/utils/keysetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 
 /**
@@ -170,6 +172,18 @@ export function getExistingNetworks(): ICustomNetworkChoice[] {
     }));
   } catch (error) {
     console.error('Error reading networks directory:', error);
+    return [];
+  }
+}
+
+export async function getExistingKeysets(): Promise<ICustomKeysetsChoice[]> {
+  try {
+    return readdirSync(defaultKeysetsPath).map((filename) => ({
+      value: path.basename(filename.toLowerCase(), '.yaml'),
+      name: path.basename(filename.toLowerCase(), '.yaml'),
+    }));
+  } catch (error) {
+    console.error('Error reading keyset directory:', error);
     return [];
   }
 }
