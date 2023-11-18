@@ -45,7 +45,7 @@ export function createOption<
             if (!conditionMet) {
               console.log(
                 chalk.redBright(
-                  `Dependency condition not met after action: aborting: (${dependency.message})`,
+                  `Dependency condition not aborting: (${dependency.message})`,
                 ),
               );
               process.exit(1);

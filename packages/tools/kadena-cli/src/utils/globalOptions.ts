@@ -72,7 +72,7 @@ export const globalOptions = {
           await program.parseAsync(['', '', 'networks', 'create']);
         },
         message:
-          'No network configuration found. A network configuration is required to continue. Lets create a network configuration.',
+          'No network configuration found. A network configuration is required to continue.',
       },
     ],
   }),
