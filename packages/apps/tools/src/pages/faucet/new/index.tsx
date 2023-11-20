@@ -8,6 +8,7 @@ import {
   Heading,
   IconButton,
   Notification,
+  NotificationHeading,
 } from '@kadena/react-ui';
 
 import {
@@ -33,7 +34,6 @@ import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
 import AccountNameField from '@/components/Global/AccountNameField';
-import { CloseableNotification } from '@/components/Global/CloseableNotification';
 import { HoverTag } from '@/components/Global/HoverTag';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
@@ -251,13 +251,10 @@ const NewAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification.Root
-            color="warning"
-            expanded={true}
-            icon="Information"
-            title={t('The Faucet is not available on Mainnet')}
-            variant="outlined"
-          >
+          <Notification color="warning" role="status">
+            <NotificationHeading>
+              {t('The Faucet is not available on Mainnet')}
+            </NotificationHeading>
             <Trans
               i18nKey="common:faucet-unavailable-warning"
               components={[
@@ -267,17 +264,12 @@ const NewAccountFaucetPage: FC = () => {
                 />,
               ]}
             />
-          </Notification.Root>
+          </Notification>
         ) : null}
       </div>
       <div className={notificationContainerStyle}>
-        <CloseableNotification
-          color="warning"
-          expanded={true}
-          icon="Information"
-          title={t(`Before you start`)}
-          variant="outlined"
-        >
+        <Notification color="warning" role="none">
+          <NotificationHeading>{t(`Before you start`)}</NotificationHeading>
           <Trans
             i18nKey="common:faucet-how-to-start"
             components={[
@@ -303,7 +295,7 @@ const NewAccountFaucetPage: FC = () => {
               />,
             ]}
           />
-        </CloseableNotification>
+        </Notification>
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification

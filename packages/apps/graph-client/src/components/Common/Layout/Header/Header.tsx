@@ -116,6 +116,7 @@ const Header: FC<IHeaderProps> = (props) => {
       fieldValue.startsWith('K:') ||
       fieldValue.startsWith('W:')
     ) {
+      setSecondSearchField('coin');
       setSearchType('account');
     }
 

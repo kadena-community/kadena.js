@@ -5,7 +5,7 @@ import { $$footerMenu, $$pageWidth } from '../../global.css';
 export const footerWrapperClass = style([
   sprinkles({
     position: 'relative',
-    background: '$gray90',
+    backgroundColor: '$gray90',
     marginTop: '$40',
   }),
   {

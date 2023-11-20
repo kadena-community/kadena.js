@@ -20,8 +20,12 @@ import {
   Button,
   Grid,
   Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
   ProgressBar,
   Stack,
+  SystemIcon,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
@@ -192,27 +196,27 @@ const CrossChainTransferTracker: FC = () => {
         </Stack>
 
         {txError ? (
-          <Notification.Root
+          <Notification
             hasCloseButton
             color="negative"
             onClose={() => {
               setTxError('');
             }}
-            title="Warning"
-            icon={'AlertBox'}
-            variant="outlined"
+            icon={<SystemIcon.AlertBox />}
+            role="status"
           >
+            <NotificationHeading>Warning</NotificationHeading>
             {txError}
-            <Notification.Actions>
-              <Notification.Button
+            <NotificationFooter>
+              <NotificationButton
                 color="negative"
-                icon={'Refresh'}
                 onClick={validateThenSubmit(handleSubmit)}
               >
                 {t('Retry')}
-              </Notification.Button>
-            </Notification.Actions>
-          </Notification.Root>
+                <SystemIcon.Refresh />
+              </NotificationButton>
+            </NotificationFooter>
+          </Notification>
         ) : null}
         <form onSubmit={validateThenSubmit(handleSubmit)}>
           <FormItemCard
