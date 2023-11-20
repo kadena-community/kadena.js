@@ -13,8 +13,11 @@ const meta: Meta<
     rightIcon: keyof typeof SystemIcon;
   } & IPaginationProps
 > = {
-  title: 'Navigation/Pagination',
+  title: 'Components/Pagination',
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:

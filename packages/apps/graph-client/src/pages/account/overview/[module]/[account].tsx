@@ -3,25 +3,19 @@ import type {
   ModuleAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetAccountQuery } from '@/__generated__/sdk';
-import Loader from '@/components/Common/loader/loader';
-import { mainStyle } from '@/components/Common/main/styles.css';
-import { ErrorBox } from '@/components/error-box/error-box';
+import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import { ChainModuleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Grid, Notification, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Notification, Table, Tabs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 const Account: React.FC = () => {
   const router = useRouter();
 
-  const {
-    loading: loadingAccount,
-    data: accountQuery,
-    error,
-  } = useGetAccountQuery({
+  const { loading, data, error } = useGetAccountQuery({
     variables: {
       moduleName: router.query.module as string,
       accountName: router.query.account as string,
@@ -29,7 +23,7 @@ const Account: React.FC = () => {
   });
 
   return (
-    <div style={{ padding: '0 50px 30px 50px' }}>
+    <>
       <Breadcrumbs.Root>
         <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
         <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
@@ -37,85 +31,87 @@ const Account: React.FC = () => {
 
       <Box marginBottom="$8" />
 
-      <main className={mainStyle}>
+      <LoaderAndError
+        error={error}
+        loading={loading}
+        loaderText="Retrieving account information..."
+      />
+
+      {data?.account &&
+        data?.account?.totalBalance === 0 &&
+        data?.account?.chainAccounts.length === 0 && (
+          <>
+            <Notification color="info" role="status">
+              We could not find any data on this account. Please check the
+              module and account name.
+            </Notification>
+            <Box margin={'$4'} />
+          </>
+        )}
+      {data?.account && (
         <div>
-          {loadingAccount && (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Loader /> <span>Retrieving account information...</span>
-            </div>
-          )}
-          {error && <ErrorBox error={error} />}
-          {accountQuery?.account &&
-            accountQuery?.account?.totalBalance === 0 &&
-            accountQuery?.account?.chainAccounts.length === 0 && (
-              <>
-                <Notification.Root color="info">
-                  We could not find any data on this account. Please check the
-                  module and account name.
-                </Notification.Root>
-                <Box margin={'$4'} />
-              </>
-            )}
-          {accountQuery?.account && (
-            <div>
-              <Table.Root wordBreak="break-all">
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td>
-                      <strong>Account Name</strong>
-                    </Table.Td>
-                    <Table.Td>{accountQuery.account.accountName}</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
-                      <strong>Module</strong>
-                    </Table.Td>
-                    <Table.Td>{accountQuery.account.moduleName}</Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
-                      <strong>Balance</strong>
-                    </Table.Td>
-                    <Table.Td>{accountQuery.account.totalBalance}</Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+          <Table.Root wordBreak="break-all">
+            <Table.Body>
+              <Table.Tr>
+                <Table.Td>
+                  <strong>Account Name</strong>
+                </Table.Td>
+                <Table.Td>{data.account.accountName}</Table.Td>
+              </Table.Tr>
+              <Table.Tr>
+                <Table.Td>
+                  <strong>Module</strong>
+                </Table.Td>
+                <Table.Td>{data.account.moduleName}</Table.Td>
+              </Table.Tr>
+              <Table.Tr>
+                <Table.Td>
+                  <strong>Balance</strong>
+                </Table.Td>
+                <Table.Td>{data.account.totalBalance}</Table.Td>
+              </Table.Tr>
+            </Table.Body>
+          </Table.Root>
+          <Box margin={'$8'} />
+          <Tabs.Root initialTab="Chain Accounts">
+            <Tabs.Tab id="Chain Accounts">Chain Accounts</Tabs.Tab>
+            <Tabs.Content id="Chain Accounts">
               <Box margin={'$4'} />
               <ChainModuleAccountTable
                 moduleName={router.query.module as string}
                 accountName={router.query.account as string}
-                chainAccounts={accountQuery.account.chainAccounts}
+                chainAccounts={data.account.chainAccounts}
               />
-              <Box margin={'$8'} />
-              <Grid.Root columns={2} gap="$lg">
-                <Grid.Item>
-                  <CompactTransfersTable
-                    description="All transfers from or to this account"
-                    moduleName={router.query.module as string}
-                    accountName={router.query.account as string}
-                    transfers={
-                      accountQuery.account
-                        .transfers as ModuleAccountTransfersConnection
-                    }
-                  />
-                </Grid.Item>
-                <Grid.Item>
-                  <CompactTransactionsTable
-                    viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
-                      router.query.module as string
-                    }/${router.query.account as string}`}
-                    transactions={
-                      accountQuery.account
-                        .transactions as ModuleAccountTransactionsConnection
-                    }
-                  />
-                </Grid.Item>
-              </Grid.Root>
-            </div>
-          )}
+            </Tabs.Content>
+            <Tabs.Tab id="Transfers">Transfers</Tabs.Tab>
+            <Tabs.Content id="Transfers">
+              <Box margin={'$4'} />
+              <CompactTransfersTable
+                description="All transfers from or to this account"
+                moduleName={router.query.module as string}
+                accountName={router.query.account as string}
+                transfers={
+                  data.account.transfers as ModuleAccountTransfersConnection
+                }
+              />
+            </Tabs.Content>
+            <Tabs.Tab id="Transactions">Transactions</Tabs.Tab>
+            <Tabs.Content id="Transactions">
+              <Box margin={'$4'} />
+              <CompactTransactionsTable
+                viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
+                  router.query.module as string
+                }/${router.query.account as string}`}
+                transactions={
+                  data.account
+                    .transactions as ModuleAccountTransactionsConnection
+                }
+              />
+            </Tabs.Content>
+          </Tabs.Root>
         </div>
-      </main>
-    </div>
+      )}
+    </>
   );
 };
 

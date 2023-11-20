@@ -1,8 +1,7 @@
-import { Tooltip } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes, FC } from 'react';
-import React, { useRef } from 'react';
+import React from 'react';
 import { gridMiniMenuLinkButtonStyle } from './styles.css';
 
 export interface IMenuLinkButtonProps
@@ -10,35 +9,31 @@ export interface IMenuLinkButtonProps
   title?: string;
   href?: string;
   active?: boolean;
+  target?: string;
 }
 
 export const MenuLinkButton: FC<IMenuLinkButtonProps> = ({
   active,
   title,
   href,
+  target = '_self',
   ...rest
 }) => {
-  const tooltipRef = useRef<HTMLDivElement>(null);
-
   const button = (
-    <>
-      <button
-        className={classNames(gridMiniMenuLinkButtonStyle, { active })}
-        onMouseEnter={(e) => Tooltip.handler(e, tooltipRef)}
-        onMouseLeave={(e) => Tooltip.handler(e, tooltipRef)}
-        {...rest}
-        aria-label={title}
-      >
-        {title}
-      </button>
-      {!!title && (
-        <Tooltip.Root placement="right" ref={tooltipRef}>
-          {title}
-        </Tooltip.Root>
-      )}
-    </>
+    <button
+      className={classNames(gridMiniMenuLinkButtonStyle, { active })}
+      {...rest}
+      aria-label={title}
+    >
+      {title}
+    </button>
   );
 
-  if (href) return <Link href={href}>{button}</Link>;
+  if (href)
+    return (
+      <Link href={href} target={target}>
+        {button}
+      </Link>
+    );
   return button;
 };

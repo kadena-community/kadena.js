@@ -88,6 +88,10 @@ export const getAccount: DocumentNode = gql`
       ...AllAccountFields
       chainAccounts {
         ...CoreChainAccountFields
+        guard {
+          keys
+          predicate
+        }
       }
       transactions {
         edges {

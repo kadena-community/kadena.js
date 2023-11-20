@@ -6,6 +6,9 @@ import { ProgressBar } from './ProgressBar';
 const meta: Meta<IProgressBarProps> = {
   title: 'Components/ProgressBar',
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:

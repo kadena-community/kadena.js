@@ -1,8 +1,6 @@
-import { OptionsModal } from '@/components/Global/OptionsModal';
 import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext } from '@/context';
 import type { ISidebarSubMenuItem } from '@/types/Layout';
-import { useModal } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -15,9 +13,7 @@ import {
   gridMiniMenuListStyle,
 } from './styles.css';
 
-export interface IMiniMenuProps {}
-
-export const Toolbar: FC<IMiniMenuProps> = () => {
+export const Toolbar: FC = () => {
   const {
     toolbar,
     setActiveMenuIndex,
@@ -26,8 +22,7 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     visibleLinks,
     setVisibleLinks,
   } = useLayoutContext();
-  const router = useRouter();
-  const { renderModal } = useModal();
+  const { pathname } = useRouter();
 
   const handleItemClick = (index: number): void => {
     setVisibleLinks(false);
@@ -36,13 +31,13 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     }
   };
 
-  const handleOpenCloseDrawer = (): void => {
+  const handleOpenDrawer = (): void => {
     if (isMenuOpen) {
       setVisibleLinks(false);
       return setActiveMenuIndex(undefined);
     }
 
-    const mainPath = router.pathname.split('/')[1];
+    const mainPath = pathname.split('/')[1];
     const activeMenu = menuData.find(
       (item) => item.href && item.href.includes(mainPath),
     );
@@ -58,10 +53,9 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     item: { title: string; href?: string; items?: ISidebarSubMenuItem[] },
     index: number,
   ) => {
-    if (router.pathname === '/') return false;
+    if (pathname === '/') return false;
     const isUrlParam =
-      item.href !== undefined &&
-      item.href.includes(router.pathname.split('/')[1]);
+      item.href !== undefined && item.href.includes(pathname.split('/')[1]);
 
     return index === activeMenuIndex || isUrlParam;
   };
@@ -73,10 +67,6 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
     }
   };
 
-  const handleDevOptionsClick = (): void => {
-    renderModal(<OptionsModal />, 'Settings');
-  };
-
   return (
     <nav className={gridItemMiniMenuStyle}>
       <ul className={classNames(gridMiniMenuListStyle)}>
@@ -84,7 +74,6 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
           <li key={String(item.title)} className={gridMiniMenuListItemStyle}>
             <MenuButton
               {...item}
-              href={'#'}
               onClick={() => handleItemClick(index)}
               active={isMenuActive(item, index)}
             />
@@ -98,20 +87,9 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
           <div>
             <MenuButton
               title={'Links'}
-              href={'#'}
               icon={'Link'}
               onClick={() => handleLinksClick()}
               active={visibleLinks}
-            />
-          </div>
-        </li>
-        <li key={String('Dev Options')} className={gridMiniMenuListItemStyle}>
-          <div>
-            <MenuButton
-              title={'DevOptions'}
-              href={'#'}
-              icon={'ApplicationBrackets'}
-              onClick={() => handleDevOptionsClick()}
             />
           </div>
         </li>
@@ -120,9 +98,8 @@ export const Toolbar: FC<IMiniMenuProps> = () => {
             <MenuButton
               rotateClass={isMenuOpen ? 'left' : 'right'}
               title={isMenuOpen ? 'Close' : 'Open'}
-              href={'#'}
               icon={'ArrowExpandUp'}
-              onClick={() => handleOpenCloseDrawer()}
+              onClick={handleOpenDrawer}
             />
           </div>
         </li>

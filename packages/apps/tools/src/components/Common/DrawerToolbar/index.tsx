@@ -1,5 +1,6 @@
+import { DrawerIconButton } from '@/components/Common/DrawerToolbar/DrawerIcon';
 import type { SystemIcon } from '@kadena/react-ui';
-import { IconButton, Text } from '@kadena/react-ui';
+import { IconButton } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { ForwardRefExoticComponent, ReactNode } from 'react';
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';
@@ -49,26 +50,21 @@ export const DrawerToolbar: ForwardRefExoticComponent<
 
   return (
     <aside className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
-      {!isOpen && (
+      {!isOpen ? (
         <div>
-          {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
           {sections.map(({ icon, title }, index) => (
             <div className={buttonWrapperClass} key={title}>
-              <IconButton
+              <DrawerIconButton
                 icon={icon}
-                title={title}
                 onClick={() => handleOpenSection(index)}
               />
             </div>
           ))}
         </div>
-      )}
-      {isOpen && (
+      ) : (
         <>
           <div className={expandedDrawerTitleClass}>
-            <Text size="lg" bold>
-              {sections[visibleSection].title}
-            </Text>
+            {sections[visibleSection].title}
             <IconButton
               onClick={() => setVisibleSection(null)}
               icon="Close"

@@ -13,6 +13,9 @@ const meta: Meta<
   title: 'Components/Link',
   component: Link,
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:

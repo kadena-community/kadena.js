@@ -12,6 +12,7 @@ interface ICompactTransfersTableProps {
   moduleName: string;
   accountName: string;
   chainId?: string;
+  truncateColumns?: boolean;
   transfers:
     | ModuleAccountTransfersConnection
     | ChainModuleAccountTransfersConnection;
@@ -27,7 +28,14 @@ interface XChainTransfer {
 export const CompactTransfersTable = (
   props: ICompactTransfersTableProps,
 ): JSX.Element => {
-  const { moduleName, accountName, chainId, transfers, description } = props;
+  const {
+    moduleName,
+    accountName,
+    chainId,
+    truncateColumns,
+    transfers,
+    description,
+  } = props;
 
   // This function determines if the transfer is the starting one or the finishing one
   const determineXChainTransferOrder = (
@@ -115,7 +123,9 @@ export const CompactTransfersTable = (
                     href={`${routes.ACCOUNT}/${moduleName}/${transfer.senderAccount}`}
                   >
                     <span title={transfer.senderAccount}>
-                      {truncate(transfer.senderAccount)}
+                      {truncateColumns
+                        ? truncate(transfer.senderAccount)
+                        : transfer.senderAccount}
                     </span>
                   </Link>
                 </Table.Td>
@@ -125,7 +135,9 @@ export const CompactTransfersTable = (
                       href={`${routes.ACCOUNT}/${moduleName}/${transfer.receiverAccount}`}
                     >
                       <span title={transfer.receiverAccount}>
-                        {truncate(transfer.receiverAccount)}
+                        {truncateColumns
+                          ? truncate(transfer.receiverAccount)
+                          : transfer.receiverAccount}
                       </span>
                     </Link>
                   ) : (
@@ -133,7 +145,9 @@ export const CompactTransfersTable = (
                       href={`${routes.ACCOUNT}/${moduleName}/${crossChainCounterPart.receiverAccount}`}
                     >
                       <span title={crossChainCounterPart.receiverAccount}>
-                        {truncate(crossChainCounterPart.receiverAccount)}
+                        {truncateColumns
+                          ? truncate(crossChainCounterPart.receiverAccount)
+                          : crossChainCounterPart.receiverAccount}
                       </span>
                     </Link>
                   )}
@@ -141,7 +155,9 @@ export const CompactTransfersTable = (
                 <Table.Td>
                   <Link href={`${routes.TRANSACTIONS}/${transfer.requestKey}`}>
                     <span title={transfer.requestKey}>
-                      {truncate(transfer.requestKey)}
+                      {truncateColumns
+                        ? truncate(transfer.requestKey)
+                        : transfer.requestKey}
                     </span>
                   </Link>
                   /
@@ -150,7 +166,9 @@ export const CompactTransfersTable = (
                       href={`${routes.TRANSACTIONS}/${crossChainCounterPart.requestKey}`}
                     >
                       <span title={crossChainCounterPart.requestKey}>
-                        {truncate(crossChainCounterPart.requestKey)}
+                        {truncateColumns
+                          ? truncate(crossChainCounterPart.requestKey)
+                          : crossChainCounterPart.requestKey}
                       </span>
                     </Link>
                   )}

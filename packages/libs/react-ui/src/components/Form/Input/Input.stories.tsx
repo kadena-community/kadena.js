@@ -37,6 +37,7 @@ const meta: Meta<IInputProps> = {
   title: 'Form/Input',
   component: Input,
   parameters: {
+    status: { type: 'inDevelopment' },
     docs: {
       description: {
         component:

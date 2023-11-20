@@ -8,6 +8,7 @@ const meta: Meta<ITextareaProps> = {
   title: 'Form/Textarea',
   component: Textarea,
   parameters: {
+    status: { type: 'inDevelopment' },
     docs: {
       description: {
         component:

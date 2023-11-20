@@ -10,7 +10,7 @@ import {
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import { mainStyle } from '../../main/styles.css';
+import { headerStyle } from './styles.css';
 
 export interface IHeaderProps {
   title?: string;
@@ -155,14 +155,14 @@ const Header: FC<IHeaderProps> = (props) => {
 
   return (
     <div>
-      <main className={mainStyle}>
+      <header className={headerStyle}>
         <Text
           as="h1"
           css={{
             display: 'block',
             color: '$mauve12',
             fontSize: 48,
-            my: '$12',
+            marginBottom: '$6',
             cursor: 'pointer',
           }}
           onClick={() => router.push(routes.HOME)}
@@ -250,7 +250,7 @@ const Header: FC<IHeaderProps> = (props) => {
             </Button>
           </Grid.Item>
         </Grid.Root>
-      </main>
+      </header>
     </div>
   );
 };

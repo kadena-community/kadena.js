@@ -34,6 +34,9 @@ type StoryProps = {
 const meta: Meta<StoryProps> = {
   title: 'Navigation/NavHeader',
   parameters: {
+    status: {
+      type: ['needsRevision'],
+    },
     controls: {
       hideNoControlsWarning: true,
       sort: 'requiredFirst',

@@ -12,6 +12,7 @@ import React from 'react';
 interface ICompactTransactionsTableProps {
   viewAllHref?: string;
   description?: string;
+  truncateColumns?: boolean;
   transactions:
     | ModuleAccountTransactionsConnection
     | ChainModuleAccountTransactionsConnection
@@ -22,7 +23,7 @@ interface ICompactTransactionsTableProps {
 export const CompactTransactionsTable = (
   props: ICompactTransactionsTableProps,
 ): JSX.Element => {
-  const { viewAllHref, description, transactions } = props;
+  const { viewAllHref, description, truncateColumns, transactions } = props;
 
   return (
     <>
@@ -51,7 +52,7 @@ export const CompactTransactionsTable = (
           </Table.Tr>
         </Table.Head>
         <Table.Body>
-          {transactions.edges.map((edge, index) => {
+          {transactions.edges.slice(0, 10).map((edge, index) => {
             return (
               <Table.Tr key={index}>
                 <Table.Td>{edge.node.chainId}</Table.Td>
@@ -62,14 +63,20 @@ export const CompactTransactionsTable = (
                 <Table.Td>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
                     <span title={edge.node.requestKey}>
-                      {truncate(edge.node.requestKey)}
+                      {truncateColumns
+                        ? truncate(edge.node.requestKey)
+                        : edge.node.requestKey}
                     </span>
                   </Link>
                 </Table.Td>
                 <Table.Td>
                   {edge.node.code ? (
                     <span title={edge.node.code}>
-                      {JSON.parse(truncate(edge.node.code)!)}
+                      {JSON.parse(
+                        truncateColumns
+                          ? truncate(edge.node.code)!
+                          : edge.node.code,
+                      )}
                     </span>
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>

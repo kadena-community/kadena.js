@@ -12,6 +12,9 @@ const meta: Meta<
 > = {
   title: 'Components/Tag',
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:

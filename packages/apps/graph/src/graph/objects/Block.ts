@@ -51,6 +51,7 @@ export default builder.prismaNode('Block', {
           return await prismaClient.transaction.count({
             where: {
               blockHash: parent.hash,
+              chainId: parent.chainId,
             },
           });
         } catch (error) {

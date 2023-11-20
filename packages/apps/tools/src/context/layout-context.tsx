@@ -63,7 +63,7 @@ export const useToolbar = (
 
 const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
   const [toolbar, setToolbar] = useState<ISidebarToolbarItem[]>([]);
-  const [activeMenuIndex, setActiveMenuIndex] = useState<number | undefined>();
+  const [activeMenuIndex, setActiveMenuIndex] = useState<number | undefined>(0);
   const isMenuOpen = Number.isInteger(activeMenuIndex);
   const [visibleLinks, setVisibleLinks] = useState(false);
 

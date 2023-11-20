@@ -17,8 +17,11 @@ type StoryProps = {
 } & ITableProps;
 
 const meta: Meta<StoryProps> = {
-  title: 'Content/Table',
+  title: 'Components/Table',
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:
