@@ -15,9 +15,8 @@ builder.subscriptionField('event', (t) => {
     },
     type: ['Event'],
     nullable: true,
-    subscribe: (parent, args, context, info) =>
-      iteratorFn(args.eventName, context),
-    resolve: (__, event) => event as Event[],
+    subscribe: (__parent, args, context) => iteratorFn(args.eventName, context),
+    resolve: (__query, parent) => parent as Event[],
   });
 });
 

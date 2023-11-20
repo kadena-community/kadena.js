@@ -16,11 +16,9 @@ builder.subscriptionField('newBlocks', (t) => {
     },
     type: ['Block'],
     nullable: true,
-    subscribe: (parent, args, context, info) =>
+    subscribe: (__parent, args, context) =>
       iteratorFn(args.chainIds as number[] | undefined, context),
-    // TODO: find out why this needs `as Block[]`
-    // without it we get the error from
-    resolve: (__, block) => block as Block[],
+    resolve: (__query, parent) => parent as Block[],
   });
 });
 
