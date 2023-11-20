@@ -37,7 +37,6 @@ export function externalPrompt(
   promptFunction: IPrompt,
 ): (defaultValue?: string) => Promise<string> {
   return async function wrappedPrompt(defaultValue?: string): Promise<string> {
-    console.log('value: ', defaultValue);
     return await promptFunction({}, { defaultValue }, false);
   };
 }
