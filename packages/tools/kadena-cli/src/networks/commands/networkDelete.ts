@@ -22,8 +22,6 @@ export const deleteNetworksCommand: (
       networkDeletePrompt,
     });
 
-    console.log('1: ', config.network);
-
     const shouldDelete = await externalPrompt.networkDeletePrompt(
       config.network,
     );
