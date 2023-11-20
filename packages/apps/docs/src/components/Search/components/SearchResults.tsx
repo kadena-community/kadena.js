@@ -7,7 +7,9 @@ import {
   Button,
   Heading,
   Notification,
+  NotificationHeading,
   Stack,
+  SystemIcon,
   Tabs,
   useModal,
 } from '@kadena/react-ui';
@@ -98,14 +100,13 @@ export const SearchResults: FC<IProps> = ({
               </div>
             )}
             {semanticError ? (
-              <Notification.Root
+              <Notification
                 color={'negative'}
-                expanded={true}
-                icon="AlertBox"
-                variant="outlined"
+                icon={<SystemIcon.AlertBox />}
+                role="status"
               >
                 {semanticError}
-              </Notification.Root>
+              </Notification>
             ) : (
               <>
                 <ResultCount count={semanticResults?.length} />
@@ -136,11 +137,8 @@ export const SearchResults: FC<IProps> = ({
 
         <Tabs.Content id="qa">
           <Box marginBottom="$8">
-            <Notification.Root
-              expanded={true}
-              icon="AlertBox"
-              title="QA search is in beta"
-            >
+            <Notification icon={<SystemIcon.AlertBox />} role="none">
+              <NotificationHeading>QA search is in beta</NotificationHeading>
               QA search our latest AI vector-based search, designed to provide
               instant answers to your queries.
               <br />
@@ -155,7 +153,7 @@ export const SearchResults: FC<IProps> = ({
                 collect valuable data that will aid us in refining and enhancing
                 the accuracy of our model’s responses in the future.
               </p>
-            </Notification.Root>
+            </Notification>
           </Box>
           <div className={scrollBoxClasses}>
             {isLoading && (
@@ -164,13 +162,13 @@ export const SearchResults: FC<IProps> = ({
               </div>
             )}
             {error && (
-              <Notification.Root
+              <Notification
                 color={'negative'}
-                expanded={true}
-                icon="AlertBox"
+                icon={<SystemIcon.AlertBox />}
+                role="status"
               >
                 {error}
-              </Notification.Root>
+              </Notification>
             )}
 
             {conversation.history?.map((interaction, idx) => {
