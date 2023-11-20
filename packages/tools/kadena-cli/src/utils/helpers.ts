@@ -73,6 +73,7 @@ export interface IQuestion<T> {
     args: Partial<T>,
     isOptional: boolean,
   ) => Promise<T[keyof T]>;
+  isOptional: boolean;
 }
 
 /**
@@ -106,7 +107,6 @@ export function* questionGenerator<T>(
 export async function collectResponses<T>(
   args: Partial<T>,
   questions: IQuestion<T>[],
-  isOptional: boolean
 ): Promise<T> {
   const responses: Partial<T> = { ...args };
   const generator = questionGenerator(args, questions);
@@ -114,10 +114,13 @@ export async function collectResponses<T>(
   let result = generator.next();
   while (result.done !== true) {
     const question = result.value;
-    const response = await question.prompt(responses, args, isOptional);
+    const response = await question.prompt(
+      responses,
+      args,
+      question.isOptional,
+    );
 
-    responses[question.key as keyof T] = response;
-
+    responses[question.key] = response;
     result = generator.next();
   }
 
@@ -287,5 +290,5 @@ export function clearCLI(full: boolean = false): void {
   }
 }
 
-export const skipSymbol = Symbol('skip');
-export const createSymbol = Symbol('createSymbol');
+// export const skipSymbol = Symbol('skip');
+// export const createSymbol = Symbol('createSymbol');

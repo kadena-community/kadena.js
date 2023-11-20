@@ -2,9 +2,14 @@ import { input, select } from '@inquirer/prompts';
 import type { ChainId } from '@kadena/types';
 import { program } from 'commander';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
-import { createSymbol, getExistingNetworks, isAlphabetic, skipSymbol } from '../utils/helpers.js';
+import type { IPrompt } from '../utils/createOption.js';
+
+import {
+  // createSymbol,
+  getExistingNetworks,
+  isAlphabetic,
+} from '../utils/helpers.js';
 import { getInput } from './generic.js';
-import { IPrompt } from '../utils/createOption.js';
 
 export const chainIdPrompt = async (): Promise<ChainId> =>
   (await getInput('Enter chainId (0-19)')) as ChainId;
@@ -54,13 +59,10 @@ export async function networkOverwritePrompt(
   });
 }
 
-
-
-export const networkSelectPrompt: IPrompt = async (
-  prev,
-  args,
-  isOptional
-) => {
+export const networkSelectPrompt: IPrompt = async (prev, args, isOptional) => {
+  console.log('prev', prev);
+  console.log('args', args);
+  console.log('isOptional', isOptional);
   const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
 
   const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({
@@ -68,28 +70,27 @@ export const networkSelectPrompt: IPrompt = async (
     name: network.name,
   }));
 
-  if (isOptional) {
+  if (isOptional === true) {
     choices.push({
-      value: skipSymbol,
+      value: 'skip', //skipSymbol,
       name: 'Network is optional. Continue to next step',
     });
   }
 
-  choices.push({ value: createSymbol, name: 'Create a new network' });
+  choices.push({ value: 'createNetwork', name: 'Create a new network' }); // createSymbol
 
   const selectedNetwork = await select({
     message: 'Select a network',
     choices: choices,
   });
 
-  console.log('create: ', selectedNetwork);
-  if (selectedNetwork === createSymbol) {
+  if (selectedNetwork === 'createNetwork') {
     await program.parseAsync(['', '', 'networks', 'create']);
     return networkSelectPrompt(prev, args, isOptional);
   }
 
   return selectedNetwork;
-}
+};
 
 export async function networkDeletePrompt(network: string): Promise<string> {
   return await select({

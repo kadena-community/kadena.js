@@ -3,7 +3,11 @@ import {
   networkDefaults,
 } from '../../constants/networks.js';
 import { PathExists, removeFile, writeFile } from '../../utils/filesystem.js';
-import { createSymbol, mergeConfigs, sanitizeFilename, skipSymbol } from '../../utils/helpers.js';
+import {
+  // createSymbol,
+  mergeConfigs,
+  sanitizeFilename,
+} from '../../utils/helpers.js';
 
 import type { WriteFileOptions } from 'fs';
 import { existsSync, readFileSync, readdirSync } from 'fs';
@@ -11,7 +15,7 @@ import yaml from 'js-yaml';
 import path from 'path';
 
 export interface ICustomNetworkChoice {
-  value: string | typeof skipSymbol | typeof createSymbol;
+  value: string; // | typeof skipSymbol | typeof createSymbol;
   name?: string;
   description?: string;
   disabled?: boolean | string;
