@@ -4,7 +4,7 @@ import { ensureFileExists } from '../../utils/filesystem.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { clearCLI } from '../../utils/helpers.js';
 
-import { networkOverwritePrompt } from '../../prompts/network.js';
+import { externalNetworkOverwritePrompt } from '../../prompts/network.js';
 import type { INetworkCreateOptions } from '../utils/networkHelpers.js';
 import { writeNetworks } from '../utils/networkHelpers.js';
 
@@ -31,7 +31,7 @@ export const createNetworksCommand: (
     const filePath = path.join(defaultNetworksPath, `${config.network}.yaml`);
 
     if (ensureFileExists(filePath)) {
-      const overwrite = await networkOverwritePrompt(config.network);
+      const overwrite = await externalNetworkOverwritePrompt(config.network);
       if (overwrite === 'no') {
         console.log(
           chalk.yellow(

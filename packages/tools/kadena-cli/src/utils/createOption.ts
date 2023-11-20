@@ -28,7 +28,7 @@ interface IOptionCreatorObject {
   option: Option;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expand?: (label: string) => any;
-};
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createOption<T extends IOptionCreatorObject>(option: T) {

@@ -2,10 +2,10 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 import {
-  networkExplorerUrlPrompt,
-  networkHostPrompt,
-  networkIdPrompt,
-  networkNamePrompt,
+  externalNetworkExplorerUrlPrompt,
+  externalNetworkHostPrompt,
+  externalNetworkIdPrompt,
+  externalNetworkNamePrompt,
 } from '../../prompts/network.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
@@ -22,10 +22,12 @@ export const manageNetworksCommand: (
     debug('network-manage:action')({ config });
 
     writeNetworks({
-      network: await networkNamePrompt(config.networkConfig.network),
-      networkId: await networkIdPrompt(config.networkConfig.networkId),
-      networkHost: await networkHostPrompt(config.networkConfig.networkHost),
-      networkExplorerUrl: await networkExplorerUrlPrompt(
+      network: await externalNetworkNamePrompt(config.networkConfig.network),
+      networkId: await externalNetworkIdPrompt(config.networkConfig.networkId),
+      networkHost: await externalNetworkHostPrompt(
+        config.networkConfig.networkHost,
+      ),
+      networkExplorerUrl: await externalNetworkExplorerUrlPrompt(
         config.networkConfig.networkExplorerUrl,
       ),
     });
