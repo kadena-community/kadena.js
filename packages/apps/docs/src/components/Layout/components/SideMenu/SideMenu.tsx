@@ -74,7 +74,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
             type="text"
             aria-label="Search"
           >
-            <MagnifierIcon size="sm" />
+            <MagnifierIcon size="md" />
           </Input>
         </Box>
       </ShowOnMobile>

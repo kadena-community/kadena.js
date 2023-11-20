@@ -37,7 +37,7 @@ export const SearchBar: FC<IProps> = forwardRef<HTMLInputElement, IProps>(
           type="text"
           aria-label="Search"
         >
-          <MagnifierIcon size="sm" />
+          <MagnifierIcon size="md" />
         </Input>
       </form>
     );
