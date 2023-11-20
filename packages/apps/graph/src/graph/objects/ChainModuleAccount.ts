@@ -60,6 +60,20 @@ export default builder.node(
       transactions: t.prismaConnection({
         type: 'Transaction',
         cursor: 'blockHash_requestKey',
+        async totalCount(parent) {
+          return await prismaClient.transaction.count({
+            where: {
+              senderAccount: parent.accountName,
+              events: {
+                some: {
+                  moduleName: parent.moduleName,
+                },
+              },
+              chainId: parseInt(parent.chainId),
+            },
+          });
+        },
+
         async resolve(query, parent) {
           try {
             return await prismaClient.transaction.findMany({
@@ -85,6 +99,26 @@ export default builder.node(
       transfers: t.prismaConnection({
         type: 'Transfer',
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
+        async totalCount(parent) {
+          try {
+            return await prismaClient.transfer.count({
+              where: {
+                OR: [
+                  {
+                    senderAccount: parent.accountName,
+                  },
+                  {
+                    receiverAccount: parent.accountName,
+                  },
+                ],
+                moduleName: parent.moduleName,
+                chainId: parseInt(parent.chainId),
+              },
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
+        },
         async resolve(query, parent) {
           try {
             return await prismaClient.transfer.findMany({
