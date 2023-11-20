@@ -20,7 +20,7 @@ export const createNetworksCommand: (
   'create',
   'Create network',
   [
-    globalOptions.networkNetwork(),
+    globalOptions.networkNetwork(false),
     globalOptions.networkId(),
     globalOptions.networkHost(),
     globalOptions.networkExplorerUrl(),
