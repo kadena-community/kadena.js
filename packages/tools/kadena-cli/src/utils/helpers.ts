@@ -71,9 +71,7 @@ export interface IQuestion<T> {
   prompt: (
     previousAnswers: Partial<T>,
     args: Partial<T>,
-    isOptional: boolean,
   ) => Promise<T[keyof T]>;
-  isOptional: boolean;
 }
 
 /**
@@ -117,7 +115,6 @@ export async function collectResponses<T>(
     const response = await question.prompt(
       responses,
       args,
-      question.isOptional,
     );
 
     responses[question.key] = response;

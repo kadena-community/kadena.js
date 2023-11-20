@@ -96,3 +96,21 @@ export function checkHasNetworksConfiguration(): boolean {
   const files = readdirSync(defaultNetworksPath);
   return files.some((file) => path.extname(file).toLowerCase() === '.yaml');
 }
+
+export function loadNetworkConfig(network: string): INetworksCreateOptions | never {
+  const networkFilePath = path.join(defaultNetworksPath, `${network}.yaml`);
+
+  if (! existsSync(networkFilePath)) {
+    throw new Error('Network configuration file not found.')
+  }
+
+  return (yaml.load(
+    readFileSync(networkFilePath, 'utf8'),
+  ) as INetworksCreateOptions);
+}
+export interface INetworksCreateOptions {
+  network: string;
+  networkId: string;
+  networkHost: string;
+  networkExplorerUrl: string;
+}

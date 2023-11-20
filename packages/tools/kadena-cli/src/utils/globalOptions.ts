@@ -1,4 +1,4 @@
-import { Option } from 'commander';
+import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
   // account,
@@ -12,11 +12,13 @@ import {
   security,
 } from '../prompts/index.js';
 
+import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
+import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
-  // Networks
+  // Network
   networkName: createOption({
     key: 'network' as const,
     prompt: networks.networkNamePrompt,
@@ -53,7 +55,7 @@ export const globalOptions = {
       'Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
     ),
   }),
-  networkNetwork: createOption({
+  network: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectPrompt,
     validation: z.string(),
@@ -61,6 +63,19 @@ export const globalOptions = {
       '-n, --network <network>',
       'Kadena network (e.g. "mainnet")',
     ),
+    expand: async (network: string) => {
+      // await ensureNetworksConfiguration();
+      try {
+        return loadNetworkConfig(network);
+      } catch (e) {
+        console.log(
+          `\nNo configuration for network "${network}" found. Please configure the network.\n`,
+        );
+        await program.parseAsync(['', '', 'networks', 'create']);
+        const networkName = await networkNamePrompt();
+        return loadNetworkConfig(networkName);
+      }
+    },
   }),
   networkChainId: createOption({
     key: 'chainId' as const,

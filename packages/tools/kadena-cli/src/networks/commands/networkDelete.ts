@@ -13,7 +13,7 @@ export const deleteNetworksCommand: (
 ) => void = createCommand(
   'delete',
   'Delete network',
-  [globalOptions.networkNetwork()],
+  [globalOptions.network()],
   async (config) => {
     debug('network-delete:action')({ config });
 

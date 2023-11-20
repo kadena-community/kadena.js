@@ -54,10 +54,9 @@ export function createCommand<
       clearCLI(true);
       try {
         // collectResponses
-        const questionsMap = options.map(({ prompt, key, isOptional }) => ({
+        const questionsMap = options.map(({ prompt, key }) => ({
           key,
-          prompt: prompt.bind(isOptional),
-          isOptional,
+          prompt
         }));
         const responses = await collectResponses(args, questionsMap);
         const newArgs = { ...args, ...responses };

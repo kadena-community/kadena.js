@@ -21,22 +21,23 @@ export interface IPrompt {
   ): Promise<any>;
 }
 
+interface IOptionCreatorObject {
+  prompt: IPrompt;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  validation: any;
+  option: Option;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  expand?: (label: string) => any;
+};
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function createOption<
-  T extends {
-    prompt: IPrompt;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    validation: any;
-    option: Option;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expand?: (label: string) => any;
-  },
->(option: T) {
+export function createOption<T extends IOptionCreatorObject>(option: T) {
   return (isOptional: boolean = true) => ({
     ...option,
     isOptional,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    prompt: option.prompt,
+    prompt: (responses: any, args: any) =>
+      option.prompt(responses, args, isOptional),
     validation: isOptional ? option.validation.optional() : option.validation,
   });
 }

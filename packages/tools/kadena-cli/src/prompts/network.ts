@@ -14,9 +14,12 @@ import { getInput } from './generic.js';
 export const chainIdPrompt = async (): Promise<ChainId> =>
   (await getInput('Enter chainId (0-19)')) as ChainId;
 
-export async function networkNamePrompt(): Promise<string> {
+export async function networkNamePrompt(
+  defaultValue?: string,
+): Promise<string> {
   return await input({
     message: 'Enter a network name (e.g. "mainnet")',
+    default: defaultValue,
     validate: function (input) {
       if (!isAlphabetic(input)) {
         return 'Network names must be alphanumeric! Please enter a valid network name.';
@@ -26,19 +29,23 @@ export async function networkNamePrompt(): Promise<string> {
   });
 }
 
-export async function networkIdPrompt(): Promise<string> {
-  return await getInput('Enter a network id (e.g. "mainnet01")');
+export async function networkIdPrompt(defaultValue?: string): Promise<string> {
+  return await getInput('Enter a network id (e.g. "mainnet01")', defaultValue);
 }
 
-export async function networkHostPrompt(): Promise<string> {
+export async function networkHostPrompt(defaultValue: string): Promise<string> {
   return await getInput(
     'Enter Kadena network host (e.g. "https://api.chainweb.com")',
+    defaultValue,
   );
 }
 
-export async function networkExplorerUrlPrompt(): Promise<string> {
+export async function networkExplorerUrlPrompt(
+  defaultValue?: string,
+): Promise<string> {
   return await getInput(
     'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
+    defaultValue,
   );
 }
 
@@ -68,7 +75,7 @@ export const networkSelectPrompt: IPrompt = async (prev, args, isOptional) => {
   }));
 
   if (isOptional === true) {
-    choices.push({
+    choices.unshift({
       value: 'skip', //skipSymbol,
       name: 'Network is optional. Continue to next step',
     });

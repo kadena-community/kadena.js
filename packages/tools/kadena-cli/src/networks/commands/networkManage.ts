@@ -1,7 +1,12 @@
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
-import { networkOverwritePrompt } from '../../prompts/network.js';
+import {
+  networkExplorerUrlPrompt,
+  networkHostPrompt,
+  networkIdPrompt,
+  networkNamePrompt,
+} from '../../prompts/network.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { writeNetworks } from '../utils/networkHelpers.js';
@@ -10,28 +15,20 @@ export const manageNetworksCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'manage',
+  'update',
   'Manage networks',
-  [
-    globalOptions.networkNetwork(),
-    globalOptions.networkId(),
-    globalOptions.networkHost(),
-    globalOptions.networkExplorerUrl(),
-  ],
+  [globalOptions.network()],
   async (config) => {
     debug('network-manage:action')({ config });
 
-    const overwrite = await networkOverwritePrompt(config.network);
-    if (overwrite === 'no') {
-      console.log(
-        chalk.yellow(
-          `\nThe network configuration "${config.network}" will not be updated.\n`,
-        ),
-      );
-      return;
-    }
-
-    writeNetworks(config);
+    writeNetworks({
+      network: await networkNamePrompt(config.networkConfig.network),
+      networkId: await networkIdPrompt(config.networkConfig.networkId),
+      networkHost: await networkHostPrompt(config.networkConfig.networkHost),
+      networkExplorerUrl: await networkExplorerUrlPrompt(
+        config.networkConfig.networkExplorerUrl,
+      ),
+    });
 
     console.log(
       chalk.green(
