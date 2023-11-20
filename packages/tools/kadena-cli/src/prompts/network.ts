@@ -1,5 +1,6 @@
 import { input, select } from '@inquirer/prompts';
 import type { ChainId } from '@kadena/types';
+import { program } from 'commander';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import { getExistingNetworks, isAlphabetic } from '../utils/helpers.js';
 import { getInput } from './generic.js';
@@ -52,17 +53,44 @@ export async function networkOverwritePrompt(
   });
 }
 
-export async function networkSelectPrompt(): Promise<string> {
+export async function networkSelectPrompt(
+  a: string = 'a',
+  b: string = 'b',
+  isOptional: boolean = false,
+): Promise<string | 'skip'> {
+  console.log('a', a);
+  console.log('b', b);
+  console.log('c', isOptional);
   const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
 
-  if (existingNetworks.length > 0) {
-    return await select({
-      message: 'Select a network',
-      choices: existingNetworks,
+  const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({
+    value: network.value,
+    name: network.name,
+  }));
+
+  if (isOptional) {
+    choices.push({
+      value: 'skip',
+      name: 'Network is optional. Continue to next step',
     });
   }
 
-  return '';
+  choices.push({ value: 'createNewNetwork', name: 'Create a new network' });
+
+  const selectedNetwork = await select({
+    message: 'Select a network',
+    choices: choices,
+  });
+
+  console.log('create: ', selectedNetwork);
+  if (selectedNetwork === 'createNewNetwork') {
+    await program.parseAsync(['', '', 'networks', 'create']);
+    return networkSelectPrompt(a, b, isOptional);
+  } else if (selectedNetwork !== 'skip') {
+    return selectedNetwork;
+  }
+
+  return 'skip';
 }
 
 export async function networkDeletePrompt(network: string): Promise<string> {

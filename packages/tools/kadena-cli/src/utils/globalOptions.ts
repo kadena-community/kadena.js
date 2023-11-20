@@ -1,4 +1,4 @@
-import { Option, program } from 'commander';
+import { Option } from 'commander';
 import { z } from 'zod';
 import {
   // account,
@@ -12,24 +12,11 @@ import {
   security,
 } from '../prompts/index.js';
 
-import { checkHasNetworksConfiguration } from '../networks/utils/networkHelpers.js';
 import { createOption } from './createOption.js';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-// type PreviousQuestions = Record<string, string | number | object | any[]>;
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   // Networks
-  networkName: createOption({
-    key: 'network' as const,
-    prompt: networks.networkNamePrompt,
-    validation: z.string(),
-    option: new Option(
-      '-n, --network <network>',
-      'Kadena network (e.g. "mainnet")',
-    ),
-  }),
   networkId: createOption({
     key: 'networkId' as const,
     prompt: networks.networkIdPrompt,
@@ -65,16 +52,6 @@ export const globalOptions = {
       '-n, --network <network>',
       'Kadena network (e.g. "mainnet")',
     ),
-    dependsOn: [
-      {
-        condition: () => checkHasNetworksConfiguration(),
-        action: async () => {
-          await program.parseAsync(['', '', 'networks', 'create']);
-        },
-        message:
-          'No network configuration found. A network configuration is required to continue.',
-      },
-    ],
   }),
   networkChainId: createOption({
     key: 'chainId' as const,
@@ -140,7 +117,7 @@ export const globalOptions = {
 
   keyKeyset: createOption({
     key: 'keyset' as const,
-    prompt: keys.keySelectKeyset,
+    prompt: keys.keysetSelectPrompt,
     validation: z.string(),
     option: new Option('-k, --keyset <keyset>', 'Keyset name'),
   }),

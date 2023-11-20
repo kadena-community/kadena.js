@@ -49,28 +49,29 @@ export function mergeConfigs<T extends object>(
 }
 
 /**
- * Interface defining the structure of a question.
+ * Interface defining the structure of a question used in dynamic configuration prompts.
+ * Each question is bound to a specific type, typically representing a configuration option.
  *
- * @template T The type the question is bound to. Typically an object of configuration options.
+ * @template T - The type the question is bound to, typically an object of configuration options.
  */
 export interface IQuestion<T> {
   /**
-   * The property key within type T.
+   * The property key within type T. This key corresponds to the specific configuration option the question relates to.
    */
   key: keyof T;
 
   /**
-   * The prompt function responsible for retrieving the answer for this question.
+   * The prompt function responsible for retrieving the answer for this question. This function is used to present the question to the user and collect their response.
    *
-   * @param config - Current configuration options.
-   * @param previousAnswers - Answers provided for previous questions.
-   * @param args - Command line arguments.
-   *
-   * @returns A promise that resolves to the answer of the question.
+   * @param {Partial<T>} previousAnswers - An object containing answers provided for previous questions. Useful for conditional logic based on past responses.
+   * @param {Partial<T>} args - Command line arguments or other external parameters that might influence the prompt's behavior.
+   * @param {boolean} isOptional - Indicates whether answering this question is optional.
+   * @returns {Promise<T[keyof T]>} - A promise that resolves to the answer provided by the user for this question.
    */
   prompt: (
     previousAnswers: Partial<T>,
     args: Partial<T>,
+    isOptional: boolean,
   ) => Promise<T[keyof T]>;
 }
 
@@ -93,27 +94,32 @@ export function* questionGenerator<T>(
 }
 
 /**
- * Collects user responses for a set of questions.
- * @template T The type of configuration options the questions correspond to.
- * @param args The initial or provided answers for some of the questions.
- * @param questions A list of questions for which to collect responses.
- * @returns A promise that resolves to an object of collected responses.
+ * Collects user responses for a set of questions, allowing for dynamic configuration based on user input.
+ * It iterates through each question, presenting it to the user and collecting the responses.
+ *
+ * @template T - The type representing the structure of configuration options.
+ * @param {Partial<T>} args - The initial or provided answers for some of the questions. These can be used to pre-populate answers or provide defaults.
+ * @param {IQuestion<T>[]} questions - A list of questions to be presented to the user.
+ * @param {boolean} [isOptional=false] - A flag to indicate whether answering questions is optional. If true, users can choose to skip questions.
+ * @returns {Promise<T>} - A promise that resolves to an object containing the collected responses.
  */
-
 export async function collectResponses<T>(
   args: Partial<T>,
   questions: IQuestion<T>[],
+  isOptional: boolean = false,
 ): Promise<T> {
-  const responses: Partial<T> = {
-    ...args,
-  };
+  const responses: Partial<T> = { ...args };
   const generator = questionGenerator(args, questions);
 
   let result = generator.next();
-  while (result.done === false) {
+  while (result.done !== true) {
     const question = result.value;
-    responses[question.key as keyof T] = await question.prompt(responses, args);
+    const response = await question.prompt(responses, args, isOptional);
 
+    if (response !== 'skip') {
+      responses[question.key as keyof T] = response;
+    }
+    // wat doen we met skip?
     result = generator.next();
   }
 

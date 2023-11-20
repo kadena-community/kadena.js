@@ -1,4 +1,5 @@
 import { input, select } from '@inquirer/prompts';
+import { program } from 'commander';
 import type { ICustomKeysetsChoice } from '../keys/utils/keysetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
@@ -41,18 +42,36 @@ export async function keyAskForKeyType(): Promise<string> {
   return keyTypeChoice.toLowerCase();
 }
 
-export const keySelectKeyset = async (): Promise<string | undefined> => {
+export async function keysetSelectPrompt(
+  isOptional: boolean = false,
+): Promise<string | 'skip'> {
   const existingKeysets: ICustomKeysetsChoice[] = await getExistingKeysets();
 
-  if (existingKeysets.length > 0) {
-    const selectedKeyset = await select({
-      message: 'Select a keyset',
-      choices: existingKeysets,
-    });
+  const choices: ICustomKeysetsChoice[] = existingKeysets.map((keyset) => ({
+    value: keyset.value,
+    name: keyset.name,
+  }));
 
-    if (selectedKeyset !== undefined) {
-      return selectedKeyset;
-    }
+  if (isOptional) {
+    choices.push({
+      value: 'skip',
+      name: 'Keyset is optional. Continue to next step',
+    });
   }
-  return undefined;
-};
+
+  choices.push({ value: 'createNewKeyset', name: 'Create a new keyset' });
+
+  const selectedKeyset = await select({
+    message: 'Select a keyset',
+    choices: choices,
+  });
+
+  if (selectedKeyset === 'createNewKeyset') {
+    await program.parseAsync(['', '', 'keysets', 'create']);
+    return keysetSelectPrompt(isOptional);
+  } else if (selectedKeyset !== 'skip') {
+    return selectedKeyset;
+  }
+
+  return 'skip';
+}
