@@ -39,8 +39,16 @@ export async function simulate({
 }): Promise<void> {
   const accounts: IAccount[] = [];
 
-  if (tokenPool < maxAmount || numberOfAccounts <= 0) {
-    logger.info('Invalid parameters');
+  // Parameters validation check
+  if (tokenPool < maxAmount) {
+    logger.info(
+      'The max transfer amount cant be greater than the total token pool',
+    );
+    return;
+  }
+
+  if (numberOfAccounts <= 1) {
+    logger.info('Number of accounts must be greater than 1');
     return;
   }
 
@@ -211,7 +219,7 @@ export async function simulate({
       await new Promise((resolve) => setTimeout(resolve, transferInterval));
     }
   } catch (error) {
-    appendToFile(filepath, { error: error });
+    appendToFile(filepath, { error });
     throw error;
   }
 }
