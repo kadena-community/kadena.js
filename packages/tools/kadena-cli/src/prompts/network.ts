@@ -119,7 +119,6 @@ export const networkDeletePrompt: IPrompt = async (
   args,
   isOptional,
 ) => {
-  console.log('networkDeletePrompt', previousQuestions, args, isOptional);
   if (args.defaultValue === undefined) {
     throw new Error('Network name is required for the delete prompt.');
   }
