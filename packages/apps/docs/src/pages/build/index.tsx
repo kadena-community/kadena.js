@@ -36,19 +36,18 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
       <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
         <Grid.Item>
           <Card fullWidth>
-            <Heading as="h4">Getting started tutorial</Heading>
+            <Heading as="h4">Get started with tutorials</Heading>
             <Box marginY="$4">
               <Text>
-                Getting started is simple. Building useful applications on a
-                blockchain doesn’t have to be hard or expensive. This Developer
-                Quickstart is designed to remove the friction from onboarding so
-                that you can understand how to build with Kadena quickly and
-                easily.
+                Building applications to run on a blockchain doesn't have to be hard, time-consuming, or expensive.
+                Get started with the basics through hands-on tutorials. Learn how to set up a development network,
+                create and fund a development wallet, deploy a smart contract, and more. 
+                Take the first step by clicking Quick start.
               </Text>
             </Box>
             <Button as="a" asChild icon="TrailingIcon">
-              <Link href={'/build/guides/election-dapp-tutorial'}>
-                Build a dApp
+              <Link href={'/build/quickstart'}>
+                Quick start
               </Link>
             </Button>
           </Card>
@@ -67,14 +66,14 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
           <Grid.Item>
             <DocsCard
-              label="Quickstart"
-              description="This Developer Quickstart is designed to remove the friction from onboarding so that you can understand how to build with Kadena quickly and easily."
+              label="Quick start"
+              description="Follow the Quick start to set up a development environment and deploy your first smart contract on Kadena."
               schema="warning"
               background="contribute"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/build/quickstart">
-                  10 minute quick start
+                  Quick start
                 </Link>
                 <Link
                   className={docsCardLink}
