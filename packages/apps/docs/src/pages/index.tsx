@@ -177,7 +177,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 subtitle="Home is where the heart is"
                 href="https://kadena.io"
               />
-                            <BrowseSection.LinkBlock
+              <BrowseSection.LinkBlock
                 title="Overview of Pact"
                 subtitle="Learn the basics of Pact to create a smart contract"
                 href="/pact"
