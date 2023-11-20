@@ -160,17 +160,19 @@ export const CompactTransfersTable = (
                         : transfer.requestKey}
                     </span>
                   </Link>
-                  /
                   {crossChainCounterPart && (
-                    <Link
-                      href={`${routes.TRANSACTIONS}/${crossChainCounterPart.requestKey}`}
-                    >
-                      <span title={crossChainCounterPart.requestKey}>
-                        {truncateColumns
-                          ? truncate(crossChainCounterPart.requestKey)
-                          : crossChainCounterPart.requestKey}
-                      </span>
-                    </Link>
+                    <>
+                      <span> / </span>
+                      <Link
+                        href={`${routes.TRANSACTIONS}/${crossChainCounterPart.requestKey}`}
+                      >
+                        <span title={crossChainCounterPart.requestKey}>
+                          {truncateColumns
+                            ? truncate(crossChainCounterPart.requestKey)
+                            : crossChainCounterPart.requestKey}
+                        </span>
+                      </Link>
+                    </>
                   )}
                 </Table.Td>
               </Table.Tr>

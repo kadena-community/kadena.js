@@ -231,13 +231,15 @@ export const ExtendedTransfersTable = (
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
                     {edge.node.requestKey}
                   </Link>
-                  /
                   {edge.node.crossChainTransfer && (
-                    <Link
-                      href={`${routes.TRANSACTIONS}/${edge.node.crossChainTransfer.requestKey}`}
-                    >
-                      {edge.node.crossChainTransfer.requestKey}
-                    </Link>
+                    <>
+                      <span> / </span>
+                      <Link
+                        href={`${routes.TRANSACTIONS}/${edge.node.crossChainTransfer.requestKey}`}
+                      >
+                        {edge.node.crossChainTransfer.requestKey}
+                      </Link>
+                    </>
                   )}
                 </Table.Td>
               </Table.Tr>
