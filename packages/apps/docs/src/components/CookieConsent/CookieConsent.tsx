@@ -1,8 +1,15 @@
 import { updateConsent } from '@/utils/analytics';
-import { Notification, Text } from '@kadena/react-ui';
+import {
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+  SystemIcon,
+  Text,
+} from '@kadena/react-ui';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { notificationClass } from './styles.css';
+import { containerClass, notificationWrapperClass } from './styles.css';
 
 export const CookieConsent: FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
@@ -31,36 +38,34 @@ export const CookieConsent: FC = () => {
   if (cookieConsent !== null || !mounted) return null;
 
   return (
-    <div className={notificationClass}>
-      <Notification.Root
-        title="Cookie Consent"
-        color="info"
-        expanded
-        variant="standard"
-        icon="Cookie"
-      >
-        <Text>
-          This notification concerns the cookie policy requirement to ask users
-          for their consent to use <strong>Google Analytics</strong> or other
-          tracking tools for better optimizations/performances.
-        </Text>
-        <Notification.Actions>
-          <Notification.Button
-            icon="Check"
-            color={'positive'}
-            onClick={handleAccept}
-          >
-            Accept
-          </Notification.Button>
-          <Notification.Button
-            icon="Close"
-            color={'negative'}
-            onClick={handleReject}
-          >
-            Reject
-          </Notification.Button>
-        </Notification.Actions>
-      </Notification.Root>
-    </div>
+    <section aria-labelledby="cookie-heading" className={containerClass}>
+      <div className={notificationWrapperClass}>
+        <Notification
+          color="info"
+          styleVariant="borderless"
+          icon={<SystemIcon.Cookie />}
+          role="none"
+        >
+          <NotificationHeading id="cookie-heading">
+            Cookie Consent
+          </NotificationHeading>
+          <Text>
+            This notification concerns the cookie policy requirement to ask
+            users for their consent to use <strong>Google Analytics</strong> or
+            other tracking tools for better optimizations/performances.
+          </Text>
+          <NotificationFooter>
+            <NotificationButton color={'positive'} onClick={handleAccept}>
+              Accept
+              <SystemIcon.Check />
+            </NotificationButton>
+            <NotificationButton color={'negative'} onClick={handleReject}>
+              Reject
+              <SystemIcon.Close />
+            </NotificationButton>
+          </NotificationFooter>
+        </Notification>
+      </div>
+    </section>
   );
 };

@@ -82,7 +82,7 @@ export const CardContainer = style([
     borderRadius: '$sm',
     alignItems: 'flex-start',
     fontSize: '$sm',
-    background: {
+    backgroundColor: {
       lightMode: '$white',
       darkMode: '$gray100',
     },

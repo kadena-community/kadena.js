@@ -44,11 +44,9 @@ export const sideMenuTitleClass = style([
     marginY: '$4',
     textAlign: 'left',
     fontSize: '$sm',
+    backgroundColor: 'transparent',
+    border: 'none',
   }),
-  {
-    background: 'transparent',
-    border: '0',
-  },
 ]);
 
 export const sideMenuTitleButtonClass = style([

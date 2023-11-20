@@ -28,6 +28,8 @@ const systemProperties = defineProperties({
     top: vars.sizes,
     wordBreak: ['normal', 'keep-all', 'break-word', 'break-all'],
     zIndex: [-1, 0, 1],
+    whiteSpace: ['nowrap', 'break-spaces', 'normal', 'pre-wrap'],
+    background: ['none'],
   },
 });
 
@@ -39,7 +41,6 @@ const colorProperties = defineProperties({
   defaultCondition: 'lightMode',
   properties: {
     color: { ...vars.colors, inherit: 'inherit' },
-    background: { ...vars.colors, none: 'none' },
     backgroundColor: { ...vars.colors, transparent: 'transparent' },
     borderColor: vars.colors,
   },
@@ -123,7 +124,6 @@ const responsiveProperties = defineProperties({
     textAlign: ['left', 'center', 'right'],
     fontSize: vars.fontSizes,
     fontWeight: vars.fontWeights,
-    whiteSpace: ['nowrap', 'break-spaces', 'normal'],
   },
   shorthands: {
     margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],
