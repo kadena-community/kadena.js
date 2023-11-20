@@ -4,7 +4,7 @@ import { program } from 'commander';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { getExistingNetworks, isAlphabetic } from '../utils/helpers.js';
-import { externalPrompt, getInput } from './generic.js'; // Importing getInput from another file
+import { getInput } from './generic.js'; // Importing getInput from another file
 
 export const chainIdPrompt: IPrompt = async (
   previousQuestions,
@@ -72,10 +72,10 @@ export const networkOverwritePrompt: IPrompt = async (
   args,
   isOptional,
 ) => {
-  if (args.network === undefined) {
+  if (args.defaultValue === undefined) {
     throw new Error('Network name is required for the overwrite prompt.');
   }
-  const message = `Are you sure you want to save this configuration for network "${args.network}"?`;
+  const message = `Are you sure you want to save this configuration for network "${args.defaultValue}"?`;
   return await select({
     message,
     choices: [
@@ -119,10 +119,11 @@ export const networkDeletePrompt: IPrompt = async (
   args,
   isOptional,
 ) => {
-  if (args.network === undefined) {
+  console.log('networkDeletePrompt', previousQuestions, args, isOptional);
+  if (args.defaultValue === undefined) {
     throw new Error('Network name is required for the delete prompt.');
   }
-  const message = `Are you sure you want to delete the configuration for network "${args.network}"?`;
+  const message = `Are you sure you want to delete the configuration for network "${args.defaultValue}"?`;
   return await select({
     message,
     choices: [
@@ -131,27 +132,3 @@ export const networkDeletePrompt: IPrompt = async (
     ],
   });
 };
-
-export const externalChainIdPrompt: (defaultValue?: string) => Promise<string> =
-  externalPrompt(chainIdPrompt);
-export const externalNetworkNamePrompt: (
-  defaultValue?: string,
-) => Promise<string> = externalPrompt(networkNamePrompt);
-export const externalNetworkIdPrompt: (
-  defaultValue?: string,
-) => Promise<string> = externalPrompt(networkIdPrompt);
-export const externalNetworkHostPrompt: (
-  defaultValue?: string,
-) => Promise<string> = externalPrompt(networkHostPrompt);
-export const externalNetworkExplorerUrlPrompt: (
-  defaultValue?: string,
-) => Promise<string> = externalPrompt(networkExplorerUrlPrompt);
-export const externalNetworkOverwritePrompt: (
-  defaultValue?: string,
-) => Promise<string> = externalPrompt(networkOverwritePrompt);
-export const externalNetworkSelectPrompt: (
-  defaultValue?: string,
-) => Promise<string> = externalPrompt(networkSelectPrompt);
-export const externalNetworkDeletePrompt: (
-  defaultValue?: string,
-) => Promise<string> = externalPrompt(networkDeletePrompt);

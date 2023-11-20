@@ -13,7 +13,8 @@ import {
 } from '../prompts/index.js';
 
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
-import { externalNetworkNamePrompt } from '../prompts/network.js';
+import { createExternalPrompt } from '../prompts/generic.js';
+import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -72,7 +73,10 @@ export const globalOptions = {
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
         await program.parseAsync(['', '', 'networks', 'create']);
-        const networkName = await externalNetworkNamePrompt();
+        const externalPrompt = createExternalPrompt({
+          networkNamePrompt,
+        });
+        const networkName = await externalPrompt.networkNamePrompt();
         return loadNetworkConfig(networkName);
       }
     },

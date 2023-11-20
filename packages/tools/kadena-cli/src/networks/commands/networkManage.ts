@@ -2,14 +2,16 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 import {
-  externalNetworkExplorerUrlPrompt,
-  externalNetworkHostPrompt,
-  externalNetworkIdPrompt,
-  externalNetworkNamePrompt,
+  networkExplorerUrlPrompt,
+  networkHostPrompt,
+  networkIdPrompt,
+  networkNamePrompt,
 } from '../../prompts/network.js';
+
+import { createExternalPrompt } from '../../prompts/generic.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { writeNetworks } from '../utils/networkHelpers.js';
+import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
 
 export const manageNetworksCommand: (
   program: Command,
@@ -21,16 +23,32 @@ export const manageNetworksCommand: (
   async (config) => {
     debug('network-manage:action')({ config });
 
+    const externalPrompts = createExternalPrompt({
+      networkExplorerUrlPrompt,
+      networkHostPrompt,
+      networkIdPrompt,
+      networkNamePrompt,
+    });
+
+    const network = await externalPrompts.networkNamePrompt(config.network);
+
     writeNetworks({
-      network: await externalNetworkNamePrompt(config.networkConfig.network),
-      networkId: await externalNetworkIdPrompt(config.networkConfig.networkId),
-      networkHost: await externalNetworkHostPrompt(
+      network: network,
+      networkId: await externalPrompts.networkIdPrompt(
+        config.networkConfig.networkId,
+      ),
+      networkHost: await externalPrompts.networkHostPrompt(
         config.networkConfig.networkHost,
       ),
-      networkExplorerUrl: await externalNetworkExplorerUrlPrompt(
+      networkExplorerUrl: await externalPrompts.networkExplorerUrlPrompt(
         config.networkConfig.networkExplorerUrl,
       ),
     });
+
+    if (network !== config.network) {
+      // name of network has changed, delete old network
+      removeNetwork(config);
+    }
 
     console.log(
       chalk.green(

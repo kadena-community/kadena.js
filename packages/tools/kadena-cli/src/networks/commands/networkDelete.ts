@@ -1,5 +1,6 @@
 import debug from 'debug';
-import { externalNetworkDeletePrompt } from '../../prompts/network.js';
+import { createExternalPrompt } from '../../prompts/generic.js';
+import { networkDeletePrompt } from '../../prompts/network.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { removeNetwork } from '../utils/networkHelpers.js';
 
@@ -17,8 +18,17 @@ export const deleteNetworksCommand: (
   async (config) => {
     debug('network-delete:action')({ config });
 
-    const overwrite = await externalNetworkDeletePrompt(config.network);
-    if (overwrite === 'no') {
+    const externalPrompt = createExternalPrompt({
+      networkDeletePrompt,
+    });
+
+    console.log('1: ', config.network);
+
+    const shouldDelete = await externalPrompt.networkDeletePrompt(
+      config.network,
+    );
+
+    if (shouldDelete === 'no') {
       console.log(
         chalk.yellow(
           `\nThe network configuration "${config.network}" will not be deleted.\n`,
