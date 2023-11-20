@@ -106,7 +106,7 @@ export function* questionGenerator<T>(
 export async function collectResponses<T>(
   args: Partial<T>,
   questions: IQuestion<T>[],
-  isOptional: boolean = false,
+  isOptional: boolean
 ): Promise<T> {
   const responses: Partial<T> = { ...args };
   const generator = questionGenerator(args, questions);
@@ -116,10 +116,8 @@ export async function collectResponses<T>(
     const question = result.value;
     const response = await question.prompt(responses, args, isOptional);
 
-    if (response !== 'skip') {
-      responses[question.key as keyof T] = response;
-    }
-    // wat doen we met skip?
+    responses[question.key as keyof T] = response;
+
     result = generator.next();
   }
 
@@ -288,3 +286,6 @@ export function clearCLI(full: boolean = false): void {
     }
   }
 }
+
+export const skipSymbol = Symbol('skip');
+export const createSymbol = Symbol('createSymbol');
