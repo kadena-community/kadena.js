@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '../';
+import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '..';
 
 import { kadenaDecrypt } from '../../utils/kadenaEncryption';
 

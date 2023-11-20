@@ -10,9 +10,9 @@ export function kadenaKeyPairsFromRandom(
   count: number = 1,
 ): { publicKey: string; secretKey: string }[] {
   const keyPairs: { publicKey: string; secretKey: string }[] = [];
-  for (let i = 0; i < count; i++) {
+  for (let index = 0; index < count; index++) {
     const randomSeedBuffer = randomBytes(32);
-    const derivationPath = `m'/44'/626'/${i}'/0'/0'`;
+    const derivationPath = `m'/44'/626'/${index}'`;
     const pair = deriveKeyPair(randomSeedBuffer, derivationPath);
 
     keyPairs.push({

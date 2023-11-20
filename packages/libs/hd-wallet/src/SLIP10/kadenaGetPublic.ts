@@ -33,7 +33,7 @@ export function kadenaGetPublic(
 
 /**
  * Generates a key pair from a seed buffer and an index or range of indices, and optionally encrypts the private key.
- * it uses bip44 m'/44'/626'/${index}'/0'/0' derivation path
+ * it uses bip44 m'/44'/626'/${index}' derivation path
  *
  * @param {Uint8Array} seedBuffer - The seed buffer to use for key generation.
  * @param {number | [number, number]} indexOrRange - Either a single index or a tuple with start and end indices for key pair generation.
@@ -45,7 +45,7 @@ export function kadenaGetPublic(
   password: string,
   seed: EncryptedString,
   indexOrRange: number | [number, number],
-  derivationPathTemplate: string = `m'/44'/626'/<index>'/0'/0'`,
+  derivationPathTemplate: string = `m'/44'/626'/<index>'`,
 ): string | string[] {
   if (typeof seed !== 'string' || seed === '') {
     throw new Error('No seed provided.');

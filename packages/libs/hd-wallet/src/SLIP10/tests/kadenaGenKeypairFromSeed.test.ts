@@ -4,7 +4,7 @@ import {
   kadenaGenKeypairFromSeed,
   kadenaGenMnemonic,
   kadenaMnemonicToSeed,
-} from '../';
+} from '..';
 
 import { kadenaDecrypt } from '../../utils/kadenaEncryption';
 

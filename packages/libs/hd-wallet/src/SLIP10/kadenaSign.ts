@@ -33,7 +33,7 @@ export function kadenaSignWithSeed(
   password: string,
   seed: EncryptedString,
   index: number,
-  derivationPathTemplate: string = `m'/44'/626'/<index>'/0'/0'`,
+  derivationPathTemplate: string = `m'/44'/626'/<index>'`,
 ): (tx: IUnsignedCommand) => { sigs: { sig: string }[] } {
   return signWithSeed(
     kadenaDecrypt(password, seed),
