@@ -39,7 +39,7 @@ export async function simulate({
 }): Promise<void> {
   const accounts: IAccount[] = [];
 
-  if (tokenPool < maxAmount || numberOfAccounts < 0) {
+  if (tokenPool < maxAmount || numberOfAccounts <= 0) {
     logger.info('Invalid parameters');
     return;
   }
