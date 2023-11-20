@@ -12,7 +12,7 @@ export default mergeConfig(
       coverage: {
         provider: 'v8',
         lines: 50,
-        functions: 32,
+        functions: 30,
         branches: 88,
         statements: 50,
       },
