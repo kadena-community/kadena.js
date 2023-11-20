@@ -60,9 +60,6 @@ export async function networkOverwritePrompt(
 }
 
 export const networkSelectPrompt: IPrompt = async (prev, args, isOptional) => {
-  console.log('prev', prev);
-  console.log('args', args);
-  console.log('isOptional', isOptional);
   const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
 
   const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({

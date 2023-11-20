@@ -17,6 +17,15 @@ import { createOption } from './createOption.js';
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   // Networks
+  networkName: createOption({
+    key: 'network' as const,
+    prompt: networks.networkNamePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
+  }),
   networkId: createOption({
     key: 'networkId' as const,
     prompt: networks.networkIdPrompt,
