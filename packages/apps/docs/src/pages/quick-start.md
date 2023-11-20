@@ -1,27 +1,23 @@
 ---
 title: Quick start
-description: Kadena makes blockchain work for everyone.
+description: Get started with blockchain basics by setting up a development environment, creating a wallet account, and deploying your first contract.
 menu: Quick start
 label: Quick start
 order: 0
-editLink: https://github.com/kadena-community/getting-started/edit/main/README.md
 layout: full
 tags: [devnet,chainweaver,tutorial,docker,transactions]
-lastModifiedDate: Fri, 03 Nov 2023 10:17:17 GMT
+lastModifiedDate: 
 ---
 
-# Welcome to Kadena
-
-The _Quick start_ assumes that you are a new developer without any prior experience working with Kadena and that you want a simplified, 
-In the _Quick start_, you'll get a basic introduction to Kadena, learn how to set up a Kadena development environment, and deploy a simple **smart contract** application on the Kadena developer network. 
+# Quick start 
 
 This _Quick start_ introduces a few basic steps for working with Kadena. 
 It provides a simplified entry point for anyone interested in trying out or building on Kadena, with step-by-step instructions to guide you on your journey.
 In this tutorial, you’ll learn how to:
 
 - Set up a local **development network**.
+- Create and fund a development account **wallet**.
 - Deploy a simple **smart contract** application.
-- Get free developer tokens using a **faucet** utility.
 - View your contract recorded in a blockchain using a **block explorer**.
 
 ## Kadena at a glance
@@ -38,17 +34,19 @@ The application you'll deploy is a simple "Hello, World!" smart contract written
 A smart contract is a computer program that runs automatically when the conditions specified in the program logic are met. 
 By deploying a smart contract on a blockchain, the terms of an agreement can be executed programmatically in a decentralized way, without any intermediary involvement or process delays.
 
-Because a smart contract requires computer resources to execute the agreement, the contract also incurs transaction fee to compensate for the resources it uses.
-To enable development, most blockchains provide an application that distributes cryptocurrency rewardd—**tokens**—that can be used for testing purposes. 
-The application that distributes the tokens is typically called a **faucets** because the rewards are so small, like drops of water from a leaky faucet.
+Because a smart contract requires computer resources to execute the agreement, the contract also incurs a transaction fee to compensate for the resources it uses.
+To enable development, most blockchains provide an application that distributes cryptocurrency rewards—**tokens**—that can be used for testing purposes. 
+The application that distributes the tokens is typically called a **faucet** because the rewards are so small, like drops of water from a leaky faucet.
 The tokens need to be stored in an account for you to use them.
-The account—your digital **wallet**—has a **secret key** and a **public key** to keep it secure and you'll learn more about that in other tutorials.
+The account—your digital **wallet**—has a **secret key** and a **public key** to keep it secure.
+You'll learn more about that in other tutorials.
 For now, it's enough to know that you have to authorize transactions you want to execute by signing them with the public key for your account.
 
 If a transaction is successful—properly signed and executed—it gets included in a block, where you can confirm the execution using a **block explorer**.
 A block explorer is an application that allows you to view detailed information about blockchain transactions, individual blocks, and account addresses.
 In most cases, you access the block explorer using your web browser.
-However, every blockchain has its own distinct block explorer. For this tutorial, you'll use a block explorer to see transactions on the Kadena blockchain. 
+However, every blockchain has its own distinct block explorer. 
+For this tutorial, you'll use ath Kadena block explorer to see transactions on the Kadena development network blockchain. 
 
 ## Before you begin
 
@@ -66,7 +64,7 @@ Before you start this tutorial, verify the following basic requirements:
 
 To get started, you are going to use Docker to create a Kadena development network in an application container on your local computer.
 
-To set up a local development network:
+To set up the local development network:
 
 1. Open a terminal shell on your computer.
 
@@ -85,6 +83,15 @@ To set up a local development network:
    ```shell
    docker run --interactive --tty --publish 8080:8080 --volume kadena_devnet:/data --name devnet kadena/devnet
    ```
+
+   If you want to automatically remove the container when you stop it, add the `--rm` command-line option.
+   For example:
+   
+   ```shell
+   docker run --rm --interactive --tty --publish 8080:8080 --volume kadena_devnet:/data --name devnet kadena/devnet
+   ```
+
+   Wait for the image to be downloaded to your local environment.
 
 4. Restart the development network by running the following command:
    
@@ -105,9 +112,9 @@ However, to optimize the development workflow on the Kadena development network,
 
 ## Create an account wallet
 
-As mentioned in [Kadena at a glance](#kadena-at-a-glance), you need an account—a digital wallet—to hold the tokens required to interact with the blockchain.
+As mentioned in [Kadena at a glance](#kadena-at-a-glance), you need an account—a digital wallet—to hold the funds required to interact with the blockchain.
 There are a lot of options for creating a wallet.
-The steps are similar for any wallet, but in this tutorial, let's use Kadena Chainweaver to set up your account wallet.
+The steps are similar for any wallet, but in this tutorial, you'll use Kadena Chainweaver to set up your account wallet.
 
 To create an account wallet:
 
@@ -115,14 +122,14 @@ To create an account wallet:
 
 2. Review the [Terms of Service](https://kadena.io/chainweaver-tos/) and confirm that you agree to them, then click **Create a new wallet**.
 
-3. Enter and confirm the password for your account, then click **Continue**.
+3. Type and confirm the password you want to use for this account, then click **Continue**.
 
 4. Confirm that you understand the importance of the recovery phrase, then click **Continue**.
 
-5. Click **Copy** to copy the 12-word recovery phrase to a secure location.
+5. Click **Copy** to copy the 12-word recovery phrase to the clipboard so you can save it in a secure location, for example, as a note in a password vault.
    
    You can also reveal each word by moving the cursor over the text field in the browser. 
-   Write each word in the correct order and store the complete recovery phrase in a secure location.
+   Write each word in the correct order and store the complete recovery phrase in a secure place.
 
 6. Confirm that you have stored the recovery phrase, then click **Continue**.
 
@@ -130,21 +137,21 @@ To create an account wallet:
 
 8. Click **Done** to view your new wallet.
 
-## Add the development network
+## Connect to the development network
 
-Now that you have a Chainweaver wallet, you need to connect it to the development network.
+Now that you have a Chainweaver wallet, you can connect it to the development network.
 
 To add the development network to your new wallet:
 
-1. Click **Settings** in the navigation panel.
+1. Click **Settings** in the Chainweaver navigation panel.
 
 2. Click **Network**.
 
-3. In Edit Networks, type the network name **Ddvnet**, then click **Create**.
+3. In Edit Networks, type the network name **devnet**, then click **Create**.
 
 4. Expand the **devnet** network, then add the localhost as a node for this network by typing `127.0.0.1:8080`.
    
-   If the local computer is still running the development network, you should see the dot next to the node turn green.
+   If the local computer is still running the development network Docker container, you should see the dot next to the node turn green.
 
 1. Click **Ok** to close the network settings.
 
@@ -154,24 +161,28 @@ The next step is to create keys for your account so that you can sign transactio
 
 To create keys in your Chainweaver wallet:
 
-1. Click **Keys** in the navigation panel.
+1. Click **Keys** in the Chainweaver navigation panel.
    
    You'll see that a public key has already been generated for your account.
    The secret key for this account is the information that can only be recovered using the 12-word recovery phrase.
    You can create additional public keys for signing transactions by clicking **Generate Key**.
    However, any additional public keys you generate are still associated with the same secret key and recovery phrase.
+   For this tutorial, you can use the public key that was generated for you.
 
 2. Click **Add k: Account**.
    
    Under Balance (KDA), notice that the account displays **Does not exist**.
    In Kadena, keys are used to sign transactions but they don't hold funds to pay transaction fees.
-   Keys must be linked to an account that holds funds before you can use them to sign transactions.
+   Keys must be linked to an authorization account—a guardian or guard—that holds funds and identifies who can sign transactions and transfer funds.
 
 ## Fund your account
 
 Right now, you have an empty wallet.
 The next step is to fund your account so you can pay transaction fees. 
-You can fund the account from a pre-installed development network account called `sender00`.
+You can fund the account from a predefined development network account called `sender00`.
+To simplify the process for this tutorial, you can use scripts located in the `getting-started` repository.
+
+To fund your account:
 
 1. Open a terminal shell on your computer.
 
@@ -186,6 +197,7 @@ You can fund the account from a pre-installed development network account called
     ```shell
     cd getting-started
     ```
+
 1. Install dependencies by running the following command:
 
     ```shell
@@ -197,21 +209,22 @@ You can fund the account from a pre-installed development network account called
 1. Send tokens from the `sender00` account to the account name you copied by running a command similar to the following:
    
    ```shell
-   npm run start -- fund --keys "<your-account-key>" --predicate "keys-all"
+   npm run start -- fund --keys "<your-account-public-key>" --predicate "keys-all"
    ```
 
    In this command, specify the public key for the account you copied from Chainweaver for the `--keys` command-line option.
+   If the account key you copied includes the `k:` prefix, remove the prefix from the command-line argument.
    The combination of the `keys` and `predicate` create a **keyset** that is used to safeguard your account.
    You'll learn more about keysets in other tutorials.
 
 2. Open the [Kadena Block Explorer](http://localhost:8080/explorer/) to search for the transaction using the account you copied from Chainweaver.
 
-3. In Chainweaver, click **Refresh** to update the account balances.
+3. In Chainweaver, click **Refresh** to update the account balance.
 
 ## Deploy a contract
 
-Now that you have a funded account, you can use that account and public key to deploy a simple `hello world` smart contract—written on the Kadena programming language, Pact—on the development network.
-You'll learn more about Pact in other tutorials, but for now, let's deploy a predefined smart contract that looks like this:
+Now that you have a funded account, you can use that account and public key to deploy a simple `hello world` smart contract—written in the Kadena programming language, Pact—on the development network.
+You'll learn more about Pact in other tutorials, but for now, you can deploy a predefined smart contract that looks like this:
 
 ```lisp
 (namespace 'free)
@@ -238,7 +251,7 @@ To deploy the smart contract:
 3. Deploy the smart contract from the `getting-started` repository by running a command similar to the following:
    
    ```shell
-   npm run start -- deploy --keys "<your-account-key>" --predicate "keys-all" --sign-manually
+   npm run start -- deploy --keys "<your-account-public-key>" --predicate "keys-all" --sign-manually
    ```
 
    In the next steps, you copy and paste information between the terminal and the Chainweaver application.
@@ -252,18 +265,18 @@ To deploy the smart contract:
 
 4. Scroll to locate the **Signers** section of the transaction and verify that your public key is listed, then click **Sign**.
 
-5. Copy the full Command JSON or the content of the `sig` key-value pair and paste it into the terminal.
+5. Copy the full Command JSON and paste it into the terminal.
    
-   After you enter this command, the terminal displays information about the transaction including a `requestkey`. 
+   After you enter this command, the terminal displays information about the transaction including a `requestKey`. 
    You can click **Done** in Chainweaver to close the Signature Builder.
 
-6. Copy the `requestkey` from the terminal.
+6. Copy the `requestKey` from the terminal.
 
-7. Open the [Kadena block explorer](http://localhost:8080/explorer), select **Request Key**, paste the `requestkey` from the terminal, then click **Search**
+7. Open the [Kadena block explorer](http://localhost:8080/explorer), select **Request Key**, paste the `requestKey` from the terminal, then click **Search**
    
    In the Transaction Results, you'll see a result similar to the following:
    
-   Loaded module free.hello-world, hash dP-eeuLlCkDI7aEvHuWhxGs-mTjw-gSUAD0DHJ9Xnxw
+   Loaded module free.hello-world, hash -pMyUsZtHx8ThNr3zlzPVxdZJa-aJTK29skwWOu9APw
 
 Now that you have uploaded the smart contract, you can interact with it on the development network.
 
@@ -276,15 +289,15 @@ To view the `hello-world` smart contract:
 1. In Chainweaver, click **Contracts** in the navigation panel.
    
    After you click Contracts, Chainweaver displays two working areas.
-   The left side enables you to view and edit contract code and execute commands interactively.
-   The right side enables you to navigate, view details, and test operations for contracts you have deployed.
+   The left side displays a sample contract in an editor that you can use to view and edit contract code and execute commands interactively.
+   The right side provides controls that enable you to navigate between contracts, view contract details, and test operations for contracts you have deployed.
 
-2. On the right side in Contracts, click **Module Explorer**.
+2. On the right side of Contracts, click **Module Explorer**.
 
 3. Under Deployed Contracts, search for the `hello-world` contract.
 
 4. Click **View**  to display details about the smart contract.
-   For example, you can see that this contract has two functions—`set-message` and `greet`—and one capability defined.
+   For example, you can see that this contract has one function—`say-hello`—defined.
 
 ## Execute a read-only command
 
@@ -295,10 +308,10 @@ Read-only commands don't require transaction fees.
 
 To execute a command using the `hello-world` contract:
 
-1. In the left side under Contracts, type the following command:
+1. In the left side under Contracts, remove the sample contract displayed, then type the following command:
    
    ```lisp
-   (free.hello-world.say-hello "Albert")
+   (free.hello-world.say-hello "World")
    ```
 
 2. Click **Deploy** to display the transaction details, then click **Next**.
@@ -310,7 +323,7 @@ To execute a command using the `hello-world` contract:
 
 4. Scroll to see the Raw Response:
    
-   "Hello, Albert!"
+   <!--![Raw response for Hello, World smart contract](/public/assets/docs/hello-world-quickstart/raw-response-hello.png)-->
 
 ## Write to the blockchain
 
@@ -319,7 +332,7 @@ You changed the **state** of the blockchain from not having the `hello-world` co
 However, that state change transaction didn't take place from within the context of the smart contract itself.
 No contract logic was executed in the transaction.
 
-To illustrate how you can change the state of information stored on the blockchain using the logic in a smart contract, we make a few adjustments to the content of the `hello-world` smart contract.
+To illustrate how you can change the state of information stored on the blockchain using the logic in a smart contract, you first need to modify the code in the `hello-world` smart contract.
 The modified version of the smart contract looks like this:
 
 ```lisp
@@ -345,6 +358,7 @@ The modified version of the smart contract looks like this:
 
 (create-table hello-world-table)
 ```
+
 ### Review contract changes
 
 Before moving on, let's take a closer look at what's changed in the sample `hello-world` contract.
@@ -372,9 +386,9 @@ The updated contract also includes a function that allows you to write to the sc
 
 ### Deploy the modified contract
 
-After making these changes, you need to redeploy the contract.
+After making these changes, you need to redeploy the modified contract.
 
-To redeploy the `hello-world` smart contract:
+To deploy the modified `hello-world` smart contract:
 
 1. Verify you have Chainweaver open in the browser.
 
@@ -386,129 +400,133 @@ To redeploy the `hello-world` smart contract:
    cd getting-started
    ```
 
-3. Redeploy the smart contract from the `getting-started` repository by running a command similar to the following:
+3. Deploy the updated smart contract from the `getting-started` repository by running a command similar to the following:
    
    ```shell
    npm run start -- deploy \
-   --keys "your-account-key" \
+   --keys "<your-account-public-key>" \
    --predicate keys-all \
    --file ./src/pact/hello-world.pact
    --sign-manually
    ```
+   
+   If the account key includes the `k:` prefix, remove the prefix from the command-line argument.
 
    As you saw in the previous deployment, you'll copy and paste information between the terminal and the Chainweaver application.
    The instructions for signing the transaction using Chainweaver in the browser are also displayed in the terminal.
 
+   - Copy the command displayed in the terminal into the Signature Builder, then click **Review**.
+   - Verify the information displayed is correct, then click **Sign**.
+   - Copy the JSON from Signature Builder and paste it into the terminal.
+   - Copy the `requestKey` from the terminal.
+   - Open the Kadena block explorer, select Request Key, paste the `requestKey`  from the terminal, then click **Search**.
+
+   For the updated `hello-world` contract, you'll see the transaction result is **TableCreated**.
+
+### View the modified contract
+
+After you deploy the updated  `hello-world` smart contract, you can view and interact with it using Chainweaver.
+
+To view the `hello-world` smart contract:
+
+1. In Chainweaver, click **Contracts** in the navigation panel.
+
+2. Click **Module Explorer**.
+
+3. Under Deployed Contracts, search for the `hello-world` contract.
+
+4. Click **View**  and note that the new contract has two new functions—`say-hello` and `write-hello`.
+   
+   The `say-hello` function reads from the table and the `write-hello` function writes to the table.
+
 ### Execute a write function
 
-1.  Go to the "contracts" page in Chainweaver
+1. Click **Contracts** in the Chainweaver navigation panel.
 
-2.  Write the following snippet
-    ```lisp
-    (free.hello-world.write-hello "Albert")
-    ```
+2. In the editor, type the following code:
+   
+   ```lisp
+   (free.hello-world.write-hello "Everyone")
+   ```
 
-3.  Click "Deploy"
+3. Click **Deploy**.
 
-4.  Select Chain ID "0"
+4. In the Configuration section of the Transaction Details:
+   
+   - Under Destination, select Chain ID **0**.
+   - Under Transaction Sender, select account with the public key that matches the account that you funded.
+     The account format uses a `k:` followed by the public key for your account.
+   - Use the default settings for the remaining fields.
 
-5.  In "Transaction Sender" select "Account" that corresponds with the account
-    that you funded. It should be `k:<public-key>`
+5. Click **Next**.
 
-6.  Other settings should be correctly filled in as default
+6. Under Unrestricted Signing Keys, check the public key of your account, then click **Next**.
+   
+   After you click Next, the transaction Preview displays a notice that a Gas Payer has not been selected for the transaction. 
+   You can ignore this notice because you have set the unrestricted signer for this transaction to use your public key.
 
-7.  Click "next"
+7. Click **Submit**.
 
-8.  In "Unrestricted Signing Keys" select the `public-key` of your account
-
-9.  Click "next"
-
-10. You'll see a Notice:
-
-    > A 'Gas Payer' has not been selected for this transaction. Are you sure
-    > this is correct?
-
-    You can safely ignore this, as the gas-payment will be done by the
-    unrestricted signer
-
-11. Click "submit". Now that you have written to the table, we can read from the
-    table
-
+8. Wait for the transaction result **Successful Server result: "Write succeeded"**, then click **Done**.
+   
 ### Read from the table
 
-Execute the following function, and deploy to read the keys from the table.
+Now that you have written to the table, you can read from the table.
 
-> **Note:** this function costs a lot as this is not something you'd usually do
-> in a regular transaction.
+**Note:** This function call is expensive because it isn't something you'd do in a typical transaction.
 
-1.  Paste the snippet in the editor
-    ```lisp
-    (map (read free.hello-world.hello-world-table) (keys free.hello-world.hello-world-table))
-    ```
-2.  Click "deploy"
-3.  Change the Chain ID to 0 (as we only deployed the contract on Chain 0)
-4.  Change the gas limit to `99999`
-5.  Click next to the end
-6.  In "Raw Response" you should be able to see
-        [{"text": "Hello, Albert!"}]
+1. In the editor, type the following code:
+   
+   ```lisp
+   (map (read free.hello-world.hello-world-table) (keys free.hello-world.hello-world-table))
+   ```
 
-## Further reading
+2. Click **Deploy**.
 
-Get started with the basics of Pact by reading the
-[Welcome to Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact)
-docs.
+3. Select the Chain ID **0** because the contract was deployed on Chain 0.
 
-[Reference documentation of Pact](https://docs.kadena.io/pact/reference)
+4. Set the **Gas Limit Units** to `99999`.
 
-A very good and complete tutorial on learning pact, with real world scenario's,
-is the
-[Real World Pact series of Thomas Honeyman](https://github.com/thomashoneyman/real-world-pact#real-world-pact)
+5. Click **Next** to display the transaction signing fields, then click **Next** again. 
 
-<!-- Now we can try to execute the `say-hello` function using chainweaver. First
-navigate to the contracts tab:
+6. Check the Raw Response and verify that you see the following:
+   
+   [{"text": "Hello, Everyone!"}]
 
-![image](https://github.com/kadena-community/getting-started/assets/1508400/0f2d192f-6a75-4a9b-ba5d-e87ff51edaf4) -->
+## Reset the development network
 
-<!-- Then click on the module explorer from the right side tab:
+If you want to run through this tutorial more than once, keep in mind that after you deploy a contract it remains on the network.
+If you want to experiment with writing and deploying contracts, you should periodically reset the development network to a clean state to avoid errors.
+To shut down the development network, you can run the following command:
 
-![image](https://github.com/kadena-community/getting-started/assets/1508400/af74e8e4-199e-4f6b-a199-f5f2f1ac9ec5) -->
+```docker
+docker stop devnet
+```
 
-<!-- Then search for the `hello-world` contract:
+To completely remove the development network from your local computer, you can run commands similar to the following:
 
-![image](https://github.com/kadena-community/getting-started/assets/1508400/5b253553-8e3c-43a7-8e23-a0309675d5d7) -->
+```docker
+docker stop <volume-container-identifier>
+docker rm <volume-container-identifier>
+docker volume rm kadena_devnet
+```
 
-<!-- View the contract to see all available methods:
+## Next steps
 
-![image](https://github.com/kadena-community/getting-started/assets/1508400/8b360ae2-260d-4eed-8c6f-f742d427d49d) -->
+In this tutorial, you learned a little about a lot of topics. 
+For example, you learned some basic terminology for building on the Kadena blockchain.
+You also had some hands-on experience with the following tasks:
 
-<!-- Click on `call` to see the necessary arguments:
+- Setting up a local development network.
+- Creating a wallet account with a public and secret key.
+- Funding your account with coins from a predefined account application.
+- Deploying a simple smart contract.
+- Using Chainweaver and the Kadena block explorer to interact with the blockchain and view information about transactions.
+- Executing the write and read functions from a smart contract on the blockchain.
 
-![image](https://github.com/kadena-community/getting-started/assets/1508400/808ddb40-cab9-4eba-aa15-35d823f020a8) -->
+The most important next step from here is to start learning how to write your own smart contracts using the Pact programming language.
+The following are the best resources for learning Pact:
 
-<!-- Notice how the raw command is prepared by chainweaver, make sure to fill in
-`sender00` for the account. If you don't fill in any account, chainweaver will
-warn you that no account has been selected for the transaction:
-
-![image](https://github.com/kadena-community/getting-started/assets/1508400/02677a89-17ed-4a83-812b-b2fc40896018) -->
-
-<!-- Then click on preview and ignore the
-`A 'Gas Payer' has not been selected for this transaction` message. We are only
-performing a lookup and will not be submitting this transaction. Scroll all the
-way down and see the result of the method:
-
-![image](https://github.com/kadena-community/getting-started/assets/1508400/c2c3eba1-a87b-48c6-b01a-4ab5b2e0b643) -->
-
-<!-- Now let's copy the `Raw Command` and close the window. Paste the `Raw Command`
-in the editor:
-
-![image](https://github.com/kadena-community/getting-started/assets/1508400/d205e7aa-1b66-4fa9-8c00-2c1560c9bb2a) -->
-
-<!-- Click on `Deploy` and fill in account to `sender00` and click on Preview once
-more:
-
-![image](https://github.com/kadena-community/getting-started/assets/1508400/7e76d1f5-188e-4631-8c4b-ba5047bc350d) -->
-
-<!-- NOTE: if you do not fill in any account you will be presented with the following
-message:
-
-![image](https://github.com/kadena-community/getting-started/assets/1508400/3747b8a8-3c34-496d-8da4-5933d0fc83a4) -->
+- [Welcome to Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact).
+- [Real World Pact](https://github.com/thomashoneyman/real-world-pact#real-world-pact) tutorial series by Thomas Honeyman.
+- [Language Reference](https://docs.kadena.io/pact/reference).
