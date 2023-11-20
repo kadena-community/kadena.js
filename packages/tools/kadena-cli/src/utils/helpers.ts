@@ -61,7 +61,7 @@ export interface IQuestion<T> {
   key: keyof T;
 
   /**
-   * The prompt function responsible for retrieving the answer for this question. This function is used to present the question to the user and collect their response.
+   * The prompt function responsible for retrieving the answer for this question.
    *
    * @param {Partial<T>} previousAnswers - An object containing answers provided for previous questions. Useful for conditional logic based on past responses.
    * @param {Partial<T>} args - Command line arguments or other external parameters that might influence the prompt's behavior.
