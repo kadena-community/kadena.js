@@ -13,7 +13,7 @@ const meta: Meta<ITooltipProps> = {
   decorators: [withCenteredStory],
   parameters: {
     status: {
-      type: ['inDevelopment'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {
