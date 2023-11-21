@@ -1,38 +1,41 @@
 export enum SearchType {
-  GasEstimation = 'gasEstimation',
+  GasEstimation = 'gas-estimation',
   Account = 'account',
   Block = 'block',
   Transactions = 'request-key',
   Event = 'event',
 }
 
-export const searchTypeLabels: Record<string, string> = {
+export const searchTypeLabels: Partial<Record<SearchType, string>> = {
   'request-key': 'Request Key',
   account: 'Account',
   event: 'Event Name',
   block: 'Block Hash',
-  gasEstimation: 'Cmd',
+  'gas-estimation': 'Command',
 };
-export const secondSearchTypeLabels: Record<string, string> = {
+export const secondSearchTypeLabels: Partial<Record<SearchType, string>> = {
   account: 'Module',
-  gasEstimation: 'Hash',
+  'gas-estimation': 'Hash',
 };
-export const thirdSeachTypeLabels: Record<string, string> = {
-  gasEstimation: 'Signatures',
+export const thirdSeachTypeLabels: Partial<Record<SearchType, string>> = {
+  'gas-estimation': 'Signatures',
 };
-export const searchTypePlaceholders: Record<string, string> = {
+export const searchTypePlaceholders: Partial<Record<SearchType, string>> = {
   'request-key': 'vCiATVJgm7...',
   account: 'k:1234...',
   event: 'coin.TRANSFER',
   block: 'CA9orP2yM...',
-  gasEstimation: 'cmd',
+  'gas-estimation': '(coin.details k:1234...',
 };
 
-export const secondSearchFieldPlaceholders: Record<string, string> = {
+export const secondSearchFieldPlaceholders: Partial<
+  Record<SearchType, string>
+> = {
   account: 'coin',
-  gasEstimation: 'hash',
+  'gas-estimation': 'hash',
 };
 
-export const thirdSearchFieldPlaceholders: Record<string, string> = {
-  gasEstimation: 'sigs',
-};
+export const thirdSearchFieldPlaceholders: Partial<Record<SearchType, string>> =
+  {
+    'gas-estimation': 'signatures',
+  };
