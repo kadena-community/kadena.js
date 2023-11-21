@@ -7,9 +7,12 @@ import {
   getBalance,
   transfer,
   transferCreate,
+  transferCreateCommand,
   transferCrossChain,
 } from '../coin';
 
+import { composePactCommand, setNetworkId } from '@kadena/client/fp';
+import { estimateGas } from '../core/estimate-gas';
 import { NetworkIds } from './support/NetworkIds';
 import { withStepFactory } from './support/helpers';
 import {

@@ -21,7 +21,7 @@ interface ICreateAccountCommandInput {
   chainId: ChainId;
 }
 
-const createAccountCommand = ({
+export const createAccountCommand = ({
   account,
   keyset,
   gasPayer,

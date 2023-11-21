@@ -18,7 +18,7 @@ interface ITransferInput {
   chainId: ChainId;
 }
 
-const transferCommand = ({
+export const transferCommand = ({
   sender,
   receiver,
   amount,

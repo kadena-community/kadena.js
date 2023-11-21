@@ -27,7 +27,7 @@ interface ICrossChainInput {
   chainId: ChainId;
 }
 
-const createCrossChainCommand = ({
+export const createCrossChainCommand = ({
   sender,
   receiver,
   amount,

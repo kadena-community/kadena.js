@@ -25,7 +25,7 @@ interface ICreateTransferInput {
   chainId: ChainId;
 }
 
-const transferCreateCommand = ({
+export const transferCreateCommand = ({
   sender,
   receiver,
   amount,
