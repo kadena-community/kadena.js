@@ -1,1 +1,2 @@
-export * from './utils';
+export * from './SLIP10';
+export * from './utils/kadenaEncryption';
