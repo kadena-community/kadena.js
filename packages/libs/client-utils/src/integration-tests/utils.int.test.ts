@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { transferCreateCommand } from '../coin';
+import { transferCreate, transferCreateCommand } from '../coin';
 
+import { IPactCommand, createSignWithKeypair } from '@kadena/client';
 import { composePactCommand, setNetworkId } from '@kadena/client/fp';
 import { estimateGas } from '../core/estimate-gas';
 import {
@@ -21,28 +22,41 @@ const accountTwo = {
 
 describe('estimateGas', () => {
   it('should return gasLimit and gasPrice', async () => {
-    const result = await estimateGas(
+    const inputs = {
+      sender: {
+        account: sender00Account.account,
+        publicKeys: [sender00Account.publicKey],
+      },
+      receiver: {
+        account: accountOne.account,
+        keyset: {
+          keys: [accountOne.publicKey],
+          pred: 'keys-all' as const,
+        },
+      },
+      amount: '1',
+      chainId: '0' as const,
+    };
+    const gasEstimation = await estimateGas(
       composePactCommand(
-        transferCreateCommand({
-          sender: {
-            account: sender00Account.account,
-            publicKeys: [sender00Account.publicKey],
-          },
-          receiver: {
-            account: accountOne.account,
-            keyset: {
-              keys: [accountOne.publicKey],
-              pred: 'keys-all',
-            },
-          },
-          amount: '1',
-          chainId: '0',
-        }),
+        transferCreateCommand(inputs),
         setNetworkId('fast-development'),
       ),
       'http://127.0.0.1:8080',
     );
 
-    expect(result).toEqual({ gasLimit: 708, gasPrice: 1e-8 });
+    expect(gasEstimation).toEqual({ gasLimit: 708, gasPrice: 1e-8 });
+
+    // check if the gas estimation is correct
+    const transferResult = await transferCreate(inputs, {
+      defaults: {
+        networkId: 'fast-development',
+        meta: { ...gasEstimation } as IPactCommand['meta'],
+      },
+      host: 'http://127.0.0.1:8080',
+      sign: createSignWithKeypair([sender00Account]),
+    }).execute();
+
+    expect(transferResult).toEqual('Write succeeded');
   });
 });
