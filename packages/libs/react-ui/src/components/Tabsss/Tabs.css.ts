@@ -1,46 +1,45 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { darkThemeClass, vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
-export const tabsContainerClass = style([
+export const tabsContainer = style([
   sprinkles({
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
-  }),
-]);
-
-export const tabListClass = style([
-  sprinkles({
-    display: 'flex',
-    flexDirection: 'row',
     position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    flexGrow: 1,
+    marginBottom: '$4',
   }),
   {
     borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral2}`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral3}`,
+      },
+    },
   },
 ]);
 
-export const tabItemClass = style([
+export const tabClass = style([
   sprinkles({
     border: 'none',
     cursor: 'pointer',
-    paddingY: '$1',
-    marginRight: '$2',
+    paddingY: '$2',
     fontSize: '$md',
-    fontWeight: '$semiBold',
     backgroundColor: 'transparent',
     color: '$neutral4',
   }),
   {
-    opacity: '.6',
     whiteSpace: 'nowrap',
-    selectors: {
-      '&[data-selected="true"]': {
-        opacity: '1',
-        color: vars.colors.$primaryContrastInverted,
-      },
-    },
+  },
+]);
+
+export const selectedClass = style([
+  sprinkles({
+    fontWeight: '$bold',
+  }),
+  {
+    color: vars.colors.$primaryContrastInverted,
   },
 ]);
 
@@ -56,16 +55,18 @@ export const selectorLine = style([
     height: '$0',
   }),
   {
-    bottom: '-2px',
+    bottom: '-2px', // for some reason a negative cant be done with vars
     transition: 'transform .4s ease, width .4s ease',
     transform: `translateX(0)`,
   },
 ]);
 
-export const tabContentClass = style([
+export const tabsContainerWrapper = style([
   sprinkles({
-    marginY: '$2',
-    fontSize: '$base',
-    color: '$neutral4',
+    display: 'flex',
+    width: '100%',
   }),
+  {
+    overflowY: 'scroll',
+  },
 ]);

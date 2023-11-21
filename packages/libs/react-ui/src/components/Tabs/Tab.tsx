@@ -1,30 +1,32 @@
-import classNames from 'classnames';
-import type { FC, ReactNode } from 'react';
-import React from 'react';
-import { selectedClass, tabClass } from './Tabs.css';
+import type { ReactNode } from 'react';
+import React, { useRef } from 'react';
+import type { AriaTabProps } from 'react-aria';
+import { useTab } from 'react-aria';
+import type { Node, TabListState } from 'react-stately';
+import { tabItemClass } from './Tabs.css';
 
-export interface ITabProps {
-  children: ReactNode;
-  selected?: boolean;
-  handleClick?: (tabId: string) => void;
-  id: string;
+interface ITabProps extends AriaTabProps {
+  item: Node<object>;
+  state: TabListState<object>;
 }
 
-export const Tab: FC<ITabProps> = ({
-  children,
-  selected = false,
-  handleClick,
-  id,
-}) => {
-  if (handleClick === undefined || id === undefined) return null;
+/**
+ * @internal this should not be used, check the Tabs.stories
+ */
+export const Tab = ({ item, state }: ITabProps): ReactNode => {
+  const { key, rendered } = item;
+  const ref = useRef(null);
+  const { tabProps } = useTab({ key }, state, ref);
+
   return (
-    <button
-      className={classNames(tabClass, { [selectedClass]: selected })}
-      data-selected={selected}
-      data-tab={id}
-      onClick={() => handleClick(id)}
+    <div
+      className={tabItemClass}
+      {...tabProps}
+      ref={ref}
+      role="tab"
+      data-selected={state.selectedKey === key}
     >
-      {children}
-    </button>
+      {rendered}
+    </div>
   );
 };

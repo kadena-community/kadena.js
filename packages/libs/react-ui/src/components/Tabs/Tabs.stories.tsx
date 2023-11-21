@@ -1,128 +1,100 @@
-import type { ITabsContainerProps } from '@components/Tabs';
-import { Tabs } from '@components/Tabs';
-import { Text } from '@components/Typography/Text/Text';
-import type { Meta, StoryObj } from '@storybook/react';
-import { withCenteredStory } from '@utils/withCenteredStory';
-import React from 'react';
+import type { Meta } from '@storybook/react';
+import React, { useState } from 'react';
+import type { Key } from 'react-aria';
+import type { ITabsProps } from './Tabs';
+import { TabItem, Tabs } from './Tabs';
 
-const ExampleTabs: string[] = [
-  'He-man',
-  'Skeletor',
-  'Orko',
-  'Teela-Na',
-  'Cringer',
-  'King Randor',
+const ExampleTabs: any[] = [
+  { title: 'Title', content: 'Content' },
+  { title: 'Title2', content: 'Content2' },
+  { title: 'Title3', content: 'Content3' },
 ];
 
-const meta: Meta<
-  ITabsContainerProps & {
-    itemsCount: number;
-  }
-> = {
-  title: 'Layout/TabsOld',
-  decorators: [withCenteredStory],
+const meta: Meta<ITabsProps> = {
+  title: 'Layout/Tabs',
+  component: Tabs,
   parameters: {
-    status: {
-      type: ['inDevelopment'],
-    },
+    status: { type: 'inDevelopment' },
     docs: {
       description: {
         component:
-          'The Tab component consists of three sub components:<br /><strong><Tabs.Root></strong> as the parent container<br /><strong><Tabs.Tab></strong> for each tab item<br /><strong><Tabs.Content></strong> for the tab content<br /><br /><em>This component has a controlled and uncontrolled state. When a currentTab is not provided, the component will track state internally.</em>',
+          'The Tabs component is wrapper around [react aria](https://react-spectrum.adobe.com/react-aria/useTabList.html) hook to add all the accessibility perks this lib includes onto our tabs.  Here are just a couple of examples but you can check their docs for more. The exposed component are Tabs and TabItem, check the examples bellow to see how to use it.',
       },
     },
   },
-  component: Tabs.Root,
   argTypes: {
-    itemsCount: {
-      control: { type: 'range', min: 1, max: 6, step: 1 },
-      description: 'Total number of tabs.',
-      table: {
-        type: { summary: 'number' },
+    ['aria-label']: {
+      description: 'accesibility label.',
+      control: {
+        type: 'text',
       },
     },
-    initialTab: {
-      options: [
-        ...['-'],
-        ...Object.values(ExampleTabs),
-      ] as (keyof typeof ExampleTabs)[],
+    ['aria-describedby']: {
+      description: 'accesibility label.',
       control: {
-        type: 'select',
-      },
-      description:
-        'The default selected page <em>before</em> any interaction.<br /><small>Changing value will not trigger story re-render.</small>',
-      table: {
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'string | undefined' },
+        type: 'text',
       },
     },
-    currentTab: {
-      options: [
-        ...[undefined],
-        ...Object.values(ExampleTabs),
-      ] as (keyof typeof ExampleTabs)[],
+    ['aria-details']: {
+      description: 'accesibility label.',
       control: {
-        type: 'select',
+        type: 'text',
       },
-      description:
-        'Current active tab. Used when component is controlled.<br /><small>Set to make component controlled.</small>',
-      table: {
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'string | undefined' },
+    },
+    ['aria-labelledby']: {
+      description: 'accesibility label.',
+      control: {
+        type: 'text',
       },
+    },
+    selectedKey: {
+      description: 'The currently selected key in the collection (controlled).',
+    },
+    defaultSelectedKey: {
+      description: 'The initial selected key in the collection (uncontrolled).',
+    },
+    onSelectionChange: {
+      description: 'Handler that is called when the selection changes.',
+      action: 'clicked',
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<ITabsContainerProps & { itemsCount: number }>;
 
-export const Primary: Story = {
-  name: 'Tabs',
-  args: {
-    itemsCount: 6,
-    initialTab: 'Skeletor',
-    currentTab: undefined,
-  },
-  render: ({ itemsCount, initialTab, currentTab }) => {
-    const tabs = ExampleTabs.slice(0, itemsCount);
+export const TabsStory = () => (
+  <Tabs aria-label="SomeExampleOfTabs">
+    {ExampleTabs.map((tab) => (
+      <TabItem key={tab.title} title={tab.title}>
+        {tab.content}
+      </TabItem>
+    ))}
+  </Tabs>
+);
 
-    return (
-      <>
-        <Tabs.Root initialTab={initialTab} currentTab={currentTab}>
-          {tabs.map((tab) => {
-            return (
-              <Tabs.Tab key={tab} id={tab}>
-                {tab}
-              </Tabs.Tab>
-            );
-          })}
+export const ControlledTabsStory = () => {
+  const [timePeriod, setTimePeriod] = useState<Key>('jurassic');
 
-          {tabs.map((tab) => {
-            return (
-              <Tabs.Content key={tab} id={tab}>
-                <Text>
-                  Content for Tab &apos;{tab}&apos; The Tab component consists
-                  of three sub components:
-                  <br />
-                  <strong></strong> as the parent container
-                  <br />
-                  <strong></strong> for each tab item
-                  <br />
-                  <strong> </strong> for the tab content
-                  <br />
-                  <br />
-                  <em>
-                    This component has a controlled and uncontrolled state. When
-                    a currentTab is not provided, the component will track state
-                    internally.
-                  </em>
-                </Text>
-              </Tabs.Content>
-            );
-          })}
-        </Tabs.Root>
-      </>
-    );
-  },
+  return (
+    <>
+      <p>Selected time period: {timePeriod}</p>
+      <Tabs
+        aria-label="Mesozoic time periods"
+        selectedKey={timePeriod}
+        onSelectionChange={setTimePeriod}
+      >
+        <TabItem key="triassic" title="Triassic">
+          The Triassic ranges roughly from 252 million to 201 million years ago,
+          preceding the Jurassic Period.
+        </TabItem>
+        <TabItem key="jurassic" title="Jurassic">
+          The Jurassic ranges from 200 million years to 145 million years ago.
+        </TabItem>
+        <TabItem key="cretaceous" title="Cretaceous">
+          The Cretaceous is the longest period of the Mesozoic, spanning from
+          145 million to 66 million years ago.
+        </TabItem>
+      </Tabs>
+    </>
+  );
 };
