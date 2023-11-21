@@ -4,6 +4,7 @@ import {
   Button,
   FormFieldWrapper,
   Grid,
+  GridItem,
   Input,
   Select,
 } from '@kadena/react-ui';
@@ -202,8 +203,8 @@ const Header: FC<IHeaderProps> = (props) => {
           {title}
         </Text>
 
-        <Grid.Root columns={gridColumns}>
-          <Grid.Item>
+        <Grid columns={gridColumns}>
+          <GridItem>
             <FormFieldWrapper htmlFor="search-type" label="Search Type">
               <Select
                 ariaLabel="search-type"
@@ -218,9 +219,9 @@ const Header: FC<IHeaderProps> = (props) => {
                 <option value={SearchType.GasEstimation}>Gas Estimation</option>
               </Select>
             </FormFieldWrapper>
-          </Grid.Item>
+          </GridItem>
 
-          <Grid.Item>
+          <GridItem>
             <FormFieldWrapper
               htmlFor="search-field"
               label={searchTypeLabels[searchType]}
@@ -233,11 +234,11 @@ const Header: FC<IHeaderProps> = (props) => {
                 onKeyDown={handleKeyPress}
               />
             </FormFieldWrapper>
-          </Grid.Item>
+          </GridItem>
 
           {(searchType.startsWith('account') ||
             searchType.startsWith('gas')) && (
-            <Grid.Item>
+            <GridItem>
               <FormFieldWrapper
                 htmlFor="second-search-field"
                 label={secondSearchTypeLabels[searchType]}
@@ -250,11 +251,11 @@ const Header: FC<IHeaderProps> = (props) => {
                   onKeyDown={handleKeyPress}
                 />
               </FormFieldWrapper>
-            </Grid.Item>
+            </GridItem>
           )}
 
           {searchType.startsWith('gas') && (
-            <Grid.Item>
+            <GridItem>
               <FormFieldWrapper
                 htmlFor="third-search-field"
                 label={thirdSeachTypeLabels[searchType]}
@@ -267,9 +268,9 @@ const Header: FC<IHeaderProps> = (props) => {
                   onKeyDown={handleKeyPress}
                 />
               </FormFieldWrapper>
-            </Grid.Item>
+            </GridItem>
           )}
-          <Grid.Item>
+          <GridItem>
             <Button
               onClick={search}
               style={{
@@ -280,8 +281,8 @@ const Header: FC<IHeaderProps> = (props) => {
             >
               Search
             </Button>
-          </Grid.Item>
-        </Grid.Root>
+          </GridItem>
+        </Grid>
       </header>
     </div>
   );

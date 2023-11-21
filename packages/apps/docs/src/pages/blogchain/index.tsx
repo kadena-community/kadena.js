@@ -19,7 +19,7 @@ import {
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
-import { Box, Grid, Stack } from '@kadena/react-ui';
+import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -54,11 +54,11 @@ const BlogChainHome: FC<IProps> = ({
             </BlogList>
           )}
 
-          <Grid.Root columns={{ sm: 1, lg: 4 }} gap="$2xl">
-            <Grid.Item columnSpan={3}>
+          <Grid columns={{ sm: 1, lg: 4 }} gap="$2xl">
+            <GridItem columnSpan={3}>
               <BlogListWrapper initPosts={allPosts} />
-            </Grid.Item>
-            <Grid.Item>
+            </GridItem>
+            <GridItem>
               <Box marginY="$8">
                 <Stack direction="column" gap="$8">
                   {popularPages.length > 0 && (
@@ -76,8 +76,8 @@ const BlogChainHome: FC<IProps> = ({
                   </Box>
                 </Stack>
               </Box>
-            </Grid.Item>
-          </Grid.Root>
+            </GridItem>
+          </Grid>
         </article>
       </div>
     </>

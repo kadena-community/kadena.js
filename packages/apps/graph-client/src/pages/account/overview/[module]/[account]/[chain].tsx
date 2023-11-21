@@ -7,7 +7,7 @@ import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Grid, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Grid, GridItem, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -87,8 +87,8 @@ const ChainAccount: React.FC = () => {
             </Table.Body>
           </Table.Root>
           <Box margin={'$8'} />
-          <Grid.Root columns={2} gap="$lg">
-            <Grid.Item>
+          <Grid columns={2} gap="$lg">
+            <GridItem>
               <CompactTransfersTable
                 moduleName={router.query.module as string}
                 accountName={router.query.account as string}
@@ -99,8 +99,8 @@ const ChainAccount: React.FC = () => {
                     .transfers as ChainModuleAccountTransfersConnection
                 }
               />
-            </Grid.Item>
-            <Grid.Item>
+            </GridItem>
+            <GridItem>
               <CompactTransactionsTable
                 viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
                   router.query.module as string
@@ -113,8 +113,8 @@ const ChainAccount: React.FC = () => {
                     .transactions as ChainModuleAccountTransactionsConnection
                 }
               />
-            </Grid.Item>
-          </Grid.Root>
+            </GridItem>
+          </Grid>
         </>
       )}
     </>
