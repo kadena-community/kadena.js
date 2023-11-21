@@ -8,7 +8,7 @@ import type { ITooltipProps } from './Tooltip';
 import { Tooltip } from './Tooltip';
 
 const meta: Meta<ITooltipProps> = {
-  title: 'Components/Tooltip',
+  title: 'Overlays/Tooltip',
   component: Tooltip,
   decorators: [withCenteredStory],
   parameters: {
