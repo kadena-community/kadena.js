@@ -23,6 +23,10 @@ interface ICreateTransferInput {
   amount: string;
   gasPayer?: { account: string; publicKeys: string[] };
   chainId: ChainId;
+  /**
+   * compatible contract with fungible-v2; default is "coin"
+   */
+  contract?: string;
 }
 /**
  * @alpha
@@ -33,10 +37,11 @@ export const transferCreateCommand = ({
   amount,
   gasPayer = sender,
   chainId,
+  contract = 'coin',
 }: ICreateTransferInput) =>
   composePactCommand(
     execution(
-      Pact.modules.coin['transfer-create'](
+      Pact.modules[contract as 'coin']['transfer-create'](
         sender.account,
         receiver.account,
         readKeyset('account-guard'),
@@ -47,9 +52,14 @@ export const transferCreateCommand = ({
     ),
     addKeyset('account-guard', receiver.keyset.pred, ...receiver.keyset.keys),
     addSigner(sender.publicKeys, (signFor) => [
-      signFor('coin.TRANSFER', sender.account, receiver.account, {
-        decimal: amount,
-      }),
+      signFor(
+        `${contract as 'coin'}.TRANSFER`,
+        sender.account,
+        receiver.account,
+        {
+          decimal: amount,
+        },
+      ),
     ]),
     addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),
     setMeta({ senderAccount: gasPayer.account, chainId }),

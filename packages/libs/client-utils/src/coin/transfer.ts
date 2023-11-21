@@ -16,6 +16,10 @@ interface ITransferInput {
   amount: string;
   gasPayer?: { account: string; publicKeys: string[] };
   chainId: ChainId;
+  /**
+   * compatible contract with fungible-v2; default is "coin"
+   */
+  contract?: string;
 }
 /**
  * @alpha
@@ -26,15 +30,16 @@ export const transferCommand = ({
   amount,
   gasPayer = sender,
   chainId,
+  contract = 'coin',
 }: ITransferInput) =>
   composePactCommand(
     execution(
-      Pact.modules.coin.transfer(sender.account, receiver, {
+      Pact.modules[contract as 'coin'].transfer(sender.account, receiver, {
         decimal: amount,
       }),
     ),
     addSigner(sender.publicKeys, (signFor) => [
-      signFor('coin.TRANSFER', sender.account, receiver, {
+      signFor(`${contract as 'coin'}.TRANSFER`, sender.account, receiver, {
         decimal: amount,
       }),
     ]),
