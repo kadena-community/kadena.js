@@ -1,5 +1,4 @@
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
-import { env } from '@/utils/env';
 import type {
   ChainwebChainId,
   ChainwebNetworkId,
@@ -10,16 +9,7 @@ import { PactNumber } from '@kadena/pactjs';
 import Debug from 'debug';
 
 const NETWORK_ID: ChainwebNetworkId = 'testnet04';
-const SENDER_ACCOUNT: string = 'coin-faucet';
-const SENDER_OPERATION_ACCOUNT: string = 'faucet-operation';
-const FAUCET_PUBLIC_KEY = env(
-  'FAUCET_PUBLIC_KEY',
-  '<PROVIDE_FAUCET_PUBLICKEY_HERE>',
-);
-const FAUCET_PRIVATE_KEY = env(
-  'FAUCET_PRIVATE_KEY',
-  '<PROVIDE_FAUCET_PRIVATEKEY_HERE>',
-);
+const FAUCET_ACCOUNT = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
 
 const debug = Debug('kadena-transfer:services:faucet');
 
@@ -33,38 +23,31 @@ export const fundExistingAccount = async (
 
   const transaction = Pact.builder
     .execution(
-      Pact.modules['user.coin-faucet']['request-coin'](
-        account,
-        new PactNumber(amount).toPactDecimal(),
-      ),
+      Pact.modules['n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet'][
+        'request-coin'
+      ](account, new PactNumber(amount).toPactDecimal()),
     )
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .addSigner(FAUCET_PUBLIC_KEY, (withCap: any) => [withCap('coin.GAS')])
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .addSigner(keyPair.publicKey, (withCap: any) => [
-      withCap(
+    .addSigner(keyPair.publicKey, (withCapability) => [
+      withCapability(
+        'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet.GAS_PAYER',
+        account,
+        { int: 1 },
+        { decimal: '1.0' },
+      ),
+      withCapability(
         'coin.TRANSFER',
-        SENDER_ACCOUNT,
+        FAUCET_ACCOUNT,
         account,
         new PactNumber(amount).toPactDecimal(),
       ),
     ])
-    .setMeta({ senderAccount: SENDER_OPERATION_ACCOUNT, chainId })
+    .setMeta({ senderAccount: FAUCET_ACCOUNT, chainId })
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 
-  const signature1 = sign(transaction.cmd, {
-    publicKey: FAUCET_PUBLIC_KEY,
-    secretKey: FAUCET_PRIVATE_KEY,
-  });
+  const signature = sign(transaction.cmd, keyPair);
 
-  if (signature1.sig === undefined) {
-    throw new Error('Failed to sign transaction');
-  }
-
-  const signature2 = sign(transaction.cmd, keyPair);
-
-  if (signature2.sig === undefined) {
+  if (signature.sig === undefined) {
     throw new Error('Failed to sign transaction');
   }
 
@@ -73,7 +56,7 @@ export const fundExistingAccount = async (
     chainId,
   });
 
-  transaction.sigs = [{ sig: signature1.sig }, { sig: signature2.sig }];
+  transaction.sigs = [{ sig: signature.sig }];
 
   const { submit, pollStatus } = createClient(apiHost);
 
