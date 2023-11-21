@@ -10,7 +10,7 @@ describe('Tooltip', () => {
     const messageText = 'Tooltip content';
     render(
       <Tooltip content={messageText}>
-        <button id="trigger">Hover me</button>
+        <button>Hover me</button>
       </Tooltip>,
     );
 
@@ -21,12 +21,5 @@ describe('Tooltip', () => {
 
     await userEvent.tab();
     expect(screen.queryByText(messageText)).not.toBeInTheDocument();
-
-    // TODO: Hover doesn't work :(
-    // await userEvent.hover(getByTestId('trigger'));
-    // expect(screen.queryByText(messageText)).toBeInTheDocument();
-
-    // await userEvent.unhover(screen.getByLabelText(/trigger/i));
-    // expect(screen.queryByText(messageText)).not.toBeInTheDocument();
   });
 });

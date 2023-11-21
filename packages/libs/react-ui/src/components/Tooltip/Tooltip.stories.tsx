@@ -1,11 +1,11 @@
 import { Button } from '@components/Button';
+import { SystemIcon } from '@components/Icon';
 import { Box, Stack } from '@components/Layout';
+import type { ITooltipProps } from '@components/Tooltip';
+import { Tooltip } from '@components/Tooltip';
 import type { Meta, StoryObj } from '@storybook/react';
 import { withCenteredStory } from '@utils/withCenteredStory';
 import React from 'react';
-import { SystemIcon } from '..';
-import type { ITooltipProps } from './Tooltip';
-import { Tooltip } from './Tooltip';
 
 const meta: Meta<ITooltipProps> = {
   title: 'Overlays/Tooltip',
