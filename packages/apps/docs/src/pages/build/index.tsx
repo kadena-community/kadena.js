@@ -39,11 +39,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             <Heading as="h4">Get started with tutorials</Heading>
             <Box marginY="$4">
               <Text>
-                Building applications to run on a blockchain doesn't have to be
-                hard, time-consuming, or expensive. Get started with the basics
-                through hands-on tutorials. Learn how to set up a development
-                network, create and fund a development wallet, deploy a smart
-                contract, and more. Take the first step by clicking Quick start.
+                Building applications to run on a blockchain doesn&apos;t have
+                to be hard, time-consuming, or expensive. Get started with the
+                basics through hands-on tutorials. Learn how to set up a
+                development network, create and fund a development wallet,
+                deploy a smart contract, and more. Take the first step by
+                clicking Quick start.
               </Text>
             </Box>
             <Button as="a" asChild icon="TrailingIcon">
