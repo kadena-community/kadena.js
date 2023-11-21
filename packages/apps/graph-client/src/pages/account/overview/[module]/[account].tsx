@@ -8,7 +8,14 @@ import { ChainModuleAccountTable } from '@components/chain-module-account-table/
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Notification, Table, Tabs } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  Notification,
+  TabItem,
+  Table,
+  Tabs,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -73,18 +80,17 @@ const Account: React.FC = () => {
             </Table.Body>
           </Table.Root>
           <Box margin={'$8'} />
-          <Tabs.Root initialTab="Chain Accounts">
-            <Tabs.Tab id="Chain Accounts">Chain Accounts</Tabs.Tab>
-            <Tabs.Content id="Chain Accounts">
+          <Tabs selectedKey="Chain Accounts">
+            <TabItem title="Chain Accounts" key="Chain Accounts">
               <Box margin={'$4'} />
               <ChainModuleAccountTable
                 moduleName={router.query.module as string}
                 accountName={router.query.account as string}
                 chainAccounts={data.account.chainAccounts}
               />
-            </Tabs.Content>
-            <Tabs.Tab id="Transfers">Transfers</Tabs.Tab>
-            <Tabs.Content id="Transfers">
+            </TabItem>
+
+            <TabItem title="Transfers" key="Transfers">
               <Box margin={'$4'} />
               <CompactTransfersTable
                 description="All transfers from or to this account"
@@ -94,9 +100,8 @@ const Account: React.FC = () => {
                   data.account.transfers as ModuleAccountTransfersConnection
                 }
               />
-            </Tabs.Content>
-            <Tabs.Tab id="Transactions">Transactions</Tabs.Tab>
-            <Tabs.Content id="Transactions">
+            </TabItem>
+            <TabItem title="Transactions" key="Transactions">
               <Box margin={'$4'} />
               <CompactTransactionsTable
                 viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
@@ -107,8 +112,8 @@ const Account: React.FC = () => {
                     .transactions as ModuleAccountTransactionsConnection
                 }
               />
-            </Tabs.Content>
-          </Tabs.Root>
+            </TabItem>
+          </Tabs>
         </div>
       )}
     </>

@@ -11,6 +11,7 @@ import {
   NotificationHeading,
   Stack,
   SystemIcon,
+  TabItem,
   Tabs,
   useDialog,
 } from '@kadena/react-ui';
@@ -94,10 +95,8 @@ export const SearchResults: FC<IProps> = ({
 
   return (
     <section onClick={rememberTab} className={tabContainerClass}>
-      <Tabs.Root initialTab={selectedTabName as string} className={tabClass}>
-        <Tabs.Tab id="docs">Docs Space </Tabs.Tab>
-        <Tabs.Tab id="qa">QA Space</Tabs.Tab>
-        <Tabs.Content id="docs" className={scrollBoxClasses}>
+      <Tabs defaultSelectedKey={selectedTabName as string} className={tabClass}>
+        <TabItem key="docs" title="Docs Space" className={scrollBoxClasses}>
           {semanticIsLoading && (
             <div className={loadingWrapperClass}>
               <Loading />
@@ -136,9 +135,9 @@ export const SearchResults: FC<IProps> = ({
               ) : null}
             </>
           )}
-        </Tabs.Content>
+        </TabItem>
 
-        <Tabs.Content id="qa" className={scrollBoxClasses}>
+        <TabItem key="qa" title="QA Space" className={scrollBoxClasses}>
           <Box marginBottom="$8">
             <Notification icon={<SystemIcon.AlertBox />} role="none">
               <NotificationHeading>QA search is in beta</NotificationHeading>
@@ -200,8 +199,8 @@ export const SearchResults: FC<IProps> = ({
             );
           })}
           <div>{outputStream}</div>
-        </Tabs.Content>
-      </Tabs.Root>
+        </TabItem>
+      </Tabs>
     </section>
   );
 };

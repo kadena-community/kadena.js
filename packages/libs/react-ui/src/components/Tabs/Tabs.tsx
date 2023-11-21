@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import type { ReactNode } from 'react';
 import React, { useEffect, useRef } from 'react';
 import type { AriaTabListProps } from 'react-aria';
@@ -10,9 +11,11 @@ import { selectorLine, tabListClass, tabsContainerClass } from './Tabs.css';
 export { Item as TabItem } from 'react-stately';
 
 export interface ITabsProps
-  extends Omit<AriaTabListProps<object>, 'orientation' | 'items'> {}
+  extends Omit<AriaTabListProps<object>, 'orientation' | 'items'> {
+  className?: string;
+}
 
-export const Tabs = (props: ITabsProps): ReactNode => {
+export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -51,7 +54,7 @@ export const Tabs = (props: ITabsProps): ReactNode => {
   }, [containerRef, state.selectedItem?.key, selectedUnderlineRef]);
 
   return (
-    <div className={tabsContainerClass}>
+    <div className={cn(tabsContainerClass, className)}>
       <div className={tabListClass} {...tabListProps} ref={containerRef}>
         {[...state.collection].map((item) => (
           <Tab key={item.key} item={item} state={state} />
