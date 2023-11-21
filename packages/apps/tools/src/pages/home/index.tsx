@@ -13,6 +13,7 @@ import {
   Breadcrumbs,
   Card,
   Grid,
+  GridItem,
   Heading,
   Table,
 } from '@kadena/react-ui';
@@ -130,8 +131,8 @@ const Home: FC = () => {
           )}
         </Heading>
         <Card fullWidth>
-          <Grid.Root columns={2}>
-            <Grid.Item>
+          <Grid columns={2}>
+            <GridItem>
               <Heading as="h3" variant="h5">
                 {t('General Links')}
               </Heading>
@@ -168,8 +169,8 @@ const Home: FC = () => {
                   </a>
                 </li>
               </ul>
-            </Grid.Item>
-            <Grid.Item>
+            </GridItem>
+            <GridItem>
               <Heading as="h3" variant="h5">
                 {t('Developers Links')}
               </Heading>
@@ -206,8 +207,8 @@ const Home: FC = () => {
                   </a>
                 </li>
               </ul>
-            </Grid.Item>
-          </Grid.Root>
+            </GridItem>
+          </Grid>
         </Card>
         <Card fullWidth>
           <Heading as="h3" variant="h5">

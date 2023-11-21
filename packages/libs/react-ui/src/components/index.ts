@@ -22,7 +22,7 @@ export type { IIconButtonProps } from './IconButton';
 export type {
   IBoxProps,
   IGridItemProps,
-  IGridRootProps,
+  IGridProps,
   IStackProps,
 } from './Layout';
 export type { ILinkProps } from './Link';
@@ -92,7 +92,7 @@ export {
 } from './Form';
 export { ProductIcon, SystemIcon } from './Icon';
 export { IconButton } from './IconButton';
-export { Box, Grid, Stack } from './Layout';
+export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';
 export { maskValue } from './MaskedValue/utils';

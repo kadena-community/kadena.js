@@ -10,7 +10,7 @@ import {
   gridContainerClass,
 } from './Grid.css';
 
-export interface IGridRootProps
+export interface IGridProps
   extends Pick<
     Sprinkles,
     | 'height'
@@ -55,7 +55,7 @@ const assembleColumnVariants = (
   });
 };
 
-export const GridRoot: FC<IGridRootProps> = ({
+export const Grid: FC<IGridProps> = ({
   className,
   children,
   columns,
