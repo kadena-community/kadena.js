@@ -13,7 +13,7 @@ export const ErrorBox = (props: IErrorBoxProps): JSX.Element => {
   let errorMessage = error.message;
   let errorExtra;
 
-  if (error.graphQLErrors.length > 0) {
+  if (error.graphQLErrors?.length > 0) {
     const mainError = error.graphQLErrors[0];
 
     if (mainError.extensions) {
