@@ -11,7 +11,7 @@
     "format:src": "prettier . --cache --write",
     "generate:coin:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "generate:contracts": "pnpm run /^generate:.*:contract/",
-    "generate:faucet:contract": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
+    "generate:faucet:contract": "pactjs contract-generate --contract n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
