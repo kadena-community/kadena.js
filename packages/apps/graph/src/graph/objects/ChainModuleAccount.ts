@@ -60,6 +60,7 @@ export default builder.node(
       transactions: t.prismaConnection({
         type: 'Transaction',
         cursor: 'blockHash_requestKey',
+        edgesNullable: false,
         async resolve(query, parent) {
           try {
             return await prismaClient.transaction.findMany({
@@ -84,6 +85,7 @@ export default builder.node(
       }),
       transfers: t.prismaConnection({
         type: 'Transfer',
+        edgesNullable: false,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         async resolve(query, parent) {
           try {
