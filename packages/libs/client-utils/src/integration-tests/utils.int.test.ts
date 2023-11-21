@@ -10,12 +10,12 @@ import { sender00Account, sourceAccount } from './test-data/accounts';
 
 const accountOne = {
   ...sourceAccount,
-  account: `one-${Date.now()}`,
+  account: `utils-one-${Date.now()}`,
 };
 
 // const accountTwo = {
 //   ...targetAccount,
-//   account: `two-${Date.now()}`,
+//   account: `utils-two-${Date.now()}`,
 // };
 
 describe('estimateGas', () => {
@@ -43,7 +43,7 @@ describe('estimateGas', () => {
       'http://127.0.0.1:8080',
     );
 
-    expect(gasEstimation).toEqual({ gasLimit: 708, gasPrice: 1e-8 });
+    expect(gasEstimation).toEqual({ gasLimit: 709, gasPrice: 1e-8 });
 
     // check if the gas estimation is correct
     const transferResult = await transferCreate(inputs, {

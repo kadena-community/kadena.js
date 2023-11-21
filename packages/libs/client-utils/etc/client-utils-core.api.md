@@ -10,7 +10,7 @@ import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
-import { IPactCommand } from '@kadena/client';
+import type { IPactCommand } from '@kadena/client';
 import { IPactCommand as IPactCommand_2 } from '@kadena/client/lib/interfaces/IPactCommand';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
