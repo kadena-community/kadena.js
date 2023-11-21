@@ -9,7 +9,7 @@ import { TabPanel } from './TabPanel';
 
 export { Item as TabItem } from 'react-stately';
 
-interface ITabsProps
+export interface ITabsProps
   extends Omit<AriaTabListProps<object>, 'orientation' | 'items'> {}
 
 export const Tabs = (props: ITabsProps): ReactNode => {

@@ -19,7 +19,7 @@ const meta: Meta<
     itemsCount: number;
   }
 > = {
-  title: 'Layout/Tabs',
+  title: 'Layout/TabsOld',
   decorators: [withCenteredStory],
   parameters: {
     status: {
@@ -101,7 +101,23 @@ export const Primary: Story = {
           {tabs.map((tab) => {
             return (
               <Tabs.Content key={tab} id={tab}>
-                <Text>Content for Tab &apos;{tab}&apos;</Text>
+                <Text>
+                  Content for Tab &apos;{tab}&apos; The Tab component consists
+                  of three sub components:
+                  <br />
+                  <strong></strong> as the parent container
+                  <br />
+                  <strong></strong> for each tab item
+                  <br />
+                  <strong> </strong> for the tab content
+                  <br />
+                  <br />
+                  <em>
+                    This component has a controlled and uncontrolled state. When
+                    a currentTab is not provided, the component will track state
+                    internally.
+                  </em>
+                </Text>
               </Tabs.Content>
             );
           })}

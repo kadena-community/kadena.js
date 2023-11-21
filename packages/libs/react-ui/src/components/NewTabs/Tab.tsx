@@ -17,14 +17,10 @@ export const Tab = ({ item, state }: ITabProps): ReactNode => {
   const { key, rendered } = item;
   const ref = useRef(null);
   const { tabProps } = useTab({ key }, state, ref);
+  const isSelected = state.selectedKey === key;
 
   return (
-    <div
-      className={tabItem}
-      {...tabProps}
-      ref={ref}
-      data-selected={state.selectedKey === key}
-    >
+    <div className={tabItem} {...tabProps} ref={ref} data-selected={isSelected}>
       {rendered}
     </div>
   );
