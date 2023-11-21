@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 generator pothos {
@@ -37,24 +38,23 @@ model Block {
 }
 
 model Event {
-  blockHash     String       @map("block") @db.VarChar
-  chainId       BigInt       @map("chainid")
+  blockHash     String @map("block") @db.VarChar
+  chainId       BigInt @map("chainid")
   height        BigInt
-  orderIndex    BigInt       @map("idx")
-  moduleName    String       @map("module") @db.VarChar
-  moduleHash    String       @map("modulehash") @db.VarChar
-  name          String       @db.VarChar
-  parameters    Json         @map("params")
-  parameterText String       @map("paramtext") @db.VarChar
-  qualifiedName String       @map("qualname") @db.VarChar
-  requestKey    String       @map("requestkey") @db.VarChar
-  id            Int          @unique(map: "events_id_uniq") @default(autoincrement())
-  transaction   Transaction? @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey])
-  block         Block        @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
+  orderIndex    BigInt @map("idx")
+  moduleName    String @map("module") @db.VarChar
+  moduleHash    String @map("modulehash") @db.VarChar
+  name          String @db.VarChar
+  parameters    Json   @map("params")
+  parameterText String @map("paramtext") @db.VarChar
+  qualifiedName String @map("qualname") @db.VarChar
+  requestKey    String @map("requestkey") @db.VarChar
+  id            Int    @default(autoincrement())
+  block         Block  @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([blockHash, orderIndex, requestKey])
-  @@index([height(sort: Desc), chainId, orderIndex], map: "events_height_chainid_orderIndex")
   @@index([requestKey])
+  @@index([height(sort: Desc), chainId, orderIndex], map: "events_height_chainid_idx")
   @@map("events")
 }
 
@@ -76,62 +76,59 @@ model Signer {
   scheme       String? @db.VarChar
   signature    String  @map("sig") @db.VarChar
 
-  @@id([orderIndex, requestKey])
+  @@id([requestKey, orderIndex])
   @@map("signers")
 }
 
 model Transaction {
-  badResult     Json?       @map("badresult")
-  blockHash     String      @map("block")
-  chainId       BigInt      @map("chainid")
-  code          String?     @db.VarChar
+  badResult     Json?    @map("badresult")
+  blockHash     String   @map("block") @db.VarChar
+  chainId       BigInt   @map("chainid")
+  code          String?  @db.VarChar
   continuation  Json?
-  creationTime  DateTime    @map("creationtime") @db.Timestamptz(6)
+  creationTime  DateTime @map("creationtime") @db.Timestamptz(6)
   data          Json?
   gas           BigInt
-  gasLimit      BigInt      @map("gaslimit")
-  gasPrice      Float       @map("gasprice")
-  goodResult    Json?       @map("goodresult")
+  gasLimit      BigInt   @map("gaslimit")
+  gasPrice      Float    @map("gasprice")
+  goodResult    Json?    @map("goodresult")
   height        BigInt
-  logs          String?     @db.VarChar
+  logs          String?  @db.VarChar
   metadata      Json?
-  nonce         String      @db.VarChar
-  eventCount    BigInt?     @map("num_events")
-  pactId        String?     @map("pactid") @db.VarChar
-  proof         String?     @db.VarChar
-  requestKey    String      @map("requestkey") @db.VarChar
+  nonce         String   @db.VarChar
+  eventCount    BigInt?  @map("num_events")
+  pactId        String?  @map("pactid") @db.VarChar
+  proof         String?  @db.VarChar
+  requestKey    String   @map("requestkey") @db.VarChar
   rollback      Boolean?
-  senderAccount String      @map("sender") @db.VarChar
+  senderAccount String   @map("sender") @db.VarChar
   step          BigInt?
   ttl           BigInt
-  transactionId BigInt?     @map("txid")
-  events        Event[]
-  block         Block       @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
-  transfers     Transfer[]
+  transactionId BigInt?  @map("txid")
+  block         Block    @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([blockHash, requestKey], map: "transaction_pkey")
+  @@id([blockHash, requestKey])
   @@index([height])
   @@index([requestKey])
   @@map("transactions")
 }
 
 model Transfer {
-  amount          Decimal       @db.Decimal
-  blockHash       String        @map("block") @db.VarChar
-  chainId         BigInt        @map("chainid")
-  senderAccount   String        @map("from_acct") @db.VarChar
+  amount          Decimal @db.Decimal
+  blockHash       String  @map("block") @db.VarChar
+  chainId         BigInt  @map("chainid")
+  senderAccount   String  @map("from_acct") @db.VarChar
   height          BigInt
-  orderIndex      BigInt        @map("idx")
-  moduleHash      String        @map("modulehash") @db.VarChar
-  moduleName      String        @map("modulename") @db.VarChar
-  requestKey      String        @map("requestkey") @db.VarChar
-  receiverAccount String        @map("to_acct") @db.VarChar
-  blocks          Block         @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
-  Transaction     Transaction?  @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey], onDelete: NoAction, onUpdate: NoAction)
+  orderIndex      BigInt  @map("idx")
+  moduleHash      String  @map("modulehash") @db.VarChar
+  moduleName      String  @map("modulename") @db.VarChar
+  requestKey      String  @map("requestkey") @db.VarChar
+  receiverAccount String  @map("to_acct") @db.VarChar
+  blocks          Block   @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([blockHash, chainId, orderIndex, moduleHash, requestKey])
-  @@index([senderAccount, height(sort: Desc), orderIndex], map: "transfers_senderAccount_height_orderIndex")
   @@index([receiverAccount, height(sort: Desc), orderIndex])
+  @@index([senderAccount, height(sort: Desc), orderIndex], map: "transfers_from_acct_height_idx")
   @@map("transfers")
 }
 
@@ -146,4 +143,24 @@ model schema_migrations {
   executed_at DateTime @default(now()) @db.Timestamp(6)
 
   @@ignore
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view reconcile {
+  token             String?
+  amount            Int?
+  sender            String?
+  sender_current    Int?
+  sender_previous   Int?
+  receiver          String?
+  receiver_current  Int?
+  receiver_previous Int?
+  chainid           BigInt?
+  height            BigInt?
+  requestKey        String  @map("requestkey") @db.VarChar
+  orderIndex        BigInt  @map("idx")
+  blockHash         String  @map("block") @db.VarChar
+  version           String?
+
+  @@id([blockHash, orderIndex, requestKey])
 }
