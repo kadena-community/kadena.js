@@ -19,10 +19,10 @@ export const base = style([
     ':before': {
       content: '',
       position: 'absolute',
-      borderTop: '0.4rem solid transparent',
-      borderRight: '0.4rem solid transparent',
-      borderBottom: `0.4rem solid ${vars.colors.$neutral6}`,
-      borderLeft: '0.4rem solid transparent',
+      borderTop: '6px solid transparent',
+      borderRight: '6px solid transparent',
+      borderBottom: `6px solid ${vars.colors.$neutral6}`,
+      borderLeft: '6px solid transparent',
     },
   },
 ]);
