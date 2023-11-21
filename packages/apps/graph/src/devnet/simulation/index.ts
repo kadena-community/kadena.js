@@ -1,5 +1,6 @@
 import { Command, Option } from 'commander';
-import { generateKeyPair, logger } from '../helper';
+import type { IAccount } from '../helper';
+import { generateAccount, logger } from '../helper';
 import { transfer } from '../transfer';
 import { simulate } from './simulate';
 
@@ -18,13 +19,18 @@ program
   )
   .action(async (args) => {
     try {
-      let publicKey = args.key;
-      if (publicKey === undefined) {
-        const account = generateKeyPair();
-        publicKey = account.publicKey;
+      let account: IAccount;
+      if (args.key === undefined) {
+        account = await generateAccount();
         logger.info('Account created:', account);
+      } else {
+        account = {
+          account: `k:${args.key}`,
+          keys: [{ publicKey: args.key }],
+        };
       }
-      await transfer({ publicKey: publicKey, amount: args.amount });
+
+      await transfer({ receiver: account, amount: args.amount });
     } catch (error) {
       console.error(error);
     }

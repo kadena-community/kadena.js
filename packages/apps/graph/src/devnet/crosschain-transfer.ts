@@ -18,32 +18,39 @@ import {
 } from './helper';
 
 function startInTheFirstChain(
-  from: IAccount,
-  to: IAccount,
+  sender: IAccount,
+  receiver: IAccount,
   pactDecimal: IPactDecimal,
 ): IUnsignedCommand {
   return Pact.builder
     .execution(
       Pact.modules.coin.defpact['transfer-crosschain'](
-        from.account,
-        to.account,
+        sender.account,
+        receiver.account,
         readKeyset('receiver-guard'),
-        to.chainId || devnetConfig.CHAIN_ID,
+        receiver.chainId || devnetConfig.CHAIN_ID,
         pactDecimal,
       ),
     )
-    .addSigner(from.publicKey, (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability(
-        'coin.TRANSFER_XCHAIN',
-        from.account,
-        to.account,
-        pactDecimal,
-        to.chainId || devnetConfig.CHAIN_ID,
-      ),
-    ])
-    .addKeyset('receiver-guard', 'keys-all', to.publicKey)
-    .setMeta({ chainId: from.chainId, senderAccount: from.account })
+    .addSigner(
+      sender.keys.map((key) => key.publicKey),
+      (withCapability) => [
+        withCapability('coin.GAS'),
+        withCapability(
+          'coin.TRANSFER_XCHAIN',
+          sender.account,
+          receiver.account,
+          pactDecimal,
+          receiver.chainId || devnetConfig.CHAIN_ID,
+        ),
+      ],
+    )
+    .addKeyset(
+      'receiver-guard',
+      'keys-all',
+      ...receiver.keys.map((key) => key.publicKey),
+    )
+    .setMeta({ chainId: sender.chainId, senderAccount: sender.account })
     .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 }
@@ -57,9 +64,10 @@ function finishInTheTargetChain(
     .continuation(continuation)
     .setNetworkId(devnetConfig.NETWORK_ID)
     // uncomment this if you want to pay gas yourself
-    .addSigner(gasPayer.publicKey, (withCapability) => [
-      withCapability('coin.GAS'),
-    ])
+    .addSigner(
+      gasPayer.keys.map((key) => key.publicKey),
+      (withCapability) => [withCapability('coin.GAS')],
+    )
     .setMeta({
       chainId: targetChainId,
       senderAccount: gasPayer.account,
@@ -71,25 +79,25 @@ function finishInTheTargetChain(
 }
 
 export async function crossChainTransfer({
-  from,
-  to,
+  sender,
+  receiver,
   amount,
   gasPayer = sender00,
 }: {
-  from: IAccount;
-  to: IAccount;
+  sender: IAccount;
+  receiver: IAccount;
   amount: number;
   gasPayer?: IAccount;
 }): Promise<ICommandResult> {
   // Gas Payer validations
-  if (gasPayer.chainId !== to.chainId) {
+  if (gasPayer.chainId !== receiver.chainId && gasPayer !== sender00) {
     logger.info(
       `Gas payer ${gasPayer.account} does not for sure have an account on the receiver chain; using sender00 as gas payer`,
     );
     gasPayer = sender00;
   }
 
-  if (!gasPayer.secretKey) {
+  if (!gasPayer.keys.map((key) => key.secretKey)) {
     logger.info(
       `Gas payer ${gasPayer.account} does not have a secret key; using sender00 as gas payer`,
     );
@@ -97,13 +105,13 @@ export async function crossChainTransfer({
   }
 
   logger.info(
-    `Crosschain Transfer from ${from.account}, chain ${from.chainId}\nTo ${to.account}, chain ${to.chainId}\nAmount: ${amount}\nGas Payer: ${gasPayer.account}`,
+    `Crosschain Transfer from ${sender.account}, chain ${sender.chainId}\nTo ${receiver.account}, chain ${receiver.chainId}\nAmount: ${amount}\nGas Payer: ${gasPayer.account}`,
   );
 
   const pactAmount = new PactNumber(amount).toPactDecimal();
 
-  const unsignedTx = startInTheFirstChain(from, to, pactAmount);
-  const signedTx = signAndAssertTransaction([from])(unsignedTx);
+  const unsignedTx = startInTheFirstChain(sender, receiver, pactAmount);
+  const signedTx = signAndAssertTransaction(sender.keys)(unsignedTx);
   const submittedTx = await submit(signedTx);
   inspect('Transfer Submited')(submittedTx);
   const status = await listen(submittedTx);
@@ -116,9 +124,9 @@ export async function crossChainTransfer({
     {
       requestKey: status.reqKey,
       networkId: devnetConfig.NETWORK_ID,
-      chainId: from.chainId || devnetConfig.CHAIN_ID,
+      chainId: sender.chainId || devnetConfig.CHAIN_ID,
     },
-    to.chainId || devnetConfig.CHAIN_ID,
+    receiver.chainId || devnetConfig.CHAIN_ID,
   );
 
   const continuation = {
@@ -129,11 +137,11 @@ export async function crossChainTransfer({
   };
   const unsignedTx2 = finishInTheTargetChain(
     continuation,
-    to.chainId || devnetConfig.CHAIN_ID,
+    receiver.chainId || devnetConfig.CHAIN_ID,
     gasPayer,
   );
 
-  const signedTx2 = signAndAssertTransaction([gasPayer])(unsignedTx2);
+  const signedTx2 = signAndAssertTransaction(gasPayer.keys)(unsignedTx2);
   const submittedTx2 = await submit(signedTx2);
   inspect('Transfer Submited')(submittedTx2);
   const status2 = await listen(submittedTx2);

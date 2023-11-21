@@ -11,41 +11,51 @@ import {
   logger,
   sender00,
   signAndAssertTransaction,
+  stringifyProperty,
   submit,
 } from './helper';
 
 export async function transfer({
-  publicKey,
+  receiver,
   chainId = devnetConfig.CHAIN_ID,
   sender = sender00,
   amount = 100,
 }: {
-  publicKey: string;
+  receiver: IAccount;
   chainId?: ChainId;
   sender?: IAccount;
   amount?: number;
 }): Promise<ICommandResult> {
-  const account = `k:${publicKey}`;
   const pactAmount = new PactNumber(amount).toPactDecimal();
 
   logger.info(
-    `Transfering from ${sender.account} to ${account}\nPublic Key: ${publicKey}\nAmount: ${pactAmount.decimal}`,
+    `Transfering from ${sender.account} to ${
+      receiver.account
+    }\nPublic Key: ${stringifyProperty(receiver.keys, 'publicKey')}\nAmount: ${
+      pactAmount.decimal
+    }`,
   );
 
   const transaction = Pact.builder
     .execution(
       Pact.modules.coin['transfer-create'](
         sender.account,
-        account,
+        receiver.account,
         () => '(read-keyset "ks")',
         pactAmount,
       ),
     )
-    .addData('ks', { keys: [publicKey], pred: 'keys-all' })
-    .addSigner(sender.publicKey, (withCap) => [
-      withCap('coin.GAS'),
-      withCap('coin.TRANSFER', sender.account, account, pactAmount),
-    ])
+    .addData('ks', {
+      keys: receiver.keys.map((key) => key.publicKey),
+      pred: 'keys-all',
+    })
+    .addSigner(
+      sender.keys.map((key) => key.publicKey),
+      (withCap) => [
+        withCap('coin.GAS'),
+        withCap('coin.TRANSFER', sender.account, receiver.account, pactAmount),
+      ],
+    )
     .setMeta({
       gasLimit: 1000,
       chainId,
@@ -55,7 +65,7 @@ export async function transfer({
     .setNetworkId(devnetConfig.NETWORK_ID)
     .createTransaction();
 
-  const signedTx = signAndAssertTransaction([sender])(transaction);
+  const signedTx = signAndAssertTransaction(sender.keys)(transaction);
 
   const transactionDescriptor = await submit(signedTx);
   inspect('Transfer Submited')(transactionDescriptor);
