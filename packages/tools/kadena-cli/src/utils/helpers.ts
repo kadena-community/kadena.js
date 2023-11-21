@@ -2,8 +2,10 @@ import clear from 'clear';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
 import sanitize from 'sanitize-filename';
+import { defaultDevnetsPath } from '../constants/devnets.js';
 import { defaultKeysetsPath } from '../constants/keysets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
+import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomKeysetsChoice } from '../keys/utils/keysetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 
@@ -176,6 +178,37 @@ export function getExistingNetworks(): ICustomNetworkChoice[] {
     console.error('Error reading networks directory:', error);
     return [];
   }
+}
+
+type ICustomChoice = ICustomDevnetsChoice | ICustomNetworkChoice;
+
+export async function getConfiguration(
+  configurationPath: string,
+): Promise<ICustomChoice[]> {
+  try {
+    return readdirSync(configurationPath).map((filename) => ({
+      value: path.basename(filename.toLowerCase(), '.yaml'),
+      name: path.basename(filename.toLowerCase(), '.yaml'),
+    }));
+  } catch (error) {
+    console.error(`Error reading ${configurationPath} directory:`, error);
+    return [];
+  }
+}
+
+export async function ensureDevnetsConfiguration(): Promise<void> {
+  if (existsSync(defaultDevnetsPath)) {
+    return;
+  }
+
+  mkdirSync(defaultDevnetsPath, { recursive: true });
+  await import('./../devnet/init.js');
+}
+
+export async function getExistingDevnets(): Promise<ICustomDevnetsChoice[]> {
+  await ensureDevnetsConfiguration();
+
+  return getConfiguration(defaultDevnetsPath);
 }
 
 export async function getExistingKeysets(): Promise<ICustomKeysetsChoice[]> {
