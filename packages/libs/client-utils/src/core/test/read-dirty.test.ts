@@ -19,6 +19,7 @@ describe('dirtyReadClient', () => {
       dirtyRead: vi.fn().mockResolvedValue({
         result: { status: 'success', data: 'test-data' },
       } as ILocalCommandResult),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
     const dirtyRead = dirtyReadClient(
       { defaults: { networkId: 'test-network' } },

@@ -1,12 +1,9 @@
-import {
-  IPactCommand,
-  IUnsignedCommand,
-  createTransaction,
-} from '@kadena/client';
+import type { IPactCommand } from '@kadena/client';
+import { createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 
 import { asyncPipe } from './utils/asyncPipe';
-import type { IClientConfig, IEmit } from './utils/helpers';
+import type { IClientConfig } from './utils/helpers';
 import { getClient, throwIfFails } from './utils/helpers';
 
 /**

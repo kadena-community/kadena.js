@@ -1,4 +1,13 @@
-import { Assert, First, IfAny, Prettify, Tail } from '../types';
+/**
+ * This file is used to test the type utilities in types.ts. It is not meant to be run.
+ */
+
+/* eslint-disable @kadena-dev/no-eslint-disable */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/naming-convention */
+
+import type { Assert, First, IfAny, Prettify, Tail } from '../types';
 
 const if_any_should_return_second_arg_if_first_arg_is_any: Assert<
   IfAny<any, 1, false>,

@@ -2,23 +2,21 @@ import { describe, expect, it } from 'vitest';
 
 import { transferCreate, transferCreateCommand } from '../coin';
 
-import { IPactCommand, createSignWithKeypair } from '@kadena/client';
+import type { IPactCommand } from '@kadena/client';
+import { createSignWithKeypair } from '@kadena/client';
 import { composePactCommand, setNetworkId } from '@kadena/client/fp';
 import { estimateGas } from '../core/estimate-gas';
-import {
-  sender00Account,
-  sourceAccount,
-  targetAccount,
-} from './test-data/accounts';
+import { sender00Account, sourceAccount } from './test-data/accounts';
 
 const accountOne = {
   ...sourceAccount,
   account: `one-${Date.now()}`,
 };
-const accountTwo = {
-  ...targetAccount,
-  account: `two-${Date.now()}`,
-};
+
+// const accountTwo = {
+//   ...targetAccount,
+//   account: `two-${Date.now()}`,
+// };
 
 describe('estimateGas', () => {
   it('should return gasLimit and gasPrice', async () => {

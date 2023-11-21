@@ -15,9 +15,10 @@ export const getBalance = (
   networkId: string,
   chainId: ChainId,
   host?: IClientConfig['host'],
+  module: string = 'coin',
 ) => {
   const balance = pipe(
-    (name) => Pact.modules.coin['get-balance'](name),
+    (name) => Pact.modules[module as 'fungible-v2']['get-balance'](name),
     execution,
     dirtyReadClient({
       host,
