@@ -1,18 +1,14 @@
-import { IconButton } from '@components/IconButton';
+import { Button } from '@components/Button';
+import { Box } from '@components/Layout';
 import type { Meta, StoryObj } from '@storybook/react';
 import { withCenteredStory } from '@utils/withCenteredStory';
-import React, { useRef } from 'react';
-import type { ITooltipProps } from './';
-import { Tooltip } from './';
-import { container } from './stories.css';
+import React from 'react';
+import type { ITooltipProps } from './Tooltip';
+import { Tooltip } from './Tooltip';
 
-const meta: Meta<
-  {
-    text: string;
-  } & ITooltipProps
-> = {
+const meta: Meta<ITooltipProps> = {
   title: 'Components/Tooltip',
-  component: Tooltip.Root,
+  component: Tooltip,
   decorators: [withCenteredStory],
   parameters: {
     status: {
@@ -21,58 +17,40 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'The Tooltip component renders a tooltip with text. The placement of the tooltip can be set with the `placement` prop. The tooltip can be triggered by hovering over the `IconButton` component.',
+          'The Tooltip component renders a tooltip with content when the user hovers or focuses the element passed as children. The placement of the tooltip can be set with the `position` prop.',
       },
     },
   },
   argTypes: {
-    text: {
+    content: {
       control: {
         type: 'text',
       },
     },
-    placement: {
-      options: ['top', 'bottom', 'left', 'right'],
-      control: {
-        type: 'select',
+    position: {
+      table: {
+        defaultValue: { summary: 'right' },
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    text: string;
-  } & ITooltipProps
->;
+type Story = StoryObj<ITooltipProps>;
 
 export const Dynamic: Story = {
   name: 'Tooltip',
   args: {
-    text: "I'm a tooltip, look at me!",
-    placement: 'right',
+    content: "I'm a tooltip, look at me!",
+    position: 'right',
   },
-  render: ({ text, placement }) => {
-    const ref = useRef<HTMLDivElement>(null);
-
+  render: ({ content, position }) => {
     return (
-      <div className={container}>
-        <IconButton
-          title="hover me"
-          icon="Information"
-          onMouseEnter={(e: React.MouseEvent<HTMLElement>) =>
-            Tooltip.handler(e, ref)
-          }
-          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) =>
-            Tooltip.handler(e, ref)
-          }
-        />
-
-        <Tooltip.Root placement={placement} ref={ref}>
-          {text}
-        </Tooltip.Root>
-      </div>
+      <Box margin="$40">
+        <Tooltip content={content} position={position}>
+          <Button>Trigger</Button>
+        </Tooltip>
+      </Box>
     );
   },
 };

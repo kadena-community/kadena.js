@@ -2,82 +2,84 @@ import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 
-export const container = style([
-  sprinkles({
-    placeItems: 'center',
-    gap: '$2',
-    borderRadius: '$md',
-    paddingX: '$4',
-    paddingY: '$3',
-    border: 'none',
-    fontSize: '$base',
-    backgroundColor: '$neutral1',
-    color: '$neutral6',
-    width: 'max-content',
-    position: 'fixed',
-    display: 'none',
-    pointerEvents: 'none',
-  }),
-  {
-    zIndex: 10,
-    top: '50%',
-    marginRight: '-50%',
-    border: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
-  },
-]);
-
-const baseArrow = style([
+export const base = style([
   sprinkles({
     position: 'absolute',
-    width: '$4',
-    height: '$4',
     backgroundColor: '$neutral1',
+    padding: '$sm',
+    borderRadius: '$md',
+    color: '$neutral6',
     pointerEvents: 'none',
+    width: 'max-content',
+    maxWidth: '$maxContentWidth',
   }),
   {
-    rotate: '45deg',
+    ':before': {
+      content: '',
+      position: 'absolute',
+      borderTop: '0.5rem solid transparent',
+      borderRight: '0.5rem solid transparent',
+      borderBottom: `0.5rem solid ${vars.colors.$neutral1}`,
+      borderLeft: '0.5rem solid transparent',
+    },
   },
 ]);
 
-export const arrowVariants = styleVariants({
-  right: [
-    baseArrow,
+export const tooltipPositionVariants = styleVariants({
+  bottom: [
+    base,
     {
-      top: `calc(50% - ${vars.sizes.$4} / 2)`,
-      left: `calc((-1 * ${vars.sizes.$4} / 2) - 1px)`,
-      borderLeft: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
-      borderBottom: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
-    },
-  ],
-  left: [
-    baseArrow,
-    {
-      top: `calc(50% - ${vars.sizes.$4} / 2)`,
-      right: `calc((-1 * ${vars.sizes.$4} / 2) - 1px)`,
-      borderRight: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
-      borderTop: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
+      marginTop: vars.sizes.$md,
+      top: '100%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      ':before': {
+        top: '0',
+        left: '50%',
+        transform: 'translate(-50%, -100%)',
+      },
     },
   ],
   top: [
-    baseArrow,
+    base,
     {
-      top: `calc(100% - ${vars.sizes.$4} / 2)`,
-      borderBottom: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
-      borderRight: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
+      marginBottom: vars.sizes.$md,
+      bottom: '100%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      ':before': {
+        bottom: '0',
+        left: '50%',
+        transform: 'translate(-50%, 100%) rotate(180deg)',
+      },
     },
   ],
-  bottom: [
-    baseArrow,
+  right: [
+    base,
     {
-      top: `calc(-1 * ${vars.sizes.$4} / 2)`,
-      borderTop: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
-      borderLeft: `${vars.borderWidths.$md} solid ${vars.colors.$neutral2}`,
+      marginLeft: vars.sizes.$md,
+      left: '100%',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      ':before': {
+        top: '50%',
+        left: '0',
+        transform: 'translate(-100%, -50%) rotate(270deg)',
+      },
+    },
+  ],
+  left: [
+    base,
+    {
+      marginRight: vars.sizes.$md,
+      right: '100%',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      ':before': {
+        top: '50%',
+        right: '0',
+        transform: 'translate(100%, -50%) rotate(90deg)',
+      },
     },
   ],
 });
-
-export const visibleClass = style([
-  sprinkles({
-    display: 'flex',
-  }),
-]);
