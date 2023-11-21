@@ -10,6 +10,16 @@ import {
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+
+import {
+  SearchType,
+  searchTypeLabels,
+  searchTypePlaceholders,
+  secondSearchFieldPlaceholders,
+  secondSearchTypeLabels,
+  thirdSeachTypeLabels,
+  thirdSearchFieldPlaceholders,
+} from '@/constants/search';
 import { headerStyle } from './styles.css';
 
 export interface IHeaderProps {
@@ -29,39 +39,56 @@ const Header: FC<IHeaderProps> = (props) => {
   const [defaultHashOption, setDefaultHashOption] =
     useState<string>('request-key');
 
-  const searchTypeLabels: Record<string, string> = {
-    'request-key': 'Request Key',
-    account: 'Account',
-    event: 'Event Name',
-    block: 'Block Hash',
-    gasEstimation: 'Cmd',
+  const routeSearchTypeMapping = [
+    {
+      route: routes.GAS_ESTIMATION,
+      searchType: SearchType.GasEstimation,
+      fields: ['cmd', 'hash', 'sigs'],
+    },
+    {
+      route: routes.ACCOUNT_ROOT,
+      searchType: SearchType.Account,
+      fields: ['account', 'module'],
+    },
+    {
+      route: routes.BLOCK_ROOT,
+      searchType: SearchType.Block,
+      fields: ['hash'],
+    },
+    { route: routes.EVENT, searchType: SearchType.Event, fields: ['key'] },
+    {
+      route: routes.TRANSACTIONS,
+      searchType: SearchType.Transactions,
+      fields: ['key'],
+    },
+  ];
+
+  const setSearchFields = (
+    searchType: SearchType,
+    searchField?: string,
+    secondSearchField?: string,
+    thirdSearchField?: string,
+  ) => {
+    setSearchType(searchType);
+    setSearchField(searchField || '');
+    setSecondSearchField(secondSearchField || '');
+    setThirdSearchField(thirdSearchField || '');
   };
 
-  const searchTypePlaceholders: Record<string, string> = {
-    'request-key': 'vCiATVJgm7...',
-    account: 'k:1234...',
-    event: 'coin.TRANSFER',
-    block: 'CA9orP2yM...',
-    gasEstimation: 'cmd',
-  };
-
-  const secondSearchTypeLabels: Record<string, string> = {
-    account: 'Module',
-    gasEstimation: 'Hash',
-  };
-
-  const secondSearchFieldPlaceholders: Record<string, string> = {
-    account: 'coin',
-    gasEstimation: 'hash',
-  };
-
-  const thirdSeachTypeLabels: Record<string, string> = {
-    gasEstimation: 'Signatures',
-  };
-
-  const thirdSearchFieldPlaceholders: Record<string, string> = {
-    gasEstimation: 'sigs',
-  };
+  React.useEffect(() => {
+    for (const mapping of routeSearchTypeMapping) {
+      if (
+        router.pathname.includes(mapping.route) &&
+        mapping.fields.some((field) => router.query[field])
+      ) {
+        const fieldValues = mapping.fields.map(
+          (field) => router.query[field] as string,
+        );
+        setSearchFields(mapping.searchType, ...fieldValues);
+        return;
+      }
+    }
+  }, [router]);
 
   const search = (): void => {
     switch (searchType) {
@@ -152,6 +179,7 @@ const Header: FC<IHeaderProps> = (props) => {
       setSecondSearchField('');
       setGridColumns(5);
     }
+    setSearchField('');
   };
 
   return (
