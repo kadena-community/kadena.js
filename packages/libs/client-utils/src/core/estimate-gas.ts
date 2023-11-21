@@ -9,6 +9,10 @@ import { asyncPipe } from './utils/asyncPipe';
 import type { IClientConfig, IEmit } from './utils/helpers';
 import { getClient, throwIfFails } from './utils/helpers';
 
+/**
+ * estimate gas for a command
+ * @alpha
+ */
 export const estimateGas = (
   command:
     | Partial<IPactCommand>

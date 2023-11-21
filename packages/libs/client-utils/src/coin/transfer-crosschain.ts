@@ -26,7 +26,9 @@ interface ICrossChainInput {
   gasPayer?: { account: string; publicKeys: string[] };
   chainId: ChainId;
 }
-
+/**
+ * @alpha
+ */
 export const createCrossChainCommand = ({
   sender,
   receiver,

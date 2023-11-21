@@ -17,7 +17,9 @@ interface ITransferInput {
   gasPayer?: { account: string; publicKeys: string[] };
   chainId: ChainId;
 }
-
+/**
+ * @alpha
+ */
 export const transferCommand = ({
   sender,
   receiver,

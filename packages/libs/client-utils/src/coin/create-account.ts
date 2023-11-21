@@ -21,6 +21,9 @@ interface ICreateAccountCommandInput {
   chainId: ChainId;
 }
 
+/**
+ * @alpha
+ */
 export const createAccountCommand = ({
   account,
   keyset,

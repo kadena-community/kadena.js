@@ -10,7 +10,7 @@ import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
-import type { IPactCommand } from '@kadena/client';
+import { IPactCommand } from '@kadena/client';
 import { IPactCommand as IPactCommand_2 } from '@kadena/client/lib/interfaces/IPactCommand';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
@@ -68,6 +68,12 @@ export const dirtyReadClient: (args_0: Omit<IClientConfig, "sign">, args_1?: ICl
 event: "dirtyRead";
 data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+
+// @alpha
+export const estimateGas: (command: Partial<IPactCommand> | ((cmd?: Partial<IPactCommand> | (() => Partial<IPactCommand>)) => Partial<IPactCommand>), host?: IClientConfig['host'], client?: IClient) => Promise<{
+    gasLimit: number;
+    gasPrice: number;
+}>;
 
 // @alpha (undocumented)
 export const preflightClient: (args_0: IClientConfig, args_1?: IClient | undefined) => (cmd?: (Partial<IPactCommand_2> | (() => Partial<IPactCommand_2>)) | undefined) => IEmitterWrapper<[{

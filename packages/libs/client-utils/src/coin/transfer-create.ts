@@ -24,7 +24,9 @@ interface ICreateTransferInput {
   gasPayer?: { account: string; publicKeys: string[] };
   chainId: ChainId;
 }
-
+/**
+ * @alpha
+ */
 export const transferCreateCommand = ({
   sender,
   receiver,

@@ -21,6 +21,9 @@ interface IRotateCommandInput {
   chainId: ChainId;
 }
 
+/**
+ * @alpha
+ */
 export const rotateCommand = ({
   account,
   newguard,
