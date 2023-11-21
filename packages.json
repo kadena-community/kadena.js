@@ -72,12 +72,6 @@
     "path": "packages/apps/graph-client"
   },
   {
-    "name": "@kadena/immutable-records",
-    "version": "0.1.6",
-    "private": true,
-    "path": "packages/apps/immutable-records"
-  },
-  {
     "name": "@kadena/js-monorepo",
     "version": "1.0.0",
     "private": true,
