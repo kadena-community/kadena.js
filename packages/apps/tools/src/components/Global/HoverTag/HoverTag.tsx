@@ -1,12 +1,5 @@
 import type { IMaskedValueProps, MaskOptions } from '@kadena/react-ui';
-import {
-  Box,
-  SystemIcon,
-  Tag,
-  Text,
-  Tooltip,
-  maskValue,
-} from '@kadena/react-ui';
+import { SystemIcon, Tag, Text, Tooltip, maskValue } from '@kadena/react-ui';
 import React from 'react';
 import { containerClass, iconButtonClass } from './HoverTag.css';
 
