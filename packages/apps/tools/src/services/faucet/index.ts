@@ -29,6 +29,7 @@ export const fundExistingAccount = async (
     )
     .addSigner(keyPair.publicKey, (withCapability) => [
       withCapability(
+        // @ts-ignore
         'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet.GAS_PAYER',
         account,
         { int: 1 },
