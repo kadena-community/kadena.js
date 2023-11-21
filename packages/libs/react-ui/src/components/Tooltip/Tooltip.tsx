@@ -37,11 +37,12 @@ export const Tooltip: FC<ITooltipProps> = ({
     <Box position="relative">
       {cloneElement(children as React.ReactElement, { ...triggerProps, ref })}
 
-      {state.isOpen && (
-        <span className={tooltipPositionVariants[position]} {...tooltipProps}>
-          {content}
-        </span>
-      )}
+      {state.isOpen ||
+        (true && (
+          <span className={tooltipPositionVariants[position]} {...tooltipProps}>
+            {content}
+          </span>
+        ))}
     </Box>
   );
 };
