@@ -2,12 +2,8 @@ import { prismaClient } from '@db/prismaClient';
 import type { Block } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
 import { nullishOrEmpty } from '@utils/nullishOrEmpty';
-import type { Debugger } from 'debug';
-import _debug from 'debug';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-
-const log: Debugger = _debug('graph:Subscription:newBlocks');
 
 builder.subscriptionField('newBlocks', (t) => {
   return t.prismaField({
@@ -31,7 +27,6 @@ async function* iteratorFn(
   let lastBlock = (await getLastBlocks(chainIds))[0];
 
   yield [lastBlock];
-  log('yielding initial block with id %s', lastBlock.id);
 
   while (!context.req.socket.destroyed) {
     const newBlocks = await getLastBlocks(chainIds, lastBlock.id);
@@ -66,8 +61,6 @@ async function getLastBlocks(
     ...extendedFilter,
     where: { ...extendedFilter.where, chainId: { in: chainIds } },
   });
-
-  log("found '%s' blocks", foundblocks.length);
 
   return foundblocks;
 }

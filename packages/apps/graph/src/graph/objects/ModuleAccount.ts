@@ -93,6 +93,7 @@ export default builder.node(
       transactions: t.prismaConnection({
         type: 'Transaction',
         cursor: 'blockHash_requestKey',
+        edgesNullable: false,
         async totalCount(parent) {
           try {
             return await prismaClient.transaction.count({
@@ -133,6 +134,7 @@ export default builder.node(
       transfers: t.prismaConnection({
         type: 'Transfer',
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
+        edgesNullable: false,
         async totalCount(parent) {
           try {
             return await prismaClient.transfer.count({

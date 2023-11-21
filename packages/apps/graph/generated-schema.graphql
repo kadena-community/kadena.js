@@ -21,7 +21,7 @@ type Block implements Node {
 }
 
 type BlockTransactionsConnection {
-  edges: [BlockTransactionsConnectionEdge]!
+  edges: [BlockTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -43,7 +43,7 @@ type ChainModuleAccount implements Node {
 }
 
 type ChainModuleAccountTransactionsConnection {
-  edges: [ChainModuleAccountTransactionsConnectionEdge]!
+  edges: [ChainModuleAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -54,7 +54,7 @@ type ChainModuleAccountTransactionsConnectionEdge {
 }
 
 type ChainModuleAccountTransfersConnection {
-  edges: [ChainModuleAccountTransfersConnectionEdge]!
+  edges: [ChainModuleAccountTransfersConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -115,7 +115,7 @@ type ModuleAccount implements Node {
 }
 
 type ModuleAccountTransactionsConnection {
-  edges: [ModuleAccountTransactionsConnectionEdge]!
+  edges: [ModuleAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -126,7 +126,7 @@ type ModuleAccountTransactionsConnectionEdge {
 }
 
 type ModuleAccountTransfersConnection {
-  edges: [ModuleAccountTransfersConnectionEdge]!
+  edges: [ModuleAccountTransfersConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -187,7 +187,7 @@ type Query {
 }
 
 type QueryTransactionsByPublicKeyConnection {
-  edges: [QueryTransactionsByPublicKeyConnectionEdge]!
+  edges: [QueryTransactionsByPublicKeyConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -198,7 +198,7 @@ type QueryTransactionsByPublicKeyConnectionEdge {
 }
 
 type QueryTransactionsConnection {
-  edges: [QueryTransactionsConnectionEdge]!
+  edges: [QueryTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -209,7 +209,7 @@ type QueryTransactionsConnectionEdge {
 }
 
 type QueryTransfersConnection {
-  edges: [QueryTransfersConnectionEdge]!
+  edges: [QueryTransfersConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
