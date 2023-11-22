@@ -72,6 +72,12 @@
     "path": "packages/apps/graph-client"
   },
   {
+    "name": "@kadena/hd-wallet",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/libs/hd-wallet"
+  },
+  {
     "name": "@kadena/immutable-records",
     "version": "0.1.6",
     "private": true,
