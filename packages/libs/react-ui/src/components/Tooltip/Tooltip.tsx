@@ -1,21 +1,53 @@
-import React, { forwardRef } from 'react';
-import { arrowVariants, container } from './Tooltip.css';
-
-export interface ITooltipProps {
-  placement?: 'top' | 'bottom' | 'left' | 'right';
-  children: React.ReactNode;
+import { Box } from '@components/Layout';
+import { mergeRefs } from '@react-aria/utils';
+import type { FC, ReactElement, ReactNode } from 'react';
+import React, { cloneElement, useRef } from 'react';
+import { useTooltip, useTooltipTrigger } from 'react-aria';
+import type { TooltipTriggerProps } from 'react-stately';
+import { useTooltipTriggerState } from 'react-stately';
+import { tooltipPositionVariants } from './Tooltip.css';
+export interface ITooltipProps
+  extends Omit<TooltipTriggerProps, 'trigger' | 'onOpenChange'> {
+  children: ReactElement;
+  content: ReactNode;
+  position?: keyof typeof tooltipPositionVariants;
 }
 
-export const Tooltip: React.ForwardRefExoticComponent<
-  Omit<ITooltipProps, 'ref'> & React.RefAttributes<HTMLDivElement>
-  // eslint-disable-next-line react/display-name
-> = forwardRef<HTMLDivElement, ITooltipProps>(
-  ({ children, placement = 'right' }, ref) => {
-    return (
-      <div className={container} ref={ref} data-placement={placement}>
-        <div className={arrowVariants[placement]} />
-        {children}
-      </div>
-    );
-  },
-);
+export const Tooltip: FC<ITooltipProps> = ({
+  children,
+  content,
+  position = 'right',
+  ...props
+}) => {
+  const config = {
+    delay: 500,
+    closeDelay: 300,
+    ...props,
+  };
+  const state = useTooltipTriggerState(config);
+  const ref = useRef(null);
+
+  const { triggerProps, tooltipProps: baseTooltipProps } = useTooltipTrigger(
+    config,
+    state,
+    ref,
+  );
+
+  const { tooltipProps } = useTooltip(baseTooltipProps, state);
+
+  return (
+    <Box position="relative">
+      {cloneElement(children, {
+        ...triggerProps,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ref: mergeRefs(ref, (children as any).ref),
+      })}
+
+      {state.isOpen && (
+        <span className={tooltipPositionVariants[position]} {...tooltipProps}>
+          {content}
+        </span>
+      )}
+    </Box>
+  );
+};
