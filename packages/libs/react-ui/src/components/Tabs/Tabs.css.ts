@@ -14,9 +14,11 @@ export const tabListClass = style([
   sprinkles({
     display: 'flex',
     flexDirection: 'row',
+    maxWidth: '100%',
     position: 'relative',
   }),
   {
+    overflowX: 'auto',
     borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral2}`,
   },
 ]);
@@ -56,7 +58,7 @@ export const selectorLine = style([
     height: '$0',
   }),
   {
-    bottom: '-2px',
+    // bottom: '-20px',
     transition: 'transform .4s ease, width .4s ease',
     transform: `translateX(0)`,
   },

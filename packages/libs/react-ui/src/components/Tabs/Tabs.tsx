@@ -6,7 +6,12 @@ import { useTabList } from 'react-aria';
 import { useTabListState } from 'react-stately';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
-import { selectorLine, tabListClass, tabsContainerClass } from './Tabs.css';
+import {
+  selectorLine,
+  tabListClass,
+  tabListClass2,
+  tabsContainerClass,
+} from './Tabs.css';
 
 export { Item as TabItem } from 'react-stately';
 
@@ -56,11 +61,16 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
   return (
     <div className={cn(tabsContainerClass, className)}>
       <div className={tabListClass} {...tabListProps} ref={containerRef}>
+        {/* <div className={tabListClass2}> */}
         {[...state.collection].map((item) => (
           <Tab key={item.key} item={item} state={state} />
         ))}
+        {/* </div> */}
+
         <span ref={selectedUnderlineRef} className={selectorLine}></span>
       </div>
+      {/* <span ref={selectedUnderlineRef} className={selectorLine}></span> */}
+
       <TabPanel key={state.selectedItem?.key} state={state} />
     </div>
   );

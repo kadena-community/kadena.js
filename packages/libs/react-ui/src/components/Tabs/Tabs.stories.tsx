@@ -5,9 +5,13 @@ import type { ITabsProps } from './Tabs';
 import { TabItem, Tabs } from './Tabs';
 
 const ExampleTabs: any[] = [
-  { title: 'Title', content: 'Content' },
-  { title: 'Title2', content: 'Content2' },
-  { title: 'Title3', content: 'Content3' },
+  { title: 'Title2Title', content: 'Content' },
+  { title: 'Title2Title2', content: 'Content2' },
+  { title: 'Title2Title3', content: 'Content3' },
+  { title: 'Title2Title4', content: 'Content3' },
+  { title: 'Title2Title5', content: 'Content3' },
+  { title: 'Title2Title6', content: 'Content3' },
+  { title: 'Title2Title7', content: 'Content3' },
 ];
 
 const meta: Meta<ITabsProps> = {
