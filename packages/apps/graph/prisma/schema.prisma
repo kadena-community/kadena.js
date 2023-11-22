@@ -164,6 +164,7 @@ view reconcile {
   requestKey        String  @map("requestkey") @db.VarChar
   orderIndex        BigInt  @map("idx")
   blockHash         String  @map("block") @db.VarChar
+  id                Int?
   version           String?
 
   @@id([blockHash, orderIndex, requestKey])
