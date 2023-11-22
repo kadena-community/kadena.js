@@ -25,7 +25,7 @@ export const HoverTag = ({
   const tagValue = maskValue(value, maskOptions);
   const tooltipContent = tooltipValue || value;
   return (
-    <Tooltip position="top" content={<code>tooltipContent</code>}>
+    <Tooltip position="top" content={<code>{tooltipContent}</code>}>
       <span data-testid="kda-hover-tag">
         <Tag>
           <div className={containerClass}>

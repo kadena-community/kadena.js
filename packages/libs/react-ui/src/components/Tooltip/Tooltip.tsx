@@ -6,7 +6,8 @@ import { useTooltip, useTooltipTrigger } from 'react-aria';
 import type { TooltipTriggerProps } from 'react-stately';
 import { useTooltipTriggerState } from 'react-stately';
 import { tooltipPositionVariants } from './Tooltip.css';
-export interface ITooltipProps extends Omit<TooltipTriggerProps, 'trigger'> {
+export interface ITooltipProps
+  extends Omit<TooltipTriggerProps, 'trigger' | 'onOpenChange'> {
   children: ReactElement;
   content: ReactNode;
   position?: keyof typeof tooltipPositionVariants;

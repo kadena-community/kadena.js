@@ -57,6 +57,18 @@ const meta: Meta<ITooltipProps> = {
         defaultValue: { summary: false },
       },
     },
+    isOpen: {
+      description: 'Allows the user to control the open state of the tooltip.',
+      table: {
+        defaultValue: { summary: false },
+      },
+    },
+    defaultOpen: {
+      description: 'Sets the initial open state of the tooltip.',
+      table: {
+        defaultValue: { summary: false },
+      },
+    },
   },
 };
 
@@ -114,6 +126,67 @@ export const TooltipReactNode: Story = {
         >
           <Button>Trigger</Button>
         </Tooltip>
+      </Box>
+    );
+  },
+};
+
+export const DefaultOpen: Story = {
+  name: 'Tooltip that is set to defaultOpen',
+  args: {
+    content: "I'm a tooltip, look at me!",
+    position: 'right',
+    isDisabled: false,
+    delay: 500,
+    closeDelay: 300,
+  },
+  render: ({ content, position, isDisabled, delay, closeDelay }) => {
+    return (
+      <Box margin="$25">
+        <Tooltip
+          content={content}
+          position={position}
+          isDisabled={isDisabled}
+          delay={delay}
+          closeDelay={closeDelay}
+          defaultOpen={true}
+        >
+          <Button>Trigger</Button>
+        </Tooltip>
+      </Box>
+    );
+  },
+};
+
+export const Controlled: Story = {
+  name: 'Tooltip that is controlled by a button',
+  args: {
+    content: "I'm a tooltip, look at me!",
+    position: 'right',
+    isDisabled: false,
+    delay: 500,
+    closeDelay: 300,
+  },
+  render: ({ content, position, isDisabled, delay, closeDelay }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    return (
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Button onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
+        </Button>
+        <Box margin="$25">
+          <Tooltip
+            content={content}
+            position={position}
+            isDisabled={isDisabled}
+            delay={delay}
+            closeDelay={closeDelay}
+            isOpen={isOpen}
+          >
+            <SystemIcon.AlertBox />
+          </Tooltip>
+        </Box>
       </Box>
     );
   },
