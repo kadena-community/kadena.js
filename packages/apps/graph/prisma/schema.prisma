@@ -54,8 +54,8 @@ model Event {
   block         Block        @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([blockHash, orderIndex, requestKey])
-  @@index([requestKey])
   @@index([height(sort: Desc), chainId, orderIndex], map: "events_height_chainid_orderIndex")
+  @@index([requestKey])
   @@map("events")
 }
 
