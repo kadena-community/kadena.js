@@ -26,7 +26,7 @@ export const tabItemClass = style([
     border: 'none',
     cursor: 'pointer',
     paddingY: '$1',
-    marginRight: '$2',
+    marginRight: '$4',
     fontSize: '$md',
     fontWeight: '$semiBold',
     backgroundColor: 'transparent',
