@@ -16,7 +16,15 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { Box, Button, Card, Grid, Heading, Text } from '@kadena/react-ui';
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  GridItem,
+  Heading,
+  Text,
+} from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -35,8 +43,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
       id="main"
     >
       <article className={articleClass}>
-        <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-          <Grid.Item>
+        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+          <GridItem>
             <Card fullWidth>
               <Heading as="h4">Learn Pact</Heading>
               <Box marginY="$4">
@@ -52,8 +60,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <Link href={'/pact/beginner'}>Getting started</Link>
               </Button>
             </Card>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <Box
               marginTop="$8"
               marginLeft={{ sm: 0, lg: '$4' }}
@@ -65,12 +73,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 titleAs="h6"
               />
             </Box>
-          </Grid.Item>
-        </Grid.Root>
+          </GridItem>
+        </Grid>
 
         <Box marginBottom="$20">
-          <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-            <Grid.Item rowSpan={2}>
+          <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+            <GridItem rowSpan={2}>
               <DocsCard
                 label="Introduction"
                 description="Pact is a human-readable smart contract language. It allows anyone to write clearly, directly and safely onto a blockchain — a true innovation for secure and simple smart contract development. Pact will enable you to create entirely new business models and on-chain services."
@@ -92,8 +100,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   </Link>
                 </BrowseSection>
               </DocsCard>
-            </Grid.Item>
-            <Grid.Item>
+            </GridItem>
+            <GridItem>
               <DocsCard
                 label="Tutorials"
                 description="Start learning Pact and how to implement it."
@@ -109,8 +117,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   </Link>
                 </BrowseSection>
               </DocsCard>
-            </Grid.Item>
-            <Grid.Item>
+            </GridItem>
+            <GridItem>
               <DocsCard
                 label="Whitepaper"
                 description="Pact is the programming language for writing smart contracts to be executed by the Kadena blockchain."
@@ -126,8 +134,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   </Link>
                 </BrowseSection>
               </DocsCard>
-            </Grid.Item>
-          </Grid.Root>
+            </GridItem>
+          </Grid>
         </Box>
 
         <Heading as="h6">Stay up-to-date</Heading>

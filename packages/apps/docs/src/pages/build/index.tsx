@@ -16,6 +16,7 @@ import {
   Button,
   Card,
   Grid,
+  GridItem,
   Heading,
   Stack,
   Text,
@@ -33,8 +34,8 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
-      <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-        <Grid.Item>
+      <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <GridItem>
           <Card fullWidth>
             <Heading as="h4">Getting started tutorial</Heading>
             <Box marginY="$4">
@@ -52,8 +53,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               </Link>
             </Button>
           </Card>
-        </Grid.Item>
-        <Grid.Item>
+        </GridItem>
+        <GridItem>
           <Box marginY="$8" marginLeft="$12">
             <MostPopular
               pages={popularPages}
@@ -61,11 +62,11 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               titleAs="h6"
             />
           </Box>
-        </Grid.Item>
-      </Grid.Root>
+        </GridItem>
+      </Grid>
       <Box marginBottom="$20">
-        <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-          <Grid.Item>
+        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+          <GridItem>
             <DocsCard
               label="Quickstart"
               description="This Developer Quickstart is designed to remove the friction from onboarding so that you can understand how to build with Kadena quickly and easily."
@@ -105,8 +106,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <DocsCard
               label="Cookbook"
               description="Use the right tools and platforms for building many types of decentralized applications."
@@ -122,8 +123,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-        </Grid.Root>
+          </GridItem>
+        </Grid>
       </Box>
 
       <Stack direction="column" gap="$2xl">

@@ -225,6 +225,7 @@ export const getTransfers: DocumentNode = gql`
       first: $first
       last: $last
     ) {
+      totalCount
       pageInfo {
         startCursor
         endCursor

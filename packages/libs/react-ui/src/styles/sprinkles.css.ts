@@ -29,6 +29,7 @@ const systemProperties = defineProperties({
     wordBreak: ['normal', 'keep-all', 'break-word', 'break-all'],
     zIndex: [-1, 0, 1],
     whiteSpace: ['nowrap', 'break-spaces', 'normal', 'pre-wrap'],
+    background: ['none'],
   },
 });
 
@@ -40,7 +41,6 @@ const colorProperties = defineProperties({
   defaultCondition: 'lightMode',
   properties: {
     color: { ...vars.colors, inherit: 'inherit' },
-    background: { ...vars.colors, none: 'none' },
     backgroundColor: { ...vars.colors, transparent: 'transparent' },
     borderColor: vars.colors,
   },

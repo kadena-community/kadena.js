@@ -1,12 +1,8 @@
 import { prismaClient } from '@db/prismaClient';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import type { Debugger } from 'debug';
-import _debug from 'debug';
 import { builder } from '../builder';
 import Block from '../objects/Block';
-
-const log: Debugger = _debug('graph:Query:completedBlockHeights');
 
 builder.queryField('completedBlockHeights', (t) => {
   return t.prismaField({
@@ -34,8 +30,6 @@ builder.queryField('completedBlockHeights', (t) => {
         ORDER BY height DESC
         LIMIT ${heightCount}
       `) as { height: number }[];
-
-          log("found '%s' blocks", completedHeights.length);
 
           if (completedHeights.length > 0) {
             return prismaClient.block.findMany({

@@ -55,25 +55,23 @@ export const CompactTransactionsTable = (
           {transactions.edges.slice(0, 10).map((edge, index) => {
             return (
               <Table.Tr key={index}>
-                <Table.Td>{edge?.node.chainId}</Table.Td>
+                <Table.Td>{edge.node.chainId}</Table.Td>
                 <Table.Td>
-                  {new Date(edge?.node.creationTime).toLocaleString()}
+                  {new Date(edge.node.creationTime).toLocaleString()}
                 </Table.Td>
-                <Table.Td>{edge?.node.height}</Table.Td>
+                <Table.Td>{edge.node.height}</Table.Td>
                 <Table.Td>
-                  <Link
-                    href={`${routes.TRANSACTIONS}/${edge?.node.requestKey}`}
-                  >
-                    <span title={edge?.node.requestKey}>
+                  <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
+                    <span title={edge.node.requestKey}>
                       {truncateColumns
-                        ? truncate(edge?.node.requestKey)
-                        : edge?.node.requestKey}
+                        ? truncate(edge.node.requestKey)
+                        : edge.node.requestKey}
                     </span>
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  {edge?.node.code ? (
-                    <span title={edge?.node.code}>
+                  {edge.node.code ? (
+                    <span title={edge.node.code}>
                       {JSON.parse(
                         truncateColumns
                           ? truncate(edge.node.code)!

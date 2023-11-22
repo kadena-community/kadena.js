@@ -2,7 +2,7 @@ import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Signer', {
-  id: { field: 'orderIndex_requestKey' },
+  id: { field: 'requestKey_orderIndex' },
   fields: (t) => ({
     //database fields
     address: t.exposeString('address', { nullable: true }),

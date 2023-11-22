@@ -14,6 +14,7 @@ import {
   Button,
   Card,
   Grid,
+  GridItem,
   Heading,
 } from '@kadena/react-ui';
 import Debug from 'debug';
@@ -85,22 +86,22 @@ const CheckTransactions: FC = () => {
           <Card fullWidth>
             <Heading as="h6">Filters</Heading>
             <Box marginBottom="$4" />
-            <Grid.Root columns={2}>
-              <Grid.Item>
+            <Grid columns={2}>
+              <GridItem>
                 <ChainSelect
                   onChange={onChainSelectChange}
                   value={chainID}
                   ariaLabel="Select Chain ID"
                 />
-              </Grid.Item>
-              <Grid.Item>
+              </GridItem>
+              <GridItem>
                 <AccountNameField
                   inputProps={register('name')}
                   error={errors.name}
                   label={t('Account')}
                 />
-              </Grid.Item>
-            </Grid.Root>
+              </GridItem>
+            </Grid>
           </Card>
           <section className={submitClass}>
             <Button icon="TrailingIcon">{t('Search for transactions')}</Button>

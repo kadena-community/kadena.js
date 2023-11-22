@@ -4,13 +4,14 @@ import { crossChainTransfer } from '../crosschain-transfer';
 import { getBalance } from '../get-balance';
 import type { IAccount } from '../helper';
 import {
-  generateKeyPair,
+  generateAccount,
   getRandomNumber,
   getRandomOption,
   isEqualChainAccounts,
   logger,
   seedRandom,
   sender00,
+  stringifyProperty,
 } from '../helper';
 import { safeTransfer } from '../safe-transfer';
 import { transfer } from '../transfer';
@@ -48,9 +49,16 @@ export async function simulate({
 
   // Create accounts
   for (let i = 0; i < numberOfAccounts; i++) {
-    const account = generateKeyPair();
+    // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
+    const noOfKeys = i % 2 === 0 ? 1 : 2;
+    const account = await generateAccount(noOfKeys);
     logger.info(
-      `Generated KeyPair\nAccount: ${account.account}\nPublic Key: ${account.publicKey}\nSecret Key: ${account.secretKey}\n`,
+      `Generated KeyPair\nAccount: ${
+        account.account
+      }\nPublic Key: ${stringifyProperty(
+        account.keys,
+        'publicKey',
+      )}\nSecret Key: ${stringifyProperty(account.keys, 'secretKey')}\n`,
     );
 
     if (accounts.includes(account)) {
@@ -60,7 +68,7 @@ export async function simulate({
 
     // Fund account
     const result = await transfer({
-      publicKey: account.publicKey,
+      receiver: account,
       amount: tokenPool / numberOfAccounts,
     });
 
@@ -87,7 +95,7 @@ export async function simulate({
       // To avoid underflowing the token pool, we fund an account when there has been more iterations than total amount of circulating tokens divided by max amount
       if (counter >= tokenPool / maxAmount) {
         await transfer({
-          publicKey: account.publicKey,
+          receiver: account,
           amount: tokenPool / numberOfAccounts,
         });
         counter = 0;
@@ -96,9 +104,10 @@ export async function simulate({
       const balance = (await getBalance(account)) as number;
 
       // using a random number safety gap to avoid underflowing the account
-      if (amount + getRandomNumber(seededRandomNo, 1) > balance) {
+      const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
+      if (amountWithSafetyGap > balance) {
         logger.info(
-          `Insufficient funds for ${account.account}\nFunds necessary: ${amount}\nFunds available: ${balance}`,
+          `Insufficient funds for ${account.account}\nFunds necessary: ${amountWithSafetyGap}\nFunds available: ${balance}`,
         );
         logger.info('Skipping transfer');
         continue;
@@ -139,8 +148,8 @@ export async function simulate({
         const possibleGasPayer = getRandomOption(seededRandomNo, accounts);
 
         result = await crossChainTransfer({
-          from: account,
-          to: nextAccount,
+          sender: account,
+          receiver: nextAccount,
           amount,
           gasPayer:
             possibleGasPayer.chainId === nextAccount.chainId
@@ -161,7 +170,7 @@ export async function simulate({
         // Using a random number to determine if the transfer is a safe transfer or not
         if (transferType === 'transfer') {
           result = await transfer({
-            publicKey: nextAccount.publicKey,
+            receiver: nextAccount,
             sender: account,
             amount,
             chainId: account.chainId,
@@ -169,7 +178,7 @@ export async function simulate({
         }
         if (transferType === 'safe-transfer') {
           result = await safeTransfer({
-            receiverKeyPair: nextAccount,
+            receiver: nextAccount,
             sender: account,
             amount,
             chainId: account.chainId,

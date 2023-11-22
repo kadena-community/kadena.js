@@ -1,6 +1,6 @@
 import type { INavigation } from '@/Layout';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { Divider, Grid, Stack } from '@kadena/react-ui';
+import { Divider, Grid, GridItem, Stack } from '@kadena/react-ui';
 import classnames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -41,11 +41,11 @@ export const BottomPageSection: FC<IProps> = ({
 
   return (
     <footer className={classes}>
-      <Grid.Root columns={{ sm: 1, lg: 3, xl: 4 }}>
-        <Grid.Item columnSpan={1}>
+      <Grid columns={{ xs: 1, lg: 3, xl: 4 }}>
+        <GridItem columnSpan={1}>
           <EditPage editLink={editLink} />
-        </Grid.Item>
-        <Grid.Item columnSpan={{ sm: 1, lg: 2, xl: 3 }}>
+        </GridItem>
+        <GridItem columnSpan={{ xs: 1, lg: 2, xl: 3 }}>
           <Stack
             width={{ xs: '100%', lg: '100%' }}
             direction="row"
@@ -74,8 +74,8 @@ export const BottomPageSection: FC<IProps> = ({
               </Link>
             )}
           </Stack>
-        </Grid.Item>
-      </Grid.Root>
+        </GridItem>
+      </Grid>
 
       <Divider />
       <Stack

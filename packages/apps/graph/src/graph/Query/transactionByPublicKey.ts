@@ -3,6 +3,7 @@ import { builder } from '../builder';
 
 builder.queryField('transactionsByPublicKey', (t) => {
   return t.prismaConnection({
+    edgesNullable: false,
     args: {
       publicKey: t.arg.string({ required: true }),
     },

@@ -42,8 +42,11 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
-    "debug": "~4.3.4"
+    "@scure/bip39": "^1.2.1",
+    "debug": "~4.3.4",
+    "ed25519-keygen": "^0.4.8"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

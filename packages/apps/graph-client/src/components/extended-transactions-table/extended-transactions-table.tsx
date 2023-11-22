@@ -1,4 +1,4 @@
-import { Box, Button, Link, Select, Table } from '@kadena/react-ui';
+import { Box, Link, Pagination, Select, Table } from '@kadena/react-ui';
 
 import type { GetTransactionsQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
@@ -33,7 +33,9 @@ export const ExtendedTransactionsTable = (
 
   // Parse the query parameters from the URL using Next.js router
   const router = useRouter();
-  const { page: urlPage, items: urlItemsPerPage } = router.query;
+  // const { page: urlPage, items: urlItemsPerPage } = router.query;
+  const urlPage = router.query.page;
+  const urlItemsPerPage = router.query.items;
 
   // Use state to manage itemsPerPage and currentPage
   const [itemsPerPage, setItemsPerPage] = useState<number>(
@@ -80,9 +82,15 @@ export const ExtendedTransactionsTable = (
         urlItemsPerPage !== itemsPerPage.toString() ||
         urlPage !== currentPage.toString()
       ) {
+        const query = {
+          ...router.query,
+          page: currentPage,
+          items: itemsPerPage,
+        };
+
         await router.push({
           pathname: router.pathname,
-          query: { page: currentPage, items: itemsPerPage },
+          query,
         });
       }
     };
@@ -90,6 +98,52 @@ export const ExtendedTransactionsTable = (
       console.error(err);
     });
   }, [currentPage, itemsPerPage, router, urlItemsPerPage, urlPage]);
+
+  const handlePaginationClick = async (newPageNumber: number) => {
+    if (newPageNumber > currentPage) {
+      await fetchMore({
+        variables: {
+          first: itemsPerPage,
+          last: null,
+          after: transactions.pageInfo.endCursor,
+          before: null,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return fetchMoreResult;
+        },
+      });
+    } else if (newPageNumber < currentPage) {
+      await fetchMore({
+        variables: {
+          first: null,
+          last: itemsPerPage,
+          after: null,
+          before: transactions.pageInfo.startCursor,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+
+          if (fetchMoreResult.transactions.edges.length < itemsPerPage) {
+            return {
+              ...prev,
+              transactions: {
+                ...fetchMoreResult.transactions,
+                edges: [
+                  ...fetchMoreResult.transactions.edges,
+                  ...prev.transactions.edges,
+                ].slice(0, itemsPerPage),
+              },
+            };
+          }
+
+          return fetchMoreResult;
+        },
+      });
+    }
+
+    setCurrentPage(newPageNumber);
+  };
 
   return (
     <>
@@ -111,64 +165,14 @@ export const ExtendedTransactionsTable = (
             ))}
           </Select>
         </div>
-        <Button
-          variant="compact"
-          onClick={async () => {
-            setCurrentPage(currentPage + 1);
-            await fetchMore({
-              variables: {
-                first: itemsPerPage,
-                last: null,
-                after: transactions.pageInfo.endCursor,
-                before: null,
-              },
-              updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev;
-                return fetchMoreResult;
-              },
-            });
-          }}
-          disabled={!transactions.pageInfo.hasNextPage}
-          style={{ float: 'right', marginTop: '25px' }}
-        >
-          Next Page
-        </Button>
-        <Button
-          variant="compact"
-          onClick={async () => {
-            setCurrentPage(currentPage - 1);
-            await fetchMore({
-              variables: {
-                first: null,
-                last: itemsPerPage,
-                after: null,
-                before: transactions.pageInfo.startCursor,
-              },
-              updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev;
-
-                if (fetchMoreResult.transactions.edges.length < itemsPerPage) {
-                  return {
-                    ...prev,
-                    transactions: {
-                      ...fetchMoreResult.transactions,
-                      edges: [
-                        ...fetchMoreResult.transactions.edges,
-                        ...prev.transactions.edges,
-                      ].slice(0, itemsPerPage),
-                    },
-                  };
-                }
-
-                return fetchMoreResult;
-              },
-            });
-          }}
-          disabled={!transactions.pageInfo.hasPreviousPage}
-          style={{ float: 'right', marginTop: '25px', marginRight: '10px' }}
-        >
-          Previous Page
-        </Button>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Pagination
+            totalPages={totalPages}
+            label="pagination"
+            currentPage={currentPage}
+            onPageChange={handlePaginationClick}
+          />
+        </div>
       </Box>
       <Table.Root wordBreak="break-word">
         <Table.Head>
@@ -184,20 +188,18 @@ export const ExtendedTransactionsTable = (
           {transactions.edges.map((edge, index) => {
             return (
               <Table.Tr key={index}>
-                <Table.Td>{edge?.node.chainId}</Table.Td>
+                <Table.Td>{edge.node.chainId}</Table.Td>
                 <Table.Td>
-                  {new Date(edge?.node.creationTime).toLocaleString()}
+                  {new Date(edge.node.creationTime).toLocaleString()}
                 </Table.Td>
-                <Table.Td>{edge?.node.height}</Table.Td>
+                <Table.Td>{edge.node.height}</Table.Td>
                 <Table.Td>
-                  <Link
-                    href={`${routes.TRANSACTIONS}/${edge?.node.requestKey}`}
-                  >
-                    {edge?.node.requestKey}
+                  <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
+                    {edge.node.requestKey}
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  {edge?.node.code ? (
+                  {edge.node.code ? (
                     <pre>{formatLisp(JSON.parse(edge.node.code))}</pre>
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>

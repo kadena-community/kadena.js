@@ -164,7 +164,7 @@ export const codeTitle = style([
     display: 'none',
     alignItems: 'center',
     fontFamily: '$main',
-    background: '$blue70',
+    backgroundColor: '$blue70',
     color: '$white',
     fontWeight: '$bold',
     textTransform: 'capitalize',
