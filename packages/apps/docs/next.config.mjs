@@ -1,6 +1,7 @@
 import mdx from '@next/mdx';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 import { readFileSync } from 'fs';
+import withYaml from 'next-plugin-yaml';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
@@ -113,4 +114,4 @@ const nextConfig = {
   },
 };
 
-export default withVanillaExtract(withMDX(nextConfig));
+export default withYaml(withVanillaExtract(withMDX(nextConfig)));
