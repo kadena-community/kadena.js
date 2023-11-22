@@ -1,0 +1,3 @@
+codeFile: ./codefile.pact
+data: {{{aNumber}}}
+something: {{{thisIsFalse}}}
