@@ -1,8 +1,4 @@
-import { defineConfig } from 'vitest/config';
+import baseConfig from '@kadena-dev/shared-config/vitest.integration.config';
+import { defineConfig, mergeConfig } from 'vitest/config';
 
-export default defineConfig({
-  test: {
-    include: ['integration-tests/*.int.test.ts'],
-    testTimeout: 60000,
-  },
-});
+export default defineConfig(baseConfig);

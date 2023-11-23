@@ -2,11 +2,10 @@
   "$schema": "http://json.schemastore.org/tsconfig",
 
   "compilerOptions": {
-    "outDir": "../../../lib",
-    "rootDir": "../../../src",
+    "outDir": "../../../integration-tests/lib",
+    "rootDir": "../../../integration-tests",
 
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
     "declaration": true,
     "sourceMap": true,
     "declarationMap": true,
@@ -17,14 +16,14 @@
     "esModuleInterop": true,
     "noEmitOnError": false,
     "allowUnreachableCode": false,
+    "strictNullChecks": true,
 
     "types": [],
-
     "module": "commonjs",
     "target": "es2019",
-    "lib": ["es2019", "DOM"],
+
     "skipLibCheck": true
   },
-  "include": ["../../../src/**/*.ts", "../../../src/**/*.tsx",],
-  "exclude": ["../../../integration-tests/**/*.ts", "../../../integration-tests/**/*.tsx",]
+  "include": ["../../../integration-tests/**/*.ts", "../../../integration-tests/**/*.tsx",],
+  "exclude": ["../../../src/**/*.ts", "../../../src/**/*.tsx",]
 }
