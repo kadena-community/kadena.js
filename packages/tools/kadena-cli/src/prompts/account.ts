@@ -1,36 +1,36 @@
-// import { select } from '@inquirer/prompts';
-// import { program } from 'commander';
+import { input, select } from '@inquirer/prompts';
+import type { IPrompt } from '../utils/createOption.js';
 
-// export async function accountSelectPrompt(
-//   isOptional: boolean = false,
-// ): Promise<string | 'skip'> {
-//   const existingAccounts: ICustomAccountChoice[] = await getExistingAccounts();
+export const publicKeysPrompt: IPrompt = async () =>
+  await input({
+    message: 'Enter zero or more public keys (comma separated).',
+  });
 
-//   let choices: ICustomAccountChoice[] = existingAccounts.map((account) => ({
-//     value: account.value,
-//     name: account.name,
-//   }));
+export const accountNamePrompt: IPrompt = async () =>
+  await input({
+    message: 'Enter an account name.',
+  });
 
-//   if (isOptional) {
-//     choices.push({
-//       value: 'skip',
-//       name: 'Account is optional. Continue to next step',
-//     });
-//   }
+export const amountPrompt: IPrompt = async () =>
+  await input({
+    validate(value) {
+      return !isNaN(parseFloat(value));
+    },
+    message: 'Enter an amount.',
+  });
 
-//   choices.push({ value: 'createNewAccount', name: 'Create a new account' });
+export const fungiblePrompt: IPrompt = async () =>
+  await input({
+    default: 'coin',
+    message: 'Enter the name of a fungible.',
+  });
 
-//   const selectedAccount = await select({
-//     message: 'Select an account',
-//     choices: choices,
-//   });
-
-//   if (selectedAccount === 'createNewAccount') {
-//     await program.parseAsync(['', '', 'account', 'create']);
-//     return accountSelectPrompt(isOptional);
-//   } else if (selectedAccount !== 'skip') {
-//     return selectedAccount;
-//   }
-
-//   return 'skip';
-// }
+export const predicatePrompt: IPrompt = async () =>
+  await select({
+    message: 'Select a keyset predicate.',
+    choices: [
+      { value: 'keys-all', name: 'keys-all' },
+      { value: 'keys-any', name: 'keys-any' },
+      { value: 'keys-2', name: 'keys-2' },
+    ],
+  });
