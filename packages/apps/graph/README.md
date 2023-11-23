@@ -129,3 +129,17 @@ npm run simulate -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tok
 - maxAmount - maximum amount for a single transaction (default: 25)
 - tokenPool - amount of circulating tokens (default: 1000000)
 - seed - seed for random number generation (default: current timestamp)
+
+### Tracing and trace analysis
+
+To enable tracing, set the `ENABLE_TRACING` environment variable to `true` in the
+`.env` file. This will enable tracing for all GraphQL queries and mutations and log them to `traces.log` in the root directory.
+
+After letting the server run and collect trace data, you can then run the trace analysis script to get statistics of the traces:
+
+```sh
+pnpm run trace:analyse -s <sort> -l <limit>
+```
+
+- sort - sort by a field (default: `median`)
+- limit - limit the number of queries to output (default: no limit)
