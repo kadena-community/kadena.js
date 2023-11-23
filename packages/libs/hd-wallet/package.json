@@ -14,15 +14,13 @@
     "Danillo Felixdaal <danillo@kadena.io>"
   ],
   "exports": {
-    "./chainweaver": "./lib/chainweaver/index.js"
-  },
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "chainweaver": [
-        "./lib/chainweaver/index.d.ts"
-      ]
+    "./chainweaver": {
+      "types": "./lib/chainweaver/index.d.ts",
+      "require": "./lib/chainweaver/index.js"
+    },
+    ".": {
+        "types": "./lib/index.js",
+        "require": "./lib/index.js"
     }
   },
   "files": [
