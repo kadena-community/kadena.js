@@ -12,10 +12,10 @@ describe('yaml-converter', () => {
   describe('getPartsAndHoles', () => {
     it('parses a simple string', () => {
       expect(
-        getPartsAndHolesInCtx('./aux-files/simple-test.yml', __dirname),
+        getPartsAndHolesInCtx('./aux-files/simple-test.yaml', __dirname),
       ).deep.eq({
         cwd: __dirname,
-        tplPath: './aux-files/simple-test.yml',
+        tplPath: './aux-files/simple-test.yaml',
         tplString: [
           [
             'Hello ',
@@ -33,10 +33,10 @@ describe('yaml-converter', () => {
 
     it('parses a complex string', () => {
       expect(
-        getPartsAndHolesInCtx('./aux-files/complex-test.yml', __dirname),
+        getPartsAndHolesInCtx('./aux-files/complex-test.yaml', __dirname),
       ).deep.eq({
         cwd: __dirname,
-        tplPath: './aux-files/complex-test.yml',
+        tplPath: './aux-files/complex-test.yaml',
         tplString: [
           [
             'Hello ',
@@ -64,7 +64,7 @@ describe('yaml-converter', () => {
   describe('replaceHoles', () => {
     it('replaces holes for simple string', () => {
       const result = replaceHoles(
-        getPartsAndHolesInCtx('./aux-files/simple-test.yml', __dirname)
+        getPartsAndHolesInCtx('./aux-files/simple-test.yaml', __dirname)
           .tplString,
         {
           name: 'Albert',
@@ -76,7 +76,7 @@ describe('yaml-converter', () => {
 
     it('replaces holes for simple string', () => {
       const result = replaceHoles(
-        getPartsAndHolesInCtx('./aux-files/complex-test.yml', __dirname)
+        getPartsAndHolesInCtx('./aux-files/complex-test.yaml', __dirname)
           .tplString,
         {
           name: 'Albert',
@@ -90,7 +90,7 @@ describe('yaml-converter', () => {
     it('throws an error when a hole is not provided', () => {
       expect(() =>
         replaceHoles(
-          getPartsAndHolesInCtx('./aux-files/complex-test.yml', __dirname)
+          getPartsAndHolesInCtx('./aux-files/complex-test.yaml', __dirname)
             .tplString,
           {
             notName: 'Albert',
@@ -112,7 +112,7 @@ describe('yaml-converter', () => {
 
       const res = parseYamlKdaTx(
         replaceHolesInCtx(
-          getPartsAndHolesInCtx('./aux-files/tx-with-codefile.yml', __dirname),
+          getPartsAndHolesInCtx('./aux-files/tx-with-codefile.yaml', __dirname),
           args,
         ),
         args,
@@ -122,6 +122,30 @@ describe('yaml-converter', () => {
         code: `(module 12 My Literal Name)
 `,
         codeFile: './aux-files/codefile.pact',
+        data: 12,
+        something: false,
+      });
+    });
+
+    it('parses a template without `codefile` property ', () => {
+      const args = {
+        thisIsFalse: 'false',
+        aNumber: 12,
+      };
+
+      const res = parseYamlKdaTx(
+        replaceHolesInCtx(
+          getPartsAndHolesInCtx(
+            './aux-files/tx-without-codefile.yaml',
+            __dirname,
+          ),
+          args,
+        ),
+        args,
+      );
+
+      expect(res.tplTx).deep.eq({
+        code: `(module 123 Nil)`,
         data: 12,
         something: false,
       });
