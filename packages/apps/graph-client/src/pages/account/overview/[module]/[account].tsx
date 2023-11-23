@@ -80,7 +80,7 @@ const Account: React.FC = () => {
             </Table.Body>
           </Table.Root>
           <Box margin={'$8'} />
-          <Tabs selectedKey="Chain Accounts">
+          <Tabs defaultSelectedKey="Chain Accounts">
             <TabItem title="Chain Accounts" key="Chain Accounts">
               <Box margin={'$4'} />
               <ChainModuleAccountTable

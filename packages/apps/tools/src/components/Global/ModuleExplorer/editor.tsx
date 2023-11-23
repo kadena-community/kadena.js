@@ -104,7 +104,7 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
           </SelectField>
         </GridItem>
       </Grid>
-      <Tabs selectedKey={moduleToTabId(openedModules[0])}>
+      <Tabs defaultSelectedKey={moduleToTabId(openedModules[0])}>
         {openedModules.map(({ moduleName, chainId, code }) => {
           return (
             <TabItem
