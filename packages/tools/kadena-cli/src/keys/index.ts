@@ -1,4 +1,4 @@
-import { createGenerateFromHdCommand } from './commands/keysGenrateFromHd.js';
+import { createGenerateFromHdCommand } from './commands/keysGenerateFromHd.js';
 import { createGenerateHdKeysCommand } from './commands/keysHdGenerate.js';
 import { createListKeysCommand } from './commands/keysList.js';
 import { createManageKeysCommand } from './commands/keysManage.js';

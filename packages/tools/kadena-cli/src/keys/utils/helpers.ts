@@ -20,14 +20,6 @@ export function getEncryptedHDKeys(): string[] {
 }
 
 /**
- * Fetches all unencrypted HD key files from the specified directory.
- * @returns {string[]} Array of unencrypted HD key filenames without their extensions.
- */
-export function getUnencryptedHDKeys(): string[] {
-  return getFilesWithExtension(KEY_DIR, HDKEY_EXT);
-}
-
-/**
  * Fetches all files with a specific extension from a given directory.
  * @param {string} dir - The directory path from which files are to be read.
  * @param {string} extension - The file extension to filter by.
