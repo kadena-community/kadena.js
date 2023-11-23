@@ -152,7 +152,7 @@ export const MyApp = ({
         >
           <ModalProvider>
             <MenuProvider>
-              <Header menuItems={props.leftMenuTree} />
+              <Header menuItems={props.headerItems} />
               <CookieConsent />
               <Layout {...props}>
                 <Component {...props} />

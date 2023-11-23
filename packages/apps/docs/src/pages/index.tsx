@@ -10,6 +10,7 @@ import {
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
+import { getHeaderItems } from '@/utils/config';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import {
@@ -236,6 +237,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
+      headerItems: getHeaderItems(),
       popularPages: mostPopularPages,
       blogPosts,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),

@@ -1,5 +1,4 @@
-import type { IMenuItem, LayoutType } from '@/Layout';
-import { useConfig } from '@/hooks/useConfig/useConfig';
+import type { IHeaderItem, IMenuItem, LayoutType } from '@/Layout';
 import { useMenu } from '@/hooks/useMenu/useMenu';
 import { SystemIcon } from '@kadena/react-ui';
 import classNames from 'classnames';
@@ -30,15 +29,13 @@ import {
 import { useHeaderAnimation } from './useHeaderAnimation';
 
 interface IProps {
-  menuItems: IMenuItem[];
+  menuItems: IHeaderItem[];
   layout?: LayoutType;
 }
 
 export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
   const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
   const { toggleMenu, isMenuOpen } = useMenu();
-
-  const { menu } = useConfig();
 
   return (
     <header className={classNames(globalClass, headerClass)}>
@@ -57,15 +54,15 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
           <nav className={navClass}>
             <ul className={ulClass} ref={listRef}>
               {menuItems.map((item) => (
-                <li key={item.root}>
+                <li key={item.link}>
                   <Link
-                    href={item.root}
+                    href={item.link}
                     className={classNames(
                       navLinkClass,
                       navLinkActiveVariant[item.isMenuOpen ? 'true' : 'false'],
                     )}
                   >
-                    {item.menu}
+                    {item.title}
                   </Link>
                 </li>
               ))}
