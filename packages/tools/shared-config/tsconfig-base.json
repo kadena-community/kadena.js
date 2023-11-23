@@ -26,5 +26,5 @@
     "skipLibCheck": true
   },
   "include": ["../../../src/**/*.ts", "../../../src/**/*.tsx",],
-  "exclude": ["../../../integration-tests/**/*.ts", "../../../integration-tests/**/*.tsx",]
+  "exclude": ["../../../src/integration-tests/**/*.ts", "../../../src/integration-tests/**/*.tsx",]
 }
