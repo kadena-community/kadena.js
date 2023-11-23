@@ -13,15 +13,14 @@
     "Javad Khalilian <javad@kadena.io>",
     "Danillo Felixdaal <danillo@kadena.io>"
   ],
-  "main": "./lib/index.js",
   "exports": {
+    ".": {
+      "types": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
     "./chainweaver": {
       "types": "./lib/chainweaver/index.d.ts",
-      "require": "./lib/chainweaver/index.js"
-    },
-    ".": {
-        "types": "./lib/index.js",
-        "require": "./lib/index.js"
+      "default": "./lib/chainweaver/index.js"
     }
   },
   "files": [
