@@ -2,6 +2,6 @@
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-test.json",
   "compilerOptions": {
     "types": ["node"],
-    "target": "ES2020",
+    "target": "ES2020"
   }
 }
