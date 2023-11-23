@@ -32,14 +32,6 @@ interface IKdaToolTransaction {
   nonce: string;
 }
 
-/*
- * Hello {{name}}! Where is {{{name}}}{{name}}?
- *                          ^^^^^^^^^^ literalHole
- *       ^^^^^^^^ parsedHole
- * ^^^^^ part
- * - PartsAndHoles: ["Hello {{name}}! Where is ", { literal: "name" }, "{{name}}?"]
- * - PartsAndHoles: ["Hello ", { parsed: "name" }, "! ", "Where is {", { literal: "name" }, "?"]
- */
 type TplHoleTriple = {
   literal: string;
 };
@@ -50,7 +42,29 @@ type TplHole = TplHoleTriple | TplHoleDouble;
 type TplPart = string;
 type PartsAndHoles = [TplPart[], TplHole[]];
 type GetPartsAndHoles = (path: string, cwd?: string) => IParseContext;
+type FilledYamlString = string;
 
+type ReplaceHoles = (
+  ctx: IParseContext,
+  holes: Record<string, string | number>,
+) => IParseContextStepTwo;
+
+type ParseYamlKdaTx = (
+  ctx: IParseContextStepTwo,
+  args: Record<string, string | number>,
+) => IParseContextStepThree;
+
+type ConvertKdaToolToKadenaClientTx = (
+  kdaToolTx: IParseContextStepThree['tplTx'],
+) => IPactCommand;
+
+type ConvertYamlToKadenaClientTx = (
+  path: string,
+  args: Record<string, string | number>,
+  cwd?: string,
+) => IPactCommand;
+
+// Responsinble for splitting a string into parts and holes
 export const getPartsAndHoles = (text: string) => {
   return text.split(/{{(.*?)}}}?/g).reduce(
     (acc, curr, i) => {
@@ -71,6 +85,7 @@ export const getPartsAndHoles = (text: string) => {
   );
 };
 
+// Responsible for reading a file and returning a context with parts and holes
 export const getPartsAndHolesInCtx: GetPartsAndHoles = (
   path,
   cwd = process.cwd(),
@@ -83,12 +98,7 @@ export const getPartsAndHolesInCtx: GetPartsAndHoles = (
   };
 };
 
-type FilledYamlString = string;
-type ReplaceHoles = (
-  ctx: IParseContext,
-  holes: Record<string, string | number>,
-) => IParseContextStepTwo;
-
+// Responsible for replacing holes with values
 export const replaceHoles = (
   partsAndHoles: PartsAndHoles,
   args: Record<string, string | number>,
@@ -96,39 +106,46 @@ export const replaceHoles = (
   const [parts, holes] = partsAndHoles;
   const allParts = zip(parts, holes);
   return allParts
-    .map((partOrHole) => {
+    .map((partOrHole, index) => {
       if (typeof partOrHole === 'string') {
         // it's a part
         return partOrHole;
-      }
-      if ('literal' in partOrHole) {
-        // it's a literal hole
-        return args[partOrHole.literal];
       } else {
-        // it's a parsed hole
-        const arg = args[partOrHole.parsed];
-        if (typeof arg === 'string') {
-          return `"${arg}"`;
-        }
-        if (typeof arg === 'number') {
-          return `{ "decimal": "${arg}" }`;
+        if ('literal' in partOrHole) {
+          // it's a literal hole
+
+          if (!(partOrHole.literal in args)) {
+            throw new Error(
+              `argument to fill hole for ${partOrHole.literal} is missing in ${
+                allParts[index - 1]
+              }{{${partOrHole.literal}}}${allParts[index + 1]}}`,
+            );
+          }
+
+          return args[partOrHole.literal];
+        } else {
+          // it's a parsed hole
+          const arg = args[partOrHole.parsed];
+          if (typeof arg === 'string') {
+            return `"${arg}"`;
+          }
+          if (typeof arg === 'number') {
+            return `{ "decimal": "${arg}" }`;
+          }
         }
       }
     })
     .join('');
 };
 
+// Responsible for replacing holes in a context with values
 export const replaceHolesInCtx: ReplaceHoles = (ctx, args) => {
   const { tplString } = ctx;
 
   return { ...ctx, filledYamlString: replaceHoles(tplString, args) };
 };
 
-type ParseYamlKdaTx = (
-  ctx: IParseContextStepTwo,
-  args: Record<string, string | number>,
-) => IParseContextStepThree;
-
+// Responsible for parsing a yaml string into a kda tool transaction
 export const parseYamlKdaTx: ParseYamlKdaTx = (ctx, args) => {
   const { filledYamlString } = ctx;
   const kdaToolTx = yaml.load(filledYamlString) as IKdaToolTransaction;
@@ -156,16 +173,14 @@ export const parseYamlKdaTx: ParseYamlKdaTx = (ctx, args) => {
   };
 };
 
-type ConvertKdaToolToKadenaClientTx = (
-  kdaToolTx: IParseContextStepThree['tplTx'],
-) => IPactCommand;
-
+// Responsible for converting a kda tool transaction into a kadena client transaction
 export const convertToKadenaClientTransaction: ConvertKdaToolToKadenaClientTx =
   (kdaToolTx) => {
     const execPayload: IExecutionPayloadObject = {
       data: kdaToolTx.data,
       code: kdaToolTx.code,
     } as unknown as IExecutionPayloadObject;
+
     return {
       ...kdaToolTx,
       payload: execPayload,
@@ -179,6 +194,17 @@ export const convertToKadenaClientTransaction: ConvertKdaToolToKadenaClientTx =
     };
   };
 
+export const convertYamlToKadenaClientTransaction: ConvertYamlToKadenaClientTx =
+  (path, args, cwd) => {
+    return convertToKadenaClientTransaction(
+      parseYamlKdaTx(
+        replaceHolesInCtx(getPartsAndHolesInCtx(path, cwd), args),
+        args,
+      ).tplTx,
+    );
+  };
+
+// Responsible for zipping together parts and holes
 function zip(parts: string[], holes: TplHole[]) {
   const result = [];
   for (let i = 0; i < parts.length; i++) {
@@ -189,6 +215,8 @@ function zip(parts: string[], holes: TplHole[]) {
   }
   return result;
 }
+
+// Responsible for converting a public key to a pubkey
 function publicToPubkey(value: { public: string }): {
   pubKey: string;
 } {

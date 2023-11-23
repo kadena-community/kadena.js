@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   convertToKadenaClientTransaction,
+  convertYamlToKadenaClientTransaction,
   getPartsAndHolesInCtx,
   parseYamlKdaTx,
   replaceHoles,
@@ -10,9 +11,11 @@ import {
 describe('yaml-converter', () => {
   describe('getPartsAndHoles', () => {
     it('parses a simple string', () => {
-      expect(getPartsAndHolesInCtx('./simple-test.yml', __dirname)).deep.eq({
-        cwd: '/Users/albert/projects/kadena-community/kadena.js-pull-requests/packages/libs/client-utils/src/core/test',
-        tplPath: './simple-test.yml',
+      expect(
+        getPartsAndHolesInCtx('./aux-files/simple-test.yml', __dirname),
+      ).deep.eq({
+        cwd: __dirname,
+        tplPath: './aux-files/simple-test.yml',
         tplString: [
           [
             'Hello ',
@@ -29,9 +32,11 @@ describe('yaml-converter', () => {
     });
 
     it('parses a complex string', () => {
-      expect(getPartsAndHolesInCtx('./complex-test.yml', __dirname)).deep.eq({
-        cwd: '/Users/albert/projects/kadena-community/kadena.js-pull-requests/packages/libs/client-utils/src/core/test',
-        tplPath: './complex-test.yml',
+      expect(
+        getPartsAndHolesInCtx('./aux-files/complex-test.yml', __dirname),
+      ).deep.eq({
+        cwd: __dirname,
+        tplPath: './aux-files/complex-test.yml',
         tplString: [
           [
             'Hello ',
@@ -59,7 +64,8 @@ describe('yaml-converter', () => {
   describe('replaceHoles', () => {
     it('replaces holes for simple string', () => {
       const result = replaceHoles(
-        getPartsAndHolesInCtx('./simple-test.yml', __dirname).tplString,
+        getPartsAndHolesInCtx('./aux-files/simple-test.yml', __dirname)
+          .tplString,
         {
           name: 'Albert',
         },
@@ -70,7 +76,8 @@ describe('yaml-converter', () => {
 
     it('replaces holes for simple string', () => {
       const result = replaceHoles(
-        getPartsAndHolesInCtx('./complex-test.yml', __dirname).tplString,
+        getPartsAndHolesInCtx('./aux-files/complex-test.yml', __dirname)
+          .tplString,
         {
           name: 'Albert',
           literalName: 'literalAlbert',
@@ -78,6 +85,20 @@ describe('yaml-converter', () => {
       );
       expect(result).eq(`Hello Albert! Where is AlbertliteralAlbert!
 `);
+    });
+
+    it('throws an error when a hole is not provided', () => {
+      expect(() =>
+        replaceHoles(
+          getPartsAndHolesInCtx('./aux-files/complex-test.yml', __dirname)
+            .tplString,
+          {
+            notName: 'Albert',
+          },
+        ),
+      ).to.throw(
+        'argument to fill hole for name is missing in Hello {{name}}!',
+      );
     });
   });
 
@@ -91,7 +112,7 @@ describe('yaml-converter', () => {
 
       const res = parseYamlKdaTx(
         replaceHolesInCtx(
-          getPartsAndHolesInCtx('./tx-with-codefile.yml', __dirname),
+          getPartsAndHolesInCtx('./aux-files/tx-with-codefile.yml', __dirname),
           args,
         ),
         args,
@@ -100,7 +121,7 @@ describe('yaml-converter', () => {
       expect(res.tplTx).deep.eq({
         code: `(module 12 My Literal Name)
 `,
-        codeFile: './codefile.pact',
+        codeFile: './aux-files/codefile.pact',
         data: 12,
         something: false,
       });
@@ -116,7 +137,8 @@ describe('yaml-converter', () => {
         network: 'testnet',
         'gas-station-name': 'my-gas-station',
         amount: 123_000,
-        'funding-key': '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+        'funding-key':
+          '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
         'owner-key':
           'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
       };
@@ -124,15 +146,141 @@ describe('yaml-converter', () => {
       const res = convertToKadenaClientTransaction(
         parseYamlKdaTx(
           replaceHolesInCtx(
-            getPartsAndHolesInCtx('./real-tx-tpl.yaml', __dirname),
+            getPartsAndHolesInCtx('./aux-files/real-tx-tpl.yaml', __dirname),
             args,
           ),
           args,
         ).tplTx,
       );
-      expect(res).toBe(
-        'TODO: equal to a nice IPactCommand for signWithChainweaver 🤣',
+
+      expect(res).toStrictEqual({
+        codeFile: './aux-files/real-tx-tpl-code.pact',
+        data: null,
+        meta: {
+          chainId: '1',
+          sender:
+            'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+          gasLimit: 2000,
+          gasPrice: 1e-8,
+          ttl: 7200,
+        },
+        networkId: 'testnet',
+        nonce: undefined,
+        signers: [
+          {
+            caps: [
+              {
+                name: 'coin.TRANSFER',
+                args: [
+                  'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+                  'my-gas-station',
+                  {
+                    '[object Object]': null,
+                  },
+                ],
+              },
+              {
+                name: 'coin.GAS',
+                args: [],
+              },
+            ],
+            pubKey:
+              '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+          },
+          {
+            caps: [
+              {
+                name: 'coin.ROTATE',
+                args: ['my-gas-station'],
+              },
+            ],
+            pubKey:
+              'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+          },
+        ],
+        type: 'exec',
+        code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
+        payload: {
+          data: null,
+          code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
+        },
+      });
+    });
+  });
+
+  describe('convertYamlToKadenaClientTransaction', () => {
+    it('converts a yaml with holes to KadenaClientTx', () => {
+      const args = {
+        chain: 1,
+        'funding-acct':
+          'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+        network: 'testnet',
+        'gas-station-name': 'my-gas-station',
+        amount: 123_000,
+        'funding-key':
+          '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+        'owner-key':
+          'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+      };
+
+      const res = convertYamlToKadenaClientTransaction(
+        './aux-files/real-tx-tpl.yaml',
+        args,
+        __dirname,
       );
+
+      expect(res).toStrictEqual({
+        codeFile: './aux-files/real-tx-tpl-code.pact',
+        data: null,
+        meta: {
+          chainId: '1',
+          sender:
+            'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+          gasLimit: 2000,
+          gasPrice: 1e-8,
+          ttl: 7200,
+        },
+        networkId: 'testnet',
+        nonce: undefined,
+        signers: [
+          {
+            caps: [
+              {
+                name: 'coin.TRANSFER',
+                args: [
+                  'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+                  'my-gas-station',
+                  {
+                    '[object Object]': null,
+                  },
+                ],
+              },
+              {
+                name: 'coin.GAS',
+                args: [],
+              },
+            ],
+            pubKey:
+              '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+          },
+          {
+            caps: [
+              {
+                name: 'coin.ROTATE',
+                args: ['my-gas-station'],
+              },
+            ],
+            pubKey:
+              'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+          },
+        ],
+        type: 'exec',
+        code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
+        payload: {
+          data: null,
+          code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
+        },
+      });
     });
   });
 });
