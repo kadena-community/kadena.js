@@ -18,8 +18,19 @@ export const tabListClass = style([
     position: 'relative',
   }),
   {
+    selectors: {
+      '&::before': {
+        position: 'absolute',
+        display: 'block',
+        content: '',
+        bottom: '0',
+        left: '0',
+        right: '0',
+        height: '2px',
+        backgroundColor: vars.colors.$neutral2,
+      },
+    },
     overflowX: 'auto',
-    borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral2}`,
   },
 ]);
 
@@ -56,9 +67,9 @@ export const selectorLine = style([
     },
     width: 0,
     height: '$0',
+    bottom: 0,
   }),
   {
-    // bottom: '-20px',
     transition: 'transform .4s ease, width .4s ease',
     transform: `translateX(0)`,
   },
