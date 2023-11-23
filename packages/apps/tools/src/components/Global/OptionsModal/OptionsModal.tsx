@@ -14,7 +14,6 @@ import {
   Stack,
   Tag,
   Text,
-  useModal,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
@@ -31,8 +30,6 @@ export const OptionsModal: FC = () => {
   const { t } = useTranslation('common');
   const { devOption, setDevOption } = useAppContext();
   const [selected, setSelected] = useState(devOption);
-
-  const { clearModal } = useModal();
 
   const devOptions: {
     [Key in DevOption]: IDevOption;
@@ -112,7 +109,6 @@ export const OptionsModal: FC = () => {
 
   const handleSave = (): void => {
     setDevOption(selected);
-    clearModal();
   };
 
   return (

@@ -1,6 +1,10 @@
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Stack, TextField, useModal } from '@kadena/react-ui';
+import {
+  Button,
+  Stack,
+  TextField,
+} from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -31,8 +35,6 @@ export const AddNetworkModal: FC = () => {
 
   const [error, setError] = useState('');
 
-  const { clearModal } = useModal();
-
   useEffect(() => {
     setError('');
   }, [networkId]);
@@ -57,7 +59,6 @@ export const AddNetworkModal: FC = () => {
     setNetworksData(networks);
 
     setSelectedNetwork(networkId);
-    clearModal();
   };
 
   const {
