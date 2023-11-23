@@ -1,4 +1,8 @@
-import { ChainId, IExecutionPayloadObject, IPactCommand } from '@kadena/client';
+import type {
+  ChainId,
+  IExecutionPayloadObject,
+  IPactCommand,
+} from '@kadena/client';
 import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join } from 'path';
