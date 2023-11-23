@@ -1,6 +1,6 @@
 import clear from 'clear';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
-import path, { join } from 'path';
+import path from 'path';
 import sanitize from 'sanitize-filename';
 import { defaultKeysetsPath } from '../constants/keysets.js';
 import { defaultNetworksPath } from '../constants/networks.js';

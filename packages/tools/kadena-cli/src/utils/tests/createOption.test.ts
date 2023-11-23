@@ -43,42 +43,6 @@ describe('createOption', () => {
     expect(mockExpand).toHaveBeenCalledWith('label');
   });
 
-  it('should handle multiple dependencies', async () => {
-    const mockAction1 = vi.fn();
-    const mockAction2 = vi.fn();
-    const mockCondition1 = vi
-      .fn()
-      .mockResolvedValueOnce(false)
-      .mockResolvedValueOnce(true);
-    const mockCondition2 = vi.fn().mockResolvedValue(true);
-    const testOption = new Option('-t, --test <test>', 'test option');
-
-    const result = createOption({
-      prompt: async () => 'test',
-      validation: { optional: vi.fn().mockReturnValue('optionalValidation') },
-      option: testOption,
-      dependsOn: [
-        {
-          condition: mockCondition1,
-          action: mockAction1,
-          message: 'First dependency required',
-        },
-        {
-          condition: mockCondition2,
-          action: mockAction2,
-          message: 'Second dependency required',
-        },
-      ],
-    });
-
-    const detailedOption = result(true);
-    await detailedOption.prompt();
-    expect(mockCondition1).toHaveBeenCalledTimes(2);
-    expect(mockAction1).toHaveBeenCalledTimes(1);
-    expect(mockCondition2).toHaveBeenCalledTimes(1);
-    expect(mockAction2).not.toHaveBeenCalled();
-  });
-
   it('should apply correct Zod validation based on optional flag', async () => {
     const validationSchema = z.string();
     const testOption = new Option('-t, --test <test>', 'test option');
@@ -102,5 +66,24 @@ describe('createOption', () => {
     expect(JSON.stringify(detailedOption.validation)).toBe(
       JSON.stringify(validationSchema.optional()),
     );
+  });
+
+  it('should correctly handle the isOptional parameter in the prompt', async () => {
+    const mockPrompt = vi.fn();
+    const testOption = new Option('-t, --test <test>', 'test option');
+
+    const result = createOption({
+      prompt: mockPrompt,
+      validation: z.string(),
+      option: testOption,
+    });
+
+    const detailedOption = result(true);
+    await detailedOption.prompt({}, {}, true);
+    expect(mockPrompt).toHaveBeenCalledWith({}, {}, true);
+
+    const detailedOptionFalse = result(false);
+    await detailedOptionFalse.prompt({}, {}, false);
+    expect(mockPrompt).toHaveBeenCalledWith({}, {}, false);
   });
 });
