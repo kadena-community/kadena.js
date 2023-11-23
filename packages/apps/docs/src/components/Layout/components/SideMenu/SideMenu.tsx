@@ -1,6 +1,6 @@
 import type { IMenuItem } from '@/Layout';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { Box, Heading, Input } from '@kadena/react-ui';
+import { Box, Heading, Input, SystemIcon } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
@@ -30,6 +30,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     menuItems,
   );
   const router = useRouter();
+  const MagnifierIcon = SystemIcon.Magnify;
 
   const activeItem = menuItems.find((item) => item.isMenuOpen);
 
@@ -67,13 +68,14 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         <Box marginX="$4" marginBottom="$8" marginTop="$4">
           <Input
             id="search"
-            rightIcon="Magnify"
             onKeyUp={handleKeyPress}
             placeholder="Search"
             outlined
             type="text"
             aria-label="Search"
-          />
+          >
+            <MagnifierIcon size="md" />
+          </Input>
         </Box>
       </ShowOnMobile>
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>

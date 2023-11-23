@@ -1,17 +1,17 @@
 import type { ITextareaProps } from '@components/Form';
-import { Textarea } from '@components/Form';
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React from 'react';
+
+import { TextareaCopy } from './TextareaCopy';
 
 const meta: Meta<ITextareaProps> = {
-  title: 'Form/Textarea/Textarea',
-  component: Textarea,
+  title: 'Form/Textarea/TextareaCopy',
+  component: TextareaCopy,
   parameters: {
-    status: { type: 'inDevelopment' },
     docs: {
       description: {
         component:
-          'The Textarea component is a wrapper around the native textArea element that provides the ability to add additional information.',
+          'The TextAreaCopy is a composition of the native textArea element and a copy button.',
       },
     },
   },
@@ -33,22 +33,18 @@ export default meta;
 
 type Story = StoryObj<ITextareaProps>;
 
-export const TextareaStory: Story = {
-  name: 'Textarea',
+export const TextareaCopyStory: Story = {
+  name: 'TextareaCopy',
   args: {
     disabled: false,
     fontFamily: '$mono',
     outlined: false,
   },
   render: (props) => {
-    const [value, setValue] = useState<string>('');
-
     return (
-      <Textarea
+      <TextareaCopy
         {...props}
-        value={value}
-        onChange={({ target }) => setValue(target.value)}
-        id="TextareaStory"
+        id="TextareaCopyStory"
         placeholder="This is a placeholder"
       />
     );
