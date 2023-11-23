@@ -3,7 +3,7 @@ const { defineConfig } = require('vitest/config');
 
 module.exports = defineConfig({
   test: {
-    include: ['src/integration-tests/*.int.{test,spec}.{ts,tsx}'],
+    include: ['integration-tests/*.int.{test,spec}.{ts,tsx}'],
     globals: false,
   },
 });
