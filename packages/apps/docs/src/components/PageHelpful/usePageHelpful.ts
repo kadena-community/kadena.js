@@ -1,7 +1,6 @@
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import usePageHelpfulModal from './usePageHelpfulModal';
 
 interface IPageHelpfulHookResult {
   handlePageHelpful(): void;
@@ -10,9 +9,8 @@ interface IPageHelpfulHookResult {
 }
 
 export default function usePageHelpful(
-  editLink?: string,
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
 ): IPageHelpfulHookResult {
-  const { renderModalComponent } = usePageHelpfulModal(editLink);
   const pathname = usePathname();
   const localStorageKey = `pageHelpfulVote${pathname}`;
   const [isPageHelpful, setIsPageHelpful] = useState<string | undefined>();
@@ -46,7 +44,7 @@ export default function usePageHelpful(
     }
     localStorage.setItem(localStorageKey, 'down');
     setIsPageHelpful('down');
-    renderModalComponent();
+    setIsOpen(true);
   }
 
   return {

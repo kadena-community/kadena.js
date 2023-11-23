@@ -1,9 +1,11 @@
-import { Box, Text } from '@kadena/react-ui';
+import { Box, DialogContent, DialogHeader, Text } from '@kadena/react-ui';
 import type { FC, FormEvent } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { Search } from '../Search/Search';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { wrapperClass } from './styles.css';
+
+export type ITabs = 'docs' | 'qa' | null;
 
 export const SearchModal: FC = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -30,18 +32,22 @@ export const SearchModal: FC = () => {
     if (searchInputRef.current && isMounted) {
       searchInputRef.current.focus();
     }
-  }, [isMounted]);
+  }, [isMounted, searchInputRef.current]);
 
   return (
     <>
-      <div className={wrapperClass}>
+      <DialogHeader>
+        <h2>Search Spaces</h2>
         <Text>Search the classic way, or just ask a question</Text>
         <Box marginY="$4">
           <SearchBar ref={searchInputRef} onSubmit={handleSubmit} />
         </Box>
-
-        <Search query={query} hasScroll={true} limitResults={10} />
-      </div>
+      </DialogHeader>
+      <DialogContent>
+        <div className={wrapperClass}>
+          <Search query={query} hasScroll={true} limitResults={10} />
+        </div>
+      </DialogContent>
     </>
   );
 };

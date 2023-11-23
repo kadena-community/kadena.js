@@ -1,5 +1,6 @@
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { Loading } from '@/components/Loading/Loading';
+import type { ITabs } from '@/components/SearchModal/SearchModal';
 import type { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import {
@@ -11,7 +12,7 @@ import {
   Stack,
   SystemIcon,
   Tabs,
-  useModal,
+  useDialog,
 } from '@kadena/react-ui';
 import classnames from 'classnames';
 import Link from 'next/link';
@@ -39,7 +40,7 @@ interface IProps {
   error?: string;
   isLoading: boolean;
   hasScroll?: boolean;
-  onTabSelect: (tabName: string) => void;
+  onTabSelect: (tabName: ITabs) => void;
 }
 
 const TABNAME = 'searchTabSelected';
@@ -57,8 +58,8 @@ export const SearchResults: FC<IProps> = ({
   hasScroll = false,
   onTabSelect,
 }) => {
-  const { clearModal } = useModal();
-  const [selectedTabName, setSelectedTabName] = useState<string>('docs');
+  const { close } = useDialog();
+  const [selectedTabName, setSelectedTabName] = useState<ITabs>(null);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   const scrollBoxClasses = classnames(scrollBoxClass, {
@@ -66,9 +67,12 @@ export const SearchResults: FC<IProps> = ({
   });
 
   const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
-    const buttonName = (e.target as HTMLElement).getAttribute('data-tab');
+    const buttonName = (e.target as HTMLElement).getAttribute(
+      'data-tab',
+    ) as ITabs;
     if (buttonName === null) return;
     localStorage.setItem(TABNAME, buttonName);
+    setSelectedTabName(buttonName);
     onTabSelect(buttonName);
   };
 
@@ -77,7 +81,7 @@ export const SearchResults: FC<IProps> = ({
   }, [setIsMounted]);
 
   useEffect(() => {
-    const value = localStorage.getItem(TABNAME);
+    const value = localStorage.getItem(TABNAME) as ITabs;
     if (value === null) return;
     setSelectedTabName(value);
     onTabSelect(value);
@@ -88,10 +92,9 @@ export const SearchResults: FC<IProps> = ({
 
   return (
     <section onClick={rememberTab}>
-      <Tabs.Root initialTab={selectedTabName}>
+      <Tabs.Root initialTab={selectedTabName as string}>
         <Tabs.Tab id="docs">Docs Space </Tabs.Tab>
         <Tabs.Tab id="qa">QA Space</Tabs.Tab>
-
         <Tabs.Content id="docs">
           <div className={scrollBoxClasses}>
             {semanticIsLoading && (
@@ -123,7 +126,7 @@ export const SearchResults: FC<IProps> = ({
                         icon={'TrailingIcon'}
                         iconAlign="right"
                         title="Go to search results"
-                        onClick={clearModal}
+                        onClick={close}
                       >
                         Go to search results
                       </Button>
