@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import type { Key } from 'react-aria';
 import type { ITabsProps } from './Tabs';
@@ -53,6 +53,10 @@ const meta: Meta<ITabsProps> = {
     },
     selectedKey: {
       description: 'The currently selected key in the collection (controlled).',
+      control: {
+        type: 'select',
+      },
+      options: ExampleTabs.map((tab) => tab.title),
     },
     defaultSelectedKey: {
       description: 'The initial selected key in the collection (uncontrolled).',
@@ -65,16 +69,26 @@ const meta: Meta<ITabsProps> = {
 };
 
 export default meta;
+type Story = StoryObj<ITabsProps>;
 
-export const TabsStory = () => (
-  <Tabs aria-label="SomeExampleOfTabs">
-    {ExampleTabs.map((tab) => (
-      <TabItem key={tab.title} title={tab.title}>
-        {tab.content}
-      </TabItem>
-    ))}
-  </Tabs>
-);
+export const TabsStory: Story = {
+  name: 'Tabs',
+  args: {
+    ['aria-label']: 'generic tabs story',
+    selectedKey: ExampleTabs[0].title,
+  },
+  render: (props) => {
+    return (
+      <Tabs aria-label={props['aria-label']} selectedKey={props.selectedKey}>
+        {ExampleTabs.map((tab) => (
+          <TabItem key={tab.title} title={tab.title}>
+            {tab.content}
+          </TabItem>
+        ))}
+      </Tabs>
+    );
+  },
+};
 
 export const ControlledTabsStory = () => {
   const [timePeriod, setTimePeriod] = useState<Key>('jurassic');
