@@ -120,4 +120,5 @@ export {
   TrackerCard,
   Tree,
   maskValue,
+  useDialog,
 } from './components';

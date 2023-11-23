@@ -30,7 +30,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
     );
 
     return (
-      <DialogContext.Provider value={{ titleProps }}>
+      <DialogContext.Provider value={{ titleProps, ...state }}>
         <div
           ref={dialogRef}
           className={overlayClass}

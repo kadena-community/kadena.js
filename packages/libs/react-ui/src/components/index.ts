@@ -86,7 +86,13 @@ export { Breadcrumbs } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
-export { Dialog, DialogContent, DialogFooter, DialogHeader } from './Dialog';
+export {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  useDialog,
+} from './Dialog';
 export { Divider } from './Divider/Divider';
 export {
   FormFieldWrapper,

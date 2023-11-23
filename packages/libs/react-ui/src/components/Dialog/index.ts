@@ -1,5 +1,6 @@
 export { Dialog } from './Dialog';
 export type { IDialogProps } from './Dialog';
+export { useDialog } from './Dialog.hook';
 export { DialogContent } from './DialogContent';
 export type { IDialogContentProps } from './DialogContent';
 export { DialogFooter } from './DialogFooter';
