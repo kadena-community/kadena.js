@@ -75,11 +75,32 @@ export const TabsStory: Story = {
   name: 'Tabs',
   args: {
     ['aria-label']: 'generic tabs story',
-    selectedKey: ExampleTabs[0].title,
   },
   render: (props) => {
     return (
-      <Tabs aria-label={props['aria-label']} selectedKey={props.selectedKey}>
+      <Tabs aria-label={props['aria-label']}>
+        {ExampleTabs.map((tab) => (
+          <TabItem key={tab.title} title={tab.title}>
+            {tab.content}
+          </TabItem>
+        ))}
+      </Tabs>
+    );
+  },
+};
+
+export const DefaultSelectedTabsStory: Story = {
+  name: 'DefaultSelectedTab',
+  args: {
+    ['aria-label']: 'generic tabs story',
+    defaultSelectedKey: ExampleTabs[1].title,
+  },
+  render: (props) => {
+    return (
+      <Tabs
+        aria-label={props['aria-label']}
+        defaultSelectedKey={props.defaultSelectedKey}
+      >
         {ExampleTabs.map((tab) => (
           <TabItem key={tab.title} title={tab.title}>
             {tab.content}

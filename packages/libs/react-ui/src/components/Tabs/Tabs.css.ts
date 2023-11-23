@@ -16,6 +16,7 @@ export const tabListClass = style([
     flexDirection: 'row',
     maxWidth: '100%',
     position: 'relative',
+    marginLeft: '$2',
   }),
   {
     selectors: {
@@ -77,7 +78,7 @@ export const selectorLine = style([
 
 export const tabContentClass = style([
   sprinkles({
-    marginY: '$2',
+    marginY: '$4',
     fontSize: '$base',
     color: '$neutral4',
   }),
