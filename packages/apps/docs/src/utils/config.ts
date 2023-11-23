@@ -9,10 +9,6 @@ export const getHeaderItems = (): IHeaderItem[] => {
   return menu.map((item: string) => {
     const found = data.find((d) => d.root === `/${item}`);
     if (!found) return null;
-    return {
-      title: found.menu,
-      isMenuOpen: found.isMenuOpen,
-      link: found.root,
-    };
+    return found;
   });
 };

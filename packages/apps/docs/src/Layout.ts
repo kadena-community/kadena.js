@@ -84,14 +84,8 @@ export interface ILayout {
 
 export type LevelType = 1 | 2 | 3;
 
-export interface IHeaderItem {
-  title: string;
-  isMenuOpen: boolean;
-  link: string;
-}
-
 export interface IPageProps {
-  headerItems: IHeaderItem[];
+  headerItems: IMenuItem[];
   children?: ReactNode;
   menuItems: IMenuItem[];
   aSideMenuTree: ISubHeaderElement[];
