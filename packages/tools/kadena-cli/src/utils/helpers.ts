@@ -1,6 +1,6 @@
 import clear from 'clear';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
-import path from 'path';
+import path, { join } from 'path';
 import sanitize from 'sanitize-filename';
 import { defaultKeysetsPath } from '../constants/keysets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
@@ -112,10 +112,7 @@ export async function collectResponses<T>(
   let result = generator.next();
   while (result.done !== true) {
     const question = result.value;
-    const response = await question.prompt(
-      responses,
-      args,
-    );
+    const response = await question.prompt(responses, args);
 
     responses[question.key] = response;
     result = generator.next();

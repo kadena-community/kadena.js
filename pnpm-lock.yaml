@@ -1814,6 +1814,9 @@ importers:
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../../libs/cryptography-utils
+      '@kadena/hd-wallet':
+        specifier: workspace:^
+        version: link:../../libs/hd-wallet
       '@kadena/pactjs':
         specifier: workspace:*
         version: link:../../libs/pactjs
@@ -11749,7 +11752,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@eslint-community/regexpp': 4.8.0
+      '@eslint-community/regexpp': 4.6.2
       '@typescript-eslint/parser': 5.59.11(eslint@8.48.0)(typescript@5.2.2)
       '@typescript-eslint/scope-manager': 5.59.11
       '@typescript-eslint/type-utils': 5.59.11(eslint@8.48.0)(typescript@5.2.2)

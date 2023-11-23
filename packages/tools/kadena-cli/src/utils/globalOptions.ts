@@ -12,7 +12,10 @@ import {
   security,
 } from '../prompts/index.js';
 
-import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
+import {
+  ensureNetworksConfiguration,
+  loadNetworkConfig,
+} from '../networks/utils/networkHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
@@ -65,7 +68,7 @@ export const globalOptions = {
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
-      // await ensureNetworksConfiguration();
+      await ensureNetworksConfiguration();
       try {
         return loadNetworkConfig(network);
       } catch (e) {
@@ -81,7 +84,7 @@ export const globalOptions = {
       }
     },
   }),
-  networkChainId: createOption({
+  chainId: createOption({
     key: 'chainId' as const,
     prompt: networks.chainIdPrompt,
     validation: z

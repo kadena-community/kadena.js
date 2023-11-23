@@ -1,6 +1,15 @@
-import { networkDefaults } from '../constants/networks.js';
-import { writeNetworks } from './utils/networkHelpers.js';
+import { ensureNetworksConfiguration } from './utils/networkHelpers.js';
 
-writeNetworks(networkDefaults.mainnet);
-writeNetworks(networkDefaults.testnet);
-writeNetworks(networkDefaults.devnet);
+async function initNetworks(): Promise<void> {
+  try {
+    await ensureNetworksConfiguration();
+  } catch (error) {
+    console.error(
+      'An error occurred during network configuration initialization:',
+      error,
+    );
+    process.exit(1);
+  }
+}
+
+await initNetworks();

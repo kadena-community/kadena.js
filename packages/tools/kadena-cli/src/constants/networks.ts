@@ -1,3 +1,4 @@
+import { join } from 'path';
 import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js';
 
 export interface IDefaultNetworkOptions {
@@ -38,3 +39,18 @@ export const networkDefaults: IDefaultNetworkOptions = {
 export const defaultNetworksPath: string = `${process.cwd()}/.kadena/networks`;
 export const standardNetworks: string[] = ['mainnet', 'testnet'];
 export const defaultNetwork: string = 'testnet';
+
+type NetworkKey = Exclude<keyof typeof networkDefaults, 'other'>;
+
+// Using Record type for INetworkFiles
+type INetworkFiles = Record<NetworkKey, string>;
+
+export const networkFiles: INetworkFiles = Object.keys(networkDefaults).reduce(
+  (files, key) => {
+    if (key !== 'other') {
+      files[key as NetworkKey] = join(defaultNetworksPath, `${key}.yaml`);
+    }
+    return files;
+  },
+  {} as INetworkFiles,
+);

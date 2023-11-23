@@ -1,7 +1,9 @@
 import {
   defaultNetworksPath,
   networkDefaults,
+  networkFiles,
 } from '../../constants/networks.js';
+
 import { PathExists, removeFile, writeFile } from '../../utils/filesystem.js';
 import {
   // createSymbol,
@@ -10,7 +12,7 @@ import {
 } from '../../utils/helpers.js';
 
 import type { WriteFileOptions } from 'fs';
-import { existsSync, readFileSync, readdirSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
 
@@ -22,6 +24,13 @@ export interface ICustomNetworkChoice {
 }
 
 export interface INetworkCreateOptions {
+  network: string;
+  networkId: string;
+  networkHost: string;
+  networkExplorerUrl: string;
+}
+
+export interface INetworksCreateOptions {
   network: string;
   networkId: string;
   networkHost: string;
@@ -97,20 +106,29 @@ export function checkHasNetworksConfiguration(): boolean {
   return files.some((file) => path.extname(file).toLowerCase() === '.yaml');
 }
 
-export function loadNetworkConfig(network: string): INetworksCreateOptions | never {
+export function loadNetworkConfig(
+  network: string,
+): INetworksCreateOptions | never {
   const networkFilePath = path.join(defaultNetworksPath, `${network}.yaml`);
 
-  if (! existsSync(networkFilePath)) {
-    throw new Error('Network configuration file not found.')
+  if (!existsSync(networkFilePath)) {
+    throw new Error('Network configuration file not found.');
   }
 
-  return (yaml.load(
+  return yaml.load(
     readFileSync(networkFilePath, 'utf8'),
-  ) as INetworksCreateOptions);
+  ) as INetworksCreateOptions;
 }
-export interface INetworksCreateOptions {
-  network: string;
-  networkId: string;
-  networkHost: string;
-  networkExplorerUrl: string;
+
+export async function ensureNetworksConfiguration(): Promise<void> {
+  if (!existsSync(defaultNetworksPath)) {
+    mkdirSync(defaultNetworksPath, { recursive: true });
+  }
+
+  for (const [network, filePath] of Object.entries(networkFiles)) {
+    console.log(network, filePath);
+    if (!existsSync(filePath)) {
+      writeNetworks(networkDefaults[network]);
+    }
+  }
 }
