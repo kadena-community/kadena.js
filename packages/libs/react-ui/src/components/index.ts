@@ -69,7 +69,7 @@ export type {
   IThProps,
   ITrProps,
 } from './Table';
-export type { ITabsProps } from './Tabs';
+export type { ITabItemProps, ITabsProps } from './Tabs';
 export type { ITagProps } from './Tag';
 export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';

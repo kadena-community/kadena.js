@@ -53,6 +53,7 @@ export type {
   IStackProps,
   ITBodyProps,
   ITHeadProps,
+  ITabItemProps,
   ITableProps,
   ITabsProps,
   ITagProps,

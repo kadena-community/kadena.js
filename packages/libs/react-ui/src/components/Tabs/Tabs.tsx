@@ -3,12 +3,14 @@ import type { ReactNode } from 'react';
 import React, { useEffect, useRef } from 'react';
 import type { AriaTabListProps } from 'react-aria';
 import { useTabList } from 'react-aria';
-import { useTabListState } from 'react-stately';
+import { Item as TabItem, useTabListState } from 'react-stately';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
 import { selectorLine, tabListClass, tabsContainerClass } from './Tabs.css';
 
-export { Item as TabItem } from 'react-stately';
+export { TabItem };
+
+export type ITabItemProps = React.ComponentProps<typeof TabItem>;
 
 export interface ITabsProps
   extends Omit<AriaTabListProps<object>, 'orientation' | 'items'> {
@@ -42,7 +44,6 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
       )[0] as HTMLElement;
     }
 
-    // set position of the bottom line
     selectedUnderlineRef.current.style.setProperty(
       'transform',
       `translateX(${selected.offsetLeft}px)`,
