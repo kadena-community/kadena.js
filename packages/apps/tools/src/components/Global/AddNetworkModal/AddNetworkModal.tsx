@@ -1,7 +1,11 @@
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { IDialogProps } from '@kadena/react-ui';
 import {
   Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
   Stack,
   TextField,
 } from '@kadena/react-ui';
@@ -23,8 +27,9 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
+interface IAddNetworkModalProps extends IDialogProps {}
 
-export const AddNetworkModal: FC = () => {
+export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
   const { t } = useTranslation('common');
   const { setSelectedNetwork, setNetworksData, networksData } =
     useWalletConnectClient();
@@ -39,7 +44,7 @@ export const AddNetworkModal: FC = () => {
     setError('');
   }, [networkId]);
 
-  const handleSubmit = async (data: FormData): Promise<void> => {
+  const handleSubmit = (data: FormData, callback: () => void) => {
     const networks = [...networksData];
 
     const isDuplicate = networks.find(
@@ -59,6 +64,7 @@ export const AddNetworkModal: FC = () => {
     setNetworksData(networks);
 
     setSelectedNetwork(networkId);
+    callback();
   };
 
   const {
@@ -70,57 +76,74 @@ export const AddNetworkModal: FC = () => {
   });
 
   return (
-    <div className={modalOptionsContentStyle}>
-      <form onSubmit={validateThenSubmit(handleSubmit)}>
-        <section>
-          <Stack direction="column" gap="$sm">
-            <TextField
-              label={t('Network label')}
-              inputProps={{
-                id: 'label',
-                ...register('label'),
-                onChange: (e) => setLabel(e.target.value),
-                value: label,
-                placeholder: 'devnet',
-              }}
-              status={errors?.label ? 'negative' : undefined}
-              helperText={errors?.label?.message ?? ''}
-            />
-            <TextField
-              label={t('Network ID')}
-              inputProps={{
-                id: 'networkId',
-                ...register('networkId'),
-                onChange: (e) => setNetworkId(e.target.value),
-                value: networkId,
-                placeholder: 'fast-development',
-              }}
-              status={errors?.networkId ? 'negative' : undefined}
-              helperText={errors?.networkId?.message ?? ''}
-            />
-            <TextField
-              label={t('Network api')}
-              inputProps={{
-                id: 'api',
-                ...register('api'),
-                onChange: (e) => setApi(e.target.value),
-                value: api,
-                placeholder: 'localhost:8080',
-              }}
-              status={errors?.api ? 'negative' : undefined}
-              helperText={errors?.api?.message ?? ''}
-            />
-          </Stack>
-          <div className={errorMessageStyle}>
-            <span>{error}</span>
-          </div>
-        </section>
-        <section className={formButtonStyle}>
-          <Button type="submit" icon="TrailingIcon" disabled={Boolean(error)}>
-            {t('Save Network')}
-          </Button>
-        </section>
-      </form>
-    </div>
+    <Dialog {...props}>
+      {(state) => (
+        <>
+          <DialogHeader>Add Network</DialogHeader>
+          <DialogContent>
+            <div className={modalOptionsContentStyle}>
+              <form
+                onSubmit={validateThenSubmit((data) => {
+                  handleSubmit(data, () => state.close());
+                })}
+              >
+                <section>
+                  <Stack direction="column" gap="$sm">
+                    <TextField
+                      label={t('Network label')}
+                      inputProps={{
+                        id: 'label',
+                        ...register('label'),
+                        onChange: (e) => setLabel(e.target.value),
+                        value: label,
+                        placeholder: 'devnet',
+                      }}
+                      status={errors?.label ? 'negative' : undefined}
+                      helperText={errors?.label?.message ?? ''}
+                    />
+                    <TextField
+                      label={t('Network ID')}
+                      inputProps={{
+                        id: 'networkId',
+                        ...register('networkId'),
+                        onChange: (e) => setNetworkId(e.target.value),
+                        value: networkId,
+                        placeholder: 'fast-development',
+                      }}
+                      status={errors?.networkId ? 'negative' : undefined}
+                      helperText={errors?.networkId?.message ?? ''}
+                    />
+                    <TextField
+                      label={t('Network api')}
+                      inputProps={{
+                        id: 'api',
+                        ...register('api'),
+                        onChange: (e) => setApi(e.target.value),
+                        value: api,
+                        placeholder: 'localhost:8080',
+                      }}
+                      status={errors?.api ? 'negative' : undefined}
+                      helperText={errors?.api?.message ?? ''}
+                    />
+                  </Stack>
+                  <div className={errorMessageStyle}>
+                    <span>{error}</span>
+                  </div>
+                </section>
+                <section className={formButtonStyle}>
+                  <Button
+                    type="submit"
+                    icon="TrailingIcon"
+                    disabled={Boolean(error)}
+                  >
+                    {t('Save Network')}
+                  </Button>
+                </section>
+              </form>
+            </div>
+          </DialogContent>
+        </>
+      )}
+    </Dialog>
   );
 };

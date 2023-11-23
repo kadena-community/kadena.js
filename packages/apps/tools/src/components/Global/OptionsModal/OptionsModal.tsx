@@ -6,10 +6,13 @@ import {
 } from '@/components/Global/OptionsModal/styles.css';
 import type { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
-import type { SystemIcon } from '@kadena/react-ui';
+import type { IDialogProps, SystemIcon } from '@kadena/react-ui';
 import {
   Button,
   Card,
+  Dialog,
+  DialogContent,
+  DialogHeader,
   IconButton,
   Stack,
   Tag,
@@ -26,7 +29,9 @@ export interface IDevOption {
   tag?: string;
 }
 
-export const OptionsModal: FC = () => {
+interface IOptionsModalProps extends IDialogProps {}
+
+export const OptionsModal: FC<IOptionsModalProps> = (props) => {
   const { t } = useTranslation('common');
   const { devOption, setDevOption } = useAppContext();
   const [selected, setSelected] = useState(devOption);
@@ -107,23 +112,31 @@ export const OptionsModal: FC = () => {
     );
   };
 
-  const handleSave = (): void => {
-    setDevOption(selected);
-  };
-
   return (
-    <div className={modalOptionsContentStyle}>
-      {renderOptions()}
+    <Dialog {...props}>
+      {(state) => (
+        <>
+          <DialogHeader>Settings</DialogHeader>
+          <DialogContent>
+            <div className={modalOptionsContentStyle}>
+              {renderOptions()}
 
-      <div className={modalButtonStyle}>
-        <Button
-          title={`${t('Save')}`}
-          onClick={() => handleSave()}
-          color="primary"
-        >
-          {`${t('Save')}`}
-        </Button>
-      </div>
-    </div>
+              <div className={modalButtonStyle}>
+                <Button
+                  title={`${t('Save')}`}
+                  onClick={() => {
+                    setDevOption(selected);
+                    state.close();
+                  }}
+                  color="primary"
+                >
+                  {`${t('Save')}`}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </>
+      )}
+    </Dialog>
   );
 };
