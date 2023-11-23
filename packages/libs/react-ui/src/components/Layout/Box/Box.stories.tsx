@@ -3,7 +3,7 @@ import { Box } from '@components/Layout/Box';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
-import { containerClass, itemClass } from '../stories.css';
+import { componentClass, containerClass, itemClass } from '../stories.css';
 
 const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,
@@ -17,16 +17,27 @@ const dimensionOptions: string[] = ['100%', 'min-content', 'max-content'];
 
 const meta: Meta<IBoxProps> = {
   title: 'Layout/Box',
+  component: Box,
   parameters: {
+    status: {
+      type: 'stable',
+    },
     docs: {
       description: {
         component:
           'Box is the most basic building block of application layout.\n' +
-          '\nThis component allows for passing the <i>display</i>, <i>margin</i> and <i>padding</i> properties.',
+          '\nThis component accepts an `as` prop which allows the user to pass what html element the `Box` will render as well as many style attributes that are mapped to css utility classes.',
       },
     },
   },
   argTypes: {
+    overflow: {
+      options: ['hidden', 'visible', 'scroll', 'auto'],
+      control: {
+        type: 'select',
+      },
+      description: 'Overflow css property.',
+    },
     width: {
       options: [...spaceOptions, ...dimensionOptions, ...contentWidthOptions],
       control: {
@@ -218,7 +229,7 @@ export const Primary: Story = {
     marginBottom,
     marginLeft,
     marginRight,
-    padding = '$6',
+    padding,
     paddingX,
     paddingY,
     paddingTop,
@@ -231,6 +242,7 @@ export const Primary: Story = {
     height,
     minHeight,
     maxHeight,
+    overflow,
   }) => (
     <div className={containerClass}>
       <Box
@@ -254,9 +266,10 @@ export const Primary: Story = {
         height={height}
         minHeight={minHeight}
         maxHeight={maxHeight}
-        className={itemClass}
+        overflow={overflow}
+        className={componentClass}
       >
-        Box Content
+        <div className={itemClass}>Box Content</div>
       </Box>
     </div>
   ),

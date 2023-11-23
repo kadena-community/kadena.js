@@ -1,4 +1,4 @@
-import type { IInputProps, IInputWrapperProps } from '@kadena/react-ui';
+import type { IFormFieldWrapperProps, IInputProps } from '@kadena/react-ui';
 import { TextField } from '@kadena/react-ui';
 
 import useTranslation from 'next-translate/useTranslation';
@@ -8,7 +8,7 @@ import type { FieldError } from 'react-hook-form';
 import { publicKeyFieldStyles } from './styles.css';
 
 interface IPublicKeyFieldProps
-  extends Partial<Omit<IInputWrapperProps, 'children'>> {
+  extends Partial<Omit<IFormFieldWrapperProps, 'children'>> {
   inputProps: Partial<
     Pick<
       IInputProps,

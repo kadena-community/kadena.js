@@ -17,6 +17,7 @@ import {
   Card,
   Heading,
   Notification,
+  NotificationHeading,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -27,15 +28,12 @@ import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import {
-  buttonContainerClass,
-  containerClass,
-  notificationContainerStyle,
-} from './styles.css';
+import { buttonContainerClass, notificationContainerStyle } from './styles.css';
 
 import {
   accountNameContainerClass,
   chainSelectContainerClass,
+  containerClass,
   inputContainerClass,
 } from '../styles.css';
 
@@ -146,13 +144,10 @@ const ExistingAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification.Root
-            color="warning"
-            expanded={true}
-            icon="Information"
-            title={t('The Faucet is not available on Mainnet')}
-            variant="outlined"
-          >
+          <Notification color="warning" role="status">
+            <NotificationHeading>
+              {t('The Faucet is not available on Mainnet')}
+            </NotificationHeading>
             <Trans
               i18nKey="common:faucet-unavailable-warning"
               components={[
@@ -162,7 +157,7 @@ const ExistingAccountFaucetPage: FC = () => {
                 />,
               ]}
             />
-          </Notification.Root>
+          </Notification>
         ) : null}
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
@@ -174,7 +169,7 @@ const ExistingAccountFaucetPage: FC = () => {
           body={requestStatus.message}
         />
         <Card fullWidth>
-          <Heading as="h5">Account</Heading>
+          <Heading as="h5">{t('Account')}</Heading>
           <Box marginBottom="$4" />
           <div className={inputContainerClass}>
             <div className={accountNameContainerClass}>

@@ -1,45 +1,6 @@
 import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
-import { fallbackVar, style } from '@vanilla-extract/css';
-import { statusColor } from '../InputWrapper/InputWrapper.css';
-
-export const containerClass = style([
-  sprinkles({
-    alignItems: 'stretch',
-    borderRadius: '$sm',
-    display: 'flex',
-    color: '$foreground',
-    overflow: 'hidden',
-    lineHeight: '$lg',
-    bg: {
-      lightMode: '$white',
-      darkMode: '$gray100',
-    },
-  }),
-  {
-    position: 'relative',
-    borderBottom: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `1px solid ${fallbackVar(
-          statusColor,
-          vars.colors.$gray60,
-        )}`,
-      },
-      '.inputGroup &': {
-        borderRadius: 0,
-      },
-      '.inputGroup &:first-child': {
-        borderTopRightRadius: vars.radii.$sm,
-        borderTopLeftRadius: vars.radii.$sm,
-      },
-      '.inputGroup &:last-child': {
-        borderBottomRightRadius: vars.radii.$sm,
-        borderBottomLeftRadius: vars.radii.$sm,
-      },
-    },
-  },
-]);
+import { style } from '@vanilla-extract/css';
 
 export const disabledClass = style([
   sprinkles({
@@ -50,11 +11,7 @@ export const disabledClass = style([
     },
   }),
   {
-    opacity: 0.4,
     selectors: {
-      '.inputGroup &': {
-        opacity: 1,
-      },
       [`${darkThemeClass} &`]: {
         backgroundColor: vars.colors.$gray60,
       },

@@ -2,7 +2,14 @@ import type { IMostPopularPage } from '@/MostPopularData';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { Box, GradientText, Grid, Heading, Stack } from '@kadena/react-ui';
+import {
+  Box,
+  GradientText,
+  Grid,
+  GridItem,
+  Heading,
+  Stack,
+} from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
@@ -47,8 +54,8 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
     <header className={loaderHeaderClass}>
       <div className={wrapperClass}>
         <Box marginX={{ xs: '$1', sm: '$4' }}>
-          <Grid.Root columns={{ sm: 1, md: 2 }}>
-            <Grid.Item>
+          <Grid columns={{ sm: 1, md: 2 }}>
+            <GridItem>
               <Heading as="h1" variant="h2">
                 Kadena
               </Heading>
@@ -66,8 +73,8 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
                   </div>
                 </Box>
               </Stack>
-            </Grid.Item>
-            <Grid.Item>
+            </GridItem>
+            <GridItem>
               {popularPages.length > 0 && (
                 <Box
                   paddingLeft={{ sm: '$1', lg: '$15', xl: '$32', xxl: '$48' }}
@@ -76,8 +83,8 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
                   <MostPopular pages={popularPages} title="Most viewed docs" />
                 </Box>
               )}
-            </Grid.Item>
-          </Grid.Root>
+            </GridItem>
+          </Grid>
         </Box>
       </div>
     </header>

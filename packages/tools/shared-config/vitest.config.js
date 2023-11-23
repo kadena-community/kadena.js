@@ -7,9 +7,12 @@ module.exports = defineConfig({
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     globals: false,
     coverage: {
-      enabled: false, // It's enabled in CI (root package.json)
+      enabled: true,
       provider: 'v8',
-      thresholdAutoUpdate: false, // Should be enabled? Too precise though, annoying in CI if missed by 0.01%
+      lines: 90,
+      functions: 90,
+      branches: 90,
+      statements: 90,
     },
   },
 });

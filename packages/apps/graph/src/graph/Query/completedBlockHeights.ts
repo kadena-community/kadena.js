@@ -1,11 +1,8 @@
-import type { Debugger } from 'debug';
-import _debug from 'debug';
-import { prismaClient } from '../../db/prismaClient';
-import { dotenv } from '../../utils/dotenv';
+import { prismaClient } from '@db/prismaClient';
+import { dotenv } from '@utils/dotenv';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import Block from '../objects/Block';
-
-const log: Debugger = _debug('graph:Query:completedBlockHeights');
 
 builder.queryField('completedBlockHeights', (t) => {
   return t.prismaField({
@@ -17,13 +14,14 @@ builder.queryField('completedBlockHeights', (t) => {
 
     type: [Block],
 
-    resolve: async (
+    async resolve(
       __query,
       __parent,
       { completedHeights: onlyCompleted = false, heightCount = 3 },
-    ) => {
-      if (onlyCompleted === true) {
-        const completedHeights = (await prismaClient.$queryRaw`
+    ) {
+      try {
+        if (onlyCompleted === true) {
+          const completedHeights = (await prismaClient.$queryRaw`
         SELECT height
         FROM blocks b
         GROUP BY height
@@ -33,36 +31,34 @@ builder.queryField('completedBlockHeights', (t) => {
         LIMIT ${heightCount}
       `) as { height: number }[];
 
-        log("found '%s' blocks", completedHeights.length);
-
-        if (completedHeights.length > 0) {
-          return prismaClient.block.findMany({
-            where: {
-              AND: [
-                {
-                  OR: [
-                    {
-                      height: {
-                        in: completedHeights.map((h) => h.height),
+          if (completedHeights.length > 0) {
+            return prismaClient.block.findMany({
+              where: {
+                AND: [
+                  {
+                    OR: [
+                      {
+                        height: {
+                          in: completedHeights.map((h) => h.height),
+                        },
                       },
-                    },
-                    {
-                      height: {
-                        gt: completedHeights[0].height,
+                      {
+                        height: {
+                          gt: completedHeights[0].height,
+                        },
                       },
-                    },
-                  ],
-                },
-              ],
-            },
-          });
+                    ],
+                  },
+                ],
+              },
+            });
+          }
         }
-      }
 
-      return prismaClient.block.findMany({
-        where: {
-          height: {
-            in: await prismaClient.$queryRaw`
+        return prismaClient.block.findMany({
+          where: {
+            height: {
+              in: await prismaClient.$queryRaw`
                 SELECT height, COUNT(*)
                 FROM blocks b
                 GROUP BY height
@@ -71,9 +67,12 @@ builder.queryField('completedBlockHeights', (t) => {
                 ORDER BY height DESC
                 LIMIT ${heightCount}
               `,
+            },
           },
-        },
-      });
+        });
+      } catch (error) {
+        throw normalizeError(error);
+      }
     },
   });
 });

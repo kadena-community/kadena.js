@@ -10,27 +10,24 @@ development so please make any suggestions if you see ways it could be improved!
 
 We have had discussions around whether we want to use composition or
 configuration as the pattern for developing components and have decided that
-**in most cases** we want to use composition, but it can differ on a case by case
-basis. [Composition over Configuration][1]
+**in most cases** we want to use composition, but it can differ on a case by
+case basis. [Composition over Configuration][1]
 
 #### Composition - Subcomponent structure
 
 Composition makes sense if the component is more complex and needs a bit more
 flexibility in regards to data, children, or layout. Components using this
-pattern will export one object of subcomponents that will make up the building
-blocks for the entire component. These subcomponents will always export one
-`Root` component as the containing component. This is inspired by [Radix
-Primitives][2].
+pattern will export multiple subcomponents to compose the compound component.
 
 A simple example of a component that should use this pattern is the Grid
 component.
 
 ```jsx
-<Grid.Root>
-  <Grid.Item>{item1}</Grid.Item>
-  <Grid.Item>{item2}</Grid.Item>
-  <Grid.Item>{item3}</Grid.Item>
-</Grid.Root>
+<Grid>
+  <GridItem>{item1}</GridItem>
+  <GridItem>{item2}</GridItem>
+  <GridItem>{item3}</GridItem>
+</Grid>
 ```
 
 The reason we opted for this approach when it comes to more complex components
@@ -52,7 +49,7 @@ more subcomponents would negatively affect DX.
 > [here](https://bradfrost.com/blog/post/atomic-web-design/) and
 > [here](https://atomicdesign.bradfrost.com/chapter-2/).
 
-##### Button component as an example
+##### Button component as an example (Needs to be updated)
 
 One example of a component that we updated from the Composition to Configuration
 approach was the `Button` component.
@@ -73,9 +70,9 @@ pattern of the other components, however in usage it caused confusion becuase:
 - It often didn't have an icon, but we still needed to use the `Root` export
 - Users didn't realize the `Button` component exported its own `Button.Icon` so
   they would use other Icon components
-- It allows for too much flexibility in terms of what can be placed within
-  the button when it should only ever have text and, optionally, an icon or
-  loading state.
+- It allows for too much flexibility in terms of what can be placed within the
+  button when it should only ever have text and, optionally, an icon or loading
+  state.
 
 Now, it has been updated with the configuration approach and can be used in the
 following way:
@@ -96,25 +93,34 @@ Kadena easier but they will often be used in conjunction with native html
 elements or components that are unique to the consuming project. In cases when
 using layout components we offer full flexiblity in what can be passed as child
 components. However, with most other components we try to provide all
-subcomponents necessary to compose an entire `organism` and **avoid using
-external elements in our component compositions**.
+subcomponents necessary to compose an entire `organism`.
 
 For example, the `NavHeader` component exports all of the subcomponents
 necessary to create the whole Navigation Header. This includes elements like
 links and buttons because we want to provide a styled version of these elements
 that is specific to the `organism` it is composing. This also helps to improve
 maintainibility of component styling which is enforced via
-[vanilla-extract/css][3] and will be explained in more detail in the Styling
+[vanilla-extract/css][2] and will be explained in more detail in the Styling
 section.
 
 #### Next.js next/link
 
-One exception to the general approach to avoid external elements in our component compositions is the use of next/link or similar components. Since next/link provides additional feature on top of the native anchor element, we want to be able to utilize it while still maintaining the integrity of our compositions. In this case, our approach to using external links is by doing the following:
-- Adding an `asChild` prop to any link components
-- Use `React.cloneElement` to forward props to the child component - effectively allowing us to apply styles and any additional logic from our component to the external component
-- Ensure that the child component's props override the UI component which keeps behavior more predictable
+One exception to the general approach to avoid external elements in our
+component compositions is the use of next/link or similar components. Since
+next/link provides additional feature on top of the native anchor element, we
+want to be able to utilize it while still maintaining the integrity of our
+compositions. In this case, our approach to using external links is by doing the
+following:
 
-This is the current solution for external links, but the same underlying approach can be applied in other circumstances as well.
+- Adding an `asChild` prop to any link components
+- Use `React.cloneElement` to forward props to the child component - effectively
+  allowing us to apply styles and any additional logic from our component to the
+  external component
+- Ensure that the child component's props override the UI component which keeps
+  behavior more predictable
+
+This is the current solution for external links, but the same underlying
+approach can be applied in other circumstances as well.
 
 ### Typing
 
@@ -159,11 +165,12 @@ This means these components should always have two optional props:
 
 Since this component library was created for usage within Kadena, the components
 are very opinionated in terms of functionality and style. For this reason, we
-wanted to be very strict with props and styling which is why **components currently do not
-accept a classname prop to alter styles**. Layout components (Box, Stack, Grid)
-should be used when positioning the components and any additional style changes
-cannot be applied for the sake of visual consistency. If a new style/iteration
-is needed, we can discuss adding this with a designer.
+wanted to be very strict with props and styling which is why **most components
+currently do not accept a classname prop to alter styles**. Layout components
+(Box, Stack, Grid) should be used when positioning components as they expose
+more styling props and accept a className prop for more customization. If a new
+style/iteration is needed for a component, we can discuss adding this with a
+designer.
 
 > NOTE: We are starting off strict, but if necessary, we can reassess whether or
 > not we want to start accepting additional styles
@@ -201,19 +208,18 @@ with Jest.
 ### Exports
 
 - Never export default from a file (storybook files are an exception)
-- Always export component props with every component
 - Always have a barrel file to export the component and props
 
 ### React Client/Server components
 
-React has the concept of [client and server components][4] which give you the
+React has the concept of [client and server components][3] which give you the
 ability to chose where to render components based on their purpose. In essence,
 server components allow you to move server related tasks like data fetching and
 large dependencies into components that are only rendered on the server. Client
 components can then be used to add interactivity to the client. This reduces the
 client-side bundle size and improves overall performance.
 
-In [Next.js][5], which is the framework most commonly used at Kadena, components
+In [Next.js][4], which is the framework most commonly used at Kadena, components
 are considered server components by default. This means that **we have to
 indicate when components need to be rendered client-side and should be treated
 as client components**. To do this we need to add the following to the top of
@@ -224,7 +230,7 @@ any client component files:
 ```
 
 > NOTE: Next.js provides a [table that summarizes the use cases for server and
-> client components.][6]
+> client components.][5]
 
 ## Styling with Vanilla Extract
 
@@ -245,7 +251,7 @@ Simple pseudo selectors and complex selectors can be used on components, but
 is a deliberate restriction set by VE to help with maintainability. If you need
 to apply a style to a child element depending on the state of a parent element,
 you can target a class on the parent element from the child and apply styles via
-a [complex selector][7]
+a [complex selector][6]
 
 It should be avoided when possible, but if you need to target child nodes within
 the current element, you can use `globalStyle`. In some cases it isn't
@@ -254,10 +260,9 @@ discretion when deciding what methods to use.
 
 [1]:
   https://dev.to/anuradha9712/configuration-vs-composition-design-reusable-components-5h1f
-[2]: https://www.radix-ui.com/primitives
-[3]: https://vanilla-extract.style/
-[4]: https://nextjs.org/docs/getting-started/react-essentials#server-components
-[5]: https://nextjs.org/
-[6]:
+[2]: https://vanilla-extract.style/
+[3]: https://nextjs.org/docs/getting-started/react-essentials#server-components
+[4]: https://nextjs.org/
+[5]:
   https://nextjs.org/docs/getting-started/react-essentials#when-to-use-server-and-client-components
-[7]: https://vanilla-extract.style/documentation/styling#complex-selectors
+[6]: https://vanilla-extract.style/documentation/styling#complex-selectors

@@ -14,14 +14,19 @@ import {
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { InputWrapperStatus } from '@kadena/react-ui';
+import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Breadcrumbs,
   Button,
   Grid,
+  GridItem,
   Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
   ProgressBar,
   Stack,
+  SystemIcon,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
@@ -62,7 +67,7 @@ const CrossChainTransferTracker: FC = () => {
   const [txError, setTxError] = useState<string>('');
   const [inputError, setInputError] = useState<string>('');
   const [validRequestKey, setValidRequestKey] = useState<
-    InputWrapperStatus | undefined
+    FormFieldStatus | undefined
   >();
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
@@ -192,27 +197,27 @@ const CrossChainTransferTracker: FC = () => {
         </Stack>
 
         {txError ? (
-          <Notification.Root
+          <Notification
             hasCloseButton
             color="negative"
             onClose={() => {
               setTxError('');
             }}
-            title="Warning"
-            icon={'AlertBox'}
-            variant="outlined"
+            icon={<SystemIcon.AlertBox />}
+            role="status"
           >
+            <NotificationHeading>Warning</NotificationHeading>
             {txError}
-            <Notification.Actions>
-              <Notification.Button
+            <NotificationFooter>
+              <NotificationButton
                 color="negative"
-                icon={'Refresh'}
                 onClick={validateThenSubmit(handleSubmit)}
               >
                 {t('Retry')}
-              </Notification.Button>
-            </Notification.Actions>
-          </Notification.Root>
+                <SystemIcon.Refresh />
+              </NotificationButton>
+            </NotificationFooter>
+          </Notification>
         ) : null}
         <form onSubmit={validateThenSubmit(handleSubmit)}>
           <FormItemCard
@@ -221,8 +226,8 @@ const CrossChainTransferTracker: FC = () => {
             helperHref="#"
             disabled={false}
           >
-            <Grid.Root>
-              <Grid.Item>
+            <Grid>
+              <GridItem>
                 <RequestKeyField
                   helperText={inputError || undefined}
                   status={validRequestKey}
@@ -233,8 +238,8 @@ const CrossChainTransferTracker: FC = () => {
                   }}
                   error={errors.requestKey}
                 />
-              </Grid.Item>
-            </Grid.Root>
+              </GridItem>
+            </Grid>
           </FormItemCard>
           <div className={formButtonStyle}>
             <Button

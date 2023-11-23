@@ -37,6 +37,7 @@ const meta: Meta<IInputProps> = {
   title: 'Form/Input',
   component: Input,
   parameters: {
+    status: { type: 'inDevelopment' },
     docs: {
       description: {
         component:
@@ -127,8 +128,8 @@ export const Dynamic: Story = {
     icon: undefined,
     type: 'text',
     rightIcon: undefined,
-    leadingText: '',
     leadingTextWidth: undefined,
+    leadingText: '',
     outlined: false,
   },
   render: ({
@@ -147,8 +148,8 @@ export const Dynamic: Story = {
       rightIcon={rightIcon}
       onChange={onChange}
       placeholder="This is a placeholder"
-      leadingText={leadingText}
       leadingTextWidth={leadingTextWidth}
+      leadingText={leadingText}
       outlined={outlined}
       disabled={disabled}
       type={type}

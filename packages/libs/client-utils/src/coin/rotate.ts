@@ -15,7 +15,7 @@ interface IRotateCommandInput {
   account: { account: string; publicKeys: string[] };
   newguard: {
     keys: string[];
-    pred: 'keys-all' | 'keys-two' | 'keys-one';
+    pred: 'keys-all' | 'keys-2' | 'keys-any';
   };
   gasPayer: { account: string; publicKeys: string[] };
   chainId: ChainId;

@@ -1,5 +1,11 @@
 # Change Log - @kadena/cryptography-utils
 
+## 0.4.1
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+
 ## 0.4.0
 
 ### Minor Changes

@@ -1,4 +1,5 @@
-import { prismaClient } from '../../db/prismaClient';
+import { prismaClient } from '@db/prismaClient';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 export default builder.prismaNode('MinerKey', {
@@ -12,13 +13,16 @@ export default builder.prismaNode('MinerKey', {
     block: t.prismaField({
       type: 'Block',
       nullable: false,
-      // eslint-disable-next-line @typescript-eslint/typedef
-      resolve(query, parent, args, context, info) {
-        return prismaClient.block.findUniqueOrThrow({
-          where: {
-            hash: parent.blockHash,
-          },
-        });
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.block.findUniqueOrThrow({
+            where: {
+              hash: parent.blockHash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
   }),

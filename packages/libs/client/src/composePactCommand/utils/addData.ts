@@ -62,7 +62,7 @@ export const addData: (
   };
 
 export interface IAddKeyset {
-  <TKey extends string, PRED extends 'keys-all' | 'keys-one' | 'keys-two'>(
+  <TKey extends string, PRED extends 'keys-all' | 'keys-any' | 'keys-2'>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]

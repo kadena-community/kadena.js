@@ -11,11 +11,11 @@
 /packages/apps/tools                            @sanderlooijenga @KristinaSpasevska
 /packages/libs/bootstrap-lib                    @alber70g
 /packages/libs/chainweb-stream-client           @Takadenoshi
-/packages/libs/client                           @alber70g @javadkh2
+/packages/libs/client                           @alber70g @javadkh2 @nillo
 /packages/libs/client-utils                     @alber70g @javadkh2
 /packages/libs/kadena.js                        @alber70g
 /packages/libs/pactjs-generator                 @alber70g @javadkh2
-/packages/libs/react-ui                         @eileenmguo @sstraatemans
+/packages/libs/react-ui                         @eileenmguo @sstraatemans @salamaashoush
 /packages/libs/types                            @alber70g
 /packages/tools/eslint-config                   @alber70g
 /packages/tools/eslint-plugin                   @alber70g

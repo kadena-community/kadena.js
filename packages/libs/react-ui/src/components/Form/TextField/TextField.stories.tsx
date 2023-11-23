@@ -1,6 +1,6 @@
 import type { ITextFieldProps } from '@components/Form';
 import { TextField } from '@components/Form';
-import { statusVariant } from '@components/Form/InputWrapper/InputWrapper.css';
+import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
@@ -16,10 +16,11 @@ type StoryProps = {
 const meta: Meta<StoryProps> = {
   title: 'Form/TextField',
   parameters: {
+    status: { type: 'inDevelopment' },
     docs: {
       description: {
         component:
-          'TextField is the composition of Input and InputWrapper to provide an input with a label, helper text, and other peripheral information.',
+          'TextField is the composition of Input and FormFieldWrapper to provide an input with a label, helper text, and other peripheral information.',
       },
     },
   },

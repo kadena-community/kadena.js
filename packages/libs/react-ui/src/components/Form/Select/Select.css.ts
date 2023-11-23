@@ -1,41 +1,20 @@
-import { statusColor } from '@components/Form/InputWrapper/InputWrapper.css';
 import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
-import { fallbackVar, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
+import { baseContainerClass } from '../Form.css';
 
 export const containerClass = style([
+  baseContainerClass,
   sprinkles({
-    alignItems: 'stretch',
     backgroundColor: {
       lightMode: '$white',
       darkMode: '$background',
     },
-    borderColor: {
-      lightMode: '$white',
-      darkMode: '$gray60',
-    },
-    borderRadius: '$sm',
-    color: '$foreground',
-    display: 'flex',
     flexGrow: 1,
     gap: '$2',
-    lineHeight: '$lg',
-    overflow: 'hidden',
     paddingLeft: '$4',
     paddingRight: '$2',
-    position: 'relative',
   }),
-  {
-    borderBottom: `1px solid ${fallbackVar(statusColor, vars.colors.$gray30)}`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `1px solid ${fallbackVar(
-          statusColor,
-          vars.colors.$gray60,
-        )}`,
-      },
-    },
-  },
 ]);
 
 export const containerClassDisabled = style([
@@ -50,11 +29,7 @@ export const containerClassDisabled = style([
     },
   }),
   {
-    opacity: 0.4,
     selectors: {
-      '.inputGroup &': {
-        opacity: 1,
-      },
       [`${darkThemeClass} &`]: {
         backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
       },

@@ -9,9 +9,8 @@ export const encode = (value: unknown) =>
 
 export const parse = (value: string) => JSON.parse(decodeURIComponent(value));
 
-export const setItem = (key: string, value: unknown) => {
+export const setItem = (key: string, value: unknown) =>
   Cookies.set(getName(key), encode(value));
-};
 
 export const getItem = (key: string) => {
   try {
@@ -22,13 +21,9 @@ export const getItem = (key: string) => {
   }
 };
 
-export const deleteItem = (key: string) => {
-  Cookies.remove(getName(key));
-};
-
+export const deleteItem = (key: string) => Cookies.remove(getName(key));
 export const getItems = () => {
   const cookies = Cookies.get();
-
   return Object.keys(cookies).reduce(
     (results, key) => {
       const match: null | string[] = key.match(getName('(.*)'));

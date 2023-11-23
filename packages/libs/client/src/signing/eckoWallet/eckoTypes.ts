@@ -44,10 +44,17 @@ export interface IEckoSignResponse {
   signedCmd: ICommand;
 }
 
-export interface IEckoQuicksignSuccessResponse {
+type IEckoQuicksignSuccessResponse = {
   status: 'success';
-  quickSignData: IQuicksignResponseOutcomes['responses'];
-}
+} & (
+  | {
+      // in old versions of Ecko Wallet, the response was called quickSignData
+      quickSignData: IQuicksignResponseOutcomes['responses'];
+    }
+  | {
+      responses: IQuicksignResponseOutcomes['responses'];
+    }
+);
 
 export interface IEckoQuicksignFailResponse {
   status: 'fail';

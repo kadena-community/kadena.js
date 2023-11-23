@@ -19,7 +19,7 @@ export const titleWrapperClass = style([
 
 export const titleTextClass = style([
   sprinkles({
-    fontSize: '$base',
+    fontSize: '$sm',
     fontWeight: '$bold',
     marginRight: '$2',
   }),
@@ -29,8 +29,15 @@ export const linksClass = style([
   sprinkles({
     paddingLeft: '$4',
     marginTop: '$2',
-    color: '$infoContrast',
+    color: '$blue80',
   }),
+  {
+    selectors: {
+      [`&.visited`]: {
+        color: vars.colors.$blue60,
+      },
+    },
+  },
 ]);
 
 export const linkClass = style([

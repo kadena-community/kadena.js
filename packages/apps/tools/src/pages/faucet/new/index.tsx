@@ -1,5 +1,5 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
-import type { InputWrapperStatus } from '@kadena/react-ui';
+import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Box,
   Breadcrumbs,
@@ -8,11 +8,11 @@ import {
   Heading,
   IconButton,
   Notification,
+  NotificationHeading,
 } from '@kadena/react-ui';
 
 import {
   buttonContainerClass,
-  containerClass,
   hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
@@ -23,11 +23,17 @@ import {
   pubKeysContainerStyle,
 } from './styles.css';
 
+import {
+  accountNameContainerClass,
+  chainSelectContainerClass,
+  containerClass,
+  inputContainerClass,
+} from '../styles.css';
+
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
 import AccountNameField from '@/components/Global/AccountNameField';
-import { CloseableNotification } from '@/components/Global/CloseableNotification';
 import { HoverTag } from '@/components/Global/HoverTag';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
@@ -50,11 +56,6 @@ import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import {
-  accountNameContainerClass,
-  chainSelectContainerClass,
-  inputContainerClass,
-} from '../styles.css';
 
 interface IFundExistingAccountResponseBody {
   result: {
@@ -88,7 +89,7 @@ const NewAccountFaucetPage: FC = () => {
   const [pubKeys, setPubKeys] = useState<string[]>([]);
   const [currentKey, setCurrentKey] = useState<string>('');
   const [validRequestKey, setValidRequestKey] = useState<
-    InputWrapperStatus | undefined
+    FormFieldStatus | undefined
   >();
 
   const { data: accountName } = useQuery({
@@ -250,13 +251,10 @@ const NewAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification.Root
-            color="warning"
-            expanded={true}
-            icon="Information"
-            title={t('The Faucet is not available on Mainnet')}
-            variant="outlined"
-          >
+          <Notification color="warning" role="status">
+            <NotificationHeading>
+              {t('The Faucet is not available on Mainnet')}
+            </NotificationHeading>
             <Trans
               i18nKey="common:faucet-unavailable-warning"
               components={[
@@ -266,17 +264,12 @@ const NewAccountFaucetPage: FC = () => {
                 />,
               ]}
             />
-          </Notification.Root>
+          </Notification>
         ) : null}
       </div>
       <div className={notificationContainerStyle}>
-        <CloseableNotification
-          color="warning"
-          expanded={true}
-          icon="Information"
-          title={t(`Before you start`)}
-          variant="outlined"
-        >
+        <Notification color="warning" role="none">
+          <NotificationHeading>{t(`Before you start`)}</NotificationHeading>
           <Trans
             i18nKey="common:faucet-how-to-start"
             components={[
@@ -302,7 +295,7 @@ const NewAccountFaucetPage: FC = () => {
               />,
             ]}
           />
-        </CloseableNotification>
+        </Notification>
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
@@ -363,7 +356,6 @@ const NewAccountFaucetPage: FC = () => {
                 inputProps={register('name')}
                 label={t('The account name to fund coins to')}
                 disabled
-                noIcon
               />
             </div>
             <div className={chainSelectContainerClass}>

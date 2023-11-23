@@ -8,9 +8,12 @@ type StoryComponentType = IProfileSummaryRootProps & {
 };
 
 const meta: Meta<StoryComponentType> = {
-  title: 'Content/ProfileSummary',
+  title: 'Patterns/ProfileSummary',
   component: ProfileSummary.Root,
   parameters: {
+    status: {
+      type: ['experimental'],
+    },
     docs: {
       description: {
         component:

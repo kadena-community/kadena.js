@@ -9,8 +9,23 @@ export interface IBoxProps
   extends Partial<
     Pick<
       Sprinkles,
+      | 'alignItems'
+      | 'backgroundColor'
+      | 'borderColor'
+      | 'borderRadius'
+      | 'borderStyle'
+      | 'borderWidth'
+      | 'bottom'
+      | 'cursor'
       | 'display'
+      | 'flexDirection'
+      | 'flexGrow'
+      | 'flexShrink'
+      | 'flexWrap'
       | 'height'
+      | 'inset'
+      | 'justifyContent'
+      | 'left'
       | 'margin'
       | 'marginBottom'
       | 'marginLeft'
@@ -22,6 +37,8 @@ export interface IBoxProps
       | 'maxWidth'
       | 'minHeight'
       | 'minWidth'
+      | 'opacity'
+      | 'overflow'
       | 'padding'
       | 'paddingBottom'
       | 'paddingLeft'
@@ -29,7 +46,12 @@ export interface IBoxProps
       | 'paddingTop'
       | 'paddingX'
       | 'paddingY'
+      | 'position'
+      | 'right'
+      | 'textAlign'
+      | 'top'
       | 'width'
+      | 'zIndex'
     >
   > {
   className?: string;
@@ -41,8 +63,23 @@ export const Box = ({
   as = 'div',
   children,
   className,
+  alignItems,
+  backgroundColor,
+  borderColor,
+  borderRadius,
+  borderStyle,
+  borderWidth,
+  bottom,
+  cursor,
   display = 'block',
+  flexDirection,
+  flexGrow,
+  flexShrink,
+  flexWrap,
   height,
+  inset,
+  justifyContent,
+  left,
   margin,
   marginBottom,
   marginLeft,
@@ -54,6 +91,8 @@ export const Box = ({
   maxWidth,
   minHeight,
   minWidth,
+  opacity,
+  overflow,
   padding,
   paddingBottom,
   paddingLeft,
@@ -61,15 +100,35 @@ export const Box = ({
   paddingTop,
   paddingX,
   paddingY,
+  position,
+  right,
+  textAlign,
+  top,
   width,
+  zIndex,
 }: IBoxProps): React.ReactElement => {
   return createElement(
     as,
     {
       className: classnames(
         sprinkles({
+          alignItems,
+          backgroundColor,
+          borderColor,
+          borderRadius,
+          borderStyle,
+          borderWidth,
+          bottom,
+          cursor,
           display,
+          flexDirection,
+          flexGrow,
+          flexShrink,
+          flexWrap,
           height,
+          inset,
+          justifyContent,
+          left,
           margin,
           marginBottom,
           marginLeft,
@@ -81,6 +140,8 @@ export const Box = ({
           maxWidth,
           minHeight,
           minWidth,
+          opacity,
+          overflow,
           padding,
           paddingBottom,
           paddingLeft,
@@ -88,7 +149,12 @@ export const Box = ({
           paddingTop,
           paddingX,
           paddingY,
+          position,
+          right,
+          textAlign,
+          top,
           width,
+          zIndex,
         }),
         className,
       ),

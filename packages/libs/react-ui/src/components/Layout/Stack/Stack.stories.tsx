@@ -23,6 +23,9 @@ const meta: Meta<typeof Stack> = {
   component: Stack,
   decorators: [withCenteredStory],
   parameters: {
+    status: {
+      type: 'releaseCandidate',
+    },
     docs: {
       description: {
         component:
@@ -31,6 +34,13 @@ const meta: Meta<typeof Stack> = {
     },
   },
   argTypes: {
+    overflow: {
+      options: ['hidden', 'visible', 'scroll', 'auto'],
+      control: {
+        type: 'select',
+      },
+      description: 'Overflow css property',
+    },
     width: {
       options: [...spaceOptions, ...dimensionOptions, ...contentWidthOptions],
       control: {
@@ -263,6 +273,7 @@ const defaultArgs: Record<keyof typeof Stack, string | undefined> = {
   paddingBottom: undefined,
   paddingLeft: undefined,
   paddingRight: undefined,
+  overflow: undefined,
 };
 
 export const Horizontal: Story = {

@@ -12,6 +12,9 @@ type StoryProps = {
 const meta: Meta<StoryProps> = {
   title: 'Navigation/NavAccordion',
   parameters: {
+    status: {
+      type: ['needsRevision'],
+    },
     controls: {
       hideNoControlsWarning: true,
       sort: 'requiredFirst',

@@ -1,5 +1,5 @@
 import type { ISelectProps } from '@kadena/react-ui';
-import { InputWrapper, Select } from '@kadena/react-ui';
+import { FormFieldWrapper, Select } from '@kadena/react-ui';
 
 import type { FC, FormEventHandler } from 'react';
 import React, { useCallback } from 'react';
@@ -34,7 +34,7 @@ const PredKeysSelect: FC<
   });
 
   return (
-    <InputWrapper label="Predicate" htmlFor={ELEMENT_ID}>
+    <FormFieldWrapper label="Predicate" htmlFor={ELEMENT_ID}>
       <Select
         {...rest}
         id={ELEMENT_ID}
@@ -44,7 +44,7 @@ const PredKeysSelect: FC<
       >
         {options}
       </Select>
-    </InputWrapper>
+    </FormFieldWrapper>
   );
 };
 

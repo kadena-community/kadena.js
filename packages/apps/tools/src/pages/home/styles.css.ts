@@ -1,4 +1,4 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const homeWrapperClass = style([
@@ -9,7 +9,20 @@ export const homeWrapperClass = style([
 
 export const helpCenterButtonClass = style([
   sprinkles({
-    color: '$infoContrast',
+    color: '$blue80',
     cursor: 'pointer',
   }),
+]);
+
+export const linkStyle = style([
+  sprinkles({
+    color: '$blue80',
+  }),
+  {
+    selectors: {
+      [`&.visited`]: {
+        color: vars.colors.$blue60,
+      },
+    },
+  },
 ]);

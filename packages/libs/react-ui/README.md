@@ -256,10 +256,10 @@ tokens.
 
 _Spacing_
 
-The component library is composed of layout, primitive, and composed components.
+The component library is composed of layout, primitive, and compound components.
 Currently we have decided to only rely on layout components for positioning.
 This means that we will not be exposing any display/spacing related props from
-our primitive and composed components.
+our primitive and compound components.
 
 ### Conclusion
 

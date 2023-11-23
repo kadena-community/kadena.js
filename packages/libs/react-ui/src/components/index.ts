@@ -8,21 +8,21 @@ export type { IButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
+  FormFieldStatus,
+  IFormFieldWrapperProps,
   IInputProps,
-  IInputWrapperProps,
   ISelectFieldProps,
   ISelectProps,
   ITextFieldProps,
   ITextareaFieldProps,
   ITextareaProps,
-  InputWrapperStatus,
 } from './Form';
 export type { IIconProps } from './Icon';
 export type { IIconButtonProps } from './IconButton';
 export type {
   IBoxProps,
   IGridItemProps,
-  IGridRootProps,
+  IGridProps,
   IStackProps,
 } from './Layout';
 export type { ILinkProps } from './Link';
@@ -44,8 +44,9 @@ export type {
   INavHeaderSelectProps,
 } from './NavHeader';
 export type {
-  INotificationActionsProps,
   INotificationButtonProps,
+  INotificationFooterProps,
+  INotificationHeadingProps,
   INotificationProps,
 } from './Notification';
 export type { IPaginationProps } from './Pagination';
@@ -81,8 +82,8 @@ export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
 export { Divider } from './Divider/Divider';
 export {
+  FormFieldWrapper,
   Input,
-  InputWrapper,
   Select,
   SelectField,
   TextField,
@@ -91,14 +92,19 @@ export {
 } from './Form';
 export { ProductIcon, SystemIcon } from './Icon';
 export { IconButton } from './IconButton';
-export { Box, Grid, Stack } from './Layout';
+export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';
 export { maskValue } from './MaskedValue/utils';
 export { Modal, ModalProvider, useModal } from './Modal';
 export { NavFooter } from './NavFooter';
 export { NavHeader } from './NavHeader';
-export { Notification } from './Notification';
+export {
+  Notification,
+  NotificationButton,
+  NotificationFooter,
+  NotificationHeading,
+} from './Notification';
 export { Pagination } from './Pagination';
 export { ProfileSummary } from './ProfileSummary';
 export { ProgressBar } from './ProgressBar';

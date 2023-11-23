@@ -1,12 +1,27 @@
 const redirectsConfig = [
   {
-    source: '/basics/kda/what-is-kda',
-    destination: '/kadena/kda/',
+    source: '/exchanges',
+    destination: '/kadena/exchanges',
     permanent: true,
   },
   {
-    source: '/exchanges',
-    destination: '/kadena/exchange',
+    source: '/kda/what-is-kda',
+    destination: '/kadena/kda',
+    permanent: true,
+  },
+  {
+    source: '/faq/faq',
+    destination: '/kadena/support',
+    permanent: true,
+  },
+  {
+    source: '/whitepapers/overview',
+    destination: '/kadena/whitepapers',
+    permanent: true,
+  },
+  {
+    source: '/basics/kda/what-is-kda',
+    destination: '/kadena/kda/',
     permanent: true,
   },
   {

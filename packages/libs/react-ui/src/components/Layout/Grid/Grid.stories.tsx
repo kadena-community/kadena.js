@@ -1,13 +1,13 @@
-import { Grid } from '@components/Layout/Grid';
+import { Grid, GridItem } from '@components/Layout/Grid';
 import type { Meta, StoryObj } from '@storybook/react';
 import { sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
 import classNames from 'classnames';
 import React from 'react';
 import { componentClass, containerClass, itemClass } from '../stories.css';
+import type { IGridProps } from './Grid';
 import type { ResponsiveInputType } from './Grid.css';
 import { gapVariants } from './Grid.css';
-import type { IGridRootProps } from './GridRoot';
 
 const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,
@@ -21,20 +21,29 @@ const dimensionOptions: string[] = ['100%', 'min-content', 'max-content'];
 
 type StoryType = {
   columnSpan: ResponsiveInputType;
-} & IGridRootProps;
+} & IGridProps;
 
 const meta: Meta<StoryType> = {
   title: 'Layout/Grid',
   parameters: {
+    status: {
+      type: 'releaseCandidate',
+    },
     docs: {
       description: {
         component:
-          'The Grid component is an abstraction over css grid that provides `Root` and `Item` subcomponents to compose a grid of equally sized columns.<br><br><i>Note: This component does not support grid templates or columns of varying sizes.</i>',
+          'The Grid component is an abstraction over css grid that provides ` and `Item` subcomponents to compose a grid of equally sized columns.<br><br><i>Note: This component does not support grid templates or columns of varying sizes.</i>',
       },
     },
   },
-  component: Grid.Root,
   argTypes: {
+    overflow: {
+      options: ['hidden', 'visible', 'scroll', 'auto'],
+      control: {
+        type: 'select',
+      },
+      description: 'Overflow css property.',
+    },
     gap: {
       options: Object.keys(gapVariants) as (keyof typeof gapVariants)[],
       control: { type: 'select' },
@@ -249,9 +258,10 @@ const defaultArgs: Record<string, string | undefined> = {
   paddingBottom: undefined,
   paddingLeft: undefined,
   paddingRight: undefined,
+  overflow: undefined,
 };
 
-export const GridRoot: Story = {
+export const Primary: Story = {
   name: 'Grid',
   args: {
     ...defaultArgs,
@@ -267,46 +277,41 @@ export const GridRoot: Story = {
   },
   render: ({ gap, columns, ...rest }) => (
     <div className={containerClass}>
-      <Grid.Root
-        gap={gap}
-        columns={columns}
-        className={componentClass}
-        {...rest}
-      >
+      <Grid gap={gap} columns={columns} className={componentClass} {...rest}>
         {Array.from(new Array(12)).map((empty, i) => (
-          <Grid.Item key={i} className={itemClass}>
+          <GridItem key={i} className={itemClass}>
             <div className={itemClass}>{i}</div>
-          </Grid.Item>
+          </GridItem>
         ))}
 
-        <Grid.Item className={itemClass}>
+        <GridItem className={itemClass}>
           <div className={itemClass}>2</div>
-        </Grid.Item>
-        <Grid.Item className={itemClass}>
+        </GridItem>
+        <GridItem className={itemClass}>
           <div className={itemClass}>3</div>
-        </Grid.Item>
-        <Grid.Item className={itemClass}>
+        </GridItem>
+        <GridItem className={itemClass}>
           <div className={itemClass}>4</div>
-        </Grid.Item>
-        <Grid.Item className={itemClass}>
+        </GridItem>
+        <GridItem className={itemClass}>
           <div className={itemClass}>5</div>
-        </Grid.Item>
-        <Grid.Item className={itemClass}>
+        </GridItem>
+        <GridItem className={itemClass}>
           <div className={itemClass}>6</div>
-        </Grid.Item>
-        <Grid.Item className={itemClass}>
+        </GridItem>
+        <GridItem className={itemClass}>
           <div className={itemClass}>7</div>
-        </Grid.Item>
+        </GridItem>
 
-        <Grid.Item className={itemClass}>
+        <GridItem className={itemClass}>
           <div className={itemClass}>8</div>
-        </Grid.Item>
-      </Grid.Root>
+        </GridItem>
+      </Grid>
     </div>
   ),
 };
 
-export const GridItem: Story = {
+export const GridItemStory: Story = {
   args: {
     ...defaultArgs,
     gap: '$xl',
@@ -322,13 +327,8 @@ export const GridItem: Story = {
   },
   render: ({ gap, columns, columnSpan, ...rest }) => (
     <div className={containerClass}>
-      <Grid.Root
-        gap={gap}
-        columns={columns}
-        className={componentClass}
-        {...rest}
-      >
-        <Grid.Item
+      <Grid gap={gap} columns={columns} className={componentClass} {...rest}>
+        <GridItem
           className={classNames(
             itemClass,
             sprinkles({ bg: '$primaryHighContrast' }),
@@ -336,13 +336,13 @@ export const GridItem: Story = {
           columnSpan={columnSpan}
         >
           dynamic
-        </Grid.Item>
+        </GridItem>
         {Array.from(new Array(12)).map((empty, i) => (
-          <Grid.Item key={i} columnSpan={1} className={itemClass}>
+          <GridItem key={i} columnSpan={1} className={itemClass}>
             1
-          </Grid.Item>
+          </GridItem>
         ))}
-      </Grid.Root>
+      </Grid>
     </div>
   ),
 };

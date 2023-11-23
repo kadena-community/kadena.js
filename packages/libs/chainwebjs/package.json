@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainwebjs",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Javascript (Typescript) bindings for the Kadena Chainweb API",
   "keywords": [
     "chainweb",
@@ -57,7 +57,8 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "base64url": "^3.0.1",

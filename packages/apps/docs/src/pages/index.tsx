@@ -16,7 +16,7 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { Box, Button, Grid, Heading, Stack } from '@kadena/react-ui';
+import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -38,8 +38,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
       >
         <article className={articleClass}>
           <Box marginBottom="$20">
-            <Grid.Root gap="$lg" columns={{ sm: 1, md: 2 }}>
-              <Grid.Item rowSpan={2}>
+            <Grid gap="$lg" columns={{ sm: 1, md: 2 }}>
+              <GridItem rowSpan={2}>
                 <DocsCard
                   label="Introduction"
                   description="Kadena is the only platform offering a complete decentralized infrastructure for builders. Combining a revolutionary chain architecture with the tools needed for widespread adoption, your teams get the full capabilities of blockchain with the ability to go from concept to launch in days vs. months by not having to build from scratch. Learn about our core concepts."
@@ -58,8 +58,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     </Link>
                   </BrowseSection>
                 </DocsCard>
-              </Grid.Item>
-              <Grid.Item>
+              </GridItem>
+              <GridItem>
                 <DocsCard
                   label="Learn through tutorials"
                   description="Find training and documentation and discover resources to assist you in learning. Whether you are just starting or an experienced professional, our hands-on approach helps you reach your goals faster, more confidently, and at your own pace."
@@ -92,8 +92,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     </Link>
                   </BrowseSection>
                 </DocsCard>
-              </Grid.Item>
-              <Grid.Item>
+              </GridItem>
+              <GridItem>
                 <DocsCard
                   label="Setup"
                   description="Use the right tools and platforms for building many types of decentralized applications."
@@ -124,8 +124,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     </Link>
                   </BrowseSection>
                 </DocsCard>
-              </Grid.Item>
-            </Grid.Root>
+              </GridItem>
+            </Grid>
           </Box>
 
           <Stack direction="column" gap="$3xl">

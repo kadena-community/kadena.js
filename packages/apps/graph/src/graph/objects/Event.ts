@@ -1,4 +1,5 @@
-import { prismaClient } from '../../db/prismaClient';
+import { prismaClient } from '@db/prismaClient';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Event', {
@@ -18,28 +19,35 @@ export default builder.prismaNode('Event', {
     transaction: t.prismaField({
       type: 'Transaction',
       nullable: true,
-      resolve(query, parent, args, context, info) {
-        return prismaClient.transaction.findUnique({
-          where: {
-            blockHash_requestKey: {
-              blockHash: parent.blockHash,
-              requestKey: parent.requestKey,
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.transaction.findUnique({
+            where: {
+              blockHash_requestKey: {
+                blockHash: parent.blockHash,
+                requestKey: parent.requestKey,
+              },
             },
-          },
-        });
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
 
     block: t.prismaField({
       type: 'Block',
       nullable: false,
-      // eslint-disable-next-line @typescript-eslint/typedef
-      resolve(query, parent, args, context, info) {
-        return prismaClient.block.findUniqueOrThrow({
-          where: {
-            hash: parent.blockHash,
-          },
-        });
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.block.findUniqueOrThrow({
+            where: {
+              hash: parent.blockHash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
   }),

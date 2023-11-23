@@ -53,7 +53,7 @@ export const vars = createGlobalTheme(':root', {
   },
   shadows: {
     // TODO: Update to match design system
-    $1: `0px 1px 2px 0 $colors$gray40`,
+    $1: `0px 1px 2px 0 ${colorPalette.$gray90}`,
   },
   sizes: {
     // eslint-disable-next-line @typescript-eslint/naming-convention

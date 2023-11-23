@@ -28,6 +28,7 @@ import {
   Breadcrumbs,
   Button,
   Grid,
+  GridItem,
   Heading,
   IconButton,
   Stack,
@@ -368,8 +369,8 @@ const CrossChainTransferFinisher: FC = () => {
               disabled={false}
             >
               <Box marginBottom="$4" />
-              <Grid.Root>
-                <Grid.Item>
+              <Grid>
+                <GridItem>
                   <RequestKeyField
                     helperText={showInputHelper}
                     status={showInputError}
@@ -381,8 +382,8 @@ const CrossChainTransferFinisher: FC = () => {
                     }}
                     error={errors.requestKey}
                   />
-                </Grid.Item>
-              </Grid.Root>
+                </GridItem>
+              </Grid>
             </FormItemCard>
 
             <FormItemCard
@@ -392,8 +393,8 @@ const CrossChainTransferFinisher: FC = () => {
               disabled={false}
             >
               <Box marginBottom="$4" />
-              <Grid.Root columns={1}>
-                <Grid.Item>
+              <Grid columns={1}>
+                <GridItem>
                   <AccountNameField
                     label={t('Gas Payer')}
                     inputProps={{
@@ -403,12 +404,12 @@ const CrossChainTransferFinisher: FC = () => {
                     }}
                     error={errors.gasPayer}
                   />
-                </Grid.Item>
-              </Grid.Root>
+                </GridItem>
+              </Grid>
 
               <Box marginBottom="$4" />
-              <Grid.Root columns={2}>
-                <Grid.Item>
+              <Grid columns={2}>
+                <GridItem>
                   <TextField
                     disabled={true}
                     label={t('Gas Price')}
@@ -421,8 +422,8 @@ const CrossChainTransferFinisher: FC = () => {
                       leadingText: t('KDA'),
                     }}
                   />
-                </Grid.Item>
-                <Grid.Item>
+                </GridItem>
+                <GridItem>
                   <TextField
                     disabled={!isAdvancedOptions}
                     helperText={t(
@@ -435,8 +436,8 @@ const CrossChainTransferFinisher: FC = () => {
                       placeholder: t('Enter Gas Limit'),
                     }}
                   />
-                </Grid.Item>
-              </Grid.Root>
+                </GridItem>
+              </Grid>
             </FormItemCard>
 
             {pollResults.tx !== undefined ? (
@@ -446,8 +447,8 @@ const CrossChainTransferFinisher: FC = () => {
                 helperHref="#"
               >
                 <Box marginBottom="$4" />
-                <Grid.Root columns={1}>
-                  <Grid.Item>
+                <Grid columns={1}>
+                  <GridItem>
                     <div className={textareaContainerStyle}>
                       <textarea rows={4} className={textAreaStyle}>
                         {formattedSigData}
@@ -461,8 +462,8 @@ const CrossChainTransferFinisher: FC = () => {
                         title={t('copySigData')}
                       />
                     </div>
-                  </Grid.Item>
-                </Grid.Root>
+                  </GridItem>
+                </Grid>
               </FormItemCard>
             ) : null}
           </Stack>

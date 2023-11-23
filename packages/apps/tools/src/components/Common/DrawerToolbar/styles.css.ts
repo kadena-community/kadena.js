@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const gridItemCollapsedSidebarStyle = style([
@@ -8,7 +8,8 @@ export const gridItemCollapsedSidebarStyle = style([
     top: '$16',
     bottom: 0,
     backgroundColor: '$neutral1',
-    width: '$16',
+    width: '$12',
+    fontSize: '$sm',
     zIndex: 1,
   }),
   {
@@ -24,10 +25,10 @@ export const gridItemCollapsedSidebarStyle = style([
 
 export const buttonWrapperClass = style([
   sprinkles({
-    paddingTop: '$3',
-    paddingBottom: '$3',
-    paddingLeft: '$2',
-    paddingRight: '$2',
+    outline: 'none',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
   }),
   {
     borderBottom: `solid 1px ${vars.colors.$borderSubtle}`,
@@ -39,14 +40,17 @@ export const expandedDrawerTitleClass = style([
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: '$4',
-    paddingBottom: '$4',
-    paddingLeft: '$6',
-    paddingRight: '$4',
-    height: '$20',
+    fontWeight: '$bold',
   }),
   {
-    borderBottom: `1px solid ${vars.colors.$borderSubtle}`,
+    borderBottom: `1px solid #E3E1E5`,
+    padding: '0.125rem 0.75rem',
+    paddingLeft: '1.25rem',
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid #27232999`,
+      },
+    },
   },
 ]);
 

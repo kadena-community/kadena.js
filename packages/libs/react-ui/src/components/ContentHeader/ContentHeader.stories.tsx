@@ -9,7 +9,10 @@ const meta: Meta<
     selectIcon: keyof typeof SystemIcon;
   } & IContentHeaderProps
 > = {
-  title: 'Content/ContentHeader',
+  title: 'Patterns/ContentHeader',
+  parameters: {
+    status: { type: 'experimental' },
+  },
   argTypes: {
     icon: {
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],

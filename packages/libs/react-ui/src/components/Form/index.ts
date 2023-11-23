@@ -1,9 +1,9 @@
-export { Input, type IInputProps } from './Input';
+export type { FormFieldStatus } from './Form.css';
 export {
-  InputWrapper,
-  type IInputWrapperProps,
-  type InputWrapperStatus,
-} from './InputWrapper';
+  FormFieldWrapper,
+  type IFormFieldWrapperProps,
+} from './FormFieldWrapper';
+export { Input, type IInputProps } from './Input';
 export { Select, type ISelectProps } from './Select';
 export { SelectField, type ISelectFieldProps } from './SelectField';
 export { TextField, type ITextFieldProps } from './TextField';
