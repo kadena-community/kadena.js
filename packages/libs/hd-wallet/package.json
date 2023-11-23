@@ -13,6 +13,7 @@
     "Javad Khalilian <javad@kadena.io>",
     "Danillo Felixdaal <danillo@kadena.io>"
   ],
+  "main": "./lib/index.js",
   "exports": {
     "./chainweaver": {
       "types": "./lib/chainweaver/index.d.ts",
