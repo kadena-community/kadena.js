@@ -42,7 +42,6 @@ export const defaultNetwork: string = 'testnet';
 
 type NetworkKey = Exclude<keyof typeof networkDefaults, 'other'>;
 
-// Using Record type for INetworkFiles
 type INetworkFiles = Record<NetworkKey, string>;
 
 export const networkFiles: INetworkFiles = Object.keys(networkDefaults).reduce(
