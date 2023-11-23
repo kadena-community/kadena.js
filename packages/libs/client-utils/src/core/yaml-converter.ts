@@ -6,21 +6,30 @@ import type {
 import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join } from 'path';
+import { asyncPipe } from './utils/asyncPipe';
 
-interface IParseContext {
+interface ITplHoleTriple {
+  literal: string;
+}
+interface ITplHoleDouble {
+  parsed: string;
+}
+type TplHole = ITplHoleTriple | ITplHoleDouble;
+type TplPart = string;
+type PartsAndHoles = [TplPart[], TplHole[]];
+
+interface ITemplateContext {
   cwd: string;
   tplPath: string;
   tplString: PartsAndHoles;
 }
 
-interface IParseContextStepTwo extends IParseContext {
+type FilledYamlString = string;
+interface ITemplateContextReplacedHoles extends ITemplateContext {
   filledYamlString: FilledYamlString;
 }
-interface IParseContextStepThree extends IParseContextStepTwo {
-  tplTx: Omit<IKdaToolTransaction, 'codeFile'> & { code?: string };
-}
 
-interface IKdaToolTransaction {
+interface ITemplateTransaction {
   codeFile?: string;
   command: string;
   meta: {
@@ -36,37 +45,9 @@ interface IKdaToolTransaction {
   nonce: string;
 }
 
-interface TplHoleTriple {
-  literal: string;
+interface ITemplateContextPactCommand extends ITemplateContextReplacedHoles {
+  tplTx: Omit<ITemplateTransaction, 'codeFile'> & { code?: string };
 }
-interface TplHoleDouble {
-  parsed: string;
-}
-type TplHole = TplHoleTriple | TplHoleDouble;
-type TplPart = string;
-type PartsAndHoles = [TplPart[], TplHole[]];
-type GetPartsAndHoles = (path: string, cwd?: string) => IParseContext;
-type FilledYamlString = string;
-
-type ReplaceHoles = (
-  ctx: IParseContext,
-  holes: Record<string, string | number>,
-) => IParseContextStepTwo;
-
-type ParseYamlKdaTx = (
-  ctx: IParseContextStepTwo,
-  args: Record<string, string | number>,
-) => IParseContextStepThree;
-
-type ConvertKdaToolToKadenaClientTx = (
-  kdaToolTx: IParseContextStepThree['tplTx'],
-) => IPactCommand;
-
-type ConvertYamlToKadenaClientTx = (
-  path: string,
-  args: Record<string, string | number>,
-  cwd?: string,
-) => IPactCommand;
 
 // Responsinble for splitting a string into parts and holes
 export const getPartsAndHoles = (text: string) => {
@@ -89,16 +70,17 @@ export const getPartsAndHoles = (text: string) => {
   );
 };
 
-// Responsible for reading a file and returning a context with parts and holes
-export const getPartsAndHolesInCtx: GetPartsAndHoles = (
-  path,
-  cwd = process.cwd(),
-) => {
-  const file = readFileSync(join(cwd, path), 'utf-8').toString();
+export const getPartsAndHolesInCtx = (
+  tplPath: string,
+  cwd: string = process.cwd(),
+): ITemplateContext => {
+  const file = readFileSync(join(cwd, tplPath), 'utf-8').toString();
+  const tplString = getPartsAndHoles(file);
+
   return {
-    tplPath: path,
-    cwd: cwd,
-    tplString: getPartsAndHoles(file),
+    tplPath,
+    cwd,
+    tplString,
   };
 };
 
@@ -143,70 +125,78 @@ export const replaceHoles = (
 };
 
 // Responsible for replacing holes in a context with values
-export const replaceHolesInCtx: ReplaceHoles = (ctx, args) => {
-  const { tplString } = ctx;
-
-  return { ...ctx, filledYamlString: replaceHoles(tplString, args) };
+export const replaceHolesInCtx = (args: Record<string, string | number>) => {
+  return (ctx: ITemplateContext): ITemplateContextReplacedHoles => {
+    const { tplString } = ctx;
+    return { ...ctx, filledYamlString: replaceHoles(tplString, args) };
+  };
 };
+export const parseYamlToKdaTx =
+  (args: Record<string, string | number>) =>
+  (ctx: ITemplateContextReplacedHoles): ITemplateContextPactCommand => {
+    const { filledYamlString } = ctx;
+    const kdaToolTx = yaml.load(filledYamlString) as ITemplateTransaction;
 
-// Responsible for parsing a yaml string into a kda tool transaction
-export const parseYamlKdaTx: ParseYamlKdaTx = (ctx, args) => {
-  const { filledYamlString } = ctx;
-  const kdaToolTx = yaml.load(filledYamlString) as IKdaToolTransaction;
+    if (!('codeFile' in kdaToolTx && kdaToolTx.codeFile)) {
+      return {
+        ...ctx,
+        tplTx: kdaToolTx,
+      };
+    }
 
-  if (!('codeFile' in kdaToolTx && kdaToolTx.codeFile)) {
+    const { codeFile, ...kdaToolTxWithoutCodeFile } = kdaToolTx;
+    const codeWithHoles = readFileSync(
+      join(ctx.cwd, codeFile),
+      'utf-8',
+    ).toString();
+
+    const code = replaceHoles(getPartsAndHoles(codeWithHoles), args);
+
     return {
       ...ctx,
-      tplTx: kdaToolTx,
+      tplTx: {
+        ...kdaToolTxWithoutCodeFile,
+        code,
+      },
     };
-  }
+  };
 
-  const codeFile = kdaToolTx.codeFile;
-  const codeWithHoles = readFileSync(
-    join(ctx.cwd, codeFile),
-    'utf-8',
-  ).toString();
+// Responsible for converting a kda tool transaction into a kadena client transaction
+export const convertTemplateTxToPactCommand = (
+  ctx: ITemplateContextPactCommand,
+): IPactCommand => {
+  const { code, ...kdaToolTx } = ctx.tplTx;
 
-  const code = replaceHoles(getPartsAndHoles(codeWithHoles), args);
+  const execPayload: IExecutionPayloadObject = {
+    data: kdaToolTx.data,
+    code: code,
+  } as unknown as IExecutionPayloadObject;
+
   return {
-    ...ctx,
-    tplTx: {
-      ...kdaToolTx,
-      code,
+    ...kdaToolTx,
+    payload: execPayload,
+    meta: {
+      ...kdaToolTx.meta,
+      chainId: kdaToolTx.meta.chainId as ChainId,
     },
+    nonce: kdaToolTx.nonce,
+    signers: kdaToolTx.signers.map(publicToPubkey),
+    networkId: kdaToolTx.networkId,
   };
 };
 
-// Responsible for converting a kda tool transaction into a kadena client transaction
-export const convertToKadenaClientTransaction: ConvertKdaToolToKadenaClientTx =
-  (kdaToolTx) => {
-    const execPayload: IExecutionPayloadObject = {
-      data: kdaToolTx.data,
-      code: kdaToolTx.code,
-    } as unknown as IExecutionPayloadObject;
-
-    return {
-      ...kdaToolTx,
-      payload: execPayload,
-      meta: {
-        ...kdaToolTx.meta,
-        chainId: kdaToolTx.meta.chainId as ChainId,
-      },
-      nonce: kdaToolTx.nonce,
-      signers: kdaToolTx.signers.map(publicToPubkey),
-      networkId: kdaToolTx.networkId,
-    };
-  };
-
-export const convertYamlToKadenaClientTransaction: ConvertYamlToKadenaClientTx =
-  (path, args, cwd) => {
-    return convertToKadenaClientTransaction(
-      parseYamlKdaTx(
-        replaceHolesInCtx(getPartsAndHolesInCtx(path, cwd), args),
-        args,
-      ).tplTx,
-    );
-  };
+export const createPactCommandFromTemplate = async (
+  path: string,
+  args: Record<string, string | number>,
+  cwd?: string,
+): Promise<IPactCommand> => {
+  return asyncPipe(
+    getPartsAndHolesInCtx,
+    replaceHolesInCtx(args),
+    parseYamlToKdaTx(args),
+    convertTemplateTxToPactCommand,
+  )(path, cwd);
+};
 
 // Responsible for zipping together parts and holes
 function zip(parts: string[], holes: TplHole[]) {

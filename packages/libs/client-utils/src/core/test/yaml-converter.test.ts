@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
-  convertToKadenaClientTransaction,
-  convertYamlToKadenaClientTransaction,
+  convertTemplateTxToPactCommand,
+  createPactCommandFromTemplate,
   getPartsAndHolesInCtx,
-  parseYamlKdaTx,
+  parseYamlToKdaTx,
   replaceHoles,
   replaceHolesInCtx,
 } from '../yaml-converter';
@@ -102,7 +102,7 @@ describe('yaml-converter', () => {
     });
   });
 
-  describe('parseYamlKdaTx', () => {
+  describe('parseYamlToKdaTx', () => {
     it('parses a template with `codefile` property with holes', () => {
       const args = {
         thisIsFalse: 'false',
@@ -110,18 +110,15 @@ describe('yaml-converter', () => {
         literalName: 'My Literal Name',
       };
 
-      const res = parseYamlKdaTx(
-        replaceHolesInCtx(
+      const res = parseYamlToKdaTx(args)(
+        replaceHolesInCtx(args)(
           getPartsAndHolesInCtx('./aux-files/tx-with-codefile.yaml', __dirname),
-          args,
         ),
-        args,
       );
 
       expect(res.tplTx).deep.eq({
         code: `(module 12 My Literal Name)
 `,
-        codeFile: './aux-files/codefile.pact',
         data: 12,
         something: false,
       });
@@ -133,15 +130,13 @@ describe('yaml-converter', () => {
         aNumber: 12,
       };
 
-      const res = parseYamlKdaTx(
-        replaceHolesInCtx(
+      const res = parseYamlToKdaTx(args)(
+        replaceHolesInCtx(args)(
           getPartsAndHolesInCtx(
             './aux-files/tx-without-codefile.yaml',
             __dirname,
           ),
-          args,
         ),
-        args,
       );
 
       expect(res.tplTx).deep.eq({
@@ -167,18 +162,15 @@ describe('yaml-converter', () => {
           'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
       };
 
-      const res = convertToKadenaClientTransaction(
-        parseYamlKdaTx(
-          replaceHolesInCtx(
+      const res = convertTemplateTxToPactCommand(
+        parseYamlToKdaTx(args)(
+          replaceHolesInCtx(args)(
             getPartsAndHolesInCtx('./aux-files/real-tx-tpl.yaml', __dirname),
-            args,
           ),
-          args,
-        ).tplTx,
+        ),
       );
 
       expect(res).toStrictEqual({
-        codeFile: './aux-files/real-tx-tpl-code.pact',
         data: null,
         meta: {
           chainId: '1',
@@ -223,7 +215,6 @@ describe('yaml-converter', () => {
           },
         ],
         type: 'exec',
-        code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
         payload: {
           data: null,
           code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
@@ -233,7 +224,7 @@ describe('yaml-converter', () => {
   });
 
   describe('convertYamlToKadenaClientTransaction', () => {
-    it('converts a yaml with holes to KadenaClientTx', () => {
+    it('converts a yaml with holes to KadenaClientTx', async () => {
       const args = {
         chain: 1,
         'funding-acct':
@@ -247,14 +238,13 @@ describe('yaml-converter', () => {
           'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
       };
 
-      const res = convertYamlToKadenaClientTransaction(
+      const res = await createPactCommandFromTemplate(
         './aux-files/real-tx-tpl.yaml',
         args,
         __dirname,
       );
 
       expect(res).toStrictEqual({
-        codeFile: './aux-files/real-tx-tpl-code.pact',
         data: null,
         meta: {
           chainId: '1',
@@ -299,7 +289,6 @@ describe('yaml-converter', () => {
           },
         ],
         type: 'exec',
-        code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
         payload: {
           data: null,
           code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
