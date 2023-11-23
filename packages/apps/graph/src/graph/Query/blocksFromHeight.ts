@@ -35,6 +35,10 @@ builder.queryField('blocksFromHeight', (t) => {
               },
             ],
           },
+          orderBy: {
+            height: 'asc',
+          },
+          take: 100,
         });
 
         return blocksFromHeight;

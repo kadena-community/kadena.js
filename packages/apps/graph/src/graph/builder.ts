@@ -3,7 +3,9 @@ import DataloaderPlugin from '@pothos/plugin-dataloader';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
+import TracingPlugin, { wrapResolver } from '@pothos/plugin-tracing';
 import { Prisma } from '@prisma/client';
+import { logTrace } from '@services/tracing/trace-service';
 import {
   BigIntResolver,
   DateTimeResolver,
@@ -60,12 +62,7 @@ export const builder = new SchemaBuilder<
     };
   }
 >({
-  plugins: [RelayPlugin, PrismaPlugin, DataloaderPlugin],
-
-  relayOptions: {
-    clientMutationId: 'optional',
-    cursorType: 'String',
-  },
+  plugins: [DataloaderPlugin, PrismaPlugin, RelayPlugin, TracingPlugin],
 
   prisma: {
     client: prismaClient,
@@ -75,6 +72,24 @@ export const builder = new SchemaBuilder<
     // use where clause from prismaRelatedConnection for totalCount
     filterConnectionTotalCount: true,
   },
+
+  relayOptions: {
+    clientMutationId: 'optional',
+    cursorType: 'String',
+  },
+
+  ...(process.env.ENABLE_TRACING === 'true' && {
+    tracing: {
+      default: () => true,
+      wrap: (resolver, __options, config) =>
+        wrapResolver(resolver, async (__error, duration) => {
+          await logTrace(config.parentType, config.name, duration);
+          console.log(
+            `Executed resolver ${config.parentType}.${config.name} in ${duration}ms`,
+          );
+        }),
+    },
+  }),
 });
 
 type ScalarTypeResolver<TScalarInputShape, TScalarOutputShape> =
