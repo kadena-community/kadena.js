@@ -36,12 +36,12 @@ interface IKdaToolTransaction {
   nonce: string;
 }
 
-type TplHoleTriple = {
+interface TplHoleTriple {
   literal: string;
-};
-type TplHoleDouble = {
+}
+interface TplHoleDouble {
   parsed: string;
-};
+}
 type TplHole = TplHoleTriple | TplHoleDouble;
 type TplPart = string;
 type PartsAndHoles = [TplPart[], TplHole[]];
