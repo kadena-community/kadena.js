@@ -2015,6 +2015,33 @@ importers:
         specifier: 5.2.2
         version: 5.2.2
 
+  packages/tools/integration-tests:
+    devDependencies:
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../lint-package
+      '@kadena-dev/markdown':
+        specifier: workspace:*
+        version: link:../markdown
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../shared-config
+      '@rushstack/eslint-config':
+        specifier: ~3.3.0
+        version: 3.3.0(eslint@8.48.0)(typescript@5.2.2)
+      '@types/node':
+        specifier: ^18.17.14
+        version: 18.17.14
+      eslint:
+        specifier: ^8.45.0
+        version: 8.48.0
+      vitest:
+        specifier: ^0.34.6
+        version: 0.34.6(happy-dom@12.9.1)
+
   packages/tools/kda-cli:
     dependencies:
       '@inkjs/ui':
