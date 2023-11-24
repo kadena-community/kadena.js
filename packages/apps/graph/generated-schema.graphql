@@ -170,7 +170,7 @@ scalar PositiveFloat
 type Query {
   account(accountName: String!, moduleName: String!): ModuleAccount!
   block(hash: String!): Block
-  blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
+  blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount
   completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
   gasLimitEstimate(transaction: PactTransaction!): Int!

@@ -121,7 +121,6 @@ export const Button: FC<IButtonProps> = ({
       {...restProps}
       aria-label={ariaLabel}
       className={buttonClassname}
-      data-testid="kda-button"
       type={type}
     >
       {getContents(children)}

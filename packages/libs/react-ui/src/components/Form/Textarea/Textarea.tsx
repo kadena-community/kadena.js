@@ -6,6 +6,7 @@ import React, { forwardRef, useContext } from 'react';
 import { baseContainerClass, baseOutlinedClass } from '../Form.css';
 import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
 import {
+  buttonContainerClass,
   disabledClass,
   textAreaClass,
   textAreaContainerClass,
@@ -14,7 +15,7 @@ import {
 export interface ITextareaProps
   extends Omit<
       TextareaHTMLAttributes<HTMLTextAreaElement>,
-      'as' | 'disabled' | 'children' | 'className' | 'id'
+      'as' | 'disabled' | 'className' | 'id'
     >,
     Partial<Pick<Sprinkles, 'fontFamily'>> {
   id: string;
@@ -27,26 +28,25 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
   HTMLTextAreaElement,
   ITextareaProps
 >(function TextArea(
-  { outlined = false, disabled = false, fontFamily, ...rest },
+  { outlined = false, disabled = false, fontFamily, children, ...rest },
   ref,
 ) {
   const { status } = useContext(FormFieldWrapperContext);
 
   return (
     <div
-      className={classNames(baseContainerClass, {
+      className={classNames(baseContainerClass, textAreaContainerClass, {
         [baseOutlinedClass]: outlined || status,
         [disabledClass]: disabled,
       })}
     >
-      <div className={textAreaContainerClass}>
-        <textarea
-          ref={ref}
-          className={classNames(textAreaClass, sprinkles({ fontFamily }))}
-          disabled={disabled}
-          {...rest}
-        />
-      </div>
+      <textarea
+        ref={ref}
+        className={classNames(textAreaClass, sprinkles({ fontFamily }))}
+        disabled={disabled}
+        {...rest}
+      />
+      {children && <div className={buttonContainerClass}>{children}</div>}
     </div>
   );
 });

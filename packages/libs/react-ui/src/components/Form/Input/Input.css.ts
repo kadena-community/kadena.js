@@ -26,7 +26,8 @@ export const inputContainerClass = style([
     flexGrow: 1,
     gap: '$2',
     lineHeight: '$lg',
-    paddingX: '$4',
+    paddingLeft: '$4',
+    paddingRight: '$2',
   }),
 ]);
 
@@ -39,6 +40,7 @@ export const inputClass = style([
     outline: 'none',
     flexGrow: 1,
     paddingY: '$2',
+    fontSize: '$base',
   }),
   {
     '::placeholder': {
@@ -72,6 +74,15 @@ export const leadingTextWrapperClass = style([
     display: 'flex',
     alignItems: 'center',
   }),
+]);
+
+export const inputChildrenClass = style([
+  {
+    marginRight: '-0.5rem',
+    paddingTop: '0.125rem',
+    paddingBottom: '0.125rem',
+    paddingRight: '0.125rem',
+  },
 ]);
 
 export const leadingTextWidthVariant = styleVariants(vars.sizes, (size) => {

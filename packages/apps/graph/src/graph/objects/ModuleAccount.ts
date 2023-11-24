@@ -94,6 +94,22 @@ export default builder.node(
         type: 'Transaction',
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
+        async totalCount(parent) {
+          try {
+            return await prismaClient.transaction.count({
+              where: {
+                senderAccount: parent.accountName,
+                events: {
+                  some: {
+                    moduleName: parent.moduleName,
+                  },
+                },
+              },
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
+        },
         async resolve(query, parent) {
           try {
             return await prismaClient.transaction.findMany({
@@ -119,6 +135,24 @@ export default builder.node(
         type: 'Transfer',
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         edgesNullable: false,
+        async totalCount(parent) {
+          try {
+            return await prismaClient.transfer.count({
+              where: {
+                OR: [
+                  {
+                    senderAccount: parent.accountName,
+                  },
+                  {
+                    receiverAccount: parent.accountName,
+                  },
+                ],
+              },
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
+        },
         async resolve(query, parent) {
           try {
             return await prismaClient.transfer.findMany({

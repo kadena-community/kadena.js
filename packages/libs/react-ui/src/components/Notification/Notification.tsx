@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { Close, Information } from '@components/Icon/System/SystemIcon';
+import { Box } from '@components/Layout';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -42,11 +43,13 @@ export const Notification: FC<INotificationProps> = ({
 
   return (
     <div className={classList} role={role}>
-      {icon ? (
-        <span className={iconClass}>{icon}</span>
-      ) : (
-        <Information size="md" />
-      )}
+      <Box flexShrink={0}>
+        {icon ? (
+          <span className={iconClass}>{icon}</span>
+        ) : (
+          <Information size="md" />
+        )}
+      </Box>
 
       <div className={contentClass}>{children}</div>
 
