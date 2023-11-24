@@ -1,9 +1,10 @@
+import { dotenv } from '@utils/dotenv';
 import { Command, Option } from 'commander';
 import { readFileSync } from 'fs';
 
 new Command()
   .command('trace-analyser')
-  .description('Analyse the traces.log file')
+  .description(`Analyse the ${dotenv.TRACING_LOG_FILENAME} file`)
   .addOption(
     new Option(
       '-l, --limit <number>',
@@ -18,15 +19,15 @@ new Command()
   )
   .action(async (args) => {
     try {
-      readFileSync('traces.log');
+      readFileSync(dotenv.TRACING_LOG_FILENAME);
     } catch (err) {
       console.error(
-        "\n >>> Failure in reading the traces.log file. If you don't have a trace file yet, then enable tracing first. See the README for more information.\n",
+        `\n >>> Failure in reading the ${dotenv.TRACING_LOG_FILENAME} file. If you don't have a trace file yet, then enable tracing first. See the README for more information.\n`,
       );
       return;
     }
 
-    const traces = readFileSync('traces.log', 'utf8')
+    const traces = readFileSync(dotenv.TRACING_LOG_FILENAME, 'utf8')
       .split('\n')
       .filter((line) => line !== '')
       .map((line) => {

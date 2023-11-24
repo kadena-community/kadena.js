@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prismaClient';
+import { chainIds as defaultChainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
@@ -9,7 +10,7 @@ builder.queryField('completedBlockHeights', (t) => {
     args: {
       completedHeights: t.arg.boolean({ required: false }),
       heightCount: t.arg.int({ required: false }),
-      chainIds: t.arg.intList({ required: false }),
+      chainIds: t.arg.stringList({ required: false }),
     },
 
     type: [Block],
@@ -20,7 +21,7 @@ builder.queryField('completedBlockHeights', (t) => {
       {
         completedHeights: onlyCompleted = false,
         heightCount = 3,
-        chainIds = Array.from(new Array(dotenv.CHAIN_COUNT)).map((__, i) => i),
+        chainIds = defaultChainIds,
       },
     ) {
       try {
@@ -41,7 +42,7 @@ builder.queryField('completedBlockHeights', (t) => {
                 AND: [
                   {
                     chainId: {
-                      in: chainIds as number[],
+                      in: chainIds?.map((x) => parseInt(x)),
                     },
                   },
                   {
@@ -79,7 +80,7 @@ builder.queryField('completedBlockHeights', (t) => {
             AND: [
               {
                 chainId: {
-                  in: chainIds as number[],
+                  in: chainIds?.map((x) => parseInt(x)),
                 },
               },
               {
