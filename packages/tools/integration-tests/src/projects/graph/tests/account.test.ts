@@ -1,15 +1,16 @@
 import request from 'supertest';
 import { describe, expect, test } from 'vitest';
-import { baseUrl } from '../constants/network';
+import { grapHost } from '../testdata/constants/network';
 import { getAccountQuery } from '../testdata/queries/getAccount';
+import { createAccounts } from '../testdata/setup/create-account';
 
 describe('Account', () => {
   test('getAccount', async () => {
-    const response = await request(baseUrl)
+    
+   const response = await request(grapHost)
       .post('')
       .send(getAccountQuery)
 
-    
     expect(response.statusCode).toBe(200)
     expect(response.body).toHaveProperty('data')
     expect(response.body.data).toHaveProperty('account')
@@ -23,3 +24,4 @@ describe('Account', () => {
     expect(response.body.data.account).toHaveProperty('chainAccounts')
       });
   });
+

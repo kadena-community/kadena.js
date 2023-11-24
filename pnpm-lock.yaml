@@ -2029,6 +2029,18 @@ importers:
       '@kadena-dev/shared-config':
         specifier: workspace:*
         version: link:../shared-config
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../../libs/client-utils
+      '@kadena/cryptography-utils':
+        specifier: workspace:*
+        version: link:../../libs/cryptography-utils
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.48.0)(typescript@5.2.2)

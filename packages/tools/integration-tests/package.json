@@ -16,6 +16,10 @@
   },
   "devDependencies": {
     "@types/supertest": "^2.0.16",
+    "@kadena/types": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
