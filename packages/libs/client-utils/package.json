@@ -10,11 +10,13 @@
   "license": "MIT",
   "contributors": [
     "Javad Khalilian <javad@kadena.io>",
-    "Albert Groothedde <albert@kadena.io>"
+    "Albert Groothedde <albert@kadena.io>",
+    "Nil Amrutlal <nil.amrutlal@deptagency.com>"
   ],
   "exports": {
     "./coin": "./lib/coin/index.js",
-    "./core": "./lib/core/index.js"
+    "./core": "./lib/core/index.js",
+    "./nodejs": "./lib/nodejs/index.js"
   },
   "main": "./lib/core/index.js",
   "typesVersions": {
@@ -24,6 +26,9 @@
       ],
       "coin": [
         "./lib/coin/index.d.ts"
+      ],
+      "nodejs": [
+        "./lib/nodejs/index.d.ts"
       ]
     }
   },

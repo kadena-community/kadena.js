@@ -3,9 +3,9 @@ import type {
   IExecutionPayloadObject,
   IPactCommand,
 } from '@kadena/client';
-import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join } from 'path';
+import { readFile } from '../nodejs';
 import { asyncPipe } from './utils/asyncPipe';
 
 interface ITplHoleTriple {
@@ -74,7 +74,7 @@ export const getPartsAndHolesInCtx = (
   tplPath: string,
   cwd: string = process.cwd(),
 ): ITemplateContext => {
-  const file = readFileSync(join(cwd, tplPath), 'utf-8').toString();
+  const file = readFile(join(cwd, tplPath), 'utf-8').toString();
   const tplString = getPartsAndHoles(file);
 
   return {
@@ -145,10 +145,7 @@ export const parseYamlToKdaTx =
     }
 
     const { codeFile, ...kdaToolTxWithoutCodeFile } = kdaToolTx;
-    const codeWithHoles = readFileSync(
-      join(ctx.cwd, codeFile),
-      'utf-8',
-    ).toString();
+    const codeWithHoles = readFile(join(ctx.cwd, codeFile), 'utf-8').toString();
 
     const code = replaceHoles(getPartsAndHoles(codeWithHoles), args);
 
