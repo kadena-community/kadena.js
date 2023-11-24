@@ -1,6 +1,6 @@
-import { SearchModal } from '@/components/SearchModal/SearchModal';
+import { SearchDialog } from '@/components/SearchDialog/SearchDialog';
 import { useOpenSearch } from '@/hooks/useOpenSearch';
-import { Dialog, SystemIcon } from '@kadena/react-ui';
+import { SystemIcon } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
@@ -29,11 +29,10 @@ export const SearchButton: FC = () => {
         </span>
       </button>
 
-      {isOpen && (
-        <Dialog isOpen={isOpen} onOpenChange={(isOpen) => setIsOpen(isOpen)}>
-          <SearchModal />
-        </Dialog>
-      )}
+      <SearchDialog
+        isOpen={isOpen}
+        onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}
+      />
     </>
   );
 };

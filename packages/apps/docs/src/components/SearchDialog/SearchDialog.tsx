@@ -1,13 +1,20 @@
-import { Box, DialogContent, DialogHeader, Text } from '@kadena/react-ui';
+import type { IDialogProps } from '@kadena/react-ui';
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  Text,
+} from '@kadena/react-ui';
 import type { FC, FormEvent } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { Search } from '../Search/Search';
 import { SearchBar } from '../SearchBar/SearchBar';
-import { wrapperClass } from './styles.css';
+import { contentClass, dialogClass } from './styles.css';
 
 export type ITabs = 'docs' | 'qa' | null;
 
-export const SearchModal: FC = () => {
+export const SearchDialog: FC<IDialogProps> = (props) => {
   const [isMounted, setIsMounted] = useState(false);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const [query, setQuery] = useState<string | undefined>();
@@ -35,19 +42,17 @@ export const SearchModal: FC = () => {
   }, [isMounted, searchInputRef.current]);
 
   return (
-    <>
+    <Dialog {...props} className={dialogClass}>
       <DialogHeader>
         <h2>Search Spaces</h2>
         <Text>Search the classic way, or just ask a question</Text>
+      </DialogHeader>
+      <DialogContent className={contentClass}>
         <Box marginY="$4">
           <SearchBar ref={searchInputRef} onSubmit={handleSubmit} />
         </Box>
-      </DialogHeader>
-      <DialogContent>
-        <div className={wrapperClass}>
-          <Search query={query} hasScroll={true} limitResults={10} />
-        </div>
+        <Search query={query} hasScroll={true} limitResults={10} />
       </DialogContent>
-    </>
+    </Dialog>
   );
 };

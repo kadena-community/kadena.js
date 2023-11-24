@@ -1,4 +1,5 @@
 import { useObjectRef } from '@react-aria/utils';
+import cn from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 import type { AriaDialogProps } from 'react-aria';
@@ -15,11 +16,12 @@ interface IBaseDialogProps
   extends Omit<IModalProps, 'children'>,
     AriaDialogProps {
   children?: ((state: OverlayTriggerState) => ReactNode) | ReactNode;
+  className?: string;
 }
 
 const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
   (props, ref) => {
-    const { children, isDismissable = true, state, ...rest } = props;
+    const { className, children, isDismissable = true, state, ...rest } = props;
     const dialogRef = useObjectRef<HTMLDivElement | null>(ref);
     const { dialogProps, titleProps } = useDialog(
       {
@@ -30,10 +32,10 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
     );
 
     return (
-      <DialogContext.Provider value={{ titleProps, ...state }}>
+      <DialogContext.Provider value={{ titleProps, state }}>
         <div
           ref={dialogRef}
-          className={overlayClass}
+          className={cn(overlayClass, className)}
           {...mergeProps(rest, dialogProps)}
         >
           {typeof children === 'function' ? children(state) : children}

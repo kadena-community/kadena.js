@@ -42,7 +42,7 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
 };
 
 const Item: FC<IResultProps> = ({ item }) => {
-  const { close } = useDialog();
+  const { state } = useDialog();
 
   if (!item.filePath) return;
 
@@ -52,7 +52,7 @@ const Item: FC<IResultProps> = ({ item }) => {
   return (
     <li>
       <Link href={url} passHref legacyBehavior>
-        <a className={itemLinkClass} onClick={close}>
+        <a className={itemLinkClass} onClick={state.close}>
           <Heading color="primaryContrastInverted" as="h5">
             {item.title}
           </Heading>

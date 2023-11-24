@@ -15,14 +15,29 @@ export const scrollBoxClass = style([
     position: 'relative',
     marginY: '$2',
     marginX: 0,
+    flex: 1,
   }),
 ]);
 
 export const scrollBoxEnabledClass = style([
-  {
-    overflowY: 'scroll',
-    height: '55vh',
-  },
+  sprinkles({
+    overflowY: 'auto',
+    paddingRight: '$6',
+  }),
+]);
+
+export const tabContainerClass = style([
+  sprinkles({ flex: 1, overflowY: 'hidden', overflowX: 'visible' }),
+]);
+
+export const tabClass = style([
+  sprinkles({
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    overflowY: 'hidden',
+    overflowX: 'visible',
+  }),
 ]);
 
 export const itemLinkClass = style([
@@ -51,7 +66,7 @@ export const loadingWrapperClass = style([
     position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
-    paddingY: '$10',
+    alignItems: 'center',
     backgroundColor: '$background',
   }),
   {

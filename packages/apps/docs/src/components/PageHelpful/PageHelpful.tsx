@@ -62,43 +62,40 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
         </Stack>
       </Stack>
 
-      {isOpen && (
-        <Dialog isOpen={isOpen} onOpenChange={(isOpen) => setIsOpen(isOpen)}>
-          {(state) => (
-            <>
-              <DialogHeader>Thank you for your feedback!</DialogHeader>
-              <DialogContent>
-                <div className={modalWrapperClass}>
-                  <Stack gap="$4" direction="column">
-                    {editLink}
-                    {editLink ? (
-                      <Stack gap="$2" direction="row">
-                        <Text>
-                          Would you like to contribute to this page by{' '}
-                          <Link href={editLink} target="_blank">
-                            editing
-                          </Link>{' '}
-                          it
-                        </Text>
-                      </Stack>
-                    ) : null}
-                    <Text>
-                      If you have any specific feedback about this page. <br />
-                      Please provide a comment.
-                    </Text>
-                    <textarea
-                      ref={inputRef}
-                      name="feedback"
-                      className={textAreaClass}
-                    ></textarea>
-                    <Button onClick={closeModal}>Send Feedback</Button>
-                  </Stack>
-                </div>
-              </DialogContent>
-            </>
-          )}
-        </Dialog>
-      )}
+      <Dialog
+        isOpen={isOpen}
+        onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}
+      >
+        <DialogHeader>Thank you for your feedback!</DialogHeader>
+        <DialogContent>
+          <div className={modalWrapperClass}>
+            <Stack gap="$4" direction="column">
+              {editLink}
+              {editLink ? (
+                <Stack gap="$2" direction="row">
+                  <Text>
+                    Would you like to contribute to this page by{' '}
+                    <Link href={editLink} target="_blank">
+                      editing
+                    </Link>{' '}
+                    it
+                  </Text>
+                </Stack>
+              ) : null}
+              <Text>
+                If you have any specific feedback about this page. <br />
+                Please provide a comment.
+              </Text>
+              <textarea
+                ref={inputRef}
+                name="feedback"
+                className={textAreaClass}
+              ></textarea>
+              <Button onClick={closeModal}>Send Feedback</Button>
+            </Stack>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

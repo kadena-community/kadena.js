@@ -32,6 +32,9 @@ const systemProperties = defineProperties({
     zIndex: [-1, 0, 1],
     whiteSpace: ['nowrap', 'break-spaces', 'normal', 'pre-wrap'],
     background: ['none'],
+    overflow: ['hidden', 'visible', 'scroll', 'auto'],
+    overflowY: ['hidden', 'visible', 'scroll', 'auto'],
+    overflowX: ['hidden', 'visible', 'scroll', 'auto'],
   },
 });
 
@@ -120,7 +123,6 @@ const responsiveProperties = defineProperties({
     },
     gap: vars.sizes,
     gridGap: vars.sizes,
-    overflow: ['hidden', 'visible', 'scroll', 'auto'],
     opacity: [0, 1],
     textAlign: ['left', 'center', 'right'],
     fontSize: vars.fontSizes,

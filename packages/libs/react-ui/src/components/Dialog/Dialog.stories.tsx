@@ -64,7 +64,10 @@ export const DialogStory: Story = {
     return (
       <>
         <Button onClick={() => setIsOpen(true)}>Modal Trigger</Button>
-        <Dialog isOpen={isOpen} onOpenChange={(isOpen) => setIsOpen(isOpen)}>
+        <Dialog
+          isOpen={isOpen}
+          onOpenChange={(isOpen: boolean) => setIsOpen(isOpen)}
+        >
           {(state) => (
             <>
               <DialogHeader>{title}</DialogHeader>

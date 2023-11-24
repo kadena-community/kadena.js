@@ -3,7 +3,7 @@ import { mapMatches } from '@/pages/api/semanticsearch';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import type { ITabs } from '../SearchModal/SearchModal';
+import type { ITabs } from '../SearchModal/SearchDialog';
 import { SearchResults } from './components/SearchResults';
 import type { ISearchProps } from './Search';
 import useAlgoliaSearch from './useAlgoliaSearch';
@@ -52,21 +52,19 @@ const SearchTab: FC<ISearchProps> = ({
   };
 
   return (
-    <section>
-      <SearchResults
-        semanticResults={semanticResults}
-        semanticIsLoading={isLoading}
-        conversation={conversation}
-        outputStream={outputStream}
-        query={query}
-        error={error || conversationError}
-        isLoading={conversationIsLoading}
-        hasScroll={hasScroll}
-        onTabSelect={onTabSelect}
-        limitResults={limitResults}
-        tabName={selectedTabName}
-      />
-    </section>
+    <SearchResults
+      semanticResults={semanticResults}
+      semanticIsLoading={isLoading}
+      conversation={conversation}
+      outputStream={outputStream}
+      query={query}
+      error={error || conversationError}
+      isLoading={conversationIsLoading}
+      hasScroll={hasScroll}
+      onTabSelect={onTabSelect}
+      limitResults={limitResults}
+      tabName={selectedTabName}
+    />
   );
 };
 
