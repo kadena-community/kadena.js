@@ -1,1 +1,1 @@
-export * from './yaml-converter';
+export { createPactCommandFromTemplate } from './yaml-converter';

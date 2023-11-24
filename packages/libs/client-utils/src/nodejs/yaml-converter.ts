@@ -108,15 +108,6 @@ export const replaceHoles = (
           }
 
           return args[partOrHole.literal];
-        } else {
-          // it's a parsed hole
-          const arg = args[partOrHole.parsed];
-          if (typeof arg === 'string') {
-            return `"${arg}"`;
-          }
-          if (typeof arg === 'number') {
-            return `{ "decimal": "${arg}" }`;
-          }
         }
       }
     })
