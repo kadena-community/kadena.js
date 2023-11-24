@@ -8,6 +8,8 @@ describe('Account', () => {
     const response = await request(baseUrl)
       .post('')
       .send(getAccountQuery)
+
+    
     expect(response.statusCode).toBe(200)
     expect(response.body).toHaveProperty('data')
     expect(response.body.data).toHaveProperty('account')
