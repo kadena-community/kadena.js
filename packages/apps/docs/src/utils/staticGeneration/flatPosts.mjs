@@ -11,3 +11,7 @@ export const getFlatData = async () => {
   const { menuData: data } = await import('./../../_generated/menu.mjs');
   return data.reduce(flatPosts, []).flat();
 };
+
+export const flattenData = (data) => {
+  return data.reduce(flatPosts, []).flat();
+};

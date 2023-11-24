@@ -85,7 +85,7 @@ export interface ILayout {
 export type LevelType = 1 | 2 | 3;
 
 export interface IPageProps {
-  headerItems: IMenuItem[];
+  headerItems?: IMenuItem[];
   children?: ReactNode;
   menuItems: IMenuItem[];
   aSideMenuTree: ISubHeaderElement[];

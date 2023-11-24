@@ -3,3 +3,8 @@ menu:
   - kadena
   - blogchain
   - chainweb
+
+pages:
+  build:
+    title: Build
+    url: /test/build
