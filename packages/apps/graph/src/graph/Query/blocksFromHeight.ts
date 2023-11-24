@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prismaClient';
-import { dotenv } from '@utils/dotenv';
+import { chainIds as defaultChainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import Block from '../objects/Block';
@@ -8,16 +8,13 @@ builder.queryField('blocksFromHeight', (t) => {
   return t.prismaField({
     args: {
       startHeight: t.arg.int({ required: true }),
-      chainIds: t.arg.intList({ required: false }),
+      chainIds: t.arg.stringList({ required: false }),
     },
     type: [Block],
     async resolve(
       __query,
       __parent,
-      {
-        startHeight,
-        chainIds = Array.from(new Array(dotenv.CHAIN_COUNT)).map((__, i) => i),
-      },
+      { startHeight, chainIds = defaultChainIds },
     ) {
       try {
         const blocksFromHeight = await prismaClient.block.findMany({
@@ -30,7 +27,7 @@ builder.queryField('blocksFromHeight', (t) => {
               },
               {
                 chainId: {
-                  in: chainIds as number[],
+                  in: chainIds?.map((x) => parseInt(x)),
                 },
               },
             ],

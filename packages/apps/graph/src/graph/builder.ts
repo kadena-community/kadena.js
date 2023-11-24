@@ -6,6 +6,7 @@ import RelayPlugin from '@pothos/plugin-relay';
 import TracingPlugin, { wrapResolver } from '@pothos/plugin-tracing';
 import { Prisma } from '@prisma/client';
 import { logTrace } from '@services/tracing/trace-service';
+import { dotenv } from '@utils/dotenv';
 import {
   BigIntResolver,
   DateTimeResolver,
@@ -78,7 +79,7 @@ export const builder = new SchemaBuilder<
     cursorType: 'String',
   },
 
-  ...(process.env.ENABLE_TRACING === 'true' && {
+  ...(dotenv.TRACING_ENABLED && {
     tracing: {
       default: () => true,
       wrap: (resolver, __options, config) =>

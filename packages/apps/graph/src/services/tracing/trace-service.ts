@@ -1,3 +1,4 @@
+import { dotenv } from '@utils/dotenv';
 import fs from 'fs';
 
 export async function logTrace(
@@ -5,5 +6,8 @@ export async function logTrace(
   fieldName: string,
   duration: number,
 ) {
-  fs.appendFileSync('traces.log', `${parentType}.${fieldName},${duration}\n`);
+  fs.appendFileSync(
+    dotenv.TRACING_LOG_FILENAME,
+    `${parentType}.${fieldName},${duration}\n`,
+  );
 }

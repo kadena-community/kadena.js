@@ -19,7 +19,8 @@ builder.queryField('graphConfiguration', (t) => {
     type: 'GraphConfiguration',
     resolve: async () => {
       return {
-        maximumConfirmationDepth: dotenv.MAX_BLOCK_DEPTH,
+        maximumConfirmationDepth:
+          dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
         minimumBlockHeight: await getMinimumBlockHeight(),
       };
     },
