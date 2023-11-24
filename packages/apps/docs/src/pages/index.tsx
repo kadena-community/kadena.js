@@ -234,10 +234,11 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
 export const getStaticProps: GetStaticProps = async () => {
   const mostPopularPages = await getMostPopularPages();
   const blogPosts = await getBlogPosts();
+  const headerItems = await getHeaderItems();
 
   return {
     props: {
-      headerItems: getHeaderItems(),
+      headerItems,
       popularPages: mostPopularPages,
       blogPosts,
       leftMenuTree: checkSubTreeForActive(getPathName(__filename)),

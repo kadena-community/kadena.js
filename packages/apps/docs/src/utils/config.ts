@@ -1,7 +1,7 @@
 import type { IMenuItem } from '@/Layout';
 import { flattenData } from '@/utils/staticGeneration/flatPosts.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
-import yaml from './../../config.yaml' assert { type: 'yaml' };
+import yaml from './../config.yaml';
 
 export const getHeaderItems = (): IMenuItem[] => {
   const data = getData();
