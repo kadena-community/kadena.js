@@ -17,7 +17,7 @@ export const dotenv: {
     'postgresql://devnet@localhost:5432/devnet',
   ),
   MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH: parseInt(
-    or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '51'),
+    or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '11'),
     10,
   ),
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'localhost:8080'),
