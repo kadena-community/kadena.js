@@ -97,6 +97,7 @@ export const replaceHoles = (
         // it's a part
         return partOrHole;
       } else {
+        // Currently we are unaware of the difference between {{}} and {{{}}} so we treat them the same: as a literal hole
         if ('literal' in partOrHole) {
           // it's a literal hole
           if (!(partOrHole.literal in args)) {

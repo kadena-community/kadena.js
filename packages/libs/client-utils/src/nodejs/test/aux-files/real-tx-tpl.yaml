@@ -17,7 +17,7 @@ signers:
   - public: '{{funding-key}}'
     caps:
       - name: 'coin.TRANSFER'
-        args: ['{{{funding-acct}}}', '{{{gas-station-name}}}', { { amount } }]
+        args: ['{{{funding-acct}}}', '{{{gas-station-name}}}', {{amount}}]
       - name: 'coin.GAS'
         args: []
   - public: '{{owner-key}}'
