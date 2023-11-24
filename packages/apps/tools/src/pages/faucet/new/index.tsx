@@ -1,5 +1,4 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
-import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Box,
   Breadcrumbs,
@@ -44,7 +43,6 @@ import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
-import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
@@ -53,7 +51,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -75,6 +73,12 @@ const isCustomError = (error: unknown): error is ICommandResult => {
   return error !== null && typeof error === 'object' && 'result' in error;
 };
 
+const schema = z.object({
+  name: z.string(),
+  pubKey: z.string().length(64),
+});
+type FormData = z.infer<typeof schema>;
+
 const NewAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
@@ -87,25 +91,12 @@ const NewAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
   const [pubKeys, setPubKeys] = useState<string[]>([]);
-  const [currentKey, setCurrentKey] = useState<string>('');
-  const [validRequestKey, setValidRequestKey] = useState<
-    FormFieldStatus | undefined
-  >();
 
   const { data: accountName } = useQuery({
     queryKey: ['accountName', pubKeys, chainID, pred],
-    queryFn: async () => {
-      if (pubKeys.length === 0) return '';
-      return await createPrincipal(pubKeys, chainID, pred);
-    },
-    initialData: '',
+    queryFn: () => createPrincipal(pubKeys, chainID, pred),
+    enabled: pubKeys.length > 0,
   });
-
-  const schema = z.object({
-    name: z.string(),
-    pubKey: z.string().optional(),
-  });
-  type FormData = z.infer<typeof schema>;
 
   const {
     register,
@@ -113,32 +104,33 @@ const NewAccountFaucetPage: FC = () => {
     formState: { errors },
     clearErrors,
     setError,
+    getValues,
+    trigger,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     values: {
       name: typeof accountName === 'string' ? accountName : '',
       pubKey: '',
     },
+    resetOptions: {
+      keepDirtyValues: true, // user-interacted input will be retained
+      keepErrors: true, // input errors will be retained with value update
+    },
   });
 
-  const [inputError, setInputError] = useState<string>('');
-
   useToolbar(menuData, router.pathname);
-
-  useEffect(() => {
-    setInputError('');
-    setValidRequestKey(undefined);
-  }, [currentKey, pubKeys.length]);
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {
       if (!pubKeys.length) {
-        setValidRequestKey('negative');
-        setInputError(t('Please add one or more public keys'));
+        setError('pubKey', {
+          type: 'custom',
+          message:
+            'Make sure to add the custom key by clicking the plus button.',
+        });
         return;
       }
 
-      setInputError('');
       setRequestStatus({ status: 'processing' });
       try {
         const result = (await fundCreateNewAccount(
@@ -175,45 +167,26 @@ const NewAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID, pred, pubKeys, t],
+    [chainID, pred, pubKeys, setError, t],
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
   const disabledButton: boolean =
     requestStatus.status === 'processing' || mainnetSelected;
 
-  const addPublicKey = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    value: string,
-  ): void => {
-    e.preventDefault();
-
-    const isValidInput = validatePublicKey(value);
-
-    if (!isValidInput) {
-      setError('pubKey', {
-        type: 'invalid',
-        message: t('Insert valid public key'),
-      });
-      setValidRequestKey('negative');
-      return;
-    }
-    setValidRequestKey(undefined);
-    setInputError('');
-    clearErrors();
+  const addPublicKey = () => {
+    const value = getValues('pubKey');
 
     const copyPubKeys = [...pubKeys];
     const isDuplicate = copyPubKeys.includes(value);
 
     if (isDuplicate) {
-      setInputError(t('Duplicate public key'));
-      setValidRequestKey('negative');
+      setError('pubKey', { message: t('Duplicate public key') });
       return;
     }
 
     copyPubKeys.push(value);
     setPubKeys(copyPubKeys);
-    setCurrentKey('');
   };
 
   const deletePublicKey = (index: number) => {
@@ -319,11 +292,13 @@ const NewAccountFaucetPage: FC = () => {
           <div className={pubKeyInputWrapperStyle}>
             <div className={inputWrapperStyle}>
               <PublicKeyField
-                helperText={inputError || errors?.pubKey?.message}
-                status={validRequestKey}
+                helperText={errors?.pubKey?.message}
                 inputProps={{
-                  ...register('pubKey'),
-                  onChange: (e) => setCurrentKey(e.target.value),
+                  ...register('pubKey', {
+                    onChange: () => {
+                      clearErrors('pubKey');
+                    },
+                  }),
                 }}
                 error={errors.pubKey}
               />
@@ -331,8 +306,14 @@ const NewAccountFaucetPage: FC = () => {
             <div className={iconButtonWrapper}>
               <IconButton
                 icon={'Plus'}
-                onClick={(e) => addPublicKey(e, currentKey)}
+                onClick={async () => {
+                  const valid = await trigger('pubKey');
+                  if (valid) {
+                    addPublicKey();
+                  }
+                }}
                 color="primary"
+                type="button"
               />
             </div>
           </div>
@@ -354,6 +335,7 @@ const NewAccountFaucetPage: FC = () => {
             <div className={accountNameContainerClass}>
               <AccountNameField
                 inputProps={register('name')}
+                error={errors.name}
                 label={t('The account name to fund coins to')}
                 disabled
               />
