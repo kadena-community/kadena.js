@@ -45,11 +45,15 @@ export const tabItemClass = style([
     fontWeight: '$semiBold',
     backgroundColor: 'transparent',
     color: '$neutral4',
+    outline: 'none',
   }),
   {
     opacity: '.6',
     whiteSpace: 'nowrap',
     selectors: {
+      '&:focus-visible': {
+        boxShadow: '0 0 0 2px var(--colors-primaryAccent)',
+      },
       '&[data-selected="true"]': {
         opacity: '1',
         color: vars.colors.$primaryContrastInverted,

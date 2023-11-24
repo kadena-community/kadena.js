@@ -2,7 +2,7 @@ import cn from 'classnames';
 import type { ReactNode } from 'react';
 import React, { useEffect, useRef } from 'react';
 import type { AriaTabListProps } from 'react-aria';
-import { useTabList } from 'react-aria';
+import { mergeProps, useFocusRing, useTabList } from 'react-aria';
 import { Item as TabItem, useTabListState } from 'react-stately';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
@@ -20,6 +20,9 @@ export interface ITabsProps
 export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const { focusProps } = useFocusRing({
+    within: true,
+  });
 
   const { tabListProps } = useTabList(
     { ...props, orientation: 'horizontal' },
@@ -56,7 +59,11 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
 
   return (
     <div className={cn(tabsContainerClass, className)}>
-      <div className={tabListClass} {...tabListProps} ref={containerRef}>
+      <div
+        className={tabListClass}
+        {...mergeProps(tabListProps, focusProps)}
+        ref={containerRef}
+      >
         {[...state.collection].map((item) => (
           <Tab key={item.key} item={item} state={state} />
         ))}

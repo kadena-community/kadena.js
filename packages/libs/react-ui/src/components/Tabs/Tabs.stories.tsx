@@ -5,6 +5,11 @@ import type { ITabsProps } from './Tabs';
 import { TabItem, Tabs } from './Tabs';
 
 const ExampleTabs: any[] = [
+  { title: 'Title', content: 'Content' },
+  { title: 'Title2', content: 'Content2' },
+  { title: 'Title3', content: 'Content3' },
+];
+const ExampleManyTabs: any[] = [
   { title: 'Title2Title', content: 'Content' },
   { title: 'Title2Title2', content: 'Content2' },
   { title: 'Title2Title3', content: 'Content3' },
@@ -93,7 +98,7 @@ export const DefaultSelectedTabsStory: Story = {
   name: 'DefaultSelectedTab',
   args: {
     ['aria-label']: 'generic tabs story',
-    defaultSelectedKey: ExampleTabs[1].title,
+    defaultSelectedKey: ExampleManyTabs[2].title,
   },
   render: (props) => {
     return (
@@ -101,7 +106,7 @@ export const DefaultSelectedTabsStory: Story = {
         aria-label={props['aria-label']}
         defaultSelectedKey={props.defaultSelectedKey}
       >
-        {ExampleTabs.map((tab) => (
+        {ExampleManyTabs.map((tab) => (
           <TabItem key={tab.title} title={tab.title}>
             {tab.content}
           </TabItem>
@@ -117,6 +122,7 @@ export const ControlledTabsStory = () => {
   return (
     <>
       <p>Selected time period: {timePeriod}</p>
+      <br />
       <Tabs
         aria-label="Mesozoic time periods"
         selectedKey={timePeriod}
