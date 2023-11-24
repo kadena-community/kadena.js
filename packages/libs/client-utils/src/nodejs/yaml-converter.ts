@@ -3,10 +3,10 @@ import type {
   IExecutionPayloadObject,
   IPactCommand,
 } from '@kadena/client';
+import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join } from 'path';
-import { readFile } from '../nodejs';
-import { asyncPipe } from './utils/asyncPipe';
+import { asyncPipe } from '../core/utils/asyncPipe';
 
 interface ITplHoleTriple {
   literal: string;
@@ -74,7 +74,7 @@ export const getPartsAndHolesInCtx = (
   tplPath: string,
   cwd: string = process.cwd(),
 ): ITemplateContext => {
-  const file = readFile(join(cwd, tplPath), 'utf-8').toString();
+  const file = readFileSync(join(cwd, tplPath), 'utf-8').toString();
   const tplString = getPartsAndHoles(file);
 
   return {
@@ -99,7 +99,6 @@ export const replaceHoles = (
       } else {
         if ('literal' in partOrHole) {
           // it's a literal hole
-
           if (!(partOrHole.literal in args)) {
             throw new Error(
               `argument to fill hole for ${partOrHole.literal} is missing in ${
@@ -145,7 +144,10 @@ export const parseYamlToKdaTx =
     }
 
     const { codeFile, ...kdaToolTxWithoutCodeFile } = kdaToolTx;
-    const codeWithHoles = readFile(join(ctx.cwd, codeFile), 'utf-8').toString();
+    const codeWithHoles = readFileSync(
+      join(ctx.cwd, codeFile),
+      'utf-8',
+    ).toString();
 
     const code = replaceHoles(getPartsAndHoles(codeWithHoles), args);
 
