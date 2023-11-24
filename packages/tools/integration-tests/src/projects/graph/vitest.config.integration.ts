@@ -5,7 +5,7 @@ module.exports = defineConfig({
   plugins: [tsconfigPaths({ projects: ['../../../tsconfig.json'] })],
   test: {
     name: '@kadena/graph',
-    include: ['tests/*.{test,spec}.ts'],
+    include: ['tests/**/*.{test,spec}.ts'],
     globals: false,
   },
 });
