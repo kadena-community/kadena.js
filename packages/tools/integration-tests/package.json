@@ -15,25 +15,27 @@
     "test:integration": "vitest run -w"
   },
   "devDependencies": {
-    "@types/supertest": "^2.0.16",
-    "@types/seedrandom": "~3.0.5",
-    "@kadena/graph": "workspace:*",
-    "@kadena/types": "workspace:*",
-    "@kadena/pactjs": "workspace:*",
-    "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/client": "workspace:*",
-    "@kadena/client-utils": "workspace:*",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/graph": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
+    "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/node": "^18.17.14",
+    "@types/papaparse": "^5.3.14",
+    "@types/seedrandom": "~3.0.5",
+    "@types/supertest": "^2.0.16",
     "eslint": "^8.45.0",
-    "vitest": "^0.34.6",
+    "graphql-yoga": "~4.0.4",
+    "papaparse": "^5.4.1",
+    "seedrandom": "~3.0.5",
     "supertest": "^6.3.3",
     "typescript": "5.2.2",
-    "seedrandom": "~3.0.5",
-    "graphql-yoga": "~4.0.4"
+    "vitest": "^0.34.6"
   }
 }

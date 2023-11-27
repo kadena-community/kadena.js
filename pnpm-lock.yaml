@@ -2053,6 +2053,9 @@ importers:
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
+      '@types/papaparse':
+        specifier: ^5.3.14
+        version: 5.3.14
       '@types/seedrandom':
         specifier: ~3.0.5
         version: 3.0.5
@@ -2065,6 +2068,9 @@ importers:
       graphql-yoga:
         specifier: ~4.0.4
         version: 4.0.4(graphql@16.8.1)
+      papaparse:
+        specifier: ^5.4.1
+        version: 5.4.1
       seedrandom:
         specifier: ~3.0.5
         version: 3.0.5
@@ -11473,6 +11479,12 @@ packages:
 
   /@types/npmcli__package-json@2.0.0:
     resolution: {integrity: sha512-8/+/ZIuh9aZjW8QIrnpRwUqUoEXCQePzH03WRZSx+3RtBZhQI4ytVRVsfhMjYtxZpJiepXLW27WKPfDl2o/i8Q==}
+    dev: true
+
+  /@types/papaparse@5.3.14:
+    resolution: {integrity: sha512-LxJ4iEFcpqc6METwp9f6BV6VVc43m6MfH0VqFosHvrUgfXiFe6ww7R3itkOQ+TCK6Y+Iv/+RnnvtRZnkc5Kc9g==}
+    dependencies:
+      '@types/node': 18.17.14
     dev: true
 
   /@types/parse-json@4.0.0:
@@ -22616,6 +22628,10 @@ packages:
 
   /pako@0.2.9:
     resolution: {integrity: sha512-NUcwaKxUxWrZLpDG+z/xZaCgQITkA/Dv4V/T6bw7VON6l1Xz/VnrBqrYjZQ12TamKHzITTfOEIYUj48y2KXImA==}
+    dev: true
+
+  /papaparse@5.4.1:
+    resolution: {integrity: sha512-HipMsgJkZu8br23pW15uvo6sib6wne/4woLZPlFf3rpDyMe9ywEXUsuD7+6K9PRkJlVT51j/sCOYDKGGS3ZJrw==}
     dev: true
 
   /param-case@3.0.4:
