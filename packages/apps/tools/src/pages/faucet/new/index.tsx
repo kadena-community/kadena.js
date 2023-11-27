@@ -43,6 +43,7 @@ import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
+import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
@@ -75,7 +76,7 @@ const isCustomError = (error: unknown): error is ICommandResult => {
 
 const schema = z.object({
   name: z.string(),
-  pubKey: z.string().length(64),
+  pubKey: z.string(),
 });
 type FormData = z.infer<typeof schema>;
 
@@ -105,7 +106,7 @@ const NewAccountFaucetPage: FC = () => {
     clearErrors,
     setError,
     getValues,
-    trigger,
+    resetField,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     values: {
@@ -125,8 +126,7 @@ const NewAccountFaucetPage: FC = () => {
       if (!pubKeys.length) {
         setError('pubKey', {
           type: 'custom',
-          message:
-            'Make sure to add the custom key by clicking the plus button.',
+          message: t('add-key-reminder'),
         });
         return;
       }
@@ -178,15 +178,16 @@ const NewAccountFaucetPage: FC = () => {
     const value = getValues('pubKey');
 
     const copyPubKeys = [...pubKeys];
-    const isDuplicate = copyPubKeys.includes(value);
+    const isDuplicate = copyPubKeys.includes(value!);
 
     if (isDuplicate) {
       setError('pubKey', { message: t('Duplicate public key') });
       return;
     }
 
-    copyPubKeys.push(value);
+    copyPubKeys.push(value!);
     setPubKeys(copyPubKeys);
+    resetField('pubKey');
   };
 
   const deletePublicKey = (index: number) => {
@@ -307,9 +308,15 @@ const NewAccountFaucetPage: FC = () => {
               <IconButton
                 icon={'Plus'}
                 onClick={async () => {
-                  const valid = await trigger('pubKey');
+                  const value = getValues('pubKey');
+                  const valid = validatePublicKey(value);
                   if (valid) {
                     addPublicKey();
+                  } else {
+                    setError('pubKey', {
+                      type: 'custom',
+                      message: t('invalid-pub-key-length'),
+                    });
                   }
                 }}
                 color="primary"
