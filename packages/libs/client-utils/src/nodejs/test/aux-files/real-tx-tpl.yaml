@@ -6,7 +6,7 @@
 # parts of the guard DRY to minimize the chance of mistakes.
 codeFile: ./aux-files/real-tx-tpl-code.pact
 data:
-meta:
+publicMeta:
   chainId: '{{chain}}'
   sender: '{{{funding-acct}}}'
   gasLimit: 2000

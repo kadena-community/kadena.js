@@ -222,7 +222,7 @@ describe('yaml-converter', () => {
   });
 
   describe('convertYamlToKadenaClientTransaction', () => {
-    it('converts a yaml with holes to KadenaClientTx', async () => {
+    it('converts a yaml with holes to KadenaClientTx pt1', async () => {
       const args = {
         chain: 1,
         'funding-acct':
@@ -288,6 +288,67 @@ describe('yaml-converter', () => {
         payload: {
           data: null,
           code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
+        },
+      });
+    });
+
+    it('converts a yaml with holes to KadenaClientTx pt2', async () => {
+      const args = {
+        sender_key:
+          'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+        marmalade_user_key_1:
+          '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+        marmalade_user_key_2:
+          'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+        marmalade_namespace: 'test-namespace',
+        is_upgrade: 'false',
+        network: 'testnet',
+        chain: 1,
+        'gas-station-name': 'my-gas-station',
+        sender: 'my-test-sender',
+        nonce: 'real-policy-manager-nonce',
+      };
+
+      const res = await createPactCommandFromTemplate(
+        './aux-files/real-policy-manager-test.yaml',
+        args,
+        __dirname,
+      );
+
+      expect(res).toStrictEqual({
+        nonce: 'real-policy-manager-nonce',
+        signers: [
+          {
+            pubKey:
+              'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+          },
+          {
+            pubKey:
+              '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+          },
+          {
+            pubKey:
+              'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+          },
+        ],
+        data: {
+          ns: 'test-namespace',
+          upgrade: false,
+        },
+        networkId: 'testnet',
+        payload: {
+          data: {
+            ns: 'test-namespace',
+            upgrade: false,
+          },
+          code: '(test-module 123 k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94)',
+        },
+        meta: {
+          chainId: '1',
+          sender: 'my-test-sender',
+          gasLimit: 100000,
+          gasPrice: 1e-7,
+          ttl: 10000,
         },
       });
     });

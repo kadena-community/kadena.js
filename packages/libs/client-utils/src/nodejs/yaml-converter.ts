@@ -32,7 +32,7 @@ interface ITemplateContextReplacedHoles extends ITemplateContext {
 interface ITemplateTransaction {
   codeFile?: string;
   command: string;
-  meta: {
+  publicMeta: {
     chainId: string;
     sender: string;
     gasLimit: number;
@@ -163,12 +163,14 @@ export const convertTemplateTxToPactCommand = (
     code: code,
   } as unknown as IExecutionPayloadObject;
 
+  const { publicMeta, ...kdaToolTxWithoutMeta } = kdaToolTx;
+
   return {
-    ...kdaToolTx,
+    ...kdaToolTxWithoutMeta,
     payload: execPayload,
     meta: {
-      ...kdaToolTx.meta,
-      chainId: kdaToolTx.meta.chainId as ChainId,
+      ...publicMeta,
+      chainId: publicMeta.chainId as ChainId,
     },
     nonce: kdaToolTx.nonce,
     signers: kdaToolTx.signers.map(publicToPubkey),
