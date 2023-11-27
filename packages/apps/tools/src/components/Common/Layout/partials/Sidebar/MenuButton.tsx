@@ -46,7 +46,7 @@ export const MenuButton: FC<IMenuButtonProps> = ({
         aria-label={title}
       >
         <span onClick={onClick}>
-          <Icon size={'sm'}/>
+          <Icon size={'sm'} />
         </span>
       </button>
     </Tooltip>
