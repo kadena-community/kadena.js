@@ -5,7 +5,7 @@ import {
   kadenaGenMnemonic,
   kadenaMnemonicToSeed,
   kadenaSignWithKeyPair,
-} from '..';
+} from '../index.js';
 
 import type { IUnsignedCommand } from '@kadena/client';
 

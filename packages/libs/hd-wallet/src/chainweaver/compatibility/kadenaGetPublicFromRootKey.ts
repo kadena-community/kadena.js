@@ -1,4 +1,4 @@
-import { kadenaGenKeypair } from './kadenaGenKeypair';
+import { kadenaGenKeypair } from './kadenaGenKeypair.js';
 
 export function kadenaGetPublicFromRootKey(
   password: string,

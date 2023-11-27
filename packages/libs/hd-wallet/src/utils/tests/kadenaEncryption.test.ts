@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import type { EncryptedString } from '../kadenaEncryption';
+import type { EncryptedString } from '../kadenaEncryption.js';
 import {
   kadenaChangePassword,
   kadenaDecrypt,
   kadenaEncrypt,
-} from '../kadenaEncryption';
+} from '../kadenaEncryption.js';
 
 describe('kadenaDecrypt', () => {
   it('should correctly decrypt a previously encrypted string', async () => {

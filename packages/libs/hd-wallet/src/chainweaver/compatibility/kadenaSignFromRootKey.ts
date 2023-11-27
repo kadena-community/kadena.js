@@ -1,5 +1,5 @@
-import { kadenaSign } from '../vendor/kadena-crypto';
-import { kadenaGenKeypair } from './kadenaGenKeypair';
+import { kadenaSign } from '../vendor/kadena-crypto.js';
+import { kadenaGenKeypair } from './kadenaGenKeypair.js';
 
 /**
  * Sign a message with a root key and the index of the keypair to use

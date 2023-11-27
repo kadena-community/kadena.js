@@ -1,8 +1,8 @@
 import type { IUnsignedCommand } from '@kadena/client';
 import { verifySig } from '@kadena/cryptography-utils';
-import type { EncryptedString } from '../utils/kadenaEncryption';
-import { kadenaDecrypt } from '../utils/kadenaEncryption';
-import { signWithKeyPair, signWithSeed } from './utils/sign';
+import type { EncryptedString } from '../utils/kadenaEncryption.js';
+import { kadenaDecrypt } from '../utils/kadenaEncryption.js';
+import { signWithKeyPair, signWithSeed } from './utils/sign.js';
 
 /**
  * Signs a Kadena transaction with a given public and private key pair.

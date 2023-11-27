@@ -3,7 +3,7 @@ import {
   kadenaGenKeypair,
   kadenaGenMnemonic,
   kadenaMnemonicToRootKeypair,
-} from '..';
+} from '../index.js';
 
 const toHexStr = (bytes: Uint8Array) => Buffer.from(bytes).toString('hex');
 
