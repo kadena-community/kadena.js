@@ -12,7 +12,7 @@ const downloadFile = async (url, folder = '.') => {
   await finished(Readable.fromWeb(res.body).pipe(fileStream));
 };
 async function main() {
-  if (!fs.existsSync('pact-bin') && !fs.existsSync('pact.zip')) {
+  if (!fs.existsSync('pact-bin') && !fs.existsSync('pact-bin/pact') && !fs.existsSync('pact.zip')) {
     await downloadFile(
       'https://github.com/kadena-io/pact/releases/download/v4.9.0/pact-4.9.0-linux-20.04.zip',
       'pact.zip',
