@@ -1,5 +1,6 @@
-import { fstat, writeFile, writeFileSync } from 'fs';
+import { fstat, mkdir, mkdirSync, writeFile, writeFileSync } from 'fs';
 import https from 'https';
+import path, { resolve } from 'path';
 
 export async function downloadGitFilesFromFolder(
   {
@@ -38,8 +39,10 @@ export async function downloadGitFilesFromFolder(
           res.on('error', reject);
         });
       });
+      const filePath = path.join(destinationPath, file.name);
+      mkdirSync(path.dirname(filePath), { recursive: true });
       console.log(destinationPath);
-      writeFileSync(`${destinationPath}/${file.name}`, content as string);
+      writeFileSync(filePath, content as string);
     }
   } else {
     throw new Error('Provided path is not a valid folder');

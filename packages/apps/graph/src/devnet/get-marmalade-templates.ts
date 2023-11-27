@@ -2,6 +2,8 @@ import { dotenv } from '../utils/dotenv';
 import { downloadGitFilesFromFolder } from '../utils/downlaod-git-files';
 import { logger } from './helper';
 
+export const MARMALADE_TEMPLATE_FOLDER = 'src/devnet/contracts/marmalade-v2';
+
 export async function getMarmaladeTemplates(
   destinationPath: string = process.cwd(),
 ) {
@@ -14,7 +16,7 @@ export async function getMarmaladeTemplates(
         folderPath: dotenv.MARMALADE_TEMPLATE_PATH,
         branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
       },
-      // destinationPath,
+      MARMALADE_TEMPLATE_FOLDER,
     );
   } catch (error) {
     logger.info('Error downloading marmalade templates', error);
