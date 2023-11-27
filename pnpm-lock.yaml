@@ -4780,6 +4780,11 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
+  /@eslint/js@8.53.0:
+    resolution: {integrity: sha512-Kn7K8dx/5U6+cT1yEhpX1w4PCSg0M+XyRILPgvwcEBjerFWCwQj5sbr3/VmxqV0JGHCBCzyd6LxypEuehypY1w==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
   /@etchteam/storybook-addon-status@4.2.4(@types/react-dom@18.2.7)(@types/react@18.2.15):
     resolution: {integrity: sha512-WkSz82WPqcqOBjB6MkLED4kIZU6jX61skBDh+/D8cedvSEQnPhQVMfxO0fnnzwhDsbqR7IXpPQPGx3hHPpi54A==}
     dependencies:
