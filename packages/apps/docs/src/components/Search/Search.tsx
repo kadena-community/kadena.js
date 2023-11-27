@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import type { FC } from 'react';
 import React from 'react';
-import { ITabs } from '../SearchDialog/SearchDialog';
+import type { ITabs } from '../SearchDialog/SearchDialog';
 
 const SearchTab = dynamic(() => import('./SearchTab'));
 
