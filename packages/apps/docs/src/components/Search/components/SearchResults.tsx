@@ -188,7 +188,7 @@ export const SearchResults: FC<IProps> = ({
                       {metadata.map((item, innerIdx) => {
                         const url = filePathToRoute(item.filePath, item.header);
                         return (
-                          <Link key={`${url}`} href={url}>
+                          <Link key={`${url}`} href={url} onClick={state.close}>
                             {item.title}
                           </Link>
                         );
