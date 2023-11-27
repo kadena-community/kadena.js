@@ -35,8 +35,8 @@ This document covers high-level test scenarios for Tools Website and is intended
 - **Inputs:** User enters a valid key and adds to the list on clicking '+' next to the input.
 - **Expected Outcome:** The user enters a valid public key and the account name input is automatically filled with a k:account. The user clicks on the button and after a successful creation and funding, sees a notification that the transfer was successful to the given account.
 
-#### Scenario 2: Get error on entering invalid public key (length validation)
-- **Objective:** User cannot create an account with an invalid public key and fund 100 coins to it.
+#### Scenario 2: Get error on entering invalid public key (length validation - 64 characters)
+- **Objective:** User cannot create an account with an invalid public key (any key with length different than 64 characters) and fund 100 coins to it.
 - **Preconditions:** /
 - **Inputs:** User enters an invalid key and adds to the list on clicking '+' next to the input.
 - **Expected Outcome:** The user enters an invalid public key and the input shows error status. If the user clicks on the submit button sees a error text to provide valid public key(s) and cannot fund the given account.
@@ -47,6 +47,11 @@ This document covers high-level test scenarios for Tools Website and is intended
 - **Inputs:** User enters valid keys and adds them to the list on clicking '+' next to the input.
 - **Expected Outcome:** The user enters multiple valid public keys and the account name input is automatically filled with a w:account. The user clicks on the button and after a successful creation and funding, sees a notification that the transfer was successful to the given account.
 
+#### Scenario 4: Show error when trying to fund same account on same chain in less than 30 minutes
+- **Objective:** User sees error when trying to fund 100 coins to same account on same chain on Testnet.
+- **Preconditions:** User has a public key already created.
+- **Inputs:** User enters a valid key and adds to the list on clicking '+' next to the input.
+- **Expected Outcome:** The user enters a valid public key and the account name input is automatically filled with a k:account. The user clicks on the button and if less than 30 minutes from last funding are passed there's an error displayed.
 
 
 ### 3.3 [Faucet / Fund existing accounts]
