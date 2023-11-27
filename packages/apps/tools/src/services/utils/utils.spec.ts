@@ -25,8 +25,7 @@ describe('validation public key', () => {
 
     test('if public key is not valid, return udefined', () => {
         const value = 'abcde';
-        const result = validateRequestKey(value);
+        const result = validatePublicKey(value);
         expect(result).toBeUndefined();
     });
-
 });
