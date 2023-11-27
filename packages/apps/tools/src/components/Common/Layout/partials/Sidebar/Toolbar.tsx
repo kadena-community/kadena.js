@@ -1,6 +1,7 @@
 import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext } from '@/context';
 import type { ISidebarSubMenuItem } from '@/types/Layout';
+import { getHref } from '@/utils/getHref';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -26,6 +27,7 @@ export const Toolbar: FC = () => {
 
   const handleItemClick = (index: number): void => {
     setVisibleLinks(false);
+    console.log(toolbar[index]);
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
     }
@@ -74,8 +76,9 @@ export const Toolbar: FC = () => {
           <li key={String(item.title)} className={gridMiniMenuListItemStyle}>
             <MenuButton
               {...item}
-              onClick={() => handleItemClick(index)}
+              onClick={(e) => handleItemClick(index)}
               active={isMenuActive(item, index)}
+              href={getHref(pathname, item.href)}
             />
           </li>
         ))}
@@ -88,7 +91,7 @@ export const Toolbar: FC = () => {
             <MenuButton
               title={'Links'}
               icon={'Link'}
-              onClick={() => handleLinksClick()}
+              onClick={handleLinksClick}
               active={visibleLinks}
             />
           </div>

@@ -42,6 +42,7 @@ import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { containerClass } from '../styles.css';
 import {
   formButtonStyle,
   formContentStyle,
@@ -272,7 +273,7 @@ const CrossChainTransferFinisher: FC = () => {
   }, [network, resetField]);
 
   return (
-    <div>
+    <section className={containerClass}>
       <DrawerToolbar
         ref={helpCenterRef}
         sections={[
@@ -474,7 +475,7 @@ const CrossChainTransferFinisher: FC = () => {
           </Button>
         </section>
       </form>
-    </div>
+    </section>
   );
 };
 
