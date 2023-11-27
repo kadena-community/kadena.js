@@ -1,6 +1,6 @@
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { Loading } from '@/components/Loading/Loading';
-import type { ITabs } from '@/components/SearchModal/SearchDialog';
+import type { ITabs } from '@/components/SearchDialog/SearchDialog';
 import type { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import {
