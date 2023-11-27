@@ -8,3 +8,4 @@ pages:
   build:
     title: Build
     url: /test/build
+    file: /docs/test.md

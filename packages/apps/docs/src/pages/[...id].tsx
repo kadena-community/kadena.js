@@ -13,12 +13,16 @@ import {
 import classNames from 'classnames';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 
-const WildCardPage: FC = () => {
+import dynamic from 'next/dynamic';
+
+const Children = dynamic(() => import('./../docs/index.tsx'));
+const WildCardPage: FC<PropsWithChildren> = (props) => {
   const router = useRouter();
 
+  console.log(props);
   console.log({ router });
 
   return (
@@ -32,7 +36,12 @@ const WildCardPage: FC = () => {
         className={classNames(contentClass, contentClassVariants.home)}
         id="maincontent"
       >
-        <article className={articleClass}>what?</article>
+        <article className={articleClass}>
+          what?3333
+          <Children {...props} />
+          111333
+        </article>
+        asdasd
       </div>
     </>
   );
@@ -45,12 +54,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths: [
       {
         params: {
-          id: ['pages', 'test', 'build'],
+          id: ['test', 'build'],
         },
       },
       {
         params: {
-          id: ['pages', 'test'],
+          id: ['test'],
         },
       },
     ],
