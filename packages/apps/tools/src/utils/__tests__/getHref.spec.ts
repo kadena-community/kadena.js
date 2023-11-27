@@ -1,5 +1,4 @@
-import Cookies from 'js-cookie';
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, } from 'vitest';
 import { getHref }  from '../getHref';
 
 describe('getHref', () => {
