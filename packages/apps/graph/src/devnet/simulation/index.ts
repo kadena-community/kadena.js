@@ -1,5 +1,8 @@
 import { Command, Option } from 'commander';
-import { getDownloadUrl } from '../../utils/downlaod-git-files';
+import {
+  downloadGitFilesFromFolder,
+  getGitData,
+} from '../../utils/downlaod-git-files';
 import { getMarmaladeTemplates } from '../get-marmalade-templates';
 import type { IAccount } from '../helper';
 import { generateAccount, logger } from '../helper';
@@ -74,14 +77,12 @@ program
     try {
       logger.info('Simulation config parameters:', args);
       // await simulate(args);
-      const url = await getDownloadUrl(
-        'kadena-io',
-        'marmalade',
-        'pact/yaml/marmalade-v2/0.account-protocols-v1.yaml',
-        'v2',
-      );
-
-      console.log(url);
+      await downloadGitFilesFromFolder({
+        owner: 'kadena-io',
+        name: 'marmalade',
+        folderPath: 'pact/yaml/marmalade-v2',
+        branch: 'v2',
+      });
     } catch (error) {
       console.error(error);
     }

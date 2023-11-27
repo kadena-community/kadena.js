@@ -1,50 +1,47 @@
 import { fstat, writeFile, writeFileSync } from 'fs';
 import https from 'https';
 
-export async function downloadGitFiles(
+export async function downloadGitFilesFromFolder(
   {
     owner,
     name,
-    path,
+    folderPath,
     branch,
   }: {
     owner: string;
     name: string;
-    path: string;
+    folderPath: string;
     branch: string;
   },
-  destinationPath: string,
+  destinationPath: string = process.cwd(),
+  fileExtension: string = 'yaml',
 ): Promise<void> {
-  const downloadUrl = await getDownloadUrl(owner, name, path, branch);
+  const folderUrl = buildGitApiUrl(owner, name, folderPath, branch);
 
-  const options = {
-    headers: {
-      'User-Agent': 'node.js',
-    },
-  };
+  const gitData = await getGitData(folderUrl);
 
-  //get downloadUrl using https library
-  const data = await new Promise((resolve, reject) => {
-    https.get(downloadUrl, options, (res) => {
-      let data = '';
-      res.on('data', (chunk) => (data += chunk));
-      res.on('end', () => resolve(data));
-      res.on('error', reject);
-    });
-  });
+  if (gitData instanceof Array) {
+    for (const file of gitData) {
+      const rawFileUrl = file.download_url;
+      const content = await new Promise((resolve, reject) => {
+        https.get(rawFileUrl, (res) => {
+          let data = '';
+          res.on('data', (chunk) => (data += chunk));
+          res.on('end', () => resolve(data));
+          res.on('error', reject);
+        });
+      });
+      writeFileSync(
+        `${destinationPath}/${file.name}.${fileExtension}`,
+        content as string,
+      );
+    }
+  }
 
-  // Save the downloaded file on destinationPath
-  writeFileSync(destinationPath, data as string);
+  console.log(gitData);
 }
 
-export async function getDownloadUrl(
-  owner: string,
-  name: string,
-  path: string,
-  branch: string,
-): Promise<URL> {
-  const url = `https://api.github.com/repos/${owner}/${name}/contents/${path}?ref=${branch}`;
-
+export async function getGitData(url: string): Promise<any> {
   const options = {
     headers: {
       'User-Agent': 'node.js',
@@ -56,10 +53,19 @@ export async function getDownloadUrl(
     https.get(url, options, (res) => {
       let data = '';
       res.on('data', (chunk) => (data += chunk));
-      res.on('end', () => resolve(JSON.parse(data).download_url));
+      res.on('end', () => resolve(JSON.parse(data)));
       res.on('error', reject);
     });
   });
 
-  return data as URL;
+  return data;
+}
+
+function buildGitApiUrl(
+  owner: string,
+  name: string,
+  path: string,
+  branch: string,
+) {
+  return `https://api.github.com/repos/${owner}/${name}/contents/${path}?ref=${branch}`;
 }
