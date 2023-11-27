@@ -1,6 +1,6 @@
 import { compareDesc } from 'date-fns';
-import { join } from 'path';
 import yaml from 'js-yaml';
+import { join } from 'path';
 import type {
   DocsRootContent,
   IAuthorInfo,
