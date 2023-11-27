@@ -190,9 +190,7 @@ describe('yaml-converter', () => {
                 args: [
                   'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
                   'my-gas-station',
-                  {
-                    '[object Object]': null,
-                  },
+                  123000,
                 ],
               },
               {
@@ -264,9 +262,7 @@ describe('yaml-converter', () => {
                 args: [
                   'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
                   'my-gas-station',
-                  {
-                    '[object Object]': null,
-                  },
+                  123000,
                 ],
               },
               {
