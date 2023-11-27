@@ -178,14 +178,14 @@ const NewAccountFaucetPage: FC = () => {
     const value = getValues('pubKey');
 
     const copyPubKeys = [...pubKeys];
-    const isDuplicate = copyPubKeys.includes(value!);
+    const isDuplicate = copyPubKeys.includes(value);
 
     if (isDuplicate) {
       setError('pubKey', { message: t('Duplicate public key') });
       return;
     }
 
-    copyPubKeys.push(value!);
+    copyPubKeys.push(value);
     setPubKeys(copyPubKeys);
     resetField('pubKey');
   };
