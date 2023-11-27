@@ -10,6 +10,11 @@ export const dotenv: {
   NETWORK_ID: string;
   TRACING_ENABLED: boolean;
   TRACING_LOG_FILENAME: string;
+  MARMALADE_ENABLED: boolean;
+  MARMALADE_TEMPLATE_OWNER: string;
+  MARMALADE_TEMPLATE_REPO: string;
+  MARMALADE_TEMPLATE_PATH: string;
+  MARMALADE_TEMPLATE_BRANCH: string;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   DATABASE_URL: or(
@@ -24,6 +29,17 @@ export const dotenv: {
   NETWORK_ID: or(process.env.NETWORK_ID, 'fast-development'),
   TRACING_ENABLED: or(process.env.TRACING_ENABLED === 'true', false),
   TRACING_LOG_FILENAME: or(process.env.TRACING_LOG_FILENAME, 'traces.log'),
+  MARMALADE_ENABLED: or(process.env.MARMALADE_ENABLED === 'true', false),
+  MARMALADE_TEMPLATE_OWNER: or(
+    process.env.MARMALADE_TEMPLATE_OWNER,
+    'kadena-io',
+  ),
+  MARMALADE_TEMPLATE_REPO: or(process.env.MARMALADE_TEMPLATE_REPO, 'marmalade'),
+  MARMALADE_TEMPLATE_PATH: or(
+    process.env.MARMALADE_TEMPLATE_PATH,
+    'pact/yaml/marmalade-v2',
+  ),
+  MARMALADE_TEMPLATE_BRANCH: or(process.env.MARMALADE_TEMPLATE_BRANCH, 'v2'),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {

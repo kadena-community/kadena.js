@@ -22,6 +22,13 @@ export async function downloadGitFilesFromFolder(
 
   if (gitData instanceof Array) {
     for (const file of gitData) {
+      if (
+        !file.name.endsWith(fileExtension) ||
+        file.type !== 'file' ||
+        !file.download_url
+      ) {
+        continue;
+      }
       const rawFileUrl = file.download_url;
       const content = await new Promise((resolve, reject) => {
         https.get(rawFileUrl, (res) => {
@@ -31,14 +38,12 @@ export async function downloadGitFilesFromFolder(
           res.on('error', reject);
         });
       });
-      writeFileSync(
-        `${destinationPath}/${file.name}.${fileExtension}`,
-        content as string,
-      );
+      console.log(destinationPath);
+      writeFileSync(`${destinationPath}/${file.name}`, content as string);
     }
+  } else {
+    throw new Error('Provided path is not a valid folder');
   }
-
-  console.log(gitData);
 }
 
 export async function getGitData(url: string): Promise<any> {

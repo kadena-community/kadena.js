@@ -1,4 +1,5 @@
 import { Command, Option } from 'commander';
+import path, { join } from 'path';
 import {
   downloadGitFilesFromFolder,
   getGitData,
@@ -77,12 +78,7 @@ program
     try {
       logger.info('Simulation config parameters:', args);
       // await simulate(args);
-      await downloadGitFilesFromFolder({
-        owner: 'kadena-io',
-        name: 'marmalade',
-        folderPath: 'pact/yaml/marmalade-v2',
-        branch: 'v2',
-      });
+      await getMarmaladeTemplates();
     } catch (error) {
       console.error(error);
     }
