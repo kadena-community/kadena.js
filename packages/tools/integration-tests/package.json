@@ -16,7 +16,10 @@
   },
   "devDependencies": {
     "@types/supertest": "^2.0.16",
+    "@types/seedrandom": "~3.0.5",
+    "@kadena/graph": "workspace:*",
     "@kadena/types": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
@@ -29,6 +32,8 @@
     "eslint": "^8.45.0",
     "vitest": "^0.34.6",
     "supertest": "^6.3.3",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "seedrandom": "~3.0.5",
+    "graphql-yoga": "~4.0.4"
   }
 }

@@ -3,8 +3,8 @@ import { transferCreate } from '@kadena/client-utils/coin';
 import { accountOne, sender00Account } from '../constants/accounts';
 import { devnetHost, networkId } from '../constants/network';
 
-export function createAccounts() {
-  transferCreate(
+export async function createAccounts(): Promise<void> {
+  await transferCreate(
     {
       sender: {
         account: sender00Account.account,

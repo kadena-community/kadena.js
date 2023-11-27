@@ -6,4 +6,8 @@ module.exports = {
   ],
   parserOptions: { tsconfigRootDir: __dirname },
   ignorePatterns: ['vitest.projects.ts'],
+  rules: {
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@rushstack/typedef-var': 'off',
+  },
 };
