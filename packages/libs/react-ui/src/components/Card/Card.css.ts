@@ -2,7 +2,7 @@ import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
-export const container = style([
+export const containerClass = style([
   sprinkles({
     backgroundColor: {
       lightMode: '$gray10',

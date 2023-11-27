@@ -1,18 +1,13 @@
-import { SearchModal } from '@/components/SearchModal/SearchModal';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
-import { useModal } from '@kadena/react-ui';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-interface IReturnProps {
-  handleOpenSearch: () => void;
-}
-
-export const useOpenSearch = (): IReturnProps => {
-  const { renderModal } = useModal();
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const useOpenSearch = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const handleOpenSearch = useCallback((): void => {
     analyticsEvent(EVENT_NAMES['click:open_searchmodal']);
-    renderModal(<SearchModal />, 'Search spaces');
-  }, [renderModal]);
+    setIsOpen(true);
+  }, []);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent): void => {
@@ -26,6 +21,7 @@ export const useOpenSearch = (): IReturnProps => {
   }, [handleOpenSearch]);
 
   return {
-    handleOpenSearch,
+    isOpen,
+    setIsOpen,
   };
 };
