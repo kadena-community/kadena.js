@@ -10,8 +10,10 @@ import {
 } from '@kadena/client/fp';
 import { crossChainClient } from '../client-helpers';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const calls = (...fns: Array<(...args: any) => any>) => {
   let i = 0;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (...args: any[]) => fns[i++](...args);
 };
 
@@ -62,6 +64,7 @@ describe('crossChainClient', () => {
       ),
 
       pollCreateSpv: vi.fn().mockResolvedValue('test-spv-proof'),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as Partial<IClient> as any;
     const sign = vi.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] }));
     const crossChain = crossChainClient(
@@ -191,6 +194,7 @@ describe('crossChainClient', () => {
       ),
 
       pollCreateSpv: vi.fn().mockResolvedValue('test-spv-proof'),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as Partial<IClient> as any;
     const sign = calls(
       vi.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] })),

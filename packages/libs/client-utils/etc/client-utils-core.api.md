@@ -69,6 +69,12 @@ event: "dirtyRead";
 data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
 
+// @alpha
+export const estimateGas: (command: Partial<IPactCommand> | ((cmd?: Partial<IPactCommand> | (() => Partial<IPactCommand>)) => Partial<IPactCommand>), host?: IClientConfig['host'], client?: IClient) => Promise<{
+    gasLimit: number;
+    gasPrice: number;
+}>;
+
 // @alpha (undocumented)
 export const preflightClient: (args_0: IClientConfig, args_1?: IClient | undefined) => (cmd?: (Partial<IPactCommand_2> | (() => Partial<IPactCommand_2>)) | undefined) => IEmitterWrapper<[{
 event: "sign";
