@@ -17,9 +17,10 @@ const getMinimumBlockHeight = async (): Promise<bigint> => {
 builder.queryField('graphConfiguration', (t) => {
   return t.field({
     type: 'GraphConfiguration',
-    resolve: async () => {
+    async resolve() {
       return {
-        maximumConfirmationDepth: dotenv.MAX_BLOCK_DEPTH,
+        maximumConfirmationDepth:
+          dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
         minimumBlockHeight: await getMinimumBlockHeight(),
       };
     },

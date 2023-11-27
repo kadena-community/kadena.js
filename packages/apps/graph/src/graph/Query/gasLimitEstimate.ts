@@ -16,7 +16,7 @@ builder.queryField('gasLimitEstimate', (t) => {
     args: {
       transaction: t.arg({ type: PactTransaction, required: true }),
     },
-    resolve: async (parent, args, context, info) => {
+    async resolve(__parent, args) {
       try {
         if (args.transaction.cmd.includes(`\\`)) {
           args.transaction.cmd = args.transaction.cmd.replace(/\\\\/g, '\\');

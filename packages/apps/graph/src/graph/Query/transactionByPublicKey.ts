@@ -9,8 +9,25 @@ builder.queryField('transactionsByPublicKey', (t) => {
     },
     type: 'Transaction',
     cursor: 'blockHash_requestKey',
+    async totalCount(__parent, args) {
+      const requestKeys = await prismaClient.signer.findMany({
+        where: {
+          publicKey: args.publicKey,
+        },
+        select: {
+          requestKey: true,
+        },
+      });
 
-    resolve: async (query, parent, args) => {
+      return await prismaClient.transaction.count({
+        where: {
+          requestKey: {
+            in: requestKeys.map((value) => value.requestKey),
+          },
+        },
+      });
+    },
+    async resolve(__query, __parent, args) {
       const requestKeys = await prismaClient.signer.findMany({
         where: {
           publicKey: args.publicKey,
