@@ -27,7 +27,7 @@ export const menuData: ISidebarToolbarItem[] = [
         href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
       },
       {
-        title: 'X-Chain Transfer Finisher',
+        title: 'Cross Chain Transfer Finisher',
         href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
       },
     ],

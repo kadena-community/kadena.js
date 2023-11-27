@@ -48,7 +48,6 @@ export const gridMiniMenuLinkButtonStyle = style([
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    // paddingY: '$3',
     textAlign: 'left',
     fontWeight: '$bold',
     fontSize: '$sm',

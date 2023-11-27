@@ -44,7 +44,6 @@ export const Menu: FC = () => {
   } = useLayoutContext();
 
   const handleCloseMenu = () => {
-    console.log('Closing menu');
     setActiveMenuIndex(undefined);
     setVisibleLinks(false);
   };

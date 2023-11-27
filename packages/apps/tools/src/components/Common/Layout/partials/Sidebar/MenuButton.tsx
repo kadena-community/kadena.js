@@ -16,7 +16,6 @@ export interface IMenuButtonProps
   href?: string;
   icon: keyof typeof SystemIcon;
   rotateClass?: string;
-  onClick: (event: React.MouseEvent) => void;
 }
 
 export const MenuButton: FC<IMenuButtonProps> = ({
@@ -46,7 +45,9 @@ export const MenuButton: FC<IMenuButtonProps> = ({
         {...rest}
         aria-label={title}
       >
-        <Icon size={'sm'} onClick={(e) => onClick(e)} />
+        <span onClick={onClick}>
+          <Icon size={'sm'}/>
+        </span>
       </button>
     </Tooltip>
   );
