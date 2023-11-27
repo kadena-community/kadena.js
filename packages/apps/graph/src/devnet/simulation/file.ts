@@ -11,6 +11,10 @@ export interface IFileData {
   type: TransferType;
 }
 
+export interface IFileError {
+  error: string;
+}
+
 export type TransferType =
   | 'fund'
   | 'transfer'
@@ -41,7 +45,10 @@ export function createFile(filename: string): string {
   return filepath;
 }
 
-export function appendToFile(filepath: string, data: IFileData): void {
+export function appendToFile(
+  filepath: string,
+  data: IFileData | IFileError,
+): void {
   const dataString = Object.values(data).join(',');
   fs.appendFileSync(filepath, `${dataString}\n`);
 }

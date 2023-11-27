@@ -1,5 +1,4 @@
 import { KodeMono } from '@kadena/fonts';
-import { ModalProvider } from '@kadena/react-ui';
 // eslint-disable-next-line import/no-unresolved
 import type { IPageMeta, IPageProps } from '@/Layout';
 import { Analytics } from '@/components/Analytics/Analytics';
@@ -150,15 +149,13 @@ export const MyApp = ({
             dark: darkThemeClass,
           }}
         >
-          <ModalProvider>
-            <MenuProvider>
-              <Header menuItems={props.leftMenuTree} />
-              <CookieConsent />
-              <Layout {...props}>
-                <Component {...props} />
-              </Layout>
-            </MenuProvider>
-          </ModalProvider>
+          <MenuProvider>
+            <Header menuItems={props.leftMenuTree} />
+            <CookieConsent />
+            <Layout {...props}>
+              <Component {...props} />
+            </Layout>
+          </MenuProvider>
         </ThemeProvider>
       </MDXProvider>
       <Analytics />

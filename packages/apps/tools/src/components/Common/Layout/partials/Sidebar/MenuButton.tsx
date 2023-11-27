@@ -1,7 +1,7 @@
 import { SystemIcon, Tooltip } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { ButtonHTMLAttributes, FC } from 'react';
-import React, { useRef } from 'react';
+import React from 'react';
 import {
   gridMiniMenuListButtonStyle,
   iconLeftStyle,
@@ -25,7 +25,6 @@ export const MenuButton: FC<IMenuButtonProps> = ({
 }) => {
   const Icon = SystemIcon[icon];
   // @ts-ignore
-  const tooltipRef = useRef(null);
   const rotationClass =
     rotateClass === undefined
       ? ''
@@ -34,23 +33,16 @@ export const MenuButton: FC<IMenuButtonProps> = ({
       : iconRightStyle;
 
   return (
-    <>
+    <Tooltip isDisabled={!title} position="right" content={title}>
       <button
         className={classNames(gridMiniMenuListButtonStyle, rotationClass, {
           active,
         })}
-        onMouseEnter={(e) => (title ? Tooltip.handler(e, tooltipRef) : null)}
-        onMouseLeave={(e) => (title ? Tooltip.handler(e, tooltipRef) : null)}
         {...rest}
         aria-label={title}
       >
         <Icon size={'sm'} />
       </button>
-      {!!title && (
-        <Tooltip.Root placement="right" ref={tooltipRef}>
-          {title}
-        </Tooltip.Root>
-      )}
-    </>
+    </Tooltip>
   );
 };

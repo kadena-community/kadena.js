@@ -10,9 +10,9 @@ builder.subscriptionField('transaction', (t) => {
     },
     type: 'Transaction',
     nullable: true,
-    subscribe: (parent, args, context, info) =>
+    subscribe: (__parent, args, context) =>
       iteratorFn(args.requestKey, context),
-    resolve: (__, transaction) => transaction,
+    resolve: (__query, parent) => parent as Transaction,
   });
 });
 

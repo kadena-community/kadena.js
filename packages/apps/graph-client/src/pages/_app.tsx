@@ -22,9 +22,11 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   // Fixes "Component' cannot be used as a JSX component."
   const ReactComponent = Component as ComponentType;
+  const is404 = ReactComponent.name === 'Error' && pageProps.statusCode === 404;
+
   return (
     <ApolloProvider client={client}>
-      <Layout>
+      <Layout omitHeader={is404}>
         <ChainTreeContextProvider>
           <ReactComponent {...pageProps} />
         </ChainTreeContextProvider>
