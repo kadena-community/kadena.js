@@ -1,6 +1,6 @@
 import { compareDesc } from 'date-fns';
+import { join } from 'path';
 import yaml from 'js-yaml';
-import authors from './data/authors.json';
 import type {
   DocsRootContent,
   IAuthorInfo,
@@ -68,9 +68,14 @@ const getBlogAuthorInfo = async (
   const authorId = data.authorId;
   if (!authorId) return;
 
+  const authorFilePath = join(process.cwd(), 'src/data/authors.json');
+
+  const authors = await import(authorFilePath);
+
   const author = (authors as IAuthorInfo[]).find(
     (author) => author.id === authorId,
   );
+
   if (!author) return;
 
   author.posts = await getLatestBlogPostsOfAuthor(author);
