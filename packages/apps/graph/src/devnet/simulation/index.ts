@@ -1,15 +1,9 @@
 import { Command, Option } from 'commander';
-import path, { join } from 'path';
-import {
-  downloadGitFilesFromFolder,
-  getGitData,
-} from '../../utils/downlaod-git-files';
-import { getMarmaladeTemplates } from '../get-marmalade-templates';
+
 import type { IAccount } from '../helper';
 import { generateAccount, logger } from '../helper';
 import { transfer } from '../transfer';
 import { simulate } from './simulate';
-('');
 
 const program: Command = new Command();
 program
@@ -77,8 +71,7 @@ program
   .action(async (args) => {
     try {
       logger.info('Simulation config parameters:', args);
-      // await simulate(args);
-      await getMarmaladeTemplates();
+      await simulate(args);
     } catch (error) {
       console.error(error);
     }

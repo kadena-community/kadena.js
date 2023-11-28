@@ -1,6 +1,6 @@
-import { fstat, mkdir, mkdirSync, writeFile, writeFileSync } from 'fs';
+import { mkdirSync, writeFileSync } from 'fs';
 import https from 'https';
-import path, { resolve } from 'path';
+import path from 'path';
 
 export async function downloadGitFilesFromFolder(
   {
@@ -74,6 +74,6 @@ function buildGitApiUrl(
   name: string,
   path: string,
   branch: string,
-) {
+): string {
   return `https://api.github.com/repos/${owner}/${name}/contents/${path}?ref=${branch}`;
 }
