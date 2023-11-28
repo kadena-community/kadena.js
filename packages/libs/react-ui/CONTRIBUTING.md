@@ -281,7 +281,7 @@ pnpm tokens:sync
 It will update `./src/styles/tokens` folder with the latest tokens.
 
 - The tool we use is [design-sync](https://github.com/salamaashoush/design-sync) it is maintained by Salama Ashoush and it is open source.
-- we can configure the sync process by editing `design-sync.config.ts` file in the root of the package.
+- We can configure the sync process by editing `design-sync.config.ts` file in the root of the package.
 - We use vanilla-extract plugin to generate tokens as two themes `light` and `dark` and we use `light` theme by default.
 - In order to use the generated tokens we need to import them from `./src/styles/tokens/contract.css`  file the exported contract is named `tokens` and we can change it in the config.
 - To see the effect of the tokens in the browser you must use one of the them class name `import { lightTheme } from './src/styles/tokens/light.css` or  `import { darkTheme } from './src/styles/tokens/dark.css` and add it to the root element of the app `<div className={lightTheme}>...</div>`.
