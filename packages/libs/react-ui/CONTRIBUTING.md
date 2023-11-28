@@ -278,7 +278,7 @@ To sync design tokens run:
 pnpm tokens:sync
 ```
 
-it will update `./src/styles/tokens` folder with the latest tokens.
+It will update `./src/styles/tokens` folder with the latest tokens.
 
 - The tool we use is [design-sync](https://github.com/salamaashoush/design-sync) it is maintained by Salama Ashoush and it is open source.
 - we can configure the sync process by editing `design-sync.config.ts` file in the root of the package.
