@@ -6,7 +6,7 @@ import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
 import { promiseExec } from './build.mjs';
 import { TEMPDIR } from './importReadme/createDoc.mjs';
-import { getReadTime } from './utils.mjs';
+import { getReadTime } from '@kadena/docs-tools';
 
 const errors = [];
 const success = [];

@@ -9,7 +9,10 @@ import remarkSideMenuToProps from './remarkSideMenuToProps';
 import remarkTwitter from './remarkTwitter';
 import remarkYoutube from './remarkYoutube';
 
+import { getReadTime } from './utils';
+
 export {
+  getReadTime,
   remarkAdmonitions,
   remarkCheckForCodeTitle,
   remarkFigureOutOfParagraph,
