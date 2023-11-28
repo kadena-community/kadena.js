@@ -7,9 +7,12 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import authors from '@/data/authors.json';
 import { getAuthorInfo, getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import { getData } from '@/utils/staticGeneration/getData.mjs';
 import type { IAuthorInfo, IMenuData, IPageProps } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
+import {
+  checkSubTreeForActive,
+  getMenuData,
+  getPathName,
+} from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -57,7 +60,9 @@ export const getStaticProps: GetStaticProps<{}, { authorId: string }> = async (
   const authorId = ctx.params?.authorId;
   const authorInfo = getAuthorInfo(authorId);
 
-  const posts = getInitBlogPosts(getData() as unknown as IMenuData[], 0, 10, {
+  const menuData: IMenuData[] = await getMenuData();
+
+  const posts = getInitBlogPosts(menuData, 0, 10, {
     authorId,
   });
 

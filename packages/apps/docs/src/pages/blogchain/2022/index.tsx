@@ -6,9 +6,12 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import { getData } from '@/utils/staticGeneration/getData.mjs';
 import type { IMenuData, IPageProps } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
+import {
+  checkSubTreeForActive,
+  getMenuData,
+  getPathName,
+} from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -38,7 +41,8 @@ const Home: FC<IProps> = ({ frontmatter, posts }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getInitBlogPosts(getData() as unknown as IMenuData[], 0, 10, {
+  const menuData: IMenuData[] = await getMenuData();
+  const posts = getInitBlogPosts(menuData, 0, 10, {
     year: '2022',
   });
 

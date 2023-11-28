@@ -48,15 +48,20 @@ const Home: FC<IProps> = ({ frontmatter, authors }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const authors = authorsData
-    .sort((a, b) => {
-      if (a.id > b.id) return 1;
-      if (a.id < b.id) return -1;
-      return 0;
-    })
-    .map((author) => {
-      return { ...author, posts: getLatestBlogPostsOfAuthor(author) };
-    }) as IAuthorInfo[];
+  const authorsSortedByName = authorsData.sort((a, b) => {
+    if (a.id > b.id) return 1;
+    if (a.id < b.id) return -1;
+    return 0;
+  });
+
+  const authors = await Promise.all(
+    authorsSortedByName.map(async (author) => {
+      return {
+        ...author,
+        posts: await getLatestBlogPostsOfAuthor(author),
+      } as IAuthorInfo;
+    }),
+  );
 
   return {
     props: {

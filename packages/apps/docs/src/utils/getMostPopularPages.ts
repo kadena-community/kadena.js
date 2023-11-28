@@ -4,10 +4,10 @@ import type {
   IRunReportResponse,
 } from '@/MostPopularData';
 import type { IMenuData } from '@kadena/docs-tools';
+import { getMenuData } from '@kadena/docs-tools';
 import fs from 'fs';
 import path from 'path';
 import analyticsDataClient from './analyticsDataClient';
-import { getData } from './staticGeneration/getData.mjs';
 import storeAnalyticsData from './storeAnalyticsData';
 
 // to be backwards compatible we need to remove the starting '/docs' from the slug
@@ -29,11 +29,11 @@ const findPost = (url: string, data: IMenuData[]): IMenuData | undefined => {
 
 // sometimes the title is not set. lets find them
 // this will also check, if the link still exists
-const setTitle = (item: IMostPopularPage): IMostPopularPage | undefined => {
-  const post = findPost(
-    cleanSlug(item.path),
-    getData() as unknown as IMenuData[],
-  );
+const setTitle = async (
+  item: IMostPopularPage,
+): Promise<IMostPopularPage | undefined> => {
+  const menuData: IMenuData[] = await getMenuData();
+  const post = findPost(cleanSlug(item.path), menuData);
 
   if (!post) return;
 
@@ -81,10 +81,10 @@ function validateCache(filePath: string): boolean {
   return false;
 }
 
-function pushToTopPages(
+async function pushToTopPages(
   topPages: IMostPopularPage[],
   row: IRow,
-): IMostPopularPage[] {
+): Promise<IMostPopularPage[]> {
   if (row === undefined || !row.dimensionValues || !row.metricValues)
     return topPages;
 
@@ -105,7 +105,7 @@ function pushToTopPages(
       title: row.dimensionValues[1].value ?? '',
     };
 
-    const newItem = setTitle(item);
+    const newItem = await setTitle(item);
 
     if (newItem) {
       topPages.push(newItem);
@@ -115,14 +115,14 @@ function pushToTopPages(
   return topPages;
 }
 
-function getTopPages(
+async function getTopPages(
   data: IRunReportResponse,
   slug: string,
   limit: number,
-): IMostPopularPage[] {
+): Promise<IMostPopularPage[]> {
   const cleanedSlug = cleanSlug(slug);
   let topPages: IMostPopularPage[] = [];
-  (data?.rows || []).forEach((row: IRow) => {
+  (data?.rows || []).forEach(async (row: IRow) => {
     if (row.dimensionValues?.[0]) {
       const value = cleanSlug(row.dimensionValues[0].value) ?? cleanedSlug;
 
@@ -138,7 +138,8 @@ function getTopPages(
       if (!value.startsWith(cleanedSlug)) return;
     }
 
-    topPages = pushToTopPages(topPages, row);
+    // eslint-disable-next-line require-atomic-updates
+    topPages = await pushToTopPages(topPages, row);
   });
 
   return topPages.sort((a, b) => b.views - a.views).slice(0, limit);
@@ -165,7 +166,7 @@ export default async function getMostPopularPages(
 
   if (!validateCache(dataFilePath)) {
     const data: string = fs.readFileSync(dataFilePath, 'utf8');
-    const mostPopularPages = getTopPages(JSON.parse(data), slug, limit);
+    const mostPopularPages = await getTopPages(JSON.parse(data), slug, limit);
 
     return mostPopularPages;
   }
@@ -198,7 +199,7 @@ export default async function getMostPopularPages(
       ],
     })) as unknown as [IRunReportResponse];
 
-    const mostPopularPages = getTopPages(response, slug, limit);
+    const mostPopularPages = await getTopPages(response, slug, limit);
 
     // Store complete data in a file to avoid hitting the API limit
     await storeAnalyticsData(dataFilePath, JSON.stringify(response));

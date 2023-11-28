@@ -13,9 +13,12 @@ import MostPopular from '@/components/MostPopular/MostPopular';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import { mostProductiveAuthors } from '@/utils/mostProductiveAuthors';
-import { getData } from '@/utils/staticGeneration/getData.mjs';
 import type { IAuthorInfo, IMenuData, IPageProps } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
+import {
+  checkSubTreeForActive,
+  getMenuData,
+  getPathName,
+} from '@kadena/docs-tools';
 import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -82,7 +85,8 @@ const BlogChainHome: FC<IProps> = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getInitBlogPosts(getData() as unknown as IMenuData[], 0, 10);
+  const menuData: IMenuData[] = await getMenuData();
+  const posts = getInitBlogPosts(menuData, 0, 10);
 
   const mostPopularPages = await getMostPopularPages('/blogchain');
 
@@ -90,7 +94,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       leftMenuTree: await checkSubTreeForActive(getPathName(__filename), true),
       popularPages: mostPopularPages,
-      authors: mostProductiveAuthors(),
+      authors: await mostProductiveAuthors(),
       posts,
       frontmatter: {
         title: 'BlogChain',

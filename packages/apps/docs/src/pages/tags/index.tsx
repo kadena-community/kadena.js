@@ -40,7 +40,7 @@ const Home: FC<IProps> = ({ tags, frontmatter }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const tags = getAllBlogTags();
+  const tags = await getAllBlogTags();
   return {
     props: {
       leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),

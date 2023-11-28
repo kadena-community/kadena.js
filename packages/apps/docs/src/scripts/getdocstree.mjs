@@ -211,7 +211,10 @@ export const createDocsTree = async () => {
   const result = await createTree(INITIAL_PATH, TREE);
 
   fs.mkdirSync(MENU_FILE_DIR, { recursive: true });
-  fs.writeFileSync(`${MENU_FILE_DIR}/${MENU_FILE}`, JSON.stringify(result, null, 2));
+  fs.writeFileSync(
+    `${MENU_FILE_DIR}/${MENU_FILE}`,
+    JSON.stringify(result, null, 2),
+  );
 
   success.push('Docs imported from monorepo');
 

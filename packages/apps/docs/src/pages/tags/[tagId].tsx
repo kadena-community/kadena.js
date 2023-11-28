@@ -7,9 +7,12 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
 import { getAllBlogTags } from '@/utils/getAllBlogTags';
-import { getData } from '@/utils/staticGeneration/getData.mjs';
 import type { IMenuData, IPageProps, ITag } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
+import {
+  checkSubTreeForActive,
+  getMenuData,
+  getPathName,
+} from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -37,9 +40,9 @@ const Home: FC<IProps> = ({ posts, frontmatter, tagId }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  getAllBlogTags();
+  const tags = await getAllBlogTags();
   return {
-    paths: getAllBlogTags().map((tag: ITag) => ({
+    paths: tags.map((tag: ITag) => ({
       params: { tagId: tag.tag },
     })),
     fallback: false, // false or "blocking"
@@ -51,7 +54,8 @@ export const getStaticProps: GetStaticProps<{}, { tagId: string }> = async (
 ) => {
   const tagId = ctx.params?.tagId;
 
-  const posts = getInitBlogPosts(getData() as unknown as IMenuData[], 0, 10, {
+  const menuData: IMenuData[] = await getMenuData();
+  const posts = getInitBlogPosts(menuData, 0, 10, {
     tagId,
   });
 
