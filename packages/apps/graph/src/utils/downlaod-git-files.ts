@@ -1,7 +1,7 @@
 import https from 'https';
 import { createDirAndWriteFile } from './path';
 
-export async function downloadGitFilesFromFolder(
+export async function downloadGitFiles(
   {
     owner,
     name,
@@ -30,11 +30,11 @@ export async function downloadGitFilesFromFolder(
       ) {
         continue;
       }
-      await donwloadFile(file.download_url, file.name, destinationPath);
+      await donwloadGitFile(file.download_url, file.name, destinationPath);
     }
   } else if (gitData instanceof Object) {
     // if gitData is an object, it means that it's a file and we can download it
-    await donwloadFile(gitData.download_url, gitData.name, destinationPath);
+    await donwloadGitFile(gitData.download_url, gitData.name, destinationPath);
   } else {
     throw new Error('Provided path is not a valid ');
   }
@@ -62,7 +62,7 @@ export async function getGitData(
   return data;
 }
 
-async function donwloadFile(
+async function donwloadGitFile(
   url: string,
   filename: string,
   path: string,
@@ -78,4 +78,25 @@ function buildGitApiUrl(
   branch: string,
 ): string {
   return `https://api.github.com/repos/${owner}/${name}/contents/${path}?ref=${branch}`;
+}
+
+export function getGitAbsolutePath(base: string, relative: string): string {
+  const baseSplit = base.split('/');
+  const relativeSplit = relative.split('/');
+
+  // Remove the last component of the base path(should be the file name)
+  baseSplit.pop();
+
+  for (const component of relativeSplit) {
+    if (component === '..') {
+      baseSplit.pop();
+    } else if (component !== '.') {
+      // If the component is not '.', add it to the end of the base path
+      baseSplit.push(component);
+    }
+  }
+
+  // Join the components of the base path back into a single string
+  const absolutePath = baseSplit.join('/');
+  return absolutePath;
 }
