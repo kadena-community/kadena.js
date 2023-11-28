@@ -9,11 +9,8 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import authorsData from '@/data/authors.json';
 import { getLatestBlogPostsOfAuthor } from '@/utils/getBlogPosts';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import type { IAuthorInfo, IPageProps } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import { Card, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -63,7 +60,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       authors,
       frontmatter: {
         title: 'BlogChain authors',

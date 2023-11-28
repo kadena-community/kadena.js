@@ -7,12 +7,9 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import authors from '@/data/authors.json';
 import { getAuthorInfo, getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
 import type { IAuthorInfo, IMenuData, IPageProps } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -66,7 +63,7 @@ export const getStaticProps: GetStaticProps<{}, { authorId: string }> = async (
 
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       posts,
       authorInfo,
       frontmatter: {

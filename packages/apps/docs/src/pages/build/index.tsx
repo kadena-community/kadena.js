@@ -7,10 +7,7 @@ import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import {
   Box,
   Button,
@@ -148,7 +145,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       popularPages: mostPopularPages,
       blogPosts,
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Build on Kadena',
         menu: 'Build',

@@ -1,4 +1,4 @@
-import { menuData } from '@/_generated/menu.mjs';
+import menuData from '@/_generated/menu.json';
 import type { IFrontmatterData } from '@/types';
 import { createSlug } from '@/utils/createSlug';
 import type { StreamMetaData } from '@7-docs/edge';

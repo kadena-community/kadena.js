@@ -1,4 +1,4 @@
-import { menuData } from '@/_generated/menu.mjs';
+import menuData from '@/_generated/menu.json';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
 import type { IResponseError } from '@/types';
 import type { IMenuData } from '@kadena/docs-tools';

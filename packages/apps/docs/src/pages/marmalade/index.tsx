@@ -16,11 +16,8 @@ import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import type { IMenuData } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -150,7 +147,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       blogPosts,
       popularPages: mostPopularPages,
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Build with Marmalade',
         menu: 'Marmalade',
