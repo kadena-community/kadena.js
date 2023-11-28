@@ -1,4 +1,4 @@
-import type { IMenuItem, LevelType } from '@/Layout';
+import type { IMenuItem, LevelType } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';

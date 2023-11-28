@@ -1,4 +1,4 @@
-import type { IBasePageMeta, IPageMeta } from '@/Layout';
+import type { IBasePageMeta, IPageMeta } from '@kadena/docs-tools';
 
 export const blogFrontMatter: IPageMeta = {
   wordCount: 779,

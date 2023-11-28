@@ -1,4 +1,3 @@
-import type { IPageProps, ITag } from '@/Layout';
 import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import {
   articleClass,
@@ -12,6 +11,7 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import type { IPageProps, ITag } from '@kadena/docs-tools';
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';

@@ -1,18 +1,18 @@
 import { BlogListWrapper } from '@/components/BlogList/BlogListWrapper';
+import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IMenuData, IPageProps, ITag } from '@/Layout';
 import { getAllBlogTags } from '@/utils/getAllBlogTags';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
+import type { IMenuData, IPageProps, ITag } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -54,7 +54,9 @@ export const getStaticProps: GetStaticProps<{}, { tagId: string }> = async (
 ) => {
   const tagId = ctx.params?.tagId;
 
-  const posts = getInitBlogPosts(getData() as IMenuData[], 0, 10, { tagId });
+  const posts = getInitBlogPosts(getData() as unknown as IMenuData[], 0, 10, {
+    tagId,
+  });
 
   return {
     props: {

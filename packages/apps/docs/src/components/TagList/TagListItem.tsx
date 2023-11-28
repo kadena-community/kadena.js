@@ -1,4 +1,4 @@
-import type { ITag } from '@/Layout';
+import type { ITag } from '@kadena/docs-tools';
 import { Box, Card } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';

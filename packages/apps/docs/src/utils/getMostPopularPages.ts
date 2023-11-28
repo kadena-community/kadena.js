@@ -1,9 +1,9 @@
-import type { IMenuData } from '@/Layout';
 import type {
   IMostPopularPage,
   IRow,
   IRunReportResponse,
 } from '@/MostPopularData';
+import type { IMenuData } from '@kadena/docs-tools';
 import fs from 'fs';
 import path from 'path';
 import analyticsDataClient from './analyticsDataClient';
@@ -30,7 +30,10 @@ const findPost = (url: string, data: IMenuData[]): IMenuData | undefined => {
 // sometimes the title is not set. lets find them
 // this will also check, if the link still exists
 const setTitle = (item: IMostPopularPage): IMostPopularPage | undefined => {
-  const post = findPost(cleanSlug(item.path), getData() as IMenuData[]);
+  const post = findPost(
+    cleanSlug(item.path),
+    getData() as unknown as IMenuData[],
+  );
 
   if (!post) return;
 

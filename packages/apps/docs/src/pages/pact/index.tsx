@@ -1,4 +1,3 @@
-import type { IMenuData } from '@/Layout';
 import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
@@ -16,6 +15,7 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import type { IMenuData } from '@kadena/docs-tools';
 import {
   Box,
   Button,

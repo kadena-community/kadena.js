@@ -1,8 +1,8 @@
 import { menuData } from '@/_generated/menu.mjs';
-import type { IMenuData } from '@/Layout';
 import type { IFrontmatterData } from '@/types';
 import { createSlug } from '@/utils/createSlug';
 import type { StreamMetaData } from '@7-docs/edge';
+import type { IMenuData } from '@kadena/docs-tools';
 import algoliasearch from 'algoliasearch';
 import type { NextApiRequest, NextApiResponse } from 'next';
 

@@ -1,17 +1,17 @@
 import { BlogListWrapper } from '@/components/BlogList/BlogListWrapper';
+import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IMenuData, IPageProps } from '@/Layout';
 import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
+import type { IMenuData, IPageProps } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -41,7 +41,7 @@ const Home: FC<IProps> = ({ frontmatter, posts }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getInitBlogPosts(getData() as IMenuData[], 0, 10, {
+  const posts = getInitBlogPosts(getData() as unknown as IMenuData[], 0, 10, {
     year: '2021',
   });
 

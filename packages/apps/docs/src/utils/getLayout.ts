@@ -3,7 +3,7 @@ import { Full } from '@/components/Layout/Full/Full';
 import { Home } from '@/components/Layout/Home/Home';
 import { Landing } from '@/components/Layout/Landing/Landing';
 import { Redocly } from '@/components/Layout/Redocly/Redocly';
-import type { IBasePageProps, IPageProps } from '@/Layout';
+import type { IBasePageProps, IPageProps } from '@kadena/docs-tools';
 import type { FC } from 'react';
 
 type IProps = IBasePageProps | IPageProps;

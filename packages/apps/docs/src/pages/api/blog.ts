@@ -1,7 +1,7 @@
 import { menuData } from '@/_generated/menu.mjs';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IMenuData } from '@/Layout';
 import type { IResponseError } from '@/types';
+import type { IMenuData } from '@kadena/docs-tools';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const search = async (
@@ -22,11 +22,16 @@ const search = async (
     tagId?: string;
   };
 
-  const data = getInitBlogPosts(menuData as IMenuData[], offset, limit, {
-    authorId,
-    year,
-    tagId,
-  });
+  const data = getInitBlogPosts(
+    menuData as unknown as IMenuData[],
+    offset,
+    limit,
+    {
+      authorId,
+      year,
+      tagId,
+    },
+  );
 
   res.json(data);
 };

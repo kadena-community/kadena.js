@@ -1,4 +1,4 @@
-import type { IAuthorInfo, IMenuData } from '@/Layout';
+import type { IAuthorInfo, IMenuData } from '@kadena/docs-tools';
 import { compareDesc } from './dates';
 import { getData } from './staticGeneration/getData.mjs';
 
@@ -29,7 +29,7 @@ export const getBlogPosts = async (tags?: string[]): Promise<IMenuData[]> => {
 export const getLatestBlogPostsOfAuthor = (
   author: IAuthorInfo,
 ): IMenuData[] => {
-  const data = getData() as IMenuData[];
+  const data = getData() as unknown as IMenuData[];
   const STARTBRANCH = '/blogchain';
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);

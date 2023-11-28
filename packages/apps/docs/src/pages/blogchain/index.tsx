@@ -1,4 +1,3 @@
-import type { IAuthorInfo, IMenuData, IPageProps } from '@/Layout';
 import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogItem } from '@/components/Blog/BlogItem/BlogItem';
 import { BlogList } from '@/components/Blog/BlogList';
@@ -19,6 +18,7 @@ import {
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
 import { getData } from '@/utils/staticGeneration/getData.mjs';
+import type { IAuthorInfo, IMenuData, IPageProps } from '@kadena/docs-tools';
 import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -85,7 +85,7 @@ const BlogChainHome: FC<IProps> = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getInitBlogPosts(getData() as IMenuData[], 0, 10);
+  const posts = getInitBlogPosts(getData() as unknown as IMenuData[], 0, 10);
 
   const mostPopularPages = await getMostPopularPages('/blogchain');
 

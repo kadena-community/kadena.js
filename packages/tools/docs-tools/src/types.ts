@@ -146,7 +146,7 @@ export interface IMenuData {
   authorInfo?: IAuthorInfo;
   wordCount?: number;
   readingTimeInMinutes?: number;
-  lastModifiedDate: Date;
+  lastModifiedDate?: Date;
 }
 
 export interface ITag {

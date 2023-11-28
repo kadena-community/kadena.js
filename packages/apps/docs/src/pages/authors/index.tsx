@@ -1,4 +1,3 @@
-import type { IAuthorInfo, IPageProps } from '@/Layout';
 import { AuthorList } from '@/components/AuthorList/AuthorList';
 import { AuthorListItem } from '@/components/AuthorList/AuthorListItem';
 import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileCard';
@@ -14,6 +13,7 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import type { IAuthorInfo, IPageProps } from '@kadena/docs-tools';
 import { Card, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';

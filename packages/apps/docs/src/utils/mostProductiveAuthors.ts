@@ -1,4 +1,4 @@
-import type { IAuthorInfo } from '@/Layout';
+import type { IAuthorInfo } from '@kadena/docs-tools';
 import { add, isAfter } from 'date-fns';
 import authors from '../data/authors.json';
 import { getLatestBlogPostsOfAuthor } from './getBlogPosts';
