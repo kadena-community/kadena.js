@@ -29,13 +29,13 @@ const ExampleTabs: IExampleTab[] = [
   },
 ];
 const ExampleManyTabs: IExampleTab[] = [
-  { title: 'Really Long Title', content: 'Content1' },
-  { title: 'Really Long Title2', content: 'Content2' },
-  { title: 'Really Long Title3', content: 'Content3' },
-  { title: 'Really Long Title4', content: 'Content3' },
-  { title: 'Really Long Title5', content: 'Content3' },
-  { title: 'Really Long Title6', content: 'Content3' },
-  { title: 'Really Long Title7', content: 'Content3' },
+  { title: 'Really Long Title', content: 'Content for tab 1' },
+  { title: 'Really Long Title 2', content: 'Content for tab 2' },
+  { title: 'Really Long Title 3', content: 'Content for tab 3' },
+  { title: 'Really Long Title 4', content: 'Content for tab 4' },
+  { title: 'Really Long Title 5', content: 'Content for tab 5' },
+  { title: 'Really Long Title 6', content: 'Content for tab 6' },
+  { title: 'Really Long Title 7', content: 'Content for tab 7' },
 ];
 
 const meta: Meta<ITabsProps> = {
@@ -46,7 +46,7 @@ const meta: Meta<ITabsProps> = {
     docs: {
       description: {
         component:
-          'The Tabs component is wrapper around [react aria](https://react-spectrum.adobe.com/react-aria/useTabList.html) hook to add all the accessibility perks this lib includes onto our tabs.  Here are just a couple of examples but you can check their docs for more. The exposed component are Tabs and TabItem, check the examples bellow to see how to use it.',
+          "The Tabs component is wrapper around [react-aria's](https://react-spectrum.adobe.com/react-aria/useTabList.html) useTabList hook.  Here are just a couple of examples but you can check their docs for more. The compound component is composed of the exposed `Tabs` and `TabItem` components, check the examples below to see how to use them.",
       },
     },
   },
@@ -114,7 +114,7 @@ export const TabsStory: Story = {
 };
 
 export const DefaultSelectedTabsStory: Story = {
-  name: 'DefaultSelectedTab',
+  name: 'Scrollable Tabs with defaultSelectedTab',
   args: {
     ['aria-label']: 'generic tabs story',
     defaultSelectedKey: ExampleManyTabs[2].title,
@@ -135,29 +135,32 @@ export const DefaultSelectedTabsStory: Story = {
   },
 };
 
-export const ControlledTabsStory = () => {
-  const [timePeriod, setTimePeriod] = useState<Key>('jurassic');
+export const ControlledTabsStory: Story = {
+  name: 'Tabs',
+  render: () => {
+    const [timePeriod, setTimePeriod] = useState<Key>('jurassic');
 
-  return (
-    <Stack direction="column" gap="$lg">
-      <Text>Selected time period: {timePeriod}</Text>
-      <Tabs
-        aria-label="Mesozoic time periods"
-        selectedKey={timePeriod}
-        onSelectionChange={setTimePeriod}
-      >
-        <TabItem key="triassic" title="Triassic">
-          The Triassic ranges roughly from 252 million to 201 million years ago,
-          preceding the Jurassic Period.
-        </TabItem>
-        <TabItem key="jurassic" title="Jurassic">
-          The Jurassic ranges from 200 million years to 145 million years ago.
-        </TabItem>
-        <TabItem key="cretaceous" title="Cretaceous">
-          The Cretaceous is the longest period of the Mesozoic, spanning from
-          145 million to 66 million years ago.
-        </TabItem>
-      </Tabs>
-    </Stack>
-  );
+    return (
+      <Stack direction="column" gap="$lg">
+        <Text>Selected time period: {timePeriod}</Text>
+        <Tabs
+          aria-label="Mesozoic time periods"
+          selectedKey={timePeriod}
+          onSelectionChange={setTimePeriod}
+        >
+          <TabItem key="triassic" title="Triassic">
+            The Triassic ranges roughly from 252 million to 201 million years
+            ago, preceding the Jurassic Period.
+          </TabItem>
+          <TabItem key="jurassic" title="Jurassic">
+            The Jurassic ranges from 200 million years to 145 million years ago.
+          </TabItem>
+          <TabItem key="cretaceous" title="Cretaceous">
+            The Cretaceous is the longest period of the Mesozoic, spanning from
+            145 million to 66 million years ago.
+          </TabItem>
+        </Tabs>
+      </Stack>
+    );
+  },
 };
