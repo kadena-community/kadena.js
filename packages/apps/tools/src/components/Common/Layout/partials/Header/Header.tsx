@@ -35,7 +35,6 @@ const Header: FC<IHeaderProps> = () => {
     e: React.MouseEvent<HTMLAnchorElement>,
   ): Promise<void> => {
     e.preventDefault();
-    console.log('e.currentTarget.href', e.currentTarget);
 
     await push(e.currentTarget.href);
   };
