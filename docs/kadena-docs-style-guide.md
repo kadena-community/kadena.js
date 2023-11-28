@@ -39,8 +39,8 @@ information model:
   in a tutorial, do in a how-to guide, or look up in reference material.
 
 For more detailed information and examples of how to structure documentation
-using this information model, see [The Grand Unified Theory of
-Documentation][1].
+using this information model, see
+[The Grand Unified Theory of Documentation](https://documentation.divio.com/).
 
 ## Structuring content into pages
 
@@ -64,8 +64,8 @@ bank account wouldn't explain what a bank account is or why you might want to
 open one, but would focus on specific steps such as:
 
 1. Select an institution.
-2. Fill out an application.
-3. Deposit a minimum amount of currency.
+1. Fill out an application.
+1. Deposit a minimum amount of currency.
 
 How-to guides often include links to additional information, but should not
 include explanations that take the focus away from what the reader wants to
@@ -151,7 +151,6 @@ achieving learning objectives. Typically, a tutorial includes:
 
 - A "Before you begin" list of the tools, knowledge, or skills required to
   complete the tutorial.
-
 - Learning objectives that summarize what the reader will accomplish by
   completing the tutorial. Objectives can be listed under a "Learning
   objectives" heading, but only if this heading is used consistently for all
@@ -202,7 +201,6 @@ henever possible.
 Reference manuals typically contain the following sections:
 
 - Frontmatter with a guide title, description, and other information.
-
 - One or more introductory paragraphs that explain what information the
   reference covers.
 
@@ -269,19 +267,12 @@ and why you use contractions.
 To keep the tone conversational but concise, adhere to the following guidelines:
 
 - Use simple English words instead of flowery or literary language.
-
 - Use “when” to imply **eventuality** and time.
-
 - Use "if” to imply the **possibility** of something happening.
-
 - Use “since” to imply a period of time.
-
 - Use “because” to imply cause and result.
-
 - Use “once” to imply something that occurs a single time.
-
 - Use “after” to imply something that occurs each time.
-
 - Avoid dead language words and phrases even if they are generally accepted as
   English words in practice. For example:
 
@@ -436,7 +427,7 @@ that delivers technically accurate information.
 
 ### Diagrams
 
-Use the [Kadena visual library][2] to create diagrams with a consistent design
+Use the [Kadena visual library]() to create diagrams with a consistent design
 language.
 
 ### Product names and capitalization
@@ -539,15 +530,15 @@ Use _(Optional)_ at the beginning of steps that are optional. For example:
 
 Use the following guidelines for punctuation marks.
 
-| Punctuation                    | Usage                                                                                                                                                                                                                                  |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| apostrophe (')                 | Use in contractions for a conversational tone. Avoid using the possessive form.                                                                                                                                                        |
-| colon (:)                      | Use a colon at the end of the statement that introduces a procedure, bulleted list, or table.                                                                                                                                          |
-| comma (,)                      | Use a serial comma to separate three or more items in a series, including the item before the conjunction. For example: She bought apples, oranges, and bananas.                                                                       |
-| em dash (—)                    | Use an em dash (—) to set off a clarifying or parenthetical phrase with more emphasis than parentheses provide. Don't add spaces around an em dash. Don't capitalize the first word after an em dash unless the word is a proper noun. |
-| exclamation point (!)          | Avoid using exclamation points in general and never use more than one.                                                                                                                                                                 |
-| semicolons (;)                 | Don't use semicolons instead of commas to separate items in a list. If you think the content should use semicolons, consider rewriting it into subtopics or an unordered bullet list.                                                  |
-| slashes (/) and backslashes () | Avoid using slashes or backslashes except when documenting paths that require either forward or backward slashes. Never use _and/or_ in documentation.                                                                                 |
+| Punctuation                     | Usage                                                                                                                                                                                                                                  |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| apostrophe (')                  | Use in contractions for a conversational tone. Avoid using the possessive form.                                                                                                                                                        |
+| colon (:)                       | Use a colon at the end of the statement that introduces a procedure, bulleted list, or table.                                                                                                                                          |
+| comma (,)                       | Use a serial comma to separate three or more items in a series, including the item before the conjunction. For example: She bought apples, oranges, and bananas.                                                                       |
+| em dash (—)                     | Use an em dash (—) to set off a clarifying or parenthetical phrase with more emphasis than parentheses provide. Don't add spaces around an em dash. Don't capitalize the first word after an em dash unless the word is a proper noun. |
+| exclamation point (!)           | Avoid using exclamation points in general and never use more than one.                                                                                                                                                                 |
+| semicolons (;)                  | Don't use semicolons instead of commas to separate items in a list. If you think the content should use semicolons, consider rewriting it into subtopics or an unordered bullet list.                                                  |
+| slashes (/) and backslashes (\) | Avoid using slashes or backslashes except when documenting paths that require either forward or backward slashes. Never use _and/or_ in documentation.                                                                                 |
 
 ### Software versions
 
@@ -700,15 +691,10 @@ Most cross references should include information that clarifies what the reader
 can expect to be found in the referenced topic. For cross references to topics
 in the Kadena documentation, use the following format:
 
-- For more information about viewing audit logs, see [Troubleshooting][3].
+- For more information about viewing audit logs, see
+  [Troubleshooting](#troubleshooting).
 
 For cross references to external resources, use the title of the destination
 instead of the URL of the destination. Avoid using links to unnamed
 destinations. For example, don't use links like click <ins>here</ins> or see
 this <ins>article</ins>>.
-
-[1]: https://documentation.divio.com/
-
-[2]: <>
-
-[3]: #troubleshooting
