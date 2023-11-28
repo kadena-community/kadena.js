@@ -1,3 +1,4 @@
+import { getReadTime } from '@kadena/docs-tools';
 import { isValid } from 'date-fns';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
@@ -6,14 +7,13 @@ import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
 import { promiseExec } from './build.mjs';
 import { TEMPDIR } from './importReadme/createDoc.mjs';
-import { getReadTime } from '@kadena/docs-tools';
 
 const errors = [];
 const success = [];
 
-const INITIALPATH = './src/pages';
-const MENUFILEDIR = './src/_generated';
-const MENUFILE = 'menu.mjs';
+const INITIAL_PATH = './src/pages';
+const MENU_FILE_DIR = './src/_generated';
+const MENU_FILE = 'menu.json';
 const TREE = [];
 
 const isMarkDownFile = (name) => {
@@ -160,7 +160,7 @@ const getFile = async (rootDir, parent, file) => {
 
   if (
     SEARCHABLE_DIRS.some((item) => {
-      return currentFile.startsWith(`${INITIALPATH}${item}`);
+      return currentFile.startsWith(`${INITIAL_PATH}${item}`);
     })
   ) {
     if (fs.statSync(`${currentFile}`).isFile()) {
@@ -208,13 +208,10 @@ const createTree = async (rootDir, parent = []) => {
 };
 
 export const createDocsTree = async () => {
-  const result = await createTree(INITIALPATH, TREE);
-  // write menu file
-  const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
-  export const menuData = ${JSON.stringify(result, null, 2)}`;
+  const result = await createTree(INITIAL_PATH, TREE);
 
-  fs.mkdirSync(MENUFILEDIR, { recursive: true });
-  fs.writeFileSync(`${MENUFILEDIR}/${MENUFILE}`, fileStr);
+  fs.mkdirSync(MENU_FILE_DIR, { recursive: true });
+  fs.writeFileSync(`${MENU_FILE_DIR}/${MENU_FILE}`, JSON.stringify(result, null, 2));
 
   success.push('Docs imported from monorepo');
 

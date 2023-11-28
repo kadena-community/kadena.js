@@ -8,10 +8,15 @@ import remarkPropsToStaticRender from './remarkPropsToStaticRender';
 import remarkSideMenuToProps from './remarkSideMenuToProps';
 import remarkTwitter from './remarkTwitter';
 import remarkYoutube from './remarkYoutube';
-
 import { getReadTime } from './utils';
+import {
+  checkSubTreeForActive,
+  getPathName,
+} from './utils/staticGeneration/checkSubTreeForActive';
 
 export {
+  checkSubTreeForActive,
+  getPathName,
   getReadTime,
   remarkAdmonitions,
   remarkCheckForCodeTitle,
