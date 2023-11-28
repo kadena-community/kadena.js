@@ -1827,7 +1827,7 @@ importers:
         specifier: workspace:*
         version: link:../shared-config
       '@types/js-yaml':
-        specifier: ^4.0.9
+        specifier: 4.0.9
         version: 4.0.9
       '@types/mdast':
         specifier: ^4.0.1
