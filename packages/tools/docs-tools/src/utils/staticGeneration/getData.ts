@@ -1,5 +1,5 @@
-import { join } from 'path';
 import { readFile } from 'fs/promises';
+import { join } from 'path';
 import type { IMenuData } from '../../types';
 
 export const getData = async (): Promise<IMenuData[]> => {
@@ -12,5 +12,5 @@ export const getData = async (): Promise<IMenuData[]> => {
   } catch (e) {
     console.error(e);
     throw new Error('Could not load menu data');
-  };
+  }
 };
