@@ -1,4 +1,5 @@
 import { compareDesc } from 'date-fns';
+import { readFile } from 'fs/promises';
 import yaml from 'js-yaml';
 import { join } from 'path';
 import type {
@@ -70,7 +71,9 @@ const getBlogAuthorInfo = async (
 
   const authorFilePath = join(process.cwd(), 'src/data/authors.json');
 
-  const authors = await import(authorFilePath);
+  const fileData = await readFile(authorFilePath, 'utf-8');
+
+  const authors = JSON.parse(fileData);
 
   const author = (authors as IAuthorInfo[]).find(
     (author) => author.id === authorId,
