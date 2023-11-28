@@ -156,7 +156,7 @@ In case you forget which key index corresponds to which account, the
 [Search Ledger Keys](https://transfer.chainweb.com/search-ledger-keys.html) tool
 allows you to search your ledger for a specific key:
 
-![Search in progress for a ledger key 3fbf4e7ac…](/assets/blog/1_Apczttw1SqpMu40eYAURwA.webp)
+![Search in progress for a ledger key 3fbf4e7ac…](/assets/blog/2023/1_Apczttw1SqpMu40eYAURwA.webp)
 
 Under the hood, the tool checks each key starting with 0. Each check can take up
 to one second to execute, so it could be a few minutes until the key is found.
@@ -179,7 +179,7 @@ The second panel of the
 [Search Ledger Keys](https://transfer.chainweb.com/search-ledger-keys.html) tool
 allows you to find keys matching a specific prefix (or number of prefixes.)
 
-![Example prefix search for keys starting with a repeated hex number](/assets/blog/2023/1_LAgKEgQRk42iHalbjBZugg.wepb)
+![Example prefix search for keys starting with a repeated hex number](/assets/blog/2023/1_LAgKEgQRk42iHalbjBZugg.webp)
 
 This can be used to find a key starting with a hexadecimal prefix of your
 choosing.
