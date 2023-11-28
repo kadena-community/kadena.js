@@ -477,6 +477,73 @@ importers:
         specifier: 5.2.2
         version: 5.2.2
 
+  packages/apps/proof-of-us:
+    dependencies:
+      '@google-analytics/data':
+        specifier: ~3.2.2
+        version: 3.2.2
+      '@kadena/fonts':
+        specifier: ~0.0.1
+        version: 0.0.1
+      '@vanilla-extract/css':
+        specifier: 1.13.0
+        version: 1.13.0
+      next:
+        specifier: 13.5.5
+        version: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
+      next-themes:
+        specifier: ~0.2.1
+        version: 0.2.1(next@13.5.5)(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../../tools/lint-package
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
+      '@rushstack/eslint-config':
+        specifier: ~3.3.0
+        version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
+      '@types/gtag.js':
+        specifier: ~0.0.12
+        version: 0.0.12
+      '@types/node':
+        specifier: ^18.17.14
+        version: 18.17.14
+      '@types/react':
+        specifier: ^18.2.15
+        version: 18.2.15
+      '@types/react-dom':
+        specifier: 18.2.7
+        version: 18.2.7
+      '@vanilla-extract/next-plugin':
+        specifier: 2.3.1
+        version: 2.3.1(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2)
+      '@vanilla-extract/webpack-plugin':
+        specifier: 2.2.0
+        version: 2.2.0(@types/node@18.17.14)(webpack@5.88.2)
+      dotenv:
+        specifier: ~16.0.3
+        version: 16.0.3
+      eslint:
+        specifier: ^8.45.0
+        version: 8.45.0
+      prettier:
+        specifier: ~3.0.3
+        version: 3.0.3
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
   packages/apps/tools:
     dependencies:
       '@hookform/resolvers':
@@ -14153,6 +14220,7 @@ packages:
   /chownr@2.0.0:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
+    requiresBuild: true
     dev: true
 
   /chromatic@6.20.0:
@@ -17244,6 +17312,7 @@ packages:
   /fs-minipass@2.1.0:
     resolution: {integrity: sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==}
     engines: {node: '>= 8'}
+    requiresBuild: true
     dependencies:
       minipass: 3.3.6
     dev: true
@@ -21022,6 +21091,7 @@ packages:
   /minipass@5.0.0:
     resolution: {integrity: sha512-3FnjYuehv9k6ovOEbyOswadCDPX1piCfhV8ncmYtHOjuPwylVWsghTLo7rabjC3Rx5xD4HDx8Wm1xnMF7S5qFQ==}
     engines: {node: '>=8'}
+    requiresBuild: true
     dev: true
 
   /minipass@7.0.3:
@@ -21031,6 +21101,7 @@ packages:
   /minizlib@2.1.2:
     resolution: {integrity: sha512-bAxsR8BVfj60DWXHE3u30oHzfl4G7khkSuPW+qvpd7jFRHm7dLxOjUk1EHACJ/hxLY8phGJ0YhYHZo7jil7Qdg==}
     engines: {node: '>= 8'}
+    requiresBuild: true
     dependencies:
       minipass: 3.3.6
       yallist: 4.0.0
