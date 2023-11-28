@@ -6,7 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "test": "echo 'No tests, until there is time to debug the build'"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@google-analytics/data": "~3.2.2",
@@ -22,15 +23,21 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
+    "@testing-library/react": "~14.0.0",
     "@types/gtag.js": "~0.0.12",
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "@types/react-dom": "18.2.7",
     "@vanilla-extract/next-plugin": "2.3.1",
+    "@vanilla-extract/vite-plugin": "^3.9.0",
     "@vanilla-extract/webpack-plugin": "2.2.0",
+    "@vitest/coverage-v8": "^0.34.6",
     "dotenv": "~16.0.3",
     "eslint": "^8.45.0",
+    "next-router-mock": "^0.9.10",
     "prettier": "~3.0.3",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "vitest": "^0.34.6",
+    "vitest-dom": "^0.1.1"
   }
 }
