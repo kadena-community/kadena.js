@@ -513,6 +513,9 @@ importers:
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
+      '@testing-library/react':
+        specifier: ~14.0.0
+        version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
       '@types/gtag.js':
         specifier: ~0.0.12
         version: 0.0.12
@@ -528,21 +531,36 @@ importers:
       '@vanilla-extract/next-plugin':
         specifier: 2.3.1
         version: 2.3.1(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2)
+      '@vanilla-extract/vite-plugin':
+        specifier: ^3.9.0
+        version: 3.9.0(@types/node@18.17.14)(vite@4.4.8)
       '@vanilla-extract/webpack-plugin':
         specifier: 2.2.0
         version: 2.2.0(@types/node@18.17.14)(webpack@5.88.2)
+      '@vitest/coverage-v8':
+        specifier: ^0.34.6
+        version: 0.34.6(vitest@0.34.6)
       dotenv:
         specifier: ~16.0.3
         version: 16.0.3
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
+      next-router-mock:
+        specifier: ^0.9.10
+        version: 0.9.10(next@13.5.5)(react@18.2.0)
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
       typescript:
         specifier: 5.2.2
         version: 5.2.2
+      vitest:
+        specifier: ^0.34.6
+        version: 0.34.6(@vitest/ui@0.34.6)
+      vitest-dom:
+        specifier: ^0.1.1
+        version: 0.1.1(vitest@0.34.6)
 
   packages/apps/tools:
     dependencies:
@@ -3735,7 +3753,7 @@ packages:
     dependencies:
       '@babel/core': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-validator-option': 7.22.5
+      '@babel/helper-validator-option': 7.22.15
       '@babel/plugin-transform-typescript': 7.22.9(@babel/core@7.22.15)
     dev: true
 
@@ -12198,7 +12216,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
+      webpack: 5.88.2(webpack-cli@4.9.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -12219,7 +12237,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
+      webpack: 5.88.2(webpack-cli@4.9.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -12247,7 +12265,7 @@ packages:
       std-env: 3.4.3
       test-exclude: 6.0.0
       v8-to-istanbul: 9.1.0
-      vitest: 0.34.6(happy-dom@12.9.1)
+      vitest: 0.34.6(@vitest/ui@0.34.6)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -26751,7 +26769,7 @@ packages:
       dom-accessibility-api: 0.6.3
       lodash-es: 4.17.21
       redent: 4.0.0
-      vitest: 0.34.6(happy-dom@12.9.1)
+      vitest: 0.34.6(@vitest/ui@0.34.6)
     dev: true
 
   /vitest@0.34.6(@vitest/ui@0.34.6):
