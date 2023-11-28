@@ -16,6 +16,7 @@ export const dotenv: {
   MARMALADE_TEMPLATE_PATH: string;
   MARMALADE_TEMPLATE_BRANCH: string;
   MARMALADE_TEMPLATE_LOCAL_PATH: string;
+  GITHUB_TOKEN: string;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   DATABASE_URL: or(
@@ -45,6 +46,7 @@ export const dotenv: {
     process.env.MARMALADE_TEMPLATE_LOCAL_PATH,
     'src/devnet/templates',
   ),
+  GITHUB_TOKEN: or(process.env.GITHUB_TOKEN, ''),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {

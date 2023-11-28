@@ -25,11 +25,3 @@ export async function clearDir(dir: string, extension?: string): Promise<void> {
     unlinkSync(join(dir, file));
   }
 }
-
-export async function readDir(dir: string): Promise<string[]> {
-  return readdirSync(dir);
-}
-
-export async function readFile(dir: string, filename: string): Promise<string> {
-  return readFileSync(join(dir, filename), 'utf8');
-}

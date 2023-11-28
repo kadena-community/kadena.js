@@ -1,4 +1,5 @@
 import https from 'https';
+import { dotenv } from './dotenv';
 import { createDirAndWriteFile } from './path';
 
 export async function downloadGitFiles(
@@ -22,16 +23,18 @@ export async function downloadGitFiles(
 
   if (gitData instanceof Array) {
     // if gitData is an array, it means that it is a folder and we can download the files
-    for (const file of gitData) {
-      if (
-        !file.name.endsWith(fileExtension) ||
-        file.type !== 'file' ||
-        !file.download_url
-      ) {
-        continue;
-      }
-      await donwloadGitFile(file.download_url, file.name, destinationPath);
-    }
+    await Promise.all(
+      gitData.map(async (file) => {
+        if (
+          !file.name.endsWith(fileExtension) ||
+          file.type !== 'file' ||
+          !file.download_url
+        ) {
+          return;
+        }
+        await donwloadGitFile(file.download_url, file.name, destinationPath);
+      }),
+    );
   } else if (gitData instanceof Object) {
     // if gitData is an object, it means that it's a file and we can download it
     await donwloadGitFile(gitData.download_url, gitData.name, destinationPath);
@@ -44,11 +47,15 @@ export async function getGitData(
   url: string,
   rawResponse: boolean = false,
 ): Promise<any> {
-  const options = {
+  const options: https.RequestOptions = {
     headers: {
       'User-Agent': 'node.js',
     },
   };
+
+  if (dotenv.GITHUB_TOKEN && options.headers) {
+    options.headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+  }
 
   const data = await new Promise((resolve, reject) => {
     https.get(url, options, (res) => {
