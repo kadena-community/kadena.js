@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ComponentPropsWithRef, FC } from 'react';
 import React from 'react';
 import type {
   colorVariants,
@@ -8,7 +8,7 @@ import type {
 import type { elementVariants } from './Heading.css';
 import { heading } from './Heading.css';
 
-export interface IHeadingProps {
+export interface IHeadingProps extends ComponentPropsWithRef<'h1'> {
   as?: keyof typeof elementVariants;
   variant?: keyof typeof elementVariants;
   font?: keyof typeof fontVariants;
@@ -26,6 +26,7 @@ export const Heading: FC<IHeadingProps> = ({
   color = 'emphasize',
   transform = 'none',
   children,
+  ...props
 }) => {
   const classList = heading({
     variant,
@@ -37,17 +38,41 @@ export const Heading: FC<IHeadingProps> = ({
 
   switch (as) {
     case 'h2':
-      return <h2 className={classList}>{children}</h2>;
+      return (
+        <h2 className={classList} {...props}>
+          {children}
+        </h2>
+      );
     case 'h3':
-      return <h3 className={classList}>{children}</h3>;
+      return (
+        <h3 className={classList} {...props}>
+          {children}
+        </h3>
+      );
     case 'h4':
-      return <h4 className={classList}>{children}</h4>;
+      return (
+        <h4 className={classList} {...props}>
+          {children}
+        </h4>
+      );
     case 'h5':
-      return <h5 className={classList}>{children}</h5>;
+      return (
+        <h5 className={classList} {...props}>
+          {children}
+        </h5>
+      );
     case 'h6':
-      return <h6 className={classList}>{children}</h6>;
+      return (
+        <h6 className={classList} {...props}>
+          {children}
+        </h6>
+      );
     case 'h1':
     default:
-      return <h1 className={classList}>{children}</h1>;
+      return (
+        <h1 className={classList} {...props}>
+          {children}
+        </h1>
+      );
   }
 };

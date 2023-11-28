@@ -9,12 +9,14 @@ export interface ITabsContainerProps {
   children?: ReactNode;
   initialTab?: string;
   currentTab?: string;
+  className?: string;
 }
 
 export const TabsContainer: FC<ITabsContainerProps> = ({
   children,
   initialTab = undefined,
   currentTab = undefined,
+  ...props
 }) => {
   const [_activeTab, setActiveTab] = useState(initialTab);
   const activeTab = currentTab || _activeTab;
@@ -50,7 +52,7 @@ export const TabsContainer: FC<ITabsContainerProps> = ({
   };
 
   return (
-    <section>
+    <section {...props}>
       <div className={tabsContainerWrapper}>
         <div ref={containerRef} className={tabsContainer}>
           {React.Children.map(children, (child) => {

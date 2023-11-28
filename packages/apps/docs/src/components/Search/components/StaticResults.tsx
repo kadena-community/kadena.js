@@ -1,5 +1,5 @@
 import { filePathToRoute } from '@/pages/api/semanticsearch';
-import { Box, Heading, Text, useModal } from '@kadena/react-ui';
+import { Box, Heading, Text, useDialog } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
@@ -42,7 +42,7 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
 };
 
 const Item: FC<IResultProps> = ({ item }) => {
-  const { clearModal } = useModal();
+  const { state } = useDialog();
 
   if (!item.filePath) return;
 
@@ -52,7 +52,7 @@ const Item: FC<IResultProps> = ({ item }) => {
   return (
     <li>
       <Link href={url} passHref legacyBehavior>
-        <a className={itemLinkClass} onClick={clearModal}>
+        <a className={itemLinkClass} onClick={state.close}>
           <Heading color="primaryContrastInverted" as="h5">
             {item.title}
           </Heading>

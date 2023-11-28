@@ -24,6 +24,7 @@ describe('preflightClient', () => {
       preflight: vi.fn().mockResolvedValue({
         result: { status: 'success', data: 'preflight-test' },
       } as ILocalCommandResult),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
     const sign = vi.fn((tx) => ({ ...tx, sigs: [{ sig: 'sig-hash' }] }));
     const preflight = preflightClient(
