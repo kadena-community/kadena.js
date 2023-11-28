@@ -83,7 +83,7 @@ export const SearchResults: FC<IProps> = ({
   }, [setIsMounted]);
 
   useEffect(() => {
-    const value = localStorage.getItem(TABNAME) as ITabs;
+    const value = (localStorage.getItem(TABNAME) as ITabs) ?? 'docs';
     if (value === null) return;
     setSelectedTabName(value);
     onTabSelect(value);
