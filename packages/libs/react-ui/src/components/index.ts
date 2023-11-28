@@ -8,6 +8,12 @@ export type { IButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
+  IDialogContentProps,
+  IDialogFooterProps,
+  IDialogHeaderProps,
+  IDialogProps,
+} from './Dialog';
+export type {
   FormFieldStatus,
   IFormFieldWrapperProps,
   IInputProps,
@@ -80,6 +86,13 @@ export { Breadcrumbs } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
+export {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  useDialog,
+} from './Dialog';
 export { Divider } from './Divider/Divider';
 export {
   FormFieldWrapper,
@@ -98,7 +111,7 @@ export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';
 export { maskValue } from './MaskedValue/utils';
-export { Modal, ModalProvider, useModal } from './Modal';
+export { Modal } from './Modal';
 export { NavFooter } from './NavFooter';
 export { NavHeader } from './NavHeader';
 export {

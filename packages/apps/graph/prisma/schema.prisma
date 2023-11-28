@@ -151,21 +151,21 @@ model schema_migrations {
 
 /// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view reconcile {
-  token             String?
-  amount            Int?
-  sender            String?
-  sender_current    Int?
-  sender_previous   Int?
-  receiver          String?
-  receiver_current  Int?
-  receiver_previous Int?
-  chainid           BigInt?
-  height            BigInt?
-  requestKey        String  @map("requestkey") @db.VarChar
-  orderIndex        BigInt  @map("idx")
-  blockHash         String  @map("block") @db.VarChar
-  id                Int?
-  version           String?
+  token                  String?
+  amount                 Int?
+  senderAccount          String? @map("sender")
+  senderCurrentAmount    Int?    @map("sender_current")
+  senderPreviousAmount   Int?    @map("sender_previous")
+  receiverAccount        String? @map("receiver")
+  receiverCurrentAmount  Int?    @map("receiver_current")
+  receiverPreviousAmount Int?    @map("receiver_previous")
+  chainId                BigInt? @map("chainid")
+  height                 BigInt?
+  requestKey             String  @map("requestkey") @db.VarChar
+  orderIndex             BigInt  @map("idx")
+  blockHash              String  @map("block") @db.VarChar
+  eventId                Int?    @map("id")
+  version                String?
 
   @@id([blockHash, orderIndex, requestKey])
 }
