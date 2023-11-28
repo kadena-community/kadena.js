@@ -608,15 +608,10 @@ export const lightTheme = createTheme(tokens, {
         },
       },
       effect: {
-        defaultBlur: '',
-        blur: {
-          '0': '',
-        },
-        defaultShadow: `4px 0.5rem ${tokens.kda.foundation.size.n3} 4px #000000`,
         shadow: {
-          '0': `4px 0.5rem ${tokens.kda.foundation.size.n3} 4px #000000`,
-          '1': `4rem 4rem ${tokens.kda.foundation.size.n3} 2rem #000000`,
-          '2': `0 0 ${tokens.kda.foundation.size.n3} 24px #000000`,
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n3} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n3} 2rem #000000`,
+          level3: `0 0 ${tokens.kda.foundation.size.n3} 24px #000000`,
         },
       },
       typography: {
@@ -646,37 +641,22 @@ export const lightTheme = createTheme(tokens, {
           '12xl': '5.25rem',
         },
         lineHeight: {
-          primaryFont: {
-            initial: '',
-            normal: '400',
-            base: '1.4',
-            lg: '1.9',
-          },
-          secondaryFont: {
-            initial: '',
-            normal: '400',
-            base: '1.4',
-            lg: '1.9',
-          },
-          codeFont: {
-            initial: '',
-            normal: '400',
-            base: '1.4',
-            lg: '1.9',
-          },
+          normal: '400',
+          base: '1.4',
+          lg: '1.9',
         },
         weight: {
           headingFont: {
-            light: '45',
-            normal: '55',
-            medium: '65',
-            bold: '75',
+            light: '300',
+            normal: '400',
+            medium: '500',
+            bold: '700',
           },
           bodyFont: {
-            light: '45',
-            normal: '55',
-            medium: '65',
-            bold: '75',
+            light: '300',
+            normal: '400',
+            medium: '500',
+            bold: '700',
           },
         },
       },
