@@ -26,14 +26,20 @@ export const getLastModifiedDate = async (root) => {
   const filename = rootArray.pop();
   const newRoot = rootArray.join('/');
 
-  const { stdout } = await promiseExec(
-    `cd ${TEMPDIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
-  );
+  try {
+    const { stdout } = await promiseExec(
+      `cd ${TEMPDIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
+    );
+    const date = new Date(stdout);
+    if (!isValid(date)) return;
 
-  const date = new Date(stdout);
-  if (!isValid(date)) return;
+    return date.toUTCString();
+  } catch (e) {
+    const date = new Date();
+    if (!isValid(date)) return;
 
-  return date.toUTCString();
+    return date.toUTCString();
+  }
 };
 
 const isIndex = (file) => {
