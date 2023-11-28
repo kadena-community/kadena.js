@@ -27,8 +27,8 @@ export default defineConfig({
   schemaExtensions: [
     responsiveExtension({
       breakpoints,
-      filter: ({ type, path }) =>
-        type === 'typography' &&
+      filter: ([path, token]) =>
+        token.$type === 'typography' &&
         breakpointKeys.some((key) => path.endsWith(key)),
     }),
   ],
