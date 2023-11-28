@@ -546,6 +546,9 @@ importers:
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
+      happy-dom:
+        specifier: ^12.9.1
+        version: 12.9.1
       next-router-mock:
         specifier: ^0.9.10
         version: 0.9.10(next@13.5.5)(react@18.2.0)
@@ -557,7 +560,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^0.34.6
-        version: 0.34.6(@vitest/ui@0.34.6)
+        version: 0.34.6(happy-dom@12.9.1)
       vitest-dom:
         specifier: ^0.1.1
         version: 0.1.1(vitest@0.34.6)
@@ -12265,7 +12268,7 @@ packages:
       std-env: 3.4.3
       test-exclude: 6.0.0
       v8-to-istanbul: 9.1.0
-      vitest: 0.34.6(@vitest/ui@0.34.6)
+      vitest: 0.34.6(happy-dom@12.9.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -26769,7 +26772,7 @@ packages:
       dom-accessibility-api: 0.6.3
       lodash-es: 4.17.21
       redent: 4.0.0
-      vitest: 0.34.6(@vitest/ui@0.34.6)
+      vitest: 0.34.6(happy-dom@12.9.1)
     dev: true
 
   /vitest@0.34.6(@vitest/ui@0.34.6):
