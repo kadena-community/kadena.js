@@ -5,7 +5,6 @@ import { style } from '@vanilla-extract/css';
 export const tabsContainerClass = style([
   sprinkles({
     display: 'flex',
-    flexWrap: 'wrap',
     flexDirection: 'column',
   }),
 ]);
@@ -104,5 +103,7 @@ export const tabContentClass = style([
     marginY: '$4',
     fontSize: '$base',
     color: '$neutral4',
+    flex: 1,
+    overflowY: 'auto',
   }),
 ]);

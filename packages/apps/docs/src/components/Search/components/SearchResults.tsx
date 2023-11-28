@@ -15,7 +15,6 @@ import {
   Tabs,
   useDialog,
 } from '@kadena/react-ui';
-import classnames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -24,8 +23,6 @@ import type { IQueryResult } from '../../../types';
 import { removeUnnecessarySearchRecords } from '../utils';
 import {
   loadingWrapperClass,
-  scrollBoxClass,
-  scrollBoxEnabledClass,
   tabClass,
   tabContainerClass,
 } from './../styles.css';
@@ -65,10 +62,6 @@ export const SearchResults: FC<IProps> = ({
   const [selectedTabName, setSelectedTabName] = useState<ITabs>(null);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  const scrollBoxClasses = classnames(scrollBoxClass, {
-    [scrollBoxEnabledClass]: hasScroll,
-  });
-
   const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
     const buttonName = (e.target as HTMLElement).getAttribute(
       'data-tab',
@@ -96,7 +89,7 @@ export const SearchResults: FC<IProps> = ({
   return (
     <section onClick={rememberTab} className={tabContainerClass}>
       <Tabs defaultSelectedKey={selectedTabName as string} className={tabClass}>
-        <TabItem key="docs" title="Docs Space" className={scrollBoxClasses}>
+        <TabItem key="docs" title="Docs Space">
           {semanticIsLoading && (
             <div className={loadingWrapperClass}>
               <Loading />
@@ -135,9 +128,60 @@ export const SearchResults: FC<IProps> = ({
               ) : null}
             </>
           )}
+          <Notification icon={<SystemIcon.AlertBox />} role="none">
+            <NotificationHeading>QA search is in beta</NotificationHeading>
+            QA search our latest AI vector-based search, designed to provide
+            instant answers to your queries.
+            <br />
+            These responses are generated using information extracted from all
+            the documentation and blog posts available on our website.
+            <br />
+            Please be aware that, as we are in the process of training our
+            model, the answers provided may not always be accurate.
+            <p>
+              <strong>But why launch it now?</strong>
+              By making this alpha version accessible online, we aim to collect
+              valuable data that will aid us in refining and enhancing the
+              accuracy of our model’s responses in the future.
+            </p>
+          </Notification>
+          <Notification icon={<SystemIcon.AlertBox />} role="none">
+            <NotificationHeading>QA search is in beta</NotificationHeading>
+            QA search our latest AI vector-based search, designed to provide
+            instant answers to your queries.
+            <br />
+            These responses are generated using information extracted from all
+            the documentation and blog posts available on our website.
+            <br />
+            Please be aware that, as we are in the process of training our
+            model, the answers provided may not always be accurate.
+            <p>
+              <strong>But why launch it now?</strong>
+              By making this alpha version accessible online, we aim to collect
+              valuable data that will aid us in refining and enhancing the
+              accuracy of our model’s responses in the future.
+            </p>
+          </Notification>
+          <Notification icon={<SystemIcon.AlertBox />} role="none">
+            <NotificationHeading>QA search is in beta</NotificationHeading>
+            QA search our latest AI vector-based search, designed to provide
+            instant answers to your queries.
+            <br />
+            These responses are generated using information extracted from all
+            the documentation and blog posts available on our website.
+            <br />
+            Please be aware that, as we are in the process of training our
+            model, the answers provided may not always be accurate.
+            <p>
+              <strong>But why launch it now?</strong>
+              By making this alpha version accessible online, we aim to collect
+              valuable data that will aid us in refining and enhancing the
+              accuracy of our model’s responses in the future.
+            </p>
+          </Notification>
         </TabItem>
 
-        <TabItem key="qa" title="QA Space" className={scrollBoxClasses}>
+        <TabItem key="qa" title="QA Space">
           <Box marginBottom="$8">
             <Notification icon={<SystemIcon.AlertBox />} role="none">
               <NotificationHeading>QA search is in beta</NotificationHeading>
