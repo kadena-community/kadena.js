@@ -15,6 +15,7 @@ export const dotenv: {
   MARMALADE_TEMPLATE_REPO: string;
   MARMALADE_TEMPLATE_PATH: string;
   MARMALADE_TEMPLATE_BRANCH: string;
+  MARMALADE_TEMPLATE_LOCAL_PATH: string;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   DATABASE_URL: or(
@@ -40,6 +41,10 @@ export const dotenv: {
     'pact/yaml/marmalade-v2',
   ),
   MARMALADE_TEMPLATE_BRANCH: or(process.env.MARMALADE_TEMPLATE_BRANCH, 'v2'),
+  MARMALADE_TEMPLATE_LOCAL_PATH: or(
+    process.env.MARMALADE_TEMPLATE_LOCAL_PATH,
+    'src/devnet/templates',
+  ),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {
