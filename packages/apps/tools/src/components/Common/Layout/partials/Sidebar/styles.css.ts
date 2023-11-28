@@ -48,14 +48,15 @@ export const gridMiniMenuLinkButtonStyle = style([
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    padding: '$5',
     textAlign: 'left',
     fontWeight: '$bold',
     fontSize: '$sm',
+    pointerEvents: 'none',
   }),
   {
     width: '100%',
     borderBottom: `1px solid #E3E1E5`,
+    padding: '0.85rem 1rem',
 
     selectors: {
       [`${darkThemeClass} &`]: {

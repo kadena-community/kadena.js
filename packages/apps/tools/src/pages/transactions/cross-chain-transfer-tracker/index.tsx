@@ -36,12 +36,8 @@ import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import {
-  formButtonStyle,
-  headerTextStyle,
-  infoBoxStyle,
-  mainContentStyle,
-} from './styles.css';
+import { containerClass } from '../styles.css';
+import { formButtonStyle, headerTextStyle, infoBoxStyle } from './styles.css';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
@@ -161,7 +157,7 @@ const CrossChainTransferTracker: FC = () => {
   }, [errors.requestKey?.message]);
 
   return (
-    <div className={mainContentStyle}>
+    <section className={containerClass}>
       <Stack
         direction="column"
         paddingTop={'$2'}
@@ -329,7 +325,7 @@ const CrossChainTransferTracker: FC = () => {
           />
         ) : null}
       </Stack>
-    </div>
+    </section>
   );
 };
 

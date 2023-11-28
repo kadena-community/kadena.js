@@ -4,6 +4,7 @@ import type { Network } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { IMenuItem } from '@/types/Layout';
+import { getHref } from '@/utils/getHref';
 import type { INetworkData } from '@/utils/network';
 import { NavHeader } from '@kadena/react-ui';
 import { useTheme } from 'next-themes';
@@ -46,39 +47,17 @@ const Header: FC<IHeaderProps> = () => {
     setTheme(newTheme);
   };
 
-  const getHref = (itemHref?: string): string => {
-    if (!itemHref) return '#';
-    const basePath = pathname.split('/')[1];
-
-    if (!basePath) {
-      const currentItem = menuData.find((item) => item.href === itemHref);
-      return currentItem?.items ? currentItem.items[0].href : '#';
-    }
-
-    const itemFromMenu = menuData.find((item) => item.href === basePath);
-
-    if (!itemFromMenu) return '#';
-
-    const activeHref = itemFromMenu.items?.find(
-      (item) => item.href === pathname,
-    );
-
-    if (!activeHref) return '#';
-
-    return activeHref.href;
-  };
-
   return (
     <NavHeader.Root brand="DevTools">
       <NavHeader.Navigation activeHref={pathname}>
         {menuData.map((item, index) => (
           <NavHeader.Link
             key={index}
-            href={getHref(item.href)}
+            href={getHref(pathname, item.href)}
             onClick={handleMenuItemClick}
             asChild
           >
-            <Link href={getHref(item.href)}>{item.title}</Link>
+            <Link href={getHref(pathname, item.href)}>{item.title}</Link>
           </NavHeader.Link>
         ))}
       </NavHeader.Navigation>

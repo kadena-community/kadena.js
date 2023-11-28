@@ -59,7 +59,7 @@ export const Menu: FC = () => {
             <MenuButton
               title={t('Resource links')}
               icon={'Close'}
-              onClick={() => handleCloseMenu()}
+              onClick={handleCloseMenu}
             />
           </div>
           <div className={subMenuContentStyle}>
@@ -80,7 +80,7 @@ export const Menu: FC = () => {
         <>
           <div className={subMenuTitleClass}>
             <span>{activeMenu?.title}</span>
-            <MenuButton icon={'Close'} onClick={() => handleCloseMenu()} />
+            <MenuButton icon={'Close'} onClick={handleCloseMenu} />
           </div>
           <div className={subMenuContentStyle}>
             <Accordion.Root>
