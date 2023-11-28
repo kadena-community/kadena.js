@@ -13,6 +13,9 @@ export async function createDirAndWriteFile(
 export async function clearDir(dir: string, extension?: string): Promise<void> {
   const files = readdirSync(dir);
   for (const file of files) {
+    if (extension && !file.endsWith(extension)) {
+      continue;
+    }
     unlinkSync(join(dir, file));
   }
 }
