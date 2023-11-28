@@ -6,7 +6,12 @@ import { mergeProps, useFocusRing, useTabList } from 'react-aria';
 import { Item as TabItem, useTabListState } from 'react-stately';
 import { Tab } from './Tab';
 import { TabPanel } from './TabPanel';
-import { selectorLine, tabListClass, tabsContainerClass } from './Tabs.css';
+import {
+  selectorLine,
+  tabListClass,
+  tabListWrapperClass,
+  tabsContainerClass,
+} from './Tabs.css';
 
 export { TabItem };
 
@@ -20,7 +25,7 @@ export interface ITabsProps
 export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
   const state = useTabListState(props);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { focusProps } = useFocusRing({
+  const { focusProps, isFocusVisible } = useFocusRing({
     within: true,
   });
 
@@ -59,15 +64,17 @@ export const Tabs = ({ className, ...props }: ITabsProps): ReactNode => {
 
   return (
     <div className={cn(tabsContainerClass, className)}>
-      <div
-        className={tabListClass}
-        {...mergeProps(tabListProps, focusProps)}
-        ref={containerRef}
-      >
-        {[...state.collection].map((item) => (
-          <Tab key={item.key} item={item} state={state} />
-        ))}
-        <span ref={selectedUnderlineRef} className={selectorLine}></span>
+      <div className={tabListWrapperClass}>
+        <div
+          className={cn(tabListClass, { focusVisible: isFocusVisible })}
+          {...mergeProps(tabListProps, focusProps)}
+          ref={containerRef}
+        >
+          {[...state.collection].map((item) => (
+            <Tab key={item.key} item={item} state={state} />
+          ))}
+          <span ref={selectedUnderlineRef} className={selectorLine}></span>
+        </div>
       </div>
 
       <TabPanel key={state.selectedItem?.key} state={state} />

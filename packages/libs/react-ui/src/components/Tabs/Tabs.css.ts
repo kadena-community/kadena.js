@@ -1,5 +1,5 @@
 import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { darkThemeClass, vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
 export const tabsContainerClass = style([
@@ -10,13 +10,23 @@ export const tabsContainerClass = style([
   }),
 ]);
 
+export const tabListWrapperClass = style([
+  sprinkles({
+    maxWidth: '100%',
+    overflowX: 'auto',
+  }),
+  {
+    paddingLeft: '2px',
+    paddingTop: '2px', // For focus ring
+  },
+]);
+
 export const tabListClass = style([
   sprinkles({
-    display: 'flex',
+    display: 'inline-flex',
     flexDirection: 'row',
-    maxWidth: '100%',
+    minWidth: '100%',
     position: 'relative',
-    marginLeft: '$2',
   }),
   {
     selectors: {
@@ -30,8 +40,10 @@ export const tabListClass = style([
         height: '2px',
         backgroundColor: vars.colors.$neutral2,
       },
+      [`${darkThemeClass} &::before`]: {
+        backgroundColor: vars.colors.$neutral3,
+      },
     },
-    overflowX: 'auto',
   },
 ]);
 
@@ -40,7 +52,7 @@ export const tabItemClass = style([
     border: 'none',
     cursor: 'pointer',
     paddingY: '$1',
-    marginRight: '$4',
+    paddingX: '$2',
     fontSize: '$md',
     fontWeight: '$semiBold',
     backgroundColor: 'transparent',
@@ -51,9 +63,6 @@ export const tabItemClass = style([
     opacity: '.6',
     whiteSpace: 'nowrap',
     selectors: {
-      '&:focus-visible': {
-        boxShadow: '0 0 0 2px var(--colors-primaryAccent)',
-      },
       '&[data-selected="true"]': {
         opacity: '1',
         color: vars.colors.$primaryContrastInverted,
@@ -66,17 +75,27 @@ export const selectorLine = style([
   sprinkles({
     position: 'absolute',
     display: 'block',
-    backgroundColor: {
+    width: 0,
+    height: '100%',
+    bottom: 0,
+    borderStyle: 'solid',
+    borderColor: {
       darkMode: '$neutral6',
       lightMode: '$primaryAccent',
     },
-    width: 0,
-    height: '$0',
-    bottom: 0,
   }),
   {
+    borderWidth: 0,
+    borderBottomWidth: '2px',
     transition: 'transform .4s ease, width .4s ease',
     transform: `translateX(0)`,
+    selectors: {
+      '.focusVisible &': {
+        borderTopLeftRadius: vars.radii.$sm,
+        borderTopRightRadius: vars.radii.$sm,
+        outline: `2px solid ${vars.colors.$primaryAccent}`,
+      },
+    },
   },
 ]);
 

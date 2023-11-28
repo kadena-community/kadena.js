@@ -1,22 +1,41 @@
+import { Stack } from '@components/Layout';
+import type { ITabsProps } from '@components/Tabs';
+import { TabItem, Tabs } from '@components/Tabs';
+import { Text } from '@components/Typography';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import type { Key } from 'react-aria';
-import type { ITabsProps } from './Tabs';
-import { TabItem, Tabs } from './Tabs';
 
-const ExampleTabs: any[] = [
-  { title: 'Title', content: 'Content' },
-  { title: 'Title2', content: 'Content2' },
-  { title: 'Title3', content: 'Content3' },
+interface IExampleTab {
+  title: string;
+  content: string;
+}
+
+const ExampleTabs: IExampleTab[] = [
+  {
+    title: 'Title 1',
+    content:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+  },
+  {
+    title: 'Title 2',
+    content:
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).  ",
+  },
+  {
+    title: 'Title 3',
+    content:
+      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.  ",
+  },
 ];
-const ExampleManyTabs: any[] = [
-  { title: 'Title2Title', content: 'Content' },
-  { title: 'Title2Title2', content: 'Content2' },
-  { title: 'Title2Title3', content: 'Content3' },
-  { title: 'Title2Title4', content: 'Content3' },
-  { title: 'Title2Title5', content: 'Content3' },
-  { title: 'Title2Title6', content: 'Content3' },
-  { title: 'Title2Title7', content: 'Content3' },
+const ExampleManyTabs: IExampleTab[] = [
+  { title: 'Really Long Title', content: 'Content1' },
+  { title: 'Really Long Title2', content: 'Content2' },
+  { title: 'Really Long Title3', content: 'Content3' },
+  { title: 'Really Long Title4', content: 'Content3' },
+  { title: 'Really Long Title5', content: 'Content3' },
+  { title: 'Really Long Title6', content: 'Content3' },
+  { title: 'Really Long Title7', content: 'Content3' },
 ];
 
 const meta: Meta<ITabsProps> = {
@@ -120,9 +139,8 @@ export const ControlledTabsStory = () => {
   const [timePeriod, setTimePeriod] = useState<Key>('jurassic');
 
   return (
-    <>
-      <p>Selected time period: {timePeriod}</p>
-      <br />
+    <Stack direction="column" gap="$lg">
+      <Text>Selected time period: {timePeriod}</Text>
       <Tabs
         aria-label="Mesozoic time periods"
         selectedKey={timePeriod}
@@ -140,6 +158,6 @@ export const ControlledTabsStory = () => {
           145 million to 66 million years ago.
         </TabItem>
       </Tabs>
-    </>
+    </Stack>
   );
 };
