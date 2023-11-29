@@ -1,6 +1,9 @@
 import { Command, Option } from 'commander';
 
-import { deployMarmaladeContracts } from '../../devnet/marmalade';
+import {
+  deployMarmaladeContracts,
+  hardCodedDeployMarmaladeContract,
+} from '../../devnet/marmalade';
 import type { IAccount } from '../helper';
 import { generateAccount, logger, sender00 } from '../helper';
 import { transfer } from '../transfer';
@@ -74,6 +77,7 @@ program
       logger.info('Simulation config parameters:', args);
       // await simulate(args);
       await deployMarmaladeContracts(sender00);
+      // await hardCodedDeployMarmaladeContract();
     } catch (error) {
       console.error(error);
     }

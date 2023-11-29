@@ -1,5 +1,4 @@
-import { local } from '@kadena/chainweb-node-client';
-import { Pact, createTransaction } from '@kadena/client';
+import { IPactCommand, Pact, createTransaction } from '@kadena/client';
 import { createPactCommandFromTemplate } from '@kadena/client-utils/nodejs';
 import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
@@ -15,6 +14,7 @@ import {
   dirtyRead,
   listen,
   logger,
+  sender00,
   signAndAssertTransaction,
   submit,
 } from './helper';
@@ -28,15 +28,15 @@ export async function deployMarmaladeContracts(
   templateDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
   codeFileDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
 ) {
-  await clearDir(templateDestinationPath);
+  // await clearDir(templateDestinationPath);
 
-  if (templateDestinationPath !== codeFileDestinationPath) {
-    await clearDir(codeFileDestinationPath);
-  }
+  // if (templateDestinationPath !== codeFileDestinationPath) {
+  //   await clearDir(codeFileDestinationPath);
+  // }
 
-  console.log('Getting Marmalade Templates');
-  await getMarmaladeTemplates(templateDestinationPath);
-  await getCodeFiles(templateDestinationPath, codeFileDestinationPath);
+  // console.log('Getting Marmalade Templates');
+  // await getMarmaladeTemplates(templateDestinationPath);
+  // await getCodeFiles(templateDestinationPath, codeFileDestinationPath);
 
   const templateFiles = readdirSync(templateDestinationPath).filter((file) =>
     file.endsWith(TEMPLATE_EXTENSION),
@@ -75,14 +75,56 @@ export async function deployMarmaladeContracts(
   console.log(pactCommand);
 
   const transaction = createTransaction(pactCommand);
-  pactCommand.payload;
+
+  console.log(transaction);
+
   const signedTx = signAndAssertTransaction(signerAccount.keys)(transaction);
 
   console.log(signedTx);
 
-  const commandResult = await submit(signedTx);
-  const result = await listen(commandResult);
+  const commandResult = await dirtyRead(transaction);
+
+  console.log(commandResult);
+
+  // const commandResult = await submit(signedTx);
+  // const result = await listen(commandResult);
   // }
+}
+
+export async function hardCodedDeployMarmaladeContract() {
+  const pactCommand: IPactCommand = {
+    payload: {
+      exec: {
+        data: {},
+        code: "(namespace 'kip) (interface account-protocols-v1   (defconst SINGLE_KEY)   (defun enforce-reserved:bool (account:string guard:string) @doc ) )",
+        // code: '(+ 1 1)',
+      },
+      cont: {},
+    },
+    meta: {
+      chainId: '0',
+      sender: 'sender00',
+      gasLimit: 100000,
+      gasPrice: 1e-7,
+      ttl: 600,
+      creationTime: 1701266277,
+    },
+    signers: [
+      {
+        pubKey:
+          '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+        scheme: 'ED25519',
+      },
+    ],
+    networkId: 'fast-development',
+    nonce: '',
+  };
+
+  const transaction = createTransaction(pactCommand);
+  const signedTx = signAndAssertTransaction(sender00.keys)(transaction);
+  const commandResult = await dirtyRead(transaction);
+
+  console.log(commandResult);
 }
 
 export async function getMarmaladeTemplates(
