@@ -11,14 +11,15 @@ describe('Account', () => {
   beforeAll(() => {
     devnetData = parseLogs();
   });
-  test('getAccount', async () => {
+  test('Query: getAccount', async () => {
     const query = getAccountQuery(devnetData[0].from);
     const response = await request(grapHost).post('').send(query);
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty('data');
     expect(response.body.data).toHaveProperty('account');
-    expect(response.body.data.account).toHaveProperty('accountName');
+    expect(response.body.data.account.accountName).toEqual(devnetData[0].from);
+
     expect(response.body.data.account).toHaveProperty('moduleName');
     expect(response.body.data.account).toHaveProperty('__typename');
     expect(response.body.data.account).toHaveProperty('id');
