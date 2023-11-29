@@ -65,14 +65,18 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <ThemeProvider>
-      <>
-        {children}
+    <html>
+      <body>
+        <ThemeProvider>
+          <>
+            {children}
 
-        <CookieConsent />
-        <Analytics />
-      </>
-    </ThemeProvider>
+            <CookieConsent />
+            <Analytics />
+          </>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 };
 
