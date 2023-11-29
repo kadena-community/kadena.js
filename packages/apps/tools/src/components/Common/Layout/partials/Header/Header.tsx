@@ -1,5 +1,6 @@
 import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
+import { AddNetworkModal } from '@/components/Global';
 import type { Network } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
@@ -12,7 +13,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -39,8 +40,16 @@ const Header: FC<IHeaderProps> = () => {
     await push(e.currentTarget.href);
   };
 
-  const handleOnChange = (e: React.FormEvent<HTMLSelectElement>): void =>
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openNetworkModal = () => setIsOpen(true);
+
+  const handleOnChange = (e: React.FormEvent<HTMLSelectElement>): void => {
+    if ((e.target as HTMLSelectElement).value === 'custom') {
+      return openNetworkModal();
+    }
     setSelectedNetwork((e.target as HTMLSelectElement).value as Network);
+  };
 
   const toggleTheme = (): void => {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -48,47 +57,54 @@ const Header: FC<IHeaderProps> = () => {
   };
 
   return (
-    <NavHeader.Root brand="DevTools">
-      <NavHeader.Navigation activeHref={pathname}>
-        {menuData.map((item, index) => (
-          <NavHeader.Link
-            key={index}
-            href={getHref(pathname, item.href)}
-            onClick={handleMenuItemClick}
-            asChild
-          >
-            <Link href={getHref(pathname, item.href)}>{item.title}</Link>
-          </NavHeader.Link>
-        ))}
-      </NavHeader.Navigation>
-      <NavHeader.Content>
-        <HeaderMenuButton
-          title={'Toggle theme'}
-          icon={'ThemeLightDark'}
-          onClick={() => toggleTheme()}
-        />
-        <NavHeader.Select
-          id="network-select"
-          ariaLabel={t('Select Network')}
-          value={selectedNetwork as string}
-          onChange={(e) => handleOnChange(e)}
-          icon="Earth"
-        >
-          {networksData.map((network: INetworkData) => (
-            <option
-              key={network.networkId}
-              value={network.networkId}
-              disabled={network.networkId === 'mainnet01'}
+    <>
+      <NavHeader.Root brand="DevTools">
+        <NavHeader.Navigation activeHref={pathname}>
+          {menuData.map((item, index) => (
+            <NavHeader.Link
+              key={index}
+              href={getHref(pathname, item.href)}
+              onClick={handleMenuItemClick}
+              asChild
             >
-              {network.label}
-            </option>
+              <Link href={getHref(pathname, item.href)}>{item.title}</Link>
+            </NavHeader.Link>
           ))}
-        </NavHeader.Select>
-        <div className={walletConnectWrapperStyle}>
-          {/*<WalletConnectButton />*/}
-        </div>
-      </NavHeader.Content>
-    </NavHeader.Root>
+        </NavHeader.Navigation>
+        <NavHeader.Content>
+          <HeaderMenuButton
+            title={'Toggle theme'}
+            icon={'ThemeLightDark'}
+            onClick={() => toggleTheme()}
+          />
+          <NavHeader.Select
+            id="network-select"
+            ariaLabel={t('Select Network')}
+            value={selectedNetwork as string}
+            onChange={(e) => handleOnChange(e)}
+            icon="Earth"
+          >
+            {networksData.map((network: INetworkData) => (
+              <option
+                key={network.networkId}
+                value={network.networkId}
+                disabled={network.networkId === 'mainnet01'}
+              >
+                {network.label}
+              </option>
+            ))}
+            <option value="custom">{t('+ add network')}</option>
+          </NavHeader.Select>
+          <div className={walletConnectWrapperStyle}>
+            {/*<WalletConnectButton />*/}
+          </div>
+        </NavHeader.Content>
+      </NavHeader.Root>
+      <AddNetworkModal
+        isOpen={isOpen}
+        onOpenChange={(isOpen) => setIsOpen(isOpen)}
+      />
+    </>
   );
 };
 
