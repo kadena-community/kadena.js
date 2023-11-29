@@ -1,7 +1,7 @@
 'use client';
 
 import { analyticsPageView } from '@/utils/analytics';
-import { useRouter } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Script from 'next/script';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
@@ -9,7 +9,9 @@ import React, { useEffect } from 'react';
 const TRACKING_ID: string = process.env.NEXT_PUBLIC_TRACKING_ID ?? '';
 
 export const Analytics: FC = () => {
-  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   // 👇 send page views when users gets to the landing page
   useEffect(() => {
     if (!TRACKING_ID) return;
@@ -33,13 +35,11 @@ export const Analytics: FC = () => {
         send_to: TRACKING_ID,
       });
     };
-    router.events.on('routeChangeComplete', handleRouteChange);
-    router.events.on('hashChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-      router.events.off('hashChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
+
+    const url = `${pathname}?${searchParams}`;
+
+    handleRouteChange(url);
+  }, [pathname, searchParams]);
 
   if (!TRACKING_ID) {
     return null;
