@@ -1,5 +1,7 @@
+'use client';
+
 import { analyticsPageView } from '@/utils/analytics';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
