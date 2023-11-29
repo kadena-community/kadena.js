@@ -29,12 +29,12 @@
   },
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
-  "types": "./lib/esm/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "chainweaver"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.cjs.json && tsc && api-extractor run || true && cpy ./src/chainweaver/vendor/**/* ./lib/cjs/chainweaver/vendor/ && cpy ./src/chainweaver/vendor/**/* ./lib/esm/chainweaver/vendor/",
+    "build": "tsc -p tsconfig.cjs.json && tsc && api-extractor run || true && cpy ./src/chainweaver/vendor/**/* ./lib/cjs/chainweaver/vendor/ && cpy ./src/chainweaver/vendor/**/* ./lib/esm/chainweaver/vendor/ && cp ./package.cjs.json ./lib/cjs/package.json",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark *.md -o --use @kadena-dev/markdown",

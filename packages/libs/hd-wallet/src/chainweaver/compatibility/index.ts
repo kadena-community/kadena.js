@@ -1,3 +1,3 @@
-export * from './kadenaGenKeypair.js';
-export * from './kadenaGetPublicFromRootKey.js';
-export * from './kadenaSignFromRootKey.js';
+export { kadenaGenKeypair } from './kadenaGenKeypair.js';
+export { kadenaGetPublicFromRootKey } from './kadenaGetPublicFromRootKey.js';
+export { kadenaSignFromRootKey } from './kadenaSignFromRootKey.js';

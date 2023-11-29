@@ -6,6 +6,10 @@ export {
   kadenaMnemonicToRootKeypair,
   kadenaSign,
   kadenaVerify,
-} from './vendor/kadena-crypto.js';
+} from './kadena-crypto.js';
 
-export * from './compatibility/index.js';
+export {
+  kadenaGenKeypair,
+  kadenaGetPublicFromRootKey,
+  kadenaSignFromRootKey,
+} from './compatibility/index.js';

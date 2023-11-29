@@ -9,7 +9,6 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/kadena-cli"
   },
-  "type": "module",
   "license": "ISC",
   "contributors": [
     "Danillo Felixdaal <danillo@kadena.io>",
@@ -18,6 +17,7 @@
     "Jermaine Jong <jermaine@kadena.io",
     "Javad Khalilian <javad@kadena.io>"
   ],
+  "type": "module",
   "bin": {
     "kadena": "./bin/kadena-cli.js"
   },
@@ -28,6 +28,7 @@
   "scripts": {
     "build": "tsc",
     "build:generate": "pnpm run generate:ts && pnpm run build",
+    "dev": "node --loader @swc-node/register/esm src/index.ts",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
@@ -39,10 +40,10 @@
     "@inquirer/prompts": "^3.0.4",
     "@kadena/client": "workspace:^",
     "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/hd-wallet": "workspace:^",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:^",
     "@kadena/pactjs-generator": "workspace:*",
-    "@kadena/hd-wallet": "workspace:^",
     "@scure/bip39": "^1.2.1",
     "@types/clear": "^0.1.2",
     "@types/js-yaml": "^4.0.5",
@@ -70,6 +71,7 @@
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
+    "@swc-node/register": "^1.6.8",
     "@types/cross-spawn": "~6.0.2",
     "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.3",
