@@ -1,3 +1,5 @@
+import { local } from '@kadena/chainweb-node-client';
+import { Pact, createTransaction } from '@kadena/client';
 import { createPactCommandFromTemplate } from '@kadena/client-utils/nodejs';
 import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
@@ -8,13 +10,21 @@ import {
   getGitAbsolutePath,
 } from '../utils/downlaod-git-files';
 import { clearDir } from '../utils/path';
-import { logger } from './helper';
+import {
+  IAccount,
+  dirtyRead,
+  listen,
+  logger,
+  signAndAssertTransaction,
+  submit,
+} from './helper';
 import { marmaladeConfig } from './simulation/config/marmalade';
 
 const TEMPLATE_EXTENSION = 'yaml';
 const CODE_FILE_EXTENSION = 'pact';
 
 export async function deployMarmaladeContracts(
+  signerAccount: IAccount,
   templateDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
   codeFileDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
 ) {
@@ -51,6 +61,7 @@ export async function deployMarmaladeContracts(
   console.log(templateFiles);
 
   // for (const templateFile of templateFiles) {
+
   const templateFile = templateFiles[0];
   const templateFilePath = join(templateDestinationPath, templateFile);
 
@@ -62,6 +73,16 @@ export async function deployMarmaladeContracts(
   );
 
   console.log(pactCommand);
+
+  const transaction = createTransaction(pactCommand);
+  pactCommand.payload;
+  const signedTx = signAndAssertTransaction(signerAccount.keys)(transaction);
+
+  console.log(signedTx);
+
+  const commandResult = await submit(signedTx);
+  const result = await listen(commandResult);
+  // }
 }
 
 export async function getMarmaladeTemplates(

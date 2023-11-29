@@ -2,7 +2,7 @@ import { Command, Option } from 'commander';
 
 import { deployMarmaladeContracts } from '../../devnet/marmalade';
 import type { IAccount } from '../helper';
-import { generateAccount, logger } from '../helper';
+import { generateAccount, logger, sender00 } from '../helper';
 import { transfer } from '../transfer';
 import { simulate } from './simulate';
 
@@ -73,7 +73,7 @@ program
     try {
       logger.info('Simulation config parameters:', args);
       // await simulate(args);
-      await deployMarmaladeContracts();
+      await deployMarmaladeContracts(sender00);
     } catch (error) {
       console.error(error);
     }
