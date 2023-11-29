@@ -121,7 +121,7 @@ const ExistingAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID, t],
+    [chainID, networksData, selectedNetwork, t],
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
