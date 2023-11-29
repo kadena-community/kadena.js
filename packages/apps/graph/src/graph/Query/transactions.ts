@@ -1,7 +1,7 @@
 import { prismaClient } from '@db/prismaClient';
 import type { Prisma } from '@prisma/client';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { COMPLEXITY, PRISMA, builder } from '../builder';
 
 builder.queryField('transactions', (t) => {
   return t.prismaConnection({
@@ -15,6 +15,12 @@ builder.queryField('transactions', (t) => {
     },
     type: 'Transaction',
     cursor: 'blockHash_requestKey',
+    complexity: (args) => ({
+      field: args.moduleName
+        ? COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS
+        : COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      multiplier: args.first || args.last || PRISMA.DEFAULT_SIZE,
+    }),
     async totalCount(__parent, args) {
       try {
         return await prismaClient.transaction.count({

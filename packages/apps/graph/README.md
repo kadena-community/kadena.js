@@ -143,3 +143,15 @@ pnpm run trace:analyse -s <sort> -l <limit>
 
 - sort - sort by a field (default: `median`)
 - limit - limit the number of queries to output (default: no limit)
+
+### Query Complexity
+
+To enable query complexity limits and calculations, set `COMPLEXITY_ENABLED` to `true`. The complexity limit, which determines how complex queries are allowed to be, can be set with `COMPLEXITY_LIMIT`. You can expose the complexity of a query by setting `COMPLEXITY_EXPOSED` to `true`, which returns the complexity details in the `extensions` section of the response.
+
+The overal query complexity is calculated by combining the field complexity, the depth and the breath. The complexity of the fields is determined by the following rules:
+
+- Fields that do not make external calls: 1
+- Calls to Chainweb Node: 5
+- Prisma calls without relations: 5
+- Prisma calls with relations: 10
+- *In cases of lists, a mulitplier is applied for the requested item count.
