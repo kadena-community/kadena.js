@@ -486,8 +486,8 @@ importers:
         specifier: ~0.0.1
         version: 0.0.1
       '@vanilla-extract/css':
-        specifier: 1.13.0
-        version: 1.13.0
+        specifier: 1.14.0
+        version: 1.14.0
       next:
         specifier: 13.5.5
         version: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
@@ -529,14 +529,14 @@ importers:
         specifier: 18.2.7
         version: 18.2.7
       '@vanilla-extract/next-plugin':
-        specifier: 2.3.1
-        version: 2.3.1(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2)
+        specifier: 2.3.2
+        version: 2.3.2(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2)
       '@vanilla-extract/vite-plugin':
-        specifier: ^3.9.0
+        specifier: ^3.9.2
         version: 3.9.2(@types/node@18.17.14)(vite@4.4.8)
       '@vanilla-extract/webpack-plugin':
-        specifier: 2.2.0
-        version: 2.2.0(@types/node@18.17.14)(webpack@5.88.2)
+        specifier: 2.3.1
+        version: 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
       '@vitest/coverage-v8':
         specifier: ^0.34.6
         version: 0.34.6(vitest@0.34.6)
@@ -12027,22 +12027,6 @@ packages:
       - supports-color
     dev: true
 
-  /@vanilla-extract/css@1.13.0:
-    resolution: {integrity: sha512-JFFBXhnJrPlGqHBabagXqo5ghXw9mtV270ycIGyLDZG8NAK5eRwAYkMowAxuzK7wZSm67GnETWYB7b0AUmyttg==}
-    dependencies:
-      '@emotion/hash': 0.9.1
-      '@vanilla-extract/private': 1.0.3
-      ahocorasick: 1.0.2
-      chalk: 4.1.2
-      css-what: 6.1.0
-      cssesc: 3.0.0
-      csstype: 3.1.2
-      deep-object-diff: 1.1.9
-      deepmerge: 4.3.1
-      media-query-parser: 2.0.2
-      outdent: 0.8.0
-    dev: false
-
   /@vanilla-extract/css@1.14.0:
     resolution: {integrity: sha512-rYfm7JciWZ8PFzBM/HDiE2GLnKI3xJ6/vdmVJ5BSgcCZ5CxRlM9Cjqclni9lGzF3eMOijnUhCd/KV8TOzyzbMA==}
     dependencies:
@@ -12112,25 +12096,6 @@ packages:
       - terser
     dev: true
 
-  /@vanilla-extract/next-plugin@2.3.1(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2):
-    resolution: {integrity: sha512-aoDTnCY3gJXjytoxlA7Xk4A/BDxdzUBeZhHWypauKJ06XJKlV/odjXt8K5FhCrMy8o+nqnCpjOD6KXcg6JmIdw==}
-    peerDependencies:
-      next: '>=12.1.7'
-    dependencies:
-      '@vanilla-extract/webpack-plugin': 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
-      next: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - webpack
-    dev: true
-
   /@vanilla-extract/next-plugin@2.3.2(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2):
     resolution: {integrity: sha512-wBulJAhmr8guYo5YxrfsA1T/TQ3tbMJjNtE6QrVZvs1NTnT9/WAmf4IVrbUvQbH+LBj5LXO8dRzueGPAvepSng==}
     peerDependencies:
@@ -12189,27 +12154,6 @@ packages:
       - supports-color
       - terser
       - ts-node
-    dev: true
-
-  /@vanilla-extract/webpack-plugin@2.2.0(@types/node@18.17.14)(webpack@5.88.2):
-    resolution: {integrity: sha512-EQrnT7gIki+Wm57eIRZRw6pi4M4VVnwiSp5OOcQF81XdZvoYXo51Ern7+dHKS+Xxli151BWTUsg/UZSpaAz29Q==}
-    peerDependencies:
-      webpack: ^4.30.0 || ^5.20.2
-    dependencies:
-      '@vanilla-extract/integration': 6.2.4(@types/node@18.17.14)
-      chalk: 4.1.2
-      debug: 4.3.4(supports-color@5.5.0)
-      loader-utils: 2.0.4
-      webpack: 5.88.2(webpack-cli@4.9.2)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
     dev: true
 
   /@vanilla-extract/webpack-plugin@2.3.1(@types/node@18.17.14)(webpack@5.88.2):
@@ -12980,10 +12924,6 @@ packages:
     dependencies:
       clean-stack: 4.2.0
       indent-string: 5.0.0
-
-  /ahocorasick@1.0.2:
-    resolution: {integrity: sha512-hCOfMzbFx5IDutmWLAt6MZwOUjIfSM9G9FyVxytmE4Rs/5YDPWQrD/+IR1w+FweD9H2oOZEnv36TmkjhNURBVA==}
-    dev: false
 
   /ajv-formats@2.1.1(ajv@8.12.0):
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
