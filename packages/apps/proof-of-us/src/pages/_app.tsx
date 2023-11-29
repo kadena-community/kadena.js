@@ -1,4 +1,5 @@
 import { Analytics } from '@/components/Analytics/Analytics';
+import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { KodeMono } from '@kadena/fonts';
 import { ThemeProvider } from 'next-themes';
 import type { AppInitialProps } from 'next/app';
@@ -98,6 +99,7 @@ export const MyApp = ({
           dark: 'dark',
         }}
       >
+        <CookieConsent />
         <Component {...pageProps} />
       </ThemeProvider>
 
