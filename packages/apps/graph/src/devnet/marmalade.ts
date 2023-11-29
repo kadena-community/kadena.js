@@ -82,12 +82,11 @@ export async function deployMarmaladeContracts(
 
   console.log(signedTx);
 
-  const commandResult = await dirtyRead(transaction);
+  const dirtyReadResult = await dirtyRead(transaction);
+  console.log(dirtyReadResult);
 
-  console.log(commandResult);
-
-  // const commandResult = await submit(signedTx);
-  // const result = await listen(commandResult);
+  const commandResult = await submit(signedTx);
+  const result = await listen(commandResult);
   // }
 }
 
