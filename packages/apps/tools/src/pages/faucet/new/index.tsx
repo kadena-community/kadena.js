@@ -83,7 +83,7 @@ type FormData = z.infer<typeof schema>;
 const NewAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { selectedNetwork } = useWalletConnectClient();
+  const { selectedNetwork, networksData } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
   const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
@@ -94,8 +94,16 @@ const NewAccountFaucetPage: FC = () => {
   const [pubKeys, setPubKeys] = useState<string[]>([]);
 
   const { data: accountName } = useQuery({
-    queryKey: ['accountName', pubKeys, chainID, pred],
-    queryFn: () => createPrincipal(pubKeys, chainID, pred),
+    queryKey: [
+      'accountName',
+      pubKeys,
+      chainID,
+      pred,
+      selectedNetwork,
+      networksData,
+    ],
+    queryFn: () =>
+      createPrincipal(pubKeys, chainID, selectedNetwork, networksData, pred),
     enabled: pubKeys.length > 0,
   });
 
@@ -134,6 +142,8 @@ const NewAccountFaucetPage: FC = () => {
           data.name,
           pubKeys,
           chainID,
+          selectedNetwork,
+          networksData,
           AMOUNT_OF_COINS_FUNDED,
           pred,
         )) as IFundExistingAccountResponse;
@@ -164,7 +174,7 @@ const NewAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID, pred, pubKeys, setError, t],
+    [chainID, networksData, pred, pubKeys, selectedNetwork, setError, t],
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';

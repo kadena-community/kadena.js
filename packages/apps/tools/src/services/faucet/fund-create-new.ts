@@ -1,20 +1,19 @@
-import type {
-  ChainwebChainId,
-  ChainwebNetworkId,
-} from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
-  Pact,
   createClient,
   isSignedTransaction,
+  Pact,
   readKeyset,
 } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 
-import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import Debug from 'debug';
 
-const NETWORK_ID: ChainwebNetworkId = 'testnet04';
+import type { Network } from '@/constants/kadena';
+import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
+
 const FAUCET_ACCOUNT = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
 const debug = Debug('kadena-transfer:services:faucet');
 
@@ -22,10 +21,19 @@ export const fundCreateNewAccount = async (
   account: string,
   keys: string[],
   chainId: ChainwebChainId,
+  network: Network,
+  networksData: INetworkData[],
   amount = 100,
   pred = 'keys-all',
 ): Promise<unknown> => {
   debug(fundCreateNewAccount.name);
+
+  const networkDto = networksData.find((item) => item.networkId === network);
+
+  if (!networkDto) {
+    throw new Error('Network not found');
+  }
+
   const keyPair = genKeyPair();
   const KEYSET_NAME = 'new_keyset';
 
@@ -56,7 +64,7 @@ export const fundCreateNewAccount = async (
     ])
     .addKeyset(KEYSET_NAME, pred, ...keys)
     .setMeta({ senderAccount: FAUCET_ACCOUNT, chainId })
-    .setNetworkId(NETWORK_ID)
+    .setNetworkId(networkDto.networkId)
     .createTransaction();
 
   const signature = sign(transaction.cmd, keyPair);
@@ -65,8 +73,9 @@ export const fundCreateNewAccount = async (
     throw new Error('Failed to sign transaction');
   }
 
-  const apiHost = getKadenaConstantByNetwork('testnet04').apiHost({
-    networkId: NETWORK_ID,
+  const apiHost = getApiHost({
+    api: networkDto.API,
+    networkId: networkDto.networkId,
     chainId,
   });
 
