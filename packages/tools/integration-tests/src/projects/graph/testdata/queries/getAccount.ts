@@ -1,11 +1,88 @@
 export function getAccountQuery(account: string) {
-  const query = {
-    query:
-      'query getAccount($moduleName: String!, $accountName: String!) {\n  account(moduleName: $moduleName, accountName: $accountName) {\n    ...AllAccountFields\n    chainAccounts {\n      ...CoreChainAccountFields\n      guard {\n        keys\n        predicate\n        __typename\n      }\n      __typename\n    }\n    transactions {\n      edges {\n        node {\n          ...CoreTransactionFields\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    transfers {\n      edges {\n        node {\n          ...CoreTransferFields\n          crossChainTransfer {\n            ...CoreTransferFields\n            __typename\n          }\n          transaction {\n            pactId\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment AllAccountFields on ModuleAccount {\n  ...CoreAccountFields\n  id\n  totalBalance\n  __typename\n}\n\nfragment CoreAccountFields on ModuleAccount {\n  accountName\n  moduleName\n  __typename\n}\n\nfragment CoreChainAccountFields on ChainModuleAccount {\n  balance\n  chainId\n  __typename\n}\n\nfragment CoreTransactionFields on Transaction {\n  chainId\n  code\n  creationTime\n  height\n  requestKey\n  __typename\n}\n\nfragment CoreTransferFields on Transfer {\n  amount\n  chainId\n  senderAccount\n  height\n  requestKey\n  receiverAccount\n  __typename\n}',
+  return {
+    query: `query getAccount($moduleName: String!, $accountName: String!) {
+      account(moduleName: $moduleName, accountName: $accountName) {
+        ...AllAccountFields
+        chainAccounts {
+          ...CoreChainAccountFields
+          guard {
+            keys
+            predicate
+            __typename
+          }
+          __typename
+        }
+        transactions {
+          edges {
+            node {
+              ...CoreTransactionFields
+              __typename
+            }
+            __typename
+          }
+          __typename
+        }
+        transfers {
+          edges {
+            node {
+              ...CoreTransferFields
+              crossChainTransfer {
+                ...CoreTransferFields
+                __typename
+              }
+              transaction {
+                pactId
+                __typename
+              }
+              __typename
+            }
+            __typename
+          }
+          __typename
+        }
+        __typename
+      }
+    }
+
+    fragment AllAccountFields on ModuleAccount {
+      ...CoreAccountFields
+      id
+      totalBalance
+      __typename
+    }
+
+    fragment CoreAccountFields on ModuleAccount {
+      accountName
+      moduleName
+      __typename
+    }
+
+    fragment CoreChainAccountFields on ChainModuleAccount {
+      balance
+      chainId
+      __typename
+    }
+
+    fragment CoreTransactionFields on Transaction {
+      chainId
+      code
+      creationTime
+      height
+      requestKey
+      __typename
+    }
+
+    fragment CoreTransferFields on Transfer {
+      amount
+      chainId
+      senderAccount
+      height
+      requestKey
+      receiverAccount
+      __typename
+    }`,
     variables: { moduleName: 'coin', accountName: account },
     operationName: 'getAccount',
     extensions: {},
   };
-
-  return query;
 }
