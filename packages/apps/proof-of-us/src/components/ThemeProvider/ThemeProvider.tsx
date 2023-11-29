@@ -1,7 +1,7 @@
 'use client';
 
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 
 interface IProps extends PropsWithChildren {}
 
