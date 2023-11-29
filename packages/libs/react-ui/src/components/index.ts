@@ -77,7 +77,6 @@ export type { ITreeProps } from './Tree';
 export type {
   IGradientTextProps,
   IHeadingProps,
-  ILabelProps,
   ITextProps,
 } from './Typography';
 
@@ -129,4 +128,4 @@ export { Tag } from './Tag';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
-export { GradientText, Heading, Label, Text } from './Typography';
+export { GradientText, Heading, Text } from './Typography';
