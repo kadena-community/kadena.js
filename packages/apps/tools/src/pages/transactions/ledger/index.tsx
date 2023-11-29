@@ -22,6 +22,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { containerClass } from '../styles.css';
 
+import AppBtc from '@ledgerhq/hw-app-btc';
+import TransportWebHID from '@ledgerhq/hw-transport-webhid';
+import { listen } from '@ledgerhq/logs';
+
 const schema = z.object({
   receiver: NAME_VALIDATION,
   amount: z.number().positive(),
@@ -29,6 +33,37 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
+
+async function connectLedger() {
+  try {
+    const transport = await TransportWebHID.create();
+
+    //listen to the events which are sent by the Ledger packages in order to debug the app
+    listen((log) => console.log('Ledger listen:', log));
+
+    //When the Ledger device connected it is trying to display the bitcoin address
+    const appBtc = new AppBtc({ transport });
+    const { bitcoinAddress } = await appBtc.getWalletPublicKey(
+      "44'/0'/0'/0/0",
+      { verify: false, format: 'legacy' },
+    );
+
+    console.log('BitcoinAddress:', bitcoinAddress);
+
+    //Display the address on the Ledger device and ask to verify the address
+    const walletPublicKey = await appBtc.getWalletPublicKey("44'/0'/0'/0/0", {
+      format: 'legacy',
+      verify: true,
+    });
+
+    console.log('WalletPublicKey:', walletPublicKey);
+  } catch (error) {
+    console.log(
+      'Something went wrong with the Ledger device connection',
+      error,
+    );
+  }
+}
 
 const LedgerPage = () => {
   const router = useRouter();
@@ -59,6 +94,9 @@ const LedgerPage = () => {
       <Heading as="h4">{t('Kadena Ledger Transfer')}</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Card fullWidth>
+          <Button onClick={connectLedger} type="button">
+            Connect your Ledger
+          </Button>
           <Heading as="h5">{t('Receiver')}</Heading>
           <AccountNameField
             inputProps={{ ...register('receiver') }}
