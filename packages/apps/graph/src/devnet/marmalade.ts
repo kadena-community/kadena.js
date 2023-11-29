@@ -9,6 +9,7 @@ import {
 } from '../utils/downlaod-git-files';
 import { clearDir } from '../utils/path';
 import { logger } from './helper';
+import { marmaladeConfig } from './simulation/config/marmalade';
 
 const TEMPLATE_EXTENSION = 'yaml';
 const CODE_FILE_EXTENSION = 'pact';
@@ -17,15 +18,15 @@ export async function deployMarmaladeContracts(
   templateDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
   codeFileDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
 ) {
-  // await clearDir(templateDestinationPath);
+  await clearDir(templateDestinationPath);
 
-  // if (templateDestinationPath !== codeFileDestinationPath) {
-  //   await clearDir(codeFileDestinationPath);
-  // }
+  if (templateDestinationPath !== codeFileDestinationPath) {
+    await clearDir(codeFileDestinationPath);
+  }
 
-  // console.log('Getting Marmalade Templates');
-  // await getMarmaladeTemplates(templateDestinationPath);
-  // await getCodeFiles(templateDestinationPath, codeFileDestinationPath);
+  console.log('Getting Marmalade Templates');
+  await getMarmaladeTemplates(templateDestinationPath);
+  await getCodeFiles(templateDestinationPath, codeFileDestinationPath);
 
   const templateFiles = readdirSync(templateDestinationPath).filter((file) =>
     file.endsWith(TEMPLATE_EXTENSION),
@@ -35,15 +36,32 @@ export async function deployMarmaladeContracts(
     file.endsWith(CODE_FILE_EXTENSION),
   );
 
-  console.log(templateFiles);
-  console.log(codeFiles);
-
-  updateTemplateFilesWithCodeFile(
+  await updateTemplateFilesWithCodeFile(
     templateFiles,
     templateDestinationPath,
     codeFiles,
     codeFileDestinationPath,
   );
+
+  console.log('Deploying Marmalade Contracts');
+
+  // sort the templates alphabetically so that the contracts are deployed in the correct order
+  templateFiles.sort((a, b) => a.localeCompare(b));
+
+  console.log(templateFiles);
+
+  // for (const templateFile of templateFiles) {
+  const templateFile = templateFiles[0];
+  const templateFilePath = join(templateDestinationPath, templateFile);
+
+  console.log(templateFilePath);
+  const pactCommand = await createPactCommandFromTemplate(
+    templateFile,
+    marmaladeConfig,
+    templateDestinationPath,
+  );
+
+  console.log(pactCommand);
 }
 
 export async function getMarmaladeTemplates(
@@ -101,40 +119,43 @@ export async function getCodeFiles(
   );
 }
 
-export function updateTemplateFilesWithCodeFile(
+export async function updateTemplateFilesWithCodeFile(
   templateFiles: string[],
   templateDirectory: string,
   codeFiles: string[],
   codeFileDirectory: string,
-): void {
-  templateFiles.forEach(async (templateFile) => {
-    const templateFileContent = readFileSync(
-      join(templateDirectory, templateFile),
-      'utf8',
-    );
-    const yamlContent = yaml.load(templateFileContent) as any;
+): Promise<void> {
+  await Promise.all(
+    templateFiles.map((templateFile) => {
+      const templateFileContent = readFileSync(
+        join(templateDirectory, templateFile),
+        'utf8',
+      );
+      const yamlContent = yaml.load(templateFileContent) as any;
 
-    if (!yamlContent?.codeFile) {
-      return;
-    }
+      if (!yamlContent?.codeFile) {
+        return;
+      }
 
-    const codeFileName = yamlContent.codeFile.split('/').pop();
+      const codeFileName = yamlContent.codeFile.split('/').pop();
 
-    console.log('codeFileName', join(templateDirectory, templateFile));
-    console.log('codeFileDirectory', join(codeFileDirectory, codeFileName));
+      console.log('codeFileName', join(templateDirectory, templateFile));
+      console.log('codeFileDirectory', join(codeFileDirectory, codeFileName));
 
-    if (!codeFiles.includes(codeFileName)) {
-      throw new Error(`Code file ${codeFileName} not found`);
-    }
-    const newCodeFilePath = relative(
-      templateDirectory,
-      join(codeFileDirectory, codeFileName),
-    );
+      if (!codeFiles.includes(codeFileName)) {
+        throw new Error(`Code file ${codeFileName} not found`);
+      }
+      const newCodeFilePath = relative(
+        templateDirectory,
+        join(codeFileDirectory, codeFileName),
+      );
 
-    yamlContent.codeFile = newCodeFilePath;
-    writeFileSync(
-      join(templateDirectory, templateFile),
-      yaml.dump(yamlContent),
-    );
-  });
+      const yamlString = readFileSync(
+        join(templateDirectory, templateFile),
+        'utf8',
+      ).replace(yamlContent.codeFile, newCodeFilePath);
+
+      writeFileSync(join(templateDirectory, templateFile), yamlString);
+    }),
+  );
 }
