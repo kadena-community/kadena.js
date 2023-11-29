@@ -1,4 +1,3 @@
-import type { IMenuData } from '@/Layout';
 import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
@@ -7,6 +6,7 @@ import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
+import type { IMenuData } from '@kadena/docs-tools';
 import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import {
   Box,
