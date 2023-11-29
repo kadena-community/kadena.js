@@ -159,9 +159,11 @@ export const convertTemplateTxToPactCommand = (
   const { code, ...kdaToolTx } = ctx.tplTx;
 
   const execPayload: IExecutionPayloadObject = {
-    data: kdaToolTx.data,
-    code: code,
-  } as unknown as IExecutionPayloadObject;
+    exec: {
+      data: kdaToolTx.data,
+      code: code,
+    },
+  };
 
   const { publicMeta, ...kdaToolTxWithoutMeta } = kdaToolTx;
 
