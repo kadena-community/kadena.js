@@ -170,7 +170,7 @@ export const convertTemplateTxToPactCommand = (
     meta: {
       ...publicMeta,
       chainId: publicMeta.chainId as ChainId,
-      creationTime: Date.now(),
+      creationTime: Math.floor(Date.now() / 1000),
     },
     nonce: kdaToolTx.nonce ? kdaToolTx.nonce : '',
     signers: kdaToolTx.signers.map(publicToPubkey),
