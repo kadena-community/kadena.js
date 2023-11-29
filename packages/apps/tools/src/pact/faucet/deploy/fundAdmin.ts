@@ -1,13 +1,12 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
-import { Pact, createClient, readKeyset } from '@kadena/client';
+import { Pact, createClient } from '@kadena/client';
 
 import {
-  ADMINS,
   COIN_ACCOUNT,
   DOMAIN,
   GAS_PROVIDER,
-  InitialFunding,
+  GAS_STATION,
   NETWORK_ID,
 } from './constants';
 import { signTransaction } from './utils';
@@ -25,25 +24,67 @@ export const fundAdmin = async ({
   chainId: ChainwebChainId;
   upgrade: boolean;
 }) => {
+  if (NETWORK_ID !== 'testnet04') {
+    return 'Only needs to happen on Testnet, funding happens differently on Devnet.';
+  }
+
   if (upgrade) {
     return 'The step "fundAdmin" is skipped for upgrades';
   }
 
+  // const result = transferCrossChain(
+  //   {
+  //     sender: { account: COIN_ACCOUNT, publicKeys: [GAS_PROVIDER.publicKey] },
+  //     receiver: {
+  //       account: GAS_STATION,
+  //       keyset: {
+  //         keys: [GAS_PROVIDER.publicKey],
+  //         pred: 'keys-any',
+  //       },
+  //     },
+  //     amount: '2.0',
+  //     targetChainId: chainId,
+  //     // targetChainGasPayer?: { account: string; publicKeys: string[] };
+  //     // gasPayer?: { account: string; publicKeys: string[] };
+  //     chainId: '0',
+  //   },
+  //   {
+  //     host: ({ networkId, chainId }) =>
+  //       `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+  //     defaults: { networkId: NETWORK_ID },
+  //     sign: createSignWithKeypair([
+  //       {
+  //         publicKey: GAS_PROVIDER.publicKey,
+  //         secretKey: GAS_PROVIDER.privateKey,
+  //       },
+  //     ]),
+  //   },
+  // )
+  //   .on('sign', (data) => console.log(data))
+  //   .on('preflight', (data) => console.log(data))
+  //   .on('submit', (data) => console.log(data))
+  //   .on('listen', (data) => console.log(data))
+  //   .execute();
+
+  //   return result;
+
+  // if (upgrade) {
+  //   return 'The step "fundAdmin" is skipped for upgrades';
+  // }
+
   const from: IAccount = { chainId: '0', account: COIN_ACCOUNT };
-  const to: IAccount = { chainId: chainId, account: COIN_ACCOUNT };
-  const keysetName = 'receiver-guard';
+  const to: IAccount = { chainId: chainId, account: GAS_STATION };
 
   const fundTx = Pact.builder
     .execution(
       Pact.modules.coin.defpact['transfer-crosschain'](
         from.account,
         to.account,
-        readKeyset(keysetName),
+        () =>
+          '(n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet.create-gas-payer-guard)',
         to.chainId,
         {
-          decimal: `${
-            InitialFunding.COIN_FAUCET + InitialFunding.FAUCET_OPERATION
-          }.0`,
+          decimal: `2.0`,
         },
       ),
     )
@@ -54,18 +95,12 @@ export const fundAdmin = async ({
         from.account,
         to.account,
         {
-          decimal: `${
-            InitialFunding.COIN_FAUCET + InitialFunding.FAUCET_OPERATION
-          }.0`,
+          decimal: `2.0`,
         },
         to.chainId,
       ),
     ])
-    .addKeyset(
-      keysetName,
-      'keys-any',
-      ...ADMINS.map((admin) => admin.publicKey),
-    )
+    // .addKeyset(keysetName, 'keys-any', ...[GAS_PROVIDER.publicKey])
     .setMeta({ chainId: from.chainId, senderAccount: from.account })
     .setNetworkId(NETWORK_ID)
     .createTransaction();

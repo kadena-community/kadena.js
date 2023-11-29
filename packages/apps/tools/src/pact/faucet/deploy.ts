@@ -1,33 +1,47 @@
 import { CHAINS } from '@kadena/chainweb-node-client';
 
 import { createAdmin } from './deploy/createAdmin';
+import { createNamespace } from './deploy/createNamespace';
 import { deployFaucet } from './deploy/deployFaucet';
+import { drain } from './deploy/drain';
 import { fundAdmin } from './deploy/fundAdmin';
-import { fundFaucet } from './deploy/fundFaucet';
 import { fundGasStation } from './deploy/fundGasStation';
-import { rotateKeyset } from './deploy/rotate-keyset';
 
 const deployInOrder = () => {
   CHAINS.forEach(async (chain) => {
-    const upgrade = false; // Depends on where you're deploying, whether it's a redeploy or not
+    // Depends on where you're deploying, whether it's a redeploy or not (on Testnet it's not an upgrade, on (a "fresh") DevNet it is)
+    const upgrade = false;
 
-    // console.log('createAdmin', chain, upgrade);
-    // await createAdmin({ chainId: chain, upgrade });
+    console.log('createAdmin start', chain, upgrade);
+    const adminResult = await createAdmin({ chainId: chain, upgrade });
+    console.log('createAdmin end', adminResult);
 
-    // console.log('fundAdmin', chain, upgrade);
-    // await fundAdmin({ chainId: chain, upgrade });
+    console.log('createNamespace 1', chain, upgrade);
+    const namespaceResult = await createNamespace({ chainId: chain, upgrade });
+    console.log('createNamespace 2', namespaceResult);
 
-    // console.log('deployFaucet', chain, upgrade);
-    // await deployFaucet({ chainId: chain, upgrade });
+    console.log('deployFaucet start', chain, upgrade);
+    const resultDeploy = await deployFaucet({
+      chainId: chain,
+      upgrade,
+      namespace: 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49',
+    });
+    console.log('deployFaucet end', resultDeploy);
 
-    // console.log('fundFaucet', chain, upgrade);
-    // await fundFaucet({ chainId: chain, upgrade });
+    console.log('fundGasStation start', chain, upgrade);
+    const fundGasStationResult = await fundGasStation({
+      chainId: chain,
+      upgrade,
+    });
+    console.log('fundGasStation end', fundGasStationResult);
 
-    // console.log('fundGasStation', chain, upgrade);
-    // await fundGasStation({ chainId: chain, upgrade });
+    // console.log('fundAdmin start', chain, upgrade);
+    // const fundAdminResult = await fundAdmin({ chainId: chain, upgrade });
+    // console.log('fundAdmin end', fundAdminResult);
 
-    // console.log('rotateKeyset', chain, upgrade);
-    // await rotateKeyset('faucet-operation', chain);
+    // console.log('drain start', chain, upgrade);
+    // const drainResult = await drain({ chainId: chain, upgrade });
+    // console.log('drain end', drainResult);
   });
 };
 

@@ -1,16 +1,10 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { createClient, Pact, readKeyset } from '@kadena/client';
+import { createSignWithKeypair } from '@kadena/client';
 
-import {
-  ADMINS,
-  COIN_ACCOUNT,
-  DOMAIN,
-  GAS_PROVIDER,
-  NETWORK_ID,
-} from './constants';
-import { signTransaction } from './utils';
+import { transferCreate } from '@kadena/client-utils/coin';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+import { ADMIN, DEVNET_GENESIS, DOMAIN, NETWORK_ID } from './constants';
+
 export const createAdmin = async ({
   chainId,
   upgrade,
@@ -18,46 +12,49 @@ export const createAdmin = async ({
   chainId: ChainwebChainId;
   upgrade: boolean;
 }) => {
+  if (NETWORK_ID !== 'fast-development') {
+    return 'Only needs to happen on Devnet, user already exist on Testnet.';
+  }
+
   if (upgrade) {
     return 'The step "createAdmins" is skipped for upgrades';
   }
 
-  const receiver = COIN_ACCOUNT;
-  const keysetName = 'contract-admins';
-  const createAdminTx = Pact.builder
-    .execution(
-      Pact.modules.coin['create-account'](receiver, readKeyset(keysetName)),
-    )
-    // .addKeyset(keysetName, 'keys-any', ADMINS.map((admin) => admin.publicKey))
-    .addData(keysetName, {
-      keys: ADMINS.map((admin) => admin.publicKey),
-      pred: 'keys-any',
-    })
-    .addSigner(GAS_PROVIDER.publicKey, (withCap: any) => [withCap('coin.GAS')])
-    .setMeta({
+  const result = transferCreate(
+    {
+      sender: {
+        account: DEVNET_GENESIS.accountName,
+        publicKeys: [DEVNET_GENESIS.publicKey],
+      },
+      receiver: {
+        account: ADMIN.accountName,
+        keyset: {
+          keys: [ADMIN.publicKey],
+          pred: 'keys-all',
+        },
+      },
+      amount: '1',
+      // gasPayer?: { account: string; publicKeys: string[] };
       chainId,
-      gasPrice: 0.000001,
-      gasLimit: 10000,
-      ttl: 28800,
-      creationTime: Math.round(new Date().getTime() / 1000) - 15,
-      senderAccount: GAS_PROVIDER.accountName,
-    })
-    .setNonce('Create contract-admins')
-    .setNetworkId(NETWORK_ID)
-    .createTransaction();
+    },
+    {
+      host: ({ networkId, chainId }) =>
+        `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      defaults: { networkId: NETWORK_ID },
+      sign: createSignWithKeypair([
+        {
+          publicKey: DEVNET_GENESIS.publicKey,
+          secretKey: DEVNET_GENESIS.privateKey,
+        },
+      ]),
+    },
+  )
+    .on('sign', (data) => console.log(data))
+    .on('preflight', (data) => console.log(data))
+    .on('submit', (data) => console.log(data))
+    .on('listen', (data) => console.log(data))
+    .execute();
 
-  const signedTx = signTransaction(createAdminTx, {
-    publicKey: GAS_PROVIDER.publicKey,
-    secretKey: GAS_PROVIDER.privateKey,
-  });
-
-  const { submit, pollStatus } = createClient(({ chainId, networkId }) => {
-    return `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
-  });
-
-  const requestKeys = await submit(signedTx);
-
-  console.log('createAdmins', requestKeys);
-
-  return await pollStatus(requestKeys);
+  console.log(result);
+  return result;
 };

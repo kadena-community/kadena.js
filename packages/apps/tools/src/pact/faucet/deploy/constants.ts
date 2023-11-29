@@ -27,6 +27,7 @@ type Account = {
   accountName: string;
 };
 
+// Needs to be the credentials of one of the `ADMINS` specified above
 export const ADMIN: Account = {
   publicKey: '<PROVIDE_ONE_OF_THE_ADMINS>',
   privateKey: '<PROVIDE_ONE_OF_THE_ADMINS>',

@@ -1,19 +1,20 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { createClient, Pact } from '@kadena/client';
+import { createClient, isSignedTransaction, Pact } from '@kadena/client';
 
-import { DOMAIN, GAS_PROVIDER, NETWORK_ID } from './constants';
-import { signTransaction } from './utils';
+import { ADMIN, DOMAIN, NETWORK_ID } from './constants';
 
+import { sign } from '@kadena/cryptography-utils';
 import fs from 'fs';
 import path from 'path';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const deployFaucet = async ({
   chainId,
   upgrade,
+  namespace,
 }: {
   chainId: ChainwebChainId;
   upgrade: boolean;
+  namespace: string;
 }) => {
   const faucetContract = fs.readFileSync(
     path.resolve(__dirname, './../testnet-faucet.pact'),
@@ -22,32 +23,42 @@ export const deployFaucet = async ({
 
   const deployFaucetTx = Pact.builder
     .execution(faucetContract)
-    .addData('upgrade', upgrade)
-    .addSigner(GAS_PROVIDER.publicKey, (withCap: any) => [])
+    .addData('init', !upgrade)
+    .addData('coin-faucet-namespace', namespace)
+    .addData('coin-faucet-admin-keyset-name', `${namespace}.admin-keyset`)
+    .addSigner(ADMIN.publicKey)
     .setMeta({
       chainId,
       gasPrice: 0.000001,
       gasLimit: 70000,
       ttl: 28800,
-      creationTime: Math.round(new Date().getTime() / 1000) - 15,
-      senderAccount: GAS_PROVIDER.accountName,
+      senderAccount: ADMIN.accountName,
     })
-    .setNonce('Deploy Coin Faucet')
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 
-  const signedTx = signTransaction(deployFaucetTx, {
-    publicKey: GAS_PROVIDER.publicKey,
-    secretKey: GAS_PROVIDER.privateKey,
+  const signature = sign(deployFaucetTx.cmd, {
+    publicKey: ADMIN.publicKey,
+    secretKey: ADMIN.privateKey,
   });
 
-  console.log(signedTx);
+  if (signature.sig === undefined) {
+    throw new Error('Failed to sign transaction');
+  }
+
+  deployFaucetTx.sigs = [{ sig: signature.sig }];
+
+  console.log(deployFaucetTx);
 
   const { submit, pollStatus } = createClient(({ chainId, networkId }) => {
     return `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
   });
 
-  const requestKeys = await submit(signedTx);
+  if (!isSignedTransaction(deployFaucetTx)) {
+    throw new Error('Transaction is not signed');
+  }
+
+  const requestKeys = await submit(deployFaucetTx);
 
   console.log('deployFaucet', requestKeys);
 

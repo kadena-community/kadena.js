@@ -2,10 +2,10 @@ import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer } from '@kadena/client-utils/coin';
 import {
-  COIN_ACCOUNT,
+  DEVNET_GENESIS,
   DOMAIN,
-  GAS_PROVIDER,
   GAS_STATION,
+  InitialFunding,
   NETWORK_ID,
 } from './constants';
 
@@ -16,6 +16,10 @@ export const fundGasStation = async ({
   chainId: ChainwebChainId;
   upgrade: boolean;
 }) => {
+  if (NETWORK_ID !== 'fast-development') {
+    return 'Only needs to happen on Devnet, funding happens differently on Testnet.';
+  }
+
   if (upgrade) {
     return 'The step "fundGasStation" is skipped for upgrades';
   }
@@ -23,14 +27,14 @@ export const fundGasStation = async ({
   const result = await transfer(
     {
       sender: {
-        account: COIN_ACCOUNT,
-        publicKeys: [GAS_PROVIDER.publicKey],
+        account: DEVNET_GENESIS.accountName,
+        publicKeys: [DEVNET_GENESIS.publicKey],
       },
       receiver: GAS_STATION,
-      amount: '1',
+      amount: `${InitialFunding}`,
       gasPayer: {
-        account: GAS_PROVIDER.accountName,
-        publicKeys: [GAS_PROVIDER.publicKey],
+        account: DEVNET_GENESIS.accountName,
+        publicKeys: [DEVNET_GENESIS.publicKey],
       },
       chainId,
     },
@@ -40,8 +44,8 @@ export const fundGasStation = async ({
       defaults: { networkId: NETWORK_ID },
       sign: createSignWithKeypair([
         {
-          publicKey: GAS_PROVIDER.publicKey,
-          secretKey: GAS_PROVIDER.privateKey,
+          publicKey: DEVNET_GENESIS.publicKey,
+          secretKey: DEVNET_GENESIS.privateKey,
         },
       ]),
     },
@@ -52,6 +56,5 @@ export const fundGasStation = async ({
     .on('listen', (data) => console.log(data))
     .execute();
 
-  console.log(result);
-  return;
+  return result;
 };
