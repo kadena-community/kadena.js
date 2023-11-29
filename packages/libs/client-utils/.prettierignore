@@ -5,3 +5,4 @@ temp
 **/*.md
 coverage
 tsdoc-metadata.json
+**/*.yaml
