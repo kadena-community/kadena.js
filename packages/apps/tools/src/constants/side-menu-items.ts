@@ -32,4 +32,10 @@ export const menuData: ISidebarToolbarItem[] = [
       },
     ],
   },
+  {
+    title: 'Ledger',
+    icon: 'UsbFlashDrive',
+    href: 'ledger',
+    items: [{ title: 'Ledger', href: Routes.LEDGER }],
+  },
 ];
