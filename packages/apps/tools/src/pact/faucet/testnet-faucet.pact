@@ -1,5 +1,6 @@
-(namespace "user")
-(module coin-faucet-v2 GOVERNANCE
+(namespace (read-string 'coin-faucet-namespace))
+
+(module coin-faucet GOVERNANCE
 
   "'coin-faucet' represents Kadena's Coin Faucet Contract."
 
@@ -8,11 +9,23 @@
   ;; TODO - use hashed import
   (use coin)
 
+  (defconst GOVERNANCE_KEYSET (read-string 'coin-faucet-admin-keyset-name))
+
+  (defcap GOVERNANCE()
+    (enforce-guard GOVERNANCE_KEYSET)
+  )
+
+  (defcap ALLOW_FUNDING () true)
+
+  (defconst FAUCET_ACCOUNT (create-principal (create-gas-payer-guard)))
+
+  (defun init ()
+    (coin.create-account FAUCET_ACCOUNT (create-gas-payer-guard))
+  )
+
   ; --------------------------------------------------------------------------
   ; Gas station
   ; --------------------------------------------------------------------------
-
-  (defcap ALLOW_GAS () true)
 
   (defun chain-gas-price ()
     (at 'gas-price (chain-data))
@@ -40,12 +53,21 @@
     ;    (property (limit > 0))
     ;    (property (price > 0.0))
     ;  ]
-    (enforce (= "exec" (at "tx-type" (read-msg))) "Can only be used inside an exec")
-    (enforce (= 1 (length (at "exec-code" (read-msg)))) "Can only be used to call one pact function")
-    (enforce (= "(user.coin-faucet-v2." (take 21 (at 0 (at "exec-code" (read-msg))))) "only coin faucet smart contract")
+
+    (let ((tx-type:string (read-msg "tx-type"))
+          (exec-code:[string] (read-msg "exec-code"))
+          (formatted (format "({}.{}." [ NS "coin-faucet" ]))
+          )
+      (enforce (= "exec" tx-type) "Can only be used inside an exec")
+      (enforce (= 1 (length exec-code)) "Can only be used to call one pact function")
+      (enforce (= formatted (take (length formatted) (at 0 exec-code))) "only coin faucet smart contract")
+    )
+
     (enforce-below-or-at-gas-price 0.0000001)
-    (compose-capability (ALLOW_GAS))
+    (compose-capability (ALLOW_FUNDING))
   )
+
+  (defconst NS (read-string 'coin-faucet-namespace))
 
   (defun create-gas-payer-guard:guard ()
     @doc
@@ -55,21 +77,8 @@
     \ that is required in this guard. Thus, if coin contract is able to \
     \ successfully acquire GAS_PAYER, the composed 'anonymous' cap required \
     \ here will be in scope, and gas buy will succeed."
-    (create-capability-guard (ALLOW_GAS))
+    (create-capability-guard (ALLOW_FUNDING))
   )
-
-  (defconst GAS_STATION_ACCOUNT (create-principal (create-gas-payer-guard)))
-
-  (defun init ()
-    (coin.create-account GAS_STATION_ACCOUNT (create-gas-payer-guard))
-  )
-
-  ; --------------------------------------------------------------------------
-  ; Governance
-  ; --------------------------------------------------------------------------
-
-  (defcap GOVERNANCE ()
-    (enforce-guard (at 'guard (details 'contract-admins))))
 
   ; --------------------------------------------------------------------------
   ; Schemas and Tables
@@ -90,7 +99,6 @@
   ; Constants
   ; --------------------------------------------------------------------------
 
-  (defconst FAUCET_ACCOUNT:string 'coin-faucet)
   (defconst MAX_COIN_PER_REQUEST:decimal 100.0)
   (defconst WAIT_TIME_PER_REQUEST 1800.0)
   (defconst EPOCH (time "1970-01-01T00:00:00Z"))
@@ -98,17 +106,12 @@
   ; --------------------------------------------------------------------------
   ; Coin Faucet Contract
   ; --------------------------------------------------------------------------
-
-  (defcap FUND() true)
-
-  (defun faucet-guard:guard () (create-capability-guard (FUND)))
-
   (defun request-coin:string (address:string amount:decimal)
 
     (enforce (<= amount MAX_COIN_PER_REQUEST)
       "Has reached maximum coin amount per request")
 
-    (with-capability (FUND)
+    (with-capability (ALLOW_FUNDING)
       (transfer FAUCET_ACCOUNT address amount))
 
     (with-default-read history-table address
@@ -141,7 +144,7 @@
     (enforce (<= amount MAX_COIN_PER_REQUEST)
       "Has reached maximum coin amount per request")
 
-      (with-capability (FUND)
+      (with-capability (ALLOW_FUNDING)
         (transfer-create FAUCET_ACCOUNT address address-guard amount))
       (insert history-table address {
         "total-coins-earned": amount,
@@ -167,9 +170,14 @@
   (defun curr-time ()
     (at 'block-time (chain-data)))
 )
-(if (read-msg 'upgrade)
-  ["Upgrade successful"]
+
+(if (read-msg 'init)
   [
     (create-table history-table)
     (init)
-  ])
+  ]
+  ["Upgrade successful"]
+)
+(let ((ks coin-faucet.GOVERNANCE_KEYSET))
+  (enforce-guard ks)
+)
