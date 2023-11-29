@@ -1,7 +1,7 @@
 import { prismaClient } from '@db/prismaClient';
 import type { Prisma } from '@prisma/client';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { COMPLEXITY, PRISMA, builder } from '../builder';
 
 builder.queryField('transfers', (t) => {
   return t.prismaConnection({
@@ -13,6 +13,10 @@ builder.queryField('transfers', (t) => {
     },
     type: 'Transfer',
     cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
+    complexity: (args) => ({
+      field: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      multiplier: args.first || args.last || PRISMA.DEFAULT_SIZE,
+    }),
     async totalCount(__parent, args) {
       try {
         return await prismaClient.transfer.count({
