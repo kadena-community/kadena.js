@@ -21,11 +21,13 @@ export const ADMINS: IAdmin[] = [
   },
 ];
 
-export const ADMIN: {
+type Account = {
   publicKey: string;
   privateKey: string;
   accountName: string;
-} = {
+};
+
+export const ADMIN: Account = {
   publicKey: '<PROVIDE_ONE_OF_THE_ADMINS>',
   privateKey: '<PROVIDE_ONE_OF_THE_ADMINS>',
   accountName: '<PROVIDE_ONE_OF_THE_ADMINS>',
@@ -41,14 +43,17 @@ export const COIN_ACCOUNT: string = 'contract-admins';
 
 export const GAS_STATION = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
 
-export const GAS_PROVIDER: {
-  publicKey: string;
-  privateKey: string;
-  accountName: string;
-} = {
+export const GAS_PROVIDER: Account = {
   publicKey: '<INSERT_A_PUBLIC_KEY_HERE>',
   privateKey: '<INSERT_A_PRIVATE_KEY_HERE',
   accountName: '<INSERT_AN_ACCOUNT_NAME_HERE>',
+};
+
+export const DEVNET_GENESIS: Account = {
+  publicKey: '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+  privateKey:
+    '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
+  accountName: 'sender00',
 };
 
 export const InitialFunding = 10020; // 10000 + 20 gas station fees
