@@ -1,3 +1,5 @@
+'use client';
+
 import { COOKIE_CONSENTNAME, updateConsent } from '@/utils/analytics';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
