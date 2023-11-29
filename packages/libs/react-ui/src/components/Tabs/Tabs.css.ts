@@ -57,6 +57,7 @@ export const tabItemClass = style([
     backgroundColor: 'transparent',
     color: '$neutral4',
     outline: 'none',
+    zIndex: 1,
   }),
   {
     opacity: '.6',
@@ -83,10 +84,7 @@ export const selectorLine = style([
     height: '100%',
     bottom: 0,
     borderStyle: 'solid',
-    borderColor: {
-      darkMode: '$neutral6',
-      lightMode: '$primaryAccent',
-    },
+    borderColor: '$primaryAccent',
   }),
   {
     borderWidth: 0,
