@@ -66,6 +66,11 @@ export const tabItemClass = style([
         opacity: '1',
         color: vars.colors.$primaryContrastInverted,
       },
+      '.focusVisible &:focus-visible': {
+        borderTopLeftRadius: vars.radii.$sm,
+        borderTopRightRadius: vars.radii.$sm,
+        outline: `2px solid ${vars.colors.$primaryAccent}`,
+      },
     },
   },
 ]);
@@ -88,13 +93,6 @@ export const selectorLine = style([
     borderBottomWidth: '2px',
     transition: 'transform .4s ease, width .4s ease',
     transform: `translateX(0)`,
-    selectors: {
-      '.focusVisible &': {
-        borderTopLeftRadius: vars.radii.$sm,
-        borderTopRightRadius: vars.radii.$sm,
-        outline: `2px solid ${vars.colors.$primaryAccent}`,
-      },
-    },
   },
 ]);
 
