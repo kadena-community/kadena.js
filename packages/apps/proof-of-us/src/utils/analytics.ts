@@ -14,7 +14,7 @@ export const EVENT_NAMES = {
   'click:page_helpful': 'click:page_helpful',
 } as const;
 
-const COOKIE_CONSENTNAME = 'cookie_consent';
+export const COOKIE_CONSENTNAME = 'cookie_consent';
 
 type IOptionsType = Record<string, string | undefined>;
 
