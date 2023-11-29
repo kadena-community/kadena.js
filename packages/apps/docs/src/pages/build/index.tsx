@@ -141,11 +141,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
 export const getStaticProps: GetStaticProps = async () => {
   const blogPosts = await getBlogPosts(['kadenajs', 'cli']);
   const mostPopularPages = await getMostPopularPages('/build');
+  const leftMenuTree = await checkSubTreeForActive(getPathName(__filename));
   return {
     props: {
       popularPages: mostPopularPages,
       blogPosts,
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree,
       frontmatter: {
         title: 'Build on Kadena',
         menu: 'Build',

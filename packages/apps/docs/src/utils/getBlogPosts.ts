@@ -3,7 +3,7 @@ import { getMenuData } from '@kadena/docs-tools';
 import { compareDesc } from './dates';
 
 export const getBlogPosts = async (tags?: string[]): Promise<IMenuData[]> => {
-  const menu = (await getMenuData()) as unknown as IMenuData[];
+  const menu: IMenuData[] = await getMenuData();
   const blogPosts = menu.find((item) => item.root.includes('/blogchain'));
 
   if (!blogPosts) return [];
@@ -29,7 +29,7 @@ export const getBlogPosts = async (tags?: string[]): Promise<IMenuData[]> => {
 export const getLatestBlogPostsOfAuthor = async (
   author: IAuthorInfo,
 ): Promise<IMenuData[]> => {
-  const data = (await getMenuData()) as unknown as IMenuData[];
+  const data: IMenuData[] = await getMenuData();
   const STARTBRANCH = '/blogchain';
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);
