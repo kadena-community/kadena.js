@@ -5,13 +5,15 @@ export interface ITabContentProps {
   children: ReactNode;
   selected?: boolean;
   id: string;
+  className?: string;
 }
 
 export const TabContent: FC<ITabContentProps> = ({
   children,
   selected = false,
+  ...props
 }) => {
   if (!selected) return null;
 
-  return <div>{children}</div>;
+  return <div {...props}>{children}</div>;
 };

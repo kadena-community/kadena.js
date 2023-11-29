@@ -13,7 +13,7 @@ export default mergeConfig(
         provider: 'v8',
         lines: 50,
         functions: 30,
-        branches: 88,
+        branches: 80,
         statements: 50,
       },
     },

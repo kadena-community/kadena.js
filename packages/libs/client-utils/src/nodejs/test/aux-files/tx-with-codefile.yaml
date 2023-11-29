@@ -1,0 +1,3 @@
+codeFile: ./aux-files/codefile.pact
+data: {{{aNumber}}}
+something: {{{thisIsFalse}}}
