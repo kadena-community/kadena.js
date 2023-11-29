@@ -113,7 +113,7 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                       inputProps={{
                         id: 'api',
                         ...register('api'),
-                        placeholder: 'localhost:8080',
+                        placeholder: 'http://localhost:8080',
                       }}
                       status={errors?.api ? 'negative' : undefined}
                       helperText={errors?.api?.message ?? ''}
