@@ -72,21 +72,17 @@ export async function deployMarmaladeContracts(
     templateDestinationPath,
   );
 
-  console.log(pactCommand);
-
   const transaction = createTransaction(pactCommand);
 
-  console.log(transaction);
-
   const signedTx = signAndAssertTransaction(signerAccount.keys)(transaction);
-
-  console.log(signedTx);
 
   const dirtyReadResult = await dirtyRead(transaction);
   console.log(dirtyReadResult);
 
   const commandResult = await submit(signedTx);
   const result = await listen(commandResult);
+
+  console.log(result);
   // }
 }
 
