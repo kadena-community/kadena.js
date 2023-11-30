@@ -1,12 +1,12 @@
 import type { FC, PropsWithChildren } from 'react';
 
 import { AccountInfo } from '@/components/AccountInfo/AccountInfo';
+import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
 import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider';
+import { ToastProvider } from '@/components/ToastProvider/ToastProvider';
 import { Toasts } from '@/components/Toasts/Toasts';
-import { AccountProvider } from '@/hooks/account.hook';
-import { ToastProvider } from '@/hooks/toast.hook';
 import type { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {

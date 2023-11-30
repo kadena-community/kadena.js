@@ -1,22 +1,16 @@
 'use client';
-import { ACCOUNTCOOKIENAME } from '@/constants';
-import { env } from '@/utils/env';
+import { ACCOUNT_COOKIE_NAME } from '@/constants';
+import { useToasts } from '@/hooks/toast';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { env } from 'process';
 import type { FC, PropsWithChildren } from 'react';
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { useToasts } from './toast.hook';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
 interface IAccountError {
   message: string;
 }
 
-interface IAccountContext {
+export interface IAccountContext {
   account?: IAccount;
   error?: IAccountError;
   login: () => void;
@@ -28,8 +22,6 @@ export const AccountContext = createContext<IAccountContext>({
   login: () => {},
   logout: () => {},
 });
-
-export const useAccount = (): IAccountContext => useContext(AccountContext);
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IAccount>();
@@ -63,7 +55,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem(ACCOUNTCOOKIENAME);
+    localStorage.removeItem(ACCOUNT_COOKIE_NAME);
     setAccount(undefined);
   }, []);
 
@@ -71,13 +63,13 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     const response = searchParams.get('response');
     if (!response) return;
 
-    localStorage.setItem(ACCOUNTCOOKIENAME, response);
+    localStorage.setItem(ACCOUNT_COOKIE_NAME, response);
     const account = decodeAccount(response);
     setAccount(account);
   }, [searchParams, setAccount, decodeAccount]);
 
   useEffect(() => {
-    const response = localStorage.getItem(ACCOUNTCOOKIENAME);
+    const response = localStorage.getItem(ACCOUNT_COOKIE_NAME);
     if (!response) return;
     const account = decodeAccount(response);
     setAccount(account);

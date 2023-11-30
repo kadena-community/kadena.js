@@ -1,5 +1,5 @@
 'use client';
-import { useToasts } from '@/hooks/toast.hook';
+import { useToasts } from '@/hooks/toast';
 import type { FC } from 'react';
 
 export const Toasts: FC = () => {

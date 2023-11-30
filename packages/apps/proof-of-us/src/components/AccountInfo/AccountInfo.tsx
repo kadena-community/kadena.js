@@ -1,5 +1,5 @@
 'use client';
-import { useAccount } from '@/hooks/account.hook';
+import { useAccount } from '@/hooks/account';
 import type { FC } from 'react';
 
 export const AccountInfo: FC = () => {

@@ -1,8 +1,8 @@
 'use client';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 
-interface IToastContext {
+export interface IToastContext {
   toasts: IToast[];
   addToast: (toast: IToast) => void;
 }
@@ -11,8 +11,6 @@ export const ToastContext = createContext<IToastContext>({
   toasts: [],
   addToast: (toast: IToast) => {},
 });
-
-export const useToasts = (): IToastContext => useContext(ToastContext);
 
 export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
   const [toasts, setToasts] = useState<IToast[]>([]);
