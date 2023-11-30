@@ -54,10 +54,13 @@ export function createCommand<
       clearCLI(true);
       try {
         // collectResponses
-        const questionsMap = options.map(({ prompt, key }) => ({
-          key,
-          prompt
-        }));
+        const questionsMap = options
+          .filter((o) => o.isInQuestions)
+          .map(({ prompt, key }) => ({
+            key,
+            prompt,
+          }));
+
         const responses = await collectResponses(args, questionsMap);
         const newArgs = { ...args, ...responses };
 
@@ -82,6 +85,10 @@ export function createCommand<
                   displayValue = value.toString();
                 }
 
+                if (typeof value === 'boolean' && value === false) {
+                  return undefined;
+                }
+
                 return `--${arg.replace(
                   /[A-Z]/g,
                   (match: string) => `-${match.toLowerCase()}`,
@@ -91,6 +98,7 @@ export function createCommand<
                     : ''
                 }`;
               })
+              .filter(Boolean)
               .join(' ')}`,
           ),
         );

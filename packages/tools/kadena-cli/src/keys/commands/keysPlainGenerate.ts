@@ -1,16 +1,89 @@
 import { kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
+import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
+import chalk from 'chalk';
+import type { Command } from 'commander';
+import { randomBytes } from 'crypto';
+import debug from 'debug';
+import { PLAINKEY_EXT, PLAINKEY_LEGACY_EXT } from '../../constants/config.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-
-import chalk from 'chalk';
-import debug from 'debug';
-
-import { PLAINKEY_EXT } from '../../constants/config.js';
 import { clearCLI } from '../../utils/helpers.js';
-
+import { toHexStr } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
-import type { Command } from 'commander';
+interface IKeyPair {
+  publicKey: string;
+  secretKey: string;
+}
+
+interface IGeneratePlainKeysCommandConfig {
+  keyAlias?: string;
+  keyAmount?: number;
+  legacy?: boolean;
+}
+
+const defaultAmount: number = 1;
+
+async function generateKeyPairs(
+  config: IGeneratePlainKeysCommandConfig,
+  amount: number,
+): Promise<IKeyPair[]> {
+  if (config.legacy === true) {
+    return generateLegacyKeyPairs(amount);
+  } else {
+    return kadenaKeyPairsFromRandom(amount);
+  }
+}
+
+async function generateLegacyKeyPairs(amount: number): Promise<IKeyPair[]> {
+  const password = '';
+  const rootKey = randomBytes(128);
+  const [encryptedSecret, publicKey] = await kadenaGenKeypair(
+    password,
+    rootKey,
+    amount,
+  );
+  return [
+    { publicKey: toHexStr(encryptedSecret), secretKey: toHexStr(publicKey) },
+  ];
+}
+
+function displayGeneratedKeys(
+  plainKeyPairs: IKeyPair[],
+  config: IGeneratePlainKeysCommandConfig,
+): void {
+  clearCLI(true);
+  console.log(
+    chalk.green(
+      `Generated Plain Key Pair(s): ${JSON.stringify(plainKeyPairs, null, 2)}`,
+    ),
+  );
+
+  if (config.keyAlias !== undefined && config.keyAlias !== '') {
+    storageService.savePlainKeyByAlias(
+      config.keyAlias,
+      plainKeyPairs[0].publicKey,
+      plainKeyPairs[0].secretKey,
+      plainKeyPairs.length,
+      config.legacy,
+    );
+    console.log(
+      chalk.green(
+        'The Plain Key Pair is stored within your keys folder under the filename(s):',
+      ),
+    );
+
+    const ext: string =
+      config.legacy === true ? PLAINKEY_LEGACY_EXT : PLAINKEY_EXT;
+    plainKeyPairs.forEach((pair, index) => {
+      const keyName =
+        index === 0
+          ? `${config.keyAlias}${ext}`
+          : `${config.keyAlias}-${index}${ext}`;
+      console.log(chalk.green(`- ${keyName}`));
+    });
+  }
+}
 
 export const createGeneratePlainKeysCommand: (
   program: Command,
@@ -18,45 +91,16 @@ export const createGeneratePlainKeysCommand: (
 ) => void = createCommand(
   'plain',
   'generate (plain) public-private key-pair',
-  [globalOptions.keyAlias(), globalOptions.keyAmount()],
+  [
+    globalOptions.keyAlias(),
+    globalOptions.keyAmount(),
+    globalOptions.legacy({ isOptional: true, disableQuestion: true }),
+  ],
   async (config) => {
     debug('generate-plain-key:action')({ config });
-    const amount = (config.keyAmount as unknown as number) || 1;
-
-    const plainKeyPairs = kadenaKeyPairsFromRandom(amount);
-    clearCLI(true);
-    console.log(
-      chalk.green(
-        `Generated Plain Key Pair(s): ${JSON.stringify(
-          plainKeyPairs,
-          null,
-          2,
-        )}`,
-      ),
-    );
-
-    if (config.keyAlias !== undefined) {
-      storageService.savePlainKeyByAlias(
-        config.keyAlias,
-        plainKeyPairs[0].publicKey,
-        plainKeyPairs[0].secretKey,
-        amount,
-      );
-
-      console.log(
-        chalk.green(
-          'The Plain Key Pair is stored within your keys folder under the filename(s):',
-        ),
-      );
-
-      const totalKeys = amount === undefined ? 1 : amount;
-      for (let i = 0; i < totalKeys; i++) {
-        const keyName =
-          i === 0
-            ? `${config.keyAlias}${PLAINKEY_EXT}`
-            : `${config.keyAlias}-${i}${PLAINKEY_EXT}`;
-        console.log(chalk.green(`- ${keyName}`));
-      }
-    }
+    const amount =
+      typeof config.keyAmount === 'number' ? config.keyAmount : defaultAmount;
+    const plainKeyPairs = await generateKeyPairs(config, amount);
+    displayGeneratedKeys(plainKeyPairs, config);
   },
 );

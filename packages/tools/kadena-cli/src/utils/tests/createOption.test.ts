@@ -18,7 +18,7 @@ describe('createOption', () => {
     });
 
     expect(result).toBeInstanceOf(Function);
-    const detailedOption = result(true);
+    const detailedOption = result({ isOptional: true });
     expect(detailedOption).toHaveProperty('option', testOption);
     expect(detailedOption).toHaveProperty('validation', 'optionalValidation');
     expect(detailedOption).toHaveProperty('prompt');
@@ -38,7 +38,7 @@ describe('createOption', () => {
       expand: mockExpand,
     });
 
-    const detailedOption = result(true);
+    const detailedOption = result({ isOptional: true });
     await detailedOption.expand('label');
     expect(mockExpand).toHaveBeenCalledWith('label');
   });
@@ -52,7 +52,7 @@ describe('createOption', () => {
       validation: validationSchema,
       option: testOption,
     });
-    let detailedOption = result(false);
+    let detailedOption = result({ isOptional: false });
     expect(JSON.stringify(detailedOption.validation)).toBe(
       JSON.stringify(validationSchema),
     );
@@ -62,7 +62,7 @@ describe('createOption', () => {
       validation: validationSchema,
       option: testOption,
     });
-    detailedOption = result(true);
+    detailedOption = result({ isOptional: true });
     expect(JSON.stringify(detailedOption.validation)).toBe(
       JSON.stringify(validationSchema.optional()),
     );
@@ -78,11 +78,11 @@ describe('createOption', () => {
       option: testOption,
     });
 
-    const detailedOption = result(true);
+    const detailedOption = result({ isOptional: true });
     await detailedOption.prompt({}, {}, true);
     expect(mockPrompt).toHaveBeenCalledWith({}, {}, true);
 
-    const detailedOptionFalse = result(false);
+    const detailedOptionFalse = result({ isOptional: false });
     await detailedOptionFalse.prompt({}, {}, false);
     expect(mockPrompt).toHaveBeenCalledWith({}, {}, false);
   });

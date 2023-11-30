@@ -21,7 +21,7 @@ export const createNetworksCommand: (
   'create',
   'Create network',
   [
-    globalOptions.networkName(false),
+    globalOptions.networkName({ isOptional: false }),
     globalOptions.networkId(),
     globalOptions.networkHost(),
     globalOptions.networkExplorerUrl(),

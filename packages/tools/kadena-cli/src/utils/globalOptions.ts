@@ -21,7 +21,32 @@ import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
+export const globalFlags = {
+  ci: new Option('--ci', 'CI mode (disables interactive prompts)'),
+  legacy: new Option('-l, --legacy', 'Output legacy format'),
+} as const;
+
+// eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
+  // global
+  ci: createOption({
+    key: 'ci' as const,
+    prompt: ({ ci }: { ci: boolean }) => {
+      const result = ci || false;
+      return Promise.resolve(result);
+    },
+    validation: z.boolean().optional(),
+    option: globalFlags.ci,
+  }),
+  legacy: createOption({
+    key: 'legacy' as const,
+    prompt: ({ legacy }: { legacy: boolean }) => {
+      const result = legacy || false;
+      return Promise.resolve(result);
+    },
+    validation: z.boolean().optional(),
+    option: globalFlags.legacy,
+  }),
   // Network
   networkName: createOption({
     key: 'network' as const,
@@ -146,3 +171,4 @@ export const globalOptions = {
 } as const;
 
 export type GlobalOptions = typeof globalOptions;
+export type GlobalFlags = typeof globalFlags;

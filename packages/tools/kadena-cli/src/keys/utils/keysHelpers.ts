@@ -1,7 +1,12 @@
-import { HDKEY_EXT, KEY_DIR, PLAINKEY_EXT } from '../../constants/config.js';
+import {
+  HDKEY_ENC_EXT,
+  HDKEY_ENC_LEGACY_EXT,
+  KEY_DIR,
+  PLAINKEY_EXT,
+  PLAINKEY_LEGACY_EXT,
+} from '../../constants/config.js';
 
 import { existsSync, mkdirSync, readdirSync } from 'fs';
-import path from 'path';
 
 /**
  * Fetches all plain key files from the specified directory.
@@ -12,11 +17,27 @@ export function getPlainKeys(): string[] {
 }
 
 /**
+ * Fetches all plain key files from the specified directory.
+ * @returns {string[]} Array of plain key filenames without their extensions.
+ */
+export function getPlainLegacyKeys(): string[] {
+  return getFilesWithExtension(KEY_DIR, PLAINKEY_LEGACY_EXT);
+}
+
+/**
  * Fetches all encrypted HD key files from the specified directory.
  * @returns {string[]} Array of encrypted HD key filenames without their extensions.
  */
-export function getEncryptedHDKeys(): string[] {
-  return getFilesWithExtension(KEY_DIR, HDKEY_EXT);
+export function getHDKeys(): string[] {
+  return getFilesWithExtension(KEY_DIR, HDKEY_ENC_EXT);
+}
+
+/**
+ * Fetches all encrypted HD key files from the specified directory.
+ * @returns {string[]} Array of encrypted HD key filenames without their extensions.
+ */
+export function getHDLegacyKeys(): string[] {
+  return getFilesWithExtension(KEY_DIR, HDKEY_ENC_LEGACY_EXT);
 }
 
 /**
@@ -34,11 +55,14 @@ export function getFilesWithExtension(
   }
 
   try {
-    return readdirSync(dir)
-      .filter((filename) => filename.toLowerCase().endsWith(extension))
-      .map((filename) => path.basename(filename.toLowerCase(), extension));
+    return readdirSync(dir).filter((filename) =>
+      filename.toLowerCase().endsWith(extension),
+    );
   } catch (error) {
     console.error(`Error reading directory for extension ${extension}:`, error);
     return [];
   }
 }
+
+export const toHexStr = (bytes: Uint8Array): string =>
+  Buffer.from(bytes).toString('hex');

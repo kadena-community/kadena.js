@@ -4,8 +4,10 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   HDKEY_ENC_EXT,
+  HDKEY_ENC_LEGACY_EXT,
   KEY_DIR,
   PLAINKEY_EXT,
+  PLAINKEY_LEGACY_EXT,
 } from '../../constants/config.js';
 import { ensureDirectoryExists, writeFile } from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
@@ -29,6 +31,7 @@ export function savePlainKeyByAlias(
   publicKey: string,
   privateKey: string,
   amount: number = 1,
+  legacy: boolean = false,
 ): void {
   ensureDirectoryExists(KEY_DIR);
   const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
@@ -41,7 +44,9 @@ export function savePlainKeyByAlias(
       fileName += `-${i}`;
     }
 
-    fileName += PLAINKEY_EXT;
+    const ext = legacy === true ? PLAINKEY_LEGACY_EXT : PLAINKEY_EXT;
+
+    fileName += ext;
 
     const filePath = join(KEY_DIR, fileName);
 
@@ -50,7 +55,11 @@ export function savePlainKeyByAlias(
       privateKey,
     };
 
-    writeFile(filePath, yaml.dump(data), 'utf8' as WriteFileOptions);
+    writeFile(
+      filePath,
+      yaml.dump(data, { lineWidth: -1 }),
+      'utf8' as WriteFileOptions,
+    );
   }
 }
 
@@ -62,8 +71,10 @@ export function savePlainKeyByAlias(
  */
 export function getStoredPlainKeyByAlias(
   alias: string,
+  legacy: boolean = false,
 ): { publicKey: string; secretKey: string } | undefined {
-  const filePath = join(KEY_DIR, `${alias}${PLAINKEY_EXT}`);
+  const ext = legacy === true ? PLAINKEY_LEGACY_EXT : PLAINKEY_EXT;
+  const filePath = join(KEY_DIR, `${alias}${ext}`);
   if (existsSync(filePath)) {
     const keyPair = yaml.load(readFileSync(filePath, 'utf8')) as IKeyPair;
     return {
@@ -111,15 +122,23 @@ export function getAllPublicKeysFromAliasFiles(): string[] {
  * @param {string} fileName - The name of the file to store the mnemonic or seed in.
  * @param {boolean} hasPassword - Whether a password was used to generate the seed.
  */
-export function storeHdKey(seed: string, fileName: string): void {
+export function storeHdKey(
+  seed: string,
+  fileName: string,
+  legacy: boolean = false,
+): void {
   ensureDirectoryExists(KEY_DIR);
 
   const sanitizedFilename = sanitizeFilename(fileName).toLowerCase();
-  const fileExtension = HDKEY_ENC_EXT;
-  const dataToStore = seed;
+  const fileExtension = legacy === true ? HDKEY_ENC_LEGACY_EXT : HDKEY_ENC_EXT;
   const storagePath = join(KEY_DIR, `${sanitizedFilename}${fileExtension}`);
 
-  writeFile(storagePath, yaml.dump(dataToStore), 'utf8' as WriteFileOptions);
+  writeFile(
+    storagePath,
+    // Dump the seed as a plain string instead of a folded block scalar
+    yaml.dump(seed, { lineWidth: -1 }),
+    'utf8' as WriteFileOptions,
+  );
 }
 
 /**

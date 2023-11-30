@@ -21,7 +21,7 @@ export interface IPrompt {
   ): Promise<any>;
 }
 
-interface IOptionCreatorObject {
+export interface IOptionCreatorObject {
   prompt: IPrompt;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validation: any;
@@ -32,12 +32,23 @@ interface IOptionCreatorObject {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createOption<T extends IOptionCreatorObject>(option: T) {
-  return (isOptional: boolean = true) => ({
-    ...option,
-    isOptional,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    prompt: (responses: any, args: any) =>
-      option.prompt(responses, args, isOptional),
-    validation: isOptional ? option.validation.optional() : option.validation,
-  });
+  return (
+    {
+      isOptional = true,
+      disableQuestion: isInQuestions = true,
+    }: {
+      isOptional?: boolean;
+      disableQuestion?: boolean;
+    } = { isOptional: true, disableQuestion: true },
+  ) => {
+    return {
+      ...option,
+      isOptional,
+      isInQuestions,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      prompt: (responses: any, args: any) =>
+        option.prompt(responses, args, isOptional),
+      validation: isOptional ? option.validation.optional() : option.validation,
+    };
+  };
 }

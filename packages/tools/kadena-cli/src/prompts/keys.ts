@@ -1,5 +1,4 @@
 import { input, select } from '@inquirer/prompts';
-import { program } from 'commander';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import { capitalizeFirstLetter, isAlphabetic } from '../utils/helpers.js';
 
@@ -17,7 +16,7 @@ export async function keyAlias(): Promise<string> {
 
 export async function keyAmount(): Promise<string> {
   return await input({
-    message: `Enter the amount of keyPairs you want to generate. (aliases can only be used when generating one key pair) (optional) (default: 1)`,
+    message: `Enter the amount of keyPairs you want to generate. (alias-{amount} will increment) (optional) (default: 1)`,
   });
 }
 
