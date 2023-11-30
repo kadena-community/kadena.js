@@ -35,7 +35,7 @@ export const vars = createGlobalTheme(':root', {
     $light: '300',
     $normal: '400',
     $medium: '500',
-    $semiBold: '700',
+    $semiBold: '600',
     $bold: '700',
   },
   radii: {

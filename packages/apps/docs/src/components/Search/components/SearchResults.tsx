@@ -11,20 +11,18 @@ import {
   NotificationHeading,
   Stack,
   SystemIcon,
+  TabItem,
   Tabs,
   useDialog,
 } from '@kadena/react-ui';
-import classnames from 'classnames';
 import Link from 'next/link';
-import type { FC } from 'react';
+import type { FC, Key } from 'react';
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import type { IQueryResult } from '../../../types';
 import { removeUnnecessarySearchRecords } from '../utils';
 import {
   loadingWrapperClass,
-  scrollBoxClass,
-  scrollBoxEnabledClass,
   tabClass,
   tabContainerClass,
 } from './../styles.css';
@@ -64,15 +62,9 @@ export const SearchResults: FC<IProps> = ({
   const [selectedTabName, setSelectedTabName] = useState<ITabs>(null);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  const scrollBoxClasses = classnames(scrollBoxClass, {
-    [scrollBoxEnabledClass]: hasScroll,
-  });
-
-  const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
-    const buttonName = (e.target as HTMLElement).getAttribute(
-      'data-tab',
-    ) as ITabs;
-    if (buttonName === null) return;
+  const rememberTab = (key: Key): void => {
+    const buttonName = `${key}` as ITabs;
+    if (!buttonName) return;
     localStorage.setItem(TABNAME, buttonName);
     setSelectedTabName(buttonName);
     onTabSelect(buttonName);
@@ -93,52 +85,56 @@ export const SearchResults: FC<IProps> = ({
   if (!isMounted) return null;
 
   return (
-    <section onClick={rememberTab} className={tabContainerClass}>
-      <Tabs.Root initialTab={selectedTabName as string} className={tabClass}>
-        <Tabs.Tab id="docs">Docs Space </Tabs.Tab>
-        <Tabs.Tab id="qa">QA Space</Tabs.Tab>
-        <Tabs.Content id="docs" className={scrollBoxClasses}>
-          {semanticIsLoading && (
-            <div className={loadingWrapperClass}>
-              <Loading />
-            </div>
-          )}
-          {semanticError ? (
-            <Notification
-              color={'negative'}
-              icon={<SystemIcon.AlertBox />}
-              role="status"
-            >
-              {semanticError}
-            </Notification>
-          ) : (
-            <>
-              <ResultCount count={semanticResults?.length} />
-              <StaticResults
-                limitResults={limitResults}
-                results={semanticResults}
-              />
-              {limitResults !== undefined &&
-              limitResults < (semanticResults?.length ?? 0) &&
-              query !== undefined ? (
-                <Stack justifyContent="flex-end">
-                  <Link href={`/search?q=${query}`} passHref legacyBehavior>
-                    <Button
-                      icon={'TrailingIcon'}
-                      iconAlign="right"
-                      title="Go to search results"
-                      onClick={state.close}
-                    >
-                      Go to search results
-                    </Button>
-                  </Link>
-                </Stack>
-              ) : null}
-            </>
-          )}
-        </Tabs.Content>
+    <section className={tabContainerClass}>
+      <Tabs
+        defaultSelectedKey={selectedTabName as string}
+        className={tabClass}
+        onSelectionChange={rememberTab}
+      >
+        <TabItem key="docs" title="Docs Space">
+          <Box position="relative">
+            {semanticIsLoading && (
+              <div className={loadingWrapperClass}>
+                <Loading />
+              </div>
+            )}
+            {semanticError ? (
+              <Notification
+                color={'negative'}
+                icon={<SystemIcon.AlertBox />}
+                role="status"
+              >
+                {semanticError}
+              </Notification>
+            ) : (
+              <>
+                <ResultCount count={semanticResults?.length} />
+                <StaticResults
+                  limitResults={limitResults}
+                  results={semanticResults}
+                />
+                {limitResults !== undefined &&
+                limitResults < (semanticResults?.length ?? 0) &&
+                query !== undefined ? (
+                  <Stack justifyContent="flex-end">
+                    <Link href={`/search?q=${query}`} passHref legacyBehavior>
+                      <Button
+                        icon={'TrailingIcon'}
+                        iconAlign="right"
+                        title="Go to search results"
+                        onClick={state.close}
+                      >
+                        Go to search results
+                      </Button>
+                    </Link>
+                  </Stack>
+                ) : null}
+              </>
+            )}
+          </Box>
+        </TabItem>
 
-        <Tabs.Content id="qa" className={scrollBoxClasses}>
+        <TabItem key="qa" title="QA Space">
           <Box marginBottom="$8">
             <Notification icon={<SystemIcon.AlertBox />} role="none">
               <NotificationHeading>QA search is in beta</NotificationHeading>
@@ -158,50 +154,59 @@ export const SearchResults: FC<IProps> = ({
               </p>
             </Notification>
           </Box>
-          {isLoading && (
-            <div className={loadingWrapperClass}>
-              <Loading />
-            </div>
-          )}
-          {error && (
-            <Notification
-              color={'negative'}
-              icon={<SystemIcon.AlertBox />}
-              role="status"
-            >
-              {error}
-            </Notification>
-          )}
-
-          {conversation.history?.map((interaction, idx) => {
-            const metadata = removeUnnecessarySearchRecords(
-              interaction?.metadata,
-            );
-
-            return (
-              <div key={`${interaction.input}-${idx}`}>
-                <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                <Box marginTop="$8">
-                  <Heading variant="h4">Sources:</Heading>
-                  {metadata.length > 1 && (
-                    <BrowseSection>
-                      {metadata.map((item, innerIdx) => {
-                        const url = filePathToRoute(item.filePath, item.header);
-                        return (
-                          <Link key={`${url}`} href={url} onClick={state.close}>
-                            {item.title}
-                          </Link>
-                        );
-                      })}
-                    </BrowseSection>
-                  )}
-                </Box>
+          <Box position="relative">
+            {isLoading && (
+              <div className={loadingWrapperClass}>
+                <Loading />
               </div>
-            );
-          })}
-          <div>{outputStream}</div>
-        </Tabs.Content>
-      </Tabs.Root>
+            )}
+            {error && (
+              <Notification
+                color={'negative'}
+                icon={<SystemIcon.AlertBox />}
+                role="status"
+              >
+                {error}
+              </Notification>
+            )}
+
+            {conversation.history?.map((interaction, idx) => {
+              const metadata = removeUnnecessarySearchRecords(
+                interaction?.metadata,
+              );
+
+              return (
+                <div key={`${interaction.input}-${idx}`}>
+                  <ReactMarkdown>{interaction?.output}</ReactMarkdown>
+                  <Box marginTop="$8">
+                    <Heading variant="h4">Sources:</Heading>
+                    {metadata.length > 1 && (
+                      <BrowseSection>
+                        {metadata.map((item, innerIdx) => {
+                          const url = filePathToRoute(
+                            item.filePath,
+                            item.header,
+                          );
+                          return (
+                            <Link
+                              key={`${url}`}
+                              href={url}
+                              onClick={state.close}
+                            >
+                              {item.title}
+                            </Link>
+                          );
+                        })}
+                      </BrowseSection>
+                    )}
+                  </Box>
+                </div>
+              );
+            })}
+            <div>{outputStream}</div>
+          </Box>
+        </TabItem>
+      </Tabs>
     </section>
   );
 };

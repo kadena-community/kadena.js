@@ -10,22 +10,6 @@ export const staticResultsListClass = style([
   },
 ]);
 
-export const scrollBoxClass = style([
-  sprinkles({
-    position: 'relative',
-    marginY: '$2',
-    marginX: 0,
-    flex: 1,
-  }),
-]);
-
-export const scrollBoxEnabledClass = style([
-  sprinkles({
-    overflowY: 'auto',
-    paddingRight: '$6',
-  }),
-]);
-
 export const tabContainerClass = style([
   sprinkles({ flex: 1, overflowY: 'hidden', overflowX: 'visible' }),
 ]);
