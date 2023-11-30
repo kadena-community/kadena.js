@@ -1,3 +1,4 @@
+import { OptionsModal } from '@/components/Global/OptionsModal';
 import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext } from '@/context';
 import type { ISidebarSubMenuItem } from '@/types/Layout';
@@ -5,7 +6,7 @@ import { getHref } from '@/utils/getHref';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { MenuButton } from './MenuButton';
 import {
   bottomIconsContainerStyle,
@@ -24,6 +25,7 @@ export const Toolbar: FC = () => {
     setVisibleLinks,
   } = useLayoutContext();
   const { pathname } = useRouter();
+  const [openModal, setOpenModal] = useState(false);
 
   const handleItemClick = (index: number): void => {
     setVisibleLinks(false);
@@ -48,6 +50,10 @@ export const Toolbar: FC = () => {
     const activeMenuIndex = menuData.indexOf(activeMenu);
 
     setActiveMenuIndex(activeMenuIndex);
+  };
+
+  const handleDevOptionsClick = (): void => {
+    setOpenModal(true);
   };
 
   const isMenuActive = (
@@ -85,6 +91,16 @@ export const Toolbar: FC = () => {
       <ul
         className={classNames(gridMiniMenuListStyle, bottomIconsContainerStyle)}
       >
+        <li key={String('Dev Options')} className={gridMiniMenuListItemStyle}>
+          <div>
+            <MenuButton
+              title={'DevOptions'}
+              href={'#'}
+              icon={'ApplicationBrackets'}
+              onClick={() => handleDevOptionsClick()}
+            />
+          </div>
+        </li>
         <li key={String('links')} className={gridMiniMenuListItemStyle}>
           <div>
             <MenuButton
@@ -106,6 +122,11 @@ export const Toolbar: FC = () => {
           </div>
         </li>
       </ul>
+
+      <OptionsModal
+        isOpen={openModal}
+        onOpenChange={() => setOpenModal(false)}
+      />
     </nav>
   );
 };

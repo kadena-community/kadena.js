@@ -7,5 +7,5 @@ export const containerClass = style([
   }),
   {
     width: '680px',
-  }
+  },
 ]);

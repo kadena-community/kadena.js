@@ -32,8 +32,8 @@ import {
   Heading,
   IconButton,
   Stack,
-  Textarea,
   TextField,
+  Textarea,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
@@ -181,7 +181,6 @@ const CrossChainTransferFinisher: FC = () => {
         requestKey: requestKeyOrError as string,
         networkId,
         chainId: pollResults.tx.receiver.chain,
-
       });
       console.log(finalResults, 'results');
       if (data.result.status === 'failure') {
@@ -274,13 +273,12 @@ const CrossChainTransferFinisher: FC = () => {
       </FormStatusNotification>
     );
 
-  const renderWaitingNotification =
-      (
-          <FormStatusNotification
-              status="processing"
-              title={t('form-status-title-processing')}
-          />
-      );
+  const renderWaitingNotification = (
+    <FormStatusNotification
+      status="processing"
+      title={t('form-status-title-processing')}
+    />
+  );
 
   useEffect(() => {
     resetField('requestKey');
@@ -378,10 +376,10 @@ const CrossChainTransferFinisher: FC = () => {
       ) : null}
 
       {processingTx ? (
-        <div className={notificationContainerStyle}>{renderWaitingNotification}</div>
+        <div className={notificationContainerStyle}>
+          {renderWaitingNotification}
+        </div>
       ) : null}
-
-
 
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
@@ -464,11 +462,11 @@ const CrossChainTransferFinisher: FC = () => {
                       {/*  {formattedSigData}*/}
                       {/*</textarea>*/}
 
-                        <Textarea
-                          fontFamily="$mono"
-                          id="sig-text-area"
-                          value={formattedSigData}
-                        />
+                      <Textarea
+                        fontFamily="$mono"
+                        id="sig-text-area"
+                        value={formattedSigData}
+                      />
 
                       <IconButton
                         color="primary"

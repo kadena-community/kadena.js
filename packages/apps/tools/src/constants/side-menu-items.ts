@@ -22,7 +22,6 @@ export const menuData: ISidebarToolbarItem[] = [
     icon: 'Transition',
     href: 'transactions',
     items: [
-
       {
         title: 'Cross Chain Transfer Finisher',
         href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
