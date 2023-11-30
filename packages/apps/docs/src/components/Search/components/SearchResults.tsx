@@ -64,10 +64,6 @@ export const SearchResults: FC<IProps> = ({
 
   const rememberTab = (key: Key): void => {
     const buttonName = `${key}` as ITabs;
-
-    // const buttonName = (e.target as HTMLElement).getAttribute(
-    //   'data-key',
-    // ) as ITabs;
     if (!buttonName) return;
     localStorage.setItem(TABNAME, buttonName);
     setSelectedTabName(buttonName);
