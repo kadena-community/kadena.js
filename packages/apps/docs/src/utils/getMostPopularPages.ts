@@ -93,16 +93,14 @@ async function pushToTopPages(
   );
 
   if (isPageAlreadyExist) {
-    isPageAlreadyExist.views =
-      parseFloat(isPageAlreadyExist.views.toString()) +
-      parseFloat(row.metricValues?.[0]?.value ?? '0');
+    isPageAlreadyExist.views += parseFloat(row.metricValues?.[0]?.value ?? '0');
   } else {
-    const views = row.metricValues?.[0].value ?? '0';
+    const views = parseFloat(row.metricValues?.[0]?.value ?? '0');
 
     const item = {
-      path: cleanSlug(row.dimensionValues[0].value) ?? '',
-      views: parseFloat(views),
-      title: row.dimensionValues[1].value ?? '',
+      path: cleanSlug(row.dimensionValues[0]?.value) ?? '',
+      views,
+      title: row.dimensionValues[1]?.value ?? '',
     };
 
     const newItem = await setTitle(item);
@@ -121,26 +119,29 @@ async function getTopPages(
   limit: number,
 ): Promise<IMostPopularPage[]> {
   const cleanedSlug = cleanSlug(slug);
-  let topPages: IMostPopularPage[] = [];
-  (data?.rows || []).forEach(async (row: IRow) => {
-    if (row.dimensionValues?.[0]) {
-      const value = cleanSlug(row.dimensionValues[0].value) ?? cleanedSlug;
 
-      // Not including the current page
-      if (value === cleanedSlug) return;
+  const topPages = await (data?.rows || []).reduce(
+    async (promiseResult: Promise<IMostPopularPage[]>, row: IRow) => {
+      const result = await promiseResult;
+      if (row.dimensionValues?.[0]) {
+        const value = cleanSlug(row.dimensionValues[0]?.value) ?? cleanedSlug;
 
-      // Not including search pages
-      if (value.startsWith('/search')) return;
+        // Not including the current page
+        if (value === cleanedSlug) return result;
 
-      // Not including `__tests` pages
-      if (value.includes('/__tests')) return;
+        // Not including search pages
+        if (value.startsWith('/search')) return result;
 
-      if (!value.startsWith(cleanedSlug)) return;
-    }
+        // Not including `__tests` pages
+        if (value.includes('/__tests')) return result;
 
-    // eslint-disable-next-line require-atomic-updates
-    topPages = await pushToTopPages(topPages, row);
-  });
+        if (!value.startsWith(cleanedSlug)) return result;
+      }
+
+      return pushToTopPages(result, row);
+    },
+    Promise.resolve([]),
+  );
 
   return topPages.sort((a, b) => b.views - a.views).slice(0, limit);
 }
