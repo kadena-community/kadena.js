@@ -1,8 +1,12 @@
 import type { FC, PropsWithChildren } from 'react';
 
+import { AccountInfo } from '@/components/AccountInfo/AccountInfo';
 import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider';
+import { Toasts } from '@/components/Toasts/Toasts';
+import { AccountProvider } from '@/hooks/account.hook';
+import { ToastProvider } from '@/hooks/toast.hook';
 import type { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -67,14 +71,21 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html>
       <body>
-        <ThemeProvider>
-          <>
-            {children}
+        <ToastProvider>
+          <AccountProvider>
+            <ThemeProvider>
+              <>
+                <AccountInfo />
+                {children}
 
-            <CookieConsent />
-            <Analytics />
-          </>
-        </ThemeProvider>
+                <CookieConsent />
+
+                <Toasts />
+                <Analytics />
+              </>
+            </ThemeProvider>
+          </AccountProvider>
+        </ToastProvider>
       </body>
     </html>
   );
