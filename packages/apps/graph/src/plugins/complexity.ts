@@ -1,5 +1,5 @@
 import { complexityFromQuery } from '@pothos/plugin-complexity';
-import { GraphQLSchema } from 'graphql';
+import type { GraphQLSchema } from 'graphql';
 import { handleStreamOrSingleExecutionResult } from 'graphql-yoga';
 
 export const complexityPlugin = (schema: GraphQLSchema) => ({
