@@ -6,7 +6,6 @@ module.exports = defineConfig({
   test: {
     name: '@kadena/graph',
     include: ['tests/**/*.{test,spec}.ts'],
-    setupFiles: ['/testdata/setup/devnet-state.ts'],
     globals: true,
     testTimeout: 60000,
   },

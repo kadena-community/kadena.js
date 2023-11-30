@@ -1,0 +1,51 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Account > Query: getAccount 1`] = `
+{
+  "__typename": "ModuleAccount",
+  "accountName": "k:bc7bc6e180551e42f831bed08ca82c137ead7a8a2b174724ca917a73e62e4eb8",
+  "chainAccounts": [
+    {
+      "__typename": "ChainModuleAccount",
+      "balance": Any<Number>,
+      "chainId": "0",
+      "guard": {
+        "__typename": "Guard",
+        "keys": [
+          "bc7bc6e180551e42f831bed08ca82c137ead7a8a2b174724ca917a73e62e4eb8",
+        ],
+        "predicate": "keys-all",
+      },
+    },
+  ],
+  "id": "TW9kdWxlQWNjb3VudDpNb2R1bGVBY2NvdW50L2NvaW4vazpiYzdiYzZlMTgwNTUxZTQyZjgzMWJlZDA4Y2E4MmMxMzdlYWQ3YThhMmIxNzQ3MjRjYTkxN2E3M2U2MmU0ZWI4",
+  "moduleName": "coin",
+  "totalBalance": Any<Number>,
+  "transactions": {
+    "__typename": "ModuleAccountTransactionsConnection",
+    "edges": [],
+  },
+  "transfers": {
+    "__typename": "ModuleAccountTransfersConnection",
+    "edges": ArrayContaining [
+      ObjectContaining {
+        "__typename": "ModuleAccountTransfersConnectionEdge",
+        "node": {
+          "__typename": "Transfer",
+          "amount": 100,
+          "chainId": 0,
+          "crossChainTransfer": null,
+          "height": Any<Number>,
+          "receiverAccount": "k:bc7bc6e180551e42f831bed08ca82c137ead7a8a2b174724ca917a73e62e4eb8",
+          "requestKey": Any<String>,
+          "senderAccount": "sender00",
+          "transaction": {
+            "__typename": "Transaction",
+            "pactId": null,
+          },
+        },
+      },
+    ],
+  },
+}
+`;
