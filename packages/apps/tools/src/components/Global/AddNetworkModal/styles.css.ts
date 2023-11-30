@@ -15,10 +15,3 @@ export const formButtonStyle = style([
     gap: '$8',
   }),
 ]);
-
-export const errorMessageStyle = style([
-  sprinkles({
-    marginTop: '$md',
-    color: '$red60',
-  }),
-]);
