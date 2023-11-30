@@ -55,7 +55,7 @@ export const PRISMA = {
 export const COMPLEXITY = {
   FIELD: {
     DEFAULT: 1,
-    CHAINWEB_NODE: 5,
+    CHAINWEB_NODE: 7,
     PRISMA_WITHOUT_RELATIONS: 5,
     PRISMA_WITH_RELATIONS: 10,
   },
