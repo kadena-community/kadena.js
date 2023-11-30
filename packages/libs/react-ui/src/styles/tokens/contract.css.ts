@@ -2799,15 +2799,15 @@ export const tokens = createThemeContract({
       typography: {
         family: {
           /**
-           * @default 'Haas Grotesk Display', -apple-system, sans-serif
-           * @light 'Haas Grotesk Display', -apple-system, sans-serif
-           * @dark 'Haas Grotesk Display', -apple-system, sans-serif
+           * @default Haas Grot Disp
+           * @light Haas Grot Disp
+           * @dark Haas Grot Disp
            */
           primaryFont: '',
           /**
-           * @default 'Haas Grotesk Display', -apple-system, sans-serif
-           * @light 'Haas Grotesk Display', -apple-system, sans-serif
-           * @dark 'Haas Grotesk Display', -apple-system, sans-serif
+           * @default Haas Grot Disp
+           * @light Haas Grot Disp
+           * @dark Haas Grot Disp
            */
           headingFont: '',
           /**
@@ -2817,9 +2817,9 @@ export const tokens = createThemeContract({
            */
           codeFont: '',
           /**
-           * @default 'Haas Grotesk Display', -apple-system, sans-serif
-           * @light 'Haas Grotesk Display', -apple-system, sans-serif
-           * @dark 'Haas Grotesk Display', -apple-system, sans-serif
+           * @default Haas Grot Disp
+           * @light Haas Grot Disp
+           * @dark Haas Grot Disp
            */
           bodyFont: '',
         },

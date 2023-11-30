@@ -6,14 +6,14 @@ import {
   bodyBaseRegular,
   bodySmallBold,
   bodySmallRegular,
+  bodySmallestBold,
+  bodySmallestRegular,
   codeBaseBold,
   codeBaseRegular,
   codeSmallBold,
   codeSmallRegular,
   codeSmallestBold,
   codeSmallestRegular,
-  fontSmallestBold,
-  fontSmallestRegular,
 } from '../../../styles';
 import { colorVariants, transformVariants } from '../typography.css';
 
@@ -39,7 +39,7 @@ function getFontClass(
   }
 
   if (variant === 'smallest') {
-    return isBold ? fontSmallestBold : fontSmallestRegular;
+    return isBold ? bodySmallestBold : bodySmallestRegular;
   }
   if (variant === 'small') {
     return isBold ? bodySmallBold : bodySmallRegular;

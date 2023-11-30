@@ -11,7 +11,7 @@ const breakpoints = {
 };
 
 const breakpointKeys = Object.keys(breakpoints);
-const fontOverride = () => "'Haas Grotesk Display', -apple-system, sans-serif";
+// const fontOverride = () => "'Haas Grotesk Display', -apple-system, sans-serif";
 
 export default defineConfig({
   // you can switch to different branch by changing the #main to #branch-name
@@ -22,8 +22,7 @@ export default defineConfig({
   plugins: [
     vanillaExtractPlugin({
       contractName: 'tokens',
-      createGlobalThemes: false,
-      createGlobalContract: false,
+      onlyValues: true,
     }),
   ],
   schemaExtensions: [
@@ -35,10 +34,10 @@ export default defineConfig({
     }),
   ],
   // TODO: Workaround different font names in figma and google fonts
-  overrides: {
-    'kda.foundation.typography.family.bodyFont': fontOverride,
-    'kda.foundation.typography.family.primaryFont': fontOverride,
-    'kda.foundation.typography.family.headingFont': fontOverride,
-  },
+  // overrides: {
+  //   'kda.foundation.typography.family.bodyFont': fontOverride,
+  //   'kda.foundation.typography.family.primaryFont': fontOverride,
+  //   'kda.foundation.typography.family.headingFont': fontOverride,
+  // },
   prettify: true,
 });
