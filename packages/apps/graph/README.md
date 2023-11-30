@@ -159,7 +159,7 @@ To enable query complexity limits and calculations, set `COMPLEXITY_ENABLED` to 
 The overal query complexity is calculated by combining the field complexity, the depth and the breath. The complexity of the fields is determined by the following rules:
 
 - Fields that do not make external calls: 1
-- Calls to Chainweb Node: 5
+- Calls to Chainweb Node: 7
 - Prisma calls without relations: 5
 - Prisma calls with relations: 10
 - *In cases of lists, a mulitplier is applied for the requested item count.
