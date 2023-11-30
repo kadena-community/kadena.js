@@ -1,10 +1,11 @@
 import type { ITextFieldProps } from '@kadena/react-ui';
-import { TextField } from '@kadena/react-ui';
+import {FormFieldWrapper, Input } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
 import type { FieldError } from 'react-hook-form';
 import * as z from 'zod';
+import { requestKeyWrapperStyle } from "@/components/Global/RequestKeyField/styles.css";
 
 export const RequestLength: { MIN: number; MAX: number } = { MIN: 43, MAX: 44 };
 
@@ -42,18 +43,23 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
   const helper = helperText || error?.message;
 
   return (
-    <TextField
-      label={t('Request Key')}
-      status={error ? 'negative' : status}
-      helperText={helper}
-      {...rest}
-      inputProps={{
-        id: 'request-key-input',
-        placeholder: t('Enter Request Key'),
-        icon: 'KeyIconFilled',
-        ...inputProps,
-      }}
-    />
+    <div className={requestKeyWrapperStyle}>
+      <FormFieldWrapper
+        label={t('Request Key')}
+        status={error ? 'negative' : status}
+        helperText={helper}
+        htmlFor={'request-key-input'}
+        {...rest}
+      >
+        <Input
+          {...inputProps}
+          placeholder={t('Enter Request Key')}
+          id={'request-key-input'}
+          icon={'KeyIconFilled'}
+        />
+      </FormFieldWrapper>
+    </div>
+
   );
 };
 
