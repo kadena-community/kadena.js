@@ -1,6 +1,6 @@
 import { prismaClient } from '@db/prismaClient';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { COMPLEXITY, builder } from '../builder';
 import Block from '../objects/Block';
 
 builder.queryField('block', (t) => {
@@ -10,9 +10,11 @@ builder.queryField('block', (t) => {
     },
     type: Block,
     nullable: true,
-    async resolve(__query, __parent, args) {
+    complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+    async resolve(query, __parent, args) {
       try {
         const block = await prismaClient.block.findUnique({
+          ...query,
           where: {
             hash: args.hash,
           },

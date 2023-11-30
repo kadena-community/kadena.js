@@ -1,7 +1,7 @@
 import type { CommandData } from '@services/node-service';
 import { sendRawQuery } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { COMPLEXITY, builder } from '../builder';
 
 const PactData = builder.inputType('PactQueryData', {
   fields: (t) => ({
@@ -24,6 +24,9 @@ builder.queryField('pactQueries', (t) => {
     args: {
       pactQuery: t.arg({ type: [PactQuery], required: true }),
     },
+    complexity: (args) => ({
+      field: COMPLEXITY.FIELD.CHAINWEB_NODE * args.pactQuery.length,
+    }),
     async resolve(__parent, args) {
       try {
         return args.pactQuery.map(
@@ -47,6 +50,7 @@ builder.queryField('pactQuery', (t) => {
     args: {
       pactQuery: t.arg({ type: PactQuery, required: true }),
     },
+    complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
         return await sendRawQuery(

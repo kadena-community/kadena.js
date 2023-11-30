@@ -3,7 +3,7 @@ import { getChainModuleAccount } from '@services/account-service';
 import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { COMPLEXITY, PRISMA, builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import type { ChainModuleAccount, ModuleAccount } from '../types/graphql-types';
 import {
@@ -46,7 +46,7 @@ export default builder.node(
       moduleName: t.exposeString('moduleName'),
       chainAccounts: t.field({
         type: [ChainModuleAccountName],
-        complexity: dotenv.CHAIN_COUNT,
+        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE * dotenv.CHAIN_COUNT,
         async resolve(parent) {
           try {
             return (
@@ -69,7 +69,7 @@ export default builder.node(
       }),
       totalBalance: t.field({
         type: 'Decimal',
-        complexity: dotenv.CHAIN_COUNT,
+        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE * dotenv.CHAIN_COUNT,
         async resolve(parent) {
           try {
             return (
@@ -97,10 +97,11 @@ export default builder.node(
         type: 'Transaction',
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
-        complexity: {
-          field: 10,
-          multiplier: 2,
-        },
+        complexity: (args) => ({
+          field:
+            COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS *
+            (args.first || args.last || PRISMA.DEFAULT_SIZE),
+        }),
         async totalCount(parent) {
           try {
             return await prismaClient.transaction.count({
@@ -142,10 +143,11 @@ export default builder.node(
         type: 'Transfer',
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         edgesNullable: false,
-        complexity: {
-          field: 5,
-          multiplier: 2,
-        },
+        complexity: (args) => ({
+          field:
+            COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS *
+            (args.first || args.last || PRISMA.DEFAULT_SIZE),
+        }),
         async totalCount(parent) {
           try {
             return await prismaClient.transfer.count({

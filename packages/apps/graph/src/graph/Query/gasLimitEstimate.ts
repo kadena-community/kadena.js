@@ -1,6 +1,6 @@
 import { localReadTransfer } from '@devnet/transfer';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { COMPLEXITY, builder } from '../builder';
 
 const PactTransaction = builder.inputType('PactTransaction', {
   fields: (t) => ({
@@ -16,6 +16,7 @@ builder.queryField('gasLimitEstimate', (t) => {
     args: {
       transaction: t.arg({ type: PactTransaction, required: true }),
     },
+    complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
         if (args.transaction.cmd.includes(`\\`)) {
@@ -41,7 +42,10 @@ builder.queryField('gasLimitEstimates', (t) => {
     args: {
       transactions: t.arg({ type: [PactTransaction], required: true }),
     },
-    resolve: async (parent, args, context, info) => {
+    complexity: (args) => ({
+      field: COMPLEXITY.FIELD.CHAINWEB_NODE * args.transactions.length,
+    }),
+    resolve: async (__parent, args) => {
       try {
         return args.transactions.map(async (transaction) => {
           if (transaction.cmd.includes('//')) {

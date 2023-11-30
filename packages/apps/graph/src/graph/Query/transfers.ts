@@ -14,8 +14,9 @@ builder.queryField('transfers', (t) => {
     type: 'Transfer',
     cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
     complexity: (args) => ({
-      field: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
-      multiplier: args.first || args.last || PRISMA.DEFAULT_SIZE,
+      field:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS *
+        (args.first || args.last || PRISMA.DEFAULT_SIZE),
     }),
     async totalCount(__parent, args) {
       try {
