@@ -1,31 +1,51 @@
 import request from 'supertest';
-import { beforeAll, describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vitest';
+import { accountOne, sender00Account } from '../testdata/constants/accounts';
 import { grapHost } from '../testdata/constants/network';
-import type { ITestData } from '../testdata/devnet/simulation/file';
-import { parseLogs } from '../testdata/devnet/simulation/file';
 import { getAccountQuery } from '../testdata/queries/getAccount';
-
-let devnetData: ITestData[];
+import { createAccount } from '../testdata/setup/create-account';
 
 describe('Account', () => {
-  beforeAll(() => {
-    devnetData = parseLogs();
-  });
   test('Query: getAccount', async () => {
-    const query = getAccountQuery(devnetData[0].from);
+    // Given a test account is created.
+   await createAccount(accountOne);
+
+    // When the getAccountQuery is executed
+    const query = getAccountQuery(accountOne.account);
     const response = await request(grapHost).post('').send(query);
 
+    //Then the statuscode should be 200 and the snapshot should match, including specific property matchers.
     expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('data');
-    expect(response.body.data).toHaveProperty('account');
-    expect(response.body.data.account.accountName).toEqual(devnetData[0].from);
-
-    expect(response.body.data.account).toHaveProperty('moduleName');
-    expect(response.body.data.account).toHaveProperty('__typename');
-    expect(response.body.data.account).toHaveProperty('id');
-    expect(response.body.data.account).toHaveProperty('transactions');
-    expect(response.body.data.account).toHaveProperty('transfers');
-    expect(response.body.data.account).toHaveProperty('totalBalance');
-    expect(response.body.data.account).toHaveProperty('chainAccounts');
+   // ToMatchSnapshot uses Jests Property Matchers, any property defined below is (literally) matched against the snashot file
+   // Properties that are defined below can be a little bit more flexible to prevent having to update the snapshot on every run
+    expect(response.body.data.account).toMatchSnapshot({
+      chainAccounts: [
+        {
+          balance: expect.any(Number), //Generic Assert, to prevent updating the snapshot.
+        },
+      ],
+      totalBalance: expect.any(Number), //Generic Assert, to prevent updating the snapshot.
+      transfers: {
+        edges: expect.arrayContaining([
+          expect.objectContaining({
+            __typename: 'ModuleAccountTransfersConnectionEdge',
+            node: {
+              __typename: 'Transfer',
+              amount: 100,
+              chainId: 0,
+              crossChainTransfer: null,
+              height: expect.any(Number), //Generic Assert, to prevent updating the snapshot.
+              receiverAccount: accountOne.account,
+              requestKey: expect.any(String), //Generic Assert, to prevent updating the snapshot.
+              senderAccount: sender00Account.account,
+              transaction: {
+                __typename: 'Transaction',
+                pactId: null,
+              },
+            },
+          }),
+        ]),
+      },
+    });
   });
 });
