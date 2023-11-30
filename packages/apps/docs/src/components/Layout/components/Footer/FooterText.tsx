@@ -9,7 +9,7 @@ interface IProps {
 
 export const FooterText: FC<IProps> = ({ children }) => {
   return (
-    <Text size="md" bold={false}>
+    <Text variant="small" bold={false}>
       <span className={textClass}>{children}</span>
     </Text>
   );

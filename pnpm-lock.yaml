@@ -1585,11 +1585,11 @@ importers:
         version: 3.28.0(react@18.2.0)
     devDependencies:
       '@design-sync/cli':
-        specifier: ^0.8.1
-        version: 0.8.1(prettier@3.0.3)
+        specifier: ^0.9.1
+        version: 0.9.1(prettier@3.0.3)
       '@design-sync/vanilla-extract-plugin':
-        specifier: ^0.4.0
-        version: 0.4.0(prettier@3.0.3)
+        specifier: ^0.4.2
+        version: 0.4.2(prettier@3.0.3)
       '@etchteam/storybook-addon-status':
         specifier: ^4.2.4
         version: 4.2.4(@types/react-dom@18.2.7)(@types/react@18.2.15)
@@ -4112,13 +4112,13 @@ packages:
       - supports-color
     dev: true
 
-  /@design-sync/cli@0.8.1(prettier@3.0.3):
-    resolution: {integrity: sha512-eYNZWoM097WSV/fG2ISg0gayT3rlAPMyoFHEz3b18AaoSrKxzj2oR6jJwIY9PQUc/olFI5KiHoOFJje0Ze+Mtg==}
+  /@design-sync/cli@0.9.1(prettier@3.0.3):
+    resolution: {integrity: sha512-3QsdEFDqP0mydM4LQw3gNE0Lz3O2q+WWm3yrBRFLWjucy8oQjT4kvFErmwizbTgQk+biuRdvZDDNU5m9T7+dlQ==}
     hasBin: true
     dependencies:
-      '@design-sync/manager': 0.4.1(prettier@3.0.3)
+      '@design-sync/manager': 0.5.1(prettier@3.0.3)
       '@design-sync/utils': 0.4.0
-      '@design-sync/w3c-dtfm': 0.7.0
+      '@design-sync/w3c-dtfm': 0.9.0
       citty: 0.1.5
       nypm: 0.3.3
     transitivePeerDependencies:
@@ -4126,13 +4126,13 @@ packages:
       - supports-color
     dev: true
 
-  /@design-sync/manager@0.4.1(prettier@3.0.3):
-    resolution: {integrity: sha512-9dDbpLZPLlzhTFcSpuOJ6dybBzxm/ZngjMprHq3lcARBloOLJ5dR1hASxA7GY33bgoQfby/mCI88G/k4EM8ZNA==}
+  /@design-sync/manager@0.5.1(prettier@3.0.3):
+    resolution: {integrity: sha512-Kfsp+/9Gr8pX5IWyBUBDMT6RAySbaKDwAqoKQhpDp6vB3+QDJTz4KTKQLiY8Nq8nwqBSXDcA2sLeGNmO66A90Q==}
     peerDependencies:
       prettier: ^3.0.0
     dependencies:
       '@design-sync/utils': 0.4.0
-      '@design-sync/w3c-dtfm': 0.7.0
+      '@design-sync/w3c-dtfm': 0.9.0
       c12: 1.5.1
       consola: 3.2.3
       fast-glob: 3.3.2
@@ -4153,19 +4153,19 @@ packages:
       scule: 1.1.0
     dev: true
 
-  /@design-sync/vanilla-extract-plugin@0.4.0(prettier@3.0.3):
-    resolution: {integrity: sha512-ZvahLFqlBhFNUk4zis0J3C3dskQ8ZPW1TZZMfLGP78EaQCC8ezmNBy+Q1qd+jxghbi/uQoKzejSZAKUvVonqJA==}
+  /@design-sync/vanilla-extract-plugin@0.4.2(prettier@3.0.3):
+    resolution: {integrity: sha512-l01W01bammyZ0RusQ24xyvupfxjjvSta1VoxIfLsliLXlPD30FX+XRieuXuc1Hf9IABjF/NxXjOrRuO6CEwu5w==}
     dependencies:
-      '@design-sync/manager': 0.4.1(prettier@3.0.3)
+      '@design-sync/manager': 0.5.1(prettier@3.0.3)
       '@design-sync/utils': 0.4.0
-      '@design-sync/w3c-dtfm': 0.7.0
+      '@design-sync/w3c-dtfm': 0.9.0
     transitivePeerDependencies:
       - prettier
       - supports-color
     dev: true
 
-  /@design-sync/w3c-dtfm@0.7.0:
-    resolution: {integrity: sha512-ARFMMV0zX1+YOmurd1zAviPmQTFoQ2Q41Ls+U01ELyE3HAVthGv1Z/oSppj4FHS+V7s6+uKDCTunwAR0NqmZYA==}
+  /@design-sync/w3c-dtfm@0.9.0:
+    resolution: {integrity: sha512-NpJLmFdumUxGB7cVMxnCvyB2svqNtakr1nbD5FUuX498uYWB1+lqeN+S2YRpKndCG6poxs3mR3vOZGIKdmp4JA==}
     dependencies:
       '@design-sync/utils': 0.4.0
       culori: 3.3.0
@@ -21422,7 +21422,7 @@ packages:
       acorn: 8.11.2
       pathe: 1.1.1
       pkg-types: 1.0.3
-      ufo: 1.2.0
+      ufo: 1.3.2
 
   /mlly@1.4.2:
     resolution: {integrity: sha512-i/Ykufi2t1EZ6NaPLdfnZk2AX8cs0d+mTzVKuPfqPKPatxLApaBoxJQ9x1/uckXtrS/U5oisPMDkNs0yQTaBRg==}
@@ -26348,9 +26348,6 @@ packages:
   /uc.micro@1.0.6:
     resolution: {integrity: sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==}
     dev: false
-
-  /ufo@1.2.0:
-    resolution: {integrity: sha512-RsPyTbqORDNDxqAdQPQBpgqhWle1VcTSou/FraClYlHf6TZnQcGslpLcAphNR+sQW4q5lLWLbOsRlh9j24baQg==}
 
   /ufo@1.3.2:
     resolution: {integrity: sha512-o+ORpgGwaYQXgqGDwd+hkS4PuZ3QnmqMMxRuajK/a38L6fTpcE5GPIfrf+L/KemFzfUpeUQc1rRS1iDBozvnFA==}

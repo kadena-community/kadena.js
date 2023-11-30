@@ -11,8 +11,10 @@ const breakpoints = {
 };
 
 const breakpointKeys = Object.keys(breakpoints);
+const fontOverride = () => "'Haas Grotesk Display', -apple-system, sans-serif";
 
 export default defineConfig({
+  // you can switch to different branch by changing the #main to #branch-name
   uri: 'github:kadena-community/design-system/tokens#main',
   out: 'src/styles/tokens',
   defaultMode: 'light',
@@ -32,5 +34,11 @@ export default defineConfig({
         breakpointKeys.some((key) => path.endsWith(key)),
     }),
   ],
+  // TODO: Workaround different font names in figma and google fonts
+  overrides: {
+    'kda.foundation.typography.family.bodyFont': fontOverride,
+    'kda.foundation.typography.family.primaryFont': fontOverride,
+    'kda.foundation.typography.family.headingFont': fontOverride,
+  },
   prettify: true,
 });

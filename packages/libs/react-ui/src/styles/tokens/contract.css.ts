@@ -47,9 +47,9 @@ export const tokens = createThemeContract({
       },
       breakpoint: {
         /**
-         * @default 0
-         * @light 0
-         * @dark 0
+         * @default 0rem
+         * @light 0rem
+         * @dark 0rem
          */
         xs: '',
         /**
@@ -2472,7 +2472,7 @@ export const tokens = createThemeContract({
             n20: '',
             /**
              * @default kda.foundation.color.palette.lime.n30
-             * @light kda.foundation.color.palette.lime.n30
+             * @light kda.foundation.color.palette.lime.n30`
              * @dark kda.foundation.color.palette.lime.n30
              */
             n30: '',
@@ -2789,9 +2789,9 @@ export const tokens = createThemeContract({
           level2: '',
           /**
            * @description This is the shadow 3 description updated
-           * @default 0 0 kda.foundation.size.n2 24px #000000
-           * @light 0 0 kda.foundation.size.n2 24px #000000
-           * @dark 0 0 kda.foundation.size.n2 24px #000000
+           * @default 0px 0px kda.foundation.size.n3 24px #000000
+           * @light 0px 0px kda.foundation.size.n3 24px #000000
+           * @dark 0px 0px kda.foundation.size.n3 24px #000000
            */
           level3: '',
         },
@@ -2799,15 +2799,15 @@ export const tokens = createThemeContract({
       typography: {
         family: {
           /**
-           * @default Haas Grot Disp
-           * @light Haas Grot Disp
-           * @dark Haas Grot Disp
+           * @default 'Haas Grotesk Display', -apple-system, sans-serif
+           * @light 'Haas Grotesk Display', -apple-system, sans-serif
+           * @dark 'Haas Grotesk Display', -apple-system, sans-serif
            */
           primaryFont: '',
           /**
-           * @default Haas Grot Disp
-           * @light Haas Grot Disp
-           * @dark Haas Grot Disp
+           * @default 'Haas Grotesk Display', -apple-system, sans-serif
+           * @light 'Haas Grotesk Display', -apple-system, sans-serif
+           * @dark 'Haas Grotesk Display', -apple-system, sans-serif
            */
           headingFont: '',
           /**
@@ -2817,9 +2817,9 @@ export const tokens = createThemeContract({
            */
           codeFont: '',
           /**
-           * @default Haas Grot Disp
-           * @light Haas Grot Disp
-           * @dark Haas Grot Disp
+           * @default 'Haas Grotesk Display', -apple-system, sans-serif
+           * @light 'Haas Grotesk Display', -apple-system, sans-serif
+           * @dark 'Haas Grotesk Display', -apple-system, sans-serif
            */
           bodyFont: '',
         },

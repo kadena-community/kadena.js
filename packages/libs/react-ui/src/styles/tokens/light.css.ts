@@ -18,7 +18,7 @@ export const lightTheme = createTheme(tokens, {
         thick: `${tokens.kda.foundation.border.width.thick} solid ${tokens.kda.foundation.color.border.base['@bold']}`,
       },
       breakpoint: {
-        xs: '0',
+        xs: '0rem',
         sm: '40rem',
         md: '48rem',
         lg: '64rem',
@@ -615,17 +615,17 @@ export const lightTheme = createTheme(tokens, {
       },
       effect: {
         shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
-          level3: `0 0 ${tokens.kda.foundation.size.n2} 24px #000000`,
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n3} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n3} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n3} 24px #000000`,
         },
       },
       typography: {
         family: {
-          primaryFont: 'Haas Grot Disp',
-          headingFont: 'Haas Grot Disp',
+          primaryFont: "'Haas Grotesk Display', -apple-system, sans-serif",
+          headingFont: "'Haas Grotesk Display', -apple-system, sans-serif",
           codeFont: 'Kode Mono',
-          bodyFont: 'Haas Grot Disp',
+          bodyFont: "'Haas Grotesk Display', -apple-system, sans-serif",
         },
         fontSize: {
           xs: '0.75rem',
