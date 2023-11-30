@@ -1,6 +1,6 @@
 import { getAccountDetails } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { COMPLEXITY, builder } from '../builder';
 import ChainModuleAccount from '../objects/ChainModuleAccount';
 import { ChainModuleAccountName } from '../types/graphql-types';
 
@@ -13,6 +13,7 @@ builder.queryField('chainAccount', (t) => {
     },
     type: ChainModuleAccount,
     nullable: true,
+    complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
         const accountDetails = await getAccountDetails(

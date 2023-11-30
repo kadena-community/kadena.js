@@ -1,6 +1,6 @@
 import { prismaClient } from '@db/prismaClient';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { COMPLEXITY, builder } from '../builder';
 
 export default builder.prismaNode('Event', {
   id: { field: 'blockHash_orderIndex_requestKey' },
@@ -19,9 +19,11 @@ export default builder.prismaNode('Event', {
     transaction: t.prismaField({
       type: 'Transaction',
       nullable: true,
-      async resolve(__query, parent) {
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      async resolve(query, parent) {
         try {
           return await prismaClient.transaction.findUnique({
+            ...query,
             where: {
               blockHash_requestKey: {
                 blockHash: parent.blockHash,
@@ -38,9 +40,11 @@ export default builder.prismaNode('Event', {
     block: t.prismaField({
       type: 'Block',
       nullable: false,
-      async resolve(__query, parent) {
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      async resolve(query, parent) {
         try {
           return await prismaClient.block.findUniqueOrThrow({
+            ...query,
             where: {
               hash: parent.blockHash,
             },

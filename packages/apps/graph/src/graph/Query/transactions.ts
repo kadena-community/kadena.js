@@ -16,10 +16,11 @@ builder.queryField('transactions', (t) => {
     type: 'Transaction',
     cursor: 'blockHash_requestKey',
     complexity: (args) => ({
-      field: args.moduleName
-        ? COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS
-        : COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
-      multiplier: args.first || args.last || PRISMA.DEFAULT_SIZE,
+      field:
+        (args.moduleName
+          ? COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS
+          : COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS) *
+        (args.first || args.last || PRISMA.DEFAULT_SIZE),
     }),
     async totalCount(__parent, args) {
       try {

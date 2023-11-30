@@ -16,6 +16,14 @@ uses chainweb-data as the datasource.
 
 A GraphQL endpoint that interacts with chainweb-data and chainweb-node.
 
+- [Kadena GraphQL](#kadena-graphql)
+- [Useful extra's](#useful-extras)
+  - [Connect to the database](#connect-to-the-database)
+  - [Fund an account on the devnet](#fund-an-account-on-the-devnet)
+  - [Simulate traffic on the devnet](#simulate-traffic-on-the-devnet)
+  - [Tracing and trace analysis](#tracing-and-trace-analysis)
+  - [Query Complexity](#query-complexity)
+
 # Getting started
 
 First, install dependencies and build up to and including `@kadena/graph`.
@@ -83,7 +91,7 @@ pnpm build --filter @kadena/graph...
    }
    ```
 
-## Useful commands
+## Useful extra's
 
 ### Connect to the database
 
