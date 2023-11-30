@@ -1,4 +1,3 @@
-import { useToasts } from '@/hooks/toast.hook';
 import type { FC } from 'react';
 
 const Page: FC = () => {

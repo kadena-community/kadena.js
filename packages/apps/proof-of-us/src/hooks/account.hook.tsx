@@ -17,14 +17,14 @@ interface IAccountError {
 }
 
 interface IAccountContext {
-  account?: IAccount | null;
+  account?: IAccount;
   error?: IAccountError;
   login: () => void;
   logout: () => void;
 }
 
 export const AccountContext = createContext<IAccountContext>({
-  account: null,
+  account: undefined,
   login: () => {},
   logout: () => {},
 });
@@ -32,7 +32,7 @@ export const AccountContext = createContext<IAccountContext>({
 export const useAccount = (): IAccountContext => useContext(AccountContext);
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [account, setAccount] = useState<IAccount | null>();
+  const [account, setAccount] = useState<IAccount>();
   const { addToast } = useToasts();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -42,18 +42,19 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const decodeAccount = useCallback((response: string) => {
-    if (!response) return null;
+    if (!response) return;
     try {
       const account: IAccount = JSON.parse(
         Buffer.from(response, 'base64').toString(),
       );
       return account;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       addToast({
         type: 'error',
         message: e.message,
       });
-      return null;
+      return;
     }
   }, []);
 
@@ -63,7 +64,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const logout = useCallback(() => {
     localStorage.removeItem(ACCOUNTCOOKIENAME);
-    setAccount(null);
+    setAccount(undefined);
   }, []);
 
   useEffect(() => {

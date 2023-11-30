@@ -12,5 +12,6 @@ module.exports = {
   rules: {
     '@kadena-dev/typedef-var': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
   },
 };
