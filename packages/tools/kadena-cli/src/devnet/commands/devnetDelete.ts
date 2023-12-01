@@ -66,7 +66,7 @@ export const deleteDevnetCommand: CreateCommandReturnType = createCommand(
     } catch (e) {
       console.log(
         chalk.red(
-          'Deleting devnet requires Docker. Please install Docker and try again.',
+          'Something went wrong during the removal of the devnet container.',
         ),
       );
       return;
