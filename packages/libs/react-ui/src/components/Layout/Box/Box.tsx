@@ -1,5 +1,5 @@
-import type { Atoms } from '@theme/atoms.css';
-import { atoms } from '@theme/atoms.css';
+import type { Sprinkles } from '@theme/sprinkles.css';
+import { sprinkles } from '@theme/sprinkles.css';
 import classnames from 'classnames';
 import type React from 'react';
 import type { ElementType } from 'react';
@@ -8,11 +8,12 @@ import { createElement } from 'react';
 export interface IBoxProps
   extends Partial<
     Pick<
-      Atoms,
+      Sprinkles,
       | 'alignItems'
       | 'backgroundColor'
       | 'borderColor'
       | 'borderRadius'
+      | 'borderStyle'
       | 'borderWidth'
       | 'bottom'
       | 'cursor'
@@ -32,7 +33,9 @@ export interface IBoxProps
       | 'marginTop'
       | 'marginX'
       | 'marginY'
+      | 'maxHeight'
       | 'maxWidth'
+      | 'minHeight'
       | 'minWidth'
       | 'opacity'
       | 'overflow'
@@ -64,6 +67,7 @@ export const Box = ({
   backgroundColor,
   borderColor,
   borderRadius,
+  borderStyle,
   borderWidth,
   bottom,
   cursor,
@@ -83,7 +87,9 @@ export const Box = ({
   marginTop,
   marginX,
   marginY,
+  maxHeight,
   maxWidth,
+  minHeight,
   minWidth,
   opacity,
   overflow,
@@ -105,11 +111,12 @@ export const Box = ({
     as,
     {
       className: classnames(
-        atoms({
+        sprinkles({
           alignItems,
           backgroundColor,
           borderColor,
           borderRadius,
+          borderStyle,
           borderWidth,
           bottom,
           cursor,
@@ -129,7 +136,9 @@ export const Box = ({
           marginTop,
           marginX,
           marginY,
+          maxHeight,
           maxWidth,
+          minHeight,
           minWidth,
           opacity,
           overflow,
