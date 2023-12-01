@@ -1,6 +1,6 @@
-import type { EncryptedString } from '../utils/kadenaEncryption';
-import { kadenaDecrypt, kadenaEncrypt } from '../utils/kadenaEncryption';
-import { deriveKeyPair } from './utils/sign';
+import type { EncryptedString } from '../utils/kadenaEncryption.js';
+import { kadenaDecrypt, kadenaEncrypt } from '../utils/kadenaEncryption.js';
+import { deriveKeyPair } from './utils/sign.js';
 
 function genKeypairFromSeed(
   password: string,

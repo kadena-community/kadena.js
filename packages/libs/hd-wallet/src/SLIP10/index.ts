@@ -1,5 +1,9 @@
-export * from './kadenaGenKeypairFromSeed';
-export * from './kadenaGetPublic';
-export * from './kadenaKeyPairsFromRandom';
-export * from './kadenaMnemonic';
-export * from './kadenaSign';
+export { kadenaGenKeypairFromSeed } from './kadenaGenKeypairFromSeed.js';
+export { kadenaGetPublic } from './kadenaGetPublic.js';
+export { kadenaKeyPairsFromRandom } from './kadenaKeyPairsFromRandom.js';
+export { kadenaGenMnemonic, kadenaMnemonicToSeed } from './kadenaMnemonic.js';
+export {
+  kadenaSignWithKeyPair,
+  kadenaSignWithSeed,
+  kadenaVerify,
+} from './kadenaSign.js';

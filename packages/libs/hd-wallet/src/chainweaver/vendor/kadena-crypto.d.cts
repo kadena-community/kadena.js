@@ -33,4 +33,18 @@ export declare const kadenaVerify: (
   signature: string,
 ) => boolean;
 
+export declare const isLoaded: () => boolean;
+
+export default {
+  kadenaChangePassword,
+  kadenaCheckMnemonic,
+  kadenaGenKeypair,
+  kadenaGenMnemonic,
+  kadenaGetPublic,
+  kadenaMnemonicToRootKeypair,
+  kadenaSign,
+  kadenaVerify,
+  isLoaded,
+};
+
 // Path: ./kadena-crypto.js

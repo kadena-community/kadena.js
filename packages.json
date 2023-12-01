@@ -78,10 +78,22 @@
     "path": "packages/apps/graph-client"
   },
   {
+    "name": "@kadena/hd-wallet",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/libs/hd-wallet"
+  },
+  {
     "name": "@kadena/js-monorepo",
     "version": "1.0.0",
     "private": true,
     "path": "."
+  },
+  {
+    "name": "@kadena/kadena-cli",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/tools/kadena-cli"
   },
   {
     "name": "@kadena/kda-cli",

@@ -1,6 +1,6 @@
-import type { EncryptedString } from '../utils/kadenaEncryption';
-import { kadenaDecrypt } from '../utils/kadenaEncryption';
-import { deriveKeyPair } from './utils/sign';
+import type { EncryptedString } from '../utils/kadenaEncryption.js';
+import { kadenaDecrypt } from '../utils/kadenaEncryption.js';
+import { deriveKeyPair } from './utils/sign.js';
 
 function genPublicKeyFromSeed(
   seedBuffer: Uint8Array,
