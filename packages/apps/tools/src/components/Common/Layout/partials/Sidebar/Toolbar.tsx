@@ -1,6 +1,7 @@
 import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext } from '@/context';
 import type { ISidebarSubMenuItem } from '@/types/Layout';
+import { getHref } from '@/utils/getHref';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -12,7 +13,6 @@ import {
   gridMiniMenuListItemStyle,
   gridMiniMenuListStyle,
 } from './styles.css';
-import {getHref} from "@/utils/getHref";
 
 export const Toolbar: FC = () => {
   const {
