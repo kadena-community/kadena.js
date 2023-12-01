@@ -22,6 +22,11 @@ type FlattenObjectTokens<T extends { [key: string]: Token }> = {
   [Key in Leaves<T>]: string;
 };
 
+/**
+ * @private Used internally to create utility class options
+ * @param {Record<string, any>} tokens - The tokens to flatten
+ * @param {string | undefined} prefix - Do not use this parameter. This param is used to internally recursively pass parent prefixes to nested tokens.
+ */
 export const flattenTokens = <T extends Record<string, any>>(
   tokens: T,
   prefix?: string,
