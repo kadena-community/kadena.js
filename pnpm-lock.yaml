@@ -1620,32 +1620,6 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(vitest@0.34.6)
 
-  packages/libs/test-cjs:
-    dependencies:
-      '@kadena/hd-wallet':
-        specifier: workspace:*
-        version: link:../hd-wallet
-    devDependencies:
-      '@types/node':
-        specifier: ^20.10.0
-        version: 20.10.0
-      typescript:
-        specifier: 5.2.2
-        version: 5.2.2
-
-  packages/libs/test-esm:
-    dependencies:
-      '@kadena/hd-wallet':
-        specifier: workspace:*
-        version: link:../hd-wallet
-    devDependencies:
-      '@types/node':
-        specifier: ^20.10.0
-        version: 20.10.0
-      typescript:
-        specifier: 5.2.2
-        version: 5.2.2
-
   packages/libs/types:
     devDependencies:
       '@kadena-dev/eslint-config':
@@ -1841,7 +1815,7 @@ importers:
         specifier: workspace:*
         version: link:../../libs/cryptography-utils
       '@kadena/hd-wallet':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../libs/hd-wallet
       '@kadena/pactjs':
         specifier: workspace:*
@@ -1855,12 +1829,6 @@ importers:
       '@scure/bip39':
         specifier: ^1.2.1
         version: 1.2.1
-      '@types/clear':
-        specifier: ^0.1.2
-        version: 0.1.3
-      '@types/js-yaml':
-        specifier: ^4.0.5
-        version: 4.0.5
       cardano-crypto.js:
         specifier: https://github.com/kadena-io/cardano-crypto.js.git#jam@chainweaver-keygen
         version: github.com/kadena-io/cardano-crypto.js/c50fb8c2fcd4e8d396506fb0c07de9d658aa1bae
@@ -1931,6 +1899,9 @@ importers:
       '@swc-node/register':
         specifier: ^1.6.8
         version: 1.6.8(@swc/core@1.3.80)(typescript@5.2.2)
+      '@types/clear':
+        specifier: ^0.1.2
+        version: 0.1.3
       '@types/cross-spawn':
         specifier: ~6.0.2
         version: 6.0.3
@@ -1943,6 +1914,9 @@ importers:
       '@types/isomorphic-fetch':
         specifier: ~0.0.36
         version: 0.0.38
+      '@types/js-yaml':
+        specifier: ^4.0.5
+        version: 4.0.5
       '@types/mkdirp':
         specifier: ~1.0.2
         version: 1.0.2
@@ -11207,7 +11181,7 @@ packages:
 
   /@types/clear@0.1.3:
     resolution: {integrity: sha512-T9pwLqQsOl5Sd1QGGkVbzHQkIvVIBUJkh8r9XcOxy5dukshynYRQx5mU4KVWYAVkakKwpJ4DWNYdT7LMFJlTxg==}
-    dev: false
+    dev: true
 
   /@types/concat-stream@2.0.0:
     resolution: {integrity: sha512-t3YCerNM7NTVjLuICZo5gYAXYoDvpuuTceCcFQWcDQz26kxUR5uIWolxbIR5jRNIXpMqhOpW/b8imCR1LEmuJw==}
@@ -11417,6 +11391,7 @@ packages:
 
   /@types/js-yaml@4.0.5:
     resolution: {integrity: sha512-FhpRzf927MNQdRZP0J5DLIdTXhjLYzeUTmLAu69mnVksLH9CJY3IuSeEgbKUki7GQZm0WqDkGzyxju2EZGD2wA==}
+    dev: true
 
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}
