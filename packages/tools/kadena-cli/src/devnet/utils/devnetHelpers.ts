@@ -56,7 +56,7 @@ export function writeDevnet(options: IDevnetsCreateOptions): void {
     existingConfig =
       typeof devnetDefaults[name] !== 'undefined'
         ? { ...devnetDefaults[name] }
-        : { ...devnetDefaults.other };
+        : { ...devnetDefaults.devnet };
   }
 
   const devnetConfig = mergeConfigs(existingConfig, options);
@@ -93,11 +93,11 @@ export function defaultDevnetIsConfigured(): boolean {
 
 export function getDevnetConfiguration(
   name: string,
-): IDevnetsCreateOptions | null {
+): IDevnetsCreateOptions | undefined {
   const devnetFilePath = path.join(defaultDevnetsPath, `${name}.yaml`);
 
   if (!PathExists(devnetFilePath)) {
-    return null;
+    return undefined;
   }
 
   return yaml.load(

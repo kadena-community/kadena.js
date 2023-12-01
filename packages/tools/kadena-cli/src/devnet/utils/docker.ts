@@ -2,12 +2,12 @@ import chalk from 'chalk';
 import { execSync } from 'child_process';
 import type { IDevnetsCreateOptions } from './devnetHelpers.js';
 
-const volumePrefix = 'kadena_';
-const containerDataFolder = '/data';
-const containerPactFolder = '/pact-cli';
-const containerPactFolderPermissions = 'ro';
-const chainwebNodeApiPort = '8080';
-const devnetImageName = 'kadena/devnet';
+const volumePrefix: string = 'kadena_';
+const containerDataFolder: string = '/data';
+const containerPactFolder: string = '/pact-cli';
+const containerPactFolderPermissions: string = 'ro';
+const chainwebNodeApiPort: string = '8080';
+const devnetImageName: string = 'kadena/devnet';
 
 export function isDockerInstalled(): boolean {
   try {
@@ -146,7 +146,7 @@ export function removeVolume(containerName: string): void {
 }
 
 export function updateDevnet(version?: string): void {
-  const image = `${devnetImageName}:${version || 'latest'}`;
+  const image = `${devnetImageName}:${version}`;
   try {
     execSync(`docker pull ${image}`);
     console.log(chalk.green(`Updated ${image}`));
