@@ -1,6 +1,6 @@
-import type { IAuthorInfo, IMenuData } from '@/Layout';
 import { compareDesc } from '@/utils/dates';
 import { getAuthorData } from '@/utils/staticGeneration/getJsonData.mjs';
+import type { IAuthorInfo, IMenuData } from '@kadena/docs-tools';
 
 export interface IIBlogLoadOptions {
   authorId?: string;

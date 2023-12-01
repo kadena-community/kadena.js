@@ -2,44 +2,77 @@ import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass, vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
-export const tabsContainer = style([
+export const tabsContainerClass = style([
   sprinkles({
-    position: 'relative',
     display: 'flex',
-    alignItems: 'center',
-    flexGrow: 1,
-    marginBottom: '$4',
+    flexDirection: 'column',
+  }),
+]);
+
+export const tabListWrapperClass = style([
+  sprinkles({
+    maxWidth: '100%',
+    overflowX: 'auto',
   }),
   {
-    borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral2}`,
+    paddingLeft: '2px',
+    paddingTop: '2px', // For focus ring
+  },
+]);
+
+export const tabListClass = style([
+  sprinkles({
+    display: 'inline-flex',
+    flexDirection: 'row',
+    minWidth: '100%',
+    position: 'relative',
+  }),
+  {
     selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `${vars.sizes.$0} solid ${vars.colors.$neutral3}`,
+      '&::before': {
+        position: 'absolute',
+        display: 'block',
+        content: '',
+        bottom: '0',
+        left: '0',
+        right: '0',
+        height: '2px',
+        backgroundColor: vars.colors.$neutral2,
+      },
+      [`${darkThemeClass} &::before`]: {
+        backgroundColor: vars.colors.$neutral3,
       },
     },
   },
 ]);
 
-export const tabClass = style([
+export const tabItemClass = style([
   sprinkles({
     border: 'none',
     cursor: 'pointer',
-    paddingY: '$2',
+    paddingY: '$1',
+    paddingX: '$2',
     fontSize: '$md',
+    fontWeight: '$semiBold',
     backgroundColor: 'transparent',
     color: '$neutral4',
+    outline: 'none',
+    zIndex: 1,
   }),
   {
+    opacity: '.6',
     whiteSpace: 'nowrap',
-  },
-]);
-
-export const selectedClass = style([
-  sprinkles({
-    fontWeight: '$bold',
-  }),
-  {
-    color: vars.colors.$primaryContrastInverted,
+    selectors: {
+      '&[data-selected="true"]': {
+        opacity: '1',
+        color: vars.colors.$primaryContrastInverted,
+      },
+      '.focusVisible &:focus-visible': {
+        borderTopLeftRadius: vars.radii.$sm,
+        borderTopRightRadius: vars.radii.$sm,
+        outline: `2px solid ${vars.colors.$primaryAccent}`,
+      },
+    },
   },
 ]);
 
@@ -47,26 +80,26 @@ export const selectorLine = style([
   sprinkles({
     position: 'absolute',
     display: 'block',
-    backgroundColor: {
-      darkMode: '$neutral6',
-      lightMode: '$primaryAccent',
-    },
     width: 0,
-    height: '$0',
+    height: '100%',
+    bottom: 0,
+    borderStyle: 'solid',
+    borderColor: '$primaryAccent',
   }),
   {
-    bottom: '-2px', // for some reason a negative cant be done with vars
+    borderWidth: 0,
+    borderBottomWidth: '2px',
     transition: 'transform .4s ease, width .4s ease',
     transform: `translateX(0)`,
   },
 ]);
 
-export const tabsContainerWrapper = style([
+export const tabContentClass = style([
   sprinkles({
-    display: 'flex',
-    width: '100%',
+    marginY: '$4',
+    fontSize: '$base',
+    color: '$neutral4',
+    flex: 1,
+    overflowY: 'auto',
   }),
-  {
-    overflowY: 'scroll',
-  },
 ]);

@@ -25,19 +25,26 @@ interface ICrossChainInput {
   targetChainGasPayer?: { account: string; publicKeys: string[] };
   gasPayer?: { account: string; publicKeys: string[] };
   chainId: ChainId;
+  /**
+   * compatible contract with fungible-v2; default is "coin"
+   */
+  contract?: string;
 }
-
-const createCrossChainCommand = ({
+/**
+ * @alpha
+ */
+export const createCrossChainCommand = ({
   sender,
   receiver,
   amount,
   targetChainId,
   gasPayer = sender,
   chainId,
+  contract = 'coin',
 }: Omit<ICrossChainInput, 'targetChainGasPayer'>) =>
   composePactCommand(
     execution(
-      Pact.modules.coin.defpact['transfer-crosschain'](
+      Pact.modules[contract as 'coin'].defpact['transfer-crosschain'](
         sender.account,
         receiver.account,
         readKeyset('account-guard'),
@@ -50,7 +57,7 @@ const createCrossChainCommand = ({
     addKeyset('account-guard', receiver.keyset.pred, ...receiver.keyset.keys),
     addSigner(sender.publicKeys, (signFor) => [
       signFor(
-        'coin.TRANSFER_XCHAIN',
+        `${contract as 'coin'}.TRANSFER_XCHAIN`,
         sender.account,
         receiver.account,
         { decimal: amount },

@@ -1,4 +1,4 @@
-import type { IBasePageProps } from '@/Layout';
+import type { IBasePageProps } from '@kadena/docs-tools';
 import classnames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';

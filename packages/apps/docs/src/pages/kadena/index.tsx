@@ -1,13 +1,10 @@
-import type { IMenuData } from '@/Layout';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import { getBlogPosts } from '@/utils/getBlogPosts';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import type { IMenuData } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import { Box, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -109,7 +106,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       blogPosts,
       frontmatter: {
         title: 'Intro to Kadena',
