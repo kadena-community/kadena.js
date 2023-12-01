@@ -150,6 +150,12 @@
     "path": "packages/tools/e2e-tests"
   },
   {
+    "name": "@kadena-dev/integration-tests",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/tools/integration-tests"
+  },
+  {
     "name": "@kadena-dev/eslint-config",
     "version": "1.0.3",
     "private": false,
