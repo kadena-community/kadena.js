@@ -25,7 +25,9 @@ export const Toolbar: FC = () => {
   } = useLayoutContext();
   const { pathname } = useRouter();
 
-  const handleItemClick = (index: number): void => {
+  const handleItemClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number): void => {
+    event.preventDefault();
+
     setVisibleLinks(false);
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
@@ -75,7 +77,7 @@ export const Toolbar: FC = () => {
           <li key={String(item.title)} className={gridMiniMenuListItemStyle}>
             <MenuButton
               {...item}
-              onClick={() => handleItemClick(index)}
+              onClick={(e) => handleItemClick(e, index)}
               active={isMenuActive(item, index)}
               href={getHref(pathname, item.href)}
             />
