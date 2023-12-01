@@ -8,7 +8,7 @@ import { createAccount } from '../testdata/setup/create-account';
 describe('Account', () => {
   test('Query: getAccount', async () => {
     // Given a test account is created.
-   await createAccount(accountOne);
+    await createAccount(accountOne);
 
     // When the getAccountQuery is executed
     const query = getAccountQuery(accountOne.account);
@@ -16,8 +16,8 @@ describe('Account', () => {
 
     //Then the statuscode should be 200 and the snapshot should match, including specific property matchers.
     expect(response.statusCode).toBe(200);
-   // ToMatchSnapshot uses Jests Property Matchers, any property defined below is (literally) matched against the snashot file
-   // Properties that are defined below can be a little bit more flexible to prevent having to update the snapshot on every run
+    // ToMatchSnapshot uses Jests Property Matchers, any property defined below is (literally) matched against the snashot file
+    // Properties that are defined below can be a little bit more flexible to prevent having to update the snapshot on every run
     expect(response.body.data.account).toMatchSnapshot({
       chainAccounts: [
         {

@@ -48,7 +48,7 @@ export function getTransfers(amount = 1) {
       requestKey
       __typename
     }`,
-    variables: { first: amount},
+    variables: { first: amount },
     operationName: 'getTransactions',
     extensions: {},
   };
