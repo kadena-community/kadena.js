@@ -12,6 +12,7 @@ import {
   gridMiniMenuListItemStyle,
   gridMiniMenuListStyle,
 } from './styles.css';
+import {getHref} from "@/utils/getHref";
 
 export const Toolbar: FC = () => {
   const {
@@ -76,6 +77,7 @@ export const Toolbar: FC = () => {
               {...item}
               onClick={() => handleItemClick(index)}
               active={isMenuActive(item, index)}
+              href={getHref(pathname, item.href)}
             />
           </li>
         ))}
