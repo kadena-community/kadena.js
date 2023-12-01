@@ -1,19 +1,17 @@
 import type { IBoxProps } from '@components/Layout/Box';
 import { Box } from '@components/Layout/Box';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
+import { tokens } from '@theme/tokens/contract.css';
 import React from 'react';
 import { componentClass, containerClass, itemClass } from '../stories.css';
 
-const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
-  undefined,
-  ...(Object.keys(vars.sizes) as (keyof typeof vars.sizes)[]),
-];
-const contentWidthOptions: (keyof typeof vars.contentWidth | undefined)[] = [
-  undefined,
-  ...(Object.keys(vars.contentWidth) as (keyof typeof vars.contentWidth)[]),
-];
-const dimensionOptions: string[] = ['100%', 'min-content', 'max-content'];
+const spaceOptions: (keyof typeof tokens.kda.foundation.spacing | undefined)[] =
+  [
+    undefined,
+    ...(Object.keys(
+      tokens.kda.foundation.spacing,
+    ) as (keyof typeof tokens.kda.foundation.spacing)[]),
+  ];
 
 const meta: Meta<IBoxProps> = {
   title: 'Layout/Box',
@@ -37,48 +35,6 @@ const meta: Meta<IBoxProps> = {
         type: 'select',
       },
       description: 'Overflow css property.',
-    },
-    width: {
-      options: [...spaceOptions, ...dimensionOptions, ...contentWidthOptions],
-      control: {
-        type: 'select',
-      },
-      description: 'Value for width property with pre-defined size values.',
-    },
-    minWidth: {
-      options: dimensionOptions,
-      control: {
-        type: 'select',
-      },
-      description: 'Value for minWidth property with pre-defined size values.',
-    },
-    maxWidth: {
-      options: [...dimensionOptions, ...contentWidthOptions],
-      control: {
-        type: 'select',
-      },
-      description: 'Value for maxWidth property with pre-defined size values.',
-    },
-    height: {
-      options: [...spaceOptions, ...dimensionOptions],
-      control: {
-        type: 'select',
-      },
-      description: 'Value for height property with pre-defined size values.',
-    },
-    minHeight: {
-      options: dimensionOptions,
-      control: {
-        type: 'select',
-      },
-      description: 'Value for minHeight property with pre-defined size values.',
-    },
-    maxHeight: {
-      options: dimensionOptions,
-      control: {
-        type: 'select',
-      },
-      description: 'Value for maxHeight property with pre-defined size values.',
     },
     margin: {
       options: spaceOptions,
@@ -119,7 +75,6 @@ const meta: Meta<IBoxProps> = {
       description:
         'Value for top margin property with pre-defined size values.',
     },
-
     marginLeft: {
       options: spaceOptions,
       control: {
@@ -218,8 +173,6 @@ export const Primary: Story = {
     minWidth: undefined,
     maxWidth: undefined,
     height: undefined,
-    minHeight: undefined,
-    maxHeight: undefined,
   },
   render: ({
     margin,
@@ -240,8 +193,6 @@ export const Primary: Story = {
     minWidth,
     maxWidth,
     height,
-    minHeight,
-    maxHeight,
     overflow,
   }) => (
     <div className={containerClass}>
@@ -264,8 +215,6 @@ export const Primary: Story = {
         minWidth={minWidth}
         maxWidth={maxWidth}
         height={height}
-        minHeight={minHeight}
-        maxHeight={maxHeight}
         overflow={overflow}
         className={componentClass}
       >
