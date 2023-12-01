@@ -9,7 +9,6 @@ const Document: FC = () => {
       <Head />
       <body className={bodyStyle}>
         <Main />
-        <div id="modalportal" />
         <NextScript />
       </body>
     </Html>

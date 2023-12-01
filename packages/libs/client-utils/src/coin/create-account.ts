@@ -19,17 +19,28 @@ interface ICreateAccountCommandInput {
   };
   gasPayer: { account: string; publicKeys: string[] };
   chainId: ChainId;
+  /**
+   * compatible contract with fungible-v2; default is "coin"
+   */
+  contract?: string;
 }
 
-const createAccountCommand = ({
+/**
+ * @alpha
+ */
+export const createAccountCommand = ({
   account,
   keyset,
   gasPayer,
   chainId,
+  contract = 'coin',
 }: ICreateAccountCommandInput) =>
   composePactCommand(
     execution(
-      Pact.modules.coin['create-account'](account, readKeyset('account-guard')),
+      Pact.modules[contract as 'coin']['create-account'](
+        account,
+        readKeyset('account-guard'),
+      ),
     ),
     addKeyset('account-guard', keyset.pred, ...keyset.keys),
     addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),

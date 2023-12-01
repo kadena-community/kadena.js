@@ -3,12 +3,18 @@ import { mapMatches } from '@/pages/api/semanticsearch';
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
+import type { ITabs } from '../SearchDialog/SearchDialog';
 import { SearchResults } from './components/SearchResults';
 import type { ISearchProps } from './Search';
 import useAlgoliaSearch from './useAlgoliaSearch';
 
-const SearchTab: FC<ISearchProps> = ({ query, hasScroll, limitResults }) => {
-  const [tabName, setTabName] = useState<string | undefined>('docs');
+const SearchTab: FC<ISearchProps> = ({
+  query,
+  hasScroll,
+  limitResults,
+  selectedTabName = null,
+}) => {
+  const [tabName, setTabName] = useState<ITabs>(selectedTabName);
   const { metadata, handleSubmit, error, isLoading } =
     useAlgoliaSearch(limitResults);
 
@@ -26,7 +32,7 @@ const SearchTab: FC<ISearchProps> = ({ query, hasScroll, limitResults }) => {
     if (
       query !== undefined &&
       query.trim() !== '' &&
-      tabName !== undefined &&
+      tabName !== null &&
       tabName.trim() !== ''
     ) {
       if (tabName === 'docs') {
@@ -41,25 +47,23 @@ const SearchTab: FC<ISearchProps> = ({ query, hasScroll, limitResults }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, tabName]);
 
-  const onTabSelect = (tabName: string): void => {
+  const onTabSelect = (tabName: ITabs): void => {
     setTabName(tabName);
   };
 
   return (
-    <section>
-      <SearchResults
-        semanticResults={semanticResults}
-        semanticIsLoading={isLoading}
-        conversation={conversation}
-        outputStream={outputStream}
-        query={query}
-        error={error || conversationError}
-        isLoading={conversationIsLoading}
-        hasScroll={hasScroll}
-        onTabSelect={onTabSelect}
-        limitResults={limitResults}
-      />
-    </section>
+    <SearchResults
+      semanticResults={semanticResults}
+      semanticIsLoading={isLoading}
+      conversation={conversation}
+      outputStream={outputStream}
+      query={query}
+      error={error || conversationError}
+      isLoading={conversationIsLoading}
+      hasScroll={hasScroll}
+      onTabSelect={onTabSelect}
+      limitResults={limitResults}
+    />
   );
 };
 

@@ -27,6 +27,9 @@ jobs:
       - name: pnpm install
         run: pnpm install
 
+      - name: Build docs dependencies
+        run: pnpm turbo run build --filter=@kadena/docs^...
+
       - name: Ingest docs to Algolia
         run: pnpm run 7d:ingest-algolia-prod
         working-directory: packages/apps/docs

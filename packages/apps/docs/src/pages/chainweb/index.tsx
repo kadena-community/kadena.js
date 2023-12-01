@@ -1,10 +1,7 @@
 import apiSpecs from '@/_generated/specs/chainweb.openapi.json';
 import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs/Specs';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import type { GetStaticProps } from 'next';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { FC } from 'react';
@@ -18,7 +15,7 @@ const Home: FC = () => {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Intro to Chainweb',
         menu: 'Chainweb',
