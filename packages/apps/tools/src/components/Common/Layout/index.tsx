@@ -21,7 +21,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
     // sidebar menu closed by default on smaller screens
     if (window.innerWidth < 768) {
       setActiveMenuIndex(undefined);
-      setIsMenuOpen(false)
+      setIsMenuOpen(false);
     }
   }, []);
 

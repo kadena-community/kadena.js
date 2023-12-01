@@ -5,7 +5,7 @@ import { Accordion } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   gridItemMenuStyle,
   subMenuContentStyle,
@@ -59,7 +59,7 @@ export const Menu: FC = () => {
   };
 
   const handleOnClick = () => {
-    if(smallScreen){
+    if (smallScreen) {
       setIsMenuOpen(false);
     }
   };

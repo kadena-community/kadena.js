@@ -56,7 +56,7 @@ export const Toolbar: FC = () => {
     const activeMenuIndex = menuData.indexOf(activeMenu);
 
     setActiveMenuIndex(activeMenuIndex);
-    setIsMenuOpen(true)
+    setIsMenuOpen(true);
   };
 
   const isMenuActive = (

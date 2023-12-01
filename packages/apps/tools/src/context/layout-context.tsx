@@ -42,7 +42,8 @@ export const useToolbar = (
   toolbar: ISidebarToolbarItem[],
   pathName?: string,
 ): void => {
-  const { setToolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen } = useLayoutContext();
+  const { setToolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen } =
+    useLayoutContext();
   useEffect(() => {
     setToolbar(toolbar);
 
