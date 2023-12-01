@@ -18,7 +18,10 @@ export default builder.prismaNode('Signer', {
     orderIndex: t.exposeInt('orderIndex'),
     publicKey: t.exposeString('publicKey'),
     requestKey: t.exposeString('requestKey'),
-    scheme: t.exposeString('scheme', { nullable: true }),
+    scheme: t.exposeString('scheme', {
+      nullable: true,
+      description: 'The signature scheme that was used to sign.',
+    }),
     signature: t.exposeString('signature'),
   }),
 });

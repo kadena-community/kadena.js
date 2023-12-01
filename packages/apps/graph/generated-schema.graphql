@@ -279,6 +279,8 @@ type Signer implements Node {
   orderIndex: Int!
   publicKey: String!
   requestKey: String!
+
+  """The signature scheme that was used to sign."""
   scheme: String
   signature: String!
 }
