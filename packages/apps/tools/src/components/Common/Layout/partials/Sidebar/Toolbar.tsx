@@ -25,7 +25,10 @@ export const Toolbar: FC = () => {
   } = useLayoutContext();
   const { pathname } = useRouter();
 
-  const handleItemClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number): void => {
+  const handleItemClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    index: number,
+  ): void => {
     event.preventDefault();
 
     setVisibleLinks(false);
