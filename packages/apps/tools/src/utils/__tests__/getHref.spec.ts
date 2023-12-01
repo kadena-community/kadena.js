@@ -32,8 +32,8 @@ describe('getHref', () => {
   });
 
   test('existing basepath and existing href', () => {
-    const pathname = '/faucet/existing';
+    const pathname = '/faucet/new';
     const result = getHref(pathname, 'faucet');
-    expect(result).toBe('/faucet/existing');
+    expect(result).toBe('/faucet/new');
   });
 });
