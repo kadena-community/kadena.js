@@ -2,10 +2,13 @@ import {
   mkdirSync,
   readFileSync,
   readdirSync,
+  renameSync,
+  rmdirSync,
+  statSync,
   unlinkSync,
   writeFileSync,
 } from 'fs';
-import { join } from 'path';
+import { basename, join } from 'path';
 
 export async function createDirAndWriteFile(
   dir: string,
@@ -19,9 +22,37 @@ export async function createDirAndWriteFile(
 export async function clearDir(dir: string, extension?: string): Promise<void> {
   const files = readdirSync(dir);
   for (const file of files) {
-    if (extension && !file.endsWith(extension)) {
-      continue;
+    const filePath = join(dir, file);
+    try {
+      if (statSync(filePath).isDirectory()) {
+        await clearDir(filePath, extension); // Recursive call
+        rmdirSync(filePath); // Remove the directory itself
+      } else if (!extension || file.endsWith(extension)) {
+        unlinkSync(filePath);
+      }
+    } catch (error) {
+      console.error(`Error processing file ${filePath}: ${error}`);
     }
-    unlinkSync(join(dir, file));
+  }
+}
+export async function flattenFolder(
+  basePath: string,
+  fileExtensions: string[],
+  currentPath: string = basePath,
+): Promise<void> {
+  const files = readdirSync(currentPath);
+  for (const file of files) {
+    const filePath = join(currentPath, file);
+    if (statSync(filePath).isDirectory()) {
+      await flattenFolder(basePath, fileExtensions, filePath);
+      rmdirSync(filePath);
+    } else if (fileExtensions.some((ext) => file.endsWith(ext))) {
+      if (basePath === currentPath) continue;
+      const newFilePath = join(
+        basePath,
+        `${basename(currentPath)}.${basename(file)}`,
+      );
+      renameSync(filePath, newFilePath);
+    }
   }
 }

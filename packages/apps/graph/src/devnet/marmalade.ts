@@ -1,14 +1,30 @@
-import { IPactCommand, Pact, createTransaction } from '@kadena/client';
+import {
+  ChainId,
+  ICommand,
+  IPactCommand,
+  Pact,
+  createTransaction,
+} from '@kadena/client';
 import { createPactCommandFromTemplate } from '@kadena/client-utils/nodejs';
-import { readFileSync, readdirSync, writeFileSync } from 'fs';
+import {
+  existsSync,
+  mkdir,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+  writeFileSync,
+} from 'fs';
 import yaml from 'js-yaml';
 import { join, relative, resolve } from 'path';
 import { dotenv } from '../utils/dotenv';
 import {
   downloadGitFiles,
   getGitAbsolutePath,
+  getGitData,
 } from '../utils/downlaod-git-files';
-import { clearDir } from '../utils/path';
+import { clearDir, flattenFolder } from '../utils/path';
+import { devnetConfig } from './config';
 import {
   IAccount,
   dirtyRead,
@@ -22,21 +38,46 @@ import { marmaladeConfig } from './simulation/config/marmalade';
 
 const TEMPLATE_EXTENSION = 'yaml';
 const CODE_FILE_EXTENSION = 'pact';
+const EXCLUDE_TEMPLATE_FOLDERS = ['data'];
+
+export interface ITemplateFile {
+  name: string;
+  // relative path to the template base path
+  relativePath: string;
+}
 
 export async function deployMarmaladeContracts(
   signerAccount: IAccount,
   templateDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
   codeFileDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
+  nsDestinationPath: string = dotenv.MARMALADE_NS_LOCAL_PATH,
 ) {
-  // await clearDir(templateDestinationPath);
+  console.log('Clearing Marmalade Templates');
+  handleDirectorySetup(templateDestinationPath, codeFileDestinationPath);
 
-  // if (templateDestinationPath !== codeFileDestinationPath) {
-  //   await clearDir(codeFileDestinationPath);
-  // }
+  console.log('Getting Marmalade Templates');
+  await getMarmaladeTemplates(
+    {
+      owner: dotenv.MARMALADE_TEMPLATE_OWNER,
+      name: dotenv.MARMALADE_TEMPLATE_REPO,
+      path: dotenv.MARMALADE_TEMPLATE_PATH,
+      branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
+    },
+    templateDestinationPath,
+  );
 
-  // console.log('Getting Marmalade Templates');
-  // await getMarmaladeTemplates(templateDestinationPath);
-  // await getCodeFiles(templateDestinationPath, codeFileDestinationPath);
+  await getCodeFiles(templateDestinationPath, codeFileDestinationPath);
+
+  // Get marmalade namespace definition files
+  await getNsCodeFiles(
+    {
+      owner: dotenv.MARMALADE_TEMPLATE_OWNER,
+      name: dotenv.MARMALADE_TEMPLATE_REPO,
+      path: dotenv.MARMALADE_NS_FILE_PATH,
+      branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
+    },
+    nsDestinationPath,
+  );
 
   const templateFiles = readdirSync(templateDestinationPath).filter((file) =>
     file.endsWith(TEMPLATE_EXTENSION),
@@ -46,6 +87,13 @@ export async function deployMarmaladeContracts(
     file.endsWith(CODE_FILE_EXTENSION),
   );
 
+  // if (flattenSubfolders) {
+  //   flattenFolder(destinationPath, [TEMPLATE_EXTENSION]);
+  // }
+
+  console.log(templateFiles);
+  console.log(codeFiles);
+
   await updateTemplateFilesWithCodeFile(
     templateFiles,
     templateDestinationPath,
@@ -53,7 +101,24 @@ export async function deployMarmaladeContracts(
     codeFileDestinationPath,
   );
 
+  return;
+
+  console.log('Deploying Marmalade Namespaces');
+
+  const nsFiles = readdirSync(nsDestinationPath).filter((file) =>
+    file.endsWith(CODE_FILE_EXTENSION),
+  );
+
+  const nsFile = nsFiles[0];
+  const nsFilePath = join(nsDestinationPath, nsFile);
+
   console.log('Deploying Marmalade Contracts');
+
+  const nsTransaction = await createPactCommandFromFile(nsFilePath);
+  const dirtyReadResult1 = await dirtyRead(nsTransaction);
+  console.log(dirtyReadResult1);
+
+  return;
 
   // sort the templates alphabetically so that the contracts are deployed in the correct order
   templateFiles.sort((a, b) => a.localeCompare(b));
@@ -79,63 +144,56 @@ export async function deployMarmaladeContracts(
   const dirtyReadResult = await dirtyRead(transaction);
   console.log(dirtyReadResult);
 
-  const commandResult = await submit(signedTx);
-  const result = await listen(commandResult);
+  // const commandResult = await submit(signedTx);
+  // const result = await listen(commandResult);
 
-  console.log(result);
+  // console.log(result);
   // }
 }
 
-export async function hardCodedDeployMarmaladeContract() {
-  const pactCommand: IPactCommand = {
-    payload: {
-      exec: {
-        data: {},
-        code: "(namespace 'kip) (interface account-protocols-v1   (defconst SINGLE_KEY)   (defun enforce-reserved:bool (account:string guard:string) @doc ) )",
-        // code: '(+ 1 1)',
-      },
-      cont: {},
-    },
-    meta: {
-      chainId: '0',
-      sender: 'sender00',
-      gasLimit: 100000,
-      gasPrice: 1e-7,
-      ttl: 600,
-      creationTime: 1701266277,
-    },
-    signers: [
-      {
-        pubKey:
-          '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
-        scheme: 'ED25519',
-      },
-    ],
-    networkId: 'fast-development',
-    nonce: '',
-  };
+export async function handleDirectorySetup(
+  templateDestinationPath: string,
+  codeFileDestinationPath: string,
+): Promise<void> {
+  //check if directory exists
+  if (!existsSync(templateDestinationPath)) {
+    mkdirSync(templateDestinationPath);
+  } else {
+    await clearDir(templateDestinationPath);
+  }
 
-  const transaction = createTransaction(pactCommand);
-  const signedTx = signAndAssertTransaction(sender00.keys)(transaction);
-  const commandResult = await dirtyRead(transaction);
-
-  console.log(commandResult);
+  if (templateDestinationPath !== codeFileDestinationPath) {
+    await clearDir(codeFileDestinationPath);
+  }
 }
 
 export async function getMarmaladeTemplates(
+  {
+    owner,
+    name,
+    path,
+    branch,
+  }: { owner: string; name: string; path: string; branch: string },
   destinationPath: string,
+  flatFolder: boolean = true,
 ): Promise<void> {
   logger.info('Downloading marmalade templates');
   try {
     await downloadGitFiles(
       {
-        owner: dotenv.MARMALADE_TEMPLATE_OWNER,
-        name: dotenv.MARMALADE_TEMPLATE_REPO,
-        path: dotenv.MARMALADE_TEMPLATE_PATH,
-        branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
+        owner,
+        name,
+        path,
+        branch,
       },
       destinationPath,
+      TEMPLATE_EXTENSION,
+      true,
     );
+
+    if (flatFolder) {
+      await flattenFolder(destinationPath, [TEMPLATE_EXTENSION]);
+    }
   } catch (error) {
     logger.info('Error downloading marmalade templates', error);
     throw error;
@@ -177,6 +235,53 @@ export async function getCodeFiles(
   );
 }
 
+export async function getNsCodeFiles(
+  {
+    owner,
+    name,
+    path,
+    branch,
+  }: { owner: string; name: string; path: string; branch: string },
+  destinationPath: string,
+) {
+  await downloadGitFiles(
+    {
+      owner,
+      name,
+      path,
+      branch,
+    },
+    destinationPath,
+    CODE_FILE_EXTENSION,
+  );
+}
+
+export async function createPactCommandFromFile(
+  nsFilePath: string,
+  chainId: ChainId = devnetConfig.CHAIN_ID,
+): Promise<ICommand> {
+  const fileContent = readFileSync(nsFilePath, 'utf8');
+
+  const transaction = Pact.builder
+    .execution(fileContent)
+    .addSigner(sender00.keys.map((key) => key.publicKey))
+    .addData('ns', 'marmalade-v2')
+    .setNetworkId(devnetConfig.NETWORK_ID)
+    .setMeta({
+      gasLimit: 1500,
+      chainId,
+      senderAccount: sender00.account,
+      ttl: 8 * 60 * 60, //8 hours
+    })
+
+    .createTransaction();
+
+  console.log(transaction);
+
+  const signedTx = signAndAssertTransaction(sender00.keys)(transaction);
+  return signedTx;
+}
+
 export async function updateTemplateFilesWithCodeFile(
   templateFiles: string[],
   templateDirectory: string,
@@ -196,9 +301,6 @@ export async function updateTemplateFilesWithCodeFile(
       }
 
       const codeFileName = yamlContent.codeFile.split('/').pop();
-
-      console.log('codeFileName', join(templateDirectory, templateFile));
-      console.log('codeFileDirectory', join(codeFileDirectory, codeFileName));
 
       if (!codeFiles.includes(codeFileName)) {
         throw new Error(`Code file ${codeFileName} not found`);

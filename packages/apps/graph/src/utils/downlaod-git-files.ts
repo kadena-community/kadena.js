@@ -1,4 +1,5 @@
 import https from 'https';
+import { join } from 'path';
 import { dotenv } from './dotenv';
 import { createDirAndWriteFile } from './path';
 
@@ -16,6 +17,7 @@ export async function downloadGitFiles(
   },
   destinationPath: string = process.cwd(),
   fileExtension: string = 'yaml',
+  drillDown: boolean = false,
 ): Promise<void> {
   const folderUrl = buildGitApiUrl(owner, name, path, branch);
 
@@ -25,14 +27,23 @@ export async function downloadGitFiles(
     // if gitData is an array, it means that it is a folder and we can download the files
     await Promise.all(
       gitData.map(async (file) => {
-        if (
+        if (file.type === 'dir' && drillDown) {
+          // If the file is a directory and we're drilling down, recursively download its files
+          await downloadGitFiles(
+            { owner, name, path: file.path, branch },
+            join(destinationPath, file.name),
+            fileExtension,
+            drillDown,
+          );
+        } else if (
           !file.name.endsWith(fileExtension) ||
           file.type !== 'file' ||
           !file.download_url
         ) {
           return;
+        } else if (file.type === 'file' && file.name.endsWith(fileExtension)) {
+          await donwloadGitFile(file.download_url, file.name, destinationPath);
         }
-        await donwloadGitFile(file.download_url, file.name, destinationPath);
       }),
     );
   } else if (gitData instanceof Object) {
