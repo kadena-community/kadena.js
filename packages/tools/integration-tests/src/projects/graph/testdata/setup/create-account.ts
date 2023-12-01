@@ -1,7 +1,7 @@
-import type { ICommandResult} from '@kadena/client';
+import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
-import type { IAccount} from '../constants/accounts';
+import type { IAccount } from '../constants/accounts';
 import { sender00Account } from '../constants/accounts';
 import { devnetHost, networkId } from '../constants/network';
 
