@@ -1,32 +1,28 @@
-/**
- * This replace a twitter posts link to twitter embed post
- * @param {*} tree
- * @returns
- */
+import type { ITree, Plugin, RootContent } from './types';
 
-const getTwitterStatusId = (url) => {
+const getTwitterStatusId = (url: string): string | undefined => {
   if (!url) return;
 
   const twitterRegExp =
     /^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/(.*\/status\/)?([0-9]*)/;
 
-  const match = url.match(twitterRegExp);
+  const match = url.match(twitterRegExp) ?? [];
 
-  if (match?.length > 0 && match[5]) {
+  if (match.length > 0 && match[5]) {
     return match[5];
   }
 
   return;
 };
 
-const remarkTwitter = () => {
-  return async (tree) => {
+const remarkTwitter = (): Plugin => {
+  return async (tree: ITree): Promise<ITree> => {
     const children = tree.children.map((node) => {
-      if (node.children && node.children[0]) {
-        const leaf = node.children[0] ?? null;
+      if (node.type === 'paragraph' && node.children?.length === 1) {
+        const leaf = node.children?.[0] ?? null;
+        if (leaf.type !== 'link') return node;
 
-        const twitterStatusId = getTwitterStatusId(leaf?.url);
-
+        const twitterStatusId = getTwitterStatusId(leaf.url);
         if (twitterStatusId) {
           const newNode = {
             ...leaf,
@@ -34,6 +30,7 @@ const remarkTwitter = () => {
             type: 'element',
             value: leaf.url,
             data: {
+              ...node.data,
               hName: 'kda-tweet',
               hProperties: {
                 tweetId: twitterStatusId,
@@ -41,14 +38,14 @@ const remarkTwitter = () => {
             },
           };
 
-          delete newNode.children;
+          newNode.children = [];
           return newNode;
         }
       }
       return node;
     });
 
-    tree.children = children;
+    tree.children = children as RootContent[];
     return tree;
   };
 };

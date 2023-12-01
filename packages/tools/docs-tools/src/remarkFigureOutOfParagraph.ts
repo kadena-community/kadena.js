@@ -4,13 +4,15 @@
  * @returns
  */
 
-const remarkFigureOutOfParagraph = () => {
-  return async (tree) => {
-    const children = tree.children.map((node) => {
+import type { DocsRootContent, ITree, Plugin } from './types';
+
+const remarkFigureOutOfParagraph = (): Plugin => {
+  return async (tree): Promise<ITree> => {
+    const children = tree.children.map((node: Partial<DocsRootContent>) => {
       const { type } = node;
 
       if (
-        type == 'paragraph' &&
+        type === 'paragraph' &&
         node.children &&
         node.children[0].type === 'image'
       ) {
@@ -29,7 +31,7 @@ const remarkFigureOutOfParagraph = () => {
       return node;
     });
 
-    tree.children = children;
+    tree.children = children as DocsRootContent[];
     return tree;
   };
 };

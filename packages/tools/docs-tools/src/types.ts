@@ -1,7 +1,30 @@
-import type { ITopDoc } from '@/data/getTopDocs';
+import type {
+  Code,
+  Heading,
+  Html,
+  InlineCode,
+  Root,
+  RootContent,
+  RootContentMap,
+  Text,
+  Yaml,
+} from 'mdast';
 import type { ReactNode } from 'react';
 
+export interface ITopDoc {
+  label: string;
+  url: string;
+}
+
 export type TagNameType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
+export interface IStartArray {
+  type: 'heading';
+  tag: TagNameType;
+  depth: 1 | 2 | 3 | 4 | 5 | 6;
+  children: IStartArray[];
+  title?: string;
+}
 
 export type LayoutType =
   | 'full'
@@ -37,6 +60,13 @@ export interface IBasePageMeta {
   description: string;
   subTitle?: string;
   lastModifiedDate?: Date;
+}
+
+export interface IFrontMatterYaml extends IBasePageMeta {
+  publishDate?: string;
+  tags?: string[];
+  author?: string;
+  authorId?: string;
 }
 
 export interface IAuthorInfo {
@@ -116,6 +146,7 @@ export interface IMenuData {
   authorInfo?: IAuthorInfo;
   wordCount?: number;
   readingTimeInMinutes?: number;
+  lastModifiedDate?: Date;
 }
 
 export interface ITag {
@@ -123,3 +154,82 @@ export interface ITag {
   count: number;
   links: IMenuData[];
 }
+
+interface IPropsData {
+  frontmatter: IPageMeta;
+}
+
+interface ILeftMenuTreeData {
+  leftMenuTree: IMenuItem[];
+}
+
+interface IAsideMenuData {
+  aSideMenuTree: ISubHeaderElement[];
+}
+
+export interface IFile {
+  data: Record<string, any>;
+  messages: string[];
+  history: string[];
+  value: string;
+}
+
+export interface IPropsType {
+  type: 'props';
+  children: [];
+  data: IPropsData | IAsideMenuData | ILeftMenuTreeData;
+}
+
+export type TypeWithValue = InlineCode | Text | Yaml | Html | Code;
+
+export type ChildrenWithValues = TypeWithValue[];
+
+export interface IElementType {
+  type: 'element';
+  value?: string;
+  children: TypeWithValue[];
+  data: {
+    hName: string;
+    hProperties: {
+      [key: string]: any;
+    };
+  };
+}
+
+export interface IEsTree {
+  type: 'Program';
+  sourceType: 'module';
+  body: Record<string, any>[];
+}
+
+export interface IMdxJSEsm {
+  type: 'mdxjsEsm';
+  data: {};
+}
+
+export interface IDocsRootContentMap extends RootContentMap {
+  props: IPropsType;
+  element: IElementType;
+  mdxjsEsm: IMdxJSEsm;
+}
+
+export type DocsRootContent = IDocsRootContentMap[keyof IDocsRootContentMap];
+
+export interface ITree extends Omit<Root, 'children'> {
+  children: DocsRootContent[];
+}
+
+export interface IPropsTree extends Omit<Root, 'children'> {
+  children: IPropsType[];
+}
+
+export interface IHeadingTree extends Omit<Root, 'children'> {
+  children: Heading[];
+}
+
+export type Plugin = (
+  tree: ITree,
+  file: any,
+) => Promise<ITree | void | IPropsTree>;
+
+export { Root, RootContent };

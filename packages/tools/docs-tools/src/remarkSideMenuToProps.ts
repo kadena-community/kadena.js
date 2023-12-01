@@ -1,12 +1,13 @@
-import { checkSubTreeForActive } from './../utils/staticGeneration/checkSubTreeForActive.mjs';
+import type { IMenuItem, IPropsType, ITree, Plugin } from './types';
+import { checkSubTreeForActive } from './utils/staticGeneration/checkSubTreeForActive';
 
-const getPath = (filename) => {
+const getPath = (filename: string): string => {
   const arr = filename.split('/');
   let complete = false;
 
   return `/${arr
     .reverse()
-    .reduce((acc, val) => {
+    .reduce((acc: string[], val: string) => {
       const fileName = val.split('.')[0];
       if (fileName.includes('index') || complete) return acc;
       if (fileName === 'pages') {
@@ -22,12 +23,12 @@ const getPath = (filename) => {
     .join('/')}`;
 };
 
-const remarkSideMenuToProps = () => {
-  return async (tree, file) => {
-    const items = checkSubTreeForActive(getPath(file.history[0]));
+const remarkSideMenuToProps = (): Plugin => {
+  return async (tree: ITree, file) => {
+    const items = await checkSubTreeForActive(getPath(file.history[0]));
 
-    const itemsReduced = items.map((item) => {
-      if (item.isMenuOpen) return item;
+    const itemsReduced = items.map((item: Partial<IMenuItem>) => {
+      if (item?.isMenuOpen) return item;
 
       delete item.children;
       return item;
@@ -38,7 +39,7 @@ const remarkSideMenuToProps = () => {
       data: {
         leftMenuTree: itemsReduced,
       },
-    });
+    } as unknown as IPropsType);
 
     return tree;
   };

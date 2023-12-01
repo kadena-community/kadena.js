@@ -1,3 +1,4 @@
+import { getMenuData } from '@kadena/docs-tools';
 import authorData from '../../data/authors.json' assert { type: 'json' };
 
 export const getAuthorData = () => {
@@ -17,7 +18,7 @@ const PostsPerTag = (tag, data) => {
 
 export const getTagsData = async () => {
   const STARTBRANCH = '/blogchain';
-  const { menuData: data } = await import('./../../_generated/menu.mjs');
+  const data = await getMenuData();
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);
 

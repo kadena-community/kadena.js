@@ -1,4 +1,4 @@
-import type { IPageProps } from '@/Layout';
+import type { IPageProps } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';

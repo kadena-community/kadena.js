@@ -1,9 +1,6 @@
-/**
- * This plugin will check that every code block has a title
- * @param {*} tree
- * @returns
- */
-const replaceOrConcatString = (str) => {
+import type { ITree, Plugin } from './types';
+
+const replaceOrConcatString = (str?: string): string => {
   if (!str) str = '';
   const emptyTitleRegex = /title=""/g;
   const emptyTitleReplacement = 'title=" "';
@@ -17,13 +14,13 @@ const replaceOrConcatString = (str) => {
   return str;
 };
 
-const remarkCheckForCodeTitle = () => {
-  return async (tree) => {
+const remarkCheckForCodeTitle = (): Plugin => {
+  return async (tree: ITree): Promise<ITree> => {
     const children = tree.children.map((node) => {
       const { type } = node;
 
-      if (type == 'code') {
-        node.meta = replaceOrConcatString(node.meta);
+      if (type === 'code') {
+        node.meta = replaceOrConcatString(node.meta ?? '');
       }
 
       return node;

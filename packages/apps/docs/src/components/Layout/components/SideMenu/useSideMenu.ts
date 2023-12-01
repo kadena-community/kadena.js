@@ -1,5 +1,5 @@
-import type { IMenuItem } from '@/Layout';
 import { hasSameBasePath } from '@/utils/hasSameBasePath';
+import type { IMenuItem } from '@kadena/docs-tools';
 import { useRouter } from 'next/router';
 import type { MouseEventHandler, RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
