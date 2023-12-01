@@ -11,7 +11,7 @@ export default mergeConfig(
         provider: 'v8',
         lines: 99.24,
         functions: 96.96,
-        branches: 94.94,
+        branches: 95.14,
         statements: 99.24,
         thresholdAutoUpdate: true,
       },
