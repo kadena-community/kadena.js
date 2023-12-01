@@ -5,8 +5,9 @@ import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 
-builder.subscriptionField('newBlocks', (t) => {
-  return t.prismaField({
+builder.subscriptionField('newBlocks', (t) =>
+  t.prismaField({
+    description: 'Subscribe to new blocks.',
     args: {
       chainIds: t.arg.intList({ required: false }),
     },
@@ -15,8 +16,8 @@ builder.subscriptionField('newBlocks', (t) => {
     subscribe: (__parent, args, context) =>
       iteratorFn(args.chainIds as number[] | undefined, context),
     resolve: (__query, parent) => parent as Block[],
-  });
-});
+  }),
+);
 
 async function* iteratorFn(
   chainIds: number[] = Array.from(new Array(dotenv.CHAIN_COUNT)).map(

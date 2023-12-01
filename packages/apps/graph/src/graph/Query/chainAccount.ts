@@ -4,8 +4,10 @@ import { builder } from '../builder';
 import ChainModuleAccount from '../objects/ChainModuleAccount';
 import { ChainModuleAccountName } from '../types/graphql-types';
 
-builder.queryField('chainAccount', (t) => {
-  return t.field({
+builder.queryField('chainAccount', (t) =>
+  t.field({
+    description:
+      'Find an account by its name and its module, such as coin, on a specific chain.',
     args: {
       accountName: t.arg.string({ required: true }),
       moduleName: t.arg.string({ required: true }),
@@ -40,5 +42,5 @@ builder.queryField('chainAccount', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

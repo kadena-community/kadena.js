@@ -4,6 +4,8 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Block', {
+  description:
+    'A unit of information that stores a set of verified transactions.',
   id: { field: 'hash' },
   name: 'Block',
   fields: (t) => ({
@@ -14,7 +16,9 @@ export default builder.prismaNode('Block', {
     epoch: t.expose('epoch', { type: 'DateTime' }),
     height: t.expose('height', { type: 'BigInt' }),
     payloadHash: t.exposeString('payloadHash'),
-    powHash: t.exposeString('powHash'),
+    powHash: t.exposeString('powHash', {
+      description: 'The proof of work hash.',
+    }),
     predicate: t.exposeString('predicate'),
 
     // computed fields
@@ -99,6 +103,7 @@ export default builder.prismaNode('Block', {
           throw normalizeError(error);
         }
       },
+      description: 'The number of blocks that confirm this block.',
     }),
   }),
 });

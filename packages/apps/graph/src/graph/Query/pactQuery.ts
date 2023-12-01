@@ -18,8 +18,9 @@ const PactQuery = builder.inputType('PactQuery', {
   }),
 });
 
-builder.queryField('pactQueries', (t) => {
-  return t.field({
+builder.queryField('pactQueries', (t) =>
+  t.field({
+    description: 'Send a list of raw pact queries.',
     type: ['String'],
     args: {
       pactQuery: t.arg({ type: [PactQuery], required: true }),
@@ -38,11 +39,12 @@ builder.queryField('pactQueries', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);
 
-builder.queryField('pactQuery', (t) => {
-  return t.field({
+builder.queryField('pactQuery', (t) =>
+  t.field({
+    description: 'Send a raw pact query.',
     type: 'String',
     args: {
       pactQuery: t.arg({ type: PactQuery, required: true }),
@@ -58,5 +60,5 @@ builder.queryField('pactQuery', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

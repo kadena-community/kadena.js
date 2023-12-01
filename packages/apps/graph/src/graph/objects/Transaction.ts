@@ -4,10 +4,13 @@ import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {
+  description: 'A request to execute a smart contract function.',
   id: { field: 'blockHash_requestKey' },
   fields: (t) => ({
     // database fields
     badResult: t.string({
+      description:
+        'The JSON stringified error message if the transaction failed.',
       nullable: true,
       resolve({ badResult }) {
         return nullishOrEmpty(badResult)
@@ -18,11 +21,14 @@ export default builder.prismaNode('Transaction', {
     chainId: t.expose('chainId', { type: 'BigInt' }),
     // code: t.exposeString('code', { nullable: true }),
     code: t.string({
+      description: 'The PACT code that is executed.',
       resolve({ code }) {
         return code === null ? JSON.stringify('cont') : JSON.stringify(code);
       },
     }),
     continuation: t.string({
+      description:
+        'The JSON stringified continuation in the case that it is a continuation.',
       nullable: true,
       resolve({ continuation }) {
         return nullishOrEmpty(continuation)
@@ -32,6 +38,7 @@ export default builder.prismaNode('Transaction', {
     }),
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     data: t.string({
+      description: 'The JSON stringified data that is related to the request.',
       nullable: true,
       resolve({ data }) {
         return nullishOrEmpty(data) ? undefined : JSON.stringify(data);
@@ -41,6 +48,8 @@ export default builder.prismaNode('Transaction', {
     gasLimit: t.expose('gasLimit', { type: 'BigInt' }),
     gasPrice: t.expose('gasPrice', { type: 'Float' }),
     goodResult: t.string({
+      description:
+        'The JSON stringified result if the transaction was successful.',
       nullable: true,
       resolve({ goodResult }) {
         return nullishOrEmpty(goodResult)
@@ -48,7 +57,10 @@ export default builder.prismaNode('Transaction', {
           : JSON.stringify(goodResult);
       },
     }),
-    height: t.expose('height', { type: 'BigInt' }),
+    height: t.expose('height', {
+      type: 'BigInt',
+      description: 'The block height.',
+    }),
     logs: t.exposeString('logs', { nullable: true }),
     metadata: t.string({
       nullable: true,
@@ -63,7 +75,11 @@ export default builder.prismaNode('Transaction', {
     requestKey: t.exposeString('requestKey'),
     rollback: t.expose('rollback', { type: 'Boolean', nullable: true }),
     senderAccount: t.exposeString('senderAccount', { nullable: true }),
-    step: t.expose('step', { type: 'BigInt', nullable: true }),
+    step: t.expose('step', {
+      type: 'BigInt',
+      nullable: true,
+      description: 'The step number in the case that transactions are chained.',
+    }),
     ttl: t.expose('ttl', { type: 'BigInt' }),
     transactionId: t.expose('transactionId', {
       type: 'BigInt',

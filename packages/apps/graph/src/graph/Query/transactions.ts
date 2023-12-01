@@ -3,8 +3,9 @@ import type { Prisma } from '@prisma/client';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
-builder.queryField('transactions', (t) => {
-  return t.prismaConnection({
+builder.queryField('transactions', (t) =>
+  t.prismaConnection({
+    description: 'Find transactions.',
     edgesNullable: false,
     args: {
       accountName: t.arg.string({ required: false }),
@@ -41,8 +42,8 @@ builder.queryField('transactions', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);
 
 function generateTransactionFilter(args: {
   accountName?: string | null | undefined;

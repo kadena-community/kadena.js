@@ -3,6 +3,7 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Transfer', {
+  description: 'A transfer of funds from a fungible between two accounts.',
   id: { field: 'blockHash_chainId_orderIndex_moduleHash_requestKey' },
   fields: (t) => ({
     // database fields
@@ -11,7 +12,11 @@ export default builder.prismaNode('Transfer', {
     chainId: t.expose('chainId', { type: 'BigInt' }),
     senderAccount: t.exposeString('senderAccount'),
     height: t.expose('height', { type: 'BigInt' }),
-    orderIndex: t.expose('orderIndex', { type: 'BigInt' }),
+    orderIndex: t.expose('orderIndex', {
+      type: 'BigInt',
+      description:
+        'The order of the transfer in the case that there are chained Transfers.',
+    }),
     moduleHash: t.exposeString('moduleHash'),
     moduleName: t.exposeString('moduleName'),
     requestKey: t.exposeString('requestKey'),
@@ -19,6 +24,7 @@ export default builder.prismaNode('Transfer', {
 
     // computed fields
     crossChainTransfer: t.prismaField({
+      description: 'The transfer that is the counterparty of this transfer.',
       type: 'Transfer',
       nullable: true,
       async resolve(__query, parent) {
@@ -96,6 +102,7 @@ export default builder.prismaNode('Transfer', {
     }),
 
     transaction: t.prismaField({
+      description: 'The transaction that initiated this transfer.',
       type: 'Transaction',
       nullable: true,
       async resolve(__query, parent) {

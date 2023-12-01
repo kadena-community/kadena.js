@@ -1,8 +1,9 @@
 import { prismaClient } from '@db/prismaClient';
 import { builder } from '../builder';
 
-builder.queryField('transactionsByPublicKey', (t) => {
-  return t.prismaConnection({
+builder.queryField('transactionsByPublicKey', (t) =>
+  t.prismaConnection({
+    description: 'Find all transactions by a given public key.',
     edgesNullable: false,
     args: {
       publicKey: t.arg.string({ required: true }),
@@ -48,5 +49,5 @@ builder.queryField('transactionsByPublicKey', (t) => {
         },
       });
     },
-  });
-});
+  }),
+);

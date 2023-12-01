@@ -2,8 +2,9 @@ import { prismaClient } from '@db/prismaClient';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
-builder.queryField('lastBlockHeight', (t) => {
-  return t.field({
+builder.queryField('lastBlockHeight', (t) =>
+  t.field({
+    description: 'Get the height of the latest block.',
     type: 'BigInt',
     nullable: true,
     async resolve() {
@@ -19,5 +20,5 @@ builder.queryField('lastBlockHeight', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

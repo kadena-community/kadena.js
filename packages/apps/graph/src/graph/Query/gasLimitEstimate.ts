@@ -10,8 +10,9 @@ const PactTransaction = builder.inputType('PactTransaction', {
   }),
 });
 
-builder.queryField('gasLimitEstimate', (t) => {
-  return t.field({
+builder.queryField('gasLimitEstimate', (t) =>
+  t.field({
+    description: 'Estimate the gas limit for a transaction.',
     type: 'Int',
     args: {
       transaction: t.arg({ type: PactTransaction, required: true }),
@@ -32,11 +33,12 @@ builder.queryField('gasLimitEstimate', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);
 
-builder.queryField('gasLimitEstimates', (t) => {
-  return t.field({
+builder.queryField('gasLimitEstimates', (t) =>
+  t.field({
+    description: 'Estimate the gas limit for a list of transactions.',
     type: ['Int'],
     args: {
       transactions: t.arg({ type: [PactTransaction], required: true }),
@@ -58,5 +60,5 @@ builder.queryField('gasLimitEstimates', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

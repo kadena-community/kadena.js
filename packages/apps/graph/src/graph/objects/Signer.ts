@@ -2,6 +2,7 @@ import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Signer', {
+  description: 'Information about a public key that can sign transactions.',
   id: { field: 'requestKey_orderIndex' },
   fields: (t) => ({
     //database fields

@@ -3,8 +3,9 @@ import type { Prisma } from '@prisma/client';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
-builder.queryField('transfers', (t) => {
-  return t.prismaConnection({
+builder.queryField('transfers', (t) =>
+  t.prismaConnection({
+    description: 'Find transfers.',
     edgesNullable: false,
     args: {
       accountName: t.arg.string({ required: false }),
@@ -39,8 +40,8 @@ builder.queryField('transfers', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);
 
 function generateTransferFilter(args: {
   accountName?: string | null | undefined;

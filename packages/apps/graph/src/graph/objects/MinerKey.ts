@@ -3,6 +3,7 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 export default builder.prismaNode('MinerKey', {
+  description: 'The public key of the miner that solved a block.',
   id: { field: 'blockHash_key' },
   fields: (t) => ({
     // database fields

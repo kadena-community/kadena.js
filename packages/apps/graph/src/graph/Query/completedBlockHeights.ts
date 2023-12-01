@@ -5,16 +5,15 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
-builder.queryField('completedBlockHeights', (t) => {
-  return t.prismaField({
+builder.queryField('completedBlockHeights', (t) =>
+  t.prismaField({
+    description: 'Find all completed blocks from a given height.',
     args: {
       completedHeights: t.arg.boolean({ required: false }),
       heightCount: t.arg.int({ required: false }),
       chainIds: t.arg.stringList({ required: false }),
     },
-
     type: [Block],
-
     async resolve(
       __query,
       __parent,
@@ -95,5 +94,5 @@ builder.queryField('completedBlockHeights', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

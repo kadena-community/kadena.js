@@ -4,8 +4,9 @@ import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 
-builder.subscriptionField('event', (t) => {
-  return t.prismaField({
+builder.subscriptionField('event', (t) =>
+  t.prismaField({
+    description: 'Subscribe to new events.',
     args: {
       eventName: t.arg.string({ required: true }),
     },
@@ -13,8 +14,8 @@ builder.subscriptionField('event', (t) => {
     nullable: true,
     subscribe: (__parent, args, context) => iteratorFn(args.eventName, context),
     resolve: (__query, parent) => parent as Event[],
-  });
-});
+  }),
+);
 
 async function* iteratorFn(
   eventName: string,

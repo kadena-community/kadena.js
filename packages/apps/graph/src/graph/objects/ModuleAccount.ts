@@ -13,6 +13,7 @@ import {
 export default builder.node(
   builder.objectRef<ModuleAccount>(ModuleAccountName),
   {
+    description: 'An account on a certain module, such as coin.',
     id: {
       resolve(parent) {
         return `${ModuleAccountName}/${parent.moduleName}/${parent.accountName}`;
