@@ -2,7 +2,7 @@ import type { IUnsignedCommand } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
 
 import { HDKey } from 'ed25519-keygen/hdkey';
-import { uint8ArrayToHex } from '../../utils/buffer-helpers';
+import { uint8ArrayToHex } from '../../utils/buffer-helpers.js';
 
 /**
  * Derive a key pair using a seed and an index.

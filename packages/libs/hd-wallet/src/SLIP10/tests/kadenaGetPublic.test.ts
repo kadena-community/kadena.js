@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { kadenaGenMnemonic, kadenaGetPublic, kadenaMnemonicToSeed } from '..';
+import { kadenaGenMnemonic, kadenaGetPublic, kadenaMnemonicToSeed } from '../index.js';
 
 describe('kadenaGetPublic', () => {
   it('should retrieve the public key from seed and the given index', async () => {

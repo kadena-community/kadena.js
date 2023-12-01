@@ -1,5 +1,5 @@
-import { kadenaSign } from '../vendor/kadena-crypto';
-import { kadenaGenKeypair } from './kadenaGenKeypair';
+import { kadenaSign } from '../vendor/kadena-crypto.cjs';
+import { kadenaGenKeypair } from './kadenaGenKeypair.js';
 
 /**
  * Sign a message with a root key and the index of the keypair to use
@@ -9,12 +9,12 @@ import { kadenaGenKeypair } from './kadenaGenKeypair';
  * @param index
  * @returns signature
  */
-export function kadenaSignFromRootKey(
+export async function kadenaSignFromRootKey(
   password: string,
   message: string,
   rootKey: string | Uint8Array,
   index: number,
-): Uint8Array {
-  const [privateKey] = kadenaGenKeypair(password, rootKey, index);
+): Promise<Uint8Array> {
+  const [privateKey] = await kadenaGenKeypair(password, rootKey, index);
   return kadenaSign(password, message, privateKey);
 }

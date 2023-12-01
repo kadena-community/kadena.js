@@ -1,10 +1,10 @@
+import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 import type { Command } from 'commander';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 
 import { HDKEY_ENC_EXT } from '../../constants/config.js';
 import { clearCLI } from '../../utils/helpers.js'; // clearCLI
-import * as cryptoService from '../utils/service.js';
 import * as storageService from '../utils/storage.js';
 
 import chalk from 'chalk';
@@ -21,9 +21,8 @@ export const createGenerateHdKeysCommand: (
   async (config) => {
     debug('generate-hd-keys:action')({ config });
 
-    const { words, seed } = await cryptoService.generateSeed(
-      config.keyPassword,
-    );
+    const words = kadenaGenMnemonic();
+    const seed = await kadenaMnemonicToSeed(words, config.keyPassword);
     storageService.storeHdKey(seed, config.keyFilename);
 
     clearCLI(true);

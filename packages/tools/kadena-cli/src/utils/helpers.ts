@@ -6,7 +6,6 @@ import { defaultDevnetsPath } from '../constants/devnets.js';
 import { defaultKeysetsPath } from '../constants/keysets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
-import type { ICustomKeysetsChoice } from '../keys/utils/keysetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 
 /**
@@ -209,18 +208,6 @@ export async function getExistingDevnets(): Promise<ICustomDevnetsChoice[]> {
   await ensureDevnetsConfiguration();
 
   return getConfiguration(defaultDevnetsPath);
-}
-
-export async function getExistingKeysets(): Promise<ICustomKeysetsChoice[]> {
-  try {
-    return readdirSync(defaultKeysetsPath).map((filename) => ({
-      value: path.basename(filename.toLowerCase(), '.yaml'),
-      name: path.basename(filename.toLowerCase(), '.yaml'),
-    }));
-  } catch (error) {
-    console.error('Error reading keyset directory:', error);
-    return [];
-  }
 }
 
 /**

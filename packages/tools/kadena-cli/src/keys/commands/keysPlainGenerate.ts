@@ -1,3 +1,4 @@
+import { kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
@@ -7,7 +8,6 @@ import debug from 'debug';
 import { PLAINKEY_EXT } from '../../constants/config.js';
 import { clearCLI } from '../../utils/helpers.js';
 
-import * as cryptoService from '../utils/service.js';
 import * as storageService from '../utils/storage.js';
 
 import type { Command } from 'commander';
@@ -23,7 +23,7 @@ export const createGeneratePlainKeysCommand: (
     debug('generate-plain-key:action')({ config });
     const amount = (config.keyAmount as unknown as number) || 1;
 
-    const plainKeyPairs = cryptoService.generateKeyPairsFromRandom(amount);
+    const plainKeyPairs = kadenaKeyPairsFromRandom(amount);
     clearCLI(true);
     console.log(
       chalk.green(

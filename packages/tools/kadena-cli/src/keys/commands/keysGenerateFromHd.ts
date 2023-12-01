@@ -1,6 +1,7 @@
 import type { Command } from 'commander';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 
 // TO-DO: Implement this command
 // choices: [
@@ -16,7 +17,7 @@ export const createGenerateFromHdCommand: (
 ) => void = createCommand(
   'genfromhd',
   'Generate key(s) from HD key',
-  [],
+  [globalOptions.keyPassword(), globalOptions.keyFilename()],
   async (config) => {
     debug('generate-from-hid:action')({ config });
     console.log('generate from hd: not implemented yet');
