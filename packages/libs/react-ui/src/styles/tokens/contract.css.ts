@@ -47,39 +47,39 @@ export const tokens = createThemeContract({
       },
       breakpoint: {
         /**
-         * @default 640px
-         * @light 640px
-         * @dark 640px
+         * @default 0
+         * @light 0
+         * @dark 0
          */
         xs: '',
         /**
-         * @default 768px
-         * @light 768px
-         * @dark 768px
+         * @default 40rem
+         * @light 40rem
+         * @dark 40rem
          */
         sm: '',
         /**
-         * @default 1024px
-         * @light 1024px
-         * @dark 1024px
+         * @default 48rem
+         * @light 48rem
+         * @dark 48rem
          */
         md: '',
         /**
-         * @default 1280px
-         * @light 1280px
-         * @dark 1280px
+         * @default 64rem
+         * @light 64rem
+         * @dark 64rem
          */
         lg: '',
         /**
-         * @default 1536px
-         * @light 1536px
-         * @dark 1536px
+         * @default 80rem
+         * @light 80rem
+         * @dark 80rem
          */
         xl: '',
         /**
-         * @default 1980px
-         * @light 1980px
-         * @dark 1980px
+         * @default 96rem
+         * @light 96rem
+         * @dark 96rem
          */
         xxl: '',
       },
@@ -97,9 +97,9 @@ export const tokens = createThemeContract({
          */
         xs: '',
         /**
-         * @default kda.foundation.size.n2
-         * @light kda.foundation.size.n2
-         * @dark kda.foundation.size.n2
+         * @default 4
+         * @light 4
+         * @dark 4
          */
         sm: '',
         /**
@@ -109,21 +109,21 @@ export const tokens = createThemeContract({
          */
         md: '',
         /**
-         * @default kda.foundation.size.n3
-         * @light kda.foundation.size.n3
-         * @dark kda.foundation.size.n3
+         * @default 8
+         * @light 8
+         * @dark 8
          */
         lg: '',
         /**
-         * @default kda.foundation.size.n4
-         * @light kda.foundation.size.n4
-         * @dark kda.foundation.size.n4
+         * @default 16
+         * @light 16
+         * @dark 16
          */
         xl: '',
         /**
-         * @default kda.foundation.size.n6
-         * @light kda.foundation.size.n6
-         * @dark kda.foundation.size.n6
+         * @default 24
+         * @light 24
+         * @dark 24
          */
         xxl: '',
         /**
@@ -141,21 +141,21 @@ export const tokens = createThemeContract({
          */
         n0: '',
         /**
-         * @default 0.125rem
-         * @light 0.125rem
-         * @dark 0.125rem
-         */
-        n1: '',
-        /**
          * @default 0.25rem
          * @light 0.25rem
          * @dark 0.25rem
          */
-        n2: '',
+        n1: '',
         /**
          * @default 0.5rem
          * @light 0.5rem
          * @dark 0.5rem
+         */
+        n2: '',
+        /**
+         * @default 0.75rem
+         * @light 0.75rem
+         * @dark 0.75rem
          */
         n3: '',
         /**
@@ -323,21 +323,21 @@ export const tokens = createThemeContract({
          */
         no: '',
         /**
+         * @default 0.125rem
+         * @light 0.125rem
+         * @dark 0.125rem
+         */
+        xxs: '',
+        /**
          * @default kda.foundation.size.n1
          * @light kda.foundation.size.n1
          * @dark kda.foundation.size.n1
          */
-        xxs: '',
+        xs: '',
         /**
          * @default kda.foundation.size.n2
          * @light kda.foundation.size.n2
          * @dark kda.foundation.size.n2
-         */
-        xs: '',
-        /**
-         * @default kda.foundation.size.n3
-         * @light kda.foundation.size.n3
-         * @dark kda.foundation.size.n3
          */
         sm: '',
         /**
@@ -2755,27 +2755,43 @@ export const tokens = createThemeContract({
           },
         },
       },
+      layout: {
+        content: {
+          /**
+           * @default 33.75rem
+           * @light 33.75rem
+           * @dark 33.75rem
+           */
+          minWidth: '',
+          /**
+           * @default 42.5rem
+           * @light 42.5rem
+           * @dark 42.5rem
+           */
+          maxWidth: '',
+        },
+      },
       effect: {
         shadow: {
           /**
            * @description This is the shadow 1 description
-           * @default 4px 0.5rem kda.foundation.size.n3 4px #000000
-           * @light 4px 0.5rem kda.foundation.size.n3 4px #000000
-           * @dark 4px 0.5rem kda.foundation.size.n3 4px #000000
+           * @default 4px 0.5rem kda.foundation.size.n2 4px #000000
+           * @light 4px 0.5rem kda.foundation.size.n2 4px #000000
+           * @dark 4px 0.5rem kda.foundation.size.n2 4px #000000
            */
           level1: '',
           /**
            * @description This is the shadow 2 description
-           * @default 4rem 4rem kda.foundation.size.n3 2rem #000000
-           * @light 4rem 4rem kda.foundation.size.n3 2rem #000000
-           * @dark 4rem 4rem kda.foundation.size.n3 2rem #000000
+           * @default 4rem 4rem kda.foundation.size.n2 2rem #000000
+           * @light 4rem 4rem kda.foundation.size.n2 2rem #000000
+           * @dark 4rem 4rem kda.foundation.size.n2 2rem #000000
            */
           level2: '',
           /**
            * @description This is the shadow 3 description updated
-           * @default 0 0 kda.foundation.size.n3 24px #000000
-           * @light 0 0 kda.foundation.size.n3 24px #000000
-           * @dark 0 0 kda.foundation.size.n3 24px #000000
+           * @default 0 0 kda.foundation.size.n2 24px #000000
+           * @light 0 0 kda.foundation.size.n2 24px #000000
+           * @dark 0 0 kda.foundation.size.n2 24px #000000
            */
           level3: '',
         },
@@ -2913,12 +2929,6 @@ export const tokens = createThemeContract({
         },
         lineHeight: {
           /**
-           * @default 400
-           * @light 400
-           * @dark 400
-           */
-          normal: '',
-          /**
            * @default 1.4
            * @light 1.4
            * @dark 1.4
@@ -2934,17 +2944,11 @@ export const tokens = createThemeContract({
         weight: {
           headingFont: {
             /**
-             * @default 300
-             * @light 300
-             * @dark 300
-             */
-            light: '',
-            /**
              * @default 400
              * @light 400
              * @dark 400
              */
-            normal: '',
+            regular: '',
             /**
              * @default 500
              * @light 500
@@ -2957,26 +2961,58 @@ export const tokens = createThemeContract({
              * @dark 700
              */
             bold: '',
+            /**
+             * @default 700
+             * @light 700
+             * @dark 700
+             */
+            black: '',
           },
           bodyFont: {
-            /**
-             * @default 300
-             * @light 300
-             * @dark 300
-             */
-            light: '',
             /**
              * @default 400
              * @light 400
              * @dark 400
              */
-            normal: '',
+            regular: '',
             /**
              * @default 500
              * @light 500
              * @dark 500
              */
             medium: '',
+            /**
+             * @default 600
+             * @light 600
+             * @dark 600
+             */
+            bold: '',
+            /**
+             * @default 700
+             * @light 700
+             * @dark 700
+             */
+            black: '',
+          },
+          monoFont: {
+            /**
+             * @default 400
+             * @light 400
+             * @dark 400
+             */
+            regular: '',
+            /**
+             * @default 500
+             * @light 500
+             * @dark 500
+             */
+            medium: '',
+            /**
+             * @default 600
+             * @light 600
+             * @dark 600
+             */
+            semiBold: '',
             /**
              * @default 700
              * @light 700

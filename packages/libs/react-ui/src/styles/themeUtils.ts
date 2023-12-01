@@ -1,15 +1,16 @@
 import type { StyleRule } from '@vanilla-extract/css';
 import type { Properties } from 'csstype';
 import omit from 'lodash.omit';
+import { tokens } from './tokens/contract.css';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const breakpoints = {
   xs: '',
-  sm: `screen and (min-width: ${640 / 16}rem)`,
-  md: `screen and (min-width: ${768 / 16}rem)`,
-  lg: `screen and (min-width: ${1024 / 16}rem)`,
-  xl: `screen and (min-width: ${1280 / 16}rem)`,
-  xxl: `screen and (min-width: ${1536 / 16}rem)`,
+  sm: `screen and (min-width: ${tokens.kda.foundation.breakpoint.sm})`,
+  md: `screen and (min-width: ${tokens.kda.foundation.breakpoint.md})`,
+  lg: `screen and (min-width: ${tokens.kda.foundation.breakpoint.lg})`,
+  xl: `screen and (min-width: ${tokens.kda.foundation.breakpoint.xl})`,
+  xxl: `screen and (min-width: ${tokens.kda.foundation.breakpoint.xxl})`,
 };
 
 export type Breakpoint = keyof typeof breakpoints;
