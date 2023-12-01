@@ -38,7 +38,7 @@ const main = async () => {
 
   await fs.writeFile(
     join(baseDir, 'packages.json'),
-    JSON.stringify(packages, null, 2),
+    JSON.stringify(packages, null, 2) + '\n',
   );
 };
 
