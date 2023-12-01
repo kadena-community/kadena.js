@@ -5,9 +5,10 @@ import { writeDevnet } from '../utils/devnetHelpers.js';
 
 import chalk from 'chalk';
 import { createExternalPrompt } from '../../prompts/generic.js';
+import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 
-export const manageDevnetsCommand = createCommand(
+export const manageDevnetsCommand: CreateCommandReturnType = createCommand(
   'manage',
   'Manage devnets',
   [

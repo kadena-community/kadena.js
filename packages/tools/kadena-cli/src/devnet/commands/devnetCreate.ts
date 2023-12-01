@@ -8,10 +8,11 @@ import path from 'path';
 import chalk from 'chalk';
 import { devnetOverwritePrompt } from '../../prompts/devnet.js';
 import { createExternalPrompt } from '../../prompts/generic.js';
+import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
-export const createDevnetCommand = createCommand(
+export const createDevnetCommand: CreateCommandReturnType = createCommand(
   'create',
   'Create devnet',
   [

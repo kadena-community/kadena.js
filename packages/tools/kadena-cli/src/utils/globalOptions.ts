@@ -12,12 +12,12 @@ import {
   security,
 } from '../prompts/index.js';
 
+import chalk from 'chalk';
+import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import {
   ensureNetworksConfiguration,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
-import chalk from 'chalk';
-import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';

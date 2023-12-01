@@ -33,6 +33,11 @@ type Combine<Tuple extends any[]> = Tuple extends [infer one]
       Tail<Tuple> extends any[] ? Combine<Tail<Tuple>> : {}
     >;
 
+export type CreateCommandReturnType = (
+  program: Command,
+  version: string,
+) => void;
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createCommand<
   T extends ReturnType<GlobalOptions[keyof GlobalOptions]>[],
@@ -56,7 +61,7 @@ export function createCommand<
         // collectResponses
         const questionsMap = options.map(({ prompt, key }) => ({
           key,
-          prompt
+          prompt,
         }));
         const responses = await collectResponses(args, questionsMap);
         const newArgs = { ...args, ...responses };
