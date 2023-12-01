@@ -2,7 +2,8 @@ import { getChainModuleAccount } from '@services/account-service';
 import { chainIds } from '@utils/chains';
 import { builder } from '../builder';
 import Account from '../objects/ModuleAccount';
-import { ChainModuleAccount, ModuleAccountName } from '../types/graphql-types';
+import type { ChainModuleAccount } from '../types/graphql-types';
+import { ModuleAccountName } from '../types/graphql-types';
 
 builder.queryField('account', (t) =>
   t.field({
