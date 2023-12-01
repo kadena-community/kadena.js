@@ -22,6 +22,7 @@ export const Toolbar: FC = () => {
     isMenuOpen,
     visibleLinks,
     setVisibleLinks,
+    setIsMenuOpen,
   } = useLayoutContext();
   const { pathname } = useRouter();
 
@@ -34,12 +35,14 @@ export const Toolbar: FC = () => {
     setVisibleLinks(false);
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
+      setIsMenuOpen(true);
     }
   };
 
   const handleOpenDrawer = (): void => {
     if (isMenuOpen) {
       setVisibleLinks(false);
+      setIsMenuOpen(false);
       return setActiveMenuIndex(undefined);
     }
 
@@ -53,6 +56,7 @@ export const Toolbar: FC = () => {
     const activeMenuIndex = menuData.indexOf(activeMenu);
 
     setActiveMenuIndex(activeMenuIndex);
+    setIsMenuOpen(true);
   };
 
   const isMenuActive = (
@@ -70,6 +74,7 @@ export const Toolbar: FC = () => {
     setActiveMenuIndex(-1);
     if (!visibleLinks) {
       setVisibleLinks(true);
+      setIsMenuOpen(true);
     }
   };
 
