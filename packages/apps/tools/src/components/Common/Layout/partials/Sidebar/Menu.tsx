@@ -5,7 +5,7 @@ import { Accordion } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   gridItemMenuStyle,
   subMenuContentStyle,
@@ -41,11 +41,27 @@ export const Menu: FC = () => {
     setActiveMenuIndex,
     visibleLinks,
     setVisibleLinks,
+    setIsMenuOpen,
   } = useLayoutContext();
+  const [smallScreen, setSmallScreen] = useState(false);
+
+  useEffect(() => {
+    // sidebar menu closed by default on smaller screens
+    if (window.innerWidth < 768) {
+      setSmallScreen(true);
+    }
+  }, []);
 
   const handleCloseMenu = () => {
     setActiveMenuIndex(undefined);
+    setIsMenuOpen(false);
     setVisibleLinks(false);
+  };
+
+  const handleOnClick = () => {
+    if(smallScreen){
+      setIsMenuOpen(false);
+    }
   };
 
   if (!isMenuOpen) return null;
@@ -71,6 +87,7 @@ export const Menu: FC = () => {
                   href={item.href}
                   active={item.href === router.pathname}
                   target="_blank"
+                  onClick={handleOnClick}
                 />
               ))}
             </Accordion.Root>
@@ -90,6 +107,7 @@ export const Menu: FC = () => {
                   key={`menu-link-${index}`}
                   href={item.href}
                   active={item.href === router.pathname}
+                  onClick={handleOnClick}
                 />
               ))}
             </Accordion.Root>
