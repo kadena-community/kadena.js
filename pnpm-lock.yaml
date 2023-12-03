@@ -2352,6 +2352,9 @@ importers:
       fast-glob:
         specifier: ^3.3.1
         version: 3.3.1
+      prettier:
+        specifier: ~3.0.3
+        version: 3.0.3
 
   packages/tools/shared-config:
     dependencies:
