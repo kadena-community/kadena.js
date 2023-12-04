@@ -1,3 +1,15 @@
+import {
+  remarkAdmonitions,
+  remarkCheckForCodeTitle,
+  remarkFigureOutOfParagraph,
+  remarkFixAbsoluteLinks,
+  remarkFrontmatterToProps,
+  remarkHeadersToProps,
+  remarkPropsToStaticRender,
+  remarkSideMenuToProps,
+  remarkTwitter,
+  remarkYoutube,
+} from '@kadena/docs-tools';
 import mdx from '@next/mdx';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 import { readFileSync } from 'fs';
@@ -6,16 +18,7 @@ import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import { BUNDLED_LANGUAGES, getHighlighter } from 'shiki';
 import redirectsConfig from './redirects.mjs';
-import remarkAdmonitions from './src/scripts/remarkAdmonitions.mjs';
-import remarkCheckForCodeTitle from './src/scripts/remarkCheckForCodeTitle.mjs';
-import remarkFigureOutOfParagraph from './src/scripts/remarkFigureOutOfParagraph.mjs';
-import remarkFixAbsoluteLinks from './src/scripts/remarkFixAbsoluteLinks.mjs';
-import remarkFrontmatterToProps from './src/scripts/remarkFrontmatterToProps.mjs';
-import remarkHeadersToProps from './src/scripts/remarkHeadersToProps.mjs';
-import remarkPropsToStaticRender from './src/scripts/remarkPropsToStaticRender.mjs';
-import remarkSideMenuToProps from './src/scripts/remarkSideMenuToProps.mjs';
-import remarkTwitter from './src/scripts/remarkTwitter.mjs';
-import remarkYoutube from './src/scripts/remarkYoutube.mjs';
+
 const withVanillaExtract = createVanillaExtractPlugin();
 
 const options = {

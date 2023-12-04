@@ -1,5 +1,5 @@
-import type { IMenuItem } from '@/Layout';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
+import type { IMenuItem } from '@kadena/docs-tools';
 import { Box, Heading, Input, SystemIcon } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';

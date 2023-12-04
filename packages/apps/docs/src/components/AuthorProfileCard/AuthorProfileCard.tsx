@@ -1,4 +1,4 @@
-import type { IAuthorInfo } from '@/Layout';
+import type { IAuthorInfo } from '@kadena/docs-tools';
 import { Box, Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';

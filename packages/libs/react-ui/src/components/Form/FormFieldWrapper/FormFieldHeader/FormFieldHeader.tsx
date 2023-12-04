@@ -1,8 +1,12 @@
 import { SystemIcon } from '@components/Icon';
-import { Label } from '@components/Typography';
 import type { FC } from 'react';
 import React from 'react';
-import { headerClass, infoClass, tagClass } from './FormFieldHeader.css';
+import {
+  headerClass,
+  infoClass,
+  labelClass,
+  tagClass,
+} from './FormFieldHeader.css';
 
 export interface IFormFieldHeaderProps {
   label: string;
@@ -19,7 +23,11 @@ export const FormFieldHeader: FC<IFormFieldHeaderProps> = ({
 }) => {
   return (
     <div className={headerClass}>
-      {Boolean(label) && <Label htmlFor={htmlFor}>{label}</Label>}
+      {Boolean(label) && (
+        <label className={labelClass} htmlFor={htmlFor}>
+          {label}
+        </label>
+      )}
       {Boolean(tag) && <span className={tagClass}>{tag}</span>}
       {Boolean(info) && (
         <span className={infoClass}>

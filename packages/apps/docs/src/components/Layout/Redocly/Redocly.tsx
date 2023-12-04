@@ -1,7 +1,7 @@
-import type { IPageProps } from '@/Layout';
 import { BottomPageSection } from '@/components/BottomPageSection/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate/LastModifiedDate';
+import type { IPageProps } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
