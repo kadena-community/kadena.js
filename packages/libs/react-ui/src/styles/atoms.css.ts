@@ -1,24 +1,30 @@
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles';
 import mapValues from 'lodash.mapvalues';
-import { breakpoints } from './themeUtils';
+import { breakpoints, flattenTokens } from './themeUtils';
 import { tokens } from './tokens/contract.css';
-import { darkTheme } from './tokens/dark.css';
-import { lightTheme } from './tokens/light.css';
-import { flattenTokens } from './tokens/utils';
 
 const systemProperties = defineProperties({
   properties: {
     background: ['none'],
+    backgroundColor: {
+      transparent: 'transparent',
+      ...flattenTokens(tokens.kda.foundation.color.background),
+    },
     border: {
       none: 'none',
       hairline: tokens.kda.foundation.border.hairline,
       normal: tokens.kda.foundation.border.normal,
       thick: tokens.kda.foundation.border.thick,
     },
+    borderColor: flattenTokens(tokens.kda.foundation.color.border),
     borderRadius: tokens.kda.foundation.radius,
     borderWidth: tokens.kda.foundation.border.width,
     bottom: [0],
     boxShadow: tokens.kda.foundation.effect.shadow,
+    color: flattenTokens({
+      icon: tokens.kda.foundation.color.icon,
+      text: tokens.kda.foundation.color.text,
+    }),
     cursor: ['pointer', 'not-allowed'],
     flex: [1],
     flexGrow: [0, 1],
@@ -52,25 +58,6 @@ const systemProperties = defineProperties({
     width: ['100%'],
     wordBreak: ['normal', 'keep-all', 'break-word', 'break-all'],
     zIndex: [-1, 0, 1],
-  },
-});
-
-const colorProperties = defineProperties({
-  conditions: {
-    lightMode: { selector: `.${lightTheme} &` },
-    darkMode: { selector: `.${darkTheme} &` },
-  },
-  defaultCondition: 'lightMode',
-  properties: {
-    color: flattenTokens({
-      icon: tokens.kda.foundation.color.icon,
-      text: tokens.kda.foundation.color.text,
-    }),
-    backgroundColor: {
-      transparent: 'transparent',
-      ...flattenTokens(tokens.kda.foundation.color.background),
-    },
-    borderColor: flattenTokens(tokens.kda.foundation.color.border),
   },
 });
 
@@ -121,10 +108,6 @@ const responsiveProperties = defineProperties({
   },
 });
 
-export const atoms = createSprinkles(
-  systemProperties,
-  colorProperties,
-  responsiveProperties,
-);
+export const atoms = createSprinkles(systemProperties, responsiveProperties);
 
 export type Atoms = Parameters<typeof atoms>[0];
