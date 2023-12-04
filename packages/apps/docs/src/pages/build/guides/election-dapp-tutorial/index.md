@@ -1,83 +1,88 @@
 ---
-title: Election dApp tutorial
-description: The Election dApp tutorial will teach you how to implement a voting website that registers votes on the Kadena blockchain.
-menu: Election dApp tutorial
+title: "Workshop: Build an election application"
+description: Learn how to build a decentralized application that registers votes on the Kadena blockchain.
+menu: "Workshop: Build an election appication"
 label: Introduction
 order: 3
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
 
-# Election dApp Tutorial
+# Welcome to the Election application workshop
 
-Welcome to the Kadena Election dApp tutorial. In this tutorial you will create a website for
-the election of the new president of the Kadena Universe. All members of the Kadena
-community will be able to cast one vote on any of the candidates nominated by the election
-officials. Because all votes, as well as the voting mechanism itself, are openly published
-on the blockchain, the election process is fully transparent. Everyone can check if the
-election has proceeded fairly and, for instance, no double votes were cast. Nevertheless, the
-privacy of all voters is protected, because they are voting with an anonymous Kadena account.
-Every vote is a transaction on the blockchain, which comes at the price of a gas fee to paid
-to the miners. The election organization will utilize a gas station that pays the gas for
-all voting transactions, so the election is accessible for all community members, for free.
+The Election application workshop consists of several self-paced tutorials with content and coding challenges to help you learn about how to build decentralized applications for the Kadena network using the Pact smart contract programming language and related tools.
 
-## What you will learn
+## What you’ll build
 
-The concept of a gas station is a central topic of this tutorial, but definitely not the only
-one. You will learn about creating and funding accounts. You will learn how to deal with
-permissions by leveraging keysets and capabilities. You will learn how to interact with the
-blockchain from your code. You will be reading data from the blockchain for free and send
-transactions that cost gas. You will also learn how to deploy a smart contract and upgrade it,
-i.e. deploy changes to your smart contract. You will learn how to do this on a Dockerized Devnet
-running on your own computer. Before deploying anything you will learn
-how to develop smart contracts using the test-driven methodology. You will dive into different
-ways to sign transactions: with keypairs and Chainweaver. Along the way,
-you will learn about a wide range of tooling that is available for blockchain development in
-the Kadena platform, like the Kadena JavaScript client library, Chainweaver, the Pact command
-line executable and more.
+The tutorials in the workshop will guide you to create an application website where Kadena community members can elect the new president of the fictional Kadena society.
 
-## Tutorial structure
+In this application:
 
-This tutorial consists of multiple chapters. In the first chapter you will start off with a
-working front-end that stores candidates and votes in memory. The next chapters will guide
-you through the process of building a blockchain back-end for the election website one
-step at a time. The tutorial's git repository contains branches with starter code for every
-chapter. When you are following along with the tutorial, you can compare your solution with
-with the starter code of the next chapter. The branch name that corresponds to each chapter
-will be provided at the top of the respective chapter page.
+- All members of the Kadena community can cast one vote for any candidate nominated by election officials. 
+- All votes and voting counting mechanics must be published on the blockchain, so that the election process is fully transparent. 
+- Anyone—inside of the community or outside of it—must be able check the election results and verify that the election process was conducted fairly, for example, to determine that no double or fraudulent votes were cast.
+- All voters must be able to cast their votes anonymously so their privacy is protected.
 
- * [Chapter 01: Getting started](/build/guides/election-dapp-tutorial/01-getting-started)
- * [Chapter 02: Running Devnet](/build/guides/election-dapp-tutorial/02-running-devnet)
- * [Chapter 03: Admin account](/build/guides/election-dapp-tutorial/03-admin-account)
- * [Chapter 04: Namespaces](/build/guides/election-dapp-tutorial/04-namespaces)
- * [Chapter 05: Keysets](/build/guides/election-dapp-tutorial/05-keysets)
- * [Chapter 06: Smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
- * [Chapter 07: Nominate candidates](/build/guides/election-dapp-tutorial/07-nominate-candidates)
- * [Chapter 08: Voting](/build/guides/election-dapp-tutorial/08-voting)
- * [Chapter 09: Gas station](/build/guides/election-dapp-tutorial/09-gas-station)
+To ensure that the application can meet these requirements, every vote is executed as a transaction on a blockchain. 
+The blockchain is the perfect vehicle for this application because it can ensure data integrity, authenticity, transparency, and privacy. 
+However, transactions require computational resources and fees to be paid in exchange for the resources consumed to validate a block.
+To make the election application accessible to all community members for free, the election contract includes a special type of reserve account—called a **gas station**—that pays the fees for all voting transactions.
 
-In the future, additional chapters may be added to this tutorial. Some ideas are already floating
-around, but if you have any suggestions for topics you would like to see covered, please
-get in touch.
+## What you’ll learn
 
- * Deploying to Testnet with the functional programming approach
- * A continuous integration pipeline for deploying your dApp
- * Other signing methods than keypair and Chainweaver
+By completing the tutorials in this workshop, you’ll learn how to:
 
-## Requirements for this tutorial
+- Create and fund accounts.
+- Leverage keysets and capabilities to manage permissions.
+- Interact with the blockchain directly from your contract code.
+- Read data from the blockchain state for free.
+- Sign and send transactions that require fee payments.
+- Deploy and update a smart contract.
+- Use a gas station to pay fees on behalf of application users.
 
-Before moving on to the first chapter of this tutorial, please make sure that you have the
-required software installed on your computer. The tutorial assumes that you have installed
-the software listed below.
+Some of the topics covered in this workshop are similar to topics introduced in the Quick start.
+For example, you’ll set up a development network (devnet) running on your local computer in a Docker container and sign transactions using public keys and Chainweaver accounts.
+However, the tutorials in the workshop also touch on additional topics such as:
 
- - [Docker](https://docs.docker.com/get-docker/)
- - [Git](https://git-scm.com/downloads)
- - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
- - [Chainweaver](https://github.com/kadena-io/chainweaver/releases)
- - [Pact (optional)](https://github.com/kadena-io/pact#installing-pact)
- - [Pact LSP (optional)](https://github.com/kadena-io/pact-lsp/releases)
+- How to develop smart contracts that use formal verification.
+- Options available for signing transactions.
+- Where you can find additional tooling for blockchain development, including the Kadena JavaScript client library, Chainweaver, the Pact command-line executable and more.
 
-## Get started
+## Workshop roadmap
 
-Let's start creating a website for the election of the new president of the Kadena Universe.
-Good luck and have fun with [Chapter 01: Getting started](/build/guides/election-dapp-tutorial/01-getting-started).
+This workshop consists of multiple tutorials that should be completed in order. Each tutorial provides some starter code and guides you to completing the tasks necessary to build the Election application to run on the Kadena blockchain.
+
+For the first tutorial, you’ll clone a repository with a working front-end for the election application that stores candidates and votes in memory. 
+After that, you’ll set up a local development network and your development workspace to begin building the blockchain back-end for the election website. 
+The workshop repository contains branches with starter code for every tutorial, so you can compare your solution with the finished code at every step along the way. 
+
+ * [Get started](/build/guides/election-dapp-tutorial/01-getting-started)
+ * [Prepare your workspace](/build/guides/election-dapp-tutorial/02-running-devnet)
+ * [Admin account](/build/guides/election-dapp-tutorial/03-admin-account)
+ * [Namespaces](/build/guides/election-dapp-tutorial/04-namespaces)
+ * [Keysets](/build/guides/election-dapp-tutorial/05-keysets)
+ * [Smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
+ * [Nominate candidates](/build/guides/election-dapp-tutorial/07-nominate-candidates)
+ * [Voting](/build/guides/election-dapp-tutorial/08-voting)
+ * [Gas station](/build/guides/election-dapp-tutorial/09-gas-station)
+
+Stay tuned for future editions of this workshop and for more intermediate and advanced tutorials  covering additional topics, such as:
+
+ * Deploy to test network with the functional programming approach
+ * Develop a continuous integration pipeline for deploying your application
+
+To suggest topics you’d like to see covered in future tutorials and workshops, submit a documentation request.
+
+## Before you begin
+
+Before you start the tutorials in this workshop, verify the following basic requirements:
+
+- You have an internet connection and a web browser installed on your local computer.
+- You have a code editor, such as Visual Studio Code, access to an interactive terminal shell, and are generally familiar with using command-line programs.
+- You have [Docker](https://docs.docker.com/get-docker/) installed and are generally familiar with using Docker commands for containerized applications.
+- You have [Git](https://git-scm.com/downloads) installed and are generally familiar with using git commands.
+- You have [Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs/)  and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed on your local computer.
+- You have access to [Chainweaver](https://github.com/kadena-io/chainweaver/releases) desktop or web application.
+- You have [Pact](https://github.com/kadena-io/pact#installing-pact) or the [Pact language server plugin](https://github.com/kadena-io/pact-lsp/releases) installed on your local computer.
+
+If you have everything you need, let’s start building the election website with [Get started](/build/guides/election-dapp-tutorial/01-getting-started). 
