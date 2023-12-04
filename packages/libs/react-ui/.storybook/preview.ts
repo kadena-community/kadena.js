@@ -7,8 +7,7 @@ import { useDarkMode } from 'storybook-dark-mode';
 import { darkThemeClass } from '../src/styles';
 import { colorPalette } from '../src/styles/colors';
 import '../src/styles/global.css';
-import { darkTheme } from '../src/styles/tokens/dark.css';
-import { lightTheme } from '../src/styles/tokens/light.css';
+
 KodeMono();
 
 const preview: Preview = {
@@ -25,10 +24,10 @@ const preview: Preview = {
       current: 'light',
       // Override the default dark theme
       dark: { ...themes.dark, appBg: colorPalette.$black },
-      darkClass: [darkThemeClass, darkTheme, 'dark-mode'],
+      darkClass: [darkThemeClass, 'dark-mode'],
       // Override the default light theme
       light: { ...themes.normal, appBg: colorPalette.$white },
-      lightClass: [lightTheme, 'light-mode'],
+      lightClass: ['light-mode'],
       stylePreview: true,
       theme: themes.dark,
     },

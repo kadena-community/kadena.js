@@ -1,9 +1,21 @@
 import { colorPalette, gradients, hexToRgba } from '@theme/colors';
-import { createGlobalTheme, createTheme } from '@vanilla-extract/css';
+import {
+  createGlobalTheme,
+  createTheme,
+  createThemeContract,
+} from '@vanilla-extract/css';
+import { tokens } from './tokens/contract.css';
+import { darkThemeValues } from './tokens/dark.css';
+import { lightThemeValues } from './tokens/light.css';
 
-export const vars = createGlobalTheme(':root', {
+// eslint-disable-next-line @kadena-dev/typedef-var
+export const primaryFont =
+  lightThemeValues.kda.foundation.typography.family.primaryFont;
+
+// eslint-disable-next-line @kadena-dev/typedef-var
+const oldThemeValues = {
   fonts: {
-    $main: "'Haas Grotesk Display', -apple-system, sans-serif",
+    $main: `${primaryFont}, -apple-system, sans-serif`,
     $mono: "'Kode Mono', Menlo, monospace",
   },
   fontSizes: {
@@ -197,9 +209,26 @@ export const vars = createGlobalTheme(':root', {
     $neutral5: colorPalette.$gray90,
     $neutral6: colorPalette.$gray100,
   },
+};
+
+// Creating a contract and exporting with old name
+export const vars = createThemeContract(oldThemeValues);
+
+// Creating a merged contract to create both old and new css variables
+// eslint-disable-next-line @kadena-dev/typedef-var
+const lightContract = {
+  ...vars,
+  ...tokens,
+};
+
+createGlobalTheme(':root', lightContract, {
+  ...oldThemeValues,
+  ...lightThemeValues,
 });
 
-export const darkThemeClass = createTheme(vars.colors, {
+// the old dark theme values
+// eslint-disable-next-line @kadena-dev/typedef-var
+const oldDarkThemeColors = {
   ...colorPalette,
   ...gradients,
 
@@ -295,7 +324,22 @@ export const darkThemeClass = createTheme(vars.colors, {
   $neutral4: colorPalette.$gray40,
   $neutral5: colorPalette.$gray20,
   $neutral6: colorPalette.$gray10,
-});
+};
+
+// here we combine the old and new values for the dark theme to export only one class
+// eslint-disable-next-line @kadena-dev/typedef-var
+const darkContract = {
+  new: tokens.kda.foundation.color,
+  old: vars.colors,
+};
+export const darkThemeClass = createTheme(
+  darkContract,
+  {
+    new: darkThemeValues.kda.foundation.color,
+    old: oldDarkThemeColors,
+  },
+  'dark',
+);
 
 export type ColorType =
   | 'primary'
