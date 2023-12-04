@@ -36,16 +36,23 @@ async function generateKeyPairs(
 }
 
 async function generateLegacyKeyPairs(amount: number): Promise<IKeyPair[]> {
+  const keyPairs = [];
   const password = '';
   const rootKey = randomBytes(128);
-  const [encryptedSecret, publicKey] = await kadenaGenKeypair(
-    password,
-    rootKey,
-    amount,
-  );
-  return [
-    { publicKey: toHexStr(encryptedSecret), secretKey: toHexStr(publicKey) },
-  ];
+
+  for (let i = 0; i < amount; i++) {
+    const [encryptedSecret, publicKey] = await kadenaGenKeypair(
+      password,
+      rootKey,
+      parseInt(amount as unknown as string, 10),
+    );
+    keyPairs.push({
+      publicKey: toHexStr(encryptedSecret),
+      secretKey: toHexStr(publicKey),
+    });
+  }
+
+  return keyPairs;
 }
 
 function displayGeneratedKeys(
@@ -99,7 +106,9 @@ export const createGeneratePlainKeysCommand: (
   async (config) => {
     debug('generate-plain-key:action')({ config });
     const amount =
-      typeof config.keyAmount === 'number' ? config.keyAmount : defaultAmount;
+      config.keyAmount !== undefined && config.keyAmount !== ''
+        ? config.keyAmount
+        : defaultAmount;
     const plainKeyPairs = await generateKeyPairs(config, amount);
     displayGeneratedKeys(plainKeyPairs, config);
   },

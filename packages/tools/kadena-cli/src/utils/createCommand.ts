@@ -135,7 +135,10 @@ export function createCommand<
         }
 
         clearCLI(true);
-        displayConfig(config);
+        if (Object.keys(config).length > 0) {
+          displayConfig(config);
+          console.log('\n');
+        }
 
         await action(config);
       } catch (error) {

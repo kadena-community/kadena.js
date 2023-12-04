@@ -25,11 +25,11 @@ export function displayKeysConfig(): void {
   const formatLength = 80; // Maximum width for the display
 
   const displaySeparator = (): void => {
-    log(chalk.green('-'.padEnd(formatLength, '-')));
+    log(chalk.yellow('-'.padEnd(formatLength, '-')));
   };
 
   const displayHeaderSeparator = (): void => {
-    log(chalk.yellow('-'.padEnd(formatLength, '-')));
+    log(chalk.green('-'.padEnd(formatLength, '-')));
   };
 
   const displayKeys = (
