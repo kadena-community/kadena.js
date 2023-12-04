@@ -2042,6 +2042,9 @@ importers:
       '@kadena-dev/shared-config':
         specifier: workspace:*
         version: link:../shared-config
+      '@kadena/cryptography-utils':
+        specifier: workspace:*
+        version: link:../../libs/cryptography-utils
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types

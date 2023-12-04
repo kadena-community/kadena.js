@@ -1,9 +1,9 @@
 import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
-import type { IAccount } from '../constants/accounts';
-import { sender00Account } from '../constants/accounts';
-import { devnetHost, networkId } from '../constants/network';
+import type { IAccount } from '../testdata/constants/accounts';
+import { sender00Account } from '../testdata/constants/accounts';
+import { devnetHost, networkId } from '../testdata/constants/network';
 
 export async function createAccount(input: IAccount): Promise<ICommandResult> {
   return new Promise<ICommandResult>((resolve, reject) => {
