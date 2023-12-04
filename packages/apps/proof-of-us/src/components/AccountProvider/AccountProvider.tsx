@@ -1,8 +1,9 @@
 'use client';
 import { ACCOUNT_COOKIE_NAME } from '@/constants';
 import { useToasts } from '@/hooks/toast';
+import { env } from '@/utils/env';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { env } from 'process';
+
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
 

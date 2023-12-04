@@ -1,0 +1,42 @@
+(env-data
+    { 'admin-keyset :
+      { 'keys : [ "db601702162a84e6561d4cd6011c420b63c65214151cf4c40aeaf526abc3a5f9" ]
+      , 'pred : 'keys-all
+      }
+    }
+  )
+  
+  (begin-tx)
+  (load "root/ns.pact")
+  (commit-tx)
+  
+  (begin-tx
+    "Define a principal namespace"
+  )
+  (expect
+    "A principal namespace can be created"
+    "Namespace defined: n_92e73ec91a185eb606fcee94c9791dae8487abfb"
+    (let ((ns-name (ns.create-principal-namespace (read-keyset 'admin-keyset))))
+      (define-namespace ns-name (read-keyset 'admin-keyset ) (read-keyset 'admin-keyset ))
+    )
+  )
+  (commit-tx)
+  
+  (env-sigs
+    [{ 'key  : "db601702162a84e6561d4cd6011c420b63c65214151cf4c40aeaf526abc3a5f9"
+     , 'caps : []
+    }]
+  )
+  
+  (begin-tx
+    "Define a keyset in the principal namespace"
+  )
+  (expect
+    "A keyset can be defined in a principal namespace"
+    "Keyset defined"
+    (let ((ns-name (ns.create-principal-namespace (read-keyset 'admin-keyset))))
+      (namespace ns-name)
+      (define-keyset (format "{}.{}" [ns-name 'admin-keyset]) (read-keyset 'admin-keyset ))
+    )
+  )
+  (commit-tx)
