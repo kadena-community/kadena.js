@@ -55,9 +55,11 @@ export const menuInLayoutVariants = styleVariants({
   ],
   false: [
     sprinkles({
-      display: 'block',
+      display: {
+        xs: 'block',
+        md: 'none',
+      },
     }),
-    responsiveStyle({ md: { display: 'none' } }),
   ],
 });
 
