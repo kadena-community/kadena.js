@@ -1,5 +1,5 @@
-import type { IMenuData } from '@/Layout';
 import { useGetBlogs } from '@/hooks/useGetBlogs/useGetBlogs';
+import type { IMenuData } from '@kadena/docs-tools';
 import type { FC } from 'react';
 import React from 'react';
 import { BlogItem } from '../Blog/BlogItem/BlogItem';

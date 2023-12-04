@@ -1,5 +1,5 @@
-import type { IMenuItem, LayoutType } from '@/Layout';
 import { useMenu } from '@/hooks/useMenu/useMenu';
+import type { IMenuItem, LayoutType } from '@kadena/docs-tools';
 import { SystemIcon } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';

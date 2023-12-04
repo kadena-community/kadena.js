@@ -1,9 +1,9 @@
-import type { IAuthorInfo, IMenuData } from '@/Layout';
+import type { IAuthorInfo, IMenuData } from '@kadena/docs-tools';
+import { getMenuData } from '@kadena/docs-tools';
 import { compareDesc } from './dates';
-import { getData } from './staticGeneration/getData.mjs';
 
 export const getBlogPosts = async (tags?: string[]): Promise<IMenuData[]> => {
-  const menu = getData() as unknown as IMenuData[];
+  const menu: IMenuData[] = await getMenuData();
   const blogPosts = menu.find((item) => item.root.includes('/blogchain'));
 
   if (!blogPosts) return [];
@@ -26,10 +26,10 @@ export const getBlogPosts = async (tags?: string[]): Promise<IMenuData[]> => {
   return flatListWithPosts ?? [];
 };
 
-export const getLatestBlogPostsOfAuthor = (
+export const getLatestBlogPostsOfAuthor = async (
   author: IAuthorInfo,
-): IMenuData[] => {
-  const data = getData() as IMenuData[];
+): Promise<IMenuData[]> => {
+  const data: IMenuData[] = await getMenuData();
   const STARTBRANCH = '/blogchain';
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);

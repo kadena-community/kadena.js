@@ -1,4 +1,3 @@
-import type { IAuthorInfo, IPageProps } from '@/Layout';
 import { AuthorList } from '@/components/AuthorList/AuthorList';
 import { AuthorListItem } from '@/components/AuthorList/AuthorListItem';
 import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileCard';
@@ -10,10 +9,8 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import authorsData from '@/data/authors.json';
 import { getLatestBlogPostsOfAuthor } from '@/utils/getBlogPosts';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import type { IAuthorInfo, IPageProps } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import { Card, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -51,19 +48,24 @@ const Home: FC<IProps> = ({ frontmatter, authors }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const authors = authorsData
-    .sort((a, b) => {
-      if (a.id > b.id) return 1;
-      if (a.id < b.id) return -1;
-      return 0;
-    })
-    .map((author) => {
-      return { ...author, posts: getLatestBlogPostsOfAuthor(author) };
-    }) as IAuthorInfo[];
+  const authorsSortedByName = authorsData.sort((a, b) => {
+    if (a.id > b.id) return 1;
+    if (a.id < b.id) return -1;
+    return 0;
+  });
+
+  const authors = await Promise.all(
+    authorsSortedByName.map(async (author) => {
+      return {
+        ...author,
+        posts: await getLatestBlogPostsOfAuthor(author),
+      } as IAuthorInfo;
+    }),
+  );
 
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       authors,
       frontmatter: {
         title: 'BlogChain authors',

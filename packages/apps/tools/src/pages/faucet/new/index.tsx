@@ -52,7 +52,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -76,7 +76,7 @@ const isCustomError = (error: unknown): error is ICommandResult => {
 
 const schema = z.object({
   name: z.string(),
-  pubKey: z.string(),
+  pubKey: z.string().optional(),
 });
 type FormData = z.infer<typeof schema>;
 
@@ -107,17 +107,14 @@ const NewAccountFaucetPage: FC = () => {
     setError,
     getValues,
     resetField,
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: {
-      name: typeof accountName === 'string' ? accountName : '',
-      pubKey: '',
-    },
-    resetOptions: {
-      keepDirtyValues: true, // user-interacted input will be retained
-      keepErrors: true, // input errors will be retained with value update
-    },
   });
+
+  useEffect(() => {
+    setValue('name', typeof accountName === 'string' ? accountName : '');
+  }, [accountName, setValue]);
 
   useToolbar(menuData, router.pathname);
 
@@ -178,14 +175,14 @@ const NewAccountFaucetPage: FC = () => {
     const value = getValues('pubKey');
 
     const copyPubKeys = [...pubKeys];
-    const isDuplicate = copyPubKeys.includes(value);
+    const isDuplicate = copyPubKeys.includes(value!);
 
     if (isDuplicate) {
       setError('pubKey', { message: t('Duplicate public key') });
       return;
     }
 
-    copyPubKeys.push(value);
+    copyPubKeys.push(value!);
     setPubKeys(copyPubKeys);
     resetField('pubKey');
   };
@@ -309,7 +306,7 @@ const NewAccountFaucetPage: FC = () => {
                 icon={'Plus'}
                 onClick={() => {
                   const value = getValues('pubKey');
-                  const valid = validatePublicKey(value);
+                  const valid = validatePublicKey(value || '');
                   if (valid) {
                     addPublicKey();
                   } else {

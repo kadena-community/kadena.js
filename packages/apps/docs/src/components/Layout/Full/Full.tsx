@@ -1,8 +1,8 @@
-import type { IPageProps } from '@/Layout';
 import { BottomPageSection } from '@/components/BottomPageSection/BottomPageSection';
 import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate/LastModifiedDate';
 import { createSlug } from '@/utils/createSlug';
+import type { IPageProps } from '@kadena/docs-tools';
 import { Heading } from '@kadena/react-ui';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
