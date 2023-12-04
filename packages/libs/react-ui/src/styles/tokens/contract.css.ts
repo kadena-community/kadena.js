@@ -371,6 +371,31 @@ export const tokens = createThemeContract({
          */
         xxxl: '',
       },
+      effect: {
+        shadow: {
+          /**
+           * @description This is the shadow 1 description
+           * @default 4px 0.5rem kda.foundation.size.n2 4px #000000
+           * @light 4px 0.5rem kda.foundation.size.n2 4px #000000
+           * @dark 4px 0.5rem kda.foundation.size.n2 4px #000000
+           */
+          level1: '',
+          /**
+           * @description This is the shadow 2 description
+           * @default 4rem 4rem kda.foundation.size.n2 2rem #000000
+           * @light 4rem 4rem kda.foundation.size.n2 2rem #000000
+           * @dark 4rem 4rem kda.foundation.size.n2 2rem #000000
+           */
+          level2: '',
+          /**
+           * @description This is the shadow 3 description updated
+           * @default 0px 0px kda.foundation.size.n2 24px #000000
+           * @light 0px 0px kda.foundation.size.n2 24px #000000
+           * @dark 0px 0px kda.foundation.size.n2 24px #000000
+           */
+          level3: '',
+        },
+      },
       color: {
         background: {
           base: {
@@ -2472,7 +2497,7 @@ export const tokens = createThemeContract({
             n20: '',
             /**
              * @default kda.foundation.color.palette.lime.n30
-             * @light kda.foundation.color.palette.lime.n30`
+             * @light kda.foundation.color.palette.lime.n30
              * @dark kda.foundation.color.palette.lime.n30
              */
             n30: '',
@@ -2769,31 +2794,6 @@ export const tokens = createThemeContract({
            * @dark 42.5rem
            */
           maxWidth: '',
-        },
-      },
-      effect: {
-        shadow: {
-          /**
-           * @description This is the shadow 1 description
-           * @default 4px 0.5rem kda.foundation.size.n2 4px #000000
-           * @light 4px 0.5rem kda.foundation.size.n2 4px #000000
-           * @dark 4px 0.5rem kda.foundation.size.n2 4px #000000
-           */
-          level1: '',
-          /**
-           * @description This is the shadow 2 description
-           * @default 4rem 4rem kda.foundation.size.n2 2rem #000000
-           * @light 4rem 4rem kda.foundation.size.n2 2rem #000000
-           * @dark 4rem 4rem kda.foundation.size.n2 2rem #000000
-           */
-          level2: '',
-          /**
-           * @description This is the shadow 3 description updated
-           * @default 0px 0px kda.foundation.size.n3 24px #000000
-           * @light 0px 0px kda.foundation.size.n3 24px #000000
-           * @dark 0px 0px kda.foundation.size.n3 24px #000000
-           */
-          level3: '',
         },
       },
       typography: {

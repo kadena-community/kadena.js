@@ -312,7 +312,7 @@ export const bodySmallRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: '14px',
   fontWeight: tokens.kda.foundation.typography.weight.bodyFont.regular,
-  lineHeight: tokens.kda.foundation.size.n6,
+  lineHeight: tokens.kda.foundation.size.n4,
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
@@ -320,7 +320,7 @@ export const bodySmallBold = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: '14px',
   fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
-  lineHeight: tokens.kda.foundation.size.n6,
+  lineHeight: tokens.kda.foundation.size.n4,
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
@@ -328,7 +328,7 @@ export const bodySmallestRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: tokens.kda.foundation.size.n3,
   fontWeight: tokens.kda.foundation.typography.weight.bodyFont.regular,
-  lineHeight: tokens.kda.foundation.size.n6,
+  lineHeight: tokens.kda.foundation.size.n4,
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
@@ -336,7 +336,7 @@ export const bodySmallestBold = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: tokens.kda.foundation.size.n3,
   fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
-  lineHeight: tokens.kda.foundation.size.n6,
+  lineHeight: tokens.kda.foundation.size.n4,
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
@@ -352,6 +352,6 @@ export const bodyBaseBold = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: tokens.kda.foundation.size.n4,
   fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
-  lineHeight: tokens.kda.foundation.size.n4,
+  lineHeight: tokens.kda.foundation.size.n6,
   letterSpacing: tokens.kda.foundation.spacing.no,
 });

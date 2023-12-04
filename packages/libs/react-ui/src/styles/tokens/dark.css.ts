@@ -76,6 +76,13 @@ export const darkThemeValues = {
         xxl: tokens.kda.foundation.size.n9,
         xxxl: tokens.kda.foundation.size.n10,
       },
+      effect: {
+        shadow: {
+          level1: `4px 0.5rem ${tokens.kda.foundation.size.n2} 4px #000000`,
+          level2: `4rem 4rem ${tokens.kda.foundation.size.n2} 2rem #000000`,
+          level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
+        },
+      },
       color: {
         background: {
           base: {
@@ -609,13 +616,6 @@ export const darkThemeValues = {
         content: {
           minWidth: '33.75rem',
           maxWidth: '42.5rem',
-        },
-      },
-      effect: {
-        shadow: {
-          level1: `4px 0.5rem ${tokens.kda.foundation.size.n3} 4px #000000`,
-          level2: `4rem 4rem ${tokens.kda.foundation.size.n3} 2rem #000000`,
-          level3: `0px 0px ${tokens.kda.foundation.size.n3} 24px #000000`,
         },
       },
       typography: {
