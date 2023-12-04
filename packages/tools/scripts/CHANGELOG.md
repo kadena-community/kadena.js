@@ -1,5 +1,12 @@
 # @kadena-dev/scripts
 
+## 0.0.3
+
+### Patch Changes
+
+- 0d7fbe56a: Fix generate packages json to include new line as the last line.
+  This fixes linting errors on build
+
 ## 0.0.2
 
 ### Patch Changes
