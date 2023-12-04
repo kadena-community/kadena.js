@@ -1,6 +1,6 @@
-import type { IPageProps } from '@/Layout';
 import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileCard';
 import { formatDateDistance } from '@/utils/dates';
+import type { IPageProps } from '@kadena/docs-tools';
 import { Tag } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';

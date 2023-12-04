@@ -4,6 +4,7 @@ import {
   Heading,
   SelectField,
   Stack,
+  TabItem,
   Tabs,
 } from '@kadena/react-ui';
 
@@ -103,21 +104,12 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
           </SelectField>
         </GridItem>
       </Grid>
-      <Tabs.Root initialTab={moduleToTabId(openedModules[0])}>
-        {openedModules.map(({ moduleName, chainId }) => {
-          return (
-            <Tabs.Tab
-              id={moduleToTabId({ moduleName, chainId })}
-              key={moduleToTabId({ moduleName, chainId })}
-            >{`${moduleName} @ ${chainId}`}</Tabs.Tab>
-          );
-        })}
-
+      <Tabs defaultSelectedKey={moduleToTabId(openedModules[0])}>
         {openedModules.map(({ moduleName, chainId, code }) => {
           return (
-            <Tabs.Content
+            <TabItem
+              title={`${moduleName} @ ${chainId}`}
               key={moduleToTabId({ moduleName, chainId })}
-              id={moduleToTabId({ moduleName, chainId })}
             >
               <AceViewer
                 code={code}
@@ -127,10 +119,10 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
                 theme={theme}
                 mode={mode}
               />
-            </Tabs.Content>
+            </TabItem>
           );
         })}
-      </Tabs.Root>
+      </Tabs>
     </Stack>
   );
 };

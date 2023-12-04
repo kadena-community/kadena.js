@@ -1,13 +1,12 @@
 import { KodeMono } from '@kadena/fonts';
-import { ModalProvider } from '@kadena/react-ui';
 // eslint-disable-next-line import/no-unresolved
-import type { IPageMeta, IPageProps } from '@/Layout';
 import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
 import { getLayout } from '@/utils/getLayout';
+import type { IPageMeta, IPageProps } from '@kadena/docs-tools';
 import { darkThemeClass } from '@kadena/react-ui/theme';
 import { MDXProvider } from '@mdx-js/react';
 import { ThemeProvider } from 'next-themes';
@@ -150,15 +149,13 @@ export const MyApp = ({
             dark: darkThemeClass,
           }}
         >
-          <ModalProvider>
-            <MenuProvider>
-              <Header menuItems={props.leftMenuTree} />
-              <CookieConsent />
-              <Layout {...props}>
-                <Component {...props} />
-              </Layout>
-            </MenuProvider>
-          </ModalProvider>
+          <MenuProvider>
+            <Header menuItems={props.leftMenuTree} />
+            <CookieConsent />
+            <Layout {...props}>
+              <Component {...props} />
+            </Layout>
+          </MenuProvider>
         </ThemeProvider>
       </MDXProvider>
       <Analytics />

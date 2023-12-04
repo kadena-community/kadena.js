@@ -3635,7 +3635,7 @@
   }
   
   var Buffer = require('safe-buffer').Buffer
-  var crypto = global.crypto || global.msCrypto
+  var crypto = global.crypto || global.msCrypto || require('crypto')
   
   if (crypto && crypto.getRandomValues) {
     module.exports = randomBytes

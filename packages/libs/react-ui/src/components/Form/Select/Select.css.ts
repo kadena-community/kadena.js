@@ -53,6 +53,7 @@ export const selectClass = style([
     outline: 'none',
     paddingRight: '$2',
     paddingY: '$2',
+    fontSize: '$base',
   }),
   {
     backgroundColor: 'inherit',

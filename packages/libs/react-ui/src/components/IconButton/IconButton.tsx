@@ -92,7 +92,6 @@ export const IconButton: FC<IIconButtonProps> = ({
       {...restProps}
       className={buttonClassname}
       aria-label={ariaLabel}
-      data-testid="kda-icon-button"
       type={type}
     >
       <Icon size="md" />

@@ -1,6 +1,6 @@
+import { getFlatData } from '@kadena/docs-tools';
 import { format, isValid } from 'date-fns';
 import * as fs from 'fs';
-import { getFlatData } from './../utils/staticGeneration/flatPosts.mjs';
 import {
   getAuthorData,
   getTagsData,
@@ -74,17 +74,17 @@ export const createSitemap = async () => {
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
       <loc>${URL}/</loc>
-    </url>  
+    </url>
     <url>
       <loc>${URL}/search</loc>
-    </url>  
-    <url>  
+    </url>
+    <url>
       <loc>${URL}/tags</loc>
-    </url>  
+    </url>
       ${getTags(URL, tags)}
-    <url>  
+    <url>
       <loc>${URL}/authors</loc>
-    </url>  
+    </url>
     ${getAuthors(URL)}
     <url>
       <loc>${URL}/help</loc>

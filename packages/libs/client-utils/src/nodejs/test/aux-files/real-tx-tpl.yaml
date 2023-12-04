@@ -1,0 +1,27 @@
+# A Kadena gas station is nothing more than a KDA account controlled by a
+# special guard. This transaction template constructs gas station
+# safely...i.e. it calls rotate after creating the account to ensure that you
+# will be able to rotate it's guard in the future if any of the gas station's
+# limits need to be changed. The mk-guard lambda function makes the important
+# parts of the guard DRY to minimize the chance of mistakes.
+codeFile: ./aux-files/real-tx-tpl-code.pact
+data:
+publicMeta:
+  chainId: '{{chain}}'
+  sender: '{{{funding-acct}}}'
+  gasLimit: 2000
+  gasPrice: 0.00000001
+  ttl: 7200
+networkId: '{{network}}'
+signers:
+  - public: '{{funding-key}}'
+    caps:
+      - name: 'coin.TRANSFER'
+        args: ['{{{funding-acct}}}', '{{{gas-station-name}}}', {{amount}}]
+      - name: 'coin.GAS'
+        args: []
+  - public: '{{owner-key}}'
+    caps:
+      - name: 'coin.ROTATE'
+        args: ['{{{gas-station-name}}}']
+type: exec

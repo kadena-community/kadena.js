@@ -27,7 +27,8 @@ export const textAreaContainerClass = style([
     flexGrow: 1,
     gap: '$2',
     lineHeight: '$lg',
-    paddingX: '$4',
+    paddingLeft: '$4',
+    paddingRight: '$2',
   }),
 ]);
 
@@ -40,6 +41,7 @@ export const textAreaClass = style([
     outline: 'none',
     flexGrow: 1,
     paddingY: '$2',
+    fontSize: '$base',
   }),
   {
     minHeight: vars.sizes.$20,
@@ -51,4 +53,11 @@ export const textAreaClass = style([
       color: vars.colors.$gray50,
     },
   },
+]);
+
+export const buttonContainerClass = style([
+  sprinkles({
+    top: '$2',
+    position: 'relative',
+  }),
 ]);

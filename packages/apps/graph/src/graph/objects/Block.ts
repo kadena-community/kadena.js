@@ -113,7 +113,7 @@ async function getConfirmationDepth(blockhash: string): Promise<number> {
       SELECT b.hash, b.parent, d.depth + 1 AS depth
       FROM BlockDescendants d
       JOIN blocks b ON d.hash = b.parent
-      WHERE d.depth < ${dotenv.MAX_BLOCK_DEPTH}
+      WHERE d.depth < ${dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH}
     )
     SELECT MAX(depth) AS depth
     FROM BlockDescendants;

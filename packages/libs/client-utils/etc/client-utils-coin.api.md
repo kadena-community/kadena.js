@@ -9,7 +9,8 @@ import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
-import type { IPactCommand } from '@kadena/client';
+import { IPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
+import type { IPactCommand as IPactCommand_2 } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
 import type { ISignFunction } from '@kadena/client';
@@ -36,10 +37,18 @@ data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
 
 // @alpha (undocumented)
-export const details: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host']) => Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>;
+export const createAccountCommand: ({ account, keyset, gasPayer, chainId, contract, }: ICreateAccountCommandInput) => (cmd?: (Partial<IPactCommand> | (() => Partial<IPactCommand>)) | undefined) => Partial<IPactCommand>;
+
+// Warning: (ae-forgotten-export) The symbol "ICrossChainInput" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const createCrossChainCommand: ({ sender, receiver, amount, targetChainId, gasPayer, chainId, contract, }: Omit<ICrossChainInput, 'targetChainGasPayer'>) => (cmd?: (Partial<IPactCommand> | (() => Partial<IPactCommand>)) | undefined) => Partial<IPactCommand>;
 
 // @alpha (undocumented)
-export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host']) => Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>;
+export const details: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>;
+
+// @alpha (undocumented)
+export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>;
 
 // Warning: (ae-forgotten-export) The symbol "IRotateCommandInput" needs to be exported by the entry point index.d.ts
 //
@@ -58,6 +67,9 @@ event: "listen";
 data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
 
+// @alpha (undocumented)
+export const rotateCommand: ({ account, newguard, gasPayer, chainId, contract, }: IRotateCommandInput) => (cmd?: (Partial<IPactCommand> | (() => Partial<IPactCommand>)) | undefined) => Partial<IPactCommand>;
+
 // Warning: (ae-forgotten-export) The symbol "ITransferInput" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
@@ -74,6 +86,9 @@ data: ITransactionDescriptor;
 event: "listen";
 data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+
+// @alpha (undocumented)
+export const transferCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ITransferInput) => (cmd?: (Partial<IPactCommand> | (() => Partial<IPactCommand>)) | undefined) => Partial<IPactCommand>;
 
 // Warning: (ae-forgotten-export) The symbol "ICreateTransferInput" needs to be exported by the entry point index.d.ts
 //
@@ -92,8 +107,9 @@ event: "listen";
 data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
 
-// Warning: (ae-forgotten-export) The symbol "ICrossChainInput" needs to be exported by the entry point index.d.ts
-//
+// @alpha (undocumented)
+export const transferCreateCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ICreateTransferInput) => (cmd?: (Partial<IPactCommand> | (() => Partial<IPactCommand>)) | undefined) => Partial<IPactCommand>;
+
 // @alpha (undocumented)
 export const transferCrossChain: (inputs: ICrossChainInput, config: IClientConfig) => IEmitterWrapper<[{
 event: "sign";

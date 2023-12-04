@@ -15,9 +15,10 @@ export const details = (
   networkId: string,
   chainId: ChainId,
   host?: IClientConfig['host'],
+  contract: string = 'coin',
 ) => {
   const getDetails = pipe(
-    (name) => Pact.modules.coin.details(name),
+    (name) => Pact.modules[contract as 'coin'].details(name),
     execution,
     dirtyReadClient({
       host,

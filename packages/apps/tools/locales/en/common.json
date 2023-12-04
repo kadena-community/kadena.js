@@ -63,6 +63,8 @@
   "Testnet": "Testnet",
   "Cross Chain Transfers": "Cross Chain Transfers",
   "Invalid length of request key": "Invalid length of request key",
+  "invalid-pub-key-length": "Invalid length of public key",
+  "add-key-reminder": "Make sure to add the custom key by clicking the plus button.",
   "No request key found": "No request key found",
   "Pact Information": "Pact Information",
   "Sender": "Sender",

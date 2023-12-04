@@ -10,19 +10,18 @@ export const staticResultsListClass = style([
   },
 ]);
 
-export const scrollBoxClass = style([
-  sprinkles({
-    position: 'relative',
-    marginY: '$2',
-    marginX: 0,
-  }),
+export const tabContainerClass = style([
+  sprinkles({ flex: 1, overflowY: 'hidden', overflowX: 'visible' }),
 ]);
 
-export const scrollBoxEnabledClass = style([
-  {
-    overflowY: 'scroll',
-    height: '55vh',
-  },
+export const tabClass = style([
+  sprinkles({
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    overflowY: 'hidden',
+    overflowX: 'visible',
+  }),
 ]);
 
 export const itemLinkClass = style([
@@ -51,7 +50,7 @@ export const loadingWrapperClass = style([
     position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
-    paddingY: '$10',
+    alignItems: 'center',
     backgroundColor: '$background',
   }),
   {

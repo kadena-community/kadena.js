@@ -60,6 +60,12 @@
     "path": "packages/apps/docs"
   },
   {
+    "name": "@kadena/proof-of-us",
+    "version": "0.1.0",
+    "private": true,
+    "path": "packages/apps/proof-of-us"
+  },
+  {
     "name": "@kadena/graph",
     "version": "1.0.5",
     "private": true,

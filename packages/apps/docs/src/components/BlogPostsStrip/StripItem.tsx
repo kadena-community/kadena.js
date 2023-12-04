@@ -1,4 +1,4 @@
-import type { IMenuData } from '@/Layout';
+import type { IMenuData } from '@kadena/docs-tools';
 import { Box } from '@kadena/react-ui';
 import Image from 'next/image';
 import Link from 'next/link';

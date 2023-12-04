@@ -1,4 +1,4 @@
-import type { ISubHeaderElement } from '@/Layout';
+import type { ISubHeaderElement } from '@kadena/docs-tools';
 
 /**
  * Function used for creating a nested list of all headers in a document.

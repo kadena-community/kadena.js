@@ -8,15 +8,15 @@ import {
 
 import chalk from 'chalk';
 import { createExternalPrompt } from '../../prompts/generic.js';
+import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import {
   dockerVolumeName,
-  isDockerInstalled,
   removeDevnet,
   removeVolume,
 } from '../utils/docker.js';
 
-export const deleteDevnetCommand = createCommand(
+export const deleteDevnetCommand: CreateCommandReturnType = createCommand(
   'delete',
   'Delete devnet',
   [globalOptions.devnetSelect()],
@@ -37,37 +37,39 @@ export const deleteDevnetCommand = createCommand(
       return;
     }
 
-    if (!isDockerInstalled()) {
+    try {
+      removeDevnet(config.name);
+      console.log(chalk.green(`Removed devnet container: ${config.name}`));
+
+      const configuration = getDevnetConfiguration(config.name);
+
+      if (configuration?.useVolume === true) {
+        removeVolume(config.name);
+        console.log(
+          chalk.green(`Removed volume: ${dockerVolumeName(config.name)}`),
+        );
+      }
+
+      console.log(
+        chalk.green(
+          `Successfully removed devnet container for configuration: ${config.name}`,
+        ),
+      );
+
+      removeDevnetConfiguration(config);
+
+      console.log(
+        chalk.green(
+          `Successfully removed devnet configuration: ${config.name}`,
+        ),
+      );
+    } catch (e) {
       console.log(
         chalk.red(
-          'Stopping devnet requires Docker. Please install Docker and try again.',
+          'Deleting devnet requires Docker. Please install Docker and try again.',
         ),
       );
       return;
     }
-
-    removeDevnet(config.name);
-    console.log(chalk.green(`Removed devnet container: ${config.name}`));
-
-    const configuration = getDevnetConfiguration(config.name);
-
-    if (configuration?.useVolume) {
-      removeVolume(config.name);
-      console.log(
-        chalk.green(`Removed volume: ${dockerVolumeName(config.name)}`),
-      );
-    }
-
-    console.log(
-      chalk.green(
-        `Successfully removed devnet container for configuration: ${config.name}`,
-      ),
-    );
-
-    removeDevnetConfiguration(config);
-
-    console.log(
-      chalk.green(`Successfully removed devnet configuration: ${config.name}`),
-    );
   },
 );

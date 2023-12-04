@@ -29,6 +29,12 @@ export const devnetNamePrompt: IPrompt = async (
 ) => {
   const containerName = await input({
     message: 'Enter a devnet name (e.g. "devnet")',
+    validate: function (input) {
+      if (input.trim().length === 0) {
+        return 'Please specify a name for your devnet.';
+      }
+      return true;
+    },
   });
 
   const filePath = path.join(defaultDevnetsPath, `${containerName}.yaml`);

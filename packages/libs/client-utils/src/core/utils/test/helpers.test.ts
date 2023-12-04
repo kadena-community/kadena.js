@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   checkSuccess,
   extractResult,
@@ -150,7 +151,9 @@ describe('pickFirst', () => {
 describe('throwIfFails', () => {
   it('returns input if the status is success', () => {
     expect(
-      throwIfFails({ result: { status: 'success', data: 'test' } } as any),
+      throwIfFails({
+        result: { status: 'success', data: 'test' },
+      } as unknown as ICommandResult),
     ).toEqual({ result: { status: 'success', data: 'test' } });
   });
 
@@ -158,7 +161,7 @@ describe('throwIfFails', () => {
     expect(() =>
       throwIfFails({
         result: { status: 'failure', error: 'error-message' },
-      } as any),
+      } as unknown as ICommandResult),
     ).toThrow('error-message');
   });
 });
@@ -168,7 +171,7 @@ describe('extractResult', () => {
     expect(
       extractResult({
         result: { status: 'success', data: 'test-data' },
-      } as any),
+      } as unknown as ICommandResult),
     ).toBe('test-data');
   });
 
@@ -180,7 +183,7 @@ describe('extractResult', () => {
           data: 'failure-data',
           error: 'error-message',
         },
-      } as any),
+      } as unknown as ICommandResult),
     ).toBe(undefined);
   });
 });
