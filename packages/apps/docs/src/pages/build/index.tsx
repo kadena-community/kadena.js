@@ -1,4 +1,3 @@
-import type { IMenuData } from '@/Layout';
 import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
@@ -7,10 +6,8 @@ import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import type { IMenuData } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import {
   Box,
   Button,
@@ -143,11 +140,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
 export const getStaticProps: GetStaticProps = async () => {
   const blogPosts = await getBlogPosts(['kadenajs', 'cli']);
   const mostPopularPages = await getMostPopularPages('/build');
+  const leftMenuTree = await checkSubTreeForActive(getPathName(__filename));
   return {
     props: {
       popularPages: mostPopularPages,
       blogPosts,
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree,
       frontmatter: {
         title: 'Build on Kadena',
         menu: 'Build',

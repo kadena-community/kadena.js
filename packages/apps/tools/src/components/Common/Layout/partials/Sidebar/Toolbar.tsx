@@ -1,6 +1,7 @@
 import { menuData } from '@/constants/side-menu-items';
 import { useLayoutContext } from '@/context';
 import type { ISidebarSubMenuItem } from '@/types/Layout';
+import { getHref } from '@/utils/getHref';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -21,19 +22,27 @@ export const Toolbar: FC = () => {
     isMenuOpen,
     visibleLinks,
     setVisibleLinks,
+    setIsMenuOpen,
   } = useLayoutContext();
   const { pathname } = useRouter();
 
-  const handleItemClick = (index: number): void => {
+  const handleItemClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    index: number,
+  ): void => {
+    event.preventDefault();
+
     setVisibleLinks(false);
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
+      setIsMenuOpen(true);
     }
   };
 
   const handleOpenDrawer = (): void => {
     if (isMenuOpen) {
       setVisibleLinks(false);
+      setIsMenuOpen(false);
       return setActiveMenuIndex(undefined);
     }
 
@@ -47,6 +56,7 @@ export const Toolbar: FC = () => {
     const activeMenuIndex = menuData.indexOf(activeMenu);
 
     setActiveMenuIndex(activeMenuIndex);
+    setIsMenuOpen(true);
   };
 
   const isMenuActive = (
@@ -64,6 +74,7 @@ export const Toolbar: FC = () => {
     setActiveMenuIndex(-1);
     if (!visibleLinks) {
       setVisibleLinks(true);
+      setIsMenuOpen(true);
     }
   };
 
@@ -74,8 +85,9 @@ export const Toolbar: FC = () => {
           <li key={String(item.title)} className={gridMiniMenuListItemStyle}>
             <MenuButton
               {...item}
-              onClick={() => handleItemClick(index)}
+              onClick={(e) => handleItemClick(e, index)}
               active={isMenuActive(item, index)}
+              href={getHref(pathname, item.href)}
             />
           </li>
         ))}

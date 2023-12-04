@@ -1,6 +1,6 @@
 {
   "name": "@kadena/docs",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "private": true,
   "scripts": {
     "7d": "npx 7d pinecone-create-index --index kda-docs --environment asia-northeast1-gcp",
@@ -35,6 +35,7 @@
   "dependencies": {
     "@7-docs/edge": "^0.5.1",
     "@google-analytics/data": "~3.2.2",
+    "@kadena/docs-tools": "workspace:*",
     "@kadena/fonts": "~0.0.1",
     "@kadena/react-ui": "workspace:*",
     "@mailchimp/mailchimp_marketing": "~3.0.80",
@@ -42,7 +43,7 @@
     "@mdx-js/react": "~2.3.0",
     "@next/mdx": "~13.3.4",
     "@vanilla-extract/css": "1.14.0",
-    "acorn": "~8.8.2",
+    "acorn": "~8.11.2",
     "algoliasearch": "^4.20.0",
     "classnames": "^2.3.1",
     "date-fns": "~2.30.0",

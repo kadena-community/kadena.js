@@ -1,4 +1,4 @@
-import type { ISubHeaderElement } from '@/Layout';
+import type { ISubHeaderElement } from '@kadena/docs-tools';
 import { getParentHeading } from '../getParentHeading';
 
 describe('utils getParentHeading', () => {

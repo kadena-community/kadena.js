@@ -1,5 +1,24 @@
 # @kadena/react-ui
 
+## 0.5.0
+
+### Minor Changes
+
+- a7bb78d8b: Updated the Notification component API
+- 957af9922: Used react-aria to recreate the `Dialog` and `Modal` components
+- bf490445c: Setup design tokens sync
+- 854604595: Updated the Tooltip component API and styles
+- a30106c85: Refactored Tabs component
+- 5250be30b: Added TextareaCopy and InputCopy
+- d9109f3ba: Removing the Label component
+- 4b8b728dd: Updated the Card component's styles and removed the `stacked` prop.
+  Users can add the Divider component within a Card to achieve the same result
+  as using the deprecated `stacked` prop.
+
+### Patch Changes
+
+- 6992a2b58: Added Icons for C: & W: accounts
+
 ## 0.4.0
 
 ### Minor Changes
