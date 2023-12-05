@@ -108,24 +108,20 @@ export const generateAccount = async (
   chainId: ChainId = devnetConfig.CHAIN_ID,
 ): Promise<IAccount> => {
   const keyPairs = Array.from({ length: keys }, () => genKeyPair());
-  let account = `k:${keyPairs[0].publicKey}`;
-
-  if (keyPairs.length > 1) {
-    account = await createPrincipal(
-      {
-        keyset: {
-          keys: keyPairs.map((keyPair) => keyPair.publicKey),
-        },
+  const account = await createPrincipal(
+    {
+      keyset: {
+        keys: keyPairs.map((keyPair) => keyPair.publicKey),
       },
-      {
-        host: `http://localhost:${devnetConfig.PORT}`,
-        defaults: {
-          networkId: devnetConfig.NETWORK_ID,
-          meta: { chainId },
-        },
+    },
+    {
+      host: `http://localhost:${devnetConfig.PORT}`,
+      defaults: {
+        networkId: devnetConfig.NETWORK_ID,
+        meta: { chainId },
       },
-    );
-  }
+    },
+  );
 
   return {
     keys: keyPairs,

@@ -1,9 +1,12 @@
-import { addData, execution } from '@kadena/client/fp';
+import { addKeyset, execution } from '@kadena/client/fp';
 import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
-interface ICreatePrincipalInput {
+/**
+ * @alpha
+ */
+export interface ICreatePrincipalInput {
   keyset: {
     keys: string[];
     pred?: 'keys-all' | 'keys-2' | 'keys-any';
@@ -20,7 +23,7 @@ export const createPrincipal = async (
   const command = pipe(
     () => '(create-principal (read-keyset "ks"))',
     execution,
-    addData('ks', inputs.keyset),
+    addKeyset('ks', inputs.keyset.pred || 'keys-all', ...inputs.keyset.keys),
     dirtyReadClient(config),
   );
   return command().execute() as unknown as string;

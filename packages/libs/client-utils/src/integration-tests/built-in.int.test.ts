@@ -1,4 +1,3 @@
-import type { ChainId } from '@kadena/client';
 import { describe, expect, it } from 'vitest';
 
 import { createPrincipal } from '../built-in/create-principal';
@@ -7,9 +6,9 @@ const config = {
   host: 'http://127.0.0.1:8080',
   defaults: {
     networkId: 'fast-development',
-    meta: { chainId: '0' as ChainId },
+    meta: { chainId: '0' },
   },
-};
+} as const;
 
 describe('createPrincipal', () => {
   it('creates a principal based on one public key', async () => {

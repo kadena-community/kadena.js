@@ -2,6 +2,7 @@ import type {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
+import type { ICreatePrincipalInput } from '@kadena/client-utils/built-in';
 import { createPrincipal as createPrincipalUtil } from '@kadena/client-utils/built-in';
 
 import { kadenaConstants } from '@/constants/kadena';
@@ -22,7 +23,7 @@ export const createPrincipal = async (
     {
       keyset: {
         keys,
-        pred: pred as 'keys-all',
+        pred: pred as ICreatePrincipalInput['keyset']['pred'],
       },
     },
     {

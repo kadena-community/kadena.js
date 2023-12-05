@@ -1,5 +1,5 @@
 ---
-'@kadena/client-utils': patch
+'@kadena/client-utils': minor
 '@kadena/graph': patch
 ---
 
