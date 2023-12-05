@@ -14,6 +14,7 @@ import type { IPactCommand } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
 import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
+import type { IPartialPactCommand as IPartialPactCommand_2 } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
 import { PactValue } from '@kadena/types';
@@ -70,7 +71,7 @@ data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
 
 // @alpha
-export const estimateGas: (command: Partial<IPactCommand> | ((cmd?: Partial<IPactCommand> | (() => Partial<IPactCommand>)) => Partial<IPactCommand>), host?: IClientConfig['host'], client?: IClient) => Promise<{
+export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPactCommand_2 | (() => IPartialPactCommand_2)) => IPartialPactCommand_2), host?: IClientConfig['host'], client?: IClient) => Promise<{
     gasLimit: number;
     gasPrice: number;
 }>;
