@@ -1,6 +1,5 @@
 import type { IFormFieldWrapperProps } from '@components/Form';
 import { FormFieldWrapper, Input } from '@components/Form';
-import type { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
@@ -9,7 +8,6 @@ import { statusVariant } from './FormFieldWrapper.css';
 type StoryProps = {
   helperText: string;
   leadingText: string;
-  icon: keyof typeof SystemIcon;
 } & IFormFieldWrapperProps;
 
 const meta: Meta<StoryProps> = {

@@ -9,8 +9,8 @@ import React from 'react';
 type StoryProps = {
   helperText: string;
   leadingText: string;
-  icon: keyof typeof SystemIcon;
-} & ITextFieldProps;
+  startIcon: React.ReactElement | '-';
+} & Omit<ITextFieldProps, 'startIcon'>;
 
 const meta: Meta<StoryProps> = {
   title: 'Form/TextField',
@@ -87,10 +87,10 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    icon: {
+    startIcon: {
       description:
         'Icon rendered inside the input to the left of the input text.',
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
+      options: ['-', ...Object.keys(SystemIcon)],
       control: {
         type: 'select',
       },
@@ -115,13 +115,13 @@ export const Group: Story = {
     label: 'Label',
     disabled: false,
     status: undefined,
-    icon: 'Account',
+    startIcon: <SystemIcon.Account />,
     leadingText: 'Leading',
     leadingTextWidth: undefined,
   },
   render: ({
     leadingText,
-    icon,
+    startIcon,
     disabled,
     status,
     tag,
@@ -130,6 +130,12 @@ export const Group: Story = {
     label,
     leadingTextWidth,
   }) => {
+    // Fix this to render the selection
+    // const IconComponent =
+    //   startIcon !== '-'
+    //     ? SystemIcon[startIcon as unknown as keyof typeof SystemIcon]
+    //     : undefined;
+
     return (
       <TextField
         tag={tag}
@@ -142,7 +148,7 @@ export const Group: Story = {
         inputProps={{
           id: 'inputStory',
           leadingText,
-          icon,
+          startIcon: startIcon !== '-' ? startIcon : undefined,
           placeholder: 'This is a placeholder',
         }}
       />

@@ -104,7 +104,7 @@ type Story = StoryObj<
     leadingText: string;
     startIcon: React.ReactElement | '-';
     type: React.HTMLInputTypeAttribute;
-  } & Omit<IInputProps, 'icon'>
+  } & Omit<IInputProps, 'startIcon'>
 >;
 
 export const Dynamic: Story = {

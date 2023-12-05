@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 type StoryProps = {
-  icon: keyof typeof SystemIcon;
+  startIcon: React.ReactElement | '-';
 } & ISelectFieldProps;
 
 const meta: Meta<StoryProps> = {
@@ -67,7 +67,7 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    icon: {
+    startIcon: {
       description: 'Icon rendered inside the select to the left of the text.',
       options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
@@ -88,9 +88,9 @@ export const Group: Story = {
     label: 'Label',
     disabled: false,
     status: undefined,
-    icon: 'Account',
+    startIcon: <SystemIcon.Account />,
   },
-  render: ({ icon, disabled, status, tag, helperText, info, label }) => {
+  render: ({ startIcon, disabled, status, tag, helperText, info, label }) => {
     return (
       <SelectField
         tag={tag}
@@ -102,7 +102,7 @@ export const Group: Story = {
         selectProps={{
           ariaLabel: 'Select Story',
           id: 'inputStory',
-          icon,
+          startIcon: startIcon !== '-' ? startIcon : undefined,
           placeholder: 'This is a placeholder',
         }}
       >
