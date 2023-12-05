@@ -36,7 +36,7 @@ export const Subscribe: FC = () => {
               <Stack gap="$sm" paddingY="$1">
                 <Input
                   id="email"
-                  startIcon={SystemIcon.At}
+                  startIcon={<SystemIcon.At />}
                   onChange={handleFormState}
                   placeholder="Email address"
                   outlined
