@@ -217,6 +217,24 @@ export const globalOptions = {
       'Enter the number of key pairs you want to generate (default: 1)',
     ),
   }),
+  keyGenFromHdChoice: createOption({
+    key: 'keyGenFromHdChoice',
+    prompt: keys.genFromHdChoicePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-c, --key-gen-from-hd-choice <keyGenFromHdChoice>',
+      'Choose an action for generating keys',
+    ),
+  }),
+  keySeed: createOption({
+    key: 'keySeed',
+    prompt: keys.keySeed,
+    validation: z.string(),
+    option: new Option(
+      '-s, --key-seed <choice>',
+      'Enter your seed to generate keys from',
+    ),
+  }),
   keyPassword: createOption({
     key: 'keyPassword' as const,
     prompt: security.securityPassword,

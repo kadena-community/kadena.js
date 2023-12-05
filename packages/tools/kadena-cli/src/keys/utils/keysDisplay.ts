@@ -90,3 +90,46 @@ export function displayKeysConfig(): void {
     displayKeys('Plain Legacy', plainLegacyKeys, false);
   }
 }
+
+// Rename to displayGeneratedHdKeys and modify to accept key data directly
+export function displayGeneratedHdKeys(
+  keysData: Array<{
+    publicKey: string;
+    privateKey?: string;
+    seed?: string;
+    filename?: string;
+  }>,
+): void {
+  const log = console.log;
+  const formatLength = 80; // Maximum width for the display
+
+  const displaySeparator = (): void => {
+    log(chalk.yellow('-'.padEnd(formatLength, '-')));
+  };
+
+  const displayHeaderSeparator = (): void => {
+    log(chalk.green('-'.padEnd(formatLength, '-')));
+  };
+
+  displayHeaderSeparator();
+  log(chalk.yellow(`Generated HD Keys:`));
+  displayHeaderSeparator();
+
+  if (keysData.length > 0) {
+    keysData.forEach((keyData, index) => {
+      log(`Key ${index + 1}`);
+      log(`Filename: ${keyData.filename}`);
+      if (keyData.seed !== undefined) {
+        log(`HD Seed: ${keyData.seed}`);
+      }
+      log(`Public Key: ${keyData.publicKey}`);
+      if (keyData.privateKey !== undefined) {
+        log(`Private Key: ${keyData.privateKey}`);
+      }
+      displaySeparator();
+    });
+  } else {
+    log('No keys generated.');
+    displaySeparator();
+  }
+}

@@ -35,3 +35,25 @@ export async function keyAskForKeyType(): Promise<string> {
 
   return keyTypeChoice.toLowerCase();
 }
+
+export async function genFromHdChoicePrompt(): Promise<string> {
+  return await select({
+    message: 'Select an action',
+    choices: [
+      {
+        value: 'genPublicKeyFromHDKey',
+        name: 'Generate Public key from HD key',
+      },
+      {
+        value: 'genPublicPrivateKeysFromHDKey',
+        name: 'Generate Public and Private key from HD key',
+      },
+    ],
+  });
+}
+
+export async function keySeed(): Promise<string> {
+  return await input({
+    message: `Enter your seed`,
+  });
+}

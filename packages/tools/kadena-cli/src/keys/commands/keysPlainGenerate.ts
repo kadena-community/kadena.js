@@ -44,7 +44,7 @@ async function generateLegacyKeyPairs(amount: number): Promise<IKeyPair[]> {
     const [encryptedSecret, publicKey] = await kadenaGenKeypair(
       password,
       rootKey,
-      parseInt(amount as unknown as string, 10),
+      i,
     );
     keyPairs.push({
       publicKey: toHexStr(encryptedSecret),

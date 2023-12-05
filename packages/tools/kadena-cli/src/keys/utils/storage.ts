@@ -93,7 +93,7 @@ export function getStoredPlainKeyByAlias(
  * @returns {string[]} Array of public keys.
  */
 export function getAllPublicKeysFromAliasFiles(): string[] {
-  ensureDirectoryExists(KEY_DIR); // Ensure this function is defined elsewhere in your code
+  ensureDirectoryExists(KEY_DIR);
   const publicKeys: string[] = [];
   const files = readdirSync(KEY_DIR);
 
@@ -119,19 +119,19 @@ export function getAllPublicKeysFromAliasFiles(): string[] {
  *
  * @param {string} words - The mnemonic phrase.
  * @param {string} seed - The seed.
- * @param {string} fileName - The name of the file to store the mnemonic or seed in.
+ * @param {string} alias - The name of the file to store the mnemonic or seed in.
  * @param {boolean} hasPassword - Whether a password was used to generate the seed.
  */
-export function storeHdKey(
+export function storeHdKeyByAlias(
   seed: string,
-  fileName: string,
+  alias: string,
   legacy: boolean = false,
 ): void {
   ensureDirectoryExists(KEY_DIR);
 
-  const sanitizedFilename = sanitizeFilename(fileName).toLowerCase();
-  const fileExtension = legacy === true ? HDKEY_ENC_LEGACY_EXT : HDKEY_ENC_EXT;
-  const storagePath = join(KEY_DIR, `${sanitizedFilename}${fileExtension}`);
+  const sanitizedAlias = sanitizeFilename(alias).toLowerCase();
+  const aliasExtension = legacy === true ? HDKEY_ENC_LEGACY_EXT : HDKEY_ENC_EXT;
+  const storagePath = join(KEY_DIR, `${sanitizedAlias}${aliasExtension}`);
 
   writeFile(
     storagePath,
@@ -144,11 +144,11 @@ export function storeHdKey(
 /**
  * Retrieves the stored mnemonic phrase from the filesystem.
  *
- * @param {string} fileName - The name of the file where the mnemonic is stored.
+ * @param {string} alias - The name of the file where the mnemonic is stored.
  * @returns {string | undefined} The stored mnemonic phrase, or undefined if not found.
  */
-export function getStoredHdKey(fileName: string): string | undefined {
-  const storagePath = join(KEY_DIR, fileName);
+export function getStoredHdKey(alias: string): string | undefined {
+  const storagePath = join(KEY_DIR, alias);
 
   if (existsSync(storagePath)) {
     return yaml.load(readFileSync(storagePath, 'utf8')) as string;
