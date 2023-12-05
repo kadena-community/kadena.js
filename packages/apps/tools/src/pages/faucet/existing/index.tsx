@@ -66,7 +66,7 @@ interface IFundExistingAccountResponse
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { selectedNetwork } = useWalletConnectClient();
+  const { selectedNetwork, networksData } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
@@ -85,6 +85,8 @@ const ExistingAccountFaucetPage: FC = () => {
         const result = (await fundExistingAccount(
           data.name,
           chainID,
+          selectedNetwork,
+          networksData,
           AMOUNT_OF_COINS_FUNDED,
         )) as IFundExistingAccountResponse;
 
@@ -119,7 +121,7 @@ const ExistingAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID, t],
+    [chainID, networksData, selectedNetwork, t],
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
