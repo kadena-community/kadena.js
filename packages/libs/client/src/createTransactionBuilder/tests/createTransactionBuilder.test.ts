@@ -36,11 +36,21 @@ describe('createTransactionBuilder', () => {
       .continuation({
         pactId: '1',
         proof: 'proof',
+        rollback: false,
+        step: 1,
       })
       .getCommand();
 
     expect(command).toStrictEqual({
-      payload: { cont: { pactId: '1', proof: 'proof', data: {} } },
+      payload: {
+        cont: {
+          pactId: '1',
+          proof: 'proof',
+          data: {},
+          rollback: false,
+          step: 1,
+        },
+      },
       signers: [],
       nonce: 'kjs:nonce:1690416000000',
     });
@@ -190,7 +200,7 @@ describe('createTransactionBuilder', () => {
   it('returns cont command with data', () => {
     const builder = createTransactionBuilder();
     const command = builder
-      .continuation({ pactId: '1' })
+      .continuation({ pactId: '1', rollback: false, step: 1 })
       .addData('test', 'value')
       .getCommand();
 
@@ -200,6 +210,9 @@ describe('createTransactionBuilder', () => {
         cont: {
           pactId: '1',
           data: { test: 'value' },
+          rollback: false,
+          proof: null,
+          step: 1,
         },
       },
       signers: [],

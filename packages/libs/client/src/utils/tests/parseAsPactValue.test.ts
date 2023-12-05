@@ -32,7 +32,7 @@ describe('parseType', () => {
   it('throws exception if value is a number', () => {
     expect(() => parseAsPactValue(10)).toThrowError(
       new Error(
-        'Type `number` is not allowed in the command. Use `{ decimal: 10 }` or `{ int: 10 }` instead',
+        'Type `number` is not allowed in the command. Use `{ decimal: "10.0" }` or `{ int: "10" }` instead',
       ),
     );
   });

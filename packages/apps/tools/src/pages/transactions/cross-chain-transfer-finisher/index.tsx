@@ -153,7 +153,7 @@ const CrossChainTransferFinisher: FC = () => {
 
     const status = await client.listen(requestObject);
 
-    const pactId = status.continuation?.pactId;
+    const pactId = status.continuation!.pactId;
 
     const requestKeyOrError = await finishXChainTransfer(
       {
