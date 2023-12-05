@@ -1,5 +1,6 @@
 'use client';
 import { useAccount } from '@/hooks/account';
+import { createToken } from '@/services/marmalade';
 import { main } from '@/services/test';
 import type { FC } from 'react';
 
@@ -15,7 +16,14 @@ export const AccountInfo: FC = () => {
 
           <div>
             test:{' '}
-            <button onClick={() => main(account.caccount)}>get info</button>
+            <button onClick={() => main(account.caccount)}>get balance</button>
+          </div>
+
+          <div>
+            test:{' '}
+            <button onClick={() => createToken(account.caccount)}>
+              create token
+            </button>
           </div>
         </>
       ) : (

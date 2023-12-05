@@ -1,4 +1,9 @@
-import type { ICommandResult } from '@kadena/client';
+import { env } from '@/utils/env';
+import type {
+  ChainId,
+  ICommandResult,
+  IPollRequestPromise,
+} from '@kadena/client';
 import { Pact, createClient, signWithChainweaver } from '@kadena/client';
 import { getApiHost, getChainId, getNetworkId } from './config';
 
@@ -17,7 +22,39 @@ function parseResponse<T>(response: ICommandResult, subject: string): T {
 }
 
 const guardPublicKey =
-  'db601702162a84e6561d4cd6011c420b63c65214151cf4c40aeaf526abc3a5f9';
+  'WEBAUTHN-a5010203262001215820c80da60bf93eb53694ce43d39b8fe25ca3a7dc054507ec88a14966117f66a543225820ee351bf3b5a9e0efe9cbd3bc6708ccbe9bdd3205d4969820646f7d0e8d4951d4';
+
+export const pollStatus = async (
+  requestKeys: string[] | string,
+): Promise<IPollRequestPromise<ICommandResult>> => {
+  // You can await this promise, but you can also await the result of each individual request
+  if (!Array.isArray(requestKeys)) {
+    return client.pollStatus(
+      {
+        requestKey: requestKeys,
+        networkId: env.NETWORKID,
+        chainId: env.CHAINID as ChainId,
+      },
+      {
+        onPoll: (requestKey) => {
+          console.log('polling status of', requestKey);
+        },
+      },
+    );
+  }
+
+  const transactionDescriptors = requestKeys.map((req) => ({
+    requestKey: req,
+    networkId: env.NETWORKID,
+    chainId: env.CHAINID as ChainId,
+  }));
+
+  return client.pollStatus(transactionDescriptors, {
+    onPoll: (requestKey) => {
+      console.log('polling status of', requestKey);
+    },
+  });
+};
 
 export const createTokenId = async (metadata: any): Promise<string> => {
   const transaction = Pact.builder
@@ -33,8 +70,6 @@ export const createTokenId = async (metadata: any): Promise<string> => {
       chainId: getChainId(),
     })
     .createTransaction();
-
-  console.log(222, transaction);
 
   const response = await client.local(transaction, {
     preflight: false,
@@ -62,15 +97,27 @@ export const createToken = async (metadata: any) => {
     .setMeta({
       chainId: getChainId(),
     })
-    .addSigner(guardPublicKey, (withCap) => [
-      withCap('coin.GAS'),
-      withCap('marmalade-v2.ledger.CREATE-TOKEN', tokenId, {
-        pred: 'keys-all',
-        keys: [guardPublicKey],
-      }),
-    ])
+    .addSigner(
+      {
+        pubKey: guardPublicKey,
+        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
+        scheme: 'WebAuthn',
+      },
+      (withCap) => [
+        withCap('coin.GAS'),
+        withCap('marmalade-v2.ledger.CREATE-TOKEN', tokenId, {
+          pred: 'keys-all',
+          keys: [guardPublicKey],
+        }),
+      ],
+    )
     .createTransaction();
 
+  console.log({ transaction });
   const signed = await signWithChainweaver(transaction);
   console.log(signed);
+
+  const pollResult = await pollStatus(transaction.hash);
+
+  console.log({ pollResult });
 };

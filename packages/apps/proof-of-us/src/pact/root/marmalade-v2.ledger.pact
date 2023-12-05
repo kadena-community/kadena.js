@@ -1,3 +1,4 @@
+(namespace (read-msg 'ns ))
 (module ledger GOVERNANCE
 
     @model

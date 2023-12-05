@@ -522,6 +522,9 @@ importers:
       '@kadena-dev/shared-config':
         specifier: workspace:*
         version: link:../../tools/shared-config
+      '@kadena/cryptography-utils':
+        specifier: workspace:^
+        version: link:../../libs/cryptography-utils
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
@@ -567,6 +570,9 @@ importers:
       eslint-plugin-import:
         specifier: ~2.27.5
         version: 2.27.5(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@3.5.5)(eslint@8.45.0)
+      fp:
+        specifier: link:@kadena/client/fp
+        version: link:@kadena/client/fp
       happy-dom:
         specifier: ^12.9.1
         version: 12.9.1
@@ -576,6 +582,9 @@ importers:
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
+      tsx:
+        specifier: ^3.12.10
+        version: 3.12.10
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -4770,7 +4779,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4(supports-color@8.1.1)
       espree: 9.6.1
       globals: 13.21.0
       ignore: 5.2.4
@@ -5683,7 +5692,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 2.0.1
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4(supports-color@8.1.1)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -16734,7 +16743,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4(supports-color@8.1.1)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
