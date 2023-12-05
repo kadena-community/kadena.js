@@ -2,23 +2,20 @@ import chalk from 'chalk';
 import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
+import { clearCLI } from '../../utils/helpers.js';
 import {
   getHDKeys,
   getHDLegacyKeys,
   getPlainKeys,
   getPlainLegacyKeys,
 } from './keysHelpers.js';
+import type { IHDKeyContent, IKeyPair } from './storage.js';
 
-import { KEY_DIR } from '../../constants/config.js';
-
-interface IHDKeyContent {
-  seed: string;
-}
-
-interface IPlainKeyContent {
-  publicKey: string;
-  privateKey: string;
-}
+import {
+  KEY_DIR,
+  PLAINKEY_EXT,
+  PLAINKEY_LEGACY_EXT,
+} from '../../constants/config.js';
 
 export function displayKeysConfig(): void {
   const log = console.log;
@@ -50,10 +47,11 @@ export function displayKeysConfig(): void {
             const parsedContents = yaml.load(fileContents) as IHDKeyContent;
             log(`HD Seed: ${parsedContents}`);
           } else {
-            const parsedContents = yaml.load(fileContents) as IPlainKeyContent;
+            const parsedContents = yaml.load(fileContents) as IKeyPair;
             log(`Public Key: ${parsedContents.publicKey}`);
-            // Uncomment the next line if you want to display the private key
-            // log(`Private Key: ${parsedContents.privateKey}`);
+            if (parsedContents.privateKey !== undefined) {
+              log(`Private Key: ${parsedContents.privateKey}`);
+            }
           }
         } catch (error) {
           log(`Error reading key file ${filePath}:`, error);
@@ -91,7 +89,6 @@ export function displayKeysConfig(): void {
   }
 }
 
-// Rename to displayGeneratedHdKeys and modify to accept key data directly
 export function displayGeneratedHdKeys(
   keysData: Array<{
     publicKey: string;
@@ -132,4 +129,32 @@ export function displayGeneratedHdKeys(
     log('No keys generated.');
     displaySeparator();
   }
+}
+
+export function printStoredPlainKeys(
+  alias: string,
+  plainKeyPairs: IKeyPair[],
+  isLegacy: boolean,
+): void {
+  console.log(
+    chalk.green(
+      'The Plain Key Pair is stored within your keys folder under the filename(s):',
+    ),
+  );
+
+  const ext = isLegacy ? PLAINKEY_LEGACY_EXT : PLAINKEY_EXT;
+
+  for (let index = 0; index < plainKeyPairs.length; index++) {
+    const keyName = index === 0 ? `${alias}${ext}` : `${alias}-${index}${ext}`;
+    console.log(chalk.green(`- ${keyName}`));
+  }
+}
+
+export function displayGeneratedPlainKeys(plainKeyPairs: IKeyPair[]): void {
+  clearCLI(true);
+  console.log(
+    chalk.green(
+      `Generated Plain Key Pair(s): ${JSON.stringify(plainKeyPairs, null, 2)}`,
+    ),
+  );
 }

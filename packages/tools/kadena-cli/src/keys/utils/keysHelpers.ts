@@ -6,7 +6,7 @@ import {
   PLAINKEY_LEGACY_EXT,
 } from '../../constants/config.js';
 
-import { existsSync, mkdirSync, readdirSync } from 'fs';
+import { getFilesWithExtension } from './storage.js';
 
 /**
  * Fetches all plain key files from the specified directory.
@@ -41,27 +41,13 @@ export function getHDLegacyKeys(): string[] {
 }
 
 /**
- * Fetches all files with a specific extension from a given directory.
- * @param {string} dir - The directory path from which files are to be read.
- * @param {string} extension - The file extension to filter by.
- * @returns {string[]} Array of filenames with the specified extension, without the extension itself.
+ * Fetches all HD key filenames (both standard and legacy) from the specified directory.
+ * @returns {string[]} Array of HD key filenames without their extensions.
  */
-export function getFilesWithExtension(
-  dir: string,
-  extension: string,
-): string[] {
-  if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
-  }
-
-  try {
-    return readdirSync(dir).filter((filename) =>
-      filename.toLowerCase().endsWith(extension),
-    );
-  } catch (error) {
-    console.error(`Error reading directory for extension ${extension}:`, error);
-    return [];
-  }
+export function getAllHDKeys(): string[] {
+  const hdKeys = getHDKeys();
+  const hdLegacyKeys = getHDLegacyKeys();
+  return [...hdKeys, ...hdLegacyKeys];
 }
 
 export const toHexStr = (bytes: Uint8Array): string =>

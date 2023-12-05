@@ -1,20 +1,16 @@
 import { kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
-import chalk from 'chalk';
 import type { Command } from 'commander';
 import { randomBytes } from 'crypto';
 import debug from 'debug';
-import { PLAINKEY_EXT, PLAINKEY_LEGACY_EXT } from '../../constants/config.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { clearCLI } from '../../utils/helpers.js';
+import {
+  displayGeneratedPlainKeys,
+  printStoredPlainKeys,
+} from '../utils/keysDisplay.js';
 import { toHexStr } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
-
-interface IKeyPair {
-  publicKey: string;
-  secretKey: string;
-}
 
 interface IGeneratePlainKeysCommandConfig {
   keyAlias?: string;
@@ -27,16 +23,25 @@ const defaultAmount: number = 1;
 async function generateKeyPairs(
   config: IGeneratePlainKeysCommandConfig,
   amount: number,
-): Promise<IKeyPair[]> {
+): Promise<storageService.IKeyPair[]> {
   if (config.legacy === true) {
     return generateLegacyKeyPairs(amount);
   } else {
-    return kadenaKeyPairsFromRandom(amount);
+    const randomKeyPairs = await kadenaKeyPairsFromRandom(amount);
+    return randomKeyPairs.map(
+      (keyPair) =>
+        ({
+          publicKey: keyPair.publicKey,
+          privateKey: keyPair.secretKey,
+        }) as storageService.IKeyPair,
+    );
   }
 }
 
-async function generateLegacyKeyPairs(amount: number): Promise<IKeyPair[]> {
-  const keyPairs = [];
+async function generateLegacyKeyPairs(
+  amount: number,
+): Promise<storageService.IKeyPair[]> {
+  const keyPairs: storageService.IKeyPair[] = [];
   const password = '';
   const rootKey = randomBytes(128);
 
@@ -48,48 +53,11 @@ async function generateLegacyKeyPairs(amount: number): Promise<IKeyPair[]> {
     );
     keyPairs.push({
       publicKey: toHexStr(encryptedSecret),
-      secretKey: toHexStr(publicKey),
+      privateKey: toHexStr(publicKey),
     });
   }
 
   return keyPairs;
-}
-
-function displayGeneratedKeys(
-  plainKeyPairs: IKeyPair[],
-  config: IGeneratePlainKeysCommandConfig,
-): void {
-  clearCLI(true);
-  console.log(
-    chalk.green(
-      `Generated Plain Key Pair(s): ${JSON.stringify(plainKeyPairs, null, 2)}`,
-    ),
-  );
-
-  if (config.keyAlias !== undefined && config.keyAlias !== '') {
-    storageService.savePlainKeyByAlias(
-      config.keyAlias,
-      plainKeyPairs[0].publicKey,
-      plainKeyPairs[0].secretKey,
-      plainKeyPairs.length,
-      config.legacy,
-    );
-    console.log(
-      chalk.green(
-        'The Plain Key Pair is stored within your keys folder under the filename(s):',
-      ),
-    );
-
-    const ext: string =
-      config.legacy === true ? PLAINKEY_LEGACY_EXT : PLAINKEY_EXT;
-    plainKeyPairs.forEach((pair, index) => {
-      const keyName =
-        index === 0
-          ? `${config.keyAlias}${ext}`
-          : `${config.keyAlias}-${index}${ext}`;
-      console.log(chalk.green(`- ${keyName}`));
-    });
-  }
 }
 
 export const createGeneratePlainKeysCommand: (
@@ -100,7 +68,7 @@ export const createGeneratePlainKeysCommand: (
   'generate (plain) public-private key-pair',
   [
     globalOptions.keyAlias(),
-    globalOptions.keyAmount(),
+    globalOptions.keyAmount({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
@@ -109,7 +77,15 @@ export const createGeneratePlainKeysCommand: (
       config.keyAmount !== undefined && config.keyAmount !== ''
         ? config.keyAmount
         : defaultAmount;
-    const plainKeyPairs = await generateKeyPairs(config, amount);
-    displayGeneratedKeys(plainKeyPairs, config);
+    const keys = await generateKeyPairs(config, amount);
+
+    displayGeneratedPlainKeys(keys);
+
+    await storageService.savePlainKeyByAlias(
+      config.keyAlias,
+      keys,
+      config.legacy,
+    );
+    printStoredPlainKeys(config.keyAlias, keys, config.legacy);
   },
 );

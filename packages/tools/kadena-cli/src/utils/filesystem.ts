@@ -1,5 +1,12 @@
 import type { PathLike, WriteFileOptions } from 'fs';
-import { accessSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'fs';
+import {
+  accessSync,
+  existsSync,
+  promises as fsPromises,
+  mkdirSync,
+  rmSync,
+  writeFileSync,
+} from 'fs';
 import path from 'path';
 
 /**
@@ -43,6 +50,20 @@ export function writeFile(
     mkdirSync(dirname, { recursive: true });
   }
   writeFileSync(filePath, data, options);
+}
+
+export async function writeFileAsync(
+  filePath: string,
+  data: string | NodeJS.ArrayBufferView,
+  options: WriteFileOptions | undefined,
+): Promise<void> {
+  const dirname = path.dirname(filePath);
+  try {
+    await fsPromises.access(dirname);
+  } catch {
+    await fsPromises.mkdir(dirname, { recursive: true });
+  }
+  await fsPromises.writeFile(filePath, data, options);
 }
 
 /**

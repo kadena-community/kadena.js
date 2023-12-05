@@ -1,5 +1,8 @@
 import { input, select } from '@inquirer/prompts';
+import { program } from 'commander';
+import { getAllHDKeys } from '../keys/utils/keysHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import type { IPrompt } from '../utils/createOption.js';
 import { capitalizeFirstLetter, isAlphabetic } from '../utils/helpers.js';
 
 export async function keyAlias(): Promise<string> {
@@ -52,8 +55,42 @@ export async function genFromHdChoicePrompt(): Promise<string> {
   });
 }
 
-export async function keySeed(): Promise<string> {
-  return await input({
-    message: `Enter your seed`,
+export const keySeed: IPrompt = async (prev, args, isOptional) => {
+  const existingKeys: string[] = getAllHDKeys();
+
+  const choices = existingKeys.map((key) => ({
+    value: key,
+    name: `alias: ${key}`,
+  }));
+
+  if (isOptional === true) {
+    choices.unshift({
+      value: 'skip',
+      name: 'Seed selection is optional. Continue to next step',
+    });
+  }
+
+  // Option to enter own key
+  choices.push({ value: 'enterOwnSeed', name: 'Enter my own seed' });
+
+  // Option to create a new key
+  choices.push({ value: 'createSeed', name: 'Generate a new HD key' });
+
+  const selectedSeed = await select({
+    message: 'Select or enter a seed',
+    choices: choices,
   });
-}
+
+  if (selectedSeed === 'createSeed') {
+    await program.parseAsync(['', '', 'keys', 'generate', 'hd']);
+    return keySeed(prev, args, isOptional);
+  }
+
+  if (selectedSeed === 'enterOwnSeed') {
+    return await input({
+      message: `Enter your seed`,
+    });
+  }
+
+  return selectedSeed;
+};

@@ -19,7 +19,7 @@ import { toHexStr } from '../utils/keysHelpers.js';
 
 interface IConfig {
   keyPassword: string;
-  keyFilename: string;
+  keyAlias: string;
   legacy?: boolean;
 }
 
@@ -44,14 +44,19 @@ async function generateKey(
   return { words, seed };
 }
 
-function displayGeneratedKey(words: string, config: IConfig): void {
+function displayGeneratedHdKey(words: string, config: IConfig): void {
   const extension: string =
     config.legacy === true ? HDKEY_ENC_LEGACY_EXT : HDKEY_ENC_EXT;
 
   console.log(chalk.green(`Generated HD Key: ${words}`));
   console.log(
-    chalk.red(
-      `The HD Key is stored within your keys folder under the filename: ${config.keyFilename}${extension}!`,
+    chalk.yellow(
+      `Please store the key phrase in a safe place. You will need it to recover your keys.`,
+    ),
+  );
+  console.log(
+    chalk.green(
+      `The HD Key (seed) is stored within your keys folder under the alias: ${config.keyAlias}${extension}!`,
     ),
   );
 }
@@ -61,19 +66,19 @@ export const createGenerateHdKeysCommand: (
   version: string,
 ) => void = createCommand(
   'hd',
-  'generate an HD-key or public-private key-pair',
+  'generate an HD-key (encrypted seed)',
   [
+    globalOptions.keyAlias(),
     globalOptions.keyPassword(),
-    globalOptions.keyFilename(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
-  async (config: IConfig) => {
+  async (config) => {
     debug('generate-hd-keys:action')({ config });
 
     const { words, seed } = await generateKey(config);
 
-    storageService.storeHdKeyByAlias(seed, config.keyFilename, config.legacy);
+    storageService.storeHdKeyByAlias(seed, config.keyAlias, config.legacy);
     clearCLI(true);
-    displayGeneratedKey(words, config);
+    displayGeneratedHdKey(words, config);
   },
 );

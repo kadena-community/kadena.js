@@ -1,6 +1,6 @@
 import type { WriteFileOptions } from 'fs';
 import yaml from 'js-yaml';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   HDKEY_ENC_EXT,
@@ -9,57 +9,41 @@ import {
   PLAINKEY_EXT,
   PLAINKEY_LEGACY_EXT,
 } from '../../constants/config.js';
-import { ensureDirectoryExists, writeFile } from '../../utils/filesystem.js';
+import {
+  ensureDirectoryExists,
+  writeFile,
+  writeFileAsync,
+} from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 
-interface IKeyPair {
+export interface IHDKeyContent {
+  seed: string;
+}
+export interface IKeyPair {
   publicKey: string;
-  privateKey: string;
+  privateKey?: string;
 }
 
-/**
- * Saves the given key pair to multiple files based on the provided amount.
- * Only subsequent files will be postfixed with an index if the amount is greater than 1.
- *
- * @param {string} alias - The base alias for the key pair.
- * @param {string} publicKey - The public key.
- * @param {string} privateKey - The private key.
- * @param {number} [amount=1] - The number of files to write.
- */
-export function savePlainKeyByAlias(
+export async function savePlainKeyByAlias(
   alias: string,
-  publicKey: string,
-  privateKey: string,
-  amount: number = 1,
+  keyPairs: IKeyPair[],
   legacy: boolean = false,
-): void {
-  ensureDirectoryExists(KEY_DIR);
+): Promise<void> {
   const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
 
-  for (let i = 0; i < amount; i++) {
-    let fileName = sanitizedAlias;
-
-    // Append index to the filename if it's not the first file.
-    if (i > 0) {
-      fileName += `-${i}`;
-    }
-
-    const ext = legacy === true ? PLAINKEY_LEGACY_EXT : PLAINKEY_EXT;
-
+  for (let i = 0; i < keyPairs.length; i++) {
+    const keyPair = keyPairs[i];
+    let fileName = `${sanitizedAlias}${i > 0 ? `-${i}` : ''}`;
+    const ext = legacy ? PLAINKEY_LEGACY_EXT : PLAINKEY_EXT;
     fileName += ext;
-
     const filePath = join(KEY_DIR, fileName);
 
-    const data = {
-      publicKey,
-      privateKey,
-    };
+    const data: IKeyPair = { publicKey: keyPair.publicKey };
+    if (keyPair.privateKey !== undefined) {
+      data.privateKey = keyPair.privateKey;
+    }
 
-    writeFile(
-      filePath,
-      yaml.dump(data, { lineWidth: -1 }),
-      'utf8' as WriteFileOptions,
-    );
+    await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
   }
 }
 
@@ -67,20 +51,24 @@ export function savePlainKeyByAlias(
  * Retrieves a key pair based on the given alias.
  *
  * @param {string} alias - The alias corresponding to the key file to be fetched.
- * @returns {{publicKey: string; secretKey: string} | undefined} The key pair if found, otherwise undefined.
+ * @returns {{publicKey: string; privateKey: string} | undefined} The key pair if found, otherwise undefined.
  */
 export function getStoredPlainKeyByAlias(
   alias: string,
   legacy: boolean = false,
-): { publicKey: string; secretKey: string } | undefined {
+): IKeyPair | undefined {
   const ext = legacy === true ? PLAINKEY_LEGACY_EXT : PLAINKEY_EXT;
   const filePath = join(KEY_DIR, `${alias}${ext}`);
   if (existsSync(filePath)) {
     const keyPair = yaml.load(readFileSync(filePath, 'utf8')) as IKeyPair;
-    return {
+    const result: IKeyPair = {
       publicKey: keyPair.publicKey,
-      secretKey: keyPair.privateKey,
     };
+
+    if (keyPair.privateKey !== undefined) {
+      result.privateKey = keyPair.privateKey;
+    }
+    return result;
   }
   return undefined;
 }
@@ -141,17 +129,66 @@ export function storeHdKeyByAlias(
   );
 }
 
-/**
- * Retrieves the stored mnemonic phrase from the filesystem.
- *
- * @param {string} alias - The name of the file where the mnemonic is stored.
- * @returns {string | undefined} The stored mnemonic phrase, or undefined if not found.
+/* @param {string} keyAlias - The alias of the key file to read.
+ * @returns {IHDKeyContent | IKeyPair | undefined} The parsed content of the key file, or undefined if the file does not exist.
+ * @throws {Error} Throws an error if reading the file fails.
  */
-export function getStoredHdKey(alias: string): string | undefined {
-  const storagePath = join(KEY_DIR, alias);
+export function readKeyFileContent(
+  keyAlias: string,
+): IHDKeyContent | IKeyPair | undefined {
+  const filePath = join(KEY_DIR, keyAlias);
 
-  if (existsSync(storagePath)) {
-    return yaml.load(readFileSync(storagePath, 'utf8')) as string;
+  if (!existsSync(filePath)) {
+    console.error(`File ${keyAlias} does not exist.`);
+    return undefined;
   }
-  return undefined;
+
+  try {
+    const fileContents = readFileSync(filePath, 'utf8');
+    return yaml.load(fileContents) as IHDKeyContent | IKeyPair;
+  } catch (error) {
+    throw new Error(`Error reading file ${keyAlias}: ${error}`);
+  }
+}
+
+/**
+ * Asynchronously wraps the readKeyFileContent function.
+ * @param {string} keyAlias - The alias of the key file to read.
+ * @returns {Promise<IHDKeyContent | IKeyPair | undefined>} A promise that resolves with the parsed content of the key file, or undefined if the file does not exist.
+ */
+export async function readKeyFileContentAsync(
+  keyAlias: string,
+): Promise<IHDKeyContent | IKeyPair | undefined> {
+  return new Promise((resolve, reject) => {
+    try {
+      const result = readKeyFileContent(keyAlias);
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+/**
+ * Fetches all files with a specific extension from a given directory.
+ * @param {string} dir - The directory path from which files are to be read.
+ * @param {string} extension - The file extension to filter by.
+ * @returns {string[]} Array of filenames with the specified extension, without the extension itself.
+ */
+export function getFilesWithExtension(
+  dir: string,
+  extension: string,
+): string[] {
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
+
+  try {
+    return readdirSync(dir).filter((filename) =>
+      filename.toLowerCase().endsWith(extension),
+    );
+  } catch (error) {
+    console.error(`Error reading directory for extension ${extension}:`, error);
+    return [];
+  }
 }
