@@ -10,6 +10,7 @@ import RequestKeyField, {
 } from '@/components/Global/RequestKeyField';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import client from '@/constants/client';
+import type { DefinedNetwork } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { menuData } from '@/constants/side-menu-items';
@@ -141,8 +142,14 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     setProcessingTx(true);
+    window.scrollTo(0, 0);
 
     const networkId = chainNetwork[network].network;
+
+    const { pollCreateSpv, listen } = client(
+      networkId as DefinedNetwork,
+      pollResults.tx.sender.chain,
+    );
 
     const requestObject = {
       requestKey: data.requestKey,
@@ -150,13 +157,11 @@ const CrossChainTransferFinisher: FC = () => {
       chainId: pollResults.tx.sender.chain,
     };
 
-    const proof = await client.pollCreateSpv(
+    const proof = await pollCreateSpv(
       requestObject,
       pollResults.tx.receiver.chain,
     );
-
-    const status = await client.listen(requestObject);
-
+    const status = await listen(requestObject);
     const pactId = status.continuation?.pactId;
 
     const requestKeyOrError = await finishXChainTransfer(
@@ -174,15 +179,20 @@ const CrossChainTransferFinisher: FC = () => {
     if (typeof requestKeyOrError !== 'string') {
       setTxError((requestKeyOrError as { error: string }).error);
       setProcessingTx(false);
+      return;
     }
 
+    const receiveClient = client(
+      networkId as DefinedNetwork,
+      pollResults.tx.receiver.chain,
+    );
+
     try {
-      const data = await client.listen({
+      const data = await receiveClient.listen({
         requestKey: requestKeyOrError as string,
         networkId,
         chainId: pollResults.tx.receiver.chain,
       });
-      console.log(finalResults, 'results');
       if (data.result.status === 'failure') {
         const error: IErrorObject = data.result.error as IErrorObject;
         setTxError(error.message);
@@ -263,7 +273,7 @@ const CrossChainTransferFinisher: FC = () => {
     txError.toString() === '' ? (
       <FormStatusNotification
         status="successful"
-        title={t('Notification title')}
+        title={t('Notification title success')}
       >
         {t('XChain transfer has been successfully finalized!')}
       </FormStatusNotification>
@@ -463,6 +473,7 @@ const CrossChainTransferFinisher: FC = () => {
                       {/*</textarea>*/}
 
                       <Textarea
+                        readOnly
                         fontFamily="$mono"
                         id="sig-text-area"
                         value={formattedSigData}

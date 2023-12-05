@@ -22,6 +22,8 @@ export async function finishXChainTransfer(
 ): Promise<string | { error: string }> {
   debug(finishXChainTransfer.name);
 
+  const { submit } = client(networkId, targetChainId);
+
   try {
     const continuationTransaction = Pact.builder
       .continuation(continuation)
@@ -33,8 +35,7 @@ export async function finishXChainTransfer(
         gasLimit: 850,
       })
       .createTransaction();
-    return (await client.submit(continuationTransaction as ICommand))
-      .requestKey;
+    return (await submit(continuationTransaction as ICommand)).requestKey;
   } catch (e) {
     debug(e.message);
     return { error: e.message };
