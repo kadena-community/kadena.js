@@ -1,16 +1,11 @@
-import { Button } from '@components/Button';
-import type { ITagProps } from '@components/Tag';
-import { Tag } from '@components/Tag';
+import type { ITagGroupProps } from '@components/Tag';
+import { TagGroup, TagItem } from '@components/Tag';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
-const meta: Meta<
-  {
-    hasClose: boolean;
-    text: string;
-  } & ITagProps
-> = {
-  title: 'Components/Tag',
+const meta: Meta<ITagGroupProps> = {
+  title: 'Components/TagGroup',
+  component: TagGroup,
   parameters: {
     status: {
       type: ['inDevelopment'],
@@ -18,45 +13,96 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'The Tag component renders a tag with a text. This tag can be dismissed by the user by clicking the X icon when the optional `onClose` prop is provided.',
+          'The `TagGroup` component is an implementation of [useTabGroup from react-aria](https://react-spectrum.adobe.com/react-aria/useTagGroup.html). Currently we have enabled options to close or disable tags, but we have disabled features like selection since there has not yet been a need for them.\n\nThe compound component is composed of the exposed `TagGroup` and `TagItem` components, check the examples below to see how to use them.\n\n*Note: In most cases, you should use the `TagGroup` and `TagItem` component composition to ensure that the tags are accessible, however if you need only the tag component styles, you can use the `Tag` component to compose your own custom component.*',
       },
     },
   },
-  component: Tag,
   argTypes: {
-    text: {
+    label: {
+      description: 'Label for the group. Accepts a string or a ReactNode.',
       control: {
         type: 'text',
       },
     },
-    hasClose: {
+    onRemove: {
+      description: 'Callback when a tag is removed',
       control: {
-        type: 'boolean',
+        type: null,
+      },
+    },
+    disabledKeys: {
+      description: 'Keys of tags that are disabled',
+      control: {
+        type: null,
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    text: string;
-    hasClose: boolean;
-  } & ITagProps
->;
+type Story = StoryObj<ITagGroupProps>;
 
-export const Primary: Story = {
-  name: 'Tag',
+// eslint-disable-next-line
+const tags = [
+  { id: '1', name: 'News' },
+  { id: '2', name: 'Travel' },
+  { id: '3', name: 'Gaming' },
+  { id: '4', name: 'Shopping' },
+];
+
+export const Group: Story = {
+  name: 'Group of tags',
   args: {
-    text: 'Chain:1',
-    hasClose: true,
+    label: undefined,
   },
-  render: ({ text, hasClose }) => {
-    const [closed, setClosed] = useState(false);
-
-    if (closed) return <Button onClick={() => setClosed(false)}>Reset</Button>;
+  render: ({ label }) => {
     return (
-      <Tag onClose={hasClose ? () => setClosed(true) : undefined}>{text}</Tag>
+      <TagGroup label={label}>
+        {tags.map((item) => (
+          <TagItem key={item.id}>{item.name}</TagItem>
+        ))}
+      </TagGroup>
+    );
+  },
+};
+
+export const Removable: Story = {
+  name: 'Removable Tags',
+  render: () => {
+    const [list, setList] = useState(tags);
+
+    return (
+      <TagGroup
+        label="Filter Categories"
+        onRemove={(keys) => {
+          setList(list.filter((item) => !keys.has(item.id)));
+        }}
+      >
+        {list.map((item) => (
+          <TagItem key={item.id}>{item.name}</TagItem>
+        ))}
+      </TagGroup>
+    );
+  },
+};
+
+export const Disabled: Story = {
+  name: 'Disabled Tag',
+  render: () => {
+    const [list, setList] = useState(tags);
+
+    return (
+      <TagGroup
+        label="Filter Categories"
+        onRemove={(keys) => {
+          setList(list.filter((item) => !keys.has(item.id)));
+        }}
+        disabledKeys={['2']}
+      >
+        {list.map((item) => (
+          <TagItem key={item.id}>{item.name}</TagItem>
+        ))}
+      </TagGroup>
     );
   },
 };

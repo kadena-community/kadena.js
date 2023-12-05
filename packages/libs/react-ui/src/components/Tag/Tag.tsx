@@ -1,22 +1,15 @@
-import { SystemIcon } from '@components/Icon';
-import type { FC } from 'react';
+import type { DOMAttributes, FC } from 'react';
 import React from 'react';
-import { closeButtonClass, tagClass, tagLabelClass } from './Tag.css';
+import { tagClass } from './Tag.css';
 
-export interface ITagProps {
+export interface ITagProps extends DOMAttributes<HTMLSpanElement> {
   children: React.ReactNode;
-  onClose?: () => void;
 }
 
-export const Tag: FC<ITagProps> = ({ children, onClose }) => {
+export const Tag: FC<ITagProps> = ({ children, ...restProps }) => {
   return (
-    <span data-testid="kda-tag" className={tagClass}>
-      <span className={tagLabelClass}>{children}</span>
-      {onClose ? (
-        <button className={closeButtonClass} onClick={onClose}>
-          <SystemIcon.Close size="sm" />
-        </button>
-      ) : null}
+    <span className={tagClass} {...restProps}>
+      {children}
     </span>
   );
 };
