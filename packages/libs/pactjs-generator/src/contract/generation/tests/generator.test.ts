@@ -269,4 +269,27 @@ describe('generateDts', () => {
     const dts = generateDts('user.test-module', modules);
     expect(dts).toMatchSnapshot();
   });
+
+  it('uses object as type when the capability accepts guard', async () => {
+    const module = `(namespace "user")
+    (module test-module governance
+      @doc "this is module doc"
+      (defcap test-cap (capabilityName:string guard:guard)
+        @doc "this is defcap doc"
+        true)
+      (defpact test-func:bool (parameter-one:string guard:guard )
+        @doc "this is defpact doc"
+        (with-capability (test-cap "capabilityName" guard))
+      )
+    )
+  `;
+
+    const modules = await pactParser({
+      files: [module],
+      getContract: () => Promise.resolve(''),
+    });
+
+    const dts = generateDts('user.test-module', modules);
+    expect(dts).toMatchSnapshot();
+  });
 });

@@ -20,9 +20,9 @@ async function transfer(
 ): Promise<void> {
   const transaction = Pact.builder
     .execution(Pact.modules.coin.transfer(sender, receiver, amount))
-    .addSigner(keyFromAccount(sender), (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability('coin.TRANSFER', sender, receiver, amount),
+    .addSigner(keyFromAccount(sender), (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', sender, receiver, amount),
     ])
     .setMeta({ chainId: '0', senderAccount: sender })
     .setNetworkId(NETWORK_ID)
