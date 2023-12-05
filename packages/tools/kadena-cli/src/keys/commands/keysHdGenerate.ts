@@ -72,7 +72,7 @@ export const createGenerateHdKeysCommand: (
 
     const { words, seed } = await generateKey(config);
 
-    storageService.storeHdKey(seed, config.keyFilename, config.legacy);
+    storageService.storeHdKeyByAlias(seed, config.keyFilename, config.legacy);
     clearCLI(true);
     displayGeneratedKey(words, config);
   },
