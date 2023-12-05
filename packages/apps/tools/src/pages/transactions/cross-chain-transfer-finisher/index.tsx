@@ -162,7 +162,7 @@ const CrossChainTransferFinisher: FC = () => {
       pollResults.tx.receiver.chain,
     );
     const status = await listen(requestObject);
-    const pactId = status.continuation?.pactId;
+    const pactId = status.continuation?.pactId ?? '';
 
     const requestKeyOrError = await finishXChainTransfer(
       {
