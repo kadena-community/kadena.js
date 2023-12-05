@@ -1,55 +1,64 @@
-export function getTransfers(amount = 1) {
+export function getTransfersQuery(accountName: string) {
   return {
-    query: `query getTransactions($moduleName: String, $accountName: String, $chainId: String, $blockHash: String, $after: String, $before: String, $first: Int, $last: Int) {
-      transactions(
-        moduleName: $moduleName
-        accountName: $accountName
-        chainId: $chainId
-        blockHash: $blockHash
-        after: $after
-        before: $before
-        first: $first
-        last: $last
-      ) {
-        totalCount
-        pageInfo {
-          startCursor
-          endCursor
-          hasPreviousPage
-          hasNextPage
-          __typename
-        }
+    query: `query getTransfers($accountName: String!) {
+      transfers(accountName: $accountName) {
         edges {
           cursor
           node {
-            ...CoreTransactionFields
-            block {
-              hash
-              __typename
+            amount
+            blockHash
+            chainId
+            height
+            id
+            moduleHash
+            moduleName
+            orderIndex
+            receiverAccount
+            requestKey
+            senderAccount
+            transaction {
+              signers {
+                address
+                capabilities
+                id
+                orderIndex
+                publicKey
+                requestKey
+                scheme
+                signature
+              }
+              badResult
+              code
+              chainId
+              continuation
+              data
+              creationTime
+              eventCount
+              gas
+              gasPrice
+              gasLimit
+              height
+              goodResult
+              logs
+              id
+              metadata
+              nonce
+              pactId
+              proof
+              requestKey
+              rollback
+              senderAccount
+              step
+              transactionId
+              ttl
             }
-            signers {
-              publicKey
-              signature
-              __typename
-            }
-            __typename
           }
-          __typename
         }
-        __typename
+        totalCount
       }
-    }
-
-    fragment CoreTransactionFields on Transaction {
-      chainId
-      code
-      creationTime
-      height
-      requestKey
-      __typename
     }`,
-    variables: { first: amount },
-    operationName: 'getTransactions',
+    variables: { accountName: accountName },
+    operationName: 'getTransfers',
     extensions: {},
   };
 }

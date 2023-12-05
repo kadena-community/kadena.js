@@ -1,4 +1,4 @@
-export function getAccountQuery(account: string) {
+export function getAccountQuery(accountName: string) {
   return {
     query: `query getAccount($moduleName: String!, $accountName: String!) {
       account(moduleName: $moduleName, accountName: $accountName) {
@@ -81,7 +81,7 @@ export function getAccountQuery(account: string) {
       receiverAccount
       __typename
     }`,
-    variables: { moduleName: 'coin', accountName: account },
+    variables: { moduleName: 'coin', accountName: accountName },
     operationName: 'getAccount',
     extensions: {},
   };

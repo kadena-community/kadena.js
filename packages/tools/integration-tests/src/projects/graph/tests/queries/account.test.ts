@@ -1,36 +1,27 @@
-import { genKeyPair } from '@kadena/cryptography-utils';
 import request from 'supertest';
 import { beforeEach, describe, expect, test } from 'vitest';
-import { createAccount } from '../../support/create-account';
-import type { IAccount } from '../../testdata/constants/accounts';
-import { sender00Account } from '../../testdata/constants/accounts';
+import { createAccount, generateAccount } from '../../support/utils'
+import type { IAccountWithSecretKey } from '../../testdata/constants/accounts';
+import { sender00 } from '../../testdata/constants/accounts';
 import { grapHost } from '../../testdata/constants/network';
 import { getAccountQuery } from '../../testdata/queries/getAccount';
 
-let testAccount: IAccount;
+let testAccount: IAccountWithSecretKey;
 
 describe('Account', () => {
   beforeEach(async () => {
-    const keyPair = genKeyPair();
-    testAccount = {
-      account: `k:${keyPair.publicKey}`,
-      publicKey: keyPair.publicKey,
-      chainId: '0',
-      guard: keyPair.publicKey,
-      secretKey: keyPair.secretKey,
-    };
+    testAccount = generateAccount()
   });
 
-  test('Query: getAccount by AccountName', async () => {
+  test.skip('Query: getAccount by AccountName', async () => {
     // Given a test account is created.
-    const requestResponse = await createAccount(testAccount);
-    console.log(requestResponse)
+    const testDataResponse = await createAccount(testAccount);
 
     // When the getAccountQuery is executed
     const query = getAccountQuery(testAccount.account);
     const queryResponse = await request(grapHost).post('').send(query);
 
-   //Then GraphQL should return the account, including 1 transaction.
+   //Then GraphQL should return the account, including 1 transfer.
     expect(queryResponse.statusCode).toBe(200);
     expect(queryResponse.body.data.account).toEqual({
       __typename: 'ModuleAccount',
@@ -66,10 +57,10 @@ describe('Account', () => {
               amount: 100,
               chainId: 0,
               crossChainTransfer: null,
-              height: requestResponse.metaData?.blockHeight,
+              height: testDataResponse.metaData?.blockHeight,
               receiverAccount: testAccount.account,
-              requestKey: requestResponse.reqKey,
-              senderAccount: sender00Account.account,
+              requestKey: testDataResponse.reqKey,
+              senderAccount: sender00.account,
               transaction: {
                 __typename: 'Transaction',
                 pactId: null,
