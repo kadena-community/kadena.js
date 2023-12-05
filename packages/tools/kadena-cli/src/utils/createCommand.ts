@@ -132,6 +132,11 @@ export function createCommand<
               }
             }
           }
+          if ('transform' in option) {
+            if (typeof option.transform === 'function') {
+              config[option.key] = await option.transform(newArgs[option.key]);
+            }
+          }
         }
 
         clearCLI(true);

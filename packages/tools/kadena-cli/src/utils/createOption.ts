@@ -28,6 +28,8 @@ export interface IOptionCreatorObject {
   option: Option;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expand?: (label: string) => any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transform?: (key: string) => any;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
