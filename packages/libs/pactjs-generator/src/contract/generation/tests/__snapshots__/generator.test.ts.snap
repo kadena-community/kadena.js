@@ -15,10 +15,10 @@ declare module '@kadena/client' {
   interface IPactModules {
     
     \\"user.test-module\\": {
-    
+
 
       \\"defpact\\":{
-        \\"test\\": () => string & { capability : ICommonCapabilities} 
+\\"test\\": () => string & { capability : ICommonCapabilities; returnType : any} 
       }
     }
   }
@@ -36,27 +36,21 @@ interface ICommonCapabilities {
   (name: string, ...args: any[]): ICap;
 }
 
-interface ICapability_test_func {
-  /**
-  * this is defcap doc
-  */
-  (
-    capabilityName: \\"user.test-module.test-cap\\", 
-    name: string): ICap,
-}
+interface ICapability_test_func {/**
+* this is defcap doc
+*/
+(capabilityName: \\"user.test-module.test-cap\\",name: string): ICap,}
 
 declare module '@kadena/client' {
   interface IPactModules {
     /**
-    this is module doc    
-    */
+* this is module doc
+*/
     \\"user.test-module\\": {
-      /**
-      * this is defun doc
-      */
-      \\"test-func\\": (
-        parameterone: PactReference,
-        parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities} 
+/**
+* this is defun doc
+*/
+\\"test-func\\": (parameterone: PactReference,parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities; returnType : boolean} 
 
     }
   }
@@ -74,27 +68,21 @@ interface ICommonCapabilities {
   (name: string, ...args: any[]): ICap;
 }
 
-interface ICapability_test_func {
-  /**
-  * this is defcap doc
-  */
-  (
-    capabilityName: \\"user.test-module.test-cap\\", 
-    name: string): ICap,
-}
+interface ICapability_test_func {/**
+* this is defcap doc
+*/
+(capabilityName: \\"user.test-module.test-cap\\",name: string): ICap,}
 
 declare module '@kadena/client' {
   interface IPactModules {
     /**
-    this is module doc    
-    */
+* this is module doc
+*/
     \\"user.test-module\\": {
-      /**
-      * this is defun doc
-      */
-      \\"test-func\\": (
-        parameterone: object | PactReference,
-        parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities} 
+/**
+* this is defun doc
+*/
+\\"test-func\\": (parameterone: object | PactReference,parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities; returnType : boolean} 
 
     }
   }
@@ -112,31 +100,24 @@ interface ICommonCapabilities {
   (name: string, ...args: any[]): ICap;
 }
 
-interface ICapability_defpact_test_func {
-  /**
-  * this is defcap doc
-  */
-  (
-    __capabilityName: \\"user.test-module.test-cap\\", 
-    capabilityName: string, 
-    _capabilityName: string): ICap,
-}
+interface ICapability_defpact_test_func {/**
+* this is defcap doc
+*/
+(__capabilityName: \\"user.test-module.test-cap\\",capabilityName: string,_capabilityName: string): ICap,}
 
 declare module '@kadena/client' {
   interface IPactModules {
     /**
-    this is module doc    
-    */
+* this is module doc
+*/
     \\"user.test-module\\": {
-    
+
 
       \\"defpact\\":{
-        /**
-        * this is defpact doc
-        */
-        \\"test-func\\": (
-          parameterone: any,
-          parametertwo: any) => string & { capability : ICapability_defpact_test_func & ICommonCapabilities} 
+/**
+* this is defpact doc
+*/
+\\"test-func\\": (parameterone: any,parametertwo: any) => string & { capability : ICapability_defpact_test_func & ICommonCapabilities; returnType : boolean} 
       }
     }
   }
@@ -158,9 +139,7 @@ declare module '@kadena/client' {
   interface IPactModules {
     
     \\"user.test-module\\": {
-      \\"test-func\\": (
-        parameterone: IPactDecimal | PactReference,
-        parametertwo: boolean | PactReference) => string & { capability : ICommonCapabilities} 
+\\"test-func\\": (parameterone: IPactDecimal | PactReference,parametertwo: boolean | PactReference) => string & { capability : ICommonCapabilities; returnType : boolean} 
 
     }
   }
@@ -182,7 +161,7 @@ declare module '@kadena/client' {
   interface IPactModules {
     
     \\"user.test-module\\": {
-      \\"test\\": () => string & { capability : ICommonCapabilities} 
+\\"test\\": () => string & { capability : ICommonCapabilities; returnType : any} 
 
     }
   }
@@ -200,30 +179,24 @@ interface ICommonCapabilities {
   (name: string, ...args: any[]): ICap;
 }
 
-interface ICapability_defpact_test_func {
-  /**
-  * this is defcap doc
-  */
-  (
-    capabilityName: \\"user.test-module.test-cap\\", 
-    name: string): ICap,
-}
+interface ICapability_defpact_test_func {/**
+* this is defcap doc
+*/
+(capabilityName: \\"user.test-module.test-cap\\",name: string): ICap,}
 
 declare module '@kadena/client' {
   interface IPactModules {
     /**
-    this is module doc    
-    */
+* this is module doc
+*/
     \\"user.test-module\\": {
-    
+
 
       \\"defpact\\":{
-        /**
-        * this is defpact doc
-        */
-        \\"test-func\\": (
-          parameterone: any,
-          parametertwo: any) => string & { capability : ICapability_defpact_test_func & ICommonCapabilities} 
+/**
+* this is defpact doc
+*/
+\\"test-func\\": (parameterone: any,parametertwo: any) => string & { capability : ICapability_defpact_test_func & ICommonCapabilities; returnType : boolean} 
       }
     }
   }
@@ -242,19 +215,13 @@ interface ICommonCapabilities {
 }
 
 interface ICapability_test_func {
-  
-  (
-    capabilityName: \\"user.test-module.test-cap\\", 
-    name: string): ICap,
-}
+(capabilityName: \\"user.test-module.test-cap\\",name: string): ICap,}
 
 declare module '@kadena/client' {
   interface IPactModules {
     
     \\"user.test-module\\": {
-      \\"test-func\\": (
-        parameterone: string | PactReference,
-        parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities} 
+\\"test-func\\": (parameterone: string | PactReference,parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities; returnType : boolean} 
 
     }
   }
@@ -276,10 +243,10 @@ declare module '@kadena/client' {
   interface IPactModules {
     
     \\"user.test-module\\": {
-      /**
-      * Get all events
-      */
-      \\"get-events-list\\": () => string & { capability : ICommonCapabilities} 
+/**
+* Get all events
+*/
+\\"get-events-list\\": () => string & { capability : ICommonCapabilities; returnType : object[]} 
 
     }
   }
@@ -298,19 +265,13 @@ interface ICommonCapabilities {
 }
 
 interface ICapability_test_func {
-  
-  (
-    capabilityName: \\"user.test-module.test-cap\\", 
-    name: string): ICap,
-}
+(capabilityName: \\"user.test-module.test-cap\\",name: string): ICap,}
 
 declare module '@kadena/client' {
   interface IPactModules {
     
     \\"user.test-module\\": {
-      \\"test-func\\": (
-        parameterone: any,
-        parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities} 
+\\"test-func\\": (parameterone: any,parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities; returnType : boolean} 
 
     }
   }
@@ -329,19 +290,13 @@ interface ICommonCapabilities {
 }
 
 interface ICapability_test_func {
-  
-  (
-    capabilityName: \\"user.test-module.test-cap\\", 
-    name: string): ICap,
-}
+(capabilityName: \\"user.test-module.test-cap\\",name: string): ICap,}
 
 declare module '@kadena/client' {
   interface IPactModules {
     
     \\"user.test-module\\": {
-      \\"test-func\\": (
-        parameterone: object | PactReference,
-        parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities} 
+\\"test-func\\": (parameterone: object | PactReference,parametertwo: boolean | PactReference) => string & { capability : ICapability_test_func & ICommonCapabilities; returnType : boolean} 
 
     }
   }
@@ -359,31 +314,24 @@ interface ICommonCapabilities {
   (name: string, ...args: any[]): ICap;
 }
 
-interface ICapability_defpact_test_func {
-  /**
-  * this is defcap doc
-  */
-  (
-    _capabilityName: \\"user.test-module.test-cap\\", 
-    capabilityName: string, 
-    guard: string | object): ICap,
-}
+interface ICapability_defpact_test_func {/**
+* this is defcap doc
+*/
+(_capabilityName: \\"user.test-module.test-cap\\",capabilityName: string,guard: string | object): ICap,}
 
 declare module '@kadena/client' {
   interface IPactModules {
     /**
-    this is module doc    
-    */
+* this is module doc
+*/
     \\"user.test-module\\": {
-    
+
 
       \\"defpact\\":{
-        /**
-        * this is defpact doc
-        */
-        \\"test-func\\": (
-          parameterone: string | PactReference,
-          guard: PactReference) => string & { capability : ICapability_defpact_test_func & ICommonCapabilities} 
+/**
+* this is defpact doc
+*/
+\\"test-func\\": (parameterone: string | PactReference,guard: PactReference) => string & { capability : ICapability_defpact_test_func & ICommonCapabilities; returnType : boolean} 
       }
     }
   }
@@ -405,7 +353,7 @@ declare module '@kadena/client' {
   interface IPactModules {
     
     \\"user.test-module\\": {
-      \\"test\\": (param: any) => string & { capability : ICommonCapabilities} 
+\\"test\\": (param: any) => string & { capability : ICommonCapabilities; returnType : any} 
 
     }
   }

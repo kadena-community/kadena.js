@@ -401,6 +401,11 @@ export const Pact: IPact;
 // @public
 export type PactReference = Literal | (() => string);
 
+// @public (undocumented)
+export type PactReturnType<T extends (...args: any[]) => any> = T extends (...args: any[]) => infer R ? R extends {
+    returnType: infer RR;
+} ? RR : any : any;
+
 // @public
 export const readKeyset: (key: string) => () => string;
 
