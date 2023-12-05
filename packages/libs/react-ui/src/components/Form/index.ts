@@ -1,4 +1,5 @@
 export { CopyButton } from './ActionButtons/CopyButton';
+export { ShowHideButton } from './ActionButtons/ShowHideButton';
 export type { FormFieldStatus } from './Form.css';
 export {
   FormFieldWrapper,
