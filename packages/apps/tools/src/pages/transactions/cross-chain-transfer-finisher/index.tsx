@@ -468,17 +468,12 @@ const CrossChainTransferFinisher: FC = () => {
                 <Grid columns={1}>
                   <GridItem>
                     <div className={textareaContainerStyle}>
-                      {/*<textarea rows={4} className={textAreaStyle}>*/}
-                      {/*  {formattedSigData}*/}
-                      {/*</textarea>*/}
-
                       <Textarea
                         readOnly
                         fontFamily="$mono"
                         id="sig-text-area"
                         value={formattedSigData}
                       />
-
                       <IconButton
                         color="primary"
                         icon={'ContentCopy'}

@@ -113,7 +113,6 @@ export async function getTransferData({
 
     const { step, stepHasRollback, pactId } = found?.continuation as IPactExec;
 
-    // @ts-ignore
     return {
       tx: {
         sender: {
