@@ -33,6 +33,7 @@
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@pothos/core": "~3.33.0",
