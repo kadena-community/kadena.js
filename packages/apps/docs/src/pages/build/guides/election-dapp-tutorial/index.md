@@ -2,13 +2,13 @@
 title: "Workshop: Build an election application"
 description: Learn how to build a decentralized application that registers votes on the Kadena blockchain.
 menu: "Workshop: Build an election appication"
-label: Introduction
+label: Welcome
 order: 3
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
 
-# Welcome to the Election application workshop
+# Welcome to the Election workshop
 
 The Election application workshop consists of several self-paced tutorials with content and coding challenges to help you learn about how to build decentralized applications for the Kadena network using the Pact smart contract programming language and related tools.
 
@@ -19,8 +19,9 @@ The tutorials in the workshop will guide you to create an application website wh
 In this application:
 
 - All members of the Kadena community can cast one vote for any candidate nominated by election officials. 
-- All votes and voting counting mechanics must be published on the blockchain, so that the election process is fully transparent. 
-- Anyone—inside of the community or outside of it—must be able check the election results and verify that the election process was conducted fairly, for example, to determine that no double or fraudulent votes were cast.
+- All votes and vote-counting mechanics must be published on the blockchain, so that the election process is fully transparent. 
+- Anyone—inside of the community or outside of it—must be able check the election results and verify that the election process was conducted fairly.
+  For example, anyone should be able to verify that no double or fraudulent votes were cast.
 - All voters must be able to cast their votes anonymously so their privacy is protected.
 
 To ensure that the application can meet these requirements, every vote is executed as a transaction on a blockchain. 
@@ -40,17 +41,18 @@ By completing the tutorials in this workshop, you’ll learn how to:
 - Deploy and update a smart contract.
 - Use a gas station to pay fees on behalf of application users.
 
-Some of the topics covered in this workshop are similar to topics introduced in the Quick start.
+Some of the topics covered in this workshop are similar to topics introduced in the _Quick start_.
 For example, you’ll set up a development network (devnet) running on your local computer in a Docker container and sign transactions using public keys and Chainweaver accounts.
 However, the tutorials in the workshop also touch on additional topics such as:
 
 - How to develop smart contracts that use formal verification.
 - Options available for signing transactions.
-- Where you can find additional tooling for blockchain development, including the Kadena JavaScript client library, Chainweaver, the Pact command-line executable and more.
+- Where you can find additional tooling for blockchain development, including the Kadena JavaScript client library, Chainweaver, the Pact command-line executable, and more.
 
 ## Workshop roadmap
 
-This workshop consists of multiple tutorials that should be completed in order. Each tutorial provides some starter code and guides you to completing the tasks necessary to build the Election application to run on the Kadena blockchain.
+This workshop consists of multiple tutorials that you should complete in order. 
+Each tutorial provides some starter code and guides you to completing the tasks necessary to build the Election application to run on the Kadena blockchain.
 
 For the first tutorial, you’ll clone a repository with a working front-end for the election application that stores candidates and votes in memory. 
 After that, you’ll set up a local development network and your development workspace to begin building the blockchain back-end for the election website. 
@@ -71,7 +73,8 @@ Stay tuned for future editions of this workshop and for more intermediate and ad
  * Deploy to test network with the functional programming approach
  * Develop a continuous integration pipeline for deploying your application
 
-To suggest topics you’d like to see covered in future tutorials and workshops, submit a documentation request.
+To suggest topics you’d like to see covered in future tutorials and workshops, submit a [documentation request]().
+If you'd like to contribute content—either in the form of a new tutorial or to fix issues—see our [contributor's guide]().
 
 ## Before you begin
 
