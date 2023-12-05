@@ -3,6 +3,14 @@ import type {
   IContinuationPayloadObject,
   IExecutionPayloadObject,
 } from '../../interfaces/IPactCommand';
+import type { ExtractPactModule } from '../../interfaces/type-utilities';
+
+export type AddCapabilities<T> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [K in keyof T]: T[K] extends { capability: any }
+    ? T[K]
+    : ExtractPactModule<T[K]>;
+};
 
 interface IExec {
   <
@@ -16,7 +24,7 @@ interface IExec {
     ...codes: [...TCodes]
   ): {
     payload: { exec: Required<IExecutionPayloadObject['exec']> } & {
-      funs: [...TCodes];
+      funs: AddCapabilities<[...TCodes]>;
     };
   };
 }
