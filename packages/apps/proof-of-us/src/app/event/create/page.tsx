@@ -1,9 +1,11 @@
 'use client';
 import { FileUploader } from '@/components/FileUploader/FileUploader';
+import { useQR } from '@/hooks/qr';
 import { createToken } from '@/services/marmalade';
 import type { FC } from 'react';
 
 const Page: FC = () => {
+  const { createQR, QR } = useQR();
   const handleChange = (file) => {
     console.log(file);
   };
@@ -21,12 +23,22 @@ const Page: FC = () => {
       family: 'proof of us',
     },
   };
+
+  const handleCreateQR = async () => {
+    const data = await createQR('test url');
+    console.log(data);
+  };
+
   return (
     <div>
       <h1>Create event NFT</h1>
 
       <button onClick={() => createToken(metadata)}>sfs</button>
       <FileUploader onChange={handleChange} />
+
+      <button onClick={handleCreateQR}>create QR</button>
+
+      {QR && <img src={QR} />}
     </div>
   );
 };
