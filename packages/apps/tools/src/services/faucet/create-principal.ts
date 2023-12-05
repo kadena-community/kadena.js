@@ -2,9 +2,9 @@ import type {
   ChainwebChainId,
   ChainwebNetworkId,
 } from '@kadena/chainweb-node-client';
-import { Pact, createClient, isSignedTransaction } from '@kadena/client';
+import { createPrincipal as createPrincipalUtil } from '@kadena/client-utils/built-in';
 
-import { getKadenaConstantByNetwork } from '@/constants/kadena';
+import { kadenaConstants } from '@/constants/kadena';
 import Debug from 'debug';
 
 const NETWORK_ID: ChainwebNetworkId = 'testnet04';
@@ -18,31 +18,19 @@ export const createPrincipal = async (
 ): Promise<string | Error> => {
   debug(createPrincipal.name);
 
-  const KEYSET_NAME = 'account_keyset';
-
-  const transaction = Pact.builder
-    .execution(`(create-principal (read-keyset '${KEYSET_NAME}))`)
-    .addKeyset(KEYSET_NAME, pred, ...keys)
-    .setMeta({ chainId })
-    .setNetworkId(NETWORK_ID)
-    .createTransaction();
-
-  const apiHost = getKadenaConstantByNetwork('testnet04').apiHost({
-    networkId: NETWORK_ID,
-    chainId,
-  });
-
-  const { dirtyRead } = createClient(apiHost);
-
-  if (!isSignedTransaction(transaction)) {
-    throw new Error('Transaction is not signed');
-  }
-
-  const response = await dirtyRead(transaction);
-
-  if (response.result.status === 'success') {
-    return response.result.data as string;
-  }
-
-  throw new Error((response.result.error as any)?.message || 'Unknown error');
+  return createPrincipalUtil(
+    {
+      keyset: {
+        keys,
+        pred: pred as 'keys-all',
+      },
+    },
+    {
+      host: `https://${kadenaConstants.testnet04.API}`,
+      defaults: {
+        networkId: NETWORK_ID,
+        meta: { chainId },
+      },
+    },
+  );
 };

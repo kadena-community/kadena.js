@@ -12,11 +12,11 @@ import {
   createClient,
   isSignedTransaction,
 } from '@kadena/client';
+import { createPrincipal } from '@kadena/client-utils/built-in';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { createLogger } from 'graphql-yoga';
 import seedrandom from 'seedrandom';
 import { devnetConfig } from './config';
-import { createPrincipal } from './create-principal';
 
 export interface IAccount {
   account: string;
@@ -111,11 +111,20 @@ export const generateAccount = async (
   let account = `k:${keyPairs[0].publicKey}`;
 
   if (keyPairs.length > 1) {
-    account = await createPrincipal({
-      keys: keyPairs.map((keyPair) => keyPair.publicKey),
-      pred: 'keys-all',
-      chainId: chainId,
-    });
+    account = await createPrincipal(
+      {
+        keyset: {
+          keys: keyPairs.map((keyPair) => keyPair.publicKey),
+        },
+      },
+      {
+        host: `http://localhost:${devnetConfig.PORT}`,
+        defaults: {
+          networkId: devnetConfig.NETWORK_ID,
+          meta: { chainId },
+        },
+      },
+    );
   }
 
   return {
