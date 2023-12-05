@@ -28,7 +28,7 @@ function createTokenIdCommand({
 }: ICreateTokenIdInput) {
   const transaction = Pact.builder
     .execution(
-      `(marmalade-v2.ledger.create-token-id {"precision": 0, "policies": (read-list "policies"), "uri": (read-string "uri")} (read-keyset "creation_guard"))`,
+      `(marmalade-v2.ledger.create-token-id {"precision": 0, "policies": (read-msg "policies"), "uri": (read-string "uri")} (read-keyset "creation_guard"))`,
     )
     .addData('uri', uri)
     .addData('policies', policies)
@@ -46,5 +46,5 @@ function createTokenIdCommand({
  */
 export const createTokenId = (
   inputs: ICreateTokenIdInput,
-  config: IClientConfig,
+  config: Omit<IClientConfig, 'sign'>,
 ) => dirtyReadClient(config)(createTokenIdCommand(inputs));

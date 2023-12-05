@@ -2,7 +2,7 @@ import { mintCommand } from './commands/marmaladeMint.js';
 
 import type { Command } from 'commander';
 
-const SUBCOMMAND_ROOT = 'marmalade' as const;
+const SUBCOMMAND_ROOT: 'marmalade' = 'marmalade';
 
 export function marmaladeCommandFactory(
   program: Command,

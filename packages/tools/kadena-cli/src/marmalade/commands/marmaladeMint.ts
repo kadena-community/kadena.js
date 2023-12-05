@@ -11,7 +11,7 @@ export const mintCommand: (program: Command, version: string) => void =
     [globalOptions.network(true)],
     async (config) => {
       debug('marmalade-mint:action')({ config });
-      const tokenId = createTokenId(
+      const tokenIdReponse = createTokenId(
         {
           account: {
             account: '123',
@@ -30,9 +30,14 @@ export const mintCommand: (program: Command, version: string) => void =
           },
         },
         {
-          // TODO: fix this (sign method?)
+          host: config.networkConfig.networkHost,
+          defaults: {
+            networkId: config.networkConfig.networkId,
+          },
         },
       );
+
+      const tokenId = await tokenIdReponse.execute();
       console.log(tokenId);
       // mintNFT
     },
