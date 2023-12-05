@@ -9,7 +9,7 @@ import React from 'react';
 type StoryProps = {
   helperText: string;
   leadingText: string;
-  startIcon: React.ReactElement | '-';
+  startIcon: React.ReactElement;
 } & Omit<ITextFieldProps, 'startIcon'>;
 
 const meta: Meta<StoryProps> = {
@@ -87,14 +87,6 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    startIcon: {
-      description:
-        'Icon rendered inside the input to the left of the input text.',
-      options: ['-', ...Object.keys(SystemIcon)],
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
@@ -130,12 +122,6 @@ export const Group: Story = {
     label,
     leadingTextWidth,
   }) => {
-    // Fix this to render the selection
-    // const IconComponent =
-    //   startIcon !== '-'
-    //     ? SystemIcon[startIcon as unknown as keyof typeof SystemIcon]
-    //     : undefined;
-
     return (
       <TextField
         tag={tag}
@@ -148,7 +134,7 @@ export const Group: Story = {
         inputProps={{
           id: 'inputStory',
           leadingText,
-          startIcon: startIcon !== '-' ? startIcon : undefined,
+          startIcon,
           placeholder: 'This is a placeholder',
         }}
       />

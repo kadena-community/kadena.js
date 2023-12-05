@@ -1,5 +1,5 @@
 'use client';
-import { EyeOutline, SystemIcon } from '@components/Icon';
+import { SystemIcon } from '@components/Icon';
 import type { FC } from 'react';
 import React, { useState } from 'react';
 import {
