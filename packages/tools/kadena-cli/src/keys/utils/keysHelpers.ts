@@ -52,3 +52,6 @@ export function getAllHDKeys(): string[] {
 
 export const toHexStr = (bytes: Uint8Array): string =>
   Buffer.from(bytes).toString('hex');
+
+export const fromHexStr = (hexStr: string): Uint8Array =>
+  new Uint8Array(Buffer.from(hexStr, 'hex'));

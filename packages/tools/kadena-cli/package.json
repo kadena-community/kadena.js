@@ -56,6 +56,7 @@
     "js-yaml": "~4.1.0",
     "mkdirp": "~1.0.4",
     "node-fetch": "~2.6.2",
+    "ora": "^7.0.1",
     "pact-lang-api": "^4.2.0",
     "rimraf": "~5.0.1",
     "sanitize-filename": "^1.6.3",

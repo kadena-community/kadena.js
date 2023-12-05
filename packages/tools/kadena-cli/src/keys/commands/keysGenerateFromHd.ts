@@ -9,9 +9,10 @@ import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
 } from '../utils/keysDisplay.js';
-import { toHexStr } from '../utils/keysHelpers.js';
+import { fromHexStr, toHexStr } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
+import ora from 'ora';
 interface IConfig {
   keyGenFromHdChoice: string;
   keyAlias?: string;
@@ -42,9 +43,7 @@ async function generateFromHd(
 async function handlePublicPrivateKeysFromHDKey(
   config: IConfig,
   showPrivateKey: boolean = false,
-): Promise<
-  Array<{ publicKey: string; privateKey?: string; filename?: string }>
-> {
+): Promise<Array<{ publicKey: string; privateKey?: string }>> {
   if (config.keySeed === undefined) {
     throw new Error('Seed is required for this option.');
   }
@@ -59,7 +58,7 @@ async function handlePublicPrivateKeysFromHDKey(
     if (config.keySeed.length >= 256) {
       keyGenResult = await kadenaGenKeypair(
         config.keyPassword,
-        config.keySeed,
+        fromHexStr(config.keySeed), // config.keySeed,
         index,
       );
     } else {
@@ -79,9 +78,8 @@ async function handlePublicPrivateKeysFromHDKey(
         ? keyGenResult[1]
         : toHexStr(keyGenResult[1]);
 
-    const keyPair: storageService.IKeyPair & { filename?: string } = {
+    const keyPair: storageService.IKeyPair = {
       publicKey,
-      filename: `key_pair_${index}.yaml`,
       ...(showPrivateKey && { privateKey: encryptedPrivateKey }),
     };
 
@@ -106,9 +104,10 @@ export const createGenerateFromHdCommand: (
   ],
   async (config) => {
     debug('generate-from-hd:action')({ config });
+    const loading = ora('Generating from seed..').start();
     try {
       const keys = await generateFromHd(config as IConfig);
-
+      loading.succeed('Completed');
       displayGeneratedPlainKeys(keys);
 
       const isLegacy = config.keySeed.length >= 256;
@@ -116,6 +115,7 @@ export const createGenerateFromHdCommand: (
       await storageService.savePlainKeyByAlias(config.keyAlias, keys, isLegacy);
       printStoredPlainKeys(config.keyAlias, keys, config.legacy);
     } catch (error) {
+      loading.fail('Operation failed');
       console.error(`Error: ${error instanceof Error ? error.message : error}`);
     }
   },
