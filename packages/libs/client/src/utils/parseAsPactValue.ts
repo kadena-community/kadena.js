@@ -33,7 +33,7 @@ export function parseAsPactValue(
     }
     case 'number':
       throw new Error(
-        'Type `number` is not allowed in the command. Use `{ decimal: 10 }` or `{ int: 10 }` instead',
+        'Type `number` is not allowed in the command. Use `{ decimal: "10.0" }` or `{ int: "10" }` instead',
       );
     case 'string':
       return `"${input}"`;

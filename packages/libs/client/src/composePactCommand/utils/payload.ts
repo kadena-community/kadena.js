@@ -14,12 +14,16 @@ interface IExec {
     >,
   >(
     ...codes: [...TCodes]
-  ): { payload: IExecutionPayloadObject & { funs: [...TCodes] } };
+  ): {
+    payload: { exec: Required<IExecutionPayloadObject['exec']> } & {
+      funs: [...TCodes];
+    };
+  };
 }
 
 interface ICont {
-  (options: IContinuationPayloadObject['cont']): {
-    payload: IContinuationPayloadObject;
+  (options: Partial<IContinuationPayloadObject['cont']>): {
+    payload: { cont: Partial<IContinuationPayloadObject['cont']> };
   };
 }
 
@@ -45,7 +49,10 @@ export const execution: IExec = (...codes: string[]) => {
  * @public
  */
 export const continuation: ICont = (options) => {
-  const clone = { ...options, data: options.data ? options.data : {} };
+  const clone = {
+    data: {},
+    ...options,
+  };
   if (typeof clone.proof === 'string') {
     clone.proof = clone.proof.replace(/\"/gi, '');
   }

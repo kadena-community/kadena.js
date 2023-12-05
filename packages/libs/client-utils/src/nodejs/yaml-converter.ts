@@ -158,7 +158,7 @@ export const convertTemplateTxToPactCommand = (
   const execPayload: IExecutionPayloadObject = {
     exec: {
       data: kdaToolTx.data ? kdaToolTx.data : {},
-      code: code,
+      code: code!,
     },
   };
 
