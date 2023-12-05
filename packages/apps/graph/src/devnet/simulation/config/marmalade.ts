@@ -3,12 +3,11 @@ import { sender00 } from '../../helper';
 
 export const marmaladeConfig = {
   sender_key: sender00.keys[0].publicKey,
-  marmalade_user_key_1: '',
-  marmalade_user_key_2: '',
-  marmalade_namespace: '',
-  is_upgrade: '',
+  marmalade_namespace: 'marmalade-v2',
+  is_upgrade: 'false',
   network: devnetConfig.NETWORK_ID,
   chain: devnetConfig.CHAIN_ID,
   sender: sender00.account,
-  kip_namespace: '',
+  kip_namespace: 'kip',
+  signer: sender00.keys[0].publicKey,
 };
