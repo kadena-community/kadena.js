@@ -12,7 +12,6 @@ interface IConfig {
   keySeed?: string;
   keyAmount?: number;
 }
-
 interface IKeyPair {
   publicKey: string;
   privateKey?: string;
