@@ -1,11 +1,7 @@
-import type {
-  ChainId,
-  ICommandResult,
-} from '@kadena/client';
+import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
-import { transfer, transferCreate } from '@kadena/client-utils/coin';
+import { transferCreate } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
-import { expect } from 'vitest';
 import type {
   IAccount,
   IAccountWithSecretKey,
@@ -54,29 +50,4 @@ export async function createAccount(input: IAccount): Promise<ICommandResult> {
       .execute()
       .catch(reject);
   });
-}
-
-export async function transferFunds(
-  source: IAccountWithSecretKey,
-  target: IAccountWithSecretKey,
-  amount: string,
-  chainId: ChainId,
-) {
-  const result = await transfer(
-    {
-      sender: { account: source.account, publicKeys: [source.publicKey] },
-      receiver: target.account,
-      amount: amount,
-      gasPayer: { account: source.account, publicKeys: [source.publicKey] },
-      chainId: chainId,
-    },
-    {
-      host: devnetHost,
-      defaults: {
-        networkId: networkId,
-      },
-      sign: createSignWithKeypair([source]),
-    },
-  ).execute();
-  expect(result).toBe('Write succeeded');
 }
