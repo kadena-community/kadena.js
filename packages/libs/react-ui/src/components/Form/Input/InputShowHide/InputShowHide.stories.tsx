@@ -1,17 +1,17 @@
 import type { IInputProps } from '@components/Form';
-import { InputCopy } from '@components/Form';
+import { InputShowHide } from '@components/Form';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<IInputProps> = {
-  title: 'Form/Input/InputCopy',
-  component: InputCopy,
+  title: 'Form/Input/InputShowHide',
+  component: InputShowHide,
   parameters: {
     docs: {
       description: {
         component:
-          'The InputCopy is a composition of the native Input element and a copy button.',
+          'The InputShowHide is a composition of the native Input element and a show hide toggle button.',
       },
     },
   },
@@ -21,8 +21,8 @@ export default meta;
 
 type Story = StoryObj<IInputProps>;
 
-export const InputCopyStory: Story = {
-  name: 'InputCopy',
+export const InputShowHideStory: Story = {
+  name: 'InputShowHide',
   args: {
     icon: undefined,
     type: 'text',
@@ -33,9 +33,9 @@ export const InputCopyStory: Story = {
   render: (props) => {
     return (
       <>
-        <InputCopy
+        <InputShowHide
           {...props}
-          id="InputCopyStory"
+          id="InputShowHideStory"
           placeholder="This is a placeholder"
         />
       </>
