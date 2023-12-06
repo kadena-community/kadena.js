@@ -1,7 +1,11 @@
 import { prismaClient } from '@db/prismaClient';
 import { getChainModuleAccount } from '@services/account-service';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { COMPLEXITY, PRISMA, builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import type { ChainModuleAccount } from '../types/graphql-types';
 import { ChainModuleAccountName } from '../types/graphql-types';
@@ -63,9 +67,11 @@ export default builder.node(
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
         complexity: (args) => ({
-          field:
-            COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS *
-            (args.first || args.last || PRISMA.DEFAULT_SIZE),
+          field: getDefaultConnectionComplexity({
+            withRelations: true,
+            first: args.first,
+            last: args.last,
+          }),
         }),
         async totalCount(parent) {
           return await prismaClient.transaction.count({
@@ -107,9 +113,10 @@ export default builder.node(
         edgesNullable: false,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         complexity: (args) => ({
-          field:
-            COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS *
-            (args.first || args.last || PRISMA.DEFAULT_SIZE),
+          field: getDefaultConnectionComplexity({
+            first: args.first,
+            last: args.last,
+          }),
         }),
         async totalCount(parent) {
           try {

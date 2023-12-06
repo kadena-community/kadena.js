@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { COMPLEXITY, builder } from '../builder';
+import { builder } from '../builder';
 
 export default builder.prismaNode('MinerKey', {
   id: { field: 'blockHash_key' },

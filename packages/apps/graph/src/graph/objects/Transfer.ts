@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { COMPLEXITY, PRISMA, builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Transfer', {
   id: { field: 'blockHash_chainId_orderIndex_moduleHash_requestKey' },

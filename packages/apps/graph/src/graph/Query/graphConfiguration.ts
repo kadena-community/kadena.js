@@ -1,8 +1,9 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
-import { COMPLEXITY, builder } from '../builder';
+import { builder } from '../builder';
 
-const getMinimumBlockHeight = async (): Promise<bigint> => {
+const getLowestBlockHeigth = async (): Promise<bigint> => {
   const lowestBlock = await prismaClient.block.findFirst({
     orderBy: {
       height: 'asc',
@@ -23,7 +24,7 @@ builder.queryField('graphConfiguration', (t) => {
       return {
         maximumConfirmationDepth:
           dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
-        minimumBlockHeight: await getMinimumBlockHeight(),
+        minimumBlockHeight: await getLowestBlockHeigth(),
       };
     },
   });

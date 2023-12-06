@@ -1,6 +1,7 @@
+import { COMPLEXITY } from '@services/complexity';
 import { getAccountDetails } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
-import { COMPLEXITY, builder } from '../builder';
+import { builder } from '../builder';
 import ChainModuleAccount from '../objects/ChainModuleAccount';
 import { ChainModuleAccountName } from '../types/graphql-types';
 

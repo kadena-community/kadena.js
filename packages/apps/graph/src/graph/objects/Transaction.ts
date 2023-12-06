@@ -1,7 +1,8 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullishOrEmpty';
-import { COMPLEXITY, PRISMA, builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {
   id: { field: 'blockHash_requestKey' },

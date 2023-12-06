@@ -1,6 +1,7 @@
 import { localReadTransfer } from '@devnet/transfer';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { COMPLEXITY, builder } from '../builder';
+import { builder } from '../builder';
 
 const PactTransaction = builder.inputType('PactTransaction', {
   fields: (t) => ({

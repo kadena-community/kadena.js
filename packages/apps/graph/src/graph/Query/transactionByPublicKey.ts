@@ -1,5 +1,9 @@
 import { prismaClient } from '@db/prismaClient';
-import { COMPLEXITY, PRISMA, builder } from '../builder';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
+import { PRISMA, builder } from '../builder';
 
 builder.queryField('transactionsByPublicKey', (t) => {
   return t.prismaConnection({
@@ -11,9 +15,10 @@ builder.queryField('transactionsByPublicKey', (t) => {
     cursor: 'blockHash_requestKey',
     complexity: (args) => ({
       field:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS *
-        (args.first || args.last || PRISMA.DEFAULT_SIZE) *
-        2, // Times two because of the exra call to signers.
+        getDefaultConnectionComplexity({
+          first: args.first,
+          last: args.last,
+        }) * 2, // Times two because of the exra call to signers.
     }),
     async totalCount(__parent, args) {
       const requestKeys = await prismaClient.signer.findMany({

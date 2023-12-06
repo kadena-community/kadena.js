@@ -1,7 +1,11 @@
 import { prismaClient } from '@db/prismaClient';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import { COMPLEXITY, PRISMA, builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Block', {
   id: { field: 'hash' },
@@ -48,9 +52,10 @@ export default builder.prismaNode('Block', {
       cursor: 'blockHash_requestKey',
       edgesNullable: false,
       complexity: (args) => ({
-        field:
-          COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS *
-          (args.first || args.last || PRISMA.DEFAULT_SIZE),
+        field: getDefaultConnectionComplexity({
+          first: args.first,
+          last: args.last,
+        }),
       }),
       async totalCount(parent) {
         try {
