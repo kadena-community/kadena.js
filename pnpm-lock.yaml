@@ -285,6 +285,9 @@ importers:
       '@kadena/client':
         specifier: workspace:*
         version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../../libs/client-utils
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../../libs/cryptography-utils
@@ -588,6 +591,9 @@ importers:
       '@kadena/client':
         specifier: workspace:*
         version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../../libs/client-utils
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../../libs/cryptography-utils

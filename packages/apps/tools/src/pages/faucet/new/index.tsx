@@ -103,7 +103,7 @@ const NewAccountFaucetPage: FC = () => {
       networksData,
     ],
     queryFn: () =>
-      createPrincipal(pubKeys, chainID, selectedNetwork, networksData, pred),
+      createPrincipal(pubKeys, chainID, pred),
     enabled: pubKeys.length > 0,
   });
 
