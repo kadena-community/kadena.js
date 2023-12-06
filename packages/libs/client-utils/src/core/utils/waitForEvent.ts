@@ -1,3 +1,6 @@
+/**
+ * @alpha
+ */
 export function waitForEvent<
   T extends {
     on: (name: string, data: any) => any;
