@@ -9,15 +9,6 @@ const containerPactFolderPermissions: string = 'ro';
 const chainwebNodeApiPort: string = '8080';
 const devnetImageName: string = 'kadena/devnet';
 
-export function isDockerInstalled(): boolean {
-  try {
-    execSync('docker -v');
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
 export const dockerVolumeName = (containerName: string): string =>
   `${volumePrefix}${containerName}`;
 
