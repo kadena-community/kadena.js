@@ -1,0 +1,321 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "thematicBreak",
+      "position": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 4,
+          "offset": 3
+        }
+      }
+    },
+    {
+      "type": "heading",
+      "depth": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "title: The Future of Blockchain is the Smart Contract Sharing Economy\ndescription:\nHow Kadena’s stack turns cost centers into revenue generators. Kadena is\nuniquely positioned in the blockchain ecosystem; we provide a complete\nblockchain stack allowing entrepreneurs and developers to use both\npermissioned and permission-less (private and public) blockchains to unlock\nnew sources of revenue.\nmenu: The Future of Blockchain is the Smart Contract Sharing Economy\nlabel: The Future of Blockchain is the Smart Contract Sharing Economy\npublishDate: 2018-12-17\ntags: [kadena]\nauthor: Will Martino\nauthorId: will.martino\nlayout: blog",
+          "position": {
+            "start": {
+              "line": 2,
+              "column": 1,
+              "offset": 4
+            },
+            "end": {
+              "line": 15,
+              "column": 13,
+              "offset": 642
+            }
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 2,
+          "column": 1,
+          "offset": 4
+        },
+        "end": {
+          "line": 16,
+          "column": 4,
+          "offset": 646
+        }
+      }
+    },
+    {
+      "type": "heading",
+      "depth": 1,
+      "children": [
+        {
+          "type": "text",
+          "value": "The Future of Blockchain is the Smart Contract Sharing Economy",
+          "position": {
+            "start": {
+              "line": 18,
+              "column": 3,
+              "offset": 650
+            },
+            "end": {
+              "line": 18,
+              "column": 65,
+              "offset": 712
+            }
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 18,
+          "column": 1,
+          "offset": 648
+        },
+        "end": {
+          "line": 18,
+          "column": 65,
+          "offset": 712
+        }
+      }
+    },
+    {
+      "type": "heading",
+      "depth": 3,
+      "children": [
+        {
+          "type": "text",
+          "value": "How Kadena’s stack turns cost centers into revenue generators",
+          "position": {
+            "start": {
+              "line": 20,
+              "column": 5,
+              "offset": 718
+            },
+            "end": {
+              "line": 20,
+              "column": 66,
+              "offset": 779
+            }
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 20,
+          "column": 1,
+          "offset": 714
+        },
+        "end": {
+          "line": 20,
+          "column": 66,
+          "offset": 779
+        }
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "strong",
+          "children": [
+            {
+              "type": "link",
+              "title": null,
+              "url": "http://kadena.io",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Kadena",
+                  "position": {
+                    "start": {
+                      "line": 22,
+                      "column": 4,
+                      "offset": 784
+                    },
+                    "end": {
+                      "line": 22,
+                      "column": 10,
+                      "offset": 790
+                    }
+                  }
+                }
+              ],
+              "position": {
+                "start": {
+                  "line": 22,
+                  "column": 3,
+                  "offset": 783
+                },
+                "end": {
+                  "line": 22,
+                  "column": 29,
+                  "offset": 809
+                }
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 22,
+              "column": 1,
+              "offset": 781
+            },
+            "end": {
+              "line": 22,
+              "column": 31,
+              "offset": 811
+            }
+          }
+        },
+        {
+          "type": "text",
+          "value": " is uniquely positioned in the blockchain\necosystem; we provide a complete blockchain stack allowing entrepreneurs and\ndevelopers to use both permissioned and permission-less (private and public)\nblockchains to unlock new sources of revenue. Interoperating and securing our\nend to end stack sits ",
+          "position": {
+            "start": {
+              "line": 22,
+              "column": 31,
+              "offset": 811
+            },
+            "end": {
+              "line": 26,
+              "column": 23,
+              "offset": 1107
+            }
+          }
+        },
+        {
+          "type": "link",
+          "title": null,
+          "url": "http://pact.kadena.io",
+          "children": [
+            {
+              "type": "text",
+              "value": "Pact",
+              "position": {
+                "start": {
+                  "line": 26,
+                  "column": 24,
+                  "offset": 1108
+                },
+                "end": {
+                  "line": 26,
+                  "column": 28,
+                  "offset": 1112
+                }
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 26,
+              "column": 23,
+              "offset": 1107
+            },
+            "end": {
+              "line": 26,
+              "column": 52,
+              "offset": 1136
+            }
+          }
+        },
+        {
+          "type": "text",
+          "value": " — a single, simple,\nintegrated (and ",
+          "position": {
+            "start": {
+              "line": 26,
+              "column": 52,
+              "offset": 1136
+            },
+            "end": {
+              "line": 27,
+              "column": 17,
+              "offset": 1173
+            }
+          }
+        },
+        {
+          "type": "link",
+          "title": null,
+          "url": "https://github.com/kadena-io/pact",
+          "children": [
+            {
+              "type": "text",
+              "value": "open source",
+              "position": {
+                "start": {
+                  "line": 27,
+                  "column": 18,
+                  "offset": 1174
+                },
+                "end": {
+                  "line": 27,
+                  "column": 29,
+                  "offset": 1185
+                }
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 27,
+              "column": 17,
+              "offset": 1173
+            },
+            "end": {
+              "line": 27,
+              "column": 65,
+              "offset": 1221
+            }
+          }
+        },
+        {
+          "type": "text",
+          "value": ") smart contract\nlanguage. Kadena users effectively have an out-of-the-box solution, seamlessly\nmoving between public and private configurations depending on their tolerance\nand case needs for permissions and security. This technology carves out new\nopportunities with existing data and workflows that the current solutions\ncannot. The Kadena stack **turns cost centers into revenue makers. **Kadena\nallows companies to safely monetize their existing business workflows and\nrepresent them as smart contracts on a public network.",
+          "position": {
+            "start": {
+              "line": 27,
+              "column": 65,
+              "offset": 1221
+            },
+            "end": {
+              "line": 34,
+              "column": 55,
+              "offset": 1749
+            }
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 22,
+          "column": 1,
+          "offset": 781
+        },
+        "end": {
+          "line": 34,
+          "column": 55,
+          "offset": 1749
+        }
+      }
+    }
+  ],
+  "position": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 35,
+      "column": 1,
+      "offset": 1750
+    }
+  }
+}

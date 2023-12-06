@@ -1,0 +1,5 @@
+How Kadena’s stack turns cost centers into revenue generators. Kadena is
+  uniquely positioned in the blockchain ecosystem; we provide a complete
+  blockchain stack allowing entrepreneurs and developers to use both
+  permissioned and permission-less (private and public) blockchains to unlock
+  new sources of revenue.
