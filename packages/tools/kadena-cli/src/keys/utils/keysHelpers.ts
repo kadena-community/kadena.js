@@ -50,8 +50,24 @@ export function getAllHDKeys(): string[] {
   return [...hdKeys, ...hdLegacyKeys];
 }
 
+/**
+ * Converts a Uint8Array to a hexadecimal string.
+ *
+ * This function takes a Uint8Array and returns its equivalent hexadecimal string representation.
+ *
+ * @param {Uint8Array} bytes - The Uint8Array to be converted.
+ * @returns {string} The hexadecimal string representation of the input bytes.
+ */
 export const toHexStr = (bytes: Uint8Array): string =>
   Buffer.from(bytes).toString('hex');
 
+/**
+ * Converts a hexadecimal string to a Uint8Array.
+ *
+ * This function takes a hexadecimal string and returns its equivalent Uint8Array representation.
+ *
+ * @param {string} hexStr - The hexadecimal string to be converted.
+ * @returns {Uint8Array} The Uint8Array representation of the input hexadecimal string.
+ */
 export const fromHexStr = (hexStr: string): Uint8Array =>
   new Uint8Array(Buffer.from(hexStr, 'hex'));

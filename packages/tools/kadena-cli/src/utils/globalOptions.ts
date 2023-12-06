@@ -273,6 +273,12 @@ export const globalOptions = {
       'Enter filename to store your key in',
     ),
   }),
+  key: createOption({
+    key: 'key' as const,
+    prompt: keys.keySelectPrompt,
+    validation: z.string(),
+    option: new Option('-k, --key <key>', 'Select key from keyfile'),
+  }),
 } as const;
 
 export type GlobalOptions = typeof globalOptions;

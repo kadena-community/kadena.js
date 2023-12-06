@@ -9,7 +9,7 @@ import {
   getPlainKeys,
   getPlainLegacyKeys,
 } from './keysHelpers.js';
-import type { IHDKeyContent, IKeyPair } from './storage.js';
+import type { IKeyPair, THDKeyContent } from './storage.js';
 
 import {
   KEY_DIR,
@@ -44,7 +44,7 @@ export function displayKeysConfig(): void {
         try {
           const fileContents = readFileSync(filePath, 'utf8');
           if (isHD) {
-            const parsedContents = yaml.load(fileContents) as IHDKeyContent;
+            const parsedContents = yaml.load(fileContents) as THDKeyContent;
             log(`HD Seed: ${parsedContents}`);
           } else {
             const parsedContents = yaml.load(fileContents) as IKeyPair;

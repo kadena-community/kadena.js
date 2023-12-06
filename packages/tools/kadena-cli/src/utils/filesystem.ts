@@ -9,6 +9,9 @@ import {
 } from 'fs';
 import path from 'path';
 
+import chalk from 'chalk';
+import { readdir, rm } from 'fs/promises';
+
 /**
  * Checks if a given path exists.
  *
@@ -88,5 +91,26 @@ export function removeFile(filePath: string): void {
 export function ensureDirectoryExists(directoryPath: string): void {
   if (!PathExists(directoryPath)) {
     mkdirSync(directoryPath, { recursive: true });
+  }
+}
+
+/**
+ * Asynchronously deletes all files in a given directory.
+ *
+ * @param {string} dirPath - The path of the directory whose files are to be deleted.
+ */
+export async function deleteAllFilesInDir(dirPath: string): Promise<void> {
+  try {
+    const files = await readdir(dirPath);
+    for (const file of files) {
+      const filePath = path.join(dirPath, file);
+      await rm(filePath);
+    }
+    console.log(chalk.green(`\nAll files in ${dirPath} have been deleted.\n`));
+  } catch (error) {
+    console.error(
+      chalk.red(`Error during file deletion in ${dirPath}: ${error.message}`),
+    );
+    throw error;
   }
 }

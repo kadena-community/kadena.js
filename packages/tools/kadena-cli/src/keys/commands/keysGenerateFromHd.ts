@@ -50,7 +50,9 @@ async function handlePublicPrivateKeysFromHDKey(
 
   const keys: Array<storageService.IKeyPair> = [];
   const amount =
-    config.keyAmount !== undefined ? config.keyAmount : defaultAmount;
+    config.keyAmount !== undefined && config.keyAmount > 0
+      ? config.keyAmount
+      : defaultAmount;
 
   for (let index = 0; index < amount; index++) {
     let keyGenResult: [Uint8Array | string, Uint8Array | string];
@@ -104,6 +106,7 @@ export const createGenerateFromHdCommand: (
   ],
   async (config) => {
     debug('generate-from-hd:action')({ config });
+
     const loading = ora('Generating from seed..').start();
     try {
       const keys = await generateFromHd(config as IConfig);
@@ -113,7 +116,7 @@ export const createGenerateFromHdCommand: (
       const isLegacy = config.keySeed.length >= 256;
 
       await storageService.savePlainKeyByAlias(config.keyAlias, keys, isLegacy);
-      printStoredPlainKeys(config.keyAlias, keys, config.legacy);
+      printStoredPlainKeys(config.keyAlias, keys, isLegacy);
     } catch (error) {
       loading.fail('Operation failed');
       console.error(`Error: ${error instanceof Error ? error.message : error}`);

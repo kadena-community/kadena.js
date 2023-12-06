@@ -1,4 +1,5 @@
 import type { WriteFileOptions } from 'fs';
+
 import yaml from 'js-yaml';
 import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -16,13 +17,14 @@ import {
 } from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 
-export interface IHDKeyContent {
-  seed: string;
-}
+export type THDKeyContent = string;
+
 export interface IKeyPair {
   publicKey: string;
   privateKey?: string;
 }
+
+export type KeyContent = THDKeyContent | IKeyPair;
 
 export async function savePlainKeyByAlias(
   alias: string,
@@ -130,12 +132,10 @@ export function storeHdKeyByAlias(
 }
 
 /* @param {string} keyAlias - The alias of the key file to read.
- * @returns {IHDKeyContent | IKeyPair | undefined} The parsed content of the key file, or undefined if the file does not exist.
+ * @returns {THDKeyContent | IKeyPair | undefined} The parsed content of the key file, or undefined if the file does not exist.
  * @throws {Error} Throws an error if reading the file fails.
  */
-export function readKeyFileContent(
-  keyAlias: string,
-): IHDKeyContent | IKeyPair | undefined {
+export function readKeyFileContent(keyAlias: string): KeyContent | undefined {
   const filePath = join(KEY_DIR, keyAlias);
 
   if (!existsSync(filePath)) {
@@ -145,7 +145,7 @@ export function readKeyFileContent(
 
   try {
     const fileContents = readFileSync(filePath, 'utf8');
-    return yaml.load(fileContents) as IHDKeyContent | IKeyPair;
+    return yaml.load(fileContents) as THDKeyContent | IKeyPair;
   } catch (error) {
     throw new Error(`Error reading file ${keyAlias}: ${error}`);
   }
@@ -154,11 +154,11 @@ export function readKeyFileContent(
 /**
  * Asynchronously wraps the readKeyFileContent function.
  * @param {string} keyAlias - The alias of the key file to read.
- * @returns {Promise<IHDKeyContent | IKeyPair | undefined>} A promise that resolves with the parsed content of the key file, or undefined if the file does not exist.
+ * @returns {Promise<THDKeyContent | IKeyPair | undefined>} A promise that resolves with the parsed content of the key file, or undefined if the file does not exist.
  */
 export async function readKeyFileContentAsync(
   keyAlias: string,
-): Promise<IHDKeyContent | IKeyPair | undefined> {
+): Promise<THDKeyContent | IKeyPair | undefined> {
   return new Promise((resolve, reject) => {
     try {
       const result = readKeyFileContent(keyAlias);
