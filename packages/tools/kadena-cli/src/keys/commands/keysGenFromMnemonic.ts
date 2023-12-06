@@ -1,15 +1,17 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaMnemonicToSeed } from '@kadena/hd-wallet';
+import { kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair } from '@kadena/hd-wallet/chainweaver';
 import type { Command } from 'commander';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import type { IKeysConfig } from '../utils/keySharedGeneratorUtils.js';
-import { generateFromHd } from '../utils/keySharedGeneratorUtils.js';
+import type { IKeysConfig } from '../utils/keySharedKeyGenUtils.js';
+import { generateFromHd } from '../utils/keySharedKeyGenUtils.js';
 import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
 } from '../utils/keysDisplay.js';
+import { toHexStr } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
 import ora from 'ora';
@@ -26,16 +28,27 @@ export const createGenerateFromMnemonic: (
     globalOptions.keyPassword(),
     globalOptions.keyAlias(),
     globalOptions.keyAmount({ isOptional: true }),
+    globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
     debug('generate-from-mnemonic:action')({ config });
 
     const loading = ora('Generating..').start();
     try {
-      const keySeed = await kadenaMnemonicToSeed(
-        config.keyPassword,
-        config.keyMnemonic,
-      );
+      let keySeed: EncryptedString | undefined;
+
+      if (config.legacy === true) {
+        const buffer = await legacykadenaMnemonicToRootKeypair(
+          config.keyPassword,
+          config.keyMnemonic,
+        );
+        keySeed = toHexStr(buffer) as EncryptedString;
+      } else {
+        keySeed = await kadenaMnemonicToSeed(
+          config.keyPassword,
+          config.keyMnemonic,
+        );
+      }
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { keyMnemonic, keyGenFromChoice, ...rest } = config;

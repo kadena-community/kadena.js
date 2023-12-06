@@ -13,18 +13,19 @@ export interface IKeysConfig {
   keyMnemonic?: string;
   keyPassword: string;
   keyAmount?: number;
+  legacy?: boolean;
 }
 
 export async function generateFromHd(config: IKeysConfig): Promise<IKeyPair[]> {
   if (
-    !['genPublicKey', 'genPublicPrivateKeys'].includes(config.keyGenFromChoice)
+    !['genPublicKey', 'genPublicPrivateKey'].includes(config.keyGenFromChoice)
   ) {
     throw new Error('Invalid choice');
   }
 
   return handlePublicPrivateKeysFrom(
     config,
-    config.keyGenFromChoice === 'genPublicPrivateKeys',
+    config.keyGenFromChoice === 'genPublicPrivateKey',
   );
 }
 
@@ -45,7 +46,7 @@ export async function handlePublicPrivateKeysFrom(
   for (let index = 0; index < amount; index++) {
     let keyGenResult: [Uint8Array | string, Uint8Array | string];
 
-    if (config.keySeed.length >= 256) {
+    if (config.legacy === true) {
       keyGenResult = await kadenaGenKeypair(
         config.keyPassword,
         fromHexStr(config.keySeed),
