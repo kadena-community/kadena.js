@@ -8,6 +8,7 @@ const pactCommand: IPactCommand = {
   payload: {
     exec: {
       code: '(coin.transfer "alice" "bob" 12.1)',
+      data: {},
     },
   },
   signers: [
@@ -33,7 +34,7 @@ describe('createTransaction', () => {
     const transaction = createTransaction(pactCommand);
 
     expect(transaction.hash).toBe(
-      'fo-INzZ1jYEYILEavqawvkBmGld6DajK7ozxGZF8knM',
+      'tMvXzZPbK_Rd93C0ZwtNKzHpGaUhiEj3uaf-RSw29HU',
     );
   });
 

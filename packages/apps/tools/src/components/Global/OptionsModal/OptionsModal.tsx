@@ -99,7 +99,7 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
                       <Text as="span">{value.title}</Text>
                       {value.tag !== undefined ? <Tag>{value.tag}</Tag> : null}
                     </div>
-                    <Text as="p" size="sm">
+                    <Text as="p" variant="smallest">
                       {value.text}
                     </Text>
                   </Stack>

@@ -283,9 +283,8 @@ It will update `./src/styles/tokens` folder with the latest tokens.
 - The tool we use is [design-sync](https://github.com/salamaashoush/design-sync) it is maintained by Salama Ashoush and it is open source.
 - We can configure the sync process by editing `design-sync.config.ts` file in the root of the package.
 - We use vanilla-extract plugin to generate tokens as two themes `light` and `dark` and we use `light` theme by default.
-- In order to use the generated tokens we need to import them from `./src/styles/tokens/contract.css`  file the exported contract is named `tokens` and we can change it in the config.
-- To see the effect of the tokens in the browser you must use one of the them class name `import { lightTheme } from './src/styles/tokens/light.css` or  `import { darkTheme } from './src/styles/tokens/dark.css` and add it to the root element of the app `<div className={lightTheme}>...</div>`.
-- We can generate global themes instead but for now we generate scoped ones until maybe we full migrate the old tokens.
+- In order to use the generated tokens we need to import them from `./src/styles/tokens/contract.css.ts`  file the exported contract is named `tokens` and we can change it in the config.
+- During our migration to new tokens we don't create vanilla-extract themes from the tokens but only create the contract file and theme values (using `onlyValues` config) then we create bigger contract and theme combining the old and new tokens, see `./src/styles/vars.css.ts`
 - We also use `responsiveExtension` to generate styles with media queries for different screen sizes.
 
 for more info about the tool check the [repo](https://github.com/salamaashoush/design-sync)

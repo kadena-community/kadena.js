@@ -1,4 +1,4 @@
-import type { IPactCommand } from '@kadena/client';
+import type { IPartialPactCommand } from '@kadena/client';
 import { createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 
@@ -12,10 +12,10 @@ import { getClient, throwIfFails } from './utils/helpers';
  */
 export const estimateGas = (
   command:
-    | Partial<IPactCommand>
+    | IPartialPactCommand
     | ((
-        cmd?: Partial<IPactCommand> | (() => Partial<IPactCommand>),
-      ) => Partial<IPactCommand>),
+        cmd?: IPartialPactCommand | (() => IPartialPactCommand),
+      ) => IPartialPactCommand),
   host?: IClientConfig['host'],
   client = getClient(host),
 ) => {
@@ -24,7 +24,7 @@ export const estimateGas = (
       meta: {
         gasLimit: 10000,
         gasPrice: 1.0e-8,
-      } as IPactCommand['meta'],
+      } as IPartialPactCommand['meta'],
     }),
     createTransaction,
     (tx) => client.local(tx, { preflight: true, signatureVerification: false }),

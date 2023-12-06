@@ -1,5 +1,15 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.6.4
+
+### Patch Changes
+
+- 21a0d1530: Fix pactjs-cli to send hash with txs; fixed the issue after
+  chainweb-node update
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+  - @kadena/pactjs-generator@1.6.4
+
 ## 1.6.3
 
 ### Patch Changes

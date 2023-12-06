@@ -16,7 +16,7 @@ export const FooterLink: FC<IProps> = React.forwardRef<
   const isInnerLink = href.includes('http');
 
   return (
-    <Text size="md" bold={false}>
+    <Text variant="small" bold={false}>
       {isInnerLink ? (
         <a ref={ref} href={href} className={linkClass}>
           {children}
