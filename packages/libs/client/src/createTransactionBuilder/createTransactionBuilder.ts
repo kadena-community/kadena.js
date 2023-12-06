@@ -13,6 +13,7 @@ import {
 import type { ValidDataTypes } from '../composePactCommand/utils/addData';
 import type { ISigner } from '../composePactCommand/utils/addSigner';
 import { patchCommand } from '../composePactCommand/utils/patchCommand';
+import type { AddCapabilities } from '../composePactCommand/utils/payload';
 import type {
   IContinuationPayloadObject,
   IPactCommand,
@@ -200,7 +201,9 @@ interface IExecution {
     >,
   >(
     ...codes: [...TCodes]
-  ): IBuilder<{ payload: IExecPayload & { funs: [...TCodes] } }>;
+  ): IBuilder<{
+    payload: IExecPayload & { funs: AddCapabilities<[...TCodes]> };
+  }>;
 }
 
 /**
