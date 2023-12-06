@@ -4,14 +4,15 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Event', {
-  description: 'A record of an execution of a function on a smart contract.',
+  description:
+    'An event emitted by the execution of a smart-contract function.',
   id: { field: 'blockHash_orderIndex_requestKey' },
   fields: (t) => ({
     // database fields
     chainId: t.expose('chainId', { type: 'BigInt' }),
     height: t.expose('height', {
       type: 'BigInt',
-      description: 'The block height of this event.',
+      description: 'The height of the block where the event was emitted.',
     }),
     orderIndex: t.expose('orderIndex', {
       type: 'BigInt',
@@ -22,7 +23,8 @@ export default builder.prismaNode('Event', {
     name: t.exposeString('name'),
     parameterText: t.exposeString('parameterText'),
     qualifiedName: t.exposeString('qualifiedName', {
-      description: 'The module name and the event name combined.',
+      description:
+        'The full eventname, containing module and eventname, e.g. coin.TRANSFER',
     }),
     requestKey: t.exposeString('requestKey'),
 

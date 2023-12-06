@@ -18,7 +18,7 @@ import {
 export default builder.node(
   builder.objectRef<ModuleAccount>(ModuleAccountName),
   {
-    description: 'An account on a certain module, such as coin.',
+    description: 'A fungible-specific account.',
     id: {
       resolve(parent) {
         return `${ModuleAccountName}/${parent.moduleName}/${parent.accountName}`;

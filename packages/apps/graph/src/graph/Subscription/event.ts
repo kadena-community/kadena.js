@@ -6,7 +6,8 @@ import { builder } from '../builder';
 
 builder.subscriptionField('event', (t) =>
   t.prismaField({
-    description: 'Subscribe to new events.',
+    description:
+      'Listen for a specific event by qualifiedName (e.g. `coin.TRANSFER`).',
     args: {
       eventName: t.arg.string({ required: true }),
     },

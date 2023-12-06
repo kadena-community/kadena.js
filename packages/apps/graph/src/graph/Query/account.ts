@@ -7,7 +7,7 @@ import { ModuleAccountName } from '../types/graphql-types';
 
 builder.queryField('account', (t) =>
   t.field({
-    description: 'Find an account by its name and its module, such as coin.',
+    description: 'Retrieve an account by its name and fungible, such as coin.',
     nullable: true,
     args: {
       accountName: t.arg.string({ required: true }),

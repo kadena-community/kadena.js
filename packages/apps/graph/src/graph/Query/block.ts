@@ -6,7 +6,7 @@ import Block from '../objects/Block';
 
 builder.queryField('block', (t) =>
   t.prismaField({
-    description: 'Find a block by its hash.',
+    description: 'Retrieve a block by hash.',
     args: {
       hash: t.arg.string({ required: true }),
     },

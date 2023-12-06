@@ -6,7 +6,7 @@ import { builder } from '../builder';
 
 builder.queryField('transactions', (t) =>
   t.prismaConnection({
-    description: 'Find transactions.',
+    description: 'Retrieve transactions.',
     edgesNullable: false,
     args: {
       accountName: t.arg.string({ required: false }),

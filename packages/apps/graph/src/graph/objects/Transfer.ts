@@ -16,7 +16,7 @@ export default builder.prismaNode('Transfer', {
     orderIndex: t.expose('orderIndex', {
       type: 'BigInt',
       description:
-        'The order of the transfer in the case that there are chained Transfers.',
+        'The order of the transfer when it is a `defpact` (multi-step transaction) execution.',
     }),
     moduleHash: t.exposeString('moduleHash'),
     moduleName: t.exposeString('moduleName'),
@@ -25,7 +25,8 @@ export default builder.prismaNode('Transfer', {
 
     // computed fields
     crossChainTransfer: t.prismaField({
-      description: 'The transfer that is the counterparty of this transfer.',
+      description:
+        'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
       type: 'Transfer',
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 4, // In the worst case resolve scenario, it executes 4 queries.

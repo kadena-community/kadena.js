@@ -13,8 +13,7 @@ import { ChainModuleAccountName } from '../types/graphql-types';
 export default builder.node(
   builder.objectRef<ChainModuleAccount>(ChainModuleAccountName),
   {
-    description:
-      'An account on a certain chain on a certain module, such as coin.',
+    description: 'A chain- and fungible-specific account.',
     id: {
       resolve(parent) {
         return `${ChainModuleAccountName}/${parent.chainId}/${parent.moduleName}/${parent.accountName}`;

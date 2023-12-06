@@ -7,7 +7,7 @@ import Block from '../objects/Block';
 
 builder.queryField('blocksFromHeight', (t) =>
   t.prismaField({
-    description: 'Find all blocks from a given height.',
+    description: 'Retrieve blocks by chain and minimal height.',
     args: {
       startHeight: t.arg.int({ required: true }),
       chainIds: t.arg.stringList({ required: false }),

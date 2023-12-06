@@ -5,7 +5,7 @@ import { builder } from '../builder';
 
 builder.queryField('lastBlockHeight', (t) =>
   t.field({
-    description: 'Get the height of the latest block.',
+    description: 'Get the height of the block with the highest height.',
     type: 'BigInt',
     nullable: true,
     complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,

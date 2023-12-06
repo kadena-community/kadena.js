@@ -3,15 +3,11 @@ The `BigInt` scalar type represents non-fractional signed whole numeric values.
 """
 scalar BigInt
 
-"""
-A unit of information that stores a set of verified transactions.
-"""
+"""A unit of information that stores a set of verified transactions."""
 type Block implements Node {
   chainId: BigInt!
 
-  """
-  The number of blocks that confirm this block.
-  """
+  """The number of blocks that proceed this block."""
   confirmationDepth: Int!
   creationTime: DateTime!
   epoch: DateTime!
@@ -23,17 +19,10 @@ type Block implements Node {
   parentHash: String
   payloadHash: String!
 
-  """
-  The proof of work hash.
-  """
+  """The proof of work hash."""
   powHash: String!
   predicate: String!
-  transactions(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): BlockTransactionsConnection!
+  transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
 }
 
 type BlockTransactionsConnection {
@@ -47,9 +36,7 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
-"""
-An account on a certain chain on a certain module, such as coin.
-"""
+"""A chain- and fungible-specific account."""
 type ChainModuleAccount implements Node {
   accountName: String!
   balance: Float!
@@ -57,18 +44,8 @@ type ChainModuleAccount implements Node {
   guard: Guard!
   id: ID!
   moduleName: String!
-  transactions(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ChainModuleAccountTransactionsConnection!
-  transfers(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ChainModuleAccountTransfersConnection!
+  transactions(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransfersConnection!
 }
 
 type ChainModuleAccountTransactionsConnection {
@@ -98,21 +75,15 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
-"""
-Floats that will have a value of 0 or more.
-"""
+"""Floats that will have a value of 0 or more."""
 scalar Decimal
 
-"""
-A record of an execution of a function on a smart contract.
-"""
+"""An event emitted by the execution of a smart-contract function."""
 type Event implements Node {
   block: Block!
   chainId: BigInt!
 
-  """
-  The block height of this event.
-  """
+  """The height of the block where the event was emitted."""
   height: BigInt!
   id: ID!
   moduleName: String!
@@ -125,39 +96,29 @@ type Event implements Node {
   parameterText: String!
 
   """
-  The module name and the event name combined.
+  The full eventname, containing module and eventname, e.g. coin.TRANSFER
   """
   qualifiedName: String!
   requestKey: String!
   transaction: Transaction
 }
 
-"""
-General information about the graph and chainweb-data.
-"""
+"""General information about the graph and chainweb-data."""
 type GraphConfiguration {
-  """
-  The maximum confirmation depth configured in the environment variables.
-  """
+  """The maximum number of confirmations calculated on this endpoint."""
   maximumConfirmationDepth: Int!
 
-  """
-  The minimum block height that is available in the graph.
-  """
+  """The lowest block-height that is indexed in this endpoint."""
   minimumBlockHeight: BigInt
 }
 
-"""
-Access rule for a certain smart contract or account.
-"""
+"""Guard for an account."""
 type Guard {
   keys: [String!]!
   predicate: String!
 }
 
-"""
-The public key of the miner that solved a block.
-"""
+"""The public key of the miner that solved a block."""
 type MinerKey implements Node {
   block: Block!
   blockHash: String!
@@ -165,27 +126,15 @@ type MinerKey implements Node {
   key: String!
 }
 
-"""
-An account on a certain module, such as coin.
-"""
+"""A fungible-specific account."""
 type ModuleAccount implements Node {
   accountName: String!
   chainAccounts: [ChainModuleAccount!]!
   id: ID!
   moduleName: String!
   totalBalance: Decimal!
-  transactions(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ModuleAccountTransactionsConnection!
-  transfers(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ModuleAccountTransfersConnection!
+  transactions(after: String, before: String, first: Int, last: Int): ModuleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): ModuleAccountTransfersConnection!
 }
 
 type ModuleAccountTransactionsConnection {
@@ -238,115 +187,59 @@ type PageInfo {
   startCursor: String
 }
 
-"""
-Floats that will have a value greater than 0.
-"""
+"""Floats that will have a value greater than 0."""
 scalar PositiveFloat
 
 type Query {
-  """
-  Find an account by its name and its module, such as coin.
-  """
+  """Retrieve an account by its name and fungible, such as coin."""
   account(accountName: String!, moduleName: String!): ModuleAccount
 
-  """
-  Find a block by its hash.
-  """
+  """Retrieve a block by hash."""
   block(hash: String!): Block
 
-  """
-  Find all blocks from a given height.
-  """
+  """Retrieve blocks by chain and minimal height."""
   blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
 
   """
-  Find an account by its name and its module, such as coin, on a specific chain.
+  Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
-  chainAccount(
-    accountName: String!
-    chainId: String!
-    moduleName: String!
-  ): ChainModuleAccount
+  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount
 
-  """
-  Find all completed blocks from a given height.
-  """
-  completedBlockHeights(
-    chainIds: [String!]
-    completedHeights: Boolean
-    heightCount: Int
-  ): [Block!]!
+  """Retrieve all completed blocks from a given height."""
+  completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
 
-  """
-  Estimate the gas limit for a transaction.
-  """
+  """Estimate the gas limit for a transaction."""
   gasLimitEstimate(transaction: PactTransaction!): Int!
 
-  """
-  Estimate the gas limit for a list of transactions.
-  """
+  """Estimate the gas limit for a list of transactions."""
   gasLimitEstimates(transactions: [PactTransaction!]!): [Int!]!
 
-  """
-  Get the configuration of the graph.
-  """
+  """Get the configuration of the graph."""
   graphConfiguration: GraphConfiguration!
 
-  """
-  Get the height of the latest block.
-  """
+  """Get the height of the block with the highest height."""
   lastBlockHeight: BigInt
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
 
   """
-  Send a list of raw pact queries.
+  Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
   pactQueries(pactQuery: [PactQuery!]!): [String!]!
 
   """
-  Send a raw pact query.
+  Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
   pactQuery(pactQuery: PactQuery!): String!
 
-  """
-  Find transactions.
-  """
-  transactions(
-    accountName: String
-    after: String
-    before: String
-    blockHash: String
-    chainId: String
-    first: Int
-    last: Int
-    moduleName: String
-    requestKey: String
-  ): QueryTransactionsConnection!
+  """Retrieve transactions."""
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String, requestKey: String): QueryTransactionsConnection!
 
-  """
-  Find all transactions by a given public key.
-  """
-  transactionsByPublicKey(
-    after: String
-    before: String
-    first: Int
-    last: Int
-    publicKey: String!
-  ): QueryTransactionsByPublicKeyConnection!
+  """Retrieve all transactions by a given public key."""
+  transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
 
-  """
-  Find transfers.
-  """
-  transfers(
-    accountName: String
-    after: String
-    before: String
-    chainId: String
-    first: Int
-    last: Int
-    moduleName: String
-  ): QueryTransfersConnection!
+  """Retrieve transfers."""
+  transfers(accountName: String, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransfersConnection!
 }
 
 type QueryTransactionsByPublicKeyConnection {
@@ -382,9 +275,7 @@ type QueryTransfersConnectionEdge {
   node: Transfer!
 }
 
-"""
-Information about a public key that can sign transactions.
-"""
+"""A signer for a specific transaction."""
 type Signer implements Node {
   address: String
   capabilities: String
@@ -393,43 +284,33 @@ type Signer implements Node {
   publicKey: String!
   requestKey: String!
 
-  """
-  The signature scheme that was used to sign.
-  """
+  """The signature scheme that was used to sign."""
   scheme: String
   signature: String!
 }
 
 type Subscription {
-  """
-  Subscribe to new events.
-  """
+  """Listen for a specific event by qualifiedName (e.g. `coin.TRANSFER`)."""
   event(eventName: String!): [Event!]
 
-  """
-  Subscribe to new blocks.
-  """
+  """Subscribe to new blocks."""
   newBlocks(chainIds: [Int!]): [Block!]
 
   """
-  Subscribe to a request key to wait for the related transaction to appear.
+  Listen for a transaction by request key. Returns when it is in a block.
   """
   transaction(requestKey: String!): Transaction
 }
 
-"""
-A request to execute a smart contract function.
-"""
+"""A confirmed transaction."""
 type Transaction implements Node {
-  """
-  The JSON stringified error message if the transaction failed.
-  """
+  """The JSON stringified error message if the transaction failed."""
   badResult: String
   block: Block
   chainId: BigInt!
 
   """
-  The PACT code that is executed.
+  The Pact expressions executed in this transaction when it is an `exec` transaction. For a continuation, this field is `cont`.
   """
   code: String!
 
@@ -439,9 +320,7 @@ type Transaction implements Node {
   continuation: String
   creationTime: DateTime!
 
-  """
-  The JSON stringified data that is related to the request.
-  """
+  """The `data` field of a transaction. Formatted as raw JSON."""
   data: String
   eventCount: BigInt
   events: [Event!]
@@ -449,14 +328,10 @@ type Transaction implements Node {
   gasLimit: BigInt!
   gasPrice: Float!
 
-  """
-  The JSON stringified result if the transaction was successful.
-  """
+  """The transaction result when it was successful. Formatted as raw JSON."""
   goodResult: String
 
-  """
-  The block height.
-  """
+  """The height of the block this transaction belongs to."""
   height: BigInt!
   id: ID!
   logs: String
@@ -470,7 +345,7 @@ type Transaction implements Node {
   signers: [Signer!]
 
   """
-  The step number in the case that transactions are chained.
+  The step-number when this is an execution of a `defpact`, aka multi-step transaction.
   """
   step: BigInt
   transactionId: BigInt
@@ -478,9 +353,7 @@ type Transaction implements Node {
   ttl: BigInt!
 }
 
-"""
-A transfer of funds from a fungible between two accounts.
-"""
+"""A transfer of funds from a fungible between two accounts."""
 type Transfer implements Node {
   amount: Decimal!
   blockHash: String!
@@ -488,7 +361,7 @@ type Transfer implements Node {
   chainId: BigInt!
 
   """
-  The transfer that is the counterparty of this transfer.
+  The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.
   """
   crossChainTransfer: Transfer
   height: BigInt!
@@ -497,15 +370,13 @@ type Transfer implements Node {
   moduleName: String!
 
   """
-  The order of the transfer in the case that there are chained Transfers.
+  The order of the transfer when it is a `defpact` (multi-step transaction) execution.
   """
   orderIndex: BigInt!
   receiverAccount: String!
   requestKey: String!
   senderAccount: String!
 
-  """
-  The transaction that initiated this transfer.
-  """
+  """The transaction that initiated this transfer."""
   transaction: Transaction
 }

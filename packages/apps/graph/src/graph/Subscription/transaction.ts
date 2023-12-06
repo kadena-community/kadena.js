@@ -6,7 +6,7 @@ import { builder } from '../builder';
 builder.subscriptionField('transaction', (t) =>
   t.prismaField({
     description:
-      'Subscribe to a request key to wait for the related transaction to appear.',
+      'Listen for a transaction by request key. Returns when it is in a block.',
     args: {
       requestKey: t.arg.string({ required: true }),
     },

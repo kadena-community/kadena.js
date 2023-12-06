@@ -4,7 +4,7 @@ import { builder } from '../builder';
 
 builder.queryField('transactionsByPublicKey', (t) =>
   t.prismaConnection({
-    description: 'Find all transactions by a given public key.',
+    description: 'Retrieve all transactions by a given public key.',
     edgesNullable: false,
     args: {
       publicKey: t.arg.string({ required: true }),

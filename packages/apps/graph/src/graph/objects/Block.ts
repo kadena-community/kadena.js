@@ -109,6 +109,7 @@ export default builder.prismaNode('Block', {
     }),
 
     confirmationDepth: t.int({
+      description: 'The number of blocks that proceed this block.',
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS *
         dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
@@ -119,7 +120,6 @@ export default builder.prismaNode('Block', {
           throw normalizeError(error);
         }
       },
-      description: 'The number of blocks that confirm this block.',
     }),
   }),
 });

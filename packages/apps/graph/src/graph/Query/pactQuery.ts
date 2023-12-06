@@ -21,7 +21,8 @@ const PactQuery = builder.inputType('PactQuery', {
 
 builder.queryField('pactQueries', (t) =>
   t.field({
-    description: 'Send a list of raw pact queries.',
+    description:
+      'Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).',
     type: ['String'],
     args: {
       pactQuery: t.arg({ type: [PactQuery], required: true }),
@@ -48,7 +49,8 @@ builder.queryField('pactQueries', (t) =>
 
 builder.queryField('pactQuery', (t) =>
   t.field({
-    description: 'Send a raw pact query.',
+    description:
+      'Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).',
     type: 'String',
     args: {
       pactQuery: t.arg({ type: PactQuery, required: true }),

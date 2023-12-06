@@ -5,7 +5,7 @@ import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {
-  description: 'A request to execute a smart contract function.',
+  description: 'A confirmed transaction.',
   id: { field: 'blockHash_requestKey' },
   fields: (t) => ({
     // database fields
@@ -22,7 +22,8 @@ export default builder.prismaNode('Transaction', {
     chainId: t.expose('chainId', { type: 'BigInt' }),
     // code: t.exposeString('code', { nullable: true }),
     code: t.string({
-      description: 'The PACT code that is executed.',
+      description:
+        'The Pact expressions executed in this transaction when it is an `exec` transaction. For a continuation, this field is `cont`.',
       resolve({ code }) {
         return code === null ? JSON.stringify('cont') : JSON.stringify(code);
       },
@@ -39,7 +40,7 @@ export default builder.prismaNode('Transaction', {
     }),
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     data: t.string({
-      description: 'The JSON stringified data that is related to the request.',
+      description: 'The `data` field of a transaction. Formatted as raw JSON.',
       nullable: true,
       resolve({ data }) {
         return nullishOrEmpty(data) ? undefined : JSON.stringify(data);
@@ -50,7 +51,7 @@ export default builder.prismaNode('Transaction', {
     gasPrice: t.expose('gasPrice', { type: 'Float' }),
     goodResult: t.string({
       description:
-        'The JSON stringified result if the transaction was successful.',
+        'The transaction result when it was successful. Formatted as raw JSON.',
       nullable: true,
       resolve({ goodResult }) {
         return nullishOrEmpty(goodResult)
@@ -60,7 +61,7 @@ export default builder.prismaNode('Transaction', {
     }),
     height: t.expose('height', {
       type: 'BigInt',
-      description: 'The block height.',
+      description: 'The height of the block this transaction belongs to.',
     }),
     logs: t.exposeString('logs', { nullable: true }),
     metadata: t.string({
@@ -79,7 +80,8 @@ export default builder.prismaNode('Transaction', {
     step: t.expose('step', {
       type: 'BigInt',
       nullable: true,
-      description: 'The step number in the case that transactions are chained.',
+      description:
+        'The step-number when this is an execution of a `defpact`, aka multi-step transaction.',
     }),
     ttl: t.expose('ttl', { type: 'BigInt' }),
     transactionId: t.expose('transactionId', {

@@ -5,12 +5,12 @@ export default builder.objectType('GraphConfiguration', {
   fields: (t) => ({
     maximumConfirmationDepth: t.exposeInt('maximumConfirmationDepth', {
       description:
-        'The maximum confirmation depth configured in the environment variables.',
+        'The maximum number of confirmations calculated on this endpoint.',
     }),
     minimumBlockHeight: t.expose('minimumBlockHeight', {
       type: 'BigInt',
       nullable: true,
-      description: 'The minimum block height that is available in the graph.',
+      description: 'The lowest block-height that is indexed in this endpoint.',
     }),
   }),
 });
