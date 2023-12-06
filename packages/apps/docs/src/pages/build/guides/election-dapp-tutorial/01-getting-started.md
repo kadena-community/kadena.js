@@ -15,20 +15,19 @@ In this tutorial, you'll complete the following tasks:
 
 - Clone the project repository.
 - Explore the initial state of the project structure. 
-- Install the dependencies for the application frontend and run it as a standalone application without a connection to any blockchain and with data stored
-in memory. 
+- Install the dependencies for the application frontend.
+- Explore the functionality of the frontend as a standalone application with data stored in memory.
 
 ## Before you begin
 
-Before you start the tutorials in the Election workshop, verify the following basic requirements:
+Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
-- You have a code editor, such as Visual Studio Code, access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have [Docker](https://docs.docker.com/get-docker/) installed and are generally familiar with using Docker commands for containerized applications.
+- You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
 - You have [Git](https://git-scm.com/downloads) installed and are generally familiar with using git commands.
-- You have [Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs/)  and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed on your local computer.
+- You have [Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs/) and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed on your local computer.
 - You have access to [Chainweaver](https://github.com/kadena-io/chainweaver/releases) desktop or web application.
-- You have [Pact](https://github.com/kadena-io/pact#installing-pact) or the [Pact language server plugin](https://github.com/kadena-io/pact-lsp/releases) installed on your local computer.
+- You have [Pact](https://github.com/kadena-io/pact#installing-pact) or the [Pact language server plugin](https://github.com/kadena-io/pact-lsp/releases) installed on your local computer to support syntax highlighting and other features in the code editor.
 
 ## Clone the project repository
 
@@ -163,5 +162,5 @@ To explore the election website frontend application:
 At this point, you have a basic development environment and an overview of the project directory structure. 
 You have also had you're first look at the frontend for the election website and explored its main features. 
 
-In the next tutorial, you'll start a development network—`devnet`—blockchain on your local computer insidw of a Docker container. 
+In the next tutorial, you'll start a development network—`devnet`—blockchain on your local computer inside of a Docker container. 
 After you get the development network running, you'll be ready to start developing smart contracts to connect the election application to the blockchain backend.
