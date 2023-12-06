@@ -7,7 +7,7 @@ import {
 import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import type { ChainModuleAccount, ModuleAccount } from '../types/graphql-types';
 import {

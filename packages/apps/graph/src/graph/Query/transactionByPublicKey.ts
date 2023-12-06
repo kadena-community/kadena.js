@@ -1,9 +1,6 @@
 import { prismaClient } from '@db/prismaClient';
-import {
-  COMPLEXITY,
-  getDefaultConnectionComplexity,
-} from '@services/complexity';
-import { PRISMA, builder } from '../builder';
+import { getDefaultConnectionComplexity } from '@services/complexity';
+import { builder } from '../builder';
 
 builder.queryField('transactionsByPublicKey', (t) => {
   return t.prismaConnection({
