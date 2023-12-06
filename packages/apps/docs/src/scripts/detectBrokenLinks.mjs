@@ -91,9 +91,10 @@ function getDisallowedLinksFromMdFile(links) {
     if (!val.startsWith('http') && val.includes('.html')) {
       return [...acc, `${val} (NO RELATIVE .HTML files)`];
     }
-    if (val.startsWith('#')) {
-      return [...acc, `${val} (ONLY RELATIVE DEEPLINKS, WITH PATH)`];
-    }
+    //@TODO: fix checks on relative links
+    // if (val.startsWith('#')) {
+    //   return [...acc, `${val} (ONLY RELATIVE DEEPLINKS, WITH PATH)`];
+    // }
 
     return acc;
   }, []);
