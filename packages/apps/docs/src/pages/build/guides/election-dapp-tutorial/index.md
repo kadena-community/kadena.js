@@ -49,6 +49,21 @@ However, the tutorials in the workshop also touch on additional topics such as:
 - Options available for signing transactions.
 - Where you can find additional tooling for blockchain development, including the Kadena JavaScript client library, Chainweaver, the Pact command-line executable, and more.
 
+## What you'll need
+
+To complete the tutorials in the workshop, you need to have some software installed on the computer you are using for your development environment.
+Each tutorial includes a "Before you begin" summary of what you'll need for that specific tutorial. As a preview before you start the workshop, you should check whether your development environment meets the following basic requirements:
+
+- You have an internet connection and a web browser installed on your local computer.
+- You have a code editor, such as Visual Studio Code, access to an interactive terminal shell, and are generally familiar with using command-line programs.
+- You have [Docker](https://docs.docker.com/get-docker/) installed and are generally familiar with using Docker commands for containerized applications.
+- You have [Git](https://git-scm.com/downloads) installed and are generally familiar with using git commands.
+- You have [Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs/)  and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed on your local computer.
+- You have access to [Chainweaver](https://github.com/kadena-io/chainweaver/releases) desktop or web application.
+- You have [Pact](https://github.com/kadena-io/pact#installing-pact) or the [Pact language server plugin](https://github.com/kadena-io/pact-lsp/releases) installed on your local computer.
+
+If you have everything you need, let’s start building the election website by following the workshop roadmap to get started with [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started). 
+
 ## Workshop roadmap
 
 This workshop consists of multiple tutorials that you should complete in order. 
@@ -58,8 +73,8 @@ For the first tutorial, you’ll clone a repository with a working front-end for
 After that, you’ll set up a local development network and your development workspace to begin building the blockchain back-end for the election website. 
 The workshop repository contains branches with starter code for every tutorial, so you can compare your solution with the finished code at every step along the way. 
 
- * [Get started](/build/guides/election-dapp-tutorial/01-getting-started)
- * [Prepare your workspace](/build/guides/election-dapp-tutorial/02-running-devnet)
+ * [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started)
+ * [Start a local blockchain](/build/guides/election-dapp-tutorial/02-running-devnet)
  * [Admin account](/build/guides/election-dapp-tutorial/03-admin-account)
  * [Namespaces](/build/guides/election-dapp-tutorial/04-namespaces)
  * [Keysets](/build/guides/election-dapp-tutorial/05-keysets)
@@ -73,20 +88,5 @@ Stay tuned for future editions of this workshop and for more intermediate and ad
  * Deploy to test network with the functional programming approach
  * Develop a continuous integration pipeline for deploying your application
 
-To suggest topics you’d like to see covered in future tutorials and workshops, submit a [documentation request]().
-If you'd like to contribute content—either in the form of a new tutorial or to fix issues—see our [contributor's guide]().
-
-## What you'll need
-
-To complete the tutorials in the workshop, you need to have some software installed on the computer you are using for your development environment.
-Each tutorial includes a "Before you begin" summary of what you'll need to that specific tutorial. As a preview of what you'll need, before you start the tutorials in the workshop, you should check whether your development environment meets the following basic requirements:
-
-- You have an internet connection and a web browser installed on your local computer.
-- You have a code editor, such as Visual Studio Code, access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have [Docker](https://docs.docker.com/get-docker/) installed and are generally familiar with using Docker commands for containerized applications.
-- You have [Git](https://git-scm.com/downloads) installed and are generally familiar with using git commands.
-- You have [Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs/)  and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed on your local computer.
-- You have access to [Chainweaver](https://github.com/kadena-io/chainweaver/releases) desktop or web application.
-- You have [Pact](https://github.com/kadena-io/pact#installing-pact) or the [Pact language server plugin](https://github.com/kadena-io/pact-lsp/releases) installed on your local computer.
-
-If you have everything you need, let’s start building the election website with [Get started](/build/guides/election-dapp-tutorial/01-getting-started). 
+To suggest topics you’d like to see covered in future tutorials and workshops, submit a [documentation request](https://github.com/kadena-community/kadena.js/issues/new?assignees=&labels=documentation&projects=&template=003-improve_documentation.yml).
+If you'd like to contribute content—either in the form of a new tutorial or to fix issues—see our [contributor's guide](/contribute/contributors-guide).
