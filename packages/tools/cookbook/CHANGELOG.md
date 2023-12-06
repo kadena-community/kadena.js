@@ -1,5 +1,38 @@
 # @kadena/cookbook
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [4bd53128d]
+  - @kadena/client@1.6.3
+
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [445fb2c7d]
+  - @kadena/client@1.6.1
+
+## 0.0.5
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [d15a6231f]
+- Updated dependencies [fa6b84e22]
+  - @kadena/chainweb-node-client@0.5.1
+  - @kadena/cryptography-utils@0.4.1
+  - @kadena/client@1.6.0
+
 ## 0.0.4
 
 ### Patch Changes

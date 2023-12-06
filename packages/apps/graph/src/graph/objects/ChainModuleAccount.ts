@@ -1,72 +1,168 @@
-import { prismaClient } from '../../db/prismaClient';
+import { prismaClient } from '@db/prismaClient';
+import { getChainModuleAccount } from '@services/account-service';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
+import type { ChainModuleAccount } from '../types/graphql-types';
+import { ChainModuleAccountName } from '../types/graphql-types';
 
-export default builder.objectType('ChainModuleAccount', {
-  fields: (t) => ({
-    chainId: t.exposeID('chainId'),
-    accountName: t.exposeString('accountName'),
-    moduleName: t.exposeString('moduleName'),
-    guard: t.field({
-      type: 'Guard',
-      resolve: async (parent, args) => {
-        const accountDetails = await accountDetailsLoader.load({
-          moduleName: parent.moduleName,
-          accountName: parent.accountName,
-          chainId: parent.chainId,
-        });
-
-        return {
-          keys: accountDetails.guard.keys,
-          predicate: accountDetails.guard.pred,
-        };
+export default builder.node(
+  builder.objectRef<ChainModuleAccount>(ChainModuleAccountName),
+  {
+    id: {
+      resolve(parent) {
+        return `${ChainModuleAccountName}/${parent.chainId}/${parent.moduleName}/${parent.accountName}`;
       },
-    }),
-    balance: t.exposeFloat('balance'),
-    transactions: t.prismaConnection({
-      type: 'Transaction',
-      cursor: 'blockHash_requestKey',
-      resolve: (query, parent) => {
-        return prismaClient.transaction.findMany({
-          ...query,
-          where: {
-            senderAccount: parent.accountName,
-            events: {
-              some: {
-                moduleName: parent.moduleName,
+      // Do not use parse here since there is a bug in the pothos relay plugin which can cause incorrect results. Parse the ID directly in the loadOne function.
+    },
+    isTypeOf(source) {
+      return (source as any).__typename === ChainModuleAccountName;
+    },
+    async loadOne(id) {
+      try {
+        const chainId = id.split('/')[1];
+        const moduleName = id.split('/')[2];
+        const accountName = id.split('/')[3];
+
+        return getChainModuleAccount({
+          chainId,
+          moduleName,
+          accountName,
+        });
+      } catch (error) {
+        throw normalizeError(error);
+      }
+    },
+    fields: (t) => ({
+      chainId: t.exposeID('chainId'),
+      accountName: t.exposeString('accountName'),
+      moduleName: t.exposeString('moduleName'),
+      guard: t.field({
+        type: 'Guard',
+        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
+        async resolve(parent) {
+          try {
+            const accountDetails = await accountDetailsLoader.load({
+              moduleName: parent.moduleName,
+              accountName: parent.accountName,
+              chainId: parent.chainId,
+            });
+
+            return {
+              keys: accountDetails.guard.keys,
+              predicate: accountDetails.guard.pred,
+            };
+          } catch (error) {
+            throw normalizeError(error);
+          }
+        },
+      }),
+      balance: t.exposeFloat('balance'),
+      transactions: t.prismaConnection({
+        type: 'Transaction',
+        cursor: 'blockHash_requestKey',
+        edgesNullable: false,
+        complexity: (args) => ({
+          field: getDefaultConnectionComplexity({
+            withRelations: true,
+            first: args.first,
+            last: args.last,
+          }),
+        }),
+        async totalCount(parent) {
+          return await prismaClient.transaction.count({
+            where: {
+              senderAccount: parent.accountName,
+              events: {
+                some: {
+                  moduleName: parent.moduleName,
+                },
               },
+              chainId: parseInt(parent.chainId),
             },
-            chainId: parseInt(parent.chainId),
-          },
-          orderBy: {
-            height: 'desc',
-          },
-        });
-      },
-    }),
-    transfers: t.prismaConnection({
-      type: 'Transfer',
-      cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
-      resolve: async (query, parent) => {
-        return prismaClient.transfer.findMany({
-          ...query,
-          where: {
-            OR: [
-              {
+          });
+        },
+        async resolve(query, parent) {
+          try {
+            return await prismaClient.transaction.findMany({
+              ...query,
+              where: {
                 senderAccount: parent.accountName,
+                events: {
+                  some: {
+                    moduleName: parent.moduleName,
+                  },
+                },
+                chainId: parseInt(parent.chainId),
               },
-              {
-                receiverAccount: parent.accountName,
+              orderBy: {
+                height: 'desc',
               },
-            ],
-            moduleName: parent.moduleName,
-            chainId: parseInt(parent.chainId),
-          },
-          orderBy: {
-            height: 'desc',
-          },
-        });
-      },
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
+        },
+      }),
+      transfers: t.prismaConnection({
+        type: 'Transfer',
+        edgesNullable: false,
+        cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
+        complexity: (args) => ({
+          field: getDefaultConnectionComplexity({
+            first: args.first,
+            last: args.last,
+          }),
+        }),
+        async totalCount(parent) {
+          try {
+            return await prismaClient.transfer.count({
+              where: {
+                OR: [
+                  {
+                    senderAccount: parent.accountName,
+                  },
+                  {
+                    receiverAccount: parent.accountName,
+                  },
+                ],
+                moduleName: parent.moduleName,
+                chainId: parseInt(parent.chainId),
+              },
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
+        },
+        async resolve(query, parent) {
+          try {
+            return await prismaClient.transfer.findMany({
+              ...query,
+              where: {
+                OR: [
+                  {
+                    senderAccount: parent.accountName,
+                  },
+                  {
+                    receiverAccount: parent.accountName,
+                  },
+                ],
+                moduleName: parent.moduleName,
+                chainId: parseInt(parent.chainId),
+              },
+              orderBy: {
+                height: 'desc',
+              },
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
+        },
+      }),
     }),
-  }),
-});
+  },
+);

@@ -6,10 +6,7 @@ import {
 import { ErrorHeader } from '@/components/Layout/Landing/components/Headers/ErrorHeader';
 import { Search } from '@/components/Search/Search';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { NextRouter } from 'next/router';
@@ -74,7 +71,7 @@ const NotFoundPage: FC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename), true),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename), true),
       frontmatter: {
         title: '404 - Not found',
         menu: '404 - Not found',

@@ -1,5 +1,60 @@
 # @kadena/react-ui
 
+## 0.5.0
+
+### Minor Changes
+
+- a7bb78d8b: Updated the Notification component API
+- 957af9922: Used react-aria to recreate the `Dialog` and `Modal` components
+- bf490445c: Setup design tokens sync
+- 854604595: Updated the Tooltip component API and styles
+- a30106c85: Refactored Tabs component
+- 5250be30b: Added TextareaCopy and InputCopy
+- d9109f3ba: Removing the Label component
+- 4b8b728dd: Updated the Card component's styles and removed the `stacked` prop.
+  Users can add the Divider component within a Card to achieve the same result
+  as using the deprecated `stacked` prop.
+
+### Patch Changes
+
+- 6992a2b58: Added Icons for C: & W: accounts
+
+## 0.4.0
+
+### Minor Changes
+
+- 49d8366c7: Refactor InputFieldWrapper for the new FormFieldWrapper component
+  with stacked items
+
+## 0.3.1
+
+### Patch Changes
+
+- 6f79f73dd: Added overflow prop to the Box, Stack, and Grid components
+- 6f79f73dd: Added focus state and improved visuals for inputs
+
+## 0.3.0
+
+### Minor Changes
+
+- 11747cde4: Exported the Textarea and TextareaField components
+- 8a719c647: Add new width, height, and className properties to sprinkles and
+  update Box, Stack and Grid components to use them
+- df7044cac: Corrected `Tag` background color Extracted `maskValue` string
+  utility function from `MaskedValue` component Accept ReactNode as `children`
+  prop for `Tag` component
+
+### Patch Changes
+
+- 6491589b5: Exported MaskOptions type
+
+## 0.2.1
+
+### Patch Changes
+
+- fa98adaa8: Fixed the KodeMono font
+- fa6b84e22: No auto-globals for vitest specs
+
 ## 0.2.0
 
 ### Minor Changes

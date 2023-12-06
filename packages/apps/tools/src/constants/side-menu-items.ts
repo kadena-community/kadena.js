@@ -17,14 +17,19 @@ export const menuData: ISidebarToolbarItem[] = [
       },
     ],
   },
-  // {
-  //   title: 'Transactions',
-  //   icon: 'Transition',
-  //   href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
-  // },
-  // {
-  //   title: 'Account',
-  //   icon: 'Account',
-  //   href: Routes.ACCOUNT_TRANSACTIONS,
-  // },
+  {
+    title: 'Transactions',
+    icon: 'Transition',
+    href: 'transactions',
+    items: [
+      {
+        title: 'Transfer Tracker',
+        href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
+      },
+      {
+        title: 'Cross Chain Transfer Finisher',
+        href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
+      },
+    ],
+  },
 ];

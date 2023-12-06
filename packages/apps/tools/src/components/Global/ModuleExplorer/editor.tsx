@@ -1,4 +1,12 @@
-import { Grid, Heading, SelectField, Stack, Tabs } from '@kadena/react-ui';
+import {
+  Grid,
+  GridItem,
+  Heading,
+  SelectField,
+  Stack,
+  TabItem,
+  Tabs,
+} from '@kadena/react-ui';
 
 import type { IChainModule } from './types';
 
@@ -46,8 +54,8 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
   }
   return (
     <Stack direction={'column'}>
-      <Grid.Root columns={3}>
-        <Grid.Item>
+      <Grid columns={3}>
+        <GridItem>
           <SelectField
             label={t('Keyboard handler')}
             selectProps={{
@@ -62,8 +70,8 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
               <option key={`editor-keyboard-${keyboard}`}>{keyboard}</option>
             ))}
           </SelectField>
-        </Grid.Item>
-        <Grid.Item>
+        </GridItem>
+        <GridItem>
           <SelectField
             label={t('Theme')}
             selectProps={{
@@ -78,8 +86,8 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
               <option key={`editor-theme-${theme}`}>{theme}</option>
             ))}
           </SelectField>
-        </Grid.Item>
-        <Grid.Item>
+        </GridItem>
+        <GridItem>
           <SelectField
             label={t('Mode')}
             selectProps={{
@@ -94,23 +102,14 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
               <option key={`editor-mode-${mode}`}>{mode}</option>
             ))}
           </SelectField>
-        </Grid.Item>
-      </Grid.Root>
-      <Tabs.Root initialTab={moduleToTabId(openedModules[0])}>
-        {openedModules.map(({ moduleName, chainId }) => {
-          return (
-            <Tabs.Tab
-              id={moduleToTabId({ moduleName, chainId })}
-              key={moduleToTabId({ moduleName, chainId })}
-            >{`${moduleName} @ ${chainId}`}</Tabs.Tab>
-          );
-        })}
-
+        </GridItem>
+      </Grid>
+      <Tabs defaultSelectedKey={moduleToTabId(openedModules[0])}>
         {openedModules.map(({ moduleName, chainId, code }) => {
           return (
-            <Tabs.Content
+            <TabItem
+              title={`${moduleName} @ ${chainId}`}
               key={moduleToTabId({ moduleName, chainId })}
-              id={moduleToTabId({ moduleName, chainId })}
             >
               <AceViewer
                 code={code}
@@ -120,10 +119,10 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
                 theme={theme}
                 mode={mode}
               />
-            </Tabs.Content>
+            </TabItem>
           );
         })}
-      </Tabs.Root>
+      </Tabs>
     </Stack>
   );
 };

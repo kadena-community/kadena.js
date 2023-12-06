@@ -1,7 +1,6 @@
-import type { SystemIcon } from '@components/Icon';
+import { Stack } from '@components/Layout/Stack';
 import type { IPaginationProps } from '@components/Pagination';
 import { Pagination } from '@components/Pagination';
-import { Stack } from '@components/Stack';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -9,12 +8,13 @@ const meta: Meta<
   {
     helperText: string;
     leadingText: string;
-    leftIcon: keyof typeof SystemIcon;
-    rightIcon: keyof typeof SystemIcon;
   } & IPaginationProps
 > = {
-  title: 'Navigation/Pagination',
+  title: 'Components/Pagination',
   parameters: {
+    status: {
+      type: ['inDevelopment'],
+    },
     docs: {
       description: {
         component:

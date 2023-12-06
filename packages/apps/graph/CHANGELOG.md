@@ -1,5 +1,72 @@
 # @kadena/graph
 
+## 1.0.6
+
+### Patch Changes
+
+- 2dec0d4cd: Improved naming convention of Reconcile object
+- 73bbcbd56: Made edges non-nullable
+- 0f598d10e: Added chain id to transactions filter on block object; changed
+  default value for maximum confirmation depth
+- ad00ec0b2: Added reconcile view for chainweb data
+- 858f52a2e: hotfix for reconcile
+- d1f6f99fc: Refactor objects, queries and subscriptions to use the same
+  function type definition, to use the same argument naming conventions and
+  object casting; also added totalCount resolvers to all prismaConnection
+  fields; added errors to simulation log file
+- bccf4333a: Added multi-sig accounts support in simulation
+- 49e5c55ae: Added tracing and trace analyser
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+
+## 1.0.5
+
+### Patch Changes
+
+- f4ac431f4: Included cross-chain transfers in transfer object
+- 66338bfa0: Enabled option for different gas payers in simulation
+- d58bce7ef: acount and chainAccount now implement the Node type, meaning that
+  they can be used in the node and nodes queries. Besides this, several
+  optimizations with async data retrieval.
+- 0a36ed900: Fix simulate script edge case (when it attempts cross-chain
+  transfers to the same chain). Add build step in start:generate script
+- Updated dependencies [4bd53128d]
+  - @kadena/client@1.6.3
+
+## 1.0.4
+
+### Patch Changes
+
+- 6f79f73dd: Added gas estimation query and adjusted folder structure for devnet
+  files
+
+## 1.0.3
+
+### Patch Changes
+
+- 2e18fe50c: Added query to get transactions by public key
+- 39a870cea: Added endpoint for graph and chainweb-data general info
+- aced46632: Updated simulate command to now incorporate safe-transfers
+- 6e4895050: Added proper error logging for the graph and client
+- 9de5d550c: Added PactData as optional argument to PactQueries
+- Updated dependencies [445fb2c7d]
+  - @kadena/client@1.6.1
+
+## 1.0.2
+
+### Patch Changes
+
+- 18a8f5574: Added pactQuery and pactQueries for arbitrary PACT code execution
+- b348a6899: Added signer object and signer fields on transactions (graph)
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [d15a6231f]
+- Updated dependencies [fa6b84e22]
+  - @kadena/chainweb-node-client@0.5.1
+  - @kadena/cryptography-utils@0.4.1
+  - @kadena/client@1.6.0
+  - @kadena/pactjs@0.4.1
+
 ## 1.0.1
 
 ### Patch Changes

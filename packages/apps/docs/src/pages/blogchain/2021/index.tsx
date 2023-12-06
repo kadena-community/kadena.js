@@ -1,17 +1,17 @@
 import { BlogListWrapper } from '@/components/BlogList/BlogListWrapper';
+import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IMenuData, IPageProps } from '@/Layout';
+import type { IMenuData, IPageProps } from '@kadena/docs-tools';
 import {
   checkSubTreeForActive,
+  getMenuData,
   getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { getData } from '@/utils/staticGeneration/getData.mjs';
+} from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -41,13 +41,14 @@ const Home: FC<IProps> = ({ frontmatter, posts }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getInitBlogPosts(getData() as IMenuData[], 0, 10, {
+  const menuData: IMenuData[] = await getMenuData();
+  const posts = getInitBlogPosts(menuData, 0, 10, {
     year: '2021',
   });
 
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       posts,
       frontmatter: {
         title: 'BlogChain 2021',

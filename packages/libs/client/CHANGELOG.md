@@ -1,5 +1,36 @@
 # Change Log - @kadena/client
 
+## 1.6.4
+
+### Patch Changes
+
+- 21a0d1530: Fix pactjs-cli to send hash with txs; fixed the issue after
+  chainweb-node update
+
+## 1.6.3
+
+### Patch Changes
+
+- 4bd53128d: Fix createEckoWalletQuicksign to work with updated interface
+
+## 1.6.1
+
+### Patch Changes
+
+- 445fb2c7d: Fix pred type for keysets
+
+## 1.6.0
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [d15a6231f]
+- Updated dependencies [fa6b84e22]
+  - @kadena/chainweb-node-client@0.5.1
+  - @kadena/cryptography-utils@0.4.1
+  - @kadena/pactjs@0.4.1
+
 ## 1.5.0
 
 ### Minor Changes
@@ -16,25 +47,25 @@
   - `submitOne` to make piping easier. As the piped arguments can be ambiguous
     (array or single transaction)
 - f1259eafa: Migrate packages from Jest to Vitest
-- Updated dependencies [badc7c2a3]
-- Updated dependencies [831c022c8]
-- Updated dependencies [2a0e92cd1]
-- Updated dependencies [3e00cf2ac]
-- Updated dependencies [c8bbec395]
-- Updated dependencies [b51b86507]
-- Updated dependencies [a664a9535]
-- Updated dependencies [c143687bd]
-- Updated dependencies [591bf035e]
-- Updated dependencies [d62a23ffe]
-- Updated dependencies [fec8dfafd]
-- Updated dependencies [eede6962f]
-- Updated dependencies [699e73b51]
-- Updated dependencies [7e5bfb25f]
-- Updated dependencies [a664a9535]
-- Updated dependencies [c375cb124]
-  - @kadena/chainweb-node-client@0.5.0
-  - @kadena/cryptography-utils@0.4.0
-  - @kadena/pactjs@0.4.0
+- Updated dependencies \[badc7c2a3]
+- Updated dependencies \[831c022c8]
+- Updated dependencies \[2a0e92cd1]
+- Updated dependencies \[3e00cf2ac]
+- Updated dependencies \[c8bbec395]
+- Updated dependencies \[b51b86507]
+- Updated dependencies \[a664a9535]
+- Updated dependencies \[c143687bd]
+- Updated dependencies \[591bf035e]
+- Updated dependencies \[d62a23ffe]
+- Updated dependencies \[fec8dfafd]
+- Updated dependencies \[eede6962f]
+- Updated dependencies \[699e73b51]
+- Updated dependencies \[7e5bfb25f]
+- Updated dependencies \[a664a9535]
+- Updated dependencies \[c375cb124]
+  - @kadena/chainweb-node-client\@0.5.0
+  - @kadena/cryptography-utils\@0.4.0
+  - @kadena/pactjs\@0.4.0
 
 ## 1.4.0
 

@@ -1,14 +1,11 @@
-import type { IMenuData } from '@/Layout';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import { getBlogPosts } from '@/utils/getBlogPosts';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { Box, Grid, Heading, Stack } from '@kadena/react-ui';
+import type { IMenuData } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
+import { Box, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -22,8 +19,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <Stack direction="column" gap="$2xl">
       <Box marginBottom="$20">
-        <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-          <Grid.Item rowSpan={2}>
+        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+          <GridItem rowSpan={2}>
             <DocsCard
               label="General"
               description="Kadena was founded on the idea that blockchain could revolutionize how the world interacts and transacts. But to get to mass adoption, chain technology and the ecosystem connecting it to the business world needed to be reimagined from the ground up. Our founders built a proprietary chain architecture and created the tools to make blockchain work for business – at speed, scale, and energy efficiency previously thought unachievable."
@@ -42,8 +39,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 </a>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <DocsCard
               label="Resources"
               description="Miscellaneous resources to make your Kadena journey easier."
@@ -65,8 +62,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <DocsCard
               label="Whitepapers"
               description="Read up on the different aspects of Kadena in our whitepapers."
@@ -88,8 +85,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-        </Grid.Root>
+          </GridItem>
+        </Grid>
       </Box>
 
       <Box>
@@ -109,7 +106,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       blogPosts,
       frontmatter: {
         title: 'Intro to Kadena',

@@ -1,14 +1,11 @@
-import type { IMenuData } from '@/Layout';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import { getBlogPosts } from '@/utils/getBlogPosts';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { Box, Grid, Heading } from '@kadena/react-ui';
+import type { IMenuData } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
+import { Box, Grid, GridItem, Heading } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -22,8 +19,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <>
       <Box marginBottom="$20">
-        <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-          <Grid.Item rowSpan={2}>
+        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+          <GridItem rowSpan={2}>
             <DocsCard
               label="We are looking for Ambassadors"
               description="Since the launch of Kadena's public blockchain, we have had
@@ -40,8 +37,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <DocsCard
               label="Run a node"
               description=""
@@ -75,8 +72,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <DocsCard
               label="Contribute to the docs"
               description="The Kadena documentation is open source and hosted on GitHub.
@@ -93,8 +90,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-        </Grid.Root>
+          </GridItem>
+        </Grid>
       </Box>
 
       <Heading as="h6">Stay up-to-date</Heading>
@@ -109,7 +106,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       blogPosts,
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Contribute',
         menu: 'Contribute',

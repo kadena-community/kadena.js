@@ -1,5 +1,6 @@
 import { builder } from '../builder';
 import Account from '../objects/ModuleAccount';
+import { ModuleAccountName } from '../types/graphql-types';
 
 builder.queryField('account', (t) => {
   return t.field({
@@ -8,9 +9,9 @@ builder.queryField('account', (t) => {
       moduleName: t.arg.string({ required: true }),
     },
     type: Account,
-    resolve: async (parent, args) => {
+    resolve(__parent, args) {
       return {
-        id: `Account:${args.accountName}`,
+        __typename: ModuleAccountName,
         accountName: args.accountName,
         moduleName: args.moduleName,
         chainAccounts: [],

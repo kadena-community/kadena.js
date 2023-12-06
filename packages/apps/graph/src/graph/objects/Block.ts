@@ -1,6 +1,11 @@
-import { prismaClient } from '../../db/prismaClient';
-import { dotenv } from '../../utils/dotenv';
-import { builder } from '../builder';
+import { prismaClient } from '@db/prismaClient';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
+import { dotenv } from '@utils/dotenv';
+import { normalizeError } from '@utils/errors';
+import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Block', {
   id: { field: 'hash' },
@@ -20,18 +25,22 @@ export default builder.prismaNode('Block', {
     parent: t.prismaField({
       type: 'Block',
       nullable: true,
-      resolve(query, parent, args, context, info) {
-        return prismaClient.block.findUnique({
-          where: {
-            hash: parent.parentBlockHash,
-          },
-        });
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      async resolve(__query, parent) {
+        try {
+          return await prismaClient.block.findUnique({
+            where: {
+              hash: parent.parentBlockHash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
-
     parentHash: t.string({
       nullable: true,
-      resolve: (parent, args, context, info) => {
+      resolve(parent) {
         // Access the parent block's hash from the parent object
         return parent.parentBlockHash;
       },
@@ -41,41 +50,70 @@ export default builder.prismaNode('Block', {
     transactions: t.prismaConnection({
       type: 'Transaction',
       cursor: 'blockHash_requestKey',
-      async totalCount(parent, args, context, info) {
-        return prismaClient.transaction.count({
-          where: {
-            blockHash: parent.hash,
-          },
-        });
+      edgesNullable: false,
+      complexity: (args) => ({
+        field: getDefaultConnectionComplexity({
+          first: args.first,
+          last: args.last,
+        }),
+      }),
+      async totalCount(parent) {
+        try {
+          return await prismaClient.transaction.count({
+            where: {
+              blockHash: parent.hash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
-      resolve: (query, parent, args, context, info) => {
-        return prismaClient.transaction.findMany({
-          ...query,
-          where: {
-            blockHash: parent.hash,
-          },
-          orderBy: {
-            height: 'desc',
-          },
-        });
+      async resolve(query, parent) {
+        try {
+          return await prismaClient.transaction.findMany({
+            ...query,
+            where: {
+              blockHash: parent.hash,
+            },
+            orderBy: {
+              height: 'desc',
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
 
     minerKeys: t.prismaField({
       type: ['MinerKey'],
       nullable: true,
-      resolve(query, parent, args, context, info) {
-        return prismaClient.minerKey.findMany({
-          where: {
-            blockHash: parent.hash,
-          },
-        });
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      async resolve(query, parent) {
+        try {
+          return await prismaClient.minerKey.findMany({
+            ...query,
+            where: {
+              blockHash: parent.hash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
 
     confirmationDepth: t.int({
-      resolve: async (parent, args, context, info) => {
-        return getConfirmationDepth(parent.hash);
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS *
+        dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
+      async resolve(parent) {
+        try {
+          return await getConfirmationDepth(parent.hash);
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
   }),
@@ -91,7 +129,7 @@ async function getConfirmationDepth(blockhash: string): Promise<number> {
       SELECT b.hash, b.parent, d.depth + 1 AS depth
       FROM BlockDescendants d
       JOIN blocks b ON d.hash = b.parent
-      WHERE d.depth < ${dotenv.MAX_BLOCK_DEPTH}
+      WHERE d.depth < ${dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH}
     )
     SELECT MAX(depth) AS depth
     FROM BlockDescendants;

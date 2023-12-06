@@ -22,3 +22,9 @@ export type Tail<T extends Any[]> = T extends [infer _]
 export type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
+
+export type Assert<T, U> = (<V>() => V extends T ? 1 : 2) extends <
+  V,
+>() => V extends U ? 1 : 2
+  ? true
+  : { error: 'Types are not equal'; received: T; expected: U };

@@ -53,26 +53,31 @@ export function createEckoWalletQuicksign(): IEckoSignFunction {
       throw new Error('Error signing transaction');
     }
 
-    if ('quickSignData' in eckoResponse) {
-      eckoResponse.quickSignData.map((signedCommand, i) => {
-        if (signedCommand.outcome.result === 'success') {
-          if (signedCommand.outcome.hash !== transactionHashes[i]) {
-            throw new Error(
-              `Hash of the transaction signed by the wallet does not match. Our hash: ${transactionHashes[i]}, wallet hash: ${signedCommand.outcome.hash}`,
-            );
-          }
+    const responses =
+      'responses' in eckoResponse
+        ? eckoResponse.responses
+        : eckoResponse.quickSignData;
 
-          const sigs = signedCommand.commandSigData.sigs.filter(
-            (sig) => sig.sig !== null,
-          ) as { pubKey: string; sig: string }[];
-
-          // Add the signature(s) that we received from the wallet to the PactCommand(s)
-          transactions[i] = addSignatures(transactions[i], ...sigs);
-        }
-      });
-    } else {
+    if (!Array.isArray(responses)) {
       throw new Error('Error signing transaction');
     }
+
+    responses.map((signedCommand, i) => {
+      if (signedCommand.outcome.result === 'success') {
+        if (signedCommand.outcome.hash !== transactionHashes[i]) {
+          throw new Error(
+            `Hash of the transaction signed by the wallet does not match. Our hash: ${transactionHashes[i]}, wallet hash: ${signedCommand.outcome.hash}`,
+          );
+        }
+
+        const sigs = signedCommand.commandSigData.sigs.filter(
+          (sig) => sig.sig !== null,
+        ) as { pubKey: string; sig: string }[];
+
+        // Add the signature(s) that we received from the wallet to the PactCommand(s)
+        transactions[i] = addSignatures(transactions[i], ...sigs);
+      }
+    });
 
     return isList ? transactions : transactions[0];
   }) as IEckoSignFunction;

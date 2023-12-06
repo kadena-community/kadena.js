@@ -1,4 +1,3 @@
-import type { IMenuData } from '@/Layout';
 import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
@@ -7,15 +6,14 @@ import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import type { IMenuData } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import {
   Box,
   Button,
   Card,
   Grid,
+  GridItem,
   Heading,
   Stack,
   Text,
@@ -33,27 +31,26 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
-      <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-        <Grid.Item>
+      <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <GridItem>
           <Card fullWidth>
-            <Heading as="h4">Getting started tutorial</Heading>
+            <Heading as="h4">Get started with tutorials</Heading>
             <Box marginY="$4">
               <Text>
-                Getting started is simple. Building useful applications on a
-                blockchain doesn’t have to be hard or expensive. This Developer
-                Quickstart is designed to remove the friction from onboarding so
-                that you can understand how to build with Kadena quickly and
-                easily.
+                Building applications to run on a blockchain doesn&apos;t have
+                to be hard, time-consuming, or expensive. Get started with the
+                basics through hands-on tutorials. Learn how to set up a
+                development network, create and fund a development wallet,
+                deploy a smart contract, and more. Take the first step by
+                clicking Quick start.
               </Text>
             </Box>
             <Button as="a" asChild icon="TrailingIcon">
-              <Link href={'/build/guides/election-dapp-tutorial'}>
-                Build a dApp
-              </Link>
+              <Link href={'/build/quickstart'}>Quick start</Link>
             </Button>
           </Card>
-        </Grid.Item>
-        <Grid.Item>
+        </GridItem>
+        <GridItem>
           <Box marginY="$8" marginLeft="$12">
             <MostPopular
               pages={popularPages}
@@ -61,20 +58,20 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               titleAs="h6"
             />
           </Box>
-        </Grid.Item>
-      </Grid.Root>
+        </GridItem>
+      </Grid>
       <Box marginBottom="$20">
-        <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-          <Grid.Item>
+        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+          <GridItem>
             <DocsCard
-              label="Quickstart"
-              description="This Developer Quickstart is designed to remove the friction from onboarding so that you can understand how to build with Kadena quickly and easily."
+              label="Quick start"
+              description="Follow the Quick start to set up a development environment and deploy your first smart contract on Kadena."
               schema="warning"
               background="contribute"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/build/quickstart">
-                  10 minute quick start
+                  Quick start
                 </Link>
                 <Link
                   className={docsCardLink}
@@ -105,8 +102,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <DocsCard
               label="Cookbook"
               description="Use the right tools and platforms for building many types of decentralized applications."
@@ -122,8 +119,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-        </Grid.Root>
+          </GridItem>
+        </Grid>
       </Box>
 
       <Stack direction="column" gap="$2xl">
@@ -143,11 +140,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
 export const getStaticProps: GetStaticProps = async () => {
   const blogPosts = await getBlogPosts(['kadenajs', 'cli']);
   const mostPopularPages = await getMostPopularPages('/build');
+  const leftMenuTree = await checkSubTreeForActive(getPathName(__filename));
   return {
     props: {
       popularPages: mostPopularPages,
       blogPosts,
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree,
       frontmatter: {
         title: 'Build on Kadena',
         menu: 'Build',

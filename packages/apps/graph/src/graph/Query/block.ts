@@ -1,33 +1,30 @@
-import type { Debugger } from 'debug';
-import _debug from 'debug';
-import { prismaClient } from '../../db/prismaClient';
+import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import Block from '../objects/Block';
-
-const log: Debugger = _debug('graph:Query:block');
 
 builder.queryField('block', (t) => {
   return t.prismaField({
     args: {
       hash: t.arg.string({ required: true }),
     },
-
     type: Block,
+    nullable: true,
+    complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+    async resolve(query, __parent, args) {
+      try {
+        const block = await prismaClient.block.findUnique({
+          ...query,
+          where: {
+            hash: args.hash,
+          },
+        });
 
-    resolve: async (__query, __parent, { hash }) => {
-      log('searching for block with hash:', hash);
-
-      const block = await prismaClient.block.findUnique({
-        where: {
-          hash,
-        },
-      });
-
-      log('found block', block);
-      if (!block) {
-        throw new Error(`Block not found for hash: ${hash}`);
+        return block;
+      } catch (error) {
+        throw normalizeError(error);
       }
-      return block;
     },
   });
 });

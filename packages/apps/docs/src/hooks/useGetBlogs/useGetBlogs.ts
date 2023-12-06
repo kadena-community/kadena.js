@@ -1,5 +1,5 @@
 import type { IIBlogLoadOptions } from '@/hooks/useGetBlogs/utils';
-import type { IMenuData } from '@/Layout';
+import type { IMenuData } from '@kadena/docs-tools';
 import { useEffect, useState } from 'react';
 
 interface IReturn {
@@ -32,7 +32,7 @@ export const useGetBlogs = ({
           authorId ? `&authorId=${authorId}` : ``
         }${year ? `&year=${year}` : ``}${tagId ? `&tagId=${tagId}` : ``}`,
       );
-      const items = (await result.json()) as IMenuData[];
+      const items = (await result.json()) as unknown as IMenuData[];
       getData((v) => [...v, ...items]);
       setOffset((v) => v + limit);
 

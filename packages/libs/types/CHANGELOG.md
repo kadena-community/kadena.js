@@ -1,5 +1,11 @@
 # Change Log - @kadena/types
 
+## 0.5.1
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+
 ## 0.5.0
 
 ### Minor Changes

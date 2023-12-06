@@ -1,2 +1,2 @@
 export { MaskedValue } from './MaskedValue';
-export { maskValue } from './utils';
+export { maskValue, type MaskOptions } from './utils';

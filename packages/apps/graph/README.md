@@ -16,6 +16,14 @@ uses chainweb-data as the datasource.
 
 A GraphQL endpoint that interacts with chainweb-data and chainweb-node.
 
+- [Kadena GraphQL](#kadena-graphql)
+- [Useful extra's](#useful-extras)
+  - [Connect to the database](#connect-to-the-database)
+  - [Fund an account on the devnet](#fund-an-account-on-the-devnet)
+  - [Simulate traffic on the devnet](#simulate-traffic-on-the-devnet)
+  - [Tracing and trace analysis](#tracing-and-trace-analysis)
+  - [Query Complexity](#query-complexity)
+
 # Getting started
 
 First, install dependencies and build up to and including `@kadena/graph`.
@@ -36,7 +44,9 @@ pnpm build --filter @kadena/graph...
 
 2. Start devnet:
 
-   > **NOTE:** This project has a built-in command to create and start devnet. For the full guide visit the quickstart page on the documentation website [here](https://docs.kadena.io/build/quickstart).
+   > **NOTE:** This project has a built-in command to create and start devnet.
+   > For the full guide visit the quickstart page on the documentation website
+   > [here](https://docs.kadena.io/build/quickstart).
 
    ```sh
    pnpm run devnet
@@ -51,8 +61,7 @@ pnpm build --filter @kadena/graph...
    the image by adding `--pull=always` after `docker run` in the `devnet`
    script.
 
-   If something goes wrong, you can delete the volume, and try to
-   start again:
+   If something goes wrong, you can delete the volume, and try to start again:
 
    ```sh
    docker volume rm kadena_devnet
@@ -82,7 +91,7 @@ pnpm build --filter @kadena/graph...
    }
    ```
 
-## Useful commands
+## Useful extra's
 
 ### Connect to the database
 
@@ -120,11 +129,37 @@ transactions are different, with different amounts and to and from different
 chains. The new number is generated using the previous one as seed.
 
 ```sh
-npm run simulate -- -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
+npm run simulate -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
 ```
 
-- accounts - number of accounts to be created in the devnet (default: 5)
+- numberOfAccounts - number of accounts to be created in the devnet (default: 6)
 - timeInterval - frequency of transactions in miliseconds (default: 100)
 - maxAmount - maximum amount for a single transaction (default: 25)
 - tokenPool - amount of circulating tokens (default: 1000000)
 - seed - seed for random number generation (default: current timestamp)
+
+### Tracing and trace analysis
+
+To enable tracing, set the `TRACING_ENABLED` environment variable to `true` in the
+`.env` file. This will enable tracing for all GraphQL queries and mutations and log them to `traces.log` (by default) in the root directory. You can also configure the output name of the log file by setting the `TRACING_LOG_FILENAME` environment variable.
+
+After letting the server run and collect trace data, you can then run the trace analysis script to get statistics of the traces:
+
+```sh
+pnpm run trace:analyse -s <sort> -l <limit>
+```
+
+- sort - sort by a field (default: `median`)
+- limit - limit the number of queries to output (default: no limit)
+
+### Query Complexity
+
+To enable query complexity limits and calculations, set `COMPLEXITY_ENABLED` to `true`. The complexity limit, which determines how complex queries are allowed to be, can be set with `COMPLEXITY_LIMIT`. You can expose the complexity of a query by setting `COMPLEXITY_EXPOSED` to `true`, which returns the complexity details in the `extensions` section of the response.
+
+The overal query complexity is calculated by combining the field complexity, the depth and the breath. The complexity of the fields is determined by the following rules:
+
+- Fields that do not make external calls: 1
+- Calls to Chainweb Node: 7
+- Prisma calls without relations: 5
+- Prisma calls with relations: 10
+- *In cases of lists, a mulitplier is applied for the requested item count.

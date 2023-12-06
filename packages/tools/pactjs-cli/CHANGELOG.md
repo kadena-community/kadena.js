@@ -1,5 +1,40 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.6.4
+
+### Patch Changes
+
+- 21a0d1530: Fix pactjs-cli to send hash with txs; fixed the issue after
+  chainweb-node update
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+  - @kadena/pactjs-generator@1.6.4
+
+## 1.6.3
+
+### Patch Changes
+
+- @kadena/pactjs-generator@1.6.3
+
+## 1.6.1
+
+### Patch Changes
+
+- @kadena/pactjs-generator@1.6.1
+
+## 1.6.0
+
+### Minor Changes
+
+- e62a9505e: add option to store modules parse tree to dist
+
+### Patch Changes
+
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [fa6b84e22]
+  - @kadena/pactjs-generator@1.6.0
+
 ## 1.5.0
 
 ### Patch Changes

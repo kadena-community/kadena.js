@@ -1,0 +1,72 @@
+{
+  "name": "@kadena/hd-wallet",
+  "version": "0.1.0",
+  "private": true,
+  "description": "HD Wallet; key derivation",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/hd-wallet"
+  },
+  "license": "MIT",
+  "contributors": [
+    "Javad Khalilian <javad@kadena.io>",
+    "Danillo Felixdaal <danillo@kadena.io>"
+  ],
+  "exports": {
+    "./chainweaver": "./lib/chainweaver/index.js"
+  },
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "chainweaver": [
+        "./lib/chainweaver/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc && cpy ./src/chainweaver/vendor/**/* ./lib/chainweaver/vendor/",
+    "format": "pnpm run --sequential /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
+    "format:md": "remark *.md -o --use @kadena-dev/markdown",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .js,.ts",
+    "start": "ts-node --transpile-only src/index.ts",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@kadena/client": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@scure/bip39": "^1.2.1",
+    "debug": "~4.3.4",
+    "ed25519-keygen": "^0.4.8"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "@microsoft/api-extractor": "^7.38.0",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@types/debug": "~4.1.7",
+    "@types/node": "^18.17.14",
+    "@vitest/coverage-v8": "^0.34.6",
+    "cpy-cli": "^5.0.0",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.3",
+    "ts-node": "~10.8.2",
+    "typescript": "5.2.2",
+    "vitest": "^0.34.6"
+  },
+  "publishConfig": {
+    "provenance": true
+  }
+}

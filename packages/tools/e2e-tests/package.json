@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/e2e-tests",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "format": "pnpm run --sequential /^format:.*/",

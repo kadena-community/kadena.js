@@ -1,4 +1,5 @@
 import type { ChainId, ICap } from '@kadena/types';
+import type { AllPartial } from './type-utilities';
 
 /**
  * The payload of a Execution transaction
@@ -7,8 +8,8 @@ import type { ChainId, ICap } from '@kadena/types';
 export interface IExecutionPayloadObject {
   // executable pact code
   exec: {
-    code?: string;
-    data?: Record<string, unknown>;
+    code: string;
+    data: Record<string, unknown>;
   };
 }
 
@@ -18,11 +19,13 @@ export interface IExecutionPayloadObject {
  */
 export interface IContinuationPayloadObject {
   cont: {
-    pactId?: string;
-    step?: number;
-    rollback?: boolean;
+    pactId: string;
+    step: number;
+    rollback: boolean;
     data?: Record<string, unknown>;
-    proof?: string;
+    // for none cross-chain tx, proof is null
+    // eslint-disable-next-line @rushstack/no-new-null
+    proof?: string | null;
   };
 }
 
@@ -56,4 +59,14 @@ export interface IPactCommand {
   }>;
   networkId: string;
   nonce: string;
+}
+
+/**
+ * The the Partial type of {@link IPactCommand}
+ * @public
+ */
+export interface IPartialPactCommand extends AllPartial<IPactCommand> {
+  payload?:
+    | { exec: Partial<IExecutionPayloadObject['exec']> }
+    | { cont: Partial<IContinuationPayloadObject['cont']> };
 }

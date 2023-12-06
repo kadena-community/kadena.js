@@ -5,6 +5,7 @@ import { useToolbar } from '@/context/layout-context';
 import {
   helpCenterButtonClass,
   homeWrapperClass,
+  linkStyle,
 } from '@/pages/home/styles.css';
 import {
   Accordion,
@@ -12,6 +13,7 @@ import {
   Breadcrumbs,
   Card,
   Grid,
+  GridItem,
   Heading,
   Table,
 } from '@kadena/react-ui';
@@ -34,8 +36,16 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:faucet-description"
           components={[
-            <Link href="/faucet/existing" key="faucet-existing-link" />,
-            <Link href="/faucet/new" key="faucet-new-link" />,
+            <Link
+              className={linkStyle}
+              href="/faucet/existing"
+              key="faucet-existing-link"
+            />,
+            <Link
+              className={linkStyle}
+              href="/faucet/new"
+              key="faucet-new-link"
+            />,
           ]}
         />
       ),
@@ -47,6 +57,7 @@ const Home: FC = () => {
           i18nKey="common:how-to-keypair"
           components={[
             <a
+              className={linkStyle}
               href="https://transfer.chainweb.com/"
               target="_blank"
               rel="noreferrer"
@@ -54,6 +65,7 @@ const Home: FC = () => {
             />,
             <strong key="generate-keypair" />,
             <a
+              className={linkStyle}
               href="https://kadena.io/chainweaver-tos/"
               target="_blank"
               rel="noreferrer"
@@ -119,8 +131,8 @@ const Home: FC = () => {
           )}
         </Heading>
         <Card fullWidth>
-          <Grid.Root columns={2}>
-            <Grid.Item>
+          <Grid columns={2}>
+            <GridItem>
               <Heading as="h3" variant="h5">
                 {t('General Links')}
               </Heading>
@@ -128,6 +140,7 @@ const Home: FC = () => {
               <ul>
                 <li>
                   <a
+                    className={linkStyle}
                     href="https://docs.kadena.io/kadena"
                     target="_blank"
                     rel="noreferrer"
@@ -137,6 +150,7 @@ const Home: FC = () => {
                 </li>
                 <li>
                   <a
+                    className={linkStyle}
                     href="https://docs.kadena.io/kadena/kda/manage-kda"
                     target="_blank"
                     rel="noreferrer"
@@ -146,6 +160,7 @@ const Home: FC = () => {
                 </li>
                 <li>
                   <a
+                    className={linkStyle}
                     href="https://kadena.io/grants/"
                     target="_blank"
                     rel="noreferrer"
@@ -154,8 +169,8 @@ const Home: FC = () => {
                   </a>
                 </li>
               </ul>
-            </Grid.Item>
-            <Grid.Item>
+            </GridItem>
+            <GridItem>
               <Heading as="h3" variant="h5">
                 {t('Developers Links')}
               </Heading>
@@ -163,6 +178,7 @@ const Home: FC = () => {
               <ul>
                 <li>
                   <a
+                    className={linkStyle}
                     href="https://docs.kadena.io/build/quickstart"
                     target="_blank"
                     rel="noreferrer"
@@ -172,6 +188,7 @@ const Home: FC = () => {
                 </li>
                 <li>
                   <a
+                    className={linkStyle}
                     href="https://docs.kadena.io/pact"
                     target="_blank"
                     rel="noreferrer"
@@ -181,6 +198,7 @@ const Home: FC = () => {
                 </li>
                 <li>
                   <a
+                    className={linkStyle}
                     href="https://docs.kadena.io/build/guides/election-dapp-tutorial"
                     target="_blank"
                     rel="noreferrer"
@@ -189,8 +207,8 @@ const Home: FC = () => {
                   </a>
                 </li>
               </ul>
-            </Grid.Item>
-          </Grid.Root>
+            </GridItem>
+          </Grid>
         </Card>
         <Card fullWidth>
           <Heading as="h3" variant="h5">
@@ -223,7 +241,7 @@ const Home: FC = () => {
             Changelog with the latest updates to the Kadena Development Tools.
           </p>
           <br />
-          <Table.Root>
+          <Table.Root striped>
             <Table.Body>
               <Table.Tr>
                 <Table.Td>July 28, 2023</Table.Td>

@@ -1,20 +1,19 @@
-import { exec } from 'child_process';
+import { getReadTime } from '@kadena/docs-tools';
 import { isValid } from 'date-fns';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
-import { promisify } from 'util';
-import { getReadTime } from './utils.mjs';
+import { promiseExec } from './build.mjs';
+import { TEMPDIR } from './importReadme/createDoc.mjs';
 
-const promiseExec = promisify(exec);
 const errors = [];
 const success = [];
 
-const INITIALPATH = './src/pages';
-const MENUFILEDIR = './src/_generated';
-const MENUFILE = 'menu.mjs';
+const INITIAL_PATH = './src/pages';
+const MENU_FILE_DIR = './src/_generated';
+const MENU_FILE = 'menu.json';
 const TREE = [];
 
 const isMarkDownFile = (name) => {
@@ -23,14 +22,24 @@ const isMarkDownFile = (name) => {
 };
 
 export const getLastModifiedDate = async (root) => {
-  const { stdout } = await promiseExec(
-    `git log -1 --pretty="format:%ci" ${root}`,
-  );
+  const rootArray = root.split('/');
+  const filename = rootArray.pop();
+  const newRoot = rootArray.join('/');
 
-  const date = new Date(stdout);
-  if (!isValid(date)) return;
+  try {
+    const { stdout } = await promiseExec(
+      `cd ${TEMPDIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
+    );
+    const date = new Date(stdout);
+    if (!isValid(date)) return;
 
-  return date.toUTCString();
+    return date.toUTCString();
+  } catch (e) {
+    const date = new Date();
+    if (!isValid(date)) return;
+
+    return date.toUTCString();
+  }
 };
 
 const isIndex = (file) => {
@@ -56,7 +65,14 @@ const convertFile = async (file) => {
   if (!data) return;
 
   const readTime = getReadTime(doc);
-  const lastModifiedDate = await getLastModifiedDate(file);
+  const lastModifiedDate = data.lastModifiedDate
+    ? data.lastModifiedDate
+    : await getLastModifiedDate(
+        `./kadena-community/kadena.js/packages/apps/docs/${file.substr(
+          2,
+          file.length - 1,
+        )}`,
+      );
 
   return {
     lastModifiedDate,
@@ -137,13 +153,14 @@ const getFile = async (rootDir, parent, file) => {
   let child = {
     children: arr,
   };
+
   child.root = findPath(currentFile);
 
   if (!child.root) return;
 
   if (
     SEARCHABLE_DIRS.some((item) => {
-      return currentFile.startsWith(`${INITIALPATH}${item}`);
+      return currentFile.startsWith(`${INITIAL_PATH}${item}`);
     })
   ) {
     if (fs.statSync(`${currentFile}`).isFile()) {
@@ -191,13 +208,13 @@ const createTree = async (rootDir, parent = []) => {
 };
 
 export const createDocsTree = async () => {
-  const result = await createTree(INITIALPATH, TREE);
-  // write menu file
-  const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
-  export const menuData = ${JSON.stringify(result, null, 2)}`;
+  const result = await createTree(INITIAL_PATH, TREE);
 
-  fs.mkdirSync(MENUFILEDIR, { recursive: true });
-  fs.writeFileSync(`${MENUFILEDIR}/${MENUFILE}`, fileStr);
+  fs.mkdirSync(MENU_FILE_DIR, { recursive: true });
+  fs.writeFileSync(
+    `${MENU_FILE_DIR}/${MENU_FILE}`,
+    JSON.stringify(result, null, 2),
+  );
 
   success.push('Docs imported from monorepo');
 

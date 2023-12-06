@@ -1,4 +1,4 @@
-import type { IPactCommand } from '../../interfaces/IPactCommand';
+import type { IPartialPactCommand } from '../../interfaces/IPactCommand';
 import { patchCommand } from './patchCommand';
 
 export type ValidDataTypes =
@@ -8,11 +8,11 @@ export type ValidDataTypes =
   | boolean
   | Array<ValidDataTypes>;
 
-const getData = (cmd: Partial<IPactCommand>, key: string): unknown => {
+const getData = (cmd: IPartialPactCommand, key: string): unknown => {
   if (
     cmd.payload &&
     'exec' in cmd.payload &&
-    cmd.payload.exec.data !== undefined
+    cmd.payload.exec?.data !== undefined
   ) {
     return cmd.payload.exec.data[key];
   }
@@ -20,7 +20,7 @@ const getData = (cmd: Partial<IPactCommand>, key: string): unknown => {
   if (
     cmd.payload &&
     'cont' in cmd.payload &&
-    cmd.payload.cont.data !== undefined
+    cmd.payload.cont?.data !== undefined
   ) {
     return cmd.payload.cont.data[key];
   }
@@ -37,9 +37,9 @@ const getData = (cmd: Partial<IPactCommand>, key: string): unknown => {
 export const addData: (
   key: string,
   value: ValidDataTypes,
-) => (cmd: Partial<IPactCommand>) => Partial<IPactCommand> =
+) => (cmd: IPartialPactCommand) => IPartialPactCommand =
   (key: string, value: ValidDataTypes) =>
-  (cmd: Partial<IPactCommand>): Partial<IPactCommand> => {
+  (cmd: IPartialPactCommand): IPartialPactCommand => {
     let target: 'exec' | 'cont' = 'exec';
     if (cmd.payload && 'cont' in cmd.payload) {
       target = 'cont';
@@ -49,7 +49,7 @@ export const addData: (
         `DUPLICATED_KEY: "${key}" is already available in the data`,
       );
     }
-    const patch: unknown = {
+    const patch = {
       payload: {
         [target]: {
           data: {
@@ -57,20 +57,20 @@ export const addData: (
           },
         },
       },
-    };
-    return patchCommand(cmd, patch as Partial<IPactCommand>);
+    } as IPartialPactCommand;
+    return patchCommand(cmd, patch);
   };
 
 export interface IAddKeyset {
-  <TKey extends string, PRED extends 'keys-all' | 'keys-one' | 'keys-two'>(
+  <TKey extends string, PRED extends 'keys-all' | 'keys-any' | 'keys-2'>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]
-  ): (cmd: Partial<IPactCommand>) => Partial<IPactCommand>;
+  ): (cmd: IPartialPactCommand) => IPartialPactCommand;
 
   <TKey extends string, PRED extends string>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]
-  ): (cmd: Partial<IPactCommand>) => Partial<IPactCommand>;
+  ): (cmd: IPartialPactCommand) => IPartialPactCommand;
 }

@@ -8,10 +8,11 @@ import { createSitemap } from './createSitemap.mjs';
 import { createSpecs } from './createSpec.mjs';
 import { detectBrokenLinks } from './detectBrokenLinks.mjs';
 import { createDocsTree } from './getdocstree.mjs';
-import { importAllReadmes } from './importReadme.mjs';
+import { deleteTempDir } from './importReadme/importRepo.mjs';
+import { importAllReadmes } from './importReadme/index.mjs';
 import { Spinner } from './spinner.mjs';
 
-const promiseExec = promisify(exec);
+export const promiseExec = promisify(exec);
 let globalError = false;
 
 const createString = (str, start) => {
@@ -73,6 +74,8 @@ const initFunc = async (fnc, description) => {
 };
 
 (async function () {
+  //starting with a cleanslate, removing the tempdir.
+  deleteTempDir();
   await initFunc(importAllReadmes, 'Import docs from monorepo');
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');
@@ -82,6 +85,8 @@ const initFunc = async (fnc, description) => {
   await initFunc(createSitemap, 'Create the sitemap');
   await initFunc(copyFavIcons, 'Copy favicons');
   await initFunc(runPrettier, 'Prettier');
+  //cleanup, removing the tempdir
+  deleteTempDir();
 
   if (globalError) {
     process.exitCode = 1;

@@ -1,6 +1,7 @@
 import type {
-  GetAccountQuery,
-  GetChainAccountQuery,
+  ChainModuleAccountTransfersConnection,
+  ModuleAccountTransfersConnection,
+  Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
@@ -11,16 +12,49 @@ interface ICompactTransfersTableProps {
   moduleName: string;
   accountName: string;
   chainId?: string;
+  truncateColumns?: boolean;
   transfers:
-    | GetAccountQuery['account']['transfers']
-    | GetChainAccountQuery['chainAccount']['transfers'];
+    | ModuleAccountTransfersConnection
+    | ChainModuleAccountTransfersConnection;
+
   description?: string;
+}
+
+interface XChainTransfer {
+  startingTransfer: Transfer;
+  finishingTransfer: Transfer;
 }
 
 export const CompactTransfersTable = (
   props: ICompactTransfersTableProps,
 ): JSX.Element => {
-  const { moduleName, accountName, chainId, transfers, description } = props;
+  const {
+    moduleName,
+    accountName,
+    chainId,
+    truncateColumns,
+    transfers,
+    description,
+  } = props;
+
+  // This function determines if the transfer is the starting one or the finishing one
+  const determineXChainTransferOrder = (
+    transfer: Transfer,
+    crossChainTransfer: Transfer,
+  ): XChainTransfer => {
+    if (transfer.transaction?.pactId) {
+      // This means that the transfer on this chain is the finishing one
+      return {
+        startingTransfer: crossChainTransfer,
+        finishingTransfer: transfer,
+      };
+    } else {
+      return {
+        startingTransfer: transfer,
+        finishingTransfer: crossChainTransfer,
+      };
+    }
+  };
 
   return (
     <>
@@ -55,37 +89,91 @@ export const CompactTransfersTable = (
         </Table.Head>
         <Table.Body>
           {transfers.edges.map((edge, index) => {
+            let transfer = edge.node;
+            let crossChainCounterPart = edge.node.crossChainTransfer;
+
+            if (!chainId) {
+              /**  These transfers are going to be added to their crosschain counterpart and
+             this way we avoid repeated transfers in the table */
+              if (transfer.transaction?.pactId) return <></>;
+            } else {
+              if (crossChainCounterPart) {
+                const { startingTransfer, finishingTransfer } =
+                  determineXChainTransferOrder(transfer, crossChainCounterPart);
+                transfer = startingTransfer;
+                crossChainCounterPart = finishingTransfer;
+              }
+            }
+
+            const chainIdDisplay = crossChainCounterPart
+              ? `${transfer.chainId} / ${crossChainCounterPart.chainId}`
+              : transfer.chainId;
+
+            const heightDisplay = crossChainCounterPart
+              ? `${transfer.height} / ${crossChainCounterPart.height}`
+              : transfer.height;
+
             return (
               <Table.Tr key={index}>
-                <Table.Td>{edge?.node.chainId}</Table.Td>
-                <Table.Td>{edge?.node.height}</Table.Td>
-                <Table.Td>{edge?.node.amount}</Table.Td>
+                <Table.Td>{chainIdDisplay}</Table.Td>
+                <Table.Td>{heightDisplay}</Table.Td>
+                <Table.Td>{transfer.amount}</Table.Td>
                 <Table.Td>
                   <Link
-                    href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.senderAccount}`}
+                    href={`${routes.ACCOUNT}/${moduleName}/${transfer.senderAccount}`}
                   >
-                    <span title={edge?.node.senderAccount}>
-                      {truncate(edge?.node.senderAccount)}
+                    <span title={transfer.senderAccount}>
+                      {truncateColumns
+                        ? truncate(transfer.senderAccount)
+                        : transfer.senderAccount}
                     </span>
                   </Link>
                 </Table.Td>
                 <Table.Td>
-                  <Link
-                    href={`${routes.ACCOUNT}/${moduleName}/${edge?.node.receiverAccount}`}
-                  >
-                    <span title={edge?.node.receiverAccount}>
-                      {truncate(edge?.node.receiverAccount)}
-                    </span>
-                  </Link>
+                  {!crossChainCounterPart ? (
+                    <Link
+                      href={`${routes.ACCOUNT}/${moduleName}/${transfer.receiverAccount}`}
+                    >
+                      <span title={transfer.receiverAccount}>
+                        {truncateColumns
+                          ? truncate(transfer.receiverAccount)
+                          : transfer.receiverAccount}
+                      </span>
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`${routes.ACCOUNT}/${moduleName}/${crossChainCounterPart.receiverAccount}`}
+                    >
+                      <span title={crossChainCounterPart.receiverAccount}>
+                        {truncateColumns
+                          ? truncate(crossChainCounterPart.receiverAccount)
+                          : crossChainCounterPart.receiverAccount}
+                      </span>
+                    </Link>
+                  )}
                 </Table.Td>
                 <Table.Td>
-                  <Link
-                    href={`${routes.TRANSACTIONS}/${edge?.node.requestKey}`}
-                  >
-                    <span title={edge?.node.requestKey}>
-                      {truncate(edge?.node.requestKey)}
+                  <Link href={`${routes.TRANSACTIONS}/${transfer.requestKey}`}>
+                    <span title={transfer.requestKey}>
+                      {truncateColumns
+                        ? truncate(transfer.requestKey)
+                        : transfer.requestKey}
                     </span>
                   </Link>
+                  {crossChainCounterPart && (
+                    <>
+                      <span> / </span>
+                      <Link
+                        href={`${routes.TRANSACTIONS}/${crossChainCounterPart.requestKey}`}
+                      >
+                        <span title={crossChainCounterPart.requestKey}>
+                          {truncateColumns
+                            ? truncate(crossChainCounterPart.requestKey)
+                            : crossChainCounterPart.requestKey}
+                        </span>
+                      </Link>
+                    </>
+                  )}
                 </Table.Td>
               </Table.Tr>
             );

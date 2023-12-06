@@ -4,6 +4,9 @@ name: Release
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -24,9 +27,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           show-progress: false
-
-      - name: Setup Node.js 18
-        uses: actions/setup-node@v3
 
       - uses: pnpm/action-setup@v2
         with:
@@ -53,7 +53,7 @@ jobs:
           # Note: pnpm install after versioning is necessary to refresh lockfile
           version: pnpm run version
           publish: pnpm run publish
-          commit: 'Update changelogs and bump versions [skip ci]'
+          commit: 'Update changelogs and bump versions'
           title: '[ci] Release'
         env:
           # Needs "Contents" r+w and "Pull requests" r+w access to open/update PRs and push to main

@@ -3,7 +3,7 @@ import type {
   IClient,
   ICommandResult,
   IContinuationPayloadObject,
-  IPactCommand,
+  IPartialPactCommand,
   ITransactionDescriptor,
 } from '@kadena/client';
 import { createTransaction } from '@kadena/client';
@@ -17,9 +17,9 @@ import {
 import { asyncPipe } from './utils/asyncPipe';
 import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
 import {
+  checkSuccess,
   extractResult,
   getClient,
-  pickFirst,
   safeSign,
   throwIfFails,
   withInput,
@@ -50,7 +50,7 @@ const useGasStation = (targetChainGasPayer: IAccount) =>
 
 const signers = (
   publicKeys?: string[],
-): ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>) =>
+): ((cmd: IPartialPactCommand) => IPartialPactCommand) =>
   Array.isArray(publicKeys) && publicKeys.length
     ? addSigner(publicKeys!, (signFor) => [signFor('coin.GAS')])
     : (cmd) => cmd;
@@ -85,8 +85,9 @@ export const crossChain = (
       createTransaction,
       safeSign(sign),
       emit('sign'),
-      withInput(asyncPipe(client.preflight, emit('preflight'), throwIfFails)),
-      pickFirst,
+      checkSuccess(
+        asyncPipe(client.preflight, emit('preflight'), throwIfFails),
+      ),
       client.submitOne,
       emit('submit'),
       withInput(asyncPipe(client.listen, emit('listen'), throwIfFails)),
@@ -97,7 +98,11 @@ export const crossChain = (
       composePactCommand(defaults ?? {}),
       createTransaction,
       safeSign(sign),
-      emit(useGasStation(targetChainGasPayer) ? 'gas-station' : 'sign'),
+      emit(
+        useGasStation(targetChainGasPayer)
+          ? 'gas-station'
+          : 'sign-continuation',
+      ),
       client.submitOne,
       emit('submit-continuation'),
       client.listen,

@@ -2,11 +2,6 @@ import { sprinkles } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
-export const containerClass = style([
-  {
-    width: '680px',
-  },
-]);
 export const buttonContainerClass = style([
   { display: 'flex', flexDirection: 'row-reverse' },
 ]);
@@ -24,16 +19,16 @@ export const pubKeyInputWrapperStyle = style([
     position: 'relative',
   }),
   {
-    width: 'auto',
+    width: '100%',
   },
 ]);
 
-export const keyIconWrapperStyle = style([
+export const pubKeysContainerStyle = style([
   sprinkles({
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    gap: '$2',
+    marginY: '$4',
+    flexWrap: 'wrap',
   }),
 ]);
 

@@ -1,17 +1,16 @@
-import { Text } from '@components/Typography/Text/Text';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import {
-  colorVariant,
-  elementVariant,
-  fontVariant,
-  sizeVariant,
-  transformVariant,
-} from './Text.css';
+import { colorVariants, transformVariants } from '../typography.css';
+import { Text } from './Text';
 
 const meta: Meta<typeof Text> = {
   title: 'Typography/Text',
   component: Text,
+  parameters: {
+    status: {
+      type: ['needsRevision'],
+    },
+  },
   argTypes: {
     children: {
       control: { type: 'text' },
@@ -20,28 +19,20 @@ const meta: Meta<typeof Text> = {
       control: { type: 'select' },
     },
     variant: {
-      options: Object.keys(elementVariant) as (keyof typeof elementVariant)[],
+      options: ['small', 'smallest', 'base'],
       control: { type: 'select' },
-    },
-    size: {
-      options: Object.keys(sizeVariant) as (keyof typeof sizeVariant)[],
-      control: { type: 'radio' },
-    },
-    font: {
-      options: Object.keys(fontVariant) as (keyof typeof fontVariant)[],
-      control: { type: 'radio' },
     },
     bold: {
       control: { type: 'boolean' },
     },
     color: {
-      options: Object.keys(colorVariant) as (keyof typeof colorVariant)[],
+      options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
       control: { type: 'select' },
     },
     transform: {
       options: Object.keys(
-        transformVariant,
-      ) as (keyof typeof transformVariant)[],
+        transformVariants,
+      ) as (keyof typeof transformVariants)[],
       control: { type: 'radio' },
     },
   },
@@ -56,17 +47,13 @@ export const Primary: Story = {
     children: 'text',
     as: 'span',
     variant: undefined,
-    size: undefined,
-    font: undefined,
     bold: undefined,
     color: undefined,
     transform: undefined,
   },
-  render: ({ font, bold, size, as, variant, transform, children, color }) => (
+  render: ({ bold, as, variant, transform, children, color }) => (
     <Text
-      font={font}
       bold={bold}
-      size={size}
       as={as}
       variant={variant}
       transform={transform}

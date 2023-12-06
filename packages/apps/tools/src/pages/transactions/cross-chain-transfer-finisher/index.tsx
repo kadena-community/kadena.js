@@ -28,6 +28,7 @@ import {
   Breadcrumbs,
   Button,
   Grid,
+  GridItem,
   Heading,
   IconButton,
   Stack,
@@ -41,6 +42,7 @@ import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { containerClass } from '../styles.css';
 import {
   formButtonStyle,
   formContentStyle,
@@ -152,7 +154,7 @@ const CrossChainTransferFinisher: FC = () => {
 
     const status = await client.listen(requestObject);
 
-    const pactId = status.continuation?.pactId;
+    const pactId = status.continuation!.pactId;
 
     const requestKeyOrError = await finishXChainTransfer(
       {
@@ -271,7 +273,7 @@ const CrossChainTransferFinisher: FC = () => {
   }, [network, resetField]);
 
   return (
-    <div>
+    <section className={containerClass}>
       <DrawerToolbar
         ref={helpCenterRef}
         sections={[
@@ -368,8 +370,8 @@ const CrossChainTransferFinisher: FC = () => {
               disabled={false}
             >
               <Box marginBottom="$4" />
-              <Grid.Root>
-                <Grid.Item>
+              <Grid>
+                <GridItem>
                   <RequestKeyField
                     helperText={showInputHelper}
                     status={showInputError}
@@ -381,8 +383,8 @@ const CrossChainTransferFinisher: FC = () => {
                     }}
                     error={errors.requestKey}
                   />
-                </Grid.Item>
-              </Grid.Root>
+                </GridItem>
+              </Grid>
             </FormItemCard>
 
             <FormItemCard
@@ -392,8 +394,8 @@ const CrossChainTransferFinisher: FC = () => {
               disabled={false}
             >
               <Box marginBottom="$4" />
-              <Grid.Root columns={1}>
-                <Grid.Item>
+              <Grid columns={1}>
+                <GridItem>
                   <AccountNameField
                     label={t('Gas Payer')}
                     inputProps={{
@@ -403,12 +405,12 @@ const CrossChainTransferFinisher: FC = () => {
                     }}
                     error={errors.gasPayer}
                   />
-                </Grid.Item>
-              </Grid.Root>
+                </GridItem>
+              </Grid>
 
               <Box marginBottom="$4" />
-              <Grid.Root columns={2}>
-                <Grid.Item>
+              <Grid columns={2}>
+                <GridItem>
                   <TextField
                     disabled={true}
                     label={t('Gas Price')}
@@ -421,8 +423,8 @@ const CrossChainTransferFinisher: FC = () => {
                       leadingText: t('KDA'),
                     }}
                   />
-                </Grid.Item>
-                <Grid.Item>
+                </GridItem>
+                <GridItem>
                   <TextField
                     disabled={!isAdvancedOptions}
                     helperText={t(
@@ -435,8 +437,8 @@ const CrossChainTransferFinisher: FC = () => {
                       placeholder: t('Enter Gas Limit'),
                     }}
                   />
-                </Grid.Item>
-              </Grid.Root>
+                </GridItem>
+              </Grid>
             </FormItemCard>
 
             {pollResults.tx !== undefined ? (
@@ -446,8 +448,8 @@ const CrossChainTransferFinisher: FC = () => {
                 helperHref="#"
               >
                 <Box marginBottom="$4" />
-                <Grid.Root columns={1}>
-                  <Grid.Item>
+                <Grid columns={1}>
+                  <GridItem>
                     <div className={textareaContainerStyle}>
                       <textarea rows={4} className={textAreaStyle}>
                         {formattedSigData}
@@ -461,8 +463,8 @@ const CrossChainTransferFinisher: FC = () => {
                         title={t('copySigData')}
                       />
                     </div>
-                  </Grid.Item>
-                </Grid.Root>
+                  </GridItem>
+                </Grid>
               </FormItemCard>
             ) : null}
           </Stack>
@@ -473,7 +475,7 @@ const CrossChainTransferFinisher: FC = () => {
           </Button>
         </section>
       </form>
-    </div>
+    </section>
   );
 };
 

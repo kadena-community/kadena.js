@@ -1,18 +1,23 @@
-import { Box, Button, Card, Grid, Heading, Text } from '@kadena/react-ui';
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  GridItem,
+  Heading,
+  Text,
+} from '@kadena/react-ui';
 
+import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
-import type { IMenuData } from '@/Layout';
-import type { IMostPopularPage } from '@/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
+import type { IMenuData } from '@kadena/docs-tools';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -37,8 +42,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           thrilled to share the next stage of this adventure.
         </Text>
       </Box>
-      <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-        <Grid.Item>
+      <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <GridItem>
           <Card fullWidth>
             <Heading as="h4">Quick start</Heading>
             <Box marginY="$4">
@@ -56,18 +61,18 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               <Link href={'/marmalade/quick-start'}>Get started</Link>
             </Button>
           </Card>
-        </Grid.Item>
+        </GridItem>
 
-        <Grid.Item>
+        <GridItem>
           <Box marginTop="$8">
             <MostPopular pages={popularPages} title="Most viewed docs" />
           </Box>
-        </Grid.Item>
-      </Grid.Root>
+        </GridItem>
+      </Grid>
 
       <Box marginBottom="$20">
-        <Grid.Root gap="$lg" columns={{ sm: 1, lg: 2 }}>
-          <Grid.Item rowSpan={2}>
+        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+          <GridItem rowSpan={2}>
             <DocsCard
               label="Overview"
               description="Marmalade is an NFT smart contract system on Kadena’s blockchain. It comprises multiple smart contracts that execute logic configured by the token policies with which the token is built. Now we’ve diligently upgraded to Marmalade V2, introducing an entirely new system that simplifies the process of engaging with NFTs."
@@ -89,8 +94,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <DocsCard
               label="Architecture"
               description="The introduction of the multi-policy model in Marmalade V2 aims to enhance the user experience by simplifying token creation and management."
@@ -103,8 +108,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <DocsCard
               label="Policies"
               description="Marmalade V2 aims to broaden its audience by providing a tool to simplify the token creation process, offering a set of policies that encompass commonly used token features, referred to as /marmalade/concrete-policies."
@@ -120,8 +125,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 </Link>
               </BrowseSection>
             </DocsCard>
-          </Grid.Item>
-        </Grid.Root>
+          </GridItem>
+        </Grid>
       </Box>
 
       <Heading as="h6">Stay up-to-date</Heading>
@@ -142,7 +147,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       blogPosts,
       popularPages: mostPopularPages,
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       frontmatter: {
         title: 'Build with Marmalade',
         menu: 'Marmalade',

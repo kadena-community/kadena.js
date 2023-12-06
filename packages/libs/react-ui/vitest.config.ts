@@ -10,6 +10,7 @@ export default mergeConfig(
       setupFiles: ['vitest.setup.ts'],
       environment: 'happy-dom',
       coverage: {
+        provider: 'v8',
         lines: 50,
         functions: 30,
         branches: 80,

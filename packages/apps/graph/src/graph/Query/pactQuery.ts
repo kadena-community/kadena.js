@@ -1,7 +1,7 @@
-import type { ChainId } from '@kadena/client';
-import { Pact } from '@kadena/client';
-import { devnetConfig } from '../../scripts/devnet/config';
-import { dirtyRead } from '../../scripts/devnet/helper';
+import { COMPLEXITY } from '@services/complexity';
+import type { CommandData } from '@services/node-service';
+import { sendRawQuery } from '@services/node-service';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 const PactData = builder.inputType('PactQueryData', {
@@ -25,29 +25,22 @@ builder.queryField('pactQueries', (t) => {
     args: {
       pactQuery: t.arg({ type: [PactQuery], required: true }),
     },
-    resolve: async (parent, args, context, info) => {
-      const result = args.pactQuery.map(async (query) => {
-        const transaction = Pact.builder
-          .execution(query.code)
-          .setMeta({
-            chainId: query.chainId as ChainId,
-          })
-          .setNetworkId(devnetConfig.NETWORK_ID);
-
-        query.data?.forEach((data) => {
-          transaction.addData(data.key, data.value);
-        });
-
-        const response = await dirtyRead(transaction.createTransaction());
-
-        if (response.result.status === 'failure') {
-          return String(response.result.status);
-        }
-
-        return JSON.stringify(response.result.data);
-      });
-
-      return result;
+    complexity: (args) => ({
+      field: COMPLEXITY.FIELD.CHAINWEB_NODE * args.pactQuery.length,
+    }),
+    async resolve(__parent, args) {
+      try {
+        return args.pactQuery.map(
+          async (query) =>
+            await sendRawQuery(
+              query.code,
+              query.chainId,
+              query.data as CommandData[],
+            ),
+        );
+      } catch (error) {
+        throw normalizeError(error);
+      }
     },
   });
 });
@@ -58,25 +51,17 @@ builder.queryField('pactQuery', (t) => {
     args: {
       pactQuery: t.arg({ type: PactQuery, required: true }),
     },
-    resolve: async (parent, args, context, info) => {
-      const transaction = Pact.builder
-        .execution(args.pactQuery.code)
-        .setMeta({
-          chainId: args.pactQuery.chainId as ChainId,
-        })
-        .setNetworkId(devnetConfig.NETWORK_ID);
-
-      args.pactQuery.data?.forEach((data) => {
-        transaction.addData(data.key, data.value);
-      });
-
-      const response = await dirtyRead(transaction.createTransaction());
-
-      if (response.result.status === 'failure') {
-        return String(response.result.status);
+    complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
+    async resolve(__parent, args) {
+      try {
+        return await sendRawQuery(
+          args.pactQuery.code,
+          args.pactQuery.chainId,
+          args.pactQuery.data as CommandData[],
+        );
+      } catch (error) {
+        throw normalizeError(error);
       }
-
-      return JSON.stringify(response.result.data);
     },
   });
 });

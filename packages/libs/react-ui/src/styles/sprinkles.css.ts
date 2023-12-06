@@ -5,28 +5,36 @@ import { darkThemeClass, vars } from './vars.css';
 
 const systemProperties = defineProperties({
   properties: {
-    fontFamily: vars.fonts,
-    lineHeight: vars.lineHeights,
-    borderRadius: vars.radii,
-    boxShadow: vars.shadows,
-    borderWidth: vars.borderWidths,
-    borderStyle: ['solid', 'none'],
-    cursor: ['pointer', 'not-allowed'],
-    flexWrap: ['wrap', 'nowrap'],
-    top: vars.sizes,
-    bottom: vars.sizes,
-    left: vars.sizes,
-    right: vars.sizes,
-    flexShrink: [0],
-    flexGrow: [0, 1],
-    zIndex: [-1, 0, 1],
     border: ['none'],
-    outline: ['none'],
-    textTransform: ['uppercase', 'lowercase', 'capitalize', 'none'],
-    textDecoration: ['underline', 'none'],
-    wordBreak: ['normal', 'keep-all', 'break-word', 'break-all'],
+    borderRadius: vars.radii,
+    borderStyle: ['solid', 'none'],
+    borderWidth: vars.borderWidths,
+    bottom: vars.sizes,
+    boxShadow: vars.shadows,
+    cursor: ['pointer', 'not-allowed'],
+    flex: [1],
+    flexGrow: [0, 1],
+    flexShrink: [0],
+    flexWrap: ['wrap', 'nowrap'],
+    fontFamily: vars.fonts,
+    inset: [0],
+    left: vars.sizes,
+    lineHeight: vars.lineHeights,
     listStyleType: ['none'],
     objectFit: ['cover', 'contain'],
+    outline: ['none'],
+    pointerEvents: ['none', 'auto', 'initial'],
+    right: vars.sizes,
+    textDecoration: ['underline', 'none'],
+    textTransform: ['uppercase', 'lowercase', 'capitalize', 'none'],
+    top: vars.sizes,
+    wordBreak: ['normal', 'keep-all', 'break-word', 'break-all'],
+    zIndex: [-1, 0, 1],
+    whiteSpace: ['nowrap', 'break-spaces', 'normal', 'pre-wrap'],
+    background: ['none'],
+    overflow: ['hidden', 'visible', 'scroll', 'auto'],
+    overflowY: ['hidden', 'visible', 'scroll', 'auto'],
+    overflowX: ['hidden', 'visible', 'scroll', 'auto'],
   },
 });
 
@@ -38,7 +46,6 @@ const colorProperties = defineProperties({
   defaultCondition: 'lightMode',
   properties: {
     color: { ...vars.colors, inherit: 'inherit' },
-    background: { ...vars.colors, none: 'none' },
     backgroundColor: { ...vars.colors, transparent: 'transparent' },
     borderColor: vars.colors,
   },
@@ -82,36 +89,44 @@ const responsiveProperties = defineProperties({
     marginRight: { ...vars.sizes, auto: 'auto' },
     width: {
       ...vars.sizes,
+      ...vars.contentWidth,
       '100%': '100%',
       'min-content': 'min-content',
       'max-content': 'max-content',
     },
     minWidth: {
-      ...vars.sizes,
       '100%': '100%',
       'min-content': 'min-content',
       'max-content': 'max-content',
     },
     maxWidth: {
+      ...vars.contentWidth,
       '100%': '100%',
-      maxContent: '42.5rem', // 680px
+      'min-content': 'min-content',
+      'max-content': 'max-content',
     },
-    height: { ...vars.sizes, '100%': '100%', 'min-content': 'min-content' },
-    minHeight: {
+    height: {
       ...vars.sizes,
+      '100%': '100%',
+      'min-content': 'min-content',
+      'max-content': 'max-content',
+    },
+    minHeight: {
+      '100%': '100%',
+      'min-content': 'min-content',
+      'max-content': 'max-content',
+    },
+    maxHeight: {
       '100%': '100%',
       'min-content': 'min-content',
       'max-content': 'max-content',
     },
     gap: vars.sizes,
     gridGap: vars.sizes,
-    overflow: ['hidden', 'visible', 'scroll', 'auto'],
-    pointerEvents: ['none', 'auto'],
     opacity: [0, 1],
     textAlign: ['left', 'center', 'right'],
     fontSize: vars.fontSizes,
     fontWeight: vars.fontWeights,
-    whiteSpace: ['nowrap', 'break-spaces', 'normal'],
   },
   shorthands: {
     margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],
@@ -125,10 +140,16 @@ const responsiveProperties = defineProperties({
   },
 });
 
+/**
+ * @deprecated Use 'atoms' from '@kadena/react-ui/styles'
+ */
 export const sprinkles = createSprinkles(
   systemProperties,
   colorProperties,
   responsiveProperties,
 );
 
+/**
+ * @deprecated Use 'Atoms' from '@kadena/react-ui/styles'
+ */
 export type Sprinkles = Parameters<typeof sprinkles>[0];

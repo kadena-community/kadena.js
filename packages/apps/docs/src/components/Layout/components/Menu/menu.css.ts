@@ -7,7 +7,7 @@ export const menuClass = style([
     position: 'fixed',
     height: '100%',
     width: '100%',
-    background: '$background',
+    backgroundColor: '$background',
     overflow: 'hidden',
     top: '$17',
     bottom: 0,
@@ -31,7 +31,7 @@ export const menuClass = style([
         bottom: 'auto',
         height: `calc(100vh - ${vars.sizes.$18})`,
         transform: 'translateX(0)',
-        background: 'transparent',
+        backgroundColor: 'transparent',
         paddingBottom: vars.sizes.$40,
       },
     }),
@@ -55,9 +55,11 @@ export const menuInLayoutVariants = styleVariants({
   ],
   false: [
     sprinkles({
-      display: 'block',
+      display: {
+        xs: 'block',
+        md: 'none',
+      },
     }),
-    responsiveStyle({ md: { display: 'none' } }),
   ],
 });
 
@@ -76,7 +78,7 @@ export const menuBackClass = style([
     cursor: 'pointer',
   }),
   {
-    background: 'rgba(0,0,0,.5)',
+    backgroundColor: 'rgba(0,0,0,.5)',
     border: 0,
     opacity: 0,
     transform: 'translateX(-100%)',

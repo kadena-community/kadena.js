@@ -1,8 +1,4 @@
+import baseConfig from '@kadena-dev/shared-config/vitest.config';
 import { defineConfig } from 'vitest/config';
 
-export default defineConfig({
-  test: {
-    include: ['src/**/*.test.ts'],
-    globals: true,
-  },
-});
+export default defineConfig(baseConfig);

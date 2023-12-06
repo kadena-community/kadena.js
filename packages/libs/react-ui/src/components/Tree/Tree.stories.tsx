@@ -6,6 +6,9 @@ import { Tree } from './';
 const meta: Meta<{} & ITreeProps> = {
   title: 'Components/Tree',
   parameters: {
+    status: {
+      type: ['needsRevision'],
+    },
     docs: {
       description: {
         component:

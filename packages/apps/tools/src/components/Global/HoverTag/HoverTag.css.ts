@@ -1,7 +1,7 @@
 import { sprinkles } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
-export const copyButtonClass = style([
+export const iconButtonClass = style([
   sprinkles({
     border: 'none',
     background: 'none',
@@ -9,3 +9,5 @@ export const copyButtonClass = style([
     cursor: 'pointer',
   }),
 ]);
+
+export const containerClass = style([sprinkles({ display: 'flex' })]);

@@ -165,9 +165,9 @@ export const headerIconGroupClass = style([
     display: 'flex',
     gap: {
       xs: '$3',
-      lg: '$6',
+      lg: '$3',
     },
-    marginLeft: '$6',
+    marginLeft: '$3',
   }),
 ]);
 

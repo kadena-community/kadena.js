@@ -3,6 +3,7 @@ import './Query/block';
 import './Query/blocksFromHeight';
 import './Query/chainAccount';
 import './Query/completedBlockHeights';
+import './Query/gasLimitEstimate';
 import './Query/graphConfiguration';
 import './Query/lastBlockHeight';
 import './Query/pactQuery';

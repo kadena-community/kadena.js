@@ -1,6 +1,6 @@
 {
   "name": "@kadena/graph",
-  "version": "1.0.1",
+  "version": "1.0.6",
   "private": true,
   "description": "",
   "keywords": [],
@@ -8,36 +8,40 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "build": "pnpm run pactjs:generate:contract:chain && pnpm prisma:generate",
+    "build": "pnpm run pactjs:generate:contract:coin && pnpm prisma:generate",
     "devnet": "docker volume create kadena_devnet; docker run --rm -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v kadena_devnet:/data -v ./cwd-extra-migrations:/cwd-extra-migrations:ro --name devnet kadena/devnet",
     "devnet:update": "docker pull kadena/devnet",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
-    "fund": "npx ts-node -T src/scripts/devnet/index.ts fund",
+    "fund": "npx ts-node -T src/devnet/simulation/index.ts fund",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "pactjs:generate:contract:chain": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
+    "pactjs:generate:contract:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
     "pactjs:generate:contract:faucet": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact;",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
-    "simulate": "ts-node -T src/scripts/devnet/index.ts traffic",
+    "simulate": "ts-node -T src/devnet/simulation/index.ts traffic",
     "start": "npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
-    "start:generate": "pnpm run prisma:generate && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
-    "test": "echo \"no test specified\""
+    "start:generate": "pnpm build && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
+    "test": "echo \"no test specified\"",
+    "tracing:analyse": "npx ts-node -T src/services/tracing/trace-analyser.ts"
   },
   "dependencies": {
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@pothos/core": "~3.33.0",
+    "@pothos/plugin-complexity": "^3.13.0",
     "@pothos/plugin-dataloader": "^3.17.1",
     "@pothos/plugin-prisma": "~3.57.0",
     "@pothos/plugin-relay": "~3.43.1",
+    "@pothos/plugin-tracing": "^0.5.8",
     "@prisma/client": "^5.1.1",
     "commander": "^11.0.0",
     "dataloader": "^2.2.2",
@@ -48,6 +52,7 @@
     "graphql-scalars": "~1.22.2",
     "graphql-yoga": "~4.0.4",
     "json-bigint-patch": "~0.0.8",
+    "module-alias": "^2.2.3",
     "prisma": "^5.1.1",
     "seedrandom": "~3.0.5"
   },
@@ -65,5 +70,11 @@
     "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2"
+  },
+  "_moduleAliases": {
+    "@db": "src/db",
+    "@services": "src/services",
+    "@utils": "src/utils",
+    "@devnet": "src/devnet"
   }
 }

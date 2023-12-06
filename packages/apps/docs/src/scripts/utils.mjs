@@ -1,26 +1,3 @@
-export const getReadTime = (content) => {
-  const WORDS_PER_MINUTE = 200;
-  let result = {};
-  //Matches words
-  //See
-  //https://regex101.com/r/q2Kqjg/6
-  const regex = /\w+/g;
-  result.wordCount = (content || '').match(regex).length;
-  result.readingTimeInMinutes = Math.ceil(result.wordCount / WORDS_PER_MINUTE);
-
-  return result;
-};
-
-export const getValues = (tree, arr = []) => {
-  tree.children.forEach((branch) => {
-    if (branch.value) arr.push(branch.value.trim());
-    if (!branch.children) return arr;
-
-    return getValues(branch, arr);
-  });
-  return arr;
-};
-
 export const getTypes = (tree, type, arr = []) => {
   tree.children.forEach((branch) => {
     if (branch.type === type) {
@@ -39,7 +16,19 @@ export const getTypes = (tree, type, arr = []) => {
 export const importReadMes = [
   /** /libs/chainweb-node-client */
   {
-    file: 'libs/chainweb-node-client/README.md',
+    file: `/README.md`,
+    repo: 'https://github.com/kadena-community/getting-started',
+    destination: '/build/quickstart',
+    title: 'Quickstart',
+    options: {
+      RootOrder: 0,
+      tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
+      singlePage: true,
+    },
+  },
+  {
+    file: '/packages/libs/chainweb-node-client/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'chainweb/node-client',
     title: 'Node Client',
     options: {
@@ -48,7 +37,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'libs/chainweb-node-client/etc/chainweb-node-client.api.md',
+    file: '/packages/libs/chainweb-node-client/etc/chainweb-node-client.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'chainweb/node-client/api',
     title: 'Client Api',
     options: {
@@ -59,7 +49,8 @@ export const importReadMes = [
   },
   /** /libs/chainweb-stream-client */
   {
-    file: 'libs/chainweb-stream-client/README.md',
+    file: '/packages/libs/chainweb-stream-client/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'chainweb/stream-client',
     title: 'Stream Client',
     options: {
@@ -68,7 +59,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'libs/chainweb-stream-client/etc/chainweb-stream-client.api.md',
+    file: '/packages/libs/chainweb-stream-client/etc/chainweb-stream-client.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'chainweb/stream-client/api',
     title: 'Stream Api',
     options: {
@@ -79,7 +71,8 @@ export const importReadMes = [
   },
   /** /libs/chainwebjs */
   {
-    file: 'libs/chainwebjs/README.md',
+    file: '/packages/libs/chainwebjs/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'chainweb/js-bindings',
     title: 'JS bindings',
     options: {
@@ -88,7 +81,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'libs/chainwebjs/etc/chainwebjs.api.md',
+    file: '/packages/libs/chainwebjs/etc/chainwebjs.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'chainweb/js-bindings/api',
     title: 'JS bindings API',
     options: {
@@ -99,7 +93,8 @@ export const importReadMes = [
   },
   /** /libs/client */
   {
-    file: 'libs/client/README.md',
+    file: '/packages/libs/client/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'kadena/client',
     title: 'Client',
     options: {
@@ -114,7 +109,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'libs/client/etc/client.api.md',
+    file: '/packages/libs/client/etc/client.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'kadena/client/api',
     title: 'Client Api',
     options: {
@@ -132,7 +128,8 @@ export const importReadMes = [
   },
 
   {
-    file: 'libs/client-examples/README.md',
+    file: '/packages/libs/client-examples/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'kadena/client-examples',
     title: 'Client examples',
     options: {
@@ -143,7 +140,8 @@ export const importReadMes = [
 
   /** /libs/cryptography-utils */
   {
-    file: 'libs/cryptography-utils/README.md',
+    file: '/packages/libs/cryptography-utils/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'build/cryptography-utils',
     title: 'Cryptography-Utils',
     options: {
@@ -151,7 +149,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'libs/cryptography-utils/etc/cryptography-utils.api.md',
+    file: '/packages/libs/cryptography-utils/etc/cryptography-utils.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'build/cryptography-utils/api',
     title: 'Cryptography-Utils Api',
     options: {
@@ -161,7 +160,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'libs/cryptography-utils/etc/crypto.api.md',
+    file: '/packages/libs/cryptography-utils/etc/crypto.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'build/cryptography-utils/crypto-api',
     title: 'Crypto Api',
     options: {
@@ -178,7 +178,8 @@ export const importReadMes = [
   },
   /** /libs/kadena.js */
   {
-    file: 'libs/kadena.js/README.md',
+    file: '/packages/libs/kadena.js/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'kadena/kadenajs',
     title: 'KadenaJS',
     options: {
@@ -188,7 +189,8 @@ export const importReadMes = [
   },
   /** /libs/pactjs */
   {
-    file: 'libs/pactjs/README.md',
+    file: '/packages/libs/pactjs/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'pact/pactjs',
     title: 'PactJS',
     options: {
@@ -197,7 +199,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'libs/pactjs/etc/pactjs.api.md',
+    file: '/packages/libs/pactjs/etc/pactjs.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'pact/pactjs/api',
     title: 'PactJS Api',
     options: {
@@ -207,7 +210,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'libs/pactjs/etc/pactjs-utils.api.md',
+    file: '/packages/libs/pactjs/etc/pactjs-utils.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'pact/pactjs/utils',
     title: 'PactJS Utils',
     options: {
@@ -218,7 +222,8 @@ export const importReadMes = [
   },
   /** /libs/pactjs-generator */
   {
-    file: 'libs/pactjs-generator/README.md',
+    file: '/packages/libs/pactjs-generator/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'pact/pactjs-generator',
     title: 'PactJS Generator',
     options: {
@@ -227,7 +232,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'libs/pactjs-generator/etc/pactjs-generator.api.md',
+    file: '/packages/libs/pactjs-generator/etc/pactjs-generator.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'pact/pactjs-generator/api',
     title: 'PactJS Generator Api',
     options: {
@@ -238,7 +244,8 @@ export const importReadMes = [
   },
   /** /tools/cookbook */
   {
-    file: 'tools/cookbook/README.md',
+    file: '/packages/tools/cookbook/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'build/cookbook/cookbook',
     title: 'JS Cookbook',
     options: {
@@ -248,7 +255,8 @@ export const importReadMes = [
   },
   /** /tools/kda-cli */
   {
-    file: 'tools/kda-cli/README.md',
+    file: '/packages/tools/kda-cli/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'build/kda-cli',
     title: 'KDA CLI',
     options: {
@@ -265,7 +273,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'tools/kda-cli/etc/kda-cli.api.md',
+    file: '/packages/tools/kda-cli/etc/kda-cli.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'build/kda-cli/api',
     title: 'KDA CLI Api',
     options: {
@@ -285,7 +294,8 @@ export const importReadMes = [
   },
   /** /tools/pactjs-cli */
   {
-    file: 'tools/pactjs-cli/README.md',
+    file: '/packages/tools/pactjs-cli/README.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'pact/cli',
     title: 'CLI tool',
     options: {
@@ -294,7 +304,8 @@ export const importReadMes = [
     },
   },
   {
-    file: 'tools/pactjs-cli/etc/pactjs-cli.api.md',
+    file: '/packages/tools/pactjs-cli/etc/pactjs-cli.api.md',
+    repo: 'https://github.com/kadena-community/kadena.js',
     destination: 'pact/cli/api',
     title: 'CLI tool Api',
     options: {

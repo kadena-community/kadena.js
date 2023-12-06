@@ -7,6 +7,7 @@ import { useDarkMode } from 'storybook-dark-mode';
 import { darkThemeClass } from '../src/styles';
 import { colorPalette } from '../src/styles/colors';
 import '../src/styles/global.css';
+
 KodeMono();
 
 const preview: Preview = {
@@ -40,6 +41,22 @@ const preview: Preview = {
         };
 
         return React.createElement(DocsContainer, props);
+      },
+    },
+    status: {
+      statuses: {
+        needsRevision: {
+          background: colorPalette.$yellow70,
+          color: colorPalette.$white,
+        },
+        inDevelopment: {
+          background: colorPalette.$blue70,
+          color: colorPalette.$white,
+        },
+        experimental: {
+          background: colorPalette.$pink70,
+          color: colorPalette.$white,
+        },
       },
     },
   },

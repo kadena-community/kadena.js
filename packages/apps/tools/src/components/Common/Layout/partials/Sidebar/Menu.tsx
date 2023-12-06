@@ -1,10 +1,11 @@
+import { MenuButton } from '@/components/Common/Layout/partials/Sidebar/MenuButton';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { useLayoutContext } from '@/context';
-import { Accordion, IconButton } from '@kadena/react-ui';
+import { Accordion } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React from 'react';
-import { MenuLinkButton } from './MenuLinkButton';
+import React, { useEffect, useState } from 'react';
 import {
   gridItemMenuStyle,
   subMenuContentStyle,
@@ -19,22 +20,18 @@ export const Menu: FC = () => {
     {
       title: t('Tutorial'),
       href: 'https://kadena.io/',
-      target: '_blank',
     },
     {
       title: t('Documentation'),
       href: 'https://kadena.io/',
-      target: '_blank',
     },
     {
       title: t('Privacy & Policy'),
       href: 'https://kadena.io/',
-      target: '_blank',
     },
     {
       title: t('Terms of use'),
       href: 'https://kadena.io/',
-      target: '_blank',
     },
   ];
 
@@ -44,11 +41,27 @@ export const Menu: FC = () => {
     setActiveMenuIndex,
     visibleLinks,
     setVisibleLinks,
+    setIsMenuOpen,
   } = useLayoutContext();
+  const [smallScreen, setSmallScreen] = useState(false);
+
+  useEffect(() => {
+    // sidebar menu closed by default on smaller screens
+    if (window.innerWidth < 768) {
+      setSmallScreen(true);
+    }
+  }, []);
 
   const handleCloseMenu = () => {
     setActiveMenuIndex(undefined);
+    setIsMenuOpen(false);
     setVisibleLinks(false);
+  };
+
+  const handleOnClick = () => {
+    if (smallScreen) {
+      setIsMenuOpen(false);
+    }
   };
 
   if (!isMenuOpen) return null;
@@ -59,10 +72,10 @@ export const Menu: FC = () => {
         <>
           <div className={subMenuTitleClass}>
             <span>{t('Resource links')}</span>
-            <IconButton
-              icon={'Close'}
-              onClick={() => handleCloseMenu()}
+            <MenuButton
               title={t('Resource links')}
+              icon={'Close'}
+              onClick={handleCloseMenu}
             />
           </div>
           <div className={subMenuContentStyle}>
@@ -73,7 +86,8 @@ export const Menu: FC = () => {
                   key={`menu-link-${index}`}
                   href={item.href}
                   active={item.href === router.pathname}
-                  target={item.target}
+                  target="_blank"
+                  onClick={handleOnClick}
                 />
               ))}
             </Accordion.Root>
@@ -83,11 +97,7 @@ export const Menu: FC = () => {
         <>
           <div className={subMenuTitleClass}>
             <span>{activeMenu?.title}</span>
-            <IconButton
-              icon={'Close'}
-              onClick={() => handleCloseMenu()}
-              title={activeMenu?.title}
-            />
+            <MenuButton icon={'Close'} onClick={handleCloseMenu} />
           </div>
           <div className={subMenuContentStyle}>
             <Accordion.Root>
@@ -97,6 +107,7 @@ export const Menu: FC = () => {
                   key={`menu-link-${index}`}
                   href={item.href}
                   active={item.href === router.pathname}
+                  onClick={handleOnClick}
                 />
               ))}
             </Accordion.Root>

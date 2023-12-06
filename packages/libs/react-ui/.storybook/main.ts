@@ -15,6 +15,7 @@ const config: StorybookConfig = {
     '@storybook/addon-controls',
     '@storybook/addon-interactions',
     'storybook-dark-mode',
+    '@etchteam/storybook-addon-status',
     {
       name: '@storybook/addon-docs',
       options: {

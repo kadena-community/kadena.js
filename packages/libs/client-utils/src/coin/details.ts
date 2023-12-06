@@ -5,7 +5,7 @@ import { execution } from '@kadena/client/fp';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
-import pipe from 'ramda/es/pipe';
+import { pipe } from 'ramda';
 
 /**
  * @alpha
@@ -15,9 +15,10 @@ export const details = (
   networkId: string,
   chainId: ChainId,
   host?: IClientConfig['host'],
+  contract: string = 'coin',
 ) => {
   const getDetails = pipe(
-    (name) => Pact.modules.coin.details(name),
+    (name) => Pact.modules[contract as 'coin'].details(name),
     execution,
     dirtyReadClient({
       host,

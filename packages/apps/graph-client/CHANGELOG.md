@@ -1,5 +1,74 @@
 # @kadena/graph-client
 
+## 0.1.7
+
+### Patch Changes
+
+- 73bbcbd56: Implemented Pagination component; added possibility of table
+  resizing in transfers and implemented logic in order for cross-chain transfers
+  to always display in the same line with the correct order (starting /
+  finishing transfer)
+- a58e0886c: Set second search field when account search; added omitHeader prop
+  to header for when 404 not found page is displayed
+- f02b991cb: Added Guards to Account page and updated styling; added
+  LoaderAndError component
+- Updated dependencies [a7bb78d8b]
+- Updated dependencies [957af9922]
+- Updated dependencies [bf490445c]
+- Updated dependencies [854604595]
+- Updated dependencies [a30106c85]
+- Updated dependencies [5250be30b]
+- Updated dependencies [6992a2b58]
+- Updated dependencies [d9109f3ba]
+- Updated dependencies [4b8b728dd]
+  - @kadena/react-ui@0.5.0
+
+## 0.1.6
+
+### Patch Changes
+
+- f4ac431f4: Edited the pages containing transfers to display cross-chain
+  transfers as one entry
+- Updated dependencies [49d8366c7]
+  - @kadena/react-ui@0.4.0
+
+## 0.1.5
+
+### Patch Changes
+
+- 6f79f73dd: Created gas estimation page and ajusted header component to
+  incorporate option for gas. Also added necessary graph references to consume
+  the endpoint
+- Updated dependencies [6f79f73dd]
+- Updated dependencies [6f79f73dd]
+  - @kadena/react-ui@0.3.1
+
+## 0.1.4
+
+### Patch Changes
+
+- 6e4895050: Added proper error logging for the graph and client
+- 39a870cea: Changed queries to adjust to new endpoint for getting graph and
+  chainweb-data info
+- Updated dependencies [11747cde4]
+- Updated dependencies [6491589b5]
+- Updated dependencies [8a719c647]
+- Updated dependencies [df7044cac]
+  - @kadena/react-ui@0.3.0
+
+## 0.1.3
+
+### Patch Changes
+
+- 96e321d8a: Changed the transaction overview page to display signer related
+  information
+- bcac940f7: Apply formatting to all json's and code in client
+- fa6b84e22: No auto-globals for vitest specs
+- Updated dependencies [1d7d88081]
+- Updated dependencies [fa98adaa8]
+- Updated dependencies [fa6b84e22]
+  - @kadena/react-ui@0.2.1
+
 ## 0.1.2
 
 ### Patch Changes

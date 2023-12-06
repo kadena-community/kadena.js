@@ -1,33 +1,30 @@
-import { Heading } from '@components/Typography/Heading/Heading';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import {
-  colorVariants,
-  fontVariants,
-  transformVariants,
-} from '../typography.css';
-import { boldVariants, elementVariants } from './Heading.css';
+import { colorVariants, transformVariants } from '../typography.css';
+import { HEADING_ELEMENTS, Heading } from './Heading';
 
 const meta: Meta<typeof Heading> = {
   title: 'Typography/Heading',
   component: Heading,
+  parameters: {
+    status: {
+      type: ['needsRevision'],
+    },
+  },
   argTypes: {
     children: {
       control: { type: 'text' },
     },
     as: {
+      options: HEADING_ELEMENTS,
       control: { type: 'select' },
     },
     variant: {
-      options: Object.keys(elementVariants) as (keyof typeof elementVariants)[],
+      options: HEADING_ELEMENTS,
       control: { type: 'select' },
     },
-    font: {
-      options: Object.keys(fontVariants) as (keyof typeof fontVariants)[],
-      control: { type: 'radio' },
-    },
     bold: {
-      options: Object.keys(boldVariants) as (keyof typeof boldVariants)[],
+      options: HEADING_ELEMENTS,
       control: { type: 'boolean' },
     },
     color: {
@@ -49,19 +46,17 @@ type Story = StoryObj<typeof Heading>;
 export const Primary: Story = {
   name: 'Heading',
   args: {
-    children: 'heading',
     as: 'h1',
+    children: 'heading',
     variant: undefined,
-    font: undefined,
     bold: undefined,
     color: undefined,
     transform: undefined,
   },
-  render: ({ font, bold, as, variant, transform, children, color }) => (
+  render: ({ as, bold, variant, transform, children, color }) => (
     <Heading
       as={as}
       variant={variant}
-      font={font}
       bold={bold}
       color={color}
       transform={transform}

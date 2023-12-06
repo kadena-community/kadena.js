@@ -1,5 +1,6 @@
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { Loading } from '@/components/Loading/Loading';
+import type { ITabs } from '@/components/SearchDialog/SearchDialog';
 import type { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
 import {
@@ -7,21 +8,23 @@ import {
   Button,
   Heading,
   Notification,
+  NotificationHeading,
   Stack,
+  SystemIcon,
+  TabItem,
   Tabs,
-  useModal,
+  useDialog,
 } from '@kadena/react-ui';
-import classnames from 'classnames';
 import Link from 'next/link';
-import type { FC } from 'react';
+import type { FC, Key } from 'react';
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import type { IQueryResult } from '../../../types';
 import { removeUnnecessarySearchRecords } from '../utils';
 import {
   loadingWrapperClass,
-  scrollBoxClass,
-  scrollBoxEnabledClass,
+  tabClass,
+  tabContainerClass,
 } from './../styles.css';
 import { ResultCount } from './ResultCount';
 import { StaticResults } from './StaticResults';
@@ -37,7 +40,7 @@ interface IProps {
   error?: string;
   isLoading: boolean;
   hasScroll?: boolean;
-  onTabSelect: (tabName: string) => void;
+  onTabSelect: (tabName: ITabs) => void;
 }
 
 const TABNAME = 'searchTabSelected';
@@ -55,18 +58,15 @@ export const SearchResults: FC<IProps> = ({
   hasScroll = false,
   onTabSelect,
 }) => {
-  const { clearModal } = useModal();
-  const [selectedTabName, setSelectedTabName] = useState<string>('docs');
+  const { state } = useDialog();
+  const [selectedTabName, setSelectedTabName] = useState<ITabs>(null);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  const scrollBoxClasses = classnames(scrollBoxClass, {
-    [scrollBoxEnabledClass]: hasScroll,
-  });
-
-  const rememberTab = (e: React.MouseEvent<HTMLElement>): void => {
-    const buttonName = (e.target as HTMLElement).getAttribute('data-tab');
-    if (buttonName === null) return;
+  const rememberTab = (key: Key): void => {
+    const buttonName = `${key}` as ITabs;
+    if (!buttonName) return;
     localStorage.setItem(TABNAME, buttonName);
+    setSelectedTabName(buttonName);
     onTabSelect(buttonName);
   };
 
@@ -75,7 +75,7 @@ export const SearchResults: FC<IProps> = ({
   }, [setIsMounted]);
 
   useEffect(() => {
-    const value = localStorage.getItem(TABNAME);
+    const value = (localStorage.getItem(TABNAME) as ITabs) ?? 'docs';
     if (value === null) return;
     setSelectedTabName(value);
     onTabSelect(value);
@@ -85,27 +85,27 @@ export const SearchResults: FC<IProps> = ({
   if (!isMounted) return null;
 
   return (
-    <section onClick={rememberTab}>
-      <Tabs.Root initialTab={selectedTabName}>
-        <Tabs.Tab id="docs">Docs Space </Tabs.Tab>
-        <Tabs.Tab id="qa">QA Space</Tabs.Tab>
-
-        <Tabs.Content id="docs">
-          <div className={scrollBoxClasses}>
+    <section className={tabContainerClass}>
+      <Tabs
+        defaultSelectedKey={selectedTabName as string}
+        className={tabClass}
+        onSelectionChange={rememberTab}
+      >
+        <TabItem key="docs" title="Docs Space">
+          <Box position="relative">
             {semanticIsLoading && (
               <div className={loadingWrapperClass}>
                 <Loading />
               </div>
             )}
             {semanticError ? (
-              <Notification.Root
+              <Notification
                 color={'negative'}
-                expanded={true}
-                icon="AlertBox"
-                variant="outlined"
+                icon={<SystemIcon.AlertBox />}
+                role="status"
               >
                 {semanticError}
-              </Notification.Root>
+              </Notification>
             ) : (
               <>
                 <ResultCount count={semanticResults?.length} />
@@ -122,7 +122,7 @@ export const SearchResults: FC<IProps> = ({
                         icon={'TrailingIcon'}
                         iconAlign="right"
                         title="Go to search results"
-                        onClick={clearModal}
+                        onClick={state.close}
                       >
                         Go to search results
                       </Button>
@@ -131,16 +131,13 @@ export const SearchResults: FC<IProps> = ({
                 ) : null}
               </>
             )}
-          </div>
-        </Tabs.Content>
+          </Box>
+        </TabItem>
 
-        <Tabs.Content id="qa">
+        <TabItem key="qa" title="QA Space">
           <Box marginBottom="$8">
-            <Notification.Root
-              expanded={true}
-              icon="AlertBox"
-              title="QA search is in beta"
-            >
+            <Notification icon={<SystemIcon.AlertBox />} role="none">
+              <NotificationHeading>QA search is in beta</NotificationHeading>
               QA search our latest AI vector-based search, designed to provide
               instant answers to your queries.
               <br />
@@ -155,22 +152,22 @@ export const SearchResults: FC<IProps> = ({
                 collect valuable data that will aid us in refining and enhancing
                 the accuracy of our model’s responses in the future.
               </p>
-            </Notification.Root>
+            </Notification>
           </Box>
-          <div className={scrollBoxClasses}>
+          <Box position="relative">
             {isLoading && (
               <div className={loadingWrapperClass}>
                 <Loading />
               </div>
             )}
             {error && (
-              <Notification.Root
+              <Notification
                 color={'negative'}
-                expanded={true}
-                icon="AlertBox"
+                icon={<SystemIcon.AlertBox />}
+                role="status"
               >
                 {error}
-              </Notification.Root>
+              </Notification>
             )}
 
             {conversation.history?.map((interaction, idx) => {
@@ -191,7 +188,11 @@ export const SearchResults: FC<IProps> = ({
                             item.header,
                           );
                           return (
-                            <Link key={`${url}`} href={url}>
+                            <Link
+                              key={`${url}`}
+                              href={url}
+                              onClick={state.close}
+                            >
                               {item.title}
                             </Link>
                           );
@@ -202,11 +203,10 @@ export const SearchResults: FC<IProps> = ({
                 </div>
               );
             })}
-
             <div>{outputStream}</div>
-          </div>
-        </Tabs.Content>
-      </Tabs.Root>
+          </Box>
+        </TabItem>
+      </Tabs>
     </section>
   );
 };

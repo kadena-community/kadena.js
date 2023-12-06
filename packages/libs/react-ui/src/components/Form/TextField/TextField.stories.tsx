@@ -1,6 +1,6 @@
 import type { ITextFieldProps } from '@components/Form';
 import { TextField } from '@components/Form';
-import { statusVariant } from '@components/Form/InputWrapper/InputWrapper.css';
+import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
@@ -10,16 +10,16 @@ type StoryProps = {
   helperText: string;
   leadingText: string;
   icon: keyof typeof SystemIcon;
-  rightIcon: keyof typeof SystemIcon;
 } & ITextFieldProps;
 
 const meta: Meta<StoryProps> = {
   title: 'Form/TextField',
   parameters: {
+    status: { type: 'inDevelopment' },
     docs: {
       description: {
         component:
-          'TextField is the composition of Input and InputWrapper to provide an input with a label, helper text, and other peripheral information.',
+          'TextField is the composition of Input and FormFieldWrapper to provide an input with a label, helper text, and other peripheral information.',
       },
     },
   },
@@ -95,14 +95,6 @@ const meta: Meta<StoryProps> = {
         type: 'select',
       },
     },
-    rightIcon: {
-      description:
-        'Icon rendered inside the input to the right of the input text.',
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
@@ -124,14 +116,12 @@ export const Group: Story = {
     disabled: false,
     status: undefined,
     icon: 'Account',
-    rightIcon: undefined,
     leadingText: 'Leading',
     leadingTextWidth: undefined,
   },
   render: ({
     leadingText,
     icon,
-    rightIcon,
     disabled,
     status,
     tag,
@@ -153,7 +143,6 @@ export const Group: Story = {
           id: 'inputStory',
           leadingText,
           icon,
-          rightIcon,
           placeholder: 'This is a placeholder',
         }}
       />

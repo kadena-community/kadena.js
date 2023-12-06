@@ -2,7 +2,7 @@ import { SystemIcon, Tooltip } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes, FC } from 'react';
-import React, { useRef } from 'react';
+import React from 'react';
 import {
   gridMiniMenuListButtonStyle,
   iconLeftStyle,
@@ -12,8 +12,8 @@ import {
 export interface IMenuButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   title?: string;
-  href?: string;
   active?: boolean;
+  href?: string;
   icon: keyof typeof SystemIcon;
   rotateClass?: string;
 }
@@ -24,12 +24,11 @@ export const MenuButton: FC<IMenuButtonProps> = ({
   href,
   icon,
   rotateClass,
+  onClick,
   ...rest
 }) => {
   const Icon = SystemIcon[icon];
-  // eslint-disable-next-line
   // @ts-ignore
-  const tooltipRef = useRef(null);
   const rotationClass =
     rotateClass === undefined
       ? ''
@@ -38,26 +37,27 @@ export const MenuButton: FC<IMenuButtonProps> = ({
       : iconRightStyle;
 
   const button = (
-    <>
+    <Tooltip isDisabled={!title} position="right" content={title}>
       <button
         className={classNames(gridMiniMenuListButtonStyle, rotationClass, {
           active,
         })}
-        onMouseEnter={(e) => Tooltip.handler(e, tooltipRef)}
-        onMouseLeave={(e) => Tooltip.handler(e, tooltipRef)}
         {...rest}
         aria-label={title}
       >
-        <Icon />
+        <span onClick={onClick}>
+          <Icon size={'sm'} />
+        </span>
       </button>
-      {!!title && (
-        <Tooltip.Root placement="right" ref={tooltipRef}>
-          {title}
-        </Tooltip.Root>
-      )}
-    </>
+    </Tooltip>
   );
 
-  if (href) return <Link href={href}>{button}</Link>;
+  if (href)
+    return (
+      <Link href={href} target="_self">
+        {button}
+      </Link>
+    );
+
   return button;
 };

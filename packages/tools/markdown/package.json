@@ -1,6 +1,6 @@
 {
   "name": "@kadena-dev/markdown",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Kadena monorepo Remark plugins",
   "license": "MIT",
@@ -44,7 +44,7 @@
     "eslint": "^8.45.0",
     "prettier": "~3.0.3",
     "typescript": "5.2.2",
-    "unified": "^11.0.3",
+    "unified": "11.0.3",
     "vfile": "6.0.1"
   }
 }

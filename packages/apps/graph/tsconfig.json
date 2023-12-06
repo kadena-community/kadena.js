@@ -2,6 +2,12 @@
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
     "types": [".kadena/pactjs-generated", "node"],
-    "target": "ES2020"
+    "target": "ES2020",
+    "paths": {
+      "@db/*": ["./src/db/*"],
+      "@services/*": ["./src/services/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@devnet/*": ["./src/devnet/*"]
+    }
   }
 }

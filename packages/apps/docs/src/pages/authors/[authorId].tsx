@@ -1,18 +1,18 @@
 import { BlogListWrapper } from '@/components/BlogList/BlogListWrapper';
+import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { TitleHeader } from '@/components/Layout/components/TitleHeader/TitleHeader';
 import authors from '@/data/authors.json';
 import { getAuthorInfo, getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import type { IAuthorInfo, IMenuData, IPageProps } from '@/Layout';
+import type { IAuthorInfo, IMenuData, IPageProps } from '@kadena/docs-tools';
 import {
   checkSubTreeForActive,
+  getMenuData,
   getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { getData } from '@/utils/staticGeneration/getData.mjs';
+} from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -60,11 +60,15 @@ export const getStaticProps: GetStaticProps<{}, { authorId: string }> = async (
   const authorId = ctx.params?.authorId;
   const authorInfo = getAuthorInfo(authorId);
 
-  const posts = getInitBlogPosts(getData() as IMenuData[], 0, 10, { authorId });
+  const menuData: IMenuData[] = await getMenuData();
+
+  const posts = getInitBlogPosts(menuData, 0, 10, {
+    authorId,
+  });
 
   return {
     props: {
-      leftMenuTree: checkSubTreeForActive(getPathName(__filename)),
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
       posts,
       authorInfo,
       frontmatter: {

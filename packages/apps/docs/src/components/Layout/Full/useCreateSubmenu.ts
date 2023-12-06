@@ -1,6 +1,6 @@
-import type { ISubHeaderElement, TagNameType } from '@/Layout';
 import { createSlug } from '@/utils/createSlug';
 import { getParentHeading } from '@/utils/getParentHeading';
+import type { ISubHeaderElement, TagNameType } from '@kadena/docs-tools';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 

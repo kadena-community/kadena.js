@@ -2,7 +2,14 @@ import {
   helperStyle,
   helperTextIconStyle,
 } from '@/components/Global/FormItemCard/styles.css';
-import { Card, Grid, Heading, SystemIcon, Text } from '@kadena/react-ui';
+import {
+  Card,
+  Grid,
+  GridItem,
+  Heading,
+  SystemIcon,
+  Text,
+} from '@kadena/react-ui';
 import Link from 'next/link';
 import type { ChangeEvent, FC } from 'react';
 import React from 'react';
@@ -34,13 +41,13 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
   return (
     <div>
       <Card fullWidth disabled={disabled}>
-        <Grid.Root columns={2} gap="$3xl">
-          <Grid.Item>
+        <Grid columns={2} gap="$3xl">
+          <GridItem>
             <Heading as="h5">{heading}</Heading>
-          </Grid.Item>
-          <Grid.Item>
+          </GridItem>
+          <GridItem>
             <div className={helperStyle}>
-              <Text size="sm">
+              <Text variant="smallest">
                 {helperHref ? (
                   <Link className={helperTextIconStyle} href={helperHref}>
                     <span>{helper}</span>
@@ -51,8 +58,8 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
                 )}
               </Text>
             </div>
-          </Grid.Item>
-        </Grid.Root>
+          </GridItem>
+        </Grid>
         {children}
       </Card>
     </div>

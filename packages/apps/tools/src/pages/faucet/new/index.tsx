@@ -1,5 +1,4 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
-import type { InputWrapperStatus } from '@kadena/react-ui';
 import {
   Box,
   Breadcrumbs,
@@ -8,27 +7,32 @@ import {
   Heading,
   IconButton,
   Notification,
-  Stack,
-  Text,
+  NotificationHeading,
 } from '@kadena/react-ui';
 
 import {
   buttonContainerClass,
-  containerClass,
   hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
-  keyIconWrapperStyle,
   notificationContainerStyle,
   notificationContentStyle,
   notificationLinkStyle,
   pubKeyInputWrapperStyle,
+  pubKeysContainerStyle,
 } from './styles.css';
+
+import {
+  accountNameContainerClass,
+  chainSelectContainerClass,
+  containerClass,
+  inputContainerClass,
+} from '../styles.css';
 
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
+import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
 import AccountNameField from '@/components/Global/AccountNameField';
-import { CloseableNotification } from '@/components/Global/CloseableNotification';
 import { HoverTag } from '@/components/Global/HoverTag';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
@@ -51,11 +55,6 @@ import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import {
-  accountNameContainerClass,
-  chainSelectContainerClass,
-  inputContainerClass,
-} from '../styles.css';
 
 interface IFundExistingAccountResponseBody {
   result: {
@@ -75,10 +74,16 @@ const isCustomError = (error: unknown): error is ICommandResult => {
   return error !== null && typeof error === 'object' && 'result' in error;
 };
 
+const schema = z.object({
+  name: z.string(),
+  pubKey: z.string().optional(),
+});
+type FormData = z.infer<typeof schema>;
+
 const NewAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { selectedNetwork } = useWalletConnectClient();
+  const { selectedNetwork, networksData } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
   const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
@@ -87,25 +92,20 @@ const NewAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
   const [pubKeys, setPubKeys] = useState<string[]>([]);
-  const [currentKey, setCurrentKey] = useState<string>('');
-  const [validRequestKey, setValidRequestKey] = useState<
-    InputWrapperStatus | undefined
-  >();
 
   const { data: accountName } = useQuery({
-    queryKey: ['accountName', pubKeys, chainID, pred],
-    queryFn: async () => {
-      if (pubKeys.length === 0) return '';
-      return await createPrincipal(pubKeys, chainID, pred);
-    },
-    initialData: '',
+    queryKey: [
+      'accountName',
+      pubKeys,
+      chainID,
+      pred,
+      selectedNetwork,
+      networksData,
+    ],
+    queryFn: () =>
+      createPrincipal(pubKeys, chainID, pred),
+    enabled: pubKeys.length > 0,
   });
-
-  const schema = z.object({
-    name: z.string(),
-    pubKey: z.string().optional(),
-  });
-  type FormData = z.infer<typeof schema>;
 
   const {
     register,
@@ -113,38 +113,37 @@ const NewAccountFaucetPage: FC = () => {
     formState: { errors },
     clearErrors,
     setError,
+    getValues,
+    resetField,
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: {
-      name: typeof accountName === 'string' ? accountName : '',
-      pubKey: '',
-    },
   });
 
-  const [inputError, setInputError] = useState<string>('');
+  useEffect(() => {
+    setValue('name', typeof accountName === 'string' ? accountName : '');
+  }, [accountName, setValue]);
 
   useToolbar(menuData, router.pathname);
-
-  useEffect(() => {
-    setInputError('');
-    setValidRequestKey(undefined);
-  }, [currentKey, pubKeys.length]);
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {
       if (!pubKeys.length) {
-        setValidRequestKey('negative');
-        setInputError(t('Please add one or more public keys'));
+        setError('pubKey', {
+          type: 'custom',
+          message: t('add-key-reminder'),
+        });
         return;
       }
 
-      setInputError('');
       setRequestStatus({ status: 'processing' });
       try {
         const result = (await fundCreateNewAccount(
           data.name,
           pubKeys,
           chainID,
+          selectedNetwork,
+          networksData,
           AMOUNT_OF_COINS_FUNDED,
           pred,
         )) as IFundExistingAccountResponse;
@@ -175,53 +174,30 @@ const NewAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID, pred, pubKeys, t],
+    [chainID, networksData, pred, pubKeys, selectedNetwork, setError, t],
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
   const disabledButton: boolean =
     requestStatus.status === 'processing' || mainnetSelected;
 
-  const addPublicKey = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    value: string,
-  ): void => {
-    e.preventDefault();
-
-    const isValidInput = validatePublicKey(value);
-
-    if (!isValidInput) {
-      setError('pubKey', {
-        type: 'invalid',
-        message: t('Insert valid public key'),
-      });
-      setValidRequestKey('negative');
-      return;
-    }
-    setValidRequestKey(undefined);
-    setInputError('');
-    clearErrors();
+  const addPublicKey = () => {
+    const value = getValues('pubKey');
 
     const copyPubKeys = [...pubKeys];
-    const isDuplicate = copyPubKeys.includes(value);
+    const isDuplicate = copyPubKeys.includes(value!);
 
     if (isDuplicate) {
-      setInputError(t('Duplicate public key'));
-      setValidRequestKey('negative');
+      setError('pubKey', { message: t('Duplicate public key') });
       return;
     }
 
-    copyPubKeys.push(value);
+    copyPubKeys.push(value!);
     setPubKeys(copyPubKeys);
-    setCurrentKey('');
+    resetField('pubKey');
   };
 
-  const deletePublicKey = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    index: number,
-  ): void => {
-    e.preventDefault();
-
+  const deletePublicKey = (index: number) => {
     const copyPubKeys = [...pubKeys];
     copyPubKeys.splice(index, 1);
 
@@ -229,17 +205,19 @@ const NewAccountFaucetPage: FC = () => {
   };
 
   const renderPubKeys = () => (
-    <Stack direction={'column'}>
+    <div className={pubKeysContainerStyle}>
       {pubKeys.map((key, index) => (
-        <div key={index} className={keyIconWrapperStyle}>
-          <Text size={'md'}>{key}</Text>
-          <IconButton
-            icon={'TrashCan'}
-            onClick={(event) => deletePublicKey(event, index)}
-          />
-        </div>
+        <HoverTag
+          key={`public-key-${key}`}
+          value={key}
+          onIconButtonClick={() => {
+            deletePublicKey(index);
+          }}
+          icon="TrashCan"
+          maskOptions={{ headLength: 4 }}
+        />
       ))}
-    </Stack>
+    </div>
   );
 
   return (
@@ -254,13 +232,10 @@ const NewAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification.Root
-            color="warning"
-            expanded={true}
-            icon="Information"
-            title={t('The Faucet is not available on Mainnet')}
-            variant="outlined"
-          >
+          <Notification color="warning" role="status">
+            <NotificationHeading>
+              {t('The Faucet is not available on Mainnet')}
+            </NotificationHeading>
             <Trans
               i18nKey="common:faucet-unavailable-warning"
               components={[
@@ -270,17 +245,12 @@ const NewAccountFaucetPage: FC = () => {
                 />,
               ]}
             />
-          </Notification.Root>
+          </Notification>
         ) : null}
       </div>
       <div className={notificationContainerStyle}>
-        <CloseableNotification
-          color="warning"
-          expanded={true}
-          icon="Information"
-          title={t(`Before you start`)}
-          variant="outlined"
-        >
+        <Notification color="warning" role="none">
+          <NotificationHeading>{t(`Before you start`)}</NotificationHeading>
           <Trans
             i18nKey="common:faucet-how-to-start"
             components={[
@@ -306,7 +276,7 @@ const NewAccountFaucetPage: FC = () => {
               />,
             ]}
           />
-        </CloseableNotification>
+        </Notification>
       </div>
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <FormStatusNotification
@@ -316,7 +286,7 @@ const NewAccountFaucetPage: FC = () => {
               <span className={notificationContentStyle}>
                 {`${AMOUNT_OF_COINS_FUNDED} ${t('coins have been funded to')}`}
                 <span className={hoverTagContainerStyle}>
-                  <HoverTag value={accountName as string} />
+                  <AccountHoverTag value={accountName as string} />
                 </span>
               </span>
             ),
@@ -330,11 +300,13 @@ const NewAccountFaucetPage: FC = () => {
           <div className={pubKeyInputWrapperStyle}>
             <div className={inputWrapperStyle}>
               <PublicKeyField
-                helperText={inputError || errors?.pubKey?.message}
-                status={validRequestKey}
+                helperText={errors?.pubKey?.message}
                 inputProps={{
-                  ...register('pubKey'),
-                  onChange: (e) => setCurrentKey(e.target.value),
+                  ...register('pubKey', {
+                    onChange: () => {
+                      clearErrors('pubKey');
+                    },
+                  }),
                 }}
                 error={errors.pubKey}
               />
@@ -342,8 +314,20 @@ const NewAccountFaucetPage: FC = () => {
             <div className={iconButtonWrapper}>
               <IconButton
                 icon={'Plus'}
-                onClick={(e) => addPublicKey(e, currentKey)}
+                onClick={() => {
+                  const value = getValues('pubKey');
+                  const valid = validatePublicKey(value || '');
+                  if (valid) {
+                    addPublicKey();
+                  } else {
+                    setError('pubKey', {
+                      type: 'custom',
+                      message: t('invalid-pub-key-length'),
+                    });
+                  }
+                }}
                 color="primary"
+                type="button"
               />
             </div>
           </div>
@@ -365,9 +349,9 @@ const NewAccountFaucetPage: FC = () => {
             <div className={accountNameContainerClass}>
               <AccountNameField
                 inputProps={register('name')}
+                error={errors.name}
                 label={t('The account name to fund coins to')}
                 disabled
-                noIcon
               />
             </div>
             <div className={chainSelectContainerClass}>
