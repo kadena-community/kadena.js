@@ -1,6 +1,6 @@
 import type { ChainId } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
-import { createPrincipalCommand } from '@kadena/client-utils/built-in';
+import { createPrincipal } from '@kadena/client-utils/built-in';
 import { transferCreate } from '@kadena/client-utils/coin';
 import chalk from 'chalk';
 import type { Command } from 'commander';
@@ -19,7 +19,7 @@ export const transferCreateCommand: (
     globalOptions.amount(),
     globalOptions.fungible(),
     globalOptions.network(),
-    globalOptions.networkChainId(),
+    globalOptions.chainId(),
     globalOptions.publicKeys(),
     globalOptions.predicate(),
   ],
@@ -27,14 +27,12 @@ export const transferCreateCommand: (
     debug('account-transfer-create:action')({ config });
 
     try {
-      const createPrincipal = await createPrincipalCommand(
+      const principal = await createPrincipal(
         {
           keyset: {
-            pred: config.predicate as 'keys-all' | 'keys-two' | 'keys-one',
+            pred: config.predicate as 'keys-all' | 'keys-2' | 'keys-any',
             keys: config.publicKeysConfig,
           },
-          gasPayer: { account: 'dummy', publicKeys: [] },
-          chainId: config.chainId as ChainId,
         },
         {
           host: config.networkConfig.networkHost,
@@ -46,8 +44,6 @@ export const transferCreateCommand: (
           },
         },
       );
-
-      const account = await createPrincipal().execute();
 
       const signWithKeyPair = createSignWithKeypair({
         publicKey: FAUCET_CONSTANTS.devnetKp.publicKey,
@@ -61,9 +57,9 @@ export const transferCreateCommand: (
             publicKeys: [FAUCET_CONSTANTS.devnetKp.publicKey],
           },
           receiver: {
-            account: account as string,
+            account: principal,
             keyset: {
-              pred: config.predicate as 'keys-all' | 'keys-two' | 'keys-one',
+              pred: config.predicate as 'keys-all' | 'keys-2' | 'keys-any',
               keys: config.publicKeysConfig,
             },
           },
@@ -73,6 +69,7 @@ export const transferCreateCommand: (
           },
           chainId: config.chainId as ChainId,
           amount: config.amount,
+          contract: config.fungible,
         },
         {
           host: config.networkConfig.networkHost,
@@ -89,7 +86,7 @@ export const transferCreateCommand: (
       if (result === 'Write succeeded') {
         console.log(
           chalk.green(
-            `\nFunded the account "${account}" on chain ${config.chainId} of "${config.network}".\n`,
+            `\nFunded the account "${principal}" on chain ${config.chainId} of "${config.network}".\n`,
           ),
         );
       } else {

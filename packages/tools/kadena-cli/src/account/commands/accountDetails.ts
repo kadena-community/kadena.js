@@ -16,7 +16,7 @@ export const accountDetailsCommand: (
     globalOptions.accountName(),
     globalOptions.fungible(),
     globalOptions.network(),
-    globalOptions.networkChainId(),
+    globalOptions.chainId(),
   ],
   async (config) => {
     debug('account-details:action')({ config });
@@ -27,6 +27,7 @@ export const accountDetailsCommand: (
         config.networkConfig.networkId,
         config.chainId as ChainId,
         config.networkConfig.networkHost,
+        config.fungible,
       );
       console.log(
         chalk.green(`\nDetails of account "${config.accountName}":\n`),

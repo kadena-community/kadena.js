@@ -1,5 +1,5 @@
 import { createSignWithKeypair } from '@kadena/client';
-import { createPrincipalCommand } from '@kadena/client-utils/built-in';
+import { createPrincipal } from '@kadena/client-utils/built-in';
 import { createAccount } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
@@ -16,7 +16,7 @@ export const createAccountCommand: (program: Command, version: string) => void =
     [
       globalOptions.fungible(),
       globalOptions.network(),
-      globalOptions.networkChainId(),
+      globalOptions.chainId(),
       globalOptions.publicKeys(),
       globalOptions.predicate(),
     ],
@@ -24,14 +24,12 @@ export const createAccountCommand: (program: Command, version: string) => void =
       debug('account-create:action')({ config });
 
       try {
-        const createPrincipal = await createPrincipalCommand(
+        const principal = await createPrincipal(
           {
             keyset: {
-              pred: config.predicate as 'keys-all' | 'keys-two' | 'keys-one',
+              pred: config.predicate as 'keys-all' | 'keys-2' | 'keys-any',
               keys: config.publicKeysConfig,
             },
-            gasPayer: { account: 'dummy', publicKeys: [] },
-            chainId: config.chainId as ChainId,
           },
           {
             host: config.networkConfig.networkHost,
@@ -44,8 +42,6 @@ export const createAccountCommand: (program: Command, version: string) => void =
           },
         );
 
-        const account = await createPrincipal().execute();
-
         const signWithKeyPair = createSignWithKeypair({
           publicKey: FAUCET_CONSTANTS.devnetKp.publicKey,
           secretKey: FAUCET_CONSTANTS.devnetKp.secretKey,
@@ -53,9 +49,9 @@ export const createAccountCommand: (program: Command, version: string) => void =
 
         const result = await createAccount(
           {
-            account: account as string,
+            account: principal as string,
             keyset: {
-              pred: config.predicate as 'keys-all' | 'keys-two' | 'keys-one',
+              pred: config.predicate as 'keys-all' | 'keys-2' | 'keys-any',
               keys: config.publicKeysConfig,
             },
             gasPayer: {
@@ -63,6 +59,7 @@ export const createAccountCommand: (program: Command, version: string) => void =
               publicKeys: [FAUCET_CONSTANTS.devnetKp.publicKey],
             },
             chainId: config.chainId as ChainId,
+            contract: config.fungible,
           },
           {
             host: config.networkConfig.networkHost,
@@ -79,7 +76,7 @@ export const createAccountCommand: (program: Command, version: string) => void =
         if (result === 'Write succeeded') {
           console.log(
             chalk.green(
-              `\nCreated account "${account}" on chain ${config.chainId} of "${config.network}".\n`,
+              `\nCreated account "${principal}" on chain ${config.chainId} of "${config.network}".\n`,
             ),
           );
         } else {
