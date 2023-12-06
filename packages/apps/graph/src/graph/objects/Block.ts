@@ -1,7 +1,11 @@
 import { prismaClient } from '@db/prismaClient';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Block', {
   id: { field: 'hash' },
@@ -21,6 +25,7 @@ export default builder.prismaNode('Block', {
     parent: t.prismaField({
       type: 'Block',
       nullable: true,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       async resolve(__query, parent) {
         try {
           return await prismaClient.block.findUnique({
@@ -46,12 +51,17 @@ export default builder.prismaNode('Block', {
       type: 'Transaction',
       cursor: 'blockHash_requestKey',
       edgesNullable: false,
+      complexity: (args) => ({
+        field: getDefaultConnectionComplexity({
+          first: args.first,
+          last: args.last,
+        }),
+      }),
       async totalCount(parent) {
         try {
           return await prismaClient.transaction.count({
             where: {
               blockHash: parent.hash,
-              chainId: parent.chainId,
             },
           });
         } catch (error) {
@@ -78,9 +88,12 @@ export default builder.prismaNode('Block', {
     minerKeys: t.prismaField({
       type: ['MinerKey'],
       nullable: true,
-      async resolve(__query, parent) {
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      async resolve(query, parent) {
         try {
           return await prismaClient.minerKey.findMany({
+            ...query,
             where: {
               blockHash: parent.hash,
             },
@@ -92,6 +105,9 @@ export default builder.prismaNode('Block', {
     }),
 
     confirmationDepth: t.int({
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS *
+        dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
       async resolve(parent) {
         try {
           return await getConfirmationDepth(parent.hash);

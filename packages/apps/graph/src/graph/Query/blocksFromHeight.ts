@@ -1,7 +1,8 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { chainIds as defaultChainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 import Block from '../objects/Block';
 
 builder.queryField('blocksFromHeight', (t) => {
@@ -11,13 +12,15 @@ builder.queryField('blocksFromHeight', (t) => {
       chainIds: t.arg.stringList({ required: false }),
     },
     type: [Block],
+    complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
     async resolve(
-      __query,
+      query,
       __parent,
       { startHeight, chainIds = defaultChainIds },
     ) {
       try {
-        const blocksFromHeight = await prismaClient.block.findMany({
+        return await prismaClient.block.findMany({
+          ...query,
           where: {
             AND: [
               {
@@ -35,10 +38,8 @@ builder.queryField('blocksFromHeight', (t) => {
           orderBy: {
             height: 'asc',
           },
-          take: 100,
+          take: PRISMA.DEFAULT_SIZE,
         });
-
-        return blocksFromHeight;
       } catch (error) {
         throw normalizeError(error);
       }
