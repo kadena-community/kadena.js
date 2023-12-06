@@ -24,9 +24,8 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have [Git](https://git-scm.com/downloads) installed and are generally familiar with using git commands.
+- You have [Git](https://git-scm.com/downloads) installed and are generally familiar with using `git` commands.
 - You have [Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs/) and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed on your local computer.
-- You have access to [Chainweaver](https://github.com/kadena-io/chainweaver/releases) desktop or web application.
 - You have [Pact](https://github.com/kadena-io/pact#installing-pact) or the [Pact language server plugin](https://github.com/kadena-io/pact-lsp/releases) installed on your local computer to support syntax highlighting and other features in the code editor.
 
 ## Clone the project repository
