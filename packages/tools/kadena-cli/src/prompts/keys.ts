@@ -63,13 +63,6 @@ export const keySeed: IPrompt = async (prev, args, isOptional) => {
     name: `alias: ${key}`,
   }));
 
-  if (isOptional === true) {
-    choices.unshift({
-      value: 'skip',
-      name: 'Seed selection is optional. Continue to next step',
-    });
-  }
-
   // Option to enter own key
   choices.push({ value: 'enterOwnSeed', name: 'Enter my own seed' });
 

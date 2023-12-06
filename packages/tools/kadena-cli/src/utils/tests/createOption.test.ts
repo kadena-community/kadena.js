@@ -87,3 +87,28 @@ describe('createOption', () => {
     expect(mockPrompt).toHaveBeenCalledWith({}, {}, false);
   });
 });
+
+describe('createOption with transform', () => {
+  it('should apply transform function to the option value', async () => {
+    const mockTransform = vi
+      .fn()
+      .mockImplementation((value) => `transformed-${value}`);
+    const testOption = new Option('-t, --test <test>', 'test option');
+    const inputValue = 'inputValue';
+
+    const optionCreator = {
+      prompt: async () => inputValue,
+      validation: z.string(),
+      option: testOption,
+      transform: mockTransform,
+    };
+
+    const result = createOption(optionCreator);
+    const detailedOption = result({ isOptional: false });
+
+    const transformedValue = await detailedOption.transform(inputValue);
+
+    expect(mockTransform).toHaveBeenCalledWith(inputValue);
+    expect(transformedValue).toBe(`transformed-${inputValue}`);
+  });
+});
