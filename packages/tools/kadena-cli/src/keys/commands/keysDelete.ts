@@ -38,7 +38,7 @@ export const createDeleteKeysCommand: (
         return;
       }
 
-      await deleteAllFilesInDirAsync(KEY_DIR);
+      await deleteAllFilesInDirAsync(KEY_DIR, ['.seed']);
       return;
     }
 

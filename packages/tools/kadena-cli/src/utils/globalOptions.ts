@@ -219,12 +219,12 @@ export const globalOptions = {
       'Enter the number of key pairs you want to generate (default: 1)',
     ),
   }),
-  keyGenFromHdChoice: createOption({
-    key: 'keyGenFromHdChoice',
-    prompt: keys.genFromHdChoicePrompt,
+  keyGenFromChoice: createOption({
+    key: 'keyGenFromChoice',
+    prompt: keys.genFromChoicePrompt,
     validation: z.string(),
     option: new Option(
-      '-c, --key-gen-from-hd-choice <keyGenFromHdChoice>',
+      '-c, --key-gen-from-choice <keyGenFromChoice>',
       'Choose an action for generating keys',
     ),
   }),
@@ -253,6 +253,15 @@ export const globalOptions = {
     option: new Option(
       '-p, --key-password <keyPassword>',
       'Enter a password to encrypt your key with',
+    ),
+  }),
+  keyMnemonic: createOption({
+    key: 'keyMnemonic' as const,
+    prompt: keys.keyMnemonic,
+    validation: z.string(),
+    option: new Option(
+      '-m, --key-mnemonic <keyMnemonic>',
+      'Enter your 12-word mnemonic phrase to generate keys from',
     ),
   }),
   keyUsePassword: createOption({

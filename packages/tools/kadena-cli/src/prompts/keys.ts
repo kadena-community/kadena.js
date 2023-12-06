@@ -1,4 +1,7 @@
 import { input, select } from '@inquirer/prompts';
+import { validateMnemonic } from '@scure/bip39';
+import { wordlist } from '@scure/bip39/wordlists/english';
+
 import { program } from 'commander';
 import {
   getAllHDKeys,
@@ -20,6 +23,22 @@ export async function keyAlias(): Promise<string> {
     validate: function (input) {
       if (!isAlphabetic(input)) {
         return 'Alias must be alphabetic! Please enter a valid name.';
+      }
+      return true;
+    },
+  });
+}
+
+export async function keyMnemonic(): Promise<string> {
+  return await input({
+    message: `Enter your 12-word mnemonic phrase:`,
+    validate: function (input) {
+      const words = input.split(' ');
+      if (words.length !== 12) {
+        return 'The mnemonic phrase must contain exactly 12 words.';
+      }
+      if (!validateMnemonic(input, wordlist)) {
+        return 'Invalid mnemonic phrase. Please enter a valid 12-word mnemonic.';
       }
       return true;
     },
@@ -48,17 +67,17 @@ export async function keyAskForKeyType(): Promise<string> {
   return keyTypeChoice.toLowerCase();
 }
 
-export async function genFromHdChoicePrompt(): Promise<string> {
+export async function genFromChoicePrompt(): Promise<string> {
   return await select({
     message: 'Select an action',
     choices: [
       {
-        value: 'genPublicKeyFromHDKey',
-        name: 'Generate Public key from HD key',
+        value: 'genPublicKey',
+        name: 'Generate Public key',
       },
       {
-        value: 'genPublicPrivateKeysFromHDKey',
-        name: 'Generate Public and Private key from HD key',
+        value: 'genPublicPrivateKey',
+        name: 'Generate Public and Private key',
       },
     ],
   });
@@ -143,7 +162,7 @@ export const keySelectPrompt: IPrompt = async (prev, args, isOptional) => {
 
   choices.push({
     value: 'all',
-    name: 'Delete all keys ( warning: cannot be undone )',
+    name: '** Delete all keys ** ',
   });
 
   const selectedKey = await select({
@@ -160,7 +179,7 @@ export const confirmDeleteAllKeysPrompt: IPrompt = async (
   isOptional,
 ) => {
   const message =
-    'Are you sure you want to delete ALL key files? This action cannot be undone.';
+    'Are you sure you want to delete ALL key files? ( Warning: This action cannot be undone. Seeds need to be manually selected for deletion. )';
 
   return await select({
     message,
