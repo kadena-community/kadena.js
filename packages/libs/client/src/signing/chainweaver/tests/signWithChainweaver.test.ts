@@ -86,6 +86,46 @@ describe('signWithChainweaver', () => {
     await signWithChainweaver(unsignedTransaction);
   });
 
+  it('makes a call on my-host.kadena:9467/v1/quicksign when chainweaverUrl is passed', async () => {
+    const unsignedTransaction = Pact.builder
+      .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('pubkey', (withCap) => [withCap('coin.GAS')])
+      .addSigner('pubkey', (withCap) => [
+        withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
+      ])
+      .setMeta({
+        senderAccount: '',
+        chainId: '0',
+      })
+      .createTransaction();
+
+    const mockedResponse: IQuicksignResponseOutcomes = {
+      responses: [
+        {
+          commandSigData: {
+            cmd: '',
+            sigs: [{ pubKey: 'pubkey', sig: 'sig' }],
+          },
+          outcome: {
+            hash: '',
+            result: 'success',
+          },
+        },
+      ],
+    };
+
+    server.resetHandlers(
+      post('http://my-host.kadena:9467/v1/quicksign', mockedResponse),
+    );
+
+    const signedTx = await signWithChainweaver(
+      unsignedTransaction,
+      'http://my-host.kadena:9467',
+    );
+
+    expect(signedTx.sigs).toStrictEqual([{ sig: 'sig' }]);
+  });
+
   it('throws when call fails', async () => {
     server.resetHandlers(
       post('http://127.0.0.1:9467/v1/quicksign', 'A system error occured', 500),

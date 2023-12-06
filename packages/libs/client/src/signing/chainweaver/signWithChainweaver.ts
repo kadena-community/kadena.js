@@ -7,19 +7,42 @@ import type {
   IQuicksignResponse,
   IQuicksignSigner,
 } from '../../signing-api/v1/quicksign';
-import type { ISignFunction } from '../ISignFunction';
+import type { ISingleSignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 const debug: Debugger = _debug('pactjs:signWithChainweaver');
 
 /**
+ * Interface to use when writing a signing function for Chainweaver that accepts a single transaction
+ * @public
+ */
+export interface IChainweaverSingleSignFunction extends ISingleSignFunction {
+  (
+    transaction: IUnsignedCommand,
+    chainweaverUrl?: string,
+  ): Promise<ICommand | IUnsignedCommand>;
+}
+
+/**
+ * Interface to use when writing a signing function for Chainweaver that accepts multiple transactions
+ * @public
+ */
+export interface IChainweaverSignFunction
+  extends IChainweaverSingleSignFunction {
+  (
+    transactionList: IUnsignedCommand[],
+  ): Promise<(ICommand | IUnsignedCommand)[]>;
+}
+
+/**
  * Sign with chainweaver according to {@link https://github.com/kadena-io/KIPs/blob/master/kip-0015.md | sign-v1 API}
  *
  * @public
  */
-export const signWithChainweaver: ISignFunction = (async (
+export const signWithChainweaver: IChainweaverSignFunction = (async (
   transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
+  chainweaverUrl = 'http://127.0.0.1:9467',
 ) => {
   if (transactionList === undefined) {
     throw new Error('No transaction(s) to sign');
@@ -46,7 +69,7 @@ export const signWithChainweaver: ISignFunction = (async (
 
   debug('calling sign api:', body);
 
-  const response = await fetch('http://127.0.0.1:9467/v1/quicksign', {
+  const response = await fetch(`${chainweaverUrl}/v1/quicksign`, {
     method: 'POST',
     body,
     headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -82,7 +105,7 @@ export const signWithChainweaver: ISignFunction = (async (
         `${error}`,
     );
   }
-}) as ISignFunction;
+}) as IChainweaverSignFunction;
 
 function isASigner(signer: IQuicksignSigner): signer is {
   pubKey: string;
