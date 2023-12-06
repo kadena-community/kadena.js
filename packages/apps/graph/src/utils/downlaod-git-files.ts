@@ -18,6 +18,7 @@ export async function downloadGitFiles(
   destinationPath: string = process.cwd(),
   fileExtension: string = 'yaml',
   drillDown: boolean = false,
+  excludeFolder: string[] = [],
 ): Promise<void> {
   const folderUrl = buildGitApiUrl(owner, name, path, branch);
 
@@ -27,7 +28,11 @@ export async function downloadGitFiles(
     // if gitData is an array, it means that it is a folder and we can download the files
     await Promise.all(
       gitData.map(async (file) => {
-        if (file.type === 'dir' && drillDown) {
+        if (
+          file.type === 'dir' &&
+          drillDown &&
+          !excludeFolder.includes(file.name)
+        ) {
           // If the file is a directory and we're drilling down, recursively download its files
           await downloadGitFiles(
             { owner, name, path: file.path, branch },

@@ -39,7 +39,7 @@ import { marmaladeConfig } from './simulation/config/marmalade';
 
 const TEMPLATE_EXTENSION = 'yaml';
 const CODE_FILE_EXTENSION = 'pact';
-const EXCLUDE_TEMPLATE_FOLDERS = ['data'];
+const EXCLUDE_TEMPLATE_FOLDERS = ['data', 'sample'];
 const MARMALADE_NAMESPACE_FILES = [
   'ns-marmalade.pact',
   'ns-contract-admin.pact',
@@ -91,7 +91,10 @@ export async function deployMarmaladeContracts(
       branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
     },
     templateDestinationPath,
+    EXCLUDE_TEMPLATE_FOLDERS,
   );
+
+  return;
 
   logger.info('Downloading necessary marmalade code files...');
 
@@ -213,6 +216,7 @@ export async function getMarmaladeTemplates(
     branch,
   }: { owner: string; name: string; path: string; branch: string },
   destinationPath: string,
+  excludeFolders: string[],
   flatFolder: boolean = true,
 ): Promise<void> {
   try {
@@ -226,7 +230,16 @@ export async function getMarmaladeTemplates(
       destinationPath,
       TEMPLATE_EXTENSION,
       true,
+      excludeFolders,
     );
+
+    const templateFiles = readdirSync(destinationPath);
+
+    if (templateFiles.length === 0) {
+      throw new Error(
+        'No template files found. Please double-check the provided credentials.',
+      );
+    }
 
     if (flatFolder) {
       await flattenFolder(destinationPath, [TEMPLATE_EXTENSION]);

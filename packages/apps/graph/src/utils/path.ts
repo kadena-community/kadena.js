@@ -40,17 +40,23 @@ export async function flattenFolder(
   fileExtensions: string[],
   currentPath: string = basePath,
 ): Promise<void> {
+  // Read directory
   const files = readdirSync(currentPath);
   for (const file of files) {
     const filePath = join(currentPath, file);
+
+    // if directory, recurse and delete folder
     if (statSync(filePath).isDirectory()) {
       await flattenFolder(basePath, fileExtensions, filePath);
       rmdirSync(filePath);
     } else if (fileExtensions.some((ext) => file.endsWith(ext))) {
+      // if file, rename to include parent folder name
       if (basePath === currentPath) continue;
+      const relativePath = currentPath.replace(basePath, '');
+      const folderChain = relativePath.split('/').filter(Boolean).join('.');
       const newFilePath = join(
         basePath,
-        `${basename(currentPath)}.${basename(file)}`,
+        `${basename(folderChain)}.${basename(file)}`,
       );
       renameSync(filePath, newFilePath);
     }
