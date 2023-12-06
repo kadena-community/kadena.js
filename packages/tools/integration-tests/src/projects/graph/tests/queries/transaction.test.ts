@@ -6,6 +6,7 @@ import { getTransactionsQuery } from '../../testdata/queries/getTransactions';
 import { createAccount, generateAccount } from '../../utils/account-utils';
 import { transferFunds } from '../../utils/transfer-utils';
 import { base64Encode } from '../../utils/cryptography-utils';
+import { coinModuleHash } from '../../testdata/constants/modules';
 
 let sourceAccount: IAccountWithSecretKey;
 let targetAccount: IAccountWithSecretKey;
@@ -21,11 +22,9 @@ describe('Query: getTransactions', () => {
 
   test('Should return transactions, if they exist.', async () => {
     // Given an account is created and transactions are fetched.
-    const sourceCreationResponse = await createAccount(sourceAccount);
+    await createAccount(sourceAccount);
     await createAccount(targetAccount);
     const initialResponse = await request(grapHost).post('').send(query);
-
-    //console.log(sourceCreationResponse)
 
     // Then there should be no transactions for the created account.
     expect(initialResponse.statusCode).toBe(200);
@@ -33,16 +32,15 @@ describe('Query: getTransactions', () => {
     expect(initialResponse.body.data.transactions.totalCount).toEqual(0);
 
     // When a transfer is performed from source to target
-    await transferFunds(sourceAccount, targetAccount, '20', '0');
+    const transfer = await transferFunds(sourceAccount, targetAccount, '20', '0');
 
     // And the transfers are retrieved for the source account
     const finalResponse = await request(grapHost).post('').send(query);
 
-    // Then the source should have two 1 transaction with 2 transfers.
+    // Then the source should have two 1 transaction with 2 transfers, 2 events and signed by the Source Account
     expect(finalResponse.statusCode).toBe(200);
     expect(finalResponse.body.data.transactions.edges).toHaveLength(1);
     expect(finalResponse.body.data.transactions.totalCount).toEqual(1);
-
     expect(finalResponse.body.data.transactions.edges[0].node).toEqual({
       code: `\"(coin.transfer \\\"${sourceAccount.account}\\\" \\\"${targetAccount.account}\\\" 20.0)\"`,
       data: '{}',
@@ -53,57 +51,47 @@ describe('Query: getTransactions', () => {
       senderAccount: sourceAccount.account,
       ttl: 28800,
       chainId: 0,
-      requestKey: 'JGG87A8clJ9irY3ezG9xVaIPGd2Ft4bQNnAHMmjWMXI',
+      requestKey: transfer.reqKey,
       eventCount: 2,
-      id: base64Encode(`Event:["dgPZCX6FaD7l3NQDwraoCQtIH8zE2LeazXUkA3MxNTg","1","us7Qo_sL0PK2N3ny3RgI23oww3mGNga1FkYHwT3e8X0"]`),
+      id: base64Encode(`Transaction:["${transfer.metaData?.blockHash}","${transfer.reqKey}"]`),
+      events: [
+        {
+          requestKey: transfer.reqKey,
+          parameterText: `["${sourceAccount.account}","${devnetMiner.account}",7.36e-6]`,
+          id: base64Encode(`Event:["${transfer.metaData?.blockHash}","0","${transfer.reqKey}"]`)
+        },
+        {
+          requestKey: transfer.reqKey,
+          parameterText: `["${sourceAccount.account}","${targetAccount.account}",20]`,
+          id: base64Encode(`Event:["${transfer.metaData?.blockHash}","1","${transfer.reqKey}"]`)
+        }
+      ],
       transfers: [
         {
           amount: 0.00000736,
           chainId: 0,
           receiverAccount:devnetMiner.account,
-          requestKey: 'JGG87A8clJ9irY3ezG9xVaIPGd2Ft4bQNnAHMmjWMXI',
+          requestKey: transfer.reqKey,
           senderAccount: sourceAccount.account,
-          id: 'VHJhbnNmZXI6WyJHZ202al9oOVpmdUliRDJiR3VSeVY1aXRGUExkOFVjVUNhcG9YRXdFa1ZBIiwiMCIsIjAiLCJNMWdhYmFrcWtFaV8xTjhkUkt0NHo1bEV2MWt1Q19ueExUbnlEQ3VaSUswIiwiSkdHODdBOGNsSjlpclkzZXpHOXhWYUlQR2QyRnQ0YlFObkFITW1qV01YSSJd',
+          id: base64Encode(`Transfer:["${transfer.metaData?.blockHash}","0","0","${coinModuleHash}","${transfer.reqKey}"]`),
         },
         {
           amount: 20,
           chainId: 0,
           receiverAccount: targetAccount.account,
-          requestKey: 'JGG87A8clJ9irY3ezG9xVaIPGd2Ft4bQNnAHMmjWMXI',
+          requestKey: transfer.reqKey,
           senderAccount: sourceAccount.account,
-          id: 'VHJhbnNmZXI6WyJHZ202al9oOVpmdUliRDJiR3VSeVY1aXRGUExkOFVjVUNhcG9YRXdFa1ZBIiwiMCIsIjEiLCJNMWdhYmFrcWtFaV8xTjhkUkt0NHo1bEV2MWt1Q19ueExUbnlEQ3VaSUswIiwiSkdHODdBOGNsSjlpclkzZXpHOXhWYUlQR2QyRnQ0YlFObkFITW1qV01YSSJd',
+          id: base64Encode(`Transfer:["${transfer.metaData?.blockHash}","0","1","${coinModuleHash}","${transfer.reqKey}"]`),
         },
       ],
       signers: [
         {
-          capabilities: `[{\"args\":[\"k:2088c4f97c00b2b638457ae2f87aa02a1da15c8b42c51088df991b8f92da9d06\",\"k:26b29459802d0960c62968c7ef017416ac60beb7a83a4c24eea26a9a5f1ac9ea\",{\"decimal\":\"20\"}],\"name\":\"coin.TRANSFER\"},{\"args\":[],\"name\":\"coin.GAS\"}]`,
+          capabilities: `[{\"args\":[\"${sourceAccount.account}\",\"${targetAccount.account}\",{\"decimal\":\"20\"}],\"name\":\"coin.TRANSFER\"},{\"args\":[],\"name\":\"coin.GAS\"}]`,
           publicKey: sourceAccount.publicKey,
-          requestKey: 'JGG87A8clJ9irY3ezG9xVaIPGd2Ft4bQNnAHMmjWMXI',
-          id: 'U2lnbmVyOlsiSkdHODdBOGNsSjlpclkzZXpHOXhWYUlQR2QyRnQ0YlFObkFITW1qV01YSSIsIjAiXQ==',
+          requestKey: transfer.reqKey,
+          id: base64Encode(`Signer:["${transfer.reqKey}","0"]`),
         },
       ],
     });
-
-    // Then the source
-    //expect(initialData.transfers.totalCount).toEqual(1)
-    // expect(initialData.transfers.edges[0].node).toEqual({
-    //   amount: fundAmount,
-    //   chainId: 0,
-    //   receiverAccount: sourceAccount.account,
-    //   requestKey: sourceCreationResponse.reqKey,
-    //   senderAccount: sender00.account,
-    //   id: base64Encode(`Transfer:["${sourceCreationResponse.metaData?.blockHash}","0","1","${coinModuleHash}","${sourceCreationResponse.reqKey}"]`),
-    // })
-
-    // When a transfer is performed
-
-    //   // And the getTransfers Query is executed
-    //   const finalResponse = await request(grapHost).post('').send(query);
-    //   const finalData = finalResponse.body.data
-
-    //   // Then there should be 2 transactions with 4 events and 4 transfers (2 gas payments and 2 transfers)
-    //   expect(finalResponse.statusCode).toBe(200);
-    //   //expect(finalData.transfers.totalCount).toEqual(1)
-    //     console.log(finalData.transfers)
   });
 });
