@@ -297,6 +297,9 @@ importers:
       '@pothos/core':
         specifier: ~3.33.0
         version: 3.33.0(graphql@16.8.0)
+      '@pothos/plugin-complexity':
+        specifier: ^3.13.0
+        version: 3.13.0(@pothos/core@3.33.0)(graphql@16.8.0)
       '@pothos/plugin-dataloader':
         specifier: ^3.17.1
         version: 3.17.1(@pothos/core@3.33.0)(dataloader@2.2.2)(graphql@16.8.0)
@@ -6803,6 +6806,16 @@ packages:
     peerDependencies:
       graphql: '>=15.1.0'
     dependencies:
+      graphql: 16.8.0
+    dev: false
+
+  /@pothos/plugin-complexity@3.13.0(@pothos/core@3.33.0)(graphql@16.8.0):
+    resolution: {integrity: sha512-exA4XV678s+/CObiDJr8qrID4kR+2Ch2tK13GyfdxCdH4SILWz1udjhYQ+6zRHu5nmr4ZvnmemzD5nw6cMVUJg==}
+    peerDependencies:
+      '@pothos/core': '*'
+      graphql: '>=15.1.0'
+    dependencies:
+      '@pothos/core': 3.33.0(graphql@16.8.0)
       graphql: 16.8.0
     dev: false
 
