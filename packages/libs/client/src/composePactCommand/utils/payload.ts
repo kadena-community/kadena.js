@@ -3,6 +3,14 @@ import type {
   IContinuationPayloadObject,
   IExecutionPayloadObject,
 } from '../../interfaces/IPactCommand';
+import type { ExtractPactModule } from '../../interfaces/type-utilities';
+
+export type AddCapabilities<T> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [K in keyof T]: T[K] extends { capability: any }
+    ? T[K]
+    : ExtractPactModule<T[K]>;
+};
 
 interface IExec {
   <
@@ -14,12 +22,16 @@ interface IExec {
     >,
   >(
     ...codes: [...TCodes]
-  ): { payload: IExecutionPayloadObject & { funs: [...TCodes] } };
+  ): {
+    payload: { exec: Required<IExecutionPayloadObject['exec']> } & {
+      funs: AddCapabilities<[...TCodes]>;
+    };
+  };
 }
 
 interface ICont {
-  (options: IContinuationPayloadObject['cont']): {
-    payload: IContinuationPayloadObject;
+  (options: Partial<IContinuationPayloadObject['cont']>): {
+    payload: { cont: Partial<IContinuationPayloadObject['cont']> };
   };
 }
 
@@ -45,7 +57,10 @@ export const execution: IExec = (...codes: string[]) => {
  * @public
  */
 export const continuation: ICont = (options) => {
-  const clone = { ...options, data: options.data ? options.data : {} };
+  const clone = {
+    data: {},
+    ...options,
+  };
   if (typeof clone.proof === 'string') {
     clone.proof = clone.proof.replace(/\"/gi, '');
   }

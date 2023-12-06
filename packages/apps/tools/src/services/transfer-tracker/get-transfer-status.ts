@@ -177,7 +177,7 @@ export async function getXChainTransferInfo({
 
     const proof = await client.pollCreateSpv(requestObject, receiverChain);
     const status = await client.listen(requestObject);
-    const pactId = status.continuation?.pactId;
+    const pactId = status.continuation!.pactId;
 
     const continuationTransaction = Pact.builder
       .continuation({

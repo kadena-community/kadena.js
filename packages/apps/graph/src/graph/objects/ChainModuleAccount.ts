@@ -1,5 +1,9 @@
 import { prismaClient } from '@db/prismaClient';
 import { getChainModuleAccount } from '@services/account-service';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
@@ -41,6 +45,7 @@ export default builder.node(
       moduleName: t.exposeString('moduleName'),
       guard: t.field({
         type: 'Guard',
+        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         async resolve(parent) {
           try {
             const accountDetails = await accountDetailsLoader.load({
@@ -63,6 +68,13 @@ export default builder.node(
         type: 'Transaction',
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
+        complexity: (args) => ({
+          field: getDefaultConnectionComplexity({
+            withRelations: true,
+            first: args.first,
+            last: args.last,
+          }),
+        }),
         async totalCount(parent) {
           return await prismaClient.transaction.count({
             where: {
@@ -76,7 +88,6 @@ export default builder.node(
             },
           });
         },
-
         async resolve(query, parent) {
           try {
             return await prismaClient.transaction.findMany({
@@ -103,6 +114,12 @@ export default builder.node(
         type: 'Transfer',
         edgesNullable: false,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
+        complexity: (args) => ({
+          field: getDefaultConnectionComplexity({
+            first: args.first,
+            last: args.last,
+          }),
+        }),
         async totalCount(parent) {
           try {
             return await prismaClient.transfer.count({
