@@ -5,7 +5,7 @@ import {
   getDefaultConnectionComplexity,
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import type { ChainModuleAccount } from '../types/graphql-types';
 import { ChainModuleAccountName } from '../types/graphql-types';
