@@ -5,15 +5,19 @@ import React, { useState } from 'react';
 
 export const InputShowHide: FC<IInputProps> = (props) => {
   const [value, setValue] = useState<string>('');
-  const [type, setType] = useState<'text' | 'password'>('text');
+  const [isText, setIsTextType] = useState<boolean>(true);
   return (
     <Input
       {...props}
-      type={type}
+      type={isText ? 'text' : 'password'}
       value={value}
       onChange={({ target }) => setValue(target.value)}
     >
-      <ShowHideButton type={type} setType={setType} value={value} />
+      <ShowHideButton
+        isText={isText}
+        setIsTextType={setIsTextType}
+        value={value}
+      />
     </Input>
   );
 };

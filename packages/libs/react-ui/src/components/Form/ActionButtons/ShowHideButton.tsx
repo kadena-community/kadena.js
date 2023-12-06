@@ -9,16 +9,21 @@ export interface IShowHideButtonProps
     'color' | 'className'
   > {
   value: string;
+  isText: boolean;
+  setIsTextType: (isText: boolean) => void;
 }
 
 export const ShowHideButton: FC<IShowHideButtonProps> = ({
   value,
+  isText,
+  setIsTextType,
   ...restProps
 }) => {
-  const [click, setClick] = useState<boolean>(false);
+  const [click, setClick] = useState<boolean>(true);
 
   const handleClick = async (): Promise<void> => {
     setClick(!click);
+    setIsTextType(!isText);
   };
 
   const EyeIcon = SystemIcon.Eye;
