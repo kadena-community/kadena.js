@@ -1,103 +1,68 @@
 import { prismaClient } from '@db/prismaClient';
-import { getChainModuleAccount } from '@services/account-service';
+import { getChainFungibleAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
-import { chainIds } from '@utils/chains';
-import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
-import type { ChainModuleAccount, ModuleAccount } from '../types/graphql-types';
-import {
-  ChainModuleAccountName,
-  ModuleAccountName,
-} from '../types/graphql-types';
+import type { ChainFungibleAccount } from '../types/graphql-types';
+import { ChainFungibleAccountName } from '../types/graphql-types';
 
 export default builder.node(
-  builder.objectRef<ModuleAccount>(ModuleAccountName),
+  builder.objectRef<ChainFungibleAccount>(ChainFungibleAccountName),
   {
-    description: 'A fungible-specific account.',
+    description: 'A chain- and fungible-specific account.',
     id: {
       resolve(parent) {
-        return `${ModuleAccountName}/${parent.moduleName}/${parent.accountName}`;
+        return `${ChainFungibleAccountName}/${parent.chainId}/${parent.fungibleName}/${parent.accountName}`;
       },
       // Do not use parse here since there is a bug in the pothos relay plugin which can cause incorrect results. Parse the ID directly in the loadOne function.
     },
     isTypeOf(source) {
-      return (source as any).__typename === ModuleAccountName;
+      return (source as any).__typename === ChainFungibleAccountName;
     },
     async loadOne(id) {
       try {
-        const moduleName = id.split('/')[1];
-        const accountName = id.split('/')[2];
+        const chainId = id.split('/')[1];
+        const fungibleName = id.split('/')[2];
+        const accountName = id.split('/')[3];
 
-        return {
-          __typename: ModuleAccountName,
+        return getChainFungibleAccount({
+          chainId,
+          fungibleName,
           accountName,
-          moduleName,
-          chainAccounts: [],
-          totalBalance: 0,
-          transactions: [],
-          transfers: [],
-        };
+        });
       } catch (error) {
         throw normalizeError(error);
       }
     },
     fields: (t) => ({
+      chainId: t.exposeID('chainId'),
       accountName: t.exposeString('accountName'),
-      moduleName: t.exposeString('moduleName'),
-      chainAccounts: t.field({
-        type: [ChainModuleAccountName],
-        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE * dotenv.CHAIN_COUNT,
+      fungibleName: t.exposeString('fungibleName'),
+      guard: t.field({
+        type: 'Guard',
+        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         async resolve(parent) {
           try {
-            return (
-              await Promise.all(
-                chainIds.map(async (chainId) => {
-                  return await getChainModuleAccount({
-                    chainId: chainId,
-                    moduleName: parent.moduleName,
-                    accountName: parent.accountName,
-                  });
-                }),
-              )
-            ).filter(
-              (chainAccount) => chainAccount !== null,
-            ) as ChainModuleAccount[];
+            const accountDetails = await accountDetailsLoader.load({
+              fungibleName: parent.fungibleName,
+              accountName: parent.accountName,
+              chainId: parent.chainId,
+            });
+
+            return {
+              keys: accountDetails.guard.keys,
+              predicate: accountDetails.guard.pred,
+            };
           } catch (error) {
             throw normalizeError(error);
           }
         },
       }),
-      totalBalance: t.field({
-        type: 'Decimal',
-        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE * dotenv.CHAIN_COUNT,
-        async resolve(parent) {
-          try {
-            return (
-              await Promise.all(
-                chainIds.map(async (chainId) => {
-                  return accountDetailsLoader.load({
-                    moduleName: parent.moduleName,
-                    accountName: parent.accountName,
-                    chainId: chainId,
-                  });
-                }),
-              )
-            ).reduce((acc, accountDetails) => {
-              if (accountDetails !== null) {
-                return acc + accountDetails.balance;
-              }
-              return acc;
-            }, 0);
-          } catch (error) {
-            throw normalizeError(error);
-          }
-        },
-      }),
+      balance: t.exposeFloat('balance'),
       transactions: t.prismaConnection({
         type: 'Transaction',
         cursor: 'blockHash_requestKey',
@@ -110,20 +75,17 @@ export default builder.node(
           }),
         }),
         async totalCount(parent) {
-          try {
-            return await prismaClient.transaction.count({
-              where: {
-                senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: parent.moduleName,
-                  },
+          return await prismaClient.transaction.count({
+            where: {
+              senderAccount: parent.accountName,
+              events: {
+                some: {
+                  moduleName: parent.fungibleName,
                 },
               },
-            });
-          } catch (error) {
-            throw normalizeError(error);
-          }
+              chainId: parseInt(parent.chainId),
+            },
+          });
         },
         async resolve(query, parent) {
           try {
@@ -133,9 +95,10 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: parent.moduleName,
+                    moduleName: parent.fungibleName,
                   },
                 },
+                chainId: parseInt(parent.chainId),
               },
               orderBy: {
                 height: 'desc',
@@ -148,8 +111,8 @@ export default builder.node(
       }),
       transfers: t.prismaConnection({
         type: 'Transfer',
-        cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         edgesNullable: false,
+        cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         complexity: (args) => ({
           field: getDefaultConnectionComplexity({
             first: args.first,
@@ -168,6 +131,8 @@ export default builder.node(
                     receiverAccount: parent.accountName,
                   },
                 ],
+                moduleName: parent.fungibleName,
+                chainId: parseInt(parent.chainId),
               },
             });
           } catch (error) {
@@ -187,6 +152,8 @@ export default builder.node(
                     receiverAccount: parent.accountName,
                   },
                 ],
+                moduleName: parent.fungibleName,
+                chainId: parseInt(parent.chainId),
               },
               orderBy: {
                 height: 'desc',

@@ -1,10 +1,11 @@
 import type {
-  ModuleAccountTransactionsConnection,
-  ModuleAccountTransfersConnection,
+  ChainFungibleAccount,
+  FungibleAccountTransactionsConnection,
+  FungibleAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetAccountQuery } from '@/__generated__/sdk';
 import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
-import { ChainModuleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
+import { ChainFungibleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
@@ -24,7 +25,7 @@ const Account: React.FC = () => {
 
   const { loading, data, error } = useGetAccountQuery({
     variables: {
-      moduleName: router.query.module as string,
+      fungibleName: router.query.fungible as string,
       accountName: router.query.account as string,
     },
   });
@@ -50,7 +51,7 @@ const Account: React.FC = () => {
           <>
             <Notification color="info" role="status">
               We could not find any data on this account. Please check the
-              module and account name.
+              fungible name and account name.
             </Notification>
             <Box margin={'$4'} />
           </>
@@ -67,9 +68,9 @@ const Account: React.FC = () => {
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
-                  <strong>Module</strong>
+                  <strong>Fungible</strong>
                 </Table.Td>
-                <Table.Td>{data.account.moduleName}</Table.Td>
+                <Table.Td>{data.account.fungibleName}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
@@ -83,10 +84,12 @@ const Account: React.FC = () => {
           <Tabs defaultSelectedKey="Chain Accounts">
             <TabItem title="Chain Accounts" key="Chain Accounts">
               <Box margin={'$4'} />
-              <ChainModuleAccountTable
-                moduleName={router.query.module as string}
+              <ChainFungibleAccountTable
+                fungibleName={router.query.fungible as string}
                 accountName={router.query.account as string}
-                chainAccounts={data.account.chainAccounts}
+                chainAccounts={
+                  data.account.chainAccounts as ChainFungibleAccount[]
+                }
               />
             </TabItem>
 
@@ -94,10 +97,10 @@ const Account: React.FC = () => {
               <Box margin={'$4'} />
               <CompactTransfersTable
                 description="All transfers from or to this account"
-                moduleName={router.query.module as string}
+                fungibleName={router.query.fungible as string}
                 accountName={router.query.account as string}
                 transfers={
-                  data.account.transfers as ModuleAccountTransfersConnection
+                  data.account.transfers as FungibleAccountTransfersConnection
                 }
               />
             </TabItem>
@@ -105,11 +108,11 @@ const Account: React.FC = () => {
               <Box margin={'$4'} />
               <CompactTransactionsTable
                 viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
-                  router.query.module as string
+                  router.query.fungible as string
                 }/${router.query.account as string}`}
                 transactions={
                   data.account
-                    .transactions as ModuleAccountTransactionsConnection
+                    .transactions as FungibleAccountTransactionsConnection
                 }
               />
             </TabItem>

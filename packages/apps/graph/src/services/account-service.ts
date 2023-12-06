@@ -1,28 +1,28 @@
 import { accountDetailsLoader } from '../graph/data-loaders/account-details';
-import type { ChainModuleAccount } from '../graph/types/graphql-types';
-import { ChainModuleAccountName } from '../graph/types/graphql-types';
+import type { ChainFungibleAccount } from '../graph/types/graphql-types';
+import { ChainFungibleAccountName } from '../graph/types/graphql-types';
 
-export async function getChainModuleAccount({
+export async function getChainFungibleAccount({
   chainId,
-  moduleName,
+  fungibleName,
   accountName,
 }: {
   chainId: string;
-  moduleName: string;
+  fungibleName: string;
   accountName: string;
-}): Promise<ChainModuleAccount | null> {
+}): Promise<ChainFungibleAccount | null> {
   const accountDetails = await accountDetailsLoader.load({
-    moduleName,
+    fungibleName,
     accountName,
     chainId,
   });
 
   return accountDetails !== null
     ? {
-        __typename: ChainModuleAccountName,
+        __typename: ChainFungibleAccountName,
         chainId,
         accountName,
-        moduleName,
+        fungibleName,
         guard: {
           keys: accountDetails.guard.keys,
           predicate: accountDetails.guard.pred,

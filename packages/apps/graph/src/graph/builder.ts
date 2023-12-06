@@ -17,10 +17,10 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prismaClient';
 import type {
-  ChainModuleAccount,
+  ChainFungibleAccount,
+  FungibleAccount,
   GraphConfiguration,
   Guard,
-  ModuleAccount,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -58,8 +58,8 @@ export const builder = new SchemaBuilder<
     PrismaTypes: PrismaTypes;
     Context: IContext;
     Objects: {
-      ModuleAccount: ModuleAccount;
-      ChainModuleAccount: ChainModuleAccount;
+      FungibleAccount: FungibleAccount;
+      ChainFungibleAccount: ChainFungibleAccount;
       Guard: Guard;
       GraphConfiguration: GraphConfiguration;
     };

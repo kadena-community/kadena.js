@@ -1,7 +1,7 @@
 import type { ChainId, IClient, ICommandResult } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
-import { Guard } from '../graph/types/graphql-types';
+import type { Guard } from '../graph/types/graphql-types';
 
 export class PactCommandError extends Error {
   public commandResult: ICommandResult;
@@ -21,7 +21,7 @@ export type CommandData = {
 };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type ChainModuleAccountDetails = {
+export type ChainFungibleAccountDetails = {
   account: string;
   balance: number;
   guard: {
@@ -37,13 +37,15 @@ function getClient(chainId: ChainId): IClient {
 }
 
 export async function getAccountDetails(
-  module: string,
+  fungibleName: string,
   accountName: string,
   chainId: string,
-): Promise<ChainModuleAccountDetails | null> {
+): Promise<ChainFungibleAccountDetails | null> {
   const commandResult = await getClient(chainId as ChainId).dirtyRead(
     Pact.builder
-      .execution(Pact.modules[module as 'fungible-v2'].details(accountName))
+      .execution(
+        Pact.modules[fungibleName as 'fungible-v2'].details(accountName),
+      )
       .setMeta({
         chainId: chainId as ChainId,
       })
@@ -74,7 +76,7 @@ export async function getAccountDetails(
     result.balance = parseFloat(result.balance.decimal);
   }
 
-  return result as ChainModuleAccountDetails;
+  return result as ChainFungibleAccountDetails;
 }
 
 export async function sendRawQuery(

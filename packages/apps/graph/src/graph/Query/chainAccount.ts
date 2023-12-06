@@ -2,8 +2,8 @@ import { COMPLEXITY } from '@services/complexity';
 import { getAccountDetails } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import ChainModuleAccount from '../objects/ChainModuleAccount';
-import { ChainModuleAccountName } from '../types/graphql-types';
+import ChainFungibleAccount from '../objects/chain-fungible-account';
+import { ChainFungibleAccountName } from '../types/graphql-types';
 
 builder.queryField('chainAccount', (t) =>
   t.field({
@@ -11,26 +11,26 @@ builder.queryField('chainAccount', (t) =>
       'Retrieve an account by its name and fungible, such as coin, on a specific chain.',
     args: {
       accountName: t.arg.string({ required: true }),
-      moduleName: t.arg.string({ required: true }),
+      fungibleName: t.arg.string({ required: true }),
       chainId: t.arg.string({ required: true }),
     },
-    type: ChainModuleAccount,
+    type: ChainFungibleAccount,
     nullable: true,
     complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
         const accountDetails = await getAccountDetails(
-          args.moduleName,
+          args.fungibleName,
           args.accountName,
           args.chainId,
         );
 
         return accountDetails
           ? {
-              __typename: ChainModuleAccountName,
+              __typename: ChainFungibleAccountName,
               chainId: args.chainId,
               accountName: args.accountName,
-              moduleName: args.moduleName,
+              fungibleName: args.fungibleName,
               guard: {
                 keys: accountDetails.guard.keys,
                 predicate: accountDetails.guard.pred,

@@ -1,9 +1,9 @@
-import { getChainModuleAccount } from '@services/account-service';
+import { getChainFungibleAccount } from '@services/account-service';
 import { chainIds } from '@utils/chains';
 import { builder } from '../builder';
-import Account from '../objects/ModuleAccount';
-import type { ChainModuleAccount } from '../types/graphql-types';
-import { ModuleAccountName } from '../types/graphql-types';
+import Account from '../objects/fungible-account';
+import type { ChainFungibleAccount } from '../types/graphql-types';
+import { FungibleAccountName } from '../types/graphql-types';
 
 builder.queryField('account', (t) =>
   t.field({
@@ -11,30 +11,32 @@ builder.queryField('account', (t) =>
     nullable: true,
     args: {
       accountName: t.arg.string({ required: true }),
-      moduleName: t.arg.string({ required: true }),
+      fungibleName: t.arg.string({ required: true }),
     },
     type: Account,
     async resolve(__parent, args) {
       const chainAccounts = (
         await Promise.all(
           chainIds.map(async (chainId) => {
-            return await getChainModuleAccount({
+            return await getChainFungibleAccount({
               chainId: chainId,
-              moduleName: args.moduleName,
+              fungibleName: args.fungibleName,
               accountName: args.accountName,
             });
           }),
         )
-      ).filter((chainAccount) => chainAccount !== null) as ChainModuleAccount[];
+      ).filter(
+        (chainAccount) => chainAccount !== null,
+      ) as ChainFungibleAccount[];
 
       if (chainAccounts.length === 0) {
         return null;
       }
 
       return {
-        __typename: ModuleAccountName,
+        __typename: FungibleAccountName,
         accountName: args.accountName,
-        moduleName: args.moduleName,
+        fungibleName: args.fungibleName,
         chainAccounts: chainAccounts,
         totalBalance: 0,
         transactions: [],

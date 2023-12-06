@@ -6,8 +6,9 @@ import {
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { ChainModuleAccountName, Guard } from '../types/graphql-types';
-import ChainModuleAccount from './ChainModuleAccount';
+import type { Guard } from '../types/graphql-types';
+import { ChainFungibleAccountName } from '../types/graphql-types';
+import ChainFungibleAccount from './chain-fungible-account';
 
 export default builder.prismaNode('Block', {
   description:
@@ -31,13 +32,13 @@ export default builder.prismaNode('Block', {
     }),
     predicate: t.exposeString('predicate'),
     minerAccount: t.field({
-      type: ChainModuleAccount,
+      type: ChainFungibleAccount,
       complexity: COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS,
       resolve: async (parent) => ({
-        __typename: ChainModuleAccountName,
+        __typename: ChainFungibleAccountName,
         chainId: parent.chainId.toString(),
         accountName: parent.minerAccount,
-        moduleName: 'coin',
+        fungibleName: 'coin',
         guard: {
           keys: (
             await prismaClient.minerKey.findMany({

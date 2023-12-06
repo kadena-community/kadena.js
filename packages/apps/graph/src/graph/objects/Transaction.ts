@@ -139,6 +139,7 @@ export default builder.prismaNode('Transaction', {
               requestKey: parent.requestKey,
               blockHash: parent.blockHash,
             },
+            take: PRISMA.DEFAULT_SIZE,
           });
         } catch (error) {
           throw normalizeError(error);
@@ -159,6 +160,7 @@ export default builder.prismaNode('Transaction', {
               requestKey: parent.requestKey,
               blockHash: parent.blockHash,
             },
+            take: PRISMA.DEFAULT_SIZE,
           });
         } catch (error) {
           throw normalizeError(error);
@@ -178,6 +180,7 @@ export default builder.prismaNode('Transaction', {
             where: {
               requestKey: parent.requestKey,
             },
+            take: PRISMA.DEFAULT_SIZE,
           });
         } catch (error) {
           throw normalizeError(error);

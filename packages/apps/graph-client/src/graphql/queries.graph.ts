@@ -85,8 +85,8 @@ export const getAccount: DocumentNode = gql`
   ${CORE_TRANSACTION_FIELDS}
   ${CORE_TRANSFER_FIELDS}
 
-  query getAccount($moduleName: String!, $accountName: String!) {
-    account(moduleName: $moduleName, accountName: $accountName) {
+  query getAccount($fungibleName: String!, $accountName: String!) {
+    account(fungibleName: $fungibleName, accountName: $accountName) {
       ...AllAccountFields
       chainAccounts {
         ...CoreChainAccountFields
@@ -125,12 +125,12 @@ export const getChainAccount: DocumentNode = gql`
   ${ALL_CHAIN_ACCOUNT_FIELDS}
 
   query getChainAccount(
-    $moduleName: String!
+    $fungibleName: String!
     $accountName: String!
     $chainId: String!
   ) {
     chainAccount(
-      moduleName: $moduleName
+      fungibleName: $fungibleName
       accountName: $accountName
       chainId: $chainId
     ) {
@@ -163,7 +163,7 @@ export const getTransactions: DocumentNode = gql`
   ${CORE_TRANSACTION_FIELDS}
 
   query getTransactions(
-    $moduleName: String
+    $fungibleName: String
     $accountName: String
     $chainId: String
     $blockHash: String
@@ -173,7 +173,7 @@ export const getTransactions: DocumentNode = gql`
     $last: Int
   ) {
     transactions(
-      moduleName: $moduleName
+      fungibleName: $fungibleName
       accountName: $accountName
       chainId: $chainId
       blockHash: $blockHash
@@ -210,7 +210,7 @@ export const getTransfers: DocumentNode = gql`
   ${CORE_TRANSFER_FIELDS}
 
   query getTransfers(
-    $moduleName: String!
+    $fungibleName: String!
     $accountName: String!
     $chainId: String
     $after: String
@@ -219,7 +219,7 @@ export const getTransfers: DocumentNode = gql`
     $last: Int
   ) {
     transfers(
-      moduleName: $moduleName
+      fungibleName: $fungibleName
       accountName: $accountName
       chainId: $chainId
       after: $after
