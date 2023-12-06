@@ -74,32 +74,39 @@ export async function deployMarmaladeContracts(
   codeFileDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
   nsDestinationPath: string = dotenv.MARMALADE_NS_LOCAL_PATH,
 ) {
-  // console.log('Clearing Marmalade Templates');
-  // handleDirectorySetup(templateDestinationPath, codeFileDestinationPath);
+  logger.info('Preparing directories...');
+  handleDirectorySetup(
+    templateDestinationPath,
+    codeFileDestinationPath,
+    nsDestinationPath,
+  );
 
-  // console.log('Getting Marmalade Templates');
-  // await getMarmaladeTemplates(
-  //   {
-  //     owner: dotenv.MARMALADE_TEMPLATE_OWNER,
-  //     name: dotenv.MARMALADE_TEMPLATE_REPO,
-  //     path: dotenv.MARMALADE_TEMPLATE_PATH,
-  //     branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
-  //   },
-  //   templateDestinationPath,
-  // );
+  logger.info('Downloading marmalade templates...');
 
-  // await getCodeFiles(templateDestinationPath, codeFileDestinationPath);
+  await getMarmaladeTemplates(
+    {
+      owner: dotenv.MARMALADE_TEMPLATE_OWNER,
+      name: dotenv.MARMALADE_TEMPLATE_REPO,
+      path: dotenv.MARMALADE_TEMPLATE_PATH,
+      branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
+    },
+    templateDestinationPath,
+  );
 
-  // // Get marmalade namespace definition files
-  // await getNsCodeFiles(
-  //   {
-  //     owner: dotenv.MARMALADE_TEMPLATE_OWNER,
-  //     name: dotenv.MARMALADE_TEMPLATE_REPO,
-  //     path: dotenv.MARMALADE_NS_FILE_PATH,
-  //     branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
-  //   },
-  //   nsDestinationPath,
-  // );
+  logger.info('Downloading necessary marmalade code files...');
+
+  await getCodeFiles(templateDestinationPath, codeFileDestinationPath);
+
+  // Get marmalade namespace definition files
+  await getNsCodeFiles(
+    {
+      owner: dotenv.MARMALADE_TEMPLATE_OWNER,
+      name: dotenv.MARMALADE_TEMPLATE_REPO,
+      path: dotenv.MARMALADE_NS_FILE_PATH,
+      branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
+    },
+    nsDestinationPath,
+  );
 
   const templateFiles = readdirSync(templateDestinationPath).filter((file) =>
     file.endsWith(TEMPLATE_EXTENSION),
@@ -109,15 +116,15 @@ export async function deployMarmaladeContracts(
     file.endsWith(CODE_FILE_EXTENSION),
   );
 
-  // console.log(templateFiles);
-  // console.log(codeFiles);
+  console.log(templateFiles);
+  console.log(codeFiles);
 
-  // await updateTemplateFilesWithCodeFile(
-  //   templateFiles,
-  //   templateDestinationPath,
-  //   codeFiles,
-  //   codeFileDestinationPath,
-  // );
+  await updateTemplateFilesWithCodeFile(
+    templateFiles,
+    templateDestinationPath,
+    codeFiles,
+    codeFileDestinationPath,
+  );
 
   console.log('Deploying Marmalade Namespaces');
 
@@ -138,19 +145,14 @@ export async function deployMarmaladeContracts(
 
   console.log('Deploying Marmalade Contracts');
 
-  // await deployNamespaceFiles(nsFilePath1, nsFilePath2, nsFilePath3);
+  await deployNamespaceFiles(nsFilePath1, nsFilePath2, nsFilePath3);
 
   // sort the templates alphabetically so that the contracts are deployed in the correct order
   templateFiles.sort((a, b) => a.localeCompare(b));
 
   console.log(templateFiles);
-  let index = 0;
 
   for (const templateFile of templateFiles) {
-    index++;
-    // if (index === 1) continue;
-    if (index < 14) continue;
-
     const templateFilePath = join(templateDestinationPath, templateFile);
 
     console.log(templateFilePath);
@@ -179,6 +181,7 @@ export async function deployMarmaladeContracts(
 export async function handleDirectorySetup(
   templateDestinationPath: string,
   codeFileDestinationPath: string,
+  nsFilesDestinationPath: string,
 ): Promise<void> {
   //check if directory exists
   if (!existsSync(templateDestinationPath)) {
@@ -188,7 +191,17 @@ export async function handleDirectorySetup(
   }
 
   if (templateDestinationPath !== codeFileDestinationPath) {
-    await clearDir(codeFileDestinationPath);
+    if (!existsSync(codeFileDestinationPath)) {
+      mkdirSync(codeFileDestinationPath);
+    } else {
+      await clearDir(codeFileDestinationPath);
+    }
+  }
+
+  if (!existsSync(nsFilesDestinationPath)) {
+    mkdirSync(nsFilesDestinationPath);
+  } else {
+    await clearDir(nsFilesDestinationPath);
   }
 }
 
@@ -202,7 +215,6 @@ export async function getMarmaladeTemplates(
   destinationPath: string,
   flatFolder: boolean = true,
 ): Promise<void> {
-  logger.info('Downloading marmalade templates');
   try {
     await downloadGitFiles(
       {
@@ -229,35 +241,44 @@ export async function getCodeFiles(
   templateDestinationPath: string,
   codeFileDestinationPath: string,
 ) {
-  const templateFiles = readdirSync(templateDestinationPath);
+  try {
+    const templateFiles = readdirSync(templateDestinationPath);
 
-  await Promise.all(
-    templateFiles.map(async (file) => {
-      const fileContent = readFileSync(
-        join(templateDestinationPath, file),
-        'utf8',
-      );
-      const yamlContent = yaml.load(fileContent) as any;
+    if (templateFiles.length === 0) {
+      throw new Error('No template files found');
+    }
 
-      if (!yamlContent?.codeFile) {
-        return;
-      }
-      const codeFilePath = getGitAbsolutePath(
-        dotenv.MARMALADE_TEMPLATE_PATH,
-        yamlContent.codeFile,
-      );
+    await Promise.all(
+      templateFiles.map(async (file) => {
+        const fileContent = readFileSync(
+          join(templateDestinationPath, file),
+          'utf8',
+        );
+        const yamlContent = yaml.load(fileContent) as any;
 
-      await downloadGitFiles(
-        {
-          owner: dotenv.MARMALADE_TEMPLATE_OWNER,
-          name: dotenv.MARMALADE_TEMPLATE_REPO,
-          path: codeFilePath,
-          branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
-        },
-        codeFileDestinationPath,
-      );
-    }),
-  );
+        if (!yamlContent?.codeFile) {
+          return;
+        }
+        const codeFilePath = getGitAbsolutePath(
+          dotenv.MARMALADE_TEMPLATE_PATH,
+          yamlContent.codeFile,
+        );
+
+        await downloadGitFiles(
+          {
+            owner: dotenv.MARMALADE_TEMPLATE_OWNER,
+            name: dotenv.MARMALADE_TEMPLATE_REPO,
+            path: codeFilePath,
+            branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
+          },
+          codeFileDestinationPath,
+        );
+      }),
+    );
+  } catch (error) {
+    logger.info('Error getting code files from templates', error);
+    throw error;
+  }
 }
 
 export async function getNsCodeFiles(
