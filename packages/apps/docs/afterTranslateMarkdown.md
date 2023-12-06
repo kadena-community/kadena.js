@@ -1,35 +1,35 @@
 ---
-title: oops... The Future of Blockchain is the Smart Contract Sharing Economy
+authorId: Will.Martino
+tags: kadena
+label: De toekomst van blockchain is de slimme economie voor het delen van contracten
+menu: De toekomst van blockchain is de slimme economie voor het delen van contracten
+layout: blog
+author: Will Martino
+publishDate: ma 17 dec. 2018 01:00:00 GMT+0100 (Midden-Europese standaardtijd)
 description: >-
-  oops... How Kadena’s stack turns cost centers into revenue generators. Kadena
-  is uniquely positioned in the blockchain ecosystem; we provide a complete
-  blockchain stack allowing entrepreneurs and developers to use both
-  permissioned and permission-less (private and public) blockchains to unlock
-  new sources of revenue.
-menu: oops... The Future of Blockchain is the Smart Contract Sharing Economy
-label: oops... The Future of Blockchain is the Smart Contract Sharing Economy
-publishDate: oops... Mon Dec 17 2018 01:00:00 GMT+0100 (Central European Standard Time)
-tags: oops... kadena
-author: oops... Will Martino
-authorId: oops... will.martino
-layout: oops... blog
+  Hoe Kadena's stack kostenplaatsen omzet in inkomstengeneratoren. Kadena is
+  uniek gepositioneerd in het blockchain-ecosysteem; we bieden een complete
+  blockchain-stack waarmee ondernemers en ontwikkelaars zowel geautoriseerde als
+  toestemmingsloze (private en openbare) blockchains kunnen gebruiken om nieuwe
+  inkomstenbronnen te ontsluiten.
+title: De toekomst van blockchain is de slimme economie voor het delen van contracten
 
 ---
 
-# oops... The Future of Blockchain is the Smart Contract Sharing Economy
+# De toekomst van blockchain is de slimme economie voor het delen van contracten
 
-### oops... How Kadena’s stack turns cost centers into revenue generators
+### Hoe Kadena's stack kostenplaatsen omzet in inkomstengeneratoren
 
-**[oops... Kadena](http://kadena.io)**oops...  is uniquely positioned in the blockchain
-ecosystem; we provide a complete blockchain stack allowing entrepreneurs and
-developers to use both permissioned and permission-less (private and public)
-blockchains to unlock new sources of revenue. Interoperating and securing our
-end to end stack sits [oops... Pact](http://pact.kadena.io)oops...  — a single, simple,
-integrated (and [oops... open source](https://github.com/kadena-io/pact)oops... ) smart contract
-language. Kadena users effectively have an out-of-the-box solution, seamlessly
-moving between public and private configurations depending on their tolerance
-and case needs for permissions and security. This technology carves out new
-opportunities with existing data and workflows that the current solutions
-cannot. The Kadena stack \*\*turns cost centers into revenue makers. \*\*Kadena
-allows companies to safely monetize their existing business workflows and
-represent them as smart contracts on a public network.
+**[Kadena](http://kadena.io)** is uniek gepositioneerd in de blockchain
+ecosysteem; we bieden een complete blockchain-stack waarmee ondernemers en
+ontwikkelaars om zowel met toestemming als zonder toestemming te gebruiken (privé en openbaar)
+blockchains om nieuwe bronnen van inkomsten te ontsluiten. Samenwerken en beveiligen van onze
+stapelzittingen van begin tot eind [overeenkomst](http://pact.kadena.io) — een enkele, eenvoudige,
+geïntegreerd (en [open source](https://github.com/kadena-io/pact)) slim contract
+taal. Kadena-gebruikers hebben effectief een kant-en-klare oplossing, naadloos
+schakelen tussen openbare en particuliere configuraties, afhankelijk van hun tolerantie
+en casusbehoeften voor machtigingen en beveiliging. Deze technologie zorgt voor nieuwe
+mogelijkheden met bestaande gegevens en workflows die de huidige oplossingen
+kan niet. De Kadena-stack \*\* maakt van kostenplaatsen inkomstenmakers. \*\*Kadena
+stelt bedrijven in staat om veilig inkomsten te genereren met hun bestaande zakelijke workflows en
+representeer ze als slimme contracten op een openbaar netwerk.
