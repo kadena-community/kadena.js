@@ -40,7 +40,9 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
       const account: IAccount = JSON.parse(
         Buffer.from(response, 'base64').toString(),
       );
-      return account;
+
+      if (account.name) return account;
+      return;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       addToast({
@@ -64,8 +66,9 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     const response = searchParams.get('response');
     if (!response) return;
 
-    localStorage.setItem(ACCOUNT_COOKIE_NAME, response);
     const account = decodeAccount(response);
+    if (!account?.name) return;
+    localStorage.setItem(ACCOUNT_COOKIE_NAME, response);
     setAccount(account);
   }, [searchParams, setAccount, decodeAccount]);
 
@@ -73,7 +76,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     const response = localStorage.getItem(ACCOUNT_COOKIE_NAME);
     if (!response) return;
     const account = decodeAccount(response);
-    setAccount(account);
+    if (account) setAccount(account);
   }, [setAccount, decodeAccount]);
 
   return (

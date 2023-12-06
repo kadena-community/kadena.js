@@ -491,6 +491,9 @@ importers:
       '@kadena/fonts':
         specifier: ~0.0.1
         version: 0.0.1
+      '@simplewebauthn/browser':
+        specifier: ^8.3.4
+        version: 8.3.4
       '@vanilla-extract/css':
         specifier: 1.14.0
         version: 1.14.0
@@ -9060,6 +9063,16 @@ packages:
   /@sideway/pinpoint@2.0.0:
     resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
     dev: true
+
+  /@simplewebauthn/browser@8.3.4:
+    resolution: {integrity: sha512-rO0hZ0ESD28bZl6Qe8k7RUuYvDLbsS6oPezkMMTtZ5vC80U07j4qBELKBzojDD6BsdL3dIJ9SExVp8E7pqQ5fA==}
+    dependencies:
+      '@simplewebauthn/typescript-types': 8.3.4
+    dev: false
+
+  /@simplewebauthn/typescript-types@8.3.4:
+    resolution: {integrity: sha512-38xtca0OqfRVNloKBrFB5LEM6PN5vzFbJG6rAutPVrtGHFYxPdiV3btYWq0eAZAZmP+dqFPYJxJWeJrGfmYHng==}
+    dev: false
 
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}

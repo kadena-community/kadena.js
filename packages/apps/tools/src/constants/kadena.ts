@@ -27,10 +27,10 @@ export const kadenaConstants: KadenaConstants = {
     estatsHost: () => env('KADENA_MAINNET_ESTATS', 'estats.chainweb.com'),
   },
   testnet04: {
-    label: 'Testnet',
+    label: 'Devnet',
     API: env('KADENA_TESTNET_API', 'api.testnet.chainweb.com'),
     apiHost: ({ networkId, chainId }) =>
-      `https://${kadenaConstants.testnet04.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+      `http://localhost:8080/chainweb/0.0/fast-development/chain/14/pact`,
     estatsHost: () =>
       env('KADENA_TESTNET_ESTATS', 'estats.testnet.chainweb.com'),
   },

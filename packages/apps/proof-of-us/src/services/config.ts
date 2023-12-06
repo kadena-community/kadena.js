@@ -1,5 +1,6 @@
 import { env } from '@/utils/env';
 import type { ChainId } from '@kadena/client';
+import { createClient } from '@kadena/client';
 
 export const getChainId = (): ChainId => {
   return env.CHAINID as ChainId;
@@ -25,3 +26,5 @@ export const getApiHost = (): string => {
       }/chainweb/0.0/${getNetworkId()}/chain/${getChainId()}/pact`;
   }
 };
+
+export const client = createClient(getApiHost());

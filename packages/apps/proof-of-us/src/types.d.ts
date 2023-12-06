@@ -22,3 +22,8 @@ interface IFile {
 }
 
 type Network = 'devnet' | 'testnet' | 'mainnet';
+
+interface ISearchParams {
+  payload: string;
+  response: string;
+}

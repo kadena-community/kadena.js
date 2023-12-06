@@ -2,10 +2,24 @@
 import { useAccount } from '@/hooks/account';
 import { createToken } from '@/services/marmalade';
 import { main } from '@/services/test';
+import { env } from '@/utils/env';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 
 export const AccountInfo: FC = () => {
   const { account, login, logout } = useAccount();
+  const router = useRouter();
+
+  const handleClick = async () => {
+    if (!account) return;
+    const order = await createToken(account.caccount);
+
+    router.push(
+      `${env.WALLET_URL}/sign?payload=${Buffer.from(
+        JSON.stringify(order),
+      ).toString('base64')}&cid=${account.cid}&returnUrl=http://localhost:3000`,
+    );
+  };
   return (
     <section>
       {account ? (
@@ -20,10 +34,7 @@ export const AccountInfo: FC = () => {
           </div>
 
           <div>
-            test:{' '}
-            <button onClick={() => createToken(account.caccount)}>
-              create token
-            </button>
+            test: <button onClick={handleClick}>create token</button>
           </div>
         </>
       ) : (

@@ -4,10 +4,8 @@ import type {
   ICommandResult,
   IPollRequestPromise,
 } from '@kadena/client';
-import { Pact, createClient, signWithChainweaver } from '@kadena/client';
-import { getApiHost, getChainId, getNetworkId } from './config';
-
-const client = createClient(getApiHost());
+import { Pact } from '@kadena/client';
+import { client, getChainId, getNetworkId } from './config';
 
 function parseResponse<T>(response: ICommandResult, subject: string): T {
   if (response.result?.status === 'success') {
@@ -59,7 +57,7 @@ export const pollStatus = async (
 export const createTokenId = async (metadata: any): Promise<string> => {
   const transaction = Pact.builder
     .execution(
-      `(marmalade-v2.ledger.create-token-id  { 'uri: "${metadata}", 'precision: 0, 'policies: [] } (read-keyset 'creation_guard))`,
+      `(marmalade-v2.ledger.create-token-id  { 'uri: "${metadata}", 'precision: 0, 'policies: [marmalade-v2.non-fungible-policy-v1] } (read-keyset 'creation_guard))`,
     )
     .addData('creation_guard', {
       pred: 'keys-all',
@@ -92,18 +90,28 @@ export const createToken = async (metadata: any) => {
       pred: 'keys-all',
       keys: [guardPublicKey],
     })
+    .addData('mint_guard', {
+      pred: 'keys-all',
+      keys: [guardPublicKey],
+    })
 
     .setNetworkId(getNetworkId())
     .setMeta({
       chainId: getChainId(),
+      senderAccount: 'c:rG4RgPNuOdQ1i13uMyJAXwQyzxSz5p_IhflYjdAzCf4',
     })
     .addSigner(
       {
         pubKey: guardPublicKey,
-        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
         scheme: 'WebAuthn',
       },
       (withCap) => [
+        withCap(
+          'n_560eefcee4a090a24f12d7cf68cd48f11d8d2bd9.webauthn-wallet.GAS_PAYER',
+          'w:29eryfVhFg2on1mf_UoDZPW80bywcFkc2B_ju6_O3-g:keys-any',
+          { int: 1 },
+          1.0,
+        ),
         withCap('coin.GAS'),
         withCap('marmalade-v2.ledger.CREATE-TOKEN', tokenId, {
           pred: 'keys-all',
@@ -112,12 +120,5 @@ export const createToken = async (metadata: any) => {
       ],
     )
     .createTransaction();
-
-  console.log({ transaction });
-  const signed = await signWithChainweaver(transaction);
-  console.log(signed);
-
-  const pollResult = await pollStatus(transaction.hash);
-
-  console.log({ pollResult });
+  return transaction;
 };
