@@ -1,7 +1,8 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullishOrEmpty';
-import { builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {
   id: { field: 'blockHash_requestKey' },
@@ -74,9 +75,11 @@ export default builder.prismaNode('Transaction', {
     block: t.prismaField({
       type: 'Block',
       nullable: true,
-      async resolve(__query, parent) {
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      async resolve(query, parent) {
         try {
           return await prismaClient.block.findUnique({
+            ...query,
             where: {
               hash: parent.blockHash,
             },
@@ -90,9 +93,12 @@ export default builder.prismaNode('Transaction', {
     events: t.prismaField({
       type: ['Event'],
       nullable: true,
-      async resolve(__query, parent) {
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      async resolve(query, parent) {
         try {
           return await prismaClient.event.findMany({
+            ...query,
             where: {
               requestKey: parent.requestKey,
               blockHash: parent.blockHash,
@@ -107,9 +113,12 @@ export default builder.prismaNode('Transaction', {
     transfers: t.prismaField({
       type: ['Transfer'],
       nullable: true,
-      async resolve(__query, parent) {
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      async resolve(query, parent) {
         try {
           return await prismaClient.transfer.findMany({
+            ...query,
             where: {
               requestKey: parent.requestKey,
               blockHash: parent.blockHash,
@@ -124,9 +133,12 @@ export default builder.prismaNode('Transaction', {
     signers: t.prismaField({
       type: ['Signer'],
       nullable: true,
-      async resolve(__query, parent) {
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      async resolve(query, parent) {
         try {
           return await prismaClient.signer.findMany({
+            ...query,
             where: {
               requestKey: parent.requestKey,
             },

@@ -172,7 +172,7 @@ type Query {
   block(hash: String!): Block
   blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
   chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount
-  completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+  completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
   gasLimitEstimate(transaction: PactTransaction!): Int!
   gasLimitEstimates(transactions: [PactTransaction!]!): [Int!]!
   graphConfiguration: GraphConfiguration!

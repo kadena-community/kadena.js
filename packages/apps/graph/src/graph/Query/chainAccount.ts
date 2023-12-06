@@ -1,3 +1,4 @@
+import { COMPLEXITY } from '@services/complexity';
 import { getAccountDetails } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
@@ -13,6 +14,7 @@ builder.queryField('chainAccount', (t) => {
     },
     type: ChainModuleAccount,
     nullable: true,
+    complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
         const accountDetails = await getAccountDetails(
