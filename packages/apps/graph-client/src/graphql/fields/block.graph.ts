@@ -23,7 +23,7 @@ export const ALL_BLOCK_FIELDS: DocumentNode = gql`
     predicate
 
     # confirmationDepth // default excluded since it's a heavy query
-    # minerKeys {}
+    # minerAccount {}
     # parent {}
     # transactions {}
   }

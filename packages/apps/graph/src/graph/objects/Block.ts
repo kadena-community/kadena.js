@@ -5,7 +5,9 @@ import {
 } from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
+import { ChainModuleAccountName, Guard } from '../types/graphql-types';
+import ChainModuleAccount from './ChainModuleAccount';
 
 export default builder.prismaNode('Block', {
   description:
@@ -28,6 +30,29 @@ export default builder.prismaNode('Block', {
       description: 'The proof of work hash.',
     }),
     predicate: t.exposeString('predicate'),
+    minerAccount: t.field({
+      type: ChainModuleAccount,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS,
+      resolve: async (parent) => ({
+        __typename: ChainModuleAccountName,
+        chainId: parent.chainId.toString(),
+        accountName: parent.minerAccount,
+        moduleName: 'coin',
+        guard: {
+          keys: (
+            await prismaClient.minerKey.findMany({
+              where: {
+                blockHash: parent.hash,
+              },
+            })
+          )?.map((x) => x.key),
+          predicate: parent.predicate as Guard['predicate'],
+        },
+        balance: 0,
+        transactions: [],
+        transfers: [],
+      }),
+    }),
 
     // computed fields
     parent: t.prismaField({
@@ -85,25 +110,6 @@ export default builder.prismaNode('Block', {
             },
             orderBy: {
               height: 'desc',
-            },
-          });
-        } catch (error) {
-          throw normalizeError(error);
-        }
-      },
-    }),
-
-    minerKeys: t.prismaField({
-      type: ['MinerKey'],
-      nullable: true,
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
-      async resolve(query, parent) {
-        try {
-          return await prismaClient.minerKey.findMany({
-            ...query,
-            where: {
-              blockHash: parent.hash,
             },
           });
         } catch (error) {

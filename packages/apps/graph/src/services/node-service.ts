@@ -1,6 +1,7 @@
 import type { ChainId, IClient, ICommandResult } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
+import { Guard } from '../graph/types/graphql-types';
 
 export class PactCommandError extends Error {
   public commandResult: ICommandResult;
@@ -25,7 +26,7 @@ export type ChainModuleAccountDetails = {
   balance: number;
   guard: {
     keys: string[];
-    pred: 'keys-all' | 'keys-any' | 'keys-two';
+    pred: Guard['predicate'];
   };
 };
 

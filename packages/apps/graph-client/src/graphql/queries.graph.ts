@@ -40,8 +40,10 @@ export const getBlockFromHash: DocumentNode = gql`
         }
       }
       confirmationDepth
-      minerKeys {
-        ...CoreMinerKeyFields
+      minerAccount {
+        guard {
+          keys
+        }
       }
     }
   }
