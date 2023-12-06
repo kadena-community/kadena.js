@@ -6,7 +6,10 @@ import {
   confirmDeleteAllKeysPrompt,
   keyDeletePrompt,
 } from '../../prompts/keys.js';
-import { deleteAllFilesInDir, removeFile } from '../../utils/filesystem.js';
+import {
+  deleteAllFilesInDirAsync,
+  removeFile,
+} from '../../utils/filesystem.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
 import chalk from 'chalk';
@@ -35,7 +38,7 @@ export const createDeleteKeysCommand: (
         return;
       }
 
-      await deleteAllFilesInDir(KEY_DIR);
+      await deleteAllFilesInDirAsync(KEY_DIR);
       return;
     }
 

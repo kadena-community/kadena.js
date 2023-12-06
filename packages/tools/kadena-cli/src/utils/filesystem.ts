@@ -99,7 +99,7 @@ export function ensureDirectoryExists(directoryPath: string): void {
  *
  * @param {string} dirPath - The path of the directory whose files are to be deleted.
  */
-export async function deleteAllFilesInDir(dirPath: string): Promise<void> {
+export async function deleteAllFilesInDirAsync(dirPath: string): Promise<void> {
   try {
     const files = await readdir(dirPath);
     for (const file of files) {
