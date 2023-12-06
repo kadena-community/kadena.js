@@ -100,6 +100,12 @@ event: "listen";
 data: ICommandResult;
 }], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
 
+// @public (undocumented)
+export function waitForEvent<T extends {
+    on: (name: string, data: any) => any;
+    execute: () => Promise<any>;
+}>(event: string, task: T): Promise<any>;
+
 // (No @packageDocumentation comment for this package)
 
 ```
