@@ -17,7 +17,11 @@ export default builder.prismaNode('Block', {
     hash: t.exposeID('hash'),
     chainId: t.expose('chainId', { type: 'BigInt' }),
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
-    epoch: t.expose('epoch', { type: 'DateTime' }),
+    epoch: t.expose('epoch', {
+      type: 'DateTime',
+      description:
+        'The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.',
+    }),
     height: t.expose('height', { type: 'BigInt' }),
     payloadHash: t.exposeString('payloadHash'),
     powHash: t.exposeString('powHash', {

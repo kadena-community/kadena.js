@@ -40,7 +40,8 @@ export default builder.prismaNode('Transaction', {
     }),
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     data: t.string({
-      description: 'The `data` field of a transaction. Formatted as raw JSON.',
+      description:
+        'The environment data made available to the transaction. Formatted as raw JSON.',
       nullable: true,
       resolve({ data }) {
         return nullishOrEmpty(data) ? undefined : JSON.stringify(data);
@@ -63,7 +64,11 @@ export default builder.prismaNode('Transaction', {
       type: 'BigInt',
       description: 'The height of the block this transaction belongs to.',
     }),
-    logs: t.exposeString('logs', { nullable: true }),
+    logs: t.exposeString('logs', {
+      nullable: true,
+      description:
+        'Identifier to retrieve the logs for the execution of the transaction.',
+    }),
     metadata: t.string({
       nullable: true,
       resolve({ metadata }) {
@@ -72,10 +77,23 @@ export default builder.prismaNode('Transaction', {
     }),
     nonce: t.exposeString('nonce', { nullable: true }),
     eventCount: t.expose('eventCount', { type: 'BigInt', nullable: true }),
-    pactId: t.exposeString('pactId', { nullable: true }),
-    proof: t.exposeString('proof', { nullable: true }),
+    pactId: t.exposeString('pactId', {
+      nullable: true,
+      description:
+        'In the case of a cross-chain transaction; A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.',
+    }),
+    proof: t.exposeString('proof', {
+      nullable: true,
+      description:
+        'In the case of a cross-chain transaction; the proof provided to continue the cross-chain transaction.',
+    }),
     requestKey: t.exposeString('requestKey'),
-    rollback: t.expose('rollback', { type: 'Boolean', nullable: true }),
+    rollback: t.expose('rollback', {
+      type: 'Boolean',
+      nullable: true,
+      description:
+        'In the case of a cross-chain transaction; Whether or not this transaction can be rolled back.',
+    }),
     senderAccount: t.exposeString('senderAccount', { nullable: true }),
     step: t.expose('step', {
       type: 'BigInt',

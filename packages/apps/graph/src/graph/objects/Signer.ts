@@ -6,7 +6,10 @@ export default builder.prismaNode('Signer', {
   id: { field: 'requestKey_orderIndex' },
   fields: (t) => ({
     //database fields
-    address: t.exposeString('address', { nullable: true }),
+    address: t.exposeString('address', {
+      nullable: true,
+      description: 'The signer for the gas.',
+    }),
     capabilities: t.string({
       nullable: true,
       resolve({ capabilities }) {
@@ -22,6 +25,9 @@ export default builder.prismaNode('Signer', {
       nullable: true,
       description: 'The signature scheme that was used to sign.',
     }),
-    signature: t.exposeString('signature'),
+    signature: t.exposeString('signature', {
+      description:
+        'The result of the signing operation of the hash of the transaction.',
+    }),
   }),
 });

@@ -10,6 +10,10 @@ type Block implements Node {
   """The number of blocks that proceed this block."""
   confirmationDepth: Int!
   creationTime: DateTime!
+
+  """
+  The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.
+  """
   epoch: DateTime!
   hash: ID!
   height: BigInt!
@@ -118,7 +122,7 @@ type Guard {
   predicate: String!
 }
 
-"""The public key of the miner that solved a block."""
+"""The account of the miner that solved a block."""
 type MinerKey implements Node {
   block: Block!
   blockHash: String!
@@ -277,6 +281,7 @@ type QueryTransfersConnectionEdge {
 
 """A signer for a specific transaction."""
 type Signer implements Node {
+  """The signer for the gas."""
   address: String
   capabilities: String
   id: ID!
@@ -286,6 +291,8 @@ type Signer implements Node {
 
   """The signature scheme that was used to sign."""
   scheme: String
+
+  """The result of the signing operation of the hash of the transaction."""
   signature: String!
 }
 
@@ -320,7 +327,9 @@ type Transaction implements Node {
   continuation: String
   creationTime: DateTime!
 
-  """The `data` field of a transaction. Formatted as raw JSON."""
+  """
+  The environment data made available to the transaction. Formatted as raw JSON.
+  """
   data: String
   eventCount: BigInt
   events: [Event!]
@@ -334,12 +343,26 @@ type Transaction implements Node {
   """The height of the block this transaction belongs to."""
   height: BigInt!
   id: ID!
+
+  """Identifier to retrieve the logs for the execution of the transaction."""
   logs: String
   metadata: String
   nonce: String
+
+  """
+  In the case of a cross-chain transaction; A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.
+  """
   pactId: String
+
+  """
+  In the case of a cross-chain transaction; the proof provided to continue the cross-chain transaction.
+  """
   proof: String
   requestKey: String!
+
+  """
+  In the case of a cross-chain transaction; Whether or not this transaction can be rolled back.
+  """
   rollback: Boolean
   senderAccount: String
   signers: [Signer!]
