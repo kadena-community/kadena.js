@@ -2,46 +2,13 @@
   "type": "root",
   "children": [
     {
-      "type": "thematicBreak",
+      "type": "yaml",
+      "value": "title: The Future of Blockchain is the Smart Contract Sharing Economy\ndescription:\n  How Kadena’s stack turns cost centers into revenue generators. Kadena is\n  uniquely positioned in the blockchain ecosystem; we provide a complete\n  blockchain stack allowing entrepreneurs and developers to use both\n  permissioned and permission-less (private and public) blockchains to unlock\n  new sources of revenue.\nmenu: The Future of Blockchain is the Smart Contract Sharing Economy\nlabel: The Future of Blockchain is the Smart Contract Sharing Economy\npublishDate: 2018-12-17\ntags: [kadena]\nauthor: Will Martino\nauthorId: will.martino\nlayout: blog",
       "position": {
         "start": {
           "line": 1,
           "column": 1,
           "offset": 0
-        },
-        "end": {
-          "line": 1,
-          "column": 4,
-          "offset": 3
-        }
-      }
-    },
-    {
-      "type": "heading",
-      "depth": 2,
-      "children": [
-        {
-          "type": "text",
-          "value": "title: The Future of Blockchain is the Smart Contract Sharing Economy\ndescription:\nHow Kadena’s stack turns cost centers into revenue generators. Kadena is\nuniquely positioned in the blockchain ecosystem; we provide a complete\nblockchain stack allowing entrepreneurs and developers to use both\npermissioned and permission-less (private and public) blockchains to unlock\nnew sources of revenue.\nmenu: The Future of Blockchain is the Smart Contract Sharing Economy\nlabel: The Future of Blockchain is the Smart Contract Sharing Economy\npublishDate: 2018-12-17\ntags: [kadena]\nauthor: Will Martino\nauthorId: will.martino\nlayout: blog",
-          "position": {
-            "start": {
-              "line": 2,
-              "column": 1,
-              "offset": 4
-            },
-            "end": {
-              "line": 15,
-              "column": 13,
-              "offset": 642
-            }
-          }
-        }
-      ],
-      "position": {
-        "start": {
-          "line": 2,
-          "column": 1,
-          "offset": 4
         },
         "end": {
           "line": 16,

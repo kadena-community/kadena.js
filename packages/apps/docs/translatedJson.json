@@ -3,7 +3,7 @@
   "children": [
     {
       "type": "yaml",
-      "value": "title: The Future of Blockchain is the Smart Contract Sharing Economy\ndescription:\n  How Kadena’s stack turns cost centers into revenue generators. Kadena is\n  uniquely positioned in the blockchain ecosystem; we provide a complete\n  blockchain stack allowing entrepreneurs and developers to use both\n  permissioned and permission-less (private and public) blockchains to unlock\n  new sources of revenue.\nmenu: The Future of Blockchain is the Smart Contract Sharing Economy\nlabel: The Future of Blockchain is the Smart Contract Sharing Economy\npublishDate: 2018-12-17\ntags: [kadena]\nauthor: Will Martino\nauthorId: will.martino\nlayout: blog",
+      "value": "title: oops... The Future of Blockchain is the Smart Contract Sharing Economy\ndescription: >-\n  oops... How Kadena’s stack turns cost centers into revenue generators. Kadena\n  is uniquely positioned in the blockchain ecosystem; we provide a complete\n  blockchain stack allowing entrepreneurs and developers to use both\n  permissioned and permission-less (private and public) blockchains to unlock\n  new sources of revenue.\nmenu: oops... The Future of Blockchain is the Smart Contract Sharing Economy\nlabel: oops... The Future of Blockchain is the Smart Contract Sharing Economy\npublishDate: oops... Mon Dec 17 2018 01:00:00 GMT+0100 (Central European Standard Time)\ntags: oops... kadena\nauthor: oops... Will Martino\nauthorId: oops... will.martino\nlayout: oops... blog\n",
       "position": {
         "start": {
           "line": 1,
@@ -23,7 +23,7 @@
       "children": [
         {
           "type": "text",
-          "value": "The Future of Blockchain is the Smart Contract Sharing Economy",
+          "value": "oops... The Future of Blockchain is the Smart Contract Sharing Economy",
           "position": {
             "start": {
               "line": 18,
@@ -57,7 +57,7 @@
       "children": [
         {
           "type": "text",
-          "value": "How Kadena’s stack turns cost centers into revenue generators",
+          "value": "oops... How Kadena’s stack turns cost centers into revenue generators",
           "position": {
             "start": {
               "line": 20,
@@ -98,7 +98,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Kadena",
+                  "value": "oops... Kadena",
                   "position": {
                     "start": {
                       "line": 22,
@@ -142,7 +142,7 @@
         },
         {
           "type": "text",
-          "value": " is uniquely positioned in the blockchain\necosystem; we provide a complete blockchain stack allowing entrepreneurs and\ndevelopers to use both permissioned and permission-less (private and public)\nblockchains to unlock new sources of revenue. Interoperating and securing our\nend to end stack sits ",
+          "value": "oops...  is uniquely positioned in the blockchain\necosystem; we provide a complete blockchain stack allowing entrepreneurs and\ndevelopers to use both permissioned and permission-less (private and public)\nblockchains to unlock new sources of revenue. Interoperating and securing our\nend to end stack sits ",
           "position": {
             "start": {
               "line": 22,
@@ -163,7 +163,7 @@
           "children": [
             {
               "type": "text",
-              "value": "Pact",
+              "value": "oops... Pact",
               "position": {
                 "start": {
                   "line": 26,
@@ -193,7 +193,7 @@
         },
         {
           "type": "text",
-          "value": " — a single, simple,\nintegrated (and ",
+          "value": "oops...  — a single, simple,\nintegrated (and ",
           "position": {
             "start": {
               "line": 26,
@@ -214,7 +214,7 @@
           "children": [
             {
               "type": "text",
-              "value": "open source",
+              "value": "oops... open source",
               "position": {
                 "start": {
                   "line": 27,
@@ -244,7 +244,7 @@
         },
         {
           "type": "text",
-          "value": ") smart contract\nlanguage. Kadena users effectively have an out-of-the-box solution, seamlessly\nmoving between public and private configurations depending on their tolerance\nand case needs for permissions and security. This technology carves out new\nopportunities with existing data and workflows that the current solutions\ncannot. The Kadena stack **turns cost centers into revenue makers. **Kadena\nallows companies to safely monetize their existing business workflows and\nrepresent them as smart contracts on a public network.",
+          "value": "oops... ) smart contract\nlanguage. Kadena users effectively have an out-of-the-box solution, seamlessly\nmoving between public and private configurations depending on their tolerance\nand case needs for permissions and security. This technology carves out new\nopportunities with existing data and workflows that the current solutions\ncannot. The Kadena stack **turns cost centers into revenue makers. **Kadena\nallows companies to safely monetize their existing business workflows and\nrepresent them as smart contracts on a public network.",
           "position": {
             "start": {
               "line": 27,
