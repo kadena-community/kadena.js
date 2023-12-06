@@ -33,6 +33,8 @@ describe('dirtyReadClient', () => {
       });
     });
 
-    await expect(result.execute()).resolves.toEqual('test-data');
+    await expect(result.execute()).resolves.toEqual({
+      result: { status: 'success', data: 'test-data' },
+    });
   });
 });

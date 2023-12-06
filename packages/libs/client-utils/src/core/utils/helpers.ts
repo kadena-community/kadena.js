@@ -102,9 +102,9 @@ export const throwIfFails = (response: ICommandResult): ICommandResult => {
 
 export const pickFirst = <T extends Any[]>([tx]: T) => tx;
 
-export const extractResult = (response: ICommandResult) => {
+export const returnResult = (response: ICommandResult) => {
   if (response.result.status === 'success') {
-    return response.result.data;
+    return response;
   }
   return undefined;
 };

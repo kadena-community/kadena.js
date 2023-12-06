@@ -153,7 +153,9 @@ describe('crossChainClient', () => {
         });
       });
 
-    await expect(result.execute()).resolves.toEqual('test-data');
+    await expect(result.execute()).resolves.toEqual({
+      result: { status: 'success', data: 'test-data' },
+    });
   });
 
   it('runs a cross chain flow including exec and cont and call the sign if gas payer is not a gas station ', async () => {
@@ -290,6 +292,8 @@ describe('crossChainClient', () => {
         });
       });
 
-    await expect(result.execute()).resolves.toEqual('test-data');
+    await expect(result.execute()).resolves.toEqual({
+      result: { status: 'success', data: 'test-data' },
+    });
   });
 });

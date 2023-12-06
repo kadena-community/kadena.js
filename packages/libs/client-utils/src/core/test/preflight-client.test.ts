@@ -55,6 +55,8 @@ describe('preflightClient', () => {
         });
       });
 
-    await expect(result.execute()).resolves.toEqual('preflight-test');
+    await expect(result.execute()).resolves.toEqual({
+      result: { status: 'success', data: 'preflight-test' },
+    });
   });
 });

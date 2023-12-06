@@ -5,7 +5,7 @@ import { asyncPipe } from './utils/asyncPipe';
 import type { IClientConfig, IEmit } from './utils/helpers';
 import {
   checkSuccess,
-  extractResult,
+  returnResult,
   getClient,
   safeSign,
   throwIfFails,
@@ -27,5 +27,5 @@ export const submitAndListen =
       client.listen,
       emit('listen'),
       throwIfFails,
-      extractResult,
+      returnResult,
     );

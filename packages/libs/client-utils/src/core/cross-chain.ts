@@ -18,7 +18,7 @@ import { asyncPipe } from './utils/asyncPipe';
 import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
 import {
   checkSuccess,
-  extractResult,
+  returnResult,
   getClient,
   safeSign,
   throwIfFails,
@@ -108,6 +108,6 @@ export const crossChain = (
       client.listen,
       emit('listen-continuation'),
       throwIfFails,
-      extractResult,
+      returnResult,
     );
 };

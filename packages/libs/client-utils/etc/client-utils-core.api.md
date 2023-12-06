@@ -11,13 +11,10 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
-import { IPactDecimal } from '@kadena/types';
-import { IPactInt } from '@kadena/types';
 import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
 import type { IPartialPactCommand as IPartialPactCommand_2 } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
-import { PactValue } from '@kadena/types';
 
 // Warning: (ae-forgotten-export) The symbol "IAsyncPipe" needs to be exported by the entry point index.d.ts
 //
@@ -62,13 +59,13 @@ data: ICommandResult;
 }], [{
 event: 'poll-spv';
 data: string;
-}], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], Promise<ICommandResult> | Promise<undefined>>;
 
 // @alpha (undocumented)
 export const dirtyReadClient: (args_0: Omit<IClientConfig, "sign">, args_1?: IClient | undefined) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
 event: "dirtyRead";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<ICommandResult> | Promise<undefined>>;
 
 // @alpha
 export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPactCommand_2 | (() => IPartialPactCommand_2)) => IPartialPactCommand_2), host?: IClientConfig['host'], client?: IClient) => Promise<{
@@ -83,7 +80,7 @@ data: ICommand;
 }, {
 event: "preflight";
 data: ILocalCommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<ICommandResult> | Promise<undefined>>;
 
 // @alpha (undocumented)
 export const submitClient: (args_0: IClientConfig, args_1?: IClient | undefined) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
@@ -98,7 +95,7 @@ data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<ICommandResult> | Promise<undefined>>;
 
 // (No @packageDocumentation comment for this package)
 

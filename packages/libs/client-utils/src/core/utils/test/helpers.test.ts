@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   checkSuccess,
-  extractResult,
+  returnResult,
   inspect,
   pickFirst,
   safeSign,
@@ -167,17 +167,19 @@ describe('throwIfFails', () => {
 });
 
 describe('extractResult', () => {
-  it('returns data if it is success', () => {
+  it('returns complete response if it is success', () => {
     expect(
-      extractResult({
+      returnResult({
         result: { status: 'success', data: 'test-data' },
       } as unknown as ICommandResult),
-    ).toBe('test-data');
+    ).toEqual({
+      result: { status: 'success', data: 'test-data' },
+    });
   });
 
   it('returns undefined if it is not success', () => {
     expect(
-      extractResult({
+      returnResult({
         result: {
           status: 'failure',
           data: 'failure-data',
