@@ -28,7 +28,7 @@ export async function keyAlias(): Promise<string> {
 
 export async function keyAmount(): Promise<string> {
   return await input({
-    message: `Enter the amount of keyPairs you want to generate. (alias-{amount} will increment) (optional) (default: 1)`,
+    message: `Enter the amount of keys you want to generate. (alias-{amount} will increment) (default: 1)`,
   });
 }
 
