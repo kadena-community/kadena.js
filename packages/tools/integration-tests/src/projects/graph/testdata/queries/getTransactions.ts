@@ -1,54 +1,48 @@
-export function getTransactionsQuery(amount = 1) {
+export function getTransactionsQuery(accountName: string) {
   return {
-    query: `query getTransactions($moduleName: String, $accountName: String, $chainId: String, $blockHash: String, $after: String, $before: String, $first: Int, $last: Int) {
+    query: `query getTransactions($accountName: String) {
       transactions(
-        moduleName: $moduleName
         accountName: $accountName
-        chainId: $chainId
-        blockHash: $blockHash
-        after: $after
-        before: $before
-        first: $first
-        last: $last
       ) {
         totalCount
-        pageInfo {
-          startCursor
-          endCursor
-          hasPreviousPage
-          hasNextPage
-          __typename
-        }
         edges {
-          cursor
           node {
-            ...CoreTransactionFields
-            block {
-              hash
-              __typename
+            code
+            data
+            gas
+            gasLimit
+            gasPrice
+            id
+            metadata
+            senderAccount
+            transfers {
+              amount
+              chainId
+              id
+              receiverAccount
+              requestKey
+              senderAccount
+            }
+            ttl
+            chainId
+            requestKey
+            eventCount
+            events {
+              requestKey
+              parameterText
+              id
             }
             signers {
+              capabilities
+              id
               publicKey
-              signature
-              __typename
+              requestKey
             }
-            __typename
           }
-          __typename
         }
-        __typename
       }
-    }
-
-    fragment CoreTransactionFields on Transaction {
-      chainId
-      code
-      creationTime
-      height
-      requestKey
-      __typename
     }`,
-    variables: { first: amount },
+    variables: { accountName: accountName },
     operationName: 'getTransactions',
     extensions: {},
   };

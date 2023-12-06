@@ -20,3 +20,10 @@ export const sender00: IAccountWithSecretKey = {
   // this is here only for testing purposes. in a real world scenario, the secret key should never be exposed
   secretKey: '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
 };
+
+export const devnetMiner: IAccount = {
+  account: 'k:f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+  publicKey: 'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+  chainId: '0',
+  guard: 'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f'
+}
