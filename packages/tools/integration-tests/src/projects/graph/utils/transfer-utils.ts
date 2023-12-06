@@ -1,7 +1,7 @@
 import type { ITransactionDescriptor } from '@kadena/client';
 import { ICommandResult, createSignWithKeypair } from '@kadena/client';
 import { transfer } from '@kadena/client-utils/coin';
-import type { ChainId } from '@kadena/types';
+import type { ChainId, ICommand } from '@kadena/types';
 import { expect } from 'vitest';
 import type { IAccountWithSecretKey } from '../testdata/constants/accounts';
 import { devnetHost, networkId } from '../testdata/constants/network';
@@ -38,7 +38,7 @@ export function transferFunds(
   amount: string,
   chainId: ChainId,
 ) {
-  const result = new Promise((resolve, reject)=> {
+  const result = new Promise<ICommandResult>((resolve, reject)=> {
    return transfer(
       {
         sender: { account: source.account, publicKeys: [source.publicKey] },
@@ -58,6 +58,5 @@ export function transferFunds(
     .execute()
     .catch(reject)
   })
-  console.log(`=========== RESULT ${result}`)
   return result
 }
