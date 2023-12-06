@@ -52,18 +52,6 @@ export const PRISMA = {
   DEFAULT_SIZE: 20,
 };
 
-export const COMPLEXITY = {
-  FIELD: {
-    DEFAULT: 1,
-    CHAINWEB_NODE: 7,
-    PRISMA_WITHOUT_RELATIONS: 5,
-    PRISMA_WITH_RELATIONS: 10,
-  },
-  MULTIPLIER: {
-    DEFAULT: 1,
-  },
-};
-
 // eslint-disable-next-line @rushstack/typedef-var
 export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {
@@ -93,8 +81,6 @@ export const builder = new SchemaBuilder<
       limit: {
         complexity: dotenv.COMPLEXITY_LIMIT,
       },
-      // defaultComplexity: COMPLEXITY.FIELD.DEFAULT,
-      // defaultListMultiplier: COMPLEXITY.MULTIPLIER.DEFAULT,
     },
   }),
 

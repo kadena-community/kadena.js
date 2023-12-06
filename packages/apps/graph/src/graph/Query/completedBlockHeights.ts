@@ -1,8 +1,9 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { chainIds as defaultChainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import { COMPLEXITY, builder } from '../builder';
+import { builder } from '../builder';
 import Block from '../objects/Block';
 
 builder.queryField('completedBlockHeights', (t) => {

@@ -1,7 +1,8 @@
+import { COMPLEXITY } from '@services/complexity';
 import type { CommandData } from '@services/node-service';
 import { sendRawQuery } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
-import { COMPLEXITY, builder } from '../builder';
+import { builder } from '../builder';
 
 const PactData = builder.inputType('PactQueryData', {
   fields: (t) => ({
