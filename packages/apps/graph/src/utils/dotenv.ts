@@ -14,17 +14,11 @@ export const dotenv: {
   MARMALADE_REPOSITORY_OWNER: string;
   MARMALADE_REPOSITORY_NAME: string;
   MARMALADE_REPOSITORY_BRANCH: string;
-  MARMALADE_TEMPLATE_REMOTE_PATH: string[];
-  MARMALADE_NAMESPACE_REMOTE_PATH: string[];
-  MARMALADE_TEMPLATE_LOCAL_PATH: string;
-  MARMALADE_NAMESPACE_LOCAL_PATH: string;
-  // MARMALADE_TEMPLATE_OWNER: string;
-  // MARMALADE_TEMPLATE_REPO: string;
-  // MARMALADE_TEMPLATE_PATH: string;
-  // MARMALADE_TEMPLATE_BRANCH: string;
-  // MARMALADE_TEMPLATE_LOCAL_PATH: string;
-  // MARMALADE_NS_FILE_PATH: string;
-  // MARMALADE_NS_LOCAL_PATH: string;
+  MARMALADE_REMOTE_TEMPLATE_PATH: string[];
+  MARMALADE_REMOTE_NAMESPACE_PATH: string[];
+  MARMALADE_REMOTE_EXCLUDE: string[];
+  MARMALADE_LOCAL_TEMPLATE_PATH: string;
+  MARMALADE_LOCAL_NAMESPACE_PATH: string;
   GITHUB_TOKEN: string;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
@@ -53,21 +47,26 @@ export const dotenv: {
     process.env.MARMALADE_REPOSITORY_BRANCH,
     'main',
   ),
-  MARMALADE_TEMPLATE_REMOTE_PATH: or(
-    process.env.MARMALADE_TEMPLATE_REMOTE_PATH?.split(','),
+  MARMALADE_REMOTE_TEMPLATE_PATH: or(
+    process.env.MARMALADE_REMOTE_TEMPLATE_PATH?.split(','),
     ['pact/yaml/marmalade-v2'],
   ),
-  MARMALADE_NAMESPACE_REMOTE_PATH: or(
-    process.env.MARMALADE_NAMESPACE_REMOTE_PATH?.split(','),
+  MARMALADE_REMOTE_NAMESPACE_PATH: or(
+    process.env.MARMALADE_REMOTE_NAMESPACE_PATH?.split(','),
     ['pact/marmalade-ns', 'pact/util'],
   ),
 
-  MARMALADE_TEMPLATE_LOCAL_PATH: or(
-    process.env.MARMALADE_TEMPLATE_LOCAL_PATH,
+  MARMALADE_REMOTE_EXCLUDE: or(
+    process.env.MARMALADE_REMOTE_EXCLUDE?.split(','),
+    ['sample', 'data', 'test'],
+  ),
+
+  MARMALADE_LOCAL_TEMPLATE_PATH: or(
+    process.env.MARMALADE_LOCAL_TEMPLATE_PATH,
     'src/devnet/marmalade/templates/v2',
   ),
-  MARMALADE_NAMESPACE_LOCAL_PATH: or(
-    process.env.MARMALADE_NS_LOCAL_PATH,
+  MARMALADE_LOCAL_NAMESPACE_PATH: or(
+    process.env.MARMALADE_LOCAL_NAMESPACE_PATH,
     'src/devnet/marmalade/templates/ns',
   ),
   GITHUB_TOKEN: or(process.env.GITHUB_TOKEN, '/pact/marmalade-ns'),

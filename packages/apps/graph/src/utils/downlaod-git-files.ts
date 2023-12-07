@@ -3,23 +3,25 @@ import { join } from 'path';
 import { dotenv } from './dotenv';
 import { createDirAndWriteFile } from './path';
 
-export async function downloadGitFiles(
-  {
-    owner,
-    name,
-    path,
-    branch,
-  }: {
-    owner: string;
-    name: string;
-    path: string;
-    branch: string;
-  },
-  destinationPath: string = process.cwd(),
-  fileExtension: string = 'yaml',
-  drillDown: boolean = false,
-  excludeFolder: string[] = [],
-): Promise<void> {
+export async function downloadGitFiles({
+  owner,
+  name,
+  path,
+  branch,
+  localPath = process.cwd(),
+  fileExtension,
+  drillDown = false,
+  excludeFolder = [],
+}: {
+  owner: string;
+  name: string;
+  path: string;
+  branch: string;
+  localPath: string;
+  fileExtension: string;
+  drillDown: boolean;
+  excludeFolder: string[];
+}): Promise<void> {
   const folderUrl = buildGitApiUrl(owner, name, path, branch);
 
   const gitData = await getGitData(folderUrl);
@@ -34,12 +36,16 @@ export async function downloadGitFiles(
           !excludeFolder.includes(file.name)
         ) {
           // If the file is a directory and we're drilling down, recursively download its files
-          await downloadGitFiles(
-            { owner, name, path: file.path, branch },
-            join(destinationPath, file.name),
+          await downloadGitFiles({
+            owner,
+            name,
+            path: file.path,
+            branch,
+            localPath: join(localPath, file.name),
             fileExtension,
             drillDown,
-          );
+            excludeFolder,
+          });
         } else if (
           !file.name.endsWith(fileExtension) ||
           file.type !== 'file' ||
@@ -47,13 +53,13 @@ export async function downloadGitFiles(
         ) {
           return;
         } else if (file.type === 'file' && file.name.endsWith(fileExtension)) {
-          await donwloadGitFile(file.download_url, file.name, destinationPath);
+          await donwloadGitFile(file.download_url, file.name, localPath);
         }
       }),
     );
   } else if (gitData instanceof Object) {
     // if gitData is an object, it means that it's a file and we can download it
-    await donwloadGitFile(gitData.download_url, gitData.name, destinationPath);
+    await donwloadGitFile(gitData.download_url, gitData.name, localPath);
   } else {
     throw new Error('Provided path is not a valid ');
   }
