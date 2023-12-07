@@ -14,7 +14,7 @@ export const dotenv: {
   MARMALADE_REPOSITORY_OWNER: string;
   MARMALADE_REPOSITORY_NAME: string;
   MARMALADE_REPOSITORY_BRANCH: string;
-  MARMALADE_REMOTE_TEMPLATE_PATH: string[];
+  MARMALADE_REMOTE_TEMPLATE_PATH: string;
   MARMALADE_REMOTE_NAMESPACE_PATH: string[];
   MARMALADE_REMOTE_EXCLUDE: string[];
   MARMALADE_LOCAL_TEMPLATE_PATH: string;
@@ -48,8 +48,8 @@ export const dotenv: {
     'main',
   ),
   MARMALADE_REMOTE_TEMPLATE_PATH: or(
-    process.env.MARMALADE_REMOTE_TEMPLATE_PATH?.split(','),
-    ['pact/yaml/marmalade-v2'],
+    process.env.MARMALADE_REMOTE_TEMPLATE_PATH,
+    'pact/yaml/marmalade-v2',
   ),
   MARMALADE_REMOTE_NAMESPACE_PATH: or(
     process.env.MARMALADE_REMOTE_NAMESPACE_PATH?.split(','),

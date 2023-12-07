@@ -1,8 +1,10 @@
 import { Command, Option } from 'commander';
 
-import { deployMarmaladeContracts } from '../../devnet/marmalade';
+import 'module-alias/register';
+
 import type { IAccount } from '../helper';
 import { generateAccount, logger, sender00 } from '../helper';
+import { deployMarmaladeContracts } from '../marmalade/marmalade';
 import { transfer } from '../transfer';
 import { simulate } from './simulate';
 
