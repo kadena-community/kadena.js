@@ -1,235 +1,305 @@
 ---
-title: "02: Running Devnet"
-description: "In the second chapter of the Election dApp tutorial you will use Docker to run a blockchain on your computer."
-menu: Election dApp tutorial
-label: "02: Running Devnet"
+title: "Start a local blockchain"
+description: "Start the development network blockchain on your local computer and explore the smart contracts avaiable by default."
+menu: "Workshop: Election application"
+label: "Start a local blockchain"
 order: 2
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
 
-# Chapter 02: Running Devnet
+# Start a local blockchain
 
-The back-end of the election website will be implemented with smart contracts
-running on the Kadena blockchain. The smart contract contains rules for voting
-and nominating candidates and stores the nominated candidates and the votes
-for each candidate. Before publishing your smart contract on a public network,
-like Testnet or Mainnet, it is good practice to test if it works as expected
-on your local computer.
+In this workshop, you are going to implement the back-end of the election website using  **smart contracts** on the Kadena blockchain. 
+The smart contract you'll be writing for the election application defines rules for:
 
-## Get the code
+- Nominating candidates.
+- Casting and counting votes.
+- Storing the nominated candidates and the votes for each candidate.
+  
+Before you publish any smart contract on a public network, like the Kadena test network or the Kadena main network, you should always test that the contract works as expected on your local computer.
+In this tutorial, you'll set up a local development network—`devnet`—to run a blockchain inside of a Docker container on your local computer. 
+You can use this development network to test your smart contracts and experiment with code in an isolated environment that your can reset to a clean state at any time.
 
-The project files have not been changed since the last chapter, so if you are
-following along with the tutorial you can continue on the `01-getting-started`
-branch. If you started the tutorial with this chapter, clone the tutorial
-project and change the current directory of your terminal to the project folder.
+## Before you begin
 
-```bash
-git clone git@github.com:kadena-community/voting-dapp.git election-dapp
-cd election-dapp
-```
+Before you start this tutorial, verify the following basic requirements:
 
-After cloning the project, switch branches to get the starter code for this chapter.
+- You have an internet connection and a web browser installed on your local computer.
+- You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
+- You have cloned the [election-dapp](github.com/kadena-community/voting-dapp.git election-dapp) as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started) and have checkd out the `01-getting-started` branch.
+- You have [Docker](https://docs.docker.com/get-docker/) installed and are generally familiar with using Docker commands for containerized applications.
 
-```bash
-git checkout 02-running-devnet
-```
+## Run the development network in Docker
 
-## Run Devnet with Docker
+The Kadena development network—called `devnet`—is a fully functional Kadena blockchain network that runs inside of a Docker application container.
+For this tutorial, you'll want to start the blockchain with a clean slate every time you stop and restart the container.
+Because you don't need to maintain the state of the local blockchain between restarts, you can start the container without creating a persistent volume.
 
-Using Docker, you can spin up a fully functional
-Kadena blockchain network called Devnet.
+To start the local development network:
 
-```bash
-docker run -it -p 8080:8080 kadena/devnet:latest
-```
+1. Open a terminal shell on your computer.
 
-In case you do not want or are unable to run the Pact executable on your local
-computer, you can mount the `./pact` folder of the project to the container.
+2. Start the Docker service if it isn't configured to start automatically in your local environment.
 
-```bash
-docker run -it -p 8080:8080 -v ./pact:/pact-cli:ro kadena/devnet:latest
-```
+   You can run the `docker info` command to check whether Docker is currently running.
 
-This will enable you to execute `pact` commands against your `.pact` and `.repl`
-files via aninteractive `pact>` shell in your browser at
-[http://localhost:8080/ttyd/pact-cli/](http://localhost:8080/ttyd/pact-cli/).
+3. tart the `devnet` container without a persistent volume by running the following command:
 
-In this tutorial you will not need to create a persistent volume to maintain
-the state of your local blockchain between restarts of your Docker container.
-In fact, you can conveniently start with a clean slate by stopping the container
-with `Ctrl+c` and starting it again with the command above. If you do want to
-use a persistent volume, start the container as follows. Whenever you want to
-start from scratch, you will need to recreate the volume.
+   ```shell
+   docker run --interactive --tty --publish 8080:8080 kadena/devnet:latest
+   ```
+   
+   You can stop the network at any time—and reset the blockchain state—by pressing Ctrl-c in the terminal. starting it again with the command above. 
+   
+   If you can't run the Pact executable on your local computer, you can mount the `./pact` folder of the project in the container by running the following command:
+   
+   ```bash
+   docker run --interactive --tty \
+    --publish 8080:8080 \
+    --volume ./pact:/pact-cli:ro \
+    kadena/devnet:latest
+   ```
+   
+   If you mount the `pact` folder, you can execute `pact` commands using an interactive `pact>` shell in your browser at [http://localhost:8080/ttyd/pact-cli/](http://localhost:8080/ttyd/pact-cli/).
 
-```bash
-docker volume create kadena_devnet
-docker run -it -p 8080:8080 -v kadena_devnet:/data -v ./pact:/pact-cli:ro --name devnet kadena/devnet
-```
+   After you start the development network, you'll see information about the network processes displayed in a terminal console.
 
-## Configure Devnet in Chainweaver
+   ![Development network (devnet) console](/assets/docs/election-workshop/devnet-console.png)
 
-Throughout this tutorial, you will frequently use Chainweaver to debug your
-locally running blockchain via Chainweaver's graphical user interface. Open
-Chainweaver and create an account if you have not already. After unlocking
-Chainweaver, navigate to `Settings` on the bottom left of the screen and
-choose `Network`. Under `Edit networks` you will see Testnet and Mainnet
-preconfigured. In the `Create new network` field type `Devnet` and click
-`Create`. Devnet should appear in the list. Click the arrow button next to
-Devnet to reveal a form where that allows you to add a node. You only need
-to add one node: `localhost:8080`. If your Docker container is running, the
-circle to the right of the node name turns green. Press `Ok` to confirm.
-On the far left in the top bar of the Chainweaver window, you can now switch
-your network to Devnet. This ensures that all actions that you perform in
-Chainweaver will be executed against Devnet.
+## Create a Chainweaver account
 
-## Explore Devnet contracts
+If you followed the [Quick start](/build/quickstart), you might already have a Chainweaver account. 
+Chainweaver is a desktop or web application that provides a graphical user interface for interacting with Kadena blockchain networks, accounts, and smart contracts.
+For example, you can use Chainweaver in the election workshop tutorials to debug your smart contracts and your local development blockchain.
 
-In Chainweaver, expand the left navigation bar and click contracts. Select
-`Module Explorer` at the top of the right panel to reveal a list of contracts
-that are already deployed on your Devnet. Next to the search box above
-that list, change `All chains` to any particular chain to narrow down the
-list to the unique contracts that are deployed to Devnet by default:
+If you don't already have a Chainweaver account, you should create one using either the [Chainweaver desktop application](https://github.com/kadena-io/chainweaver/releases) or the [Chainweaver web application](https://chainweaver.kadena.network/).
+After you download and install the desktop application or open Chainweaver in a browser, you can create accounts to interact with Kadena networks.
 
- * coin
- * fungible-v1
- * fungible-v2
- * fungible-xchain-v1
- * gas-payer-v1
- * ns
+To create a Chainweaver account:
 
-As the names of the contracts suggest, they provide the basic functionality
-required for using tokens (coin, fungible), paying transaction fees (gas)
-and organizing contracts in namespaces (ns). Notice the overlap with the
-contracts in the `./pact/root` folder of your project. Do your remember
-from [Chapter 01](/build/guides/election-dapp-tutorial/01-getting-started) why these
-files need to exist in your project, even though the corresponding contracts
-are already deployed on Mainnet, Testnet, as well as Devnet? Also note that
-there are not contracts related to the election yet. You will be creating
-those yourself in the course of this tutorial. Click the `View`
-button in the row of the `coin` contract to view its details. At the top of
-the right pane you can click `Open` to load the source code into the left pane.
-You will use this functionality in later chapters to verify upgrades of your own
-smart contracts. Scrolling down in the right pane you will encounter a list
-of functions inside the contract that you can call directly from Chainweaver.
-In this tutorial, however, you will mainly use the Kadena JavaScript client
-to call smart contract functions. Scroll back up a bit to
-`Implemented interfaces` and view the `fungible-v2` interface. Read the
-documentation of the following functions:
+1. Open Chainweaver.
 
- * transfer
- * transfer-create
- * details
- * create-account
+1. Review the Terms of Service and confirm that you agree to them, then click **Create a new wallet**.
 
-These are some of the first smart contract functions that you will interact
-with in the upcoming chapters of this tutorial.
+2. Type and confirm the password you want to use for this account, then click **Continue**.
 
-## List modules with Kadena Client
+1. Confirm that you understand the importance of the recovery phrase, then click **Continue**.
 
-Open up your editor and navigate to the `./snippets` folder of the election
-dApp project. In the `./snippets/package.json` file you will find a list of
-npm scripts defined that call TypeScript files in the `./snippets` folder.
-The first script you will execute is `list-modules:devnet`. As the name implies,
-this script will list the modules deployed on Devnet. It does so by executing
-the `./snippets/list-modules.ts` file. Before running the script,
-let's install the dependencies of the snippets first and then take a closer
-look at what happens in the `./snippets/list-modules.ts` file. Open a terminal
-and execute the following commands from the root of the election dApp project.
+1. Click **Copy** to copy the 12-word recovery phrase to the clipboard so you can save it in a secure location, for example, as a note in a password vault.
 
-```bash
-cd ./snippets
-npm install
-```
+   You can also reveal each word by moving the cursor over the text field in the browser. Write each word in the correct order and store the complete recovery phrase in a secure place.
 
-Open the file `./snippets/configuration.ts`. When the environment variable
-`KADENA_NETWORK` is set to `devnet`, the functions exported from this file
-will return `fast-development` as the network id, `1` as the chain id and
-and API base URL with the host and port of your local devnet and a path
-composed of the aforementioned network id and chain id. This configuration
-is loaded into the `./snippets/list-modules.ts` file to configure the
-transaction that is sent to your local blockchain using the Kadena Client.
+1. Confirm that you have stored the recovery phrase, then click **Continue**.
 
-In the main function of this file, the `Pact.builder` is used to create a
-transaction for executing the Pact code `(list-modules)`, which is a
-globally available function, not tied to a particular deployed contract.
-Calling this read operation does not cost any gas, so it can be executed
-by passing the transaction to the `dirtyRead` method of the Kadena Client
-instance. Internally, this method transforms the transaction object to a
-json object that is posted to an HTTP API endpoint of your Devnet node.
-The remainder of the main function deals with processing the response
-from the API.
+2. Verify the 12-word recovery phrase by typing the correct words in the correct order, then click **Continue**.
 
-```typescript
-// ./snippets/list-modules.ts
-import { Pact, createClient } from '@kadena/client';
-import { getApiHost, getChainId, getNetworkId } from './configuration';
+1. Click **Done** to view your new wallet.
 
-const client = createClient(getApiHost());
+## Connect to the development network
 
-main();
+Now that you have a Chainweaver wallet, you can connect it to the development network.
 
-async function main() {
-  const transaction = Pact.builder
-    .execution('(list-modules)')
-    .setMeta({ chainId: getChainId() })
-    .setNetworkId(getNetworkId())
-    .createTransaction();
+To add the development network to your new wallet:
 
-  try {
-    const response = await client.dirtyRead(transaction);
+1. Unlock Chainweaver.
+2. Click **Settings** in the Chainweaver navigation panel.
+3. Click **Network**.
+4. Under Edit Networks, type the network name **devnet**, then click **Create**.
+5. Expand the **devnet** network, then add the localhost as a node for this network by typing 127.0.0.1:8080.
 
-    const { result } = response;
+   If the local computer is still running the development network Docker container, you should see the dot next to the node turn green.
 
-    if (result.status === 'success') {
-      console.log(result.data);
-    } else {
-      console.error(result.error);
+1. Click **Ok** to close the network settings.
+
+   After you click Ok, you can see **devnet** selected as your current network. 
+   All actions you perform in Chainweaver are now executed on the local development network.
+
+## Explore default contracts
+
+The development network has several smart contracts deployed by default.
+You can use Chainweaver to view and interact with these default smart contracts.
+
+To view the default smart contracts:
+
+1. In Chainweaver, click **Contracts** in the navigation panel.
+
+   After you click Contracts, Chainweaver displays two working areas:
+   
+   - The left side displays a sample contract in an editor that you can use to view and edit contract code and execute commands interactively. 
+   - The right side provides controls that enable you to navigate between contracts, view contract details, and test operations for contracts you have deployed.
+
+1. On the right side of Contracts, click **Module Explorer** to view a list of contracts
+that are already deployed on the local development network.
+
+1. Under Deployed Contracts, change **All chains** to chain **0** to see the
+list of unique contracts that are deployed to development network by default:
+
+   - coin
+   - fungible-v1
+   - fungible-v2
+   - fungible-xchain-v1
+   - gas-payer-v1
+   - ns
+
+   These default contracts provide the basic functionality for the following common tasks:
+   
+   - Using tokens in the `coin` and `fungible` contracts.
+   - Paying transaction fees in the `gas-payer` contract.
+   - Organizing contracts into namespaces in the `ns` contract. 
+
+   These contracts are the same as the contracts in the `./pact/root` folder of your project. 
+   As you might remember from [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started), the contracts exist in your project to enable local testing without connecting to the development network. 
+   
+   You should also note that these default contracts aren't related to the election application. You'll be creating election-related content in contracts in later tutorials. 
+
+1. Click **View** for the `coin` contract to view its details. 
+  
+   Explore the implemented interfaces, function calls, and capabilities listed for the contract.
+   For example, under **Implemented interfaces**, view the `fungible-v2` interface and review the descriptions of the following functions:
+   
+   - transfer
+   - transfer-create
+   - details
+   - create-account
+   
+   You'll interact with these functions and learn more about these features of smart contracts and in later tutorials.
+   For now, it's enough to have a general idea of what's in a typical contract.
+
+2. Click **Open** to load the source code for the `coin` contract into the left pane.
+   
+   Scroll through the source code and review the comments (`@doc`) to get a sense of how this contract works.
+   
+## Use TypeScript and Kadena client
+
+Chainweaver is one way to interact with your smart contract code.
+Another common way to interact with smart contracts is by using the Kadena client and TypeScript files.
+
+To explore using TypeScript and Kadena client:
+
+1. Open the `election-dapp` folder in your code editor and expand the `./snippets` folder. 
+
+2. Select the `package.json` file and review the list of scripts.
+   
+   For example:
+   
+   ```json
+   "scripts": {
+    "coin-details:devnet": "KADENA_NETWORK=devnet ts-node ./coin-details.ts",
+    "create-account:devnet": "KADENA_NETWORK=devnet ts-node ./create-account.ts",
+    "create-namespace:devnet": "KADENA_NETWORK=devnet ts-node ./principal-namespace.ts",
+    "define-keyset:devnet": "KADENA_NETWORK=devnet ts-node ./define-keyset.ts",
+    "deploy-gas-station:devnet": "KADENA_NETWORK=devnet ts-node ./deploy-gas-station.ts",
+    "deploy-module:devnet": "KADENA_NETWORK=devnet ts-node ./deploy-module.ts",
+    "format": "prettier --write .",
+    "generate-types:coin:devnet": "pactjs contract-generate --contract coin --api http://localhost:8080/chainweb/0.0/fast-development/chain/1/pact",
+    "list-modules:devnet": "KADENA_NETWORK=devnet ts-node ./list-modules.ts",
+    "transfer-create:devnet": "KADENA_NETWORK=devnet ts-node ./transfer-create.ts",
+    "transfer:devnet": "KADENA_NETWORK=devnet ts-node ./transfer.ts"
+   },
+   ```
+   
+   These `npm` scripts call the corresponding TypeScript files in the `./snippets` folder.
+   Before you execute any of these scripts, you need to:
+
+   - Install package dependencies.
+   - Check the configuration of the `KADENA_NETWORK` environment variable.
+
+1. Open a terminal in the code editor, change to the `snippets` folder, then install the package dependencies by running the following commands:
+   
+   ```bash
+   cd ./snippets
+   npm install
+   ```
+
+2. Open the `configuration.ts` file in your code editor. 
+   
+   Notice that when the environment variable `KADENA_NETWORK` is set to `devnet`, the functions exported from this file return the following:
+   
+   - The network identifier `fast-development`.
+   - The chain identifier `1` 
+   - The API base URL `localhost:8080`—the host and port for the node you previously specified for the development network—and appended with the network id and chain id. 
+  
+   These configuration settings are loaded into the `list-modules.ts` file to configure the transaction that is sent to your local blockchain using the Kadena client.
+
+1. Open the `list-modules.ts` file in your code editor. 
+   
+   ```typescript
+   import { Pact, createClient } from '@kadena/client';
+   import { getApiHost, getChainId, getNetworkId } from './configuration';
+   
+   const client = createClient(getApiHost());
+   
+   main();
+   async function main() {
+     const transaction = Pact.builder
+       .execution('(list-modules)')
+       .setMeta({ chainId: getChainId() })
+       .setNetworkId(getNetworkId())
+       .createTransaction();
+     try {
+       const response = await client.dirtyRead(transaction);
+       
+       const { result } = response;
+       
+       if (result.status === 'success') {
+         console.log(result.data);
+       } else {
+         console.error(result.error);
+       }
+    } catch (e: unknown) {
+      console.error((e as Error).message);
     }
-  } catch (e: unknown) {
-    console.error((e as Error).message);
-  }
-}
-```
+   }
+   ```
 
-Execute the snippet by running the following command in a terminal window
+   Let's take a closer look at this code:
+   
+   - In the `main` function, the `Pact.builder` creates a transaction for executing the Pact code `(list-modules)`.
+   - The `(list-modules)` function is a globally available function that isn't tied to a particular contract. 
+   - Because the `(list-modules)` function is a read-only operation, you can execute the transaction without paying any transaction fees using the `dirtyRead` method of the Kadena client. 
+   Internally, the `dirtyRead` method transforms the transaction object into a JSON object that is posted to an HTTP API endpoint of your development node.
+   
+   The rest of the `main` function processes the response from the API.
+
+1. Execute the `(list-modules)` script by running the following command in a terminal window
 with the current directory set to the `./snippets` folder:
 
-```bash
-npm run list-modules:devnet
-```
-
-The script will produce the following output, a list of modules deployed on
-your local Devnet:
-
-```bash
-[
-  'coin',
-  'fungible-v1',
-  'fungible-v2',
-  'fungible-xchain-v1',
-  'gas-payer-v1',
-  'ns'
-]
-```
-
-Notice that the list is exactly the same as the list displayed in the module
-explorer of Chainweaver. Both these tools can be used interchangeably to interact
-with the Kadena blockchain. They both support the execution of simple read
-operations as well as the execution of complex multi-step transactions, as will
-become clear when you will be using both approaches to test the smart contracts
-that you will develop for the election website back-end in the remainder of this
-tutorial.
+   ```bash
+   npm run list-modules:devnet
+   ```
+   
+   The script output lists the modules deployed on your local development network.
+   For example:
+   
+   ```bash
+   > snippets@1.0.0 list-modules:devnet
+   > KADENA_NETWORK=devnet ts-node ./list-modules.ts
+   [
+    'coin',
+    'fungible-v1',
+    'fungible-v2',
+    'fungible-xchain-v1',
+    'gas-payer-v1',
+    'ns'
+   ]
+   ```
+   
+   This list is the same as the list displayed in the Chainweaver Module Explorer. 
+   You can use either Chainweaver or Kadena client to interact with the Kadena blockchain. These tools support both simple read operations and complex multi-step transactions.
+   You'll learn more about using Chainweaver and Kadena client to test smart contracts in later tutorials as you develop functionality for the election back-end.
 
 ## Next steps
 
-At the end of this chapter you should have a full-fledged Kadena blockchain network
-called Devnet running on your local computer. You have learned which contracts
-are deployed on the Kadena networks by default and how you can explore them using
-either Chainweaver or the Kadena JavaScript client. In the next chapter, you will
-create an account on Devnet. This account will govern several aspects of the smart
-contracts you will create in this tutorial: the namespace, keyset definition and
-modules. The account will also get exclusive permission to call certain functions in the
-election smart contract, such as adding candidates. After setting up this account,
-namespace and keyset definitions, all will be in place to deploy the smart contract
-that will become the new back-end of the election website.
+At this point, you have a functioning Kadena blockchain development network—`devnet`—running on your local computer. 
+In this tutorial, you learned: 
+
+-  How to start and stop a development network running on your local computer. 
+-  How to create a Chainweaver account and connect Chainweaver to the development network running on a local node.
+-  How to explore the contracts that are deployed by default using Chainweaver.
+-  How you can explore contracts using TypeScript files and the Kadena client. 
+
+In the next tutorial, you'll learn how you can use accounts and permissions to control who is allowed to perform different tasks on the development network. 
+In creating accounts, you'll learn about core concepts—including namespaces, keysets, and
+modules—and how to use them to grant or restrict access to specific functions. 
+For example, you'll learn how to use an account, namespace, and keyset definition to control the permission to add candidates to the ballot in an election.
