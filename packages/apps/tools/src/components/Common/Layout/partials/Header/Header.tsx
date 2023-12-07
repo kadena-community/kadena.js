@@ -1,5 +1,6 @@
 import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
+import WalletConnectButton from '@/components/Common/WalletConnectButton';
 import { AddNetworkModal } from '@/components/Global';
 import type { Network } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
@@ -14,7 +15,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
 import React, { useState } from 'react';
-import WalletConnectButton from "@/components/Common/WalletConnectButton";
 
 export interface IHeaderProps {
   logo?: ReactNode;
