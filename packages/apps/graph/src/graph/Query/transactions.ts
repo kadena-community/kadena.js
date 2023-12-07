@@ -4,12 +4,13 @@ import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
-builder.queryField('transactions', (t) => {
-  return t.prismaConnection({
+builder.queryField('transactions', (t) =>
+  t.prismaConnection({
+    description: 'Retrieve transactions.',
     edgesNullable: false,
     args: {
       accountName: t.arg.string({ required: false }),
-      moduleName: t.arg.string({ required: false }),
+      fungibleName: t.arg.string({ required: false }),
       chainId: t.arg.string({ required: false }),
       blockHash: t.arg.string({ required: false }),
       requestKey: t.arg.string({ required: false }),
@@ -18,7 +19,7 @@ builder.queryField('transactions', (t) => {
     cursor: 'blockHash_requestKey',
     complexity: (args) => ({
       field: getDefaultConnectionComplexity({
-        withRelations: !!args.moduleName,
+        withRelations: !!args.fungibleName,
         first: args.first,
         last: args.last,
       }),
@@ -49,12 +50,12 @@ builder.queryField('transactions', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);
 
 function generateTransactionFilter(args: {
   accountName?: string | null | undefined;
-  moduleName?: string | null | undefined;
+  fungibleName?: string | null | undefined;
   chainId?: string | null | undefined;
   blockHash?: string | null | undefined;
   requestKey?: string | null | undefined;
@@ -65,11 +66,11 @@ function generateTransactionFilter(args: {
     whereFilter.senderAccount = args.accountName;
   }
 
-  if (args.moduleName) {
+  if (args.fungibleName) {
     if (whereFilter.events) {
-      whereFilter.events.some = { moduleName: args.moduleName };
+      whereFilter.events.some = { moduleName: args.fungibleName };
     } else {
-      whereFilter.events = { some: { moduleName: args.moduleName } };
+      whereFilter.events = { some: { moduleName: args.fungibleName } };
     }
   }
 

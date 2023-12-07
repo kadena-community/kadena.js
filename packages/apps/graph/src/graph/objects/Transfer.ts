@@ -4,6 +4,7 @@ import { normalizeError } from '@utils/errors';
 import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Transfer', {
+  description: 'A transfer of funds from a fungible between two accounts.',
   id: { field: 'blockHash_chainId_orderIndex_moduleHash_requestKey' },
   fields: (t) => ({
     // database fields
@@ -12,7 +13,11 @@ export default builder.prismaNode('Transfer', {
     chainId: t.expose('chainId', { type: 'BigInt' }),
     senderAccount: t.exposeString('senderAccount'),
     height: t.expose('height', { type: 'BigInt' }),
-    orderIndex: t.expose('orderIndex', { type: 'BigInt' }),
+    orderIndex: t.expose('orderIndex', {
+      type: 'BigInt',
+      description:
+        'The order of the transfer when it is a `defpact` (multi-step transaction) execution.',
+    }),
     moduleHash: t.exposeString('moduleHash'),
     moduleName: t.exposeString('moduleName'),
     requestKey: t.exposeString('requestKey'),
@@ -20,6 +25,8 @@ export default builder.prismaNode('Transfer', {
 
     // computed fields
     crossChainTransfer: t.prismaField({
+      description:
+        'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
       type: 'Transfer',
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 4, // In the worst case resolve scenario, it executes 4 queries.
@@ -100,6 +107,7 @@ export default builder.prismaNode('Transfer', {
     }),
 
     transaction: t.prismaField({
+      description: 'The transaction that initiated this transfer.',
       type: 'Transaction',
       nullable: true,
       complexity:

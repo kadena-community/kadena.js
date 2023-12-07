@@ -52,7 +52,7 @@ const Header: FC<IHeaderProps> = (props) => {
     {
       route: routes.ACCOUNT_ROOT,
       searchType: SearchType.Account,
-      fields: ['account', 'module'],
+      fields: ['account', 'fungible'],
     },
     {
       route: routes.BLOCK_ROOT,
