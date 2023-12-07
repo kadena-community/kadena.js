@@ -4,15 +4,9 @@ import { createCommand } from '../../utils/createCommand.js';
 
 // TO-DO: Implement this command
 // choices: [
-//   'Encrypt an unencryptedSeed',
-//       '> List of unencryptedSeeds',
-//          '> select and encrypt an unencryptedSeed',
 //   'Re-encrypt a key with a new password',
-//       '> List of encryptedSeeds',
-//          '> select and encrypt with given password',
-//   'Delete a key',
-//       '> List of all keys',
-//          '> select and delete a key',
+//       '> List of encrypted seeds',
+//          '> select and re-encrypt with given password',
 //   'Exit'
 // ],
 

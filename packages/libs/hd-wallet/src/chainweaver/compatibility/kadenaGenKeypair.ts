@@ -10,7 +10,7 @@ async function kadenaGenOneKeypair(
     throw new Error('Index must be hardened');
   }
   const keyPair = await kadenaGenKeypairOriginal(password, rootKey, index);
-  // kadenaGenKeypaißr returns [encryptedSecret, publicKey] we want [publicKey, encryptedSecret]
+  // kadenaGenKeypair returns [encryptedSecret, publicKey] we want [publicKey, encryptedSecret]
   return [keyPair[1], keyPair[0]];
 }
 
