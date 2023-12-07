@@ -14,7 +14,7 @@ describe('Query: getAccount by AccountName', () => {
     testAccount = await generateAccount();
   });
 
-  test.skip('Should return an account when after it has been created', async () => {
+  test('Should return an account when after it has been created', async () => {
     // Given a test account is created.
     const testDataResponse = await createAccount(testAccount);
 

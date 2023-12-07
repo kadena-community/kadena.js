@@ -1,12 +1,14 @@
 import request from 'supertest';
 import { beforeEach, describe, expect, test } from 'vitest';
-import { devnetMiner, devnetMinerPubKey, type IAccountWithSecretKey } from '../../testdata/constants/accounts';
+import { devnetMiner  } from '../../testdata/constants/accounts';
+import type {IAccountWithSecretKey} from '../../testdata/constants/accounts';
 import { grapHost } from '../../testdata/constants/network';
 import { getTransactionsQuery } from '../../testdata/queries/getTransactions';
-import { createAccount, generateAccount } from '../../utils/account-utils';
+import * as accountUtils from '../../utils/account-utils';
 import { transferFunds } from '../../utils/transfer-utils';
 import { base64Encode } from '../../utils/cryptography-utils';
 import { coinModuleHash } from '../../testdata/constants/modules';
+import { transferAmount } from '../../testdata/constants/amounts';
 
 let sourceAccount: IAccountWithSecretKey;
 let targetAccount: IAccountWithSecretKey;
@@ -14,16 +16,16 @@ let query: object;
 
 describe('Query: getTransactions', () => {
   beforeEach(async () => {
-    sourceAccount = await generateAccount();
+    sourceAccount = await accountUtils.generateAccount();
     //console.debug(sourceAccount);
-    targetAccount = await generateAccount();
+    targetAccount = await accountUtils.generateAccount();
     query = getTransactionsQuery(sourceAccount.account);
   });
 
   test('Should return transactions, if they exist.', async () => {
     // Given an account is created and transactions are fetched.
-    await createAccount(sourceAccount);
-    await createAccount(targetAccount);
+    await accountUtils.createAccount(sourceAccount);
+    await accountUtils.createAccount(targetAccount);
     const initialResponse = await request(grapHost).post('').send(query);
 
     // Then there should be no transactions for the created account.
@@ -32,7 +34,7 @@ describe('Query: getTransactions', () => {
     expect(initialResponse.body.data.transactions.totalCount).toEqual(0);
 
     // When a transfer is performed from source to target
-    const transfer = await transferFunds(sourceAccount, targetAccount, '20', '0');
+    const transfer = await transferFunds(sourceAccount, targetAccount, transferAmount, '0');
 
     // And the transfers are retrieved for the source account
     const finalResponse = await request(grapHost).post('').send(query);
