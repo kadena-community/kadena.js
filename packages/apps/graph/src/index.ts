@@ -1,5 +1,14 @@
-// Cjs style import of module-alias/register to avoid sorting of imports.
-require('module-alias/register');
+#!/usr/bin/env node
+// commonjs import of module-alias/register to avoid sorting of imports.
+const moduleAlias = require('module-alias');
+
+moduleAlias.addAliases({
+  '@db': `${__dirname}/db`,
+  '@services': `${__dirname}/services`,
+  '@utils': `${__dirname}/utils`,
+  '@devnet': `${__dirname}/devnet`,
+});
+
 import { dotenv } from '@utils/dotenv';
 import { createYoga } from 'graphql-yoga';
 import 'json-bigint-patch';
