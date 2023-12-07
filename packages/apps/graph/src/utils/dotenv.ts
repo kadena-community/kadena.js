@@ -11,13 +11,20 @@ export const dotenv: {
   TRACING_ENABLED: boolean;
   TRACING_LOG_FILENAME: string;
   MARMALADE_ENABLED: boolean;
-  MARMALADE_TEMPLATE_OWNER: string;
-  MARMALADE_TEMPLATE_REPO: string;
-  MARMALADE_TEMPLATE_PATH: string;
-  MARMALADE_TEMPLATE_BRANCH: string;
+  MARMALADE_REPOSITORY_OWNER: string;
+  MARMALADE_REPOSITORY_NAME: string;
+  MARMALADE_REPOSITORY_BRANCH: string;
+  MARMALADE_TEMPLATE_REMOTE_PATH: string[];
+  MARMALADE_NAMESPACE_REMOTE_PATH: string[];
   MARMALADE_TEMPLATE_LOCAL_PATH: string;
-  MARMALADE_NS_FILE_PATH: string;
-  MARMALADE_NS_LOCAL_PATH: string;
+  MARMALADE_NAMESPACE_LOCAL_PATH: string;
+  // MARMALADE_TEMPLATE_OWNER: string;
+  // MARMALADE_TEMPLATE_REPO: string;
+  // MARMALADE_TEMPLATE_PATH: string;
+  // MARMALADE_TEMPLATE_BRANCH: string;
+  // MARMALADE_TEMPLATE_LOCAL_PATH: string;
+  // MARMALADE_NS_FILE_PATH: string;
+  // MARMALADE_NS_LOCAL_PATH: string;
   GITHUB_TOKEN: string;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
@@ -34,24 +41,34 @@ export const dotenv: {
   TRACING_ENABLED: or(process.env.TRACING_ENABLED === 'true', false),
   TRACING_LOG_FILENAME: or(process.env.TRACING_LOG_FILENAME, 'traces.log'),
   MARMALADE_ENABLED: or(process.env.MARMALADE_ENABLED === 'true', false),
-  MARMALADE_TEMPLATE_OWNER: or(
-    process.env.MARMALADE_TEMPLATE_OWNER,
+  MARMALADE_REPOSITORY_OWNER: or(
+    process.env.MARMALADE_REPOSITORY_OWNER,
     'kadena-io',
   ),
-  MARMALADE_TEMPLATE_REPO: or(process.env.MARMALADE_TEMPLATE_REPO, 'marmalade'),
-  MARMALADE_TEMPLATE_PATH: or(
-    process.env.MARMALADE_TEMPLATE_PATH,
-    'pact/yaml/marmalade-v2',
+  MARMALADE_REPOSITORY_NAME: or(
+    process.env.MARMALADE_REPOSITORY_NAME,
+    'marmalade',
   ),
-  MARMALADE_TEMPLATE_BRANCH: or(process.env.MARMALADE_TEMPLATE_BRANCH, 'v2'),
+  MARMALADE_REPOSITORY_BRANCH: or(
+    process.env.MARMALADE_REPOSITORY_BRANCH,
+    'main',
+  ),
+  MARMALADE_TEMPLATE_REMOTE_PATH: or(
+    process.env.MARMALADE_TEMPLATE_REMOTE_PATH?.split(','),
+    ['pact/yaml/marmalade-v2'],
+  ),
+  MARMALADE_NAMESPACE_REMOTE_PATH: or(
+    process.env.MARMALADE_NAMESPACE_REMOTE_PATH?.split(','),
+    ['pact/marmalade-ns', 'pact/util'],
+  ),
+
   MARMALADE_TEMPLATE_LOCAL_PATH: or(
     process.env.MARMALADE_TEMPLATE_LOCAL_PATH,
-    'src/devnet/templates',
+    'src/devnet/marmalade/templates/v2',
   ),
-  MARMALADE_NS_FILE_PATH: or(process.env.MARMALADE_NS_FILE_PATH, 'src/ns'),
-  MARMALADE_NS_LOCAL_PATH: or(
+  MARMALADE_NAMESPACE_LOCAL_PATH: or(
     process.env.MARMALADE_NS_LOCAL_PATH,
-    'src/devnet/templates/ns',
+    'src/devnet/marmalade/templates/ns',
   ),
   GITHUB_TOKEN: or(process.env.GITHUB_TOKEN, '/pact/marmalade-ns'),
 };
