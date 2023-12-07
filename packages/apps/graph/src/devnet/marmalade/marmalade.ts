@@ -36,6 +36,7 @@ import {
   submit,
 } from '../helper';
 import { marmaladeConfig } from './config/arguments';
+import { IMarmaladeNamespaceConfig } from './config/namespaces';
 import {
   IMarmaladeLocalConfig,
   IMarmaladeRemoteConfig,
@@ -117,6 +118,10 @@ export async function deployMarmaladeContracts(
     codeFiles,
     codeFileDestinationPath,
   );
+
+  logger.info('Deploying Marmalade Namespaces');
+
+  await deployNamespaceFiles();
 
   return;
 
@@ -416,6 +421,78 @@ export async function updateTemplateFilesWithCodeFile(
   );
 }
 
+export async function deployMarmamaladeNamespaces({
+  localConfigData,
+  namespacesConfig,
+  sender = sender00,
+  fileExtension,
+}: {
+  localConfigData: IMarmaladeLocalConfig;
+  namespacesConfig: IMarmaladeNamespaceConfig[];
+  sender?: IAccount;
+  fileExtension: string;
+}) {
+  const publickeys = sender.keys.map((key) => key.publicKey);
+
+  const namespaceFiles = readdirSync(localConfigData.namespacePath).filter(
+    (file) => file.endsWith(fileExtension),
+  );
+
+  await Promise.all(
+    namespacesConfig.map((config) => {
+      const namespaceFilename = namespaceFiles.find((file) =>
+        file.includes(config.file),
+      );
+      if (!namespaceFilename) {
+        throw new Error(`Namespace file ${config.file} not found`);
+      }
+
+      const namespaceFile = join(
+        localConfigData.namespacePath,
+        namespaceFilename,
+      );
+
+      config.namespaces.forEach(async (namespace) => {
+        let keysets;
+        if (config.file === 'ns-contract-admin.pact') {
+          keysets = [
+            {
+              name: `${namespace}.marmalade-contract-admin`,
+              keys: publickeys,
+              pred: 'keys-all',
+            },
+          ];
+        } else {
+          keysets = [
+            {
+              name: 'marmalade-admin',
+              keys: publickeys,
+              pred: 'keys-all',
+            },
+            {
+              name: 'marmalade-user',
+              keys: publickeys,
+              pred: 'keys-all',
+            },
+          ];
+        }
+
+        const transaction = await createPactCommandFromFile(namespaceFile, {
+          namespace: {
+            key: 'ns',
+            data: namespace,
+          },
+          keysets,
+        });
+
+        const transactionDescriptor = await submit(transaction);
+        const commandResult = await listen(transactionDescriptor);
+        console.log(commandResult);
+      });
+    }),
+  );
+}
+
 export async function deployNamespaceFiles(
   nsMarmaladeFilepath: string,
   nsContractAdminFilepath: string,
@@ -446,8 +523,6 @@ export async function deployNamespaceFiles(
   const result5 = await submit(transaction5);
   const listen5 = await listen(result5);
   console.log(listen5);
-
-  return;
 
   for (const namespace of MARMALADE_NAMESPACES) {
     const transaction1 = await createPactCommandFromFile(nsMarmaladeFilepath, {
