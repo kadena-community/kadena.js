@@ -16,15 +16,15 @@ import {
   writeFileSync,
 } from 'fs';
 import yaml from 'js-yaml';
-import { join, relative, resolve } from 'path';
-import { dotenv } from '../utils/dotenv';
+import { join, normalize, relative, resolve } from 'path';
+import { dotenv } from '../../utils/dotenv';
 import {
   downloadGitFiles,
   getGitAbsolutePath,
   getGitData,
-} from '../utils/downlaod-git-files';
-import { clearDir, flattenFolder } from '../utils/path';
-import { devnetConfig } from './config';
+} from '../../utils/downlaod-git-files';
+import { clearDir, flattenFolder } from '../../utils/path';
+import { devnetConfig } from '../config';
 import {
   IAccount,
   IKeyPair,
@@ -34,16 +34,16 @@ import {
   sender00,
   signAndAssertTransaction,
   submit,
-} from './helper';
-import { marmaladeConfig } from './simulation/config/marmalade';
-
-const TEMPLATE_EXTENSION = 'yaml';
-const CODE_FILE_EXTENSION = 'pact';
-const EXCLUDE_TEMPLATE_FOLDERS = ['data', 'sample'];
-const MARMALADE_NAMESPACE_FILES = [
-  'ns-marmalade.pact',
-  'ns-contract-admin.pact',
-];
+} from '../helper';
+import { marmaladeConfig } from './config/arguments';
+import {
+  IMarmaladeLocalConfig,
+  IMarmaladeRemoteConfig,
+  IMarmaladeRepository,
+  marmaladeLocalConfig,
+  marmaladeRemoteConfig,
+  marmaladeRepository,
+} from './config/repository';
 
 // const MARMALADE_NAMESPACE_DEPLOYMENTS = [
 //   {
@@ -62,17 +62,11 @@ const MARMALADE_NAMESPACE_FILES = [
 
 const MARMALADE_NAMESPACES = ['marmalade-v2', 'marmalade-sale'];
 
-export interface ITemplateFile {
-  name: string;
-  // relative path to the template base path
-  relativePath: string;
-}
-
 export async function deployMarmaladeContracts(
   signerAccount: IAccount,
-  templateDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
-  codeFileDestinationPath: string = dotenv.MARMALADE_TEMPLATE_LOCAL_PATH,
-  nsDestinationPath: string = dotenv.MARMALADE_NS_LOCAL_PATH,
+  templateDestinationPath: string = marmaladeLocalConfig.templatePath,
+  codeFileDestinationPath: string = marmaladeLocalConfig.codeFilesPath,
+  nsDestinationPath: string = marmaladeLocalConfig.namespacePath,
 ) {
   logger.info('Preparing directories...');
   handleDirectorySetup(
@@ -83,40 +77,35 @@ export async function deployMarmaladeContracts(
 
   logger.info('Downloading marmalade templates...');
 
-  await getMarmaladeTemplates(
-    {
-      owner: dotenv.MARMALADE_TEMPLATE_OWNER,
-      name: dotenv.MARMALADE_TEMPLATE_REPO,
-      path: dotenv.MARMALADE_TEMPLATE_PATH,
-      branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
-    },
-    templateDestinationPath,
-    EXCLUDE_TEMPLATE_FOLDERS,
-  );
-
-  return;
+  await getMarmaladeTemplates({
+    repositoryData: marmaladeRepository,
+    remoteConfig: marmaladeRemoteConfig,
+    localPath: templateDestinationPath,
+    flatFolder: true,
+  });
 
   logger.info('Downloading necessary marmalade code files...');
 
-  await getCodeFiles(templateDestinationPath, codeFileDestinationPath);
+  await getCodeFiles({
+    repositoryData: marmaladeRepository,
+    localConfigData: marmaladeLocalConfig,
+    templateRemotePath: marmaladeRemoteConfig.templatePath,
+    fileExtension: marmaladeRemoteConfig.codefileExtension,
+  });
 
   // Get marmalade namespace definition files
-  await getNsCodeFiles(
-    {
-      owner: dotenv.MARMALADE_TEMPLATE_OWNER,
-      name: dotenv.MARMALADE_TEMPLATE_REPO,
-      path: dotenv.MARMALADE_NS_FILE_PATH,
-      branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
-    },
-    nsDestinationPath,
-  );
+  await getNsCodeFiles({
+    repositoryData: marmaladeRepository,
+    remoteConfigData: marmaladeRemoteConfig,
+    localPath: nsDestinationPath,
+  });
 
   const templateFiles = readdirSync(templateDestinationPath).filter((file) =>
-    file.endsWith(TEMPLATE_EXTENSION),
+    file.endsWith(marmaladeRemoteConfig.templateExtension),
   );
 
   const codeFiles = readdirSync(codeFileDestinationPath).filter((file) =>
-    file.endsWith(CODE_FILE_EXTENSION),
+    file.endsWith(marmaladeRemoteConfig.codefileExtension),
   );
 
   console.log(templateFiles);
@@ -128,6 +117,8 @@ export async function deployMarmaladeContracts(
     codeFiles,
     codeFileDestinationPath,
   );
+
+  return;
 
   console.log('Deploying Marmalade Namespaces');
 
@@ -208,32 +199,29 @@ export async function handleDirectorySetup(
   }
 }
 
-export async function getMarmaladeTemplates(
-  {
-    owner,
-    name,
-    path,
-    branch,
-  }: { owner: string; name: string; path: string; branch: string },
-  destinationPath: string,
-  excludeFolders: string[],
-  flatFolder: boolean = true,
-): Promise<void> {
+export async function getMarmaladeTemplates({
+  repositoryData,
+  remoteConfig,
+  localPath,
+  flatFolder = true,
+}: {
+  repositoryData: IMarmaladeRepository;
+  remoteConfig: IMarmaladeRemoteConfig;
+  localPath: string;
+  flatFolder: boolean;
+}): Promise<void> {
   try {
-    await downloadGitFiles(
-      {
-        owner,
-        name,
-        path,
-        branch,
-      },
-      destinationPath,
-      TEMPLATE_EXTENSION,
-      true,
-      excludeFolders,
-    );
+    await downloadGitFiles({
+      ...repositoryData,
+      path: remoteConfig.templatePath,
 
-    const templateFiles = readdirSync(destinationPath);
+      localPath,
+      fileExtension: remoteConfig.templateExtension,
+      drillDown: true,
+      excludeFolder: remoteConfig.exclude || [],
+    });
+
+    const templateFiles = readdirSync(localPath);
 
     if (templateFiles.length === 0) {
       throw new Error(
@@ -242,7 +230,7 @@ export async function getMarmaladeTemplates(
     }
 
     if (flatFolder) {
-      await flattenFolder(destinationPath, [TEMPLATE_EXTENSION]);
+      await flattenFolder(localPath, [remoteConfig.templateExtension]);
     }
   } catch (error) {
     logger.info('Error downloading marmalade templates', error);
@@ -250,12 +238,21 @@ export async function getMarmaladeTemplates(
   }
 }
 
-export async function getCodeFiles(
-  templateDestinationPath: string,
-  codeFileDestinationPath: string,
-) {
+export async function getCodeFiles({
+  repositoryData,
+  localConfigData,
+  templateRemotePath,
+  fileExtension,
+  basePath = 'pact',
+}: {
+  repositoryData: IMarmaladeRepository;
+  localConfigData: IMarmaladeLocalConfig;
+  templateRemotePath: string;
+  fileExtension: string;
+  basePath?: string;
+}) {
   try {
-    const templateFiles = readdirSync(templateDestinationPath);
+    const templateFiles = readdirSync(localConfigData.templatePath);
 
     if (templateFiles.length === 0) {
       throw new Error('No template files found');
@@ -264,7 +261,7 @@ export async function getCodeFiles(
     await Promise.all(
       templateFiles.map(async (file) => {
         const fileContent = readFileSync(
-          join(templateDestinationPath, file),
+          join(localConfigData.templatePath, file),
           'utf8',
         );
         const yamlContent = yaml.load(fileContent) as any;
@@ -272,20 +269,26 @@ export async function getCodeFiles(
         if (!yamlContent?.codeFile) {
           return;
         }
-        const codeFilePath = getGitAbsolutePath(
-          dotenv.MARMALADE_TEMPLATE_PATH,
-          yamlContent.codeFile,
+
+        const codeFilePath = join(
+          basePath,
+          yamlContent.codeFile
+            .split('/')
+            .filter((part: string) => part !== '..' && part !== '.')
+            .join('/'),
         );
 
-        await downloadGitFiles(
-          {
-            owner: dotenv.MARMALADE_TEMPLATE_OWNER,
-            name: dotenv.MARMALADE_TEMPLATE_REPO,
-            path: codeFilePath,
-            branch: dotenv.MARMALADE_TEMPLATE_BRANCH,
-          },
-          codeFileDestinationPath,
-        );
+        // const codeFilePath = getGitAbsolutePath(
+        //   join(templateRemotePath, file),
+        //   yamlContent.codeFile,
+        // );
+
+        await downloadGitFiles({
+          ...repositoryData,
+          path: codeFilePath,
+          localPath: localConfigData.codeFilesPath,
+          fileExtension,
+        });
       }),
     );
   } catch (error) {
@@ -294,24 +297,24 @@ export async function getCodeFiles(
   }
 }
 
-export async function getNsCodeFiles(
-  {
-    owner,
-    name,
-    path,
-    branch,
-  }: { owner: string; name: string; path: string; branch: string },
-  destinationPath: string,
-) {
-  await downloadGitFiles(
-    {
-      owner,
-      name,
-      path,
-      branch,
-    },
-    destinationPath,
-    CODE_FILE_EXTENSION,
+export async function getNsCodeFiles({
+  repositoryData,
+  remoteConfigData,
+  localPath,
+}: {
+  repositoryData: IMarmaladeRepository;
+  remoteConfigData: IMarmaladeRemoteConfig;
+  localPath: string;
+}) {
+  await Promise.all(
+    remoteConfigData.namespacePaths.map(async (path) => {
+      await downloadGitFiles({
+        ...repositoryData,
+        path,
+        localPath,
+        fileExtension: remoteConfigData.codefileExtension,
+      });
+    }),
   );
 }
 
