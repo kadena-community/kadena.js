@@ -11,7 +11,7 @@ let testAccount: IAccountWithSecretKey;
 
 describe('Query: getAccount by AccountName', () => {
   beforeEach(async () => {
-    testAccount = await generateAccount();
+    testAccount = await generateAccount('0');
   });
 
   test('Should return an account when after it has been created', async () => {
