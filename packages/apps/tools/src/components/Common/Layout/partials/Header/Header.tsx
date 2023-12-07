@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
 import React, { useState } from 'react';
+import WalletConnectButton from "@/components/Common/WalletConnectButton";
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -96,7 +97,7 @@ const Header: FC<IHeaderProps> = () => {
             <option value="custom">{t('+ add network')}</option>
           </NavHeader.Select>
           <div className={walletConnectWrapperStyle}>
-            {/*<WalletConnectButton />*/}
+            <WalletConnectButton />
           </div>
         </NavHeader.Content>
       </NavHeader.Root>
