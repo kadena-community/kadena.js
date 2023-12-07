@@ -47,7 +47,6 @@ export function getTransactionsQuery(accountName: string) {
   };
 }
 
-
 export function getxChainTransactionsQuery(accountName: string) {
   return {
     query: `query getxChainTransactionsQuery($accountName: String) {
