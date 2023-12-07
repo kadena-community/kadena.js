@@ -19,10 +19,12 @@ export async function downloadGitFiles({
   branch: string;
   localPath: string;
   fileExtension: string;
-  drillDown: boolean;
-  excludeFolder: string[];
+  drillDown?: boolean;
+  excludeFolder?: string[];
 }): Promise<void> {
   const folderUrl = buildGitApiUrl(owner, name, path, branch);
+
+  console.log(folderUrl);
 
   const gitData = await getGitData(folderUrl);
 
@@ -109,12 +111,16 @@ function buildGitApiUrl(
   return `https://api.github.com/repos/${owner}/${name}/contents/${path}?ref=${branch}`;
 }
 
-export function getGitAbsolutePath(base: string, relative: string): string {
+export function getGitAbsolutePath(
+  base: string,
+  relative: string,
+  removeFilename: boolean = false,
+): string {
   const baseSplit = base.split('/');
   const relativeSplit = relative.split('/');
 
   // Remove the last component of the base path(should be the file name)
-  baseSplit.pop();
+  if (removeFilename) baseSplit.pop();
 
   for (const component of relativeSplit) {
     if (component === '..') {
