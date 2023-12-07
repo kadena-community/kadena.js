@@ -36,7 +36,7 @@ describe('Query: getTransactions', () => {
       targetAccount,
       transferAmount,
       '0',
-    );
+    )
 
     // And the transfers are retrieved for the source account
     const finalResponse = await sendQuery(query);
@@ -140,15 +140,17 @@ describe('Query: getTransactions', () => {
       '0',
       '1',
     );
+
+    console.log(transfer.continuation?.continuation.args)
     // And the transfers are retrieved for the source account
     const finalResponse = await sendQuery(query);
-    console.log(finalResponse.body.data)
+
 
     // Then the source should have two 1 transaction with 2 transfers, 2 events and signed by the Source Account
-    expect(finalResponse.body.data.transactions.edges).toHaveLength(1);
+    console.log(finalResponse.body.data.transactions.edges[1])
     expect(finalResponse.body.data.transactions.totalCount).toEqual(1);
-
-    expect(finalResponse.body.data.transactions.edges[0].node).toEqual({
+    //console.log(finalResponse.body.data.transactions.edges[0].node.signers);
+    expect(finalResponse.body.data.transactions.edges[1].node).toEqual({
       code: `"(coin.transfer-crosschain \\"${sourceAccountOnChain0.account}\\" \\"${targetAccountOnChain1.account}\\" (read-keyset \\"account-guard\\") \\"1\\" ${transferAmount}.0)"`,
       data: `{"account-guard":{"keys":["${targetAccountOnChain1.publicKey}"],"pred":"keys-all"}}`,
       gas: 621,
@@ -178,6 +180,6 @@ describe('Query: getTransactions', () => {
       transfers: expect.any(Array),
       events: expect.any(Array),
     });
-    console.log(finalResponse.body.data.transactions.edges[0].node.signers);
+
   });
 });

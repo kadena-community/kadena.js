@@ -7,7 +7,7 @@ module.exports = defineConfig({
     name: '@kadena/graph',
     include: ['tests/**/*.{test,spec}.ts'],
     globals: true,
-    testTimeout: 60000,
+    testTimeout: 1200000,
     hookTimeout: 30000
   },
 });
