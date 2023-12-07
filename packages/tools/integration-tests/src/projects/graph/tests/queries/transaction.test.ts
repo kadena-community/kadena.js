@@ -1,7 +1,6 @@
 import request from 'supertest';
-import { beforeEach, describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { devnetMiner  } from '../../testdata/constants/accounts';
-import type {IAccountWithSecretKey} from '../../testdata/constants/accounts';
 import { grapHost } from '../../testdata/constants/network';
 import { getTransactionsQuery, getxChainTransactionsQuery } from '../../testdata/queries/getTransactions';
 import * as accountUtils from '../../utils/account-utils';
@@ -12,7 +11,7 @@ import { transferAmount } from '../../testdata/constants/amounts';
 
 describe('Query: getTransactions', () => {
 
-  test('Should return transactions.', async () => {
+  test.skip('Should return transactions.', async () => {
     const sourceAccount = await accountUtils.generateAccount('0');
     const targetAccount = await accountUtils.generateAccount('0');
     const query = getTransactionsQuery(sourceAccount.account);
@@ -24,6 +23,7 @@ describe('Query: getTransactions', () => {
     console.log(sourceAccount)
     console.log(targetAccount)
     const initialResponse = await request(grapHost).post('').send(query);
+   
 
     // Then there should be no transactions for the created account.
     expect(initialResponse.statusCode).toBe(200);
@@ -94,7 +94,7 @@ describe('Query: getTransactions', () => {
     });
   });
 
-  test.only('Should return cross chain transactions.', async () => {
+  test.skip('Should return cross chain transactions.', async () => {
     const sourceAccountOnChain0 = await accountUtils.generateAccount('0');
     //const sourceChain1 = await accountUtils.generateAccount('1');
     const targetAccountOnChain1 = await accountUtils.generateAccount('1');

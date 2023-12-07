@@ -1,7 +1,7 @@
 export function getAccountQuery(accountName: string) {
   return {
-    query: `query getAccount($moduleName: String!, $accountName: String!) {
-      account(moduleName: $moduleName, accountName: $accountName) {
+    query: `query getAccount($fungibleName: String!, $accountName: String!) {
+      account(fungibleName: $fungibleName, accountName: $accountName) {
         ...AllAccountFields
         chainAccounts {
           ...CoreChainAccountFields
@@ -32,16 +32,16 @@ export function getAccountQuery(accountName: string) {
         }
       }
     }
-    fragment AllAccountFields on ModuleAccount {
+    fragment AllAccountFields on FungibleAccount {
       ...CoreAccountFields
       id
       totalBalance
     }
-    fragment CoreAccountFields on ModuleAccount {
+    fragment CoreAccountFields on FungibleAccount {
       accountName
-      moduleName
+      fungibleName
     }
-    fragment CoreChainAccountFields on ChainModuleAccount {
+    fragment CoreChainAccountFields on ChainFungibleAccount {
       balance
       chainId
     }
@@ -60,7 +60,7 @@ export function getAccountQuery(accountName: string) {
       requestKey
       receiverAccount
     }`,
-    variables: { moduleName: 'coin', accountName: accountName },
+    variables: { fungibleName: 'coin', accountName: accountName },
     operationName: 'getAccount',
     extensions: {},
   };

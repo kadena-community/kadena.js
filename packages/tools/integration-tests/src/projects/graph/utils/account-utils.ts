@@ -8,6 +8,7 @@ import type {
 } from '../testdata/constants/accounts';
 import { sender00 } from '../testdata/constants/accounts';
 import { devnetHost, networkId } from '../testdata/constants/network';
+import { waitForEvent } from '@kadena/client-utils/core';
 
 export async function generateAccount(chain: ChainId): Promise<IAccountWithSecretKey> {
   const keyPair = genKeyPair();
@@ -21,7 +22,8 @@ export async function generateAccount(chain: ChainId): Promise<IAccountWithSecre
 }
 
 export async function createAccount(input: IAccount): Promise<ICommandResult> {
-  return new Promise<ICommandResult>((resolve, reject) => {
+  return waitForEvent(
+    'listen',
     transferCreate(
       {
         sender: {
@@ -45,9 +47,6 @@ export async function createAccount(input: IAccount): Promise<ICommandResult> {
         },
         sign: createSignWithKeypair([sender00]),
       },
-    )
-      .on('listen', resolve)
-      .execute()
-      .catch(reject);
-  });
+    ),
+  );
 }
