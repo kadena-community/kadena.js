@@ -130,7 +130,7 @@ export async function crossChainTransfer({
   );
 
   const continuation = {
-    pactId: status.continuation?.pactId,
+    pactId: status.continuation?.pactId || '',
     proof,
     rollback: false,
     step: 1,
