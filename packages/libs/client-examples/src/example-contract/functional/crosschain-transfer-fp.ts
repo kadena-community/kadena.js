@@ -53,10 +53,10 @@ function startInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
         },
       ),
     ),
-    addSigner(from.publicKey, (withCapability) => [
+    addSigner(from.publicKey, (signFor) => [
       // in typescript this function suggests you only relevant capabilities
-      withCapability('coin.GAS'),
-      withCapability(
+      signFor('coin.GAS'),
+      signFor(
         'coin.TRANSFER_XCHAIN',
         from.account,
         to.account,
@@ -80,8 +80,8 @@ const finishInTheTargetChain = (
     composePactCommand(
       setNetworkId(NETWORK_ID),
       // uncomment this if you want to pay gas yourself
-      // addSigner(gasPayer.publicKey, (withCapability) => [
-      //   withCapability('coin.GAS'),
+      // addSigner(gasPayer.publicKey, (signFor) => [
+      //   signFor('coin.GAS'),
       // ]),
       setMeta({
         chainId: targetChainId,

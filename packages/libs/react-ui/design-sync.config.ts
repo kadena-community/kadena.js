@@ -13,6 +13,7 @@ const breakpoints = {
 const breakpointKeys = Object.keys(breakpoints);
 
 export default defineConfig({
+  // you can switch to different branch by changing the #main to #branch-name
   uri: 'github:kadena-community/design-system/tokens#main',
   out: 'src/styles/tokens',
   defaultMode: 'light',
@@ -20,8 +21,7 @@ export default defineConfig({
   plugins: [
     vanillaExtractPlugin({
       contractName: 'tokens',
-      createGlobalThemes: false,
-      createGlobalContract: false,
+      onlyValues: true,
     }),
   ],
   schemaExtensions: [

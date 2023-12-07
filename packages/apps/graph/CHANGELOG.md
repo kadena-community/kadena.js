@@ -1,5 +1,24 @@
 # @kadena/graph
 
+## 1.0.6
+
+### Patch Changes
+
+- 2dec0d4cd: Improved naming convention of Reconcile object
+- 73bbcbd56: Made edges non-nullable
+- 0f598d10e: Added chain id to transactions filter on block object; changed
+  default value for maximum confirmation depth
+- ad00ec0b2: Added reconcile view for chainweb data
+- 858f52a2e: hotfix for reconcile
+- d1f6f99fc: Refactor objects, queries and subscriptions to use the same
+  function type definition, to use the same argument naming conventions and
+  object casting; also added totalCount resolvers to all prismaConnection
+  fields; added errors to simulation log file
+- bccf4333a: Added multi-sig accounts support in simulation
+- 49e5c55ae: Added tracing and trace analyser
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+
 ## 1.0.5
 
 ### Patch Changes

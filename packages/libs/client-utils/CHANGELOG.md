@@ -1,5 +1,18 @@
 # @kadena/client-utils
 
+## 0.1.0
+
+### Minor Changes
+
+- a4ccd823a: Adding gasEstimate function + export commandCreator functions
+
+### Patch Changes
+
+- f37318e9d: Small fixes regarding yaml to kadena client transactions
+- 86e4927d3: Added YAML template to Pact Command converter
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+
 ## 0.0.5
 
 ### Patch Changes

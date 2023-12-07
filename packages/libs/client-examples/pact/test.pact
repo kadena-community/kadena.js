@@ -1,0 +1,1 @@
+(marmalade-v2.ledger.create-token (read-string 'token-id) 0 (read-string 'uri) [n_4ef6ed68d7d219dc2c8372725d83c2b1eae62882.imr-auction-policy marmalade-v2.non-fungible-policy-v1 marmalade-v2.guard-policy-v1] (read-keyset 'creation_guard)))

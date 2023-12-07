@@ -31,9 +31,9 @@ const getTransferCommand = ({
     execution(
       Pact.modules.coin.transfer(sender, receiver, { decimal: amount }),
     ),
-    addSigner(signerPublicKey, (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability('coin.TRANSFER', sender, receiver, {
+    addSigner(signerPublicKey, (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', sender, receiver, {
         decimal: amount,
       }),
     ]),

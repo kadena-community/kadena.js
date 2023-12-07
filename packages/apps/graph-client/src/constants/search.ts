@@ -14,7 +14,7 @@ export const searchTypeLabels: Partial<Record<SearchType, string>> = {
   'gas-estimation': 'Command',
 };
 export const secondSearchTypeLabels: Partial<Record<SearchType, string>> = {
-  account: 'Module',
+  account: 'Fungible',
   'gas-estimation': 'Hash',
 };
 export const thirdSeachTypeLabels: Partial<Record<SearchType, string>> = {

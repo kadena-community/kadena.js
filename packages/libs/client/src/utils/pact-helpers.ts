@@ -63,6 +63,8 @@ const literalRegex: RegExp = /"Literal\(([^\)]*)\)"/gi;
  * @internal
  */
 export function unpackLiterals(value: string): string {
+  // literal object is already unpacked if they are direct argument of a function.
+  // but if they are inside a json object, they are not unpacked since the toJSON method packs them as Literal(string)
   return value.replace(literalRegex, (__, literal) => literal);
 }
 
@@ -71,3 +73,14 @@ export function unpackLiterals(value: string): string {
  * @public
  */
 export type PactReference = Literal | (() => string);
+
+/**
+ * @public
+ */
+export type PactReturnType<T extends (...args: any[]) => any> = T extends (
+  ...args: any[]
+) => infer R
+  ? R extends { returnType: infer RR }
+    ? RR
+    : any
+  : any;
