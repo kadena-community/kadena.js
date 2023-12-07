@@ -3,12 +3,18 @@ import type {
   ISelectProps,
   ITextareaProps,
 } from '@components/Form';
-import type { FC, FunctionComponentElement } from 'react';
-import React from 'react';
+import type {
+  DOMAttributes,
+  FC,
+  FunctionComponentElement,
+  LabelHTMLAttributes,
+} from 'react';
+import React, { useRef } from 'react';
 import type { vars } from 'src/styles';
 import type { FormFieldStatus } from '../Form.css';
 
 import { Stack } from '@components/Layout';
+import { useTextField } from 'react-aria';
 import type { IFormFieldHeaderProps } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHeader } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHelper } from './FormFieldHelper/FormFieldHelper';
@@ -25,6 +31,9 @@ export interface IFormFieldWrapperProps
   helperText?: string;
   label?: string;
   leadingTextWidth?: keyof typeof vars.sizes;
+  labelProps?:
+    | DOMAttributes<HTMLLabelElement>
+    | LabelHTMLAttributes<HTMLLabelElement>;
 }
 
 export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
@@ -37,6 +46,7 @@ export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
   tag,
   info,
   helperText,
+  labelProps,
 }) => {
   const statusVal = disabled === true ? 'disabled' : status;
 
@@ -47,6 +57,7 @@ export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
           <FormFieldHeader
             htmlFor={htmlFor}
             label={label}
+            labelProps={labelProps}
             tag={tag}
             info={info}
           />

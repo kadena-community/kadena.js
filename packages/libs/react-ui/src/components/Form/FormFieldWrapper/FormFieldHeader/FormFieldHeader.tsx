@@ -1,5 +1,5 @@
 import { SystemIcon } from '@components/Icon';
-import type { FC } from 'react';
+import type { DOMAttributes, FC, LabelHTMLAttributes } from 'react';
 import React from 'react';
 import {
   headerClass,
@@ -13,18 +13,22 @@ export interface IFormFieldHeaderProps {
   htmlFor: string;
   tag?: string;
   info?: string;
+  labelProps?:
+    | DOMAttributes<HTMLLabelElement>
+    | LabelHTMLAttributes<HTMLLabelElement>;
 }
 
 export const FormFieldHeader: FC<IFormFieldHeaderProps> = ({
   label,
   htmlFor,
+  labelProps,
   tag,
   info,
 }) => {
   return (
     <div className={headerClass}>
       {Boolean(label) && (
-        <label className={labelClass} htmlFor={htmlFor}>
+        <label className={labelClass} htmlFor={htmlFor} {...labelProps}>
           {label}
         </label>
       )}
