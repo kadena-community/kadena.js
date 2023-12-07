@@ -47,7 +47,7 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
           </GridItem>
           <GridItem>
             <div className={helperStyle}>
-              <Text variant="smallest">
+              <Text>
                 {helperHref ? (
                   <Link className={helperTextIconStyle} href={helperHref}>
                     <span>{helper}</span>

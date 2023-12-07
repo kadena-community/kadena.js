@@ -204,5 +204,6 @@
   "Select which mode to use for the code editor": "Select which mode to use for the code editor",
   "Keyboard handler": "Keyboard handler",
   "Mode": "Mode",
-  "Theme": "Theme"
+  "Theme": "Theme",
+  "Notification title success": "Successful transaction"
 }

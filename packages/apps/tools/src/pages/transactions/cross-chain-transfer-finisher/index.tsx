@@ -10,6 +10,7 @@ import RequestKeyField, {
 } from '@/components/Global/RequestKeyField';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import client from '@/constants/client';
+import type { DefinedNetwork } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import { menuData } from '@/constants/side-menu-items';
@@ -33,6 +34,7 @@ import {
   IconButton,
   Stack,
   TextField,
+  Textarea,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
@@ -48,7 +50,6 @@ import {
   formContentStyle,
   notificationContainerStyle,
   sidebarLinksStyle,
-  textAreaStyle,
   textareaContainerStyle,
 } from './styles.css';
 
@@ -91,6 +92,7 @@ const CrossChainTransferFinisher: FC = () => {
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
+  const [processingTx, setProcessingTx] = useState(false);
 
   const handleOpenHelpCenter = (): void => {
     // @ts-ignore
@@ -139,7 +141,15 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
 
+    setProcessingTx(true);
+    window.scrollTo(0, 0);
+
     const networkId = chainNetwork[network].network;
+
+    const { pollCreateSpv, listen } = client(
+      networkId as DefinedNetwork,
+      pollResults.tx.sender.chain,
+    );
 
     const requestObject = {
       requestKey: data.requestKey,
@@ -147,14 +157,12 @@ const CrossChainTransferFinisher: FC = () => {
       chainId: pollResults.tx.sender.chain,
     };
 
-    const proof = await client.pollCreateSpv(
+    const proof = await pollCreateSpv(
       requestObject,
       pollResults.tx.receiver.chain,
     );
-
-    const status = await client.listen(requestObject);
-
-    const pactId = status.continuation!.pactId;
+    const status = await listen(requestObject);
+    const pactId = status.continuation?.pactId ?? '';
 
     const requestKeyOrError = await finishXChainTransfer(
       {
@@ -170,10 +178,17 @@ const CrossChainTransferFinisher: FC = () => {
 
     if (typeof requestKeyOrError !== 'string') {
       setTxError((requestKeyOrError as { error: string }).error);
+      setProcessingTx(false);
+      return;
     }
 
+    const receiveClient = client(
+      networkId as DefinedNetwork,
+      pollResults.tx.receiver.chain,
+    );
+
     try {
-      const data = await client.listen({
+      const data = await receiveClient.listen({
         requestKey: requestKeyOrError as string,
         networkId,
         chainId: pollResults.tx.receiver.chain,
@@ -186,10 +201,12 @@ const CrossChainTransferFinisher: FC = () => {
         requestKey: data.reqKey,
         status: data.result.status,
       });
+      setProcessingTx(false);
     } catch (tx) {
       debug(tx);
 
       setFinalResults({ ...tx });
+      setProcessingTx(false);
     }
   };
 
@@ -239,6 +256,7 @@ const CrossChainTransferFinisher: FC = () => {
   const watchGasPayer = watch('gasPayer');
 
   const isGasStation = watchGasPayer === 'kadena-xchain-gas';
+  const disabledSubmit = !isGasStation || processingTx;
   const isAdvancedOptions = devOption !== 'BASIC';
   const showInputError =
     pollResults.error === undefined ? undefined : 'negative';
@@ -255,7 +273,7 @@ const CrossChainTransferFinisher: FC = () => {
     txError.toString() === '' ? (
       <FormStatusNotification
         status="successful"
-        title={t('Notification title')}
+        title={t('Notification title success')}
       >
         {t('XChain transfer has been successfully finalized!')}
       </FormStatusNotification>
@@ -264,6 +282,13 @@ const CrossChainTransferFinisher: FC = () => {
         {txError.toString()}
       </FormStatusNotification>
     );
+
+  const renderWaitingNotification = (
+    <FormStatusNotification
+      status="processing"
+      title={t('form-status-title-processing')}
+    />
+  );
 
   useEffect(() => {
     resetField('requestKey');
@@ -360,6 +385,12 @@ const CrossChainTransferFinisher: FC = () => {
         <div className={notificationContainerStyle}>{renderNotification}</div>
       ) : null}
 
+      {processingTx ? (
+        <div className={notificationContainerStyle}>
+          {renderWaitingNotification}
+        </div>
+      ) : null}
+
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
           <Stack direction="column">
@@ -409,21 +440,7 @@ const CrossChainTransferFinisher: FC = () => {
               </Grid>
 
               <Box marginBottom="$4" />
-              <Grid columns={2}>
-                <GridItem>
-                  <TextField
-                    disabled={true}
-                    label={t('Gas Price')}
-                    info={t('approx. USD 000.1 ¢')}
-                    leadingTextWidth="$16"
-                    inputProps={{
-                      ...register('gasPrice', { shouldUnregister: true }),
-                      id: 'gas-price-input',
-                      placeholder: t('Enter Gas Price'),
-                      leadingText: t('KDA'),
-                    }}
-                  />
-                </GridItem>
+              <Grid columns={1}>
                 <GridItem>
                   <TextField
                     disabled={!isAdvancedOptions}
@@ -451,9 +468,12 @@ const CrossChainTransferFinisher: FC = () => {
                 <Grid columns={1}>
                   <GridItem>
                     <div className={textareaContainerStyle}>
-                      <textarea rows={4} className={textAreaStyle}>
-                        {formattedSigData}
-                      </textarea>
+                      <Textarea
+                        readOnly
+                        fontFamily="$mono"
+                        id="sig-text-area"
+                        value={formattedSigData}
+                      />
                       <IconButton
                         color="primary"
                         icon={'ContentCopy'}
@@ -470,7 +490,7 @@ const CrossChainTransferFinisher: FC = () => {
           </Stack>
         </section>
         <section className={formButtonStyle}>
-          <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">
+          <Button type="submit" disabled={disabledSubmit} icon="TrailingIcon">
             {t('Finish Transaction')}
           </Button>
         </section>

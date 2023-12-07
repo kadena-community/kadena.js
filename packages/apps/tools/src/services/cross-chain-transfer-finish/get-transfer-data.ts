@@ -1,3 +1,4 @@
+import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import {
@@ -5,13 +6,11 @@ import {
   validateRequestKey,
 } from '@/services/utils/utils';
 import type { INetworkData } from '@/utils/network';
-import { getApiHost } from '@/utils/network';
 import type {
   ChainwebChainId,
   ICommandResult,
 } from '@kadena/chainweb-node-client';
-import { createClient } from '@kadena/client';
-import type { IPactEvent, IPactExec, PactValue } from '@kadena/types';
+import type { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
 import Debug from 'debug';
 import type { Translate } from 'next-translate';
 
@@ -75,13 +74,10 @@ export async function getTransferData({
         return;
       }
 
-      const host = getApiHost({
-        api: networkDto.API,
-        networkId: networkDto.networkId,
-        chainId: convertIntToChainId(chainId),
-      });
-
-      const { getStatus } = createClient(host);
+      const { getStatus } = client(
+        networkDto.networkId,
+        convertIntToChainId(chainId),
+      );
       return getStatus({
         requestKey,
         chainId: convertIntToChainId(chainId),
@@ -111,12 +107,21 @@ export async function getTransferData({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       found?.continuation?.continuation.args as Array<any>;
 
+    const yieldData = found?.continuation?.yield as
+      | {
+          data: [string, PactValue][];
+          provenance: { targetChainId: ChainId; moduleHash: string } | null;
+          source: string;
+        }
+      | null
+      | undefined;
+
     const { step, stepHasRollback, pactId } = found?.continuation as IPactExec;
 
     return {
       tx: {
         sender: {
-          chain: '1', // todo: fix typing. // found.chainId.toString() as ChainwebChainId,
+          chain: yieldData?.source as ChainwebChainId,
           account: senderAccount,
         },
         receiver: {

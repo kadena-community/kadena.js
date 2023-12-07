@@ -5,6 +5,7 @@ export const formContentStyle = style([
   sprinkles({
     position: 'relative',
     height: '100%',
+    marginY: '$sm',
   }),
   {
     width: '680px',

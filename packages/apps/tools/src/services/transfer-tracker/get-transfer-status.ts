@@ -175,8 +175,9 @@ export async function getXChainTransferInfo({
       chainId: senderChain,
     };
 
-    const proof = await client.pollCreateSpv(requestObject, receiverChain);
-    const status = await client.listen(requestObject);
+    const { pollCreateSpv, listen, dirtyRead } = client(networkId, senderChain);
+    const proof = await pollCreateSpv(requestObject, receiverChain);
+    const status = await listen(requestObject);
     const pactId = status.continuation!.pactId;
 
     const continuationTransaction = Pact.builder
@@ -190,9 +191,7 @@ export async function getXChainTransferInfo({
       .setMeta({ chainId: receiverChain })
       .createTransaction();
 
-    const response = await client.dirtyRead(
-      continuationTransaction as ICommand,
-    );
+    const response = await dirtyRead(continuationTransaction as ICommand);
 
     if ('error' in response?.result) {
       const error = response.result as unknown as {
@@ -268,7 +267,9 @@ export async function checkForProof({
   try {
     let count = 0;
 
-    return client.pollCreateSpv(
+    const { pollCreateSpv } = client(network, senderChain);
+
+    return pollCreateSpv(
       {
         requestKey,
         networkId: chainNetwork[network].network,
