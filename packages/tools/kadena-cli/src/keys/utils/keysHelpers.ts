@@ -1,9 +1,9 @@
 import {
-  HDKEY_ENC_EXT,
-  HDKEY_ENC_LEGACY_EXT,
   KEY_DIR,
   PLAINKEY_EXT,
   PLAINKEY_LEGACY_EXT,
+  SEED_EXT,
+  SEED_LEGACY_EXT,
 } from '../../constants/config.js';
 
 import { getFilesWithExtension } from './storage.js';
@@ -25,29 +25,29 @@ export function getPlainLegacyKeys(): string[] {
 }
 
 /**
- * Fetches all encrypted HD key files from the specified directory.
- * @returns {string[]} Array of encrypted HD key filenames without their extensions.
+ * Fetches all encryptedSeed files from the specified directory.
+ * @returns {string[]} Array of encryptedSeed filenames without their extensions.
  */
-export function getHDKeys(): string[] {
-  return getFilesWithExtension(KEY_DIR, HDKEY_ENC_EXT);
+export function getSeeds(): string[] {
+  return getFilesWithExtension(KEY_DIR, SEED_EXT);
 }
 
 /**
- * Fetches all encrypted HD key files from the specified directory.
- * @returns {string[]} Array of encrypted HD key filenames without their extensions.
+ * Fetches all encryptedSeed files from the specified directory.
+ * @returns {string[]} Array of encryptedSeed filenames without their extensions.
  */
-export function getHDLegacyKeys(): string[] {
-  return getFilesWithExtension(KEY_DIR, HDKEY_ENC_LEGACY_EXT);
+export function getLegacySeeds(): string[] {
+  return getFilesWithExtension(KEY_DIR, SEED_LEGACY_EXT);
 }
 
 /**
- * Fetches all HD key filenames (both standard and legacy) from the specified directory.
- * @returns {string[]} Array of HD key filenames without their extensions.
+ * Fetches allSeed filenames (both standard and legacy) from the specified directory.
+ * @returns {string[]} Array ofSeed filenames without their extensions.
  */
-export function getAllHDKeys(): string[] {
-  const hdKeys = getHDKeys();
-  const hdLegacyKeys = getHDLegacyKeys();
-  return [...hdKeys, ...hdLegacyKeys];
+export function getAllSeeds(): string[] {
+  const seeds = getSeeds();
+  const legacySeeds = getLegacySeeds();
+  return [...seeds, ...legacySeeds];
 }
 
 /**

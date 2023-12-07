@@ -1,4 +1,4 @@
-import { kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
+import { kadenaEncrypt, kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
 import type { Command } from 'commander';
 import { randomBytes } from 'crypto';
@@ -9,12 +9,13 @@ import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
 } from '../utils/keysDisplay.js';
-import { toHexStr } from '../utils/keysHelpers.js';
+import { fromHexStr, toHexStr } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
 interface IGeneratePlainKeysCommandConfig {
-  keyAlias?: string;
+  keyAlias: string;
   keyAmount?: number;
+  keyPassword: string;
   legacy?: boolean;
 }
 
@@ -25,20 +26,24 @@ async function generateKeyPairs(
   amount: number,
 ): Promise<storageService.IKeyPair[]> {
   if (config.legacy === true) {
-    return generateLegacyKeyPairs(amount);
+    return generateLegacyKeyPairs(config, amount);
   } else {
     const randomKeyPairs = await kadenaKeyPairsFromRandom(amount);
-    return randomKeyPairs.map(
-      (keyPair) =>
-        ({
-          publicKey: keyPair.publicKey,
-          privateKey: keyPair.secretKey,
-        }) as storageService.IKeyPair,
-    );
+    return randomKeyPairs.map((keyPair) => {
+      const encryptedPrivateKey = kadenaEncrypt(
+        config.keyPassword,
+        fromHexStr(keyPair.secretKey),
+      );
+      return {
+        publicKey: keyPair.publicKey,
+        privateKey: encryptedPrivateKey,
+      } as storageService.IKeyPair;
+    });
   }
 }
 
 async function generateLegacyKeyPairs(
+  config: IGeneratePlainKeysCommandConfig,
   amount: number,
 ): Promise<storageService.IKeyPair[]> {
   const keyPairs: storageService.IKeyPair[] = [];
@@ -46,14 +51,17 @@ async function generateLegacyKeyPairs(
   const rootKey = randomBytes(128);
 
   for (let i = 0; i < amount; i++) {
-    const [encryptedSecret, publicKey] = await kadenaGenKeypair(
+    const [publicKey, privateKey] = await kadenaGenKeypair(
       password,
       rootKey,
       i,
     );
+
+    const encyptedPrivateKey = kadenaEncrypt(config.keyPassword, privateKey);
+
     keyPairs.push({
-      publicKey: toHexStr(encryptedSecret),
-      privateKey: toHexStr(publicKey),
+      publicKey: toHexStr(publicKey),
+      privateKey: encyptedPrivateKey,
     });
   }
 
@@ -64,10 +72,11 @@ export const createGeneratePlainKeysCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'plain',
-  'generate (plain) public-private key-pair',
+  'from-random',
+  'create a plain key from random non-persisted seed',
   [
     globalOptions.keyAlias(),
+    globalOptions.keyPassword(),
     globalOptions.keyAmount({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],

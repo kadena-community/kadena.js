@@ -4,18 +4,17 @@ import { wordlist } from '@scure/bip39/wordlists/english';
 
 import { program } from 'commander';
 import {
-  getAllHDKeys,
-  getHDKeys,
-  getHDLegacyKeys,
+  getAllSeeds,
+  getLegacySeeds,
   getPlainKeys,
   getPlainLegacyKeys,
+  getSeeds,
 } from '../keys/utils/keysHelpers.js';
 
 import type { KeyContent } from '../keys/utils/storage.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
-import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
-import { capitalizeFirstLetter, isAlphabetic } from '../utils/helpers.js';
+import { isAlphabetic } from '../utils/helpers.js';
 
 export async function keyAlias(): Promise<string> {
   return await input({
@@ -48,23 +47,8 @@ export async function keyMnemonic(): Promise<string> {
 export async function keyAmount(): Promise<string> {
   return await input({
     message: `Enter the amount of keys you want to generate. (alias-{amount} will increment) (default: 1)`,
+    default: '1',
   });
-}
-
-export async function keyAskForKeyType(): Promise<string> {
-  const keyTypes: ICustomNetworkChoice[] = ['hd', 'plain'].map((type) => {
-    return {
-      value: type,
-      name: `${capitalizeFirstLetter(type)} key`,
-    };
-  });
-
-  const keyTypeChoice = await select({
-    message: 'Select a key type to generate:',
-    choices: keyTypes,
-  });
-
-  return keyTypeChoice.toLowerCase();
 }
 
 export async function genFromChoicePrompt(): Promise<string> {
@@ -84,7 +68,7 @@ export async function genFromChoicePrompt(): Promise<string> {
 }
 
 export const keySeed: IPrompt = async (prev, args, isOptional) => {
-  const existingKeys: string[] = getAllHDKeys();
+  const existingKeys: string[] = getAllSeeds();
 
   const choices = existingKeys.map((key) => ({
     value: key,
@@ -92,10 +76,14 @@ export const keySeed: IPrompt = async (prev, args, isOptional) => {
   }));
 
   // Option to enter own key
-  choices.push({ value: 'enterOwnSeed', name: 'Enter my own seed' });
+  choices.push({ value: 'enterOwnSeed', name: 'Enter my seed' });
 
   // Option to create a new key
-  choices.push({ value: 'createSeed', name: 'Generate a new HD key' });
+  choices.push({ value: 'createSeed', name: 'Create a new seed' });
+  choices.push({
+    value: 'createLegacySeed',
+    name: 'Create a new legacy seed',
+  });
 
   const selectedSeed = await select({
     message: 'Select or enter a seed',
@@ -103,7 +91,12 @@ export const keySeed: IPrompt = async (prev, args, isOptional) => {
   });
 
   if (selectedSeed === 'createSeed') {
-    await program.parseAsync(['', '', 'keys', 'generate', 'hd']);
+    await program.parseAsync(['', '', 'keys', 'create-seed']);
+    return keySeed(prev, args, isOptional);
+  }
+
+  if (selectedSeed === 'createLegacySeed') {
+    await program.parseAsync(['', '', 'keys', 'create-seed', '--legacy']);
     return keySeed(prev, args, isOptional);
   }
 
@@ -116,7 +109,7 @@ export const keySeed: IPrompt = async (prev, args, isOptional) => {
   return selectedSeed;
 };
 
-type KeyType = 'plain' | 'plainLegacy' | 'hd' | 'hdLegacy';
+type KeyType = 'plain' | 'plainLegacy' | 'seed' | 'seedLegacy';
 
 export const keySelectPrompt: IPrompt = async (prev, args, isOptional) => {
   const plainKeys = getPlainKeys().map((file) => ({
@@ -127,17 +120,17 @@ export const keySelectPrompt: IPrompt = async (prev, args, isOptional) => {
     file,
     type: 'plainLegacy' as KeyType,
   }));
-  const hdKeys = getHDKeys().map((file) => ({ file, type: 'hd' as KeyType }));
-  const hdLegacyKeys = getHDLegacyKeys().map((file) => ({
+  const seeds = getSeeds().map((file) => ({ file, type: 'seed' as KeyType }));
+  const legacySeeds = getLegacySeeds().map((file) => ({
     file,
-    type: 'hdLegacy' as KeyType,
+    type: 'seedLegacy' as KeyType,
   }));
 
   const allKeyFiles = [
     ...plainKeys,
     ...plainLegacyKeys,
-    ...hdKeys,
-    ...hdLegacyKeys,
+    ...seeds,
+    ...legacySeeds,
   ];
 
   if (allKeyFiles.length === 0) {
@@ -212,7 +205,7 @@ export const keyDeletePrompt: IPrompt = async (
  * Formats a key based on its type.
  *
  * @param {KeyContent} keyContent - The content of the key to format.
- * @param {KeyType} type - The type of the key (plain, plainLegacy, hd, hdLegacy).
+ * @param {KeyType} type - The type of the key (plain, plainLegacy, seed, seedLegacy).
  * @returns {string} The formatted key as a string.
  * @throws {Error} Throws an error if an invalid key type is provided.
  */
@@ -225,10 +218,10 @@ function formatKey(keyContent: KeyContent, type: KeyType): string {
       }
       return formatTruncated(keyContent.publicKey);
 
-    case 'hd':
-    case 'hdLegacy':
+    case 'seed':
+    case 'seedLegacy':
       if (typeof keyContent !== 'string') {
-        throw new Error(`Invalid key type for HD key: ${type}`);
+        throw new Error(`Invalid key type forSeed: ${type}`);
       }
       return formatTruncated(keyContent);
 

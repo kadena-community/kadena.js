@@ -1,5 +1,9 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
-import { kadenaGenKeypairFromSeed } from '@kadena/hd-wallet';
+import {
+  kadenaDecrypt,
+  kadenaEncrypt,
+  kadenaGenKeypairFromSeed,
+} from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
 import { fromHexStr, toHexStr } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
@@ -16,7 +20,9 @@ export interface IKeysConfig {
   legacy?: boolean;
 }
 
-export async function generateFromHd(config: IKeysConfig): Promise<IKeyPair[]> {
+export async function generateFromSeed(
+  config: IKeysConfig,
+): Promise<IKeyPair[]> {
   if (
     !['genPublicKey', 'genPublicPrivateKey'].includes(config.keyGenFromChoice)
   ) {
@@ -47,9 +53,14 @@ export async function handlePublicPrivateKeysFrom(
     let keyGenResult: [Uint8Array | string, Uint8Array | string];
 
     if (config.legacy === true) {
+      const decryptedSeed = kadenaDecrypt(
+        config.keyPassword,
+        config.keySeed as EncryptedString,
+      );
+
       keyGenResult = await kadenaGenKeypair(
         config.keyPassword,
-        fromHexStr(config.keySeed),
+        decryptedSeed,
         index,
       );
     } else {
@@ -64,14 +75,16 @@ export async function handlePublicPrivateKeysFrom(
       typeof keyGenResult[0] === 'string'
         ? keyGenResult[0]
         : toHexStr(keyGenResult[0]);
-    const encryptedPrivateKey =
+    const privateKey =
       typeof keyGenResult[1] === 'string'
-        ? keyGenResult[1]
-        : toHexStr(keyGenResult[1]);
+        ? fromHexStr(keyGenResult[1])
+        : keyGenResult[1];
+
+    const encyptedPrivateKey = kadenaEncrypt(config.keyPassword, privateKey);
 
     const keyPair: IKeyPair = {
       publicKey,
-      ...(showPrivateKey && { privateKey: encryptedPrivateKey }),
+      ...(showPrivateKey && { privateKey: encyptedPrivateKey }),
     };
 
     keys.push(keyPair);

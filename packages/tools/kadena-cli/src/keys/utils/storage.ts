@@ -4,11 +4,11 @@ import yaml from 'js-yaml';
 import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  HDKEY_ENC_EXT,
-  HDKEY_ENC_LEGACY_EXT,
   KEY_DIR,
   PLAINKEY_EXT,
   PLAINKEY_LEGACY_EXT,
+  SEED_EXT,
+  SEED_LEGACY_EXT,
 } from '../../constants/config.js';
 import {
   ensureDirectoryExists,
@@ -17,14 +17,14 @@ import {
 } from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 
-export type THDKeyContent = string;
+export type TSeedContent = string;
 
 export interface IKeyPair {
   publicKey: string;
   privateKey?: string;
 }
 
-export type KeyContent = THDKeyContent | IKeyPair;
+export type KeyContent = TSeedContent | IKeyPair;
 
 export async function savePlainKeyByAlias(
   alias: string,
@@ -112,7 +112,7 @@ export function getAllPublicKeysFromAliasFiles(): string[] {
  * @param {string} alias - The name of the file to store the mnemonic or seed in.
  * @param {boolean} hasPassword - Whether a password was used to generate the seed.
  */
-export function storeHdKeyByAlias(
+export function storeSeedByAlias(
   seed: string,
   alias: string,
   legacy: boolean = false,
@@ -120,7 +120,7 @@ export function storeHdKeyByAlias(
   ensureDirectoryExists(KEY_DIR);
 
   const sanitizedAlias = sanitizeFilename(alias).toLowerCase();
-  const aliasExtension = legacy === true ? HDKEY_ENC_LEGACY_EXT : HDKEY_ENC_EXT;
+  const aliasExtension = legacy === true ? SEED_LEGACY_EXT : SEED_EXT;
   const storagePath = join(KEY_DIR, `${sanitizedAlias}${aliasExtension}`);
 
   writeFile(
@@ -132,7 +132,7 @@ export function storeHdKeyByAlias(
 }
 
 /* @param {string} keyAlias - The alias of the key file to read.
- * @returns {THDKeyContent | IKeyPair | undefined} The parsed content of the key file, or undefined if the file does not exist.
+ * @returns {TSeedContent | IKeyPair | undefined} The parsed content of the key file, or undefined if the file does not exist.
  * @throws {Error} Throws an error if reading the file fails.
  */
 export function readKeyFileContent(keyAlias: string): KeyContent | undefined {
@@ -145,7 +145,7 @@ export function readKeyFileContent(keyAlias: string): KeyContent | undefined {
 
   try {
     const fileContents = readFileSync(filePath, 'utf8');
-    return yaml.load(fileContents) as THDKeyContent | IKeyPair;
+    return yaml.load(fileContents) as TSeedContent | IKeyPair;
   } catch (error) {
     throw new Error(`Error reading file ${keyAlias}: ${error}`);
   }
@@ -154,11 +154,11 @@ export function readKeyFileContent(keyAlias: string): KeyContent | undefined {
 /**
  * Asynchronously wraps the readKeyFileContent function.
  * @param {string} keyAlias - The alias of the key file to read.
- * @returns {Promise<THDKeyContent | IKeyPair | undefined>} A promise that resolves with the parsed content of the key file, or undefined if the file does not exist.
+ * @returns {Promise<TSeedContent | IKeyPair | undefined>} A promise that resolves with the parsed content of the key file, or undefined if the file does not exist.
  */
 export async function readKeyFileContentAsync(
   keyAlias: string,
-): Promise<THDKeyContent | IKeyPair | undefined> {
+): Promise<TSeedContent | IKeyPair | undefined> {
   return new Promise((resolve, reject) => {
     try {
       const result = readKeyFileContent(keyAlias);

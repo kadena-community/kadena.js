@@ -4,11 +4,11 @@ import { createCommand } from '../../utils/createCommand.js';
 
 // TO-DO: Implement this command
 // choices: [
-//   'Encrypt an unencrypted HD key',
-//       '> List of unencrypted HD keys',
-//          '> select and encrypt an unencrypted HD key',
+//   'Encrypt an unencryptedSeed',
+//       '> List of unencryptedSeeds',
+//          '> select and encrypt an unencryptedSeed',
 //   'Re-encrypt a key with a new password',
-//       '> List of encrypted HD keys',
+//       '> List of encryptedSeeds',
 //          '> select and encrypt with given password',
 //   'Delete a key',
 //       '> List of all keys',

@@ -3,7 +3,7 @@ import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import type { IKeysConfig } from '../utils/keySharedKeyGenUtils.js';
-import { generateFromHd } from '../utils/keySharedKeyGenUtils.js';
+import { generateFromSeed } from '../utils/keySharedKeyGenUtils.js';
 import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
@@ -11,14 +11,15 @@ import {
 
 import * as storageService from '../utils/storage.js';
 
+import { kadenaDecrypt } from '@kadena/hd-wallet';
 import ora from 'ora';
 
-export const createGenerateFromHdCommand: (
+export const createGenerateFromSeedCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'from-hd',
-  'Generate key(s) from HD key (encrypted seed)',
+  'from-seed',
+  'create key(s) from encrypted seed',
   [
     globalOptions.keyGenFromChoice(),
     globalOptions.keyAlias(),
@@ -27,15 +28,19 @@ export const createGenerateFromHdCommand: (
     globalOptions.keyAmount({ isOptional: true }),
   ],
   async (config) => {
-    debug('generate-from-hd:action')({ config });
+    debug('generate-from-seed:action')({ config });
 
     const loading = ora('Generating from seed..').start();
+    const isLegacy =
+      kadenaDecrypt(config.keyPassword, config.keySeed).byteLength >= 128;
+
     try {
       const result = {
         ...config,
-        legacy: config.keySeed.length >= 256,
+        legacy: isLegacy,
       };
-      const keys = await generateFromHd(result as IKeysConfig);
+
+      const keys = await generateFromSeed(result as IKeysConfig);
       loading.succeed('Completed');
       displayGeneratedPlainKeys(keys);
 

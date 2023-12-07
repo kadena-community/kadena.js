@@ -1,17 +1,16 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
-import { kadenaMnemonicToSeed } from '@kadena/hd-wallet';
+import { kadenaEncrypt, kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 import { kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair } from '@kadena/hd-wallet/chainweaver';
 import type { Command } from 'commander';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import type { IKeysConfig } from '../utils/keySharedKeyGenUtils.js';
-import { generateFromHd } from '../utils/keySharedKeyGenUtils.js';
+import { generateFromSeed } from '../utils/keySharedKeyGenUtils.js';
 import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
 } from '../utils/keysDisplay.js';
-import { toHexStr } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
 import ora from 'ora';
@@ -21,7 +20,7 @@ export const createGenerateFromMnemonic: (
   version: string,
 ) => void = createCommand(
   'from-mnemonic',
-  'Generate key(s) from Mnemonic phrase',
+  'create key(s) from mnemonic phrase',
   [
     globalOptions.keyGenFromChoice(),
     globalOptions.keyMnemonic(),
@@ -42,7 +41,7 @@ export const createGenerateFromMnemonic: (
           config.keyPassword,
           config.keyMnemonic,
         );
-        keySeed = toHexStr(buffer) as EncryptedString;
+        keySeed = kadenaEncrypt(config.keyPassword, buffer);
       } else {
         keySeed = await kadenaMnemonicToSeed(
           config.keyPassword,
@@ -57,7 +56,8 @@ export const createGenerateFromMnemonic: (
         keySeed: keySeed as EncryptedString,
         keyGenFromChoice,
       };
-      const keys = await generateFromHd(result as IKeysConfig);
+      const keys = await generateFromSeed(result as IKeysConfig);
+
       loading.succeed('Completed');
       displayGeneratedPlainKeys(keys);
 

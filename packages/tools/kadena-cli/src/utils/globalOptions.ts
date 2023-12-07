@@ -13,7 +13,7 @@ import {
 } from '../prompts/index.js';
 
 import chalk from 'chalk';
-import { HDKEY_ENC_EXT, HDKEY_ENC_LEGACY_EXT } from '../constants/config.js';
+import { SEED_EXT, SEED_LEGACY_EXT } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import {
@@ -237,10 +237,7 @@ export const globalOptions = {
       'Enter your seed to generate keys from',
     ),
     transform: (keySeed: string) => {
-      if (
-        keySeed.includes(HDKEY_ENC_EXT) ||
-        keySeed.includes(HDKEY_ENC_LEGACY_EXT)
-      ) {
+      if (keySeed.includes(SEED_EXT) || keySeed.includes(SEED_LEGACY_EXT)) {
         return readKeyFileContent(keySeed);
       }
       return keySeed;
