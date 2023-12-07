@@ -41,7 +41,7 @@ export function transferFundsCrossChain(
   targetChain: ChainId,
 ): Promise<ICommandResult> {
   return waitForEvent(
-    'listen',
+    'listen-continuation',
     transferCrossChain(
       {
         sender: {
@@ -55,13 +55,10 @@ export function transferFundsCrossChain(
             pred: 'keys-all',
           },
         },
-        gasPayer: {
-          account: source.account,
-          publicKeys: [source.publicKey],
-        },
         amount: amount,
         chainId: sourceChain,
         targetChainId: targetChain,
+        targetChainGasPayer: { account: source.account, publicKeys: [source.publicKey], }
       },
       {
         host: devnetHost,
