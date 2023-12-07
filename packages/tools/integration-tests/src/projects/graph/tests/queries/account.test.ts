@@ -33,7 +33,7 @@ describe('Query: getAccount by AccountName', () => {
         },
       ],
       id: base64Encode(
-        `ModuleAccount:ModuleAccount/coin/${testAccount.account}`, // TODO: Validate if this should now become FungibleAccount:FungibleAccount/coin/${testAccount.account}
+        `FungibleAccount:FungibleAccount/coin/${testAccount.account}`,
       ),
       fungibleName: 'coin',
       totalBalance: 100,
