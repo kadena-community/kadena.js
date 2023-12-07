@@ -3,29 +3,26 @@ import { beforeEach, describe, expect, test } from 'vitest';
 import { devnetMiner  } from '../../testdata/constants/accounts';
 import type {IAccountWithSecretKey} from '../../testdata/constants/accounts';
 import { grapHost } from '../../testdata/constants/network';
-import { getTransactionsQuery } from '../../testdata/queries/getTransactions';
+import { getTransactionsQuery, getxChainTransactionsQuery } from '../../testdata/queries/getTransactions';
 import * as accountUtils from '../../utils/account-utils';
-import { transferFunds } from '../../utils/transfer-utils';
+import { transferFunds, transferFundsCrossChain } from '../../utils/transfer-utils';
 import { base64Encode } from '../../utils/cryptography-utils';
 import { coinModuleHash } from '../../testdata/constants/modules';
 import { transferAmount } from '../../testdata/constants/amounts';
 
-let sourceAccount: IAccountWithSecretKey;
-let targetAccount: IAccountWithSecretKey;
-let query: object;
-
 describe('Query: getTransactions', () => {
-  beforeEach(async () => {
-    sourceAccount = await accountUtils.generateAccount();
-    //console.debug(sourceAccount);
-    targetAccount = await accountUtils.generateAccount();
-    query = getTransactionsQuery(sourceAccount.account);
-  });
 
-  test('Should return transactions, if they exist.', async () => {
+  test('Should return transactions.', async () => {
+    const sourceAccount = await accountUtils.generateAccount('0');
+    const targetAccount = await accountUtils.generateAccount('0');
+    const query = getTransactionsQuery(sourceAccount.account);
+
     // Given an account is created and transactions are fetched.
     await accountUtils.createAccount(sourceAccount);
     await accountUtils.createAccount(targetAccount);
+    console.log('REGULAR TRANSFER')
+    console.log(sourceAccount)
+    console.log(targetAccount)
     const initialResponse = await request(grapHost).post('').send(query);
 
     // Then there should be no transactions for the created account.
@@ -96,4 +93,53 @@ describe('Query: getTransactions', () => {
       ],
     });
   });
+
+  test.only('Should return cross chain transactions.', async () => {
+    const sourceAccountOnChain0 = await accountUtils.generateAccount('0');
+    //const sourceChain1 = await accountUtils.generateAccount('1');
+    const targetAccountOnChain1 = await accountUtils.generateAccount('1');
+    const query = getxChainTransactionsQuery(sourceAccountOnChain0.account);
+
+    // Given an account is created and transactions are fetched.
+    await accountUtils.createAccount(sourceAccountOnChain0);
+    //await accountUtils.createAccount(sourceChain1);
+    await accountUtils.createAccount(targetAccountOnChain1);
+    const initialResponse = await request(grapHost).post('').send(query);
+
+    // Then there should be no transactions for the created account.
+    expect(initialResponse.statusCode).toBe(200);
+    expect(initialResponse.body.data.transactions.edges).toHaveLength(0);
+    expect(initialResponse.body.data.transactions.totalCount).toEqual(0);
+
+    // When a transfer is performed from source to target
+    const transfer = await transferFundsCrossChain(sourceAccountOnChain0, targetAccountOnChain1, transferAmount, '0', '1');
+    console.log(transfer)
+
+    // And the transfers are retrieved for the source account
+    const finalResponse = await request(grapHost).post('').send(query);
+
+    // Then the source should have two 1 transaction with 2 transfers, 2 events and signed by the Source Account
+    expect(finalResponse.statusCode).toBe(200);
+    expect(finalResponse.body.data.transactions.edges).toHaveLength(1);
+    expect(finalResponse.body.data.transactions.totalCount).toEqual(1);
+
+    expect(finalResponse.body.data.transactions.edges[0].node).toEqual( {
+      code: `"(coin.transfer-crosschain \\"${sourceAccountOnChain0.account}\\" \\"${targetAccountOnChain1.account}\\" (read-keyset \\"account-guard\\") \\"1\\" ${transferAmount}.0)"`,
+      data: `{"account-guard":{"keys":["${sourceAccountOnChain0.publicKey}"],"pred":"keys-all"}}`,
+      gas: 621,
+      gasLimit: 2500,
+      gasPrice: 1e-8,
+      senderAccount: sourceAccountOnChain0.account,
+      ttl: 28800,
+      chainId: 0,
+      requestKey: transfer.reqKey,
+      eventCount: 4,
+      id: base64Encode(`Transaction:["${transfer.metaData?.blockHash}","${transfer.reqKey}"]`),
+      signers: expect.any(Array),
+      transfers: expect.any(Array),
+      events: expect.any(Array)
+    })
+    console.log(finalResponse.body.data.transactions.edges)
+  });
+
 });
