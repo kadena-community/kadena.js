@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { sprinkles, vars } from '../../styles';
+import {responsiveStyle, sprinkles, vars} from '../../styles';
 
 export const containerClass = style([
   sprinkles({
@@ -9,12 +9,17 @@ export const containerClass = style([
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'nowrap',
+    width: 'max-content',
     height: '$16',
     justifyContent: 'flex-start',
-    overflow: 'hidden',
     position: 'relative',
   }),
   {
+    ...responsiveStyle({
+      sm: {
+        width: '100%',
+      }
+    }),
     alignItems: 'center',
     selectors: {
       '&:hover': {
@@ -24,7 +29,7 @@ export const containerClass = style([
         color: vars.colors.$negativeContrast,
       },
     },
-  },
+  }
 ]);
 
 export const logoClass = style([

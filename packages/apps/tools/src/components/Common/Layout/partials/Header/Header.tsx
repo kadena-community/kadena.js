@@ -11,7 +11,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -29,6 +29,15 @@ const Header: FC<IHeaderProps> = () => {
   const { systemTheme, theme, setTheme } = useTheme();
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
+
+  const [smallScreen, setSmallScreen] = useState(false);
+
+  useEffect(() => {
+    // sidebar menu closed by default on smaller screens
+    if (window.innerWidth < 768) {
+      setSmallScreen(true);
+    }
+  }, []);
 
   const handleMenuItemClick = async (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -69,7 +78,7 @@ const Header: FC<IHeaderProps> = () => {
   };
 
   return (
-    <NavHeader.Root brand="DevTools">
+    <NavHeader.Root brand={smallScreen ? 'Kadena' : 'DevTools'}>
       <NavHeader.Navigation activeHref={pathname}>
         {menuData.map((item, index) => (
           <NavHeader.Link
