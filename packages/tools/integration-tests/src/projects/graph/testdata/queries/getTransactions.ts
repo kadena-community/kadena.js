@@ -14,6 +14,10 @@ export function getTransactionsQuery(accountName: string) {
             gasPrice
             id
             senderAccount
+            continuation
+            pactId
+            proof
+            rollback
             transfers {
               amount
               chainId
@@ -21,6 +25,16 @@ export function getTransactionsQuery(accountName: string) {
               receiverAccount
               requestKey
               senderAccount
+              crossChainTransfer {
+                amount
+                blockHash
+                chainId
+                id
+                moduleName
+                receiverAccount
+                requestKey
+                senderAccount
+              }
             }
             ttl
             chainId
@@ -47,54 +61,3 @@ export function getTransactionsQuery(accountName: string) {
   };
 }
 
-export function getxChainTransactionsQuery(accountName: string) {
-  return {
-    query: `query getxChainTransactionsQuery($accountName: String) {
-      transactions(
-        accountName: $accountName
-      ) {
-        totalCount
-        edges {
-          node {
-            chainId
-            code
-            continuation
-            data
-            gas
-            gasLimit
-            gasPrice
-            id
-            senderAccount
-            transfers {
-              amount
-              chainId
-              id
-              receiverAccount
-              requestKey
-              senderAccount
-            }
-            step
-            ttl
-            requestKey
-            eventCount
-            events {
-              chainId
-              requestKey
-              parameterText
-              id
-            }
-            signers {
-              capabilities
-              id
-              publicKey
-              requestKey
-            }
-          }
-        }
-      }
-    }`,
-    variables: { accountName: accountName },
-    operationName: 'getxChainTransactionsQuery',
-    extensions: {},
-  };
-}

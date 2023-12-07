@@ -2,7 +2,7 @@ import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer, transferCrossChain } from '@kadena/client-utils/coin';
 import { waitForEvent } from '@kadena/client-utils/core';
-import type { ChainId} from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import type { IAccountWithSecretKey } from '../testdata/constants/accounts';
 import { devnetHost, networkId } from '../testdata/constants/network';
 
@@ -37,7 +37,7 @@ export function transferFundsCrossChain(
   source: IAccountWithSecretKey,
   target: IAccountWithSecretKey,
   amount: string,
-  sourecChain: ChainId,
+  sourceChain: ChainId,
   targetChain: ChainId,
 ): Promise<ICommandResult> {
   return waitForEvent(
@@ -55,8 +55,12 @@ export function transferFundsCrossChain(
             pred: 'keys-all',
           },
         },
+        gasPayer: {
+          account: source.account,
+          publicKeys: [source.publicKey],
+        },
         amount: amount,
-        chainId: sourecChain,
+        chainId: sourceChain,
         targetChainId: targetChain,
       },
       {
