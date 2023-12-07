@@ -4,8 +4,6 @@ import { ensureFileExists } from '../../utils/filesystem.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { clearCLI } from '../../utils/helpers.js';
 
-import { createExternalPrompt } from '../../prompts/generic.js';
-import { networkOverwritePrompt } from '../../prompts/network.js';
 import type { INetworkCreateOptions } from '../utils/networkHelpers.js';
 import { writeNetworks } from '../utils/networkHelpers.js';
 
@@ -25,26 +23,20 @@ export const createNetworksCommand: (
     globalOptions.networkId(),
     globalOptions.networkHost(),
     globalOptions.networkExplorerUrl(),
+    globalOptions.networkOverwrite(),
   ],
   async (config) => {
     debug('network-create:action')({ config });
 
     const filePath = path.join(defaultNetworksPath, `${config.network}.yaml`);
-    const externalPrompt = createExternalPrompt({
-      networkOverwritePrompt,
-    });
-    if (ensureFileExists(filePath)) {
-      const overwrite = await externalPrompt.networkOverwritePrompt(
-        config.network,
+
+    if (!ensureFileExists(filePath) && config.networkOverwrite === 'no') {
+      console.log(
+        chalk.yellow(
+          `\nThe existing network configuration "${config.network}" will not be updated.\n`,
+        ),
       );
-      if (overwrite === 'no') {
-        console.log(
-          chalk.yellow(
-            `\nThe existing network configuration "${config.network}" will not be updated.\n`,
-          ),
-        );
-        return;
-      }
+      return;
     }
 
     writeNetworks(config as unknown as INetworkCreateOptions);

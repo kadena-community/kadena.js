@@ -76,12 +76,18 @@ export const createGenerateSeedCommand: (
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
-    debug('generate-seed:action')({ config });
+    clearCLI();
+    try {
+      debug('generate-seed:action')({ config });
 
-    const { words, seed } = await generateKey(config);
+      const { words, seed } = await generateKey(config);
 
-    storageService.storeSeedByAlias(seed, config.keyAlias, config.legacy);
-    clearCLI(true);
-    displayGeneratedSeed(words, config);
+      storageService.storeSeedByAlias(seed, config.keyAlias, config.legacy);
+      clearCLI(true);
+      displayGeneratedSeed(words, config);
+    } catch (error) {
+      console.log(chalk.red(`\n${error.message}\n`));
+      process.exit(1);
+    }
   },
 );

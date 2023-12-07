@@ -2,8 +2,8 @@ import type { Command } from 'commander';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import type { IKeysConfig } from '../utils/keySharedKeyGenUtils.js';
-import { generateFromSeed } from '../utils/keySharedKeyGenUtils.js';
+import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
+import { generateFromSeed } from '../utils/keySharedKeyGen.js';
 import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
@@ -12,7 +12,9 @@ import {
 import * as storageService from '../utils/storage.js';
 
 import { kadenaDecrypt } from '@kadena/hd-wallet';
+import chalk from 'chalk';
 import ora from 'ora';
+import { clearCLI } from '../../utils/helpers.js';
 
 export const createGenerateFromSeedCommand: (
   program: Command,
@@ -28,13 +30,14 @@ export const createGenerateFromSeedCommand: (
     globalOptions.keyAmount({ isOptional: true }),
   ],
   async (config) => {
-    debug('generate-from-seed:action')({ config });
-
-    const loading = ora('Generating from seed..').start();
-    const isLegacy =
-      kadenaDecrypt(config.keyPassword, config.keySeed).byteLength >= 128;
-
+    clearCLI();
     try {
+      debug('generate-from-seed:action')({ config });
+
+      const loading = ora('Generating from seed..').start();
+      const isLegacy =
+        kadenaDecrypt(config.keyPassword, config.keySeed).byteLength >= 128;
+
       const result = {
         ...config,
         legacy: isLegacy,
@@ -51,8 +54,8 @@ export const createGenerateFromSeedCommand: (
       );
       printStoredPlainKeys(config.keyAlias, keys, config.legacy);
     } catch (error) {
-      loading.fail('Operation failed');
-      console.error(`Error: ${error instanceof Error ? error.message : error}`);
+      console.log(chalk.red(`\n${error.message}\n`));
+      process.exit(1);
     }
   },
 );

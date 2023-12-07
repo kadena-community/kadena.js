@@ -52,6 +52,25 @@ export const globalOptions = {
     validation: z.boolean().optional(),
     option: globalFlags.legacy,
   }),
+  // security
+  securityCurrentPassword: createOption({
+    key: 'securityCurrentPassword' as const,
+    prompt: security.securityCurrentPassword,
+    validation: z.string(),
+    option: new Option(
+      '-scp, --security-current-password <securityCurrentPassword>',
+      'Enter your current key password',
+    ),
+  }),
+  securityNewPassword: createOption({
+    key: 'securityNewPassword' as const,
+    prompt: security.securityNewPassword,
+    validation: z.string(),
+    option: new Option(
+      '-snp, --security-new-password <securityNewPassword>',
+      'Enter your new key password',
+    ),
+  }),
   // Devnet
   devnet: createOption({
     key: 'devnet' as const,
@@ -162,6 +181,15 @@ export const globalOptions = {
       'Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
     ),
   }),
+  networkOverwrite: createOption({
+    key: 'networkOverwrite' as const,
+    prompt: networks.networkOverwritePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-o, --network-overwrite <networkOverwrite>',
+      'Overwrite existing network configuration (yes/no)',
+    ),
+  }),
   network: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectPrompt,
@@ -233,12 +261,27 @@ export const globalOptions = {
     prompt: keys.keySeed,
     validation: z.string(),
     option: new Option(
-      '-s, --key-seed <choice>',
+      '-s, --key-seed <keySeed>',
       'Enter your seed to generate keys from',
     ),
     transform: (keySeed: string) => {
       if (keySeed.includes(SEED_EXT) || keySeed.includes(SEED_LEGACY_EXT)) {
         return readKeyFileContent(keySeed);
+      }
+      return keySeed;
+    },
+  }),
+  keySeedSelect: createOption({
+    key: 'keySeed',
+    prompt: keys.keySeedSelect,
+    validation: z.string(),
+    option: new Option('-s, --key-seed <keySeed>', 'Enter your seed to manage'),
+    transform: (keySeed: string) => {
+      if (keySeed.includes(SEED_EXT) || keySeed.includes(SEED_LEGACY_EXT)) {
+        return {
+          seed: readKeyFileContent(keySeed),
+          fileName: keySeed,
+        };
       }
       return keySeed;
     },

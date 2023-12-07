@@ -72,10 +72,16 @@ export const networkOverwritePrompt: IPrompt = async (
   args,
   isOptional,
 ) => {
-  if (args.defaultValue === undefined) {
+  // Determine which value to use for the message
+  const networkName =
+    args.defaultValue ?? previousQuestions.network ?? args.network;
+
+  if (networkName === undefined) {
     throw new Error('Network name is required for the overwrite prompt.');
   }
-  const message = `Are you sure you want to save this configuration for network "${args.defaultValue}"?`;
+
+  const message = `Are you sure you want to save this configuration for network "${networkName}"?`;
+
   return await select({
     message,
     choices: [

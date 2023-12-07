@@ -46,7 +46,7 @@ export function createCommand<
   description: string,
   options: [...T],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  action: (finalConfig: Prettify<Combine<T>>) => any,
+  action: (finalConfig: Prettify<Combine<T>>, args?: any) => any,
 ): (program: Command, version: string) => void {
   return async (program: Command, version: string) => {
     const command = program.command(name).description(description);
@@ -145,7 +145,7 @@ export function createCommand<
           console.log('\n');
         }
 
-        await action(config);
+        await action(config, newArgs);
       } catch (error) {
         console.error(error);
         console.error(chalk.red(`Error executing command ${name}: ${error})`));

@@ -24,42 +24,47 @@ export const createDeleteKeysCommand: (
   'Delete key',
   [globalOptions.key()],
   async (config) => {
-    debug('delete:action')({ config });
+    try {
+      debug('delete:action')({ config });
 
-    const externalPrompt = createExternalPrompt({
-      keyDeletePrompt,
-      confirmDeleteAllKeysPrompt,
-    });
+      const externalPrompt = createExternalPrompt({
+        keyDeletePrompt,
+        confirmDeleteAllKeysPrompt,
+      });
 
-    if (config.key === 'all') {
-      const confirmDelete = await externalPrompt.confirmDeleteAllKeysPrompt();
-      if (confirmDelete === 'no') {
-        console.log(chalk.yellow('\nNo keys were deleted.\n'));
+      if (config.key === 'all') {
+        const confirmDelete = await externalPrompt.confirmDeleteAllKeysPrompt();
+        if (confirmDelete === 'no') {
+          console.log(chalk.yellow('\nNo keys were deleted.\n'));
+          return;
+        }
+
+        await deleteAllFilesInDirAsync(KEY_DIR, ['.seed']);
         return;
       }
 
-      await deleteAllFilesInDirAsync(KEY_DIR, ['.seed']);
-      return;
-    }
+      const shouldDelete = await externalPrompt.keyDeletePrompt(config.key);
 
-    const shouldDelete = await externalPrompt.keyDeletePrompt(config.key);
+      if (shouldDelete === 'no') {
+        console.log(
+          chalk.yellow(`\nThe key file "${config.key}" will not be deleted.\n`),
+        );
+        return;
+      }
 
-    if (shouldDelete === 'no') {
+      const filePath = `${KEY_DIR}/${config.key}`;
+      if (!existsSync(filePath)) {
+        console.error(chalk.red(`File ${config.key} does not exist.`));
+        return;
+      }
+
+      removeFile(filePath);
       console.log(
-        chalk.yellow(`\nThe key file "${config.key}" will not be deleted.\n`),
+        chalk.green(`\nThe key file "${config.key}" has been deleted.\n`),
       );
-      return;
+    } catch (error) {
+      console.log(chalk.red(`\n${error.message}\n`));
+      process.exit(1);
     }
-
-    const filePath = `${KEY_DIR}/${config.key}`;
-    if (!existsSync(filePath)) {
-      console.error(chalk.red(`File ${config.key} does not exist.`));
-      return;
-    }
-
-    removeFile(filePath);
-    console.log(
-      chalk.green(`\nThe key file "${config.key}" has been deleted.\n`),
-    );
   },
 );

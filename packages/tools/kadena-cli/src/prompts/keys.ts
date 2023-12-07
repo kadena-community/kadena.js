@@ -11,6 +11,7 @@ import {
   getSeeds,
 } from '../keys/utils/keysHelpers.js';
 
+import chalk from 'chalk';
 import type { KeyContent } from '../keys/utils/storage.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import type { IPrompt } from '../utils/createOption.js';
@@ -66,6 +67,27 @@ export async function genFromChoicePrompt(): Promise<string> {
     ],
   });
 }
+
+export const keySeedSelect: IPrompt = async (prev, args, isOptional) => {
+  const existingKeys: string[] = getAllSeeds();
+
+  if (existingKeys.length === 0) {
+    console.log(chalk.red('No keys found. Exiting.'));
+    process.exit(0);
+  }
+
+  const choices = existingKeys.map((key) => ({
+    value: key,
+    name: `alias: ${key}`,
+  }));
+
+  const selectedSeed = await select({
+    message: 'Select a seed',
+    choices: choices,
+  });
+
+  return selectedSeed;
+};
 
 export const keySeed: IPrompt = async (prev, args, isOptional) => {
   const existingKeys: string[] = getAllSeeds();
@@ -134,7 +156,7 @@ export const keySelectPrompt: IPrompt = async (prev, args, isOptional) => {
   ];
 
   if (allKeyFiles.length === 0) {
-    console.log('No keys found. Exiting.');
+    console.log(chalk.red('No keys found. Exiting.'));
     process.exit(0);
   }
 
@@ -159,7 +181,7 @@ export const keySelectPrompt: IPrompt = async (prev, args, isOptional) => {
   });
 
   const selectedKey = await select({
-    message: 'Select a key to delete',
+    message: 'Select a key',
     choices: choices,
   });
 

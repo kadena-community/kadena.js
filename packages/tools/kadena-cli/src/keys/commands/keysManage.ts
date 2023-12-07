@@ -1,19 +1,83 @@
+import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
-import { createCommand } from '../../utils/createCommand.js';
 
-// TO-DO: Implement this command
-// choices: [
-//   'Re-encrypt a key with a new password',
-//       '> List of encrypted seeds',
-//          '> select and re-encrypt with given password',
-//   'Exit'
-// ],
+import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
+import { kadenaChangePassword } from '@kadena/hd-wallet/chainweaver';
+
+import { createExternalPrompt } from '../../prompts/generic.js';
+import { actionAskForUpdatePassword } from '../../prompts/genericActionPrompts.js';
+import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
+import { clearCLI } from '../../utils/helpers.js';
+import * as storageService from '../utils/storage.js';
 
 export const createManageKeysCommand: (
   program: Command,
   version: string,
-) => void = createCommand('manage', 'Manage key(s)', [], async (config) => {
-  debug('manage-keys:action')({ config });
-  console.log('manage keys: not implemented yet');
-});
+) => void = createCommand(
+  'update-seed-password',
+  'Update seed password',
+  [
+    globalOptions.keySeedSelect(),
+    globalOptions.securityCurrentPassword(),
+    globalOptions.securityNewPassword(),
+  ],
+  async (config) => {
+    try {
+      clearCLI();
+      debug('manage-keys:action')({ config });
+      const { keySeed: data } = config;
+      const { seed: keySeed, fileName } = data;
+
+      console.log(
+        chalk.yellow(`\nYou are about to update the password for this seed.\n`),
+      );
+
+      const isLegacy =
+        kadenaDecrypt(config.securityCurrentPassword, keySeed).byteLength >=
+        128;
+
+      const externalPrompt = createExternalPrompt({
+        actionAskForUpdatePassword,
+      });
+      const result = await externalPrompt.actionAskForUpdatePassword();
+
+      if (result === 'no') {
+        console.log(chalk.red(`\nSeed password won't be updated. Exiting..\n`));
+        process.exit(0);
+      }
+
+      let encryptedNewSeed;
+      const decryptedCurrentSeed = kadenaDecrypt(
+        config.securityCurrentPassword,
+        keySeed,
+      );
+
+      if (isLegacy === true) {
+        const newSeed = await kadenaChangePassword(
+          decryptedCurrentSeed,
+          config.securityCurrentPassword,
+          config.securityNewPassword,
+        );
+        encryptedNewSeed = kadenaEncrypt(config.securityNewPassword, newSeed);
+
+        console.log('enc: ', encryptedNewSeed);
+      } else {
+        encryptedNewSeed = kadenaEncrypt(
+          config.securityNewPassword,
+          decryptedCurrentSeed,
+        );
+      }
+
+      storageService.storeSeedByAlias(
+        encryptedNewSeed,
+        fileName.replace(/\.enc.*/, ''),
+        isLegacy,
+      );
+    } catch (error) {
+      console.log(chalk.red(`\n${error.message}\n`));
+      process.exit(1);
+    }
+  },
+);

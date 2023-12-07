@@ -1,12 +1,13 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaEncrypt, kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 import { kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair } from '@kadena/hd-wallet/chainweaver';
+import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import type { IKeysConfig } from '../utils/keySharedKeyGenUtils.js';
-import { generateFromSeed } from '../utils/keySharedKeyGenUtils.js';
+import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
+import { generateFromSeed } from '../utils/keySharedKeyGen.js';
 import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
@@ -14,6 +15,7 @@ import {
 import * as storageService from '../utils/storage.js';
 
 import ora from 'ora';
+import { clearCLI } from '../../utils/helpers.js';
 
 export const createGenerateFromMnemonic: (
   program: Command,
@@ -30,42 +32,50 @@ export const createGenerateFromMnemonic: (
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
-    debug('generate-from-mnemonic:action')({ config });
-
-    const loading = ora('Generating..').start();
+    clearCLI();
     try {
-      let keySeed: EncryptedString | undefined;
+      debug('generate-from-mnemonic:action')({ config });
 
-      if (config.legacy === true) {
-        const buffer = await legacykadenaMnemonicToRootKeypair(
-          config.keyPassword,
-          config.keyMnemonic,
-        );
-        keySeed = kadenaEncrypt(config.keyPassword, buffer);
-      } else {
-        keySeed = await kadenaMnemonicToSeed(
-          config.keyPassword,
-          config.keyMnemonic,
+      const loading = ora('Generating..').start();
+      try {
+        let keySeed: EncryptedString | undefined;
+
+        if (config.legacy === true) {
+          const buffer = await legacykadenaMnemonicToRootKeypair(
+            config.keyPassword,
+            config.keyMnemonic,
+          );
+          keySeed = kadenaEncrypt(config.keyPassword, buffer);
+        } else {
+          keySeed = await kadenaMnemonicToSeed(
+            config.keyPassword,
+            config.keyMnemonic,
+          );
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { keyMnemonic, keyGenFromChoice, ...rest } = config;
+        const result = {
+          ...rest,
+          keySeed: keySeed as EncryptedString,
+          keyGenFromChoice,
+        };
+        const keys = await generateFromSeed(result as IKeysConfig);
+
+        loading.succeed('Completed');
+        displayGeneratedPlainKeys(keys);
+
+        await storageService.savePlainKeyByAlias(config.keyAlias, keys, false);
+        printStoredPlainKeys(config.keyAlias, keys, false);
+      } catch (error) {
+        loading.fail('Operation failed');
+        console.error(
+          `Error: ${error instanceof Error ? error.message : error}`,
         );
       }
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { keyMnemonic, keyGenFromChoice, ...rest } = config;
-      const result = {
-        ...rest,
-        keySeed: keySeed as EncryptedString,
-        keyGenFromChoice,
-      };
-      const keys = await generateFromSeed(result as IKeysConfig);
-
-      loading.succeed('Completed');
-      displayGeneratedPlainKeys(keys);
-
-      await storageService.savePlainKeyByAlias(config.keyAlias, keys, false);
-      printStoredPlainKeys(config.keyAlias, keys, false);
     } catch (error) {
-      loading.fail('Operation failed');
-      console.error(`Error: ${error instanceof Error ? error.message : error}`);
+      console.log(chalk.red(`\n${error.message}\n`));
+      process.exit(1);
     }
   },
 );

@@ -1,10 +1,12 @@
 import { kadenaEncrypt, kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
+import chalk from 'chalk';
 import type { Command } from 'commander';
 import { randomBytes } from 'crypto';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { clearCLI } from '../../utils/helpers.js';
 import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
@@ -81,20 +83,26 @@ export const createGeneratePlainKeysCommand: (
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
-    debug('generate-plain-key:action')({ config });
-    const amount =
-      config.keyAmount !== undefined && config.keyAmount !== ''
-        ? config.keyAmount
-        : defaultAmount;
-    const keys = await generateKeyPairs(config, amount);
+    clearCLI();
+    try {
+      debug('generate-plain-key:action')({ config });
+      const amount =
+        config.keyAmount !== undefined && config.keyAmount !== ''
+          ? config.keyAmount
+          : defaultAmount;
+      const keys = await generateKeyPairs(config, amount);
 
-    displayGeneratedPlainKeys(keys);
+      displayGeneratedPlainKeys(keys);
 
-    await storageService.savePlainKeyByAlias(
-      config.keyAlias,
-      keys,
-      config.legacy,
-    );
-    printStoredPlainKeys(config.keyAlias, keys, config.legacy);
+      await storageService.savePlainKeyByAlias(
+        config.keyAlias,
+        keys,
+        config.legacy,
+      );
+      printStoredPlainKeys(config.keyAlias, keys, config.legacy);
+    } catch (error) {
+      console.log(chalk.red(`\n${error.message}\n`));
+      process.exit(1);
+    }
   },
 );

@@ -26,6 +26,10 @@ export async function actionAskForPassword(): Promise<string> {
   return actionHelper('Do you wish to enter a password ?');
 }
 
+export async function actionAskForUpdatePassword(): Promise<string> {
+  return actionHelper('Do you wish to update your password ?');
+}
+
 async function actionHelper(message: string): Promise<string> {
   return await select({
     message: message,
