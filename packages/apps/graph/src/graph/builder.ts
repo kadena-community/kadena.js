@@ -1,4 +1,5 @@
 import SchemaBuilder from '@pothos/core';
+import ComplexityPlugin from '@pothos/plugin-complexity';
 import DataloaderPlugin from '@pothos/plugin-dataloader';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
@@ -16,10 +17,10 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prismaClient';
 import type {
-  ChainModuleAccount,
+  ChainFungibleAccount,
+  FungibleAccount,
   GraphConfiguration,
   Guard,
-  ModuleAccount,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -47,14 +48,18 @@ export interface IContext {
   req: IncomingMessage;
 }
 
+export const PRISMA = {
+  DEFAULT_SIZE: 20,
+};
+
 // eslint-disable-next-line @rushstack/typedef-var
 export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {
     PrismaTypes: PrismaTypes;
     Context: IContext;
     Objects: {
-      ModuleAccount: ModuleAccount;
-      ChainModuleAccount: ChainModuleAccount;
+      FungibleAccount: FungibleAccount;
+      ChainFungibleAccount: ChainFungibleAccount;
       Guard: Guard;
       GraphConfiguration: GraphConfiguration;
     };
@@ -63,7 +68,21 @@ export const builder = new SchemaBuilder<
     };
   }
 >({
-  plugins: [DataloaderPlugin, PrismaPlugin, RelayPlugin, TracingPlugin],
+  plugins: [
+    ComplexityPlugin,
+    DataloaderPlugin,
+    PrismaPlugin,
+    RelayPlugin,
+    TracingPlugin,
+  ],
+
+  ...(dotenv.COMPLEXITY_ENABLED && {
+    complexity: {
+      limit: {
+        complexity: dotenv.COMPLEXITY_LIMIT,
+      },
+    },
+  }),
 
   prisma: {
     client: prismaClient,

@@ -1,8 +1,10 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 export default builder.prismaNode('MinerKey', {
+  description: 'The account of the miner that solved a block.',
   id: { field: 'blockHash_key' },
   fields: (t) => ({
     // database fields
@@ -13,9 +15,11 @@ export default builder.prismaNode('MinerKey', {
     block: t.prismaField({
       type: 'Block',
       nullable: false,
-      async resolve(__query, parent) {
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      async resolve(query, parent) {
         try {
           return await prismaClient.block.findUniqueOrThrow({
+            ...query,
             where: {
               hash: parent.blockHash,
             },

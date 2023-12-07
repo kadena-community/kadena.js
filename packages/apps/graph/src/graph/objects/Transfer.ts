@@ -1,8 +1,10 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Transfer', {
+  description: 'A transfer of funds from a fungible between two accounts.',
   id: { field: 'blockHash_chainId_orderIndex_moduleHash_requestKey' },
   fields: (t) => ({
     // database fields
@@ -11,7 +13,11 @@ export default builder.prismaNode('Transfer', {
     chainId: t.expose('chainId', { type: 'BigInt' }),
     senderAccount: t.exposeString('senderAccount'),
     height: t.expose('height', { type: 'BigInt' }),
-    orderIndex: t.expose('orderIndex', { type: 'BigInt' }),
+    orderIndex: t.expose('orderIndex', {
+      type: 'BigInt',
+      description:
+        'The order of the transfer when it is a `defpact` (multi-step transaction) execution.',
+    }),
     moduleHash: t.exposeString('moduleHash'),
     moduleName: t.exposeString('moduleName'),
     requestKey: t.exposeString('requestKey'),
@@ -19,8 +25,11 @@ export default builder.prismaNode('Transfer', {
 
     // computed fields
     crossChainTransfer: t.prismaField({
+      description:
+        'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
       type: 'Transfer',
       nullable: true,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 4, // In the worst case resolve scenario, it executes 4 queries.
       async resolve(__query, parent) {
         try {
           let counterTransaction;
@@ -82,9 +91,11 @@ export default builder.prismaNode('Transfer', {
     // relations
     blocks: t.prismaField({
       type: ['Block'],
-      async resolve(__query, parent) {
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      async resolve(query, parent) {
         try {
           return await prismaClient.block.findMany({
+            ...query,
             where: {
               hash: parent.blockHash,
             },
@@ -96,11 +107,15 @@ export default builder.prismaNode('Transfer', {
     }),
 
     transaction: t.prismaField({
+      description: 'The transaction that initiated this transfer.',
       type: 'Transaction',
       nullable: true,
-      async resolve(__query, parent) {
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      async resolve(query, parent) {
         try {
           return await prismaClient.transaction.findUnique({
+            ...query,
             where: {
               blockHash_requestKey: {
                 blockHash: parent.blockHash,
