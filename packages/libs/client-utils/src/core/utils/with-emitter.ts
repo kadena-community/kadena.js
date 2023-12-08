@@ -29,8 +29,7 @@ export interface IEmitterWrapper<
   ExecReturnType,
 > {
   on: ToOnType<[...T, ...Extra], this>;
-  execute: () => ExecReturnType;
-  next: ToNextType<[...T, ...Extra]>;
+  execute: (() => ExecReturnType) & ToNextType<[...T, ...Extra]>;
 }
 
 export type WithEmitter<
@@ -49,30 +48,42 @@ export const withEmitter: WithEmitter =
   (fn) =>
   (...args: Any[]): Any => {
     const emitter = new MyEventTarget();
-    const execute = fn(((event: string) => async (data: Any) => {
-      await emitter.dispatchEvent(event, data);
-      return data;
+    const allEvents: Record<string, unknown> = {};
+    const execute: (...args: any) => Promise<any> = fn(((event: string) => {
+      allEvents[event] = null;
+      return async (data: Any) => {
+        allEvents[event] = data;
+        await emitter.dispatchEvent(event, data);
+        return data;
+      };
     }) as Any);
+    let executePromise: Promise<any> | null = null;
+
+    const exec = (): Promise<any> => {
+      if (executePromise !== null) {
+        return executePromise;
+      }
+      executePromise = execute(...args);
+      return executePromise;
+    };
     const lock = asyncLock();
-    let executeCalled = false;
     const wrapper = {
       on: (event: string, cb: (data: Any) => Any) => {
         // CustomEvent is not typed correctly
         emitter.addEventListener(event, cb);
         return wrapper;
       },
-      execute: async () => {
-        if (executeCalled) {
-          throw new Error('execute can only be called once');
+      execute: (event?: string) => {
+        if (event === undefined) {
+          lock.open();
+          return exec();
         }
-        executeCalled = true;
-        return execute(...args);
-      },
-      next: (event: string) => {
+        if (allEvents[event] !== null) {
+          return Promise.resolve(allEvents[event]);
+        }
         const pr = new Promise((resolve, reject) => {
-          if (!executeCalled) {
-            wrapper.execute().catch(reject);
-          }
+          exec().catch(reject);
+
           const resolveAndLock = (data: any) => {
             resolve(data);
             emitter.removeEventListener(event, resolveAndLock);
