@@ -35,7 +35,6 @@ import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
 import AccountNameField from '@/components/Global/AccountNameField';
 import { HoverTag } from '@/components/Global/HoverTag';
-import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
 import { PublicKeyField } from '@/components/Global/PublicKeyField';
 import { menuData } from '@/constants/side-menu-items';
@@ -46,6 +45,7 @@ import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { TPredicate } from '@kadena/types';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -87,7 +87,7 @@ const NewAccountFaucetPage: FC = () => {
   const { selectedNetwork } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
-  const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
+  const [pred, onPredSelectChange] = useState<TPredicate>('keys-all');
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
     message?: string;

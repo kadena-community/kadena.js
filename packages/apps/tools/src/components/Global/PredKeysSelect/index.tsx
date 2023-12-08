@@ -1,20 +1,19 @@
 import type { ISelectProps } from '@kadena/react-ui';
 import { FormFieldWrapper, Select } from '@kadena/react-ui';
+import type { TPredicate } from '@kadena/types';
 
 import type { FC, FormEventHandler } from 'react';
 import React, { useCallback } from 'react';
 
-export type PredKey = 'keys-all' | 'keys-any' | 'keys-2';
-
-export type OnPredSelectChange = (value: PredKey) => void;
+export type OnPredSelectChange = (value: TPredicate) => void;
 
 const ELEMENT_ID = 'select-pred';
 
-const predicates: Array<PredKey> = ['keys-all', 'keys-any', 'keys-2'];
+const predicates: Array<TPredicate> = ['keys-all', 'keys-any', 'keys-2'];
 
 const PredKeysSelect: FC<
   Omit<ISelectProps, 'children' | 'value' | 'onChange' | 'icon' | 'id'> & {
-    value: PredKey;
+    value: TPredicate;
     onChange: OnPredSelectChange;
   }
 > = ({ value, onChange, ...rest }) => {

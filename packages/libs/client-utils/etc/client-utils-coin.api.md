@@ -14,6 +14,7 @@ import { IPactDecimal } from '@kadena/types';
 import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
+import type { TPredicate } from '@kadena/types';
 
 // Warning: (ae-forgotten-export) The symbol "ICreateAccountCommandInput" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "IClientConfig" needs to be exported by the entry point index.d.ts

@@ -7,6 +7,7 @@
 import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
+import type { TPredicate } from '@kadena/types';
 
 // Warning: (ae-forgotten-export) The symbol "IClientConfig" needs to be exported by the entry point index.d.ts
 //
@@ -18,7 +19,7 @@ export interface ICreatePrincipalInput {
     // (undocumented)
     keyset: {
         keys: string[];
-        pred?: 'keys-all' | 'keys-2' | 'keys-any';
+        pred?: TPredicate;
     };
 }
 
