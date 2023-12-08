@@ -27,8 +27,7 @@ export const createManageKeysCommand: (
     try {
       clearCLI();
       debug('manage-keys:action')({ config });
-      const { keySeed: data } = config;
-      const { seed: keySeed, fileName } = data;
+      const { seed: keySeed, fileName } = config.keySeed;
 
       console.log(
         chalk.yellow(`\nYou are about to update the password for this seed.\n`),

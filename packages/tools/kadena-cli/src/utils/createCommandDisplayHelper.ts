@@ -7,8 +7,14 @@ export const displaySeparator = (): void => {
 };
 
 export const formatConfig = (key: string, value?: string | number): string => {
-  const valueDisplay =
-    value === undefined ? chalk.red('Not Set') : chalk.green(value.toString());
+  let valueDisplay;
+  if (value === undefined) {
+    valueDisplay = chalk.red('Not Set');
+  } else if (key.toLowerCase().includes('password')) {
+    valueDisplay = chalk.red('******');
+  } else {
+    valueDisplay = chalk.green(value.toString());
+  }
   const keyValue = `${key} : ${valueDisplay}`;
   const remainingWidth =
     formatLength - keyValue.length > 0 ? formatLength - keyValue.length : 0;

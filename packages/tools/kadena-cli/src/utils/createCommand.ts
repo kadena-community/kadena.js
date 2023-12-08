@@ -78,25 +78,23 @@ export function createCommand<
                 let displayValue: string | null = null;
                 const value = newArgs[arg];
 
-                if (Array.isArray(value)) {
-                  displayValue = value.join(' ');
-                }
-
-                if (typeof value === 'string') {
-                  displayValue = `"${value}"`;
-                }
-
-                if (typeof value === 'number') {
-                  displayValue = value.toString();
-                }
-
-                if (typeof value === 'boolean' && value === false) {
-                  return undefined;
+                if (arg.toLowerCase().includes('password')) {
+                  displayValue = '******';
+                } else {
+                  if (Array.isArray(value)) {
+                    displayValue = value.join(' ');
+                  } else if (typeof value === 'string') {
+                    displayValue = `"${value}"`;
+                  } else if (typeof value === 'number') {
+                    displayValue = value.toString();
+                  } else if (typeof value === 'boolean' && value === false) {
+                    return undefined;
+                  }
                 }
 
                 return `--${arg.replace(
                   /[A-Z]/g,
-                  (match: string) => `-${match.toLowerCase()}`,
+                  (match) => `-${match.toLowerCase()}`,
                 )} ${
                   displayValue !== null && displayValue !== undefined
                     ? displayValue
