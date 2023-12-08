@@ -1,7 +1,6 @@
 import { devnetConfig } from '@devnet/config';
+import type { IAccount, IKeyPair } from '@devnet/helper';
 import {
-  IAccount,
-  IKeyPair,
   inspect,
   listen,
   logger,
@@ -9,11 +8,12 @@ import {
   signAndAssertTransaction,
   submit,
 } from '@devnet/helper';
-import { ChainId, ICommand, Pact } from '@kadena/client';
+import type { ChainId, ICommand } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
-import { IMarmaladeNamespaceConfig } from './config/namespaces';
-import { IMarmaladeLocalConfig } from './config/repository';
+import type { IMarmaladeNamespaceConfig } from './config/namespaces';
+import type { IMarmaladeLocalConfig } from './config/repository';
 
 export async function deployMarmamaladeNamespaces({
   localConfigData,
@@ -25,7 +25,7 @@ export async function deployMarmamaladeNamespaces({
   namespacesConfig: IMarmaladeNamespaceConfig[];
   sender?: IAccount;
   fileExtension: string;
-}) {
+}): Promise<void> {
   const publickeys = sender.keys.map((key) => key.publicKey);
 
   const namespaceFiles = readdirSync(localConfigData.namespacePath).filter(
