@@ -111,6 +111,11 @@ const nextConfig = {
       },
     ],
   },
+  i18n: {
+    locales: ['en', 'nl'],
+    defaultLocale: 'en',
+    // localeDetection: true,
+  },
   async redirects() {
     return redirectsConfig;
   },
