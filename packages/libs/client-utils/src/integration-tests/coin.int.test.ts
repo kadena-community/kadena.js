@@ -152,7 +152,7 @@ describe('createAccount', () => {
         },
         sign: createSignWithKeypair([sender00Account]),
       },
-    );
+    ).execute();
 
     expect(result).toBe('Write succeeded');
   });
