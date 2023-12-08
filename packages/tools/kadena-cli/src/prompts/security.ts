@@ -12,14 +12,14 @@ export async function promptForPassword(message: string): Promise<string> {
   });
 }
 
-export async function securityPassword(): Promise<string> {
+export async function securityPasswordPrompt(): Promise<string> {
   return promptForPassword('Enter a password');
 }
 
-export async function securityCurrentPassword(): Promise<string> {
+export async function securityCurrentPasswordPrompt(): Promise<string> {
   return promptForPassword('Enter your current password');
 }
 
-export async function securityNewPassword(): Promise<string> {
+export async function securityNewPasswordPrompt(): Promise<string> {
   return promptForPassword('Enter your new password');
 }

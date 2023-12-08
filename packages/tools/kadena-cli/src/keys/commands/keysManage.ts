@@ -17,7 +17,7 @@ export const createManageKeysCommand: (
   version: string,
 ) => void = createCommand(
   'update-seed-password',
-  'Update seed password',
+  'update seed password',
   [
     globalOptions.keySeedSelect(),
     globalOptions.securityCurrentPassword(),
@@ -61,14 +61,14 @@ export const createManageKeysCommand: (
           config.securityNewPassword,
         );
         encryptedNewSeed = kadenaEncrypt(config.securityNewPassword, newSeed);
-
-        console.log('enc: ', encryptedNewSeed);
       } else {
         encryptedNewSeed = kadenaEncrypt(
           config.securityNewPassword,
           decryptedCurrentSeed,
         );
       }
+
+      console.log(chalk.green(`\nSeed password successfully updated..\n`));
 
       storageService.storeSeedByAlias(
         encryptedNewSeed,

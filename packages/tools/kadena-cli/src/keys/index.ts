@@ -1,3 +1,4 @@
+import { createDecryptCommand } from './commands/keysDecrypt.js';
 import { createDeleteKeysCommand } from './commands/keysDelete.js';
 import { createGenerateFromMnemonic } from './commands/keysGenFromMnemonic.js';
 import { createGenerateFromSeedCommand } from './commands/keysGenerateFromSeed.js';
@@ -21,5 +22,6 @@ export function keysCommandFactory(program: Command, version: string): void {
   createGenerateFromMnemonic(keysProgram, version);
   createDeleteKeysCommand(keysProgram, version);
   createManageKeysCommand(keysProgram, version);
+  createDecryptCommand(keysProgram, version);
   createListKeysCommand(keysProgram, version);
 }

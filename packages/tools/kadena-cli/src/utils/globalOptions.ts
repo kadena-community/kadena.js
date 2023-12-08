@@ -13,7 +13,11 @@ import {
 } from '../prompts/index.js';
 
 import chalk from 'chalk';
-import { SEED_EXT, SEED_LEGACY_EXT } from '../constants/config.js';
+import {
+  PLAINKEY_EXT,
+  SEED_EXT,
+  SEED_LEGACY_EXT,
+} from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import {
@@ -55,7 +59,7 @@ export const globalOptions = {
   // security
   securityCurrentPassword: createOption({
     key: 'securityCurrentPassword' as const,
-    prompt: security.securityCurrentPassword,
+    prompt: security.securityCurrentPasswordPrompt,
     validation: z.string(),
     option: new Option(
       '-scp, --security-current-password <securityCurrentPassword>',
@@ -64,7 +68,7 @@ export const globalOptions = {
   }),
   securityNewPassword: createOption({
     key: 'securityNewPassword' as const,
-    prompt: security.securityNewPassword,
+    prompt: security.securityNewPasswordPrompt,
     validation: z.string(),
     option: new Option(
       '-snp, --security-new-password <securityNewPassword>',
@@ -240,7 +244,7 @@ export const globalOptions = {
   }),
   keyAmount: createOption({
     key: 'keyAmount' as const,
-    prompt: keys.keyAmount,
+    prompt: keys.keyAmountPrompt,
     validation: z.string(),
     option: new Option(
       '-n, --key-amount <keyAmount>',
@@ -258,7 +262,7 @@ export const globalOptions = {
   }),
   keySeed: createOption({
     key: 'keySeed',
-    prompt: keys.keySeed,
+    prompt: keys.keySeedPrompt,
     validation: z.string(),
     option: new Option(
       '-s, --key-seed <keySeed>',
@@ -273,7 +277,7 @@ export const globalOptions = {
   }),
   keySeedSelect: createOption({
     key: 'keySeed',
-    prompt: keys.keySeedSelect,
+    prompt: keys.keySeedSelectPrompt,
     validation: z.string(),
     option: new Option('-s, --key-seed <keySeed>', 'Enter your seed to manage'),
     transform: (keySeed: string) => {
@@ -288,7 +292,7 @@ export const globalOptions = {
   }),
   keyPassword: createOption({
     key: 'keyPassword' as const,
-    prompt: security.securityPassword,
+    prompt: security.securityPasswordPrompt,
     validation: z.string(),
     option: new Option(
       '-p, --key-password <keyPassword>',
@@ -297,7 +301,7 @@ export const globalOptions = {
   }),
   keyMnemonic: createOption({
     key: 'keyMnemonic' as const,
-    prompt: keys.keyMnemonic,
+    prompt: keys.keyMnemonicPrompt,
     validation: z.string(),
     option: new Option(
       '-m, --key-mnemonic <keyMnemonic>',
@@ -327,6 +331,25 @@ export const globalOptions = {
     prompt: keys.keySelectPrompt,
     validation: z.string(),
     option: new Option('-k, --key <key>', 'Select key from keyfile'),
+  }),
+  keyMessage: createOption({
+    key: 'keyMessage' as const,
+    prompt: keys.selectMessagePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-n, --key-message <keyMessage>',
+      'Enter message to decrypt',
+    ),
+    transform: (keyMessage: string) => {
+      if (keyMessage.includes(SEED_EXT) || keyMessage.includes(PLAINKEY_EXT)) {
+        const keyFileContent = readKeyFileContent(keyMessage);
+        if (typeof keyFileContent === 'string') {
+          return keyFileContent;
+        }
+        return keyFileContent?.privateKey;
+      }
+      return keyMessage;
+    },
   }),
 } as const;
 

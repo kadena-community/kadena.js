@@ -21,7 +21,7 @@ export const createDeleteKeysCommand: (
   version: string,
 ) => void = createCommand(
   'delete',
-  'Delete key',
+  'delete key(s)',
   [globalOptions.key()],
   async (config) => {
     try {

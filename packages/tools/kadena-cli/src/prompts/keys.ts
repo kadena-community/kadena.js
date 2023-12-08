@@ -29,7 +29,7 @@ export async function keyAlias(): Promise<string> {
   });
 }
 
-export async function keyMnemonic(): Promise<string> {
+export async function keyMnemonicPrompt(): Promise<string> {
   return await input({
     message: `Enter your 12-word mnemonic phrase:`,
     validate: function (input) {
@@ -45,7 +45,7 @@ export async function keyMnemonic(): Promise<string> {
   });
 }
 
-export async function keyAmount(): Promise<string> {
+export async function keyAmountPrompt(): Promise<string> {
   return await input({
     message: `Enter the amount of keys you want to generate. (alias-{amount} will increment) (default: 1)`,
     default: '1',
@@ -68,11 +68,11 @@ export async function genFromChoicePrompt(): Promise<string> {
   });
 }
 
-export const keySeedSelect: IPrompt = async (prev, args, isOptional) => {
+export const keySeedSelectPrompt: IPrompt = async (prev, args, isOptional) => {
   const existingKeys: string[] = getAllSeeds();
 
   if (existingKeys.length === 0) {
-    console.log(chalk.red('No keys found. Exiting.'));
+    console.log(chalk.red('No files found. Exiting.'));
     process.exit(0);
   }
 
@@ -89,7 +89,50 @@ export const keySeedSelect: IPrompt = async (prev, args, isOptional) => {
   return selectedSeed;
 };
 
-export const keySeed: IPrompt = async (prev, args, isOptional) => {
+export const selectMessagePrompt: IPrompt = async (prev, args, isOptional) => {
+  const plainKeys = getPlainKeys().map((file) => ({
+    file,
+    type: 'plain' as KeyType,
+  }));
+  const seeds = getSeeds().map((file) => ({ file, type: 'seed' as KeyType }));
+
+  const allKeyFiles = [...plainKeys, ...seeds];
+
+  const choices = allKeyFiles.reduce(
+    (acc, { file, type }) => {
+      const keyContent = readKeyFileContent(file);
+      if (keyContent !== undefined) {
+        acc.push({
+          value: file,
+          name: `${file} - ${formatKey(keyContent, type)}`,
+        });
+      }
+      return acc;
+    },
+    [] as { value: string; name: string }[],
+  );
+
+  // Option to enter own key
+  choices.push({
+    value: 'enterOwnMessage',
+    name: 'Enter message to decrypt (e.g. seed/privatekey)',
+  });
+
+  const selectedKey = await select({
+    message: 'Select a key/seed',
+    choices: choices,
+  });
+
+  if (selectedKey === 'enterOwnMessage') {
+    return await input({
+      message: `Message to decrypt`,
+    });
+  }
+
+  return selectedKey;
+};
+
+export const keySeedPrompt: IPrompt = async (prev, args, isOptional) => {
   const existingKeys: string[] = getAllSeeds();
 
   const choices = existingKeys.map((key) => ({
@@ -114,12 +157,12 @@ export const keySeed: IPrompt = async (prev, args, isOptional) => {
 
   if (selectedSeed === 'createSeed') {
     await program.parseAsync(['', '', 'keys', 'create-seed']);
-    return keySeed(prev, args, isOptional);
+    return keySeedPrompt(prev, args, isOptional);
   }
 
   if (selectedSeed === 'createLegacySeed') {
     await program.parseAsync(['', '', 'keys', 'create-seed', '--legacy']);
-    return keySeed(prev, args, isOptional);
+    return keySeedPrompt(prev, args, isOptional);
   }
 
   if (selectedSeed === 'enterOwnSeed') {
@@ -156,7 +199,7 @@ export const keySelectPrompt: IPrompt = async (prev, args, isOptional) => {
   ];
 
   if (allKeyFiles.length === 0) {
-    console.log(chalk.red('No keys found. Exiting.'));
+    console.log(chalk.red('No files found. Exiting.'));
     process.exit(0);
   }
 

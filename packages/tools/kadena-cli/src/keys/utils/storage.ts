@@ -1,5 +1,6 @@
 import type { WriteFileOptions } from 'fs';
 
+import type { EncryptedString } from '@kadena/hd-wallet';
 import yaml from 'js-yaml';
 import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -21,7 +22,7 @@ export type TSeedContent = string;
 
 export interface IKeyPair {
   publicKey: string;
-  privateKey?: string;
+  privateKey?: EncryptedString;
 }
 
 export type KeyContent = TSeedContent | IKeyPair;

@@ -5,7 +5,7 @@ import {
   kadenaGenKeypairFromSeed,
 } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
-import { fromHexStr, toHexStr } from './keysHelpers.js';
+import { toHexStr } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
 const defaultAmount: number = 1;
@@ -13,7 +13,7 @@ const defaultAmount: number = 1;
 export interface IKeysConfig {
   keyGenFromChoice: string;
   keyAlias: string;
-  keySeed?: string;
+  keySeed?: EncryptedString;
   keyMnemonic?: string;
   keyPassword: string;
   keyAmount?: number;
@@ -38,56 +38,42 @@ export async function generateFromSeed(
 export async function handlePublicPrivateKeysFrom(
   config: IKeysConfig,
   showPrivateKey: boolean = false,
-): Promise<Array<{ publicKey: string; privateKey?: string }>> {
-  if (config.keySeed === undefined) {
+): Promise<IKeyPair[]> {
+  if (!config.keySeed) {
     throw new Error('Seed is required for this option.');
   }
 
-  const keys: Array<IKeyPair> = [];
+  const keys: IKeyPair[] = [];
   const amount =
     config.keyAmount !== undefined && config.keyAmount > 0
       ? config.keyAmount
       : defaultAmount;
 
   for (let index = 0; index < amount; index++) {
-    let keyGenResult: [Uint8Array | string, Uint8Array | string];
+    let publicKey: string;
+    let privateKey: EncryptedString | undefined;
 
     if (config.legacy === true) {
-      const decryptedSeed = kadenaDecrypt(
-        config.keyPassword,
-        config.keySeed as EncryptedString,
-      );
-
-      keyGenResult = await kadenaGenKeypair(
+      const decryptedSeed = kadenaDecrypt(config.keyPassword, config.keySeed);
+      const [publicKeyUint8, privateKeyUint8] = await kadenaGenKeypair(
         config.keyPassword,
         decryptedSeed,
         index,
       );
+      publicKey = toHexStr(publicKeyUint8);
+      privateKey = kadenaEncrypt(config.keyPassword, privateKeyUint8);
     } else {
-      keyGenResult = await kadenaGenKeypairFromSeed(
-        config.keyPassword,
-        config.keySeed as EncryptedString,
-        index,
-      );
+      const [publicKeyString, privateKeyString] =
+        await kadenaGenKeypairFromSeed(
+          config.keyPassword,
+          config.keySeed,
+          index,
+        );
+      publicKey = publicKeyString;
+      privateKey = privateKeyString;
     }
 
-    const publicKey =
-      typeof keyGenResult[0] === 'string'
-        ? keyGenResult[0]
-        : toHexStr(keyGenResult[0]);
-    const privateKey =
-      typeof keyGenResult[1] === 'string'
-        ? fromHexStr(keyGenResult[1])
-        : keyGenResult[1];
-
-    const encyptedPrivateKey = kadenaEncrypt(config.keyPassword, privateKey);
-
-    const keyPair: IKeyPair = {
-      publicKey,
-      ...(showPrivateKey && { privateKey: encyptedPrivateKey }),
-    };
-
-    keys.push(keyPair);
+    keys.push({ publicKey, ...(showPrivateKey && { privateKey }) });
   }
 
   return keys;

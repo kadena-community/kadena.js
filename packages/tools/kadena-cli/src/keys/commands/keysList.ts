@@ -6,7 +6,7 @@ import { displayKeysConfig } from '../utils/keysDisplay.js';
 export const createListKeysCommand: (
   program: Command,
   version: string,
-) => void = createCommand('list', 'List key(s)', [], async (config) => {
+) => void = createCommand('list', 'list key(s)', [], async (config) => {
   debug('list-keys:action')({ config });
   displayKeysConfig();
 });
