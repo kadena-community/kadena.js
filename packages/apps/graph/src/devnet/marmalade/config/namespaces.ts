@@ -12,6 +12,7 @@ export const marmaladeNamespaceConfig: IMarmaladeNamespaceConfig[] = [
     file: 'ns-contract-admin.pact',
     namespaces: ['marmalade-v2', 'marmalade-sale'],
   },
-  { file: 'fungible-util.pact', namespaces: ['util'] },
   { file: 'guards1.pact', namespaces: ['util'] },
 ];
+
+export const marmaladeNamespaceOrder = ['marmalade-v2', 'marmalade-sale'];

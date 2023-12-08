@@ -12,4 +12,6 @@ export const argumentConfig = {
   sender: sender00.account,
   kip_namespace: 'kip',
   signer: sender00.keys[0].publicKey,
+  marmalade_user_key_1: sender00.keys[0].publicKey,
+  marmalade_user_key_2: sender00.keys[0].publicKey,
 };

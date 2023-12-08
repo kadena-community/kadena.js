@@ -4,7 +4,7 @@ import 'module-alias/register';
 
 import type { IAccount } from '../helper';
 import { generateAccount, logger, sender00 } from '../helper';
-import { deployMarmaladeContracts } from '../marmalade/marmalade';
+import { deployMarmaladeContracts } from '../marmalade/deploy';
 import { transfer } from '../transfer';
 import { simulate } from './simulate';
 
@@ -74,9 +74,19 @@ program
   .action(async (args) => {
     try {
       logger.info('Simulation config parameters:', args);
-      // await simulate(args);
+      await simulate(args);
       await deployMarmaladeContracts(sender00);
-      // await hardCodedDeployMarmaladeContract();
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+program
+  .command('marmalade')
+  .description('Deploy marmalade contracts on the devnet')
+  .action(async (args) => {
+    try {
+      await deployMarmaladeContracts(sender00);
     } catch (error) {
       console.error(error);
     }

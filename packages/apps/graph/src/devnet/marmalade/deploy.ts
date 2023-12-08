@@ -1,67 +1,44 @@
-import {
-  ChainId,
-  ICommand,
-  IPactCommand,
-  Pact,
-  createTransaction,
-} from '@kadena/client';
+import type { ChainId, ICommand } from '@kadena/client';
+import { Pact, createTransaction } from '@kadena/client';
 import { createPactCommandFromTemplate } from '@kadena/client-utils/nodejs';
 import {
   existsSync,
-  mkdir,
   mkdirSync,
   readFileSync,
   readdirSync,
-  statSync,
   writeFileSync,
 } from 'fs';
 import yaml from 'js-yaml';
-import { join, normalize, relative, resolve } from 'path';
-import { dotenv } from '../../utils/dotenv';
-import {
-  downloadGitFiles,
-  getGitAbsolutePath,
-  getGitData,
-} from '../../utils/downlaod-git-files';
+import { join, relative } from 'path';
+
+import { downloadGitFiles } from '../../utils/downlaod-git-files';
 import { clearDir, flattenFolder } from '../../utils/path';
 import { devnetConfig } from '../config';
+import type { IAccount, IKeyPair } from '../helper';
 import {
-  IAccount,
-  IKeyPair,
-  dirtyRead,
+  inspect,
   listen,
   logger,
   sender00,
   signAndAssertTransaction,
   submit,
 } from '../helper';
-import { marmaladeConfig } from './config/arguments';
-import { IMarmaladeNamespaceConfig } from './config/namespaces';
+import { argumentConfig } from './config/arguments';
+import type { IMarmaladeNamespaceConfig } from './config/namespaces';
 import {
+  marmaladeNamespaceConfig,
+  marmaladeNamespaceOrder,
+} from './config/namespaces';
+import type {
   IMarmaladeLocalConfig,
   IMarmaladeRemoteConfig,
   IMarmaladeRepository,
+} from './config/repository';
+import {
   marmaladeLocalConfig,
   marmaladeRemoteConfig,
   marmaladeRepository,
 } from './config/repository';
-
-// const MARMALADE_NAMESPACE_DEPLOYMENTS = [
-//   {
-//     namespace: 'marmalade-v2',
-//     files: MARMALADE_NAMESPACE_FILES,
-//   },
-//   {
-//     namespace: 'marmalade-sale',
-//     files: MARMALADE_NAMESPACE_FILES,
-//   },
-//   {
-//     namespace: 'kip',
-//     files: ['ns-marmalade.pact'],
-//   },
-// ];
-
-const MARMALADE_NAMESPACES = ['marmalade-v2', 'marmalade-sale'];
 
 export async function deployMarmaladeContracts(
   signerAccount: IAccount,
@@ -70,7 +47,7 @@ export async function deployMarmaladeContracts(
   nsDestinationPath: string = marmaladeLocalConfig.namespacePath,
 ) {
   logger.info('Preparing directories...');
-  handleDirectorySetup(
+  await handleDirectorySetup(
     templateDestinationPath,
     codeFileDestinationPath,
     nsDestinationPath,
@@ -101,6 +78,8 @@ export async function deployMarmaladeContracts(
     localPath: nsDestinationPath,
   });
 
+  logger.info('Preparing and adjusting the downloaded files...');
+
   const templateFiles = readdirSync(templateDestinationPath).filter((file) =>
     file.endsWith(marmaladeRemoteConfig.templateExtension),
   );
@@ -108,10 +87,6 @@ export async function deployMarmaladeContracts(
   const codeFiles = readdirSync(codeFileDestinationPath).filter((file) =>
     file.endsWith(marmaladeRemoteConfig.codefileExtension),
   );
-
-  console.log(templateFiles);
-  console.log(codeFiles);
-
   await updateTemplateFilesWithCodeFile(
     templateFiles,
     templateDestinationPath,
@@ -119,61 +94,61 @@ export async function deployMarmaladeContracts(
     codeFileDestinationPath,
   );
 
-  logger.info('Deploying Marmalade Namespaces');
+  logger.info('Deploying Marmalade Namespaces...');
 
-  await deployNamespaceFiles();
+  await deployMarmamaladeNamespaces({
+    localConfigData: marmaladeLocalConfig,
+    namespacesConfig: marmaladeNamespaceConfig,
+    sender: signerAccount,
+    fileExtension: marmaladeRemoteConfig.codefileExtension,
+  });
 
-  return;
+  /* sort the templates alphabetically so that the contracts are deployed in the correct order
+  also taking into account the order provided in the configuration */
 
-  console.log('Deploying Marmalade Namespaces');
+  templateFiles.sort((a, b) => {
+    const indexA = marmaladeNamespaceOrder.findIndex((order) =>
+      a.includes(order),
+    );
+    const indexB = marmaladeNamespaceOrder.findIndex((order) =>
+      b.includes(order),
+    );
 
-  const nsFiles = readdirSync(nsDestinationPath).filter((file) =>
-    file.endsWith(CODE_FILE_EXTENSION),
-  );
+    if (indexA === -1 && indexB === -1) {
+      // Neither a nor b are in marmaladeNamespaceOrder, sort alphabetically
+      return a.localeCompare(b);
+    } else if (indexA === -1) {
+      // Only b is in marmaladeNamespaceOrder, b comes first
+      return 1;
+    } else if (indexB === -1) {
+      // Only a is in marmaladeNamespaceOrder, a comes first
+      return -1;
+    } else {
+      // Both a and b are in marmaladeNamespaceOrder, sort based on their positions
+      return indexA - indexB;
+    }
+  });
 
-  console.log(nsFiles);
-
-  const nsFile1 = nsFiles[0];
-  const nsFilePath1 = join(nsDestinationPath, nsFile1);
-
-  const nsFile2 = nsFiles[1];
-  const nsFilePath2 = join(nsDestinationPath, nsFile2);
-
-  const nsFile3 = nsFiles[2];
-  const nsFilePath3 = join(nsDestinationPath, nsFile3);
-
-  console.log('Deploying Marmalade Contracts');
-
-  await deployNamespaceFiles(nsFilePath1, nsFilePath2, nsFilePath3);
-
-  // sort the templates alphabetically so that the contracts are deployed in the correct order
-  templateFiles.sort((a, b) => a.localeCompare(b));
-
-  console.log(templateFiles);
+  logger.info('Deploying Marmalade Contracts...');
 
   for (const templateFile of templateFiles) {
-    const templateFilePath = join(templateDestinationPath, templateFile);
+    logger.info(`Deploying ${templateFile}...`);
 
-    console.log(templateFilePath);
+    /* Assuming that the template file name is the same as the namespace
+    and that the filename contains the namespace*/
+    argumentConfig.marmalade_namespace = templateFile.split('.')[0];
+
     const pactCommand = await createPactCommandFromTemplate(
       templateFile,
-      marmaladeConfig,
+      argumentConfig,
       templateDestinationPath,
     );
 
     const transaction = createTransaction(pactCommand);
-
-    console.log(transaction);
-
     const signedTx = signAndAssertTransaction(signerAccount.keys)(transaction);
-
-    const dirtyReadResult = await dirtyRead(transaction);
-    console.log(dirtyReadResult);
-
     const commandResult = await submit(signedTx);
     const result = await listen(commandResult);
-
-    console.log(result);
+    inspect('Result')(result);
   }
 }
 
@@ -353,8 +328,6 @@ export async function createPactCommandFromFile(
 ): Promise<ICommand> {
   const fileContent = readFileSync(filepath, 'utf8');
 
-  const publicKeys = sender00.keys.map((key) => key.publicKey);
-
   let transactionBuilder = Pact.builder
     .execution(fileContent)
     .setMeta(meta)
@@ -438,26 +411,34 @@ export async function deployMarmamaladeNamespaces({
     (file) => file.endsWith(fileExtension),
   );
 
-  await Promise.all(
-    namespacesConfig.map((config) => {
-      const namespaceFilename = namespaceFiles.find((file) =>
-        file.includes(config.file),
-      );
-      if (!namespaceFilename) {
-        throw new Error(`Namespace file ${config.file} not found`);
-      }
+  for (const config of namespacesConfig) {
+    const namespaceFilename = namespaceFiles.find((file) =>
+      file.includes(config.file),
+    );
+    if (!namespaceFilename) {
+      throw new Error(`Namespace file ${config.file} not found`);
+    }
 
-      const namespaceFile = join(
-        localConfigData.namespacePath,
-        namespaceFilename,
-      );
+    const namespaceFile = join(
+      localConfigData.namespacePath,
+      namespaceFilename,
+    );
 
-      config.namespaces.forEach(async (namespace) => {
+    await Promise.all(
+      config.namespaces.map(async (namespace) => {
         let keysets;
         if (config.file === 'ns-contract-admin.pact') {
           keysets = [
             {
               name: `${namespace}.marmalade-contract-admin`,
+              keys: publickeys,
+              pred: 'keys-all',
+            },
+          ];
+        } else if (config.file === 'fungible-util.pact') {
+          keysets = [
+            {
+              name: 'util-ns-admin',
               keys: publickeys,
               pred: 'keys-all',
             },
@@ -485,134 +466,14 @@ export async function deployMarmamaladeNamespaces({
           keysets,
         });
 
+        logger.info(
+          `Deploying namespace file ${config.file} for ${namespace}...}`,
+        );
+
         const transactionDescriptor = await submit(transaction);
         const commandResult = await listen(transactionDescriptor);
-        console.log(commandResult);
-      });
-    }),
-  );
-}
-
-export async function deployNamespaceFiles(
-  nsMarmaladeFilepath: string,
-  nsContractAdminFilepath: string,
-  nsUtilsGuards1Filepath: string,
-  sender: IAccount = sender00,
-) {
-  const publickeys = sender.keys.map((key) => key.publicKey);
-
-  const transaction5 = await createPactCommandFromFile(nsUtilsGuards1Filepath, {
-    namespace: {
-      key: 'ns',
-      data: 'util',
-    },
-    keysets: [
-      {
-        name: 'marmalade-admin',
-        keys: publickeys,
-        pred: 'keys-all',
-      },
-      {
-        name: 'marmalade-user',
-        keys: publickeys,
-        pred: 'keys-all',
-      },
-    ],
-  });
-
-  const result5 = await submit(transaction5);
-  const listen5 = await listen(result5);
-  console.log(listen5);
-
-  for (const namespace of MARMALADE_NAMESPACES) {
-    const transaction1 = await createPactCommandFromFile(nsMarmaladeFilepath, {
-      namespace: {
-        key: 'ns',
-        data: namespace,
-      },
-      keysets: [
-        {
-          name: 'marmalade-admin',
-          keys: publickeys,
-          pred: 'keys-all',
-        },
-        {
-          name: 'marmalade-user',
-          keys: publickeys,
-          pred: 'keys-all',
-        },
-      ],
-    });
-
-    const result1 = await submit(transaction1);
-    const listen1 = await listen(result1);
-    console.log(listen1);
-
-    const transaction2 = await createPactCommandFromFile(
-      nsContractAdminFilepath,
-      {
-        namespace: {
-          key: 'ns',
-          data: namespace,
-        },
-        keysets: [
-          {
-            name: `${namespace}.marmalade-contract-admin`,
-            keys: publickeys,
-            pred: 'keys-all',
-          },
-        ],
-      },
+        inspect('Result')(commandResult);
+      }),
     );
-
-    const result2 = await submit(transaction2);
-    const listen2 = await listen(result2);
-    console.log(listen2);
   }
-
-  const transaction3 = await createPactCommandFromFile(nsMarmaladeFilepath, {
-    namespace: {
-      key: 'ns',
-      data: 'kip',
-    },
-    keysets: [
-      {
-        name: 'marmalade-admin',
-        keys: publickeys,
-        pred: 'keys-all',
-      },
-      {
-        name: 'marmalade-user',
-        keys: publickeys,
-        pred: 'keys-all',
-      },
-    ],
-  });
-
-  const result3 = await submit(transaction3);
-  const listen3 = await listen(result3);
-  console.log(listen3);
-
-  const transaction4 = await createPactCommandFromFile(nsMarmaladeFilepath, {
-    namespace: {
-      key: 'ns',
-      data: 'util',
-    },
-    keysets: [
-      {
-        name: 'marmalade-admin',
-        keys: publickeys,
-        pred: 'keys-all',
-      },
-      {
-        name: 'marmalade-user',
-        keys: publickeys,
-        pred: 'keys-all',
-      },
-    ],
-  });
-
-  const result4 = await submit(transaction4);
-  const listen4 = await listen(result4);
-  console.log(listen4);
 }

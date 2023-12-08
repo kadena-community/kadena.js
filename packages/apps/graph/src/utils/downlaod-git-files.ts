@@ -1,3 +1,4 @@
+import { logger } from '@devnet/helper';
 import https from 'https';
 import { join } from 'path';
 import { dotenv } from './dotenv';
@@ -24,7 +25,7 @@ export async function downloadGitFiles({
 }): Promise<void> {
   const folderUrl = buildGitApiUrl(owner, name, path, branch);
 
-  console.log(folderUrl);
+  logger.info(`Downloading file: ${folderUrl}`);
 
   const gitData = await getGitData(folderUrl);
 
@@ -78,7 +79,7 @@ export async function getGitData(
   };
 
   if (dotenv.GITHUB_TOKEN && options.headers) {
-    options.headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+    options.headers.Authorization = `token ${process.env.GITHUB_TOKEN}`;
   }
 
   const data = await new Promise((resolve, reject) => {
@@ -99,7 +100,7 @@ async function donwloadGitFile(
   path: string,
 ): Promise<void> {
   const content = await getGitData(url, true);
-  createDirAndWriteFile(path, filename, content);
+  await createDirAndWriteFile(path, filename, content);
 }
 
 function buildGitApiUrl(
