@@ -286,6 +286,9 @@ export type SPVProof = string;
 // @alpha (undocumented)
 export type Step = number;
 
+// @alpha (undocumented)
+export type TPredicate = 'keys-all' | 'keys-2' | 'keys-any';
+
 // (No @packageDocumentation comment for this package)
 
 ```

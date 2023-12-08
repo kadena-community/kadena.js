@@ -18,6 +18,7 @@ import { IUnsignedCommand } from '@kadena/types';
 import type { LocalRequestBody } from '@kadena/chainweb-node-client';
 import type { LocalResponse } from '@kadena/chainweb-node-client';
 import type { SessionTypes } from '@walletconnect/types';
+import type { TPredicate } from '@kadena/types';
 
 // @public
 export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {

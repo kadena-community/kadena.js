@@ -8,6 +8,7 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
+import type { TPredicate } from '@kadena/types';
 import { crossChainClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
@@ -17,7 +18,7 @@ interface ICrossChainInput {
     account: string;
     keyset: {
       keys: string[];
-      pred: 'keys-all' | 'keys-2' | 'keys-any';
+      pred: TPredicate;
     };
   };
   amount: string;
