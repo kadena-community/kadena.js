@@ -29,7 +29,7 @@ export const HoverTag = ({
       <span data-testid="kda-hover-tag">
         <Tag>
           <div className={containerClass}>
-            <Text variant="code">{tagValue}</Text>
+            <Text as="code">{tagValue}</Text>
             {Icon ? (
               <button
                 className={iconButtonClass}

@@ -2,51 +2,76 @@ import cn from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
 import {
-  boldClass,
-  colorVariant,
-  elementVariant,
-  fontVariant,
-  sizeVariant,
-  transformVariant,
-} from './Text.css';
+  bodyBaseBold,
+  bodyBaseRegular,
+  bodySmallBold,
+  bodySmallRegular,
+  bodySmallestBold,
+  bodySmallestRegular,
+  codeBaseBold,
+  codeBaseRegular,
+  codeSmallBold,
+  codeSmallRegular,
+  codeSmallestBold,
+  codeSmallestRegular,
+} from '../../../styles';
+import { colorVariants, transformVariants } from '../typography.css';
+
+// eslint-disable-next-line @kadena-dev/typedef-var
+export const TEXT_ELEMENTS = ['p', 'span', 'code'] as const;
+export type TextElementType = (typeof TEXT_ELEMENTS)[number];
+
+type TextVariant = 'small' | 'smallest' | 'base';
+function getFontClass(
+  variant: TextVariant,
+  isBold: boolean,
+  type: TextElementType,
+): string {
+  if (type === 'code' && variant === 'smallest') {
+    return isBold ? codeSmallestBold : codeSmallestRegular;
+  }
+  if (type === 'code' && variant === 'small') {
+    return isBold ? codeSmallBold : codeSmallRegular;
+  }
+
+  if (type === 'code' && variant === 'base') {
+    return isBold ? codeBaseBold : codeBaseRegular;
+  }
+
+  if (variant === 'smallest') {
+    return isBold ? bodySmallestBold : bodySmallestRegular;
+  }
+  if (variant === 'small') {
+    return isBold ? bodySmallBold : bodySmallRegular;
+  }
+
+  return isBold ? bodyBaseBold : bodyBaseRegular;
+}
 
 export interface ITextProps {
-  as?: keyof typeof elementVariant;
-  variant?: keyof typeof elementVariant;
-  font?: keyof typeof fontVariant;
+  as?: TextElementType;
+  variant?: TextVariant;
   bold?: boolean;
-  color?: keyof typeof colorVariant;
-  transform?: keyof typeof transformVariant;
-  size?: keyof typeof sizeVariant;
+  color?: keyof typeof colorVariants;
+  transform?: keyof typeof transformVariants;
   children: React.ReactNode;
 }
 
 export const Text: FC<ITextProps> = ({
   as = 'span',
-  variant = as,
-  font = variant === 'code' ? 'mono' : 'main',
+  variant = 'base',
   bold = false,
-  size = 'lg',
   color = 'default',
   transform = 'none',
   children,
 }) => {
   const classList = cn(
-    elementVariant[variant],
-    fontVariant[font],
-    sizeVariant[size],
-    colorVariant[color],
-    transformVariant[transform],
-    { [boldClass]: bold },
+    getFontClass(variant, bold, as),
+    colorVariants[color],
+    transformVariants[transform],
   );
 
-  switch (as) {
-    case 'p':
-      return <p className={classList}>{children}</p>;
-    case 'code':
-      return <code className={classList}>{children}</code>;
-    case 'span':
-    default:
-      return <span className={classList}>{children}</span>;
-  }
+  // making sure that the variant is one of the allowed ones in case typescript is ignored or not used
+  const Element = TEXT_ELEMENTS.includes(as) ? as : 'span';
+  return <Element className={classList}>{children}</Element>;
 };

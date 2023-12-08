@@ -27,12 +27,12 @@ async function doSafeTransfer(
       // the actual transfer
       Pact.modules.coin.transfer(from.account, to.account, pactDecimal),
     )
-    .addSigner(from.publicKey, (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability('coin.TRANSFER', from.account, to.account, pactDecimal),
+    .addSigner(from.publicKey, (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', from.account, to.account, pactDecimal),
     ])
-    .addSigner(to.publicKey, (withCapability) => [
-      withCapability('coin.TRANSFER', to.account, from.account, aLowAmount),
+    .addSigner(to.publicKey, (signFor) => [
+      signFor('coin.TRANSFER', to.account, from.account, aLowAmount),
     ])
     .setNetworkId(NETWORK_ID)
     .setMeta({ chainId: '1', senderAccount: from.account })

@@ -243,8 +243,21 @@ const createPage = async (page, filename, item, hasMulitplePages, idx) => {
   );
 };
 
+const removeFrontmatter = (doc) => {
+  // Find the first occurrence of '---' to locate the end of frontmatter
+  const frontmatterEnd = doc.indexOf('---', doc.indexOf('---') + 1);
+
+  if (frontmatterEnd !== -1) {
+    // Extract the frontmatter and remove it from the content
+    //const frontmatter = markdownContent.slice(0, frontmatterEnd + 3);
+    return doc.slice(frontmatterEnd + 3).trim();
+  }
+
+  return doc;
+};
+
 export const importDocs = async (filename, item) => {
-  const doc = fs.readFileSync(`${filename}`, 'utf-8');
+  const doc = removeFrontmatter(fs.readFileSync(`${filename}`, 'utf-8'));
 
   const md = remark.parse(doc);
 

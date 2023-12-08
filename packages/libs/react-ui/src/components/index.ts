@@ -69,7 +69,7 @@ export type {
   IThProps,
   ITrProps,
 } from './Table';
-export type { ITabContentProps, ITabProps, ITabsContainerProps } from './Tabs';
+export type { ITabItemProps, ITabsProps } from './Tabs';
 export type { ITagProps } from './Tag';
 export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
@@ -77,7 +77,6 @@ export type { ITreeProps } from './Tree';
 export type {
   IGradientTextProps,
   IHeadingProps,
-  ILabelProps,
   ITextProps,
 } from './Typography';
 
@@ -124,9 +123,9 @@ export { Pagination } from './Pagination';
 export { ProfileSummary } from './ProfileSummary';
 export { ProgressBar } from './ProgressBar';
 export { Table } from './Table';
-export { Tabs } from './Tabs';
+export { TabItem, Tabs } from './Tabs';
 export { Tag } from './Tag';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
-export { GradientText, Heading, Label, Text } from './Typography';
+export { GradientText, Heading, Text } from './Typography';

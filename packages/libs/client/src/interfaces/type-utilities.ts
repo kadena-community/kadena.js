@@ -1,4 +1,5 @@
 import type { ICap } from '@kadena/types';
+import type { IPactModules } from '../pact';
 
 /**
  * @internal
@@ -39,3 +40,43 @@ export type ExtractCapabilityType<TCommand> = TCommand extends {
       : IGeneralCapability
     : IGeneralCapability
   : IGeneralCapability;
+
+export type Prettify<T extends Record<string, unknown>> = {
+  [K in keyof T]: T[K];
+} & {};
+
+export type WithRequired<T, K extends keyof T> = Prettify<
+  T & { [P in K]-?: T[P] }
+>;
+
+export type AllPartial<T> = {
+  [P in keyof T]?: T[P] extends {} ? AllPartial<T[P]> : T[P];
+} & {};
+type FnRest = '' | ` ${string}`;
+
+type GetFuncReturnType<M, F> = M extends keyof IPactModules
+  ? F extends keyof IPactModules[M]
+    ? IPactModules[M][F] extends (...args: any[]) => infer R
+      ? R
+      : never
+    : never
+  : never;
+
+type RootModule<T> = T extends `(${infer moduleType}.${infer func}${FnRest})`
+  ? func extends `${string} ` | `${string} ${string}`
+    ? never
+    : GetFuncReturnType<moduleType, func>
+  : never;
+
+type ModuleWithNamespace<T> =
+  T extends `(${infer namespaceType}.${infer moduleType}.${infer func}${FnRest})`
+    ? func extends `${string} ` | `${string} ${string}`
+      ? never
+      : GetFuncReturnType<`${namespaceType}.${moduleType}`, func>
+    : never;
+
+export type ExtractPactModule<T> =
+  | RootModule<T>
+  | ModuleWithNamespace<T> extends never
+  ? string
+  : RootModule<T> | ModuleWithNamespace<T>;

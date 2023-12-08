@@ -1,13 +1,17 @@
 import { prismaClient } from '@db/prismaClient';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullishOrEmpty';
-import { builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {
+  description: 'A confirmed transaction.',
   id: { field: 'blockHash_requestKey' },
   fields: (t) => ({
     // database fields
     badResult: t.string({
+      description:
+        'The JSON stringified error message if the transaction failed.',
       nullable: true,
       resolve({ badResult }) {
         return nullishOrEmpty(badResult)
@@ -18,11 +22,15 @@ export default builder.prismaNode('Transaction', {
     chainId: t.expose('chainId', { type: 'BigInt' }),
     // code: t.exposeString('code', { nullable: true }),
     code: t.string({
+      description:
+        'The Pact expressions executed in this transaction when it is an `exec` transaction. For a continuation, this field is `cont`.',
       resolve({ code }) {
         return code === null ? JSON.stringify('cont') : JSON.stringify(code);
       },
     }),
     continuation: t.string({
+      description:
+        'The JSON stringified continuation in the case that it is a continuation.',
       nullable: true,
       resolve({ continuation }) {
         return nullishOrEmpty(continuation)
@@ -32,6 +40,8 @@ export default builder.prismaNode('Transaction', {
     }),
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     data: t.string({
+      description:
+        'The environment data made available to the transaction. Formatted as raw JSON.',
       nullable: true,
       resolve({ data }) {
         return nullishOrEmpty(data) ? undefined : JSON.stringify(data);
@@ -41,6 +51,8 @@ export default builder.prismaNode('Transaction', {
     gasLimit: t.expose('gasLimit', { type: 'BigInt' }),
     gasPrice: t.expose('gasPrice', { type: 'Float' }),
     goodResult: t.string({
+      description:
+        'The transaction result when it was successful. Formatted as raw JSON.',
       nullable: true,
       resolve({ goodResult }) {
         return nullishOrEmpty(goodResult)
@@ -48,8 +60,15 @@ export default builder.prismaNode('Transaction', {
           : JSON.stringify(goodResult);
       },
     }),
-    height: t.expose('height', { type: 'BigInt' }),
-    logs: t.exposeString('logs', { nullable: true }),
+    height: t.expose('height', {
+      type: 'BigInt',
+      description: 'The height of the block this transaction belongs to.',
+    }),
+    logs: t.exposeString('logs', {
+      nullable: true,
+      description:
+        'Identifier to retrieve the logs for the execution of the transaction.',
+    }),
     metadata: t.string({
       nullable: true,
       resolve({ metadata }) {
@@ -58,12 +77,30 @@ export default builder.prismaNode('Transaction', {
     }),
     nonce: t.exposeString('nonce', { nullable: true }),
     eventCount: t.expose('eventCount', { type: 'BigInt', nullable: true }),
-    pactId: t.exposeString('pactId', { nullable: true }),
-    proof: t.exposeString('proof', { nullable: true }),
+    pactId: t.exposeString('pactId', {
+      nullable: true,
+      description:
+        'In the case of a cross-chain transaction; A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.',
+    }),
+    proof: t.exposeString('proof', {
+      nullable: true,
+      description:
+        'In the case of a cross-chain transaction; the proof provided to continue the cross-chain transaction.',
+    }),
     requestKey: t.exposeString('requestKey'),
-    rollback: t.expose('rollback', { type: 'Boolean', nullable: true }),
+    rollback: t.expose('rollback', {
+      type: 'Boolean',
+      nullable: true,
+      description:
+        'In the case of a cross-chain transaction; Whether or not this transaction can be rolled back.',
+    }),
     senderAccount: t.exposeString('senderAccount', { nullable: true }),
-    step: t.expose('step', { type: 'BigInt', nullable: true }),
+    step: t.expose('step', {
+      type: 'BigInt',
+      nullable: true,
+      description:
+        'The step-number when this is an execution of a `defpact`, aka multi-step transaction.',
+    }),
     ttl: t.expose('ttl', { type: 'BigInt' }),
     transactionId: t.expose('transactionId', {
       type: 'BigInt',
@@ -74,9 +111,11 @@ export default builder.prismaNode('Transaction', {
     block: t.prismaField({
       type: 'Block',
       nullable: true,
-      async resolve(__query, parent) {
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      async resolve(query, parent) {
         try {
           return await prismaClient.block.findUnique({
+            ...query,
             where: {
               hash: parent.blockHash,
             },
@@ -90,13 +129,17 @@ export default builder.prismaNode('Transaction', {
     events: t.prismaField({
       type: ['Event'],
       nullable: true,
-      async resolve(__query, parent) {
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      async resolve(query, parent) {
         try {
           return await prismaClient.event.findMany({
+            ...query,
             where: {
               requestKey: parent.requestKey,
               blockHash: parent.blockHash,
             },
+            take: PRISMA.DEFAULT_SIZE,
           });
         } catch (error) {
           throw normalizeError(error);
@@ -107,13 +150,17 @@ export default builder.prismaNode('Transaction', {
     transfers: t.prismaField({
       type: ['Transfer'],
       nullable: true,
-      async resolve(__query, parent) {
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      async resolve(query, parent) {
         try {
           return await prismaClient.transfer.findMany({
+            ...query,
             where: {
               requestKey: parent.requestKey,
               blockHash: parent.blockHash,
             },
+            take: PRISMA.DEFAULT_SIZE,
           });
         } catch (error) {
           throw normalizeError(error);
@@ -124,12 +171,16 @@ export default builder.prismaNode('Transaction', {
     signers: t.prismaField({
       type: ['Signer'],
       nullable: true,
-      async resolve(__query, parent) {
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      async resolve(query, parent) {
         try {
           return await prismaClient.signer.findMany({
+            ...query,
             where: {
               requestKey: parent.requestKey,
             },
+            take: PRISMA.DEFAULT_SIZE,
           });
         } catch (error) {
           throw normalizeError(error);

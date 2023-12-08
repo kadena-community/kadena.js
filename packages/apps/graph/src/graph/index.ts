@@ -15,16 +15,16 @@ import './Subscription/newBlocks';
 import './Subscription/transaction';
 import { builder } from './builder';
 import './objects/Block';
-import './objects/ChainModuleAccount';
 import './objects/Event';
 import './objects/GraphConfiguration';
 import './objects/Guard';
 import './objects/MinerKey';
-import './objects/ModuleAccount';
 import './objects/Signer';
 import './objects/TotalCount';
 import './objects/Transaction';
 import './objects/Transfer';
+import './objects/chain-fungible-account';
+import './objects/fungible-account';
 builder.queryType({});
 // no mutation fields defined yet, hence commented
 // builder.mutationType({});

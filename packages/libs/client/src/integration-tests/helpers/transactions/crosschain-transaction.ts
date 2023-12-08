@@ -111,7 +111,7 @@ export async function executeCrossChainTransfer(
       .then(([status, proof]) =>
         finishInTheTargetChain(
           {
-            pactId: status.continuation?.pactId,
+            pactId: status.continuation!.pactId,
             proof,
             rollback: false,
             step: 1,

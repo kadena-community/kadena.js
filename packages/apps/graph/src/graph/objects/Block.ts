@@ -1,9 +1,18 @@
 import { prismaClient } from '@db/prismaClient';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
+import type { Guard } from '../types/graphql-types';
+import { ChainFungibleAccountName } from '../types/graphql-types';
+import ChainFungibleAccount from './chain-fungible-account';
 
 export default builder.prismaNode('Block', {
+  description:
+    'A unit of information that stores a set of verified transactions.',
   id: { field: 'hash' },
   name: 'Block',
   fields: (t) => ({
@@ -11,16 +20,46 @@ export default builder.prismaNode('Block', {
     hash: t.exposeID('hash'),
     chainId: t.expose('chainId', { type: 'BigInt' }),
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
-    epoch: t.expose('epoch', { type: 'DateTime' }),
+    epoch: t.expose('epoch', {
+      type: 'DateTime',
+      description:
+        'The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.',
+    }),
     height: t.expose('height', { type: 'BigInt' }),
     payloadHash: t.exposeString('payloadHash'),
-    powHash: t.exposeString('powHash'),
+    powHash: t.exposeString('powHash', {
+      description: 'The proof of work hash.',
+    }),
     predicate: t.exposeString('predicate'),
+    minerAccount: t.field({
+      type: ChainFungibleAccount,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS,
+      resolve: async (parent) => ({
+        __typename: ChainFungibleAccountName,
+        chainId: parent.chainId.toString(),
+        accountName: parent.minerAccount,
+        fungibleName: 'coin',
+        guard: {
+          keys: (
+            await prismaClient.minerKey.findMany({
+              where: {
+                blockHash: parent.hash,
+              },
+            })
+          )?.map((x) => x.key),
+          predicate: parent.predicate as Guard['predicate'],
+        },
+        balance: 0,
+        transactions: [],
+        transfers: [],
+      }),
+    }),
 
     // computed fields
     parent: t.prismaField({
       type: 'Block',
       nullable: true,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       async resolve(__query, parent) {
         try {
           return await prismaClient.block.findUnique({
@@ -46,12 +85,17 @@ export default builder.prismaNode('Block', {
       type: 'Transaction',
       cursor: 'blockHash_requestKey',
       edgesNullable: false,
+      complexity: (args) => ({
+        field: getDefaultConnectionComplexity({
+          first: args.first,
+          last: args.last,
+        }),
+      }),
       async totalCount(parent) {
         try {
           return await prismaClient.transaction.count({
             where: {
               blockHash: parent.hash,
-              chainId: parent.chainId,
             },
           });
         } catch (error) {
@@ -75,23 +119,11 @@ export default builder.prismaNode('Block', {
       },
     }),
 
-    minerKeys: t.prismaField({
-      type: ['MinerKey'],
-      nullable: true,
-      async resolve(__query, parent) {
-        try {
-          return await prismaClient.minerKey.findMany({
-            where: {
-              blockHash: parent.hash,
-            },
-          });
-        } catch (error) {
-          throw normalizeError(error);
-        }
-      },
-    }),
-
     confirmationDepth: t.int({
+      description: 'The number of blocks that proceed this block.',
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS *
+        dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
       async resolve(parent) {
         try {
           return await getConfirmationDepth(parent.hash);

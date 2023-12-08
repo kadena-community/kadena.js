@@ -1,5 +1,5 @@
-import type { INavigation } from '@/Layout';
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
+import type { INavigation } from '@kadena/docs-tools';
 import { Divider, Grid, GridItem, Stack } from '@kadena/react-ui';
 import classnames from 'classnames';
 import Link from 'next/link';
