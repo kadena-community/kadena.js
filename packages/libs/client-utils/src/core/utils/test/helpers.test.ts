@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
+  asyncLock,
   checkSuccess,
   extractResult,
   inspect,
@@ -185,5 +186,25 @@ describe('extractResult', () => {
         },
       } as unknown as ICommandResult),
     ).toBe(undefined);
+  });
+});
+
+describe('asyncLock', () => {
+  it('returns an object with a promise that resolves when the open is called', async () => {
+    const lock = asyncLock();
+    const wait = lock.waitTillOpen();
+    lock.open();
+    await wait;
+    expect(true).toBe(true);
+  });
+
+  it('returns an object with a promise that resolves when the open is called', async () => {
+    const lock = asyncLock();
+    const wait = lock.waitTillOpen();
+    const result = await Promise.race([
+      new Promise((resolve) => setTimeout(() => resolve('timeout'), 100)),
+      wait.then(() => 'should not resolve'),
+    ]);
+    expect(result).toBe('timeout');
   });
 });

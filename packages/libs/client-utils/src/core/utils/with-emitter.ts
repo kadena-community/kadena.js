@@ -1,56 +1,36 @@
+import { MyEventTarget } from './MyEventTarget';
 import type { IEmit } from './helpers';
-import type { Any, AnyFunc, First, IfAny, Tail } from './types';
+import { asyncLock } from './helpers';
+import type { Any, UnionToIntersection } from './types';
 
-// the default EventTarget does not throw errors when dispatching events
-class MyEventTarget {
-  private _listeners: Record<string, ((data: Any) => void)[]> = {};
+type ToNextType<T extends Array<{ event: string; data: Any }>> =
+  UnionToIntersection<
+    {
+      [K in keyof T]: T[K] extends { event: infer Tag }
+        ? (event: Tag) => Promise<T[K]['data']>
+        : never;
+    }[number]
+  >;
 
-  public addEventListener(event: string, cb: (event: Any) => void) {
-    if (this._listeners[event] === undefined) {
-      this._listeners[event] = [];
-    }
-    this._listeners[event].push(cb);
-  }
-
-  public dispatchEvent(event: string, data: Any) {
-    if (this._listeners[event] === undefined) {
-      return;
-    }
-    this._listeners[event].forEach((cb) => cb(data));
-  }
-}
-
-type GeneralEvent<T> = (event: string, cb: (data: unknown) => Any) => T;
-
-type EventListenerType<
-  Events extends Array<{ event: string; data: Any }>,
-  WrapperType = Any,
-  Acc extends AnyFunc = Any,
-> = Events extends []
-  ? Acc & GeneralEvent<WrapperType>
-  : First<Events> extends { event: infer Tag; data: infer R }
-  ? EventListenerType<
-      Tail<Events> extends Any[] ? Tail<Events> : [],
-      WrapperType,
-      IfAny<
-        Acc,
-        (event: Tag, cb: (data: R) => Any) => WrapperType,
-        Acc & ((event: Tag, cb: (data: R) => Any) => WrapperType)
-      >
-    >
-  : EventListenerType<
-      Tail<Events> extends Any[] ? Tail<Events> : [],
-      WrapperType,
-      Acc
-    >;
+type ToOnType<
+  T extends Array<{ event: string; data: Any }>,
+  WrapperType,
+> = UnionToIntersection<
+  {
+    [K in keyof T]: T[K] extends { event: infer Tag; data: infer R }
+      ? (event: Tag, cb: (data: R) => Any) => WrapperType
+      : never;
+  }[number]
+>;
 
 export interface IEmitterWrapper<
   T extends Array<{ event: string; data: Any }>,
   Extra extends Array<{ event: string; data: Any }>,
   ExecReturnType,
 > {
-  on: EventListenerType<[...Extra, ...T], this>;
+  on: ToOnType<[...T, ...Extra], this>;
   execute: () => ExecReturnType;
+  next: ToNextType<[...T, ...Extra]>;
 }
 
 export type WithEmitter<
@@ -69,17 +49,42 @@ export const withEmitter: WithEmitter =
   (fn) =>
   (...args: Any[]): Any => {
     const emitter = new MyEventTarget();
-    const execute = fn(((event: string) => (data: Any) => {
-      emitter.dispatchEvent(event, data);
+    const execute = fn(((event: string) => async (data: Any) => {
+      await emitter.dispatchEvent(event, data);
       return data;
     }) as Any);
+    const lock = asyncLock();
+    let executeCalled = false;
     const wrapper = {
       on: (event: string, cb: (data: Any) => Any) => {
         // CustomEvent is not typed correctly
         emitter.addEventListener(event, cb);
         return wrapper;
       },
-      execute: () => execute(...args),
+      execute: async () => {
+        if (executeCalled) {
+          throw new Error('execute can only be called once');
+        }
+        executeCalled = true;
+        return execute(...args);
+      },
+      next: (event: string) => {
+        const pr = new Promise((resolve, reject) => {
+          if (!executeCalled) {
+            wrapper.execute().catch(reject);
+          }
+          const resolveAndLock = (data: any) => {
+            resolve(data);
+            emitter.removeEventListener(event, resolveAndLock);
+            lock.close();
+            return lock.waitTillOpen();
+          };
+          emitter.addEventListener(event, resolveAndLock);
+        });
+
+        lock.open();
+        return pr;
+      },
     };
     return wrapper;
   };
