@@ -12,7 +12,7 @@ import { globalOptions } from '../../utils/globalOptions.js';
 export const createAccountCommand: (program: Command, version: string) => void =
   createCommand(
     'create',
-    'Create account',
+    'Create account for a fungible (e.g. coin)',
     [
       globalOptions.fungible(),
       globalOptions.network(),

@@ -13,8 +13,8 @@ export const accountNamePrompt: IPrompt = async () =>
 
 export const amountPrompt: IPrompt = async () =>
   await input({
-    validate(value) {
-      return !isNaN(parseFloat(value));
+    validate(value: string) {
+      return !isNaN(parseFloat(value.replace(',', '.')));
     },
     message: 'Enter an amount.',
   });
