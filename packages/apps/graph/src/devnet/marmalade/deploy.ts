@@ -352,10 +352,10 @@ export async function updateTemplateFilesWithCodeFile(
         join(codeFileDirectory, codeFileName),
       );
 
-      const yamlString = readFileSync(
-        join(templateDirectory, templateFile),
-        'utf8',
-      ).replace(yamlContent.codeFile, newCodeFilePath);
+      const yamlString = templateFileContent.replace(
+        yamlContent.codeFile,
+        newCodeFilePath,
+      );
 
       writeFileSync(join(templateDirectory, templateFile), yamlString);
     }),
