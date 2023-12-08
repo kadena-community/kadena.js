@@ -1,18 +1,12 @@
 import type { ChainId, ICommand } from '@kadena/client';
 import { Pact, createTransaction } from '@kadena/client';
 import { createPactCommandFromTemplate } from '@kadena/client-utils/nodejs';
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  readdirSync,
-  writeFileSync,
-} from 'fs';
+import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join, relative } from 'path';
 
-import { downloadGitFiles } from '../../utils/downlaod-git-files';
-import { clearDir, flattenFolder } from '../../utils/path';
+import { downloadGitFiles } from '@utils/downlaod-git-files';
+import { flattenFolder } from '@utils/path';
 import { devnetConfig } from '../config';
 import type { IAccount, IKeyPair } from '../helper';
 import {
@@ -39,6 +33,7 @@ import {
   marmaladeRemoteConfig,
   marmaladeRepository,
 } from './config/repository';
+import { handleDirectorySetup } from './directory';
 
 export async function deployMarmaladeContracts(
   signerAccount: IAccount,
@@ -149,33 +144,6 @@ export async function deployMarmaladeContracts(
     const commandResult = await submit(signedTx);
     const result = await listen(commandResult);
     inspect('Result')(result);
-  }
-}
-
-export async function handleDirectorySetup(
-  templateDestinationPath: string,
-  codeFileDestinationPath: string,
-  nsFilesDestinationPath: string,
-): Promise<void> {
-  //check if directory exists
-  if (!existsSync(templateDestinationPath)) {
-    mkdirSync(templateDestinationPath);
-  } else {
-    await clearDir(templateDestinationPath);
-  }
-
-  if (templateDestinationPath !== codeFileDestinationPath) {
-    if (!existsSync(codeFileDestinationPath)) {
-      mkdirSync(codeFileDestinationPath);
-    } else {
-      await clearDir(codeFileDestinationPath);
-    }
-  }
-
-  if (!existsSync(nsFilesDestinationPath)) {
-    mkdirSync(nsFilesDestinationPath);
-  } else {
-    await clearDir(nsFilesDestinationPath);
   }
 }
 
