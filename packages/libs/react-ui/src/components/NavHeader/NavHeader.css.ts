@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import {responsiveStyle, sprinkles, vars} from '../../styles';
+import { responsiveStyle, sprinkles, vars } from '../../styles';
 
 export const containerClass = style([
   sprinkles({
@@ -18,7 +18,7 @@ export const containerClass = style([
     ...responsiveStyle({
       sm: {
         width: '100%',
-      }
+      },
     }),
     alignItems: 'center',
     selectors: {
@@ -29,7 +29,7 @@ export const containerClass = style([
         color: vars.colors.$negativeContrast,
       },
     },
-  }
+  },
 ]);
 
 export const logoClass = style([

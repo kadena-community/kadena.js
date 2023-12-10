@@ -3,15 +3,17 @@ import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/H
 import type { Network } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import type { IMenuItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
 import { NavHeader } from '@kadena/react-ui';
+import { breakpoints } from '@kadena/react-ui/theme';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -30,14 +32,7 @@ const Header: FC<IHeaderProps> = () => {
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
-  const [smallScreen, setSmallScreen] = useState(false);
-
-  useEffect(() => {
-    // sidebar menu closed by default on smaller screens
-    if (window.innerWidth < 768) {
-      setSmallScreen(true);
-    }
-  }, []);
+  const { isMatchingMedia } = useIsMatchingMediaQuery(breakpoints.md);
 
   const handleMenuItemClick = async (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -78,7 +73,7 @@ const Header: FC<IHeaderProps> = () => {
   };
 
   return (
-    <NavHeader.Root brand={smallScreen ? 'Kadena' : 'DevTools'}>
+    <NavHeader.Root brand={isMatchingMedia ? 'DevTools' : 'Kadena'}>
       <NavHeader.Navigation activeHref={pathname}>
         {menuData.map((item, index) => (
           <NavHeader.Link
