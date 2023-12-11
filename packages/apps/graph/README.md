@@ -140,10 +140,14 @@ npm run simulate -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tok
 
 ### Tracing and trace analysis
 
-To enable tracing, set the `TRACING_ENABLED` environment variable to `true` in the
-`.env` file. This will enable tracing for all GraphQL queries and mutations and log them to `traces.log` (by default) in the root directory. You can also configure the output name of the log file by setting the `TRACING_LOG_FILENAME` environment variable.
+To enable tracing, set the `TRACING_ENABLED` environment variable to `true` in
+the `.env` file. This will enable tracing for all GraphQL queries and mutations
+and log them to `traces.log` (by default) in the root directory. You can also
+configure the output name of the log file by setting the `TRACING_LOG_FILENAME`
+environment variable.
 
-After letting the server run and collect trace data, you can then run the trace analysis script to get statistics of the traces:
+After letting the server run and collect trace data, you can then run the trace
+analysis script to get statistics of the traces:
 
 ```sh
 pnpm run trace:analyse -s <sort> -l <limit>
@@ -154,12 +158,18 @@ pnpm run trace:analyse -s <sort> -l <limit>
 
 ### Query Complexity
 
-To enable query complexity limits and calculations, set `COMPLEXITY_ENABLED` to `true`. The complexity limit, which determines how complex queries are allowed to be, can be set with `COMPLEXITY_LIMIT`. You can expose the complexity of a query by setting `COMPLEXITY_EXPOSED` to `true`, which returns the complexity details in the `extensions` section of the response.
+To enable query complexity limits and calculations, set `COMPLEXITY_ENABLED` to
+`true`. The complexity limit, which determines how complex queries are allowed
+to be, can be set with `COMPLEXITY_LIMIT`. You can expose the complexity of a
+query by setting `COMPLEXITY_EXPOSED` to `true`, which returns the complexity
+details in the `extensions` section of the response.
 
-The overal query complexity is calculated by combining the field complexity, the depth and the breath. The complexity of the fields is determined by the following rules:
+The overal query complexity is calculated by combining the field complexity, the
+depth and the breath. The complexity of the fields is determined by the
+following rules:
 
 - Fields that do not make external calls: 1
 - Calls to Chainweb Node: 7
 - Prisma calls without relations: 5
 - Prisma calls with relations: 10
-- *In cases of lists, a mulitplier is applied for the requested item count.
+- \*In cases of lists, a mulitplier is applied for the requested item count.
