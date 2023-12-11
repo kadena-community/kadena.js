@@ -66,8 +66,6 @@ export async function transfer({
 
     .createTransaction();
 
-  console.log(transaction);
-
   const signedTx = signAndAssertTransaction(sender.keys)(transaction);
 
   const transactionDescriptor = await submit(signedTx);
