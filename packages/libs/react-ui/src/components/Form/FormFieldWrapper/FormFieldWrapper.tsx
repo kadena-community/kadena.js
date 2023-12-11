@@ -9,12 +9,12 @@ import type {
   FunctionComponentElement,
   LabelHTMLAttributes,
 } from 'react';
-import React, { useRef } from 'react';
+import React from 'react';
 import type { vars } from 'src/styles';
 import type { FormFieldStatus } from '../Form.css';
 
 import { Stack } from '@components/Layout';
-import { useTextField } from 'react-aria';
+import type { FocusableElement } from '@react-types/shared';
 import type { IFormFieldHeaderProps } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHeader } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHelper } from './FormFieldHelper/FormFieldHelper';
@@ -34,6 +34,7 @@ export interface IFormFieldWrapperProps
   labelProps?:
     | DOMAttributes<HTMLLabelElement>
     | LabelHTMLAttributes<HTMLLabelElement>;
+  descriptionProps?: DOMAttributes<FocusableElement>;
 }
 
 export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({

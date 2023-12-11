@@ -17,7 +17,15 @@ export const TextField: FC<ITextFieldProps> = ({
 }) => {
   const { id } = inputProps;
   const ref = useRef(null);
-  const { labelProps, inputProps: ariaInputProps } = useTextField(props, ref);
+  const {
+    labelProps,
+    inputProps: ariaInputProps,
+    descriptionProps,
+    errorMessageProps,
+  } = useTextField(props, ref);
+
+  const computedDescriptionProps =
+    status === 'negative' ? errorMessageProps : descriptionProps;
 
   return (
     <FormFieldWrapper
@@ -25,6 +33,7 @@ export const TextField: FC<ITextFieldProps> = ({
       disabled={disabled}
       status={status}
       labelProps={labelProps}
+      descriptionProps={computedDescriptionProps}
       {...props}
     >
       <Input
