@@ -9,7 +9,6 @@ import {
 
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
-import type { Prettify } from '../core/utils/types';
 
 interface ITransferInput {
   sender: { account: string; publicKeys: string[] };
