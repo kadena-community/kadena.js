@@ -60,7 +60,7 @@ export async function simulate({
     for (let i = 0; i < numberOfAccounts; i++) {
       // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
       const noOfKeys = i % 2 === 0 ? 1 : 2;
-      const account = await generateAccount(noOfKeys);
+      let account = await generateAccount(noOfKeys);
       logger.info(
         `Generated KeyPair\nAccount: ${
           account.account
@@ -73,13 +73,43 @@ export async function simulate({
       if (accounts.includes(account)) {
         throw Error('Duplicate account');
       }
-      accounts.push(account);
 
-      // Fund account
-      const result = await transfer({
-        receiver: account,
-        amount: tokenPool / numberOfAccounts,
-      });
+      /* To diversify the initial testing sample, we cycle through all transfer types for the first funding transfers.
+      Subsequent transfers will be of the 'transfer' type to simulate normal operations. */
+      const fundingType =
+        i < simualtionTransferOptions.length
+          ? simualtionTransferOptions[i]
+          : 'transfer';
+
+      let result;
+
+      if (fundingType === 'xchaintransfer') {
+        account = {
+          ...account,
+          chainId: '1',
+        };
+
+        let sender: IAccount = { ...sender00, chainId: '0' };
+
+        result = await crossChainTransfer({
+          sender: sender,
+          receiver: account,
+          amount: tokenPool / numberOfAccounts,
+        });
+      } else if (fundingType === 'safe-transfer') {
+        result = await safeTransfer({
+          receiver: account,
+          amount: tokenPool / numberOfAccounts,
+        });
+      } else {
+        result = await transfer({
+          receiver: account,
+          amount: tokenPool / numberOfAccounts,
+        });
+      }
+
+      // If the account is not in the accountlist, add it
+      accounts.push(account);
 
       appendToFile(filepath, {
         timestamp: Date.now(),
