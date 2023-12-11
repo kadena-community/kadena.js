@@ -28,5 +28,5 @@ export function useIsMatchingMediaQuery(queryInput: string): boolean {
     }
   }, [query, isServer]);
 
-  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }
