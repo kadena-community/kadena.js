@@ -1,4 +1,4 @@
-import type { ChainId } from '@kadena/client';
+import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import {
   addSigner,
@@ -9,6 +9,7 @@ import {
 
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
+import type { Prettify } from '../core/utils/types';
 
 interface ITransferInput {
   sender: { account: string; publicKeys: string[] };
@@ -51,4 +52,6 @@ export const transferCommand = ({
  * @alpha
  */
 export const transfer = (inputs: ITransferInput, config: IClientConfig) =>
-  submitClient(config)(transferCommand(inputs));
+  submitClient<PactReturnType<IPactModules['coin']['transfer']>>(config)(
+    transferCommand(inputs),
+  );
