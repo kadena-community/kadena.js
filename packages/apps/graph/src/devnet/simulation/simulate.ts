@@ -89,7 +89,7 @@ export async function simulate({
           chainId: '1',
         };
 
-        let sender: IAccount = { ...sender00, chainId: '0' };
+        const sender: IAccount = { ...sender00, chainId: '0' };
 
         result = await crossChainTransfer({
           sender: sender,
