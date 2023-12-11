@@ -493,6 +493,17 @@ export const globalOptions = {
       return keyMessage;
     },
   }),
+
+  // Dapp
+  dappTemplate: createOption({
+    key: 'dappTemplate',
+    prompt: genericActionsPrompts.actionAskForDappTemplate,
+    validation: z.string(),
+    option: new Option(
+      '-t, --dapp-template <dappTemplate>',
+      'Select a dapp template',
+    ),
+  }),
   // TX
   outFileJson: createOption({
     key: 'outFile',
