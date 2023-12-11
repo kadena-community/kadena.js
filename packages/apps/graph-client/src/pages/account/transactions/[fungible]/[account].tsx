@@ -11,7 +11,7 @@ const AccountTransactions: React.FC = () => {
 
   const { loading, data, error, fetchMore } = useGetTransactionsQuery({
     variables: {
-      moduleName: router.query.module as string,
+      fungibleName: router.query.fungible as string,
       accountName: router.query.account as string,
       ...(router.query.chain && { chainId: router.query.chain as string }),
       first: 10,
@@ -23,7 +23,7 @@ const AccountTransactions: React.FC = () => {
       <Breadcrumbs.Root>
         <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
         <Breadcrumbs.Item
-          href={`${routes.ACCOUNT}/${router.query.module as string}/${
+          href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
             router.query.account as string
           }`}
         >

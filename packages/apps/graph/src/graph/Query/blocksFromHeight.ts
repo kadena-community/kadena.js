@@ -5,8 +5,9 @@ import { normalizeError } from '@utils/errors';
 import { PRISMA, builder } from '../builder';
 import Block from '../objects/Block';
 
-builder.queryField('blocksFromHeight', (t) => {
-  return t.prismaField({
+builder.queryField('blocksFromHeight', (t) =>
+  t.prismaField({
+    description: 'Retrieve blocks by chain and minimal height.',
     args: {
       startHeight: t.arg.int({ required: true }),
       chainIds: t.arg.stringList({ required: false }),
@@ -44,5 +45,5 @@ builder.queryField('blocksFromHeight', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

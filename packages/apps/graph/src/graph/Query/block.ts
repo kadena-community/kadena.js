@@ -4,8 +4,9 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
-builder.queryField('block', (t) => {
-  return t.prismaField({
+builder.queryField('block', (t) =>
+  t.prismaField({
+    description: 'Retrieve a block by hash.',
     args: {
       hash: t.arg.string({ required: true }),
     },
@@ -26,5 +27,5 @@ builder.queryField('block', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

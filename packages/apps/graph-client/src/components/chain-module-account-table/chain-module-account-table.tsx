@@ -1,17 +1,17 @@
-import type { GetAccountQuery } from '@/__generated__/sdk';
+import type { ChainFungibleAccount } from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
 import React from 'react';
 
-interface IChainModuleAccountTableProps {
-  moduleName: string;
+interface IChainFungibleAccountTableProps {
+  fungibleName: string;
   accountName: string;
-  chainAccounts: GetAccountQuery['account']['chainAccounts'];
+  chainAccounts: ChainFungibleAccount[];
 }
-export const ChainModuleAccountTable = (
-  props: IChainModuleAccountTableProps,
+export const ChainFungibleAccountTable = (
+  props: IChainFungibleAccountTableProps,
 ): JSX.Element => {
-  const { moduleName, accountName, chainAccounts } = props;
+  const { fungibleName, accountName, chainAccounts } = props;
 
   return (
     <>
@@ -36,7 +36,7 @@ export const ChainModuleAccountTable = (
               <Table.Td>{chainAccount.chainId}</Table.Td>
               <Table.Td>
                 <Link
-                  href={`${routes.ACCOUNT}/${moduleName}/${accountName}/${chainAccount.chainId}`}
+                  href={`${routes.ACCOUNT}/${fungibleName}/${accountName}/${chainAccount.chainId}`}
                 >
                   {chainAccount.balance}
                 </Link>
