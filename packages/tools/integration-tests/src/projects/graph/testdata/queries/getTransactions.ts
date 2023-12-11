@@ -61,3 +61,22 @@ export function getTransactionsQuery(accountName: string) {
   };
 }
 
+export function getTransactionsByRequestKeyQuery(requestKey: string | undefined)  {
+  return {
+    query: `query getTransactionsByRequestKey($requestKey: String!) {
+      transactions(requestKey: $requestKey) {
+        edges {
+          node {
+            block {
+              hash
+            }
+          }
+        }
+      }
+    }`,
+    variables: { requestKey: requestKey },
+    operationName: 'getTransactionsByRequestKey',
+    extensions: {},
+  };
+}
+
