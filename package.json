@@ -21,16 +21,16 @@
     "version": "changeset version && pnpm run format:pkgs"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.2",
+    "@changesets/cli": "^2.27.1",
     "@kadena-dev/markdown": "workspace:*",
-    "knip": "^2.38.1",
+    "knip": "^3.7.0",
     "only-allow": "^1.2.1",
     "prettier": "~3.0.3",
-    "prettier-plugin-organize-imports": "^3.2.3",
-    "prettier-plugin-packagejson": "^2.4.6",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "prettier-plugin-packagejson": "^2.4.7",
     "syncpack": "^11.2.1",
-    "tsx": "^3.12.10",
-    "turbo": "^1.10.15"
+    "tsx": "^4.6.2",
+    "turbo": "^1.11.1"
   },
   "engines": {
     "node": ">=18",
