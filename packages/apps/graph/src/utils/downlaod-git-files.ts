@@ -64,7 +64,7 @@ export async function downloadGitFiles({
     // if gitData is an object, it means that it's a file and we can download it
     await donwloadGitFile(gitData.download_url, gitData.name, localPath);
   } else {
-    throw new Error('Provided path is not a valid ');
+    throw new Error('Provided path is not a valid');
   }
 }
 

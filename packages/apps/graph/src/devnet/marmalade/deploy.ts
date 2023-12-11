@@ -6,6 +6,7 @@ import { join, relative } from 'path';
 
 import { downloadGitFiles } from '@utils/downlaod-git-files';
 import { flattenFolder } from '@utils/path';
+import { validateObjectProperties } from '@utils/validateObject';
 import type { IAccount } from '../helper';
 import {
   inspect,
@@ -35,6 +36,13 @@ export async function deployMarmaladeContracts(
   codeFileDestinationPath: string = marmaladeLocalConfig.codeFilesPath,
   nsDestinationPath: string = marmaladeLocalConfig.namespacePath,
 ) {
+  logger.info('Validating repository data...');
+  validateConfig(
+    marmaladeRepository,
+    marmaladeLocalConfig,
+    marmaladeRemoteConfig,
+  );
+
   logger.info('Preparing directories...');
   await handleDirectorySetup(
     templateDestinationPath,
@@ -248,16 +256,21 @@ export async function getNsCodeFiles({
   remoteConfigData: IMarmaladeRemoteConfig;
   localPath: string;
 }) {
-  await Promise.all(
-    remoteConfigData.namespacePaths.map(async (path) => {
-      await downloadGitFiles({
-        ...repositoryData,
-        path,
-        localPath,
-        fileExtension: remoteConfigData.codefileExtension,
-      });
-    }),
-  );
+  try {
+    await Promise.all(
+      remoteConfigData.namespacePaths.map(async (path) => {
+        await downloadGitFiles({
+          ...repositoryData,
+          path,
+          localPath,
+          fileExtension: remoteConfigData.codefileExtension,
+        });
+      }),
+    );
+  } catch (error) {
+    logger.info('Error getting namespace code files', error);
+    throw error;
+  }
 }
 
 export async function updateTemplateFilesWithCodeFile(
@@ -266,34 +279,49 @@ export async function updateTemplateFilesWithCodeFile(
   codeFiles: string[],
   codeFileDirectory: string,
 ): Promise<void> {
-  await Promise.all(
-    templateFiles.map((templateFile) => {
-      const templateFileContent = readFileSync(
-        join(templateDirectory, templateFile),
-        'utf8',
-      );
-      const yamlContent = yaml.load(templateFileContent) as any;
+  try {
+    await Promise.all(
+      templateFiles.map((templateFile) => {
+        const templateFileContent = readFileSync(
+          join(templateDirectory, templateFile),
+          'utf8',
+        );
+        const yamlContent = yaml.load(templateFileContent) as any;
 
-      if (!yamlContent?.codeFile) {
-        return;
-      }
+        if (!yamlContent?.codeFile) {
+          return;
+        }
 
-      const codeFileName = yamlContent.codeFile.split('/').pop();
+        const codeFileName = yamlContent.codeFile.split('/').pop();
 
-      if (!codeFiles.includes(codeFileName)) {
-        throw new Error(`Code file ${codeFileName} not found`);
-      }
-      const newCodeFilePath = relative(
-        templateDirectory,
-        join(codeFileDirectory, codeFileName),
-      );
+        if (!codeFiles.includes(codeFileName)) {
+          throw new Error(`Code file ${codeFileName} not found`);
+        }
+        const newCodeFilePath = relative(
+          templateDirectory,
+          join(codeFileDirectory, codeFileName),
+        );
 
-      const yamlString = templateFileContent.replace(
-        yamlContent.codeFile,
-        newCodeFilePath,
-      );
+        const yamlString = templateFileContent.replace(
+          yamlContent.codeFile,
+          newCodeFilePath,
+        );
 
-      writeFileSync(join(templateDirectory, templateFile), yamlString);
-    }),
-  );
+        writeFileSync(join(templateDirectory, templateFile), yamlString);
+      }),
+    );
+  } catch (error) {
+    logger.info('Error updating template files with code files', error);
+    throw error;
+  }
+}
+
+export async function validateConfig(
+  repositoryConfig: IMarmaladeRepository,
+  localConfig: IMarmaladeLocalConfig,
+  remoteConfig: IMarmaladeRemoteConfig,
+) {
+  validateObjectProperties(repositoryConfig, 'Repository');
+  validateObjectProperties(localConfig, 'Local');
+  validateObjectProperties(remoteConfig, 'Remote');
 }

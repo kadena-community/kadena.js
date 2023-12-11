@@ -53,7 +53,7 @@ export const dotenv: {
   ),
   MARMALADE_REPOSITORY_BRANCH: or(
     process.env.MARMALADE_REPOSITORY_BRANCH,
-    'main',
+    'v2',
   ),
   MARMALADE_REMOTE_TEMPLATE_PATH: or(
     process.env.MARMALADE_REMOTE_TEMPLATE_PATH,
