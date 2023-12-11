@@ -1,8 +1,10 @@
 # Marmalade in Devnet
 
-The goal of this folder is to deploy Marmalade scripts into the Devnet. It
-contains all the necessary scripts and configuration files to facilitate this
-process.
+The devnet does not come with the marmalade smart contracts deployed out of the
+box. Therefore, to be able to use marmalade, we need to deploy all the smart
+contracts in the devnet. The goal of this folder is to deploy Marmalade scripts
+into the devnet. It contains all the necessary scripts and configuration files
+to facilitate this process.
 
 ## Concepts
 

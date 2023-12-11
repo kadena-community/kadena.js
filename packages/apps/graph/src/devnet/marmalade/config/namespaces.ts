@@ -14,5 +14,3 @@ export const marmaladeNamespaceConfig: IMarmaladeNamespaceConfig[] = [
   },
   { file: 'guards1.pact', namespaces: ['util'] },
 ];
-
-export const marmaladeNamespaceOrder = ['marmalade-v2', 'marmalade-sale'];

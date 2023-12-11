@@ -14,11 +14,8 @@ import {
   signAndAssertTransaction,
   submit,
 } from '../helper';
-import { argumentConfig } from './config/arguments';
-import {
-  marmaladeNamespaceConfig,
-  marmaladeNamespaceOrder,
-} from './config/namespaces';
+import { argumentConfig, marmaladeNamespaceOrder } from './config/arguments';
+import { marmaladeNamespaceConfig } from './config/namespaces';
 import type {
   IMarmaladeLocalConfig,
   IMarmaladeRemoteConfig,

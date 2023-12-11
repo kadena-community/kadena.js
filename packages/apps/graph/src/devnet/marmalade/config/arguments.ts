@@ -15,3 +15,8 @@ export const argumentConfig = {
   marmalade_user_key_1: sender00.keys[0].publicKey,
   marmalade_user_key_2: sender00.keys[0].publicKey,
 };
+
+/* Define the order of the namespaces in the marmalade contracts: the smart contracts
+related to the namespace of the first item are going to be deployed first, then the second,
+and so on  */
+export const marmaladeNamespaceOrder = ['marmalade-v2', 'marmalade-sale'];
