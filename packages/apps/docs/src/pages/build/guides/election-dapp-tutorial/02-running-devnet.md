@@ -27,7 +27,7 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](github.com/kadena-community/voting-dapp.git election-dapp) as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started) and have checkd out the `01-getting-started` branch.
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started) and have checkd out the `01-getting-started` branch.
 - You have [Docker](https://docs.docker.com/get-docker/) installed and are generally familiar with using Docker commands for containerized applications.
 
 ## Run the development network in Docker
