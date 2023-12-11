@@ -45,7 +45,7 @@ export const Menu: FC = () => {
     setVisibleLinks,
     setIsMenuOpen,
   } = useLayoutContext();
-  const { isMatchingMedia } = useIsMatchingMediaQuery(breakpoints.md);
+  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
   const handleCloseMenu = () => {
     setActiveMenuIndex(undefined);
@@ -54,7 +54,7 @@ export const Menu: FC = () => {
   };
 
   const handleOnClick = () => {
-    if (!isMatchingMedia) {
+    if (!isMediumScreen) {
       setIsMenuOpen(false);
     }
   };
