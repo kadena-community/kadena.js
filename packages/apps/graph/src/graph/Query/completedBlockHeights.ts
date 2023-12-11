@@ -6,8 +6,9 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import Block from '../objects/Block';
 
-builder.queryField('completedBlockHeights', (t) => {
-  return t.prismaField({
+builder.queryField('completedBlockHeights', (t) =>
+  t.prismaField({
+    description: 'Retrieve all completed blocks from a given height.',
     args: {
       completedHeights: t.arg.boolean({ required: false, defaultValue: false }),
       heightCount: t.arg.int({ required: false, defaultValue: 3 }),
@@ -95,5 +96,5 @@ builder.queryField('completedBlockHeights', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

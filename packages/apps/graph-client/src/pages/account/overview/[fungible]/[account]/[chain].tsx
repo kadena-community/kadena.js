@@ -1,6 +1,6 @@
 import type {
-  ChainModuleAccountTransactionsConnection,
-  ChainModuleAccountTransfersConnection,
+  ChainFungibleAccountTransactionsConnection,
+  ChainFungibleAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetChainAccountQuery } from '@/__generated__/sdk';
 import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
@@ -16,7 +16,7 @@ const ChainAccount: React.FC = () => {
 
   const { loading, data, error } = useGetChainAccountQuery({
     variables: {
-      moduleName: router.query.module as string,
+      fungibleName: router.query.fungible as string,
       accountName: router.query.account as string,
       chainId: router.query.chain as string,
     },
@@ -27,7 +27,7 @@ const ChainAccount: React.FC = () => {
       <Breadcrumbs.Root>
         <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
         <Breadcrumbs.Item
-          href={`${routes.ACCOUNT}/${router.query.module as string}/${
+          href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
             router.query.account as string
           }`}
         >
@@ -56,9 +56,9 @@ const ChainAccount: React.FC = () => {
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
-                  <strong>Module</strong>
+                  <strong>Fungible</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.moduleName}</Table.Td>
+                <Table.Td>{data.chainAccount.fungibleName}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
@@ -90,27 +90,27 @@ const ChainAccount: React.FC = () => {
           <Grid columns={2} gap="$lg">
             <GridItem>
               <CompactTransfersTable
-                moduleName={router.query.module as string}
+                fungibleName={router.query.fungible as string}
                 accountName={router.query.account as string}
                 chainId={router.query.chain as string}
                 truncateColumns={true}
                 transfers={
                   data.chainAccount
-                    .transfers as ChainModuleAccountTransfersConnection
+                    .transfers as ChainFungibleAccountTransfersConnection
                 }
               />
             </GridItem>
             <GridItem>
               <CompactTransactionsTable
                 viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
-                  router.query.module as string
+                  router.query.fungible as string
                 }/${router.query.account as string}?chain=${
                   router.query.chain as string
                 }`}
                 truncateColumns={true}
                 transactions={
                   data.chainAccount
-                    .transactions as ChainModuleAccountTransactionsConnection
+                    .transactions as ChainFungibleAccountTransactionsConnection
                 }
               />
             </GridItem>

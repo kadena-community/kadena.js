@@ -4,10 +4,12 @@ import { AddNetworkModal } from '@/components/Global';
 import type { Network } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import type { IMenuItem } from '@/types/Layout';
 import { getHref } from '@/utils/getHref';
 import type { INetworkData } from '@/utils/network';
 import { NavHeader } from '@kadena/react-ui';
+import { breakpoints } from '@kadena/react-ui/theme';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
@@ -31,6 +33,8 @@ const Header: FC<IHeaderProps> = () => {
   const { systemTheme, theme, setTheme } = useTheme();
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
+
+  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
   const handleMenuItemClick = async (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -58,7 +62,7 @@ const Header: FC<IHeaderProps> = () => {
 
   return (
     <>
-      <NavHeader.Root brand="DevTools">
+      <NavHeader.Root brand={isMediumScreen ? 'DevTools' : 'Kadena'}>
         <NavHeader.Navigation activeHref={pathname}>
           {menuData.map((item, index) => (
             <NavHeader.Link

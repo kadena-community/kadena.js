@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prismaClient';
-import { getChainModuleAccount } from '@services/account-service';
+import { getChainFungibleAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -9,33 +9,37 @@ import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
-import type { ChainModuleAccount, ModuleAccount } from '../types/graphql-types';
+import type {
+  ChainFungibleAccount,
+  FungibleAccount,
+} from '../types/graphql-types';
 import {
-  ChainModuleAccountName,
-  ModuleAccountName,
+  ChainFungibleAccountName,
+  FungibleAccountName,
 } from '../types/graphql-types';
 
 export default builder.node(
-  builder.objectRef<ModuleAccount>(ModuleAccountName),
+  builder.objectRef<FungibleAccount>(FungibleAccountName),
   {
+    description: 'A fungible-specific account.',
     id: {
       resolve(parent) {
-        return `${ModuleAccountName}/${parent.moduleName}/${parent.accountName}`;
+        return `${FungibleAccountName}/${parent.fungibleName}/${parent.accountName}`;
       },
       // Do not use parse here since there is a bug in the pothos relay plugin which can cause incorrect results. Parse the ID directly in the loadOne function.
     },
     isTypeOf(source) {
-      return (source as any).__typename === ModuleAccountName;
+      return (source as any).__typename === FungibleAccountName;
     },
     async loadOne(id) {
       try {
-        const moduleName = id.split('/')[1];
+        const fungibleName = id.split('/')[1];
         const accountName = id.split('/')[2];
 
         return {
-          __typename: ModuleAccountName,
+          __typename: FungibleAccountName,
           accountName,
-          moduleName,
+          fungibleName,
           chainAccounts: [],
           totalBalance: 0,
           transactions: [],
@@ -47,25 +51,25 @@ export default builder.node(
     },
     fields: (t) => ({
       accountName: t.exposeString('accountName'),
-      moduleName: t.exposeString('moduleName'),
+      fungibleName: t.exposeString('fungibleName'),
       chainAccounts: t.field({
-        type: [ChainModuleAccountName],
+        type: [ChainFungibleAccountName],
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE * dotenv.CHAIN_COUNT,
         async resolve(parent) {
           try {
             return (
               await Promise.all(
                 chainIds.map(async (chainId) => {
-                  return await getChainModuleAccount({
+                  return await getChainFungibleAccount({
                     chainId: chainId,
-                    moduleName: parent.moduleName,
+                    fungibleName: parent.fungibleName,
                     accountName: parent.accountName,
                   });
                 }),
               )
             ).filter(
               (chainAccount) => chainAccount !== null,
-            ) as ChainModuleAccount[];
+            ) as ChainFungibleAccount[];
           } catch (error) {
             throw normalizeError(error);
           }
@@ -80,7 +84,7 @@ export default builder.node(
               await Promise.all(
                 chainIds.map(async (chainId) => {
                   return accountDetailsLoader.load({
-                    moduleName: parent.moduleName,
+                    fungibleName: parent.fungibleName,
                     accountName: parent.accountName,
                     chainId: chainId,
                   });
@@ -115,7 +119,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: parent.moduleName,
+                    moduleName: parent.fungibleName,
                   },
                 },
               },
@@ -132,7 +136,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: parent.moduleName,
+                    moduleName: parent.fungibleName,
                   },
                 },
               },

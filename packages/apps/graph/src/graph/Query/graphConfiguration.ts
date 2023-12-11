@@ -16,8 +16,9 @@ const getLowestBlockHeigth = async (): Promise<bigint> => {
   return lowestBlock?.height || BigInt(0);
 };
 
-builder.queryField('graphConfiguration', (t) => {
-  return t.field({
+builder.queryField('graphConfiguration', (t) =>
+  t.field({
+    description: 'Get the configuration of the graph.',
     type: 'GraphConfiguration',
     complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
     async resolve() {
@@ -27,5 +28,5 @@ builder.queryField('graphConfiguration', (t) => {
         minimumBlockHeight: await getLowestBlockHeigth(),
       };
     },
-  });
-});
+  }),
+);
