@@ -6,14 +6,14 @@ process.
 
 ## Concepts
 
-In order to better understand the deployment of marmalade, here are some key
-concepts to be aware of:
+To better understand the deployment of marmalade, here are some key concepts to
+be aware of:
 
 - Templates: these are `.yaml` files that contain the necessary data for the
   deployment of a smart contract.
 - Code files: these are `.pact` files that contain PACT code. These are normally
   referenced in the template files Both templates and code files can contain
-  replacable tags, in the following format: `{{arguments}}`.
+  replaceable tags, in the following format: `{{arguments}}`.
 
 ## Pre-requisites
 
@@ -24,18 +24,49 @@ concepts to be aware of:
   the arguments in
   `packages/apps/graph/src/devnet/marmalade/config/arguments.ts`. These
   arguments are going to be used to replace the tags in the templates and code
-  files (refered to in [concepts](#concepts) )
+  files (referred to in [concepts](#concepts) )
+
+## Assumptions
+
+- The template files should be numbered. They will be deployed in alphabetical
+  order so please make sure that the files are named accordingly (eg.
+  `0.fungible-util.yaml`)
+- Subfolders are allowed
+- When supplying the remote template folder path on the `.env`, the following
+  folder structure should be followed (in the remote directory):
+
+```bash
+.                               # supplied folder
+├── namespace1                  # namespace (will be used when creating transaction)
+│   ├── 0.template1.yaml        # order number + filename / folder name
+│   ├── 1.template2.yaml        # order number + filename / folder name
+│   └── 2.template3.yaml        # order number + filename / folder name
+│   ├── 3.policies              # order number + filename / folder name
+│   │   ├── template4.yaml      # order number + filename / folder name
+│   │   └── template5.yaml      # order number + filename / folder name
+├── namespace2                  # namespace (will be used when creating transaction)
+│   ├── 0.template4.yaml        # order number + filename / folder name
+│   ├── 1.template5.yaml        # order number + filename / folder name
+│   └── 2.template6.yaml        # order number + filename / folder name
+└── ...
+```
 
 ## The process
 
-This is a small step-by-step description of the steps that are taked to deploy
+This is a small step-by-step description of the steps that are taken to deploy
 marmalade in the devnet
 
-1. Downloading the necessary templates and codefiles from a given repository
-2. Reading all the templates files and creating transactions from them. In this
-   step it is important that all the arguments are supplied
+1. Downloading the necessary templates and code files from a given repository
+2. Reading all the template files and creating transactions from them. In this
+   step, all the arguments must be supplied
 3. Deploying all the necessary namespaces
-4. Deploying all the necessary templates (that will be responsible to create
+4. Deploying all the necessary templates (that will be responsible for creating
    interfaces, tables, etc)
 
-## Assumptions
+### Aditional Notes
+
+These scripts use Github's API to retrieve the files. If a token is not provided
+on the `.env` file, the requests will be authenticated which results in a
+significantly lower rate limit. It is strongly advised that a token is provided.
+For more information, please click
+[here](https://docs.github.com/en/rest/overview/rate-limits-for-the-rest-api?apiVersion=2022-11-28)
