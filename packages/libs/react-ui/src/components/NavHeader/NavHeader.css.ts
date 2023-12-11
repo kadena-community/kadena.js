@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { responsiveStyle, sprinkles, vars } from '../../styles';
+import { sprinkles, vars } from '../../styles';
 
 export const containerClass = style([
   sprinkles({
@@ -13,12 +13,11 @@ export const containerClass = style([
     justifyContent: 'flex-start',
     position: 'relative',
     width: {
-      xs: "max-content",
-      sm: "100%",
-    }
+      xs: 'max-content',
+      sm: '100%',
+    },
   }),
   {
-
     alignItems: 'center',
     selectors: {
       '&:hover': {

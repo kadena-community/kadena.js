@@ -32,9 +32,7 @@ const Header: FC<IHeaderProps> = () => {
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
-    const isMediumScreen = useIsMatchingMediaQuery(
-        `${breakpoints.sm}`,
-    );
+  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
   const handleMenuItemClick = async (
     e: React.MouseEvent<HTMLAnchorElement>,
