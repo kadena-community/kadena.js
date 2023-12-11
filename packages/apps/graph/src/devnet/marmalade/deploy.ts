@@ -316,11 +316,11 @@ export async function updateTemplateFilesWithCodeFile(
   }
 }
 
-export async function validateConfig(
+export function validateConfig(
   repositoryConfig: IMarmaladeRepository,
   localConfig: IMarmaladeLocalConfig,
   remoteConfig: IMarmaladeRemoteConfig,
-) {
+): void {
   validateObjectProperties(repositoryConfig, 'Repository');
   validateObjectProperties(localConfig, 'Local');
   validateObjectProperties(remoteConfig, 'Remote');
