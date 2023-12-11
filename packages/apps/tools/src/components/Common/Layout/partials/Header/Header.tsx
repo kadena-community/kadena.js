@@ -32,7 +32,9 @@ const Header: FC<IHeaderProps> = () => {
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
-  const { isMatchingMedia } = useIsMatchingMediaQuery(breakpoints.md);
+    const isMediumScreen = useIsMatchingMediaQuery(
+        `${breakpoints.sm}`,
+    );
 
   const handleMenuItemClick = async (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -73,7 +75,7 @@ const Header: FC<IHeaderProps> = () => {
   };
 
   return (
-    <NavHeader.Root brand={isMatchingMedia ? 'DevTools' : 'Kadena'}>
+    <NavHeader.Root brand={isMediumScreen ? 'DevTools' : 'Kadena'}>
       <NavHeader.Navigation activeHref={pathname}>
         {menuData.map((item, index) => (
           <NavHeader.Link

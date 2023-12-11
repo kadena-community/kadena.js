@@ -1,27 +1,33 @@
-import { useEffect, useState } from 'react';
-export const useIsMatchingMediaQuery = (query: string) => {
-  const [isMatchingMedia, setIsMatchingMedia] = useState(false);
+import { useMemo, useSyncExternalStore } from 'react';
+import {boolean} from "zod";
 
-  useEffect(() => {
-    setIsMatchingMedia(window.matchMedia(query).matches);
+/**
+ * Checks if the media query matches or not.
+ * Compatible with Next.js (handles server-side rendering).
+ */
+export function useIsMatchingMediaQuery(queryInput: string): boolean {
+    // Adjust the media query string if necessary
+    const query = queryInput.replace(/^@media( ?)/m, '');
 
-    const handleResize = (e: {
-      matches: boolean | ((prevState: boolean) => boolean);
-    }) => {
-      setIsMatchingMedia(e.matches);
-    };
+    const isServer = typeof window === 'undefined';
 
-    const mediaQuery = window.matchMedia(query);
+    const [getSnapshot, subscribe] = useMemo(() => {
+        if (!isServer) {
+            const mediaQueryList = window.matchMedia(query);
 
-    mediaQuery.addEventListener('change', handleResize);
+            return [
+                () => mediaQueryList.matches,
+                (notify: () => void) => {
+                    // Using addEventListener for compatibility with modern browsers
+                    mediaQueryList.addEventListener('change', notify);
+                    return () => mediaQueryList.removeEventListener('change', notify);
+                },
+            ];
+        } else {
+            // Dummy functions for server side
+            return [() => false, (notify: () => void) => () => {}];
+        }
+    }, [query, isServer]);
 
-    // Clean up the event listener when the component unmounts
-    return () => {
-      mediaQuery.removeEventListener('change', handleResize);
-    };
-  }, []);
-
-  return {
-    isMatchingMedia,
-  };
-};
+    return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+}
