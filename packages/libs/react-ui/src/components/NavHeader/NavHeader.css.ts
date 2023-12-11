@@ -9,17 +9,16 @@ export const containerClass = style([
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'nowrap',
-    width: 'max-content',
     height: '$16',
     justifyContent: 'flex-start',
     position: 'relative',
+    width: {
+      xs: "max-content",
+      sm: "100%",
+    }
   }),
   {
-    ...responsiveStyle({
-      sm: {
-        width: '100%',
-      },
-    }),
+
     alignItems: 'center',
     selectors: {
       '&:hover': {
