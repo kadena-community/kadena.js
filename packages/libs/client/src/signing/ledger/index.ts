@@ -3,6 +3,9 @@ import type AppKda from '@ledgerhq/hw-app-kda';
 import type { ISignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignatures';
 
+/**
+ * @internal
+ */
 export const createSignWithLedger = (
   client: AppKda,
   keyId = 0,
