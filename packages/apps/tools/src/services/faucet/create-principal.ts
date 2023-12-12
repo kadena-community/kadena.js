@@ -7,6 +7,7 @@ import { createPrincipal as createPrincipalUtil } from '@kadena/client-utils/bui
 
 import { kadenaConstants } from '@/constants/kadena';
 import type { TPredicate } from '@kadena/types';
+import { Predicate } from '@kadena/types';
 import Debug from 'debug';
 
 const NETWORK_ID: ChainwebNetworkId = 'testnet04';
@@ -16,7 +17,7 @@ const debug = Debug('kadena-transfer:services:faucet');
 export const createPrincipal = async (
   keys: string[],
   chainId: ChainwebChainId,
-  pred: TPredicate,
+  pred: TPredicate = Predicate.keysAll,
 ): Promise<string | Error> => {
   debug(createPrincipal.name);
 
