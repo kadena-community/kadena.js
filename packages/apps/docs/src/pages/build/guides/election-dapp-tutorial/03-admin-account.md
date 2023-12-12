@@ -166,7 +166,7 @@ To transfer coins to fund the administrative account:
 
 7. Expand your administrative account to verify that on chain 1 you are the owner, one keyset is defined, and the balance is 20 KDA.
    
-   ![Your funded administrative account on the development network](/assets/docs/election-workshop/funded-ccount.png)
+   ![Your funded administrative account on the development network](/assets/docs/election-workshop/funded-account.png)
 
 ## Next steps
 
