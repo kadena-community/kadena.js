@@ -18,7 +18,7 @@ export interface IFileError {
 export type TransferType =
   | 'fund'
   | 'transfer'
-  | 'xchaintransfer'
+  | 'cross-chain-transfer'
   | 'safe-transfer'
   | undefined;
 
