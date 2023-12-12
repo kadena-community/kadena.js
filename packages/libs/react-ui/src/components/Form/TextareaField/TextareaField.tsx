@@ -2,8 +2,7 @@ import type { IFormFieldWrapperProps, ITextareaProps } from '@components/Form';
 import { FormFieldWrapper, Textarea } from '@components/Form';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
-import type { AriaTextFieldProps } from 'react-aria';
-import { useTextField } from 'react-aria';
+import { AriaTextFieldProps, useTextField } from 'react-aria';
 
 export interface ITextareaFieldProps
   extends Omit<IFormFieldWrapperProps, 'htmlFor' | 'children'> {
@@ -21,7 +20,7 @@ export const TextareaField: FC<ITextareaFieldProps> = ({
   const { labelProps, inputProps, descriptionProps, errorMessageProps } =
     useTextField(
       {
-        ...(textAreaProps as AriaTextFieldProps),
+        ...rest,
         inputElementType: 'textarea',
       },
       ref,

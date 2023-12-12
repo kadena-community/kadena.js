@@ -43,7 +43,6 @@ export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
   children,
   label,
   leadingTextWidth = undefined,
-  // htmlFor,
   tag,
   info,
   helperText,

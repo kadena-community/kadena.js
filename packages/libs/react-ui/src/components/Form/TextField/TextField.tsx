@@ -23,7 +23,7 @@ export const TextField: FC<ITextFieldProps> = ({
     inputProps: ariaInputProps,
     descriptionProps,
     errorMessageProps,
-  } = useTextField(inputProps as AriaTextFieldProps, ref);
+  } = useTextField(props, ref);
 
   const computedHelperTextProps =
     status === 'negative' ? errorMessageProps : descriptionProps;
