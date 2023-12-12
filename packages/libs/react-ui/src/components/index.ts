@@ -8,6 +8,12 @@ export type { IButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
+  IDialogContentProps,
+  IDialogFooterProps,
+  IDialogHeaderProps,
+  IDialogProps,
+} from './Dialog';
+export type {
   FormFieldStatus,
   IFormFieldWrapperProps,
   IInputProps,
@@ -63,7 +69,7 @@ export type {
   IThProps,
   ITrProps,
 } from './Table';
-export type { ITabContentProps, ITabProps, ITabsContainerProps } from './Tabs';
+export type { ITabItemProps, ITabsProps } from './Tabs';
 export type { ITagProps } from './Tag';
 export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
@@ -71,7 +77,6 @@ export type { ITreeProps } from './Tree';
 export type {
   IGradientTextProps,
   IHeadingProps,
-  ILabelProps,
   ITextProps,
 } from './Typography';
 
@@ -80,14 +85,23 @@ export { Breadcrumbs } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
+export {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  useDialog,
+} from './Dialog';
 export { Divider } from './Divider/Divider';
 export {
   FormFieldWrapper,
   Input,
+  InputCopy,
   Select,
   SelectField,
   TextField,
   Textarea,
+  TextareaCopy,
   TextareaField,
 } from './Form';
 export { ProductIcon, SystemIcon } from './Icon';
@@ -96,7 +110,7 @@ export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';
 export { maskValue } from './MaskedValue/utils';
-export { Modal, ModalProvider, useModal } from './Modal';
+export { Modal } from './Modal';
 export { NavFooter } from './NavFooter';
 export { NavHeader } from './NavHeader';
 export {
@@ -109,9 +123,9 @@ export { Pagination } from './Pagination';
 export { ProfileSummary } from './ProfileSummary';
 export { ProgressBar } from './ProgressBar';
 export { Table } from './Table';
-export { Tabs } from './Tabs';
+export { TabItem, Tabs } from './Tabs';
 export { Tag } from './Tag';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';
-export { GradientText, Heading, Label, Text } from './Typography';
+export { GradientText, Heading, Text } from './Typography';

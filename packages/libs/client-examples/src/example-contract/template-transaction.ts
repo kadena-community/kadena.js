@@ -48,20 +48,15 @@ async function transfer(
     // The sender needs to sign the command; otherwise, the blockchain node will refuse to do the transaction.
     // there is the concept of capabilities in Pact, we will explain it in the more in-depth part.
     // if you are using TypeScript this function comes with types of the available capabilities based on the execution part.
-    .addSigner(sender.publicKey, (withCapability) => [
+    .addSigner(sender.publicKey, (signFor) => [
       // The sender scopes their signature only to "coin.TRANSFER" and "coin.GAS" with the specific arguments.
       // The sender mentions they want to pay the gas fee by adding the "coin.GAS" capability.
-      withCapability('coin.GAS'),
+      signFor('coin.GAS'),
       // coin.TRANSFER capability has some arguments that lets users mention the sender, receiver and the maximum
       // amount they want to transfer
-      withCapability(
-        'coin.TRANSFER',
-        sender.accountName,
-        receiver.accountName,
-        {
-          decimal: amount,
-        },
-      ),
+      signFor('coin.TRANSFER', sender.accountName, receiver.accountName, {
+        decimal: amount,
+      }),
     ])
     // Since Kadena has a multi-chain architecture, we need to set the chainId.
     // We also need to mention who is going to pay the gas fee.

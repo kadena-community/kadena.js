@@ -1,26 +1,27 @@
 import { prismaClient } from '@db/prismaClient';
-import { dotenv } from '@utils/dotenv';
+import { COMPLEXITY } from '@services/complexity';
+import { chainIds as defaultChainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { PRISMA, builder } from '../builder';
 import Block from '../objects/Block';
 
-builder.queryField('blocksFromHeight', (t) => {
-  return t.prismaField({
+builder.queryField('blocksFromHeight', (t) =>
+  t.prismaField({
+    description: 'Retrieve blocks by chain and minimal height.',
     args: {
       startHeight: t.arg.int({ required: true }),
-      chainIds: t.arg.intList({ required: false }),
+      chainIds: t.arg.stringList({ required: false }),
     },
     type: [Block],
+    complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
     async resolve(
-      __query,
+      query,
       __parent,
-      {
-        startHeight,
-        chainIds = Array.from(new Array(dotenv.CHAIN_COUNT)).map((__, i) => i),
-      },
+      { startHeight, chainIds = defaultChainIds },
     ) {
       try {
-        const blocksFromHeight = await prismaClient.block.findMany({
+        return await prismaClient.block.findMany({
+          ...query,
           where: {
             AND: [
               {
@@ -30,17 +31,19 @@ builder.queryField('blocksFromHeight', (t) => {
               },
               {
                 chainId: {
-                  in: chainIds as number[],
+                  in: chainIds?.map((x) => parseInt(x)),
                 },
               },
             ],
           },
+          orderBy: {
+            height: 'asc',
+          },
+          take: PRISMA.DEFAULT_SIZE,
         });
-
-        return blocksFromHeight;
       } catch (error) {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

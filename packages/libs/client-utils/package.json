@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client-utils",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Utility functions build as a wrapper around @kadena/client",
   "repository": {
     "type": "git",
@@ -10,35 +10,47 @@
   "license": "MIT",
   "contributors": [
     "Javad Khalilian <javad@kadena.io>",
-    "Albert Groothedde <albert@kadena.io>"
+    "Albert Groothedde <albert@kadena.io>",
+    "Nil Amrutlal <nil.amrutlal@deptagency.com>"
   ],
   "exports": {
+    "./built-in": "./lib/built-in/index.js",
     "./coin": "./lib/coin/index.js",
-    "./core": "./lib/core/index.js"
+    "./core": "./lib/core/index.js",
+    "./nodejs": "./lib/nodejs/index.js"
   },
   "main": "./lib/core/index.js",
   "typesVersions": {
     "*": {
+      "built-in": [
+        "./lib/built-in/index.d.ts"
+      ],
       "core": [
         "./lib/core/index.d.ts"
       ],
       "coin": [
         "./lib/coin/index.d.ts"
+      ],
+      "nodejs": [
+        "./lib/nodejs/index.d.ts"
       ]
     }
   },
   "files": [
     "dist",
     "lib",
+    "built-in",
     "coin",
     "core",
     "src"
   ],
   "scripts": {
-    "ae": "pnpm run ae:core && pnpm run ae:coin",
+    "ae": "pnpm run ae:core && pnpm run ae:built-in && pnpm run ae:coin",
+    "ae:built-in": "api-extractor run --verbose -c ./config/api-extractor-built-in.json",
     "ae:coin": "api-extractor run --verbose -c ./config/api-extractor-coin.json",
     "ae:core": "api-extractor run --verbose -c ./config/api-extractor-core.json",
     "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc && pnpm run ae",
+    "dev:ae:built-in": "api-extractor run --local --verbose -c ./config/api-extractor-built-in.json",
     "dev:ae:coin": "api-extractor run --local --verbose -c ./config/api-extractor-coin.json",
     "dev:ae:core": "api-extractor run --local --verbose -c ./config/api-extractor-core.json",
     "dev:postinstall": "pnpm run pactjs:generate:contract",
@@ -62,6 +74,7 @@
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/types": "workspace:*",
     "debug": "~4.3.4",
+    "js-yaml": "~4.1.0",
     "ramda": "^0.29.0"
   },
   "devDependencies": {
@@ -74,6 +87,7 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@types/debug": "~4.1.7",
+    "@types/js-yaml": "4.0.9",
     "@types/node": "^18.17.14",
     "@types/ramda": "^0.29.5",
     "@vitest/coverage-v8": "^0.34.6",

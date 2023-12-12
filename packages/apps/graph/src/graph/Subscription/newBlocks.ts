@@ -5,20 +5,19 @@ import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 
-builder.subscriptionField('newBlocks', (t) => {
-  return t.prismaField({
+builder.subscriptionField('newBlocks', (t) =>
+  t.prismaField({
+    description: 'Subscribe to new blocks.',
     args: {
       chainIds: t.arg.intList({ required: false }),
     },
     type: ['Block'],
     nullable: true,
-    subscribe: (parent, args, context, info) =>
+    subscribe: (__parent, args, context) =>
       iteratorFn(args.chainIds as number[] | undefined, context),
-    // TODO: find out why this needs `as Block[]`
-    // without it we get the error from
-    resolve: (__, block) => block as Block[],
-  });
-});
+    resolve: (__query, parent) => parent as Block[],
+  }),
+);
 
 async function* iteratorFn(
   chainIds: number[] = Array.from(new Array(dotenv.CHAIN_COUNT)).map(

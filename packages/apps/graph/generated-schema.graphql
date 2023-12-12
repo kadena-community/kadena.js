@@ -3,18 +3,27 @@ The `BigInt` scalar type represents non-fractional signed whole numeric values.
 """
 scalar BigInt
 
+"""A unit of information that stores a set of verified transactions."""
 type Block implements Node {
   chainId: BigInt!
+
+  """The number of blocks that proceed this block."""
   confirmationDepth: Int!
   creationTime: DateTime!
+
+  """
+  The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.
+  """
   epoch: DateTime!
   hash: ID!
   height: BigInt!
   id: ID!
-  minerKeys: [MinerKey!]
+  minerAccount: ChainFungibleAccount!
   parent: Block
   parentHash: String
   payloadHash: String!
+
+  """The proof of work hash."""
   powHash: String!
   predicate: String!
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
@@ -31,35 +40,36 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
-type ChainModuleAccount implements Node {
+"""A chain- and fungible-specific account."""
+type ChainFungibleAccount implements Node {
   accountName: String!
   balance: Float!
   chainId: ID!
+  fungibleName: String!
   guard: Guard!
   id: ID!
-  moduleName: String!
-  transactions(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransactionsConnection!
-  transfers(after: String, before: String, first: Int, last: Int): ChainModuleAccountTransfersConnection!
+  transactions(after: String, before: String, first: Int, last: Int): ChainFungibleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): ChainFungibleAccountTransfersConnection!
 }
 
-type ChainModuleAccountTransactionsConnection {
-  edges: [ChainModuleAccountTransactionsConnectionEdge!]!
+type ChainFungibleAccountTransactionsConnection {
+  edges: [ChainFungibleAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
 
-type ChainModuleAccountTransactionsConnectionEdge {
+type ChainFungibleAccountTransactionsConnectionEdge {
   cursor: String!
   node: Transaction!
 }
 
-type ChainModuleAccountTransfersConnection {
-  edges: [ChainModuleAccountTransfersConnectionEdge!]!
+type ChainFungibleAccountTransfersConnection {
+  edges: [ChainFungibleAccountTransfersConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
 
-type ChainModuleAccountTransfersConnectionEdge {
+type ChainFungibleAccountTransfersConnectionEdge {
   cursor: String!
   node: Transfer!
 }
@@ -72,68 +82,85 @@ scalar DateTime
 """Floats that will have a value of 0 or more."""
 scalar Decimal
 
+"""An event emitted by the execution of a smart-contract function."""
 type Event implements Node {
   block: Block!
   chainId: BigInt!
+
+  """The height of the block where the event was emitted."""
   height: BigInt!
   id: ID!
   moduleName: String!
   name: String!
+
+  """
+  The order index of this event, in the case that there are multiple events.
+  """
   orderIndex: BigInt!
   parameterText: String!
+
+  """
+  The full eventname, containing module and eventname, e.g. coin.TRANSFER
+  """
   qualifiedName: String!
   requestKey: String!
   transaction: Transaction
 }
 
-"""General information about the graph and chainweb-data"""
+"""A fungible-specific account."""
+type FungibleAccount implements Node {
+  accountName: String!
+  chainAccounts: [ChainFungibleAccount!]!
+  fungibleName: String!
+  id: ID!
+  totalBalance: Decimal!
+  transactions(after: String, before: String, first: Int, last: Int): FungibleAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): FungibleAccountTransfersConnection!
+}
+
+type FungibleAccountTransactionsConnection {
+  edges: [FungibleAccountTransactionsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type FungibleAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type FungibleAccountTransfersConnection {
+  edges: [FungibleAccountTransfersConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type FungibleAccountTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
+}
+
+"""General information about the graph and chainweb-data."""
 type GraphConfiguration {
+  """The maximum number of confirmations calculated on this endpoint."""
   maximumConfirmationDepth: Int!
+
+  """The lowest block-height that is indexed in this endpoint."""
   minimumBlockHeight: BigInt
 }
 
+"""Guard for an account."""
 type Guard {
   keys: [String!]!
   predicate: String!
 }
 
+"""The account of the miner that solved a block."""
 type MinerKey implements Node {
   block: Block!
   blockHash: String!
   id: ID!
   key: String!
-}
-
-type ModuleAccount implements Node {
-  accountName: String!
-  chainAccounts: [ChainModuleAccount!]!
-  id: ID!
-  moduleName: String!
-  totalBalance: Decimal!
-  transactions(after: String, before: String, first: Int, last: Int): ModuleAccountTransactionsConnection!
-  transfers(after: String, before: String, first: Int, last: Int): ModuleAccountTransfersConnection!
-}
-
-type ModuleAccountTransactionsConnection {
-  edges: [ModuleAccountTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type ModuleAccountTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
-}
-
-type ModuleAccountTransfersConnection {
-  edges: [ModuleAccountTransfersConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type ModuleAccountTransfersConnectionEdge {
-  cursor: String!
-  node: Transfer!
 }
 
 interface Node {
@@ -168,22 +195,55 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
-  account(accountName: String!, moduleName: String!): ModuleAccount!
+  """Retrieve an account by its name and fungible, such as coin."""
+  account(accountName: String!, fungibleName: String!): FungibleAccount
+
+  """Retrieve a block by hash."""
   block(hash: String!): Block
-  blocksFromHeight(chainIds: [Int!], startHeight: Int!): [Block!]!
-  chainAccount(accountName: String!, chainId: String!, moduleName: String!): ChainModuleAccount
-  completedBlockHeights(chainIds: [String!], completedHeights: Boolean, heightCount: Int): [Block!]!
+
+  """Retrieve blocks by chain and minimal height."""
+  blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
+
+  """
+  Retrieve an account by its name and fungible, such as coin, on a specific chain.
+  """
+  chainAccount(accountName: String!, chainId: String!, fungibleName: String!): ChainFungibleAccount
+
+  """Retrieve all completed blocks from a given height."""
+  completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
+
+  """Estimate the gas limit for a transaction."""
   gasLimitEstimate(transaction: PactTransaction!): Int!
+
+  """Estimate the gas limit for a list of transactions."""
   gasLimitEstimates(transactions: [PactTransaction!]!): [Int!]!
+
+  """Get the configuration of the graph."""
   graphConfiguration: GraphConfiguration!
+
+  """Get the height of the block with the highest height."""
   lastBlockHeight: BigInt
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
+
+  """
+  Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
+  """
   pactQueries(pactQuery: [PactQuery!]!): [String!]!
+
+  """
+  Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
+  """
   pactQuery(pactQuery: PactQuery!): String!
-  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, moduleName: String, requestKey: String): QueryTransactionsConnection!
+
+  """Retrieve transactions."""
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
+
+  """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
-  transfers(accountName: String, after: String, before: String, chainId: String, first: Int, last: Int, moduleName: String): QueryTransfersConnection!
+
+  """Retrieve transfers."""
+  transfers(accountName: String, after: String, before: String, chainId: String, first: Int, fungibleName: String, last: Int): QueryTransfersConnection!
 }
 
 type QueryTransactionsByPublicKeyConnection {
@@ -219,67 +279,127 @@ type QueryTransfersConnectionEdge {
   node: Transfer!
 }
 
+"""A signer for a specific transaction."""
 type Signer implements Node {
+  """The signer for the gas."""
   address: String
   capabilities: String
   id: ID!
   orderIndex: Int!
   publicKey: String!
   requestKey: String!
+
+  """The signature scheme that was used to sign."""
   scheme: String
+
+  """The result of the signing operation of the hash of the transaction."""
   signature: String!
 }
 
 type Subscription {
+  """Listen for a specific event by qualifiedName (e.g. `coin.TRANSFER`)."""
   event(eventName: String!): [Event!]
+
+  """Subscribe to new blocks."""
   newBlocks(chainIds: [Int!]): [Block!]
+
+  """
+  Listen for a transaction by request key. Returns when it is in a block.
+  """
   transaction(requestKey: String!): Transaction
 }
 
+"""A confirmed transaction."""
 type Transaction implements Node {
+  """The JSON stringified error message if the transaction failed."""
   badResult: String
   block: Block
   chainId: BigInt!
+
+  """
+  The Pact expressions executed in this transaction when it is an `exec` transaction. For a continuation, this field is `cont`.
+  """
   code: String!
+
+  """
+  The JSON stringified continuation in the case that it is a continuation.
+  """
   continuation: String
   creationTime: DateTime!
+
+  """
+  The environment data made available to the transaction. Formatted as raw JSON.
+  """
   data: String
   eventCount: BigInt
   events: [Event!]
   gas: BigInt!
   gasLimit: BigInt!
   gasPrice: Float!
+
+  """The transaction result when it was successful. Formatted as raw JSON."""
   goodResult: String
+
+  """The height of the block this transaction belongs to."""
   height: BigInt!
   id: ID!
+
+  """Identifier to retrieve the logs for the execution of the transaction."""
   logs: String
   metadata: String
   nonce: String
+
+  """
+  In the case of a cross-chain transaction; A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.
+  """
   pactId: String
+
+  """
+  In the case of a cross-chain transaction; the proof provided to continue the cross-chain transaction.
+  """
   proof: String
   requestKey: String!
+
+  """
+  In the case of a cross-chain transaction; Whether or not this transaction can be rolled back.
+  """
   rollback: Boolean
   senderAccount: String
   signers: [Signer!]
+
+  """
+  The step-number when this is an execution of a `defpact`, aka multi-step transaction.
+  """
   step: BigInt
   transactionId: BigInt
   transfers: [Transfer!]
   ttl: BigInt!
 }
 
+"""A transfer of funds from a fungible between two accounts."""
 type Transfer implements Node {
   amount: Decimal!
   blockHash: String!
   blocks: [Block!]!
   chainId: BigInt!
+
+  """
+  The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.
+  """
   crossChainTransfer: Transfer
   height: BigInt!
   id: ID!
   moduleHash: String!
   moduleName: String!
+
+  """
+  The order of the transfer when it is a `defpact` (multi-step transaction) execution.
+  """
   orderIndex: BigInt!
   receiverAccount: String!
   requestKey: String!
   senderAccount: String!
+
+  """The transaction that initiated this transfer."""
   transaction: Transaction
 }

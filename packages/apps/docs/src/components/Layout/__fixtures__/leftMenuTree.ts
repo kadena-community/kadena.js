@@ -1,4 +1,4 @@
-import type { IMenuItem } from '@/Layout';
+import type { IMenuItem } from '@kadena/docs-tools';
 
 export const leftMenuTree: IMenuItem[] = [
   {

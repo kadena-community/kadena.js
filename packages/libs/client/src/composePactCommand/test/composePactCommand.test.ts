@@ -44,11 +44,13 @@ describe('continuation', () => {
       pactId: '1',
       proof: 'test-proof',
       step: 1,
+      rollback: false,
     });
     expect(command.payload).toEqual({
       cont: {
         pactId: '1',
         proof: 'test-proof',
+        rollback: false,
         step: 1,
         data: {},
       },
@@ -277,7 +279,7 @@ describe('composePactCommand', () => {
   });
 
   it('adds does not set sender if its not presented', () => {
-    const command: Partial<IPactCommand> = composePactCommand(
+    const command = composePactCommand(
       composePactCommand(
         execution('(test)'),
         setMeta({ senderAccount: 'test' }),
@@ -306,6 +308,31 @@ describe('composePactCommand', () => {
       ttl: 1,
     });
   });
+  it('merge data if they are continuation', () => {
+    expect(
+      composePactCommand(
+        continuation({
+          pactId: '1',
+          step: 1,
+          rollback: false,
+          proof: null,
+          data: { direct: 'test' },
+        }),
+        addData('one', 'test'),
+      )().payload,
+    ).toEqual({
+      cont: {
+        pactId: '1',
+        step: 1,
+        rollback: false,
+        proof: null,
+        data: {
+          one: 'test',
+          direct: 'test',
+        },
+      },
+    });
+  });
 });
 
 describe('mergePayload', () => {
@@ -315,6 +342,7 @@ describe('mergePayload', () => {
     ).toEqual({
       exec: {
         code: '(one)(two)',
+        data: {},
       },
     });
   });
@@ -360,6 +388,27 @@ describe('mergePayload', () => {
     ).toEqual({
       cont: {
         pactId: '1',
+        data: { one: 'test', two: 'test' },
+      },
+    });
+
+    expect(
+      mergePayload(undefined, {
+        exec: { code: '(one)', data: { one: 'test' } },
+      }),
+    ).toEqual({ exec: { code: '(one)', data: { one: 'test' } } });
+  });
+
+  it('should not override input data', () => {
+    expect(
+      mergePayload(
+        { cont: { proof: 'proof', data: { one: 'test' } } },
+        { cont: { pactId: '1', data: { two: 'test' } } },
+      ),
+    ).toEqual({
+      cont: {
+        pactId: '1',
+        proof: 'proof',
         data: { one: 'test', two: 'test' },
       },
     });

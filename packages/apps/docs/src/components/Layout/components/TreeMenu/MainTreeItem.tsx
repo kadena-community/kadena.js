@@ -1,4 +1,4 @@
-import type { IMenuItem, LevelType } from '@/Layout';
+import type { IMenuItem, LevelType } from '@kadena/docs-tools';
 import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import { Item } from './Item';

@@ -1,5 +1,5 @@
-import type { IMenuData, ITag } from '@/Layout';
-import { getData } from '@/utils/staticGeneration/getData.mjs';
+import type { IMenuData, ITag } from '@kadena/docs-tools';
+import { getMenuData } from '@kadena/docs-tools';
 
 const PostsPerTag = (tag: string, data?: IMenuData[]): Omit<ITag, 'tag'> => {
   if (!data) return { count: 0, links: [] };
@@ -12,9 +12,9 @@ const PostsPerTag = (tag: string, data?: IMenuData[]): Omit<ITag, 'tag'> => {
   };
 };
 
-export const getAllBlogTags = (): ITag[] => {
+export const getAllBlogTags = async (): Promise<ITag[]> => {
   const STARTBRANCH = '/blogchain';
-  const data = getData() as IMenuData[];
+  const data = (await getMenuData()) as unknown as IMenuData[];
 
   const startBranch = data.find((item) => item.root === STARTBRANCH);
 

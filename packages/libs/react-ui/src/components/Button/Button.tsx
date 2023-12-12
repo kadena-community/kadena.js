@@ -1,6 +1,11 @@
 import { SystemIcon } from '@components/Icon';
 import cn from 'classnames';
-import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import type {
+  ButtonHTMLAttributes,
+  FC,
+  HTMLAttributeAnchorTarget,
+  ReactNode,
+} from 'react';
 import React from 'react';
 import type { colorVariants, typeVariants } from './Button.css';
 import {
@@ -30,7 +35,7 @@ export interface IButtonProps
   onClick?:
     | React.MouseEventHandler<HTMLButtonElement>
     | React.FormEventHandler<HTMLButtonElement>;
-  target?: '_blank' | '_self';
+  target?: HTMLAttributeAnchorTarget;
   title?: string;
   type?: 'button' | 'submit' | 'reset';
   variant?: keyof typeof typeVariants;
@@ -121,7 +126,6 @@ export const Button: FC<IButtonProps> = ({
       {...restProps}
       aria-label={ariaLabel}
       className={buttonClassname}
-      data-testid="kda-button"
       type={type}
     >
       {getContents(children)}

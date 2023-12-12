@@ -8,6 +8,7 @@ export const headerStyle = style([
     width: '100%',
     height: '$16',
     alignItems: 'center',
+    overflow: 'auto',
     zIndex: 1,
   }),
 ]);

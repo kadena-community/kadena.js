@@ -1,7 +1,7 @@
 import { useLayoutContext } from '@/context';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Header, Sidebar } from './partials';
 import {
   gridItemMainStyle,
@@ -15,7 +15,15 @@ interface IProps {
 }
 
 export const Layout: FC<IProps> = ({ children }: IProps) => {
-  const { isMenuOpen } = useLayoutContext();
+  const { isMenuOpen, setActiveMenuIndex, setIsMenuOpen } = useLayoutContext();
+
+  useEffect(() => {
+    // sidebar menu closed by default on smaller screens
+    if (window.innerWidth < 768) {
+      setActiveMenuIndex(undefined);
+      setIsMenuOpen(false);
+    }
+  }, []);
 
   return (
     <div data-testid="layout-container">

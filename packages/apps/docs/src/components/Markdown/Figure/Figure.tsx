@@ -33,7 +33,7 @@ export const Figure: FC<IProps> = ({ alt, src }) => {
       />
       {alt ? (
         <figcaption className={figCaption}>
-          <Text size="sm" as="span">
+          <Text variant="smallest" as="span">
             {alt}
           </Text>
         </figcaption>

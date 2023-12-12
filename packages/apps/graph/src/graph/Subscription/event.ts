@@ -4,18 +4,19 @@ import { nullishOrEmpty } from '@utils/nullishOrEmpty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 
-builder.subscriptionField('event', (t) => {
-  return t.prismaField({
+builder.subscriptionField('event', (t) =>
+  t.prismaField({
+    description:
+      'Listen for a specific event by qualifiedName (e.g. `coin.TRANSFER`).',
     args: {
       eventName: t.arg.string({ required: true }),
     },
     type: ['Event'],
     nullable: true,
-    subscribe: (parent, args, context, info) =>
-      iteratorFn(args.eventName, context),
-    resolve: (__, event) => event as Event[],
-  });
-});
+    subscribe: (__parent, args, context) => iteratorFn(args.eventName, context),
+    resolve: (__query, parent) => parent as Event[],
+  }),
+);
 
 async function* iteratorFn(
   eventName: string,

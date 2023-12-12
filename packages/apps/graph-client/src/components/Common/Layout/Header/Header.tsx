@@ -11,6 +11,16 @@ import {
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+
+import {
+  SearchType,
+  searchTypeLabels,
+  searchTypePlaceholders,
+  secondSearchFieldPlaceholders,
+  secondSearchTypeLabels,
+  thirdSeachTypeLabels,
+  thirdSearchFieldPlaceholders,
+} from '@/constants/search';
 import { headerStyle } from './styles.css';
 
 export interface IHeaderProps {
@@ -22,67 +32,87 @@ const Header: FC<IHeaderProps> = (props) => {
 
   const router = useRouter();
 
-  const [searchType, setSearchType] = useState<string>('request-key');
+  const [searchType, setSearchType] = useState<SearchType>(
+    SearchType.Transactions,
+  );
   const [searchField, setSearchField] = useState<string>('');
   const [secondSearchField, setSecondSearchField] = useState<string>('');
   const [thirdSearchField, setThirdSearchField] = useState<string>('');
   const [gridColumns, setGridColumns] = useState<number>(3);
-  const [defaultHashOption, setDefaultHashOption] =
-    useState<string>('request-key');
+  const [defaultHashOption, setDefaultHashOption] = useState<SearchType>(
+    SearchType.Transactions,
+  );
 
-  const searchTypeLabels: Record<string, string> = {
-    'request-key': 'Request Key',
-    account: 'Account',
-    event: 'Event Name',
-    block: 'Block Hash',
-    gasEstimation: 'Cmd',
+  const routeSearchTypeMapping = [
+    {
+      route: routes.GAS_ESTIMATION,
+      searchType: SearchType.GasEstimation,
+      fields: ['cmd', 'hash', 'sigs'],
+    },
+    {
+      route: routes.ACCOUNT_ROOT,
+      searchType: SearchType.Account,
+      fields: ['account', 'fungible'],
+    },
+    {
+      route: routes.BLOCK_ROOT,
+      searchType: SearchType.Block,
+      fields: ['hash'],
+    },
+    { route: routes.EVENT, searchType: SearchType.Event, fields: ['key'] },
+    {
+      route: routes.TRANSACTIONS,
+      searchType: SearchType.Transactions,
+      fields: ['key'],
+    },
+  ];
+
+  const setSearchFields = (
+    searchType: SearchType,
+    searchField?: string,
+    secondSearchField?: string,
+    thirdSearchField?: string,
+  ) => {
+    setSearchType(searchType);
+    setSearchField(searchField || '');
+    setSecondSearchField(secondSearchField || '');
+    setThirdSearchField(thirdSearchField || '');
   };
 
-  const searchTypePlaceholders: Record<string, string> = {
-    'request-key': 'vCiATVJgm7...',
-    account: 'k:1234...',
-    event: 'coin.TRANSFER',
-    block: 'CA9orP2yM...',
-    gasEstimation: 'cmd',
-  };
-
-  const secondSearchTypeLabels: Record<string, string> = {
-    account: 'Module',
-    gasEstimation: 'Hash',
-  };
-
-  const secondSearchFieldPlaceholders: Record<string, string> = {
-    account: 'coin',
-    gasEstimation: 'hash',
-  };
-
-  const thirdSeachTypeLabels: Record<string, string> = {
-    gasEstimation: 'Signatures',
-  };
-
-  const thirdSearchFieldPlaceholders: Record<string, string> = {
-    gasEstimation: 'sigs',
-  };
+  React.useEffect(() => {
+    for (const mapping of routeSearchTypeMapping) {
+      if (
+        router.pathname.includes(mapping.route) &&
+        mapping.fields.some((field) => router.query[field])
+      ) {
+        const fieldValues = mapping.fields.map(
+          (field) => router.query[field] as string,
+        );
+        setSearchFields(mapping.searchType, ...fieldValues);
+        return;
+      }
+    }
+  }, [router]);
 
   const search = (): void => {
     switch (searchType) {
-      case 'request-key':
+      case SearchType.Transactions:
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.TRANSACTIONS}/${searchField}`);
         break;
-      case 'account':
+      case SearchType.Account:
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.ACCOUNT}/${secondSearchField}/${searchField}`);
         break;
-      case 'event':
+      case SearchType.Event:
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.EVENT}/${searchField}`);
         break;
-      case 'block':
+      case SearchType.Block:
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.BLOCK_OVERVIEW}/${searchField}`);
         break;
-      case 'gasEstimation':
+      case SearchType.GasEstimation:
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push({
           pathname: `${routes.GAS_ESTIMATION}`,
@@ -107,7 +137,7 @@ const Header: FC<IHeaderProps> = (props) => {
     setSearchField(event.target.value);
     const fieldValue = event.target.value;
 
-    if (searchType === 'gasEstimation') {
+    if (searchType === SearchType.GasEstimation) {
       return;
     }
 
@@ -117,11 +147,12 @@ const Header: FC<IHeaderProps> = (props) => {
       fieldValue.startsWith('K:') ||
       fieldValue.startsWith('W:')
     ) {
-      setSearchType('account');
+      setSecondSearchField('coin');
+      setSearchType(SearchType.Account);
     }
 
     if (fieldValue.includes('.')) {
-      setSearchType('event');
+      setSearchType(SearchType.Event);
     }
 
     if (fieldValue.length === 43) {
@@ -132,26 +163,27 @@ const Header: FC<IHeaderProps> = (props) => {
   const handleSearchTypeChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
-    setSearchType(event.target.value);
-    if (event.target.value === 'request-key') {
-      setDefaultHashOption('request-key');
+    setSearchType(event.target.value as SearchType);
+    if (event.target.value === SearchType.Transactions) {
+      setDefaultHashOption(SearchType.Transactions);
       setGridColumns(3);
     }
-    if (event.target.value === 'block') {
-      setDefaultHashOption('block');
+    if (event.target.value === SearchType.Block) {
+      setDefaultHashOption(SearchType.Block);
       setGridColumns(3);
     }
-    if (event.target.value === 'event') {
+    if (event.target.value === SearchType.Event) {
       setGridColumns(3);
     }
-    if (event.target.value === 'account') {
+    if (event.target.value === SearchType.Account) {
       setSecondSearchField('coin');
       setGridColumns(4);
     }
-    if (event.target.value === 'gasEstimation') {
+    if (event.target.value === SearchType.GasEstimation) {
       setSecondSearchField('');
       setGridColumns(5);
     }
+    setSearchField('');
   };
 
   return (
@@ -180,11 +212,11 @@ const Header: FC<IHeaderProps> = (props) => {
                 onChange={handleSearchTypeChange}
                 value={searchType}
               >
-                <option value="request-key">Request Key</option>
-                <option value="account">Account</option>
-                <option value="event">Event</option>
-                <option value="block">Block</option>
-                <option value="gasEstimation">Gas Estimation</option>
+                <option value={SearchType.Transactions}>Request Key</option>
+                <option value={SearchType.Account}>Account</option>
+                <option value={SearchType.Event}>Event</option>
+                <option value={SearchType.Block}>Block</option>
+                <option value={SearchType.GasEstimation}>Gas Estimation</option>
               </Select>
             </FormFieldWrapper>
           </GridItem>
