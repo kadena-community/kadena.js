@@ -36,6 +36,12 @@ const meta: Meta<ITagGroupProps> = {
         type: null,
       },
     },
+    className: {
+      description: "Optional classnames to add to the tag's container",
+      control: {
+        type: null,
+      },
+    },
   },
 };
 
@@ -59,7 +65,9 @@ export const Group: Story = {
     return (
       <TagGroup label={label}>
         {tags.map((item) => (
-          <TagItem key={item.id}>{item.name}</TagItem>
+          <TagItem key={item.id} href="www.google.com">
+            {item.name}
+          </TagItem>
         ))}
       </TagGroup>
     );

@@ -18,17 +18,19 @@ export interface ITagGroupProps
     | 'defaultSelectedKeys'
     | 'selectedKeys'
     | 'onSelectionChange'
-  > {}
+  > {
+  className?: string;
+}
 
-export const TagGroup: FC<ITagGroupProps> = (props) => {
-  const { label } = props;
+export const TagGroup: FC<ITagGroupProps> = ({ className, ...restProps }) => {
+  const { label } = restProps;
   const ref = React.useRef(null);
 
-  const state = useListState(props);
-  const { gridProps, labelProps } = useTagGroup(props, state, ref);
+  const state = useListState(restProps);
+  const { gridProps, labelProps } = useTagGroup(restProps, state, ref);
 
   return (
-    <div className="tag-group">
+    <div className={className}>
       {label && (
         <div {...labelProps}>
           {typeof label === 'string' ? (
