@@ -175,7 +175,7 @@ export async function getXChainTransferInfo({
       chainId: senderChain,
     };
 
-    const { pollCreateSpv, listen, dirtyRead } = client(networkId, senderChain);
+    const { pollCreateSpv, listen } = client(networkId, senderChain);
     const proof = await pollCreateSpv(requestObject, receiverChain);
     const status = await listen(requestObject);
     const pactId = status.continuation!.pactId;
@@ -191,16 +191,21 @@ export async function getXChainTransferInfo({
       .setMeta({ chainId: receiverChain })
       .createTransaction();
 
+    const { dirtyRead } = client(networkId, receiverChain);
+
     const response = await dirtyRead(continuationTransaction as ICommand);
 
     if ('error' in response?.result) {
-      const error = response.result as unknown as {
-        type: string;
-        message: string;
+      const failed = response.result as unknown as {
+        status: string, error: {
+          type: string;
+          message: string;
+        }
       };
+
       if (
-        String(error.type) === 'EvalError' &&
-        String(error.message).includes('pact completed')
+        String(failed.error.type) === 'EvalError' &&
+        String(failed.error.message).includes('pact completed')
       ) {
         return {
           id: StatusId.Success,
