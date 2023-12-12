@@ -8,7 +8,7 @@ export const helperStyle = style([
     gap: '$1',
     cursor: 'pointer',
     color: '$neutral5',
-    fontSize: '$xs'
+    fontSize: '$xs',
   }),
 ]);
 

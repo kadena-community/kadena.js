@@ -197,10 +197,11 @@ export async function getXChainTransferInfo({
 
     if ('error' in response?.result) {
       const failed = response.result as unknown as {
-        status: string, error: {
+        status: string;
+        error: {
           type: string;
           message: string;
-        }
+        };
       };
 
       if (
