@@ -8,6 +8,6 @@ module.exports = defineConfig({
     include: ['tests/**/*.{test,spec}.ts'],
     globals: true,
     testTimeout: 1200000,
-    hookTimeout: 30000
+    hookTimeout: 30000,
   },
 });

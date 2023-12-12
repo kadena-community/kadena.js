@@ -1,2 +1,2 @@
-export const fundAmount = 100
-export const transferAmount = '20'
+export const fundAmount = 100;
+export const transferAmount = '20';

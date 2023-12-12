@@ -61,7 +61,9 @@ export function getTransactionsQuery(accountName: string) {
   };
 }
 
-export function getTransactionsByRequestKeyQuery(requestKey: string | undefined)  {
+export function getTransactionsByRequestKeyQuery(
+  requestKey: string | undefined,
+) {
   return {
     query: `query getTransactionsByRequestKey($requestKey: String!) {
       transactions(requestKey: $requestKey) {
@@ -79,4 +81,3 @@ export function getTransactionsByRequestKeyQuery(requestKey: string | undefined)
     extensions: {},
   };
 }
-
