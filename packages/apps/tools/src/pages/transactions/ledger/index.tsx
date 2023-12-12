@@ -172,9 +172,7 @@ const LedgerPage = () => {
           {publicKey ? (
             <AccountHoverTag value={publicKey.slice(0, 15)} />
           ) : (
-            <Text variant="code">
-              Connect with your ledger to fetch your key
-            </Text>
+            <Text as="code">Connect with your ledger to fetch your key</Text>
           )}
           <Box marginBottom={'$4'} />
 
