@@ -16,6 +16,14 @@ uses chainweb-data as the datasource.
 
 A GraphQL endpoint that interacts with chainweb-data and chainweb-node.
 
+- [Kadena GraphQL](#kadena-graphql)
+- [Useful extra's](#useful-extras)
+  - [Connect to the database](#connect-to-the-database)
+  - [Fund an account on the devnet](#fund-an-account-on-the-devnet)
+  - [Simulate traffic on the devnet](#simulate-traffic-on-the-devnet)
+  - [Tracing and trace analysis](#tracing-and-trace-analysis)
+  - [Query Complexity](#query-complexity)
+
 # Getting started
 
 First, install dependencies and build up to and including `@kadena/graph`.
@@ -83,7 +91,7 @@ pnpm build --filter @kadena/graph...
    }
    ```
 
-## Useful commands
+## Useful extra's
 
 ### Connect to the database
 
@@ -143,3 +151,15 @@ pnpm run trace:analyse -s <sort> -l <limit>
 
 - sort - sort by a field (default: `median`)
 - limit - limit the number of queries to output (default: no limit)
+
+### Query Complexity
+
+To enable query complexity limits and calculations, set `COMPLEXITY_ENABLED` to `true`. The complexity limit, which determines how complex queries are allowed to be, can be set with `COMPLEXITY_LIMIT`. You can expose the complexity of a query by setting `COMPLEXITY_EXPOSED` to `true`, which returns the complexity details in the `extensions` section of the response.
+
+The overal query complexity is calculated by combining the field complexity, the depth and the breath. The complexity of the fields is determined by the following rules:
+
+- Fields that do not make external calls: 1
+- Calls to Chainweb Node: 7
+- Prisma calls without relations: 5
+- Prisma calls with relations: 10
+- *In cases of lists, a mulitplier is applied for the requested item count.

@@ -179,11 +179,13 @@ const Block: React.FC = () => {
                         <Table.Td>
                           <Table.Root>
                             <Table.Body>
-                              {data.block.minerKeys?.map((minerKey, index) => (
-                                <Table.Tr key={index}>
-                                  <Table.Td>{minerKey.key}</Table.Td>
-                                </Table.Tr>
-                              ))}
+                              {data.block.minerAccount.guard.keys?.map(
+                                (minerKey, index) => (
+                                  <Table.Tr key={index}>
+                                    <Table.Td>{minerKey}</Table.Td>
+                                  </Table.Tr>
+                                ),
+                              )}
                             </Table.Body>
                           </Table.Root>
                         </Table.Td>

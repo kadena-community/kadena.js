@@ -2,16 +2,16 @@ import type { DocumentNode } from '@apollo/client';
 import { gql } from '@apollo/client';
 
 export const CORE_ACCOUNT_FIELDS: DocumentNode = gql`
-  fragment CoreAccountFields on ModuleAccount {
+  fragment CoreAccountFields on FungibleAccount {
     accountName
-    moduleName
+    fungibleName
   }
 `;
 
 export const ALL_ACCOUNT_FIELDS: DocumentNode = gql`
   ${CORE_ACCOUNT_FIELDS}
 
-  fragment AllAccountFields on ModuleAccount {
+  fragment AllAccountFields on FungibleAccount {
     ...CoreAccountFields
     id
     totalBalance
