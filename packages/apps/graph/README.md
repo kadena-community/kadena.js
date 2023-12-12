@@ -172,4 +172,4 @@ following rules:
 - Calls to Chainweb Node: 7
 - Prisma calls without relations: 5
 - Prisma calls with relations: 10
-- \*In cases of lists, a mulitplier is applied for the requested item count.
+- \*In cases of lists, a multiplier is applied for the requested item count.
