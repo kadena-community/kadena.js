@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 export const InputShowHide: FC<IInputProps> = (props) => {
   const [value, setValue] = useState<string>('');
-  const [isText, setIsTextType] = useState<boolean>(true);
+  const [isText, setIsTextType] = useState<boolean>(false);
   return (
     <Input
       {...props}
