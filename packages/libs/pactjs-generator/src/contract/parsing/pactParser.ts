@@ -156,7 +156,10 @@ const isNotDuplicated: IsNotDuplicated =
 
 // eslint-disable-next-line @rushstack/typedef-var
 const isNotDuplicatedModule = isNotDuplicated<IModuleLike>(
-  (a, b) => a.name === b.name && a.namespace === b.namespace,
+  (a, b) =>
+    a.name === b.name &&
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    (a.namespace === b.namespace || (!a.namespace && !b.namespace)),
 );
 
 /**
@@ -273,7 +276,7 @@ async function loadModuleDependencies(
         await getModule(withParentNamespace);
         moduleName = withParentNamespace;
       } catch {
-        // if the module is not found, continue with without a namespace
+        // if the module is not found, continue without a namespace
         moduleName = usedModule.name;
         console.log(
           `Module ${moduleName} not found. trying to load ${usedModule.name}`,
