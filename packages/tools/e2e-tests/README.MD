@@ -28,20 +28,20 @@ executing the commands below.
 Note: the following commands have been written to be executable from the root of
 the monorepository.
 
-1.  Install dependencies:
+1. Install dependencies:
 
 ```sh
 pnpm install
 ```
 
-2.  Install browsers required by Playwright
+2. Install browsers required by Playwright
 
 ```sh
 pnpm --filter @kadena-dev/e2e-tests run install:chromium
 ```
 
-3.  Run test suite, substitute `tools-app` for any of the available projects
-    described in the [playwright.config.ts][4]
+3. Run test suite, substitute `tools-app` for any of the available projects
+   described in the [playwright.config.ts][4]
 
 ```sh
  pnpm --filter @kadena-dev/e2e-tests run test:e2e --project=@kadena/tools
