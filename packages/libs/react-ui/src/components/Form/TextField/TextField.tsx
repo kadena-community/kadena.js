@@ -2,6 +2,7 @@ import type { IFormFieldWrapperProps, IInputProps } from '@components/Form';
 import { FormFieldWrapper, Input } from '@components/Form';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
+import type { AriaTextFieldProps } from 'react-aria';
 import { useTextField } from 'react-aria';
 
 export interface ITextFieldProps
@@ -22,9 +23,9 @@ export const TextField: FC<ITextFieldProps> = ({
     inputProps: ariaInputProps,
     descriptionProps,
     errorMessageProps,
-  } = useTextField(props, ref);
+  } = useTextField(inputProps as AriaTextFieldProps, ref);
 
-  const computedDescriptionProps =
+  const computedHelperTextProps =
     status === 'negative' ? errorMessageProps : descriptionProps;
 
   return (
@@ -33,7 +34,7 @@ export const TextField: FC<ITextFieldProps> = ({
       disabled={disabled}
       status={status}
       labelProps={labelProps}
-      descriptionProps={computedDescriptionProps}
+      helperTextProps={computedHelperTextProps}
       {...props}
     >
       <Input

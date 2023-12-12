@@ -34,7 +34,7 @@ export interface IFormFieldWrapperProps
   labelProps?:
     | DOMAttributes<HTMLLabelElement>
     | LabelHTMLAttributes<HTMLLabelElement>;
-  descriptionProps?: DOMAttributes<FocusableElement>;
+  helperTextProps?: DOMAttributes<FocusableElement>;
 }
 
 export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
@@ -43,11 +43,12 @@ export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
   children,
   label,
   leadingTextWidth = undefined,
-  htmlFor,
+  // htmlFor,
   tag,
   info,
   helperText,
   labelProps,
+  helperTextProps,
 }) => {
   const statusVal = disabled === true ? 'disabled' : status;
 
@@ -56,7 +57,6 @@ export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
       <div className={statusVal ? statusVariant[statusVal] : undefined}>
         {label !== undefined && (
           <FormFieldHeader
-            htmlFor={htmlFor}
             label={label}
             labelProps={labelProps}
             tag={tag}
@@ -66,7 +66,11 @@ export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
         <Stack gap="$2" direction="column">
           {children}
         </Stack>
-        {Boolean(helperText) && <FormFieldHelper>{helperText}</FormFieldHelper>}
+        {Boolean(helperText) && (
+          <FormFieldHelper helperTextProps={helperTextProps}>
+            {helperText}
+          </FormFieldHelper>
+        )}
       </div>
     </FormFieldWrapperContext.Provider>
   );

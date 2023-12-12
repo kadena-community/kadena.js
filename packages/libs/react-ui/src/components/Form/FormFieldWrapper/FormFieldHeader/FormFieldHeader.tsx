@@ -10,7 +10,7 @@ import {
 
 export interface IFormFieldHeaderProps {
   label: string;
-  htmlFor: string;
+  htmlFor?: string;
   tag?: string;
   info?: string;
   labelProps?:
