@@ -14,3 +14,7 @@ pages:
         title: Build
         url: /build
         file: /docs/index.tsx
+      build2:
+        title: Build2
+        url: /build2
+        file: /docs/test.md

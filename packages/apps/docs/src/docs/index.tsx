@@ -1,26 +1,18 @@
 import type { IMenuData } from '@/Layout';
 import type { IMostPopularPage } from '@/MostPopularData';
-import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
-import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
-import { DocsCard } from '@/components/DocsCard/DocsCard';
-import { docsCardLink } from '@/components/DocsCard/styles.css';
 import { HomeHeader } from '@/components/Layout/Landing/components';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { getHeaderItems } from '@/utils/config';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import {
-  checkSubTreeForActive,
-  getPathName,
-} from '@/utils/staticGeneration/checkSubTreeForActive.mjs';
-import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
+import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
+
 import classNames from 'classnames';
-import type { GetStaticProps } from 'next';
-import Link from 'next/link';
+import type { GetStaticProps } from 'next/types';
+
 import type { FC } from 'react';
 import React from 'react';
 
@@ -43,6 +35,28 @@ const Home: FC<IProps> = () => {
       </div>
     </>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const mostPopularPages = await getMostPopularPages('/pact');
+  const blogPosts = await getBlogPosts(['pact']);
+
+  return {
+    props: {
+      popularPages: mostPopularPages,
+      blogPosts,
+      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      frontmatter: {
+        title: 'Learn Pact',
+        subTitle: 'The human-readable smart contract language',
+        menu: 'Pact',
+        label: 'Pact',
+        order: 2,
+        description: 'The human-readable smart contract language',
+        layout: 'landing',
+      },
+    },
+  };
 };
 
 export default Home;
