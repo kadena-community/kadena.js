@@ -18,8 +18,8 @@ import { transfer } from '../transfer';
 import type { TransferType } from './file';
 import { appendToFile, createFile } from './file';
 
-const simualtionTransferOptions: TransferType[] = [
-  'xchaintransfer',
+const simulationTransferOptions: TransferType[] = [
+  'cross-chain-transfer',
   'transfer',
   'safe-transfer',
 ];
@@ -70,20 +70,16 @@ export async function simulate({
         )}\nSecret Key: ${stringifyProperty(account.keys, 'secretKey')}\n`,
       );
 
-      if (accounts.includes(account)) {
-        throw Error('Duplicate account');
-      }
-
       /* To diversify the initial testing sample, we cycle through all transfer types for the first funding transfers.
       Subsequent transfers will be of the 'transfer' type to simulate normal operations. */
       const fundingType =
-        i < simualtionTransferOptions.length
-          ? simualtionTransferOptions[i]
+        i < simulationTransferOptions.length
+          ? simulationTransferOptions[i]
           : 'transfer';
 
       let result;
 
-      if (fundingType === 'xchaintransfer') {
+      if (fundingType === 'cross-chain-transfer') {
         account = {
           ...account,
           chainId: '1',
@@ -109,6 +105,9 @@ export async function simulate({
       }
 
       // If the account is not in the accountlist, add it
+      if (accounts.includes(account)) {
+        throw Error('Duplicate account');
+      }
       accounts.push(account);
 
       appendToFile(filepath, {
@@ -161,13 +160,13 @@ export async function simulate({
         // Random select a transfer type
         const transferType = getRandomOption(
           seededRandomNo,
-          simualtionTransferOptions,
+          simulationTransferOptions,
         );
 
         let result;
 
         // This is to simulate cross chain transfers
-        if (transferType === 'xchaintransfer') {
+        if (transferType === 'cross-chain-transfer') {
           if (account.chainId === nextAccount.chainId) {
             nextAccount = {
               ...nextAccount,
