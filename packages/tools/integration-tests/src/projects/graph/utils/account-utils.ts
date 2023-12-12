@@ -1,16 +1,19 @@
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
+import { waitForEvent } from '@kadena/client-utils/core';
+import type { IKeyPair } from '@kadena/types';
 import type {
   IAccount,
   IAccountWithSecretKey,
 } from '../testdata/constants/accounts';
 import { sender00 } from '../testdata/constants/accounts';
 import { devnetHost, networkId } from '../testdata/constants/network';
-import { waitForEvent } from '@kadena/client-utils/core';
-import type { IKeyPair } from '@kadena/types';
 
-export async function generateAccount(keyPair: IKeyPair, chain: ChainId): Promise<IAccountWithSecretKey> {
+export async function generateAccount(
+  keyPair: IKeyPair,
+  chain: ChainId,
+): Promise<IAccountWithSecretKey> {
   return {
     account: `k:${keyPair.publicKey}`,
     publicKey: keyPair.publicKey,
@@ -21,7 +24,6 @@ export async function generateAccount(keyPair: IKeyPair, chain: ChainId): Promis
 }
 
 export async function createAccount(input: IAccount): Promise<ICommandResult> {
-
   return waitForEvent(
     'listen',
     transferCreate(

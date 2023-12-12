@@ -58,7 +58,10 @@ export function transferFundsCrossChain(
         amount: amount,
         chainId: sourceChain,
         targetChainId: targetChain,
-        targetChainGasPayer: { account: source.account, publicKeys: [source.publicKey], }
+        targetChainGasPayer: {
+          account: source.account,
+          publicKeys: [source.publicKey],
+        },
       },
       {
         host: devnetHost,
