@@ -29,7 +29,8 @@ export interface IEmitterWrapper<
   ExecReturnType,
 > {
   on: ToOnType<[...T, ...Extra], this>;
-  execute: (() => ExecReturnType) & ToNextType<[...T, ...Extra]>;
+  execute: () => ExecReturnType;
+  executeTo: (() => ExecReturnType) & ToNextType<[...T, ...Extra]>;
 }
 
 export type WithEmitter<
@@ -73,7 +74,7 @@ export const withEmitter: WithEmitter =
         emitter.addEventListener(event, cb);
         return wrapper;
       },
-      execute: (event?: string) => {
+      executeTo: (event?: string) => {
         if (event === undefined) {
           lock.open();
           return exec();
@@ -95,6 +96,9 @@ export const withEmitter: WithEmitter =
 
         lock.open();
         return pr;
+      },
+      execute: () => {
+        return wrapper.executeTo();
       },
     };
     return wrapper;

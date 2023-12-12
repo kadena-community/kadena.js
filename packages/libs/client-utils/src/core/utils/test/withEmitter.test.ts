@@ -71,10 +71,10 @@ describe('withEmitter', () => {
 
     const iterator = emitter('test');
 
-    const second = await iterator.execute('second');
+    const second = await iterator.executeTo('second');
     expect(second).toBe('one:test');
 
-    const data = await iterator.execute('data');
+    const data = await iterator.executeTo('data');
     expect(data).toBe('two:one:test');
   });
 
@@ -93,13 +93,13 @@ describe('withEmitter', () => {
 
     const iterator = emitter('test');
 
-    const second = await iterator.execute('second');
+    const second = await iterator.executeTo('second');
     expect(second).toBe('one:test');
 
     // sleep for 100ms to make sure the data event is not triggered without calling execute
     await sleep(100);
 
-    const data = await iterator.execute('data');
+    const data = await iterator.executeTo('data');
     expect(data).toBe('two:one:test');
   });
 
@@ -118,7 +118,7 @@ describe('withEmitter', () => {
 
     const iterator = emitter('test');
 
-    const second = await iterator.execute('second');
+    const second = await iterator.executeTo('second');
     expect(second).toBe('one:test');
 
     const data = await iterator.execute();
@@ -140,10 +140,10 @@ describe('withEmitter', () => {
 
     const iterator = emitter('test');
 
-    const second = await iterator.execute('second');
+    const second = await iterator.executeTo('second');
     expect(second).toBe('one:test');
 
-    const secondTwice = await iterator.execute('second');
+    const secondTwice = await iterator.executeTo('second');
     expect(second).toBe(secondTwice);
   });
 });
