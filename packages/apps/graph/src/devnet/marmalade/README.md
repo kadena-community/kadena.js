@@ -1,10 +1,20 @@
-# Marmalade in Devnet
+## Table of Contents
+
+- [Table of Contents][1]
+- [Usage & Purpose][2]
+- [Concepts][3]
+- [Pre-requisites][4]
+- [Assumptions][5]
+- [The Process][6]
+- [Aditional Notes][7]
+
+## Usage & Purpose
 
 The devnet does not come with the marmalade smart contracts deployed out of the
 box. Therefore, to be able to use marmalade, we need to deploy all the smart
-contracts in the devnet. The goal of this folder is to deploy Marmalade scripts
-into the devnet. It contains all the necessary scripts and configuration files
-to facilitate this process.
+contracts in the devnet. The goal of this folder is to deploy the Marmalade
+scripts into the devnet. It contains all the necessary scripts and configuration
+files to facilitate this process.
 
 ## Concepts
 
@@ -53,7 +63,7 @@ be aware of:
 └── ...
 ```
 
-## The process
+## The Process
 
 This is a small step-by-step description of the steps that are taken to deploy
 marmalade in the devnet
@@ -72,3 +82,11 @@ on the `.env` file, the requests will be authenticated which results in a
 significantly lower rate limit. It is strongly advised that a token is provided.
 For more information, please click
 [here](https://docs.github.com/en/rest/overview/rate-limits-for-the-rest-api?apiVersion=2022-11-28)
+
+[1]: #table-of-contents
+[2]: #usage--purpose
+[3]: #concepts
+[4]: #pre-requisites
+[5]: #assumptions
+[6]: #the-process
+[7]: #aditional-notes
