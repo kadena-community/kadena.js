@@ -32,7 +32,6 @@
     "@kadena/pactjs-generator": "workspace:*",
     "@kadena/react-components": "workspace:*",
     "@kadena/react-ui": "workspace:*",
-    "@ledgerhq/hw-app-btc": "^10.1.0",
     "@ledgerhq/hw-app-kda": "git+ssh://git@github.com:obsidiansystems/hw-app-kda",
     "@ledgerhq/hw-transport-webhid": "^6.28.0",
     "@ledgerhq/logs": "^6.12.0",
