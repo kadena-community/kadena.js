@@ -7,13 +7,14 @@ import { createServer } from 'node:http';
 import './graph';
 import { builder } from './graph/builder';
 import { complexityPlugin } from './plugins/complexity';
+import { extensionsPlugin } from './plugins/extensions';
 import { writeSchema } from './utils/write-schema';
 
 writeSchema();
 
 const schema = builder.toSchema();
 
-const plugins = [];
+const plugins = [extensionsPlugin()];
 
 if (dotenv.COMPLEXITY_EXPOSED) {
   plugins.push(complexityPlugin(schema));
@@ -23,7 +24,12 @@ createServer(
   createYoga({
     schema,
     plugins,
+    context: () => {
+      return {
+        extensions: {},
+      };
+    },
   }),
 ).listen(dotenv.PORT, () => {
-  console.info('Server is running on http://localhost:4000/graphql');
+  console.info(`Server is running on http://localhost:${dotenv.PORT}/graphql`);
 });

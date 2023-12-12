@@ -13,6 +13,7 @@ export const dotenv: {
   NETWORK_ID: string;
   PORT: number;
   TRACING_ENABLED: boolean;
+  TRACING_EXPOSED: boolean;
   TRACING_LOG_FILENAME: string;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
@@ -31,6 +32,7 @@ export const dotenv: {
   NETWORK_ID: or(process.env.NETWORK_ID, 'fast-development'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
   TRACING_ENABLED: or(process.env.TRACING_ENABLED === 'true', false),
+  TRACING_EXPOSED: or(process.env.TRACING_EXPOSED === 'true', false),
   TRACING_LOG_FILENAME: or(process.env.TRACING_LOG_FILENAME, 'traces.log'),
 };
 
