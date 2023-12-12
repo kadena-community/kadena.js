@@ -2,7 +2,6 @@ import type { IFormFieldWrapperProps, IInputProps } from '@components/Form';
 import { FormFieldWrapper, Input } from '@components/Form';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
-import type { AriaTextFieldProps } from 'react-aria';
 import { useTextField } from 'react-aria';
 
 export interface ITextFieldProps
