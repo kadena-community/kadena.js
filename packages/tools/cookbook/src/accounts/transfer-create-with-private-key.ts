@@ -5,6 +5,7 @@ import {
   Pact,
 } from '@kadena/client';
 import { sign } from '@kadena/cryptography-utils';
+import { Predicate } from '@kadena/types';
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 
@@ -42,7 +43,7 @@ async function transferCreate(
     .execution(Pact.modules.coin.transfer(sender, receiver, pactDecimal))
     .addData('ks', {
       keys: [accountKey(receiver)],
-      pred: 'keys-all',
+      pred: Predicate.keysAll,
     })
     .addSigner(senderPublicKey, (withCap) => [
       withCap('coin.TRANSFER', sender, receiver, pactDecimal),

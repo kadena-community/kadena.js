@@ -1,4 +1,5 @@
 import type { ChainId, IPactDecimal } from '@kadena/types';
+import { Predicate } from '@kadena/types';
 import { Pact, readKeyset } from '../../../index';
 import { NetworkId } from '../../support/enums';
 import { sender00Account } from '../../test-data/accounts';
@@ -31,7 +32,7 @@ export async function fundAccount(
         amount,
       ),
     ])
-    .addKeyset('ks', 'keys-all', receiverKey)
+    .addKeyset('ks', Predicate.keysAll, receiverKey)
     .setMeta({
       chainId: chain,
       gasLimit: 1000,

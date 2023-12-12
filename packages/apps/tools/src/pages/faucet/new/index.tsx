@@ -45,6 +45,7 @@ import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { TPredicate } from '@kadena/types';
+import { Predicate } from '@kadena/types';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -86,7 +87,7 @@ const NewAccountFaucetPage: FC = () => {
   const { selectedNetwork } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
-  const [pred, onPredSelectChange] = useState<TPredicate>('keys-all');
+  const [pred, onPredSelectChange] = useState<TPredicate>(Predicate.keysAll);
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
     message?: string;

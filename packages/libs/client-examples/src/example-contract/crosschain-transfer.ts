@@ -7,6 +7,7 @@ import {
   signWithChainweaver,
 } from '@kadena/client';
 import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/types';
+import { Predicate } from '@kadena/types';
 import { listen, pollCreateSpv, pollStatus, submit } from './util/client';
 import { inspect } from './util/fp-helpers';
 import { keyFromAccount } from './util/keyFromAccount';
@@ -59,7 +60,7 @@ function startInTheFirstChain(
         to.chainId,
       ),
     ])
-    .addKeyset('receiver-guard', 'keys-all', to.publicKey)
+    .addKeyset('receiver-guard', Predicate.keysAll, to.publicKey)
     .setMeta({ chainId: from.chainId, senderAccount: from.account })
     .setNetworkId(NETWORK_ID)
     .createTransaction();

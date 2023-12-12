@@ -1,3 +1,4 @@
+import type { TPredicate } from '@kadena/types';
 import type { IAddKeyset } from './addData';
 import { addData } from './addData';
 
@@ -8,6 +9,6 @@ import { addData } from './addData';
  */
 export const addKeyset: IAddKeyset = (
   name: string,
-  pred: string,
+  pred: TPredicate,
   ...publicKeys: string[]
 ) => addData(name, { keys: publicKeys, pred });

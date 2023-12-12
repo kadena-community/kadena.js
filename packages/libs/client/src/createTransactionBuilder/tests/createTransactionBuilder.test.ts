@@ -1,3 +1,4 @@
+import { Predicate } from '@kadena/types';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ICoin } from '../../composePactCommand/test/coin-contract';
 import type { IExecutionPayloadObject } from '../../interfaces/IPactCommand';
@@ -223,7 +224,7 @@ describe('createTransactionBuilder', () => {
     const builder = createTransactionBuilder();
     const command = builder
       .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
-      .addKeyset('ks', 'keys-all', 'pub1', 'pub2')
+      .addKeyset('ks', Predicate.keysAll, 'pub1', 'pub2')
       .getCommand();
 
     expect(command).toEqual({
@@ -233,7 +234,7 @@ describe('createTransactionBuilder', () => {
           code: '(coin.transfer "bob" "alice" 12.0)',
           data: {
             ks: {
-              pred: 'keys-all',
+              pred: Predicate.keysAll,
               keys: ['pub1', 'pub2'],
             },
           },

@@ -1,5 +1,6 @@
 import { signWithChainweaver } from '@kadena/client';
 
+import { Predicate } from '@kadena/types';
 import { createAccount } from '../coin/create-account';
 
 export async function consumer() {
@@ -7,7 +8,7 @@ export async function consumer() {
     {
       account: 'javad',
       keyset: {
-        pred: 'keys-all',
+        pred: Predicate.keysAll,
         keys: ['key-a', 'key-b'],
       },
       gasPayer: { account: 'gasPayer', publicKeys: [''] },

@@ -31,6 +31,7 @@ examples
 ```TS
 import { getBalance, transferCrossChain } from "@kadena/client-utils/coin"
 import { signWithChainweaver } from "@kadena/client"
+import { Predicate } from "@kadena/types"
 
 const balance = await getBalance(
   accountOne.account,
@@ -43,7 +44,7 @@ const balance = await getBalance(
   {
     account: 'javad',
     keyset: {
-      pred: 'keys-all',
+      pred: Predicate.keysAll,
       keys: ['key-a', 'key-b'],
     },
     gasPayer: { account: 'gasPayer', publicKeys: [''] },

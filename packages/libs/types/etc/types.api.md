@@ -266,6 +266,13 @@ export type PactTransactionHash = IBase64Url;
 export type PactValue = PactLiteral | Array<PactValue>;
 
 // @alpha (undocumented)
+export const Predicate: {
+    readonly keysAll: "keys-all";
+    readonly keysTwo: "keys-2";
+    readonly keysAny: "keys-any";
+};
+
+// @alpha (undocumented)
 export type Proof = IBase64Url | undefined;
 
 // @alpha (undocumented)
@@ -287,7 +294,7 @@ export type SPVProof = string;
 export type Step = number;
 
 // @alpha (undocumented)
-export type TPredicate = 'keys-all' | 'keys-2' | 'keys-any';
+export type TPredicate = (typeof Predicate)[keyof typeof Predicate] | string | undefined;
 
 // (No @packageDocumentation comment for this package)
 

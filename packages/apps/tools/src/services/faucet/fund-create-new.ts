@@ -10,6 +10,7 @@ import {
 } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
+import type { TPredicate } from '@kadena/types';
 
 import { getKadenaConstantByNetwork } from '@/constants/kadena';
 import Debug from 'debug';
@@ -23,7 +24,7 @@ export const fundCreateNewAccount = async (
   keys: string[],
   chainId: ChainwebChainId,
   amount = 100,
-  pred = 'keys-all',
+  pred: TPredicate,
 ): Promise<unknown> => {
   debug(fundCreateNewAccount.name);
   const keyPair = genKeyPair();

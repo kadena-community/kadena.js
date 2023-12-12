@@ -5,6 +5,7 @@ import { transferCreate, transferCreateCommand } from '../coin';
 import type { IPactCommand } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { composePactCommand, setNetworkId } from '@kadena/client/fp';
+import { Predicate } from '@kadena/types';
 import { estimateGas } from '../core/estimate-gas';
 import { sender00Account, sourceAccount } from './test-data/accounts';
 
@@ -29,7 +30,7 @@ describe('estimateGas', () => {
         account: accountOne.account,
         keyset: {
           keys: [accountOne.publicKey],
-          pred: 'keys-all' as const,
+          pred: Predicate.keysAll,
         },
       },
       amount: '1',

@@ -7,6 +7,7 @@ import {
   signWithChainweaver,
 } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import { Predicate } from '@kadena/types';
 import { keyFromAccount } from './util/keyFromAccount';
 
 export async function createProject(
@@ -31,7 +32,7 @@ export async function createProject(
         readKeyset('owner-guard'),
       ),
     )
-    .addKeyset('owner-guard', 'keys-all', sender.publicKey)
+    .addKeyset('owner-guard', Predicate.keysAll, sender.publicKey)
     .addSigner(sender.publicKey)
     .setNetworkId('testnet04')
     .setMeta({ chainId: '0', senderAccount: sender.account })

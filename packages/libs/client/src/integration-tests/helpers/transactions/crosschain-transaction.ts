@@ -1,5 +1,6 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import type { ChainId, IUnsignedCommand } from '@kadena/types';
+import { Predicate } from '@kadena/types';
 import type { IContinuationPayloadObject } from '../../../index';
 import { Pact, isSignedTransaction, readKeyset } from '../../../index';
 import { NetworkId } from '../../support/enums';
@@ -40,7 +41,7 @@ function startCrossChainTransfer(
           to.chainId,
         ),
       ])
-      .addKeyset('receiver-guard', 'keys-all', to.publicKey)
+      .addKeyset('receiver-guard', Predicate.keysAll, to.publicKey)
       .setMeta({ chainId: from.chainId, senderAccount: from.account })
       .setNetworkId(NetworkId.fast_development)
       .createTransaction()

@@ -17,6 +17,7 @@ import {
 } from '@kadena/client/fp';
 import { isSignedCommand } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
+import { Predicate } from '@kadena/types';
 
 import { listen, pollCreateSpv, submitOne } from '../util/client';
 import { inspect } from '../util/fp-helpers';
@@ -66,7 +67,7 @@ function startInTheFirstChain(from: IAccount, to: IAccount, amount: string) {
         to.chainId,
       ),
     ]),
-    addKeyset('receiver-guard', 'keys-all', to.publicKey),
+    addKeyset('receiver-guard', Predicate.keysAll, to.publicKey),
     setMeta({ chainId: from.chainId, senderAccount: from.account }),
     setNetworkId(NETWORK_ID),
   );

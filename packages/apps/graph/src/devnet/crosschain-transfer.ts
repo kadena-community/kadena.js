@@ -5,6 +5,7 @@ import type {
 import { Pact, readKeyset } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import type { ChainId, IPactDecimal, IUnsignedCommand } from '@kadena/types';
+import { Predicate } from '@kadena/types';
 import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {
@@ -47,7 +48,7 @@ function startInTheFirstChain(
     )
     .addKeyset(
       'receiver-guard',
-      'keys-all',
+      Predicate.keysAll,
       ...receiver.keys.map((key) => key.publicKey),
     )
     .setMeta({ chainId: sender.chainId, senderAccount: sender.account })

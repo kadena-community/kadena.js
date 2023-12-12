@@ -2,6 +2,7 @@ import type { ChainId, ICommandResult, IUnsignedCommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { hash as hashFunction } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
+import { Predicate } from '@kadena/types';
 import { devnetConfig } from './config';
 import type { IAccount } from './helper';
 import {
@@ -47,7 +48,7 @@ export async function transfer({
     )
     .addData('ks', {
       keys: receiver.keys.map((key) => key.publicKey),
-      pred: 'keys-all',
+      pred: Predicate.keysAll,
     })
     .addSigner(
       sender.keys.map((key) => key.publicKey),

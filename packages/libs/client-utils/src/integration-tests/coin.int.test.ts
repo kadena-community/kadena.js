@@ -10,6 +10,7 @@ import {
   transferCrossChain,
 } from '../coin';
 
+import { Predicate } from '@kadena/types';
 import { NetworkIds } from './support/NetworkIds';
 import { withStepFactory } from './support/helpers';
 import {
@@ -40,7 +41,7 @@ describe('transferCreate', () => {
           account: accountOne.account,
           keyset: {
             keys: [accountOne.publicKey],
-            pred: 'keys-all',
+            pred: Predicate.keysAll,
           },
         },
         amount: '100',
@@ -124,7 +125,7 @@ describe('getDetails', () => {
       balance: 100,
       guard: {
         keys: [accountOne.publicKey],
-        pred: 'keys-all',
+        pred: Predicate.keysAll,
       },
     });
   });
@@ -137,7 +138,7 @@ describe('createAccount', () => {
         account: accountTwo.account,
         keyset: {
           keys: [accountTwo.publicKey],
-          pred: 'keys-all',
+          pred: Predicate.keysAll,
         },
         gasPayer: {
           account: sender00Account.account,
@@ -204,7 +205,7 @@ describe('cross chain transfer', () => {
           account: accountOne.account,
           keyset: {
             keys: [accountOne.publicKey],
-            pred: 'keys-all',
+            pred: Predicate.keysAll,
           },
         },
         amount: '10',

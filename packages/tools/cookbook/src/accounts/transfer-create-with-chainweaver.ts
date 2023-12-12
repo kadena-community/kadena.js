@@ -5,6 +5,7 @@ import {
   signWithChainweaver,
 } from '@kadena/client';
 import type { IPactDecimal } from '@kadena/types';
+import { Predicate } from '@kadena/types';
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 
@@ -48,7 +49,7 @@ async function transferCreate(
     )
     .addData('ks', {
       keys: [accountKey(receiver)],
-      pred: 'keys-all',
+      pred: Predicate.keysAll,
     })
     .addSigner(senderPublicKey, (withCap) => [
       withCap('coin.TRANSFER', sender, receiver, pactDecimal),

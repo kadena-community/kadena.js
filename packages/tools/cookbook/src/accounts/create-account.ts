@@ -4,6 +4,7 @@ import {
   Pact,
   signWithChainweaver,
 } from '@kadena/client';
+import { Predicate } from '@kadena/types';
 import { accountKey } from '../utils/account-key';
 import { apiHost } from '../utils/api-host';
 
@@ -37,7 +38,7 @@ async function createAccount(
     )
     .addData('ks', {
       keys: [accountKey(receiver)],
-      pred: 'keys-all',
+      pred: Predicate.keysAll,
     })
     .addSigner(gasProviderPublicKey, (withCap) => [withCap('coin.GAS')])
     .setMeta({ chainId: '1', senderAccount: gasProvider })

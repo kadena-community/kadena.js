@@ -68,10 +68,4 @@ export interface IAddKeyset {
     pred: PRED,
     ...publicKeys: string[]
   ): (cmd: IPartialPactCommand) => IPartialPactCommand;
-
-  <TKey extends string, PRED extends string>(
-    key: TKey,
-    pred: PRED,
-    ...publicKeys: string[]
-  ): (cmd: IPartialPactCommand) => IPartialPactCommand;
 }

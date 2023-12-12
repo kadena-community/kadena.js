@@ -5,6 +5,7 @@ import {
   signWithChainweaver,
 } from '@kadena/client';
 import type { IPactDecimal } from '@kadena/types';
+import { Predicate } from '@kadena/types';
 import { listen, preflight, submit } from './util/client';
 
 const NETWORK_ID: string = 'testnet04';
@@ -31,7 +32,7 @@ async function main(): Promise<void> {
       signFor('coin.GAS'),
       signFor('coin.TRANSFER', senderAccount, receiverAccount, amount),
     ])
-    .addKeyset('ks', 'keys-all', receiverKey)
+    .addKeyset('ks', Predicate.keysAll, receiverKey)
     .setMeta({
       chainId: '1',
       gasLimit: 1000,
