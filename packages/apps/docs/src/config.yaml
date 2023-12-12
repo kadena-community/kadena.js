@@ -7,5 +7,10 @@ menu:
 pages:
   build:
     title: Build
-    url: /test/build
+    url: /test
     file: /docs/test.md
+    children:
+      build:
+        title: Build
+        url: /build
+        file: /docs/index.tsx

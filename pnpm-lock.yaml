@@ -201,6 +201,9 @@ importers:
       '@types/gtag.js':
         specifier: ~0.0.12
         version: 0.0.18
+      '@types/js-yaml':
+        specifier: 4.0.9
+        version: 4.0.9
       '@types/mailchimp__mailchimp_marketing':
         specifier: ~3.0.10
         version: 3.0.17
@@ -276,6 +279,9 @@ importers:
       storybook-dark-mode:
         specifier: ^3.0.0
         version: 3.0.0(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
+      tsx:
+        specifier: ^3.12.10
+        version: 3.12.10
       typescript:
         specifier: 5.2.2
         version: 5.2.2
