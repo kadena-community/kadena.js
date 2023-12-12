@@ -4,6 +4,7 @@
 
 ```ts
 
+import type AppKda from '@ledgerhq/hw-app-kda';
 import { ChainId } from '@kadena/types';
 import type Client from '@walletconnect/sign-client';
 import { ICap } from '@kadena/types';
@@ -47,6 +48,11 @@ export function createSignWithChainweaver(options?: {
 
 // @public
 export const createSignWithKeypair: ICreateSignWithKeypair;
+
+// Warning: (ae-internal-missing-underscore) The name "createSignWithLedger" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const createSignWithLedger: (client: AppKda, keyId?: number) => ISignFunction;
 
 // @public
 export const createTransaction: (pactCommand: IPartialPactCommand) => IUnsignedCommand;
