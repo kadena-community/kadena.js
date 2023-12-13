@@ -12,7 +12,7 @@ const meta: Meta<ISelectProps> = {
     docs: {
       description: {
         component:
-          'The Select component renders a select element with options. The select element can be disabled with the `disabled` prop. The icon of the select element can be set with the `icon` prop.',
+          'The Select component renders a select element with options. The select element can be disabled with the `disabled` prop. The startIcon of the select element can be set with the `startIcon` prop.',
       },
     },
   },
@@ -28,11 +28,8 @@ const meta: Meta<ISelectProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    icon: {
-      options: [
-        ...['-'],
-        ...Object.keys(SystemIcon),
-      ] as (keyof typeof SystemIcon)[],
+    startIcon: {
+      options: ['-', ...Object.keys(SystemIcon)],
       control: {
         type: 'select',
       },
@@ -43,22 +40,27 @@ const meta: Meta<ISelectProps> = {
 export default meta;
 type Story = StoryObj<
   {
-    icon: keyof typeof SystemIcon;
-  } & Omit<ISelectProps, 'icon'>
+    startIcon: React.ReactElement | '-';
+  } & Omit<ISelectProps, 'startIcon'>
 >;
 
 export const Dynamic: Story = {
   name: 'Select',
   args: {
-    icon: undefined,
+    startIcon: undefined,
   },
-  render: ({ icon, disabled, outlined }) => {
+  render: ({ startIcon, disabled, outlined }) => {
     const [value, setValue] = useState<string>('1');
+    const IconComponent =
+      startIcon !== '-'
+        ? SystemIcon[startIcon as unknown as keyof typeof SystemIcon]
+        : undefined;
+
     return (
       <Select
         id="select-story"
         ariaLabel={'select'}
-        icon={icon}
+        startIcon={IconComponent && <IconComponent />}
         onChange={(e) => {
           console.log('clicked on', e.target.value);
           setValue(e.target.value);
