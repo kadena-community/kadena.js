@@ -1,20 +1,17 @@
 import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer, transferCrossChain } from '@kadena/client-utils/coin';
-import { waitForEvent } from '@kadena/client-utils/core';
 import type { ChainId } from '@kadena/types';
 import type { IAccountWithSecretKey } from '../testdata/constants/accounts';
 import { devnetHost, networkId } from '../testdata/constants/network';
 
-export function transferFunds(
+export async function transferFunds(
   source: IAccountWithSecretKey,
   target: IAccountWithSecretKey,
   amount: string,
   chainId: ChainId,
 ): Promise<ICommandResult> {
-  return waitForEvent(
-    'listen',
-    transfer(
+    const transferTask = await transfer(
       {
         sender: { account: source.account, publicKeys: [source.publicKey] },
         receiver: target.account,
@@ -29,20 +26,20 @@ export function transferFunds(
         },
         sign: createSignWithKeypair([source]),
       },
-    ),
-  );
+    )
+    const listen =  await transferTask.executeTo("listen")
+    await transferTask.execute()
+    return listen
 }
 
-export function transferFundsCrossChain(
+export async function transferFundsCrossChain(
   source: IAccountWithSecretKey,
   target: IAccountWithSecretKey,
   amount: string,
   sourceChain: ChainId,
   targetChain: ChainId,
 ): Promise<ICommandResult> {
-  return waitForEvent(
-    'listen-continuation',
-    transferCrossChain(
+   const transferCrossChainTask = await transferCrossChain(
       {
         sender: {
           account: source.account,
@@ -70,6 +67,9 @@ export function transferFundsCrossChain(
         },
         sign: createSignWithKeypair([source]),
       },
-    ),
-  );
+    )
+       const listenContinuation =  await transferCrossChainTask.executeTo('listen-continuation')
+      await transferCrossChainTask.executeTo()
+      return listenContinuation
+
 }
