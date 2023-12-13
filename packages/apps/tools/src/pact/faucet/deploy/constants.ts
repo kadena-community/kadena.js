@@ -56,6 +56,13 @@ export const ADMIN: Account =
         accountName: '<PROVIDE_ONE_OF_THE_ADMINS>',
       };
 
+export const NAMESPACES = {
+  DEVNET: 'n_34d947e2627143159ea73cdf277138fd571f17ac',
+  TESTNET: 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49',
+} as const;
+
+export const NAMESPACE = NAMESPACES[environment];
+
 export const NETWORK_ID: 'testnet04' | 'fast-development' = 'fast-development';
 
 export const DOMAIN:
