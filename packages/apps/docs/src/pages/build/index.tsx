@@ -5,10 +5,7 @@ import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { getPageConfig } from '@/utils/config';
-import { getBlogPosts } from '@/utils/getBlogPosts';
-import getMostPopularPages from '@/utils/getMostPopularPages';
 import type { IMenuData } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import {
   Box,
   Button,

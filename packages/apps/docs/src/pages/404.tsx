@@ -7,7 +7,6 @@ import { ErrorHeader } from '@/components/Layout/Landing/components/Headers/Erro
 import { Search } from '@/components/Search/Search';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { getPageConfig } from '@/utils/config';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { NextRouter } from 'next/router';
