@@ -17,9 +17,7 @@ export const contentClass = style([
   sprinkles({
     display: 'flex',
     flexDirection: 'column',
-  }),
-  {
     overflowY: 'hidden',
     overflowX: 'visible',
-  },
+  }),
 ]);

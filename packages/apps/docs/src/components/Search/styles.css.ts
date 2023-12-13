@@ -11,8 +11,7 @@ export const staticResultsListClass = style([
 ]);
 
 export const tabContainerClass = style([
-  sprinkles({ flex: 1 }),
-  { overflowY: 'hidden', overflowX: 'visible' },
+  sprinkles({ flex: 1, overflowY: 'hidden', overflowX: 'visible' }),
 ]);
 
 export const tabClass = style([
@@ -20,11 +19,9 @@ export const tabClass = style([
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-  }),
-  {
     overflowY: 'hidden',
     overflowX: 'visible',
-  },
+  }),
 ]);
 
 export const itemLinkClass = style([
