@@ -1,4 +1,5 @@
-import type { LayoutType } from '@/Layout';
+import type { LayoutType } from '@kadena/docs-tools';
+import { getReadTime } from '@kadena/docs-tools';
 import { isValid } from 'date-fns';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
@@ -6,8 +7,7 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
 import { promiseExec } from './build.mjs';
-import { TEMPDIR } from './importReadme/createDoc.mjs';
-import { getReadTime } from './utils.mjs';
+import { TEMP_DIR } from './importReadme/createDoc';
 
 const errors: string[] = [];
 const success: string[] = [];
@@ -32,7 +32,7 @@ export const getLastModifiedDate = async (
   const newRoot = rootArray.join('/');
 
   const { stdout } = await promiseExec(
-    `cd ${TEMPDIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
+    `cd ${TEMP_DIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
   );
 
   const date = new Date(stdout);
