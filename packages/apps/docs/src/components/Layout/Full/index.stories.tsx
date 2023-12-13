@@ -34,6 +34,7 @@ const aSideMenuTree = [
 ];
 
 const props: IPageProps = {
+  headerItems: fullLayoutLeftMenuTree,
   frontmatter: fullLayoutFrontMatter,
   leftMenuTree: fullLayoutLeftMenuTree,
   menuItems: [],
@@ -44,9 +45,10 @@ const props: IPageProps = {
 export const Default: Story = {
   name: 'Default',
   args: props,
-  render: ({ frontmatter, leftMenuTree, aSideMenuTree }) => (
+  render: ({ frontmatter, leftMenuTree, aSideMenuTree, headerItems }) => (
     <div>
       <Full
+        headerItems={headerItems}
         frontmatter={frontmatter}
         leftMenuTree={leftMenuTree}
         menuItems={[]}
