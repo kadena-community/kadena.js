@@ -2,10 +2,10 @@ import type { IMenuItem } from '@/Layout';
 import type { IMostPopularPage } from '@/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import { flattenData } from '@/utils/staticGeneration/flatPosts.mjs';
 import type { IMenuData } from '@kadena/docs-tools';
 import {
   checkSubTreeForActive,
+  flattenData,
   getMenuData,
   getPathName,
 } from '@kadena/docs-tools';

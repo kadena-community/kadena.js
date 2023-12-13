@@ -13,12 +13,17 @@ import {
   checkSubTreeForActive,
   getPathName,
 } from './utils/staticGeneration/checkSubTreeForActive';
-import { flatPosts, getFlatData } from './utils/staticGeneration/flatPosts';
+import {
+  flatPosts,
+  flattenData,
+  getFlatData,
+} from './utils/staticGeneration/flatPosts';
 import { getData as getMenuData } from './utils/staticGeneration/getData';
 
 export {
   checkSubTreeForActive,
   flatPosts,
+  flattenData,
   getFlatData,
   getMenuData,
   getPathName,
