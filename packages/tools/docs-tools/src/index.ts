@@ -9,6 +9,7 @@ import remarkSideMenuToProps from './remarkSideMenuToProps';
 import remarkTwitter from './remarkTwitter';
 import remarkYoutube from './remarkYoutube';
 import { getReadTime } from './utils';
+import { getHeaderItems } from './utils/getHeaderItems';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -25,6 +26,7 @@ export {
   flatPosts,
   flattenData,
   getFlatData,
+  getHeaderItems,
   getMenuData,
   getPathName,
   getReadTime,

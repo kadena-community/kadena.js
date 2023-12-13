@@ -1,6 +1,6 @@
-import type { IMenuData, IMenuItem, IPropsType, ITree, Plugin } from './types';
+import type { IMenuItem, IPropsType, ITree, Plugin } from './types';
+import { getHeaderItems } from './utils/getHeaderItems';
 import { checkSubTreeForActive } from './utils/staticGeneration/checkSubTreeForActive';
-import { getConfig, getData } from './utils/staticGeneration/getData';
 
 const getPath = (filename: string): string => {
   const arr = filename.split('/');
@@ -22,25 +22,6 @@ const getPath = (filename: string): string => {
     }, [])
     .reverse()
     .join('/')}`;
-};
-
-const getHeaderItems = async (): Promise<IMenuData[]> => {
-  const { menu } = await getConfig();
-  const tree = await getData();
-
-  const menuItems = menu.reduce(
-    (acc: IMenuData[], item: string): IMenuData[] => {
-      const found = tree.find((d) => d.root === `/${item}`);
-      if (!found) return acc;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { children, ...result } = found;
-      acc.push(result as IMenuData);
-      return acc;
-    },
-    [],
-  );
-
-  return menuItems;
 };
 
 const remarkSideMenuToProps = (): Plugin => {

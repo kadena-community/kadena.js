@@ -14,7 +14,7 @@ export const Spinner = () => {
   };
 
   const frame = elegantSpinner();
-  let interval;
+  let interval: NodeJS.Timer;
 
   return {
     start: () => {
