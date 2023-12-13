@@ -6,7 +6,7 @@ import yaml from 'js-yaml';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
-import { promiseExec } from './build.mjs';
+import { promiseExec } from './build';
 import { TEMP_DIR } from './importReadme/createDoc';
 
 const errors: string[] = [];
@@ -137,7 +137,7 @@ const pushToParent = (parent: IParent[], child: IParent): IParent[] => {
 
   parent.forEach((item, idx) => {
     if (
-      parseInt(child?.order?.toString()) <= parseInt(item.order.toString()) &&
+      parseInt(child?.order?.toString()) <= parseInt(item.order?.toString()) &&
       !added
     ) {
       const minIdx = minimumZeroValue(idx);

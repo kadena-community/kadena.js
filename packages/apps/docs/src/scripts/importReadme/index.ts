@@ -1,4 +1,4 @@
-import { promiseExec } from '../build.mjs';
+import { promiseExec } from '../build';
 import type { IScriptResult } from '../types';
 import { importReadMes } from '../utils';
 import { TEMP_DIR } from './createDoc';
