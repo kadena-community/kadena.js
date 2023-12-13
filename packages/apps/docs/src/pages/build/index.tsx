@@ -22,6 +22,7 @@ import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
+import { getPageConfig } from '../../utils/config';
 
 interface IProps {
   popularPages: IMostPopularPage[];
@@ -138,14 +139,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const blogPosts = await getBlogPosts(['kadenajs', 'cli']);
-  const mostPopularPages = await getMostPopularPages('/build');
-  const leftMenuTree = await checkSubTreeForActive(getPathName(__filename));
   return {
     props: {
-      popularPages: mostPopularPages,
-      blogPosts,
-      leftMenuTree,
+      ...(await getPageConfig({
+        blogPosts: true,
+        popularPages: '/build',
+      })),
       frontmatter: {
         title: 'Build on Kadena',
         menu: 'Build',

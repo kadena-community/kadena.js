@@ -150,7 +150,7 @@ export const MyApp = ({
           }}
         >
           <MenuProvider>
-            <Header menuItems={props.headerItems ?? props.leftMenuTree} />
+            <Header menuItems={props.headerItems} />
             <CookieConsent />
             <Layout {...props}>
               <Component {...props} />

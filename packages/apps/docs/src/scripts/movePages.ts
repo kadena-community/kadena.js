@@ -50,8 +50,7 @@ const isAlreadyIgnored = (
   filePath: string,
   existingContent: string,
 ): boolean => {
-  console.log(111, existingContent);
-
+  // eslint-disable-next-line @rushstack/security/no-unsafe-regexp
   const regex = new RegExp(`^${filePath}$`, 'gm');
   return regex.test(existingContent);
 };

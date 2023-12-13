@@ -9,17 +9,14 @@ import {
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { getHeaderItems } from '@/utils/config';
-import { getBlogPosts } from '@/utils/getBlogPosts';
-import getMostPopularPages from '@/utils/getMostPopularPages';
 import type { IMenuData } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
+import { getPageConfig } from '../utils/config';
 
 interface IProps {
   popularPages: IMostPopularPage[];
@@ -226,16 +223,9 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const mostPopularPages = await getMostPopularPages();
-  const blogPosts = await getBlogPosts();
-  const headerItems = await getHeaderItems();
-
   return {
     props: {
-      headerItems,
-      popularPages: mostPopularPages,
-      blogPosts,
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      ...(await getPageConfig({ blogPosts: true, popularPages: '/' })),
       frontmatter: {
         title: 'Welcome to Kadena docs',
         menu: 'Pact',

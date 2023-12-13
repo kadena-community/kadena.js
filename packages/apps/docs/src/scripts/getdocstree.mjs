@@ -137,14 +137,15 @@ const findPath = (dir) => {
   return `/${path}/${fileName}`;
 };
 
-const SEARCHABLE_DIRS = [
-  '/blogchain',
-  '/build',
-  '/chainweb',
-  '/contribute',
-  '/kadena',
-  '/marmalade',
-  '/pact',
+const NONSEARCHABLE_DIRS = [
+  '/tags',
+  '/authors',
+  '/api',
+  '/_app',
+  '/_document',
+  '/index',
+  '/404',
+  '/.gitignore',
 ];
 
 const getFile = async (rootDir, parent, file) => {
@@ -159,7 +160,7 @@ const getFile = async (rootDir, parent, file) => {
   if (!child.root) return;
 
   if (
-    SEARCHABLE_DIRS.some((item) => {
+    !NONSEARCHABLE_DIRS.some((item) => {
       return currentFile.startsWith(`${INITIAL_PATH}${item}`);
     })
   ) {
@@ -187,6 +188,7 @@ const getFile = async (rootDir, parent, file) => {
       }
     }
 
+    console.log(parent.root, child.root);
     parent = pushToParent(parent, child);
 
     if (fs.statSync(currentFile).isDirectory()) {

@@ -3,7 +3,6 @@ title: Pact-lang-API Cookbook
 description: Common use cases for `pact-lang-api`
 menu: Cookbook
 label: Cookbook
-order: 3
 layout: full
 tags: [pact, typescript, account, transactions, utils]
 ---
