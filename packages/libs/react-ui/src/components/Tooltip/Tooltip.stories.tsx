@@ -4,6 +4,7 @@ import { Box, Stack } from '@components/Layout';
 import type { ITooltipProps } from '@components/Tooltip';
 import { Tooltip } from '@components/Tooltip';
 import type { Meta, StoryObj } from '@storybook/react';
+import { atoms } from '@theme/atoms.css';
 import { onLayer1 } from '@utils/withLayerStory';
 import React from 'react';
 
@@ -165,10 +166,12 @@ export const Controlled: Story = {
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Button onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
-        </Button>
+      <>
+        <div className={atoms({ marginBottom: 'xxxl' })}>
+          <Button onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
+          </Button>
+        </div>
         <Tooltip
           content={content}
           position={position}
@@ -179,7 +182,7 @@ export const Controlled: Story = {
         >
           <SystemIcon.AlertBox />
         </Tooltip>
-      </Box>
+      </>
     );
   },
 };
