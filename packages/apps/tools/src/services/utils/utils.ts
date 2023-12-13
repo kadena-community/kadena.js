@@ -17,7 +17,7 @@ export const validateRequestKey = (key: string): string | undefined => {
 };
 
 export const validatePublicKey = (key: string): string | undefined => {
-  if (key.length === 64 || /(^WEBAUTHN-[a-f0-9]+)$/.test(key)) {
+  if (key.length === 64 || /(^WEBAUTHN-[a-fA-F0-9]+)$/i.test(key)) {
     return key;
   }
 
