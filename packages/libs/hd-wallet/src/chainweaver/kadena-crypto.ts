@@ -21,7 +21,7 @@ export const kadenaMnemonicToRootKeypair = makeAsync(
 export const kadenaChangePassword = makeAsync(
   kadenaCrypto.kadenaChangePassword,
 );
-export const kadenaCheckMnemonic = makeAsync(kadenaCrypto.kadenaCheckMnemonic);
+export const kadenaCheckMnemonic = kadenaCrypto.kadenaCheckMnemonic;
 export const kadenaGetPublic = makeAsync(kadenaCrypto.kadenaGetPublic);
 export const kadenaSign = makeAsync(kadenaCrypto.kadenaSign);
 export const kadenaVerify = makeAsync(kadenaCrypto.kadenaVerify);

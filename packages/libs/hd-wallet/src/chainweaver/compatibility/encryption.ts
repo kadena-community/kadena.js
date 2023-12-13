@@ -15,9 +15,9 @@ export function encryptLegacySecretKey(
 
 export function getPublicKeyFromLegacySecretKey(
   secretKey: EncryptedString,
-): Uint8Array {
+): string {
   // prettier-ignore
   const publicKeyBase64 = Buffer.from(secretKey, 'base64').toString().split('.').pop();
   if (!publicKeyBase64) throw Error('Invalid secret key');
-  return Buffer.from(publicKeyBase64, 'base64');
+  return Buffer.from(publicKeyBase64, 'base64').toString('hex');
 }
