@@ -11,6 +11,7 @@ export interface IEnvInterface {
   WALLET_CONNECT_RELAY_URL?: string;
   FAUCET_NAMESPACE?: string;
   FAUCET_CONTRACT?: string;
+  FAUCET_USER?: string;
 }
 
 type RequiredEnv = Required<IEnvInterface>;
@@ -28,6 +29,7 @@ export const dotenv: IEnvInterface = {
   WALLET_CONNECT_RELAY_URL: process.env.WALLET_CONNECT_RELAY_URL,
   FAUCET_NAMESPACE: process.env.FAUCET_NAMESPACE,
   FAUCET_CONTRACT: process.env.FAUCET_CONTRACT,
+  FAUCET_USER: process.env.FAUCET_USER,
 };
 
 export const env = <T extends keyof RequiredEnv, TDefault>(

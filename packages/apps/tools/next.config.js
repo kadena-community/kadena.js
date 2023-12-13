@@ -25,6 +25,7 @@ const config = {
     WALLET_CONNECT_RELAY_URL: process.env.WALLET_CONNECT_RELAY_URL,
     FAUCET_NAMESPACE: process.env.FAUCET_NAMESPACE,
     FAUCET_CONTRACT: process.env.FAUCET_CONTRACT,
+    FAUCET_USER: process.env.FAUCET_USER,
   },
 };
 

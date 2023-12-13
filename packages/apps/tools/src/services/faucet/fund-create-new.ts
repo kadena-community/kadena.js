@@ -15,7 +15,10 @@ import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 
-const FAUCET_ACCOUNT = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
+const FAUCET_ACCOUNT = env(
+  'FAUCET_USER',
+  'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
+);
 const debug = Debug('kadena-transfer:services:faucet');
 
 const NAMESPACE = env(
