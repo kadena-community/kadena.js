@@ -1,4 +1,4 @@
-import { nullishOrEmpty } from '@utils/nullishOrEmpty';
+import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Signer', {

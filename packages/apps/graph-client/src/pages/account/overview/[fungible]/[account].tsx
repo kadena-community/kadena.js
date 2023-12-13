@@ -4,7 +4,7 @@ import type {
   FungibleAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetAccountQuery } from '@/__generated__/sdk';
-import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
+import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { ChainFungibleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';

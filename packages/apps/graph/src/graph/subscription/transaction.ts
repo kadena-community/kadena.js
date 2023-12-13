@@ -1,4 +1,4 @@
-import { prismaClient } from '@db/prismaClient';
+import { prismaClient } from '@db/prisma-client';
 import type { Transaction } from '@prisma/client';
 import type { IContext } from '../builder';
 import { builder } from '../builder';

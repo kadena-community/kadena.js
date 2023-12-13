@@ -1,7 +1,7 @@
 import type { ApolloError } from '@apollo/client';
 import React from 'react';
-import { centerBlockStyle } from '../Common/center-block/styles.css';
-import Loader from '../Common/loader/loader';
+import { centerBlockStyle } from '../common/center-block/styles.css';
+import Loader from '../common/loader/loader';
 import { ErrorBox } from '../error-box/error-box';
 
 interface ILoaderAndErrorProps {

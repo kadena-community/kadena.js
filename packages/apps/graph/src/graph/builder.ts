@@ -15,7 +15,7 @@ import {
   PositiveFloatResolver,
 } from 'graphql-scalars';
 import type { IncomingMessage } from 'http';
-import { prismaClient } from '../db/prismaClient';
+import { prismaClient } from '../db/prisma-client';
 import type {
   ChainFungibleAccount,
   FungibleAccount,

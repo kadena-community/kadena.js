@@ -1,4 +1,4 @@
-import { nullishOrEmpty } from './nullishOrEmpty';
+import { nullishOrEmpty } from './nullish-or-empty';
 
 export function validateObjectProperties<T extends Record<string, any>>(
   obj: T,

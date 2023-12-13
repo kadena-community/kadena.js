@@ -1,8 +1,8 @@
-import { prismaClient } from '@db/prismaClient';
+import { prismaClient } from '@db/prisma-client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import Block from '../objects/Block';
+import Block from '../objects/block';
 
 builder.queryField('block', (t) =>
   t.prismaField({
