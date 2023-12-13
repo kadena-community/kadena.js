@@ -1,13 +1,14 @@
 import fs from 'fs';
 import copy from 'recursive-copy';
+import type { IScriptResult } from './types';
 
-const errors = [];
-const success = [];
+const errors: string[] = [];
+const success: string[] = [];
 
 const COMMON_FAV_ICONS_PATH = '../../../common/images/icons/internal';
 const PUBLIC_DIR = 'public/assets/favicons';
 
-export const copyFavIcons = async () => {
+export const copyFavIcons = async (): Promise<IScriptResult> => {
   try {
     if (fs.existsSync(PUBLIC_DIR)) {
       fs.rmSync(PUBLIC_DIR, {
