@@ -102,7 +102,7 @@ data: ICommandResult;
 
 // @alpha (undocumented)
 export function waitForEvent<T extends {
-    on: (name: string, data: any) => any;
+    on: (name: any, data: any) => any;
     execute: () => Promise<any>;
 }>(event: string, task: T): Promise<any>;
 
