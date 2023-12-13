@@ -13,7 +13,7 @@ export const base = style([
     color: 'text.base.default',
     pointerEvents: 'none',
     maxWidth: 'content.maxWidth',
-    boxShadow: 'level1', // Isa
+    // boxShadow: 'level1', // @Isa: Should we use a boxShadow for this?
   }),
   {
     width: 'max-content',

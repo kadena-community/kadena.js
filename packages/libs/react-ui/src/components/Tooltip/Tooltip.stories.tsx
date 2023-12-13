@@ -4,33 +4,13 @@ import { Box, Stack } from '@components/Layout';
 import type { ITooltipProps } from '@components/Tooltip';
 import { Tooltip } from '@components/Tooltip';
 import type { Meta, StoryObj } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
-import { withCenteredStory } from '@utils/withCenteredStory';
+import { onBase } from '@utils/withLayerStory';
 import React from 'react';
-import { storyClass } from './Tooltip.css';
 
 const meta: Meta<ITooltipProps> = {
   title: 'Overlays/Tooltip',
   component: Tooltip,
-  decorators: [
-    withCenteredStory,
-    (Story) => (
-      <div
-        className={atoms({
-          backgroundColor: 'base.default',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          width: '100%',
-          padding: 'xxxl',
-        })}
-        style={{ height: '20rem' }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [onBase],
   parameters: {
     status: {
       type: ['releaseCandidate'],
@@ -104,24 +84,6 @@ export const Dynamic: Story = {
     delay: 500,
     closeDelay: 300,
   },
-  decorators: [
-    (Story) => (
-      <div
-        className={atoms({
-          backgroundColor: 'base.default',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          width: '100%',
-          padding: 'xxxl',
-        })}
-        style={{ height: '20rem' }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
   render: ({ content, position, isDisabled, delay, closeDelay }) => {
     return (
       <Tooltip
@@ -203,12 +165,7 @@ export const Controlled: Story = {
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        className={storyClass}
-      >
+      <Box display="flex" flexDirection="column" alignItems="center">
         <Button onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
         </Button>
