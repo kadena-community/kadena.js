@@ -115,7 +115,7 @@
     "storybook-addon-next-router": "~4.0.2",
     "storybook-addon-swc": "~1.2.0",
     "storybook-dark-mode": "^3.0.0",
-    "tsx": "^3.12.10",
+    "tsx": "^4.6.2",
     "typescript": "5.2.2"
   }
 }
