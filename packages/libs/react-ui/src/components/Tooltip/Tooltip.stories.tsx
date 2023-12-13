@@ -4,13 +4,33 @@ import { Box, Stack } from '@components/Layout';
 import type { ITooltipProps } from '@components/Tooltip';
 import { Tooltip } from '@components/Tooltip';
 import type { Meta, StoryObj } from '@storybook/react';
+import { atoms } from '@theme/atoms.css';
 import { withCenteredStory } from '@utils/withCenteredStory';
 import React from 'react';
+import { storyClass } from './Tooltip.css';
 
 const meta: Meta<ITooltipProps> = {
   title: 'Overlays/Tooltip',
   component: Tooltip,
-  decorators: [withCenteredStory],
+  decorators: [
+    withCenteredStory,
+    (Story) => (
+      <div
+        className={atoms({
+          backgroundColor: 'base.default',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          width: '100%',
+          padding: 'xxxl',
+        })}
+        style={{ height: '20rem' }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     status: {
       type: ['releaseCandidate'],
@@ -84,19 +104,35 @@ export const Dynamic: Story = {
     delay: 500,
     closeDelay: 300,
   },
+  decorators: [
+    (Story) => (
+      <div
+        className={atoms({
+          backgroundColor: 'base.default',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          width: '100%',
+          padding: 'xxxl',
+        })}
+        style={{ height: '20rem' }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
   render: ({ content, position, isDisabled, delay, closeDelay }) => {
     return (
-      <Box margin="$25">
-        <Tooltip
-          content={content}
-          position={position}
-          isDisabled={isDisabled}
-          delay={delay}
-          closeDelay={closeDelay}
-        >
-          <Button>Trigger</Button>
-        </Tooltip>
-      </Box>
+      <Tooltip
+        content={content}
+        position={position}
+        isDisabled={isDisabled}
+        delay={delay}
+        closeDelay={closeDelay}
+      >
+        <Button>Trigger</Button>
+      </Tooltip>
     );
   },
 };
@@ -111,22 +147,20 @@ export const TooltipReactNode: Story = {
   },
   render: ({ position, isDisabled, delay, closeDelay }) => {
     return (
-      <Box margin="$25">
-        <Tooltip
-          position={position}
-          isDisabled={isDisabled}
-          delay={delay}
-          closeDelay={closeDelay}
-          content={
-            <Stack direction="row" gap="$xs" alignItems="center">
-              <SystemIcon.AlertBox />
-              <code>I have an icon!</code>
-            </Stack>
-          }
-        >
-          <Button>Trigger</Button>
-        </Tooltip>
-      </Box>
+      <Tooltip
+        position={position}
+        isDisabled={isDisabled}
+        delay={delay}
+        closeDelay={closeDelay}
+        content={
+          <Stack direction="row" gap="$xs" alignItems="center">
+            <SystemIcon.AlertBox />
+            <code>I have an icon!</code>
+          </Stack>
+        }
+      >
+        <Button>Trigger</Button>
+      </Tooltip>
     );
   },
 };
@@ -142,18 +176,16 @@ export const DefaultOpen: Story = {
   },
   render: ({ content, position, isDisabled, delay, closeDelay }) => {
     return (
-      <Box margin="$25">
-        <Tooltip
-          content={content}
-          position={position}
-          isDisabled={isDisabled}
-          delay={delay}
-          closeDelay={closeDelay}
-          defaultOpen={true}
-        >
-          <Button>Trigger</Button>
-        </Tooltip>
-      </Box>
+      <Tooltip
+        content={content}
+        position={position}
+        isDisabled={isDisabled}
+        delay={delay}
+        closeDelay={closeDelay}
+        defaultOpen={true}
+      >
+        <Button>Trigger</Button>
+      </Tooltip>
     );
   },
 };
@@ -171,22 +203,25 @@ export const Controlled: Story = {
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (
-      <Box display="flex" flexDirection="column" alignItems="center">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        className={storyClass}
+      >
         <Button onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
         </Button>
-        <Box margin="$25">
-          <Tooltip
-            content={content}
-            position={position}
-            isDisabled={isDisabled}
-            delay={delay}
-            closeDelay={closeDelay}
-            isOpen={isOpen}
-          >
-            <SystemIcon.AlertBox />
-          </Tooltip>
-        </Box>
+        <Tooltip
+          content={content}
+          position={position}
+          isDisabled={isDisabled}
+          delay={delay}
+          closeDelay={closeDelay}
+          isOpen={isOpen}
+        >
+          <SystemIcon.AlertBox />
+        </Tooltip>
       </Box>
     );
   },

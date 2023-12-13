@@ -8,7 +8,17 @@ import {
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { SystemIcon } from '..';
-import { colorVariants, displayVariants } from './Notification.css';
+import { notificationRecipe } from './Notification.css';
+
+// eslint-disable-next-line @kadena-dev/typedef-var
+const intentVariants = Object.keys(
+  (notificationRecipe as any).classNames?.variants?.intent,
+) as INotificationProps['intent'][];
+
+// eslint-disable-next-line @kadena-dev/typedef-var
+const displayStyleVariant = Object.keys(
+  (notificationRecipe as any).classNames?.variants?.displayStyle,
+) as INotificationProps['displayStyle'][];
 
 type StoryType = {
   heading: string;
@@ -28,24 +38,30 @@ const meta: Meta<StoryType> = {
     },
   },
   argTypes: {
-    styleVariant: {
+    displayStyle: {
+      options: displayStyleVariant,
+      control: {
+        type: 'select',
+      },
       description:
         'The Notification component has bordered and borderless variants. The borderless variant is used for notifications that located within a card or content body, while the bordered variant can be used in all other cases. ',
-      options: Object.keys(displayVariants),
-      control: {
-        type: 'select',
-      },
       table: {
-        defaultValue: { summary: 'bordered' },
+        type: { summary: displayStyleVariant.join(' | ') },
+        defaultValue: { summary: 'default' },
       },
     },
-    color: {
-      options: Object.keys(colorVariants),
+    intent: {
+      options: intentVariants,
       control: {
         type: 'select',
       },
+      description: 'Notification intent color',
+      table: {
+        type: { summary: intentVariants.join(' | ') },
+        defaultValue: { summary: 'default' },
+      },
     },
-    hasCloseButton: {
+    isDismissable: {
       control: {
         type: 'boolean',
       },
@@ -76,33 +92,31 @@ export const Primary: Story = {
   name: 'Notification',
   args: {
     heading: 'Notification Heading',
-    hasCloseButton: true,
-    color: undefined,
+    isDismissable: true,
+    intent: undefined,
     children:
       'Notification children to inform users about the event that occurred!',
-    styleVariant: 'bordered',
+    displayStyle: 'bordered',
   },
-  render: ({ heading, hasCloseButton, color, children, styleVariant }) => {
+  render: ({ heading, isDismissable, intent, children, displayStyle }) => {
     return (
       <Notification
-        color={color}
-        hasCloseButton={hasCloseButton}
-        onClose={() => {
+        intent={intent}
+        isDismissable={isDismissable}
+        onDismiss={() => {
           alert('Close button clicked');
         }}
-        styleVariant={styleVariant}
+        displayStyle={displayStyle}
         role="none"
       >
         <NotificationHeading>{heading}</NotificationHeading>
         {children}
         <NotificationFooter>
-          <NotificationButton color="positive">
+          <NotificationButton intent="positive" icon={<SystemIcon.Check />}>
             Accept
-            <SystemIcon.Check />
           </NotificationButton>
-          <NotificationButton color="negative">
+          <NotificationButton intent="negative" icon={<SystemIcon.Close />}>
             Reject
-            <SystemIcon.Close />
           </NotificationButton>
         </NotificationFooter>
       </Notification>

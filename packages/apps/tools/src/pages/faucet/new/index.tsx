@@ -222,7 +222,7 @@ const NewAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification color="warning" role="status">
+          <Notification intent="warning" role="status">
             <NotificationHeading>
               {t('The Faucet is not available on Mainnet')}
             </NotificationHeading>
@@ -239,7 +239,7 @@ const NewAccountFaucetPage: FC = () => {
         ) : null}
       </div>
       <div className={notificationContainerStyle}>
-        <Notification color="warning" role="none">
+        <Notification intent="warning" role="none">
           <NotificationHeading>{t(`Before you start`)}</NotificationHeading>
           <Trans
             i18nKey="common:faucet-how-to-start"

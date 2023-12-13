@@ -80,10 +80,10 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
   return (
     <div className={containerStyle}>
       <Notification
-        color={statusToColorMap[status!]}
-        hasCloseButton
+        intent={statusToColorMap[status!]}
         icon={statusToIconMap[status!]}
-        onClose={onNotificationCloseClick}
+        isDismissable
+        onDismiss={onNotificationCloseClick}
         role="status"
       >
         <NotificationHeading>{title ?? titles[status!]}</NotificationHeading>

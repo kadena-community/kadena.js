@@ -144,7 +144,7 @@ const ExistingAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification color="warning" role="status">
+          <Notification intent="warning" role="status">
             <NotificationHeading>
               {t('The Faucet is not available on Mainnet')}
             </NotificationHeading>

@@ -1,3 +1,4 @@
+import { atoms } from '@theme/atoms.css';
 import { sprinkles } from '@theme/sprinkles.css';
 import { style } from '@vanilla-extract/css';
 

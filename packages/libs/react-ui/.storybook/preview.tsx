@@ -4,7 +4,7 @@ import { type Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
 import React from 'react';
 import { useDarkMode } from 'storybook-dark-mode';
-import { darkThemeClass } from '../src/styles';
+import { atoms, darkThemeClass } from '../src/styles';
 import { colorPalette } from '../src/styles/colors';
 import '../src/styles/global.css';
 
@@ -60,6 +60,22 @@ const preview: Preview = {
       },
     },
   },
+  // decorators: [
+  //   (Story) => (
+  //     <div
+  //       className={atoms({
+  //         backgroundColor: 'base.default',
+  //         display: 'flex',
+  //         alignItems: 'center',
+  //         justifyContent: 'center',
+  //         height: '100%',
+  //         padding: 'xxxl',
+  //       })}
+  //     >
+  //       <Story />
+  //     </div>
+  //   ),
+  // ],
 };
 
 export default preview;

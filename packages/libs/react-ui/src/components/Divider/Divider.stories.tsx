@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Card } from '..';
 import { Divider } from './Divider';
-import { ContentClass } from './stories.css';
+import { tempClass } from './stories.css';
 
 const meta: Meta = {
   title: 'Layout/Divider',
@@ -24,8 +25,8 @@ export const Static: Story = {
 
   render: () => {
     return (
-      <>
-        <div className={ContentClass}>
+      <div className={tempClass}>
+        <Card>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -33,10 +34,10 @@ export const Static: Story = {
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
-        </div>
+        </Card>
 
         <Divider />
-        <div className={ContentClass}>
+        <Card>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -44,8 +45,8 @@ export const Static: Story = {
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
-        </div>
-      </>
+        </Card>
+      </div>
     );
   },
 };
