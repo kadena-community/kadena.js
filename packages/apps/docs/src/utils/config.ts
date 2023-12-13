@@ -1,8 +1,7 @@
-import type { IMenuItem } from '@/Layout';
 import type { IMostPopularPage } from '@/MostPopularData';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
-import type { IMenuData } from '@kadena/docs-tools';
+import type { IMenuData, IMenuItem } from '@kadena/docs-tools';
 import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 
 interface IPageConfigProps {
@@ -12,19 +11,26 @@ interface IPageConfigProps {
 
 interface IPageConfigReturn {
   leftMenuTree: IMenuItem[];
-  blogPosts?: IMenuData[];
-  popularPages?: IMostPopularPage[];
+  blogPosts: IMenuData[] | null;
+  popularPages: IMostPopularPage[] | null;
 }
 
 export const getPageConfig = async ({
   blogPosts,
   popularPages,
 }: IPageConfigProps): Promise<IPageConfigReturn> => {
+  const blogData = Array.isArray(blogPosts)
+    ? await getBlogPosts(blogPosts)
+    : blogPosts
+    ? await getBlogPosts()
+    : null;
+  const popularData = popularPages
+    ? await getMostPopularPages(popularPages)
+    : null;
+
   return {
     leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
-    blogPosts: blogPosts ? await getBlogPosts() : undefined,
-    popularPages: popularPages
-      ? await getMostPopularPages(popularPages)
-      : undefined,
+    blogPosts: blogData,
+    popularPages: popularData,
   };
 };
