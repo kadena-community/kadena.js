@@ -7,7 +7,7 @@ const makeAsync = <T extends (...args: any[]) => any>(
 ): ((...args: Parameters<T>) => Promise<ReturnType<T>>) => {
   return async (...args: any[]): Promise<any> => {
     // kadena-crypto internally loads a wasm module
-    // which is an async operation, were we wait for that
+    // which is an async operation, ensure it is completed
     while (!kadenaCrypto.default.isLoaded()) {
       await nextTick();
     }

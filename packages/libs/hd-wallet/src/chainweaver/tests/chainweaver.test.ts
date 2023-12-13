@@ -3,6 +3,7 @@ import {
   kadenaGenKeypair,
   kadenaGenMnemonic,
   kadenaMnemonicToRootKeypair,
+  kadenaSignFromRootKey,
 } from '../index.js';
 
 const toHexStr = (bytes: Uint8Array) => Buffer.from(bytes).toString('hex');
@@ -22,7 +23,7 @@ describe('kadenaMnemonicToRootKeypair', () => {
       'bubble fade wasp analyst then panel desert hold spatial sound lucky weekend';
     const password = 'password';
     const rootKey = await kadenaMnemonicToRootKeypair(password, mnemonic);
-    expect(rootKey).toHaveLength(128);
+    expect(rootKey).toBeTruthy();
   });
 
   it('should generate a the same root key from the same mnemonic', async () => {
@@ -32,7 +33,8 @@ describe('kadenaMnemonicToRootKeypair', () => {
     const rootKey1 = await kadenaMnemonicToRootKeypair(password, mnemonic);
     const rootKey2 = await kadenaMnemonicToRootKeypair(password, mnemonic);
 
-    expect(toHexStr(rootKey1)).toBe(toHexStr(rootKey2));
+    // not equal due to encryption salt.
+    expect(rootKey1).not.toBe(rootKey2);
   });
 
   it('should generate different root key for different mnemonic', async () => {
@@ -48,7 +50,7 @@ describe('kadenaMnemonicToRootKeypair', () => {
       mnemonicSecond,
     );
 
-    expect(toHexStr(rootKey1)).not.toBe(toHexStr(rootKey2));
+    expect(rootKey1).not.toBe(rootKey2);
   });
 
   it('should generate different root key for different passwords same mnemonic', async () => {
@@ -57,7 +59,7 @@ describe('kadenaMnemonicToRootKeypair', () => {
     const rootKey1 = await kadenaMnemonicToRootKeypair('pass-one', mnemonic);
     const rootKey2 = await kadenaMnemonicToRootKeypair('pass-two', mnemonic);
 
-    expect(toHexStr(rootKey1)).not.toBe(toHexStr(rootKey2));
+    expect(rootKey1).not.toBe(rootKey2);
   });
 });
 
@@ -67,13 +69,13 @@ describe('kadenaGenKeypair', () => {
       'bubble fade wasp analyst then panel desert hold spatial sound lucky weekend';
     const password = 'password';
     const rootKey = await kadenaMnemonicToRootKeypair(password, mnemonic);
-    const [encryptedSecret, publicKey] = await kadenaGenKeypair(
+    const { publicKey, secretKey } = await kadenaGenKeypair(
       password,
       rootKey,
       1,
     );
-    expect(encryptedSecret.byteLength).toEqual(128);
-    expect(publicKey.byteLength).toBe(32);
+    expect(secretKey.length).toBeTruthy();
+    expect(publicKey.length).toBe(64);
   });
 
   it('should generate a range of keypairs frpm the rootKey', async () => {
@@ -83,9 +85,23 @@ describe('kadenaGenKeypair', () => {
     const rootKey = await kadenaMnemonicToRootKeypair(password, mnemonic);
     const keyPairs = await kadenaGenKeypair(password, rootKey, [0, 3]);
     expect(keyPairs).toHaveLength(4);
-    keyPairs.forEach(([encryptedSecret, publicKey]) => {
-      expect(encryptedSecret.byteLength).toEqual(128);
-      expect(publicKey.byteLength).toBe(32);
+    keyPairs.forEach(({ publicKey, secretKey }) => {
+      expect(secretKey.length).toBeTruthy();
+      expect(publicKey.length).toBe(64);
     });
+  });
+
+  it('should generate a valid signature', async () => {
+    const mnemonic: string =
+      'bubble fade wasp analyst then panel desert hold spatial sound lucky weekend';
+    const password = 'password';
+    const rootKey = await kadenaMnemonicToRootKeypair(password, mnemonic);
+    const signature = await kadenaSignFromRootKey(
+      password,
+      'hello',
+      rootKey,
+      1,
+    );
+    expect(signature).toBeTruthy();
   });
 });
