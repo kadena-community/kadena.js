@@ -339,6 +339,9 @@ importers:
       graphql-yoga:
         specifier: ~4.0.4
         version: 4.0.4(graphql@16.8.0)
+      js-yaml:
+        specifier: ~4.1.0
+        version: 4.1.0
       json-bigint-patch:
         specifier: ~0.0.8
         version: 0.0.8
@@ -373,6 +376,9 @@ importers:
       '@types/debug':
         specifier: ~4.1.7
         version: 4.1.7
+      '@types/js-yaml':
+        specifier: 4.0.9
+        version: 4.0.9
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14

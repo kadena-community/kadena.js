@@ -24,6 +24,8 @@ const simulationTransferOptions: TransferType[] = [
   'safe-transfer',
 ];
 
+export const MARMALADE_TEMPLATE_FOLDER = 'src/devnet/contracts/marmalade-v2';
+
 export async function simulate({
   numberOfAccounts = 6,
   transferInterval = 100,

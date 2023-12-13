@@ -63,6 +63,7 @@ export async function transfer({
       ttl: 8 * 60 * 60, //8 hours
     })
     .setNetworkId(devnetConfig.NETWORK_ID)
+
     .createTransaction();
 
   const signedTx = signAndAssertTransaction(sender.keys)(transaction);
