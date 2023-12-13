@@ -1,13 +1,13 @@
 import * as fs from 'fs';
 import yaml from 'js-yaml';
-import type { IBuildReturn, IConfig, IError, IPage, ISuccess } from './types';
+import type { IConfig, IPage, IScriptResult } from './types';
 
-const errors: IError[] = [];
-const success: ISuccess[] = [];
+const errors: string[] = [];
+const success: string[] = [];
 const newFiles: string[] = [];
 
 const loadConfigPages = (): IPage[] => {
-  const data = fs.readFileSync(`./../config.yaml`, 'utf-8');
+  const data = fs.readFileSync(`./src/config.yaml`, 'utf-8');
   const { pages } = yaml.load(data) as IConfig;
 
   const cleanup = (pages: IPage[]): IPage[] => {
@@ -33,10 +33,10 @@ const copyPages = (pages: IPage[], parentDir: string = ''): void => {
   pages.forEach((page) => {
     const dir = `${parentDir}${page.url}`;
 
-    fs.mkdirSync(`./../pages${dir}`, { recursive: true });
+    fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
     fs.copyFileSync(
-      `./..${page.file}`,
-      `./../pages${dir}/index.${getFileExtension(page.file)}`,
+      `./src${page.file}`,
+      `./src/pages${dir}/index.${getFileExtension(page.file)}`,
     );
     newFiles.push(dir);
 
@@ -56,7 +56,7 @@ const isAlreadyIgnored = (
 };
 
 const createGitIgnore = (files: string[]): void => {
-  const existingContent = fs.readFileSync(`./../pages/.gitignore`, 'utf-8');
+  const existingContent = fs.readFileSync(`./src/pages/.gitignore`, 'utf-8');
 
   const content = files.reduce((acc, val) => {
     if (isAlreadyIgnored(val, existingContent)) return acc;
@@ -64,10 +64,10 @@ const createGitIgnore = (files: string[]): void => {
     return `${acc}\n${val}`;
   }, existingContent);
 
-  fs.writeFileSync('./../pages/.gitignore', content);
+  fs.writeFileSync('./src/pages/.gitignore', content);
 };
 
-export const movePages = async (): Promise<IBuildReturn> => {
+export const movePages = async (): Promise<IScriptResult> => {
   const pages = loadConfigPages();
   copyPages(pages);
 

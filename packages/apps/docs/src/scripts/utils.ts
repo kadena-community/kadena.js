@@ -1,19 +1,40 @@
-export const getTypes = (tree, type, arr = []) => {
-  tree.children.forEach((branch) => {
-    if (branch.type === type) {
-      arr.push(branch);
-    }
-    if (!branch.children) return arr;
+import type { Content, Root } from 'mdast-util-from-markdown/lib';
 
-    return getTypes(branch, type, arr);
-  });
+export const getTypes = <T>(
+  tree: Root | Content,
+  type: string,
+  arr: T[] = [],
+): T[] => {
+  if ('children' in tree) {
+    tree.children.forEach((branch: Content) => {
+      if (branch.type === type) {
+        arr.push(branch as unknown as T);
+      }
+      getTypes(branch, type, arr);
+    });
+  }
   return arr;
 };
+
+interface IImportReadMeItemOptions {
+  RootOrder: number;
+  tags?: string[];
+  hideEditLink?: boolean;
+  singlePage?: boolean;
+}
+
+export interface IImportReadMeItem {
+  file: string;
+  repo: string;
+  destination: string;
+  title: string;
+  options: IImportReadMeItemOptions;
+}
 
 /**
  * Files to be imported
  */
-export const importReadMes = [
+export const importReadMes: IImportReadMeItem[] = [
   /** /libs/chainweb-node-client */
   {
     file: `/README.md`,

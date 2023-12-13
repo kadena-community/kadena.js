@@ -1,11 +1,19 @@
 import chalk from 'chalk';
 import logUpdate from 'log-update';
 
-type IFrame = string;
-const frames: IFrame[] = '◴◷◶◵'.split('');
+interface ISpinner {
+  start: () => void;
+  stop: () => void;
+}
 
-export const Spinner = () => {
-  const elegantSpinner = (): (() => IFrame) => {
+interface IElegantSpinner {
+  (): string;
+}
+
+export const Spinner = (): ISpinner => {
+  const frames = '◴◷◶◵'.split('');
+
+  const elegantSpinner = (): IElegantSpinner => {
     let i = 0;
 
     return function () {
@@ -14,7 +22,7 @@ export const Spinner = () => {
   };
 
   const frame = elegantSpinner();
-  let interval: NodeJS.Timer;
+  let interval: NodeJS.Timeout;
 
   return {
     start: () => {

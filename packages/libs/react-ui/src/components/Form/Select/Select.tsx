@@ -20,7 +20,7 @@ export interface ISelectProps
   ariaLabel: string;
   children: React.ReactNode;
   disabled?: boolean;
-  icon?: keyof typeof SystemIcon;
+  startIcon?: React.ReactElement;
   ref?: React.ForwardedRef<HTMLSelectElement>;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   id: string;
@@ -32,12 +32,17 @@ export const Select: FC<ISelectProps> = forwardRef<
   HTMLSelectElement,
   ISelectProps
 >(function Select(
-  { ariaLabel, children, disabled = false, outlined = false, icon, ...rest },
+  {
+    ariaLabel,
+    children,
+    disabled = false,
+    outlined = false,
+    startIcon,
+    ...rest
+  },
   ref,
 ) {
   const { status } = useContext(FormFieldWrapperContext);
-
-  const Icon = icon && SystemIcon[icon];
   const ChevronDown = SystemIcon.ChevronDown;
 
   return (
@@ -48,11 +53,7 @@ export const Select: FC<ISelectProps> = forwardRef<
       })}
       data-testid="kda-select"
     >
-      {Icon && (
-        <span className={iconClass}>
-          <Icon size="md" />
-        </span>
-      )}
+      {startIcon && <span className={iconClass}>{startIcon}</span>}
       <select
         aria-label={ariaLabel}
         className={selectClass}

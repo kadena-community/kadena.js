@@ -1,33 +1,36 @@
+import type { IMenuData } from '@kadena/docs-tools';
 import { getFlatData } from '@kadena/docs-tools';
 import { format, isValid } from 'date-fns';
 import * as fs from 'fs';
+import type { ITagsData } from '../utils/staticGeneration/getJsonData';
 import {
   getAuthorData,
   getTagsData,
-} from './../utils/staticGeneration/getJsonData.mjs';
+} from '../utils/staticGeneration/getJsonData';
+import type { IScriptResult } from './types';
 
-const MENUFILE = './public/sitemap.xml';
+const MENU_FILE = './public/sitemap.xml';
 const URL = 'https://docs.kadena.io';
 
-const errors = [];
-const success = [];
+const errors: string[] = [];
+const success: string[] = [];
 
 const authors = getAuthorData();
 
-const setPrio = (root) => {
+const setPriority = (root: string): string => {
   if (root.includes('/blogchain')) return '0.5';
 
   return '1';
 };
 
-const formatDate = (dateStr) => {
+const formatDate = (dateStr: string | Date): string => {
   const date = new Date(dateStr);
   if (!isValid(date)) return '';
 
   return format(date, 'yyyy-MM-dd');
 };
 
-const getPosts = (root, posts) => {
+const getPosts = (root: string, posts: IMenuData[]): string => {
   return posts
     .map(
       (post) => `
@@ -35,16 +38,16 @@ const getPosts = (root, posts) => {
       <loc>${root}${post.root}</loc>
       ${
         post.lastModifiedDate &&
-        `<lastmod>${formatDate(post.lastModifiedDate)}</lastmod>`
+        `<lastmod>${formatDate(post?.lastModifiedDate)}</lastmod>`
       }
       <changefreq>monthly</changefreq>
-      <priority>${setPrio(post.root)}</priority>
+      <priority>${setPriority(post.root)}</priority>
     </url>`,
     )
     .join('');
 };
 
-const getTags = (root, tags) => {
+const getTags = (root: string, tags: ITagsData[]): string => {
   return tags
     .map(
       (tag) => `
@@ -55,7 +58,7 @@ const getTags = (root, tags) => {
     .join('');
 };
 
-const getAuthors = (root) => {
+const getAuthors = (root: string): string => {
   return authors
     .map(
       (author) => `
@@ -66,7 +69,7 @@ const getAuthors = (root) => {
     .join('');
 };
 
-export const createSitemap = async () => {
+export const createSitemap = async (): Promise<IScriptResult> => {
   const tags = await getTagsData();
   const posts = await getFlatData();
 
@@ -97,7 +100,7 @@ export const createSitemap = async () => {
       errors.push(error);
     });
   } else {
-    fs.writeFileSync(MENUFILE, fileStr);
+    fs.writeFileSync(MENU_FILE, fileStr);
 
     success.push('sitemap successfully created');
   }

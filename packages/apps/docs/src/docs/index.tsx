@@ -5,16 +5,14 @@ import {
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { getBlogPosts } from '@/utils/getBlogPosts';
-import getMostPopularPages from '@/utils/getMostPopularPages';
 import type { IMenuData } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next/types';
 
 import type { FC } from 'react';
 import React from 'react';
+import { getPageConfig } from '../utils/config';
 
 interface IProps {
   popularPages: IMostPopularPage[];
@@ -38,14 +36,9 @@ const Home: FC<IProps> = () => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const mostPopularPages = await getMostPopularPages('/pact');
-  const blogPosts = await getBlogPosts(['pact']);
-
   return {
     props: {
-      popularPages: mostPopularPages,
-      blogPosts,
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      ...(await getPageConfig({ blogPosts: ['pact'], popularPages: '/pact' })),
       frontmatter: {
         title: 'Learn Pact',
         subTitle: 'The human-readable smart contract language',

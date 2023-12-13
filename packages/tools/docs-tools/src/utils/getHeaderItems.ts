@@ -1,4 +1,4 @@
-import { IMenuData } from 'src/types';
+import type { IMenuData } from 'src/types';
 import { getConfig, getData } from './staticGeneration/getData';
 
 export const getHeaderItems = async (): Promise<IMenuData[]> => {

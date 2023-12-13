@@ -1,11 +1,7 @@
-export type IError = string;
-export type ISuccess = string;
-
-export interface IBuildReturn {
-  errors: IError[];
-  success: ISuccess[];
+export interface IScriptResult {
+  success: string[];
+  errors: string[];
 }
-
 //config
 
 export type IMenu = string[];

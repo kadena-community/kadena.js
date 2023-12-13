@@ -9,8 +9,8 @@ import React from 'react';
 type StoryProps = {
   helperText: string;
   leadingText: string;
-  icon: keyof typeof SystemIcon;
-} & ITextFieldProps;
+  startIcon: React.ReactElement;
+} & Omit<ITextFieldProps, 'startIcon'>;
 
 const meta: Meta<StoryProps> = {
   title: 'Form/TextField',
@@ -87,14 +87,6 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    icon: {
-      description:
-        'Icon rendered inside the input to the left of the input text.',
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
@@ -115,13 +107,13 @@ export const Group: Story = {
     label: 'Label',
     disabled: false,
     status: undefined,
-    icon: 'Account',
+    startIcon: <SystemIcon.Account />,
     leadingText: 'Leading',
     leadingTextWidth: undefined,
   },
   render: ({
     leadingText,
-    icon,
+    startIcon,
     disabled,
     status,
     tag,
@@ -142,7 +134,7 @@ export const Group: Story = {
         inputProps={{
           id: 'inputStory',
           leadingText,
-          icon,
+          startIcon,
           placeholder: 'This is a placeholder',
         }}
       />
