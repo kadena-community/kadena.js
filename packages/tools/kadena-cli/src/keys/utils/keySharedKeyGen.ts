@@ -8,20 +8,21 @@ import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
 import { toHexStr } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
-const defaultAmount: number = 1;
+export const defaultAmount: number = 1;
 
 export interface IKeysConfig {
   keyGenFromChoice: string;
   keyAlias: string;
-  keySeed?: EncryptedString;
+  keyWallet?: EncryptedString;
   keyMnemonic?: string;
   keyPassword: string;
   keyAmount?: number;
   legacy?: boolean;
 }
 
-export async function generateFromSeed(
+export async function generateFromWallet(
   config: IKeysConfig,
+  showPrivateKey: boolean = false,
 ): Promise<IKeyPair[]> {
   if (
     !['genPublicKey', 'genPublicPrivateKey'].includes(config.keyGenFromChoice)
@@ -29,18 +30,15 @@ export async function generateFromSeed(
     throw new Error('Invalid choice');
   }
 
-  return handlePublicPrivateKeysFrom(
-    config,
-    config.keyGenFromChoice === 'genPublicPrivateKey',
-  );
+  return handlePublicPrivateKeysFrom(config, showPrivateKey);
 }
 
 export async function handlePublicPrivateKeysFrom(
   config: IKeysConfig,
   showPrivateKey: boolean = false,
 ): Promise<IKeyPair[]> {
-  if (!config.keySeed) {
-    throw new Error('Seed is required for this option.');
+  if (!config.keyWallet) {
+    throw new Error('Wallet is required for this option.');
   }
 
   const keys: IKeyPair[] = [];
@@ -54,7 +52,7 @@ export async function handlePublicPrivateKeysFrom(
     let privateKey: EncryptedString | undefined;
 
     if (config.legacy === true) {
-      const decryptedSeed = kadenaDecrypt(config.keyPassword, config.keySeed);
+      const decryptedSeed = kadenaDecrypt(config.keyPassword, config.keyWallet);
       const [publicKeyUint8, privateKeyUint8] = await kadenaGenKeypair(
         config.keyPassword,
         decryptedSeed,
@@ -66,7 +64,7 @@ export async function handlePublicPrivateKeysFrom(
       const [publicKeyString, privateKeyString] =
         await kadenaGenKeypairFromSeed(
           config.keyPassword,
-          config.keySeed,
+          config.keyWallet,
           index,
         );
       publicKey = publicKeyString;

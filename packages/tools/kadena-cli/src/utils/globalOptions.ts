@@ -13,10 +13,12 @@ import {
 } from '../prompts/index.js';
 
 import chalk from 'chalk';
+import { join } from 'node:path';
 import {
-  PLAINKEY_EXT,
-  SEED_EXT,
-  SEED_LEGACY_EXT,
+  KEY_EXT,
+  WALLET_DIR,
+  WALLET_EXT,
+  WALLET_LEGACY_EXT,
 } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
@@ -27,6 +29,7 @@ import {
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
+import { removeAfterFirstDot } from './filesystem.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -235,11 +238,20 @@ export const globalOptions = {
   // Keys
   keyAlias: createOption({
     key: 'keyAlias' as const,
-    prompt: keys.keyAlias,
+    prompt: keys.keyAliasPrompt,
     validation: z.string(),
     option: new Option(
       '-a, --key-alias <keyAlias>',
       'Enter an alias to store your key',
+    ),
+  }),
+  keyWallet: createOption({
+    key: 'keyWallet' as const,
+    prompt: keys.keyWallet,
+    validation: z.string(),
+    option: new Option(
+      '-w, --key-wallet <keyWallet>',
+      'Enter you wallet names',
     ),
   }),
   keyAmount: createOption({
@@ -260,34 +272,24 @@ export const globalOptions = {
       'Choose an action for generating keys',
     ),
   }),
-  keySeed: createOption({
-    key: 'keySeed',
-    prompt: keys.keySeedPrompt,
+  keyWalletSelect: createOption({
+    key: 'keyWallet',
+    prompt: keys.keyWalletSelectPrompt,
     validation: z.string(),
-    option: new Option(
-      '-s, --key-seed <keySeed>',
-      'Enter your seed to generate keys from',
-    ),
-    transform: (keySeed: string) => {
-      if (keySeed.includes(SEED_EXT) || keySeed.includes(SEED_LEGACY_EXT)) {
-        return readKeyFileContent(keySeed);
-      }
-      return keySeed;
-    },
-  }),
-  keySeedSelect: createOption({
-    key: 'keySeed',
-    prompt: keys.keySeedSelectPrompt,
-    validation: z.string(),
-    option: new Option('-s, --key-seed <keySeed>', 'Enter your seed to manage'),
-    transform: (keySeed: string) => {
-      if (keySeed.includes(SEED_EXT) || keySeed.includes(SEED_LEGACY_EXT)) {
+    option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    transform: (keyWallet: string) => {
+      if (
+        keyWallet.includes(WALLET_EXT) ||
+        keyWallet.includes(WALLET_LEGACY_EXT)
+      ) {
         return {
-          seed: readKeyFileContent(keySeed),
-          fileName: keySeed,
+          wallet: readKeyFileContent(
+            join(WALLET_DIR, removeAfterFirstDot(keyWallet), keyWallet),
+          ),
+          fileName: keyWallet,
         };
       }
-      return keySeed;
+      return keyWallet;
     },
   }),
   keyPassword: createOption({
@@ -319,7 +321,7 @@ export const globalOptions = {
   }),
   keyFilename: createOption({
     key: 'keyFilename' as const,
-    prompt: () => generic.genericFileName('key'),
+    prompt: () => generic.genericFileNamePrompt('key'),
     validation: z.string(),
     option: new Option(
       '-f, --key-filename <keyFilename>',
@@ -328,20 +330,20 @@ export const globalOptions = {
   }),
   key: createOption({
     key: 'key' as const,
-    prompt: keys.keySelectPrompt,
+    prompt: keys.keyDeleteSelectPrompt,
     validation: z.string(),
     option: new Option('-k, --key <key>', 'Select key from keyfile'),
   }),
   keyMessage: createOption({
     key: 'keyMessage' as const,
-    prompt: keys.selectMessagePrompt,
+    prompt: keys.keyMessagePrompt,
     validation: z.string(),
     option: new Option(
       '-n, --key-message <keyMessage>',
       'Enter message to decrypt',
     ),
     transform: (keyMessage: string) => {
-      if (keyMessage.includes(SEED_EXT) || keyMessage.includes(PLAINKEY_EXT)) {
+      if (keyMessage.includes(WALLET_EXT) || keyMessage.includes(KEY_EXT)) {
         const keyFileContent = readKeyFileContent(keyMessage);
         if (typeof keyFileContent === 'string') {
           return keyFileContent;

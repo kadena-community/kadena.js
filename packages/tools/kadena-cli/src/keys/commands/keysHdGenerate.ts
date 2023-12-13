@@ -3,10 +3,10 @@ import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
-import { generateFromSeed } from '../utils/keySharedKeyGen.js';
+import { generateFromWallet } from '../utils/keySharedKeyGen.js';
 import {
-  displayGeneratedPlainKeys,
-  printStoredPlainKeys,
+  displayGeneratedHdKeys,
+  printStoredHdKeys,
 } from '../utils/keysDisplay.js';
 
 import * as storageService from '../utils/storage.js';
@@ -16,43 +16,50 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { clearCLI } from '../../utils/helpers.js';
 
-export const createGenerateFromSeedCommand: (
+export const createGenerateHdKeysCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'from-seed',
-  'create key(s) from encrypted seed',
+  'gen-hd',
+  'generate public/private key pair(s) fom your wallet',
   [
+    globalOptions.keyWalletSelect(),
     globalOptions.keyGenFromChoice(),
     globalOptions.keyAlias(),
-    globalOptions.keySeed(),
     globalOptions.keyPassword(),
     globalOptions.keyAmount({ isOptional: true }),
   ],
   async (config) => {
     clearCLI();
     try {
-      debug('generate-from-seed:action')({ config });
+      debug('generate-keys:action')({ config });
+      const { wallet: keyWallet, fileName } = config.keyWallet;
 
-      const loading = ora('Generating from seed..').start();
       const isLegacy =
-        kadenaDecrypt(config.keyPassword, config.keySeed).byteLength >= 128;
+        kadenaDecrypt(config.keyPassword, keyWallet).byteLength >= 128;
 
       const result = {
         ...config,
+        keyWallet: keyWallet,
         legacy: isLegacy,
       };
 
-      const keys = await generateFromSeed(result as IKeysConfig);
-      loading.succeed('Completed');
-      displayGeneratedPlainKeys(keys);
+      const loading = ora('Generating keys..').start();
 
-      await storageService.savePlainKeyByAlias(
-        config.keyAlias,
-        keys,
-        config.legacy,
+      const keys = await generateFromWallet(
+        result as IKeysConfig,
+        config.keyGenFromChoice === 'genPublicPrivateKey',
       );
-      printStoredPlainKeys(config.keyAlias, keys, config.legacy);
+      loading.succeed('Completed');
+      displayGeneratedHdKeys(keys);
+
+      await storageService.saveKeyByAlias(
+        result.keyAlias,
+        keys,
+        result.legacy,
+        fileName,
+      );
+      return printStoredHdKeys(result.keyAlias, keys, result.legacy);
     } catch (error) {
       console.log(chalk.red(`\n${error.message}\n`));
       process.exit(1);

@@ -4,7 +4,7 @@ import { program } from 'commander';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { getExistingNetworks, isAlphabetic } from '../utils/helpers.js';
-import { getInput } from './generic.js'; // Importing getInput from another file
+import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
 
 export const chainIdPrompt: IPrompt = async (
   previousQuestions,
@@ -12,7 +12,10 @@ export const chainIdPrompt: IPrompt = async (
   isOptional,
 ) => {
   const defaultValue = args.defaultValue;
-  return (await getInput('Enter ChainId (0-19)', defaultValue)) as ChainId;
+  return (await getInputPrompt(
+    'Enter ChainId (0-19)',
+    defaultValue,
+  )) as ChainId;
 };
 
 export const networkNamePrompt: IPrompt = async (
@@ -40,7 +43,10 @@ export const networkIdPrompt: IPrompt = async (
   isOptional,
 ) => {
   const defaultValue = args.defaultValue;
-  return await getInput('Enter a network id (e.g. "mainnet01")', defaultValue);
+  return await getInputPrompt(
+    'Enter a network id (e.g. "mainnet01")',
+    defaultValue,
+  );
 };
 
 export const networkHostPrompt: IPrompt = async (
@@ -49,7 +55,7 @@ export const networkHostPrompt: IPrompt = async (
   isOptional,
 ) => {
   const defaultValue = args.defaultValue;
-  return await getInput(
+  return await getInputPrompt(
     'Enter Kadena network host (e.g. "https://api.chainweb.com")',
     defaultValue,
   );
@@ -61,7 +67,7 @@ export const networkExplorerUrlPrompt: IPrompt = async (
   isOptional,
 ) => {
   const defaultValue = args.defaultValue;
-  return await getInput(
+  return await getInputPrompt(
     'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
     defaultValue,
   );

@@ -4,20 +4,32 @@ import { wordlist } from '@scure/bip39/wordlists/english';
 
 import { program } from 'commander';
 import {
-  getAllSeeds,
-  getLegacySeeds,
-  getPlainKeys,
-  getPlainLegacyKeys,
-  getSeeds,
+  getAllWallets,
+  getKeysFromWallet,
+  getLegacyKeysFromWallet,
+  getLegacyWallets,
+  getWallets,
 } from '../keys/utils/keysHelpers.js';
 
 import chalk from 'chalk';
 import type { KeyContent } from '../keys/utils/storage.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import type { IPrompt } from '../utils/createOption.js';
-import { isAlphabetic } from '../utils/helpers.js';
+import { isAlphabetic, isAlphanumeric } from '../utils/helpers.js';
 
-export async function keyAlias(): Promise<string> {
+export async function keyWallet(): Promise<string> {
+  return await input({
+    message: `Enter your wallet name:`,
+    validate: function (input) {
+      if (!isAlphanumeric(input)) {
+        return 'Wallet must be alphabetic! Please enter a valid wallet name.';
+      }
+      return true;
+    },
+  });
+}
+
+export async function keyAliasPrompt(): Promise<string> {
   return await input({
     message: `Enter a alias for your key:`,
     validate: function (input) {
@@ -52,6 +64,12 @@ export async function keyAmountPrompt(): Promise<string> {
   });
 }
 
+export async function keyMessagePrompt(): Promise<string> {
+  return await input({
+    message: `Enter message to decrypt:`,
+  });
+}
+
 export async function genFromChoicePrompt(): Promise<string> {
   return await select({
     message: 'Select an action',
@@ -68,8 +86,10 @@ export async function genFromChoicePrompt(): Promise<string> {
   });
 }
 
-export const keySeedSelectPrompt: IPrompt = async (prev, args, isOptional) => {
-  const existingKeys: string[] = getAllSeeds();
+async function walletSelectionPrompt(
+  includeAllOption: boolean,
+): Promise<string> {
+  const existingKeys: string[] = getAllWallets();
 
   if (existingKeys.length === 0) {
     console.log(chalk.red('No files found. Exiting.'));
@@ -78,25 +98,57 @@ export const keySeedSelectPrompt: IPrompt = async (prev, args, isOptional) => {
 
   const choices = existingKeys.map((key) => ({
     value: key,
-    name: `alias: ${key}`,
+    name: `Wallet: ${key}`,
   }));
 
-  const selectedSeed = await select({
-    message: 'Select a seed',
+  // Optionally add the "all" option
+  if (includeAllOption) {
+    choices.unshift({
+      value: 'all',
+      name: 'All Wallets',
+    });
+  }
+
+  const selectedWallet = await select({
+    message: 'Select a wallet',
     choices: choices,
   });
 
-  return selectedSeed;
+  return selectedWallet;
+}
+
+export const keyWalletSelectPrompt: IPrompt = async (
+  previousQuestions,
+  args,
+  isOptional,
+): Promise<string> => {
+  return walletSelectionPrompt(false); // No "all" option
 };
 
-export const selectMessagePrompt: IPrompt = async (prev, args, isOptional) => {
-  const plainKeys = getPlainKeys().map((file) => ({
+export const keyWalletSelectAllPrompt: IPrompt = async (
+  previousQuestions,
+  args,
+  isOptional,
+): Promise<string> => {
+  return walletSelectionPrompt(true); // Include "all" option
+};
+
+export const selectDecryptMessagePrompt: IPrompt = async (
+  prev,
+  args,
+  isOptional,
+) => {
+  const walletName = await keyWalletSelectPrompt(prev, args, isOptional);
+  const keys = getKeysFromWallet(walletName).map((file) => ({
     file,
     type: 'plain' as KeyType,
   }));
-  const seeds = getSeeds().map((file) => ({ file, type: 'seed' as KeyType }));
+  const wallets = getWallets(walletName).map((file) => ({
+    file,
+    type: 'wallet' as KeyType,
+  }));
 
-  const allKeyFiles = [...plainKeys, ...seeds];
+  const allKeyFiles = [...keys, ...wallets];
 
   const choices = allKeyFiles.reduce(
     (acc, { file, type }) => {
@@ -115,11 +167,11 @@ export const selectMessagePrompt: IPrompt = async (prev, args, isOptional) => {
   // Option to enter own key
   choices.push({
     value: 'enterOwnMessage',
-    name: 'Enter message to decrypt (e.g. seed/privatekey)',
+    name: 'Enter message to decrypt',
   });
 
   const selectedKey = await select({
-    message: 'Select a key/seed',
+    message: 'Select a key',
     choices: choices,
   });
 
@@ -132,70 +184,69 @@ export const selectMessagePrompt: IPrompt = async (prev, args, isOptional) => {
   return selectedKey;
 };
 
-export const keySeedPrompt: IPrompt = async (prev, args, isOptional) => {
-  const existingKeys: string[] = getAllSeeds();
+export const keyWalletPrompt: IPrompt = async (prev, args, isOptional) => {
+  const existingKeys: string[] = getAllWallets();
 
   const choices = existingKeys.map((key) => ({
     value: key,
     name: `alias: ${key}`,
   }));
 
-  // Option to enter own key
-  choices.push({ value: 'enterOwnSeed', name: 'Enter my seed' });
-
   // Option to create a new key
-  choices.push({ value: 'createSeed', name: 'Create a new seed' });
+  choices.push({ value: 'createWallet', name: 'Create a new wallet' });
   choices.push({
-    value: 'createLegacySeed',
-    name: 'Create a new legacy seed',
+    value: 'createLegacyWallet',
+    name: 'Create a new legacy wallet',
   });
 
-  const selectedSeed = await select({
-    message: 'Select or enter a seed',
+  const selectedWallet = await select({
+    message: 'Select a wallet',
     choices: choices,
   });
 
-  if (selectedSeed === 'createSeed') {
-    await program.parseAsync(['', '', 'keys', 'create-seed']);
-    return keySeedPrompt(prev, args, isOptional);
+  if (selectedWallet === 'createWallet') {
+    await program.parseAsync(['', '', 'keys', 'create-wallet']);
+    return keyWalletPrompt(prev, args, isOptional);
   }
 
-  if (selectedSeed === 'createLegacySeed') {
-    await program.parseAsync(['', '', 'keys', 'create-seed', '--legacy']);
-    return keySeedPrompt(prev, args, isOptional);
+  if (selectedWallet === 'createLegacyWallet') {
+    await program.parseAsync(['', '', 'keys', 'create-wallet', '--legacy']);
+    return keyWalletPrompt(prev, args, isOptional);
   }
 
-  if (selectedSeed === 'enterOwnSeed') {
-    return await input({
-      message: `Enter your seed`,
-    });
-  }
-
-  return selectedSeed;
+  return selectedWallet;
 };
 
-type KeyType = 'plain' | 'plainLegacy' | 'seed' | 'seedLegacy';
+type KeyType = 'plain' | 'plainLegacy' | 'hd' | 'hdLegacy';
 
-export const keySelectPrompt: IPrompt = async (prev, args, isOptional) => {
-  const plainKeys = getPlainKeys().map((file) => ({
+export const keyDeleteSelectPrompt: IPrompt = async (
+  prev,
+  args,
+  isOptional,
+) => {
+  const walletName = await keyWalletSelectPrompt(prev, args, isOptional);
+  const plainKeys = getKeysFromWallet(walletName).map((file) => ({
     file,
     type: 'plain' as KeyType,
   }));
-  const plainLegacyKeys = getPlainLegacyKeys().map((file) => ({
+  const plainLegacyKeys = getLegacyKeysFromWallet(walletName).map((file) => ({
     file,
     type: 'plainLegacy' as KeyType,
   }));
-  const seeds = getSeeds().map((file) => ({ file, type: 'seed' as KeyType }));
-  const legacySeeds = getLegacySeeds().map((file) => ({
+  const wallets = getWallets(walletName).map((file) => ({
     file,
-    type: 'seedLegacy' as KeyType,
+    type: 'wallet' as KeyType,
+  }));
+  const legacyWallets = getLegacyWallets(walletName).map((file) => ({
+    file,
+    type: 'walletLegacy' as KeyType,
   }));
 
   const allKeyFiles = [
     ...plainKeys,
     ...plainLegacyKeys,
-    ...seeds,
-    ...legacySeeds,
+    ...wallets,
+    ...legacyWallets,
   ];
 
   if (allKeyFiles.length === 0) {
@@ -237,7 +288,7 @@ export const confirmDeleteAllKeysPrompt: IPrompt = async (
   isOptional,
 ) => {
   const message =
-    'Are you sure you want to delete ALL key files? ( Warning: This action cannot be undone. Seeds need to be manually selected for deletion. )';
+    'Are you sure you want to delete ALL key files? ( Warning: This action cannot be undone. Wallets need to be manually selected for deletion. )';
 
   return await select({
     message,
@@ -270,7 +321,7 @@ export const keyDeletePrompt: IPrompt = async (
  * Formats a key based on its type.
  *
  * @param {KeyContent} keyContent - The content of the key to format.
- * @param {KeyType} type - The type of the key (plain, plainLegacy, seed, seedLegacy).
+ * @param {KeyType} type - The type of the key (plain, plainLegacy, hd, hdLegacy).
  * @returns {string} The formatted key as a string.
  * @throws {Error} Throws an error if an invalid key type is provided.
  */
@@ -283,10 +334,10 @@ function formatKey(keyContent: KeyContent, type: KeyType): string {
       }
       return formatTruncated(keyContent.publicKey);
 
-    case 'seed':
-    case 'seedLegacy':
+    case 'hd':
+    case 'hdLegacy':
       if (typeof keyContent !== 'string') {
-        throw new Error(`Invalid key type forSeed: ${type}`);
+        throw new Error(`Invalid key type: ${type}`);
       }
       return formatTruncated(keyContent);
 

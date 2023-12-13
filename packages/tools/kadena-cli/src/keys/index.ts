@@ -1,11 +1,11 @@
+import { createChangeWalletPasswordCommand } from './commands/keysChangeWalletPassword.js';
 import { createDecryptCommand } from './commands/keysDecrypt.js';
 import { createDeleteKeysCommand } from './commands/keysDelete.js';
-import { createGenerateFromMnemonic } from './commands/keysGenFromMnemonic.js';
-import { createGenerateFromSeedCommand } from './commands/keysGenerateFromSeed.js';
+import { createGenerateHdKeysCommand } from './commands/keysHdGenerate.js';
+import { createImportWalletCommand } from './commands/keysImportWallet.js';
 import { createListKeysCommand } from './commands/keysList.js';
-import { createManageKeysCommand } from './commands/keysManage.js';
 import { createGeneratePlainKeysCommand } from './commands/keysPlainGenerate.js';
-import { createGenerateSeedCommand } from './commands/keysSeedGenerate.js';
+import { createGenerateWalletsCommand } from './commands/keysWalletGenerate.js';
 
 import type { Command } from 'commander';
 
@@ -15,13 +15,12 @@ export function keysCommandFactory(program: Command, version: string): void {
   const keysProgram = program
     .command(SUBCOMMAND_ROOT)
     .description(`Tool to generate and manage keys`);
-
-  createGenerateSeedCommand(keysProgram, version);
+  createGenerateWalletsCommand(keysProgram, version);
+  createImportWalletCommand(keysProgram, version);
+  createGenerateHdKeysCommand(keysProgram, version);
   createGeneratePlainKeysCommand(keysProgram, version);
-  createGenerateFromSeedCommand(keysProgram, version);
-  createGenerateFromMnemonic(keysProgram, version);
+  createChangeWalletPasswordCommand(keysProgram, version);
   createDeleteKeysCommand(keysProgram, version);
-  createManageKeysCommand(keysProgram, version);
   createDecryptCommand(keysProgram, version);
   createListKeysCommand(keysProgram, version);
 }

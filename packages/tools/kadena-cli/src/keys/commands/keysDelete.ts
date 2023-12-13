@@ -1,6 +1,6 @@
 import debug from 'debug';
 import { existsSync } from 'fs';
-import { KEY_DIR } from '../../constants/config.js';
+import { WALLET_DIR } from '../../constants/config.js';
 import { createExternalPrompt } from '../../prompts/generic.js';
 import {
   confirmDeleteAllKeysPrompt,
@@ -39,7 +39,7 @@ export const createDeleteKeysCommand: (
           return;
         }
 
-        await deleteAllFilesInDirAsync(KEY_DIR, ['.seed']);
+        await deleteAllFilesInDirAsync(WALLET_DIR, ['.seed']);
         return;
       }
 
@@ -52,7 +52,7 @@ export const createDeleteKeysCommand: (
         return;
       }
 
-      const filePath = `${KEY_DIR}/${config.key}`;
+      const filePath = `${WALLET_DIR}/${config.key}`;
       if (!existsSync(filePath)) {
         console.error(chalk.red(`File ${config.key} does not exist.`));
         return;

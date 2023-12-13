@@ -6,35 +6,26 @@ import type { Command } from 'commander';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
-import { generateFromSeed } from '../utils/keySharedKeyGen.js';
-import {
-  displayGeneratedPlainKeys,
-  printStoredPlainKeys,
-} from '../utils/keysDisplay.js';
 import * as storageService from '../utils/storage.js';
 
 import ora from 'ora';
-import { clearCLI } from '../../utils/helpers.js';
+import { displayStoredWallet } from '../utils/keysDisplay.js';
 
-export const createGenerateFromMnemonic: (
+export const createImportWalletCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'from-mnemonic',
-  'create key(s) from mnemonic phrase',
+  'import-wallet',
+  'import (restore) wallet from mnemonic phrase',
   [
-    globalOptions.keyGenFromChoice(),
     globalOptions.keyMnemonic(),
-    globalOptions.keyPassword(),
-    globalOptions.keyAlias(),
-    globalOptions.keyAmount({ isOptional: true }),
+    globalOptions.securityNewPassword(),
+    globalOptions.keyWallet(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
-    clearCLI();
     try {
-      debug('generate-from-mnemonic:action')({ config });
+      debug('import-wallet:action')({ config });
 
       const loading = ora('Generating..').start();
       try {
@@ -42,31 +33,22 @@ export const createGenerateFromMnemonic: (
 
         if (config.legacy === true) {
           const buffer = await legacykadenaMnemonicToRootKeypair(
-            config.keyPassword,
+            config.securityNewPassword,
             config.keyMnemonic,
           );
-          keySeed = kadenaEncrypt(config.keyPassword, buffer);
+          keySeed = kadenaEncrypt(config.securityNewPassword, buffer);
         } else {
           keySeed = await kadenaMnemonicToSeed(
-            config.keyPassword,
+            config.securityNewPassword,
             config.keyMnemonic,
           );
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { keyMnemonic, keyGenFromChoice, ...rest } = config;
-        const result = {
-          ...rest,
-          keySeed: keySeed as EncryptedString,
-          keyGenFromChoice,
-        };
-        const keys = await generateFromSeed(result as IKeysConfig);
-
         loading.succeed('Completed');
-        displayGeneratedPlainKeys(keys);
 
-        await storageService.savePlainKeyByAlias(config.keyAlias, keys, false);
-        printStoredPlainKeys(config.keyAlias, keys, false);
+        storageService.storeWallet(keySeed, config.keyWallet, config.legacy);
+
+        displayStoredWallet(config.keyWallet, config.legacy);
       } catch (error) {
         loading.fail('Operation failed');
         console.error(

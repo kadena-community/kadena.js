@@ -12,22 +12,20 @@ import type { Command } from 'commander';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 
-import { SEED_EXT, SEED_LEGACY_EXT } from '../../constants/config.js';
 import { clearCLI } from '../../utils/helpers.js'; // clearCLI
 import * as storageService from '../utils/storage.js';
 
 import chalk from 'chalk';
 
 import { globalOptions } from '../../utils/globalOptions.js';
-
-interface IConfig {
-  keyPassword: string;
-  keyAlias: string;
-  legacy?: boolean;
-}
+import {
+  displayGeneratedWallet,
+  displayStoredWallet,
+} from '../utils/keysDisplay.js';
+import type { IWalletConfig } from '../utils/keysHelpers.js';
 
 async function generateKey(
-  config: IConfig,
+  config: IWalletConfig,
 ): Promise<{ words: string; seed: string }> {
   let words: string;
   let seed: string;
@@ -47,31 +45,14 @@ async function generateKey(
   return { words, seed };
 }
 
-function displayGeneratedSeed(words: string, config: IConfig): void {
-  const extension: string = config.legacy === true ? SEED_LEGACY_EXT : SEED_EXT;
-
-  console.log(chalk.green(`Mnemonic phrase: ${words}`));
-  console.log(
-    chalk.yellow(
-      `Please store the key phrase in a safe place. You will need it to recover your keys.`,
-    ),
-  );
-  console.log('\n');
-  console.log(
-    chalk.green(
-      `The seed is stored within your keys folder under the alias: ${config.keyAlias}${extension}!`,
-    ),
-  );
-}
-
-export const createGenerateSeedCommand: (
+export const createGenerateWalletsCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'create-seed',
-  'create a ecrypted seed',
+  'create-wallet',
+  'create your local wallet',
   [
-    globalOptions.keyAlias(),
+    globalOptions.keyWallet(),
     globalOptions.keyPassword(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
@@ -82,9 +63,9 @@ export const createGenerateSeedCommand: (
 
       const { words, seed } = await generateKey(config);
 
-      storageService.storeSeedByAlias(seed, config.keyAlias, config.legacy);
-      clearCLI(true);
-      displayGeneratedSeed(words, config);
+      storageService.storeWallet(seed, config.keyWallet, config.legacy);
+      displayGeneratedWallet(words, config);
+      displayStoredWallet(config.keyWallet, config.legacy);
     } catch (error) {
       console.log(chalk.red(`\n${error.message}\n`));
       process.exit(1);
