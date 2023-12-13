@@ -17,7 +17,7 @@ const success: string[] = [];
 
 const authors = getAuthorData();
 
-const setPrio = (root: string): string => {
+const setPriority = (root: string): string => {
   if (root.includes('/blogchain')) return '0.5';
 
   return '1';
@@ -41,7 +41,7 @@ const getPosts = (root: string, posts: IMenuData[]): string => {
         `<lastmod>${formatDate(post?.lastModifiedDate)}</lastmod>`
       }
       <changefreq>monthly</changefreq>
-      <priority>${setPrio(post.root)}</priority>
+      <priority>${setPriority(post.root)}</priority>
     </url>`,
     )
     .join('');
