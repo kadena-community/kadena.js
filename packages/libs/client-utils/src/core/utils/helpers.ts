@@ -115,3 +115,21 @@ export const getClient = (
   typeof host === 'string'
     ? createClient(getHostUrl(host))
     : createClient(host);
+
+export const asyncLock = () => {
+  let res = () => {};
+  let promise = Promise.resolve();
+  const lock = {
+    open: () => {
+      res();
+    },
+    waitTillOpen: () => promise,
+    close: () => {
+      promise = new Promise((resolve) => {
+        res = resolve;
+      });
+    },
+  };
+  lock.close();
+  return lock;
+};
