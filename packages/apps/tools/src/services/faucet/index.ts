@@ -8,7 +8,10 @@ import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
 import Debug from 'debug';
 
-const FAUCET_ACCOUNT = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
+const FAUCET_ACCOUNT = env(
+  'FAUCET_USER',
+  'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
+);
 
 const debug = Debug('kadena-transfer:services:faucet');
 
