@@ -1,6 +1,6 @@
 import { requestKeyWrapperStyle } from '@/components/Global/RequestKeyField/styles.css';
 import type { ITextFieldProps } from '@kadena/react-ui';
-import { FormFieldWrapper, Input } from '@kadena/react-ui';
+import { FormFieldWrapper, Input, SystemIcon } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
@@ -55,7 +55,7 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
           {...inputProps}
           placeholder={t('Enter Request Key')}
           id={'request-key-input'}
-          icon={'KeyIconFilled'}
+          startIcon={<SystemIcon.KeyIconFilled />}
         />
       </FormFieldWrapper>
     </div>

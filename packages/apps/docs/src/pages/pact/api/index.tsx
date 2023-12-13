@@ -1,8 +1,8 @@
 import apiSpecs from '@/_generated/specs/pact.openapi.json';
 import { options } from '@/components/Layout/Redocly/Redocly';
 import { Specs } from '@/components/Specs/Specs';
+import { getPageConfig } from '@/utils/config';
 import type { ILayout } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import { Heading } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -22,7 +22,7 @@ const Home: FC<ILayout> = () => {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      ...(await getPageConfig({})),
       frontmatter: {
         title: 'Pact OpenAPI',
         menu: 'Docs',

@@ -1,21 +1,22 @@
 import chalk from 'chalk';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { checkForHeaders } from './checkForHeaders.mjs';
-import { copyFavIcons } from './copyFavIcons.mjs';
-import { checkAuthors } from './createBlogAuthors.mjs';
-import { createSitemap } from './createSitemap.mjs';
-import { createSpecs } from './createSpec.mjs';
-import { detectBrokenLinks } from './detectBrokenLinks.mjs';
-import { createDocsTree } from './getdocstree.mjs';
-import { deleteTempDir } from './importReadme/importRepo.mjs';
-import { importAllReadmes } from './importReadme/index.mjs';
-import { Spinner } from './spinner.mjs';
+import { checkForHeaders } from './checkForHeaders';
+import { copyFavIcons } from './copyFavIcons';
+import { checkAuthors } from './createBlogAuthors';
+import { createSitemap } from './createSitemap';
+import { createSpecs } from './createSpec';
+import { detectBrokenLinks } from './detectBrokenLinks';
+import { createDocsTree } from './getdocstree';
+import { importAllReadmes } from './importReadme';
+import { deleteTempDir } from './importReadme/importRepo';
+import { Spinner } from './spinner';
+import type { IScriptResult } from './types';
 
 export const promiseExec = promisify(exec);
 let globalError = false;
 
-const createString = (str, start) => {
+const createString = (str: string, start?: boolean): string => {
   let titleStr = ` END ${chalk.blue(str.toUpperCase())} ====`;
   let line = '\n\n';
   if (start) {
@@ -31,16 +32,16 @@ const createString = (str, start) => {
   return `${line}${titleStr}`;
 };
 
-const runPrettier = async () => {
-  const success = [];
-  const errors = [];
+const runPrettier = async (): Promise<IScriptResult> => {
+  const success: string[] = [];
+  const errors: string[] = [];
 
   const { stderr } = await promiseExec(
     `prettier ./public/sitemap.xml --write && prettier ./src/pages --write  && prettier ./src/_generated/**/*.json --write`,
   );
 
   if (stderr) {
-    errors.push(`Prettier had issues: ${sterr}`);
+    errors.push(`Prettier had issues: ${stderr}`);
   } else {
     success.push('Prettier done!');
   }
@@ -48,7 +49,10 @@ const runPrettier = async () => {
   return { errors, success };
 };
 
-const initFunc = async (fnc, description) => {
+const initFunc = async (
+  fnc: () => Promise<IScriptResult>,
+  description: string,
+): Promise<void | number> => {
   console.log(createString(description, true));
 
   const spinner = Spinner();
@@ -65,15 +69,16 @@ const initFunc = async (fnc, description) => {
     globalError = true;
     return (process.exitCode = 1);
   } else {
-    success.map((succes) => {
-      console.log(chalk.green('✓'), succes);
+    success.map((successItem) => {
+      console.log(chalk.green('✓'), successItem);
     });
   }
 
   console.log(createString(description));
 };
 
-(async function () {
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+(async function (): Promise<void> {
   //starting with a cleanslate, removing the tempdir.
   deleteTempDir();
   await initFunc(importAllReadmes, 'Import docs from monorepo');

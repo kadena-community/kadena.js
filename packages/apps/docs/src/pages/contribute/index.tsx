@@ -2,9 +2,8 @@ import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
-import { getBlogPosts } from '@/utils/getBlogPosts';
+import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import { Box, Grid, GridItem, Heading } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -101,12 +100,11 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const blogPosts = await getBlogPosts(['ambassadors', 'grant']);
-
   return {
     props: {
-      blogPosts,
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      ...(await getPageConfig({
+        blogPosts: ['ambassadors', 'grant'],
+      })),
       frontmatter: {
         title: 'Contribute',
         menu: 'Contribute',
