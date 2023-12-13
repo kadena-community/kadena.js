@@ -42,7 +42,7 @@ async function actionHelper(message: string): Promise<string> {
 
 export async function actionAskForDappTemplate(): Promise<string> {
   return await select({
-    message: 'What template do you want to use ?',
+    message: 'What template do you want to use?',
     choices: [
       { value: 'angular', name: 'Angular' },
       { value: 'nextjs', name: 'Next JS' },

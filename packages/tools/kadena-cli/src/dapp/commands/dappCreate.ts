@@ -16,9 +16,9 @@ export const createDappCommand: (program: Command, version: string) => void =
     async (config, args) => {
       const projectDir = join(process.cwd(), args[0]);
       const { dappTemplate } = config;
-      const isFolderExists = existsSync(projectDir);
+      const folderExists = existsSync(projectDir);
 
-      if (isFolderExists) {
+      if (folderExists) {
         console.error(chalk.red(`Project directory ${args[0]} already exists`));
         process.exit(1);
       }
