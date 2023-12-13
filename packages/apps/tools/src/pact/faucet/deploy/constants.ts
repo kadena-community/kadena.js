@@ -71,12 +71,12 @@ export const DOMAIN:
 
 export const COIN_ACCOUNT: string = 'contract-admins';
 
-export const GAS_PAYERS = {
+export const GAS_STATIONS = {
   DEVNET: 'c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4',
   TESTNET: 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
 } as const;
 
-export const GAS_STATION = GAS_PAYERS[environment];
+export const GAS_STATION = GAS_STATIONS[environment];
 
 export const GAS_PROVIDER: Account = {
   publicKey: '<INSERT_A_PUBLIC_KEY_HERE>',
