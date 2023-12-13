@@ -6,6 +6,7 @@ import {
 import { SearchHeader } from '@/components/Layout/Landing/components';
 import { Search } from '@/components/Search/Search';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
+import { getPageConfig } from '@/utils/config';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
