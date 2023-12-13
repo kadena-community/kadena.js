@@ -1,5 +1,4 @@
-import { join } from 'path';
-import type { IMenuItem, IPropsType, ITree, Plugin } from './types';
+import type { IMenuData, IMenuItem, IPropsType, ITree, Plugin } from './types';
 import { checkSubTreeForActive } from './utils/staticGeneration/checkSubTreeForActive';
 import { getConfig, getData } from './utils/staticGeneration/getData';
 
@@ -25,17 +24,23 @@ const getPath = (filename: string): string => {
     .join('/')}`;
 };
 
-const getHeaderItems = async () => {
+const getHeaderItems = async (): Promise<IMenuData[]> => {
   const { menu } = await getConfig();
   const tree = await getData();
 
-  return menu.map((item: string) => {
-    const found = tree.find((d) => d.root === `/${item}`);
-    if (!found) return null;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { children, ...result } = found;
-    return result;
-  });
+  const menuItems = menu.reduce(
+    (acc: IMenuData[], item: string): IMenuData[] => {
+      const found = tree.find((d) => d.root === `/${item}`);
+      if (!found) return acc;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { children, ...result } = found;
+      acc.push(result as IMenuData);
+      return acc;
+    },
+    [],
+  );
+
+  return menuItems;
 };
 
 const remarkSideMenuToProps = (): Plugin => {
