@@ -14,7 +14,7 @@ const success: string[] = [];
 
 const INITIAL_PATH = './src/pages';
 const MENU_FILE_DIR = './src/_generated';
-const MENU_FILE = 'menu.mjs';
+const MENU_FILE = 'menu.json';
 const TREE: IParent[] = [];
 
 const isMarkDownFile = (name: string): boolean => {
