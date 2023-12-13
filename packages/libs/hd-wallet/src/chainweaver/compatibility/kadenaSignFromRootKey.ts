@@ -1,3 +1,4 @@
+import { EncryptedString, kadenaDecrypt } from '../../index.js';
 import { kadenaSign } from '../vendor/kadena-crypto.cjs';
 import { kadenaGenKeypair } from './kadenaGenKeypair.js';
 
@@ -12,9 +13,10 @@ import { kadenaGenKeypair } from './kadenaGenKeypair.js';
 export async function kadenaSignFromRootKey(
   password: string,
   message: string,
-  rootKey: string | Uint8Array,
+  rootKey: EncryptedString,
   index: number,
 ): Promise<Uint8Array> {
-  const [privateKey] = await kadenaGenKeypair(password, rootKey, index);
-  return kadenaSign(password, message, privateKey);
+  const { secretKey } = await kadenaGenKeypair(password, rootKey, index);
+  const secret = kadenaDecrypt(password, secretKey);
+  return kadenaSign(password, message, secret);
 }

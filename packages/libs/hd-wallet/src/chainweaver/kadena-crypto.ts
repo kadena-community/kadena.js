@@ -7,7 +7,7 @@ const makeAsync = <T extends (...args: any[]) => any>(
 ): ((...args: Parameters<T>) => Promise<ReturnType<T>>) => {
   return async (...args: any[]): Promise<any> => {
     // kadena-crypto internally loads a wasm module
-    // which is an async operation, were we wait for that
+    // which is an async operation, ensure it is completed
     while (!kadenaCrypto.default.isLoaded()) {
       await nextTick();
     }
@@ -21,7 +21,7 @@ export const kadenaMnemonicToRootKeypair = makeAsync(
 export const kadenaChangePassword = makeAsync(
   kadenaCrypto.kadenaChangePassword,
 );
-export const kadenaCheckMnemonic = makeAsync(kadenaCrypto.kadenaCheckMnemonic);
+export const kadenaCheckMnemonic = kadenaCrypto.kadenaCheckMnemonic;
 export const kadenaGetPublic = makeAsync(kadenaCrypto.kadenaGetPublic);
 export const kadenaSign = makeAsync(kadenaCrypto.kadenaSign);
 export const kadenaVerify = makeAsync(kadenaCrypto.kadenaVerify);
