@@ -1,6 +1,6 @@
 /* eslint-disable @kadena-dev/no-eslint-disable */
 
-import { useObjectRef } from '@react-aria/utils';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type {
   ComponentProps,
@@ -9,17 +9,24 @@ import type {
   ReactNode,
 } from 'react';
 import React, { forwardRef, useCallback } from 'react';
-import type { AriaButtonProps } from 'react-aria';
-import { useButton } from 'react-aria';
+import type { AriaButtonProps, HoverEvents } from 'react-aria';
+import { useButton, useFocusRing, useHover } from 'react-aria';
 import { Loading } from '../Icon/System/SystemIcon';
 import { button, spinner } from './NewButton.css';
 
 type Variants = Omit<NonNullable<RecipeVariants<typeof button>>, 'onlyIcon'>;
-export interface IButtonProps extends AriaButtonProps, Variants {
+// omit link related props from `AriaButtonProps`
+type PickedAriaButtonProps = Omit<
+  AriaButtonProps,
+  'href' | 'target' | 'rel' | 'elementType'
+>;
+export interface IButtonProps
+  extends PickedAriaButtonProps,
+    HoverEvents,
+    Variants {
   startIcon?: ReactNode;
   endIcon?: ReactNode;
   icon?: ReactNode;
-  title?: string;
   /**
    * @deprecated use `onPress` instead to be consistent with React Aria, also keep in mind that `onPress` is not a native event it is a synthetic event created by React Aria
    * @see https://react-spectrum.adobe.com/react-aria/useButton.html#props
@@ -34,7 +41,9 @@ function BaseButton(
   forwardedRef: ForwardedRef<HTMLButtonElement>,
 ) {
   const ref = useObjectRef(forwardedRef);
-  const { buttonProps } = useButton(props, ref);
+  const { buttonProps, isPressed } = useButton(props, ref);
+  const { hoverProps, isHovered } = useHover(props);
+  const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
 
   // support for deprecated `onClick` prop
   const handleClick = useCallback(
@@ -58,7 +67,7 @@ function BaseButton(
 
   return (
     <button
-      {...buttonProps}
+      {...mergeProps(buttonProps, hoverProps, focusProps)}
       ref={ref}
       className={button({
         onlyIcon,
@@ -67,6 +76,11 @@ function BaseButton(
         isOutlined: props.isOutlined,
       })}
       onClick={handleClick}
+      data-disabled={props.isDisabled || undefined}
+      data-pressed={isPressed || undefined}
+      data-hovered={isHovered || undefined}
+      data-focused={isFocused || undefined}
+      data-focus-visible={isFocusVisible || undefined}
     >
       {props.isLoading ? (
         <>

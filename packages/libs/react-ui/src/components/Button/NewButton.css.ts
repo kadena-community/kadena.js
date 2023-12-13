@@ -1,6 +1,6 @@
-import { atoms } from '@theme/atoms.css';
 import { createVar, keyframes, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
+import { atoms } from '../../styles/atoms.css';
 import { colorPalette } from '../../styles/colors';
 import { tokens } from '../../styles/tokens/contract.css';
 import { bodyBaseBold } from '../../styles/tokens/styles.css';
@@ -139,49 +139,85 @@ const colorVariants = {
   },
 } as const;
 
+// eslint-disable-next-line @kadena-dev/typedef-var
+const focusRing = {
+  outlineColor,
+  outlineStyle: 'solid',
+  outlineWidth: tokens.kda.foundation.border.width.normal,
+  outlineOffset: tokens.kda.foundation.border.width.normal,
+};
+
+const buttonReset = style({
+  position: 'relative',
+  appearance: 'button',
+  WebkitAppearance: 'button',
+  /* Remove the inheritance of text transform on button in Edge, Firefox, and IE. */
+  textTransform: 'none',
+  WebkitFontSmoothing: 'antialiased',
+  /* Font smoothing for Firefox */
+  MozOsxFontSmoothing: 'grayscale',
+  verticalAlign: 'top',
+  /* prevent touch scrolling on buttons */
+  touchAction: 'none',
+  userSelect: 'none',
+  cursor: 'default',
+  textDecoration: 'none',
+  isolation: 'isolate',
+  border: 'none',
+  margin: 0,
+  ':focus': {
+    outline: 'none',
+  },
+  ':focus-visible': {
+    zIndex: 3,
+  },
+  selectors: {
+    /* Fix Firefox */
+    '&::-moz-focus-inner': {
+      border: 0,
+      /* Remove the inner border and padding for button in Firefox. */
+      borderStyle: 'none',
+      padding: 0,
+      /* Use uppercase PX so values don't get converted to rem */
+      marginBlockStart: '-2PX',
+      marginBlockEnd: '-2PX',
+    },
+  },
+});
 export const button = recipe({
   base: [
+    buttonReset,
     bodyBaseBold,
     atoms({
-      display: 'flex',
+      display: 'inline-flex',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 'sm',
       gap: 'sm',
       paddingInline: 'md',
       paddingBlock: 'sm',
-      border: 'none',
-      textDecoration: 'none',
-      cursor: 'pointer',
-      position: 'relative',
     }),
     {
       color,
       backgroundColor,
-      outlineOffset: tokens.kda.foundation.border.width.normal,
-      ':hover': {
-        color: hoverColor,
-        backgroundColor: hoverBackgroundColor,
-      },
-      ':active': {
-        outlineStyle: 'solid',
-        outlineWidth: tokens.kda.foundation.border.width.normal,
-        outlineColor,
-      },
-      ':focus-visible': {
-        outlineStyle: 'solid',
-        outlineWidth: tokens.kda.foundation.border.width.normal,
-        outlineColor,
-      },
-      ':disabled': {
-        opacity: 0.7,
-        backgroundColor: colorPalette.$gray60,
-        color: colorPalette.$gray10,
-        cursor: 'not-allowed',
-        pointerEvents: 'none',
-      },
       transition:
         'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
+
+      selectors: {
+        '&[data-hovered]': {
+          color: hoverColor,
+          backgroundColor: hoverBackgroundColor,
+        },
+        '&[data-pressed]': focusRing,
+        '&[data-focus-visible]': focusRing,
+        '&[data-disabled]': {
+          opacity: 0.7,
+          backgroundColor: colorPalette.$gray60,
+          color: colorPalette.$gray10,
+          cursor: 'not-allowed',
+          pointerEvents: 'none',
+        },
+      },
     },
   ],
   variants: {
