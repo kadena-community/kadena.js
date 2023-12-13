@@ -15,6 +15,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["types.d.ts"],
+  "include": ["types.d.ts", "./src"],
   "exclude": ["node_modules", "./cypress"]
 }
