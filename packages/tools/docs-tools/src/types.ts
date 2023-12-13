@@ -234,3 +234,19 @@ export type Plugin = (
 ) => Promise<ITree | void | IPropsTree>;
 
 export { Root, RootContent };
+
+//config
+
+export type IConfigMenu = string[];
+
+export interface IConfigTreeItem {
+  id: string;
+  title: string;
+  url: string;
+  file: string;
+  children?: IConfigTreeItem[];
+}
+export interface IConfig {
+  menu: IConfigMenu;
+  pages: IConfigTreeItem[];
+}

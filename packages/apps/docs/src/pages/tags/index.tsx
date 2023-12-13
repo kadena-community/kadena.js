@@ -6,9 +6,9 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import { TagList } from '@/components/TagList/TagList';
 import { TagListItem } from '@/components/TagList/TagListItem';
+import { getPageConfig } from '@/utils/config';
 import { getAllBlogTags } from '@/utils/getAllBlogTags';
 import type { IPageProps, ITag } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -43,7 +43,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const tags = await getAllBlogTags();
   return {
     props: {
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      ...(await getPageConfig({})),
       tags,
       frontmatter: {
         title: 'Tags',

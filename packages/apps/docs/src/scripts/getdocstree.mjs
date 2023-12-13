@@ -187,8 +187,6 @@ const getFile = async (rootDir, parent, file) => {
         );
       }
     }
-
-    console.log(parent.root, child.root);
     parent = pushToParent(parent, child);
 
     if (fs.statSync(currentFile).isDirectory()) {

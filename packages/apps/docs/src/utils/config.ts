@@ -18,7 +18,9 @@ export const getHeaderItems = async (): Promise<IMenuItem[]> => {
   return menu.map((item: string) => {
     const found = data.find((d) => d.root === `/${item}`);
     if (!found) return null;
-    return found;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { children, ...result } = found;
+    return result;
   });
 };
 
@@ -30,27 +32,36 @@ export const getAllPages = async (): Promise<IMenuItem[]> => {
 };
 
 interface IPageConfigProps {
-  blogPosts?: boolean;
+  blogPosts?: string[] | boolean;
   popularPages?: string;
 }
 
 interface IPageConfigReturn {
   headerItems: IMenuItem[];
   leftMenuTree: IMenuItem[];
-  blogPosts?: IMenuData[];
-  popularPages?: IMostPopularPage[];
+  blogPosts: IMenuData[] | null;
+  popularPages: IMostPopularPage[] | null;
 }
 
 export const getPageConfig = async ({
   blogPosts,
   popularPages,
 }: IPageConfigProps): Promise<IPageConfigReturn> => {
+  const blogData = Array.isArray(blogPosts)
+    ? await getBlogPosts(blogPosts)
+    : blogPosts
+    ? await getBlogPosts()
+    : null;
+  const popularData = popularPages
+    ? await getMostPopularPages(popularPages)
+    : null;
+
+  const headerItems = await getHeaderItems();
+
   return {
-    headerItems: await getHeaderItems(),
+    headerItems,
     leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
-    blogPosts: blogPosts ? await getBlogPosts() : undefined,
-    popularPages: popularPages
-      ? await getMostPopularPages(popularPages)
-      : undefined,
+    blogPosts: blogData,
+    popularPages: popularData,
   };
 };

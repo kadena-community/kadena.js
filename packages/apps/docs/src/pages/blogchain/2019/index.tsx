@@ -6,12 +6,9 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
+import { getPageConfig } from '@/utils/config';
 import type { IMenuData, IPageProps } from '@kadena/docs-tools';
-import {
-  checkSubTreeForActive,
-  getMenuData,
-  getPathName,
-} from '@kadena/docs-tools';
+import { getMenuData } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import type { FC } from 'react';
@@ -48,7 +45,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      ...(await getPageConfig({})),
       posts,
       frontmatter: {
         title: 'BlogChain 2019',

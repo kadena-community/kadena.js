@@ -4,10 +4,8 @@ import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
-import { getBlogPosts } from '@/utils/getBlogPosts';
-import getMostPopularPages from '@/utils/getMostPopularPages';
+import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import {
   Box,
   Button,
@@ -22,7 +20,6 @@ import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
-import { getPageConfig } from '../../utils/config';
 
 interface IProps {
   popularPages: IMostPopularPage[];
@@ -142,7 +139,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       ...(await getPageConfig({
-        blogPosts: true,
+        blogPosts: ['kadenajs', 'cli'],
         popularPages: '/build',
       })),
       frontmatter: {

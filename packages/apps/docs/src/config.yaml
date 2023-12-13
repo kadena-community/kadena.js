@@ -1,9 +1,11 @@
 menu:
-  - test
-  - build
   - kadena
-  - blogchain
+  - build
+  - pact
   - chainweb
+  - marmalade
+  - contribute
+  - blogchain
 
 pages:
   build:
