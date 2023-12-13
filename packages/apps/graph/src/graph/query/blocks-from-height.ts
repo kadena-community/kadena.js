@@ -1,9 +1,9 @@
-import { prismaClient } from '@db/prismaClient';
+import { prismaClient } from '@db/prisma-client';
 import { COMPLEXITY } from '@services/complexity';
 import { chainIds as defaultChainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
 import { PRISMA, builder } from '../builder';
-import Block from '../objects/Block';
+import Block from '../objects/block';
 
 builder.queryField('blocksFromHeight', (t) =>
   t.prismaField({

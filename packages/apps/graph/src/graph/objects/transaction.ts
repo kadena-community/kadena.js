@@ -1,7 +1,7 @@
-import { prismaClient } from '@db/prismaClient';
+import { prismaClient } from '@db/prisma-client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { nullishOrEmpty } from '@utils/nullishOrEmpty';
+import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { PRISMA, builder } from '../builder';
 
 export default builder.prismaNode('Transaction', {

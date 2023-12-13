@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
-import Header from './Header/Header';
+import Header from './header/header';
 import { documentStyle } from './styles.css';
 
 interface IProps {

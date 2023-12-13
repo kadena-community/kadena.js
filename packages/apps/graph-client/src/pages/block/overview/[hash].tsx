@@ -3,8 +3,8 @@ import {
   useGetBlockFromHashQuery,
   useGetGraphConfigurationQuery,
 } from '@/__generated__/sdk';
-import { centerBlockStyle } from '@/components/Common/center-block/styles.css';
-import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
+import { centerBlockStyle } from '@/components/common/center-block/styles.css';
+import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { Text } from '@components/text';
 import routes from '@constants/routes';

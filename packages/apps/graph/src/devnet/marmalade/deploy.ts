@@ -6,7 +6,7 @@ import { join, relative } from 'path';
 
 import { downloadGitFiles } from '@utils/downlaod-git-files';
 import { flattenFolder } from '@utils/path';
-import { validateObjectProperties } from '@utils/validateObject';
+import { validateObjectProperties } from '@utils/validate-object';
 import type { IAccount } from '../helper';
 import {
   inspect,

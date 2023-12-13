@@ -1,4 +1,4 @@
-import { prismaClient } from '@db/prismaClient';
+import { prismaClient } from '@db/prisma-client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { PRISMA, builder } from '../builder';

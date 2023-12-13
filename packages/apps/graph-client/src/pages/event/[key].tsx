@@ -1,6 +1,6 @@
 import { useGetEventByNameSubscription } from '@/__generated__/sdk';
-import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import { ErrorBox } from '@/components/error-box/error-box';
+import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { formatCode } from '@/utils/formatter';
 import routes from '@constants/routes';
 import { Box, Breadcrumbs, Table } from '@kadena/react-ui';

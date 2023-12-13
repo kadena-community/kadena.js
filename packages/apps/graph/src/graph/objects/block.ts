@@ -1,4 +1,4 @@
-import { prismaClient } from '@db/prismaClient';
+import { prismaClient } from '@db/prisma-client';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
