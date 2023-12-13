@@ -1,4 +1,4 @@
-import type { IAuthorInfo } from '@/Layout';
+import type { IAuthorInfo } from '@kadena/docs-tools';
 import fs from 'fs';
 import { globby } from 'globby';
 import path from 'path';
