@@ -31,14 +31,20 @@ export const getLastModifiedDate = async (
   const filename = rootArray.pop();
   const newRoot = rootArray.join('/');
 
-  const { stdout } = await promiseExec(
-    `cd ${TEMP_DIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
-  );
+  try {
+    const { stdout } = await promiseExec(
+      `cd ${TEMP_DIR} && cd ${newRoot} && git log -1 --pretty="format:%ci" ${filename}`,
+    );
+    const date = new Date(stdout);
+    if (!isValid(date)) return;
 
-  const date = new Date(stdout);
-  if (!isValid(date)) return;
+    return date.toUTCString();
+  } catch (e) {
+    const date = new Date();
+    if (!isValid(date)) return;
 
-  return date.toUTCString();
+    return date.toUTCString();
+  }
 };
 
 const isIndex = (file: string): boolean => {
@@ -244,12 +250,12 @@ interface IDocsTreeResult {
 
 export const createDocsTree = async (): Promise<IDocsTreeResult> => {
   const result = await createTree(INITIAL_PATH, TREE);
-  // write menu file
-  const fileStr = `/* eslint @kadena-dev/typedef-var: "off" */
-  export const menuData = ${JSON.stringify(result, null, 2)}`;
 
   fs.mkdirSync(MENU_FILE_DIR, { recursive: true });
-  fs.writeFileSync(`${MENU_FILE_DIR}/${MENU_FILE}`, fileStr);
+  fs.writeFileSync(
+    `${MENU_FILE_DIR}/${MENU_FILE}`,
+    JSON.stringify(result, null, 2),
+  );
 
   success.push('Docs imported from monorepo');
 
