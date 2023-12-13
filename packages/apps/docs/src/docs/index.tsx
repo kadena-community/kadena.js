@@ -1,4 +1,3 @@
-import type { IMenuData } from '@/Layout';
 import type { IMostPopularPage } from '@/MostPopularData';
 import { HomeHeader } from '@/components/Layout/Landing/components';
 import {
@@ -8,6 +7,7 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
+import type { IMenuData } from '@kadena/docs-tools';
 import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 
 import classNames from 'classnames';
