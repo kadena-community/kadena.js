@@ -1,3 +1,4 @@
+import { atoms } from '@theme/atoms.css';
 import { createVar, keyframes, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { colorPalette } from '../../styles/colors';
@@ -141,21 +142,23 @@ const colorVariants = {
 export const button = recipe({
   base: [
     bodyBaseBold,
+    atoms({
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 'sm',
+      gap: 'sm',
+      paddingInline: 'md',
+      paddingBlock: 'sm',
+      border: 'none',
+      textDecoration: 'none',
+      cursor: 'pointer',
+      position: 'relative',
+    }),
     {
       color,
       backgroundColor,
-      position: 'relative',
-      display: 'flex',
-      placeItems: 'center',
-      cursor: 'pointer',
-      border: 'none',
-      textDecoration: 'none',
-      borderRadius: tokens.kda.foundation.radius.sm,
-      gap: tokens.kda.foundation.size.n2,
-      paddingInline: tokens.kda.foundation.size.n4,
-      paddingBlock: tokens.kda.foundation.size.n2,
       outlineOffset: tokens.kda.foundation.border.width.normal,
-
       ':hover': {
         color: hoverColor,
         backgroundColor: hoverBackgroundColor,

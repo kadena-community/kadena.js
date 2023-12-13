@@ -61,6 +61,8 @@ const systemProperties = defineProperties({
   },
 });
 
+// eslint-disable-next-line @kadena-dev/typedef-var
+const spacingWithAuto = { ...tokens.kda.foundation.spacing, auto: 'auto' };
 const responsiveProperties = defineProperties({
   conditions: mapValues(breakpoints, (bp?: string) =>
     bp === '' ? {} : { '@media': bp },
@@ -80,7 +82,6 @@ const responsiveProperties = defineProperties({
     flexDirection: ['row', 'row-reverse', 'column', 'column-reverse'],
     fontSize: tokens.kda.foundation.typography.fontSize,
     gap: tokens.kda.foundation.spacing,
-    gridGap: tokens.kda.foundation.spacing,
     justifyContent: [
       'flex-start',
       'center',
@@ -89,22 +90,36 @@ const responsiveProperties = defineProperties({
       'space-between',
     ],
     lineHeight: tokens.kda.foundation.typography.lineHeight,
-    marginBottom: tokens.kda.foundation.spacing,
-    marginLeft: { ...tokens.kda.foundation.spacing, auto: 'auto' },
-    marginRight: { ...tokens.kda.foundation.spacing, auto: 'auto' },
-    marginTop: tokens.kda.foundation.spacing,
-    paddingBottom: tokens.kda.foundation.spacing,
-    paddingLeft: tokens.kda.foundation.spacing,
-    paddingRight: tokens.kda.foundation.spacing,
-    paddingTop: tokens.kda.foundation.spacing,
+    marginBlockEnd: spacingWithAuto,
+    marginInlineStart: spacingWithAuto,
+    marginInlineEnd: spacingWithAuto,
+    marginBlockStart: spacingWithAuto,
+    paddingBlockEnd: tokens.kda.foundation.spacing,
+    paddingInlineStart: tokens.kda.foundation.spacing,
+    paddingInlineEnd: tokens.kda.foundation.spacing,
+    paddingBlockStart: tokens.kda.foundation.spacing,
   },
   shorthands: {
-    margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],
-    marginX: ['marginLeft', 'marginRight'],
-    marginY: ['marginTop', 'marginBottom'],
-    padding: ['paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight'],
-    paddingX: ['paddingLeft', 'paddingRight'],
-    paddingY: ['paddingTop', 'paddingBottom'],
+    margin: [
+      'marginBlockStart',
+      'marginBlockEnd',
+      'marginInlineStart',
+      'marginInlineEnd',
+    ],
+    marginX: ['marginInlineStart', 'marginInlineEnd'],
+    marginY: ['marginBlockStart', 'marginBlockEnd'],
+    marginInline: ['marginInlineStart', 'marginInlineEnd'],
+    marginBlock: ['marginBlockStart', 'marginBlockEnd'],
+    padding: [
+      'paddingBlockStart',
+      'paddingBlockEnd',
+      'paddingInlineStart',
+      'paddingInlineEnd',
+    ],
+    paddingX: ['paddingInlineStart', 'paddingInlineEnd'],
+    paddingY: ['paddingBlockStart', 'paddingBlockEnd'],
+    paddingInline: ['paddingInlineStart', 'paddingInlineEnd'],
+    paddingBlock: ['paddingBlockStart', 'paddingBlockEnd'],
   },
 });
 
