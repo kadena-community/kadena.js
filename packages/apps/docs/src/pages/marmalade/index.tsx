@@ -14,6 +14,7 @@ import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
+import { getPageConfig } from '@/utils/config';
 import { getBlogPosts } from '@/utils/getBlogPosts';
 import getMostPopularPages from '@/utils/getMostPopularPages';
 import type { IMenuData } from '@kadena/docs-tools';
@@ -140,14 +141,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const blogPosts = await getBlogPosts(['marmalade', 'nft']);
-  const mostPopularPages = await getMostPopularPages('/marmalade');
-
   return {
     props: {
-      blogPosts,
-      popularPages: mostPopularPages,
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      ...(await getPageConfig({
+        blogPosts: ['marmalade', 'nft'],
+        popularPages: '/marmalade',
+      })),
       frontmatter: {
         title: 'Build with Marmalade',
         menu: 'Marmalade',
