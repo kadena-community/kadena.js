@@ -1,7 +1,6 @@
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
-import { waitForEvent } from '@kadena/client-utils/core';
 import type { IKeyPair } from '@kadena/types';
 import type {
   IAccount,
@@ -24,9 +23,7 @@ export async function generateAccount(
 }
 
 export async function createAccount(input: IAccount): Promise<ICommandResult> {
-  return waitForEvent(
-    'listen',
-    transferCreate(
+   const transferCreateTask =  transferCreate(
       {
         sender: {
           account: sender00.account,
@@ -49,6 +46,10 @@ export async function createAccount(input: IAccount): Promise<ICommandResult> {
         },
         sign: createSignWithKeypair([sender00]),
       },
-    ),
-  );
+    )
+
+   const listen = await transferCreateTask.executeTo("listen")
+   await transferCreateTask.executeTo()
+   return listen
+
 }
