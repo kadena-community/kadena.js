@@ -29,7 +29,7 @@ const props: IBasePageProps = {
 export const Default: Story = {
   name: 'Default',
   args: props,
-  render: ({ frontmatter, leftMenuTree }) => (
+  render: ({ frontmatter, leftMenuTree, headerItems }) => (
     <div>
       <Landing
         headerItems={headerItems}
