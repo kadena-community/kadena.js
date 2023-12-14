@@ -47,7 +47,7 @@ export async function kadenaGenKeypair(
   rootKey: EncryptedString,
   indexOrRange: number | [start: number, end: number],
 ) {
-  const decrypted = await kadenaDecrypt(password, rootKey);
+  const decrypted = kadenaDecrypt(password, rootKey);
   if (typeof indexOrRange === 'number') {
     return await kadenaGenOneKeypair(password, decrypted, harden(indexOrRange));
   }
