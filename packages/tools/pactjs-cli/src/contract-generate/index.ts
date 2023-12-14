@@ -106,6 +106,7 @@ export function contractGenerateCommand(
         const { network, chain } = extractNetworkAndChain(api);
         const updatedArgs = {
           ...rest,
+          api,
           network: rest.network ?? network,
           chain: rest.chain ?? chain,
         };
