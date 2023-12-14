@@ -8,16 +8,49 @@ menu:
   - blogchain
 
 pages:
+  contribute:
+    url: /contribute
+    file: /contribute/index.tsx
+    children:
+      docs:
+        url: /docs
+        file: /contribute/docs.md
+      dao:
+        url: /kadena-dao
+        file: /contribute/kadena-dao.md
+      ambassadors:
+        url: /ambassadors
+        file: /contribute/ambassadors/index.md
+        children:
+          moderator:
+            url: /moderator
+            file: /contribute/ambassadors/moderator.md
+          creator:
+            url: /content-creator
+            file: /contribute/ambassadors/creator.md
+          leader:
+            url: /community-channel-leader
+            file: /contribute/ambassadors/community-channel-leader.md
+      node:
+        url: /node
+        file: /contribute/node/index.md
+        children:
+          troubleshooting:
+            url: /trouble-shooting-chainweb
+            file: /contribute/node/troubleshooting-chainweb.md
+          startmining:
+            url: /start-mining.md
+            file: /contribute/node/start-mining.md
+          interact:
+            url: /interact-with-nodes
+            file: /contribute/node/interact-with-nodes.md
   build:
-    title: Build
     url: /test
-    file: /docs/test.md
+    file: /test.md
     children:
       build:
-        title: Build
         url: /build
-        file: /docs/index.tsx
+        file: /index.tsx
       build2:
-        title: Build2
         url: /build2
-        file: /docs/test.md
+        file: /test.md

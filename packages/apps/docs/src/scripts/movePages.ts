@@ -35,7 +35,7 @@ const copyPages = (pages: IPage[], parentDir: string = ''): void => {
 
     fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
     fs.copyFileSync(
-      `./src${page.file}`,
+      `./src/docs${page.file}`,
       `./src/pages${dir}/index.${getFileExtension(page.file)}`,
     );
     newFiles.push(dir);
