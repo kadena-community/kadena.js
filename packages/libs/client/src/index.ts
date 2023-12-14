@@ -18,4 +18,10 @@ export {
   IPollResponse,
   IPreflightResult,
 } from '@kadena/chainweb-node-client';
-export { ChainId, ICap, ICommand, IUnsignedCommand } from '@kadena/types';
+export {
+  ChainId,
+  ICap,
+  ICommand,
+  IKeyPair,
+  IUnsignedCommand,
+} from '@kadena/types';

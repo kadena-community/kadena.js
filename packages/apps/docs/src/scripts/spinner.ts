@@ -1,18 +1,28 @@
 import chalk from 'chalk';
 import logUpdate from 'log-update';
 
-export const Spinner = () => {
-  const elegantSpinner = () => {
-    var i = 0;
+interface ISpinner {
+  start: () => void;
+  stop: () => void;
+}
+
+interface IElegantSpinner {
+  (): string;
+}
+
+export const Spinner = (): ISpinner => {
+  const frames = '◴◷◶◵'.split('');
+
+  const elegantSpinner = (): IElegantSpinner => {
+    let i = 0;
 
     return function () {
       return frames[(i = ++i % frames.length)];
     };
   };
 
-  var frame = elegantSpinner();
-  let interval;
-  const frames = '◴◷◶◵'.split('');
+  const frame = elegantSpinner();
+  let interval: NodeJS.Timeout;
 
   return {
     start: () => {

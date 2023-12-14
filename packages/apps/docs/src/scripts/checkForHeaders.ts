@@ -1,28 +1,29 @@
 import fs from 'fs';
 import { globby } from 'globby';
 import path from 'path';
+import type { IScriptResult } from './types';
 
-const errors = [];
-const success = [];
+const errors: string[] = [];
+const success: string[] = [];
 
 /**
  * This script will check that all MD or MDX files
  * that they have an H1 tag.
  */
 
-const filesMissingHeaders = [];
+const filesMissingHeaders: string[] = [];
 
 const ROOT = `${path.resolve()}/src/pages`;
 const headerDepth1Regex = /^#\s+(.*?)\s*$/gm;
 
 //we dont want to have the headers that are inside a code block
 // because these are actually comments
-const removeCodeBlocks = (content) => {
+const removeCodeBlocks = (content: string): string => {
   const codeBlockRegex = /```[\s\S]*?```/g;
   return content.replace(codeBlockRegex, '');
 };
 
-export const checkForHeaders = async () => {
+export const checkForHeaders = async (): Promise<IScriptResult> => {
   const paths = await globby([`${ROOT}/**/*.md`]);
 
   paths.forEach((item) => {

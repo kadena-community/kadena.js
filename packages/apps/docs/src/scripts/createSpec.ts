@@ -1,15 +1,16 @@
 import * as fs from 'fs';
 import yaml from 'js-yaml';
-import { TEMPDIR } from './importReadme/createDoc.mjs';
-import { clone } from './importReadme/index.mjs';
+import { TEMP_DIR } from './importReadme/createDoc';
+import { clone } from './importReadme/index';
+import type { IScriptResult } from './types';
 
-const errors = [];
-const success = [];
+const errors: string[] = [];
+const success: string[] = [];
 const REPO = '/kadena-io/chainweb-openapi';
 
-const returnJSON = (filename) => {
+const returnJSON = (filename: string): void => {
   try {
-    const doc = fs.readFileSync(`${TEMPDIR}${REPO}/${filename}.yaml`, 'utf-8');
+    const doc = fs.readFileSync(`${TEMP_DIR}${REPO}/${filename}.yaml`, 'utf-8');
     const json = yaml.load(doc);
 
     const DIR = './src/_generated/specs/';
@@ -23,7 +24,7 @@ const returnJSON = (filename) => {
   }
 };
 
-export const createSpecs = async () => {
+export const createSpecs = async (): Promise<IScriptResult> => {
   await clone(REPO);
   returnJSON('chainweb.openapi');
   returnJSON('pact.openapi');
