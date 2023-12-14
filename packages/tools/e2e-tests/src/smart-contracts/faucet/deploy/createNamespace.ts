@@ -52,15 +52,11 @@ export const createNamespace = async ({
     secretKey: ADMIN.privateKey,
   });
 
-  console.log(signedTx);
-
   const { submit, listen } = createClient(({ chainId, networkId }) => {
     return `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
   });
 
   const requestKeys = await submit(signedTx);
-
-  console.log('createNamespace', requestKeys);
 
   // const transactionDescriptor = await client.submit(signedTx);
   const response = await listen(requestKeys);

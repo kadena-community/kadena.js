@@ -1,4 +1,4 @@
-import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import { listen, type ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer } from '@kadena/client-utils/coin';
 import {
@@ -15,16 +15,16 @@ export const fundGasStation = async ({
 }: {
   chainId: ChainwebChainId;
   upgrade: boolean;
-}): Promise<string | undefined> => {
-  if (NETWORK_ID !== 'fast-development') {
-    return 'Only needs to happen on Devnet, funding happens differently on Testnet.';
-  }
+}): Promise<ICommandResult> => {
+  // if (NETWORK_ID !== 'fast-development') {
+  //   return 'Only needs to happen on Devnet, funding happens differently on Testnet.';
+  // }
 
-  if (upgrade) {
-    return 'The step "fundGasStation" is skipped for upgrades';
-  }
+  // if (upgrade) {
+  //   return 'The step "fundGasStation" is skipped for upgrades';
+  // }
 
-  const result = await transfer(
+  const transferTask = await transfer(
     {
       sender: {
         account: DEVNET_GENESIS.accountName,
@@ -49,6 +49,8 @@ export const fundGasStation = async ({
         },
       ]),
     },
-  ).execute();
-  return result as string;
+  )
+  const listenResult = await transferTask.executeTo('listen')
+  await transferTask.executeTo()
+  return listenResult
 };
