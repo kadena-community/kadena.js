@@ -73,14 +73,12 @@ export interface IExecPayload {
     data: Exclude<EnvData, undefined> | null;
 }
 
-// @alpha
+// @alpha (undocumented)
 export interface IKeyPair {
-    // (undocumented)
-    clist?: Array<ICap>;
     // (undocumented)
     publicKey: string;
     // (undocumented)
-    secretKey?: string;
+    secretKey: string;
 }
 
 // @alpha
