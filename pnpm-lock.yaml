@@ -1906,6 +1906,22 @@ importers:
         version: 5.2.2
 
   packages/tools/e2e-tests:
+    dependencies:
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../../libs/client-utils
+      '@kadena/cryptography-utils':
+        specifier: workspace:*
+        version: link:../../libs/cryptography-utils
+      '@kadena/pactjs':
+        specifier: workspace:*
+        version: link:../../libs/pactjs
+      '@kadena/pactjs-cli':
+        specifier: workspace:*
+        version: link:../pactjs-cli
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -1919,6 +1935,12 @@ importers:
       '@kadena-dev/shared-config':
         specifier: workspace:*
         version: link:../shared-config
+      '@kadena/chainweb-node-client':
+        specifier: workspace:*
+        version: link:../../libs/chainweb-node-client
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
       '@playwright/test':
         specifier: ^1.39.0
         version: 1.39.0

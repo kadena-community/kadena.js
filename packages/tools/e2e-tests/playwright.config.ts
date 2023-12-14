@@ -18,19 +18,24 @@ export default defineConfig({
     channel: 'chromium',
     trace: 'retain-on-failure',
   },
+  timeout: 10 * 10000,
   expect: {
     timeout: 10 * 1000,
   },
-  webServer: {
-    command: `pnpm --filter ${process.env.TESTOBJECT} run start`,
-    url: 'http://127.0.0.1:3000',
-    reuseExistingServer: process.env.CI === undefined,
-  },
+  // webServer: {
+  //   command: `pnpm --filter ${process.env.TESTOBJECT} run start`,
+  //   url: 'http://127.0.0.1:3000',
+  //   reuseExistingServer: process.env.CI === undefined,
+  // },
 
   projects: [
     {
       name: '@kadena/tools',
       testDir: 'src/tests/tools-app',
+    },
+    {
+      name: 'setup',
+      testDir: 'src/tests/setup',
     },
   ],
 });
