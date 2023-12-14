@@ -1,5 +1,4 @@
 import { atoms } from '@theme/atoms.css';
-import type { ComplexStyleRule } from '@vanilla-extract/css';
 
 export const fontVariants = {
   main: [atoms({ fontFamily: 'primaryFont' })],

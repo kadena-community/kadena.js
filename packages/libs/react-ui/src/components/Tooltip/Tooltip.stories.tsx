@@ -1,6 +1,6 @@
 import { Button } from '@components/Button';
 import { SystemIcon } from '@components/Icon';
-import { Box, Stack } from '@components/Layout';
+import { Stack } from '@components/Layout';
 import type { ITooltipProps } from '@components/Tooltip';
 import { Tooltip } from '@components/Tooltip';
 import { onLayer1 } from '@storyDecorators';

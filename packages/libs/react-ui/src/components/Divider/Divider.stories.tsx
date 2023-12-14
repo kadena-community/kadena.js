@@ -1,8 +1,7 @@
+import { Card } from '@components/Card';
 import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
 import React from 'react';
-import { Card } from '..';
 import { Divider } from './Divider';
 
 const meta: Meta = {
