@@ -5,11 +5,11 @@ import { style } from '@vanilla-extract/css';
 export const dividerClass = style([
   atoms({
     width: '100%',
-    marginY: 'xxl',
+    marginY: 'lg',
     border: 'none',
   }),
   {
-    backgroundColor: tokens.kda.foundation.color.border.base['@boldest'],
+    backgroundColor: tokens.kda.foundation.color.border.base['@bold'],
     height: tokens.kda.foundation.border.width.hairline,
   },
 ]);

@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 export const containerClass = style([
   atoms({
     backgroundColor: 'layer-2.default',
-    color: 'text.base.default', // Check with Isa
+    color: 'text.base.default',
     paddingX: 'xxl',
     paddingY: 'lg',
     borderRadius: 'sm',

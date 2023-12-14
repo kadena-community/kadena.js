@@ -7,13 +7,12 @@ export const base = style([
     position: 'absolute',
     backgroundColor: 'layer-3.default',
     fontSize: 'sm',
-    paddingY: 'xs',
-    paddingX: 'sm',
+    paddingY: 'sm',
+    paddingX: 'md',
     borderRadius: 'md',
     color: 'text.base.default',
     pointerEvents: 'none',
     maxWidth: 'content.maxWidth',
-    // boxShadow: 'level1', // @Isa: Should we use a boxShadow for this?
   }),
   {
     width: 'max-content',

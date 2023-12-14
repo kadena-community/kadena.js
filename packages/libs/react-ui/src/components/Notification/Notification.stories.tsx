@@ -5,6 +5,7 @@ import {
   NotificationFooter,
   NotificationHeading,
 } from '@components/Notification';
+import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { SystemIcon } from '..';
@@ -26,6 +27,7 @@ type StoryType = {
 
 const meta: Meta<StoryType> = {
   title: 'Components/Notification',
+  decorators: [withContentWidth],
   parameters: {
     status: {
       type: ['inDevelopment'],

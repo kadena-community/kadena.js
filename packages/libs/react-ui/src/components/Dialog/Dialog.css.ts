@@ -26,6 +26,9 @@ export const overlayClass = style([
       maxWidth: '100vw',
       inset: 0,
     },
+    sm: {
+      minWidth: tokens.kda.foundation.layout.content.minWidth,
+    },
     md: {
       maxWidth: tokens.kda.foundation.layout.content.maxWidth,
       maxHeight: '75vh',
@@ -42,7 +45,7 @@ export const closeButtonClass = style([
     border: 'none',
     padding: 'xs',
     cursor: 'pointer',
-    color: 'inherit',
+    color: 'icon.base.default',
   }),
   {
     top: tokens.kda.foundation.spacing.md,

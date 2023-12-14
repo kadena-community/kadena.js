@@ -11,7 +11,7 @@ export const underlayClass = style([
     inset: 0,
   }),
   {
-    // Ask isa
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    // TODO: Update to use token
+    backgroundColor: 'rgba(26, 26, 26, 0.8)',
   },
 ]);

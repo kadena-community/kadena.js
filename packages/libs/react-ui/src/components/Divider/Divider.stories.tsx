@@ -1,10 +1,13 @@
+import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
+import { atoms } from '@theme/atoms.css';
 import React from 'react';
 import { Card } from '..';
 import { Divider } from './Divider';
 
 const meta: Meta = {
   title: 'Layout/Divider',
+  decorators: [withContentWidth],
   parameters: {
     status: { type: 'stable' },
     docs: {
@@ -33,10 +36,7 @@ export const Static: Story = {
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
-        </Card>
-
-        <Divider />
-        <Card>
+          <Divider />
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
