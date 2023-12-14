@@ -1,5 +1,5 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
-import { kadenaEncrypt, kadenaMnemonicToSeed } from '@kadena/hd-wallet';
+import { kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 import { kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair } from '@kadena/hd-wallet/chainweaver';
 import chalk from 'chalk';
 import type { Command } from 'commander';
@@ -32,11 +32,10 @@ export const createImportWalletCommand: (
         let keySeed: EncryptedString | undefined;
 
         if (config.legacy === true) {
-          const buffer = await legacykadenaMnemonicToRootKeypair(
+          keySeed = await legacykadenaMnemonicToRootKeypair(
             config.securityNewPassword,
             config.keyMnemonic,
           );
-          keySeed = kadenaEncrypt(config.securityNewPassword, buffer);
         } else {
           keySeed = await kadenaMnemonicToSeed(
             config.securityNewPassword,

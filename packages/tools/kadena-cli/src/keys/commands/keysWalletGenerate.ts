@@ -1,8 +1,4 @@
-import {
-  kadenaEncrypt,
-  kadenaGenMnemonic,
-  kadenaMnemonicToSeed,
-} from '@kadena/hd-wallet';
+import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 import {
   kadenaGenMnemonic as LegacyKadenaGenMnemonic,
   kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair,
@@ -32,11 +28,7 @@ async function generateKey(
 
   if (config.legacy === true) {
     words = LegacyKadenaGenMnemonic();
-    const buffer = await legacykadenaMnemonicToRootKeypair(
-      config.keyPassword,
-      words,
-    );
-    seed = kadenaEncrypt(config.keyPassword, buffer);
+    seed = await legacykadenaMnemonicToRootKeypair(config.keyPassword, words);
   } else {
     words = kadenaGenMnemonic();
     seed = await kadenaMnemonicToSeed(config.keyPassword, words);

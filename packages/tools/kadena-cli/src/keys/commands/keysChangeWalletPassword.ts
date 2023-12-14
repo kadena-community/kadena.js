@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 
+import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
 import { kadenaChangePassword } from '@kadena/hd-wallet/chainweaver';
 
@@ -52,20 +53,19 @@ export const createChangeWalletPasswordCommand: (
         process.exit(0);
       }
 
-      let encryptedNewSeed;
-      const decryptedCurrentSeed = kadenaDecrypt(
-        config.securityCurrentPassword,
-        keyWallet,
-      );
+      let encryptedNewSeed: EncryptedString | undefined;
 
       if (isLegacy === true) {
-        const newSeed = await kadenaChangePassword(
-          decryptedCurrentSeed,
+        encryptedNewSeed = await kadenaChangePassword(
+          keyWallet,
           config.securityCurrentPassword,
           config.securityNewPassword,
         );
-        encryptedNewSeed = kadenaEncrypt(config.securityNewPassword, newSeed);
       } else {
+        const decryptedCurrentSeed = kadenaDecrypt(
+          config.securityCurrentPassword,
+          keyWallet,
+        );
         encryptedNewSeed = kadenaEncrypt(
           config.securityNewPassword,
           decryptedCurrentSeed,

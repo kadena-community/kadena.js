@@ -1,11 +1,6 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
-import {
-  kadenaDecrypt,
-  kadenaEncrypt,
-  kadenaGenKeypairFromSeed,
-} from '@kadena/hd-wallet';
+import { kadenaGenKeypairFromSeed } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
-import { toHexStr } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
 export const defaultAmount: number = 1;
@@ -52,21 +47,16 @@ export async function handlePublicPrivateKeysFrom(
     let privateKey: EncryptedString | undefined;
 
     if (config.legacy === true) {
-      const decryptedSeed = kadenaDecrypt(config.keyPassword, config.keyWallet);
-      const [publicKeyUint8, privateKeyUint8] = await kadenaGenKeypair(
+      const { publicKey: _publicKey, secretKey: _secretKey } =
+        await kadenaGenKeypair(config.keyPassword, config.keyWallet, index);
+      publicKey = _publicKey;
+      privateKey = _secretKey;
+    } else {
+      const [publicKeyString, privateKeyString] = kadenaGenKeypairFromSeed(
         config.keyPassword,
-        decryptedSeed,
+        config.keyWallet,
         index,
       );
-      publicKey = toHexStr(publicKeyUint8);
-      privateKey = kadenaEncrypt(config.keyPassword, privateKeyUint8);
-    } else {
-      const [publicKeyString, privateKeyString] =
-        await kadenaGenKeypairFromSeed(
-          config.keyPassword,
-          config.keyWallet,
-          index,
-        );
       publicKey = publicKeyString;
       privateKey = privateKeyString;
     }

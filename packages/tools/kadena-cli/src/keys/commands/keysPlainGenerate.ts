@@ -1,4 +1,4 @@
-import { kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
+import { kadenaEncrypt, kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
 import chalk from 'chalk';
 import type { Command } from 'commander';
@@ -11,7 +11,6 @@ import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
 } from '../utils/keysDisplay.js';
-import { toHexStr } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
 interface IGeneratePlainKeysCommandConfig {
@@ -27,9 +26,9 @@ async function generateKeyPairs(
   amount: number,
 ): Promise<storageService.IKeyPair[]> {
   if (config.legacy === true) {
-    return generateLegacyKeyPairs(config, amount);
+    return await generateLegacyKeyPairs(config, amount);
   } else {
-    const randomKeyPairs = await kadenaKeyPairsFromRandom(amount);
+    const randomKeyPairs = kadenaKeyPairsFromRandom(amount);
     return randomKeyPairs.map((keyPair) => {
       return {
         publicKey: keyPair.publicKey,
@@ -45,18 +44,18 @@ async function generateLegacyKeyPairs(
 ): Promise<storageService.IKeyPair[]> {
   const keyPairs: storageService.IKeyPair[] = [];
   const password = '';
-  const rootKey = randomBytes(128);
+  const rootKey = kadenaEncrypt(password, randomBytes(128));
 
   for (let i = 0; i < amount; i++) {
-    const [publicKey, privateKey] = await kadenaGenKeypair(
+    const { publicKey, secretKey } = await kadenaGenKeypair(
       password,
       rootKey,
       i,
     );
 
     keyPairs.push({
-      publicKey: toHexStr(publicKey),
-      privateKey: toHexStr(privateKey),
+      publicKey: publicKey,
+      privateKey: secretKey,
     });
   }
 
