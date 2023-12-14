@@ -62,7 +62,7 @@ export async function simulate({
     for (let i = 0; i < numberOfAccounts; i++) {
       // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
       const noOfKeys = i % 2 === 0 ? 1 : 2;
-      let account = await generateAccount(noOfKeys);
+      const account = await generateAccount(noOfKeys);
       logger.info(
         `Generated KeyPair\nAccount: ${
           account.account
@@ -82,16 +82,15 @@ export async function simulate({
       let result;
 
       if (fundingType === 'cross-chain-transfer') {
-        account = {
-          ...account,
-          chainId: '1',
-        };
-
-        const sender: IAccount = { ...sender00, chainId: '0' };
-
         result = await crossChainTransfer({
-          sender: sender,
-          receiver: account,
+          sender: {
+            ...sender00,
+            chainId: '0',
+          },
+          receiver: {
+            ...account,
+            chainId: '1',
+          },
           amount: tokenPool / numberOfAccounts,
         });
       } else if (fundingType === 'safe-transfer') {

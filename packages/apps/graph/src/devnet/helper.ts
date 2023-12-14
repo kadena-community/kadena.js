@@ -3,7 +3,7 @@ import type {
   IClient,
   ICommand,
   ICommandResult,
-  IPollRequestPromise,
+  IKeypair as IKeyPair,
   ITransactionDescriptor,
   IUnsignedCommand,
 } from '@kadena/client';
@@ -24,11 +24,6 @@ export interface IAccount {
   keys: IKeyPair[];
 }
 
-export interface IKeyPair {
-  publicKey: string;
-  secretKey?: string;
-}
-
 export const logger = createLogger('info');
 
 const getClient = (): IClient =>
@@ -42,18 +37,6 @@ export const submit = (tx: ICommand): Promise<ITransactionDescriptor> =>
 
 export const listen = (tx: ITransactionDescriptor): Promise<ICommandResult> =>
   getClient().listen(tx);
-
-export const pollCreateSpv = (
-  tx: ITransactionDescriptor,
-  chainId: ChainId,
-): Promise<string> => getClient().pollCreateSpv(tx, chainId);
-
-export const pollStatus = (
-  tx: ITransactionDescriptor,
-): IPollRequestPromise<ICommandResult> => getClient().pollStatus(tx);
-
-export const dirtyRead = (tx: IUnsignedCommand): Promise<ICommandResult> =>
-  getClient().dirtyRead(tx);
 
 export const signTransaction =
   (keyPairs: IKeyPair[]) =>
@@ -92,17 +75,11 @@ export const inspect =
     return data;
   };
 
-export const asyncPipe =
-  (...fns: any[]) =>
-  (value: any) => {
-    return fns.reduce((acc, fn) => acc.then(fn), Promise.resolve(value));
-  };
-
 export const generateAccount = async (
   keys: number = 1,
   chainId: ChainId = dotenv.SIMULATE_DEFAULT_CHAIN_ID,
 ): Promise<IAccount> => {
-  const keyPairs = Array.from({ length: keys }, () => genKeyPair());
+  const keyPairs = Array.from({ length: keys }, () => genKeyPair() as IKeyPair);
   const account = await createPrincipal(
     {
       keyset: {
