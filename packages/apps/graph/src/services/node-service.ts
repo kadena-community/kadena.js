@@ -29,8 +29,6 @@ export type ChainFungibleAccountDetails = {
   };
 };
 
-const getHost = () => `http://${dotenv.NETWORK_HOST}`;
-
 export async function getAccountDetails(
   fungibleName: string,
   accountName: string,
@@ -42,7 +40,7 @@ export async function getAccountDetails(
       accountName,
       dotenv.NETWORK_ID,
       chainId as ChainId,
-      getHost(),
+      dotenv.NETWORK_HOST,
       fungibleName,
     )) as any;
 
@@ -68,7 +66,7 @@ export async function sendRawQuery(
   let result;
   try {
     result = await dirtyReadClient({
-      host: getHost(),
+      host: dotenv.NETWORK_HOST,
       defaults: {
         networkId: dotenv.NETWORK_ID,
         meta: { chainId: chainId as ChainId },
