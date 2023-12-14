@@ -30,7 +30,7 @@ program
       } else {
         account = {
           account: `k:${args.key}`,
-          keys: [{ publicKey: args.key }],
+          keys: [{ publicKey: args.key, secretKey: '' }],
         };
       }
 
