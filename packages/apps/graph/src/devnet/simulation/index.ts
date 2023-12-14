@@ -2,6 +2,12 @@ import { Command, Option } from 'commander';
 
 import 'module-alias/register';
 
+import {
+  createToken,
+  createTokenId,
+} from '@devnet/marmalade/token/create-token';
+import { mintToken, mintToken1 } from '@devnet/marmalade/token/mint-token';
+import { transferToken } from '@devnet/marmalade/token/transfer-token';
 import type { IAccount } from '../helper';
 import { generateAccount, logger, sender00 } from '../helper';
 import { deployMarmaladeContracts } from '../marmalade/deploy';
@@ -87,6 +93,25 @@ program
   .action(async (args) => {
     try {
       await deployMarmaladeContracts(sender00);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+program
+  .command('test')
+  .description('Deploy marmalade contracts on the devnet')
+  .action(async (args) => {
+    try {
+      // const tokenId = await createToken({
+      //   uri: `https://www.${Date.now()}.io`,
+      // });
+      await mintToken1({
+        tokenId: 't:dEsk5ofm2nRDjURTHrM7ao4__QsVL1huhtxSioo1KcI',
+      });
+      // await transferToken({
+      //   tokenId: 't:IU-0WeAH4TGZGFLV0_1ZfuhcUV80jG0ZLSXF78nptvo',
+      // });
     } catch (error) {
       console.error(error);
     }
