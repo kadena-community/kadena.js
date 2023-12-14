@@ -2,7 +2,7 @@ import type { ICommandResult } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
-import { devnetConfig } from './config';
+import { dotenv } from '@utils/dotenv';
 import type { IAccount } from './helper';
 import {
   inspect,
@@ -16,7 +16,7 @@ import {
 
 export async function safeTransfer({
   receiver,
-  chainId = devnetConfig.CHAIN_ID,
+  chainId = dotenv.SIMULATE_DEFAULT_CHAIN_ID,
   sender = sender00,
   amount = 100,
 }: {
@@ -71,7 +71,7 @@ export async function safeTransfer({
       senderAccount: sender.account,
       ttl: 8 * 60 * 60, //8 hours
     })
-    .setNetworkId(devnetConfig.NETWORK_ID)
+    .setNetworkId(dotenv.NETWORK_ID)
     .createTransaction();
 
   const signedTx = signAndAssertTransaction([...sender.keys, ...receiver.keys])(

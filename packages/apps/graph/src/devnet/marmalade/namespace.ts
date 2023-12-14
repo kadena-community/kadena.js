@@ -1,4 +1,3 @@
-import { devnetConfig } from '@devnet/config';
 import type { IAccount, IKeyPair } from '@devnet/helper';
 import {
   inspect,
@@ -10,6 +9,7 @@ import {
 } from '@devnet/helper';
 import type { ChainId, ICommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
+import { dotenv } from '@utils/dotenv';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import type { IMarmaladeNamespaceConfig } from './config/namespaces';
@@ -102,8 +102,8 @@ export async function deployMarmamaladeNamespaces({
 export async function createPactCommandFromFile(
   filepath: string,
   {
-    chainId = devnetConfig.CHAIN_ID,
-    networkId = devnetConfig.NETWORK_ID,
+    chainId = dotenv.SIMULATE_DEFAULT_CHAIN_ID,
+    networkId = dotenv.NETWORK_ID,
     signers = sender00.keys,
     meta = {
       gasLimit: 70000,

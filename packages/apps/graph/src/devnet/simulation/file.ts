@@ -1,6 +1,6 @@
+import { dotenv } from '@utils/dotenv';
 import fs from 'fs';
 import path from 'path';
-import { devnetConfig } from '../config';
 
 export interface IFileData {
   timestamp: number;
@@ -37,7 +37,7 @@ export function createFile(filename: string): string {
     requestKey: '',
     type: undefined,
   };
-  const directory = path.join(__dirname, `${devnetConfig.LOG_FOLDERNAME}/`);
+  const directory = path.join(__dirname, `${dotenv.SIMULATE_LOG_FOLDER_NAME}/`);
   createDir(directory);
   const filepath = path.join(directory, filename);
   const headers = `${Object.keys(exampleData).join(',')}\n`;
