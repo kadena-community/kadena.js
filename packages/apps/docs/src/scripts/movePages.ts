@@ -1,6 +1,10 @@
+import { exec } from 'child_process';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
+import { promisify } from 'util';
 import type { IConfig, IPage, IScriptResult } from './types';
+
+export const promiseExec = promisify(exec);
 
 const errors: string[] = [];
 const success: string[] = [];
@@ -32,13 +36,11 @@ const getFileExtension = (filePath: string): string => {
 const copyPages = (pages: IPage[], parentDir: string = ''): void => {
   pages.forEach((page) => {
     const dir = `${parentDir}${page.url}`;
+    const file = `${dir}/index.${getFileExtension(page.file)}`;
 
     fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
-    fs.copyFileSync(
-      `./src/docs${page.file}`,
-      `./src/pages${dir}/index.${getFileExtension(page.file)}`,
-    );
-    newFiles.push(dir);
+    fs.copyFileSync(`./src/docs${page.file}`, `./src/pages${file}`);
+    newFiles.push(file);
 
     if (page.children) {
       copyPages(page.children, `${parentDir}${page.url}`);
@@ -67,7 +69,20 @@ const createGitIgnore = (files: string[]): void => {
   fs.writeFileSync('./src/pages/.gitignore', content);
 };
 
+//this removes all the files in the /pages folder that are in the gitignore.
+//this is needed for local development to make sure that files that are not needed are deleted
+const cleanup = async (): Promise<void> => {
+  try {
+    await promiseExec(`cd ./src/pages && git clean -Xdf`);
+  } catch (e) {
+    errors.push('removing old files (via gitignore) has failed');
+    await Promise.resolve();
+  }
+};
+
 export const movePages = async (): Promise<IScriptResult> => {
+  await cleanup();
+
   const pages = loadConfigPages();
   copyPages(pages);
 
