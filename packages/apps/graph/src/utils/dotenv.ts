@@ -38,7 +38,7 @@ export const dotenv: {
     or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '11'),
     10,
   ),
-  NETWORK_HOST: or(process.env.NETWORK_HOST, 'localhost:8080'),
+  NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
   NETWORK_ID: or(process.env.NETWORK_ID, 'fast-development'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
   TRACING_ENABLED: or(process.env.TRACING_ENABLED === 'true', false),
