@@ -1,15 +1,14 @@
-import type { ChainId, IClient, ICommandResult } from '@kadena/client';
-import { Pact, createClient } from '@kadena/client';
+import { details } from '@kadena/client-utils/coin';
+import { dirtyReadClient } from '@kadena/client-utils/core';
+import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import type { Guard } from '../graph/types/graphql-types';
 
 export class PactCommandError extends Error {
-  public commandResult: ICommandResult;
   public pactError: any;
 
-  constructor(message: string, commandResult: ICommandResult, pactError?: any) {
+  constructor(message: string, pactError?: any) {
     super(message);
-    this.commandResult = commandResult;
     this.pactError = pactError;
   }
 }
@@ -30,53 +29,35 @@ export type ChainFungibleAccountDetails = {
   };
 };
 
-function getClient(chainId: ChainId): IClient {
-  return createClient(
-    `http://${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
-  );
-}
+const getHost = () => `http://${dotenv.NETWORK_HOST}`;
 
 export async function getAccountDetails(
   fungibleName: string,
   accountName: string,
   chainId: string,
 ): Promise<ChainFungibleAccountDetails | null> {
-  const commandResult = await getClient(chainId as ChainId).dirtyRead(
-    Pact.builder
-      .execution(
-        Pact.modules[fungibleName as 'fungible-v2'].details(accountName),
-      )
-      .setMeta({
-        chainId: chainId as ChainId,
-      })
-      .setNetworkId(dotenv.NETWORK_ID)
-      .createTransaction(),
-  );
+  let result;
+  try {
+    result = (await details(
+      accountName,
+      dotenv.NETWORK_ID,
+      chainId as ChainId,
+      getHost(),
+      fungibleName,
+    )) as any;
 
-  if (commandResult.result.status !== 'success') {
-    // If the account does not exist on a chain, we get a row not found error.
-    if (
-      (commandResult.result.error as any).message?.includes(
-        'with-read: row not found',
-      )
-    ) {
+    if (typeof result.balance === 'object') {
+      result.balance = parseFloat(result.balance.decimal);
+    }
+
+    return result as ChainFungibleAccountDetails;
+  } catch (error) {
+    if (error.message.includes('with-read: row not found')) {
       return null;
     } else {
-      throw new PactCommandError(
-        'Pact Command failed with error',
-        commandResult,
-        commandResult.result.error,
-      );
+      throw new PactCommandError('Pact Command failed with error', result);
     }
   }
-
-  const result = commandResult.result.data as unknown as any;
-
-  if (typeof result.balance === 'object') {
-    result.balance = parseFloat(result.balance.decimal);
-  }
-
-  return result as ChainFungibleAccountDetails;
 }
 
 export async function sendRawQuery(
@@ -84,30 +65,31 @@ export async function sendRawQuery(
   chainId: string,
   data?: CommandData[],
 ): Promise<string> {
-  const commandBuilder = Pact.builder
-    .execution(code)
-    .setMeta({
-      chainId: chainId as ChainId,
-    })
-    .setNetworkId(dotenv.NETWORK_ID);
+  let result;
+  try {
+    result = await dirtyReadClient({
+      host: getHost(),
+      defaults: {
+        networkId: dotenv.NETWORK_ID,
+        meta: { chainId: chainId as ChainId },
+        payload: {
+          exec: {
+            code,
+            data:
+              data?.reduce(
+                (acc, obj) => {
+                  acc[obj.key] = obj.value;
+                  return acc;
+                },
+                {} as Record<string, unknown>,
+              ) || {},
+          },
+        },
+      },
+    })().execute();
 
-  if (data) {
-    data.forEach((data) => {
-      commandBuilder.addData(data.key, data.value);
-    });
+    return JSON.stringify(result);
+  } catch (error) {
+    throw new PactCommandError('Pact Command failed with error', error);
   }
-
-  const commandResult = await getClient(chainId as ChainId).dirtyRead(
-    commandBuilder.createTransaction(),
-  );
-
-  if (commandResult.result.status !== 'success') {
-    throw new PactCommandError(
-      'Pact Command failed with error',
-      commandResult,
-      commandResult.result.error,
-    );
-  }
-
-  return JSON.stringify(commandResult.result.data);
 }
