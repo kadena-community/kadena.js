@@ -32,7 +32,5 @@ export const rotateKeyset = async (
 
   const requestKeys = await submit(signedTx);
 
-  console.log('rotateKeyset', requestKeys);
-
   return await pollStatus(requestKeys);
 };
