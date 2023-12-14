@@ -1,3 +1,4 @@
+import type { ChainId } from '@kadena/types';
 import * as _dotenv from 'dotenv';
 
 _dotenv.config();
@@ -25,6 +26,8 @@ export const dotenv: {
   MARMALADE_LOCAL_TEMPLATE_PATH: string;
   MARMALADE_LOCAL_NAMESPACE_PATH: string;
   GITHUB_TOKEN: string;
+  SIMULATE_DEFAULT_CHAIN_ID: ChainId;
+  SIMULATE_LOG_FOLDER_NAME: string;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
@@ -80,6 +83,11 @@ export const dotenv: {
     'src/devnet/marmalade/templates/ns',
   ),
   GITHUB_TOKEN: or(process.env.GITHUB_TOKEN, '/pact/marmalade-ns'),
+  SIMULATE_DEFAULT_CHAIN_ID: or(
+    process.env.SIMULATE_DEFAULT_CHAIN_ID as ChainId,
+    '0' as ChainId,
+  ),
+  SIMULATE_LOG_FOLDER_NAME: or(process.env.SIMULATE_LOG_FOLDER_NAME, 'logs'),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {

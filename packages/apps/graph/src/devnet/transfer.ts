@@ -2,7 +2,7 @@ import type { ChainId, ICommandResult, IUnsignedCommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { hash as hashFunction } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
-import { devnetConfig } from './config';
+import { dotenv } from '@utils/dotenv';
 import type { IAccount } from './helper';
 import {
   inspect,
@@ -17,7 +17,7 @@ import {
 
 export async function transfer({
   receiver,
-  chainId = devnetConfig.CHAIN_ID,
+  chainId = dotenv.SIMULATE_DEFAULT_CHAIN_ID,
   sender = sender00,
   amount = 100,
 }: {
@@ -62,7 +62,7 @@ export async function transfer({
       senderAccount: sender.account,
       ttl: 8 * 60 * 60, //8 hours
     })
-    .setNetworkId(devnetConfig.NETWORK_ID)
+    .setNetworkId(dotenv.NETWORK_ID)
 
     .createTransaction();
 

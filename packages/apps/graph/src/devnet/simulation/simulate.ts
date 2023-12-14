@@ -1,7 +1,6 @@
 import type { ChainId } from '@kadena/client';
 import { getBalance } from '@kadena/client-utils/coin';
 import { dotenv } from '@utils/dotenv';
-import { devnetConfig } from '../config';
 import { crossChainTransfer } from '../crosschain-transfer';
 import type { IAccount } from '../helper';
 import {
@@ -145,7 +144,7 @@ export async function simulate({
         const balance = (await getBalance(
           account.account,
           dotenv.NETWORK_ID,
-          devnetConfig.CHAIN_ID,
+          dotenv.SIMULATE_DEFAULT_CHAIN_ID,
           dotenv.NETWORK_HOST,
         )) as number;
 
@@ -180,7 +179,7 @@ export async function simulate({
               ...nextAccount,
               chainId: `${getRandomNumber(
                 seededRandomNo,
-                devnetConfig.NUMBER_OF_CHAINS,
+                dotenv.CHAIN_COUNT,
               )}` as ChainId,
             };
           }

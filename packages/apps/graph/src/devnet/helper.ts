@@ -14,9 +14,9 @@ import {
 } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
+import { dotenv } from '@utils/dotenv';
 import { createLogger } from 'graphql-yoga';
 import seedrandom from 'seedrandom';
-import { devnetConfig } from './config';
 
 export interface IAccount {
   account: string;
@@ -33,8 +33,8 @@ export const logger = createLogger('info');
 
 const getClient = (): IClient =>
   createClient(
-    ({ chainId, networkId }) =>
-      `http://localhost:${devnetConfig.PORT}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+    ({ chainId }) =>
+      `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
   );
 
 export const submit = (tx: ICommand): Promise<ITransactionDescriptor> =>
@@ -105,7 +105,7 @@ export const asyncPipe =
 
 export const generateAccount = async (
   keys: number = 1,
-  chainId: ChainId = devnetConfig.CHAIN_ID,
+  chainId: ChainId = dotenv.SIMULATE_DEFAULT_CHAIN_ID,
 ): Promise<IAccount> => {
   const keyPairs = Array.from({ length: keys }, () => genKeyPair());
   const account = await createPrincipal(
@@ -115,9 +115,9 @@ export const generateAccount = async (
       },
     },
     {
-      host: `http://localhost:${devnetConfig.PORT}`,
+      host: dotenv.NETWORK_HOST,
       defaults: {
-        networkId: devnetConfig.NETWORK_ID,
+        networkId: dotenv.NETWORK_ID,
         meta: { chainId },
       },
     },

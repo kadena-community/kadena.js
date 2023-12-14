@@ -5,7 +5,7 @@ import type {
 import { Pact, readKeyset } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import type { ChainId, IPactDecimal, IUnsignedCommand } from '@kadena/types';
-import { devnetConfig } from './config';
+import { dotenv } from '@utils/dotenv';
 import type { IAccount } from './helper';
 import {
   inspect,
@@ -28,7 +28,7 @@ function startInTheFirstChain(
         sender.account,
         receiver.account,
         readKeyset('receiver-guard'),
-        receiver.chainId || devnetConfig.CHAIN_ID,
+        receiver.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
         pactDecimal,
       ),
     )
@@ -41,7 +41,7 @@ function startInTheFirstChain(
           sender.account,
           receiver.account,
           pactDecimal,
-          receiver.chainId || devnetConfig.CHAIN_ID,
+          receiver.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
         ),
       ],
     )
@@ -51,7 +51,7 @@ function startInTheFirstChain(
       ...receiver.keys.map((key) => key.publicKey),
     )
     .setMeta({ chainId: sender.chainId, senderAccount: sender.account })
-    .setNetworkId(devnetConfig.NETWORK_ID)
+    .setNetworkId(dotenv.NETWORK_ID)
     .createTransaction();
 }
 
@@ -62,7 +62,7 @@ function finishInTheTargetChain(
 ): IUnsignedCommand {
   const builder = Pact.builder
     .continuation(continuation)
-    .setNetworkId(devnetConfig.NETWORK_ID)
+    .setNetworkId(dotenv.NETWORK_ID)
     // uncomment this if you want to pay gas yourself
     .addSigner(
       gasPayer.keys.map((key) => key.publicKey),
@@ -123,10 +123,10 @@ export async function crossChainTransfer({
   const proof = await pollCreateSpv(
     {
       requestKey: status.reqKey,
-      networkId: devnetConfig.NETWORK_ID,
-      chainId: sender.chainId || devnetConfig.CHAIN_ID,
+      networkId: dotenv.NETWORK_ID,
+      chainId: sender.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
     },
-    receiver.chainId || devnetConfig.CHAIN_ID,
+    receiver.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
   );
 
   const continuation = {
@@ -137,7 +137,7 @@ export async function crossChainTransfer({
   };
   const unsignedTx2 = finishInTheTargetChain(
     continuation,
-    receiver.chainId || devnetConfig.CHAIN_ID,
+    receiver.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
     gasPayer,
   );
 
