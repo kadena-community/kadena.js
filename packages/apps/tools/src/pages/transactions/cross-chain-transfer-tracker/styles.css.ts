@@ -41,7 +41,7 @@ export const accountFormStyle = style([
 export const formButtonStyle = style([
   sprinkles({
     alignItems: 'center',
-    marginTop: '$4',
+    marginY: '$4',
     display: 'flex',
     flexDirection: 'row-reverse',
   }),
