@@ -61,9 +61,5 @@ export async function crossChainTransfer({
     },
   );
 
-  return await new Promise((resolve) => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    crossChainTransferRequest.execute();
-    crossChainTransferRequest.on('listen', resolve);
-  });
+  return crossChainTransferRequest.executeTo('listen-continuation');
 }
