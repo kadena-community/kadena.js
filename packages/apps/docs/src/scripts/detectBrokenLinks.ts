@@ -1,15 +1,19 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
+import type { IScriptResult } from './types';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const __dirname = path.resolve();
-const errors = [];
-const success = [];
+const errors: string[] = [];
+const success: string[] = [];
 
-const externalLinks = {};
+type LinksType = Record<string, string[]>;
 
-function getBrokenLinks(filePath, links) {
-  const brokenLinks = [];
+const externalLinks: LinksType = {};
+
+function getBrokenLinks(filePath: string, links: string[]): string[] {
+  const brokenLinks: string[] = [];
   //const directory = path.dirname(filePath);
   links.forEach((link, index) => {
     // clean the link of hash fragments
@@ -58,7 +62,7 @@ function getBrokenLinks(filePath, links) {
   return brokenLinks;
 }
 
-function extractBrokenLinksFromTsFile(filePath) {
+function extractBrokenLinksFromTsFile(filePath: string): string[] {
   const fileContent = fs.readFileSync(filePath, 'utf8');
   const linkRegex = /<a href="([^"]+)">/g;
   const links = [];
@@ -72,7 +76,7 @@ function extractBrokenLinksFromTsFile(filePath) {
   return broken;
 }
 
-function getDisallowedLinksFromMdFile(links) {
+function getDisallowedLinksFromMdFile(links: string[]): string[] {
   const blackListedUrls = [
     'medium.com/kadena-io',
     '/pages/docs/',
@@ -81,7 +85,7 @@ function getDisallowedLinksFromMdFile(links) {
     //'api.chainweb.com', todo when pact docs are approved
     // 'kadena-io.github.io' ,todo when pact docs are approved
   ];
-  return links.reduce((acc, val) => {
+  return links.reduce((acc: string[], val) => {
     const found = blackListedUrls.filter((url) => val.includes(url));
 
     if (found.length) {
@@ -100,10 +104,10 @@ function getDisallowedLinksFromMdFile(links) {
   }, []);
 }
 
-function extractBrokenLinksFromMdFile(filePath) {
+function extractBrokenLinksFromMdFile(filePath: string): string[] {
   const fileContent = fs.readFileSync(filePath, 'utf8');
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  const links = [];
+  const links: string[] = [];
   let match;
 
   while ((match = linkRegex.exec(fileContent))) {
@@ -116,9 +120,9 @@ function extractBrokenLinksFromMdFile(filePath) {
   ];
 }
 
-const filesWithBrokenLinks = {};
+const filesWithBrokenLinks: LinksType = {};
 
-function processFiles(directory) {
+function processFiles(directory: string): void {
   const files = fs.readdirSync(directory);
   files.forEach((file) => {
     const filePath = path.join(directory, file);
@@ -149,13 +153,16 @@ function processFiles(directory) {
   });
 }
 
-const countDeadLinks = (filesWithBrokenLinks) => {
-  return Object.keys(filesWithBrokenLinks).reduce((acc, val) => {
-    return acc + filesWithBrokenLinks[val].length;
-  }, 0);
+const countDeadLinks = (filesWithBrokenLinks: LinksType): number => {
+  return Object.keys(filesWithBrokenLinks).reduce(
+    (acc: number, val: string) => {
+      return acc + filesWithBrokenLinks[val].length;
+    },
+    0,
+  );
 };
 
-export const detectBrokenLinks = async () => {
+export const detectBrokenLinks = async (): Promise<IScriptResult> => {
   const directoryPath = path.join(__dirname, 'src/pages');
   processFiles(directoryPath);
 

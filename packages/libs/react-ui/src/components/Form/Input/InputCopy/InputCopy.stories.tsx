@@ -24,7 +24,6 @@ type Story = StoryObj<IInputProps>;
 export const InputCopyStory: Story = {
   name: 'InputCopy',
   args: {
-    icon: undefined,
     type: 'text',
     leadingTextWidth: undefined,
     leadingText: '',

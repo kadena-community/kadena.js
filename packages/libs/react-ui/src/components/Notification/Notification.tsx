@@ -19,7 +19,7 @@ export interface INotificationProps {
   styleVariant?: keyof typeof displayVariants;
   hasCloseButton?: boolean;
   onClose?: () => void;
-  icon?: React.ReactNode;
+  icon?: React.ReactElement;
   role: 'alert' | 'status' | 'none';
 }
 

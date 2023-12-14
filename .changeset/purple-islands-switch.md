@@ -2,5 +2,4 @@
 '@kadena/client-utils': minor
 ---
 
-Make the return value of utils an iterator which process the task till a
-specific event
+Introduce `executeTo` which executes the process until the specific event is fired then it returns the result of that and pauses the process until you call it again.
