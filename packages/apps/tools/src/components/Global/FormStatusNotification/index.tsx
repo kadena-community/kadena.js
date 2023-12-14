@@ -14,7 +14,7 @@ export type FormStatus = 'idle' | 'successful' | 'erroneous' | 'processing';
 export type Titles = Record<FormStatus, string>;
 export type Bodies = Record<FormStatus, React.ReactNode>;
 
-const statusToColorMap: Record<FormStatus, INotificationProps['color']> = {
+const statusToColorMap: Record<FormStatus, INotificationProps['intent']> = {
   erroneous: 'negative',
   idle: 'warning',
   processing: 'info',
