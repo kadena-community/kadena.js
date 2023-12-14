@@ -55,7 +55,7 @@ export const createGenerateWalletsCommand: (
 
       const { words, seed } = await generateKey(config);
 
-      storageService.storeWallet(seed, config.keyWallet, config.legacy);
+      await storageService.storeWallet(seed, config.keyWallet, config.legacy);
       displayGeneratedWallet(words, config);
       displayStoredWallet(config.keyWallet, config.legacy);
     } catch (error) {
