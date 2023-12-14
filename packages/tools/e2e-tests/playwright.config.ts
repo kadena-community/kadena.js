@@ -9,7 +9,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 4 : 1,
-  reporter: [['github'], ['list'], ['html', { open: 'never' }]],
+  reporter: process.env.CI ? [['github'], ['dot'], ['html', { open: 'never' }]] : [['list', {printSteps: true }], ['html', { open: 'never' }]],
   use: {
     headless: !!process.env.CI,
     baseURL: process.env.PLAYWRIGHT_BASE_URL
@@ -20,7 +20,7 @@ export default defineConfig({
   },
   timeout: 10 * 10000,
   expect: {
-    timeout: 10 * 1000,
+    timeout: 6 * 10000,
   },
   // webServer: {
   //   command: `pnpm --filter ${process.env.TESTOBJECT} run start`,
@@ -32,10 +32,11 @@ export default defineConfig({
     {
       name: '@kadena/tools',
       testDir: 'src/tests/tools-app',
+      dependencies: ['deploy-faucet']
     },
     {
-      name: 'setup',
-      testDir: 'src/tests/setup',
+      name: 'deploy-faucet',
+      testMatch: 'deploy-faucet.setup.ts',
     },
   ],
 });

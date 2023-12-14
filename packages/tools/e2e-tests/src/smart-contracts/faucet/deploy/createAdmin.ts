@@ -1,4 +1,4 @@
-import type { ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
+import { listen, type ChainwebChainId, type ICommandResult } from '@kadena/chainweb-node-client';
 import { createSignWithKeypair } from '@kadena/client';
 
 import { transferCreate } from '@kadena/client-utils/coin';
@@ -20,7 +20,7 @@ export const createAdmin = async ({
     return 'The step "createAdmins" is skipped for upgrades';
   }
 
-  const result = await transferCreate(
+  const transferCreateTask = await transferCreate(
     {
       sender: {
         account: DEVNET_GENESIS.accountName,
@@ -48,6 +48,8 @@ export const createAdmin = async ({
         },
       ]),
     },
-  ).execute();
-  return result;
+  )
+const listenResult = await transferCreateTask.executeTo("listen")
+await transferCreateTask.executeTo()
+return listenResult
 };
