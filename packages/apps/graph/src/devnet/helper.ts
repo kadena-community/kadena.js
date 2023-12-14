@@ -3,7 +3,7 @@ import type {
   IClient,
   ICommand,
   ICommandResult,
-  IKeypair as IKeyPair,
+  IKeyPair,
   ITransactionDescriptor,
   IUnsignedCommand,
 } from '@kadena/client';
@@ -79,7 +79,7 @@ export const generateAccount = async (
   keys: number = 1,
   chainId: ChainId = dotenv.SIMULATE_DEFAULT_CHAIN_ID,
 ): Promise<IAccount> => {
-  const keyPairs = Array.from({ length: keys }, () => genKeyPair() as IKeyPair);
+  const keyPairs = Array.from({ length: keys }, () => genKeyPair());
   const account = await createPrincipal(
     {
       keyset: {

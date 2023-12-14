@@ -1,4 +1,4 @@
-import type { IAccount, IKeyPair } from '@devnet/helper';
+import type { IAccount } from '@devnet/helper';
 import {
   inspect,
   listen,
@@ -7,7 +7,7 @@ import {
   signAndAssertTransaction,
   submit,
 } from '@devnet/helper';
-import type { ChainId, ICommand } from '@kadena/client';
+import type { ChainId, ICommand, IKeyPair } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
 import { readFileSync, readdirSync } from 'fs';
