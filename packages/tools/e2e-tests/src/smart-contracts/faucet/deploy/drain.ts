@@ -1,4 +1,4 @@
-import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
 import { createSignWithKeypair, Pact } from '@kadena/client';
 import type { transferCrossChain } from '@kadena/client-utils/coin';
 import { transfer } from '@kadena/client-utils/coin';
@@ -28,7 +28,7 @@ export const drain = async ({
 }: {
   chainId: ChainwebChainId;
   upgrade: boolean;
-}): Promise<any> => {
+}): Promise<ICommandResult | string | undefined> => {
   if (NETWORK_ID !== 'testnet04') {
     return 'Only needs to happen on Testnet, funding happens differently on Devnet.';
   }
@@ -136,12 +136,8 @@ export const drain = async ({
     );
   }
 
-  const result = await transaction
-    .on('sign', (data) => console.log('sign', data))
-    .on('preflight', (data) => console.log('preflight', data))
-    .on('submit', (data) => console.log('submit', data))
-    .on('listen', (data) => console.log('listen', data))
-    .execute();
+  const listenResult = await transaction.executeTo("listen")
+  await transaction.executeTo()
+  return listenResult
 
-  return result;
 };

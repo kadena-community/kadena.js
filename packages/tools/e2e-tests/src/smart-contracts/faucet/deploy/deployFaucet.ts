@@ -47,9 +47,6 @@ export const deployFaucet = async ({
   }
 
   deployFaucetTx.sigs = [{ sig: signature.sig }];
-
-  console.log(deployFaucetTx);
-
   const { submit, pollStatus } = createClient(({ chainId, networkId }) => {
     return `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
   });
@@ -57,10 +54,6 @@ export const deployFaucet = async ({
   if (!isSignedTransaction(deployFaucetTx)) {
     throw new Error('Transaction is not signed');
   }
-
   const requestKeys = await submit(deployFaucetTx);
-
-  console.log('deployFaucet', requestKeys);
-
   return await pollStatus(requestKeys);
 };

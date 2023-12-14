@@ -65,14 +65,10 @@ export const fundAdmin = async ({
     .setNetworkId(NETWORK_ID)
     .createTransaction();
 
-  console.log(fundTx);
-
   const signedTx = signTransaction(fundTx, {
     publicKey: GAS_PROVIDER.publicKey,
     secretKey: GAS_PROVIDER.privateKey,
   });
-
-  console.log(signedTx);
 
   const { submit, listen, pollCreateSpv, pollStatus } = createClient(
     ({ chainId, networkId }) => {
@@ -82,11 +78,7 @@ export const fundAdmin = async ({
 
   const result = await submit(signedTx);
 
-  console.log('fundAdmin 1', result);
-
   const status = await listen(result);
-
-  console.log('fundAdmin 2', status);
 
   const proof = await pollCreateSpv(
     {
@@ -96,8 +88,6 @@ export const fundAdmin = async ({
     },
     to.chainId,
   );
-
-  console.log('fundAdmin 3', proof);
 
   const finishTargetChainTX: IUnsignedCommand = Pact.builder
     .continuation({
@@ -122,7 +112,7 @@ export const fundAdmin = async ({
 
   const finishResult = await submit(finishTargetChainTX as ICommand);
 
-  console.log('fundAdmin 4', finishResult);
+  ('fundAdmin 4', finishResult);
 
   return await pollStatus(finishResult);
 };
