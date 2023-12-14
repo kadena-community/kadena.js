@@ -1,5 +1,8 @@
+import type { ICommandResult } from '@kadena/chainweb-node-client';
+import { createClient } from '@kadena/client';
 import { details } from '@kadena/client-utils/coin';
 import { dirtyReadClient } from '@kadena/client-utils/core';
+import { hash as hashFunction } from '@kadena/cryptography-utils';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import type { Guard } from '../graph/types/graphql-types';
@@ -91,3 +94,31 @@ export async function sendRawQuery(
     throw new PactCommandError('Pact Command failed with error', error);
   }
 }
+
+export const estimateGas = async ({
+  cmd,
+  hash = undefined,
+  sigs = [],
+}: {
+  cmd: string;
+  hash?: string | undefined | null;
+  sigs?: string[] | undefined | null;
+}): Promise<ICommandResult> => {
+  return await createClient(
+    ({ chainId }) =>
+      `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
+  ).local(
+    {
+      cmd,
+      hash: hash || hashFunction(cmd),
+      sigs:
+        sigs?.map((sig) => ({
+          sig: sig,
+        })) || [],
+    },
+    {
+      preflight: true,
+      signatureVerification: false,
+    },
+  );
+};
