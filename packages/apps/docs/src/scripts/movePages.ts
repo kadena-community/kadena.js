@@ -24,10 +24,28 @@ export const loadConfigPages = (): IPage[] => {
   return cleanup(pages);
 };
 
+export const getLinkHash = (filePath: string): string | undefined => {
+  const arr = filePath.split('/');
+  const extensionWithHashArr = arr[arr.length - 1].split('.');
+
+  //also remove the # at the end of a link
+  const extensionArr =
+    extensionWithHashArr[extensionWithHashArr.length - 1].split('#');
+
+  if (extensionArr.length < 2) return;
+
+  return extensionArr[1];
+};
+
 export const getFileExtension = (filePath: string): string => {
   const arr = filePath.split('/');
-  const last = arr[arr.length - 1].split('.');
-  return last[last.length - 1];
+  const extensionWithHashArr = arr[arr.length - 1].split('.');
+
+  //also remove the # at the end of a link
+  const extensionArr =
+    extensionWithHashArr[extensionWithHashArr.length - 1].split('#');
+
+  return extensionArr[0];
 };
 
 const copyPages = (pages: IPage[], parentDir: string = ''): void => {
@@ -78,6 +96,8 @@ const cleanup = async (): Promise<void> => {
 };
 
 export const movePages = async (): Promise<IScriptResult> => {
+  errors.length = 0;
+  success.length = 0;
   await cleanup();
 
   const pages = loadConfigPages();

@@ -3,15 +3,14 @@ import type { Definition, Image, Link } from 'mdast-util-from-markdown/lib';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
-import { getFileExtension, loadConfigPages } from './movePages';
+import { getFileExtension, getLinkHash, loadConfigPages } from './movePages';
 import type { IPage, IScriptResult } from './types';
 import { getTypes } from './utils';
 
 const errors: string[] = [];
 const success: string[] = [];
 
-const isLocalPageLink = (link: Link | Definition): boolean => {
-  const url = link.url;
+const isLocalPageLink = (url: string): boolean => {
   const extension = getFileExtension(url);
   return (
     !url.startsWith('http') &&
@@ -20,6 +19,12 @@ const isLocalPageLink = (link: Link | Definition): boolean => {
       extension === 'tsx' ||
       extension === 'jsx')
   );
+};
+
+const fixHashLinks = (link: string): string => {
+  // check if the link has a hashdeeplink
+  const arr = link.split('#');
+  if (arr.length < 2) return '';
 };
 
 const isLocalImageLink = (link: Image): boolean => {
@@ -74,17 +79,23 @@ const getUrlofImageFile = (link: string): string => {
 
 const getUrlofPageFile = (link: string): string => {
   const pages = loadConfigPages();
+  const fileHash = getLinkHash(link);
 
-  const cleanLink = link.replace(/\.\.\//g, '').replace(/\.\//g, '');
+  const cleanLink = link
+    .replace(/\.\.\//g, '')
+    .replace(/\.\//g, '')
+    .replace(`#${fileHash}`, '');
 
   const result = findPageByFile(cleanLink, pages);
   if (!result) {
-    errors.push(`${link} not found in the config`);
+    errors.push(`${link}#${fileHash} not found in the config`);
     return '';
   }
 
   if (!result.page) return '';
-  return getUrlNameOfPageFile(result.page, result.parentTree);
+  return `${getUrlNameOfPageFile(result.page, result.parentTree)}${
+    fileHash ? `#${fileHash}` : ''
+  }`;
 };
 
 const splitContentFrontmatter = (
@@ -130,9 +141,10 @@ const fixLinks = async (page: IPage, parentTree: IPage[]): Promise<void> => {
   });
 
   [...links, ...linkReferences].forEach((link) => {
-    if (isLocalPageLink(link)) {
+    if (isLocalPageLink(link.url)) {
       link.url = getUrlofPageFile(link.url);
     }
+    //link.url = fixHashLinks(link.url);
   });
 
   const newContent = toMarkdown(md);
@@ -162,6 +174,8 @@ const crawlPage = (page: IPage, parentTree: IPage[]): void => {
 };
 
 export const fixLocalLinks = async (): Promise<IScriptResult> => {
+  errors.length = 0;
+  success.length = 0;
   const pages = loadConfigPages();
 
   pages.forEach((page) => {
