@@ -179,7 +179,6 @@ describe('yaml-converter', () => {
       );
 
       expect(res).toStrictEqual({
-        data: null,
         meta: {
           chainId: '1',
           creationTime: 1698278400,
@@ -254,7 +253,6 @@ describe('yaml-converter', () => {
       );
 
       expect(res).toStrictEqual({
-        data: null,
         meta: {
           chainId: '1',
           creationTime: 1698278400,
@@ -347,10 +345,6 @@ describe('yaml-converter', () => {
               'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
           },
         ],
-        data: {
-          ns: 'test-namespace',
-          upgrade: false,
-        },
         networkId: 'testnet',
         payload: {
           exec: {

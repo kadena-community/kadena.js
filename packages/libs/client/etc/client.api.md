@@ -10,6 +10,7 @@ import { ICap } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import type { IExecPayload } from '@kadena/types';
+import { IKeyPair } from '@kadena/types';
 import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { ILocalOptions } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
@@ -139,9 +140,9 @@ export interface ICreateClient {
 // @public
 export interface ICreateSignWithKeypair {
     // (undocumented)
-    (key: IKeypair): ISignFunction;
+    (key: IKeyPair): ISignFunction;
     // (undocumented)
-    (keys: IKeypair[]): ISignFunction;
+    (keys: IKeyPair[]): ISignFunction;
 }
 
 // @public
@@ -161,13 +162,7 @@ export interface IExecutionPayloadObject {
     };
 }
 
-// @public
-export interface IKeypair {
-    // (undocumented)
-    publicKey: string;
-    // (undocumented)
-    secretKey: string;
-}
+export { IKeyPair }
 
 // @public (undocumented)
 export interface INetworkOptions {

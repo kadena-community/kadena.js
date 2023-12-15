@@ -1,4 +1,4 @@
-import Layout from '@/components/Common/Layout';
+import Layout from '@/components/common/layout';
 import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import '@styles/globals.css';

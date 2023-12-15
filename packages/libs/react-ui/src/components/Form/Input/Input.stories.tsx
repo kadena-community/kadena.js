@@ -60,13 +60,10 @@ const meta: Meta<IInputProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    icon: {
+    startIcon: {
       description:
         'Icon rendered inside the input to the left of the input text.',
-      options: [
-        '-',
-        ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
-      ],
+      options: ['-', ...Object.keys(SystemIcon)],
       control: {
         type: 'select',
       },
@@ -105,62 +102,74 @@ export default meta;
 type Story = StoryObj<
   {
     leadingText: string;
-    icon: keyof typeof SystemIcon;
+    startIcon: React.ReactElement | '-';
     type: React.HTMLInputTypeAttribute;
-  } & Omit<IInputProps, 'icon'>
+  } & Omit<IInputProps, 'startIcon'>
 >;
 
 export const Dynamic: Story = {
   name: 'Input',
   args: {
-    icon: undefined,
+    startIcon: undefined,
     type: 'text',
     leadingTextWidth: undefined,
     leadingText: '',
     outlined: false,
   },
   render: ({
-    icon,
+    startIcon,
     outlined,
     leadingText,
     leadingTextWidth,
     onChange,
     disabled,
     type,
-  }) => (
-    <Input
-      id="inlineInputStory"
-      icon={icon}
-      onChange={onChange}
-      placeholder="This is a placeholder"
-      leadingTextWidth={leadingTextWidth}
-      leadingText={leadingText}
-      outlined={outlined}
-      disabled={disabled}
-      type={type}
-    />
-  ),
+  }) => {
+    const IconComponent =
+      startIcon !== '-'
+        ? SystemIcon[startIcon as unknown as keyof typeof SystemIcon]
+        : undefined;
+    return (
+      <Input
+        id="inlineInputStory"
+        startIcon={IconComponent && <IconComponent />}
+        onChange={onChange}
+        placeholder="This is a placeholder"
+        leadingTextWidth={leadingTextWidth}
+        leadingText={leadingText}
+        outlined={outlined}
+        disabled={disabled}
+        type={type}
+      />
+    );
+  },
 };
 
 export const InlineWithButton: Story = {
   name: 'Inline with button',
   args: {
-    icon: undefined,
+    startIcon: undefined,
     type: 'text',
   },
-  render: ({ icon, onChange, type }) => (
-    <Stack gap="$xs" alignItems="stretch">
-      <Input
-        id="inlineInputStory"
-        icon={icon}
-        onChange={onChange}
-        placeholder="This is a placeholder"
-        outlined
-        type={type}
-      />
-      <Button title="Submit" onClick={() => {}}>
-        Submit
-      </Button>
-    </Stack>
-  ),
+  render: ({ startIcon, onChange, type }) => {
+    const IconComponent =
+      startIcon !== '-'
+        ? SystemIcon[startIcon as unknown as keyof typeof SystemIcon]
+        : undefined;
+    return (
+      <Stack gap="$xs" alignItems="stretch">
+        <Input
+          id="inlineInputStory"
+          startIcon={IconComponent && <IconComponent />}
+          onChange={onChange}
+          placeholder="This is a placeholder"
+          outlined
+          type={type}
+        />
+        <Button title="Submit" onClick={() => {}}>
+          Submit
+        </Button>
+      </Stack>
+    );
+  },
 };

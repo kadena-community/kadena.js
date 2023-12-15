@@ -1,12 +1,12 @@
+import type { IKeyPair } from '@kadena/types';
 import { beforeAll, describe, expect, it } from 'vitest';
 import type { ICoin } from '../../../composePactCommand/test/coin-contract';
 import type { ISignFunction } from '../../../index';
 import { Pact } from '../../../index';
 import { getModule } from '../../../pact';
-import type { IKeypair } from '../createSignWithKeypair';
 import { createSignWithKeypair } from '../createSignWithKeypair';
 
-const keyPair: IKeypair = {
+const keyPair: IKeyPair = {
   publicKey: '09e82da78d531e2d16852a923e9fe0f80f3b67a9b8d92c7f05e4782222252e12',
   secretKey: '76e1cabaa58a33321982e434f355dc7a4cfbee092a4ac1c7aac26302ba80d992',
 };
@@ -48,7 +48,7 @@ describe('signWithKeypair', () => {
   });
 
   it('adds signatures in multisig fashion to the transactions', async () => {
-    const keyPair2: IKeypair = {
+    const keyPair2: IKeyPair = {
       publicKey:
         '815224b7316e0053635a91fea90f1f5bb474831b257be1aaaf2129ff989824d8',
       secretKey:
@@ -91,7 +91,7 @@ describe('signWithKeypair', () => {
   });
 
   it('tries to sign with the wrong keypair', async () => {
-    const keyPair2: IKeypair = {
+    const keyPair2: IKeyPair = {
       publicKey:
         '815224b7316e0053635a91fea90f1f5bb474831b257be1aaaf2129ff989824d8',
       secretKey:
@@ -117,7 +117,7 @@ describe('signWithKeypair', () => {
   });
 
   it('signs with two keypairs when one is required', async () => {
-    const keyPair2: IKeypair = {
+    const keyPair2: IKeyPair = {
       publicKey:
         '815224b7316e0053635a91fea90f1f5bb474831b257be1aaaf2129ff989824d8',
       secretKey:
@@ -146,7 +146,7 @@ describe('signWithKeypair', () => {
   });
 
   it('signs with two keypairs', async () => {
-    const keyPair2: IKeypair = {
+    const keyPair2: IKeyPair = {
       publicKey:
         '815224b7316e0053635a91fea90f1f5bb474831b257be1aaaf2129ff989824d8',
       secretKey:
@@ -181,7 +181,7 @@ describe('signWithKeypair', () => {
   });
 
   it('signs multiple transactions with multiple keys passed to `createSignWithKeypair`', async () => {
-    const keyPair2: IKeypair = {
+    const keyPair2: IKeyPair = {
       publicKey:
         '815224b7316e0053635a91fea90f1f5bb474831b257be1aaaf2129ff989824d8',
       secretKey:

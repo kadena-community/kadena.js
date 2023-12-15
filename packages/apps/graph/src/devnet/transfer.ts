@@ -1,23 +1,14 @@
-import type { ChainId, ICommandResult, IUnsignedCommand } from '@kadena/client';
-import { Pact } from '@kadena/client';
-import { hash as hashFunction } from '@kadena/cryptography-utils';
+import type { ChainId, ICommandResult } from '@kadena/client';
+import { createSignWithKeypair } from '@kadena/client';
+import { transferCreate } from '@kadena/client-utils/coin';
 import { PactNumber } from '@kadena/pactjs';
-import { devnetConfig } from './config';
+import { dotenv } from '@utils/dotenv';
 import type { IAccount } from './helper';
-import {
-  inspect,
-  listen,
-  localReadForGasEstimation,
-  logger,
-  sender00,
-  signAndAssertTransaction,
-  stringifyProperty,
-  submit,
-} from './helper';
+import { logger, sender00, stringifyProperty } from './helper';
 
 export async function transfer({
   receiver,
-  chainId = devnetConfig.CHAIN_ID,
+  chainId = dotenv.SIMULATE_DEFAULT_CHAIN_ID,
   sender = sender00,
   amount = 100,
 }: {
@@ -36,76 +27,28 @@ export async function transfer({
     }`,
   );
 
-  const transaction = Pact.builder
-    .execution(
-      Pact.modules.coin['transfer-create'](
-        sender.account,
-        receiver.account,
-        () => '(read-keyset "ks")',
-        pactAmount,
-      ),
-    )
-    .addData('ks', {
-      keys: receiver.keys.map((key) => key.publicKey),
-      pred: 'keys-all',
-    })
-    .addSigner(
-      sender.keys.map((key) => key.publicKey),
-      (withCap) => [
-        withCap('coin.GAS'),
-        withCap('coin.TRANSFER', sender.account, receiver.account, pactAmount),
-      ],
-    )
-    .setMeta({
-      gasLimit: 1000,
+  return transferCreate(
+    {
+      amount: pactAmount.decimal,
       chainId,
-      senderAccount: sender.account,
-      ttl: 8 * 60 * 60, //8 hours
-    })
-    .setNetworkId(devnetConfig.NETWORK_ID)
-
-    .createTransaction();
-
-  const signedTx = signAndAssertTransaction(sender.keys)(transaction);
-
-  const transactionDescriptor = await submit(signedTx);
-  inspect('Transfer Submited')(transactionDescriptor);
-
-  const result = await listen(transactionDescriptor);
-  inspect('Transfer Result')(result);
-  if (result.result.status === 'failure') {
-    throw result.result.error;
-  } else {
-    logger.info(result.result);
-    return result;
-  }
+      receiver: {
+        account: receiver.account,
+        keyset: {
+          keys: receiver.keys.map((key) => key.publicKey),
+          pred: 'keys-all',
+        },
+      },
+      sender: {
+        account: sender.account,
+        publicKeys: sender.keys.map((key) => key.publicKey),
+      },
+    },
+    {
+      host: dotenv.NETWORK_HOST,
+      defaults: {
+        networkId: dotenv.NETWORK_ID,
+      },
+      sign: createSignWithKeypair(sender.keys[0]),
+    },
+  ).executeTo('listen');
 }
-export const localReadTransfer = async ({
-  cmd,
-  hash = undefined,
-  sigs = [],
-}: {
-  cmd: string;
-  hash?: string | undefined | null;
-  sigs?: string[] | undefined | null;
-}): Promise<ICommandResult> => {
-  if (!hash) {
-    hash = hashFunction(cmd);
-  }
-
-  let existingSigs: IUnsignedCommand['sigs'] = [];
-
-  if (sigs && sigs?.length > 0) {
-    existingSigs = sigs.map((sig) => ({
-      sig: sig,
-    }));
-  }
-
-  const transaction: IUnsignedCommand = {
-    cmd,
-    hash,
-    sigs: existingSigs,
-  };
-
-  return await localReadForGasEstimation(transaction);
-};

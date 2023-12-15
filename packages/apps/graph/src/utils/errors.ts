@@ -27,9 +27,7 @@ export function normalizeError(error: any): GraphQLError {
     } else if (error.pactError?.message.startsWith('Cannot resolve')) {
       description =
         'The requested module or function was most likely not found.';
-    } else if (
-      (error.commandResult as any).message.includes('Failed reading: mzero')
-    ) {
+    } else if (error.pactError?.message.includes('Failed reading: mzero')) {
       description =
         'Empty code was most likely sent to the Chainweb Node. Please check your arguments.';
     }
@@ -37,12 +35,8 @@ export function normalizeError(error: any): GraphQLError {
     return new GraphQLError('Chainweb Node Command Failure', {
       extensions: {
         type: error.pactError?.type || 'UnknownType',
-        message:
-          error.pactError?.message ||
-          (error.commandResult as any).message ||
-          error.message,
+        message: error.pactError?.message || error.message,
         description,
-        data: error.commandResult,
       },
     });
   }
