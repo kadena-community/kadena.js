@@ -135,7 +135,11 @@ const minimumZeroValue = (value: number): number => {
 
 const pushToParent = (parent: IParent[], child: IParent): IParent[] => {
   let added = false;
-  if (!parent.length || !child.order) {
+  if (
+    !parent.length ||
+    child.order > (parent.at(-1)?.order ?? 0) ||
+    child.order === undefined
+  ) {
     added = true;
     parent.push(child as IParent);
     return parent;
