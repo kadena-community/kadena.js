@@ -17,6 +17,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       ...(await getPageConfig({
         blogPosts: false,
+        filename: __filename,
       })),
       frontmatter: {
         title: 'Intro to Chainweb',

@@ -150,6 +150,7 @@ export const getStaticProps: GetStaticProps = async () => {
       ...(await getPageConfig({
         blogPosts: ['pact'],
         popularPages: '/pact',
+        filename: __filename,
       })),
       frontmatter: {
         title: 'Learn Pact',

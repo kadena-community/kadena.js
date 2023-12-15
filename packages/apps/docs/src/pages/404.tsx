@@ -71,7 +71,7 @@ const NotFoundPage: FC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
-      ...(await getPageConfig({})),
+      ...(await getPageConfig({ filename: __filename })),
       frontmatter: {
         title: '404 - Not found',
         menu: '404 - Not found',
