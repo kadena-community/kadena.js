@@ -1,6 +1,3 @@
-import chalk from 'chalk';
-import { exec } from 'child_process';
-import { promisify } from 'util';
 import { checkForHeaders } from './checkForHeaders';
 import { copyFavIcons } from './copyFavIcons';
 import { checkAuthors } from './createBlogAuthors';
@@ -12,27 +9,9 @@ import { createDocsTree } from './getdocstree';
 import { importAllReadmes } from './importReadme';
 import { deleteTempDir } from './importReadme/importRepo';
 import { movePages } from './movePages';
-import { Spinner } from './spinner';
 import type { IScriptResult } from './types';
-
-export const promiseExec = promisify(exec);
-let globalError = false;
-
-const createString = (str: string, start?: boolean): string => {
-  let titleStr = ` END ${chalk.blue(str.toUpperCase())} ====`;
-  let line = '\n\n';
-  if (start) {
-    titleStr = ` START ${chalk.blue(str.toUpperCase())} ====\n\n`;
-    line = '';
-  }
-  const maxLineLength = 70;
-
-  while (line.length + titleStr.length < maxLineLength) {
-    line += `=`;
-  }
-
-  return `${line}${titleStr}`;
-};
+import { initFunc, promiseExec } from './utils/build';
+import { getGlobalError } from './utils/globalError';
 
 const runPrettier = async (): Promise<IScriptResult> => {
   const success: string[] = [];
@@ -49,34 +28,6 @@ const runPrettier = async (): Promise<IScriptResult> => {
   }
 
   return { errors, success };
-};
-
-const initFunc = async (
-  fnc: () => Promise<IScriptResult>,
-  description: string,
-): Promise<void | number> => {
-  console.log(createString(description, true));
-
-  const spinner = Spinner();
-  spinner.start();
-
-  const { success, errors } = await fnc();
-
-  spinner.stop();
-
-  if (errors.length) {
-    errors.map((error) => {
-      console.warn(chalk.red('⨯'), error);
-    });
-    globalError = true;
-    return;
-  } else {
-    success.map((succes) => {
-      console.log(chalk.green('✓'), succes);
-    });
-  }
-
-  console.log(createString(description));
 };
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -98,7 +49,7 @@ const initFunc = async (
   //cleanup, removing the tempdir
   deleteTempDir();
 
-  if (globalError) {
+  if (getGlobalError()) {
     process.exitCode = 1;
   }
 })();

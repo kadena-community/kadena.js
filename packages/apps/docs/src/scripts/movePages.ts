@@ -1,10 +1,7 @@
-import { exec } from 'child_process';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
-import { promisify } from 'util';
 import type { IConfig, IPage, IScriptResult } from './types';
-
-export const promiseExec = promisify(exec);
+import { promiseExec } from './utils/build';
 
 const errors: string[] = [];
 const success: string[] = [];

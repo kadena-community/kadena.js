@@ -20,7 +20,6 @@ import { getTypes } from '../utils';
 import { removeRepoDomain } from './index';
 
 const DOCS_ROOT = './src/pages';
-export const TEMP_DIR = './.tempimport';
 
 const createFrontMatter = (
   title: string,

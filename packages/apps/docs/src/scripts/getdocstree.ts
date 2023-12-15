@@ -6,8 +6,7 @@ import yaml from 'js-yaml';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
-import { promiseExec } from './build';
-import { TEMP_DIR } from './importReadme/createDoc';
+import { TEMP_DIR, promiseExec } from './utils/build';
 
 const errors: string[] = [];
 const success: string[] = [];

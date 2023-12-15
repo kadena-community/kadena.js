@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import type { IImportReadMeItem } from '../utils';
-import { TEMP_DIR, importDocs } from './createDoc';
+import { TEMP_DIR } from '../utils/build';
+import { importDocs } from './createDoc';
 import { clone, removeRepoDomain } from './index';
 
 /**

@@ -1,15 +1,11 @@
-import { exec } from 'child_process';
 import * as fs from 'fs';
 import type { Definition, Image, Link } from 'mdast-util-from-markdown/lib';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
-import { promisify } from 'util';
 import { getFileExtension, loadConfigPages } from './movePages';
 import type { IPage, IScriptResult } from './types';
 import { getTypes } from './utils';
-
-export const promiseExec = promisify(exec);
 
 const errors: string[] = [];
 const success: string[] = [];
@@ -130,7 +126,6 @@ const fixLinks = async (page: IPage, parentTree: IPage[]): Promise<void> => {
   images.forEach((image) => {
     if (isLocalImageLink(image)) {
       image.url = getUrlofImageFile(image.url);
-      console.log(image);
     }
   });
 

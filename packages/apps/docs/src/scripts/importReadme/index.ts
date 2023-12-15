@@ -1,7 +1,6 @@
-import { promiseExec } from '../build';
 import type { IScriptResult } from '../types';
 import { importReadMes } from '../utils';
-import { TEMP_DIR } from './createDoc';
+import { TEMP_DIR, promiseExec } from '../utils/build';
 import { importRepo } from './importRepo';
 
 const errors: string[] = [];
