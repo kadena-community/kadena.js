@@ -2,10 +2,8 @@ import { Command, Option } from 'commander';
 
 import 'module-alias/register';
 
-import {
-  createToken,
-  createTokenId,
-} from '@devnet/marmalade/token/create-token';
+import { createToken } from '@devnet/marmalade/token/create-token';
+import { createTokenId } from '@devnet/marmalade/token/create-token-id';
 import { mintToken, mintToken1 } from '@devnet/marmalade/token/mint-token';
 import { transferToken } from '@devnet/marmalade/token/transfer-token';
 import type { IAccount } from '../helper';
@@ -106,11 +104,19 @@ program
       // const tokenId = await createToken({
       //   uri: `https://www.${Date.now()}.io`,
       // });
-      await mintToken1({
-        tokenId: 't:dEsk5ofm2nRDjURTHrM7ao4__QsVL1huhtxSioo1KcI',
+      const tokenId = await createTokenId({
+        policies: [],
+        uri: `https://www.${Date.now()}.io`,
+        precision: 0,
       });
+
+      console.log(tokenId);
+      // await mintToken1({
+      //   // tokenId: 't:dEsk5ofm2nRDjURTHrM7ao4__QsVL1huhtxSioo1KcI',
+      //   tokenId: 't:bvygitdVSfiGXsrbosKxKff2ZpnzqLAN1qY5AGQQjaw',
+      // });
       // await transferToken({
-      //   tokenId: 't:IU-0WeAH4TGZGFLV0_1ZfuhcUV80jG0ZLSXF78nptvo',
+      //   tokenId: 't:bvygitdVSfiGXsrbosKxKff2ZpnzqLAN1qY5AGQQjaw',
       // });
     } catch (error) {
       console.error(error);
