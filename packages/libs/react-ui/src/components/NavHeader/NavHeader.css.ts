@@ -12,10 +12,7 @@ export const containerClass = style([
     height: '$16',
     justifyContent: 'flex-start',
     position: 'relative',
-    width: {
-      xs: 'max-content',
-      sm: '100%',
-    },
+    minWidth: 'max-content',
   }),
   {
     alignItems: 'center',
