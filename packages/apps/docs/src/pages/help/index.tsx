@@ -11,7 +11,7 @@ const Help: FC = () => {
 export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
-      ...(await getPageConfig({})),
+      ...(await getPageConfig({ filename: __filename })),
 
       frontmatter: {
         title: 'Help',

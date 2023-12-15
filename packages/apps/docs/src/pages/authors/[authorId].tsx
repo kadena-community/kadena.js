@@ -65,7 +65,7 @@ export const getStaticProps: GetStaticProps<{}, { authorId: string }> = async (
 
   return {
     props: {
-      ...(await getPageConfig({})),
+      ...(await getPageConfig({ filename: __filename })),
       posts,
       authorInfo,
       frontmatter: {
