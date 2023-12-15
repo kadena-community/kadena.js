@@ -10,6 +10,7 @@ import {
   transferCrossChain,
 } from '../coin';
 
+import { safeTransfer } from '../coin/safe-transfer';
 import { NetworkIds } from './support/NetworkIds';
 import { withStepFactory } from './support/helpers';
 import {
@@ -230,5 +231,103 @@ describe('cross chain transfer', () => {
     );
 
     expect(balance).toBe('10');
+  });
+});
+
+describe('safeTransfer', () => {
+  it('should transfer kda from sender00 account to receiverAccount and both receiver and sender should sign', async () => {
+    const result = await safeTransfer(
+      {
+        sender: {
+          account: sender00Account.account,
+          publicKeys: [sender00Account.publicKey],
+        },
+        receiver: {
+          account: accountOne.account,
+          keyset: {
+            keys: [accountOne.publicKey],
+            pred: 'keys-all',
+          },
+        },
+        amount: '100',
+        chainId: '0',
+      },
+      {
+        host: 'http://127.0.0.1:8080',
+        defaults: {
+          networkId: 'fast-development',
+        },
+        sign: createSignWithKeypair([sender00Account, accountOne]),
+      },
+    )
+      .on('sign', (tx) => {
+        expect(tx.sigs).toHaveLength(2);
+        expect(tx.sigs[0].sig).toBeTruthy();
+        expect(tx.sigs[1].sig).toBeTruthy();
+      })
+      .execute();
+
+    expect(result).toBe('Write succeeded');
+  });
+
+  it('should fails if receiver doesnt sign', async () => {
+    const task = safeTransfer(
+      {
+        sender: {
+          account: sender00Account.account,
+          publicKeys: [sender00Account.publicKey],
+        },
+        receiver: {
+          account: accountOne.account,
+          keyset: {
+            keys: [accountOne.publicKey],
+            pred: 'keys-all',
+          },
+        },
+        amount: '100',
+        chainId: '0',
+      },
+      {
+        host: 'http://127.0.0.1:8080',
+        defaults: {
+          networkId: 'fast-development',
+        },
+        sign: createSignWithKeypair([sender00Account]),
+      },
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error('Signing failed'),
+    );
+  });
+
+  it('should fails if receiver doesnt satisfy the account guard sign', async () => {
+    const task = safeTransfer(
+      {
+        sender: {
+          account: sender00Account.account,
+          publicKeys: [sender00Account.publicKey],
+        },
+        receiver: {
+          account: accountOne.account,
+          keyset: {
+            // add wrong guard
+            keys: [sender00Account.publicKey],
+            pred: 'keys-all',
+          },
+        },
+        amount: '100',
+        chainId: '0',
+      },
+      {
+        host: 'http://127.0.0.1:8080',
+        defaults: {
+          networkId: 'fast-development',
+        },
+        sign: createSignWithKeypair([sender00Account]),
+      },
+    );
+
+    await expect(() => task.execute()).rejects.toThrow(/Keyset failure/);
   });
 });
