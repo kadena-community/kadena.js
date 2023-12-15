@@ -144,7 +144,7 @@ export async function simulate({
         const balance = (await getBalance(
           account.account,
           dotenv.NETWORK_ID,
-          dotenv.SIMULATE_DEFAULT_CHAIN_ID,
+          account.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
           dotenv.NETWORK_HOST,
         )) as number;
 
