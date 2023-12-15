@@ -8,7 +8,6 @@ export type IMenu = string[];
 
 export interface IPage {
   id: string;
-  title: string;
   url: string;
   file: string;
   children?: IPage[];

@@ -10,7 +10,7 @@ const errors: string[] = [];
 const success: string[] = [];
 const newFiles: string[] = [];
 
-const loadConfigPages = (): IPage[] => {
+export const loadConfigPages = (): IPage[] => {
   const data = fs.readFileSync(`./src/config.yaml`, 'utf-8');
   const { pages } = yaml.load(data) as IConfig;
 
@@ -27,7 +27,7 @@ const loadConfigPages = (): IPage[] => {
   return cleanup(pages);
 };
 
-const getFileExtension = (filePath: string): string => {
+export const getFileExtension = (filePath: string): string => {
   const arr = filePath.split('/');
   const last = arr[arr.length - 1].split('.');
   return last[last.length - 1];

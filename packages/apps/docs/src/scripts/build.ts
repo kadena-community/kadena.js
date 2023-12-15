@@ -7,9 +7,11 @@ import { checkAuthors } from './createBlogAuthors';
 import { createSitemap } from './createSitemap';
 import { createSpecs } from './createSpec';
 import { detectBrokenLinks } from './detectBrokenLinks';
+import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
 import { importAllReadmes } from './importReadme';
 import { deleteTempDir } from './importReadme/importRepo';
+import { movePages } from './movePages';
 import { Spinner } from './spinner';
 import type { IScriptResult } from './types';
 
@@ -81,7 +83,9 @@ const initFunc = async (
 (async function (): Promise<void> {
   //starting with a cleanslate, removing the tempdir.
   deleteTempDir();
-  //await initFunc(movePages, 'create foldertree');
+  await initFunc(movePages, 'create foldertree from config.yaml');
+  await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
+
   await initFunc(importAllReadmes, 'Import docs from monorepo');
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');

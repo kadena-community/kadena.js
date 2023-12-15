@@ -54,3 +54,6 @@ pages:
       build2:
         url: /build2
         file: /test.md
+      test2:
+        url: /test2
+        file: /test2.md
