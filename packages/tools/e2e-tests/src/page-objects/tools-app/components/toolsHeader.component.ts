@@ -1,14 +1,22 @@
 import type { Locator, Page } from '@playwright/test';
 import { CardComponent } from '../../react-ui/card.component';
 import { NavHeaderComponent } from '../../react-ui/navHeader.component';
+import { getI18nInstance } from 'playwright-i18next-fixture';
+import { ns } from '../../../fixtures/constants';
 
 export class ToolsHeaderComponent extends NavHeaderComponent {
   public networkCard: CardComponent;
+  private readonly _i18n = getI18nInstance()
 
   public constructor(page: Page) {
     super(page);
     this._page = page;
     this.networkCard = new CardComponent(page);
+
+  }
+
+  public async goToPage(translationKey: string): Promise<void> {
+    return this._component.getByRole('link', { name: this._i18n.t(translationKey)}).click();
   }
 
   public async setNetwork(networkLabel: string): Promise<string[]> {
@@ -20,12 +28,12 @@ export class ToolsHeaderComponent extends NavHeaderComponent {
   }
   public async addNetwork(
     networkLabel: string,
-    chainId: string,
+    networkId: string,
     host: string,
   ): Promise<void> {
     await this._page.getByRole('combobox').selectOption('+ add network');
     await this.networkCard.setValueForTextbox('Network Label', networkLabel);
-    await this.networkCard.setValueForTextbox('Network ID', chainId);
+    await this.networkCard.setValueForTextbox('Network ID', networkId);
     await this.networkCard.setValueForTextbox('Network Api', host);
     await this.networkCard.clickButton('Save Network');
   }

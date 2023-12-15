@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from '../../page-objects';
+import { test } from '../../fixtures/page-obects.fixture';
 
 test.skip('The Module Explorer shows deployed contracts', async ({
   page,

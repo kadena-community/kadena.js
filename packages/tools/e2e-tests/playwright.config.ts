@@ -14,7 +14,7 @@ export default defineConfig({
     headless: !!process.env.CI,
     baseURL: process.env.PLAYWRIGHT_BASE_URL
       ? process.env.PLAYWRIGHT_BASE_URL
-      : 'http://127.0.0.1:3000',
+      : 'http://localhost:3000',
     channel: 'chromium',
     trace: 'retain-on-failure',
   },
@@ -32,10 +32,13 @@ export default defineConfig({
     {
       name: '@kadena/tools',
       testDir: 'src/tests/tools-app',
-      dependencies: ['deploy-faucet']
+      dependencies: ['tools-setup'],
+      use: {
+        storageState: './src/page-objects/tools-app/storageState.json'
+      }
     },
     {
-      name: 'deploy-faucet',
+      name: 'tools-setup',
       testMatch: 'deploy-faucet.setup.ts',
     },
   ],

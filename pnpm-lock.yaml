@@ -1922,6 +1922,9 @@ importers:
       '@kadena/pactjs-cli':
         specifier: workspace:*
         version: link:../pactjs-cli
+      '@kadena/tools':
+        specifier: workspace:*
+        version: link:../../apps/tools
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -1956,6 +1959,12 @@ importers:
       eslint-plugin-playwright:
         specifier: 0.16.0
         version: 0.16.0(eslint@8.45.0)
+      i18next:
+        specifier: 21.0.0
+        version: 21.0.0
+      playwright-i18next-fixture:
+        specifier: 1.0.0
+        version: 1.0.0(@playwright/test@1.39.0)
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
@@ -18630,6 +18639,18 @@ packages:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}
     dev: false
 
+  /i18next@21.0.0:
+    resolution: {integrity: sha512-17A00z5ASuOJkPUNSUMaZcfL3zOm2qYiN8UBIYhNYNmPbPrcP+IfabGEFEICv8CCStr/cbjF0Jk/IXNX9hj3ZA==}
+    dependencies:
+      '@babel/runtime': 7.22.15
+    dev: true
+
+  /i18next@21.10.0:
+    resolution: {integrity: sha512-YeuIBmFsGjUfO3qBmMOc0rQaun4mIpGKET5WDwvu8lU7gvwpcariZLNtL0Fzj+zazcHUrlXHiptcFhBMFaxzfg==}
+    dependencies:
+      '@babel/runtime': 7.22.15
+    dev: true
+
   /iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -22910,6 +22931,15 @@ packages:
     resolution: {integrity: sha512-+k4pdZgs1qiM+OUkSjx96YiKsXsmb59evFoqv8SKO067qBA+Z2s/dCzJij/ZhdQcs2zlTAgRKfeiiLm8PQ2qvw==}
     engines: {node: '>=16'}
     hasBin: true
+    dev: true
+
+  /playwright-i18next-fixture@1.0.0(@playwright/test@1.39.0):
+    resolution: {integrity: sha512-7YQXB8zNGlu8ThXaM1pfGefcHdS97FE0Y4R/VrSLwi2DqjJrYx60cWR4KgcEjGvOUaaVMgyu7WlbQJDoHXGzAQ==}
+    peerDependencies:
+      '@playwright/test': ^1.26.0
+    dependencies:
+      '@playwright/test': 1.39.0
+      i18next: 21.10.0
     dev: true
 
   /playwright@1.39.0:

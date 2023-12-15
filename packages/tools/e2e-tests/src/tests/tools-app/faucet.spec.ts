@@ -1,28 +1,48 @@
 import { expect } from '@playwright/test';
-import { accountsData } from '../../fixtures/data/accounts';
-import { pollFinished, pollInProgress } from '../../fixtures/mocks/poll.mocks';
-import { sendMocks } from '../../fixtures/mocks/send.mocks';
-import { test } from '../../page-objects';
+import { accountsData } from '../../fixtures/accounts.fixture';
+import { test } from '../../fixtures/test.fixture';
 
-test('Fund existing account @mocks', async ({ page, toolsApp, mockHelper }) => {
+
+test('Fund existing account @mocks', async ({ page, toolsApp, i18n}) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
     await page.goto('/');
-    await toolsApp.homePage.header.setNetwork('Testnet');
-    await toolsApp.homePage.header.goTo('Faucet');
+  //  await toolsApp.homePage.header.setNetwork('devnet');
+    await toolsApp.homePage.header.goToPage('Faucet');
   });
 
   await test.step('Fund account on chain 0.', async () => {
-    await mockHelper.mockResponse('**/send', sendMocks);
+    await toolsApp.faucetPage.asidePanel.clickPageLink('Fund Existing Account')
     await toolsApp.faucetPage.fundExistingAccount(accountsData.publicKey, '0');
-
-    await mockHelper.mockResponse('**/poll', pollInProgress);
     await expect(
       page.getByText('Transaction is being processed...'),
     ).toBeVisible();
 
-    await mockHelper.mockResponse('**/poll', pollFinished);
     await expect(
       page.getByText('Transaction successfully completed'),
     ).toBeVisible();
   });
 });
+
+// test('fund new K: account', async ({ page, toolsApp}) => {
+//   await test.step('Open Tools and navigate to Faucet', async () => {
+//     await page.goto('/');
+//     await toolsApp.homePage.header.setNetwork('devnet');
+
+//     await toolsApp.homePage.header.goTo('Faucet');
+//   });
+
+//   await test.step('Create account on chain 0.', async () => {
+
+//     await toolsApp.faucetPage.(accountsData.publicKey, '0');
+
+//     await expect(
+//       page.getByText('Transaction is being processed...'),
+//     ).toBeVisible();
+
+//     await expect(
+//       page.getByText('Transaction successfully completed'),
+//     ).toBeVisible();
+//   });
+
+//  expect(true).toBe(true);
+//});

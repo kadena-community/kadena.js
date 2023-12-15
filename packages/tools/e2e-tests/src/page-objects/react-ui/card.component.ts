@@ -4,6 +4,7 @@ export class CardComponent {
   private readonly _page: Page;
 
   public constructor(page: Page) {
+
     this._page = page;
   }
 
@@ -12,10 +13,10 @@ export class CardComponent {
   }
 
   public async setValueForCombobox(
-    label: string,
+    name: string,
     value: string,
   ): Promise<void> {
-    await this._page.getByRole('combobox', { name: label }).selectOption(value);
+    await this._page.getByRole('combobox', { name: name }).selectOption(value);
   }
 
   public async clickButton(label: string): Promise<void> {
