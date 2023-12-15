@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test as setup } from '../../page-objects';
+import { test as setup } from '../../fixtures/page-obects.fixture';
 import { deployFaucetContract } from '../../smart-contracts/faucet/deploy';
 
 setup('Deploy Faucet Smart Contract', async () => {
