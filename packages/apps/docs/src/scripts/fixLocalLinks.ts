@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 import * as fs from 'fs';
-import type { Definition, Link } from 'mdast-util-from-markdown/lib';
+import type { Definition, Image, Link } from 'mdast-util-from-markdown/lib';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
@@ -14,7 +14,7 @@ export const promiseExec = promisify(exec);
 const errors: string[] = [];
 const success: string[] = [];
 
-const isLocalFileLink = (link: Link | Definition): boolean => {
+const isLocalPageLink = (link: Link | Definition): boolean => {
   const url = link.url;
   const extension = getFileExtension(url);
   return (
@@ -24,6 +24,11 @@ const isLocalFileLink = (link: Link | Definition): boolean => {
       extension === 'tsx' ||
       extension === 'jsx')
   );
+};
+
+const isLocalImageLink = (link: Image): boolean => {
+  const url = link.url;
+  return !url.startsWith('http') && url.includes('public/assets');
 };
 
 const getFileNameOfPageFile = (page: IPage, parentTree: IPage[]): string => {
@@ -60,6 +65,15 @@ const findPageByFile = (
   });
 
   return found;
+};
+
+const getUrlofImageFile = (link: string): string => {
+  const cleanLink = link
+    .replace(/\.\.\//g, '')
+    .replace(/\.\//g, '')
+    .replace(/public/, '');
+
+  return cleanLink;
 };
 
 const getUrlofPageFile = (link: string): string => {
@@ -109,11 +123,19 @@ const fixLinks = async (page: IPage, parentTree: IPage[]): Promise<void> => {
   );
 
   const md: Root = remark.parse(content);
+  const images = getTypes<Image>(md, 'image');
   const links = getTypes<Link>(md, 'link');
   const linkReferences = getTypes<Definition>(md, 'definition');
 
+  images.forEach((image) => {
+    if (isLocalImageLink(image)) {
+      image.url = getUrlofImageFile(image.url);
+      console.log(image);
+    }
+  });
+
   [...links, ...linkReferences].forEach((link) => {
-    if (isLocalFileLink(link)) {
+    if (isLocalPageLink(link)) {
       link.url = getUrlofPageFile(link.url);
     }
   });
