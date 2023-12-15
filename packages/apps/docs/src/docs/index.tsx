@@ -10,9 +10,9 @@ import type { IMenuData } from '@kadena/docs-tools';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next/types';
 
+import { getPageConfig } from '@/utils/config';
 import type { FC } from 'react';
 import React from 'react';
-import { getPageConfig } from '../utils/config';
 
 interface IProps {
   popularPages: IMostPopularPage[];
@@ -38,7 +38,11 @@ const Home: FC<IProps> = () => {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      ...(await getPageConfig({ blogPosts: ['pact'], popularPages: '/pact' })),
+      ...(await getPageConfig({
+        blogPosts: ['pact'],
+        popularPages: '/pact',
+        filename: __filename,
+      })),
       frontmatter: {
         title: 'Learn Pact',
         subTitle: 'The human-readable smart contract language',
