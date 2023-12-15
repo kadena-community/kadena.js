@@ -4,8 +4,8 @@ import React from 'react';
 import type { AriaTagGroupProps } from 'react-aria';
 import { useTagGroup } from 'react-aria';
 import { useListState } from 'react-stately';
+import { InternalTagItem } from './InternalTagItem';
 import { tagGroupLabelClass, tagListClass } from './Tag.css';
-import { TagItem } from './TagItem';
 
 export interface ITagGroupProps
   extends Omit<
@@ -20,9 +20,14 @@ export interface ITagGroupProps
     | 'onSelectionChange'
   > {
   className?: string;
+  tagAsChild?: boolean;
 }
 
-export const TagGroup: FC<ITagGroupProps> = ({ className, ...restProps }) => {
+export const TagGroup: FC<ITagGroupProps> = ({
+  tagAsChild,
+  className,
+  ...restProps
+}) => {
   const { label } = restProps;
   const ref = React.useRef(null);
 
@@ -42,7 +47,14 @@ export const TagGroup: FC<ITagGroupProps> = ({ className, ...restProps }) => {
       )}
       <div {...gridProps} ref={ref} className={tagListClass}>
         {[...state.collection].map((item) => (
-          <TagItem key={item.key} item={item} state={state} />
+          <InternalTagItem
+            key={item.key}
+            item={item}
+            state={state}
+            asChild={tagAsChild}
+          >
+            {item.rendered}
+          </InternalTagItem>
         ))}
       </div>
     </div>

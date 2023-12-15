@@ -75,7 +75,7 @@ export const Group: Story = {
 };
 
 export const Removable: Story = {
-  name: 'Removable Tags',
+  name: 'Removable tags',
   render: () => {
     const [list, setList] = useState(tags);
 
@@ -95,7 +95,7 @@ export const Removable: Story = {
 };
 
 export const Disabled: Story = {
-  name: 'Disabled Tag',
+  name: 'Disabled tag',
   render: () => {
     const [list, setList] = useState(tags);
 
@@ -110,6 +110,22 @@ export const Disabled: Story = {
         {list.map((item) => (
           <TagItem key={item.id}>{item.name}</TagItem>
         ))}
+      </TagGroup>
+    );
+  },
+};
+
+export const AsChild: Story = {
+  name: 'Tag styles and props set on their child',
+  render: () => {
+    return (
+      <TagGroup label="Kadena Resources" tagAsChild>
+        <TagItem key="docs">
+          <a href="https://docs.kadena.io/">Kadena Docs</a>
+        </TagItem>
+        <TagItem key="tools">
+          <a href="https://tools.kadena.io/">Tools Website</a>
+        </TagItem>
       </TagGroup>
     );
   },

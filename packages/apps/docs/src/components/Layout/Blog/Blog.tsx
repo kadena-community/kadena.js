@@ -91,10 +91,12 @@ export const Blog: FC<IPageProps> = ({
               </ArticleMetadataItem>
               <ArticleMetadataItem>
                 {tags && (
-                  <TagGroup>
-                    {tags.map((tag) => (
-                      <TagItem key={tag} href={`/tags/${tag}`}>
-                        {tag}
+                  <TagGroup tagAsChild>
+                    {tags.map((tag: string) => (
+                      <TagItem key={tag}>
+                        <Link key={tag} href={`/tags/${tag}`}>
+                          {tag}
+                        </Link>
                       </TagItem>
                     ))}
                   </TagGroup>
