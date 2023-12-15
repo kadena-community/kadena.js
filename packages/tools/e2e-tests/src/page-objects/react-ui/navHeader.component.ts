@@ -8,8 +8,4 @@ export class NavHeaderComponent {
     this._page = page;
     this._component = this._page.locator('header');
   }
-
-  public async goTo(link: string): Promise<void> {
-    return this._component.getByRole('link', { name: `${link}` }).click();
-  }
 }
