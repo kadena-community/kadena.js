@@ -34,7 +34,7 @@ const getFileNameOfPageFile = (page: IPage, parentTree: IPage[]): string => {
   }/index.${getFileExtension(page.file)}`;
 };
 
-const getUrlNameOfPageFile = (page?: IPage, parentTree: IPage[]): string => {
+const getUrlNameOfPageFile = (page: IPage, parentTree: IPage[]): string => {
   if (!page) return '';
   return `${
     parentTree.reduce((acc, val) => {
@@ -73,34 +73,60 @@ const getUrlofPageFile = (link: string): string => {
     return '';
   }
 
+  if (!result.page) return '';
   return getUrlNameOfPageFile(result.page, result.parentTree);
+};
+
+const splitContentFrontmatter = (
+  content: string,
+): { frontmatter: string | null; content: string } => {
+  const frontmatterRegex = /^---([\s\S]+?)---/;
+  const frontmatterMatch = content.match(frontmatterRegex);
+
+  const frontmatter = frontmatterMatch ? frontmatterMatch[1] : null;
+  const contentWithoutFrontmatter = frontmatter
+    ? content.replace(frontmatterRegex, '').trim()
+    : content.trim();
+
+  return {
+    content: contentWithoutFrontmatter,
+    frontmatter: frontmatter,
+  };
 };
 
 const fixLinks = async (page: IPage, parentTree: IPage[]): Promise<void> => {
   const extenstion = getFileExtension(page.file);
   if (extenstion !== 'md' && extenstion !== 'mdx') return;
 
-  const content = fs.readFileSync(
+  const contentWithFrontmatter = fs.readFileSync(
     `./src/pages${getFileNameOfPageFile(page, parentTree)}`,
     'utf-8',
   );
+
+  // we need to preserve the frontmatter, because remark conversion doesnt work to well with the frontmatter
+  const { frontmatter, content } = splitContentFrontmatter(
+    contentWithFrontmatter,
+  );
+
   const md: Root = remark.parse(content);
-  // const links = getTypes<Link>(md, 'link');
-  // const linkReferences = getTypes<Definition>(md, 'definition');
+  const links = getTypes<Link>(md, 'link');
+  const linkReferences = getTypes<Definition>(md, 'definition');
 
-  // [...links, ...linkReferences].forEach((link) => {
-  //   if (isLocalFileLink(link)) {
-  //     link.url = getUrlofPageFile(link.url);
-  //   }
-  // });
-
-  const newContent = toMarkdown(md, {
-    rule: '-',
+  [...links, ...linkReferences].forEach((link) => {
+    if (isLocalFileLink(link)) {
+      link.url = getUrlofPageFile(link.url);
+    }
   });
+
+  const newContent = toMarkdown(md);
 
   fs.writeFileSync(
     `./src/pages${getFileNameOfPageFile(page, parentTree)}`,
-    newContent,
+    `---
+${frontmatter}
+---
+${newContent}
+    `,
     {
       flag: 'w',
     },
