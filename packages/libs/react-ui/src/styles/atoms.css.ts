@@ -4,6 +4,7 @@ import { breakpoints, flattenTokens } from './themeUtils';
 import { tokens } from './tokens/contract.css';
 
 export const colorAtoms = flattenTokens({
+  currentColor: 'currentColor',
   icon: tokens.kda.foundation.color.icon,
   text: tokens.kda.foundation.color.text,
 });

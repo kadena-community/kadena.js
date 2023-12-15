@@ -46,7 +46,7 @@ const meta: Meta<IProgressCircleProps> = {
       },
     },
     color: {
-      options: ['currentColor', ...Object.keys(colorAtoms)],
+      options: Object.keys(colorAtoms),
       control: {
         type: 'select',
       },

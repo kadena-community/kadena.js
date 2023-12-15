@@ -47,7 +47,7 @@ export function ProgressCircle(props: IProgressCircleProps) {
       {...testProps(props)}
       className={classNames(
         atoms({
-          color: props.color !== 'currentColor' ? props.color : undefined,
+          color: props.color,
         }),
         props.className,
       )}

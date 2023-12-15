@@ -81,7 +81,7 @@ describe('ProgressCircle', () => {
     );
   });
 
-  it('supports custom DOM props', function () {
+  it('supports custom DOM props', () => {
     const { getByTestId } = render(
       <ProgressCircle value={25} aria-label="Progress" data-testid="test" />,
     );
