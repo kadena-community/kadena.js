@@ -8,6 +8,7 @@ import {
   IconButton,
   Notification,
   NotificationHeading,
+  Stack,
 } from '@kadena/react-ui';
 
 import {
@@ -283,87 +284,89 @@ const NewAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <Card fullWidth>
-          <Heading as="h5">Public Keys</Heading>
-          <Box marginBottom="$4" />
+        <Stack direction="column" gap="$lg">
+          <Card fullWidth>
+            <Heading as="h5">Public Keys</Heading>
+            <Box marginBottom="$4" />
 
-          <div className={pubKeyInputWrapperStyle}>
-            <div className={inputWrapperStyle}>
-              <PublicKeyField
-                helperText={errors?.pubKey?.message}
-                inputProps={{
-                  ...register('pubKey', {
-                    onChange: () => {
-                      clearErrors('pubKey');
-                    },
-                  }),
-                }}
-                error={errors.pubKey}
-              />
+            <div className={pubKeyInputWrapperStyle}>
+              <div className={inputWrapperStyle}>
+                <PublicKeyField
+                  helperText={errors?.pubKey?.message}
+                  inputProps={{
+                    ...register('pubKey', {
+                      onChange: () => {
+                        clearErrors('pubKey');
+                      },
+                    }),
+                  }}
+                  error={errors.pubKey}
+                />
+              </div>
+              <div className={iconButtonWrapper}>
+                <IconButton
+                  icon={'Plus'}
+                  onClick={() => {
+                    const value = getValues('pubKey');
+                    const valid = validatePublicKey(value || '');
+                    if (valid) {
+                      addPublicKey();
+                    } else {
+                      setError('pubKey', {
+                        type: 'custom',
+                        message: t('invalid-pub-key-length'),
+                      });
+                    }
+                  }}
+                  color="primary"
+                  type="button"
+                />
+              </div>
             </div>
-            <div className={iconButtonWrapper}>
-              <IconButton
-                icon={'Plus'}
-                onClick={() => {
-                  const value = getValues('pubKey');
-                  const valid = validatePublicKey(value || '');
-                  if (valid) {
-                    addPublicKey();
-                  } else {
-                    setError('pubKey', {
-                      type: 'custom',
-                      message: t('invalid-pub-key-length'),
-                    });
-                  }
-                }}
-                color="primary"
-                type="button"
+
+            {pubKeys.length > 0 ? renderPubKeys() : null}
+
+            {pubKeys.length > 1 ? (
+              <PredKeysSelect
+                onChange={onPredSelectChange}
+                value={pred}
+                ariaLabel="Select Predicate"
               />
+            ) : null}
+          </Card>
+          <Card fullWidth>
+            <Heading as="h5">{t('Account')}</Heading>
+            <Box marginBottom="$4" />
+            <div className={inputContainerClass}>
+              <div className={accountNameContainerClass}>
+                <AccountNameField
+                  inputProps={register('name')}
+                  error={errors.name}
+                  label={t('The account name to fund coins to')}
+                  disabled
+                />
+              </div>
+              <div className={chainSelectContainerClass}>
+                <ChainSelect
+                  onChange={onChainSelectChange}
+                  value={chainID}
+                  ariaLabel="Select Chain ID"
+                />
+              </div>
             </div>
+          </Card>
+          <div className={buttonContainerClass}>
+            <Button
+              loading={requestStatus.status === 'processing'}
+              icon="TrailingIcon"
+              iconAlign="right"
+              title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
+              disabled={disabledButton}
+            >
+              {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
+            </Button>
           </div>
-
-          {pubKeys.length > 0 ? renderPubKeys() : null}
-
-          {pubKeys.length > 1 ? (
-            <PredKeysSelect
-              onChange={onPredSelectChange}
-              value={pred}
-              ariaLabel="Select Predicate"
-            />
-          ) : null}
-        </Card>
-        <Card fullWidth>
-          <Heading as="h5">{t('Account')}</Heading>
-          <Box marginBottom="$4" />
-          <div className={inputContainerClass}>
-            <div className={accountNameContainerClass}>
-              <AccountNameField
-                inputProps={register('name')}
-                error={errors.name}
-                label={t('The account name to fund coins to')}
-                disabled
-              />
-            </div>
-            <div className={chainSelectContainerClass}>
-              <ChainSelect
-                onChange={onChainSelectChange}
-                value={chainID}
-                ariaLabel="Select Chain ID"
-              />
-            </div>
-          </div>
-        </Card>
-        <div className={buttonContainerClass}>
-          <Button
-            loading={requestStatus.status === 'processing'}
-            icon="TrailingIcon"
-            iconAlign="right"
-            title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            disabled={disabledButton}
-          >
-            {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
-          </Button>
-        </div>
+        </Stack>
       </form>
     </section>
   );
