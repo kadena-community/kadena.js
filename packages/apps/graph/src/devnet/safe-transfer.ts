@@ -1,18 +1,11 @@
 import type { ICommandResult } from '@kadena/client';
-import { Pact } from '@kadena/client';
+import { Pact, createSignWithKeypair } from '@kadena/client';
+import { submitClient } from '@kadena/client-utils/core';
 import { PactNumber } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import type { IAccount } from './helper';
-import {
-  inspect,
-  listen,
-  logger,
-  sender00,
-  signAndAssertTransaction,
-  stringifyProperty,
-  submit,
-} from './helper';
+import { logger, sender00, stringifyProperty } from './helper';
 
 export async function safeTransfer({
   receiver,
@@ -38,55 +31,61 @@ export async function safeTransfer({
     }`,
   );
 
-  const transaction = Pact.builder
-    .execution(
-      Pact.modules.coin['transfer-create'](
-        sender.account,
-        receiver.account,
-        () => '(read-keyset "ks")',
-        pactAmount,
-      ),
-      Pact.modules.coin.transfer(receiver.account, sender.account, extraAmount),
-    )
-    .addData('ks', {
-      keys: receiver.keys.map((key) => key.publicKey),
-      pred: 'keys-all',
-    })
-    .addSigner(
-      sender.keys.map((key) => key.publicKey),
-      (withCap) => [
-        withCap('coin.GAS'),
-        withCap('coin.TRANSFER', sender.account, receiver.account, pactAmount),
-      ],
-    )
-    .addSigner(
-      receiver.keys.map((key) => key.publicKey),
-      (withCap) => [
-        withCap('coin.TRANSFER', receiver.account, sender.account, extraAmount),
-      ],
-    )
-    .setMeta({
-      gasLimit: 1500,
-      chainId,
-      senderAccount: sender.account,
-      ttl: 8 * 60 * 60, //8 hours
-    })
-    .setNetworkId(dotenv.NETWORK_ID)
-    .createTransaction();
-
-  const signedTx = signAndAssertTransaction([...sender.keys, ...receiver.keys])(
-    transaction,
-  );
-
-  const transactionDescriptor = await submit(signedTx);
-  inspect('Transfer Submited')(transactionDescriptor);
-
-  const result = await listen(transactionDescriptor);
-  inspect('Transfer Result')(result);
-  if (result.result.status === 'failure') {
-    throw result.result.error;
-  } else {
-    logger.info(result.result);
-    return result;
-  }
+  return submitClient({
+    host: dotenv.NETWORK_HOST,
+    sign: createSignWithKeypair([...sender.keys, ...receiver.keys]),
+    defaults: {
+      networkId: dotenv.NETWORK_ID,
+    },
+  })(
+    Pact.builder
+      .execution(
+        Pact.modules.coin['transfer-create'](
+          sender.account,
+          receiver.account,
+          () => '(read-keyset "ks")',
+          pactAmount,
+        ),
+        Pact.modules.coin.transfer(
+          receiver.account,
+          sender.account,
+          extraAmount,
+        ),
+      )
+      .addData('ks', {
+        keys: receiver.keys.map((key) => key.publicKey),
+        pred: 'keys-all',
+      })
+      .addSigner(
+        sender.keys.map((key) => key.publicKey),
+        (withCap) => [
+          withCap('coin.GAS'),
+          withCap(
+            'coin.TRANSFER',
+            sender.account,
+            receiver.account,
+            pactAmount,
+          ),
+        ],
+      )
+      .addSigner(
+        receiver.keys.map((key) => key.publicKey),
+        (withCap) => [
+          withCap(
+            'coin.TRANSFER',
+            receiver.account,
+            sender.account,
+            extraAmount,
+          ),
+        ],
+      )
+      .setMeta({
+        gasLimit: 1500,
+        chainId,
+        senderAccount: sender.account,
+        ttl: 8 * 60 * 60, //8 hours
+      })
+      .setNetworkId(dotenv.NETWORK_ID)
+      .getCommand(),
+  ).executeTo('listen');
 }
