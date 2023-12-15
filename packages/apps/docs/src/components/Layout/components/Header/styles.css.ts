@@ -9,6 +9,8 @@ import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
 
 export const logoClass = style({
   zIndex: $$navMenu,
+  maxWidth: vars.sizes.$48,
+  paddingRight: vars.sizes.$2,
 });
 
 export const headerButtonClass = style([
@@ -208,6 +210,7 @@ export const navClass = style([
   responsiveStyle({
     md: {
       display: 'flex',
+      marginTop: '-1px',
     },
   }),
 ]);
