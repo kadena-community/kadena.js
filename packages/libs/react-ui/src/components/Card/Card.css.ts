@@ -17,7 +17,7 @@ export const containerClass = style([
   },
 ]);
 
-export const fullWidthClass = style([atoms({ width: '100%' })]);
+export const fullWidthClass = style({ width: '100%' });
 
 export const disabledClass = style([
   atoms({
