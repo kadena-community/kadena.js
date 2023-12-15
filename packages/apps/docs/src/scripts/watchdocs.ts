@@ -1,5 +1,4 @@
 import chokidar from 'chokidar';
-import { detectBrokenLinks } from './detectBrokenLinks';
 import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
 import { movePages } from './movePages';
