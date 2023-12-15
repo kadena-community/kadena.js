@@ -2,7 +2,6 @@ import type { Locator, Page } from '@playwright/test';
 import { CardComponent } from '../../react-ui/card.component';
 import { NavHeaderComponent } from '../../react-ui/navHeader.component';
 import { getI18nInstance } from 'playwright-i18next-fixture';
-import { ns } from '../../../fixtures/constants';
 
 export class ToolsHeaderComponent extends NavHeaderComponent {
   public networkCard: CardComponent;
@@ -25,16 +24,5 @@ export class ToolsHeaderComponent extends NavHeaderComponent {
 
   public async getNetwork(): Promise<Locator> {
     return this._component.getByRole('combobox');
-  }
-  public async addNetwork(
-    networkLabel: string,
-    networkId: string,
-    host: string,
-  ): Promise<void> {
-    await this._page.getByRole('combobox').selectOption('+ add network');
-    await this.networkCard.setValueForTextbox('Network Label', networkLabel);
-    await this.networkCard.setValueForTextbox('Network ID', networkId);
-    await this.networkCard.setValueForTextbox('Network Api', host);
-    await this.networkCard.clickButton('Save Network');
   }
 }
