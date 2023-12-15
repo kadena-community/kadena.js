@@ -3,6 +3,11 @@ import mapValues from 'lodash.mapvalues';
 import { breakpoints, flattenTokens } from './themeUtils';
 import { tokens } from './tokens/contract.css';
 
+export const colorAtoms = flattenTokens({
+  icon: tokens.kda.foundation.color.icon,
+  text: tokens.kda.foundation.color.text,
+});
+
 const systemProperties = defineProperties({
   properties: {
     background: ['none'],
@@ -21,10 +26,7 @@ const systemProperties = defineProperties({
     borderWidth: tokens.kda.foundation.border.width,
     bottom: [0],
     boxShadow: tokens.kda.foundation.effect.shadow,
-    color: flattenTokens({
-      icon: tokens.kda.foundation.color.icon,
-      text: tokens.kda.foundation.color.text,
-    }),
+    color: colorAtoms,
     cursor: ['pointer', 'not-allowed'],
     flex: [1],
     flexGrow: [0, 1],

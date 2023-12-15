@@ -2,7 +2,7 @@ import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Plus } from '../Icon/System/SystemIcon';
 import type { IButtonProps } from './NewButton';
-import { NewButton } from './NewButton';
+import { Button } from './NewButton';
 import { button } from './NewButton.css';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
@@ -12,7 +12,7 @@ const buttonVariants = Object.keys(
 
 const meta: Meta<IButtonProps> = {
   title: 'Components/NewButton',
-  component: NewButton,
+  component: Button,
   parameters: {
     status: { type: 'inDevelopment' },
     controls: {
@@ -29,6 +29,7 @@ const meta: Meta<IButtonProps> = {
   argTypes: {
     onClick: {
       action: 'clicked',
+      description: '(deprecated) callback when button is clicked',
       table: {
         disable: true,
       },
@@ -42,16 +43,6 @@ const meta: Meta<IButtonProps> = {
       table: {
         type: { summary: buttonVariants.join(' | ') },
         defaultValue: { summary: 'default' },
-      },
-    },
-    title: {
-      control: {
-        type: 'text',
-      },
-      description: 'native tooltip',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '' },
       },
     },
     type: {
@@ -110,7 +101,6 @@ export const Default: Story = {
     endIcon: undefined,
     isLoading: false,
     text: 'Click me',
-    title: 'test title',
     variant: 'primary',
   },
   render: ({
@@ -123,11 +113,10 @@ export const Default: Story = {
     isLoading,
     onClick,
     text,
-    title,
     variant = 'primary',
   }) => {
     return (
-      <NewButton
+      <Button
         startIcon={startIcon}
         endIcon={endIcon}
         icon={icon}
@@ -136,25 +125,22 @@ export const Default: Story = {
         isOutlined={isOutlined}
         isLoading={isLoading}
         onClick={onClick}
-        title={title}
         variant={variant}
       >
         {text}
-      </NewButton>
+      </Button>
     );
   },
 };
 
 export const StartIcon: StoryFn<IButtonProps> = () => (
-  <NewButton startIcon={<Plus />}>Click me</NewButton>
+  <Button startIcon={<Plus />}>Click me</Button>
 );
 
 export const EndIcon: StoryFn<IButtonProps> = () => (
-  <NewButton endIcon={<Plus />}>Click me</NewButton>
+  <Button endIcon={<Plus />}>Click me</Button>
 );
 
-export const OnlyIcon: StoryFn<IButtonProps> = () => (
-  <NewButton icon={<Plus />} />
-);
+export const OnlyIcon: StoryFn<IButtonProps> = () => <Button icon={<Plus />} />;
 
 export default meta;

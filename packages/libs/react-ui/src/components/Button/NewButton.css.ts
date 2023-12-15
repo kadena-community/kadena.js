@@ -1,4 +1,4 @@
-import { createVar, keyframes, style } from '@vanilla-extract/css';
+import { createVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { atoms } from '../../styles/atoms.css';
 import { colorPalette } from '../../styles/colors';
@@ -255,25 +255,4 @@ export const button = recipe({
     isCompact: false,
     isOutlined: false,
   },
-});
-
-const rotate = keyframes({
-  '0%': { transform: 'rotate(0deg)' },
-  '100%': { transform: 'rotate(360deg)' },
-});
-
-export const spinner = style({
-  animationName: rotate,
-  animationDuration: '1.5s',
-  animationIterationCount: 'infinite',
-  animationTimingFunction: 'linear',
-});
-
-export const cloak = style({
-  visibility: 'hidden',
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  position: 'absolute',
-  inset: 0,
 });
