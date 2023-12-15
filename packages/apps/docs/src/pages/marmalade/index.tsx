@@ -143,6 +143,7 @@ export const getStaticProps: GetStaticProps = async () => {
       ...(await getPageConfig({
         blogPosts: ['marmalade', 'nft'],
         popularPages: '/marmalade',
+        filename: __filename,
       })),
       frontmatter: {
         title: 'Build with Marmalade',

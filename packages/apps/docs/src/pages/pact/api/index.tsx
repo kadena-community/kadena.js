@@ -22,7 +22,7 @@ const Home: FC<ILayout> = () => {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      ...(await getPageConfig({})),
+      ...(await getPageConfig({ filename: __filename })),
       frontmatter: {
         title: 'Pact OpenAPI',
         menu: 'Docs',
