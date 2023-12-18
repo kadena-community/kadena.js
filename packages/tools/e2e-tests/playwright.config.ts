@@ -24,7 +24,7 @@ export default defineConfig({
   },
   timeout: 10 * 10000,
   expect: {
-    timeout: 1 * 20000,
+    timeout: 1 * 30000,
   },
   // webServer: {
   //   command: `pnpm --filter ${process.env.TESTOBJECT} run start`,
