@@ -1,5 +1,5 @@
 import type { IFormFieldWrapperProps, IInputProps } from '@components/Form';
-import { FormFieldWrapper, Input } from '@components/Form';
+import { Input } from '@components/Form';
 import { Stack } from '@components/Layout';
 import type { FC } from 'react';
 import React from 'react';
@@ -9,7 +9,7 @@ import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
 
 export interface ITextFieldProps
   extends Omit<IFormFieldWrapperProps, 'children' | 'htmlFor'>,
-    Omit<IInputProps, 'disabled' | 'children' | 'leadingTextWidth'> {}
+    Omit<IInputProps, 'disabled' | 'children'> {}
 // FormField with action buttons? pass the children as its by default?
 export const TextField: FC<ITextFieldProps> = ({
   disabled = false,
@@ -30,13 +30,11 @@ export const TextField: FC<ITextFieldProps> = ({
   const statusVal = disabled === true ? 'disabled' : status;
 
   return (
-    <>
-      <FormFieldWrapper
-        htmlFor={id}
-        disabled={disabled}
-        status={status}
-        {...rest}
-      >
+    <div className={statusVal ? statusVariant[statusVal] : undefined}>
+      {label !== undefined && (
+        <FormFieldHeader htmlFor={id} label={label} tag={tag} info={info} />
+      )}
+      <Stack gap="$2" direction="column">
         <Input
           disabled={disabled}
           leadingText={leadingText}
@@ -46,28 +44,15 @@ export const TextField: FC<ITextFieldProps> = ({
           ref={ref}
           id={id}
           outlined={outlined}
+          {...rest}
         />
-      </FormFieldWrapper>
-
-      <div className={statusVal ? statusVariant[statusVal] : undefined}>
-        {label !== undefined && (
-          <FormFieldHeader htmlFor={id} label={label} tag={tag} info={info} />
-        )}
-        <Stack gap="$2" direction="column">
-          <Input
-            disabled={disabled}
-            leadingText={leadingText}
-            leadingTextWidth={leadingTextWidth}
-            startIcon={startIcon}
-            type={type}
-            ref={ref}
-            id={id}
-            outlined={outlined}
-            {...rest}
-          />
-        </Stack>
-        {Boolean(helperText) && <FormFieldHelper>{helperText}</FormFieldHelper>}
-      </div>
-    </>
+      </Stack>
+      {Boolean(helperText) && status !== 'negative' && (
+        <FormFieldHelper>{helperText}</FormFieldHelper>
+      )}
+      {Boolean(helperText) && status === 'negative' && (
+        <FormFieldHelper>{helperText}</FormFieldHelper>
+      )}
+    </div>
   );
 };

@@ -1,13 +1,11 @@
 import type { vars } from '@theme/vars.css';
 import classNames from 'classnames';
 import type { FC, InputHTMLAttributes } from 'react';
-import React, { forwardRef, useContext } from 'react';
-import {
-  FormFieldStatus,
-  baseContainerClass,
-  baseOutlinedClass,
-} from '../Form.css';
-import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
+import React, { forwardRef } from 'react';
+
+import type { FormFieldStatus } from '../Form.css';
+import { baseContainerClass, baseOutlinedClass } from '../Form.css';
+
 import {
   disabledClass,
   inputChildrenClass,
@@ -43,14 +41,11 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
       leadingTextWidth,
       disabled = false,
       children,
+      status,
       ...rest
     },
     ref,
   ) {
-    // const { status, leadingTextWidth: wrapperLeadingTextWidth } = useContext(
-    //   FormFieldWrapperContext,
-    // );
-
     return (
       <div
         className={classNames(baseContainerClass, {
