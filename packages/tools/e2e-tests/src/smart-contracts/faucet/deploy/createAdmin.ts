@@ -1,4 +1,7 @@
-import { listen, type ChainwebChainId, type ICommandResult } from '@kadena/chainweb-node-client';
+import type {
+  ChainwebChainId,
+  ICommandResult,
+} from '@kadena/chainweb-node-client';
 import { createSignWithKeypair } from '@kadena/client';
 
 import { transferCreate } from '@kadena/client-utils/coin';
@@ -48,8 +51,8 @@ export const createAdmin = async ({
         },
       ]),
     },
-  )
-const listenResult = await transferCreateTask.executeTo("listen")
-await transferCreateTask.executeTo()
-return listenResult
+  );
+  const listenResult = await transferCreateTask.executeTo('listen');
+  await transferCreateTask.executeTo();
+  return listenResult;
 };

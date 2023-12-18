@@ -2,13 +2,13 @@ export type Environment = 'DEVNET' | 'TESTNET';
 
 const environment: Environment = 'DEVNET' as Environment;
 
-export type Account = {
+export interface _IAccount {
   publicKey: string;
   privateKey: string;
   accountName: string;
-};
+}
 
-export const DEVNET_GENESIS: Account = {
+export const DEVNET_GENESIS: _IAccount = {
   publicKey: '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
   privateKey:
     '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
@@ -47,7 +47,7 @@ export const ADMINS: IAdmin[] =
       ];
 
 // Needs to be the credentials of one of the `ADMINS` specified above
-export const ADMIN: Account =
+export const ADMIN: _IAccount =
   environment === 'DEVNET'
     ? DEVNET_GENESIS
     : {
@@ -78,7 +78,7 @@ export const GAS_STATIONS = {
 
 export const GAS_STATION = GAS_STATIONS[environment];
 
-export const GAS_PROVIDER: Account = {
+export const GAS_PROVIDER: _IAccount = {
   publicKey: '<INSERT_A_PUBLIC_KEY_HERE>',
   privateKey: '<INSERT_A_PRIVATE_KEY_HERE',
   accountName: '<INSERT_AN_ACCOUNT_NAME_HERE>',
