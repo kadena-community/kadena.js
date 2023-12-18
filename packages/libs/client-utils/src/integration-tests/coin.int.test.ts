@@ -270,7 +270,7 @@ describe('safeTransfer', () => {
     expect(result).toBe('Write succeeded');
   });
 
-  it('should fails if receiver doesnt sign', async () => {
+  it('should fail if receiver does not sign', async () => {
     const task = safeTransfer(
       {
         sender: {
