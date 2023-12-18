@@ -30,4 +30,19 @@ sdfs`,
 
     expect(splitContentFrontmatter(markdown)).toEqual(expectedResult);
   });
+
+  it('should return content if there is no frontmatter', async () => {
+    const markdown = `
+# Test2
+sdfs
+`;
+
+    const expectedResult = {
+      frontmatter: null,
+      content: `# Test2
+sdfs`,
+    };
+
+    expect(splitContentFrontmatter(markdown)).toEqual(expectedResult);
+  });
 });

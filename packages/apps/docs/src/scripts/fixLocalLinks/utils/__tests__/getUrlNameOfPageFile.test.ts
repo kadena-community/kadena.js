@@ -49,4 +49,18 @@ describe('utils getUrlNameOfPageFile', () => {
     const expectedResult = '/contribute/node/test/ambassadors';
     expect(getUrlNameOfPageFile(page, parentTree)).toEqual(expectedResult);
   });
+
+  it('should return undefined when there is no page', async () => {
+    const page = undefined as unknown as IPage;
+    const parentTree: IPage[] = [
+      {
+        url: '/contribute',
+        file: '/contribute/index.tsx',
+        children: [page],
+        id: 'contribute',
+      },
+    ];
+
+    expect(getUrlNameOfPageFile(page, parentTree)).toEqual('');
+  });
 });
