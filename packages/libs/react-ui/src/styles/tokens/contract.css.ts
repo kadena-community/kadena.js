@@ -8,450 +8,435 @@ export const tokens = createThemeContract({
       border: {
         width: {
           /**
-           * @default 1px
-           * @light 1px
-           * @dark 1px
+           * @light  `"1px"`
+           * @dark  `"1px"`
            */
           hairline: '',
           /**
-           * @default 2px
-           * @light 2px
-           * @dark 2px
+           * @light  `"2px"`
+           * @dark  `"2px"`
            */
           normal: '',
           /**
-           * @default 4px
-           * @light 4px
-           * @dark 4px
+           * @light  `"4px"`
+           * @dark  `"4px"`
            */
           thick: '',
         },
         /**
-         * @default kda.foundation.border.width.hairline solid kda.foundation.color.border.base.default
-         * @light kda.foundation.border.width.hairline solid kda.foundation.color.border.base.default
-         * @dark kda.foundation.border.width.hairline solid kda.foundation.color.border.base.default
+         * @light  `"tokens.kda.foundation.border.width.hairline solid tokens.kda.foundation.color.border.base.default"`
+         * @dark  `"tokens.kda.foundation.border.width.hairline solid tokens.kda.foundation.color.border.base.default"`
          */
         hairline: '',
         /**
-         * @default kda.foundation.border.width.normal solid kda.foundation.color.border.base.@bold
-         * @light kda.foundation.border.width.normal solid kda.foundation.color.border.base.@bold
-         * @dark kda.foundation.border.width.normal solid kda.foundation.color.border.base.@bold
+         * @light  `"tokens.kda.foundation.border.width.normal solid tokens.kda.foundation.color.border.base.bold"`
+         * @dark  `"tokens.kda.foundation.border.width.normal solid tokens.kda.foundation.color.border.base.bold"`
          */
         normal: '',
         /**
-         * @default kda.foundation.border.width.thick solid kda.foundation.color.border.base.@bold
-         * @light kda.foundation.border.width.thick solid kda.foundation.color.border.base.@bold
-         * @dark kda.foundation.border.width.thick solid kda.foundation.color.border.base.@bold
+         * @light  `"tokens.kda.foundation.border.width.thick solid tokens.kda.foundation.color.border.base.bold"`
+         * @dark  `"tokens.kda.foundation.border.width.thick solid tokens.kda.foundation.color.border.base.bold"`
          */
         thick: '',
       },
       breakpoint: {
         /**
-         * @default 0rem
-         * @light 0rem
-         * @dark 0rem
+         * @light  `"0rem"`
+         * @dark  `"0rem"`
          */
         xs: '',
         /**
-         * @default 40rem
-         * @light 40rem
-         * @dark 40rem
+         * @light  `"40rem"`
+         * @dark  `"40rem"`
          */
         sm: '',
         /**
-         * @default 48rem
-         * @light 48rem
-         * @dark 48rem
+         * @light  `"48rem"`
+         * @dark  `"48rem"`
          */
         md: '',
         /**
-         * @default 64rem
-         * @light 64rem
-         * @dark 64rem
+         * @light  `"64rem"`
+         * @dark  `"64rem"`
          */
         lg: '',
         /**
-         * @default 80rem
-         * @light 80rem
-         * @dark 80rem
+         * @light  `"80rem"`
+         * @dark  `"80rem"`
          */
         xl: '',
         /**
-         * @default 96rem
-         * @light 96rem
-         * @dark 96rem
+         * @light  `"96rem"`
+         * @dark  `"96rem"`
          */
         xxl: '',
       },
       radius: {
         /**
-         * @default 0px
-         * @light 0px
-         * @dark 0px
+         * @light  `"0px"`
+         * @dark  `"0px"`
          */
         no: '',
         /**
-         * @default 2px
-         * @light 2px
-         * @dark 2px
+         * @light  `"2px"`
+         * @dark  `"2px"`
          */
         xs: '',
         /**
-         * @default 4px
-         * @light 4px
-         * @dark 4px
+         * @light  `"4px"`
+         * @dark  `"4px"`
          */
         sm: '',
         /**
-         * @default 6px
-         * @light 6px
-         * @dark 6px
+         * @light  `"6px"`
+         * @dark  `"6px"`
          */
         md: '',
         /**
-         * @default 8px
-         * @light 8px
-         * @dark 8px
+         * @light  `"8px"`
+         * @dark  `"8px"`
          */
         lg: '',
         /**
-         * @default 16px
-         * @light 16px
-         * @dark 16px
+         * @light  `"16px"`
+         * @dark  `"16px"`
          */
         xl: '',
         /**
-         * @default 24px
-         * @light 24px
-         * @dark 24px
+         * @light  `"24px"`
+         * @dark  `"24px"`
          */
         xxl: '',
         /**
-         * @default 999rem
-         * @light 999rem
-         * @dark 999rem
+         * @light  `"999rem"`
+         * @dark  `"999rem"`
          */
         round: '',
       },
       size: {
         /**
-         * @default 0px
-         * @light 0px
-         * @dark 0px
+         * @light  `"0px"`
+         * @dark  `"0px"`
          */
         n0: '',
         /**
-         * @default 0.25rem
-         * @light 0.25rem
-         * @dark 0.25rem
+         * @light  `"0.25rem"`
+         * @dark  `"0.25rem"`
          */
         n1: '',
         /**
-         * @default 0.5rem
-         * @light 0.5rem
-         * @dark 0.5rem
+         * @light  `"0.5rem"`
+         * @dark  `"0.5rem"`
          */
         n2: '',
         /**
-         * @default 0.75rem
-         * @light 0.75rem
-         * @dark 0.75rem
+         * @light  `"0.75rem"`
+         * @dark  `"0.75rem"`
          */
         n3: '',
         /**
-         * @default 1rem
-         * @light 1rem
-         * @dark 1rem
+         * @light  `"1rem"`
+         * @dark  `"1rem"`
          */
         n4: '',
         /**
-         * @default 1.25rem
-         * @light 1.25rem
-         * @dark 1.25rem
+         * @light  `"1.25rem"`
+         * @dark  `"1.25rem"`
          */
         n5: '',
         /**
-         * @default 1.5rem
-         * @light 1.5rem
-         * @dark 1.5rem
+         * @light  `"1.5rem"`
+         * @dark  `"1.5rem"`
          */
         n6: '',
         /**
-         * @default 1.75rem
-         * @light 1.75rem
-         * @dark 1.75rem
+         * @light  `"1.75rem"`
+         * @dark  `"1.75rem"`
          */
         n7: '',
         /**
-         * @default 2rem
-         * @light 2rem
-         * @dark 2rem
+         * @light  `"2rem"`
+         * @dark  `"2rem"`
          */
         n8: '',
         /**
-         * @default 2.25rem
-         * @light 2.25rem
-         * @dark 2.25rem
+         * @light  `"2.25rem"`
+         * @dark  `"2.25rem"`
          */
         n9: '',
         /**
-         * @default 2.5rem
-         * @light 2.5rem
-         * @dark 2.5rem
+         * @light  `"2.5rem"`
+         * @dark  `"2.5rem"`
          */
         n10: '',
         /**
-         * @default 2.75rem
-         * @light 2.75rem
-         * @dark 2.75rem
+         * @light  `"2.75rem"`
+         * @dark  `"2.75rem"`
          */
         n11: '',
         /**
-         * @default 3rem
-         * @light 3rem
-         * @dark 3rem
+         * @light  `"3rem"`
+         * @dark  `"3rem"`
          */
         n12: '',
         /**
-         * @default 3.25rem
-         * @light 3.25rem
-         * @dark 3.25rem
+         * @light  `"3.25rem"`
+         * @dark  `"3.25rem"`
          */
         n13: '',
         /**
-         * @default 3.5rem
-         * @light 3.5rem
-         * @dark 3.5rem
+         * @light  `"3.5rem"`
+         * @dark  `"3.5rem"`
          */
         n14: '',
         /**
-         * @default 3.75rem
-         * @light 3.75rem
-         * @dark 3.75rem
+         * @light  `"3.75rem"`
+         * @dark  `"3.75rem"`
          */
         n15: '',
         /**
-         * @default 4rem
-         * @light 4rem
-         * @dark 4rem
+         * @light  `"4rem"`
+         * @dark  `"4rem"`
          */
         n16: '',
         /**
-         * @default 4.25rem
-         * @light 4.25rem
-         * @dark 4.25rem
+         * @light  `"4.25rem"`
+         * @dark  `"4.25rem"`
          */
         n17: '',
         /**
-         * @default 4.5rem
-         * @light 4.5rem
-         * @dark 4.5rem
+         * @light  `"4.5rem"`
+         * @dark  `"4.5rem"`
          */
         n18: '',
         /**
-         * @default 4.75rem
-         * @light 4.75rem
-         * @dark 4.75rem
+         * @light  `"4.75rem"`
+         * @dark  `"4.75rem"`
          */
         n19: '',
         /**
-         * @default 5rem
-         * @light 5rem
-         * @dark 5rem
+         * @light  `"5rem"`
+         * @dark  `"5rem"`
          */
         n20: '',
         /**
-         * @default 6rem
-         * @light 6rem
-         * @dark 6rem
+         * @light  `"6rem"`
+         * @dark  `"6rem"`
          */
         n24: '',
         /**
-         * @default 6.25rem
-         * @light 6.25rem
-         * @dark 6.25rem
+         * @light  `"6.25rem"`
+         * @dark  `"6.25rem"`
          */
         n25: '',
         /**
-         * @default 7.5rem
-         * @light 7.5rem
-         * @dark 7.5rem
+         * @light  `"7.5rem"`
+         * @dark  `"7.5rem"`
          */
         n30: '',
         /**
-         * @default 8rem
-         * @light 8rem
-         * @dark 8rem
+         * @light  `"8rem"`
+         * @dark  `"8rem"`
          */
         n32: '',
         /**
-         * @default 8.75rem
-         * @light 8.75rem
-         * @dark 8.75rem
+         * @light  `"8.75rem"`
+         * @dark  `"8.75rem"`
          */
         n35: '',
         /**
-         * @default 10rem
-         * @light 10rem
-         * @dark 10rem
+         * @light  `"10rem"`
+         * @dark  `"10rem"`
          */
         n40: '',
         /**
-         * @default 12rem
-         * @light 12rem
-         * @dark 12rem
+         * @light  `"12rem"`
+         * @dark  `"12rem"`
          */
         n48: '',
         /**
-         * @default 14rem
-         * @light 14rem
-         * @dark 14rem
+         * @light  `"14rem"`
+         * @dark  `"14rem"`
          */
         n56: '',
         /**
-         * @default 16rem
-         * @light 16rem
-         * @dark 16rem
+         * @light  `"16rem"`
+         * @dark  `"16rem"`
          */
         n64: '',
       },
       spacing: {
         /**
-         * @default kda.foundation.size.n0
-         * @light kda.foundation.size.n0
-         * @dark kda.foundation.size.n0
+         * @light {@link tokens.kda.foundation.size.n0}
+         * @dark {@link tokens.kda.foundation.size.n0}
          */
         no: '',
         /**
-         * @default 0.125rem
-         * @light 0.125rem
-         * @dark 0.125rem
+         * @light  `"0.125rem"`
+         * @dark  `"0.125rem"`
          */
         xxs: '',
         /**
-         * @default kda.foundation.size.n1
-         * @light kda.foundation.size.n1
-         * @dark kda.foundation.size.n1
+         * @light {@link tokens.kda.foundation.size.n1}
+         * @dark {@link tokens.kda.foundation.size.n1}
          */
         xs: '',
         /**
-         * @default kda.foundation.size.n2
-         * @light kda.foundation.size.n2
-         * @dark kda.foundation.size.n2
+         * @light {@link tokens.kda.foundation.size.n2}
+         * @dark {@link tokens.kda.foundation.size.n2}
          */
         sm: '',
         /**
-         * @default kda.foundation.size.n4
-         * @light kda.foundation.size.n4
-         * @dark kda.foundation.size.n4
+         * @light {@link tokens.kda.foundation.size.n4}
+         * @dark {@link tokens.kda.foundation.size.n4}
          */
         md: '',
         /**
-         * @default kda.foundation.size.n6
-         * @light kda.foundation.size.n6
-         * @dark kda.foundation.size.n6
+         * @light {@link tokens.kda.foundation.size.n6}
+         * @dark {@link tokens.kda.foundation.size.n6}
          */
         lg: '',
         /**
-         * @default kda.foundation.size.n7
-         * @light kda.foundation.size.n7
-         * @dark kda.foundation.size.n7
+         * @light {@link tokens.kda.foundation.size.n7}
+         * @dark {@link tokens.kda.foundation.size.n7}
          */
         xl: '',
         /**
-         * @default kda.foundation.size.n9
-         * @light kda.foundation.size.n9
-         * @dark kda.foundation.size.n9
+         * @light {@link tokens.kda.foundation.size.n9}
+         * @dark {@link tokens.kda.foundation.size.n9}
          */
         xxl: '',
         /**
-         * @default kda.foundation.size.n10
-         * @light kda.foundation.size.n10
-         * @dark kda.foundation.size.n10
+         * @light {@link tokens.kda.foundation.size.n10}
+         * @dark {@link tokens.kda.foundation.size.n10}
          */
         xxxl: '',
+      },
+      zIndex: {
+        /**
+         * @light  `"-99999"`
+         * @dark  `"-99999"`
+         */
+        deepdive: '',
+        /**
+         * @light  `"1"`
+         * @dark  `"1"`
+         */
+        default: '',
+        /**
+         * @light  `"6000"`
+         * @dark  `"6000"`
+         */
+        dialog: '',
+        /**
+         * @light  `"4"`
+         * @dark  `"4"`
+         */
+        surface: '',
+        /**
+         * @light  `"7000"`
+         * @dark  `"7000"`
+         */
+        dropdown: '',
+        /**
+         * @light  `"9000"`
+         * @dark  `"9000"`
+         */
+        modal: '',
+        /**
+         * @light  `"8000"`
+         * @dark  `"8000"`
+         */
+        overlay: '',
+        /**
+         * @light  `"5000"`
+         * @dark  `"5000"`
+         */
+        popup: '',
+        /**
+         * @light  `"9050"`
+         * @dark  `"9050"`
+         */
+        spinner: '',
+        /**
+         * @light  `"100"`
+         * @dark  `"100"`
+         */
+        sticky: '',
+        /**
+         * @light  `"10000"`
+         * @dark  `"10000"`
+         */
+        toast: '',
       },
       color: {
         accent: {
           /**
-           * @default kda.foundation.color.palette.blue.n70
-           * @light kda.foundation.color.palette.blue.n70
-           * @dark kda.foundation.color.palette.blue.n70
+           * @light {@link tokens.kda.foundation.color.palette.blue.n70}
+           * @dark {@link tokens.kda.foundation.color.palette.blue.n70}
            */
           blue: '',
           /**
-           * @default kda.foundation.color.palette.indigo.n70
-           * @light kda.foundation.color.palette.indigo.n70
-           * @dark kda.foundation.color.palette.indigo.n70
+           * @light {@link tokens.kda.foundation.color.palette.indigo.n70}
+           * @dark {@link tokens.kda.foundation.color.palette.indigo.n70}
            */
           indigo: '',
           /**
-           * @default kda.foundation.color.palette.lime.n70
-           * @light kda.foundation.color.palette.lime.n70
-           * @dark kda.foundation.color.palette.lime.n70
+           * @light {@link tokens.kda.foundation.color.palette.lime.n70}
+           * @dark {@link tokens.kda.foundation.color.palette.lime.n70}
            */
           lime: '',
           /**
-           * @default kda.foundation.color.palette.magenta.n70
-           * @light kda.foundation.color.palette.magenta.n70
-           * @dark kda.foundation.color.palette.magenta.n70
+           * @light {@link tokens.kda.foundation.color.palette.magenta.n70}
+           * @dark {@link tokens.kda.foundation.color.palette.magenta.n70}
            */
           magenta: '',
           /**
-           * @default kda.foundation.color.palette.purple.n70
-           * @light kda.foundation.color.palette.purple.n70
-           * @dark kda.foundation.color.palette.purple.n70
+           * @light {@link tokens.kda.foundation.color.palette.purple.n70}
+           * @dark {@link tokens.kda.foundation.color.palette.purple.n70}
            */
           purple: '',
           /**
-           * @default kda.foundation.color.palette.red.n70
-           * @light kda.foundation.color.palette.red.n70
-           * @dark kda.foundation.color.palette.red.n70
+           * @light {@link tokens.kda.foundation.color.palette.red.n70}
+           * @dark {@link tokens.kda.foundation.color.palette.red.n70}
            */
           red: '',
           /**
-           * @default kda.foundation.color.palette.yellow.n70
-           * @light kda.foundation.color.palette.yellow.n70
-           * @dark kda.foundation.color.palette.yellow.n70
+           * @light {@link tokens.kda.foundation.color.palette.yellow.n70}
+           * @dark {@link tokens.kda.foundation.color.palette.yellow.n70}
            */
           yellow: '',
           brand: {
             /**
-             * @default kda.foundation.color.brand.primary.n70
-             * @light kda.foundation.color.brand.primary.n70
-             * @dark kda.foundation.color.brand.primary.n70
+             * @light {@link tokens.kda.foundation.color.brand.primary.n70}
+             * @dark {@link tokens.kda.foundation.color.brand.primary.n70}
              */
             primary: '',
             /**
-             * @default kda.foundation.color.brand.secondary.n70
-             * @light kda.foundation.color.brand.secondary.n70
-             * @dark kda.foundation.color.brand.secondary.n70
+             * @light {@link tokens.kda.foundation.color.brand.secondary.n70}
+             * @dark {@link tokens.kda.foundation.color.brand.secondary.n70}
              */
             secondary: '',
           },
           semantic: {
             /**
-             * @default kda.foundation.color.semantic.info.n70
-             * @light kda.foundation.color.semantic.info.n70
-             * @dark kda.foundation.color.semantic.info.n70
+             * @light {@link tokens.kda.foundation.color.semantic.info.n70}
+             * @dark {@link tokens.kda.foundation.color.semantic.info.n70}
              */
             info: '',
             /**
-             * @default kda.foundation.color.semantic.warning.n70
-             * @light kda.foundation.color.semantic.warning.n70
-             * @dark kda.foundation.color.semantic.warning.n70
+             * @light {@link tokens.kda.foundation.color.semantic.warning.n70}
+             * @dark {@link tokens.kda.foundation.color.semantic.warning.n70}
              */
             warning: '',
             /**
-             * @default kda.foundation.color.semantic.positive.n70
-             * @light kda.foundation.color.semantic.positive.n70
-             * @dark kda.foundation.color.semantic.positive.n70
+             * @light {@link tokens.kda.foundation.color.semantic.positive.n70}
+             * @dark {@link tokens.kda.foundation.color.semantic.positive.n70}
              */
             positive: '',
             /**
-             * @default kda.foundation.color.semantic.negative.n70
-             * @light kda.foundation.color.semantic.negative.n70
-             * @dark kda.foundation.color.semantic.negative.n70
+             * @light {@link tokens.kda.foundation.color.semantic.negative.n70}
+             * @dark {@link tokens.kda.foundation.color.semantic.negative.n70}
              */
             negative: '',
           },
@@ -459,605 +444,760 @@ export const tokens = createThemeContract({
         background: {
           base: {
             /**
-             * @default kda.foundation.color.neutral.n20
-             * @light kda.foundation.color.neutral.n20
-             * @dark kda.foundation.color.neutral.n20
+             * @light {@link tokens.kda.foundation.color.neutral.n20}
+             * @dark {@link tokens.kda.foundation.color.neutral.n30}
              */
             default: '',
             /**
-             * @default kda.foundation.color.neutral.n10
-             * @light kda.foundation.color.neutral.n10
-             * @dark kda.foundation.color.neutral.n10
+             * @light {@link tokens.kda.foundation.color.neutral.n10}
+             * @dark {@link tokens.kda.foundation.color.neutral.n10}
              */
             '@hover': '',
             /**
-             * @default kda.foundation.color.neutral.n80
-             * @light kda.foundation.color.neutral.n80
-             * @dark kda.foundation.color.neutral.n80
+             * @light {@link tokens.kda.foundation.color.neutral.n20}
+             * @dark {@link tokens.kda.foundation.color.neutral.n20}
              */
-            '@inverse': '',
+            '@disabled': '',
+            inverse: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n80}
+               * @dark {@link tokens.kda.foundation.color.neutral.n80}
+               */
+              default: '',
+            },
           },
           'layer-1': {
             /**
-             * @default kda.foundation.color.neutral.n10
-             * @light kda.foundation.color.neutral.n10
-             * @dark kda.foundation.color.neutral.n10
+             * @light {@link tokens.kda.foundation.color.neutral.n10}
+             * @dark {@link tokens.kda.foundation.color.neutral.n20}
              */
             default: '',
             /**
-             * @default kda.foundation.color.neutral.n20
-             * @light kda.foundation.color.neutral.n20
-             * @dark kda.foundation.color.neutral.n20
+             * @light {@link tokens.kda.foundation.color.neutral.n20}
+             * @dark {@link tokens.kda.foundation.color.neutral.n20}
              */
             '@hover': '',
-            /**
-             * @default kda.foundation.color.neutral.n90
-             * @light kda.foundation.color.neutral.n90
-             * @dark kda.foundation.color.neutral.n90
-             */
-            '@inverse': '',
+            inverse: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n90}
+               * @dark {@link tokens.kda.foundation.color.neutral.n90}
+               */
+              default: '',
+            },
           },
           'layer-2': {
             /**
-             * @default kda.foundation.color.neutral.n5
-             * @light kda.foundation.color.neutral.n5
-             * @dark kda.foundation.color.neutral.n5
+             * @light {@link tokens.kda.foundation.color.neutral.n5}
+             * @dark {@link tokens.kda.foundation.color.neutral.n10}
              */
             default: '',
             /**
-             * @default kda.foundation.color.neutral.n0
-             * @light kda.foundation.color.neutral.n0
-             * @dark kda.foundation.color.neutral.n0
+             * @light {@link tokens.kda.foundation.color.neutral.n0}
+             * @dark {@link tokens.kda.foundation.color.neutral.n0}
              */
             '@hover': '',
-            /**
-             * @default kda.foundation.color.neutral.n95
-             * @light kda.foundation.color.neutral.n95
-             * @dark kda.foundation.color.neutral.n95
-             */
-            '@inverse': '',
+            inverse: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n95}
+               * @dark {@link tokens.kda.foundation.color.neutral.n95}
+               */
+              default: '',
+            },
           },
           'layer-3': {
             /**
-             * @default kda.foundation.color.neutral.n0
-             * @light kda.foundation.color.neutral.n0
-             * @dark kda.foundation.color.neutral.n0
+             * @light {@link tokens.kda.foundation.color.neutral.n0}
+             * @dark {@link tokens.kda.foundation.color.neutral.n5}
              */
             default: '',
             /**
-             * @default kda.foundation.color.neutral.n5
-             * @light kda.foundation.color.neutral.n5
-             * @dark kda.foundation.color.neutral.n5
+             * @light {@link tokens.kda.foundation.color.neutral.n1}
+             * @dark {@link tokens.kda.foundation.color.neutral.n1}
              */
             '@hover': '',
-            /**
-             * @default kda.foundation.color.neutral.n100
-             * @light kda.foundation.color.neutral.n100
-             * @dark kda.foundation.color.neutral.n100
-             */
-            '@inverse': '',
+            inverse: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n100}
+               * @dark {@link tokens.kda.foundation.color.neutral.n100}
+               */
+              default: '',
+            },
           },
           brand: {
             primary: {
               /**
-               * @default kda.foundation.color.brand.primary.n1
-               * @light kda.foundation.color.brand.primary.n1
-               * @dark kda.foundation.color.brand.primary.n1
+               * @light {@link tokens.kda.foundation.color.brand.primary.n5}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n5}
                */
               default: '',
               /**
-               * @default kda.foundation.color.brand.primary.n5
-               * @light kda.foundation.color.brand.primary.n5
-               * @dark kda.foundation.color.brand.primary.n5
+               * @light {@link tokens.kda.foundation.color.brand.primary.n10}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n10}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.brand.primary.n99
-               * @light kda.foundation.color.brand.primary.n99
-               * @dark kda.foundation.color.brand.primary.n99
+               * @light {@link tokens.kda.foundation.color.brand.primary.n10}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n10}
                */
-              '@inverse': '',
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n95}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n95}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n80}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n80}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n80}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n80}
+                 */
+                '@focus': '',
+              },
             },
             secondary: {
               /**
-               * @default kda.foundation.color.brand.secondary.n1
-               * @light kda.foundation.color.brand.secondary.n1
-               * @dark kda.foundation.color.brand.secondary.n1
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n1}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n1}
                */
               default: '',
               /**
-               * @default kda.foundation.color.brand.secondary.n5
-               * @light kda.foundation.color.brand.secondary.n5
-               * @dark kda.foundation.color.brand.secondary.n5
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n5}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n5}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.brand.secondary.n99
-               * @light kda.foundation.color.brand.secondary.n99
-               * @dark kda.foundation.color.brand.secondary.n99
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n5}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n5}
                */
-              '@inverse': '',
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n99}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n99}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n80}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n80}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n80}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n80}
+                 */
+                '@focus': '',
+              },
             },
           },
           semantic: {
             positive: {
               /**
-               * @default kda.foundation.color.semantic.positive.n1
-               * @light kda.foundation.color.semantic.positive.n1
-               * @dark kda.foundation.color.semantic.positive.n1
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n1}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n1}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.positive.n10
-               * @light kda.foundation.color.semantic.positive.n10
-               * @dark kda.foundation.color.semantic.positive.n10
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n10}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n10}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.positive.n95
-               * @light kda.foundation.color.semantic.positive.n95
-               * @dark kda.foundation.color.semantic.positive.n95
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n10}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n10}
                */
-              '@inverse': '',
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n95}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n95}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n90}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n90}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n90}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n90}
+                 */
+                '@focus': '',
+              },
             },
             negative: {
               /**
-               * @default kda.foundation.color.semantic.negative.n1
-               * @light kda.foundation.color.semantic.negative.n1
-               * @dark kda.foundation.color.semantic.negative.n1
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n1}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n1}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.negative.n10
-               * @light kda.foundation.color.semantic.negative.n10
-               * @dark kda.foundation.color.semantic.negative.n10
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n10}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n10}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.negative.n95
-               * @light kda.foundation.color.semantic.negative.n95
-               * @dark kda.foundation.color.semantic.negative.n95
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n10}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n10}
                */
-              '@inverse': '',
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n95}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n95}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n90}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n90}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n90}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n90}
+                 */
+                '@focus': '',
+              },
             },
             warning: {
               /**
-               * @default kda.foundation.color.semantic.warning.n1
-               * @light kda.foundation.color.semantic.warning.n1
-               * @dark kda.foundation.color.semantic.warning.n1
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n1}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n1}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.warning.n10
-               * @light kda.foundation.color.semantic.warning.n10
-               * @dark kda.foundation.color.semantic.warning.n10
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n10}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n10}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.warning.n95
-               * @light kda.foundation.color.semantic.warning.n95
-               * @dark kda.foundation.color.semantic.warning.n95
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n10}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n10}
                */
-              '@inverse': '',
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n95}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n95}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n90}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n90}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n90}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n90}
+                 */
+                '@focus': '',
+              },
             },
             info: {
               /**
-               * @default kda.foundation.color.semantic.info.n1
-               * @light kda.foundation.color.semantic.info.n1
-               * @dark kda.foundation.color.semantic.info.n1
+               * @light {@link tokens.kda.foundation.color.semantic.info.n1}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n1}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.info.n10
-               * @light kda.foundation.color.semantic.info.n10
-               * @dark kda.foundation.color.semantic.info.n10
+               * @light {@link tokens.kda.foundation.color.semantic.info.n10}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n10}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.info.n95
-               * @light kda.foundation.color.semantic.info.n95
-               * @dark kda.foundation.color.semantic.info.n95
+               * @light {@link tokens.kda.foundation.color.semantic.info.n10}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n10}
                */
-              '@inverse': '',
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n95}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n95}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n90}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n90}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n90}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n90}
+                 */
+                '@focus': '',
+              },
             },
           },
         },
         border: {
           base: {
             /**
-             * @default kda.foundation.color.neutral.n10
-             * @light kda.foundation.color.neutral.n10
-             * @dark kda.foundation.color.neutral.n10
+             * @light {@link tokens.kda.foundation.color.neutral.n100@alpha5}
+             * @dark {@link tokens.kda.foundation.color.neutral.n100@alpha5}
              */
             default: '',
             /**
-             * @default kda.foundation.color.neutral.n20
-             * @light kda.foundation.color.neutral.n20
-             * @dark kda.foundation.color.neutral.n20
+             * @light {@link tokens.kda.foundation.color.neutral.n100@alpha10}
+             * @dark {@link tokens.kda.foundation.color.neutral.n100@alpha10}
              */
-            '@bold': '',
+            bold: '',
             /**
-             * @default kda.foundation.color.neutral.n30
-             * @light kda.foundation.color.neutral.n30
-             * @dark kda.foundation.color.neutral.n30
+             * @light {@link tokens.kda.foundation.color.neutral.n100@alpha20}
+             * @dark {@link tokens.kda.foundation.color.neutral.n100@alpha20}
              */
-            '@boldest': '',
+            boldest: '',
             /**
-             * @default kda.foundation.color.neutral.n20
-             * @light kda.foundation.color.neutral.n20
-             * @dark kda.foundation.color.neutral.n20
+             * @light {@link tokens.kda.foundation.color.neutral.n100}
+             * @dark {@link tokens.kda.foundation.color.neutral.n100}
+             */
+            'high-contrast': '',
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n20}
+             * @dark {@link tokens.kda.foundation.color.neutral.n20}
              */
             '@disabled': '',
             /**
-             * @default kda.foundation.color.neutral.n100
-             * @light kda.foundation.color.neutral.n100
-             * @dark kda.foundation.color.neutral.n100
-             */
-            '@inverse': '',
-            /**
-             * @default kda.foundation.color.neutral.n20
-             * @light kda.foundation.color.neutral.n20
-             * @dark kda.foundation.color.neutral.n20
+             * @light {@link tokens.kda.foundation.color.neutral.n20}
+             * @dark {@link tokens.kda.foundation.color.neutral.n20}
              */
             '@hover': '',
             /**
-             * @default kda.foundation.color.neutral.n60
-             * @light kda.foundation.color.neutral.n60
-             * @dark kda.foundation.color.neutral.n60
+             * @light {@link tokens.kda.foundation.color.neutral.n60}
+             * @dark {@link tokens.kda.foundation.color.neutral.n60}
              */
             '@focus': '',
+            inverse: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n100}
+               * @dark {@link tokens.kda.foundation.color.neutral.n100}
+               */
+              default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n95}
+               * @dark {@link tokens.kda.foundation.color.neutral.n95}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n90}
+               * @dark {@link tokens.kda.foundation.color.neutral.n90}
+               */
+              '@focus': '',
+            },
           },
           brand: {
-            /**
-             * @default kda.foundation.color.brand.primary.n0
-             * @light kda.foundation.color.brand.primary.n0
-             * @dark kda.foundation.color.brand.primary.n0
-             */
-            primary: '',
-            /**
-             * @default kda.foundation.color.brand.secondary.n0
-             * @light kda.foundation.color.brand.secondary.n0
-             * @dark kda.foundation.color.brand.secondary.n0
-             */
-            secondary: '',
+            primary: {
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.primary.n40}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n40}
+               */
+              default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.primary.n20}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n20}
+               */
+              subtle: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.primary.n60}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n60}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.primary.n70}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n70}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n80}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n80}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n70}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n70}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n60}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n60}
+                 */
+                '@focus': '',
+              },
+            },
+            secondary: {
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n40}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n40}
+               */
+              default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n20}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n20}
+               */
+              subtle: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n60}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n60}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n70}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n70}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n80}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n80}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n70}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n70}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n60}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n60}
+                 */
+                '@focus': '',
+              },
+            },
           },
           semantic: {
             positive: {
               /**
-               * @default kda.foundation.color.semantic.positive.n60
-               * @light kda.foundation.color.semantic.positive.n60
-               * @dark kda.foundation.color.semantic.positive.n60
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n60}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.positive.n20
-               * @light kda.foundation.color.semantic.positive.n20
-               * @dark kda.foundation.color.semantic.positive.n5
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n5}
                */
-              '@subtle': '',
+              subtle: '',
               /**
-               * @default kda.foundation.color.semantic.positive.n20
-               * @light kda.foundation.color.semantic.positive.n20
-               * @dark kda.foundation.color.semantic.positive.n20
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n20}
                */
               '@disabled': '',
               /**
-               * @default kda.foundation.color.semantic.positive.n40
-               * @light kda.foundation.color.semantic.positive.n40
-               * @dark kda.foundation.color.semantic.positive.n40
-               */
-              '@inverse': '',
-              /**
-               * @default kda.foundation.color.semantic.positive.n70
-               * @light kda.foundation.color.semantic.positive.n70
-               * @dark kda.foundation.color.semantic.positive.n70
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n70}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n70}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.positive.n60
-               * @light kda.foundation.color.semantic.positive.n60
-               * @dark kda.foundation.color.semantic.positive.n60
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n60}
                */
               '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n40}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n40}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n30}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n30}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n20}
+                 */
+                '@focus': '',
+              },
             },
             negative: {
               /**
-               * @default kda.foundation.color.semantic.negative.n60
-               * @light kda.foundation.color.semantic.negative.n60
-               * @dark kda.foundation.color.semantic.negative.n60
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n60}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.negative.n20
-               * @light kda.foundation.color.semantic.negative.n20
-               * @dark kda.foundation.color.semantic.negative.n5
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n5}
                */
-              '@subtle': '',
+              subtle: '',
               /**
-               * @default kda.foundation.color.semantic.negative.n20
-               * @light kda.foundation.color.semantic.negative.n20
-               * @dark kda.foundation.color.semantic.negative.n20
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n20}
                */
               '@disabled': '',
               /**
-               * @default kda.foundation.color.semantic.negative.n40
-               * @light kda.foundation.color.semantic.negative.n40
-               * @dark kda.foundation.color.semantic.negative.n40
-               */
-              '@inverse': '',
-              /**
-               * @default kda.foundation.color.semantic.negative.n70
-               * @light kda.foundation.color.semantic.negative.n70
-               * @dark kda.foundation.color.semantic.negative.n70
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n70}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n70}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.negative.n60
-               * @light kda.foundation.color.semantic.negative.n60
-               * @dark kda.foundation.color.semantic.negative.n60
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n60}
                */
               '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n40}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n40}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n30}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n30}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n20}
+                 */
+                '@focus': '',
+              },
             },
             warning: {
               /**
-               * @default kda.foundation.color.semantic.warning.n60
-               * @light kda.foundation.color.semantic.warning.n60
-               * @dark kda.foundation.color.semantic.warning.n60
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n60}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.warning.n20
-               * @light kda.foundation.color.semantic.warning.n20
-               * @dark kda.foundation.color.semantic.warning.n5
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n5}
                */
-              '@subtle': '',
+              subtle: '',
               /**
-               * @default kda.foundation.color.semantic.warning.n20
-               * @light kda.foundation.color.semantic.warning.n20
-               * @dark kda.foundation.color.semantic.warning.n20
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n20}
                */
               '@disabled': '',
               /**
-               * @default kda.foundation.color.semantic.warning.n40
-               * @light kda.foundation.color.semantic.warning.n40
-               * @dark kda.foundation.color.semantic.warning.n40
-               */
-              '@inverse': '',
-              /**
-               * @default kda.foundation.color.semantic.warning.n70
-               * @light kda.foundation.color.semantic.warning.n70
-               * @dark kda.foundation.color.semantic.warning.n70
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n70}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n70}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.warning.n60
-               * @light kda.foundation.color.semantic.warning.n60
-               * @dark kda.foundation.color.semantic.warning.n60
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n60}
                */
               '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n40}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n40}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n30}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n30}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n20}
+                 */
+                '@focus': '',
+              },
             },
             info: {
               /**
-               * @default kda.foundation.color.semantic.info.n60
-               * @light kda.foundation.color.semantic.info.n60
-               * @dark kda.foundation.color.semantic.info.n60
+               * @light {@link tokens.kda.foundation.color.semantic.info.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n60}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.info.n20
-               * @light kda.foundation.color.semantic.info.n20
-               * @dark kda.foundation.color.semantic.info.n5
+               * @light {@link tokens.kda.foundation.color.semantic.info.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n5}
                */
-              '@subtle': '',
+              subtle: '',
               /**
-               * @default kda.foundation.color.semantic.info.n20
-               * @light kda.foundation.color.semantic.info.n20
-               * @dark kda.foundation.color.semantic.info.n20
+               * @light {@link tokens.kda.foundation.color.semantic.info.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n20}
                */
               '@disabled': '',
               /**
-               * @default kda.foundation.color.semantic.info.n40
-               * @light kda.foundation.color.semantic.info.n40
-               * @dark kda.foundation.color.semantic.info.n40
-               */
-              '@inverse': '',
-              /**
-               * @default kda.foundation.color.semantic.info.n70
-               * @light kda.foundation.color.semantic.info.n70
-               * @dark kda.foundation.color.semantic.info.n70
+               * @light {@link tokens.kda.foundation.color.semantic.info.n70}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n70}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.info.n60
-               * @light kda.foundation.color.semantic.info.n60
-               * @dark kda.foundation.color.semantic.info.n60
+               * @light {@link tokens.kda.foundation.color.semantic.info.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n60}
                */
               '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n40}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n40}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n30}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n30}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n20}
+                 */
+                '@focus': '',
+              },
             },
           },
         },
         brand: {
           primary: {
             /**
-             * @default kda.foundation.color.palette.blue.n0
-             * @light kda.foundation.color.palette.blue.n0
-             * @dark kda.foundation.color.palette.blue.n0
+             * @light {@link tokens.kda.foundation.color.palette.blue.n0}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n0}
              */
             n0: '',
             /**
-             * @default kda.foundation.color.palette.blue.n1
-             * @light kda.foundation.color.palette.blue.n1
-             * @dark kda.foundation.color.palette.blue.n1
+             * @light {@link tokens.kda.foundation.color.palette.blue.n1}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n1}
              */
             n1: '',
             /**
-             * @default kda.foundation.color.palette.blue.n5
-             * @light kda.foundation.color.palette.blue.n5
-             * @dark kda.foundation.color.palette.blue.n5
+             * @light {@link tokens.kda.foundation.color.palette.blue.n5}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n5}
              */
             n5: '',
             /**
-             * @default kda.foundation.color.palette.blue.n10
-             * @light kda.foundation.color.palette.blue.n10
-             * @dark kda.foundation.color.palette.blue.n10
+             * @light {@link tokens.kda.foundation.color.palette.blue.n10}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n10}
              */
             n10: '',
             /**
-             * @default kda.foundation.color.palette.blue.n20
-             * @light kda.foundation.color.palette.blue.n20
-             * @dark kda.foundation.color.palette.blue.n20
+             * @light {@link tokens.kda.foundation.color.palette.blue.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n20}
              */
             n20: '',
             /**
-             * @default kda.foundation.color.palette.blue.n30
-             * @light kda.foundation.color.palette.blue.n30
-             * @dark kda.foundation.color.palette.blue.n30
+             * @light {@link tokens.kda.foundation.color.palette.blue.n30}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n30}
              */
             n30: '',
             /**
-             * @default kda.foundation.color.palette.blue.n40
-             * @light kda.foundation.color.palette.blue.n40
-             * @dark kda.foundation.color.palette.blue.n40
+             * @light {@link tokens.kda.foundation.color.palette.blue.n40}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n40}
              */
             n40: '',
             /**
-             * @default kda.foundation.color.palette.blue.n50
-             * @light kda.foundation.color.palette.blue.n50
-             * @dark kda.foundation.color.palette.blue.n50
+             * @light {@link tokens.kda.foundation.color.palette.blue.n50}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n50}
              */
             n50: '',
             /**
-             * @default kda.foundation.color.palette.blue.n60
-             * @light kda.foundation.color.palette.blue.n60
-             * @dark kda.foundation.color.palette.blue.n60
+             * @light {@link tokens.kda.foundation.color.palette.blue.n60}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n60}
              */
             n60: '',
             /**
-             * @default kda.foundation.color.palette.blue.n70
-             * @light kda.foundation.color.palette.blue.n70
-             * @dark kda.foundation.color.palette.blue.n70
+             * @light {@link tokens.kda.foundation.color.palette.blue.n70}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n70}
              */
             n70: '',
             /**
-             * @default kda.foundation.color.palette.blue.n80
-             * @light kda.foundation.color.palette.blue.n80
-             * @dark kda.foundation.color.palette.blue.n80
+             * @light {@link tokens.kda.foundation.color.palette.blue.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n80}
              */
             n80: '',
             /**
-             * @default kda.foundation.color.palette.blue.n90
-             * @light kda.foundation.color.palette.blue.n90
-             * @dark kda.foundation.color.palette.blue.n90
+             * @light {@link tokens.kda.foundation.color.palette.blue.n90}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n90}
              */
             n90: '',
             /**
-             * @default kda.foundation.color.palette.blue.n95
-             * @light kda.foundation.color.palette.blue.n95
-             * @dark kda.foundation.color.palette.blue.n95
+             * @light {@link tokens.kda.foundation.color.palette.blue.n95}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n95}
              */
             n95: '',
             /**
-             * @default kda.foundation.color.palette.blue.n99
-             * @light kda.foundation.color.palette.blue.n99
-             * @dark kda.foundation.color.palette.blue.n99
+             * @light {@link tokens.kda.foundation.color.palette.blue.n99}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n99}
              */
             n99: '',
             /**
-             * @default kda.foundation.color.palette.blue.n100
-             * @light kda.foundation.color.palette.blue.n100
-             * @dark kda.foundation.color.palette.blue.n100
+             * @light {@link tokens.kda.foundation.color.palette.blue.n100}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n100}
              */
             n100: '',
           },
           secondary: {
             /**
-             * @default kda.foundation.color.palette.purple.n0
-             * @light kda.foundation.color.palette.purple.n0
-             * @dark kda.foundation.color.palette.purple.n0
+             * @light {@link tokens.kda.foundation.color.palette.purple.n0}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n0}
              */
             n0: '',
             /**
-             * @default kda.foundation.color.palette.purple.n1
-             * @light kda.foundation.color.palette.purple.n1
-             * @dark kda.foundation.color.palette.purple.n1
+             * @light {@link tokens.kda.foundation.color.palette.purple.n1}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n1}
              */
             n1: '',
             /**
-             * @default kda.foundation.color.palette.purple.n5
-             * @light kda.foundation.color.palette.purple.n5
-             * @dark kda.foundation.color.palette.purple.n5
+             * @light {@link tokens.kda.foundation.color.palette.purple.n5}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n5}
              */
             n5: '',
             /**
-             * @default kda.foundation.color.palette.purple.n10
-             * @light kda.foundation.color.palette.purple.n10
-             * @dark kda.foundation.color.palette.purple.n10
+             * @light {@link tokens.kda.foundation.color.palette.purple.n10}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n10}
              */
             n10: '',
             /**
-             * @default kda.foundation.color.palette.purple.n20
-             * @light kda.foundation.color.palette.purple.n20
-             * @dark kda.foundation.color.palette.purple.n20
+             * @light {@link tokens.kda.foundation.color.palette.purple.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n20}
              */
             n20: '',
             /**
-             * @default kda.foundation.color.palette.purple.n30
-             * @light kda.foundation.color.palette.purple.n30
-             * @dark kda.foundation.color.palette.purple.n30
+             * @light {@link tokens.kda.foundation.color.palette.purple.n30}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n30}
              */
             n30: '',
             /**
-             * @default kda.foundation.color.palette.purple.n40
-             * @light kda.foundation.color.palette.purple.n40
-             * @dark kda.foundation.color.palette.purple.n40
+             * @light {@link tokens.kda.foundation.color.palette.purple.n40}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n40}
              */
             n40: '',
             /**
-             * @default kda.foundation.color.palette.purple.n50
-             * @light kda.foundation.color.palette.purple.n50
-             * @dark kda.foundation.color.palette.purple.n50
+             * @light {@link tokens.kda.foundation.color.palette.purple.n50}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n50}
              */
             n50: '',
             /**
-             * @default kda.foundation.color.palette.purple.n60
-             * @light kda.foundation.color.palette.purple.n60
-             * @dark kda.foundation.color.palette.purple.n60
+             * @light {@link tokens.kda.foundation.color.palette.purple.n60}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n60}
              */
             n60: '',
             /**
-             * @default kda.foundation.color.palette.purple.n70
-             * @light kda.foundation.color.palette.purple.n70
-             * @dark kda.foundation.color.palette.purple.n70
+             * @light {@link tokens.kda.foundation.color.palette.purple.n70}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n70}
              */
             n70: '',
             /**
-             * @default kda.foundation.color.palette.purple.n80
-             * @light kda.foundation.color.palette.purple.n80
-             * @dark kda.foundation.color.palette.purple.n80
+             * @light {@link tokens.kda.foundation.color.palette.purple.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n80}
              */
             n80: '',
             /**
-             * @default kda.foundation.color.palette.purple.n90
-             * @light kda.foundation.color.palette.purple.n90
-             * @dark kda.foundation.color.palette.purple.n90
+             * @light {@link tokens.kda.foundation.color.palette.purple.n90}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n90}
              */
             n90: '',
             /**
-             * @default kda.foundation.color.palette.purple.n95
-             * @light kda.foundation.color.palette.purple.n95
-             * @dark kda.foundation.color.palette.purple.n95
+             * @light {@link tokens.kda.foundation.color.palette.purple.n95}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n95}
              */
             n95: '',
             /**
-             * @default kda.foundation.color.palette.purple.n99
-             * @light kda.foundation.color.palette.purple.n99
-             * @dark kda.foundation.color.palette.purple.n99
+             * @light {@link tokens.kda.foundation.color.palette.purple.n99}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n99}
              */
             n99: '',
             /**
-             * @default kda.foundation.color.palette.purple.n100
-             * @light kda.foundation.color.palette.purple.n100
-             * @dark kda.foundation.color.palette.purple.n100
+             * @light {@link tokens.kda.foundation.color.palette.purple.n100}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n100}
              */
             n100: '',
           },
@@ -1065,256 +1205,342 @@ export const tokens = createThemeContract({
         icon: {
           base: {
             /**
-             * @default kda.foundation.color.neutral.n80
-             * @light kda.foundation.color.neutral.n80
-             * @dark kda.foundation.color.neutral.n80
+             * @light {@link tokens.kda.foundation.color.neutral.n80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n80}
              */
             default: '',
             /**
-             * @default kda.foundation.color.neutral.n90
-             * @light kda.foundation.color.neutral.n90
-             * @dark kda.foundation.color.neutral.n90
+             * @light {@link tokens.kda.foundation.color.neutral.n90}
+             * @dark {@link tokens.kda.foundation.color.neutral.n90}
              */
-            '@bold': '',
+            bold: '',
             /**
-             * @default kda.foundation.color.neutral.n60
-             * @light kda.foundation.color.neutral.n60
-             * @dark kda.foundation.color.neutral.n60
+             * @light {@link tokens.kda.foundation.color.neutral.n30}
+             * @dark {@link tokens.kda.foundation.color.neutral.n30}
              */
             '@disabled': '',
             /**
-             * @default kda.foundation.color.neutral.n20
-             * @light kda.foundation.color.neutral.n20
-             * @dark kda.foundation.color.neutral.n20
-             */
-            '@inverse': '',
-            /**
-             * @default kda.foundation.color.neutral.n70
-             * @light kda.foundation.color.neutral.n70
-             * @dark kda.foundation.color.neutral.n70
+             * @light {@link tokens.kda.foundation.color.neutral.n70}
+             * @dark {@link tokens.kda.foundation.color.neutral.n70}
              */
             '@hover': '',
             /**
-             * @default kda.foundation.color.neutral.n60
-             * @light kda.foundation.color.neutral.n60
-             * @dark kda.foundation.color.neutral.n60
+             * @light {@link tokens.kda.foundation.color.neutral.n60}
+             * @dark {@link tokens.kda.foundation.color.neutral.n60}
              */
             '@focus': '',
+            inverse: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n20}
+               * @dark {@link tokens.kda.foundation.color.neutral.n20}
+               */
+              default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n10}
+               * @dark {@link tokens.kda.foundation.color.neutral.n10}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n5}
+               * @dark {@link tokens.kda.foundation.color.neutral.n5}
+               */
+              '@focus': '',
+            },
           },
           brand: {
             primary: {
               /**
-               * @default kda.foundation.color.brand.primary.n40
-               * @light kda.foundation.color.brand.primary.n40
-               * @dark kda.foundation.color.brand.primary.n40
+               * @light {@link tokens.kda.foundation.color.brand.primary.n40}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n40}
                */
               default: '',
               /**
-               * @default kda.foundation.color.brand.primary.n50
-               * @light kda.foundation.color.brand.primary.n50
-               * @dark kda.foundation.color.brand.primary.n50
+               * @light {@link tokens.kda.foundation.color.brand.primary.n50}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n50}
                */
-              '@bold': '',
+              bold: '',
               /**
-               * @default kda.foundation.color.brand.primary.n20
-               * @light kda.foundation.color.brand.primary.n20
-               * @dark kda.foundation.color.brand.primary.n20
+               * @light {@link tokens.kda.foundation.color.brand.primary.n20}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n20}
                */
               '@disabled': '',
               /**
-               * @default kda.foundation.color.brand.primary.n0
-               * @light kda.foundation.color.brand.primary.n0
-               * @dark kda.foundation.color.brand.primary.n0
-               */
-              '@inverse': '',
-              /**
-               * @default kda.foundation.color.brand.primary.n50
-               * @light kda.foundation.color.brand.primary.n50
-               * @dark kda.foundation.color.brand.primary.n50
+               * @light {@link tokens.kda.foundation.color.brand.primary.n50}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n50}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.brand.primary.n60
-               * @light kda.foundation.color.brand.primary.n60
-               * @dark kda.foundation.color.brand.primary.n60
+               * @light {@link tokens.kda.foundation.color.brand.primary.n60}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n60}
                */
               '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n10}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n10}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n5}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n5}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n1}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n1}
+                 */
+                '@focus': '',
+              },
             },
             secondary: {
               /**
-               * @default kda.foundation.color.brand.secondary.n40
-               * @light kda.foundation.color.brand.secondary.n40
-               * @dark kda.foundation.color.brand.secondary.n40
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n40}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n40}
                */
               default: '',
               /**
-               * @default kda.foundation.color.brand.secondary.n50
-               * @light kda.foundation.color.brand.secondary.n50
-               * @dark kda.foundation.color.brand.secondary.n50
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n50}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n50}
                */
-              '@bold': '',
+              bold: '',
               /**
-               * @default kda.foundation.color.brand.secondary.n20
-               * @light kda.foundation.color.brand.secondary.n20
-               * @dark kda.foundation.color.brand.secondary.n20
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n20}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n20}
                */
               '@disabled': '',
               /**
-               * @default kda.foundation.color.brand.secondary.n0
-               * @light kda.foundation.color.brand.secondary.n0
-               * @dark kda.foundation.color.brand.secondary.n0
-               */
-              '@inverse': '',
-              /**
-               * @default kda.foundation.color.brand.secondary.n50
-               * @light kda.foundation.color.brand.secondary.n50
-               * @dark kda.foundation.color.brand.secondary.n50
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n50}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n50}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.brand.secondary.n60
-               * @light kda.foundation.color.brand.secondary.n60
-               * @dark kda.foundation.color.brand.secondary.n60
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n60}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n60}
                */
               '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n10}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n10}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n5}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n5}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n1}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n1}
+                 */
+                '@focus': '',
+              },
             },
           },
           semantic: {
             positive: {
               /**
-               * @default kda.foundation.color.semantic.positive.n80
-               * @light kda.foundation.color.semantic.positive.n80
-               * @dark kda.foundation.color.semantic.positive.n80
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n80}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n80}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.positive.n20
-               * @light kda.foundation.color.semantic.positive.n20
-               * @dark kda.foundation.color.semantic.positive.n20
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n70}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n70}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n60}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n20}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n10}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n10}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n5}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n5}
+                 */
+                '@focus': '',
+              },
             },
             negative: {
               /**
-               * @default kda.foundation.color.semantic.negative.n80
-               * @light kda.foundation.color.semantic.negative.n80
-               * @dark kda.foundation.color.semantic.negative.n80
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n80}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n80}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.negative.n20
-               * @light kda.foundation.color.semantic.negative.n20
-               * @dark kda.foundation.color.semantic.negative.n20
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n70}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n70}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n60}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n20}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n10}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n10}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n5}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n5}
+                 */
+                '@focus': '',
+              },
             },
             warning: {
               /**
-               * @default kda.foundation.color.semantic.warning.n80
-               * @light kda.foundation.color.semantic.warning.n80
-               * @dark kda.foundation.color.semantic.warning.n80
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n80}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n80}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.warning.n20
-               * @light kda.foundation.color.semantic.warning.n20
-               * @dark kda.foundation.color.semantic.warning.n20
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n70}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n70}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n60}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n20}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n10}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n10}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n5}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n5}
+                 */
+                '@focus': '',
+              },
             },
             info: {
               /**
-               * @default kda.foundation.color.semantic.info.n80
-               * @light kda.foundation.color.semantic.info.n80
-               * @dark kda.foundation.color.semantic.info.n80
+               * @light {@link tokens.kda.foundation.color.semantic.info.n80}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n80}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.info.n20
-               * @light kda.foundation.color.semantic.info.n20
-               * @dark kda.foundation.color.semantic.info.n20
+               * @light {@link tokens.kda.foundation.color.semantic.info.n70}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n70}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.info.n60}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n60}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n20}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n10}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n10}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n5}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n5}
+                 */
+                '@focus': '',
+              },
             },
           },
         },
         link: {
           base: {
             /**
-             * @default kda.foundation.color.palette.blue.n70
-             * @light kda.foundation.color.palette.blue.n70
-             * @dark kda.foundation.color.palette.blue.n70
+             * @light {@link tokens.kda.foundation.color.palette.blue.n70}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n70}
              */
             default: '',
             /**
-             * @default kda.foundation.color.palette.blue.n80
-             * @light kda.foundation.color.palette.blue.n80
-             * @dark kda.foundation.color.palette.blue.n80
+             * @light {@link tokens.kda.foundation.color.palette.blue.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n80}
              */
             '@hover': '',
             /**
-             * @default kda.foundation.color.palette.blue.n60
-             * @light kda.foundation.color.palette.blue.n60
-             * @dark kda.foundation.color.palette.blue.n60
+             * @light {@link tokens.kda.foundation.color.palette.blue.n60}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n60}
              */
             '@focus': '',
             /**
-             * @default kda.foundation.color.palette.purple.n80
-             * @light kda.foundation.color.palette.purple.n80
-             * @dark kda.foundation.color.palette.purple.n80
+             * @light {@link tokens.kda.foundation.color.palette.purple.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.purple.n80}
              */
             '@visited': '',
           },
           brand: {
             primary: {
               /**
-               * @default kda.foundation.color.brand.primary.n70
-               * @light kda.foundation.color.brand.primary.n70
-               * @dark kda.foundation.color.brand.primary.n70
+               * @light {@link tokens.kda.foundation.color.brand.primary.n70}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n70}
                */
               default: '',
               /**
-               * @default kda.foundation.color.brand.primary.n80
-               * @light kda.foundation.color.brand.primary.n80
-               * @dark kda.foundation.color.brand.primary.n80
+               * @light {@link tokens.kda.foundation.color.brand.primary.n80}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n80}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.brand.primary.n60
-               * @light kda.foundation.color.brand.primary.n60
-               * @dark kda.foundation.color.brand.primary.n60
+               * @light {@link tokens.kda.foundation.color.brand.primary.n60}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n60}
                */
               '@focus': '',
               /**
-               * @default kda.foundation.color.palette.purple.n80
-               * @light kda.foundation.color.palette.purple.n80
-               * @dark kda.foundation.color.palette.purple.n80
+               * @light {@link tokens.kda.foundation.color.palette.purple.n80}
+               * @dark {@link tokens.kda.foundation.color.palette.purple.n80}
                */
               '@visited': '',
             },
             secondary: {
               /**
-               * @default kda.foundation.color.brand.secondary.n70
-               * @light kda.foundation.color.brand.secondary.n70
-               * @dark kda.foundation.color.brand.secondary.n70
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n70}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n70}
                */
               default: '',
               /**
-               * @default kda.foundation.color.brand.secondary.n80
-               * @light kda.foundation.color.brand.secondary.n80
-               * @dark kda.foundation.color.brand.secondary.n80
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n80}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n80}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.brand.secondary.n60
-               * @light kda.foundation.color.brand.secondary.n60
-               * @dark kda.foundation.color.brand.secondary.n60
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n60}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n60}
                */
               '@focus': '',
               /**
-               * @default kda.foundation.color.palette.purple.n80
-               * @light kda.foundation.color.palette.purple.n80
-               * @dark kda.foundation.color.palette.purple.n80
+               * @light {@link tokens.kda.foundation.color.palette.purple.n80}
+               * @dark {@link tokens.kda.foundation.color.palette.purple.n80}
                */
               '@visited': '',
             },
@@ -1322,105 +1548,89 @@ export const tokens = createThemeContract({
           semantic: {
             positive: {
               /**
-               * @default kda.foundation.color.semantic.positive.n90
-               * @light kda.foundation.color.semantic.positive.n90
-               * @dark kda.foundation.color.semantic.positive.n90
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n90}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.positive.n95
-               * @light kda.foundation.color.semantic.positive.n95
-               * @dark kda.foundation.color.semantic.positive.n95
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n95}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n95}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.positive.n80
-               * @light kda.foundation.color.semantic.positive.n80
-               * @dark kda.foundation.color.semantic.positive.n80
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n80}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n80}
                */
               '@focus': '',
               /**
-               * @default kda.foundation.color.palette.purple.n80
-               * @light kda.foundation.color.palette.purple.n80
-               * @dark kda.foundation.color.palette.purple.n80
+               * @light {@link tokens.kda.foundation.color.palette.purple.n80}
+               * @dark {@link tokens.kda.foundation.color.palette.purple.n80}
                */
               '@visited': '',
             },
             negative: {
               /**
-               * @default kda.foundation.color.semantic.negative.n90
-               * @light kda.foundation.color.semantic.negative.n90
-               * @dark kda.foundation.color.semantic.negative.n90
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n90}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.negative.n95
-               * @light kda.foundation.color.semantic.negative.n95
-               * @dark kda.foundation.color.semantic.negative.n95
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n95}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n95}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.negative.n80
-               * @light kda.foundation.color.semantic.negative.n80
-               * @dark kda.foundation.color.semantic.negative.n80
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n80}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n80}
                */
               '@focus': '',
               /**
-               * @default kda.foundation.color.palette.purple.n80
-               * @light kda.foundation.color.palette.purple.n80
-               * @dark kda.foundation.color.palette.purple.n80
+               * @light {@link tokens.kda.foundation.color.palette.purple.n80}
+               * @dark {@link tokens.kda.foundation.color.palette.purple.n80}
                */
               '@visited': '',
             },
             warning: {
               /**
-               * @default kda.foundation.color.semantic.warning.n90
-               * @light kda.foundation.color.semantic.warning.n90
-               * @dark kda.foundation.color.semantic.warning.n90
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n90}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.warning.n95
-               * @light kda.foundation.color.semantic.warning.n95
-               * @dark kda.foundation.color.semantic.warning.n95
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n95}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n95}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.warning.n80
-               * @light kda.foundation.color.semantic.warning.n80
-               * @dark kda.foundation.color.semantic.warning.n80
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n80}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n80}
                */
               '@focus': '',
               /**
-               * @default kda.foundation.color.palette.purple.n80
-               * @light kda.foundation.color.palette.purple.n80
-               * @dark kda.foundation.color.palette.purple.n80
+               * @light {@link tokens.kda.foundation.color.palette.purple.n80}
+               * @dark {@link tokens.kda.foundation.color.palette.purple.n80}
                */
               '@visited': '',
             },
             info: {
               /**
-               * @default kda.foundation.color.semantic.info.n90
-               * @light kda.foundation.color.semantic.info.n90
-               * @dark kda.foundation.color.semantic.info.n90
+               * @light {@link tokens.kda.foundation.color.semantic.info.n90}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.info.n95
-               * @light kda.foundation.color.semantic.info.n95
-               * @dark kda.foundation.color.semantic.info.n95
+               * @light {@link tokens.kda.foundation.color.semantic.info.n95}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n95}
                */
               '@hover': '',
               /**
-               * @default kda.foundation.color.semantic.info.n80
-               * @light kda.foundation.color.semantic.info.n80
-               * @dark kda.foundation.color.semantic.info.n80
+               * @light {@link tokens.kda.foundation.color.semantic.info.n80}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n80}
                */
               '@focus': '',
               /**
-               * @default kda.foundation.color.palette.purple.n80
-               * @light kda.foundation.color.palette.purple.n80
-               * @dark kda.foundation.color.palette.purple.n80
+               * @light {@link tokens.kda.foundation.color.palette.purple.n80}
+               * @dark {@link tokens.kda.foundation.color.palette.purple.n80}
                */
               '@visited': '',
             },
@@ -1428,912 +1638,937 @@ export const tokens = createThemeContract({
         },
         neutral: {
           /**
-           * @default #ffffff
-           * @light #ffffff
-           * @dark #000000
+           * @light  `"#ffffff"`
+           * @dark  `"#000000"`
            */
           n0: '',
           /**
-           * @default #f8f8f8
-           * @light #f8f8f8
-           * @dark #0f0f0f
+           * @light  `"#fafafa"`
+           * @dark  `"#050505"`
+           */
+          n1: '',
+          /**
+           * @light  `"#f0f0f0"`
+           * @dark  `"#0f0f0f"`
            */
           n5: '',
           /**
-           * @default #e6e6e6
-           * @light #e6e6e6
-           * @dark #1a1a1a
+           * @light  `"#e6e6e6"`
+           * @dark  `"#1a1a1a"`
            */
           n10: '',
           /**
-           * @default #d5d5d5
-           * @light #d5d5d5
-           * @dark #222222
+           * @light  `"#d5d5d5"`
+           * @dark  `"#222222"`
            */
           n20: '',
           /**
-           * @default #b1b1b1
-           * @light #b1b1b1
-           * @dark #333333
+           * @light  `"#b1b1b1"`
+           * @dark  `"#333333"`
            */
           n30: '',
           /**
-           * @default #909090
-           * @light #909090
-           * @dark #464646
+           * @light  `"#909090"`
+           * @dark  `"#464646"`
            */
           n40: '',
           /**
-           * @default #6d6d6d
-           * @light #6d6d6d
-           * @dark #6d6d6d
+           * @light  `"#6d6d6d"`
+           * @dark  `"#6d6d6d"`
            */
           n50: '',
           /**
-           * @default #464646
-           * @light #464646
-           * @dark #909090
+           * @light  `"#464646"`
+           * @dark  `"#909090"`
            */
           n60: '',
           /**
-           * @default #333333
-           * @light #333333
-           * @dark #b1b1b1
+           * @light  `"#333333"`
+           * @dark  `"#b1b1b1"`
            */
           n70: '',
           /**
-           * @default #222222
-           * @light #222222
-           * @dark #d5d5d5
+           * @light  `"#222222"`
+           * @dark  `"#d5d5d5"`
            */
           n80: '',
           /**
-           * @default #1a1a1a
-           * @light #1a1a1a
-           * @dark #e6e6e6
+           * @light  `"#1a1a1a"`
+           * @dark  `"#e6e6e6"`
            */
           n90: '',
           /**
-           * @default #0f0f0f
-           * @light #0f0f0f
-           * @dark #f8f8f8
+           * @light  `"#0f0f0f"`
+           * @dark  `"#f0f0f0"`
            */
           n95: '',
           /**
-           * @default #000000
-           * @light #000000
-           * @dark #ffffff
+           * @light  `"#050505"`
+           * @dark  `"#fafafa"`
+           */
+          n99: '',
+          /**
+           * [generated]
+           * @light  `"#000000"`
+           * @dark  `"#ffffff"`
            */
           n100: '',
+          /**
+           * [generated]
+           * @light  `"#0000000d"`
+           * @dark  `"#ffffff0d"`
+           */
+          'n100@alpha5': '',
+          /**
+           * [generated]
+           * @light  `"#0000001a"`
+           * @dark  `"#ffffff1a"`
+           */
+          'n100@alpha10': '',
+          /**
+           * [generated]
+           * @light  `"#00000033"`
+           * @dark  `"#ffffff33"`
+           */
+          'n100@alpha20': '',
         },
         text: {
           base: {
             /**
-             * @description Use for primary text, such as body copy, sentence case headers, and buttons.
-             * @default kda.foundation.color.neutral.n95
-             * @light kda.foundation.color.neutral.n95
-             * @dark kda.foundation.color.neutral.n95
+             * Use for primary text, such as body copy, sentence case headers, and buttons.
+             * @light {@link tokens.kda.foundation.color.neutral.n95}
+             * @dark {@link tokens.kda.foundation.color.neutral.n95}
              */
             default: '',
             /**
-             * @description Use for text in a disabled state.
-             * @default kda.foundation.color.neutral.n60
-             * @light kda.foundation.color.neutral.n60
-             * @dark kda.foundation.color.neutral.n60
+             * Use for text in a disabled state.
+             * @light {@link tokens.kda.foundation.color.neutral.n40}
+             * @dark {@link tokens.kda.foundation.color.neutral.n40}
              */
             '@disabled': '',
             /**
-             * @description Use for text in selected or opened states, such as tabs and dropdown buttons.
-             * @default kda.foundation.color.palette.blue.n70
-             * @light kda.foundation.color.palette.blue.n70
-             * @dark kda.foundation.color.palette.blue.n70
+             * Use for text in selected or opened states, such as tabs and dropdown buttons.
+             * @light {@link tokens.kda.foundation.color.palette.blue.n70}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n70}
              */
             '@selected': '',
-            /**
-             * @description Use for text on bold backgrounds.
-             * @default kda.foundation.color.neutral.n0
-             * @light kda.foundation.color.neutral.n0
-             * @dark kda.foundation.color.neutral.n0
-             */
-            '@inverse': '',
+            inverse: {
+              /**
+               * Use for text on bold backgrounds.
+               * @light {@link tokens.kda.foundation.color.neutral.n0}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0}
+               */
+              default: '',
+            },
           },
           gray: {
             /**
-             * @default kda.foundation.color.neutral.n70
-             * @light kda.foundation.color.neutral.n70
-             * @dark kda.foundation.color.neutral.n70
+             * @light {@link tokens.kda.foundation.color.neutral.n70}
+             * @dark {@link tokens.kda.foundation.color.neutral.n70}
              */
             default: '',
             /**
-             * @default kda.foundation.color.neutral.n60
-             * @light kda.foundation.color.neutral.n60
-             * @dark kda.foundation.color.neutral.n60
+             * @light {@link tokens.kda.foundation.color.neutral.n60}
+             * @dark {@link tokens.kda.foundation.color.neutral.n60}
              */
-            '@lighter': '',
+            lighter: '',
             /**
-             * @default kda.foundation.color.neutral.n80
-             * @light kda.foundation.color.neutral.n80
-             * @dark kda.foundation.color.neutral.n80
+             * @light {@link tokens.kda.foundation.color.neutral.n80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n80}
              */
-            '@bolder': '',
-            /**
-             * @default kda.foundation.color.neutral.n30
-             * @light kda.foundation.color.neutral.n30
-             * @dark kda.foundation.color.neutral.n30
-             */
-            '@inverse': '',
+            bolder: '',
+            inverse: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n30}
+               * @dark {@link tokens.kda.foundation.color.neutral.n30}
+               */
+              default: '',
+            },
           },
           subtle: {
             /**
-             * @default kda.foundation.color.neutral.n70
-             * @light kda.foundation.color.neutral.n70
-             * @dark kda.foundation.color.neutral.n70
+             * @light {@link tokens.kda.foundation.color.neutral.n70}
+             * @dark {@link tokens.kda.foundation.color.neutral.n70}
              */
             default: '',
             /**
-             * @default kda.foundation.color.neutral.n80
-             * @light kda.foundation.color.neutral.n80
-             * @dark kda.foundation.color.neutral.n80
+             * @light {@link tokens.kda.foundation.color.neutral.n80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n80}
              */
             '@hover': '',
-            /**
-             * @default kda.foundation.color.neutral.n30
-             * @light kda.foundation.color.neutral.n30
-             * @dark kda.foundation.color.neutral.n30
-             */
-            '@inverse': '',
+            inverse: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n30}
+               * @dark {@link tokens.kda.foundation.color.neutral.n30}
+               */
+              default: '',
+            },
           },
           subtlest: {
             /**
-             * @default kda.foundation.color.neutral.n60
-             * @light kda.foundation.color.neutral.n60
-             * @dark kda.foundation.color.neutral.n60
+             * @light {@link tokens.kda.foundation.color.neutral.n60}
+             * @dark {@link tokens.kda.foundation.color.neutral.n60}
              */
             default: '',
             /**
-             * @default kda.foundation.color.neutral.n50
-             * @light kda.foundation.color.neutral.n50
-             * @dark kda.foundation.color.neutral.n50
+             * @light {@link tokens.kda.foundation.color.neutral.n50}
+             * @dark {@link tokens.kda.foundation.color.neutral.n50}
              */
             '@hover': '',
-            /**
-             * @default kda.foundation.color.neutral.n40
-             * @light kda.foundation.color.neutral.n40
-             * @dark kda.foundation.color.neutral.n40
-             */
-            '@inverse': '',
+            inverse: {
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n40}
+               * @dark {@link tokens.kda.foundation.color.neutral.n40}
+               */
+              default: '',
+            },
           },
           brand: {
             primary: {
               /**
-               * @default kda.foundation.color.brand.primary.n95
-               * @light kda.foundation.color.brand.primary.n95
-               * @dark kda.foundation.color.brand.primary.n95
+               * @light {@link tokens.kda.foundation.color.brand.primary.n90}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.brand.primary.n5
-               * @light kda.foundation.color.brand.primary.n5
-               * @dark kda.foundation.color.brand.primary.n5
+               * @light {@link tokens.kda.foundation.color.brand.primary.n95}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n95}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.primary.n99}
+               * @dark {@link tokens.kda.foundation.color.brand.primary.n99}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n10}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n10}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n5}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n5}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.primary.n1}
+                 * @dark {@link tokens.kda.foundation.color.brand.primary.n1}
+                 */
+                '@focus': '',
+              },
             },
             secondary: {
               /**
-               * @default kda.foundation.color.brand.secondary.n95
-               * @light kda.foundation.color.brand.secondary.n95
-               * @dark kda.foundation.color.brand.secondary.n95
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n90}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.brand.secondary.n5
-               * @light kda.foundation.color.brand.secondary.n5
-               * @dark kda.foundation.color.brand.secondary.n5
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n95}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n95}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.brand.secondary.n99}
+               * @dark {@link tokens.kda.foundation.color.brand.secondary.n99}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n10}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n10}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n5}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n5}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.brand.secondary.n1}
+                 * @dark {@link tokens.kda.foundation.color.brand.secondary.n1}
+                 */
+                '@focus': '',
+              },
             },
           },
           semantic: {
             positive: {
               /**
-               * @default kda.foundation.color.semantic.positive.n90
-               * @light kda.foundation.color.semantic.positive.n90
-               * @dark kda.foundation.color.semantic.positive.n90
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n90}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.positive.n10
-               * @light kda.foundation.color.semantic.positive.n10
-               * @dark kda.foundation.color.semantic.positive.n10
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n95}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n95}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n99}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n99}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n10}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n10}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n5}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n5}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n1}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n1}
+                 */
+                '@focus': '',
+              },
             },
             negative: {
               /**
-               * @default kda.foundation.color.semantic.negative.n90
-               * @light kda.foundation.color.semantic.negative.n90
-               * @dark kda.foundation.color.semantic.negative.n90
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n90}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.negative.n10
-               * @light kda.foundation.color.semantic.negative.n10
-               * @dark kda.foundation.color.semantic.negative.n10
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n95}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n95}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n99}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n99}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n10}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n10}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n5}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n5}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n1}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n1}
+                 */
+                '@focus': '',
+              },
             },
             warning: {
               /**
-               * @default kda.foundation.color.semantic.warning.n90
-               * @light kda.foundation.color.semantic.warning.n90
-               * @dark kda.foundation.color.semantic.warning.n90
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n90}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.warning.n10
-               * @light kda.foundation.color.semantic.warning.n10
-               * @dark kda.foundation.color.semantic.warning.n10
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n95}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n95}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n99}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n99}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n10}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n10}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n5}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n5}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n1}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n1}
+                 */
+                '@focus': '',
+              },
             },
             info: {
               /**
-               * @default kda.foundation.color.semantic.info.n90
-               * @light kda.foundation.color.semantic.info.n90
-               * @dark kda.foundation.color.semantic.info.n90
+               * @light {@link tokens.kda.foundation.color.semantic.info.n90}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n90}
                */
               default: '',
               /**
-               * @default kda.foundation.color.semantic.info.n10
-               * @light kda.foundation.color.semantic.info.n10
-               * @dark kda.foundation.color.semantic.info.n10
+               * @light {@link tokens.kda.foundation.color.semantic.info.n95}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n95}
                */
-              '@inverse': '',
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.info.n99}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n99}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n10}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n10}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n5}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n5}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n1}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n1}
+                 */
+                '@focus': '',
+              },
             },
           },
         },
         palette: {
           blue: {
             /**
-             * @default #fafcff
-             * @light #fafcff
-             * @dark #001329
+             * @light  `"#fafcff"`
+             * @dark  `"#001329"`
              */
             n0: '',
             /**
-             * @default #e0f2ff
-             * @light #e0f2ff
-             * @dark #002754
+             * @light  `"#e0f2ff"`
+             * @dark  `"#002754"`
              */
             n1: '',
             /**
-             * @default #cae8ff
-             * @light #cae8ff
-             * @dark #003571
+             * @light  `"#cae8ff"`
+             * @dark  `"#003571"`
              */
             n5: '',
             /**
-             * @default #b5deff
-             * @light #b5deff
-             * @dark #004491
+             * @light  `"#b5deff"`
+             * @dark  `"#004491"`
              */
             n10: '',
             /**
-             * @default #96cefd
-             * @light #96cefd
-             * @dark #0054b6
+             * @light  `"#96cefd"`
+             * @dark  `"#0054b6"`
              */
             n20: '',
             /**
-             * @default #78bbfa
-             * @light #78bbfa
-             * @dark #0265dc
+             * @light  `"#78bbfa"`
+             * @dark  `"#0265dc"`
              */
             n30: '',
             /**
-             * @default #59a7f6
-             * @light #59a7f6
-             * @dark #147af3
+             * @light  `"#59a7f6"`
+             * @dark  `"#147af3"`
              */
             n40: '',
             /**
-             * @default #3892f3
-             * @light #3892f3
-             * @dark #3892f3
+             * @light  `"#3892f3"`
+             * @dark  `"#3892f3"`
              */
             n50: '',
             /**
-             * @default #147af3
-             * @light #147af3
-             * @dark #59a7f6
+             * @light  `"#147af3"`
+             * @dark  `"#59a7f6"`
              */
             n60: '',
             /**
-             * @default #0265dc
-             * @light #0265dc
-             * @dark #78bbfa
+             * @light  `"#0265dc"`
+             * @dark  `"#78bbfa"`
              */
             n70: '',
             /**
-             * @default #0054b6
-             * @light #0054b6
-             * @dark #96cefd
+             * @light  `"#0054b6"`
+             * @dark  `"#96cefd"`
              */
             n80: '',
             /**
-             * @default #004491
-             * @light #004491
-             * @dark #b5deff
+             * @light  `"#004491"`
+             * @dark  `"#b5deff"`
              */
             n90: '',
             /**
-             * @default #003571
-             * @light #003571
-             * @dark #cae8ff
+             * @light  `"#003571"`
+             * @dark  `"#cae8ff"`
              */
             n95: '',
             /**
-             * @default #002754
-             * @light #002754
-             * @dark #e0f2ff
+             * @light  `"#002754"`
+             * @dark  `"#e0f2ff"`
              */
             n99: '',
             /**
-             * @default #001329
-             * @light #001329
-             * @dark #fafcff
+             * @light  `"#001329"`
+             * @dark  `"#fafcff"`
              */
             n100: '',
           },
           indigo: {
             /**
-             * @default #f7f7fd
-             * @light #f7f7fd
-             * @dark #0b0c28
+             * @light  `"#f7f7fd"`
+             * @dark  `"#0b0c28"`
              */
             n0: '',
             /**
-             * @default #edeeff
-             * @light #edeeff
-             * @dark #1b1e64
+             * @light  `"#edeeff"`
+             * @dark  `"#1b1e64"`
              */
             n1: '',
             /**
-             * @default #e0e2ff
-             * @light #e0e2ff
-             * @dark #262986
+             * @light  `"#e0e2ff"`
+             * @dark  `"#262986"`
              */
             n5: '',
             /**
-             * @default #d3d5ff
-             * @light #d3d5ff
-             * @dark #3236a8
+             * @light  `"#d3d5ff"`
+             * @dark  `"#3236a8"`
              */
             n10: '',
             /**
-             * @default #c1c4ff
-             * @light #c1c4ff
-             * @dark #4046ca
+             * @light  `"#c1c4ff"`
+             * @dark  `"#4046ca"`
              */
             n20: '',
             /**
-             * @default #acafff
-             * @light #acafff
-             * @dark #5258e4
+             * @light  `"#acafff"`
+             * @dark  `"#5258e4"`
              */
             n30: '',
             /**
-             * @default #9599ff
-             * @light #9599ff
-             * @dark #686df4
+             * @light  `"#9599ff"`
+             * @dark  `"#686df4"`
              */
             n40: '',
             /**
-             * @default #7e84fc
-             * @light #7e84fc
-             * @dark #7e84fc
+             * @light  `"#7e84fc"`
+             * @dark  `"#7e84fc"`
              */
             n50: '',
             /**
-             * @default #686df4
-             * @light #686df4
-             * @dark #9599ff
+             * @light  `"#686df4"`
+             * @dark  `"#9599ff"`
              */
             n60: '',
             /**
-             * @default #5258e4
-             * @light #5258e4
-             * @dark #acafff
+             * @light  `"#5258e4"`
+             * @dark  `"#acafff"`
              */
             n70: '',
             /**
-             * @default #4046ca
-             * @light #4046ca
-             * @dark #c1c4ff
+             * @light  `"#4046ca"`
+             * @dark  `"#c1c4ff"`
              */
             n80: '',
             /**
-             * @default #3236a8
-             * @light #3236a8
-             * @dark #d3d5ff
+             * @light  `"#3236a8"`
+             * @dark  `"#d3d5ff"`
              */
             n90: '',
             /**
-             * @default #262986
-             * @light #262986
-             * @dark #e0e2ff
+             * @light  `"#262986"`
+             * @dark  `"#e0e2ff"`
              */
             n95: '',
             /**
-             * @default #1b1e64
-             * @light #1b1e64
-             * @dark #edeeff
+             * @light  `"#1b1e64"`
+             * @dark  `"#edeeff"`
              */
             n99: '',
             /**
-             * @default #0b0c28
-             * @light #0b0c28
-             * @dark #f7f7fd
+             * @light  `"#0b0c28"`
+             * @dark  `"#f7f7fd"`
              */
             n100: '',
           },
           lime: {
             /**
-             * @default #f8fff5
-             * @light #f8fff5
-             * @dark #0a1f00
+             * @light  `"#f8fff5"`
+             * @dark  `"#0a1f00"`
              */
             n0: '',
             /**
-             * @default #e6fd9b
-             * @light #e6fd9b
-             * @dark #212c00
+             * @light  `"#e6fd9b"`
+             * @dark  `"#212c00"`
              */
             n1: '',
             /**
-             * @default #cbf443
-             * @light #cbf443
-             * @dark #2c3b00
+             * @light  `"#cbf443"`
+             * @dark  `"#2c3b00"`
              */
             n5: '',
             /**
-             * @default #bce92a
-             * @light #bce92a
-             * @dark #3a4d00
+             * @light  `"#bce92a"`
+             * @dark  `"#3a4d00"`
              */
             n10: '',
             /**
-             * @default #aad816
-             * @light #aad816
-             * @dark #486000
+             * @light  `"#aad816"`
+             * @dark  `"#486000"`
              */
             n20: '',
             /**
-             * @default #98c50a
-             * @light #98c50a
-             * @dark #577400
+             * @light  `"#98c50a"`
+             * @dark  `"#577400"`
              */
             n30: '',
             /**
-             * @default #87b103
-             * @light #87b103
-             * @dark #678800
+             * @light  `"#87b103"`
+             * @dark  `"#678800"`
              */
             n40: '',
             /**
-             * @default #769c00
-             * @light #769c00
-             * @dark #769c00
+             * @light  `"#769c00"`
+             * @dark  `"#769c00"`
              */
             n50: '',
             /**
-             * @default #678800
-             * @light #678800
-             * @dark #87b103
+             * @light  `"#678800"`
+             * @dark  `"#87b103"`
              */
             n60: '',
             /**
-             * @default #577400
-             * @light #577400
-             * @dark #98c50a
+             * @light  `"#577400"`
+             * @dark  `"#98c50a"`
              */
             n70: '',
             /**
-             * @default #486000
-             * @light #486000
-             * @dark #aad816
+             * @light  `"#486000"`
+             * @dark  `"#aad816"`
              */
             n80: '',
             /**
-             * @default #3a4d00
-             * @light #3a4d00
-             * @dark #bce92a
+             * @light  `"#3a4d00"`
+             * @dark  `"#bce92a"`
              */
             n90: '',
             /**
-             * @default #2c3b00
-             * @light #2c3b00
-             * @dark #cbf443
+             * @light  `"#2c3b00"`
+             * @dark  `"#cbf443"`
              */
             n95: '',
             /**
-             * @default #212c00
-             * @light #212c00
-             * @dark #e6fd9b
+             * @light  `"#212c00"`
+             * @dark  `"#e6fd9b"`
              */
             n99: '',
             /**
-             * @default #0a1f00
-             * @light #0a1f00
-             * @dark #f8fff5
+             * @light  `"#0a1f00"`
+             * @dark  `"#f8fff5"`
              */
             n100: '',
           },
           magenta: {
             /**
-             * @default #fff5fb
-             * @light #fff5fb
-             * @dark #230115
+             * @light  `"#fff5fb"`
+             * @dark  `"#230115"`
              */
             n0: '',
             /**
-             * @default #ffeaf1
-             * @light #ffeaf1
-             * @dark #54032a
+             * @light  `"#ffeaf1"`
+             * @dark  `"#54032a"`
              */
             n1: '',
             /**
-             * @default #ffdce8
-             * @light #ffdce8
-             * @dark #700037
+             * @light  `"#ffdce8"`
+             * @dark  `"#700037"`
              */
             n5: '',
             /**
-             * @default #ffcadd
-             * @light #ffcadd
-             * @dark #8e0045
+             * @light  `"#ffcadd"`
+             * @dark  `"#8e0045"`
              */
             n10: '',
             /**
-             * @default #ffb2ce
-             * @light #ffb2ce
-             * @dark #ad0955
+             * @light  `"#ffb2ce"`
+             * @dark  `"#ad0955"`
              */
             n20: '',
             /**
-             * @default #ff95bd
-             * @light #ff95bd
-             * @dark #c82269
+             * @light  `"#ff95bd"`
+             * @dark  `"#c82269"`
              */
             n30: '',
             /**
-             * @default #fa77aa
-             * @light #fa77aa
-             * @dark #de3d82
+             * @light  `"#fa77aa"`
+             * @dark  `"#de3d82"`
              */
             n40: '',
             /**
-             * @default #ef5a98
-             * @light #ef5a98
-             * @dark #ef5a98
+             * @light  `"#ef5a98"`
+             * @dark  `"#ef5a98"`
              */
             n50: '',
             /**
-             * @default #de3d82
-             * @light #de3d82
-             * @dark #fa77aa
+             * @light  `"#de3d82"`
+             * @dark  `"#fa77aa"`
              */
             n60: '',
             /**
-             * @default #c82269
-             * @light #c82269
-             * @dark #ff95bd
+             * @light  `"#c82269"`
+             * @dark  `"#ff95bd"`
              */
             n70: '',
             /**
-             * @default #ad0955
-             * @light #ad0955
-             * @dark #ffb2ce
+             * @light  `"#ad0955"`
+             * @dark  `"#ffb2ce"`
              */
             n80: '',
             /**
-             * @default #8e0045
-             * @light #8e0045
-             * @dark #ffcadd
+             * @light  `"#8e0045"`
+             * @dark  `"#ffcadd"`
              */
             n90: '',
             /**
-             * @default #700037
-             * @light #700037
-             * @dark #ffdce8
+             * @light  `"#700037"`
+             * @dark  `"#ffdce8"`
              */
             n95: '',
             /**
-             * @default #54032a
-             * @light #54032a
-             * @dark #ffeaf1
+             * @light  `"#54032a"`
+             * @dark  `"#ffeaf1"`
              */
             n99: '',
             /**
-             * @default #230115
-             * @light #230115
-             * @dark #fff5fb
+             * @light  `"#230115"`
+             * @dark  `"#fff5fb"`
              */
             n100: '',
           },
           purple: {
             /**
-             * @default #fdfaff
-             * @light #fdfaff
-             * @dark #13001f
+             * @light  `"#fdfaff"`
+             * @dark  `"#13001f"`
              */
             n0: '',
             /**
-             * @default #f6ebff
-             * @light #f6ebff
-             * @dark #33106a
+             * @light  `"#f6ebff"`
+             * @dark  `"#33106a"`
              */
             n1: '',
             /**
-             * @default #eeddff
-             * @light #eeddff
-             * @dark #470c94
+             * @light  `"#eeddff"`
+             * @dark  `"#470c94"`
              */
             n5: '',
             /**
-             * @default #e6d0ff
-             * @light #e6d0ff
-             * @dark #5d13b7
+             * @light  `"#e6d0ff"`
+             * @dark  `"#5d13b7"`
              */
             n10: '',
             /**
-             * @default #dbbbfe
-             * @light #dbbbfe
-             * @dark #7326d3
+             * @light  `"#dbbbfe"`
+             * @dark  `"#7326d3"`
              */
             n20: '',
             /**
-             * @default #cca4fd
-             * @light #cca4fd
-             * @dark #893de7
+             * @light  `"#cca4fd"`
+             * @dark  `"#893de7"`
              */
             n30: '',
             /**
-             * @default #bd8bfc
-             * @light #bd8bfc
-             * @dark #9d57f4
+             * @light  `"#bd8bfc"`
+             * @dark  `"#9d57f4"`
              */
             n40: '',
             /**
-             * @default #ae72f9
-             * @light #ae72f9
-             * @dark #ae72f9
+             * @light  `"#ae72f9"`
+             * @dark  `"#ae72f9"`
              */
             n50: '',
             /**
-             * @default #9d57f4
-             * @light #9d57f4
-             * @dark #bd8bfc
+             * @light  `"#9d57f4"`
+             * @dark  `"#bd8bfc"`
              */
             n60: '',
             /**
-             * @default #893de7
-             * @light #893de7
-             * @dark #cca4fd
+             * @light  `"#893de7"`
+             * @dark  `"#cca4fd"`
              */
             n70: '',
             /**
-             * @default #7326d3
-             * @light #7326d3
-             * @dark #dbbbfe
+             * @light  `"#7326d3"`
+             * @dark  `"#dbbbfe"`
              */
             n80: '',
             /**
-             * @default #5d13b7
-             * @light #5d13b7
-             * @dark #e6d0ff
+             * @light  `"#5d13b7"`
+             * @dark  `"#e6d0ff"`
              */
             n90: '',
             /**
-             * @default #470c94
-             * @light #470c94
-             * @dark #eeddff
+             * @light  `"#470c94"`
+             * @dark  `"#eeddff"`
              */
             n95: '',
             /**
-             * @default #33106a
-             * @light #33106a
-             * @dark #f6ebff
+             * @light  `"#33106a"`
+             * @dark  `"#f6ebff"`
              */
             n99: '',
             /**
-             * @default #13001f
-             * @light #13001f
-             * @dark #fdfaff
+             * @light  `"#13001f"`
+             * @dark  `"#fdfaff"`
              */
             n100: '',
           },
           red: {
             /**
-             * @default #fff5f5
-             * @light #fff5f5
-             * @dark #240003
+             * @light  `"#fff5f5"`
+             * @dark  `"#240003"`
              */
             n0: '',
             /**
-             * @default #ffebe7
-             * @light #ffebe7
-             * @dark #590000
+             * @light  `"#ffebe7"`
+             * @dark  `"#590000"`
              */
             n1: '',
             /**
-             * @default #ffddd6
-             * @light #ffddd6
-             * @dark #740000
+             * @light  `"#ffddd6"`
+             * @dark  `"#740000"`
              */
             n5: '',
             /**
-             * @default #ffcdc3
-             * @light #ffcdc3
-             * @dark #930000
+             * @light  `"#ffcdc3"`
+             * @dark  `"#930000"`
              */
             n10: '',
             /**
-             * @default #ffb7a9
-             * @light #ffb7a9
-             * @dark #b40000
+             * @light  `"#ffb7a9"`
+             * @dark  `"#b40000"`
              */
             n20: '',
             /**
-             * @default #ff9b88
-             * @light #ff9b88
-             * @dark #d31510
+             * @light  `"#ff9b88"`
+             * @dark  `"#d31510"`
              */
             n30: '',
             /**
-             * @default #ff7c65
-             * @light #ff7c65
-             * @dark #ea3829
+             * @light  `"#ff7c65"`
+             * @dark  `"#ea3829"`
              */
             n40: '',
             /**
-             * @default #f75c46
-             * @light #f75c46
-             * @dark #f75c46
+             * @light  `"#f75c46"`
+             * @dark  `"#f75c46"`
              */
             n50: '',
             /**
-             * @default #ea3829
-             * @light #ea3829
-             * @dark #ff7c65
+             * @light  `"#ea3829"`
+             * @dark  `"#ff7c65"`
              */
             n60: '',
             /**
-             * @default #d31510
-             * @light #d31510
-             * @dark #ff9b88
+             * @light  `"#d31510"`
+             * @dark  `"#ff9b88"`
              */
             n70: '',
             /**
-             * @default #b40000
-             * @light #b40000
-             * @dark #ffb7a9
+             * @light  `"#b40000"`
+             * @dark  `"#ffb7a9"`
              */
             n80: '',
             /**
-             * @default #930000
-             * @light #930000
-             * @dark #ffcdc3
+             * @light  `"#930000"`
+             * @dark  `"#ffcdc3"`
              */
             n90: '',
             /**
-             * @default #740000
-             * @light #740000
-             * @dark #ffddd6
+             * @light  `"#740000"`
+             * @dark  `"#ffddd6"`
              */
             n95: '',
             /**
-             * @default #590000
-             * @light #590000
-             * @dark #ffebe7
+             * @light  `"#590000"`
+             * @dark  `"#ffebe7"`
              */
             n99: '',
             /**
-             * @default #240003
-             * @light #240003
-             * @dark #fff5f5
+             * @light  `"#240003"`
+             * @dark  `"#fff5f5"`
              */
             n100: '',
           },
           yellow: {
             /**
-             * @default #fffbf5
-             * @light #fffbf5
-             * @dark #1f1300
+             * @light  `"#fffbf5"`
+             * @dark  `"#1f1300"`
              */
             n0: '',
             /**
-             * @default #fcf4ac
-             * @light #fcf4ac
-             * @dark #362500
+             * @light  `"#fcf4ac"`
+             * @dark  `"#362500"`
              */
             n1: '',
             /**
-             * @default #f8e750
-             * @light #f8e750
-             * @dark #483300
+             * @light  `"#f8e750"`
+             * @dark  `"#483300"`
              */
             n5: '',
             /**
-             * @default #f8d904
-             * @light #f8d904
-             * @dark #5b4300
+             * @light  `"#f8d904"`
+             * @dark  `"#5b4300"`
              */
             n10: '',
             /**
-             * @default #e8c600
-             * @light #e8c600
-             * @dark #705300
+             * @light  `"#e8c600"`
+             * @dark  `"#705300"`
              */
             n20: '',
             /**
-             * @default #d7b300
-             * @light #d7b300
-             * @dark #856600
+             * @light  `"#d7b300"`
+             * @dark  `"#856600"`
              */
             n30: '',
             /**
-             * @default #c49f00
-             * @light #c49f00
-             * @dark #9b7800
+             * @light  `"#c49f00"`
+             * @dark  `"#9b7800"`
              */
             n40: '',
             /**
-             * @default #b08c00
-             * @light #b08c00
-             * @dark #b08c00
+             * @light  `"#b08c00"`
+             * @dark  `"#b08c00"`
              */
             n50: '',
             /**
-             * @default #9b7800
-             * @light #9b7800
-             * @dark #c49f00
+             * @light  `"#9b7800"`
+             * @dark  `"#c49f00"`
              */
             n60: '',
             /**
-             * @default #856600
-             * @light #856600
-             * @dark #d7b300
+             * @light  `"#856600"`
+             * @dark  `"#d7b300"`
              */
             n70: '',
             /**
-             * @default #705300
-             * @light #705300
-             * @dark #e8c600
+             * @light  `"#705300"`
+             * @dark  `"#e8c600"`
              */
             n80: '',
             /**
-             * @default #5b4300
-             * @light #5b4300
-             * @dark #f8d904
+             * @light  `"#5b4300"`
+             * @dark  `"#f8d904"`
              */
             n90: '',
             /**
-             * @default #483300
-             * @light #483300
-             * @dark #f8e750
+             * @light  `"#483300"`
+             * @dark  `"#f8e750"`
              */
             n95: '',
             /**
-             * @default #362500
-             * @light #362500
-             * @dark #fcf4ac
+             * @light  `"#362500"`
+             * @dark  `"#fcf4ac"`
              */
             n99: '',
             /**
-             * @default #1f1300
-             * @light #1f1300
-             * @dark #fffbf5
+             * @light  `"#1f1300"`
+             * @dark  `"#fffbf5"`
              */
             n100: '',
           },
@@ -2341,369 +2576,309 @@ export const tokens = createThemeContract({
         semantic: {
           info: {
             /**
-             * @default kda.foundation.color.palette.blue.n0
-             * @light kda.foundation.color.palette.blue.n0
-             * @dark kda.foundation.color.palette.blue.n0
+             * @light {@link tokens.kda.foundation.color.palette.blue.n0}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n0}
              */
             n0: '',
             /**
-             * @default kda.foundation.color.palette.blue.n1
-             * @light kda.foundation.color.palette.blue.n1
-             * @dark kda.foundation.color.palette.blue.n1
+             * @light {@link tokens.kda.foundation.color.palette.blue.n1}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n1}
              */
             n1: '',
             /**
-             * @default kda.foundation.color.palette.blue.n5
-             * @light kda.foundation.color.palette.blue.n5
-             * @dark kda.foundation.color.palette.blue.n5
+             * @light {@link tokens.kda.foundation.color.palette.blue.n5}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n5}
              */
             n5: '',
             /**
-             * @default kda.foundation.color.palette.blue.n10
-             * @light kda.foundation.color.palette.blue.n10
-             * @dark kda.foundation.color.palette.blue.n10
+             * @light {@link tokens.kda.foundation.color.palette.blue.n10}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n10}
              */
             n10: '',
             /**
-             * @default kda.foundation.color.palette.blue.n20
-             * @light kda.foundation.color.palette.blue.n20
-             * @dark kda.foundation.color.palette.blue.n20
+             * @light {@link tokens.kda.foundation.color.palette.blue.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n20}
              */
             n20: '',
             /**
-             * @default kda.foundation.color.palette.blue.n30
-             * @light kda.foundation.color.palette.blue.n30
-             * @dark kda.foundation.color.palette.blue.n30
+             * @light {@link tokens.kda.foundation.color.palette.blue.n30}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n30}
              */
             n30: '',
             /**
-             * @default kda.foundation.color.palette.blue.n40
-             * @light kda.foundation.color.palette.blue.n40
-             * @dark kda.foundation.color.palette.blue.n40
+             * @light {@link tokens.kda.foundation.color.palette.blue.n40}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n40}
              */
             n40: '',
             /**
-             * @default kda.foundation.color.palette.blue.n50
-             * @light kda.foundation.color.palette.blue.n50
-             * @dark kda.foundation.color.palette.blue.n50
+             * @light {@link tokens.kda.foundation.color.palette.blue.n50}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n50}
              */
             n50: '',
             /**
-             * @default kda.foundation.color.palette.blue.n60
-             * @light kda.foundation.color.palette.blue.n60
-             * @dark kda.foundation.color.palette.blue.n60
+             * @light {@link tokens.kda.foundation.color.palette.blue.n60}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n60}
              */
             n60: '',
             /**
-             * @default kda.foundation.color.palette.blue.n70
-             * @light kda.foundation.color.palette.blue.n70
-             * @dark kda.foundation.color.palette.blue.n70
+             * @light {@link tokens.kda.foundation.color.palette.blue.n70}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n70}
              */
             n70: '',
             /**
-             * @default kda.foundation.color.palette.blue.n80
-             * @light kda.foundation.color.palette.blue.n80
-             * @dark kda.foundation.color.palette.blue.n80
+             * @light {@link tokens.kda.foundation.color.palette.blue.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n80}
              */
             n80: '',
             /**
-             * @default kda.foundation.color.palette.blue.n90
-             * @light kda.foundation.color.palette.blue.n90
-             * @dark kda.foundation.color.palette.blue.n90
+             * @light {@link tokens.kda.foundation.color.palette.blue.n90}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n90}
              */
             n90: '',
             /**
-             * @default kda.foundation.color.palette.blue.n95
-             * @light kda.foundation.color.palette.blue.n95
-             * @dark kda.foundation.color.palette.blue.n95
+             * @light {@link tokens.kda.foundation.color.palette.blue.n95}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n95}
              */
             n95: '',
             /**
-             * @default kda.foundation.color.palette.blue.n99
-             * @light kda.foundation.color.palette.blue.n99
-             * @dark kda.foundation.color.palette.blue.n99
+             * @light {@link tokens.kda.foundation.color.palette.blue.n99}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n99}
              */
             n99: '',
             /**
-             * @default kda.foundation.color.palette.blue.n100
-             * @light kda.foundation.color.palette.blue.n100
-             * @dark kda.foundation.color.palette.blue.n100
+             * @light {@link tokens.kda.foundation.color.palette.blue.n100}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n100}
              */
             n100: '',
           },
           negative: {
             /**
-             * @default kda.foundation.color.palette.red.n0
-             * @light kda.foundation.color.palette.red.n0
-             * @dark kda.foundation.color.palette.red.n0
+             * @light {@link tokens.kda.foundation.color.palette.red.n0}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n0}
              */
             n0: '',
             /**
-             * @default kda.foundation.color.palette.red.n1
-             * @light kda.foundation.color.palette.red.n1
-             * @dark kda.foundation.color.palette.red.n1
+             * @light {@link tokens.kda.foundation.color.palette.red.n1}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n1}
              */
             n1: '',
             /**
-             * @default kda.foundation.color.palette.red.n5
-             * @light kda.foundation.color.palette.red.n5
-             * @dark kda.foundation.color.palette.red.n5
+             * @light {@link tokens.kda.foundation.color.palette.red.n5}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n5}
              */
             n5: '',
             /**
-             * @default kda.foundation.color.palette.red.n10
-             * @light kda.foundation.color.palette.red.n10
-             * @dark kda.foundation.color.palette.red.n10
+             * @light {@link tokens.kda.foundation.color.palette.red.n10}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n10}
              */
             n10: '',
             /**
-             * @default kda.foundation.color.palette.red.n20
-             * @light kda.foundation.color.palette.red.n20
-             * @dark kda.foundation.color.palette.red.n20
+             * @light {@link tokens.kda.foundation.color.palette.red.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n20}
              */
             n20: '',
             /**
-             * @default kda.foundation.color.palette.red.n30
-             * @light kda.foundation.color.palette.red.n30
-             * @dark kda.foundation.color.palette.red.n30
+             * @light {@link tokens.kda.foundation.color.palette.red.n30}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n30}
              */
             n30: '',
             /**
-             * @default kda.foundation.color.palette.red.n40
-             * @light kda.foundation.color.palette.red.n40
-             * @dark kda.foundation.color.palette.red.n40
+             * @light {@link tokens.kda.foundation.color.palette.red.n40}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n40}
              */
             n40: '',
             /**
-             * @default kda.foundation.color.palette.red.n50
-             * @light kda.foundation.color.palette.red.n50
-             * @dark kda.foundation.color.palette.red.n50
+             * @light {@link tokens.kda.foundation.color.palette.red.n50}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n50}
              */
             n50: '',
             /**
-             * @default kda.foundation.color.palette.red.n60
-             * @light kda.foundation.color.palette.red.n60
-             * @dark kda.foundation.color.palette.red.n60
+             * @light {@link tokens.kda.foundation.color.palette.red.n60}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n60}
              */
             n60: '',
             /**
-             * @default kda.foundation.color.palette.red.n70
-             * @light kda.foundation.color.palette.red.n70
-             * @dark kda.foundation.color.palette.red.n70
+             * @light {@link tokens.kda.foundation.color.palette.red.n70}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n70}
              */
             n70: '',
             /**
-             * @default kda.foundation.color.palette.red.n80
-             * @light kda.foundation.color.palette.red.n80
-             * @dark kda.foundation.color.palette.red.n80
+             * @light {@link tokens.kda.foundation.color.palette.red.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n80}
              */
             n80: '',
             /**
-             * @default kda.foundation.color.palette.red.n90
-             * @light kda.foundation.color.palette.red.n90
-             * @dark kda.foundation.color.palette.red.n90
+             * @light {@link tokens.kda.foundation.color.palette.red.n90}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n90}
              */
             n90: '',
             /**
-             * @default kda.foundation.color.palette.red.n95
-             * @light kda.foundation.color.palette.red.n95
-             * @dark kda.foundation.color.palette.red.n95
+             * @light {@link tokens.kda.foundation.color.palette.red.n95}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n95}
              */
             n95: '',
             /**
-             * @default kda.foundation.color.palette.red.n99
-             * @light kda.foundation.color.palette.red.n99
-             * @dark kda.foundation.color.palette.red.n99
+             * @light {@link tokens.kda.foundation.color.palette.red.n99}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n99}
              */
             n99: '',
             /**
-             * @default kda.foundation.color.palette.red.n100
-             * @light kda.foundation.color.palette.red.n100
-             * @dark kda.foundation.color.palette.red.n100
+             * @light {@link tokens.kda.foundation.color.palette.red.n100}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n100}
              */
             n100: '',
           },
           positive: {
             /**
-             * @default kda.foundation.color.palette.lime.n0
-             * @light kda.foundation.color.palette.lime.n0
-             * @dark kda.foundation.color.palette.lime.n0
+             * @light {@link tokens.kda.foundation.color.palette.lime.n0}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n0}
              */
             n0: '',
             /**
-             * @default kda.foundation.color.palette.lime.n1
-             * @light kda.foundation.color.palette.lime.n1
-             * @dark kda.foundation.color.palette.lime.n1
+             * @light {@link tokens.kda.foundation.color.palette.lime.n1}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n1}
              */
             n1: '',
             /**
-             * @default kda.foundation.color.palette.lime.n5
-             * @light kda.foundation.color.palette.lime.n5
-             * @dark kda.foundation.color.palette.lime.n5
+             * @light {@link tokens.kda.foundation.color.palette.lime.n5}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n5}
              */
             n5: '',
             /**
-             * @default kda.foundation.color.palette.lime.n10
-             * @light kda.foundation.color.palette.lime.n10
-             * @dark kda.foundation.color.palette.lime.n10
+             * @light {@link tokens.kda.foundation.color.palette.lime.n10}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n10}
              */
             n10: '',
             /**
-             * @default kda.foundation.color.palette.lime.n20
-             * @light kda.foundation.color.palette.lime.n20
-             * @dark kda.foundation.color.palette.lime.n20
+             * @light {@link tokens.kda.foundation.color.palette.lime.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n20}
              */
             n20: '',
             /**
-             * @default kda.foundation.color.palette.lime.n30
-             * @light kda.foundation.color.palette.lime.n30
-             * @dark kda.foundation.color.palette.lime.n30
+             * @light {@link tokens.kda.foundation.color.palette.lime.n30}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n30}
              */
             n30: '',
             /**
-             * @default kda.foundation.color.palette.lime.n40
-             * @light kda.foundation.color.palette.lime.n40
-             * @dark kda.foundation.color.palette.lime.n40
+             * @light {@link tokens.kda.foundation.color.palette.lime.n40}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n40}
              */
             n40: '',
             /**
-             * @default kda.foundation.color.palette.lime.n50
-             * @light kda.foundation.color.palette.lime.n50
-             * @dark kda.foundation.color.palette.lime.n50
+             * @light {@link tokens.kda.foundation.color.palette.lime.n50}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n50}
              */
             n50: '',
             /**
-             * @default kda.foundation.color.palette.lime.n60
-             * @light kda.foundation.color.palette.lime.n60
-             * @dark kda.foundation.color.palette.lime.n60
+             * @light {@link tokens.kda.foundation.color.palette.lime.n60}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n60}
              */
             n60: '',
             /**
-             * @default kda.foundation.color.palette.lime.n70
-             * @light kda.foundation.color.palette.lime.n70
-             * @dark kda.foundation.color.palette.lime.n70
+             * @light {@link tokens.kda.foundation.color.palette.lime.n70}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n70}
              */
             n70: '',
             /**
-             * @default kda.foundation.color.palette.lime.n80
-             * @light kda.foundation.color.palette.lime.n80
-             * @dark kda.foundation.color.palette.lime.n80
+             * @light {@link tokens.kda.foundation.color.palette.lime.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n80}
              */
             n80: '',
             /**
-             * @default kda.foundation.color.palette.lime.n90
-             * @light kda.foundation.color.palette.lime.n90
-             * @dark kda.foundation.color.palette.lime.n90
+             * @light {@link tokens.kda.foundation.color.palette.lime.n90}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n90}
              */
             n90: '',
             /**
-             * @default kda.foundation.color.palette.lime.n95
-             * @light kda.foundation.color.palette.lime.n95
-             * @dark kda.foundation.color.palette.lime.n95
+             * @light {@link tokens.kda.foundation.color.palette.lime.n95}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n95}
              */
             n95: '',
             /**
-             * @default kda.foundation.color.palette.lime.n99
-             * @light kda.foundation.color.palette.lime.n99
-             * @dark kda.foundation.color.palette.lime.n99
+             * @light {@link tokens.kda.foundation.color.palette.lime.n99}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n99}
              */
             n99: '',
             /**
-             * @default kda.foundation.color.palette.lime.n100
-             * @light kda.foundation.color.palette.lime.n100
-             * @dark kda.foundation.color.palette.lime.n100
+             * @light {@link tokens.kda.foundation.color.palette.lime.n100}
+             * @dark {@link tokens.kda.foundation.color.palette.lime.n100}
              */
             n100: '',
           },
           warning: {
             /**
-             * @default kda.foundation.color.palette.yellow.n0
-             * @light kda.foundation.color.palette.yellow.n0
-             * @dark kda.foundation.color.palette.yellow.n0
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n0}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n0}
              */
             n0: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n1
-             * @light kda.foundation.color.palette.yellow.n1
-             * @dark kda.foundation.color.palette.yellow.n1
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n1}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n1}
              */
             n1: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n5
-             * @light kda.foundation.color.palette.yellow.n5
-             * @dark kda.foundation.color.palette.yellow.n5
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n5}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n5}
              */
             n5: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n10
-             * @light kda.foundation.color.palette.yellow.n10
-             * @dark kda.foundation.color.palette.yellow.n10
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n10}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n10}
              */
             n10: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n20
-             * @light kda.foundation.color.palette.yellow.n20
-             * @dark kda.foundation.color.palette.yellow.n20
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n20}
              */
             n20: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n30
-             * @light kda.foundation.color.palette.yellow.n30
-             * @dark kda.foundation.color.palette.yellow.n30
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n30}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n30}
              */
             n30: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n40
-             * @light kda.foundation.color.palette.yellow.n40
-             * @dark kda.foundation.color.palette.yellow.n40
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n40}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n40}
              */
             n40: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n50
-             * @light kda.foundation.color.palette.yellow.n50
-             * @dark kda.foundation.color.palette.yellow.n50
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n50}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n50}
              */
             n50: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n60
-             * @light kda.foundation.color.palette.yellow.n60
-             * @dark kda.foundation.color.palette.yellow.n60
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n60}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n60}
              */
             n60: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n70
-             * @light kda.foundation.color.palette.yellow.n70
-             * @dark kda.foundation.color.palette.yellow.n70
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n70}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n70}
              */
             n70: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n80
-             * @light kda.foundation.color.palette.yellow.n80
-             * @dark kda.foundation.color.palette.yellow.n80
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n80}
              */
             n80: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n90
-             * @light kda.foundation.color.palette.yellow.n90
-             * @dark kda.foundation.color.palette.yellow.n90
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n90}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n90}
              */
             n90: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n95
-             * @light kda.foundation.color.palette.yellow.n95
-             * @dark kda.foundation.color.palette.yellow.n95
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n95}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n95}
              */
             n95: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n99
-             * @light kda.foundation.color.palette.yellow.n99
-             * @dark kda.foundation.color.palette.yellow.n99
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n99}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n99}
              */
             n99: '',
             /**
-             * @default kda.foundation.color.palette.yellow.n100
-             * @light kda.foundation.color.palette.yellow.n100
-             * @dark kda.foundation.color.palette.yellow.n100
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n100}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n100}
              */
             n100: '',
           },
@@ -2711,129 +2886,113 @@ export const tokens = createThemeContract({
         categorical: {
           category1: {
             /**
-             * @description Visualisation Color 1
-             * @default #2898bd
-             * @light #2898bd
-             * @dark #2898bd
+             * Visualisation Color 1
+             * @light  `"#2898bd"`
+             * @dark  `"#2898bd"`
              */
             default: '',
             /**
-             * @description Visualisation Color 1 Hover State
-             * @default #227d9b
-             * @light #227d9b
-             * @dark #42b2d7
+             * Visualisation Color 1 Hover State
+             * @light  `"#227d9b"`
+             * @dark  `"#42b2d7"`
              */
             '@hover': '',
           },
           category2: {
             /**
-             * @description Visualisation Color 2
-             * @default #5e4db2
-             * @light #5e4db2
-             * @dark #b8acf6
+             * Visualisation Color 2
+             * @light  `"#5e4db2"`
+             * @dark  `"#b8acf6"`
              */
             default: '',
             /**
-             * @description Visualisation Color 2 Hover State
-             * @default #352c63
-             * @light #352c63
-             * @dark #dfd8fd
+             * Visualisation Color 2 Hover State
+             * @light  `"#352c63"`
+             * @dark  `"#dfd8fd"`
              */
             '@hover': '',
           },
           category3: {
             /**
-             * @description Visualisation Color 3
-             * @default #e56910
-             * @light #e56910
-             * @dark #e56910
+             * Visualisation Color 3
+             * @light  `"#e56910"`
+             * @dark  `"#e56910"`
              */
             default: '',
             /**
-             * @description Visualisation Color 3 Hover State
-             * @default #c25100
-             * @light #c25100
-             * @dark #f38a3f
+             * Visualisation Color 3 Hover State
+             * @light  `"#c25100"`
+             * @dark  `"#f38a3f"`
              */
             '@hover': '',
           },
           category4: {
             /**
-             * @description Visualisation Color 4
-             * @default #943d73
-             * @light #943d73
-             * @dark #f797d2
+             * Visualisation Color 4
+             * @light  `"#943d73"`
+             * @dark  `"#f797d2"`
              */
             default: '',
             /**
-             * @description Visualisation Color 4 Hover State
-             * @default #50253f
-             * @light #50253f
-             * @dark #fdd0ec
+             * Visualisation Color 4 Hover State
+             * @light  `"#50253f"`
+             * @dark  `"#fdd0ec"`
              */
             '@hover': '',
           },
           category5: {
             /**
-             * @description Visualisation Color 5
-             * @default #09326c
-             * @light #09326c
-             * @dark #cce0ff
+             * Visualisation Color 5
+             * @light  `"#09326c"`
+             * @dark  `"#cce0ff"`
              */
             default: '',
             /**
-             * @description Visualisation Color 5 Hover State
-             * @default #1c2b41
-             * @light #1c2b41
-             * @dark #e9f2ff
+             * Visualisation Color 5 Hover State
+             * @light  `"#1c2b41"`
+             * @dark  `"#e9f2ff"`
              */
             '@hover': '',
           },
           category6: {
             /**
-             * @description Visualisation Color 6
-             * @default #8f7ee7
-             * @light #8f7ee7
-             * @dark #8270db
+             * Visualisation Color 6
+             * @light  `"#8f7ee7"`
+             * @dark  `"#8270db"`
              */
             default: '',
             /**
-             * @description Visualisation Color 6 Hover State
-             * @default #8270db
-             * @light #8270db
-             * @dark #8f7ee7
+             * Visualisation Color 6 Hover State
+             * @light  `"#8270db"`
+             * @dark  `"#8f7ee7"`
              */
             '@hover': '',
           },
           category7: {
             /**
-             * @description Visualisation Color 7
-             * @default #50253f
-             * @light #50253f
-             * @dark #fdd0ec
+             * Visualisation Color 7
+             * @light  `"#50253f"`
+             * @dark  `"#fdd0ec"`
              */
             default: '',
             /**
-             * @description Visualisation Color 7 Hover State
-             * @default #3d2232
-             * @light #3d2232
-             * @dark #ffecf8
+             * Visualisation Color 7 Hover State
+             * @light  `"#3d2232"`
+             * @dark  `"#ffecf8"`
              */
             '@hover': '',
           },
           category8: {
             /**
-             * @description Visualisation Color 8
-             * @default #a54800
-             * @light #a54800
-             * @dark #fec195
+             * Visualisation Color 8
+             * @light  `"#a54800"`
+             * @dark  `"#fec195"`
              */
             default: '',
             /**
-             * @description Visualisation Color 8 Hover State
-             * @default #702e00
-             * @light #702e00
-             * @dark #fedec8
+             * Visualisation Color 8 Hover State
+             * @light  `"#702e00"`
+             * @dark  `"#fedec8"`
              */
             '@hover': '',
           },
@@ -2842,311 +3001,264 @@ export const tokens = createThemeContract({
       effect: {
         shadow: {
           /**
-           * @description This is the shadow 1 description
-           * @default 4px 0.5rem kda.foundation.size.n2 4px #000000
-           * @light 4px 0.5rem kda.foundation.size.n2 4px #000000
-           * @dark 4px 0.5rem kda.foundation.size.n2 4px #000000
+           * This is the shadow 1 description
+           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
            */
           level1: '',
           /**
-           * @description This is the shadow 2 description
-           * @default 4rem 4rem kda.foundation.size.n2 2rem #000000
-           * @light 4rem 4rem kda.foundation.size.n2 2rem #000000
-           * @dark 4rem 4rem kda.foundation.size.n2 2rem #000000
+           * This is the shadow 2 description
+           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
            */
           level2: '',
           /**
-           * @description This is the shadow 3 description updated
-           * @default 0px 0px kda.foundation.size.n2 24px #000000
-           * @light 0px 0px kda.foundation.size.n2 24px #000000
-           * @dark 0px 0px kda.foundation.size.n2 24px #000000
+           * This is the shadow 3 description updated
+           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
            */
           level3: '',
-        },
-      },
-      layout: {
-        content: {
-          /**
-           * @default 33.75rem
-           * @light 33.75rem
-           * @dark 33.75rem
-           */
-          minWidth: '',
-          /**
-           * @default 42.5rem
-           * @light 42.5rem
-           * @dark 42.5rem
-           */
-          maxWidth: '',
         },
       },
       icon: {
         size: {
           /**
-           * @default kda.foundation.size.n3
-           * @light kda.foundation.size.n3
-           * @dark kda.foundation.size.n3
+           * @light {@link tokens.kda.foundation.size.n3}
+           * @dark {@link tokens.kda.foundation.size.n3}
            */
           xxs: '',
           /**
-           * @default kda.foundation.size.n4
-           * @light kda.foundation.size.n4
-           * @dark kda.foundation.size.n4
+           * @light {@link tokens.kda.foundation.size.n4}
+           * @dark {@link tokens.kda.foundation.size.n4}
            */
           xs: '',
           /**
-           * @default kda.foundation.size.n5
-           * @light kda.foundation.size.n5
-           * @dark kda.foundation.size.n5
+           * @light {@link tokens.kda.foundation.size.n5}
+           * @dark {@link tokens.kda.foundation.size.n5}
            */
           sm: '',
           /**
-           * @default kda.foundation.size.n6
-           * @light kda.foundation.size.n6
-           * @dark kda.foundation.size.n6
+           * @light {@link tokens.kda.foundation.size.n6}
+           * @dark {@link tokens.kda.foundation.size.n6}
            */
           base: '',
           /**
-           * @default kda.foundation.size.n8
-           * @light kda.foundation.size.n8
-           * @dark kda.foundation.size.n8
+           * @light {@link tokens.kda.foundation.size.n8}
+           * @dark {@link tokens.kda.foundation.size.n8}
            */
           lg: '',
           /**
-           * @default kda.foundation.size.n10
-           * @light kda.foundation.size.n10
-           * @dark kda.foundation.size.n10
+           * @light {@link tokens.kda.foundation.size.n10}
+           * @dark {@link tokens.kda.foundation.size.n10}
            */
           xl: '',
           /**
-           * @default kda.foundation.size.n16
-           * @light kda.foundation.size.n16
-           * @dark kda.foundation.size.n16
+           * @light {@link tokens.kda.foundation.size.n16}
+           * @dark {@link tokens.kda.foundation.size.n16}
            */
           xxl: '',
+        },
+      },
+      layout: {
+        content: {
+          /**
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
+           */
+          minWidth: '',
+          /**
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
+           */
+          maxWidth: '',
         },
       },
       typography: {
         family: {
           /**
-           * @default Haas Grot Disp
-           * @light Haas Grot Disp
-           * @dark Haas Grot Disp
+           * @light  `"Haas Grot Disp"`
+           * @dark  `"Haas Grot Disp"`
            */
           primaryFont: '',
           /**
-           * @default Haas Grot Disp
-           * @light Haas Grot Disp
-           * @dark Haas Grot Disp
+           * @light  `"Haas Grot Disp"`
+           * @dark  `"Haas Grot Disp"`
            */
           headingFont: '',
           /**
-           * @default Kode Mono
-           * @light Kode Mono
-           * @dark Kode Mono
+           * @light  `"Kode Mono"`
+           * @dark  `"Kode Mono"`
            */
           codeFont: '',
           /**
-           * @default Haas Grot Disp
-           * @light Haas Grot Disp
-           * @dark Haas Grot Disp
+           * @light  `"Haas Grot Disp"`
+           * @dark  `"Haas Grot Disp"`
            */
           bodyFont: '',
         },
         fontSize: {
           /**
-           * @default 0.75rem
-           * @light 0.75rem
-           * @dark 0.75rem
+           * @light  `"0.75rem"`
+           * @dark  `"0.75rem"`
            */
           xs: '',
           /**
-           * @default 0.875rem
-           * @light 0.875rem
-           * @dark 0.875rem
+           * @light  `"0.875rem"`
+           * @dark  `"0.875rem"`
            */
           sm: '',
           /**
-           * @default kda.foundation.size.n4
-           * @light kda.foundation.size.n4
-           * @dark kda.foundation.size.n4
+           * @light {@link tokens.kda.foundation.size.n4}
+           * @dark {@link tokens.kda.foundation.size.n4}
            */
           base: '',
           /**
-           * @default 1.125rem
-           * @light 1.125rem
-           * @dark 1.125rem
+           * @light  `"1.125rem"`
+           * @dark  `"1.125rem"`
            */
           md: '',
           /**
-           * @default 1.25rem
-           * @light 1.25rem
-           * @dark 1.25rem
+           * @light  `"1.25rem"`
+           * @dark  `"1.25rem"`
            */
           lg: '',
           /**
-           * @default 1.5rem
-           * @light 1.5rem
-           * @dark 1.5rem
+           * @light  `"1.5rem"`
+           * @dark  `"1.5rem"`
            */
           xl: '',
           /**
-           * @default 1.75rem
-           * @light 1.75rem
-           * @dark 1.75rem
+           * @light  `"1.75rem"`
+           * @dark  `"1.75rem"`
            */
           '2xl': '',
           /**
-           * @default 2rem
-           * @light 2rem
-           * @dark 2rem
+           * @light  `"2rem"`
+           * @dark  `"2rem"`
            */
           '3xl': '',
           /**
-           * @default 2.25rem
-           * @light 2.25rem
-           * @dark 2.25rem
+           * @light  `"2.25rem"`
+           * @dark  `"2.25rem"`
            */
           '4xl': '',
           /**
-           * @default 2.5rem
-           * @light 2.5rem
-           * @dark 2.5rem
+           * @light  `"2.5rem"`
+           * @dark  `"2.5rem"`
            */
           '5xl': '',
           /**
-           * @default 2.75rem
-           * @light 2.75rem
-           * @dark 2.75rem
+           * @light  `"2.75rem"`
+           * @dark  `"2.75rem"`
            */
           '6xl': '',
           /**
-           * @default 3rem
-           * @light 3rem
-           * @dark 3rem
+           * @light  `"3rem"`
+           * @dark  `"3rem"`
            */
           '7xl': '',
           /**
-           * @default 3.25rem
-           * @light 3.25rem
-           * @dark 3.25rem
+           * @light  `"3.25rem"`
+           * @dark  `"3.25rem"`
            */
           '8xl': '',
           /**
-           * @default 3.75rem
-           * @light 3.75rem
-           * @dark 3.75rem
+           * @light  `"3.75rem"`
+           * @dark  `"3.75rem"`
            */
           '9xl': '',
           /**
-           * @default 4.5rem
-           * @light 4.5rem
-           * @dark 4.5rem
+           * @light  `"4.5rem"`
+           * @dark  `"4.5rem"`
            */
           '10xl': '',
           /**
-           * @default 5rem
-           * @light 5rem
-           * @dark 5rem
+           * @light  `"5rem"`
+           * @dark  `"5rem"`
            */
           '11xl': '',
           /**
-           * @default 5.25rem
-           * @light 5.25rem
-           * @dark 5.25rem
+           * @light  `"5.25rem"`
+           * @dark  `"5.25rem"`
            */
           '12xl': '',
         },
         lineHeight: {
           /**
-           * @default 1.4
-           * @light 1.4
-           * @dark 1.4
+           * @light  `"1.4"`
+           * @dark  `"1.4"`
            */
           base: '',
           /**
-           * @default 1.9
-           * @light 1.9
-           * @dark 1.9
+           * @light  `"1.9"`
+           * @dark  `"1.9"`
            */
           lg: '',
         },
         weight: {
           headingFont: {
             /**
-             * @default 400
-             * @light 400
-             * @dark 400
+             * @light  `"400"`
+             * @dark  `"400"`
              */
             regular: '',
             /**
-             * @default 500
-             * @light 500
-             * @dark 500
+             * @light  `"500"`
+             * @dark  `"500"`
              */
             medium: '',
             /**
-             * @default 700
-             * @light 700
-             * @dark 700
+             * @light  `"700"`
+             * @dark  `"700"`
              */
             bold: '',
             /**
-             * @default 700
-             * @light 700
-             * @dark 700
+             * @light  `"700"`
+             * @dark  `"700"`
              */
             black: '',
           },
           bodyFont: {
             /**
-             * @default 400
-             * @light 400
-             * @dark 400
+             * @light  `"400"`
+             * @dark  `"400"`
              */
             regular: '',
             /**
-             * @default 500
-             * @light 500
-             * @dark 500
+             * @light  `"500"`
+             * @dark  `"500"`
              */
             medium: '',
             /**
-             * @default 600
-             * @light 600
-             * @dark 600
+             * @light  `"600"`
+             * @dark  `"600"`
              */
             bold: '',
             /**
-             * @default 700
-             * @light 700
-             * @dark 700
+             * @light  `"700"`
+             * @dark  `"700"`
              */
             black: '',
           },
           monoFont: {
             /**
-             * @default 400
-             * @light 400
-             * @dark 400
+             * @light  `"400"`
+             * @dark  `"400"`
              */
             regular: '',
             /**
-             * @default 500
-             * @light 500
-             * @dark 500
+             * @light  `"500"`
+             * @dark  `"500"`
              */
             medium: '',
             /**
-             * @default 600
-             * @light 600
-             * @dark 600
+             * @light  `"600"`
+             * @dark  `"600"`
              */
             semiBold: '',
             /**
-             * @default 700
-             * @light 700
-             * @dark 700
+             * @light  `"700"`
+             * @dark  `"700"`
              */
             bold: '',
           },
