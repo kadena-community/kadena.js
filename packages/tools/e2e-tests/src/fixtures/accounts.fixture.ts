@@ -1,8 +1,10 @@
-interface IAccounts {
-  publicKey: string;
-  secretkey: string;
-}
-export const accountsData: IAccounts = {
-  publicKey: '938c8ec66283493844c205481f220cfbd7024bda5859c7897141f6a5c6fc52c1',
-  secretkey: 'be6442bd49bb7c1c48413596da6e879f85c047bbe8236abe9f9afb63eb32705d',
+import type { IAccountWithSecretKey } from "../types/accounts";
+
+export const sender00Account: IAccountWithSecretKey = {
+  account: 'sender00',
+  publicKey: '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+  chainId: '0',
+  guard: '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+  // this is here only for testing purposes. in a real world scenario, the secret key should never be exposed
+  secretKey: '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
 };

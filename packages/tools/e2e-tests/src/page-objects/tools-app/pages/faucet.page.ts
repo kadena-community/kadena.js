@@ -9,14 +9,14 @@ import { AsideComponent } from '../components/aside.component';
 export class FaucetPage {
   private readonly _page: Page;
   private _card: CardComponent;
-  public notification: NotificationContainerComponent;
+  public notificationComponent: NotificationContainerComponent;
   public asidePanel: AsideComponent;
   private readonly _i18n = getI18nInstance();
 
   public constructor(page: Page) {
     this._page = page;
     this._card = new CardComponent(this._page);
-    this.notification = new NotificationContainerComponent(this._page);
+    this.notificationComponent = new NotificationContainerComponent(this._page);
     this.asidePanel = new AsideComponent(this._page);
   }
 
