@@ -12,12 +12,12 @@ import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { getFileExtension } from '../movePages/utils/getFileExtension';
 import { loadConfigPages } from '../movePages/utils/loadConfigPages';
-import { getLinkHash } from './../movePages';
 import type { IPage, IScriptResult } from './../types';
 import { getTypes } from './../utils';
 import { getCleanedHash } from './utils/getCleanedHash';
 import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
 import { getFileNameOfPageFile } from './utils/getFileNameOfPageFile';
+import { getLinkHash } from './utils/getLinkHash';
 import { getUrlNameOfPageFile } from './utils/getUrlNameOfPageFile';
 import { getUrlofImageFile } from './utils/getUrlofImageFile';
 import { isLocalImageLink, isLocalPageLink } from './utils/isLocalPageLink';
@@ -25,6 +25,10 @@ import { splitContentFrontmatter } from './utils/splitContentFrontmatter';
 
 const errors: string[] = [];
 const success: string[] = [];
+
+const getContent = (filePath: string): string => {
+  return fs.readFileSync(`./src/docs${filePath}`, 'utf-8');
+};
 
 const fixHashLinks = (link: string): string => {
   // check if the link has a hashdeeplink
@@ -39,7 +43,8 @@ const fixHashLinks = (link: string): string => {
 
   if (!file) return link;
 
-  const fullContent = fs.readFileSync(`./src/docs${file.file}`, 'utf-8');
+  const fullContent = getContent(file.file);
+
   const { content } = splitContentFrontmatter(fullContent);
 
   const md: Root = remark.parse(content);
