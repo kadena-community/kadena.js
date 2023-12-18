@@ -6,7 +6,7 @@ export class AsideComponent {
 
   public constructor(page: Page) {
     this._page = page;
-    this._component =this._page.locator('aside')
+    this._component = this._page.locator('aside');
   }
 
   public async clickPageLink(ariaLabel: string): Promise<void> {

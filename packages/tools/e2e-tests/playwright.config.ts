@@ -11,7 +11,9 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 4 : 1,
-  reporter: process.env.CI ? [['github'], ['dot'], ['html', { open: 'never' }]] : [['list'], ['html', { open: 'never' }]],
+  reporter: process.env.CI
+    ? [['github'], ['dot'], ['html', { open: 'never' }]]
+    : [['list'], ['html', { open: 'never' }]],
   use: {
     headless: !!process.env.CI,
     baseURL: process.env.PLAYWRIGHT_BASE_URL
@@ -33,16 +35,15 @@ export default defineConfig({
   projects: [
     {
       name: 'setup',
-      testMatch: 'setup/faucet.setup.ts'
+      testMatch: 'setup/faucet.setup.ts',
     },
     {
       name: '@kadena/tools',
       testDir: 'src/tests/tools-app/',
       dependencies: ['setup'],
       use: {
-        storageState: './src/page-objects/tools-app/storageState.json'
-      }
+        storageState: './src/page-objects/tools-app/storageState.json',
+      },
     },
-
   ],
 });

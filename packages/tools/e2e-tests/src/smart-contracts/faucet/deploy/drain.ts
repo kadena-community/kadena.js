@@ -1,5 +1,8 @@
-import type { ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
-import { createSignWithKeypair, Pact } from '@kadena/client';
+import type {
+  ChainwebChainId,
+  ICommandResult,
+} from '@kadena/chainweb-node-client';
+import { Pact, createSignWithKeypair } from '@kadena/client';
 import type { transferCrossChain } from '@kadena/client-utils/coin';
 import { transfer } from '@kadena/client-utils/coin';
 import { crossChainClient } from '@kadena/client-utils/core';
@@ -136,8 +139,7 @@ export const drain = async ({
     );
   }
 
-  const listenResult = await transaction.executeTo("listen")
-  await transaction.executeTo()
-  return listenResult
-
+  const listenResult = await transaction.executeTo('listen');
+  await transaction.executeTo();
+  return listenResult;
 };
