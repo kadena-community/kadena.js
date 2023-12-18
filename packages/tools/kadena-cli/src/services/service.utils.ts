@@ -3,7 +3,11 @@ import type { IServices } from './index.js';
 type ServiceGeneric = IServices[keyof IServices];
 
 const callHistory: [string, unknown[]][] = [];
-export function mock<T extends ServiceGeneric>(
+/**
+ * Can be used in services/index.ts to wrap around a service.
+ * Will record calls that can be then asserted against.
+ */
+export function recordCalls<T extends ServiceGeneric>(
   service: T,
   serviceName: string,
 ): T {
@@ -24,7 +28,7 @@ export function getCallHistory(): typeof callHistory {
   return callHistory;
 }
 
-export const mockServiceCalledWith = (
+export const serviceCalledWith = (
   method: string,
   args: (boolean | string | ((arg: unknown) => boolean))[],
 ): boolean => {
