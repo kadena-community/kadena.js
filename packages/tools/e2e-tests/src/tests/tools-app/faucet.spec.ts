@@ -10,11 +10,11 @@ test.beforeEach( async ({page, toolsApp}) => {
   });
 })
 
-test('fund new K: account', async ({ page, toolsApp }) => {
+test('Create and fund K: account', async ({ page, toolsApp }) => {
   const account = await generateAccount('0');
   await test.step('Create account on chain 0.', async () => {
     await toolsApp.faucetPage.asidePanel.clickPageLink('Fund New Account');
-    await toolsApp.faucetPage.fundNewAccount(account);
+    await toolsApp.faucetPage.CreateFundAccount(account);
     await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction is being processed...')
   });
   await test.step('Account has been created', async () => {
