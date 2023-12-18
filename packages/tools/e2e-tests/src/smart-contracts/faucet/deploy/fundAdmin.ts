@@ -91,7 +91,7 @@ export const fundAdmin = async ({
 
   const finishTargetChainTX: IUnsignedCommand = Pact.builder
     .continuation({
-      pactId: status.continuation?.pactId,
+      pactId: status.continuation?.pactId as string,
       step: 1,
       rollback: false,
       // data?: Record<string, unknown>;
@@ -111,8 +111,6 @@ export const fundAdmin = async ({
     .createTransaction();
 
   const finishResult = await submit(finishTargetChainTX as ICommand);
-
-  ('fundAdmin 4', finishResult);
 
   return await pollStatus(finishResult);
 };

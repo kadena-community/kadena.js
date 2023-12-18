@@ -1,4 +1,7 @@
-import type { ICommandResult,  ChainwebChainId } from '@kadena/chainweb-node-client';
+import type {
+  ChainwebChainId,
+  ICommandResult,
+} from '@kadena/chainweb-node-client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer } from '@kadena/client-utils/coin';
 import {
@@ -49,8 +52,8 @@ export const fundGasStation = async ({
         },
       ]),
     },
-  )
-  const listenResult = await transferTask.executeTo('listen')
-  await transferTask.executeTo()
-  return listenResult.result.status
+  );
+  const listenResult = await transferTask.executeTo('listen');
+  await transferTask.executeTo();
+  return listenResult.result.status;
 };
