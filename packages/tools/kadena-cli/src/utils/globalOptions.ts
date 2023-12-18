@@ -274,7 +274,7 @@ export const globalOptions = {
   }),
   keyWalletSelect: createOption({
     key: 'keyWallet',
-    prompt: keys.keyWalletSelectPrompt,
+    prompt: keys.keyWalletSelectAllPrompt,
     validation: z.string(),
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
     transform: (keyWallet: string) => {

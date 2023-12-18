@@ -1,6 +1,6 @@
 import { createChangeWalletPasswordCommand } from './commands/keysChangeWalletPassword.js';
 import { createDecryptCommand } from './commands/keysDecrypt.js';
-import { createDeleteKeysCommand } from './commands/keysDelete.js';
+import { createDeleteKeysCommand } from './commands/keysDeleteWallet.js';
 import { createGenerateHdKeysCommand } from './commands/keysHdGenerate.js';
 import { createImportWalletCommand } from './commands/keysImportWallet.js';
 import { createListKeysCommand } from './commands/keysList.js';

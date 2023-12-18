@@ -87,12 +87,12 @@ export async function genFromChoicePrompt(): Promise<string> {
 }
 
 async function walletSelectionPrompt(
-  includeAllOption: boolean,
+  specialOptions: string[] = [], // Array of special options
 ): Promise<string> {
   const existingKeys: string[] = getAllWallets();
 
-  if (existingKeys.length === 0) {
-    console.log(chalk.red('No files found. Exiting.'));
+  if (existingKeys.length === 0 && !specialOptions.includes('none')) {
+    console.log(chalk.red('No wallets found. Exiting.'));
     process.exit(0);
   }
 
@@ -101,11 +101,17 @@ async function walletSelectionPrompt(
     name: `Wallet: ${key}`,
   }));
 
-  // Optionally add the "all" option
-  if (includeAllOption) {
+  // Check for special options and add them
+  if (specialOptions.includes('all')) {
     choices.unshift({
       value: 'all',
       name: 'All Wallets',
+    });
+  }
+  if (specialOptions.includes('none')) {
+    choices.unshift({
+      value: 'none',
+      name: 'No Wallet',
     });
   }
 
@@ -122,7 +128,7 @@ export const keyWalletSelectPrompt: IPrompt = async (
   args,
   isOptional,
 ): Promise<string> => {
-  return walletSelectionPrompt(false); // No "all" option
+  return walletSelectionPrompt(); // No special options
 };
 
 export const keyWalletSelectAllPrompt: IPrompt = async (
@@ -130,7 +136,23 @@ export const keyWalletSelectAllPrompt: IPrompt = async (
   args,
   isOptional,
 ): Promise<string> => {
-  return walletSelectionPrompt(true); // Include "all" option
+  return walletSelectionPrompt(['all']); // Include "all" option
+};
+
+export const keyWalletSelectNonePrompt: IPrompt = async (
+  previousQuestions,
+  args,
+  isOptional,
+): Promise<string> => {
+  return walletSelectionPrompt(['none']); // Include "no wallet" option
+};
+
+export const keyWalletSelectAllOrNonePrompt: IPrompt = async (
+  previousQuestions,
+  args,
+  isOptional,
+): Promise<string> => {
+  return walletSelectionPrompt(['all', 'none']); // Include both "all" and "no wallet" options
 };
 
 export const selectDecryptMessagePrompt: IPrompt = async (
@@ -308,6 +330,40 @@ export const keyDeletePrompt: IPrompt = async (
     throw new Error('Key file name is required for the delete prompt.');
   }
   const message = `Are you sure you want to delete the key file "${args.defaultValue}"?`;
+  return await select({
+    message,
+    choices: [
+      { value: 'yes', name: 'Yes' },
+      { value: 'no', name: 'No' },
+    ],
+  });
+};
+
+export const confirmWalletDeletePrompt: IPrompt = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const message = 'Are you sure you want to delete ALL wallets';
+
+  return await select({
+    message,
+    choices: [
+      { value: 'yes', name: 'Yes, delete all wallets' },
+      { value: 'no', name: 'No, do not delete any wallet' },
+    ],
+  });
+};
+
+export const walletDeletePrompt: IPrompt = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  if (args.defaultValue === undefined) {
+    throw new Error('Walletis required for the delete prompt.');
+  }
+  const message = `Are you sure you want to delete the wallet: "${args.defaultValue}"?`;
   return await select({
     message,
     choices: [
