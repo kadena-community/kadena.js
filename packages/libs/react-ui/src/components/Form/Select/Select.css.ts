@@ -1,6 +1,5 @@
 import { atoms } from '@theme/atoms.css';
-import { sprinkles } from '@theme/sprinkles.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
+import { tokens } from '@theme/index';
 import { style } from '@vanilla-extract/css';
 import { baseContainerClass } from '../Form.css';
 
@@ -13,24 +12,13 @@ export const containerClass = style([
   }),
 ]);
 
+// check with isa
 export const containerClassDisabled = style([
-  sprinkles({
+  atoms({
     pointerEvents: 'none',
-    backgroundColor: {
-      lightMode: '$gray20',
-      darkMode: '$gray60',
-    },
-    color: {
-      lightMode: '$foreground',
-    },
+    color: 'text.base.inverse.default',
+    backgroundColor: 'layer-3.inverse.default',
   }),
-  {
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
-      },
-    },
-  },
 ]);
 
 export const iconClass = style([
@@ -74,7 +62,7 @@ export const chevronIconClass = style([
     zIndex: 10,
     selectors: {
       '&:active': {
-        color: vars.colors.$gray40,
+        color: tokens.kda.foundation.color.icon.base.default,
       },
     },
   },
