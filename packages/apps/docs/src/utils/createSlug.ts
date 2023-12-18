@@ -1,7 +1,7 @@
-const createSlugHash = (str: string): string => {
+export const createSlugHash = (str: string): string => {
   let hash = 0;
   // if the length of the string is 0, return 0
-  if (str.length === 0) return `${hash}`;
+  if (str.length === 0) return ``;
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   str.split('').forEach((_char, idx) => {

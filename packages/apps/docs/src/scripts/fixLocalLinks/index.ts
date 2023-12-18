@@ -10,40 +10,18 @@ import type {
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
-import { getFileExtension, getLinkHash, loadConfigPages } from './movePages';
-import type { IPage, IScriptResult } from './types';
-import { getTypes } from './utils';
+import { getFileExtension } from '../movePages/utils/getFileExtension';
+import { getLinkHash, loadConfigPages } from './../movePages';
+import type { IPage, IScriptResult } from './../types';
+import { getTypes } from './../utils';
+import { getCleanedHash } from './utils/getCleanedHash';
+import { getUrlNameOfPageFile } from './utils/getUrlNameOfPageFile';
+import { getUrlofImageFile } from './utils/getUrlofImageFile';
+import { isLocalImageLink, isLocalPageLink } from './utils/isLocalPageLink';
+import { splitContentFrontmatter } from './utils/splitContentFrontmatter';
 
 const errors: string[] = [];
 const success: string[] = [];
-
-const splitContentFrontmatter = (
-  content: string,
-): { frontmatter: string | null; content: string } => {
-  const frontmatterRegex = /^---([\s\S]+?)---/;
-  const frontmatterMatch = content.match(frontmatterRegex);
-
-  const frontmatter = frontmatterMatch ? frontmatterMatch[1] : null;
-  const contentWithoutFrontmatter = frontmatter
-    ? content.replace(frontmatterRegex, '').trim()
-    : content.trim();
-
-  return {
-    content: contentWithoutFrontmatter,
-    frontmatter: frontmatter,
-  };
-};
-
-const isLocalPageLink = (url: string): boolean => {
-  const extension = getFileExtension(url);
-  return (
-    !url.startsWith('http') &&
-    (extension === 'md' ||
-      extension === 'mdx' ||
-      extension === 'tsx' ||
-      extension === 'jsx')
-  );
-};
 
 const getFileNameOfUrl = (link: string): IPage | undefined => {
   const pages = loadConfigPages();
@@ -61,14 +39,6 @@ const getFileNameOfUrl = (link: string): IPage | undefined => {
   };
 
   return innerFind(pages);
-};
-
-//removing the hDIGIT part, so we can add it programmatically (for backward compatibility)
-const getCleanedHash = (hash: string): string => {
-  const regExp = /^([^\d]+)h(-?\d+)$/;
-  const match = hash.match(regExp);
-  if (!match) return hash;
-  return match[1];
 };
 
 const fixHashLinks = (link: string): string => {
@@ -105,26 +75,12 @@ const fixHashLinks = (link: string): string => {
   return `${cleanedLink}#${createSlug(foundHeader)}`;
 };
 
-const isLocalImageLink = (link: Image): boolean => {
-  const url = link.url;
-  return !url.startsWith('http') && url.includes('public/assets');
-};
-
 const getFileNameOfPageFile = (page: IPage, parentTree: IPage[]): string => {
   return `${
     parentTree.reduce((acc, val) => {
       return `${acc}${val.url}`;
     }, '') + page.url
   }/index.${getFileExtension(page.file)}`;
-};
-
-const getUrlNameOfPageFile = (page: IPage, parentTree: IPage[]): string => {
-  if (!page) return '';
-  return `${
-    parentTree.reduce((acc, val) => {
-      return `${acc}${val.url}`;
-    }, '') + page.url
-  }`;
 };
 
 const findPageByFile = (
@@ -146,15 +102,6 @@ const findPageByFile = (
   return found;
 };
 
-const getUrlofImageFile = (link: string): string => {
-  const cleanLink = link
-    .replace(/\.\.\//g, '')
-    .replace(/\.\//g, '')
-    .replace(/public/, '');
-
-  return cleanLink;
-};
-
 const getUrlofPageFile = (link: string): string => {
   const pages = loadConfigPages();
   const fileHash = getLinkHash(link);
@@ -171,6 +118,7 @@ const getUrlofPageFile = (link: string): string => {
   }
 
   if (!result.page) return '';
+
   return `${getUrlNameOfPageFile(result.page, result.parentTree)}${
     fileHash ? `#${fileHash}` : ''
   }`;

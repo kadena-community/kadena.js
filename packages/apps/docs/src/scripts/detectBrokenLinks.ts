@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
+import { getFileExtension } from './movePages/utils/getFileExtension';
 import type { IScriptResult } from './types';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -131,10 +132,10 @@ function processFiles(directory: string): void {
     if (fileStats.isDirectory()) {
       processFiles(filePath); // Recursively process subdirectories
     } else {
-      const fileExtension = path.extname(filePath);
+      const fileExtension = getFileExtension(filePath);
       const localFilePath = filePath.replace(__dirname, '');
 
-      if (fileExtension === '.md') {
+      if (fileExtension === 'md') {
         const brokenLinks = extractBrokenLinksFromMdFile(filePath);
 
         if (brokenLinks.length > 0) {
@@ -142,7 +143,7 @@ function processFiles(directory: string): void {
         }
       }
 
-      if (fileExtension === '.tsx') {
+      if (fileExtension === 'tsx') {
         const brokenLinks = extractBrokenLinksFromTsFile(filePath);
 
         if (brokenLinks.length > 0) {

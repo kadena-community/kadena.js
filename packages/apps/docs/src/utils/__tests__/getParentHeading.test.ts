@@ -1,8 +1,9 @@
 import type { ISubHeaderElement } from '@kadena/docs-tools';
+import { describe, expect, it } from 'vitest';
 import { getParentHeading } from '../getParentHeading';
 
 describe('utils getParentHeading', () => {
-  test('should return the parent H1 if the tag is H2"', () => {
+  it('should return the parent H1 if the tag is H2"', () => {
     const root: ISubHeaderElement = { tag: 'h1', children: [] };
     const expectedResult = root;
 
@@ -13,7 +14,7 @@ describe('utils getParentHeading', () => {
     expect(result).toStrictEqual(expectedResult);
   });
 
-  test('should return the parent H2 if the tag is H3', () => {
+  it('should return the parent H2 if the tag is H3', () => {
     const root: ISubHeaderElement = {
       tag: 'h1',
       children: [
@@ -34,7 +35,7 @@ describe('utils getParentHeading', () => {
     expect(result).toStrictEqual(expectedResult);
   });
 
-  test('should return the parent H1 if the tag is H2 and there is already an H2 as a child', () => {
+  it('should return the parent H1 if the tag is H2 and there is already an H2 as a child', () => {
     const root: ISubHeaderElement = {
       tag: 'h1',
       children: [
@@ -50,7 +51,7 @@ describe('utils getParentHeading', () => {
     expect(result).toStrictEqual(expectedResult);
   });
 
-  test('should return the last H2 if the tag is H2 and there is already an H2 as a child', () => {
+  it('should return the last H2 if the tag is H2 and there is already an H2 as a child', () => {
     const root: ISubHeaderElement = {
       tag: 'h1',
       children: [
@@ -85,7 +86,7 @@ describe('utils getParentHeading', () => {
     expect(result).toStrictEqual(expectedResult);
   });
 
-  test('should return the last H3 if the tag is H4', () => {
+  it('should return the last H3 if the tag is H4', () => {
     const root: ISubHeaderElement = {
       tag: 'h1',
       children: [

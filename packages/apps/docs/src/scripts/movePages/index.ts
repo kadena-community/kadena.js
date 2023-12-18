@@ -1,7 +1,9 @@
 import * as fs from 'fs';
 import yaml from 'js-yaml';
-import type { IConfig, IPage, IScriptResult } from './types';
-import { promiseExec } from './utils/build';
+import path from 'path';
+import type { IConfig, IPage, IScriptResult } from './../types';
+import { promiseExec } from './../utils/build';
+import { getFileExtension } from './utils/getFileExtension';
 
 const errors: string[] = [];
 const success: string[] = [];
@@ -35,17 +37,6 @@ export const getLinkHash = (filePath: string): string | undefined => {
   if (extensionArr.length < 2) return;
 
   return extensionArr[1];
-};
-
-export const getFileExtension = (filePath: string): string => {
-  const arr = filePath.split('/');
-  const extensionWithHashArr = arr[arr.length - 1].split('.');
-
-  //also remove the # at the end of a link
-  const extensionArr =
-    extensionWithHashArr[extensionWithHashArr.length - 1].split('#');
-
-  return extensionArr[0];
 };
 
 const copyPages = (pages: IPage[], parentDir: string = ''): void => {
