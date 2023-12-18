@@ -131,22 +131,22 @@ export const darkThemeValues = {
           },
           semantic: {
             positive: {
-              default: tokens.kda.foundation.color.semantic.positive.n5,
+              default: tokens.kda.foundation.color.semantic.positive.n1,
               '@hover': tokens.kda.foundation.color.semantic.positive.n10,
               '@inverse': tokens.kda.foundation.color.semantic.positive.n95,
             },
             negative: {
-              default: tokens.kda.foundation.color.semantic.negative.n5,
+              default: tokens.kda.foundation.color.semantic.negative.n1,
               '@hover': tokens.kda.foundation.color.semantic.negative.n10,
               '@inverse': tokens.kda.foundation.color.semantic.negative.n95,
             },
             warning: {
-              default: tokens.kda.foundation.color.semantic.warning.n5,
+              default: tokens.kda.foundation.color.semantic.warning.n1,
               '@hover': tokens.kda.foundation.color.semantic.warning.n10,
               '@inverse': tokens.kda.foundation.color.semantic.warning.n95,
             },
             info: {
-              default: tokens.kda.foundation.color.semantic.info.n5,
+              default: tokens.kda.foundation.color.semantic.info.n1,
               '@hover': tokens.kda.foundation.color.semantic.info.n10,
               '@inverse': tokens.kda.foundation.color.semantic.info.n95,
             },
@@ -631,6 +631,12 @@ export const darkThemeValues = {
           level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
         },
       },
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
+        },
+      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -640,12 +646,6 @@ export const darkThemeValues = {
           lg: tokens.kda.foundation.size.n8,
           xl: tokens.kda.foundation.size.n10,
           xxl: tokens.kda.foundation.size.n16,
-        },
-      },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
         },
       },
       typography: {

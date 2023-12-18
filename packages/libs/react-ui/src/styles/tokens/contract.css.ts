@@ -582,9 +582,9 @@ export const tokens = createThemeContract({
           semantic: {
             positive: {
               /**
-               * @default kda.foundation.color.semantic.positive.n5
-               * @light kda.foundation.color.semantic.positive.n5
-               * @dark kda.foundation.color.semantic.positive.n5
+               * @default kda.foundation.color.semantic.positive.n1
+               * @light kda.foundation.color.semantic.positive.n1
+               * @dark kda.foundation.color.semantic.positive.n1
                */
               default: '',
               /**
@@ -602,9 +602,9 @@ export const tokens = createThemeContract({
             },
             negative: {
               /**
-               * @default kda.foundation.color.semantic.negative.n5
-               * @light kda.foundation.color.semantic.negative.n5
-               * @dark kda.foundation.color.semantic.negative.n5
+               * @default kda.foundation.color.semantic.negative.n1
+               * @light kda.foundation.color.semantic.negative.n1
+               * @dark kda.foundation.color.semantic.negative.n1
                */
               default: '',
               /**
@@ -622,9 +622,9 @@ export const tokens = createThemeContract({
             },
             warning: {
               /**
-               * @default kda.foundation.color.semantic.warning.n5
-               * @light kda.foundation.color.semantic.warning.n5
-               * @dark kda.foundation.color.semantic.warning.n5
+               * @default kda.foundation.color.semantic.warning.n1
+               * @light kda.foundation.color.semantic.warning.n1
+               * @dark kda.foundation.color.semantic.warning.n1
                */
               default: '',
               /**
@@ -642,9 +642,9 @@ export const tokens = createThemeContract({
             },
             info: {
               /**
-               * @default kda.foundation.color.semantic.info.n5
-               * @light kda.foundation.color.semantic.info.n5
-               * @dark kda.foundation.color.semantic.info.n5
+               * @default kda.foundation.color.semantic.info.n1
+               * @light kda.foundation.color.semantic.info.n1
+               * @dark kda.foundation.color.semantic.info.n1
                */
               default: '',
               /**
@@ -2864,6 +2864,22 @@ export const tokens = createThemeContract({
           level3: '',
         },
       },
+      layout: {
+        content: {
+          /**
+           * @default 33.75rem
+           * @light 33.75rem
+           * @dark 33.75rem
+           */
+          minWidth: '',
+          /**
+           * @default 42.5rem
+           * @light 42.5rem
+           * @dark 42.5rem
+           */
+          maxWidth: '',
+        },
+      },
       icon: {
         size: {
           /**
@@ -2908,22 +2924,6 @@ export const tokens = createThemeContract({
            * @dark kda.foundation.size.n16
            */
           xxl: '',
-        },
-      },
-      layout: {
-        content: {
-          /**
-           * @default 33.75rem
-           * @light 33.75rem
-           * @dark 33.75rem
-           */
-          minWidth: '',
-          /**
-           * @default 42.5rem
-           * @light 42.5rem
-           * @dark 42.5rem
-           */
-          maxWidth: '',
         },
       },
       typography: {

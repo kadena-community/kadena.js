@@ -4,6 +4,7 @@ import { breakpoints, flattenTokens } from './themeUtils';
 import { tokens } from './tokens/contract.css';
 
 export const colorAtoms = flattenTokens({
+  inherit: 'inherit',
   currentColor: 'currentColor',
   icon: tokens.kda.foundation.color.icon,
   text: tokens.kda.foundation.color.text,
@@ -24,6 +25,7 @@ const systemProperties = defineProperties({
     },
     borderColor: flattenTokens(tokens.kda.foundation.color.border),
     borderRadius: tokens.kda.foundation.radius,
+    borderStyle: ['solid'],
     borderWidth: tokens.kda.foundation.border.width,
     bottom: [0],
     boxShadow: tokens.kda.foundation.effect.shadow,
@@ -109,6 +111,10 @@ const responsiveProperties = defineProperties({
       'marginInlineStart',
       'marginInlineEnd',
     ],
+    marginLeft: ['marginInlineStart'],
+    marginRight: ['marginInlineEnd'],
+    marginTop: ['marginBlockStart'],
+    marginBottom: ['marginBlockEnd'],
     marginX: ['marginInlineStart', 'marginInlineEnd'],
     marginY: ['marginBlockStart', 'marginBlockEnd'],
     marginInline: ['marginInlineStart', 'marginInlineEnd'],
@@ -119,6 +125,10 @@ const responsiveProperties = defineProperties({
       'paddingInlineStart',
       'paddingInlineEnd',
     ],
+    paddingLeft: ['paddingInlineStart'],
+    paddingRight: ['paddingInlineEnd'],
+    paddingTop: ['paddingBlockStart'],
+    paddingBottom: ['paddingBlockEnd'],
     paddingX: ['paddingInlineStart', 'paddingInlineEnd'],
     paddingY: ['paddingBlockStart', 'paddingBlockEnd'],
     paddingInline: ['paddingInlineStart', 'paddingInlineEnd'],
