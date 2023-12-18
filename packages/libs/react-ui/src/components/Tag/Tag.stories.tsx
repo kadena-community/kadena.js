@@ -48,7 +48,6 @@ const meta: Meta<ITagGroupProps> = {
 export default meta;
 type Story = StoryObj<ITagGroupProps>;
 
-// eslint-disable-next-line
 const tags = [
   { id: '1', name: 'News' },
   { id: '2', name: 'Travel' },
@@ -65,9 +64,7 @@ export const Group: Story = {
     return (
       <TagGroup label={label}>
         {tags.map((item) => (
-          <TagItem key={item.id} href="www.google.com">
-            {item.name}
-          </TagItem>
+          <TagItem key={item.id}>{item.name}</TagItem>
         ))}
       </TagGroup>
     );
