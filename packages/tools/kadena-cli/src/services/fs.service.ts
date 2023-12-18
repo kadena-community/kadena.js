@@ -10,18 +10,18 @@ export interface IFileSystemService {
 }
 
 export const fileSystemService: IFileSystemService = {
-  readFile: async (path: string) => {
+  async readFile(path: string) {
     try {
-      return fs.readFile(path, 'utf8');
+      return await fs.readFile(path, 'utf8');
     } catch (e) {
       return null;
     }
   },
-  writeFile: async (file: string, data: string) => {
+  async writeFile(file: string, data: string) {
     await fs.writeFile(file, data, 'utf8');
   },
-  async directoryExists(file: string) {
-    const dirname = path.dirname(file);
+  async directoryExists(directoryPath: string) {
+    const dirname = path.dirname(directoryPath);
     try {
       await fs.access(dirname, fs.constants.F_OK);
       return true;
@@ -31,29 +31,11 @@ export const fileSystemService: IFileSystemService = {
   },
   async ensureDirectoryExists(file: string) {
     const dirname = path.dirname(file);
-    if (!(await this.directoryExists(dirname))) {
+    if (!(await fileSystemService.directoryExists(dirname))) {
       await fs.mkdir(dirname, { recursive: true });
     }
   },
   async readDir(directoryPath: string) {
     return fs.readdir(directoryPath);
-  },
-};
-
-export const mockFileSystemService: IFileSystemService = {
-  readFile: async (path: string) => {
-    return '';
-  },
-  writeFile: async (path: string, data: string) => {
-    return;
-  },
-  directoryExists: async (directoryPath: string) => {
-    return true;
-  },
-  ensureDirectoryExists: async (directoryPath: string) => {
-    return;
-  },
-  readDir: async (directoryPath: string) => {
-    return [];
   },
 };

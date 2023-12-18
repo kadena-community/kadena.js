@@ -2035,6 +2035,9 @@ importers:
       js-yaml:
         specifier: ~4.1.0
         version: 4.1.0
+      memfs:
+        specifier: ~3.5.1
+        version: 3.5.3
       mkdirp:
         specifier: ~1.0.4
         version: 1.0.4
@@ -21712,7 +21715,6 @@ packages:
     engines: {node: '>= 4.0.0'}
     dependencies:
       fs-monkey: 1.0.4
-    dev: true
 
   /memoizerific@1.11.3:
     resolution: {integrity: sha512-/EuHYwAPdLtXwAwSZkh/Gutery6pD2KYd44oQLhAvQp/50mpyduZh8Q7PYHXTCJ+wuXxt7oij2LXyIJOOYFPog==}
