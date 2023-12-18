@@ -32,6 +32,9 @@ export interface IInputProps
   status?: FormFieldStatus;
 }
 
+/**
+ * @deprecated Use `TextField` instead.
+ */
 export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
   function Input(
     {

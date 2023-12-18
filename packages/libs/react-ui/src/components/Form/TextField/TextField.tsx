@@ -10,7 +10,7 @@ import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
 export interface ITextFieldProps
   extends Omit<IFormFieldWrapperProps, 'children' | 'htmlFor'>,
     Omit<IInputProps, 'disabled' | 'children'> {}
-// FormField with action buttons? pass the children as its by default?
+// remove exports for textArea, select and input
 export const TextField: FC<ITextFieldProps> = ({
   disabled = false,
   status,

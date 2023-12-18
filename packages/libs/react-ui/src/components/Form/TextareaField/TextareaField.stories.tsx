@@ -26,17 +26,6 @@ const meta: Meta<ITextareaFieldProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-
-    textAreaProps: {
-      description: 'Props for the textarea element.',
-      control: {
-        type: 'object',
-      },
-      table: {
-        type: { summary: 'object' },
-        defaultValue: { summary: 'false' },
-      },
-    },
   },
 };
 

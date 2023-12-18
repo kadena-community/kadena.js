@@ -6,14 +6,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
 
-type StoryProps = {
-  helperText: string;
-  leadingText: string;
-  startIcon: React.ReactElement;
-} & Omit<ITextFieldProps, 'startIcon'>;
+// type StoryProps = {
+//   helperText: string;
+//   leadingText: string;
+//   startIcon: React.ReactElement;
+// } & Omit<ITextFieldProps, 'startIcon'>;
 
-const meta: Meta<StoryProps> = {
+const meta: Meta<ITextFieldProps> = {
   title: 'Form/TextField',
+  component: TextField,
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {
@@ -90,7 +91,7 @@ const meta: Meta<StoryProps> = {
   },
 };
 
-type Story = StoryObj<StoryProps>;
+type Story = StoryObj<ITextFieldProps>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -131,12 +132,10 @@ export const Group: Story = {
         disabled={disabled}
         helperText={helperText}
         leadingTextWidth={leadingTextWidth}
-        inputProps={{
-          id: 'inputStory',
-          leadingText,
-          startIcon,
-          placeholder: 'This is a placeholder',
-        }}
+        id="inputStory"
+        leadingText={leadingText}
+        startIcon={startIcon}
+        placeholder="This is a placeholder"
       />
     );
   },
