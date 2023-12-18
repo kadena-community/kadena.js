@@ -1,5 +1,6 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import yaml from 'js-yaml';
+import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   KEY_EXT,
@@ -124,17 +125,17 @@ export async function storeWallet(
  * @returns {TSeedContent | IKeyPair | undefined} The parsed content of the key file, or undefined if the file does not exist.
  * @throws {Error} Throws an error if reading the file fails.
  */
-export async function readKeyFileContent(
+export function readKeyFileContent(
   filePath: string,
-): Promise<TSeedContent | IKeyPair | undefined> {
-  // if (!existsSync(filePath)) {
-  if (!(await services.filesystem.directoryExists(filePath))) {
+): TSeedContent | IKeyPair | undefined {
+  if (!existsSync(filePath)) {
+    // if (!(await services.filesystem.directoryExists(filePath))) {
     console.error(`File at path ${filePath} does not exist.`);
     return undefined;
   }
 
-  // const fileContents = readFileSync(filePath, 'utf8');
-  const fileContents = await services.filesystem.readFile(filePath);
+  const fileContents = readFileSync(filePath, 'utf8');
+  // const fileContents = await services.filesystem.readFile(filePath);
   if (fileContents === null) {
     throw Error(`Failed to read file at path: ${filePath}`);
   }
@@ -165,19 +166,19 @@ export async function readKeyFileContentAsync(
  * @param {string} extension - The file extension to filter by.
  * @returns {string[]} Array of filenames with the specified extension, without the extension itself.
  */
-export async function getFilesWithExtension(
+export function getFilesWithExtension(
   dir: string,
   extension: string,
-): Promise<string[]> {
-  // if (!existsSync(dir)) {
-  //   mkdirSync(dir, { recursive: true });
-  // }
-  await services.filesystem.ensureDirectoryExists(dir);
+): string[] {
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
+  // await services.filesystem.ensureDirectoryExists(dir);
 
   try {
-    const files = await services.filesystem.readDir(dir);
-    // return readdirSync(dir).filter((filename) => {
-    return files.filter((filename) => {
+    // const files = await services.filesystem.readDir(dir);
+    return readdirSync(dir).filter((filename) => {
+      // return files.filter((filename) => {
       // When searching for standard wallet files, exclude legacy wallet files
       if (extension === WALLET_EXT && filename.endsWith(WALLET_LEGACY_EXT)) {
         return false;

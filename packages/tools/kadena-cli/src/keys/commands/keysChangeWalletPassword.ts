@@ -74,7 +74,7 @@ export const createChangeWalletPasswordCommand: (
 
       console.log(chalk.green(`\nWallet password successfully updated..\n`));
       console.log('filename: ', fileName);
-      storageService.storeWallet(
+      await storageService.storeWallet(
         encryptedNewSeed,
         removeAfterFirstDot(fileName),
         isLegacy,

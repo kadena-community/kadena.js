@@ -45,7 +45,11 @@ export const createImportWalletCommand: (
 
         loading.succeed('Completed');
 
-        storageService.storeWallet(keySeed, config.keyWallet, config.legacy);
+        await storageService.storeWallet(
+          keySeed,
+          config.keyWallet,
+          config.legacy,
+        );
 
         displayStoredWallet(config.keyWallet, config.legacy);
       } catch (error) {
