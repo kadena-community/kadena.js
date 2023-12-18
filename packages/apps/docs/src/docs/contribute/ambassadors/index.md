@@ -1,4 +1,5 @@
 ---
+
 title: Ambassador Overview
 description:
   Join a community of passionate individuals in helping spread Kadena's brand
@@ -7,8 +8,8 @@ menu: Ambassadors
 label: Ambassadors
 order: 3
 layout: full
----
 
+---
 # Ambassador Overview
 
 ## Kadena Ambassador program
@@ -25,22 +26,22 @@ be selecting individuals to serve as Kadena Ambassadors.
 
 **Ambassador Privileges**
 
-- Eligible for compensation paid in KDA Tokens.
-- Ambassador designation on our Discord Server and Telegram Channel
-- Dedicated invite-only Ambassador Channel on our Discord and Telegram
-- Gain behind-the-scenes access to our project's roadmap
-- More involvement in the project's decision-making process by providing direct
-  feedback to core team members
+*   Eligible for compensation paid in KDA Tokens.
+*   Ambassador designation on our Discord Server and Telegram Channel
+*   Dedicated invite-only Ambassador Channel on our Discord and Telegram
+*   Gain behind-the-scenes access to our project's roadmap
+*   More involvement in the project's decision-making process by providing direct
+    feedback to core team members
 
 **Categories of Ambassadors**
 
-- Content Creator​
-- Moderator
-- Community Channel Leader
+*   Content Creator​
+*   Moderator
+*   Community Channel Leader
 
 ## FAQ
 
----
+***
 
 **Does being a long time member of the Kadena community help by application?**
 
@@ -120,3 +121,5 @@ our social media communities. We expect you to abide that Code of Conduct while
 acting as an Ambassador and if you a Moderator or Community Channel Leader
 enforce that Code of Conduct in the social media channel that you moderate
 and/or monitor.
+
+    

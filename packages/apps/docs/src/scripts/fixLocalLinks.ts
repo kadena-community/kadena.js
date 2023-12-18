@@ -1,5 +1,12 @@
+import { createSlug } from '@/utils/createSlug';
 import * as fs from 'fs';
-import type { Definition, Image, Link } from 'mdast-util-from-markdown/lib';
+import type {
+  Definition,
+  Heading,
+  Image,
+  Link,
+  Text,
+} from 'mdast-util-from-markdown/lib';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
@@ -9,6 +16,23 @@ import { getTypes } from './utils';
 
 const errors: string[] = [];
 const success: string[] = [];
+
+const splitContentFrontmatter = (
+  content: string,
+): { frontmatter: string | null; content: string } => {
+  const frontmatterRegex = /^---([\s\S]+?)---/;
+  const frontmatterMatch = content.match(frontmatterRegex);
+
+  const frontmatter = frontmatterMatch ? frontmatterMatch[1] : null;
+  const contentWithoutFrontmatter = frontmatter
+    ? content.replace(frontmatterRegex, '').trim()
+    : content.trim();
+
+  return {
+    content: contentWithoutFrontmatter,
+    frontmatter: frontmatter,
+  };
+};
 
 const isLocalPageLink = (url: string): boolean => {
   const extension = getFileExtension(url);
@@ -21,10 +45,64 @@ const isLocalPageLink = (url: string): boolean => {
   );
 };
 
+const getFileNameOfUrl = (link: string): IPage | undefined => {
+  const pages = loadConfigPages();
+  const [, ...linkArr] = link.split('/');
+
+  const innerFind = (
+    pages: IPage[] | undefined,
+    parentPage?: IPage,
+  ): IPage | undefined => {
+    const parentUrl = linkArr.shift();
+    if (!parentUrl || !pages) return parentPage;
+    const found = pages.find((page) => page.url === `/${parentUrl}`);
+    if (!found) return parentPage;
+    return innerFind(found.children, found);
+  };
+
+  return innerFind(pages);
+};
+
+//removing the hDIGIT part, so we can add it programmatically (for backward compatibility)
+const getCleanedHash = (hash: string): string => {
+  const regExp = /^([^\d]+)h(-?\d+)$/;
+  const match = hash.match(regExp);
+  if (!match) return hash;
+  return match[1];
+};
+
 const fixHashLinks = (link: string): string => {
   // check if the link has a hashdeeplink
   const arr = link.split('#');
-  if (arr.length < 2) return '';
+  if (arr.length < 2) return link;
+
+  const cleanedLink = arr[0];
+  const cleanedHashUrl = getCleanedHash(arr[1]);
+
+  // get the page to the hashlink
+  const file = getFileNameOfUrl(cleanedLink);
+
+  if (!file) return link;
+
+  const fullContent = fs.readFileSync(`./src/docs${file.file}`, 'utf-8');
+  const { content } = splitContentFrontmatter(fullContent);
+
+  const md: Root = remark.parse(content);
+  const headers = getTypes<Heading>(md, 'heading');
+
+  const foundHeader = headers
+    .map((header) => {
+      return (header.children[0] as Text).value;
+    })
+    .find((header) => {
+      return cleanedHashUrl === getCleanedHash(createSlug(header));
+    });
+
+  if (!foundHeader) {
+    errors.push(`${link} deeplink was not found in config`);
+  }
+
+  return `${cleanedLink}#${createSlug(foundHeader)}`;
 };
 
 const isLocalImageLink = (link: Image): boolean => {
@@ -98,23 +176,6 @@ const getUrlofPageFile = (link: string): string => {
   }`;
 };
 
-const splitContentFrontmatter = (
-  content: string,
-): { frontmatter: string | null; content: string } => {
-  const frontmatterRegex = /^---([\s\S]+?)---/;
-  const frontmatterMatch = content.match(frontmatterRegex);
-
-  const frontmatter = frontmatterMatch ? frontmatterMatch[1] : null;
-  const contentWithoutFrontmatter = frontmatter
-    ? content.replace(frontmatterRegex, '').trim()
-    : content.trim();
-
-  return {
-    content: contentWithoutFrontmatter,
-    frontmatter: frontmatter,
-  };
-};
-
 const fixLinks = async (page: IPage, parentTree: IPage[]): Promise<void> => {
   const extenstion = getFileExtension(page.file);
   if (extenstion !== 'md' && extenstion !== 'mdx') return;
@@ -144,7 +205,8 @@ const fixLinks = async (page: IPage, parentTree: IPage[]): Promise<void> => {
     if (isLocalPageLink(link.url)) {
       link.url = getUrlofPageFile(link.url);
     }
-    //link.url = fixHashLinks(link.url);
+
+    link.url = fixHashLinks(link.url);
   });
 
   const newContent = toMarkdown(md);
