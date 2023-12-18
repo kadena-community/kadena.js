@@ -1,9 +1,10 @@
-import { createSignWithKeypair, type ChainId } from '@kadena/client';
+import { createSignWithKeypair  } from '@kadena/client';
+import type {ChainId} from '@kadena/client';
 import { createAccount } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { expect } from '@playwright/test';
 import { sender00Account } from '../fixtures/accounts.fixture';
-import { devnetHost, networkId } from '../fixtures/constants';
+import * as constants from '../fixtures/constants';
 import type { IAccountWithSecretKey } from '../types/accounts';
 
 export async function generateAccount(
@@ -34,9 +35,9 @@ export async function createAccountOnChain(chain: ChainId): Promise<IAccountWith
       chainId: chain,
     },
     {
-      host: devnetHost,
+      host: constants.devnetHost,
       defaults: {
-        networkId: networkId,
+        networkId: constants.networkId,
       },
       sign: createSignWithKeypair([sender00Account]),
     },
