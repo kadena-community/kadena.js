@@ -84,8 +84,11 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                 </span>
                 <FormatDate date={item.publishDate} />
                 {item.tags && (
-                  <TagGroup className={footerTags}>
-                    {item.tags.map((tag) => (
+                  <TagGroup
+                    className={footerTags}
+                    aria-label={`${item.authorInfo?.name} Tags`}
+                  >
+                    {item.tags.map((tag: string) => (
                       <TagItem key={tag}>{tag}</TagItem>
                     ))}
                   </TagGroup>

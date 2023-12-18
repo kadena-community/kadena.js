@@ -22,7 +22,6 @@ import {
   headerFigureClass,
   headerImageClass,
   pageGridClass,
-  tagLinkClass,
 } from './styles.css';
 
 export const Blog: FC<IPageProps> = ({
@@ -91,9 +90,9 @@ export const Blog: FC<IPageProps> = ({
               </ArticleMetadataItem>
               <ArticleMetadataItem>
                 {tags && (
-                  <TagGroup tagAsChild>
+                  <TagGroup tagAsChild aria-label={`${title} Tags`}>
                     {tags.map((tag: string) => (
-                      <TagItem key={tag}>
+                      <TagItem key={tag} aria-label={`${tag} Link`}>
                         <Link key={tag} href={`/tags/${tag}`}>
                           {tag}
                         </Link>
