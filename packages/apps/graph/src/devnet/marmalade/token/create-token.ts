@@ -59,7 +59,6 @@ export async function createToken({
         }),
       ],
     ),
-    addSigner(sender.keys.map((key) => key.publicKey)),
     setMeta({ senderAccount: sender.account, chainId: sender.chainId }),
   );
 
