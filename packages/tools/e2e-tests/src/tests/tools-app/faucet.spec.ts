@@ -10,36 +10,28 @@ test.beforeEach( async ({page, toolsApp}) => {
   });
 })
 
-
-test('Fund existing account @mocks', async ({ page, toolsApp, i18n }) => {
-  await test.step('Fund account on chain 0.', async () => {
-    const account = await createAccountOnChain('0')
-    await toolsApp.faucetPage.asidePanel.clickPageLink('Fund Existing Account');
-    await toolsApp.faucetPage.fundExistingAccount(account.account, '0');
-    await expect(
-      page.getByText('Transaction is being processed...'),
-    ).toBeVisible();
-
-    await expect(
-      page.getByText('Transaction successfully completed'),
-    ).toBeVisible();
-  });
-});
-
 test('fund new K: account', async ({ page, toolsApp }) => {
   const account = await generateAccount('0');
   await test.step('Create account on chain 0.', async () => {
     await toolsApp.faucetPage.asidePanel.clickPageLink('Fund New Account');
     await toolsApp.faucetPage.fundNewAccount(account);
-
-
     await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction is being processed...')
-    // await expect(
-    //   page.getByText('Transaction is being processed...'),
-    // ).toBeVisible();
+  });
+  await test.step('Account has been created', async () => {
+
     await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction successfully completed')
-    // await expect(
-    //   page.getByText('Transaction successfully completed'),
-    // ).toBeVisible();
+  });
+});
+
+test('Fund existing account', async ({ page, toolsApp, i18n }) => {
+  await test.step('Fund account on chain 0.', async () => {
+    const account = await createAccountOnChain('0')
+    await toolsApp.faucetPage.asidePanel.clickPageLink('Fund Existing Account');
+    await toolsApp.faucetPage.fundExistingAccount(account.account, '0');
+    await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction is being processed...')
+  });
+  await test.step('Account has been funded', async () => {
+
+    await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction successfully completed')
   });
 });
