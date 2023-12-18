@@ -11,10 +11,13 @@ import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { getFileExtension } from '../movePages/utils/getFileExtension';
-import { getLinkHash, loadConfigPages } from './../movePages';
+import { loadConfigPages } from '../movePages/utils/loadConfigPages';
+import { getLinkHash } from './../movePages';
 import type { IPage, IScriptResult } from './../types';
 import { getTypes } from './../utils';
 import { getCleanedHash } from './utils/getCleanedHash';
+import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
+import { getFileNameOfPageFile } from './utils/getFileNameOfPageFile';
 import { getUrlNameOfPageFile } from './utils/getUrlNameOfPageFile';
 import { getUrlofImageFile } from './utils/getUrlofImageFile';
 import { isLocalImageLink, isLocalPageLink } from './utils/isLocalPageLink';
@@ -22,24 +25,6 @@ import { splitContentFrontmatter } from './utils/splitContentFrontmatter';
 
 const errors: string[] = [];
 const success: string[] = [];
-
-const getFileNameOfUrl = (link: string): IPage | undefined => {
-  const pages = loadConfigPages();
-  const [, ...linkArr] = link.split('/');
-
-  const innerFind = (
-    pages: IPage[] | undefined,
-    parentPage?: IPage,
-  ): IPage | undefined => {
-    const parentUrl = linkArr.shift();
-    if (!parentUrl || !pages) return parentPage;
-    const found = pages.find((page) => page.url === `/${parentUrl}`);
-    if (!found) return parentPage;
-    return innerFind(found.children, found);
-  };
-
-  return innerFind(pages);
-};
 
 const fixHashLinks = (link: string): string => {
   // check if the link has a hashdeeplink
@@ -50,7 +35,7 @@ const fixHashLinks = (link: string): string => {
   const cleanedHashUrl = getCleanedHash(arr[1]);
 
   // get the page to the hashlink
-  const file = getFileNameOfUrl(cleanedLink);
+  const file = getFileFromNameOfUrl(cleanedLink);
 
   if (!file) return link;
 
@@ -73,14 +58,6 @@ const fixHashLinks = (link: string): string => {
   }
 
   return `${cleanedLink}#${createSlug(foundHeader)}`;
-};
-
-const getFileNameOfPageFile = (page: IPage, parentTree: IPage[]): string => {
-  return `${
-    parentTree.reduce((acc, val) => {
-      return `${acc}${val.url}`;
-    }, '') + page.url
-  }/index.${getFileExtension(page.file)}`;
 };
 
 const findPageByFile = (

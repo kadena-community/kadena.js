@@ -1,30 +1,12 @@
 import * as fs from 'fs';
-import yaml from 'js-yaml';
-import path from 'path';
-import type { IConfig, IPage, IScriptResult } from './../types';
+import type { IPage, IScriptResult } from './../types';
 import { promiseExec } from './../utils/build';
 import { getFileExtension } from './utils/getFileExtension';
+import { loadConfigPages } from './utils/loadConfigPages';
 
 const errors: string[] = [];
 const success: string[] = [];
 const newFiles: string[] = [];
-
-export const loadConfigPages = (): IPage[] => {
-  const data = fs.readFileSync(`./src/config.yaml`, 'utf-8');
-  const { pages } = yaml.load(data) as IConfig;
-
-  const cleanup = (pages: IPage[]): IPage[] => {
-    const innerPages = Object.entries(pages);
-
-    return innerPages.map(([key, page]: [string, IPage]) => {
-      if (page.children) page.children = cleanup(page.children);
-
-      return { ...page, id: key } as IPage;
-    });
-  };
-
-  return cleanup(pages);
-};
 
 export const getLinkHash = (filePath: string): string | undefined => {
   const arr = filePath.split('/');
