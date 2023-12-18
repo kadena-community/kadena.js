@@ -1,94 +1,38 @@
-import { devnetConfig } from '@devnet/config';
 import {
-  dirtyRead,
+  IAccount,
   inspect,
   listen,
   sender00,
   signAndAssertTransaction,
   submit,
 } from '@devnet/helper';
-import { Pact, literal } from '@kadena/client';
+import {
+  ICommandResult,
+  Pact,
+  PactReference,
+  createSignWithKeypair,
+  literal,
+  readKeyset,
+} from '@kadena/client';
+import { submitClient } from '@kadena/client-utils/core';
+import {
+  addData,
+  addKeyset,
+  addSigner,
+  composePactCommand,
+  execution,
+  setMeta,
+} from '@kadena/client/fp';
 import { PactNumber } from '@kadena/pactjs';
+import { dotenv } from '@utils/dotenv';
+import { createTokenId } from './create-token-id';
 
-const sender = {
-  keys: [
-    {
-      publicKey:
-        'ac76beb00875b5618744b3f734802a51eeadb4aa2f40c9e6cf410507a69831ff',
-      secretKey:
-        'f401a6eb1ed1bd95c902fa4bf0dfcd9a604a3b69e6aaa5b399db8e5f8591ff24',
-    },
-  ],
-  account: 'k:ac76beb00875b5618744b3f734802a51eeadb4aa2f40c9e6cf410507a69831ff',
-  chainId: '0',
-};
-
-export function destructurePolicies(policies: string[]): string {
-  const policy = policies.map((policy) => `${policy}`).join(' ');
-  return `${policy}`;
-}
-
-export async function createTokenId({
-  policies,
-  uri,
-  precision = 0,
-}: {
-  policies: string[];
+interface ICreateTokenInput {
+  policies?: string[];
   uri: string;
+  tokenId?: string;
   precision?: number;
-}): Promise<string> {
-  const transaction = Pact.builder
-    .execution(
-      `(marmalade-v2.ledger.create-token-id {'precision: ${precision}, 'policies: [${destructurePolicies(
-        policies,
-      )}], 'uri: (read-string "uri")} (read-keyset 'creation_guard))`,
-    )
-    .addData('uri', uri)
-    .addData('creation_guard', {
-      pred: 'keys-all',
-      keys: sender.keys.map((key) => key.publicKey),
-    })
-    .setNetworkId(devnetConfig.NETWORK_ID)
-    .setMeta({
-      chainId: devnetConfig.CHAIN_ID,
-    })
-    .createTransaction();
-
-  const command = await dirtyRead(transaction);
-
-  if (command.result.status === 'success') {
-    return command.result.data.toString();
-  } else {
-    throw new Error(JSON.stringify(command.result.error));
-  }
-
-  // const uri: string = 'https://www.kadena.io';
-
-  // const transaction = Pact.builder
-  //   .execution(
-  //     Pact.modules['marmalade-v2.ledger']['create-token-id'](
-  //       literal(
-  //         JSON.stringify({
-  //           policies: ['marmalade-v2.non-fungible-policy-v1'],
-  //           uri,
-  //           precision: 0,
-  //         }),
-  //       ),
-  //       () => '(read-keyset "creation-guard")',
-  //     ),
-  //   )
-  //   .addData('creation-guard', {
-  //     pred: 'keys-all',
-  //     keys: sender00.keys.map((key) => key.publicKey),
-  //   })
-  //   .addData('uri', uri)
-  //   .setNetworkId(devnetConfig.NETWORK_ID)
-  //   .setMeta({ chainId: devnetConfig.CHAIN_ID })
-  //   .createTransaction();
-
-  // console.log(transaction);
-  // const result = await dirtyRead(transaction);
-  // console.log(result);
+  sender: IAccount;
 }
 
 export async function createToken({
@@ -96,22 +40,75 @@ export async function createToken({
   uri,
   tokenId,
   precision = 0,
-}: {
-  policies?: string[];
-  uri: string;
-  tokenId?: string;
-  precision?: number;
-}): Promise<string> {
+  sender,
+}: ICreateTokenInput): Promise<ICommandResult> {
   if (!tokenId) {
-    tokenId = await createTokenId({ policies, uri });
+    tokenId = await createTokenId({ policies, uri, sender });
   }
 
-  console.log(tokenId);
+  console.log('Token ID: ', tokenId);
+
+  const command = composePactCommand(
+    execution(
+      Pact.modules['marmalade-v2.ledger']['create-token'](
+        tokenId,
+        new PactNumber(precision).toPactInteger(),
+        uri,
+        //@ts-ignore
+        Array(policies.join(' ')),
+        readKeyset('creation-guard'),
+      ),
+    ),
+    addKeyset(
+      'creation-guard',
+      'keys-all',
+      ...sender.keys.map((key) => key.publicKey),
+    ),
+    addSigner(
+      sender.keys.map((key) => key.publicKey),
+      (signFor) => [
+        signFor('coin.GAS'),
+        signFor(
+          'marmalade-v2.ledger.CREATE-TOKEN',
+          tokenId,
+          new PactNumber(precision).toPactInteger(),
+          uri,
+          literal(policies.join(' ')),
+        ),
+      ],
+    ),
+    addSigner(sender.keys.map((key) => key.publicKey)),
+    setMeta({ senderAccount: sender.account, chainId: sender.chainId }),
+  );
+
+  const config = {
+    host: dotenv.NETWORK_HOST,
+    defaults: {
+      networkId: dotenv.NETWORK_ID,
+    },
+    sign: createSignWithKeypair(sender.keys),
+  };
+
+  const result = await submitClient(config)(command).executeTo('listen');
+  console.log(result);
+  return result;
+}
+
+export async function createToken1({
+  policies = [],
+  uri,
+  tokenId,
+  precision = 0,
+  sender,
+}: ICreateTokenInput): Promise<string> {
+  if (!tokenId) {
+    tokenId = await createTokenId({ policies, uri, sender });
+  }
 
   const transaction = Pact.builder
     .execution(
-      `(marmalade-v2.ledger.create-token (read-string 'token-id) 0 (read-string 'uri)[${destructurePolicies(
-        policies,
+      `(marmalade-v2.ledger.create-token (read-string 'token-id) 0 (read-string 'uri) [${policies.join(
+        ' ',
       )}] (read-keyset 'creation_guard))`,
     )
     .addData('token-id', tokenId)
@@ -121,9 +118,9 @@ export async function createToken({
       keys: sender.keys.map((key) => key.publicKey),
     })
 
-    .setNetworkId(devnetConfig.NETWORK_ID)
+    .setNetworkId(dotenv.NETWORK_ID)
     .setMeta({
-      chainId: devnetConfig.CHAIN_ID,
+      chainId: sender.chainId,
       senderAccount: sender.account,
     })
     .addSigner(sender.keys[0].publicKey, (withCap) => [
