@@ -67,6 +67,26 @@ data: ICommandResult;
 // @alpha (undocumented)
 export const rotateCommand: ({ account, newguard, gasPayer, chainId, contract, }: IRotateCommandInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
 
+// Warning: (ae-forgotten-export) The symbol "ISafeTransferInput" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const safeTransfer: (inputs: ISafeTransferInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "sign";
+data: ICommand;
+}, {
+event: "preflight";
+data: ILocalCommandResult;
+}, {
+event: "submit";
+data: ITransactionDescriptor;
+}, {
+event: "listen";
+data: ICommandResult;
+}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+
+// @alpha (undocumented)
+export const safeTransferCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ISafeTransferInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
+
 // Warning: (ae-forgotten-export) The symbol "ITransferInput" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
