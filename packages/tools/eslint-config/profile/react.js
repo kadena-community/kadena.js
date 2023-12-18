@@ -3,7 +3,6 @@ module.exports = {
   extends: ['./lib', 'plugin:react/recommended'],
   plugins: ['react', 'jsx-a11y'],
   rules: {
-    '@rushstack/typedef-var': 'off',
     '@kadena-dev/typedef-var': 'off',
     'jsx-a11y/aria-props': 'warn',
     'jsx-a11y/role-has-required-aria-props': 'warn',
