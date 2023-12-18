@@ -32,7 +32,7 @@ export class FaucetPage {
     await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();
   }
 
-  public async fundNewAccount(account: IAccountWithSecretKey): Promise<void> {
+  public async CreateFundAccount(account: IAccountWithSecretKey): Promise<void> {
     await this._card.setValueForTextbox('Public Key', account.publicKey);
     await this._card.clickButton('Add Public Key');
     await this._card.setValueForCombobox(
