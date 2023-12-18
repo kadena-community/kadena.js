@@ -1,1 +1,1 @@
-export const ns = 'common'
+export const ns = 'common';

@@ -4,7 +4,6 @@ export class CardComponent {
   private readonly _page: Page;
 
   public constructor(page: Page) {
-
     this._page = page;
   }
 
@@ -12,10 +11,7 @@ export class CardComponent {
     await this._page.getByRole('textbox', { name: label }).fill(value);
   }
 
-  public async setValueForCombobox(
-    name: string,
-    value: string,
-  ): Promise<void> {
+  public async setValueForCombobox(name: string, value: string): Promise<void> {
     await this._page.getByRole('combobox', { name: name }).selectOption(value);
   }
 

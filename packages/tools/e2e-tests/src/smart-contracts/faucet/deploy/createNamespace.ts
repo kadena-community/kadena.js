@@ -1,4 +1,7 @@
-import type { ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
+import type {
+  ChainwebChainId,
+  ICommandResult,
+} from '@kadena/chainweb-node-client';
 import { Pact, createClient } from '@kadena/client';
 import { ADMIN, ADMINS, DOMAIN, NETWORK_ID } from './constants';
 import { signTransaction } from './utils';
