@@ -1,144 +1,182 @@
 ---
-title: "04: Namespaces"
-description: "In the fourth chapter of the Election dApp tutorial you will create a namespace for your keyset and modules."
-menu: Election dApp tutorial
-label: "04: Namespaces"
+title: "Define a namespace"
+description: "Learn how to define a unique namespace for your smart contracts, keysets, and Pact modules."
+menu: "Workshop: Election application"
+label: "Define a namespace"
 order: 4
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
 
-# Chapter 04: Namespaces
+# Define a namespace
 
-After you have completed this entire tutorial, you may want to deploy your election
-smart contract to Testnet. Many others like you would perhaps like to do the same.
-If everyone would deploy Pact modules with the same name to the same network, however,
-it would become impossible to distinguish your Pact module from all the others. Therefore,
-it is not allowed to deploy a Pact module with a name that is already used by someone
-else on the chain you are deploying to
-and your deployment transaction will fail with an error if you try. Fortunately,
-Kadena offers a solution to this problem by introducing namespaces. You can create
-your own unique namespace on the blockchain and you get to decide who can update the
-namespace or use it to define keysets and modules inside it. As long as you choose a
-unique name for your namespace, all keysets and modules defined inside it will automatically
-be unique, too.
+In the Kadena ecosystem, a **namespace** is conceptual similar to a domain name except that the name is a static prefix that establishes a private boundary for the contracts and keyset definitions you control. 
 
-In this chapter, you will use the Pact REPL to test out Pact commands for defining
-namespaces. At the end of the chapter you will define a namespace for your project
-on your local Devnet. You will be using that namespace throughout the remainder of
-the tutorial.
+When you are building, testing, and deploying smart contracts on your local development network, you don't need to define a namespace.
+Your work is isolated from others because your blockchain—and any smart contracts you deploy—run exclusively on your local computer.
+
+However, if you want to deploy a smart contract on the Kadena test network or another public blockchain, the contract must have a unique name that distinguishes your Pact module from all the others.
+If you try to deploy a Pact module with a name that's already being used on the network where you are trying to deploy, the deployment will fail with an error and you'll pay a transaction fee for the failed attempt. 
+
+To prevent name collisions on the same network, Kadena allows you to define your own unique namespace on the blockchain.
+The namespace segregates your work—your smart contracts, custom keysets, and Pact modules—from applications and modules created and deployed by others.
+Within your namespace, you can define whatever keysets and modules you need and control who can update the namespace with changes. 
+As long as you choose a unique name for your namespace, everything you define inside of it will automatically be unique, too.
+
+In this tutorial, you'll learn how to define a namespace for the election application and how to use that namespace in the remaining tutorials.
+
+
+Kadena’s namespaces are relatively simple in practice. They are used in exactly two scenarios:
+
+Contract definition, in which a module is published to a namespace, which allows one to access the module and its members by prefixing the namespace and a dot (e.g. if you have a namespace my-namespace, then if you define my-module within it, you may access its members by issuing my-namespace.my-module.my-function.
+
+Keyset definition, in which a keyset is defined within the namespace, and may be referenced by its name prefixed by the namespace name in which it was defined. This allows for keysets to exist with the same name, allowing the namespace to distinguish which keyset with a common name is being referenced at a particular point in code. This also works for named keyset references.
+
+There are two builtins needed to define and “enter” a namespace in order to define constructs: define-namespace, and namespace. Upon defining a namespace, a user and admin governance protocol (a keyset or more generally, a guard) must be supplied in order to define the namespace and who may upload to it. For a more in-depth discussion, see the Pact Language ReadTheDocs.
+
 
 ## Recommended reading
 
  * [An Introductory Guide to Kadena Namespaces](/blogchain/2023/an-introductory-guide-to-kadena-namespaces-2023-01-11)
  * [Testing in the Pact REPL](https://github.com/thomashoneyman/real-world-pact/blob/main/00-core-concepts/03-Testing-In-The-Pact-REPL.md)
 
-## Get the code
+## Before you begin
 
-The project files have not been changed since the last chapter, so if you are
-following along with the tutorial you can continue on the `01-getting-started`
-branch. If you started the tutorial with this chapter, clone the tutorial
-project and change the current directory of your terminal to the project folder.
+Before you start this tutorial, verify the following basic requirements:
 
-```bash
-git clone git@github.com:kadena-community/voting-dapp.git election-dapp
-cd election-dapp
-```
+- You have an internet connection and a web browser installed on your local computer.
+- You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started) and have checked out the `01-getting-started` branch.
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/02-running-devnet).
+- You have are [connected to the development network](/build/guides/election-dapp-tutorial/02-running-devnet#connect-to-the-development-network) using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
 
-After cloning the project, switch branches to get the starter code for this chapter.
+## Write a transaction in Pact
 
-```bash
-git checkout 04-namespaces
-```
+In this tutorial, you'll write and execute some code using the Pact smart contract programming language and the Pact REPL. 
 
-In this chapter you will add some code to the project for the first time. If you want
-to skip ahead and see the final solution for this chapter, you can check out the branch
-containing the starter code for the next chapter.
+To write a simple transaction in Pact:
 
-```bash
-git checkout 05-keysets
-```
+1. Open the `election-dapp/pact` folder in a terminal shell on your computer.
 
-## Exercise: Define a namespace
+3. Create a new file named `namespace.repl` in the `pact` folder. 
 
-In the `./pact` folder, create a file `namespace.repl`. Write an empty transaction inside
-this file.
+4. Write an empty transaction by typing the following lines of code in the `namespace.repl` file:
+   
+   ```pact
+   (begin-tx
+     "Define a namespace called 'election"
+   )
+   (commit-tx)
+   ```
 
-```pact
-(begin-tx
-  "Define a namespace called 'election"
-)
-(commit-tx)
-```
+5. Execute the transaction using the `pact` command-line program running locally or in a browser.
 
-If you have the pact executable installed locally, you can run the `namespace.repl`
-file using the following command in a terminal with the current directory set
-to the root of your project.
+   If `pact` is installed locally, run the following command in the current terminal shell:
+   
+   ```bash
+   pact namespace.repl -t
+   ```
+   
+   If `pact` isn't installed locally, you can open [pact](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
+   Verify the development network is currently running on your local computer and run the following command:
+   
+   ```pact
+   (load "namespace.repl")
+   ```
 
-```bash
-pact pact/namespace.repl -t
-```
+   After you execute the file, you should see the following output:
+   
+   ```bash
+   namespace.repl:1:0:Trace: Begin Tx 0: Define a namespace called 'election
+   namespace.repl:4:0:Trace: Commit Tx 0: Define a namespace called 'election
+   Load successful
+   ```
 
-If you do not have the pact executable installed locally, you can run the `namespace.repl`
-file from the [pact ttyd in your browser](http://localhost:8080/ttyd/pact-cli/).
-Make sure that your local Devnet is running.
+## Use Pact built-in functions
 
-```pact
-(load "namespace.repl")
-```
+Inside the transaction you created in the namespace.repl file, you can call the built-in `define-namespace` Pact function with the following information as arguments:
 
-If all is well, you should see the following output.
+- The name of the namespace.
+- The keyset that defines who can use the namespace.
+- The keyset that defines who governs the namespace. 
 
-```bash
-pact/namespace.repl:2:0:Trace: Begin Tx 0: Define a namespace called 'election
-pact/namespace.repl:5:0:Trace: Commit Tx 0: Define a namespace called 'election
-Load successful
-```
+The `define-namespace` function is wrapped by the `expect` function to test that calling `define-namespace` will succeed.
+The `expect` function takes three arguments:
 
-### Define a namespace
+- The title of the test.
+- The expected output of the `define-namespace` function.
+- The `define-namespace` function call. 
 
-Inside the transaction you will call the built-in Pact function `define-namespace` with
-the name of the namespace, the keyset that defines who can use the namespace and the
-keyset that defines who governs the namespace as arguments. This function is wrapped
-by the `expect` function in order to test that calling `define-namespace` will succeed.
-The first argument of expect is the title of the test, the second argument is the expected
-output of the `define-namespace` function and the third argument is the actual `define-namespace`
-function call. Add the following code between the `begin-tx` and `commit-tx` lines in
-`namespace.repl` and run it.
+To use the `define-namespace` function:
 
-```pact
-(expect
-  "A namespace can be defined"
-  "Namespace defined: election"
-  (define-namespace 'election (read-keyset 'user-keyset) (read-keyset 'admin-keyset))
-)
-```
+1. Open the `election-dapp/pact/namespace.repl` file in a terminal shell on your computer.
 
-The test will fail with the message `No such key in message: user-keyset`. You will need
-to load the `user-keyset` and `admin-keyset` into the context of the Pact REPL so they
-can be read using the `read-keyset` function. Add the following lines at the top of the
-`namespace.repl` file and run it again.
+2. Add the following lines of code between the `begin-tx` and `commit-tx` lines:
 
-```pact
-(env-data
-  { 'user-keyset :
-    { 'keys : [ 'user-public-key ]
-    , 'pred : 'keys-all
+   ```pact
+   (expect
+     "Test whether a namespace can be defined"
+     "Namespace defined: election"
+     (define-namespace 'election (read-keyset 'user-keyset) (read-keyset 'admin-keyset))
+   )
+   ```
+
+3. Execute the transaction using the `pact` command-line program by running the following command in the current terminal shell:
+   
+   ```bash
+   pact namespace.repl -t
+   ```
+
+   You'll see that this transaction fails with output similar to the following:
+   
+   ```bash
+   namespace.repl:1:0:Trace: Begin Tx 0: Define a namespace called 'election
+   namespace.repl:4:0:Trace: FAILURE: Test whether a namespace can be defined: evaluation of actual failed:namespace.repl:7:32: No such key in message: user-keyset
+   namespace.repl:9:0:Trace: Commit Tx 0: Define a namespace called 'election
+   namespace.repl:4:0:ExecError: FAILURE: Test whether a namespace can be defined: evaluation of actual failed:namespace.repl:7:32: No such key in message: user-keyset
+   Load failed
+   ```
+   
+   For the transaction to succeed, you must first load the `user-keyset` and `admin-keyset` into the context of the Pact REPL so they can be read using the `read-keyset` function.
+
+4. Add the following lines at the top of the `namespace.repl` file:
+
+   ```pact
+   (env-data
+    { 'user-keyset :
+      { 'keys : [ 'user-public-key ]
+      , 'pred : 'keys-all
+      }
+    , 'admin-keyset :
+      { 'keys : [ 'admin-public-key ]
+      , 'pred : 'keys-all
+      }
     }
-  , 'admin-keyset :
-    { 'keys : [ 'admin-public-key ]
-    , 'pred : 'keys-all
-    }
-  }
-)
-```
+   )
+   ```
 
-At the end of the output you will see `Load successful`, which means that your test has
-passed and you successfully defined a namespace called `election` in the Pact REPL.
+5. Execute the transaction using the `pact` command-line program by running the following command in the current terminal shell:
+   
+   ```bash
+   pact namespace.repl -t
+   ```
 
-### Update the namespace
+   You'll see that this transaction succeeds with output similar to the following:
+   
+   ```bash
+   namespace.repl:1:0:Trace: Setting transaction data
+   namespace.repl:12:0:Trace: Begin Tx 0: Define a namespace called 'election
+   namespace.repl:15:0:Trace: Expect: success: Test whether a namespace can be defined
+   namespace.repl:20:0:Trace: Commit Tx 0: Define a namespace called 'election
+   Load successful
+   ```
+   
+   You now have a namespace called `election` defined in the Pact REPL.
 
-It is possible to update a namespace. In the next transaction you will update the namespace
+## Update the namespace
+
+After you define a namespace, you can update the namespace. In the next transaction you will update the namespace
 to allow the `user-keyset` to govern the namespace and limit the `admin-keyset` to only use
 the namespace for defining keysets and Pact modules. Add the following transaction at the
 bottom of the `namespace.yml` file and run it.
@@ -327,3 +365,13 @@ the Kadena JavaScript client to define a principal namespace on your local Devne
 In the next chapter you will define a keyset inside your principal namespace. This
 keyset definition will later be used to guard who can govern, i.e update, your
 election smart contract.
+
+
+
+To see the final solution for this chapter, you can check out the branch
+containing the starter code for the next chapter.
+
+```bash
+git checkout 05-keysets
+```
+
