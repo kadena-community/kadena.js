@@ -2,6 +2,7 @@ import type { ITextFieldProps } from '@components/Form';
 import { TextField } from '@components/Form';
 import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
 import { SystemIcon } from '@components/Icon';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
@@ -14,6 +15,7 @@ type StoryProps = {
 
 const meta: Meta<StoryProps> = {
   title: 'Form/TextField',
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {

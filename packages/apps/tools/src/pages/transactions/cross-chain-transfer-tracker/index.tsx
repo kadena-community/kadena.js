@@ -194,9 +194,9 @@ const CrossChainTransferTracker: FC = () => {
 
         {txError ? (
           <Notification
-            hasCloseButton
-            color="negative"
-            onClose={() => {
+            intent="negative"
+            isDismissable
+            onDismiss={() => {
               setTxError('');
             }}
             icon={<SystemIcon.AlertBox />}
@@ -206,11 +206,11 @@ const CrossChainTransferTracker: FC = () => {
             {txError}
             <NotificationFooter>
               <NotificationButton
-                color="negative"
+                intent="negative"
                 onClick={validateThenSubmit(handleSubmit)}
+                icon={<SystemIcon.Refresh />}
               >
                 {t('Retry')}
-                <SystemIcon.Refresh />
               </NotificationButton>
             </NotificationFooter>
           </Notification>

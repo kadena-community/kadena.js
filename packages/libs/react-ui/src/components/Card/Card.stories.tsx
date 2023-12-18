@@ -3,11 +3,13 @@ import type { ICardProps } from '@components/Card';
 import { Card } from '@components/Card';
 import { Stack } from '@components/Layout';
 import { Heading, Text } from '@components/Typography';
+import { withCenteredStory, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 const meta: Meta<ICardProps> = {
   title: 'Layout/Card',
+  decorators: [withContentWidth, withCenteredStory],
   parameters: {
     status: {
       type: ['needsRevision'],

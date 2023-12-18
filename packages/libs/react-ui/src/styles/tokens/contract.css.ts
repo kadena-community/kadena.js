@@ -85,45 +85,45 @@ export const tokens = createThemeContract({
       },
       radius: {
         /**
-         * @default 0
-         * @light 0
-         * @dark 0
+         * @default 0px
+         * @light 0px
+         * @dark 0px
          */
         no: '',
         /**
-         * @default 2
-         * @light 2
-         * @dark 2
+         * @default 2px
+         * @light 2px
+         * @dark 2px
          */
         xs: '',
         /**
-         * @default 4
-         * @light 4
-         * @dark 4
+         * @default 4px
+         * @light 4px
+         * @dark 4px
          */
         sm: '',
         /**
-         * @default 6
-         * @light 6
-         * @dark 6
+         * @default 6px
+         * @light 6px
+         * @dark 6px
          */
         md: '',
         /**
-         * @default 8
-         * @light 8
-         * @dark 8
+         * @default 8px
+         * @light 8px
+         * @dark 8px
          */
         lg: '',
         /**
-         * @default 16
-         * @light 16
-         * @dark 16
+         * @default 16px
+         * @light 16px
+         * @dark 16px
          */
         xl: '',
         /**
-         * @default 24
-         * @light 24
-         * @dark 24
+         * @default 24px
+         * @light 24px
+         * @dark 24px
          */
         xxl: '',
         /**
@@ -371,32 +371,91 @@ export const tokens = createThemeContract({
          */
         xxxl: '',
       },
-      effect: {
-        shadow: {
-          /**
-           * @description This is the shadow 1 description
-           * @default 4px 0.5rem kda.foundation.size.n2 4px #000000
-           * @light 4px 0.5rem kda.foundation.size.n2 4px #000000
-           * @dark 4px 0.5rem kda.foundation.size.n2 4px #000000
-           */
-          level1: '',
-          /**
-           * @description This is the shadow 2 description
-           * @default 4rem 4rem kda.foundation.size.n2 2rem #000000
-           * @light 4rem 4rem kda.foundation.size.n2 2rem #000000
-           * @dark 4rem 4rem kda.foundation.size.n2 2rem #000000
-           */
-          level2: '',
-          /**
-           * @description This is the shadow 3 description updated
-           * @default 0px 0px kda.foundation.size.n2 24px #000000
-           * @light 0px 0px kda.foundation.size.n2 24px #000000
-           * @dark 0px 0px kda.foundation.size.n2 24px #000000
-           */
-          level3: '',
-        },
-      },
       color: {
+        accent: {
+          /**
+           * @default kda.foundation.color.palette.blue.n70
+           * @light kda.foundation.color.palette.blue.n70
+           * @dark kda.foundation.color.palette.blue.n70
+           */
+          blue: '',
+          /**
+           * @default kda.foundation.color.palette.indigo.n70
+           * @light kda.foundation.color.palette.indigo.n70
+           * @dark kda.foundation.color.palette.indigo.n70
+           */
+          indigo: '',
+          /**
+           * @default kda.foundation.color.palette.lime.n70
+           * @light kda.foundation.color.palette.lime.n70
+           * @dark kda.foundation.color.palette.lime.n70
+           */
+          lime: '',
+          /**
+           * @default kda.foundation.color.palette.magenta.n70
+           * @light kda.foundation.color.palette.magenta.n70
+           * @dark kda.foundation.color.palette.magenta.n70
+           */
+          magenta: '',
+          /**
+           * @default kda.foundation.color.palette.purple.n70
+           * @light kda.foundation.color.palette.purple.n70
+           * @dark kda.foundation.color.palette.purple.n70
+           */
+          purple: '',
+          /**
+           * @default kda.foundation.color.palette.red.n70
+           * @light kda.foundation.color.palette.red.n70
+           * @dark kda.foundation.color.palette.red.n70
+           */
+          red: '',
+          /**
+           * @default kda.foundation.color.palette.yellow.n70
+           * @light kda.foundation.color.palette.yellow.n70
+           * @dark kda.foundation.color.palette.yellow.n70
+           */
+          yellow: '',
+          brand: {
+            /**
+             * @default kda.foundation.color.brand.primary.n70
+             * @light kda.foundation.color.brand.primary.n70
+             * @dark kda.foundation.color.brand.primary.n70
+             */
+            primary: '',
+            /**
+             * @default kda.foundation.color.brand.secondary.n70
+             * @light kda.foundation.color.brand.secondary.n70
+             * @dark kda.foundation.color.brand.secondary.n70
+             */
+            secondary: '',
+          },
+          semantic: {
+            /**
+             * @default kda.foundation.color.semantic.info.n70
+             * @light kda.foundation.color.semantic.info.n70
+             * @dark kda.foundation.color.semantic.info.n70
+             */
+            info: '',
+            /**
+             * @default kda.foundation.color.semantic.warning.n70
+             * @light kda.foundation.color.semantic.warning.n70
+             * @dark kda.foundation.color.semantic.warning.n70
+             */
+            warning: '',
+            /**
+             * @default kda.foundation.color.semantic.positive.n70
+             * @light kda.foundation.color.semantic.positive.n70
+             * @dark kda.foundation.color.semantic.positive.n70
+             */
+            positive: '',
+            /**
+             * @default kda.foundation.color.semantic.negative.n70
+             * @light kda.foundation.color.semantic.negative.n70
+             * @dark kda.foundation.color.semantic.negative.n70
+             */
+            negative: '',
+          },
+        },
         background: {
           base: {
             /**
@@ -523,9 +582,9 @@ export const tokens = createThemeContract({
           semantic: {
             positive: {
               /**
-               * @default kda.foundation.color.semantic.positive.n5
-               * @light kda.foundation.color.semantic.positive.n5
-               * @dark kda.foundation.color.semantic.positive.n5
+               * @default kda.foundation.color.semantic.positive.n1
+               * @light kda.foundation.color.semantic.positive.n1
+               * @dark kda.foundation.color.semantic.positive.n1
                */
               default: '',
               /**
@@ -543,9 +602,9 @@ export const tokens = createThemeContract({
             },
             negative: {
               /**
-               * @default kda.foundation.color.semantic.negative.n5
-               * @light kda.foundation.color.semantic.negative.n5
-               * @dark kda.foundation.color.semantic.negative.n5
+               * @default kda.foundation.color.semantic.negative.n1
+               * @light kda.foundation.color.semantic.negative.n1
+               * @dark kda.foundation.color.semantic.negative.n1
                */
               default: '',
               /**
@@ -563,9 +622,9 @@ export const tokens = createThemeContract({
             },
             warning: {
               /**
-               * @default kda.foundation.color.semantic.warning.n5
-               * @light kda.foundation.color.semantic.warning.n5
-               * @dark kda.foundation.color.semantic.warning.n5
+               * @default kda.foundation.color.semantic.warning.n1
+               * @light kda.foundation.color.semantic.warning.n1
+               * @dark kda.foundation.color.semantic.warning.n1
                */
               default: '',
               /**
@@ -583,9 +642,9 @@ export const tokens = createThemeContract({
             },
             info: {
               /**
-               * @default kda.foundation.color.semantic.info.n5
-               * @light kda.foundation.color.semantic.info.n5
-               * @dark kda.foundation.color.semantic.info.n5
+               * @default kda.foundation.color.semantic.info.n1
+               * @light kda.foundation.color.semantic.info.n1
+               * @dark kda.foundation.color.semantic.info.n1
                */
               default: '',
               /**
@@ -2780,6 +2839,31 @@ export const tokens = createThemeContract({
           },
         },
       },
+      effect: {
+        shadow: {
+          /**
+           * @description This is the shadow 1 description
+           * @default 4px 0.5rem kda.foundation.size.n2 4px #000000
+           * @light 4px 0.5rem kda.foundation.size.n2 4px #000000
+           * @dark 4px 0.5rem kda.foundation.size.n2 4px #000000
+           */
+          level1: '',
+          /**
+           * @description This is the shadow 2 description
+           * @default 4rem 4rem kda.foundation.size.n2 2rem #000000
+           * @light 4rem 4rem kda.foundation.size.n2 2rem #000000
+           * @dark 4rem 4rem kda.foundation.size.n2 2rem #000000
+           */
+          level2: '',
+          /**
+           * @description This is the shadow 3 description updated
+           * @default 0px 0px kda.foundation.size.n2 24px #000000
+           * @light 0px 0px kda.foundation.size.n2 24px #000000
+           * @dark 0px 0px kda.foundation.size.n2 24px #000000
+           */
+          level3: '',
+        },
+      },
       layout: {
         content: {
           /**
@@ -2794,6 +2878,52 @@ export const tokens = createThemeContract({
            * @dark 42.5rem
            */
           maxWidth: '',
+        },
+      },
+      icon: {
+        size: {
+          /**
+           * @default kda.foundation.size.n3
+           * @light kda.foundation.size.n3
+           * @dark kda.foundation.size.n3
+           */
+          xxs: '',
+          /**
+           * @default kda.foundation.size.n4
+           * @light kda.foundation.size.n4
+           * @dark kda.foundation.size.n4
+           */
+          xs: '',
+          /**
+           * @default kda.foundation.size.n5
+           * @light kda.foundation.size.n5
+           * @dark kda.foundation.size.n5
+           */
+          sm: '',
+          /**
+           * @default kda.foundation.size.n6
+           * @light kda.foundation.size.n6
+           * @dark kda.foundation.size.n6
+           */
+          base: '',
+          /**
+           * @default kda.foundation.size.n8
+           * @light kda.foundation.size.n8
+           * @dark kda.foundation.size.n8
+           */
+          lg: '',
+          /**
+           * @default kda.foundation.size.n10
+           * @light kda.foundation.size.n10
+           * @dark kda.foundation.size.n10
+           */
+          xl: '',
+          /**
+           * @default kda.foundation.size.n16
+           * @light kda.foundation.size.n16
+           * @dark kda.foundation.size.n16
+           */
+          xxl: '',
         },
       },
       typography: {
