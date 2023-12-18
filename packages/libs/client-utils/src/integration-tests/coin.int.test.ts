@@ -235,7 +235,7 @@ describe('cross chain transfer', () => {
 });
 
 describe('safeTransfer', () => {
-  it('should transfer kda from sender00 account to receiverAccount and both receiver and sender should sign', async () => {
+  it('should transfer kda from sender00 account to receiverAccount if both receiver and sender sign', async () => {
     const result = await safeTransfer(
       {
         sender: {
@@ -301,7 +301,7 @@ describe('safeTransfer', () => {
     );
   });
 
-  it('should fails if receiver doesnt satisfy the account guard sign', async () => {
+  it('should fail if receiver does nor=t satisfy the account guard sign', async () => {
     const task = safeTransfer(
       {
         sender: {
