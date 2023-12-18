@@ -1,4 +1,5 @@
-import { expect, type Page } from '@playwright/test';
+import { expect  } from '@playwright/test';
+import type {Page} from '@playwright/test';
 import { CardComponent } from '../../react-ui/card.component';
 import { NotificationContainerComponent } from '../../react-ui/notificationContainer.component';
 import { AsideComponent } from '../components/aside.component';
@@ -25,7 +26,7 @@ export class FaucetPage {
   }
 
   public async fundExistingAccount(
-    account: string,
+    account: string
     chainId: string,
   ): Promise<void> {
     await this._card.setValueForTextbox(
