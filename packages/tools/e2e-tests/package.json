@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
+    "devnet": "docker run --rm -it -p 8080:8080 kadena/devnet",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "i18next": "21.0.0",
+    "@types/node": "^18.17.14",
     "@kadena/types": "workspace:*",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
@@ -35,7 +37,6 @@
     "@kadena/chainweb-node-client": "workspace:*",
     "@playwright/test": "^1.39.0",
     "@rushstack/eslint-config": "~3.3.0",
-    "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
     "eslint-plugin-playwright": "0.16.0",
     "prettier": "~3.0.3",

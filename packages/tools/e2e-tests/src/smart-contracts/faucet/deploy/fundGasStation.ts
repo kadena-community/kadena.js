@@ -1,4 +1,4 @@
-import { listen, type ChainwebChainId, ICommandResult } from '@kadena/chainweb-node-client';
+import type { ICommandResult,  ChainwebChainId } from '@kadena/chainweb-node-client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer } from '@kadena/client-utils/coin';
 import {
@@ -15,14 +15,14 @@ export const fundGasStation = async ({
 }: {
   chainId: ChainwebChainId;
   upgrade: boolean;
-}): Promise<ICommandResult> => {
-  // if (NETWORK_ID !== 'fast-development') {
-  //   return 'Only needs to happen on Devnet, funding happens differently on Testnet.';
-  // }
+}): Promise<ICommandResult | string> => {
+  if (NETWORK_ID !== 'fast-development') {
+    return 'Only needs to happen on Devnet, funding happens differently on Testnet.';
+  }
 
-  // if (upgrade) {
-  //   return 'The step "fundGasStation" is skipped for upgrades';
-  // }
+  if (upgrade) {
+    return 'The step "fundGasStation" is skipped for upgrades';
+  }
 
   const transferTask = await transfer(
     {
@@ -52,5 +52,5 @@ export const fundGasStation = async ({
   )
   const listenResult = await transferTask.executeTo('listen')
   await transferTask.executeTo()
-  return listenResult
+  return listenResult.result.status
 };
