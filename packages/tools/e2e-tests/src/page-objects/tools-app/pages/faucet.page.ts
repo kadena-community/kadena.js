@@ -1,9 +1,13 @@
-import type { Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import { CardComponent } from '../../react-ui/card.component';
 import { NotificationContainerComponent } from '../../react-ui/notificationContainer.component';
 import { AsideComponent } from '../components/aside.component';
 import { getI18nInstance } from 'playwright-i18next-fixture';
 import { ns } from '../../../fixtures/constants';
+import { IAccount } from '@kadena/client-utils/lib/core/utils/helpers';
+import { IAccountWithSecretKey } from '../../../types/accounts';
+import { generateAccount } from '../../../helpers/accounts.helper';
+import { ChainId } from '@kadena/types';
 
 export class FaucetPage {
 
@@ -31,4 +35,18 @@ export class FaucetPage {
     await this._card.setValueForCombobox(this._i18n.t(`Chain ID`), chainId);
     await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();
   }
+
+  public async fundNewAccount(account:IAccountWithSecretKey): Promise<void> {
+    await this._card.setValueForTextbox(
+      'Public Key',
+      account.publicKey,
+    );
+    await this._card.clickButton('Add Public Key')
+    await this._card.setValueForCombobox(this._i18n.t(`Chain ID`), account.chainId);
+    //Form validation is retriggered after setting the chain. Explicitly wait for the Account Name to be visible before pressing fund.
+    await expect(this._page.getByRole('textbox', {name: 'The Account Name To Fund Coins To'})).toHaveValue(account.account);
+    await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();
+  }
+
+
 }

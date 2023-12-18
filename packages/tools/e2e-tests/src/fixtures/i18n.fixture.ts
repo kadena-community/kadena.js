@@ -6,7 +6,7 @@ import i18nEn from '@kadena/tools/locales/en/common.json'
 const i18nFixture = createI18nFixture({
   // i18n configuration options
   options: {
-    debug: true,
+    debug: false, //Enable this if you're having issues getting translations to work.
     ns: ['common'],
     lng: 'en',
     cleanCode: true,
