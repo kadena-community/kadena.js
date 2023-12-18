@@ -18,7 +18,6 @@ test('fund new K: account', async ({ page, toolsApp }) => {
     await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction is being processed...')
   });
   await test.step('Account has been created', async () => {
-
     await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction successfully completed')
   });
 });
@@ -31,7 +30,6 @@ test('Fund existing account', async ({ page, toolsApp, i18n }) => {
     await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction is being processed...')
   });
   await test.step('Account has been funded', async () => {
-
     await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction successfully completed')
   });
 });
