@@ -12,7 +12,7 @@ export const headerStyle = style([
   }),
   {
     width: '100vw',
-  }
+  },
 ]);
 
 export const mainStyle = style([
