@@ -1,6 +1,5 @@
-import { colorPalette } from '@theme/colors';
-import { sprinkles } from '@theme/sprinkles.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
+import { atoms } from '@theme/atoms.css';
+import { tokens } from '@theme/tokens/contract.css';
 import { createVar, fallbackVar, style } from '@vanilla-extract/css';
 
 export type FormFieldStatus = 'disabled' | 'positive' | 'warning' | 'negative';
@@ -11,42 +10,31 @@ export const baseOutlinedClass = style([
   {
     outline: `2px solid ${fallbackVar(
       statusOutlineColor,
-      vars.colors.$gray30,
+      tokens.kda.foundation.color.border.base.default,
     )}`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        outline: `2px solid ${fallbackVar(
-          statusOutlineColor,
-          vars.colors.$gray60,
-        )}`,
-      },
-    },
   },
 ]);
 
 export const baseContainerClass = style([
-  sprinkles({
+  atoms({
     alignItems: 'stretch',
-    borderRadius: '$sm',
+    borderRadius: 'sm',
     display: 'flex',
-    color: '$foreground',
+    color: 'text.base.default',
     overflow: 'hidden',
-    lineHeight: '$lg',
-    bg: {
-      lightMode: '$white',
-      darkMode: '$gray100',
-    },
+    lineHeight: 'lg',
+    backgroundColor: 'layer-3.default',
+    position: 'relative',
   }),
   {
-    position: 'relative',
-    boxShadow: `0px 1px 0 0 ${colorPalette.$gray30}`,
+    boxShadow: `0px 1px 0 0 ${tokens.kda.foundation.color.border.base.default}`,
     outlineOffset: '2px',
     selectors: {
-      [`${darkThemeClass} &`]: {
-        boxShadow: `0px 1px 0 0 ${colorPalette.$gray60}`,
-      },
       '&:focus-within': {
-        outline: `2px solid ${fallbackVar(statusColor, vars.colors.$blue60)}`,
+        outline: `2px solid ${fallbackVar(
+          statusColor,
+          tokens.kda.foundation.color.border.semantic.info['@focus'],
+        )}`,
         outlineOffset: '2px',
       },
     },

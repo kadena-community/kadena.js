@@ -1,20 +1,20 @@
+import { atoms } from '@theme/atoms.css';
 import { colorPalette } from '@theme/colors';
-import { sprinkles } from '@theme/sprinkles.css';
 import { darkThemeClass } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
 
 export const buttonClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: '$md',
+    borderRadius: 'md',
     cursor: 'pointer',
     border: 'none',
-    width: '$8',
-    height: '$8',
   }),
   {
+    width: '32px',
+    height: '32px',
     selectors: {
       [`${darkThemeClass} &`]: {
         backgroundColor: `${colorPalette.$gray80}`,

@@ -5,7 +5,6 @@ import { recipe } from '@vanilla-extract/recipes';
 
 const iconColorVar = createVar();
 
-// eslint-disable-next-line
 const semanticColors = ['info', 'positive', 'warning', 'negative'] as const;
 type SemanticColor = (typeof semanticColors)[number];
 
