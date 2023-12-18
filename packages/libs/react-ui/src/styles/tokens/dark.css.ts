@@ -12,8 +12,8 @@ export const darkThemeValues = {
           thick: '4px',
         },
         hairline: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
-        normal: `${tokens.kda.foundation.border.width.normal} solid ${tokens.kda.foundation.color.border.base['@bold']}`,
-        thick: `${tokens.kda.foundation.border.width.thick} solid ${tokens.kda.foundation.color.border.base['@bold']}`,
+        normal: `${tokens.kda.foundation.border.width.normal} solid ${tokens.kda.foundation.color.border.base.bold}`,
+        thick: `${tokens.kda.foundation.border.width.thick} solid ${tokens.kda.foundation.color.border.base.bold}`,
       },
       breakpoint: {
         xs: '0rem',
@@ -76,6 +76,19 @@ export const darkThemeValues = {
         xxl: tokens.kda.foundation.size.n9,
         xxxl: tokens.kda.foundation.size.n10,
       },
+      zIndex: {
+        deepdive: '-99999',
+        default: '1',
+        dialog: '6000',
+        surface: '4',
+        dropdown: '7000',
+        modal: '9000',
+        overlay: '8000',
+        popup: '5000',
+        spinner: '9050',
+        sticky: '100',
+        toast: '10000',
+      },
       color: {
         accent: {
           blue: tokens.kda.foundation.color.palette.blue.n70,
@@ -98,106 +111,186 @@ export const darkThemeValues = {
         },
         background: {
           base: {
-            default: tokens.kda.foundation.color.neutral.n20,
+            default: tokens.kda.foundation.color.neutral.n30,
             '@hover': tokens.kda.foundation.color.neutral.n10,
-            '@inverse': tokens.kda.foundation.color.neutral.n80,
+            '@disabled': tokens.kda.foundation.color.neutral.n20,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n80,
+            },
           },
           'layer-1': {
-            default: tokens.kda.foundation.color.neutral.n10,
+            default: tokens.kda.foundation.color.neutral.n20,
             '@hover': tokens.kda.foundation.color.neutral.n20,
-            '@inverse': tokens.kda.foundation.color.neutral.n90,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n90,
+            },
           },
           'layer-2': {
-            default: tokens.kda.foundation.color.neutral.n5,
+            default: tokens.kda.foundation.color.neutral.n10,
             '@hover': tokens.kda.foundation.color.neutral.n0,
-            '@inverse': tokens.kda.foundation.color.neutral.n95,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n95,
+            },
           },
           'layer-3': {
-            default: tokens.kda.foundation.color.neutral.n0,
-            '@hover': tokens.kda.foundation.color.neutral.n5,
-            '@inverse': tokens.kda.foundation.color.neutral.n100,
+            default: tokens.kda.foundation.color.neutral.n5,
+            '@hover': tokens.kda.foundation.color.neutral.n1,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n100,
+            },
           },
           brand: {
             primary: {
-              default: tokens.kda.foundation.color.brand.primary.n1,
-              '@hover': tokens.kda.foundation.color.brand.primary.n5,
-              '@inverse': tokens.kda.foundation.color.brand.primary.n99,
+              default: tokens.kda.foundation.color.brand.primary.n5,
+              '@hover': tokens.kda.foundation.color.brand.primary.n10,
+              '@focus': tokens.kda.foundation.color.brand.primary.n10,
+              inverse: {
+                default: tokens.kda.foundation.color.brand.primary.n95,
+                '@hover': tokens.kda.foundation.color.brand.primary.n80,
+                '@focus': tokens.kda.foundation.color.brand.primary.n80,
+              },
             },
             secondary: {
               default: tokens.kda.foundation.color.brand.secondary.n1,
               '@hover': tokens.kda.foundation.color.brand.secondary.n5,
-              '@inverse': tokens.kda.foundation.color.brand.secondary.n99,
+              '@focus': tokens.kda.foundation.color.brand.secondary.n5,
+              inverse: {
+                default: tokens.kda.foundation.color.brand.secondary.n99,
+                '@hover': tokens.kda.foundation.color.brand.secondary.n80,
+                '@focus': tokens.kda.foundation.color.brand.secondary.n80,
+              },
             },
           },
           semantic: {
             positive: {
               default: tokens.kda.foundation.color.semantic.positive.n1,
               '@hover': tokens.kda.foundation.color.semantic.positive.n10,
-              '@inverse': tokens.kda.foundation.color.semantic.positive.n95,
+              '@focus': tokens.kda.foundation.color.semantic.positive.n10,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.positive.n95,
+                '@hover': tokens.kda.foundation.color.semantic.positive.n90,
+                '@focus': tokens.kda.foundation.color.semantic.positive.n90,
+              },
             },
             negative: {
               default: tokens.kda.foundation.color.semantic.negative.n1,
               '@hover': tokens.kda.foundation.color.semantic.negative.n10,
-              '@inverse': tokens.kda.foundation.color.semantic.negative.n95,
+              '@focus': tokens.kda.foundation.color.semantic.negative.n10,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.negative.n95,
+                '@hover': tokens.kda.foundation.color.semantic.negative.n90,
+                '@focus': tokens.kda.foundation.color.semantic.negative.n90,
+              },
             },
             warning: {
               default: tokens.kda.foundation.color.semantic.warning.n1,
               '@hover': tokens.kda.foundation.color.semantic.warning.n10,
-              '@inverse': tokens.kda.foundation.color.semantic.warning.n95,
+              '@focus': tokens.kda.foundation.color.semantic.warning.n10,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.warning.n95,
+                '@hover': tokens.kda.foundation.color.semantic.warning.n90,
+                '@focus': tokens.kda.foundation.color.semantic.warning.n90,
+              },
             },
             info: {
               default: tokens.kda.foundation.color.semantic.info.n1,
               '@hover': tokens.kda.foundation.color.semantic.info.n10,
-              '@inverse': tokens.kda.foundation.color.semantic.info.n95,
+              '@focus': tokens.kda.foundation.color.semantic.info.n10,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.info.n95,
+                '@hover': tokens.kda.foundation.color.semantic.info.n90,
+                '@focus': tokens.kda.foundation.color.semantic.info.n90,
+              },
             },
           },
         },
         border: {
           base: {
-            default: tokens.kda.foundation.color.neutral.n10,
-            '@bold': tokens.kda.foundation.color.neutral.n20,
-            '@boldest': tokens.kda.foundation.color.neutral.n30,
+            default: tokens.kda.foundation.color.neutral['n100@alpha5'],
+            bold: tokens.kda.foundation.color.neutral['n100@alpha10'],
+            boldest: tokens.kda.foundation.color.neutral['n100@alpha20'],
+            'high-contrast': tokens.kda.foundation.color.neutral.n100,
             '@disabled': tokens.kda.foundation.color.neutral.n20,
-            '@inverse': tokens.kda.foundation.color.neutral.n100,
             '@hover': tokens.kda.foundation.color.neutral.n20,
             '@focus': tokens.kda.foundation.color.neutral.n60,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n100,
+              '@hover': tokens.kda.foundation.color.neutral.n95,
+              '@focus': tokens.kda.foundation.color.neutral.n90,
+            },
           },
           brand: {
-            primary: tokens.kda.foundation.color.brand.primary.n0,
-            secondary: tokens.kda.foundation.color.brand.secondary.n0,
+            primary: {
+              default: tokens.kda.foundation.color.brand.primary.n40,
+              subtle: tokens.kda.foundation.color.brand.primary.n20,
+              '@hover': tokens.kda.foundation.color.brand.primary.n60,
+              '@focus': tokens.kda.foundation.color.brand.primary.n70,
+              inverse: {
+                default: tokens.kda.foundation.color.brand.primary.n80,
+                '@hover': tokens.kda.foundation.color.brand.primary.n70,
+                '@focus': tokens.kda.foundation.color.brand.primary.n60,
+              },
+            },
+            secondary: {
+              default: tokens.kda.foundation.color.brand.secondary.n40,
+              subtle: tokens.kda.foundation.color.brand.secondary.n20,
+              '@hover': tokens.kda.foundation.color.brand.secondary.n60,
+              '@focus': tokens.kda.foundation.color.brand.secondary.n70,
+              inverse: {
+                default: tokens.kda.foundation.color.brand.secondary.n80,
+                '@hover': tokens.kda.foundation.color.brand.secondary.n70,
+                '@focus': tokens.kda.foundation.color.brand.secondary.n60,
+              },
+            },
           },
           semantic: {
             positive: {
               default: tokens.kda.foundation.color.semantic.positive.n60,
-              '@subtle': tokens.kda.foundation.color.semantic.positive.n5,
+              subtle: tokens.kda.foundation.color.semantic.positive.n5,
               '@disabled': tokens.kda.foundation.color.semantic.positive.n20,
-              '@inverse': tokens.kda.foundation.color.semantic.positive.n40,
               '@hover': tokens.kda.foundation.color.semantic.positive.n70,
               '@focus': tokens.kda.foundation.color.semantic.positive.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.positive.n40,
+                '@hover': tokens.kda.foundation.color.semantic.positive.n30,
+                '@focus': tokens.kda.foundation.color.semantic.positive.n20,
+              },
             },
             negative: {
               default: tokens.kda.foundation.color.semantic.negative.n60,
-              '@subtle': tokens.kda.foundation.color.semantic.negative.n5,
+              subtle: tokens.kda.foundation.color.semantic.negative.n5,
               '@disabled': tokens.kda.foundation.color.semantic.negative.n20,
-              '@inverse': tokens.kda.foundation.color.semantic.negative.n40,
               '@hover': tokens.kda.foundation.color.semantic.negative.n70,
               '@focus': tokens.kda.foundation.color.semantic.negative.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.negative.n40,
+                '@hover': tokens.kda.foundation.color.semantic.negative.n30,
+                '@focus': tokens.kda.foundation.color.semantic.negative.n20,
+              },
             },
             warning: {
               default: tokens.kda.foundation.color.semantic.warning.n60,
-              '@subtle': tokens.kda.foundation.color.semantic.warning.n5,
+              subtle: tokens.kda.foundation.color.semantic.warning.n5,
               '@disabled': tokens.kda.foundation.color.semantic.warning.n20,
-              '@inverse': tokens.kda.foundation.color.semantic.warning.n40,
               '@hover': tokens.kda.foundation.color.semantic.warning.n70,
               '@focus': tokens.kda.foundation.color.semantic.warning.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.warning.n40,
+                '@hover': tokens.kda.foundation.color.semantic.warning.n30,
+                '@focus': tokens.kda.foundation.color.semantic.warning.n20,
+              },
             },
             info: {
               default: tokens.kda.foundation.color.semantic.info.n60,
-              '@subtle': tokens.kda.foundation.color.semantic.info.n5,
+              subtle: tokens.kda.foundation.color.semantic.info.n5,
               '@disabled': tokens.kda.foundation.color.semantic.info.n20,
-              '@inverse': tokens.kda.foundation.color.semantic.info.n40,
               '@hover': tokens.kda.foundation.color.semantic.info.n70,
               '@focus': tokens.kda.foundation.color.semantic.info.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.info.n40,
+                '@hover': tokens.kda.foundation.color.semantic.info.n30,
+                '@focus': tokens.kda.foundation.color.semantic.info.n20,
+              },
             },
           },
         },
@@ -240,46 +333,82 @@ export const darkThemeValues = {
         icon: {
           base: {
             default: tokens.kda.foundation.color.neutral.n80,
-            '@bold': tokens.kda.foundation.color.neutral.n90,
-            '@disabled': tokens.kda.foundation.color.neutral.n60,
-            '@inverse': tokens.kda.foundation.color.neutral.n20,
+            bold: tokens.kda.foundation.color.neutral.n90,
+            '@disabled': tokens.kda.foundation.color.neutral.n30,
             '@hover': tokens.kda.foundation.color.neutral.n70,
             '@focus': tokens.kda.foundation.color.neutral.n60,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n20,
+              '@hover': tokens.kda.foundation.color.neutral.n10,
+              '@focus': tokens.kda.foundation.color.neutral.n5,
+            },
           },
           brand: {
             primary: {
               default: tokens.kda.foundation.color.brand.primary.n40,
-              '@bold': tokens.kda.foundation.color.brand.primary.n50,
+              bold: tokens.kda.foundation.color.brand.primary.n50,
               '@disabled': tokens.kda.foundation.color.brand.primary.n20,
-              '@inverse': tokens.kda.foundation.color.brand.primary.n0,
               '@hover': tokens.kda.foundation.color.brand.primary.n50,
               '@focus': tokens.kda.foundation.color.brand.primary.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.brand.primary.n10,
+                '@hover': tokens.kda.foundation.color.brand.primary.n5,
+                '@focus': tokens.kda.foundation.color.brand.primary.n1,
+              },
             },
             secondary: {
               default: tokens.kda.foundation.color.brand.secondary.n40,
-              '@bold': tokens.kda.foundation.color.brand.secondary.n50,
+              bold: tokens.kda.foundation.color.brand.secondary.n50,
               '@disabled': tokens.kda.foundation.color.brand.secondary.n20,
-              '@inverse': tokens.kda.foundation.color.brand.secondary.n0,
               '@hover': tokens.kda.foundation.color.brand.secondary.n50,
               '@focus': tokens.kda.foundation.color.brand.secondary.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.brand.secondary.n10,
+                '@hover': tokens.kda.foundation.color.brand.secondary.n5,
+                '@focus': tokens.kda.foundation.color.brand.secondary.n1,
+              },
             },
           },
           semantic: {
             positive: {
               default: tokens.kda.foundation.color.semantic.positive.n80,
-              '@inverse': tokens.kda.foundation.color.semantic.positive.n20,
+              '@hover': tokens.kda.foundation.color.semantic.positive.n70,
+              '@focus': tokens.kda.foundation.color.semantic.positive.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.positive.n20,
+                '@hover': tokens.kda.foundation.color.semantic.positive.n10,
+                '@focus': tokens.kda.foundation.color.semantic.positive.n5,
+              },
             },
             negative: {
               default: tokens.kda.foundation.color.semantic.negative.n80,
-              '@inverse': tokens.kda.foundation.color.semantic.negative.n20,
+              '@hover': tokens.kda.foundation.color.semantic.negative.n70,
+              '@focus': tokens.kda.foundation.color.semantic.negative.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.negative.n20,
+                '@hover': tokens.kda.foundation.color.semantic.negative.n10,
+                '@focus': tokens.kda.foundation.color.semantic.negative.n5,
+              },
             },
             warning: {
               default: tokens.kda.foundation.color.semantic.warning.n80,
-              '@inverse': tokens.kda.foundation.color.semantic.warning.n20,
+              '@hover': tokens.kda.foundation.color.semantic.warning.n70,
+              '@focus': tokens.kda.foundation.color.semantic.warning.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.warning.n20,
+                '@hover': tokens.kda.foundation.color.semantic.warning.n10,
+                '@focus': tokens.kda.foundation.color.semantic.warning.n5,
+              },
             },
             info: {
               default: tokens.kda.foundation.color.semantic.info.n80,
-              '@inverse': tokens.kda.foundation.color.semantic.info.n20,
+              '@hover': tokens.kda.foundation.color.semantic.info.n70,
+              '@focus': tokens.kda.foundation.color.semantic.info.n60,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.info.n20,
+                '@hover': tokens.kda.foundation.color.semantic.info.n10,
+                '@focus': tokens.kda.foundation.color.semantic.info.n5,
+              },
             },
           },
         },
@@ -333,6 +462,7 @@ export const darkThemeValues = {
         },
         neutral: {
           n0: '#000000',
+          n1: '#050505',
           n5: '#0f0f0f',
           n10: '#1a1a1a',
           n20: '#222222',
@@ -343,58 +473,106 @@ export const darkThemeValues = {
           n70: '#b1b1b1',
           n80: '#d5d5d5',
           n90: '#e6e6e6',
-          n95: '#f8f8f8',
+          n95: '#f0f0f0',
+          n99: '#fafafa',
           n100: '#ffffff',
+          'n100@alpha5': '#ffffff0d',
+          'n100@alpha10': '#ffffff1a',
+          'n100@alpha20': '#ffffff33',
         },
         text: {
           base: {
             default: tokens.kda.foundation.color.neutral.n95,
-            '@disabled': tokens.kda.foundation.color.neutral.n60,
+            '@disabled': tokens.kda.foundation.color.neutral.n40,
             '@selected': tokens.kda.foundation.color.palette.blue.n70,
-            '@inverse': tokens.kda.foundation.color.neutral.n0,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n0,
+            },
           },
           gray: {
             default: tokens.kda.foundation.color.neutral.n70,
-            '@lighter': tokens.kda.foundation.color.neutral.n60,
-            '@bolder': tokens.kda.foundation.color.neutral.n80,
-            '@inverse': tokens.kda.foundation.color.neutral.n30,
+            lighter: tokens.kda.foundation.color.neutral.n60,
+            bolder: tokens.kda.foundation.color.neutral.n80,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n30,
+            },
           },
           subtle: {
             default: tokens.kda.foundation.color.neutral.n70,
             '@hover': tokens.kda.foundation.color.neutral.n80,
-            '@inverse': tokens.kda.foundation.color.neutral.n30,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n30,
+            },
           },
           subtlest: {
             default: tokens.kda.foundation.color.neutral.n60,
             '@hover': tokens.kda.foundation.color.neutral.n50,
-            '@inverse': tokens.kda.foundation.color.neutral.n40,
+            inverse: {
+              default: tokens.kda.foundation.color.neutral.n40,
+            },
           },
           brand: {
             primary: {
-              default: tokens.kda.foundation.color.brand.primary.n95,
-              '@inverse': tokens.kda.foundation.color.brand.primary.n5,
+              default: tokens.kda.foundation.color.brand.primary.n90,
+              '@hover': tokens.kda.foundation.color.brand.primary.n95,
+              '@focus': tokens.kda.foundation.color.brand.primary.n99,
+              inverse: {
+                default: tokens.kda.foundation.color.brand.primary.n10,
+                '@hover': tokens.kda.foundation.color.brand.primary.n5,
+                '@focus': tokens.kda.foundation.color.brand.primary.n1,
+              },
             },
             secondary: {
-              default: tokens.kda.foundation.color.brand.secondary.n95,
-              '@inverse': tokens.kda.foundation.color.brand.secondary.n5,
+              default: tokens.kda.foundation.color.brand.secondary.n90,
+              '@hover': tokens.kda.foundation.color.brand.secondary.n95,
+              '@focus': tokens.kda.foundation.color.brand.secondary.n99,
+              inverse: {
+                default: tokens.kda.foundation.color.brand.secondary.n10,
+                '@hover': tokens.kda.foundation.color.brand.secondary.n5,
+                '@focus': tokens.kda.foundation.color.brand.secondary.n1,
+              },
             },
           },
           semantic: {
             positive: {
               default: tokens.kda.foundation.color.semantic.positive.n90,
-              '@inverse': tokens.kda.foundation.color.semantic.positive.n10,
+              '@hover': tokens.kda.foundation.color.semantic.positive.n95,
+              '@focus': tokens.kda.foundation.color.semantic.positive.n99,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.positive.n10,
+                '@hover': tokens.kda.foundation.color.semantic.positive.n5,
+                '@focus': tokens.kda.foundation.color.semantic.positive.n1,
+              },
             },
             negative: {
               default: tokens.kda.foundation.color.semantic.negative.n90,
-              '@inverse': tokens.kda.foundation.color.semantic.negative.n10,
+              '@hover': tokens.kda.foundation.color.semantic.negative.n95,
+              '@focus': tokens.kda.foundation.color.semantic.negative.n99,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.negative.n10,
+                '@hover': tokens.kda.foundation.color.semantic.negative.n5,
+                '@focus': tokens.kda.foundation.color.semantic.negative.n1,
+              },
             },
             warning: {
               default: tokens.kda.foundation.color.semantic.warning.n90,
-              '@inverse': tokens.kda.foundation.color.semantic.warning.n10,
+              '@hover': tokens.kda.foundation.color.semantic.warning.n95,
+              '@focus': tokens.kda.foundation.color.semantic.warning.n99,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.warning.n10,
+                '@hover': tokens.kda.foundation.color.semantic.warning.n5,
+                '@focus': tokens.kda.foundation.color.semantic.warning.n1,
+              },
             },
             info: {
               default: tokens.kda.foundation.color.semantic.info.n90,
-              '@inverse': tokens.kda.foundation.color.semantic.info.n10,
+              '@hover': tokens.kda.foundation.color.semantic.info.n95,
+              '@focus': tokens.kda.foundation.color.semantic.info.n99,
+              inverse: {
+                default: tokens.kda.foundation.color.semantic.info.n10,
+                '@hover': tokens.kda.foundation.color.semantic.info.n5,
+                '@focus': tokens.kda.foundation.color.semantic.info.n1,
+              },
             },
           },
         },
@@ -631,12 +809,6 @@ export const darkThemeValues = {
           level3: `0px 0px ${tokens.kda.foundation.size.n2} 24px #000000`,
         },
       },
-      layout: {
-        content: {
-          minWidth: '33.75rem',
-          maxWidth: '42.5rem',
-        },
-      },
       icon: {
         size: {
           xxs: tokens.kda.foundation.size.n3,
@@ -646,6 +818,12 @@ export const darkThemeValues = {
           lg: tokens.kda.foundation.size.n8,
           xl: tokens.kda.foundation.size.n10,
           xxl: tokens.kda.foundation.size.n16,
+        },
+      },
+      layout: {
+        content: {
+          minWidth: '33.75rem',
+          maxWidth: '42.5rem',
         },
       },
       typography: {
