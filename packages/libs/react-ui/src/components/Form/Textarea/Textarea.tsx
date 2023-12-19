@@ -42,6 +42,7 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
     >
       <textarea
         ref={ref}
+        //here
         className={classNames(textAreaClass, sprinkles({ fontFamily }))}
         disabled={disabled}
         {...rest}
