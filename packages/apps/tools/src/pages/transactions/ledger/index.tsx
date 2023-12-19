@@ -5,6 +5,7 @@ import AccountNameField, {
 } from '@/components/Global/AccountNameField';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
+import useAccountDetails from '@/hooks/use-account-details';
 import useLedgerApp from '@/hooks/use-ledger-app';
 import { buttonContainerClass } from '@/pages/faucet/existing/styles.css';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -80,10 +81,19 @@ const LedgerPage = () => {
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { receiverChainId: CHAINS[0] },
   });
+
+  const watchReceiver = watch('receiver');
+  const watchReceiverChainId = watch('receiverChainId');
+  const receiver = useAccountDetails(
+    watchReceiver,
+    'testnet04',
+    watchReceiverChainId,
+  );
 
   const onSubmit = async (data: FormData) => {
     console.log('onsubmit', data);
