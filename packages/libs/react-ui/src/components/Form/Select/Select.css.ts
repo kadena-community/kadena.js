@@ -12,7 +12,6 @@ export const containerClass = style([
   }),
 ]);
 
-// check with isa
 export const containerClassDisabled = style([
   atoms({
     pointerEvents: 'none',

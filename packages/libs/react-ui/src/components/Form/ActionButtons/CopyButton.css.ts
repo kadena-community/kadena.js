@@ -17,7 +17,6 @@ export const buttonClass = style([
     width: '32px',
     height: '32px',
     selectors: {
-      //check with isa
       [`&:hover`]: {
         backgroundColor: tokens.kda.foundation.color.background.base['@hover'],
         color: tokens.kda.foundation.color.background.base.default,
@@ -25,7 +24,6 @@ export const buttonClass = style([
     },
     ':disabled': {
       opacity: 0.7,
-      // wut
       backgroundColor: tokens.kda.foundation.color.icon.base['@disabled'],
       color: tokens.kda.foundation.color.text.base['@disabled'],
       cursor: 'not-allowed',

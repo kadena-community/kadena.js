@@ -71,7 +71,6 @@ export const inputChildrenClass = style([
   },
 ]);
 
-// check with isa
 export const leadingTextWidthVariant = styleVariants(vars.sizes, (size) => {
   return {
     width: size,
