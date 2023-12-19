@@ -1,5 +1,5 @@
 import type { IFormFieldWrapperProps, ISelectProps } from '@components/Form';
-import { FormFieldWrapper, Select } from '@components/Form';
+import { Select } from '@components/Form';
 import { Stack } from '@components/Layout';
 import type { FC } from 'react';
 import React from 'react';
@@ -10,6 +10,9 @@ export interface ISelectFieldProps
   extends Omit<IFormFieldWrapperProps, 'htmlFor'>,
     Omit<ISelectProps, 'disabled' | 'children'> {}
 
+/**
+ * @deprecated Use `SelectField` instead.
+ */
 export const SelectField: FC<ISelectFieldProps> = ({
   disabled = false,
   id,
