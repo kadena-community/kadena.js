@@ -10,7 +10,7 @@ export type LabelType =
   | 'danger'
   | 'warning';
 
-export const getColor = (label?: LabelType): INotificationProps['color'] => {
+export const getColor = (label?: LabelType): INotificationProps['intent'] => {
   if (!label) return;
   switch (label) {
     case 'tip':

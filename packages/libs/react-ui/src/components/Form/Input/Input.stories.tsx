@@ -3,6 +3,7 @@ import type { IInputProps } from '@components/Form';
 import { Input } from '@components/Form';
 import { SystemIcon } from '@components/Icon';
 import { Stack } from '@components/Layout/Stack';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import type { HTMLInputTypeAttribute } from 'react';
@@ -36,6 +37,7 @@ const HTMLInputTypes: HTMLInputTypeAttribute[] = [
 const meta: Meta<IInputProps> = {
   title: 'Form/Input/Input',
   component: Input,
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {
