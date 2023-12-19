@@ -68,7 +68,7 @@ const mapSubTree =
       'readingTimeInMinutes',
     ]) as unknown as IMenuItem;
 
-    if (pathname.includes('/build')) {
+    if (pathname.includes('/build/guides/e')) {
       console.log({ pathname, root: newItem.root });
     }
     if (IsMenuOpen(pathname, newItem.root)) {
