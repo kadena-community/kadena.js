@@ -25,3 +25,19 @@ export const getConfig = async (): Promise<IConfig> => {
     throw new Error('Could not load config yaml');
   }
 };
+
+export const getPages = async (): Promise<IMenuData[]> => {
+  const { pages } = await getConfig();
+
+  const cleanup = (pages: IMenuData[]): IMenuData[] => {
+    const innerPages = Object.entries(pages);
+
+    return innerPages.map(([key, page]: [string, IMenuData]) => {
+      if (page.children) page.children = cleanup(page.children);
+
+      return { ...page, id: key } as IMenuData;
+    });
+  };
+
+  return cleanup(pages);
+};

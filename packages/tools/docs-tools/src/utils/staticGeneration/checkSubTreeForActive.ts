@@ -1,7 +1,7 @@
 import path from 'path';
 
 import type { IMenuData, IMenuItem } from '../../types';
-import { getData } from './getData';
+import { getConfig, getData } from './getData';
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const omit = (
@@ -92,11 +92,15 @@ export const checkSubTreeForActive = async (
   path: string,
   noChildren = false,
 ): Promise<IMenuItem[]> => {
-  const tree = await getData();
+  console.log(1111111);
+  const { pages } = await getConfig();
+
+  console.log(2222222, pages);
 
   if (!path) {
     throw new Error('no path');
   }
 
-  return tree.map(mapSubTree(path, noChildren, true));
+  return pages as unknown as IMenuItem[];
+  //return tree.map(mapSubTree(path, noChildren, true));
 };

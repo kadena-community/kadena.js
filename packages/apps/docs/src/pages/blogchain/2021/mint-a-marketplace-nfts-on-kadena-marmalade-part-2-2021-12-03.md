@@ -22,7 +22,7 @@ layout: blog
 ## Part 2: Technical Details of the new NFT Standard and Smart Contracts
 
 In the
-[previous article](./mint-a-marketplace-nfts-on-kadena-marmalade-part-1-2021-12-02),
+[previous article](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-1-2021-12-02),
 we showed how Kadena [Marmalade](http://marmalade.art) is revolutionizing how
 NFTs are transacted on-chain with multi-step pacts controlling sale, and token
 policies offering “pluggable” marketplace implementations for creators to choose

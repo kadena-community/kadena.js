@@ -69,6 +69,7 @@ export const Template: FC<IProps> = ({
     });
   }, [y, initialTopSpacing, enablePositioning]);
 
+  console.log({ menuItems });
   return (
     <>
       <MenuBack isOpen={isMenuOpen} onClick={closeMenu} />

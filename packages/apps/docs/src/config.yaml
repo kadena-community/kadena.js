@@ -1,16 +1,11 @@
 menu:
-  - kadena
   - build
-  - pact
-  - chainweb
-  - marmalade
   - contribute
-  - blogchain
 
 pages:
   build:
     url: '/build'
-    file: '/build.index.tsx'
+    file: '/build/index.tsx'
     children:
       quickstart:
         url: /quickstart
@@ -21,16 +16,16 @@ pages:
             file: /build/quickstart/memorywall.md
           chainweaver:
             url: /setup-chainweaver
-            file: /build/quickstart/setup-chainweaver.md  
+            file: /build/quickstart/setup-chainweaver.md
           testnet:
             url: /testnet-account-setup
             file: /build/quickstart/testnet-account-setup.md
           pactyparrots:
             url: /pacty-parrots
-            file: /build/quickstart/pacty-parrots.md  
+            file: /build/quickstart/pacty-parrots.md
           dapp:
             url: /dapp
-            file: /build/quickstart/dapp.md  
+            file: /build/quickstart/dapp.md
       cookbook:
         url: /cookbook
         file: /build/cookbook/index.md
@@ -39,13 +34,13 @@ pages:
         file: /build/guides/index.md
         children:
           marmalade:
-            url: /marmalade-tutorial    
-            file: /build/guides/marmalade-tutorial.md           
+            url: /marmalade-tutorial
+            file: /build/guides/marmalade-tutorial.md
           localapi:
-            url: /pact-local-api-queries    
-            file: /build/guides/pact-local-api-queries.md           
+            url: /pact-local-api-queries
+            file: /build/guides/pact-local-api-queries.md
           electiondapptutorial:
-            url: /election-dapp-tutorial    
+            url: /election-dapp-tutorial
             file: /build/guides/election-dapp-tutorial/index.md
             children:
               gettingstarted:
@@ -76,14 +71,14 @@ pages:
                 url: /09-gas-station
                 file: /build/guides/election-dapp-tutorial/09-gas-station.md
           rotatedrain:
-            url: /safe-rotate-and-drain    
-            file: /build/guides/safe-rotate-and-drain.md           
+            url: /safe-rotate-and-drain
+            file: /build/guides/safe-rotate-and-drain.md
           safetransfer:
-            url: /safe-transfer    
-            file: /build/guides/safe-transfer.md   
+            url: /safe-transfer
+            file: /build/guides/safe-transfer.md
       resources:
         url: /resources
-        file: /build/resources/index.md     
+        file: /build/resources/index.md
         children:
           kurolayer2:
             url: /kuro-layer-2
@@ -124,7 +119,7 @@ pages:
           interact:
             url: /interact-with-nodes
             file: /contribute/node/interact-with-nodes.md
-  build:
+  test:
     url: /test
     file: /test.md
     children:
