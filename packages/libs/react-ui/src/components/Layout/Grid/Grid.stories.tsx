@@ -2,15 +2,16 @@ import { Grid, GridItem } from '@components/Layout/Grid';
 import { onLayer2 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/tokens/contract.css';
 import classNames from 'classnames';
 import React from 'react';
 import { componentClass, containerClass, itemClass } from '../stories.css';
+import {
+  Legend,
+  defaultBoxArgs,
+  sharedStoryArgTypes,
+} from '../storyComponents';
 import type { IGridProps } from './Grid';
 import type { ResponsiveInputType } from './Grid.css';
-
-const spaceOptions = [undefined, ...Object.keys(tokens.kda.foundation.spacing)];
-const marginOptions = [...spaceOptions, 'auto'];
 
 type StoryType = {
   columnSpan: ResponsiveInputType;
@@ -19,7 +20,21 @@ type StoryType = {
 const meta: Meta<StoryType> = {
   title: 'Layout/Grid',
   component: Grid,
-  decorators: [onLayer2],
+  decorators: [
+    (story) => (
+      <>
+        {story()}
+        <Legend
+          items={[
+            { label: 'Margin', color: 'warning' },
+            { label: 'Padding + Gap', color: 'positive' },
+            { label: 'Content', color: 'info' },
+          ]}
+        />
+      </>
+    ),
+    onLayer2,
+  ],
   parameters: {
     status: {
       type: 'releaseCandidate',
@@ -32,19 +47,7 @@ const meta: Meta<StoryType> = {
     },
   },
   argTypes: {
-    overflow: {
-      options: ['hidden', 'visible', 'scroll', 'auto'],
-      control: {
-        type: 'select',
-      },
-      description: 'Overflow css property.',
-    },
-    gap: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-    },
+    ...sharedStoryArgTypes,
     columns: {
       control: { type: 'object' },
       description: 'Defines the number of columns.',
@@ -53,148 +56,30 @@ const meta: Meta<StoryType> = {
       control: { type: 'object' },
       description: 'Defines the column span.',
     },
-    width: {
-      options: [undefined, '100%'],
-      control: {
-        type: 'select',
-      },
-    },
-    minWidth: {
-      options: [undefined, 'content.minWidth'],
-      control: {
-        type: 'select',
-      },
-    },
-    maxWidth: {
-      options: [undefined, 'content.maxWidth'],
-      control: {
-        type: 'select',
-      },
-    },
-    height: {
-      options: [undefined, '100%'],
-      control: {
-        type: 'select',
-      },
-    },
-    margin: {
-      options: marginOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    marginInline: {
-      options: marginOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    marginBlock: {
-      options: marginOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    marginBlockStart: {
-      options: marginOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    marginBlockEnd: {
-      options: marginOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    marginInlineStart: {
-      options: marginOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    marginInlineEnd: {
-      options: marginOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    padding: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    paddingInline: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    paddingBlock: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    paddingBlockStart: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    paddingBlockEnd: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    paddingInlineStart: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-    },
-    paddingInlineEnd: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
 export default meta;
 type Story = StoryObj<StoryType>;
 
-const defaultArgs: Record<string, string | undefined> = {
-  width: undefined,
-  minWidth: undefined,
-  maxWidth: undefined,
-  height: undefined,
-  margin: undefined,
-  marginInline: undefined,
-  marginBlock: undefined,
-  marginBlockStart: undefined,
-  marginBlockEnd: undefined,
-  marginInlineStart: undefined,
-  marginInlineEnd: undefined,
-  gap: undefined,
-  columns: undefined,
-  padding: undefined,
-  paddingInline: undefined,
-  paddingBlock: undefined,
-  paddingBlockStart: undefined,
-  paddingBlockEnd: undefined,
-  paddingInlineStart: undefined,
-  paddingInlineEnd: undefined,
-  overflow: undefined,
-};
+const {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  display,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  flex,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  alignItems,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  flexDirection,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  justifyContent,
+  ...defaultGridArgs
+} = defaultBoxArgs;
 
 export const Primary: Story = {
   name: 'Grid',
   args: {
-    ...defaultArgs,
+    ...defaultGridArgs,
     gap: 'xl',
     columns: {
       xs: 1,
@@ -220,7 +105,7 @@ export const Primary: Story = {
 
 export const GridItemStory: Story = {
   args: {
-    ...defaultArgs,
+    ...defaultGridArgs,
     gap: 'xl',
     columns: 12,
     columnSpan: {

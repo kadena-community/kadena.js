@@ -2,67 +2,64 @@ import type { Atoms } from '@theme/atoms.css';
 import { atoms } from '@theme/atoms.css';
 import classnames from 'classnames';
 import type React from 'react';
-import type { ElementType } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 import { createElement } from 'react';
 
 export interface IBoxProps
-  extends Partial<
-    Pick<
-      Atoms,
-      | 'alignItems'
-      | 'backgroundColor'
-      | 'borderColor'
-      | 'borderRadius'
-      | 'borderStyle'
-      | 'borderWidth'
-      | 'bottom'
-      | 'cursor'
-      | 'display'
-      | 'flexDirection'
-      | 'flexGrow'
-      | 'flexShrink'
-      | 'flexWrap'
-      | 'gap'
-      | 'height'
-      | 'inset'
-      | 'justifyContent'
-      | 'left'
-      | 'margin'
-      | 'marginBlockEnd'
-      | 'marginInlineStart'
-      | 'marginInlineEnd'
-      | 'marginBlockStart'
-      | 'marginInline'
-      | 'marginBlock'
-      | 'maxWidth'
-      | 'minWidth'
-      | 'opacity'
-      | 'overflow'
-      | 'padding'
-      | 'paddingBlockEnd'
-      | 'paddingInlineStart'
-      | 'paddingInlineEnd'
-      | 'paddingBlockStart'
-      | 'paddingInline'
-      | 'paddingBlock'
-      | 'position'
-      | 'right'
-      | 'textAlign'
-      | 'top'
-      | 'width'
-      | 'zIndex'
-      | 'gap'
-    >
-  > {
-  className?: string;
+  extends ComponentPropsWithRef<'div'>,
+    Partial<
+      Pick<
+        Atoms,
+        | 'alignItems'
+        | 'backgroundColor'
+        | 'borderColor'
+        | 'borderRadius'
+        | 'borderStyle'
+        | 'borderWidth'
+        | 'bottom'
+        | 'cursor'
+        | 'display'
+        | 'flex'
+        | 'flexDirection'
+        | 'flexGrow'
+        | 'flexShrink'
+        | 'flexWrap'
+        | 'gap'
+        | 'height'
+        | 'inset'
+        | 'justifyContent'
+        | 'left'
+        | 'margin'
+        | 'marginBlock'
+        | 'marginBlockEnd'
+        | 'marginBlockStart'
+        | 'marginInline'
+        | 'marginInlineEnd'
+        | 'marginInlineStart'
+        | 'maxWidth'
+        | 'minWidth'
+        | 'opacity'
+        | 'overflow'
+        | 'padding'
+        | 'paddingBlock'
+        | 'paddingBlockEnd'
+        | 'paddingBlockStart'
+        | 'paddingInline'
+        | 'paddingInlineEnd'
+        | 'paddingInlineStart'
+        | 'position'
+        | 'right'
+        | 'textAlign'
+        | 'top'
+        | 'width'
+        | 'zIndex'
+      >
+    > {
   as?: ElementType;
-  children?: React.ReactNode;
 }
 
 export const Box = ({
   as = 'div',
-  children,
-  className,
   alignItems,
   backgroundColor,
   borderColor,
@@ -70,8 +67,11 @@ export const Box = ({
   borderStyle,
   borderWidth,
   bottom,
+  children,
+  className,
   cursor,
   display = 'block',
+  flex,
   flexDirection,
   flexGrow,
   flexShrink,
@@ -82,30 +82,30 @@ export const Box = ({
   justifyContent,
   left,
   margin,
+  marginBlock,
   marginBlockEnd,
-  marginInlineStart,
-  marginInlineEnd,
   marginBlockStart,
   marginInline,
-  marginBlock,
+  marginInlineEnd,
+  marginInlineStart,
   maxWidth,
   minWidth,
   opacity,
   overflow,
   padding,
+  paddingBlock,
   paddingBlockEnd,
-  paddingInlineStart,
-  paddingInlineEnd,
   paddingBlockStart,
   paddingInline,
-  paddingBlock,
+  paddingInlineEnd,
+  paddingInlineStart,
   position,
   right,
   textAlign,
   top,
   width,
   zIndex,
-  gap,
+  ...props
 }: IBoxProps): React.ReactElement => {
   return createElement(
     as,
@@ -121,6 +121,7 @@ export const Box = ({
           bottom,
           cursor,
           display,
+          flex,
           flexDirection,
           flexGrow,
           flexShrink,
@@ -131,33 +132,33 @@ export const Box = ({
           justifyContent,
           left,
           margin,
+          marginBlock,
           marginBlockEnd,
-          marginInlineStart,
-          marginInlineEnd,
           marginBlockStart,
           marginInline,
-          marginBlock,
+          marginInlineEnd,
+          marginInlineStart,
           maxWidth,
           minWidth,
           opacity,
           overflow,
           padding,
+          paddingBlock,
           paddingBlockEnd,
-          paddingInlineStart,
-          paddingInlineEnd,
           paddingBlockStart,
           paddingInline,
-          paddingBlock,
+          paddingInlineEnd,
+          paddingInlineStart,
           position,
           right,
           textAlign,
           top,
           width,
           zIndex,
-          gap,
         }),
         className,
       ),
+      ...props,
     },
     children,
   );
