@@ -13,7 +13,7 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@theme/*": ["src/styles/*"],
-      "@utils/*": ["src/utils/*"]
+      "@storyDecorators": ["src/storyDecorators"]
     }
   },
   "include": ["./src"],

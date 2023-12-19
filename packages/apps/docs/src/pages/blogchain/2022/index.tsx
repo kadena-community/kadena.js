@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      ...(await getPageConfig({})),
+      ...(await getPageConfig({ filename: __filename })),
       posts,
       frontmatter: {
         title: 'BlogChain 2022',

@@ -105,6 +105,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       ...(await getPageConfig({
         blogPosts: ['kadena'],
+        filename: __filename,
       })),
 
       frontmatter: {

@@ -4,6 +4,9 @@ import { style } from '@vanilla-extract/css';
 
 import { tokens } from './contract.css';
 
+/**
+ * Small Code @xs Description
+ */
 export const codeSmallRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.codeFont,
   fontSize: '14px',
@@ -12,6 +15,9 @@ export const codeSmallRegular = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * Small Code Bold @ xs Description
+ */
 export const codeSmallBold = style({
   fontFamily: tokens.kda.foundation.typography.family.codeFont,
   fontSize: '14px',
@@ -20,6 +26,9 @@ export const codeSmallBold = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * Smallest Code @xs Description
+ */
 export const codeSmallestRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.codeFont,
   fontSize: tokens.kda.foundation.size.n3,
@@ -28,6 +37,9 @@ export const codeSmallestRegular = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * Smallest Code Bold @ xs Description
+ */
 export const codeSmallestBold = style({
   fontFamily: tokens.kda.foundation.typography.family.codeFont,
   fontSize: tokens.kda.foundation.size.n3,
@@ -36,6 +48,9 @@ export const codeSmallestBold = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * Code @xs Description
+ */
 export const codeBaseRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.codeFont,
   fontSize: tokens.kda.foundation.size.n4,
@@ -44,6 +59,9 @@ export const codeBaseRegular = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * Code Bold @ xs Description
+ */
 export const codeBaseBold = style({
   fontFamily: tokens.kda.foundation.typography.family.codeFont,
   fontSize: tokens.kda.foundation.size.n4,
@@ -52,6 +70,9 @@ export const codeBaseBold = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * H1 Description
+ */
 export const fontH1Regular = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n10,
@@ -78,6 +99,9 @@ export const fontH1Regular = style({
   },
 });
 
+/**
+ * H1 Bold @ xs Description
+ */
 export const fontH1Bold = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n10,
@@ -104,6 +128,9 @@ export const fontH1Bold = style({
   },
 });
 
+/**
+ * H2 Description
+ */
 export const fontH2Regular = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n9,
@@ -126,6 +153,9 @@ export const fontH2Regular = style({
   },
 });
 
+/**
+ * H2 Bold @ xs Description
+ */
 export const fontH2Bold = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n9,
@@ -148,6 +178,9 @@ export const fontH2Bold = style({
   },
 });
 
+/**
+ * H3 Description
+ */
 export const fontH3Regular = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n7,
@@ -170,6 +203,9 @@ export const fontH3Regular = style({
   },
 });
 
+/**
+ * H3 Bold @ xs Description
+ */
 export const fontH3Bold = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n7,
@@ -192,6 +228,9 @@ export const fontH3Bold = style({
   },
 });
 
+/**
+ * H4 Description
+ */
 export const fontH4Regular = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n6,
@@ -214,6 +253,9 @@ export const fontH4Regular = style({
   },
 });
 
+/**
+ * H4 Bold @ xs Description
+ */
 export const fontH4Bold = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n6,
@@ -236,6 +278,9 @@ export const fontH4Bold = style({
   },
 });
 
+/**
+ * H5 Description
+ */
 export const fontH5Regular = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n5,
@@ -254,6 +299,9 @@ export const fontH5Regular = style({
   },
 });
 
+/**
+ * H5 Bold @ xs Description
+ */
 export const fontH5Bold = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n5,
@@ -272,6 +320,9 @@ export const fontH5Bold = style({
   },
 });
 
+/**
+ * H6 Description
+ */
 export const fontH6Regular = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n4,
@@ -290,6 +341,9 @@ export const fontH6Regular = style({
   },
 });
 
+/**
+ * H6 Bold @ xs Description
+ */
 export const fontH6Bold = style({
   fontFamily: tokens.kda.foundation.typography.family.headingFont,
   fontSize: tokens.kda.foundation.size.n4,
@@ -308,6 +362,9 @@ export const fontH6Bold = style({
   },
 });
 
+/**
+ * Small P @xs Description
+ */
 export const bodySmallRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: '14px',
@@ -316,6 +373,9 @@ export const bodySmallRegular = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * Small P Bold @ xs Description
+ */
 export const bodySmallBold = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: '14px',
@@ -324,6 +384,9 @@ export const bodySmallBold = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * Smallest P @xs Description
+ */
 export const bodySmallestRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: tokens.kda.foundation.size.n3,
@@ -332,6 +395,9 @@ export const bodySmallestRegular = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * Smallest P Bold @ xs Description
+ */
 export const bodySmallestBold = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: tokens.kda.foundation.size.n3,
@@ -340,6 +406,9 @@ export const bodySmallestBold = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * P @xs Description
+ */
 export const bodyBaseRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: tokens.kda.foundation.size.n4,
@@ -348,6 +417,9 @@ export const bodyBaseRegular = style({
   letterSpacing: tokens.kda.foundation.spacing.no,
 });
 
+/**
+ * P Bold @ xs Description
+ */
 export const bodyBaseBold = style({
   fontFamily: tokens.kda.foundation.typography.family.bodyFont,
   fontSize: tokens.kda.foundation.size.n4,

@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import type { FC } from 'react';
+import type { ComponentPropsWithRef, FC } from 'react';
 import React from 'react';
 import {
   bodyBaseBold,
@@ -48,7 +48,7 @@ function getFontClass(
   return isBold ? bodyBaseBold : bodyBaseRegular;
 }
 
-export interface ITextProps {
+export interface ITextProps extends ComponentPropsWithRef<'p'> {
   as?: TextElementType;
   variant?: TextVariant;
   bold?: boolean;
@@ -64,14 +64,21 @@ export const Text: FC<ITextProps> = ({
   color = 'default',
   transform = 'none',
   children,
+  className,
+  ...props
 }) => {
   const classList = cn(
     getFontClass(variant, bold, as),
     colorVariants[color],
     transformVariants[transform],
+    className,
   );
 
   // making sure that the variant is one of the allowed ones in case typescript is ignored or not used
   const Element = TEXT_ELEMENTS.includes(as) ? as : 'span';
-  return <Element className={classList}>{children}</Element>;
+  return (
+    <Element className={classList} {...props}>
+      {children}
+    </Element>
+  );
 };

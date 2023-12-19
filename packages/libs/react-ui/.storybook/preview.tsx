@@ -4,7 +4,8 @@ import { type Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
 import React from 'react';
 import { useDarkMode } from 'storybook-dark-mode';
-import { darkThemeClass } from '../src/styles';
+import { withCenteredStory } from '../src/storyDecorators';
+import { atoms, darkThemeClass } from '../src/styles';
 import { colorPalette } from '../src/styles/colors';
 import '../src/styles/global.css';
 
@@ -60,6 +61,7 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [withCenteredStory],
 };
 
 export default preview;

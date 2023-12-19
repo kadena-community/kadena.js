@@ -43,7 +43,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const tags = await getAllBlogTags();
   return {
     props: {
-      ...(await getPageConfig({})),
+      ...(await getPageConfig({ filename: __filename })),
       tags,
       frontmatter: {
         title: 'Tags',
