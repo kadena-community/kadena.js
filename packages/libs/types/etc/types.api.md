@@ -248,7 +248,7 @@ export type Nonce = string;
 export type PactCode = string;
 
 // @alpha
-export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean | Date;
+export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean | Date | object;
 
 // @alpha
 export type PactPayload = {
