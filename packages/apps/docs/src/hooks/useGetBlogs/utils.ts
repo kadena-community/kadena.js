@@ -1,5 +1,5 @@
 import { compareDesc } from '@/utils/dates';
-import { getAuthorData } from '@/utils/staticGeneration/getJsonData.mjs';
+import { getAuthorData } from '@/utils/staticGeneration/getJsonData';
 import type { IAuthorInfo, IMenuData } from '@kadena/docs-tools';
 
 export interface IIBlogLoadOptions {

@@ -5,7 +5,7 @@ import { addSignatures } from '../addSignatures';
 describe('addSignature', () => {
   it('returns a new transaction object by adding the input signatures to the sigs array', () => {
     const command: Partial<IPactCommand> = {
-      payload: { exec: { code: 'some-pact-code' } },
+      payload: { exec: { code: 'some-pact-code', data: {} } },
       signers: [
         {
           pubKey: 'first_public_key',
@@ -48,7 +48,7 @@ describe('addSignature', () => {
 
   it('returns a new transaction object by adding the input signatures without public key to the sigs array', () => {
     const command: Partial<IPactCommand> = {
-      payload: { exec: { code: 'some-pact-code' } },
+      payload: { exec: { code: 'some-pact-code', data: {} } },
       signers: [
         {
           pubKey: 'first_public_key',
@@ -82,7 +82,7 @@ describe('addSignature', () => {
   });
   it('throws an exception if signatures are not matched', () => {
     const command: Partial<IPactCommand> = {
-      payload: { exec: { code: 'some-pact-code' } },
+      payload: { exec: { code: 'some-pact-code', data: {} } },
       signers: [
         {
           pubKey: 'first_public_key',

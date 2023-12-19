@@ -3,7 +3,7 @@ import type {
   IClient,
   ICommandResult,
   IContinuationPayloadObject,
-  IPactCommand,
+  IPartialPactCommand,
   ITransactionDescriptor,
 } from '@kadena/client';
 import { createTransaction } from '@kadena/client';
@@ -14,6 +14,7 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
+import type { PactValue } from '@kadena/types';
 import { asyncPipe } from './utils/asyncPipe';
 import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
 import {
@@ -50,7 +51,7 @@ const useGasStation = (targetChainGasPayer: IAccount) =>
 
 const signers = (
   publicKeys?: string[],
-): ((cmd: Partial<IPactCommand>) => Partial<IPactCommand>) =>
+): ((cmd: IPartialPactCommand) => IPartialPactCommand) =>
   Array.isArray(publicKeys) && publicKeys.length
     ? addSigner(publicKeys!, (signFor) => [signFor('coin.GAS')])
     : (cmd) => cmd;
@@ -67,7 +68,7 @@ const createPactCommand = (
     signers(targetChainGasPayer.publicKeys),
   );
 
-export const crossChain = (
+export const crossChain = <T = PactValue>(
   { host, defaults, sign }: IClientConfig,
   client = getClient(host),
 ) => {
@@ -108,6 +109,6 @@ export const crossChain = (
       client.listen,
       emit('listen-continuation'),
       throwIfFails,
-      extractResult,
+      extractResult<T>,
     );
 };

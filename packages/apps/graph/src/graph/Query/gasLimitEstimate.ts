@@ -1,4 +1,5 @@
 import { localReadTransfer } from '@devnet/transfer';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
@@ -10,12 +11,14 @@ const PactTransaction = builder.inputType('PactTransaction', {
   }),
 });
 
-builder.queryField('gasLimitEstimate', (t) => {
-  return t.field({
+builder.queryField('gasLimitEstimate', (t) =>
+  t.field({
+    description: 'Estimate the gas limit for a transaction.',
     type: 'Int',
     args: {
       transaction: t.arg({ type: PactTransaction, required: true }),
     },
+    complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
         if (args.transaction.cmd.includes(`\\`)) {
@@ -32,16 +35,20 @@ builder.queryField('gasLimitEstimate', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);
 
-builder.queryField('gasLimitEstimates', (t) => {
-  return t.field({
+builder.queryField('gasLimitEstimates', (t) =>
+  t.field({
+    description: 'Estimate the gas limit for a list of transactions.',
     type: ['Int'],
     args: {
       transactions: t.arg({ type: [PactTransaction], required: true }),
     },
-    resolve: async (parent, args, context, info) => {
+    complexity: (args) => ({
+      field: COMPLEXITY.FIELD.CHAINWEB_NODE * args.transactions.length,
+    }),
+    resolve: async (__parent, args) => {
       try {
         return args.transactions.map(async (transaction) => {
           if (transaction.cmd.includes('//')) {
@@ -58,5 +65,5 @@ builder.queryField('gasLimitEstimates', (t) => {
         throw normalizeError(error);
       }
     },
-  });
-});
+  }),
+);

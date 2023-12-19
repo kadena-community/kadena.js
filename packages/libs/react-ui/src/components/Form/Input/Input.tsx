@@ -1,4 +1,3 @@
-import { SystemIcon } from '@components/Icon';
 import type { vars } from '@theme/vars.css';
 import classNames from 'classnames';
 import type { FC, InputHTMLAttributes } from 'react';
@@ -21,7 +20,7 @@ export interface IInputProps
     'as' | 'disabled' | 'className' | 'id'
   > {
   leadingText?: string;
-  icon?: keyof typeof SystemIcon;
+  startIcon?: React.ReactElement;
   leadingTextWidth?: keyof typeof vars.sizes;
   disabled?: boolean;
   type?: React.HTMLInputTypeAttribute;
@@ -35,7 +34,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     {
       outlined,
       leadingText,
-      icon,
+      startIcon,
       leadingTextWidth: propLeadingTextWidth,
       disabled = false,
       children,
@@ -47,7 +46,6 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
       FormFieldWrapperContext,
     );
     const leadingTextWidth = propLeadingTextWidth || wrapperLeadingTextWidth;
-    const Icon = icon && SystemIcon[icon];
 
     return (
       <div
@@ -67,7 +65,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           </div>
         )}
         <div className={inputContainerClass}>
-          {Icon && <Icon size="md" />}
+          {startIcon}
           <input
             ref={ref}
             className={inputClass}

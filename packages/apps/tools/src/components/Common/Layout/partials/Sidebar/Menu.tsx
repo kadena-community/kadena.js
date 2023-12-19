@@ -1,7 +1,9 @@
 import { MenuButton } from '@/components/Common/Layout/partials/Sidebar/MenuButton';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { useLayoutContext } from '@/context';
+import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import { Accordion } from '@kadena/react-ui';
+import { breakpoints } from '@kadena/react-ui/theme';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -41,11 +43,20 @@ export const Menu: FC = () => {
     setActiveMenuIndex,
     visibleLinks,
     setVisibleLinks,
+    setIsMenuOpen,
   } = useLayoutContext();
+  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
   const handleCloseMenu = () => {
     setActiveMenuIndex(undefined);
+    setIsMenuOpen(false);
     setVisibleLinks(false);
+  };
+
+  const handleOnClick = () => {
+    if (!isMediumScreen) {
+      setIsMenuOpen(false);
+    }
   };
 
   if (!isMenuOpen) return null;
@@ -71,6 +82,7 @@ export const Menu: FC = () => {
                   href={item.href}
                   active={item.href === router.pathname}
                   target="_blank"
+                  onClick={handleOnClick}
                 />
               ))}
             </Accordion.Root>
@@ -90,6 +102,7 @@ export const Menu: FC = () => {
                   key={`menu-link-${index}`}
                   href={item.href}
                   active={item.href === router.pathname}
+                  onClick={handleOnClick}
                 />
               ))}
             </Accordion.Root>

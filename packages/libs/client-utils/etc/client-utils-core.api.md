@@ -11,12 +11,11 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
-import { IPactCommand as IPactCommand_2 } from '@kadena/client/lib/interfaces/IPactCommand';
-import { IPactDecimal } from '@kadena/types';
-import { IPactInt } from '@kadena/types';
+import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
+import type { IPartialPactCommand as IPartialPactCommand_2 } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
-import { PactValue } from '@kadena/types';
+import type { PactValue } from '@kadena/types';
 
 // Warning: (ae-forgotten-export) The symbol "IAsyncPipe" needs to be exported by the entry point index.d.ts
 //
@@ -28,7 +27,7 @@ export const asyncPipe: IAsyncPipe;
 // Warning: (ae-forgotten-export) The symbol "IEmitterWrapper" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export const crossChainClient: (args_0: IClientConfig, args_1?: IClient | undefined) => (targetChainId: ChainId, targetChainGasPayer: IAccount) => (cmd?: (Partial<IPactCommand_2> | (() => Partial<IPactCommand_2>)) | undefined) => IEmitterWrapper<[{
+export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => (targetChainId: ChainId, targetChainGasPayer: IAccount) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
 event: "sign";
 data: ICommand;
 }, {
@@ -43,11 +42,11 @@ data: ICommandResult;
 }, {
 event: "spv-proof";
 data: {
-pactId?: string | undefined;
-step?: number | undefined;
-rollback?: boolean | undefined;
+pactId: string;
+step: number;
+rollback: boolean;
 data?: Record<string, unknown> | undefined;
-proof?: string | undefined;
+proof?: string | null | undefined;
 };
 }, {
 event: "gas-station" | "sign-continuation";
@@ -61,31 +60,31 @@ data: ICommandResult;
 }], [{
 event: 'poll-spv';
 data: string;
-}], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
 
 // @alpha (undocumented)
-export const dirtyReadClient: (args_0: Omit<IClientConfig, "sign">, args_1?: IClient | undefined) => (cmd?: (Partial<IPactCommand_2> | (() => Partial<IPactCommand_2>)) | undefined) => IEmitterWrapper<[{
+export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, args_1?: IClient | undefined) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
 event: "dirtyRead";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
 
 // @alpha
-export const estimateGas: (command: Partial<IPactCommand> | ((cmd?: Partial<IPactCommand> | (() => Partial<IPactCommand>)) => Partial<IPactCommand>), host?: IClientConfig['host'], client?: IClient) => Promise<{
+export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPactCommand_2 | (() => IPartialPactCommand_2)) => IPartialPactCommand_2), host?: IClientConfig['host'], client?: IClient) => Promise<{
     gasLimit: number;
     gasPrice: number;
 }>;
 
 // @alpha (undocumented)
-export const preflightClient: (args_0: IClientConfig, args_1?: IClient | undefined) => (cmd?: (Partial<IPactCommand_2> | (() => Partial<IPactCommand_2>)) | undefined) => IEmitterWrapper<[{
+export const preflightClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
 event: "sign";
 data: ICommand;
 }, {
 event: "preflight";
 data: ILocalCommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
 
 // @alpha (undocumented)
-export const submitClient: (args_0: IClientConfig, args_1?: IClient | undefined) => (cmd?: (Partial<IPactCommand_2> | (() => Partial<IPactCommand_2>)) | undefined) => IEmitterWrapper<[{
+export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
 event: "sign";
 data: ICommand;
 }, {
@@ -97,7 +96,7 @@ data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
 
 // (No @packageDocumentation comment for this package)
 

@@ -11,14 +11,10 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { getInitBlogPosts } from '@/hooks/useGetBlogs/utils';
-import getMostPopularPages from '@/utils/getMostPopularPages';
+import { getPageConfig } from '@/utils/config';
 import { mostProductiveAuthors } from '@/utils/mostProductiveAuthors';
 import type { IAuthorInfo, IMenuData, IPageProps } from '@kadena/docs-tools';
-import {
-  checkSubTreeForActive,
-  getMenuData,
-  getPathName,
-} from '@kadena/docs-tools';
+import { getMenuData } from '@kadena/docs-tools';
 import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -88,12 +84,13 @@ export const getStaticProps: GetStaticProps = async () => {
   const menuData: IMenuData[] = await getMenuData();
   const posts = getInitBlogPosts(menuData, 0, 10);
 
-  const mostPopularPages = await getMostPopularPages('/blogchain');
-
   return {
     props: {
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename), true),
-      popularPages: mostPopularPages,
+      ...(await getPageConfig({
+        blogPosts: true,
+        popularPages: '/blogchain',
+        filename: __filename,
+      })),
       authors: await mostProductiveAuthors(),
       posts,
       frontmatter: {

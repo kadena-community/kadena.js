@@ -27,6 +27,7 @@ module.exports = {
       },
     ],
     'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+    '@rushstack/typedef-var': 'off',
   },
   settings: {
     'import/parsers': {

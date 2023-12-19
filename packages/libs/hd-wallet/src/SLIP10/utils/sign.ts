@@ -38,7 +38,7 @@ export const deriveKeyPair = (
  */
 export const signWithKeyPair = (
   publicKey: string,
-  secretKey?: string,
+  secretKey: string,
 ): ((tx: IUnsignedCommand) => { sigs: { sig: string }[] }) => {
   return (tx: IUnsignedCommand) => {
     const { sig } = sign(tx.cmd, { publicKey, secretKey });

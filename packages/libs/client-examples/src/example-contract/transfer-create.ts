@@ -27,9 +27,9 @@ async function main(): Promise<void> {
         amount,
       ),
     )
-    .addSigner(signerKey, (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability('coin.TRANSFER', senderAccount, receiverAccount, amount),
+    .addSigner(signerKey, (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', senderAccount, receiverAccount, amount),
     ])
     .addKeyset('ks', 'keys-all', receiverKey)
     .setMeta({

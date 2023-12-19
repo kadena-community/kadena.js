@@ -100,7 +100,7 @@ export const SearchResults: FC<IProps> = ({
             )}
             {semanticError ? (
               <Notification
-                color={'negative'}
+                intent="negative"
                 icon={<SystemIcon.AlertBox />}
                 role="status"
               >
@@ -162,7 +162,7 @@ export const SearchResults: FC<IProps> = ({
             )}
             {error && (
               <Notification
-                color={'negative'}
+                intent={'negative'}
                 icon={<SystemIcon.AlertBox />}
                 role="status"
               >

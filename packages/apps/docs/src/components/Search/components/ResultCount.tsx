@@ -9,7 +9,7 @@ interface IProps {
 export const ResultCount: FC<IProps> = ({ count }) => {
   if (typeof count !== 'number') return null;
   return (
-    <Text size="md">
+    <Text variant="small">
       {count} Documentation items related to your search term found in this
       space.
     </Text>
