@@ -13,7 +13,7 @@ import {
 import { getFilesWithExtension } from './storage.js';
 
 export interface IWalletConfig {
-  keyPassword: string;
+  securityPassword: string;
   keyWallet: string;
   legacy?: boolean;
 }
@@ -151,3 +151,46 @@ export const toHexStr = (bytes: Uint8Array): string =>
  */
 export const fromHexStr = (hexStr: string): Uint8Array =>
   new Uint8Array(Buffer.from(hexStr, 'hex'));
+
+/**
+ * Parses the input string to determine if it represents a single number or a range of numbers.
+ * The function can handle ranges separated by either a hyphen '-' or a comma ','.
+ *
+ * @param {string} input - The input string to be parsed. The format can be a single number (e.g., "5")
+ *                         or a range (e.g., "1-10" or "1,10").
+ * @returns {number | [number, number]} - If the input is a single number, returns the number.
+ *                                        If the input is a range, returns a tuple of two numbers
+ *                                        representing the start and end of the range.
+ * @throws {Error} - Throws an error if the input format is not valid, either for a single number or a range.
+ */
+export function parseKeyIndexOrRange(input: string): number | [number, number] {
+  const trimmedInput = input.trim();
+  const hasHyphen = trimmedInput.includes('-');
+  const hasComma = trimmedInput.includes(',');
+  const hasInvalidInput = /[^0-9,\- ]/.test(trimmedInput);
+
+  if (hasInvalidInput) {
+    throw new Error('Invalid number input. e.g "1" or "1-10" or "1,10"');
+  }
+
+  const rangeSeparator = hasHyphen ? '-' : hasComma ? ',' : undefined;
+
+  if (rangeSeparator) {
+    const parts = trimmedInput
+      .split(rangeSeparator)
+      .map((part) => parseInt(part, 10));
+    if (parts.length === 2 && parts.every(Number.isInteger)) {
+      return [parts[0], parts[1]];
+    } else {
+      throw new Error(
+        'Invalid range format. Expected format: "start-end" or "start, end" e.g "1-10" or "1,10".',
+      );
+    }
+  } else {
+    const number = parseInt(trimmedInput, 10);
+    if (!Number.isInteger(number)) {
+      throw new Error('Invalid number format. e.g "1"');
+    }
+    return number;
+  }
+}

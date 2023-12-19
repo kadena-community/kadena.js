@@ -11,7 +11,11 @@ export const formatConfig = (key: string, value?: string | number): string => {
   if (value === undefined) {
     valueDisplay = chalk.red('Not Set');
   } else if (key.toLowerCase().includes('password')) {
-    valueDisplay = chalk.red('******');
+    if (value === '') {
+      valueDisplay = 'no password set';
+    } else {
+      valueDisplay = chalk.red('******');
+    }
   } else {
     valueDisplay = chalk.green(value.toString());
   }

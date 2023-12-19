@@ -25,7 +25,7 @@ export type TSeedContent = string;
 
 export interface IKeyPair {
   publicKey: string;
-  privateKey?: EncryptedString | string;
+  secretKey?: EncryptedString | string;
 }
 
 export type KeyContent = TSeedContent | IKeyPair;
@@ -45,8 +45,8 @@ export async function savePlainKeyByAlias(
     const filePath = join(PLAIN_KEY_DIR, fileName);
 
     const data: IKeyPair = { publicKey: keyPair.publicKey };
-    if (keyPair.privateKey !== undefined) {
-      data.privateKey = keyPair.privateKey;
+    if (keyPair.secretKey !== undefined) {
+      data.secretKey = keyPair.secretKey;
     }
 
     await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
@@ -82,8 +82,8 @@ export async function saveKeyByAlias(
     const filePath = join(baseDir, fileName);
 
     const data: IKeyPair = { publicKey: keyPair.publicKey };
-    if (keyPair.privateKey !== undefined) {
-      data.privateKey = keyPair.privateKey;
+    if (keyPair.secretKey !== undefined) {
+      data.secretKey = keyPair.secretKey;
     }
 
     await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');

@@ -15,14 +15,14 @@ import chalk from 'chalk';
 import type { KeyContent } from '../keys/utils/storage.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import type { IPrompt } from '../utils/createOption.js';
-import { isAlphabetic, isAlphanumeric } from '../utils/helpers.js';
+import { isAlphanumeric } from '../utils/helpers.js';
 
 export async function keyWallet(): Promise<string> {
   return await input({
     message: `Enter your wallet name:`,
     validate: function (input) {
       if (!isAlphanumeric(input)) {
-        return 'Wallet must be alphabetic! Please enter a valid wallet name.';
+        return 'Wallet must be alphanumeric! Please enter a valid name.';
       }
       return true;
     },
@@ -33,8 +33,8 @@ export async function keyAliasPrompt(): Promise<string> {
   return await input({
     message: `Enter a alias for your key:`,
     validate: function (input) {
-      if (!isAlphabetic(input)) {
-        return 'Alias must be alphabetic! Please enter a valid name.';
+      if (!isAlphanumeric(input)) {
+        return 'Alias must be alphanumeric! Please enter a valid name.';
       }
       return true;
     },
@@ -64,6 +64,13 @@ export async function keyAmountPrompt(): Promise<string> {
   });
 }
 
+export async function keyIndexOrRangePrompt(): Promise<string> {
+  return await input({
+    message: `Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 1`,
+    default: '1',
+  });
+}
+
 export async function keyMessagePrompt(): Promise<string> {
   return await input({
     message: `Enter message to decrypt:`,
@@ -79,8 +86,12 @@ export async function genFromChoicePrompt(): Promise<string> {
         name: 'Generate Public key',
       },
       {
-        value: 'genPublicPrivateKey',
-        name: 'Generate Public and Private key',
+        value: 'genPublicSecretKey',
+        name: 'Generate Public and Secret Key',
+      },
+      {
+        value: 'genPublicSecretKeyDec',
+        name: 'Generate Public and Secret Key (decrypted)',
       },
     ],
   });

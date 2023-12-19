@@ -6,7 +6,6 @@ import { kadenaDecrypt } from '@kadena/hd-wallet';
 
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { clearCLI } from '../../utils/helpers.js';
 import { toHexStr } from '../utils/keysHelpers.js';
 
 export const createDecryptCommand: (program: Command, version: string) => void =
@@ -17,7 +16,6 @@ export const createDecryptCommand: (program: Command, version: string) => void =
     async (config) => {
       console.log(config);
       try {
-        clearCLI();
         debug('decrypt:action')({ config });
 
         console.log(

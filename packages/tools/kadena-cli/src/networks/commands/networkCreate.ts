@@ -2,7 +2,6 @@ import { defaultNetworksPath } from '../../constants/networks.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { ensureFileExists } from '../../utils/filesystem.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { clearCLI } from '../../utils/helpers.js';
 
 import type { INetworkCreateOptions } from '../utils/networkHelpers.js';
 import { writeNetworks } from '../utils/networkHelpers.js';
@@ -40,7 +39,6 @@ export const createNetworksCommand: (
     }
 
     writeNetworks(config as unknown as INetworkCreateOptions);
-    clearCLI(true);
 
     console.log(
       chalk.green(

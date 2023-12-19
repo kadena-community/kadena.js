@@ -254,6 +254,15 @@ export const globalOptions = {
       'Enter you wallet names',
     ),
   }),
+  keyIndexOrRange: createOption({
+    key: 'keyIndexOrRange' as const,
+    prompt: keys.keyIndexOrRangePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-r, --key-index-or-range <keyIndexOrRange>',
+      'Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 1',
+    ),
+  }),
   keyAmount: createOption({
     key: 'keyAmount' as const,
     prompt: keys.keyAmountPrompt,
@@ -292,13 +301,22 @@ export const globalOptions = {
       return keyWallet;
     },
   }),
-  keyPassword: createOption({
-    key: 'keyPassword' as const,
+  securityPassword: createOption({
+    key: 'securityPassword' as const,
     prompt: security.securityPasswordPrompt,
     validation: z.string(),
     option: new Option(
-      '-p, --key-password <keyPassword>',
+      '-p, --key-password <securityPassword>',
       'Enter a password to encrypt your key with',
+    ),
+  }),
+  securityVerifyPassword: createOption({
+    key: 'securityVerifyPassword' as const,
+    prompt: security.securityPasswordVerifyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-p, --key-verify-password <securityVerifyPassword>',
+      'Enter a password to verify with password',
     ),
   }),
   keyMnemonic: createOption({
@@ -348,7 +366,7 @@ export const globalOptions = {
         if (typeof keyFileContent === 'string') {
           return keyFileContent;
         }
-        return keyFileContent?.privateKey;
+        return keyFileContent?.secretKey;
       }
       return keyMessage;
     },

@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { CLIRootName } from '../constants/config.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
 import type { GlobalOptions } from './globalOptions.js';
-import { clearCLI, collectResponses } from './helpers.js';
+import { collectResponses } from './helpers.js';
 import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 
 type AsOption<T> = T extends {
@@ -56,7 +56,6 @@ export function createCommand<
     });
 
     command.action(async (args, ...rest) => {
-      clearCLI(true);
       try {
         // collectResponses
         const questionsMap = options
@@ -77,9 +76,14 @@ export function createCommand<
               .map((arg) => {
                 let displayValue: string | null = null;
                 const value = newArgs[arg];
+                const argName = arg.toLowerCase();
 
-                if (arg.toLowerCase().includes('password')) {
-                  displayValue = '******';
+                if (argName.includes('password')) {
+                  if (value === '') {
+                    displayValue = '';
+                  } else {
+                    displayValue = '******';
+                  }
                 } else {
                   if (Array.isArray(value)) {
                     displayValue = value.join(' ');
@@ -137,7 +141,6 @@ export function createCommand<
           }
         }
 
-        clearCLI(true);
         if (Object.keys(config).length > 0) {
           displayConfig(config);
           console.log('\n');

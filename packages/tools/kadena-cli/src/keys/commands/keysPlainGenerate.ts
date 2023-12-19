@@ -6,7 +6,6 @@ import { randomBytes } from 'crypto';
 import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { clearCLI } from '../../utils/helpers.js';
 import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
@@ -32,7 +31,7 @@ async function generateKeyPairs(
     return randomKeyPairs.map((keyPair) => {
       return {
         publicKey: keyPair.publicKey,
-        privateKey: keyPair.secretKey,
+        secretKey: keyPair.secretKey,
       } as storageService.IKeyPair;
     });
   }
@@ -55,7 +54,7 @@ async function generateLegacyKeyPairs(
 
     keyPairs.push({
       publicKey: publicKey,
-      privateKey: secretKey,
+      secretKey: secretKey,
     });
   }
 
@@ -67,16 +66,15 @@ export const createGeneratePlainKeysCommand: (
   version: string,
 ) => void = createCommand(
   'gen-plain',
-  'generate plain public/private key pair(s)',
+  'generate plain public/secret key pair(s)',
   [
     globalOptions.keyAlias(),
     globalOptions.keyAmount({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
-    clearCLI();
     try {
-      debug('generate-plain-key:action')({ config });
+      debug('generate-plain:action')({ config });
       const amount =
         config.keyAmount !== undefined && config.keyAmount !== ''
           ? config.keyAmount

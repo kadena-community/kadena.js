@@ -38,7 +38,7 @@ const packageJson: { version: string } = JSON.parse(
     fn(program, packageJson.version);
   });
 
-clearCLI();
+clearCLI(true);
 
 program
   .description('CLI to interact with Kadena and its ecosystem')

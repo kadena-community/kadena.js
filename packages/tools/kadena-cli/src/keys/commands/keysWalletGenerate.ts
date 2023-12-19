@@ -1,26 +1,32 @@
+// External library imports
+import chalk from 'chalk';
+import debug from 'debug';
+import { existsSync } from 'fs';
+
 import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 import {
   kadenaGenMnemonic as LegacyKadenaGenMnemonic,
   kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair,
 } from '@kadena/hd-wallet/chainweaver';
-import { existsSync } from 'fs';
 
+// Internal module imports
 import type { Command } from 'commander';
-import debug from 'debug';
-import { createCommand } from '../../utils/createCommand.js';
-
-import { clearCLI } from '../../utils/helpers.js'; // clearCLI
-import * as storageService from '../utils/storage.js';
-
-import chalk from 'chalk';
-
 import { WALLET_DIR } from '../../constants/config.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+
 import {
   displayGeneratedWallet,
   displayStoredWallet,
 } from '../utils/keysDisplay.js';
 import type { IWalletConfig } from '../utils/keysHelpers.js';
+import * as storageService from '../utils/storage.js';
+
+/**
+ * Generates a new key for the wallet.
+ * @param {IWalletConfig} config - The wallet configuration.
+ * @returns {Promise<{words: string, seed: string}>} - The mnemonic words and seed.
+ */
 async function generateKey(
   config: IWalletConfig,
 ): Promise<{ words: string; seed: string }> {
@@ -29,15 +35,23 @@ async function generateKey(
 
   if (config.legacy === true) {
     words = LegacyKadenaGenMnemonic();
-    seed = await legacykadenaMnemonicToRootKeypair(config.keyPassword, words);
+    seed = await legacykadenaMnemonicToRootKeypair(
+      config.securityPassword,
+      words,
+    );
   } else {
     words = kadenaGenMnemonic();
-    seed = await kadenaMnemonicToSeed(config.keyPassword, words);
+    seed = await kadenaMnemonicToSeed(config.securityPassword, words);
   }
 
   return { words, seed };
 }
 
+/**
+ * Creates a command to generate wallets.
+ * @param {Command} program - The commander program.
+ * @param {string} version - The version of the program.
+ */
 export const createGenerateWalletsCommand: (
   program: Command,
   version: string,
@@ -45,16 +59,22 @@ export const createGenerateWalletsCommand: (
   'create-wallet',
   'create your local wallet',
   [
-    globalOptions.keyWallet(),
-    globalOptions.keyPassword(),
+    globalOptions.keyWallet({ isOptional: false }),
+    globalOptions.securityPassword({ isOptional: false }),
+    globalOptions.securityVerifyPassword({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
-    clearCLI();
     try {
-      debug('generate-seed:action')({ config });
+      debug('create-wallet:action')({ config });
 
-      // Check if wallet already exists
+      // compare passwords
+      if (config.securityPassword !== config.securityVerifyPassword) {
+        console.log(chalk.red(`\nPasswords don't match. Please try again.\n`));
+        process.exit(1);
+      }
+
+      // Check for existing wallet
       const walletPath = `${WALLET_DIR}/${config.keyWallet}`;
       if (existsSync(walletPath)) {
         console.log(
@@ -62,7 +82,7 @@ export const createGenerateWalletsCommand: (
             `\nWallet named "${config.keyWallet}" already exists.\n`,
           ),
         );
-        return;
+        process.exit(1);
       }
 
       const { words, seed } = await generateKey(config);
@@ -71,7 +91,7 @@ export const createGenerateWalletsCommand: (
       displayGeneratedWallet(words, config);
       displayStoredWallet(config.keyWallet, config.legacy);
     } catch (error) {
-      console.log(chalk.red(`\n${error.message}\n`));
+      console.error(chalk.red(`\n${error.message}\n`));
       process.exit(1);
     }
   },

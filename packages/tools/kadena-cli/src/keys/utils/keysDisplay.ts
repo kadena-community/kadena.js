@@ -62,8 +62,8 @@ function displayKeysInSection(
       const parsedContents = yaml.load(fileContents) as IKeyPair;
       console.log(chalk.yellow(`Filename: ${keyFileName}`));
       console.log(`Public Key: ${parsedContents.publicKey}`);
-      if (parsedContents.privateKey !== undefined) {
-        console.log(`Private Key: ${parsedContents.privateKey}`);
+      if (parsedContents.secretKey !== undefined) {
+        console.log(`Secret Key: ${parsedContents.secretKey}`);
       }
     } catch (error) {
       console.log(`Error reading key file ${filePath}:`, error);

@@ -23,7 +23,7 @@ export const createDeleteKeysCommand: (
   [globalOptions.keyWalletSelect()],
   async (config) => {
     try {
-      debug('delete:action')({ config });
+      debug('delete-wallet:action')({ config });
 
       const externalPrompt = createExternalPrompt({
         walletDeletePrompt,

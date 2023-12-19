@@ -19,13 +19,20 @@ export const createImportWalletCommand: (
   'import (restore) wallet from mnemonic phrase',
   [
     globalOptions.keyMnemonic(),
-    globalOptions.securityNewPassword(),
+    globalOptions.securityNewPassword({ isOptional: false }),
+    globalOptions.securityVerifyPassword({ isOptional: false }),
     globalOptions.keyWallet(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
     try {
       debug('import-wallet:action')({ config });
+
+      // compare passwords
+      if (config.securityNewPassword !== config.securityVerifyPassword) {
+        console.log(chalk.red(`\nPasswords don't match. Please try again.\n`));
+        process.exit(1);
+      }
 
       const loading = ora('Generating..').start();
       try {

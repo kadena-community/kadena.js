@@ -11,7 +11,6 @@ import { actionAskForUpdatePassword } from '../../prompts/genericActionPrompts.j
 import { createCommand } from '../../utils/createCommand.js';
 import { removeAfterFirstDot } from '../../utils/filesystem.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { clearCLI } from '../../utils/helpers.js';
 import * as storageService from '../utils/storage.js';
 
 export const createChangeWalletPasswordCommand: (
@@ -22,13 +21,20 @@ export const createChangeWalletPasswordCommand: (
   'update the password for your wallet',
   [
     globalOptions.keyWalletSelect(),
-    globalOptions.securityCurrentPassword(),
-    globalOptions.securityNewPassword(),
+    globalOptions.securityCurrentPassword({ isOptional: false }),
+    globalOptions.securityNewPassword({ isOptional: false }),
+    globalOptions.securityVerifyPassword({ isOptional: false }),
   ],
   async (config) => {
     try {
-      clearCLI();
-      debug('manage-keys:action')({ config });
+      debug('change-wallet-password:action')({ config });
+
+      // compare passwords
+      if (config.securityNewPassword !== config.securityVerifyPassword) {
+        console.log(chalk.red(`\nPasswords don't match. Please try again.\n`));
+        process.exit(1);
+      }
+
       const { wallet: keyWallet, fileName } = config.keyWallet;
 
       console.log(
@@ -37,9 +43,7 @@ export const createChangeWalletPasswordCommand: (
         ),
       );
 
-      const isLegacy =
-        kadenaDecrypt(config.securityCurrentPassword, keyWallet).byteLength >=
-        128;
+      const isLegacy = fileName.includes('.legacy');
 
       const externalPrompt = createExternalPrompt({
         actionAskForUpdatePassword,

@@ -1,9 +1,16 @@
 import { password } from '@inquirer/prompts';
+import type { IPrompt } from '../utils/createOption.js';
 
-export async function promptForPassword(message: string): Promise<string> {
+export async function promptForPassword(
+  message: string,
+  isOptional: boolean = false,
+): Promise<string> {
   return await password({
     message: message,
     validate: function (value) {
+      if (isOptional && value.length === 0) {
+        return true;
+      }
       if (value.length < 8) {
         return 'Password should be at least 8 characters long.';
       }
@@ -12,9 +19,24 @@ export async function promptForPassword(message: string): Promise<string> {
   });
 }
 
-export async function securityPasswordPrompt(): Promise<string> {
-  return promptForPassword('Enter a password');
-}
+export const securityPasswordPrompt: IPrompt = async (
+  prev = {},
+  args,
+  isOptional,
+) => {
+  return promptForPassword('Enter a password', isOptional);
+};
+
+export const securityPasswordVerifyPrompt: IPrompt = async (
+  prev = {},
+  args,
+  isOptional,
+) => {
+  return promptForPassword(
+    'Enter a password to verify with password',
+    isOptional,
+  );
+};
 
 export async function securityCurrentPasswordPrompt(): Promise<string> {
   return promptForPassword('Enter your current password');
