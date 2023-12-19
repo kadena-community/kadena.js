@@ -5,6 +5,7 @@ import { TagGroup, TagItem } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
+import React from 'react';
 import { baseGridClass } from '../basestyles.css';
 import { Template } from '../components/Template/Template';
 import { TitleHeader } from '../components/TitleHeader/TitleHeader';
