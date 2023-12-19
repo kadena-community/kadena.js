@@ -24,10 +24,9 @@ export const itemsContainerClass = style([
     justifyContent: 'flex-start',
     alignItems: 'center',
     overflow: 'scroll',
-    paddingLeft: '$sm'
+    paddingLeft: '$sm',
   }),
   {
-
     selectors: {
       '&:hover': {
         textDecoration: 'none',

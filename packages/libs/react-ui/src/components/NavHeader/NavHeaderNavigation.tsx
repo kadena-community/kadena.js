@@ -30,26 +30,14 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
     <NavHeaderNavigationContext.Provider
       value={{ setGlowPosition, activeHref: _activeHref, setActiveHref }}
     >
-      <div
-        role="none"
-        className={glowClass}
-        style={{
-          opacity: !glowX ? 1 : 0,
-          left: '-6rem',
-          transform: `translateX(${glowX}px)`,
-          transitionDuration: `${animationDuration}ms`,
-        }}
-      >
-        <NavGlow />
-      </div>
       <nav className={navWrapperClass} ref={navRef} aria-label="main" dir="ltr">
         <div
           role="none"
           className={glowClass}
           ref={glowRef}
           style={{
-            opacity: glowX ? 1 : 0,
-            transform: `translateX(${glowX}px)`,
+            opacity: 1,
+            transform: `translateX(${glowX + 60}px)`,
             transitionDuration: `${animationDuration}ms`,
           }}
         >

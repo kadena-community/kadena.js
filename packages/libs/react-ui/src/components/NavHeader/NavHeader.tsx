@@ -3,7 +3,11 @@ import Logo, { logoVariants } from '@components/BrandLogo';
 import { Link } from '@components/Link';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
-import { containerClass, itemsContainerClass, logoClass } from './NavHeader.css';
+import {
+  containerClass,
+  itemsContainerClass,
+  logoClass,
+} from './NavHeader.css';
 import type { INavHeaderContentProps } from './NavHeaderContent';
 import type { INavHeaderNavigationProps } from './NavHeaderNavigation';
 
@@ -27,9 +31,7 @@ export const NavHeaderContainer: FC<INavHeaderRootProps> = ({
           </Link>
         </div>
       )}
-      <div className={itemsContainerClass}>
-        {children}
-      </div>
+      <div className={itemsContainerClass}>{children}</div>
     </header>
   );
 };
