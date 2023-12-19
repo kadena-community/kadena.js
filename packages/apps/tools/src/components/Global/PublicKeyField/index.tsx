@@ -9,6 +9,7 @@ import { publicKeyFieldStyles } from './styles.css';
 
 interface IPublicKeyFieldProps
   extends Partial<Omit<IFormFieldWrapperProps, 'children'>> {
+  // refactor?
   inputProps: Partial<
     Pick<
       IInputProps,
@@ -34,11 +35,9 @@ export const PublicKeyField: FC<IPublicKeyFieldProps> = ({
         status={error ? 'negative' : status}
         helperText={helperText}
         {...rest}
-        inputProps={{
-          id: 'public-key-input',
-          placeholder: t('Enter Public Key'),
-          ...inputProps,
-        }}
+        id="public-key-input"
+        placeholder={t('Enter Public Key')}
+        {...inputProps}
       />
     </span>
   );

@@ -24,15 +24,12 @@ export const REQUEST_KEY_VALIDATION = z
     },
   );
 
-interface IRequestKeyFieldProps
-  extends Partial<Omit<ITextFieldProps, 'inputProps'>> {
-  inputProps: Partial<ITextFieldProps['inputProps']>;
+interface IRequestKeyFieldProps extends Partial<ITextFieldProps> {
   error?: FieldError;
 }
 
 const RequestKeyField: FC<IRequestKeyFieldProps> = ({
   error,
-  inputProps,
   status,
   helperText,
   ...rest
@@ -46,13 +43,10 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
       label={t('Request Key')}
       status={error ? 'negative' : status}
       helperText={helper}
+      id="request-key-input"
+      placeholder={t('Enter Request Key')}
+      startIcon={<SystemIcon.KeyIconFilled />}
       {...rest}
-      inputProps={{
-        id: 'request-key-input',
-        placeholder: t('Enter Request Key'),
-        startIcon: <SystemIcon.KeyIconFilled />,
-        ...inputProps,
-      }}
     />
   );
 };
