@@ -1,4 +1,5 @@
-import { EncryptedString, kadenaDecrypt } from '../../index.js';
+import type { EncryptedString } from '../../index.js';
+import { kadenaDecrypt } from '../../index.js';
 import { kadenaSign } from '../vendor/kadena-crypto.cjs';
 import { kadenaGenKeypair } from './kadenaGenKeypair.js';
 

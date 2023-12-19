@@ -1,4 +1,5 @@
-import { EncryptedString, kadenaDecrypt } from '../../index.js';
+import type { EncryptedString } from '../../index.js';
+import { kadenaDecrypt } from '../../index.js';
 import { kadenaChangePassword as originalKadenaChangePassword } from '../kadena-crypto.js';
 import { encryptLegacySecretKey } from './encryption.js';
 

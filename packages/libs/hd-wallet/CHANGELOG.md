@@ -8,5 +8,5 @@
 
 ### Patch Changes
 
-- Updated dependencies [21a0d1530]
-  - @kadena/client@1.6.4
+- Updated dependencies \[21a0d1530]
+  - @kadena/client\@1.6.4
