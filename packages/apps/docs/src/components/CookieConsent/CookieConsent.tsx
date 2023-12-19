@@ -41,8 +41,8 @@ export const CookieConsent: FC = () => {
     <section aria-labelledby="cookie-heading" className={containerClass}>
       <div className={notificationWrapperClass}>
         <Notification
-          color="info"
-          styleVariant="borderless"
+          intent="info"
+          displayStyle="borderless"
           icon={<SystemIcon.Cookie />}
           role="none"
         >
@@ -55,13 +55,19 @@ export const CookieConsent: FC = () => {
             other tracking tools for better optimizations/performances.
           </Text>
           <NotificationFooter>
-            <NotificationButton color={'positive'} onClick={handleAccept}>
+            <NotificationButton
+              intent={'positive'}
+              onClick={handleAccept}
+              icon={<SystemIcon.Check />}
+            >
               Accept
-              <SystemIcon.Check />
             </NotificationButton>
-            <NotificationButton color={'negative'} onClick={handleReject}>
+            <NotificationButton
+              intent={'negative'}
+              onClick={handleReject}
+              icon={<SystemIcon.Close />}
+            >
               Reject
-              <SystemIcon.Close />
             </NotificationButton>
           </NotificationFooter>
         </Notification>

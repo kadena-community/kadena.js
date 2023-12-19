@@ -48,7 +48,7 @@ export async function transfer({
       defaults: {
         networkId: dotenv.NETWORK_ID,
       },
-      sign: createSignWithKeypair(sender.keys[0]),
+      sign: createSignWithKeypair(sender.keys),
     },
   ).executeTo('listen');
 }

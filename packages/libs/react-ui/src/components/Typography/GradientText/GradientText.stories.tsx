@@ -7,7 +7,7 @@ const meta: Meta<typeof GradientText> = {
   component: GradientText,
   parameters: {
     status: {
-      type: ['stable'],
+      type: ['deprecated'],
     },
   },
   argTypes: {

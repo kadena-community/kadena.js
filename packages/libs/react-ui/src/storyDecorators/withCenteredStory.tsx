@@ -24,6 +24,7 @@ const CenteredStory: FC<ICenteredStoryProps> = ({
         display: 'flex',
         alignItems: vertical ? 'center' : 'flex-start',
         justifyContent: horizontal ? 'center' : 'flex-start',
+        overflow: 'none',
       }}
     >
       {children}

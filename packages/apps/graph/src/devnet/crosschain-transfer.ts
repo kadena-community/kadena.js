@@ -57,7 +57,7 @@ export async function crossChainTransfer({
       defaults: {
         networkId: dotenv.NETWORK_ID,
       },
-      sign: createSignWithKeypair(sender00.keys[0]),
+      sign: createSignWithKeypair(sender00.keys),
     },
   );
 

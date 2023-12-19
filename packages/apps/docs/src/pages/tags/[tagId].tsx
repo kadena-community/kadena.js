@@ -58,7 +58,7 @@ export const getStaticProps: GetStaticProps<{}, { tagId: string }> = async (
 
   return {
     props: {
-      ...(await getPageConfig({})),
+      ...(await getPageConfig({ filename: __filename })),
       posts,
       tagId,
       frontmatter: {

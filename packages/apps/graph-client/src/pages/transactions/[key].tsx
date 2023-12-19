@@ -55,7 +55,7 @@ const RequestKey: React.FC = () => {
                 <Table.Td>
                   {data?.transaction?.badResult && (
                     <Notification
-                      color="negative"
+                      intent="negative"
                       icon={<SystemIcon.Close />}
                       role="status"
                     >
@@ -71,7 +71,7 @@ const RequestKey: React.FC = () => {
                   )}
                   {data?.transaction?.goodResult && (
                     <Notification
-                      color="positive"
+                      intent="positive"
                       icon={<SystemIcon.Check />}
                       role="status"
                     >
@@ -82,7 +82,7 @@ const RequestKey: React.FC = () => {
                   )}
                   {!data?.transaction?.goodResult &&
                     !data?.transaction?.badResult && (
-                      <Notification color="warning" role="status">
+                      <Notification intent="warning" role="status">
                         Unknown transaction status
                       </Notification>
                     )}

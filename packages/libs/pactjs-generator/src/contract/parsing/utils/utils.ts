@@ -19,6 +19,8 @@ export const pushUnique = (arr: Primitive[], item: Primitive): void => {
 export interface IModuleLike {
   name: string;
   namespace?: string;
+  hash?: string;
+  imports?: string[];
 }
 
 export const getModuleFullName = ({

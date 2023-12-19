@@ -225,7 +225,11 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      ...(await getPageConfig({ blogPosts: true, popularPages: '/' })),
+      ...(await getPageConfig({
+        blogPosts: true,
+        popularPages: '/',
+        filename: __filename,
+      })),
       frontmatter: {
         title: 'Welcome to Kadena docs',
         menu: 'Pact',

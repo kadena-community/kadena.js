@@ -15,6 +15,7 @@ import {
   Grid,
   GridItem,
   Heading,
+  Stack,
   Table,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
@@ -130,130 +131,132 @@ const Home: FC = () => {
             "We're constantly adding new Developer Tools to make it easier for our builders to utilize all Kadena has to offer.",
           )}
         </Heading>
-        <Card fullWidth>
-          <Grid columns={2}>
-            <GridItem>
-              <Heading as="h3" variant="h5">
-                {t('General Links')}
-              </Heading>
-              <Box marginBottom="$4" />
-              <ul>
-                <li>
-                  <a
-                    className={linkStyle}
-                    href="https://docs.kadena.io/kadena"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {t('Overview of Kadena')}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={linkStyle}
-                    href="https://docs.kadena.io/kadena/kda/manage-kda"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {t('Manage your KDA')}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={linkStyle}
-                    href="https://kadena.io/grants/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {t('Contribute to the network')}
-                  </a>
-                </li>
-              </ul>
-            </GridItem>
-            <GridItem>
-              <Heading as="h3" variant="h5">
-                {t('Developers Links')}
-              </Heading>
-              <Box marginBottom="$4" />
-              <ul>
-                <li>
-                  <a
-                    className={linkStyle}
-                    href="https://docs.kadena.io/build/quickstart"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {t('Quick start')}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={linkStyle}
-                    href="https://docs.kadena.io/pact"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {t('Pact language resources')}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className={linkStyle}
-                    href="https://docs.kadena.io/build/guides/election-dapp-tutorial"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {t('Build your first dApp')}
-                  </a>
-                </li>
-              </ul>
-            </GridItem>
-          </Grid>
-        </Card>
-        <Card fullWidth>
-          <Heading as="h3" variant="h5">
-            {t('Frequently Asked Questions')}
-          </Heading>
-          <Box marginBottom="$4" />
-          <Accordion.Root>
-            {faqs.map((faq) => (
-              <Accordion.Section title={faq.title} key={faq.title}>
-                {faq.body}
-              </Accordion.Section>
-            ))}
-          </Accordion.Root>
-        </Card>
-        <Card fullWidth>
-          <Heading as="h3" variant="h5">
-            Latest Updates
-          </Heading>
-          <p>
-            {/* eslint-disable-next-line react/no-unescaped-entities */}
-            If you're seeking Help click{' '}
-            <span
-              className={helpCenterButtonClass}
-              onClick={handleOpenHelpCenter}
-            >
-              HERE
-            </span>
-          </p>
-          <p>
-            Changelog with the latest updates to the Kadena Development Tools.
-          </p>
-          <br />
-          <Table.Root striped>
-            <Table.Body>
-              <Table.Tr>
-                <Table.Td>July 28, 2023</Table.Td>
-                <Table.Td>Added the Account Transactions Overview.</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>July 10, 2023</Table.Td>
-                <Table.Td>Released version 1 of the Tools Website.</Table.Td>
-              </Table.Tr>
-            </Table.Body>
-          </Table.Root>
-        </Card>
+        <Stack direction="column" gap="$lg" marginTop="$lg">
+          <Card fullWidth>
+            <Grid columns={2}>
+              <GridItem>
+                <Heading as="h3" variant="h5">
+                  {t('General Links')}
+                </Heading>
+                <Box marginBottom="$4" />
+                <ul>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/kadena"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Overview of Kadena')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/kadena/kda/manage-kda"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Manage your KDA')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://kadena.io/grants/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Contribute to the network')}
+                    </a>
+                  </li>
+                </ul>
+              </GridItem>
+              <GridItem>
+                <Heading as="h3" variant="h5">
+                  {t('Developers Links')}
+                </Heading>
+                <Box marginBottom="$4" />
+                <ul>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/build/quickstart"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Quick start')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/pact"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Pact language resources')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/build/guides/election-dapp-tutorial"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Build your first dApp')}
+                    </a>
+                  </li>
+                </ul>
+              </GridItem>
+            </Grid>
+          </Card>
+          <Card fullWidth>
+            <Heading as="h3" variant="h5">
+              {t('Frequently Asked Questions')}
+            </Heading>
+            <Box marginBottom="$4" />
+            <Accordion.Root>
+              {faqs.map((faq) => (
+                <Accordion.Section title={faq.title} key={faq.title}>
+                  {faq.body}
+                </Accordion.Section>
+              ))}
+            </Accordion.Root>
+          </Card>
+          <Card fullWidth>
+            <Heading as="h3" variant="h5">
+              Latest Updates
+            </Heading>
+            <p>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
+              If you're seeking Help click{' '}
+              <span
+                className={helpCenterButtonClass}
+                onClick={handleOpenHelpCenter}
+              >
+                HERE
+              </span>
+            </p>
+            <p>
+              Changelog with the latest updates to the Kadena Development Tools.
+            </p>
+            <br />
+            <Table.Root striped>
+              <Table.Body>
+                <Table.Tr>
+                  <Table.Td>July 28, 2023</Table.Td>
+                  <Table.Td>Added the Account Transactions Overview.</Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>July 10, 2023</Table.Td>
+                  <Table.Td>Released version 1 of the Tools Website.</Table.Td>
+                </Table.Tr>
+              </Table.Body>
+            </Table.Root>
+          </Card>
+        </Stack>
       </div>
     </div>
   );
