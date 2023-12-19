@@ -3,7 +3,7 @@ import { sprinkles, vars } from '../../styles';
 
 export const containerClass = style([
   sprinkles({
-    alignItems: 'stretch',
+    alignItems: 'center',
     backgroundColor: '$gray90',
     color: '$gray40',
     display: 'flex',
@@ -12,10 +12,22 @@ export const containerClass = style([
     height: '$16',
     justifyContent: 'flex-start',
     position: 'relative',
-    minWidth: 'max-content',
+  }),
+]);
+
+export const itemsContainerClass = style([
+  sprinkles({
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    height: '$16',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    overflow: 'scroll',
+    paddingLeft: '$sm'
   }),
   {
-    alignItems: 'center',
+
     selectors: {
       '&:hover': {
         textDecoration: 'none',
@@ -30,11 +42,9 @@ export const containerClass = style([
 export const logoClass = style([
   sprinkles({
     display: 'flex',
-    marginLeft: '$3',
+    marginX: '$3',
+    minWidth: 'max-content',
   }),
-  {
-    zIndex: 1,
-  },
 ]);
 
 export const navWrapperClass = style([
@@ -53,6 +63,7 @@ export const navListClass = style([
   }),
   {
     listStyle: 'none',
+    paddingInlineStart: '1rem',
     zIndex: 1,
   },
 ]);

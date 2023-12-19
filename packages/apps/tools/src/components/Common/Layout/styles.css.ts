@@ -7,7 +7,6 @@ export const headerStyle = style([
     top: 0,
     height: '$16',
     alignItems: 'center',
-    overflow: 'auto',
     zIndex: 1,
   }),
   {
