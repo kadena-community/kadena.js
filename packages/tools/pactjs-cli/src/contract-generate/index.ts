@@ -3,6 +3,7 @@ import { Option } from 'commander';
 import { z } from 'zod';
 import type { networkMap } from '../utils/networkMap';
 import { generate } from './generate';
+import { extractNetworkAndChain } from './utils';
 
 export interface IContractGenerateOptions {
   clean?: boolean;
@@ -33,7 +34,7 @@ const Options = z
     api: z.string().optional(),
     chain: z.number().optional(),
     namespace: z.string().optional(),
-    network: z.enum(['mainnet', 'testnet']),
+    network: z.string(),
     parseTreePath: z.string().optional(),
   })
   .refine(({ file, contract }) => {
@@ -101,7 +102,15 @@ export function contractGenerateCommand(
     )
     .action((args: IContractGenerateOptions) => {
       try {
-        Options.parse(args);
+        const { api, ...rest } = args;
+        const { network, chain } = extractNetworkAndChain(api);
+        const updatedArgs = {
+          ...rest,
+          api,
+          network: rest.network ?? network,
+          chain: rest.chain ?? chain,
+        };
+        Options.parse(updatedArgs);
       } catch (e) {
         program.error(
           `${(e as z.ZodError).errors
