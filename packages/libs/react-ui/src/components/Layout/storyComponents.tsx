@@ -1,5 +1,4 @@
 import { Text } from '@components/Typography';
-import { atoms } from '@theme/atoms.css';
 import { tokens } from '@theme/tokens/contract.css';
 import type { FC } from 'react';
 import React from 'react';
@@ -190,12 +189,10 @@ export const Legend: FC<ILegendProps> = ({ items }) => {
         <Stack as="li" key={label} alignItems="center" gap="sm">
           <Box
             style={{ width: 15, height: 15 }}
-            className={atoms({
-              backgroundColor: `semantic.${color}.default`,
-              borderColor: 'base.bold',
-              borderStyle: 'solid',
-              borderWidth: 'hairline',
-            })}
+            backgroundColor={`semantic.${color}.default`}
+            borderColor="base.bold"
+            borderStyle="solid"
+            borderWidth="hairline"
           />
           <Text>{label}</Text>
         </Stack>
