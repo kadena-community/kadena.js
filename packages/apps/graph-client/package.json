@@ -37,9 +37,9 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "2.16.1",
-    "@graphql-codegen/typescript-operations": "~2.5.10",
-    "@graphql-codegen/typescript-react-apollo": "~3.3.7",
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/typescript-operations": "~4.0.1",
+    "@graphql-codegen/typescript-react-apollo": "~4.1.0",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
