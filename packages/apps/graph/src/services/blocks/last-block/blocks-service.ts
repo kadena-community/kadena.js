@@ -8,7 +8,7 @@ const performanceLog: debug.Debugger = debug('performance');
 class BlocksService {
   private _lastBlocks: Block[] = [];
   private _prisma: PrismaClient<Prisma.PrismaClientOptions, never>;
-  private _interval: NodeJS.Timer | undefined;
+  private _interval: NodeJS.Timeout | undefined;
   public pubsub: PubSub<{ NEW_BLOCKS: [NEW_BLOCKS: Block[]] }>;
   private _i: number = 0;
   private _mocks: Block[];
