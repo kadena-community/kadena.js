@@ -1,7 +1,8 @@
 import type { ITagGroupProps } from '@components/Tag';
-import { TagGroup, TagItem } from '@components/Tag';
+import { Tag, TagGroup, TagItem } from '@components/Tag';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { Stack, SystemIcon } from '..';
 
 const meta: Meta<ITagGroupProps> = {
   title: 'Components/TagGroup',
@@ -124,6 +125,20 @@ export const AsChild: Story = {
           <a href="https://tools.kadena.io/">Tools Website</a>
         </TagItem>
       </TagGroup>
+    );
+  },
+};
+
+export const TagComponent: Story = {
+  name: 'Tag Styles Component',
+  render: () => {
+    return (
+      <Tag>
+        <Stack gap="$xs" alignItems="center">
+          Tag Styles
+          <SystemIcon.Edit size="sm" />
+        </Stack>
+      </Tag>
     );
   },
 };

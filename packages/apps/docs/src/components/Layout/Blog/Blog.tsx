@@ -2,6 +2,7 @@ import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileC
 import { formatDateDistance } from '@/utils/dates';
 import type { IPageProps } from '@kadena/docs-tools';
 import { TagGroup, TagItem } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -90,7 +91,11 @@ export const Blog: FC<IPageProps> = ({
               </ArticleMetadataItem>
               <ArticleMetadataItem>
                 {tags && (
-                  <TagGroup tagAsChild aria-label={`${title} Tags`}>
+                  <TagGroup
+                    tagAsChild
+                    aria-label={`${title} Tags`}
+                    className={atoms({ display: 'inline-block' })}
+                  >
                     {tags.map((tag: string) => (
                       <TagItem key={tag} aria-label={`${tag} Link`}>
                         <Link key={tag} href={`/tags/${tag}`}>
