@@ -2,7 +2,7 @@ import type { ChainId } from '@kadena/client';
 import { getBalance } from '@kadena/client-utils/coin';
 import { dotenv } from '@utils/dotenv';
 import { crossChainTransfer } from '../crosschain-transfer';
-import type { IAccount } from '../helper';
+import type { IAccount, IAccountWithTokens } from '../helper';
 import {
   generateAccount,
   getRandomNumber,
@@ -26,22 +26,24 @@ const simulationTransferOptions: TransferType[] = [
 
 export const MARMALADE_TEMPLATE_FOLDER = 'src/devnet/contracts/marmalade-v2';
 
+export interface ISimulationOptions {
+  numberOfAccounts: number;
+  transferInterval: number;
+  maxAmount: number;
+  tokenPool: number;
+  seed: string;
+}
+
 export async function simulate({
   numberOfAccounts = 6,
   transferInterval = 100,
   maxAmount = 25,
   tokenPool = 1000000,
   seed = Date.now().toString(),
-}: {
-  numberOfAccounts: number;
-  transferInterval: number;
-  maxAmount: number;
-  tokenPool: number;
-  seed: string;
-}): Promise<void> {
+}: ISimulationOptions): Promise<void> {
   const accounts: IAccount[] = [];
 
-  // Parameters validation check
+  // Parameters validation
   if (tokenPool < maxAmount) {
     logger.info(
       'The max transfer amount cant be greater than the total token pool',
@@ -118,7 +120,7 @@ export async function simulate({
         to: account.account,
         amount: tokenPool / numberOfAccounts,
         requestKey: result.reqKey,
-        type: 'fund',
+        action: 'fund',
       });
     }
 
@@ -237,7 +239,7 @@ export async function simulate({
           to: nextAccount.account,
           amount,
           requestKey: result?.reqKey || '',
-          type: transferType,
+          action: transferType,
         });
 
         // If the account is not in the accountlist, add it

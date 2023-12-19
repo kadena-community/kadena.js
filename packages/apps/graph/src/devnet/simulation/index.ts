@@ -2,17 +2,18 @@ import { Command, Option } from 'commander';
 
 import 'module-alias/register';
 
-import {
-  createToken,
-  createToken1,
-} from '@devnet/marmalade/token/create-token';
+import { createToken } from '@devnet/marmalade/token/create-token';
 import { createTokenId } from '@devnet/marmalade/token/create-token-id';
+import { mintToken } from '@devnet/marmalade/token/mint-token';
+import { transferCreateToken } from '@devnet/marmalade/token/transfer-create-token';
+import { PactNumber } from '@kadena/pactjs';
 import { ChainId } from '@kadena/types';
 import type { IAccount } from '../helper';
 import { generateAccount, logger, sender00 } from '../helper';
 import { deployMarmaladeContracts } from '../marmalade/deploy';
 import { transfer } from '../transfer';
 import { simulate } from './simulate';
+import { simulateMarmalade } from './simulate-marmalade';
 
 const program: Command = new Command();
 program
@@ -103,42 +104,7 @@ program
   .description('Deploy marmalade contracts on the devnet')
   .action(async (args) => {
     try {
-      // const tokenId = await createToken({
-      //   uri: `https://www.${Date.now()}.io`,
-      // });
-
-      const sender: IAccount = {
-        keys: [
-          {
-            publicKey:
-              'ac76beb00875b5618744b3f734802a51eeadb4aa2f40c9e6cf410507a69831ff',
-            secretKey:
-              'f401a6eb1ed1bd95c902fa4bf0dfcd9a604a3b69e6aaa5b399db8e5f8591ff24',
-          },
-        ],
-        account:
-          'k:ac76beb00875b5618744b3f734802a51eeadb4aa2f40c9e6cf410507a69831ff',
-        chainId: '0' as ChainId,
-      };
-
-      const uri = `https://www.${Date.now()}.io`;
-      // const tokenId = await createTokenId({
-      //   sender: sender,
-      //   uri: `https://www.${Date.now()}.io`,
-      //   policies: [],
-      //   precision: 0,
-      // });
-
-      const result = await createToken({ uri, sender });
-
-      console.log(result);
-      // await mintToken1({
-      //   // tokenId: 't:dEsk5ofm2nRDjURTHrM7ao4__QsVL1huhtxSioo1KcI',
-      //   tokenId: 't:bvygitdVSfiGXsrbosKxKff2ZpnzqLAN1qY5AGQQjaw',
-      // });
-      // await transferToken({
-      //   tokenId: 't:bvygitdVSfiGXsrbosKxKff2ZpnzqLAN1qY5AGQQjaw',
-      // });
+      await simulateMarmalade(args);
     } catch (error) {
       console.error(error);
     }

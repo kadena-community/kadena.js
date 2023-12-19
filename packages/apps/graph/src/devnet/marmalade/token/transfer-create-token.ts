@@ -1,4 +1,4 @@
-import { IAccount } from '@devnet/helper';
+import { IAccount, logger } from '@devnet/helper';
 import { Pact, createSignWithKeypair, readKeyset } from '@kadena/client';
 import { submitClient } from '@kadena/client-utils/core';
 import {
@@ -24,6 +24,10 @@ export async function transferCreateToken({
   receiver,
   amount,
 }: ITransferCreateTokenInput) {
+  logger.info(
+    `Transfering token ${tokenId}\nAmount ${amount.decimal}\nSender ${sender.account}\nReceiver ${receiver.account}`,
+  );
+
   const command = composePactCommand(
     execution(
       Pact.modules['marmalade-v2.ledger']['transfer-create'](

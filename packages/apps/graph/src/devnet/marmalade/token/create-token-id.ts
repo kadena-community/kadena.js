@@ -13,14 +13,14 @@ interface ICreateTokenIdInput {
   policies?: string[];
   uri: string;
   precision?: number;
-  sender: IAccount;
+  creator: IAccount;
 }
 
 export async function createTokenId({
   policies = [],
   uri,
   precision = 0,
-  sender,
+  creator,
 }: ICreateTokenIdInput): Promise<string> {
   return (await dirtyReadClient({
     host: dotenv.NETWORK_HOST,
@@ -38,9 +38,9 @@ export async function createTokenId({
       addKeyset(
         'creation-guard',
         'keys-all',
-        ...sender.keys.map((key) => key.publicKey),
+        ...creator.keys.map((key) => key.publicKey),
       ),
-      setMeta({ senderAccount: sender.account, chainId: sender.chainId }),
+      setMeta({ senderAccount: creator.account, chainId: creator.chainId }),
     ),
   ).execute()) as string;
 }

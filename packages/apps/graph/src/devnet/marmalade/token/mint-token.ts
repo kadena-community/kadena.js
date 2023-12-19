@@ -1,4 +1,4 @@
-import { IAccount } from '@devnet/helper';
+import { IAccount, logger } from '@devnet/helper';
 import { Pact, createSignWithKeypair, readKeyset } from '@kadena/client';
 import { submitClient } from '@kadena/client-utils/core';
 import {
@@ -24,6 +24,10 @@ export async function mintToken({
   guard,
   amount,
 }: ICreateTokenInput) {
+  logger.info(
+    `Minting token ${tokenId}\nAmount ${amount.decimal}\nCreator ${creator}`,
+  );
+
   const command = composePactCommand(
     execution(
       Pact.modules['marmalade-v2.ledger'].mint(

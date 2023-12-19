@@ -22,7 +22,7 @@ interface ICreateTokenInput {
   uri: string;
   tokenId: string;
   precision?: number;
-  sender: IAccount;
+  creator: IAccount;
 }
 
 export async function createToken({
@@ -30,7 +30,7 @@ export async function createToken({
   uri,
   tokenId,
   precision = 0,
-  sender,
+  creator,
 }: ICreateTokenInput): Promise<ICommandResult> {
   const command = composePactCommand(
     execution(
@@ -47,19 +47,19 @@ export async function createToken({
     addKeyset(
       'creation-guard',
       'keys-all',
-      ...sender.keys.map((key) => key.publicKey),
+      ...creator.keys.map((key) => key.publicKey),
     ),
     addSigner(
-      sender.keys.map((key) => key.publicKey),
+      creator.keys.map((key) => key.publicKey),
       (signFor) => [
         signFor('coin.GAS'),
         signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, {
           pred: 'keys-all',
-          keys: sender.keys.map((key) => key.publicKey),
+          keys: creator.keys.map((key) => key.publicKey),
         }),
       ],
     ),
-    setMeta({ senderAccount: sender.account, chainId: sender.chainId }),
+    setMeta({ senderAccount: creator.account, chainId: creator.chainId }),
   );
 
   const config = {
@@ -67,7 +67,7 @@ export async function createToken({
     defaults: {
       networkId: dotenv.NETWORK_ID,
     },
-    sign: createSignWithKeypair(sender.keys),
+    sign: createSignWithKeypair(creator.keys),
   };
 
   const result = await submitClient(config)(command).executeTo('listen');
