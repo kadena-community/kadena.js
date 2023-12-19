@@ -3,8 +3,7 @@ import { Input } from '@components/Form';
 import { Stack } from '@components/Layout';
 import type { FC } from 'react';
 import React from 'react';
-import { FormFieldHeader } from '../FormFieldWrapper/FormFieldHeader/FormFieldHeader';
-import { FormFieldHelper } from '../FormFieldWrapper/FormFieldHelper/FormFieldHelper';
+import { FormFieldHeader, FormFieldHelper } from '../FormFieldWrapper';
 import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
 
 export interface ITextFieldProps
