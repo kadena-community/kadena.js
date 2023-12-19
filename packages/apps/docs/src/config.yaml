@@ -8,6 +8,86 @@ menu:
   - blogchain
 
 pages:
+  build:
+    url: '/build'
+    file: '/build.index.tsx'
+    children:
+      quickstart:
+        url: /quickstart
+        file: /build/quickstart/index.md
+        children:
+          memorywall:
+            url: /memorywall
+            file: /build/quickstart/memorywall.md
+          chainweaver:
+            url: /setup-chainweaver
+            file: /build/quickstart/setup-chainweaver.md  
+          testnet:
+            url: /testnet-account-setup
+            file: /build/quickstart/testnet-account-setup.md
+          pactyparrots:
+            url: /pacty-parrots
+            file: /build/quickstart/pacty-parrots.md  
+          dapp:
+            url: /dapp
+            file: /build/quickstart/dapp.md  
+      cookbook:
+        url: /cookbook
+        file: /build/cookbook/index.md
+      guides:
+        url: /guides
+        file: /build/guides/index.md
+        children:
+          marmalade:
+            url: /marmalade-tutorial    
+            file: /build/guides/marmalade-tutorial.md           
+          localapi:
+            url: /pact-local-api-queries    
+            file: /build/guides/pact-local-api-queries.md           
+          electiondapptutorial:
+            url: /election-dapp-tutorial    
+            file: /build/guides/election-dapp-tutorial/index.md
+            children:
+              gettingstarted:
+                url: /01-getting-started
+                file: /build/guides/election-dapp-tutorial/01-getting-started.md
+              runningdevnet:
+                url: /02-running-devnet
+                file: /build/guides/election-dapp-tutorial/02-running-devnet.md
+              adminaccount:
+                url: /03-admin-account
+                file: /build/guides/election-dapp-tutorial/03-admin-account.md
+              namespaces:
+                url: /04-namespaces
+                file: /build/guides/election-dapp-tutorial/04-namespaces.md
+              keysets:
+                url: /05-keysets
+                file: /build/guides/election-dapp-tutorial/05-keysets.md
+              smart-contract:
+                url: /06-smart-contract
+                file: /build/guides/election-dapp-tutorial/06-smart-contract.md
+              nominate-candidates:
+                url: /07-nominate-candidates
+                file: /build/guides/election-dapp-tutorial/07-nominate-candidates.md
+              voting:
+                url: /08-voting
+                file: /build/guides/election-dapp-tutorial/08-voting.md
+              gasstation:
+                url: /09-gas-station
+                file: /build/guides/election-dapp-tutorial/09-gas-station.md
+          rotatedrain:
+            url: /safe-rotate-and-drain    
+            file: /build/guides/safe-rotate-and-drain.md           
+          safetransfer:
+            url: /safe-transfer    
+            file: /build/guides/safe-transfer.md   
+      resources:
+        url: /resources
+        file: /build/resources/index.md     
+        children:
+          kurolayer2:
+            url: /kuro-layer-2
+            file: /build/resources/kuro-layer-2.md
   contribute:
     url: /contribute
     file: /contribute/index.tsx
