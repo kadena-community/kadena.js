@@ -9,7 +9,7 @@ export const dividerClass = style([
     border: 'none',
   }),
   {
-    backgroundColor: tokens.kda.foundation.color.border.base['@bold'],
+    backgroundColor: tokens.kda.foundation.color.border.base.bold,
     height: tokens.kda.foundation.border.width.hairline,
   },
 ]);
