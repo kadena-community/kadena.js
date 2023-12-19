@@ -153,11 +153,11 @@ export const parseYamlToKdaTx =
 export const convertTemplateTxToPactCommand = (
   ctx: ITemplateContextPactCommand,
 ): IPactCommand => {
-  const { code, ...kdaToolTx } = ctx.tplTx;
+  const { code, data, ...kdaToolTx } = ctx.tplTx;
 
   const execPayload: IExecutionPayloadObject = {
     exec: {
-      data: kdaToolTx.data ? kdaToolTx.data : {},
+      data: data ? data : {},
       code: code!,
     },
   };

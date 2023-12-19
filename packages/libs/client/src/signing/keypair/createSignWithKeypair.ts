@@ -1,5 +1,5 @@
 import { signHash } from '@kadena/cryptography-utils';
-import type { IUnsignedCommand } from '@kadena/types';
+import type { IKeyPair, IUnsignedCommand } from '@kadena/types';
 import type { Debugger } from 'debug';
 import _debug from 'debug';
 import type { IPactCommand } from '../../interfaces/IPactCommand';
@@ -8,16 +8,6 @@ import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 const debug: Debugger = _debug('pactjs:signWithKeypair');
-
-/**
- * interface for a keypair
- *
- * @public
- */
-export interface IKeypair {
-  publicKey: string;
-  secretKey: string;
-}
 
 /**
  * interface for the `createSignWithKeypair` function {@link createSignWithKeypair}
@@ -38,7 +28,7 @@ export interface ICreateSignWithKeypair {
    *
    * @public
    */
-  (key: IKeypair): ISignFunction;
+  (key: IKeyPair): ISignFunction;
   /**
    * @param keys - provide the keys to sign with
    * @returns a function to sign with
@@ -53,7 +43,7 @@ export interface ICreateSignWithKeypair {
    *
    * @public
    */
-  (keys: IKeypair[]): ISignFunction;
+  (keys: IKeyPair[]): ISignFunction;
 }
 
 /**
@@ -73,7 +63,7 @@ export interface ICreateSignWithKeypair {
  * @public
  */
 export const createSignWithKeypair: ICreateSignWithKeypair = (keyOrKeys) => {
-  const keypairs: IKeypair[] = Array.isArray(keyOrKeys)
+  const keypairs: IKeyPair[] = Array.isArray(keyOrKeys)
     ? keyOrKeys
     : [keyOrKeys];
   return async function signWithKeypair(transactionList) {
@@ -104,8 +94,8 @@ export const createSignWithKeypair: ICreateSignWithKeypair = (keyOrKeys) => {
 
 function getRelevantKeypairs(
   tx: IPactCommand,
-  keypairs: IKeypair[],
-): IKeypair[] {
+  keypairs: IKeyPair[],
+): IKeyPair[] {
   const relevantKeypairs = keypairs.filter((keypair) =>
     tx.signers.some(({ pubKey }) => pubKey === keypair.publicKey),
   );
@@ -115,7 +105,7 @@ function getRelevantKeypairs(
 
 function signWithKeypairs(
   tx: IUnsignedCommand,
-  relevantKeypairs: IKeypair[],
+  relevantKeypairs: IKeyPair[],
 ): IUnsignedCommand {
   return relevantKeypairs.reduce((tx, keypair) => {
     const { sig, pubKey } = signHash(tx.hash, keypair);

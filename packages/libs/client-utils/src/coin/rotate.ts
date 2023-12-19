@@ -1,4 +1,4 @@
-import type { ChainId } from '@kadena/client';
+import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
@@ -54,4 +54,6 @@ export const rotateCommand = ({
  * @alpha
  */
 export const rotate = (inputs: IRotateCommandInput, config: IClientConfig) =>
-  submitClient(config)(rotateCommand(inputs));
+  submitClient<PactReturnType<IPactModules['coin']['rotate']>>(config)(
+    rotateCommand(inputs),
+  );

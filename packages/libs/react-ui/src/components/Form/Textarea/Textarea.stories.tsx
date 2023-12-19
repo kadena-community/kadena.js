@@ -1,11 +1,13 @@
 import type { ITextareaProps } from '@components/Form';
 import { Textarea } from '@components/Form';
 import type { Meta, StoryObj } from '@storybook/react';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import React, { useState } from 'react';
 
 const meta: Meta<ITextareaProps> = {
   title: 'Form/Textarea/Textarea',
   component: Textarea,
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {

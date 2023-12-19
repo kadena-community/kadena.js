@@ -49,7 +49,7 @@ const Account: React.FC = () => {
         data?.account?.totalBalance === 0 &&
         data?.account?.chainAccounts.length === 0 && (
           <>
-            <Notification color="info" role="status">
+            <Notification intent="info" role="status">
               We could not find any data on this account. Please check the
               fungible name and account name.
             </Notification>

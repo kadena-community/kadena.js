@@ -1,20 +1,26 @@
 import type { FC } from 'react';
 import React from 'react';
-import { actionButtonColorVariants } from './Notification.css';
+import {
+  actionButtonIconClass,
+  actionButtonIntentVariants,
+} from './Notification.css';
 
 export interface INotificationButtonProps {
-  color: keyof typeof actionButtonColorVariants;
+  intent: keyof typeof actionButtonIntentVariants;
   onClick?: () => void;
   children: React.ReactNode;
+  icon: React.ReactElement;
 }
 export const NotificationButton: FC<INotificationButtonProps> = ({
-  color,
+  intent,
   onClick,
   children,
+  icon,
 }) => {
   return (
-    <button onClick={onClick} className={actionButtonColorVariants[color]}>
+    <button onClick={onClick} className={actionButtonIntentVariants[intent]}>
       {children}
+      <span className={actionButtonIconClass}>{icon}</span>
     </button>
   );
 };

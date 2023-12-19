@@ -11,8 +11,11 @@ export const containerClass = style([
     flexWrap: 'nowrap',
     height: '$16',
     justifyContent: 'flex-start',
-    overflow: 'hidden',
     position: 'relative',
+    width: {
+      xs: 'max-content',
+      sm: '100%',
+    },
   }),
   {
     alignItems: 'center',
