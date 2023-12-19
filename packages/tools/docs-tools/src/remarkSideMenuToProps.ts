@@ -25,7 +25,6 @@ const getPath = (filename: string): string => {
 
 const remarkSideMenuToProps = (): Plugin => {
   return async (tree: ITree, file) => {
-    console.log('path', getPath(file.history[0]));
     const items = await checkSubTreeForActive(getPath(file.history[0]));
 
     const itemsReduced = items.map((item: Partial<IMenuItem>) => {
