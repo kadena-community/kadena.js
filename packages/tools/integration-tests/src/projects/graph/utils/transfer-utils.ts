@@ -11,25 +11,25 @@ export async function transferFunds(
   amount: string,
   chainId: ChainId,
 ): Promise<ICommandResult> {
-    const transferTask = await transfer(
-      {
-        sender: { account: source.account, publicKeys: [source.publicKey] },
-        receiver: target.account,
-        amount: amount,
-        gasPayer: { account: source.account, publicKeys: [source.publicKey] },
-        chainId: chainId,
+  const transferTask = await transfer(
+    {
+      sender: { account: source.account, publicKeys: [source.publicKey] },
+      receiver: target.account,
+      amount: amount,
+      gasPayer: { account: source.account, publicKeys: [source.publicKey] },
+      chainId: chainId,
+    },
+    {
+      host: devnetHost,
+      defaults: {
+        networkId: networkId,
       },
-      {
-        host: devnetHost,
-        defaults: {
-          networkId: networkId,
-        },
-        sign: createSignWithKeypair([source]),
-      },
-    )
-    const listen =  await transferTask.executeTo("listen")
-    await transferTask.execute()
-    return listen
+      sign: createSignWithKeypair([source]),
+    },
+  );
+  const listen = await transferTask.executeTo('listen');
+  await transferTask.execute();
+  return listen;
 }
 
 export async function transferFundsCrossChain(
@@ -39,37 +39,38 @@ export async function transferFundsCrossChain(
   sourceChain: ChainId,
   targetChain: ChainId,
 ): Promise<ICommandResult> {
-   const transferCrossChainTask = await transferCrossChain(
-      {
-        sender: {
-          account: source.account,
-          publicKeys: [source.publicKey],
-        },
-        receiver: {
-          account: target.account,
-          keyset: {
-            keys: [target.publicKey],
-            pred: 'keys-all',
-          },
-        },
-        amount: amount,
-        chainId: sourceChain,
-        targetChainId: targetChain,
-        targetChainGasPayer: {
-          account: source.account,
-          publicKeys: [source.publicKey],
+  const transferCrossChainTask = await transferCrossChain(
+    {
+      sender: {
+        account: source.account,
+        publicKeys: [source.publicKey],
+      },
+      receiver: {
+        account: target.account,
+        keyset: {
+          keys: [target.publicKey],
+          pred: 'keys-all',
         },
       },
-      {
-        host: devnetHost,
-        defaults: {
-          networkId: networkId,
-        },
-        sign: createSignWithKeypair([source]),
+      amount: amount,
+      chainId: sourceChain,
+      targetChainId: targetChain,
+      targetChainGasPayer: {
+        account: source.account,
+        publicKeys: [source.publicKey],
       },
-    )
-       const listenContinuation =  await transferCrossChainTask.executeTo('listen-continuation')
-      await transferCrossChainTask.executeTo()
-      return listenContinuation
-
+    },
+    {
+      host: devnetHost,
+      defaults: {
+        networkId: networkId,
+      },
+      sign: createSignWithKeypair([source]),
+    },
+  );
+  const listenContinuation = await transferCrossChainTask.executeTo(
+    'listen-continuation',
+  );
+  await transferCrossChainTask.executeTo();
+  return listenContinuation;
 }

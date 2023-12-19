@@ -23,33 +23,32 @@ export async function generateAccount(
 }
 
 export async function createAccount(input: IAccount): Promise<ICommandResult> {
-   const transferCreateTask =  transferCreate(
-      {
-        sender: {
-          account: sender00.account,
-          publicKeys: [sender00.publicKey],
-        },
-        receiver: {
-          account: input.account,
-          keyset: {
-            keys: [input.publicKey],
-            pred: 'keys-all',
-          },
-        },
-        amount: '100',
-        chainId: input.chainId,
+  const transferCreateTask = transferCreate(
+    {
+      sender: {
+        account: sender00.account,
+        publicKeys: [sender00.publicKey],
       },
-      {
-        host: devnetHost,
-        defaults: {
-          networkId: networkId,
+      receiver: {
+        account: input.account,
+        keyset: {
+          keys: [input.publicKey],
+          pred: 'keys-all',
         },
-        sign: createSignWithKeypair([sender00]),
       },
-    )
+      amount: '100',
+      chainId: input.chainId,
+    },
+    {
+      host: devnetHost,
+      defaults: {
+        networkId: networkId,
+      },
+      sign: createSignWithKeypair([sender00]),
+    },
+  );
 
-   const listen = await transferCreateTask.executeTo("listen")
-   await transferCreateTask.executeTo()
-   return listen
-
+  const listen = await transferCreateTask.executeTo('listen');
+  await transferCreateTask.executeTo();
+  return listen;
 }
