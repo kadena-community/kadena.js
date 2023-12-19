@@ -1,5 +1,5 @@
 import { SystemIcon } from '@components/Icon';
-import { FocusableElement } from '@react-types/shared';
+import type { FocusableElement } from '@react-types/shared';
 import type { DOMAttributes, FC } from 'react';
 import React from 'react';
 import { helperClass, helperIconClass } from './FormFieldHelper.css';
