@@ -1,5 +1,4 @@
 import { input, select } from '@inquirer/prompts';
-import { program } from 'commander';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import { capitalizeFirstLetter, isAlphabetic } from '../utils/helpers.js';
 
