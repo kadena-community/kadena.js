@@ -1,27 +1,19 @@
 import { Stack } from '@components/Layout/Stack';
-import { withCenteredStory } from '@storyDecorators';
+import { onLayer2 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { tokens } from '@theme/tokens/contract.css';
 import className from 'classnames';
 import React from 'react';
 import { componentClass, containerClass, itemClass } from '../stories.css';
 import { itemSizeClass } from './stories.css';
 
-const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
-  undefined,
-  ...(Object.keys(vars.sizes) as (keyof typeof vars.sizes)[]),
-];
-const contentWidthOptions: (keyof typeof vars.contentWidth | undefined)[] = [
-  undefined,
-  ...(Object.keys(vars.contentWidth) as (keyof typeof vars.contentWidth)[]),
-];
-const dimensionOptions: string[] = ['100%', 'min-content', 'max-content'];
+const spaceOptions = [undefined, ...Object.keys(tokens.kda.foundation.spacing)];
+const marginOptions = [...spaceOptions, 'auto'];
 
 const meta: Meta<typeof Stack> = {
   title: 'Layout/Stack',
   component: Stack,
-  decorators: [withCenteredStory],
+  decorators: [onLayer2],
   parameters: {
     status: {
       type: 'releaseCandidate',
@@ -42,110 +34,118 @@ const meta: Meta<typeof Stack> = {
       description: 'Overflow css property',
     },
     width: {
-      options: [...spaceOptions, ...dimensionOptions, ...contentWidthOptions],
+      options: [undefined, '100%'],
       control: {
         type: 'select',
       },
-      description: 'Value for width property with pre-defined size values.',
     },
     minWidth: {
-      options: dimensionOptions,
+      options: [undefined, 'content.minWidth'],
       control: {
         type: 'select',
       },
-      description: 'Value for minWidth property with pre-defined size values.',
     },
     maxWidth: {
-      options: [...dimensionOptions, ...contentWidthOptions],
+      options: [undefined, 'content.maxWidth'],
       control: {
         type: 'select',
       },
-      description: 'Value for maxWidth property with pre-defined size values.',
     },
     height: {
-      options: [...spaceOptions, ...dimensionOptions],
+      options: [undefined, '100%'],
       control: {
         type: 'select',
       },
-      description: 'Value for height property with pre-defined size values.',
-    },
-    minHeight: {
-      options: dimensionOptions,
-      control: {
-        type: 'select',
-      },
-      description: 'Value for minHeight property with pre-defined size values.',
-    },
-    maxHeight: {
-      options: dimensionOptions,
-      control: {
-        type: 'select',
-      },
-      description: 'Value for maxHeight property with pre-defined size values.',
     },
     margin: {
-      options: spaceOptions,
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description: 'Value for margin property with pre-defined size values.',
     },
-    marginX: {
-      options: spaceOptions,
+    marginInline: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for margin property on X axis with pre-defined size values.',
     },
-    marginY: {
-      options: spaceOptions,
+    marginBlock: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for margin property on Y axis with pre-defined size values.',
     },
-    marginTop: {
-      options: spaceOptions,
+    marginBlockStart: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for top margin property with pre-defined size values.',
     },
-    marginBottom: {
-      options: spaceOptions,
+    marginBlockEnd: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for top margin property with pre-defined size values.',
     },
-
-    marginLeft: {
-      options: spaceOptions,
+    marginInlineStart: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for left margin property with pre-defined size values.',
     },
-    marginRight: {
+    marginInlineEnd: {
+      options: marginOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    padding: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for right margin property with pre-defined size values.',
+    },
+    paddingInline: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingBlock: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingBlockStart: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingBlockEnd: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingInlineStart: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
+    },
+    paddingInlineEnd: {
+      options: spaceOptions,
+      control: {
+        type: 'select',
+      },
     },
     gap: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Defines the gaps between rows and columns with pre-defined size values.',
     },
     justifyContent: {
       options: [
@@ -154,92 +154,27 @@ const meta: Meta<typeof Stack> = {
         'flex-end',
         'space-around',
         'space-between',
-      ] as Sprinkles['justifyContent'][],
+      ],
       control: { type: 'select' },
       description:
         'Defines how the browser distributes space between and around content items along the main-axis of a flex container',
     },
     alignItems: {
-      options: [
-        'flex-start',
-        'center',
-        'flex-end',
-        'stretch',
-      ] as Sprinkles['alignItems'][],
+      options: ['flex-start', 'center', 'flex-end', 'stretch'],
       control: { type: 'select' },
       description: 'Controls the alignment of items on the cross axis',
     },
-    direction: {
-      options: [
-        'row',
-        'row-reverse',
-        'column',
-        'column-reverse',
-      ] as Sprinkles['flexDirection'][],
+    flexDirection: {
+      options: ['row', 'row-reverse', 'column', 'column-reverse'],
       control: { type: 'select' },
       description:
         'Controls the flex direction of text, table columns, and horizontal overflow.',
     },
-    wrap: {
-      options: ['wrap', 'nowrap'] as Sprinkles['flexWrap'][],
+    flexWrap: {
+      options: ['wrap', 'nowrap'],
       control: { type: 'select' },
       description:
         'Sets whether flex items are forced onto one line or can wrap onto multiple lines.',
-    },
-    padding: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-      description: 'Value for padding property with pre-defined size values.',
-    },
-    paddingX: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-      description:
-        'Value for padding property on X axis with pre-defined size values.',
-    },
-    paddingY: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-      description:
-        'Value for padding property on Y axis with pre-defined size values.',
-    },
-    paddingTop: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-      description:
-        'Value for top padding property with pre-defined size values.',
-    },
-    paddingBottom: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-      description:
-        'Value for bottom padding property with pre-defined size values.',
-    },
-    paddingLeft: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-      description:
-        'Value for left padding property with pre-defined size values.',
-    },
-    paddingRight: {
-      options: spaceOptions,
-      control: {
-        type: 'select',
-      },
-      description:
-        'Value for right padding property with pre-defined size values.',
     },
   },
 };
@@ -255,24 +190,24 @@ const defaultArgs: Record<keyof typeof Stack, string | undefined> = {
   minHeight: undefined,
   maxHeight: undefined,
   margin: undefined,
-  marginX: undefined,
-  marginY: undefined,
-  marginTop: undefined,
-  marginBottom: undefined,
-  marginLeft: undefined,
-  marginRight: undefined,
+  marginInline: undefined,
+  marginBlock: undefined,
+  marginBlockStart: undefined,
+  marginBlockEnd: undefined,
+  marginInlineStart: undefined,
+  marginInlineEnd: undefined,
   gap: undefined,
   justifyContent: undefined,
   alignItems: undefined,
-  direction: undefined,
-  wrap: undefined,
+  flexDirection: undefined,
+  flexWrap: undefined,
   padding: undefined,
-  paddingX: undefined,
-  paddingY: undefined,
-  paddingTop: undefined,
-  paddingBottom: undefined,
-  paddingLeft: undefined,
-  paddingRight: undefined,
+  paddingInline: undefined,
+  paddingBlock: undefined,
+  paddingBlockStart: undefined,
+  paddingBlockEnd: undefined,
+  paddingInlineStart: undefined,
+  paddingInlineEnd: undefined,
   overflow: undefined,
 };
 
@@ -280,16 +215,15 @@ export const Horizontal: Story = {
   name: 'Horizontal Stack',
   args: {
     ...defaultArgs,
-    gap: '$md',
-    direction: 'row',
+    gap: 'md',
+    flexDirection: 'row',
   },
-  render: ({ gap, direction, ...rest }) => {
-    console.log({ rest });
+  render: ({ gap, flexDirection, ...rest }) => {
     return (
       <div className={containerClass}>
         <Stack
           gap={gap}
-          direction={direction}
+          flexDirection={flexDirection}
           className={componentClass}
           {...rest}
         >
@@ -309,14 +243,14 @@ export const Vertical: Story = {
   name: 'Vertical Stack',
   args: {
     ...defaultArgs,
-    gap: '$md',
-    direction: 'column',
+    gap: 'md',
+    flexDirection: 'column',
   },
-  render: ({ gap, direction, ...rest }) => (
+  render: ({ gap, flexDirection, ...rest }) => (
     <div className={containerClass}>
       <Stack
         gap={gap}
-        direction={direction}
+        flexDirection={flexDirection}
         className={componentClass}
         {...rest}
       >
@@ -335,16 +269,16 @@ export const Centered: Story = {
   name: 'Align Items Center Stack',
   args: {
     ...defaultArgs,
-    gap: '$md',
-    direction: 'row',
+    gap: 'md',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  render: ({ gap, direction, alignItems, justifyContent, ...rest }) => (
+  render: ({ gap, flexDirection, alignItems, justifyContent, ...rest }) => (
     <div className={containerClass}>
       <Stack
         gap={gap}
-        direction={direction}
+        flexDirection={flexDirection}
         alignItems={alignItems}
         justifyContent={justifyContent}
         className={componentClass}
@@ -365,16 +299,16 @@ export const SpaceBetween: Story = {
   name: 'Space Between Stack',
   args: {
     ...defaultArgs,
-    gap: '$md',
-    direction: 'row',
+    gap: 'md',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  render: ({ gap, direction, alignItems, justifyContent, ...rest }) => (
+  render: ({ gap, flexDirection, alignItems, justifyContent, ...rest }) => (
     <div className={containerClass}>
       <Stack
         gap={gap}
-        direction={direction}
+        flexDirection={flexDirection}
         alignItems={alignItems}
         justifyContent={justifyContent}
         className={componentClass}
@@ -395,20 +329,27 @@ export const Wrapped: Story = {
   name: 'Wrapped Stack',
   args: {
     ...defaultArgs,
-    gap: '$md',
-    direction: 'row',
+    gap: 'md',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    wrap: 'wrap',
+    flexWrap: 'wrap',
   },
-  render: ({ gap, direction, alignItems, justifyContent, wrap, ...rest }) => (
+  render: ({
+    gap,
+    flexDirection,
+    alignItems,
+    justifyContent,
+    flexWrap,
+    ...rest
+  }) => (
     <div className={containerClass}>
       <Stack
         gap={gap}
-        direction={direction}
+        flexDirection={flexDirection}
         alignItems={alignItems}
         justifyContent={justifyContent}
-        wrap={wrap}
+        flexWrap={flexWrap}
         className={componentClass}
         {...rest}
       >

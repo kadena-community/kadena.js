@@ -1,5 +1,5 @@
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { sprinkles } from '@theme/sprinkles.css';
+import type { Atoms } from '@theme/atoms.css';
+import { atoms } from '@theme/atoms.css';
 import classnames from 'classnames';
 import type React from 'react';
 import type { ElementType } from 'react';
@@ -8,7 +8,7 @@ import { createElement } from 'react';
 export interface IBoxProps
   extends Partial<
     Pick<
-      Sprinkles,
+      Atoms,
       | 'alignItems'
       | 'backgroundColor'
       | 'borderColor'
@@ -22,30 +22,29 @@ export interface IBoxProps
       | 'flexGrow'
       | 'flexShrink'
       | 'flexWrap'
+      | 'gap'
       | 'height'
       | 'inset'
       | 'justifyContent'
       | 'left'
       | 'margin'
-      | 'marginBottom'
-      | 'marginLeft'
-      | 'marginRight'
-      | 'marginTop'
-      | 'marginX'
-      | 'marginY'
-      | 'maxHeight'
+      | 'marginBlockEnd'
+      | 'marginInlineStart'
+      | 'marginInlineEnd'
+      | 'marginBlockStart'
+      | 'marginInline'
+      | 'marginBlock'
       | 'maxWidth'
-      | 'minHeight'
       | 'minWidth'
       | 'opacity'
       | 'overflow'
       | 'padding'
-      | 'paddingBottom'
-      | 'paddingLeft'
-      | 'paddingRight'
-      | 'paddingTop'
-      | 'paddingX'
-      | 'paddingY'
+      | 'paddingBlockEnd'
+      | 'paddingInlineStart'
+      | 'paddingInlineEnd'
+      | 'paddingBlockStart'
+      | 'paddingInline'
+      | 'paddingBlock'
       | 'position'
       | 'right'
       | 'textAlign'
@@ -77,30 +76,29 @@ export const Box = ({
   flexGrow,
   flexShrink,
   flexWrap,
+  gap,
   height,
   inset,
   justifyContent,
   left,
   margin,
-  marginBottom,
-  marginLeft,
-  marginRight,
-  marginTop,
-  marginX,
-  marginY,
-  maxHeight,
+  marginBlockEnd,
+  marginInlineStart,
+  marginInlineEnd,
+  marginBlockStart,
+  marginInline,
+  marginBlock,
   maxWidth,
-  minHeight,
   minWidth,
   opacity,
   overflow,
   padding,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
-  paddingX,
-  paddingY,
+  paddingBlockEnd,
+  paddingInlineStart,
+  paddingInlineEnd,
+  paddingBlockStart,
+  paddingInline,
+  paddingBlock,
   position,
   right,
   textAlign,
@@ -113,7 +111,7 @@ export const Box = ({
     as,
     {
       className: classnames(
-        sprinkles({
+        atoms({
           alignItems,
           backgroundColor,
           borderColor,
@@ -127,30 +125,29 @@ export const Box = ({
           flexGrow,
           flexShrink,
           flexWrap,
+          gap,
           height,
           inset,
           justifyContent,
           left,
           margin,
-          marginBottom,
-          marginLeft,
-          marginRight,
-          marginTop,
-          marginX,
-          marginY,
-          maxHeight,
+          marginBlockEnd,
+          marginInlineStart,
+          marginInlineEnd,
+          marginBlockStart,
+          marginInline,
+          marginBlock,
           maxWidth,
-          minHeight,
           minWidth,
           opacity,
           overflow,
           padding,
-          paddingBottom,
-          paddingLeft,
-          paddingRight,
-          paddingTop,
-          paddingX,
-          paddingY,
+          paddingBlockEnd,
+          paddingInlineStart,
+          paddingInlineEnd,
+          paddingBlockStart,
+          paddingInline,
+          paddingBlock,
           position,
           right,
           textAlign,

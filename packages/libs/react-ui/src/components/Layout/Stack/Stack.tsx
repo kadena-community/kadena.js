@@ -1,5 +1,5 @@
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { sprinkles } from '@theme/sprinkles.css';
+import type { Atoms } from '@theme/atoms.css';
+import { atoms } from '@theme/atoms.css';
 import classnames from 'classnames';
 import type React from 'react';
 import type { ElementType } from 'react';
@@ -7,37 +7,36 @@ import { createElement } from 'react';
 
 export interface IStackProps
   extends Pick<
-    Sprinkles,
+    Atoms,
     | 'alignItems'
     | 'gap'
     | 'justifyContent'
     | 'height'
     | 'margin'
-    | 'marginBottom'
-    | 'marginLeft'
-    | 'marginRight'
-    | 'marginTop'
-    | 'marginX'
-    | 'marginY'
-    | 'maxHeight'
+    | 'marginBlockEnd'
+    | 'marginInlineStart'
+    | 'marginInlineEnd'
+    | 'marginBlockStart'
+    | 'marginInline'
+    | 'marginBlock'
     | 'maxWidth'
-    | 'minHeight'
     | 'minWidth'
     | 'overflow'
     | 'padding'
-    | 'paddingBottom'
-    | 'paddingLeft'
-    | 'paddingRight'
-    | 'paddingTop'
-    | 'paddingX'
-    | 'paddingY'
+    | 'paddingBlockEnd'
+    | 'paddingInlineStart'
+    | 'paddingInlineEnd'
+    | 'paddingBlockStart'
+    | 'paddingInline'
+    | 'paddingBlock'
     | 'width'
+    | 'flexDirection'
+    | 'flexWrap'
   > {
   className?: string;
-  direction?: Sprinkles['flexDirection'];
-  wrap?: Sprinkles['flexWrap'];
   as?: ElementType;
   children?: React.ReactNode;
+  display?: 'flex' | 'inline-flex';
 }
 
 export const Stack = ({
@@ -45,63 +44,60 @@ export const Stack = ({
   children,
   alignItems,
   as = 'div',
-  direction,
+  display = 'flex',
+  flexDirection,
   gap,
   justifyContent,
   height,
   margin,
-  marginBottom,
-  marginLeft,
-  marginRight,
-  marginTop,
-  marginX,
-  marginY,
-  maxHeight,
+  marginBlockEnd,
+  marginInlineStart,
+  marginInlineEnd,
+  marginBlockStart,
+  marginInline,
+  marginBlock,
   maxWidth,
-  minHeight,
   minWidth,
   overflow,
   padding,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
-  paddingX,
-  paddingY,
+  paddingBlockEnd,
+  paddingInlineStart,
+  paddingInlineEnd,
+  paddingBlockStart,
+  paddingInline,
+  paddingBlock,
   width,
-  wrap,
+  flexWrap,
 }: IStackProps): React.ReactElement => {
   return createElement(
     as,
     {
       className: classnames(
-        sprinkles({
+        atoms({
           alignItems,
-          display: 'flex',
-          flexDirection: direction,
-          flexWrap: wrap,
+          display,
+          flexDirection,
+          flexWrap,
           gap,
           justifyContent,
           height,
           margin,
-          marginBottom,
-          marginLeft,
-          marginRight,
-          marginTop,
-          marginX,
-          marginY,
-          maxHeight,
+          marginBlockEnd,
+          marginInlineStart,
+          marginInlineEnd,
+          marginBlockStart,
+          marginInline,
+          marginBlock,
           maxWidth,
-          minHeight,
           minWidth,
           overflow,
           padding,
-          paddingBottom,
-          paddingLeft,
-          paddingRight,
-          paddingTop,
-          paddingX,
-          paddingY,
+          paddingBlockEnd,
+          paddingInlineStart,
+          paddingInlineEnd,
+          paddingBlockStart,
+          paddingInline,
+          paddingBlock,
           width,
         }),
         className,

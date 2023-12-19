@@ -1,23 +1,18 @@
 import type { IBoxProps } from '@components/Layout/Box';
 import { Box } from '@components/Layout/Box';
+import { onLayer2 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
+import { tokens } from '@theme/tokens/contract.css';
 import React from 'react';
 import { componentClass, containerClass, itemClass } from '../stories.css';
 
-const spaceOptions: (keyof typeof vars.sizes | undefined)[] = [
-  undefined,
-  ...(Object.keys(vars.sizes) as (keyof typeof vars.sizes)[]),
-];
-const contentWidthOptions: (keyof typeof vars.contentWidth | undefined)[] = [
-  undefined,
-  ...(Object.keys(vars.contentWidth) as (keyof typeof vars.contentWidth)[]),
-];
-const dimensionOptions: string[] = ['100%', 'min-content', 'max-content'];
+const spaceOptions = [undefined, ...Object.keys(tokens.kda.foundation.spacing)];
+const marginOptions = [...spaceOptions, 'auto'];
 
 const meta: Meta<IBoxProps> = {
   title: 'Layout/Box',
   component: Box,
+  decorators: [onLayer2],
   parameters: {
     status: {
       type: 'stable',
@@ -38,158 +33,116 @@ const meta: Meta<IBoxProps> = {
       },
       description: 'Overflow css property.',
     },
+    gap: {
+      options: spaceOptions,
+    },
     width: {
-      options: [...spaceOptions, ...dimensionOptions, ...contentWidthOptions],
+      options: [undefined, '100%'],
       control: {
         type: 'select',
       },
-      description: 'Value for width property with pre-defined size values.',
     },
     minWidth: {
-      options: dimensionOptions,
+      options: [undefined, 'content.minWidth'],
       control: {
         type: 'select',
       },
-      description: 'Value for minWidth property with pre-defined size values.',
     },
     maxWidth: {
-      options: [...dimensionOptions, ...contentWidthOptions],
+      options: [undefined, 'content.maxWidth'],
       control: {
         type: 'select',
       },
-      description: 'Value for maxWidth property with pre-defined size values.',
     },
     height: {
-      options: [...spaceOptions, ...dimensionOptions],
+      options: [undefined, '100%'],
       control: {
         type: 'select',
       },
-      description: 'Value for height property with pre-defined size values.',
-    },
-    minHeight: {
-      options: dimensionOptions,
-      control: {
-        type: 'select',
-      },
-      description: 'Value for minHeight property with pre-defined size values.',
-    },
-    maxHeight: {
-      options: dimensionOptions,
-      control: {
-        type: 'select',
-      },
-      description: 'Value for maxHeight property with pre-defined size values.',
     },
     margin: {
-      options: spaceOptions,
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description: 'Value for margin property with pre-defined size values.',
     },
-    marginX: {
-      options: spaceOptions,
+    marginInline: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for margin property on X axis with pre-defined size values.',
     },
-    marginY: {
-      options: spaceOptions,
+    marginBlock: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for margin property on Y axis with pre-defined size values.',
     },
-    marginTop: {
-      options: spaceOptions,
+    marginBlockStart: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for top margin property with pre-defined size values.',
     },
-    marginBottom: {
-      options: spaceOptions,
+    marginBlockEnd: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for top margin property with pre-defined size values.',
     },
-
-    marginLeft: {
-      options: spaceOptions,
+    marginInlineStart: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for left margin property with pre-defined size values.',
     },
-    marginRight: {
-      options: spaceOptions,
+    marginInlineEnd: {
+      options: marginOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for right margin property with pre-defined size values.',
     },
     padding: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
-      description: 'Value for padding property with pre-defined size values.',
     },
-    paddingX: {
+    paddingInline: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for padding property on X axis with pre-defined size values.',
     },
-    paddingY: {
+    paddingBlock: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for padding property on Y axis with pre-defined size values.',
     },
-    paddingTop: {
+    paddingBlockStart: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for top padding property with pre-defined size values.',
     },
-    paddingBottom: {
+    paddingBlockEnd: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for bottom padding property with pre-defined size values.',
     },
-    paddingLeft: {
+    paddingInlineStart: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for left padding property with pre-defined size values.',
     },
-    paddingRight: {
+    paddingInlineEnd: {
       options: spaceOptions,
       control: {
         type: 'select',
       },
-      description:
-        'Value for right padding property with pre-defined size values.',
     },
   },
 };
@@ -201,72 +154,69 @@ export const Primary: Story = {
   name: 'Box - Margin',
   args: {
     margin: undefined,
-    marginX: undefined,
-    marginY: undefined,
-    marginTop: undefined,
-    marginBottom: undefined,
-    marginLeft: undefined,
-    marginRight: undefined,
+    marginInline: undefined,
+    marginBlock: undefined,
+    marginBlockStart: undefined,
+    marginBlockEnd: undefined,
+    marginInlineStart: undefined,
+    marginInlineEnd: undefined,
     padding: undefined,
-    paddingX: undefined,
-    paddingY: undefined,
-    paddingTop: undefined,
-    paddingBottom: undefined,
-    paddingLeft: undefined,
-    paddingRight: undefined,
+    paddingInline: undefined,
+    paddingBlock: undefined,
+    paddingBlockStart: undefined,
+    paddingBlockEnd: undefined,
+    paddingInlineStart: undefined,
+    paddingInlineEnd: undefined,
     width: undefined,
     minWidth: undefined,
     maxWidth: undefined,
     height: undefined,
-    minHeight: undefined,
-    maxHeight: undefined,
+    gap: undefined,
   },
   render: ({
     margin,
-    marginX,
-    marginY,
-    marginTop,
-    marginBottom,
-    marginLeft,
-    marginRight,
+    marginInline,
+    marginBlock,
+    marginBlockStart,
+    marginBlockEnd,
+    marginInlineStart,
+    marginInlineEnd,
     padding,
-    paddingX,
-    paddingY,
-    paddingTop,
-    paddingBottom,
-    paddingLeft,
-    paddingRight,
+    paddingInline,
+    paddingBlock,
+    paddingBlockStart,
+    paddingBlockEnd,
+    paddingInlineStart,
+    paddingInlineEnd,
     width,
     minWidth,
     maxWidth,
     height,
-    minHeight,
-    maxHeight,
     overflow,
+    gap,
   }) => (
     <div className={containerClass}>
       <Box
         margin={margin}
-        marginX={marginX}
-        marginY={marginY}
-        marginTop={marginTop}
-        marginBottom={marginBottom}
-        marginLeft={marginLeft}
-        marginRight={marginRight}
+        marginInline={marginInline}
+        marginBlock={marginBlock}
+        marginBlockStart={marginBlockStart}
+        marginBlockEnd={marginBlockEnd}
+        marginInlineStart={marginInlineStart}
+        marginInlineEnd={marginInlineEnd}
         padding={padding}
-        paddingX={paddingX}
-        paddingY={paddingY}
-        paddingTop={paddingTop}
-        paddingBottom={paddingBottom}
-        paddingLeft={paddingLeft}
-        paddingRight={paddingRight}
+        paddingInline={paddingInline}
+        paddingBlock={paddingBlock}
+        paddingBlockStart={paddingBlockStart}
+        paddingBlockEnd={paddingBlockEnd}
+        paddingInlineStart={paddingInlineStart}
+        paddingInlineEnd={paddingInlineEnd}
         width={width}
         minWidth={minWidth}
         maxWidth={maxWidth}
         height={height}
-        minHeight={minHeight}
-        maxHeight={maxHeight}
         overflow={overflow}
+        gap={gap}
         className={componentClass}
       >
         <div className={itemClass}>Box Content</div>

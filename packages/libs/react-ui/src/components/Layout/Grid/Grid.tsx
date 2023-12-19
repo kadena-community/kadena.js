@@ -1,44 +1,38 @@
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { sprinkles } from '@theme/sprinkles.css';
+import type { Atoms } from '@theme/atoms.css';
+import { atoms } from '@theme/atoms.css';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 import type { ResponsiveInputType } from './Grid.css';
-import {
-  containerColumnVariants,
-  gapVariants,
-  gridContainerClass,
-} from './Grid.css';
+import { containerColumnVariants, gridContainerClass } from './Grid.css';
 
 export interface IGridProps
   extends Pick<
-    Sprinkles,
+    Atoms,
     | 'height'
     | 'margin'
-    | 'marginBottom'
-    | 'marginLeft'
-    | 'marginRight'
-    | 'marginTop'
-    | 'marginX'
-    | 'marginY'
-    | 'maxHeight'
+    | 'marginBlockEnd'
+    | 'marginInlineStart'
+    | 'marginInlineEnd'
+    | 'marginBlockStart'
+    | 'marginInline'
+    | 'marginBlock'
     | 'maxWidth'
-    | 'minHeight'
     | 'minWidth'
     | 'overflow'
     | 'padding'
-    | 'paddingBottom'
-    | 'paddingLeft'
-    | 'paddingRight'
-    | 'paddingTop'
-    | 'paddingX'
-    | 'paddingY'
+    | 'paddingBlockEnd'
+    | 'paddingInlineStart'
+    | 'paddingInlineEnd'
+    | 'paddingBlockStart'
+    | 'paddingInline'
+    | 'paddingBlock'
     | 'width'
+    | 'gap'
   > {
   className?: string;
   children?: ReactNode;
   columns?: ResponsiveInputType;
-  gap?: keyof typeof gapVariants;
 }
 
 const assembleColumnVariants = (
@@ -59,54 +53,50 @@ export const Grid: FC<IGridProps> = ({
   className,
   children,
   columns,
-  gap = '$md',
+  gap = 'md',
   height,
   margin,
-  marginBottom,
-  marginLeft,
-  marginRight,
-  marginTop,
-  marginX,
-  marginY,
-  maxHeight,
+  marginBlockEnd,
+  marginInlineStart,
+  marginInlineEnd,
+  marginBlockStart,
+  marginInline,
+  marginBlock,
   maxWidth,
-  minHeight,
   minWidth,
   overflow,
   padding,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
-  paddingX,
-  paddingY,
+  paddingBlockEnd,
+  paddingInlineStart,
+  paddingInlineEnd,
+  paddingBlockStart,
+  paddingInline,
+  paddingBlock,
   width,
 }) => {
   const classList = classNames(
-    gapVariants[gap],
     gridContainerClass,
     columns && assembleColumnVariants(columns),
-    sprinkles({
+    atoms({
+      gap,
       height,
       margin,
-      marginBottom,
-      marginLeft,
-      marginRight,
-      marginTop,
-      marginX,
-      marginY,
-      maxHeight,
+      marginBlockEnd,
+      marginInlineStart,
+      marginInlineEnd,
+      marginBlockStart,
+      marginInline,
+      marginBlock,
       maxWidth,
-      minHeight,
       minWidth,
       overflow,
       padding,
-      paddingBottom,
-      paddingLeft,
-      paddingRight,
-      paddingTop,
-      paddingX,
-      paddingY,
+      paddingBlockEnd,
+      paddingInlineStart,
+      paddingInlineEnd,
+      paddingBlockStart,
+      paddingInline,
+      paddingBlock,
       width,
     }),
     className,

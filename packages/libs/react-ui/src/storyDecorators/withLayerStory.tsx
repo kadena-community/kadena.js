@@ -26,7 +26,7 @@ const WithLayerStory: FC<IWithLayerStoryProps> = ({ children, layer }) => {
         width: '100%',
         padding: 'xxxl',
       })}
-      style={{ height: '20rem' }}
+      style={{ minHeight: '20rem' }}
     >
       <Text
         variant="base"
@@ -36,7 +36,7 @@ const WithLayerStory: FC<IWithLayerStoryProps> = ({ children, layer }) => {
           top: 0,
           left: 0,
           margin: 'md',
-          marginY: 'sm',
+          marginBlock: 'sm',
         })}
       >
         {layer}
