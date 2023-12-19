@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "private": true,
   "description": "Changesets tools",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "@changesets/logger": "^0.0.5",
     "@changesets/types": "^5.2.1",
