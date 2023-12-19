@@ -43,26 +43,21 @@ export const TextFieldStory: Story = {
     helperText: 'This is helper text',
     info: '(optional)',
     label: 'Label',
-    textAreaProps: {
-      id: 'TextFieldStory',
-      fontFamily: '$mono',
-      placeholder: 'This is a placeholder',
-      value: '',
-      onChange: () => {},
-    },
+    id: 'TextFieldStory',
+    fontFamily: '$mono',
+    placeholder: 'This is a placeholder',
+    value: '',
+    onChange: () => {},
   },
-  render: ({ disabled, textAreaProps, ...rest }) => {
+  render: ({ disabled, ...rest }) => {
     const [value, setValue] = useState<string>('');
 
     return (
       <TextareaField
         disabled={disabled}
-        textAreaProps={{
-          ...textAreaProps,
-          value,
-          onChange: ({ target }) => setValue(target.value),
-        }}
         {...rest}
+        value={value}
+        onChange={({ target }) => setValue(target.value)}
       />
     );
   },

@@ -7,12 +7,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
 
-// type StoryProps = {
-//   helperText: string;
-//   leadingText: string;
-//   startIcon: React.ReactElement;
-// } & Omit<ITextFieldProps, 'startIcon'>;
-
 const meta: Meta<ITextFieldProps> = {
   title: 'Form/TextField',
   component: TextField,
@@ -57,6 +51,9 @@ const meta: Meta<ITextFieldProps> = {
       control: {
         type: 'text',
       },
+    },
+    startIcon: {
+      description: 'Initial icon that can be passed as a prop.',
     },
     leadingTextWidth: {
       description:
