@@ -24,10 +24,6 @@ export async function transferCreateToken({
   receiver,
   amount,
 }: ITransferCreateTokenInput) {
-  logger.info(
-    `Transfering token ${tokenId}\nAmount ${amount.decimal}\nSender ${sender.account}\nReceiver ${receiver.account}`,
-  );
-
   const command = composePactCommand(
     execution(
       Pact.modules['marmalade-v2.ledger']['transfer-create'](
