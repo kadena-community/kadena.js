@@ -101,8 +101,32 @@ program
 program
   .command('test')
   .description('Deploy marmalade contracts on the devnet')
+  .addOption(
+    new Option(
+      '-a, --numberOfAccounts <number>',
+      'Number of accounts to create',
+    ).default(8),
+  )
+  .addOption(
+    new Option(
+      '-i, --transferInterval <number>',
+      'Transfer interval in milliseconds',
+    ).default(100),
+  )
+  .addOption(
+    new Option(
+      '-mt, --maximumMintValue <number>',
+      'Maximum amount a token can be minted at once',
+    ).default(25),
+  )
+  .addOption(
+    new Option('-s, --seed <string>', 'Seed for the random number').default(
+      Date.now().toString(),
+    ),
+  )
   .action(async (args) => {
     try {
+      logger.info('Simulation config parameters:', args);
       await simulateMarmalade(args);
     } catch (error) {
       console.error(error);

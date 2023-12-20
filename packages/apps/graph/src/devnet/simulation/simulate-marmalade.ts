@@ -1,7 +1,9 @@
 import {
+  IAccount,
   IAccountWithTokens,
   generateAccount,
   getRandomNumber,
+  getRandomOption,
   logger,
   seedRandom,
   stringifyProperty,
@@ -19,17 +21,17 @@ const simulationTransferOptions: TokenActionType[] = ['mint', 'transfer'];
 export interface IMarmaladeSimulationOptions {
   numberOfAccounts: number;
   transferInterval: number;
-  maxNumberOfCirculatingTokens: number;
+  maximumMintValue: number;
   seed: string;
 }
 
 export async function simulateMarmalade({
-  numberOfAccounts = 2,
+  numberOfAccounts = 10,
   transferInterval = 100,
-  maxNumberOfCirculatingTokens = 50,
+  maximumMintValue = 20,
   seed = Date.now().toString(),
 }: IMarmaladeSimulationOptions): Promise<void> {
-  const accounts: IAccountWithTokens[] = [];
+  const accountCollection: IAccountWithTokens[] = [];
 
   // Parameters validation
   if (numberOfAccounts <= 1) {
@@ -37,9 +39,9 @@ export async function simulateMarmalade({
     return;
   }
 
-  if (numberOfAccounts < maxNumberOfCirculatingTokens) {
+  if (maximumMintValue < 1) {
     logger.info(
-      'Number of accounts must be greater than max number of circulating tokens',
+      'The max transfer amount cant be less than 1 (minimum mint amount)',
     );
     return;
   }
@@ -50,14 +52,13 @@ export async function simulateMarmalade({
   // Generate first seeded random number
   let seededRandomNo = seedRandom(seed);
 
-  let circulatingTokens = 0;
-
   try {
     // Create accounts, fund them, mint tokens and transfer them
     for (let i = 0; i < numberOfAccounts; i++) {
       // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
       const noOfKeys = i % 2 === 0 ? 1 : 2;
       let account = await generateAccount(noOfKeys);
+
       logger.info(
         `Generated KeyPair\nAccount: ${
           account.account
@@ -69,72 +70,24 @@ export async function simulateMarmalade({
 
       // Fund account
       const coinAmount = 1000;
-      logger.info(`Funding account with ${coinAmount} (for gas fees)`);
-      const coinTransferResult = await transfer({
-        receiver: account,
-        amount: coinAmount,
-      });
-
-      appendToFile(filepath, {
-        timestamp: Date.now(),
-        from: 'sender00',
-        to: account.account,
-        amount: coinAmount,
-        requestKey: coinTransferResult.reqKey,
-        action: 'fund',
-      });
-
-      // Create Token
-      const uri = `https://www.${Date.now()}.com`;
-      const tokenId = await createTokenId({ creator: account, uri });
-
-      const createResult = await createToken({
-        creator: account,
-        uri,
-        tokenId,
-      });
-
-      logger.info(`Created Token: ${tokenId}`);
-
-      appendToFile(filepath, {
-        timestamp: Date.now(),
-        from: 'n/a',
-        to: account.account,
-        amount: 0,
-        requestKey: createResult.reqKey,
-        action: 'create',
-      });
+      await fundNewAccount({ account, amount: coinAmount, filepath });
 
       const tokenAmount = getRandomNumber(
         seededRandomNo,
         // maximum amount of tokens that can be minted initially (maxNumberOfCirculatingTokens / numberOfAccounts * 2)
-        maxNumberOfCirculatingTokens / numberOfAccounts,
+        maximumMintValue,
       );
 
-      // Mint Token
-      const mintResult = await mintToken({
-        creator: account.account,
-        tokenId,
-        amount: new PactNumber(tokenAmount).toPactDecimal(),
-        guard: account,
-      });
+      // Rotate seeded random number
+      seededRandomNo = seedRandom(`${seededRandomNo}`);
 
-      circulatingTokens += tokenAmount;
-
-      appendToFile(filepath, {
-        timestamp: Date.now(),
-        from: 'n/a',
-        to: account.account,
+      // Create and Mint Token
+      const tokenId = await createAndMintToken({
+        uri: `https://www.${Date.now()}.com`,
+        creator: account,
         amount: tokenAmount,
-        requestKey: mintResult.reqKey,
-        action: 'mint',
-      });
-
-      accounts.push({
-        ...account,
-        tokens: {
-          [tokenId]: tokenAmount,
-        },
+        filepath,
+        accountCollection,
       });
 
       if (i === 0) {
@@ -142,57 +95,122 @@ export async function simulateMarmalade({
       }
 
       // Transfer 1 Token in order to have both token actions at the beginning
-      const nextAccount = accounts[i - 1];
+      const nextAccount = accountCollection[i - 1];
 
-      const transferResult = await transferCreateToken({
+      await transferToken({
         tokenId,
         sender: account,
         receiver: nextAccount,
-        amount: new PactNumber(1).toPactDecimal(),
+        amount: 1,
+        filepath,
+        accountCollection,
       });
-
-      appendToFile(filepath, {
-        timestamp: Date.now(),
-        from: account.account,
-        to: nextAccount.account,
-        amount: tokenAmount,
-        requestKey: transferResult.reqKey,
-        action: 'transfer',
-      });
-
-      let accountToUpdate = accounts.find(
-        (a) => a.account === nextAccount.account,
-      );
-
-      if (accountToUpdate) {
-        accountToUpdate.tokens = {
-          ...accountToUpdate.tokens,
-          [tokenId]: (accountToUpdate.tokens?.[tokenId] || 0) + 1,
-        };
-      }
-
-      //Rotate seeded random number
-      seededRandomNo = seedRandom(`${seededRandomNo}`);
     }
 
-    let counter: number = 0;
-
     while (true) {
-      for (let i = 0; i < accounts.length; i++) {
-        const account = accounts[i];
-        const amount: number = getRandomNumber(
+      for (let i = 0; i < accountCollection.length; i++) {
+        // Choose account from
+        const account = accountCollection[i];
+
+        // Select random action type
+        const transferType = getRandomOption(
           seededRandomNo,
-          maxNumberOfCirculatingTokens,
+          simulationTransferOptions,
         );
 
-        // On the first iterations, we can only mint tokens
-        if (counter < accounts.length) {
-          counter++;
+        // Rotate seeded random number
+        seededRandomNo = seedRandom(`${seededRandomNo}`);
+
+        if (transferType === 'mint') {
+          const mintAmount: number = getRandomNumber(
+            seededRandomNo,
+            maximumMintValue,
+          );
+
+          // Rotate seeded random number
+          seededRandomNo = seedRandom(`${seededRandomNo}`);
+
+          const mintOption = getRandomOption(seededRandomNo, [
+            'new',
+            'existing',
+          ]);
+
+          // Rotate seeded random number
+          seededRandomNo = seedRandom(`${seededRandomNo}`);
+
+          if (mintOption === 'new') {
+            await createAndMintToken({
+              creator: account,
+              amount: mintAmount,
+              uri: `https://www.${Date.now()}.com`,
+              filepath,
+              accountCollection,
+            });
+          } else if (mintOption === 'existing') {
+            const tokenId = getRandomOption(
+              seededRandomNo,
+              Object.keys(account.tokens),
+            );
+
+            // Rotate seeded random number
+            seededRandomNo = seedRandom(`${seededRandomNo}`);
+
+            await mintExistingToken({
+              creator: account,
+              tokenId,
+              amount: mintAmount,
+              filepath,
+              accountCollection,
+            });
+          }
+        } else if (transferType === 'transfer') {
+          const nextAccount =
+            accountCollection[
+              getRandomNumber(seededRandomNo, accountCollection.length)
+            ];
+
+          // Rotate seeded random number
+          seededRandomNo = seedRandom(`${seededRandomNo}`);
+
+          if (nextAccount.account === account.account) {
+            logger.info('Skipping transfer to self');
+            continue;
+          }
+
+          // Get random token to transfer
+          const randomToken = getRandomOption(
+            seededRandomNo,
+            Object.keys(account.tokens),
+          );
+
+          // Rotate seeded random number
+          seededRandomNo = seedRandom(`${seededRandomNo}`);
+
+          // Get random amount to transfer
+          const transferAmount: number = getRandomNumber(
+            seededRandomNo,
+            account.tokens[randomToken],
+          );
+
+          // Rotate seeded random number
+          seededRandomNo = seedRandom(`${seededRandomNo}`);
+
+          if (transferAmount < 1) {
+            logger.info('Skipping transfer of 0 tokens');
+            continue;
+          }
+
+          await transferToken({
+            tokenId: randomToken,
+            sender: account,
+            receiver: nextAccount,
+            amount: transferAmount,
+            filepath,
+            accountCollection,
+          });
         }
 
-        // mintToken({});
-
-        counter++;
+        await new Promise((resolve) => setTimeout(resolve, transferInterval));
       }
     }
   } catch (error) {
@@ -200,8 +218,216 @@ export async function simulateMarmalade({
   }
 }
 
+export async function fundNewAccount({
+  account,
+  amount,
+  filepath,
+}: {
+  account: IAccount;
+  amount: number;
+  filepath: string;
+}): Promise<void> {
+  logger.info(`Funding account with ${amount} (for gas fees)`);
+
+  const coinTransferResult = await transfer({
+    receiver: account,
+    amount: amount,
+  });
+
+  appendToFile(filepath, {
+    timestamp: Date.now(),
+    from: 'sender00',
+    to: account.account,
+    amount: amount,
+    requestKey: coinTransferResult.reqKey,
+    action: 'fund',
+  });
+}
+
 export function getAvailableTokens(account: IAccountWithTokens): string[] {
   return Object.keys(account.tokens).filter(
     (tokenId) => account.tokens[tokenId] > 0,
   );
+}
+
+export async function createAndMintToken({
+  creator,
+  amount,
+  uri,
+  filepath,
+  accountCollection,
+}: {
+  creator: IAccountWithTokens | IAccount;
+  amount: number;
+  uri: string;
+  filepath: string;
+  accountCollection: IAccountWithTokens[];
+}) {
+  const tokenId = await createTokenId({ creator, uri });
+
+  const createResult = await createToken({
+    creator,
+    uri,
+    tokenId,
+  });
+
+  logger.info(`Created Token: ${tokenId}`);
+
+  appendToFile(filepath, {
+    timestamp: Date.now(),
+    from: 'n/a',
+    to: creator.account,
+    amount: 0,
+    requestKey: createResult.reqKey,
+    action: 'create',
+  });
+
+  logger.info(
+    `Minting token ${tokenId}\nAmount ${amount}\nCreator ${creator.account}`,
+  );
+
+  const mintResult = await mintToken({
+    creator: creator.account,
+    tokenId,
+    amount: new PactNumber(amount).toPactDecimal(),
+    guard: creator,
+  });
+
+  appendToFile(filepath, {
+    timestamp: Date.now(),
+    from: 'n/a',
+    to: creator.account,
+    amount: amount,
+    requestKey: mintResult.reqKey,
+    action: 'mint',
+  });
+
+  // If account already exists in array, add the token. If not add the account to the array
+  let accountToUpdate = accountCollection.find(
+    (acc) => acc.account === creator.account,
+  );
+
+  if (accountToUpdate) {
+    accountToUpdate.tokens = {
+      ...accountToUpdate.tokens,
+      [tokenId]: amount,
+    };
+  } else {
+    accountCollection.push({
+      ...creator,
+      tokens: {
+        [tokenId]: amount,
+      },
+    });
+  }
+  return tokenId;
+}
+
+export async function transferToken({
+  tokenId,
+  sender,
+  receiver,
+  amount,
+  filepath,
+  accountCollection,
+}: {
+  tokenId: string;
+  sender: IAccountWithTokens | IAccount;
+  receiver: IAccountWithTokens | IAccount;
+  amount: number;
+  filepath: string;
+  accountCollection: IAccountWithTokens[];
+}) {
+  logger.info(
+    `Transfering token ${tokenId}\nAmount ${amount}\nSender ${sender.account}\nReceiver ${receiver.account}`,
+  );
+
+  const transferResult = await transferCreateToken({
+    tokenId,
+    sender,
+    receiver,
+    amount: new PactNumber(1).toPactDecimal(),
+  });
+
+  appendToFile(filepath, {
+    timestamp: Date.now(),
+    from: sender.account,
+    to: receiver.account,
+    amount: amount,
+    requestKey: transferResult.reqKey,
+    action: 'transfer',
+  });
+
+  // Update sender account
+  const senderAccountToUpdate = accountCollection.find(
+    (a) => a.account === sender.account,
+  );
+  if (!senderAccountToUpdate) {
+    throw Error('Sender account not found');
+  }
+  senderAccountToUpdate.tokens = {
+    ...senderAccountToUpdate.tokens,
+    [tokenId]: (senderAccountToUpdate.tokens?.[tokenId] || 0) - amount,
+  };
+
+  // Update receiver account
+  let accountToUpdate = accountCollection.find(
+    (a) => a.account === receiver.account,
+  );
+
+  if (accountToUpdate) {
+    accountToUpdate.tokens = {
+      ...accountToUpdate.tokens,
+      [tokenId]: (accountToUpdate.tokens?.[tokenId] || 0) + amount,
+    };
+  }
+}
+
+export async function mintExistingToken({
+  creator,
+  tokenId,
+  amount,
+  filepath,
+  accountCollection,
+}: {
+  creator: IAccountWithTokens | IAccount;
+  tokenId: string;
+  amount: number;
+  filepath: string;
+  accountCollection: IAccountWithTokens[];
+}) {
+  const mintResult = await mintToken({
+    creator: creator.account,
+    tokenId,
+    amount: new PactNumber(amount).toPactDecimal(),
+    guard: creator,
+  });
+
+  appendToFile(filepath, {
+    timestamp: Date.now(),
+    from: 'n/a',
+    to: creator.account,
+    amount: amount,
+    requestKey: mintResult.reqKey,
+    action: 'mint',
+  });
+
+  // If account already exists in array, add the token. If not add the account to the array
+  let accountToUpdate = accountCollection.find(
+    (acc) => acc.account === creator.account,
+  );
+
+  if (accountToUpdate) {
+    accountToUpdate.tokens = {
+      ...accountToUpdate.tokens,
+      [tokenId]: (accountToUpdate.tokens?.[tokenId] || 0) + 1,
+    };
+  } else {
+    accountCollection.push({
+      ...creator,
+      tokens: {
+        [tokenId]: amount,
+      },
+    });
+  }
 }
