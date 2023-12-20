@@ -81,6 +81,7 @@ export const globalOptions = {
     prompt: account.predicatePrompt,
     validation: z.string(),
     option: new Option('-p, --predicate <predicate>', 'Keyset predicate'),
+  }),
   // global
   ci: createOption({
     key: 'ci' as const,
