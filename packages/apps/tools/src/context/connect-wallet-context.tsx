@@ -5,6 +5,7 @@ import type { INetworkData } from '@/utils/network';
 import { getAllNetworks, getInitialNetworks } from '@/utils/network';
 import { getItem, setItem } from '@/utils/persist';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { IWalletConnectAccount } from '@kadena/client/lib/signing/walletconnect/walletConnectTypes';
 import { WalletConnectModal } from '@walletconnect/modal';
 import Client from '@walletconnect/sign-client';
 import type { PairingTypes, SessionTypes } from '@walletconnect/types';
@@ -145,19 +146,18 @@ export const WalletConnectClientContextProvider: FC<
 
       try {
         const { uri, approval } = await client.connect({
-          pairingTopic: pairing?.topic,
-
+          pairingTopic: undefined,
           requiredNamespaces: {
             kadena: {
-              methods: [
-                'kadena_getAccounts_v1',
-                'kadena_sign_v1',
-                'kadena_quicksign_v1',
-              ],
               chains: [
                 'kadena:mainnet01',
                 'kadena:testnet04',
                 'kadena:development',
+              ],
+              methods: [
+                'kadena_getAccounts_v1',
+                'kadena_sign_v1',
+                'kadena_quicksign_v1',
               ],
               events: [],
             },
@@ -171,6 +171,34 @@ export const WalletConnectClientContextProvider: FC<
 
         const session = await approval();
         await onSessionConnected(session);
+
+        console.log('Session: ', session);
+
+        // NOTE: this doesn't work yet
+        const accountsRequest = {
+          id: 1,
+          jsonrpc: '2.0',
+          method: 'kadena_getAccounts_v1',
+          params: {
+            accounts: [
+              {
+                account: session.namespaces?.kadena?.accounts[1],
+                contracts: ['coin'],
+              },
+            ],
+          },
+        };
+
+        const response = await client.request<{
+          accounts: IWalletConnectAccount[];
+        }>({
+          topic: session.topic,
+          chainId: 'kadena:testnet04',
+          request: accountsRequest,
+        });
+
+        console.log('Response: ', response);
+
         // Update known pairings after session is connected.
         setPairings(client.pairing.getAll({ active: true }));
       } catch (e) {
