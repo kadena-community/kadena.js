@@ -13,6 +13,7 @@ import {
   isSignedTransaction,
 } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
+import { getBalance } from '@kadena/client-utils/coin';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { dotenv } from '@utils/dotenv';
 import { createLogger } from 'graphql-yoga';
@@ -171,4 +172,25 @@ export const getRandomOption = <T>(randomSeed: number, options: T[]): T => {
 
 export const stringifyProperty = <T>(keys: T[], property: keyof T) => {
   return keys.map((key) => key[property]).join(', ');
+};
+
+export const getAccountBalance = async ({
+  account,
+  chainId,
+}: {
+  account: string;
+  chainId: ChainId;
+}) => {
+  const result = await getBalance(
+    account,
+    dotenv.NETWORK_ID,
+    chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
+    dotenv.NETWORK_HOST,
+  );
+
+  if (typeof result === 'object') {
+    return parseFloat(result.decimal);
+  }
+
+  return result || 0;
 };

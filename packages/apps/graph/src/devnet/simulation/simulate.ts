@@ -1,10 +1,10 @@
 import type { ChainId } from '@kadena/client';
-import { getBalance } from '@kadena/client-utils/coin';
 import { dotenv } from '@utils/dotenv';
 import { crossChainTransfer } from '../crosschain-transfer';
 import type { IAccount } from '../helper';
 import {
   generateAccount,
+  getAccountBalance,
   getRandomNumber,
   getRandomOption,
   isEqualChainAccounts,
@@ -141,16 +141,10 @@ export async function simulate({
           counter = 0;
         }
 
-        const balance = parseFloat(
-          (
-            await getBalance(
-              account.account,
-              dotenv.NETWORK_ID,
-              account.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
-              dotenv.NETWORK_HOST,
-            )
-          )?.decimal || '0',
-        );
+        const balance = await getAccountBalance({
+          account: account.account,
+          chainId: account.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
+        });
 
         // using a random number safety gap to avoid underflowing the account
         const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
