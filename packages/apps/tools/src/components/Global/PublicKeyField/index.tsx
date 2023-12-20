@@ -4,7 +4,6 @@ import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
 import type { FieldError } from 'react-hook-form';
-import { publicKeyFieldStyles } from './styles.css';
 
 interface IPublicKeyFieldProps extends Omit<ITextFieldProps, 'id'> {
   error?: FieldError;
@@ -16,17 +15,17 @@ export const PublicKeyField: FC<IPublicKeyFieldProps> = ({
   ...rest
 }) => {
   const { t } = useTranslation('common');
+  console.log('all props', rest);
 
   return (
-    <span className={publicKeyFieldStyles}>
-      <TextField
-        label={t('Public Key')}
-        status={error ? 'negative' : status}
-        id="public-key-input"
-        placeholder={t('Enter Public Key')}
-        {...rest}
-      />
-    </span>
+    <TextField
+      label={t('Public Key')}
+      status={error ? 'negative' : status}
+      fontFamily="codeFont"
+      id="public-key-input"
+      placeholder={t('Enter Public Key')}
+      {...rest}
+    />
   );
 };
 
