@@ -72,7 +72,7 @@ export type {
 export type { ITabItemProps, ITabsProps } from './Tabs';
 export type { ITagProps } from './Tag';
 export type { ITooltipProps } from './Tooltip';
-export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
+export type { ILabelValue, ITrackerCardProps } from './TrackerCard';
 export type { ITreeProps } from './Tree';
 export type {
   IGradientTextProps,
@@ -126,6 +126,6 @@ export { Table } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag } from './Tag';
 export { Tooltip } from './Tooltip';
-export { TrackerCard } from './TrackerCard/TrackerCard';
+export { TrackerCard, TrackerLabel } from './TrackerCard';
 export { Tree } from './Tree';
 export { GradientText, Heading, Text } from './Typography';

@@ -2,9 +2,10 @@ import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { ProductIcon } from '../Icon';
-import type { ILabelValue, ITrackerCardProps } from './TrackerCard';
+import type { ITrackerCardProps } from './TrackerCard';
 import { TrackerCard } from './TrackerCard';
 import { layoutVariant } from './TrackerCard.css';
+import type { ILabelValue } from './TrackerLabel';
 
 const meta: Meta<{ icon: keyof typeof ProductIcon } & ITrackerCardProps> = {
   title: 'Patterns/TrackerCard',

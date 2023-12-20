@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { beforeEach, describe, expect, test } from 'vitest';
-import type { ILabelValue } from './TrackerCard';
+import type { ILabelValue } from './TrackerLabel';
 import { TrackerCard } from './TrackerCard';
 
 describe('TrackerCard', () => {

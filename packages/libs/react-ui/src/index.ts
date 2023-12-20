@@ -116,6 +116,7 @@ export {
   TextareaField,
   Tooltip,
   TrackerCard,
+  TrackerLabel,
   Tree,
   maskValue,
   useDialog,

@@ -1,21 +1,17 @@
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
-import { MaskedValue, ProductIcon } from '..';
+import { ProductIcon } from '..';
 import {
   CardContainer,
   ContentContainer,
   DataContainer,
-  LabelTitle,
-  LabelValue,
-  LabelValueContainer,
-  TrackerWarningContainer,
-  displayVariant,
-  gapValueLabelVariant,
   gridVariant,
   layoutVariant,
+  TrackerWarningContainer,
   warningVariant,
 } from './TrackerCard.css';
+import { ILabelValue, TrackerLabel } from './TrackerLabel';
 
 export interface ITrackerCardProps {
   labelValues: ILabelValue[];
@@ -23,15 +19,6 @@ export interface ITrackerCardProps {
   helperTextType?: 'mild' | 'severe';
   icon?: keyof typeof ProductIcon;
   variant?: keyof typeof layoutVariant;
-}
-
-export interface ILabelValue {
-  label: string;
-  value?: string;
-  isAccount?: boolean;
-  defaultVisible?: boolean;
-  startUnmasked?: number;
-  endUnmasked?: number;
 }
 
 export const TrackerCard: FC<ITrackerCardProps> = ({
@@ -47,13 +34,6 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
     gridVariant[variant],
   );
 
-  const classLabelValue = classNames(
-    LabelValueContainer,
-    displayVariant[variant],
-    layoutVariant[variant],
-    gapValueLabelVariant[variant],
-  );
-
   const classWarningContainer = classNames(
     TrackerWarningContainer,
     warningVariant[helperTextType],
@@ -66,41 +46,14 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
       {Icon ? <Icon data-testid="kda-icon" size="xl" /> : null}
       <div className={ContentContainer}>
         <div className={DataContainer} data-testid="kda-data-container">
-          {labelValues?.map((item, index) => {
-            return (
-              <div
-                className={classLabelValue}
-                key={`label-value-container-${index}`}
-                data-testid={`kda-label-value-container-${index}`}
-              >
-                <div
-                  className={LabelTitle}
-                  key={`label-${index}`}
-                  data-testid={`kda-label-${index}`}
-                >
-                  {item.label}
-                </div>
-                {item.isAccount && item.value ? (
-                  <MaskedValue
-                    value={item.value}
-                    defaultVisibility={item.defaultVisible}
-                    startUnmaskedValues={item.startUnmasked}
-                    endUnmaskedValues={item.endUnmasked}
-                    key={`masked-value-${index}`}
-                    data-testid={`kda-masked-value-${index}`}
-                  />
-                ) : (
-                  <div
-                    className={LabelValue}
-                    key={`value-${index}`}
-                    data-testid={`kda-value-${index}`}
-                  >
-                    {item.value}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          {labelValues?.map((item, index) => (
+            <TrackerLabel
+              key={`label-value-container-${index}`}
+              item={item}
+              index={index}
+              variant={variant}
+            />
+          ))}
         </div>
         {helperText ? (
           <div className={classWarningContainer} data-testid="kda-helper-text">
