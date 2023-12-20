@@ -1,6 +1,5 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import yaml from 'js-yaml';
-import type { WriteFileOptions } from 'node:fs';
 import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
@@ -13,12 +12,8 @@ import {
   WALLET_EXT,
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
-import {
-  ensureDirectoryExists,
-  removeAfterFirstDot,
-  writeFile,
-  writeFileAsync,
-} from '../../utils/filesystem.js';
+import { services } from '../../services/index.js';
+import { removeAfterFirstDot } from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 
 export type TSeedContent = string;
@@ -49,7 +44,11 @@ export async function savePlainKeyByAlias(
       data.secretKey = keyPair.secretKey;
     }
 
-    await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
+    await services.filesystem.writeFile(
+      filePath,
+      yaml.dump(data, { lineWidth: -1 }),
+    );
+    // await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
   }
 }
 
@@ -85,8 +84,11 @@ export async function saveKeyByAlias(
     if (keyPair.secretKey !== undefined) {
       data.secretKey = keyPair.secretKey;
     }
-
-    await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
+    await services.filesystem.writeFile(
+      filePath,
+      yaml.dump(data, { lineWidth: -1 }),
+    );
+    // await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
   }
 }
 
@@ -99,22 +101,22 @@ export async function saveKeyByAlias(
  * @param {string} alias - The alias used to name the file and directory.
  * @param {boolean} legacy - Whether to use the legacy file extension.
  */
-export function storeWallet(
+export async function storeWallet(
   seed: string,
   alias: string,
   legacy: boolean = false,
-): void {
+): Promise<void> {
   const sanitizedAlias = sanitizeFilename(alias).toLowerCase();
   const walletSubDir = join(WALLET_DIR, sanitizedAlias);
-  ensureDirectoryExists(walletSubDir);
 
   const aliasExtension = legacy ? WALLET_LEGACY_EXT : WALLET_EXT;
   const storagePath = join(walletSubDir, `${sanitizedAlias}${aliasExtension}`);
 
-  writeFile(
+  console.log('storeWallet');
+  await services.filesystem.ensureDirectoryExists(storagePath);
+  await services.filesystem.writeFile(
     storagePath,
     yaml.dump(seed, { lineWidth: -1 }),
-    'utf8' as WriteFileOptions,
   );
 }
 
@@ -128,16 +130,17 @@ export function readKeyFileContent(
   filePath: string,
 ): TSeedContent | IKeyPair | undefined {
   if (!existsSync(filePath)) {
+    // if (!(await services.filesystem.directoryExists(filePath))) {
     console.error(`File at path ${filePath} does not exist.`);
     return undefined;
   }
 
-  try {
-    const fileContents = readFileSync(filePath, 'utf8');
-    return yaml.load(fileContents) as TSeedContent | IKeyPair;
-  } catch (error) {
-    throw new Error(`Error reading file at path ${filePath}: ${error}`);
+  const fileContents = readFileSync(filePath, 'utf8');
+  // const fileContents = await services.filesystem.readFile(filePath);
+  if (fileContents === null) {
+    throw Error(`Failed to read file at path: ${filePath}`);
   }
+  return yaml.load(fileContents) as TSeedContent | IKeyPair;
 }
 
 /**
@@ -171,9 +174,12 @@ export function getFilesWithExtension(
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
   }
+  // await services.filesystem.ensureDirectoryExists(dir);
 
   try {
+    // const files = await services.filesystem.readDir(dir);
     return readdirSync(dir).filter((filename) => {
+      // return files.filter((filename) => {
       // When searching for standard wallet files, exclude legacy wallet files
       if (extension === WALLET_EXT && filename.endsWith(WALLET_LEGACY_EXT)) {
         return false;

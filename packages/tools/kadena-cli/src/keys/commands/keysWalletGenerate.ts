@@ -1,7 +1,6 @@
 // External library imports
 import chalk from 'chalk';
 import debug from 'debug';
-import { existsSync } from 'fs';
 
 import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 import {
@@ -15,6 +14,7 @@ import { WALLET_DIR } from '../../constants/config.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
+import { services } from '../../services/index.js';
 import {
   displayGeneratedWallet,
   displayStoredWallet,
@@ -71,23 +71,23 @@ export const createGenerateWalletsCommand: (
       // compare passwords
       if (config.securityPassword !== config.securityVerifyPassword) {
         console.log(chalk.red(`\nPasswords don't match. Please try again.\n`));
-        process.exit(1);
+        return process.exit(1);
       }
 
       // Check for existing wallet
       const walletPath = `${WALLET_DIR}/${config.keyWallet}`;
-      if (existsSync(walletPath)) {
+      if (await services.filesystem.fileExists(walletPath)) {
         console.log(
           chalk.yellow(
             `\nWallet named "${config.keyWallet}" already exists.\n`,
           ),
         );
-        process.exit(1);
+        return process.exit(1);
       }
 
       const { words, seed } = await generateKey(config);
 
-      storageService.storeWallet(seed, config.keyWallet, config.legacy);
+      await storageService.storeWallet(seed, config.keyWallet, config.legacy);
       displayGeneratedWallet(words, config);
       displayStoredWallet(config.keyWallet, config.legacy);
     } catch (error) {
