@@ -1,4 +1,4 @@
-import { prismaClient } from '@db/prismaClient';
+import { prismaClient } from '@db/prisma-client';
 import { getChainFungibleAccount } from '@services/account-service';
 import {
   COMPLEXITY,

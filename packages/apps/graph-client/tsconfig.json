@@ -14,6 +14,7 @@
     "declarationMap": false,
     "jsx": "preserve",
     "paths": {
+      "react": ["./node_modules/@types/react"],
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
       "@constants/*": ["./src/constants/*"],

@@ -1,4 +1,4 @@
-import { formatDocument } from './lispFormatter';
+import { formatDocument } from './lisp-formatter';
 
 export function formatCode(code: string): string {
   try {
