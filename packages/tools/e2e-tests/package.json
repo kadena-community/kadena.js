@@ -15,6 +15,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
+    "test": "echo \"no test required\"",
     "test:e2e": "playwright test"
   },
   "dependencies": {
