@@ -1135,6 +1135,12 @@ importers:
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../cryptography-utils
+      '@kadena/pactjs':
+        specifier: workspace:*
+        version: link:../pactjs
+      '@kadena/pactjs-cli':
+        specifier: workspace:*
+        version: link:../../tools/pactjs-cli
       '@kadena/types':
         specifier: workspace:*
         version: link:../types
@@ -1160,12 +1166,6 @@ importers:
       '@kadena-dev/shared-config':
         specifier: workspace:*
         version: link:../../tools/shared-config
-      '@kadena/pactjs':
-        specifier: workspace:*
-        version: link:../pactjs
-      '@kadena/pactjs-cli':
-        specifier: workspace:*
-        version: link:../../tools/pactjs-cli
       '@microsoft/api-extractor':
         specifier: ^7.38.0
         version: 7.38.0(@types/node@18.17.14)
