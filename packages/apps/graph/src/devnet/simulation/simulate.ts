@@ -148,7 +148,7 @@ export async function simulate({
 
         // using a random number safety gap to avoid underflowing the account
         const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
-        if (amountWithSafetyGap > balance) {
+        if (amountWithSafetyGap > parseFloat(balance)) {
           logger.info(
             `Insufficient funds for ${account.account}\nFunds necessary: ${amountWithSafetyGap}\nFunds available: ${balance}`,
           );
