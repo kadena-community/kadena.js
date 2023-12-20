@@ -13,7 +13,9 @@ const useGlow = (): IUseGlowReturn => {
   const glowRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
-  const [glowX, setGlowX] = useState(-160);
+  const initialGlowPosition = -160;
+
+  const [glowX, setGlowX] = useState(initialGlowPosition);
 
   const prevGlowX = useRef<number>(glowX);
 
