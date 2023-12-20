@@ -24,7 +24,7 @@ export const itemsContainerClass = style([
     flexWrap: 'nowrap',
     width: '100%',
     height: '100%',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     overflowX: 'auto',
   }),
@@ -127,7 +127,6 @@ export const activeLinkClass = style([
 export const childrenClass = style([
   atoms({
     display: 'flex',
-    marginLeft: 'auto',
   }),
   {
     marginRight: vars.sizes.$3,
