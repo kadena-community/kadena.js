@@ -56,7 +56,7 @@ export const TextFieldStory: Story = {
     label: 'Label',
     textAreaProps: {
       id: 'TextFieldStory',
-      fontFamily: '$mono',
+      fontFamily: 'codeFont',
       placeholder: 'This is a placeholder',
       value: '',
       onChange: () => {},
