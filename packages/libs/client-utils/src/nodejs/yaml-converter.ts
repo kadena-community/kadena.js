@@ -136,10 +136,7 @@ export const parseYamlToKdaTx =
     }
 
     const { codeFile, ...kdaToolTxWithoutCodeFile } = kdaToolTx;
-    const codeWithHoles = readFileSync(
-      join(ctx.cwd, codeFile),
-      'utf-8',
-    ).toString();
+    const codeWithHoles = readFileSync(join(ctx.cwd, codeFile), 'utf-8');
 
     const code = replaceHoles(getPartsAndHoles(codeWithHoles), args);
 
@@ -156,12 +153,14 @@ export const parseYamlToKdaTx =
 export const convertTemplateTxToPactCommand = (
   ctx: ITemplateContextPactCommand,
 ): IPactCommand => {
-  const { code, ...kdaToolTx } = ctx.tplTx;
+  const { code, data, ...kdaToolTx } = ctx.tplTx;
 
   const execPayload: IExecutionPayloadObject = {
-    data: kdaToolTx.data,
-    code: code,
-  } as unknown as IExecutionPayloadObject;
+    exec: {
+      data: data ? data : {},
+      code: code!,
+    },
+  };
 
   const { publicMeta, ...kdaToolTxWithoutMeta } = kdaToolTx;
 
@@ -171,8 +170,9 @@ export const convertTemplateTxToPactCommand = (
     meta: {
       ...publicMeta,
       chainId: publicMeta.chainId as ChainId,
+      creationTime: Math.floor(Date.now() / 1000),
     },
-    nonce: kdaToolTx.nonce,
+    nonce: kdaToolTx.nonce ? kdaToolTx.nonce : '',
     signers: kdaToolTx.signers.map(publicToPubkey),
     networkId: kdaToolTx.networkId,
   };

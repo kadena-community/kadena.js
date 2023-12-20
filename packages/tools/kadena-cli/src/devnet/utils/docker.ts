@@ -9,14 +9,30 @@ const containerPactFolderPermissions: string = 'ro';
 const chainwebNodeApiPort: string = '8080';
 const devnetImageName: string = 'kadena/devnet';
 
-export function isDockerInstalled(): boolean {
+export const guardDockerInstalled = (): void | never => {
   try {
-    execSync('docker -v');
-    return true;
+    execSync('docker -v', { stdio: 'pipe' });
   } catch (error) {
-    return false;
+    if (error.stderr.includes('command not found')) {
+      throw new Error('Please install Docker.');
+    }
   }
-}
+};
+
+export const guardDockerRunning = (): void | never => {
+  try {
+    execSync('docker ps', { stdio: 'pipe' });
+  } catch (error) {
+    if (error.stderr.includes('Cannot connect to the Docker daemon')) {
+      throw new Error('Please make sure the Docker daemon is running.');
+    }
+  }
+};
+
+export const guardDocker = (): void | never => {
+  guardDockerInstalled();
+  guardDockerRunning();
+};
 
 export const dockerVolumeName = (containerName: string): string =>
   `${volumePrefix}${containerName}`;
@@ -31,29 +47,21 @@ const maybeCreateVolume = (useVolume: boolean, containerName: string): void => {
 
   const volumeName = dockerVolumeName(containerName);
 
-  try {
-    const existingVolumes = execSync('docker volume ls --format "{{.Name}}"')
-      .toString()
-      .trim()
-      .split('\n');
+  const existingVolumes = execSync('docker volume ls --format "{{.Name}}"')
+    .toString()
+    .trim()
+    .split('\n');
 
-    if (existingVolumes.includes(volumeName)) {
-      console.log(chalk.green(`Using existing volume: ${volumeName}`));
-      return;
-    }
-
-    console.log(chalk.green(`Creating volume: ${volumeName}`));
-
-    execSync(`docker volume create ${volumeName}`);
-
-    console.log(chalk.green(`Successfully created volume: ${volumeName}`));
-  } catch (error) {
-    console.log(
-      chalk.red(
-        `Something went wrong with the Docker volume: ${error.message}`,
-      ),
-    );
+  if (existingVolumes.includes(volumeName)) {
+    console.log(chalk.green(`Using existing volume: ${volumeName}`));
+    return;
   }
+
+  console.log(chalk.green(`Creating volume: ${volumeName}`));
+
+  execSync(`docker volume create ${volumeName}`);
+
+  console.log(chalk.green(`Successfully created volume: ${volumeName}`));
 };
 
 const formatDockerRunOptions = (
@@ -91,50 +99,33 @@ const formatDockerRunOptions = (
 };
 
 const containerExists = (name: string): boolean => {
-  try {
-    const existingContainers = execSync('docker ps -a --format "{{.Names}}"')
-      .toString()
-      .trim()
-      .split('\n');
-    return existingContainers.includes(name);
-  } catch (error) {
-    console.log(
-      chalk.red(
-        `Error checking if the container "${name}" already exists: ${error.message}`,
-      ),
-    );
-    return false;
-  }
+  const existingContainers = execSync('docker ps -a --format "{{.Names}}"')
+    .toString()
+    .trim()
+    .split('\n');
+  return existingContainers.includes(name);
 };
 
 export function runDevnet(configuration: IDevnetsCreateOptions): void {
   maybeCreateVolume(!!configuration.useVolume, configuration.name);
   const dockerRunOptions = formatDockerRunOptions(configuration);
 
-  try {
-    if (containerExists(configuration.name)) {
-      execSync(`docker start ${configuration.name}`);
-      console.log(
-        chalk.green(`Started existing container: ${configuration.name}`),
-      );
-      return;
-    }
-    execSync(`docker run ${dockerRunOptions}`);
+  if (containerExists(configuration.name)) {
+    execSync(`docker start ${configuration.name}`);
     console.log(
-      chalk.green(`New devnet container "${configuration.name}" is running`),
+      chalk.green(`Started existing container: ${configuration.name}`),
     );
-  } catch (error) {
-    console.log(chalk.red(`Failed to run devnet: ${error.message}`));
+    return;
   }
+  execSync(`docker run ${dockerRunOptions}`);
+  console.log(
+    chalk.green(`New devnet container "${configuration.name}" is running`),
+  );
 }
 
 export function stopDevnet(containerName: string): void {
-  try {
-    execSync(`docker stop ${containerName}`);
-    console.log(chalk.green(`Stopped devnet container: ${containerName}`));
-  } catch (error) {
-    console.log(chalk.red(`Failed to stop devnet: ${error.message}`));
-  }
+  execSync(`docker stop ${containerName}`);
+  console.log(chalk.green(`Stopped devnet container: ${containerName}`));
 }
 
 export function removeDevnet(containerName: string): void {
@@ -147,10 +138,6 @@ export function removeVolume(containerName: string): void {
 
 export function updateDevnet(version?: string): void {
   const image = `${devnetImageName}:${version}`;
-  try {
-    execSync(`docker pull ${image}`);
-    console.log(chalk.green(`Updated ${image}`));
-  } catch (error) {
-    console.log(chalk.red(`Failed to update ${image}`));
-  }
+  execSync(`docker pull ${image}`);
+  console.log(chalk.green(`Updated ${image}`));
 }

@@ -6,14 +6,14 @@ export interface Guard {
   predicate: 'keys-all' | 'keys-any' | 'keys-two';
 }
 
-export const ChainModuleAccountName: 'ChainModuleAccount' =
-  'ChainModuleAccount';
+export const ChainFungibleAccountName: 'ChainFungibleAccount' =
+  'ChainFungibleAccount';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface ChainModuleAccount {
-  __typename: typeof ChainModuleAccountName;
+export interface ChainFungibleAccount {
+  __typename: typeof ChainFungibleAccountName;
   chainId: string;
-  moduleName: string;
+  fungibleName: string;
   accountName: string;
   guard: Guard;
   balance: number;
@@ -21,14 +21,14 @@ export interface ChainModuleAccount {
   transfers: Transfer[];
 }
 
-export const ModuleAccountName: 'ModuleAccount' = 'ModuleAccount';
+export const FungibleAccountName: 'FungibleAccount' = 'FungibleAccount';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface ModuleAccount {
-  __typename: typeof ModuleAccountName;
-  moduleName: string;
+export interface FungibleAccount {
+  __typename: typeof FungibleAccountName;
+  fungibleName: string;
   accountName: string;
-  chainAccounts: ChainModuleAccount[];
+  chainAccounts: ChainFungibleAccount[];
   totalBalance: number;
   transactions: Transaction[];
   transfers: Transfer[];

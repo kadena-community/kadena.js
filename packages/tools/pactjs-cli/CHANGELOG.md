@@ -1,5 +1,34 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.7.0
+
+### Minor Changes
+
+- 9bec1fb8e: intruduce PactReturnType in order to extract pact functions return
+  type
+
+### Patch Changes
+
+- 735aeb38f: Fixed dependency resolution in pactjs-cli
+- 74880bb51: Extract networkId and chainId from the api
+- Updated dependencies [9bec1fb8e]
+- Updated dependencies [735aeb38f]
+- Updated dependencies [c126ca38c]
+- Updated dependencies [c637a9596]
+- Updated dependencies [a3bb20737]
+  - @kadena/pactjs-generator@1.7.0
+  - @kadena/client@1.7.0
+
+## 1.6.4
+
+### Patch Changes
+
+- 21a0d1530: Fix pactjs-cli to send hash with txs; fixed the issue after
+  chainweb-node update
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+  - @kadena/pactjs-generator@1.6.4
+
 ## 1.6.3
 
 ### Patch Changes

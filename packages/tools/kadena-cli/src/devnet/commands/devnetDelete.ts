@@ -12,6 +12,7 @@ import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import {
   dockerVolumeName,
+  guardDocker,
   removeDevnet,
   removeVolume,
 } from '../utils/docker.js';
@@ -22,6 +23,8 @@ export const deleteDevnetCommand: CreateCommandReturnType = createCommand(
   [globalOptions.devnetSelect()],
   async (config) => {
     debug('devnet-delete:action')({ config });
+
+    guardDocker();
 
     const externalPrompt = createExternalPrompt({
       devnetDeletePrompt,
@@ -66,7 +69,7 @@ export const deleteDevnetCommand: CreateCommandReturnType = createCommand(
     } catch (e) {
       console.log(
         chalk.red(
-          'Deleting devnet requires Docker. Please install Docker and try again.',
+          'Something went wrong during the removal of the devnet container.',
         ),
       );
       return;

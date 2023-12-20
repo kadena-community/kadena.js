@@ -1,5 +1,46 @@
 # @kadena/client-utils
 
+## 0.2.0
+
+### Minor Changes
+
+- 4afeb196d: refactor create principal
+- 34e193c77: Introduce `executeTo` which executes the process until the specific
+  event is fired then it returns the result of that and pauses the process until
+  you call it again.
+- 15c203ee5: improve client utils returns type
+
+### Patch Changes
+
+- 9bec1fb8e: intruduce PactReturnType in order to extract pact functions return
+  type
+- 70c126a32: Fixed minor issue in yaml converter related to an aditional data
+  field in IPactCommand.
+- a3bb20737: let users pass Literal or ()=>string as function inputs to cover
+  more advanced usecases.
+- Updated dependencies [9bec1fb8e]
+- Updated dependencies [c126ca38c]
+- Updated dependencies [c637a9596]
+- Updated dependencies [15c203ee5]
+- Updated dependencies [a3bb20737]
+  - @kadena/client@1.7.0
+  - @kadena/types@0.6.0
+  - @kadena/chainweb-node-client@0.5.2
+  - @kadena/cryptography-utils@0.4.2
+
+## 0.1.0
+
+### Minor Changes
+
+- a4ccd823a: Adding gasEstimate function + export commandCreator functions
+
+### Patch Changes
+
+- f37318e9d: Small fixes regarding yaml to kadena client transactions
+- 86e4927d3: Added YAML template to Pact Command converter
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+
 ## 0.0.5
 
 ### Patch Changes

@@ -3,7 +3,7 @@ import debug from 'debug';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { updateDevnet } from '../utils/docker.js';
+import { guardDocker, updateDevnet } from '../utils/docker.js';
 
 export const updateDevnetCommand: CreateCommandReturnType = createCommand(
   'update',
@@ -11,6 +11,8 @@ export const updateDevnetCommand: CreateCommandReturnType = createCommand(
   [globalOptions.devnetVersion()],
   async (config) => {
     debug('devnet-update:action')({ config });
+
+    guardDocker();
 
     try {
       updateDevnet(config.version);

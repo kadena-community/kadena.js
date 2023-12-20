@@ -1,5 +1,45 @@
 # @kadena/graph
 
+## 1.0.7
+
+### Patch Changes
+
+- 4afeb196d: refactor create principal
+- c2b60a1a1: Added descriptions to objects, fields and queries
+- ca1834ecb: Complexity calculations and limitations added
+- Updated dependencies [9bec1fb8e]
+- Updated dependencies [4afeb196d]
+- Updated dependencies [c126ca38c]
+- Updated dependencies [c637a9596]
+- Updated dependencies [34e193c77]
+- Updated dependencies [70c126a32]
+- Updated dependencies [15c203ee5]
+- Updated dependencies [a3bb20737]
+  - @kadena/client@1.7.0
+  - @kadena/client-utils@0.2.0
+  - @kadena/chainweb-node-client@0.5.2
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/pactjs@0.4.2
+
+## 1.0.6
+
+### Patch Changes
+
+- 2dec0d4cd: Improved naming convention of Reconcile object
+- 73bbcbd56: Made edges non-nullable
+- 0f598d10e: Added chain id to transactions filter on block object; changed
+  default value for maximum confirmation depth
+- ad00ec0b2: Added reconcile view for chainweb data
+- 858f52a2e: hotfix for reconcile
+- d1f6f99fc: Refactor objects, queries and subscriptions to use the same
+  function type definition, to use the same argument naming conventions and
+  object casting; also added totalCount resolvers to all prismaConnection
+  fields; added errors to simulation log file
+- bccf4333a: Added multi-sig accounts support in simulation
+- 49e5c55ae: Added tracing and trace analyser
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+
 ## 1.0.5
 
 ### Patch Changes

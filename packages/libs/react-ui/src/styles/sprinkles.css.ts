@@ -140,10 +140,16 @@ const responsiveProperties = defineProperties({
   },
 });
 
+/**
+ * @deprecated Use 'atoms' from '@kadena/react-ui/theme'
+ */
 export const sprinkles = createSprinkles(
   systemProperties,
   colorProperties,
   responsiveProperties,
 );
 
+/**
+ * @deprecated Use 'Atoms' from '@kadena/react-ui/theme'
+ */
 export type Sprinkles = Parameters<typeof sprinkles>[0];

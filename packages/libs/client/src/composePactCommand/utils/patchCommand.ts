@@ -1,31 +1,23 @@
-import type {
-  IContinuationPayloadObject,
-  IExecutionPayloadObject,
-  IPactCommand,
-} from '../../interfaces/IPactCommand';
+import type { IPartialPactCommand } from '../../interfaces/IPactCommand';
 
 /**
  * @internal
  */
 export const mergePayload = (
-  payload: IPactCommand['payload'] | undefined,
-  newPayload: IPactCommand['payload'] | undefined,
-): IExecutionPayloadObject | IContinuationPayloadObject | undefined => {
+  payload: IPartialPactCommand['payload'] | undefined,
+  newPayload: IPartialPactCommand['payload'],
+): IPartialPactCommand['payload'] => {
   if (payload === undefined || newPayload === undefined)
     return newPayload ?? payload;
 
   if ('exec' in payload && 'exec' in newPayload) {
     return {
       exec: {
-        code: (payload.exec.code ?? '') + (newPayload.exec.code ?? ''),
-        ...(payload.exec.data || newPayload.exec.data
-          ? {
-              data: {
-                ...payload.exec.data,
-                ...newPayload.exec.data,
-              },
-            }
-          : {}),
+        code: (payload.exec?.code ?? '') + (newPayload.exec?.code ?? ''),
+        data: {
+          ...payload.exec?.data,
+          ...newPayload.exec?.data,
+        },
       },
     };
   }
@@ -35,14 +27,10 @@ export const mergePayload = (
       cont: {
         ...payload.cont,
         ...newPayload.cont,
-        ...(payload.cont.data || newPayload.cont.data
-          ? {
-              data: {
-                ...payload.cont.data,
-                ...newPayload.cont.data,
-              },
-            }
-          : {}),
+        data: {
+          ...payload.cont?.data,
+          ...newPayload.cont?.data,
+        },
       },
     };
   }
@@ -61,9 +49,9 @@ export const mergePayload = (
  * @public
  */
 export function patchCommand(
-  command: Partial<IPactCommand>,
-  patch: Partial<IPactCommand>,
-): Partial<IPactCommand> {
+  command: IPartialPactCommand,
+  patch: IPartialPactCommand,
+): IPartialPactCommand {
   const state = { ...command };
   if (patch.payload !== undefined) {
     state.payload = mergePayload(state.payload, patch.payload);
@@ -80,13 +68,13 @@ export function patchCommand(
   if (patch.signers !== undefined) {
     patch.signers.forEach((signer) => {
       state.signers ??= [];
-      const foundSigner = state.signers.find(
-        ({ pubKey }) => signer.pubKey === pubKey,
-      );
+      const foundSigner = state.signers
+        .filter(Boolean)
+        .find((item) => signer?.pubKey === item?.pubKey);
       if (foundSigner !== undefined) {
         foundSigner.clist = [
           ...(foundSigner.clist ?? []),
-          ...(signer.clist ?? []),
+          ...(signer?.clist ?? []),
         ];
       } else {
         state.signers.push(signer);

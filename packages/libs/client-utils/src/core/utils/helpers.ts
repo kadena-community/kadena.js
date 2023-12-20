@@ -5,7 +5,7 @@ import type {
   ISignFunction,
 } from '@kadena/client';
 import { createClient, getHostUrl, isSignedTransaction } from '@kadena/client';
-import type { ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand, PactValue } from '@kadena/types';
 
 import type { Any } from './types';
 
@@ -94,19 +94,19 @@ export const checkSuccess = <
 
 // throw if the result is failed ; we might introduce another api for error handling
 export const throwIfFails = (response: ICommandResult): ICommandResult => {
-  if (response.result.status === 'success') {
-    return response;
+  if (response.result.status !== 'success') {
+    throw response.result.error;
   }
-  throw response.result.error;
+  return response;
 };
 
 export const pickFirst = <T extends Any[]>([tx]: T) => tx;
 
-export const extractResult = (response: ICommandResult) => {
-  if (response.result.status === 'success') {
-    return response.result.data;
+export const extractResult = <T = PactValue>(response: ICommandResult) => {
+  if (response.result.status !== 'success') {
+    return undefined;
   }
-  return undefined;
+  return response.result.data as T;
 };
 
 export const getClient = (
@@ -115,3 +115,21 @@ export const getClient = (
   typeof host === 'string'
     ? createClient(getHostUrl(host))
     : createClient(host);
+
+export const asyncLock = () => {
+  let res = () => {};
+  let promise = Promise.resolve();
+  const lock = {
+    open: () => {
+      res();
+    },
+    waitTillOpen: () => promise,
+    close: () => {
+      promise = new Promise((resolve) => {
+        res = resolve;
+      });
+    },
+  };
+  lock.close();
+  return lock;
+};

@@ -3,11 +3,7 @@ module.exports = {
   extends: ['./lib', 'plugin:react/recommended'],
   plugins: ['react', 'jsx-a11y'],
   rules: {
-    '@rushstack/typedef-var': 'off',
-    // @kadena-dev/typedef-var allows for inferred types in exported constants
-    //  when they are created by a function call.
-    //  e.g. This is allowed: `export const StyledButton = styled('button', {})`
-    '@kadena-dev/typedef-var': 'warn',
+    '@kadena-dev/typedef-var': 'off',
     'jsx-a11y/aria-props': 'warn',
     'jsx-a11y/role-has-required-aria-props': 'warn',
     'jsx-a11y/heading-has-content': 'warn',

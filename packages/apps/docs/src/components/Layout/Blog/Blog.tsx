@@ -1,7 +1,8 @@
 import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileCard';
 import { formatDateDistance } from '@/utils/dates';
 import type { IPageProps } from '@kadena/docs-tools';
-import { Tag } from '@kadena/react-ui';
+import { TagGroup, TagItem } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -22,7 +23,6 @@ import {
   headerFigureClass,
   headerImageClass,
   pageGridClass,
-  tagLinkClass,
 } from './styles.css';
 
 export const Blog: FC<IPageProps> = ({
@@ -90,16 +90,21 @@ export const Blog: FC<IPageProps> = ({
                 )}
               </ArticleMetadataItem>
               <ArticleMetadataItem>
-                {tags &&
-                  tags.map((tag) => (
-                    <Link
-                      className={tagLinkClass}
-                      key={tag}
-                      href={`/tags/${tag}`}
-                    >
-                      <Tag>{tag}</Tag>
-                    </Link>
-                  ))}
+                {tags && (
+                  <TagGroup
+                    tagAsChild
+                    aria-label={`${title} Tags`}
+                    className={atoms({ display: 'inline-block' })}
+                  >
+                    {tags.map((tag: string) => (
+                      <TagItem key={tag} aria-label={`${tag} Link`}>
+                        <Link key={tag} href={`/tags/${tag}`}>
+                          {tag}
+                        </Link>
+                      </TagItem>
+                    ))}
+                  </TagGroup>
+                )}
               </ArticleMetadataItem>
             </div>
             <div itemProp="articleBody">{children}</div>

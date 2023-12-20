@@ -1,5 +1,24 @@
 # @kadena/cookbook
 
+## 0.0.9
+
+### Patch Changes
+
+- Updated dependencies [9bec1fb8e]
+- Updated dependencies [c126ca38c]
+- Updated dependencies [c637a9596]
+- Updated dependencies [a3bb20737]
+  - @kadena/client@1.7.0
+  - @kadena/chainweb-node-client@0.5.2
+  - @kadena/cryptography-utils@0.4.2
+
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4
+
 ## 0.0.7
 
 ### Patch Changes

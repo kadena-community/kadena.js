@@ -17,9 +17,9 @@ export const MDNotification: FC<IProps> = ({ children, title = '', label }) => {
   return (
     <div className={classNames(wrapperClass, notificationWrapperClass)}>
       <Notification
-        color={getColor(label)}
+        intent={getColor(label)}
         icon={getIcon(label)}
-        styleVariant="borderless"
+        displayStyle="borderless"
         role="none"
       >
         <NotificationHeading>{title}</NotificationHeading>

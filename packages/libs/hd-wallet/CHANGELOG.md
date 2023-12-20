@@ -1,0 +1,27 @@
+# @kadena/hd-wallet
+
+## 0.2.0
+
+### Minor Changes
+
+- c637a9596: Resolved the issue with Ikeypair type with two different signatures
+
+### Patch Changes
+
+- Updated dependencies [9bec1fb8e]
+- Updated dependencies [c126ca38c]
+- Updated dependencies [c637a9596]
+- Updated dependencies [a3bb20737]
+  - @kadena/client@1.7.0
+  - @kadena/cryptography-utils@0.4.2
+
+## 0.1.0
+
+### Minor Changes
+
+- 427772991: Add functions to support SLIP-0010 key derivation
+
+### Patch Changes
+
+- Updated dependencies [21a0d1530]
+  - @kadena/client@1.6.4

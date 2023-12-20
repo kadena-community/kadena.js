@@ -1,5 +1,29 @@
 # Change Log - @kadena/client
 
+## 1.7.0
+
+### Minor Changes
+
+- 9bec1fb8e: intruduce PactReturnType in order to extract pact functions return
+  type
+- c126ca38c: Extract capability type from pure string pact code
+- c637a9596: Resolved the issue with Ikeypair type with two different signatures
+
+### Patch Changes
+
+- a3bb20737: let users pass Literal or ()=>string as function inputs to cover
+  more advanced usecases.
+  - @kadena/chainweb-node-client@0.5.2
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/pactjs@0.4.2
+
+## 1.6.4
+
+### Patch Changes
+
+- 21a0d1530: Fix pactjs-cli to send hash with txs; fixed the issue after
+  chainweb-node update
+
 ## 1.6.3
 
 ### Patch Changes

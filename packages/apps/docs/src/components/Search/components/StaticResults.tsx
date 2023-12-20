@@ -32,7 +32,7 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
     <>
       {urlArray.map((str, idx) => {
         return (
-          <Text size="sm" bold={idx === 0} key={str + idx}>
+          <Text variant="smallest" bold={idx === 0} key={str + idx}>
             {removeHashFromString(str)} {idx < urlArray.length - 1 ? ' / ' : ''}
           </Text>
         );
@@ -53,9 +53,7 @@ const Item: FC<IResultProps> = ({ item }) => {
     <li>
       <Link href={url} passHref legacyBehavior>
         <a className={itemLinkClass} onClick={state.close}>
-          <Heading color="primaryContrastInverted" as="h5">
-            {item.title}
-          </Heading>
+          <Heading as="h5">{item.title}</Heading>
           <ItemBreadCrumb url={url} />
 
           <Text as="p">

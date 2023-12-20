@@ -93,11 +93,11 @@ export function defaultDevnetIsConfigured(): boolean {
 
 export function getDevnetConfiguration(
   name: string,
-): IDevnetsCreateOptions | undefined {
+): IDevnetsCreateOptions | void {
   const devnetFilePath = path.join(defaultDevnetsPath, `${name}.yaml`);
 
   if (!PathExists(devnetFilePath)) {
-    return undefined;
+    return;
   }
 
   return yaml.load(

@@ -8,6 +8,7 @@ import {
   IconButton,
   Notification,
   NotificationHeading,
+  Stack,
 } from '@kadena/react-ui';
 
 import {
@@ -52,7 +53,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -76,7 +77,7 @@ const isCustomError = (error: unknown): error is ICommandResult => {
 
 const schema = z.object({
   name: z.string(),
-  pubKey: z.string(),
+  pubKey: z.string().optional(),
 });
 type FormData = z.infer<typeof schema>;
 
@@ -107,17 +108,14 @@ const NewAccountFaucetPage: FC = () => {
     setError,
     getValues,
     resetField,
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: {
-      name: typeof accountName === 'string' ? accountName : '',
-      pubKey: '',
-    },
-    resetOptions: {
-      keepDirtyValues: true, // user-interacted input will be retained
-      keepErrors: true, // input errors will be retained with value update
-    },
   });
+
+  useEffect(() => {
+    setValue('name', typeof accountName === 'string' ? accountName : '');
+  }, [accountName, setValue]);
 
   useToolbar(menuData, router.pathname);
 
@@ -178,14 +176,14 @@ const NewAccountFaucetPage: FC = () => {
     const value = getValues('pubKey');
 
     const copyPubKeys = [...pubKeys];
-    const isDuplicate = copyPubKeys.includes(value);
+    const isDuplicate = copyPubKeys.includes(value!);
 
     if (isDuplicate) {
       setError('pubKey', { message: t('Duplicate public key') });
       return;
     }
 
-    copyPubKeys.push(value);
+    copyPubKeys.push(value!);
     setPubKeys(copyPubKeys);
     resetField('pubKey');
   };
@@ -225,7 +223,7 @@ const NewAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification color="warning" role="status">
+          <Notification intent="warning" role="status">
             <NotificationHeading>
               {t('The Faucet is not available on Mainnet')}
             </NotificationHeading>
@@ -242,7 +240,7 @@ const NewAccountFaucetPage: FC = () => {
         ) : null}
       </div>
       <div className={notificationContainerStyle}>
-        <Notification color="warning" role="none">
+        <Notification intent="warning" role="none">
           <NotificationHeading>{t(`Before you start`)}</NotificationHeading>
           <Trans
             i18nKey="common:faucet-how-to-start"
@@ -286,87 +284,89 @@ const NewAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <Card fullWidth>
-          <Heading as="h5">Public Keys</Heading>
-          <Box marginBottom="$4" />
+        <Stack direction="column" gap="$lg">
+          <Card fullWidth>
+            <Heading as="h5">Public Keys</Heading>
+            <Box marginBottom="$4" />
 
-          <div className={pubKeyInputWrapperStyle}>
-            <div className={inputWrapperStyle}>
-              <PublicKeyField
-                helperText={errors?.pubKey?.message}
-                inputProps={{
-                  ...register('pubKey', {
-                    onChange: () => {
-                      clearErrors('pubKey');
-                    },
-                  }),
-                }}
-                error={errors.pubKey}
-              />
+            <div className={pubKeyInputWrapperStyle}>
+              <div className={inputWrapperStyle}>
+                <PublicKeyField
+                  helperText={errors?.pubKey?.message}
+                  inputProps={{
+                    ...register('pubKey', {
+                      onChange: () => {
+                        clearErrors('pubKey');
+                      },
+                    }),
+                  }}
+                  error={errors.pubKey}
+                />
+              </div>
+              <div className={iconButtonWrapper}>
+                <IconButton
+                  icon={'Plus'}
+                  onClick={() => {
+                    const value = getValues('pubKey');
+                    const valid = validatePublicKey(value || '');
+                    if (valid) {
+                      addPublicKey();
+                    } else {
+                      setError('pubKey', {
+                        type: 'custom',
+                        message: t('invalid-pub-key-length'),
+                      });
+                    }
+                  }}
+                  color="primary"
+                  type="button"
+                />
+              </div>
             </div>
-            <div className={iconButtonWrapper}>
-              <IconButton
-                icon={'Plus'}
-                onClick={() => {
-                  const value = getValues('pubKey');
-                  const valid = validatePublicKey(value);
-                  if (valid) {
-                    addPublicKey();
-                  } else {
-                    setError('pubKey', {
-                      type: 'custom',
-                      message: t('invalid-pub-key-length'),
-                    });
-                  }
-                }}
-                color="primary"
-                type="button"
+
+            {pubKeys.length > 0 ? renderPubKeys() : null}
+
+            {pubKeys.length > 1 ? (
+              <PredKeysSelect
+                onChange={onPredSelectChange}
+                value={pred}
+                ariaLabel="Select Predicate"
               />
+            ) : null}
+          </Card>
+          <Card fullWidth>
+            <Heading as="h5">{t('Account')}</Heading>
+            <Box marginBottom="$4" />
+            <div className={inputContainerClass}>
+              <div className={accountNameContainerClass}>
+                <AccountNameField
+                  inputProps={register('name')}
+                  error={errors.name}
+                  label={t('The account name to fund coins to')}
+                  disabled
+                />
+              </div>
+              <div className={chainSelectContainerClass}>
+                <ChainSelect
+                  onChange={onChainSelectChange}
+                  value={chainID}
+                  ariaLabel="Select Chain ID"
+                />
+              </div>
             </div>
+          </Card>
+          <div className={buttonContainerClass}>
+            <Button
+              loading={requestStatus.status === 'processing'}
+              icon="TrailingIcon"
+              iconAlign="right"
+              title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
+              disabled={disabledButton}
+            >
+              {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
+            </Button>
           </div>
-
-          {pubKeys.length > 0 ? renderPubKeys() : null}
-
-          {pubKeys.length > 1 ? (
-            <PredKeysSelect
-              onChange={onPredSelectChange}
-              value={pred}
-              ariaLabel="Select Predicate"
-            />
-          ) : null}
-        </Card>
-        <Card fullWidth>
-          <Heading as="h5">{t('Account')}</Heading>
-          <Box marginBottom="$4" />
-          <div className={inputContainerClass}>
-            <div className={accountNameContainerClass}>
-              <AccountNameField
-                inputProps={register('name')}
-                error={errors.name}
-                label={t('The account name to fund coins to')}
-                disabled
-              />
-            </div>
-            <div className={chainSelectContainerClass}>
-              <ChainSelect
-                onChange={onChainSelectChange}
-                value={chainID}
-                ariaLabel="Select Chain ID"
-              />
-            </div>
-          </div>
-        </Card>
-        <div className={buttonContainerClass}>
-          <Button
-            loading={requestStatus.status === 'processing'}
-            icon="TrailingIcon"
-            iconAlign="right"
-            title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            disabled={disabledButton}
-          >
-            {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
-          </Button>
-        </div>
+        </Stack>
       </form>
     </section>
   );
