@@ -15,7 +15,7 @@ import {
   Tabs,
   useDialog,
 } from '@kadena/react-ui';
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { sprinkles } from '@kadena/react-ui/theme';
 import Link from 'next/link';
 import type { FC, Key } from 'react';
 import React, { useEffect, useState } from 'react';

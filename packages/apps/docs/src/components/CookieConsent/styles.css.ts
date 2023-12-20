@@ -1,4 +1,4 @@
-import { atoms, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 import { $$pageWidth, globalClass } from '../Layout/global.css';
 

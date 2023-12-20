@@ -16,7 +16,7 @@ import { mostProductiveAuthors } from '@/utils/mostProductiveAuthors';
 import type { IAuthorInfo, IMenuData, IPageProps } from '@kadena/docs-tools';
 import { getMenuData } from '@kadena/docs-tools';
 import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
