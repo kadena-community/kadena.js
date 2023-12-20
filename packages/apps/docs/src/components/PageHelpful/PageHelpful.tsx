@@ -38,11 +38,11 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
 
   return (
     <>
-      <Stack flexDirection="column" gap="$sm">
+      <Stack flexDirection="column" gap="sm">
         <Text bold as="p">
           Was this page helpful?
         </Text>
-        <Stack gap="$xs">
+        <Stack gap="xs">
           <IconButton
             color="positive"
             icon="ThumbUpOutline"
@@ -72,7 +72,7 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
             <Stack gap="md" flexDirection="column">
               {editLink}
               {editLink ? (
-                <Stack gap="$2" flexDirection="row">
+                <Stack gap="sm" flexDirection="row">
                   <Text>
                     Would you like to contribute to this page by{' '}
                     <Link href={editLink} target="_blank">

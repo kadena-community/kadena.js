@@ -30,8 +30,8 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
       <Box
-        marginInlineEnd={{ sm: 0, lg: '$32', xl: '$64' }}
-        marginBlockEnd="$10"
+        marginInlineEnd={{ sm: 'no', lg: '$32', xl: '$64' }}
+        marginBlockEnd="xxxl"
       >
         <Text>
           The long-awaited release of Marmalade’s V2 standard has arrived,
@@ -43,7 +43,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           thrilled to share the next stage of this adventure.
         </Text>
       </Box>
-      <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+      <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
         <GridItem>
           <Card fullWidth>
             <Heading as="h4">Quick start</Heading>
@@ -72,7 +72,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
       </Grid>
 
       <Box marginBlockEnd="$20">
-        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem rowSpan={2}>
             <DocsCard
               label="Overview"

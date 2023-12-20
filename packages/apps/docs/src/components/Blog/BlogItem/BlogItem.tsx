@@ -56,7 +56,7 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
             className={gridBlogItemContent[size]}
             style={{ gridArea: 'header' }}
           >
-            <Stack alignItems="center" gap="$2">
+            <Stack alignItems="center" gap="sm">
               <Avatar
                 name={item.authorInfo?.name}
                 avatar={item.authorInfo?.avatar}

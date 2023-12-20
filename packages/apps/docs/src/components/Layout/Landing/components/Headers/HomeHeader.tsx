@@ -78,12 +78,12 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
               {popularPages.length > 0 && (
                 <Box
                   paddingInlineStart={{
-                    sm: '$1',
+                    sm: 'xs',
                     lg: '$15',
                     xl: '$32',
                     xxl: '$48',
                   }}
-                  marginInlineEnd="$10"
+                  marginInlineEnd="xxxl"
                 >
                   <MostPopular pages={popularPages} title="Most viewed docs" />
                 </Box>

@@ -18,7 +18,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <>
       <Box marginBlockEnd="$20">
-        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem rowSpan={2}>
             <DocsCard
               label="We are looking for Ambassadors"

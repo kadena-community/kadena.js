@@ -38,7 +38,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
       id="main"
     >
       <article className={articleClass}>
-        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem>
             <Card fullWidth>
               <Heading as="h4">Learn Pact</Heading>
@@ -72,7 +72,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         </Grid>
 
         <Box marginBlockEnd="$20">
-          <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+          <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
             <GridItem rowSpan={2}>
               <DocsCard
                 label="Introduction"

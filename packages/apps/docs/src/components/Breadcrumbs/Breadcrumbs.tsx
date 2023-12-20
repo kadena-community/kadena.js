@@ -49,7 +49,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
   }, [menuItems]);
 
   return (
-    <Box data-cy="breadcrumbs" marginBlockStart="$10" marginBlockEnd="md">
+    <Box data-cy="breadcrumbs" marginBlockStart="xxxl" marginBlockEnd="md">
       <StyledBreadcrumbs.Root>
         {items.map((item, idx) =>
           idx < items.length - 1 ? (
