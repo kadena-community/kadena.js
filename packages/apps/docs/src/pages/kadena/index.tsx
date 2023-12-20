@@ -5,6 +5,7 @@ import { docsCardLink } from '@/components/DocsCard/styles.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
 import { Box, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -17,7 +18,7 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <Stack flexDirection="column" gap="xxl">
-      <Box marginBlockEnd="$20">
+      <Box className={sprinkles({ marginBlockEnd: '$20' })}>
         <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem rowSpan={2}>
             <DocsCard

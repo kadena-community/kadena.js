@@ -1,6 +1,7 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { INavigation } from '@kadena/docs-tools';
 import { Divider, Grid, GridItem, Stack } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classnames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -47,9 +48,9 @@ export const BottomPageSection: FC<IProps> = ({
         </GridItem>
         <GridItem columnSpan={{ xs: 1, lg: 2, xl: 3 }}>
           <Stack
-            width={{ xs: '100%', lg: '100%' }}
             flexDirection="row"
             justifyContent="space-between"
+            className={sprinkles({ width: { xs: '100%', lg: '100%' } })}
           >
             {navigation?.previous !== undefined && (
               <Link
@@ -82,7 +83,9 @@ export const BottomPageSection: FC<IProps> = ({
         flexDirection={{ xs: 'column', lg: 'row' }}
         justifyContent="space-between"
         width="100%"
-        gap={{ xs: '$8', lg: 'xs' }}
+        className={sprinkles({
+          gap: { xs: '$8', lg: '$xs' },
+        })}
       >
         <PageHelpful editLink={editLink} />
         <Subscribe />

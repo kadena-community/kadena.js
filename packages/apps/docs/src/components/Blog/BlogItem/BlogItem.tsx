@@ -1,5 +1,6 @@
 import type { IMenuData } from '@kadena/docs-tools';
 import { Box, Heading, Stack, TagGroup, TagItem } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -35,8 +36,10 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
         <div className={gridWrapperClass}>
           <div className={gridBlogItemImage} style={{ gridArea: 'image' }}>
             <Box
-              marginInlineStart={{ xs: 0, md: '$8' }}
-              marginBlockEnd={{ xs: '$8', md: 0 }}
+              className={sprinkles({
+                marginInlineStart: { xs: 0, md: '$8' },
+                marginBlockEnd: { xs: '$8', md: 0 },
+              })}
             >
               <figure className={classNames(figureClass, figureVariant[size])}>
                 {item.headerImage && (
@@ -71,7 +74,10 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                 )}
               </Heading>
             </Stack>
-            <Box marginInlineStart="$12" marginBlockStart="md">
+            <Box
+              marginBlockStart="md"
+              className={sprinkles({ marginInlineStart: '$12' })}
+            >
               <Heading as="h3" variant={size === 'large' ? 'h5' : 'h6'}>
                 {item.title}
               </Heading>

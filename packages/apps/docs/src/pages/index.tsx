@@ -12,6 +12,7 @@ import {
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
 import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -32,7 +33,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Box marginBlockEnd="$20">
+          <Box className={sprinkles({ marginBlockEnd: '$20' })}>
             <Grid gap="lg" columns={{ sm: 1, md: 2 }}>
               <GridItem rowSpan={2}>
                 <DocsCard
@@ -123,8 +124,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </Grid>
           </Box>
 
-          <Stack flexDirection="column" gap="$3xl">
-            <BrowseSection title="Download useful tools" flexDirection="row">
+          <Stack flexDirection="column" gap="xxxl">
+            <BrowseSection title="Download useful tools" direction="row">
               <BrowseSection.LinkBlock
                 title="Bootstrap Kadena dApp"
                 subtitle="Quickstart your Kadena app"

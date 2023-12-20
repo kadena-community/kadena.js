@@ -16,6 +16,7 @@ import {
   Stack,
   Text,
 } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -49,7 +50,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           </Card>
         </GridItem>
         <GridItem>
-          <Box marginBlock="$8" marginInlineStart="$12">
+          <Box
+            className={sprinkles({
+              marginBlock: '$8',
+              marginInlineStart: '$12',
+            })}
+          >
             <MostPopular
               pages={popularPages}
               title="Most viewed docs"
@@ -58,7 +64,9 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           </Box>
         </GridItem>
       </Grid>
-      <Box marginBlockEnd="$20">
+      <Box
+        className={sprinkles({ marginBlockStart: '$6', marginBlockEnd: '$20' })}
+      >
         <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem>
             <DocsCard
@@ -121,7 +129,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         </Grid>
       </Box>
 
-      <Stack flexDirection="column" gap="$2xl">
+      <Stack flexDirection="column" gap="xxl">
         <Box>
           <Heading as="h6">Stay up-to-date</Heading>
           <BlogPostsStrip

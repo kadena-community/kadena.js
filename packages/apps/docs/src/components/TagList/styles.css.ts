@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([

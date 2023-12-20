@@ -7,6 +7,7 @@ import {
   Heading,
   Text,
 } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 
 import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
@@ -30,8 +31,10 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
       <Box
-        marginInlineEnd={{ sm: 'no', lg: '$32', xl: '$64' }}
         marginBlockEnd="xxxl"
+        className={sprinkles({
+          marginInlineEnd: { sm: 0, lg: '$32', xl: '$64' },
+        })}
       >
         <Text>
           The long-awaited release of Marmalade’s V2 standard has arrived,
@@ -65,13 +68,15 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         </GridItem>
 
         <GridItem>
-          <Box marginBlockStart="$8">
+          <Box className={sprinkles({ marginBlockStart: '$8' })}>
             <MostPopular pages={popularPages} title="Most viewed docs" />
           </Box>
         </GridItem>
       </Grid>
 
-      <Box marginBlockEnd="$20">
+      <Box
+        className={sprinkles({ marginBlockStart: '$8', marginBlockEnd: '$20' })}
+      >
         <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem rowSpan={2}>
             <DocsCard
