@@ -115,7 +115,7 @@ jobs:
       #     FAUCET_USER: c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4
 
       - name: Run Tests
-        run: pnpm run test:e2e -- --c playwright.${{ matrix.app }}.config.ts
+        run: pnpm run test:e2e -- -c playwright.${{ matrix.app }}.config.ts
         env:
           CI: true
 
