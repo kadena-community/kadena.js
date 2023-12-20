@@ -1,4 +1,5 @@
-import { EncryptedString, kadenaDecrypt } from '../../index.js';
+import type { EncryptedString } from '../../index.js';
+import { kadenaDecrypt } from '../../index.js';
 import { kadenaGenKeypair } from '../kadena-crypto.js';
 
 export async function kadenaGetPublicFromRootKey(

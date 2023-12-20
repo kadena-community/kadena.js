@@ -1,4 +1,5 @@
-import { EncryptedString, kadenaEncrypt } from '../../index.js';
+import type { EncryptedString } from '../../index.js';
+import { kadenaEncrypt } from '../../index.js';
 
 export function encryptLegacySecretKey(
   password: string,
@@ -18,6 +19,6 @@ export function getPublicKeyFromLegacySecretKey(
 ): string {
   // prettier-ignore
   const publicKeyBase64 = Buffer.from(secretKey, 'base64').toString().split('.').pop();
-  if (!publicKeyBase64) throw Error('Invalid secret key');
+  if (publicKeyBase64 === undefined) throw Error('Invalid secret key');
   return Buffer.from(publicKeyBase64, 'base64').toString('hex');
 }

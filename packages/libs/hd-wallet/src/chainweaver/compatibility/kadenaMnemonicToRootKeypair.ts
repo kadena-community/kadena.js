@@ -1,4 +1,5 @@
-import { EncryptedString, kadenaEncrypt } from '../../index.js';
+import type { EncryptedString } from '../../index.js';
+import { kadenaEncrypt } from '../../index.js';
 import { kadenaMnemonicToRootKeypair as originalKadenaMnemonicToRootKeypair } from '../kadena-crypto.js';
 
 export const kadenaMnemonicToRootKeypair = async (
