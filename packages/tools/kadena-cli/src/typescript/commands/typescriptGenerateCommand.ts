@@ -13,7 +13,7 @@ import { retrieveContractFromChain } from '../utils/retrieveContractFromChain.js
 import { writeModulesJson } from '../utils/files.js';
 
 export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
-  'contract-generate',
+  'generate',
   'Generate typescript definitions based on a smart contract',
   [
     globalOptions.typescriptClean(),
