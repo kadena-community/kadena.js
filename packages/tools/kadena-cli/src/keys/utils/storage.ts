@@ -13,7 +13,10 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
-import { removeAfterFirstDot } from '../../utils/filesystem.js';
+import {
+  ensureDirectoryExists,
+  removeAfterFirstDot,
+} from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 
 export type TSeedContent = string;
@@ -32,26 +35,30 @@ export async function savePlainKeyByAlias(
 ): Promise<void> {
   const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
 
-  for (let i = 0; i < keyPairs.length; i++) {
-    const keyPair = keyPairs[i];
-    let fileName = `${sanitizedAlias}${i > 0 ? `-${i}` : ''}`;
-    const ext = legacy ? PLAIN_KEY_LEGACY_EXT : PLAIN_KEY_EXT;
-    fileName += ext;
-    const filePath = join(PLAIN_KEY_DIR, fileName);
+  try {
+    ensureDirectoryExists(PLAIN_KEY_DIR);
 
-    const data: IKeyPair = { publicKey: keyPair.publicKey };
-    if (keyPair.secretKey !== undefined) {
-      data.secretKey = keyPair.secretKey;
+    for (let i = 0; i < keyPairs.length; i++) {
+      const keyPair = keyPairs[i];
+      let fileName = `${sanitizedAlias}${i > 0 ? `-${i}` : ''}`;
+      const ext = legacy ? PLAIN_KEY_LEGACY_EXT : PLAIN_KEY_EXT;
+      fileName += ext;
+      const filePath = join(PLAIN_KEY_DIR, fileName);
+
+      const data: IKeyPair = { publicKey: keyPair.publicKey };
+      if (keyPair.secretKey !== undefined) {
+        data.secretKey = keyPair.secretKey;
+      }
+
+      await services.filesystem.writeFile(
+        filePath,
+        yaml.dump(data, { lineWidth: -1 }),
+      );
     }
-
-    await services.filesystem.writeFile(
-      filePath,
-      yaml.dump(data, { lineWidth: -1 }),
-    );
-    // await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
+  } catch (error) {
+    console.error(`Error saving plain key file:`, error);
   }
 }
-
 /**
  * Saves key pairs by alias in a specific wallet directory.
  *
@@ -59,12 +66,14 @@ export async function savePlainKeyByAlias(
  * @param {IKeyPair[]} keyPairs - Array of key pairs to save.
  * @param {boolean} legacy - Whether to use legacy format.
  * @param {string} [walletName=""] - The name of the wallet (optional).
+ * @param {number} [startIndex=0] - The starting index for naming the key files. This is used to correctly name files when saving a range of keys. Defaults to 0.
  */
 export async function saveKeyByAlias(
   alias: string,
   keyPairs: IKeyPair[],
   legacy: boolean = false,
   walletName: string = '',
+  startIndex: number = 0,
 ): Promise<void> {
   const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
   const sanitizedWalletName = sanitizeFilename(removeAfterFirstDot(walletName));
@@ -73,22 +82,27 @@ export async function saveKeyByAlias(
     ? join(WALLET_DIR, sanitizedWalletName)
     : WALLET_DIR;
 
-  for (let i = 0; i < keyPairs.length; i++) {
-    const keyPair = keyPairs[i];
-    let fileName = `${sanitizedAlias}${i > 0 ? `-${i}` : ''}`;
-    const ext = legacy ? KEY_LEGACY_EXT : KEY_EXT;
-    fileName += ext;
-    const filePath = join(baseDir, fileName);
+  try {
+    ensureDirectoryExists(baseDir);
+    for (let i = 0; i < keyPairs.length; i++) {
+      const keyPair = keyPairs[i];
+      const fileNameIndex = keyPairs.length === 1 ? startIndex : startIndex + i;
+      let fileName = `${sanitizedAlias}${fileNameIndex}`;
+      const ext = legacy ? KEY_LEGACY_EXT : KEY_EXT;
+      fileName += ext;
+      const filePath = join(baseDir, fileName);
 
-    const data: IKeyPair = { publicKey: keyPair.publicKey };
-    if (keyPair.secretKey !== undefined) {
-      data.secretKey = keyPair.secretKey;
+      const data: IKeyPair = { publicKey: keyPair.publicKey };
+      if (keyPair.secretKey !== undefined) {
+        data.secretKey = keyPair.secretKey;
+      }
+      await services.filesystem.writeFile(
+        filePath,
+        yaml.dump(data, { lineWidth: -1 }),
+      );
     }
-    await services.filesystem.writeFile(
-      filePath,
-      yaml.dump(data, { lineWidth: -1 }),
-    );
-    // await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
+  } catch (error) {
+    console.error(`Error saving key file:`, error);
   }
 }
 

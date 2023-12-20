@@ -11,7 +11,10 @@ import {
   displayGeneratedHdKeys,
   printStoredHdKeys,
 } from '../utils/keysDisplay.js';
-import { parseKeyIndexOrRange } from '../utils/keysHelpers.js';
+import {
+  extractStartIndex,
+  parseKeyIndexOrRange,
+} from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
 export const createGenerateHdKeysCommand: (
@@ -33,10 +36,16 @@ export const createGenerateHdKeysCommand: (
       const { wallet: keyWallet, fileName } = config.keyWallet;
       const isLegacy = fileName.includes('.legacy');
 
+      const parseKeyIndexOrRangeRes = parseKeyIndexOrRange(
+        config.keyIndexOrRange,
+      );
+
+      const startIndex = extractStartIndex(parseKeyIndexOrRangeRes);
+
       const result = {
         ...config,
         keyWallet,
-        keyIndexOrRange: parseKeyIndexOrRange(config.keyIndexOrRange),
+        keyIndexOrRange: parseKeyIndexOrRangeRes,
         legacy: isLegacy,
       };
 
@@ -58,8 +67,9 @@ export const createGenerateHdKeysCommand: (
         keys,
         result.legacy,
         fileName,
+        startIndex,
       );
-      printStoredHdKeys(result.keyAlias, keys, result.legacy);
+      printStoredHdKeys(result.keyAlias, keys, result.legacy, startIndex);
     } catch (error) {
       console.error(chalk.red(`\n${error.message}\n`));
       process.exit(1);

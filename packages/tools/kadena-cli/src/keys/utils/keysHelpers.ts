@@ -194,3 +194,19 @@ export function parseKeyIndexOrRange(input: string): number | [number, number] {
     return number;
   }
 }
+
+/**
+ * Extracts the start index from the output of parseKeyIndexOrRange.
+ *
+ * @param {number | [number, number]} rangeOrNumber - The result from parseKeyIndexOrRange, can be a single number or a range tuple.
+ * @returns {number} - The start index
+ */
+export function extractStartIndex(
+  rangeOrNumber: number | [number, number],
+): number {
+  if (Array.isArray(rangeOrNumber)) {
+    return rangeOrNumber[0];
+  } else {
+    return rangeOrNumber;
+  }
+}

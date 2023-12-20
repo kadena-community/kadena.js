@@ -90,13 +90,15 @@ export function displayAllWallets(): void {
  * @param {string} alias - The alias for the keys.
  * @param {IKeyPair[]} keyPairs - Array of key pairs.
  * @param {boolean} isLegacy - Indicates if the keys are in legacy format.
+ * @param {number} [startIndex=0] - The starting index for naming the key files.
  */
 export function printStoredPlainKeys(
   alias: string,
   keyPairs: IKeyPair[],
   isLegacy: boolean,
+  startIndex: number = 0,
 ): void {
-  printStoredKeys(alias, keyPairs, isLegacy, false);
+  printStoredKeys(alias, keyPairs, isLegacy, false, startIndex);
 }
 
 /**
@@ -104,13 +106,15 @@ export function printStoredPlainKeys(
  * @param {string} alias - The alias for the keys.
  * @param {IKeyPair[]} keyPairs - Array of key pairs.
  * @param {boolean} isLegacy - Indicates if the keys are in legacy format.
+ * @param {number} [startIndex=0] - The starting index for naming the key files.
  */
 export function printStoredHdKeys(
   alias: string,
   keyPairs: IKeyPair[],
   isLegacy: boolean,
+  startIndex: number = 0,
 ): void {
-  printStoredKeys(alias, keyPairs, isLegacy, true);
+  printStoredKeys(alias, keyPairs, isLegacy, true, startIndex);
 }
 
 /**
@@ -119,12 +123,14 @@ export function printStoredHdKeys(
  * @param {IKeyPair[]} keyPairs - Array of key pairs.
  * @param {boolean} isLegacy - Indicates if the keys are in legacy format.
  * @param {boolean} isHd - Indicates if the keys are HD (Hierarchical Deterministic) or not.
+ * @param {number} [startIndex=0] - The starting index for naming the key files.
  */
 export function printStoredKeys(
   alias: string,
   keyPairs: IKeyPair[],
   isLegacy: boolean,
   isHd: boolean,
+  startIndex: number = 0,
 ): void {
   const ext = isHd
     ? isLegacy
@@ -142,8 +148,10 @@ export function printStoredKeys(
   console.log('\n');
 
   for (let index = 0; index < keyPairs.length; index++) {
-    const keyName = index === 0 ? `${alias}${ext}` : `${alias}-${index}${ext}`;
-    console.log(chalk.green(`- ${keyName}`));
+    const fileNameIndex =
+      keyPairs.length === 1 ? startIndex : startIndex + index;
+    const fileName = `${alias}${fileNameIndex}${ext}`;
+    console.log(chalk.green(`- ${fileName}`));
   }
 }
 
