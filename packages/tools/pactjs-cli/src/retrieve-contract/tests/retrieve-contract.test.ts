@@ -18,7 +18,10 @@ import { retrieveContract } from '../retrieve-contract';
 const httpHandlers = [
   http.post(
     'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact/api/v1/local',
-    () => HttpResponse.json({ result: { data: { code: 'some pactCode' } } }),
+    () =>
+      HttpResponse.json({
+        result: { status: 'success', data: { code: 'some pactCode' } },
+      }),
   ),
 ];
 

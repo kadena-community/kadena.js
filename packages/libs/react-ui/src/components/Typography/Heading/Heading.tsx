@@ -55,12 +55,14 @@ export const Heading: FC<IHeadingProps> = ({
   transform = 'none',
   bold = true,
   children,
+  className,
   ...props
 }) => {
   const classList = classNames(
     getHeadingClass(variant, bold),
     colorVariants[color],
     transformVariants[transform],
+    className,
   );
   // making sure that the variant is one of the allowed ones in case typescript is ignored or not used
   const Element = HEADING_ELEMENTS.includes(as) ? as : 'h1';

@@ -3,14 +3,16 @@ import { SelectField } from '@components/Form';
 import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import React from 'react';
 
 type StoryProps = {
-  icon: keyof typeof SystemIcon;
+  startIcon: React.ReactElement;
 } & ISelectFieldProps;
 
 const meta: Meta<StoryProps> = {
   title: 'Form/SelectField',
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {
@@ -67,13 +69,6 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    icon: {
-      description: 'Icon rendered inside the select to the left of the text.',
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
@@ -88,9 +83,9 @@ export const Group: Story = {
     label: 'Label',
     disabled: false,
     status: undefined,
-    icon: 'Account',
+    startIcon: <SystemIcon.Account />,
   },
-  render: ({ icon, disabled, status, tag, helperText, info, label }) => {
+  render: ({ startIcon, disabled, status, tag, helperText, info, label }) => {
     return (
       <SelectField
         tag={tag}
@@ -102,7 +97,7 @@ export const Group: Story = {
         selectProps={{
           ariaLabel: 'Select Story',
           id: 'inputStory',
-          icon,
+          startIcon,
           placeholder: 'This is a placeholder',
         }}
       >
