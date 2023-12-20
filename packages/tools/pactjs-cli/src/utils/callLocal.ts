@@ -1,19 +1,19 @@
+import type { ICommandResult } from '@kadena/client';
 import fetch from 'cross-fetch';
 
-export async function callLocal(
+export async function fetchModule(
   apiHost: string,
   body: string,
-): Promise<{
-  textResponse: string | undefined;
-  jsonResponse:
-    | {
-        result: {
-          data: { code: string };
-        };
-      }
-    | undefined;
-  response: Response;
-}> {
+): Promise<
+  | {
+      error: string;
+      code?: undefined;
+    }
+  | {
+      error?: undefined;
+      code: string;
+    }
+> {
   const response = await fetch(`${apiHost}/api/v1/local`, {
     headers: {
       accept: 'application/json;charset=utf-8, application/json',
@@ -25,16 +25,26 @@ export async function callLocal(
     method: 'POST',
   });
 
-  let jsonResponse;
-  let textResponse;
-
   try {
-    jsonResponse = (await response.clone().json()) as {
-      result: { data: { code: string } };
+    const responseJson = (await response.clone().json()) as ICommandResult;
+    if (responseJson.result.status === 'success') {
+      return { code: (responseJson.result.data as any).code };
+    }
+    const { error } = responseJson.result;
+    if (error === undefined || typeof error === 'string') {
+      return {
+        error: error || 'unknown error',
+      };
+    }
+    return {
+      error:
+        'message' in error
+          ? (error.message as string)
+          : JSON.stringify(responseJson.result.error),
     };
   } catch (e) {
-    textResponse = await response.text();
+    return {
+      error: (await response.text()) || ('message' in e ? e.message : e),
+    };
   }
-
-  return { textResponse, jsonResponse, response };
 }

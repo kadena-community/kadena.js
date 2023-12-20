@@ -1,5 +1,12 @@
 # Change Log - @kadena-dev/eslint-config
 
+## 1.0.3
+
+### Patch Changes
+
+- 1db01bbc6: Improve developer experience and use Typescript power to infer
+  types of variables
+
 ## 1.0.2
 
 ### Patch Changes

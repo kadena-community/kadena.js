@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { createPrincipal } from '../built-in/create-principal';
+import { describeModule } from '../built-in/describe-module';
 
 const config = {
   host: 'http://127.0.0.1:8080',
@@ -60,5 +61,27 @@ describe('createPrincipal', () => {
     expect(principal).toBe(
       'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-any',
     );
+  });
+});
+
+describe('describeModule', () => {
+  it('describes the coin module', async () => {
+    const module = await describeModule('coin', config);
+    expect(module.hash).toBeTruthy();
+    expect(module.blessed).toHaveLength(3);
+    expect(module.keyset).toContain('Governance {');
+    expect(module.interfaces).toHaveLength(2);
+    expect(module.name).toBe('coin');
+    expect(module.code).toContain('(module coin GOVERNANCE');
+  });
+
+  it('describes the ns module', async () => {
+    const module = await describeModule('ns', config);
+    expect(module.hash).toBeTruthy();
+    expect(module.blessed).toHaveLength(0);
+    expect(module.keyset).toContain('Governance {');
+    expect(module.interfaces).toHaveLength(0);
+    expect(module.name).toBe('ns');
+    expect(module.code).toContain('(module ns GOVERNANCE');
   });
 });

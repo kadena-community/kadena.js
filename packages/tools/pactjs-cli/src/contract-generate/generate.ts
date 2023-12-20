@@ -108,7 +108,13 @@ async function generator(
       WARNING: No namespace found for module "${name}". You can pass --namespace as a fallback.
       `);
     }
-    moduleDtss.set(name, generateDts(name, modules));
+    if (modules[name].functions === undefined) {
+      console.log(`
+      WARNING: No functions found for module "${name}". This module will be skipped.
+      `);
+      return;
+    }
+    moduleDtss.set(name, generateDts(modules[name]));
   });
 
   return moduleDtss;
