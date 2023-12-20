@@ -1,11 +1,11 @@
-import {createSignWithKeypair} from '@kadena/client';
-import type { ChainId} from '@kadena/client';
+import type { ChainId } from '@kadena/client';
+import { createSignWithKeypair } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
+import { transferCreate } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
+import { sender00Account } from '../fixtures/accounts.fixture';
 import * as constants from '../fixtures/constants';
 import type { IAccount } from '../types/types';
-import { transferCreate } from '@kadena/client-utils/coin';
-import { sender00Account } from '../fixtures/accounts.fixture';
 
 export const generateAccount = async (
   keys: number = 1,
@@ -38,7 +38,7 @@ export const createAccount = async (
   keys: number = 1,
   chainId: ChainId,
 ): Promise<IAccount> => {
-  const account = await generateAccount(keys, chainId)
+  const account = await generateAccount(keys, chainId);
   const transferCreateTask = transferCreate(
     {
       sender: {
@@ -65,8 +65,6 @@ export const createAccount = async (
   );
 
   await transferCreateTask.executeTo();
-  console.log(account)
-  return account
+  console.log(account);
+  return account;
 };
-
-

@@ -6,7 +6,7 @@ export class NotificationContainerComponent {
 
   public constructor(page: Page) {
     this._page = page;
-    this.container = this._page.getByRole('status')
+    this.container = this._page.getByRole('status');
   }
 
   public async getTitle(): Promise<Locator> {
