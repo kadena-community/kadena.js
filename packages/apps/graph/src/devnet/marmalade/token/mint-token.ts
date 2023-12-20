@@ -24,10 +24,6 @@ export async function mintToken({
   guard,
   amount,
 }: ICreateTokenInput) {
-  logger.info(
-    `Minting token ${tokenId}\nAmount ${amount.decimal}\nCreator ${creator}`,
-  );
-
   const command = composePactCommand(
     execution(
       Pact.modules['marmalade-v2.ledger'].mint(
