@@ -327,7 +327,7 @@ const NewAccountFaucetPage: FC = () => {
                       });
                     }
                   }}
-                aria-label="Add Public Key"
+                  aria-label="Add Public Key"
                   color="primary"
                   type="button"
                 />
