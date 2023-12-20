@@ -77,12 +77,12 @@ jobs:
         run: pnpm run test:integration --filter ${{ matrix.package }}
 
   end-to-end-tests:
-    name: E2E - ${{ matrix.package }}
+    name: E2E - ${{ matrix.app }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['@kadena/tools']
+        app: ['tools']
 
     steps:
       - uses: actions/checkout@v4
@@ -106,24 +106,18 @@ jobs:
       - name: Install browsers
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
 
-      - name: build dApp
-        run: pnpm --filter ${{ matrix.package }} build...
-        env:
-          # Faucet variables for devnet.
-          FAUCET_NAMESPACE: n_34d947e2627143159ea73cdf277138fd571f17ac
-          FAUCET_CONTRACT: coin-faucet
-          FAUCET_USER: c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4
+      # - name: build dApp
+      #   run: pnpm --filter ${{ matrix.app }} build...
+      #   env:
+      #     # Faucet variables for devnet.
+      #     FAUCET_NAMESPACE: n_34d947e2627143159ea73cdf277138fd571f17ac
+      #     FAUCET_CONTRACT: coin-faucet
+      #     FAUCET_USER: c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4
 
-      - name: Start dApp & Run Tests
-        run:
-          pnpm --filter ${{ matrix.package }} start & pnpm --filter
-          @kadena-dev/e2e-tests run test:e2e -- --project=${{ matrix.package }}
+      - name: Run Tests
+        run: pnpm run test:e2e -- --c playwright.${{ matrix.app }}.config.ts
         env:
           CI: true
-          # Faucet variables for devnet.
-          FAUCET_NAMESPACE: n_34d947e2627143159ea73cdf277138fd571f17ac
-          FAUCET_CONTRACT: coin-faucet
-          FAUCET_USER: c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4
 
       - uses: actions/upload-artifact@v3
         if: always()
