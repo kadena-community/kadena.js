@@ -198,10 +198,7 @@ export function displayGeneratedKeys(
   console.log('\n');
 }
 
-export function displayGeneratedWallet(
-  words: string,
-  config: IWalletConfig,
-): void {
+export function displayGeneratedWallet(words: string): void {
   console.log(chalk.green(`Mnemonic phrase: ${words}`));
 
   console.log(

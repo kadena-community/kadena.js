@@ -15,37 +15,65 @@ import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
 import { services } from '../../services/index.js';
+import type { CommandResult } from '../../utils/command.util.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import {
   displayGeneratedWallet,
   displayStoredWallet,
 } from '../utils/keysDisplay.js';
-import type { IWalletConfig } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
 /**
  * Generates a new key for the wallet.
- * @param {IWalletConfig} config - The wallet configuration.
+ * @param {string} password - The password to encrypt the mnemonic with.
+ * @param {boolean} legacy - Whether to use legacy format.
  * @returns {Promise<{words: string, seed: string}>} - The mnemonic words and seed.
  */
 async function generateKey(
-  config: IWalletConfig,
+  password: string,
+  legacy: boolean,
 ): Promise<{ words: string; seed: string }> {
   let words: string;
   let seed: string;
 
-  if (config.legacy === true) {
+  if (legacy === true) {
     words = LegacyKadenaGenMnemonic();
-    seed = await legacykadenaMnemonicToRootKeypair(
-      config.securityPassword,
-      words,
-    );
+    seed = await legacykadenaMnemonicToRootKeypair(password, words);
   } else {
     words = kadenaGenMnemonic();
-    seed = await kadenaMnemonicToSeed(config.securityPassword, words);
+    seed = await kadenaMnemonicToSeed(password, words);
   }
 
   return { words, seed };
 }
+
+export const walletGenerate = async (
+  keyWallet: string,
+  password: string,
+  legacy: boolean,
+): Promise<
+  CommandResult<{
+    mnemonic: string;
+    path: string;
+  }>
+> => {
+  const walletPath = `${WALLET_DIR}/${keyWallet}`;
+  if (await services.filesystem.fileExists(walletPath)) {
+    return {
+      success: false,
+      errors: [`Wallet named "${keyWallet}" already exists.`],
+    };
+  }
+
+  const { words, seed } = await generateKey(password, legacy);
+
+  const path = await storageService.storeWallet(seed, keyWallet, legacy);
+
+  return {
+    success: true,
+    data: { mnemonic: words, path },
+  };
+};
 
 /**
  * Creates a command to generate wallets.
@@ -74,21 +102,15 @@ export const createGenerateWalletsCommand: (
         return process.exit(1);
       }
 
-      // Check for existing wallet
-      const walletPath = `${WALLET_DIR}/${config.keyWallet}`;
-      if (await services.filesystem.fileExists(walletPath)) {
-        console.log(
-          chalk.yellow(
-            `\nWallet named "${config.keyWallet}" already exists.\n`,
-          ),
-        );
-        return process.exit(1);
-      }
+      const result = await walletGenerate(
+        config.keyWallet,
+        config.securityPassword,
+        config.legacy,
+      );
 
-      const { words, seed } = await generateKey(config);
+      assertCommandError(result);
 
-      await storageService.storeWallet(seed, config.keyWallet, config.legacy);
-      displayGeneratedWallet(words, config);
+      displayGeneratedWallet(result.data.mnemonic);
       displayStoredWallet(config.keyWallet, config.legacy);
     } catch (error) {
       console.error(chalk.red(`\n${error.message}\n`));
