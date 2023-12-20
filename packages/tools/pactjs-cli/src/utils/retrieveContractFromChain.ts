@@ -7,11 +7,15 @@ export async function retrieveContractFromChain(
   module: string,
   apiHost: string,
   chain: number | string,
-  network: keyof typeof networkMap,
+  network: string,
 ): Promise<string> {
   const command = Pact.builder
     .execution(`(describe-module "${module}")`)
-    .setNetworkId(networkMap[network].network)
+    .setNetworkId(
+      network === 'testnet' || network === 'mainnet'
+        ? networkMap[network].network
+        : network,
+    )
     .setMeta({ chainId: chain.toString() as ChainId })
     .createTransaction();
 

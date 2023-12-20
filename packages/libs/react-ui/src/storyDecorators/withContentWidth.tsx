@@ -4,8 +4,10 @@
 */
 import type { Decorator } from '@storybook/react';
 import { atoms } from '@theme/atoms.css';
+import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import { minWidth } from './storyDecorators.css';
 
 interface IWithContentWidthProps {
   children: React.ReactNode;
@@ -13,10 +15,7 @@ interface IWithContentWidthProps {
 const WithContentWidth: FC<IWithContentWidthProps> = ({ children }) => {
   return (
     <div
-      className={atoms({
-        maxWidth: 'content.maxWidth',
-        minWidth: 'content.minWidth',
-      })}
+      className={classNames(atoms({ maxWidth: 'content.maxWidth' }), minWidth)}
     >
       {children}
     </div>

@@ -44,7 +44,7 @@ export const TextFieldStory: Story = {
     info: '(optional)',
     label: 'Label',
     id: 'TextFieldStory',
-    fontFamily: '$mono',
+    fontFamily: 'codeFont',
     placeholder: 'This is a placeholder',
     value: '',
     onChange: () => {},

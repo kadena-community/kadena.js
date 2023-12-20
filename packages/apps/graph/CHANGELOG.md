@@ -1,5 +1,26 @@
 # @kadena/graph
 
+## 1.0.7
+
+### Patch Changes
+
+- 4afeb196d: refactor create principal
+- c2b60a1a1: Added descriptions to objects, fields and queries
+- ca1834ecb: Complexity calculations and limitations added
+- Updated dependencies [9bec1fb8e]
+- Updated dependencies [4afeb196d]
+- Updated dependencies [c126ca38c]
+- Updated dependencies [c637a9596]
+- Updated dependencies [34e193c77]
+- Updated dependencies [70c126a32]
+- Updated dependencies [15c203ee5]
+- Updated dependencies [a3bb20737]
+  - @kadena/client@1.7.0
+  - @kadena/client-utils@0.2.0
+  - @kadena/chainweb-node-client@0.5.2
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/pactjs@0.4.2
+
 ## 1.0.6
 
 ### Patch Changes

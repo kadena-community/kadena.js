@@ -1,4 +1,4 @@
-import type { ChainId } from '@kadena/client';
+import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
@@ -71,4 +71,7 @@ export const transferCreateCommand = ({
 export const transferCreate = (
   inputs: ICreateTransferInput,
   config: IClientConfig,
-) => submitClient(config)(transferCreateCommand(inputs));
+) =>
+  submitClient<PactReturnType<IPactModules['coin']['transfer-create']>>(config)(
+    transferCreateCommand(inputs),
+  );

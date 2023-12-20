@@ -1,5 +1,12 @@
 # Change Log - @kadena/types
 
+## 0.6.0
+
+### Minor Changes
+
+- c637a9596: Resolved the issue with Ikeypair type with two different signatures
+- 15c203ee5: improve client utils returns type
+
 ## 0.5.1
 
 ### Patch Changes
