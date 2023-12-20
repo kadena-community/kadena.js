@@ -121,11 +121,7 @@ const NewAccountFaucetPage: FC = () => {
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {
-      console.log(data, pubKeys);
-
       if (!pubKeys.length) {
-        console.log('here');
-
         setError('pubKey', {
           type: 'custom',
           message: t('add-key-reminder'),
@@ -311,7 +307,6 @@ const NewAccountFaucetPage: FC = () => {
                   onClick={() => {
                     const value = getValues('pubKey');
                     const valid = validatePublicKey(value || '');
-                    console.log('add pub key', value, valid);
                     if (valid) {
                       addPublicKey();
                     } else {

@@ -2,7 +2,7 @@ import type { ITextFieldProps } from '@kadena/react-ui';
 import { SystemIcon, TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import type { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -28,18 +28,17 @@ interface IRequestKeyFieldProps extends Partial<ITextFieldProps> {
   error?: FieldError;
 }
 
-const RequestKeyField: FC<IRequestKeyFieldProps> = ({
-  error,
-  status,
-  helperText,
-  ...rest
-}) => {
+const RequestKeyField: FC<IRequestKeyFieldProps> = forwardRef<
+  HTMLInputElement,
+  IRequestKeyFieldProps
+>(function RequestKeyField({ error, status, helperText, ...rest }, ref) {
   const { t } = useTranslation('common');
 
   const helper = helperText || error?.message;
 
   return (
     <TextField
+      ref={ref}
       label={t('Request Key')}
       status={error ? 'negative' : status}
       helperText={helper}
@@ -49,6 +48,6 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = ({
       {...rest}
     />
   );
-};
+});
 
 export default RequestKeyField;

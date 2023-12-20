@@ -9,7 +9,6 @@ export interface ITextFieldProps
   extends Omit<IFormFieldWrapperProps, 'children' | 'htmlFor'>,
     Omit<IInputProps, 'disabled' | 'children'> {}
 
-// eslint-disable-next-line react/display-name
 export const TextField: FC<ITextFieldProps> = forwardRef<
   HTMLInputElement,
   ITextFieldProps
