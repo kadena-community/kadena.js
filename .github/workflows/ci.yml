@@ -5,9 +5,9 @@ on:
   pull_request:
   workflow_dispatch:
 
-# env:
-#   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-#   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
 jobs:
   build:
