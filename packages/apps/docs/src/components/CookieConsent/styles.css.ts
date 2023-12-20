@@ -1,14 +1,14 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { atoms, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 import { $$pageWidth, globalClass } from '../Layout/global.css';
 
 export const containerClass = style([
-  sprinkles({
+  atoms({
     position: 'sticky',
-    top: '$17',
-    bg: '$primarySurfaceInverted',
+    backgroundColor: 'semantic.info.default',
   }),
   {
+    top: vars.sizes.$17,
     zIndex: 1000,
   },
 ]);

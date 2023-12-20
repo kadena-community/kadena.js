@@ -1,41 +1,26 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
+import { atoms } from '@theme/atoms.css';
 import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
-  sprinkles({
-    backgroundColor: {
-      lightMode: '$gray10',
-      darkMode: '$gray90',
-    },
-    color: {
-      lightMode: '$gray100',
-      darkMode: '$gray20',
-    },
-    paddingX: '$10',
-    paddingY: '$6',
-    borderRadius: '$sm',
-    marginY: '$6',
-    border: 'none',
-    width: 'max-content',
+  atoms({
+    backgroundColor: 'layer-2.default',
+    color: 'text.base.default',
+    paddingX: 'xxl',
+    paddingY: 'lg',
+    borderRadius: 'sm',
+    border: 'hairline',
     position: 'relative',
   }),
   {
-    border: `1px solid ${vars.colors.$gray30}`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        border: `1px solid ${vars.colors.$gray60}`,
-      },
-    },
+    maxWidth: '100%',
+    width: 'max-content',
   },
 ]);
 
-export const fullWidthClass = style({
-  width: '100%',
-});
+export const fullWidthClass = style({ width: '100%' });
 
 export const disabledClass = style([
-  sprinkles({
+  atoms({
     pointerEvents: 'none',
   }),
   {

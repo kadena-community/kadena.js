@@ -70,7 +70,7 @@ export type {
   ITrProps,
 } from './Table';
 export type { ITabItemProps, ITabsProps } from './Tabs';
-export type { ITagProps } from './Tag';
+export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
 export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
 export type { ITreeProps } from './Tree';
@@ -124,7 +124,7 @@ export { ProfileSummary } from './ProfileSummary';
 export { ProgressBar } from './ProgressBar';
 export { Table } from './Table';
 export { TabItem, Tabs } from './Tabs';
-export { Tag } from './Tag';
+export { Tag, TagGroup, TagItem } from './Tag';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';

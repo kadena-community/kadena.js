@@ -2,7 +2,6 @@ import type {
   EnvData,
   ICommand,
   ICommandPayload,
-  IKeyPair,
   IMetaData,
   IUnsignedCommand,
   NetworkId,
@@ -14,6 +13,7 @@ import type {
 } from '@kadena/types';
 import { attachSignature } from './attachSignature';
 import { createCommand } from './createCommand';
+import type { ISignerKeyPair } from './pullSigner';
 import { pullSigner } from './pullSigner';
 /**
  * Prepare an ContMsg pact command for use in send or local execution.
@@ -29,7 +29,7 @@ import { pullSigner } from './pullSigner';
  * @return valid pact API Cont command for send or local use.
  */
 export function prepareContCommand(
-  keyPairs: Array<IKeyPair>,
+  keyPairs: Array<ISignerKeyPair>,
   nonce: Nonce,
   proof: Proof,
   pactId: PactTransactionHash,

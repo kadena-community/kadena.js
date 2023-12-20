@@ -1,5 +1,18 @@
 # Change Log - @kadena/pactjs-generator
 
+## 1.7.0
+
+### Minor Changes
+
+- 9bec1fb8e: intruduce PactReturnType in order to extract pact functions return
+  type
+- a3bb20737: let users pass Literal or ()=>string as function inputs to cover
+  more advanced usecases.
+
+### Patch Changes
+
+- 735aeb38f: Fixed dependency resolution in pactjs-cli
+
 ## 1.6.4
 
 ## 1.6.3

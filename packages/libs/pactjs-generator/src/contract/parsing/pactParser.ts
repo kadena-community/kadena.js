@@ -131,33 +131,52 @@ const getUsedModules = (
 };
 
 // returns the list of modules used in the functions of the module without using "use" keyword in the module
-function getUsedModulesInFunctions(
-  functions?: IFunction[],
-): Required<IModuleLike>[] {
+function getUsedModulesInFunctions(functions?: IFunction[]): IModuleLike[] {
   if (!functions) return [];
 
   return functions.flatMap((fun) => {
     const externalFnCalls = fun.externalFnCalls;
     if (externalFnCalls === undefined) return [];
-    return externalFnCalls.map(({ namespace, module: name }) => ({
+    return externalFnCalls.map(({ namespace, module: name, func }) => ({
       namespace: namespace ?? '',
       name,
+      imports: [func],
     }));
   });
 }
-type IsNotDuplicated = <T>(
-  isEqual: (a: T, b: T) => boolean,
-) => (a: T, idx: number, list: T[]) => boolean;
 
-const isNotDuplicated: IsNotDuplicated =
+const isNotDuplicated =
   <T>(isEqual: (a: T, b: T) => boolean) =>
   (a: T, idx: number, list: T[]): boolean =>
     list.findIndex((b) => isEqual(a, b)) === idx;
 
-// eslint-disable-next-line @rushstack/typedef-var
-const isNotDuplicatedModule = isNotDuplicated<IModuleLike>(
-  (a, b) => a.name === b.name && a.namespace === b.namespace,
-);
+const isTheSameModule = (a: IModuleLike, b: IModuleLike): boolean =>
+  a.name === b.name &&
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  (a.namespace === b.namespace || (!a.namespace && !b.namespace));
+
+const reduceModules = (acc: Required<IModuleLike>[], module: IModuleLike) => {
+  const idx = acc.findIndex((mod) => isTheSameModule(mod, module));
+  if (idx === -1) {
+    acc.push({
+      name: module.name,
+      namespace: module.namespace ?? '',
+      hash: module.hash ?? '',
+      imports: module.imports ?? [],
+    });
+  } else {
+    const mod = acc[idx];
+    acc[idx] = {
+      name: mod.name,
+      namespace: mod.namespace,
+      hash: mod.hash ?? module.hash,
+      imports: [...mod.imports, ...(module.imports ?? [])].filter(
+        isNotDuplicated((a, b) => a === b),
+      ),
+    };
+  }
+  return acc;
+};
 
 /**
  * @alpha
@@ -180,22 +199,16 @@ export function contractParser(
             ...(mod.usedModules ?? []),
             ...getUsedModules(location, usedModules),
             ...getUsedModulesInFunctions(mod.functions),
-          ].filter(isNotDuplicatedModule),
+          ].reduce(reduceModules, []),
         }))
       : [];
 
   return [extModules, pointer];
 }
 
-interface IModuleLoader {
-  getModule(moduleFullName: string): Promise<IModuleWithPointer | undefined>;
-  parserFile(content: string, namespace?: string): void;
-  getStorage(): Map<string, IModuleWithPointer>;
-}
-
 const moduleLoader = (
   fetchModule: (moduleFullName: string) => Promise<string>,
-): IModuleLoader => {
+) => {
   const storage = new Map<string, IModuleWithPointer>();
 
   const parseModule = (content: string, namespace?: string): void => {
@@ -228,7 +241,7 @@ const moduleLoader = (
 
       return storage.get(moduleFullName)!;
     },
-    parserFile(content: string, namespace: string) {
+    parserFile(content: string, namespace?: string) {
       parseModule(content, namespace);
     },
     getStorage() {
@@ -259,7 +272,10 @@ async function loadModuleDependencies(
 
   const mods = await Promise.all(
     interfaceOrModule.map(async (usedModule) => {
-      if (typeof usedModule.namespace === 'string') {
+      if (
+        typeof usedModule.namespace === 'string' &&
+        usedModule.namespace !== ''
+      ) {
         return loadModuleDependencies(getModuleFullName(usedModule), getModule);
       }
       let moduleName: string;
@@ -273,7 +289,7 @@ async function loadModuleDependencies(
         await getModule(withParentNamespace);
         moduleName = withParentNamespace;
       } catch {
-        // if the module is not found, continue with without a namespace
+        // if the module is not found, continue without a namespace
         moduleName = usedModule.name;
         console.log(
           `Module ${moduleName} not found. trying to load ${usedModule.name}`,
@@ -285,7 +301,7 @@ async function loadModuleDependencies(
   );
   const dependencies = mods.flat();
 
-  return [module, ...dependencies].filter(isNotDuplicatedModule);
+  return [module, ...dependencies].filter(isNotDuplicated(isTheSameModule));
 }
 
 // check function body again for checking function calls, internal and external

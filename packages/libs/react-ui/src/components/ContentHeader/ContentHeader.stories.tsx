@@ -1,6 +1,7 @@
 import type { IContentHeaderProps } from '@components/ContentHeader';
 import { ContentHeader } from '@components/ContentHeader';
 import { SystemIcon } from '@components/Icon';
+import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -10,6 +11,7 @@ const meta: Meta<
   } & IContentHeaderProps
 > = {
   title: 'Patterns/ContentHeader',
+  decorators: [withContentWidth],
   parameters: {
     status: { type: 'experimental' },
   },

@@ -1,32 +1,65 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { atoms } from '@theme/atoms.css';
+import { tokens } from '@theme/tokens/contract.css';
 import { style } from '@vanilla-extract/css';
+import { calc } from '@vanilla-extract/css-utils';
 
-export const tagClass = style([
-  sprinkles({
-    backgroundColor: '$layoutSurfaceCard',
-    color: '$neutral6',
-    borderRadius: '$xs',
-    padding: '$1',
-    display: 'inline-flex',
-    alignItems: 'center',
-  }),
+export const tagItemClass = style([
   {
-    border: `1px solid ${vars.colors.$borderSubtle}`,
+    selectors: {
+      '&[aria-disabled="true"]': {
+        opacity: 0.4,
+        cursor: 'not-allowed',
+      },
+      '&[data-focus-visible="true"]': {
+        outline: `2px auto ${tokens.kda.foundation.color.accent.brand.primary}`,
+        outlineOffset: '2px',
+      },
+      '&[data-focus-visible="false"]': {
+        outline: 'none',
+      },
+    },
   },
 ]);
 
-export const tagLabelClass = style([
-  sprinkles({
-    paddingX: '$2',
+export const tagClass = style([
+  atoms({
+    backgroundColor: 'layer-2.default',
+    color: 'text.base.default',
+    borderRadius: 'xs',
+    paddingY: 'xs',
+    paddingX: 'sm',
+    display: 'inline-flex',
+    alignItems: 'center',
+    border: 'hairline',
   }),
 ]);
 
 export const closeButtonClass = style([
-  sprinkles({
+  atoms({
     border: 'none',
     background: 'none',
-    padding: '$1',
+    padding: 'xs',
     cursor: 'pointer',
+    marginLeft: 'xs',
+    outline: 'none',
+  }),
+  {
+    marginRight: calc(tokens.kda.foundation.spacing.xs).negate().toString(),
+  },
+]);
+
+export const tagListClass = style([
+  atoms({
+    display: 'flex',
+    gap: 'sm',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  }),
+]);
+
+export const tagGroupLabelClass = style([
+  atoms({
+    marginBottom: 'sm',
+    display: 'block',
   }),
 ]);

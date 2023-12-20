@@ -1,8 +1,8 @@
 import { Stack } from '@components/Layout/Stack';
+import { withCenteredStory } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { Sprinkles } from '@theme/sprinkles.css';
 import { vars } from '@theme/vars.css';
-import { withCenteredStory } from '@utils/withCenteredStory';
 import className from 'classnames';
 import React from 'react';
 import { componentClass, containerClass, itemClass } from '../stories.css';

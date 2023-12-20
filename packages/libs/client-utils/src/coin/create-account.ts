@@ -1,4 +1,4 @@
-import type { ChainId } from '@kadena/client';
+import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
@@ -52,4 +52,7 @@ export const createAccountCommand = ({
 export const createAccount = (
   inputs: ICreateAccountCommandInput,
   config: IClientConfig,
-) => submitClient(config)(createAccountCommand(inputs));
+) =>
+  submitClient<PactReturnType<IPactModules['coin']['create-account']>>(config)(
+    createAccountCommand(inputs),
+  );

@@ -1,5 +1,17 @@
 # kadena.js
 
+## 0.1.0
+
+### Minor Changes
+
+- c637a9596: Resolved the issue with Ikeypair type with two different signatures
+
+### Patch Changes
+
+- @kadena/chainweb-node-client@0.5.2
+- @kadena/cryptography-utils@0.4.2
+- @kadena/pactjs@0.4.2
+
 ## 0.0.3
 
 ### Patch Changes

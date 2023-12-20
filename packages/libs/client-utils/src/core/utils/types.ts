@@ -28,3 +28,9 @@ export type Assert<T, U> = (<V>() => V extends T ? 1 : 2) extends <
 >() => V extends U ? 1 : 2
   ? true
   : { error: 'Types are not equal'; received: T; expected: U };
+
+export type UnionToIntersection<T> = (
+  T extends unknown ? (k: T) => void : never
+) extends (k: infer I) => void
+  ? I
+  : never;
