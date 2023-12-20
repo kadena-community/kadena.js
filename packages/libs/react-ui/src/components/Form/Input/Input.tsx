@@ -1,4 +1,3 @@
-import type { vars } from '@theme/vars.css';
 import classNames from 'classnames';
 import type { FC, InputHTMLAttributes } from 'react';
 import React, { forwardRef } from 'react';
@@ -12,7 +11,6 @@ import {
   inputClass,
   inputContainerClass,
   leadingTextClass,
-  leadingTextWidthVariant,
   leadingTextWrapperClass,
 } from './Input.css';
 
@@ -23,7 +21,6 @@ export interface IInputProps
   > {
   leadingText?: string;
   startIcon?: React.ReactElement;
-  leadingTextWidth?: keyof typeof vars.sizes;
   disabled?: boolean;
   type?: React.HTMLInputTypeAttribute;
   ref?: React.ForwardedRef<HTMLInputElement>;
@@ -41,7 +38,6 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
       outlined,
       leadingText,
       startIcon,
-      leadingTextWidth,
       disabled = false,
       children,
       status,
@@ -57,12 +53,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
         })}
       >
         {Boolean(leadingText) && (
-          <div
-            className={classNames(
-              leadingTextWrapperClass,
-              leadingTextWidth && leadingTextWidthVariant[leadingTextWidth],
-            )}
-          >
+          <div className={classNames(leadingTextWrapperClass)}>
             <span className={leadingTextClass}>{leadingText}</span>
           </div>
         )}

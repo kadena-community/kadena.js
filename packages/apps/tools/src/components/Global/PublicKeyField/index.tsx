@@ -1,28 +1,17 @@
-import type { IFormFieldWrapperProps, IInputProps } from '@kadena/react-ui';
+import type { ITextFieldProps } from '@kadena/react-ui';
 import { TextField } from '@kadena/react-ui';
-
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
 import type { FieldError } from 'react-hook-form';
 import { publicKeyFieldStyles } from './styles.css';
 
-interface IPublicKeyFieldProps
-  extends Partial<Omit<IFormFieldWrapperProps, 'children'>> {
-  // refactor?
-  inputProps: Partial<
-    Pick<
-      IInputProps,
-      'id' | 'placeholder' | 'ref' | 'name' | 'onChange' | 'onBlur'
-    >
-  >;
+interface IPublicKeyFieldProps extends Omit<ITextFieldProps, 'id'> {
   error?: FieldError;
 }
 
 export const PublicKeyField: FC<IPublicKeyFieldProps> = ({
-  inputProps,
   status,
-  helperText,
   error,
   ...rest
 }) => {
@@ -33,11 +22,9 @@ export const PublicKeyField: FC<IPublicKeyFieldProps> = ({
       <TextField
         label={t('Public Key')}
         status={error ? 'negative' : status}
-        helperText={helperText}
-        {...rest}
         id="public-key-input"
         placeholder={t('Enter Public Key')}
-        {...inputProps}
+        {...rest}
       />
     </span>
   );
