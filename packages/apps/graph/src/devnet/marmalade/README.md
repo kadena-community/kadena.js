@@ -16,6 +16,8 @@ contracts in the devnet. The goal of this folder is to deploy the Marmalade
 scripts into the devnet. It contains all the necessary scripts and configuration
 files to facilitate this process.
 
+To deploy marmalade in devnet, please run the `pnpm deploy:marmalade`
+
 ## Concepts
 
 To better understand the deployment of marmalade, here are some key concepts to
@@ -31,12 +33,12 @@ be aware of:
 
 - Fill in the environment variables that need to be set before starting the
   deployment scripts. You can find more about these in `.env.example`
-- Please make sure that all the configurations under
-  `packages/apps/graph/src/devnet/marmalade/config` are correct and please set
-  the arguments in
-  `packages/apps/graph/src/devnet/marmalade/config/arguments.ts`. These
-  arguments are going to be used to replace the tags in the templates and code
-  files (referred to in [concepts](#concepts) )
+- Optional: make sure that all the configurations under
+  `packages/apps/graph/src/devnet/marmalade/config` are correct and check if all
+  default values set in
+  `packages/apps/graph/src/devnet/marmalade/config/arguments.ts` are right.
+  These arguments are going to be used to replace the tags in the templates and
+  code files (referred to in [concepts](#concepts) )
 
 ## Assumptions
 
