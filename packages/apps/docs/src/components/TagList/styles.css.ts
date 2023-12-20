@@ -16,7 +16,7 @@ export const listClass = style([
 export const itemClass = style([
   sprinkles({
     display: 'flex',
-    paddingX: '$2',
+    paddingInline: '$2',
     width: '100%',
   }),
   {

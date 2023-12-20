@@ -3,8 +3,8 @@ import { style } from '@vanilla-extract/css';
 
 export const listClass = style([
   sprinkles({
-    paddingY: 0,
-    paddingX: '$5',
+    paddingBlock: 0,
+    paddingInline: '$5',
   }),
   {
     listStyle: 'disc',

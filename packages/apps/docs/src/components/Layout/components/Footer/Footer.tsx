@@ -15,17 +15,17 @@ export const Footer: FC = () => {
         <Stack
           justifyContent="space-around"
           alignItems="center"
-          marginY="$2"
           className={logoClass}
+          marginBlock="$2"
         >
           <DocsLogo overwriteTheme="dark" />
         </Stack>
         <div className={spacerClass} />
         <Stack
-          direction={{ xs: 'column', md: 'row' }}
+          flexDirection={{ xs: 'column', md: 'row' }}
           justifyContent="space-around"
           alignItems={{ xs: 'flex-start', md: 'center' }}
-          marginY="$2"
+          marginBlock="$2"
         >
           <FooterLink href="https://kadena.io">Kadena.io</FooterLink>
           <FooterLink href="https://kadena.io">Privacy Policy</FooterLink>
@@ -36,7 +36,11 @@ export const Footer: FC = () => {
             </FooterLink>
           </Link>
         </Stack>
-        <Stack justifyContent="space-around" alignItems="center" marginY="$2">
+        <Stack
+          justifyContent="space-around"
+          alignItems="center"
+          marginBlock="$2"
+        >
           <FooterText>Copyrights 2023 © Kadena LLC</FooterText>
         </Stack>
       </div>

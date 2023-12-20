@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 
 const browseSectionWrapper = style([
   sprinkles({
-    marginBottom: '$6',
+    marginBlockEnd: '$6',
   }),
   {
     flexBasis: '50%',

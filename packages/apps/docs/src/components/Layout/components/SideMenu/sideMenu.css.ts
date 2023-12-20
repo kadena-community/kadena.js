@@ -28,8 +28,8 @@ export const listClass = style([
 
 export const listItemClass = style([
   sprinkles({
-    paddingTop: '$4',
-    paddingBottom: '$2',
+    paddingBlockStart: '$4',
+    paddingBlockEnd: '$2',
   }),
   {
     borderBottom: `1px solid ${vars.colors.$borderDefault}`,
@@ -40,8 +40,8 @@ export const sideMenuTitleClass = style([
   sprinkles({
     display: 'block',
     padding: 0,
-    paddingLeft: '$4',
-    marginY: '$4',
+    paddingInlineStart: '$4',
+    marginBlock: '$4',
     textAlign: 'left',
     fontSize: '$sm',
     backgroundColor: 'transparent',
@@ -55,7 +55,7 @@ export const sideMenuTitleButtonClass = style([
       sm: 'flex',
       md: 'none',
     },
-    paddingLeft: '$9',
+    paddingInlineStart: '$9',
     textAlign: 'left',
     cursor: 'pointer',
   }),

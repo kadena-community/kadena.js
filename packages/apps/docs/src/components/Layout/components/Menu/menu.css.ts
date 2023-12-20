@@ -11,7 +11,7 @@ export const menuClass = style([
     overflow: 'hidden',
     top: '$17',
     bottom: 0,
-    paddingBottom: '$4',
+    paddingBlockEnd: '$4',
   }),
   {
     height: `calc(100vh - ${vars.sizes.$13})`,
@@ -32,7 +32,7 @@ export const menuClass = style([
         height: `calc(100vh - ${vars.sizes.$18})`,
         transform: 'translateX(0)',
         backgroundColor: 'transparent',
-        paddingBottom: vars.sizes.$40,
+        paddingBlockEnd: vars.sizes.$40,
       },
     }),
   },

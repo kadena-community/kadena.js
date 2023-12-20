@@ -21,7 +21,7 @@ export const headerButtonClass = style([
     borderRadius: '$lg',
     cursor: 'pointer',
     color: '$neutral2',
-    paddingY: '$2',
+    paddingBlock: '$2',
     width: '$11',
   }),
   {
@@ -71,7 +71,7 @@ export const hamburgerButtonClass = style([
 export const searchButtonClass = style([
   sprinkles({
     backgroundColor: '$neutral4',
-    paddingX: '$2',
+    paddingInline: '$2',
   }),
   {
     width: 'inherit',
@@ -87,7 +87,7 @@ export const searchButtonClass = style([
 export const searchButtonSlashClass = style([
   sprinkles({
     borderRadius: '$lg',
-    marginLeft: '$2',
+    marginInlineStart: '$2',
     backgroundColor: '$neutral3',
     color: '$white',
   }),
@@ -123,8 +123,8 @@ export const skipNavClass = style([
     position: 'absolute',
     top: 0,
     left: 0,
-    paddingY: '$2',
-    paddingX: '$4',
+    paddingBlock: '$2',
+    paddingInline: '$4',
     color: '$white',
     fontWeight: '$bold',
     opacity: 0,
@@ -148,10 +148,10 @@ export const innerWrapperClass = style([
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    paddingY: '$3',
-    paddingX: '$4',
-    marginY: 0,
-    marginX: 'auto',
+    paddingBlock: '$3',
+    paddingInline: '$4',
+    marginBlock: 0,
+    marginInline: 'auto',
   }),
   {
     maxWidth: $$pageWidth,
@@ -169,7 +169,7 @@ export const headerIconGroupClass = style([
       xs: '$3',
       lg: '$3',
     },
-    marginLeft: '$3',
+    marginInlineStart: '$3',
   }),
 ]);
 

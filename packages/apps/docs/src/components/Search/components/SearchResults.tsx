@@ -135,7 +135,7 @@ export const SearchResults: FC<IProps> = ({
         </TabItem>
 
         <TabItem key="qa" title="QA Space">
-          <Box marginBottom="$8">
+          <Box marginBlockEnd="$8">
             <Notification icon={<SystemIcon.AlertBox />} role="none">
               <NotificationHeading>QA search is in beta</NotificationHeading>
               QA search our latest AI vector-based search, designed to provide
@@ -178,7 +178,7 @@ export const SearchResults: FC<IProps> = ({
               return (
                 <div key={`${interaction.input}-${idx}`}>
                   <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                  <Box marginTop="$8">
+                  <Box marginBlockStart="$8">
                     <Heading variant="h4">Sources:</Heading>
                     {metadata.length > 1 && (
                       <BrowseSection>

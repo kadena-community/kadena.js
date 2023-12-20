@@ -55,8 +55,8 @@ const BlogChainHome: FC<IProps> = ({
               <BlogListWrapper initPosts={allPosts} />
             </GridItem>
             <GridItem>
-              <Box marginY="$8">
-                <Stack direction="column" gap="$8">
+              <Box marginBlock="$8">
+                <Stack flexDirection="column" gap="$8">
                   {popularPages.length > 0 && (
                     <MostPopular pages={popularPages} title="Popular posts" />
                   )}

@@ -35,8 +35,8 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
         <div className={gridWrapperClass}>
           <div className={gridBlogItemImage} style={{ gridArea: 'image' }}>
             <Box
-              marginLeft={{ xs: 0, md: '$8' }}
-              marginBottom={{ xs: '$8', md: 0 }}
+              marginInlineStart={{ xs: 0, md: '$8' }}
+              marginBlockEnd={{ xs: '$8', md: 0 }}
             >
               <figure className={classNames(figureClass, figureVariant[size])}>
                 {item.headerImage && (
@@ -71,12 +71,12 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                 )}
               </Heading>
             </Stack>
-            <Box marginLeft="$12" marginTop="$4">
+            <Box marginInlineStart="$12" marginBlockStart="md">
               <Heading as="h3" variant={size === 'large' ? 'h5' : 'h6'}>
                 {item.title}
               </Heading>
 
-              <Box marginY="$4">{item.description}</Box>
+              <Box marginBlock="md">{item.description}</Box>
 
               <footer className={classNames(footer, footerVariant[size])}>
                 <span className={metaItem}>

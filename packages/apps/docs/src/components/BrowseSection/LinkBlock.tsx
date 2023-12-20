@@ -18,8 +18,8 @@ export const LinkBlock: FC<ILinkBlock> = ({ title, subtitle, href }) => {
   return (
     <li className={listItemClass}>
       <Link href={href} className={listItemLinkClass}>
-        <Stack direction="row" gap="$2">
-          <Stack direction="column" gap={0}>
+        <Stack flexDirection="row" gap="$2">
+          <Stack flexDirection="column" gap={0}>
             <h4>{title}</h4>
             <span className={listItemLinkTextClass}>{subtitle}</span>
           </Stack>

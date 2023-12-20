@@ -48,7 +48,7 @@ export const BottomPageSection: FC<IProps> = ({
         <GridItem columnSpan={{ xs: 1, lg: 2, xl: 3 }}>
           <Stack
             width={{ xs: '100%', lg: '100%' }}
-            direction="row"
+            flexDirection="row"
             justifyContent="space-between"
           >
             {navigation?.previous !== undefined && (
@@ -79,7 +79,7 @@ export const BottomPageSection: FC<IProps> = ({
 
       <Divider />
       <Stack
-        direction={{ xs: 'column', lg: 'row' }}
+        flexDirection={{ xs: 'column', lg: 'row' }}
         justifyContent="space-between"
         width="100%"
         gap={{ xs: '$8', lg: '$2' }}

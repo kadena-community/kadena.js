@@ -38,7 +38,7 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
 
   return (
     <>
-      <Stack direction="column" gap="$sm">
+      <Stack flexDirection="column" gap="$sm">
         <Text bold as="p">
           Was this page helpful?
         </Text>
@@ -69,10 +69,10 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
         <DialogHeader>Thank you for your feedback!</DialogHeader>
         <DialogContent>
           <div className={modalWrapperClass}>
-            <Stack gap="$4" direction="column">
+            <Stack gap="$4" flexDirection="column">
               {editLink}
               {editLink ? (
-                <Stack gap="$2" direction="row">
+                <Stack gap="$2" flexDirection="row">
                   <Text>
                     Would you like to contribute to this page by{' '}
                     <Link href={editLink} target="_blank">

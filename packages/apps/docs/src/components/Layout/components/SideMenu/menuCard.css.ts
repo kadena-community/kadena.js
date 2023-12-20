@@ -6,7 +6,7 @@ export const menuCardClass = style([
     position: 'absolute',
     width: '100%',
     height: '100%',
-    paddingX: '$6',
+    paddingInline: '$6',
   }),
   {
     transition: 'transform .2s ease',

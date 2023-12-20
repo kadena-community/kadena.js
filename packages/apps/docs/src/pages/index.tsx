@@ -32,8 +32,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Box marginBottom="$20">
-            <Grid gap="$lg" columns={{ sm: 1, md: 2 }}>
+          <Box marginBlockEnd="$20">
+            <Grid gap="lg" columns={{ sm: 1, md: 2 }}>
               <GridItem rowSpan={2}>
                 <DocsCard
                   label="Start with core concepts"
@@ -61,7 +61,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="warning"
                   background="contribute"
                 >
-                  <Box marginY="$4">
+                  <Box marginBlock="md">
                     <Button
                       as="a"
                       href="/build/guides/election-dapp-tutorial"
@@ -123,8 +123,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </Grid>
           </Box>
 
-          <Stack direction="column" gap="$3xl">
-            <BrowseSection title="Download useful tools" direction="row">
+          <Stack flexDirection="column" gap="$3xl">
+            <BrowseSection title="Download useful tools" flexDirection="row">
               <BrowseSection.LinkBlock
                 title="Bootstrap Kadena dApp"
                 subtitle="Quickstart your Kadena app"

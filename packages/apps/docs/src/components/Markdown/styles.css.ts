@@ -3,8 +3,8 @@ import { style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([
   sprinkles({
-    marginY: '$5',
-    marginX: 0,
+    marginBlock: '$5',
+    marginInline: 0,
   }),
   {},
 ]);

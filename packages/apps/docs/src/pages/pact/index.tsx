@@ -42,7 +42,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           <GridItem>
             <Card fullWidth>
               <Heading as="h4">Learn Pact</Heading>
-              <Box marginY="$4">
+              <Box marginBlock="$4">
                 <Text>
                   Pact allows anyone to write clearly, directly and safely onto
                   a blockchain — a true innovation for secure and simple smart
@@ -58,9 +58,9 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </GridItem>
           <GridItem>
             <Box
-              marginTop="$8"
-              marginLeft={{ sm: 0, lg: '$4' }}
-              marginRight={{ sm: 0, xl: '$32' }}
+              marginBlockStart="$8"
+              marginInlineStart={{ sm: 0, lg: '$4' }}
+              marginInlineEnd={{ sm: 0, xl: '$32' }}
             >
               <MostPopular
                 pages={popularPages}
@@ -71,7 +71,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </GridItem>
         </Grid>
 
-        <Box marginBottom="$20">
+        <Box marginBlockEnd="$20">
           <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
             <GridItem rowSpan={2}>
               <DocsCard

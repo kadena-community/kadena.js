@@ -17,7 +17,7 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts }) => {
   return (
     <>
-      <Box marginBottom="$20">
+      <Box marginBlockEnd="$20">
         <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem rowSpan={2}>
             <DocsCard

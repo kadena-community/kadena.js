@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 
 export const stripWrapper = style([
   sprinkles({
-    marginTop: '$md',
+    marginBlockStart: '$md',
   }),
 ]);
 
@@ -22,8 +22,8 @@ export const stripClass = style([
 
 export const stripItemWrapperClass = style([
   sprinkles({
-    paddingRight: '$8',
-    marginBottom: '$8',
+    paddingInlineEnd: '$8',
+    marginBlockEnd: '$8',
   }),
   {
     minWidth: '100px',
@@ -55,7 +55,7 @@ export const stripItemClass = style([
     display: 'flex',
     flexDirection: 'column',
     textDecoration: 'none',
-    marginBottom: '$8',
+    marginBlockEnd: '$8',
   }),
   {
     selectors: {
@@ -92,9 +92,9 @@ export const imageClass = style([
 export const headerClass = style([
   sprinkles({
     color: '$primaryContrastInverted',
-    paddingRight: '$4',
+    paddingInlineEnd: '$4',
     fontSize: '$lg',
-    marginTop: '$4',
+    marginBlockStart: 'md',
   }),
   {
     flex: 1,
@@ -107,7 +107,7 @@ export const headerClass = style([
 export const textClass = style([
   sprinkles({
     color: '$foreground',
-    paddingRight: '$4',
+    paddingInlineEnd: '$4',
   }),
   {
     display: '-webkit-box',

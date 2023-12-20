@@ -27,7 +27,7 @@ export const tabClass = style([
 export const itemLinkClass = style([
   sprinkles({
     display: 'block',
-    marginBottom: '$4',
+    marginBlockEnd: '$4',
     textDecoration: 'none',
     padding: '$sm',
   }),

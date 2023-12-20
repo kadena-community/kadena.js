@@ -5,9 +5,9 @@ export const blockquote = style([
   sprinkles({
     borderColor: '$neutral4',
     backgroundColor: '$infoLowContrast',
-    marginY: '$4',
-    paddingY: '$2',
-    paddingLeft: '$4',
+    marginBlock: '$4',
+    paddingBlock: '$2',
+    paddingInlineStart: '$4',
     fontSize: '$sm',
   }),
   {
@@ -16,7 +16,7 @@ export const blockquote = style([
     whiteSpace: 'pre-wrap',
     ...responsiveStyle({
       md: {
-        paddingRight: vars.sizes.$8,
+        paddingInlineEnd: vars.sizes.$8,
       },
     }),
   },

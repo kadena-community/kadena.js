@@ -51,12 +51,12 @@ export const wrapperClass = style([
     flexDirection: 'column',
     alignItems: 'flex-start',
     width: '100%',
-    paddingTop: '$20',
+    paddingBlockStart: '$20',
 
-    paddingBottom: '$20',
+    paddingBlockEnd: '$20',
 
-    marginX: 'auto',
-    marginBottom: '$16',
+    marginInline: 'auto',
+    marginBlockEnd: '$16',
   }),
   {
     paddingInline: vars.sizes.$10,

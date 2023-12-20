@@ -8,8 +8,8 @@ export const inlineCode = style([
   sprinkles({
     borderRadius: '$sm',
     backgroundColor: '$neutral2',
-    marginLeft: '$1',
-    marginRight: '$1',
+    marginInlineStart: '$1',
+    marginInlineEnd: '$1',
   }),
   {
     fontFamily: vars.fonts.$mono,
@@ -30,8 +30,8 @@ globalStyle(
   h1${getClassName(headerClass)} +
   ${getClassName(paragraphWrapperClass)} ${getClassName(inlineCode)}`,
   {
-    paddingLeft: vars.sizes.$2,
-    paddingRight: vars.sizes.$2,
+    paddingInlineStart: vars.sizes.$2,
+    paddingInlineEnd: vars.sizes.$2,
   },
 );
 
@@ -43,10 +43,10 @@ globalStyle(
   article ol ${getClassName(inlineCode)}
   `,
   {
-    paddingLeft: vars.sizes.$1,
-    paddingRight: vars.sizes.$1,
-    paddingTop: 0,
-    paddingBottom: 0,
+    paddingInlineStart: vars.sizes.$1,
+    paddingInlineEnd: vars.sizes.$1,
+    paddingBlockStart: 0,
+    paddingBlockEnd: 0,
   },
 );
 
@@ -56,8 +56,8 @@ export const codeWrapper = style([
     fontSize: '$sm',
     fontFamily: '$mono',
     lineHeight: '$lg',
-    marginX: 0,
-    marginY: '$10',
+    marginInline: 0,
+    marginBlock: '$10',
   }),
   {
     borderRadius: vars.radii.$lg,
@@ -71,7 +71,7 @@ export const code = style([
     whiteSpace: 'break-spaces',
     fontFamily: '$mono',
     display: 'none',
-    paddingY: '$3',
+    paddingBlock: '$3',
     position: 'relative',
   }),
   {
@@ -105,7 +105,7 @@ export const codeLine = style([
     width: '100%',
     fontFamily: '$mono',
     zIndex: 1,
-    paddingRight: '$4',
+    paddingInlineEnd: '$4',
   }),
   {
     display: 'inline-flex',
@@ -125,9 +125,9 @@ export const codeLine = style([
         wordBreak: 'keep-all',
         display: 'inline-flex',
         width: '1rem',
-        marginRight: `${vars.sizes.$4}`,
-        marginLeft: `${vars.sizes.$4}`,
-        marginTop: '3px', //hack, this just aligns the number the best. with vars or display: flex. the alignment is of
+        marginInlineEnd: `${vars.sizes.$4}`,
+        marginInlineStart: `${vars.sizes.$4}`,
+        marginBlockStart: '3px', //hack, this just aligns the number the best. with vars or display: flex. the alignment is of
         textAlign: 'right',
         fontSize: vars.sizes.$sm,
         color: vars.colors.$white,
@@ -154,8 +154,8 @@ globalStyle(
   `,
   {
     margin: 0,
-    marginTop: vars.sizes.$md,
-    marginBottom: vars.sizes.$lg,
+    marginBlockStart: vars.sizes.$md,
+    marginBlockEnd: vars.sizes.$lg,
   },
 );
 

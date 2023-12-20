@@ -15,6 +15,6 @@ export const containerClass = style([
 
 export const notificationWrapperClass = style([
   globalClass,
-  sprinkles({ marginX: 'auto' }),
+  sprinkles({ marginInline: 'auto' }),
   { maxWidth: $$pageWidth },
 ]);
