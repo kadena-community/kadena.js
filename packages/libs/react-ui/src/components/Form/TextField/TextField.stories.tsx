@@ -4,7 +4,6 @@ import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrappe
 import { SystemIcon } from '@components/Icon';
 import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
 import React from 'react';
 
 const meta: Meta<ITextFieldProps> = {
@@ -55,17 +54,6 @@ const meta: Meta<ITextFieldProps> = {
     startIcon: {
       description: 'Initial icon that can be passed as a prop.',
     },
-    leadingTextWidth: {
-      description:
-        'Width of the leading text. Defaults to the size of the text itself.',
-      control: {
-        type: 'select',
-      },
-      options: [
-        undefined,
-        ...Object.keys(vars.sizes).map((key) => key as keyof typeof vars.sizes),
-      ],
-    },
     status: {
       options: [
         undefined,
@@ -109,7 +97,6 @@ export const Group: Story = {
     status: undefined,
     startIcon: <SystemIcon.Account />,
     leadingText: 'Leading',
-    leadingTextWidth: undefined,
   },
   render: ({
     leadingText,
@@ -120,7 +107,6 @@ export const Group: Story = {
     helperText,
     info,
     label,
-    leadingTextWidth,
   }) => {
     return (
       <TextField
@@ -130,7 +116,6 @@ export const Group: Story = {
         status={status}
         disabled={disabled}
         helperText={helperText}
-        leadingTextWidth={leadingTextWidth}
         id="inputStory"
         leadingText={leadingText}
         startIcon={startIcon}

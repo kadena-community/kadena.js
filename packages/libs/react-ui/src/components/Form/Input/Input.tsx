@@ -5,6 +5,7 @@ import React, { forwardRef } from 'react';
 import type { FormFieldStatus } from '../Form.css';
 import { baseContainerClass, baseOutlinedClass } from '../Form.css';
 
+import { atoms } from '@theme/atoms.css';
 import {
   disabledClass,
   inputChildrenClass,
@@ -15,18 +16,15 @@ import {
 } from './Input.css';
 
 export interface IInputProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'as' | 'disabled' | 'className' | 'id'
-  > {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'as' | 'id'> {
   leadingText?: string;
   startIcon?: React.ReactElement;
-  disabled?: boolean;
   type?: React.HTMLInputTypeAttribute;
   ref?: React.ForwardedRef<HTMLInputElement>;
   id: string;
   outlined?: boolean;
   status?: FormFieldStatus;
+  fontFamily?: 'primaryFont' | 'codeFont';
 }
 
 /**
@@ -41,16 +39,22 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
       disabled = false,
       children,
       status,
+      className,
+      fontFamily = 'primaryFont',
       ...rest
     },
     ref,
   ) {
     return (
       <div
-        className={classNames(baseContainerClass, {
-          [baseOutlinedClass]: outlined || status,
-          [disabledClass]: disabled,
-        })}
+        className={classNames(
+          baseContainerClass,
+          {
+            [baseOutlinedClass]: outlined || status,
+            [disabledClass]: disabled,
+          },
+          className,
+        )}
       >
         {Boolean(leadingText) && (
           <div className={classNames(leadingTextWrapperClass)}>
@@ -61,7 +65,7 @@ export const Input: FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
           {startIcon}
           <input
             ref={ref}
-            className={inputClass}
+            className={classNames(inputClass, atoms({ fontFamily }))}
             disabled={disabled}
             {...rest}
           />
