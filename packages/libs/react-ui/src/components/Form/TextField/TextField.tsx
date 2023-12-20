@@ -1,24 +1,22 @@
 import type { IFormFieldWrapperProps, IInputProps } from '@components/Form';
 import { Input } from '@components/Form';
-import { Stack } from '@components/Layout';
 import type { FC } from 'react';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { FormFieldHeader, FormFieldHelper } from '../FormFieldWrapper';
 import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
 
 export interface ITextFieldProps
   extends Omit<IFormFieldWrapperProps, 'children' | 'htmlFor'>,
     Omit<IInputProps, 'disabled' | 'children'> {}
-export const TextField: FC<ITextFieldProps> = ({
-  disabled = false,
-  status,
-  id,
-  label,
-  info,
-  tag,
-  helperText,
-  ...inputProps
-}) => {
+
+// eslint-disable-next-line react/display-name
+export const TextField: FC<ITextFieldProps> = forwardRef<
+  HTMLInputElement,
+  ITextFieldProps
+>(function TextField(
+  { disabled = false, status, id, label, info, tag, helperText, ...inputProps },
+  ref,
+) {
   const statusVal = disabled === true ? 'disabled' : status;
 
   return (
@@ -26,9 +24,7 @@ export const TextField: FC<ITextFieldProps> = ({
       {label !== undefined && (
         <FormFieldHeader htmlFor={id} label={label} tag={tag} info={info} />
       )}
-      <Stack gap="$2" direction="column">
-        <Input disabled={disabled} id={id} {...inputProps} />
-      </Stack>
+      <Input ref={ref} disabled={disabled} id={id} {...inputProps} />
       {Boolean(helperText) && status !== 'negative' && (
         <FormFieldHelper>{helperText}</FormFieldHelper>
       )}
@@ -37,4 +33,4 @@ export const TextField: FC<ITextFieldProps> = ({
       )}
     </div>
   );
-};
+});
