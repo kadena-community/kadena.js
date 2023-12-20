@@ -82,7 +82,7 @@ export const BottomPageSection: FC<IProps> = ({
         flexDirection={{ xs: 'column', lg: 'row' }}
         justifyContent="space-between"
         width="100%"
-        gap={{ xs: '$8', lg: '$2' }}
+        gap={{ xs: '$8', lg: 'xs' }}
       >
         <PageHelpful editLink={editLink} />
         <Subscribe />

@@ -8,10 +8,10 @@ export const inlineCode = style([
   sprinkles({
     borderRadius: '$sm',
     backgroundColor: '$neutral2',
-    marginInlineStart: '$1',
-    marginInlineEnd: '$1',
   }),
   {
+    marginInlineStart: vars.sizes.$1,
+    marginInlineEnd: vars.sizes.$1,
     fontFamily: vars.fonts.$mono,
     color: vars.colors.$primaryContrastInverted,
     padding: `calc(${vars.sizes.$1} / 4) ${vars.sizes.$1}`,
@@ -56,10 +56,10 @@ export const codeWrapper = style([
     fontSize: '$sm',
     fontFamily: '$mono',
     lineHeight: '$lg',
-    marginInline: 0,
-    marginBlock: '$10',
   }),
   {
+    marginInline: 0,
+    marginBlock: vars.sizes.$10,
     borderRadius: vars.radii.$lg,
     overflow: 'hidden',
     wordBreak: 'break-all',
@@ -71,10 +71,10 @@ export const code = style([
     whiteSpace: 'break-spaces',
     fontFamily: '$mono',
     display: 'none',
-    paddingBlock: '$3',
     position: 'relative',
   }),
   {
+    paddingBlock: vars.sizes.$3,
     counterReset: 'line',
     selectors: {
       [`${darkThemeClass} &[data-theme="dark"], &[data-theme="light"]`]: {
@@ -105,9 +105,9 @@ export const codeLine = style([
     width: '100%',
     fontFamily: '$mono',
     zIndex: 1,
-    paddingInlineEnd: '$4',
   }),
   {
+    paddingInlineEnd: vars.sizes.$4,
     display: 'inline-flex',
     cursor: 'default',
 

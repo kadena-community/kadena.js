@@ -33,7 +33,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         <GridItem>
           <Card fullWidth>
             <Heading as="h4">Get started with tutorials</Heading>
-            <Box marginBlock="$4">
+            <Box marginBlock="md">
               <Text>
                 Building applications to run on a blockchain doesn&apos;t have
                 to be hard, time-consuming, or expensive. Get started with the

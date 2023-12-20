@@ -3,9 +3,11 @@ import { style } from '@vanilla-extract/css';
 
 export const bottomWrapperClass = style([
   sprinkles({
-    marginBlockStart: '$40',
     width: '100%',
   }),
+  {
+    marginBlockStart: vars.sizes.$40,
+  },
 ]);
 
 export const bottomWrapperCodeLayoutClass = style(

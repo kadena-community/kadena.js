@@ -21,10 +21,10 @@ export const headerButtonClass = style([
     borderRadius: '$lg',
     cursor: 'pointer',
     color: '$neutral2',
-    paddingBlock: '$2',
     width: '$11',
   }),
   {
+    paddingBlock: vars.sizes.$2,
     border: 0,
     transition: `opacity 0.2s ease`,
     selectors: {
@@ -71,10 +71,10 @@ export const hamburgerButtonClass = style([
 export const searchButtonClass = style([
   sprinkles({
     backgroundColor: '$neutral4',
-    paddingInline: '$2',
   }),
   {
     width: 'inherit',
+    paddingInline: vars.sizes.$2,
 
     selectors: {
       [`${darkThemeClass} &`]: {
@@ -87,11 +87,11 @@ export const searchButtonClass = style([
 export const searchButtonSlashClass = style([
   sprinkles({
     borderRadius: '$lg',
-    marginInlineStart: '$2',
     backgroundColor: '$neutral3',
     color: '$white',
   }),
   {
+    marginInlineStart: vars.sizes.$2,
     selectors: {
       [`${darkThemeClass} &`]: {
         backgroundColor: vars.colors.$neutral4,
@@ -123,13 +123,13 @@ export const skipNavClass = style([
     position: 'absolute',
     top: 0,
     left: 0,
-    paddingBlock: '$2',
-    paddingInline: '$4',
     color: '$white',
     fontWeight: '$bold',
     opacity: 0,
   }),
   {
+    paddingBlock: vars.sizes.$2,
+    paddingInline: vars.sizes.$4,
     backgroundColor: 'red',
     transform: 'translateY(-40px)',
     transition: 'transform .1s ease-in, opacity .1s ease-in',
@@ -148,12 +148,12 @@ export const innerWrapperClass = style([
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    paddingBlock: '$3',
-    paddingInline: '$4',
-    marginBlock: 0,
-    marginInline: 'auto',
   }),
   {
+    marginInline: 'auto',
+    marginBlock: 0,
+    paddingBlock: vars.sizes.$3,
+    paddingInline: vars.sizes.$4,
     maxWidth: $$pageWidth,
   },
 ]);
@@ -169,8 +169,10 @@ export const headerIconGroupClass = style([
       xs: '$3',
       lg: '$3',
     },
-    marginInlineStart: '$3',
   }),
+  {
+    marginInlineStart: vars.sizes.$3,
+  },
 ]);
 
 export const socialGroupClass = style({

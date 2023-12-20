@@ -1,10 +1,9 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([
-  sprinkles({
-    marginBlock: '$5',
+  {
+    marginBlock: vars.sizes.$5,
     marginInline: 0,
-  }),
-  {},
+  },
 ]);

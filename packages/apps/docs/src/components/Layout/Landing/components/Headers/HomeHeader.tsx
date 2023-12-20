@@ -53,7 +53,7 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
   return (
     <header className={loaderHeaderClass}>
       <div className={wrapperClass}>
-        <Box marginInline={{ xs: '$1', sm: '$4' }}>
+        <Box marginInline={{ xs: 'xs', sm: 'md' }}>
           <Grid columns={{ sm: 1, md: 2 }}>
             <GridItem>
               <Heading as="h1" variant="h2">

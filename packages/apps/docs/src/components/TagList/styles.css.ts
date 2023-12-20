@@ -16,10 +16,10 @@ export const listClass = style([
 export const itemClass = style([
   sprinkles({
     display: 'flex',
-    paddingInline: '$2',
     width: '100%',
   }),
   {
+    paddingInline: vars.sizes.$2,
     flex: '100%',
 
     ...responsiveStyle({

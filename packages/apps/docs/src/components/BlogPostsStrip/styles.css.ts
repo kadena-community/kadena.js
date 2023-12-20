@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 import type { ComplexStyleRule } from '@vanilla-extract/css';
 import { style } from '@vanilla-extract/css';
 
@@ -21,11 +21,9 @@ export const stripClass = style([
 ]);
 
 export const stripItemWrapperClass = style([
-  sprinkles({
-    paddingInlineEnd: '$8',
-    marginBlockEnd: '$8',
-  }),
   {
+    paddingInlineEnd: vars.sizes.$8,
+    marginBlockEnd: vars.sizes.$8,
     minWidth: '100px',
     flex: '100%',
     selectors: {
@@ -55,9 +53,9 @@ export const stripItemClass = style([
     display: 'flex',
     flexDirection: 'column',
     textDecoration: 'none',
-    marginBlockEnd: '$8',
   }),
   {
+    marginBlockEnd: vars.sizes.$8,
     selectors: {
       '&:hover': {
         textDecoration: 'none',
@@ -92,11 +90,11 @@ export const imageClass = style([
 export const headerClass = style([
   sprinkles({
     color: '$primaryContrastInverted',
-    paddingInlineEnd: '$4',
     fontSize: '$lg',
-    marginBlockStart: 'md',
   }),
   {
+    paddingInlineEnd: vars.sizes.$4,
+    marginBlockStart: vars.sizes.$4,
     flex: 1,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -107,9 +105,9 @@ export const headerClass = style([
 export const textClass = style([
   sprinkles({
     color: '$foreground',
-    paddingInlineEnd: '$4',
   }),
   {
+    paddingInlineEnd: vars.sizes.$4,
     display: '-webkit-box',
     WebkitLineClamp: 3,
     WebkitBoxOrient: 'vertical',

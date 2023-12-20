@@ -37,8 +37,8 @@ export const DocsCard: FC<IProps> = ({
         {label}
       </Heading>
       <Box
-        marginBlock="$4"
-        marginInlineEnd={{ sm: '$20', md: '$4', lg: '$20' }}
+        marginBlock="md"
+        marginInlineEnd={{ sm: '$20', md: 'md', lg: '$20' }}
       >
         <div>{description}</div>
       </Box>

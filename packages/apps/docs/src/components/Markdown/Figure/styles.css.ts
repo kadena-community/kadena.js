@@ -42,10 +42,10 @@ export const figureImg = style([
 export const figCaption = style([
   sprinkles({
     textAlign: 'center',
-    marginBlockEnd: '$8',
-    marginInline: '$4',
   }),
   {
+    marginBlockEnd: vars.sizes.$8,
+    marginInline: vars.sizes.$4,
     ...responsiveStyle({
       md: {
         maxWidth: '50%',

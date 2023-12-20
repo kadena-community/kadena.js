@@ -14,9 +14,9 @@ const articleLinkOpacity = createVar();
 export const headerIconLinkClass = style([
   sprinkles({
     display: 'inline-block',
-    paddingInlineStart: '$3',
   }),
   {
+    paddingInlineStart: vars.sizes.$3,
     scrollMarginTop: `80px`,
     scrollSnapMarginTop: `80px`,
     transition: 'opacity .3s ease',
@@ -29,9 +29,9 @@ export const headerClass = style([
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    marginBlockStart: '$xl',
   }),
   {
+    marginBlockStart: vars.sizes.$xl,
     selectors: {
       '&:hover': {
         vars: {

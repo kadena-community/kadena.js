@@ -11,9 +11,9 @@ export const menuClass = style([
     overflow: 'hidden',
     top: '$17',
     bottom: 0,
-    paddingBlockEnd: '$4',
   }),
   {
+    paddingBlockEnd: vars.sizes.$4,
     height: `calc(100vh - ${vars.sizes.$13})`,
     gridArea: 'menu',
     gridRow: '2 / span 3',

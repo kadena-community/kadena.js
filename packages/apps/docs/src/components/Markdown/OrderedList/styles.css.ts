@@ -5,11 +5,13 @@ import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
 export const olListClass = style([
   sprinkles({
-    paddingBlock: '$2',
-    marginInline: 0,
     position: 'relative',
     color: '$neutral4',
   }),
+  {
+    marginInline: 0,
+    paddingBlock: vars.sizes.$2,
+  },
 ]);
 
 globalStyle(`article ol > li`, {

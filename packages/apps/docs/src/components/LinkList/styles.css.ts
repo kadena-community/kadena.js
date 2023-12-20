@@ -2,11 +2,9 @@ import { sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([
-  sprinkles({
-    paddingBlock: 0,
-    paddingInline: '$5',
-  }),
   {
+    paddingBlock: 0,
+    paddingInline: vars.sizes.$5,
     listStyle: 'disc',
   },
 ]);

@@ -3,11 +3,11 @@ import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
 export const blogitem = style([
   sprinkles({
-    paddingBlock: '$10',
-    paddingInline: '$10',
     backgroundColor: 'transparent',
   }),
   {
+    paddingBlock: vars.sizes.$10,
+    paddingInline: vars.sizes.$10,
     marginBlockStart: `${vars.sizes.$8}!important`,
     marginBlockEnd: `${vars.sizes.$8}!important`,
     willChange: 'background-color',

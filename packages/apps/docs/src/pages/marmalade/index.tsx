@@ -47,7 +47,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         <GridItem>
           <Card fullWidth>
             <Heading as="h4">Quick start</Heading>
-            <Box marginBlock="$4">
+            <Box marginBlock="md">
               <Text>
                 Marmalade is an NFT smart contract system on Kadena’s
                 blockchain. It comprises multiple smart contracts that execute

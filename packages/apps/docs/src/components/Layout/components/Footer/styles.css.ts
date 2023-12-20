@@ -6,9 +6,9 @@ export const footerWrapperClass = style([
   sprinkles({
     position: 'relative',
     backgroundColor: '$gray90',
-    marginBlockStart: '$40',
   }),
   {
+    marginBlockStart: vars.sizes.$40,
     zIndex: $$footerMenu,
     gridArea: 'footer',
   },
@@ -25,8 +25,6 @@ export const footerClass = style([
       xs: 'flex-start',
       md: 'center',
     },
-    paddingBlock: '$3',
-    paddingInline: '$4',
 
     flexDirection: {
       xs: 'column',
@@ -34,6 +32,8 @@ export const footerClass = style([
     },
   }),
   {
+    paddingBlock: vars.sizes.$3,
+    paddingInline: vars.sizes.$4,
     margin: '0 auto',
     maxWidth: $$pageWidth,
   },
@@ -43,9 +43,11 @@ export const textClass = style([
   sprinkles({
     display: 'block',
     color: '$gray40',
-    paddingInline: '$3',
     textAlign: 'center',
   }),
+  {
+    paddingInline: vars.sizes.$3,
+  },
 ]);
 
 export const linkClass = style([
@@ -53,10 +55,10 @@ export const linkClass = style([
     display: 'block',
     textDecoration: 'none',
     color: '$gray40',
-    paddingInline: '$3',
     textAlign: 'center',
   }),
   {
+    paddingInline: vars.sizes.$3,
     selectors: {
       '&:hover': {
         textDecoration: 'none',

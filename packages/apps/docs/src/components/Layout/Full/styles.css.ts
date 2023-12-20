@@ -87,15 +87,15 @@ export const stickyAsideWrapperClass = style([
     position: 'sticky',
     display: 'flex',
     top: '$10',
-    paddingInlineStart: '$4',
   }),
+  {
+    paddingInlineStart: vars.sizes.$4,
+  },
 ]);
 
 export const stickyAsideClass = style([
-  sprinkles({
-    paddingBlockStart: '$10',
-  }),
   {
+    paddingBlockStart: vars.sizes.$10,
     overflowY: 'auto',
     height: `calc(100vh - ${vars.sizes.$20})`,
     selectors: {
@@ -112,10 +112,10 @@ export const asideClass = style([
     position: 'absolute',
     height: '100%',
     width: '100%',
-    paddingBlock: 0,
-    paddingInline: '$4',
   }),
   {
+    paddingBlock: 0,
+    paddingInline: vars.sizes.$4,
     gridArea: 'aside',
     gridColumn: '4 / span 2',
     gridRow: '2 / span 2',

@@ -27,11 +27,11 @@ export const tabClass = style([
 export const itemLinkClass = style([
   sprinkles({
     display: 'block',
-    marginBlockEnd: '$4',
     textDecoration: 'none',
     padding: '$sm',
   }),
   {
+    marginBlockEnd: vars.sizes.$4,
     ':hover': {
       color: '$neutral100',
       backgroundColor: '$primaryContrastInverted',
