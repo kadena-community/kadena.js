@@ -1,7 +1,7 @@
 import path from 'path';
 
 import type { IMenuData, IMenuItem } from '../../types';
-import { getConfig, getData } from './getData';
+import { getData } from './getData';
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const omit = (

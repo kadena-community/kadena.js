@@ -241,7 +241,6 @@ export type IConfigMenu = string[];
 
 export interface IConfigTreeItem {
   id: string;
-  title: string;
   url: string;
   file: string;
   children?: IConfigTreeItem[];
@@ -249,4 +248,9 @@ export interface IConfigTreeItem {
 export interface IConfig {
   menu: IConfigMenu;
   pages: IConfigTreeItem[];
+}
+
+export interface IScriptResult {
+  success: string[];
+  errors: string[];
 }

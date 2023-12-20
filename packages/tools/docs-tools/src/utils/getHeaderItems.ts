@@ -1,26 +1,60 @@
-import type { IMenuData } from 'src/types';
-import { getConfig, getData } from './staticGeneration/getData';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
+import type { IConfigTreeItem, IMenuItem } from 'src/types';
+import { getUrlNameOfPageFile } from './config/getUrlNameOfPageFile';
+import { getConfig } from './getConfig';
+import { getFrontmatter, getFrontmatterFromTsx } from './getFrontmatter';
+import { isMarkDownFile } from './markdown/isMarkdownFile';
+import { getPages } from './staticGeneration/getData';
 
-const getPageById = (id: string): IPage => {};
+export const getPageTreeById = async (
+  id: string,
+): Promise<IConfigTreeItem[]> => {
+  const pages = await getPages();
+  const idArray = id.split('.');
 
-export const getHeaderItems = async (): Promise<IMenuData[]> => {
+  const pageTree: IConfigTreeItem[] = [];
+  while (idArray.length > 0) {
+    const id = idArray.shift();
+
+    const pagesArray = pageTree.length
+      ? pageTree[pageTree.length - 1].children
+      : pages;
+    const found = pagesArray?.find((p) => p.id === id);
+    if (!found) throw new Error(`header id ${id} not found`);
+
+    pageTree.push(found);
+  }
+
+  return pageTree;
+};
+
+export const getHeaderItems = async (): Promise<IMenuItem[]> => {
   const { menu } = await getConfig();
+  const headers = [];
+  for (let i = 0; i < menu.length; i++) {
+    const id = menu[i];
+    const pageArray = (await getPageTreeById(id)) ?? [];
 
-  return menu.reduce((acc, val) => {
-    const idArray = val.split('.');
-  }, []);
+    const page = pageArray.pop();
+    const root = getUrlNameOfPageFile(page, pageArray);
+    if (!page) throw new Error('no file path found for id ${id}');
 
-  const menuItems = menu.reduce(
-    (acc: IMenuData[], item: string): IMenuData[] => {
-      const found = tree.find((d) => d.root === `/${item}`);
-      if (!found) return acc;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { children, ...result } = found;
-      acc.push(result as IMenuData);
-      return acc;
-    },
-    [],
-  );
+    const filePath = join(process.cwd(), `src/docs/${page.file}`);
+    const content = await readFile(filePath, 'utf-8');
+    const frontmatter = isMarkDownFile(page.file)
+      ? await getFrontmatter(content)
+      : getFrontmatterFromTsx(content);
 
-  return menuItems;
+    if (!frontmatter)
+      throw new Error(`no frontmatter found for ${page.file} (id: ${id})`);
+
+    headers.push({
+      root,
+      menu: frontmatter.menu,
+      title: frontmatter.title,
+    } as unknown as IMenuItem);
+  }
+
+  return headers;
 };

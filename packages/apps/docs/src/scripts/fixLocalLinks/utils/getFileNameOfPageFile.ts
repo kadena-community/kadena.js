@@ -1,9 +1,9 @@
 import { getFileExtension } from '@/scripts/movePages/utils/getFileExtension';
-import type { IPage } from '@/scripts/types';
+import type { IConfigTreeItem } from '@kadena/docs-tools';
 
 export const getFileNameOfPageFile = (
-  page: IPage,
-  parentTree: IPage[],
+  page: IConfigTreeItem,
+  parentTree: IConfigTreeItem[],
 ): string => {
   return `${
     parentTree.reduce((acc, val) => {

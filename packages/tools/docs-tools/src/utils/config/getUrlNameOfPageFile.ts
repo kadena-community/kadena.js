@@ -1,9 +1,9 @@
-import type { IPage } from '@/scripts/types';
+import type { IConfigTreeItem } from 'src/types';
 
 // creates the url from the pagefile and its parentTree
 export const getUrlNameOfPageFile = (
-  page: IPage,
-  parentTree: IPage[],
+  page: IConfigTreeItem | undefined,
+  parentTree: IConfigTreeItem[],
 ): string => {
   if (!page) return '';
   return `${

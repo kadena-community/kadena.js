@@ -1,5 +1,9 @@
 import type { LayoutType } from '@kadena/docs-tools';
-import { getReadTime } from '@kadena/docs-tools';
+import {
+  getFrontmatterFromTsx,
+  getReadTime,
+  isMarkDownFile,
+} from '@kadena/docs-tools';
 import { isValid } from 'date-fns';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
@@ -15,13 +19,6 @@ const INITIAL_PATH = './src/pages';
 const MENU_FILE_DIR = './src/_generated';
 const MENU_FILE = 'menu.json';
 const TREE: IParent[] = [];
-
-const isMarkDownFile = (name: string): boolean => {
-  const extension = name.split('.').at(-1);
-  return (
-    extension?.toLowerCase() === 'md' || extension?.toLowerCase() === 'mdx'
-  );
-};
 
 export const getLastModifiedDate = async (
   root: string,
@@ -94,6 +91,7 @@ const convertFile = async (
   if (isMarkDownFile(file)) {
     data = getFrontMatter(doc, file);
   } else {
+    data = getFrontmatterFromTsx(doc);
     const regex = /frontmatter\s*:\s*{[^}]+}/;
     const match = doc.match(regex);
     if (!match) return;

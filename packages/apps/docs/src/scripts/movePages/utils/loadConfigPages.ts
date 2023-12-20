@@ -1,18 +1,18 @@
-import type { IConfig, IPage } from '@/scripts/types';
+import type { IConfig, IConfigTreeItem } from '@kadena/docs-tools';
 import * as fs from 'fs';
 import yaml from 'js-yaml';
 
-export const loadConfigPages = (): IPage[] => {
+export const loadConfigPages = (): IConfigTreeItem[] => {
   const data = fs.readFileSync(`./src/config.yaml`, 'utf-8');
   const { pages } = yaml.load(data) as IConfig;
 
-  const cleanup = (pages: IPage[]): IPage[] => {
+  const cleanup = (pages: IConfigTreeItem[]): IConfigTreeItem[] => {
     const innerPages = Object.entries(pages);
 
-    return innerPages.map(([key, page]: [string, IPage]) => {
+    return innerPages.map(([key, page]: [string, IConfigTreeItem]) => {
       if (page.children) page.children = cleanup(page.children);
 
-      return { ...page, id: key } as IPage;
+      return { ...page, id: key } as IConfigTreeItem;
     });
   };
 

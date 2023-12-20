@@ -1,0 +1,89 @@
+import { cleanup } from '@testing-library/react';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { getHeaderItems, getPageTreeById } from './../getHeaderItems';
+
+describe('utils getHeaderItems', () => {
+  beforeAll(() => {
+    vi.mock('fs/promises', async () => {
+      const actual = (await vi.importActual('fs/promises')) as {};
+      return {
+        default: {
+          ...actual,
+          readFile: async (file: string) => {
+            const fileArray = file.split('/');
+            return `---
+title: mocktitle ${fileArray.at(-1)}
+description: Kadena makes blockchain work for everyone.
+menu: mockmenu ${fileArray.at(-1)}
+label: Setup
+order: 2
+editLink: https://github.com/kadena-community/kadena.js/edit/main/packages/tools/cookbook/README.md
+layout: full
+tags: [javascript,typescript,pact,reference,api]
+---
+            # Setup
+            
+            this is a test file`;
+          },
+        },
+      };
+    });
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
+
+  it('should return headerItems from config', async () => {
+    const result = await getHeaderItems();
+    const expectedResult = [
+      {
+        root: '/contribute',
+        menu: 'mockmenu index.tsx',
+        title: 'mocktitle index.tsx',
+      },
+      {
+        root: '/test',
+        menu: 'mockmenu test.md',
+        title: 'mocktitle test.md',
+      },
+      {
+        root: '/test/test2',
+        menu: 'mockmenu test2.md',
+        title: 'mocktitle test2.md',
+      },
+    ];
+
+    expect(result).toStrictEqual(expectedResult);
+  });
+});
+
+describe('utils getPageTreeById', () => {
+  it('should return the correct pageTree by given ID', async () => {
+    const id = 'contribute.ambassadors.mod';
+    const expectedResult = {
+      url: '/moderator',
+      id: 'mod',
+      file: '/contribute/ambassadors/moderator.md',
+    };
+
+    const result = await getPageTreeById(id);
+    expect(result[result.length - 1]).toStrictEqual(expectedResult);
+    expect(result.length).toBe(3);
+  });
+
+  it('should return the correct pageTree when given short ID', async () => {
+    const id = 'contribute';
+
+    const result = await getPageTreeById(id);
+    expect(result[result.length - 1].id).toStrictEqual('contribute');
+    expect(result.length).toBe(1);
+  });
+  it('should throw an error when id was not found', async () => {
+    const id = 'contribute.skeletor';
+
+    await expect(async () => await getPageTreeById(id)).rejects.toThrowError(
+      'skeletor',
+    );
+  });
+});

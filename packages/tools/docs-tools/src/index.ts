@@ -9,7 +9,10 @@ import remarkSideMenuToProps from './remarkSideMenuToProps';
 import remarkTwitter from './remarkTwitter';
 import remarkYoutube from './remarkYoutube';
 import { getReadTime } from './utils';
+import { getUrlNameOfPageFile } from './utils/config/getUrlNameOfPageFile';
+import { getFrontmatterFromTsx } from './utils/getFrontmatter';
 import { getHeaderItems } from './utils/getHeaderItems';
+import { isMarkDownFile } from './utils/markdown/isMarkdownFile';
 import {
   checkSubTreeForActive,
   getPathName,
@@ -26,10 +29,13 @@ export {
   flatPosts,
   flattenData,
   getFlatData,
+  getFrontmatterFromTsx,
   getHeaderItems,
   getMenuData,
   getPathName,
   getReadTime,
+  getUrlNameOfPageFile,
+  isMarkDownFile,
   remarkAdmonitions,
   remarkCheckForCodeTitle,
   remarkFigureOutOfParagraph,

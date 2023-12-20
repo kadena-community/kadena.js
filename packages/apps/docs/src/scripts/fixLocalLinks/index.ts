@@ -1,4 +1,6 @@
 import { createSlug } from '@/utils/createSlug';
+import type { IConfigTreeItem } from '@kadena/docs-tools';
+import { getUrlNameOfPageFile } from '@kadena/docs-tools';
 import * as fs from 'fs';
 import type {
   Definition,
@@ -12,13 +14,12 @@ import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { getFileExtension } from '../movePages/utils/getFileExtension';
 import { loadConfigPages } from '../movePages/utils/loadConfigPages';
-import type { IPage, IScriptResult } from './../types';
+import type { IScriptResult } from './../types';
 import { getTypes } from './../utils';
 import { getCleanedHash } from './utils/getCleanedHash';
 import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
 import { getFileNameOfPageFile } from './utils/getFileNameOfPageFile';
 import { getLinkHash } from './utils/getLinkHash';
-import { getUrlNameOfPageFile } from './utils/getUrlNameOfPageFile';
 import { getUrlofImageFile } from './utils/getUrlofImageFile';
 import { isLocalImageLink, isLocalPageLink } from './utils/isLocalPageLink';
 import { splitContentFrontmatter } from './utils/splitContentFrontmatter';
@@ -67,12 +68,14 @@ const fixHashLinks = (link: string): string => {
 
 const findPageByFile = (
   file: string,
-  pages?: IPage[],
-  parentTree: IPage[] = [],
-): { page?: IPage; parentTree: IPage[] } | undefined => {
+  pages?: IConfigTreeItem[],
+  parentTree: IConfigTreeItem[] = [],
+): { page?: IConfigTreeItem; parentTree: IConfigTreeItem[] } | undefined => {
   if (!pages) return;
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  let found: { page?: IPage; parentTree: IPage[] } | undefined;
+  let found:
+    | { page?: IConfigTreeItem; parentTree: IConfigTreeItem[] }
+    | undefined;
   pages.forEach((p) => {
     if (p.file.endsWith(file)) {
       found = { page: p, parentTree };
@@ -106,7 +109,10 @@ const getUrlofPageFile = (link: string): string => {
   }`;
 };
 
-const fixLinks = async (page: IPage, parentTree: IPage[]): Promise<void> => {
+const fixLinks = async (
+  page: IConfigTreeItem,
+  parentTree: IConfigTreeItem[],
+): Promise<void> => {
   const extenstion = getFileExtension(page.file);
   if (extenstion !== 'md' && extenstion !== 'mdx') return;
 
@@ -154,7 +160,10 @@ ${newContent}
   );
 };
 
-const crawlPage = (page: IPage, parentTree: IPage[]): void => {
+const crawlPage = (
+  page: IConfigTreeItem,
+  parentTree: IConfigTreeItem[],
+): void => {
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   fixLinks(page, parentTree);
 

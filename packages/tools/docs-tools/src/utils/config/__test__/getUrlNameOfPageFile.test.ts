@@ -1,15 +1,15 @@
-import type { IPage } from '@/scripts/types';
+import type { IConfigTreeItem } from 'src/types';
 import { describe, expect, it } from 'vitest';
 import { getUrlNameOfPageFile } from '../getUrlNameOfPageFile';
 
 describe('utils getUrlNameOfPageFile', () => {
   it('should return the correct image url from the string', async () => {
-    const page: IPage = {
+    const page: IConfigTreeItem = {
       url: '/ambassadors',
       file: '/contribute/ambassadors/index.md',
       id: 'ambassadors',
     };
-    const parentTree: IPage[] = [
+    const parentTree: IConfigTreeItem[] = [
       {
         url: '/contribute',
         file: '/contribute/index.tsx',
@@ -22,12 +22,12 @@ describe('utils getUrlNameOfPageFile', () => {
     expect(getUrlNameOfPageFile(page, parentTree)).toEqual(expectedResult);
   });
   it('should return the correct image url from the string and large parent', async () => {
-    const page: IPage = {
+    const page: IConfigTreeItem = {
       url: '/ambassadors',
       file: '/contribute/ambassadors/index.md',
       id: 'ambassadors',
     };
-    const parentTree: IPage[] = [
+    const parentTree: IConfigTreeItem[] = [
       {
         url: '/contribute',
         file: '/contribute/index.tsx',
@@ -51,8 +51,8 @@ describe('utils getUrlNameOfPageFile', () => {
   });
 
   it('should return undefined when there is no page', async () => {
-    const page = undefined as unknown as IPage;
-    const parentTree: IPage[] = [
+    const page = undefined as unknown as IConfigTreeItem;
+    const parentTree: IConfigTreeItem[] = [
       {
         url: '/contribute',
         file: '/contribute/index.tsx',

@@ -1,5 +1,6 @@
+import type { IConfigTreeItem } from '@kadena/docs-tools';
 import * as fs from 'fs';
-import type { IPage, IScriptResult } from './../types';
+import type { IScriptResult } from './../types';
 import { promiseExec } from './../utils/build';
 import { getFileExtension } from './utils/getFileExtension';
 import { loadConfigPages } from './utils/loadConfigPages';
@@ -8,7 +9,7 @@ const errors: string[] = [];
 const success: string[] = [];
 const newFiles: string[] = [];
 
-const copyPages = (pages: IPage[], parentDir: string = ''): void => {
+const copyPages = (pages: IConfigTreeItem[], parentDir: string = ''): void => {
   pages.forEach((page) => {
     const dir = `${parentDir}${page.url}`;
     const file = `${dir}/index.${getFileExtension(page.file)}`;
