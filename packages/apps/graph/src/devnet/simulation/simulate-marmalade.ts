@@ -37,6 +37,13 @@ export async function simulateMarmalade({
     return;
   }
 
+  if (numberOfAccounts < maxNumberOfCirculatingTokens) {
+    logger.info(
+      'Number of accounts must be greater than max number of circulating tokens',
+    );
+    return;
+  }
+
   logger.info('Seed value: ', seed);
   const filepath = createFile(`nft-${Date.now()}-${seed}.csv`);
 
@@ -46,7 +53,7 @@ export async function simulateMarmalade({
   let circulatingTokens = 0;
 
   try {
-    // Create accounts
+    // Create accounts, fund them, mint tokens and transfer them
     for (let i = 0; i < numberOfAccounts; i++) {
       // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
       const noOfKeys = i % 2 === 0 ? 1 : 2;
@@ -100,8 +107,8 @@ export async function simulateMarmalade({
 
       const tokenAmount = getRandomNumber(
         seededRandomNo,
-        // maximum amount of tokens that can be minted initially (maxNumberOfCirculatingTokens / 4)
-        maxNumberOfCirculatingTokens / 4,
+        // maximum amount of tokens that can be minted initially (maxNumberOfCirculatingTokens / numberOfAccounts * 2)
+        maxNumberOfCirculatingTokens / numberOfAccounts,
       );
 
       // Mint Token
@@ -153,23 +160,21 @@ export async function simulateMarmalade({
         action: 'transfer',
       });
 
-      accounts.push({
-        ...nextAccount,
-        tokens: {
-          ...nextAccount.tokens,
-          [tokenId]: (nextAccount.tokens?.[tokenId] || 0) + 1,
-        },
-      });
+      let accountToUpdate = accounts.find(
+        (a) => a.account === nextAccount.account,
+      );
+
+      if (accountToUpdate) {
+        accountToUpdate.tokens = {
+          ...accountToUpdate.tokens,
+          [tokenId]: (accountToUpdate.tokens?.[tokenId] || 0) + 1,
+        };
+      }
 
       //Rotate seeded random number
       seededRandomNo = seedRandom(`${seededRandomNo}`);
     }
 
-    console.log(accounts);
-
-    return;
-
-    let tokenCount: number = 0;
     let counter: number = 0;
 
     while (true) {
