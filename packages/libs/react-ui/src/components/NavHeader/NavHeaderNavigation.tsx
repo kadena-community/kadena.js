@@ -26,6 +26,8 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
     }
   }, [activeHref]);
 
+  const glowOffset = 60;
+
   return (
     <NavHeaderNavigationContext.Provider
       value={{ setGlowPosition, activeHref: _activeHref, setActiveHref }}
@@ -37,7 +39,7 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
           ref={glowRef}
           style={{
             opacity: 1,
-            transform: `translateX(${glowX + 60}px)`,
+            transform: `translateX(${glowX + glowOffset}px)`,
             transitionDuration: `${animationDuration}ms`,
           }}
         >
