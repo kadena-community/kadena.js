@@ -26,18 +26,18 @@ export const getConfig = async (): Promise<IConfig> => {
   }
 };
 
-export const getPages = async (): Promise<IMenuData[]> => {
-  const { pages } = await getConfig();
+// export const getPages = async (): Promise<IMenuData[]> => {
+//   const { pages } = await getConfig();
 
-  const cleanup = (pages: IMenuData[]): IMenuData[] => {
-    const innerPages = Object.entries(pages);
+//   const cleanup = (pages: IMenuData[]): IMenuData[] => {
+//     const innerPages = Object.entries(pages);
 
-    return innerPages.map(([key, page]: [string, IMenuData]) => {
-      if (page.children) page.children = cleanup(page.children);
+//     return innerPages.map(([key, page]: [string, IMenuData]) => {
+//       if (page.children) page.children = cleanup(page.children);
 
-      return { ...page, id: key } as IMenuData;
-    });
-  };
+//       return { ...page, id: key } as IMenuData;
+//     });
+//   };
 
-  return cleanup(pages);
-};
+//   return cleanup(pages);
+// };

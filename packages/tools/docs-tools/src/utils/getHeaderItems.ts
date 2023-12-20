@@ -1,9 +1,14 @@
 import type { IMenuData } from 'src/types';
 import { getConfig, getData } from './staticGeneration/getData';
 
+const getPageById = (id: string): IPage => {};
+
 export const getHeaderItems = async (): Promise<IMenuData[]> => {
   const { menu } = await getConfig();
-  const tree = await getData();
+
+  return menu.reduce((acc, val) => {
+    const idArray = val.split('.');
+  }, []);
 
   const menuItems = menu.reduce(
     (acc: IMenuData[], item: string): IMenuData[] => {

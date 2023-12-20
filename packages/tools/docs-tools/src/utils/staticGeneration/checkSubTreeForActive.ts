@@ -92,15 +92,11 @@ export const checkSubTreeForActive = async (
   path: string,
   noChildren = false,
 ): Promise<IMenuItem[]> => {
-  console.log(1111111);
-  const { pages } = await getConfig();
-
-  console.log(2222222, pages);
+  const tree = await getData();
 
   if (!path) {
     throw new Error('no path');
   }
 
-  return pages as unknown as IMenuItem[];
-  //return tree.map(mapSubTree(path, noChildren, true));
+  return tree.map(mapSubTree(path, noChildren, true));
 };
