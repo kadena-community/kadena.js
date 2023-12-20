@@ -136,10 +136,10 @@ export const childrenClass = style([
 
 export const glowClass = style([
   {
+    top: 0,
     left: 0,
     pointerEvents: 'none',
     position: 'absolute',
-    top: 0,
     zIndex: 0,
   },
 ]);
@@ -193,10 +193,8 @@ export const selectClass = style([
   atoms({
     background: 'none',
     border: 'none',
-
     flexGrow: 1,
     outline: 'none',
-
     fontSize: 'base',
   }),
   {
@@ -214,10 +212,10 @@ export const chevronIconClass = style([
     position: 'absolute',
     display: 'inline-flex',
     alignItems: 'center',
-  }),
-  {
     top: 0,
     bottom: 0,
+  }),
+  {
     right: vars.sizes.$1,
     color: vars.colors.$gray40,
     marginRight: vars.sizes.$2,
