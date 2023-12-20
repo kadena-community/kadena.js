@@ -1,138 +1,193 @@
-import type { WriteFileOptions } from 'fs';
+import type { EncryptedString } from '@kadena/hd-wallet';
 import yaml from 'js-yaml';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  HDKEY_ENC_EXT,
-  KEY_DIR,
-  PLAINKEY_EXT,
+  KEY_EXT,
+  KEY_LEGACY_EXT,
+  PLAIN_KEY_DIR,
+  PLAIN_KEY_EXT,
+  PLAIN_KEY_LEGACY_EXT,
+  WALLET_DIR,
+  WALLET_EXT,
+  WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
-import { ensureDirectoryExists, writeFile } from '../../utils/filesystem.js';
+import { services } from '../../services/index.js';
+import { removeAfterFirstDot } from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 
-interface IKeyPair {
+export type TSeedContent = string;
+
+export interface IKeyPair {
   publicKey: string;
-  privateKey: string;
+  secretKey?: EncryptedString | string;
 }
 
-/**
- * Saves the given key pair to multiple files based on the provided amount.
- * Only subsequent files will be postfixed with an index if the amount is greater than 1.
- *
- * @param {string} alias - The base alias for the key pair.
- * @param {string} publicKey - The public key.
- * @param {string} privateKey - The private key.
- * @param {number} [amount=1] - The number of files to write.
- */
-export function savePlainKeyByAlias(
+export type KeyContent = TSeedContent | IKeyPair;
+
+export async function savePlainKeyByAlias(
   alias: string,
-  publicKey: string,
-  privateKey: string,
-  amount: number = 1,
-): void {
-  ensureDirectoryExists(KEY_DIR);
+  keyPairs: IKeyPair[],
+  legacy: boolean = false,
+): Promise<void> {
   const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
 
-  for (let i = 0; i < amount; i++) {
-    let fileName = sanitizedAlias;
+  for (let i = 0; i < keyPairs.length; i++) {
+    const keyPair = keyPairs[i];
+    let fileName = `${sanitizedAlias}${i > 0 ? `-${i}` : ''}`;
+    const ext = legacy ? PLAIN_KEY_LEGACY_EXT : PLAIN_KEY_EXT;
+    fileName += ext;
+    const filePath = join(PLAIN_KEY_DIR, fileName);
 
-    // Append index to the filename if it's not the first file.
-    if (i > 0) {
-      fileName += `-${i}`;
+    const data: IKeyPair = { publicKey: keyPair.publicKey };
+    if (keyPair.secretKey !== undefined) {
+      data.secretKey = keyPair.secretKey;
     }
 
-    fileName += PLAINKEY_EXT;
-
-    const filePath = join(KEY_DIR, fileName);
-
-    const data = {
-      publicKey,
-      privateKey,
-    };
-
-    writeFile(filePath, yaml.dump(data), 'utf8' as WriteFileOptions);
+    await services.filesystem.writeFile(
+      filePath,
+      yaml.dump(data, { lineWidth: -1 }),
+    );
+    // await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
   }
 }
 
 /**
- * Retrieves a key pair based on the given alias.
+ * Saves key pairs by alias in a specific wallet directory.
  *
- * @param {string} alias - The alias corresponding to the key file to be fetched.
- * @returns {{publicKey: string; secretKey: string} | undefined} The key pair if found, otherwise undefined.
+ * @param {string} alias - The alias for the key pair.
+ * @param {IKeyPair[]} keyPairs - Array of key pairs to save.
+ * @param {boolean} legacy - Whether to use legacy format.
+ * @param {string} [walletName=""] - The name of the wallet (optional).
  */
-export function getStoredPlainKeyByAlias(
+export async function saveKeyByAlias(
   alias: string,
-): { publicKey: string; secretKey: string } | undefined {
-  const filePath = join(KEY_DIR, `${alias}${PLAINKEY_EXT}`);
-  if (existsSync(filePath)) {
-    const keyPair = yaml.load(readFileSync(filePath, 'utf8')) as IKeyPair;
-    return {
-      publicKey: keyPair.publicKey,
-      secretKey: keyPair.privateKey,
-    };
-  }
-  return undefined;
-}
+  keyPairs: IKeyPair[],
+  legacy: boolean = false,
+  walletName: string = '',
+): Promise<void> {
+  const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
+  const sanitizedWalletName = sanitizeFilename(removeAfterFirstDot(walletName));
 
-/**
- * Loads the public keys from key files based on their aliases.
- * Iterates through files in the key directory, and if a file matches the '.key' extension,
- * its content is parsed, and if it contains a valid public key, it's added to the returned array.
- *
- * @returns {string[]} Array of public keys.
- */
-export function getAllPublicKeysFromAliasFiles(): string[] {
-  ensureDirectoryExists(KEY_DIR); // Ensure this function is defined elsewhere in your code
-  const publicKeys: string[] = [];
-  const files = readdirSync(KEY_DIR);
+  const baseDir = sanitizedWalletName
+    ? join(WALLET_DIR, sanitizedWalletName)
+    : WALLET_DIR;
 
-  for (const file of files) {
-    if (file.endsWith('.key')) {
-      const filePath = join(KEY_DIR, file);
-      const keyPair = yaml.load(readFileSync(filePath, 'utf8')) as IKeyPair;
+  for (let i = 0; i < keyPairs.length; i++) {
+    const keyPair = keyPairs[i];
+    let fileName = `${sanitizedAlias}${i > 0 ? `-${i}` : ''}`;
+    const ext = legacy ? KEY_LEGACY_EXT : KEY_EXT;
+    fileName += ext;
+    const filePath = join(baseDir, fileName);
 
-      if (
-        typeof keyPair?.publicKey === 'string' &&
-        keyPair.publicKey.length > 0
-      ) {
-        publicKeys.push(keyPair.publicKey);
-      }
+    const data: IKeyPair = { publicKey: keyPair.publicKey };
+    if (keyPair.secretKey !== undefined) {
+      data.secretKey = keyPair.secretKey;
     }
+    await services.filesystem.writeFile(
+      filePath,
+      yaml.dump(data, { lineWidth: -1 }),
+    );
+    // await writeFileAsync(filePath, yaml.dump(data, { lineWidth: -1 }), 'utf8');
   }
-
-  return publicKeys;
 }
 
 /**
- * Stores the mnemonic phrase or seed to the filesystem.
+
+/**
+ * Stores the seed in the filesystem in a directory specific to the alias.
  *
- * @param {string} words - The mnemonic phrase.
  * @param {string} seed - The seed.
- * @param {string} fileName - The name of the file to store the mnemonic or seed in.
- * @param {boolean} hasPassword - Whether a password was used to generate the seed.
+ * @param {string} alias - The alias used to name the file and directory.
+ * @param {boolean} legacy - Whether to use the legacy file extension.
  */
-export function storeHdKey(seed: string, fileName: string): void {
-  ensureDirectoryExists(KEY_DIR);
+export async function storeWallet(
+  seed: string,
+  alias: string,
+  legacy: boolean = false,
+): Promise<void> {
+  const sanitizedAlias = sanitizeFilename(alias).toLowerCase();
+  const walletSubDir = join(WALLET_DIR, sanitizedAlias);
 
-  const sanitizedFilename = sanitizeFilename(fileName).toLowerCase();
-  const fileExtension = HDKEY_ENC_EXT;
-  const dataToStore = seed;
-  const storagePath = join(KEY_DIR, `${sanitizedFilename}${fileExtension}`);
+  const aliasExtension = legacy ? WALLET_LEGACY_EXT : WALLET_EXT;
+  const storagePath = join(walletSubDir, `${sanitizedAlias}${aliasExtension}`);
 
-  writeFile(storagePath, yaml.dump(dataToStore), 'utf8' as WriteFileOptions);
+  console.log('storeWallet');
+  await services.filesystem.ensureDirectoryExists(storagePath);
+  await services.filesystem.writeFile(
+    storagePath,
+    yaml.dump(seed, { lineWidth: -1 }),
+  );
 }
 
 /**
- * Retrieves the stored mnemonic phrase from the filesystem.
- *
- * @param {string} fileName - The name of the file where the mnemonic is stored.
- * @returns {string | undefined} The stored mnemonic phrase, or undefined if not found.
+ * Reads the content of a key file and parses it.
+ * @param {string} filePath - The complete file path of the key file to be read.
+ * @returns {TSeedContent | IKeyPair | undefined} The parsed content of the key file, or undefined if the file does not exist.
+ * @throws {Error} Throws an error if reading the file fails.
  */
-export function getStoredHdKey(fileName: string): string | undefined {
-  const storagePath = join(KEY_DIR, fileName);
-
-  if (existsSync(storagePath)) {
-    return yaml.load(readFileSync(storagePath, 'utf8')) as string;
+export function readKeyFileContent(
+  filePath: string,
+): TSeedContent | IKeyPair | undefined {
+  if (!existsSync(filePath)) {
+    // if (!(await services.filesystem.directoryExists(filePath))) {
+    console.error(`File at path ${filePath} does not exist.`);
+    return undefined;
   }
-  return undefined;
+
+  const fileContents = readFileSync(filePath, 'utf8');
+  // const fileContents = await services.filesystem.readFile(filePath);
+  if (fileContents === null) {
+    throw Error(`Failed to read file at path: ${filePath}`);
+  }
+  return yaml.load(fileContents) as TSeedContent | IKeyPair;
+}
+
+/**
+ * Asynchronously wraps the readKeyFileContent function.
+ * @param {string} filePath - The complete file path of the key file to be read.
+ * @returns {Promise<TSeedContent | IKeyPair | undefined>} A promise that resolves with the parsed content of the key file, or undefined if the file does not exist.
+ */
+export async function readKeyFileContentAsync(
+  filePath: string,
+): Promise<TSeedContent | IKeyPair | undefined> {
+  return new Promise((resolve, reject) => {
+    try {
+      const result = readKeyFileContent(filePath);
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+/**
+ * Fetches all files with a specific extension from a given directory.
+ * @param {string} dir - The directory path from which files are to be read.
+ * @param {string} extension - The file extension to filter by.
+ * @returns {string[]} Array of filenames with the specified extension, without the extension itself.
+ */
+export function getFilesWithExtension(
+  dir: string,
+  extension: string,
+): string[] {
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
+  // await services.filesystem.ensureDirectoryExists(dir);
+
+  try {
+    // const files = await services.filesystem.readDir(dir);
+    return readdirSync(dir).filter((filename) => {
+      // return files.filter((filename) => {
+      // When searching for standard wallet files, exclude legacy wallet files
+      if (extension === WALLET_EXT && filename.endsWith(WALLET_LEGACY_EXT)) {
+        return false;
+      }
+      return filename.toLowerCase().endsWith(extension);
+    });
+  } catch (error) {
+    console.error(`Error reading directory for extension ${extension}:`, error);
+    return [];
+  }
 }

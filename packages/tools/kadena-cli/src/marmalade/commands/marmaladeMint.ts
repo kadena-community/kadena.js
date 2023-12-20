@@ -8,7 +8,7 @@ export const mintCommand: (program: Command, version: string) => void =
   createCommand(
     'mint',
     'mint a new NFT on Marmalade',
-    [globalOptions.network(true)],
+    [globalOptions.network()],
     async (config) => {
       debug('marmalade-mint:action')({ config });
       const tokenIdReponse = createTokenId(
