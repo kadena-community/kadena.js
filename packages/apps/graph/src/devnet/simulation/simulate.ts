@@ -141,12 +141,16 @@ export async function simulate({
           counter = 0;
         }
 
-        const balance = (await getBalance(
-          account.account,
-          dotenv.NETWORK_ID,
-          account.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
-          dotenv.NETWORK_HOST,
-        )) as number;
+        const balance = parseFloat(
+          (
+            await getBalance(
+              account.account,
+              dotenv.NETWORK_ID,
+              account.chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
+              dotenv.NETWORK_HOST,
+            )
+          )?.decimal || '0',
+        );
 
         // using a random number safety gap to avoid underflowing the account
         const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
