@@ -20,7 +20,7 @@ export const baseConfig: PlaywrightTestConfig = {
       ? process.env.PLAYWRIGHT_BASE_URL
       : 'http://localhost:3000',
     channel: 'chromium',
-   // trace: 'retain-on-failure',
+    // trace: 'retain-on-failure',
   },
   timeout: 10 * 10000,
   expect: {
