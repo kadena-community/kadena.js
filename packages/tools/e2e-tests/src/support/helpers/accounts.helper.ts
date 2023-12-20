@@ -1,5 +1,5 @@
 import {createSignWithKeypair} from '@kadena/client';
-import type { ICommandResult, ChainId} from '@kadena/client';
+import type { ChainId} from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import * as constants from '../fixtures/constants';
@@ -65,8 +65,8 @@ export const createAccount = async (
   );
 
   await transferCreateTask.executeTo();
+  console.log(account)
   return account
-
 };
 
 
