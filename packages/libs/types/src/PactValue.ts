@@ -47,7 +47,8 @@ export type PactLiteral =
   | IPactInt
   | IPactDecimal
   | boolean
-  | Date;
+  | Date
+  | object;
 
 /**
  * A sum type representing a `pact` value.

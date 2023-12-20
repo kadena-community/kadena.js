@@ -87,16 +87,3 @@ export const headerImageClass = style({
   inset: 0,
   width: '100%',
 });
-
-export const tagLinkClass = style([
-  sprinkles({
-    marginX: '$1',
-  }),
-  {
-    selectors: {
-      '&:hover': {
-        opacity: '.8',
-      },
-    },
-  },
-]);

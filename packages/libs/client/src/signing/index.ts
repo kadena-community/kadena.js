@@ -5,7 +5,6 @@ export {
   IEckoSignFunction,
   IEckoSignSingleFunction,
 } from './eckoWallet/eckoTypes';
-export { IKeypair } from './keypair/createSignWithKeypair';
 export { TWalletConnectChainId } from './walletconnect/walletConnectTypes';
 
 export * from './utils/addSignatures';

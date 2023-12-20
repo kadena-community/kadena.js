@@ -109,7 +109,7 @@ async function generator(
       WARNING: No namespace found for module "${name}". You can pass --namespace as a fallback.
       `);
     }
-    moduleDtss.set(name, generateDts(name, modules));
+    moduleDtss.set(name, generateDts(modules[name]));
   });
 
   return moduleDtss;

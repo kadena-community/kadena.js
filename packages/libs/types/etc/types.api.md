@@ -73,14 +73,12 @@ export interface IExecPayload {
     data: Exclude<EnvData, undefined> | null;
 }
 
-// @alpha
+// @alpha (undocumented)
 export interface IKeyPair {
-    // (undocumented)
-    clist?: Array<ICap>;
     // (undocumented)
     publicKey: string;
     // (undocumented)
-    secretKey?: string;
+    secretKey: string;
 }
 
 // @alpha
@@ -250,7 +248,7 @@ export type Nonce = string;
 export type PactCode = string;
 
 // @alpha
-export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean | Date;
+export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean | Date | object;
 
 // @alpha
 export type PactPayload = {

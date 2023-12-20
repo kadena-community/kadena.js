@@ -1,6 +1,6 @@
 import { Box } from '@/components/box';
 import { Text } from '@/components/text';
-import { selectColor } from '@/utils/selectColor';
+import { selectColor } from '@/utils/select-color';
 import React from 'react';
 
 export const ChainwebHeader = (): JSX.Element => {

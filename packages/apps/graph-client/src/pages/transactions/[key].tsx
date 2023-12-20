@@ -1,5 +1,5 @@
 import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
-import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
+import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
 import { formatCode, formatLisp } from '@/utils/formatter';
 import {
@@ -55,7 +55,7 @@ const RequestKey: React.FC = () => {
                 <Table.Td>
                   {data?.transaction?.badResult && (
                     <Notification
-                      color="negative"
+                      intent="negative"
                       icon={<SystemIcon.Close />}
                       role="status"
                     >
@@ -71,7 +71,7 @@ const RequestKey: React.FC = () => {
                   )}
                   {data?.transaction?.goodResult && (
                     <Notification
-                      color="positive"
+                      intent="positive"
                       icon={<SystemIcon.Check />}
                       role="status"
                     >
@@ -82,7 +82,7 @@ const RequestKey: React.FC = () => {
                   )}
                   {!data?.transaction?.goodResult &&
                     !data?.transaction?.badResult && (
-                      <Notification color="warning" role="status">
+                      <Notification intent="warning" role="status">
                         Unknown transaction status
                       </Notification>
                     )}

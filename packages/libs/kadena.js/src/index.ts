@@ -5,5 +5,5 @@ export * from './api/createExecCommand';
 export * from './api/prepareContCommand';
 export * from './api/prepareExecCommand';
 export * from './api/pullAndCheckHashs';
-export * from './api/pullSigner';
+export { pullSigner } from './api/pullSigner';
 export * from './wallet/createCap';

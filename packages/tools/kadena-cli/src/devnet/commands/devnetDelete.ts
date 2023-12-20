@@ -12,6 +12,7 @@ import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import {
   dockerVolumeName,
+  guardDocker,
   removeDevnet,
   removeVolume,
 } from '../utils/docker.js';
@@ -22,6 +23,8 @@ export const deleteDevnetCommand: CreateCommandReturnType = createCommand(
   [globalOptions.devnetSelect()],
   async (config) => {
     debug('devnet-delete:action')({ config });
+
+    guardDocker();
 
     const externalPrompt = createExternalPrompt({
       devnetDeletePrompt,

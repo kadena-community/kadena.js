@@ -14,7 +14,7 @@ export type FormStatus = 'idle' | 'successful' | 'erroneous' | 'processing';
 export type Titles = Record<FormStatus, string>;
 export type Bodies = Record<FormStatus, React.ReactNode>;
 
-const statusToColorMap: Record<FormStatus, INotificationProps['color']> = {
+const statusToColorMap: Record<FormStatus, INotificationProps['intent']> = {
   erroneous: 'negative',
   idle: 'warning',
   processing: 'info',
@@ -80,10 +80,10 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
   return (
     <div className={containerStyle}>
       <Notification
-        color={statusToColorMap[status!]}
-        hasCloseButton
+        intent={statusToColorMap[status!]}
         icon={statusToIconMap[status!]}
-        onClose={onNotificationCloseClick}
+        isDismissable
+        onDismiss={onNotificationCloseClick}
         role="status"
       >
         <NotificationHeading>{title ?? titles[status!]}</NotificationHeading>

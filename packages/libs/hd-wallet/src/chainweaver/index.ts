@@ -1,15 +1,15 @@
 export {
-  kadenaChangePassword,
   kadenaCheckMnemonic,
   kadenaGenMnemonic,
-  kadenaGetPublic,
-  kadenaMnemonicToRootKeypair,
-  kadenaSign,
   kadenaVerify,
 } from './kadena-crypto.js';
 
 export {
+  kadenaChangePassword,
   kadenaGenKeypair,
+  kadenaGetPublic,
   kadenaGetPublicFromRootKey,
+  kadenaMnemonicToRootKeypair,
+  kadenaSign,
   kadenaSignFromRootKey,
 } from './compatibility/index.js';

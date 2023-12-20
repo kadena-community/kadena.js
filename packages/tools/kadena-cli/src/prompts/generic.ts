@@ -2,7 +2,7 @@ import { input } from '@inquirer/prompts';
 import type { IPrompt } from '../utils/createOption.js';
 import { isAlphanumeric } from '../utils/helpers.js';
 
-export async function genericFileName(type?: string): Promise<string> {
+export async function genericFileNamePrompt(type?: string): Promise<string> {
   return await input({
     message: `Enter a filename${type !== '' ? ` for your ${type}` : ''}`,
     validate: function (input) {
@@ -14,7 +14,7 @@ export async function genericFileName(type?: string): Promise<string> {
   });
 }
 
-export async function getInput(
+export async function getInputPrompt(
   message: string,
   defaultValue?: string,
 ): Promise<string> {

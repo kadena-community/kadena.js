@@ -1,4 +1,11 @@
-import { Button, Heading, Input, Notification, Stack } from '@kadena/react-ui';
+import {
+  Button,
+  Heading,
+  Input,
+  Notification,
+  Stack,
+  SystemIcon,
+} from '@kadena/react-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { useSubscribe } from './useSubscribe';
@@ -29,7 +36,7 @@ export const Subscribe: FC = () => {
               <Stack gap="$sm" paddingY="$1">
                 <Input
                   id="email"
-                  icon="At"
+                  startIcon={<SystemIcon.At />}
                   onChange={handleFormState}
                   placeholder="Email address"
                   outlined
@@ -49,14 +56,14 @@ export const Subscribe: FC = () => {
             </form>
 
             {Boolean(message) && (
-              <Notification color="warning" role="status">
+              <Notification intent="warning" role="status">
                 {message}
               </Notification>
             )}
           </>
         ) : (
           Boolean(message) && (
-            <Notification color="positive" role="status">
+            <Notification intent="positive" role="status">
               {message}
             </Notification>
           )

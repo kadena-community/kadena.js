@@ -4,7 +4,7 @@ import { globalOptions } from '../../utils/globalOptions.js';
 import chalk from 'chalk';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { stopDevnet } from '../utils/docker.js';
+import { guardDocker, stopDevnet } from '../utils/docker.js';
 
 export const stopDevnetCommand: CreateCommandReturnType = createCommand(
   'stop',
@@ -12,6 +12,8 @@ export const stopDevnetCommand: CreateCommandReturnType = createCommand(
   [globalOptions.devnetSelect()],
   async (config) => {
     debug('devnet-stop:action')({ config });
+
+    guardDocker();
 
     try {
       stopDevnet(config.name);

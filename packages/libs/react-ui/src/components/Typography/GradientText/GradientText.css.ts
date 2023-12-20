@@ -1,13 +1,14 @@
-import { sprinkles } from '@theme/sprinkles.css';
+import { atoms } from '@theme/atoms.css';
+import { tokens } from '@theme/index';
 import { style } from '@vanilla-extract/css';
 
 export const gradientTextClass = style([
-  sprinkles({
-    fontWeight: '$bold',
+  atoms({
+    fontWeight: 'bodyFont.bold',
   }),
   {
     backgroundColor: 'inherit',
-    backgroundImage: 'linear-gradient(50deg, #ff00e9, #00c0ff 90%)',
+    backgroundImage: `linear-gradient(50deg, ${tokens.kda.foundation.color.accent.brand.secondary}, ${tokens.kda.foundation.color.accent.brand.primary} 90%)`,
     backgroundSize: '100%',
     color: 'white',
     backgroundClip: 'text',

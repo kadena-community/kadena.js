@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { CLIRootName } from '../constants/config.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
 import type { GlobalOptions } from './globalOptions.js';
-import { clearCLI, collectResponses } from './helpers.js';
+import { collectResponses } from './helpers.js';
 import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 
 type AsOption<T> = T extends {
@@ -46,7 +46,7 @@ export function createCommand<
   description: string,
   options: [...T],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  action: (finalConfig: Prettify<Combine<T>>) => any,
+  action: (finalConfig: Prettify<Combine<T>>, args?: any) => any,
 ): (program: Command, version: string) => void {
   return async (program: Command, version: string) => {
     const command = program.command(name).description(description);
@@ -56,13 +56,15 @@ export function createCommand<
     });
 
     command.action(async (args, ...rest) => {
-      clearCLI(true);
       try {
         // collectResponses
-        const questionsMap = options.map(({ prompt, key }) => ({
-          key,
-          prompt,
-        }));
+        const questionsMap = options
+          .filter((o) => o.isInQuestions)
+          .map(({ prompt, key }) => ({
+            key,
+            prompt,
+          }));
+
         const responses = await collectResponses(args, questionsMap);
         const newArgs = { ...args, ...responses };
 
@@ -74,28 +76,36 @@ export function createCommand<
               .map((arg) => {
                 let displayValue: string | null = null;
                 const value = newArgs[arg];
+                const argName = arg.toLowerCase();
 
-                if (Array.isArray(value)) {
-                  displayValue = value.join(' ');
-                }
-
-                if (typeof value === 'string') {
-                  displayValue = `"${value}"`;
-                }
-
-                if (typeof value === 'number') {
-                  displayValue = value.toString();
+                if (argName.includes('password')) {
+                  if (value === '') {
+                    displayValue = '';
+                  } else {
+                    displayValue = '******';
+                  }
+                } else {
+                  if (Array.isArray(value)) {
+                    displayValue = value.join(' ');
+                  } else if (typeof value === 'string') {
+                    displayValue = `"${value}"`;
+                  } else if (typeof value === 'number') {
+                    displayValue = value.toString();
+                  } else if (typeof value === 'boolean' && value === false) {
+                    return undefined;
+                  }
                 }
 
                 return `--${arg.replace(
                   /[A-Z]/g,
-                  (match: string) => `-${match.toLowerCase()}`,
+                  (match) => `-${match.toLowerCase()}`,
                 )} ${
                   displayValue !== null && displayValue !== undefined
                     ? displayValue
                     : ''
                 }`;
               })
+              .filter(Boolean)
               .join(' ')}`,
           ),
         );
@@ -124,12 +134,19 @@ export function createCommand<
               }
             }
           }
+          if ('transform' in option) {
+            if (typeof option.transform === 'function') {
+              config[option.key] = await option.transform(newArgs[option.key]);
+            }
+          }
         }
 
-        clearCLI(true);
-        displayConfig(config);
+        if (Object.keys(config).length > 0) {
+          displayConfig(config);
+          console.log('\n');
+        }
 
-        await action(config);
+        await action(config, newArgs);
       } catch (error) {
         console.error(error);
         console.error(chalk.red(`Error executing command ${name}: ${error})`));
