@@ -1160,6 +1160,9 @@ importers:
       '@kadena-dev/shared-config':
         specifier: workspace:*
         version: link:../../tools/shared-config
+      '@kadena/pactjs':
+        specifier: workspace:^
+        version: link:../pactjs
       '@kadena/pactjs-cli':
         specifier: workspace:^
         version: link:../../tools/pactjs-cli
