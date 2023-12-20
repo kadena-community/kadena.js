@@ -1,5 +1,6 @@
 import { cleanup } from '@testing-library/react';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { isMarkDownFile } from '../markdown/isMarkdownFile';
 import { getHeaderItems, getPageTreeById } from './../getHeaderItems';
 
 describe('utils getHeaderItems', () => {
@@ -11,19 +12,63 @@ describe('utils getHeaderItems', () => {
           ...actual,
           readFile: async (file: string) => {
             const fileArray = file.split('/');
-            return `---
-title: mocktitle ${fileArray.at(-1)}
-description: Kadena makes blockchain work for everyone.
-menu: mockmenu ${fileArray.at(-1)}
-label: Setup
-order: 2
-editLink: https://github.com/kadena-community/kadena.js/edit/main/packages/tools/cookbook/README.md
-layout: full
-tags: [javascript,typescript,pact,reference,api]
+            if (isMarkDownFile(file)) {
+              return `---
+  title: mocktitle ${fileArray.at(-1)}
+  description: Kadena makes blockchain work for everyone.
+  menu: mockmenu ${fileArray.at(-1)}
+  label: Setup
+  order: 2
+  editLink: https://github.com/kadena-community/kadena.js/edit/main/packages/tools/cookbook/README.md
+  layout: full
+  tags: [javascript,typescript,pact,reference,api]
 ---
-            # Setup
+              # Setup
+              
+              this is a test file`;
+            }
+
+            return `
+            import type { IMostPopularPage } from '@/MostPopularData';
+            import React from 'react';
             
-            this is a test file`;
+            interface IProps {
+              popularPages: IMostPopularPage[];
+              blogPosts: IMenuData[];
+            }
+            
+            const Home: FC<IProps> = () => {
+              return (
+                <div>
+                  content
+                </div>
+              );
+            };
+            
+            export const getStaticProps: GetStaticProps = async () => {
+              return {
+                props: {
+                  ...(await getPageConfig({
+                    blogPosts: ['kadenajs', 'cli'],
+                    popularPages: '/build',
+                    filename: __filename,
+                  })),
+                  frontmatter: {
+                    title: 'mocktitle ${fileArray.at(-1)}',
+                    menu: 'mockmenu ${fileArray.at(-1)}',
+                    subTitle: 'Build your best ideas with us',
+                    label: 'Introduction',
+                    order: 1,
+                    description: 'Build on Kadena',
+                    layout: 'landing',
+                  },
+                },
+              };
+            };
+            
+            export default Home;
+                        
+            `;
           },
         },
       };
