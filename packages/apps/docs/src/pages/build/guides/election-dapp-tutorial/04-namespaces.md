@@ -485,6 +485,10 @@ To create your principal namespace on the development network:
   You can copy this account name from Chainweaver when viewing the account watch list.
 
   When you run the script, you should see Chainweaver display a QuickSign Request.
+  For example:
+
+  ![Sample QuickSign request](/assets/docs/election-workshop/quicksign-request.png)
+
   If you don't see the request automatically, select Chainweaver to bring it to the foreground. 
 
 1. Click **Sign All** to sign the request.
