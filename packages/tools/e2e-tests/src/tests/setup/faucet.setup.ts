@@ -1,5 +1,5 @@
 import { expect, test as setup } from '@playwright/test';
-import { deployFaucetContract } from '../../smart-contracts/faucet/deploy';
+import { deployFaucetContract } from '../../support/smart-contracts/faucet/deploy';
 
 setup('Deploy Faucet Smart Contract', async () => {
   await setup.step('Deploying on Chain 0', async () => {
