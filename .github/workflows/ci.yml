@@ -5,9 +5,9 @@ on:
   pull_request:
   workflow_dispatch:
 
-env:
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+# env:
+#   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+#   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
 jobs:
   build:
@@ -107,7 +107,7 @@ jobs:
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
 
       - name: build dApp
-        run: pnpm --filter ${{ matrix.package }}... build
+        run: pnpm --filter ${{ matrix.package }} build
         env:
           # Faucet variables for devnet.
           FAUCET_NAMESPACE: n_34d947e2627143159ea73cdf277138fd571f17ac
@@ -116,7 +116,7 @@ jobs:
 
       - name: Start dApp & Run Tests
         run:
-          pnpm --filter ${{ matrix.package }} start & pnpm run test:e2e --
+          pnpm --filter ${{ matrix.package }} start & pnpm --filter @kadena-dev/e2e-tests run test:e2e --
           --project=${{ matrix.package }}
         env:
           CI: true
