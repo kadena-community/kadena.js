@@ -10,9 +10,12 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
+import { IPactDecimal } from '@kadena/types';
+import { IPactInt } from '@kadena/types';
 import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
+import { PactValue } from '@kadena/types';
 
 // Warning: (ae-forgotten-export) The symbol "ICreateAccountCommandInput" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "IClientConfig" needs to be exported by the entry point index.d.ts
@@ -82,7 +85,7 @@ data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<object> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
 
 // @alpha (undocumented)
 export const safeTransferCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ISafeTransferInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
