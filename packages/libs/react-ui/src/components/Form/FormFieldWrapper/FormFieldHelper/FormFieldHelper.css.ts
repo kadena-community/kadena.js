@@ -1,24 +1,29 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { atoms } from '@theme/atoms.css';
+import { tokens } from '@theme/tokens/contract.css';
 import { createVar, fallbackVar, style } from '@vanilla-extract/css';
 
 export const helperIconColor = createVar(),
   helperTextColor = createVar();
 
 export const helperClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     alignItems: 'center',
-    gap: '$1',
-    fontSize: '$xs',
-    marginY: '$3',
-    color: '$foreground',
+    gap: 'xxs',
+    fontSize: 'xs',
+    marginY: 'sm',
   }),
   {
-    color: fallbackVar(helperTextColor, vars.colors.$primaryContrastInverted),
+    color: fallbackVar(
+      helperTextColor,
+      tokens.kda.foundation.color.text.semantic.info.default,
+    ),
   },
 ]);
 
 export const helperIconClass = style({
-  color: fallbackVar(helperIconColor, vars.colors.$primaryAccent),
+  color: fallbackVar(
+    helperIconColor,
+    tokens.kda.foundation.color.icon.semantic.info.default,
+  ),
 });
