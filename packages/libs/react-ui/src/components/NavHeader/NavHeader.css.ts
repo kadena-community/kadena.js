@@ -23,9 +23,10 @@ export const itemsContainerClass = style([
     flexDirection: 'row',
     flexWrap: 'nowrap',
     width: '100%',
+    height: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    overflow: 'scroll',
+    overflowX: 'auto',
   }),
   {
     paddingLeft: vars.sizes.$3,
