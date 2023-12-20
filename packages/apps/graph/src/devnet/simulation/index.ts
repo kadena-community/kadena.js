@@ -82,7 +82,6 @@ program
     try {
       logger.info('Simulation config parameters:', args);
       await simulate(args);
-      await deployMarmaladeContracts(sender00);
     } catch (error) {
       console.error(error);
     }

@@ -7,6 +7,7 @@ import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 interface IPageConfigProps {
   blogPosts?: string[] | boolean;
   popularPages?: string;
+  filename: string;
 }
 
 interface IPageConfigReturn {
@@ -18,6 +19,7 @@ interface IPageConfigReturn {
 export const getPageConfig = async ({
   blogPosts,
   popularPages,
+  filename,
 }: IPageConfigProps): Promise<IPageConfigReturn> => {
   const blogData = Array.isArray(blogPosts)
     ? await getBlogPosts(blogPosts)
@@ -29,7 +31,7 @@ export const getPageConfig = async ({
     : null;
 
   return {
-    leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+    leftMenuTree: await checkSubTreeForActive(getPathName(filename)),
     blogPosts: blogData,
     popularPages: popularData,
   };

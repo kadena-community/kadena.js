@@ -3,6 +3,7 @@ import { SelectField } from '@components/Form';
 import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import React from 'react';
 
 type StoryProps = {
@@ -11,6 +12,7 @@ type StoryProps = {
 
 const meta: Meta<StoryProps> = {
   title: 'Form/SelectField',
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {

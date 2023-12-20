@@ -65,7 +65,11 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      ...(await getPageConfig({ blogPosts: true, popularPages: '/' })),
+      ...(await getPageConfig({
+        blogPosts: true,
+        popularPages: '/',
+        filename: __filename,
+      })),
       authors,
       frontmatter: {
         title: 'BlogChain authors',

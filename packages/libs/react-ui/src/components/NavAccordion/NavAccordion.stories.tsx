@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { atoms } from '@theme/atoms.css';
 import React from 'react';
 import type { INavAccordionProps, INavAccordionSectionProps } from './';
 import { NavAccordion } from './';
@@ -58,49 +59,55 @@ export const Dynamic: IStory = {
   },
   render: ({ linked, darkMode }) => {
     return (
-      <NavAccordion.Root linked={linked} darkMode={darkMode}>
-        <NavAccordion.Section
-          title="Developers"
-          onClose={() =>
-            console.log('optional section onClose handler example')
-          }
-          onOpen={() => console.log('optional section onOpen handler example')}
-        >
-          <NavAccordion.Group
-            title="Guides"
+      <div className={atoms({ width: '100%' })}>
+        <NavAccordion.Root linked={linked} darkMode={darkMode}>
+          <NavAccordion.Section
+            title="Developers"
             onClose={() =>
-              console.log('optional group onClose handler example')
+              console.log('optional section onClose handler example')
             }
-            onOpen={() => console.log('optional group onOpen handler example')}
+            onOpen={() =>
+              console.log('optional section onOpen handler example')
+            }
           >
-            <NavAccordion.Link href="#pact">
-              Pact Smart Contract
+            <NavAccordion.Group
+              title="Guides"
+              onClose={() =>
+                console.log('optional group onClose handler example')
+              }
+              onOpen={() =>
+                console.log('optional group onOpen handler example')
+              }
+            >
+              <NavAccordion.Link href="#pact">
+                Pact Smart Contract
+              </NavAccordion.Link>
+              <NavAccordion.Link href="#marmalade">
+                Marmalade Tutorial
+              </NavAccordion.Link>
+              <NavAccordion.Link href="#dapp-tutorial">
+                Voting dApp Tutorial
+              </NavAccordion.Link>
+            </NavAccordion.Group>
+            <NavAccordion.Link href="#get-involved">
+              Getting Involved
             </NavAccordion.Link>
-            <NavAccordion.Link href="#marmalade">
-              Marmalade Tutorial
+          </NavAccordion.Section>
+          <NavAccordion.Section title="Support">
+            <NavAccordion.Link href="#developer-program">
+              Developer Program
             </NavAccordion.Link>
-            <NavAccordion.Link href="#dapp-tutorial">
-              Voting dApp Tutorial
+            <NavAccordion.Link asChild>
+              <a href="https://kadena.io/" rel="noreferrer" target="_blank">
+                Kadena.io (asChild)
+              </a>
             </NavAccordion.Link>
-          </NavAccordion.Group>
-          <NavAccordion.Link href="#get-involved">
-            Getting Involved
+          </NavAccordion.Section>
+          <NavAccordion.Link href="https://docs.kadena.io/">
+            Documentation
           </NavAccordion.Link>
-        </NavAccordion.Section>
-        <NavAccordion.Section title="Support">
-          <NavAccordion.Link href="#developer-program">
-            Developer Program
-          </NavAccordion.Link>
-          <NavAccordion.Link asChild>
-            <a href="https://kadena.io/" rel="noreferrer" target="_blank">
-              Kadena.io (asChild)
-            </a>
-          </NavAccordion.Link>
-        </NavAccordion.Section>
-        <NavAccordion.Link href="https://docs.kadena.io/">
-          Documentation
-        </NavAccordion.Link>
-      </NavAccordion.Root>
+        </NavAccordion.Root>
+      </div>
     );
   },
 };

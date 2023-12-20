@@ -1,5 +1,6 @@
 import type { IFormFieldWrapperProps } from '@components/Form';
 import { FormFieldWrapper, Input } from '@components/Form';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import { vars } from '@theme/vars.css';
 import React from 'react';
@@ -12,6 +13,7 @@ type StoryProps = {
 
 const meta: Meta<StoryProps> = {
   title: 'Form/FormFieldWrapper',
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'stable' },
     docs: {
