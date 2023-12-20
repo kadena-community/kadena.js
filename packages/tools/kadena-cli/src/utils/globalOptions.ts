@@ -1,7 +1,7 @@
 import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
-  // account,
+  account,
   // contract,
   devnet as devnetPrompts,
   generic,
@@ -40,6 +40,48 @@ export const globalFlags = {
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
+  // Account
+  accountName: createOption({
+    key: 'accountName' as const,
+    prompt: account.accountNamePrompt,
+    validation: z.string(),
+    option: new Option('-a, --account-name <accountName>', 'Account name'),
+  }),
+  publicKeys: createOption({
+    key: 'publicKeys' as const,
+    prompt: account.publicKeysPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-p, --public-keys <publicKeys>',
+      'Public keys (comma separated)',
+    ),
+    expand: async (publicKeys: string) => {
+      return publicKeys.split(',').map((value) => value.trim());
+    },
+  }),
+  amount: createOption({
+    key: 'amount' as const,
+    prompt: account.amountPrompt,
+    validation: z
+      .string({
+        /* eslint-disable-next-line @typescript-eslint/naming-convention */
+        invalid_type_error: 'Error: -a, --amount must be a number',
+      })
+      .min(0),
+    option: new Option('-a, --amount <amount>', 'Amount'),
+  }),
+  fungible: createOption({
+    key: 'fungible' as const,
+    prompt: account.fungiblePrompt,
+    validation: z.string(),
+    option: new Option('-f, --fungible <fungible>', 'Fungible'),
+  }),
+  predicate: createOption({
+    key: 'predicate' as const,
+    prompt: account.predicatePrompt,
+    validation: z.string(),
+    option: new Option('-p, --predicate <predicate>', 'Keyset predicate'),
+  }),
   // global
   ci: createOption({
     key: 'ci' as const,
