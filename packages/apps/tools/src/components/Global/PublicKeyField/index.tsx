@@ -15,7 +15,6 @@ export const PublicKeyField: FC<IPublicKeyFieldProps> = ({
   ...rest
 }) => {
   const { t } = useTranslation('common');
-  console.log('all props', rest);
 
   return (
     <TextField
