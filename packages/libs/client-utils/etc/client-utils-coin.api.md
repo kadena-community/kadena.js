@@ -10,7 +10,6 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
-import { IPactDecimal } from '@kadena/types';
 import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
@@ -46,7 +45,7 @@ export const createCrossChainCommand: ({ sender, receiver, amount, targetChainId
 export const details: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<undefined> | Promise<object>;
 
 // @alpha (undocumented)
-export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<undefined> | Promise<IPactDecimal>;
+export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<string | undefined>;
 
 // Warning: (ae-forgotten-export) The symbol "IRotateCommandInput" needs to be exported by the entry point index.d.ts
 //
