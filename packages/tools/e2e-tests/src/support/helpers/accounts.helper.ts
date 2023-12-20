@@ -1,49 +1,70 @@
-import { createSignWithKeypair  } from '@kadena/client';
-import type {ChainId} from '@kadena/client';
-import { createAccount } from '@kadena/client-utils/coin';
+import {createSignWithKeypair} from '@kadena/client';
+import type { ICommandResult, ChainId} from '@kadena/client';
+import { createPrincipal } from '@kadena/client-utils/built-in';
 import { genKeyPair } from '@kadena/cryptography-utils';
-import { expect } from '@playwright/test';
-import { sender00Account } from '../fixtures/accounts.fixture';
 import * as constants from '../fixtures/constants';
-import type { IAccountWithSecretKey } from '../types/accounts';
+import type { IAccount } from '../types/types';
+import { transferCreate } from '@kadena/client-utils/coin';
+import { sender00Account } from '../fixtures/accounts.fixture';
 
-export async function generateAccount(
-  chain: ChainId,
-): Promise<IAccountWithSecretKey> {
-  const keyPair = genKeyPair();
-  return {
-    account: `k:${keyPair.publicKey}`,
-    publicKey: keyPair.publicKey,
-    chainId: chain,
-    guard: keyPair.publicKey,
-    secretKey: keyPair.secretKey as string,
-  };
-}
-export async function createAccountOnChain(chain: ChainId): Promise<IAccountWithSecretKey> {
-  const generatedAccount = await generateAccount(chain);
-  const creationTask = await createAccount(
+export const generateAccount = async (
+  keys: number = 1,
+  chainId: ChainId,
+): Promise<IAccount> => {
+  const keyPairs = Array.from({ length: keys }, () => genKeyPair());
+  const account = await createPrincipal(
     {
-      account: generatedAccount.account,
       keyset: {
-        pred: 'keys-all',
-        keys: [generatedAccount.publicKey],
+        keys: keyPairs.map((keyPair) => keyPair.publicKey),
       },
-      gasPayer: {
+    },
+    {
+      host: constants.devnetHost,
+      defaults: {
+        networkId: constants.networkId,
+        meta: { chainId },
+      },
+    },
+  );
+
+  return {
+    keys: keyPairs,
+    account,
+    chainId,
+  };
+};
+
+export const createAccount = async (
+  account: IAccount
+): Promise<ICommandResult> => {
+  const transferCreateTask = transferCreate(
+    {
+      sender: {
         account: sender00Account.account,
-        publicKeys: [sender00Account.publicKey],
+        publicKeys: sender00Account.keys.map((keyPair) => keyPair.publicKey),
       },
-      chainId: chain,
+      receiver: {
+        account: account.account,
+        keyset: {
+          keys: account.keys.map((keyPair) => keyPair.publicKey),
+          pred: 'keys-all',
+        },
+      },
+      amount: '100',
+      chainId: account.chainId,
     },
     {
       host: constants.devnetHost,
       defaults: {
         networkId: constants.networkId,
       },
-      sign: createSignWithKeypair([sender00Account]),
+      sign: createSignWithKeypair(sender00Account.keys),
     },
   );
-  const result = await creationTask.executeTo();
-  console.log(result)
-  expect(result).toBe('Write succeeded');
-  return generatedAccount
-}
+
+  const listen = await transferCreateTask.executeTo('listen');
+  await transferCreateTask.executeTo();
+  return listen;
+};
+
+

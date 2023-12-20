@@ -9,7 +9,7 @@
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
     "generate:coin:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact --chain 1 --network testnet",
-    "generate:contracts": "pnpm run /^generate:.*:contract/",
+    "build": "pnpm run /^generate:.*:contract/",
     "install:chromium": "npx playwright install chromium",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",

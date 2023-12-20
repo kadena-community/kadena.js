@@ -42,7 +42,7 @@ export default defineConfig({
       testDir: 'src/tests/tools-app/',
       dependencies: ['setup'],
       use: {
-        storageState: './src/page-objects/tools-app/storageState.json',
+        storageState: './src/support/page-objects/tools-app/storageState.json'
       },
     },
   ],

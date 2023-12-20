@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
-import { test } from '../../fixtures/test.fixture';
-import { createAccountOnChain, generateAccount } from '../../helpers/accounts.helper';
+import { test } from '../../support/fixtures/test.fixture';
+import { createAccount, generateAccount } from '../../support/helpers/accounts.helper';
 
 test.beforeEach( async ({page, toolsApp}) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
@@ -11,7 +11,8 @@ test.beforeEach( async ({page, toolsApp}) => {
 })
 
 test('Create and fund K: account', async ({ page, toolsApp }) => {
-  const account = await generateAccount('0');
+  const account = await generateAccount(1,'0');
+  console.log(account)
   await test.step('Create account on chain 0.', async () => {
     await toolsApp.faucetPage.asidePanel.clickPageLink('Fund New Account');
     await toolsApp.faucetPage.CreateFundAccount(account);
@@ -24,9 +25,9 @@ test('Create and fund K: account', async ({ page, toolsApp }) => {
 
 test('Fund existing account', async ({ page, toolsApp, i18n }) => {
   await test.step('Fund account on chain 0.', async () => {
-    const account = await createAccountOnChain('0')
+    const createdAccount = await generateAccount(1, '0')
     await toolsApp.faucetPage.asidePanel.clickPageLink('Fund Existing Account');
-    await toolsApp.faucetPage.fundExistingAccount(account.account, '0');
+    await toolsApp.faucetPage.fundExistingAccount(createdAccount.account, '0');
     await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction is being processed...')
   });
   await test.step('Account has been funded', async () => {
