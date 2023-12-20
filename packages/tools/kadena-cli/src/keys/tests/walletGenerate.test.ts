@@ -1,29 +1,23 @@
 import path from 'path';
 import { describe, expect, it } from 'vitest';
 import { services } from '../../services/index.js';
-import { isValidEncryptedValue, run } from '../../utils/test.util.js';
+import { isValidEncryptedValue } from '../../utils/test.util.js';
+import { walletGenerate } from '../commands/keysWalletGenerate.js';
 
 const root = path.join(__dirname, '../../../');
 
 describe('create wallet', () => {
   it('Should create a encrypted seed and store it', async () => {
-    const { stdout, stderr } = await run([
-      'keys',
-      'create-wallet',
-      '--key-wallet',
-      'test',
-      '--security-password',
-      '12345678',
-      '--security-verify-password',
-      '12345678',
-    ]);
-    expect(stdout).toContain('Your wallet was stored at');
-    expect(stderr).toEqual('');
+    const result = await walletGenerate('test', '12345678', false);
+
+    if (!result.success) throw new Error('Should be true');
+
+    const filePath = path.join(root, '.kadena/wallets/test/test.wallet');
+    expect(result.data.mnemonic.split(' ')).toHaveLength(12);
+    expect(result.data.path).toEqual(filePath);
 
     const fs = services.filesystem;
-    const walletFile = await fs.readFile(
-      path.join(root, '.kadena/wallets/test/test.wallet'),
-    );
+    const walletFile = await fs.readFile(filePath);
 
     expect(walletFile).toBeTruthy();
     expect(isValidEncryptedValue(walletFile)).toBe(true);

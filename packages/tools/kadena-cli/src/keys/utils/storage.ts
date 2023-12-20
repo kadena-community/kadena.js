@@ -105,19 +105,20 @@ export async function storeWallet(
   seed: string,
   alias: string,
   legacy: boolean = false,
-): Promise<void> {
+): Promise<string> {
   const sanitizedAlias = sanitizeFilename(alias).toLowerCase();
   const walletSubDir = join(WALLET_DIR, sanitizedAlias);
 
   const aliasExtension = legacy ? WALLET_LEGACY_EXT : WALLET_EXT;
   const storagePath = join(walletSubDir, `${sanitizedAlias}${aliasExtension}`);
 
-  console.log('storeWallet');
   await services.filesystem.ensureDirectoryExists(storagePath);
   await services.filesystem.writeFile(
     storagePath,
     yaml.dump(seed, { lineWidth: -1 }),
   );
+
+  return storagePath;
 }
 
 /**
