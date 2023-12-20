@@ -16,14 +16,12 @@ their configuration options.
 
 ## Getting started
 
-Run the following commands to install dependencies and build the library:
+Run the following commands to install dependencies and build the library from
+this repo:
 
 ```sh
-git clone git@github.com:kadena-community/kadena.js.git
-cd kadena.js
 pnpm install
-cd packages/libs/react-ui
-pnpm build
+pnpm build --filter @kadena/react-ui
 ```
 
 Since this library uses VE and is not pre-bundled, the consuming project will
