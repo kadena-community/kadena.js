@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { getI18nInstance } from 'playwright-i18next-fixture';
-import type { IAccount, IAccountWithSecretKey, IGeneratedKeyPair } from '../../../types/types';
+import type { IAccount } from '../../../types/types';
 import { CardComponent } from '../../react-ui/card.component';
 import { NotificationContainerComponent } from '../../react-ui/notificationContainer.component';
 import { AsideComponent } from '../components/aside.component';
@@ -32,7 +32,7 @@ export class FaucetPage {
     await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();
   }
 
-  public async CreateFundAccount(account: IGeneratedKeyPair): Promise<void> {
+  public async CreateFundAccount(account: IAccount): Promise<void> {
     for (const keyPair of account.keys) {
       await this._card.setValueForTextbox('Public Key', keyPair.publicKey);
       await this._card.clickButton('Add Public Key');
@@ -46,8 +46,6 @@ export class FaucetPage {
         }),
       ).toHaveValue(`k:${keyPair.publicKey}`);
     }
-
-
     //Form validation is retriggered after setting the chain. Explicitly wait for the Account Name to be visible before pressing fund.
 
     await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();

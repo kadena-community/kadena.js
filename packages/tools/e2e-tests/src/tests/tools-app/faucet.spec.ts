@@ -25,7 +25,7 @@ test('Create and fund K: account', async ({ page, toolsApp }) => {
 
 test('Fund existing account', async ({ page, toolsApp, i18n }) => {
   await test.step('Fund account on chain 0.', async () => {
-    const createdAccount = await generateAccount(1, '0')
+    const createdAccount = await createAccount(1, '0')
     await toolsApp.faucetPage.asidePanel.clickPageLink('Fund Existing Account');
     await toolsApp.faucetPage.fundExistingAccount(createdAccount.account, '0');
     await expect(await toolsApp.faucetPage.notificationComponent.getTitle()).toHaveText('Transaction is being processed...')

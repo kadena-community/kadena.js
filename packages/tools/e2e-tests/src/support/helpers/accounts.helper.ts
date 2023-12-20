@@ -35,8 +35,10 @@ export const generateAccount = async (
 };
 
 export const createAccount = async (
-  account: IAccount
-): Promise<ICommandResult> => {
+  keys: number = 1,
+  chainId: ChainId,
+): Promise<IAccount> => {
+  const account = await generateAccount(keys, chainId)
   const transferCreateTask = transferCreate(
     {
       sender: {
@@ -62,9 +64,9 @@ export const createAccount = async (
     },
   );
 
-  const listen = await transferCreateTask.executeTo('listen');
   await transferCreateTask.executeTo();
-  return listen;
+  return account
+
 };
 
 
