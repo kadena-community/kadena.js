@@ -1,35 +1,24 @@
-import { ChainId } from '@kadena/types';
-import { callLocal } from './callLocal.js';
+import type { ChainId } from '@kadena/types';
+import { describeModule } from '@kadena/client-utils/built-in';
 
 export async function retrieveContractFromChain(
   module: string,
   host: string,
   networkId: string,
-  chain: ChainId,
+  chainId: ChainId,
 ): Promise<string | undefined> {
-  const now = new Date();
-  const apiHost = `${host}/chainweb/0.0/${networkId}/chain/${chain}/pact`;
-
-  console.log(apiHost);
-  const createBody = (hash: string = ''): string =>
-    `{"cmd":"{\\"signers\\":[],\\"meta\\":{\\"creationTime\\":${now.getTime()},\\"ttl\\":600,\\"chainId\\":\\"${chain}\\",\\"gasPrice\\":1.0e-8,\\"gasLimit\\":2500,\\"sender\\":\\"sender00\\"},\\"nonce\\":\\"CW:${now.toUTCString()}\\",\\"networkId\\":\\"${
-      networkId
-    }\\",\\"payload\\":{\\"exec\\":{\\"code\\":\\"(describe-module \\\\\\"${module}\\\\\\")\\",\\"data\\":{}}}}","hash":"${hash}","sigs":[]}`;
-
-  console.log(createBody());
-
-  const { textResponse } = await callLocal(apiHost, createBody());
-
-  console.log(textResponse);
-
-  const hashFromResponse = textResponse?.split(' ').splice(-1, 1)[0];
-
-  const { jsonResponse } = await callLocal(
-    apiHost,
-    createBody(hashFromResponse),
+  const moduleDescription = await describeModule(
+    module,
+    {
+      host,
+      defaults: {
+        networkId,
+        meta: {
+          chainId,
+        },
+      },
+    },
   );
 
-  console.log(jsonResponse);
-
-  return jsonResponse?.result.data.code;
+  return moduleDescription.code;
 }

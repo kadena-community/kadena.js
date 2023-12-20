@@ -81,8 +81,6 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
         config.chainId,
       );
 
-      console.log(content);
-
       return content ?? '';
     };
 
@@ -110,7 +108,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
           \n`),
         );
       }
-      moduleDtss.set(name, generateDts(name, modules));
+      moduleDtss.set(name, generateDts(modules[name]));
     });
 
     moduleDtss.forEach((dts, moduleName) => {
