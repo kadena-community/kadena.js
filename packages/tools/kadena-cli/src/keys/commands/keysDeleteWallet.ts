@@ -1,5 +1,4 @@
 import debug from 'debug';
-import { existsSync } from 'fs';
 import { rimraf } from 'rimraf'; // Ensure that rimraf is properly imported
 import { WALLET_DIR } from '../../constants/config.js';
 import { createExternalPrompt } from '../../prompts/generic.js';
@@ -7,11 +6,12 @@ import {
   confirmWalletDeletePrompt,
   walletDeletePrompt,
 } from '../../prompts/keys.js';
-import { removeAfterFirstDot } from '../../utils/filesystem.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { removeAfterFirstDot } from '../../utils/path.util.js';
 
 import chalk from 'chalk';
 import type { Command } from 'commander';
+import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 
 export const createDeleteKeysCommand: (
@@ -56,7 +56,7 @@ export const createDeleteKeysCommand: (
       const walletFolderPath = `${WALLET_DIR}/${walletName}`;
       const walletPath = `${WALLET_DIR}/${walletName}/${walletFileName}`;
 
-      if (!existsSync(walletPath)) {
+      if (!(await services.filesystem.directoryExists(walletPath))) {
         console.error(chalk.red(`Wallet: ${walletFileName} does not exist.`));
         return;
       }

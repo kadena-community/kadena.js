@@ -3,8 +3,8 @@ import { program } from 'commander';
 import path from 'path';
 import { defaultDevnetsPath } from '../constants/devnets.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
+import { services } from '../services/index.js';
 import type { IPrompt } from '../utils/createOption.js';
-import { ensureFileExists } from '../utils/filesystem.js';
 import { getExistingDevnets } from '../utils/helpers.js';
 
 export const devnetOverwritePrompt: IPrompt = async (
@@ -38,7 +38,7 @@ export const devnetNamePrompt: IPrompt = async (
   });
 
   const filePath = path.join(defaultDevnetsPath, `${containerName}.yaml`);
-  if (ensureFileExists(filePath)) {
+  if (await services.filesystem.fileExists(filePath)) {
     const overwrite = await devnetOverwritePrompt(
       previousQuestions,
       args,

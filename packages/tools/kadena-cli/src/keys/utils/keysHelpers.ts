@@ -1,4 +1,3 @@
-import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   KEY_EXT,
@@ -10,6 +9,7 @@ import {
   WALLET_EXT,
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
+import { services } from '../../services/index.js';
 import { getFilesWithExtension } from './storage.js';
 
 export interface IWalletConfig {
@@ -22,8 +22,8 @@ export interface IWalletConfig {
  * Ensures that the wallet directory exists. If the directory does not exist,
  * the process is terminated and exits.
  */
-export function ensureWalletExists(): void {
-  if (!existsSync(WALLET_DIR)) {
+export async function ensureWalletExists(): Promise<void> {
+  if (!(await services.filesystem.directoryExists(WALLET_DIR))) {
     console.error(`No Wallet created yet. Please create a wallet first.`);
     process.exit(1);
   }
@@ -38,8 +38,8 @@ export function ensureWalletExists(): void {
  * @param {string} walletName - The name of the wallet directory to search within.
  * @returns {string[]} An array of plain key filenames without their extensions.
  */
-export function getKeysFromWallet(walletName: string): string[] {
-  return getFilesWithExtension(join(WALLET_DIR, walletName), KEY_EXT);
+export async function getKeysFromWallet(walletName: string): Promise<string[]> {
+  return await getFilesWithExtension(join(WALLET_DIR, walletName), KEY_EXT);
 }
 
 /**
@@ -50,8 +50,8 @@ export function getKeysFromWallet(walletName: string): string[] {
  * @returns {string[]} An array of filenames representing plain keys.
  * These filenames do not include the file extension.
  */
-export function getPlainKeys(): string[] {
-  return getFilesWithExtension(PLAIN_KEY_DIR, PLAIN_KEY_EXT);
+export async function getPlainKeys(): Promise<string[]> {
+  return await getFilesWithExtension(PLAIN_KEY_DIR, PLAIN_KEY_EXT);
 }
 
 /**
@@ -62,8 +62,8 @@ export function getPlainKeys(): string[] {
  * @returns {string[]} An array of filenames representing legacy plain keys.
  * These filenames do not include the file extension.
  */
-export function getPlainLegacyKeys(): string[] {
-  return getFilesWithExtension(PLAIN_KEY_DIR, PLAIN_KEY_LEGACY_EXT);
+export async function getPlainLegacyKeys(): Promise<string[]> {
+  return await getFilesWithExtension(PLAIN_KEY_DIR, PLAIN_KEY_LEGACY_EXT);
 }
 
 /**
@@ -75,8 +75,13 @@ export function getPlainLegacyKeys(): string[] {
  * @param {string} walletName - The name of the wallet directory to search within.
  * @returns {string[]} An array of legacy key filenames without their extensions.
  */
-export function getLegacyKeysFromWallet(walletName: string): string[] {
-  return getFilesWithExtension(join(WALLET_DIR, walletName), KEY_LEGACY_EXT);
+export async function getLegacyKeysFromWallet(
+  walletName: string,
+): Promise<string[]> {
+  return await getFilesWithExtension(
+    join(WALLET_DIR, walletName),
+    KEY_LEGACY_EXT,
+  );
 }
 
 /**
@@ -87,8 +92,8 @@ export function getLegacyKeysFromWallet(walletName: string): string[] {
  * @param {string} walletName - The name of the wallet directory to search within.
  * @returns {string[]} An array of standard wallet filenames without their extensions.
  */
-export function getWallets(walletName: string): string[] {
-  return getFilesWithExtension(join(WALLET_DIR, walletName), WALLET_EXT);
+export async function getWallets(walletName: string): Promise<string[]> {
+  return await getFilesWithExtension(join(WALLET_DIR, walletName), WALLET_EXT);
 }
 
 /**
@@ -99,8 +104,11 @@ export function getWallets(walletName: string): string[] {
  * @param {string} walletName - The name of the wallet directory to search within.
  * @returns {string[]} An array of legacy wallet filenames without their extensions.
  */
-export function getLegacyWallets(walletName: string): string[] {
-  return getFilesWithExtension(join(WALLET_DIR, walletName), WALLET_LEGACY_EXT);
+export async function getLegacyWallets(walletName: string): Promise<string[]> {
+  return await getFilesWithExtension(
+    join(WALLET_DIR, walletName),
+    WALLET_LEGACY_EXT,
+  );
 }
 
 /**
@@ -111,23 +119,30 @@ export function getLegacyWallets(walletName: string): string[] {
  *
  * @returns {string[]} An array of all wallet filenames with their extensions.
  */
-export function getAllWallets(): string[] {
-  ensureWalletExists();
-  const walletDirs = readdirSync(WALLET_DIR).filter((dirName) =>
-    existsSync(join(WALLET_DIR, dirName)),
-  );
+export async function getAllWallets(): Promise<string[]> {
+  await ensureWalletExists();
 
-  const wallets = walletDirs.flatMap((walletName) => [
-    ...getFilesWithExtension(join(WALLET_DIR, walletName), WALLET_LEGACY_EXT),
-  ]);
+  const walletDirs = await services.filesystem.readDir(WALLET_DIR);
 
-  const standardWallets = walletDirs
-    .flatMap((walletName) => [
-      ...getFilesWithExtension(join(WALLET_DIR, walletName), WALLET_EXT),
-    ])
-    .filter((file) => !file.endsWith(WALLET_LEGACY_EXT));
+  let wallets: string[] = [];
 
-  return [...wallets, ...standardWallets];
+  for (const dirName of walletDirs) {
+    if (
+      !(await services.filesystem.directoryExists(join(WALLET_DIR, dirName)))
+    ) {
+      continue;
+    }
+
+    wallets = wallets.concat(
+      await getFilesWithExtension(join(WALLET_DIR, dirName), WALLET_LEGACY_EXT),
+    );
+
+    wallets = wallets.concat(
+      await getFilesWithExtension(join(WALLET_DIR, dirName), WALLET_EXT),
+    );
+  }
+
+  return wallets;
 }
 
 /**

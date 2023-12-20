@@ -3,13 +3,12 @@ import {
   defaultDevnetsPath,
   devnetDefaults,
 } from '../../constants/devnets.js';
-import { PathExists, removeFile, writeFile } from '../../utils/filesystem.js';
 import { mergeConfigs, sanitizeFilename } from '../../utils/helpers.js';
 
-import type { WriteFileOptions } from 'fs';
 import { existsSync, readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
+import { services } from '../../services/index.js';
 
 export interface ICustomDevnetsChoice {
   value: string;
@@ -37,7 +36,9 @@ export interface IDevnetsCreateOptions {
  * @param {string} options.version - The version of the kadena/devnet image to use.
  * @returns {void} - No return value; the function writes directly to a file.
  */
-export function writeDevnet(options: IDevnetsCreateOptions): void {
+export async function writeDevnet(
+  options: IDevnetsCreateOptions,
+): Promise<void> {
   const { name } = options;
   const sanitizedDevnet = sanitizeFilename(name).toLowerCase();
   const devnetFilePath = path.join(
@@ -45,27 +46,22 @@ export function writeDevnet(options: IDevnetsCreateOptions): void {
     `${sanitizedDevnet}.yaml`,
   );
 
-  let existingConfig: IDevnetsCreateOptions;
+  let existingConfig: IDevnetsCreateOptions =
+    typeof devnetDefaults[name] !== 'undefined'
+      ? { ...devnetDefaults[name] }
+      : { ...devnetDefaults.devnet };
 
-  if (PathExists(devnetFilePath)) {
-    existingConfig = yaml.load(
-      readFileSync(devnetFilePath, 'utf8'),
-    ) as IDevnetsCreateOptions;
-  } else {
-    // Explicitly check if devnet key exists in devnetDefaults and is not undefined
-    existingConfig =
-      typeof devnetDefaults[name] !== 'undefined'
-        ? { ...devnetDefaults[name] }
-        : { ...devnetDefaults.devnet };
+  if (await services.filesystem.fileExists(devnetFilePath)) {
+    const content = await services.filesystem.readFile(devnetFilePath);
+    if (content !== null) {
+      existingConfig = yaml.load(content) as IDevnetsCreateOptions;
+    }
   }
 
   const devnetConfig = mergeConfigs(existingConfig, options);
 
-  writeFile(
-    devnetFilePath,
-    yaml.dump(devnetConfig),
-    'utf8' as WriteFileOptions,
-  );
+  await services.filesystem.ensureDirectoryExists(devnetFilePath);
+  await services.filesystem.writeFile(devnetFilePath, yaml.dump(devnetConfig));
 }
 
 /**
@@ -74,9 +70,9 @@ export function writeDevnet(options: IDevnetsCreateOptions): void {
  * @param {Pick<IDevnetsCreateOptions, 'name'>} options - The set of configuration options.
  * @param {string} options.name - The name of the devnet configuration.
  */
-export function removeDevnetConfiguration(
+export async function removeDevnetConfiguration(
   options: Pick<IDevnetsCreateOptions, 'name'>,
-): void {
+): Promise<void> {
   const { name } = options;
   const sanitizedDevnet = sanitizeFilename(name).toLowerCase();
   const devnetFilePath = path.join(
@@ -84,25 +80,24 @@ export function removeDevnetConfiguration(
     `${sanitizedDevnet}.yaml`,
   );
 
-  removeFile(devnetFilePath);
+  await services.filesystem.deleteFile(devnetFilePath);
 }
 
-export function defaultDevnetIsConfigured(): boolean {
-  return PathExists(path.join(defaultDevnetsPath, `${defaultDevnet}.yaml`));
+export async function defaultDevnetIsConfigured(): Promise<boolean> {
+  return await services.filesystem.fileExists(
+    path.join(defaultDevnetsPath, `${defaultDevnet}.yaml`),
+  );
 }
 
-export function getDevnetConfiguration(
+export async function getDevnetConfiguration(
   name: string,
-): IDevnetsCreateOptions | void {
+): Promise<IDevnetsCreateOptions | void> {
   const devnetFilePath = path.join(defaultDevnetsPath, `${name}.yaml`);
 
-  if (!PathExists(devnetFilePath)) {
-    return;
-  }
+  const content = await services.filesystem.readFile(devnetFilePath);
+  if (content === null) return;
 
-  return yaml.load(
-    readFileSync(devnetFilePath, 'utf8'),
-  ) as IDevnetsCreateOptions;
+  return yaml.load(content) as IDevnetsCreateOptions;
 }
 
 export function loadDevnetConfig(

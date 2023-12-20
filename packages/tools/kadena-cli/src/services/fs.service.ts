@@ -1,13 +1,17 @@
+import type { Dirent } from 'node:fs';
 import fs from 'node:fs/promises';
-import path from 'path';
+import { dirname } from 'path';
 
 export interface IFileSystemService {
   readFile: (path: string) => Promise<string | null>;
   writeFile: (path: string, data: string) => Promise<void>;
-  directoryExists: (directoryPath: string) => Promise<boolean>;
-  fileExists: (directoryPath: string) => Promise<boolean>;
-  ensureDirectoryExists: (directoryPath: string) => Promise<void>;
-  readDir: (directoryPath: string) => Promise<string[]>;
+  deleteFile: (path: string) => Promise<void>;
+  deleteDirectory: (path: string) => Promise<void>;
+  directoryExists: (path: string) => Promise<boolean>;
+  fileExists: (path: string) => Promise<boolean>;
+  ensureDirectoryExists: (path: string) => Promise<void>;
+  readDir: (path: string) => Promise<string[]>;
+  readDirWithTypes: (path: string) => Promise<Dirent[]>;
 }
 
 export const fileSystemService: IFileSystemService = {
@@ -18,32 +22,44 @@ export const fileSystemService: IFileSystemService = {
       return null;
     }
   },
-  async writeFile(file: string, data: string) {
-    await fs.writeFile(file, data, 'utf8');
+  async writeFile(path: string, data: string) {
+    await fs.writeFile(path, data, 'utf8');
   },
-  async directoryExists(dir: string) {
+  async deleteFile(path: string) {
+    await fs.unlink(path);
+  },
+  async deleteDirectory(path: string) {
+    await fs.rmdir(path, { recursive: true });
+  },
+  async directoryExists(path: string) {
     try {
-      const stat = await fs.stat(dir);
+      const stat = await fs.stat(path);
       return stat.isDirectory();
     } catch {
       return false;
     }
   },
-  async fileExists(file: string) {
+  async fileExists(path: string) {
     try {
-      const stat = await fs.stat(file);
+      const stat = await fs.stat(path);
       return stat.isFile();
     } catch {
       return false;
     }
   },
-  async ensureDirectoryExists(file: string) {
-    const dirname = path.dirname(file);
-    if (!(await fileSystemService.directoryExists(dirname))) {
-      await fs.mkdir(dirname, { recursive: true });
-    }
+  async ensureDirectoryExists(path: string) {
+    if (await fileSystemService.directoryExists(path)) return;
+
+    const isFile = path.split('/').pop()?.includes('.') ?? false;
+
+    await fs.mkdir(isFile ? dirname(path) : path, {
+      recursive: true,
+    });
   },
-  async readDir(directoryPath: string) {
-    return fs.readdir(directoryPath);
+  async readDir(path: string) {
+    return fs.readdir(path);
+  },
+  async readDirWithTypes(path: string) {
+    return fs.readdir(path, { withFileTypes: true });
   },
 };

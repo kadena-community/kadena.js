@@ -29,8 +29,8 @@ import {
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
-import { removeAfterFirstDot } from './filesystem.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
+import { removeAfterFirstDot } from './path.util.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalFlags = {
@@ -328,13 +328,13 @@ export const globalOptions = {
     prompt: keys.keyWalletSelectPrompt,
     validation: z.string(),
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
-    transform: (keyWallet: string) => {
+    transform: async (keyWallet: string) => {
       if (
         keyWallet.includes(WALLET_EXT) ||
         keyWallet.includes(WALLET_LEGACY_EXT)
       ) {
         return {
-          wallet: readKeyFileContent(
+          wallet: await readKeyFileContent(
             join(WALLET_DIR, removeAfterFirstDot(keyWallet), keyWallet),
           ),
           fileName: keyWallet,
@@ -402,9 +402,9 @@ export const globalOptions = {
       '-n, --key-message <keyMessage>',
       'Enter message to decrypt',
     ),
-    transform: (keyMessage: string) => {
+    transform: async (keyMessage: string) => {
       if (keyMessage.includes(WALLET_EXT) || keyMessage.includes(KEY_EXT)) {
-        const keyFileContent = readKeyFileContent(keyMessage);
+        const keyFileContent = await readKeyFileContent(keyMessage);
         if (typeof keyFileContent === 'string') {
           return keyFileContent;
         }

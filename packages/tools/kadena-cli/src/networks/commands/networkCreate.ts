@@ -1,6 +1,6 @@
 import { defaultNetworksPath } from '../../constants/networks.js';
+import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { ensureFileExists } from '../../utils/filesystem.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
 import type { INetworkCreateOptions } from '../utils/networkHelpers.js';
@@ -29,7 +29,10 @@ export const createNetworksCommand: (
 
     const filePath = path.join(defaultNetworksPath, `${config.network}.yaml`);
 
-    if (!ensureFileExists(filePath) && config.networkOverwrite === 'no') {
+    if (
+      !(await services.filesystem.fileExists(filePath)) &&
+      config.networkOverwrite === 'no'
+    ) {
       console.log(
         chalk.yellow(
           `\nThe existing network configuration "${config.network}" will not be updated.\n`,
@@ -38,7 +41,7 @@ export const createNetworksCommand: (
       return;
     }
 
-    writeNetworks(config as unknown as INetworkCreateOptions);
+    await writeNetworks(config as unknown as INetworkCreateOptions);
 
     console.log(
       chalk.green(
