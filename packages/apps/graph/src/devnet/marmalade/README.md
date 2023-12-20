@@ -78,7 +78,7 @@ marmalade in the devnet
 ### Aditional Notes
 
 These scripts use Github's API to retrieve the files. If a token is not provided
-on the `.env` file, the requests will be authenticated which results in a
+on the `.env` file, the requests will be unauthenticated which results in a
 significantly lower rate limit. It is strongly advised that a token is provided.
 For more information, please click
 [here](https://docs.github.com/en/rest/overview/rate-limits-for-the-rest-api?apiVersion=2022-11-28)
