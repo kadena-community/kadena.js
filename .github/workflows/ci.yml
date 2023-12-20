@@ -118,7 +118,6 @@ jobs:
         run: pnpm --filter ${{ matrix.package }} start & pnpm run test:e2e -- --project=${{ matrix.package }}
         env:
           CI: true
-          TESTOBJECT: ${{ matrix.package }}
 
       - uses: actions/upload-artifact@v3
         if: always()
