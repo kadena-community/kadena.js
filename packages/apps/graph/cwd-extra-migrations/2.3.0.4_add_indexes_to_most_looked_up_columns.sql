@@ -1,6 +1,10 @@
+-- For the graphql subscriptions on blocks.
+CREATE INDEX blocks_id ON blocks (id);
+
 -- For querying the events of a transaction and events related to a module.
 CREATE INDEX events_block_requestkey ON events (block, requestkey);
 CREATE INDEX events_module ON events (module);
+CREATE INDEX events_id ON events (id);
 
 -- For querying all miner keys on a block.
 CREATE INDEX minerkeys_block ON minerkeys (block);
