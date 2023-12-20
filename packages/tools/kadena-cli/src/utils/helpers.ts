@@ -3,7 +3,6 @@ import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import { defaultDevnetsPath } from '../constants/devnets.js';
-import { defaultKeysetsPath } from '../constants/keysets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';

@@ -1,62 +1,97 @@
-import { kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
+import { kadenaEncrypt, kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
+import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
+import chalk from 'chalk';
+import type { Command } from 'commander';
+import { randomBytes } from 'crypto';
+import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-
-import chalk from 'chalk';
-import debug from 'debug';
-
-import { PLAINKEY_EXT } from '../../constants/config.js';
-import { clearCLI } from '../../utils/helpers.js';
-
+import {
+  displayGeneratedPlainKeys,
+  printStoredPlainKeys,
+} from '../utils/keysDisplay.js';
 import * as storageService from '../utils/storage.js';
 
-import type { Command } from 'commander';
+interface IGeneratePlainKeysCommandConfig {
+  keyAlias: string;
+  keyAmount?: number;
+  legacy?: boolean;
+}
+
+const defaultAmount: number = 1;
+
+async function generateKeyPairs(
+  config: IGeneratePlainKeysCommandConfig,
+  amount: number,
+): Promise<storageService.IKeyPair[]> {
+  if (config.legacy === true) {
+    return await generateLegacyKeyPairs(config, amount);
+  } else {
+    const randomKeyPairs = kadenaKeyPairsFromRandom(amount);
+    return randomKeyPairs.map((keyPair) => {
+      return {
+        publicKey: keyPair.publicKey,
+        secretKey: keyPair.secretKey,
+      } as storageService.IKeyPair;
+    });
+  }
+}
+
+async function generateLegacyKeyPairs(
+  config: IGeneratePlainKeysCommandConfig,
+  amount: number,
+): Promise<storageService.IKeyPair[]> {
+  const keyPairs: storageService.IKeyPair[] = [];
+  const password = '';
+  const rootKey = kadenaEncrypt(password, randomBytes(128));
+
+  for (let i = 0; i < amount; i++) {
+    const { publicKey, secretKey } = await kadenaGenKeypair(
+      password,
+      rootKey,
+      i,
+    );
+
+    keyPairs.push({
+      publicKey: publicKey,
+      secretKey: secretKey,
+    });
+  }
+
+  return keyPairs;
+}
 
 export const createGeneratePlainKeysCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'plain',
-  'generate (plain) public-private key-pair',
-  [globalOptions.keyAlias(), globalOptions.keyAmount()],
+  'gen-plain',
+  'generate plain public/secret key pair(s)',
+  [
+    globalOptions.keyAlias(),
+    globalOptions.keyAmount({ isOptional: true }),
+    globalOptions.legacy({ isOptional: true, disableQuestion: true }),
+  ],
   async (config) => {
-    debug('generate-plain-key:action')({ config });
-    const amount = (config.keyAmount as unknown as number) || 1;
+    try {
+      debug('generate-plain:action')({ config });
+      const amount =
+        config.keyAmount !== undefined && config.keyAmount !== ''
+          ? config.keyAmount
+          : defaultAmount;
+      const keys = await generateKeyPairs(config, amount);
 
-    const plainKeyPairs = kadenaKeyPairsFromRandom(amount);
-    clearCLI(true);
-    console.log(
-      chalk.green(
-        `Generated Plain Key Pair(s): ${JSON.stringify(
-          plainKeyPairs,
-          null,
-          2,
-        )}`,
-      ),
-    );
+      displayGeneratedPlainKeys(keys);
 
-    if (config.keyAlias !== undefined) {
-      storageService.savePlainKeyByAlias(
+      await storageService.savePlainKeyByAlias(
         config.keyAlias,
-        plainKeyPairs[0].publicKey,
-        plainKeyPairs[0].secretKey,
-        amount,
+        keys,
+        config.legacy,
       );
-
-      console.log(
-        chalk.green(
-          'The Plain Key Pair is stored within your keys folder under the filename(s):',
-        ),
-      );
-
-      const totalKeys = amount === undefined ? 1 : amount;
-      for (let i = 0; i < totalKeys; i++) {
-        const keyName =
-          i === 0
-            ? `${config.keyAlias}${PLAINKEY_EXT}`
-            : `${config.keyAlias}-${i}${PLAINKEY_EXT}`;
-        console.log(chalk.green(`- ${keyName}`));
-      }
+      printStoredPlainKeys(config.keyAlias, keys, config.legacy);
+    } catch (error) {
+      console.log(chalk.red(`\n${error.message}\n`));
+      process.exit(1);
     }
   },
 );

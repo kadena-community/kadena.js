@@ -13,7 +13,15 @@ import {
 } from '../prompts/index.js';
 
 import chalk from 'chalk';
+import { join } from 'node:path';
+import {
+  KEY_EXT,
+  WALLET_DIR,
+  WALLET_EXT,
+  WALLET_LEGACY_EXT,
+} from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
+import { readKeyFileContent } from '../keys/utils/storage.js';
 import {
   ensureNetworksConfiguration,
   loadNetworkConfig,
@@ -21,10 +29,55 @@ import {
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
+import { removeAfterFirstDot } from './filesystem.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
+export const globalFlags = {
+  ci: new Option('--ci', 'CI mode (disables interactive prompts)'),
+  legacy: new Option('-l, --legacy', 'Output legacy format'),
+} as const;
+
+// eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
+  // global
+  ci: createOption({
+    key: 'ci' as const,
+    prompt: ({ ci }: { ci: boolean }) => {
+      const result = ci || false;
+      return Promise.resolve(result);
+    },
+    validation: z.boolean().optional(),
+    option: globalFlags.ci,
+  }),
+  legacy: createOption({
+    key: 'legacy' as const,
+    prompt: ({ legacy }: { legacy: boolean }) => {
+      const result = legacy || false;
+      return Promise.resolve(result);
+    },
+    validation: z.boolean().optional(),
+    option: globalFlags.legacy,
+  }),
+  // security
+  securityCurrentPassword: createOption({
+    key: 'securityCurrentPassword' as const,
+    prompt: security.securityCurrentPasswordPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-scp, --security-current-password <securityCurrentPassword>',
+      'Enter your current key password',
+    ),
+  }),
+  securityNewPassword: createOption({
+    key: 'securityNewPassword' as const,
+    prompt: security.securityNewPasswordPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-snp, --security-new-password <securityNewPassword>',
+      'Enter your new key password',
+    ),
+  }),
   // Devnet
   devnet: createOption({
     key: 'devnet' as const,
@@ -135,6 +188,15 @@ export const globalOptions = {
       'Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
     ),
   }),
+  networkOverwrite: createOption({
+    key: 'networkOverwrite' as const,
+    prompt: networks.networkOverwritePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-o, --network-overwrite <networkOverwrite>',
+      'Overwrite existing network configuration (yes/no)',
+    ),
+  }),
   network: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectPrompt,
@@ -176,29 +238,94 @@ export const globalOptions = {
   // Keys
   keyAlias: createOption({
     key: 'keyAlias' as const,
-    prompt: keys.keyAlias,
+    prompt: keys.keyAliasPrompt,
     validation: z.string(),
     option: new Option(
       '-a, --key-alias <keyAlias>',
       'Enter an alias to store your key',
     ),
   }),
+  keyWallet: createOption({
+    key: 'keyWallet' as const,
+    prompt: keys.keyWallet,
+    validation: z.string(),
+    option: new Option(
+      '-w, --key-wallet <keyWallet>',
+      'Enter you wallet names',
+    ),
+  }),
+  keyIndexOrRange: createOption({
+    key: 'keyIndexOrRange' as const,
+    prompt: keys.keyIndexOrRangePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-r, --key-index-or-range <keyIndexOrRange>',
+      'Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 1',
+    ),
+  }),
   keyAmount: createOption({
     key: 'keyAmount' as const,
-    prompt: keys.keyAmount,
+    prompt: keys.keyAmountPrompt,
     validation: z.string(),
     option: new Option(
       '-n, --key-amount <keyAmount>',
       'Enter the number of key pairs you want to generate (default: 1)',
     ),
   }),
-  keyPassword: createOption({
-    key: 'keyPassword' as const,
-    prompt: security.securityPassword,
+  keyGenFromChoice: createOption({
+    key: 'keyGenFromChoice',
+    prompt: keys.genFromChoicePrompt,
     validation: z.string(),
     option: new Option(
-      '-p, --key-password <keyPassword>',
+      '-c, --key-gen-from-choice <keyGenFromChoice>',
+      'Choose an action for generating keys',
+    ),
+  }),
+  keyWalletSelect: createOption({
+    key: 'keyWallet',
+    prompt: keys.keyWalletSelectAllPrompt,
+    validation: z.string(),
+    option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    transform: (keyWallet: string) => {
+      if (
+        keyWallet.includes(WALLET_EXT) ||
+        keyWallet.includes(WALLET_LEGACY_EXT)
+      ) {
+        return {
+          wallet: readKeyFileContent(
+            join(WALLET_DIR, removeAfterFirstDot(keyWallet), keyWallet),
+          ),
+          fileName: keyWallet,
+        };
+      }
+      return keyWallet;
+    },
+  }),
+  securityPassword: createOption({
+    key: 'securityPassword' as const,
+    prompt: security.securityPasswordPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-p, --security-password <securityPassword>',
       'Enter a password to encrypt your key with',
+    ),
+  }),
+  securityVerifyPassword: createOption({
+    key: 'securityVerifyPassword' as const,
+    prompt: security.securityPasswordVerifyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-p, --security-verify-password <securityVerifyPassword>',
+      'Enter a password to verify with password',
+    ),
+  }),
+  keyMnemonic: createOption({
+    key: 'keyMnemonic' as const,
+    prompt: keys.keyMnemonicPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-m, --key-mnemonic <keyMnemonic>',
+      'Enter your 12-word mnemonic phrase to generate keys from',
     ),
   }),
   keyUsePassword: createOption({
@@ -212,13 +339,39 @@ export const globalOptions = {
   }),
   keyFilename: createOption({
     key: 'keyFilename' as const,
-    prompt: () => generic.genericFileName('key'),
+    prompt: () => generic.genericFileNamePrompt('key'),
     validation: z.string(),
     option: new Option(
       '-f, --key-filename <keyFilename>',
       'Enter filename to store your key in',
     ),
   }),
+  key: createOption({
+    key: 'key' as const,
+    prompt: keys.keyDeleteSelectPrompt,
+    validation: z.string(),
+    option: new Option('-k, --key <key>', 'Select key from keyfile'),
+  }),
+  keyMessage: createOption({
+    key: 'keyMessage' as const,
+    prompt: keys.keyMessagePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-n, --key-message <keyMessage>',
+      'Enter message to decrypt',
+    ),
+    transform: (keyMessage: string) => {
+      if (keyMessage.includes(WALLET_EXT) || keyMessage.includes(KEY_EXT)) {
+        const keyFileContent = readKeyFileContent(keyMessage);
+        if (typeof keyFileContent === 'string') {
+          return keyFileContent;
+        }
+        return keyFileContent?.secretKey;
+      }
+      return keyMessage;
+    },
+  }),
 } as const;
 
 export type GlobalOptions = typeof globalOptions;
+export type GlobalFlags = typeof globalFlags;
