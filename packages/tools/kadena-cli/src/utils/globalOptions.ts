@@ -306,7 +306,7 @@ export const globalOptions = {
     prompt: security.securityPasswordPrompt,
     validation: z.string(),
     option: new Option(
-      '-p, --key-password <securityPassword>',
+      '-p, --security-password <securityPassword>',
       'Enter a password to encrypt your key with',
     ),
   }),
@@ -315,7 +315,7 @@ export const globalOptions = {
     prompt: security.securityPasswordVerifyPrompt,
     validation: z.string(),
     option: new Option(
-      '-p, --key-verify-password <securityVerifyPassword>',
+      '-p, --security-verify-password <securityVerifyPassword>',
       'Enter a password to verify with password',
     ),
   }),
