@@ -1,25 +1,20 @@
 import type { ChainId } from '@kadena/client';
-import { Pact, readKeyset } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import {
-  addKeyset,
   addSigner,
   composePactCommand,
   execution,
   setMeta,
 } from '@kadena/client/fp';
 
+import { PactNumber } from '@kadena/pactjs';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
+import { transferCommand } from './transfer';
 
 interface ISafeTransferInput {
   sender: { account: string; publicKeys: string[] };
-  receiver: {
-    account: string;
-    keyset: {
-      keys: string[];
-      pred: 'keys-all' | 'keys-2' | 'keys-any';
-    };
-  };
+  receiver: { account: string; publicKeys: string[] };
   amount: string;
   gasPayer?: { account: string; publicKeys: string[] };
   chainId: ChainId;
@@ -28,30 +23,23 @@ interface ISafeTransferInput {
    */
   contract?: string;
 }
-/**
- * @alpha
- */
-export const safeTransferCommand = ({
+
+const partialTransferCommand = ({
   sender,
-  receiver,
   amount,
-  gasPayer = sender,
-  chainId,
+  receiver,
   contract = 'coin',
-}: ISafeTransferInput) =>
+}: Omit<ISafeTransferInput, 'gasPayer' | 'chainId'>) =>
   composePactCommand(
     execution(
-      `(enforce-keyset (read-keyset 'account-guard))`,
-      Pact.modules[contract as 'coin']['transfer-create'](
+      Pact.modules[contract as 'coin'].transfer(
         sender.account,
         receiver.account,
-        readKeyset('account-guard'),
         {
           decimal: amount,
         },
       ),
     ),
-    addKeyset('account-guard', receiver.keyset.pred, ...receiver.keyset.keys),
     addSigner(sender.publicKeys, (signFor) => [
       signFor(
         `${contract as 'coin'}.TRANSFER`,
@@ -62,10 +50,48 @@ export const safeTransferCommand = ({
         },
       ),
     ]),
-    addSigner(receiver.keyset.keys),
+  );
+
+/**
+ * @alpha
+ */
+export const safeTransferCommand = ({
+  sender,
+  receiver,
+  amount,
+  gasPayer = sender,
+  chainId,
+  contract = 'coin',
+}: ISafeTransferInput) => {
+  if (receiver.account === gasPayer.account) {
+    return transferCommand({
+      sender,
+      receiver: receiver.account,
+      amount,
+      gasPayer,
+      chainId,
+      contract,
+    });
+  }
+  const smallAmount = '0.0000001';
+  const amountPlusSmall = new PactNumber(amount).plus(smallAmount).toDecimal();
+  return composePactCommand(
+    partialTransferCommand({
+      sender,
+      amount: amountPlusSmall,
+      receiver,
+      contract,
+    }),
+    partialTransferCommand({
+      sender: receiver,
+      amount: smallAmount,
+      receiver: sender,
+      contract,
+    }),
     addSigner(gasPayer.publicKeys, (signFor) => [signFor('coin.GAS')]),
     setMeta({ senderAccount: gasPayer.account, chainId }),
   );
+};
 
 /**
  * @alpha

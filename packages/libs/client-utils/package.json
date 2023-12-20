@@ -82,6 +82,7 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/pactjs": "workspace:^",
     "@kadena/pactjs-cli": "workspace:^",
     "@microsoft/api-extractor": "^7.38.0",
     "@rushstack/eslint-config": "~3.3.0",
