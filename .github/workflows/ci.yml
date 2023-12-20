@@ -115,7 +115,9 @@ jobs:
           FAUCET_USER: c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4
 
       - name: Start dApp & Run Tests
-        run: pnpm --filter ${{ matrix.package }} start & pnpm run test:e2e -- --project=${{ matrix.package }}
+        run:
+          pnpm --filter ${{ matrix.package }} start & pnpm run test:e2e --
+          --project=${{ matrix.package }}
         env:
           CI: true
 
