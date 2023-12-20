@@ -19,35 +19,47 @@ const accountTypes = [
 ];
 
 for (const accountType of accountTypes) {
-test(`Create and fund ${accountType.type} account`, async ({ page, toolsApp }) => {
-  const account = await generateAccount(accountType.NumberOfKeys, '0');
-  await test.step('Create account on chain 0.', async () => {
-    await toolsApp.faucetPage.asidePanel.clickPageLink('Fund New Account');
-    await toolsApp.faucetPage.CreateFundAccount(account);
-    await expect(
-      await toolsApp.faucetPage.notificationComponent.getTitle(),
-    ).toHaveText('Transaction is being processed...');
+  test(`Create and fund ${accountType.type} account`, async ({
+    page,
+    toolsApp,
+  }) => {
+    const account = await generateAccount(accountType.NumberOfKeys, '0');
+    await test.step('Create account on chain 0.', async () => {
+      await toolsApp.faucetPage.asidePanel.clickPageLink('Fund New Account');
+      await toolsApp.faucetPage.CreateFundAccount(account);
+      await expect(
+        await toolsApp.faucetPage.notificationComponent.getTitle(),
+      ).toHaveText('Transaction is being processed...');
+    });
+    await test.step('Account has been created', async () => {
+      await expect(
+        await toolsApp.faucetPage.notificationComponent.getTitle(),
+      ).toHaveText('Transaction successfully completed');
+    });
   });
-  await test.step('Account has been created', async () => {
-    await expect(
-      await toolsApp.faucetPage.notificationComponent.getTitle(),
-    ).toHaveText('Transaction successfully completed');
-  });
-});
 
-test(`Fund existing ${accountType.type} account`, async ({ page, toolsApp, i18n }) => {
-  await test.step('Fund account on chain 0.', async () => {
-    const createdAccount = await createAccount(accountType.NumberOfKeys, '0');
-    await toolsApp.faucetPage.asidePanel.clickPageLink('Fund Existing Account');
-    await toolsApp.faucetPage.fundExistingAccount(createdAccount.account, '0');
-    await expect(
-      await toolsApp.faucetPage.notificationComponent.getTitle(),
-    ).toHaveText('Transaction is being processed...');
+  test(`Fund existing ${accountType.type} account`, async ({
+    page,
+    toolsApp,
+    i18n,
+  }) => {
+    await test.step('Fund account on chain 0.', async () => {
+      const createdAccount = await createAccount(accountType.NumberOfKeys, '0');
+      await toolsApp.faucetPage.asidePanel.clickPageLink(
+        'Fund Existing Account',
+      );
+      await toolsApp.faucetPage.fundExistingAccount(
+        createdAccount.account,
+        '0',
+      );
+      await expect(
+        await toolsApp.faucetPage.notificationComponent.getTitle(),
+      ).toHaveText('Transaction is being processed...');
+    });
+    await test.step('Account has been funded', async () => {
+      await expect(
+        await toolsApp.faucetPage.notificationComponent.getTitle(),
+      ).toHaveText('Transaction successfully completed');
+    });
   });
-  await test.step('Account has been funded', async () => {
-    await expect(
-      await toolsApp.faucetPage.notificationComponent.getTitle(),
-    ).toHaveText('Transaction successfully completed');
-  });
-});
 }
