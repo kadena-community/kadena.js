@@ -2,9 +2,11 @@ import * as kadenaCrypto from './vendor/kadena-crypto.cjs';
 
 const nextTick = () => new Promise((resolve) => process.nextTick(resolve));
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const makeAsync = <T extends (...args: any[]) => any>(
   cb: T,
 ): ((...args: Parameters<T>) => Promise<ReturnType<T>>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async (...args: any[]): Promise<any> => {
     // kadena-crypto internally loads a wasm module
     // which is an async operation, ensure it is completed
