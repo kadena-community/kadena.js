@@ -1,5 +1,4 @@
 import { defaultDevnetsPath } from '../../constants/devnets.js';
-import { ensureFileExists } from '../../utils/filesystem.js';
 import { writeDevnet } from '../utils/devnetHelpers.js';
 
 import debug from 'debug';
@@ -8,6 +7,7 @@ import path from 'path';
 import chalk from 'chalk';
 import { devnetOverwritePrompt } from '../../prompts/devnet.js';
 import { createExternalPrompt } from '../../prompts/generic.js';
+import { services } from '../../services/index.js';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
@@ -27,7 +27,7 @@ export const createDevnetCommand: CreateCommandReturnType = createCommand(
 
     const filePath = path.join(defaultDevnetsPath, `${config.name}.yaml`);
 
-    if (ensureFileExists(filePath)) {
+    if (await services.filesystem.fileExists(filePath)) {
       const externalPrompt = createExternalPrompt({
         devnetOverwritePrompt,
       });
@@ -42,7 +42,7 @@ export const createDevnetCommand: CreateCommandReturnType = createCommand(
       }
     }
 
-    writeDevnet(config);
+    await writeDevnet(config);
 
     console.log(
       chalk.green(

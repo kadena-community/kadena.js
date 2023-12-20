@@ -100,7 +100,7 @@ export async function genFromChoicePrompt(): Promise<string> {
 async function walletSelectionPrompt(
   specialOptions: string[] = [], // Array of special options
 ): Promise<string> {
-  const existingKeys: string[] = getAllWallets();
+  const existingKeys: string[] = await getAllWallets();
 
   if (existingKeys.length === 0 && !specialOptions.includes('none')) {
     console.log(chalk.red('No wallets found. Exiting.'));
@@ -172,20 +172,24 @@ export const selectDecryptMessagePrompt: IPrompt = async (
   isOptional,
 ) => {
   const walletName = await keyWalletSelectPrompt(prev, args, isOptional);
-  const keys = getKeysFromWallet(walletName).map((file) => ({
+  const keys = (await getKeysFromWallet(walletName)).map((file) => ({
     file,
     type: 'plain' as KeyType,
   }));
-  const wallets = getWallets(walletName).map((file) => ({
+  const wallets = (await getWallets(walletName)).map((file) => ({
     file,
     type: 'wallet' as KeyType,
   }));
 
   const allKeyFiles = [...keys, ...wallets];
 
+  const content = await Promise.all(
+    allKeyFiles.map(({ file }) => readKeyFileContent(file)),
+  );
+
   const choices = allKeyFiles.reduce(
-    (acc, { file, type }) => {
-      const keyContent = readKeyFileContent(file);
+    (acc, { file, type }, index) => {
+      const keyContent = content[index];
       if (keyContent !== undefined) {
         acc.push({
           value: file,
@@ -218,7 +222,7 @@ export const selectDecryptMessagePrompt: IPrompt = async (
 };
 
 export const keyWalletPrompt: IPrompt = async (prev, args, isOptional) => {
-  const existingKeys: string[] = getAllWallets();
+  const existingKeys: string[] = await getAllWallets();
 
   const choices = existingKeys.map((key) => ({
     value: key,
@@ -258,19 +262,21 @@ export const keyDeleteSelectPrompt: IPrompt = async (
   isOptional,
 ) => {
   const walletName = await keyWalletSelectPrompt(prev, args, isOptional);
-  const plainKeys = getKeysFromWallet(walletName).map((file) => ({
+  const plainKeys = (await getKeysFromWallet(walletName)).map((file) => ({
     file,
     type: 'plain' as KeyType,
   }));
-  const plainLegacyKeys = getLegacyKeysFromWallet(walletName).map((file) => ({
-    file,
-    type: 'plainLegacy' as KeyType,
-  }));
-  const wallets = getWallets(walletName).map((file) => ({
+  const plainLegacyKeys = (await getLegacyKeysFromWallet(walletName)).map(
+    (file) => ({
+      file,
+      type: 'plainLegacy' as KeyType,
+    }),
+  );
+  const wallets = (await getWallets(walletName)).map((file) => ({
     file,
     type: 'wallet' as KeyType,
   }));
-  const legacyWallets = getLegacyWallets(walletName).map((file) => ({
+  const legacyWallets = (await getLegacyWallets(walletName)).map((file) => ({
     file,
     type: 'walletLegacy' as KeyType,
   }));
@@ -287,9 +293,13 @@ export const keyDeleteSelectPrompt: IPrompt = async (
     process.exit(0);
   }
 
+  const content = await Promise.all(
+    allKeyFiles.map(({ file }) => readKeyFileContent(file)),
+  );
+
   const choices = allKeyFiles.reduce(
-    (acc, { file, type }) => {
-      const keyContent = readKeyFileContent(file);
+    (acc, { file, type }, index) => {
+      const keyContent = content[index];
       if (keyContent !== undefined) {
         // no file content
         acc.push({

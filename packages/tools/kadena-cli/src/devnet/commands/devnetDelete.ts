@@ -44,7 +44,7 @@ export const deleteDevnetCommand: CreateCommandReturnType = createCommand(
       removeDevnet(config.name);
       console.log(chalk.green(`Removed devnet container: ${config.name}`));
 
-      const configuration = getDevnetConfiguration(config.name);
+      const configuration = await getDevnetConfiguration(config.name);
 
       if (configuration?.useVolume === true) {
         removeVolume(config.name);
@@ -59,7 +59,7 @@ export const deleteDevnetCommand: CreateCommandReturnType = createCommand(
         ),
       );
 
-      removeDevnetConfiguration(config);
+      await removeDevnetConfiguration(config);
 
       console.log(
         chalk.green(

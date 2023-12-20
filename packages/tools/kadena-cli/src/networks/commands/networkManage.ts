@@ -32,7 +32,7 @@ export const manageNetworksCommand: (
 
     const network = await externalPrompts.networkNamePrompt(config.network);
 
-    writeNetworks({
+    await writeNetworks({
       network: network,
       networkId: await externalPrompts.networkIdPrompt(
         config.networkConfig.networkId,
@@ -47,7 +47,7 @@ export const manageNetworksCommand: (
 
     if (network !== config.network) {
       // name of network has changed, delete old network
-      removeNetwork(config);
+      await removeNetwork(config);
     }
 
     console.log(

@@ -9,8 +9,8 @@ import { kadenaChangePassword } from '@kadena/hd-wallet/chainweaver';
 import { createExternalPrompt } from '../../prompts/generic.js';
 import { actionAskForUpdatePassword } from '../../prompts/genericActionPrompts.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { removeAfterFirstDot } from '../../utils/filesystem.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { removeAfterFirstDot } from '../../utils/path.util.js';
 import * as storageService from '../utils/storage.js';
 
 export const createChangeWalletPasswordCommand: (

@@ -1,11 +1,11 @@
 import { select } from '@inquirer/prompts';
-import { ensureFileExists } from '../utils/filesystem.js';
+import { services } from '../services/index.js';
 
 export async function actionFileExistShouldUpdate(
   name: string,
   filePath: string,
 ): Promise<boolean> {
-  if (ensureFileExists(filePath)) {
+  if (await services.filesystem.fileExists(filePath)) {
     const overwrite = await actionHelper(
       `Your config For ${name} already exists. Do you want to update it?`,
     );

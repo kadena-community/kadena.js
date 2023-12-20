@@ -1,6 +1,5 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import yaml from 'js-yaml';
-import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   KEY_EXT,
@@ -13,11 +12,8 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
-import {
-  ensureDirectoryExists,
-  removeAfterFirstDot,
-} from '../../utils/filesystem.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
+import { removeAfterFirstDot } from '../../utils/path.util.js';
 
 export type TSeedContent = string;
 
@@ -36,8 +32,6 @@ export async function savePlainKeyByAlias(
   const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
 
   try {
-    ensureDirectoryExists(PLAIN_KEY_DIR);
-
     for (let i = 0; i < keyPairs.length; i++) {
       const keyPair = keyPairs[i];
       let fileName = `${sanitizedAlias}${i > 0 ? `-${i}` : ''}`;
@@ -50,6 +44,7 @@ export async function savePlainKeyByAlias(
         data.secretKey = keyPair.secretKey;
       }
 
+      await services.filesystem.ensureDirectoryExists(filePath);
       await services.filesystem.writeFile(
         filePath,
         yaml.dump(data, { lineWidth: -1 }),
@@ -83,7 +78,6 @@ export async function saveKeyByAlias(
     : WALLET_DIR;
 
   try {
-    ensureDirectoryExists(baseDir);
     for (let i = 0; i < keyPairs.length; i++) {
       const keyPair = keyPairs[i];
       const fileNameIndex = keyPairs.length === 1 ? startIndex : startIndex + i;
@@ -96,6 +90,7 @@ export async function saveKeyByAlias(
       if (keyPair.secretKey !== undefined) {
         data.secretKey = keyPair.secretKey;
       }
+      await services.filesystem.ensureDirectoryExists(filePath);
       await services.filesystem.writeFile(
         filePath,
         yaml.dump(data, { lineWidth: -1 }),
@@ -141,39 +136,14 @@ export async function storeWallet(
  * @returns {TSeedContent | IKeyPair | undefined} The parsed content of the key file, or undefined if the file does not exist.
  * @throws {Error} Throws an error if reading the file fails.
  */
-export function readKeyFileContent(
+export async function readKeyFileContent(
   filePath: string,
-): TSeedContent | IKeyPair | undefined {
-  if (!existsSync(filePath)) {
-    // if (!(await services.filesystem.directoryExists(filePath))) {
-    console.error(`File at path ${filePath} does not exist.`);
-    return undefined;
-  }
-
-  const fileContents = readFileSync(filePath, 'utf8');
-  // const fileContents = await services.filesystem.readFile(filePath);
+): Promise<TSeedContent | IKeyPair | undefined> {
+  const fileContents = await services.filesystem.readFile(filePath);
   if (fileContents === null) {
     throw Error(`Failed to read file at path: ${filePath}`);
   }
   return yaml.load(fileContents) as TSeedContent | IKeyPair;
-}
-
-/**
- * Asynchronously wraps the readKeyFileContent function.
- * @param {string} filePath - The complete file path of the key file to be read.
- * @returns {Promise<TSeedContent | IKeyPair | undefined>} A promise that resolves with the parsed content of the key file, or undefined if the file does not exist.
- */
-export async function readKeyFileContentAsync(
-  filePath: string,
-): Promise<TSeedContent | IKeyPair | undefined> {
-  return new Promise((resolve, reject) => {
-    try {
-      const result = readKeyFileContent(filePath);
-      resolve(result);
-    } catch (error) {
-      reject(error);
-    }
-  });
 }
 
 /**
@@ -182,19 +152,15 @@ export async function readKeyFileContentAsync(
  * @param {string} extension - The file extension to filter by.
  * @returns {string[]} Array of filenames with the specified extension, without the extension itself.
  */
-export function getFilesWithExtension(
+export async function getFilesWithExtension(
   dir: string,
   extension: string,
-): string[] {
-  if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
-  }
-  // await services.filesystem.ensureDirectoryExists(dir);
+): Promise<string[]> {
+  await services.filesystem.ensureDirectoryExists(dir);
 
   try {
-    // const files = await services.filesystem.readDir(dir);
-    return readdirSync(dir).filter((filename) => {
-      // return files.filter((filename) => {
+    const files = await services.filesystem.readDir(dir);
+    return files.filter((filename) => {
       // When searching for standard wallet files, exclude legacy wallet files
       if (extension === WALLET_EXT && filename.endsWith(WALLET_LEGACY_EXT)) {
         return false;

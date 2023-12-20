@@ -35,7 +35,7 @@ export const manageDevnetsCommand: CreateCommandReturnType = createCommand(
       return;
     }
 
-    writeDevnet(config);
+    await writeDevnet(config);
 
     console.log(
       chalk.green(

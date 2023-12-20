@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import { randomBytes } from 'crypto';
 import debug from 'debug';
+import { CommandResult, assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import {
@@ -12,20 +13,14 @@ import {
 } from '../utils/keysDisplay.js';
 import * as storageService from '../utils/storage.js';
 
-interface IGeneratePlainKeysCommandConfig {
-  keyAlias: string;
-  keyAmount?: number;
-  legacy?: boolean;
-}
-
 const defaultAmount: number = 1;
 
 async function generateKeyPairs(
-  config: IGeneratePlainKeysCommandConfig,
   amount: number,
+  legacy: boolean,
 ): Promise<storageService.IKeyPair[]> {
-  if (config.legacy === true) {
-    return await generateLegacyKeyPairs(config, amount);
+  if (legacy === true) {
+    return await generateLegacyKeyPairs(amount);
   } else {
     const randomKeyPairs = kadenaKeyPairsFromRandom(amount);
     return randomKeyPairs.map((keyPair) => {
@@ -38,7 +33,6 @@ async function generateKeyPairs(
 }
 
 async function generateLegacyKeyPairs(
-  config: IGeneratePlainKeysCommandConfig,
   amount: number,
 ): Promise<storageService.IKeyPair[]> {
   const keyPairs: storageService.IKeyPair[] = [];
@@ -60,6 +54,17 @@ async function generateLegacyKeyPairs(
 
   return keyPairs;
 }
+export const generatePlainKeys = async (
+  alias: string,
+  amount: number,
+  legacy: boolean,
+): Promise<CommandResult<{ keys: storageService.IKeyPair[] }>> => {
+  const keys = await generateKeyPairs(amount, legacy);
+
+  await storageService.savePlainKeyByAlias(alias, keys, legacy);
+
+  return { success: true, data: { keys } };
+};
 
 export const createGeneratePlainKeysCommand: (
   program: Command,
@@ -75,20 +80,22 @@ export const createGeneratePlainKeysCommand: (
   async (config) => {
     try {
       debug('generate-plain:action')({ config });
+
       const amount =
         config.keyAmount !== undefined && config.keyAmount !== ''
           ? config.keyAmount
           : defaultAmount;
-      const keys = await generateKeyPairs(config, amount);
 
-      displayGeneratedPlainKeys(keys);
-
-      await storageService.savePlainKeyByAlias(
+      const result = await generatePlainKeys(
         config.keyAlias,
-        keys,
+        amount,
         config.legacy,
       );
-      printStoredPlainKeys(config.keyAlias, keys, config.legacy);
+
+      assertCommandError(result);
+
+      displayGeneratedPlainKeys(result.data.keys);
+      printStoredPlainKeys(config.keyAlias, result.data.keys, config.legacy);
     } catch (error) {
       console.log(chalk.red(`\n${error.message}\n`));
       process.exit(1);

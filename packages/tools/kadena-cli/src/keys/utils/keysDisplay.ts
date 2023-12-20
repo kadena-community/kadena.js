@@ -1,10 +1,6 @@
 import chalk from 'chalk';
-import { readFileSync, readdirSync } from 'fs';
 import yaml from 'js-yaml';
-
-import type { IWalletConfig } from './keysHelpers.js';
-
-import type { IKeyPair } from './storage.js';
+import { join } from 'path';
 
 import {
   KEY_EXT,
@@ -15,13 +11,12 @@ import {
   WALLET_EXT,
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
-
-import { join } from 'path';
-
-import { removeAfterFirstDot } from '../../utils/filesystem.js';
+import { services } from '../../services/index.js';
+import { removeAfterFirstDot } from '../../utils/path.util.js';
 import { getKeysFromWallet, getLegacyKeysFromWallet } from './keysHelpers.js';
+import type { IKeyPair } from './storage.js';
 
-export function displaySelectedWallet(name: string): void {
+export async function displaySelectedWallet(name: string): Promise<void> {
   const walletName = removeAfterFirstDot(name);
   const formatLength = 80; // Maximum width for the display
   // Wallet header with background color
@@ -31,21 +26,21 @@ export function displaySelectedWallet(name: string): void {
 
   displayKeysInSection(
     walletName,
-    getKeysFromWallet(removeAfterFirstDot(walletName)),
+    await getKeysFromWallet(removeAfterFirstDot(walletName)),
     chalk.green('Standard Keys:'),
   );
   displayKeysInSection(
     walletName,
-    getLegacyKeysFromWallet(walletName),
+    await getLegacyKeysFromWallet(walletName),
     chalk.green('Legacy Keys:'),
   );
 }
 
-function displayKeysInSection(
+async function displayKeysInSection(
   walletName: string,
   keys: string[],
   sectionTitle: string,
-): void {
+): Promise<void> {
   const formatLength = 80; // Maximum width for the display
   console.log(sectionTitle);
   console.log(chalk.yellow('-'.padEnd(formatLength, '-'))); // Header separator
@@ -55,10 +50,13 @@ function displayKeysInSection(
     return;
   }
 
-  keys.forEach((keyFileName) => {
+  const content = await Promise.all(keys.map(services.filesystem.readFile));
+
+  keys.forEach((keyFileName, index) => {
     const filePath = join(WALLET_DIR, walletName, keyFileName);
     try {
-      const fileContents = readFileSync(filePath, 'utf8');
+      const fileContents = content[index];
+      if (!fileContents) throw Error('Failed to read file contents');
       const parsedContents = yaml.load(fileContents) as IKeyPair;
       console.log(chalk.yellow(`Filename: ${keyFileName}`));
       console.log(`Public Key: ${parsedContents.publicKey}`);
@@ -72,8 +70,8 @@ function displayKeysInSection(
   });
 }
 
-export function displayAllWallets(): void {
-  const walletDirs = readdirSync(WALLET_DIR, { withFileTypes: true })
+export async function displayAllWallets(): Promise<void> {
+  const walletDirs = (await services.filesystem.readDirWithTypes(WALLET_DIR))
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
 

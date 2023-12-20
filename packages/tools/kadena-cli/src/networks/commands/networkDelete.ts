@@ -35,7 +35,7 @@ export const deleteNetworksCommand: (
       return;
     }
 
-    removeNetwork(config);
+    await removeNetwork(config);
 
     console.log(
       chalk.green(

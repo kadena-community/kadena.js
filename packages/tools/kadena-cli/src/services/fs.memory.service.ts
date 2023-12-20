@@ -1,5 +1,6 @@
 import { vol } from 'memfs';
-import path from 'path';
+import type { Dirent } from 'node:fs';
+import { dirname } from 'path';
 import type { IFileSystemService } from './fs.service.js';
 
 export const fs: typeof vol.promises = vol.promises;
@@ -15,36 +16,46 @@ export const memoryFileSystemService: IFileSystemService = {
       return null;
     }
   },
-  async writeFile(file: string, data: string) {
-    await fs.writeFile(file, data, { encoding: 'utf8' });
+  async writeFile(path: string, data: string) {
+    await fs.writeFile(path, data, { encoding: 'utf8' });
   },
-  async directoryExists(dir: string) {
+  async deleteFile(path: string) {
+    await fs.unlink(path);
+  },
+  async deleteDirectory(path: string) {
+    await fs.rmdir(path);
+  },
+  async directoryExists(path: string) {
     try {
-      const stat = await fs.stat(dir);
+      const stat = await fs.stat(path);
       return stat.isDirectory();
     } catch {
       return false;
     }
   },
-  async fileExists(file: string) {
+  async fileExists(path: string) {
     try {
-      const stat = await fs.stat(file);
+      const stat = await fs.stat(path);
       return stat.isFile();
     } catch {
       return false;
     }
   },
-  async ensureDirectoryExists(directoryPath: string) {
-    if (await memoryFileSystemService.directoryExists(directoryPath)) return;
+  async ensureDirectoryExists(path: string) {
+    if (await memoryFileSystemService.directoryExists(path)) return;
 
-    const isFile = directoryPath.split('/').pop()?.includes('.') ?? false;
+    const isFile = path.split('/').pop()?.includes('.') ?? false;
 
-    await fs.mkdir(isFile ? path.dirname(directoryPath) : directoryPath, {
+    await fs.mkdir(isFile ? dirname(path) : path, {
       recursive: true,
     });
   },
-  async readDir(directoryPath: string) {
-    const result = await fs.readdir(directoryPath);
-    return result.map((x) => x.toString());
+  async readDir(path: string) {
+    const result = await fs.readdir(path);
+    return result.map((file) => file.toString());
+  },
+  async readDirWithTypes(path: string) {
+    const result = await fs.readdir(path, { withFileTypes: true });
+    return result as unknown as Dirent[];
   },
 };

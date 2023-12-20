@@ -2,13 +2,13 @@ import path from 'path';
 import { describe, expect, it } from 'vitest';
 import { services } from '../../services/index.js';
 import { isValidEncryptedValue } from '../../utils/test.util.js';
-import { walletGenerate } from '../commands/keysWalletGenerate.js';
+import { generateWallet } from '../commands/keysWalletGenerate.js';
 
 const root = path.join(__dirname, '../../../');
 
 describe('create wallet', () => {
   it('Should create a encrypted seed and store it', async () => {
-    const result = await walletGenerate('test', '12345678', false);
+    const result = await generateWallet('test', '12345678', false);
 
     if (!result.success) throw new Error('Should be true');
 

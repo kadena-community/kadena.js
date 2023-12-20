@@ -47,7 +47,7 @@ async function generateKey(
   return { words, seed };
 }
 
-export const walletGenerate = async (
+export const generateWallet = async (
   keyWallet: string,
   password: string,
   legacy: boolean,
@@ -80,7 +80,7 @@ export const walletGenerate = async (
  * @param {Command} program - The commander program.
  * @param {string} version - The version of the program.
  */
-export const createGenerateWalletsCommand: (
+export const createGenerateWalletCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
@@ -102,7 +102,7 @@ export const createGenerateWalletsCommand: (
         return process.exit(1);
       }
 
-      const result = await walletGenerate(
+      const result = await generateWallet(
         config.keyWallet,
         config.securityPassword,
         config.legacy,
