@@ -66,7 +66,6 @@ export const createNamespace = async ({
   // if (response.result.status === 'failure') {
   //   throw response.result.error;
   // } else {
-  //   console.log(response.result);
   //   return response.result;
   // }
   return response;
