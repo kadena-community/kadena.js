@@ -49,7 +49,7 @@ model Event {
   parameterText String       @map("paramtext") @db.VarChar
   qualifiedName String       @map("qualname") @db.VarChar
   requestKey    String       @map("requestkey") @db.VarChar
-  id            Int          @unique(map: "events_id_uniq") @default(autoincrement())
+  id            Int          @unique(map: "events_id") @default(autoincrement())
   transaction   Transaction? @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey])
   block         Block        @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
