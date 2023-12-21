@@ -5,11 +5,13 @@ import {
   generateAccount,
 } from '../../support/helpers/accounts.helper';
 
-test.beforeEach(async ({ page, toolsApp }) => {
+test.beforeEach(async ({ page, toolsApp, context }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
     await page.goto('/');
     await toolsApp.homePage.header.setNetwork('devnet');
     await toolsApp.homePage.header.goToPage('Faucet');
+    const cookies = await context.cookies()
+    console.log(cookies)
   });
 });
 
