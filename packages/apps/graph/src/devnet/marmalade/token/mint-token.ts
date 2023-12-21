@@ -1,4 +1,4 @@
-import { IAccount, logger } from '@devnet/helper';
+import type { IAccount } from '@devnet/helper';
 import { Pact, createSignWithKeypair, readKeyset } from '@kadena/client';
 import { submitClient } from '@kadena/client-utils/core';
 import {
@@ -8,7 +8,7 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { IPactDecimal } from '@kadena/types';
+import type { IPactDecimal } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 
 export interface ICreateTokenInput {

@@ -1,6 +1,5 @@
+import type { IAccount, IAccountWithTokens } from '@devnet/helper';
 import {
-  IAccount,
-  IAccountWithTokens,
   generateAccount,
   getRandomNumber,
   getRandomOption,
@@ -14,7 +13,8 @@ import { mintToken } from '@devnet/marmalade/token/mint-token';
 import { transferCreateToken } from '@devnet/marmalade/token/transfer-create-token';
 import { transfer } from '@devnet/transfer';
 import { PactNumber } from '@kadena/pactjs';
-import { TokenActionType, appendToFile, createFile } from './file';
+import type { TokenActionType } from './file';
+import { appendToFile, createFile } from './file';
 
 const simulationTransferOptions: TokenActionType[] = ['mint', 'transfer'];
 
@@ -57,7 +57,7 @@ export async function simulateMarmalade({
     for (let i = 0; i < numberOfAccounts; i++) {
       // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
       const noOfKeys = i % 2 === 0 ? 1 : 2;
-      let account = await generateAccount(noOfKeys);
+      const account = await generateAccount(noOfKeys);
 
       logger.info(
         `Generated KeyPair\nAccount: ${
@@ -305,7 +305,7 @@ export async function createAndMintToken({
   });
 
   // If account already exists in array, add the token. If not add the account to the array
-  let accountToUpdate = accountCollection.find(
+  const accountToUpdate = accountCollection.find(
     (acc) => acc.account === creator.account,
   );
 
@@ -373,7 +373,7 @@ export async function transferToken({
   };
 
   // Update receiver account
-  let accountToUpdate = accountCollection.find(
+  const accountToUpdate = accountCollection.find(
     (a) => a.account === receiver.account,
   );
 
@@ -415,7 +415,7 @@ export async function mintExistingToken({
   });
 
   // If account already exists in array, add the token. If not add the account to the array
-  let accountToUpdate = accountCollection.find(
+  const accountToUpdate = accountCollection.find(
     (acc) => acc.account === creator.account,
   );
 

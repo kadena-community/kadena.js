@@ -1,7 +1,7 @@
 import type { ChainId } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
 import { crossChainTransfer } from '../crosschain-transfer';
-import type { IAccount, IAccountWithTokens } from '../helper';
+import type { IAccount } from '../helper';
 import {
   generateAccount,
   getAccountBalance,
