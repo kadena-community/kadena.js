@@ -1,4 +1,9 @@
-import type { ICap, IExecPayload, IUnsignedCommand } from '@kadena/types';
+import type {
+  ICap,
+  IExecPayload,
+  IUnsignedCommand,
+  TPredicate,
+} from '@kadena/types';
 import {
   addData,
   addKeyset,
@@ -61,7 +66,7 @@ interface ISetNonce<TCommand> {
 }
 
 interface IAddKeyset<TCommand> {
-  <TKey extends string, PRED extends 'keys-all' | 'keys-any' | 'keys-2'>(
+  <TKey extends string, PRED extends TPredicate>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]

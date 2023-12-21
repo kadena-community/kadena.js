@@ -8,6 +8,7 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
+import type { TPredicate } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
@@ -15,7 +16,7 @@ interface IRotateCommandInput {
   account: { account: string; publicKeys: string[] };
   newguard: {
     keys: string[];
-    pred: 'keys-all' | 'keys-2' | 'keys-any';
+    pred: TPredicate;
   };
   gasPayer: { account: string; publicKeys: string[] };
   chainId: ChainId;

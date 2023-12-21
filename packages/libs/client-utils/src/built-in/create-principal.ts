@@ -1,4 +1,5 @@
 import { addKeyset, execution } from '@kadena/client/fp';
+import type { TPredicate } from '@kadena/types';
 import { pipe } from 'ramda';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
@@ -9,7 +10,7 @@ import type { IClientConfig } from '../core/utils/helpers';
 export interface ICreatePrincipalInput {
   keyset: {
     keys: string[];
-    pred?: 'keys-all' | 'keys-2' | 'keys-any';
+    pred?: TPredicate;
   };
 }
 

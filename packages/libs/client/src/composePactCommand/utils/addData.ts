@@ -1,3 +1,4 @@
+import type { TPredicate } from '@kadena/types';
 import type { IPartialPactCommand } from '../../interfaces/IPactCommand';
 import { patchCommand } from './patchCommand';
 
@@ -62,7 +63,7 @@ export const addData: (
   };
 
 export interface IAddKeyset {
-  <TKey extends string, PRED extends 'keys-all' | 'keys-any' | 'keys-2'>(
+  <TKey extends string, PRED extends TPredicate>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]

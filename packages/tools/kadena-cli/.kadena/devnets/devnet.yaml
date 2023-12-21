@@ -1,0 +1,5 @@
+name: devnet
+port: 8080
+useVolume: false
+mountPactFolder: ''
+version: latest

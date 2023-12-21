@@ -1,9 +1,10 @@
+import type { TPredicate } from '@kadena/types';
 import type { Transaction, Transfer } from '@prisma/client';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Guard {
   keys: string[];
-  predicate: 'keys-all' | 'keys-any' | 'keys-two';
+  predicate: TPredicate;
 }
 
 export const ChainFungibleAccountName: 'ChainFungibleAccount' =
