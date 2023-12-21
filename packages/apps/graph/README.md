@@ -128,14 +128,35 @@ Advanced: In each iteration a new random number is generated, so that the
 transactions are different, with different amounts and to and from different
 chains. The new number is generated using the previous one as seed.
 
+#### Coin simulation
+
+In the coin simulation, fungibles are transfered between accounts at a random
+order. The simulation is also responsible for creating differents transactions
+types such as transfers, cross-chain transfers, and safe transfers.
+
 ```sh
-npm run simulate -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
+npm run simulate:coin -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
 ```
 
 - numberOfAccounts - number of accounts to be created in the devnet (default: 6)
 - timeInterval - frequency of transactions in miliseconds (default: 100)
 - maxAmount - maximum amount for a single transaction (default: 25)
 - tokenPool - amount of circulating tokens (default: 1000000)
+- seed - seed for random number generation (default: current timestamp)
+
+#### Marmalade simulation
+
+In the marmalade simulation, non-fungibles tokens are created, minted and
+transfered between accounts at a random order. The simulation is also
+responsible for creating differents tokens along its course.
+
+```sh
+npm run simulate:marmalade -a <numberOfAccounts> -i <timeInterval> -mt <maximumMintValue> -s <seed>
+```
+
+- numberOfAccounts - number of accounts to be created in the devnet (default: 8)
+- timeInterval - frequency of transactions in miliseconds (default: 100)
+- maximumMintValue - maximum amount a token can be minted at once (default: 25)
 - seed - seed for random number generation (default: current timestamp)
 
 ### Tracing and trace analysis
