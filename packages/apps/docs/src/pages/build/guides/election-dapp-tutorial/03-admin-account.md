@@ -172,7 +172,7 @@ To transfer coins to fund the administrative account:
 
 In this tutorial, you learned how to:
 
-- Generate a new public and secret key key for a Kadena account using Chainweaver.
+- Generate a new public and secret key for a Kadena account using Chainweaver.
 - Transfer coins to create and fund a new account using the Kadena client.
 - Verify account information using the Kadena client and in Chainweaver. 
  
