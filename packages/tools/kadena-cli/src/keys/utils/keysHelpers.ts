@@ -200,13 +200,22 @@ export function parseKeyIndexOrRange(input: string): number | [number, number] {
  *
  * @param {number | [number, number]} rangeOrNumber - The result from parseKeyIndexOrRange, can be a single number or a range tuple.
  * @returns {number} - The start index
+ * @throws {TypeError} - Throws if the input is not a number or a valid range tuple.
  */
 export function extractStartIndex(
   rangeOrNumber: number | [number, number],
 ): number {
-  if (Array.isArray(rangeOrNumber)) {
+  if (typeof rangeOrNumber === 'number') {
+    return rangeOrNumber;
+  } else if (
+    Array.isArray(rangeOrNumber) &&
+    rangeOrNumber.length === 2 &&
+    rangeOrNumber.every((elem) => typeof elem === 'number')
+  ) {
     return rangeOrNumber[0];
   } else {
-    return rangeOrNumber;
+    throw new TypeError(
+      'Invalid input: Input must be a number or a range tuple of two numbers.',
+    );
   }
 }

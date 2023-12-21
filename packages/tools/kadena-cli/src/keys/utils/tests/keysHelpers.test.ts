@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseKeyIndexOrRange } from '../keysHelpers.js';
+import { extractStartIndex, parseKeyIndexOrRange } from '../keysHelpers.js';
 
 describe('parseKeyIndexOrRange', () => {
   it('parses a single number correctly', () => {
@@ -75,5 +75,40 @@ describe('parseKeyIndexOrRange', () => {
   it('throws error when passing a number in a range directly', () => {
     const oneToFive = [1, 5] as unknown as string; // typescript for testing
     expect(() => parseKeyIndexOrRange(oneToFive)).toThrow();
+  });
+});
+
+describe('extractStartIndex', () => {
+  it('should return the number itself if a single number is provided', () => {
+    expect(extractStartIndex(5)).toBe(5);
+  });
+
+  it('should return the first element of the tuple if a range is provided', () => {
+    expect(extractStartIndex([3, 7])).toBe(3);
+  });
+
+  // New test cases for fault tolerance
+  it('should throw an error for non-numeric single inputs', () => {
+    expect(() => extractStartIndex('invalid' as unknown as number)).toThrow();
+  });
+
+  it('should throw an error for tuples not containing exactly two numbers', () => {
+    expect(() =>
+      extractStartIndex([1] as unknown as [number, number]),
+    ).toThrow();
+    expect(() =>
+      extractStartIndex([1, 2, 3] as unknown as [number, number]),
+    ).toThrow();
+    expect(() =>
+      extractStartIndex(['a', 'b'] as unknown as [number, number]),
+    ).toThrow();
+  });
+
+  it('should throw an error for non-array and non-number inputs', () => {
+    expect(() =>
+      extractStartIndex({} as unknown as [number, number]),
+    ).toThrow();
+    expect(() => extractStartIndex(null as unknown as number)).toThrow();
+    expect(() => extractStartIndex(undefined as unknown as number)).toThrow();
   });
 });
