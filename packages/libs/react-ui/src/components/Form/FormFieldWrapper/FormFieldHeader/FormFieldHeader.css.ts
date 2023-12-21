@@ -6,7 +6,7 @@ export const headerClass = style([
     display: 'flex',
     alignItems: 'center',
     gap: 'sm',
-    marginY: 'sm',
+    marginBlock: 'sm',
   }),
 ]);
 
@@ -16,7 +16,7 @@ export const infoClass = style([
     alignItems: 'center',
     gap: 'xxs',
     fontSize: 'xs',
-    marginLeft: 'auto',
+    marginInlineStart: 'auto',
     color: 'text.base.default',
   }),
 ]);
@@ -26,7 +26,7 @@ export const tagClass = style([
     backgroundColor: 'layer-3.inverse.default',
     color: 'text.base.inverse.default',
     borderRadius: 'sm',
-    paddingX: 'sm',
+    paddingInline: 'sm',
     fontSize: 'xs',
     fontWeight: 'bodyFont.bold',
     display: 'inline-block',
