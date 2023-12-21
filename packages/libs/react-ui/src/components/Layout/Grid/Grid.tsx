@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
-import { Box, IBoxProps } from '../Box';
+import type { IBoxProps } from '../Box';
+import { Box } from '../Box';
 import type { ResponsiveInputType } from './Grid.css';
 import { containerColumnVariants, gridContainerClass } from './Grid.css';
 
