@@ -65,6 +65,5 @@ export const createAccount = async (
   );
 
   await transferCreateTask.executeTo();
-  console.log(account);
   return account;
 };
