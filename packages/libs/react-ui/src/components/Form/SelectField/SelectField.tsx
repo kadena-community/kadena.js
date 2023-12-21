@@ -35,11 +35,11 @@ export const SelectField: FC<ISelectFieldProps> = forwardRef<
         {label !== undefined && (
           <FormFieldHeader htmlFor={id} label={label} tag={tag} info={info} />
         )}
-        <Stack gap="$2" direction="column">
-          <Select ref={ref} id={id} disabled={disabled} {...rest}>
-            {children}
-          </Select>
-        </Stack>
+
+        <Select ref={ref} id={id} disabled={disabled} {...rest}>
+          {children}
+        </Select>
+
         {Boolean(helperText) && status !== 'negative' && (
           <FormFieldHelper>{helperText}</FormFieldHelper>
         )}

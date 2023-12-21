@@ -24,9 +24,9 @@ export const TextareaField: FC<ITextareaFieldProps> = forwardRef<
       {label !== undefined && (
         <FormFieldHeader htmlFor={id} label={label} tag={tag} info={info} />
       )}
-      <Stack gap="$2" direction="column">
-        <Textarea ref={ref} disabled={disabled} id={id} {...rest} />
-      </Stack>
+
+      <Textarea ref={ref} disabled={disabled} id={id} {...rest} />
+
       {Boolean(helperText) && status !== 'negative' && (
         <FormFieldHelper>{helperText}</FormFieldHelper>
       )}

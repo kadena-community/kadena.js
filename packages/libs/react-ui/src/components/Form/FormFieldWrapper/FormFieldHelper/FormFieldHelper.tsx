@@ -6,7 +6,6 @@ import { helperClass, helperIconClass } from './FormFieldHelper.css';
 
 interface IFormFieldHelperProps {
   children: React.ReactNode;
-  helperTextProps?: DOMAttributes<FocusableElement>; // all props of the span
 }
 
 export const FormFieldHelper: FC<IFormFieldHelperProps> = ({ children }) => {
