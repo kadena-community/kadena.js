@@ -14,14 +14,15 @@ their configuration options.
 > Additionally, installation and compatibility has only been tested with Next.js
 > projects within the Kadena.js monorepo.
 
-## Getting started
+## Getting Started
 
-Run the following commands to install dependencies and build the library from
-this repo:
+### Install
+
+Note that the package is not yet published, so for now you need to clone this
+repo and make a symlink.
 
 ```sh
-pnpm install
-pnpm build --filter @kadena/react-ui
+$ npm install @kadena/react-ui
 ```
 
 Since this library uses VE and is not pre-bundled, the consuming project will
@@ -29,6 +30,14 @@ need to setup integration with VE. You can find integration instructions in the
 [VE docs][4].
 
 ### Integration with Next.js projects within Kadena.js
+
+Run the following commands to install dependencies and build the library from
+this repo:
+
+```sh
+pnpm install --filter @kadena/react-ui
+pnpm build --filter @kadena/react-ui
+```
 
 Add **@kadena/react-ui** as a dependency in your `package.json`:
 
@@ -42,8 +51,8 @@ Add **@kadena/react-ui** as a dependency in your `package.json`:
 }
 ```
 
-Then run the following commands to install the package and update the monorepo's
-state:
+Then run the following commands from your project directory to install the
+package and update the monorepo's state:
 
 ```sh
 pnpm install
