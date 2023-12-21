@@ -15,8 +15,5 @@
     "jsx": "preserve",
     "allowJs": true
   },
-  "files": [
-   "playwright.tools.config.ts", "playwright.base.config.ts"
-
-]
+  "files": ["playwright.tools.config.ts", "playwright.base.config.ts"]
 }
