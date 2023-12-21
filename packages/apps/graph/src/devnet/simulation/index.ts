@@ -1,13 +1,5 @@
 import { Command, Option } from 'commander';
-
 import 'module-alias/register';
-
-import { createToken } from '@devnet/marmalade/token/create-token';
-import { createTokenId } from '@devnet/marmalade/token/create-token-id';
-import { mintToken } from '@devnet/marmalade/token/mint-token';
-import { transferCreateToken } from '@devnet/marmalade/token/transfer-create-token';
-import { PactNumber } from '@kadena/pactjs';
-import { ChainId } from '@kadena/types';
 import type { IAccount } from '../helper';
 import { generateAccount, logger, sender00 } from '../helper';
 import { deployMarmaladeContracts } from '../marmalade/deploy';
@@ -48,7 +40,7 @@ program
   });
 
 program
-  .command('traffic')
+  .command('simulate:coin')
   .description('Simulate traffic on the devnet')
   .addOption(
     new Option(
@@ -88,7 +80,7 @@ program
   });
 
 program
-  .command('marmalade')
+  .command('deploy:marmalade')
   .description('Deploy marmalade contracts on the devnet')
   .action(async (args) => {
     try {
@@ -99,7 +91,7 @@ program
   });
 
 program
-  .command('test')
+  .command('simulate:marmalade')
   .description('Deploy marmalade contracts on the devnet')
   .addOption(
     new Option(

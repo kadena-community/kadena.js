@@ -35,12 +35,12 @@ export async function simulateMarmalade({
 
   // Parameters validation
   if (numberOfAccounts <= 1) {
-    logger.info('Number of accounts must be greater than 1');
+    logger.error('Number of accounts must be greater than 1');
     return;
   }
 
   if (maximumMintValue < 1) {
-    logger.info(
+    logger.error(
       'The max transfer amount cant be less than 1 (minimum mint amount)',
     );
     return;
@@ -173,7 +173,7 @@ export async function simulateMarmalade({
           seededRandomNo = seedRandom(`${seededRandomNo}`);
 
           if (nextAccount.account === account.account) {
-            logger.info('Skipping transfer to self');
+            logger.warn('Skipping transfer to self');
             continue;
           }
 
@@ -196,7 +196,7 @@ export async function simulateMarmalade({
           seededRandomNo = seedRandom(`${seededRandomNo}`);
 
           if (transferAmount < 1) {
-            logger.info('Skipping transfer of 0 tokens');
+            logger.warn('Skipping transfer of 0 tokens');
             continue;
           }
 
@@ -214,7 +214,9 @@ export async function simulateMarmalade({
       }
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
+    appendToFile(filepath, { error });
+    throw error;
   }
 }
 

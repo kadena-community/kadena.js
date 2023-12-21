@@ -45,14 +45,14 @@ export async function simulate({
 
   // Parameters validation
   if (tokenPool < maxAmount) {
-    logger.info(
+    logger.error(
       'The max transfer amount cant be greater than the total token pool',
     );
     return;
   }
 
   if (numberOfAccounts <= 1) {
-    logger.info('Number of accounts must be greater than 1');
+    logger.error('Number of accounts must be greater than 1');
     return;
   }
 
@@ -151,7 +151,7 @@ export async function simulate({
         // using a random number safety gap to avoid underflowing the account
         const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
         if (amountWithSafetyGap > balance) {
-          logger.info(
+          logger.warn(
             `Insufficient funds for ${account.account}\nFunds necessary: ${amountWithSafetyGap}\nFunds available: ${balance}`,
           );
           logger.info('Skipping transfer');
@@ -185,7 +185,7 @@ export async function simulate({
           }
 
           if (account.chainId === nextAccount.chainId) {
-            logger.info('Skipping cross chain transfer to same chain');
+            logger.warn('Skipping cross chain transfer to same chain');
             continue;
           }
 
@@ -208,7 +208,7 @@ export async function simulate({
           }
 
           if (isEqualChainAccounts(account, nextAccount)) {
-            logger.info('Skipping transfer to self');
+            logger.warn('Skipping transfer to self');
             continue;
           }
 
@@ -251,10 +251,9 @@ export async function simulate({
         await new Promise((resolve) => setTimeout(resolve, transferInterval));
       }
       counter++;
-      // Timeout
-      await new Promise((resolve) => setTimeout(resolve, transferInterval));
     }
   } catch (error) {
+    logger.error(error);
     appendToFile(filepath, { error });
     throw error;
   }
