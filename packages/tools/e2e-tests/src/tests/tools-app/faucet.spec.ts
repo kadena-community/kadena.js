@@ -10,8 +10,8 @@ test.beforeEach(async ({ page, toolsApp, context }) => {
     await page.goto('/');
     await toolsApp.homePage.header.setNetwork('devnet');
     await toolsApp.homePage.header.goToPage('Faucet');
-    const cookies = await context.cookies()
-    console.log(cookies)
+    const cookies = await context.cookies();
+    console.log(cookies);
   });
 });
 
