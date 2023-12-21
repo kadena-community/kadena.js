@@ -5,7 +5,7 @@ import type { ICoin } from '../../../composePactCommand/test/coin-contract';
 import type { IQuicksignResponseOutcomes } from '../../../index';
 import { Pact } from '../../../index';
 import { getModule } from '../../../pact';
-import { signWithChainweaver } from '../signWithChainweaver';
+import { createSignWithChainweaver } from '../signWithChainweaver';
 
 const coin: ICoin = getModule('coin');
 
@@ -34,6 +34,7 @@ const post = (
 describe('signWithChainweaver', () => {
   it('throws an error when nothing is to be signed', async () => {
     try {
+      const signWithChainweaver = createSignWithChainweaver();
       await (signWithChainweaver as (arg: unknown) => {})(undefined);
     } catch (e) {
       expect(e).toBeTruthy();
@@ -46,6 +47,7 @@ describe('signWithChainweaver', () => {
     );
 
     try {
+      const signWithChainweaver = createSignWithChainweaver();
       await (signWithChainweaver as (arg: unknown) => {})([]);
     } catch (e) {
       expect(e).toBeTruthy();
@@ -83,6 +85,7 @@ describe('signWithChainweaver', () => {
       }),
     );
 
+    const signWithChainweaver = createSignWithChainweaver();
     await signWithChainweaver(unsignedTransaction);
   });
 
@@ -118,10 +121,10 @@ describe('signWithChainweaver', () => {
       post('http://my-host.kadena:9467/v1/quicksign', mockedResponse),
     );
 
-    const signedTx = await signWithChainweaver(
-      unsignedTransaction,
+    const signWithChainweaver = createSignWithChainweaver(
       'http://my-host.kadena:9467',
     );
+    const signedTx = await signWithChainweaver(unsignedTransaction);
 
     expect(signedTx.sigs).toStrictEqual([{ sig: 'sig' }]);
   });
@@ -141,6 +144,7 @@ describe('signWithChainweaver', () => {
       .createTransaction();
 
     // expected: throws an error
+    const signWithChainweaver = createSignWithChainweaver();
     await expect(signWithChainweaver(unsignedTransaction)).rejects.toThrow();
   });
 
@@ -195,6 +199,7 @@ describe('signWithChainweaver', () => {
       })
       .createTransaction();
 
+    const signWithChainweaver = createSignWithChainweaver();
     const txWithOneSig = await signWithChainweaver(unsignedTransaction);
 
     expect(txWithOneSig.sigs).toStrictEqual([
@@ -231,6 +236,7 @@ describe('signWithChainweaver', () => {
       .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
       .createTransaction();
 
+    const signWithChainweaver = createSignWithChainweaver();
     const signedTransaction = await signWithChainweaver(unsignedTransaction);
 
     expect(signedTransaction.sigs).toEqual([undefined]);

@@ -38,6 +38,9 @@ export function createEckoWalletQuicksign(): IEckoSignFunction;
 export function createEckoWalletSign(): IEckoSignSingleFunction;
 
 // @public
+export function createSignWithChainweaver(chainweaverUrl?: string): ISignFunction;
+
+// @public
 export const createSignWithKeypair: ICreateSignWithKeypair;
 
 // @public
@@ -403,9 +406,6 @@ export type PactReturnType<T extends (...args: any[]) => any> = T extends (...ar
 
 // @public
 export const readKeyset: (key: string) => () => string;
-
-// @public
-export const signWithChainweaver: ISignFunction;
 
 // @public
 export type TWalletConnectChainId = `kadena:${IPactCommand['networkId']}`;

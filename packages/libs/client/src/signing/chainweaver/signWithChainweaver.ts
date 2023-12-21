@@ -7,105 +7,89 @@ import type {
   IQuicksignResponse,
   IQuicksignSigner,
 } from '../../signing-api/v1/quicksign';
-import type { ISingleSignFunction } from '../ISignFunction';
+import type { ISignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 const debug: Debugger = _debug('pactjs:signWithChainweaver');
 
 /**
- * Interface to use when writing a signing function for Chainweaver that accepts a single transaction
- * @public
- */
-export interface IChainweaverSingleSignFunction extends ISingleSignFunction {
-  (
-    transaction: IUnsignedCommand,
-    chainweaverUrl?: string,
-  ): Promise<ICommand | IUnsignedCommand>;
-}
-
-/**
- * Interface to use when writing a signing function for Chainweaver that accepts multiple transactions
- * @public
- */
-export interface IChainweaverSignFunction
-  extends IChainweaverSingleSignFunction {
-  (
-    transactionList: IUnsignedCommand[],
-  ): Promise<(ICommand | IUnsignedCommand)[]>;
-}
-
-/**
- * Sign with chainweaver according to {@link https://github.com/kadena-io/KIPs/blob/master/kip-0015.md | sign-v1 API}
+ * Creates the signWithChainweaver function with interface {@link ISignFunction}
+ * Lets you sign with chainweaver according to {@link https://github.com/kadena-io/KIPs/blob/master/kip-0015.md | sign-v1 API}
  *
  * @public
  */
-export const signWithChainweaver: IChainweaverSignFunction = (async (
-  transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
+export function createSignWithChainweaver(
   chainweaverUrl = 'http://127.0.0.1:9467',
-) => {
-  if (transactionList === undefined) {
-    throw new Error('No transaction(s) to sign');
-  }
-
-  const isList = Array.isArray(transactionList);
-  const transactions = isList ? transactionList : [transactionList];
-  const quickSignRequest: IQuickSignRequestBody = {
-    cmdSigDatas: transactions.map((t) => {
-      const parsedTransaction = parseTransactionCommand(t);
-      return {
-        cmd: t.cmd,
-        sigs: parsedTransaction.signers.map((signer, i) => {
-          return {
-            pubKey: signer.pubKey,
-            sig: t.sigs[i]?.sig ?? null,
-          };
-        }),
-      };
-    }),
-  };
-
-  const body: string = JSON.stringify(quickSignRequest);
-
-  debug('calling sign api:', body);
-
-  const response = await fetch(`${chainweaverUrl}/v1/quicksign`, {
-    method: 'POST',
-    body,
-    headers: { 'Content-Type': 'application/json;charset=utf-8' },
-  });
-
-  const bodyText = await response.text();
-
-  // response is not JSON when not-ok, that's why we use try-catch
-  try {
-    const result = JSON.parse(bodyText) as IQuicksignResponse;
-
-    if ('error' in result) {
-      if ('msg' in result.error) {
-        console.log('error in result', result.error.msg);
-      }
-      throw new Error(JSON.stringify(result.error));
+): ISignFunction {
+  const signWithChainweaver: ISignFunction = (async (
+    transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
+  ) => {
+    if (transactionList === undefined) {
+      throw new Error('No transaction(s) to sign');
     }
 
-    result.responses.map((signedCommand, i) => {
-      transactions[i] = addSignatures(
-        transactions[i],
-        ...signedCommand.commandSigData.sigs.filter(isASigner),
-      );
+    const isList = Array.isArray(transactionList);
+    const transactions = isList ? transactionList : [transactionList];
+    const quickSignRequest: IQuickSignRequestBody = {
+      cmdSigDatas: transactions.map((t) => {
+        const parsedTransaction = parseTransactionCommand(t);
+        return {
+          cmd: t.cmd,
+          sigs: parsedTransaction.signers.map((signer, i) => {
+            return {
+              pubKey: signer.pubKey,
+              sig: t.sigs[i]?.sig ?? null,
+            };
+          }),
+        };
+      }),
+    };
+
+    const body: string = JSON.stringify(quickSignRequest);
+
+    debug('calling sign api:', body);
+
+    const response = await fetch(`${chainweaverUrl}/v1/quicksign`, {
+      method: 'POST',
+      body,
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
     });
 
-    return isList ? transactions : transactions[0];
-  } catch (error) {
-    throw new Error(
-      'An error occurred when adding signatures to the command' +
-        `\nResponse from v1/quicksign was \`${bodyText}\`. ` +
-        `\nCode: \`${response.status}\`` +
-        `\nText: \`${response.statusText}\` ` +
-        `${error}`,
-    );
-  }
-}) as IChainweaverSignFunction;
+    const bodyText = await response.text();
+
+    // response is not JSON when not-ok, that's why we use try-catch
+    try {
+      const result = JSON.parse(bodyText) as IQuicksignResponse;
+
+      if ('error' in result) {
+        if ('msg' in result.error) {
+          console.log('error in result', result.error.msg);
+        }
+        throw new Error(JSON.stringify(result.error));
+      }
+
+      result.responses.map((signedCommand, i) => {
+        transactions[i] = addSignatures(
+          transactions[i],
+          ...signedCommand.commandSigData.sigs.filter(isASigner),
+        );
+      });
+
+      return isList ? transactions : transactions[0];
+    } catch (error) {
+      throw new Error(
+        'An error occurred when adding signatures to the command' +
+          `\nResponse from v1/quicksign was \`${bodyText}\`. ` +
+          `\nCode: \`${response.status}\`` +
+          `\nText: \`${response.statusText}\` ` +
+          `${error}`,
+      );
+    }
+  }) as ISignFunction;
+
+  return signWithChainweaver;
+}
 
 function isASigner(signer: IQuicksignSigner): signer is {
   pubKey: string;

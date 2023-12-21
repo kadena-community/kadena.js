@@ -1,5 +1,5 @@
 ---
-'@kadena/client': minor
+'@kadena/client': major
 ---
 
 Adds support for a custom url to signWithChainweaver
