@@ -4,7 +4,7 @@ import { baseConfig } from './playwright.base.config';
 const config: PlaywrightTestConfig = {
   ...baseConfig,
   webServer: {
-    command: `pnpm run start --filter @kadena/tools`,
+    command: `pnpm --filter @kadena/tools start`,
     url: 'http://localhost:3000',
     reuseExistingServer: process.env.CI === undefined,
     env: {
