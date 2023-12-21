@@ -204,7 +204,7 @@ const Event: React.FC = () => {
         />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <Grid columns={2}>
         <GridItem>
