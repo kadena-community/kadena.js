@@ -1,4 +1,5 @@
 ---
+
 title: What is KDA?
 description:
   Digital currency that is used to pay for compute on the Kadena public chain.
@@ -6,8 +7,8 @@ menu: KDA
 label: What is KDA?
 order: 3
 layout: full
----
 
+---
 # What is KDA?
 
 ## What does the KDA token do?
@@ -45,3 +46,5 @@ Current circulating supply can be found on the
 
 Resources and guides for securing, managing and moving KDA are available
 [here](/kadena/kda/manage-kda).
+
+    

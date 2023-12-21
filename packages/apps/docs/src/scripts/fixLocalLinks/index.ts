@@ -22,6 +22,7 @@ import { getFileNameOfPageFile } from './utils/getFileNameOfPageFile';
 import { getLinkHash } from './utils/getLinkHash';
 import { getUrlofImageFile } from './utils/getUrlofImageFile';
 import { isLocalImageLink, isLocalPageLink } from './utils/isLocalPageLink';
+import { removeFileExtenion } from './utils/removeFileExtenion';
 import { splitContentFrontmatter } from './utils/splitContentFrontmatter';
 
 const errors: string[] = [];
@@ -96,9 +97,17 @@ const getUrlofPageFile = (link: string): string => {
     .replace(/\.\//g, '')
     .replace(`#${fileHash}`, '');
 
+  // the blogchain is not in the config.
+  // so do not check to change
+  if (cleanLink.startsWith('/blogchain') || cleanLink.startsWith('blogchain'))
+    return removeFileExtenion(cleanLink);
+
   const result = findPageByFile(cleanLink, pages);
   if (!result) {
-    errors.push(`${link}#${fileHash} not found in the config`);
+    console.log(cleanLink, removeFileExtenion(cleanLink));
+    errors.push(
+      `${link}${fileHash ? `#${fileHash}` : ``} not found in the config`,
+    );
     return '';
   }
 

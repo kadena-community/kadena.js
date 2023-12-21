@@ -1,12 +1,13 @@
 ---
+
 title: FAQ
 description: Answers to commonly asked questions about Kadena.
 menu: Support
 label: FAQ
 order: 5
 layout: full
----
 
+---
 # FAQ
 
 ### What consensus mechanism does Kadena use?
@@ -15,7 +16,7 @@ Proof-of-Work
 
 ### What hashing algorithm does Kadena use?
 
-Blake2s_256
+Blake2s\_256
 
 ### What is the target block time for Kadena?
 
@@ -46,14 +47,14 @@ Yes, the open-source repository for the Kadena public blockchain is
 Kadena uses proof of work for a few key reasons:Evidence: PoW is the only
 “battle-tested” consensus protocol primitive.
 
-1. **Economic incentive alignment:** PoW creates an economic incentive for the
-   majority of the hashpower to validate and honestly support the entire
-   network. It is an open research question if a non-PoW approach can reasonably
-   achieve the same.
-2. **Regulation:** In the eyes of certain financial regulators, proof of work
-   miners are not considered money transmitters, making a probabilistic PoW
-   mining system safer from a US regulatory perspective than a system with more
-   “finality” like PoS.
+1.  **Economic incentive alignment:** PoW creates an economic incentive for the
+    majority of the hashpower to validate and honestly support the entire
+    network. It is an open research question if a non-PoW approach can reasonably
+    achieve the same.
+2.  **Regulation:** In the eyes of certain financial regulators, proof of work
+    miners are not considered money transmitters, making a probabilistic PoW
+    mining system safer from a US regulatory perspective than a system with more
+    “finality” like PoS.
 
 ### How does Kadena scale?
 
@@ -99,3 +100,5 @@ supplementary resources here.
 Official information for mining KDA is maintained at
 [this GitHub repository](https://github.com/kadena-io/chainweb-mining-client),
 and supplementary resources here.
+
+    

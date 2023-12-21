@@ -1,4 +1,5 @@
 ---
+
 title: Kadena Resources
 description:
   Here are the official links for Kadena's social pages, blog, and developer
@@ -7,8 +8,8 @@ menu: Resources
 label: Resources
 order: 7
 layout: full
----
 
+---
 # Kadena Resources
 
 ## Official Links
@@ -22,3 +23,5 @@ layout: full
 | [LinkedIn](https://www.linkedin.com/company/kadena-llc/mycompany/) | ![LinkedIn](/assets/docs/linkedin.png) |
 | [Reddit](https://www.reddit.com/r/kadena/)                         | ![Reddit](/assets/docs/reddit.png)     |
 | [Github](https://github.com/kadena-community)                      | ![Github](/assets/docs/github.png)     |
+
+    

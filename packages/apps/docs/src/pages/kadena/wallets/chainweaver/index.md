@@ -1,12 +1,13 @@
 ---
+
 title: Chainweaver User Guide
 description: Chainweaver User Guide
 menu: Chainweaver
 label: User Guide
 order: 2
 layout: full
----
 
+---
 # Chainweaver User Guide
 
 ## Getting Started
@@ -19,7 +20,7 @@ preference in operating system; (1) .dmg for Mac, (2) .deb for Linux, (3) and
 
 **.dmg for Mac**
 
-_Compatible with macOS High Sierra 10.13 and above_
+*Compatible with macOS High Sierra 10.13 and above*
 
 :::note
 
@@ -34,7 +35,7 @@ your Applications folder.
 
 **.deb for Linux**
 
-_Compatible with Ubuntu 18.04_
+*Compatible with Ubuntu 18.04*
 
 :::note
 
@@ -42,8 +43,8 @@ Download the .deb [here.](/kadena/wallets)
 
 :::
 
-- As of August 6th 2021, deposit of KDA in all 20 chains (chain 0 to chain 19)
-  is now supported.
+*   As of August 6th 2021, deposit of KDA in all 20 chains (chain 0 to chain 19)
+    is now supported.
 
 Navigate to your downloads folder and double click the .deb.
 
@@ -69,7 +70,7 @@ With this icon
 
 :::note Help
 
-See the [Chainweaver Troubleshoot](./chainweaver-troubleshooting.md) page if you
+See the [Chainweaver Troubleshoot](/kadena/wallets/chainweaver/chainweaver-troubleshooting) page if you
 encountered issues installing the .deb
 
 :::
@@ -112,7 +113,7 @@ Kadena Chainweaver” icon from the desktop
 
 :::note Help
 
-See the [Chainweaver Troubleshoot ](./chainweaver-troubleshooting.md)page if you
+See the [Chainweaver Troubleshoot ](/kadena/wallets/chainweaver/chainweaver-troubleshooting)page if you
 encountered issues installing the .ova
 
 :::
@@ -126,13 +127,13 @@ encountered issues installing the .ova
 Three main steps; (1) set password, (2) record recovery phrase, (3) verify
 recovery phrase
 
-1. ​Set password: Create a strong, secret, and unique password. See the Basic
-   Safety Tips section for suggestions on password generation.
-2. Record recovery phrase: Mouse over each of the 12 words to view and record
-   your recovery phrase. See the Basic Safety Tips section for suggestions on
-   securing your recovery phrase.
-3. Verify recovery phrase: Enter each word in the correct order to verify that
-   you have correctly recorded your recovery phrase.
+1.  ​Set password: Create a strong, secret, and unique password. See the Basic
+    Safety Tips section for suggestions on password generation.
+2.  Record recovery phrase: Mouse over each of the 12 words to view and record
+    your recovery phrase. See the Basic Safety Tips section for suggestions on
+    securing your recovery phrase.
+3.  Verify recovery phrase: Enter each word in the correct order to verify that
+    you have correctly recorded your recovery phrase.
 
 After creating the wallet you might want to continue
 [creating the account](/kadena/wallets/chainweaver#create-an-accounth1279555262)
@@ -143,21 +144,21 @@ on the blockchain.
 Three main steps; (1) enter recovery phrase, (2) set new password, (3)
 re-generate keys
 
-1. Enter recovery phrase: Follow the guidance to enter your 12-word recovery
-   phrase.
-2. Set new password: Input a new password for your existing wallet.
-3. Re-generate keys: From the Keys section, select the Generate Key button to
-   restore keys. These keys are deterministically generated meaning that the
-   same keys will always appear in the same order by using the recovery phrase
-   as a master seed. Repeat selecting the Generate Key button until all
-   necessary keys are restored.
+1.  Enter recovery phrase: Follow the guidance to enter your 12-word recovery
+    phrase.
+2.  Set new password: Input a new password for your existing wallet.
+3.  Re-generate keys: From the Keys section, select the Generate Key button to
+    restore keys. These keys are deterministically generated meaning that the
+    same keys will always appear in the same order by using the recovery phrase
+    as a master seed. Repeat selecting the Generate Key button until all
+    necessary keys are restored.
 
 **Restore existing wallet from wallet export**
 
 Two main steps; (1) select file, (2) enter password
 
-1. Select a properly formatted file to import
-2. Enter the password for the chosen wallet file
+1.  Select a properly formatted file to import
+2.  Enter the password for the chosen wallet file
 
 :::note
 
@@ -178,13 +179,13 @@ interacting
 
 **Sections Menu (left bar)** Use this menu to go to different Sections
 
-- Accounts: Display of all added accounts and their status across chains.
-  Deposit and withdraw KDA.
-- Keys: Display of all public keys generated within the wallet
-- Contracts: Write, deploy and interact with smart contracts
-- Resources: Reference helpful support materials
-- Settings: Configure wallet and network settings
-- Logout: Log out of the desktop application
+*   Accounts: Display of all added accounts and their status across chains.
+    Deposit and withdraw KDA.
+*   Keys: Display of all public keys generated within the wallet
+*   Contracts: Write, deploy and interact with smart contracts
+*   Resources: Reference helpful support materials
+*   Settings: Configure wallet and network settings
+*   Logout: Log out of the desktop application
 
 **Main Viewer (center screen)** This is where you interact with the section you
 have chosen from the Sections Menu.
@@ -194,7 +195,7 @@ have chosen from the Sections Menu.
 Upgrading Chainweaver is an essential part of keeping your crypto assets safe
 and enjoying new features for interacting with the Kadena blockchain ecosystem.
 The latest version of Chainweaver will always be available for download at
-[https://www.kadena.io/chainweaver](https://www.kadena.io/chainweaver).
+<https://www.kadena.io/chainweaver>.
 
 :::note
 
@@ -210,14 +211,14 @@ issues can be resolved simply by updating to the latest version of Chainweaver.
 Chainweaver allows you to interact with different networks, including the main
 network (“Mainnet”) and a test network (“Testnet”)
 
-- Mainnet is the primary live blockchain network where assets of value can be
-  transferred and smart contract services can be called.
-- Testnet is a network with which you can safely test various blockchain
-  interactions without the risk of losing valuable assets.
-- Both Mainnet and Testnet are fully operational, real blockchains. It is only
-  Testnet, however, where you can acquire KDA coins for free from a
-  [coin faucet](https://faucet.testnet.chainweb.com). Naturally, account
-  balances cannot move between networks.
+*   Mainnet is the primary live blockchain network where assets of value can be
+    transferred and smart contract services can be called.
+*   Testnet is a network with which you can safely test various blockchain
+    interactions without the risk of losing valuable assets.
+*   Both Mainnet and Testnet are fully operational, real blockchains. It is only
+    Testnet, however, where you can acquire KDA coins for free from a
+    [coin faucet](https://faucet.testnet.chainweb.com). Naturally, account
+    balances cannot move between networks.
 
 ## Change networks
 
@@ -268,10 +269,10 @@ Every Account is governed by a keyset which must be defined when creating any
 Account. Keysets are composed of two parts; (1) a set of keys and (2) a
 predicate
 
-- Set of keys: a list of public keys that are associated to the account
-- Predicate: a governance function that determines which keys are allowed to
-  make choices for the account when it comes to transactions (e.g. do all keys
-  need to be present? only one? two? etc.)
+*   Set of keys: a list of public keys that are associated to the account
+*   Predicate: a governance function that determines which keys are allowed to
+    make choices for the account when it comes to transactions (e.g. do all keys
+    need to be present? only one? two? etc.)
 
 Summarily, keysets look like the following as JSON data:
 
@@ -337,18 +338,18 @@ There are two ways to perform the “transfer & create” operation.
 
 **Method 1: Tx Builder**
 
-- Select “Receive” beside the desired account’s Chain ID row to open the dialog
-- Follow the on-screen instructions to define the keyset
-- Copy the generated Tx Builder and paste it into the To field in Chainweaver's
-  transfer tool or send it to someone else so they can use it to complete the
-  transfer
+*   Select “Receive” beside the desired account’s Chain ID row to open the dialog
+*   Follow the on-screen instructions to define the keyset
+*   Copy the generated Tx Builder and paste it into the To field in Chainweaver's
+    transfer tool or send it to someone else so they can use it to complete the
+    transfer
 
 **Method 2: Manual entry**
 
-- Open the Transfer section and fill-in the fields
-- Expand the Owner Keyset sub-section to define how keys will govern this new
-  account
-- Select “Sign & Transfer” to complete the transaction
+*   Open the Transfer section and fill-in the fields
+*   Expand the Owner Keyset sub-section to define how keys will govern this new
+    account
+*   Select “Sign & Transfer” to complete the transaction
 
 ![create-account](/assets/docs/account-create.png)
 
@@ -422,12 +423,12 @@ understand which accounts they own and which they may not own. For convenience,
 Chainweaver displays whether you are the owner of any account that you are
 watching.
 
-- If Chainweaver generated all of the keys in an account, it will indicate “yes”
-  for Owner
-- If Chainweaver generated some but not all keys in an account, it will indicate
-  “joint” for Owner
-- If Chainweaver generated none of the keys in an account, it will indicate “no”
-  for Owner
+*   If Chainweaver generated all of the keys in an account, it will indicate “yes”
+    for Owner
+*   If Chainweaver generated some but not all keys in an account, it will indicate
+    “joint” for Owner
+*   If Chainweaver generated none of the keys in an account, it will indicate “no”
+    for Owner
 
 ![ownership-examples](/assets/docs/ownership-examples.png)
 
@@ -491,14 +492,14 @@ There are two recommended approaches for receiving KDA
 **Method 1: Tx Builder** — best for receiving KDA from a sender who is also
 using Chainweaver
 
-- Select “Receive” beside the desired account’s Chain ID row to open the dialog
-- Copy the Tx Builder and share with the sender to complete the transfer
+*   Select “Receive” beside the desired account’s Chain ID row to open the dialog
+*   Copy the Tx Builder and share with the sender to complete the transfer
 
 **Method 2: Account Name + Chain ID** — best for receiving KDA from a sender who
 is not using Chainweaver
 
-- Share both your Account name and chain ID with the sender to complete the
-  transfer
+*   Share both your Account name and chain ID with the sender to complete the
+    transfer
 
 :::note
 
@@ -539,8 +540,8 @@ to submit the transaction to the blockchain.
 This process has one distinct difference from transfers on the same chain. This
 time when you configure the transaction, you must select two Gas Payers:
 
-1. Gas payer on the originating chain to initiate the transfer
-2. Gas payer on the destination chain to redeem the transfer
+1.  Gas payer on the originating chain to initiate the transfer
+2.  Gas payer on the destination chain to redeem the transfer
 
 ![cross-chain-transfer](/assets/docs/cross-chain-transfer.png)
 
@@ -618,10 +619,10 @@ check the ENV tab of the tool panel on the right side for any error messages
 that might be displayed. Once you are satisfied with your code, you can either
 select “Load into REPL” or “Deploy.”
 
-- “Load into REPL” will execute the editor text within the local REPL
-  environment so that you can test and interact with the contract
-- “Deploy” will begin the process of configuring the smart contract for
-  execution on the blockchain
+*   “Load into REPL” will execute the editor text within the local REPL
+    environment so that you can test and interact with the contract
+*   “Deploy” will begin the process of configuring the smart contract for
+    execution on the blockchain
 
 ![deploy-config](/assets/docs/deploy-config.png)
 
@@ -647,9 +648,9 @@ functions to call.
 
 Select “Call” beside your chosen function to open a three-part dialog:
 
-1. Parameters: enter the required parameters
-2. Configuration: choose the transaction settings
-3. Sign: grant the required capabilities
+1.  Parameters: enter the required parameters
+2.  Configuration: choose the transaction settings
+3.  Sign: grant the required capabilities
 
 Preview the transaction, then select “Create Transaction” to execute the
 operation.
@@ -752,11 +753,11 @@ file in a secure location and do not alter its contents.
 
 The wallet data to be exported within this file includes:
 
-- Generated public/private key pairs
-- Added accounts
-- Account notes
-- Network configuration
-- Transaction configuration
+*   Generated public/private key pairs
+*   Added accounts
+*   Account notes
+*   Network configuration
+*   Transaction configuration
 
 :::note
 
@@ -791,3 +792,5 @@ Chainweaver will only communicate through verified channels.
 
 Join our Discord server [here](https://discord.io/kadena) and chat live with
 Kadena developers and the community on the #chainweaver channel
+
+    

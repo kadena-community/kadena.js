@@ -1,4 +1,5 @@
 ---
+
 title: Kadena Wallets
 description:
   KDA custody tools for desktop and mobile, with support guides to get you
@@ -7,14 +8,14 @@ menu: Kadena Wallets
 label: Overview
 order: 4
 layout: full
----
 
+---
 # Kadena Wallets
 
 KDA custody tools for desktop and mobile, with support guides to get you
 started.
 
----
+***
 
 ## Software Wallets
 
@@ -83,3 +84,5 @@ formidable fortress for your cryptocurrencies. With its sleek and compact
 design, this hardware wallet offers a seamless user experience, empowering you
 with complete control over your digital wealth while keeping it safe from online
 threats.
+
+    

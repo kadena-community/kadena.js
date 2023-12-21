@@ -1,12 +1,13 @@
 ---
+
 title: Whitepapers Overview
 description: Answers to commonly asked questions about Kadena.
 menu: Whitepapers
 label: Overview
 order: 4
 layout: full
----
 
+---
 # Whitepapers Overview
 
 ### 1. Chainweb, Kadena’s (layer 1) public blockchain protocol
@@ -15,7 +16,7 @@ Chainweb is a braided, parallelized proof-of-work consensus mechanism that
 improves throughput and scalability while maintaining the security and integrity
 found in Bitcoin.
 
-[How Chainweb Works: A Simple Animation](https://www.youtube.com/watch?v=hYvXxFbsN6I 'How Chainweb Works: A Simple Animation')
+[How Chainweb Works: A Simple Animation](https://www.youtube.com/watch?v=hYvXxFbsN6I "How Chainweb Works: A Simple Animation")
 
 In 2020, Kadena's public blockchain performed a live network expansion from 10
 chains to 20 chains. This doubled throughput, proving the network's ability to
@@ -23,11 +24,11 @@ scale in production to meet ever-higher demand.
 
 Informational Resources
 
-- Article:
-  [Kadena’s Public Blockchain 101](/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01)
-- Whitepapers: [Chainweb layer 1](/kadena/whitepapers/chainweb-layer-1)
-- Article:
-  [How to scale a Proof of Work Blockchain](/blogchain/2021/how-to-scale-a-proof-of-work-blockchain-2021-03-07)&#x20;
+*   Article:
+    [Kadena’s Public Blockchain 101](/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01)
+*   Whitepapers: [Chainweb layer 1](/kadena/whitepapers/chainweb-layer-1)
+*   Article:
+    [How to scale a Proof of Work Blockchain](/blogchain/2021/how-to-scale-a-proof-of-work-blockchain-2021-03-07)&#x20;
 
 :::note
 
@@ -45,11 +46,11 @@ support for interoperability, and strong permission and access control.
 
 #### Informational Resources
 
-- Article:
-  [Safer, Smarter Contracts with Pact](/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20.md)
-- Whitepaper: [Pact Smart Contract Language](./pact-smart-contract-language.md)
-- Documentation: [Pact GitHub](https://github.com/kadena-io/pact)
-- Documentation: [Pact Language Reference](/pact/reference)
+*   Article:
+    [Safer, Smarter Contracts with Pact](blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20)
+*   Whitepaper: [Pact Smart Contract Language](/kadena/whitepapers/pact-smart-contract-language)
+*   Documentation: [Pact GitHub](https://github.com/kadena-io/pact)
+*   Documentation: [Pact Language Reference](/pact/reference)
 
 :::note
 
@@ -60,8 +61,8 @@ Resources for using Pact are available at the
 
 **Informational Resources**
 
-- Article:
-  [Kadena's layer 2 blockchain 101](/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09.md)
+*   Article:
+    [Kadena's layer 2 blockchain 101](/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09)
 
 :::note
 
@@ -77,10 +78,10 @@ With 20 chains, the Kadena blockchain platform achieves an industry-leading
 
 **Informational Resources**
 
-- Article:
-  [Kadena completes blockchain scaling to 480,000 TPS on 20 Chains](/blogchain/2020/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-2020-08-20.md)
-- Article:
-  [Kadena's layer 2 blockchain 101](/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09.md)
+*   Article:
+    [Kadena completes blockchain scaling to 480,000 TPS on 20 Chains](/blogchain/2020/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-2020-08-20)
+*   Article:
+    [Kadena's layer 2 blockchain 101](/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09)
 
 :::note
 
@@ -88,3 +89,5 @@ Resources for deploying Kuro are available at the
 [Kuro layer 2 deployment](/build/resources/kuro-layer-2) page.
 
 :::
+
+    

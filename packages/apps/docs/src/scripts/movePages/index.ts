@@ -9,6 +9,13 @@ const errors: string[] = [];
 const success: string[] = [];
 const newFiles: string[] = [];
 
+const copyBlogchain = (): void => {
+  fs.mkdirSync(`./src/pages/blogchain`, { recursive: true });
+  fs.cpSync(`./src/docs/blogchain`, `./src/pages/blogchain`, {
+    recursive: true,
+  });
+};
+
 const copyPages = (pages: IConfigTreeItem[], parentDir: string = ''): void => {
   pages.forEach((page) => {
     const dir = `${parentDir}${page.url}`;
@@ -63,6 +70,9 @@ export const movePages = async (): Promise<IScriptResult> => {
 
   const pages = loadConfigPages();
   copyPages(pages);
+
+  //copy the blogchain files
+  copyBlogchain();
 
   createGitIgnore(newFiles);
 

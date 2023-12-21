@@ -16,6 +16,7 @@
 /chainweb/js-bindings
 
 
+/blogchain
 ## added by scripts
 /contribute/index.tsx
 /contribute/docs/index.md
@@ -73,3 +74,26 @@
 /marmalade/metadata/ipfs/index.md
 /marmalade/marmalade-v1/index.md
 /marmalade/marmalade-v1/why-v2/index.md
+/kadena/index.tsx
+/kadena/overview/index.md
+/kadena/kda/index.md
+/kadena/kda/manage-kda/index.md
+/kadena/kda/kda-concepts/index.md
+/kadena/whitepapers/index.md
+/kadena/whitepapers/chainweb-layer-1/index.md
+/kadena/whitepapers/pact-smart-contract-language/index.md
+/kadena/wallets/index.md
+/kadena/wallets/chainweaver/index.md
+/kadena/wallets/chainweaver/chainweaver-troubleshooting/index.md
+/kadena/wallets/chainweaver/terms-of-service/index.md
+/kadena/wallets/ledger/index.md
+/kadena/support/index.md
+/kadena/support/developer-program/index.md
+/kadena/support/technical-grants/index.md
+/kadena/code-of-conduct/index.md
+/kadena/exchanges/index.md
+/kadena/resources/index.md
+/kadena/resources/press-kit/index.md
+/kadena/resources/glossary/index.md
+/kadena/resources/kadena-content-repository/index.md
+/blogchain/index.tsx

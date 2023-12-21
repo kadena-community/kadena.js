@@ -1,9 +1,84 @@
 menu:
+  - kadena
   - build
   - build.quickstart
   - contribute
+  - blogchain
 
 pages:
+  kadena:
+    url: /kadena
+    file: /kadena/index.tsx
+    children:
+      overview:
+        url: /overview
+        file: /kadena/overview.md
+      kda:
+        url: /kda
+        file: /kadena/kda/index.md
+        children:
+          managekda:
+            url: /manage-kda
+            file: /kadena/kda/manage-kda.md
+          kdaconcepts:
+            url: /kda-concepts
+            file: /kadena/kda/kda-concepts.md
+      whitepapers:
+        url: /whitepapers
+        file: /kadena/whitepapers/index.md
+        children:
+          chainweblayer1:
+            url: /chainweb-layer-1
+            file: /kadena/whitepapers/chainweb-layer-1.md
+          pactsmartcontractlanguage:
+            url: /pact-smart-contract-language
+            file: /kadena/whitepapers/pact-smart-contract-language.md
+      wallets:
+        url: /wallets
+        file: /kadena/wallets/index.md
+        children:
+          chainweaver:
+            url: /chainweaver
+            file: /kadena/wallets/chainweaver/index.md
+            children:
+              chainweavertroubleshooting:
+                url: /chainweaver-troubleshooting
+                file: /kadena/wallets/chainweaver/chainweaver-troubleshooting.md
+              termsofservice:
+                url: /terms-of-service
+                file: /kadena/wallets/chainweaver/terms-of-service.md
+          ledger:
+            url: /ledger
+            file: /kadena/wallets/ledger/index.md
+      support:
+        url: /support
+        file: /kadena/support/index.md
+        children:
+          developerprogram:
+            url: /developer-program
+            file: /kadena/support/developer-program.md
+          technicalgrants:
+            url: /technical-grants
+            file: /kadena/support/technical-grants.md
+      codeofconduct:
+        url: /code-of-conduct
+        file: /kadena/code-of-conduct.md
+      exchanges:
+        url: /exchanges
+        file: /kadena/exchanges.md
+      resources:
+        url: /resources
+        file: /kadena/resources/index.md
+        children:
+          presskit:
+            url: /press-kit
+            file: /kadena/resources/press-kit.md
+          glossary:
+            url: /glossary
+            file: /kadena/resources/glossary.md
+          contentrepository:
+            url: /kadena-content-repository
+            file: /kadena/resources/kadena-content-repository.md
   build:
     url: '/build'
     file: '/build/index.tsx'
@@ -100,10 +175,10 @@ pages:
         children:
           ledger:
             url: /ledger
-            file: /marmalade/architecture/ledger.md 
+            file: /marmalade/architecture/ledger.md
           policy:
             url: /policy-manager
-            file: /marmalade/architecture/policy-manager.md   
+            file: /marmalade/architecture/policy-manager.md
           sale:
             url: /sale-contracts
             file: /marmalade/architecture/sale-contracts.md
@@ -113,16 +188,16 @@ pages:
         children:
           collectionpolicy:
             url: /collection-policy
-            file: /marmalade/concrete-policies/collection-policy.md         
+            file: /marmalade/concrete-policies/collection-policy.md
           guardpolicy:
             url: /guard-policy
-            file: /marmalade/concrete-policies/guard-policy.md         
+            file: /marmalade/concrete-policies/guard-policy.md
           nonfungiblepolicy:
             url: /non-fungible-policy
-            file: /marmalade/concrete-policies/non-fungible-policy.md         
+            file: /marmalade/concrete-policies/non-fungible-policy.md
           royaltypolicy:
             url: /royalty-policy
-            file: /marmalade/concrete-policies/royalty-policy.md  
+            file: /marmalade/concrete-policies/royalty-policy.md
       metadata:
         url: /metadata
         file: /marmalade/metadata/index.md
@@ -136,10 +211,10 @@ pages:
       v1:
         url: /marmalade-v1
         file: /marmalade/marmalade-v1/index.md
-        children: 
+        children:
           whyv2:
             url: /why-v2
-            file: /marmalade/marmalade-v1/why-v2.md        
+            file: /marmalade/marmalade-v1/why-v2.md
   contribute:
     url: /contribute
     file: /contribute/index.tsx
@@ -176,6 +251,9 @@ pages:
           interact:
             url: /interact-with-nodes
             file: /contribute/node/interact-with-nodes.md
+  blogchain:
+    url: /blogchain
+    file: /blogchain/index.tsx
   test:
     url: /test
     file: /test.md
