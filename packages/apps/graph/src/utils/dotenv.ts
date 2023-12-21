@@ -28,7 +28,6 @@ export const dotenv: {
   GITHUB_TOKEN: string;
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
-  ENABLE_MARMALADE: boolean;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
@@ -89,7 +88,6 @@ export const dotenv: {
     '0' as ChainId,
   ),
   SIMULATE_LOG_FOLDER_NAME: or(process.env.SIMULATE_LOG_FOLDER_NAME, 'logs'),
-  ENABLE_MARMALADE: or(process.env.ENABLE_MARMALADE === 'true', false),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {
