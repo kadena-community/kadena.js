@@ -1,6 +1,8 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Plus } from '../Icon/System/SystemIcon';
+import { Heading } from '..';
+import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
+import { Box } from '../Layout/Box/Box';
 import type { IButtonProps } from './NewButton';
 import { Button } from './NewButton';
 import { button } from './NewButton.css';
@@ -132,6 +134,52 @@ export const Default: Story = {
     );
   },
 };
+
+export const AllVariants: StoryFn<IButtonProps> = () => (
+  <Box gap="$2" display="flex" flexDirection="column">
+    <Heading variant="h6">Default</Heading>
+    <Box gap="$2" display="flex">
+      {buttonVariants.map((variant) => (
+        <Button
+          key={variant}
+          variant={variant}
+          startIcon={<LeadingIcon />}
+          endIcon={<TrailingIcon />}
+        >
+          {variant}
+        </Button>
+      ))}
+    </Box>
+    <Heading variant="h6">Outlined</Heading>
+    <Box gap="$2" display="flex">
+      {buttonVariants.map((variant) => (
+        <Button
+          key={variant}
+          variant={variant}
+          isOutlined
+          startIcon={<LeadingIcon />}
+          endIcon={<TrailingIcon />}
+        >
+          {variant}
+        </Button>
+      ))}
+    </Box>
+    <Heading variant="h6">Compact</Heading>
+    <Box gap="$2" display="flex">
+      {buttonVariants.map((variant) => (
+        <Button
+          key={variant}
+          variant={variant}
+          isCompact
+          startIcon={<LeadingIcon />}
+          endIcon={<TrailingIcon />}
+        >
+          {variant}
+        </Button>
+      ))}
+    </Box>
+  </Box>
+);
 
 export const StartIcon: StoryFn<IButtonProps> = () => (
   <Button startIcon={<Plus />}>Click me</Button>

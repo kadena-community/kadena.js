@@ -52,6 +52,7 @@ export interface IBoxProps
       | 'top'
       | 'width'
       | 'zIndex'
+      | 'gap'
     >
   > {
   className?: string;
@@ -106,6 +107,7 @@ export const Box = ({
   top,
   width,
   zIndex,
+  gap,
 }: IBoxProps): React.ReactElement => {
   return createElement(
     as,
@@ -155,6 +157,7 @@ export const Box = ({
           top,
           width,
           zIndex,
+          gap,
         }),
         className,
       ),
