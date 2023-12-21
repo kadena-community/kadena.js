@@ -62,8 +62,8 @@ $ pact -a tests/apireq.yaml -l | curl -d @- http://localhost:8080/api/v1/local
 ### Request YAML file format
 
 Request yaml files takes two forms. An _execution_ Request yaml file describes
-the [exec](/pact/api#tag/model-payload) payload. Meanwhile, a _continuation_
-Request yaml file describes the [cont](/pact/api#tag/model-payload) payload.
+the [exec](/pact/api) payload. Meanwhile, a _continuation_ Request yaml file
+describes the [cont](/pact/api) payload.
 
 #### YAML exec command request
 
@@ -162,11 +162,9 @@ the command and all the signatures on stdout.
 Both `add-sig` and `combine-sigs` will output YAML if the output transaction
 hasn't accumulated enough signatures to be valid. If all the necessary
 signatures are present, then they will output JSON in final form that is ready
-to be sent to the blockchain on the
-[`/send` endpoint](/pact/api#tag/endpoint-send/paths/~1send/post). If you would
+to be sent to the blockchain on the [`/send` endpoint](/pact/api). If you would
 like to do a test run of the transaction, you can use the `-l` flag to generate
-output suitable for use with the
-[`/local` endpoint](/pact/api#tag/endpoint-local/paths/~1local/post).
+output suitable for use with the [`/local` endpoint](/pact/api).
 
 The above example adds signatures in parallel, but the `add-sig` command can
 also be used to add signatures sequentially in separate steps or all at once in

@@ -336,8 +336,8 @@ change their keyset.
 :::info
 
 View [update](/pact/beginner/schemas-and-tables#updateh-1754979095) and
-[format](/pact/reference/functions#formath-1268779017t) for more information
-related to completing this challenge.
+[format](/pact/reference/functions#format) for more information related to
+completing this challenge.
 
 :::
 

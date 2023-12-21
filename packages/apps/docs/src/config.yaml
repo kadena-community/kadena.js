@@ -1,8 +1,10 @@
 menu:
   - kadena
-  - pact
   - build
   - build.quickstart
+  - pact
+  - chainweb
+  - marmalade
   - contribute
   - blogchain
 
@@ -167,164 +169,164 @@ pages:
       overview:
         url: /overview
         file: /pact/overview.md
-        beginner:
-          url: /beginner
-          file: /pact/beginner/index.md
-          children:
-            webeditor:
-              url: /web-editor
-              file: /pact/beginner/web-editor.md
-            helloworld:
-              url: /hello-world
-              file: /pact/beginner/hello-world.md
-            languagebasics:
-              url: /language-basics
-              file: /pact/beginner/language-basics.md
-            modules:
-              url: /modules
-              file: /pact/beginner/modules.md
-            keysets:
-              url: /keysets
-              file: /pact/beginner/keysets.md
-            schemastables:
-              url: /schemas-and-tables
-              file: /pact/beginner/schemas-and-tables.md
-            atomsdk:
-              url: /atom-sdk
-              file: /pact/beginner/atom-sdk.md
-            accountstransfers:
-              url: /accounts-and-transfers
-              file: /pact/beginner/accounts-and-transfers.md
-             contractinteraction:
-              url: /contract-interaction
-              file: /pact/beginner/contract-interaction.md 
-            rotatablewallet:
-              url: /rotatable-wallet
-              file: /pact/beginner/rotatable-wallet.md  
-            loans:
-              url: /loans
-              file: /pact/beginner/loans.md 
-            testsdk:
-              url: /test-in-the-sdk
-              file: /pact/beginner/test-in-the-sdk.md  
-        intermediate:
-          url: /intermediate
-          file: /pact/intermediate/index.md
-          children:
-            pactjavascript:
-              url: /pact-and-javascript
-              file: /pact/intermediate/pact-and-javascript.md
-            safetyflow:
-              url: /safety-using-control-flow
-              file: /pact/intermediate/safety-using-control-flow.md 
-            interfacespact:
-              url: /interfaces-with-pact
-              file: /pact/intermediate/interfaces-with-pact.md
-            builtinfunctions:
-              url: /built-in-functions
-              file: /pact/intermediate/built-in-functions.md    
-        reference:
-          url: /reference
-          file: /pact/reference/index.md
-          children:
-            restapi:
-              url: /rest-api
-              file: /pact/reference/rest-api.md
-            concepts:
-              url: /concepts
-              file: /pact/reference/concepts.md
-            syntax:
-              url: /syntax
-              file: /pact/reference/syntax.md
-            timeformats:
-              url: /time-formats
-              file: /pact/reference/time-formats.md
-            functions:
-              url: /functions
-              file: /pact/reference/functions/index.md
-              children:
-                database:
-                  url: /database
-                  file: /pact/reference/functions/database.md
-                time:
-                  url: /time
-                  file: /pact/reference/functions/time.md
-                operators:
-                  url: /operators
-                  file: /pact/reference/functions/operators.md
-                keysets:
-                  url: /keysets
-                  file: /pact/reference/functions/keysets.md
-                capabilities:
-                  url: /capabilities
-                  file: /pact/reference/functions/capabilities.md
-                spv:
-                  url: /spv
-                  file: /pact/reference/functions/spv.md
-                commitments:
-                  url: /commitments
-                  file: /pact/reference/functions/commitments.md
-                guards:
-                  url: /guards
-                  file: /pact/reference/functions/guards.md
-                zk:
-                  url: /zk
-                  file: /pact/reference/functions/zk.md
-                replonlyfunctions:
-                  url: /repl-only-functions
-                  file: /pact/reference/functions/repl-only-functions.md
-            propertychecking:
-              url: /property-checking
-              file: /pact/reference/property-checking.md
-            propertiesinvariants:
-              url: /properties-and-invariants
-              file: /pact/reference/properties-and-invariants/index.md
-              children:
-                numerical:
-                  url: /numerical
-                  file: /pact/reference/properties-and-invariants/numerical.md
-                bitwise:
-                  url: /bitwise
-                  file: /pact/reference/properties-and-invariants/bitwise.md
-                objectoperators:
-                  url: /object-operators
-                  file: /pact/reference/properties-and-invariants/object-operators.md
-                listoperators:
-                  url: /list-operators
-                  file: /pact/reference/properties-and-invariants/list-operators.md
-                string:
-                  url: /string
-                  file: /pact/reference/properties-and-invariants/string.md
-                temporal:
-                  url: /temporal
-                  file: /pact/reference/properties-and-invariants/temporal.md
-                quantification:
-                  url: /quantification
-                  file: /pact/reference/properties-and-invariants/quantification.md
-                transactional:
-                  url: /transactional
-                  file: /pact/reference/properties-and-invariants/transactional.md
-                database:
-                  url: /database
-                  file: /pact/reference/properties-and-invariants/database.md
-                authorization:
-                  url: /authorization
-                  file: /pact/reference/properties-and-invariants/authorization.md
-                function:
-                  url: /function
-                  file: /pact/reference/properties-and-invariants/function.md
-                other:
-                  url: /other
-                  file: /pact/reference/properties-and-invariants/other.md
-            pacts:
-              url: /pacts
-              file : /pact/reference/pacts.md
-        api:
-          url: /api
-          file: /pact/api/index.tsx
-        vscode:
-          url: /vscode
-          file: /pact/vscode/index.md
+      beginner:
+        url: /beginner
+        file: /pact/beginner/index.md
+        children:
+          webeditor:
+            url: /web-editor
+            file: /pact/beginner/web-editor.md
+          helloworld:
+            url: /hello-world
+            file: /pact/beginner/hello-world.md
+          languagebasics:
+            url: /language-basics
+            file: /pact/beginner/language-basics.md
+          modules:
+            url: /modules
+            file: /pact/beginner/modules.md
+          keysets:
+            url: /keysets
+            file: /pact/beginner/keysets.md
+          schemastables:
+            url: /schemas-and-tables
+            file: /pact/beginner/schemas-and-tables.md
+          atomsdk:
+            url: /atom-sdk
+            file: /pact/beginner/atom-sdk.md
+          accountstransfers:
+            url: /accounts-and-transfers
+            file: /pact/beginner/accounts-and-transfers.md
+          contractinteraction:
+            url: /contract-interaction
+            file: /pact/beginner/contract-interaction.md
+          rotatablewallet:
+            url: /rotatable-wallet
+            file: /pact/beginner/rotatable-wallet.md
+          loans:
+            url: /loans
+            file: /pact/beginner/loans.md
+          testsdk:
+            url: /test-in-the-sdk
+            file: /pact/beginner/test-in-the-sdk.md
+      intermediate:
+        url: /intermediate
+        file: /pact/intermediate/index.md
+        children:
+          pactjavascript:
+            url: /pact-and-javascript
+            file: /pact/intermediate/pact-and-javascript.md
+          safetyflow:
+            url: /safety-using-control-flow
+            file: /pact/intermediate/safety-using-control-flow.md
+          interfacespact:
+            url: /interfaces-with-pact
+            file: /pact/intermediate/interfaces-with-pact.md
+          builtinfunctions:
+            url: /built-in-functions
+            file: /pact/intermediate/built-in-functions.md
+      reference:
+        url: /reference
+        file: /pact/reference/index.md
+        children:
+          restapi:
+            url: /rest-api
+            file: /pact/reference/rest-api.md
+          concepts:
+            url: /concepts
+            file: /pact/reference/concepts.md
+          syntax:
+            url: /syntax
+            file: /pact/reference/syntax.md
+          timeformats:
+            url: /time-formats
+            file: /pact/reference/time-formats.md
+          functions:
+            url: /functions
+            file: /pact/reference/functions/index.md
+            children:
+              database:
+                url: /database
+                file: /pact/reference/functions/database.md
+              time:
+                url: /time
+                file: /pact/reference/functions/time.md
+              operators:
+                url: /operators
+                file: /pact/reference/functions/operators.md
+              keysets:
+                url: /keysets
+                file: /pact/reference/functions/keysets.md
+              capabilities:
+                url: /capabilities
+                file: /pact/reference/functions/capabilities.md
+              spv:
+                url: /spv
+                file: /pact/reference/functions/spv.md
+              commitments:
+                url: /commitments
+                file: /pact/reference/functions/commitments.md
+              guards:
+                url: /guards
+                file: /pact/reference/functions/guards.md
+              zk:
+                url: /zk
+                file: /pact/reference/functions/zk.md
+              replonlyfunctions:
+                url: /repl-only-functions
+                file: /pact/reference/functions/repl-only-functions.md
+          propertychecking:
+            url: /property-checking
+            file: /pact/reference/property-checking.md
+          propertiesinvariants:
+            url: /properties-and-invariants
+            file: /pact/reference/properties-and-invariants/index.md
+            children:
+              numerical:
+                url: /numerical
+                file: /pact/reference/properties-and-invariants/numerical.md
+              bitwise:
+                url: /bitwise
+                file: /pact/reference/properties-and-invariants/bitwise.md
+              objectoperators:
+                url: /object-operators
+                file: /pact/reference/properties-and-invariants/object-operators.md
+              listoperators:
+                url: /list-operators
+                file: /pact/reference/properties-and-invariants/list-operators.md
+              string:
+                url: /string
+                file: /pact/reference/properties-and-invariants/string.md
+              temporal:
+                url: /temporal
+                file: /pact/reference/properties-and-invariants/temporal.md
+              quantification:
+                url: /quantification
+                file: /pact/reference/properties-and-invariants/quantification.md
+              transactional:
+                url: /transactional
+                file: /pact/reference/properties-and-invariants/transactional.md
+              database:
+                url: /database
+                file: /pact/reference/properties-and-invariants/database.md
+              authorization:
+                url: /authorization
+                file: /pact/reference/properties-and-invariants/authorization.md
+              function:
+                url: /function
+                file: /pact/reference/properties-and-invariants/function.md
+              other:
+                url: /other
+                file: /pact/reference/properties-and-invariants/other.md
+          pacts:
+            url: /pacts
+            file: /pact/reference/pacts.md
+      api:
+        url: /api
+        file: /pact/api/index.tsx
+      vscode:
+        url: /vscode
+        file: /pact/vscode/index.md
   chainweb:
     url: /chainweb
     file: /chainweb/index.tsx

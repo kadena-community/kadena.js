@@ -158,11 +158,11 @@ Let’s proceed with defining the “free.goliath-faucet-keyset” using the key
 provided via transaction data. You can parse data from the transaction using the
 (read-\*) family of functions:
 
-- [#read-msg](/pact/reference/functions#readmsg)
-- [#read-keyset](/pact/reference/functions/keysets#read-keyseth2039204282)
-- [#read-string](/pact/reference/functions#readstring)
-- [#read-integer](/pact/reference/functions#readinteger)
-- [#read-decimal](/pact/reference/functions#readdecimal)
+- [#read-msg](/pact/reference/functions#read-msg)
+- [#read-keyset](/pact/reference/functions/keysets#read-keyset)
+- [#read-string](/pact/reference/functions#read-string)
+- [#read-integer](/pact/reference/functions#read-integer)
+- [#read-decimal](/pact/reference/functions#read-decimal)
 
 Our deployment transaction will be sent with two pieces of data:
 
@@ -542,7 +542,7 @@ amount. Second, if the transaction succeeded, then the table at the
 ‘funds-requested’ column must have increased by the amount requested. The first
 property is a simple check, but the second uses a property-only function called
 `(column-delta)`.
-[#column-delta](/pact/reference/properties-and-invariants/database#columndelta)
+[#column-delta](/pact/reference/properties-and-invariants/database#column-delta)
 
 Recall that due to our schema invariants we have some additional checks that
 verify that our table writes are always within the valid bounds of our account

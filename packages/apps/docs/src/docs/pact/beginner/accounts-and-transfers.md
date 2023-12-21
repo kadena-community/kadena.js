@@ -161,9 +161,8 @@ accounts.
 :::info
 
 You can review each of the function types in the
-[Schemas and Tables Tutorial](/pact/beginner/schemas-and-tables#table-builtin-functions)
-as well as the
-[Pact Language Basics Tutorial](/pact/beginner/language-basics#builtin-functions).
+[Schemas and Tables Tutorial](/pact/beginner/schemas-and-tables) as well as the
+[Pact Language Basics Tutorial](/pact/beginner/language-basics).
 
 :::
 

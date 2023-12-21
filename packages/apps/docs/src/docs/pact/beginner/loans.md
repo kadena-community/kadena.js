@@ -272,7 +272,7 @@ your smart contract.
 :::info
 
 You can review each of these function types in the
-[Pact Schemas and Tables Tutorial](/pact/beginner/schemas-and-tables#table-builtin-functions).
+[Pact Schemas and Tables Tutorial](/pact/beginner/schemas-and-tables#table-built-in-functions).
 
 :::
 
