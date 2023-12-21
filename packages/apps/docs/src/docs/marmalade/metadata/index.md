@@ -1,13 +1,12 @@
 ---
-
 title: Metadata
 description: What is the Marmalade v2 Metadata Standard
 menu: Metadata
 label: Metadata
 order: 5
 layout: full
-
 ---
+
 # Metadata standard
 
 The Marmalade v2 metadata standard, serves as a crucial component for
@@ -38,8 +37,8 @@ stored off-chain in a JSON format. The schema includes the following fields:
 | \*image         |      string      |                   A URI pointing to a resource with mime type image/\* representing the asset to which this NFT represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive.                    |
 | \*properties    |      object      |                                                                                               Arbitrary properties. Values may be strings, numbers, object or arrays.                                                                                               |
 | \*authors       | array of objects |                                                               An array of authors who created or contributed to the asset. Each author is an object with a "name" field specifying the author's name.                                                               |
-| \*external\_url  |      string      |                                                                                            URL to an external application or website where users can also view the asset                                                                                            |
-| \*animation\_url |      string      | URL to a multimedia attachment of the asset. The supported file formats are MP4 and MOV for video, MP3, FLAC and WAV for audio, GLB for AR/3D assets, and HTML for HTML pages. You may use the ?ext={file\_extension} query to provide information on the file type. |
+| \*external_url  |      string      |                                                                                            URL to an external application or website where users can also view the asset                                                                                            |
+| \*animation_url |      string      | URL to a multimedia attachment of the asset. The supported file formats are MP4 and MOV for video, MP3, FLAC and WAV for audio, GLB for AR/3D assets, and HTML for HTML pages. You may use the ?ext={file_extension} query to provide information on the file type. |
 | \*collection    |      object      |                                                 an object with a "name" field specifying the name of the collection, and a “family” field specifying the larger category or group to which the collection belongs.                                                  |
 
 \* `optional`
@@ -170,7 +169,7 @@ stored off-chain in a JSON format. The schema includes the following fields:
 }
 ```
 
-***
+---
 
 ### Pact schema
 
@@ -208,8 +207,8 @@ Token schema now has the following structure:
     )
 ```
 
-*   uri: A string representing the URI that points to an external JSON-Schema for
-    the NFT.
+- uri: A string representing the URI that points to an external JSON-Schema for
+  the NFT.
 
 **Generating t:{hash}**
 
@@ -251,7 +250,7 @@ flexibility for developers and most of all simplicity of usage in general.
 The decision to move NFT metadata off-chain and use a widely accepted standard
 for the metadata schema is a positive step for Marmalade tokens.
 
-***
+---
 
 The Marmalade v2 metadata standard for Non-Fungible Tokens (NFTs) adheres
 closely to the widely recognised ERC1155 "metadata standard". By aligning with
@@ -281,5 +280,3 @@ dedication to following established industry norms, ensuring consistency,
 compatibility, and ease of migration for NFTs. This commitment enables a broader
 range of users to participate in the vibrant world of digital collectibles while
 fostering interoperability between different blockchain ecosystems.
-
-    

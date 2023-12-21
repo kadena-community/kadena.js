@@ -20,7 +20,7 @@
     "cypress:cilocal": "NEXT_PUBLIC_APP_DEV=test start-server-and-test dev http://localhost:3000 cypress:open",
     "cypress:open": "percy exec -- cypress open",
     "cypress:run": "percy exec -- cypress run",
-    "dev": "pnpm run build:scripts && concurrently \"pnpm run dev:docswatch\" \"next dev\"",
+    "dev": "pnpm run build:scripts && concurrently  \"next dev\"",
     "dev:docswatch": "tsx ./src/scripts/watchdocs.ts",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
@@ -32,8 +32,8 @@
     "start": "next start",
     "storybook": "storybook dev -p 6006",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@7-docs/edge": "^0.5.1",

@@ -1,13 +1,12 @@
 ---
-
 title: Concrete Policies
 description: What are policies
 menu: Concrete Policies
 label: Overview
 order: 4
 layout: full
-
 ---
+
 # Policies and Implementations
 
 In Marmalade V2, policies play a pivotal role in defining the behavior and
@@ -58,7 +57,7 @@ Regardless of whether a policy is concrete or custom, its implementation
 revolves around the `token-policy-v2` interface, which outlines specific
 functions that govern token behavior.
 
-**Getting Started**:\
+**Getting Started**:  
 To use this interface, you first need to import it into your Pact code using the
 following command:
 
@@ -67,7 +66,7 @@ following command:
 (import 'marmalade-v2.token-policy-v2)
 ```
 
-**Policy Enforcement Functions**:\
+**Policy Enforcement Functions**:  
 Once the interface is integrated, you can enforce policies through these
 functions:
 
@@ -79,5 +78,3 @@ sale. `enforce-transfer`: Administers token transfers between accounts.
 Each function requires specific parameters related to the token objec. By
 implementing custom checks within these functions, creators can tailor their
 tokens' behavior.
-
-    

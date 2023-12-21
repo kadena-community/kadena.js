@@ -1,13 +1,12 @@
 ---
-
 title: Minting with Marmalade V2 Tutorial
 description: How to mint on marmalade v2
 menu: Guides
 label: Quick Start
 order: 2
 layout: full
-
 ---
+
 # Minting with Marmalade V2 Tutorial
 
 Welcome to the Minting with Marmalade V2 tutorial! Marmalade is a revolutionary
@@ -43,10 +42,10 @@ Once located, select "View" to continue.
 We will start by adding the required data for toke creation. Click on the
 `mint-basic-NFT` function, and filling in the token components listed below.
 
-1.  **URI**: Enter the off-chain URI that stores the token metadata.
-2.  **guard**: This guard will be account guard of the minted token. We need to
-    locate the keyset information in the transaction data field, by adding in
-    `(read-keyset "my-keyset")`
+1. **URI**: Enter the off-chain URI that stores the token metadata.
+2. **guard**: This guard will be account guard of the minted token. We need to
+   locate the keyset information in the transaction data field, by adding in
+   `(read-keyset "my-keyset")`
 
 **Note:** By default, `mint-basic-NFT` mints a non-fungible token without any
 rules programmed.
@@ -88,5 +87,3 @@ Wait for the transaction to finish. The server result should be true.
 
 You've minted your first NFT on marmalade! Investigate the transaction on the
 [block explorer](explorer.chainweb.com), and find your token information.
-
-    

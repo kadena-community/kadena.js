@@ -84,6 +84,62 @@ pages:
           kurolayer2:
             url: /kuro-layer-2
             file: /build/resources/kuro-layer-2.md
+  chainweb:
+    url: /chainweb
+    file: /chainweb/index.tsx
+  marmalade:
+    url: /marmalade
+    file: /marmalade/index.tsx
+    children:
+      quickstart:
+        url: /quick-start
+        file: /marmalade/quick-start/index.md
+      architecture:
+        url: /architecture
+        file: /marmalade/architecture/index.md
+        children:
+          ledger:
+            url: /ledger
+            file: /marmalade/architecture/ledger.md 
+          policy:
+            url: /policy-manager
+            file: /marmalade/architecture/policy-manager.md   
+          sale:
+            url: /sale-contracts
+            file: /marmalade/architecture/sale-contracts.md
+      policies:
+        url: /concrete-policies
+        file: /marmalade/concrete-policies/index.md
+        children:
+          collectionpolicy:
+            url: /collection-policy
+            file: /marmalade/concrete-policies/collection-policy.md         
+          guardpolicy:
+            url: /guard-policy
+            file: /marmalade/concrete-policies/guard-policy.md         
+          nonfungiblepolicy:
+            url: /non-fungible-policy
+            file: /marmalade/concrete-policies/non-fungible-policy.md         
+          royaltypolicy:
+            url: /royalty-policy
+            file: /marmalade/concrete-policies/royalty-policy.md  
+      metadata:
+        url: /metadata
+        file: /marmalade/metadata/index.md
+        children:
+          arweavestorage:
+            url: /arweave-storage
+            file: /marmalade/metadata/arweave-storage.md
+          ipfs:
+            url: /ipfs
+            file: /marmalade/metadata/ipfs.md
+      v1:
+        url: /marmalade-v1
+        file: /marmalade/marmalade-v1/index.md
+        children: 
+          whyv2:
+            url: /why-v2
+            file: /marmalade/marmalade-v1/why-v2.md        
   contribute:
     url: /contribute
     file: /contribute/index.tsx

@@ -1,13 +1,12 @@
 ---
-
 title: Contract Architecture
 description: Marmalade V2 Architecture
 menu: Contract Architecture
 label: Overview
 order: 3
 layout: full
-
 ---
+
 # Marmalade Architecture
 
 The introduction of the multi-policy model in Marmalade V2, with the inclusion
@@ -72,8 +71,6 @@ creative auctions, while also guaranteeing royalty payout.
 for more info on the sale contracts please click
 [here](/marmalade/architecture/sale-contracts)
 
-***
+---
 
 **[Marmalade on GitHub](https://github.com/kadena-io/marmalade)**
-
-    

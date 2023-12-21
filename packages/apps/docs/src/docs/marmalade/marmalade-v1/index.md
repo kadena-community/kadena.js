@@ -1,13 +1,12 @@
 ---
-
 title: Marmalade v1
 description: A Brief history of marmalade
 menu: V1
 label: Overview
 order: 10
 layout: full
-
 ---
+
 # Overview Marmalade v1
 
 [Marmalade](https://marmalade.art/), a Kadena NFT standard, was born out of a
@@ -59,5 +58,3 @@ readings:
 [Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-1-2021-12-02)
 
 [Mint a Marketplace! NFTs on Kadena Marmalade (Part 2)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-2-2021-12-03)
-
-    
