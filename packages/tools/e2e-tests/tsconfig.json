@@ -1,6 +1,7 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
+    "rootDir": "./",
     "types": ["node", ".kadena/pactjs-generated"],
     "target": "ES2020",
     "skipLibCheck": true,
@@ -13,5 +14,9 @@
     "declarationMap": false,
     "jsx": "preserve",
     "allowJs": true
-  }
+  },
+  "files": [
+   "playwright.tools.config.ts", "playwright.base.config.ts"
+
+]
 }
