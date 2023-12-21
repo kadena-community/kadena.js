@@ -4,10 +4,9 @@ import { baseConfig } from './playwright.base.config';
 const config: PlaywrightTestConfig = {
   ...baseConfig,
   webServer: {
-    command: `pnpm run start`,
+    command: `pnpm run start --filter @kadena/tools`,
     url: 'http://localhost:3000',
-    reuseExistingServer: false,
-    cwd: '../../apps/tools',
+    reuseExistingServer: process.env.CI === undefined,
     env: {
       FAUCET_NAMESPACE: 'n_34d947e2627143159ea73cdf277138fd571f17ac',
       FAUCET_CONTRACT: 'coin-faucet',
@@ -31,3 +30,4 @@ const config: PlaywrightTestConfig = {
 };
 
 export default config;
+
