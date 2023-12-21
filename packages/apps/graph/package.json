@@ -17,7 +17,7 @@
     "kadena-graph": "./dist/index.js"
   },
   "scripts": {
-    "prebuild": "pnpm run pactjs:generate:contract:coin && pnpm prisma:generate",
+    "prebuild": "pnpm run pactjs:generate:contract:coin && pnpm run pactjs:generate:contract:marmalade && pnpm prisma:generate",
     "build": "tsc",
     "deploy:marmalade": "ts-node -T src/devnet/simulation/index.ts deploy:marmalade",
     "devnet": "docker volume create kadena_devnet; docker run --rm -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v kadena_devnet:/data -v ./cwd-extra-migrations:/cwd-extra-migrations:ro --name devnet kadena/devnet",
