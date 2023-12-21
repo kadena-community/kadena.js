@@ -1,4 +1,8 @@
-import { Button } from '@components/Button';
+import { Button } from '@components/Button/NewButton';
+import type { IInputProps } from '@components/Form';
+import { TextField } from '@components/Form';
+import { SystemIcon } from '@components/Icon';
+import { Stack } from '@components/Layout';
 import { ListBox } from '@components/ListBox';
 import { Popover } from '@components/Popover';
 import React, { useRef } from 'react';
@@ -6,13 +10,15 @@ import type { AriaComboBoxProps } from 'react-aria';
 import { mergeProps, useComboBox, useFilter } from 'react-aria';
 import { useComboBoxState } from 'react-stately';
 
-// Reuse the ListBox, Popover, and Button from your component library. See below for details.
-// import { Button, ListBox, Popover } from '@components';
-
-export interface IComboBoxProps<T> extends AriaComboBoxProps<T> {}
+export interface IComboBoxProps<T> extends Omit<AriaComboBoxProps<T>, 'id'> {
+  id: IInputProps['id'];
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const ComboBox = <T extends object>(props: IComboBoxProps<T>) => {
+export const ComboBox = <T extends object>({
+  id,
+  ...props
+}: IComboBoxProps<T>) => {
   // Setup filter function and state.
   const { contains } = useFilter({ sensitivity: 'base' });
   const state = useComboBoxState({ ...props, defaultFilter: contains });
@@ -38,40 +44,30 @@ export const ComboBox = <T extends object>(props: IComboBoxProps<T>) => {
     <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
       <label {...labelProps}>{props.label}</label>
       <div>
-        <input
-          {...inputProps}
-          ref={inputRef}
-          style={{
-            height: 24,
-            boxSizing: 'border-box',
-            marginRight: 0,
-            fontSize: 16,
-          }}
-        />
-        <Button
-          {...buttonProps}
-          // buttonRef={buttonRef}
-          style={{
-            height: 24,
-            marginLeft: 0,
-          }}
-        >
-          <span aria-hidden="true" style={{ padding: '0 2px' }}>
-            ▼
-          </span>
-        </Button>
+        <Stack gap="$xs" alignItems="stretch">
+          <TextField
+            {...inputProps}
+            id={id}
+            startIcon={<SystemIcon.KeyIconFilled />}
+            ref={inputRef}
+          />
+          <Button {...buttonProps} ref={buttonRef}>
+            <span aria-hidden="true">▼</span>
+          </Button>
+        </Stack>
         {state.isOpen && (
           <Popover
             state={state}
             triggerRef={inputRef}
-            // popoverRef={popoverRef}
+            popoverRef={popoverRef}
             isNonModal
             placement="bottom start"
           >
             <ListBox
               {...mergeProps(props, listBoxProps)}
-              // state={state}
-              // listBoxRef={listBoxRef}
+              // {...listBoxProps}
+              state={state}
+              listBoxRef={listBoxRef}
             />
           </Popover>
         )}

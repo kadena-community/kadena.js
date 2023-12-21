@@ -19,7 +19,7 @@ export const Test: Story = {
   name: 'ComboBox',
   render: () => {
     return (
-      <ComboBox label="Favorite Animal">
+      <ComboBox label="Favorite Animal" allowsCustomValue>
         <Item key="red panda">Red Panda</Item>
         <Item key="cat">Cat</Item>
         <Item key="dog">Dog</Item>
