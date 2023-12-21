@@ -23,6 +23,9 @@ export interface ITextareaProps
   outlined?: boolean;
 }
 
+/**
+ * @deprecated Use `TextareaField` instead.
+ */
 export const Textarea: FC<ITextareaProps> = forwardRef<
   HTMLTextAreaElement,
   ITextareaProps

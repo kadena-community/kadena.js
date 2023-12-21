@@ -293,13 +293,11 @@ const NewAccountFaucetPage: FC = () => {
               <div className={inputWrapperStyle}>
                 <PublicKeyField
                   helperText={errors?.pubKey?.message}
-                  inputProps={{
-                    ...register('pubKey', {
-                      onChange: () => {
-                        clearErrors('pubKey');
-                      },
-                    }),
-                  }}
+                  {...register('pubKey', {
+                    onChange: () => {
+                      clearErrors('pubKey');
+                    },
+                  })}
                   error={errors.pubKey}
                 />
               </div>
