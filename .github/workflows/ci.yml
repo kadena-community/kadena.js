@@ -117,6 +117,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: build dApp
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
+
       - name: Install browsers
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
 
