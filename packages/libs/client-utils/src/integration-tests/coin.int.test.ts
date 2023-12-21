@@ -107,7 +107,7 @@ describe('getBalance', () => {
       '0',
       'http://127.0.0.1:8080',
     );
-    expect(balance).toBe(100);
+    expect(balance).toBe('100');
   });
 });
 
@@ -188,7 +188,7 @@ describe('transfer', () => {
       'http://127.0.0.1:8080',
     );
 
-    expect(balance).toBe(10);
+    expect(balance).toBe('10');
   });
 });
 
@@ -229,6 +229,6 @@ describe('cross chain transfer', () => {
       'http://127.0.0.1:8080',
     );
 
-    expect(balance).toBe(10);
+    expect(balance).toBe('10');
   });
 });

@@ -5,12 +5,13 @@ export const headerStyle = style([
   sprinkles({
     position: 'fixed',
     top: 0,
-    width: '100%',
     height: '$16',
     alignItems: 'center',
-    overflow: 'auto',
     zIndex: 1,
   }),
+  {
+    width: '100vw',
+  },
 ]);
 
 export const mainStyle = style([

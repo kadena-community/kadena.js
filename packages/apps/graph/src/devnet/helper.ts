@@ -192,9 +192,5 @@ export const getAccountBalance = async ({
     dotenv.NETWORK_HOST,
   );
 
-  if (typeof result === 'object') {
-    return parseFloat(result.decimal);
-  }
-
-  return result || 0;
+  return result || '0';
 };
