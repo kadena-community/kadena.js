@@ -1,6 +1,5 @@
 import type { IFormFieldWrapperProps, ITextareaProps } from '@components/Form';
 import { Textarea } from '@components/Form';
-import { Stack } from '@components/Layout';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
 import { FormFieldHeader, FormFieldHelper } from '../FormFieldWrapper';
