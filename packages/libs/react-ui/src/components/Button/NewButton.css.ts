@@ -1,10 +1,8 @@
 import { createVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { atoms } from '../../styles/atoms.css';
-import { colorPalette } from '../../styles/colors';
 import { tokens } from '../../styles/tokens/contract.css';
 import { bodyBaseBold } from '../../styles/tokens/styles.css';
-import { vars } from '../../styles/vars.css';
 
 const hoverBackgroundColor = createVar();
 const activeBackgroundColor = createVar();
@@ -13,128 +11,206 @@ const outlineColor = createVar();
 const backgroundColor = createVar();
 const color = createVar();
 
-// TODO: use the new tokens once they are ready in the design system and figma is updated
+// variables for the outlined variant
+const borderColor = createVar();
+const borderHoverColor = createVar();
+const borderActiveColor = createVar();
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const colorVariants = {
   primary: {
     vars: {
-      [color]: vars.colors.$primaryContrast,
-      [backgroundColor]: vars.colors.$primarySurface,
-      [hoverBackgroundColor]: vars.colors.$primaryHighContrast,
-      [activeBackgroundColor]: vars.colors.$primaryHighContrast,
-      [hoverColor]: vars.colors.$primaryContrast,
-      [outlineColor]: vars.colors.$primaryAccent,
+      [color]: tokens.kda.foundation.color.text.brand.primary.inverse.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.brand.primary.inverse.default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.brand.primary.inverse['@hover'],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.brand.primary.inverse['@focus'],
+      [hoverColor]:
+        tokens.kda.foundation.color.text.brand.primary.inverse['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.brand.primary['@focus'],
+      [borderColor]: tokens.kda.foundation.color.border.brand.primary.subtle,
+      [borderHoverColor]:
+        tokens.kda.foundation.color.border.brand.primary['@hover'],
+      [borderActiveColor]:
+        tokens.kda.foundation.color.border.brand.primary['@focus'],
     },
   },
   secondary: {
     vars: {
-      [color]: vars.colors.$secondaryContrast,
-      [backgroundColor]: vars.colors.$secondarySurface,
-      [hoverBackgroundColor]: vars.colors.$secondaryHighContrast,
-      [activeBackgroundColor]: vars.colors.$secondaryHighContrast,
-      [hoverColor]: vars.colors.$secondaryContrast,
-      [outlineColor]: vars.colors.$secondaryAccent,
-    },
-  },
-  tertiary: {
-    vars: {
-      [color]: vars.colors.$tertiaryContrast,
-      [backgroundColor]: vars.colors.$tertiarySurface,
-      [hoverBackgroundColor]: vars.colors.$tertiaryHighContrast,
-      [activeBackgroundColor]: vars.colors.$tertiaryHighContrast,
-      [hoverColor]: vars.colors.$tertiaryContrast,
-      [outlineColor]: vars.colors.$tertiaryAccent,
+      [color]: tokens.kda.foundation.color.text.brand.secondary.inverse.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.brand.secondary.inverse.default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.brand.secondary.inverse[
+          '@hover'
+        ],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.brand.secondary.inverse[
+          '@focus'
+        ],
+      [hoverColor]:
+        tokens.kda.foundation.color.text.brand.secondary.inverse['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.brand.secondary['@focus'],
+      [borderColor]: tokens.kda.foundation.color.border.brand.secondary.subtle,
+      [borderHoverColor]:
+        tokens.kda.foundation.color.border.brand.secondary['@hover'],
+      [borderActiveColor]:
+        tokens.kda.foundation.color.border.brand.secondary['@focus'],
     },
   },
   warning: {
     vars: {
-      [color]: vars.colors.$warningContrast,
-      [backgroundColor]: vars.colors.$warningSurface,
-      [hoverBackgroundColor]: vars.colors.$warningHighContrast,
-      [activeBackgroundColor]: vars.colors.$warningHighContrast,
-      [hoverColor]: vars.colors.$warningContrast,
-      [outlineColor]: vars.colors.$warningAccent,
+      [color]:
+        tokens.kda.foundation.color.text.semantic.warning.inverse.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.semantic.warning.inverse.default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.warning.inverse[
+          '@hover'
+        ],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.warning.inverse[
+          '@focus'
+        ],
+      [hoverColor]:
+        tokens.kda.foundation.color.text.semantic.warning.inverse['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.semantic.warning['@focus'],
+      [borderColor]: tokens.kda.foundation.color.border.semantic.warning.subtle,
+      [borderHoverColor]:
+        tokens.kda.foundation.color.border.semantic.warning['@hover'],
+      [borderActiveColor]:
+        tokens.kda.foundation.color.border.semantic.warning['@focus'],
     },
   },
   negative: {
     vars: {
-      [color]: vars.colors.$negativeContrast,
-      [backgroundColor]: vars.colors.$negativeSurface,
-      [hoverBackgroundColor]: vars.colors.$negativeHighContrast,
-      [activeBackgroundColor]: vars.colors.$negativeHighContrast,
-      [hoverColor]: vars.colors.$negativeContrast,
-      [outlineColor]: vars.colors.$negativeAccent,
+      [color]:
+        tokens.kda.foundation.color.text.semantic.negative.inverse.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.semantic.negative.inverse
+          .default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.negative.inverse[
+          '@hover'
+        ],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.negative.inverse[
+          '@focus'
+        ],
+      [hoverColor]:
+        tokens.kda.foundation.color.text.semantic.negative.inverse['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.semantic.negative['@focus'],
+      [borderColor]:
+        tokens.kda.foundation.color.border.semantic.negative.subtle,
+      [borderHoverColor]:
+        tokens.kda.foundation.color.border.semantic.negative['@hover'],
+      [borderActiveColor]:
+        tokens.kda.foundation.color.border.semantic.negative['@focus'],
     },
   },
   positive: {
     vars: {
-      [color]: vars.colors.$positiveContrast,
-      [backgroundColor]: vars.colors.$positiveSurface,
-      [hoverBackgroundColor]: vars.colors.$positiveHighContrast,
-      [activeBackgroundColor]: vars.colors.$positiveHighContrast,
-      [hoverColor]: vars.colors.$positiveContrast,
-      [outlineColor]: vars.colors.$positiveAccent,
+      [color]:
+        tokens.kda.foundation.color.text.semantic.positive.inverse.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.semantic.positive.inverse
+          .default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.positive.inverse[
+          '@hover'
+        ],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.positive.inverse[
+          '@focus'
+        ],
+      [hoverColor]:
+        tokens.kda.foundation.color.text.semantic.positive.inverse['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.semantic.positive['@focus'],
+      [borderColor]:
+        tokens.kda.foundation.color.border.semantic.positive.subtle,
+      [borderHoverColor]:
+        tokens.kda.foundation.color.border.semantic.positive['@hover'],
+      [borderActiveColor]:
+        tokens.kda.foundation.color.border.semantic.positive['@focus'],
     },
   },
-  primaryInverted: {
+  primaryAlternative: {
     vars: {
-      [color]: vars.colors.$primaryContrastInverted,
-      [backgroundColor]: vars.colors.$primaryLowContrast,
-      [hoverBackgroundColor]: vars.colors.$primarySurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$primaryHighContrast,
-      [hoverColor]: vars.colors.$primaryContrastInverted,
-      [outlineColor]: vars.colors.$primaryAccent,
+      [color]: tokens.kda.foundation.color.text.brand.primary.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.brand.primary.default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.brand.primary['@hover'],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.brand.primary['@focus'],
+      [hoverColor]: tokens.kda.foundation.color.text.brand.primary['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.brand.primary['@focus'],
     },
   },
-  secondaryInverted: {
+  secondaryAlternative: {
     vars: {
-      [color]: vars.colors.$secondaryContrastInverted,
-      [backgroundColor]: vars.colors.$secondaryLowContrast,
-      [hoverBackgroundColor]: vars.colors.$secondarySurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$secondaryHighContrast,
-      [hoverColor]: vars.colors.$secondaryContrastInverted,
-      [outlineColor]: vars.colors.$secondaryAccent,
+      [color]: tokens.kda.foundation.color.text.brand.secondary.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.brand.secondary.default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.brand.secondary['@hover'],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.brand.secondary['@focus'],
+      [hoverColor]: tokens.kda.foundation.color.text.brand.secondary['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.brand.secondary['@focus'],
     },
   },
-  tertiaryInverted: {
+  warningAlternative: {
     vars: {
-      [color]: vars.colors.$tertiaryContrastInverted,
-      [backgroundColor]: vars.colors.$tertiaryLowContrast,
-      [hoverBackgroundColor]: vars.colors.$tertiarySurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$tertiaryHighContrast,
-      [hoverColor]: vars.colors.$tertiaryContrastInverted,
-      [outlineColor]: vars.colors.$tertiaryAccent,
+      [color]: tokens.kda.foundation.color.text.semantic.warning.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.semantic.warning.default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.warning['@hover'],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.warning['@focus'],
+      [hoverColor]: tokens.kda.foundation.color.text.semantic.warning['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.semantic.warning['@focus'],
     },
   },
-  warningInverted: {
+  positiveAlternative: {
     vars: {
-      [color]: vars.colors.$warningContrastInverted,
-      [backgroundColor]: vars.colors.$warningLowContrast,
-      [hoverBackgroundColor]: vars.colors.$warningSurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$warningHighContrast,
-      [hoverColor]: vars.colors.$warningContrastInverted,
-      [outlineColor]: vars.colors.$warningAccent,
+      [color]: tokens.kda.foundation.color.text.semantic.positive.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.semantic.positive.default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.positive['@hover'],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.positive['@focus'],
+      [hoverColor]:
+        tokens.kda.foundation.color.text.semantic.positive['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.semantic.positive['@focus'],
     },
   },
-  positiveInverted: {
+  negativeAlternative: {
     vars: {
-      [color]: vars.colors.$positiveContrastInverted,
-      [backgroundColor]: vars.colors.$positiveLowContrast,
-      [hoverBackgroundColor]: vars.colors.$positiveSurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$positiveHighContrast,
-      [hoverColor]: vars.colors.$positiveContrastInverted,
-      [outlineColor]: vars.colors.$positiveAccent,
-    },
-  },
-  negativeInverted: {
-    vars: {
-      [color]: vars.colors.$negativeContrastInverted,
-      [backgroundColor]: vars.colors.$negativeLowContrast,
-      [hoverBackgroundColor]: vars.colors.$negativeSurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$negativeHighContrast,
-      [hoverColor]: vars.colors.$negativeContrastInverted,
-      [outlineColor]: vars.colors.$negativeAccent,
+      [color]: tokens.kda.foundation.color.text.semantic.negative.default,
+      [backgroundColor]:
+        tokens.kda.foundation.color.background.semantic.negative.default,
+      [hoverBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.negative['@hover'],
+      [activeBackgroundColor]:
+        tokens.kda.foundation.color.background.semantic.negative['@focus'],
+      [hoverColor]:
+        tokens.kda.foundation.color.text.semantic.negative['@hover'],
+      [outlineColor]:
+        tokens.kda.foundation.color.border.semantic.negative['@focus'],
     },
   },
 } as const;
@@ -192,10 +268,9 @@ export const button = recipe({
       display: 'inline-flex',
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 'sm',
-      gap: 'sm',
-      paddingInline: 'md',
-      paddingBlock: 'sm',
+      borderRadius: 'md',
+      gap: 'xs',
+      padding: 'sm',
     }),
     {
       color,
@@ -211,9 +286,9 @@ export const button = recipe({
         '&[data-pressed]': focusRing,
         '&[data-focus-visible]': focusRing,
         '&[data-disabled]': {
-          opacity: 0.7,
-          backgroundColor: colorPalette.$gray60,
-          color: colorPalette.$gray10,
+          backgroundColor:
+            tokens.kda.foundation.color.background.base['@disabled'],
+          color: tokens.kda.foundation.color.text.base['@disabled'],
           cursor: 'not-allowed',
           pointerEvents: 'none',
         },
@@ -223,18 +298,35 @@ export const button = recipe({
   variants: {
     variant: colorVariants,
     isCompact: {
-      true: {
-        paddingInline: vars.sizes.$1,
-        paddingBlock: vars.sizes.$1,
-      },
+      true: [atoms({ padding: 'xs' })],
     },
     isOutlined: {
       true: {
-        backgroundColor: 'transparent',
+        borderWidth: tokens.kda.foundation.border.width.normal,
+        borderColor: borderColor,
+        borderStyle: 'solid',
+        outlineStyle: 'none',
+        outlineWidth: 0,
         outlineOffset: 0,
+        outlineColor: 'transparent',
         vars: {
-          [backgroundColor]: 'none',
-          [hoverBackgroundColor]: 'none',
+          [backgroundColor]: 'transparent',
+          [hoverBackgroundColor]: 'transparent',
+          [outlineColor]: 'transparent',
+        },
+        selectors: {
+          '&[data-hovered]': {
+            borderColor: borderHoverColor,
+          },
+          '&[data-pressed]': {
+            borderColor: borderActiveColor,
+          },
+          '&[data-focus-visible]': {
+            borderColor: borderActiveColor,
+          },
+          '&[data-disabled]': {
+            borderColor: tokens.kda.foundation.color.border.base['@disabled'],
+          },
         },
       },
     },
@@ -244,10 +336,7 @@ export const button = recipe({
       },
     },
     onlyIcon: {
-      true: {
-        paddingInline: vars.sizes.$2,
-        paddingBlock: vars.sizes.$2,
-      },
+      true: [atoms({ padding: 'sm' })],
     },
   },
   defaultVariants: {
