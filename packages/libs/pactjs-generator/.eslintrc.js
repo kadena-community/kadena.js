@@ -8,4 +8,5 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@rushstack/typedef-var': 'off',
   },
+  ignorePatterns: ['vitest.*.ts'],
 };

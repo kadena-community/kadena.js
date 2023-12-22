@@ -69,7 +69,7 @@
     "@typescript-eslint/parser": "^5.23.0",
     "@vanilla-extract/css": "1.14.0",
     "@vanilla-extract/next-plugin": "2.3.2",
-    "@vanilla-extract/vite-plugin": "^3.9.2",
+    "@vanilla-extract/vite-plugin": "^3.9.3",
     "@vitest/coverage-v8": "^1.1.0",
     "@walletconnect/types": "~2.8.1",
     "@webpro/next-translate-plugin": "^2.6.3",
