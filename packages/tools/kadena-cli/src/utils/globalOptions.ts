@@ -34,7 +34,10 @@ import { removeAfterFirstDot } from './path.util.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalFlags = {
-  ci: new Option('--ci', 'CI mode (disables interactive prompts)'),
+  quiet: new Option(
+    '-q --quiet',
+    'Disables interactive prompts and skips confirmations',
+  ),
   legacy: new Option('-l, --legacy', 'Output legacy format'),
 } as const;
 
@@ -83,14 +86,11 @@ export const globalOptions = {
     option: new Option('-p, --predicate <predicate>', 'Keyset predicate'),
   }),
   // global
-  ci: createOption({
-    key: 'ci' as const,
-    prompt: ({ ci }: { ci: boolean }) => {
-      const result = ci || false;
-      return Promise.resolve(result);
-    },
+  quiet: createOption({
+    key: 'quiet' as const,
+    prompt: async ({ quiet }: { quiet: boolean }) => quiet || false,
     validation: z.boolean().optional(),
-    option: globalFlags.ci,
+    option: globalFlags.quiet,
   }),
   legacy: createOption({
     key: 'legacy' as const,

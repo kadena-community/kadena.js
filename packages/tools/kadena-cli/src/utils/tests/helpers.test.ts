@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import type { IQuestion } from '../helpers.js';
 import * as helpers from '../helpers.js';
 
 describe('safeAssign', () => {
@@ -116,74 +115,6 @@ describe('collectResponses', () => {
     ];
     const responses = await helpers.collectResponses(args, questions);
     expect(responses).toEqual({ key1: 'Answer 1', key2: 'Answer 2' });
-  });
-});
-
-interface IConfigOptions {
-  key1?: string;
-  key2?: string;
-  key3?: string;
-}
-
-describe('questionGenerator', () => {
-  it('should yield questions that are yet to be answered', () => {
-    const args: Partial<IConfigOptions> = { key1: 'value1' };
-    const questions: IQuestion<IConfigOptions>[] = [
-      { key: 'key1', prompt: () => Promise.resolve('Answer 1') },
-      { key: 'key2', prompt: () => Promise.resolve('Answer 2') },
-    ];
-    const generator = helpers.questionGenerator(args, questions);
-
-    const result1 = generator.next();
-    expect(result1.done).toBe(false);
-    expect(result1.value).toBeTruthy();
-
-    if (result1.value) {
-      expect(result1.value.key).toBe('key2');
-    }
-
-    const result2 = generator.next();
-    expect(result2.done).toBe(true);
-  });
-
-  it('should generate all questions when args are empty', () => {
-    const args: Partial<IConfigOptions> = {};
-    const questions: IQuestion<IConfigOptions>[] = [
-      { key: 'key1', prompt: () => Promise.resolve('Answer 1') },
-      { key: 'key2', prompt: () => Promise.resolve('Answer 2') },
-      { key: 'key3', prompt: () => Promise.resolve('Answer 3') },
-    ];
-    const generator = helpers.questionGenerator(args, questions);
-
-    // First question should be 'key1'
-    const result1 = generator.next();
-    expect(result1.value).toEqual({
-      key: 'key1',
-      prompt: expect.any(Function),
-    });
-    expect(result1.done).toBe(false);
-    // Simulate answering the first question
-    args.key1 = 'Answer 1';
-    // Second question should be 'key2'
-    const result2 = generator.next();
-    expect(result2.value).toEqual({
-      key: 'key2',
-      prompt: expect.any(Function),
-    });
-    expect(result2.done).toBe(false);
-    // Simulate answering the second question
-    args.key2 = 'Answer 2';
-    // Third question should be 'key3'
-    const result3 = generator.next();
-    expect(result3.value).toEqual({
-      key: 'key3',
-      prompt: expect.any(Function),
-    });
-    expect(result3.done).toBe(false);
-    // All questions have been answered, generator should be done
-    const result4 = generator.next();
-    expect(result4.value).toBeUndefined();
-    expect(result4.done).toBe(true);
   });
 });
 
