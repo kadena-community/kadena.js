@@ -8,7 +8,7 @@ export interface IFileData {
   to: string;
   amount: number;
   requestKey: string;
-  type: TransferType;
+  action: TransferType | TokenActionType;
 }
 
 export interface IFileError {
@@ -21,6 +21,8 @@ export type TransferType =
   | 'cross-chain-transfer'
   | 'safe-transfer'
   | undefined;
+
+export type TokenActionType = 'create' | 'mint' | 'transfer' | undefined;
 
 export function createDir(directory: string): void {
   if (!fs.existsSync(directory)) {
@@ -35,7 +37,7 @@ export function createFile(filename: string): string {
     to: '',
     amount: 0,
     requestKey: '',
-    type: undefined,
+    action: undefined,
   };
   const directory = path.join(__dirname, `${dotenv.SIMULATE_LOG_FOLDER_NAME}/`);
   createDir(directory);

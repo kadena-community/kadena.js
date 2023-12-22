@@ -25,6 +25,10 @@ export interface IAccount {
   keys: IKeyPair[];
 }
 
+export interface IAccountWithTokens extends IAccount {
+  tokens: { [key: string]: number };
+}
+
 export const logger = createLogger('info');
 
 const getClient = (): IClient =>
