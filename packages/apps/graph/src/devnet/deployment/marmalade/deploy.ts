@@ -140,7 +140,12 @@ export async function deployMarmaladeContracts(
     const signedTx = signAndAssertTransaction(signerAccount.keys)(transaction);
     const commandResult = await submit(signedTx);
     const result = await listen(commandResult);
-    inspect('Result')(result);
+
+    if (result.result.status !== 'success') {
+      inspect('Result')(commandResult);
+    } else {
+      logger.info(`Sucessfully deployed ${templateFile}`);
+    }
   }
 }
 
