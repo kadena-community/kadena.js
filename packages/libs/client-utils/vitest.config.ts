@@ -3,7 +3,7 @@ import { defineConfig, mergeConfig } from 'vitest/config';
 
 const localConfig = defineConfig({
   test: {
-    exclude: ['src/**/*.int.test.ts'],
+    exclude: ['src/**/*.int.test.ts', 'src/interfaces/**/*'],
     coverage: {
       provider: 'v8',
       thresholds: {

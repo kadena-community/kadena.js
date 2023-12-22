@@ -146,4 +146,23 @@ describe('withEmitter', () => {
     const secondTwice = await iterator.executeTo('second');
     expect(second).toBe(secondTwice);
   });
+
+  it('start from specific step', async () => {
+    const emitter = withEmitter((emit) =>
+      asyncPipe(
+        emit('first'),
+        (one: string) => `one:${one}`,
+        emit('second'),
+        (two: string) => `two:${two}`,
+        emit('data'),
+        (two: string) => 2,
+        emit('datas'),
+      ),
+    );
+
+    const iterator = emitter('test').from('second', 'from-step');
+
+    const second = await iterator.executeTo('data');
+    expect(second).toBe('two:from-step');
+  });
 });
