@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { CLIRootName } from '../constants/config.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
 import type { GlobalOptions } from './globalOptions.js';
+import { globalOptions } from './globalOptions.js';
 import { collectResponses } from './helpers.js';
 import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 
@@ -51,31 +52,21 @@ export function createCommand<
   return async (program: Command, version: string) => {
     const command = program.command(name).description(description);
 
+    command.addOption(globalOptions.quiet().option);
     options.forEach((option) => {
       command.addOption(option.option);
     });
 
     command.action(async (args, ...rest) => {
       try {
-        // collectResponses
-        const questionsMap = options
-          .filter((o) => o.isInQuestions)
-          .map(({ prompt, key }) => ({
-            key,
-            prompt,
-          }));
-
-        const responses = await collectResponses(args, questionsMap);
-        const newArgs = { ...args, ...responses };
-
-        console.log(
-          chalk.yellow(
-            `\nexecuting: ${CLIRootName} ${program.name()} ${name} ${Object.getOwnPropertyNames(
-              newArgs,
+        const getCommandExecution = (args: Record<string, unknown>) => {
+          return chalk.yellow(
+            `${CLIRootName} ${program.name()} ${name} ${Object.getOwnPropertyNames(
+              args,
             )
               .map((arg) => {
                 let displayValue: string | null = null;
-                const value = newArgs[arg];
+                const value = args[arg];
                 const argName = arg.toLowerCase();
 
                 if (argName.includes('password')) {
@@ -107,8 +98,51 @@ export function createCommand<
               })
               .filter(Boolean)
               .join(' ')}`,
-          ),
-        );
+          );
+        };
+
+        // collectResponses
+        const questionsMap = options
+          .filter((o) => o.isInQuestions)
+          .map(({ prompt, key, isOptional }) => ({
+            key,
+            prompt,
+            isOptional,
+          }));
+
+        if (args.quiet) {
+          const missing = questionsMap.filter(
+            (question) =>
+              question.isOptional === false && args[question.key] === undefined,
+          );
+          if (missing.length) {
+            console.log(
+              `${chalk.yellow('Missing arguments in: ')}${getCommandExecution(
+                args,
+              )}`,
+            );
+            console.log(
+              chalk.red(
+                `\nMissing required arguments:\n${missing
+                  .map((m) => options.find((q) => q.key === m.key)!)
+                  .map((m) => `- ${m.key} (${m.option.flags})\n`)
+                  .join('')}`,
+              ),
+            );
+            console.log(
+              chalk.yellow(
+                'Remove the --quiet flag to enable interactive prompts\n',
+              ),
+            );
+            process.exit(1);
+          }
+        }
+
+        const newArgs: any = args.quiet
+          ? args
+          : await collectResponses(args, questionsMap);
+
+        console.log(`\nExecuting: ${getCommandExecution(newArgs)}`);
 
         // zod validation
         const zodValidationObject = options.reduce(

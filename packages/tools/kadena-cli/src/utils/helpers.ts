@@ -75,24 +75,6 @@ export interface IQuestion<T> {
 }
 
 /**
- * Generator function that iterates over a list of questions and yields questions that are yet to be answered.
- * @template T The type of configuration options the questions correspond to.
- * @param args The initial or provided answers for some of the questions.
- * @param questions A list of questions to iterate over.
- * @yields A question that is yet to be answered.
- */
-export function* questionGenerator<T>(
-  args: Partial<T>,
-  questions: IQuestion<T>[],
-): Generator<IQuestion<T>, void, void> {
-  for (const question of questions) {
-    if (args[question.key] === undefined) {
-      yield question;
-    }
-  }
-}
-
-/**
  * Collects user responses for a set of questions, allowing for dynamic configuration based on user input.
  * It iterates through each question, presenting it to the user and collecting the responses.
  *
@@ -107,15 +89,12 @@ export async function collectResponses<T>(
   questions: IQuestion<T>[],
 ): Promise<T> {
   const responses: Partial<T> = { ...args };
-  const generator = questionGenerator(args, questions);
 
-  let result = generator.next();
-  while (result.done !== true) {
-    const question = result.value;
-    const response = await question.prompt(responses, args);
-
-    responses[question.key] = response;
-    result = generator.next();
+  for (const question of questions) {
+    if (args[question.key] === undefined) {
+      const response = await question.prompt(responses, args);
+      responses[question.key] = response;
+    }
   }
 
   return responses as T;
