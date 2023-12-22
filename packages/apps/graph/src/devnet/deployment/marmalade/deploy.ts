@@ -5,16 +5,11 @@ import yaml from 'js-yaml';
 import { join, relative } from 'path';
 
 import { downloadGitFiles } from '@utils/download-git-files';
+import { logger } from '@utils/logger';
 import { flattenFolder } from '@utils/path';
 import { validateObjectProperties } from '@utils/validate-object';
 import type { IAccount } from '../helper';
-import {
-  inspect,
-  listen,
-  logger,
-  signAndAssertTransaction,
-  submit,
-} from '../helper';
+import { inspect, listen, signAndAssertTransaction, submit } from '../helper';
 import { argumentConfig, marmaladeNamespaceOrder } from './config/arguments';
 import { marmaladeNamespaceConfig } from './config/namespaces';
 import type {
@@ -142,10 +137,17 @@ export async function deployMarmaladeContracts(
     );
 
     const transaction = createTransaction(pactCommand);
-    const signedTx = signAndAssertTransaction(signerAccount.keys)(transaction);
+    const signedTx = await signAndAssertTransaction(signerAccount.keys)(
+      transaction,
+    );
     const commandResult = await submit(signedTx);
     const result = await listen(commandResult);
-    inspect('Result')(result);
+
+    if (result.result.status !== 'success') {
+      inspect('Result')(commandResult);
+    } else {
+      logger.info(`Sucessfully deployed ${templateFile}`);
+    }
   }
 }
 

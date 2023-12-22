@@ -1,17 +1,12 @@
-import type { IAccount } from '@devnet/helper';
-import {
-  inspect,
-  listen,
-  logger,
-  sender00,
-  signAndAssertTransaction,
-  submit,
-} from '@devnet/helper';
+import type { IAccount } from '@devnet/utils';
+import { sender00 } from '@devnet/utils';
 import type { ChainId, ICommand, IKeyPair } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
+import { logger } from '@utils/logger';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
+import { inspect, listen, signAndAssertTransaction, submit } from '../helper';
 import type { IMarmaladeNamespaceConfig } from './config/namespaces';
 import type { IMarmaladeLocalConfig } from './config/repository';
 
@@ -87,13 +82,18 @@ export async function deployMarmamaladeNamespaces({
           keysets,
         });
 
-        logger.info(
-          `Deploying namespace file ${config.file} for ${namespace}...}`,
-        );
+        logger.info(`Deploying namespace file ${config.file} for ${namespace}`);
 
         const transactionDescriptor = await submit(transaction);
         const commandResult = await listen(transactionDescriptor);
-        inspect('Result')(commandResult);
+
+        if (commandResult.result.status !== 'success') {
+          inspect('Result')(commandResult);
+        } else {
+          logger.info(
+            `Sucessfully deployed namespace file ${config.file} for ${namespace}`,
+          );
+        }
       }),
     );
   }
@@ -153,6 +153,6 @@ export async function createPactCommandFromFile(
 
   const transaction = transactionBuilder.createTransaction();
 
-  const signedTx = signAndAssertTransaction(signers)(transaction);
+  const signedTx = await signAndAssertTransaction(signers)(transaction);
   return signedTx;
 }

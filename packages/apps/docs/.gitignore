@@ -24,3 +24,5 @@ src/pages/docs
 
 next-env.d.ts
 .env.local
+
+.vscode/settings.json

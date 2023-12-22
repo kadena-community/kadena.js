@@ -76,11 +76,11 @@ export const dotenv: {
 
   MARMALADE_LOCAL_TEMPLATE_PATH: or(
     process.env.MARMALADE_LOCAL_TEMPLATE_PATH,
-    'src/devnet/marmalade/templates/v2',
+    'src/devnet/deployment/marmalade/templates/v2',
   ),
   MARMALADE_LOCAL_NAMESPACE_PATH: or(
     process.env.MARMALADE_LOCAL_NAMESPACE_PATH,
-    'src/devnet/marmalade/templates/ns',
+    'src/devnet/deployment/marmalade/templates/ns',
   ),
   GITHUB_TOKEN: or(process.env.GITHUB_TOKEN, '/pact/marmalade-ns'),
   SIMULATE_DEFAULT_CHAIN_ID: or(

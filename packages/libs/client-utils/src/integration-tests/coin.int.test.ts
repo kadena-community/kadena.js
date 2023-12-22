@@ -1,3 +1,4 @@
+import type { IExecutionPayloadObject, IPactCommand } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { describe, expect, it } from 'vitest';
 
@@ -10,6 +11,7 @@ import {
   transferCrossChain,
 } from '../coin';
 
+import { safeTransfer } from '../coin/safe-transfer';
 import { NetworkIds } from './support/NetworkIds';
 import { withStepFactory } from './support/helpers';
 import {
@@ -230,5 +232,175 @@ describe('cross chain transfer', () => {
     );
 
     expect(balance).toBe('10');
+  });
+});
+
+describe('safeTransfer', () => {
+  it('should transfer kda from sender00 account to receiverAccount if both receiver and sender sign', async () => {
+    const initialBalance = await getBalance(
+      accountOne.account,
+      'fast-development',
+      '0',
+      'http://127.0.0.1:8080',
+    );
+    const result = await safeTransfer(
+      {
+        sender: {
+          account: sender00Account.account,
+          publicKeys: [sender00Account.publicKey],
+        },
+        receiver: {
+          account: accountOne.account,
+          publicKeys: [accountOne.publicKey],
+        },
+        amount: '10',
+        chainId: '0',
+      },
+      {
+        host: 'http://127.0.0.1:8080',
+        defaults: {
+          networkId: 'fast-development',
+        },
+        sign: createSignWithKeypair([sender00Account, accountOne]),
+      },
+    )
+      .on('sign', (tx) => {
+        expect(tx.sigs).toHaveLength(2);
+        expect(tx.sigs[0].sig).toBeTruthy();
+        expect(tx.sigs[1].sig).toBeTruthy();
+      })
+      .execute();
+
+    expect(result).toBe('Write succeeded');
+
+    const balanceAfterTransfer = await getBalance(
+      accountOne.account,
+      'fast-development',
+      '0',
+      'http://127.0.0.1:8080',
+    );
+    if (
+      typeof balanceAfterTransfer === 'string' &&
+      typeof initialBalance === 'string'
+    ) {
+      expect(+balanceAfterTransfer).toBe(+initialBalance + 10);
+    } else {
+      throw new Error('balance is not a number');
+    }
+  });
+
+  it('should fail if receiver does not sign', async () => {
+    const task = safeTransfer(
+      {
+        sender: {
+          account: sender00Account.account,
+          publicKeys: [sender00Account.publicKey],
+        },
+        receiver: {
+          account: accountOne.account,
+          publicKeys: [accountOne.publicKey],
+        },
+        amount: '100',
+        chainId: '0',
+      },
+      {
+        host: 'http://127.0.0.1:8080',
+        defaults: {
+          networkId: 'fast-development',
+        },
+        sign: createSignWithKeypair([sender00Account]),
+      },
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error('Signing failed'),
+    );
+  });
+
+  it('should fail if receiver does not satisfy the account guard sign', async () => {
+    const task = safeTransfer(
+      {
+        sender: {
+          account: sender00Account.account,
+          publicKeys: [sender00Account.publicKey],
+        },
+        receiver: {
+          account: accountOne.account,
+          publicKeys: [sender00Account.publicKey],
+        },
+        amount: '100',
+        chainId: '0',
+      },
+      {
+        host: 'http://127.0.0.1:8080',
+        defaults: {
+          networkId: 'fast-development',
+        },
+        sign: createSignWithKeypair([sender00Account]),
+      },
+    );
+
+    await expect(() => task.execute()).rejects.toThrow(/Keyset failure/);
+  });
+
+  it('uses normal transfer if gasPayer is the same as receiver', async () => {
+    const initialBalance = await getBalance(
+      accountOne.account,
+      'fast-development',
+      '0',
+      'http://127.0.0.1:8080',
+    );
+    const result = await safeTransfer(
+      {
+        sender: {
+          account: sender00Account.account,
+          publicKeys: [sender00Account.publicKey],
+        },
+        receiver: {
+          account: accountOne.account,
+          publicKeys: [accountOne.publicKey],
+        },
+        gasPayer: {
+          account: accountOne.account,
+          publicKeys: [accountOne.publicKey],
+        },
+        amount: '10',
+        chainId: '0',
+      },
+      {
+        host: 'http://127.0.0.1:8080',
+        defaults: {
+          networkId: 'fast-development',
+        },
+        sign: createSignWithKeypair([sender00Account, accountOne]),
+      },
+    )
+      .on('sign', (tx) => {
+        const command: IPactCommand = JSON.parse(tx.cmd);
+        expect(
+          (command.payload as IExecutionPayloadObject).exec.code.split(
+            'coin.transfer',
+          ),
+        ).toHaveLength(2);
+      })
+      .execute();
+
+    expect(result).toBe('Write succeeded');
+    const balanceAfterTransfer = await getBalance(
+      accountOne.account,
+      'fast-development',
+      '0',
+      'http://127.0.0.1:8080',
+    );
+    if (
+      typeof balanceAfterTransfer === 'string' &&
+      typeof initialBalance === 'string'
+    ) {
+      // since we are using the same account as gasPayer, we expect the balance to be 10 less
+      expect(+balanceAfterTransfer > +initialBalance + 9).toBeTruthy();
+      expect(+balanceAfterTransfer < +initialBalance + 10).toBeTruthy();
+    } else {
+      throw new Error('balance is not a number');
+    }
   });
 });

@@ -12,11 +12,9 @@ import {
 } from '@kadena/react-ui';
 
 import {
-  buttonContainerClass,
   hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
-  notificationContainerStyle,
   notificationContentStyle,
   notificationLinkStyle,
   pubKeyInputWrapperStyle,
@@ -25,9 +23,11 @@ import {
 
 import {
   accountNameContainerClass,
+  buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
   inputContainerClass,
+  notificationContainerStyle,
 } from '../styles.css';
 
 import type { FormStatus } from '@/components/Global';

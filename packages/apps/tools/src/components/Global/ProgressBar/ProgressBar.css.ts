@@ -1,5 +1,4 @@
-import { colorPalette } from '@theme/colors';
-import { sprinkles } from '@theme/sprinkles.css';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const circleColorVariant = styleVariants({
@@ -25,17 +24,17 @@ export const circleColorVariant = styleVariants({
 export const lineColorVariant = styleVariants({
   complete: [
     {
-      backgroundImage: `linear-gradient(${colorPalette.$blue60} 33%, rgba(255,255,255,0) 0%)`,
+      backgroundImage: `linear-gradient(${vars.colors.$blue60} 33%, rgba(255,255,255,0) 0%)`,
     },
   ],
   pending: [
     {
-      backgroundImage: `linear-gradient(${colorPalette.$red60} 33%, rgba(255,255,255,0) 0%)`,
+      backgroundImage: `linear-gradient(${vars.colors.$red60} 33%, rgba(255,255,255,0) 0%)`,
     },
   ],
   incomplete: [
     {
-      backgroundImage: `linear-gradient(${colorPalette.$gray40} 33%, rgba(255,255,255,0) 0%)`,
+      backgroundImage: `linear-gradient(${vars.colors.$gray40} 33%, rgba(255,255,255,0) 0%)`,
     },
   ],
 });

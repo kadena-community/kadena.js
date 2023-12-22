@@ -55,15 +55,9 @@
   },
   {
     "name": "@kadena/docs",
-    "version": "0.8.0",
+    "version": "0.6.3",
     "private": true,
     "path": "packages/apps/docs"
-  },
-  {
-    "name": "@kadena/docs-tools",
-    "version": "0.1.0",
-    "private": true,
-    "path": "packages/tools/docs-tools"
   },
   {
     "name": "@kadena/graph",
@@ -79,7 +73,7 @@
   },
   {
     "name": "@kadena/hd-wallet",
-    "version": "0.2.0",
+    "version": "0.0.1",
     "private": true,
     "path": "packages/libs/hd-wallet"
   },
@@ -115,7 +109,7 @@
   },
   {
     "name": "@kadena/proof-of-us",
-    "version": "0.2.0",
+    "version": "0.1.0",
     "private": true,
     "path": "packages/apps/proof-of-us"
   },
@@ -160,6 +154,12 @@
     "version": "0.0.8",
     "private": false,
     "path": "packages/tools/eslint-plugin"
+  },
+  {
+    "name": "@kadena-dev/integration-tests",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/tools/integration-tests"
   },
   {
     "name": "@kadena-dev/lint-package",

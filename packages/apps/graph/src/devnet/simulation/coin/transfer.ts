@@ -1,10 +1,12 @@
+import type { IAccount } from '@devnet/utils';
+import { sender00 } from '@devnet/utils';
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
 import { PactNumber } from '@kadena/pactjs';
 import { dotenv } from '@utils/dotenv';
-import type { IAccount } from './helper';
-import { logger, sender00, stringifyProperty } from './helper';
+import { logger } from '@utils/logger';
+import { stringifyProperty } from '../helper';
 
 export async function transfer({
   receiver,

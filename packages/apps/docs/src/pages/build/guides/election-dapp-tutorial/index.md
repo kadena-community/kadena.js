@@ -41,7 +41,7 @@ By completing the tutorials in this workshop, you’ll learn how to:
 - Deploy and update a smart contract.
 - Use a gas station to pay fees on behalf of application users.
 
-Some of the topics covered in this workshop are similar to topics introduced in the _Quick start_.
+Some of the topics covered in this workshop are similar to topics introduced in the [_Quick start_](/build/quickstart).
 For example, you’ll set up a development network (devnet) running on your local computer in a Docker container and sign transactions using public keys and Chainweaver accounts.
 However, the tutorials in the workshop also touch on additional topics such as:
 
@@ -75,18 +75,18 @@ The workshop repository contains branches with starter code for every tutorial, 
 
  * [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started)
  * [Start a local blockchain](/build/guides/election-dapp-tutorial/02-running-devnet)
- * [Admin account](/build/guides/election-dapp-tutorial/03-admin-account)
- * [Namespaces](/build/guides/election-dapp-tutorial/04-namespaces)
- * [Keysets](/build/guides/election-dapp-tutorial/05-keysets)
- * [Smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
- * [Nominate candidates](/build/guides/election-dapp-tutorial/07-nominate-candidates)
- * [Voting](/build/guides/election-dapp-tutorial/08-voting)
- * [Gas station](/build/guides/election-dapp-tutorial/09-gas-station)
+ * [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account)
+ * [Define a namespaces](/build/guides/election-dapp-tutorial/04-namespaces)
+ * [Define keysets](/build/guides/election-dapp-tutorial/05-keysets)
+ * [Write and deploy a smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
+ * [Add candidate management](/build/guides/election-dapp-tutorial/07-nominate-candidates)
+ * [Add voting management](/build/guides/election-dapp-tutorial/08-voting)
+ * [Add a gas station](/build/guides/election-dapp-tutorial/09-gas-station)
 
-Stay tuned for future editions of this workshop and for more intermediate and advanced tutorials  covering additional topics, such as:
+Stay tuned for future editions of this workshop and for more intermediate and advanced tutorials covering additional topics, such as:
 
  * Deploy to test network with the functional programming approach
- * Develop a continuous integration pipeline for deploying your application
+ * Develop a continuous integration pipeline
 
 To suggest topics you’d like to see covered in future tutorials and workshops, submit a [documentation request](https://github.com/kadena-community/kadena.js/issues/new?assignees=&labels=documentation&projects=&template=003-improve_documentation.yml).
 If you'd like to contribute content—either in the form of a new tutorial or to fix issues—see our [contributor's guide](/contribute/contributors-guide).
