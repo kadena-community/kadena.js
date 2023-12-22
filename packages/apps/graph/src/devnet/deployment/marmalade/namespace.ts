@@ -81,13 +81,18 @@ export async function deployMarmamaladeNamespaces({
           keysets,
         });
 
-        logger.info(
-          `Deploying namespace file ${config.file} for ${namespace}...}`,
-        );
+        logger.info(`Deploying namespace file ${config.file} for ${namespace}`);
 
         const transactionDescriptor = await submit(transaction);
         const commandResult = await listen(transactionDescriptor);
-        inspect('Result')(commandResult);
+
+        if (commandResult.result.status !== 'success') {
+          inspect('Result')(commandResult);
+        } else {
+          logger.info(
+            `Sucessfully deployed namespace file ${config.file} for ${namespace}`,
+          );
+        }
       }),
     );
   }
