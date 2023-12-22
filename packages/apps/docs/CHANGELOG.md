@@ -1,5 +1,26 @@
 # @kadena/docs
 
+## 0.8.0
+
+### Minor Changes
+
+- 0cee99f3b: bugfix: fix the buildscripts remove extra frontmatter and do not
+  check on relative deeplink
+
+### Patch Changes
+
+- fb49b2c27: fix the tree bug. now all items are visible again
+- 6d30efacd: Update `Text` and `Heading` components to use new design tokens
+- Updated dependencies [5cf64e17c]
+- Updated dependencies [269e3bd66]
+- Updated dependencies [f2312a16c]
+- Updated dependencies [52664959c]
+- Updated dependencies [5a71173a8]
+- Updated dependencies [6d30efacd]
+- Updated dependencies [d1f705b4d]
+  - @kadena/react-ui@0.6.0
+  - @kadena/docs-tools@0.1.0
+
 ## 0.7.0
 
 ### Minor Changes

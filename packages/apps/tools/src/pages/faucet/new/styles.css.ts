@@ -6,7 +6,7 @@ export const buttonContainerClass = style([
   atoms({ display: 'flex', flexDirection: 'row-reverse' }),
 ]);
 export const notificationLinkStyle = style([
-  atoms({ fontWeight: 'bodyFont.bold', color: 'text.base.default' }),
+  atoms({ fontWeight: 'bodyFont.bold', color: 'text.semantic.warning.default' }),
 ]);
 
 export const pubKeyInputWrapperStyle = style([

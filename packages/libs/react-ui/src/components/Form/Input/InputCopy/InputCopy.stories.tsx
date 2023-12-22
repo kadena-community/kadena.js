@@ -2,11 +2,13 @@ import type { IInputProps } from '@components/Form';
 import { InputCopy } from '@components/Form';
 
 import type { Meta, StoryObj } from '@storybook/react';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import React from 'react';
 
 const meta: Meta<IInputProps> = {
   title: 'Form/Input/InputCopy',
   component: InputCopy,
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     docs: {
       description: {
@@ -25,7 +27,6 @@ export const InputCopyStory: Story = {
   name: 'InputCopy',
   args: {
     type: 'text',
-    leadingTextWidth: undefined,
     leadingText: '',
     outlined: false,
   },

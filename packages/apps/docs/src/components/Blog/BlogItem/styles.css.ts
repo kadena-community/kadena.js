@@ -60,12 +60,6 @@ export const metaItem = style([
   },
 ]);
 
-export const tagLinkClass = style([
-  sprinkles({
-    marginRight: '$2',
-  }),
-]);
-
 export const figureClass = style([
   sprinkles({
     display: 'flex',

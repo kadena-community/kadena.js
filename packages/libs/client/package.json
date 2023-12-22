@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client",
-  "version": "1.6.4",
+  "version": "1.7.0",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "build": "tsc && api-extractor run --verbose",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
-    "format:md": "remark *.md -o --use @kadena-dev/markdown",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",

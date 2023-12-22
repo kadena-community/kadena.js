@@ -27,5 +27,5 @@ export const buttonContainerClass = style([
 ]);
 
 export const notificationContainerStyle = style([
-  atoms({ fontSize: 'xs', marginBlock: 'sm' }),
+  atoms({ fontSize: 'xs', marginBlock: 'lg' }),
 ]);

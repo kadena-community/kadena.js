@@ -1,3 +1,4 @@
+import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import type { IMaskedValueProps } from './MaskedValue';
@@ -5,6 +6,7 @@ import { MaskedValue } from './MaskedValue';
 
 const meta: Meta<IMaskedValueProps> = {
   title: 'Patterns/MaskedValue',
+  decorators: [withContentWidth],
   parameters: {
     status: {
       type: ['experimental'],
