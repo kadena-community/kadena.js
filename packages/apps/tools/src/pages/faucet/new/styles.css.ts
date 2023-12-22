@@ -1,35 +1,35 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { atoms, vars } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
 export const buttonContainerClass = style([
-  { display: 'flex', flexDirection: 'row-reverse' },
-]);
-export const notificationContainerStyle = style([
-  sprinkles({ fontSize: '$sm', marginY: '$6' }),
+  atoms({ display: 'flex', flexDirection: 'row-reverse' }),
 ]);
 export const notificationLinkStyle = style([
-  sprinkles({ color: '$neutral5', fontWeight: '$bold' }),
+  atoms({
+    fontWeight: 'bodyFont.bold',
+    color: 'text.semantic.warning.default',
+  }),
 ]);
 
 export const pubKeyInputWrapperStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
+    width: '100%',
     alignItems: 'flex-start',
     position: 'relative',
   }),
-  {
-    width: '100%',
-  },
 ]);
 
 export const pubKeysContainerStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    gap: '$2',
-    marginY: '$4',
+    marginBlock: 'sm',
     flexWrap: 'wrap',
   }),
+  {
+    gap: vars.sizes.$2,
+  },
 ]);
 
 export const inputWrapperStyle = style([
@@ -39,23 +39,25 @@ export const inputWrapperStyle = style([
 ]);
 
 export const iconButtonWrapper = style([
-  sprinkles({
-    width: '$sm',
+  atoms({
     position: 'absolute',
-    top: '$10',
-    right: '$6',
   }),
+  {
+    width: vars.sizes.$sm,
+    top: vars.sizes.$10,
+    right: vars.sizes.$6,
+  },
 ]);
 
 export const notificationContentStyle = style([
-  sprinkles({
+  atoms({
     display: 'inline-flex',
     alignItems: 'center',
   }),
 ]);
 
 export const hoverTagContainerStyle = style([
-  sprinkles({
-    marginX: '$1',
+  atoms({
+    marginInline: 'xxs',
   }),
 ]);

@@ -23,3 +23,4 @@
 /packages/tools/pactjs-cli                      @alber70g @javadkh2
 /packages/tools/shared-config                   @alber70g
 /packages/tools/e2e-tests                       @ghislain89
+/packages/tools/integration-tests               @ghislain89

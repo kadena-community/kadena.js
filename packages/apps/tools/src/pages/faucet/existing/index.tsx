@@ -29,13 +29,14 @@ import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { buttonContainerClass, notificationContainerStyle } from './styles.css';
 
 import {
   accountNameContainerClass,
+  buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
   inputContainerClass,
+  notificationContainerStyle,
 } from '../styles.css';
 
 const schema = z.object({
@@ -180,7 +181,7 @@ const ExistingAccountFaucetPage: FC = () => {
                 <AccountNameField
                   inputProps={register('name')}
                   error={errors.name}
-                  label={t('The account name you would like to fund coins to')}
+                  label={t('The account name to fund coins to')}
                 />
               </div>
               <div className={chainSelectContainerClass}>

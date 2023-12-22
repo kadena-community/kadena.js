@@ -28,17 +28,6 @@ const meta: Meta<ITextareaFieldProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-
-    textAreaProps: {
-      description: 'Props for the textarea element.',
-      control: {
-        type: 'object',
-      },
-      table: {
-        type: { summary: 'object' },
-        defaultValue: { summary: 'false' },
-      },
-    },
   },
 };
 
@@ -54,26 +43,21 @@ export const TextFieldStory: Story = {
     helperText: 'This is helper text',
     info: '(optional)',
     label: 'Label',
-    textAreaProps: {
-      id: 'TextFieldStory',
-      fontFamily: '$mono',
-      placeholder: 'This is a placeholder',
-      value: '',
-      onChange: () => {},
-    },
+    id: 'TextFieldStory',
+    fontFamily: 'codeFont',
+    placeholder: 'This is a placeholder',
+    value: '',
+    onChange: () => {},
   },
-  render: ({ disabled, textAreaProps, ...rest }) => {
+  render: ({ disabled, ...rest }) => {
     const [value, setValue] = useState<string>('');
 
     return (
       <TextareaField
         disabled={disabled}
-        textAreaProps={{
-          ...textAreaProps,
-          value,
-          onChange: ({ target }) => setValue(target.value),
-        }}
         {...rest}
+        value={value}
+        onChange={({ target }) => setValue(target.value)}
       />
     );
   },

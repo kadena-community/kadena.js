@@ -3,7 +3,7 @@ import type {
   IClient,
   ICommand,
   ICommandResult,
-  IPollRequestPromise,
+  IKeyPair,
   ITransactionDescriptor,
   IUnsignedCommand,
 } from '@kadena/client';
@@ -13,10 +13,11 @@ import {
   isSignedTransaction,
 } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
+import { getBalance } from '@kadena/client-utils/coin';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
+import { dotenv } from '@utils/dotenv';
 import { createLogger } from 'graphql-yoga';
 import seedrandom from 'seedrandom';
-import { devnetConfig } from './config';
 
 export interface IAccount {
   account: string;
@@ -24,17 +25,12 @@ export interface IAccount {
   keys: IKeyPair[];
 }
 
-export interface IKeyPair {
-  publicKey: string;
-  secretKey?: string;
-}
-
 export const logger = createLogger('info');
 
 const getClient = (): IClient =>
   createClient(
-    ({ chainId, networkId }) =>
-      `http://localhost:${devnetConfig.PORT}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+    ({ chainId }) =>
+      `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
   );
 
 export const submit = (tx: ICommand): Promise<ITransactionDescriptor> =>
@@ -42,23 +38,6 @@ export const submit = (tx: ICommand): Promise<ITransactionDescriptor> =>
 
 export const listen = (tx: ITransactionDescriptor): Promise<ICommandResult> =>
   getClient().listen(tx);
-
-export const pollCreateSpv = (
-  tx: ITransactionDescriptor,
-  chainId: ChainId,
-): Promise<string> => getClient().pollCreateSpv(tx, chainId);
-
-export const pollStatus = (
-  tx: ITransactionDescriptor,
-): IPollRequestPromise<ICommandResult> => getClient().pollStatus(tx);
-
-export const dirtyRead = (tx: IUnsignedCommand): Promise<ICommandResult> =>
-  getClient().dirtyRead(tx);
-
-export const localReadForGasEstimation = (
-  tx: IUnsignedCommand,
-): Promise<ICommandResult> =>
-  getClient().local(tx, { preflight: true, signatureVerification: false });
 
 export const signTransaction =
   (keyPairs: IKeyPair[]) =>
@@ -97,15 +76,9 @@ export const inspect =
     return data;
   };
 
-export const asyncPipe =
-  (...fns: any[]) =>
-  (value: any) => {
-    return fns.reduce((acc, fn) => acc.then(fn), Promise.resolve(value));
-  };
-
 export const generateAccount = async (
   keys: number = 1,
-  chainId: ChainId = devnetConfig.CHAIN_ID,
+  chainId: ChainId = dotenv.SIMULATE_DEFAULT_CHAIN_ID,
 ): Promise<IAccount> => {
   const keyPairs = Array.from({ length: keys }, () => genKeyPair());
   const account = await createPrincipal(
@@ -115,9 +88,9 @@ export const generateAccount = async (
       },
     },
     {
-      host: `http://localhost:${devnetConfig.PORT}`,
+      host: dotenv.NETWORK_HOST,
       defaults: {
-        networkId: devnetConfig.NETWORK_ID,
+        networkId: dotenv.NETWORK_ID,
         meta: { chainId },
       },
     },
@@ -199,4 +172,21 @@ export const getRandomOption = <T>(randomSeed: number, options: T[]): T => {
 
 export const stringifyProperty = <T>(keys: T[], property: keyof T) => {
   return keys.map((key) => key[property]).join(', ');
+};
+
+export const getAccountBalance = async ({
+  account,
+  chainId,
+}: {
+  account: string;
+  chainId: ChainId;
+}) => {
+  const result = await getBalance(
+    account,
+    dotenv.NETWORK_ID,
+    chainId || dotenv.SIMULATE_DEFAULT_CHAIN_ID,
+    dotenv.NETWORK_HOST,
+  );
+
+  return result || '0';
 };

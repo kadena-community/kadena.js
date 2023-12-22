@@ -50,6 +50,7 @@ import {
   formContentStyle,
   notificationContainerStyle,
   sidebarLinksStyle,
+  textAreaStyle,
   textareaContainerStyle,
 } from './styles.css';
 
@@ -406,12 +407,10 @@ const CrossChainTransferFinisher: FC = () => {
                   <RequestKeyField
                     helperText={showInputHelper}
                     status={showInputError}
-                    inputProps={{
-                      ...register('requestKey'),
-                      onKeyUp: onCheckRequestKey,
-                      onChange: onRequestKeyChange,
-                      value: requestKey,
-                    }}
+                    {...register('requestKey')}
+                    value={requestKey}
+                    onChange={onRequestKeyChange}
+                    onKeyUp={onCheckRequestKey}
                     error={errors.requestKey}
                   />
                 </GridItem>
@@ -447,12 +446,13 @@ const CrossChainTransferFinisher: FC = () => {
                     helperText={t(
                       'This input field will only be enabled if the user is in expert mode',
                     )}
+                    {...register('gasLimit', { shouldUnregister: true })}
                     label={t('Gas Limit')}
-                    inputProps={{
-                      ...register('gasLimit', { shouldUnregister: true }),
-                      id: 'gas-limit-input',
-                      placeholder: t('Enter Gas Limit'),
-                    }}
+                    id="gas-limit-input"
+                    placeholder={t('Enter Gas Limit')}
+                    {...register('gasLimit', { shouldUnregister: true })}
+                    id="gas-limit-input"
+                    placeholder={t('Enter Gas Limit')}
                   />
                 </GridItem>
               </Grid>

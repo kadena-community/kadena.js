@@ -1,6 +1,6 @@
 import { useGetTransfersQuery } from '@/__generated__/sdk';
 import { ExtendedTransfersTable } from '@/components/extended-transfers-table/extended-transfers-table';
-import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
+import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@constants/routes';
 import { Box, Breadcrumbs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
