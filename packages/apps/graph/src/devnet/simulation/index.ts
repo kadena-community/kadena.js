@@ -1,6 +1,7 @@
 import 'module-alias/register';
 
-import { IAccount, sender00 } from '@devnet/utils';
+import type { IAccount } from '@devnet/utils';
+import { sender00 } from '@devnet/utils';
 import { logger } from '@utils/logger';
 import { Command, Option } from 'commander';
 import { deployMarmaladeContracts } from '../deployment/marmalade/deploy';

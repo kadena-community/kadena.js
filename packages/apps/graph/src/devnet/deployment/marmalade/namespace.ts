@@ -1,4 +1,5 @@
-import { sender00, type IAccount } from '@devnet/utils';
+import type { IAccount } from '@devnet/utils';
+import { sender00 } from '@devnet/utils';
 import type { ChainId, ICommand, IKeyPair } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
