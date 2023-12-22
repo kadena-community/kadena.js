@@ -153,6 +153,6 @@ export async function createPactCommandFromFile(
 
   const transaction = transactionBuilder.createTransaction();
 
-  const signedTx = signAndAssertTransaction(signers)(transaction);
+  const signedTx = await signAndAssertTransaction(signers)(transaction);
   return signedTx;
 }
