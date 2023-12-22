@@ -155,8 +155,8 @@ const ExistingAccountFaucetPage: FC = () => {
               i18nKey="common:faucet-unavailable-warning"
               components={[
                 <Link
-                  href="/transactions/module-explorer?module=user.coin-faucet&chain=1"
-                  key="link-to-module-explorer"
+                  href="https://chainweaver.kadena.network/contracts"
+                  key="link-to-module"
                 />,
               ]}
             />
