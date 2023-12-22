@@ -50,10 +50,11 @@ export const ComboBox = <T extends object>({
             id={id}
             startIcon={<SystemIcon.KeyIconFilled />}
             ref={inputRef}
-          />
-          <Button {...buttonProps} ref={buttonRef}>
-            <span aria-hidden="true">▼</span>
-          </Button>
+          >
+            <Button {...buttonProps} ref={buttonRef}>
+              <span aria-hidden="true">▼</span>
+            </Button>
+          </TextField>
         </Stack>
         {state.isOpen && (
           <Popover
