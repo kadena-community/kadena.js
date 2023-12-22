@@ -519,7 +519,7 @@ In this tutorial, you learned how to:
 The work you completed in this tutorial sets the groundwork for the next tutorial.
 In the next tutorial, you'll learn how to define a keyset inside your principal namespace and how the keyset you define is used to guard who can modify your election application smart contract.
 
-To see the code for the activity you completed in this tutorial and get the starter code for the next tutorial, check out the `05-keysets` branch from the election-dapp repository by running the following command in your terminal shell:
+To see the code for the activity you completed in this tutorial and get the starter code for the next tutorial, check out the `05-keysets` branch from the `election-dapp` repository by running the following command in your terminal shell:
 
 ```bash
 git checkout 05-keysets
