@@ -46,8 +46,9 @@ support for interoperability, and strong permission and access control.
 #### Informational Resources
 
 - Article:
-  [Safer, Smarter Contracts with Pact](../../blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20.md)
-- Whitepaper: [Pact Smart Contract Language](./pact-smart-contract-language.md)
+  [Safer, Smarter Contracts with Pact](/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20)
+- Whitepaper:
+  [Pact Smart Contract Language](/kadena/whitepapers/pact-smart-contract-language)
 - Documentation: [Pact GitHub](https://github.com/kadena-io/pact)
 - Documentation: [Pact Language Reference](/pact/reference)
 
@@ -61,7 +62,7 @@ Resources for using Pact are available at the
 **Informational Resources**
 
 - Article:
-  [Kadena's layer 2 blockchain 101](/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09.md)
+  [Kadena's layer 2 blockchain 101](/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09)
 
 :::note
 
@@ -78,9 +79,9 @@ With 20 chains, the Kadena blockchain platform achieves an industry-leading
 **Informational Resources**
 
 - Article:
-  [Kadena completes blockchain scaling to 480,000 TPS on 20 Chains](/blogchain/2020/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-2020-08-20.md)
+  [Kadena completes blockchain scaling to 480,000 TPS on 20 Chains](/blogchain/2020/kadena-completes-hybrid-blockchain-scaling-to-480-000-transactions-per-second-on-20-chains-2020-08-20)
 - Article:
-  [Kadena's layer 2 blockchain 101](/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09.md)
+  [Kadena's layer 2 blockchain 101](/blogchain/2019/scalablebft-kadenas-private-blockchain-101-2019-03-09)
 
 :::note
 

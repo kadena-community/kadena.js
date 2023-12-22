@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { atoms } from '@theme/atoms.css';
 import React from 'react';
 import type { IAccordionProps, IAccordionSectionProps } from './';
 import { Accordion } from './';
@@ -66,23 +67,25 @@ export const Dynamic: IStory = {
   render: ({ linked }) => {
     const sections = sampleSections;
     return (
-      <Accordion.Root linked={linked}>
-        {sections.map(
-          (
-            { title, children, onOpen, onClose }: IAccordionSectionProps,
-            index,
-          ) => (
-            <Accordion.Section
-              onOpen={onOpen}
-              onClose={onClose}
-              title={title}
-              key={index}
-            >
-              {children}
-            </Accordion.Section>
-          ),
-        )}
-      </Accordion.Root>
+      <div className={atoms({ width: '100%' })}>
+        <Accordion.Root linked={linked}>
+          {sections.map(
+            (
+              { title, children, onOpen, onClose }: IAccordionSectionProps,
+              index,
+            ) => (
+              <Accordion.Section
+                onOpen={onOpen}
+                onClose={onClose}
+                title={title}
+                key={index}
+              >
+                {children}
+              </Accordion.Section>
+            ),
+          )}
+        </Accordion.Root>
+      </div>
     );
   },
 };

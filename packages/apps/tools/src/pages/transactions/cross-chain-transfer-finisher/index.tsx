@@ -374,12 +374,10 @@ const CrossChainTransferFinisher: FC = () => {
                   <RequestKeyField
                     helperText={showInputHelper}
                     status={showInputError}
-                    inputProps={{
-                      ...register('requestKey'),
-                      onKeyUp: onCheckRequestKey,
-                      onChange: onRequestKeyChange,
-                      value: requestKey,
-                    }}
+                    {...register('requestKey')}
+                    value={requestKey}
+                    onChange={onRequestKeyChange}
+                    onKeyUp={onCheckRequestKey}
                     error={errors.requestKey}
                   />
                 </GridItem>
@@ -415,12 +413,10 @@ const CrossChainTransferFinisher: FC = () => {
                     label={t('Gas Price')}
                     info={t('approx. USD 000.1 ¢')}
                     leadingTextWidth="$16"
-                    inputProps={{
-                      ...register('gasPrice', { shouldUnregister: true }),
-                      id: 'gas-price-input',
-                      placeholder: t('Enter Gas Price'),
-                      leadingText: t('KDA'),
-                    }}
+                    {...register('gasPrice', { shouldUnregister: true })}
+                    id="gas-price-input"
+                    placeholder={t('Enter Gas Price')}
+                    leadingText={t('KDA')}
                   />
                 </GridItem>
                 <GridItem>
@@ -430,11 +426,9 @@ const CrossChainTransferFinisher: FC = () => {
                       'This input field will only be enabled if the user is in expert mode',
                     )}
                     label={t('Gas Limit')}
-                    inputProps={{
-                      ...register('gasLimit', { shouldUnregister: true }),
-                      id: 'gas-limit-input',
-                      placeholder: t('Enter Gas Limit'),
-                    }}
+                    {...register('gasLimit', { shouldUnregister: true })}
+                    id="gas-limit-input"
+                    placeholder={t('Enter Gas Limit')}
                   />
                 </GridItem>
               </Grid>

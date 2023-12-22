@@ -4,7 +4,7 @@ import type {
   FungibleAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetAccountQuery } from '@/__generated__/sdk';
-import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
+import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { ChainFungibleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
@@ -49,7 +49,7 @@ const Account: React.FC = () => {
         data?.account?.totalBalance === 0 &&
         data?.account?.chainAccounts.length === 0 && (
           <>
-            <Notification color="info" role="status">
+            <Notification intent="info" role="status">
               We could not find any data on this account. Please check the
               fungible name and account name.
             </Notification>

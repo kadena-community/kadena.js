@@ -11,7 +11,7 @@
 export function contractParser(contract: string, namespace?: string): [IModule[], IPointer];
 
 // @alpha (undocumented)
-export function generateDts(moduleFullName: string, modules: Record<string, IModule>): string;
+export function generateDts(module: IModule): string;
 
 // @alpha (undocumented)
 export function generateTemplates(templates: {

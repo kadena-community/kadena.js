@@ -3,14 +3,13 @@ import { SelectField } from '@components/Form';
 import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import React from 'react';
 
-type StoryProps = {
-  startIcon: React.ReactElement;
-} & ISelectFieldProps;
-
-const meta: Meta<StoryProps> = {
+const meta: Meta<ISelectFieldProps> = {
   title: 'Form/SelectField',
+  component: SelectField,
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {
@@ -70,7 +69,7 @@ const meta: Meta<StoryProps> = {
   },
 };
 
-type Story = StoryObj<StoryProps>;
+type Story = StoryObj<ISelectFieldProps>;
 
 export const Group: Story = {
   name: 'Select Field',
@@ -92,12 +91,10 @@ export const Group: Story = {
         status={status}
         disabled={disabled}
         helperText={helperText}
-        selectProps={{
-          ariaLabel: 'Select Story',
-          id: 'inputStory',
-          startIcon,
-          placeholder: 'This is a placeholder',
-        }}
+        ariaLabel="Select Story"
+        id="inputStory"
+        startIcon={startIcon}
+        placeholder="This is a placeholder"
       >
         <option value="1">Option 1</option>
         <option value="2">Option 2</option>

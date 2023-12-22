@@ -187,6 +187,7 @@ describe('pactParser', () => {
     expect(testModule.usedModules).toEqual([
       {
         name: 'test_contract',
+        hash: '',
         namespace: 'test_namespace',
         imports: ['test_fun'],
       },
@@ -207,7 +208,9 @@ describe('pactParser', () => {
     expect(Object.keys(modules)).toHaveLength(1);
     const testModule = modules.test_module;
     expect(testModule).toBeDefined();
-    expect(testModule.usedModules).toEqual([{ name: 'coin', namespace: '' }]);
+    expect(testModule.usedModules).toEqual([
+      { name: 'coin', namespace: '', hash: '', imports: ['transfer'] },
+    ]);
   });
 
   it('should add only used module to the list', async () => {
@@ -232,7 +235,9 @@ describe('pactParser', () => {
     const testModule = modules.test_module;
     expect(testModule).toBeDefined();
     expect(testModule.usedModules).toHaveLength(1);
-    expect(testModule.usedModules).toEqual([{ name: 'first_module' }]);
+    expect(testModule.usedModules).toEqual([
+      { name: 'first_module', hash: '', namespace: '', imports: [] },
+    ]);
   });
   it('should parse a contract with power symbol "^"', async () => {
     const contract = `

@@ -56,14 +56,14 @@ export const Subscribe: FC = () => {
             </form>
 
             {Boolean(message) && (
-              <Notification color="warning" role="status">
+              <Notification intent="warning" role="status">
                 {message}
               </Notification>
             )}
           </>
         ) : (
           Boolean(message) && (
-            <Notification color="positive" role="status">
+            <Notification intent="positive" role="status">
               {message}
             </Notification>
           )

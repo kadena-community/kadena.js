@@ -18,7 +18,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -37,7 +37,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -56,7 +56,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -73,7 +73,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -90,8 +90,8 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    expect(() => generateDts('user.test-module-2', modules)).toThrowError(
-      `Module user.test-module-2 not found`,
+    expect(() => generateDts(modules['user.test-module-2'])).toThrowError(
+      `Module is undefined`,
     );
   });
 
@@ -107,7 +107,7 @@ describe('generateDts', () => {
 
     modules['user.test-module'].functions = undefined;
 
-    expect(() => generateDts('user.test-module', modules)).toThrowError(
+    expect(() => generateDts(modules['user.test-module'])).toThrowError(
       `Module user.test-module has no functions`,
     );
   });
@@ -124,7 +124,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -140,7 +140,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -163,7 +163,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -186,7 +186,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
   it('add defpact functions to defpact property', async () => {
@@ -201,7 +201,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -224,7 +224,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -247,7 +247,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -266,7 +266,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 
@@ -289,7 +289,7 @@ describe('generateDts', () => {
       getContract: () => Promise.resolve(''),
     });
 
-    const dts = generateDts('user.test-module', modules);
+    const dts = generateDts(modules['user.test-module']);
     expect(dts).toMatchSnapshot();
   });
 });

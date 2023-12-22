@@ -1,4 +1,4 @@
-import type { LayoutType } from '@kadena/docs-tools';
+import type { IConfigTreeItem, LayoutType } from '@kadena/docs-tools';
 import {
   getFrontmatterFromTsx,
   getPages,
@@ -11,15 +11,19 @@ import yaml from 'js-yaml';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
+import { getFileExtension } from './movePages/utils/getFileExtension';
 import { TEMP_DIR, promiseExec } from './utils/build';
 
 const errors: string[] = [];
 const success: string[] = [];
 
 const INITIAL_PATH = './src/pages';
+const blogchainReg = new RegExp(/^\.\/src\/pages\/blogchain\/\d{4}$/, 'g');
 const MENU_FILE_DIR = './src/_generated';
 const MENU_FILE = 'menu.json';
 const TREE: IParent[] = [];
+
+const SEARCHABLE_DIRS: string[] = [];
 
 export const getLastModifiedDate = async (
   root: string,
@@ -127,33 +131,12 @@ const convertFile = async (
   };
 };
 
-const minimumZeroValue = (value: number): number => {
-  return value <= 0 ? 0 : value;
-};
-
-const pushToParent = (parent: IParent[], child: IParent): IParent[] => {
-  let added = false;
-  if (
-    !parent.length ||
-    child.order > (parent.at(-1)?.order ?? 0) ||
-    child.order === undefined
-  ) {
-    added = true;
-    parent.push(child as IParent);
-    return parent;
-  }
-
-  parent.forEach((item, idx) => {
-    if (
-      parseInt(child?.order?.toString()) <= parseInt(item.order?.toString()) &&
-      !added
-    ) {
-      const minIdx = minimumZeroValue(idx);
-      parent.splice(minIdx, 0, child);
-      added = true;
-      return parent;
-    }
-  });
+const pushToParent = (
+  parent: IParent[],
+  child: IParent,
+  rootIdx: number,
+): IParent[] => {
+  parent[rootIdx] = child;
   return parent;
 };
 
@@ -168,25 +151,43 @@ const findPath = (dir: string): string | undefined => {
   return `/${path}/${fileName}`;
 };
 
-const SEARCHABLE_DIRS = [
-  '/blogchain',
-  '/build',
-  '/chainweb',
-  '/contribute',
-  '/kadena',
-  '/marmalade',
-  '/pact',
-];
-
 const createTree = async (
   rootDir: string,
   parent: IParent[] = [],
+  pages: IConfigTreeItem[],
 ): Promise<IParent[]> => {
   const files = fs.readdirSync(rootDir);
+  let newFiles: string[] = [];
+  //set the files in the right order
 
   for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    const fileIdx = pages.reduce((acc, val, idx) => {
+      if (val.url.endsWith(file)) return idx;
+
+      return acc;
+    }, -1);
+    if (fileIdx > -1) {
+      newFiles[fileIdx] = file;
+    }
+  }
+
+  if (rootDir.match(blogchainReg)) {
+    newFiles = files.filter(
+      (file) =>
+        getFileExtension(file) === 'md' || getFileExtension(file) === 'mdx',
+    );
+  }
+
+  for (let i = 0; i < newFiles.length; i++) {
     /* eslint-disable-next-line @typescript-eslint/no-use-before-define*/
-    await getFile(rootDir, parent, files[i]);
+    const pageChildren = rootDir.match(blogchainReg)
+      ? []
+      : pages[i].children ?? [];
+
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    await getFile(rootDir, parent, newFiles[i], pageChildren, i);
   }
 
   return parent;
@@ -196,6 +197,8 @@ const getFile = async (
   rootDir: string,
   parent: IParent[],
   file: string,
+  pages: IConfigTreeItem[],
+  idx: number,
 ): Promise<IParent[] | undefined> => {
   const currentFile = `${rootDir}/${file}`;
   const arr: IParent[] = [];
@@ -235,10 +238,10 @@ const getFile = async (
       }
     }
 
-    parent = pushToParent(parent, child as IParent);
+    parent = pushToParent(parent, child as IParent, idx);
 
     if (fs.statSync(currentFile).isDirectory()) {
-      child.children = await createTree(currentFile, child.children);
+      child.children = await createTree(currentFile, child.children, pages);
 
       return child.children;
     }
@@ -251,10 +254,15 @@ interface IDocsTreeResult {
 }
 
 export const createDocsTree = async (): Promise<IDocsTreeResult> => {
-  const result = await createTree(INITIAL_PATH, TREE);
-
   const pages = await getPages();
-  console.log(pages);
+  // fill the SEARCHABLE_DIRS
+  pages.forEach((p) => {
+    SEARCHABLE_DIRS.push(p.url);
+  });
+
+  const result = await createTree(INITIAL_PATH, TREE, pages);
+
+  //
 
   fs.mkdirSync(MENU_FILE_DIR, { recursive: true });
   fs.writeFileSync(

@@ -1,6 +1,10 @@
 import { Command, Option } from 'commander';
+
+import 'module-alias/register';
+
 import type { IAccount } from '../helper';
-import { generateAccount, logger } from '../helper';
+import { generateAccount, logger, sender00 } from '../helper';
+import { deployMarmaladeContracts } from '../marmalade/deploy';
 import { transfer } from '../transfer';
 import { simulate } from './simulate';
 
@@ -26,7 +30,7 @@ program
       } else {
         account = {
           account: `k:${args.key}`,
-          keys: [{ publicKey: args.key }],
+          keys: [{ publicKey: args.key, secretKey: '' }],
         };
       }
 
@@ -71,6 +75,17 @@ program
     try {
       logger.info('Simulation config parameters:', args);
       await simulate(args);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+program
+  .command('marmalade')
+  .description('Deploy marmalade contracts on the devnet')
+  .action(async (args) => {
+    try {
+      await deployMarmaladeContracts(sender00);
     } catch (error) {
       console.error(error);
     }

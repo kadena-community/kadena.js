@@ -130,17 +130,12 @@ const getFunctionType = (func: IFunction): string => {
 /**
  * @alpha
  */
-export function generateDts(
-  moduleFullName: string,
-  modules: Record<string, IModule>,
-): string {
-  const module = modules[moduleFullName];
+export function generateDts(module: IModule): string {
   if (module === undefined) {
-    throw new Error(`Module ${moduleFullName} not found`);
+    throw new Error(`Module is undefined`);
   }
-
   if (module.functions === undefined) {
-    throw new Error(`Module ${moduleFullName} has no functions`);
+    throw new Error(`Module ${getModuleFullName(module)} has no functions`);
   }
 
   const functions = module.functions.filter(({ kind }) => kind === 'defun');
