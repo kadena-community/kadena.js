@@ -22,7 +22,10 @@ import {
   flattenData,
   getFlatData,
 } from './utils/staticGeneration/flatPosts';
-import { getData as getMenuData } from './utils/staticGeneration/getData';
+import {
+  getData as getMenuData,
+  getPages,
+} from './utils/staticGeneration/getData';
 
 export {
   checkSubTreeForActive,
@@ -32,6 +35,7 @@ export {
   getFrontmatterFromTsx,
   getHeaderItems,
   getMenuData,
+  getPages,
   getPathName,
   getReadTime,
   getUrlNameOfPageFile,

@@ -1,6 +1,7 @@
 import type { LayoutType } from '@kadena/docs-tools';
 import {
   getFrontmatterFromTsx,
+  getPages,
   getReadTime,
   isMarkDownFile,
 } from '@kadena/docs-tools';
@@ -251,6 +252,9 @@ interface IDocsTreeResult {
 
 export const createDocsTree = async (): Promise<IDocsTreeResult> => {
   const result = await createTree(INITIAL_PATH, TREE);
+
+  const pages = await getPages();
+  console.log(pages);
 
   fs.mkdirSync(MENU_FILE_DIR, { recursive: true });
   fs.writeFileSync(
