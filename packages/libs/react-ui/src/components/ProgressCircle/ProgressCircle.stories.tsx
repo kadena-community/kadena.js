@@ -9,7 +9,7 @@ const meta: Meta<IProgressCircleProps> = {
   title: 'Components/ProgressCircle',
   parameters: {
     status: {
-      type: ['inDevelopment'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {
@@ -66,7 +66,7 @@ type Story = StoryObj<IProgressCircleProps>;
 export const Primary: Story = {
   name: 'ProgressCircle',
   args: {
-    isIndeterminate: false,
+    isIndeterminate: true,
     value: 25,
     minValue: 0,
     maxValue: 100,

@@ -4,10 +4,10 @@
 basic React components for reuse in Kadena applications. It uses
 [vanilla-extract/css][1] (will be referred to as VE) to establish a system of
 utility classes (defined as [sprinkles][2]) and CSS variables (defined in the
-theme) that align with Kadena's Design System and exposes them so that they can
-be used with any project or framework. A basic [Storybook][3] integration has
-been implemented so that users can preview components visually and interact with
-their configuration options.
+theme) that align with [Kadena's Design System][3] and exposes them so that they
+can be used with any project or framework. A basic [Storybook][4] integration
+has been implemented so that users can preview components visually and interact
+with their configuration options.
 
 > Warning: This library is in its early development stage so elements in the
 > styling environment may change as well as the API for components.
@@ -18,16 +18,13 @@ their configuration options.
 
 ### Install
 
-Note that the package is not yet published, so for now you need to clone this
-repo and make a symlink.
-
 ```sh
 $ npm install @kadena/react-ui
 ```
 
 Since this library uses VE and is not pre-bundled, the consuming project will
 need to setup integration with VE. You can find integration instructions in the
-[VE docs][4].
+[VE docs][5].
 
 ### Integration with Next.js projects within Kadena.js
 
@@ -82,7 +79,7 @@ module.exports = withVanillaExtract(nextConfig);
 ```
 
 If required, this plugin can be composed with other plugins. See [VE Next.js
-integration docs][5].
+integration docs][6].
 
 After the plugin is setup, you should be able to use styling utilities exported
 from **@kadena/react-ui** and components within your application.
@@ -90,7 +87,7 @@ from **@kadena/react-ui** and components within your application.
 ### Usage
 
 As mentioned earlier, **@kadena/react-ui** provides components and styling
-utilities that align with the Kadena design system.
+utilities that align with the [Kadena Design System][3].
 
 Example for importing and using components:
 
@@ -127,7 +124,7 @@ We are overriding some global styles and adding fonts in this library. To make s
 
 ### Dark Theme
 
-We are utilizing the [theming][6] feature from VE to create CSS color variables
+We are utilizing the [theming][7] feature from VE to create CSS color variables
 that invert depending on the selected theme (light/dark). By default, the theme
 will have colors suitable for light mode, but to add dark theme integration you
 can export `darkThemeClass` from **@kadena/react-ui** and use it with your theme
@@ -172,36 +169,6 @@ command:
 pnpm storybook
 ```
 
-### Installation outside of the Kadena.js monorepo
-
-The component library is not yet published. To use it in an app outside of this
-mono repo you first clone this repo and then reference this library from your
-app.
-
-```sh
-git clone git@github.com:kadena-community/kadena.js.git
-cd kadena.js
-pnpm install
-cd packages/libs/react-ui
-pnpm build
-cd ~/your-app-root
-```
-
-Add @kadena/react-ui as a dependency in your package.json:
-
-```jsonc
-{
-  ...
-  "dependencies": {
-    "@kadena/react-ui": "link:../kadena.js/packages/libs/react-ui"
-    ...
-  }
-}
-```
-
-Then, like other installations, you will need to follow the applicable
-integration instructions for VE.
-
 ## UI Library Guidelines
 
 We would like to maintain a strict component library with opinionated styles and
@@ -211,67 +178,46 @@ components to maintain this goal.
 
 ### Styling
 
-We are currently using [vanilla-extract/css][7] as it is a zero-runtime
+We are currently using [vanilla-extract/css][8] as it is a zero-runtime
 CSS-in-JS library that is framework agnostic.
 
 _Theming_
 
-We have defined a theme using elements of the Kadena Design System and these
-tokens should be used as property values in most cases to ensure consistency and
-alignment with the design. With VE, we are also able to override this theme
-within projects to add additional CSS variables or update colors for a dark
-theme, for example.
+We have defined a theme using elements of the [Kadena Design System][3] and
+these tokens should be used as property values in most cases to ensure
+consistency and alignment with the design. With VE, we are also able to override
+this theme within projects to add additional CSS variables or update colors for
+a dark theme, for example.
 
-_Sprinkles_
+_Atoms_
 
-Sprinkles is an optional utility class built on top of VE that allows users to
+Sprinkles is an optional package built on top of VE that allows users to
 generate a set of custom utility classes (similar to Tailwind). @kadena/react-ui
-has setup sprinkles using the defined theme based on the Kadena Design System.
-Whenever possible it is preferrable to use these utility classes and avoid
-creating unnecessary custom classes using the `style` function to keep the
-bundle size smaller.
+has setup `atoms` using the defined theme based on the [Kadena Design
+System][3]. Whenever possible it is preferrable to use these utility classes and
+avoid creating unnecessary custom classes using the `style` function to keep the
+bundle size smaller and UI more consistent.
 
 _Colors_
 
-In our theme we have color scales that represent a set of different shades for a
-color as well as theme specific tokens that return different colors depending on
-whether we are in light/dark theme.
+In our tokens we have color scales that represent a set of different shades for
+a color as well as theme specific tokens that return different colors depending
+on whether we are in light/dark theme.
 
-Due to the strict nature of our component library, we should use our discretion
-to determine what subset of colors should be exposed for a certain component.
-For example, a text component would likely only be used in a small subset of
-colors on an interface - our approach to doing this would be to create a color
-variant with named options that map to each of the colors options.
-
-When it comes to the dark theme, the default behavior when using theme specific
-tokens will effectively be the inverse of the opposing theme. This is not always
-ideal since visual cues can be lost. When using sprinkles, you can specify a
-different color for dark vs light mode and when using the style function, you
-can use a selector.
-
-Since the development of this library is happening in parallel with the
-development of our other products, the color sets are also still in flux. In
-general you can expect each set of colors to have the following 4 options.
-Example:
-
-```js
-primaryAccent: '#2997FF', // Vibrant
-primarySurface: '#C2E1FF', // Low contrast
-primaryContrast: '#00498F', // Contrast
-primaryHighContrast: '#002F5C', // High Contrast
-```
-
-If at any point you feel that you need more than these variations of a specific
-color, reach out to our designer(s) to discuss if it would be possible to
-simplify the design to use these 4 colors before adding them to the color
-tokens.
+The [Kadena Design System][3] setup the color tokens to have naming based on
+application rather than the underlying color. Since not all colors are
+applicable for different CSS properties, the `atoms` utility only provides a
+subset of color options that would most commonly be used with the associated
+property. In cases where consumers need access to other colors, the can still
+access them through the exported `tokens`.
 
 _Spacing_
 
 The component library is composed of layout, primitive, and compound components.
 Currently we have decided to only rely on layout components for positioning.
 This means that we will not be exposing any display/spacing related props from
-our primitive and compound components.
+our primitive and compound components. All finalized components will accept a
+className prop in case consumers need to add custom styling.
 
 ### Conclusion
 
@@ -281,8 +227,9 @@ together as a starting point, but any suggestions for change are welcome!
 
 [1]: https://vanilla-extract.style
 [2]: https://vanilla-extract.style/documentation/packages/sprinkles/
-[3]: https://storybook.js.org/
-[4]: https://vanilla-extract.style/documentation/integrations/next/
-[5]: https://vanilla-extract.style/documentation/integrations/next/#setup
-[6]: https://vanilla-extract.style/documentation/global-api/create-global-theme/
-[7]: https://vanilla-extract.style/
+[3]: https://github.com/kadena-community/design-system
+[4]: https://storybook.js.org/
+[5]: https://vanilla-extract.style/documentation/integrations/next/
+[6]: https://vanilla-extract.style/documentation/integrations/next/#setup
+[7]: https://vanilla-extract.style/documentation/global-api/create-global-theme/
+[8]: https://vanilla-extract.style/

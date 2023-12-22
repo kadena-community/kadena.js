@@ -77,8 +77,10 @@ pattern of the other components, however in usage it caused confusion becuase:
 Now, it has been updated with the configuration approach and can be used in the
 following way:
 
-```jsonc
-<Button icon="someIcon" iconAlign="right" loading={false}>Label</Button>
+```jsx
+<Button startIcon="someIcon" loading={false}>
+  Label
+</Button>
 ```
 
 This keeps the `Button` API cleaner, especially when only a label is provided,
@@ -144,8 +146,8 @@ Guidlines for defining types:
 ### Property Naming Convention
 
 - Actions should be prefixed with `on` - e.g. `onClick` or `onHover`.
-- All boolean props should be named like an adjective to describe the
-  Component - `disabled`, `stacked`, `fullWidth` Card.
+- All boolean props should be named as follows - `isDisabled`, `isFullWidth`
+  Card.
 
 ### Controlled - Components with state
 
@@ -153,27 +155,23 @@ Some components will require state to be able to function, in these cases we
 should **offer a controlled and uncontrolled version**. For example, the
 `Pagination` component can be uncontrolled in the sense that it handles its own
 state (which page you are on) when clicking arrows, but it also accepts an
-optional `currentPage` prop which allows the user to control its state.
+optional `selectedPage` prop which allows the user to control its state.
 
 This means these components should always have two optional props:
 
 - Value that is being controlled.
 - Initial value (for when it is not controlled). This prop should always be
-  prefixed with `default` - e.g. `initialPage`.
+  prefixed with `default` - e.g. `defaultSelectedPage`.
 
 ### Custom Styling
 
 Since this component library was created for usage within Kadena, the components
 are very opinionated in terms of functionality and style. For this reason, we
-wanted to be very strict with props and styling which is why **most components
-currently do not accept a classname prop to alter styles**. Layout components
-(Box, Stack, Grid) should be used when positioning components as they expose
-more styling props and accept a className prop for more customization. If a new
-style/iteration is needed for a component, we can discuss adding this with a
-designer.
-
-> NOTE: We are starting off strict, but if necessary, we can reassess whether or
-> not we want to start accepting additional styles
+wanted to be very strict with props and styling while components are still in
+development to reduce inconsistencies across different applications. However
+when a component's feature set and style is finalized and mature, we will expose
+a classname prop to allow consumers to further customize styles for their
+usecase.
 
 ### Storybook, Chromatic, & Testing
 
@@ -238,9 +236,9 @@ Guidelines when styling with VE:
 
 - Classnames should use camel-casing and always have `Class` suffix -
   `containerClass`
-- You should use sprinkles whenever possible since these are predefined utility
+- You should use `atoms` whenever possible since these are predefined utility
   class. If a style value that you think is commonly used is not available as a
-  sprinkle, feel free to add it.
+  `atoms`, feel free to add it.
 - If you want to create multiple variations of a components style, use variants.
   Variants should have a `Variant` suffix - `colorVariant`
 
@@ -267,10 +265,10 @@ discretion when deciding what methods to use.
   https://nextjs.org/docs/getting-started/react-essentials#when-to-use-server-and-client-components
 [6]: https://vanilla-extract.style/documentation/styling#complex-selectors
 
-
 ## Design tokens
 
-We use a tool to automatically sync design tokens from our design system [repo](https://github.com/kadena-community/design-system/tree/main).
+We use a tool to automatically sync design tokens from our design system
+[repo](https://github.com/kadena-community/design-system/tree/main).
 
 To sync design tokens run:
 
@@ -278,13 +276,24 @@ To sync design tokens run:
 pnpm tokens:sync
 ```
 
-It will update `./src/styles/tokens` folder with the latest tokens.
+This command will rewrite the `./src/styles/tokens` folder with the latest
+tokens.
 
-- The tool we use is [design-sync](https://github.com/salamaashoush/design-sync) it is maintained by Salama Ashoush and it is open source.
-- We can configure the sync process by editing `design-sync.config.ts` file in the root of the package.
-- We use vanilla-extract plugin to generate tokens as two themes `light` and `dark` and we use `light` theme by default.
-- In order to use the generated tokens we need to import them from `./src/styles/tokens/contract.css.ts`  file the exported contract is named `tokens` and we can change it in the config.
-- During our migration to new tokens we don't create vanilla-extract themes from the tokens but only create the contract file and theme values (using `onlyValues` config) then we create bigger contract and theme combining the old and new tokens, see `./src/styles/vars.css.ts`
-- We also use `responsiveExtension` to generate styles with media queries for different screen sizes.
+- The tool we use is
+  [design-sync](https://github.com/salamaashoush/design-sync).
+- We can configure the sync process by editing `design-sync.config.ts` file in
+  the root of the package.
+- We use vanilla-extract plugin to generate tokens as two themes `light` and
+  `dark` and we use `light` theme by default.
+- In order to use the generated tokens we need to import them from
+  `./src/styles/tokens/contract.css.ts` file the exported contract is named
+  `tokens` and we can change it in the config.
+- During our migration to new tokens we don't create vanilla-extract themes from
+  the tokens but only create the contract file and theme values (using
+  `onlyValues` config) then we create bigger contract and theme combining the
+  old and new tokens, see `./src/styles/vars.css.ts`
+- We also use `responsiveExtension` to generate styles with media queries for
+  different screen sizes.
 
-for more info about the tool check the [repo](https://github.com/salamaashoush/design-sync)
+For more info about the tool check the
+[repo](https://github.com/salamaashoush/design-sync)
