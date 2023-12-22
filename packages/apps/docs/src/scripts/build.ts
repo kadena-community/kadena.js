@@ -43,9 +43,9 @@ const runPrettier = async (): Promise<IScriptResult> => {
   await initFunc(detectBrokenLinks, 'Detect broken links');
   await initFunc(checkForHeaders, 'Detect missing H1 headers');
   await initFunc(checkAuthors, 'Check author data for blog');
-  //await initFunc(createSitemap, 'Create the sitemap');
+  await initFunc(createSitemap, 'Create the sitemap');
   await initFunc(copyFavIcons, 'Copy favicons');
-  //await initFunc(runPrettier, 'Prettier');
+  await initFunc(runPrettier, 'Prettier');
   //cleanup, removing the tempdir
   deleteTempDir();
 
