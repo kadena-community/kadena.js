@@ -23,13 +23,13 @@ import {
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
 import {
   accountNameContainerClass,
   buttonContainerClass,
@@ -155,9 +155,12 @@ const ExistingAccountFaucetPage: FC = () => {
             <Trans
               i18nKey="common:faucet-unavailable-warning"
               components={[
-                <Link
-                  href="/transactions/module-explorer?module=user.coin-faucet&chain=1"
-                  key="link-to-module-explorer"
+                <a
+                  className={notificationLinkStyle}
+                  target={'_blank'}
+                  href="https://chainweaver.kadena.network/contracts"
+                  rel="noreferrer"
+                  key="link-to-module"
                 />,
               ]}
             />

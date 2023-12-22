@@ -180,7 +180,7 @@
   "Search": "Search",
   "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!",
   "The Faucet is not available on Mainnet": "The Faucet is not available on Mainnet.",
-  "faucet-unavailable-warning": "On other networks, the Faucet smart contract must be deployed to fund accounts. In the Module Explorer you can see if <0>it's deployed</0>.",
+  "faucet-unavailable-warning": "On other networks, the Faucet smart contract must be deployed to fund accounts. In the <0>Module Explorer</0> you can see if it's deployed (search for \"faucet\").",
   "+ add network": "+ add network",
   "Save Network": "Save Network",
   "Network label": "Network label",
