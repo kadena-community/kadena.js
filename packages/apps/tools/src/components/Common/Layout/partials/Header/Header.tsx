@@ -89,11 +89,7 @@ const Header: FC<IHeaderProps> = () => {
             icon="Earth"
           >
             {networksData.map((network: INetworkData) => (
-              <option
-                key={network.networkId}
-                value={network.networkId}
-                disabled={network.networkId === 'mainnet01'}
-              >
+              <option key={network.networkId} value={network.networkId}>
                 {network.label}
               </option>
             ))}
