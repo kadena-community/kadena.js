@@ -50,7 +50,6 @@ import {
   formContentStyle,
   notificationContainerStyle,
   sidebarLinksStyle,
-  textAreaStyle,
   textareaContainerStyle,
 } from './styles.css';
 
@@ -450,9 +449,6 @@ const CrossChainTransferFinisher: FC = () => {
                     label={t('Gas Limit')}
                     id="gas-limit-input"
                     placeholder={t('Enter Gas Limit')}
-                    {...register('gasLimit', { shouldUnregister: true })}
-                    id="gas-limit-input"
-                    placeholder={t('Enter Gas Limit')}
                   />
                 </GridItem>
               </Grid>
@@ -470,7 +466,7 @@ const CrossChainTransferFinisher: FC = () => {
                     <div className={textareaContainerStyle}>
                       <Textarea
                         readOnly
-                        fontFamily="$mono"
+                        fontFamily="codeFont"
                         id="sig-text-area"
                         value={formattedSigData}
                       />
