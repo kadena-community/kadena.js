@@ -1,4 +1,4 @@
-import type { IAccount } from '@devnet/helper';
+import { IAccount } from '@devnet/utils';
 import type { ICommandResult } from '@kadena/client';
 import { Pact, createSignWithKeypair, readKeyset } from '@kadena/client';
 import { submitClient } from '@kadena/client-utils/core';
@@ -12,48 +12,37 @@ import {
 import type { IPactDecimal } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 
-export interface ITransferCreateTokenInput {
+export interface ICreateTokenInput {
   tokenId: string;
-  sender: IAccount;
-  receiver: IAccount;
+  creator: string;
+  guard: IAccount;
   amount: IPactDecimal;
 }
 
-export async function transferCreateToken({
+export async function mintToken({
   tokenId,
-  sender,
-  receiver,
+  creator,
+  guard,
   amount,
-}: ITransferCreateTokenInput): Promise<ICommandResult> {
+}: ICreateTokenInput): Promise<ICommandResult> {
   const command = composePactCommand(
     execution(
-      Pact.modules['marmalade-v2.ledger']['transfer-create'](
+      Pact.modules['marmalade-v2.ledger'].mint(
         tokenId,
-        sender.account,
-        receiver.account,
-        readKeyset('receiver-guard'),
+        creator,
+        readKeyset('guard'),
         amount,
       ),
     ),
-    addKeyset(
-      'receiver-guard',
-      'keys-all',
-      ...receiver.keys.map((key) => key.publicKey),
-    ),
+    addKeyset('guard', 'keys-all', ...guard.keys.map((key) => key.publicKey)),
     addSigner(
-      sender.keys.map((key) => key.publicKey),
+      guard.keys.map((key) => key.publicKey),
       (signFor) => [
         signFor('coin.GAS'),
-        signFor(
-          'marmalade-v2.ledger.TRANSFER',
-          tokenId,
-          sender.account,
-          receiver.account,
-          amount,
-        ),
+        signFor('marmalade-v2.ledger.MINT', tokenId, creator, amount),
       ],
     ),
-    setMeta({ senderAccount: sender.account, chainId: sender.chainId }),
+    setMeta({ senderAccount: guard.account, chainId: guard.chainId }),
   );
 
   const config = {
@@ -61,7 +50,7 @@ export async function transferCreateToken({
     defaults: {
       networkId: dotenv.NETWORK_ID,
     },
-    sign: createSignWithKeypair(sender.keys),
+    sign: createSignWithKeypair(guard.keys),
   };
 
   const result = await submitClient(config)(command).executeTo('listen');

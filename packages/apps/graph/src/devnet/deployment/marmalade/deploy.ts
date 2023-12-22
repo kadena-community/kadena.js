@@ -5,16 +5,11 @@ import yaml from 'js-yaml';
 import { join, relative } from 'path';
 
 import { downloadGitFiles } from '@utils/download-git-files';
+import { logger } from '@utils/logger';
 import { flattenFolder } from '@utils/path';
 import { validateObjectProperties } from '@utils/validate-object';
 import type { IAccount } from '../helper';
-import {
-  inspect,
-  listen,
-  logger,
-  signAndAssertTransaction,
-  submit,
-} from '../helper';
+import { inspect, listen, signAndAssertTransaction, submit } from '../helper';
 import { argumentConfig, marmaladeNamespaceOrder } from './config/arguments';
 import { marmaladeNamespaceConfig } from './config/namespaces';
 import type {

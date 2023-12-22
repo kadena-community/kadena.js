@@ -1,20 +1,20 @@
-import type { IAccount, IAccountWithTokens } from '@devnet/helper';
+import { transfer } from '@devnet/simulation/coin/transfer';
+import { createToken } from '@devnet/simulation/marmalade/create-token';
+import { createTokenId } from '@devnet/simulation/marmalade/create-token-id';
+import { mintToken } from '@devnet/simulation/marmalade/mint-token';
+import { transferCreateToken } from '@devnet/simulation/marmalade/transfer-create-token';
+import type { IAccount, IAccountWithTokens } from '@devnet/utils';
+import { PactNumber } from '@kadena/pactjs';
+import { logger } from '@utils/logger';
+import type { TokenActionType } from '../file';
+import { appendToFile, createFile } from '../file';
 import {
   generateAccount,
   getRandomNumber,
   getRandomOption,
-  logger,
   seedRandom,
   stringifyProperty,
-} from '@devnet/helper';
-import { createToken } from '@devnet/marmalade/token/create-token';
-import { createTokenId } from '@devnet/marmalade/token/create-token-id';
-import { mintToken } from '@devnet/marmalade/token/mint-token';
-import { transferCreateToken } from '@devnet/marmalade/token/transfer-create-token';
-import { transfer } from '@devnet/transfer';
-import { PactNumber } from '@kadena/pactjs';
-import type { TokenActionType } from './file';
-import { appendToFile, createFile } from './file';
+} from '../helper';
 
 const simulationTransferOptions: TokenActionType[] = ['mint', 'transfer'];
 
@@ -47,7 +47,7 @@ export async function simulateMarmalade({
   }
 
   logger.info('Seed value: ', seed);
-  const filepath = createFile(`nft-${Date.now()}-${seed}.csv`);
+  const filepath = createFile(`marmalade-${Date.now()}-${seed}.csv`);
 
   // Generate first seeded random number
   let seededRandomNo = seedRandom(seed);

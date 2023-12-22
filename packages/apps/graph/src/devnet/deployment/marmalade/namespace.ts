@@ -1,17 +1,11 @@
-import type { IAccount } from '@devnet/helper';
-import {
-  inspect,
-  listen,
-  logger,
-  sender00,
-  signAndAssertTransaction,
-  submit,
-} from '@devnet/helper';
+import { sender00, type IAccount } from '@devnet/utils';
 import type { ChainId, ICommand, IKeyPair } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
+import { logger } from '@utils/logger';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
+import { inspect, listen, signAndAssertTransaction, submit } from '../helper';
 import type { IMarmaladeNamespaceConfig } from './config/namespaces';
 import type { IMarmaladeLocalConfig } from './config/repository';
 
