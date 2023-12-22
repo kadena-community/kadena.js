@@ -8,9 +8,9 @@ const localConfig = defineConfig({
       enabled: true,
       thresholds: {
         lines: 3.3,
-        functions:8.69,
+        functions: 8.69,
         statements: 3.3,
-        branches: 25
+        branches: 25,
       },
     },
   },

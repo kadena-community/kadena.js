@@ -10,7 +10,7 @@ const localConfig = defineConfig({
         lines: 16.16,
         functions: 38.46,
         statements: 16.16,
-        branches: 71.42
+        branches: 71.42,
       },
     },
   },

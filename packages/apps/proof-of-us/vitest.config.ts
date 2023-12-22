@@ -9,7 +9,7 @@ const localConfig = defineConfig({
     environment: 'happy-dom',
     coverage: {
       provider: 'v8',
-      enabled: false
+      enabled: false,
     },
   },
 });
