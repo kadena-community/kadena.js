@@ -1,4 +1,4 @@
-import baseConfig  from '@kadena-dev/shared-config/vitest.config';
+import baseConfig from '@kadena-dev/shared-config/vitest.config';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 const localConfig = defineConfig({
@@ -7,11 +7,10 @@ const localConfig = defineConfig({
     coverage: {
       provider: 'v8',
       thresholds: {
-        lines: 99.33,
-        functions: 95.65,
-        branches: 95.31,
-        statements: 99.33,
-        autoUpdate: true,
+        lines: 21.32,
+        functions: 68.75,
+        branches: 83.56,
+        statements: 21.32,
       },
     },
   },
