@@ -1,4 +1,4 @@
-import { generateCommand } from './generate/index.js';
+import { typescriptGenerateCommand } from './commands/typescriptGenerateCommand.js';
 
 import type { Command } from 'commander';
 
@@ -12,5 +12,5 @@ export function typescriptCommandFactory(
     .command(SUBCOMMAND_ROOT)
     .description(`Tool to generate and manage typescript definitions`);
 
-  generateCommand(typescriptProgram, version);
+  typescriptGenerateCommand(typescriptProgram, version);
 }
