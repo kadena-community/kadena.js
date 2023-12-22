@@ -352,7 +352,7 @@ export const globalOptions = {
     prompt: typescript.typescriptClean,
     validation: z.boolean(),
     option: new Option(
-      '-c, --typescript-clean',
+      '--typescript-clean',
       'Clean existing generated files',
     ),
   }),
@@ -361,7 +361,7 @@ export const globalOptions = {
     prompt: typescript.typescriptCapsInterface,
     validation: z.string().optional(),
     option: new Option(
-      '-i, --typescript-caps-interface <interface>',
+      '--typescript-caps-interface <interface>',
       'Custom name for the interface of the caps. Can be used to create a type definition with a limited set of capabilities.',
     ),
   }),
@@ -370,7 +370,7 @@ export const globalOptions = {
     prompt: typescript.typescriptFile,
     validation: z.string().optional(),
     option: new Option(
-      '-f, --typescript-file <file>',
+      '--typescript-file <file>',
       'Generate d.ts from Pact contract file(s) (comma separated)',
     ),
     expand: async (file: string) => {
