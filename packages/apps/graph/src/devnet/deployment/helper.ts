@@ -1,4 +1,4 @@
-import {
+import type {
   ChainId,
   IClient,
   ICommand,
@@ -6,6 +6,8 @@ import {
   IKeyPair,
   ITransactionDescriptor,
   IUnsignedCommand,
+} from '@kadena/client';
+import {
   addSignatures,
   createClient,
   isSignedTransaction,

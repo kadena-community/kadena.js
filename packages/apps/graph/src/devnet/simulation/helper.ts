@@ -1,8 +1,8 @@
-import { IAccount } from '@devnet/utils';
+import type { IAccount } from '@devnet/utils';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 import { getBalance } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import seedrandom from 'seedrandom';
 

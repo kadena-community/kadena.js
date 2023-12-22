@@ -1,4 +1,5 @@
-import { IAccount, sender00 } from '@devnet/utils';
+import type { IAccount } from '@devnet/utils';
+import { sender00 } from '@devnet/utils';
 import type { ChainId } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';

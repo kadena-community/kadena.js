@@ -1,4 +1,4 @@
-import { IAccount } from '@devnet/utils';
+import type { IAccount } from '@devnet/utils';
 import type { ICommandResult } from '@kadena/client';
 import { Pact, createSignWithKeypair, readKeyset } from '@kadena/client';
 import { submitClient } from '@kadena/client-utils/core';
