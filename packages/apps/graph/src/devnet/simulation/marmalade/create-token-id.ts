@@ -1,4 +1,4 @@
-import type { IAccount } from '@devnet/helper';
+import { IAccount } from '@devnet/utils';
 import { Pact, readKeyset } from '@kadena/client';
 import { dirtyReadClient } from '@kadena/client-utils/core';
 import {

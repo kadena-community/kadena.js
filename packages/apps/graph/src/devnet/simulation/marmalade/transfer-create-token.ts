@@ -1,4 +1,4 @@
-import type { IAccount } from '@devnet/helper';
+import { IAccount } from '@devnet/utils';
 import type { ICommandResult } from '@kadena/client';
 import { Pact, createSignWithKeypair, readKeyset } from '@kadena/client';
 import { submitClient } from '@kadena/client-utils/core';
@@ -12,37 +12,48 @@ import {
 import type { IPactDecimal } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 
-export interface ICreateTokenInput {
+export interface ITransferCreateTokenInput {
   tokenId: string;
-  creator: string;
-  guard: IAccount;
+  sender: IAccount;
+  receiver: IAccount;
   amount: IPactDecimal;
 }
 
-export async function mintToken({
+export async function transferCreateToken({
   tokenId,
-  creator,
-  guard,
+  sender,
+  receiver,
   amount,
-}: ICreateTokenInput): Promise<ICommandResult> {
+}: ITransferCreateTokenInput): Promise<ICommandResult> {
   const command = composePactCommand(
     execution(
-      Pact.modules['marmalade-v2.ledger'].mint(
+      Pact.modules['marmalade-v2.ledger']['transfer-create'](
         tokenId,
-        creator,
-        readKeyset('guard'),
+        sender.account,
+        receiver.account,
+        readKeyset('receiver-guard'),
         amount,
       ),
     ),
-    addKeyset('guard', 'keys-all', ...guard.keys.map((key) => key.publicKey)),
+    addKeyset(
+      'receiver-guard',
+      'keys-all',
+      ...receiver.keys.map((key) => key.publicKey),
+    ),
     addSigner(
-      guard.keys.map((key) => key.publicKey),
+      sender.keys.map((key) => key.publicKey),
       (signFor) => [
         signFor('coin.GAS'),
-        signFor('marmalade-v2.ledger.MINT', tokenId, creator, amount),
+        signFor(
+          'marmalade-v2.ledger.TRANSFER',
+          tokenId,
+          sender.account,
+          receiver.account,
+          amount,
+        ),
       ],
     ),
-    setMeta({ senderAccount: guard.account, chainId: guard.chainId }),
+    setMeta({ senderAccount: sender.account, chainId: sender.chainId }),
   );
 
   const config = {
@@ -50,7 +61,7 @@ export async function mintToken({
     defaults: {
       networkId: dotenv.NETWORK_ID,
     },
-    sign: createSignWithKeypair(guard.keys),
+    sign: createSignWithKeypair(sender.keys),
   };
 
   const result = await submitClient(config)(command).executeTo('listen');

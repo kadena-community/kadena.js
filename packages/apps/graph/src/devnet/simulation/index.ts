@@ -1,11 +1,12 @@
+import { IAccount, sender00 } from '@devnet/utils';
+import { logger } from '@utils/logger';
 import { Command, Option } from 'commander';
 import 'module-alias/register';
-import type { IAccount } from '../helper';
-import { generateAccount, logger, sender00 } from '../helper';
-import { deployMarmaladeContracts } from '../marmalade/deploy';
-import { transfer } from '../transfer';
-import { simulate } from './simulate';
-import { simulateMarmalade } from './simulate-marmalade';
+import { deployMarmaladeContracts } from '../deployment/marmalade/deploy';
+import { simulateCoin } from './coin/simulate';
+import { transfer } from './coin/transfer';
+import { generateAccount } from './helper';
+import { simulateMarmalade } from './marmalade/simulate';
 
 const program: Command = new Command();
 program
@@ -73,7 +74,7 @@ program
   .action(async (args) => {
     try {
       logger.info('Simulation config parameters:', args);
-      await simulate(args);
+      await simulateCoin(args);
     } catch (error) {
       console.error(error);
     }

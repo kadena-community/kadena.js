@@ -1,22 +1,21 @@
+import { IAccount, sender00 } from '@devnet/utils';
 import type { ChainId } from '@kadena/client';
 import { dotenv } from '@utils/dotenv';
-import { crossChainTransfer } from '../crosschain-transfer';
-import type { IAccount } from '../helper';
+import { logger } from '@utils/logger';
+import type { TransferType } from '../file';
+import { appendToFile, createFile } from '../file';
 import {
   generateAccount,
   getAccountBalance,
   getRandomNumber,
   getRandomOption,
   isEqualChainAccounts,
-  logger,
   seedRandom,
-  sender00,
   stringifyProperty,
 } from '../helper';
-import { safeTransfer } from '../safe-transfer';
-import { transfer } from '../transfer';
-import type { TransferType } from './file';
-import { appendToFile, createFile } from './file';
+import { crossChainTransfer } from './crosschain-transfer';
+import { safeTransfer } from './safe-transfer';
+import { transfer } from './transfer';
 
 const simulationTransferOptions: TransferType[] = [
   'cross-chain-transfer',
@@ -34,7 +33,7 @@ export interface ISimulationOptions {
   seed: string;
 }
 
-export async function simulate({
+export async function simulateCoin({
   numberOfAccounts = 6,
   transferInterval = 100,
   maxAmount = 25,
@@ -57,7 +56,7 @@ export async function simulate({
   }
 
   logger.info('Seed value: ', seed);
-  const filepath = createFile(`${Date.now()}-${seed}.csv`);
+  const filepath = createFile(`coin-${Date.now()}-${seed}.csv`);
 
   try {
     // Create accounts
