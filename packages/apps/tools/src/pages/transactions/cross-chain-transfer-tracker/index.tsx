@@ -1,5 +1,6 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { FormItemCard } from '@/components/Global/FormItemCard';
+import { ProgressBar } from '@/components/Global/ProgressBar';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
 } from '@/components/Global/RequestKeyField';
@@ -24,7 +25,6 @@ import {
   NotificationButton,
   NotificationFooter,
   NotificationHeading,
-  ProgressBar,
   Stack,
   SystemIcon,
   TrackerCard,
