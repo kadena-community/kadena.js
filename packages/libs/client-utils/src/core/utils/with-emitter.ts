@@ -100,7 +100,7 @@ export const withEmitter: WithEmitter =
           lock.open();
           return exec();
         }
-        if (event in allEvents && allEvents[event] !== null) {
+        if (executePromise && event in allEvents && allEvents[event] !== null) {
           return Promise.resolve(allEvents[event]);
         }
         const pr = new Promise((resolve, reject) => {
