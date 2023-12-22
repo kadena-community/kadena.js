@@ -1,20 +1,21 @@
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, darkThemeClass, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const headerStyle = style([
-  sprinkles({
+  atoms({
     position: 'fixed',
     top: 0,
     width: '100%',
-    height: '$16',
     alignItems: 'center',
-    overflow: 'auto',
     zIndex: 1,
   }),
+  {
+    height: vars.sizes.$16,
+  },
 ]);
 
 export const mainStyle = style([
-  sprinkles({
+  atoms({
     width: '100%',
   }),
   {
@@ -29,15 +30,15 @@ export const mainStyle = style([
 ]);
 
 export const gridItemMainStyle = style([
-  sprinkles({
-    paddingTop: '$20',
-    paddingBottom: '$16',
-    paddingRight: '$6',
-  }),
-  {
-    width: 'auto',
+  atoms({
+    width: '100%',
     height: '100%',
     overflowY: 'scroll',
+  }),
+  {
+    paddingTop: vars.sizes.$20,
+    paddingBottom: vars.sizes.$16,
+    paddingRight: vars.sizes.$6,
     paddingLeft: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
     borderRight: `1px solid #E3E1E5`,
     selectors: {
@@ -56,18 +57,18 @@ export const gridItemMainStyle = style([
 ]);
 
 export const sidebarStyle = style([
-  sprinkles({
+  atoms({
     position: 'fixed',
     left: 0,
-    top: '$16',
     bottom: 0,
-    backgroundColor: '$neutral1',
     display: 'flex',
     overflow: 'hidden',
     zIndex: 1,
-    width: '$12',
   }),
   {
+    width: vars.sizes.$12,
+    top: vars.sizes.$16,
+    backgroundColor: vars.colors.$neutral1,
     transition: 'width 0.1s ease-in',
     borderRight: `1px solid #E3E1E5`,
     selectors: {

@@ -55,6 +55,6 @@ sequel is the much-anticipated Marmalade v2.
 To learn more about Marmalade v1 for historic purposes try these recommended
 readings:
 
-[Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-1-2021-12-02.md)
+[Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-1-2021-12-02)
 
-[Mint a Marketplace! NFTs on Kadena Marmalade (Part 2)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-2-2021-12-03.md)
+[Mint a Marketplace! NFTs on Kadena Marmalade (Part 2)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-2-2021-12-03)

@@ -227,11 +227,9 @@ const CrossChainTransferTracker: FC = () => {
                 <RequestKeyField
                   helperText={inputError || undefined}
                   status={validRequestKey}
-                  inputProps={{
-                    ...register('requestKey'),
-                    onKeyUp: checkRequestKey,
-                    onChange: onRequestKeyChange,
-                  }}
+                  {...register('requestKey')}
+                  onKeyUp={checkRequestKey}
+                  onChange={onRequestKeyChange}
                   error={errors.requestKey}
                 />
               </GridItem>
