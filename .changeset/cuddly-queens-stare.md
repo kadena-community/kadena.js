@@ -2,4 +2,4 @@
 '@kadena/client-utils': patch
 ---
 
-export describeModule
+enable the utility function 'describeModule' to be used in other packages
