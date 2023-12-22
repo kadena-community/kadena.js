@@ -6,7 +6,8 @@ module.exports = {
     'plugin:@tanstack/eslint-plugin-query/recommended',
   ],
   parserOptions: { tsconfigRootDir: __dirname },
-  ignorePatterns: ['**/generated/**'],
+  ignorePatterns: ['**/generated/**', 'vitest.*.ts'],
+
   rules: {
     '@kadena-dev/typedef-var': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
