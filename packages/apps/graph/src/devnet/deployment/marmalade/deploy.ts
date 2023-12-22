@@ -137,7 +137,9 @@ export async function deployMarmaladeContracts(
     );
 
     const transaction = createTransaction(pactCommand);
-    const signedTx = signAndAssertTransaction(signerAccount.keys)(transaction);
+    const signedTx = await signAndAssertTransaction(signerAccount.keys)(
+      transaction,
+    );
     const commandResult = await submit(signedTx);
     const result = await listen(commandResult);
 

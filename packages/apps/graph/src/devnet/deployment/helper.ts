@@ -8,11 +8,10 @@ import type {
   IUnsignedCommand,
 } from '@kadena/client';
 import {
-  addSignatures,
   createClient,
+  createSignWithKeypair,
   isSignedTransaction,
 } from '@kadena/client';
-import { sign } from '@kadena/cryptography-utils';
 import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';
 
@@ -22,11 +21,17 @@ export interface IAccount {
   keys: IKeyPair[];
 }
 
-const getClient = (): IClient =>
-  createClient(
-    ({ chainId }) =>
-      `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
-  );
+let client: IClient | null = null;
+
+const getClient = (): IClient => {
+  if (!client) {
+    client = createClient(
+      ({ chainId }) =>
+        `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
+    );
+  }
+  return client;
+};
 
 export const submit = (tx: ICommand): Promise<ITransactionDescriptor> =>
   getClient().submit(tx);
@@ -36,15 +41,10 @@ export const listen = (tx: ITransactionDescriptor): Promise<ICommandResult> =>
 
 export const signTransaction =
   (keyPairs: IKeyPair[]) =>
-  (tx: IUnsignedCommand): IUnsignedCommand | ICommand => {
-    const signedTx = keyPairs.reduce((acc, keyPair) => {
-      const { sig } = sign(acc.cmd, {
-        publicKey: keyPair.publicKey,
-        secretKey: keyPair.secretKey,
-      });
-      if (!sig) throw Error('Failed to sign transaction');
-      return addSignatures(acc, { sig, pubKey: keyPair.publicKey });
-    }, tx);
+  async (tx: IUnsignedCommand): Promise<IUnsignedCommand | ICommand> => {
+    const signWithKeypair = createSignWithKeypair(keyPairs);
+    const signedTx = await signWithKeypair(tx);
+
     return signedTx;
   };
 
@@ -58,8 +58,8 @@ export const assertTransactionSigned = (
 
 export const signAndAssertTransaction =
   (keyPairs: IKeyPair[]) =>
-  (tx: IUnsignedCommand): ICommand => {
-    const signedTx = signTransaction(keyPairs)(tx);
+  async (tx: IUnsignedCommand): Promise<ICommand> => {
+    const signedTx = await signTransaction(keyPairs)(tx);
     const assertedTx = assertTransactionSigned(signedTx);
     return assertedTx;
   };
