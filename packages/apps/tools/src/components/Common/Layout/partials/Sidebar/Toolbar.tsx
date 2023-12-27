@@ -36,7 +36,7 @@ export const Toolbar: FC = () => {
 
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
-      setIsMenuOpen(true)
+      setIsMenuOpen(true);
     }
   };
 
