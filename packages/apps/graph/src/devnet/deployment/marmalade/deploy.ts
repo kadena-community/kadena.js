@@ -1,9 +1,10 @@
-import { createTransaction } from '@kadena/client';
+import { ChainId, createTransaction } from '@kadena/client';
 import { createPactCommandFromTemplate } from '@kadena/client-utils/nodejs';
 import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join, relative } from 'path';
 
+import { dotenv } from '@utils/dotenv';
 import { downloadGitFiles } from '@utils/download-git-files';
 import { logger } from '@utils/logger';
 import { flattenFolder } from '@utils/path';
@@ -27,6 +28,7 @@ import { deployMarmamaladeNamespaces } from './namespace';
 
 export async function deployMarmaladeContracts(
   signerAccount: IAccount,
+  chainIds: ChainId[],
   templateDestinationPath: string = marmaladeLocalConfig.templatePath,
   codeFileDestinationPath: string = marmaladeLocalConfig.codeFilesPath,
   nsDestinationPath: string = marmaladeLocalConfig.namespacePath,
@@ -86,15 +88,6 @@ export async function deployMarmaladeContracts(
     codeFileDestinationPath,
   );
 
-  logger.info('Deploying Marmalade Namespaces...');
-
-  await deployMarmamaladeNamespaces({
-    localConfigData: marmaladeLocalConfig,
-    namespacesConfig: marmaladeNamespaceConfig,
-    sender: signerAccount,
-    fileExtension: marmaladeRemoteConfig.codefileExtension,
-  });
-
   /* sort the templates alphabetically so that the contracts are deployed in the correct order
   also taking into account the order provided in the configuration */
 
@@ -121,34 +114,59 @@ export async function deployMarmaladeContracts(
     }
   });
 
-  logger.info('Deploying Marmalade Contracts...');
-
-  for (const templateFile of templateFiles) {
-    logger.info(`Deploying ${templateFile}...`);
-
-    /* Assuming that the template file name is the same as the namespace
-    and that the filename contains the namespace*/
-    argumentConfig.marmalade_namespace = templateFile.split('.')[0];
-
-    const pactCommand = await createPactCommandFromTemplate(
-      templateFile,
-      argumentConfig,
-      templateDestinationPath,
-    );
-
-    const transaction = createTransaction(pactCommand);
-    const signedTx = await signAndAssertTransaction(signerAccount.keys)(
-      transaction,
-    );
-    const commandResult = await submit(signedTx);
-    const result = await listen(commandResult);
-
-    if (result.result.status !== 'success') {
-      inspect('Result')(commandResult);
-    } else {
-      logger.info(`Sucessfully deployed ${templateFile}`);
-    }
+  // If no chain ids are provided, use the default chain id from the argument config
+  if (chainIds.length === 0) {
+    chainIds = [argumentConfig.chain];
   }
+
+  await Promise.all(
+    chainIds.map(async (chainId) => {
+      logger.info(`Deploying Marmalade Namespaces on chain ${chainId}...`);
+
+      await deployMarmamaladeNamespaces({
+        localConfigData: marmaladeLocalConfig,
+        namespacesConfig: marmaladeNamespaceConfig,
+        sender: signerAccount,
+        fileExtension: marmaladeRemoteConfig.codefileExtension,
+        chainId,
+      });
+
+      logger.info(`Deploying Marmalade Contracts on chain ${chainId}...`);
+
+      for (const templateFile of templateFiles) {
+        logger.info(`Deploying ${templateFile}...`);
+
+        /* Assuming that the template file name is the same as the namespace
+    and that the filename contains the namespace*/
+        argumentConfig.marmalade_namespace = templateFile.split('.')[0];
+        // Change the chain id for each chain
+        argumentConfig.chain = chainId;
+
+        const pactCommand = await createPactCommandFromTemplate(
+          templateFile,
+          argumentConfig,
+          templateDestinationPath,
+        );
+
+        const transaction = createTransaction(pactCommand);
+        const signedTx = await signAndAssertTransaction(signerAccount.keys)(
+          transaction,
+        );
+        const commandResult = await submit(signedTx);
+        const result = await listen(commandResult);
+
+        if (result.result.status !== 'success') {
+          inspect('Result')(commandResult);
+        } else {
+          logger.info(
+            `Sucessfully deployed ${templateFile} on chain ${chainId}`,
+          );
+        }
+      }
+
+      logger.info(`Finished deploying Marmalade Contracts on chain ${chainId}`);
+    }),
+  );
 }
 
 export async function getMarmaladeTemplates({

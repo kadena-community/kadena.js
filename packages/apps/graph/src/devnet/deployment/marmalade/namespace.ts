@@ -15,11 +15,13 @@ export async function deployMarmamaladeNamespaces({
   namespacesConfig,
   sender = sender00,
   fileExtension,
+  chainId,
 }: {
   localConfigData: IMarmaladeLocalConfig;
   namespacesConfig: IMarmaladeNamespaceConfig[];
   sender?: IAccount;
   fileExtension: string;
+  chainId: ChainId;
 }): Promise<void> {
   const publickeys = sender.keys.map((key) => key.publicKey);
 
@@ -80,6 +82,7 @@ export async function deployMarmamaladeNamespaces({
             data: namespace,
           },
           keysets,
+          chainId,
         });
 
         logger.info(`Deploying namespace file ${config.file} for ${namespace}`);
@@ -102,7 +105,7 @@ export async function deployMarmamaladeNamespaces({
 export async function createPactCommandFromFile(
   filepath: string,
   {
-    chainId = dotenv.SIMULATE_DEFAULT_CHAIN_ID,
+    chainId,
     networkId = dotenv.NETWORK_ID,
     signers = sender00.keys,
     meta = {
@@ -114,7 +117,7 @@ export async function createPactCommandFromFile(
     keysets,
     namespace,
   }: {
-    chainId?: ChainId;
+    chainId: ChainId;
     networkId?: string;
     signers?: IKeyPair[];
     meta?: {
