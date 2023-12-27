@@ -1,7 +1,7 @@
 import 'module-alias/register';
 
 import { sender00 } from '@devnet/utils';
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';
 import { Option, program } from 'commander';
