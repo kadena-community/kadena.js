@@ -39,3 +39,31 @@ export interface GraphConfiguration {
   maximumConfirmationDepth: number;
   minimumBlockHeight: bigint;
 }
+
+export const ChainNonFungibleAccountName: 'ChainNonFungibleAccount' =
+  'ChainNonFungibleAccount';
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface ChainNonFungibleAccount {
+  __typename: typeof ChainNonFungibleAccountName;
+  chainId: string;
+  fungibleName: string;
+  accountName: string;
+  guard: Guard;
+  balance: number;
+  transactions: Transaction[];
+  transfers: Transfer[];
+}
+
+export const NonFungibleAccountName: 'NonFungibleAccount' =
+  'NonFungibleAccount';
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface NonFungibleAccount {
+  __typename: typeof NonFungibleAccountName;
+  accountName: string;
+  chainAccounts: ChainNonFungibleAccount[];
+  totalBalance: number;
+  transactions: Transaction[];
+  transfers: Transfer[];
+}
