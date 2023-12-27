@@ -59,7 +59,7 @@ export const useToolbar = (
       const index = menuData.indexOf(activeMenu);
       setActiveMenuIndex(index);
     }
-    }, [activeMenuIndex, isMenuOpen]);
+    }, []);
 };
 
 const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
