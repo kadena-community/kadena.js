@@ -8,12 +8,12 @@ const localConfig = defineConfig({
     setupFiles: ['vitest.setup.ts'],
     environment: 'happy-dom',
     coverage: {
-      provider: 'v8',
       thresholds: {
         lines: 18.64,
         functions: 23.71,
         branches: 43.58,
         statements: 18.64,
+        autoUpdate: false,
       },
     },
   },
