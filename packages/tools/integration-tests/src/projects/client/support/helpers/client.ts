@@ -1,5 +1,5 @@
 import type { ChainId, NetworkId } from '@kadena/types';
-import { createClient } from '../../index';
+import { createClient } from '@kadena/client/src';
 
 export const apiHostGenerator = ({
   networkId,

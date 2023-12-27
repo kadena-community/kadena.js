@@ -4,14 +4,14 @@ import { devnetMiner } from '../../testdata/constants/accounts';
 import { transferAmount } from '../../testdata/constants/amounts';
 import { coinModuleHash } from '../../testdata/constants/modules';
 import { getTransactionsQuery } from '../../testdata/queries/getTransactions';
-import { createAccount, generateAccount } from '../../utils/account-utils';
-import { getBlockHash } from '../../utils/block-utils';
-import { base64Encode } from '../../utils/cryptography-utils';
-import { sendQuery } from '../../utils/request-util';
+import { createAccount, generateAccount } from '../../support/account-utils';
+import { getBlockHash } from '../../support/block-utils';
+import { base64Encode } from '../../support/cryptography-utils';
+import { sendQuery } from '../../support/request-util';
 import {
   transferFunds,
   transferFundsCrossChain,
-} from '../../utils/transfer-utils';
+} from '../../support/transfer-utils';
 
 describe('Query: getTransactions', () => {
   test('Should return transactions.', async () => {

@@ -1,6 +1,6 @@
 import type { ChainId } from '@kadena/types';
-import { Pact } from '../../../pact';
-import { NetworkId } from '../../support/enums';
+import { Pact } from '@kadena/client/src/pact';
+import { NetworkId } from '../../enums';
 import { dirtyRead } from '../client';
 
 export async function getBalance(

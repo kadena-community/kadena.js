@@ -1,4 +1,7 @@
-import type { Any } from '../../core/utils/types';
+
+//TODO: Ask Javad if we should export types from @kadena/client-utils. Duplicated type for now to prevent changing the client-utils API.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Any = any;
 
 export const withStepFactory = () => {
   let step = 0;

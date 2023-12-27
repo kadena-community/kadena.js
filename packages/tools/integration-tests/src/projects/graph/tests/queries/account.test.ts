@@ -2,9 +2,9 @@ import { genKeyPair } from '@kadena/cryptography-utils';
 import { describe, expect, test } from 'vitest';
 import { sender00 } from '../../testdata/constants/accounts';
 import { getAccountQuery } from '../../testdata/queries/getAccount';
-import { createAccount, generateAccount } from '../../utils/account-utils';
-import { base64Encode } from '../../utils/cryptography-utils';
-import { sendQuery } from '../../utils/request-util';
+import { createAccount, generateAccount } from '../../support/account-utils';
+import { base64Encode } from '../../support/cryptography-utils';
+import { sendQuery } from '../../support/request-util';
 
 describe('Query: getAccount by AccountName', () => {
   test('Should return an account after it has been created', async () => {

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { getBalance } from './helpers/account/describe-account';
-import { fundAccount } from './helpers/account/fund-account';
-import { executeCrossChainTransfer } from './helpers/transactions/crosschain-transaction';
-import { sourceAccount, targetAccount } from './test-data/accounts';
+import { getBalance } from '../support/helpers/account/describe-account';
+import { fundAccount } from '../support/helpers/account/fund-account';
+import { executeCrossChainTransfer } from '../support/helpers/transactions/crosschain-transaction';
+import { sourceAccount, targetAccount } from '../test-data/accounts';
 
 let initialSourceBalance: number;
 let initialTargetBalance: number;

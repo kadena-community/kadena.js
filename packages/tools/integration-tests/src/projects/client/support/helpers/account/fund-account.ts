@@ -1,7 +1,7 @@
 import type { ChainId, IPactDecimal } from '@kadena/types';
-import { Pact, readKeyset } from '../../../index';
-import { NetworkId } from '../../support/enums';
-import { sender00Account } from '../../test-data/accounts';
+import { Pact, readKeyset } from '@kadena/client/src';
+import { NetworkId } from '../../enums';
+import { sender00Account } from '../../../test-data/accounts';
 import { listen, preflight, submit } from '../client';
 import { signByKeyPair } from '../transactions/sign-transaction';
 

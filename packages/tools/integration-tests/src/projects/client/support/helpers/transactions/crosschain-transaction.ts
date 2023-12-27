@@ -1,9 +1,9 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import type { ChainId, IUnsignedCommand } from '@kadena/types';
-import type { IContinuationPayloadObject } from '../../../index';
-import { Pact, isSignedTransaction, readKeyset } from '../../../index';
-import { NetworkId } from '../../support/enums';
-import type { IAccount, IAccountWithSecretKey } from '../../support/interfaces';
+import type { IContinuationPayloadObject } from '@kadena/client/src';
+import { Pact, isSignedTransaction, readKeyset } from '@kadena/client/src';
+import { NetworkId } from '../../enums';
+import type { IAccount, IAccountWithSecretKey } from '../../interfaces';
 import { keyFromAccount } from '../account/keyFromAccount';
 import { listen, pollCreateSpv, pollStatus, submit } from '../client';
 import { signByKeyPair } from './sign-transaction';

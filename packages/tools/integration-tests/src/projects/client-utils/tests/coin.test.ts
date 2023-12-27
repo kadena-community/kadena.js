@@ -9,16 +9,15 @@ import {
   transfer,
   transferCreate,
   transferCrossChain,
-} from '../coin';
+ safeTransfer } from '@kadena/client-utils/coin';
 
-import { safeTransfer } from '../coin/safe-transfer';
-import { NetworkIds } from './support/NetworkIds';
-import { withStepFactory } from './support/helpers';
+import { NetworkIds } from '../support/NetworkIds'
+import { withStepFactory } from '../support/helpers'
 import {
   sender00Account,
   sourceAccount,
   targetAccount,
-} from './test-data/accounts';
+} from '../testdata/accounts'
 
 const accountOne = {
   ...sourceAccount,

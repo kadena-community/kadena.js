@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { createPrincipal } from '../built-in/create-principal';
-import { describeModule } from '../built-in/describe-module';
+import { createPrincipal } from '@kadena/client-utils/src/built-in/create-principal';
+import { describeModule } from '@kadena/client-utils/src/built-in/describe-module';
 
 const config = {
   host: 'http://127.0.0.1:8080',
