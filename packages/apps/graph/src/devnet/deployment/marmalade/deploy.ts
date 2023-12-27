@@ -1,10 +1,10 @@
-import { ChainId, createTransaction } from '@kadena/client';
+import type { ChainId } from '@kadena/client';
+import { createTransaction } from '@kadena/client';
 import { createPactCommandFromTemplate } from '@kadena/client-utils/nodejs';
 import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join, relative } from 'path';
 
-import { dotenv } from '@utils/dotenv';
 import { downloadGitFiles } from '@utils/download-git-files';
 import { logger } from '@utils/logger';
 import { flattenFolder } from '@utils/path';
