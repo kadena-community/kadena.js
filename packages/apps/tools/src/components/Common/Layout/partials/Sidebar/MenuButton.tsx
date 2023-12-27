@@ -1,4 +1,4 @@
-import { SystemIcon, Tooltip } from '@kadena/react-ui';
+import {ITooltipProps, SystemIcon, Tooltip} from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes, FC } from 'react';
@@ -21,7 +21,7 @@ export interface IMenuButtonProps
 export const MenuButton: FC<IMenuButtonProps> = ({
   active,
   title,
-  href,
+  href = '#',
   icon,
   rotateClass,
   onClick,
@@ -37,27 +37,25 @@ export const MenuButton: FC<IMenuButtonProps> = ({
       : iconRightStyle;
 
   const button = (
-    <Tooltip isDisabled={!title} position="right" content={title}>
-      <button
+      <button type="button"
         className={classNames(gridMiniMenuListButtonStyle, rotationClass, {
           active,
         })}
         {...rest}
         aria-label={title}
+        onClick={onClick}
       >
-        <span onClick={onClick}>
+        <span>
           <Icon size={'sm'} />
         </span>
       </button>
-    </Tooltip>
   );
 
-  if (href)
-    return (
-      <Link href={href} target="_self">
-        {button}
-      </Link>
-    );
-
-  return button;
+  return (
+      <Tooltip isDisabled={!title} position={"right"} content={title}>
+        <Link href={href} target="_self">
+          {button}
+        </Link>
+      </Tooltip>
+  );
 };

@@ -32,12 +32,11 @@ export const Toolbar: FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     index: number,
   ): void => {
-    event.preventDefault();
-
     setVisibleLinks(false);
+
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
-      setIsMenuOpen(true);
+      setIsMenuOpen(true)
     }
   };
 

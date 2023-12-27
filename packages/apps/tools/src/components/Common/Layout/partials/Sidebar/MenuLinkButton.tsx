@@ -21,6 +21,7 @@ export const MenuLinkButton: FC<IMenuLinkButtonProps> = ({
 }) => {
   const button = (
     <button
+      type={"button"}
       className={classNames(gridMiniMenuLinkButtonStyle, { active })}
       {...rest}
       aria-label={title}

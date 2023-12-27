@@ -232,20 +232,23 @@ const NewAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification intent="warning" role="status">
-            <NotificationHeading>
-              {t('The Faucet is not available on Mainnet')}
-            </NotificationHeading>
-            <Trans
-              i18nKey="common:faucet-unavailable-warning"
-              components={[
-                <Link
-                  href="/transactions/module-explorer?module=user.coin-faucet&chain=1"
-                  key="link-to-module-explorer"
-                />,
-              ]}
-            />
-          </Notification>
+            <Notification intent="warning" role="status">
+              <NotificationHeading>
+                {t('The Faucet is not available on Mainnet')}
+              </NotificationHeading>
+              <Trans
+                  i18nKey="common:faucet-unavailable-warning"
+                  components={[
+                    <a
+                        className={notificationLinkStyle}
+                        target={'_blank'}
+                        href="https://chainweaver.kadena.network/contracts"
+                        rel="noreferrer"
+                        key="link-to-module"
+                    />,
+                  ]}
+              />
+            </Notification>
         ) : null}
       </div>
       <div className={notificationContainerStyle}>

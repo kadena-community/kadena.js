@@ -36,14 +36,6 @@ const Header: FC<IHeaderProps> = () => {
 
   const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
-  const handleMenuItemClick = async (
-    e: React.MouseEvent<HTMLAnchorElement>,
-  ): Promise<void> => {
-    e.preventDefault();
-
-    await push(e.currentTarget.href);
-  };
-
   const [isOpen, setIsOpen] = useState(false);
 
   const openNetworkModal = () => setIsOpen(true);
@@ -68,7 +60,6 @@ const Header: FC<IHeaderProps> = () => {
             <NavHeader.Link
               key={index}
               href={getHref(pathname, item.href)}
-              onClick={handleMenuItemClick}
               asChild
             >
               <Link href={getHref(pathname, item.href)}>{item.title}</Link>
