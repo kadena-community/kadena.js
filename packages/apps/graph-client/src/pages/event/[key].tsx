@@ -1,6 +1,8 @@
 import { useGetEventByNameSubscription } from '@/__generated__/sdk';
 import { ErrorBox } from '@/components/error-box/error-box';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import { getEventByName } from '@/graphql/subscriptions.graph';
 import { formatCode } from '@/utils/formatter';
 import routes from '@constants/routes';
 import { Box, Breadcrumbs, Table } from '@kadena/react-ui';
@@ -10,9 +12,8 @@ import React from 'react';
 const Event: React.FC = () => {
   const router = useRouter();
 
-  const { loading, data, error } = useGetEventByNameSubscription({
-    variables: { eventName: router.query.key as string },
-  });
+  const variables = { eventName: router.query.key as string };
+  const { loading, data, error } = useGetEventByNameSubscription({ variables });
 
   return (
     <>
@@ -20,6 +21,7 @@ const Event: React.FC = () => {
         <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
         <Breadcrumbs.Item>Events</Breadcrumbs.Item>
       </Breadcrumbs.Root>
+      <GraphQLQueryDialog queries={[getEventByName]} variables={variables} />
 
       <Box marginBottom="$8" />
 

@@ -1,7 +1,9 @@
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
+import { getTransactions } from '@/graphql/queries.graph';
 import { Box, Breadcrumbs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -9,13 +11,15 @@ import React from 'react';
 const AccountTransactions: React.FC = () => {
   const router = useRouter();
 
+  const variables = {
+    fungibleName: router.query.fungible as string,
+    accountName: router.query.account as string,
+    ...(router.query.chain && { chainId: router.query.chain as string }),
+    first: 10,
+  };
+
   const { loading, data, error, fetchMore } = useGetTransactionsQuery({
-    variables: {
-      fungibleName: router.query.fungible as string,
-      accountName: router.query.account as string,
-      ...(router.query.chain && { chainId: router.query.chain as string }),
-      first: 10,
-    },
+    variables,
   });
 
   return (
@@ -31,6 +35,7 @@ const AccountTransactions: React.FC = () => {
         </Breadcrumbs.Item>
         <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
       </Breadcrumbs.Root>
+      <GraphQLQueryDialog queries={[getTransactions]} variables={variables} />
 
       <Box marginBottom="$8" />
 

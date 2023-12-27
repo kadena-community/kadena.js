@@ -1,6 +1,8 @@
 import { useGetTransfersQuery } from '@/__generated__/sdk';
 import { ExtendedTransfersTable } from '@/components/extended-transfers-table/extended-transfers-table';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import { getTransfers } from '@/graphql/queries.graph';
 import routes from '@constants/routes';
 import { Box, Breadcrumbs } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
@@ -9,13 +11,15 @@ import React from 'react';
 const AccountTransfers: React.FC = () => {
   const router = useRouter();
 
+  const variables = {
+    fungibleName: router.query.fungible as string,
+    accountName: router.query.account as string,
+    ...(router.query.chain && { chainId: router.query.chain as string }),
+    first: 10,
+  };
+
   const { loading, data, error, fetchMore } = useGetTransfersQuery({
-    variables: {
-      fungibleName: router.query.fungible as string,
-      accountName: router.query.account as string,
-      ...(router.query.chain && { chainId: router.query.chain as string }),
-      first: 10,
-    },
+    variables,
   });
 
   return (
@@ -31,6 +35,7 @@ const AccountTransfers: React.FC = () => {
         </Breadcrumbs.Item>
         <Breadcrumbs.Item>Transfers</Breadcrumbs.Item>
       </Breadcrumbs.Root>
+      <GraphQLQueryDialog queries={[getTransfers]} variables={variables} />
 
       <Box marginBottom="$8" />
 
