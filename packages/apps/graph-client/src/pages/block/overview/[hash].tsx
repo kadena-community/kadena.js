@@ -4,7 +4,12 @@ import {
   useGetGraphConfigurationQuery,
 } from '@/__generated__/sdk';
 import { centerBlockStyle } from '@/components/common/center-block/styles.css';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import {
+  getBlockFromHash,
+  getGraphConfiguration,
+} from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
@@ -16,9 +21,9 @@ import React from 'react';
 const Block: React.FC = () => {
   const router = useRouter();
 
-  const { loading, data, error } = useGetBlockFromHashQuery({
-    variables: { hash: router.query.hash as string, first: 10 },
-  });
+  const variables = { hash: router.query.hash as string, first: 10 };
+
+  const { loading, data, error } = useGetBlockFromHashQuery({ variables });
 
   const { data: configData } = useGetGraphConfigurationQuery();
 
@@ -33,6 +38,10 @@ const Block: React.FC = () => {
           <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
           <Breadcrumbs.Item>Block Overview</Breadcrumbs.Item>
         </Breadcrumbs.Root>
+        <GraphQLQueryDialog
+          queries={[getBlockFromHash, getGraphConfiguration]}
+          variables={variables}
+        />
 
         <Box marginBottom="$8" />
 

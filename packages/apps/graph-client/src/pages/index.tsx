@@ -8,7 +8,10 @@ import {
 } from '@/__generated__/sdk';
 import { centerBlockStyle } from '@/components/common/center-block/styles.css';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import { getRecentHeights, getTransactions } from '@/graphql/queries.graph';
+import { getBlocksSubscription } from '@/graphql/subscriptions.graph';
 import { ChainwebGraph } from '@components/chainweb';
 import routes from '@constants/routes';
 import { useChainTree } from '@context/chain-tree-context';
@@ -23,13 +26,15 @@ const Home: React.FC = () => {
     data: newBlocks,
     error: newBlocksError,
   } = useGetBlocksSubscription();
+  const getRecentHeightsVariables = { count: 3 };
   const { data: recentBlocks, error: recentBlocksError } =
-    useGetRecentHeightsQuery({ variables: { count: 3 } });
+    useGetRecentHeightsQuery({ variables: getRecentHeightsVariables });
   const previousNewBlocks = usePrevious(newBlocks);
   const previousRecentBlocks = usePrevious(recentBlocks);
 
+  const getTransactionsVariables = { first: 10 };
   const { data: txs, error: txError } = useGetTransactionsQuery({
-    variables: { first: 10 },
+    variables: getTransactionsVariables,
   });
 
   const { allBlocks, addBlocks } = useParsedBlocks();
@@ -65,6 +70,14 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <GraphQLQueryDialog
+        queries={[getBlocksSubscription, getRecentHeights, getTransactions]}
+        variables={{
+          ...getRecentHeightsVariables,
+          ...getTransactionsVariables,
+        }}
+      />
+
       <LoaderAndError
         error={newBlocksError || recentBlocksError || txError}
         loading={loadingNewBlocks}

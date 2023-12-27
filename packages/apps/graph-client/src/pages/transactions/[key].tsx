@@ -1,6 +1,8 @@
 import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
+import { getTransactionByRequestKey } from '@/graphql/subscriptions.graph';
 import { formatCode, formatLisp } from '@/utils/formatter';
 import {
   Box,
@@ -16,8 +18,10 @@ import React from 'react';
 const RequestKey: React.FC = () => {
   const router = useRouter();
 
+  const variables = { requestKey: router.query.key as string };
+
   const { loading, data, error } = useGetTransactionByRequestKeySubscription({
-    variables: { requestKey: router.query.key as string },
+    variables,
   });
 
   return (
@@ -29,6 +33,10 @@ const RequestKey: React.FC = () => {
         </Breadcrumbs.Item>
         <Breadcrumbs.Item>Transaction</Breadcrumbs.Item>
       </Breadcrumbs.Root>
+      <GraphQLQueryDialog
+        queries={[getTransactionByRequestKey]}
+        variables={variables}
+      />
 
       <Box marginBottom="$8" />
 
