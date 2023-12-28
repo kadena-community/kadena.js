@@ -40,7 +40,7 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
-"""A chain- and fungible-specific account."""
+"""A chain and fungible-specific account."""
 type ChainFungibleAccount implements Node {
   accountName: String!
   balance: Float!
