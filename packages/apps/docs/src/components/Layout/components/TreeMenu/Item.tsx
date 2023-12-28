@@ -25,7 +25,7 @@ export const Item: FC<IItem> = ({ item, level }) => {
   );
 
   return (
-    <li className={classNames(listItemClass, listItemVariants[`l${level}`])}>
+    <li test-id={`menuItem-${level}`} className={classNames(listItemClass, listItemVariants[`l${level}`])}>
       <Link className={classes} href={item.root} data-active={item.isActive}>
         {item.label}
       </Link>

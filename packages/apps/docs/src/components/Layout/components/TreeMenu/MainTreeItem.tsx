@@ -65,7 +65,7 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
         </>
       )}
       {!root && hasSubmenu ? (
-        <li key={item.root} ref={ref}>
+        <li test-id={`menuItem-${level}`} key={item.root} ref={ref}>
           <TreeButton
             onClick={() => setMenuOpen((v) => !v)}
             level={`l${level}`}
