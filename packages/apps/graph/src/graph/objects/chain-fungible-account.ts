@@ -13,7 +13,7 @@ import { ChainFungibleAccountName } from '../types/graphql-types';
 export default builder.node(
   builder.objectRef<ChainFungibleAccount>(ChainFungibleAccountName),
   {
-    description: 'A chain- and fungible-specific account.',
+    description: 'A chain and fungible-specific account.',
     id: {
       resolve(parent) {
         return `${ChainFungibleAccountName}/${parent.chainId}/${parent.fungibleName}/${parent.accountName}`;
