@@ -30,11 +30,10 @@
     "lint:src": "eslint src --ext .js,.ts,.jsx,.tsx,.mjs",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "test": "echo 'No tests, until there is time to debug the build'"
+    "test": "npx playwright test --ui"
   },
   "dependencies": {
-    "@7-docs/edge": "^0.5.1",
-    "@google-analytics/data": "~3.2.2",
+    "directory-tree": "3.5.1",
     "@kadena/docs-tools": "workspace:*",
     "@kadena/fonts": "~0.0.1",
     "@kadena/react-ui": "workspace:*",
@@ -69,6 +68,9 @@
     "styled-components": "~5.3.10"
   },
   "devDependencies": {
+    "crawlee": "3.7.0",
+    "@crawlee/types": "3.7.0",
+    "@playwright/test": "^1.39.0",
     "@7-docs/cli": "^0.5.1",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
@@ -98,7 +100,6 @@
     "@vanilla-extract/webpack-plugin": "2.3.1",
     "chalk": "^5.2.0",
     "chromatic": "6.20.0",
-    "cypress": "~12.12.0",
     "dotenv": "~16.0.3",
     "eslint": "^8.45.0",
     "log-update": "^5.0.1",
