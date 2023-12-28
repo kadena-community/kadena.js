@@ -1,63 +1,52 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
+import { atoms } from '@theme/atoms.css';
+import { tokens } from '@theme/tokens/contract.css';
 import { style } from '@vanilla-extract/css';
 
 export const disabledClass = style([
-  sprinkles({
+  atoms({
     pointerEvents: 'none',
-    bg: {
-      darkMode: '$gray60',
-      lightMode: '$gray20',
-    },
+    backgroundColor: 'layer-3.default',
   }),
-  {
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$gray60,
-      },
-    },
-  },
 ]);
 
 export const textAreaContainerClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
     alignItems: 'center',
     display: 'flex',
     flexGrow: 1,
-    gap: '$2',
-    lineHeight: '$lg',
-    paddingLeft: '$4',
-    paddingRight: '$2',
+    gap: 'xs',
+    lineHeight: 'lg',
+    paddingLeft: 'sm',
+    paddingRight: 'xs',
   }),
 ]);
 
 export const textAreaClass = style([
-  sprinkles({
+  atoms({
     alignItems: 'center',
     background: 'none',
     border: 'none',
-    color: '$foreground',
+    color: 'text.base.default',
     outline: 'none',
     flexGrow: 1,
-    paddingY: '$2',
-    fontSize: '$base',
+    paddingY: 'sm',
+    fontSize: 'base',
   }),
   {
-    minHeight: vars.sizes.$20,
+    minHeight: tokens.kda.foundation.size.n20,
     resize: 'none',
     '::placeholder': {
-      color: vars.colors.$gray40,
-    },
-    [`${darkThemeClass} &::placeholder`]: {
-      color: vars.colors.$gray50,
+      color: tokens.kda.foundation.color.text.subtlest.default,
     },
   },
 ]);
 
 export const buttonContainerClass = style([
-  sprinkles({
-    top: '$2',
+  atoms({
     position: 'relative',
   }),
+  {
+    top: '4px',
+  },
 ]);

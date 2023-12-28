@@ -1,4 +1,4 @@
-import type { ChainId } from '@kadena/client';
+import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
@@ -75,7 +75,9 @@ export const transferCrossChain = (
   inputs: ICrossChainInput,
   config: IClientConfig,
 ) =>
-  crossChainClient(config)(
+  crossChainClient<
+    PactReturnType<IPactModules['coin']['defpact']['transfer-crosschain']>
+  >(config)(
     inputs.targetChainId,
     inputs.targetChainGasPayer ?? inputs.sender,
   )(createCrossChainCommand(inputs));

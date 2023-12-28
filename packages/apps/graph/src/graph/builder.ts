@@ -15,12 +15,12 @@ import {
   PositiveFloatResolver,
 } from 'graphql-scalars';
 import type { IncomingMessage } from 'http';
-import { prismaClient } from '../db/prismaClient';
+import { prismaClient } from '../db/prisma-client';
 import type {
-  ChainModuleAccount,
+  ChainFungibleAccount,
+  FungibleAccount,
   GraphConfiguration,
   Guard,
-  ModuleAccount,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -46,6 +46,7 @@ interface IDefaultTypesExtension {
 
 export interface IContext {
   req: IncomingMessage;
+  extensions: any;
 }
 
 export const PRISMA = {
@@ -58,8 +59,8 @@ export const builder = new SchemaBuilder<
     PrismaTypes: PrismaTypes;
     Context: IContext;
     Objects: {
-      ModuleAccount: ModuleAccount;
-      ChainModuleAccount: ChainModuleAccount;
+      FungibleAccount: FungibleAccount;
+      ChainFungibleAccount: ChainFungibleAccount;
       Guard: Guard;
       GraphConfiguration: GraphConfiguration;
     };
@@ -101,13 +102,16 @@ export const builder = new SchemaBuilder<
   ...(dotenv.TRACING_ENABLED && {
     tracing: {
       default: () => true,
-      wrap: (resolver, __options, config) =>
-        wrapResolver(resolver, async (__error, duration) => {
+      wrap: (resolver, __options, config) => (parent, args, ctx, info) => {
+        return wrapResolver(resolver, async (__error, duration) => {
           await logTrace(config.parentType, config.name, duration);
-          console.log(
-            `Executed resolver ${config.parentType}.${config.name} in ${duration}ms`,
-          );
-        }),
+
+          ctx.extensions.tracing = {
+            ...ctx.extensions.tracing,
+            [`${config.parentType}.${config.name}`]: duration,
+          };
+        })(parent, args, ctx, info);
+      },
     },
   }),
 });

@@ -3,14 +3,13 @@ import { SelectField } from '@components/Form';
 import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
 import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import React from 'react';
 
-type StoryProps = {
-  icon: keyof typeof SystemIcon;
-} & ISelectFieldProps;
-
-const meta: Meta<StoryProps> = {
+const meta: Meta<ISelectFieldProps> = {
   title: 'Form/SelectField',
+  component: SelectField,
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {
@@ -67,17 +66,10 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    icon: {
-      description: 'Icon rendered inside the select to the left of the text.',
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
-type Story = StoryObj<StoryProps>;
+type Story = StoryObj<ISelectFieldProps>;
 
 export const Group: Story = {
   name: 'Select Field',
@@ -88,9 +80,9 @@ export const Group: Story = {
     label: 'Label',
     disabled: false,
     status: undefined,
-    icon: 'Account',
+    startIcon: <SystemIcon.Account />,
   },
-  render: ({ icon, disabled, status, tag, helperText, info, label }) => {
+  render: ({ startIcon, disabled, status, tag, helperText, info, label }) => {
     return (
       <SelectField
         tag={tag}
@@ -99,12 +91,10 @@ export const Group: Story = {
         status={status}
         disabled={disabled}
         helperText={helperText}
-        selectProps={{
-          ariaLabel: 'Select Story',
-          id: 'inputStory',
-          icon,
-          placeholder: 'This is a placeholder',
-        }}
+        ariaLabel="Select Story"
+        id="inputStory"
+        startIcon={startIcon}
+        placeholder="This is a placeholder"
       >
         <option value="1">Option 1</option>
         <option value="2">Option 2</option>

@@ -6,6 +6,9 @@ export interface IGradientTextProps {
   children: React.ReactNode;
 }
 
+/**
+ * @deprecated Kadena's new branding will not utilize gradients
+ */
 export const GradientText: FC<IGradientTextProps> = ({ children }) => {
   return <span className={gradientTextClass}>{children}</span>;
 };

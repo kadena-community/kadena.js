@@ -3,6 +3,13 @@ import mapValues from 'lodash.mapvalues';
 import { breakpoints, flattenTokens } from './themeUtils';
 import { tokens } from './tokens/contract.css';
 
+export const colorAtoms = flattenTokens({
+  inherit: 'inherit',
+  currentColor: 'currentColor',
+  icon: tokens.kda.foundation.color.icon,
+  text: tokens.kda.foundation.color.text,
+});
+
 const systemProperties = defineProperties({
   properties: {
     background: ['none'],
@@ -18,13 +25,11 @@ const systemProperties = defineProperties({
     },
     borderColor: flattenTokens(tokens.kda.foundation.color.border),
     borderRadius: tokens.kda.foundation.radius,
+    borderStyle: ['solid'],
     borderWidth: tokens.kda.foundation.border.width,
     bottom: [0],
     boxShadow: tokens.kda.foundation.effect.shadow,
-    color: flattenTokens({
-      icon: tokens.kda.foundation.color.icon,
-      text: tokens.kda.foundation.color.text,
-    }),
+    color: colorAtoms,
     cursor: ['pointer', 'not-allowed'],
     flex: [1],
     flexGrow: [0, 1],
@@ -61,6 +66,8 @@ const systemProperties = defineProperties({
   },
 });
 
+// eslint-disable-next-line @kadena-dev/typedef-var
+const spacingWithAuto = { ...tokens.kda.foundation.spacing, auto: 'auto' };
 const responsiveProperties = defineProperties({
   conditions: mapValues(breakpoints, (bp?: string) =>
     bp === '' ? {} : { '@media': bp },
@@ -80,7 +87,6 @@ const responsiveProperties = defineProperties({
     flexDirection: ['row', 'row-reverse', 'column', 'column-reverse'],
     fontSize: tokens.kda.foundation.typography.fontSize,
     gap: tokens.kda.foundation.spacing,
-    gridGap: tokens.kda.foundation.spacing,
     justifyContent: [
       'flex-start',
       'center',
@@ -89,22 +95,44 @@ const responsiveProperties = defineProperties({
       'space-between',
     ],
     lineHeight: tokens.kda.foundation.typography.lineHeight,
-    marginBottom: tokens.kda.foundation.spacing,
-    marginLeft: { ...tokens.kda.foundation.spacing, auto: 'auto' },
-    marginRight: { ...tokens.kda.foundation.spacing, auto: 'auto' },
-    marginTop: tokens.kda.foundation.spacing,
-    paddingBottom: tokens.kda.foundation.spacing,
-    paddingLeft: tokens.kda.foundation.spacing,
-    paddingRight: tokens.kda.foundation.spacing,
-    paddingTop: tokens.kda.foundation.spacing,
+    marginBlockEnd: spacingWithAuto,
+    marginInlineStart: spacingWithAuto,
+    marginInlineEnd: spacingWithAuto,
+    marginBlockStart: spacingWithAuto,
+    paddingBlockEnd: tokens.kda.foundation.spacing,
+    paddingInlineStart: tokens.kda.foundation.spacing,
+    paddingInlineEnd: tokens.kda.foundation.spacing,
+    paddingBlockStart: tokens.kda.foundation.spacing,
   },
   shorthands: {
-    margin: ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],
-    marginX: ['marginLeft', 'marginRight'],
-    marginY: ['marginTop', 'marginBottom'],
-    padding: ['paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight'],
-    paddingX: ['paddingLeft', 'paddingRight'],
-    paddingY: ['paddingTop', 'paddingBottom'],
+    margin: [
+      'marginBlockStart',
+      'marginBlockEnd',
+      'marginInlineStart',
+      'marginInlineEnd',
+    ],
+    marginLeft: ['marginInlineStart'],
+    marginRight: ['marginInlineEnd'],
+    marginTop: ['marginBlockStart'],
+    marginBottom: ['marginBlockEnd'],
+    marginX: ['marginInlineStart', 'marginInlineEnd'],
+    marginY: ['marginBlockStart', 'marginBlockEnd'],
+    marginInline: ['marginInlineStart', 'marginInlineEnd'],
+    marginBlock: ['marginBlockStart', 'marginBlockEnd'],
+    padding: [
+      'paddingBlockStart',
+      'paddingBlockEnd',
+      'paddingInlineStart',
+      'paddingInlineEnd',
+    ],
+    paddingLeft: ['paddingInlineStart'],
+    paddingRight: ['paddingInlineEnd'],
+    paddingTop: ['paddingBlockStart'],
+    paddingBottom: ['paddingBlockEnd'],
+    paddingX: ['paddingInlineStart', 'paddingInlineEnd'],
+    paddingY: ['paddingBlockStart', 'paddingBlockEnd'],
+    paddingInline: ['paddingInlineStart', 'paddingInlineEnd'],
+    paddingBlock: ['paddingBlockStart', 'paddingBlockEnd'],
   },
 });
 

@@ -2,7 +2,7 @@ import { getAccountDetails } from '@services/node-service';
 import DataLoader from 'dataloader';
 
 interface AccountDetailsKey {
-  moduleName: string;
+  fungibleName: string;
   accountName: string;
   chainId: string;
 }
@@ -10,8 +10,8 @@ interface AccountDetailsKey {
 export const accountDetailsLoader = new DataLoader<AccountDetailsKey, any>(
   async (keys: readonly AccountDetailsKey[]) => {
     const results = await Promise.all(
-      keys.map(({ moduleName, accountName, chainId }) =>
-        getAccountDetails(moduleName, accountName, chainId),
+      keys.map(({ fungibleName: fungibleName, accountName, chainId }) =>
+        getAccountDetails(fungibleName, accountName, chainId),
       ),
     );
 

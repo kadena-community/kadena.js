@@ -1,33 +1,34 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
+import { atoms } from '@theme/atoms.css';
+import { tokens } from '@theme/tokens/contract.css';
 import { style } from '@vanilla-extract/css';
 
 export const tabsContainerClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
+    width: '100%',
   }),
 ]);
 
 export const tabListWrapperClass = style([
-  sprinkles({
-    maxWidth: '100%',
+  atoms({
     overflowX: 'auto',
   }),
   {
+    maxWidth: '100%',
     paddingLeft: '2px',
     paddingTop: '2px', // For focus ring
   },
 ]);
 
 export const tabListClass = style([
-  sprinkles({
+  atoms({
     display: 'inline-flex',
     flexDirection: 'row',
-    minWidth: '100%',
     position: 'relative',
   }),
   {
+    minWidth: '100%',
     selectors: {
       '&::before': {
         position: 'absolute',
@@ -36,26 +37,23 @@ export const tabListClass = style([
         bottom: '0',
         left: '0',
         right: '0',
-        height: '2px',
-        backgroundColor: vars.colors.$neutral2,
-      },
-      [`${darkThemeClass} &::before`]: {
-        backgroundColor: vars.colors.$neutral3,
+        height: tokens.kda.foundation.border.width.normal,
+        backgroundColor: tokens.kda.foundation.color.border.base.default,
       },
     },
   },
 ]);
 
 export const tabItemClass = style([
-  sprinkles({
+  atoms({
     border: 'none',
     cursor: 'pointer',
-    paddingY: '$1',
-    paddingX: '$2',
-    fontSize: '$md',
-    fontWeight: '$semiBold',
+    paddingY: 'xs',
+    paddingX: 'sm',
+    fontSize: 'md',
+    fontWeight: 'bodyFont.bold',
     backgroundColor: 'transparent',
-    color: '$neutral4',
+    color: 'text.base.default',
     outline: 'none',
     zIndex: 1,
   }),
@@ -65,40 +63,40 @@ export const tabItemClass = style([
     selectors: {
       '&[data-selected="true"]': {
         opacity: '1',
-        color: vars.colors.$primaryContrastInverted,
+        color: tokens.kda.foundation.color.text.brand.primary.default,
       },
       '.focusVisible &:focus-visible': {
-        borderTopLeftRadius: vars.radii.$sm,
-        borderTopRightRadius: vars.radii.$sm,
-        outline: `2px solid ${vars.colors.$primaryAccent}`,
+        borderTopLeftRadius: tokens.kda.foundation.radius.sm,
+        borderTopRightRadius: tokens.kda.foundation.radius.sm,
+        outline: `2px solid ${tokens.kda.foundation.color.accent.brand.primary}`,
       },
     },
   },
 ]);
 
 export const selectorLine = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
     display: 'block',
-    width: 0,
     height: '100%',
     bottom: 0,
     borderStyle: 'solid',
-    borderColor: '$primaryAccent',
   }),
   {
+    width: 0,
     borderWidth: 0,
-    borderBottomWidth: '2px',
+    borderBottomWidth: tokens.kda.foundation.border.width.normal,
+    borderColor: tokens.kda.foundation.color.accent.brand.primary,
     transition: 'transform .4s ease, width .4s ease',
     transform: `translateX(0)`,
   },
 ]);
 
 export const tabContentClass = style([
-  sprinkles({
-    marginY: '$4',
-    fontSize: '$base',
-    color: '$neutral4',
+  atoms({
+    marginY: 'md',
+    fontSize: 'base',
+    color: 'text.base.default',
     flex: 1,
     overflowY: 'auto',
   }),

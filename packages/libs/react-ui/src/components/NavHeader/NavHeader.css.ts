@@ -1,21 +1,35 @@
 import { style } from '@vanilla-extract/css';
-import { sprinkles, vars } from '../../styles';
+import { atoms, vars } from '../../styles';
 
 export const containerClass = style([
-  sprinkles({
-    alignItems: 'stretch',
-    backgroundColor: '$gray90',
-    color: '$gray40',
+  atoms({
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'nowrap',
-    height: '$16',
     justifyContent: 'flex-start',
-    overflow: 'hidden',
     position: 'relative',
   }),
   {
+    height: vars.sizes.$16,
+    backgroundColor: vars.colors.$gray90,
+    color: vars.colors.$gray40,
+  },
+]);
+
+export const itemsContainerClass = style([
+  atoms({
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    overflowX: 'auto',
+  }),
+  {
+    paddingLeft: vars.sizes.$3,
     selectors: {
       '&:hover': {
         textDecoration: 'none',
@@ -28,17 +42,17 @@ export const containerClass = style([
 ]);
 
 export const logoClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    marginLeft: '$3',
   }),
   {
-    zIndex: 1,
+    margin: `0 ${vars.sizes.$3}`,
+    minWidth: 'max-content',
   },
 ]);
 
 export const navWrapperClass = style([
-  sprinkles({
+  atoms({
     alignItems: 'stretch',
     display: 'flex',
     justifyContent: 'center',
@@ -46,30 +60,31 @@ export const navWrapperClass = style([
 ]);
 
 export const navListClass = style([
-  sprinkles({
+  atoms({
     alignItems: 'stretch',
     display: 'flex',
     justifyContent: 'center',
   }),
   {
     listStyle: 'none',
+    paddingInlineStart: '1rem',
     zIndex: 1,
   },
 ]);
 
 export const linkClass = style([
-  sprinkles({
+  atoms({
     alignItems: 'center',
-    borderRadius: '$sm',
-    color: '$gray40',
     display: 'flex',
-    fontSize: '$sm',
-    fontWeight: '$semiBold',
-    marginRight: '$6',
-    marginX: '$1',
+    fontSize: 'sm',
+    fontWeight: 'bodyFont.black',
     textDecoration: 'none',
   }),
   {
+    borderRadius: '1px',
+    color: vars.colors.$gray40,
+    marginRight: vars.sizes.$6,
+    margin: `0 ${vars.sizes.$1}`,
     padding: `${vars.sizes.$1} ${vars.sizes.$2}`,
     transition: 'background 0.1s ease, color 0.1s ease',
   },
@@ -92,11 +107,9 @@ export const linkClass = style([
 ]);
 
 export const activeLinkClass = style([
-  sprinkles({
-    backgroundColor: '$white',
-    color: '$gray90',
-  }),
   {
+    backgroundColor: vars.colors.$white,
+    color: vars.colors.$gray90,
     selectors: {
       '&:hover': {
         color: vars.colors.$gray90,
@@ -112,37 +125,38 @@ export const activeLinkClass = style([
 ]);
 
 export const childrenClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    marginLeft: 'auto',
-    marginRight: '$3',
   }),
+  {
+    marginRight: vars.sizes.$3,
+  },
 ]);
 
 export const glowClass = style([
-  sprinkles({
+  {
+    top: 0,
     left: 0,
     pointerEvents: 'none',
     position: 'absolute',
-    top: 0,
     zIndex: 0,
-  }),
+  },
 ]);
 
 export const selectContainerClass = style([
-  sprinkles({
+  atoms({
     alignItems: 'stretch',
-    backgroundColor: '$gray90',
-    borderRadius: '$sm',
     display: 'flex',
     flexGrow: 1,
-    lineHeight: '$lg',
+    lineHeight: 'lg',
     overflow: 'hidden',
-    paddingLeft: '$4',
-    paddingRight: '$2',
     position: 'relative',
   }),
   {
+    paddingLeft: vars.sizes.$4,
+    paddingRight: vars.sizes.$2,
+    backgroundColor: vars.colors.$gray90,
+    borderRadius: '1px',
     border: `1px solid ${vars.colors.$gray40}`,
     selectors: {
       '&:active': {
@@ -153,23 +167,19 @@ export const selectContainerClass = style([
 ]);
 
 export const selectContainerClassDisabled = style([
-  sprinkles({
-    backgroundColor: {
-      lightMode: '$gray20',
-    },
-    color: {
-      lightMode: '$foreground',
-    },
-  }),
+  {
+    backgroundColor: vars.colors.$gray20,
+    color: vars.colors.$gray100,
+  },
 ]);
 
 export const selectIconClass = style([
-  sprinkles({
+  atoms({
     alignItems: 'center',
     display: 'flex',
-    color: '$gray40',
   }),
   {
+    color: vars.colors.$gray40,
     selectors: {
       '&:active': {
         color: vars.colors.$gray40,
@@ -179,35 +189,35 @@ export const selectIconClass = style([
 ]);
 
 export const selectClass = style([
-  sprinkles({
+  atoms({
     background: 'none',
     border: 'none',
-    color: '$gray40',
     flexGrow: 1,
     outline: 'none',
-    paddingRight: '$8',
-    paddingLeft: '$sm',
-    paddingY: '$2',
-    fontSize: '$base',
+    fontSize: 'base',
   }),
   {
     backgroundColor: 'inherit',
+    color: vars.colors.$gray40,
     appearance: 'none',
+    padding: `${vars.sizes.$2} 0`,
+    paddingRight: vars.sizes.$8,
+    paddingLeft: vars.sizes.$3,
   },
 ]);
 
 export const chevronIconClass = style([
-  sprinkles({
-    marginRight: '$2',
+  atoms({
     position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: '$1',
-    color: '$gray40',
     display: 'inline-flex',
     alignItems: 'center',
+    top: 0,
+    bottom: 0,
   }),
   {
+    right: vars.sizes.$1,
+    color: vars.colors.$gray40,
+    marginRight: vars.sizes.$2,
     pointerEvents: 'none',
     zIndex: 10,
     selectors: {

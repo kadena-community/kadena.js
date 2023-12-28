@@ -1,7 +1,8 @@
-import fs from 'node:fs/promises';
 import fg from 'fast-glob';
-import { join, dirname, relative } from 'node:path';
+import fs from 'node:fs/promises';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import * as prettier from "prettier";
 
 // Generate `packages.json` in root
 // Usage: `npx tsx packages/tools/scripts/generate-packages-json.ts`
@@ -38,7 +39,9 @@ const main = async () => {
 
   await fs.writeFile(
     join(baseDir, 'packages.json'),
-    JSON.stringify(packages, null, 2) + '\n',
+    await prettier.format(JSON.stringify(packages, null, 2), {
+      parser: 'json',
+    }),
   );
 };
 
