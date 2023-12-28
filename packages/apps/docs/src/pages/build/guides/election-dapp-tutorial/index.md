@@ -47,7 +47,7 @@ with the starter code of the next chapter. The branch name that corresponds to e
 will be provided at the top of the respective chapter page.
 
  * [Chapter 01: Getting started](/build/guides/election-dapp-tutorial/01-getting-started)
- * [Chapter 02: Running Devnet](/build/guides/election-dapp-tutorial/02-running-devnet)
+ * [Chapter 02: Running Devnet](/build/guides/election-dapp-tutorial/start-a-local-blockchain)
  * [Chapter 03: Admin account](/build/guides/election-dapp-tutorial/03-admin-account)
  * [Chapter 04: Namespaces](/build/guides/election-dapp-tutorial/04-namespaces)
  * [Chapter 05: Keysets](/build/guides/election-dapp-tutorial/05-keysets)
