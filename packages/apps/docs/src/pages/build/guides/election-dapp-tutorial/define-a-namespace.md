@@ -5,7 +5,7 @@ menu: "Workshop: Election application"
 label: "Define a namespace"
 order: 4
 layout: full
-tags: [pact, smart contract, typescript, tutorial]
+tags: [namespace, pact, smart contract, typescript, tutorial]
 ---
 
 # Define a namespace
