@@ -65,6 +65,8 @@
     "styled-components": "~5.3.10"
   },
   "devDependencies": {
+    "directory-tree": "3.5.1",
+    "@playwright/test": "^1.39.0",
     "@7-docs/cli": "^0.5.1",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
