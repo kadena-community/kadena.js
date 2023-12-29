@@ -1,6 +1,9 @@
+/* eslint-disable @kadena-dev/no-eslint-disable */
+/* eslint-disable playwright/expect-expect */
+// The expect is performed by validateTree(), so the test does not need one.
 import { test } from '@playwright/test';
-import CookieHelper from './helpers/cookie.helper';
-import TreeHelper from './helpers/tree.helper';
+import CookieHelper from '../../helpers/cookie.helper';
+import TreeHelper from '../../helpers/tree.helper';
 
 const pages = [
   'kadena',
