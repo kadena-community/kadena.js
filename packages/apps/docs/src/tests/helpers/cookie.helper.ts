@@ -1,18 +1,21 @@
 import type { Locator, Page } from '@playwright/test';
-import { expect } from '@playwright/test';
 
 export default class CookieHelper {
-  private readonly page: Page;
-  consentBar: Locator;
-  acceptButton: any;
+  private readonly _page: Page;
+  private _consentBar: Locator;
+  private _acceptButton: Locator;
 
-  constructor(page: Page) {
-    this.page = page;
-    this.consentBar = this.page.getByRole('region', { name: 'Cookie Consent' });
-    this.acceptButton = this.consentBar.getByRole('button', { name: 'Accept' });
+  public constructor(page: Page) {
+    this._page = page;
+    this._consentBar = this._page.getByRole('region', {
+      name: 'Cookie Consent',
+    });
+    this._acceptButton = this._consentBar.getByRole('button', {
+      name: 'Accept',
+    });
   }
 
-  async acceptCookies() {
-    await this.acceptButton.click();
+  public async acceptCookies(): Promise<void> {
+    await this._acceptButton.click();
   }
 }

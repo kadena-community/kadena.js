@@ -10,6 +10,7 @@ interface IProps {
   menuOpen?: boolean;
   root?: boolean;
   level?: LevelType;
+  testId?: string;
 }
 
 export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
@@ -65,6 +66,8 @@ export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
         </>
       )}
       {!root && hasSubmenu ? (
+        //TODO: Check with Steven for a good way to do this.
+        // eslint-disable-next-line react/no-unknown-property
         <li test-id={`menuItem-${level}`} key={item.root} ref={ref}>
           <TreeButton
             onClick={() => setMenuOpen((v) => !v)}

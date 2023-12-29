@@ -2,28 +2,32 @@ import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 
 export default class MenuHelper {
-  private readonly page: Page;
-  private levelTwo: Locator;
-  private levelOne: Locator;
+  private readonly _page: Page;
+  private _levelTwo: Locator;
+  private _levelOne: Locator;
 
-  constructor(page: Page) {
-    this.page = page;
-    this.levelOne = this.page.locator('[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button')
-    this.levelTwo = this.page.locator('[data-cy="sidemenu-submenu"] [test-id="menuItem-2"] > button')
+  public constructor(page: Page) {
+    this._page = page;
+    this._levelOne = this._page.locator(
+      '[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button',
+    );
+    this._levelTwo = this._page.locator(
+      '[data-cy="sidemenu-submenu"] [test-id="menuItem-2"] > button',
+    );
   }
 
-  async openCollapsedItems(): Promise<void> {
-    const collapsedFirstLevelElements = await this.levelOne.all();
+  public async openCollapsedItems(): Promise<void> {
+    const collapsedFirstLevelElements = await this._levelOne.all();
 
     for (const collapsedElement of collapsedFirstLevelElements) {
       await collapsedElement.click();
-      await this.page.waitForTimeout(1000)
-      expect(collapsedElement).toHaveAttribute('data-active', "true")
+      await this._page.waitForTimeout(1000);
+      await expect(collapsedElement).toHaveAttribute('data-active', 'true');
     }
-    const collapsedSecondLevelElements = await this.levelTwo.all();
+    const collapsedSecondLevelElements = await this._levelTwo.all();
     for (const collapsedElement of collapsedSecondLevelElements) {
       await collapsedElement.click();
-      expect(collapsedElement).toHaveAttribute('data-active', "true")
+      await expect(collapsedElement).toHaveAttribute('data-active', 'true');
     }
   }
 }

@@ -25,7 +25,12 @@ export const Item: FC<IItem> = ({ item, level }) => {
   );
 
   return (
-    <li test-id={`menuItem-${level}`} className={classNames(listItemClass, listItemVariants[`l${level}`])}>
+    //TODO: Check with Steven for a good way to do this.
+    // eslint-disable-next-line react/no-unknown-property
+    <li
+      test-id={`menuItem-${level}`}
+      className={classNames(listItemClass, listItemVariants[`l${level}`])}
+    >
       <Link className={classes} href={item.root} data-active={item.isActive}>
         {item.label}
       </Link>
