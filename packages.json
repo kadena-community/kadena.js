@@ -55,14 +55,20 @@
   },
   {
     "name": "@kadena/docs",
-    "version": "0.6.3",
+    "version": "0.8.0",
     "private": true,
     "path": "packages/apps/docs"
   },
   {
-    "name": "@kadena/graph",
-    "version": "1.0.7",
+    "name": "@kadena/docs-tools",
+    "version": "0.1.0",
     "private": true,
+    "path": "packages/tools/docs-tools"
+  },
+  {
+    "name": "@kadena/graph",
+    "version": "1.0.6",
+    "private": false,
     "path": "packages/apps/graph"
   },
   {
@@ -73,7 +79,7 @@
   },
   {
     "name": "@kadena/hd-wallet",
-    "version": "0.0.1",
+    "version": "0.2.0",
     "private": true,
     "path": "packages/libs/hd-wallet"
   },
@@ -109,7 +115,7 @@
   },
   {
     "name": "@kadena/proof-of-us",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "private": true,
     "path": "packages/apps/proof-of-us"
   },
