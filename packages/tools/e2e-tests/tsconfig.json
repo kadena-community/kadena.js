@@ -14,8 +14,7 @@
     "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
     "declarationMap": false,
     "jsx": "preserve",
-    "allowJs": true,
+    "allowJs": true
   },
   "include": ["./**/*.ts", "./**/*.tsx"]
 }
-
