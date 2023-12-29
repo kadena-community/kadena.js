@@ -1,4 +1,7 @@
 import client from '@/constants/client';
+import type { Network } from '@/constants/kadena';
+import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import type {
   ChainId,
   ICommand,
@@ -18,11 +21,23 @@ export async function finishXChainTransfer(
   continuation: IContinuationPayloadObject['cont'],
   targetChainId: ChainId,
   networkId: string,
+  networskData: INetworkData[],
   gasPayer: string = 'kadena-xchain-gas',
 ): Promise<string | { error: string }> {
   debug(finishXChainTransfer.name);
 
-  const { submit } = client(networkId, targetChainId);
+  const networkData: INetworkData | undefined = networskData.find(
+    (item) => (networkId as Network) === item.networkId,
+  );
+
+  if (!networkData) return { error: 'No network found' };
+
+  const apiHost = getApiHost({
+    api: networkData.API,
+    chainId: targetChainId,
+    networkId,
+  });
+  const { submit } = client(apiHost);
 
   try {
     const continuationTransaction = Pact.builder

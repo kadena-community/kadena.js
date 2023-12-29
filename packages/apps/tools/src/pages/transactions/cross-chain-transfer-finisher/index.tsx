@@ -10,9 +10,8 @@ import RequestKeyField, {
 } from '@/components/Global/RequestKeyField';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import client from '@/constants/client';
-import type { DefinedNetwork } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
 import { menuData } from '@/constants/side-menu-items';
 import { useAppContext } from '@/context/app-context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
@@ -23,6 +22,8 @@ import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/fin
 import type { ITransferDataResult } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { getTransferData } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { validateRequestKey } from '@/services/utils/utils';
+import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
@@ -94,6 +95,10 @@ const CrossChainTransferFinisher: FC = () => {
   const [txError, setTxError] = useState('');
   const [processingTx, setProcessingTx] = useState(false);
 
+  const networkData: INetworkData = networksData.filter(
+    (item) => (network as Network) === item.networkId,
+  )[0];
+
   const handleOpenHelpCenter = (): void => {
     // @ts-ignore
     helpCenterRef.openSection(0);
@@ -144,12 +149,13 @@ const CrossChainTransferFinisher: FC = () => {
     setProcessingTx(true);
     window.scrollTo(0, 0);
 
-    const networkId = chainNetwork[network].network;
-
-    const { pollCreateSpv, listen } = client(
-      networkId as DefinedNetwork,
-      pollResults.tx.sender.chain,
-    );
+    const networkId = networkData.networkId;
+    const apiHost = getApiHost({
+      api: networkData.API,
+      chainId: pollResults.tx.sender.chain,
+      networkId,
+    });
+    const { pollCreateSpv, listen } = client(apiHost);
 
     const requestObject = {
       requestKey: data.requestKey,
@@ -173,6 +179,7 @@ const CrossChainTransferFinisher: FC = () => {
       },
       pollResults.tx.receiver.chain,
       networkId,
+      networksData,
       data.gasPayer,
     );
 
@@ -182,13 +189,15 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
 
-    const receiveClient = client(
-      networkId as DefinedNetwork,
-      pollResults.tx.receiver.chain,
-    );
+    const receiverApiHost = getApiHost({
+      api: networkData.API,
+      chainId: pollResults.tx.receiver.chain,
+      networkId,
+    });
+    const receiverClient = client(receiverApiHost);
 
     try {
-      const data = await receiveClient.listen({
+      const data = await receiverClient.listen({
         requestKey: requestKeyOrError as string,
         networkId,
         chainId: pollResults.tx.receiver.chain,
@@ -241,7 +250,7 @@ const CrossChainTransferFinisher: FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     values: {
-      server: chainNetwork[network].server,
+      server: networkData.API,
       requestKey: requestKey,
       gasPayer: 'kadena-xchain-gas',
       gasLimit: kadenaConstants.GAS_LIMIT,
@@ -312,11 +321,11 @@ const CrossChainTransferFinisher: FC = () => {
                   labelValues={[
                     {
                       label: t('Network'),
-                      value: chainNetwork[network].network,
+                      value: networkData.networkId,
                     },
                     {
                       label: t('Server'),
-                      value: chainNetwork[network].server,
+                      value: networkData.API,
                     },
                   ]}
                 />

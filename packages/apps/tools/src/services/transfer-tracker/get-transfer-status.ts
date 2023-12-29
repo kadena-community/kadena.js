@@ -2,6 +2,7 @@ import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
 import { chainNetwork } from '@/constants/network';
 import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { ICommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
@@ -106,6 +107,7 @@ export async function getTransferStatus({
         senderAccount: sender.account || t('Not found'),
         senderChain: sender.chain,
         amount,
+        networksData,
         options,
         t,
       });
@@ -116,6 +118,7 @@ export async function getTransferStatus({
         senderChain: sender.chain,
         receiverChain: receiver.chain,
         network,
+        networksData,
         t,
       });
 
@@ -156,6 +159,7 @@ export async function getXChainTransferInfo({
   senderChain,
   receiverChain,
   network,
+  networksData,
   t,
 }: {
   requestKey: string;
@@ -163,19 +167,31 @@ export async function getXChainTransferInfo({
   senderChain: ChainwebChainId;
   receiverChain: ChainwebChainId;
   network: Network;
+  networksData: INetworkData[];
   t: Translate;
 }): Promise<IStatusData> {
   debug(getXChainTransferInfo.name);
   try {
-    const networkId = chainNetwork[network].network;
+    // const { selectedNetwork: network, networksData } = useWalletConnectClient();
+    const networkData: INetworkData | undefined = networksData.find(
+      (item) => (network as Network) === item.networkId,
+    );
+
+    if (!networkData) return { error: 'No network found' };
 
     const requestObject = {
       requestKey,
-      networkId,
+      networkId: network,
       chainId: senderChain,
     };
 
-    const { pollCreateSpv, listen } = client(networkId, senderChain);
+    const apiHostSender = getApiHost({
+      api: networkData.API,
+      chainId: senderChain,
+      networkId: network,
+    });
+
+    const { pollCreateSpv, listen } = client(apiHostSender);
     const proof = await pollCreateSpv(requestObject, receiverChain);
     const status = await listen(requestObject);
     const pactId = status.continuation!.pactId;
@@ -187,11 +203,16 @@ export async function getXChainTransferInfo({
         rollback: false,
         step: 1,
       })
-      .setNetworkId(networkId)
+      .setNetworkId(network)
       .setMeta({ chainId: receiverChain })
       .createTransaction();
 
-    const { dirtyRead } = client(networkId, receiverChain);
+    const apiHostReceiver = getApiHost({
+      api: networkData.API,
+      chainId: receiverChain,
+      networkId: network,
+    });
+    const { dirtyRead } = client(apiHostReceiver);
 
     const response = await dirtyRead(continuationTransaction as ICommand);
 
@@ -251,6 +272,7 @@ export async function checkForProof({
   receiverAccount,
   receiverChain,
   amount,
+  networksData,
   options,
   t,
 }: {
@@ -261,6 +283,7 @@ export async function checkForProof({
   receiverAccount: string;
   receiverChain: ChainwebChainId;
   amount: number;
+  networksData: INetworkData[];
   options?: {
     onPoll?: (status: IStatusData) => void;
   };
@@ -270,10 +293,22 @@ export async function checkForProof({
 
   const { onPoll = () => {} } = { ...options };
 
+  const networkData: INetworkData | undefined = networksData.find(
+    (item) => (network as Network) === item.networkId,
+  );
+
+  if (!networkData) return '';
+
+  const apiHostSender = getApiHost({
+    api: networkData.API,
+    chainId: senderChain,
+    networkId: network,
+  });
+
   try {
     let count = 0;
 
-    const { pollCreateSpv } = client(network, senderChain);
+    const { pollCreateSpv } = client(apiHostSender);
 
     return pollCreateSpv(
       {
