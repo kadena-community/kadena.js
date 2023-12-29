@@ -5,7 +5,7 @@ import { builder } from '../builder';
 import ChainFungibleAccount from '../objects/chain-fungible-account';
 import { ChainFungibleAccountName } from '../types/graphql-types';
 
-builder.queryField('chainAccount', (t) =>
+builder.queryField('chainFungibleAccount', (t) =>
   t.field({
     description:
       'Retrieve an account by its name and fungible, such as coin, on a specific chain.',
