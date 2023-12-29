@@ -1,7 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import dirTree from 'directory-tree';
-import { join } from 'path';
 import { extractMetadataFromMarkdown } from './markdown.helper';
 
 export default class TreeHelper {

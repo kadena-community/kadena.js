@@ -5,8 +5,8 @@ export async function extractMetadataFromMarkdown(
   parentPath: string,
   childPath?: string,
   grandChildPath?: string,
-): Promise<_IMetadata[]> {
-  const metadata: _IMetadata[] = [];
+): Promise<IMetadata[]> {
+  const metadata: IMetadata[] = [];
 
   const parentFile = fs.readFileSync(parentPath, 'utf8');
   const parent = parseMD(parentFile);
@@ -26,7 +26,7 @@ export async function extractMetadataFromMarkdown(
   return metadata;
 }
 
-export interface _IMetadata {
+export interface IMetadata {
   title: string;
   description: string;
   menu: string;
