@@ -1,11 +1,11 @@
 import { prismaClient } from '@db/prisma-client';
-import { Token } from '../graph/types/graphql-types';
+import type { Token } from '../graph/types/graphql-types';
 
 export async function getTokenDetails(
   accountName: string,
   chainId: string,
 ): Promise<Token[] | []> {
-  let result: Token[] = [];
+  const result: Token[] = [];
 
   const allEvents = await prismaClient.reconcile.findMany({
     where: {
@@ -19,7 +19,7 @@ export async function getTokenDetails(
     },
   });
 
-  let processedTokens = new Set();
+  const processedTokens = new Set();
 
   if (allEvents.length === 0) {
     return [];

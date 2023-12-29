@@ -8,10 +8,8 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import {
-  ChainNonFungibleAccount,
-  ChainNonFungibleAccountName,
-} from '../types/graphql-types';
+import type { ChainNonFungibleAccount } from '../types/graphql-types';
+import { ChainNonFungibleAccountName } from '../types/graphql-types';
 
 export default builder.node(
   builder.objectRef<ChainNonFungibleAccount>(ChainNonFungibleAccountName),

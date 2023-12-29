@@ -8,10 +8,12 @@ import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import {
+import type {
   ChainNonFungibleAccount,
-  ChainNonFungibleAccountName,
   NonFungibleAccount,
+} from '../types/graphql-types';
+import {
+  ChainNonFungibleAccountName,
   NonFungibleAccountName,
 } from '../types/graphql-types';
 
