@@ -16,12 +16,11 @@ export default class TreeHelper {
    @param {string} pageToCheck page to check, e.g. 'Kadena'
    */
   public async validateTree(pageToCheck: string): Promise<void> {
-    const directory = join(__dirname, `../../pages/${pageToCheck}/`);
+    const directory = `../../apps/docs/src/pages/${pageToCheck}`
     const expectedTree = await dirTree(directory, {
       extensions: /\.md/,
       exclude: [/index.md/, /api/],
     });
-
     const menuItems = expectedTree.children;
 
     if (expectedTree.children) {

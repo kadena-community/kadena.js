@@ -5,20 +5,20 @@ export async function extractMetadataFromMarkdown(
   parentPath: string,
   childPath?: string,
   grandChildPath?: string,
-): Promise<Metadata[]> {
-  const metadata: Metadata[] = [];
+): Promise<_IMetadata[]> {
+  const metadata: _IMetadata[] = [];
 
   const parentFile = fs.readFileSync(parentPath, 'utf8');
   const parent = parseMD(parentFile);
   metadata.push(parent.metadata);
 
-  if (childPath) {
+  if (childPath !== undefined) {
     const childFile = fs.readFileSync(childPath, 'utf8');
     const child = parseMD(childFile);
     metadata.push(child.metadata);
   }
 
-  if (grandChildPath) {
+  if (grandChildPath !== undefined) {
     const grandChildFile = fs.readFileSync(grandChildPath, 'utf8');
     const grandChild = parseMD(grandChildFile);
     metadata.push(grandChild.metadata);
@@ -26,7 +26,7 @@ export async function extractMetadataFromMarkdown(
   return metadata;
 }
 
-export interface Metadata {
+export interface _IMetadata {
   title: string;
   description: string;
   menu: string;
