@@ -74,6 +74,27 @@ type ChainFungibleAccountTransfersConnectionEdge {
   node: Transfer!
 }
 
+"""A chain and non-fungible-specific account."""
+type ChainNonFungibleAccount implements Node {
+  accountName: String!
+  chainId: ID!
+  guard: Guard!
+  id: ID!
+  nonFungibles: [Token!]!
+  transactions(after: String, before: String, first: Int, last: Int): ChainNonFungibleAccountTransactionsConnection!
+}
+
+type ChainNonFungibleAccountTransactionsConnection {
+  edges: [ChainNonFungibleAccountTransactionsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ChainNonFungibleAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -167,6 +188,25 @@ interface Node {
   id: ID!
 }
 
+"""A non-fungible-specific account."""
+type NonFungibleAccount implements Node {
+  accountName: String!
+  chainAccounts: [ChainNonFungibleAccount!]!
+  id: ID!
+  transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
+}
+
+type NonFungibleAccountTransactionsConnection {
+  edges: [NonFungibleAccountTransactionsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type NonFungibleAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
 input PactQuery {
   chainId: String!
   code: String!
@@ -195,9 +235,6 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
-  """Retrieve an account by its name and fungible, such as coin."""
-  account(accountName: String!, fungibleName: String!): FungibleAccount
-
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
@@ -207,10 +244,18 @@ type Query {
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
-  chainAccount(accountName: String!, chainId: String!, fungibleName: String!): ChainFungibleAccount
+  chainFungibleAccount(accountName: String!, chainId: String!, fungibleName: String!): ChainFungibleAccount
+
+  """Retrieve an account by its name on a specific chain."""
+  chainNonFungibleAccount(accountName: String!, chainId: String!): ChainNonFungibleAccount
 
   """Retrieve all completed blocks from a given height."""
   completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
+
+  """
+  Retrieve an fungible specific account by its name and fungible, such as coin.
+  """
+  fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
 
   """Estimate the gas limit for a transaction."""
   gasLimitEstimate(transaction: PactTransaction!): Int!
@@ -225,6 +270,9 @@ type Query {
   lastBlockHeight: BigInt
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
+
+  """Retrieve a non-fungible specific account by its name."""
+  nonFungibleAccount(accountName: String!): NonFungibleAccount
 
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
@@ -307,6 +355,12 @@ type Subscription {
   Listen for a transaction by request key. Returns when it is in a block.
   """
   transaction(requestKey: String!): Transaction
+}
+
+"""The token identifier and its balance."""
+type Token {
+  balance: Int!
+  id: ID!
 }
 
 """A confirmed transaction."""

@@ -6,6 +6,11 @@ export interface Guard {
   predicate: 'keys-all' | 'keys-any' | 'keys-two';
 }
 
+export interface Token {
+  id: string;
+  balance: number;
+}
+
 export const ChainFungibleAccountName: 'ChainFungibleAccount' =
   'ChainFungibleAccount';
 
@@ -47,12 +52,10 @@ export const ChainNonFungibleAccountName: 'ChainNonFungibleAccount' =
 export interface ChainNonFungibleAccount {
   __typename: typeof ChainNonFungibleAccountName;
   chainId: string;
-  fungibleName: string;
   accountName: string;
   guard: Guard;
-  balance: number;
+  nonFungibles: Token[];
   transactions: Transaction[];
-  transfers: Transfer[];
 }
 
 export const NonFungibleAccountName: 'NonFungibleAccount' =
@@ -63,7 +66,5 @@ export interface NonFungibleAccount {
   __typename: typeof NonFungibleAccountName;
   accountName: string;
   chainAccounts: ChainNonFungibleAccount[];
-  totalBalance: number;
   transactions: Transaction[];
-  transfers: Transfer[];
 }
