@@ -26,8 +26,7 @@ export const Item: FC<IItem> = ({ item, level }) => {
 
   return (
     //TODO: Check with Steven for a good way to do this.
-    // eslint-disable-next-line react/no-unknown-property
-    <li
+    <li // eslint-disable-next-line react/no-unknown-property
       test-id={`menuItem-${level}`}
       className={classNames(listItemClass, listItemVariants[`l${level}`])}
     >
