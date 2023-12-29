@@ -81,12 +81,12 @@ jobs:
         run: pnpm run test:integration --filter ${{ matrix.package }}
 
   end-to-end-tests:
-    name: E2E - ${{ matrix.package }}
+    name: E2E - ${{ matrix.app }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['@kadena/tools']
+        app: ['tools']
 
     steps:
       - uses: actions/checkout@v4
@@ -112,13 +112,12 @@ jobs:
 
       # Disable remote caching for this step, otherwise env variables will not be used.
       - name: build dApp
-        run: pnpm --filter ${{ matrix.package }}... build
-
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
 
       - name: Run end-to-end tests
-        run: pnpm run test:e2e -- --project=${{ matrix.package }}
+        run: pnpm run test:e2e -- -c playwright.${{ matrix.app }}.config.ts
         env:
-          TESTOBJECT: ${{ matrix.package }}
+          TESTOBJECT: ${{ matrix.app }}
 
       - uses: actions/upload-artifact@v3
         if: always()
