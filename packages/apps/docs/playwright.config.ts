@@ -11,7 +11,7 @@ export default defineConfig({
   workers: process.env.CI ? 4 : 1,
   reporter: [['github'], ['list'], ['html', { open: 'never' }]],
   use: {
-    headless: !!process.env.CI,
+    headless: process.env.CI != undefined,
     baseURL: 'http://localhost:3000/',
     channel: 'chromium',
     trace: 'retain-on-failure',
