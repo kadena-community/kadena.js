@@ -37,10 +37,10 @@ jobs:
         run: pnpm install
 
       - name: Lint monorepo root
-        run: pnpm run lint
+        run: pnpm run lint --force
 
       - name: Build, lint, test all packages
-        run: pnpm turbo lint build test
+        run: pnpm turbo lint build test --force
 
   integration-tests:
     name: INT - ${{ matrix.package }}
