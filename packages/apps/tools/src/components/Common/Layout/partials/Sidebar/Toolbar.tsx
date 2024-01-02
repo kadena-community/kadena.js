@@ -104,7 +104,6 @@ export const Toolbar: FC = () => {
           <div>
             <MenuButton
               title={'DevOptions'}
-              href={'#'}
               icon={'ApplicationBrackets'}
               onClick={() => handleDevOptionsClick()}
             />
