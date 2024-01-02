@@ -16,7 +16,7 @@ contracts in the devnet. The goal of this folder is to deploy the Marmalade
 scripts into the devnet. It contains all the necessary scripts and configuration
 files to facilitate this process.
 
-To deploy marmalade in devnet, please run the
+To deploy marmalade in devnet, please run
 
 ```sh
 pnpm deploy:marmalade -c <chains>
