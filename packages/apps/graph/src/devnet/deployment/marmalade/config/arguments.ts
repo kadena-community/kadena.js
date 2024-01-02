@@ -1,5 +1,5 @@
+import { sender00 } from '@devnet/utils';
 import { dotenv } from '@utils/dotenv';
-import { sender00 } from '../../helper';
 
 /* Define the arguments for the marmalade contracts: these values are going
 to be replaced in the marmalade templates and code files  */
