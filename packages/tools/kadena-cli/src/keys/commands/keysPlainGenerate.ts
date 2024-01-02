@@ -4,7 +4,8 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import { randomBytes } from 'crypto';
 import debug from 'debug';
-import { CommandResult, assertCommandError } from '../../utils/command.util.js';
+import type { CommandResult } from '../../utils/command.util.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import {
@@ -82,7 +83,7 @@ export const createGeneratePlainKeysCommand: (
       debug('generate-plain:action')({ config });
 
       const amount =
-        config.keyAmount !== undefined && config.keyAmount !== ''
+        config.keyAmount !== undefined && config.keyAmount !== null
           ? config.keyAmount
           : defaultAmount;
 

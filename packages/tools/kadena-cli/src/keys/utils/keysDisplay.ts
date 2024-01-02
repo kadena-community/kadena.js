@@ -24,12 +24,12 @@ export async function displaySelectedWallet(name: string): Promise<void> {
     chalk.black.bgGreen(`\n Wallet: ${walletName.padEnd(formatLength)}\n`),
   );
 
-  displayKeysInSection(
+  await displayKeysInSection(
     walletName,
     await getKeysFromWallet(removeAfterFirstDot(walletName)),
     chalk.green('Standard Keys:'),
   );
-  displayKeysInSection(
+  await displayKeysInSection(
     walletName,
     await getLegacyKeysFromWallet(walletName),
     chalk.green('Legacy Keys:'),

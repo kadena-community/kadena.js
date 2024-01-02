@@ -13,6 +13,7 @@ import {
   typescript,
 } from '../prompts/index.js';
 
+import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
 import {
@@ -89,15 +90,14 @@ export const globalOptions = {
   // global
   quiet: createOption({
     key: 'quiet' as const,
-    prompt: async ({ quiet }: { quiet: boolean }) => quiet || false,
+    prompt: ({ quiet }): boolean => quiet === true || quiet === 'true' || false,
     validation: z.boolean().optional(),
     option: globalFlags.quiet,
   }),
   legacy: createOption({
     key: 'legacy' as const,
-    prompt: ({ legacy }: { legacy: boolean }) => {
-      const result = legacy || false;
-      return Promise.resolve(result);
+    prompt: ({ legacy }): boolean => {
+      return legacy === true || legacy === 'true' || false;
     },
     validation: z.boolean().optional(),
     option: globalFlags.legacy,
@@ -276,11 +276,14 @@ export const globalOptions = {
       .min(0)
       .max(19),
     option: new Option('-c, --chain-id <chainId>'),
+    transform: (chainId: string) => {
+      return chainId as ChainId;
+    },
   }),
 
   // Keys
   keyAlias: createOption({
-    key: 'keyAlias' as const,
+    key: 'keyAlias',
     prompt: keys.keyAliasPrompt,
     validation: z.string(),
     option: new Option(
@@ -314,6 +317,10 @@ export const globalOptions = {
       '-n, --key-amount <keyAmount>',
       'Enter the number of key pairs you want to generate (default: 1)',
     ),
+    transform: (keyAmount: string) => {
+      const parsed = parseInt(keyAmount, 10);
+      return isNaN(parsed) ? null : parsed;
+    },
   }),
   keyGenFromChoice: createOption({
     key: 'keyGenFromChoice',
@@ -329,6 +336,7 @@ export const globalOptions = {
     prompt: keys.keyWalletSelectPrompt,
     validation: z.string(),
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    defaultIsOptional: false,
     transform: async (keyWallet: string) => {
       if (
         keyWallet.includes(WALLET_EXT) ||
@@ -345,7 +353,7 @@ export const globalOptions = {
     },
   }),
   securityPassword: createOption({
-    key: 'securityPassword' as const,
+    key: 'securityPassword',
     prompt: security.securityPasswordPrompt,
     validation: z.string(),
     option: new Option(
@@ -393,10 +401,7 @@ export const globalOptions = {
     key: 'typescriptClean' as const,
     prompt: typescript.typescriptClean,
     validation: z.boolean(),
-    option: new Option(
-      '--typescript-clean',
-      'Clean existing generated files',
-    ),
+    option: new Option('--typescript-clean', 'Clean existing generated files'),
   }),
   typescriptCapsInterface: createOption({
     key: 'typescriptCapsInterface' as const,
@@ -416,7 +421,10 @@ export const globalOptions = {
       'Generate d.ts from Pact contract file(s) (comma separated)',
     ),
     expand: async (file: string) => {
-      return file.split(',').map((value) => value.trim()).filter(f => f.length);
+      return file
+        .split(',')
+        .map((value) => value.trim())
+        .filter((f) => f.length);
     },
   }),
   typescriptContract: createOption({
@@ -428,7 +436,10 @@ export const globalOptions = {
       'Generate d.ts from Pact contract(s) from the blockchain (comma separated)',
     ),
     expand: async (contracts: string) => {
-      return contracts.split(',').map((value) => value.trim()).filter(c => c.length);
+      return contracts
+        .split(',')
+        .map((value) => value.trim())
+        .filter((c) => c.length);
     },
   }),
   typescriptNamespace: createOption({

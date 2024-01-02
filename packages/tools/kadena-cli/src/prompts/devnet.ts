@@ -7,7 +7,7 @@ import { services } from '../services/index.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { getExistingDevnets } from '../utils/helpers.js';
 
-export const devnetOverwritePrompt: IPrompt = async (
+export const devnetOverwritePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -22,7 +22,7 @@ export const devnetOverwritePrompt: IPrompt = async (
   });
 };
 
-export const devnetNamePrompt: IPrompt = async (
+export const devnetNamePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -52,7 +52,7 @@ export const devnetNamePrompt: IPrompt = async (
   return containerName;
 };
 
-export const devnetPortPrompt: IPrompt = async (
+export const devnetPortPrompt: IPrompt<number> = async (
   previousQuestions,
   args,
   isOptional,
@@ -71,7 +71,7 @@ export const devnetPortPrompt: IPrompt = async (
   return parseInt(port);
 };
 
-export const devnetUseVolumePrompt: IPrompt = async (
+export const devnetUseVolumePrompt: IPrompt<boolean> = async (
   previousQuestions,
   args,
   isOptional,
@@ -84,7 +84,7 @@ export const devnetUseVolumePrompt: IPrompt = async (
     ],
   });
 
-export const devnetMountPactFolderPrompt: IPrompt = async (
+export const devnetMountPactFolderPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -95,7 +95,7 @@ export const devnetMountPactFolderPrompt: IPrompt = async (
       'Enter the relative path to a folder containing your Pact files to mount (e.g. ./pact) or leave empty to skip.',
   });
 
-export const devnetVersionPrompt: IPrompt = async (
+export const devnetVersionPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -106,7 +106,7 @@ export const devnetVersionPrompt: IPrompt = async (
       'Enter the version of the kadena/devnet image you would like to use.',
   });
 
-export const devnetSelectPrompt: IPrompt = async (
+export const devnetSelectPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -127,7 +127,7 @@ export const devnetSelectPrompt: IPrompt = async (
   return await devnetSelectPrompt(previousQuestions, args, isOptional);
 };
 
-export const devnetDeletePrompt: IPrompt = async (
+export const devnetDeletePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -140,7 +140,7 @@ export const devnetDeletePrompt: IPrompt = async (
     ],
   });
 
-export const devnetPrompt: IPrompt = async (
+export const devnetPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,

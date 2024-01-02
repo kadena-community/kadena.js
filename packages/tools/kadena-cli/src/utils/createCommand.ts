@@ -3,7 +3,7 @@ import type { Command } from 'commander';
 import { z } from 'zod';
 import { CLIRootName } from '../constants/config.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
-import type { GlobalOptions } from './globalOptions.js';
+import type { createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
 import { collectResponses } from './helpers.js';
 import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
@@ -11,11 +11,18 @@ import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 type AsOption<T> = T extends {
   key: infer K;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prompt: (...arg: any[]) => infer R;
+  prompt: infer R;
+  transform: infer Tr;
 }
   ? K extends string
     ? {
-        [P in K]: Pure<R>;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        [P in K]: Tr extends (...args: any[]) => unknown
+          ? Awaited<ReturnType<Tr>>
+          : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          R extends (...args: any[]) => unknown
+          ? Awaited<ReturnType<R>>
+          : Awaited<R>;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } & (T extends { expand: (...args: any[]) => infer Ex }
         ? {
@@ -41,13 +48,17 @@ export type CreateCommandReturnType = (
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createCommand<
-  T extends ReturnType<GlobalOptions[keyof GlobalOptions]>[],
+  const T extends ReturnType<ReturnType<typeof createOption>>[],
 >(
   name: string,
   description: string,
   options: [...T],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  action: (finalConfig: Prettify<Combine<T>>, args?: any) => any,
+  action: (
+    finalConfig: Prettify<Combine<T> & { quiet?: boolean }>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    args?: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ) => any,
 ): (program: Command, version: string) => void {
   return async (program: Command, version: string) => {
     const command = program.command(name).description(description);
@@ -59,7 +70,7 @@ export function createCommand<
 
     command.action(async (args, ...rest) => {
       try {
-        const getCommandExecution = (args: Record<string, unknown>) => {
+        const getCommandExecution = (args: Record<string, unknown>): string => {
           return chalk.yellow(
             `${CLIRootName} ${program.name()} ${name} ${Object.getOwnPropertyNames(
               args,
@@ -110,7 +121,7 @@ export function createCommand<
             isOptional,
           }));
 
-        if (args.quiet) {
+        if (args.quiet === true) {
           const missing = questionsMap.filter(
             (question) =>
               question.isOptional === false && args[question.key] === undefined,
@@ -138,9 +149,12 @@ export function createCommand<
           }
         }
 
-        const newArgs: any = args.quiet
-          ? args
-          : await collectResponses(args, questionsMap);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const newArgs: any =
+          args.quiet === true
+            ? args
+            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              await collectResponses<any>(args, questionsMap);
 
         console.log(`\nExecuting: ${getCommandExecution(newArgs)}`);
 
@@ -160,11 +174,9 @@ export function createCommand<
         for (const option of options) {
           if ('expand' in option) {
             if (typeof option.expand === 'function') {
-              config[`${option.key}Config`] = await option.expand(
-                newArgs[option.key],
-              );
-              if (config[`${option.key}Config`] === undefined) {
-                delete config[`${option.key}Config`];
+              const expanded = await option.expand(newArgs[option.key]);
+              if (expanded !== undefined) {
+                config[`${option.key}Config`] = expanded;
               }
             }
           }

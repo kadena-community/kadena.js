@@ -34,7 +34,7 @@ export async function getInputPrompt(
  * @returns {(defaultValue?: string) => Promise<string>} A wrapped version of the prompt function that takes an optional default value and returns a Promise resolving to a string.
  */
 export function externalPrompt(
-  promptFunction: IPrompt,
+  promptFunction: IPrompt<any>,
 ): (defaultValue?: string) => Promise<string> {
   return async function wrappedPrompt(defaultValue?: string): Promise<string> {
     return await promptFunction({}, { defaultValue }, false);
@@ -48,8 +48,9 @@ export function externalPrompt(
  * @param {T} prompts - An object containing original prompt functions.
  * @returns {Record<keyof T, (defaultValue?: string) => Promise<string>>} A record where each key is a prompt function name and each value is the corresponding externalized prompt function.
  */
-export function createExternalPrompt<T extends Record<string, IPrompt>>(
+export function createExternalPrompt<T extends Record<string, IPrompt<any>>>(
   prompts: T,
+  config?: { [x: string]: any },
 ): Record<keyof T, (defaultValue?: string) => Promise<string>> {
   return Object.keys(prompts).reduce(
     (acc, key) => {

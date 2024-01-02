@@ -20,8 +20,8 @@ export const createListKeysCommand: (
 
   const selectedWallet = await externalPrompt.keyWalletSelectAllPrompt();
   if (selectedWallet === 'all') {
-    displayAllWallets();
+    await displayAllWallets();
     return;
   }
-  displaySelectedWallet(selectedWallet);
+  await displaySelectedWallet(selectedWallet);
 });

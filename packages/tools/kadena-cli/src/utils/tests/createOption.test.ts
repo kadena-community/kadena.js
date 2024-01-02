@@ -8,10 +8,11 @@ describe('createOption', () => {
     const mockPrompt = vi.fn();
     const mockValidation = {
       optional: vi.fn().mockReturnValue('optionalValidation'),
-    };
+    } as unknown as z.Schema;
     const testOption = new Option('-t, --test <test>', 'test option');
 
     const result = createOption({
+      key: 'test',
       prompt: mockPrompt,
       validation: mockValidation,
       option: testOption,
@@ -32,8 +33,11 @@ describe('createOption', () => {
     const testOption = new Option('-t, --test <test>', 'test option');
 
     const result = createOption({
+      key: 'test',
       prompt: async () => 'test',
-      validation: { optional: vi.fn().mockReturnValue('optionalValidation') },
+      validation: {
+        optional: vi.fn().mockReturnValue('optionalValidation'),
+      } as unknown as z.Schema,
       option: testOption,
       expand: mockExpand,
     });
@@ -48,6 +52,7 @@ describe('createOption', () => {
     const testOption = new Option('-t, --test <test>', 'test option');
 
     let result = createOption({
+      key: 'test',
       prompt: async () => 'test',
       validation: validationSchema,
       option: testOption,
@@ -58,6 +63,7 @@ describe('createOption', () => {
     );
 
     result = createOption({
+      key: 'test',
       prompt: async () => 'test',
       validation: validationSchema,
       option: testOption,
@@ -73,6 +79,7 @@ describe('createOption', () => {
     const testOption = new Option('-t, --test <test>', 'test option');
 
     const result = createOption({
+      key: 'test',
       prompt: mockPrompt,
       validation: z.string(),
       option: testOption,
@@ -96,14 +103,13 @@ describe('createOption with transform', () => {
     const testOption = new Option('-t, --test <test>', 'test option');
     const inputValue = 'inputValue';
 
-    const optionCreator = {
+    const result = createOption({
+      key: 'test',
       prompt: async () => inputValue,
       validation: z.string(),
       option: testOption,
       transform: mockTransform,
-    };
-
-    const result = createOption(optionCreator);
+    });
     const detailedOption = result({ isOptional: false });
 
     const transformedValue = await detailedOption.transform(inputValue);

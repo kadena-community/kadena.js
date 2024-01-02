@@ -35,6 +35,10 @@ export const createChangeWalletPasswordCommand: (
         process.exit(1);
       }
 
+      if (typeof config.keyWallet === 'string') {
+        throw new Error('Invalid wallet name');
+      }
+
       const { wallet: keyWallet, fileName } = config.keyWallet;
 
       console.log(
@@ -61,14 +65,14 @@ export const createChangeWalletPasswordCommand: (
 
       if (isLegacy === true) {
         encryptedNewSeed = await kadenaChangePassword(
-          keyWallet,
+          keyWallet as EncryptedString,
           config.securityCurrentPassword,
           config.securityNewPassword,
         );
       } else {
         const decryptedCurrentSeed = kadenaDecrypt(
           config.securityCurrentPassword,
-          keyWallet,
+          keyWallet as EncryptedString,
         );
         encryptedNewSeed = kadenaEncrypt(
           config.securityNewPassword,
