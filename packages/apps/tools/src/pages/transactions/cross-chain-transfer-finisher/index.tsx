@@ -402,7 +402,7 @@ const CrossChainTransferFinisher: FC = () => {
 
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
-          <Stack direction="column">
+          <Stack direction="column" gap="$lg">
             <FormItemCard
               heading={t('Search Request')}
               helper={t('Where can I find the request key?')}
