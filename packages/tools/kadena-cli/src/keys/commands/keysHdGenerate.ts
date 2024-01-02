@@ -33,6 +33,11 @@ export const createGenerateHdKeysCommand: (
   async (config) => {
     try {
       debug('generate-hdkeys:action')({ config });
+
+      if (typeof config.keyWallet === 'string') {
+        throw new Error('Invalid wallet name');
+      }
+
       const { wallet: keyWallet, fileName } = config.keyWallet;
       const isLegacy = fileName.includes('.legacy');
 

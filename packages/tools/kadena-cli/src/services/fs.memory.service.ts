@@ -23,7 +23,7 @@ export const memoryFileSystemService: IFileSystemService = {
     await fs.unlink(path);
   },
   async deleteDirectory(path: string) {
-    await fs.rmdir(path);
+    await fs.rm(path, { recursive: true });
   },
   async directoryExists(path: string) {
     try {

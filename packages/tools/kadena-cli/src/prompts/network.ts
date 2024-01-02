@@ -6,25 +6,24 @@ import type { IPrompt } from '../utils/createOption.js';
 import { getExistingNetworks, isAlphabetic } from '../utils/helpers.js';
 import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
 
-export const chainIdPrompt: IPrompt = async (
+export const chainIdPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue;
+  const defaultValue = args.defaultValue as string;
   return (await getInputPrompt(
     'Enter ChainId (0-19)',
     defaultValue,
   )) as ChainId;
 };
 
-export const networkNamePrompt: IPrompt = async (
+export const networkNamePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue;
-
+  const defaultValue = args.defaultValue as string;
   return await input({
     message: 'Enter a network name (e.g. "mainnet")',
     default: defaultValue,
@@ -37,43 +36,43 @@ export const networkNamePrompt: IPrompt = async (
   });
 };
 
-export const networkIdPrompt: IPrompt = async (
+export const networkIdPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue;
+  const defaultValue = args.defaultValue as string;
   return await getInputPrompt(
     'Enter a network id (e.g. "mainnet01")',
     defaultValue,
   );
 };
 
-export const networkHostPrompt: IPrompt = async (
+export const networkHostPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue;
+  const defaultValue = args.defaultValue as string;
   return await getInputPrompt(
     'Enter Kadena network host (e.g. "https://api.chainweb.com")',
     defaultValue,
   );
 };
 
-export const networkExplorerUrlPrompt: IPrompt = async (
+export const networkExplorerUrlPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue;
+  const defaultValue = args.defaultValue as string;
   return await getInputPrompt(
     'Enter Kadena network explorer URL (e.g. "https://explorer.chainweb.com/mainnet/tx/")',
     defaultValue,
   );
 };
 
-export const networkOverwritePrompt: IPrompt = async (
+export const networkOverwritePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -97,7 +96,11 @@ export const networkOverwritePrompt: IPrompt = async (
   });
 };
 
-export const networkSelectPrompt: IPrompt = async (prev, args, isOptional) => {
+export const networkSelectPrompt: IPrompt<string> = async (
+  prev,
+  args,
+  isOptional,
+) => {
   const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
   if (!existingNetworks.length) {
     throw new Error(
@@ -126,7 +129,7 @@ export const networkSelectPrompt: IPrompt = async (prev, args, isOptional) => {
   return selectedNetwork;
 };
 
-export const networkDeletePrompt: IPrompt = async (
+export const networkDeletePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,

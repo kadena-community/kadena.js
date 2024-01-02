@@ -18,6 +18,13 @@ export interface IWalletConfig {
   legacy?: boolean;
 }
 
+interface IWallet {
+  folder: string;
+  legacy: boolean;
+  wallet: string;
+  keys: string[];
+}
+
 /**
  * Ensures that the wallet directory exists. If the directory does not exist,
  * the process is terminated and exits.
@@ -27,6 +34,41 @@ export async function ensureWalletExists(): Promise<void> {
     console.error(`No Wallet created yet. Please create a wallet first.`);
     process.exit(1);
   }
+}
+
+/**
+ * Helper method to get all information about a wallet
+ * @param wallet wallet name without extension
+ * @returns
+ */
+export async function getWallet(wallet: string): Promise<IWallet | null> {
+  const walletDir = join(WALLET_DIR, wallet);
+  const exists = await services.filesystem.directoryExists(walletDir);
+  if (!exists) return null;
+
+  const files = await services.filesystem.readDir(walletDir);
+
+  const isRegular = files.some((file) => file === `${wallet}${WALLET_EXT}`);
+  const isLegacy = files.some(
+    (file) => file === `${wallet}${WALLET_LEGACY_EXT}`,
+  );
+
+  if (!isRegular && !isLegacy) return null;
+
+  const walletFile = isRegular
+    ? `${wallet}${WALLET_EXT}`
+    : `${wallet}${WALLET_LEGACY_EXT}`;
+
+  const keys = files.filter((file) =>
+    file.endsWith(isLegacy ? KEY_LEGACY_EXT : KEY_EXT),
+  );
+
+  return {
+    folder: wallet,
+    wallet: walletFile,
+    legacy: isLegacy,
+    keys,
+  };
 }
 
 /**

@@ -134,7 +134,7 @@ async function walletSelectionPrompt(
   return selectedWallet;
 }
 
-export const keyWalletSelectPrompt: IPrompt = async (
+export const keyWalletSelectPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -142,7 +142,7 @@ export const keyWalletSelectPrompt: IPrompt = async (
   return walletSelectionPrompt(); // No special options
 };
 
-export const keyWalletSelectAllPrompt: IPrompt = async (
+export const keyWalletSelectAllPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -150,7 +150,7 @@ export const keyWalletSelectAllPrompt: IPrompt = async (
   return walletSelectionPrompt(['all']); // Include "all" option
 };
 
-export const keyWalletSelectNonePrompt: IPrompt = async (
+export const keyWalletSelectNonePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -158,7 +158,7 @@ export const keyWalletSelectNonePrompt: IPrompt = async (
   return walletSelectionPrompt(['none']); // Include "no wallet" option
 };
 
-export const keyWalletSelectAllOrNonePrompt: IPrompt = async (
+export const keyWalletSelectAllOrNonePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -166,7 +166,7 @@ export const keyWalletSelectAllOrNonePrompt: IPrompt = async (
   return walletSelectionPrompt(['all', 'none']); // Include both "all" and "no wallet" options
 };
 
-export const selectDecryptMessagePrompt: IPrompt = async (
+export const selectDecryptMessagePrompt: IPrompt<string> = async (
   prev,
   args,
   isOptional,
@@ -221,7 +221,11 @@ export const selectDecryptMessagePrompt: IPrompt = async (
   return selectedKey;
 };
 
-export const keyWalletPrompt: IPrompt = async (prev, args, isOptional) => {
+export const keyWalletPrompt: IPrompt<string> = async (
+  prev,
+  args,
+  isOptional,
+) => {
   const existingKeys: string[] = await getAllWallets();
 
   const choices = existingKeys.map((key) => ({
@@ -256,7 +260,7 @@ export const keyWalletPrompt: IPrompt = async (prev, args, isOptional) => {
 
 type KeyType = 'plain' | 'plainLegacy' | 'hd' | 'hdLegacy';
 
-export const keyDeleteSelectPrompt: IPrompt = async (
+export const keyDeleteSelectPrompt: IPrompt<string> = async (
   prev,
   args,
   isOptional,
@@ -325,7 +329,7 @@ export const keyDeleteSelectPrompt: IPrompt = async (
   return selectedKey;
 };
 
-export const confirmDeleteAllKeysPrompt: IPrompt = async (
+export const confirmDeleteAllKeysPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -342,7 +346,7 @@ export const confirmDeleteAllKeysPrompt: IPrompt = async (
   });
 };
 
-export const keyDeletePrompt: IPrompt = async (
+export const keyDeletePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -360,7 +364,7 @@ export const keyDeletePrompt: IPrompt = async (
   });
 };
 
-export const confirmWalletDeletePrompt: IPrompt = async (
+export const confirmWalletDeletePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,
@@ -376,7 +380,7 @@ export const confirmWalletDeletePrompt: IPrompt = async (
   });
 };
 
-export const walletDeletePrompt: IPrompt = async (
+export const walletDeletePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
   isOptional,

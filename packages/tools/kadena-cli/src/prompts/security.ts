@@ -19,7 +19,7 @@ export async function promptForPassword(
   });
 }
 
-export const securityPasswordPrompt: IPrompt = async (
+export const securityPasswordPrompt: IPrompt<string> = async (
   prev = {},
   args,
   isOptional,
@@ -27,7 +27,7 @@ export const securityPasswordPrompt: IPrompt = async (
   return promptForPassword('Enter a password', isOptional);
 };
 
-export const securityPasswordVerifyPrompt: IPrompt = async (
+export const securityPasswordVerifyPrompt: IPrompt<string> = async (
   prev = {},
   args,
   isOptional,

@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 
+import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt } from '@kadena/hd-wallet';
 
 import { createCommand } from '../../utils/createCommand.js';
@@ -18,12 +19,17 @@ export const createDecryptCommand: (program: Command, version: string) => void =
       try {
         debug('decrypt:action')({ config });
 
+        if (config.keyMessage === undefined) {
+          throw new Error('Missing keyMessage');
+        }
+        const keyMessage = config.keyMessage as EncryptedString;
+
         console.log(
           chalk.yellow(`\nYou are about to decrypt this this message.\n`),
         );
 
         const isLegacy =
-          kadenaDecrypt(config.securityCurrentPassword, config.keyMessage)
+          kadenaDecrypt(config.securityCurrentPassword, keyMessage)
             .byteLength >= 128;
 
         if (isLegacy === true) {
@@ -35,7 +41,7 @@ export const createDecryptCommand: (program: Command, version: string) => void =
 
         const decryptedMessage = kadenaDecrypt(
           config.securityCurrentPassword,
-          config.keyMessage,
+          keyMessage,
         );
 
         console.log(
