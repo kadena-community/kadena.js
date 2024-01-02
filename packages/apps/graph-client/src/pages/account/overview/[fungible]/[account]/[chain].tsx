@@ -9,7 +9,14 @@ import { getChainAccount } from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Grid, GridItem, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  Grid,
+  GridItem,
+  Stack,
+  Table,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -26,18 +33,20 @@ const ChainAccount: React.FC = () => {
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item
-          href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
-            router.query.account as string
-          }`}
-        >
-          Account Overview
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
-      <GraphQLQueryDialog queries={[getChainAccount]} variables={variables} />
+      <Stack justifyContent="space-between">
+        <Breadcrumbs.Root>
+          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item
+            href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
+              router.query.account as string
+            }`}
+          >
+            Account Overview
+          </Breadcrumbs.Item>
+          <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
+        </Breadcrumbs.Root>
+        <GraphQLQueryDialog queries={[{ query: getChainAccount, variables }]} />
+      </Stack>
 
       <Box marginBottom="$8" />
 

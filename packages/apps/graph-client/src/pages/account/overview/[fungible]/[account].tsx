@@ -15,6 +15,7 @@ import {
   Box,
   Breadcrumbs,
   Notification,
+  Stack,
   TabItem,
   Table,
   Tabs,
@@ -34,11 +35,13 @@ const Account: React.FC = () => {
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
-      <GraphQLQueryDialog queries={[getAccount]} variables={variables} />
+      <Stack justifyContent="space-between">
+        <Breadcrumbs.Root>
+          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
+        </Breadcrumbs.Root>
+        <GraphQLQueryDialog queries={[{ query: getAccount, variables }]} />
+      </Stack>
 
       <Box marginBottom="$8" />
 

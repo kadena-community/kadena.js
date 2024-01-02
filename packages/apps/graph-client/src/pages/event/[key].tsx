@@ -5,7 +5,7 @@ import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { getEventByName } from '@/graphql/subscriptions.graph';
 import { formatCode } from '@/utils/formatter';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Stack, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -17,11 +17,13 @@ const Event: React.FC = () => {
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item>Events</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
-      <GraphQLQueryDialog queries={[getEventByName]} variables={variables} />
+      <Stack justifyContent="space-between">
+        <Breadcrumbs.Root>
+          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item>Events</Breadcrumbs.Item>
+        </Breadcrumbs.Root>
+        <GraphQLQueryDialog queries={[{ query: getEventByName, variables }]} />
+      </Stack>
 
       <Box marginBottom="$8" />
 
