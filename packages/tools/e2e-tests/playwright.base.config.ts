@@ -9,7 +9,7 @@ export const baseConfig: PlaywrightTestConfig = {
   fullyParallel: true,
   forbidOnly: process.env.CI !== undefined,
   retries: process.env.CI !== undefined ? 1 : 0,
-  workers: process.env.CI !== undefined ? 4 : 1,
+  workers: 1,
   reporter:
     process.env.CI !== undefined
       ? [['github'], ['dot'], ['html', { open: 'never' }]]
