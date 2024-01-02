@@ -1,7 +1,7 @@
-import { logger } from '@devnet/helper';
 import https from 'https';
 import { join } from 'path';
 import { dotenv } from './dotenv';
+import { logger } from './logger';
 import { createDirAndWriteFile } from './path';
 
 export async function downloadGitFiles({

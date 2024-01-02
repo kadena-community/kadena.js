@@ -1,80 +1,10 @@
-import type {
-  ChainId,
-  IClient,
-  ICommand,
-  ICommandResult,
-  IKeyPair,
-  ITransactionDescriptor,
-  IUnsignedCommand,
-} from '@kadena/client';
-import {
-  addSignatures,
-  createClient,
-  isSignedTransaction,
-} from '@kadena/client';
+import type { IAccount } from '@devnet/utils';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 import { getBalance } from '@kadena/client-utils/coin';
-import { genKeyPair, sign } from '@kadena/cryptography-utils';
+import { genKeyPair } from '@kadena/cryptography-utils';
+import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
-import { createLogger } from 'graphql-yoga';
 import seedrandom from 'seedrandom';
-
-export interface IAccount {
-  account: string;
-  chainId?: ChainId;
-  keys: IKeyPair[];
-}
-
-export const logger = createLogger('info');
-
-const getClient = (): IClient =>
-  createClient(
-    ({ chainId }) =>
-      `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
-  );
-
-export const submit = (tx: ICommand): Promise<ITransactionDescriptor> =>
-  getClient().submit(tx);
-
-export const listen = (tx: ITransactionDescriptor): Promise<ICommandResult> =>
-  getClient().listen(tx);
-
-export const signTransaction =
-  (keyPairs: IKeyPair[]) =>
-  (tx: IUnsignedCommand): IUnsignedCommand | ICommand => {
-    const signedTx = keyPairs.reduce((acc, keyPair) => {
-      const { sig } = sign(acc.cmd, {
-        publicKey: keyPair.publicKey,
-        secretKey: keyPair.secretKey,
-      });
-      if (!sig) throw Error('Failed to sign transaction');
-      return addSignatures(acc, { sig, pubKey: keyPair.publicKey });
-    }, tx);
-    return signedTx;
-  };
-
-export const assertTransactionSigned = (
-  tx: IUnsignedCommand | ICommand,
-): ICommand => {
-  const signed = isSignedTransaction(tx);
-  if (!signed) throw Error('Failed to sign transaction');
-  return tx;
-};
-
-export const signAndAssertTransaction =
-  (keyPairs: IKeyPair[]) =>
-  (tx: IUnsignedCommand): ICommand => {
-    const signedTx = signTransaction(keyPairs)(tx);
-    const assertedTx = assertTransactionSigned(signedTx);
-    return assertedTx;
-  };
-
-export const inspect =
-  (tag: string): (<T>(data: T) => T) =>
-  <T>(data: T): T => {
-    logger.info(tag, data);
-    return data;
-  };
 
 export const generateAccount = async (
   keys: number = 1,
@@ -101,18 +31,6 @@ export const generateAccount = async (
     account,
     chainId,
   };
-};
-
-export const sender00: IAccount = {
-  keys: [
-    {
-      publicKey:
-        '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
-      secretKey:
-        '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
-    },
-  ],
-  account: 'sender00',
 };
 
 /** This function takes a random number between 0 and 1 and returns a random number between 0 and maxNumber */
