@@ -1,15 +1,19 @@
-import { Button, Dialog, DialogContent, Divider } from '@kadena/react-ui';
+import { Box, Button, Dialog, DialogContent, Divider } from '@kadena/react-ui';
 import type { DocumentNode } from 'graphql';
 import { print } from 'graphql';
 import React, { useState } from 'react';
 
-interface IGraphQLQueryDialog {
-  queries: DocumentNode[];
-  variables: Record<string, unknown>;
+interface IGraphQLQueryDialogProps {
+  queries: {
+    query: DocumentNode;
+    variables?: Record<string, unknown>;
+  }[];
 }
 
-export const GraphQLQueryDialog = (props: IGraphQLQueryDialog): JSX.Element => {
-  const { queries, variables } = props;
+export const GraphQLQueryDialog = (
+  props: IGraphQLQueryDialogProps,
+): JSX.Element => {
+  const { queries } = props;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -29,13 +33,24 @@ export const GraphQLQueryDialog = (props: IGraphQLQueryDialog): JSX.Element => {
       >
         {() => (
           <DialogContent>
-            <p>Query</p>
-            {queries.map((query, index) => (
-              <pre key={index}>{print(query)}</pre>
-            ))}
+            <p>Amount of queries on this page: {queries.length}</p>
             <Divider />
-            <p>Variables</p>
-            <pre>{JSON.stringify(variables, null, 2)}</pre>
+            {queries.map((query, index) => (
+              <>
+                <p>Query #{index + 1}</p>
+                <Box marginBottom="$4" />
+                <pre key={index}>{print(query.query)}</pre>
+                {query.variables && (
+                  <>
+                    <Box marginBottom="$4" />
+                    <p>Variables</p>
+                    <Box marginBottom="$4" />
+                    <pre>{JSON.stringify(query.variables, null, 2)}</pre>
+                  </>
+                )}
+                {index + 1 !== queries.length && <Divider />}
+              </>
+            ))}
           </DialogContent>
         )}
       </Dialog>

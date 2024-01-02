@@ -9,6 +9,7 @@ import {
   Breadcrumbs,
   Link,
   Notification,
+  Stack,
   SystemIcon,
   Table,
 } from '@kadena/react-ui';
@@ -26,17 +27,18 @@ const RequestKey: React.FC = () => {
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item href={`${routes.TRANSACTIONS}`}>
-          Transactions
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item>Transaction</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
-      <GraphQLQueryDialog
-        queries={[getTransactionByRequestKey]}
-        variables={variables}
-      />
+      <Stack justifyContent="space-between">
+        <Breadcrumbs.Root>
+          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item href={`${routes.TRANSACTIONS}`}>
+            Transactions
+          </Breadcrumbs.Item>
+          <Breadcrumbs.Item>Transaction</Breadcrumbs.Item>
+        </Breadcrumbs.Root>
+        <GraphQLQueryDialog
+          queries={[{ query: getTransactionByRequestKey, variables }]}
+        />
+      </Stack>
 
       <Box marginBottom="$8" />
 

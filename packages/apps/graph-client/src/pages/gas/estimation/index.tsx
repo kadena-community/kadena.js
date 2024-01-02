@@ -3,7 +3,7 @@ import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-qu
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
 import { estimateGasLimit } from '@/graphql/queries.graph';
-import { Box, Breadcrumbs, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Stack, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,11 +24,15 @@ const GasEstimation: React.FC = () => {
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item>Gas Estimation</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
-      <GraphQLQueryDialog queries={[estimateGasLimit]} variables={variables} />
+      <Stack justifyContent="space-between">
+        <Breadcrumbs.Root>
+          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item>Gas Estimation</Breadcrumbs.Item>
+        </Breadcrumbs.Root>
+        <GraphQLQueryDialog
+          queries={[{ query: estimateGasLimit, variables }]}
+        />
+      </Stack>
 
       <Box marginBottom="$8" />
 

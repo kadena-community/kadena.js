@@ -1,4 +1,4 @@
-import { Box } from '@kadena/react-ui';
+import { Box, Stack } from '@kadena/react-ui';
 
 import type { QueryTransactionsConnection } from '@/__generated__/sdk';
 import {
@@ -70,13 +70,15 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <GraphQLQueryDialog
-        queries={[getBlocksSubscription, getRecentHeights, getTransactions]}
-        variables={{
-          ...getRecentHeightsVariables,
-          ...getTransactionsVariables,
-        }}
-      />
+      <Stack justifyContent="flex-end">
+        <GraphQLQueryDialog
+          queries={[
+            { query: getBlocksSubscription },
+            { query: getRecentHeights, variables: getRecentHeightsVariables },
+            { query: getTransactions, variables: getTransactionsVariables },
+          ]}
+        />
+      </Stack>
 
       <LoaderAndError
         error={newBlocksError || recentBlocksError || txError}

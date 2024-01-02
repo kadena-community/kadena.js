@@ -13,7 +13,14 @@ import {
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
-import { Accordion, Box, Breadcrumbs, Link, Table } from '@kadena/react-ui';
+import {
+  Accordion,
+  Box,
+  Breadcrumbs,
+  Link,
+  Stack,
+  Table,
+} from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -21,9 +28,14 @@ import React from 'react';
 const Block: React.FC = () => {
   const router = useRouter();
 
-  const variables = { hash: router.query.hash as string, first: 10 };
+  const getBlockFromHashVariables = {
+    hash: router.query.hash as string,
+    first: 10,
+  };
 
-  const { loading, data, error } = useGetBlockFromHashQuery({ variables });
+  const { loading, data, error } = useGetBlockFromHashQuery({
+    variables: getBlockFromHashVariables,
+  });
 
   const { data: configData } = useGetGraphConfigurationQuery();
 
@@ -34,14 +46,18 @@ const Block: React.FC = () => {
   return (
     <div className={centerBlockStyle}>
       <div style={{ maxWidth: '1000px' }}>
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item>Block Overview</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
-        <GraphQLQueryDialog
-          queries={[getBlockFromHash, getGraphConfiguration]}
-          variables={variables}
-        />
+        <Stack justifyContent="space-between">
+          <Breadcrumbs.Root>
+            <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+            <Breadcrumbs.Item>Block Overview</Breadcrumbs.Item>
+          </Breadcrumbs.Root>
+          <GraphQLQueryDialog
+            queries={[
+              { query: getBlockFromHash, variables: getBlockFromHashVariables },
+              { query: getGraphConfiguration },
+            ]}
+          />
+        </Stack>
 
         <Box marginBottom="$8" />
 
