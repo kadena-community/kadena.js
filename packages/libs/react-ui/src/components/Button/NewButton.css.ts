@@ -1,225 +1,90 @@
 import { createVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { atoms } from '../../styles/atoms.css';
+import { token } from '../../styles/themeUtils';
 import { tokens } from '../../styles/tokens/contract.css';
 import { bodyBaseBold } from '../../styles/tokens/styles.css';
 
-const hoverBackgroundColor = createVar();
-const activeBackgroundColor = createVar();
-const hoverColor = createVar();
-const outlineColor = createVar();
-const backgroundColor = createVar();
-const color = createVar();
+// to reduce the number of local vars and make the code easier we use two colors and swap them for different variants
 
-// variables for the outlined variant
-const borderColor = createVar();
-const borderHoverColor = createVar();
-const borderActiveColor = createVar();
+// used for the button background color in the base variant
+const bg = createVar();
+const bgHover = createVar();
+
+// used for the button text color in the contained variant
+const fg = createVar();
+const fgHover = createVar();
+
+const iconColor = createVar();
+const focusColor = createVar();
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const colorVariants = {
   primary: {
     vars: {
-      [color]: tokens.kda.foundation.color.text.brand.primary.inverse.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.brand.primary.inverse.default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.brand.primary.inverse['@hover'],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.brand.primary.inverse['@focus'],
-      [hoverColor]:
-        tokens.kda.foundation.color.text.brand.primary.inverse['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.brand.primary['@focus'],
-      [borderColor]: tokens.kda.foundation.color.border.brand.primary.subtle,
-      [borderHoverColor]:
-        tokens.kda.foundation.color.border.brand.primary['@hover'],
-      [borderActiveColor]:
-        tokens.kda.foundation.color.border.brand.primary['@focus'],
+      [fg]: token('color.text.brand.primary.inverse.default'),
+      [fgHover]: token('color.text.brand.primary.inverse.@hover'),
+      [bg]: token('color.background.brand.primary.inverse.default'),
+      [bgHover]: token('color.background.brand.primary.inverse.@hover'),
+      [focusColor]: token('color.border.brand.primary.@focus'),
+      [iconColor]: token('color.icon.brand.primary.inverse.default'),
     },
   },
   secondary: {
     vars: {
-      [color]: tokens.kda.foundation.color.text.brand.secondary.inverse.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.brand.secondary.inverse.default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.brand.secondary.inverse[
-          '@hover'
-        ],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.brand.secondary.inverse[
-          '@focus'
-        ],
-      [hoverColor]:
-        tokens.kda.foundation.color.text.brand.secondary.inverse['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.brand.secondary['@focus'],
-      [borderColor]: tokens.kda.foundation.color.border.brand.secondary.subtle,
-      [borderHoverColor]:
-        tokens.kda.foundation.color.border.brand.secondary['@hover'],
-      [borderActiveColor]:
-        tokens.kda.foundation.color.border.brand.secondary['@focus'],
+      [fg]: token('color.text.brand.secondary.inverse.default'),
+      [fgHover]: token('color.text.brand.secondary.inverse.@hover'),
+      [bg]: token('color.background.brand.secondary.inverse.default'),
+      [bgHover]: token('color.background.brand.secondary.inverse.@hover'),
+      [focusColor]: token('color.border.brand.secondary.@focus'),
+      [iconColor]: token('color.icon.brand.secondary.inverse.default'),
     },
   },
   warning: {
     vars: {
-      [color]:
-        tokens.kda.foundation.color.text.semantic.warning.inverse.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.semantic.warning.inverse.default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.warning.inverse[
-          '@hover'
-        ],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.warning.inverse[
-          '@focus'
-        ],
-      [hoverColor]:
-        tokens.kda.foundation.color.text.semantic.warning.inverse['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.semantic.warning['@focus'],
-      [borderColor]: tokens.kda.foundation.color.border.semantic.warning.subtle,
-      [borderHoverColor]:
-        tokens.kda.foundation.color.border.semantic.warning['@hover'],
-      [borderActiveColor]:
-        tokens.kda.foundation.color.border.semantic.warning['@focus'],
+      [fg]: token('color.text.semantic.warning.inverse.default'),
+      [fgHover]: token('color.text.semantic.warning.inverse.@hover'),
+      [bg]: token('color.background.semantic.warning.inverse.default'),
+      [bgHover]: token('color.background.semantic.warning.inverse.@hover'),
+      [focusColor]: token('color.border.semantic.warning.@focus'),
+      [iconColor]: token('color.icon.semantic.warning.inverse.default'),
     },
   },
   negative: {
     vars: {
-      [color]:
-        tokens.kda.foundation.color.text.semantic.negative.inverse.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.semantic.negative.inverse
-          .default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.negative.inverse[
-          '@hover'
-        ],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.negative.inverse[
-          '@focus'
-        ],
-      [hoverColor]:
-        tokens.kda.foundation.color.text.semantic.negative.inverse['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.semantic.negative['@focus'],
-      [borderColor]:
-        tokens.kda.foundation.color.border.semantic.negative.subtle,
-      [borderHoverColor]:
-        tokens.kda.foundation.color.border.semantic.negative['@hover'],
-      [borderActiveColor]:
-        tokens.kda.foundation.color.border.semantic.negative['@focus'],
+      [fg]: token('color.text.semantic.negative.inverse.default'),
+      [fgHover]: token('color.text.semantic.negative.inverse.@hover'),
+      [bg]: token('color.background.semantic.negative.inverse.default'),
+      [bgHover]: token('color.background.semantic.negative.inverse.@hover'),
+      [focusColor]: token('color.border.semantic.negative.@focus'),
+      [iconColor]: token('color.icon.semantic.negative.inverse.default'),
     },
   },
   positive: {
     vars: {
-      [color]:
-        tokens.kda.foundation.color.text.semantic.positive.inverse.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.semantic.positive.inverse
-          .default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.positive.inverse[
-          '@hover'
-        ],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.positive.inverse[
-          '@focus'
-        ],
-      [hoverColor]:
-        tokens.kda.foundation.color.text.semantic.positive.inverse['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.semantic.positive['@focus'],
-      [borderColor]:
-        tokens.kda.foundation.color.border.semantic.positive.subtle,
-      [borderHoverColor]:
-        tokens.kda.foundation.color.border.semantic.positive['@hover'],
-      [borderActiveColor]:
-        tokens.kda.foundation.color.border.semantic.positive['@focus'],
+      [fg]: token('color.text.semantic.positive.inverse.default'),
+      [fgHover]: token('color.text.semantic.positive.inverse.@hover'),
+      [bg]: token('color.background.semantic.positive.inverse.default'),
+      [bgHover]: token('color.background.semantic.positive.inverse.@hover'),
+      [focusColor]: token('color.border.semantic.positive.@focus'),
+      [iconColor]: token('color.icon.semantic.positive.inverse.default'),
     },
   },
-  primaryAlternative: {
+  info: {
     vars: {
-      [color]: tokens.kda.foundation.color.text.brand.primary.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.brand.primary.default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.brand.primary['@hover'],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.brand.primary['@focus'],
-      [hoverColor]: tokens.kda.foundation.color.text.brand.primary['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.brand.primary['@focus'],
-    },
-  },
-  secondaryAlternative: {
-    vars: {
-      [color]: tokens.kda.foundation.color.text.brand.secondary.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.brand.secondary.default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.brand.secondary['@hover'],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.brand.secondary['@focus'],
-      [hoverColor]: tokens.kda.foundation.color.text.brand.secondary['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.brand.secondary['@focus'],
-    },
-  },
-  warningAlternative: {
-    vars: {
-      [color]: tokens.kda.foundation.color.text.semantic.warning.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.semantic.warning.default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.warning['@hover'],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.warning['@focus'],
-      [hoverColor]: tokens.kda.foundation.color.text.semantic.warning['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.semantic.warning['@focus'],
-    },
-  },
-  positiveAlternative: {
-    vars: {
-      [color]: tokens.kda.foundation.color.text.semantic.positive.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.semantic.positive.default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.positive['@hover'],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.positive['@focus'],
-      [hoverColor]:
-        tokens.kda.foundation.color.text.semantic.positive['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.semantic.positive['@focus'],
-    },
-  },
-  negativeAlternative: {
-    vars: {
-      [color]: tokens.kda.foundation.color.text.semantic.negative.default,
-      [backgroundColor]:
-        tokens.kda.foundation.color.background.semantic.negative.default,
-      [hoverBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.negative['@hover'],
-      [activeBackgroundColor]:
-        tokens.kda.foundation.color.background.semantic.negative['@focus'],
-      [hoverColor]:
-        tokens.kda.foundation.color.text.semantic.negative['@hover'],
-      [outlineColor]:
-        tokens.kda.foundation.color.border.semantic.negative['@focus'],
+      [fg]: token('color.text.semantic.info.inverse.default'),
+      [fgHover]: token('color.text.semantic.info.inverse.@hover'),
+      [bg]: token('color.background.semantic.info.inverse.default'),
+      [bgHover]: token('color.background.semantic.info.inverse.@hover'),
+      [focusColor]: token('color.border.semantic.info.@focus'),
+      [iconColor]: token('color.icon.semantic.info.inverse.default'),
     },
   },
 } as const;
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const focusRing = {
-  outlineColor,
-  outlineStyle: 'solid',
-  outlineWidth: tokens.kda.foundation.border.width.normal,
+  outline: `${focusColor} solid ${tokens.kda.foundation.border.width.normal}`,
   outlineOffset: tokens.kda.foundation.border.width.normal,
 };
 
@@ -270,25 +135,18 @@ export const button = recipe({
       alignItems: 'center',
       borderRadius: 'md',
       gap: 'xs',
-      padding: 'sm',
     }),
     {
-      color,
-      backgroundColor,
+      background: 'none',
+      border: `${tokens.kda.foundation.border.width.normal} solid transparent`,
       transition:
         'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
-
       selectors: {
-        '&[data-hovered]': {
-          color: hoverColor,
-          backgroundColor: hoverBackgroundColor,
-        },
         '&[data-pressed]': focusRing,
         '&[data-focus-visible]': focusRing,
         '&[data-disabled]': {
-          backgroundColor:
-            tokens.kda.foundation.color.background.base['@disabled'],
-          color: tokens.kda.foundation.color.text.base['@disabled'],
+          background: token('color.background.base.@disabled'),
+          color: token('color.text.base.@disabled'),
           cursor: 'not-allowed',
           pointerEvents: 'none',
         },
@@ -296,52 +154,95 @@ export const button = recipe({
     },
   ],
   variants: {
-    variant: colorVariants,
-    isCompact: {
-      true: [atoms({ padding: 'xs' })],
-    },
-    isOutlined: {
-      true: {
-        borderWidth: tokens.kda.foundation.border.width.normal,
-        borderColor: borderColor,
-        borderStyle: 'solid',
-        outlineStyle: 'none',
-        outlineWidth: 0,
-        outlineOffset: 0,
-        outlineColor: 'transparent',
-        vars: {
-          [backgroundColor]: 'transparent',
-          [hoverBackgroundColor]: 'transparent',
-          [outlineColor]: 'transparent',
-        },
+    variant: {
+      contained: {
+        background: bg,
+        color: fg,
+        transition:
+          'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
         selectors: {
           '&[data-hovered]': {
-            borderColor: borderHoverColor,
-          },
-          '&[data-pressed]': {
-            borderColor: borderActiveColor,
-          },
-          '&[data-focus-visible]': {
-            borderColor: borderActiveColor,
-          },
-          '&[data-disabled]': {
-            borderColor: tokens.kda.foundation.color.border.base['@disabled'],
+            color: fgHover,
+            background: bgHover,
           },
         },
       },
+      alternative: {
+        color: bg,
+        background: fg,
+        selectors: {
+          '&[data-hovered]': {
+            background: fgHover,
+            color: bgHover,
+          },
+        },
+      },
+      outlined: {
+        border: `${tokens.kda.foundation.border.width.normal} solid ${fg}`,
+        outline: 'none',
+        color: bg,
+        background: 'none',
+        selectors: {
+          '&[data-hovered]': {
+            borderColor: fgHover,
+          },
+          '&[data-pressed]': {
+            borderColor: focusColor,
+            outline: 'none',
+          },
+          '&[data-focus-visible]': {
+            borderColor: focusColor,
+            outline: 'none',
+          },
+          '&[data-disabled]': {
+            borderColor: token('color.border.base.@disabled'),
+            color: token('color.text.base.@disabled'),
+            background: 'none',
+          },
+        },
+      },
+      text: {
+        background: 'none',
+        color: bg,
+        selectors: {
+          '&[data-hovered]': {
+            color: bgHover,
+            textDecoration: 'underline',
+          },
+          '&[data-pressed]': {
+            color: focusColor,
+            textDecoration: 'underline',
+            outline: 'none',
+          },
+          '&[data-focus-visible]': {
+            color: focusColor,
+            textDecoration: 'underline',
+            outline: 'none',
+          },
+          '&[data-disabled]': {
+            background: 'none',
+          },
+        },
+      },
+    },
+    color: colorVariants,
+    isCompact: {
+      true: atoms({ padding: 'xs' }),
+      false: atoms({ padding: 'sm' }),
     },
     isLoading: {
       true: {
         pointerEvents: 'none',
       },
     },
-    onlyIcon: {
-      true: [atoms({ padding: 'sm' })],
-    },
   },
   defaultVariants: {
-    variant: 'primary',
+    variant: 'contained',
+    color: 'primary',
     isCompact: false,
-    isOutlined: false,
   },
+});
+
+export const icon = style({
+  fill: iconColor,
 });

@@ -1,7 +1,13 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 import type { StyleRule } from '@vanilla-extract/css';
+import { fallbackVar } from '@vanilla-extract/css';
 import type { Properties } from 'csstype';
+import get from 'lodash.get';
 import omit from 'lodash.omit';
+import { isNullOrUndefined } from '../utils/is';
+import type { FlattenObject, ObjectPathLeaves } from '../utils/object';
+import { flattenObject } from '../utils/object';
+import { tokens } from './tokens/contract.css';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const breakpoints = {
@@ -74,53 +80,24 @@ export const mapToProperty =
   };
 
 type Token = string | { [key: string]: Token };
-type IgnoredToken = '@hover' | '@focus' | '@disabled';
 
 // eslint-disable-next-line
-const ignoredTokens = ['@hover', '@focus', '@disabled'];
+const ignoredTokens = ['@hover', '@focus', '@disabled'] as const;
+type IgnoredToken = (typeof ignoredTokens)[number];
 
-function isValue(token: Token): token is string {
-  return typeof token === 'string';
+export function flattenTokens<T extends Record<string, Token>>(
+  tokens: T,
+): FlattenObject<T, IgnoredToken> {
+  return flattenObject(tokens, ignoredTokens);
 }
 
-type Leaves<T> = T extends object
-  ? {
-      [K in keyof T]: `${Exclude<K, symbol | IgnoredToken>}${T[K] extends object
-        ? `.${Leaves<T[K]>}`
-        : ''}`;
-    }[keyof T]
-  : never;
-
-type FlattenObjectTokens<T extends { [key: string]: Token }> = {
-  [Key in Leaves<T>]: string;
-};
-
-/**
- * @private Used internally to create utility class options
- * @param {Record<string, any>} tokens - The tokens to flatten
- * @param {string | undefined} prefix - Do not use this parameter. This param is used to internally recursively pass parent prefixes to nested tokens.
- */
-export const flattenTokens = <T extends Record<string, any>>(
-  tokens: T,
-  prefix?: string,
-): FlattenObjectTokens<T> => {
-  if (isValue(tokens)) {
-    return { [prefix!]: tokens } as any;
+export function token(
+  path: ObjectPathLeaves<typeof tokens.kda.foundation>,
+  fallback?: string,
+): string {
+  const v = get(tokens.kda.foundation, path);
+  if (!isNullOrUndefined(fallback)) {
+    return fallbackVar(v, fallback);
   }
-
-  const flattenedTokens: any = {};
-  Object.keys(tokens).forEach((key) => {
-    if (ignoredTokens.includes(key)) {
-      return;
-    }
-
-    const newKey = prefix !== undefined ? prefix.concat('.', key) : key;
-    const item = tokens[key];
-    if (isValue(item)) {
-      flattenedTokens[newKey] = item;
-    } else {
-      Object.assign(flattenedTokens, flattenTokens(item, newKey));
-    }
-  });
-  return flattenedTokens;
-};
+  return v;
+}
