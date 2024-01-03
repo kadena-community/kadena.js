@@ -1,8 +1,8 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Heading } from '..';
 import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
 import { Box } from '../Layout/Box/Box';
+import { Heading } from '../Typography/Heading/Heading';
 import type { IButtonProps } from './NewButton';
 import { Button } from './NewButton';
 import { button } from './NewButton.css';
