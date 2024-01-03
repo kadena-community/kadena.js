@@ -10,7 +10,7 @@ import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
 export const logoClass = style({
   zIndex: $$navMenu,
   maxWidth: vars.sizes.$48,
-  paddingRight: vars.sizes.$2,
+  paddingRight: vars.sizes.$10,
 });
 
 export const headerButtonClass = style([
