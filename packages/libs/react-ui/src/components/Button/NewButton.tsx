@@ -84,16 +84,15 @@ function BaseButton(
       ref={ref}
       className={classNames(
         button({
-          onlyIcon,
           variant: props.variant,
+          color: props.color,
           isCompact: props.isCompact,
-          isOutlined: props.isOutlined,
           isLoading: props.isLoading,
         }),
         props.className,
       )}
       aria-disabled={props.isLoading || undefined}
-      data-disabled={props.isDisabled || props.isLoading || undefined}
+      data-disabled={props.isDisabled || undefined}
       data-pressed={isPressed || undefined}
       data-hovered={isHovered || undefined}
       data-focused={isFocused || undefined}
