@@ -20,7 +20,7 @@ type Block implements Node {
   id: ID!
   minerAccount: ChainFungibleAccount!
   parent: Block
-  parentHash: String
+  parentHash: String!
   payloadHash: String!
 
   """The proof of work hash."""
