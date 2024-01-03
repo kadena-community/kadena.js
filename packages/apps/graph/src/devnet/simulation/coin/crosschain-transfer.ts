@@ -1,9 +1,10 @@
+import type { IAccount } from '@devnet/utils';
+import { sender00 } from '@devnet/utils';
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCrossChain } from '@kadena/client-utils/coin';
 import { dotenv } from '@utils/dotenv';
-import type { IAccount } from './helper';
-import { logger, sender00 } from './helper';
+import { logger } from '@utils/logger';
 
 export async function crossChainTransfer({
   sender,
