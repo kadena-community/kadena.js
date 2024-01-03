@@ -36,10 +36,10 @@ export const GraphQLQueryDialog = (
             <p>Amount of queries on this page: {queries.length}</p>
             <Divider />
             {queries.map((query, index) => (
-              <>
+              <div key={index}>
                 <p>Query #{index + 1}</p>
                 <Box marginBottom="$4" />
-                <pre key={index}>{print(query.query)}</pre>
+                <pre>{print(query.query)}</pre>
                 {query.variables && (
                   <>
                     <Box marginBottom="$4" />
@@ -49,7 +49,7 @@ export const GraphQLQueryDialog = (
                   </>
                 )}
                 {index + 1 !== queries.length && <Divider />}
-              </>
+              </div>
             ))}
           </DialogContent>
         )}
