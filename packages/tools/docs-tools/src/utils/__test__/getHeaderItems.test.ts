@@ -89,13 +89,13 @@ describe('utils getHeaderItems', () => {
       },
       {
         root: '/test',
-        menu: 'mockmenu test.md',
-        title: 'mocktitle test.md',
+        menu: 'mockmenu index.md',
+        title: 'mocktitle index.md',
       },
       {
         root: '/test/test2',
-        menu: 'mockmenu test2.md',
-        title: 'mocktitle test2.md',
+        menu: 'mockmenu index.md',
+        title: 'mocktitle index.md',
       },
     ];
 
