@@ -37,7 +37,7 @@
     "test": "rimraf test-* && heft test && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
   },
   "dependencies": {
-    "commander": "^11.1.0",
+    "commander": "^11.0.0",
     "cross-fetch": "~3.1.5",
     "cross-spawn": "~7.0.3",
     "yaml": "~2.1.1"
@@ -49,9 +49,9 @@
     "@types/cross-spawn": "~6.0.2",
     "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.6",
-    "@types/mkdirp": "~2.0.0",
-    "@types/node": "^20.9.0",
-    "@types/rimraf": "~4.0.5",
+    "@types/mkdirp": "~1.0.2",
+    "@types/node": "^18.17.14",
+    "@types/rimraf": "~3.0.2",
     "chalk": "^5.2.0",
     "cross-env": "~7.0.3",
     "eslint": "^8.45.0",
