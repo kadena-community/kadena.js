@@ -1,19 +1,18 @@
-import debug from 'debug';
-import { WALLET_DIR } from '../../constants/config.js';
-import { createExternalPrompt } from '../../prompts/generic.js';
-import {
-  confirmWalletDeletePrompt,
-  walletDeletePrompt,
-} from '../../prompts/keys.js';
-import { globalOptions } from '../../utils/globalOptions.js';
-import { removeAfterFirstDot } from '../../utils/path.util.js';
-
+import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import type { Command } from 'commander';
+import { Option } from 'commander';
+import debug from 'debug';
+import { z } from 'zod';
+
+import { WALLET_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { createOption } from '../../utils/createOption.js';
+import { globalOptions } from '../../utils/globalOptions.js';
+import { removeAfterFirstDot } from '../../utils/path.util.js';
 import { getWallet } from '../utils/keysHelpers.js';
 
 /*
@@ -48,89 +47,79 @@ export const deleteWallet = async (
   return { success: true, data: {} };
 };
 
+const confirmDelete = createOption({
+  key: 'confirmDelete',
+  defaultIsOptional: false,
+  async prompt(prev, args) {
+    if (typeof args.keyWallet !== 'string') return false;
+
+    // delete all prompt
+    if (args.keyWallet === 'all') {
+      return await select({
+        message: 'Are you sure you want to delete ALL wallets',
+        choices: [
+          { value: true, name: 'Yes, delete all wallets' },
+          { value: false, name: 'No, do not delete any wallet' },
+        ],
+      });
+    }
+
+    // specific wallet
+    const walletName = removeAfterFirstDot(args.keyWallet);
+    const walletData = await getWallet(walletName);
+
+    if (!walletData) return false;
+
+    const keysText =
+      walletData.keys.length > 0
+        ? ` with keys: ${walletData.keys.map((key) => `"${key}"`).join(', ')}`
+        : '';
+
+    return await select({
+      message: `Are you sure you want to delete the wallet: "${args.keyWallet}"${keysText}?`,
+      choices: [
+        { value: true, name: 'Yes' },
+        { value: false, name: 'No' },
+      ],
+    });
+  },
+  validation: z.boolean(),
+  option: new Option('--confirm', 'Confirm wallet deletion'),
+});
+
 export const createDeleteKeysCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
   'delete-wallet',
   'delete wallet from your local storage',
-  [globalOptions.keyWalletSelect()],
+  [globalOptions.keyWalletSelect(), confirmDelete()],
   async (config) => {
     try {
       debug('delete-wallet:action')({ config });
 
-      const externalPrompt = createExternalPrompt({
-        walletDeletePrompt,
-        confirmWalletDeletePrompt,
-      });
+      if (config.confirmDelete !== true) {
+        console.log(chalk.yellow('\nNo wallets were deleted.\n'));
+        return;
+      }
 
-      if (config.keyWallet === 'all') {
-        if (config.quiet !== true) {
-          const confirmDelete =
-            await externalPrompt.confirmWalletDeletePrompt();
-          if (confirmDelete === 'no') {
-            console.log(chalk.yellow('\nNo wallets were deleted.\n'));
-            return;
-          }
-        }
+      const wallet =
+        typeof config.keyWallet === 'string'
+          ? config.keyWallet
+          : config.keyWallet.fileName;
 
-        const result = await deleteWallet('all');
-        assertCommandError(result);
+      const result = await deleteWallet(wallet);
+      assertCommandError(result);
+
+      if (wallet === 'all') {
         console.log(chalk.green('\nAll wallets have been deleted.\n'));
-        return;
-      }
-
-      if (
-        typeof config.keyWallet === 'string' ||
-        config.keyWallet === undefined ||
-        config.keyWallet.fileName === undefined ||
-        config.keyWallet.fileName === ''
-      ) {
-        console.error(chalk.red('Wallet file name is invalid.'));
-        return;
-      }
-
-      const walletName = removeAfterFirstDot(config.keyWallet.fileName);
-      const walletData = await getWallet(walletName);
-
-      if (!walletData) {
+      } else {
         console.log(
-          chalk.yellow(`\nThe wallet: "${walletName}" could not be found.\n`),
-        );
-        return;
-      }
-
-      if (walletData.keys.length) {
-        console.log(
-          chalk.yellow(
-            `The wallet ${walletName} contanins keys:\n${walletData.keys
-              .map((key) => `- ${key}`)
-              .join('\n')}`,
+          chalk.green(
+            `\nThe wallet: "${wallet}" and associated key files have been deleted.\n`,
           ),
         );
       }
-
-      if (config.quiet === true) {
-        const shouldDelete =
-          await externalPrompt.walletDeletePrompt(walletName);
-        if (shouldDelete === 'no') {
-          console.log(
-            chalk.yellow(
-              `\nThe wallet: "${walletName}" will not be deleted.\n`,
-            ),
-          );
-          return;
-        }
-      }
-
-      const result = await deleteWallet(config.keyWallet.fileName);
-      assertCommandError(result);
-
-      console.log(
-        chalk.green(
-          `\nThe wallet: "${'>tmp<'}" and associated key files have been deleted.\n`,
-        ),
-      );
     } catch (error) {
       console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
       process.exit(1);
