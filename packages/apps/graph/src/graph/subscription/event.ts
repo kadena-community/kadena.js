@@ -4,26 +4,26 @@ import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 
-builder.subscriptionField('event', (t) =>
+builder.subscriptionField('events', (t) =>
   t.prismaField({
-    description:
-      'Listen for a specific event by qualifiedName (e.g. `coin.TRANSFER`).',
+    description: 'Listen for events by qualifiedName (e.g. `coin.TRANSFER`).',
     args: {
-      eventName: t.arg.string({ required: true }),
+      qualifiedEventName: t.arg.string({ required: true }),
     },
     type: ['Event'],
     nullable: true,
-    subscribe: (__parent, args, context) => iteratorFn(args.eventName, context),
+    subscribe: (__parent, args, context) =>
+      iteratorFn(args.qualifiedEventName, context),
     resolve: (__query, parent) => parent as Event[],
   }),
 );
 
 async function* iteratorFn(
-  eventName: string,
+  qualifiedEventName: string,
   context: IContext,
 ): AsyncGenerator<Event[] | undefined, void, unknown> {
   // Get the last event and yield it
-  const eventResult = await getLastEvent(eventName);
+  const eventResult = await getLastEvent(qualifiedEventName);
   let lastEvent;
 
   if (!nullishOrEmpty(eventResult)) {
@@ -33,10 +33,10 @@ async function* iteratorFn(
 
   while (!context.req.socket.destroyed) {
     // Get new events
-    const newEvents = await getLastEvent(eventName, lastEvent?.id);
+    const newEvents = await getLastEvent(qualifiedEventName, lastEvent?.id);
 
-    if (!nullishOrEmpty(newEvents) && lastEvent?.id !== newEvents?.[0]?.id) {
-      lastEvent = newEvents[newEvents.length - 1];
+    if (!nullishOrEmpty(newEvents)) {
+      lastEvent = newEvents[0];
       yield newEvents;
     }
 
@@ -73,5 +73,6 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
     },
   });
 
-  return foundEvents;
+  // sort by id desc
+  return foundEvents.sort((a, b) => b.id - a.id);
 }

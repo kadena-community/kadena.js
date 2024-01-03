@@ -44,11 +44,11 @@ export const getTransactionByRequestKey: DocumentNode = gql`
   }
 `;
 
-export const getEventByName: DocumentNode = gql`
+export const getEventsByName: DocumentNode = gql`
   ${ALL_EVENT_FIELDS}
 
-  subscription getEventByName($eventName: String!) {
-    event(eventName: $eventName) {
+  subscription getEventsByName($qualifiedEventName: String!) {
+    events(qualifiedEventName: $qualifiedEventName) {
       ...AllEventFields
       block {
         id
