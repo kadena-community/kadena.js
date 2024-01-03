@@ -3,7 +3,10 @@ import * as fs from 'fs';
 import yaml from 'js-yaml';
 
 export const loadConfigPages = (): IConfigTreeItem[] => {
-  const data = fs.readFileSync(`../config.mock.yaml`, 'utf-8');
+  const data = fs.readFileSync(
+    `${process.cwd()}/src/scripts/fixLocalLinks/utils/__tests__/config.mock.yaml`,
+    'utf-8',
+  );
   const { pages } = yaml.load(data) as IConfig;
 
   const cleanup = (pages: IConfigTreeItem[]): IConfigTreeItem[] => {

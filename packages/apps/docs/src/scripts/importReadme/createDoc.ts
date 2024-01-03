@@ -239,6 +239,7 @@ const createPage = async (
   if (hasMultiplePages) {
     createDir(`${DOCS_ROOT}/${item.destination}`);
   }
+  console.log(333333333);
 
   const lastModifiedDate = await getLastModifiedDate(
     `.${removeRepoDomain(item.repo)}${item.file}`,
@@ -293,10 +294,12 @@ export const importDocs = async (
   filename: string,
   item: IImportReadMeItem,
 ): Promise<void | undefined> => {
+  console.log({ filename });
   const doc = removeFrontmatter(fs.readFileSync(`${filename}`, 'utf-8'));
 
   const md: Root = remark.parse(doc);
 
+  console.log(1111, item.destination);
   if (item.options.singlePage) {
     relinkReferences(md, [md], `/${item.destination}/`);
     await createPage(md, item);

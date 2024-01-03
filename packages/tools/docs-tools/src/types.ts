@@ -243,6 +243,7 @@ export interface IConfigTreeItem {
   id: string;
   url: string;
   file: string;
+  repo?: string;
   children?: IConfigTreeItem[];
 }
 export interface IConfig {

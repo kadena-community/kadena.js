@@ -83,8 +83,8 @@ pages:
             url: /kadena-content-repository
             file: /kadena/resources/kadena-content-repository.md
   build:
-    url: '/build'
-    file: '/build/index.tsx'
+    url: /build
+    file: /build/index.tsx
     children:
       quickstart:
         url: /quickstart
@@ -93,6 +93,10 @@ pages:
           memorywall:
             url: /memorywall
             file: /build/quickstart/memorywall.md
+          testimport:
+            file: /packages/libs/chainweb-node-client/README.md
+            url: /testimport
+            repo: https://github.com/kadena-community/kadena.js
           chainweaver:
             url: /setup-chainweaver
             file: /build/quickstart/setup-chainweaver.md

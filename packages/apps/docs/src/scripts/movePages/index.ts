@@ -1,5 +1,9 @@
 import type { IConfigTreeItem } from '@kadena/docs-tools';
+import { getUrlNameOfPageFile } from '@kadena/docs-tools';
 import * as fs from 'fs';
+import { getParentTreeFromPage } from '../fixLocalLinks/utils/getParentTreeFromPage';
+import { importRepo } from '../importReadme/importRepo';
+import type { IImportReadMeItem } from '../utils';
 import type { IScriptResult } from './../types';
 import { promiseExec } from './../utils/build';
 import { getFileExtension } from './utils/getFileExtension';
@@ -7,7 +11,6 @@ import { loadConfigPages } from './utils/loadConfigPages';
 
 const errors: string[] = [];
 const success: string[] = [];
-const newFiles: string[] = [];
 
 const copyBlogchain = (): void => {
   fs.mkdirSync(`./src/pages/blogchain`, { recursive: true });
@@ -16,19 +19,31 @@ const copyBlogchain = (): void => {
   });
 };
 
-const copyPages = (pages: IConfigTreeItem[], parentDir: string = ''): void => {
-  pages.forEach((page) => {
-    const dir = `${parentDir}${page.url}`;
-    const file = `${dir}/index.${getFileExtension(page.file)}`;
+const copyPages = async (
+  pages: IConfigTreeItem[],
+  parentDir: string = '',
+): Promise<void> => {
+  for (let i = 0; i < pages.length; i++) {
+    const page = pages[i];
+    if (page.repo) {
+      const item = { ...page } as unknown as IImportReadMeItem;
+      const parentTree = await getParentTreeFromPage(page);
+      console.log({ parentTree });
+      item.destination = getUrlNameOfPageFile(page, parentTree ?? []);
 
-    fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
-    fs.copyFileSync(`./src/docs${page.file}`, `./src/pages${file}`);
-    newFiles.push(file);
+      await importRepo(item);
+    } else {
+      const dir = `${parentDir}${page.url}`;
+      const file = `${dir}/index.${getFileExtension(page.file)}`;
+
+      fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
+      fs.copyFileSync(`./src/docs${page.file}`, `./src/pages${file}`);
+    }
 
     if (page.children) {
-      copyPages(page.children, `${parentDir}${page.url}`);
+      await copyPages(page.children, `${parentDir}${page.url}`);
     }
-  });
+  }
 };
 
 export const isAlreadyIgnored = (
@@ -38,18 +53,6 @@ export const isAlreadyIgnored = (
   // eslint-disable-next-line @rushstack/security/no-unsafe-regexp
   const regex = new RegExp(`^${filePath}$`, 'gm');
   return regex.test(existingContent);
-};
-
-const createGitIgnore = (files: string[]): void => {
-  const existingContent = fs.readFileSync(`./src/pages/.gitignore`, 'utf-8');
-
-  const content = files.reduce((acc, val) => {
-    if (isAlreadyIgnored(val, existingContent)) return acc;
-
-    return `${acc}\n${val}`;
-  }, existingContent);
-
-  fs.writeFileSync('./src/pages/.gitignore', content);
 };
 
 //this removes all the files in the /pages folder that are in the gitignore.
@@ -69,12 +72,10 @@ export const movePages = async (): Promise<IScriptResult> => {
   await cleanup();
 
   const pages = loadConfigPages();
-  copyPages(pages);
+  await copyPages(pages);
 
   //copy the blogchain files
   copyBlogchain();
-
-  createGitIgnore(newFiles);
 
   success.push('There were no issues with copying the pages');
   return { errors, success };
