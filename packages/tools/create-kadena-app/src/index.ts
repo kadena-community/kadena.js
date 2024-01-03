@@ -6,8 +6,9 @@ import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const __filename = fileURLToPath(import.meta.url);
-
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const __dirname = dirname(__filename);
 
 const packageJson: { version: string } = JSON.parse(
