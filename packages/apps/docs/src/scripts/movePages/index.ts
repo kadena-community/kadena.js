@@ -1,12 +1,14 @@
 import type { IConfigTreeItem } from '@kadena/docs-tools';
-import { getUrlNameOfPageFile } from '@kadena/docs-tools';
+import {
+  getFileExtension,
+  getParentTreeFromPage,
+  getUrlNameOfPageFile,
+} from '@kadena/docs-tools';
 import * as fs from 'fs';
-import { getParentTreeFromPage } from '../fixLocalLinks/utils/getParentTreeFromPage';
 import { importRepo } from '../importReadme/importRepo';
 import type { IImportReadMeItem } from '../utils';
 import type { IScriptResult } from './../types';
 import { promiseExec } from './../utils/build';
-import { getFileExtension } from './utils/getFileExtension';
 import { loadConfigPages } from './utils/loadConfigPages';
 
 const errors: string[] = [];
@@ -28,7 +30,6 @@ const copyPages = async (
     if (page.repo) {
       const item = { ...page } as unknown as IImportReadMeItem;
       const parentTree = await getParentTreeFromPage(page);
-      console.log({ parentTree });
       item.destination = getUrlNameOfPageFile(page, parentTree ?? []);
 
       await importRepo(item);
@@ -37,6 +38,7 @@ const copyPages = async (
       const file = `${dir}/index.${getFileExtension(page.file)}`;
 
       fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
+      console.log(page.file);
       fs.copyFileSync(`./src/docs${page.file}`, `./src/pages${file}`);
     }
 

@@ -10,8 +10,10 @@ import remarkTwitter from './remarkTwitter';
 import remarkYoutube from './remarkYoutube';
 import { getReadTime } from './utils';
 import { getUrlNameOfPageFile } from './utils/config/getUrlNameOfPageFile';
+import { getFileExtension } from './utils/getFileExtension';
 import { getFrontmatterFromTsx } from './utils/getFrontmatter';
 import { getHeaderItems } from './utils/getHeaderItems';
+import { getParentTreeFromPage } from './utils/getParentTreeFromPage';
 import { isMarkDownFile } from './utils/markdown/isMarkdownFile';
 import {
   checkSubTreeForActive,
@@ -31,11 +33,13 @@ export {
   checkSubTreeForActive,
   flatPosts,
   flattenData,
+  getFileExtension,
   getFlatData,
   getFrontmatterFromTsx,
   getHeaderItems,
   getMenuData,
   getPages,
+  getParentTreeFromPage,
   getPathName,
   getReadTime,
   getUrlNameOfPageFile,

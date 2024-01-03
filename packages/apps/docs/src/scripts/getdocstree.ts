@@ -1,5 +1,6 @@
 import type { IConfigTreeItem, LayoutType } from '@kadena/docs-tools';
 import {
+  getFileExtension,
   getFrontmatterFromTsx,
   getPages,
   getReadTime,
@@ -11,7 +12,6 @@ import yaml from 'js-yaml';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import { frontmatter } from 'micromark-extension-frontmatter';
-import { getFileExtension } from './movePages/utils/getFileExtension';
 import { TEMP_DIR, promiseExec } from './utils/build';
 
 const errors: string[] = [];
@@ -157,6 +157,7 @@ const createTree = async (
   pages: IConfigTreeItem[],
 ): Promise<IParent[]> => {
   const files = fs.readdirSync(rootDir);
+
   let newFiles: string[] = [];
   //set the files in the right order
 

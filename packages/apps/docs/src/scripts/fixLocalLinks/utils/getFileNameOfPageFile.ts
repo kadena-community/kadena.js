@@ -1,5 +1,5 @@
-import { getFileExtension } from '@/scripts/movePages/utils/getFileExtension';
 import type { IConfigTreeItem } from '@kadena/docs-tools';
+import { getFileExtension } from '@kadena/docs-tools';
 
 export const getFileNameOfPageFile = (
   page: IConfigTreeItem,

@@ -1,6 +1,6 @@
 import { createSlug } from '@/utils/createSlug';
 import type { IConfigTreeItem } from '@kadena/docs-tools';
-import { getUrlNameOfPageFile } from '@kadena/docs-tools';
+import { getFileExtension, getUrlNameOfPageFile } from '@kadena/docs-tools';
 import * as fs from 'fs';
 import type {
   Definition,
@@ -12,7 +12,6 @@ import type {
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
-import { getFileExtension } from '../movePages/utils/getFileExtension';
 import { loadConfigPages } from '../movePages/utils/loadConfigPages';
 import type { IScriptResult } from './../types';
 import { getTypes } from './../utils';
@@ -104,7 +103,6 @@ const getUrlofPageFile = (link: string): string => {
 
   const result = findPageByFile(cleanLink, pages);
   if (!result) {
-    console.log(cleanLink, removeFileExtenion(cleanLink));
     errors.push(
       `${link}${fileHash ? `#${fileHash}` : ``} not found in the config`,
     );

@@ -3,7 +3,9 @@ import { join } from 'path';
 import type { IConfigTreeItem, IMenuItem } from 'src/types';
 import { getUrlNameOfPageFile } from './config/getUrlNameOfPageFile';
 import { getConfig } from './getConfig';
+import { getFileExtension } from './getFileExtension';
 import { getFrontmatter, getFrontmatterFromTsx } from './getFrontmatter';
+import { getParentTreeFromPage } from './getParentTreeFromPage';
 import { isMarkDownFile } from './markdown/isMarkdownFile';
 import { getPages } from './staticGeneration/getData';
 
@@ -40,7 +42,13 @@ export const getHeaderItems = async (): Promise<IMenuItem[]> => {
     const root = getUrlNameOfPageFile(page, pageArray);
     if (!page) throw new Error('no file path found for id ${id}');
 
-    const filePath = join(process.cwd(), `src/docs/${page.file}`);
+    const parentTree = await getParentTreeFromPage(page);
+
+    const url = getUrlNameOfPageFile(page, parentTree);
+    const extension = getFileExtension(page.file);
+
+    const filePath = join(process.cwd(), `src/pages${url}/index.${extension}`);
+
     const content = await readFile(filePath, 'utf-8');
     const frontmatter = isMarkDownFile(page.file)
       ? await getFrontmatter(content)

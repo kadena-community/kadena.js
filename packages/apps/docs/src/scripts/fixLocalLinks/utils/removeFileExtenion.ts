@@ -1,4 +1,4 @@
-import { getFileExtension } from '@/scripts/movePages/utils/getFileExtension';
+import { getFileExtension } from '@kadena/docs-tools';
 
 export const removeFileExtenion = (filename: string): string => {
   const extension = getFileExtension(filename);

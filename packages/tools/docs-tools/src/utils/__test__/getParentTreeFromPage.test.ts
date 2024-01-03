@@ -1,7 +1,7 @@
-import type { IConfigTreeItem } from '@kadena/docs-tools';
+import { IConfigTreeItem } from 'src/types';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getParentTreeFromPage } from '../getParentTreeFromPage';
-import { loadConfigPages } from './loadConfigPages.mock';
+import { loadConfigPages } from './../loadConfigPages.mock';
 
 vi.mock('@/scripts/movePages/utils/loadConfigPages', () => {
   return {

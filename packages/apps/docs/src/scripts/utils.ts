@@ -36,38 +36,7 @@ export interface IImportReadMeItem {
  */
 export const importReadMes: IImportReadMeItem[] = [
   /** /libs/chainweb-node-client */
-  {
-    file: `/README.md`,
-    repo: 'https://github.com/kadena-community/getting-started',
-    destination: '/build/quickstart',
-    title: 'Quickstart',
-    options: {
-      RootOrder: 0,
-      tags: ['devnet', 'chainweaver', 'tutorial', 'docker', 'transactions'],
-      singlePage: true,
-    },
-  },
-  {
-    file: '/packages/libs/chainweb-node-client/README.md',
-    repo: 'https://github.com/kadena-community/kadena.js',
-    destination: 'chainweb/node-client',
-    title: 'Node Client',
-    options: {
-      RootOrder: 1,
-      tags: ['chainweb', 'pact', 'reference'],
-    },
-  },
-  {
-    file: '/packages/libs/chainweb-node-client/etc/chainweb-node-client.api.md',
-    repo: 'https://github.com/kadena-community/kadena.js',
-    destination: 'chainweb/node-client/api',
-    title: 'Client Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-      tags: ['chainweb', 'api', 'reference'],
-    },
-  },
+
   /** /libs/chainweb-stream-client */
   {
     file: '/packages/libs/chainweb-stream-client/README.md',

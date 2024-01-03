@@ -1,7 +1,7 @@
+import { getFileExtension } from '@kadena/docs-tools';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import { getFileExtension } from './movePages/utils/getFileExtension';
 import type { IScriptResult } from './types';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

@@ -1,15 +1,15 @@
-import { loadConfigPages } from '@/scripts/movePages/utils/loadConfigPages';
-import type { IConfigTreeItem } from '@kadena/docs-tools';
+import { IConfigTreeItem } from 'src/types';
+import { loadConfigPages } from './loadConfigPages';
 
 // return the parents in the config tree of given page.
 export const getParentTreeFromPage = async (
   page: IConfigTreeItem,
-): Promise<IConfigTreeItem[] | undefined> => {
+): Promise<IConfigTreeItem[]> => {
   const pages = await loadConfigPages();
-  delete page.children;
+  const { children, ...newPage } = page;
 
   const innerSearch = (
-    targetPage: IConfigTreeItem,
+    targetPage: IConfigTreeItem | undefined,
     innerPages: IConfigTreeItem[],
     parentTree: IConfigTreeItem[],
     parent?: IConfigTreeItem,
@@ -31,5 +31,5 @@ export const getParentTreeFromPage = async (
     }, parentTree);
   };
 
-  return innerSearch(page, pages, []).reverse().slice(0, -1);
+  return innerSearch(newPage, pages, []).reverse().slice(0, -1) ?? [];
 };

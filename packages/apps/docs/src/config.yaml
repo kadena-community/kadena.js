@@ -88,15 +88,12 @@ pages:
     children:
       quickstart:
         url: /quickstart
-        file: /build/quickstart/index.md
+        file: /README.md
+        repo: https://github.com/kadena-community/getting-started
         children:
           memorywall:
             url: /memorywall
             file: /build/quickstart/memorywall.md
-          testimport:
-            file: /packages/libs/chainweb-node-client/README.md
-            url: /testimport
-            repo: https://github.com/kadena-community/kadena.js
           chainweaver:
             url: /setup-chainweaver
             file: /build/quickstart/setup-chainweaver.md
@@ -334,6 +331,16 @@ pages:
   chainweb:
     url: /chainweb
     file: /chainweb/index.tsx
+    children:
+      nodeclient:
+        file: /packages/libs/chainweb-node-client/README.md
+        url: /node-client
+        repo: https://github.com/kadena-community/kadena.js
+        children:
+          nodeclientapi:
+            file: /packages/libs/chainweb-node-client/etc/chainweb-node-client.api.md
+            url: /api
+            repo: https://github.com/kadena-community/kadena.js
   marmalade:
     url: /marmalade
     file: /marmalade/index.tsx
