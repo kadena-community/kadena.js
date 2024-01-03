@@ -364,40 +364,6 @@ export const keyDeletePrompt: IPrompt<string> = async (
   });
 };
 
-export const confirmWalletDeletePrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
-  const message = 'Are you sure you want to delete ALL wallets';
-
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes, delete all wallets' },
-      { value: 'no', name: 'No, do not delete any wallet' },
-    ],
-  });
-};
-
-export const walletDeletePrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
-  if (args.defaultValue === undefined) {
-    throw new Error('Walletis required for the delete prompt.');
-  }
-  const message = `Are you sure you want to delete the wallet: "${args.defaultValue}"?`;
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes' },
-      { value: 'no', name: 'No' },
-    ],
-  });
-};
-
 /**
  * Formats a key based on its type.
  *
