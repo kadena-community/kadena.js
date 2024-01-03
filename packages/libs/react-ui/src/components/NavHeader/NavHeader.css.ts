@@ -44,11 +44,10 @@ export const itemsContainerClass = style([
 export const logoClass = style([
   atoms({
     display: 'flex',
+    marginInline: 'xs',
+    paddingInline: 'sm',
+    paddingBlock: 'sm',
   }),
-  {
-    margin: `0 ${vars.sizes.$3}`,
-    minWidth: 'max-content',
-  },
 ]);
 
 export const navWrapperClass = style([

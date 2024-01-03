@@ -13,6 +13,9 @@ export const footerWrapperClass = style([
     gridArea: 'footer',
   },
 ]);
+export const logoClass = style({
+  maxWidth: vars.sizes.$48,
+});
 
 export const footerClass = style([
   sprinkles({
