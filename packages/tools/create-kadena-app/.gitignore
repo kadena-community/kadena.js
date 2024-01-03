@@ -1,0 +1,9 @@
+# lock-files that don't belong here
+!common/**/pnpm-lock.yaml
+
+test-*/*
+
+# Ignore sample tests app folders
+sample-*
+*-app
+*-app*
