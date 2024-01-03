@@ -6,6 +6,9 @@ module.exports = {
     '@kadena-dev/eslint-config/profile/react',
     'plugin:storybook/recommended',
   ],
+  rules: {
+    'react/prop-types': 'off',
+  },
   parserOptions: {
     tsconfigRootDir: __dirname,
     ecmaVersion: 'latest',

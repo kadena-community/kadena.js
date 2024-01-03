@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Heading } from '..';
