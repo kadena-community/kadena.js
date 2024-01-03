@@ -21,8 +21,8 @@ to use, build, and trade NFTs.
 
 To learn more about Marmalade try these recommended readings:
 
-1. [Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-1-2021-12-02.md)
-2. [Mint a Marketplace! NFTs on Kadena Marmalade (Part 2)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-2-2021-12-03.md)
+1. [Mint a Marketplace! NFTs on Kadena Marmalade (Part 1)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-1-2021-12-02)
+2. [Mint a Marketplace! NFTs on Kadena Marmalade (Part 2)](/blogchain/2021/mint-a-marketplace-nfts-on-kadena-marmalade-part-2-2021-12-03)
 
 ### What Makes Marmalade Unique
 

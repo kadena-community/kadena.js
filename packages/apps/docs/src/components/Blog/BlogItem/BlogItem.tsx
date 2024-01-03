@@ -1,5 +1,5 @@
 import type { IMenuData } from '@kadena/docs-tools';
-import { Box, Heading, Stack, Tag } from '@kadena/react-ui';
+import { Box, Heading, Stack, TagGroup, TagItem } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,7 +21,6 @@ import {
   imageClass,
   link,
   metaItem,
-  tagLinkClass,
 } from './styles.css';
 
 interface IProps {
@@ -84,14 +83,16 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                   {item.readingTimeInMinutes} minutes
                 </span>
                 <FormatDate date={item.publishDate} />
-                <span className={footerTags}>
-                  {item.tags &&
-                    item.tags.map((tag) => (
-                      <span className={tagLinkClass} key={tag}>
-                        <Tag>{tag}</Tag>
-                      </span>
+                {item.tags && (
+                  <TagGroup
+                    className={footerTags}
+                    aria-label={`${item.authorInfo?.name} Tags`}
+                  >
+                    {item.tags.map((tag: string) => (
+                      <TagItem key={tag}>{tag}</TagItem>
                     ))}
-                </span>
+                  </TagGroup>
+                )}
               </footer>
             </Box>
           </div>

@@ -18,6 +18,7 @@ import {
   Heading,
   Notification,
   NotificationHeading,
+  Stack,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -28,13 +29,14 @@ import type { FC } from 'react';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { buttonContainerClass, notificationContainerStyle } from './styles.css';
 
 import {
   accountNameContainerClass,
+  buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
   inputContainerClass,
+  notificationContainerStyle,
 } from '../styles.css';
 
 const schema = z.object({
@@ -144,7 +146,7 @@ const ExistingAccountFaucetPage: FC = () => {
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
-          <Notification color="warning" role="status">
+          <Notification intent="warning" role="status">
             <NotificationHeading>
               {t('The Faucet is not available on Mainnet')}
             </NotificationHeading>
@@ -168,37 +170,39 @@ const ExistingAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <Card fullWidth>
-          <Heading as="h5">{t('Account')}</Heading>
-          <Box marginBottom="$4" />
-          <div className={inputContainerClass}>
-            <div className={accountNameContainerClass}>
-              <AccountNameField
-                inputProps={register('name')}
-                error={errors.name}
-                label={t('The account name you would like to fund coins to')}
-              />
+        <Stack direction="column" gap="$lg">
+          <Card fullWidth>
+            <Heading as="h5">{t('Account')}</Heading>
+            <Box marginBottom="$4" />
+            <div className={inputContainerClass}>
+              <div className={accountNameContainerClass}>
+                <AccountNameField
+                  inputProps={register('name')}
+                  error={errors.name}
+                  label={t('The account name to fund coins to')}
+                />
+              </div>
+              <div className={chainSelectContainerClass}>
+                <ChainSelect
+                  onChange={onChainSelectChange}
+                  value={chainID}
+                  ariaLabel="Select Chain ID"
+                />
+              </div>
             </div>
-            <div className={chainSelectContainerClass}>
-              <ChainSelect
-                onChange={onChainSelectChange}
-                value={chainID}
-                ariaLabel="Select Chain ID"
-              />
-            </div>
+          </Card>
+          <div className={buttonContainerClass}>
+            <Button
+              loading={requestStatus.status === 'processing'}
+              icon="TrailingIcon"
+              iconAlign="right"
+              title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
+              disabled={disabledButton}
+            >
+              {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
+            </Button>
           </div>
-        </Card>
-        <div className={buttonContainerClass}>
-          <Button
-            loading={requestStatus.status === 'processing'}
-            icon="TrailingIcon"
-            iconAlign="right"
-            title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-            disabled={disabledButton}
-          >
-            {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-          </Button>
-        </div>
+        </Stack>
       </form>
     </section>
   );

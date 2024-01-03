@@ -1,25 +1,29 @@
 import { useGetEventByNameSubscription } from '@/__generated__/sdk';
-import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
 import { ErrorBox } from '@/components/error-box/error-box';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
+import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import { getEventByName } from '@/graphql/subscriptions.graph';
 import { formatCode } from '@/utils/formatter';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Table } from '@kadena/react-ui';
+import { Box, Breadcrumbs, Stack, Table } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 const Event: React.FC = () => {
   const router = useRouter();
 
-  const { loading, data, error } = useGetEventByNameSubscription({
-    variables: { eventName: router.query.key as string },
-  });
+  const variables = { eventName: router.query.key as string };
+  const { loading, data, error } = useGetEventByNameSubscription({ variables });
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item>Events</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Stack justifyContent="space-between">
+        <Breadcrumbs.Root>
+          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item>Events</Breadcrumbs.Item>
+        </Breadcrumbs.Root>
+        <GraphQLQueryDialog queries={[{ query: getEventByName, variables }]} />
+      </Stack>
 
       <Box marginBottom="$8" />
 

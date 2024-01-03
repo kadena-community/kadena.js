@@ -28,6 +28,9 @@ export interface ISelectProps
   outlined?: boolean;
 }
 
+/**
+ * @deprecated Use `SelectField` instead.
+ */
 export const Select: FC<ISelectProps> = forwardRef<
   HTMLSelectElement,
   ISelectProps

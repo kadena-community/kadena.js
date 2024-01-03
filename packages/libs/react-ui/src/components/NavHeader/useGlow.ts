@@ -13,7 +13,9 @@ const useGlow = (): IUseGlowReturn => {
   const glowRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
-  const [glowX, setGlowX] = useState(0);
+  const initialGlowPosition = -40;
+
+  const [glowX, setGlowX] = useState(initialGlowPosition);
 
   const prevGlowX = useRef<number>(glowX);
 
@@ -24,11 +26,7 @@ const useGlow = (): IUseGlowReturn => {
     const headerBounds = navRef.current?.parentElement?.getBoundingClientRect();
 
     if (glowBounds && headerBounds) {
-      const glowX =
-        targetBounds.x -
-        headerBounds.x -
-        glowBounds.width / 2 +
-        targetBounds.width / 2;
+      const glowX = targetBounds.x + initialGlowPosition * 2.25;
       setGlowX(glowX);
     }
   };

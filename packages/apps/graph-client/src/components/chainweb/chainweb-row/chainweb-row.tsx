@@ -1,7 +1,7 @@
 import { Box } from '@components/box';
 import { Text } from '@components/text';
 import type { IBlock } from '@utils/hooks/use-parsed-blocks';
-import { selectColor } from '@utils/selectColor';
+import { selectColor } from '@utils/select-color';
 import React from 'react';
 import { ChainBlock } from './../chain-block';
 

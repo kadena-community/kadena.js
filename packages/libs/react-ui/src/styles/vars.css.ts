@@ -212,6 +212,9 @@ const oldThemeValues = {
 };
 
 // Creating a contract and exporting with old name
+/**
+ * @deprecated Use 'tokens' from '@kadena/react-ui/theme'
+ */
 export const vars = createThemeContract(oldThemeValues);
 
 // Creating a merged contract to create both old and new css variables

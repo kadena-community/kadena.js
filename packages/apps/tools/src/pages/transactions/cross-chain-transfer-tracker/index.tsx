@@ -1,5 +1,6 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { FormItemCard } from '@/components/Global/FormItemCard';
+import { ProgressBar } from '@/components/Global/ProgressBar';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
 } from '@/components/Global/RequestKeyField';
@@ -24,7 +25,6 @@ import {
   NotificationButton,
   NotificationFooter,
   NotificationHeading,
-  ProgressBar,
   Stack,
   SystemIcon,
   TrackerCard,
@@ -198,9 +198,9 @@ const CrossChainTransferTracker: FC = () => {
 
         {txError ? (
           <Notification
-            hasCloseButton
-            color="negative"
-            onClose={() => {
+            intent="negative"
+            isDismissable
+            onDismiss={() => {
               setTxError('');
             }}
             icon={<SystemIcon.AlertBox />}
@@ -210,11 +210,11 @@ const CrossChainTransferTracker: FC = () => {
             {txError}
             <NotificationFooter>
               <NotificationButton
-                color="negative"
+                intent="negative"
                 onClick={validateThenSubmit(handleSubmit)}
+                icon={<SystemIcon.Refresh />}
               >
                 {t('Retry')}
-                <SystemIcon.Refresh />
               </NotificationButton>
             </NotificationFooter>
           </Notification>
@@ -231,11 +231,9 @@ const CrossChainTransferTracker: FC = () => {
                 <RequestKeyField
                   helperText={inputError || undefined}
                   status={validRequestKey}
-                  inputProps={{
-                    ...register('requestKey'),
-                    onKeyUp: checkRequestKey,
-                    onChange: onRequestKeyChange,
-                  }}
+                  {...register('requestKey')}
+                  onKeyUp={checkRequestKey}
+                  onChange={onRequestKeyChange}
                   error={errors.requestKey}
                 />
               </GridItem>
