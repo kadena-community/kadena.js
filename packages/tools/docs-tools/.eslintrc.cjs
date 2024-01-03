@@ -3,8 +3,9 @@ require('@rushstack/eslint-config/patch/modern-module-resolution');
 
 module.exports = {
   extends: ['@kadena-dev/eslint-config/profile/lib'],
-  parserOptions: { tsconfigRootDir: __dirname },
+  parserOptions: { tsconfigRootDir: __dirname, project: ['./tsconfig.json'] },
   rules: {
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@kadena-dev/typedef-var': 'off',
   },
 };

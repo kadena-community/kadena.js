@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import yaml from 'js-yaml';
-import { IConfig, IConfigTreeItem } from 'src/types';
+import type { IConfig, IConfigTreeItem } from 'src/types';
 
 export const loadConfigPages = (): IConfigTreeItem[] => {
   const data = fs.readFileSync(

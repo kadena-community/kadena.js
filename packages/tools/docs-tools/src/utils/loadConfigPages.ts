@@ -1,4 +1,4 @@
-import { IConfigTreeItem } from 'src/types';
+import type { IConfigTreeItem } from 'src/types';
 import { getConfig } from './getConfig';
 
 export const loadConfigPages = async (): Promise<IConfigTreeItem[]> => {
