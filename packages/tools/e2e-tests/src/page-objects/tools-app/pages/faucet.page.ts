@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
-import { CardComponent } from '../../react-ui/card.component';
-import { NotificationContainerComponent } from '../../react-ui/notificationContainer.component';
+import { CardComponent } from '../../../support/page-objects/react-ui/card.component';
+import { NotificationContainerComponent } from '../../../support/page-objects/react-ui/notificationContainer.component';
 
 export class FaucetPage {
   private readonly _page: Page;
