@@ -46,7 +46,7 @@ export const logoClass = style([
     display: 'flex',
     marginInline: 'xs',
     paddingInline: 'sm',
-    paddingBlock: 'sm'
+    paddingBlock: 'sm',
   }),
 ]);
 
