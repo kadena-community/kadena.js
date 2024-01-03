@@ -54,7 +54,7 @@ export const Notification: FC<INotificationProps> = ({
           }}
           aria-label="Close Notification"
         >
-          <Close size="md" />
+          <Close size="xl" />
         </button>
       )}
     </div>
