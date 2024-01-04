@@ -12,8 +12,7 @@ echo "docker run -v \"/var/run/docker.sock\":\"/var/run/docker.sock\" \
 	-e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY \
 	$INPUT_OPTIONS \"$INPUT_IMAGE\" -c \"${INPUT_RUN//$'\n'/;}\""
 
-exec docker run \
-  --name=devnet -d --health-cmd='curl --verbose --fail http://localhost:8080/info || exit 1'
+exec docker run --name=devnet -d --health-cmd='curl --verbose --fail http://localhost:8080/info || exit 1' \
   -v "/var/run/docker.sock":"/var/run/docker.sock" \
   -v /home/runner/work/_temp:/home/runner/work/_temp \
   -e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY 	\
