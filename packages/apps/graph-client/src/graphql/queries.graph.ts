@@ -338,6 +338,7 @@ export const getChainNonFungibleAccount: DocumentNode = gql`
       nonFungibles {
         balance
         id
+        chainId
       }
       transactions {
         edges {

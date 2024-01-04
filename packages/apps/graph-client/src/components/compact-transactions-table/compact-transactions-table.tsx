@@ -1,6 +1,7 @@
 import type {
   BlockTransactionsConnection,
   ChainFungibleAccountTransactionsConnection,
+  ChainNonFungibleAccountTransactionsConnection,
   FungibleAccountTransactionsConnection,
   NonFungibleAccountTransactionsConnection,
   QueryTransactionsConnection,
@@ -19,7 +20,8 @@ interface ICompactTransactionsTableProps {
     | ChainFungibleAccountTransactionsConnection
     | BlockTransactionsConnection
     | QueryTransactionsConnection
-    | NonFungibleAccountTransactionsConnection;
+    | NonFungibleAccountTransactionsConnection
+    | ChainNonFungibleAccountTransactionsConnection;
 }
 
 export const CompactTransactionsTable = (

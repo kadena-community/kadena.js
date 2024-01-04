@@ -4,6 +4,7 @@ import { gql } from '@apollo/client';
 export const CORE_CHAIN_NON_FUNGIBLE_ACCOUNT_FIELDS: DocumentNode = gql`
   fragment CoreChainNonFungibleAccountFields on ChainNonFungibleAccount {
     chainId
+    accountName
   }
 `;
 
