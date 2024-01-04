@@ -10,10 +10,10 @@ fi
 echo "docker run -v \"/var/run/docker.sock\":\"/var/run/docker.sock\" \
 	-v /home/runner/work/_temp:/home/runner/work/_temp \
 	-e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY \
-	$INPUT_OPTIONS --entrypoint=\"$INPUT_SHELL\" \"$INPUT_IMAGE\" -c \"${INPUT_RUN//$'\n'/;}\""
+	$INPUT_OPTIONS \"$INPUT_IMAGE\" -c \"${INPUT_RUN//$'\n'/;}\""
 
 exec docker run \
-	-v "/var/run/docker.sock":"/var/run/docker.sock" \
-	-v /home/runner/work/_temp:/home/runner/work/_temp \
-	-e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY \
-	$INPUT_OPTIONS --entrypoint="$INPUT_SHELL" "$INPUT_IMAGE" -c "${INPUT_RUN//$'\n'/;}"
+  -v "/var/run/docker.sock":"/var/run/docker.sock" \
+  -v /home/runner/work/_temp:/home/runner/work/_temp \
+  -e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY 	\
+  -d -p 8080:8080 "kadena/devnet" --name="devnet" --health-cmd="curl --verbose --fail http://localhost:8080/info || exit 1"
