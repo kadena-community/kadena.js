@@ -3,23 +3,23 @@ import React from 'react';
 import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
 import { Box } from '../Layout/Box/Box';
 import { Heading } from '../Typography/Heading/Heading';
-import type { IButtonProps } from './NewButton';
-import { Button } from './NewButton';
+import type { ILinkButtonProps } from './LinkButton';
+import { LinkButton } from './LinkButton';
 import { button } from './SharedButton.css';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const buttonVariants = Object.keys(
   (button as any).classNames?.variants?.variant,
-) as IButtonProps['variant'][];
+) as ILinkButtonProps['variant'][];
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const buttonColors = Object.keys(
   (button as any).classNames?.variants?.color,
-) as IButtonProps['color'][];
+) as ILinkButtonProps['color'][];
 
-const meta: Meta<IButtonProps> = {
-  title: 'Components/NewButton',
-  component: Button,
+const meta: Meta<ILinkButtonProps> = {
+  title: 'Components/LinkButton',
+  component: LinkButton,
   parameters: {
     status: { type: 'inDevelopment' },
     controls: {
@@ -29,16 +29,15 @@ const meta: Meta<IButtonProps> = {
     docs: {
       description: {
         component:
-          'The Button component renders a button which will be styled according to the variant prop (`primary` being the default)',
+          'The Button component renders a anchor tag (a) which will be styled according to the variant prop (`primary` being the default)',
       },
     },
   },
   argTypes: {
-    onClick: {
-      action: 'clicked',
-      description: '(deprecated) callback when button is clicked',
+    href: {
+      description: 'link target',
       table: {
-        disable: true,
+        type: { summary: 'string' },
       },
     },
     variant: {
@@ -46,7 +45,7 @@ const meta: Meta<IButtonProps> = {
       control: {
         type: 'select',
       },
-      description: 'button style variant',
+      description: 'link button style variant',
       table: {
         type: { summary: buttonVariants.join(' | ') },
         defaultValue: { summary: 'default' },
@@ -57,7 +56,7 @@ const meta: Meta<IButtonProps> = {
       control: {
         type: 'select',
       },
-      description: 'button color variant',
+      description: 'link button color variant',
       table: {
         type: { summary: buttonColors.join(' | ') },
         defaultValue: { summary: 'default' },
@@ -76,7 +75,7 @@ const meta: Meta<IButtonProps> = {
       },
     },
     isCompact: {
-      description: 'compact button style',
+      description: 'compact link button style',
       control: {
         type: 'boolean',
       },
@@ -87,11 +86,11 @@ const meta: Meta<IButtonProps> = {
 type Story = StoryObj<
   {
     text: string;
-  } & IButtonProps
+  } & ILinkButtonProps
 >;
 
 export const Default: Story = {
-  name: 'Button',
+  name: 'LinkButton',
   args: {
     text: 'Click me',
     variant: 'contained',
@@ -102,143 +101,155 @@ export const Default: Story = {
     icon: undefined,
     startIcon: undefined,
     endIcon: undefined,
+    href: '#',
   },
   render: ({ text, ...props }) => {
-    return <Button {...props}>{text}</Button>;
+    return <LinkButton {...props}>{text}</LinkButton>;
   },
 };
 
-export const AllVariants: StoryFn<IButtonProps> = ({
+export const AllVariants: StoryFn<ILinkButtonProps> = ({
   isCompact,
   isDisabled,
   isLoading,
+  href,
 }) => (
-  <Box gap="xs" display="flex">
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
+  <Box gap="$2" display="flex">
+    <Box gap="$2" display="flex" flexDirection="column" alignItems="flex-start">
       <Heading variant="h6">Default</Heading>
       {buttonColors.map((color) => (
-        <Button
+        <LinkButton
           key={color}
           color={color}
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
+          href={href}
           startIcon={<LeadingIcon />}
           endIcon={<TrailingIcon />}
         >
           {color}
-        </Button>
+        </LinkButton>
       ))}
     </Box>
 
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
+    <Box gap="$2" display="flex" flexDirection="column" alignItems="flex-start">
       <Heading variant="h6">Alternative</Heading>
       {buttonColors.map((color) => (
-        <Button
+        <LinkButton
           key={color}
           color={color}
           variant="alternative"
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
+          href={href}
           startIcon={<LeadingIcon />}
           endIcon={<TrailingIcon />}
         >
           {color}
-        </Button>
+        </LinkButton>
       ))}
     </Box>
 
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
+    <Box gap="$2" display="flex" flexDirection="column" alignItems="flex-start">
       <Heading variant="h6">Outlined</Heading>
       {buttonColors.map((color) => (
-        <Button
+        <LinkButton
           key={color}
           color={color}
           variant="outlined"
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
+          href={href}
           startIcon={<LeadingIcon />}
           endIcon={<TrailingIcon />}
         >
           {color}
-        </Button>
+        </LinkButton>
       ))}
     </Box>
 
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
+    <Box gap="$2" display="flex" flexDirection="column" alignItems="flex-start">
       <Heading variant="h6">Text</Heading>
       {buttonColors.map((color) => (
-        <Button
+        <LinkButton
           key={color}
           color={color}
           variant="text"
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
+          href={href}
           startIcon={<LeadingIcon />}
           endIcon={<TrailingIcon />}
         >
           {color}
-        </Button>
+        </LinkButton>
       ))}
     </Box>
   </Box>
 );
 
-export const StartIcon: StoryFn<IButtonProps> = ({
+export const StartIcon: StoryFn<ILinkButtonProps> = ({
   isCompact,
   isDisabled,
   isLoading,
   color,
   variant,
+  href,
 }) => (
-  <Button
+  <LinkButton
     startIcon={<Plus />}
     isCompact={isCompact}
     isDisabled={isDisabled}
     isLoading={isLoading}
     color={color}
+    href={href}
     variant={variant}
   >
     Click me
-  </Button>
+  </LinkButton>
 );
 
-export const EndIcon: StoryFn<IButtonProps> = ({
+export const EndIcon: StoryFn<ILinkButtonProps> = ({
   isCompact,
   isDisabled,
   isLoading,
   color,
   variant,
+  href,
 }) => (
-  <Button
+  <LinkButton
     endIcon={<Plus />}
     isCompact={isCompact}
     isDisabled={isDisabled}
     isLoading={isLoading}
     color={color}
     variant={variant}
+    href={href}
   >
     Click me
-  </Button>
+  </LinkButton>
 );
 
-export const OnlyIcon: StoryFn<IButtonProps> = ({
+export const OnlyIcon: StoryFn<ILinkButtonProps> = ({
   isCompact,
   isDisabled,
   isLoading,
   color,
   variant,
+  href,
 }) => (
-  <Button
+  <LinkButton
     icon={<Plus />}
     isCompact={isCompact}
     isDisabled={isDisabled}
     isLoading={isLoading}
     color={color}
     variant={variant}
+    href={href}
   />
 );
 
