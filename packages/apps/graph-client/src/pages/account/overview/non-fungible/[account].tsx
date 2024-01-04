@@ -1,24 +1,39 @@
 import { useGetNonFungibleAccountQuery } from '@/__generated__/sdk';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
-import { Box, Breadcrumbs, Notification, Table } from '@kadena/react-ui';
+import { getNonFungibleAccount } from '@/graphql/queries.graph';
+import {
+  Box,
+  Breadcrumbs,
+  Notification,
+  Stack,
+  TabItem,
+  Table,
+  Tabs,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 
 const NonFungibleAccount: React.FC = () => {
   const router = useRouter();
 
-  const { loading, data, error } = useGetNonFungibleAccountQuery({
-    variables: {
-      accountName: router.query.account as string,
-    },
-  });
+  const variables = {
+    accountName: router.query.account as string,
+  };
+
+  const { loading, data, error } = useGetNonFungibleAccountQuery({ variables });
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Stack justifyContent="space-between">
+        <Breadcrumbs.Root>
+          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
+        </Breadcrumbs.Root>
+        <GraphQLQueryDialog
+          queries={[{ query: getNonFungibleAccount, variables }]}
+        />
+      </Stack>
 
       <Box marginBottom="$8" />
 
@@ -61,6 +76,12 @@ const NonFungibleAccount: React.FC = () => {
               </Table.Tr>
             </Table.Body>
           </Table.Root>
+          <Box margin={'$8'} />
+          <Tabs defaultSelectedKey="Tokens">
+            <TabItem title="Tokens" key="Tokens">
+              <Box margin={'$4'} />
+            </TabItem>
+          </Tabs>
         </div>
       )}
     </>
