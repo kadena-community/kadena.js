@@ -103,33 +103,8 @@ export const Default: Story = {
     startIcon: undefined,
     endIcon: undefined,
   },
-  render: ({
-    startIcon,
-    endIcon,
-    icon,
-    isCompact,
-    isDisabled,
-    isLoading,
-    onClick,
-    text,
-    color,
-    variant,
-  }) => {
-    return (
-      <Button
-        startIcon={startIcon}
-        endIcon={endIcon}
-        icon={icon}
-        isCompact={isCompact}
-        isDisabled={isDisabled}
-        isLoading={isLoading}
-        onClick={onClick}
-        color={color}
-        variant={variant}
-      >
-        {text}
-      </Button>
-    );
+  render: ({ text, ...props }) => {
+    return <Button {...props}>{text}</Button>;
   },
 };
 
@@ -212,14 +187,59 @@ export const AllVariants: StoryFn<IButtonProps> = ({
   </Box>
 );
 
-export const StartIcon: StoryFn<IButtonProps> = () => (
-  <Button startIcon={<Plus />}>Click me</Button>
+export const StartIcon: StoryFn<IButtonProps> = ({
+  isCompact,
+  isDisabled,
+  isLoading,
+  color,
+  variant,
+}) => (
+  <Button
+    startIcon={<Plus />}
+    isCompact={isCompact}
+    isDisabled={isDisabled}
+    isLoading={isLoading}
+    color={color}
+    variant={variant}
+  >
+    Click me
+  </Button>
 );
 
-export const EndIcon: StoryFn<IButtonProps> = () => (
-  <Button endIcon={<Plus />}>Click me</Button>
+export const EndIcon: StoryFn<IButtonProps> = ({
+  isCompact,
+  isDisabled,
+  isLoading,
+  color,
+  variant,
+}) => (
+  <Button
+    endIcon={<Plus />}
+    isCompact={isCompact}
+    isDisabled={isDisabled}
+    isLoading={isLoading}
+    color={color}
+    variant={variant}
+  >
+    Click me
+  </Button>
 );
 
-export const OnlyIcon: StoryFn<IButtonProps> = () => <Button icon={<Plus />} />;
+export const OnlyIcon: StoryFn<IButtonProps> = ({
+  isCompact,
+  isDisabled,
+  isLoading,
+  color,
+  variant,
+}) => (
+  <Button
+    icon={<Plus />}
+    isCompact={isCompact}
+    isDisabled={isDisabled}
+    isLoading={isLoading}
+    color={color}
+    variant={variant}
+  />
+);
 
 export default meta;
