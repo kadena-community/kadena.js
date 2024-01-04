@@ -1,6 +1,7 @@
 export enum SearchType {
   GasEstimation = 'gas-estimation',
   Account = 'account',
+  NonFungibleAccount = 'non-fungible-account',
   Block = 'block',
   Transactions = 'request-key',
   Event = 'event',
@@ -9,6 +10,7 @@ export enum SearchType {
 export const searchTypeLabels: Partial<Record<SearchType, string>> = {
   'request-key': 'Request Key',
   account: 'Account',
+  'non-fungible-account': 'Account',
   event: 'Event Name',
   block: 'Block Hash',
   'gas-estimation': 'Command',

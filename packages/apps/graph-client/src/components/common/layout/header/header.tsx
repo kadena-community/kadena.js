@@ -50,6 +50,11 @@ const Header: FC<IHeaderProps> = (props) => {
       fields: ['cmd', 'hash', 'sigs'],
     },
     {
+      route: routes.NON_FUNGIBLE_ACCOUNT,
+      searchType: SearchType.NonFungibleAccount,
+      fields: ['account'],
+    },
+    {
       route: routes.ACCOUNT_ROOT,
       searchType: SearchType.Account,
       fields: ['account', 'fungible'],
@@ -104,6 +109,9 @@ const Header: FC<IHeaderProps> = (props) => {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.ACCOUNT}/${secondSearchField}/${searchField}`);
         break;
+      case SearchType.NonFungibleAccount:
+        router.push(`${routes.NON_FUNGIBLE_ACCOUNT}/${searchField}`);
+        break;
       case SearchType.Event:
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.EVENT}/${searchField}`);
@@ -147,6 +155,11 @@ const Header: FC<IHeaderProps> = (props) => {
       fieldValue.startsWith('K:') ||
       fieldValue.startsWith('W:')
     ) {
+      if (searchType === SearchType.NonFungibleAccount) {
+        return;
+      }
+
+      console.log('setting search type to account');
       setSecondSearchField('coin');
       setSearchType(SearchType.Account);
     }
@@ -183,6 +196,9 @@ const Header: FC<IHeaderProps> = (props) => {
       setSecondSearchField('');
       setGridColumns(5);
     }
+    if (event.target.value === SearchType.NonFungibleAccount) {
+      setGridColumns(3);
+    }
     setSearchField('');
   };
 
@@ -214,6 +230,9 @@ const Header: FC<IHeaderProps> = (props) => {
               >
                 <option value={SearchType.Transactions}>Request Key</option>
                 <option value={SearchType.Account}>Account</option>
+                <option value={SearchType.NonFungibleAccount}>
+                  Non-Fungible Account
+                </option>
                 <option value={SearchType.Event}>Event</option>
                 <option value={SearchType.Block}>Block</option>
                 <option value={SearchType.GasEstimation}>Gas Estimation</option>

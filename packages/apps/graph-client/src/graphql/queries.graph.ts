@@ -307,15 +307,16 @@ export const getNonFungibleAccount: DocumentNode = gql`
           keys
           predicate
         }
-        nonFungibles {
-          balance
-          id
-        }
-        transactions {
-          edges {
-            node {
-              ...CoreTransactionFields
-            }
+      }
+      nonFungibles {
+        balance
+        id
+        chainId
+      }
+      transactions {
+        edges {
+          node {
+            ...CoreTransactionFields
           }
         }
       }
