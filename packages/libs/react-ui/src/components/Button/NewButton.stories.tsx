@@ -31,7 +31,7 @@ const meta: Meta<IButtonProps> = {
     docs: {
       description: {
         component:
-          'The Button component renders a button which will be styled according to the variant prop (`primary` being the default)',
+          'The Button component renders a button which will be styled according to the variant/color prop (`contained/primary` being the default)',
       },
     },
   },
@@ -255,8 +255,10 @@ export const _LinkButton: LinkButtonStory = {
   parameters: {
     docs: {
       description: {
-        story:
-          'The LinkButton component renders an anchor element <a/> which will be styled according to the variant prop (`primary` being the default)',
+        story: `The LinkButton component renders an anchor element <a/> which will be styled with the same variants/colors as the Button component.
+          <br/><br/>
+          To support client side routing make sure to import/use "RouterProvider" from "@kadena/react-ui".
+          `,
       },
     },
   },
