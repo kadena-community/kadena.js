@@ -77,8 +77,7 @@ jobs:
       - uses: ./.github/actions/devnet
         with:
           image: kadena/devnet
-          options:
-            -d -p 8080:8080
+          options: -d -p 8080:8080
 
       - name: Install dependencies
         run: pnpm install
