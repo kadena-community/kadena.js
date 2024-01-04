@@ -6,13 +6,18 @@ import { DocsLogo } from '../DocsLogo/DocsLogo';
 import { spacerClass } from '../styles.css';
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';
-import { footerClass, footerWrapperClass } from './styles.css';
+import { footerClass, footerWrapperClass, logoClass } from './styles.css';
 
 export const Footer: FC = () => {
   return (
     <footer className={footerWrapperClass}>
       <div className={footerClass}>
-        <Stack justifyContent="space-around" alignItems="center" marginY="$2">
+        <Stack
+          justifyContent="space-around"
+          alignItems="center"
+          marginY="$2"
+          className={logoClass}
+        >
           <DocsLogo overwriteTheme="dark" />
         </Stack>
         <div className={spacerClass} />

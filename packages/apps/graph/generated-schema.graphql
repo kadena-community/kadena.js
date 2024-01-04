@@ -20,7 +20,7 @@ type Block implements Node {
   id: ID!
   minerAccount: ChainFungibleAccount!
   parent: Block
-  parentHash: String
+  parentHash: String!
   payloadHash: String!
 
   """The proof of work hash."""
@@ -111,6 +111,7 @@ type Event implements Node {
   """The height of the block where the event was emitted."""
   height: BigInt!
   id: ID!
+  incrementedId: Int!
   moduleName: String!
   name: String!
 
@@ -253,6 +254,12 @@ type Query {
   """Retrieve all completed blocks from a given height."""
   completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
 
+  """Retrieve a single event by its unique key."""
+  event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
+
+  """Retrieve events."""
+  events(after: String, before: String, first: Int, last: Int, qualifiedEventName: String!): QueryEventsConnection!
+
   """
   Retrieve an fungible specific account by its name and fungible, such as coin.
   """
@@ -285,14 +292,31 @@ type Query {
   """
   pactQuery(pactQuery: PactQuery!): String!
 
+  """Retrieve one transaction by its unique key."""
+  transaction(blockHash: String!, requestKey: String!): Transaction
+
   """Retrieve transactions."""
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
 
   """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
 
+  """Retrieve one transfer by its unique key."""
+  transfer(blockHash: String!, chainId: String!, moduleHash: String!, orderIndex: Int!, requestKey: String!): Transfer
+
   """Retrieve transfers."""
   transfers(accountName: String, after: String, before: String, chainId: String, first: Int, fungibleName: String, last: Int): QueryTransfersConnection!
+}
+
+type QueryEventsConnection {
+  edges: [QueryEventsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryEventsConnectionEdge {
+  cursor: String!
+  node: Event!
 }
 
 type QueryTransactionsByPublicKeyConnection {
@@ -346,8 +370,8 @@ type Signer implements Node {
 }
 
 type Subscription {
-  """Listen for a specific event by qualifiedName (e.g. `coin.TRANSFER`)."""
-  event(eventName: String!): [Event!]
+  """Listen for events by qualifiedName (e.g. `coin.TRANSFER`)."""
+  events(qualifiedEventName: String!): [Event!]
 
   """Subscribe to new blocks."""
   newBlocks(chainIds: [Int!]): [Block!]

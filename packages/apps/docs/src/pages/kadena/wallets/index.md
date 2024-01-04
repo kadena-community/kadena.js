@@ -34,6 +34,20 @@ Kadena Chainweb.
 
 [Windows (Virtual Machine)](https://github.com/kadena-io/chainweaver/releases/download/v2.2.3/kadena-chainweaver-vm.2.2.3.0.ova)
 
+### Linx Wallet
+
+Mobile wallet that aims to provide a "chainless" experience.
+
+[Linxwallet.io](https://www.linxwallet.xyz/#)
+
+[Android](https://play.google.com/store/apps/details?id=com.thinedgelabs.linx_wallet)
+
+[iOS](https://apps.apple.com/us/app/thinedgelabs-linx-wallet/id6450412379)
+
+[Discord support](https://discord.gg/FEbnXbV9xZ)
+
+[Telegram](https://t.me/linx_wallet_chat)
+
 ### Koala Wallet
 
 Your Passport to the Kadena Ecosystem. Koala Wallet makes it easier than ever to
