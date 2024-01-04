@@ -50,15 +50,6 @@ jobs:
       matrix:
         package: ['@kadena/client', '@kadena/client-utils']
 
-    # services:
-    #   devnet:
-    #     image: kadena/devnet
-    #     options:
-    #       --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
-    #       http://localhost:8080/info || exit 1"
-    #     ports:
-    #       - 8080:8080
-
     steps:
       - uses: actions/checkout@v4
         with:
