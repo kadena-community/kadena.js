@@ -39,7 +39,7 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "@kadena/client": "workspace:*",
@@ -58,13 +58,13 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@types/debug": "~4.1.7",
     "@types/node": "^18.17.14",
-    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/coverage-v8": "^1.1.0",
     "cpy-cli": "^5.0.0",
     "eslint": "^8.45.0",
     "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2",
-    "vitest": "^0.34.6"
+    "vitest": "^1.1.0"
   },
   "publishConfig": {
     "provenance": true
