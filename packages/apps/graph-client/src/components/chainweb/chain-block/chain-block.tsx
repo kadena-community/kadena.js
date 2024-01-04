@@ -61,9 +61,9 @@ export const ChainBlock = (props: IChainBlockProps): JSX.Element => {
             <InfoCircledIcon />
 
             <Text as="span">
-              {confirmationDepth >= env.MAX_CALCULATED_CONFIRMATION_DEPTH
-                ? `>${chainTree[block.chainId][block.hash].confirmationDepth}`
-                : chainTree[block.chainId][block.hash].confirmationDepth}
+              {confirmationDepth < env.MAX_CALCULATED_CONFIRMATION_DEPTH
+                ? confirmationDepth
+                : `>${confirmationDepth}`}
             </Text>
 
             {block.transactions.totalCount > 0 && (
