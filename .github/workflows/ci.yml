@@ -74,10 +74,10 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-      - uses: ./.github/actions/devnet
+      - name: Start devnet
+        uses: ./.github/actions/devnet
         with:
-          image: kadena/devnet
-          options: -d -p 8080:8080
+          migrations: ./packages/apps/graph/cwd-extra-migrations
 
       - name: Install dependencies
         run: pnpm install

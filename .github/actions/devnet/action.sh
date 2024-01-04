@@ -1,26 +1,20 @@
 #!/bin/bash
-if [ -n "$INPUT_USERNAME" ];
-	then echo "$INPUT_PASSWORD" | docker login "$INPUT_REGISTRY" -u "$INPUT_USERNAME" --password-stdin
+if [ -n "$INPUT_MIGRATIONS" ];
+	then INPUT_MIGRATIONS="-v \"$INPUT_MIGRATIONS\":\"/cwd-extra-migrations"
 fi
 
-if [ -n "$INPUT_DOCKER_NETWORK" ];
-	then INPUT_OPTIONS="$INPUT_OPTIONS --network $INPUT_DOCKER_NETWORK"
-fi
-
-echo "docker run --name=devnet -d --health-cmd='curl --verbose --fail http://localhost:8080/info || exit 1' \
-  -v \"/var/run/docker.sock\":\"/var/run/docker.sock\" \
-  -v /home/runner/work/_temp:/home/runner/work/_temp \
-  -e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY 	\
-  -p 8080:8080 \"kadena/devnet\""
+echo "Starting devnet..."
 
 exec docker run --name=devnet -d --health-cmd='curl --verbose --fail http://localhost:8080/info || exit 1' \
   -v "/var/run/docker.sock":"/var/run/docker.sock" \
   -v /home/runner/work/_temp:/home/runner/work/_temp \
+  $INPUT_MIGRATION \
   -e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY 	\
   -p 8080:8080 "kadena/devnet"
 
-
-until [ "`docker inspect -f {{.State.Health.Status}} devnet`"=="healthy" ]; do
+echo "Waiting for devnet to be healthy..."
+until [ "`docker inspect -f {{.State.Health.Status}} flamboyant_bose`"=="healthy" ]; do
     sleep 2;
-    echo "Waiting for devnet to be healthy..."
+
 done;
+echo "Devnet is healthy!"
