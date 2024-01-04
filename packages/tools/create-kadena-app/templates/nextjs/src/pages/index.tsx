@@ -50,7 +50,7 @@ const Home: React.FC = (): JSX.Element => {
     <div>
       <Head>
         <title>Create Kadena App: Next template</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <main className={styles.grid}>
         <section className={styles.headerWrapper}>
