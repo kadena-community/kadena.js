@@ -11,6 +11,7 @@ import { getNonFungibleAccount } from '@/graphql/queries.graph';
 import {
   Box,
   Breadcrumbs,
+  Link,
   Notification,
   Stack,
   TabItem,
@@ -75,7 +76,13 @@ const NonFungibleAccount: React.FC = () => {
                 </Table.Td>
                 <Table.Td>
                   {data.nonFungibleAccount.chainAccounts.map((chainAccount) => (
-                    <Box key={chainAccount.chainId}>{chainAccount.chainId}</Box>
+                    <Box key={chainAccount.chainId}>
+                      <Link
+                        href={`${routes.NON_FUNGIBLE_ACCOUNT}/${data.nonFungibleAccount?.accountName}/${chainAccount.chainId}`}
+                      >
+                        {chainAccount.chainId}
+                      </Link>
+                    </Box>
                   ))}
                 </Table.Td>
               </Table.Tr>
