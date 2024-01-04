@@ -193,6 +193,7 @@ type NonFungibleAccount implements Node {
   accountName: String!
   chainAccounts: [ChainNonFungibleAccount!]!
   id: ID!
+  nonFungibles: [Token!]!
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
 }
 
@@ -360,6 +361,7 @@ type Subscription {
 """The token identifier and its balance."""
 type Token {
   balance: Int!
+  chainId: Int!
   id: ID!
 }
 
