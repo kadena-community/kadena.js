@@ -53,7 +53,7 @@ const ChainFungibleAccount: React.FC = () => {
                 <Table.Td>
                   <strong>Account Name</strong>
                 </Table.Td>
-                <Table.Td>{data.chainNonFungibleAccount.accountName}</Table.Td>
+                <Table.Td>{data.chainNonFungibleAccount.}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
