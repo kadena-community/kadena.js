@@ -79,8 +79,7 @@ jobs:
           image: kadena/devnet
           options:
             -d --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
-            http://localhost:8080/info || exit 1"
-          ports: 8080:8080
+            http://localhost:8080/info -p 8080:8080 || exit 1"
 
       - name: Install dependencies
         run: pnpm install
