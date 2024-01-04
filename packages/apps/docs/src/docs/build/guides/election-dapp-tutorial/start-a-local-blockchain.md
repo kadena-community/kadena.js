@@ -44,7 +44,7 @@ To start the local development network:
 
    You can run the `docker info` command to check whether Docker is currently running.
 
-3. tart the `devnet` container without a persistent volume by running the following command:
+3. Start the `devnet` container without a persistent volume by running the following command:
 
    ```shell
    docker run --interactive --tty --publish 8080:8080 kadena/devnet:latest

@@ -12,12 +12,12 @@ export const COMPLEXITY = {
   },
 };
 
-export const getDefaultConnectionComplexity = (options: {
+export const getDefaultConnectionComplexity = (options?: {
   withRelations?: boolean;
   first?: number | null;
   last?: number | null;
 }) =>
-  (options.withRelations
+  (options?.withRelations
     ? COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS
     : COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS) *
-  (options.first || options.last || PRISMA.DEFAULT_SIZE);
+  (options?.first || options?.last || PRISMA.DEFAULT_SIZE);

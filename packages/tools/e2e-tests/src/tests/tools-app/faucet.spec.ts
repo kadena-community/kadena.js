@@ -13,6 +13,7 @@ test('Fund existing account @mocks', async ({ page, toolsApp, mockHelper }) => {
 
   await test.step('Fund account on chain 0.', async () => {
     await mockHelper.mockResponse('**/send', sendMocks);
+    await toolsApp.faucetPage.asidePanel.navigateTo('Fund Existing Account');
     await toolsApp.faucetPage.fundExistingAccount(accountsData.publicKey, '0');
 
     await mockHelper.mockResponse('**/poll', pollInProgress);

@@ -15,6 +15,7 @@ import './query/block';
 import './query/blocks-from-height';
 import './query/chain-account';
 import './query/completed-block-heights';
+import './query/events';
 import './query/gas-limit-estimate';
 import './query/graph-configuration';
 import './query/last-block-height';

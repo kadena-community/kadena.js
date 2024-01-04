@@ -34,7 +34,7 @@ const AccountTransactions: React.FC = () => {
           >
             Account Overview
           </Breadcrumbs.Item>
-          <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
+          <Breadcrumbs.Item>Transactions</Breadcrumbs.Item>
         </Breadcrumbs.Root>
         <GraphQLQueryDialog queries={[{ query: getTransactions, variables }]} />
       </Stack>

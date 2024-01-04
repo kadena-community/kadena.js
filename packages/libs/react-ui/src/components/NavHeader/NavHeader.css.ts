@@ -44,8 +44,7 @@ export const itemsContainerClass = style([
 export const logoClass = style([
   atoms({
     display: 'flex',
-    marginInline: 'xs',
-    paddingInline: 'sm',
+    paddingInline: 'md',
     paddingBlock: 'sm',
   }),
 ]);

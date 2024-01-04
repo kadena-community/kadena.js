@@ -16,5 +16,5 @@
     "jsx": "preserve"
   },
   "include": ["types.d.ts", "./src"],
-  "exclude": ["node_modules", "./cypress"]
+  "exclude": ["node_modules"]
 }

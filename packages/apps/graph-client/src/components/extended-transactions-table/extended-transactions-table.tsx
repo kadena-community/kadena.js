@@ -33,7 +33,6 @@ export const ExtendedTransactionsTable = (
 
   // Parse the query parameters from the URL using Next.js router
   const router = useRouter();
-  // const { page: urlPage, items: urlItemsPerPage } = router.query;
   const urlPage = router.query.page;
   const urlItemsPerPage = router.query.items;
 
