@@ -18,3 +18,9 @@ exec docker run --name=devnet -d --health-cmd='curl --verbose --fail http://loca
   -v /home/runner/work/_temp:/home/runner/work/_temp \
   -e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY 	\
   -p 8080:8080 "kadena/devnet"
+
+
+until [ "`docker inspect -f {{.State.Health.Status}} devnet`"=="healthy" ]; do
+    sleep 2;
+    echo "Waiting for devnet to be healthy..."
+done;
