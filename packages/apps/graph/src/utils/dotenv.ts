@@ -35,10 +35,10 @@ export const dotenv: {
   COMPLEXITY_EXPOSED: or(process.env.COMPLEXITY_EXPOSED === 'true', false),
   DATABASE_URL: or(
     process.env.DATABASE_URL,
-    'postgresql://devnet@localhost:5432/devnet',
+    'postgresql://devnet@localhost:5432/devnet?connection_limit=30',
   ),
   MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH: parseInt(
-    or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '11'),
+    or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '7'),
     10,
   ),
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
