@@ -76,9 +76,11 @@ jobs:
 
       - uses: ./.github/actions/devnet
         with:
-           image: kadena/devnet
-           options: -d --memory 7g --cpus 2 --health-cmd "curl --verbose --fail http://localhost:8080/info || exit 1"
-           ports: 8080:8080
+          image: kadena/devnet
+          options:
+            -d --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
+            http://localhost:8080/info || exit 1"
+          ports: 8080:8080
 
       - name: Install dependencies
         run: pnpm install
