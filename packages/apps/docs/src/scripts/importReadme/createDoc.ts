@@ -103,7 +103,7 @@ const divideIntoPages = (md: Root): Root[] => {
 
 //check the first header.
 // if it is an h2 make it an h1
-const setTitleHeader = (tree: Root): void => {
+const setTitleHeader = (tree: string): void => {
   const headings = getTypes<Heading>(tree, 'heading');
 
   if (headings.length > 0 && headings[0].depth !== 1) {
@@ -300,7 +300,7 @@ const createPage = async (
 
 const removeFrontmatter = (doc: string): string => {
   // Find the first occurrence of '---' to locate the end of frontmatter
-  const frontmatterEnd = doc.indexOf('---', doc.indexOf('---') + 1);
+  const frontmatterEnd = doc.indexOf('\n---', doc.indexOf('---') + 1);
 
   if (frontmatterEnd !== -1) {
     // Extract the frontmatter and remove it from the content
@@ -328,7 +328,7 @@ export const importDocs = async (
   );
 
   const md: Root = remark.parse(doc);
-  setTitleHeader(md);
+  setTitleHeader(doc);
 
   // if (item.options?.singlePage) {
   relinkReferences(md, [md], `/${item.destination}/`);

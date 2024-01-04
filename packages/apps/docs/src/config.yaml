@@ -1,7 +1,6 @@
 menu:
   - kadena
   - build
-  - build.quickstart
   - pact
   - chainweb
   - marmalade
@@ -339,6 +338,15 @@ pages:
         children:
           nodeclientapi:
             file: /packages/libs/chainweb-node-client/etc/chainweb-node-client.api.md
+            url: /api
+            repo: https://github.com/kadena-community/kadena.js
+      streamclient:
+        file: /packages/libs/chainweb-stream-client/README.md
+        url: /stream-client
+        repo: https://github.com/kadena-community/kadena.js
+        children:
+          streamapi:
+            file: /packages/libs/chainweb-stream-client/etc/chainweb-stream-client.api.md
             url: /api
             repo: https://github.com/kadena-community/kadena.js
   marmalade:

@@ -38,27 +38,7 @@ export const importReadMes: IImportReadMeItem[] = [
   /** /libs/chainweb-node-client */
 
   /** /libs/chainweb-stream-client */
-  {
-    file: '/packages/libs/chainweb-stream-client/README.md',
-    repo: 'https://github.com/kadena-community/kadena.js',
-    destination: 'chainweb/stream-client',
-    title: 'Stream Client',
-    options: {
-      RootOrder: 2,
-      tags: ['chainweb', 'stream', 'reference'],
-    },
-  },
-  {
-    file: '/packages/libs/chainweb-stream-client/etc/chainweb-stream-client.api.md',
-    repo: 'https://github.com/kadena-community/kadena.js',
-    destination: 'chainweb/stream-client/api',
-    title: 'Stream Api',
-    options: {
-      RootOrder: 99,
-      hideEditLink: true,
-      tags: ['chainweb', 'stream', 'reference'],
-    },
-  },
+
   /** /libs/chainwebjs */
   {
     file: '/packages/libs/chainwebjs/README.md',

@@ -44,6 +44,9 @@ const fixHashLinks = (link: string): string => {
 
   if (!file) return link;
 
+  // const parentTree = await getParentTreeFromPage(file);
+  // pagesLocation = getUrlNameOfPageFile(page, parentTree ?? []);
+
   const fullContent = getContent(file.file);
 
   const { content } = splitContentFrontmatter(fullContent);
@@ -133,6 +136,8 @@ const fixLinks = async (
     contentWithFrontmatter,
   );
 
+  console.log(page.file);
+
   const md: Root = remark.parse(content);
   const images = getTypes<Image>(md, 'image');
   const links = getTypes<Link>(md, 'link');
@@ -146,6 +151,7 @@ const fixLinks = async (
 
   [...links, ...linkReferences].forEach((link) => {
     if (isLocalPageLink(link.url)) {
+      console.log(link.url);
       link.url = getUrlofPageFile(link.url);
     }
 
@@ -167,17 +173,18 @@ ${newContent}
   );
 };
 
-const crawlPage = (
+const crawlPage = async (
   page: IConfigTreeItem,
   parentTree: IConfigTreeItem[],
-): void => {
+): Promise<void> => {
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  fixLinks(page, parentTree);
+  await fixLinks(page, parentTree);
 
   if (page.children) {
-    page.children.forEach((child) => {
-      crawlPage(child, [...parentTree, page]);
-    });
+    for (let i = 0; i < page.children.length; i++) {
+      const child = page.children[i];
+      await crawlPage(child, [...parentTree, page]);
+    }
   }
 };
 
@@ -186,9 +193,10 @@ export const fixLocalLinks = async (): Promise<IScriptResult> => {
   success.length = 0;
   const pages = loadConfigPages();
 
-  pages.forEach((page) => {
-    crawlPage(page, []);
-  });
+  for (let i = 0; i < pages.length; i++) {
+    const page = pages[i];
+    await crawlPage(page, []);
+  }
 
   success.push('Locallinks are fixed');
   return { errors, success };

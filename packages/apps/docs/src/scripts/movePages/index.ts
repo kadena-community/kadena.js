@@ -38,7 +38,6 @@ const copyPages = async (
       const file = `${dir}/index.${getFileExtension(page.file)}`;
 
       fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
-      console.log(page.file);
       fs.copyFileSync(`./src/docs${page.file}`, `./src/pages${file}`);
     }
 
