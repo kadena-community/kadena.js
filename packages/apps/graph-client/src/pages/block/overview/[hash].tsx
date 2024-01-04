@@ -106,12 +106,12 @@ const Block: React.FC = () => {
                     <strong>Confirmation Depth</strong>
                   </Table.Td>
                   <Table.Td>
-                    {configData?.graphConfiguration?.maximumConfirmationDepth
-                      ? data.block.confirmationDepth ===
-                        configData.graphConfiguration?.maximumConfirmationDepth
-                        ? `> ${data.block.confirmationDepth - 1}`
-                        : data.block.confirmationDepth
-                      : data.block.confirmationDepth}
+                    {!configData?.graphConfiguration
+                      ?.maximumConfirmationDepth ||
+                    data.block.confirmationDepth <
+                      configData.graphConfiguration.maximumConfirmationDepth
+                      ? data.block.confirmationDepth
+                      : `>${data.block.confirmationDepth}`}
                   </Table.Td>
                 </Table.Tr>
               </Table.Body>
