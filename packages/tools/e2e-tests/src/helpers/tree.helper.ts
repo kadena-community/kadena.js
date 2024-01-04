@@ -65,7 +65,7 @@ export default class TreeHelper {
   public async validateParent(label: string): Promise<void> {
     await expect(
       this._page.locator(
-        `[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > a:text-is("${label}")`,
+        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > a:text-is("${label}")`,
       ),
       `Expected ${label} to be visible on level 1 in the menu.`,
     ).toBeVisible();
@@ -83,19 +83,19 @@ export default class TreeHelper {
     // open parent menu first
     await this._page
       .locator(
-        `[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button:text-is("${parentMenu}")`,
+        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}")`,
       )
       .click();
     await expect(
       this._page.locator(
-        `[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button:text-is("${parentMenu}") + ul [test-id="menuItem-2"] > a:text-is("${childLabel}")`,
+        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}") + ul [data-testid="menuItem-2"] > a:text-is("${childLabel}")`,
       ),
       `Expected ${childLabel} to be visible on level 2 in the menu.`,
     ).toBeVisible();
     // then close parent menu again
     await this._page
       .locator(
-        `[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button:text-is("${parentMenu}")`,
+        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}")`,
       )
       .click();
   }
@@ -114,29 +114,29 @@ export default class TreeHelper {
     // open parent and child menu first
     await this._page
       .locator(
-        `[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button:text-is("${parentMenu}")`,
+        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}")`,
       )
       .click();
     await this._page
       .locator(
-        `[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button:text-is("${parentMenu}") + ul [test-id="menuItem-2"] > button:text-is("${childMenu}")`,
+        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}") + ul [data-testid="menuItem-2"] > button:text-is("${childMenu}")`,
       )
       .click();
     await expect(
       this._page.locator(
-        `[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button:text-is("${parentMenu}") + ul [test-id="menuItem-2"] > button:text-is("${childMenu}") + ul [test-id="menuItem-3"] > a:text-is("${grandChildLabel}")`,
+        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}") + ul [data-testid="menuItem-2"] > button:text-is("${childMenu}") + ul [data-testid="menuItem-3"] > a:text-is("${grandChildLabel}")`,
       ),
       `Expected ${grandChildLabel} to be visible on level 3 in the menu.`,
     ).toBeVisible();
     // Close parent and child menu
     await this._page
       .locator(
-        `[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button:text-is("${parentMenu}")`,
+        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}")`,
       )
       .click();
     await this._page
       .locator(
-        `[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button:text-is("${parentMenu}") + ul [test-id="menuItem-2"] > button:text-is("${childMenu}")`,
+        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}") + ul [data-testid="menuItem-2"] > button:text-is("${childMenu}")`,
       )
       .click();
   }

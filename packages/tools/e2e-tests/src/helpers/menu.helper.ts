@@ -9,10 +9,10 @@ export default class MenuHelper {
   public constructor(page: Page) {
     this._page = page;
     this._levelOne = this._page.locator(
-      '[data-cy="sidemenu-submenu"] [test-id="menuItem-1"] > button',
+      '[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button',
     );
     this._levelTwo = this._page.locator(
-      '[data-cy="sidemenu-submenu"] [test-id="menuItem-2"] > button',
+      '[data-cy="sidemenu-submenu"] [data-testid="menuItem-2"] > button',
     );
   }
 
