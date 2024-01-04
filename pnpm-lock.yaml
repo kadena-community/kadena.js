@@ -1595,6 +1595,9 @@ importers:
       focus-trap-react:
         specifier: ~10.2.1
         version: 10.2.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+      lodash.get:
+        specifier: ^4.4.2
+        version: 4.4.2
       lodash.mapvalues:
         specifier: ^4.6.0
         version: 4.6.0
@@ -1683,6 +1686,9 @@ importers:
       '@testing-library/user-event':
         specifier: ~14.5.1
         version: 14.5.1(@testing-library/dom@9.3.1)
+      '@types/lodash.get':
+        specifier: ^4.4.9
+        version: 4.4.9
       '@types/lodash.mapvalues':
         specifier: ^4.6.7
         version: 4.6.7
@@ -11208,6 +11214,12 @@ packages:
   /@types/linkify-it@3.0.5:
     resolution: {integrity: sha512-yg6E+u0/+Zjva+buc3EIb+29XEg4wltq7cSmd4Uc2EE/1nUVmxyzpX6gUXD0V8jIrG0r7YeOGVIbYRkxeooCtw==}
     dev: false
+
+  /@types/lodash.get@4.4.9:
+    resolution: {integrity: sha512-J5dvW98sxmGnamqf+/aLP87PYXyrha9xIgc2ZlHl6OHMFR2Ejdxep50QfU0abO1+CH6+ugx+8wEUN1toImAinA==}
+    dependencies:
+      '@types/lodash': 4.14.197
+    dev: true
 
   /@types/lodash.isequal@4.5.8:
     resolution: {integrity: sha512-uput6pg4E/tj2LGxCZo9+y27JNyB2OZuuI/T5F+ylVDYuqICLG2/ktjxx0v6GvVntAf8TvEzeQLcV0ffRirXuA==}

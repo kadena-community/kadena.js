@@ -1,149 +1,90 @@
 import { createVar, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { atoms } from '../../styles/atoms.css';
-import { colorPalette } from '../../styles/colors';
+import { token } from '../../styles/themeUtils';
 import { tokens } from '../../styles/tokens/contract.css';
 import { bodyBaseBold } from '../../styles/tokens/styles.css';
-import { vars } from '../../styles/vars.css';
+import { iconFill } from '../Icon/IconWrapper.css';
 
-const hoverBackgroundColor = createVar();
-const activeBackgroundColor = createVar();
-const hoverColor = createVar();
-const outlineColor = createVar();
-const backgroundColor = createVar();
-const color = createVar();
+// to reduce the number of local vars and make the code easier we use two colors and swap them for different variants
 
-// TODO: use the new tokens once they are ready in the design system and figma is updated
+// used for the button background color in the base variant
+const bg = createVar();
+const bgHover = createVar();
+
+// used for the button text color in the contained variant
+const fg = createVar();
+const fgHover = createVar();
+
+const focusColor = createVar();
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const colorVariants = {
   primary: {
     vars: {
-      [color]: vars.colors.$primaryContrast,
-      [backgroundColor]: vars.colors.$primarySurface,
-      [hoverBackgroundColor]: vars.colors.$primaryHighContrast,
-      [activeBackgroundColor]: vars.colors.$primaryHighContrast,
-      [hoverColor]: vars.colors.$primaryContrast,
-      [outlineColor]: vars.colors.$primaryAccent,
+      [fg]: token('color.text.brand.primary.inverse.default'),
+      [fgHover]: token('color.text.brand.primary.inverse.@hover'),
+      [bg]: token('color.background.brand.primary.inverse.default'),
+      [bgHover]: token('color.background.brand.primary.inverse.@hover'),
+      [focusColor]: token('color.border.brand.primary.@focus'),
+      [iconFill]: token('color.icon.brand.primary.default'),
     },
   },
   secondary: {
     vars: {
-      [color]: vars.colors.$secondaryContrast,
-      [backgroundColor]: vars.colors.$secondarySurface,
-      [hoverBackgroundColor]: vars.colors.$secondaryHighContrast,
-      [activeBackgroundColor]: vars.colors.$secondaryHighContrast,
-      [hoverColor]: vars.colors.$secondaryContrast,
-      [outlineColor]: vars.colors.$secondaryAccent,
-    },
-  },
-  tertiary: {
-    vars: {
-      [color]: vars.colors.$tertiaryContrast,
-      [backgroundColor]: vars.colors.$tertiarySurface,
-      [hoverBackgroundColor]: vars.colors.$tertiaryHighContrast,
-      [activeBackgroundColor]: vars.colors.$tertiaryHighContrast,
-      [hoverColor]: vars.colors.$tertiaryContrast,
-      [outlineColor]: vars.colors.$tertiaryAccent,
+      [fg]: token('color.text.brand.secondary.inverse.default'),
+      [fgHover]: token('color.text.brand.secondary.inverse.@hover'),
+      [bg]: token('color.background.brand.secondary.inverse.default'),
+      [bgHover]: token('color.background.brand.secondary.inverse.@hover'),
+      [focusColor]: token('color.border.brand.secondary.@focus'),
+      [iconFill]: token('color.icon.brand.secondary.default'),
     },
   },
   warning: {
     vars: {
-      [color]: vars.colors.$warningContrast,
-      [backgroundColor]: vars.colors.$warningSurface,
-      [hoverBackgroundColor]: vars.colors.$warningHighContrast,
-      [activeBackgroundColor]: vars.colors.$warningHighContrast,
-      [hoverColor]: vars.colors.$warningContrast,
-      [outlineColor]: vars.colors.$warningAccent,
+      [fg]: token('color.text.semantic.warning.inverse.default'),
+      [fgHover]: token('color.text.semantic.warning.inverse.@hover'),
+      [bg]: token('color.background.semantic.warning.inverse.default'),
+      [bgHover]: token('color.background.semantic.warning.inverse.@hover'),
+      [focusColor]: token('color.border.semantic.warning.@focus'),
+      [iconFill]: token('color.icon.semantic.warning.default'),
     },
   },
   negative: {
     vars: {
-      [color]: vars.colors.$negativeContrast,
-      [backgroundColor]: vars.colors.$negativeSurface,
-      [hoverBackgroundColor]: vars.colors.$negativeHighContrast,
-      [activeBackgroundColor]: vars.colors.$negativeHighContrast,
-      [hoverColor]: vars.colors.$negativeContrast,
-      [outlineColor]: vars.colors.$negativeAccent,
+      [fg]: token('color.text.semantic.negative.inverse.default'),
+      [fgHover]: token('color.text.semantic.negative.inverse.@hover'),
+      [bg]: token('color.background.semantic.negative.inverse.default'),
+      [bgHover]: token('color.background.semantic.negative.inverse.@hover'),
+      [focusColor]: token('color.border.semantic.negative.@focus'),
+      [iconFill]: token('color.icon.semantic.negative.default'),
     },
   },
   positive: {
     vars: {
-      [color]: vars.colors.$positiveContrast,
-      [backgroundColor]: vars.colors.$positiveSurface,
-      [hoverBackgroundColor]: vars.colors.$positiveHighContrast,
-      [activeBackgroundColor]: vars.colors.$positiveHighContrast,
-      [hoverColor]: vars.colors.$positiveContrast,
-      [outlineColor]: vars.colors.$positiveAccent,
+      [fg]: token('color.text.semantic.positive.inverse.default'),
+      [fgHover]: token('color.text.semantic.positive.inverse.@hover'),
+      [bg]: token('color.background.semantic.positive.inverse.default'),
+      [bgHover]: token('color.background.semantic.positive.inverse.@hover'),
+      [focusColor]: token('color.border.semantic.positive.@focus'),
+      [iconFill]: token('color.icon.semantic.positive.default'),
     },
   },
-  primaryInverted: {
+  info: {
     vars: {
-      [color]: vars.colors.$primaryContrastInverted,
-      [backgroundColor]: vars.colors.$primaryLowContrast,
-      [hoverBackgroundColor]: vars.colors.$primarySurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$primaryHighContrast,
-      [hoverColor]: vars.colors.$primaryContrastInverted,
-      [outlineColor]: vars.colors.$primaryAccent,
-    },
-  },
-  secondaryInverted: {
-    vars: {
-      [color]: vars.colors.$secondaryContrastInverted,
-      [backgroundColor]: vars.colors.$secondaryLowContrast,
-      [hoverBackgroundColor]: vars.colors.$secondarySurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$secondaryHighContrast,
-      [hoverColor]: vars.colors.$secondaryContrastInverted,
-      [outlineColor]: vars.colors.$secondaryAccent,
-    },
-  },
-  tertiaryInverted: {
-    vars: {
-      [color]: vars.colors.$tertiaryContrastInverted,
-      [backgroundColor]: vars.colors.$tertiaryLowContrast,
-      [hoverBackgroundColor]: vars.colors.$tertiarySurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$tertiaryHighContrast,
-      [hoverColor]: vars.colors.$tertiaryContrastInverted,
-      [outlineColor]: vars.colors.$tertiaryAccent,
-    },
-  },
-  warningInverted: {
-    vars: {
-      [color]: vars.colors.$warningContrastInverted,
-      [backgroundColor]: vars.colors.$warningLowContrast,
-      [hoverBackgroundColor]: vars.colors.$warningSurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$warningHighContrast,
-      [hoverColor]: vars.colors.$warningContrastInverted,
-      [outlineColor]: vars.colors.$warningAccent,
-    },
-  },
-  positiveInverted: {
-    vars: {
-      [color]: vars.colors.$positiveContrastInverted,
-      [backgroundColor]: vars.colors.$positiveLowContrast,
-      [hoverBackgroundColor]: vars.colors.$positiveSurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$positiveHighContrast,
-      [hoverColor]: vars.colors.$positiveContrastInverted,
-      [outlineColor]: vars.colors.$positiveAccent,
-    },
-  },
-  negativeInverted: {
-    vars: {
-      [color]: vars.colors.$negativeContrastInverted,
-      [backgroundColor]: vars.colors.$negativeLowContrast,
-      [hoverBackgroundColor]: vars.colors.$negativeSurfaceInverted,
-      [activeBackgroundColor]: vars.colors.$negativeHighContrast,
-      [hoverColor]: vars.colors.$negativeContrastInverted,
-      [outlineColor]: vars.colors.$negativeAccent,
+      [fg]: token('color.text.semantic.info.inverse.default'),
+      [fgHover]: token('color.text.semantic.info.inverse.@hover'),
+      [bg]: token('color.background.semantic.info.inverse.default'),
+      [bgHover]: token('color.background.semantic.info.inverse.@hover'),
+      [focusColor]: token('color.border.semantic.info.@focus'),
+      [iconFill]: token('color.icon.semantic.info.default'),
     },
   },
 } as const;
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const focusRing = {
-  outlineColor,
-  outlineStyle: 'solid',
-  outlineWidth: tokens.kda.foundation.border.width.normal,
+  outline: `${focusColor} solid ${tokens.kda.foundation.border.width.normal}`,
   outlineOffset: tokens.kda.foundation.border.width.normal,
 };
 
@@ -192,67 +133,118 @@ export const button = recipe({
       display: 'inline-flex',
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 'sm',
-      gap: 'sm',
-      paddingInline: 'md',
-      paddingBlock: 'sm',
+      borderRadius: 'md',
+      gap: 'xs',
     }),
     {
-      color,
-      backgroundColor,
+      background: 'none',
+      border: `${tokens.kda.foundation.border.width.normal} solid transparent`,
       transition:
         'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
-
       selectors: {
-        '&[data-hovered]': {
-          color: hoverColor,
-          backgroundColor: hoverBackgroundColor,
-        },
         '&[data-pressed]': focusRing,
         '&[data-focus-visible]': focusRing,
         '&[data-disabled]': {
-          opacity: 0.7,
-          backgroundColor: colorPalette.$gray60,
-          color: colorPalette.$gray10,
+          background: token('color.background.base.@disabled'),
+          color: token('color.text.base.@disabled'),
           cursor: 'not-allowed',
           pointerEvents: 'none',
+          vars: {
+            [iconFill]: token('color.icon.base.@disabled'),
+          },
         },
       },
     },
   ],
   variants: {
-    variant: colorVariants,
-    isCompact: {
-      true: {
-        paddingInline: vars.sizes.$1,
-        paddingBlock: vars.sizes.$1,
-      },
-    },
-    isOutlined: {
-      true: {
-        backgroundColor: 'transparent',
-        outlineOffset: 0,
+    color: colorVariants,
+    variant: {
+      contained: {
+        background: bg,
+        color: fg,
+        transition:
+          'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
+        selectors: {
+          '&[data-hovered]': {
+            color: fgHover,
+            background: bgHover,
+          },
+        },
         vars: {
-          [backgroundColor]: 'none',
-          [hoverBackgroundColor]: 'none',
+          [iconFill]: fg,
         },
       },
+      alternative: {
+        color: bg,
+        background: fg,
+        selectors: {
+          '&[data-hovered]': {
+            background: fgHover,
+            color: bgHover,
+          },
+        },
+      },
+      outlined: {
+        border: `${tokens.kda.foundation.border.width.normal} solid ${fg}`,
+        outline: 'none',
+        color: bg,
+        background: 'none',
+        selectors: {
+          '&[data-hovered]': {
+            borderColor: fgHover,
+          },
+          '&[data-pressed]': {
+            borderColor: focusColor,
+            outline: 'none',
+          },
+          '&[data-focus-visible]': {
+            borderColor: focusColor,
+            outline: 'none',
+          },
+          '&[data-disabled]': {
+            borderColor: token('color.border.base.@disabled'),
+            color: token('color.text.base.@disabled'),
+            background: 'none',
+          },
+        },
+      },
+      text: {
+        background: 'none',
+        color: bg,
+        selectors: {
+          '&[data-hovered]': {
+            color: bgHover,
+            textDecoration: 'underline',
+          },
+          '&[data-pressed]': {
+            color: focusColor,
+            textDecoration: 'underline',
+            outline: 'none',
+          },
+          '&[data-focus-visible]': {
+            color: focusColor,
+            textDecoration: 'underline',
+            outline: 'none',
+          },
+          '&[data-disabled]': {
+            background: 'none',
+          },
+        },
+      },
+    },
+    isCompact: {
+      true: atoms({ padding: 'xs' }),
+      false: atoms({ padding: 'sm' }),
     },
     isLoading: {
       true: {
         pointerEvents: 'none',
       },
     },
-    onlyIcon: {
-      true: {
-        paddingInline: vars.sizes.$2,
-        paddingBlock: vars.sizes.$2,
-      },
-    },
   },
   defaultVariants: {
-    variant: 'primary',
+    variant: 'contained',
+    color: 'primary',
     isCompact: false,
-    isOutlined: false,
   },
 });
