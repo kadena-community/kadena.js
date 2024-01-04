@@ -4,6 +4,7 @@ import { atoms } from '../../styles/atoms.css';
 import { token } from '../../styles/themeUtils';
 import { tokens } from '../../styles/tokens/contract.css';
 import { bodyBaseBold } from '../../styles/tokens/styles.css';
+import { iconFill } from '../Icon/IconWrapper.css';
 
 // to reduce the number of local vars and make the code easier we use two colors and swap them for different variants
 
@@ -15,7 +16,6 @@ const bgHover = createVar();
 const fg = createVar();
 const fgHover = createVar();
 
-const iconColor = createVar();
 const focusColor = createVar();
 
 // eslint-disable-next-line @kadena-dev/typedef-var
@@ -27,7 +27,7 @@ const colorVariants = {
       [bg]: token('color.background.brand.primary.inverse.default'),
       [bgHover]: token('color.background.brand.primary.inverse.@hover'),
       [focusColor]: token('color.border.brand.primary.@focus'),
-      [iconColor]: token('color.icon.brand.primary.inverse.default'),
+      [iconFill]: token('color.icon.brand.primary.default'),
     },
   },
   secondary: {
@@ -37,7 +37,7 @@ const colorVariants = {
       [bg]: token('color.background.brand.secondary.inverse.default'),
       [bgHover]: token('color.background.brand.secondary.inverse.@hover'),
       [focusColor]: token('color.border.brand.secondary.@focus'),
-      [iconColor]: token('color.icon.brand.secondary.inverse.default'),
+      [iconFill]: token('color.icon.brand.secondary.default'),
     },
   },
   warning: {
@@ -47,7 +47,7 @@ const colorVariants = {
       [bg]: token('color.background.semantic.warning.inverse.default'),
       [bgHover]: token('color.background.semantic.warning.inverse.@hover'),
       [focusColor]: token('color.border.semantic.warning.@focus'),
-      [iconColor]: token('color.icon.semantic.warning.inverse.default'),
+      [iconFill]: token('color.icon.semantic.warning.default'),
     },
   },
   negative: {
@@ -57,7 +57,7 @@ const colorVariants = {
       [bg]: token('color.background.semantic.negative.inverse.default'),
       [bgHover]: token('color.background.semantic.negative.inverse.@hover'),
       [focusColor]: token('color.border.semantic.negative.@focus'),
-      [iconColor]: token('color.icon.semantic.negative.inverse.default'),
+      [iconFill]: token('color.icon.semantic.negative.default'),
     },
   },
   positive: {
@@ -67,7 +67,7 @@ const colorVariants = {
       [bg]: token('color.background.semantic.positive.inverse.default'),
       [bgHover]: token('color.background.semantic.positive.inverse.@hover'),
       [focusColor]: token('color.border.semantic.positive.@focus'),
-      [iconColor]: token('color.icon.semantic.positive.inverse.default'),
+      [iconFill]: token('color.icon.semantic.positive.default'),
     },
   },
   info: {
@@ -77,7 +77,7 @@ const colorVariants = {
       [bg]: token('color.background.semantic.info.inverse.default'),
       [bgHover]: token('color.background.semantic.info.inverse.@hover'),
       [focusColor]: token('color.border.semantic.info.@focus'),
-      [iconColor]: token('color.icon.semantic.info.inverse.default'),
+      [iconFill]: token('color.icon.semantic.info.default'),
     },
   },
 } as const;
@@ -149,11 +149,15 @@ export const button = recipe({
           color: token('color.text.base.@disabled'),
           cursor: 'not-allowed',
           pointerEvents: 'none',
+          vars: {
+            [iconFill]: token('color.icon.base.@disabled'),
+          },
         },
       },
     },
   ],
   variants: {
+    color: colorVariants,
     variant: {
       contained: {
         background: bg,
@@ -165,6 +169,9 @@ export const button = recipe({
             color: fgHover,
             background: bgHover,
           },
+        },
+        vars: {
+          [iconFill]: fg,
         },
       },
       alternative: {
@@ -225,7 +232,6 @@ export const button = recipe({
         },
       },
     },
-    color: colorVariants,
     isCompact: {
       true: atoms({ padding: 'xs' }),
       false: atoms({ padding: 'sm' }),
@@ -241,8 +247,4 @@ export const button = recipe({
     color: 'primary',
     isCompact: false,
   },
-});
-
-export const icon = style({
-  fill: iconColor,
 });
