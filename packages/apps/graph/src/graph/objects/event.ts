@@ -9,6 +9,7 @@ export default builder.prismaNode('Event', {
   id: { field: 'blockHash_orderIndex_requestKey' },
   fields: (t) => ({
     // database fields
+    incrementedId: t.exposeInt('id'),
     chainId: t.expose('chainId', { type: 'BigInt' }),
     height: t.expose('height', {
       type: 'BigInt',

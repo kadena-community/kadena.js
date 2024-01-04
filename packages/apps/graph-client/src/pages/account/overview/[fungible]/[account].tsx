@@ -4,7 +4,9 @@ import type {
   FungibleAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetFungibleAccountQuery } from '@/__generated__/sdk';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import { getNonFungibleAccount } from '@/graphql/queries.graph';
 import { ChainFungibleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
@@ -13,6 +15,7 @@ import {
   Box,
   Breadcrumbs,
   Notification,
+  Stack,
   TabItem,
   Table,
   Tabs,
@@ -23,19 +26,24 @@ import React from 'react';
 const Account: React.FC = () => {
   const router = useRouter();
 
-  const { loading, data, error } = useGetFungibleAccountQuery({
-    variables: {
-      fungibleName: router.query.fungible as string,
-      accountName: router.query.account as string,
-    },
-  });
+  const variables = {
+    fungibleName: router.query.fungible as string,
+    accountName: router.query.account as string,
+  };
+
+  const { loading, data, error } = useGetFungibleAccountQuery({ variables });
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Stack justifyContent="space-between">
+        <Breadcrumbs.Root>
+          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
+        </Breadcrumbs.Root>
+        <GraphQLQueryDialog
+          queries={[{ query: getNonFungibleAccount, variables }]}
+        />
+      </Stack>
 
       <Box marginBottom="$8" />
 

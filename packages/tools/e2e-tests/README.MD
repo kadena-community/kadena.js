@@ -20,18 +20,30 @@ This package contains the e2e tests and source code all Kadena dApps
 
 ## Installation & Usage
 
-To run the tests locally, it is assumed that the dApp is served on
-[http://localhost:3000][3]. For more information on how to achieve this, consult
-the readme for the respective dApp. Running the tests locally can be achieved by
-executing the commands below.
+### dApp
+
+In order to run the tests, the dApp needs to be running on
+[http://localhost:3000][3]. The tests will assume you deployed the dApp yourself
+if a webserver is found on [http://localhost:3000][3]. if it is unable to find
+one, the test framework will attempt to start the dApp for you. it is
+recommended that you first execute a build of the monorepo to ensure performance
+of the dev server.
+
+### Devnet
+
+In order to run these integrated tests, a version of devnet is also required.
+`docker run -it --rm -p 127.0.0.1:8080:8080`
+
+Once these two components have been started, either by you or the
 
 Note: the following commands have been written to be executable from the root of
 the monorepository.
 
-1. Install dependencies:
+1. Install dependencies, build the monorepo:
 
 ```sh
 pnpm install
+pnpn turbo build
 ```
 
 2. Install browsers required by Playwright
@@ -40,14 +52,13 @@ pnpm install
 pnpm --filter @kadena-dev/e2e-tests run install:chromium
 ```
 
-3. Run test suite, substitute `tools-app` for any of the available projects
-   described in the [playwright.config.ts][4]
+3. Run test suite, substitute `tools` for any of the available Apps. Each App
+   has it's own config file.
 
 ```sh
- pnpm --filter @kadena-dev/e2e-tests run test:e2e --project=@kadena/tools
+pnpm run test:e2e -- -c playwright.tools.config.ts
 ```
 
 [1]: #table-of-contents
 [2]: #installation-#-usage
 [3]: http://localhost:3000
-[4]: ./playwright.config.ts

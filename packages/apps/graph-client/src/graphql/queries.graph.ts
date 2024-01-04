@@ -5,6 +5,7 @@ import {
   CORE_CHAIN_ACCOUNT_FIELDS,
 } from './fields/chain-account.graph';
 import { CORE_CHAIN_NON_FUNGIBLE_ACCOUNT_FIELDS } from './fields/chain-non-fungible-account.graph';
+import { ALL_EVENT_FIELDS } from './fields/event.graph';
 import { CORE_MINER_KEY_FIELDS } from './fields/miner-key.graph';
 import { ALL_NON_FUNGIBLE_ACCOUNT_FIELDS } from './fields/non-fungible-account.graph';
 import { CORE_TRANSACTION_FIELDS } from './fields/transaction.graph';
@@ -251,6 +252,41 @@ export const getTransfers: DocumentNode = gql`
     }
   }
 `;
+
+export const getEvents: DocumentNode = gql`
+  ${ALL_EVENT_FIELDS}
+
+  query getEvents(
+    $qualifiedEventName: String!
+    $after: String
+    $before: String
+    $first: Int
+    $last: Int
+  ) {
+    events(
+      qualifiedEventName: $qualifiedEventName
+      after: $after
+      before: $before
+      first: $first
+      last: $last
+    ) {
+      totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          ...AllEventFields
+        }
+      }
+    }
+  }
+`;
+
 export const estimateGasLimit: DocumentNode = gql`
   query estimateGasLimit($transaction: PactTransaction!) {
     gasLimitEstimate(transaction: $transaction)

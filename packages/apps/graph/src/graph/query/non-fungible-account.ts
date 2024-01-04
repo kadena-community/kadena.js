@@ -16,8 +16,8 @@ builder.queryField('nonFungibleAccount', (t) =>
     async resolve(__parent, args) {
       const chainAccounts = (
         await Promise.all(
-          chainIds.map(async (chainId) => {
-            return await getChainNonFungibleAccount({
+          chainIds.map((chainId) => {
+            return getChainNonFungibleAccount({
               chainId: chainId,
               accountName: args.accountName,
             });
@@ -34,6 +34,7 @@ builder.queryField('nonFungibleAccount', (t) =>
       return {
         __typename: NonFungibleAccountName,
         accountName: args.accountName,
+        nonFungibles: [],
         chainAccounts: chainAccounts,
         transactions: [],
       };

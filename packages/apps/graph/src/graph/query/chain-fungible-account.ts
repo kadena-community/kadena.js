@@ -1,9 +1,8 @@
+import { getChainFungibleAccount } from '@services/account-service';
 import { COMPLEXITY } from '@services/complexity';
-import { getAccountDetails } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import ChainFungibleAccount from '../objects/chain-fungible-account';
-import { ChainFungibleAccountName } from '../types/graphql-types';
 
 builder.queryField('chainFungibleAccount', (t) =>
   t.field({
@@ -19,27 +18,11 @@ builder.queryField('chainFungibleAccount', (t) =>
     complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
-        const accountDetails = await getAccountDetails(
-          args.fungibleName,
-          args.accountName,
-          args.chainId,
-        );
-
-        return accountDetails
-          ? {
-              __typename: ChainFungibleAccountName,
-              chainId: args.chainId,
-              accountName: args.accountName,
-              fungibleName: args.fungibleName,
-              guard: {
-                keys: accountDetails.guard.keys,
-                predicate: accountDetails.guard.pred,
-              },
-              balance: accountDetails.balance,
-              transactions: [],
-              transfers: [],
-            }
-          : null;
+        return getChainFungibleAccount({
+          chainId: args.chainId,
+          fungibleName: args.fungibleName,
+          accountName: args.accountName,
+        });
       } catch (error) {
         throw normalizeError(error);
       }

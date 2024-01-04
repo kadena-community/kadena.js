@@ -1,21 +1,18 @@
-import type { GetBlocksSubscription } from '@/__generated__/sdk';
 import { useCallback, useState } from 'react';
 import { env } from '../env';
 
-export interface IBlock
-  extends Pick<
-    NonNullable<GetBlocksSubscription['newBlocks']>[number],
-    | 'creationTime'
-    | 'height'
-    | 'chainId'
-    | 'hash'
-    | 'payloadHash'
-    | 'powHash'
-    | 'epoch'
-    | 'confirmationDepth'
-    | 'parentHash'
-    | 'transactions'
-  > {}
+export interface IBlock {
+  height: number;
+  hash: string;
+  parentHash: string;
+  chainId: number;
+  creationTime: number;
+  confirmationDepth: number;
+  transactions: {
+    totalCount: number;
+  };
+}
+
 interface IUseParseBlocksReturn {
   allBlocks: Record<number, IBlock[]>;
   addBlocks: (blocks: IBlock[]) => void;

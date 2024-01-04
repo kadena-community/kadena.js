@@ -18,6 +18,7 @@ import './query/blocks-from-height';
 import './query/chain-fungible-account';
 import './query/chain-non-fungible-account';
 import './query/completed-block-heights';
+import './query/events';
 import './query/fungible-account';
 import './query/gas-limit-estimate';
 import './query/graph-configuration';

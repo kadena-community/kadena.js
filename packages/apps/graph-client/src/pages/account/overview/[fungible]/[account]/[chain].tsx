@@ -3,38 +3,54 @@ import type {
   ChainFungibleAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetChainFungibleAccountQuery } from '@/__generated__/sdk';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import { getChainFungibleAccount } from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Grid, GridItem, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  Grid,
+  GridItem,
+  Stack,
+  Table,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 const ChainAccount: React.FC = () => {
   const router = useRouter();
 
+  const variables = {
+    fungibleName: router.query.fungible as string,
+    accountName: router.query.account as string,
+    chainId: router.query.chain as string,
+  };
+
   const { loading, data, error } = useGetChainFungibleAccountQuery({
-    variables: {
-      fungibleName: router.query.fungible as string,
-      accountName: router.query.account as string,
-      chainId: router.query.chain as string,
-    },
+    variables,
   });
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item
-          href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
-            router.query.account as string
-          }`}
-        >
-          Account Overview
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Stack justifyContent="space-between">
+        <Breadcrumbs.Root>
+          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
+          <Breadcrumbs.Item
+            href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
+              router.query.account as string
+            }`}
+          >
+            Account Overview
+          </Breadcrumbs.Item>
+          <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
+        </Breadcrumbs.Root>
+        <GraphQLQueryDialog
+          queries={[{ query: getChainFungibleAccount, variables }]}
+        />
+      </Stack>
 
       <Box marginBottom="$8" />
 

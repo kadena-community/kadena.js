@@ -26,6 +26,7 @@ export default builder.prismaNode('Block', {
         'The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.',
     }),
     height: t.expose('height', { type: 'BigInt' }),
+    parentHash: t.exposeString('parentBlockHash'),
     payloadHash: t.exposeString('payloadHash'),
     powHash: t.exposeString('powHash', {
       description: 'The proof of work hash.',
@@ -70,13 +71,6 @@ export default builder.prismaNode('Block', {
         } catch (error) {
           throw normalizeError(error);
         }
-      },
-    }),
-    parentHash: t.string({
-      nullable: true,
-      resolve(parent) {
-        // Access the parent block's hash from the parent object
-        return parent.parentBlockHash;
       },
     }),
 

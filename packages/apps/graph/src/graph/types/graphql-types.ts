@@ -9,6 +9,7 @@ export interface Guard {
 export interface Token {
   id: string;
   balance: number;
+  chainId: number;
 }
 
 export const ChainFungibleAccountName: 'ChainFungibleAccount' =

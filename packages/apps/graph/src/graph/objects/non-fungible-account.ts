@@ -8,6 +8,7 @@ import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
+import { tokenDetailsLoader } from '../data-loaders/token-details';
 import type {
   ChainNonFungibleAccount,
   NonFungibleAccount,
@@ -56,8 +57,8 @@ export default builder.node(
           try {
             return (
               await Promise.all(
-                chainIds.map(async (chainId) => {
-                  return await getChainNonFungibleAccount({
+                chainIds.map((chainId) => {
+                  return getChainNonFungibleAccount({
                     chainId: chainId,
                     accountName: parent.accountName,
                   });
@@ -71,6 +72,22 @@ export default builder.node(
           }
         },
       }),
+      nonFungibles: t.field({
+        type: ['Token'],
+        complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+        async resolve(parent) {
+          try {
+            const tokenDetails = await tokenDetailsLoader.load({
+              accountName: parent.accountName,
+            });
+
+            return tokenDetails;
+          } catch (error) {
+            throw normalizeError(error);
+          }
+        },
+      }),
+
       transactions: t.prismaConnection({
         type: 'Transaction',
         cursor: 'blockHash_requestKey',

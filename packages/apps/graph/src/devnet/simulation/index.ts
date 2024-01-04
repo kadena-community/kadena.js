@@ -1,10 +1,8 @@
 import 'module-alias/register';
 
 import type { IAccount } from '@devnet/utils';
-import { sender00 } from '@devnet/utils';
 import { logger } from '@utils/logger';
 import { Command, Option } from 'commander';
-import { deployMarmaladeContracts } from '../deployment/marmalade/deploy';
 import { simulateCoin } from './coin/simulate';
 import { transfer } from './coin/transfer';
 import { generateAccount } from './helper';
@@ -77,17 +75,6 @@ program
     try {
       logger.info('Simulation config parameters:', args);
       await simulateCoin(args);
-    } catch (error) {
-      console.error(error);
-    }
-  });
-
-program
-  .command('deploy:marmalade')
-  .description('Deploy marmalade contracts on the devnet')
-  .action(async (args) => {
-    try {
-      await deployMarmaladeContracts(sender00);
     } catch (error) {
       console.error(error);
     }

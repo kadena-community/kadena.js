@@ -74,7 +74,7 @@ After that, you’ll set up a local development network and your development wor
 The workshop repository contains branches with starter code for every tutorial, so you can compare your solution with the finished code at every step along the way. 
 
  * [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started)
- * [Start a local blockchain](/build/guides/election-dapp-tutorial/02-running-devnet)
+ * [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain)
  * [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account)
  * [Define a namespaces](/build/guides/election-dapp-tutorial/04-namespaces)
  * [Define keysets](/build/guides/election-dapp-tutorial/05-keysets)
