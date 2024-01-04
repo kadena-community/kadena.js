@@ -2,7 +2,10 @@ import { HttpResponse, delay, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import type { ICoin } from '../../../composePactCommand/test/coin-contract';
-import type { IQuicksignResponseOutcomes } from '../../../index';
+import type {
+  IQuicksignResponse,
+  IQuicksignResponseOutcomes,
+} from '../../../index';
 import { Pact } from '../../../index';
 import { getModule } from '../../../pact';
 import {
@@ -19,7 +22,7 @@ afterAll(() => server.close());
 
 const post = (
   path: string,
-  response: string | IQuicksignResponseOutcomes,
+  response: string | IQuicksignResponse,
   status = 200,
   wait?: number,
 ): ReturnType<typeof http.post> =>
@@ -35,9 +38,9 @@ const post = (
   );
 
 describe('signWithChainweaver', () => {
+  // Using signWithChainweaver directly is deprecated, but we still want to test it
   ['createSignWithChainweaver', 'signWithChainweaver'].forEach((fn) => {
-    console.log(fn);
-    let signFn: unknown = signWithChainweaver;
+    let signFn = signWithChainweaver;
     beforeAll(() => {
       if (fn === 'createSignWithChainweaver') {
         signFn = createSignWithChainweaver();
@@ -47,8 +50,19 @@ describe('signWithChainweaver', () => {
     describe(fn, () => {
       it('throws an error when nothing is to be signed', async () => {
         try {
-          // const signWithChainweaver = createSignWithChainweaver();
-          await (signWithChainweaver as (arg: unknown) => {})(undefined);
+          await (signFn as (arg: unknown) => {})(undefined);
+        } catch (e) {
+          expect(e).toBeTruthy();
+        }
+      });
+
+      it('throws when an empty response is returned', async () => {
+        server.resetHandlers(
+          post('http://127.0.0.1:9467/v1/quicksign', { responses: [] }),
+        );
+
+        try {
+          await (signFn as (arg: unknown) => {})([]);
         } catch (e) {
           expect(e).toBeTruthy();
         }
@@ -56,12 +70,13 @@ describe('signWithChainweaver', () => {
 
       it('throws when an error is returned', async () => {
         server.resetHandlers(
-          post('http://127.0.0.1:9467/v1/quicksign', { responses: [] }),
+          post('http://127.0.0.1:9467/v1/quicksign', {
+            error: { type: 'other', msg: 'Oops!' },
+          }),
         );
 
         try {
-          // const signWithChainweaver = createSignWithChainweaver();
-          await (signWithChainweaver as (arg: unknown) => {})([]);
+          await (signFn as (arg: unknown) => {})([]);
         } catch (e) {
           expect(e).toBeTruthy();
         }
@@ -101,48 +116,7 @@ describe('signWithChainweaver', () => {
           ),
         );
 
-        // const signWithChainweaver = createSignWithChainweaver();
-        await signWithChainweaver(unsignedTransaction);
-      });
-
-      it('makes a call on my-host.kadena:9467/v1/quicksign when chainweaverUrl is passed', async () => {
-        const unsignedTransaction = Pact.builder
-          .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
-          .addSigner('pubkey', (withCap) => [withCap('coin.GAS')])
-          .addSigner('pubkey', (withCap) => [
-            withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
-          ])
-          .setMeta({
-            senderAccount: '',
-            chainId: '0',
-          })
-          .createTransaction();
-
-        const mockedResponse: IQuicksignResponseOutcomes = {
-          responses: [
-            {
-              commandSigData: {
-                cmd: '',
-                sigs: [{ pubKey: 'pubkey', sig: 'sig' }],
-              },
-              outcome: {
-                hash: '',
-                result: 'success',
-              },
-            },
-          ],
-        };
-
-        server.resetHandlers(
-          post('http://my-host.kadena:9467/v1/quicksign', mockedResponse),
-        );
-
-        const signWithChainweaver = createSignWithChainweaver({
-          chainweaverUrl: 'http://my-host.kadena:9467',
-        });
-        const signedTx = await signWithChainweaver(unsignedTransaction);
-
-        expect(signedTx.sigs).toStrictEqual([{ sig: 'sig' }]);
+        await signFn(unsignedTransaction);
       });
 
       it('throws when call fails', async () => {
@@ -164,10 +138,7 @@ describe('signWithChainweaver', () => {
           .createTransaction();
 
         // expected: throws an error
-        // const signWithChainweaver = createSignWithChainweaver();
-        await expect(
-          signWithChainweaver(unsignedTransaction),
-        ).rejects.toThrow();
+        await expect(signFn(unsignedTransaction)).rejects.toThrow();
       });
 
       it(`adds signatures in multisig fashion to the transactions ${signFn}`, async () => {
@@ -221,15 +192,14 @@ describe('signWithChainweaver', () => {
           })
           .createTransaction();
 
-        const signWithChainweaver = createSignWithChainweaver();
-        const txWithOneSig = await signWithChainweaver(unsignedTransaction);
+        const txWithOneSig = await signFn(unsignedTransaction);
 
         expect(txWithOneSig.sigs).toStrictEqual([
           { sig: 'gas-key-sig' },
           undefined,
         ]);
 
-        const signedTx = await signWithChainweaver(txWithOneSig);
+        const signedTx = await signFn(txWithOneSig);
         expect(signedTx.sigs).toEqual([
           { sig: 'gas-key-sig' },
           { sig: 'transfer-key-sig' },
@@ -258,12 +228,50 @@ describe('signWithChainweaver', () => {
           .addSigner('gas-signer-pubkey', (withCap) => [withCap('coin.GAS')])
           .createTransaction();
 
-        const signWithChainweaver = createSignWithChainweaver();
-        const signedTransaction =
-          await signWithChainweaver(unsignedTransaction);
+        const signedTransaction = await signFn(unsignedTransaction);
 
         expect(signedTransaction.sigs).toEqual([undefined]);
       });
     });
+  });
+
+  it('makes a call on my-host.kadena:9467/v1/quicksign when chainweaverUrl is passed', async () => {
+    const unsignedTransaction = Pact.builder
+      .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner('pubkey', (withCap) => [withCap('coin.GAS')])
+      .addSigner('pubkey', (withCap) => [
+        withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
+      ])
+      .setMeta({
+        senderAccount: '',
+        chainId: '0',
+      })
+      .createTransaction();
+
+    const mockedResponse: IQuicksignResponseOutcomes = {
+      responses: [
+        {
+          commandSigData: {
+            cmd: '',
+            sigs: [{ pubKey: 'pubkey', sig: 'sig' }],
+          },
+          outcome: {
+            hash: '',
+            result: 'success',
+          },
+        },
+      ],
+    };
+
+    server.resetHandlers(
+      post('http://my-host.kadena:9467/v1/quicksign', mockedResponse),
+    );
+
+    const signWithChainweaver = createSignWithChainweaver({
+      chainweaverUrl: 'http://my-host.kadena:9467',
+    });
+    const signedTx = await signWithChainweaver(unsignedTransaction);
+
+    expect(signedTx.sigs).toStrictEqual([{ sig: 'sig' }]);
   });
 });

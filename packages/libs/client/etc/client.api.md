@@ -38,7 +38,9 @@ export function createEckoWalletQuicksign(): IEckoSignFunction;
 export function createEckoWalletSign(): IEckoSignSingleFunction;
 
 // @public
-export function createSignWithChainweaver(chainweaverUrl?: string): ISignFunction;
+export function createSignWithChainweaver(options?: {
+    chainweaverUrl: string;
+}): ISignFunction;
 
 // @public
 export const createSignWithKeypair: ICreateSignWithKeypair;
@@ -406,6 +408,14 @@ export type PactReturnType<T extends (...args: any[]) => any> = T extends (...ar
 
 // @public
 export const readKeyset: (key: string) => () => string;
+
+// Warning: (ae-internal-missing-underscore) The name "signTransactions" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const signTransactions: (chainweaverUrl: string) => ISignFunction;
+
+// @public @deprecated
+export const signWithChainweaver: ISignFunction;
 
 // @public
 export type TWalletConnectChainId = `kadena:${IPactCommand['networkId']}`;

@@ -13,7 +13,12 @@ import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 const debug: Debugger = _debug('pactjs:signWithChainweaver');
 
-export const doSign = (chainweaverUrl: string) =>
+/**
+ *
+ * @internal
+ *
+ */
+export const signTransactions = (chainweaverUrl: string) =>
   (async (
     transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
   ) => {
@@ -80,11 +85,15 @@ export const doSign = (chainweaverUrl: string) =>
     }
   }) as ISignFunction;
 
-export const signWithChainweaver: ISignFunction = async (
-  transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
-) => {
-  return doSign('http://127.0.0.1:9467')(transactionList);
-};
+/**
+ * * Lets you sign with chainweaver according to {@link https://github.com/kadena-io/KIPs/blob/master/kip-0015.md | sign-v1 API}
+ *
+ * @deprecated Use {@link createSignWithChainweaver} instead
+ * @public
+ */
+export const signWithChainweaver: ISignFunction = signTransactions(
+  'http://127.0.0.1:9467',
+);
 
 /**
  * Creates the signWithChainweaver function with interface {@link ISignFunction}
@@ -96,7 +105,7 @@ export function createSignWithChainweaver(
   options = { chainweaverUrl: 'http://127.0.0.1:9467' },
 ): ISignFunction {
   const { chainweaverUrl } = options;
-  const signWithChainweaver = doSign(chainweaverUrl);
+  const signWithChainweaver = signTransactions(chainweaverUrl);
 
   return signWithChainweaver;
 }
