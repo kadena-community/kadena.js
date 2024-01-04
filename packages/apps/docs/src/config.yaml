@@ -62,12 +62,29 @@ pages:
           technicalgrants:
             url: /technical-grants
             file: /kadena/support/technical-grants.md
+      client:
+        file: /packages/libs/client/README.md
+        repo: https://github.com/kadena-community/kadena.js
+        url: /client
+        children:
+          clientapi:
+            file: /packages/libs/client/etc/client.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /api
+      clientexamples:
+        file: /packages/libs/client-examples/README.md
+        repo: https://github.com/kadena-community/kadena.js
+        url: /client-examples
       codeofconduct:
         url: /code-of-conduct
         file: /kadena/code-of-conduct.md
       exchanges:
         url: /exchanges
         file: /kadena/exchanges.md
+      kadenajs:
+        file: /packages/libs/kadena.js/README.md
+        repo: https://github.com/kadena-community/kadena.js
+        url: /kadenajs
       resources:
         url: /resources
         file: /kadena/resources/index.md
@@ -105,9 +122,36 @@ pages:
           dapp:
             url: /dapp
             file: /build/quickstart/dapp.md
+      kdacli:
+        file: /packages/tools/kda-cli/README.md
+        repo: https://github.com/kadena-community/kadena.js
+        url: /kda-cli
+        children:
+          kdacliapi:
+            file: /packages/tools/kda-cli/etc/kda-cli.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /api
+      cryptographyutils:
+        file: /packages/libs/cryptography-utils/README.md
+        repo: https://github.com/kadena-community/kadena.js
+        url: /cryptography-utils
+        children:
+          cryptographyutilscryptoapi:
+            file: /packages/libs/cryptography-utils/etc/crypto.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /crypto-api
+          cryptographyutilsapi:
+            file: /packages/libs/cryptography-utils/etc/cryptography-utils.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /api
       cookbook:
         url: /cookbook
         file: /build/cookbook/index.md
+        children:
+          buildcookbook:
+            file: /packages/tools/cookbook/README.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /cookbook
       guides:
         url: /guides
         file: /build/guides/index.md
@@ -324,9 +368,41 @@ pages:
       api:
         url: /api
         file: /pact/api/index.tsx
+      pactjs:
+        file: /packages/libs/pactjs/README.md
+        repo: https://github.com/kadena-community/kadena.js
+        url: /pactjs
+        children:
+          pactjsapi:
+            file: /packages/libs/pactjs/etc/pactjs.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /api
+          pactjsutils:
+            file: /packages/libs/pactjs/etc/pactjs-utils.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /utils
+      pactjscli:
+        file: /packages/tools/pactjs-cli/README.md
+        repo: https://github.com/kadena-community/kadena.js
+        url: /cli
+        children:
+          pactjscliapi:
+            file: /packages/tools/pactjs-cli/etc/pactjs-cli.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /api
+      pactjsgenerator:
+        file: /packages/libs/pactjs-generator/README.md
+        repo: https://github.com/kadena-community/kadena.js
+        url: /pactjs-generator
+        children:
+          pactjsgeneratorapi:
+            file: /packages/libs/pactjs-generator/etc/pactjs-generator.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /api
       vscode:
         url: /vscode
         file: /pact/vscode/index.md
+
   chainweb:
     url: /chainweb
     file: /chainweb/index.tsx
@@ -349,6 +425,15 @@ pages:
             file: /packages/libs/chainweb-stream-client/etc/chainweb-stream-client.api.md
             url: /api
             repo: https://github.com/kadena-community/kadena.js
+      jsbindings:
+        file: /packages/libs/chainwebjs/README.md
+        repo: https://github.com/kadena-community/kadena.js
+        url: /js-bindings
+        children:
+          bindingsapi:
+            file: /packages/libs/chainwebjs/etc/chainwebjs.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /api
   marmalade:
     url: /marmalade
     file: /marmalade/index.tsx

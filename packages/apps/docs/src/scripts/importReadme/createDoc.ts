@@ -103,7 +103,7 @@ const divideIntoPages = (md: Root): Root[] => {
 
 //check the first header.
 // if it is an h2 make it an h1
-const setTitleHeader = (tree: string): void => {
+const setTitleHeader = (tree: Root): void => {
   const headings = getTypes<Heading>(tree, 'heading');
 
   if (headings.length > 0 && headings[0].depth !== 1) {
@@ -328,7 +328,7 @@ export const importDocs = async (
   );
 
   const md: Root = remark.parse(doc);
-  setTitleHeader(doc);
+  setTitleHeader(md);
 
   // if (item.options?.singlePage) {
   relinkReferences(md, [md], `/${item.destination}/`);
