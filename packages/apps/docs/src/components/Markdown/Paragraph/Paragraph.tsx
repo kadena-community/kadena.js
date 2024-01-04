@@ -9,7 +9,7 @@ interface IProp {
 
 export const Paragraph: FC<IProp> = ({ children }) => {
   return (
-    <div className={paragraphWrapperClass} suppressHydrationWarning>
+    <div className={paragraphWrapperClass}>
       <BodyText as="p">{children}</BodyText>
     </div>
   );

@@ -545,16 +545,3 @@ pages:
       blog2018:
         url: /2018
         file: /blogchain/2018/index.tsx
-  test:
-    url: /test
-    file: /test.md
-    children:
-      build:
-        url: /build
-        file: /index.tsx
-      build2:
-        url: /build2
-        file: /test.md
-      test2:
-        url: /test2
-        file: /test2.md
