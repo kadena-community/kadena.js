@@ -3,7 +3,7 @@ import DataLoader from 'dataloader';
 
 interface TokenDetailsKey {
   accountName: string;
-  chainId: string;
+  chainId?: string;
 }
 
 export const tokenDetailsLoader = new DataLoader<TokenDetailsKey, any>(
