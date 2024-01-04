@@ -3,6 +3,8 @@ import React from 'react';
 import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
 import { Box } from '../Layout/Box/Box';
 import { Heading } from '../Typography/Heading/Heading';
+import type { ILinkButtonProps } from './LinkButton';
+import { LinkButton } from './LinkButton';
 import type { IButtonProps } from './NewButton';
 import { Button } from './NewButton';
 import { button } from './SharedButton.css';
@@ -84,13 +86,19 @@ const meta: Meta<IButtonProps> = {
   },
 };
 
-type Story = StoryObj<
+type ButtonStory = StoryObj<
   {
     text: string;
   } & IButtonProps
 >;
 
-export const Default: Story = {
+type LinkButtonStory = StoryObj<
+  {
+    text: string;
+  } & ILinkButtonProps
+>;
+
+export const _Button: ButtonStory = {
   name: 'Button',
   args: {
     text: 'Click me',
@@ -241,5 +249,32 @@ export const OnlyIcon: StoryFn<IButtonProps> = ({
     variant={variant}
   />
 );
+
+export const _LinkButton: LinkButtonStory = {
+  name: 'LinkButton',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The LinkButton component renders an anchor element <a/> which will be styled according to the variant prop (`primary` being the default)',
+      },
+    },
+  },
+  args: {
+    text: 'Click me',
+    variant: 'contained',
+    color: 'primary',
+    isDisabled: false,
+    isCompact: false,
+    isLoading: false,
+    icon: undefined,
+    startIcon: undefined,
+    endIcon: undefined,
+    href: '#',
+  },
+  render: ({ text, ...props }) => {
+    return <LinkButton {...props}>{text}</LinkButton>;
+  },
+};
 
 export default meta;
