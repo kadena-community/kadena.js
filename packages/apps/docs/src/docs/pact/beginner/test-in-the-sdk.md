@@ -323,11 +323,11 @@ within the module.
 For this code challenge, you will need to make calls to a few functions from the
 loans project. Here is a brief overview of each of the functions you will call.
 
-| function                                            | purpose                                                             |
-| --------------------------------------------------- | ------------------------------------------------------------------- |
-| [create-a-loan](/pact/beginner/loans#create-a-loan) | Accepts parameters to add the appropriate information to each table |
-| [assign-a-loan](/pact/beginner/loans#assign-a-loan) | Assigns a loan to an entity.                                        |
-| [sell-a-loan](/pact/beginner/loans#sell-a-loan)     | Sell a loan and log details in the loan history table.              |
+| function                                               | purpose                                                             |
+| ------------------------------------------------------ | ------------------------------------------------------------------- |
+| [create-a-loan](/pact/beginner/loans#52-create-a-loan) | Accepts parameters to add the appropriate information to each table |
+| [assign-a-loan](/pact/beginner/loans#53-assign-a-loan) | Assigns a loan to an entity.                                        |
+| [sell-a-loan](/pact/beginner/loans#54-sell-a-loan)     | Sell a loan and log details in the loan history table.              |
 
 Follow the links provided or view the loans.pact file for more details.
 
@@ -360,10 +360,10 @@ challenge for guidance.
 
 Here is a brief overview of the functions you will call in this challenge.
 
-| function                                                              | purpose                                      |
-| --------------------------------------------------------------------- | -------------------------------------------- |
-| [read-loan-inventory](/pact/beginner/loans#read-loan-inventory)       | Reads all loans in the loan inventory table. |
-| [read-loans-with-status](/pact/beginner/loans#read-loans-with-status) | Reads all loans with a specific status.      |
+| function                                                                  | purpose                                      |
+| ------------------------------------------------------------------------- | -------------------------------------------- |
+| [read-loan-inventory](/pact/beginner/loans#59-read-loan-inventory)        | Reads all loans in the loan inventory table. |
+| [read-loans-with-status](/pact/beginner/loans#510-read-loans-with-status) | Reads all loans with a specific status.      |
 
 :::caution Code Challenge
 

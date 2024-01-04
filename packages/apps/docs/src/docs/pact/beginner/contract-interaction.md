@@ -197,7 +197,7 @@ authorization.
 :::info
 
 A function similar to this is covered in Challenge
-[4.2 in Project Rotatable Wallet](/pact/beginner/rotatable-wallet#enforce-user).
+[4.2 in Project Rotatable Wallet](/pact/beginner/rotatable-wallet#42-enforce-user).
 You can look back to this challenge for more information to help get you
 started.
 

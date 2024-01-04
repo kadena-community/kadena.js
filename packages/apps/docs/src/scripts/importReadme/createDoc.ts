@@ -73,33 +73,33 @@ const getTitle = (pageAST: Root): string => {
     .join(' ');
 };
 
-const createTreeRoot = (page: Content[]): Root => ({
-  type: 'root',
-  children: page,
-});
+// const createTreeRoot = (page: Content[]): Root => ({
+//   type: 'root',
+//   children: page,
+// });
 
 const createDir = (dir: string): void => {
   fs.mkdirSync(dir, { recursive: true });
 };
 
-const divideIntoPages = (md: Root): Root[] => {
-  const pages = md.children.reduce((acc: Content[][], val: Content) => {
-    if (val.type === 'heading' && val.depth === 2) {
-      val.depth = 1;
-      acc.push([val]);
-    } else {
-      if (acc.length) {
-        acc[acc.length - 1].push(val);
-      }
-    }
+// const divideIntoPages = (md: Root): Root[] => {
+//   const pages = md.children.reduce((acc: Content[][], val: Content) => {
+//     if (val.type === 'heading' && val.depth === 2) {
+//       val.depth = 1;
+//       acc.push([val]);
+//     } else {
+//       if (acc.length) {
+//         acc[acc.length - 1].push(val);
+//       }
+//     }
 
-    return acc;
-  }, []);
+//     return acc;
+//   }, []);
 
-  const rootedPages = pages.map((page) => createTreeRoot(page));
+//   const rootedPages = pages.map((page) => createTreeRoot(page));
 
-  return rootedPages;
-};
+//   return rootedPages;
+// };
 
 //check the first header.
 // if it is an h2 make it an h1

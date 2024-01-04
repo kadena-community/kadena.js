@@ -11,10 +11,6 @@ const remarkFigureOutOfParagraph = (): Plugin => {
     const children = tree.children.map((node: Partial<DocsRootContent>) => {
       const { type } = node;
 
-      if (type === 'paragraph' && node.children) {
-        console.log(22, node);
-      }
-
       if (
         type === 'paragraph' &&
         node.children &&

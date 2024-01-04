@@ -1,6 +1,10 @@
 import { createSlug } from '@/utils/createSlug';
 import type { IConfigTreeItem } from '@kadena/docs-tools';
-import { getFileExtension, getUrlNameOfPageFile } from '@kadena/docs-tools';
+import {
+  getFileExtension,
+  getParentTreeFromPage,
+  getUrlNameOfPageFile,
+} from '@kadena/docs-tools';
 import * as fs from 'fs';
 import type {
   Definition,
@@ -28,12 +32,13 @@ const errors: string[] = [];
 const success: string[] = [];
 
 const getContent = (filePath: string): string => {
-  return fs.readFileSync(`./src/docs${filePath}`, 'utf-8');
+  return fs.readFileSync(`./src/pages${filePath}/index.md`, 'utf-8');
 };
 
-const fixHashLinks = (link: string): string => {
+const fixHashLinks = async (link: string): Promise<string> => {
   // check if the link has a hashdeeplink
   const arr = link.split('#');
+
   if (arr.length < 2) return link;
 
   const cleanedLink = arr[0];
@@ -42,12 +47,11 @@ const fixHashLinks = (link: string): string => {
   // get the page to the hashlink
   const file = getFileFromNameOfUrl(cleanedLink);
 
-  if (!file) return link;
+  if (!file) return `#${createSlug(cleanedHashUrl)}`;
 
-  // const parentTree = await getParentTreeFromPage(file);
-  // pagesLocation = getUrlNameOfPageFile(page, parentTree ?? []);
-
-  const fullContent = getContent(file.file);
+  const parentTree = await getParentTreeFromPage(file);
+  const pagesLocation = getUrlNameOfPageFile(file, parentTree ?? []);
+  const fullContent = getContent(pagesLocation);
 
   const { content } = splitContentFrontmatter(fullContent);
 
@@ -136,8 +140,6 @@ const fixLinks = async (
     contentWithFrontmatter,
   );
 
-  console.log(page.file);
-
   const md: Root = remark.parse(content);
   const images = getTypes<Image>(md, 'image');
   const links = getTypes<Link>(md, 'link');
@@ -149,14 +151,15 @@ const fixLinks = async (
     }
   });
 
-  [...links, ...linkReferences].forEach((link) => {
-    if (isLocalPageLink(link.url)) {
-      console.log(link.url);
-      link.url = getUrlofPageFile(link.url);
-    }
+  const linkArray = [...links, ...linkReferences];
+  for (let i = 0; i < linkArray.length; i++) {
+    const link = linkArray[i];
 
-    link.url = fixHashLinks(link.url);
-  });
+    if (isLocalPageLink(link.url)) {
+      link.url = getUrlofPageFile(link.url);
+      link.url = await fixHashLinks(link.url);
+    }
+  }
 
   const newContent = toMarkdown(md);
 

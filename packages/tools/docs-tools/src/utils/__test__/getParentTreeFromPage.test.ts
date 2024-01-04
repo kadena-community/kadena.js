@@ -50,7 +50,6 @@ describe('utils getParentTreeFromPage', () => {
     const result = await getParentTreeFromPage(page);
     const expectedResult = [{ url: '/test', file: '/test.md', id: 'build' }];
 
-    console.log(result);
     expect(result).toStrictEqual(expectedResult);
   });
 

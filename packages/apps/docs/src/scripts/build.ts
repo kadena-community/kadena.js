@@ -6,7 +6,6 @@ import { createSpecs } from './createSpec';
 import { detectBrokenLinks } from './detectBrokenLinks';
 import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
-import { importAllReadmes } from './importReadme';
 import { deleteTempDir } from './importReadme/importRepo';
 import { movePages } from './movePages';
 import type { IScriptResult } from './types';
@@ -33,22 +32,20 @@ const runPrettier = async (): Promise<IScriptResult> => {
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 (async function (): Promise<void> {
   //starting with a cleanslate, removing the tempdir.
-  //deleteTempDir();
+  deleteTempDir();
   await initFunc(movePages, 'create foldertree from config.yaml');
   await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
 
-  //await initFunc(importAllReadmes, 'Import docs from monorepo');
-
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');
-  // await initFunc(detectBrokenLinks, 'Detect broken links');
-  // await initFunc(checkForHeaders, 'Detect missing H1 headers');
-  // await initFunc(checkAuthors, 'Check author data for blog');
-  // await initFunc(createSitemap, 'Create the sitemap');
-  // await initFunc(copyFavIcons, 'Copy favicons');
-  //await initFunc(runPrettier, 'Prettier');
+  await initFunc(detectBrokenLinks, 'Detect broken links');
+  await initFunc(checkForHeaders, 'Detect missing H1 headers');
+  await initFunc(checkAuthors, 'Check author data for blog');
+  await initFunc(createSitemap, 'Create the sitemap');
+  await initFunc(copyFavIcons, 'Copy favicons');
+  await initFunc(runPrettier, 'Prettier');
   //cleanup, removing the tempdir
-  //deleteTempDir();
+  deleteTempDir();
 
   if (getGlobalError()) {
     process.exitCode = 1;

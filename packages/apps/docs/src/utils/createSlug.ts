@@ -20,7 +20,7 @@ export const createSlug = (str?: string): string => {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^\w\-\s]+/g, '')
-    .replace(/\d+(\.\d+)?./g, '') // Remove numbers with dots
+    .replace(/\./g, '') // Remove numbers with dots
     .replace(/ /g, '-')
     .toLowerCase()
     .replace(/^-+|-+$/g, '');
