@@ -1,10 +1,9 @@
 import type { CSSProperties } from 'react';
-import React, { useRef } from 'react';
+import React from 'react';
 
 import type { AriaPopoverProps } from 'react-aria';
 import { DismissButton, Overlay, usePopover } from 'react-aria';
 import type { OverlayTriggerState } from 'react-stately';
-import { IBoxProps } from '..';
 import { popoverClass } from './Popover.css';
 
 export interface IPopoverProps extends AriaPopoverProps {

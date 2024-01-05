@@ -1,8 +1,6 @@
 import { Button } from '@components/Button/NewButton';
 import type { IInputProps, ITextFieldProps } from '@components/Form';
 import { TextField } from '@components/Form';
-import { SystemIcon } from '@components/Icon';
-import { Box, IBoxProps, Stack } from '@components/Layout';
 import { ListBox } from '@components/ListBox';
 import { Popover } from '@components/Popover';
 import type { CSSProperties } from 'react';
@@ -16,6 +14,7 @@ export interface IComboBoxProps<T>
   id: IInputProps['id'];
   label: ITextFieldProps['label'];
   width: CSSProperties['width'];
+  startIcon?: ITextFieldProps['startIcon'];
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -23,6 +22,7 @@ export const ComboBox = <T extends object>({
   id,
   label,
   width,
+  startIcon,
   ...props
 }: IComboBoxProps<T>) => {
   // Setup filter function and state.
@@ -53,13 +53,12 @@ export const ComboBox = <T extends object>({
 
   return (
     <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
-      {/* <label {...labelProps}>{props.label}</label> */}
       <div style={{ width }}>
         <TextField
           {...inputProps}
           label={label}
           id={id}
-          startIcon={<SystemIcon.KeyIconFilled />}
+          startIcon={startIcon}
           ref={inputRef}
         >
           <Button {...buttonProps} ref={buttonRef}>

@@ -1,3 +1,4 @@
+import { SystemIcon } from '@components/Icon';
 import { Box } from '@components/Layout';
 import { Text } from '@components/Typography';
 import { onLayer1 } from '@storyDecorators';
@@ -32,6 +33,7 @@ export const Test: Story = {
           id="my-combobox"
           width={tokens.kda.foundation.layout.content.maxWidth}
           onInputChange={(value) => setSelectedValue(value)}
+          startIcon={<SystemIcon.KeyIconFilled />}
         >
           <Item key="red panda">Red Panda</Item>
           <Item key="cat">Cat</Item>
