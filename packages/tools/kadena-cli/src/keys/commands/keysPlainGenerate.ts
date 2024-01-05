@@ -2,7 +2,6 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import { randomBytes } from 'crypto';
 import debug from 'debug';
-
 import { kadenaEncrypt, kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
 
