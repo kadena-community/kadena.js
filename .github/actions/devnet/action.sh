@@ -1,8 +1,10 @@
 #!/bin/bash
 echo "value of INPUT_MIGRATIONS is $INPUT_MIGRATIONS"
-if [ -n "$INPUT_MIGRATIONS" ];
+if [[ ! -z $INPUT_MIGRATIONS ]]
 	then INPUT_MIGRATIONS="-v \"$INPUT_MIGRATIONS\":\"/cwd-extra-migrations"
 fi
+
+echo "new value of INPUT_MIGRATIONS is $INPUT_MIGRATIONS"
 
 echo "Starting devnet..."
 
