@@ -54,6 +54,7 @@ export const ComboBox = <T extends object>({
   return (
     <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
       <div style={{ width }}>
+        {/* @ts-expect-error */}
         <TextField
           {...inputProps}
           label={label}
