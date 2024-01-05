@@ -172,7 +172,6 @@ export async function getXChainTransferInfo({
 }): Promise<IStatusData> {
   debug(getXChainTransferInfo.name);
   try {
-    // const { selectedNetwork: network, networksData } = useWalletConnectClient();
     const networkData: INetworkData | undefined = networksData.find(
       (item) => (network as Network) === item.networkId,
     );
@@ -181,14 +180,14 @@ export async function getXChainTransferInfo({
 
     const requestObject = {
       requestKey,
-      networkId: network,
+      networkId: networkData.networkId,
       chainId: senderChain,
     };
 
     const apiHostSender = getApiHost({
       api: networkData.API,
       chainId: senderChain,
-      networkId: network,
+      networkId: networkData.networkId,
     });
 
     const { pollCreateSpv, listen } = client(apiHostSender);
@@ -203,14 +202,14 @@ export async function getXChainTransferInfo({
         rollback: false,
         step: 1,
       })
-      .setNetworkId(network)
+      .setNetworkId(networkData.networkId)
       .setMeta({ chainId: receiverChain })
       .createTransaction();
 
     const apiHostReceiver = getApiHost({
       api: networkData.API,
       chainId: receiverChain,
-      networkId: network,
+      networkId: networkData.networkId,
     });
     const { dirtyRead } = client(apiHostReceiver);
 
@@ -313,7 +312,7 @@ export async function checkForProof({
     return pollCreateSpv(
       {
         requestKey,
-        networkId: chainNetwork[network].network,
+        networkId: networkData.networkId,
         chainId: senderChain,
       },
       receiverChain,
