@@ -4,12 +4,79 @@ import { kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair } from
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
+import ora from 'ora';
+import path from 'path';
+
+import type { CommandResult } from '../../utils/command.util.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { displayStoredWallet } from '../utils/keysDisplay.js';
+import type { IWallet } from '../utils/keysHelpers.js';
+import { getWallet } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
-import ora from 'ora';
-import { displayStoredWallet } from '../utils/keysDisplay.js';
+/**
+kadena keys import-wallet --key-mnemonic "catch ridge print million media eternal sleep heavy inject before captain lazy" --security-new-password 12345678 --security-verify-password 12345678 --key-wallet "test"
+*/
+
+export const importWallet = async ({
+  mnemonic,
+  password,
+  keyWallet,
+  legacy,
+}: {
+  mnemonic: string;
+  password: string;
+  keyWallet: string;
+  legacy?: boolean;
+}): Promise<CommandResult<{ wallet: IWallet }>> => {
+  const existing = await getWallet(keyWallet);
+
+  if (existing !== null && existing.legacy === legacy) {
+    return {
+      success: false,
+      errors: [`Wallet "${keyWallet}" already exists.`],
+    };
+  }
+
+  const splitMnemonic = mnemonic
+    .split(' ')
+    .map((word) => word.trim())
+    .filter((word) => word.length > 0);
+
+  if (splitMnemonic.length !== 12) {
+    // TODO: figure out if other word lengths need to be supported
+    // if legacy it must be 12.
+    return { success: false, errors: [`Mnemonic phrase must be 12 words.`] };
+  }
+
+  const validatedMnemonic = splitMnemonic.join(' ');
+  let keySeed: EncryptedString;
+
+  if (legacy === true) {
+    keySeed = await legacykadenaMnemonicToRootKeypair(
+      password,
+      validatedMnemonic,
+    );
+  } else {
+    keySeed = await kadenaMnemonicToSeed(password, validatedMnemonic);
+  }
+
+  const walletPath = await storageService.storeWallet(
+    keySeed,
+    keyWallet,
+    legacy,
+  );
+
+  const wallet = await getWallet(path.basename(walletPath));
+
+  if (!wallet) {
+    return { success: false, errors: [`Failed to create wallet`] };
+  }
+
+  return { success: true, data: { wallet } };
+};
 
 export const createImportWalletCommand: (
   program: Command,
@@ -35,36 +102,17 @@ export const createImportWalletCommand: (
       }
 
       const loading = ora('Generating..').start();
-      try {
-        let keySeed: EncryptedString | undefined;
 
-        if (config.legacy === true) {
-          keySeed = await legacykadenaMnemonicToRootKeypair(
-            config.securityNewPassword,
-            config.keyMnemonic,
-          );
-        } else {
-          keySeed = await kadenaMnemonicToSeed(
-            config.securityNewPassword,
-            config.keyMnemonic,
-          );
-        }
+      const result = await importWallet({
+        keyWallet: config.keyWallet,
+        mnemonic: config.keyMnemonic,
+        password: config.securityNewPassword,
+        legacy: config.legacy,
+      });
 
-        loading.succeed('Completed');
+      assertCommandError(result, loading);
 
-        await storageService.storeWallet(
-          keySeed,
-          config.keyWallet,
-          config.legacy,
-        );
-
-        displayStoredWallet(config.keyWallet, config.legacy);
-      } catch (error) {
-        loading.fail('Operation failed');
-        console.error(
-          `Error: ${error instanceof Error ? error.message : error}`,
-        );
-      }
+      displayStoredWallet(config.keyWallet, result.data.wallet.legacy);
     } catch (error) {
       console.log(chalk.red(`\n${error.message}\n`));
       process.exit(1);

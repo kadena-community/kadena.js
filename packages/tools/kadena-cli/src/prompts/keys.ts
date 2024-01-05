@@ -77,7 +77,9 @@ export async function keyMessagePrompt(): Promise<string> {
   });
 }
 
-export async function genFromChoicePrompt(): Promise<string> {
+export async function genFromChoicePrompt(): Promise<
+  'genPublicKey' | 'genPublicSecretKey' | 'genPublicSecretKeyDec'
+> {
   return await select({
     message: 'Select an action',
     choices: [

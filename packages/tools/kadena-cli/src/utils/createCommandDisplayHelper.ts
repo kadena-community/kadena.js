@@ -32,16 +32,26 @@ export const displayConfig = (
   displaySeparator(); // Add horizontal line at the top
   Object.getOwnPropertyNames(config).forEach((key) => {
     const value = config[key];
-    const isArray = Array.isArray(value);
-    const displayValue = isArray ? JSON.stringify(value) : value;
-    const isObject = typeof displayValue === 'object';
-    console.log(formatConfig(indentation + key, isObject ? '' : displayValue));
+    let isObject = false;
+    let displayValue = value as string;
+
+    if (Array.isArray(value)) {
+      displayValue = JSON.stringify(value);
+    } else if (value === null) {
+      displayValue = 'null';
+    } else if (typeof value === 'object') {
+      isObject = true;
+      displayValue = '';
+    }
+
+    console.log(formatConfig(indentation + key, displayValue));
+
     if (isObject) {
       displayConfig(
-        displayValue as unknown as Record<string, string | number | object>,
+        value as unknown as Record<string, string | number | object>,
         `${indentation}  `,
       );
     }
   });
-  displaySeparator(); // Add horizontal line at the bottom
+  if (indentation.length === 0) displaySeparator(); // Add horizontal line at the bottom
 };

@@ -1,6 +1,7 @@
 import chalk from 'chalk';
+
 import yaml from 'js-yaml';
-import { join } from 'path';
+import path from 'path';
 
 import {
   KEY_EXT,
@@ -12,75 +13,39 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
-import { removeAfterFirstDot } from '../../utils/path.util.js';
-import { getKeysFromWallet, getLegacyKeysFromWallet } from './keysHelpers.js';
+import type { IWallet } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
-export async function displaySelectedWallet(name: string): Promise<void> {
-  const walletName = removeAfterFirstDot(name);
-  const formatLength = 80; // Maximum width for the display
-  // Wallet header with background color
+export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
+  if (!wallet) return;
+
+  const formatLength = 80;
+
   console.log(
-    chalk.black.bgGreen(`\n Wallet: ${walletName.padEnd(formatLength)}\n`),
+    chalk.black.bgGreen(
+      `\n${` Wallet: ${wallet.folder}${
+        wallet.legacy ? ' (legacy)' : ''
+      }`.padEnd(formatLength)}\n`,
+    ),
   );
 
-  await displayKeysInSection(
-    walletName,
-    await getKeysFromWallet(removeAfterFirstDot(walletName)),
-    chalk.green('Standard Keys:'),
-  );
-  await displayKeysInSection(
-    walletName,
-    await getLegacyKeysFromWallet(walletName),
-    chalk.green('Legacy Keys:'),
-  );
-}
-
-async function displayKeysInSection(
-  walletName: string,
-  keys: string[],
-  sectionTitle: string,
-): Promise<void> {
-  const formatLength = 80; // Maximum width for the display
-  console.log(sectionTitle);
-  console.log(chalk.yellow('-'.padEnd(formatLength, '-'))); // Header separator
-
-  if (keys.length === 0) {
-    console.log('No keys found.');
-    return;
+  if (wallet.keys.length === 0) {
+    return console.log('No keys');
   }
 
-  const content = await Promise.all(keys.map(services.filesystem.readFile));
-
-  keys.forEach((keyFileName, index) => {
-    const filePath = join(WALLET_DIR, walletName, keyFileName);
-    try {
-      const fileContents = content[index];
-      if (!fileContents) throw Error('Failed to read file contents');
-      const parsedContents = yaml.load(fileContents) as IKeyPair;
-      console.log(chalk.yellow(`Filename: ${keyFileName}`));
-      console.log(`Public Key: ${parsedContents.publicKey}`);
-      if (parsedContents.secretKey !== undefined) {
-        console.log(`Secret Key: ${parsedContents.secretKey}`);
-      }
-    } catch (error) {
-      console.log(`Error reading key file ${filePath}:`, error);
+  console.log(chalk.yellow('-'.padEnd(formatLength, '-')));
+  for (const key of wallet.keys) {
+    const content = await services.filesystem.readFile(
+      path.join(WALLET_DIR, wallet.folder, key),
+    );
+    const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
+    console.log(chalk.yellow(`Filename: ${key}`));
+    console.log(`Public Key: ${parsed?.publicKey}`);
+    if (typeof parsed?.secretKey === 'string') {
+      console.log(`Secret Key: ${parsed.secretKey}`);
     }
-    console.log(chalk.yellow('-'.padEnd(formatLength, '-'))); // Key separator
-  });
-}
-
-export async function displayAllWallets(): Promise<void> {
-  const walletDirs = (await services.filesystem.readDirWithTypes(WALLET_DIR))
-    .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name);
-
-  if (walletDirs.length === 0) {
-    console.log(chalk.red('No wallets found.'));
-    return;
+    console.log(chalk.yellow('-'.padEnd(formatLength, '-')));
   }
-
-  walletDirs.forEach(displaySelectedWallet);
 }
 
 /**

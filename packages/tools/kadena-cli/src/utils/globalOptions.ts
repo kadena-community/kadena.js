@@ -23,6 +23,7 @@ import {
   WALLET_LEGACY_EXT,
 } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
+import { getWallet, parseKeyIndexOrRange } from '../keys/utils/keysHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import {
   ensureNetworksConfiguration,
@@ -308,6 +309,9 @@ export const globalOptions = {
       '-r, --key-index-or-range <keyIndexOrRange>',
       'Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 1',
     ),
+    transform(value) {
+      return parseKeyIndexOrRange(value);
+    },
   }),
   keyAmount: createOption({
     key: 'keyAmount' as const,
@@ -350,6 +354,16 @@ export const globalOptions = {
         };
       }
       return keyWallet;
+    },
+  }),
+  keyWalletSelectWithAll: createOption({
+    key: 'keyWallet',
+    prompt: keys.keyWalletSelectAllPrompt,
+    validation: z.string(),
+    option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    defaultIsOptional: false,
+    expand: async (keyWallet: string) => {
+      return await getWallet(keyWallet);
     },
   }),
   securityPassword: createOption({
