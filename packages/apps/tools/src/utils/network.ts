@@ -89,6 +89,9 @@ export const getApiHost = ({
   if (!api.startsWith('http')) {
     scheme = 'https://';
   }
+  if (api.includes('localhost')) {
+    scheme = 'http://';
+  }
   return `${scheme}${api}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 };
 

@@ -1,11 +1,11 @@
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
 import {
   convertIntToChainId,
   validateRequestKey,
 } from '@/services/utils/utils';
 import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import type {
   ChainwebChainId,
   ICommandResult,
@@ -73,15 +73,17 @@ export async function getTransferData({
       if (!networkDto) {
         return;
       }
+      const apiHost = getApiHost({
+        api: networkDto.API,
+        chainId: convertIntToChainId(chainId),
+        networkId: networkDto.networkId,
+      });
+      const { getStatus } = client(apiHost);
 
-      const { getStatus } = client(
-        networkDto.networkId,
-        convertIntToChainId(chainId),
-      );
       return getStatus({
         requestKey,
         chainId: convertIntToChainId(chainId),
-        networkId: chainNetwork[network].network,
+        networkId: networkDto.networkId,
       });
     });
     const chainInfos = await Promise.all(chainInfoPromises);

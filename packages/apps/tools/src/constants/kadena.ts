@@ -39,9 +39,3 @@ export const kadenaConstants: KadenaConstants = {
   API_TTL: Number(env('KADENA_API_TTIL', 600000)),
   DEFAULT_SENDER: env('DEFAULT_SENDER', 'not-real'),
 };
-
-export const getKadenaConstantByNetwork = (
-  network: DefinedNetwork,
-): KadenaConstants[DefinedNetwork] => {
-  return kadenaConstants[network];
-};
