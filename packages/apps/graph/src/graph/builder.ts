@@ -17,12 +17,12 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
 import type {
-  ChainFungibleAccount,
-  ChainNonFungibleAccount,
   FungibleAccount,
+  FungibleChainAccount,
   GraphConfiguration,
   Guard,
   NonFungibleAccount,
+  NonFungibleChainAccount,
   Token,
 } from './types/graphql-types';
 
@@ -63,11 +63,11 @@ export const builder = new SchemaBuilder<
     Context: IContext;
     Objects: {
       FungibleAccount: FungibleAccount;
-      ChainFungibleAccount: ChainFungibleAccount;
+      FungibleChainAccount: FungibleChainAccount;
       Guard: Guard;
       GraphConfiguration: GraphConfiguration;
       NonFungibleAccount: NonFungibleAccount;
-      ChainNonFungibleAccount: ChainNonFungibleAccount;
+      NonFungibleChainAccount: NonFungibleChainAccount;
       Token: Token;
     };
     Connection: {

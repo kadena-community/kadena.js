@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import { getChainNonFungibleAccount } from '@services/account-service';
+import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -8,27 +8,27 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type { ChainNonFungibleAccount } from '../types/graphql-types';
-import { ChainNonFungibleAccountName } from '../types/graphql-types';
+import type { NonFungibleChainAccount } from '../types/graphql-types';
+import { NonFungibleChainAccountName } from '../types/graphql-types';
 
 export default builder.node(
-  builder.objectRef<ChainNonFungibleAccount>(ChainNonFungibleAccountName),
+  builder.objectRef<NonFungibleChainAccount>(NonFungibleChainAccountName),
   {
     description: 'A chain and non-fungible-specific account.',
     id: {
       resolve(parent) {
-        return `${ChainNonFungibleAccountName}/${parent.chainId}/${parent.accountName}`;
+        return `${NonFungibleChainAccountName}/${parent.chainId}/${parent.accountName}`;
       },
     },
     isTypeOf(source) {
-      return (source as any).__typename === ChainNonFungibleAccountName;
+      return (source as any).__typename === NonFungibleChainAccountName;
     },
     async loadOne(id) {
       try {
         const chainId = id.split('/')[1];
         const accountName = id.split('/')[2];
 
-        return getChainNonFungibleAccount({
+        return getNonFungibleChainAccount({
           chainId,
           accountName,
         });

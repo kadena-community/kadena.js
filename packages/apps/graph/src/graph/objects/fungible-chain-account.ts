@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import { getChainFungibleAccount } from '@services/account-service';
+import { getFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -7,21 +7,21 @@ import {
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
-import type { ChainFungibleAccount } from '../types/graphql-types';
-import { ChainFungibleAccountName } from '../types/graphql-types';
+import type { FungibleChainAccount } from '../types/graphql-types';
+import { FungibleChainAccountName } from '../types/graphql-types';
 
 export default builder.node(
-  builder.objectRef<ChainFungibleAccount>(ChainFungibleAccountName),
+  builder.objectRef<FungibleChainAccount>(FungibleChainAccountName),
   {
-    description: 'A chain and fungible-specific account.',
+    description: 'A fungible specific chain-account.',
     id: {
       resolve(parent) {
-        return `${ChainFungibleAccountName}/${parent.chainId}/${parent.fungibleName}/${parent.accountName}`;
+        return `${FungibleChainAccountName}/${parent.chainId}/${parent.fungibleName}/${parent.accountName}`;
       },
       // Do not use parse here since there is a bug in the pothos relay plugin which can cause incorrect results. Parse the ID directly in the loadOne function.
     },
     isTypeOf(source) {
-      return (source as any).__typename === ChainFungibleAccountName;
+      return (source as any).__typename === FungibleChainAccountName;
     },
     async loadOne(id) {
       try {
@@ -29,7 +29,7 @@ export default builder.node(
         const fungibleName = id.split('/')[2];
         const accountName = id.split('/')[3];
 
-        return getChainFungibleAccount({
+        return getFungibleChainAccount({
           chainId,
           fungibleName,
           accountName,

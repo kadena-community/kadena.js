@@ -1,15 +1,15 @@
 import { accountDetailsLoader } from '../graph/data-loaders/account-details';
 import { tokenDetailsLoader } from '../graph/data-loaders/token-details';
 import type {
-  ChainFungibleAccount,
-  ChainNonFungibleAccount,
+  FungibleChainAccount,
+  NonFungibleChainAccount,
 } from '../graph/types/graphql-types';
 import {
-  ChainFungibleAccountName,
-  ChainNonFungibleAccountName,
+  FungibleChainAccountName,
+  NonFungibleChainAccountName,
 } from '../graph/types/graphql-types';
 
-export async function getChainFungibleAccount({
+export async function getFungibleChainAccount({
   chainId,
   fungibleName,
   accountName,
@@ -17,7 +17,7 @@ export async function getChainFungibleAccount({
   chainId: string;
   fungibleName: string;
   accountName: string;
-}): Promise<ChainFungibleAccount | null> {
+}): Promise<FungibleChainAccount | null> {
   const accountDetails = await accountDetailsLoader.load({
     fungibleName,
     accountName,
@@ -26,7 +26,7 @@ export async function getChainFungibleAccount({
 
   return accountDetails !== null
     ? {
-        __typename: ChainFungibleAccountName,
+        __typename: FungibleChainAccountName,
         chainId,
         accountName,
         fungibleName,
@@ -41,13 +41,13 @@ export async function getChainFungibleAccount({
     : null;
 }
 
-export async function getChainNonFungibleAccount({
+export async function getNonFungibleChainAccount({
   chainId,
   accountName,
 }: {
   chainId: string;
   accountName: string;
-}): Promise<ChainNonFungibleAccount | null> {
+}): Promise<NonFungibleChainAccount | null> {
   const [accountDetails, tokenDetails] = await Promise.all([
     accountDetailsLoader.load({ accountName, chainId, fungibleName: 'coin' }),
     tokenDetailsLoader.load({ accountName, chainId }),
@@ -55,7 +55,7 @@ export async function getChainNonFungibleAccount({
 
   return accountDetails !== null && tokenDetails !== null
     ? {
-        __typename: ChainNonFungibleAccountName,
+        __typename: NonFungibleChainAccountName,
         chainId,
         accountName,
         guard: {

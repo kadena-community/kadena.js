@@ -1,8 +1,8 @@
-import { getChainFungibleAccount } from '@services/account-service';
+import { getFungibleChainAccount } from '@services/account-service';
 import { chainIds } from '@utils/chains';
 import { builder } from '../builder';
 import FungibleAccount from '../objects/fungible-account';
-import type { ChainFungibleAccount } from '../types/graphql-types';
+import type { FungibleChainAccount } from '../types/graphql-types';
 import { FungibleAccountName } from '../types/graphql-types';
 
 builder.queryField('fungibleAccount', (t) =>
@@ -19,7 +19,7 @@ builder.queryField('fungibleAccount', (t) =>
       const chainAccounts = (
         await Promise.all(
           chainIds.map(async (chainId) => {
-            return await getChainFungibleAccount({
+            return await getFungibleChainAccount({
               chainId: chainId,
               fungibleName: args.fungibleName,
               accountName: args.accountName,
@@ -28,7 +28,7 @@ builder.queryField('fungibleAccount', (t) =>
         )
       ).filter(
         (chainAccount) => chainAccount !== null,
-      ) as ChainFungibleAccount[];
+      ) as FungibleChainAccount[];
 
       if (chainAccounts.length === 0) {
         return null;
