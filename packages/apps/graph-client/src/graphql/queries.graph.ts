@@ -130,7 +130,7 @@ export const getChainAccount: DocumentNode = gql`
     $accountName: String!
     $chainId: String!
   ) {
-    chainFungibleAccount(
+    fungibleChainAccount(
       fungibleName: $fungibleName
       accountName: $accountName
       chainId: $chainId

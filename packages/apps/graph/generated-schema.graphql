@@ -243,14 +243,6 @@ type Query {
   """Retrieve blocks by chain and minimal height."""
   blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
 
-  """
-  Retrieve an account by its name and fungible, such as coin, on a specific chain.
-  """
-  chainFungibleAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
-
-  """Retrieve an account by its name on a specific chain."""
-  chainNonFungibleAccount(accountName: String!, chainId: String!): NonFungibleChainAccount
-
   """Retrieve all completed blocks from a given height."""
   completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
 
@@ -264,6 +256,11 @@ type Query {
   Retrieve an fungible specific account by its name and fungible, such as coin.
   """
   fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
+
+  """
+  Retrieve an account by its name and fungible, such as coin, on a specific chain.
+  """
+  fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
 
   """Estimate the gas limit for a transaction."""
   gasLimitEstimate(transaction: PactTransaction!): Int!
@@ -281,6 +278,9 @@ type Query {
 
   """Retrieve a non-fungible specific account by its name."""
   nonFungibleAccount(accountName: String!): NonFungibleAccount
+
+  """Retrieve an account by its name on a specific chain."""
+  nonFungibleChainAccount(accountName: String!, chainId: String!): NonFungibleChainAccount
 
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
