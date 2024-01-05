@@ -8,5 +8,3 @@ inputs:
 runs:
   using: 'node20'
   main: 'action.js'
-  env:
-    INPUT_MIGRATIONS: ${{ inputs.migrations }}
