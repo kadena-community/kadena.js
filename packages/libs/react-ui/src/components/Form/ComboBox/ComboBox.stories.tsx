@@ -9,7 +9,7 @@ import { Item } from 'react-stately';
 import type { IComboBoxProps } from './ComboBox';
 import { ComboBox } from './ComboBox';
 
-type Option = {};
+interface Option {}
 
 const meta: Meta<IComboBoxProps<Option>> = {
   title: 'Form/ComboBox',

@@ -1,11 +1,7 @@
 import className from 'classnames';
 import type { RefObject } from 'react';
 import React, { useRef } from 'react';
-import type {
-  AriaComboBoxOptions,
-  AriaListBoxProps,
-  AriaOptionProps,
-} from 'react-aria';
+import type { AriaListBoxProps } from 'react-aria';
 // import {
 //   mergeProps,
 //   useFocusRing,
