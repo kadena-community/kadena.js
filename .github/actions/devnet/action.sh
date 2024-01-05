@@ -11,14 +11,14 @@ echo "Starting devnet..."
 echo "docker run --name=devnet -d --health-cmd='curl --verbose --fail http://localhost:8080/info || exit 1' \
   -v \"/var/run/docker.sock\":\"/var/run/docker.sock\" \
   -v /home/runner/work/_temp:/home/runner/work/_temp \
-  $INPUT_MIGRATION \
+  $INPUT_MIGRATIONS \
   -e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY 	\
   -p 8080:8080 \"kadena/devnet\""
 
 exec docker run --name=devnet -d --health-cmd='curl --verbose --fail http://localhost:8080/info || exit 1' \
   -v "/var/run/docker.sock":"/var/run/docker.sock" \
   -v /home/runner/work/_temp:/home/runner/work/_temp \
-  $INPUT_MIGRATION \
+  $INPUT_MIGRATIONS \
   -e GITHUB_ENV -e GITHUB_OUTPUT -e GITHUB_PATH -e GITHUB_STATE -e GITHUB_STEP_SUMMARY 	\
   -p 8080:8080 "kadena/devnet"
 
