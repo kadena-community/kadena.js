@@ -16,7 +16,6 @@ describe('Query: getAccount by AccountName', () => {
     // When the getAccountQuery is executed
     const query = getAccountQuery(testAccount.account);
     const queryResponse = await sendQuery(query);
-    console.log(queryResponse);
 
     //Then GraphQL should return the account, including 1 transfer.
     expect(queryResponse.body.data.account).toEqual({
