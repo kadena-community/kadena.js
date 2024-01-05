@@ -1,7 +1,5 @@
-import {
-  NonFungibleAccountTransactionsConnection,
-  useGetNonFungibleAccountQuery,
-} from '@/__generated__/sdk';
+import type { NonFungibleAccountTransactionsConnection } from '@/__generated__/sdk';
+import { useGetNonFungibleAccountQuery } from '@/__generated__/sdk';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
@@ -20,6 +18,7 @@ import {
   Tabs,
 } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 const NonFungibleAccount: React.FC = () => {
   const router = useRouter();

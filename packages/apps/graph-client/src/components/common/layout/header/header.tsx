@@ -110,6 +110,7 @@ const Header: FC<IHeaderProps> = (props) => {
         router.push(`${routes.ACCOUNT}/${secondSearchField}/${searchField}`);
         break;
       case SearchType.NonFungibleAccount:
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.NON_FUNGIBLE_ACCOUNT}/${searchField}`);
         break;
       case SearchType.Event:

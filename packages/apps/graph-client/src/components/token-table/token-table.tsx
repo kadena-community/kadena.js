@@ -1,4 +1,3 @@
-import { GetNonFungibleAccountQuery } from '@/__generated__/sdk';
 import { Box, ContentHeader, Table } from '@kadena/react-ui';
 import React from 'react';
 
