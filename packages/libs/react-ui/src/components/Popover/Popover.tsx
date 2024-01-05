@@ -12,42 +12,6 @@ export interface IPopoverProps extends AriaPopoverProps {
   width: CSSProperties['width'];
 }
 
-// export const Popover: FC<IPopoverProps> = ({
-//   children,
-//   state,
-//   offset = 8,
-//   ...props
-// }) => {
-//   const popoverRef = useRef(null);
-//   const { popoverProps, underlayProps, arrowProps, placement } = usePopover(
-//     {
-//       ...props,
-//       offset,
-//       popoverRef,
-//     },
-//     state,
-//   );
-
-//   return (
-//     <Overlay>
-//       <div {...underlayProps} className="underlay" />
-//       <div {...popoverProps} ref={popoverRef} className="popover">
-//         <svg
-//           {...arrowProps}
-//           className="arrow"
-//           data-placement={placement}
-//           viewBox="0 0 12 12"
-//         >
-//           <path d="M0 0 L6 6 L12 0" />
-//         </svg>
-//         <DismissButton onDismiss={state.close} />
-//         {children}
-//         <DismissButton onDismiss={state.close} />
-//       </div>
-//     </Overlay>
-//   );
-// };
-
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const Popover = ({
   children,
