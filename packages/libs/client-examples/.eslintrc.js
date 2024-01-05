@@ -8,4 +8,5 @@ module.exports = {
     '@rushstack/typedef-var': 'off',
   },
   parserOptions: { tsconfigRootDir: __dirname },
+  ignorePatterns: ['**/generated*/**', 'vitest.*.ts'],
 };

@@ -1,9 +1,6 @@
 import { expect, test } from 'vitest';
-import {
-  getNextQuestion,
-  type IAnswers,
-  type IQuestion,
-} from '../questions.ts';
+import type { IAnswers, IQuestion } from '../questions.ts';
+import { getNextQuestion } from '../questions.ts';
 
 const questions: IQuestion[] = [
   {

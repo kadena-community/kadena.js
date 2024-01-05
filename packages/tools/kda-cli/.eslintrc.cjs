@@ -5,4 +5,5 @@ module.exports = {
   ignorePatterns: ['**/tests/*'],
   extends: ['@kadena-dev/eslint-config/profile/lib'],
   parserOptions: { tsconfigRootDir: __dirname },
+  ignorePatterns: ['vitest.*.ts'],
 };
