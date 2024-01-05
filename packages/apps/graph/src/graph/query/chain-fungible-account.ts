@@ -4,7 +4,7 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import FungibleChainAccount from '../objects/fungible-chain-account';
 
-builder.queryField('chainFungibleAccount', (t) =>
+builder.queryField('fungibleChainAccount', (t) =>
   t.field({
     description:
       'Retrieve an account by its name and fungible, such as coin, on a specific chain.',

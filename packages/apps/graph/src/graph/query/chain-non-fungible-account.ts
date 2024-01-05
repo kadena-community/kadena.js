@@ -4,7 +4,7 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import ChainNonFungibleAccount from '../objects/non-fungible-chain-account';
 
-builder.queryField('chainNonFungibleAccount', (t) =>
+builder.queryField('nonFungibleChainAccount', (t) =>
   t.field({
     description: 'Retrieve an account by its name on a specific chain.',
     args: {
