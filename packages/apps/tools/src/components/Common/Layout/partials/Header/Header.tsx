@@ -29,12 +29,10 @@ const Header: FC<IHeaderProps> = () => {
   const { selectedNetwork, networksData, setSelectedNetwork } =
     useWalletConnectClient();
   const { pathname } = useRouter();
+  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
   const { systemTheme, theme, setTheme } = useTheme();
-
   const currentTheme = theme === 'system' ? systemTheme : theme;
-
-  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
   const [isOpen, setIsOpen] = useState(false);
 
