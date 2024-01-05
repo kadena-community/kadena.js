@@ -6,6 +6,7 @@ import { CompactTransactionsTable } from '@/components/compact-transactions-tabl
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { TokenTable } from '@/components/token-table/token-table';
+import { NONFUNGIBLETRANSACTION } from '@/constants/non-fungible';
 import routes from '@/constants/routes';
 import { getNonFungibleAccount } from '@/graphql/queries.graph';
 import {
@@ -97,9 +98,9 @@ const NonFungibleAccount: React.FC = () => {
             <TabItem title="Transactions" key="Transactions">
               <Box margin={'$4'} />
               <CompactTransactionsTable
-                viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
-                  router.query.fungible as string
-                }/${router.query.account as string}`}
+                viewAllHref={`${
+                  routes.ACCOUNT_TRANSACTIONS
+                }/${NONFUNGIBLETRANSACTION}/${router.query.account as string}`}
                 transactions={
                   data.nonFungibleAccount
                     .transactions as NonFungibleAccountTransactionsConnection
