@@ -4,10 +4,10 @@ import {
   ALL_CHAIN_ACCOUNT_FIELDS,
   CORE_CHAIN_ACCOUNT_FIELDS,
 } from './fields/chain-account.graph';
-import { CORE_CHAIN_NON_FUNGIBLE_ACCOUNT_FIELDS } from './fields/chain-non-fungible-account.graph';
 import { ALL_EVENT_FIELDS } from './fields/event.graph';
 import { CORE_MINER_KEY_FIELDS } from './fields/miner-key.graph';
 import { ALL_NON_FUNGIBLE_ACCOUNT_FIELDS } from './fields/non-fungible-account.graph';
+import { CORE_NON_FUNGIBLE_CHAIN_ACCOUNT_FIELDS } from './fields/non-fungible-chain-account.graph';
 import { CORE_TRANSACTION_FIELDS } from './fields/transaction.graph';
 import { CORE_TRANSFER_FIELDS } from './fields/transfer.graph';
 
@@ -122,17 +122,17 @@ export const getFungibleAccount: DocumentNode = gql`
   }
 `;
 
-export const getChainFungibleAccount: DocumentNode = gql`
+export const getFungibleChainAccount: DocumentNode = gql`
   ${CORE_TRANSACTION_FIELDS}
   ${CORE_TRANSFER_FIELDS}
   ${ALL_CHAIN_ACCOUNT_FIELDS}
 
-  query getChainFungibleAccount(
+  query getFungibleChainAccount(
     $fungibleName: String!
     $accountName: String!
     $chainId: String!
   ) {
-    chainFungibleAccount(
+    fungibleChainAccount(
       fungibleName: $fungibleName
       accountName: $accountName
       chainId: $chainId
@@ -295,14 +295,14 @@ export const estimateGasLimit: DocumentNode = gql`
 
 export const getNonFungibleAccount: DocumentNode = gql`
   ${ALL_NON_FUNGIBLE_ACCOUNT_FIELDS}
-  ${CORE_CHAIN_NON_FUNGIBLE_ACCOUNT_FIELDS}
+  ${CORE_NON_FUNGIBLE_CHAIN_ACCOUNT_FIELDS}
   ${CORE_TRANSACTION_FIELDS}
 
   query getNonFungibleAccount($accountName: String!) {
     nonFungibleAccount(accountName: $accountName) {
       ...AllNonFungibleAccountFields
       chainAccounts {
-        ...CoreChainNonFungibleAccountFields
+        ...CoreNonFungibleChainAccountFields
         guard {
           keys
           predicate
@@ -325,12 +325,12 @@ export const getNonFungibleAccount: DocumentNode = gql`
 `;
 
 export const getChainNonFungibleAccount: DocumentNode = gql`
-  ${CORE_CHAIN_NON_FUNGIBLE_ACCOUNT_FIELDS}
+  ${CORE_NON_FUNGIBLE_CHAIN_ACCOUNT_FIELDS}
   ${CORE_TRANSACTION_FIELDS}
 
   query getChainNonFungibleAccount($accountName: String!, $chainId: String!) {
-    chainNonFungibleAccount(accountName: $accountName, chainId: $chainId) {
-      ...CoreChainNonFungibleAccountFields
+    nonFungibleChainAccount(accountName: $accountName, chainId: $chainId) {
+      ...CoreNonFungibleChainAccountFields
       guard {
         keys
         predicate

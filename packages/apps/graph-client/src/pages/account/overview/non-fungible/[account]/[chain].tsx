@@ -1,4 +1,4 @@
-import type { ChainNonFungibleAccountTransactionsConnection } from '@/__generated__/sdk';
+import type { NonFungibleChainAccountTransactionsConnection } from '@/__generated__/sdk';
 import { useGetChainNonFungibleAccountQuery } from '@/__generated__/sdk';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
@@ -18,7 +18,7 @@ import {
 import { useRouter } from 'next/router';
 import React from 'react';
 
-const ChainFungibleAccount: React.FC = () => {
+const FungibleChainAccount: React.FC = () => {
   const router = useRouter();
 
   const variables = {
@@ -57,7 +57,7 @@ const ChainFungibleAccount: React.FC = () => {
         loaderText="Retrieving account information..."
       />
 
-      {data?.chainNonFungibleAccount && (
+      {data?.nonFungibleChainAccount && (
         <>
           <Table.Root wordBreak="break-all">
             <Table.Body>
@@ -65,33 +65,33 @@ const ChainFungibleAccount: React.FC = () => {
                 <Table.Td>
                   <strong>Account Name</strong>
                 </Table.Td>
-                <Table.Td>{data.chainNonFungibleAccount.accountName}</Table.Td>
+                <Table.Td>{data.nonFungibleChainAccount.accountName}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Chain</strong>
                 </Table.Td>
-                <Table.Td>{data.chainNonFungibleAccount.chainId}</Table.Td>
+                <Table.Td>{data.nonFungibleChainAccount.chainId}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Guard Predicate</strong>
                 </Table.Td>
                 <Table.Td>
-                  {data.chainNonFungibleAccount.guard.predicate}
+                  {data.nonFungibleChainAccount.guard.predicate}
                 </Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Guard Keys</strong>
                 </Table.Td>
-                <Table.Td>{data.chainNonFungibleAccount.guard.keys}</Table.Td>
+                <Table.Td>{data.nonFungibleChainAccount.guard.keys}</Table.Td>
               </Table.Tr>
             </Table.Body>
           </Table.Root>
           <Grid columns={2} gap="$lg">
             <GridItem>
-              <TokenTable tokens={data.chainNonFungibleAccount.nonFungibles} />
+              <TokenTable tokens={data.nonFungibleChainAccount.nonFungibles} />
             </GridItem>
             <GridItem>
               <CompactTransactionsTable
@@ -102,8 +102,8 @@ const ChainFungibleAccount: React.FC = () => {
                 }?chain=${router.query.chain as string}`}
                 truncateColumns={true}
                 transactions={
-                  data.chainNonFungibleAccount
-                    .transactions as ChainNonFungibleAccountTransactionsConnection
+                  data.nonFungibleChainAccount
+                    .transactions as NonFungibleChainAccountTransactionsConnection
                 }
               />
             </GridItem>
@@ -114,4 +114,4 @@ const ChainFungibleAccount: React.FC = () => {
   );
 };
 
-export default ChainFungibleAccount;
+export default FungibleChainAccount;
