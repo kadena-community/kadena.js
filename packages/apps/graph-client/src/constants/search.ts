@@ -25,6 +25,7 @@ export const thirdSeachTypeLabels: Partial<Record<SearchType, string>> = {
 export const searchTypePlaceholders: Partial<Record<SearchType, string>> = {
   'request-key': 'vCiATVJgm7...',
   account: 'k:1234...',
+  'non-fungible-account': 'k:1234...',
   event: 'coin.TRANSFER',
   block: 'CA9orP2yM...',
   'gas-estimation': '(coin.details k:1234...',
