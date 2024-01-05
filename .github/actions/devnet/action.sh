@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "value of INPUT_MIGRATIONS is $INPUT_MIGRATIONS"
 if [[ ! -z $INPUT_MIGRATIONS ]]
-	then INPUT_MIGRATIONS="-v $GITHUB_WORKSPACE/$INPUT_MIGRATIONS:/cwd-extra-migrations"
+	then INPUT_MIGRATIONS="-v $GITHUB_WORKSPACE/$INPUT_MIGRATIONS:/cwd-extra-migrations:ro"
 fi
 
 echo "new value of INPUT_MIGRATIONS is $INPUT_MIGRATIONS"
