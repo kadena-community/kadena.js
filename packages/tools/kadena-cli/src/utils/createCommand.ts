@@ -119,7 +119,10 @@ export function createCommand<const T extends OptionType[]>(
           displayConfig(config);
           console.log('\n');
         }
-        await action(config, rest[0].args);
+
+        const generalArgs = rest.flatMap((r) => r.args);
+
+        await action(config, generalArgs);
       } catch (error) {
         console.error(error);
         console.error(chalk.red(`Error executing command ${name}: ${error})`));
