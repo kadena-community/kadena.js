@@ -5,6 +5,7 @@ import type { AriaPopoverProps } from 'react-aria';
 import { DismissButton, Overlay, usePopover } from 'react-aria';
 import type { OverlayTriggerState } from 'react-stately';
 import { IBoxProps } from '..';
+import { popoverClass } from './Popover.css';
 
 export interface IPopoverProps extends AriaPopoverProps {
   children: React.ReactNode;
@@ -62,10 +63,9 @@ export const Popover = ({
       <div
         {...popoverProps}
         ref={props.popoverRef as React.RefObject<HTMLDivElement>}
+        className={popoverClass}
         style={{
           ...popoverProps.style,
-          background: 'lightgray',
-          border: '1px solid gray',
           width,
         }}
       >

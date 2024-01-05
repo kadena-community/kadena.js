@@ -1,3 +1,4 @@
+import className from 'classnames';
 import type { RefObject } from 'react';
 import React, { useRef } from 'react';
 import type {
@@ -22,6 +23,12 @@ import type {
 
 import { useListBox, useOption } from 'react-aria';
 import type { ListState, Node } from 'react-stately';
+import {
+  disabledClass,
+  focusedClass,
+  optionClass,
+  selectedClass,
+} from './ListBox.css';
 
 interface IOptionProps<T> {
   item: Node<object>;
@@ -57,30 +64,17 @@ const Option = <T extends object>({ item, state }: IOptionProps<T>) => {
     ref,
   );
 
-  let backgroundColor;
-  let color = 'black';
-
-  if (isSelected) {
-    backgroundColor = 'blueviolet';
-    color = 'white';
-  } else if (isFocused) {
-    backgroundColor = 'gray';
-  } else if (isDisabled) {
-    backgroundColor = 'transparent';
-    color = 'gray';
-  }
+  const classList = className(optionClass, {
+    [selectedClass]: isSelected,
+    [focusedClass]: isFocused,
+    [disabledClass]: isDisabled,
+  });
 
   return (
     <li
       {...optionProps}
       ref={ref}
-      style={{
-        background: backgroundColor,
-        color: color,
-        padding: '2px 5px',
-        outline: 'none',
-        cursor: 'pointer',
-      }}
+      className={classList}
     >
       {item.rendered}
     </li>
