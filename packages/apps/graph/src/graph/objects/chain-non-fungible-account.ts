@@ -26,7 +26,7 @@ export default builder.node(
     async loadOne(id) {
       try {
         const chainId = id.split('/')[1];
-        const accountName = id.split('/')[3];
+        const accountName = id.split('/')[2];
 
         return getChainNonFungibleAccount({
           chainId,
