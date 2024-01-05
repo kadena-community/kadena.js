@@ -2,7 +2,7 @@ import type { DocumentNode } from '@apollo/client';
 import { gql } from '@apollo/client';
 
 export const CORE_CHAIN_NON_FUNGIBLE_ACCOUNT_FIELDS: DocumentNode = gql`
-  fragment CoreChainNonFungibleAccountFields on ChainNonFungibleAccount {
+  fragment CoreNonFungibleChainAccountFields on NonFungibleChainAccount {
     chainId
     accountName
   }
@@ -11,8 +11,8 @@ export const CORE_CHAIN_NON_FUNGIBLE_ACCOUNT_FIELDS: DocumentNode = gql`
 export const ALL_CHAIN_NON_FUNGIBLE_ACCOUNT_FIELDS: DocumentNode = gql`
   ${CORE_CHAIN_NON_FUNGIBLE_ACCOUNT_FIELDS}
 
-  fragment AllChainNonFungibleAccountFields on ChainNonFungibleAccount {
-    ...CoreChainNonFungibleAccountFields
+  fragment AllNonFungibleChainAccountFields on NonFungibleChainAccount {
+    ...CoreNonFungibleChainAccountFields
     accountName
     guard {
       keys
