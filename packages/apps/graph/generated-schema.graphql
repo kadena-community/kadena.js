@@ -18,7 +18,7 @@ type Block implements Node {
   hash: ID!
   height: BigInt!
   id: ID!
-  minerAccount: ChainFungibleAccount!
+  minerAccount: FungibleChainAccount!
   parent: Block
   parentHash: String!
   payloadHash: String!
@@ -36,61 +36,6 @@ type BlockTransactionsConnection {
 }
 
 type BlockTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
-}
-
-"""A chain and fungible-specific account."""
-type ChainFungibleAccount implements Node {
-  accountName: String!
-  balance: Float!
-  chainId: ID!
-  fungibleName: String!
-  guard: Guard!
-  id: ID!
-  transactions(after: String, before: String, first: Int, last: Int): ChainFungibleAccountTransactionsConnection!
-  transfers(after: String, before: String, first: Int, last: Int): ChainFungibleAccountTransfersConnection!
-}
-
-type ChainFungibleAccountTransactionsConnection {
-  edges: [ChainFungibleAccountTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type ChainFungibleAccountTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
-}
-
-type ChainFungibleAccountTransfersConnection {
-  edges: [ChainFungibleAccountTransfersConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type ChainFungibleAccountTransfersConnectionEdge {
-  cursor: String!
-  node: Transfer!
-}
-
-"""A chain and non-fungible-specific account."""
-type ChainNonFungibleAccount implements Node {
-  accountName: String!
-  chainId: ID!
-  guard: Guard!
-  id: ID!
-  nonFungibles: [Token!]!
-  transactions(after: String, before: String, first: Int, last: Int): ChainNonFungibleAccountTransactionsConnection!
-}
-
-type ChainNonFungibleAccountTransactionsConnection {
-  edges: [ChainNonFungibleAccountTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type ChainNonFungibleAccountTransactionsConnectionEdge {
   cursor: String!
   node: Transaction!
 }
@@ -132,7 +77,7 @@ type Event implements Node {
 """A fungible-specific account."""
 type FungibleAccount implements Node {
   accountName: String!
-  chainAccounts: [ChainFungibleAccount!]!
+  chainAccounts: [FungibleChainAccount!]!
   fungibleName: String!
   id: ID!
   totalBalance: Decimal!
@@ -158,6 +103,40 @@ type FungibleAccountTransfersConnection {
 }
 
 type FungibleAccountTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
+}
+
+"""A fungible specific chain-account."""
+type FungibleChainAccount implements Node {
+  accountName: String!
+  balance: Float!
+  chainId: ID!
+  fungibleName: String!
+  guard: Guard!
+  id: ID!
+  transactions(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransfersConnection!
+}
+
+type FungibleChainAccountTransactionsConnection {
+  edges: [FungibleChainAccountTransactionsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type FungibleChainAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type FungibleChainAccountTransfersConnection {
+  edges: [FungibleChainAccountTransfersConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type FungibleChainAccountTransfersConnectionEdge {
   cursor: String!
   node: Transfer!
 }
@@ -192,7 +171,7 @@ interface Node {
 """A non-fungible-specific account."""
 type NonFungibleAccount implements Node {
   accountName: String!
-  chainAccounts: [ChainNonFungibleAccount!]!
+  chainAccounts: [NonFungibleChainAccount!]!
   id: ID!
   nonFungibles: [Token!]!
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
@@ -205,6 +184,27 @@ type NonFungibleAccountTransactionsConnection {
 }
 
 type NonFungibleAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+"""A chain and non-fungible-specific account."""
+type NonFungibleChainAccount implements Node {
+  accountName: String!
+  chainId: ID!
+  guard: Guard!
+  id: ID!
+  nonFungibles: [Token!]!
+  transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
+}
+
+type NonFungibleChainAccountTransactionsConnection {
+  edges: [NonFungibleChainAccountTransactionsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type NonFungibleChainAccountTransactionsConnectionEdge {
   cursor: String!
   node: Transaction!
 }
@@ -246,10 +246,10 @@ type Query {
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
-  chainFungibleAccount(accountName: String!, chainId: String!, fungibleName: String!): ChainFungibleAccount
+  chainFungibleAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
 
   """Retrieve an account by its name on a specific chain."""
-  chainNonFungibleAccount(accountName: String!, chainId: String!): ChainNonFungibleAccount
+  chainNonFungibleAccount(accountName: String!, chainId: String!): NonFungibleChainAccount
 
   """Retrieve all completed blocks from a given height."""
   completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!

@@ -1,8 +1,8 @@
-import { getChainFungibleAccount } from '@services/account-service';
+import { getFungibleChainAccount } from '@services/account-service';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import ChainFungibleAccount from '../objects/chain-fungible-account';
+import FungibleChainAccount from '../objects/fungible-chain-account';
 
 builder.queryField('chainFungibleAccount', (t) =>
   t.field({
@@ -13,12 +13,12 @@ builder.queryField('chainFungibleAccount', (t) =>
       fungibleName: t.arg.string({ required: true }),
       chainId: t.arg.string({ required: true }),
     },
-    type: ChainFungibleAccount,
+    type: FungibleChainAccount,
     nullable: true,
     complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
-        return getChainFungibleAccount({
+        return getFungibleChainAccount({
           chainId: args.chainId,
           fungibleName: args.fungibleName,
           accountName: args.accountName,

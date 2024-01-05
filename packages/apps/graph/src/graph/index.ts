@@ -1,13 +1,13 @@
 import { builder } from './builder';
 import './objects/block';
-import './objects/chain-fungible-account';
-import './objects/chain-non-fungible-account';
 import './objects/event';
 import './objects/fungible-account';
+import './objects/fungible-chain-account';
 import './objects/graph-configuration';
 import './objects/guard';
 import './objects/miner-key';
 import './objects/non-fungible-account';
+import './objects/non-fungible-chain-account';
 import './objects/signer';
 import './objects/token';
 import './objects/total-count';

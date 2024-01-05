@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import { getChainNonFungibleAccount } from '@services/account-service';
+import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -10,12 +10,12 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
 import type {
-  ChainNonFungibleAccount,
   NonFungibleAccount,
+  NonFungibleChainAccount,
 } from '../types/graphql-types';
 import {
-  ChainNonFungibleAccountName,
   NonFungibleAccountName,
+  NonFungibleChainAccountName,
 } from '../types/graphql-types';
 
 export default builder.node(
@@ -48,7 +48,7 @@ export default builder.node(
     fields: (t) => ({
       accountName: t.exposeString('accountName'),
       chainAccounts: t.field({
-        type: [ChainNonFungibleAccountName],
+        type: [NonFungibleChainAccountName],
         complexity:
           (COMPLEXITY.FIELD.CHAINWEB_NODE +
             COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS) *
@@ -58,7 +58,7 @@ export default builder.node(
             return (
               await Promise.all(
                 chainIds.map((chainId) => {
-                  return getChainNonFungibleAccount({
+                  return getNonFungibleChainAccount({
                     chainId: chainId,
                     accountName: parent.accountName,
                   });
@@ -66,7 +66,7 @@ export default builder.node(
               )
             ).filter(
               (chainAccount) => chainAccount !== null,
-            ) as ChainNonFungibleAccount[];
+            ) as NonFungibleChainAccount[];
           } catch (error) {
             throw normalizeError(error);
           }

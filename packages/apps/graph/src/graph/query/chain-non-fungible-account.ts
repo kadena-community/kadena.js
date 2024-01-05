@@ -1,8 +1,8 @@
-import { getChainNonFungibleAccount } from '@services/account-service';
+import { getNonFungibleChainAccount } from '@services/account-service';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import ChainNonFungibleAccount from '../objects/chain-non-fungible-account';
+import ChainNonFungibleAccount from '../objects/non-fungible-chain-account';
 
 builder.queryField('chainNonFungibleAccount', (t) =>
   t.field({
@@ -18,7 +18,7 @@ builder.queryField('chainNonFungibleAccount', (t) =>
       COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
     async resolve(__parent, args) {
       try {
-        return getChainNonFungibleAccount({
+        return getNonFungibleChainAccount({
           chainId: args.chainId,
           accountName: args.accountName,
         });
