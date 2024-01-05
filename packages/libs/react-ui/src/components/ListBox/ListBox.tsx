@@ -67,11 +67,7 @@ const Option = <T extends object>({ item, state }: IOptionProps<T>) => {
   });
 
   return (
-    <li
-      {...optionProps}
-      ref={ref}
-      className={classList}
-    >
+    <li {...optionProps} ref={ref} className={classList}>
       {item.rendered}
     </li>
   );
