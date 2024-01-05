@@ -28,21 +28,11 @@ const Header: FC<IHeaderProps> = () => {
   const { t } = useTranslation('common');
   const { selectedNetwork, networksData, setSelectedNetwork } =
     useWalletConnectClient();
-  const { pathname, push } = useRouter();
-
-  const { systemTheme, theme, setTheme } = useTheme();
-
-  const currentTheme = theme === 'system' ? systemTheme : theme;
-
+  const { pathname } = useRouter();
   const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
-  const handleMenuItemClick = async (
-    e: React.MouseEvent<HTMLAnchorElement>,
-  ): Promise<void> => {
-    e.preventDefault();
-
-    await push(e.currentTarget.href);
-  };
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -68,7 +58,6 @@ const Header: FC<IHeaderProps> = () => {
             <NavHeader.Link
               key={index}
               href={getHref(pathname, item.href)}
-              onClick={handleMenuItemClick}
               asChild
             >
               <Link href={getHref(pathname, item.href)}>{item.title}</Link>

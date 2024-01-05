@@ -239,9 +239,12 @@ const NewAccountFaucetPage: FC = () => {
             <Trans
               i18nKey="common:faucet-unavailable-warning"
               components={[
-                <Link
-                  href="/transactions/module-explorer?module=user.coin-faucet&chain=1"
-                  key="link-to-module-explorer"
+                <a
+                  className={notificationLinkStyle}
+                  target={'_blank'}
+                  href="https://chainweaver.kadena.network/contracts"
+                  rel="noreferrer"
+                  key="link-to-module"
                 />,
               ]}
             />

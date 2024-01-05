@@ -25,7 +25,7 @@ export class FaucetPage {
     chainId: string,
   ): Promise<void> {
     await this._card.setValueForTextbox(
-      'The Account Name You Would Like To Fund Coins To',
+      'The account name to fund coins to',
       account,
     );
     await this._card.setValueForCombobox(this._i18n.t(`Chain ID`), chainId);
@@ -43,7 +43,7 @@ export class FaucetPage {
     );
     await expect(
       this._page.getByRole('textbox', {
-        name: 'The Account Name To Fund Coins To',
+        name: 'The account name to fund coins to',
       }),
     ).toHaveValue(account.account);
     //Form validation is retriggered after setting the chain. Explicitly wait for the Account Name to be visible before pressing fund.
