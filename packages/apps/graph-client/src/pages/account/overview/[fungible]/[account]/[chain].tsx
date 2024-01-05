@@ -1,6 +1,6 @@
 import type {
-  ChainFungibleAccountTransactionsConnection,
-  ChainFungibleAccountTransfersConnection,
+  FungibleChainAccountTransactionsConnection,
+  FungibleChainAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetChainAccountQuery } from '@/__generated__/sdk';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
@@ -108,7 +108,7 @@ const ChainAccount: React.FC = () => {
                 truncateColumns={true}
                 transfers={
                   data.chainFungibleAccount
-                    .transfers as ChainFungibleAccountTransfersConnection
+                    .transfers as FungibleChainAccountTransfersConnection
                 }
               />
             </GridItem>
@@ -122,7 +122,7 @@ const ChainAccount: React.FC = () => {
                 truncateColumns={true}
                 transactions={
                   data.chainFungibleAccount
-                    .transactions as ChainFungibleAccountTransactionsConnection
+                    .transactions as FungibleChainAccountTransactionsConnection
                 }
               />
             </GridItem>
