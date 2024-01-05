@@ -21,6 +21,7 @@ import {
   displayGeneratedWallet,
   displayStoredWallet,
 } from '../utils/keysDisplay.js';
+import { getWallet } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
 /**
@@ -57,6 +58,15 @@ export const generateWallet = async (
     path: string;
   }>
 > => {
+  const existing = await getWallet(keyWallet);
+
+  if (existing !== null && existing.legacy === legacy) {
+    return {
+      success: false,
+      errors: [`Wallet "${keyWallet}" already exists.`],
+    };
+  }
+
   const walletPath = `${WALLET_DIR}/${keyWallet}`;
   if (await services.filesystem.fileExists(walletPath)) {
     return {

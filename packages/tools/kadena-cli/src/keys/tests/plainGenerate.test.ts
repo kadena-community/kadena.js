@@ -1,5 +1,5 @@
 import path from 'path';
-import { describe, expect, it } from 'vitest';
+import { assert, describe, expect, it } from 'vitest';
 import { services } from '../../services/index.js';
 import { generatePlainKeys } from '../commands/keysPlainGenerate.js';
 
@@ -9,7 +9,7 @@ describe('create wallet', () => {
   it('Should create a encrypted seed and store it', async () => {
     const result = await generatePlainKeys('test', 1, false);
 
-    if (!result.success) throw new Error('Should be true');
+    assert(result.success);
 
     expect(result.data.keys[0].publicKey).toBeTruthy();
     expect(result.data.keys[0].secretKey).toBeTruthy();

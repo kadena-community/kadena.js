@@ -1,8 +1,9 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 import ora from 'ora';
 
+import type { CommandResult } from '../../utils/command.util.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
@@ -13,9 +14,67 @@ import {
 } from '../utils/keysDisplay.js';
 import {
   extractStartIndex,
-  parseKeyIndexOrRange,
+  getWallet,
+  getWalletContent,
 } from '../utils/keysHelpers.js';
-import * as storageService from '../utils/storage.js';
+import type { IKeyPair } from '../utils/storage.js';
+import { saveKeyByAlias } from '../utils/storage.js';
+
+/*
+kadena keys create-wallet --key-wallet "test01" --security-password 12345678 --security-verify-password 12345678
+kadena keys gen-hd --key-wallet "test01.wallet" --key-gen-from-choice "genPublicSecretKey" --key-alias "test" --security-password 12345678 --key-index-or-range "1"
+*/
+
+export const generateHdKeys = async ({
+  walletName,
+  keyIndexOrRange,
+  keyGenFromChoice,
+  password,
+  keyAlias,
+}: {
+  walletName: string;
+  keyIndexOrRange: number | [number, number];
+  keyGenFromChoice: 'genPublicSecretKey' | 'genPublicSecretKeyDec' | string;
+  password: string;
+  keyAlias: string;
+}): Promise<
+  CommandResult<{ keys: IKeyPair[]; legacy: boolean; startIndex: number }>
+> => {
+  const wallet = await getWallet(walletName);
+
+  if (!wallet) {
+    return {
+      success: false,
+      errors: [`The wallet "${walletName}" does not exist.`],
+    };
+  }
+
+  const shouldGenerateSecretKeys =
+    keyGenFromChoice === 'genPublicSecretKey' ||
+    keyGenFromChoice === 'genPublicSecretKeyDec';
+
+  const startIndex = extractStartIndex(keyIndexOrRange);
+
+  const config = {
+    keyWallet: await getWalletContent(walletName),
+    securityPassword: password,
+    keyGenFromChoice,
+    keyIndexOrRange,
+    legacy: wallet.legacy,
+  } as IKeysConfig;
+
+  const keys = await generateFromWallet(config, shouldGenerateSecretKeys);
+
+  await saveKeyByAlias(
+    keyAlias,
+    keys,
+    wallet.legacy,
+    wallet.wallet,
+    startIndex,
+  );
+
+  return { success: true, data: { keys, legacy: wallet.legacy, startIndex } };
+};
 
 export const createGenerateHdKeysCommand: (
   program: Command,
@@ -31,53 +90,32 @@ export const createGenerateHdKeysCommand: (
     globalOptions.keyIndexOrRange({ isOptional: true }),
   ],
   async (config) => {
-    try {
-      debug('generate-hdkeys:action')({ config });
+    debug('generate-hdkeys:action')({ config });
 
-      if (typeof config.keyWallet === 'string') {
-        throw new Error('Invalid wallet name');
-      }
-
-      const { wallet: keyWallet, fileName } = config.keyWallet;
-      const isLegacy = fileName.includes('.legacy');
-
-      const parseKeyIndexOrRangeRes = parseKeyIndexOrRange(
-        config.keyIndexOrRange,
-      );
-
-      const startIndex = extractStartIndex(parseKeyIndexOrRangeRes);
-
-      const result = {
-        ...config,
-        keyWallet,
-        keyIndexOrRange: parseKeyIndexOrRangeRes,
-        legacy: isLegacy,
-      };
-
-      const loadingSpinner = ora('Generating keys..').start();
-
-      const shouldGenerateSecretKeys =
-        config.keyGenFromChoice === 'genPublicSecretKey' ||
-        config.keyGenFromChoice === 'genPublicSecretKeyDec';
-
-      const keys = await generateFromWallet(
-        result as IKeysConfig,
-        shouldGenerateSecretKeys,
-      );
-      loadingSpinner.succeed('Completed');
-
-      displayGeneratedHdKeys(keys);
-      await storageService.saveKeyByAlias(
-        result.keyAlias,
-        keys,
-        result.legacy,
-        fileName,
-        startIndex,
-      );
-      printStoredHdKeys(result.keyAlias, keys, result.legacy, startIndex);
-    } catch (error) {
-      console.error(chalk.red(`\n${error.message}\n`));
-      process.exit(1);
+    if (typeof config.keyWallet === 'string') {
+      throw Error('Invalid wallet name');
     }
+
+    const loadingSpinner = ora('Generating keys..').start();
+
+    const result = await generateHdKeys({
+      walletName: config.keyWallet.fileName,
+      keyIndexOrRange: config.keyIndexOrRange,
+      keyGenFromChoice: config.keyGenFromChoice,
+      password: config.securityPassword,
+      keyAlias: config.keyAlias,
+    });
+
+    loadingSpinner.succeed('Completed');
+
+    assertCommandError(result);
+
+    displayGeneratedHdKeys(result.data.keys);
+    printStoredHdKeys(
+      config.keyAlias,
+      result.data.keys,
+      result.data.legacy,
+      result.data.startIndex,
+    );
   },
 );

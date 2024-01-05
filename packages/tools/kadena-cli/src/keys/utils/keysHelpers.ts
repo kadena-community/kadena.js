@@ -18,7 +18,7 @@ export interface IWalletConfig {
   legacy?: boolean;
 }
 
-interface IWallet {
+export interface IWallet {
   folder: string;
   legacy: boolean;
   wallet: string;
@@ -41,34 +41,48 @@ export async function ensureWalletExists(): Promise<void> {
  * @param wallet wallet name without extension
  * @returns
  */
-export async function getWallet(wallet: string): Promise<IWallet | null> {
-  const walletDir = join(WALLET_DIR, wallet);
-  const exists = await services.filesystem.directoryExists(walletDir);
-  if (!exists) return null;
-
-  const files = await services.filesystem.readDir(walletDir);
-
-  const isRegular = files.some((file) => file === `${wallet}${WALLET_EXT}`);
-  const isLegacy = files.some(
-    (file) => file === `${wallet}${WALLET_LEGACY_EXT}`,
-  );
+export async function getWallet(walletFile: string): Promise<IWallet | null> {
+  // Determine type of wallet
+  const walletNameParts = walletFile.split('.');
+  const isLegacy =
+    walletNameParts.length === 3 &&
+    walletNameParts[1] === 'legacy' &&
+    walletNameParts[2] === 'wallet';
+  const isRegular =
+    walletNameParts.length === 2 && walletNameParts[1] === 'wallet';
 
   if (!isRegular && !isLegacy) return null;
 
-  const walletFile = isRegular
-    ? `${wallet}${WALLET_EXT}`
-    : `${wallet}${WALLET_LEGACY_EXT}`;
+  const walletName = walletNameParts[0];
+  const walletDir = join(WALLET_DIR, walletName);
+
+  const fileExists = await services.filesystem.fileExists(
+    join(walletDir, walletFile),
+  );
+  if (!fileExists) return null;
+
+  const files = await services.filesystem.readDir(walletDir);
 
   const keys = files.filter((file) =>
     file.endsWith(isLegacy ? KEY_LEGACY_EXT : KEY_EXT),
   );
 
   return {
-    folder: wallet,
+    folder: walletName,
     wallet: walletFile,
     legacy: isLegacy,
     keys,
   };
+}
+
+export async function getWalletContent(
+  walletPath: string,
+): Promise<string | null> {
+  const wallet = await getWallet(walletPath);
+  if (!wallet) return null;
+  return await services.filesystem.readFile(
+    join(WALLET_DIR, wallet.folder, wallet.wallet),
+  );
 }
 
 /**

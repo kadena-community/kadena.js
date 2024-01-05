@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import type { Ora } from 'ora';
 
 interface ICommandError {
   success: false;
@@ -17,14 +18,21 @@ export type CommandResult<T> = ICommandSuccess<T> | ICommandError;
  */
 export function assertCommandError(
   result: CommandResult<unknown>,
+  ora?: Ora,
 ): asserts result is Extract<CommandResult<unknown>, { success: true }> {
+  if (result.warnings && result.warnings.length) {
+    console.log(chalk.yellow(`${result.warnings.join('\n')}\n`));
+  }
+
   if (result.success === false) {
-    if (result.warnings && result.warnings.length) {
-      console.log(chalk.yellow(`${result.warnings.join('\n')}\n`));
-    }
+    if (ora) ora.fail('Failed');
+
     if (result.errors.length) {
       console.log(chalk.red(`${result.errors.join('\n')}\n`));
     }
+
     process.exit(1);
+  } else {
+    if (ora) ora.succeed('Completed');
   }
 }

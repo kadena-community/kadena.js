@@ -1,27 +1,35 @@
+import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
-import { createExternalPrompt } from '../../prompts/generic.js';
-import { keyWalletSelectAllPrompt } from '../../prompts/keys.js';
+
 import { createCommand } from '../../utils/createCommand.js';
-import {
-  displayAllWallets,
-  displaySelectedWallet,
-} from '../utils/keysDisplay.js';
+import { globalOptions } from '../../utils/globalOptions.js';
+import { printWalletKeys } from '../utils/keysDisplay.js';
+import { getAllWallets, getWallet } from '../utils/keysHelpers.js';
 
 export const createListKeysCommand: (
   program: Command,
   version: string,
-) => void = createCommand('list', 'list key(s)', [], async (config) => {
-  debug('list-keys:action')({ config });
+) => void = createCommand(
+  'list',
+  'list key(s)',
+  [globalOptions.keyWalletSelectWithAll()],
+  async (config) => {
+    debug('list-keys:action')({ config });
 
-  const externalPrompt = createExternalPrompt({
-    keyWalletSelectAllPrompt,
-  });
+    if (config.keyWallet === 'all') {
+      const walletNames = await getAllWallets();
+      for (const wallet of walletNames) {
+        await printWalletKeys(await getWallet(wallet));
+      }
+    }
 
-  const selectedWallet = await externalPrompt.keyWalletSelectAllPrompt();
-  if (selectedWallet === 'all') {
-    await displayAllWallets();
-    return;
-  }
-  await displaySelectedWallet(selectedWallet);
-});
+    if (config.keyWalletConfig === null) {
+      return console.error(
+        chalk.red(`Selected wallet "${config.keyWallet}" not found.`),
+      );
+    }
+
+    await printWalletKeys(config.keyWalletConfig);
+  },
+);
