@@ -1,7 +1,7 @@
 ---
 title: "Workshop: Build an election application"
 description: Learn how to build a decentralized application that registers votes on the Kadena blockchain.
-menu: "Workshop: Build an election appication"
+menu: "Workshop: Build an election application"
 label: Welcome
 order: 3
 layout: full
