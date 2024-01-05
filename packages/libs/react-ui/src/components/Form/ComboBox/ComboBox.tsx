@@ -74,7 +74,7 @@ export const ComboBox = <T extends object>({
             placement="bottom start"
             width={width}
             offset={15} // TODO: Get these values from Textfield element
-            crossOffset={-35} // TODO: Get these values from Textfield element
+            crossOffset={startIcon ? -35 : -10} // TODO: Get these values from Textfield element
           >
             <ListBox
               {...mergeProps(props, listBoxProps)}
