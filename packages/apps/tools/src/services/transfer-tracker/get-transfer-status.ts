@@ -1,6 +1,5 @@
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
