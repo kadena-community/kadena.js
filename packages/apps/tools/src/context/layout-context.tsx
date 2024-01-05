@@ -42,8 +42,7 @@ export const useToolbar = (
   toolbar: ISidebarToolbarItem[],
   pathName?: string,
 ): void => {
-  const { setToolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen } =
-    useLayoutContext();
+  const { setToolbar, setActiveMenuIndex } = useLayoutContext();
   useEffect(() => {
     setToolbar(toolbar);
 
@@ -59,9 +58,7 @@ export const useToolbar = (
       const index = menuData.indexOf(activeMenu);
       setActiveMenuIndex(index);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeMenuIndex, isMenuOpen]);
+  }, []);
 };
 
 const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {

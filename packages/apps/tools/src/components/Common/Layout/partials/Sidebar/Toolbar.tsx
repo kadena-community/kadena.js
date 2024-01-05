@@ -32,9 +32,8 @@ export const Toolbar: FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     index: number,
   ): void => {
-    event.preventDefault();
-
     setVisibleLinks(false);
+
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
       setIsMenuOpen(true);
@@ -105,7 +104,6 @@ export const Toolbar: FC = () => {
           <div>
             <MenuButton
               title={'DevOptions'}
-              href={'#'}
               icon={'ApplicationBrackets'}
               onClick={() => handleDevOptionsClick()}
             />
