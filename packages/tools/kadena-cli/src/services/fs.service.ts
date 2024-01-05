@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import { dirname } from 'path';
 
 export interface IFileSystemService {
-  readFile: (path: string) => Promise<string | null>;
+  readFile: (path: string) => Promise<string | undefined>;
   writeFile: (path: string, data: string) => Promise<void>;
   deleteFile: (path: string) => Promise<void>;
   deleteDirectory: (path: string) => Promise<void>;
@@ -19,7 +19,7 @@ export const fileSystemService: IFileSystemService = {
     try {
       return await fs.readFile(path, 'utf8');
     } catch (e) {
-      return null;
+      return;
     }
   },
   async writeFile(path: string, data: string) {

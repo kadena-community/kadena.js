@@ -18,11 +18,14 @@ class OutputCapture {
   }
   public capture(print: boolean = false): void {
     this._print = print;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     process.stdout.write = (chunk, encoding?: any, callback?: any) => {
       this._stdout.push(chunk.toString());
       if (this._print) this._originalStdoutWrite(chunk, encoding, callback);
       return true;
     };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     process.stderr.write = (chunk, encoding?: any, callback?: any) => {
       this._stderr.push(chunk.toString());
       if (this._print) this._originalStderrWrite(chunk, encoding, callback);

@@ -15,6 +15,7 @@ export function recordCalls<T extends ServiceGeneric>(
     get(target, prop) {
       const method = target[prop as keyof T];
       if (typeof method !== 'function') return method;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (...args: any[]) => {
         const historyKey = `${serviceName}.${prop as string}`;
         callHistory.push([historyKey, args]);
