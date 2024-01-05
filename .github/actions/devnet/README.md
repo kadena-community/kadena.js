@@ -11,5 +11,5 @@
   - name: Start devnet
         uses: ./.github/actions/devnet
         with:
-          migrations: ./packages/apps/graph/cwd-extra-migrations
+          migrations: packages/apps/graph/cwd-extra-migrations
 ```
