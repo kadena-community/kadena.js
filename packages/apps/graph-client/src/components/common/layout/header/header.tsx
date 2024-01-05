@@ -159,8 +159,6 @@ const Header: FC<IHeaderProps> = (props) => {
       if (searchType === SearchType.NonFungibleAccount) {
         return;
       }
-
-      console.log('setting search type to account');
       setSecondSearchField('coin');
       setSearchType(SearchType.Account);
     }
