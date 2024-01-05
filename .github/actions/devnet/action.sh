@@ -20,7 +20,7 @@ exec docker run --name=devnet -d --health-cmd='curl --verbose --fail http://loca
   -p 8080:8080 "kadena/devnet"
 
 echo "Waiting for devnet to be healthy..."
-until [ "`docker inspect -f {{.State.Health.Status}} flamboyant_bose`"=="healthy" ]; do
+until [ "`docker inspect -f {{.State.Health.Status}} devnet`"=="healthy" ]; do
     sleep 2;
 
 done;
