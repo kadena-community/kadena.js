@@ -87,7 +87,7 @@ export const getAccount: DocumentNode = gql`
   ${CORE_TRANSFER_FIELDS}
 
   query getAccount($fungibleName: String!, $accountName: String!) {
-    account(fungibleName: $fungibleName, accountName: $accountName) {
+    fungibleAccount(fungibleName: $fungibleName, accountName: $accountName) {
       ...AllAccountFields
       chainAccounts {
         ...CoreChainAccountFields
@@ -130,7 +130,7 @@ export const getChainAccount: DocumentNode = gql`
     $accountName: String!
     $chainId: String!
   ) {
-    chainAccount(
+    chainFungibleAccount(
       fungibleName: $fungibleName
       accountName: $accountName
       chainId: $chainId
