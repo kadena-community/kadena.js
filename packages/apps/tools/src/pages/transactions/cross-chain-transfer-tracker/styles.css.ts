@@ -1,42 +1,5 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { atoms, sprinkles } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
-
-export const mainContentStyle = style([
-  {
-    alignSelf: 'stretch',
-    width: '60%',
-  },
-]);
-
-export const headerTextStyle = style([
-  sprinkles({
-    fontSize: '$3xl',
-    fontWeight: '$normal',
-    fontFamily: '$main',
-    display: 'flex',
-    lineHeight: '$normal',
-  }),
-  {
-    alignSelf: 'stretch',
-  },
-]);
-
-export const accountFormStyle = style([
-  sprinkles({
-    padding: '$4',
-    borderRadius: '$sm',
-    display: 'flex',
-    flexDirection: 'column',
-    paddingBottom: '$10',
-    paddingTop: '$10',
-    paddingRight: '$10',
-    paddingLeft: '$10',
-    backgroundColor: '$gray40',
-  }),
-  {
-    alignSelf: 'stretch',
-  },
-]);
 
 export const formButtonStyle = style([
   sprinkles({
@@ -44,31 +7,6 @@ export const formButtonStyle = style([
     marginY: '$4',
     display: 'flex',
     flexDirection: 'row-reverse',
-  }),
-]);
-
-export const formHeaderStyle = style([
-  sprinkles({
-    display: 'flex',
-    paddingTop: '$6',
-    paddingRight: '$10',
-    paddingLeft: '$10',
-    alignItems: 'flex-start',
-    gap: '$2',
-    backgroundColor: '$gray40',
-  }),
-  {
-    alignSelf: 'stretch',
-  },
-]);
-
-export const formHeaderTitleStyle = style([
-  sprinkles({
-    fontSize: '$xl',
-    fontFamily: '$main',
-    fontWeight: '$semiBold',
-    lineHeight: '$normal',
-    color: '$neutral6',
   }),
 ]);
 
@@ -81,4 +19,19 @@ export const infoBoxStyle = style([
     flexDirection: 'column',
     gap: '$6',
   }),
+]);
+
+export const footerBarStyle = style([
+  atoms({
+    width: '100%',
+    position: 'sticky',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  }),
+  {
+    background: '#FAFAFA70',
+    backdropFilter: 'blur(3px)',
+  },
 ]);
