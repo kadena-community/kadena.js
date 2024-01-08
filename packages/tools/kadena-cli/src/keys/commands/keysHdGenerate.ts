@@ -26,13 +26,13 @@ kadena keys gen-hd --key-wallet "test01.wallet" --key-gen-from-choice "genPublic
 */
 
 export const generateHdKeys = async ({
-  walletName,
+  keyWallet,
   keyIndexOrRange,
   keyGenFromChoice,
   password,
   keyAlias,
 }: {
-  walletName: string;
+  keyWallet: string;
   keyIndexOrRange: number | [number, number];
   keyGenFromChoice: 'genPublicSecretKey' | 'genPublicSecretKeyDec' | string;
   password: string;
@@ -40,12 +40,12 @@ export const generateHdKeys = async ({
 }): Promise<
   CommandResult<{ keys: IKeyPair[]; legacy: boolean; startIndex: number }>
 > => {
-  const wallet = await getWallet(walletName);
+  const wallet = await getWallet(keyWallet);
 
   if (!wallet) {
     return {
       success: false,
-      errors: [`The wallet "${walletName}" does not exist.`],
+      errors: [`The wallet "${keyWallet}" does not exist.`],
     };
   }
 
@@ -56,7 +56,7 @@ export const generateHdKeys = async ({
   const startIndex = extractStartIndex(keyIndexOrRange);
 
   const config = {
-    keyWallet: await getWalletContent(walletName),
+    keyWallet: await getWalletContent(keyWallet),
     securityPassword: password,
     keyGenFromChoice,
     keyIndexOrRange,
@@ -99,7 +99,7 @@ export const createGenerateHdKeysCommand: (
     const loadingSpinner = ora('Generating keys..').start();
 
     const result = await generateHdKeys({
-      walletName: config.keyWallet.fileName,
+      keyWallet: config.keyWallet.fileName,
       keyIndexOrRange: config.keyIndexOrRange,
       keyGenFromChoice: config.keyGenFromChoice,
       password: config.securityPassword,

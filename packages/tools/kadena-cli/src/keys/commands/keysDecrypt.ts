@@ -1,8 +1,9 @@
-import type { EncryptedString } from '@kadena/hd-wallet';
-import { kadenaDecrypt } from '@kadena/hd-wallet';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
+
+import type { EncryptedString } from '@kadena/hd-wallet';
+import { kadenaDecrypt } from '@kadena/hd-wallet';
 
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
