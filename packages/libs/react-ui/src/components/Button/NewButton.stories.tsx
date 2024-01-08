@@ -113,8 +113,8 @@ export const AllVariants: StoryFn<IButtonProps> = ({
   isDisabled,
   isLoading,
 }) => (
-  <Box gap="$2" display="flex">
-    <Box gap="$2" display="flex" flexDirection="column" alignItems="flex-start">
+  <Box gap="xs" display="flex">
+    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
       <Heading variant="h6">Default</Heading>
       {buttonColors.map((color) => (
         <Button
@@ -131,7 +131,7 @@ export const AllVariants: StoryFn<IButtonProps> = ({
       ))}
     </Box>
 
-    <Box gap="$2" display="flex" flexDirection="column" alignItems="flex-start">
+    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
       <Heading variant="h6">Alternative</Heading>
       {buttonColors.map((color) => (
         <Button
@@ -149,7 +149,7 @@ export const AllVariants: StoryFn<IButtonProps> = ({
       ))}
     </Box>
 
-    <Box gap="$2" display="flex" flexDirection="column" alignItems="flex-start">
+    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
       <Heading variant="h6">Outlined</Heading>
       {buttonColors.map((color) => (
         <Button
@@ -167,7 +167,7 @@ export const AllVariants: StoryFn<IButtonProps> = ({
       ))}
     </Box>
 
-    <Box gap="$2" display="flex" flexDirection="column" alignItems="flex-start">
+    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
       <Heading variant="h6">Text</Heading>
       {buttonColors.map((color) => (
         <Button

@@ -33,7 +33,7 @@ export const TitleHeader: FC<IProps> = ({ title, subTitle, avatar }) => {
     <div data-cy="titleheader" className={loaderHeaderClass}>
       <header className={headerClass}>
         <div className={wrapperClass}>
-          <Stack alignItems="center" gap="$4">
+          <Stack alignItems="center" gap="md">
             {avatar && (
               <Image
                 className={avatarClass}

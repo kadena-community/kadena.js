@@ -92,7 +92,7 @@ const Home: React.FC = () => {
 
       {txs?.transactions && (
         <div>
-          <Box marginBottom="$10" />
+          <Box margin="md" />
           <CompactTransactionsTable
             transactions={txs.transactions as QueryTransactionsConnection}
             viewAllHref={`${routes.TRANSACTIONS}`}

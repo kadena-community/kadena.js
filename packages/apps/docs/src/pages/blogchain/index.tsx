@@ -16,6 +16,7 @@ import { mostProductiveAuthors } from '@/utils/mostProductiveAuthors';
 import type { IAuthorInfo, IMenuData, IPageProps } from '@kadena/docs-tools';
 import { getMenuData } from '@kadena/docs-tools';
 import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -50,13 +51,16 @@ const BlogChainHome: FC<IProps> = ({
             </BlogList>
           )}
 
-          <Grid columns={{ sm: 1, lg: 4 }} gap="$2xl">
+          <Grid columns={{ sm: 1, lg: 4 }} gap="xxl">
             <GridItem columnSpan={3}>
               <BlogListWrapper initPosts={allPosts} />
             </GridItem>
             <GridItem>
-              <Box marginY="$8">
-                <Stack direction="column" gap="$8">
+              <Box className={sprinkles({ marginBlock: '$8' })}>
+                <Stack
+                  flexDirection="column"
+                  className={sprinkles({ gap: '$8' })}
+                >
                   {popularPages.length > 0 && (
                     <MostPopular pages={popularPages} title="Popular posts" />
                   )}

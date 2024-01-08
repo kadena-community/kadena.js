@@ -17,8 +17,8 @@ export const textAreaContainerClass = style([
     flexGrow: 1,
     gap: 'xs',
     lineHeight: 'lg',
-    paddingLeft: 'sm',
-    paddingRight: 'xs',
+    paddingInlineStart: 'sm',
+    paddingInlineEnd: 'xs',
   }),
 ]);
 
@@ -30,7 +30,7 @@ export const textAreaClass = style([
     color: 'text.base.default',
     outline: 'none',
     flexGrow: 1,
-    paddingY: 'sm',
+    paddingBlock: 'sm',
     fontSize: 'base',
   }),
   {

@@ -20,7 +20,7 @@ export const FungibleChainAccountTable = (
         icon="Link"
         description="All chains where this account was found"
       />
-      <Box margin={'$4'} />
+      <Box margin="md" />
       <Table.Root wordBreak="break-all">
         <Table.Head>
           <Table.Tr>

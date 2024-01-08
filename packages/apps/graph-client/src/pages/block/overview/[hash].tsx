@@ -59,7 +59,7 @@ const Block: React.FC = () => {
           />
         </Stack>
 
-        <Box marginBottom="$8" />
+        <Box margin="md" />
 
         <LoaderAndError
           error={error}
@@ -117,7 +117,7 @@ const Block: React.FC = () => {
               </Table.Body>
             </Table.Root>
 
-            <Box margin={'$3'} />
+            <Box margin="sm" />
 
             <Accordion.Root>
               {[
@@ -154,7 +154,7 @@ const Block: React.FC = () => {
               ]}
             </Accordion.Root>
 
-            <Box margin={'$10'} />
+            <Box margin="md" />
 
             <Text
               as="h2"
@@ -184,7 +184,7 @@ const Block: React.FC = () => {
                 </Table.Tr>
               </Table.Body>
             </Table.Root>
-            <Box margin={'$3'} />
+            <Box margin="sm" />
             <Accordion.Root>
               {[
                 <Accordion.Section title="See more" key={'accordion-payload'}>
@@ -227,7 +227,7 @@ const Block: React.FC = () => {
               ]}
             </Accordion.Root>
 
-            <Box margin={'$10'} />
+            <Box margin="md" />
 
             {data.block.transactions.totalCount > 0 && (
               <CompactTransactionsTable
