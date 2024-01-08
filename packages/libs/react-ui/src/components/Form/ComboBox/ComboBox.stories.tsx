@@ -23,15 +23,18 @@ type Story = StoryObj<IComboBoxProps<Option>>;
 
 export const Test: Story = {
   name: 'ComboBox',
-  render: () => {
-    const [selectedValue, setSelectedValue] = React.useState<string | null>(
-      'Nothing selected yet',
-    );
+  args: {
+    allowsCustomValue: false,
+  },
+  render: ({ allowsCustomValue }) => {
+    const defaultValue = 'Nothing selected yet';
+    const [selectedValue, setSelectedValue] =
+      React.useState<string>(defaultValue);
     return (
       <>
         <ComboBox
           label="Favorite Animal"
-          allowsCustomValue
+          allowsCustomValue={allowsCustomValue}
           id="my-combobox"
           width={tokens.kda.foundation.layout.content.maxWidth}
           onInputChange={(value) => setSelectedValue(value)}
@@ -46,7 +49,7 @@ export const Test: Story = {
         </ComboBox>
         <Box marginBottom={'$4'} />
         <Text>Selected value:</Text>
-        <Text>{selectedValue}</Text>
+        <Text>{selectedValue.length ? selectedValue : defaultValue}</Text>
       </>
     );
   },
