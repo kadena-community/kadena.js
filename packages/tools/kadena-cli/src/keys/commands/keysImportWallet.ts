@@ -1,11 +1,12 @@
-import type { EncryptedString } from '@kadena/hd-wallet';
-import { kadenaMnemonicToSeed } from '@kadena/hd-wallet';
-import { kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair } from '@kadena/hd-wallet/chainweaver';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 import ora from 'ora';
 import path from 'path';
+
+import type { EncryptedString } from '@kadena/hd-wallet';
+import { kadenaMnemonicToSeed } from '@kadena/hd-wallet';
+import { kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair } from '@kadena/hd-wallet/chainweaver';
 
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -15,6 +16,7 @@ import { displayStoredWallet } from '../utils/keysDisplay.js';
 import type { IWallet } from '../utils/keysHelpers.js';
 import { getWallet } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
+import { addWalletExtension } from '../utils/storage.js';
 
 /**
 kadena keys import-wallet --key-mnemonic "catch ridge print million media eternal sleep heavy inject before captain lazy" --security-new-password 12345678 --security-verify-password 12345678 --key-wallet "test"
@@ -23,20 +25,21 @@ kadena keys import-wallet --key-mnemonic "catch ridge print million media eterna
 export const importWallet = async ({
   mnemonic,
   password,
-  keyWallet,
+  walletName,
   legacy,
 }: {
   mnemonic: string;
   password: string;
-  keyWallet: string;
+  /** Just the wallet name (excluding file extension) */
+  walletName: string;
   legacy?: boolean;
 }): Promise<CommandResult<{ wallet: IWallet }>> => {
-  const existing = await getWallet(keyWallet);
+  const existing = await getWallet(addWalletExtension(walletName, legacy));
 
   if (existing !== null && existing.legacy === legacy) {
     return {
       success: false,
-      errors: [`Wallet "${keyWallet}" already exists.`],
+      errors: [`Wallet "${walletName}" already exists.`],
     };
   }
 
@@ -65,7 +68,7 @@ export const importWallet = async ({
 
   const walletPath = await storageService.storeWallet(
     keySeed,
-    keyWallet,
+    walletName,
     legacy,
   );
 
@@ -104,7 +107,7 @@ export const createImportWalletCommand: (
       const loading = ora('Generating..').start();
 
       const result = await importWallet({
-        keyWallet: config.keyWallet,
+        walletName: config.keyWallet,
         mnemonic: config.keyMnemonic,
         password: config.securityNewPassword,
         legacy: config.legacy,

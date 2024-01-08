@@ -1,4 +1,5 @@
 import { join } from 'node:path';
+import sanitizeFilename from 'sanitize-filename';
 import {
   KEY_EXT,
   KEY_LEGACY_EXT,
@@ -51,11 +52,16 @@ export async function getWallet(walletFile: string): Promise<IWallet | null> {
   const isRegular =
     walletNameParts.length === 2 && walletNameParts[1] === 'wallet';
 
-  if (!isRegular && !isLegacy) return null;
+  if (!isRegular && !isLegacy) {
+    console.trace(
+      `Invalid wallet file given to getWallet: "${walletFile}", expected full file name`,
+    );
+    return null;
+  }
 
-  const walletName = walletNameParts[0];
+  // const walletName = walletNameParts[0];
+  const walletName = sanitizeFilename(walletNameParts[0]).toLocaleLowerCase();
   const walletDir = join(WALLET_DIR, walletName);
-
   const fileExists = await services.filesystem.fileExists(
     join(walletDir, walletFile),
   );

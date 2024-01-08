@@ -101,7 +101,12 @@ export async function saveKeyByAlias(
   }
 }
 
-/**
+export function addWalletExtension(
+  name: string,
+  legacy: boolean = false,
+): string {
+  return name + (legacy ? WALLET_LEGACY_EXT : WALLET_EXT);
+}
 
 /**
  * Stores the seed in the filesystem in a directory specific to the alias.

@@ -1,6 +1,7 @@
-// External library imports
 import chalk from 'chalk';
+import type { Command } from 'commander';
 import debug from 'debug';
+import { join } from 'path';
 
 import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 import {
@@ -8,15 +9,12 @@ import {
   kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair,
 } from '@kadena/hd-wallet/chainweaver';
 
-// Internal module imports
-import type { Command } from 'commander';
 import { WALLET_DIR } from '../../constants/config.js';
-import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
-
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
+import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 import {
   displayGeneratedWallet,
   displayStoredWallet,
@@ -49,7 +47,7 @@ async function generateKey(
 }
 
 export const generateWallet = async (
-  keyWallet: string,
+  walletName: string,
   password: string,
   legacy: boolean,
 ): Promise<
@@ -58,26 +56,28 @@ export const generateWallet = async (
     path: string;
   }>
 > => {
-  const existing = await getWallet(keyWallet);
+  const existing = await getWallet(
+    storageService.addWalletExtension(walletName, legacy),
+  );
 
   if (existing !== null && existing.legacy === legacy) {
     return {
       success: false,
-      errors: [`Wallet "${keyWallet}" already exists.`],
+      errors: [`Wallet "${walletName}" already exists.`],
     };
   }
 
-  const walletPath = `${WALLET_DIR}/${keyWallet}`;
+  const walletPath = join(WALLET_DIR, walletName);
   if (await services.filesystem.fileExists(walletPath)) {
     return {
       success: false,
-      errors: [`Wallet named "${keyWallet}" already exists.`],
+      errors: [`Wallet named "${walletName}" already exists.`],
     };
   }
 
   const { words, seed } = await generateKey(password, legacy);
 
-  const path = await storageService.storeWallet(seed, keyWallet, legacy);
+  const path = await storageService.storeWallet(seed, walletName, legacy);
 
   return {
     success: true,

@@ -12,7 +12,6 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { removeAfterFirstDot } from '../../utils/path.util.js';
 import { getWallet } from '../utils/keysHelpers.js';
 
 /*
@@ -33,9 +32,7 @@ export const deleteWallet = async (
     return { success: true, data: {} };
   }
 
-  // Delete specific wallet
-  const walletName = removeAfterFirstDot(wallet);
-  const walletData = await getWallet(walletName);
+  const walletData = await getWallet(wallet);
 
   if (!walletData) {
     return { success: false, errors: [`Wallet: ${wallet} does not exist.`] };
@@ -65,8 +62,7 @@ const confirmDelete = createOption({
     }
 
     // specific wallet
-    const walletName = removeAfterFirstDot(args.keyWallet);
-    const walletData = await getWallet(walletName);
+    const walletData = await getWallet(args.keyWallet);
 
     if (!walletData) return false;
 
