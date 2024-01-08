@@ -26,10 +26,9 @@ export const asideItemLinkActiveVariants = styleVariants({
 });
 
 export const asideItemClass = style([
-  sprinkles({
-    paddingY: '$1',
-  }),
+  sprinkles({}),
   {
+    paddingBlock: vars.sizes.$1,
     selectors: {
       '&::marker': {
         color: vars.colors.$primaryHighContrast,
@@ -55,7 +54,7 @@ export const asideListClass = style([
 
 export const asideListInnerVariants = styleVariants({
   true: {
-    paddingLeft: vars.sizes.$6,
+    paddingInlineStart: vars.sizes.$6,
   },
   false: {},
 });

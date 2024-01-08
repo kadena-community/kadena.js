@@ -116,7 +116,7 @@ export const TooltipReactNode: Story = {
         delay={delay}
         closeDelay={closeDelay}
         content={
-          <Stack direction="row" gap="$xs" alignItems="center">
+          <Stack flexDirection="row" gap="xs" alignItems="center">
             <SystemIcon.AlertBox />
             <code>I have an icon!</code>
           </Stack>
@@ -167,7 +167,7 @@ export const Controlled: Story = {
 
     return (
       <>
-        <div className={atoms({ marginBottom: 'xxxl' })}>
+        <div className={atoms({ marginBlockEnd: 'xxxl' })}>
           <Button onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
           </Button>

@@ -20,6 +20,7 @@ import {
   Heading,
   Text,
 } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -38,11 +39,11 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
       id="main"
     >
       <article className={articleClass}>
-        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem>
             <Card fullWidth>
               <Heading as="h4">Learn Pact</Heading>
-              <Box marginY="$4">
+              <Box marginBlock="md">
                 <Text>
                   Pact allows anyone to write clearly, directly and safely onto
                   a blockchain — a true innovation for secure and simple smart
@@ -58,9 +59,11 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </GridItem>
           <GridItem>
             <Box
-              marginTop="$8"
-              marginLeft={{ sm: 0, lg: '$4' }}
-              marginRight={{ sm: 0, xl: '$32' }}
+              className={sprinkles({
+                marginBlockStart: '$8',
+                marginInlineEnd: { sm: 0, xl: '$32' },
+              })}
+              marginInlineStart={{ sm: 'no', lg: 'md' }}
             >
               <MostPopular
                 pages={popularPages}
@@ -71,8 +74,13 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </GridItem>
         </Grid>
 
-        <Box marginBottom="$20">
-          <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+        <Box
+          className={sprinkles({
+            marginBlockStart: '$8',
+            marginBlockEnd: '$20',
+          })}
+        >
+          <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
             <GridItem rowSpan={2}>
               <DocsCard
                 label="Introduction"

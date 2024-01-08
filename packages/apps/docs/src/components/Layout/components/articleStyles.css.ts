@@ -5,7 +5,7 @@ import { style, styleVariants } from '@vanilla-extract/css';
 export const articleClass = style([
   sprinkles({
     width: '100%',
-    paddingY: 0,
+    paddingBlock: 0,
     backgroundColor: 'transparent',
   }),
   {
@@ -25,7 +25,7 @@ export const contentClass = style([
     display: 'flex',
     position: 'relative',
 
-    paddingX: 0,
+    paddingInline: 0,
     overflow: 'hidden',
     width: '100%',
     height: '100%',
@@ -73,7 +73,7 @@ export const contentClassVariants: Record<LayoutType, string> = styleVariants({
     }),
   },
   blog: {
-    paddingTop: 0,
+    paddingBlockStart: 0,
   },
   redocly: {},
 });

@@ -7,7 +7,7 @@ import { useGetFungibleAccountQuery } from '@/__generated__/sdk';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { getNonFungibleAccount } from '@/graphql/queries.graph';
-import { FungibleChainAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
+import { FungibleChainAccountTable } from '@components/chain-fungible-account-table/chain-fungible-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
@@ -45,7 +45,7 @@ const Account: React.FC = () => {
         />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}
@@ -61,7 +61,7 @@ const Account: React.FC = () => {
               We could not find any data on this account. Please check the
               fungible name and account name.
             </Notification>
-            <Box margin={'$4'} />
+            <Box margin="sm" />
           </>
         )}
       {data?.fungibleAccount && (
@@ -88,10 +88,10 @@ const Account: React.FC = () => {
               </Table.Tr>
             </Table.Body>
           </Table.Root>
-          <Box margin={'$8'} />
+          <Box margin="md" />
           <Tabs defaultSelectedKey="Chain Accounts">
             <TabItem title="Chain Accounts" key="Chain Accounts">
-              <Box margin={'$4'} />
+              <Box margin="sm" />
               <FungibleChainAccountTable
                 fungibleName={router.query.fungible as string}
                 accountName={router.query.account as string}
@@ -102,7 +102,7 @@ const Account: React.FC = () => {
             </TabItem>
 
             <TabItem title="Transfers" key="Transfers">
-              <Box margin={'$4'} />
+              <Box margin="sm" />
               <CompactTransfersTable
                 description="All transfers from or to this account"
                 fungibleName={router.query.fungible as string}
@@ -114,7 +114,7 @@ const Account: React.FC = () => {
               />
             </TabItem>
             <TabItem title="Transactions" key="Transactions">
-              <Box margin={'$4'} />
+              <Box margin="sm" />
               <CompactTransactionsTable
                 viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
                   router.query.fungible as string

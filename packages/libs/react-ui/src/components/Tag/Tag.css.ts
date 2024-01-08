@@ -26,8 +26,8 @@ export const tagClass = style([
     backgroundColor: 'layer-2.default',
     color: 'text.base.default',
     borderRadius: 'xs',
-    paddingY: 'xs',
-    paddingX: 'sm',
+    paddingBlock: 'xs',
+    paddingInline: 'sm',
     display: 'inline-flex',
     alignItems: 'center',
     border: 'hairline',
@@ -40,7 +40,7 @@ export const closeButtonClass = style([
     background: 'none',
     padding: 'xs',
     cursor: 'pointer',
-    marginLeft: 'xs',
+    marginInlineStart: 'xs',
     outline: 'none',
   }),
   {
@@ -59,7 +59,7 @@ export const tagListClass = style([
 
 export const tagGroupLabelClass = style([
   atoms({
-    marginBottom: 'sm',
+    marginBlockEnd: 'sm',
     display: 'block',
   }),
 ]);

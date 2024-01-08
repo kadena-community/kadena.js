@@ -43,7 +43,7 @@ const AccountTransactions: React.FC = () => {
         <GraphQLQueryDialog queries={[{ query: getTransactions, variables }]} />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}

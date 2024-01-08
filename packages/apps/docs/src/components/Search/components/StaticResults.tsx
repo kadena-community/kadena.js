@@ -75,11 +75,11 @@ export const StaticResults: FC<IProps> = ({ results, limitResults }) => {
       : results;
 
   if (results?.length === 0) {
-    return <Box marginY="$10">No results</Box>;
+    return <Box marginBlock="xxxl">No results</Box>;
   }
 
   return (
-    <Box marginY="$10">
+    <Box marginBlock="xxxl">
       <ul className={staticResultsListClass}>
         {limitedResults?.map((item) => {
           return <Item item={item} key={`${item.filePath} + ${item.header}`} />;

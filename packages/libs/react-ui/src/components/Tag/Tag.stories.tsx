@@ -134,7 +134,7 @@ export const TagComponent: Story = {
   render: () => {
     return (
       <Tag>
-        <Stack gap="$xs" alignItems="center">
+        <Stack gap="xs" alignItems="center">
           Tag Styles
           <SystemIcon.Edit size="sm" />
         </Stack>
