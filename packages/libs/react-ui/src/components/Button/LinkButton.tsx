@@ -3,29 +3,31 @@
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
-import type { ComponentProps, ForwardedRef, ReactNode } from 'react';
+import type {
+  ComponentProps,
+  ElementRef,
+  ForwardedRef,
+  ReactNode,
+} from 'react';
 import React, { forwardRef } from 'react';
-import type { AriaButtonProps, HoverEvents } from 'react-aria';
-import { useButton, useFocusRing, useHover } from 'react-aria';
+import type { AriaLinkOptions, HoverEvents } from 'react-aria';
+import { useFocusRing, useHover, useLink } from 'react-aria';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { button } from './SharedButton.css';
 import { disableLoadingProps } from './utils';
 
 type Variants = Omit<NonNullable<RecipeVariants<typeof button>>, 'onlyIcon'>;
-// omit link related props from `AriaButtonProps`
-type PickedAriaButtonProps = Omit<
-  AriaButtonProps,
-  'href' | 'target' | 'rel' | 'elementType'
->;
+type PickedAriaLinkProps = Omit<AriaLinkOptions, 'elementType'>;
 
-export interface IButtonProps
-  extends PickedAriaButtonProps,
+export interface ILinkButtonProps
+  extends PickedAriaLinkProps,
     HoverEvents,
     Variants {
   className?: string;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
   icon?: ReactNode;
+  children?: ReactNode;
   /**
    * @deprecated use `onPress` instead to be consistent with React Aria, also keep in mind that `onPress` is not a native event it is a synthetic event created by React Aria
    * @see https://react-spectrum.adobe.com/react-aria/useButton.html#props
@@ -37,13 +39,13 @@ export interface IButtonProps
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable react/function-component-definition */
-function BaseButton(
-  props: IButtonProps,
-  forwardedRef: ForwardedRef<HTMLButtonElement>,
+function BaseLinkButton(
+  props: ILinkButtonProps,
+  forwardedRef: ForwardedRef<ElementRef<'a'>>,
 ) {
   props = disableLoadingProps(props);
   const ref = useObjectRef(forwardedRef);
-  const { buttonProps, isPressed } = useButton(props, ref);
+  const { linkProps, isPressed } = useLink(props, ref);
   const { hoverProps, isHovered } = useHover(props);
   const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
 
@@ -61,12 +63,12 @@ function BaseButton(
   const isLoadingAriaLiveLabel = `${
     typeof props.children === 'string'
       ? props.children
-      : buttonProps['aria-label'] ?? 'is'
+      : linkProps['aria-label'] ?? 'is'
   } loading`.trim();
 
   return (
-    <button
-      {...mergeProps(buttonProps, hoverProps, focusProps)}
+    <a
+      {...mergeProps(linkProps, hoverProps, focusProps)}
       ref={ref}
       className={classNames(
         button({
@@ -98,8 +100,8 @@ function BaseButton(
       ) : (
         content
       )}
-    </button>
+    </a>
   );
 }
 
-export const Button = forwardRef(BaseButton);
+export const LinkButton = forwardRef(BaseLinkButton);
