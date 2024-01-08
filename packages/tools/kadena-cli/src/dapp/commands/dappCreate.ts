@@ -2,9 +2,9 @@ import chalk from 'chalk';
 import { spawnSync } from 'child_process';
 import type { Command } from 'commander';
 import debug from 'debug';
-import { existsSync } from 'fs';
 import { join } from 'path';
 
+import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
@@ -14,9 +14,11 @@ export const createDappCommand: (program: Command, version: string) => void =
     'create a new dapp project',
     [globalOptions.dappTemplate()],
     async (config, args) => {
+      debug('dapp-create-command')({ config });
       const projectDir = join(process.cwd(), args[0]);
       const { dappTemplate } = config;
-      const folderExists = existsSync(projectDir);
+      const folderExists =
+        await services.filesystem.directoryExists(projectDir);
 
       if (folderExists) {
         console.error(chalk.red(`Project directory ${args[0]} already exists`));
@@ -25,7 +27,6 @@ export const createDappCommand: (program: Command, version: string) => void =
 
       const cmd = 'npx';
       const cmdArgs = [
-        '--no-install',
         '@kadena/create-kadena-app',
         'generate-project',
         '-n',
