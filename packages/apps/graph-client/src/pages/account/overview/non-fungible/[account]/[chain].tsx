@@ -15,6 +15,7 @@ import {
   Stack,
   Table,
 } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -49,7 +50,7 @@ const FungibleChainAccount: React.FC = () => {
         />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box className={sprinkles({ marginBlockEnd: '$8' })} />
 
       <LoaderAndError
         error={error}
@@ -89,7 +90,7 @@ const FungibleChainAccount: React.FC = () => {
               </Table.Tr>
             </Table.Body>
           </Table.Root>
-          <Grid columns={2} gap="$lg">
+          <Grid columns={2} gap="lg">
             <GridItem>
               <TokenTable tokens={data.nonFungibleChainAccount.nonFungibles} />
             </GridItem>

@@ -22,7 +22,7 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
         description="All tokens owned by this account"
       />
 
-      <Box margin={'$4'} />
+      <Box margin="sm" />
 
       <Table.Root wordBreak="break-word">
         <Table.Head>

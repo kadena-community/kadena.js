@@ -17,6 +17,7 @@ import {
   Table,
   Tabs,
 } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -41,7 +42,7 @@ const NonFungibleAccount: React.FC = () => {
         />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box className={sprinkles({ marginBlockEnd: '$8' })} />
 
       <LoaderAndError
         error={error}
@@ -56,7 +57,7 @@ const NonFungibleAccount: React.FC = () => {
               We could not find any data on this account. Please check the
               account name.
             </Notification>
-            <Box margin={'$4'} />
+            <Box margin="sm" />
           </>
         )}
 
@@ -88,14 +89,14 @@ const NonFungibleAccount: React.FC = () => {
               </Table.Tr>
             </Table.Body>
           </Table.Root>
-          <Box margin={'$8'} />
+          <Box margin="md" />
           <Tabs defaultSelectedKey="Tokens">
             <TabItem title="Tokens" key="Tokens">
-              <Box margin={'$4'} />
+              <Box margin="sm" />
               <TokenTable tokens={data.nonFungibleAccount.nonFungibles} />
             </TabItem>
             <TabItem title="Transactions" key="Transactions">
-              <Box margin={'$4'} />
+              <Box margin="sm" />
               <CompactTransactionsTable
                 viewAllHref={`${
                   routes.ACCOUNT_TRANSACTIONS
