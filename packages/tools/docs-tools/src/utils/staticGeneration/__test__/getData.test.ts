@@ -1,7 +1,7 @@
 import { cleanup } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { IMenuData } from 'src';
+import type { IMenuData } from 'src';
 import { getData } from './../getData';
 
 const data = [

@@ -1,7 +1,7 @@
 import { cleanup } from '@testing-library/react';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
-import { IMenuData } from 'src';
+import type { IMenuData } from 'src';
 import { flattenData, getFlatData } from './../flatPosts';
 
 const data = [

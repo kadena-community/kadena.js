@@ -3,3 +3,4 @@ dist
 lib
 etc
 temp
+coverage
