@@ -197,7 +197,7 @@ const CheckTransactions: FC = () => {
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Results')}</BreadcrumbsItem>
       </Breadcrumbs>
-      <Box marginBottom="sm" />
+      <Box marginBlockEnd="sm" />
       <Grid columns={2}>
         <GridItem>
           <Heading bold={false} as="h5">

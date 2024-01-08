@@ -78,7 +78,7 @@ const CheckTransactions: FC = () => {
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Filters')}</BreadcrumbsItem>
       </Breadcrumbs>
-      <Box marginBottom="sm" />
+      <Box marginBlockEnd="sm" />
       <Heading bold={false} as="h5">
         {t('Account Transaction Filters')}
       </Heading>
