@@ -53,7 +53,7 @@ export async function writeDevnet(
 
   if (await services.filesystem.fileExists(devnetFilePath)) {
     const content = await services.filesystem.readFile(devnetFilePath);
-    if (content !== null) {
+    if (content !== null && content !== undefined) {
       existingConfig = yaml.load(content) as IDevnetsCreateOptions;
     }
   }
@@ -95,7 +95,7 @@ export async function getDevnetConfiguration(
   const devnetFilePath = path.join(defaultDevnetsPath, `${name}.yaml`);
 
   const content = await services.filesystem.readFile(devnetFilePath);
-  if (content === null) return;
+  if (content === null || content === undefined) return;
 
   return yaml.load(content) as IDevnetsCreateOptions;
 }

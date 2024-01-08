@@ -145,7 +145,7 @@ export async function readKeyFileContent(
   filePath: string,
 ): Promise<TSeedContent | IKeyPair | undefined> {
   const fileContents = await services.filesystem.readFile(filePath);
-  if (fileContents === null) {
+  if (!fileContents) {
     throw Error(`Failed to read file at path: ${filePath}`);
   }
   return yaml.load(fileContents) as TSeedContent | IKeyPair;

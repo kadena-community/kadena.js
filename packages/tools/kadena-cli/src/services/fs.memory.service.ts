@@ -13,7 +13,7 @@ export const memoryFileSystemService: IFileSystemService = {
     try {
       return (await fs.readFile(path, 'utf8')) as string;
     } catch (e) {
-      return null;
+      return;
     }
   },
   async writeFile(path: string, data: string) {
