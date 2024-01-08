@@ -257,7 +257,7 @@ export const _LinkButton: LinkButtonStory = {
       description: {
         story: `The LinkButton component renders an anchor element <a/> which will be styled with the same variants/colors as the Button component.
           <br/><br/>
-          To support client side routing make sure to import/use "RouterProvider" from "@kadena/react-ui".
+          To support client side routing make sure to import/use "RouterProvider" from "@kadena/react-ui" see https://react-spectrum.adobe.com/react-aria/routing.html for more info on how to integrate it with NextJS and client side routing.
           `,
       },
     },

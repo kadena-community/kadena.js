@@ -14,6 +14,7 @@ import type { AriaLinkOptions, HoverEvents } from 'react-aria';
 import { useFocusRing, useHover, useLink } from 'react-aria';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { button } from './SharedButton.css';
+import { disableLoadingProps } from './utils';
 
 type Variants = Omit<NonNullable<RecipeVariants<typeof button>>, 'onlyIcon'>;
 type PickedAriaLinkProps = Omit<AriaLinkOptions, 'elementType'>;
@@ -34,23 +35,6 @@ export interface ILinkButtonProps
   onClick?: ComponentProps<'button'>['onClick'];
   style?: ComponentProps<'button'>['style'];
   title?: ComponentProps<'button'>['title'];
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function disableLoadingProps(props: ILinkButtonProps) {
-  const newProps = { ...props };
-  // Don't allow interaction while isPending is true
-  if (newProps.isLoading) {
-    newProps.onPress = undefined;
-    newProps.onPressStart = undefined;
-    newProps.onPressEnd = undefined;
-    newProps.onPressChange = undefined;
-    newProps.onPressUp = undefined;
-    newProps.onKeyDown = undefined;
-    newProps.onKeyUp = undefined;
-    newProps.onClick = undefined;
-  }
-  return newProps;
 }
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
