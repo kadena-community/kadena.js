@@ -1,7 +1,7 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Box,
-  BreadcrumbsContainer,
+  Breadcrumbs,
   BreadcrumbsItem,
   Button,
   Card,
@@ -217,10 +217,10 @@ const NewAccountFaucetPage: FC = () => {
       <Head>
         <title>Kadena Developer Tools - Faucet</title>
       </Head>
-      <BreadcrumbsContainer>
+      <Breadcrumbs>
         <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('New')}</BreadcrumbsItem>
-      </BreadcrumbsContainer>{' '}
+      </Breadcrumbs>{' '}
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
@@ -285,10 +285,10 @@ const NewAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <Stack direction="column" gap="$lg">
+        <Stack flexDirection="column" gap="lg">
           <Card fullWidth>
             <Heading as="h5">Public Keys</Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
 
             <div className={pubKeyInputWrapperStyle}>
               <div className={inputWrapperStyle}>
@@ -335,7 +335,7 @@ const NewAccountFaucetPage: FC = () => {
           </Card>
           <Card fullWidth>
             <Heading as="h5">{t('Account')}</Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField

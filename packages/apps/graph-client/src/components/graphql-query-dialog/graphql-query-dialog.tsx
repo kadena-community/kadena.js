@@ -38,13 +38,13 @@ export const GraphQLQueryDialog = (
             {queries.map((query, index) => (
               <div key={index}>
                 <p>Query #{index + 1}</p>
-                <Box marginBottom="$4" />
+                <Box marginBlockEnd="sm" />
                 <pre>{print(query.query)}</pre>
                 {query.variables && (
                   <>
-                    <Box marginBottom="$4" />
+                    <Box marginBlockEnd="sm" />
                     <p>Variables</p>
-                    <Box marginBottom="$4" />
+                    <Box marginBlockEnd="sm" />
                     <pre>{JSON.stringify(query.variables, null, 2)}</pre>
                   </>
                 )}

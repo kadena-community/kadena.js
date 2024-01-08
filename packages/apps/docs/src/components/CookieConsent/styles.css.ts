@@ -1,4 +1,4 @@
-import { atoms, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 import { $$pageWidth, globalClass } from '../Layout/global.css';
 
@@ -15,6 +15,8 @@ export const containerClass = style([
 
 export const notificationWrapperClass = style([
   globalClass,
-  sprinkles({ marginX: 'auto' }),
-  { maxWidth: $$pageWidth },
+  {
+    marginInline: 'auto',
+    maxWidth: $$pageWidth,
+  },
 ]);

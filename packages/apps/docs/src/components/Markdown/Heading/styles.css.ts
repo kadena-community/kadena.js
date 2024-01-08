@@ -14,9 +14,9 @@ const articleLinkOpacity = createVar();
 export const headerIconLinkClass = style([
   sprinkles({
     display: 'inline-block',
-    paddingLeft: '$3',
   }),
   {
+    paddingInlineStart: vars.sizes.$3,
     scrollMarginTop: `80px`,
     scrollSnapMarginTop: `80px`,
     transition: 'opacity .3s ease',
@@ -29,9 +29,9 @@ export const headerClass = style([
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    marginTop: '$xl',
   }),
   {
+    marginBlockStart: vars.sizes.$xl,
     selectors: {
       '&:hover': {
         vars: {
@@ -94,7 +94,7 @@ globalStyle(
   h1${getClassName(headerClass)} +
   h2${getClassName(headerClass)}`,
   {
-    marginTop: vars.sizes.$lg,
+    marginBlockStart: vars.sizes.$lg,
   },
 );
 
@@ -103,7 +103,7 @@ globalStyle(
   figure
   `,
   {
-    marginTop: vars.sizes.$4,
+    marginBlockStart: vars.sizes.$4,
   },
 );
 
@@ -114,7 +114,7 @@ globalStyle(
   h3${getClassName(headerClass)} +
   ${getClassName(ulListClass)}`,
   {
-    marginBottom: `${vars.sizes.$xl} !important`,
-    paddingTop: `${vars.sizes.$xl} !important`,
+    marginBlockEnd: `${vars.sizes.$xl} !important`,
+    paddingBlockStart: `${vars.sizes.$xl} !important`,
   },
 );

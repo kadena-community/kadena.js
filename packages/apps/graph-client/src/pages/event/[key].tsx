@@ -13,7 +13,7 @@ import { getEventsByName } from '@/graphql/subscriptions.graph';
 import routes from '@constants/routes';
 import {
   Box,
-  BreadcrumbsContainer,
+  Breadcrumbs,
   BreadcrumbsItem,
   Grid,
   GridItem,
@@ -187,10 +187,10 @@ const Event: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <BreadcrumbsContainer>
+        <Breadcrumbs>
           <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
           <BreadcrumbsItem>Events</BreadcrumbsItem>
-        </BreadcrumbsContainer>
+        </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[
             {
@@ -205,7 +205,7 @@ const Event: React.FC = () => {
         />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <Grid columns={2}>
         <GridItem>
@@ -243,8 +243,8 @@ const Event: React.FC = () => {
           </Stack>
         </GridItem>
         <GridItem>
-          <Box marginTop="$1" />
-          <Stack alignItems="center" gap="$2">
+          <Box marginBlockStart="xxs" />
+          <Stack alignItems="center" gap="xs">
             <Loader />
             <p>Polling for the latest events...</p>
           </Stack>

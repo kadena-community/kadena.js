@@ -4,12 +4,7 @@ import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-qu
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
 import { getTransactions } from '@/graphql/queries.graph';
-import {
-  Box,
-  BreadcrumbsContainer,
-  BreadcrumbsItem,
-  Stack,
-} from '@kadena/react-ui';
+import { Box, Breadcrumbs, BreadcrumbsItem, Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -25,7 +20,7 @@ const BlockTransactions: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <BreadcrumbsContainer>
+        <Breadcrumbs>
           <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
           <BreadcrumbsItem
             href={`${routes.BLOCK_OVERVIEW}/${router.query.hash as string}`}
@@ -33,11 +28,11 @@ const BlockTransactions: React.FC = () => {
             Block Overview
           </BreadcrumbsItem>
           <BreadcrumbsItem>Transactions</BreadcrumbsItem>
-        </BreadcrumbsContainer>
+        </Breadcrumbs>
         <GraphQLQueryDialog queries={[{ query: getTransactions, variables }]} />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}

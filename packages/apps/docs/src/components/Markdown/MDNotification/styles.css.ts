@@ -23,7 +23,7 @@ globalStyle(
     ${getClassName(paragraphWrapperClass)}:first-of-type p
     `,
   {
-    marginTop: '0 !important',
+    marginBlockStart: '0 !important',
   },
 );
 
@@ -33,6 +33,6 @@ globalStyle(
     ${getClassName(paragraphWrapperClass)} :not(p:empty)
     `,
   {
-    marginTop: vars.sizes.$5,
+    marginBlockStart: vars.sizes.$5,
   },
 );

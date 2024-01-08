@@ -7,6 +7,7 @@ import {
   Heading,
   Text,
 } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 
 import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
@@ -29,7 +30,12 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
-      <Box marginRight={{ sm: 0, lg: '$32', xl: '$64' }} marginBottom="$10">
+      <Box
+        marginBlockEnd="xxxl"
+        className={sprinkles({
+          marginInlineEnd: { sm: 0, lg: '$32', xl: '$64' },
+        })}
+      >
         <Text>
           The long-awaited release of Marmalade’s V2 standard has arrived,
           bringing a host of exciting updates and features to the top NFT
@@ -40,11 +46,11 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           thrilled to share the next stage of this adventure.
         </Text>
       </Box>
-      <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+      <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
         <GridItem>
           <Card fullWidth>
             <Heading as="h4">Quick start</Heading>
-            <Box marginY="$4">
+            <Box marginBlock="md">
               <Text>
                 Marmalade is an NFT smart contract system on Kadena’s
                 blockchain. It comprises multiple smart contracts that execute
@@ -62,14 +68,16 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         </GridItem>
 
         <GridItem>
-          <Box marginTop="$8">
+          <Box className={sprinkles({ marginBlockStart: '$8' })}>
             <MostPopular pages={popularPages} title="Most viewed docs" />
           </Box>
         </GridItem>
       </Grid>
 
-      <Box marginBottom="$20">
-        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+      <Box
+        className={sprinkles({ marginBlockStart: '$8', marginBlockEnd: '$20' })}
+      >
+        <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem rowSpan={2}>
             <DocsCard
               label="Overview"

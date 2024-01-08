@@ -1,5 +1,9 @@
 import type { IMenuItem } from '@kadena/docs-tools';
-import { Box, BreadcrumbsContainer, BreadcrumbsItem } from '@kadena/react-ui';
+import {
+  Box,
+  BreadcrumbsItem,
+  Breadcrumbs as StyledBreadcrumbs,
+} from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
@@ -49,8 +53,8 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
   }, [menuItems]);
 
   return (
-    <Box data-cy="breadcrumbs" marginTop="$10" marginBottom="$4">
-      <BreadcrumbsContainer>
+    <Box data-cy="breadcrumbs" marginBlockStart="xxxl" marginBlockEnd="md">
+      <StyledBreadcrumbs>
         {items.map((item, idx) =>
           idx < items.length - 1 ? (
             <BreadcrumbsItem key={`${item.root}${idx}`} asChild>
@@ -62,7 +66,7 @@ export const Breadcrumbs: FC<IProps> = ({ menuItems }) => {
             </BreadcrumbsItem>
           ),
         )}
-      </BreadcrumbsContainer>
+      </StyledBreadcrumbs>
     </Box>
   );
 };

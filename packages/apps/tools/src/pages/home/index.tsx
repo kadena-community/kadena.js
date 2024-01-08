@@ -10,7 +10,7 @@ import {
 import {
   Accordion,
   Box,
-  BreadcrumbsContainer,
+  Breadcrumbs,
   BreadcrumbsItem,
   Card,
   Grid,
@@ -118,10 +118,10 @@ const Home: FC = () => {
           },
         ]}
       />
-      <BreadcrumbsContainer>
+      <Breadcrumbs>
         <BreadcrumbsItem>{t('Kadena Tools')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Startpage')}</BreadcrumbsItem>
-      </BreadcrumbsContainer>
+      </Breadcrumbs>
       <br />
       <div style={{ width: '680px' }}>
         <Heading bold={false} variant="h3">
@@ -132,14 +132,14 @@ const Home: FC = () => {
             "We're constantly adding new Developer Tools to make it easier for our builders to utilize all Kadena has to offer.",
           )}
         </Heading>
-        <Stack direction="column" gap="$lg" marginTop="$lg">
+        <Stack flexDirection="column" gap="lg" marginBlockStart="lg">
           <Card fullWidth>
             <Grid columns={2}>
               <GridItem>
                 <Heading as="h3" variant="h5">
                   {t('General Links')}
                 </Heading>
-                <Box marginBottom="$4" />
+                <Box marginBlockEnd="md" />
                 <ul>
                   <li>
                     <a
@@ -177,7 +177,7 @@ const Home: FC = () => {
                 <Heading as="h3" variant="h5">
                   {t('Developers Links')}
                 </Heading>
-                <Box marginBottom="$4" />
+                <Box marginBlockEnd="md" />
                 <ul>
                   <li>
                     <a
@@ -217,7 +217,7 @@ const Home: FC = () => {
             <Heading as="h3" variant="h5">
               {t('Frequently Asked Questions')}
             </Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
             <Accordion.Root>
               {faqs.map((faq) => (
                 <Accordion.Section title={faq.title} key={faq.title}>

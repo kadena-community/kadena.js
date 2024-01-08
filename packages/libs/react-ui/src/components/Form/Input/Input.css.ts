@@ -18,8 +18,8 @@ export const inputContainerClass = style([
     flexGrow: 1,
     gap: 'xs',
     lineHeight: 'lg',
-    paddingLeft: 'sm',
-    paddingRight: 'xs',
+    paddingInlineStart: 'sm',
+    paddingInlineEnd: 'xs',
   }),
 ]);
 
@@ -31,7 +31,7 @@ export const inputClass = style([
     color: 'text.base.default',
     outline: 'none',
     flexGrow: 1,
-    paddingY: 'sm',
+    paddingBlock: 'sm',
     fontSize: 'base',
   }),
   {
@@ -46,7 +46,7 @@ export const leadingTextClass = style([
     overflow: 'hidden',
     display: 'inline-block',
     alignItems: 'center',
-    paddingX: 'sm',
+    paddingInline: 'sm',
     whiteSpace: 'nowrap',
   }),
   {

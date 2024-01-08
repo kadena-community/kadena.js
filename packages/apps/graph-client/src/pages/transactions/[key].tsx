@@ -6,7 +6,7 @@ import { getTransactionByRequestKey } from '@/graphql/subscriptions.graph';
 import { formatCode, formatLisp } from '@/utils/formatter';
 import {
   Box,
-  BreadcrumbsContainer,
+  Breadcrumbs,
   BreadcrumbsItem,
   Link,
   Notification,
@@ -29,19 +29,19 @@ const RequestKey: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <BreadcrumbsContainer>
+        <Breadcrumbs>
           <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
           <BreadcrumbsItem href={`${routes.TRANSACTIONS}`}>
             Transactions
           </BreadcrumbsItem>
           <BreadcrumbsItem>Transaction</BreadcrumbsItem>
-        </BreadcrumbsContainer>
+        </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[{ query: getTransactionByRequestKey, variables }]}
         />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}

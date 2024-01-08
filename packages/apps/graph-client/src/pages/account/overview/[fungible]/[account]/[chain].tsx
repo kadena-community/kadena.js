@@ -11,7 +11,7 @@ import { CompactTransfersTable } from '@components/compact-transfers-table/compa
 import routes from '@constants/routes';
 import {
   Box,
-  BreadcrumbsContainer,
+  Breadcrumbs
   BreadcrumbsItem,
   Grid,
   GridItem,
@@ -35,7 +35,7 @@ const ChainAccount: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <BreadcrumbsContainer>
+        <Breadcrumbs>
           <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
           <BreadcrumbsItem
             href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
@@ -45,11 +45,11 @@ const ChainAccount: React.FC = () => {
             Account Overview
           </BreadcrumbsItem>
           <BreadcrumbsItem>Chain</BreadcrumbsItem>
-        </BreadcrumbsContainer>
+        </Breadcrumbs>
         <GraphQLQueryDialog queries={[{ query: getChainAccount, variables }]} />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}
@@ -99,8 +99,8 @@ const ChainAccount: React.FC = () => {
               </Table.Tr>
             </Table.Body>
           </Table.Root>
-          <Box margin={'$8'} />
-          <Grid columns={2} gap="$lg">
+          <Box margin="md" />
+          <Grid columns={2} gap="lg">
             <GridItem>
               <CompactTransfersTable
                 fungibleName={router.query.fungible as string}

@@ -10,7 +10,7 @@ import { usePersistentChainID } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
-  BreadcrumbsContainer,
+  Breadcrumbs,
   BreadcrumbsItem,
   Button,
   Card,
@@ -73,12 +73,12 @@ const CheckTransactions: FC = () => {
 
   return (
     <div>
-      <BreadcrumbsContainer>
+      <Breadcrumbs>
         <BreadcrumbsItem>{t('Account')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Filters')}</BreadcrumbsItem>
-      </BreadcrumbsContainer>
-      <Box marginBottom="$3" />
+      </Breadcrumbs>
+      <Box marginBottom="sm" />
       <Heading bold={false} as="h5">
         {t('Account Transaction Filters')}
       </Heading>
@@ -86,7 +86,7 @@ const CheckTransactions: FC = () => {
         <form onSubmit={handleSubmit(checkTransactionsEvent)}>
           <Card fullWidth>
             <Heading as="h6">Filters</Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
             <Grid columns={2}>
               <GridItem>
                 <ChainSelect

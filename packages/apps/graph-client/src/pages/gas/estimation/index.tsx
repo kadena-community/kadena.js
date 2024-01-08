@@ -5,7 +5,7 @@ import routes from '@/constants/routes';
 import { estimateGasLimit } from '@/graphql/queries.graph';
 import {
   Box,
-  BreadcrumbsContainer,
+  Breadcrumbs
   BreadcrumbsItem,
   Stack,
   Table,
@@ -31,16 +31,16 @@ const GasEstimation: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <BreadcrumbsContainer>
+        <Breadcrumbs>
           <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
           <BreadcrumbsItem>Gas Estimation</BreadcrumbsItem>
-        </BreadcrumbsContainer>
+        </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[{ query: estimateGasLimit, variables }]}
         />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}
