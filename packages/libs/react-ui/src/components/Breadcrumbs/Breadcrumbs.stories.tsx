@@ -31,7 +31,7 @@ const meta: Meta<
     },
   },
   argTypes: {
-    startIcon: {
+    icon: {
       description:
         'The base icon for the breadcrumb component displayed to the left of the breadcrumb items. is part of the ProductIcon',
     },
@@ -57,13 +57,13 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Breadcrumbs',
   args: {
-    startIcon: <ProductIcon.KadenaOverview />,
+    icon: <ProductIcon.KadenaOverview />,
     itemsCount: 3,
   },
-  render: ({ itemsCount, startIcon }) => {
+  render: ({ itemsCount, icon }) => {
     const items = ItemArray.slice(0, itemsCount);
     return (
-      <BreadcrumbsContainer startIcon={startIcon}>
+      <BreadcrumbsContainer icon={icon}>
         {items.map((item, idx) => {
           return (
             <BreadcrumbsItem
