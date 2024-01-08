@@ -7,7 +7,7 @@ import { useGetAccountQuery } from '@/__generated__/sdk';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { getAccount } from '@/graphql/queries.graph';
-import { ChainFungibleAccountTable } from '@components/chain-module-account-table/chain-module-account-table';
+import { ChainFungibleAccountTable } from '@components/chain-fungible-account-table/chain-fungible-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
