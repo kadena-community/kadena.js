@@ -14,6 +14,7 @@ import routes from '@constants/routes';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Notification,
   Stack,
   TabItem,
@@ -36,10 +37,10 @@ const Account: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+        <Breadcrumbs>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem>Account Overview</BreadcrumbsItem>
+        </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[{ query: getNonFungibleAccount, variables }]}
         />

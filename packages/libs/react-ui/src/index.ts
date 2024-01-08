@@ -74,6 +74,7 @@ export {
   Accordion,
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
   ContentHeader,

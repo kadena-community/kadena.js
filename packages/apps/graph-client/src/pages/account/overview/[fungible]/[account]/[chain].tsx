@@ -12,6 +12,7 @@ import routes from '@constants/routes';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Grid,
   GridItem,
   Stack,
@@ -36,17 +37,17 @@ const ChainAccount: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item
+        <Breadcrumbs>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem
             href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
               router.query.account as string
             }`}
           >
             Account Overview
-          </Breadcrumbs.Item>
-          <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+          </BreadcrumbsItem>
+          <BreadcrumbsItem>Chain</BreadcrumbsItem>
+        </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[{ query: getFungibleChainAccount, variables }]}
         />

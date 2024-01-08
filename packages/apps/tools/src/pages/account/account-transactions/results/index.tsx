@@ -11,6 +11,7 @@ import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   ContentHeader,
   Grid,
@@ -191,11 +192,11 @@ const CheckTransactions: FC = () => {
           },
         ]}
       />
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Account')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Results')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Account')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Results')}</BreadcrumbsItem>
+      </Breadcrumbs>
       <Box marginBlockEnd="sm" />
       <Grid columns={2}>
         <GridItem>

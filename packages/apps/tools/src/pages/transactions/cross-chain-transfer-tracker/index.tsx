@@ -18,6 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Grid,
   GridItem,
@@ -169,10 +170,10 @@ const CrossChainTransferTracker: FC = () => {
         gap={'lg'}
       >
         <Stack flexDirection="column" gap={'xs'}>
-          <Breadcrumbs.Root>
-            <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-            <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
-          </Breadcrumbs.Root>
+          <Breadcrumbs>
+            <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
+            <BreadcrumbsItem>{t('Cross Chain Tracker')}</BreadcrumbsItem>
+          </Breadcrumbs>
           <Stack
             gap={'lg'}
             justifyContent={'space-between'}
