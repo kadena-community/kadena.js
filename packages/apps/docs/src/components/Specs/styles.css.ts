@@ -63,5 +63,5 @@ globalStyle(`.${specsWrapper} .api-content select + label`, {
 });
 
 globalStyle(`.${specsWrapper} .api-content div[role="tabpanel"]`, {
-  marginBottom: vars.sizes.$md,
+  marginBlockEnd: vars.sizes.$md,
 });

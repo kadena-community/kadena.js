@@ -203,7 +203,7 @@ const Header: FC<IHeaderProps> = (props) => {
           {title}
         </Text>
 
-        <Grid columns={gridColumns}>
+        <Grid columns={gridColumns + 1}>
           <GridItem>
             <FormFieldWrapper htmlFor="search-type" label="Search Type">
               <Select
@@ -275,8 +275,8 @@ const Header: FC<IHeaderProps> = (props) => {
               onClick={search}
               style={{
                 position: 'relative',
-                top: '50%',
-                transform: 'translateY(-50%)',
+                top: '100%',
+                transform: 'translateY(-100%)',
               }}
             >
               Search

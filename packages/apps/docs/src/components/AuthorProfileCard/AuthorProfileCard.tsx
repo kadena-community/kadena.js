@@ -19,11 +19,11 @@ interface IProps {
 export const AuthorProfileCard: FC<IProps> = ({ author }) => {
   return (
     <section itemProp="author" itemScope itemType="https://schema.org/Person">
-      <Stack direction={{ sm: 'column', md: 'row' }} gap="$10">
+      <Stack flexDirection={{ sm: 'column', md: 'row' }} gap="xxxl">
         <div className={sectionClass}>
-          <Stack alignItems="flex-start" gap="$4">
+          <Stack alignItems="flex-start" gap="md">
             <Avatar size="large" name={author.name} avatar={author.avatar} />
-            <Stack direction="column">
+            <Stack flexDirection="column">
               <Link
                 className={linkClass}
                 itemProp="url"
@@ -33,7 +33,7 @@ export const AuthorProfileCard: FC<IProps> = ({ author }) => {
                 <span className={descriptionClass}>{author.description}</span>
               </Link>
 
-              <Box marginTop="$4">
+              <Box marginBlockStart="md">
                 <BrowseSection title="Links">
                   {author.twitter && (
                     <Link href={`https://x.com/${author.twitter}`}>

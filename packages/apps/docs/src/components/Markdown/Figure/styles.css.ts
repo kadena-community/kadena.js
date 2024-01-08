@@ -8,8 +8,8 @@ export const figure = style([
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginX: 0,
-    marginY: 0,
+    marginInline: 0,
+    marginBlock: 0,
     width: '100%',
     position: 'relative',
   }),
@@ -17,9 +17,9 @@ export const figure = style([
     ...responsiveStyle({
       md: {
         boxSizing: 'border-box',
-        marginLeft: vars.sizes.$5,
-        marginRight: vars.sizes.$5,
-        marginBottom: vars.sizes.$8,
+        marginInlineStart: vars.sizes.$5,
+        marginInlineEnd: vars.sizes.$5,
+        marginBlockEnd: vars.sizes.$8,
       },
     }),
   },
@@ -42,16 +42,16 @@ export const figureImg = style([
 export const figCaption = style([
   sprinkles({
     textAlign: 'center',
-    marginBottom: '$8',
-    marginX: '$4',
   }),
   {
+    marginBlockEnd: vars.sizes.$8,
+    marginInline: vars.sizes.$4,
     ...responsiveStyle({
       md: {
         maxWidth: '50%',
-        marginTop: vars.sizes.$2,
-        marginLeft: 0,
-        marginRight: 0,
+        marginBlockStart: vars.sizes.$2,
+        marginInlineStart: 0,
+        marginInlineEnd: 0,
       },
     }),
   },
@@ -62,7 +62,7 @@ globalStyle(
   figure
   `,
   {
-    marginTop: vars.sizes.$4,
+    marginBlockStart: vars.sizes.$4,
   },
 );
 

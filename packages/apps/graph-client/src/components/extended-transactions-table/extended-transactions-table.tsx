@@ -146,7 +146,7 @@ export const ExtendedTransactionsTable = (
 
   return (
     <>
-      <Box marginBottom="$3">
+      <Box margin="sm">
         <div style={{ float: 'left', textAlign: 'center' }}>
           <span style={{ display: 'inline-block' }}>Items per page: </span>
 

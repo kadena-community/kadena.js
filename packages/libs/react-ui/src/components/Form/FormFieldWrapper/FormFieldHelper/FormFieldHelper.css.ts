@@ -11,7 +11,7 @@ export const helperClass = style([
     alignItems: 'center',
     gap: 'xxs',
     fontSize: 'xs',
-    marginY: 'sm',
+    marginBlock: 'sm',
   }),
   {
     color: fallbackVar(

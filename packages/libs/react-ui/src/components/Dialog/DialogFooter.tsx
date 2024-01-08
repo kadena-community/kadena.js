@@ -15,10 +15,10 @@ export const DialogFooter: FC<IDialogFooterProps> = ({
 }) => {
   return (
     <Stack
-      gap="$md"
+      gap="md"
       justifyContent="flex-end"
       alignItems="center"
-      marginTop="$xl"
+      marginBlockStart="xl"
       className={cn(footerClass, className)}
     >
       {children}
