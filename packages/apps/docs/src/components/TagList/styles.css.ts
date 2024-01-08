@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([
@@ -16,10 +16,10 @@ export const listClass = style([
 export const itemClass = style([
   sprinkles({
     display: 'flex',
-    paddingX: '$2',
     width: '100%',
   }),
   {
+    paddingInline: vars.sizes.$2,
     flex: '100%',
 
     ...responsiveStyle({

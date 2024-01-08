@@ -1,4 +1,4 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const staticResultsListClass = style([
@@ -27,11 +27,11 @@ export const tabClass = style([
 export const itemLinkClass = style([
   sprinkles({
     display: 'block',
-    marginBottom: '$4',
     textDecoration: 'none',
     padding: '$sm',
   }),
   {
+    marginBlockEnd: vars.sizes.$4,
     ':hover': {
       color: '$neutral100',
       backgroundColor: '$primaryContrastInverted',

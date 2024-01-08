@@ -163,18 +163,18 @@ const CrossChainTransferTracker: FC = () => {
   return (
     <div className={mainContentStyle}>
       <Stack
-        direction="column"
-        paddingTop={'$2'}
-        paddingBottom={'$10'}
-        gap={'$6'}
+        flexDirection="column"
+        paddingBlockStart={'xs'}
+        paddingBlockEnd={'xxxl'}
+        gap={'lg'}
       >
-        <Stack direction="column" gap={'$2'}>
+        <Stack flexDirection="column" gap={'xs'}>
           <Breadcrumbs.Root>
             <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
             <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
           </Breadcrumbs.Root>
           <Stack
-            gap={'$6'}
+            gap={'lg'}
             justifyContent={'space-between'}
             alignItems={'flex-end'}
           >

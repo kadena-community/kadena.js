@@ -204,7 +204,7 @@ const Event: React.FC = () => {
         />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <Grid columns={2}>
         <GridItem>
@@ -242,8 +242,8 @@ const Event: React.FC = () => {
           </Stack>
         </GridItem>
         <GridItem>
-          <Box marginTop="$1" />
-          <Stack alignItems="center" gap="$2">
+          <Box marginBlockStart="xxs" />
+          <Stack alignItems="center" gap="xs">
             <Loader />
             <p>Polling for the latest events...</p>
           </Stack>

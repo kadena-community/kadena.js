@@ -66,8 +66,8 @@ const systemProperties = defineProperties({
   },
 });
 
-// eslint-disable-next-line @kadena-dev/typedef-var
 const spacingWithAuto = { ...tokens.kda.foundation.spacing, auto: 'auto' };
+
 const responsiveProperties = defineProperties({
   conditions: mapValues(breakpoints, (bp?: string) =>
     bp === '' ? {} : { '@media': bp },
@@ -111,12 +111,6 @@ const responsiveProperties = defineProperties({
       'marginInlineStart',
       'marginInlineEnd',
     ],
-    marginLeft: ['marginInlineStart'],
-    marginRight: ['marginInlineEnd'],
-    marginTop: ['marginBlockStart'],
-    marginBottom: ['marginBlockEnd'],
-    marginX: ['marginInlineStart', 'marginInlineEnd'],
-    marginY: ['marginBlockStart', 'marginBlockEnd'],
     marginInline: ['marginInlineStart', 'marginInlineEnd'],
     marginBlock: ['marginBlockStart', 'marginBlockEnd'],
     padding: [
@@ -125,12 +119,6 @@ const responsiveProperties = defineProperties({
       'paddingInlineStart',
       'paddingInlineEnd',
     ],
-    paddingLeft: ['paddingInlineStart'],
-    paddingRight: ['paddingInlineEnd'],
-    paddingTop: ['paddingBlockStart'],
-    paddingBottom: ['paddingBlockEnd'],
-    paddingX: ['paddingInlineStart', 'paddingInlineEnd'],
-    paddingY: ['paddingBlockStart', 'paddingBlockEnd'],
     paddingInline: ['paddingInlineStart', 'paddingInlineEnd'],
     paddingBlock: ['paddingBlockStart', 'paddingBlockEnd'],
   },

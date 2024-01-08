@@ -88,7 +88,7 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                 })}
               >
                 <section>
-                  <Stack direction="column" gap="$sm">
+                  <Stack flexDirection="column" gap="sm">
                     <TextField
                       label={t('Network label')}
                       id="label"

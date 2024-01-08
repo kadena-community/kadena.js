@@ -48,7 +48,7 @@ const ChainAccount: React.FC = () => {
         <GraphQLQueryDialog queries={[{ query: getChainAccount, variables }]} />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}
@@ -98,8 +98,8 @@ const ChainAccount: React.FC = () => {
               </Table.Tr>
             </Table.Body>
           </Table.Root>
-          <Box margin={'$8'} />
-          <Grid columns={2} gap="$lg">
+          <Box margin="md" />
+          <Grid columns={2} gap="lg">
             <GridItem>
               <CompactTransfersTable
                 fungibleName={router.query.fungible as string}

@@ -62,10 +62,10 @@ export const baseGridClass = style([
   sprinkles({
     display: 'grid',
     position: 'relative',
-    marginY: 0,
-    marginX: 'auto',
   }),
   {
+    marginBlock: 0,
+    marginInline: 'auto',
     vars: {
       [$$asideMenuWidthMDDefault]: '200px',
       [$$asideMenuWidthLGDefault]: '300px',
