@@ -8,7 +8,7 @@ import { setGlobalError } from './globalError';
 export const promiseExec = promisify(exec);
 export const TEMP_DIR = './.tempimport';
 
-const createString = (str: string, start?: boolean): string => {
+export const createString = (str: string, start?: boolean): string => {
   let titleStr = ` END ${chalk.blue(str.toUpperCase())} ====`;
   let line = '\n\n';
   if (start) {
