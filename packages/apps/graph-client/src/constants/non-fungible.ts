@@ -1,1 +1,1 @@
-export const NONFUNGIBLETRANSACTION: string = 'marmalade-v2.ledger';
+export const NON_FUNGIBLE_TRANSACTION: string = 'marmalade-v2.ledger';

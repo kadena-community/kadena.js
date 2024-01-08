@@ -4,7 +4,7 @@ import { CompactTransactionsTable } from '@/components/compact-transactions-tabl
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { TokenTable } from '@/components/token-table/token-table';
-import { NONFUNGIBLETRANSACTION } from '@/constants/non-fungible';
+import { NON_FUNGIBLE_TRANSACTION } from '@/constants/non-fungible';
 import routes from '@/constants/routes';
 import { getChainNonFungibleAccount } from '@/graphql/queries.graph';
 import {
@@ -97,7 +97,7 @@ const FungibleChainAccount: React.FC = () => {
               <CompactTransactionsTable
                 viewAllHref={`${
                   routes.ACCOUNT_TRANSACTIONS
-                }/${NONFUNGIBLETRANSACTION}/${
+                }/${NON_FUNGIBLE_TRANSACTION}/${
                   router.query.account as string
                 }?chain=${router.query.chain as string}`}
                 truncateColumns={true}

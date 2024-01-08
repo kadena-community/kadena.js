@@ -2,7 +2,7 @@ import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import { NONFUNGIBLETRANSACTION } from '@/constants/non-fungible';
+import { NON_FUNGIBLE_TRANSACTION } from '@/constants/non-fungible';
 import routes from '@/constants/routes';
 import { getTransactions } from '@/graphql/queries.graph';
 import { Box, Breadcrumbs, Stack } from '@kadena/react-ui';
@@ -24,7 +24,7 @@ const AccountTransactions: React.FC = () => {
   });
 
   const accountOverviewUrl =
-    router.query.fungible === NONFUNGIBLETRANSACTION
+    router.query.fungible === NON_FUNGIBLE_TRANSACTION
       ? `${routes.ACCOUNT}/non-fungible/${router.query.account as string}`
       : `${routes.ACCOUNT}/${router.query.fungible as string}/${
           router.query.account as string
