@@ -1,4 +1,3 @@
-import type { IScriptResult } from '@kadena/docs-tools';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createString, initFunc } from '../build';
 
@@ -6,7 +5,6 @@ describe('utils build', () => {
   describe('createString', () => {
     it('should return the correct start line', async () => {
       const result = createString('create foldertree from config.yaml', true);
-      console.log(JSON.stringify(result));
       const expectedResult =
         '============ START \u001b[34mCREATE FOLDERTREE FROM CONFIG.YAML\u001b[39m ====\n\n';
       expect(result).toEqual(expectedResult);
