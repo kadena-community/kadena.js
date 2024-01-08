@@ -4,7 +4,12 @@ import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-qu
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { getTransfers } from '@/graphql/queries.graph';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Stack } from '@kadena/react-ui';
+import {
+  Box,
+  BreadcrumbsContainer,
+  BreadcrumbsItem,
+  Stack,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -25,17 +30,17 @@ const AccountTransfers: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item
+        <BreadcrumbsContainer>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem
             href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
               router.query.account as string
             }`}
           >
             Account Overview
-          </Breadcrumbs.Item>
-          <Breadcrumbs.Item>Transfers</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+          </BreadcrumbsItem>
+          <BreadcrumbsItem>Transfers</BreadcrumbsItem>
+        </BreadcrumbsContainer>
         <GraphQLQueryDialog queries={[{ query: getTransfers, variables }]} />
       </Stack>
 

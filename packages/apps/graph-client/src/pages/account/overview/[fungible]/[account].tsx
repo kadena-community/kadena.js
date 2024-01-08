@@ -13,7 +13,8 @@ import { CompactTransfersTable } from '@components/compact-transfers-table/compa
 import routes from '@constants/routes';
 import {
   Box,
-  Breadcrumbs,
+  BreadcrumbsContainer,
+  BreadcrumbsItem,
   Notification,
   Stack,
   TabItem,
@@ -36,10 +37,10 @@ const Account: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+        <BreadcrumbsContainer>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem>Account Overview</BreadcrumbsItem>
+        </BreadcrumbsContainer>
         <GraphQLQueryDialog queries={[{ query: getAccount, variables }]} />
       </Stack>
 

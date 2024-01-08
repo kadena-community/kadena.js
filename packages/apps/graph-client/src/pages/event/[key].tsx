@@ -13,7 +13,8 @@ import { getEventsByName } from '@/graphql/subscriptions.graph';
 import routes from '@constants/routes';
 import {
   Box,
-  Breadcrumbs,
+  BreadcrumbsContainer,
+  BreadcrumbsItem,
   Grid,
   GridItem,
   Heading,
@@ -186,10 +187,10 @@ const Event: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item>Events</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+        <BreadcrumbsContainer>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem>Events</BreadcrumbsItem>
+        </BreadcrumbsContainer>
         <GraphQLQueryDialog
           queries={[
             {

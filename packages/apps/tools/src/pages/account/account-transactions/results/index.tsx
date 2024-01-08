@@ -10,7 +10,8 @@ import { getTransactions } from '@/services/accounts/get-transactions';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   Box,
-  Breadcrumbs,
+  BreadcrumbsContainer,
+  BreadcrumbsItem,
   Button,
   ContentHeader,
   Grid,
@@ -191,11 +192,11 @@ const CheckTransactions: FC = () => {
           },
         ]}
       />
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Account')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Results')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <BreadcrumbsContainer>
+        <BreadcrumbsItem>{t('Account')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Results')}</BreadcrumbsItem>
+      </BreadcrumbsContainer>
       <Box marginBottom="$3" />
       <Grid columns={2}>
         <GridItem>

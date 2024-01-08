@@ -16,7 +16,8 @@ import routes from '@constants/routes';
 import {
   Accordion,
   Box,
-  Breadcrumbs,
+  BreadcrumbsContainer,
+  BreadcrumbsItem,
   Link,
   Stack,
   Table,
@@ -47,10 +48,10 @@ const Block: React.FC = () => {
     <div className={centerBlockStyle}>
       <div style={{ maxWidth: '1000px' }}>
         <Stack justifyContent="space-between">
-          <Breadcrumbs.Root>
-            <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-            <Breadcrumbs.Item>Block Overview</Breadcrumbs.Item>
-          </Breadcrumbs.Root>
+          <BreadcrumbsContainer>
+            <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+            <BreadcrumbsItem>Block Overview</BreadcrumbsItem>
+          </BreadcrumbsContainer>
           <GraphQLQueryDialog
             queries={[
               { query: getBlockFromHash, variables: getBlockFromHashVariables },

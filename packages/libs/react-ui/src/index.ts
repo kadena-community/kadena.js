@@ -73,7 +73,8 @@ export type {
 export {
   Accordion,
   Box,
-  Breadcrumbs,
+  BreadcrumbsContainer,
+  BreadcrumbsItem,
   Button,
   Card,
   ContentHeader,

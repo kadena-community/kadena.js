@@ -12,7 +12,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Box,
-  Breadcrumbs,
+  BreadcrumbsContainer,
+  BreadcrumbsItem,
   Button,
   Card,
   Heading,
@@ -139,10 +140,10 @@ const ExistingAccountFaucetPage: FC = () => {
       <Head>
         <title>Kadena Developer Tools - Faucet</title>
       </Head>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <BreadcrumbsContainer>
+        <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Existing')}</BreadcrumbsItem>
+      </BreadcrumbsContainer>
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (

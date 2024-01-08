@@ -10,7 +10,8 @@ import {
 import {
   Accordion,
   Box,
-  Breadcrumbs,
+  BreadcrumbsContainer,
+  BreadcrumbsItem,
   Card,
   Grid,
   GridItem,
@@ -117,10 +118,10 @@ const Home: FC = () => {
           },
         ]}
       />
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Kadena Tools')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Startpage')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <BreadcrumbsContainer>
+        <BreadcrumbsItem>{t('Kadena Tools')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Startpage')}</BreadcrumbsItem>
+      </BreadcrumbsContainer>
       <br />
       <div style={{ width: '680px' }}>
         <Heading bold={false} variant="h3">

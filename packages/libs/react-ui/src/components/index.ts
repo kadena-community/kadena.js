@@ -80,7 +80,7 @@ export type {
 } from './Typography';
 
 export { Accordion } from './Accordion';
-export { Breadcrumbs } from './Breadcrumbs';
+export { BreadcrumbsContainer, BreadcrumbsItem } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';

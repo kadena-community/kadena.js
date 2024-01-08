@@ -1,136 +1,333 @@
-import type {
-  ChainFungibleAccountTransactionsConnection,
-  ChainFungibleAccountTransfersConnection,
-} from '@/__generated__/sdk';
-import { useGetChainAccountQuery } from '@/__generated__/sdk';
-import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
-import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import { getChainAccount } from '@/graphql/queries.graph';
-import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
-import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
-import routes from '@constants/routes';
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import { ProgressBar } from '@/components/Global/ProgressBar';
+import type { Network } from '@/constants/kadena';
+import Routes from '@/constants/routes';
+import { menuData } from '@/constants/side-menu-items';
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { useToolbar } from '@/context/layout-context';
+import type { ITransaction } from '@/services/accounts/get-transactions';
+import { getTransactions } from '@/services/accounts/get-transactions';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   Box,
-  Breadcrumbs,
+  BreadcrumbsContainer,
+  BreadcrumbsItem,
+  Button,
+  ContentHeader,
   Grid,
   GridItem,
-  Stack,
+  Heading,
   Table,
+  Text,
+  TrackerCard,
 } from '@kadena/react-ui';
+import Debug from 'debug';
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import React from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  filterItemClass,
+  headerButtonGroupClass,
+  mainContentClass,
+} from './styles.css';
 
-const ChainAccount: React.FC = () => {
+const CheckTransactions: FC = () => {
+  const debug = Debug(
+    'kadena-transfer:pages:transfer:account-transactions:results',
+  );
+
+  const { t } = useTranslation('common');
   const router = useRouter();
+  const { networksData } = useWalletConnectClient();
 
-  const variables = {
-    fungibleName: router.query.fungible as string,
-    accountName: router.query.account as string,
-    chainId: router.query.chain as string,
+  const [results, setResults] = useState<ITransaction[]>([]);
+  const [loadingState, setLoadingState] = useState<boolean>(true);
+  const [transactionDetails, setTransactionDetails] = useState<ITransaction>();
+
+  const transactionDetailsRef = useRef<HTMLElement | null>(null);
+
+  function displayAccountName(accountName: string): string {
+    if (accountName.length > 20) {
+      return `${accountName.replace(/(\w{4}).*(\w{4})/, '$1****$2')}`;
+    }
+
+    return accountName;
+  }
+
+  useToolbar(menuData, router.pathname);
+
+  useEffect(() => {
+    if (router.isReady) {
+      if (
+        !router.query.network ||
+        !router.query.chain ||
+        !router.query.account
+      ) {
+        router.push(Routes.ACCOUNT_TRANSACTIONS_FILTERS).catch((e) => {
+          debug(e);
+        });
+        return;
+      }
+
+      getAndSetTransactions(
+        router.query.network as Network,
+        router.query.chain as ChainwebChainId,
+        router.query.account as string,
+      )
+        .catch((e) => {
+          debug(e);
+        })
+        .finally(() => {
+          setLoadingState(false);
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  async function getAndSetTransactions(
+    network: Network,
+    chain: ChainwebChainId,
+    account: string,
+  ): Promise<void> {
+    debug(getAndSetTransactions.name);
+    if (!chain || !account || !network) return;
+
+    const result = await getTransactions({
+      network,
+      chain,
+      account,
+      networksData,
+    });
+
+    setResults(result as ITransaction[]);
+  }
+
+  async function refreshResultsEvent(): Promise<void> {
+    debug(refreshResultsEvent.name);
+
+    setResults([]);
+
+    getAndSetTransactions(
+      router.query.network as Network,
+      router.query.chain as ChainwebChainId,
+      router.query.account as string,
+    )
+      .catch((e) => {
+        debug(e);
+      })
+      .finally(() => {
+        setLoadingState(false);
+      });
+  }
+
+  async function resetFiltersEvent(): Promise<void> {
+    debug(resetFiltersEvent.name);
+
+    await router.push(Routes.ACCOUNT_TRANSACTIONS_FILTERS);
+  }
+
+  const handleOpenTransactionDetails = (result: ITransaction): void => {
+    setTransactionDetails(result);
+    // @ts-ignore
+    transactionDetailsRef.openSection(0);
   };
 
-  const { loading, data, error } = useGetChainAccountQuery({ variables });
-
   return (
-    <>
-      <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item
-            href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
-              router.query.account as string
-            }`}
-          >
-            Account Overview
-          </Breadcrumbs.Item>
-          <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
-        <GraphQLQueryDialog queries={[{ query: getChainAccount, variables }]} />
-      </Stack>
-
-      <Box marginBottom="$8" />
-
-      <LoaderAndError
-        error={error}
-        loading={loading}
-        loaderText="Retrieving account information..."
+    <div className={mainContentClass}>
+      <DrawerToolbar
+        ref={transactionDetailsRef}
+        sections={[
+          {
+            icon: 'Information',
+            title: t('Transaction Details'),
+            children: (
+              <>
+                <TrackerCard
+                  labelValues={[
+                    {
+                      label: 'Sender',
+                      value: transactionDetails?.fromAccount,
+                      isAccount: true,
+                    },
+                    {
+                      label: 'From chain',
+                      value: transactionDetails?.chain,
+                    },
+                  ]}
+                  icon={'QuickStart'}
+                />
+                <Box marginBottom="$5" />
+                <ProgressBar
+                  checkpoints={[
+                    {
+                      title: 'Initiated transaction',
+                      status: 'complete',
+                    },
+                    {
+                      title: 'Transaction complete',
+                      status: 'complete',
+                    },
+                  ]}
+                />
+                <Box marginBottom="$2" />
+                <TrackerCard
+                  labelValues={[
+                    {
+                      label: 'Receiver',
+                      value: transactionDetails?.fromAccount,
+                      isAccount: true,
+                    },
+                    {
+                      label: 'to chain',
+                      value:
+                        transactionDetails?.crossChainId ||
+                        transactionDetails?.chain,
+                    },
+                  ]}
+                  icon={'ReceiverInactive'}
+                />
+              </>
+            ),
+          },
+        ]}
       />
+      <BreadcrumbsContainer>
+        <BreadcrumbsItem>{t('Account')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Results')}</BreadcrumbsItem>
+      </BreadcrumbsContainer>
+      <Box marginBottom="$3" />
+      <Grid columns={2}>
+        <GridItem>
+          <Heading bold={false} as="h5">
+            {t('Account Transactions')}
+          </Heading>
+        </GridItem>
+        <GridItem>
+          <div className={headerButtonGroupClass}>
+            <Button icon="TrashCan" onClick={resetFiltersEvent}>
+              {t('Reset all filters')}
+            </Button>
+            <Button icon="Refresh" onClick={refreshResultsEvent}>
+              {t('Reload')}
+            </Button>
+          </div>
+        </GridItem>
+      </Grid>
+      <Box marginBottom="$1" />
+      <Text color="emphasize">
+        {t('Filtered by')}:
+        {router.query.chain ? (
+          <div className={filterItemClass}>Chain: {router.query.chain}</div>
+        ) : (
+          ''
+        )}
+        {router.query.account ? (
+          <div className={filterItemClass}>
+            {displayAccountName(router.query.account as string)}
+          </div>
+        ) : (
+          ''
+        )}
+        {router.query.network ? (
+          <div className={filterItemClass}>{router.query.network}</div>
+        ) : (
+          ''
+        )}
+      </Text>
+      <Box marginBottom="$10" />
 
-      {data?.chainAccount && (
-        <>
-          <Table.Root wordBreak="break-all">
+      {loadingState ? 'LOADING' : ''}
+
+      <Grid columns={2}>
+        <GridItem>
+          <ContentHeader
+            heading={t('Incoming transactions')}
+            icon={'ArrowCollapseDown'}
+            description="This table is listing all the incoming transaction sorted by date."
+          />
+          <Box marginBottom="$10" />
+          <Table.Root>
+            <Table.Head>
+              <Table.Tr>
+                <Table.Th>{t('Date Time')}</Table.Th>
+                <Table.Th>{t('Amount')}</Table.Th>
+                <Table.Th>{t('Sender')}</Table.Th>
+                <Table.Th></Table.Th>
+              </Table.Tr>
+            </Table.Head>
             <Table.Body>
-              <Table.Tr>
-                <Table.Td>
-                  <strong>Account Name</strong>
-                </Table.Td>
-                <Table.Td>{data.chainAccount.accountName}</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
-                  <strong>Fungible</strong>
-                </Table.Td>
-                <Table.Td>{data.chainAccount.fungibleName}</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
-                  <strong>Chain</strong>
-                </Table.Td>
-                <Table.Td>{data.chainAccount.chainId}</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
-                  <strong>Balance</strong>
-                </Table.Td>
-                <Table.Td>{data.chainAccount.balance}</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
-                  <strong>Guard Predicate</strong>
-                </Table.Td>
-                <Table.Td>{data.chainAccount.guard.predicate}</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
-                  <strong>Guard Keys</strong>
-                </Table.Td>
-                <Table.Td>{data.chainAccount.guard.keys}</Table.Td>
-              </Table.Tr>
+              {results.map((result, index) => {
+                const isIncomming = result.toAccount === router.query.account;
+
+                if (!isIncomming) {
+                  return <Table.Tr key={index}></Table.Tr>;
+                }
+
+                return (
+                  <Table.Tr
+                    key={index}
+                    onClick={() => handleOpenTransactionDetails(result)}
+                  >
+                    <Table.Td>
+                      {new Date(result.blockTime).toLocaleString()}
+                    </Table.Td>
+                    <Table.Td>{result.amount}</Table.Td>
+                    <Table.Td>
+                      {displayAccountName(result.fromAccount as string)}
+                    </Table.Td>
+                  </Table.Tr>
+                );
+              })}
             </Table.Body>
           </Table.Root>
-          <Box margin={'$8'} />
-          <Grid columns={2} gap="$lg">
-            <GridItem>
-              <CompactTransfersTable
-                fungibleName={router.query.fungible as string}
-                accountName={router.query.account as string}
-                chainId={router.query.chain as string}
-                truncateColumns={true}
-                transfers={
-                  data.chainAccount
-                    .transfers as ChainFungibleAccountTransfersConnection
+        </GridItem>
+        <GridItem>
+          <ContentHeader
+            heading={t('Outgoing transactions')}
+            icon={'ArrowExpandUp'}
+            description="This table is listing all the outgoing transaction sorted by date."
+          />
+          <Box marginBottom="$10" />
+          <Table.Root>
+            <Table.Head>
+              <Table.Tr>
+                <Table.Th>{t('Date Time')}</Table.Th>
+                <Table.Th>{t('Amount')}</Table.Th>
+                <Table.Th>{t('Receiver')}</Table.Th>
+                <Table.Th></Table.Th>
+              </Table.Tr>
+            </Table.Head>
+            <Table.Body>
+              {results.map((result, index) => {
+                const isOutgoing = result.fromAccount === router.query.account;
+
+                if (!isOutgoing) {
+                  return <Table.Tr key={index}></Table.Tr>;
                 }
-              />
-            </GridItem>
-            <GridItem>
-              <CompactTransactionsTable
-                viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
-                  router.query.fungible as string
-                }/${router.query.account as string}?chain=${
-                  router.query.chain as string
-                }`}
-                truncateColumns={true}
-                transactions={
-                  data.chainAccount
-                    .transactions as ChainFungibleAccountTransactionsConnection
-                }
-              />
-            </GridItem>
-          </Grid>
-        </>
-      )}
-    </>
+
+                return (
+                  <Table.Tr
+                    key={index}
+                    onClick={() => handleOpenTransactionDetails(result)}
+                  >
+                    <Table.Td>
+                      {new Date(result.blockTime).toLocaleString()}
+                    </Table.Td>
+                    <Table.Td>{result.amount}</Table.Td>
+                    <Table.Td>
+                      {displayAccountName(result.toAccount as string)}
+                    </Table.Td>
+                  </Table.Tr>
+                );
+              })}
+            </Table.Body>
+          </Table.Root>
+        </GridItem>
+      </Grid>
+    </div>
   );
 };
 
-export default ChainAccount;
+export default CheckTransactions;
