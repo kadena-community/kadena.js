@@ -12,10 +12,10 @@ type ExecuteTo<T extends Array<{ event: string; data: Any }>> =
 
 type StartFrom<
   T extends Array<{ event: string; data: Any }>,
-  WrapperType,
+  TReturn,
 > = UnionToIntersection<
   {
-    [K in keyof T]: (event: T[K]['event'], data: T[K]['data']) => WrapperType;
+    [K in keyof T]: (event: T[K]['event'], data: T[K]['data']) => TReturn;
   }[number]
 >;
 
@@ -37,7 +37,6 @@ export interface IEmitterWrapper<
   ExecReturnType,
 > {
   on: OnType<[...T, ...Extra], this>;
-  from: StartFrom<[...T, ...Extra], this>;
   execute: () => ExecReturnType;
   executeTo: (() => ExecReturnType) & ExecuteTo<[...T]>;
 }
@@ -46,20 +45,31 @@ export type WithEmitter<
   Extra extends [...Array<{ event: string; data: Any }>] = [],
 > = <T extends (emit: IEmit) => Any>(
   fn: T,
-) => (
-  ...args: Parameters<ReturnType<T>>
-) => IEmitterWrapper<
-  ReturnType<T>['_event_type'],
-  Extra,
-  ReturnType<ReturnType<T>>
->;
+) => {
+  (
+    ...args: Parameters<ReturnType<T>>
+  ): IEmitterWrapper<
+    ReturnType<T>['_event_type'],
+    Extra,
+    ReturnType<ReturnType<T>>
+  >;
+  from: StartFrom<
+    [...ReturnType<T>['_event_type'], ...Extra],
+    IEmitterWrapper<
+      ReturnType<T>['_event_type'],
+      Extra,
+      ReturnType<ReturnType<T>>
+    >
+  >;
+};
 
-export const withEmitter: WithEmitter =
-  (fn) =>
-  (...args: Any[]): Any => {
+export const withEmitter: WithEmitter = (fn) => {
+  const createListener = (
+    args: Any[],
+    from: { event: string | null; data: any } = { event: null, data: null },
+  ): Any => {
     const emitter = new MyEventTarget();
     const allEvents: Record<string, unknown> = {};
-    const from = { event: null as string | null, data: null as any };
     const execute: () => (...args: any) => Promise<any> = () =>
       fn(((event: string) => {
         allEvents[event] = null;
@@ -88,11 +98,6 @@ export const withEmitter: WithEmitter =
       on: (event: string, cb: (data: Any) => Any) => {
         // CustomEvent is not typed correctly
         emitter.addEventListener(event, cb);
-        return wrapper;
-      },
-      from: (event: string, data: Any) => {
-        from.event = event;
-        from.data = data;
         return wrapper;
       },
       executeTo: (event?: string) => {
@@ -124,3 +129,9 @@ export const withEmitter: WithEmitter =
     };
     return wrapper;
   };
+  const withFrom = (...args: any[]) => createListener(args);
+  withFrom.from = (event: string, data: Any) => {
+    return createListener([], { event, data });
+  };
+  return withFrom as any;
+};

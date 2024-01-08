@@ -160,7 +160,7 @@ describe('withEmitter', () => {
       ),
     );
 
-    const iterator = emitter('test').from('second', 'from-step');
+    const iterator = emitter.from('second', 'from-step');
 
     const second = await iterator.executeTo('data');
     expect(second).toBe('two:from-step');

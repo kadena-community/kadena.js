@@ -24,49 +24,360 @@ export const asyncPipe: IAsyncPipe;
 
 // Warning: (ae-forgotten-export) The symbol "IClientConfig" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "IAccount" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "IEmitterWrapper" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => (targetChainId: ChainId, targetChainGasPayer: IAccount) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
-event: "sign";
-data: ICommand;
-}, {
-event: "preflight";
-data: ILocalCommandResult;
-}, {
-event: "submit";
-data: ITransactionDescriptor;
-}, {
-event: "listen";
-data: ICommandResult;
-}, {
-event: "spv-proof";
-data: {
-pactId: string;
-step: number;
-rollback: boolean;
-data?: Record<string, unknown> | undefined;
-proof?: string | null | undefined;
+export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => (targetChainId: ChainId, targetChainGasPayer: IAccount) => {
+    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+    from: ((event: "sign", data: ICommand) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ILocalCommandResult) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "submit", data: ITransactionDescriptor) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "listen", data: ICommandResult) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "spv-proof", data: {
+        pactId: string;
+        step: number;
+        rollback: boolean;
+        data?: Record<string, unknown> | undefined;
+        proof?: string | null | undefined;
+    }) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "gas-station" | "sign-continuation", data: ICommand) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "submit-continuation", data: ITransactionDescriptor) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "listen-continuation", data: ICommandResult) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "poll-spv", data: string) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }, {
+    event: "spv-proof";
+    data: {
+    pactId: string;
+    step: number;
+    rollback: boolean;
+    data?: Record<string, unknown> | undefined;
+    proof?: string | null | undefined;
+    };
+    }, {
+    event: "gas-station" | "sign-continuation";
+    data: ICommand;
+    }, {
+    event: "submit-continuation";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen-continuation";
+    data: ICommandResult;
+    }], [{
+    event: 'poll-spv';
+    data: string;
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
 };
-}, {
-event: "gas-station" | "sign-continuation";
-data: ICommand;
-}, {
-event: "submit-continuation";
-data: ITransactionDescriptor;
-}, {
-event: "listen-continuation";
-data: ICommandResult;
-}], [{
-event: 'poll-spv';
-data: string;
-}], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
 
 // @alpha (undocumented)
-export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, args_1?: IClient | undefined) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
-event: "dirtyRead";
-data: ICommandResult;
-}], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, args_1?: IClient | undefined) => {
+    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    event: "dirtyRead";
+    data: ICommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+    from: (event: "dirtyRead", data: ICommandResult) => IEmitterWrapper<[{
+    event: "dirtyRead";
+    data: ICommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+};
 
 // @alpha
 export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPactCommand_2 | (() => IPartialPactCommand_2)) => IPartialPactCommand_2), host?: IClientConfig['host'], client?: IClient) => Promise<{
@@ -75,28 +386,98 @@ export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPact
 }>;
 
 // @alpha (undocumented)
-export const preflightClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
-event: "sign";
-data: ICommand;
-}, {
-event: "preflight";
-data: ILocalCommandResult;
-}], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+export const preflightClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => {
+    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+    from: ((event: "sign", data: ICommand) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ILocalCommandResult) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
+};
 
 // @alpha (undocumented)
-export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => IEmitterWrapper<[{
-event: "sign";
-data: ICommand;
-}, {
-event: "preflight";
-data: ILocalCommandResult;
-}, {
-event: "submit";
-data: ITransactionDescriptor;
-}, {
-event: "listen";
-data: ICommandResult;
-}], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => {
+    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
+    from: ((event: "sign", data: ICommand) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ILocalCommandResult) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "submit", data: ITransactionDescriptor) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "listen", data: ICommandResult) => IEmitterWrapper<[{
+    event: "sign";
+    data: ICommand;
+    }, {
+    event: "preflight";
+    data: ILocalCommandResult;
+    }, {
+    event: "submit";
+    data: ITransactionDescriptor;
+    }, {
+    event: "listen";
+    data: ICommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
+};
+
+// Warnings were encountered during analysis:
+//
+// src/core/client-helpers.ts:41:57 - (ae-forgotten-export) The symbol "IEmitterWrapper" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
