@@ -5,7 +5,7 @@ import type { IMenuData, IMenuItem } from '@kadena/docs-tools';
 import {
   checkSubTreeForActive,
   flattenData,
-  getHeaderItems,
+  getHeaderMenuItems,
   getMenuData,
   getPathName,
 } from '@kadena/docs-tools';
@@ -24,7 +24,7 @@ interface IPageConfigProps {
 }
 
 interface IPageConfigReturn {
-  headerItems: IMenuItem[];
+  headerMenuItems: IMenuItem[];
   leftMenuTree: IMenuItem[];
   blogPosts: IMenuData[] | null;
   popularPages: IMostPopularPage[] | null;
@@ -44,10 +44,10 @@ export const getPageConfig = async ({
     ? await getMostPopularPages(popularPages)
     : null;
 
-  const headerItems = await getHeaderItems();
+  const headerMenuItems = await getHeaderMenuItems();
 
   return {
-    headerItems,
+    headerMenuItems,
     leftMenuTree: await checkSubTreeForActive(getPathName(filename)),
     blogPosts: blogData,
     popularPages: popularData,

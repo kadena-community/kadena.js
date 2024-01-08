@@ -20,7 +20,7 @@ export default class TreeHelper {
       extensions: /\.md/,
       exclude: [/index.md/, /api/],
     });
-    const menuItems = expectedTree.children;
+    const menuItems = expectedTree?.children;
 
     if (expectedTree.children) {
       for (const menuItem of menuItems!) {
