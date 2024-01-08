@@ -11,7 +11,7 @@ import { CompactTransfersTable } from '@components/compact-transfers-table/compa
 import routes from '@constants/routes';
 import {
   Box,
-  Breadcrumbs
+  Breadcrumbs,
   BreadcrumbsItem,
   Grid,
   GridItem,

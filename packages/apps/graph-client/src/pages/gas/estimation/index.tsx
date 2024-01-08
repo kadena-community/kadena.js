@@ -5,7 +5,7 @@ import routes from '@/constants/routes';
 import { estimateGasLimit } from '@/graphql/queries.graph';
 import {
   Box,
-  Breadcrumbs
+  Breadcrumbs,
   BreadcrumbsItem,
   Stack,
   Table,
