@@ -3,10 +3,10 @@ import type {
   FungibleAccountTransfersConnection,
   FungibleChainAccount,
 } from '@/__generated__/sdk';
-import { useGetAccountQuery } from '@/__generated__/sdk';
+import { useGetFungibleAccountQuery } from '@/__generated__/sdk';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import { getAccount } from '@/graphql/queries.graph';
+import { getNonFungibleAccount } from '@/graphql/queries.graph';
 import { FungibleChainAccountTable } from '@components/chain-fungible-account-table/chain-fungible-account-table';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
@@ -31,7 +31,7 @@ const Account: React.FC = () => {
     accountName: router.query.account as string,
   };
 
-  const { loading, data, error } = useGetAccountQuery({ variables });
+  const { loading, data, error } = useGetFungibleAccountQuery({ variables });
 
   return (
     <>
@@ -40,7 +40,9 @@ const Account: React.FC = () => {
           <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
           <Breadcrumbs.Item>Account Overview</Breadcrumbs.Item>
         </Breadcrumbs.Root>
-        <GraphQLQueryDialog queries={[{ query: getAccount, variables }]} />
+        <GraphQLQueryDialog
+          queries={[{ query: getNonFungibleAccount, variables }]}
+        />
       </Stack>
 
       <Box margin="md" />
