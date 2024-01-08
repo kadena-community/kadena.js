@@ -42,7 +42,6 @@ lastModifiedDate: ${lastModifiedDate}
 };
 
 const createEditOverwrite = (item: IImportReadMeItem): string => {
-  //if (item.options.hideEditLink) return '';
   return `${item.repo}/edit/main${item.file}`;
 };
 
@@ -284,7 +283,6 @@ const removeFrontmatter = (doc: string): string => {
 
   if (frontmatterEnd !== -1) {
     // Extract the frontmatter and remove it from the content
-    //const frontmatter = markdownContent.slice(0, frontmatterEnd + 3);
     return doc.slice(frontmatterEnd + 3).trim();
   }
 

@@ -42,12 +42,6 @@ and more content
 });
 
 describe('utils getFrontmatterFromTsx', () => {
-  beforeAll(() => {});
-
-  afterEach(() => {
-    cleanup();
-  });
-
   it('should return json of frontmatter from TSX content', async () => {
     const content = `import type { IMostPopularPage } from '@/MostPopularData';
     import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
