@@ -90,7 +90,7 @@ export const getFirstHeading = (doc: string): Heading | undefined => {
 
 //check the first header.
 // if it is an h2 make it an h1
-const setTitleHeader = (tree: Root, firstHeading: Heading): void => {
+const setTitleHeader = (tree: Root, firstHeading?: Heading): void => {
   const headings = getTypes<Heading>(tree, 'heading');
 
   if (headings.length > 0 && headings[0].depth !== 1) {
@@ -313,8 +313,6 @@ export const importDocs = async (
 
   const md: Root = remark.parse(doc);
   setTitleHeader(md, firstHeading);
-
-  console.log('heading', md.children[0]);
 
   relinkReferences(md, [md], `/${item.destination}/`);
   await createPage(md, item);
