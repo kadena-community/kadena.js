@@ -73,15 +73,15 @@ For the first tutorial, you’ll clone a repository with a working front-end for
 After that, you’ll set up a local development network and your development workspace to begin building the blockchain back-end for the election website. 
 The workshop repository contains branches with starter code for every tutorial, so you can compare your solution with the finished code at every step along the way. 
 
- * [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started)
+ * [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace)
  * [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain)
- * [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account)
- * [Define a namespaces](/build/guides/election-dapp-tutorial/04-namespaces)
- * [Define keysets](/build/guides/election-dapp-tutorial/05-keysets)
- * [Write and deploy a smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
- * [Add candidate management](/build/guides/election-dapp-tutorial/07-nominate-candidates)
- * [Add voting management](/build/guides/election-dapp-tutorial/08-voting)
- * [Add a gas station](/build/guides/election-dapp-tutorial/09-gas-station)
+ * [Add an administrator account](/build/guides/election-dapp-tutorial/add-an-admin-account)
+ * [Define a namespaces](/build/guides/election-dapp-tutorial/define-a-namespaces)
+ * [Define keysets](/build/guides/election-dapp-tutorial/define-keysets)
+ * [Write the smart contract](/build/guides/election-dapp-tutorial/write-the-smart-contract)
+ * [Nominate candidates](/build/guides/election-dapp-tutorial/nominate-candidates)
+ * [Add voting management](/build/guides/election-dapp-tutorial/add-voting-management)
+ * [Add a gas station](/build/guides/election-dapp-tutorial/add-a-gas-station)
 
 Stay tuned for future editions of this workshop and for more intermediate and advanced tutorials covering additional topics, such as:
 

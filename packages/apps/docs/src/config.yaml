@@ -167,11 +167,11 @@ pages:
             file: /build/guides/election-dapp-tutorial/index.md
             children:
               gettingstarted:
-                url: /01-getting-started
-                file: /build/guides/election-dapp-tutorial/01-getting-started.md
+                url: /prepare-your-workspace
+                file: /build/guides/election-dapp-tutorial/prepare-your-workspace.md
               runningdevnet:
-                url: /02-running-devnet
-                file: /build/guides/election-dapp-tutorial/02-running-devnet.md
+                url: /start-a-local-blockchain
+                file: /build/guides/election-dapp-tutorial/start-a-local-blockchain.md
               adminaccount:
                 url: /03-admin-account
                 file: /build/guides/election-dapp-tutorial/03-admin-account.md
