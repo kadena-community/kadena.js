@@ -57,7 +57,6 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Breadcrumbs',
   args: {
-    // startIcon: 'KadenaOverview',
     startIcon: <ProductIcon.KadenaOverview />,
     itemsCount: 3,
   },

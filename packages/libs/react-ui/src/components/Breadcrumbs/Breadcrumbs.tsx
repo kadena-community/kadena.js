@@ -6,7 +6,6 @@ import type { IBreadcrumbItemProps } from './BreadcrumbsItem';
 export interface IBreadcrumbsProps {
   children?: FunctionComponentElement<IBreadcrumbItemProps>[];
   startIcon?: React.ReactElement;
-  // icon?: keyof typeof ProductIcon;
 }
 
 export const BreadcrumbsContainer: FC<IBreadcrumbsProps> = ({
