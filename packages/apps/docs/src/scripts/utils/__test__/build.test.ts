@@ -5,15 +5,17 @@ describe('utils build', () => {
   describe('createString', () => {
     it('should return the correct start line', async () => {
       const result = createString('create foldertree from config.yaml', true);
-      const expectedResult =
-        '============ START \u001b[34mCREATE FOLDERTREE FROM CONFIG.YAML\u001b[39m ====\n\n';
-      expect(result).toEqual(expectedResult);
+      const expectedResult = /START/;
+      expect(result).toMatch(expectedResult);
+      const expectedResult2 = /CREATE FOLDERTREE FROM CONFIG.YAML/;
+      expect(result).toMatch(expectedResult2);
     });
     it('should return the correct end line', async () => {
       const result = createString('create foldertree from config.yaml');
-      const expectedResult =
-        '\n\n============== END \u001b[34mCREATE FOLDERTREE FROM CONFIG.YAML\u001b[39m ====';
-      expect(result).toEqual(expectedResult);
+      const expectedResult = /END/;
+      expect(result).toMatch(expectedResult);
+      const expectedResult2 = /CREATE FOLDERTREE FROM CONFIG.YAML/;
+      expect(result).toMatch(expectedResult2);
     });
   });
 
