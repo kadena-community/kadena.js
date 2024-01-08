@@ -1,15 +1,8 @@
-import { cleanup } from '@testing-library/react';
-import { afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { getFrontmatter, getFrontmatterFromTsx } from './../getFrontmatter';
 
 describe('utils getFrontmatter', () => {
-  beforeAll(() => {});
-
-  afterEach(() => {
-    cleanup();
-  });
-
   it('should return json of frontmatter from Markdown content', async () => {
     const content = `---
   title: test 
