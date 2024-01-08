@@ -22,7 +22,7 @@ export default class TreeHelper {
     });
     const menuItems = expectedTree?.children;
 
-    if (expectedTree.children) {
+    if (expectedTree?.children) {
       for (const menuItem of menuItems!) {
         // Validate top level menu items, without children
         if (!menuItem.children) {
