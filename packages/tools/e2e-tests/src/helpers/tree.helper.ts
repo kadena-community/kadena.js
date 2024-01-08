@@ -43,7 +43,7 @@ export default class TreeHelper {
                 const metaData = await extractMetadataFromMarkdown(
                   `${menuItem.path}/index.md`,
                   `${child.path}/index.md`,
-                  grandChild.path,
+                  `${grandChild.path}/index.md`,
                 );
                 await this.validateGrandChild(
                   metaData[0].menu,
