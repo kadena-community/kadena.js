@@ -10,8 +10,7 @@ export const getData = async (): Promise<IMenuData[]> => {
     const menuData = JSON.parse(fileData);
     return menuData;
   } catch (e) {
-    console.error(e);
-    throw new Error('Could not load menu data');
+    return Promise.reject('Could not load menu data');
   }
 };
 

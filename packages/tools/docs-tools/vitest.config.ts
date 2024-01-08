@@ -9,6 +9,7 @@ export default mergeConfig(
       environment: 'happy-dom',
       threads: false,
       coverage: {
+        exclude: ['src/mock/**'],
         provider: 'v8',
         lines: 40,
         functions: 40,
