@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import { getChainFungibleAccount } from '@services/account-service';
+import { getFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -10,12 +10,12 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import type {
-  ChainFungibleAccount,
   FungibleAccount,
+  FungibleChainAccount,
 } from '../types/graphql-types';
 import {
-  ChainFungibleAccountName,
   FungibleAccountName,
+  FungibleChainAccountName,
 } from '../types/graphql-types';
 
 export default builder.node(
@@ -53,14 +53,14 @@ export default builder.node(
       accountName: t.exposeString('accountName'),
       fungibleName: t.exposeString('fungibleName'),
       chainAccounts: t.field({
-        type: [ChainFungibleAccountName],
+        type: [FungibleChainAccountName],
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE * dotenv.CHAIN_COUNT,
         async resolve(parent) {
           try {
             return (
               await Promise.all(
                 chainIds.map(async (chainId) => {
-                  return await getChainFungibleAccount({
+                  return await getFungibleChainAccount({
                     chainId: chainId,
                     fungibleName: parent.fungibleName,
                     accountName: parent.accountName,
@@ -69,7 +69,7 @@ export default builder.node(
               )
             ).filter(
               (chainAccount) => chainAccount !== null,
-            ) as ChainFungibleAccount[];
+            ) as FungibleChainAccount[];
           } catch (error) {
             throw normalizeError(error);
           }

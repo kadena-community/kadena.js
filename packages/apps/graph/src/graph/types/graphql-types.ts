@@ -6,12 +6,18 @@ export interface Guard {
   predicate: 'keys-all' | 'keys-any' | 'keys-two';
 }
 
-export const ChainFungibleAccountName: 'ChainFungibleAccount' =
-  'ChainFungibleAccount';
+export interface Token {
+  id: string;
+  balance: number;
+  chainId: number;
+}
+
+export const FungibleChainAccountName: 'FungibleChainAccount' =
+  'FungibleChainAccount';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface ChainFungibleAccount {
-  __typename: typeof ChainFungibleAccountName;
+export interface FungibleChainAccount {
+  __typename: typeof FungibleChainAccountName;
   chainId: string;
   fungibleName: string;
   accountName: string;
@@ -28,7 +34,7 @@ export interface FungibleAccount {
   __typename: typeof FungibleAccountName;
   fungibleName: string;
   accountName: string;
-  chainAccounts: ChainFungibleAccount[];
+  chainAccounts: FungibleChainAccount[];
   totalBalance: number;
   transactions: Transaction[];
   transfers: Transfer[];
@@ -38,4 +44,28 @@ export interface FungibleAccount {
 export interface GraphConfiguration {
   maximumConfirmationDepth: number;
   minimumBlockHeight: bigint;
+}
+
+export const NonFungibleChainAccountName: 'NonFungibleChainAccount' =
+  'NonFungibleChainAccount';
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface NonFungibleChainAccount {
+  __typename: typeof NonFungibleChainAccountName;
+  chainId: string;
+  accountName: string;
+  guard: Guard;
+  nonFungibles: Token[];
+  transactions: Transaction[];
+}
+
+export const NonFungibleAccountName: 'NonFungibleAccount' =
+  'NonFungibleAccount';
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface NonFungibleAccount {
+  __typename: typeof NonFungibleAccountName;
+  accountName: string;
+  chainAccounts: NonFungibleChainAccount[];
+  transactions: Transaction[];
 }
