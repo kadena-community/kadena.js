@@ -1,15 +1,15 @@
-import type { ChainFungibleAccount } from '@/__generated__/sdk';
+import type { FungibleChainAccount } from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
 import React from 'react';
 
-interface IChainFungibleAccountTableProps {
+interface IFungibleChainAccountTableProps {
   fungibleName: string;
   accountName: string;
-  chainAccounts: ChainFungibleAccount[];
+  chainAccounts: FungibleChainAccount[];
 }
-export const ChainFungibleAccountTable = (
-  props: IChainFungibleAccountTableProps,
+export const FungibleChainAccountTable = (
+  props: IFungibleChainAccountTableProps,
 ): JSX.Element => {
   const { fungibleName, accountName, chainAccounts } = props;
 

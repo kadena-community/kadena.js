@@ -18,7 +18,7 @@ describe('Query: getAccount by AccountName', () => {
     const queryResponse = await sendQuery(query);
 
     //Then GraphQL should return the account, including 1 transfer.
-    expect(queryResponse.body.data.account).toEqual({
+    expect(queryResponse.body.data.fungibleAccount).toEqual({
       accountName: testAccount.account,
       chainAccounts: [
         {

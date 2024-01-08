@@ -1,6 +1,6 @@
 import type {
-  ChainFungibleAccountTransactionsConnection,
-  ChainFungibleAccountTransfersConnection,
+  FungibleChainAccountTransactionsConnection,
+  FungibleChainAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetChainAccountQuery } from '@/__generated__/sdk';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
@@ -56,7 +56,7 @@ const ChainAccount: React.FC = () => {
         loaderText="Retrieving account information..."
       />
 
-      {data?.chainAccount && (
+      {data?.fungibleChainAccount && (
         <>
           <Table.Root wordBreak="break-all">
             <Table.Body>
@@ -64,37 +64,37 @@ const ChainAccount: React.FC = () => {
                 <Table.Td>
                   <strong>Account Name</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.accountName}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.accountName}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Fungible</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.fungibleName}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.fungibleName}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Chain</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.chainId}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.chainId}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Balance</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.balance}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.balance}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Guard Predicate</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.guard.predicate}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.guard.predicate}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Guard Keys</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.guard.keys}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.guard.keys}</Table.Td>
               </Table.Tr>
             </Table.Body>
           </Table.Root>
@@ -107,8 +107,8 @@ const ChainAccount: React.FC = () => {
                 chainId={router.query.chain as string}
                 truncateColumns={true}
                 transfers={
-                  data.chainAccount
-                    .transfers as ChainFungibleAccountTransfersConnection
+                  data.fungibleChainAccount
+                    .transfers as FungibleChainAccountTransfersConnection
                 }
               />
             </GridItem>
@@ -121,8 +121,8 @@ const ChainAccount: React.FC = () => {
                 }`}
                 truncateColumns={true}
                 transactions={
-                  data.chainAccount
-                    .transactions as ChainFungibleAccountTransactionsConnection
+                  data.fungibleChainAccount
+                    .transactions as FungibleChainAccountTransactionsConnection
                 }
               />
             </GridItem>

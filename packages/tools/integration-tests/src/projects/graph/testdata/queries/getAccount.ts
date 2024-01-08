@@ -1,7 +1,7 @@
 export function getAccountQuery(accountName: string) {
   return {
     query: `query getAccount($fungibleName: String!, $accountName: String!) {
-      account(fungibleName: $fungibleName, accountName: $accountName) {
+      fungibleAccount(fungibleName: $fungibleName, accountName: $accountName) {
         ...AllAccountFields
         chainAccounts {
           ...CoreChainAccountFields
@@ -41,7 +41,7 @@ export function getAccountQuery(accountName: string) {
       accountName
       fungibleName
     }
-    fragment CoreChainAccountFields on ChainFungibleAccount {
+    fragment CoreChainAccountFields on FungibleChainAccount {
       balance
       chainId
     }
