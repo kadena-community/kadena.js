@@ -35,7 +35,7 @@ describe('utils build', () => {
         .mockImplementation(() => ({ errors: [], success: [] }));
 
       await initFunc(func, 'test function');
-      expect(consoleMock).toHaveBeenCalledTimes(3);
+      expect(consoleMock).toHaveBeenCalledTimes(2);
       expect(consoleWarnMock).toHaveBeenCalledTimes(0);
       expect(func).toHaveBeenCalledOnce();
     });
