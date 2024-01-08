@@ -491,25 +491,6 @@ pages:
     url: /contribute
     file: /contribute/index.tsx
     children:
-      docs:
-        url: /docs
-        file: /contribute/docs.md
-      dao:
-        url: /kadena-dao
-        file: /contribute/kadena-dao.md
-      ambassadors:
-        url: /ambassadors
-        file: /contribute/ambassadors/index.md
-        children:
-          moderator:
-            url: /moderator
-            file: /contribute/ambassadors/moderator.md
-          creator:
-            url: /content-creator
-            file: /contribute/ambassadors/creator.md
-          leader:
-            url: /community-channel-leader
-            file: /contribute/ambassadors/community-channel-leader.md
       node:
         url: /node
         file: /contribute/node/index.md
@@ -523,6 +504,25 @@ pages:
           interact:
             url: /interact-with-nodes
             file: /contribute/node/interact-with-nodes.md
+      ambassadors:
+        url: /ambassadors
+        file: /contribute/ambassadors/index.md
+        children:
+          moderator:
+            url: /moderator
+            file: /contribute/ambassadors/moderator.md
+          creator:
+            url: /content-creator
+            file: /contribute/ambassadors/creator.md
+          leader:
+            url: /community-channel-leader
+            file: /contribute/ambassadors/community-channel-leader.md
+    dao:
+      url: /kadena-dao
+      file: /contribute/kadena-dao.md
+    docs:
+      url: /docs
+      file: /contribute/docs.md
   blogchain:
     url: /blogchain
     file: /blogchain/index.tsx
