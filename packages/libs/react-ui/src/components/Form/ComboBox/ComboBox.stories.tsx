@@ -47,7 +47,7 @@ export const Test: Story = {
           <Item key="kangaroo">Kangaroo</Item>
           <Item key="snake">Snake</Item>
         </ComboBox>
-        <Box marginBottom={'$4'} />
+        <Box marginBlockEnd="sm" />
         <Text>Selected value:</Text>
         <Text>{selectedValue.length ? selectedValue : defaultValue}</Text>
       </>
