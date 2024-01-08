@@ -1,9 +1,9 @@
 import { cleanup } from '@testing-library/react';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { isMarkDownFile } from '../markdown/isMarkdownFile';
-import { getHeaderItems, getPageTreeById } from './../getHeaderItems';
+import { getHeaderMenuItems, getPageTreeById } from './../getHeaderMenuItems';
 
-describe('utils getHeaderItems', () => {
+describe('utils getHeaderMenuItems', () => {
   beforeAll(() => {
     vi.mock('fs/promises', async () => {
       const actual = (await vi.importActual('fs/promises')) as {};
@@ -79,8 +79,8 @@ describe('utils getHeaderItems', () => {
     cleanup();
   });
 
-  it('should return headerItems from config', async () => {
-    const result = await getHeaderItems();
+  it('should return headerMenuItems from config', async () => {
+    const result = await getHeaderMenuItems();
     const expectedResult = [
       {
         root: '/contribute',

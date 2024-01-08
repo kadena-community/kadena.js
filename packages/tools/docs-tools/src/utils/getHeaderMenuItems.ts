@@ -31,7 +31,7 @@ export const getPageTreeById = async (
   return pageTree;
 };
 
-export const getHeaderItems = async (): Promise<IMenuItem[]> => {
+export const getHeaderMenuItems = async (): Promise<IMenuItem[]> => {
   const { menu } = await getConfig();
   const headers = [];
   for (let i = 0; i < menu.length; i++) {
