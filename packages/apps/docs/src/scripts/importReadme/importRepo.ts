@@ -14,6 +14,7 @@ export const deleteTempDir = (): void => {
 export const importRepo = async (item: IImportReadMeItem): Promise<void> => {
   await clone(item.repo);
 
+  console.log(item);
   await importDocs(
     `${TEMP_DIR}${removeRepoDomain(item.repo)}${item.file}`,
     item,

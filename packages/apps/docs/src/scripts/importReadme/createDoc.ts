@@ -24,7 +24,6 @@ const DOCS_ROOT = './src/pages';
 const createFrontMatter = (
   title: string,
   menuTitle: string,
-  order: number,
   editLink: string,
   tags: string[] = [],
   lastModifiedDate?: string,
@@ -34,7 +33,6 @@ title: ${title}
 description: Kadena makes blockchain work for everyone.
 menu: ${menuTitle}
 label: ${title}
-order: ${order}
 editLink: ${editLink}
 layout: full
 tags: [${tags.toString()}]
@@ -73,41 +71,40 @@ const getTitle = (pageAST: Root): string => {
     .join(' ');
 };
 
-// const createTreeRoot = (page: Content[]): Root => ({
-//   type: 'root',
-//   children: page,
-// });
-
 const createDir = (dir: string): void => {
   fs.mkdirSync(dir, { recursive: true });
 };
 
-// const divideIntoPages = (md: Root): Root[] => {
-//   const pages = md.children.reduce((acc: Content[][], val: Content) => {
-//     if (val.type === 'heading' && val.depth === 2) {
-//       val.depth = 1;
-//       acc.push([val]);
-//     } else {
-//       if (acc.length) {
-//         acc[acc.length - 1].push(val);
-//       }
-//     }
+//get the first title heading you find in the doc
+export const getFirstHeading = (doc: string): Heading | undefined => {
+  const md: Root = remark.parse(doc);
+  const headings = getTypes<Heading>(md, 'heading');
 
-//     return acc;
-//   }, []);
-
-//   const rootedPages = pages.map((page) => createTreeRoot(page));
-
-//   return rootedPages;
-// };
+  if (!headings.length) return;
+  const value = (headings[0].children[0] as any).value;
+  (headings[0].children[0] as any).value = value
+    .replace('@kadena/', '')
+    .replace(/-/g, ' ');
+  return headings[0];
+};
 
 //check the first header.
 // if it is an h2 make it an h1
-const setTitleHeader = (tree: Root): void => {
+const setTitleHeader = (tree: Root, firstHeading: Heading): void => {
   const headings = getTypes<Heading>(tree, 'heading');
 
   if (headings.length > 0 && headings[0].depth !== 1) {
-    headings[0].depth = 1;
+    //if the first found heading is not the same as the heading that is still in the tree add the first heading to the tree
+    //remember, we removed the generic header from the tree. in there, there is a Heading as well
+    if (
+      firstHeading?.children[0] &&
+      firstHeading?.depth === 1 &&
+      firstHeading?.children[0] !== headings[0].children[0]
+    ) {
+      tree.children.unshift(firstHeading);
+    } else {
+      headings[0].depth = 1;
+    }
   }
 
   return;
@@ -249,45 +246,28 @@ const relinkReferences = (md: Root, pages: Root[], root: string): void => {
 const createPage = async (
   page: Root,
   item: IImportReadMeItem,
-  hasMultiplePages?: boolean,
-  idx?: number,
 ): Promise<void> => {
-  //if (hasMultiplePages) {
-
-  //}
-
   const lastModifiedDate = await getLastModifiedDate(
     `.${removeRepoDomain(item.repo)}${item.file}`,
   );
 
   const title = getTitle(page);
-  const order = idx ?? 0;
-  const slug = order === 0 ? 'index' : createSlug(title);
+  const slug = 'index';
   const menuTitle = title;
 
-  if (order === 0) {
-    createDir(`${DOCS_ROOT}/${item.destination}`);
-  } else {
-    createDir(`${DOCS_ROOT}/${item.destination}/${slug}`);
-  }
+  createDir(`${DOCS_ROOT}/${item.destination}`);
 
   // check that there is just 1 h1.
   // if more, keep only 1 and replace the next with an h2
-  const pageContent = cleanUp(
-    page,
-    `/${item.destination}/${order === 0 ? '' : slug}`,
-  );
+  const pageContent = cleanUp(page, `/${item.destination}/${slug}`);
 
   const doc = toMarkdown(pageContent);
 
   fs.writeFileSync(
-    `${DOCS_ROOT}/${item.destination}/${
-      order === 0 ? 'index' : `${slug}/index`
-    }.md`,
+    `${DOCS_ROOT}/${item.destination}/index.md`,
     createFrontMatter(
       title,
       menuTitle,
-      order,
       createEditOverwrite(item),
       [],
       lastModifiedDate,
@@ -327,19 +307,16 @@ export const importDocs = async (
     removeFrontmatter(fs.readFileSync(`${filename}`, 'utf-8')),
   );
 
-  const md: Root = remark.parse(doc);
-  setTitleHeader(md);
+  const firstHeading = getFirstHeading(
+    removeFrontmatter(fs.readFileSync(`${filename}`, 'utf-8')),
+  );
 
-  // if (item.options?.singlePage) {
+  const md: Root = remark.parse(doc);
+  setTitleHeader(md, firstHeading);
+
+  console.log('heading', md.children[0]);
+
   relinkReferences(md, [md], `/${item.destination}/`);
   await createPage(md, item);
   return;
-  // }
-
-  // const pages = divideIntoPages(md);
-  // relinkReferences(md, pages, `/${item.destination}/`);
-
-  // pages.forEach(async (page: Root, idx: number) => {
-  //   await createPage(page, item, true, idx);
-  // });
 };
