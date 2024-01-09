@@ -1,4 +1,5 @@
 import {
+  helperButtonIconStyle,
   helperStyle,
   helperTextIconStyle,
 } from '@/components/Global/FormItemCard/styles.css';
@@ -10,7 +11,6 @@ import {
   SystemIcon,
   Text,
 } from '@kadena/react-ui';
-import Link from 'next/link';
 import type { ChangeEvent, FC } from 'react';
 import React from 'react';
 
@@ -24,6 +24,7 @@ export interface IFormItemCardProps {
   disabled?: boolean;
   children: React.ReactNode;
   onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
+  helperOnClick?: () =>  void;
 }
 
 export const FormItemCard: FC<IFormItemCardProps> = ({
@@ -32,6 +33,7 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
   info,
   helper,
   helperHref,
+  helperOnClick,
   status,
   disabled = false,
   onChange,
@@ -49,10 +51,18 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
             <div className={helperStyle}>
               <Text>
                 {helperHref ? (
-                  <Link className={helperTextIconStyle} href={helperHref}>
+                  <div className={helperTextIconStyle} >
                     <span>{helper}</span>
-                    <SystemIcon.Information />
-                  </Link>
+                    <button
+                        className={helperButtonIconStyle}
+                        type="button"
+                        onClick={helperOnClick}
+                    >
+                      <span>
+                       <SystemIcon.Information size={'sm'} />
+                      </span>
+                    </button>
+                  </div>
                 ) : (
                   <span>{helper}</span>
                 )}

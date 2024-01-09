@@ -6,9 +6,10 @@ import type { ForwardRefExoticComponent, ReactNode } from 'react';
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import {
   buttonWrapperClass,
-  expandedDrawerContentClass,
+  expandedDrawerContentClass, expandedDrawerContentStyle,
   expandedDrawerTitleClass,
   gridItemCollapsedSidebarStyle,
+  gridItemMiniMenuStyle
 } from './styles.css';
 
 export interface IDrawerToolbarSection {
@@ -17,7 +18,7 @@ export interface IDrawerToolbarSection {
   children: ReactNode;
 }
 interface IProps {
-  initialOpenItem?: number | undefined;
+  initialOpenItem?: { item: number } | undefined;
   sections: IDrawerToolbarSection[];
 }
 
@@ -28,7 +29,7 @@ export const DrawerToolbar: ForwardRefExoticComponent<
   ref = null,
 ) {
   const [visibleSection, setVisibleSection] = useState<number | null>(
-    initialOpenItem !== undefined ? initialOpenItem : null,
+    initialOpenItem !== undefined ? initialOpenItem.item : null,
   );
   const isOpen = visibleSection !== null;
 
@@ -46,23 +47,16 @@ export const DrawerToolbar: ForwardRefExoticComponent<
       // @ts-ignore
       ref.openSection = handleOpenSection;
     }
-  }, [handleOpenSection, ref]);
+
+    setVisibleSection(initialOpenItem !== undefined ? initialOpenItem.item : null)
+  }, [handleOpenSection, ref, initialOpenItem]);
 
   return (
-    <aside className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
-      {!isOpen ? (
-        <div>
-          {sections.map(({ icon, title }, index) => (
-            <div className={buttonWrapperClass} key={title}>
-              <DrawerIconButton
-                icon={icon}
-                onClick={() => handleOpenSection(index)}
-              />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <>
+    <aside className={expandedDrawerContentStyle}>
+
+      {isOpen ? (
+
+        <div className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
           <div className={expandedDrawerTitleClass}>
             {sections[visibleSection].title}
             <IconButton
@@ -74,8 +68,20 @@ export const DrawerToolbar: ForwardRefExoticComponent<
           <div className={expandedDrawerContentClass}>
             {sections[visibleSection].children}
           </div>
-        </>
-      )}
+        </div>
+      ) : null}
+
+      <div className={gridItemMiniMenuStyle}>
+        {sections.map(({ icon, title }, index) => (
+            <div className={buttonWrapperClass} key={title}>
+              <DrawerIconButton
+                  icon={icon}
+                  onClick={() => handleOpenSection(index)}
+                  active={index === visibleSection}
+              />
+            </div>
+        ))}
+      </div>
     </aside>
   );
 });

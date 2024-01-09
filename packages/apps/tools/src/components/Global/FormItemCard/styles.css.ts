@@ -21,3 +21,12 @@ export const helperTextIconStyle = style([
     color: '$neutral5',
   }),
 ]);
+
+export const helperButtonIconStyle = style([
+  sprinkles({
+    outline: 'none',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+  }),
+]);

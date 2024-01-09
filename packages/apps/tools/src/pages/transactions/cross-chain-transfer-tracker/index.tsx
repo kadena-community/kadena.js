@@ -17,6 +17,7 @@ import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { FormFieldStatus } from '@kadena/react-ui';
 import {
+  Accordion,
   Breadcrumbs,
   Button,
   Grid,
@@ -40,6 +41,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { containerClass, notificationContainerStyle } from '../styles.css';
 import { footerBarStyle, formButtonStyle, infoBoxStyle } from './styles.css';
+import {MenuLinkButton} from "@/components/Common/Layout/partials/Sidebar/MenuLinkButton";
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
@@ -58,6 +60,25 @@ const CrossChainTransferTracker: FC = () => {
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
   );
 
+  const links = [
+    {
+      title: t('Tutorial'),
+      href: 'https://kadena.io/',
+    },
+    {
+      title: t('Documentation'),
+      href: 'https://kadena.io/',
+    },
+    {
+      title: t('Privacy & Policy'),
+      href: 'https://kadena.io/',
+    },
+    {
+      title: t('Terms of use'),
+      href: 'https://kadena.io/',
+    },
+  ];
+
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
   );
@@ -67,7 +88,7 @@ const CrossChainTransferTracker: FC = () => {
   const [validRequestKey, setValidRequestKey] = useState<
     FormFieldStatus | undefined
   >();
-  const [drawerOpen] = useState<boolean>(false);
+  const [openItem, setOpenItem] = useState<{ item: number} | undefined>(undefined);
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   useDidUpdateEffect(() => {
@@ -159,6 +180,15 @@ const CrossChainTransferTracker: FC = () => {
     }
   }, [errors.requestKey?.message]);
 
+  const onOpenItemChange = () => {
+    setOpenItem({ item: 0});
+  }
+
+  const handleOnClickLink = () => {
+    setOpenItem(undefined);
+  }
+
+
   return (
     <section className={containerClass}>
       <Head>
@@ -206,6 +236,7 @@ const CrossChainTransferTracker: FC = () => {
             heading={t('Search Request')}
             helper={t('Where can I find the request key?')}
             helperHref="#"
+            helperOnClick={() => onOpenItemChange()}
             disabled={false}
           >
             <Grid>
@@ -318,19 +349,35 @@ const CrossChainTransferTracker: FC = () => {
         </div>
       ) : null}
 
-      {drawerOpen ? (
-        <DrawerToolbar
+      <DrawerToolbar
           ref={drawerPanelRef}
-          initialOpenItem={0}
+          initialOpenItem={ openItem }
           sections={[
             {
               icon: 'Information',
-              title: t('Resources & Links'),
+              title: t('Where can I find the request key?'),
               children: <div className={infoBoxStyle}></div>,
             },
+            {
+              icon: 'Link',
+              title: t('Resources & Links'),
+              children: <div className={infoBoxStyle}>
+                <Accordion.Root>
+                  {links.map((item, index) => (
+                      <MenuLinkButton
+                          title={item.title}
+                          key={`menu-link-${index}`}
+                          href={item.href}
+                          active={item.href === router.pathname}
+                          target="_blank"
+                          onClick={handleOnClickLink}
+                      />
+                  ))}
+                </Accordion.Root>
+              </div>,
+            },
           ]}
-        />
-      ) : null}
+      />
     </section>
   );
 };
