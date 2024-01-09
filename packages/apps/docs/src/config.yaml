@@ -517,15 +517,12 @@ pages:
           leader:
             url: /community-channel-leader
             file: /contribute/ambassadors/community-channel-leader.md
+      dao:
+        url: /kadena-dao
+        file: /contribute/kadena-dao.md
       docs:
         url: /docs
         file: /contribute/docs.md
-    dao:
-      url: /kadena-dao
-      file: /contribute/kadena-dao.md
-    docs:
-      url: /docs
-      file: /contribute/docs.md
   blogchain:
     url: /blogchain
     file: /blogchain/index.tsx
