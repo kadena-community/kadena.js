@@ -116,8 +116,4 @@ const nextConfig = {
   },
 };
 
-const withBundleAnalyzer = withBundleAnalyzerBundle({
-  enabled: process.env.ANALYZE === 'true',
-});
-
-export default withBundleAnalyzer(withVanillaExtract(withMDX(nextConfig)));
+export default withVanillaExtract(withMDX(nextConfig));
