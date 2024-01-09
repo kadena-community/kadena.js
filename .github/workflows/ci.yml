@@ -112,7 +112,7 @@ jobs:
 
       # Disable remote caching, we need to explicitly rebuild Apps.
       - name: build dApp
-        run: pnpm --filter @kadena/${{ matrix.app }} build
+        run: pnpm --filter @kadena/${{ matrix.app }}... build
 
       - name: Run end-to-end tests
         run: pnpm run test:e2e -- -c playwright.${{ matrix.app }}.config.ts
