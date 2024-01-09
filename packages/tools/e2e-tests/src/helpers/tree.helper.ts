@@ -25,7 +25,7 @@ export default class TreeHelper {
       exclude: [/index.md/, /\.\.\/\.\.\/apps\/docs\/src\/pages\/pact\/api/],
     });
 
-     const parents = expectedTree?.children;
+    const parents = expectedTree?.children;
 
     for (const parent of parents!) {
       const parentMetaData = await extractMetadataFromMarkdown(parent.path);
