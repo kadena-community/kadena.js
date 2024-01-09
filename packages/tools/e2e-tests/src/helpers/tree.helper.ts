@@ -38,7 +38,8 @@ export default class TreeHelper {
       extensions: /\.md/,
       exclude: [/index.md/, exclusionRegExp],
     });
-    console.log(expectedTree);
+
+    console.log(directory);
 
     const parents = expectedTree?.children;
 
@@ -112,7 +113,6 @@ export default class TreeHelper {
     parentLabel: string,
     childLabel: string,
   ): Promise<void> {
-    console.log('checking child menu item');
     await expect(
       this._page
         .getByTestId(`l1-item`)
