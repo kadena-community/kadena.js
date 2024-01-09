@@ -22,7 +22,7 @@ export default class TreeHelper {
     const directory = `../../apps/docs/src/pages/${pageToCheck}`;
     const expectedTree = await dirTree(directory, {
       extensions: /\.md/,
-      exclude: [/index.md/, /\.\.\/\.\.\/apps\/docs\/src\/pages\/pact\/api/],
+      exclude: [/index.md/],
     });
     console.log(expectedTree);
 
