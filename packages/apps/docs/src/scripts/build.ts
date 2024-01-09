@@ -47,7 +47,7 @@ const runPrettier = async (): Promise<IScriptResult> => {
   //cleanup, removing the tempdir
   deleteTempDir();
 
-  if (getGlobalError()) {
+  if (getGlobalError() && process.env.NODE_ENV !== 'development') {
     process.exitCode = 1;
   }
 })();
