@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - feat/move-creat-kadena-app-package
   pull_request:
   workflow_dispatch:
 
