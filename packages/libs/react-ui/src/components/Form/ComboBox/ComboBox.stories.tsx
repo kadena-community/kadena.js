@@ -9,9 +9,9 @@ import { Item } from 'react-stately';
 import type { IComboBoxProps } from './ComboBox';
 import { ComboBox } from './ComboBox';
 
-interface Option {}
+interface IOption {}
 
-const meta: Meta<IComboBoxProps<Option>> = {
+const meta: Meta<IComboBoxProps<IOption>> = {
   title: 'Form/ComboBox',
   component: ComboBox,
   decorators: [onLayer1],
@@ -19,7 +19,7 @@ const meta: Meta<IComboBoxProps<Option>> = {
 
 export default meta;
 
-type Story = StoryObj<IComboBoxProps<Option>>;
+type Story = StoryObj<IComboBoxProps<IOption>>;
 
 export const Test: Story = {
   name: 'ComboBox',
