@@ -1,5 +1,5 @@
-import { getTransactionsByRequestKeyQuery } from '../testdata/queries/getTransactions';
-import { sendQuery } from './request-util';
+import { getTransactionsByRequestKeyQuery } from '@fixtures/graph/testdata/queries/getTransactions';
+import { sendQuery } from '@helpers/graph/request.helper';
 
 export async function getBlockHash(
   requestKey: string | undefined,

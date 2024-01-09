@@ -2,7 +2,13 @@
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
     "rootDir": ".",
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@fixtures/graph/*": ["./src/fixtures/graph/*"],
+      "@fixtures/tools/*": ["./src/fixtures/tools/*"],
+      "@helpers/graph/*": ["./src/helpers/graph/*"],
+      "@helpers/tools/*": ["./src/helpers/tools/*"],
+    },
   },
   "include": ["**/*.ts", "/**/*.tsx"]
 }

@@ -1,7 +1,8 @@
-import request from 'supertest';
-import { grapHost } from '../testdata/constants/network';
 
-export async function sendQuery(query: string | object | undefined) {
+import type { APIRequestContext } from '@playwright/test';
+import { grapHost } from '../../fixtures/graph/testdata/constants/network';
+
+export async function sendQuery(request: APIRequestContext, query: string | object | undefined) {
   const queryResponse = await request(grapHost).post('').send(query);
 
   if (queryResponse.body.errors !== undefined) {
