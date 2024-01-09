@@ -1,20 +1,17 @@
 import { genKeyPair } from '@kadena/cryptography-utils';
-import { describe, expect, test } from 'vitest';
-import { devnetMiner } from '../../testdata/constants/accounts';
-import { transferAmount } from '../../testdata/constants/amounts';
-import { coinModuleHash } from '../../testdata/constants/modules';
-import { getTransactionsQuery } from '../../testdata/queries/getTransactions';
-import { createAccount, generateAccount } from '../../utils/account-utils';
-import { getBlockHash } from '../../utils/block-utils';
-import { base64Encode } from '../../utils/cryptography-utils';
-import { sendQuery } from '../../utils/request-util';
-import {
-  transferFunds,
-  transferFundsCrossChain,
-} from '../../utils/transfer-utils';
+import { expect, test } from '@playwright/test';
+import { devnetMiner } from '@fixtures/graph/testdata/constants/accounts';
+import { transferAmount } from '@fixtures/graph/testdata/constants/amounts';
+import { coinModuleHash } from '@fixtures/graph/testdata/constants/modules';
+import { getTransactionsQuery } from '@fixtures/graph/testdata/queries/getTransactions';
+import { createAccount, generateAccount } from '@helpers/graph/account.helper';
+import { getBlockHash } from '@helpers/graph/block.helper';
+import { base64Encode } from '@helpers/graph/cryptography.helper';
+import { sendQuery } from '@helpers/graph/request.helper';
+import { transferFunds, transferFundsCrossChain } from '@helpers/graph/transfer.helper';
 
-describe('Query: getTransactions', () => {
-  test('Should return transactions.', async () => {
+test('Query: getTransactions', async ({ request }) => {
+  await test.step('Should return transactions.', async () => {
     // Given a source account and target account have been created on Chain 0.
     const sourceKeyPair = genKeyPair();
     const targetKeyPair = genKeyPair();

@@ -1,13 +1,13 @@
 import { genKeyPair } from '@kadena/cryptography-utils';
-import { describe, expect, test } from 'vitest';
-import { sender00 } from '../../testdata/constants/accounts';
-import { getAccountQuery } from '../../testdata/queries/getAccount';
-import { createAccount, generateAccount } from '../../utils/account-utils';
-import { base64Encode } from '../../utils/cryptography-utils';
-import { sendQuery } from '../../utils/request-util';
+import { sender00 } from '@fixtures/graph/testdata/constants/accounts';
+import { getAccountQuery } from '@fixtures/graph/testdata/queries/getAccount';
+import { createAccount, generateAccount } from '@helpers/graph/account.helper';
+import { base64Encode } from '@helpers/graph/cryptography.helper';
+import { sendQuery } from '@helpers/graph/request.helper';
+import { test, expect} from '@playwright/test';
 
-describe('Query: getAccount by AccountName', () => {
-  test('Should return an account after it has been created', async () => {
+test('Query: getAccount by AccountName', async ({ request }) => {
+  await test.step('Should return an account after it has been created', async () => {
     // Given a test account is created.
     const keyPair = genKeyPair();
     const testAccount = await generateAccount(keyPair, '0');
@@ -15,7 +15,7 @@ describe('Query: getAccount by AccountName', () => {
 
     // When the getAccountQuery is executed
     const query = getAccountQuery(testAccount.account);
-    const queryResponse = await sendQuery(query);
+    const queryResponse = await sendQuery(request, query);
 
     //Then GraphQL should return the account, including 1 transfer.
     expect(queryResponse.body.data.fungibleAccount).toEqual({

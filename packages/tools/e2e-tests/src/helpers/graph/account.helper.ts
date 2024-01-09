@@ -5,9 +5,9 @@ import type { IKeyPair } from '@kadena/types';
 import type {
   IAccount,
   IAccountWithSecretKey,
-} from '../testdata/constants/accounts';
-import { sender00 } from '../testdata/constants/accounts';
-import { devnetHost, networkId } from '../testdata/constants/network';
+} from '../../fixtures/graph/testdata/constants/accounts';
+import { sender00 } from '../../fixtures/graph/testdata/constants/accounts';
+import { devnetHost, networkId } from '../../fixtures/graph/testdata/constants/network';
 
 export async function generateAccount(
   keyPair: IKeyPair,
