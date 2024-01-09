@@ -50,15 +50,6 @@ jobs:
       matrix:
         package: ['@kadena/client', '@kadena/client-utils']
 
-    services:
-      devnet:
-        image: kadena/devnet
-        options:
-          --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
-          http://localhost:8080/info || exit 1"
-        ports:
-          - 8080:8080
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -73,6 +64,11 @@ jobs:
         with:
           node-version: 18
           cache: 'pnpm'
+
+      - name: Start devnet
+        uses: ./.github/actions/devnet
+        with:
+          migrations: packages/apps/graph/cwd-extra-migrations
 
       - name: Install dependencies
         run: pnpm install

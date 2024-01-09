@@ -26,6 +26,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Grid,
   GridItem,
@@ -346,10 +347,10 @@ const CrossChainTransferFinisher: FC = () => {
         ]}
       />
 
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Cross Chain Finisher')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
+      </Breadcrumbs>
 
       <Heading as="h3" transform="capitalize" bold={false}>
         {t('Finish transaction')}
@@ -361,14 +362,14 @@ const CrossChainTransferFinisher: FC = () => {
 
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
-          <Stack direction="column">
+          <Stack flexDirection="column">
             <FormItemCard
               heading={t('Search Request')}
               helper={t('Where can I find the request key?')}
               helperHref="#"
               disabled={false}
             >
-              <Box marginBottom="$4" />
+              <Box marginBlockEnd="md" />
               <Grid>
                 <GridItem>
                   <RequestKeyField
@@ -390,8 +391,7 @@ const CrossChainTransferFinisher: FC = () => {
               helperHref="#"
               disabled={false}
             >
-              <Box marginBottom="$4" />
-              <Grid columns={1}>
+              <Grid columns={1} marginBlockStart="md">
                 <GridItem>
                   <AccountNameField
                     label={t('Gas Payer')}
@@ -405,8 +405,7 @@ const CrossChainTransferFinisher: FC = () => {
                 </GridItem>
               </Grid>
 
-              <Box marginBottom="$4" />
-              <Grid columns={2}>
+              <Grid columns={2} marginBlockStart="md">
                 <GridItem>
                   <TextField
                     disabled={true}
@@ -440,7 +439,7 @@ const CrossChainTransferFinisher: FC = () => {
                 helper={t('How do I use the Signature data')}
                 helperHref="#"
               >
-                <Box marginBottom="$4" />
+                <Box marginBlockEnd="md" />
                 <Grid columns={1}>
                   <GridItem>
                     <div className={textareaContainerStyle}>

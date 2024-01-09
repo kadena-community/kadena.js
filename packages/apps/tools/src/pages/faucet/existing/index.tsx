@@ -13,6 +13,7 @@ import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
   Heading,
@@ -139,10 +140,10 @@ const ExistingAccountFaucetPage: FC = () => {
       <Head>
         <title>Kadena Developer Tools - Faucet</title>
       </Head>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Existing')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Existing')}</BreadcrumbsItem>
+      </Breadcrumbs>
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
@@ -170,10 +171,10 @@ const ExistingAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <Stack direction="column" gap="$lg">
+        <Stack flexDirection="column" gap="lg">
           <Card fullWidth>
             <Heading as="h5">{t('Account')}</Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField

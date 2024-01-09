@@ -19,7 +19,7 @@ export const treeListLevelVariantClass = styleVariants({
   l1: {},
   l2: {},
   l3: {
-    marginLeft: vars.sizes.$1,
+    marginInlineStart: vars.sizes.$1,
     borderLeft: `1px solid ${$$borderColor}`,
   },
 });
@@ -50,7 +50,7 @@ export const linkClass = style([
 export const listItemClass = style({
   selectors: {
     '&:first-of-type': {
-      marginTop: vars.sizes.$2,
+      marginBlockStart: vars.sizes.$2,
     },
   },
 });
@@ -59,10 +59,10 @@ export const listItemVariants = styleVariants({
   l1: {},
   l2: {},
   l3: {
-    marginTop: vars.sizes.$2,
+    marginBlockStart: vars.sizes.$2,
     selectors: {
       '&:last-of-type': {
-        marginBottom: vars.sizes.$6,
+        marginBlockEnd: vars.sizes.$6,
       },
     },
   },

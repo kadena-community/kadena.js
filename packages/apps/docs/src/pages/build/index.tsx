@@ -16,6 +16,7 @@ import {
   Stack,
   Text,
 } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -29,11 +30,11 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
-      <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+      <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
         <GridItem>
           <Card fullWidth>
             <Heading as="h4">Get started with tutorials</Heading>
-            <Box marginY="$4">
+            <Box marginBlock="md">
               <Text>
                 Building applications to run on a blockchain doesn&apos;t have
                 to be hard, time-consuming, or expensive. Get started with the
@@ -49,7 +50,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           </Card>
         </GridItem>
         <GridItem>
-          <Box marginY="$8" marginLeft="$12">
+          <Box
+            className={sprinkles({
+              marginBlock: '$8',
+              marginInlineStart: '$12',
+            })}
+          >
             <MostPopular
               pages={popularPages}
               title="Most viewed docs"
@@ -58,8 +64,10 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           </Box>
         </GridItem>
       </Grid>
-      <Box marginBottom="$20">
-        <Grid gap="$lg" columns={{ sm: 1, lg: 2 }}>
+      <Box
+        className={sprinkles({ marginBlockStart: '$6', marginBlockEnd: '$20' })}
+      >
+        <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem>
             <DocsCard
               label="Quick start"
@@ -121,7 +129,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         </Grid>
       </Box>
 
-      <Stack direction="column" gap="$2xl">
+      <Stack flexDirection="column" gap="xxl">
         <Box>
           <Heading as="h6">Stay up-to-date</Heading>
           <BlogPostsStrip

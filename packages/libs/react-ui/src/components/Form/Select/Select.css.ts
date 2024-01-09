@@ -8,7 +8,7 @@ export const containerClass = style([
   atoms({
     backgroundColor: 'layer-3.default',
     gap: 'sm',
-    paddingX: 'md',
+    paddingInline: 'md',
   }),
 ]);
 
@@ -34,8 +34,8 @@ export const selectClass = style([
     color: 'text.base.default',
     flexGrow: 1,
     outline: 'none',
-    paddingRight: 'lg',
-    paddingY: 'sm',
+    paddingInlineEnd: 'lg',
+    paddingBlock: 'sm',
     fontSize: 'base',
   }),
   {
@@ -49,7 +49,7 @@ export const chevronIconClass = style([
   atoms({
     display: 'inline-flex',
     alignItems: 'center',
-    marginRight: 'sm',
+    marginInlineEnd: 'sm',
     position: 'absolute',
     top: 0,
     bottom: 0,

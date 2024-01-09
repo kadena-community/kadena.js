@@ -10,6 +10,7 @@ import {
   Heading,
   Stack,
 } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
@@ -53,13 +54,13 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
   return (
     <header className={loaderHeaderClass}>
       <div className={wrapperClass}>
-        <Box marginX={{ xs: '$1', sm: '$4' }}>
+        <Box marginInline={{ xs: 'xs', sm: 'md' }}>
           <Grid columns={{ sm: 1, md: 2 }}>
             <GridItem>
               <Heading as="h1" variant="h2">
                 Kadena
               </Heading>
-              <Stack direction="column" gap="$2xs">
+              <Stack flexDirection="column" gap="xxs">
                 <Heading as="h2" variant="h4">
                   Build your <GradientText>own</GradientText> Internet
                 </Heading>
@@ -67,7 +68,7 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
                   Explore our guides and examples to build on Kadena
                 </span>
 
-                <Box marginTop="$5">
+                <Box className={sprinkles({ marginBlockStart: '$5' })}>
                   <div className={searchInputWrapper}>
                     <SearchBar onKeyUp={handleKeyPress} />
                   </div>
@@ -77,8 +78,15 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
             <GridItem>
               {popularPages.length > 0 && (
                 <Box
-                  paddingLeft={{ sm: '$1', lg: '$15', xl: '$32', xxl: '$48' }}
-                  marginRight="$10"
+                  className={sprinkles({
+                    paddingInlineStart: {
+                      sm: '$xs',
+                      lg: '$15',
+                      xl: '$32',
+                      xxl: '$48',
+                    },
+                  })}
+                  marginInlineEnd="xxxl"
                 >
                   <MostPopular pages={popularPages} title="Most viewed docs" />
                 </Box>

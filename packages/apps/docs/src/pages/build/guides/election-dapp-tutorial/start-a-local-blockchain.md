@@ -44,13 +44,19 @@ To start the local development network:
 
    You can run the `docker info` command to check whether Docker is currently running.
 
-3. tart the `devnet` container without a persistent volume by running the following command:
+3. Start the `devnet` container without a persistent volume by running the following command:
 
    ```shell
    docker run --interactive --tty --publish 8080:8080 kadena/devnet:latest
    ```
    
-   You can stop the network at any time—and reset the blockchain state—by pressing Ctrl-c in the terminal. starting it again with the command above. 
+   You can stop the network at any time—and reset the blockchain state—by pressing Ctrl-c in the terminal. starting it again with the command above.
+
+   If you encounter an error where the version of Chainweb is invalid after a certain date (mostly after a service date) run the following command to pull the latest version
+
+   ```shell
+   docker run --pull=always --interactive --tty --publish 8080:8080 kadena/devnet:latest
+   ```
    
    If you can't run the Pact executable on your local computer, you can mount the `./pact` folder of the project in the container by running the following command:
    

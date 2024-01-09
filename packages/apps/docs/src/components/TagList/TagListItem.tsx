@@ -18,7 +18,7 @@ export const TagListItem: FC<ITag> = ({ tag, count, links }) => {
             {tag} ({count})
           </h2>
         </Link>
-        <Box marginTop="$4">
+        <Box marginBlockStart="md">
           <BrowseSection title="Latest posts">
             {links &&
               links.map((link) => (

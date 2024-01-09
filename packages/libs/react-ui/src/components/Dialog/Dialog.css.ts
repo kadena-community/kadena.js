@@ -55,8 +55,8 @@ export const closeButtonClass = style([
 
 export const titleWrapperClass = style([
   atoms({
-    marginBottom: 'md',
-    marginRight: 'xxl',
+    marginBlockEnd: 'md',
+    marginInlineEnd: 'xxl',
     flexShrink: 0,
   }),
 ]);
@@ -66,7 +66,7 @@ export const footerClass = style([atoms({ flexShrink: 0 })]);
 export const contentClass = style([
   atoms({
     flex: 1,
-    paddingX: 'xxxl',
+    paddingInline: 'xxxl',
     overflowY: 'auto',
   }),
   {

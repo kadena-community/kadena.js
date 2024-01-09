@@ -1,6 +1,6 @@
 import type {
-  ChainFungibleAccountTransfersConnection,
   FungibleAccountTransfersConnection,
+  FungibleChainAccountTransfersConnection,
   Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
@@ -15,7 +15,7 @@ interface ICompactTransfersTableProps {
   truncateColumns?: boolean;
   transfers:
     | FungibleAccountTransfersConnection
-    | ChainFungibleAccountTransfersConnection;
+    | FungibleChainAccountTransfersConnection;
 
   description?: string;
 }
@@ -65,7 +65,7 @@ export const CompactTransfersTable = (
           description ? description : 'All transfers from this fungible'
         }
       />
-      <Box margin={'$4'} />
+      <Box margin="sm" />
       <Button
         variant="compact"
         as="a"
@@ -75,7 +75,7 @@ export const CompactTransfersTable = (
       >
         View all transfers
       </Button>
-      <Box margin={'$2'} />
+      <Box margin="xs" />
       <Table.Root wordBreak="break-word">
         <Table.Head>
           <Table.Tr>

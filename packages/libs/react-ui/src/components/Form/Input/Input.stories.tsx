@@ -137,7 +137,7 @@ export const InlineWithButton: Story = {
         ? SystemIcon[startIcon as unknown as keyof typeof SystemIcon]
         : undefined;
     return (
-      <Stack gap="$xs" alignItems="stretch">
+      <Stack gap="xs" alignItems="stretch">
         <Input
           id="inlineInputStory"
           startIcon={IconComponent && <IconComponent />}
