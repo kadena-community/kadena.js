@@ -2,6 +2,7 @@
 title: Code of Conduct
 description: Kadena Code of Conduct
 label: Code of Conduct
+menu: Code of Conduct
 layout: normal
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Overview of Kadena
 description: Kadena makes blockchain work for everyone.
-menu: Kadena
+menu: Overview
 label: Overview
 order: 1
 layout: full

@@ -26,10 +26,10 @@ export const Item: FC<IItem> = ({ item, level }) => {
 
   return (
     <li
-      data-testid={`menuItem-${level}`}
+      data-testid={`l${level}-item`}
       className={classNames(listItemClass, listItemVariants[`l${level}`])}
     >
-      <Link className={classes} href={item.root} data-active={item.isActive}>
+      <Link data-testid={`l${level}-link`} className={classes} href={item.root} data-active={item.isActive}>
         {item.label}
       </Link>
     </li>

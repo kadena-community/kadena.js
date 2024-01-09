@@ -1,13 +1,17 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import dirTree from 'directory-tree';
 import { extractMetadataFromMarkdown } from './markdown.helper';
 
 export default class TreeHelper {
   private readonly _page: Page;
+  private _parent: Locator;
 
   public constructor(page: Page) {
     this._page = page;
+    this._parent = this._page.locator(
+      `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"]`,
+    );
   }
 
   /**
@@ -18,126 +22,80 @@ export default class TreeHelper {
     const directory = `../../apps/docs/src/pages/${pageToCheck}`;
     const expectedTree = await dirTree(directory, {
       extensions: /\.md/,
-      exclude: [/index.md/, /api/],
+      exclude: [/index.md/, /\.\.\/\.\.\/apps\/docs\/src\/pages\/pact\/api/ ],
     });
-    const menuItems = expectedTree?.children;
 
-    if (expectedTree?.children) {
-      for (const menuItem of menuItems!) {
-        // Validate top level menu items, without children
-        if (!menuItem.children) {
-          const metaData = await extractMetadataFromMarkdown(menuItem.path);
-          await this.validateParent(metaData[0].label);
-        } else {
-          // validate presence of first level children, this implicitly validates presence of top level menu items with children as well as the children.
-          for (const child of menuItem.children) {
-            if (!child.children) {
-              const metaData = await extractMetadataFromMarkdown(
-                `${menuItem.path}/index.md`,
-                child.path,
+    if (!expectedTree.children) {
+      throw new Error(`No tree found for ${pageToCheck}`);
+    }
+
+    const parents = expectedTree?.children;
+
+    for (const parent of parents!) {
+      const parentMetaData = await extractMetadataFromMarkdown(parent.path);
+      // Validate Menu Items without Children
+      if (parent.children?.length === 0) {
+        await this._validateSingleMenuItem(parentMetaData.menu);
+      } else {
+        await this._toggleParent(parentMetaData.menu); // Open Parent before validating children
+        for (const child of parent.children!) {
+          const childMetaData = await extractMetadataFromMarkdown(child.path);
+          if (child.children?.length === 0) {
+            await this._validateMenuItemWithChildren(
+              parentMetaData.menu,
+              childMetaData.label,
+            );
+          } else {
+            await this._toggleChild(parentMetaData.menu, childMetaData.menu);
+            // validate presence of first level children, this implicitly validates presence of top level menu items with children as well as the children.
+            for (const grandChild of child.children!) {
+              const grandChildMetaData = await extractMetadataFromMarkdown(
+                grandChild.path,
               );
-              await this.validateChild(metaData[0].menu, metaData[1].label);
-            } else {
-              // validate presence of first level children, this implicitly validates presence of top level menu items with children as well as the children.
-              for (const grandChild of child.children) {
-                const metaData = await extractMetadataFromMarkdown(
-                  `${menuItem.path}/index.md`,
-                  `${child.path}/index.md`,
-                  `${grandChild.path}/index.md`,
-                );
-                await this.validateGrandChild(
-                  metaData[0].menu,
-                  metaData[1].menu,
-                  metaData[2].label,
-                );
-              }
+              await this._validateMenuItemWithGrandchildren(
+                parentMetaData.menu,
+                childMetaData.menu,
+                grandChildMetaData.label,
+              );
             }
           }
         }
+        await this._toggleParent(parentMetaData.menu); 
       }
+      // Open Parent before validating children
     }
   }
+  private async _toggleParent(label: string): Promise<void> {
+    await this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-button"]:text-is("${label}")`).click()
+  }
 
-  /**
-   This function validates presence of parent items in the menu.
-   @param {string} label of the menu item to validate
-   */
-  public async validateParent(label: string): Promise<void> {
+  private async _toggleChild(parentLabel: string, childLabel: string): Promise<void> {
+    await this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-button"]:text-is(${JSON.stringify(parentLabel)}) + ul [data-testid="l2-item"] [data-testid="l2-button"]:text-is(${JSON.stringify(childLabel)})`).click()
+  }
+
+  private async _validateSingleMenuItem(label: string): Promise<void> {
     await expect(
-      this._page.locator(
-        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > a:text-is("${label}")`,
-      ),
+       this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-link"]:text-is(${JSON.stringify(label)})`),
       `Expected ${label} to be visible on level 1 in the menu.`,
     ).toBeVisible();
   }
 
-  /**
-   This function validates presence of a child item in the menu.
-   @param {string} parentLabel of the parent menu item
-   @param {string} childLabel of the menu item to validate
-   */
-  public async validateChild(
-    parentMenu: string,
+  private async _validateMenuItemWithChildren(
+    parentLabel: string,
     childLabel: string,
   ): Promise<void> {
-    // open parent menu first
-    await this._page
-      .locator(
-        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}")`,
-      )
-      .click();
-    await expect(
-      this._page.locator(
-        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}") + ul [data-testid="menuItem-2"] > a:text-is("${childLabel}")`,
-      ),
-      `Expected ${childLabel} to be visible on level 2 in the menu.`,
-    ).toBeVisible();
-    // then close parent menu again
-    await this._page
-      .locator(
-        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}")`,
-      )
-      .click();
+    console.log('checking child menu item');
+    await expect(this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-button"]:text-is(${JSON.stringify(parentLabel)}) + ul [data-testid="l2-item"] [data-testid="l2-link"]:text-is(${JSON.stringify(childLabel)})`).first(),
+    `Expected ${childLabel} to be visible on level 2 in the menu.`,).toBeVisible();
   }
 
-  /**
-   This function validates presence of a grandchild item in the menu.
-   @param {string} parentMenu of the parent menu item
-   @param {string} childMenu of the child menu item
-   @param {string} grandChildLabel of the menu item to validate
-   */
-  public async validateGrandChild(
-    parentMenu: string,
-    childMenu: string,
+  private async _validateMenuItemWithGrandchildren(
+    parentLabel: string,
+    childLabel: string,
     grandChildLabel: string,
-  ): Promise<void> {
-    // open parent and child menu first
-    await this._page
-      .locator(
-        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}")`,
-      )
-      .click();
-    await this._page
-      .locator(
-        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}") + ul [data-testid="menuItem-2"] > button:text-is("${childMenu}")`,
-      )
-      .click();
-    await expect(
-      this._page.locator(
-        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}") + ul [data-testid="menuItem-2"] > button:text-is("${childMenu}") + ul [data-testid="menuItem-3"] > a:text-is("${grandChildLabel}")`,
-      ),
+  ): Promise<void> { 
+    await expect(this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-button"]:text-is(${JSON.stringify(parentLabel)}) + ul [data-testid="l2-item"] [data-testid="l2-button"]:text-is(${JSON.stringify(childLabel)}) + ul [data-testid="l3-item"] [data-testid="l3-link"]:text-is(${JSON.stringify(grandChildLabel)})`),
       `Expected ${grandChildLabel} to be visible on level 3 in the menu.`,
     ).toBeVisible();
-    // Close parent and child menu
-    await this._page
-      .locator(
-        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}")`,
-      )
-      .click();
-    await this._page
-      .locator(
-        `[data-cy="sidemenu-submenu"] [data-testid="menuItem-1"] > button:text-is("${parentMenu}") + ul [data-testid="menuItem-2"] > button:text-is("${childMenu}")`,
-      )
-      .click();
   }
 }

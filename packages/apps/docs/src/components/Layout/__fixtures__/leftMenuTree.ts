@@ -191,9 +191,9 @@ export const fullLayoutLeftMenuTree: IMenuItem[] = [
       {
         children: [],
         root: '/kadena/client-examples',
-        title: 'Client examples',
-        menu: 'Client examples',
-        label: 'Client examples',
+        title: 'Client Examples',
+        menu: 'Client Examples',
+        label: 'Client Examples',
         isMenuOpen: false,
         isActive: false,
       },
