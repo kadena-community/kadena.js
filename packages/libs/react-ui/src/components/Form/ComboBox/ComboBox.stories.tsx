@@ -11,25 +11,44 @@ import { ComboBox } from './ComboBox';
 
 interface IOption {}
 
-const meta: Meta<IComboBoxProps<IOption>> = {
+const meta: Meta<
+  {
+    icon: keyof typeof SystemIcon;
+  } & IComboBoxProps<IOption>
+> = {
   title: 'Form/ComboBox',
   component: ComboBox,
   decorators: [onLayer1],
+  argTypes: {
+    icon: {
+      options: [
+        undefined,
+        ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
+      ],
+      control: {
+        type: 'select',
+      },
+    },
+  },
 };
 
 export default meta;
 
-type Story = StoryObj<IComboBoxProps<IOption>>;
+type Story = StoryObj<
+  { icon: keyof typeof SystemIcon } & IComboBoxProps<IOption>
+>;
 
 export const Test: Story = {
   name: 'ComboBox',
   args: {
     allowsCustomValue: false,
+    icon: 'KIcon',
   },
-  render: ({ allowsCustomValue }) => {
+  render: ({ allowsCustomValue, icon }) => {
     const defaultValue = 'Nothing selected yet';
     const [selectedValue, setSelectedValue] =
       React.useState<string>(defaultValue);
+    const Icon = icon && SystemIcon[icon];
     return (
       <>
         <ComboBox
@@ -38,7 +57,7 @@ export const Test: Story = {
           id="my-combobox"
           width={tokens.kda.foundation.layout.content.maxWidth}
           onInputChange={(value) => setSelectedValue(value)}
-          startIcon={<SystemIcon.KeyIconFilled />}
+          startIcon={icon !== undefined ? <Icon /> : undefined}
         >
           <Item key="red panda">Red Panda</Item>
           <Item key="cat">Cat</Item>
