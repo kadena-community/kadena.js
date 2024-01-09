@@ -36,7 +36,7 @@ export const headerWrapperClass = style([
         content: '',
         position: 'absolute',
         inset: 0,
-        background: 'url("/assets/bg-horizontal.png")',
+        background: 'url("/assets/bg-horizontal.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
         backgroundPositionY: '95%',
