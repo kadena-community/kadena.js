@@ -22,7 +22,7 @@ export default class TreeHelper {
     const directory = `../../apps/docs/src/pages/${pageToCheck}`;
     const expectedTree = await dirTree(directory, {
       extensions: /\.md/,
-      exclude: [/index.md/, /\.\.\/\.\.\/apps\/docs\/src\/pages\/pact\/api/ ],
+      exclude: [/index.md/, /\.\.\/\.\.\/apps\/docs\/src\/pages\/pact\/api/],
     });
 
     if (!expectedTree.children) {
@@ -60,22 +60,39 @@ export default class TreeHelper {
             }
           }
         }
-        await this._toggleParent(parentMetaData.menu); 
+        await this._toggleParent(parentMetaData.menu);
       }
       // Open Parent before validating children
     }
   }
   private async _toggleParent(label: string): Promise<void> {
-    await this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-button"]:text-is("${label}")`).click()
+    await this._page
+      .getByTestId(`l1-item`)
+      .locator(`[data-testid="l1-button"]:text-is("${label}")`)
+      .click();
   }
 
-  private async _toggleChild(parentLabel: string, childLabel: string): Promise<void> {
-    await this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-button"]:text-is(${JSON.stringify(parentLabel)}) + ul [data-testid="l2-item"] [data-testid="l2-button"]:text-is(${JSON.stringify(childLabel)})`).click()
+  private async _toggleChild(
+    parentLabel: string,
+    childLabel: string,
+  ): Promise<void> {
+    await this._page
+      .getByTestId(`l1-item`)
+      .locator(
+        `[data-testid="l1-button"]:text-is(${JSON.stringify(
+          parentLabel,
+        )}) + ul [data-testid="l2-item"] [data-testid="l2-button"]:text-is(${JSON.stringify(
+          childLabel,
+        )})`,
+      )
+      .click();
   }
 
   private async _validateSingleMenuItem(label: string): Promise<void> {
     await expect(
-       this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-link"]:text-is(${JSON.stringify(label)})`),
+      this._page
+        .getByTestId(`l1-item`)
+        .locator(`[data-testid="l1-link"]:text-is(${JSON.stringify(label)})`),
       `Expected ${label} to be visible on level 1 in the menu.`,
     ).toBeVisible();
   }
@@ -85,16 +102,38 @@ export default class TreeHelper {
     childLabel: string,
   ): Promise<void> {
     console.log('checking child menu item');
-    await expect(this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-button"]:text-is(${JSON.stringify(parentLabel)}) + ul [data-testid="l2-item"] [data-testid="l2-link"]:text-is(${JSON.stringify(childLabel)})`).first(),
-    `Expected ${childLabel} to be visible on level 2 in the menu.`,).toBeVisible();
+    await expect(
+      this._page
+        .getByTestId(`l1-item`)
+        .locator(
+          `[data-testid="l1-button"]:text-is(${JSON.stringify(
+            parentLabel,
+          )}) + ul [data-testid="l2-item"] [data-testid="l2-link"]:text-is(${JSON.stringify(
+            childLabel,
+          )})`,
+        )
+        .first(),
+      `Expected ${childLabel} to be visible on level 2 in the menu.`,
+    ).toBeVisible();
   }
 
   private async _validateMenuItemWithGrandchildren(
     parentLabel: string,
     childLabel: string,
     grandChildLabel: string,
-  ): Promise<void> { 
-    await expect(this._page.getByTestId(`l1-item`).locator(`[data-testid="l1-button"]:text-is(${JSON.stringify(parentLabel)}) + ul [data-testid="l2-item"] [data-testid="l2-button"]:text-is(${JSON.stringify(childLabel)}) + ul [data-testid="l3-item"] [data-testid="l3-link"]:text-is(${JSON.stringify(grandChildLabel)})`),
+  ): Promise<void> {
+    await expect(
+      this._page
+        .getByTestId(`l1-item`)
+        .locator(
+          `[data-testid="l1-button"]:text-is(${JSON.stringify(
+            parentLabel,
+          )}) + ul [data-testid="l2-item"] [data-testid="l2-button"]:text-is(${JSON.stringify(
+            childLabel,
+          )}) + ul [data-testid="l3-item"] [data-testid="l3-link"]:text-is(${JSON.stringify(
+            grandChildLabel,
+          )})`,
+        ),
       `Expected ${grandChildLabel} to be visible on level 3 in the menu.`,
     ).toBeVisible();
   }
