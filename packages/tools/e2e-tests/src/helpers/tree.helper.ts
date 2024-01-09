@@ -25,7 +25,7 @@ export default class TreeHelper {
       exclude: [/index.md/, /\.\.\/\.\.\/apps\/docs\/src\/pages\/pact\/api/],
     });
 
-    if (!expectedTree.children) {
+    if ((expectedTree.children ?? []).length === 0) {
       throw new Error(`No tree found for ${pageToCheck}`);
     }
 
