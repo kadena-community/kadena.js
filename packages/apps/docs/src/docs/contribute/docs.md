@@ -24,8 +24,7 @@ from.
 - From GitHub
 - From a Local Environment.
 
-[test link](kadena-dao.md) This article goes over each of these options to help
-you suggest changes to the
+This article goes over each of these options to help you suggest changes to the
 [Kadena Docs](https://github.com/kadena-community/docs).
 
 ## Before Getting Started
