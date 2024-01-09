@@ -1,4 +1,4 @@
-import { clearDir } from '@utils/path';
+import { clearDir } from '@services/git/path';
 import { existsSync, mkdirSync } from 'fs';
 
 export async function handleDirectorySetup(
