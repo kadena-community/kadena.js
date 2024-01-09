@@ -499,7 +499,7 @@ pages:
             url: /trouble-shooting-chainweb
             file: /contribute/node/troubleshooting-chainweb.md
           startmining:
-            url: /start-mining.md
+            url: /start-mining
             file: /contribute/node/start-mining.md
           interact:
             url: /interact-with-nodes
@@ -517,6 +517,9 @@ pages:
           leader:
             url: /community-channel-leader
             file: /contribute/ambassadors/community-channel-leader.md
+      docs:
+        url: /docs
+        file: /contribute/docs.md
     dao:
       url: /kadena-dao
       file: /contribute/kadena-dao.md
