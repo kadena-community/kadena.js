@@ -38,12 +38,7 @@ export const ComboBox = <T extends object>({
   const listBoxRef = useRef(null);
   const popoverRef = useRef(null);
 
-  const {
-    buttonProps,
-    inputProps,
-    listBoxProps,
-    // labelProps
-  } = useComboBox(
+  const { buttonProps, inputProps, listBoxProps } = useComboBox(
     {
       ...props,
       inputRef,
@@ -82,7 +77,6 @@ export const ComboBox = <T extends object>({
           >
             <ListBox
               {...mergeProps(props, listBoxProps)}
-              // {...listBoxProps}
               state={state}
               listBoxRef={listBoxRef}
             />
