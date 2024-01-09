@@ -45,7 +45,10 @@ export async function keyMnemonicPrompt(): Promise<string> {
   return await input({
     message: `Enter your 12-word mnemonic phrase:`,
     validate: function (input) {
-      const words = input.split(' ');
+      const words = input
+        .split(' ')
+        .map((word) => word.trim())
+        .filter((word) => word.length > 0);
       if (words.length !== 12) {
         return 'The mnemonic phrase must contain exactly 12 words.';
       }
@@ -53,6 +56,13 @@ export async function keyMnemonicPrompt(): Promise<string> {
         return 'Invalid mnemonic phrase. Please enter a valid 12-word mnemonic.';
       }
       return true;
+    },
+    transformer(input) {
+      return input
+        .split(' ')
+        .map((word) => word.trim())
+        .filter((word) => word.length > 0)
+        .join(' ');
     },
   });
 }
