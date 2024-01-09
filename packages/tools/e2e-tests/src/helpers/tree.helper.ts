@@ -1,6 +1,7 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import dirTree from 'directory-tree';
+import path from 'path';
 import { extractMetadataFromMarkdown } from './markdown.helper';
 
 export default class TreeHelper {
@@ -19,10 +20,23 @@ export default class TreeHelper {
    @param {string} pageToCheck page to check, e.g. 'Kadena'
    */
   public async validateTree(pageToCheck: string): Promise<void> {
-    const directory = `../../apps/docs/src/pages/${pageToCheck}`;
+    const baseDir = path.join(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      'apps',
+      'docs',
+      'src',
+      'pages',
+    );
+    const directory = path.join(baseDir, pageToCheck);
+    const exclusioDir = path.join(baseDir, 'pact', 'api');
+    const exclusionRegExp = new RegExp(exclusioDir);
     const expectedTree = await dirTree(directory, {
       extensions: /\.md/,
-      exclude: [/index.md/],
+      exclude: [/index.md/, exclusionRegExp],
     });
     console.log(expectedTree);
 
