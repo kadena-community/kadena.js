@@ -29,7 +29,12 @@ export const Item: FC<IItem> = ({ item, level }) => {
       data-testid={`l${level}-item`}
       className={classNames(listItemClass, listItemVariants[`l${level}`])}
     >
-      <Link data-testid={`l${level}-link`} className={classes} href={item.root} data-active={item.isActive}>
+      <Link
+        data-testid={`l${level}-link`}
+        className={classes}
+        href={item.root}
+        data-active={item.isActive}
+      >
         {item.label}
       </Link>
     </li>
