@@ -1,4 +1,5 @@
 export { CopyButton } from './ActionButtons/CopyButton';
+export { ComboBox, type IComboBoxProps } from './ComboBox';
 export type { FormFieldStatus } from './Form.css';
 export {
   FormFieldWrapper,

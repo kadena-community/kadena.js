@@ -15,6 +15,7 @@ export type {
 } from './Dialog';
 export type {
   FormFieldStatus,
+  IComboBoxProps,
   IFormFieldWrapperProps,
   IInputProps,
   ISelectFieldProps,
@@ -93,6 +94,7 @@ export {
 } from './Dialog';
 export { Divider } from './Divider/Divider';
 export {
+  ComboBox,
   FormFieldWrapper,
   Input,
   InputCopy,
