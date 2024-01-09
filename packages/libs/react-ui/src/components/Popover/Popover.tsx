@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, FC } from 'react';
 import React from 'react';
 
 import type { AriaPopoverProps } from 'react-aria';
@@ -12,8 +12,7 @@ export interface IPopoverProps extends AriaPopoverProps {
   width: CSSProperties['width'];
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const Popover = ({
+export const Popover: FC<IPopoverProps> = ({
   children,
   state,
   width,

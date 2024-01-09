@@ -17,6 +17,9 @@ export interface IComboBoxProps<T>
   startIcon?: ITextFieldProps['startIcon'];
 }
 
+/**
+ * @see https://react-spectrum.adobe.com/react-aria/useComboBox.html
+ */
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const ComboBox = <T extends object>({
   id,
