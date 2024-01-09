@@ -24,7 +24,7 @@ export default class TreeHelper {
       extensions: /\.md/,
       exclude: [/index.md/, /\.\.\/\.\.\/apps\/docs\/src\/pages\/pact\/api/],
     });
-    console.log(expectedTree)
+    console.log(expectedTree);
 
     const parents = expectedTree?.children;
 
