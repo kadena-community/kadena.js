@@ -24,7 +24,7 @@ export const codebackgroundClass = style([
         pointerEvents: 'none',
         inset: 0,
         backgroundColor: vars.colors.$background,
-        backgroundImage: 'url("/assets/bg-vertical.png")',
+        backgroundImage: 'url("/assets/bg-vertical.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: '-100px',
         backgroundPositionX: '-100px',
