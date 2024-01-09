@@ -14,7 +14,6 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { removeAfterFirstDot } from '../../utils/path.util.js';
 import { getWallet, getWalletContent } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
@@ -50,7 +49,7 @@ export const changeWalletPassword = async (
   keyWallet: string,
   currentPassword: string,
   newPassword: string,
-): Promise<CommandResult<{}>> => {
+): Promise<CommandResult<{ filename: string }>> => {
   const wallet = await getWallet(keyWallet);
   const walletContent = await getWalletContent(keyWallet);
   if (wallet === null || walletContent === null) {
@@ -77,10 +76,8 @@ export const changeWalletPassword = async (
     wallet.folder,
     wallet.legacy,
   );
-  console.log(chalk.green(`\nWallet password successfully updated..\n`));
-  console.log('filename: ', wallet.wallet);
 
-  return { success: true, data: {} };
+  return { success: true, data: { filename: wallet.wallet } };
 };
 
 export const createChangeWalletPasswordCommand: (
@@ -124,36 +121,8 @@ export const createChangeWalletPasswordCommand: (
       );
       assertCommandError(result);
 
-      const { wallet: keyWallet, fileName } = config.keyWallet;
-
-      const isLegacy = fileName.includes('.legacy');
-
-      let encryptedNewSeed: EncryptedString | undefined;
-
-      if (isLegacy === true) {
-        encryptedNewSeed = await kadenaChangePassword(
-          keyWallet as EncryptedString,
-          config.securityCurrentPassword,
-          config.securityNewPassword,
-        );
-      } else {
-        const decryptedCurrentSeed = kadenaDecrypt(
-          config.securityCurrentPassword,
-          keyWallet as EncryptedString,
-        );
-        encryptedNewSeed = kadenaEncrypt(
-          config.securityNewPassword,
-          decryptedCurrentSeed,
-        );
-      }
-
       console.log(chalk.green(`\nWallet password successfully updated..\n`));
-      console.log('filename: ', fileName);
-      await storageService.storeWallet(
-        encryptedNewSeed,
-        removeAfterFirstDot(fileName),
-        isLegacy,
-      );
+      console.log('filename: ', result.data.filename);
     } catch (error) {
       console.log(chalk.red(`\n${error.message}\n`));
       process.exit(1);

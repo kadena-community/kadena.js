@@ -3,9 +3,6 @@ import sanitizeFilename from 'sanitize-filename';
 import {
   KEY_EXT,
   KEY_LEGACY_EXT,
-  PLAIN_KEY_DIR,
-  PLAIN_KEY_EXT,
-  PLAIN_KEY_LEGACY_EXT,
   WALLET_DIR,
   WALLET_EXT,
   WALLET_LEGACY_EXT,
@@ -69,9 +66,9 @@ export async function getWallet(walletFile: string): Promise<IWallet | null> {
 
   const files = await services.filesystem.readDir(walletDir);
 
-  const keys = files.filter((file) =>
-    file.endsWith(isLegacy ? KEY_LEGACY_EXT : KEY_EXT),
-  );
+  const keys = files
+    .filter((file) => file.endsWith(KEY_EXT))
+    .filter((file) => isLegacy === file.includes(KEY_LEGACY_EXT));
 
   return {
     folder: walletName,
@@ -102,30 +99,6 @@ export async function getWalletContent(
  */
 export async function getKeysFromWallet(walletName: string): Promise<string[]> {
   return await getFilesWithExtension(join(WALLET_DIR, walletName), KEY_EXT);
-}
-
-/**
- * Retrieves an array of plain key filenames from a specific directory.
- * This function makes use of `getKeyFilesWithExtension` to filter out files
- * by the standard plain key extension.
- *
- * @returns {string[]} An array of filenames representing plain keys.
- * These filenames do not include the file extension.
- */
-export async function getPlainKeys(): Promise<string[]> {
-  return await getFilesWithExtension(PLAIN_KEY_DIR, PLAIN_KEY_EXT);
-}
-
-/**
- * Retrieves an array of legacy plain key filenames from a specific directory.
- * This function utilizes `getKeyFilesWithExtension` to filter files
- * by the legacy plain key extension.
- *
- * @returns {string[]} An array of filenames representing legacy plain keys.
- * These filenames do not include the file extension.
- */
-export async function getPlainLegacyKeys(): Promise<string[]> {
-  return await getFilesWithExtension(PLAIN_KEY_DIR, PLAIN_KEY_LEGACY_EXT);
 }
 
 /**

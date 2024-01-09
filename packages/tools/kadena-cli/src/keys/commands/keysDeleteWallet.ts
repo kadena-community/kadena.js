@@ -45,7 +45,7 @@ export const deleteWallet = async (
 };
 
 const confirmDelete = createOption({
-  key: 'confirmDelete',
+  key: 'confirm',
   defaultIsOptional: false,
   async prompt(prev, args) {
     if (typeof args.keyWallet !== 'string') return false;
@@ -94,7 +94,7 @@ export const createDeleteKeysCommand: (
     try {
       debug('delete-wallet:action')({ config });
 
-      if (config.confirmDelete !== true) {
+      if (config.confirm !== true) {
         console.log(chalk.yellow('\nNo wallets were deleted.\n'));
         return;
       }

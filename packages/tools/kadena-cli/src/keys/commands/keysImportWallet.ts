@@ -28,6 +28,7 @@ export const importWallet = async ({
   walletName,
   legacy,
 }: {
+  /** mnemonic word phrase, not validated here, expect prompt to validate */
   mnemonic: string;
   password: string;
   /** Just the wallet name (excluding file extension) */
@@ -43,27 +44,12 @@ export const importWallet = async ({
     };
   }
 
-  const splitMnemonic = mnemonic
-    .split(' ')
-    .map((word) => word.trim())
-    .filter((word) => word.length > 0);
-
-  if (splitMnemonic.length !== 12) {
-    // TODO: figure out if other word lengths need to be supported
-    // if legacy it must be 12.
-    return { success: false, errors: [`Mnemonic phrase must be 12 words.`] };
-  }
-
-  const validatedMnemonic = splitMnemonic.join(' ');
   let keySeed: EncryptedString;
 
   if (legacy === true) {
-    keySeed = await legacykadenaMnemonicToRootKeypair(
-      password,
-      validatedMnemonic,
-    );
+    keySeed = await legacykadenaMnemonicToRootKeypair(password, mnemonic);
   } else {
-    keySeed = await kadenaMnemonicToSeed(password, validatedMnemonic);
+    keySeed = await kadenaMnemonicToSeed(password, mnemonic);
   }
 
   const walletPath = await storageService.storeWallet(
