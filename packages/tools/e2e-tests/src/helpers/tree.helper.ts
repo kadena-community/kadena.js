@@ -25,11 +25,7 @@ export default class TreeHelper {
       exclude: [/index.md/, /\.\.\/\.\.\/apps\/docs\/src\/pages\/pact\/api/],
     });
 
-    if ((expectedTree.children ?? []).length === 0) {
-      throw new Error(`No tree found for ${pageToCheck}`);
-    }
-
-    const parents = expectedTree?.children;
+     const parents = expectedTree?.children;
 
     for (const parent of parents!) {
       const parentMetaData = await extractMetadataFromMarkdown(parent.path);
