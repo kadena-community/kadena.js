@@ -94,7 +94,6 @@
     "@vanilla-extract/webpack-plugin": "2.3.1",
     "chalk": "^5.2.0",
     "chromatic": "6.20.0",
-    "cross-env": "^7.0.3",
     "dotenv": "~16.0.3",
     "eslint": "^8.45.0",
     "log-update": "^5.0.1",
