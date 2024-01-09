@@ -1,4 +1,4 @@
-<!-- genericHeader start -->
+pa<!-- genericHeader start -->
 
 # @kadena/kadena-cli
 
@@ -77,6 +77,18 @@ brew install kda-cli
 
 ```bash
 brew update kda-cli
+```
+
+## installation
+
+To install the executable from this repo:
+
+```sh
+pnpm install
+pnpm build --filter @kadena/kadena-cli
+# if you are using NVM, you should have this environment variable available
+ln -s $(pwd)/bin/kadena-cli.js $NVM_BIN/kda
+# if not, you can replace $NVM_BIN to any path you have added in your $PATH
 ```
 
 ## list of commands
