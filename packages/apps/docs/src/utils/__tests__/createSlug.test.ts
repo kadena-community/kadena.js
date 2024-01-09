@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import { createSlug, createSlugHash } from '../createSlug';
 
 describe('utils createSlug', () => {

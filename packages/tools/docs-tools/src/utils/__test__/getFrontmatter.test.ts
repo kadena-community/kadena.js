@@ -1,5 +1,3 @@
-import { describe, expect, it } from 'vitest';
-
 import { getFrontmatter, getFrontmatterFromTsx } from './../getFrontmatter';
 
 describe('utils getFrontmatter', () => {

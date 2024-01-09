@@ -1,5 +1,4 @@
 import { cleanup } from '@testing-library/react';
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { isMarkDownFile } from '../markdown/isMarkdownFile';
 import { getHeaderMenuItems, getPageTreeById } from './../getHeaderMenuItems';
 

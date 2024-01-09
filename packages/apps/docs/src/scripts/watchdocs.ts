@@ -5,9 +5,9 @@ import { movePages } from './movePages';
 import { initFunc } from './utils/build';
 
 const run = async (): Promise<void> => {
-  await initFunc(movePages, 'create foldertree from config.yaml');
+  await initFunc(movePages, 'Create folder tree from config.yaml');
   await initFunc(createDocsTree, 'Create docs tree');
-  await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
+  await initFunc(fixLocalLinks, 'Fix local links from the config.yaml');
 };
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises

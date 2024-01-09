@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import { hasSameBasePath } from '../hasSameBasePath';
 
 describe('utils hasSameBasePath', () => {

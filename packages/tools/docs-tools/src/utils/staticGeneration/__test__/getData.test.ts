@@ -1,6 +1,3 @@
-import { cleanup } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-
 import type { IMenuData } from 'src';
 import { getData } from './../getData';
 
@@ -43,9 +40,6 @@ describe('utils getData', () => {
     });
   });
 
-  afterEach(() => {
-    cleanup();
-  });
   it('should return the menu data', async () => {
     const result = await getData();
     const expectedResult = data;

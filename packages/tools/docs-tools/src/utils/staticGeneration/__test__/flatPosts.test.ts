@@ -1,6 +1,3 @@
-import { cleanup } from '@testing-library/react';
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-
 import type { IMenuData } from 'src';
 import { flattenData, getFlatData } from './../flatPosts';
 
@@ -58,9 +55,6 @@ describe('utils getFlatData', () => {
     });
   });
 
-  afterEach(() => {
-    cleanup();
-  });
   it('should return a flattened array of the menu structure that is loaded in the function', async () => {
     const result = await getFlatData();
     const expectedResult = [

@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import { getFileExtension } from '../getFileExtension';
 
 describe('utils getFileExtension', () => {

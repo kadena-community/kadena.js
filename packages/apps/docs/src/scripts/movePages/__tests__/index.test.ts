@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import { isAlreadyIgnored } from '../';
 
 describe('utils isAlreadyIgnored', () => {

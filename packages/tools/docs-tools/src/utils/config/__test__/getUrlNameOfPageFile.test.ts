@@ -1,5 +1,4 @@
 import type { IConfigTreeItem } from 'src/types';
-import { describe, expect, it } from 'vitest';
 import { getUrlNameOfPageFile } from '../getUrlNameOfPageFile';
 
 describe('utils getUrlNameOfPageFile', () => {

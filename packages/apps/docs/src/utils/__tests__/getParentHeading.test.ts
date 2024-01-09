@@ -1,5 +1,4 @@
 import type { ISubHeaderElement } from '@kadena/docs-tools';
-import { describe, expect, it } from 'vitest';
 import { getParentHeading } from '../getParentHeading';
 
 describe('utils getParentHeading', () => {

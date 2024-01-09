@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import { isMarkDownFile } from './../isMarkdownFile';
 
 describe('utils isMarkdown', () => {

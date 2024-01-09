@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import { getLinkHash } from '../getLinkHash';
 
 describe('utils getLinkHash', () => {

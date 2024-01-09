@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import { getUrlofImageFile } from '../getUrlofImageFile';
 
 describe('utils getUrlofImageFile', () => {

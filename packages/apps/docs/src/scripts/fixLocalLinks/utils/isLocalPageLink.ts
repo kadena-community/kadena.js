@@ -11,7 +11,6 @@ export const isLocalPageLink = (url: string): boolean => {
   );
 };
 
-export const isLocalImageLink = (link: Image): boolean => {
-  const url = link.url;
+export const isLocalImageLink = ({ url }: Image): boolean => {
   return !url.startsWith('http') && url.includes('public/assets');
 };

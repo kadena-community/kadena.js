@@ -1,4 +1,3 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getFileFromNameOfUrl } from '../getFileFromNameOfUrl';
 import { loadConfigPages } from './../loadConfigPages.mock';
 
@@ -9,8 +8,6 @@ vi.mock('@/scripts/movePages', () => {
 });
 
 describe('utils getFileNameOfUrl', () => {
-  beforeEach(() => {});
-
   afterEach(() => {
     vi.resetAllMocks();
   });

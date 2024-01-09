@@ -1,6 +1,3 @@
-import { cleanup } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-
 import { getData } from './../getData';
 
 describe('utils getData throws error', () => {
@@ -18,9 +15,6 @@ describe('utils getData throws error', () => {
     });
   });
 
-  afterEach(() => {
-    cleanup();
-  });
   it('should throw when the data cant be loaded', async () => {
     await expect(() => getData()).rejects.toThrow('Could not load menu data');
   });

@@ -1,5 +1,4 @@
 import type { Image } from 'mdast-util-from-markdown/lib';
-import { describe, expect, it } from 'vitest';
 import { isLocalImageLink, isLocalPageLink } from '../isLocalPageLink';
 
 describe('utils isLocalPageLink', () => {

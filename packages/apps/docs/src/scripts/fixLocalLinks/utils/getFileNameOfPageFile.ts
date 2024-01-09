@@ -5,9 +5,9 @@ export const getFileNameOfPageFile = (
   page: IConfigTreeItem,
   parentTree: IConfigTreeItem[],
 ): string => {
-  return `${
-    parentTree.reduce((acc, val) => {
-      return `${acc}${val.url}`;
-    }, '') + page.url
-  }/index.${getFileExtension(page.file)}`;
+  const path = parentTree.reduce((acc, val) => {
+    return `${acc}${val.url}`;
+  }, '');
+
+  return `${path + page.url}/index.${getFileExtension(page.file)}`;
 };

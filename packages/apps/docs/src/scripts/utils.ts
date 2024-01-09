@@ -30,14 +30,3 @@ export interface IImportReadMeItem {
   title: string;
   options: IImportReadMeItemOptions;
 }
-
-/**
- * Files to be imported
- */
-export const importReadMes: IImportReadMeItem[] = [
-  /** /libs/chainweb-node-client */
-  /** /libs/chainweb-stream-client */
-  /** /libs/chainwebjs */
-  /** /libs/client */
-  /** /libs/cryptography-utils */
-];

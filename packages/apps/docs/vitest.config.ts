@@ -7,6 +7,7 @@ export default mergeConfig(
   defineConfig({
     plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
     test: {
+      globals: true,
       setupFiles: ['vitest.setup.ts'],
       environment: 'happy-dom',
       threads: false,

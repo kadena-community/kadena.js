@@ -1,5 +1,4 @@
 import type { IConfigTreeItem } from 'src/types';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getParentTreeFromPage } from '../getParentTreeFromPage';
 import { loadConfigPages } from './../../mock/loadConfigPages.mock';
 
