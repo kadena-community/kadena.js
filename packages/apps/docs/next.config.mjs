@@ -10,7 +10,6 @@ import {
   remarkTwitter,
   remarkYoutube,
 } from '@kadena/docs-tools';
-import withBundleAnalyzerBundle from '@next/bundle-analyzer';
 import mdx from '@next/mdx';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 import { readFileSync } from 'fs';
