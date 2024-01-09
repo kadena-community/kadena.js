@@ -54,3 +54,25 @@ export const Test: Story = {
     );
   },
 };
+
+export const ComboBoxDynamicCollection: Story = {
+  name: 'ComboBox dynamic collection',
+  render: () => {
+    const options = Array.from({ length: 100 }, (_, i) => ({
+      id: `ledger-key-${i}`,
+      name: `${i}`,
+    }));
+    return (
+      <ComboBox
+        label="Ledger key"
+        allowsCustomValue
+        id="ledger-key-combobox"
+        width={280}
+        startIcon={<SystemIcon.KeyIconFilled />}
+        defaultItems={options}
+      >
+        {(item) => <Item>{item.name}</Item>}
+      </ComboBox>
+    );
+  },
+};
