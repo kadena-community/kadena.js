@@ -26,6 +26,7 @@ export default class TreeHelper {
       '..',
       '..',
       '..',
+      '..',
       'apps',
       'docs',
       'src',
