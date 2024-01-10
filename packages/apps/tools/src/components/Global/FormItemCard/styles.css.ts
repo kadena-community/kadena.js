@@ -16,7 +16,7 @@ export const helperTextIconStyle = style([
   sprinkles({
     display: 'flex',
     alignItems: 'center',
-    gap: '$1',
+    gap: '$2',
     cursor: 'pointer',
     color: '$neutral5',
   }),

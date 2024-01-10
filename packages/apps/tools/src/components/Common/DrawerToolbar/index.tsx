@@ -55,11 +55,10 @@ export const DrawerToolbar: ForwardRefExoticComponent<
     <aside className={expandedDrawerContentStyle}>
 
       {isOpen ? (
-
         <div className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
           <div className={expandedDrawerTitleClass}>
             {sections[visibleSection].title}
-            <IconButton
+            <DrawerIconButton
               onClick={() => setVisibleSection(null)}
               icon="Close"
               title="close"

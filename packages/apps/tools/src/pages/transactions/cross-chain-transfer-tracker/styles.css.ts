@@ -12,12 +12,20 @@ export const formButtonStyle = style([
 
 export const infoBoxStyle = style([
   sprinkles({
-    fontSize: '$base',
-    // padding: '$2',
+    fontSize: '$sm',
+    padding: '$4',
     borderRadius: '$sm',
     display: 'flex',
     flexDirection: 'column',
-    // gap: '$6',
+  }),
+]);
+
+export const linksBoxStyle = style([
+  sprinkles({
+    fontSize: '$base',
+    borderRadius: '$sm',
+    display: 'flex',
+    flexDirection: 'column',
   }),
 ]);
 
@@ -28,7 +36,6 @@ export const footerBarStyle = style([
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: 1,
   }),
   {
     background: '#FAFAFA70',

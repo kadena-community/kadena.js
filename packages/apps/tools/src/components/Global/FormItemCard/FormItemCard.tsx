@@ -51,18 +51,18 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
             <div className={helperStyle}>
               <Text>
                 {helperHref ? (
-                  <div className={helperTextIconStyle} >
-                    <span>{helper}</span>
                     <button
                         className={helperButtonIconStyle}
                         type="button"
                         onClick={helperOnClick}
                     >
-                      <span>
-                       <SystemIcon.Information size={'sm'} />
-                      </span>
+                      <div className={helperTextIconStyle} >
+                        <span>{helper}</span>
+                        <span>
+                         <SystemIcon.Information size={'sm'} />
+                        </span>
+                      </div>
                     </button>
-                  </div>
                 ) : (
                   <span>{helper}</span>
                 )}

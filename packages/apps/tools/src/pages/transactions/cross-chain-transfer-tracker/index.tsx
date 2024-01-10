@@ -40,7 +40,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { containerClass, notificationContainerStyle } from '../styles.css';
-import { footerBarStyle, formButtonStyle, infoBoxStyle } from './styles.css';
+import {footerBarStyle, formButtonStyle, infoBoxStyle, linksBoxStyle} from './styles.css';
 import {MenuLinkButton} from "@/components/Common/Layout/partials/Sidebar/MenuLinkButton";
 
 const schema = z.object({
@@ -258,6 +258,7 @@ const CrossChainTransferTracker: FC = () => {
               title={t('Search')}
               icon="Magnify"
               iconAlign="right"
+              onClick={() => setOpenItem(undefined)}
             >
               {t('Search')}
             </Button>
@@ -356,12 +357,14 @@ const CrossChainTransferTracker: FC = () => {
             {
               icon: 'Information',
               title: t('Where can I find the request key?'),
-              children: <div className={infoBoxStyle}></div>,
+              children: <div className={infoBoxStyle}>
+                <span>You can start a cross chain transfer on Chainweaver and get a request key.</span>
+              </div>,
             },
             {
               icon: 'Link',
               title: t('Resources & Links'),
-              children: <div className={infoBoxStyle}>
+              children: <div className={linksBoxStyle}>
                 <Accordion.Root>
                   {links.map((item, index) => (
                       <MenuLinkButton

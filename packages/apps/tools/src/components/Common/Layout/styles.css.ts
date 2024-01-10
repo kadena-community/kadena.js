@@ -37,8 +37,7 @@ export const gridItemMainStyle = style([
   {
     height: '100vh',
     paddingTop: vars.sizes.$20,
-    paddingRight: vars.sizes.$6,
-    paddingLeft: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
+    paddingInline: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
     borderRight: `1px solid #E3E1E5`,
     selectors: {
       [`${darkThemeClass} &`]: {

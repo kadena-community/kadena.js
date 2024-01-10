@@ -20,7 +20,7 @@ export const gridItemCollapsedSidebarStyle = style([
     transition: 'width 0.1s ease',
     selectors: {
       '&.isOpen': {
-        width: `calc(${vars.sizes.$64} + ${vars.sizes.$20})`,
+        width: `calc(${vars.sizes.$64} + ${vars.sizes.$12})`,
       },
     },
   },
@@ -38,7 +38,7 @@ export const gridItemMiniMenuStyle = style([
     transition: 'width 0.1s ease',
     selectors: {
       '&.isOpen': {
-        width: `calc(${vars.sizes.$64} + ${vars.sizes.$35})`,
+        width: `calc(${vars.sizes.$64} + ${vars.sizes.$20})`,
       },
     },
   },
@@ -65,7 +65,6 @@ export const expandedDrawerTitleClass = style([
   }),
   {
     borderBottom: `1px solid #E3E1E5`,
-    padding: '0.125rem 0.75rem',
     paddingLeft: '1.25rem',
     selectors: {
       [`${darkThemeClass} &`]: {
