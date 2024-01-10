@@ -40,8 +40,6 @@ export default class TreeHelper {
       exclude: [/index.md/, exclusionRegExp],
     });
 
-    console.log(directory);
-
     const parents = expectedTree?.children;
 
     for (const parent of parents!) {
