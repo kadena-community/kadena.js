@@ -1,6 +1,7 @@
 import { Button } from '@components/Button/NewButton';
 import type { IInputProps, ITextFieldProps } from '@components/Form';
 import { TextField } from '@components/Form';
+import { Stack } from '@components/Layout';
 import { ListBox } from '@components/ListBox';
 import { Popover } from '@components/Popover';
 import type { CSSProperties } from 'react';
@@ -50,7 +51,7 @@ export const ComboBox = <T extends object>({
   );
 
   return (
-    <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
+    <Stack display="inline-flex" flexDirection="column">
       <div style={{ width }}>
         {/* @ts-expect-error */}
         <TextField
@@ -83,6 +84,6 @@ export const ComboBox = <T extends object>({
           </Popover>
         )}
       </div>
-    </div>
+    </Stack>
   );
 };
