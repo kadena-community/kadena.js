@@ -21,13 +21,13 @@ layout: blog
 If you are interested in specific sections, you can select the following
 options:
 
-- [Introduction](/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-2#introductionh1703914554)
+- [Introduction](/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-22#introductionh1703914554)
 
-- [Updates on Kadena Eco](/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-2#updates-on-kadena-ecoh-984668506)
+- [Updates on Kadena Eco](/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-22#updates-on-kadena-ecoh-984668506)
 
-- [Community Questions](/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-2#community-questionsh-678007402)
+- [Community Questions](/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-22#community-questionsh-678007402)
 
-- [Live Community Questions](/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-2#live-community-questionsh77357186)
+- [Live Community Questions](/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-22#live-community-questionsh77357186)
 
 ## Introduction
 
