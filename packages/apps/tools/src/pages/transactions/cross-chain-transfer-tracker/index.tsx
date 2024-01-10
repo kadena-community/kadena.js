@@ -343,14 +343,13 @@ const CrossChainTransferTracker: FC = () => {
             alignItems={'flex-start'}
             direction={'row-reverse'}
           >
-              <Link
-                  href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
-              >
-              <Button color={"positive"} icon="Link"
-                      iconAlign="right">
-                 {t('Finish Transaction')}
+            <Link
+              href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
+            >
+              <Button color={'positive'} icon="Link" iconAlign="right">
+                {t('Finish Transaction')}
               </Button>
-              </Link>
+            </Link>
           </Stack>
         </div>
       ) : null}
