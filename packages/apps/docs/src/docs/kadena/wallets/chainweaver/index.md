@@ -69,7 +69,7 @@ With this icon
 
 :::note Help
 
-See the [Chainweaver Troubleshoot](./chainweaver/chainweaver-troubleshooting) page if you
+See the [Chainweaver Troubleshoot](./chainweaver-troubleshooting) page if you
 encountered issues installing the .deb
 
 :::
