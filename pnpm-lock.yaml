@@ -1967,6 +1967,12 @@ importers:
 
   packages/tools/e2e-tests:
     dependencies:
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../../libs/client-utils
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../../libs/cryptography-utils
@@ -1986,12 +1992,6 @@ importers:
       '@kadena-dev/shared-config':
         specifier: workspace:*
         version: link:../shared-config
-      '@kadena/client':
-        specifier: workspace:*
-        version: link:../../libs/client
-      '@kadena/client-utils':
-        specifier: workspace:*
-        version: link:../../libs/client-utils
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types
