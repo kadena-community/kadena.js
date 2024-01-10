@@ -28,7 +28,7 @@ export const signWithSeed = (seed: Uint8Array, index: number) => {
   return signWithKeyPair(publicKey, privateKey);
 };
 
-export const signWithKeyPair = (publicKey: string, secretKey?: string) => {
+export const signWithKeyPair = (publicKey: string, secretKey: string) => {
   return (tx: IUnsignedCommand) => {
     const { sig } = sign(tx.cmd, { publicKey, secretKey });
     return {

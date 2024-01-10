@@ -1,13 +1,13 @@
-import { ICryptoService, cryptoService } from "@/service/crypto.service";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useAccounts } from "./accounts.hook";
-import { useLocalStorage } from "usehooks-ts";
+import { ICryptoService, cryptoService } from '@/service/crypto.service';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
+import { useAccounts } from './accounts.hook';
 
-export const KEY_LENGTH = "key_length";
-export const SEED = "kadena_seed";
+export const KEY_LENGTH = 'key_length';
+export const SEED = 'kadena_seed';
 
 const CryptoContext = createContext<
-  | (Omit<ICryptoService, "restoreWallet"> & {
+  | (Omit<ICryptoService, 'restoreWallet'> & {
       publicKeys: string[];
       loaded: boolean;
       hasEncryptedSeed: () => boolean;
@@ -24,7 +24,7 @@ interface CryptoContextProps {
 export const useCrypto = () => {
   const context = useContext(CryptoContext);
   if (!context) {
-    throw new Error("useCrypto must be used within a CryptoContextProvider");
+    throw new Error('useCrypto must be used within a CryptoContextProvider');
   }
   return context;
 };
@@ -34,28 +34,28 @@ const devPassword = import.meta.env.VITE_DEVELOPMENT_PASSWORD;
 export const CryptoContextProvider = ({ children }: CryptoContextProps) => {
   const [loading, setLoading] = useState(!!devPassword);
   const [keyLength, setKeyLength] = useLocalStorage(KEY_LENGTH, 0);
-  const [seed, setSeed] = useLocalStorage<string | null>(SEED, "");
+  const [seed, setSeed] = useLocalStorage<string | null>(SEED, '');
 
   const { clear: clearAccounts } = useAccounts();
 
   const [seedBuffer, setSeedBuffer] = useState<Uint8Array | null>(null);
   const [publicKeys, setPublicKeys] = useState<string[]>([]);
 
-  console.log("seed", seed);
+  console.log('seed', seed);
 
   const wallet = useMemo(
     () =>
       cryptoService({
         set: (patch) => {
-          if ("publicKeys" in patch) {
+          if ('publicKeys' in patch) {
             setKeyLength(patch.publicKeys?.length ?? 0);
             setPublicKeys(patch.publicKeys ?? []);
           }
-          if ("seed" in patch) {
+          if ('seed' in patch) {
             setSeed(patch.seed ?? null);
             clearAccounts();
           }
-          if ("seedBuffer" in patch) {
+          if ('seedBuffer' in patch) {
             setSeedBuffer(patch.seedBuffer ?? null);
           }
         },
@@ -66,7 +66,7 @@ export const CryptoContextProvider = ({ children }: CryptoContextProps) => {
         }),
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [seed, seedBuffer, publicKeys]
+    [seed, seedBuffer, publicKeys],
   );
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export const CryptoContextProvider = ({ children }: CryptoContextProps) => {
           wallet.restoreWallet(password, keyLength),
       }}
     >
-      {!loading ? children : "Loading..."}
+      {!loading ? children : 'Loading...'}
     </CryptoContext.Provider>
   );
 };

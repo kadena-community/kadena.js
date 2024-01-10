@@ -4,10 +4,10 @@ import {
 } from '@/components/registry-transfer/registry-transfer';
 import { safeJsonParse } from '@/utils/helpers';
 import { KadenaRemoteServer, MessagesMap } from '@kadena/lib-kadena-wallet';
-import { useModal } from '@kadena/react-ui';
 import {
   FC,
   PropsWithChildren,
+  ReactNode,
   createContext,
   useCallback,
   useContext,
@@ -26,9 +26,13 @@ const remoteServerContext = createContext<RemoteConnectionContext>({
 });
 export const useRemoteServer = () => useContext(remoteServerContext);
 
-export const RemoteConnectionContext: FC<PropsWithChildren> = ({
-  children,
-}) => {
+// TODO: refactor this to use new modal api
+export const RemoteConnectionContext: FC<
+  PropsWithChildren<{
+    renderModal?: (modal: ReactNode, title: string) => void;
+    clearModal?: () => void;
+  }>
+> = ({ children, renderModal = () => {}, clearModal = () => {} }) => {
   const [connectionId, setConnectionId] = useLocalStorage<string>(
     'kadena_connection_id',
     '',
@@ -36,7 +40,6 @@ export const RemoteConnectionContext: FC<PropsWithChildren> = ({
   const serverRef = useRef(new KadenaRemoteServer());
   const server = serverRef.current;
   const wallet = useCrypto();
-  const { renderModal, clearModal } = useModal();
 
   useEffect(() => {
     if (import.meta.env.VITE_REMOTE_ENABLED !== 'true') return;

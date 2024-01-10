@@ -23,18 +23,23 @@ function getMonorepoPackagesFromPackageJson() {
 }
 
 const monorepoPackages = getMonorepoPackagesFromPackageJson();
+const monorepoPathsRegex = monorepoPackages.map(
+  (pkg) => new RegExp(`${pkg.replace('@kadena/', '')}`),
+);
 monorepoPackages.push('@kadena/client/fp');
 
 export const config: UserConfig = {
   plugins: [react(), tsconfigPaths(), vanillaExtractPlugin()],
 
   optimizeDeps: {
+    // add all monorepo packages to optimizeDeps since they are commonjs
     include: [...monorepoPackages],
   },
 
   build: {
     commonjsOptions: {
-      include: [/node_modules/, ...monorepoPackages],
+      // add all monorepo packages path regex to commonjsOptions since they are commonjs
+      include: [/node_modules/, ...monorepoPathsRegex],
     },
   },
 
@@ -53,3 +58,5 @@ export const config: UserConfig = {
 };
 
 export default defineConfig(config);
+
+console.log('monorepoPackages', monorepoPackages);

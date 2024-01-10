@@ -1,17 +1,16 @@
 {
   "name": "@kadena/dev-wallet",
-  "description": "Kadena developer wallet",
-  "private": true,
   "version": "0.0.1",
+  "private": true,
+  "description": "Kadena developer wallet",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "test": "vitest",
-    "preview": "vite preview",
-    "postinstall": "npm run generate-coin-type && npm run generate-registry-type",
+    "dev": "vite",
     "generate-coin-type": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact\"",
-    "generate-registry-type": "pactjs contract-generate --file ./src/pact/registry.pact"
+    "postinstall": "npm run generate-coin-type",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",

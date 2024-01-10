@@ -1,9 +1,7 @@
-import { CryptoContextProvider } from "@/hooks/crypto.context";
-import { darkThemeClass } from "@kadena/react-ui/theme";
-import { ThemeProvider } from "next-themes";
-import { ModalProvider } from "@kadena/react-ui";
+import { CryptoContextProvider } from '@/hooks/crypto.context';
+import { ThemeProvider } from 'next-themes';
 
-import { RemoteConnectionContext } from "@/hooks/remote.context";
+import { RemoteConnectionContext } from '@/hooks/remote.context';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -13,13 +11,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         enableSystem={true}
         defaultTheme="dark"
         value={{
-          light: "light",
-          dark: darkThemeClass,
+          light: 'light',
         }}
       >
-        <ModalProvider>
-          <RemoteConnectionContext>{children}</RemoteConnectionContext>
-        </ModalProvider>
+        <RemoteConnectionContext>{children}</RemoteConnectionContext>
       </ThemeProvider>
     </CryptoContextProvider>
   );
