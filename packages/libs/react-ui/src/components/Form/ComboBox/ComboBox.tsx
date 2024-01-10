@@ -5,8 +5,9 @@ import { SystemIcon } from '@components/Icon';
 import { Stack } from '@components/Layout';
 import { ListBox } from '@components/ListBox';
 import { Popover } from '@components/Popover';
-import type { CSSProperties } from 'react';
-import React, { useRef } from 'react';
+import { useObjectRef } from '@react-aria/utils';
+import type { CSSProperties, ForwardedRef } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import type { AriaComboBoxProps } from 'react-aria';
 import { mergeProps, useComboBox, useFilter } from 'react-aria';
 import { useComboBoxState } from 'react-stately';
@@ -23,20 +24,17 @@ export interface IComboBoxProps<T>
  * @see https://react-spectrum.adobe.com/react-aria/useComboBox.html
  */
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const ComboBox = <T extends object>({
-  id,
-  label,
-  width,
-  startIcon,
-  ...props
-}: IComboBoxProps<T>) => {
+const BaseComboBox = <T extends object>(
+  { id, label, width, startIcon, ...props }: IComboBoxProps<T>,
+  forwardedRef: ForwardedRef<HTMLInputElement>,
+) => {
   // Setup filter function and state.
   const { contains } = useFilter({ sensitivity: 'base' });
   const state = useComboBoxState({ ...props, defaultFilter: contains });
 
   // Setup refs and get props for child elements.
   const buttonRef = useRef(null);
-  const inputRef = useRef(null);
+  const inputRef = useObjectRef(forwardedRef);
   const listBoxRef = useRef(null);
   const popoverRef = useRef(null);
 
@@ -90,3 +88,5 @@ export const ComboBox = <T extends object>({
     </Stack>
   );
 };
+
+export const ComboBox = forwardRef(BaseComboBox);
