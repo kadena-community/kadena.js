@@ -55,7 +55,6 @@ export const Test: Story = {
           label="Favorite Animal"
           allowsCustomValue={allowsCustomValue}
           id="my-combobox"
-          width={tokens.kda.foundation.layout.content.maxWidth}
           onInputChange={(value) => setSelectedValue(value)}
           startIcon={icon !== undefined ? <Icon /> : undefined}
           disabledKeys={['aardvark', 'kangaroo']}
@@ -87,7 +86,6 @@ export const ComboBoxDynamicCollection: Story = {
         label="Ledger key"
         allowsCustomValue
         id="ledger-key-combobox"
-        width={280}
         startIcon={<SystemIcon.KeyIconFilled />}
         defaultItems={options}
       >

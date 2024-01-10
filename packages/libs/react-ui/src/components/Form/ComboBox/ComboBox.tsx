@@ -7,7 +7,7 @@ import { ListBox } from '@components/ListBox';
 import { Popover } from '@components/Popover';
 import { useObjectRef } from '@react-aria/utils';
 import type { CSSProperties, ForwardedRef } from 'react';
-import React, { forwardRef, useRef } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import type { AriaComboBoxProps } from 'react-aria';
 import { mergeProps, useComboBox, useFilter } from 'react-aria';
 import { useComboBoxState } from 'react-stately';
@@ -16,7 +16,6 @@ export interface IComboBoxProps<T>
   extends Omit<AriaComboBoxProps<T>, 'id' | 'label'> {
   id: IInputProps['id'];
   label: ITextFieldProps['label'];
-  width: CSSProperties['width'];
   startIcon?: ITextFieldProps['startIcon'];
 }
 
@@ -25,7 +24,7 @@ export interface IComboBoxProps<T>
  */
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const BaseComboBox = <T extends object>(
-  { id, label, width, startIcon, ...props }: IComboBoxProps<T>,
+  { id, label, startIcon, ...props }: IComboBoxProps<T>,
   forwardedRef: ForwardedRef<HTMLInputElement>,
 ) => {
   // Setup filter function and state.
@@ -49,42 +48,45 @@ const BaseComboBox = <T extends object>(
     state,
   );
 
+  const [textFieldWidth, setTextFieldWidth] = useState(0);
+  useEffect(() => {
+    setTextFieldWidth(inputRef.current.parentElement!.offsetWidth);
+  }, []);
+
   return (
     <Stack display="inline-flex" flexDirection="column">
-      <div style={{ width }}>
-        {/* @ts-expect-error */}
-        <TextField
-          {...inputProps}
-          label={label}
-          id={id}
-          startIcon={startIcon}
-          ref={inputRef}
+      {/* @ts-expect-error */}
+      <TextField
+        {...inputProps}
+        label={label}
+        id={id}
+        startIcon={startIcon}
+        ref={inputRef}
+      >
+        <Button
+          {...buttonProps}
+          ref={buttonRef}
+          icon={<SystemIcon.OptionsOpen />}
+        />
+      </TextField>
+      {state.isOpen && (
+        <Popover
+          state={state}
+          triggerRef={inputRef}
+          popoverRef={popoverRef}
+          isNonModal
+          placement="bottom start"
+          width={textFieldWidth}
+          offset={15} // TODO: Get these values from Textfield element
+          crossOffset={startIcon ? -35 : -10} // TODO: Get these values from Textfield element
         >
-          <Button
-            {...buttonProps}
-            ref={buttonRef}
-            icon={<SystemIcon.OptionsOpen />}
-          />
-        </TextField>
-        {state.isOpen && (
-          <Popover
+          <ListBox
+            {...mergeProps(props, listBoxProps)}
             state={state}
-            triggerRef={inputRef}
-            popoverRef={popoverRef}
-            isNonModal
-            placement="bottom start"
-            width={width}
-            offset={15} // TODO: Get these values from Textfield element
-            crossOffset={startIcon ? -35 : -10} // TODO: Get these values from Textfield element
-          >
-            <ListBox
-              {...mergeProps(props, listBoxProps)}
-              state={state}
-              listBoxRef={listBoxRef}
-            />
-          </Popover>
-        )}
-      </div>
+            listBoxRef={listBoxRef}
+          />
+        </Popover>
+      )}
     </Stack>
   );
 };

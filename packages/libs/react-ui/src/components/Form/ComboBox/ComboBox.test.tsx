@@ -8,7 +8,7 @@ import { ComboBox } from './ComboBox';
 describe('ComboBox', () => {
   it('should not display the options when being closed', () => {
     const { getByText } = render(
-      <ComboBox label="Favorite Animal" id="my-combobox" width={250}>
+      <ComboBox label="Favorite Animal" id="my-combobox">
         <Item key="red panda">Red Panda</Item>
         <Item key="cat">Cat</Item>
         <Item key="dog">Dog</Item>
@@ -25,7 +25,7 @@ describe('ComboBox', () => {
   it('should display the options when being opened', async () => {
     const user = userEvent.setup({ pointerEventsCheck: 0 });
     const { getByRole, getByText } = render(
-      <ComboBox label="Favorite Animal" id="my-combobox" width={250}>
+      <ComboBox label="Favorite Animal" id="my-combobox">
         <Item key="red panda">Red Panda</Item>
         <Item key="cat">Cat</Item>
         <Item key="dog">Dog</Item>
@@ -48,7 +48,6 @@ describe('ComboBox', () => {
       <ComboBox
         label="Favorite Animal"
         id="my-combobox"
-        width={250}
         onInputChange={handleChange}
       >
         <Item key="red panda">Red Panda</Item>
@@ -73,7 +72,6 @@ describe('ComboBox', () => {
       <ComboBox
         label="Favorite Animal"
         id="my-combobox"
-        width={250}
         allowsCustomValue
         onInputChange={handleChange}
       >
