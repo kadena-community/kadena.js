@@ -17,7 +17,6 @@ This document covers high-level test scenarios for Tools Website and is intended
   - Users can fund existing accounts with 100 coins on any chain on Testnet.
 - Transactions
   - Users can track a cross chain transfer by providing a valid request key and see transfer info on the page.
-  - Users can fund existing accounts with 100 coins on any chain on Testnet.
 
 ## 3. Test Scenarios
 
