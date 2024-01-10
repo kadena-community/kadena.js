@@ -274,7 +274,7 @@ const CrossChainTransferTracker: FC = () => {
 
         {data.receiverAccount ? (
           <FormItemCard heading={t('Overview')} disabled={false}>
-            <Stack direction="row" gap='$md'>
+            <Stack direction="row" gap="$md">
               <TrackerCard
                 variant="vertical"
                 icon={'QuickStart'}
