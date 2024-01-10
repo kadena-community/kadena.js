@@ -85,7 +85,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="whitepapers"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href={'/contribute/contribute'}>
+                <Link className={docsCardLink} href={'/contribute/docs'}>
                   Fix our docs
                 </Link>
               </BrowseSection>
