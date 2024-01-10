@@ -58,7 +58,7 @@ subsequent blocks are mined from. A significant tranche of the token economic
 model is the **platform share**. Examples of uses of the platform share include:
 
 - Developer and economic grants, as seen in our
-  [Technical Grant Program](/blogchain/2020/announcing-kadena-technical-grants.2020-11-25)
+  [Technical Grant Program](/blogchain/2020/announcing-kadena-technical-grants)
 
 - Community-growing initiatives like our upcoming “Community Ambassador” program
 
