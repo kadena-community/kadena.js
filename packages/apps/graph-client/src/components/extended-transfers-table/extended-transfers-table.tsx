@@ -144,7 +144,7 @@ export const ExtendedTransfersTable = (
 
   return (
     <>
-      <Box marginBottom="$3">
+      <Box margin="sm">
         <div style={{ float: 'left', textAlign: 'center' }}>
           <span style={{ display: 'inline-block' }}>Items per page: </span>
 
@@ -205,7 +205,7 @@ export const ExtendedTransfersTable = (
                 <Table.Td>{edge.node.amount}</Table.Td>
                 <Table.Td>
                   <Link
-                    href={`${routes.ACCOUNT}/${router.query.module}/${edge.node.senderAccount}`}
+                    href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.senderAccount}`}
                   >
                     {edge.node.senderAccount}
                   </Link>
@@ -213,13 +213,13 @@ export const ExtendedTransfersTable = (
                 <Table.Td>
                   {edge.node.receiverAccount ? (
                     <Link
-                      href={`${routes.ACCOUNT}/${router.query.module}/${edge.node.receiverAccount}`}
+                      href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.receiverAccount}`}
                     >
                       {edge.node.receiverAccount}
                     </Link>
                   ) : edge.node.crossChainTransfer?.receiverAccount ? (
                     <Link
-                      href={`${routes.ACCOUNT}/${router.query.module}/${edge.node.crossChainTransfer.receiverAccount}`}
+                      href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.crossChainTransfer.receiverAccount}`}
                     >
                       {edge.node.crossChainTransfer.receiverAccount}
                     </Link>

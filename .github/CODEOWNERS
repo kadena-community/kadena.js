@@ -1,11 +1,10 @@
 # About code owners: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-/*.*                                            @alber70g
 /.github                                        @ghislain89
 /.changeset
 /common                                         @alber70g
 /pnpm-lock.yaml
-/packages/apps/docs                             @sstraatemans @eileenmguo @realdreamer
+/packages/apps/docs                             @sstraatemans @eileenmguo @realdreamer @ghislain89
 /packages/apps/proof-of-us                      @sstraatemans @realdreamer @ghislain89
 /packages/apps/graph                            @alber70g @MRVDH @nil-amrutlal-dept
 /packages/apps/graph-client                     @alber70g @MRVDH @nil-amrutlal-dept
@@ -23,3 +22,4 @@
 /packages/tools/pactjs-cli                      @alber70g @javadkh2
 /packages/tools/shared-config                   @alber70g
 /packages/tools/e2e-tests                       @ghislain89
+/packages/tools/integration-tests               @ghislain89

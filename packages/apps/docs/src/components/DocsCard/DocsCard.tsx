@@ -1,4 +1,5 @@
 import { Box, Heading } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
@@ -36,7 +37,12 @@ export const DocsCard: FC<IProps> = ({
       <Heading as="h3" variant="h5">
         {label}
       </Heading>
-      <Box marginY="$4" marginRight={{ sm: '$20', md: '$4', lg: '$20' }}>
+      <Box
+        marginBlock="md"
+        className={sprinkles({
+          marginInlineEnd: { sm: '$20', md: '$md', lg: '$20' },
+        })}
+      >
         <div>{description}</div>
       </Box>
       {children}

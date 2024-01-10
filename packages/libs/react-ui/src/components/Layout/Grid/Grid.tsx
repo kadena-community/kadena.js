@@ -1,44 +1,17 @@
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { sprinkles } from '@theme/sprinkles.css';
 import classNames from 'classnames';
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
 import React from 'react';
+import type { IBoxProps } from '../Box';
+import { Box } from '../Box';
 import type { ResponsiveInputType } from './Grid.css';
-import {
-  containerColumnVariants,
-  gapVariants,
-  gridContainerClass,
-} from './Grid.css';
+import { containerColumnVariants, gridContainerClass } from './Grid.css';
 
 export interface IGridProps
-  extends Pick<
-    Sprinkles,
-    | 'height'
-    | 'margin'
-    | 'marginBottom'
-    | 'marginLeft'
-    | 'marginRight'
-    | 'marginTop'
-    | 'marginX'
-    | 'marginY'
-    | 'maxHeight'
-    | 'maxWidth'
-    | 'minHeight'
-    | 'minWidth'
-    | 'overflow'
-    | 'padding'
-    | 'paddingBottom'
-    | 'paddingLeft'
-    | 'paddingRight'
-    | 'paddingTop'
-    | 'paddingX'
-    | 'paddingY'
-    | 'width'
+  extends Omit<
+    IBoxProps,
+    'display' | 'flex' | 'alignItems' | 'flexDirection' | 'justifyContent'
   > {
-  className?: string;
-  children?: ReactNode;
   columns?: ResponsiveInputType;
-  gap?: keyof typeof gapVariants;
 }
 
 const assembleColumnVariants = (
@@ -59,57 +32,16 @@ export const Grid: FC<IGridProps> = ({
   className,
   children,
   columns,
-  gap = '$md',
-  height,
-  margin,
-  marginBottom,
-  marginLeft,
-  marginRight,
-  marginTop,
-  marginX,
-  marginY,
-  maxHeight,
-  maxWidth,
-  minHeight,
-  minWidth,
-  overflow,
-  padding,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
-  paddingX,
-  paddingY,
-  width,
+  ...props
 }) => {
   const classList = classNames(
-    gapVariants[gap],
     gridContainerClass,
     columns && assembleColumnVariants(columns),
-    sprinkles({
-      height,
-      margin,
-      marginBottom,
-      marginLeft,
-      marginRight,
-      marginTop,
-      marginX,
-      marginY,
-      maxHeight,
-      maxWidth,
-      minHeight,
-      minWidth,
-      overflow,
-      padding,
-      paddingBottom,
-      paddingLeft,
-      paddingRight,
-      paddingTop,
-      paddingX,
-      paddingY,
-      width,
-    }),
     className,
   );
-  return <div className={classList}>{children}</div>;
+  return (
+    <Box className={classList} {...props}>
+      {children}
+    </Box>
+  );
 };

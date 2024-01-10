@@ -1,4 +1,4 @@
-import type { ChainId } from '@kadena/client';
+import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { execution } from '@kadena/client/fp';
 
@@ -20,7 +20,7 @@ export const details = (
   const getDetails = pipe(
     (name) => Pact.modules[contract as 'coin'].details(name),
     execution,
-    dirtyReadClient({
+    dirtyReadClient<PactReturnType<IPactModules['coin']['details']>>({
       host,
       defaults: {
         networkId,

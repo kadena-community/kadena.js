@@ -46,10 +46,10 @@ function startInTheFirstChain(
         },
       ),
     )
-    .addSigner(from.publicKey, (withCapability) => [
+    .addSigner(from.publicKey, (signFor) => [
       // in typescript this function suggests you only relevant capabilities
-      withCapability('coin.GAS'),
-      withCapability(
+      signFor('coin.GAS'),
+      signFor(
         'coin.TRANSFER_XCHAIN',
         from.account,
         to.account,
@@ -74,8 +74,8 @@ function finishInTheTargetChain(
     .continuation(continuation)
     .setNetworkId(NETWORK_ID)
     // uncomment this if you want to pay gas yourself
-    // .addSigner(gasPayer.publicKey, (withCapability) => [
-    //   withCapability('coin.GAS'),
+    // .addSigner(gasPayer.publicKey, (signFor) => [
+    //   signFor('coin.GAS'),
     // ])
     .setMeta({
       chainId: targetChainId,
@@ -129,7 +129,7 @@ async function doCrossChainTransfer(
         ([status, proof]) =>
           finishInTheTargetChain(
             {
-              pactId: status.continuation?.pactId,
+              pactId: status.continuation!.pactId,
               proof,
               rollback: false,
               step: 1,

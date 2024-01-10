@@ -83,7 +83,7 @@ export const Primary: Story = {
   render: ({ href, target, icon, iconAlign }) => {
     return (
       <>
-        <Stack direction="row" gap="$2">
+        <Stack flexDirection="row" gap="xs">
           <Link href={href} target={target} asChild>
             Link without icon
           </Link>

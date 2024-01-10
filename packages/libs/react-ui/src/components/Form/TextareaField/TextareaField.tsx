@@ -1,23 +1,37 @@
 import type { IFormFieldWrapperProps, ITextareaProps } from '@components/Form';
-import { FormFieldWrapper, Textarea } from '@components/Form';
+import { Textarea } from '@components/Form';
 import type { FC } from 'react';
-import React from 'react';
+import React, { forwardRef } from 'react';
+import { FormFieldHeader, FormFieldHelper } from '../FormFieldWrapper';
+import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
 
 export interface ITextareaFieldProps
-  extends Omit<IFormFieldWrapperProps, 'htmlFor' | 'children'> {
-  textAreaProps: Omit<ITextareaProps, 'disabled'>;
-}
+  extends Omit<IFormFieldWrapperProps, 'htmlFor' | 'children'>,
+    Omit<ITextareaProps, 'disabled'> {}
 
-export const TextareaField: FC<ITextareaFieldProps> = ({
-  disabled = false,
-  textAreaProps,
-  ...rest
-}) => {
-  const { id } = textAreaProps;
+export const TextareaField: FC<ITextareaFieldProps> = forwardRef<
+  HTMLTextAreaElement,
+  ITextareaFieldProps
+>(function TextareaField(
+  { disabled = false, id, status, tag, info, helperText, label, ...rest },
+  ref,
+) {
+  const statusVal = disabled === true ? 'disabled' : status;
 
   return (
-    <FormFieldWrapper htmlFor={id} disabled={disabled} {...rest}>
-      <Textarea disabled={disabled} {...textAreaProps} />
-    </FormFieldWrapper>
+    <div className={statusVal ? statusVariant[statusVal] : undefined}>
+      {label !== undefined && (
+        <FormFieldHeader htmlFor={id} label={label} tag={tag} info={info} />
+      )}
+
+      <Textarea ref={ref} disabled={disabled} id={id} {...rest} />
+
+      {Boolean(helperText) && status !== 'negative' && (
+        <FormFieldHelper>{helperText}</FormFieldHelper>
+      )}
+      {Boolean(helperText) && status === 'negative' && (
+        <FormFieldHelper>{helperText}</FormFieldHelper>
+      )}
+    </div>
   );
-};
+});

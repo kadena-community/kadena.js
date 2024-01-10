@@ -1,59 +1,42 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
+import { atoms } from '@theme/atoms.css';
+import { tokens } from '@theme/index';
 import { style } from '@vanilla-extract/css';
 import { baseContainerClass } from '../Form.css';
 
 export const containerClass = style([
   baseContainerClass,
-  sprinkles({
-    backgroundColor: {
-      lightMode: '$white',
-      darkMode: '$background',
-    },
-    flexGrow: 1,
-    gap: '$2',
-    paddingLeft: '$4',
-    paddingRight: '$2',
+  atoms({
+    backgroundColor: 'layer-3.default',
+    gap: 'sm',
+    paddingInline: 'md',
   }),
 ]);
 
 export const containerClassDisabled = style([
-  sprinkles({
+  atoms({
     pointerEvents: 'none',
-    backgroundColor: {
-      lightMode: '$gray20',
-      darkMode: '$gray60',
-    },
-    color: {
-      lightMode: '$foreground',
-    },
+    color: 'text.base.inverse.default',
+    backgroundColor: 'layer-3.inverse.default',
   }),
-  {
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
-      },
-    },
-  },
 ]);
 
 export const iconClass = style([
-  sprinkles({
+  atoms({
     alignItems: 'center',
     display: 'flex',
   }),
 ]);
 
 export const selectClass = style([
-  sprinkles({
+  atoms({
     background: 'none',
     border: 'none',
-    color: '$foreground',
+    color: 'text.base.default',
     flexGrow: 1,
     outline: 'none',
-    paddingRight: '$2',
-    paddingY: '$2',
-    fontSize: '$base',
+    paddingInlineEnd: 'lg',
+    paddingBlock: 'sm',
+    fontSize: 'base',
   }),
   {
     backgroundColor: 'inherit',
@@ -63,22 +46,22 @@ export const selectClass = style([
 ]);
 
 export const chevronIconClass = style([
-  sprinkles({
+  atoms({
     display: 'inline-flex',
     alignItems: 'center',
-    marginRight: '$2',
+    marginInlineEnd: 'sm',
     position: 'absolute',
     top: 0,
     bottom: 0,
-    right: '$1',
-    color: '$gray40',
+    right: 0,
+    color: 'icon.base.default',
   }),
   {
     pointerEvents: 'none',
     zIndex: 10,
     selectors: {
       '&:active': {
-        color: vars.colors.$gray40,
+        color: tokens.kda.foundation.color.icon.base.default,
       },
     },
   },

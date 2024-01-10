@@ -11,9 +11,9 @@ export const menuClass = style([
     overflow: 'hidden',
     top: '$17',
     bottom: 0,
-    paddingBottom: '$4',
   }),
   {
+    paddingBlockEnd: vars.sizes.$4,
     height: `calc(100vh - ${vars.sizes.$13})`,
     gridArea: 'menu',
     gridRow: '2 / span 3',
@@ -32,7 +32,7 @@ export const menuClass = style([
         height: `calc(100vh - ${vars.sizes.$18})`,
         transform: 'translateX(0)',
         backgroundColor: 'transparent',
-        paddingBottom: vars.sizes.$40,
+        paddingBlockEnd: vars.sizes.$40,
       },
     }),
   },
@@ -55,9 +55,11 @@ export const menuInLayoutVariants = styleVariants({
   ],
   false: [
     sprinkles({
-      display: 'block',
+      display: {
+        xs: 'block',
+        md: 'none',
+      },
     }),
-    responsiveStyle({ md: { display: 'none' } }),
   ],
 });
 

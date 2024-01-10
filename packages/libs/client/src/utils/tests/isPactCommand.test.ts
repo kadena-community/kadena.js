@@ -13,6 +13,7 @@ describe('isCommand', () => {
         payload: {
           exec: {
             code: '(coin.transfer "alice" "bob" 12.1)',
+            data: {},
           },
         },
         signers: [
@@ -30,7 +31,7 @@ describe('isCommand', () => {
           sender: 'gas-station',
           ttl: 1000,
         },
-      } as IPactCommand),
+      }),
     ).toBe(true);
   });
 
@@ -58,6 +59,7 @@ describe('isCommand', () => {
       payload: {
         exec: {
           code: '(coin.transfer "alice" "bob" 12.1)',
+          data: {},
         },
       },
       signers: [

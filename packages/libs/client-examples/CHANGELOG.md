@@ -1,5 +1,25 @@
 # @kadena/client-examples
 
+## 0.0.10
+
+### Patch Changes
+
+- 9bec1fb8e: intruduce PactReturnType in order to extract pact functions return
+  type
+- 735aeb38f: Fixed dependency resolution in pactjs-cli
+- Updated dependencies [9bec1fb8e]
+- Updated dependencies [4afeb196d]
+- Updated dependencies [c126ca38c]
+- Updated dependencies [c637a9596]
+- Updated dependencies [34e193c77]
+- Updated dependencies [70c126a32]
+- Updated dependencies [15c203ee5]
+- Updated dependencies [a3bb20737]
+  - @kadena/client@1.7.0
+  - @kadena/client-utils@0.2.0
+  - @kadena/chainweb-node-client@0.5.2
+  - @kadena/pactjs@0.4.2
+
 ## 0.0.9
 
 ### Patch Changes

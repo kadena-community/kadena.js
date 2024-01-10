@@ -60,7 +60,6 @@ export type {
   IProfileSummaryLinkProps,
   IProfileSummaryRootProps,
 } from './ProfileSummary';
-export type { IProgressBarProps } from './ProgressBar';
 export type {
   ITBodyProps,
   ITHeadProps,
@@ -70,7 +69,7 @@ export type {
   ITrProps,
 } from './Table';
 export type { ITabItemProps, ITabsProps } from './Tabs';
-export type { ITagProps } from './Tag';
+export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
 export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
 export type { ITreeProps } from './Tree';
@@ -81,7 +80,7 @@ export type {
 } from './Typography';
 
 export { Accordion } from './Accordion';
-export { Breadcrumbs } from './Breadcrumbs';
+export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
@@ -121,10 +120,9 @@ export {
 } from './Notification';
 export { Pagination } from './Pagination';
 export { ProfileSummary } from './ProfileSummary';
-export { ProgressBar } from './ProgressBar';
 export { Table } from './Table';
 export { TabItem, Tabs } from './Tabs';
-export { Tag } from './Tag';
+export { Tag, TagGroup, TagItem } from './Tag';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Tree } from './Tree';

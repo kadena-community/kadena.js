@@ -1,19 +1,18 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import type { ComplexStyleRule } from '@vanilla-extract/css';
+import { atoms } from '@theme/atoms.css';
 
-export const fontVariants: Record<string, ComplexStyleRule> = {
-  main: [sprinkles({ fontFamily: '$main' })],
-  mono: [sprinkles({ fontFamily: '$mono' })],
+export const fontVariants = {
+  main: [atoms({ fontFamily: 'primaryFont' })],
+  mono: [atoms({ fontFamily: 'codeFont' })],
 };
 
-export const transformVariants: Record<string, ComplexStyleRule> = {
-  uppercase: [sprinkles({ textTransform: 'uppercase' })],
-  lowercase: [sprinkles({ textTransform: 'lowercase' })],
-  capitalize: [sprinkles({ textTransform: 'capitalize' })],
-  none: [sprinkles({ textTransform: 'none' })],
+export const transformVariants = {
+  uppercase: [atoms({ textTransform: 'uppercase' })],
+  lowercase: [atoms({ textTransform: 'lowercase' })],
+  capitalize: [atoms({ textTransform: 'capitalize' })],
+  none: [atoms({ textTransform: 'none' })],
 };
 
-export const colorVariants: Record<string, ComplexStyleRule> = {
-  default: [sprinkles({ color: '$neutral4' })],
-  emphasize: [sprinkles({ color: '$neutral6' })],
+export const colorVariants = {
+  default: [atoms({ color: 'text.subtlest.default' })],
+  emphasize: [atoms({ color: 'text.base.default' })],
 };

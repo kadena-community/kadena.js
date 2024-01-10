@@ -1,14 +1,17 @@
-import type { ChainId, IClient, ICommandResult } from '@kadena/client';
-import { Pact, createClient } from '@kadena/client';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
+import { createClient } from '@kadena/client';
+import { details } from '@kadena/client-utils/coin';
+import { dirtyReadClient } from '@kadena/client-utils/core';
+import { hash as hashFunction } from '@kadena/cryptography-utils';
+import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
+import type { Guard } from '../graph/types/graphql-types';
 
 export class PactCommandError extends Error {
-  public commandResult: ICommandResult;
   public pactError: any;
 
-  constructor(message: string, commandResult: ICommandResult, pactError?: any) {
+  constructor(message: string, pactError?: any) {
     super(message);
-    this.commandResult = commandResult;
     this.pactError = pactError;
   }
 }
@@ -20,60 +23,42 @@ export type CommandData = {
 };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type ChainModuleAccountDetails = {
+export type FungibleChainAccountDetails = {
   account: string;
   balance: number;
   guard: {
     keys: string[];
-    pred: 'keys-all' | 'keys-any' | 'keys-two';
+    pred: Guard['predicate'];
   };
 };
 
-function getClient(chainId: ChainId): IClient {
-  return createClient(
-    `http://${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
-  );
-}
-
 export async function getAccountDetails(
-  module: string,
+  fungibleName: string,
   accountName: string,
   chainId: string,
-): Promise<ChainModuleAccountDetails | null> {
-  const commandResult = await getClient(chainId as ChainId).dirtyRead(
-    Pact.builder
-      .execution(Pact.modules[module as 'fungible-v2'].details(accountName))
-      .setMeta({
-        chainId: chainId as ChainId,
-      })
-      .setNetworkId(dotenv.NETWORK_ID)
-      .createTransaction(),
-  );
+): Promise<FungibleChainAccountDetails | null> {
+  let result;
+  try {
+    result = (await details(
+      accountName,
+      dotenv.NETWORK_ID,
+      chainId as ChainId,
+      dotenv.NETWORK_HOST,
+      fungibleName,
+    )) as any;
 
-  if (commandResult.result.status !== 'success') {
-    // If the account does not exist on a chain, we get a row not found error.
-    if (
-      (commandResult.result.error as any).message?.includes(
-        'with-read: row not found',
-      )
-    ) {
+    if (typeof result.balance === 'object') {
+      result.balance = parseFloat(result.balance.decimal);
+    }
+
+    return result as FungibleChainAccountDetails;
+  } catch (error) {
+    if (error.message.includes('with-read: row not found')) {
       return null;
     } else {
-      throw new PactCommandError(
-        'Pact Command failed with error',
-        commandResult,
-        commandResult.result.error,
-      );
+      throw new PactCommandError('Pact Command failed with error', result);
     }
   }
-
-  const result = commandResult.result.data as unknown as any;
-
-  if (typeof result.balance === 'object') {
-    result.balance = parseFloat(result.balance.decimal);
-  }
-
-  return result as ChainModuleAccountDetails;
 }
 
 export async function sendRawQuery(
@@ -81,30 +66,59 @@ export async function sendRawQuery(
   chainId: string,
   data?: CommandData[],
 ): Promise<string> {
-  const commandBuilder = Pact.builder
-    .execution(code)
-    .setMeta({
-      chainId: chainId as ChainId,
-    })
-    .setNetworkId(dotenv.NETWORK_ID);
+  let result;
+  try {
+    result = await dirtyReadClient({
+      host: dotenv.NETWORK_HOST,
+      defaults: {
+        networkId: dotenv.NETWORK_ID,
+        meta: { chainId: chainId as ChainId },
+        payload: {
+          exec: {
+            code,
+            data:
+              data?.reduce(
+                (acc, obj) => {
+                  acc[obj.key] = obj.value;
+                  return acc;
+                },
+                {} as Record<string, unknown>,
+              ) || {},
+          },
+        },
+      },
+    })().execute();
 
-  if (data) {
-    data.forEach((data) => {
-      commandBuilder.addData(data.key, data.value);
-    });
+    return JSON.stringify(result);
+  } catch (error) {
+    throw new PactCommandError('Pact Command failed with error', error);
   }
-
-  const commandResult = await getClient(chainId as ChainId).dirtyRead(
-    commandBuilder.createTransaction(),
-  );
-
-  if (commandResult.result.status !== 'success') {
-    throw new PactCommandError(
-      'Pact Command failed with error',
-      commandResult,
-      commandResult.result.error,
-    );
-  }
-
-  return JSON.stringify(commandResult.result.data);
 }
+
+export const estimateGas = async ({
+  cmd,
+  hash = undefined,
+  sigs = [],
+}: {
+  cmd: string;
+  hash?: string | undefined | null;
+  sigs?: string[] | undefined | null;
+}): Promise<ICommandResult> => {
+  return await createClient(
+    ({ chainId }) =>
+      `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
+  ).local(
+    {
+      cmd,
+      hash: hash || hashFunction(cmd),
+      sigs:
+        sigs?.map((sig) => ({
+          sig: sig,
+        })) || [],
+    },
+    {
+      preflight: true,
+      signatureVerification: false,
+    },
+  );
+};

@@ -1,28 +1,35 @@
 import { accountDetailsLoader } from '../graph/data-loaders/account-details';
-import type { ChainModuleAccount } from '../graph/types/graphql-types';
-import { ChainModuleAccountName } from '../graph/types/graphql-types';
+import { tokenDetailsLoader } from '../graph/data-loaders/token-details';
+import type {
+  FungibleChainAccount,
+  NonFungibleChainAccount,
+} from '../graph/types/graphql-types';
+import {
+  FungibleChainAccountName,
+  NonFungibleChainAccountName,
+} from '../graph/types/graphql-types';
 
-export async function getChainModuleAccount({
+export async function getFungibleChainAccount({
   chainId,
-  moduleName,
+  fungibleName,
   accountName,
 }: {
   chainId: string;
-  moduleName: string;
+  fungibleName: string;
   accountName: string;
-}): Promise<ChainModuleAccount | null> {
+}): Promise<FungibleChainAccount | null> {
   const accountDetails = await accountDetailsLoader.load({
-    moduleName,
+    fungibleName,
     accountName,
     chainId,
   });
 
   return accountDetails !== null
     ? {
-        __typename: ChainModuleAccountName,
+        __typename: FungibleChainAccountName,
         chainId,
         accountName,
-        moduleName,
+        fungibleName,
         guard: {
           keys: accountDetails.guard.keys,
           predicate: accountDetails.guard.pred,
@@ -30,6 +37,33 @@ export async function getChainModuleAccount({
         balance: accountDetails.balance,
         transactions: [],
         transfers: [],
+      }
+    : null;
+}
+
+export async function getNonFungibleChainAccount({
+  chainId,
+  accountName,
+}: {
+  chainId: string;
+  accountName: string;
+}): Promise<NonFungibleChainAccount | null> {
+  const [accountDetails, tokenDetails] = await Promise.all([
+    accountDetailsLoader.load({ accountName, chainId, fungibleName: 'coin' }),
+    tokenDetailsLoader.load({ accountName, chainId }),
+  ]);
+
+  return accountDetails !== null && tokenDetails !== null
+    ? {
+        __typename: NonFungibleChainAccountName,
+        chainId,
+        accountName,
+        guard: {
+          keys: accountDetails.guard.keys,
+          predicate: accountDetails.guard.pred,
+        },
+        nonFungibles: tokenDetails,
+        transactions: [],
       }
     : null;
 }

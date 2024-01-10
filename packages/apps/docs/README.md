@@ -12,7 +12,7 @@ We encourage everyone with an interest in improving Kadena documentation to
 contribute content, submit issues, and suggest changes. This guide describes how
 you can make changes to the documentation website directly by editing source
 files or indirectly by requesting updates. You can follow these instructions
-whether you are an internal or external contributor.
+whether you are an internal or external contributor
 
 ## Before you begin
 

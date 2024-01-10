@@ -1,3 +1,4 @@
+import type { PactReturnType } from '@kadena/client';
 import { isSignedTransaction, Pact, signWithChainweaver } from '@kadena/client';
 import type { IPactDecimal } from '@kadena/types';
 import { listen, submit } from './util/client';
@@ -13,16 +14,18 @@ const receiverAccount: string =
 
 const NETWORK_ID: string = 'testnet04';
 
+type TransferReturnType = PactReturnType<typeof Pact.modules.coin.transfer>;
+
 async function transfer(
   sender: string,
   receiver: string,
   amount: IPactDecimal,
-): Promise<void> {
+): Promise<TransferReturnType> {
   const transaction = Pact.builder
     .execution(Pact.modules.coin.transfer(sender, receiver, amount))
-    .addSigner(keyFromAccount(sender), (withCapability) => [
-      withCapability('coin.GAS'),
-      withCapability('coin.TRANSFER', sender, receiver, amount),
+    .addSigner(keyFromAccount(sender), (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', sender, receiver, amount),
     ])
     .setMeta({ chainId: '0', senderAccount: sender })
     .setNetworkId(NETWORK_ID)
@@ -40,8 +43,10 @@ async function transfer(
       throw response.result.error;
     } else {
       console.log(response.result);
+      return response.result.data as TransferReturnType;
     }
   }
+  throw new Error('Transaction not signed');
 }
 
 transfer(senderAccount, receiverAccount, { decimal: '1' }).catch(console.error);

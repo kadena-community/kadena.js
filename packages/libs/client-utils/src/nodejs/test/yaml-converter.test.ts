@@ -179,7 +179,6 @@ describe('yaml-converter', () => {
       );
 
       expect(res).toStrictEqual({
-        data: null,
         meta: {
           chainId: '1',
           creationTime: 1698278400,
@@ -254,7 +253,6 @@ describe('yaml-converter', () => {
       );
 
       expect(res).toStrictEqual({
-        data: null,
         meta: {
           chainId: '1',
           creationTime: 1698278400,
@@ -310,8 +308,10 @@ describe('yaml-converter', () => {
       const args = {
         sender_key:
           'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         marmalade_user_key_1:
           '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         marmalade_user_key_2:
           'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
         marmalade_namespace: 'test-namespace',
@@ -345,10 +345,6 @@ describe('yaml-converter', () => {
               'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
           },
         ],
-        data: {
-          ns: 'test-namespace',
-          upgrade: false,
-        },
         networkId: 'testnet',
         payload: {
           exec: {

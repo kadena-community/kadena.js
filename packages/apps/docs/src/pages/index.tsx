@@ -9,11 +9,10 @@ import {
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { getBlogPosts } from '@/utils/getBlogPosts';
-import getMostPopularPages from '@/utils/getMostPopularPages';
+import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -34,8 +33,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Box marginBottom="$20">
-            <Grid gap="$lg" columns={{ sm: 1, md: 2 }}>
+          <Box className={sprinkles({ marginBlockEnd: '$20' })}>
+            <Grid gap="lg" columns={{ sm: 1, md: 2 }}>
               <GridItem rowSpan={2}>
                 <DocsCard
                   label="Start with core concepts"
@@ -63,7 +62,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="warning"
                   background="contribute"
                 >
-                  <Box marginY="$4">
+                  <Box marginBlock="md">
                     <Button
                       as="a"
                       href="/build/guides/election-dapp-tutorial"
@@ -125,7 +124,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </Grid>
           </Box>
 
-          <Stack direction="column" gap="$3xl">
+          <Stack flexDirection="column" gap="xxxl">
             <BrowseSection title="Download useful tools" direction="row">
               <BrowseSection.LinkBlock
                 title="Bootstrap Kadena dApp"
@@ -225,14 +224,13 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const mostPopularPages = await getMostPopularPages();
-  const blogPosts = await getBlogPosts();
-
   return {
     props: {
-      popularPages: mostPopularPages,
-      blogPosts,
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      ...(await getPageConfig({
+        blogPosts: true,
+        popularPages: '/',
+        filename: __filename,
+      })),
       frontmatter: {
         title: 'Welcome to Kadena docs',
         menu: 'Pact',

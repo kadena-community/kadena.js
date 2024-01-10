@@ -5,7 +5,7 @@
 
 // https://stackoverflow.com/questions/54696729/postgresql-add-serial-column-to-existing-table-with-values-based-on-order-by
 // https://stackoverflow.com/questions/16474720/alter-data-type-of-a-column-to-serial
-import { prismaClient } from '../db/prismaClient';
+import { prismaClient } from '../db/prisma-client';
 
 async function main(): Promise<void> {
   const services = ['chainweb-mining-client', 'chainweb-node', 'chainweb-data'];

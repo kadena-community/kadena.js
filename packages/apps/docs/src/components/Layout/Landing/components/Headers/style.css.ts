@@ -21,7 +21,7 @@ export const headerClass = style([
         position: 'absolute',
         inset: 0,
         bottom: `calc(0px - ${vars.sizes.$5})`,
-        background: 'url("/assets/bg-horizontal.png")',
+        background: 'url("/assets/bg-horizontal.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
         backgroundPositionY: '0%',
@@ -51,15 +51,13 @@ export const wrapperClass = style([
     flexDirection: 'column',
     alignItems: 'flex-start',
     width: '100%',
-    paddingTop: '$20',
-
-    paddingBottom: '$20',
-
-    marginX: 'auto',
-    marginBottom: '$16',
   }),
   {
     paddingInline: vars.sizes.$10,
+    paddingBlockStart: vars.sizes.$20,
+    paddingBlockEnd: vars.sizes.$20,
+    marginInline: 'auto',
+    marginBlockEnd: vars.sizes.$16,
     maxWidth: $$pageWidth,
     backgroundColor: $$backgroundOverlayColor,
     boxSizing: 'border-box',

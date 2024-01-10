@@ -1,4 +1,4 @@
-import type { ChainId } from '@kadena/client';
+import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { execution } from '@kadena/client/fp';
 
@@ -10,23 +10,32 @@ import { pipe } from 'ramda';
 /**
  * @alpha
  */
-export const getBalance = (
+export const getBalance = async (
   account: string,
   networkId: string,
   chainId: ChainId,
   host?: IClientConfig['host'],
   contract: string = 'coin',
 ) => {
-  const balance = pipe(
+  const result = await pipe(
     (name) => Pact.modules[contract as 'coin']['get-balance'](name),
     execution,
-    dirtyReadClient({
+    dirtyReadClient<PactReturnType<IPactModules['coin']['get-balance']>>({
       host,
       defaults: {
         networkId,
         meta: { chainId },
       },
     }),
-  );
-  return balance(account).execute();
+  )(account).execute();
+
+  if (typeof result === 'object') {
+    return result.decimal;
+  }
+
+  if (result !== undefined) {
+    return (result as unknown as number).toString();
+  }
+
+  return result;
 };

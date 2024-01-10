@@ -1,4 +1,7 @@
-import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
+import {
+  PrismaClientInitializationError,
+  PrismaClientKnownRequestError,
+} from '@prisma/client/runtime/library';
 import { PactCommandError } from '@services/node-service';
 import { GraphQLError } from 'graphql';
 
@@ -12,10 +15,27 @@ export function normalizeError(error: any): GraphQLError {
         type: error.name,
         message: error.message,
         description:
-          'Prisma Client failed to initialize. Are you sure the database is running and reachable?',
+          'The Prisma client failed to initialize. Are you sure the database is running and reachable?',
         data: error.stack,
       },
     });
+  }
+  if (error instanceof PrismaClientKnownRequestError) {
+    if (
+      error.message.includes(
+        'Timed out fetching a new connection from the connection pool',
+      )
+    ) {
+      return new GraphQLError('Prisma Client Connection Pool Timeout', {
+        extensions: {
+          type: error.name,
+          message: 'Prisma Client Connection Pool Timeout',
+          description:
+            'The Prisma client failed to fetch a new connection from the connection pool. This is most likely due to the database being overloaded.',
+          data: error.stack,
+        },
+      });
+    }
   }
 
   if (error instanceof PactCommandError) {
@@ -27,9 +47,7 @@ export function normalizeError(error: any): GraphQLError {
     } else if (error.pactError?.message.startsWith('Cannot resolve')) {
       description =
         'The requested module or function was most likely not found.';
-    } else if (
-      (error.commandResult as any).message.includes('Failed reading: mzero')
-    ) {
+    } else if (error.pactError?.message.includes('Failed reading: mzero')) {
       description =
         'Empty code was most likely sent to the Chainweb Node. Please check your arguments.';
     }
@@ -37,12 +55,8 @@ export function normalizeError(error: any): GraphQLError {
     return new GraphQLError('Chainweb Node Command Failure', {
       extensions: {
         type: error.pactError?.type || 'UnknownType',
-        message:
-          error.pactError?.message ||
-          (error.commandResult as any).message ||
-          error.message,
+        message: error.pactError?.message || error.message,
         description,
-        data: error.commandResult,
       },
     });
   }

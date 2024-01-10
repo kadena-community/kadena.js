@@ -1,27 +1,27 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { atoms } from '@theme/atoms.css';
+import { tokens } from '@theme/index';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const base = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
-    backgroundColor: '$neutral6',
-    fontSize: '$sm',
-    paddingY: '$xs',
-    paddingX: '$sm',
-    borderRadius: '$md',
-    color: '$neutral1',
+    backgroundColor: 'layer-3.default',
+    fontSize: 'sm',
+    paddingBlock: 'sm',
+    paddingInline: 'md',
+    borderRadius: 'md',
+    color: 'text.base.default',
     pointerEvents: 'none',
-    width: 'max-content',
-    maxWidth: '$maxContentWidth',
+    maxWidth: 'content.maxWidth',
   }),
   {
+    width: 'max-content',
     ':before': {
       content: '',
       position: 'absolute',
       borderTop: '6px solid transparent',
       borderRight: '6px solid transparent',
-      borderBottom: `6px solid ${vars.colors.$neutral6}`,
+      borderBottom: `6px solid ${tokens.kda.foundation.color.background['layer-3'].default}`,
       borderLeft: '6px solid transparent',
     },
   },
@@ -31,7 +31,7 @@ export const tooltipPositionVariants = styleVariants({
   bottom: [
     base,
     {
-      marginTop: vars.sizes.$sm,
+      marginTop: tokens.kda.foundation.spacing.md,
       top: '100%',
       left: '50%',
       transform: 'translateX(-50%)',
@@ -45,7 +45,7 @@ export const tooltipPositionVariants = styleVariants({
   top: [
     base,
     {
-      marginBottom: vars.sizes.$sm,
+      marginBottom: tokens.kda.foundation.spacing.md,
       bottom: '100%',
       left: '50%',
       transform: 'translateX(-50%)',
@@ -59,7 +59,7 @@ export const tooltipPositionVariants = styleVariants({
   right: [
     base,
     {
-      marginLeft: vars.sizes.$sm,
+      marginLeft: tokens.kda.foundation.spacing.md,
       left: '100%',
       top: '50%',
       transform: 'translateY(-50%)',
@@ -73,7 +73,7 @@ export const tooltipPositionVariants = styleVariants({
   left: [
     base,
     {
-      marginRight: vars.sizes.$sm,
+      marginRight: tokens.kda.foundation.spacing.md,
       right: '100%',
       top: '50%',
       transform: 'translateY(-50%)',

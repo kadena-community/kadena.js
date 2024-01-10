@@ -41,13 +41,13 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
   return (
     <div>
       <Card fullWidth disabled={disabled}>
-        <Grid columns={2} gap="$3xl">
+        <Grid columns={2} gap="xxxl">
           <GridItem>
             <Heading as="h5">{heading}</Heading>
           </GridItem>
           <GridItem>
             <div className={helperStyle}>
-              <Text size="sm">
+              <Text variant="smallest">
                 {helperHref ? (
                   <Link className={helperTextIconStyle} href={helperHref}>
                     <span>{helper}</span>

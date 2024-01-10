@@ -46,7 +46,6 @@ export type {
   IPaginationProps,
   IProfileSummaryLinkProps,
   IProfileSummaryRootProps,
-  IProgressBarProps,
   ISelectFieldProps,
   ISelectProps,
   IStackProps,
@@ -55,6 +54,8 @@ export type {
   ITabItemProps,
   ITableProps,
   ITabsProps,
+  ITagGroupProps,
+  ITagItemProps,
   ITagProps,
   ITdProps,
   ITextFieldProps,
@@ -73,6 +74,7 @@ export {
   Accordion,
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
   ContentHeader,
@@ -100,7 +102,6 @@ export {
   Pagination,
   ProductIcon,
   ProfileSummary,
-  ProgressBar,
   Select,
   SelectField,
   Stack,
@@ -109,6 +110,8 @@ export {
   Table,
   Tabs,
   Tag,
+  TagGroup,
+  TagItem,
   Text,
   TextField,
   Textarea,
@@ -120,3 +123,6 @@ export {
   maskValue,
   useDialog,
 } from './components';
+
+// re-exports from 'react-aria'
+export { RouterProvider } from 'react-aria';

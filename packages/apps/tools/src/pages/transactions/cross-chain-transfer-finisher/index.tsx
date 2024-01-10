@@ -26,6 +26,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Grid,
   GridItem,
@@ -153,7 +154,7 @@ const CrossChainTransferFinisher: FC = () => {
 
     const status = await client.listen(requestObject);
 
-    const pactId = status.continuation?.pactId;
+    const pactId = status.continuation!.pactId;
 
     const requestKeyOrError = await finishXChainTransfer(
       {
@@ -346,10 +347,10 @@ const CrossChainTransferFinisher: FC = () => {
         ]}
       />
 
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Cross Chain Finisher')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
+      </Breadcrumbs>
 
       <Heading as="h3" transform="capitalize" bold={false}>
         {t('Finish transaction')}
@@ -361,25 +362,23 @@ const CrossChainTransferFinisher: FC = () => {
 
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
-          <Stack direction="column">
+          <Stack flexDirection="column">
             <FormItemCard
               heading={t('Search Request')}
               helper={t('Where can I find the request key?')}
               helperHref="#"
               disabled={false}
             >
-              <Box marginBottom="$4" />
+              <Box marginBlockEnd="md" />
               <Grid>
                 <GridItem>
                   <RequestKeyField
                     helperText={showInputHelper}
                     status={showInputError}
-                    inputProps={{
-                      ...register('requestKey'),
-                      onKeyUp: onCheckRequestKey,
-                      onChange: onRequestKeyChange,
-                      value: requestKey,
-                    }}
+                    {...register('requestKey')}
+                    value={requestKey}
+                    onChange={onRequestKeyChange}
+                    onKeyUp={onCheckRequestKey}
                     error={errors.requestKey}
                   />
                 </GridItem>
@@ -392,8 +391,7 @@ const CrossChainTransferFinisher: FC = () => {
               helperHref="#"
               disabled={false}
             >
-              <Box marginBottom="$4" />
-              <Grid columns={1}>
+              <Grid columns={1} marginBlockStart="md">
                 <GridItem>
                   <AccountNameField
                     label={t('Gas Payer')}
@@ -407,20 +405,17 @@ const CrossChainTransferFinisher: FC = () => {
                 </GridItem>
               </Grid>
 
-              <Box marginBottom="$4" />
-              <Grid columns={2}>
+              <Grid columns={2} marginBlockStart="md">
                 <GridItem>
                   <TextField
                     disabled={true}
                     label={t('Gas Price')}
                     info={t('approx. USD 000.1 ¢')}
                     leadingTextWidth="$16"
-                    inputProps={{
-                      ...register('gasPrice', { shouldUnregister: true }),
-                      id: 'gas-price-input',
-                      placeholder: t('Enter Gas Price'),
-                      leadingText: t('KDA'),
-                    }}
+                    {...register('gasPrice', { shouldUnregister: true })}
+                    id="gas-price-input"
+                    placeholder={t('Enter Gas Price')}
+                    leadingText={t('KDA')}
                   />
                 </GridItem>
                 <GridItem>
@@ -430,11 +425,9 @@ const CrossChainTransferFinisher: FC = () => {
                       'This input field will only be enabled if the user is in expert mode',
                     )}
                     label={t('Gas Limit')}
-                    inputProps={{
-                      ...register('gasLimit', { shouldUnregister: true }),
-                      id: 'gas-limit-input',
-                      placeholder: t('Enter Gas Limit'),
-                    }}
+                    {...register('gasLimit', { shouldUnregister: true })}
+                    id="gas-limit-input"
+                    placeholder={t('Enter Gas Limit')}
                   />
                 </GridItem>
               </Grid>
@@ -446,7 +439,7 @@ const CrossChainTransferFinisher: FC = () => {
                 helper={t('How do I use the Signature data')}
                 helperHref="#"
               >
-                <Box marginBottom="$4" />
+                <Box marginBlockEnd="md" />
                 <Grid columns={1}>
                   <GridItem>
                     <div className={textareaContainerStyle}>

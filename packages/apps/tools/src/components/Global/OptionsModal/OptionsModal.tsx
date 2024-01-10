@@ -94,12 +94,12 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
                     />
                   )}
                   <IconButton title="Radio" icon={value.icon} color="primary" />
-                  <Stack direction="column" marginX="$md">
+                  <Stack flexDirection="column" marginInline="md">
                     <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>
                       {value.tag !== undefined ? <Tag>{value.tag}</Tag> : null}
                     </div>
-                    <Text as="p" size="sm">
+                    <Text as="p" variant="smallest">
                       {value.text}
                     </Text>
                   </Stack>

@@ -1,15 +1,22 @@
+/* eslint @typescript-eslint/no-explicit-any: 0 */
 import type { StyleRule } from '@vanilla-extract/css';
+import { fallbackVar } from '@vanilla-extract/css';
 import type { Properties } from 'csstype';
+import get from 'lodash.get';
 import omit from 'lodash.omit';
+import { isNullOrUndefined } from '../utils/is';
+import type { FlattenObject, ObjectPathLeaves } from '../utils/object';
+import { flattenObject } from '../utils/object';
+import { tokens } from './tokens/contract.css';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const breakpoints = {
   xs: '',
-  sm: `screen and (min-width: ${640 / 16}rem)`,
-  md: `screen and (min-width: ${768 / 16}rem)`,
-  lg: `screen and (min-width: ${1024 / 16}rem)`,
-  xl: `screen and (min-width: ${1280 / 16}rem)`,
-  xxl: `screen and (min-width: ${1536 / 16}rem)`,
+  sm: 'screen and (min-width: 40rem)',
+  md: 'screen and (min-width: 48rem)',
+  lg: 'screen and (min-width: 64rem)',
+  xl: 'screen and (min-width: 80rem)',
+  xxl: 'screen and (min-width: 96rem)',
 };
 
 export type Breakpoint = keyof typeof breakpoints;
@@ -71,3 +78,26 @@ export const mapToProperty =
       ? responsiveStyle({ [breakpoint]: styleRule })
       : styleRule;
   };
+
+type Token = string | { [key: string]: Token };
+
+// eslint-disable-next-line
+const ignoredTokens = ['@hover', '@focus', '@disabled'] as const;
+type IgnoredToken = (typeof ignoredTokens)[number];
+
+export function flattenTokens<T extends Record<string, Token>>(
+  tokens: T,
+): FlattenObject<T, IgnoredToken> {
+  return flattenObject(tokens, ignoredTokens);
+}
+
+export function token(
+  path: ObjectPathLeaves<typeof tokens.kda.foundation>,
+  fallback?: string,
+): string {
+  const v = get(tokens.kda.foundation, path);
+  if (!isNullOrUndefined(fallback)) {
+    return fallbackVar(v, fallback);
+  }
+  return v;
+}

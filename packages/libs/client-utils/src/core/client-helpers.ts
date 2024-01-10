@@ -1,3 +1,5 @@
+/* eslint-disable @kadena-dev/no-eslint-disable */
+/* eslint-disable @typescript-eslint/naming-convention */
 import type { ChainId } from '@kadena/client';
 
 import { crossChain } from './cross-chain';
@@ -8,32 +10,39 @@ import type { IAccount } from './utils/helpers';
 import type { WithEmitter } from './utils/with-emitter';
 import { withEmitter } from './utils/with-emitter';
 
-import { pipe } from 'ramda';
+import type { PactValue } from '@kadena/types';
 
 /**
  * @alpha
  */
-export const submitClient = pipe(submitAndListen, withEmitter);
+export const submitClient = <T = PactValue>(
+  ...args: Parameters<typeof submitAndListen<T>>
+) => withEmitter(submitAndListen<T>(...args));
 
 /**
  * @alpha
  */
-export const preflightClient = pipe(preflight, withEmitter);
+export const preflightClient = <T = PactValue>(
+  ...args: Parameters<typeof preflight<T>>
+) => withEmitter(preflight<T>(...args));
 
 /**
  * @alpha
  */
-export const dirtyReadClient = pipe(dirtyRead, withEmitter);
+export const dirtyReadClient = <T = PactValue>(
+  ...args: Parameters<typeof dirtyRead<T>>
+) => withEmitter(dirtyRead<T>(...args));
 
 /**
  * @alpha
  */
-export const crossChainClient = pipe(
-  crossChain,
-  (cb) => (targetChainId: ChainId, targetChainGasPayer: IAccount) =>
+export const crossChainClient =
+  <T = PactValue>(...args: Parameters<typeof crossChain<T>>) =>
+  (targetChainId: ChainId, targetChainGasPayer: IAccount) =>
     (
       withEmitter as unknown as WithEmitter<
         [{ event: 'poll-spv'; data: string }]
       >
-    )((emit) => cb({ emit, targetChainGasPayer, targetChainId })),
-);
+    )((emit) =>
+      crossChain<T>(...args)({ emit, targetChainGasPayer, targetChainId }),
+    );

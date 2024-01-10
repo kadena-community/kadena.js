@@ -1,43 +1,34 @@
-import { sprinkles } from '@theme/sprinkles.css';
+import { atoms } from '@theme/atoms.css';
 import { style } from '@vanilla-extract/css';
 
-export const labelClass = style([
-  sprinkles({
-    fontSize: '$sm',
-    color: '$foreground',
-    fontWeight: '$bold',
-    textTransform: 'capitalize',
-  }),
-]);
-
 export const headerClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     alignItems: 'center',
-    gap: '$3',
-    marginY: '$2',
+    gap: 'sm',
+    marginBlock: 'sm',
   }),
 ]);
 
 export const infoClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     alignItems: 'center',
-    gap: '$1',
-    fontSize: '$xs',
-    marginLeft: 'auto',
-    color: '$foreground',
+    gap: 'xxs',
+    fontSize: 'xs',
+    marginInlineStart: 'auto',
+    color: 'text.base.default',
   }),
 ]);
 
 export const tagClass = style([
-  sprinkles({
-    backgroundColor: '$foreground',
-    color: '$background',
-    borderRadius: '$sm',
-    paddingX: '$2',
-    fontSize: '$xs',
-    fontWeight: '$semiBold',
+  atoms({
+    backgroundColor: 'layer-3.inverse.default',
+    color: 'text.base.inverse.default',
+    borderRadius: 'sm',
+    paddingInline: 'sm',
+    fontSize: 'xs',
+    fontWeight: 'bodyFont.bold',
     display: 'inline-block',
   }),
   {

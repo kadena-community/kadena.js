@@ -3,13 +3,13 @@ import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
 export const blogitem = style([
   sprinkles({
-    paddingY: '$10',
-    paddingX: '$10',
     backgroundColor: 'transparent',
   }),
   {
-    marginTop: `${vars.sizes.$8}!important`,
-    marginBottom: `${vars.sizes.$8}!important`,
+    paddingBlock: vars.sizes.$10,
+    paddingInline: vars.sizes.$10,
+    marginBlockStart: `${vars.sizes.$8}!important`,
+    marginBlockEnd: `${vars.sizes.$8}!important`,
     willChange: 'background-color',
     transition: 'background-color .2s ease',
 
@@ -38,7 +38,7 @@ export const link = style([
 
 export const footer = style([
   sprinkles({
-    marginTop: '$3',
+    marginBlockStart: '$3',
     color: '$neutral3',
   }),
 ]);
@@ -58,12 +58,6 @@ export const metaItem = style([
       },
     },
   },
-]);
-
-export const tagLinkClass = style([
-  sprinkles({
-    marginRight: '$2',
-  }),
 ]);
 
 export const figureClass = style([
@@ -147,15 +141,15 @@ export const gridWrapperClass = style([
 export const gridBlogItemImage = style({});
 export const gridBlogItemContent = styleVariants({
   default: {
-    marginTop: vars.sizes.$2,
-    marginBottom: vars.sizes.$4,
+    marginBlockStart: vars.sizes.$2,
+    marginBlockEnd: vars.sizes.$4,
   },
   large: {},
 });
 
 export const footerTags = style({
   display: 'block',
-  marginTop: vars.sizes.$3,
+  marginBlockStart: vars.sizes.$3,
 });
 
 globalStyle(

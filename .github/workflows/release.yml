@@ -27,6 +27,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           show-progress: false
+          token: ${{ secrets.RELEASE_ACTION_GITHUB_TOKEN }}
 
       - uses: pnpm/action-setup@v2
         with:

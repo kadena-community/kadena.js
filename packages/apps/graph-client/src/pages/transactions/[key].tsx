@@ -1,12 +1,16 @@
 import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
-import LoaderAndError from '@/components/LoaderAndError/loader-and-error';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
+import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
+import { getTransactionByRequestKey } from '@/graphql/subscriptions.graph';
 import { formatCode, formatLisp } from '@/utils/formatter';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Link,
   Notification,
+  Stack,
   SystemIcon,
   Table,
 } from '@kadena/react-ui';
@@ -16,21 +20,28 @@ import React from 'react';
 const RequestKey: React.FC = () => {
   const router = useRouter();
 
+  const variables = { requestKey: router.query.key as string };
+
   const { loading, data, error } = useGetTransactionByRequestKeySubscription({
-    variables: { requestKey: router.query.key as string },
+    variables,
   });
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item href={`${routes.TRANSACTIONS}`}>
-          Transactions
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item>Transaction</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Stack justifyContent="space-between">
+        <Breadcrumbs>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem href={`${routes.TRANSACTIONS}`}>
+            Transactions
+          </BreadcrumbsItem>
+          <BreadcrumbsItem>Transaction</BreadcrumbsItem>
+        </Breadcrumbs>
+        <GraphQLQueryDialog
+          queries={[{ query: getTransactionByRequestKey, variables }]}
+        />
+      </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}
@@ -55,7 +66,7 @@ const RequestKey: React.FC = () => {
                 <Table.Td>
                   {data?.transaction?.badResult && (
                     <Notification
-                      color="negative"
+                      intent="negative"
                       icon={<SystemIcon.Close />}
                       role="status"
                     >
@@ -71,7 +82,7 @@ const RequestKey: React.FC = () => {
                   )}
                   {data?.transaction?.goodResult && (
                     <Notification
-                      color="positive"
+                      intent="positive"
                       icon={<SystemIcon.Check />}
                       role="status"
                     >
@@ -82,7 +93,7 @@ const RequestKey: React.FC = () => {
                   )}
                   {!data?.transaction?.goodResult &&
                     !data?.transaction?.badResult && (
-                      <Notification color="warning" role="status">
+                      <Notification intent="warning" role="status">
                         Unknown transaction status
                       </Notification>
                     )}

@@ -4,10 +4,10 @@ import { style } from '@vanilla-extract/css';
 export const bottomWrapperClass = style([
   sprinkles({
     width: '100%',
-    paddingTop: '$20',
-    marginTop: '$20',
   }),
   {
+    paddingBlockStart: vars.sizes.$20,
+    marginBlockStart: vars.sizes.$20,
     borderTop: `1px solid ${vars.colors.$borderDefault}`,
   },
 ]);
@@ -18,11 +18,11 @@ export const articleTopMetadataClass = style([
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    marginBottom: '$5',
-    paddingX: 0,
-    paddingY: '$5',
   }),
   {
+    marginBlockEnd: vars.sizes.$5,
+    paddingInline: 0,
+    paddingBlock: vars.sizes.$5,
     borderBottom: `1px solid ${vars.colors.$borderDefault}`,
     opacity: '0.6',
   },
@@ -75,10 +75,12 @@ export const headerFigureClass = style([
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: '$10',
     width: '100%',
     position: 'relative',
   }),
+  {
+    marginBlockEnd: vars.sizes.$10,
+  },
 ]);
 
 export const headerImageClass = style({
@@ -87,16 +89,3 @@ export const headerImageClass = style({
   inset: 0,
   width: '100%',
 });
-
-export const tagLinkClass = style([
-  sprinkles({
-    marginX: '$1',
-  }),
-  {
-    selectors: {
-      '&:hover': {
-        opacity: '.8',
-      },
-    },
-  },
-]);

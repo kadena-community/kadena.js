@@ -2,18 +2,14 @@ import type { ITextFieldProps } from '@components/Form';
 import { TextField } from '@components/Form';
 import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
 import { SystemIcon } from '@components/Icon';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
 import React from 'react';
 
-type StoryProps = {
-  helperText: string;
-  leadingText: string;
-  icon: keyof typeof SystemIcon;
-} & ITextFieldProps;
-
-const meta: Meta<StoryProps> = {
+const meta: Meta<ITextFieldProps> = {
   title: 'Form/TextField',
+  component: TextField,
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {
@@ -55,16 +51,8 @@ const meta: Meta<StoryProps> = {
         type: 'text',
       },
     },
-    leadingTextWidth: {
-      description:
-        'Width of the leading text. Defaults to the size of the text itself.',
-      control: {
-        type: 'select',
-      },
-      options: [
-        undefined,
-        ...Object.keys(vars.sizes).map((key) => key as keyof typeof vars.sizes),
-      ],
+    startIcon: {
+      description: 'Initial icon that can be passed as a prop.',
     },
     status: {
       options: [
@@ -87,18 +75,10 @@ const meta: Meta<StoryProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    icon: {
-      description:
-        'Icon rendered inside the input to the left of the input text.',
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
-      control: {
-        type: 'select',
-      },
-    },
   },
 };
 
-type Story = StoryObj<StoryProps>;
+type Story = StoryObj<ITextFieldProps>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -115,20 +95,18 @@ export const Group: Story = {
     label: 'Label',
     disabled: false,
     status: undefined,
-    icon: 'Account',
+    startIcon: <SystemIcon.Account />,
     leadingText: 'Leading',
-    leadingTextWidth: undefined,
   },
   render: ({
     leadingText,
-    icon,
+    startIcon,
     disabled,
     status,
     tag,
     helperText,
     info,
     label,
-    leadingTextWidth,
   }) => {
     return (
       <TextField
@@ -138,13 +116,10 @@ export const Group: Story = {
         status={status}
         disabled={disabled}
         helperText={helperText}
-        leadingTextWidth={leadingTextWidth}
-        inputProps={{
-          id: 'inputStory',
-          leadingText,
-          icon,
-          placeholder: 'This is a placeholder',
-        }}
+        id="inputStory"
+        leadingText={leadingText}
+        startIcon={startIcon}
+        placeholder="This is a placeholder"
       />
     );
   },

@@ -1,6 +1,6 @@
 import type {
-  ChainModuleAccountTransfersConnection,
-  ModuleAccountTransfersConnection,
+  FungibleAccountTransfersConnection,
+  FungibleChainAccountTransfersConnection,
   Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
@@ -9,13 +9,13 @@ import { truncate } from '@utils/truncate';
 import React from 'react';
 
 interface ICompactTransfersTableProps {
-  moduleName: string;
+  fungibleName: string;
   accountName: string;
   chainId?: string;
   truncateColumns?: boolean;
   transfers:
-    | ModuleAccountTransfersConnection
-    | ChainModuleAccountTransfersConnection;
+    | FungibleAccountTransfersConnection
+    | FungibleChainAccountTransfersConnection;
 
   description?: string;
 }
@@ -29,7 +29,7 @@ export const CompactTransfersTable = (
   props: ICompactTransfersTableProps,
 ): JSX.Element => {
   const {
-    moduleName,
+    fungibleName,
     accountName,
     chainId,
     truncateColumns,
@@ -65,17 +65,17 @@ export const CompactTransfersTable = (
           description ? description : 'All transfers from this fungible'
         }
       />
-      <Box margin={'$4'} />
+      <Box margin="sm" />
       <Button
         variant="compact"
         as="a"
-        href={`${routes.ACCOUNT_TRANSFERS}/${moduleName}/${accountName}${
+        href={`${routes.ACCOUNT_TRANSFERS}/${fungibleName}/${accountName}${
           chainId !== undefined ? `?chain=${chainId}` : ''
         }`}
       >
         View all transfers
       </Button>
-      <Box margin={'$2'} />
+      <Box margin="xs" />
       <Table.Root wordBreak="break-word">
         <Table.Head>
           <Table.Tr>
@@ -120,7 +120,7 @@ export const CompactTransfersTable = (
                 <Table.Td>{transfer.amount}</Table.Td>
                 <Table.Td>
                   <Link
-                    href={`${routes.ACCOUNT}/${moduleName}/${transfer.senderAccount}`}
+                    href={`${routes.ACCOUNT}/${fungibleName}/${transfer.senderAccount}`}
                   >
                     <span title={transfer.senderAccount}>
                       {truncateColumns
@@ -132,7 +132,7 @@ export const CompactTransfersTable = (
                 <Table.Td>
                   {!crossChainCounterPart ? (
                     <Link
-                      href={`${routes.ACCOUNT}/${moduleName}/${transfer.receiverAccount}`}
+                      href={`${routes.ACCOUNT}/${fungibleName}/${transfer.receiverAccount}`}
                     >
                       <span title={transfer.receiverAccount}>
                         {truncateColumns
@@ -142,7 +142,7 @@ export const CompactTransfersTable = (
                     </Link>
                   ) : (
                     <Link
-                      href={`${routes.ACCOUNT}/${moduleName}/${crossChainCounterPart.receiverAccount}`}
+                      href={`${routes.ACCOUNT}/${fungibleName}/${crossChainCounterPart.receiverAccount}`}
                     >
                       <span title={crossChainCounterPart.receiverAccount}>
                         {truncateColumns

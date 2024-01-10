@@ -8,9 +8,9 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
 import authorsData from '@/data/authors.json';
+import { getPageConfig } from '@/utils/config';
 import { getLatestBlogPostsOfAuthor } from '@/utils/getBlogPosts';
 import type { IAuthorInfo, IPageProps } from '@kadena/docs-tools';
-import { checkSubTreeForActive, getPathName } from '@kadena/docs-tools';
 import { Card, Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
@@ -30,7 +30,7 @@ const Home: FC<IProps> = ({ frontmatter, authors }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Stack direction="column" gap="$2xl">
+          <Stack flexDirection="column" gap="xxl">
             <AuthorList>
               {authors.map((author) => (
                 <AuthorListItem key={author.id}>
@@ -65,7 +65,11 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      leftMenuTree: await checkSubTreeForActive(getPathName(__filename)),
+      ...(await getPageConfig({
+        blogPosts: true,
+        popularPages: '/',
+        filename: __filename,
+      })),
       authors,
       frontmatter: {
         title: 'BlogChain authors',

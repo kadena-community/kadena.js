@@ -1,7 +1,9 @@
 import type {
   BlockTransactionsConnection,
-  ChainModuleAccountTransactionsConnection,
-  ModuleAccountTransactionsConnection,
+  FungibleAccountTransactionsConnection,
+  FungibleChainAccountTransactionsConnection,
+  NonFungibleAccountTransactionsConnection,
+  NonFungibleChainAccountTransactionsConnection,
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
@@ -14,10 +16,12 @@ interface ICompactTransactionsTableProps {
   description?: string;
   truncateColumns?: boolean;
   transactions:
-    | ModuleAccountTransactionsConnection
-    | ChainModuleAccountTransactionsConnection
+    | FungibleAccountTransactionsConnection
+    | FungibleChainAccountTransactionsConnection
     | BlockTransactionsConnection
-    | QueryTransactionsConnection;
+    | QueryTransactionsConnection
+    | NonFungibleAccountTransactionsConnection
+    | NonFungibleChainAccountTransactionsConnection;
 }
 
 export const CompactTransactionsTable = (
@@ -36,11 +40,11 @@ export const CompactTransactionsTable = (
             : 'All transactions where this account is the initiator'
         }
       />
-      <Box margin={'$4'} />
+      <Box margin="sm" />
       <Button variant="compact" as="a" href={viewAllHref}>
         View all transactions
       </Button>
-      <Box margin={'$2'} />
+      <Box margin="xs" />
       <Table.Root wordBreak="break-word">
         <Table.Head>
           <Table.Tr>

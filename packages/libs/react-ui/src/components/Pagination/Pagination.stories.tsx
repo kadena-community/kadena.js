@@ -110,7 +110,7 @@ export const Controlled: Story = {
     currentPage,
   }) => {
     return (
-      <Stack direction="column" gap="$4">
+      <Stack flexDirection="column" gap="sm">
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}

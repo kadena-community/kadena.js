@@ -1,68 +1,65 @@
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { sprinkles } from '@theme/sprinkles.css';
+import type { Atoms } from '@theme/atoms.css';
+import { atoms } from '@theme/atoms.css';
 import classnames from 'classnames';
 import type React from 'react';
-import type { ElementType } from 'react';
+import type { ComponentPropsWithRef, ElementType } from 'react';
 import { createElement } from 'react';
 
 export interface IBoxProps
-  extends Partial<
-    Pick<
-      Sprinkles,
-      | 'alignItems'
-      | 'backgroundColor'
-      | 'borderColor'
-      | 'borderRadius'
-      | 'borderStyle'
-      | 'borderWidth'
-      | 'bottom'
-      | 'cursor'
-      | 'display'
-      | 'flexDirection'
-      | 'flexGrow'
-      | 'flexShrink'
-      | 'flexWrap'
-      | 'height'
-      | 'inset'
-      | 'justifyContent'
-      | 'left'
-      | 'margin'
-      | 'marginBottom'
-      | 'marginLeft'
-      | 'marginRight'
-      | 'marginTop'
-      | 'marginX'
-      | 'marginY'
-      | 'maxHeight'
-      | 'maxWidth'
-      | 'minHeight'
-      | 'minWidth'
-      | 'opacity'
-      | 'overflow'
-      | 'padding'
-      | 'paddingBottom'
-      | 'paddingLeft'
-      | 'paddingRight'
-      | 'paddingTop'
-      | 'paddingX'
-      | 'paddingY'
-      | 'position'
-      | 'right'
-      | 'textAlign'
-      | 'top'
-      | 'width'
-      | 'zIndex'
-    >
-  > {
-  className?: string;
+  extends ComponentPropsWithRef<'div'>,
+    Partial<
+      Pick<
+        Atoms,
+        | 'alignItems'
+        | 'backgroundColor'
+        | 'borderColor'
+        | 'borderRadius'
+        | 'borderStyle'
+        | 'borderWidth'
+        | 'bottom'
+        | 'cursor'
+        | 'display'
+        | 'flex'
+        | 'flexDirection'
+        | 'flexGrow'
+        | 'flexShrink'
+        | 'flexWrap'
+        | 'gap'
+        | 'height'
+        | 'inset'
+        | 'justifyContent'
+        | 'left'
+        | 'margin'
+        | 'marginBlock'
+        | 'marginBlockEnd'
+        | 'marginBlockStart'
+        | 'marginInline'
+        | 'marginInlineEnd'
+        | 'marginInlineStart'
+        | 'maxWidth'
+        | 'minWidth'
+        | 'opacity'
+        | 'overflow'
+        | 'padding'
+        | 'paddingBlock'
+        | 'paddingBlockEnd'
+        | 'paddingBlockStart'
+        | 'paddingInline'
+        | 'paddingInlineEnd'
+        | 'paddingInlineStart'
+        | 'position'
+        | 'right'
+        | 'textAlign'
+        | 'top'
+        | 'width'
+        | 'zIndex'
+      >
+    > {
   as?: ElementType;
-  children?: React.ReactNode;
 }
 
 export const Box = ({
   as = 'div',
-  children,
-  className,
   alignItems,
   backgroundColor,
   borderColor,
@@ -70,48 +67,51 @@ export const Box = ({
   borderStyle,
   borderWidth,
   bottom,
+  children,
+  className,
   cursor,
   display = 'block',
+  flex,
   flexDirection,
   flexGrow,
   flexShrink,
   flexWrap,
+  gap,
   height,
   inset,
   justifyContent,
   left,
   margin,
-  marginBottom,
-  marginLeft,
-  marginRight,
-  marginTop,
-  marginX,
-  marginY,
-  maxHeight,
+  marginBlock,
+  marginBlockEnd,
+  marginBlockStart,
+  marginInline,
+  marginInlineEnd,
+  marginInlineStart,
   maxWidth,
-  minHeight,
   minWidth,
   opacity,
   overflow,
   padding,
-  paddingBottom,
-  paddingLeft,
-  paddingRight,
-  paddingTop,
-  paddingX,
-  paddingY,
+  paddingBlock,
+  paddingBlockEnd,
+  paddingBlockStart,
+  paddingInline,
+  paddingInlineEnd,
+  paddingInlineStart,
   position,
   right,
   textAlign,
   top,
   width,
   zIndex,
+  ...props
 }: IBoxProps): React.ReactElement => {
   return createElement(
     as,
     {
       className: classnames(
-        sprinkles({
+        atoms({
           alignItems,
           backgroundColor,
           borderColor,
@@ -121,34 +121,34 @@ export const Box = ({
           bottom,
           cursor,
           display,
+          flex,
           flexDirection,
           flexGrow,
           flexShrink,
           flexWrap,
+          gap,
           height,
           inset,
           justifyContent,
           left,
           margin,
-          marginBottom,
-          marginLeft,
-          marginRight,
-          marginTop,
-          marginX,
-          marginY,
-          maxHeight,
+          marginBlock,
+          marginBlockEnd,
+          marginBlockStart,
+          marginInline,
+          marginInlineEnd,
+          marginInlineStart,
           maxWidth,
-          minHeight,
           minWidth,
           opacity,
           overflow,
           padding,
-          paddingBottom,
-          paddingLeft,
-          paddingRight,
-          paddingTop,
-          paddingX,
-          paddingY,
+          paddingBlock,
+          paddingBlockEnd,
+          paddingBlockStart,
+          paddingInline,
+          paddingInlineEnd,
+          paddingInlineStart,
           position,
           right,
           textAlign,
@@ -158,6 +158,7 @@ export const Box = ({
         }),
         className,
       ),
+      ...props,
     },
     children,
   );

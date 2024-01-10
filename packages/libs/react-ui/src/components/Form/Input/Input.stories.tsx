@@ -3,8 +3,8 @@ import type { IInputProps } from '@components/Form';
 import { Input } from '@components/Form';
 import { SystemIcon } from '@components/Icon';
 import { Stack } from '@components/Layout/Stack';
+import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
 import type { HTMLInputTypeAttribute } from 'react';
 import React from 'react';
 
@@ -36,6 +36,7 @@ const HTMLInputTypes: HTMLInputTypeAttribute[] = [
 const meta: Meta<IInputProps> = {
   title: 'Form/Input/Input',
   component: Input,
+  decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {
@@ -60,13 +61,10 @@ const meta: Meta<IInputProps> = {
         defaultValue: { summary: 'false' },
       },
     },
-    icon: {
+    startIcon: {
       description:
         'Icon rendered inside the input to the left of the input text.',
-      options: [
-        '-',
-        ...(Object.keys(SystemIcon) as (keyof typeof SystemIcon)[]),
-      ],
+      options: ['-', ...Object.keys(SystemIcon)],
       control: {
         type: 'select',
       },
@@ -76,17 +74,6 @@ const meta: Meta<IInputProps> = {
       control: {
         type: 'text',
       },
-    },
-    leadingTextWidth: {
-      description:
-        'Width of the leading text. Defaults to the size of the text itself.',
-      control: {
-        type: 'select',
-      },
-      options: [
-        '- Omit this property to auto-size the leading text',
-        ...Object.keys(vars.sizes).map((key) => key as keyof typeof vars.sizes),
-      ],
     },
     outlined: {
       description: 'Option to render the input with an outline.',
@@ -105,62 +92,64 @@ export default meta;
 type Story = StoryObj<
   {
     leadingText: string;
-    icon: keyof typeof SystemIcon;
+    startIcon: React.ReactElement | '-';
     type: React.HTMLInputTypeAttribute;
-  } & Omit<IInputProps, 'icon'>
+  } & Omit<IInputProps, 'startIcon'>
 >;
 
 export const Dynamic: Story = {
   name: 'Input',
   args: {
-    icon: undefined,
+    startIcon: undefined,
     type: 'text',
-    leadingTextWidth: undefined,
     leadingText: '',
     outlined: false,
   },
-  render: ({
-    icon,
-    outlined,
-    leadingText,
-    leadingTextWidth,
-    onChange,
-    disabled,
-    type,
-  }) => (
-    <Input
-      id="inlineInputStory"
-      icon={icon}
-      onChange={onChange}
-      placeholder="This is a placeholder"
-      leadingTextWidth={leadingTextWidth}
-      leadingText={leadingText}
-      outlined={outlined}
-      disabled={disabled}
-      type={type}
-    />
-  ),
+  render: ({ startIcon, outlined, leadingText, onChange, disabled, type }) => {
+    const IconComponent =
+      startIcon !== '-'
+        ? SystemIcon[startIcon as unknown as keyof typeof SystemIcon]
+        : undefined;
+    return (
+      <Input
+        id="inlineInputStory"
+        startIcon={IconComponent && <IconComponent />}
+        onChange={onChange}
+        placeholder="This is a placeholder"
+        leadingText={leadingText}
+        outlined={outlined}
+        disabled={disabled}
+        type={type}
+      />
+    );
+  },
 };
 
 export const InlineWithButton: Story = {
   name: 'Inline with button',
   args: {
-    icon: undefined,
+    startIcon: undefined,
     type: 'text',
   },
-  render: ({ icon, onChange, type }) => (
-    <Stack gap="$xs" alignItems="stretch">
-      <Input
-        id="inlineInputStory"
-        icon={icon}
-        onChange={onChange}
-        placeholder="This is a placeholder"
-        outlined
-        type={type}
-      />
-      <Button title="Submit" onClick={() => {}}>
-        Submit
-      </Button>
-    </Stack>
-  ),
+  render: ({ startIcon, onChange, type }) => {
+    const IconComponent =
+      startIcon !== '-'
+        ? SystemIcon[startIcon as unknown as keyof typeof SystemIcon]
+        : undefined;
+    return (
+      <Stack gap="xs" alignItems="stretch">
+        <Input
+          id="inlineInputStory"
+          startIcon={IconComponent && <IconComponent />}
+          onChange={onChange}
+          placeholder="This is a placeholder"
+          outlined
+          type={type}
+        />
+        <Button title="Submit" onClick={() => {}}>
+          Submit
+        </Button>
+      </Stack>
+    );
+  },
 };
