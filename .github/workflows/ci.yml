@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: ['tools', 'docs']
+        app: ['tools', 'docs', 'graph']
 
     steps:
       - uses: actions/checkout@v4
