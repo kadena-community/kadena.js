@@ -132,4 +132,4 @@ To suggest topics you’d like to see covered in future tutorials and workshops,
 submit a
 [documentation request](https://github.com/kadena-community/kadena.js/issues/new?assignees=&labels=documentation&projects=&template=003-improve_documentation.yml).
 If you'd like to contribute content—either in the form of a new tutorial or to
-fix issues—see our [contributor's guide](/contribute/contributors-guide).
+fix issues—see our [contributor's guide](/contribute/docs).
