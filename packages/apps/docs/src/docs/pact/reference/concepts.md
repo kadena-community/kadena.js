@@ -1585,7 +1585,7 @@ transaction time.
 
 With table schemas, Pact will be strongly typed for most use cases, but
 functions that do not use the database might still need types. Use the
-[typecheck](typecheck) REPL function to add the necessary types. There is a
+[typecheck](/pact/reference/functions/repl-only-functions#typecheckh522701326) REPL function to add the necessary types. There is a
 small cost for type enforcement at runtime, and too many type signatures can
 harm readability. However types can help document an API, so this is a judgement
 call.
