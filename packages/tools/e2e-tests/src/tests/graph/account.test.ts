@@ -1,24 +1,31 @@
-import { genKeyPair } from '@kadena/cryptography-utils';
-import { sender00 } from '@fixtures/graph/testdata/constants/accounts';
+import {
+  IAccountWithSecretKey,
+  sender00,
+} from '@fixtures/graph/testdata/constants/accounts';
 import { getAccountQuery } from '@fixtures/graph/testdata/queries/getAccount';
 import { createAccount, generateAccount } from '@helpers/graph/account.helper';
 import { base64Encode } from '@helpers/graph/cryptography.helper';
 import { sendQuery } from '@helpers/graph/request.helper';
-import { test, expect} from '@playwright/test';
+import { genKeyPair } from '@kadena/cryptography-utils';
+import { expect, test } from '@playwright/test';
+
+let testAccount: IAccountWithSecretKey;
+let queryResponse: any;
+let accountCreationResult: any;
 
 test('Query: getAccount by AccountName', async ({ request }) => {
-  await test.step('Should return an account after it has been created', async () => {
-    // Given a test account is created.
+  await test.step('Given a test account has been created', async () => {
     const keyPair = genKeyPair();
-    const testAccount = await generateAccount(keyPair, '0');
-    const testDataResponse = await createAccount(testAccount);
-
-    // When the getAccountQuery is executed
+    testAccount = await generateAccount(keyPair, '0');
+    accountCreationResult = await createAccount(testAccount);
+  });
+  await test.step('When the getAccountQuery is executed', async () => {
     const query = getAccountQuery(testAccount.account);
-    const queryResponse = await sendQuery(request, query);
-
+    queryResponse = await sendQuery(request, query);
+  });
+  await test.step('Should return an account after it has been created', async () => {
     //Then GraphQL should return the account, including 1 transfer.
-    expect(queryResponse.body.data.fungibleAccount).toEqual({
+    expect(queryResponse.fungibleAccount).toEqual({
       accountName: testAccount.account,
       chainAccounts: [
         {
@@ -45,9 +52,9 @@ test('Query: getAccount by AccountName', async ({ request }) => {
               amount: 100,
               chainId: 0,
               crossChainTransfer: null,
-              height: testDataResponse.metaData?.blockHeight,
+              height: accountCreationResult.metaData?.blockHeight,
               receiverAccount: testAccount.account,
-              requestKey: testDataResponse.reqKey,
+              requestKey: accountCreationResult.reqKey,
               senderAccount: sender00.account,
               transaction: {
                 pactId: null,
