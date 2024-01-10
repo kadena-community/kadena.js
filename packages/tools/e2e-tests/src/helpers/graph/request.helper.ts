@@ -1,15 +1,18 @@
-
 import type { APIRequestContext } from '@playwright/test';
 import { grapHost } from '../../fixtures/graph/testdata/constants/network';
 
-export async function sendQuery(request: APIRequestContext, query: string | object | undefined) {
-  const queryResponse = await request(grapHost).post('').send(query);
+export async function sendQuery(
+  request: APIRequestContext,
+  query: string | object | undefined,
+): Promise<any> {
+  const queryResponse = await request.post(grapHost, { data: query });
+  const jsonBody = await queryResponse.json();
 
-  if (queryResponse.body.errors !== undefined) {
+  if (jsonBody.errors !== undefined) {
     console.error('Unexpected Error Found:');
-    console.error(queryResponse.body.errors);
+    console.error(jsonBody.errors);
     throw new Error(`An unexpected has been logged to stderr.`);
   } else {
-    return queryResponse;
+    return jsonBody.data;
   }
 }
