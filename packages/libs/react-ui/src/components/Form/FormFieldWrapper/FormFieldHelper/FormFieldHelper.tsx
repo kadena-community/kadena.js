@@ -1,19 +1,28 @@
-import type { FC } from 'react';
+import type { RecipeVariants } from '@vanilla-extract/recipes';
+import classNames from 'classnames';
+import type { ComponentProps, FC } from 'react';
 import React from 'react';
-import { SystemIcon } from '../../../Icon';
-import { helperClass, helperIconClass } from './FormFieldHelper.css';
+import { AlertBox } from '../../../Icon/System/SystemIcon';
+import { helperText } from './FormFieldHelper.css';
 
-interface IFormFieldHelperProps {
-  children: React.ReactNode;
-}
+type HelperVariants = NonNullable<RecipeVariants<typeof helperText>>;
+interface IFormFieldHelperProps
+  extends HelperVariants,
+    ComponentProps<'span'> {}
 
-export const FormFieldHelper: FC<IFormFieldHelperProps> = ({ children }) => {
+export const FormFieldHelper: FC<IFormFieldHelperProps> = (props) => {
   return (
-    <span className={helperClass}>
-      <span className={helperIconClass}>
-        <SystemIcon.AlertBox size="sm" />
-      </span>
-      {children}
+    <span
+      {...props}
+      className={classNames(
+        helperText({
+          intent: props.intent,
+        }),
+        props.className,
+      )}
+    >
+      <AlertBox size="sm" />
+      {props.children}
     </span>
   );
 };

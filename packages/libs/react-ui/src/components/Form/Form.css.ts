@@ -40,3 +40,20 @@ export const baseContainerClass = style([
     },
   },
 ]);
+
+export const formField = atoms({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  alignItems: 'stretch',
+  gap: 'sm',
+});
+
+export const inputContainer = style([
+  atoms({
+    display: 'flex',
+    flex: 1,
+    position: 'relative',
+    alignItems: 'stretch',
+  }),
+]);

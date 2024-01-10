@@ -1,29 +1,45 @@
-import { createVar, fallbackVar, style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 import { atoms } from '../../../../styles/atoms.css';
-import { tokens } from '../../../../styles/tokens/contract.css';
+import { token } from '../../../../styles/themeUtils';
+import { iconFill } from '../../../Icon/IconWrapper.css';
 
-export const helperIconColor = createVar(),
-  helperTextColor = createVar();
-
-export const helperClass = style([
-  atoms({
+export const helperText = recipe({
+  base: atoms({
     display: 'flex',
     alignItems: 'center',
     gap: 'xxs',
     fontSize: 'xs',
-    marginBlock: 'sm',
+    color: 'text.semantic.info.default',
   }),
-  {
-    color: fallbackVar(
-      helperTextColor,
-      tokens.kda.foundation.color.text.semantic.info.default,
-    ),
+  defaultVariants: {
+    intent: 'info',
   },
-]);
-
-export const helperIconClass = style({
-  color: fallbackVar(
-    helperIconColor,
-    tokens.kda.foundation.color.icon.semantic.info.default,
-  ),
+  variants: {
+    intent: {
+      info: {
+        color: token('color.text.semantic.info.default'),
+        vars: {
+          [iconFill]: token('color.icon.semantic.info.default'),
+        },
+      },
+      negative: {
+        color: token('color.text.semantic.negative.default'),
+        vars: {
+          [iconFill]: token('color.icon.semantic.negative.default'),
+        },
+      },
+      positive: {
+        color: token('color.text.semantic.positive.default'),
+        vars: {
+          [iconFill]: token('color.icon.semantic.positive.default'),
+        },
+      },
+      warning: {
+        color: token('color.text.semantic.warning.default'),
+        vars: {
+          [iconFill]: token('color.icon.semantic.warning.default'),
+        },
+      },
+    },
+  },
 });
