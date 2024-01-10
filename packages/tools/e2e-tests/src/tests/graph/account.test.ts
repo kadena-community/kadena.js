@@ -1,7 +1,5 @@
-import {
-  IAccountWithSecretKey,
-  sender00,
-} from '@fixtures/graph/testdata/constants/accounts';
+import type { IAccountWithSecretKey } from '@fixtures/graph/testdata/constants/accounts';
+import { sender00 } from '@fixtures/graph/testdata/constants/accounts';
 import { getAccountQuery } from '@fixtures/graph/testdata/queries/getAccount';
 import { createAccount, generateAccount } from '@helpers/graph/account.helper';
 import { base64Encode } from '@helpers/graph/cryptography.helper';
