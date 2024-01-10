@@ -33,7 +33,10 @@ const Account: React.FC = () => {
   };
 
   const { loading, data, error } = useGetFungibleAccountQuery({ variables });
-
+  console.log(1111111111);
+  console.log(JSON.stringify(loading));
+  console.log(JSON.stringify(data));
+  console.log(JSON.stringify(error));
   return (
     <>
       <Stack justifyContent="space-between">
@@ -54,17 +57,15 @@ const Account: React.FC = () => {
         loaderText="Retrieving account information..."
       />
 
-      {data?.fungibleAccount &&
+      {((data?.fungibleAccount &&
         data?.fungibleAccount?.totalBalance === 0 &&
-        data?.fungibleAccount?.chainAccounts.length === 0 && (
-          <>
-            <Notification intent="info" role="status">
-              We could not find any data on this account. Please check the
-              fungible name and account name.
-            </Notification>
-            <Box margin="sm" />
-          </>
-        )}
+        data?.fungibleAccount?.chainAccounts.length === 0) ||
+        (!loading && !error && !data?.fungibleAccount)) && (
+        <Notification intent="info" role="status">
+          We could not find any data on this account. Please check the fungible
+          name and account name.
+        </Notification>
+      )}
       {data?.fungibleAccount && (
         <div>
           <Table.Root wordBreak="break-all">

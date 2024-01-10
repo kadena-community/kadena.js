@@ -18,7 +18,7 @@ builder.queryField('fungibleChainAccount', (t) =>
     complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
-        return getFungibleChainAccount({
+        return await getFungibleChainAccount({
           chainId: args.chainId,
           fungibleName: args.fungibleName,
           accountName: args.accountName,

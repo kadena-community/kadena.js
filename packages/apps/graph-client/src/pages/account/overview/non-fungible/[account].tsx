@@ -51,16 +51,14 @@ const NonFungibleAccount: React.FC = () => {
         loaderText="Retrieving account information..."
       />
 
-      {data?.nonFungibleAccount &&
-        data?.nonFungibleAccount?.chainAccounts.length === 0 && (
-          <>
-            <Notification intent="info" role="status">
-              We could not find any data on this account. Please check the
-              account name.
-            </Notification>
-            <Box margin="sm" />
-          </>
-        )}
+      {((data?.nonFungibleAccount &&
+        data?.nonFungibleAccount?.chainAccounts.length === 0) ||
+        (!loading && !error && !data?.nonFungibleAccount)) && (
+        <Notification intent="info" role="status">
+          We could not find any data on this account. Please check the account
+          name.
+        </Notification>
+      )}
 
       {data?.nonFungibleAccount && (
         <div>

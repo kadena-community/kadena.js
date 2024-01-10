@@ -19,6 +19,7 @@ import {
   Breadcrumbs,
   BreadcrumbsItem,
   Link,
+  Notification,
   Stack,
   Table,
 } from '@kadena/react-ui';
@@ -67,6 +68,13 @@ const Block: React.FC = () => {
           loading={loading}
           loaderText="Retrieving block data..."
         />
+
+        {!loading && !error && !data?.block && (
+          <Notification intent="info" role="status">
+            We could not find any data on this block. Please check the block
+            hash.
+          </Notification>
+        )}
 
         {data?.block && (
           <>
