@@ -1,18 +1,21 @@
 require('@rushstack/eslint-config/patch/modern-module-resolution');
+const { join } = require('path');
 
 module.exports = {
   extends: [
     '@kadena-dev/eslint-config/profile/lib',
     'plugin:playwright/recommended',
   ],
-  parserOptions: { tsconfigRootDir: __dirname },
-  rules: {
+  parserOptions: { tsconfigRootDir: __dirname, ecmaVersion: 'latest' },
+  rules: {},
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
     'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
+      node: true,
       typescript: {
-        project: ['./tsconfig.json'],
+        project: [join(__dirname, 'tsconfig.json')],
       },
     },
   },

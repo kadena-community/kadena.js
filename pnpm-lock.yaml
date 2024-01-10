@@ -1983,6 +1983,9 @@ importers:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@kadena-dev/eslint-plugin':
+        specifier: workspace:*
+        version: link:../eslint-plugin
       '@kadena-dev/lint-package':
         specifier: workspace:*
         version: link:../lint-package
