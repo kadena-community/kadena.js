@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
-import { prismaModelName } from '@pothos/plugin-prisma';
+import { Transfer } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { PRISMA, builder } from '../builder';
@@ -30,7 +31,7 @@ export default builder.prismaNode('Transfer', {
         'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
       type: 'Transfer',
       nullable: true,
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 3, // In the worst case resolve scenario, it executes 3 queries.
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 2, // In the worst case resolve scenario, it executes 3 queries.
       async resolve(__query, parent) {
         try {
           // Find all transactions that match either of the two conditions
@@ -41,6 +42,7 @@ export default builder.prismaNode('Transfer', {
                 { blockHash: parent.blockHash, requestKey: parent.requestKey },
               ],
             },
+            include: { transfers: true },
           });
 
           // Filter the transactions to find the counterTransaction
@@ -69,19 +71,17 @@ export default builder.prismaNode('Transfer', {
                   requestKey: counterTransaction.pactId,
                   pactId: undefined,
                 },
+                include: { transfers: true },
               });
 
             counterTransaction = initiatingTransaction;
           }
 
-          return await prismaClient.transfer.findFirst({
-            where: {
-              blockHash: counterTransaction.blockHash,
-              requestKey: counterTransaction.requestKey,
-              OR: [{ senderAccount: '' }, { receiverAccount: '' }],
-              amount: parent.amount,
-            },
-          });
+          return counterTransaction.transfers
+            ? (counterTransaction.transfers.find((transfer) =>
+                transfer.amount.equals(new Decimal(parent.amount)),
+              ) as Transfer)
+            : null;
         } catch (error) {
           throw normalizeError(error);
         }
