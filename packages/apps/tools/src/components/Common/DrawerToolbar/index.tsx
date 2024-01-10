@@ -1,15 +1,15 @@
 import { DrawerIconButton } from '@/components/Common/DrawerToolbar/DrawerIcon';
 import type { SystemIcon } from '@kadena/react-ui';
-import { IconButton } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { ForwardRefExoticComponent, ReactNode } from 'react';
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import {
   buttonWrapperClass,
-  expandedDrawerContentClass, expandedDrawerContentStyle,
+  expandedDrawerContentClass,
+  expandedDrawerContentStyle,
   expandedDrawerTitleClass,
   gridItemCollapsedSidebarStyle,
-  gridItemMiniMenuStyle
+  gridItemMiniMenuStyle,
 } from './styles.css';
 
 export interface IDrawerToolbarSection {
@@ -48,12 +48,13 @@ export const DrawerToolbar: ForwardRefExoticComponent<
       ref.openSection = handleOpenSection;
     }
 
-    setVisibleSection(initialOpenItem !== undefined ? initialOpenItem.item : null)
+    setVisibleSection(
+      initialOpenItem !== undefined ? initialOpenItem.item : null,
+    );
   }, [handleOpenSection, ref, initialOpenItem]);
 
   return (
     <aside className={expandedDrawerContentStyle}>
-
       {isOpen ? (
         <div className={classNames(gridItemCollapsedSidebarStyle, { isOpen })}>
           <div className={expandedDrawerTitleClass}>
@@ -72,13 +73,13 @@ export const DrawerToolbar: ForwardRefExoticComponent<
 
       <div className={gridItemMiniMenuStyle}>
         {sections.map(({ icon, title }, index) => (
-            <div className={buttonWrapperClass} key={title}>
-              <DrawerIconButton
-                  icon={icon}
-                  onClick={() => handleOpenSection(index)}
-                  active={index === visibleSection}
-              />
-            </div>
+          <div className={buttonWrapperClass} key={title}>
+            <DrawerIconButton
+              icon={icon}
+              onClick={() => handleOpenSection(index)}
+              active={index === visibleSection}
+            />
+          </div>
         ))}
       </div>
     </aside>

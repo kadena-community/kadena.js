@@ -24,7 +24,7 @@ export interface IFormItemCardProps {
   disabled?: boolean;
   children: React.ReactNode;
   onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
-  helperOnClick?: () =>  void;
+  helperOnClick?: () => void;
 }
 
 export const FormItemCard: FC<IFormItemCardProps> = ({
@@ -51,18 +51,18 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
             <div className={helperStyle}>
               <Text>
                 {helperHref ? (
-                    <button
-                        className={helperButtonIconStyle}
-                        type="button"
-                        onClick={helperOnClick}
-                    >
-                      <div className={helperTextIconStyle} >
-                        <span>{helper}</span>
-                        <span>
-                         <SystemIcon.Information size={'sm'} />
-                        </span>
-                      </div>
-                    </button>
+                  <button
+                    className={helperButtonIconStyle}
+                    type="button"
+                    onClick={helperOnClick}
+                  >
+                    <div className={helperTextIconStyle}>
+                      <span>{helper}</span>
+                      <span>
+                        <SystemIcon.Information size={'sm'} />
+                      </span>
+                    </div>
+                  </button>
                 ) : (
                   <span>{helper}</span>
                 )}

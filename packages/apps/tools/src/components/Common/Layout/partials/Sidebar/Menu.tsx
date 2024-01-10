@@ -16,12 +16,8 @@ import {
 export const Menu: FC = () => {
   const router = useRouter();
 
-  const {
-    activeMenu,
-    isMenuOpen,
-    setActiveMenuIndex,
-    setIsMenuOpen,
-  } = useLayoutContext();
+  const { activeMenu, isMenuOpen, setActiveMenuIndex, setIsMenuOpen } =
+    useLayoutContext();
   const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
   const handleCloseMenu = () => {
@@ -47,13 +43,13 @@ export const Menu: FC = () => {
         <div className={subMenuContentStyle}>
           <Accordion.Root>
             {activeMenu?.items?.map((item, index) => (
-                <MenuLinkButton
-                    title={item.title}
-                    key={`menu-link-${index}`}
-                    href={item.href}
-                    active={item.href === router.pathname}
-                    onClick={handleOnClick}
-                />
+              <MenuLinkButton
+                title={item.title}
+                key={`menu-link-${index}`}
+                href={item.href}
+                active={item.href === router.pathname}
+                onClick={handleOnClick}
+              />
             ))}
           </Accordion.Root>
         </div>

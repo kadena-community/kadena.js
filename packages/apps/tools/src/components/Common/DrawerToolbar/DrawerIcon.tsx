@@ -1,8 +1,8 @@
 import { gridMiniMenuListButtonStyle } from '@/components/Common/Layout/partials/Sidebar/styles.css';
 import { SystemIcon } from '@kadena/react-ui';
+import classNames from 'classnames';
 import type { ButtonHTMLAttributes, FC } from 'react';
 import React from 'react';
-import classNames from "classnames";
 
 export interface IMenuButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -24,9 +24,9 @@ export const DrawerIconButton: FC<IMenuButtonProps> = ({
   return (
     <>
       <button
-          className={classNames(gridMiniMenuListButtonStyle, {
-            active,
-          })}
+        className={classNames(gridMiniMenuListButtonStyle, {
+          active,
+        })}
         {...rest}
         aria-label={title}
       >

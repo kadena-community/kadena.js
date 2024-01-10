@@ -28,7 +28,6 @@ export const gridItemCollapsedSidebarStyle = style([
 
 export const gridItemMiniMenuStyle = style([
   {
-
     flexDirection: 'column',
     position: 'relative',
   },

@@ -1,4 +1,5 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { FormItemCard } from '@/components/Global/FormItemCard';
 import { ProgressBar } from '@/components/Global/ProgressBar';
 import RequestKeyField, {
@@ -40,8 +41,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { containerClass, notificationContainerStyle } from '../styles.css';
-import {footerBarStyle, formButtonStyle, infoBoxStyle, linksBoxStyle} from './styles.css';
-import {MenuLinkButton} from "@/components/Common/Layout/partials/Sidebar/MenuLinkButton";
+import {
+  footerBarStyle,
+  formButtonStyle,
+  infoBoxStyle,
+  linksBoxStyle,
+} from './styles.css';
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
@@ -88,7 +93,9 @@ const CrossChainTransferTracker: FC = () => {
   const [validRequestKey, setValidRequestKey] = useState<
     FormFieldStatus | undefined
   >();
-  const [openItem, setOpenItem] = useState<{ item: number} | undefined>(undefined);
+  const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   useDidUpdateEffect(() => {
@@ -181,13 +188,12 @@ const CrossChainTransferTracker: FC = () => {
   }, [errors.requestKey?.message]);
 
   const onOpenItemChange = () => {
-    setOpenItem({ item: 0});
-  }
+    setOpenItem({ item: 0 });
+  };
 
   const handleOnClickLink = () => {
     setOpenItem(undefined);
-  }
-
+  };
 
   return (
     <section className={containerClass}>
@@ -351,35 +357,42 @@ const CrossChainTransferTracker: FC = () => {
       ) : null}
 
       <DrawerToolbar
-          ref={drawerPanelRef}
-          initialOpenItem={ openItem }
-          sections={[
-            {
-              icon: 'Information',
-              title: t('Where can I find the request key?'),
-              children: <div className={infoBoxStyle}>
-                <span>You can start a cross chain transfer on Chainweaver and get a request key.</span>
-              </div>,
-            },
-            {
-              icon: 'Link',
-              title: t('Resources & Links'),
-              children: <div className={linksBoxStyle}>
+        ref={drawerPanelRef}
+        initialOpenItem={openItem}
+        sections={[
+          {
+            icon: 'Information',
+            title: t('Where can I find the request key?'),
+            children: (
+              <div className={infoBoxStyle}>
+                <span>
+                  You can start a cross chain transfer on Chainweaver and get a
+                  request key.
+                </span>
+              </div>
+            ),
+          },
+          {
+            icon: 'Link',
+            title: t('Resources & Links'),
+            children: (
+              <div className={linksBoxStyle}>
                 <Accordion.Root>
                   {links.map((item, index) => (
-                      <MenuLinkButton
-                          title={item.title}
-                          key={`menu-link-${index}`}
-                          href={item.href}
-                          active={item.href === router.pathname}
-                          target="_blank"
-                          onClick={handleOnClickLink}
-                      />
+                    <MenuLinkButton
+                      title={item.title}
+                      key={`menu-link-${index}`}
+                      href={item.href}
+                      active={item.href === router.pathname}
+                      target="_blank"
+                      onClick={handleOnClickLink}
+                    />
                   ))}
                 </Accordion.Root>
-              </div>,
-            },
-          ]}
+              </div>
+            ),
+          },
+        ]}
       />
     </section>
   );
