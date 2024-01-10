@@ -7,7 +7,13 @@ module.exports = {
   ],
   parserOptions: { tsconfigRootDir: __dirname },
   rules: {
-    '@kadena-dev/typedef-var': 'off',
-    '@rushstack/typedef-var': 'off',
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      typescript: {
+        project: ['./tsconfig.json'],
+      },
+    },
   },
 };

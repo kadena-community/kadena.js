@@ -1,8 +1,11 @@
 {
-  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
+"extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
+    "strictNullChecks": true,
     "rootDir": ".",
+    "baseUrl": ".",
     "types": ["node"],
+    "moduleResolution": "node",
     "paths": {
       "@fixtures/graph/*": ["./src/fixtures/graph/*"],
       "@fixtures/tools/*": ["./src/fixtures/tools/*"],
