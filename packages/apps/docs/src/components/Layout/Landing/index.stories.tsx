@@ -18,6 +18,7 @@ export default meta;
 type Story = StoryObj<IBasePageProps>;
 
 const props: IBasePageProps = {
+  headerMenuItems: leftMenuTree,
   frontmatter: landingFrontMatter,
   leftMenuTree: leftMenuTree,
   menuItems: [],
@@ -28,9 +29,10 @@ const props: IBasePageProps = {
 export const Default: Story = {
   name: 'Default',
   args: props,
-  render: ({ frontmatter, leftMenuTree }) => (
+  render: ({ frontmatter, leftMenuTree, headerMenuItems }) => (
     <div>
       <Landing
+        headerMenuItems={headerMenuItems}
         frontmatter={frontmatter}
         leftMenuTree={leftMenuTree}
         menuItems={[]}
