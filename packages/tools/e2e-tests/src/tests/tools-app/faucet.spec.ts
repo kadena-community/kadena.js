@@ -1,6 +1,9 @@
 import { expect } from '@playwright/test';
 import { accountsData } from '../../fixtures/tools/data/accounts';
-import { pollFinished, pollInProgress } from '../../fixtures/tools/mocks/poll.mocks';
+import {
+  pollFinished,
+  pollInProgress,
+} from '../../fixtures/tools/mocks/poll.mocks';
 import { sendMocks } from '../../fixtures/tools/mocks/send.mocks';
 import { test } from '../../page-objects';
 

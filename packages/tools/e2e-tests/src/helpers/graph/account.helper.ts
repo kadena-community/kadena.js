@@ -7,7 +7,10 @@ import type {
   IAccountWithSecretKey,
 } from '../../fixtures/graph/testdata/constants/accounts';
 import { sender00 } from '../../fixtures/graph/testdata/constants/accounts';
-import { devnetHost, networkId } from '../../fixtures/graph/testdata/constants/network';
+import {
+  devnetHost,
+  networkId,
+} from '../../fixtures/graph/testdata/constants/network';
 
 export async function generateAccount(
   keyPair: IKeyPair,
