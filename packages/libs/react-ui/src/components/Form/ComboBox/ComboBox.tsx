@@ -20,6 +20,28 @@ export interface IComboBoxProps<T>
 }
 
 /**
+ * 6 = difference between input field height and icon button height (divided by 2) = (48 - 36) / 2
+ * 5 = offset for outline (width + offset) + box-shadow = 2 + 2 + 1
+ * 2 = additional offset threshold to make it look good
+ *
+ * @see packages/libs/react-ui/src/components/Form/Form.css.ts
+ */
+const POPOVER_OFFSET = 6 + 5 + 2;
+
+/**
+ * 8 = left padding of input field
+ *
+ * @see packages/libs/react-ui/src/components/Form/Input/Input.css.ts
+ */
+const POPOVER_CROSS_OFFSET = -8;
+
+/**
+ * 24 = width of icon
+ * 4 = gap width between icon and input field
+ */
+const POPOVER_CROSS_OFFSET_WITH_ICON = POPOVER_CROSS_OFFSET - 24 - 4;
+
+/**
  * @see https://react-spectrum.adobe.com/react-aria/useComboBox.html
  */
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -55,6 +77,11 @@ const BaseComboBox = <T extends object>(
 
   return (
     <Stack display="inline-flex" flexDirection="column">
+      <Button
+        {...buttonProps}
+        ref={buttonRef}
+        icon={<SystemIcon.OptionsOpen />}
+      />
       {/* @ts-expect-error */}
       <TextField
         {...inputProps}
@@ -77,8 +104,10 @@ const BaseComboBox = <T extends object>(
           isNonModal
           placement="bottom start"
           width={textFieldWidth}
-          offset={15} // TODO: Get these values from Textfield element
-          crossOffset={startIcon ? -35 : -10} // TODO: Get these values from Textfield element
+          offset={POPOVER_OFFSET}
+          crossOffset={
+            startIcon ? POPOVER_CROSS_OFFSET_WITH_ICON : POPOVER_CROSS_OFFSET
+          }
         >
           <ListBox
             {...mergeProps(props, listBoxProps)}

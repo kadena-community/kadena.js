@@ -3,7 +3,6 @@ import { Box } from '@components/Layout';
 import { Text } from '@components/Typography';
 import { onLayer1 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import { tokens } from '@theme/index';
 import React from 'react';
 import { Item } from 'react-stately';
 import type { IComboBoxProps } from './ComboBox';
