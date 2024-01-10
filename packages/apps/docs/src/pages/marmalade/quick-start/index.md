@@ -86,4 +86,4 @@ Finally, go to the Preview tab and submit your transaction.
 Wait for the transaction to finish. The server result should be true.
 
 You've minted your first NFT on marmalade! Investigate the transaction on the
-[block explorer](explorer.chainweb.com), and find your token information.
+[block explorer](https://explorer.chainweb.com), and find your token information.
