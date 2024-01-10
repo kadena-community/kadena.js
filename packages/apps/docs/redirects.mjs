@@ -185,6 +185,12 @@ const redirectsConfig = [
     destination: '/pact/intermediate/:slug',
     permanent: true,
   },
+  {
+    source: '/learn-pact/intro',
+    destination: '/pact/overview',
+    permanent: true,
+  },
+
   /* Pact Reference docs redirects */
   {
     source: '/en/latest',
