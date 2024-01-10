@@ -24,6 +24,7 @@ import {
   Grid,
   GridItem,
   Heading,
+  Link,
   Notification,
   NotificationButton,
   NotificationFooter,
@@ -342,16 +343,14 @@ const CrossChainTransferTracker: FC = () => {
             alignItems={'flex-start'}
             direction={'row-reverse'}
           >
-            <Button
-              title={t('Finish Transaction')}
-              as="a"
-              href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
-              icon="Link"
-              iconAlign="right"
-              color="positive"
-            >
-              {t('Finish Transaction')}
-            </Button>
+              <Link
+                  href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
+              >
+              <Button color={"positive"} icon="Link"
+                      iconAlign="right">
+                 {t('Finish Transaction')}
+              </Button>
+              </Link>
           </Stack>
         </div>
       ) : null}
