@@ -1,6 +1,6 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaSignWithKeyPair } from '@kadena/hd-wallet';
-import type { IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
@@ -8,7 +8,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-
+import { saveSignedTransaction } from '../utils/storage.js';
 /**
  * Signs a Kadena transaction with the provided key pair.
  *
@@ -21,17 +21,20 @@ export const signTransactionAction = async (config: {
   keySecretKey: string;
   securityPassword: string;
   legacy?: boolean;
-}): Promise<CommandResult<{}>> => {
+}): Promise<CommandResult<ICommand>> => {
   if (config.legacy === true) {
-    return { success: true, data: {} };
+    return {
+      success: true,
+      data: {} as ICommand,
+    };
   } else {
-    const data = kadenaSignWithKeyPair(
+    const signedCommand = kadenaSignWithKeyPair(
       config.securityPassword,
       config.keyPublicKey,
       config.keySecretKey as EncryptedString,
-    )(config.unsignedCommand);
+    )(config.unsignedCommand) as ICommand;
 
-    return { success: true, data };
+    return { success: true, data: signedCommand };
   }
 };
 
@@ -48,7 +51,7 @@ export const createSignTransactionCommand: (
   'sign-with-keypair',
   'Sign a transaction using your keypair.',
   [
-    globalOptions.txTransactionFilename(),
+    globalOptions.txTransaction(),
     globalOptions.keyPublicKey(),
     globalOptions.keySecretKey(),
     globalOptions.securityPassword(),
@@ -58,13 +61,18 @@ export const createSignTransactionCommand: (
     try {
       debug('sign-transaction:action')({ config });
       const {
-        txTransactionFilename: { unsignedCommand },
+        txTransaction: { unsignedCommand },
         ...rest
       } = config;
       const data = { unsignedCommand, ...rest };
 
       const result = await signTransactionAction(data);
       assertCommandError(result);
+
+      await saveSignedTransaction(
+        result.data,
+        config.txTransaction.transactionFile,
+      );
 
       console.log(chalk.green(`\nTransaction signed successfully.\n`));
     } catch (error) {

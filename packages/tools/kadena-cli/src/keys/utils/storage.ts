@@ -1,4 +1,5 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
+
 import yaml from 'js-yaml';
 import { join } from 'node:path';
 import {
@@ -12,6 +13,7 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+
 import { sanitizeFilename } from '../../utils/helpers.js';
 import { removeAfterFirstDot } from '../../utils/path.util.js';
 

@@ -522,12 +522,12 @@ export const globalOptions = {
       'enter your unsigned command to sign',
     ),
   }),
-  txTransactionFilename: createOption({
-    key: 'txTransactionFilename',
+  txTransaction: createOption({
+    key: 'txTransaction',
     prompt: tx.transactionSelectPrompt,
     validation: z.string(),
     option: new Option(
-      '-t, --tx-transaction-filename <txTransactionFilename>',
+      '-t, --tx-transaction <txTransaction>',
       'Please select your transaction file containing your UnsignedCommand to sign',
     ),
     transform: async (transactionFile: string) => {
