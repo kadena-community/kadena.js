@@ -21,8 +21,6 @@ export const Toolbar: FC = () => {
     setActiveMenuIndex,
     activeMenuIndex,
     isMenuOpen,
-    visibleLinks,
-    setVisibleLinks,
     setIsMenuOpen,
   } = useLayoutContext();
   const { pathname } = useRouter();
@@ -32,8 +30,6 @@ export const Toolbar: FC = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     index: number,
   ): void => {
-    setVisibleLinks(false);
-
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
       setIsMenuOpen(true);
@@ -42,7 +38,6 @@ export const Toolbar: FC = () => {
 
   const handleOpenDrawer = (): void => {
     if (isMenuOpen) {
-      setVisibleLinks(false);
       setIsMenuOpen(false);
       return setActiveMenuIndex(undefined);
     }
@@ -75,14 +70,6 @@ export const Toolbar: FC = () => {
     return index === activeMenuIndex || isUrlParam;
   };
 
-  const handleLinksClick = (): void => {
-    setActiveMenuIndex(-1);
-    if (!visibleLinks) {
-      setVisibleLinks(true);
-      setIsMenuOpen(true);
-    }
-  };
-
   return (
     <nav className={gridItemMiniMenuStyle}>
       <ul className={classNames(gridMiniMenuListStyle)}>
@@ -106,16 +93,6 @@ export const Toolbar: FC = () => {
               title={'DevOptions'}
               icon={'ApplicationBrackets'}
               onClick={() => handleDevOptionsClick()}
-            />
-          </div>
-        </li>
-        <li key={String('links')} className={gridMiniMenuListItemStyle}>
-          <div>
-            <MenuButton
-              title={'Links'}
-              icon={'Link'}
-              onClick={handleLinksClick}
-              active={visibleLinks}
             />
           </div>
         </li>

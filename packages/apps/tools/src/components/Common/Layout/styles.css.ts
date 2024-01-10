@@ -32,14 +32,12 @@ export const mainStyle = style([
 export const gridItemMainStyle = style([
   atoms({
     width: '100%',
-    height: '100%',
     overflowY: 'scroll',
   }),
   {
+    height: '100vh',
     paddingTop: vars.sizes.$20,
-    paddingBottom: vars.sizes.$16,
-    paddingRight: vars.sizes.$6,
-    paddingLeft: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
+    paddingInline: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
     borderRight: `1px solid #E3E1E5`,
     selectors: {
       [`${darkThemeClass} &`]: {
