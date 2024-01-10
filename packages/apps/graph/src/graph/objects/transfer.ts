@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import { Transfer } from '@prisma/client';
+import type { Transfer } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
