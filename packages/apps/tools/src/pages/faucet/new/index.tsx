@@ -2,6 +2,7 @@ import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
   Heading,
@@ -216,10 +217,10 @@ const NewAccountFaucetPage: FC = () => {
       <Head>
         <title>Kadena Developer Tools - Faucet</title>
       </Head>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('New')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>{' '}
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('New')}</BreadcrumbsItem>
+      </Breadcrumbs>{' '}
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (

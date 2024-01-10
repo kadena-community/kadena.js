@@ -14,6 +14,7 @@ import routes from '@constants/routes';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Grid,
   GridItem,
   Heading,
@@ -186,10 +187,10 @@ const Event: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item>Events</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+        <Breadcrumbs>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem>Events</BreadcrumbsItem>
+        </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[
             {

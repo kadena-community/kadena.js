@@ -1,6 +1,6 @@
 import type {
-  ChainFungibleAccountTransfersConnection,
   FungibleAccountTransfersConnection,
+  FungibleChainAccountTransfersConnection,
   Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
@@ -15,7 +15,7 @@ interface ICompactTransfersTableProps {
   truncateColumns?: boolean;
   transfers:
     | FungibleAccountTransfersConnection
-    | ChainFungibleAccountTransfersConnection;
+    | FungibleChainAccountTransfersConnection;
 
   description?: string;
 }

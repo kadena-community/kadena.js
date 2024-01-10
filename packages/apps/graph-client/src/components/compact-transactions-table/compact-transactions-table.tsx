@@ -1,7 +1,9 @@
 import type {
   BlockTransactionsConnection,
-  ChainFungibleAccountTransactionsConnection,
   FungibleAccountTransactionsConnection,
+  FungibleChainAccountTransactionsConnection,
+  NonFungibleAccountTransactionsConnection,
+  NonFungibleChainAccountTransactionsConnection,
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
@@ -15,9 +17,11 @@ interface ICompactTransactionsTableProps {
   truncateColumns?: boolean;
   transactions:
     | FungibleAccountTransactionsConnection
-    | ChainFungibleAccountTransactionsConnection
+    | FungibleChainAccountTransactionsConnection
     | BlockTransactionsConnection
-    | QueryTransactionsConnection;
+    | QueryTransactionsConnection
+    | NonFungibleAccountTransactionsConnection
+    | NonFungibleChainAccountTransactionsConnection;
 }
 
 export const CompactTransactionsTable = (

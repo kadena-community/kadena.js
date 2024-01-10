@@ -2,9 +2,10 @@ import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import { NON_FUNGIBLE_TRANSACTION } from '@/constants/non-fungible';
 import routes from '@/constants/routes';
 import { getTransactions } from '@/graphql/queries.graph';
-import { Box, Breadcrumbs, Stack } from '@kadena/react-ui';
+import { Box, Breadcrumbs, BreadcrumbsItem, Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -22,20 +23,23 @@ const AccountTransactions: React.FC = () => {
     variables,
   });
 
+  const accountOverviewUrl =
+    router.query.fungible === NON_FUNGIBLE_TRANSACTION
+      ? `${routes.ACCOUNT}/non-fungible/${router.query.account as string}`
+      : `${routes.ACCOUNT}/${router.query.fungible as string}/${
+          router.query.account as string
+        }`;
+
   return (
     <>
       <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item
-            href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
-              router.query.account as string
-            }`}
-          >
+        <Breadcrumbs>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem href={accountOverviewUrl}>
             Account Overview
-          </Breadcrumbs.Item>
-          <Breadcrumbs.Item>Transactions</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+          </BreadcrumbsItem>
+          <BreadcrumbsItem>Transactions</BreadcrumbsItem>
+        </Breadcrumbs>
         <GraphQLQueryDialog queries={[{ query: getTransactions, variables }]} />
       </Stack>
 

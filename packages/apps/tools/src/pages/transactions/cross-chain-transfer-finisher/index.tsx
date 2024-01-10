@@ -26,6 +26,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Grid,
   GridItem,
@@ -346,10 +347,10 @@ const CrossChainTransferFinisher: FC = () => {
         ]}
       />
 
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Cross Chain Finisher')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
+      </Breadcrumbs>
 
       <Heading as="h3" transform="capitalize" bold={false}>
         {t('Finish transaction')}

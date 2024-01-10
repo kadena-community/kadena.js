@@ -17,6 +17,7 @@ import {
   Accordion,
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Link,
   Stack,
   Table,
@@ -47,10 +48,10 @@ const Block: React.FC = () => {
     <div className={centerBlockStyle}>
       <div style={{ maxWidth: '1000px' }}>
         <Stack justifyContent="space-between">
-          <Breadcrumbs.Root>
-            <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-            <Breadcrumbs.Item>Block Overview</Breadcrumbs.Item>
-          </Breadcrumbs.Root>
+          <Breadcrumbs>
+            <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+            <BreadcrumbsItem>Block Overview</BreadcrumbsItem>
+          </Breadcrumbs>
           <GraphQLQueryDialog
             queries={[
               { query: getBlockFromHash, variables: getBlockFromHashVariables },

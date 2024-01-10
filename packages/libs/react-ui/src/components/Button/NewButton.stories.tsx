@@ -3,9 +3,11 @@ import React from 'react';
 import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
 import { Box } from '../Layout/Box/Box';
 import { Heading } from '../Typography/Heading/Heading';
+import type { ILinkButtonProps } from './LinkButton';
+import { LinkButton } from './LinkButton';
 import type { IButtonProps } from './NewButton';
 import { Button } from './NewButton';
-import { button } from './NewButton.css';
+import { button } from './SharedButton.css';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const buttonVariants = Object.keys(
@@ -29,7 +31,7 @@ const meta: Meta<IButtonProps> = {
     docs: {
       description: {
         component:
-          'The Button component renders a button which will be styled according to the variant prop (`primary` being the default)',
+          'The Button component renders a button which will be styled according to the variant/color prop (`contained/primary` being the default)',
       },
     },
   },
@@ -84,13 +86,19 @@ const meta: Meta<IButtonProps> = {
   },
 };
 
-type Story = StoryObj<
+type ButtonStory = StoryObj<
   {
     text: string;
   } & IButtonProps
 >;
 
-export const Default: Story = {
+type LinkButtonStory = StoryObj<
+  {
+    text: string;
+  } & ILinkButtonProps
+>;
+
+export const _Button: ButtonStory = {
   name: 'Button',
   args: {
     text: 'Click me',
@@ -241,5 +249,34 @@ export const OnlyIcon: StoryFn<IButtonProps> = ({
     variant={variant}
   />
 );
+
+export const _LinkButton: LinkButtonStory = {
+  name: 'LinkButton',
+  parameters: {
+    docs: {
+      description: {
+        story: `The LinkButton component renders an anchor element <a/> which will be styled with the same variants/colors as the Button component.
+          <br/><br/>
+          To support client side routing make sure to import/use "RouterProvider" from "@kadena/react-ui" see https://react-spectrum.adobe.com/react-aria/routing.html for more info on how to integrate it with NextJS and client side routing.
+          `,
+      },
+    },
+  },
+  args: {
+    text: 'Click me',
+    variant: 'contained',
+    color: 'primary',
+    isDisabled: false,
+    isCompact: false,
+    isLoading: false,
+    icon: undefined,
+    startIcon: undefined,
+    endIcon: undefined,
+    href: '#',
+  },
+  render: ({ text, ...props }) => {
+    return <LinkButton {...props}>{text}</LinkButton>;
+  },
+};
 
 export default meta;
