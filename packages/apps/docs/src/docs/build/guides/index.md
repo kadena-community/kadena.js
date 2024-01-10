@@ -1,7 +1,7 @@
 ---
 title: A Step-By-Step Guide to Writing Pact Smart Contract
 description: A Step-By-Step Guide to Writing Pact Smart Contract
-menu: Build
+menu: Guides
 label: Pact Smart Contract
 order: 4
 layout: full
