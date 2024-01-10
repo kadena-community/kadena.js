@@ -1,6 +1,7 @@
 import { Button } from '@components/Button/NewButton';
 import type { IInputProps, ITextFieldProps } from '@components/Form';
 import { TextField } from '@components/Form';
+import { SystemIcon } from '@components/Icon';
 import { Stack } from '@components/Layout';
 import { ListBox } from '@components/ListBox';
 import { Popover } from '@components/Popover';
@@ -61,9 +62,11 @@ export const ComboBox = <T extends object>({
           startIcon={startIcon}
           ref={inputRef}
         >
-          <Button {...buttonProps} ref={buttonRef}>
-            <span aria-hidden="true">▼</span>
-          </Button>
+          <Button
+            {...buttonProps}
+            ref={buttonRef}
+            icon={<SystemIcon.OptionsOpen />}
+          />
         </TextField>
         {state.isOpen && (
           <Popover
