@@ -14,6 +14,8 @@ export const AccountInfo: FC = () => {
     if (!account) return;
     const order = await createToken(account.caccount);
 
+    console.log({ order });
+
     router.push(
       `${env.WALLET_URL}/sign?payload=${Buffer.from(
         JSON.stringify(order),

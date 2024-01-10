@@ -2,7 +2,6 @@ import { Pact, createClient } from '@kadena/client';
 import { getApiHost, getChainId, getNetworkId } from './config';
 
 export const main = async (account: string) => {
-  console.log(getApiHost());
   const client = createClient(getApiHost());
 
   const transaction = Pact.builder
@@ -13,7 +12,6 @@ export const main = async (account: string) => {
 
   try {
     const response = await client.dirtyRead(transaction);
-    console.log(response);
 
     const { result } = response;
 
