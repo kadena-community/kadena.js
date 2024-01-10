@@ -89,4 +89,6 @@ const BaseComboBox = <T extends object>(
   );
 };
 
-export const ComboBox = forwardRef(BaseComboBox);
+export const ComboBox = forwardRef(BaseComboBox) as <T>(
+  props: IComboBoxProps<T> & { ref?: ForwardedRef<HTMLInputElement> },
+) => ReturnType<typeof BaseComboBox>;
