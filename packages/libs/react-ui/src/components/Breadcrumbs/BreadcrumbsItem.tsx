@@ -20,14 +20,14 @@ export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = (props) => {
     return (
       <li className={itemClass}>
         {React.cloneElement(children, {
+          href,
+          ...itemProps,
+          ...children.props,
           className: cn(linkClass, children.props.className),
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ref: mergeRefs(ref, (children as any).ref),
-          href,
           'data-current': isCurrent,
           'data-disabled': isDisabled,
-          ...itemProps,
-          ...children.props,
         })}
       </li>
     );
