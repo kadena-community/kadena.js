@@ -41,6 +41,30 @@ export async function keyAliasPrompt(): Promise<string> {
   });
 }
 
+export async function keyPublicKeyPrompt(): Promise<string> {
+  return await input({
+    message: `Enter a public key:`,
+    validate: function (input) {
+      if (!isAlphanumeric(input)) {
+        return 'Public key must be alphanumeric! Please enter a valid public key.';
+      }
+      return true;
+    },
+  });
+}
+
+export async function keySecretKeyPrompt(): Promise<string> {
+  return await input({
+    message: `Enter a secret key:`,
+    validate: function (input) {
+      if (!isAlphanumeric(input)) {
+        return 'Secret key must be alphanumeric! Please enter a valid secret key.';
+      }
+      return true;
+    },
+  });
+}
+
 export async function keyMnemonicPrompt(): Promise<string> {
   return await input({
     message: `Enter your 12-word mnemonic phrase:`,

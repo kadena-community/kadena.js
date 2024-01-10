@@ -10,14 +10,17 @@ import {
   // marmalade,
   networks,
   security,
+  tx,
   typescript,
 } from '../prompts/index.js';
+import { services } from '../services/index.js';
 
 import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
 import {
   KEY_EXT,
+  TRANSACTION_DIR,
   WALLET_DIR,
   WALLET_EXT,
   WALLET_LEGACY_EXT,
@@ -283,6 +286,24 @@ export const globalOptions = {
   }),
 
   // Keys
+  keyPublicKey: createOption({
+    key: 'keyPublicKey' as const,
+    prompt: keys.keyPublicKeyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-p, --key-public-key <keyPublicKey>',
+      'Enter a public key',
+    ),
+  }),
+  keySecretKey: createOption({
+    key: 'keySecretKey' as const,
+    prompt: keys.keySecretKeyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-s, --key-secret-key <keySecretKey>',
+      'Enter a secret key',
+    ),
+  }),
   keyAlias: createOption({
     key: 'keyAlias',
     prompt: keys.keyAliasPrompt,
@@ -488,6 +509,47 @@ export const globalOptions = {
         return keyFileContent?.secretKey;
       }
       return keyMessage;
+    },
+  }),
+
+  // transaction
+  txUnsignedCommand: createOption({
+    key: 'txUnsignedCommand',
+    prompt: tx.txUnsignedCommandPrompt,
+    validation: tx.IUnsignedCommandSchema,
+    option: new Option(
+      '-m, --tx-unsigned-command <txUnsignedCommand>',
+      'enter your unsigned command to sign',
+    ),
+  }),
+  txTransactionFilename: createOption({
+    key: 'txTransactionFilename',
+    prompt: tx.transactionSelectPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-t, --tx-transaction-filename <txTransactionFilename>',
+      'Please select your transaction file containing your UnsignedCommand to sign',
+    ),
+    transform: async (transactionFile: string) => {
+      try {
+        const transactionFilePath = join(TRANSACTION_DIR, transactionFile);
+        const fileContent =
+          await services.filesystem.readFile(transactionFilePath);
+        if (fileContent === null) {
+          throw Error(`Failed to read file at path: ${transactionFilePath}`);
+        }
+        const transaction = JSON.parse(fileContent);
+        tx.IUnsignedCommandSchema.safeParse(transaction);
+        return {
+          transactionFile,
+          unsignedCommand: transaction,
+        };
+      } catch (error) {
+        console.error(
+          `Error processing transaction file: ${transactionFile}, failed with error: ${error}`,
+        );
+        throw error;
+      }
     },
   }),
 } as const;

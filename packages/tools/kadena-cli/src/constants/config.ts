@@ -16,3 +16,6 @@ export const KEY_EXT: string = '.key';
 export const KEY_LEGACY_EXT: string = '.legacy.key';
 export const PLAIN_KEY_EXT: string = '.key';
 export const PLAIN_KEY_LEGACY_EXT: string = '.legacy.key';
+
+// transactions
+export const TRANSACTION_DIR = `${process.cwd()}/transactions`;
