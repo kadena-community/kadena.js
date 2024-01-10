@@ -50,6 +50,11 @@ const redirectsConfig = [
     permanent: true,
   },
   {
+    source: '/kadena/wallets/chainweaver-troubleshooting',
+    destination: '/kadena/wallets/chainweaver/chainweaver-troubleshooting',
+    permanent: true,
+  },
+  {
     source: '/basics/ledger/ledger-user-guide',
     destination: '/kadena/wallets/ledger',
     permanent: true,
@@ -110,6 +115,51 @@ const redirectsConfig = [
     permanent: true,
   },
   {
+    source: '/build/guides/election-dapp-tutorial/01-getting-started',
+    destination: '/build/guides/election-dapp-tutorial/prepare-your-workspace',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/02-running-devnet',
+    destination: '/build/guides/election-dapp-tutorial/start-a-local-blockchain',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/add-an-admin-account',
+    destination: '/build/guides/election-dapp-tutorial/03-admin-account',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/define-a-namespaces',
+    destination: '/build/guides/election-dapp-tutorial/04-namespaces',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/define-keysets',
+    destination: '/build/guides/election-dapp-tutorial/05-keysets',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/write-the-smart-contract',
+    destination: '/build/guides/election-dapp-tutorial/06-smart-contract',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/nominate-candidates',
+    destination: '/build/guides/election-dapp-tutorial/07-nominate-candidates',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/add-voting-management',
+    destination: '/build/guides/election-dapp-tutorial/08-voting',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/add-a-gas-station',
+    destination: '/build/guides/election-dapp-tutorial/09-gas-station',
+    permanent: true,
+  },
+  {
     source: '/build/frontend/pact-lang-api-cookbook',
     destination: '/build/cookbook',
     permanent: true,
@@ -125,6 +175,21 @@ const redirectsConfig = [
     permanent: true,
   },
   {
+    source: '/build/resources/pact-resources',
+    destination: '/build/resources',
+    permanent: true,
+  },
+  {
+    source: '/build/support',
+    destination: '/kadena/support',
+    permanent: true,
+  },
+  {
+    source: '/contribute/contribute',
+    destination: '/contribute',
+    permanent: true,
+  },
+  {
     source: '/contribute/node/overview',
     destination: '/contribute/node',
     permanent: true,
@@ -132,6 +197,16 @@ const redirectsConfig = [
   {
     source: '/contribute/ambassadors/overview',
     destination: '/contribute/ambassadors',
+    permanent: true,
+  },
+  {
+    source: '/contribute/contributors-guide',
+    destination: '/contribute/docs',
+    permanent: true,
+  },
+  {
+    source: '/learn-pact/intro',
+    destination: '/pact/overview',
     permanent: true,
   },
   {
@@ -152,6 +227,31 @@ const redirectsConfig = [
   {
     source: '/learn-pact/intermediate/:slug',
     destination: '/pact/intermediate/:slug',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2020/announcing-kadena-technical-grants',
+    destination: '/blogchain/2020/announcing-kadena-technical-grants.2020-11-25',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-2',
+    destination: '/blogchain/2022/kadena-eco-office-hours-transcript-2022-07-22',
+    permanent: true,
+  },
+  {
+    source: '/pact/reference/typecheck',
+    destination: '/pact/reference/functions/repl-only-functions#typecheckh522701326',
+    permanent: true,
+  },
+  {
+    source: '/pact/reference/pact/reference/functions',
+    destination: '/pact/reference/functions',
+    permanent: true,
+  },
+  {
+    source: '/marmalade/metadata/todo',
+    destination: '/marmalade/metadata',
     permanent: true,
   },
   /* Pact Reference docs redirects */
