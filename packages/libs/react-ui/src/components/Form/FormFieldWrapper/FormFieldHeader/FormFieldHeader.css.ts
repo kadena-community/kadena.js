@@ -6,7 +6,6 @@ export const headerClass = style([
     display: 'flex',
     alignItems: 'center',
     gap: 'sm',
-    marginBlock: 'sm',
   }),
 ]);
 
