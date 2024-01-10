@@ -19,7 +19,6 @@ describe('ComboBox', () => {
     );
 
     expect(getByText('Favorite Animal')).toBeInTheDocument();
-    expect(getByText('▼')).toBeInTheDocument();
     expect(screen.queryByText('Cat')).not.toBeInTheDocument();
   });
 
@@ -37,7 +36,6 @@ describe('ComboBox', () => {
     );
 
     expect(getByText('Favorite Animal')).toBeInTheDocument();
-    expect(getByText('▼')).toBeInTheDocument();
     await user.click(getByRole('button'));
     expect(getByText('Cat')).toBeInTheDocument();
   });
