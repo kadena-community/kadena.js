@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "eslint-import-resolver-typescript": "3.5.5",
-    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
