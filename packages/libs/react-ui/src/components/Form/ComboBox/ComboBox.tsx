@@ -6,7 +6,7 @@ import { Stack } from '@components/Layout';
 import { ListBox } from '@components/ListBox';
 import { Popover } from '@components/Popover';
 import { useObjectRef } from '@react-aria/utils';
-import type { CSSProperties, ForwardedRef } from 'react';
+import type { ForwardedRef } from 'react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import type { AriaComboBoxProps } from 'react-aria';
 import { mergeProps, useComboBox, useFilter } from 'react-aria';
