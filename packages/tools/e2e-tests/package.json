@@ -19,15 +19,15 @@
   },
   "dependencies": {
     "eslint-import-resolver-typescript": "3.5.5",
-    "@kadena/cryptography-utils": "workspace:*"
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@kadena/client": "workspace:*",
-    "@kadena/client-utils": "workspace:*",
     "@kadena/types": "workspace:*",
     "@playwright/test": "^1.40.1",
     "@rushstack/eslint-config": "~3.3.0",
