@@ -53,7 +53,10 @@ export async function getAccountDetails(
 
     return result as FungibleChainAccountDetails;
   } catch (error) {
-    if (error.message.includes('with-read: row not found')) {
+    if (
+      error.message.includes('with-read: row not found') || // Account not found
+      error.message.includes('Cannot resolve') // Fungible or contract not found
+    ) {
       return null;
     } else {
       throw new PactCommandError('Pact Command failed with error', result);

@@ -15,6 +15,7 @@ import {
   BreadcrumbsItem,
   Grid,
   GridItem,
+  Notification,
   Stack,
   Table,
 } from '@kadena/react-ui';
@@ -60,6 +61,13 @@ const ChainAccount: React.FC = () => {
         loading={loading}
         loaderText="Retrieving account information..."
       />
+
+      {!loading && !error && !data?.fungibleChainAccount && (
+        <Notification intent="info" role="status">
+          We could not find any data on this account. Please check the fungible
+          name, account name and chain.
+        </Notification>
+      )}
 
       {data?.fungibleChainAccount && (
         <>
