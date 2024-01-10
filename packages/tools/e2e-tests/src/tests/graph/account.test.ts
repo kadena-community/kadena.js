@@ -22,7 +22,6 @@ test('Query: getAccount by AccountName', async ({ request }) => {
     queryResponse = await sendQuery(request, query);
   });
   await test.step('Should return an account after it has been created', async () => {
-    //Then GraphQL should return the account, including 1 transfer.
     expect(queryResponse.fungibleAccount).toEqual({
       accountName: testAccount.account,
       chainAccounts: [
