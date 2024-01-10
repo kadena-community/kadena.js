@@ -8,6 +8,7 @@ import type { ListState, Node } from 'react-stately';
 import {
   disabledClass,
   focusedClass,
+  listBoxClass,
   optionClass,
   selectedClass,
 } from './ListBox.css';
@@ -54,13 +55,7 @@ export const ListBox = <T extends object>(props: IListBoxProps<T>) => {
     <ul
       {...listBoxProps}
       ref={listBoxRef as RefObject<HTMLUListElement>}
-      style={{
-        margin: 0,
-        padding: 0,
-        listStyle: 'none',
-        maxHeight: 150,
-        overflow: 'auto',
-      }}
+      className={listBoxClass}
     >
       {[...state.collection].map((item) => (
         <Option key={item.key} item={item} state={state} />
