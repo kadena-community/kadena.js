@@ -58,6 +58,7 @@ export const Test: Story = {
           width={tokens.kda.foundation.layout.content.maxWidth}
           onInputChange={(value) => setSelectedValue(value)}
           startIcon={icon !== undefined ? <Icon /> : undefined}
+          disabledKeys={['aardvark', 'kangaroo']}
         >
           <Item key="red panda">Red Panda</Item>
           <Item key="cat">Cat</Item>
