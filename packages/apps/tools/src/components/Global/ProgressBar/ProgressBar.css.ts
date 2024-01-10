@@ -70,7 +70,7 @@ export const progressBarContentStyle = style([
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    marginLeft: '$6',
+    marginLeft: '$2',
   }),
 ]);
 
