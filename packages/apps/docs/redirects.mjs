@@ -249,11 +249,6 @@ const redirectsConfig = [
     destination: '/pact/reference/functions',
     permanent: true,
   },
-  {
-    source: '/marmalade/metadata/todo',
-    destination: '/marmalade/metadata',
-    permanent: true,
-  },
   /* Pact Reference docs redirects */
   {
     source: '/en/latest',
