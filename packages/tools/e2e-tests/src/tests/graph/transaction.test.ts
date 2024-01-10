@@ -1,7 +1,5 @@
-import {
-  IAccountWithSecretKey,
-  devnetMiner,
-} from '@fixtures/graph/testdata/constants/accounts';
+import type { IAccountWithSecretKey } from '@fixtures/graph/testdata/constants/accounts';
+import { devnetMiner } from '@fixtures/graph/testdata/constants/accounts';
 import { transferAmount } from '@fixtures/graph/testdata/constants/amounts';
 import { coinModuleHash } from '@fixtures/graph/testdata/constants/modules';
 import { getTransactionsQuery } from '@fixtures/graph/testdata/queries/getTransactions';
@@ -13,7 +11,7 @@ import {
   transferFunds,
   transferFundsCrossChain,
 } from '@helpers/graph/transfer.helper';
-import { ICommandResult } from '@kadena/client';
+import type { ICommandResult } from '@kadena/client';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { expect, test } from '@playwright/test';
 
