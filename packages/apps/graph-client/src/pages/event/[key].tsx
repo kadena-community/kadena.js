@@ -18,6 +18,7 @@ import {
   Grid,
   GridItem,
   Heading,
+  Notification,
   Pagination,
   Select,
   Stack,
@@ -261,11 +262,21 @@ const Event: React.FC = () => {
 
           {eventsQueryError && <ErrorBox error={eventsQueryError} />}
 
-          <EventsTable
-            events={
-              eventsQueryData?.events?.edges?.map((x) => x.node) as Event[]
-            }
-          />
+          {!eventsQueryLoading &&
+            !eventsQueryError &&
+            !eventsQueryData?.events?.edges.length && (
+              <Notification intent="info" role="status">
+                We could not find any transactions on this block.
+              </Notification>
+            )}
+
+          {eventsQueryData?.events?.edges.length && (
+            <EventsTable
+              events={
+                eventsQueryData?.events?.edges?.map((x) => x.node) as Event[]
+              }
+            />
+          )}
         </GridItem>
         <GridItem>
           <LoaderAndError
