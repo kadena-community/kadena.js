@@ -77,11 +77,6 @@ const BaseComboBox = <T extends object>(
 
   return (
     <Stack display="inline-flex" flexDirection="column">
-      <Button
-        {...buttonProps}
-        ref={buttonRef}
-        icon={<SystemIcon.OptionsOpen />}
-      />
       {/* @ts-expect-error */}
       <TextField
         {...inputProps}
