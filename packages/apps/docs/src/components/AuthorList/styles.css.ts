@@ -1,10 +1,10 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { atoms } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    padding: 0,
+    padding: 'no',
     width: '100%',
     flexWrap: 'wrap',
   }),
@@ -14,7 +14,7 @@ export const listClass = style([
 ]);
 
 export const listItemClass = style([
-  sprinkles({
+  atoms({
     width: '100%',
   }),
 ]);

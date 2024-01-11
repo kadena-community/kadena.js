@@ -106,7 +106,13 @@ const NewAccountFaucetPage: FC = () => {
     ],
     queryFn: () => createPrincipal(pubKeys, chainID, pred),
     enabled: pubKeys.length > 0,
+    placeholderData: '',
+    keepPreviousData: true,
   });
+
+  useEffect(() => {
+    setRequestStatus({ status: 'idle' });
+  }, [pubKeys.length]);
 
   const {
     register,
