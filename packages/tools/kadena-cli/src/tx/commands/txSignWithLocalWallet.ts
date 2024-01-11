@@ -36,6 +36,14 @@ export const createSignTransactionWithLocalWalletCommand: (
       } = config;
       const data = { unsignedCommand, ...rest };
 
+      // remove Prompts for secretKey
+      // get transaction file: config.txTransaction.transactionFile  | extractPublicKeysFromTransaction
+
+      // * After speaking with javad redo the transaction part, and the signing part with the helper from kadena cleint
+
+      // get secret keys for each public key  |  findSecretKeyByWalletAndPublicKey
+      // sign transaction with each secret key  |  signTransaction
+
       const result = await signTransaction(data);
       assertCommandError(result);
 
