@@ -5,7 +5,7 @@ import {
   generateAccount,
 } from '../../support/helpers/accounts.helper';
 
-test.beforeEach(async ({ page, toolsApp, context }) => {
+test.beforeEach(async ({ page, toolsApp }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
     await page.goto('/');
     await toolsApp.homePage.header.setNetwork('devnet');
