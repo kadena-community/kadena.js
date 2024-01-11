@@ -209,7 +209,7 @@ const CrossChainTransferTracker: FC = () => {
       <Heading as="h4">{t('Track & trace transactions')}</Heading>
       <Stack
         flexDirection="column"
-        paddingBlockStart={'xs'}
+        paddingBlockStart={'md'}
         paddingBlockEnd={'xxxl'}
         gap={'lg'}
       >

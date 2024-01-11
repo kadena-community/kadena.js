@@ -384,13 +384,11 @@ const CrossChainTransferFinisher: FC = () => {
       />
 
       <Breadcrumbs>
-        <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
       </Breadcrumbs>
+      <Heading as="h4">{t('Finish transaction')}</Heading>
 
-      <Heading as="h3" transform="capitalize" bold={false}>
-        {t('Finish transaction')}
-      </Heading>
 
       {showNotification ? (
         <div className={notificationContainerStyle}>{renderNotification}</div>
@@ -404,7 +402,11 @@ const CrossChainTransferFinisher: FC = () => {
 
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
-          <Stack flexDirection="column">
+          <Stack flexDirection="column"
+                 paddingBlockStart={'md'}
+                 paddingBlockEnd={'xxxl'}
+                 gap={'lg'}
+          >
             <FormItemCard
               heading={t('Search Request')}
               helper={t('Where can I find the request key?')}
