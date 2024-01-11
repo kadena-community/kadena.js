@@ -1,5 +1,6 @@
 import {
   Event,
+  useGetEventNodesQuery,
   useGetEventsByNameSubscription,
   useGetEventsQuery,
 } from '@/__generated__/sdk';
@@ -8,7 +9,7 @@ import { ErrorBox } from '@/components/error-box/error-box';
 import { EventsTable } from '@/components/events-table/events-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import { getEvents } from '@/graphql/queries.graph';
+import { getEventNodes, getEvents } from '@/graphql/queries.graph';
 import { getEventsByName } from '@/graphql/subscriptions.graph';
 import routes from '@constants/routes';
 import {
@@ -34,6 +35,7 @@ const Event: React.FC = () => {
     qualifiedEventName: router.query.key as string,
     first: parseInt((router.query.items as string) || '10'),
   };
+
   const {
     loading: eventsQueryLoading,
     data: eventsQueryData,
@@ -41,12 +43,14 @@ const Event: React.FC = () => {
     fetchMore,
   } = useGetEventsQuery({
     variables: getEventsQueryVariables,
+    skip: !router.query.key,
   });
 
   // Polled events
   const getEventsByNameSubscriptionVariables = {
     qualifiedEventName: router.query.key as string,
   };
+
   const {
     loading: eventsSubscriptionLoading,
     data: eventsSubscriptionData,
@@ -55,12 +59,21 @@ const Event: React.FC = () => {
     variables: getEventsByNameSubscriptionVariables,
   });
 
+  const nodesQueryVariables = {
+    ids: eventsSubscriptionData?.events as string[],
+  };
+
+  const { data: nodesQueryData } = useGetEventNodesQuery({
+    variables: nodesQueryVariables,
+    skip: !eventsSubscriptionData?.events?.length,
+  });
+
   const [subscriptionsEvents, setSubscriptionsEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    if (eventsSubscriptionData?.events?.length) {
+    if (nodesQueryData?.nodes?.length) {
       const updatedEvents = [
-        ...(eventsSubscriptionData.events as Event[]),
+        ...(nodesQueryData?.nodes as Event[]),
         ...subscriptionsEvents,
       ];
 
@@ -70,7 +83,7 @@ const Event: React.FC = () => {
 
       setSubscriptionsEvents(updatedEvents);
     }
-  }, [eventsSubscriptionData]);
+  }, [nodesQueryData]);
 
   // Pagination
   const itemsPerPageOptions = [10, 50, 100, 200];
@@ -201,6 +214,10 @@ const Event: React.FC = () => {
             {
               query: getEventsByName,
               variables: getEventsByNameSubscriptionVariables,
+            },
+            {
+              query: getEventNodes,
+              variables: nodesQueryVariables,
             },
           ]}
         />

@@ -1,7 +1,8 @@
 import { Box, Stack } from '@kadena/react-ui';
 
-import type { QueryTransactionsConnection } from '@/__generated__/sdk';
+import type { Block, QueryTransactionsConnection } from '@/__generated__/sdk';
 import {
+  useGetBlockNodesQuery,
   useGetBlocksSubscription,
   useGetRecentHeightsQuery,
   useGetTransactionsQuery,
@@ -22,10 +23,22 @@ import React, { useEffect } from 'react';
 
 const Home: React.FC = () => {
   const {
-    loading: loadingNewBlocks,
-    data: newBlocks,
-    error: newBlocksError,
+    loading: loadingNewBlockIds,
+    data: newBlocksIds,
+    error: newBlockIdsError,
   } = useGetBlocksSubscription();
+
+  const nodesQueryVariables = {
+    ids: newBlocksIds?.newBlocks as string[],
+  };
+
+  const { data: nodesQueryData } = useGetBlockNodesQuery({
+    variables: nodesQueryVariables,
+    skip: !newBlocksIds?.newBlocks?.length,
+  });
+
+  const newBlocks = nodesQueryData?.nodes as Block[];
+
   const getRecentHeightsVariables = { count: 3 };
   const { data: recentBlocks, error: recentBlocksError } =
     useGetRecentHeightsQuery({ variables: getRecentHeightsVariables });
@@ -44,13 +57,12 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (
       isEqual(previousNewBlocks, newBlocks) === false &&
-      newBlocks?.newBlocks &&
-      newBlocks?.newBlocks?.length > 0
+      newBlocks?.length > 0
     ) {
-      newBlocks.newBlocks.forEach(async (block) => {
+      newBlocks.forEach(async (block) => {
         addBlockToChain(block);
       });
-      addBlocks(newBlocks?.newBlocks);
+      addBlocks(newBlocks);
     }
   }, [newBlocks, addBlocks, previousNewBlocks, addBlockToChain]);
 
@@ -81,8 +93,8 @@ const Home: React.FC = () => {
       </Stack>
 
       <LoaderAndError
-        error={newBlocksError || recentBlocksError || txError}
-        loading={loadingNewBlocks}
+        error={newBlockIdsError || recentBlocksError || txError}
+        loading={loadingNewBlockIds}
         loaderText="Loading..."
       />
 
