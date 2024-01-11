@@ -1,8 +1,8 @@
 import chokidar from 'chokidar';
 import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
-import type { IEventType } from './movePages/singlepage';
-import { moveSinglePage } from './movePages/singlepage';
+import type { IEventType } from './movePages/singlePage';
+import { moveSinglePage } from './movePages/singlePage';
 import { initFunc } from './utils/build';
 
 const run = async (event: IEventType, path: string): Promise<void> => {

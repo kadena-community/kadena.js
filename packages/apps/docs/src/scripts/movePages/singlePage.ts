@@ -1,5 +1,5 @@
-import type { IConfigTreeItem, IScriptResult } from '@kadena/docs-tools';
-import { IConfigMenu, getParentTreeFromPage } from '@kadena/docs-tools';
+import type { IScriptResult } from '@kadena/docs-tools';
+import { getParentTreeFromPage } from '@kadena/docs-tools';
 import { copyPage } from '.';
 import { getPageFromPath } from '../fixLocalLinks/utils/getPageFromPath';
 
