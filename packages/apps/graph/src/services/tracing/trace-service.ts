@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 import { dotenv } from '@utils/dotenv';
 import fs from 'fs';
 
