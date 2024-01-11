@@ -1,276 +1,323 @@
 ---
-title: '06: Smart contract'
+title: 'Write the smart contract'
 description:
-  'In the sixth chapter of the Election dApp tutorial you will set up the
-  scaffolding for the election smart contract.'
-menu: Election dApp tutorial
-label: '06: Smart contract'
+  'Use the Pact smart contract language to build the scaffolding for the election application smart contract backend.'
+menu: "Workshop: Build an Election application"
+label: 'Write a smart contract'
 order: 6
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
 
-# Chapter 06: Smart contract
+# Write a smart contract
 
-A smart contract is an application on the blockchain. On the Kadena blockchain,
-a smart contract consists of one or more Pact modules. The election smart
-contract in this tutorial will consist of two modules: the main election module
-and an auxiliary gas station module. In this chapter, you will lay the
-foundation of the election module. Through a series of exercises you will learn
-the basics of deploying, using and upgrading Pact modules. At the end of the
-chapter you will deploy the election module to your local Devnet. In the
-following chapters you will gradually add more logic to the module.
+Now that you have a unique namespace controlled by your administrative keyset, you're ready to start building the backend for the election application.
+In this tutorial, you'll learn the basics of how to write a **smart contract** that can be deployed on the blockchain as the backend code for the election application.
 
-## Recommended reading
+A smart contract is a special type of application runs automatically when the conditions specified in the contract logic are met. 
+By deploying a smart contract on a blockchain, the terms of an agreement can be executed programmatically in a decentralized way, without any intermediary involvement or process delays.
 
-- [Pact Modules](/pact/beginner/modules)
-- [Capabilities](/pact/reference/concepts#capabilitiesh-1323277354)
-- [Pact: Solving Smart Contract Governance and Upgradeability](/blogchain/2019/pact-solving-smart-contract-governance-and-upgradeability-2019-04-05)
+On the Kadena blockchain, a smart contract consists of one or more **modules** written in the Pact programming language. 
+For this tutorial, the election smart contract consists of two modules: the main **election** module and an auxiliary **gas station** module. 
 
-## Get the code
+The exercises in this tutorial illustrate the basics of building and deploying a Pact module as you develop the main election module. 
+At the completion of this tutorial, you'll deploy the core logic of the election module on your local development network.
 
-If you are following along with the tutorial you can continue working on your
-current branch. In case you started the tutorial with this chapter, clone the
-tutorial project and change the current directory of your terminal to the
-project folder.
+## Before you begin
 
-```bash
-git clone git@github.com:kadena-community/voting-dapp.git election-dapp
-cd election-dapp
-```
+Before you start this tutorial, verify the following basic requirements:
 
-Switch branches to get the starter code for this chapter.
+- You have an internet connection and a web browser installed on your local computer.
+- You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started) and have checked out the `01-getting-started` branch.
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/02-running-devnet).
+- You are [connected to the development network](/build/guides/election-dapp-tutorial/02-running-devnet#connect-to-the-development-network) using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+- You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/04-namespaces).
+- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/guides/election-dapp-tutorial/05-keysets). 
 
-```bash
-git checkout 06-smart-contract
-```
+## Define a minimal Pact module
 
-If you want to skip ahead and see the final solution for this chapter, you can
-check out the branch containing the starter code for the next chapter.
+To get started writing Pact modules, you must have a file that contains the bare minimum of code required to deploy. 
+You can create and test this starter code for a Pact module using the Pact REPL.
+After you have a minimal working deployment, you can add and refactor the code to add functionality to the Pact module. 
 
-```bash
-git checkout 07-nominate-candidates
-```
+To create the starter code for a Pact module:
 
-## Exercise: Define the election Pact module
+1. Open the `election-dapp/pact` folder in a terminal shell on your computer.
 
-In this exercise you will test the deployment and upgrade of a Pact module in
-the Pact REPL. You will start with debugging the minimal requirements for
-deploying a Pact module until you have a working deployment. Then, you will
-refactor the Pact module to be governed with a capability instead of a keyset
-directly. In the `./pact` folder, create a `module.repl` file. Add a transaction
-that defines a module named `election` to this file, using the following code.
+2. Create a new file named `module.repl` in the `pact` folder.
 
-```pact
-(begin-tx
-  "Deploy the election module"
-)
-  (module election)
-(commit-tx)
-```
+3. Add a transaction that defines a module named `election` by typing the following lines of code in the `module.repl` file:
 
-if you have the pact executable installed locally, you can run the `module.repl`
-file using the following command in a terminal with the current directory set to
-the root of your project.
+   ```pact
+   (begin-tx
+     "Deploy the election module"
+   )
+     (module election)
+   (commit-tx)
+   ```
 
-```bash
-pact pact/module.repl -t
-```
+1. Execute the transaction using the `pact` command-line program running locally or using [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
 
-If you do not have the pact executable installed locally, you can run the
-`module.repl` file from the
-[pact ttyd in your browser](http://localhost:8080/ttyd/pact-cli/). Make sure
-that your local Devnet is running.
+   If `pact-cli` is installed locally, run the following command in the current terminal shell:
 
-```pact
-(load "keyset.repl")
-```
+   ```bash
+   pact module.repl -t
+   ```
+   
+   As before, if you don't have `pact` installed locally, you can load the `module.repl` file in the [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container with the following command:
 
-Run the `module.repl` file and notice the following error.
+   ```pact
+   (load "module.repl")
+   ```
 
-```bash
-error: Unexpected end of input, Expected: atom, Expected: literal
-```
+   If you are using the `pact-cli` in a browser, you can replace the `pact module.repl -t` command with `(load "module.repl")` throughout this tutorial.
+   
+   You'll see that this transaction fails with an error similar to the following:
 
-You need to add another argument to the module definition: a keyset or a
-capability that governs the module. Update the content of `module.repl` as
-follows and run the file again.
+   ```bash
+   error: Unexpected end of input, Expected: atom, Expected: literal
+   ```
+   
+   Modules require you to define either a **keyset** or a **capability** guard to govern access to the module's functions.
+   Capabilities are similar to  keysets in that they control permissions—who can do what—in the context of a Pact smart contract. 
+   You'll learn more about capabilities in this tutorial and in other tutorials.
+   For now, you can use the `admin-keyset` you defined in the previous tutorial.
 
-```pact
-(begin-tx
-  "Deploy the election module"
-)
-  (module election "election.admin-keyset")
-(commit-tx)
-```
+2. Add the `admin-keyset` to the transaction to define the `election` module in the `module.repl` file:
 
-A new error will appear.
+   ```pact
+   (begin-tx
+     "Deploy the election module"
+   )
+     (module election "election.admin-keyset")
+   (commit-tx)
+   ```
 
-```bash
-error: Unexpected end of input, Expected: list
-```
+   If you execute the transaction in the Pact REPL now, you'll see a different error:
 
-This error means that it is not possible to create an empty Pact module. Add a
-function `list-candidates` that will be used later to list the candidates stored
-in the respective database table. For now, this function will just return an empty
-list `[]`.
+   ```bash
+   error: Unexpected end of input, Expected: list
+   ```
 
-```pact
-(begin-tx
-  "Deploy the election module"
-)
-  (module election "election.admin-keyset"
-    (defun list-candidates () [])
-  )
-(commit-tx)
-```
+   Although you've added an owner to the module, the module doesn't yet include any functions.
+   You must define at least one function in a Pact module for the module to be valid.
 
-When you run file again, you should see an error that looks familiar.
+1. Add a `list-candidates` function to the transaction that defines the `election` module.
+   
+   ```pact
+   (begin-tx
+     "Deploy the election module"
+   )
+     (module election "election.admin-keyset"
+       (defun list-candidates () [])
+     )
+   (commit-tx)
+   ```
 
-```bash
-Error: No such keyset: 'election.admin-keyset
-```
+   Later, you'll update this function to list the candidates stored in ae database table. 
+   For now, this function just returns an empty list (`[]`).
+   If you execute the transaction in the Pact REPL now, you should see a familiar error:
 
-Remember from the previous chapter that you can only define a keyset in a
-namespace. Add the following code before the transaction to define the
-`election` namespace and define the `election.admin-keyset`. Then, run the
-`module.repl` file again.
+   ```bash
+   Error: No such keyset: 'election.admin-keyset
+   ```
+   
+   Remember that you can only define a keyset in a namespace. 
+   The current `module.repl` file doesn't define a namespace, so it can't define or use the keyset you've specified for the module definition.
 
-```pact
-(env-data
-  { 'admin-keyset :
-    { 'keys : [ 'admin-key ]
-    , 'pred : 'keys-all
-    }
-  }
-)
+1. Add the following code—which should look familiar from the previous tutorials—before the transaction to define the `election` module:
 
-(env-sigs
-  [{ 'key  : 'admin-key
-   , 'caps : []
-  }]
-)
+   ```pact
+   (env-data
+     { 'admin-keyset :
+       { 'keys : [ 'admin-key ]
+       , 'pred : 'keys-all
+       }
+     }
+   )
+   (env-sigs
+     [{ 'key  : 'admin-key
+      , 'caps : []
+     }]
+   )
 
-(begin-tx
-  "Define a namespace for the module"
-)
-  (define-namespace 'election (read-keyset 'admin-keyset) (read-keyset 'admin-keyset))
-(commit-tx)
+   (begin-tx
+     "Define a namespace for the module"
+   )
+     (define-namespace 'election (read-keyset 'admin-keyset) (read-keyset 'admin-keyset))
+   (commit-tx)
+   
+   (begin-tx
+     "Define a keyset to govern the module"
+   )
+     (namespace 'election)
+     (define-keyset "election.admin-keyset" (read-keyset 'admin-keyset))
+   (commit-tx)
+   ```
 
-(begin-tx
-  "Define a keyset to govern the module"
-)
-  (namespace 'election)
-  (define-keyset "election.admin-keyset" (read-keyset 'admin-keyset))
-(commit-tx)
-```
+2. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact module.repl -t
+   ```
 
-At the end of the output you will see `Load successful`, which means that you
-have successfully defined the `election` Pact module in the `election`
-namespace. While the module itself is governed by the `election.admin-keyset`,
-the `list-candidate` function of the module is publically accessible. In the
-next exercise you will prove that the `election` module works by testing the
-`list-candidates` function.
+   You'll now see that the transaction succeeds with output similar to the following:
 
-## Exercise: Use the election Pact module
+   ```bash
+   module.repl:1:0:Trace: Setting transaction data
+   module.repl:9:0:Trace: Setting transaction signatures/caps
+   module.repl:15:0:Trace: Begin Tx 0: Define a namespace for the module
+   module.repl:18:4:Trace: Namespace defined: election
+   module.repl:19:0:Trace: Commit Tx 0: Define a namespace for the module
+   module.repl:21:0:Trace: Begin Tx 1: Define a keyset to govern the module
+   module.repl:24:4:Trace: Namespace set to election
+   module.repl:25:4:Trace: Keyset defined
+   module.repl:26:0:Trace: Commit Tx 1: Define a keyset to govern the module
+   module.repl:28:0:Trace: Begin Tx 2: Deploy the election module
+   module.repl:31:4:Trace: Loaded module election, hash ElJ6iBzJbN_WaWuzr6PPPVkjlCQAXhosymHnI3nPYZM
+   module.repl:34:0:Trace: Commit Tx 2: Deploy the election module
+   Load successful
+   ```
+   
+   You now have all of the starter code required to defined the Pact `election` module in the `election` namespace. 
+   The module is governed by the `election.admin-keyset` and only includes one function.
 
-Remember from earlier chapters that there is a global Pact function
-`list-modules` that lists all Pact modules deployed on the blockchain. This
-function can also be used in the Pact REPL. Add the following transaction to
-`module.repl` to assert that the `election` module is available and run it.
+## Test the election module
 
-```pact
-(begin-tx
-  "Look up the election module"
-)
-  (expect
-    "The election module should exist"
-    ["election"]
-    (list-modules)
-  )
-(commit-tx)
-```
+Although the `election` module is governed by a keyset and can't be modified without a signed transaction, the `list-candidate` function publicly accessible.
+You can use the global `list-modules` Pact function in the Pact REPL to test access to the `election` module and the `list-candidate` function. 
 
-If all is well, the last line of the output should be `Load successful` and you
-have proven that the `election` module is defined in the Pact REPL. But does it
-actually work? Add the following transaction to `module.repl`, which calls the
-`list-candidates` function on the `election` module and asserts that it returns
-an array. Also, clear the environment to make sure that the function is
-accessible without a keyset and signature.
+To test access to the election module:
 
-```pact
-(env-data {})
-(env-sigs [])
+1. Open the `election-dapp/pact/module.repl` file in the code editor on your computer.
 
-(begin-tx
-  "Call list-candidates"
-)
-  (expect
-    "list-candidates returns an empty list"
-    []
-    (election.list-candidates)
-  )
-(commit-tx)
-```
+1. Add the following transaction to assert that the `election` module is available:
 
-The last line of the output should be `Load successful` again, meaning that you
-successfully received an empty list from the `list-candidates` function without
-having to sign the transaction. This is an important requirement for the
-eventual election website, because in a democracy, the list of candidates should
-be publically accessible.
+   ```pact
+   (begin-tx
+      "Look up the election module"
+   )
+     (expect
+      "The election module should exist"
+      ["election"]
+      (list-modules)
+     )
+   (commit-tx)
+   ```
 
-## Exercise: Upgrade the election Pact module
+2. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact module.repl -t
+   ```
+   
+   You should see output similar to the following that indicates the `election` module is defined in the Pact REPL:
 
-The `election` module was defined with a keyset to govern it. Every
-subsequent upgrade - i.e. change - of the module will only be allowed if the upgrade
-transaction is signed with that keyset. In this exercise you will examine two scenarios for
-upgrading a Pact module: with the correct keyset and with an incorrect keyset.
-Add the following code after the last transaction in `module.repl`. This code
-reloads the correct keyset and signature into the Pact REPL, redefines the
-`election` module with the `list-candidates` function returns a different
-list, and tests that `list-candidates` now returns the new list.
+   ```bash
+   module.repl:35:0:Trace: Begin Tx 3: Look up the election module
+   module.repl:38:3:Trace: Expect: success: The election module should exist
+   module.repl:43:1:Trace: Commit Tx 3: Look up the election module
+   Load successful
+   ```
 
-```pact
-(env-data
-  { 'admin-keyset :
-    { 'keys : [ 'admin-key ]
-    , 'pred : 'keys-all
-    }
-  }
-)
+3. Add the following lines of code to the `module.repl` file to clear the environment keyset and signature information, call the `list-candidates` function on the `election` module, and assert that the function returns an array:
 
-(env-sigs
-  [{ 'key  : 'admin-key
-   , 'caps : []
-  }]
-)
+   ```pact
+   (env-data {})
+   (env-sigs [])
+   
+   (begin-tx
+     "Call list-candidates"
+   )
+     (expect
+       "list-candidates returns an empty list"
+       []
+       (election.list-candidates)
+     )
+   (commit-tx)
+   ```
 
-(begin-tx
-  "Upgrade the module"
-)
-  (namespace 'election)
-  (module election "election.admin-keyset"
-    (defun list-candidates () [1, 2, 3])
-  )
-(commit-tx)
+2. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact module.repl -t
+   ```
+   
+   You should see output similar to the following that indicates you were able to call the `list-candidates` function without signing the transaction and that the function returned an empty list:
 
-(env-data {})
-(env-sigs [])
+   ```bash
+   module.repl:44:0:Trace: Setting transaction data
+   module.repl:45:0:Trace: Setting transaction signatures/caps
+   module.repl:47:0:Trace: Begin Tx 4: Call list-candidates
+   module.repl:50:5:Trace: Expect: success: list-candidates returns an empty list
+   module.repl:55:0:Trace: Commit Tx 4: Call list-candidates
+   Load successful
+   ```
 
-(begin-tx
-  "Call updated list-candidates function"
-)
-  (expect
-    "list-candidates returns a list with numbers"
-    [1, 2, 3]
-    (election.list-candidates)
-  )
-(commit-tx)
-```
+   Proving that you can call this function inside of the `election` module without an identity context or a signature is important because, in a democracy, the list of candidates should be publicly accessible.
 
-The last line of the output should be `Load successful` again, meaning that you
-successfully upgraded the `election` module and the `list-modules` function
-indeed returns a different value after the upgrade.
+## Upgrade the election Pact module
+
+When you defined the `election` module, you specified the keyset used to govern it. 
+Every change to the module requires the upgrade transaction to be signed with that keyset. 
+To test that upgrades works as expected, you can try upgrading the Pact module with the correct keyset and with an incorrect keyset.
+
+To test upgrading with the correct keyset:
+
+1. Open the `election-dapp/pact/module.repl` file in the code editor on your computer.
+
+2. Add the following lines of code after the last transaction:
+   
+   ```pact
+   (env-data
+     { 'admin-keyset :
+       { 'keys : [ 'admin-key ]
+       , 'pred : 'keys-all
+       }
+     }
+   )
+   
+   (env-sigs
+     [{ 'key  : 'admin-key
+      , 'caps : []
+     }]
+   )
+   
+   (begin-tx
+     "Upgrade the module"
+   )
+     (module election "election.admin-keyset"
+       (defun list-candidates () [1, 2, 3])
+     )
+   (commit-tx)
+   
+   (begin-tx
+     "Call updated list-candidates function"
+   )
+     (expect
+       "list-candidates returns a list with numbers"
+       [1, 2, 3]
+       (election.list-candidates)
+     )
+   (commit-tx)
+   ```
+   
+   This code:
+   
+   - Reloads the correct keyset and signature into the Pact REPL
+   - Redefines the `election` module with the `list-candidates` function to return a different list containing 1, 2, 3.
+   - Tests that `list-candidates` returns the new list.
+   
+    You should see output similar to the following that indicates you were able to call the updated `list-candidates` function and that the function returned a list with numbers:
+
+   ```bash
+   module.repl:82:0:Trace: Begin Tx 6: Call updated list-candidates function
+   module.repl:85:4:Trace: Expect: success: list-candidates returns a list with numbers
+   module.repl:90:0:Trace: Commit Tx 6: Call updated list-candidates function
+   Load successful
+   ```
 
 Earlier, you used `expect-failure` in the test REPL to catch and test errors
 that were thrown as a result of an illegal attempt to redefine a namespace or
