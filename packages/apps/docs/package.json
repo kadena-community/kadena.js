@@ -17,7 +17,7 @@
     "build:storybook": "pnpm run build:scripts && storybook build",
     "chromatic": "chromatic -b build:storybook",
     "dev": "NODE_OPTIONS=--max-old-space-size=8192 NODE_ENV=development pnpm run build:scripts && concurrently \"next dev\" \"pnpm run dev:docswatch\"",
-    "dev:docswatch": "NODE_ENV=development IGNOREREPO=true  tsx ./src/scripts/watchdocs.ts",
+    "dev:docswatch": "NODE_ENV=development tsx ./src/scripts/watchdocs.ts",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",

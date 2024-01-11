@@ -159,8 +159,6 @@ const fixLinks = async (
     if (isLocalPageLink(link.url)) {
       link.url = getUrlofPageFile(link.url);
       link.url = await fixHashLinks(link.url);
-
-      console.log('link', { url: link.url });
     }
   }
 

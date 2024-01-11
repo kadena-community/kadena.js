@@ -25,10 +25,10 @@ const runAll = async (event: IEventType, path: string): Promise<void> => {
       await runSingleChange(path);
     });
 
+  //when the config.yaml is changed, we need to rebuild the whole thing
   chokidar
     .watch('./src/config.yaml', { ignoreInitial: true })
     .on('all', async (event, path) => {
-      console.log(event, path);
       await runAll(event, path);
     });
 })();
