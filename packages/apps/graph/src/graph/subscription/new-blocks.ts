@@ -32,7 +32,7 @@ async function* iteratorFn(
 
   if (!nullishOrEmpty(blockResult)) {
     lastBlock = blockResult[0];
-    yield [createID(GQLBlock.name, [lastBlock.hash])];
+    yield [createID(GQLBlock.name, lastBlock.hash)];
   }
 
   while (!context.req.socket.destroyed) {
@@ -40,7 +40,7 @@ async function* iteratorFn(
 
     if (!nullishOrEmpty(newBlocks)) {
       lastBlock = newBlocks[0];
-      yield newBlocks.map((block) => createID(GQLBlock.name, [block.hash]));
+      yield newBlocks.map((block) => createID(GQLBlock.name, block.hash));
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
