@@ -74,6 +74,7 @@ export {
   Accordion,
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
   ContentHeader,
@@ -122,3 +123,6 @@ export {
   maskValue,
   useDialog,
 } from './components';
+
+// re-exports from 'react-aria'
+export { RouterProvider } from 'react-aria';

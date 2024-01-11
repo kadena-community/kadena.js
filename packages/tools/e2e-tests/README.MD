@@ -56,9 +56,10 @@ pnpm --filter @kadena-dev/e2e-tests run install:chromium
    has it's own config file.
 
 ```sh
- pnpm --filter @kadena-dev/e2e-tests run test:e2e -c playwright.tools.config.ts
+pnpm run test:e2e -- -c playwright.tools.config.ts
 ```
 
 [1]: #table-of-contents
 [2]: #installation-#-usage
 [3]: http://localhost:3000
+[4]: ./playwright.config.ts

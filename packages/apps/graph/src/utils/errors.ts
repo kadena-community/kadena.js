@@ -1,4 +1,7 @@
-import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
+import {
+  PrismaClientInitializationError,
+  PrismaClientKnownRequestError,
+} from '@prisma/client/runtime/library';
 import { PactCommandError } from '@services/node-service';
 import { GraphQLError } from 'graphql';
 
@@ -12,10 +15,27 @@ export function normalizeError(error: any): GraphQLError {
         type: error.name,
         message: error.message,
         description:
-          'Prisma Client failed to initialize. Are you sure the database is running and reachable?',
+          'The Prisma client failed to initialize. Are you sure the database is running and reachable?',
         data: error.stack,
       },
     });
+  }
+  if (error instanceof PrismaClientKnownRequestError) {
+    if (
+      error.message.includes(
+        'Timed out fetching a new connection from the connection pool',
+      )
+    ) {
+      return new GraphQLError('Prisma Client Connection Pool Timeout', {
+        extensions: {
+          type: error.name,
+          message: 'Prisma Client Connection Pool Timeout',
+          description:
+            'The Prisma client failed to fetch a new connection from the connection pool. This is most likely due to the database being overloaded.',
+          data: error.stack,
+        },
+      });
+    }
   }
 
   if (error instanceof PactCommandError) {

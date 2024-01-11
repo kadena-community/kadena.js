@@ -5,18 +5,18 @@ export const blockquote = style([
   sprinkles({
     borderColor: '$neutral4',
     backgroundColor: '$infoLowContrast',
-    marginY: '$4',
-    paddingY: '$2',
-    paddingLeft: '$4',
     fontSize: '$sm',
   }),
   {
+    marginBlock: vars.sizes.$4,
+    paddingBlock: vars.sizes.$2,
+    paddingInlineStart: vars.sizes.$4,
     borderLeftWidth: '2px',
     borderLeftStyle: 'solid',
     whiteSpace: 'pre-wrap',
     ...responsiveStyle({
       md: {
-        paddingRight: vars.sizes.$8,
+        paddingInlineEnd: vars.sizes.$8,
       },
     }),
   },

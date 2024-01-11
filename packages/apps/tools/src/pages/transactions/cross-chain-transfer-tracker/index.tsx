@@ -20,6 +20,7 @@ import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Accordion,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Grid,
   GridItem,
@@ -201,17 +202,16 @@ const CrossChainTransferTracker: FC = () => {
       <Head>
         <title>Kadena Developer Tools - Transactions</title>
       </Head>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Cross Chain Tracker')}</BreadcrumbsItem>
+      </Breadcrumbs>
       <Heading as="h4">{t('Track & trace transactions')}</Heading>
       <Stack
-        direction="column"
-        paddingTop={'$6'}
-        paddingBottom={'$10'}
-        marginBottom={'$6'}
-        gap={'$6'}
+        flexDirection="column"
+        paddingBlockStart={'xs'}
+        paddingBlockEnd={'xxxl'}
+        gap={'lg'}
       >
         {txError ? (
           <div className={notificationContainerStyle}>

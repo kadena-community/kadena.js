@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs, Stack } from '@kadena/react-ui';
+import { Box, Breadcrumbs, BreadcrumbsItem, Stack } from '@kadena/react-ui';
 
 import { useGetTransactionsQuery } from '@/__generated__/sdk';
 import { ExtendedTransactionsTable } from '@/components/extended-transactions-table/extended-transactions-table';
@@ -18,14 +18,14 @@ const Transactions: React.FC = () => {
   return (
     <>
       <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item>Transactions</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+        <Breadcrumbs>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem>Transactions</BreadcrumbsItem>
+        </Breadcrumbs>
         <GraphQLQueryDialog queries={[{ query: getTransactions, variables }]} />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}

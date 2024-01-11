@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
+import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const menuCardClass = style([
@@ -6,9 +6,9 @@ export const menuCardClass = style([
     position: 'absolute',
     width: '100%',
     height: '100%',
-    paddingX: '$6',
   }),
   {
+    paddingInline: vars.sizes.$6,
     transition: 'transform .2s ease',
     ...responsiveStyle({ md: { overflowY: 'auto' } }),
 

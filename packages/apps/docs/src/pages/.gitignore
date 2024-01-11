@@ -1,0 +1,11 @@
+*
+!index.tsx
+!404.tsx
+!.gitignore
+!_error.tsx
+!_document.tsx
+!_app.tsx
+!/tags/*
+!/search/*
+!/authors/*
+!/api/*

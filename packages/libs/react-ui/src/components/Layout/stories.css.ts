@@ -1,30 +1,37 @@
-import { sprinkles } from '@theme/sprinkles.css';
+import { atoms } from '@theme/atoms.css';
 import { style } from '@vanilla-extract/css';
 
 export const itemClass = style([
-  sprinkles({
-    backgroundColor: '$primaryContrast',
-    color: '$primarySurface',
-    padding: '$6',
+  atoms({
+    backgroundColor: 'semantic.info.default',
+    color: 'text.semantic.info.default',
+    fontWeight: 'bodyFont.medium',
+    padding: 'sm',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    borderColor: 'base.boldest',
+    borderStyle: 'solid',
+    borderWidth: 'hairline',
   }),
 ]);
 
 export const containerClass = style([
-  sprinkles({
-    backgroundColor: 'transparent',
-    borderColor: '$primaryAccent',
+  atoms({
+    backgroundColor: 'semantic.warning.default',
+    borderColor: 'base.boldest',
     borderStyle: 'solid',
-    borderWidth: '$sm',
+    borderWidth: 'hairline',
     width: '100%',
   }),
 ]);
 
 export const componentClass = style([
-  sprinkles({
-    backgroundColor: '$primarySurface',
-    color: '$primaryContrast',
+  atoms({
+    backgroundColor: 'semantic.positive.default',
+    color: 'text.semantic.positive.default',
+    borderColor: 'base.boldest',
+    borderStyle: 'solid',
+    borderWidth: 'hairline',
   }),
 ]);

@@ -8,7 +8,8 @@ import React, { forwardRef } from 'react';
 import type { AriaButtonProps, HoverEvents } from 'react-aria';
 import { useButton, useFocusRing, useHover } from 'react-aria';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
-import { button } from './NewButton.css';
+import { button } from './SharedButton.css';
+import { disableLoadingProps } from './utils';
 
 type Variants = Omit<NonNullable<RecipeVariants<typeof button>>, 'onlyIcon'>;
 // omit link related props from `AriaButtonProps`
@@ -30,23 +31,8 @@ export interface IButtonProps
    * @see https://react-spectrum.adobe.com/react-aria/useButton.html#props
    */
   onClick?: ComponentProps<'button'>['onClick'];
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function disableLoadingProps(props: IButtonProps) {
-  const newProps = { ...props };
-  // Don't allow interaction while isPending is true
-  if (newProps.isLoading) {
-    newProps.onPress = undefined;
-    newProps.onPressStart = undefined;
-    newProps.onPressEnd = undefined;
-    newProps.onPressChange = undefined;
-    newProps.onPressUp = undefined;
-    newProps.onKeyDown = undefined;
-    newProps.onKeyUp = undefined;
-    newProps.onClick = undefined;
-  }
-  return newProps;
+  style?: ComponentProps<'button'>['style'];
+  title?: ComponentProps<'button'>['title'];
 }
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -84,16 +70,17 @@ function BaseButton(
       ref={ref}
       className={classNames(
         button({
-          onlyIcon,
           variant: props.variant,
+          color: props.color,
           isCompact: props.isCompact,
-          isOutlined: props.isOutlined,
           isLoading: props.isLoading,
         }),
         props.className,
       )}
+      style={props.style}
+      title={props.title}
       aria-disabled={props.isLoading || undefined}
-      data-disabled={props.isDisabled || props.isLoading || undefined}
+      data-disabled={props.isDisabled || undefined}
       data-pressed={isPressed || undefined}
       data-hovered={isHovered || undefined}
       data-focused={isFocused || undefined}

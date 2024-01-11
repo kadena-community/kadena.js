@@ -28,7 +28,7 @@ const Home: FC<IProps> = ({ tags, frontmatter }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Stack direction="column" gap="$2xl">
+          <Stack flexDirection="column" gap="xxl">
             <TagList>
               {tags?.map((tag) => <TagListItem key={tag.tag} {...tag} />)}
             </TagList>

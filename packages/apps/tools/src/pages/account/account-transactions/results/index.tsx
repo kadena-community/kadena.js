@@ -11,6 +11,7 @@ import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   ContentHeader,
   Grid,
@@ -156,7 +157,7 @@ const CheckTransactions: FC = () => {
                   ]}
                   icon={'QuickStart'}
                 />
-                <Box marginBottom="$5" />
+                <Box marginBlockEnd="md" />
                 <ProgressBar
                   checkpoints={[
                     {
@@ -169,7 +170,7 @@ const CheckTransactions: FC = () => {
                     },
                   ]}
                 />
-                <Box marginBottom="$2" />
+                <Box marginBlockEnd="xs" />
                 <TrackerCard
                   labelValues={[
                     {
@@ -191,12 +192,12 @@ const CheckTransactions: FC = () => {
           },
         ]}
       />
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Account')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Results')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
-      <Box marginBottom="$3" />
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Account')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Results')}</BreadcrumbsItem>
+      </Breadcrumbs>
+      <Box marginBlockEnd="sm" />
       <Grid columns={2}>
         <GridItem>
           <Heading bold={false} as="h5">
@@ -214,7 +215,7 @@ const CheckTransactions: FC = () => {
           </div>
         </GridItem>
       </Grid>
-      <Box marginBottom="$1" />
+      <Box marginBlockEnd="xxs" />
       <Text color="emphasize">
         {t('Filtered by')}:
         {router.query.chain ? (
@@ -235,7 +236,7 @@ const CheckTransactions: FC = () => {
           ''
         )}
       </Text>
-      <Box marginBottom="$10" />
+      <Box marginBlockEnd="xxxl" />
 
       {loadingState ? 'LOADING' : ''}
 
@@ -246,7 +247,7 @@ const CheckTransactions: FC = () => {
             icon={'ArrowCollapseDown'}
             description="This table is listing all the incoming transaction sorted by date."
           />
-          <Box marginBottom="$10" />
+          <Box marginBlockEnd="xxxl" />
           <Table.Root>
             <Table.Head>
               <Table.Tr>
@@ -288,7 +289,7 @@ const CheckTransactions: FC = () => {
             icon={'ArrowExpandUp'}
             description="This table is listing all the outgoing transaction sorted by date."
           />
-          <Box marginBottom="$10" />
+          <Box marginBlockEnd="xxxl" />
           <Table.Root>
             <Table.Head>
               <Table.Tr>

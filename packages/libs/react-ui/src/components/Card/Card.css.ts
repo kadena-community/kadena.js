@@ -5,8 +5,8 @@ export const containerClass = style([
   atoms({
     backgroundColor: 'layer-2.default',
     color: 'text.base.default',
-    paddingX: 'xxl',
-    paddingY: 'lg',
+    paddingInline: 'xxl',
+    paddingBlock: 'lg',
     borderRadius: 'sm',
     border: 'hairline',
     position: 'relative',

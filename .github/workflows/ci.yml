@@ -11,6 +11,7 @@ on:
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  CI: true
 
 jobs:
   build:
@@ -49,15 +50,6 @@ jobs:
       matrix:
         package: ['@kadena/client', '@kadena/client-utils']
 
-    services:
-      devnet:
-        image: kadena/devnet
-        options:
-          --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
-          http://localhost:8080/info || exit 1"
-        ports:
-          - 8080:8080
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -73,6 +65,11 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
+      - name: Start devnet
+        uses: ./.github/actions/devnet
+        with:
+          migrations: packages/apps/graph/cwd-extra-migrations
+
       - name: Install dependencies
         run: pnpm install
 
@@ -80,21 +77,12 @@ jobs:
         run: pnpm run test:integration --filter ${{ matrix.package }}
 
   end-to-end-tests:
-    name: E2E - ${{ matrix.app }}
+    name: E2E - ${{ matrix.package }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: ['tools']
-
-    services:
-      devnet:
-        image: kadena/devnet
-        options:
-          --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
-          http://localhost:8080/info || exit 1"
-        ports:
-          - 8080:8080
+        app: ['tools', 'docs']
 
     steps:
       - uses: actions/checkout@v4
@@ -118,13 +106,14 @@ jobs:
       - name: Install browsers
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
 
+      # Disable remote caching, we need to explicitly rebuild Apps.
       - name: build dApp
-        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
+        run: pnpm --filter @kadena/${{ matrix.app }}... build
 
-      - name: Run Tests
+      - name: Run end-to-end tests
         run: pnpm run test:e2e -- -c playwright.${{ matrix.app }}.config.ts
         env:
-          CI: true
+          TESTOBJECT: ${{ matrix.app }}
 
       - uses: actions/upload-artifact@v3
         if: always()

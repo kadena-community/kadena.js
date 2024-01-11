@@ -36,7 +36,8 @@ async function* iteratorFn(
       lastBlock = newBlocks[newBlocks.length - 1];
       yield newBlocks;
     }
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
 }
 

@@ -18,6 +18,7 @@ export default meta;
 type Story = StoryObj<IPageProps>;
 
 const props: IPageProps = {
+  headerMenuItems: leftMenuTree,
   frontmatter: redoclyFrontMatter,
   leftMenuTree: leftMenuTree,
   menuItems: [],
@@ -28,9 +29,10 @@ const props: IPageProps = {
 export const Default: Story = {
   name: 'Default',
   args: props,
-  render: ({ frontmatter, leftMenuTree }) => (
+  render: ({ frontmatter, leftMenuTree, headerMenuItems }) => (
     <div>
       <Redocly
+        headerMenuItems={headerMenuItems}
         frontmatter={frontmatter}
         leftMenuTree={leftMenuTree}
         menuItems={[]}

@@ -6,21 +6,26 @@ import { DocsLogo } from '../DocsLogo/DocsLogo';
 import { spacerClass } from '../styles.css';
 import { FooterLink } from './FooterLink';
 import { FooterText } from './FooterText';
-import { footerClass, footerWrapperClass } from './styles.css';
+import { footerClass, footerWrapperClass, logoClass } from './styles.css';
 
 export const Footer: FC = () => {
   return (
     <footer className={footerWrapperClass}>
       <div className={footerClass}>
-        <Stack justifyContent="space-around" alignItems="center" marginY="$2">
+        <Stack
+          justifyContent="space-around"
+          alignItems="center"
+          className={logoClass}
+          marginBlock="sm"
+        >
           <DocsLogo overwriteTheme="dark" />
         </Stack>
         <div className={spacerClass} />
         <Stack
-          direction={{ xs: 'column', md: 'row' }}
+          flexDirection={{ xs: 'column', md: 'row' }}
           justifyContent="space-around"
           alignItems={{ xs: 'flex-start', md: 'center' }}
-          marginY="$2"
+          marginBlock="sm"
         >
           <FooterLink href="https://kadena.io">Kadena.io</FooterLink>
           <FooterLink href="https://kadena.io">Privacy Policy</FooterLink>
@@ -31,7 +36,11 @@ export const Footer: FC = () => {
             </FooterLink>
           </Link>
         </Stack>
-        <Stack justifyContent="space-around" alignItems="center" marginY="$2">
+        <Stack
+          justifyContent="space-around"
+          alignItems="center"
+          marginBlock="sm"
+        >
           <FooterText>Copyrights 2023 © Kadena LLC</FooterText>
         </Stack>
       </div>

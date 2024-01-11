@@ -53,7 +53,7 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
     );
   }
   return (
-    <Stack direction={'column'}>
+    <Stack flexDirection={'column'}>
       <Grid columns={3}>
         <GridItem>
           <SelectField
