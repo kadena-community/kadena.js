@@ -1,5 +1,4 @@
-import type { Sprinkles } from '@theme/sprinkles.css';
-import { sprinkles } from '@theme/sprinkles.css';
+import { atoms } from '@theme/atoms.css';
 import classNames from 'classnames';
 import type { FC, TextareaHTMLAttributes } from 'react';
 import React, { forwardRef, useContext } from 'react';
@@ -14,16 +13,19 @@ import {
 
 export interface ITextareaProps
   extends Omit<
-      TextareaHTMLAttributes<HTMLTextAreaElement>,
-      'as' | 'disabled' | 'className' | 'id'
-    >,
-    Partial<Pick<Sprinkles, 'fontFamily'>> {
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    'as' | 'disabled' | 'className' | 'id'
+  > {
   id: string;
+  fontFamily?: 'primaryFont' | 'codeFont';
   disabled?: boolean;
   ref?: React.ForwardedRef<HTMLTextAreaElement>;
   outlined?: boolean;
 }
 
+/**
+ * @deprecated Use `TextareaField` instead.
+ */
 export const Textarea: FC<ITextareaProps> = forwardRef<
   HTMLTextAreaElement,
   ITextareaProps
@@ -42,7 +44,7 @@ export const Textarea: FC<ITextareaProps> = forwardRef<
     >
       <textarea
         ref={ref}
-        className={classNames(textAreaClass, sprinkles({ fontFamily }))}
+        className={classNames(textAreaClass, atoms({ fontFamily }))}
         disabled={disabled}
         {...rest}
       />

@@ -39,7 +39,7 @@ export const TextareaCopyStory: Story = {
   name: 'TextareaCopy',
   args: {
     disabled: false,
-    fontFamily: '$mono',
+    fontFamily: 'codeFont',
     outlined: false,
   },
   render: (props) => {

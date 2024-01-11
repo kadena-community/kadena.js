@@ -1,12 +1,12 @@
-import { Command, Option } from 'commander';
-
 import 'module-alias/register';
 
-import type { IAccount } from '../helper';
-import { generateAccount, logger, sender00 } from '../helper';
-import { deployMarmaladeContracts } from '../marmalade/deploy';
-import { transfer } from '../transfer';
-import { simulate } from './simulate';
+import type { IAccount } from '@devnet/utils';
+import { logger } from '@utils/logger';
+import { Command, Option } from 'commander';
+import { simulateCoin } from './coin/simulate';
+import { transfer } from './coin/transfer';
+import { generateAccount } from './helper';
+import { simulateMarmalade } from './marmalade/simulate';
 
 const program: Command = new Command();
 program
@@ -41,7 +41,7 @@ program
   });
 
 program
-  .command('traffic')
+  .command('simulate:coin')
   .description('Simulate traffic on the devnet')
   .addOption(
     new Option(
@@ -74,18 +74,42 @@ program
   .action(async (args) => {
     try {
       logger.info('Simulation config parameters:', args);
-      await simulate(args);
+      await simulateCoin(args);
     } catch (error) {
       console.error(error);
     }
   });
 
 program
-  .command('marmalade')
+  .command('simulate:marmalade')
   .description('Deploy marmalade contracts on the devnet')
+  .addOption(
+    new Option(
+      '-a, --numberOfAccounts <number>',
+      'Number of accounts to create',
+    ).default(8),
+  )
+  .addOption(
+    new Option(
+      '-i, --transferInterval <number>',
+      'Transfer interval in milliseconds',
+    ).default(100),
+  )
+  .addOption(
+    new Option(
+      '-mt, --maximumMintValue <number>',
+      'Maximum amount a token can be minted at once',
+    ).default(25),
+  )
+  .addOption(
+    new Option('-s, --seed <string>', 'Seed for the random number').default(
+      Date.now().toString(),
+    ),
+  )
   .action(async (args) => {
     try {
-      await deployMarmaladeContracts(sender00);
+      logger.info('Simulation config parameters:', args);
+      await simulateMarmalade(args);
     } catch (error) {
       console.error(error);
     }

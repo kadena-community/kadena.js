@@ -17,8 +17,9 @@
     "kadena-graph": "./dist/index.js"
   },
   "scripts": {
-    "prebuild": "pnpm run pactjs:generate:contract:coin && pnpm prisma:generate",
+    "prebuild": "pnpm run pactjs:generate:contract:coin && pnpm run pactjs:generate:contract:marmalade && pnpm prisma:generate",
     "build": "tsc",
+    "deploy:marmalade": "ts-node -T src/devnet/deployment/index.ts deploy:marmalade",
     "devnet": "docker volume create kadena_devnet; docker run --rm -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v kadena_devnet:/data -v ./cwd-extra-migrations:/cwd-extra-migrations:ro --name devnet kadena/devnet",
     "devnet:update": "docker pull kadena/devnet",
     "format": "pnpm run --sequential /^format:.*/",
@@ -29,16 +30,19 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "marmalade": "ts-node -T src/devnet/simulation/index.ts marmalade",
     "pactjs:generate:contract:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
     "pactjs:generate:contract:faucet": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact;",
+    "pactjs:generate:contract:marmalade": "pactjs contract-generate --contract marmalade-v2.ledger --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact;",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
-    "simulate": "ts-node -T src/devnet/simulation/index.ts traffic",
+    "simulate:all": "pnpm run simulate:coin & pnpm run simulate:marmalade",
+    "simulate:coin": "ts-node -T src/devnet/simulation/index.ts simulate:coin",
+    "simulate:marmalade": "ts-node -T src/devnet/simulation/index.ts simulate:marmalade",
     "start": "npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "start:generate": "pnpm build && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "test": "echo \"no test specified\"",
+    "testing": "ts-node -T src/devnet/simulation/index.ts test",
     "tracing:analyse": "npx ts-node -T src/services/tracing/trace-analyser.ts"
   },
   "dependencies": {

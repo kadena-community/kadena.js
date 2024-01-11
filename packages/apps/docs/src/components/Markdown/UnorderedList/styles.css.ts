@@ -5,17 +5,19 @@ import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
 export const ulListClass = style([
   sprinkles({
-    marginY: 0,
-    marginX: 0,
-    paddingY: '$2',
     position: 'relative',
     color: '$neutral4',
   }),
+  {
+    marginBlock: 0,
+    marginInline: 0,
+    paddingBlock: vars.sizes.$2,
+  },
 ]);
 
 globalStyle(`article ul > li`, {
-  paddingTop: vars.sizes.$2xs,
-  paddingBottom: vars.sizes.$2xs,
+  paddingBlockStart: vars.sizes.$2xs,
+  paddingBlockEnd: vars.sizes.$2xs,
 });
 
 globalStyle(
@@ -24,6 +26,6 @@ globalStyle(
   
   `,
   {
-    marginTop: vars.sizes.$md,
+    marginBlockStart: vars.sizes.$md,
   },
 );

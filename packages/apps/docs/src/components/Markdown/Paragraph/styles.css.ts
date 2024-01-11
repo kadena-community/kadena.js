@@ -22,6 +22,6 @@ globalStyle(
   ${getClassName(paragraphWrapperClass)}
   `,
   {
-    marginTop: vars.sizes.$md,
+    marginBlockStart: vars.sizes.$md,
   },
 );

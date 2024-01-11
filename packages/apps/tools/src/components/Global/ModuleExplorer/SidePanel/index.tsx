@@ -44,12 +44,10 @@ const SidePanel = ({
       <div>
         <TextField
           label="Search"
-          inputProps={{
-            id: 'module-explorer-search',
-            placeholder: t('Module name'),
-            onChange,
-            value: text,
-          }}
+          id="module-explorer-search"
+          placeholder={t('Module name')}
+          onChange={onChange}
+          value={text}
         />
       </div>
       {isPending && <Text>Loading...</Text>}

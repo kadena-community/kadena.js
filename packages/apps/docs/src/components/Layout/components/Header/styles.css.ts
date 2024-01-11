@@ -9,6 +9,8 @@ import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
 
 export const logoClass = style({
   zIndex: $$navMenu,
+  maxWidth: vars.sizes.$48,
+  paddingRight: vars.sizes.$10,
 });
 
 export const headerButtonClass = style([
@@ -19,10 +21,10 @@ export const headerButtonClass = style([
     borderRadius: '$lg',
     cursor: 'pointer',
     color: '$neutral2',
-    paddingY: '$2',
     width: '$11',
   }),
   {
+    paddingBlock: vars.sizes.$2,
     border: 0,
     transition: `opacity 0.2s ease`,
     selectors: {
@@ -69,10 +71,10 @@ export const hamburgerButtonClass = style([
 export const searchButtonClass = style([
   sprinkles({
     backgroundColor: '$neutral4',
-    paddingX: '$2',
   }),
   {
     width: 'inherit',
+    paddingInline: vars.sizes.$2,
 
     selectors: {
       [`${darkThemeClass} &`]: {
@@ -85,11 +87,11 @@ export const searchButtonClass = style([
 export const searchButtonSlashClass = style([
   sprinkles({
     borderRadius: '$lg',
-    marginLeft: '$2',
     backgroundColor: '$neutral3',
     color: '$white',
   }),
   {
+    marginInlineStart: vars.sizes.$2,
     selectors: {
       [`${darkThemeClass} &`]: {
         backgroundColor: vars.colors.$neutral4,
@@ -121,13 +123,13 @@ export const skipNavClass = style([
     position: 'absolute',
     top: 0,
     left: 0,
-    paddingY: '$2',
-    paddingX: '$4',
     color: '$white',
     fontWeight: '$bold',
     opacity: 0,
   }),
   {
+    paddingBlock: vars.sizes.$2,
+    paddingInline: vars.sizes.$4,
     backgroundColor: 'red',
     transform: 'translateY(-40px)',
     transition: 'transform .1s ease-in, opacity .1s ease-in',
@@ -146,12 +148,12 @@ export const innerWrapperClass = style([
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    paddingY: '$3',
-    paddingX: '$4',
-    marginY: 0,
-    marginX: 'auto',
   }),
   {
+    marginInline: 'auto',
+    marginBlock: 0,
+    paddingBlock: vars.sizes.$3,
+    paddingInline: vars.sizes.$4,
     maxWidth: $$pageWidth,
   },
 ]);
@@ -167,8 +169,10 @@ export const headerIconGroupClass = style([
       xs: '$3',
       lg: '$3',
     },
-    marginLeft: '$3',
   }),
+  {
+    marginInlineStart: vars.sizes.$3,
+  },
 ]);
 
 export const socialGroupClass = style({
@@ -208,6 +212,7 @@ export const navClass = style([
   responsiveStyle({
     md: {
       display: 'flex',
+      marginTop: '-1px',
     },
   }),
 ]);

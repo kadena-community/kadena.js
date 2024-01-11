@@ -5,7 +5,7 @@ import type { IScriptResult } from './types';
 const errors: string[] = [];
 const success: string[] = [];
 
-const COMMON_FAV_ICONS_PATH = '../../../common/images/icons/internal';
+const COMMON_FAV_ICONS_PATH = '../../../common/images/icons/internal/default';
 const PUBLIC_DIR = 'public/assets/favicons';
 
 export const copyFavIcons = async (): Promise<IScriptResult> => {

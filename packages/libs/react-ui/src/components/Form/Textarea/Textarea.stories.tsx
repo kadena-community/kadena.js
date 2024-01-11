@@ -39,7 +39,7 @@ export const TextareaStory: Story = {
   name: 'Textarea',
   args: {
     disabled: false,
-    fontFamily: '$mono',
+    fontFamily: 'codeFont',
     outlined: false,
   },
   render: (props) => {

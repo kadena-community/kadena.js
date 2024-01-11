@@ -1,9 +1,0 @@
-{
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": "./",
-    "sourceMap": false,
-    "inlineSourceMap": true,
-    "types": ["cypress", "node", "./support"]
-  }
-}

@@ -27,14 +27,19 @@ export const ErrorBox = (props: IErrorBoxProps): JSX.Element => {
     }
   }
 
+  if (error.message === 'Unexpected response: "Internal Server Error"') {
+    errorMessage =
+      'The server encountered an unexpected error. Are you sure the GraphQL server is running?';
+  }
+
   return (
     <Notification intent="negative" icon={<SystemIcon.Close />} role="status">
       {errorTitle}
-      <Box marginBottom="$4" />
+      <Box margin="sm" />
       {errorMessage}
       {errorExtra !== undefined && (
         <>
-          <Box marginBottom="$4" />
+          <Box margin="sm" />
           <code>{errorExtra}</code>
         </>
       )}

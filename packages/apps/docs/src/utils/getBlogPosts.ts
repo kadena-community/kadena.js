@@ -10,7 +10,6 @@ export const getBlogPosts = async (tags?: string[]): Promise<IMenuData[]> => {
 
   const flatListWithPosts = blogPosts.children
     .flatMap((year) => year.children)
-    .filter((post) => !post.root.includes('/authors'))
     .filter((post) => {
       if (!tags) return post;
       return post.tags?.some((r) => tags.includes(r));

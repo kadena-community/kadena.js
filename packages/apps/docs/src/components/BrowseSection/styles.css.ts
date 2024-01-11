@@ -33,11 +33,9 @@ export const directionVariants = styleVariants({
     },
   ],
   column: [
-    sprinkles({
-      paddingY: 0,
-      paddingX: '$5',
-    }),
     {
+      paddingBlock: 0,
+      paddingInline: vars.sizes.$5,
       listStyle: 'disc',
     },
   ],
@@ -46,8 +44,10 @@ export const directionVariants = styleVariants({
 export const columnLinkListItemClass = style([
   sprinkles({
     color: '$primaryContrastInverted',
-    paddingY: '$1',
   }),
+  {
+    paddingBlock: vars.sizes.$1,
+  },
 ]);
 
 export const columnLinkClass = style([
@@ -67,12 +67,11 @@ export const listItemClass = style([
   sprinkles({
     display: 'flex',
     gap: '$4',
-    paddingRight: '$4',
-    paddingY: '$3',
   }),
   {
     flexBasis: '50%',
-
+    paddingInlineEnd: vars.sizes.$4,
+    paddingBlock: vars.sizes.$3,
     ...responsiveStyle({
       md: {
         flexBasis: '33%',

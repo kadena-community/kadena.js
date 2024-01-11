@@ -7,8 +7,8 @@ import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import type { Guard } from '../types/graphql-types';
-import { ChainFungibleAccountName } from '../types/graphql-types';
-import ChainFungibleAccount from './chain-fungible-account';
+import { FungibleChainAccountName } from '../types/graphql-types';
+import FungibleChainAccount from './fungible-chain-account';
 
 export default builder.prismaNode('Block', {
   description:
@@ -26,16 +26,17 @@ export default builder.prismaNode('Block', {
         'The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.',
     }),
     height: t.expose('height', { type: 'BigInt' }),
+    parentHash: t.exposeString('parentBlockHash'),
     payloadHash: t.exposeString('payloadHash'),
     powHash: t.exposeString('powHash', {
       description: 'The proof of work hash.',
     }),
     predicate: t.exposeString('predicate'),
     minerAccount: t.field({
-      type: ChainFungibleAccount,
+      type: FungibleChainAccount,
       complexity: COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS,
       resolve: async (parent) => ({
-        __typename: ChainFungibleAccountName,
+        __typename: FungibleChainAccountName,
         chainId: parent.chainId.toString(),
         accountName: parent.minerAccount,
         fungibleName: 'coin',
@@ -70,13 +71,6 @@ export default builder.prismaNode('Block', {
         } catch (error) {
           throw normalizeError(error);
         }
-      },
-    }),
-    parentHash: t.string({
-      nullable: true,
-      resolve(parent) {
-        // Access the parent block's hash from the parent object
-        return parent.parentBlockHash;
       },
     }),
 

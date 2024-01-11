@@ -48,7 +48,7 @@ export const SearchDialog: FC<IDialogProps> = (props) => {
         <Text>Search the classic way, or just ask a question</Text>
       </DialogHeader>
       <DialogContent className={contentClass}>
-        <Box marginY="$4">
+        <Box marginBlock="md">
           <SearchBar ref={searchInputRef} onSubmit={handleSubmit} />
         </Box>
         <Search query={query} hasScroll={true} limitResults={10} />
