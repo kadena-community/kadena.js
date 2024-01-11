@@ -31,7 +31,7 @@ export default builder.prismaNode('Transfer', {
         'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
       type: 'Transfer',
       nullable: true,
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 2, // In the worst case resolve scenario, it executes 3 queries.
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 2, // In the worst case resolve scenario, it executes 2 queries.
       async resolve(__query, parent) {
         try {
           // Find all transactions that match either of the two conditions
