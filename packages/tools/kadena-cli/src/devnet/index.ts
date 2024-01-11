@@ -5,6 +5,7 @@ import { manageDevnetsCommand } from './commands/devnetManage.js';
 import { runDevnetCommand } from './commands/devnetRun.js';
 import { stopDevnetCommand } from './commands/devnetStop.js';
 import { updateDevnetCommand } from './commands/devnetUpdate.js';
+import { simulateCommand } from './commands/simulate.js';
 
 import type { Command } from 'commander';
 
@@ -22,4 +23,5 @@ export function devnetCommandFactory(program: Command, version: string): void {
   runDevnetCommand(devnetsProgram, version);
   stopDevnetCommand(devnetsProgram, version);
   updateDevnetCommand(devnetsProgram, version);
+  simulateCommand(devnetsProgram, version);
 }
