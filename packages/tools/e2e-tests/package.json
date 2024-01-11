@@ -16,7 +16,7 @@
     "test": "echo 'No test required'",
     "test:e2e": "playwright test",
     "test:e2e:docs": "playwright test -c playwright.docs.config.ts",
-    "test:e2e:graph": "playwright test -c playwright.tools.config.ts",
+    "test:e2e:graph": "playwright test -c playwright.graph.config.ts",
     "test:e2e:tools": "playwright test -c playwright.tools.config.ts"
   },
   "dependencies": {
