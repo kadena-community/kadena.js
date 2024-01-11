@@ -1,4 +1,8 @@
-import type { IConfigTreeItem, LayoutType } from '@kadena/docs-tools';
+import type {
+  IConfigTreeItem,
+  IScriptResult,
+  LayoutType,
+} from '@kadena/docs-tools';
 import {
   getFileExtension,
   getFrontmatterFromTsx,
@@ -249,12 +253,7 @@ const getFile = async (
   }
 };
 
-interface IDocsTreeResult {
-  errors: string[];
-  success: string[];
-}
-
-export const createDocsTree = async (): Promise<IDocsTreeResult> => {
+export const createDocsTree = async (): Promise<IScriptResult> => {
   const pages = await getPages();
   // fill the SEARCHABLE_DIRS
   pages.forEach((p) => {

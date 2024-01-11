@@ -1,11 +1,15 @@
 import chokidar from 'chokidar';
 import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
-import { movePages } from './movePages';
+import type { IEventType } from './movePages/singlepage';
+import { moveSinglePage } from './movePages/singlepage';
 import { initFunc } from './utils/build';
 
-const run = async (): Promise<void> => {
-  await initFunc(movePages, 'Create folder tree from config.yaml');
+const run = async (event: IEventType, path: string): Promise<void> => {
+  await initFunc(
+    moveSinglePage(event, path),
+    'Create folder tree from config.yaml',
+  );
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(fixLocalLinks, 'Fix local links from the config.yaml');
 };
@@ -16,8 +20,6 @@ const run = async (): Promise<void> => {
     .watch('./src/docs', { ignoreInitial: true })
     .on('all', async (event, path) => {
       console.log(event, path);
-      await run();
+      await run(event, path);
     });
-
-  await run();
 })();
