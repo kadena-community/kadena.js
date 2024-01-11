@@ -16,8 +16,16 @@ const config: PlaywrightTestConfig = {
   },
   projects: [
     {
+      name: 'setup',
+      testMatch: 'setup/faucet.setup.ts',
+    },
+    {
       name: 'tools',
       testDir: 'src/tests/tools-app/',
+      dependencies: ['setup'],
+      use: {
+        storageState: './src/support/page-objects/tools-app/storageState.json',
+      },
     },
   ],
 };
