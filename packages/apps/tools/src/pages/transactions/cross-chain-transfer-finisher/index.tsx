@@ -37,7 +37,7 @@ import {
   Stack,
   TextField,
   Textarea,
-  TrackerCard,
+  TrackerCard, NotificationHeading, Notification,
 } from '@kadena/react-ui';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
@@ -52,9 +52,11 @@ import {
   formContentStyle,
   notificationContainerStyle,
   sidebarLinksStyle,
-  textAreaStyle,
   textareaContainerStyle,
+  notificationLinkStyle,
 } from './styles.css';
+import Trans from "next-translate/Trans";
+import {OptionsModal} from "@/components/Global/OptionsModal";
 
 // @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
 const DOMAIN_NAME_REGEX: RegExp =
@@ -274,6 +276,7 @@ const CrossChainTransferFinisher: FC = () => {
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';
   const showNotification = Object.keys(finalResults).length > 0;
+  const [openModal, setOpenModal] = useState(false);
 
   const formattedSigData = `{
     "pred": "${pollResults.tx?.receiverGuard.pred}",
@@ -300,6 +303,15 @@ const CrossChainTransferFinisher: FC = () => {
       title={t('form-status-title-processing')}
     />
   );
+
+  const handleDevOptionsClick = (): void => {
+    setOpenModal(true);
+  };
+
+  const handleCopySigData = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    await navigator.clipboard.writeText(formattedSigData);
+  }
 
   useEffect(() => {
     resetField('requestKey');
@@ -388,6 +400,24 @@ const CrossChainTransferFinisher: FC = () => {
         <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Heading as="h4">{t('Finish transaction')}</Heading>
+
+      <div className={notificationContainerStyle}>
+        <Notification intent="warning" role="status" isDismissable>
+          <NotificationHeading>
+            {t('Application Settings')}
+          </NotificationHeading>
+          <Trans
+            i18nKey="common:application-settings-warning"
+            components={[
+              <a
+                className={notificationLinkStyle}
+                key="link-open-settings"
+                onClick={handleDevOptionsClick}
+              />,
+            ]}
+          />
+        </Notification>
+      </div>
 
 
       {showNotification ? (
@@ -482,10 +512,11 @@ const CrossChainTransferFinisher: FC = () => {
                         value={formattedSigData}
                       />
                       <IconButton
+                        as={'button'}
                         color="primary"
                         icon={'ContentCopy'}
-                        onClick={async () => {
-                          await navigator.clipboard.writeText(formattedSigData);
+                        onClick={async (event) => {
+                          await handleCopySigData(event)
                         }}
                         title={t('copySigData')}
                       />
@@ -502,6 +533,12 @@ const CrossChainTransferFinisher: FC = () => {
           </Button>
         </section>
       </form>
+
+
+      <OptionsModal
+        isOpen={openModal}
+        onOpenChange={() => setOpenModal(false)}
+      />
     </section>
   );
 };
