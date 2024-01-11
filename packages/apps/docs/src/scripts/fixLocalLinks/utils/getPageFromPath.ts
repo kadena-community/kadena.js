@@ -6,7 +6,9 @@ export const getPageFromPath = async (
 ): Promise<IConfigTreeItem | undefined> => {
   const pages = await getPages();
 
-  const cleanedPath = path.split('src/docs')[1];
+  const cleanedPath = path.includes('src/docs')
+    ? path.split('src/docs')[1]
+    : path;
   let page: IConfigTreeItem | undefined = undefined;
   const find = (pages: IConfigTreeItem[], path: string): void => {
     pages.forEach((p) => {
