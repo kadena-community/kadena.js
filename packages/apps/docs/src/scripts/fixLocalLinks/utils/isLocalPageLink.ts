@@ -7,7 +7,10 @@ export const isLocalPageLink = (url: string): boolean => {
 
   return (
     !url.startsWith('http') &&
-    (extension === 'md' || extension === 'mdx' || extension === 'tsx')
+    (extension === 'md' ||
+      extension === 'mdx' ||
+      extension === 'tsx' ||
+      url.startsWith('./'))
   );
 };
 
