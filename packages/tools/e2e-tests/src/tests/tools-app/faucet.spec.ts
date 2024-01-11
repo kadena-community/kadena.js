@@ -9,7 +9,6 @@ test.beforeEach(async ({ page, toolsApp }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
     await page.goto('/');
     await toolsApp.homePage.header.setNetwork('devnet');
-    await toolsApp.homePage.header.goToPage('Faucet');
   });
 });
 
@@ -19,10 +18,7 @@ const accountTypes = [
 ];
 
 for (const accountType of accountTypes) {
-  test(`Create and fund ${accountType.type} account`, async ({
-    page,
-    toolsApp,
-  }) => {
+  test(`Create and fund ${accountType.type} account`, async ({ toolsApp }) => {
     const account = await generateAccount(accountType.NumberOfKeys, '0');
     await test.step('Create account on chain 0.', async () => {
       await toolsApp.faucetPage.asidePanel.clickPageLink('Fund New Account');
@@ -38,11 +34,7 @@ for (const accountType of accountTypes) {
     });
   });
 
-  test(`Fund existing ${accountType.type} account`, async ({
-    page,
-    toolsApp,
-    i18n,
-  }) => {
+  test(`Fund existing ${accountType.type} account`, async ({ toolsApp }) => {
     await test.step('Fund account on chain 0.', async () => {
       const createdAccount = await createAccount(accountType.NumberOfKeys, '0');
       await toolsApp.faucetPage.asidePanel.clickPageLink(
