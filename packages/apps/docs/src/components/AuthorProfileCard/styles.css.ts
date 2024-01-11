@@ -28,7 +28,7 @@ export const linkClass = style([
   {
     selectors: {
       '&:hover': {
-        color: tokens.kda.foundation.color.link.brand.primary['@hover'],
+        color: tokens.kda.foundation.color.text.subtlest['@hover'],
         textDecoration: 'underline',
       },
     },
