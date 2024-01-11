@@ -15,20 +15,23 @@ export default builder.node(
   {
     description: 'A fungible specific chain-account.',
     id: {
-      resolve(parent) {
-        return `${FungibleChainAccountName}/${parent.chainId}/${parent.fungibleName}/${parent.accountName}`;
-      },
-      // Do not use parse here since there is a bug in the pothos relay plugin which can cause incorrect results. Parse the ID directly in the loadOne function.
+      resolve: (parent) =>
+        JSON.stringify([
+          parent.chainId,
+          parent.fungibleName,
+          parent.accountName,
+        ]),
+      parse: (id) => ({
+        chainId: JSON.parse(id)[0],
+        fungibleName: JSON.parse(id)[1],
+        accountName: JSON.parse(id)[2],
+      }),
     },
     isTypeOf(source) {
       return (source as any).__typename === FungibleChainAccountName;
     },
-    async loadOne(id) {
+    async loadOne({ chainId, fungibleName, accountName }) {
       try {
-        const chainId = id.split('/')[1];
-        const fungibleName = id.split('/')[2];
-        const accountName = id.split('/')[3];
-
         return getFungibleChainAccount({
           chainId,
           fungibleName,
