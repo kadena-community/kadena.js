@@ -105,8 +105,9 @@ const getUrlofPageFile = (link: string): string => {
 
   // the blogchain is not in the config.
   // so do not check to change
-  if (cleanLink.startsWith('/blogchain') || cleanLink.startsWith('blogchain'))
-    return removeFileExtenion(cleanLink);
+  if (cleanLink.startsWith('/blogchain')) return removeFileExtenion(cleanLink);
+  if (cleanLink.startsWith('blogchain'))
+    return `/${removeFileExtenion(cleanLink)}`;
 
   const result = findPageByFile(cleanLink, pages);
   if (!result) {
@@ -158,6 +159,8 @@ const fixLinks = async (
     if (isLocalPageLink(link.url)) {
       link.url = getUrlofPageFile(link.url);
       link.url = await fixHashLinks(link.url);
+
+      console.log('link', { url: link.url });
     }
   }
 
