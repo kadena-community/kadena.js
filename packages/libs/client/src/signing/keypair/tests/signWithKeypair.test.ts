@@ -1,5 +1,5 @@
 import type { IKeyPair } from '@kadena/types';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import type { ICoin } from '../../../composePactCommand/test/coin-contract';
 import type { ISignFunction } from '../../../index';
 import { Pact } from '../../../index';
@@ -21,6 +21,42 @@ describe('createSignWithKeypair', () => {
 
   it('returns a function to sign with', async () => {
     expect(typeof signWithKeypair).toBe('function');
+  });
+
+  it('uses the signMethod for creating sign', async () => {
+    const signMethod = vi.fn((message: string, keyPair: IKeyPair) => {
+      return `mock-sign:${keyPair.publicKey}:${keyPair.secretKey}:${message}`;
+    });
+    const pairOne = { publicKey: 'key-1', secretKey: 'sec-1' };
+    const pairTwo = { publicKey: 'key-2', secretKey: 'sec-2' };
+
+    const signWithKeypair = createSignWithKeypair(
+      [pairOne, pairTwo],
+      signMethod,
+    );
+    const unsignedTransaction = Pact.builder
+      .execution(coin.transfer('k:from', 'k:to', { decimal: '1.0' }))
+      .addSigner(pairOne.publicKey, (withCap) => [withCap('coin.GAS')])
+      .addSigner(pairTwo.publicKey, (withCap) => [
+        withCap('coin.TRANSFER', 'k:from', 'k:to', { decimal: '1.234' }),
+      ])
+      .setMeta({
+        senderAccount: '',
+        chainId: '0',
+        creationTime: 0,
+      })
+      .setNonce('my-nonce')
+      .createTransaction();
+
+    const tx = await signWithKeypair(unsignedTransaction);
+    expect(tx.sigs).toEqual([
+      {
+        sig: `mock-sign:${pairOne.publicKey}:${pairOne.secretKey}:${unsignedTransaction.hash}`,
+      },
+      {
+        sig: `mock-sign:${pairTwo.publicKey}:${pairTwo.secretKey}:${unsignedTransaction.hash}`,
+      },
+    ]);
   });
 });
 

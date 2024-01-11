@@ -9,6 +9,10 @@ import { parseTransactionCommand } from '../utils/parseTransactionCommand';
 
 const debug: Debugger = _debug('pactjs:signWithKeypair');
 
+type SignMethod = (message: string, keyPair: IKeyPair) => string | undefined;
+const defaultSignMethod = (message: string, keypair: IKeyPair) =>
+  signHash(message, keypair).sig;
+
 /**
  * interface for the `createSignWithKeypair` function {@link createSignWithKeypair}
  *
@@ -28,7 +32,7 @@ export interface ICreateSignWithKeypair {
    *
    * @public
    */
-  (key: IKeyPair): ISignFunction;
+  (key: IKeyPair, signMethod?: SignMethod): ISignFunction;
   /**
    * @param keys - provide the keys to sign with
    * @returns a function to sign with
@@ -43,7 +47,7 @@ export interface ICreateSignWithKeypair {
    *
    * @public
    */
-  (keys: IKeyPair[]): ISignFunction;
+  (keys: IKeyPair[], signMethod?: SignMethod): ISignFunction;
 }
 
 /**
@@ -62,7 +66,10 @@ export interface ICreateSignWithKeypair {
  *
  * @public
  */
-export const createSignWithKeypair: ICreateSignWithKeypair = (keyOrKeys) => {
+export const createSignWithKeypair: ICreateSignWithKeypair = (
+  keyOrKeys,
+  signMethod = defaultSignMethod,
+) => {
   const keypairs: IKeyPair[] = Array.isArray(keyOrKeys)
     ? keyOrKeys
     : [keyOrKeys];
@@ -85,7 +92,7 @@ export const createSignWithKeypair: ICreateSignWithKeypair = (keyOrKeys) => {
         );
       }
 
-      return signWithKeypairs(tx, relevantKeypairs);
+      return signWithKeypairs(tx, relevantKeypairs, signMethod);
     });
 
     return isList ? signedTransactions : signedTransactions[0];
@@ -106,11 +113,12 @@ function getRelevantKeypairs(
 function signWithKeypairs(
   tx: IUnsignedCommand,
   relevantKeypairs: IKeyPair[],
+  signMethod: SignMethod,
 ): IUnsignedCommand {
   return relevantKeypairs.reduce((tx, keypair) => {
-    const { sig, pubKey } = signHash(tx.hash, keypair);
+    const sig = signMethod(tx.hash, keypair);
 
     debug(`adding signature from keypair: pubkey: ${keypair.publicKey}`);
-    return addSignatures(tx, { sig: sig!, pubKey });
+    return addSignatures(tx, { sig: sig!, pubKey: keypair.publicKey });
   }, tx);
 }
