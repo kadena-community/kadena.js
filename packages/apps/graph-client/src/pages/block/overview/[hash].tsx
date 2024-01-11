@@ -37,6 +37,7 @@ const Block: React.FC = () => {
 
   const { loading, data, error } = useGetBlockFromHashQuery({
     variables: getBlockFromHashVariables,
+    skip: !router.query.hash,
   });
 
   const { data: configData } = useGetGraphConfigurationQuery();

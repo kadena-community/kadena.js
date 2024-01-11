@@ -31,6 +31,7 @@ const FungibleChainAccount: React.FC = () => {
 
   const { loading, data, error } = useGetChainNonFungibleAccountQuery({
     variables,
+    skip: !router.query.account || !router.query.chain,
   });
 
   return (
