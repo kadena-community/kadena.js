@@ -269,7 +269,6 @@ const CrossChainTransferFinisher: FC = () => {
   const watchGasPayer = watch('gasPayer');
 
   const isGasStation = watchGasPayer === 'kadena-xchain-gas';
-  const disabledSubmit = !isGasStation || processingTx;
   const isAdvancedOptions = devOption !== 'BASIC';
   const showInputError =
     pollResults.error === undefined ? undefined : 'negative';
@@ -474,7 +473,7 @@ const CrossChainTransferFinisher: FC = () => {
                       id: 'gas-payer-account-input',
                       placeholder: t('Enter Your Account'),
                     }}
-                    error={errors.gasPayer}
+                    error={!isGasStation ? { message: 'Please enter kadena-xchain-gas', type: 'gas-station'} : errors.gasPayer}
                   />
                 </GridItem>
               </Grid>
@@ -528,7 +527,7 @@ const CrossChainTransferFinisher: FC = () => {
           </Stack>
         </section>
         <section className={formButtonStyle}>
-          <Button type="submit" disabled={disabledSubmit} icon="TrailingIcon">
+          <Button type="submit" disabled={processingTx} icon="TrailingIcon">
             {t('Finish Transaction')}
           </Button>
         </section>
