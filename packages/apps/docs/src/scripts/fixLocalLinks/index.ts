@@ -23,6 +23,7 @@ import { getCleanedHash } from './utils/getCleanedHash';
 import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
 import { getFileNameOfPageFile } from './utils/getFileNameOfPageFile';
 import { getLinkHash } from './utils/getLinkHash';
+import { getPageFromPath } from './utils/getPageFromPath';
 import { getUrlofImageFile } from './utils/getUrlofImageFile';
 import { isLocalImageLink, isLocalPageLink } from './utils/isLocalPageLink';
 import { removeFileExtenion } from './utils/removeFileExtenion';
@@ -105,8 +106,9 @@ const getUrlofPageFile = (link: string): string => {
 
   // the blogchain is not in the config.
   // so do not check to change
-  if (cleanLink.startsWith('/blogchain') || cleanLink.startsWith('blogchain'))
-    return removeFileExtenion(cleanLink);
+  if (cleanLink.startsWith('/blogchain')) return removeFileExtenion(cleanLink);
+  if (cleanLink.startsWith('blogchain'))
+    return `/${removeFileExtenion(cleanLink)}`;
 
   const result = findPageByFile(cleanLink, pages);
   if (!result) {
@@ -204,3 +206,20 @@ export const fixLocalLinks = async (): Promise<IScriptResult> => {
   success.push('Locallinks are fixed');
   return { errors, success };
 };
+
+export const fixLocalLinksSingle =
+  (path: string) => async (): Promise<IScriptResult> => {
+    errors.length = 0;
+    success.length = 0;
+    const page = await getPageFromPath(path);
+
+    if (!page) {
+      errors.push('page not found in config');
+    } else {
+      const parentTree = await getParentTreeFromPage(page);
+      await crawlPage(page, parentTree);
+      success.push('Locallinks are fixed');
+    }
+
+    return { errors, success };
+  };
