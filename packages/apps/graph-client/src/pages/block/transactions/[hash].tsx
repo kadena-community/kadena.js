@@ -21,6 +21,7 @@ const BlockTransactions: React.FC = () => {
 
   const { loading, data, error, fetchMore } = useGetTransactionsQuery({
     variables,
+    skip: !router.query.hash,
   });
 
   return (
