@@ -99,6 +99,7 @@ const NewAccountFaucetPage: FC = () => {
     queryKey: ['accountName', pubKeys, chainID, pred],
     queryFn: () => createPrincipal(pubKeys, chainID, pred),
     enabled: pubKeys.length > 0,
+    initialData: '',
   });
 
   const {
