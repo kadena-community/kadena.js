@@ -2,7 +2,8 @@
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
     "rootDir": ".",
-    "types": ["node"]
+    "types": ["node"],
+    "resolveJsonModule": true
   },
   "include": ["**/*.ts", "/**/*.tsx"]
 }

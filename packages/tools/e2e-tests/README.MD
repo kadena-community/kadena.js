@@ -62,4 +62,3 @@ pnpm run test:e2e -- -c playwright.tools.config.ts
 [1]: #table-of-contents
 [2]: #installation-#-usage
 [3]: http://localhost:3000
-[4]: ./playwright.config.ts
