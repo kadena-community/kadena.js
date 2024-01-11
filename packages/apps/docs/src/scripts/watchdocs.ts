@@ -1,5 +1,5 @@
 import chokidar from 'chokidar';
-import { fixLocalLinks } from './fixLocalLinks';
+import { fixLocalLinks, fixLocalLinksSingle } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
 import { movePages } from './movePages';
 import type { IEventType } from './movePages/singlePage';
@@ -7,8 +7,8 @@ import { moveSinglePage } from './movePages/singlePage';
 import { initFunc } from './utils/build';
 
 const runSingleChange = async (path: string): Promise<void> => {
-  await initFunc(moveSinglePage(path), 'Create folder tree from config.yaml');
-  await initFunc(fixLocalLinks, 'Fix local links from the config.yaml');
+  await initFunc(moveSinglePage(path), 'move a single page');
+  await initFunc(fixLocalLinksSingle(path), 'Fix local links for single page');
 };
 
 const runAll = async (event: IEventType, path: string): Promise<void> => {
