@@ -1,5 +1,5 @@
+import type { Transaction } from '@/__generated__/sdk';
 import {
-  Transaction,
   useGetTransactionByRequestKeySubscription,
   useGetTransactionNodeQuery,
 } from '@/__generated__/sdk';
