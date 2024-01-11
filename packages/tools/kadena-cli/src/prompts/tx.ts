@@ -23,7 +23,6 @@ export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
     validate: (inputString) => {
       try {
         const parsedInput = JSON.parse(inputString);
-        console.log(parsedInput);
         IUnsignedCommandSchema.safeParse(parsedInput);
         return true;
       } catch (error) {

@@ -1,5 +1,10 @@
 import { createSendTransactionCommand } from './commands/txSend.js';
-import { createSignTransactionCommand } from './commands/txSign.js';
+import { createSignTransactionWithAliasFileCommand } from './commands/txSignWithAliasFile.js';
+import { createSignTransactionWithChainweaver } from './commands/txSignWithChainweaver.js';
+import { createSignTransactionWithKeypairCommand } from './commands/txSignWithKeypair.js';
+import { createSignTransactionWithLocalWalletCommand } from './commands/txSignWithLocalWallet.js';
+import { createSignTransactionWithWalletConnect } from './commands/txSignWithWalletConnect.js';
+import { createSignTransactionWithWebAuthN } from './commands/txSignWithWebAuthN.js';
 
 import type { Command } from 'commander';
 
@@ -11,5 +16,10 @@ export function txCommandFactory(program: Command, version: string): void {
     .description(`Tool for creating and managing transactions`);
 
   createSendTransactionCommand(txProgram, version);
-  createSignTransactionCommand(txProgram, version);
+  createSignTransactionWithKeypairCommand(txProgram, version);
+  createSignTransactionWithAliasFileCommand(txProgram, version);
+  createSignTransactionWithLocalWalletCommand(txProgram, version);
+  createSignTransactionWithWalletConnect(txProgram, version);
+  createSignTransactionWithChainweaver(txProgram, version);
+  createSignTransactionWithWebAuthN(txProgram, version);
 }

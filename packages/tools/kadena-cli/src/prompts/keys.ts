@@ -56,12 +56,6 @@ export async function keyPublicKeyPrompt(): Promise<string> {
 export async function keySecretKeyPrompt(): Promise<string> {
   return await input({
     message: `Enter a secret key:`,
-    validate: function (input) {
-      if (!isAlphanumeric(input)) {
-        return 'Secret key must be alphanumeric! Please enter a valid secret key.';
-      }
-      return true;
-    },
   });
 }
 
