@@ -9,7 +9,7 @@ const errors: string[] = [];
 const success: string[] = [];
 
 export const moveSinglePage =
-  (event: IEventType, path: string) => async (): Promise<IScriptResult> => {
+  (path: string) => async (): Promise<IScriptResult> => {
     errors.length = 0;
     success.length = 0;
 
