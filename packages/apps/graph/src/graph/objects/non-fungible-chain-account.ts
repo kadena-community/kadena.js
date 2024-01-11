@@ -16,18 +16,17 @@ export default builder.node(
   {
     description: 'A chain and non-fungible-specific account.',
     id: {
-      resolve(parent) {
-        return `${NonFungibleChainAccountName}/${parent.chainId}/${parent.accountName}`;
-      },
+      resolve: (parent) => JSON.stringify([parent.chainId, parent.accountName]),
+      parse: (id) => ({
+        chainId: JSON.parse(id)[0],
+        accountName: JSON.parse(id)[1],
+      }),
     },
     isTypeOf(source) {
       return (source as any).__typename === NonFungibleChainAccountName;
     },
-    async loadOne(id) {
+    async loadOne({ chainId, accountName }) {
       try {
-        const chainId = id.split('/')[1];
-        const accountName = id.split('/')[2];
-
         return getNonFungibleChainAccount({
           chainId,
           accountName,

@@ -24,6 +24,7 @@ const RequestKey: React.FC = () => {
 
   const { loading, data, error } = useGetTransactionByRequestKeySubscription({
     variables,
+    skip: !router.query.key,
   });
 
   return (
