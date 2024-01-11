@@ -4,15 +4,77 @@ import {
   ALL_CHAIN_ACCOUNT_FIELDS,
   CORE_CHAIN_ACCOUNT_FIELDS,
 } from './fields/chain-account.graph';
-import { ALL_EVENT_FIELDS } from './fields/event.graph';
+import { ALL_EVENT_FIELDS, CORE_EVENT_FIELDS } from './fields/event.graph';
 import { CORE_MINER_KEY_FIELDS } from './fields/miner-key.graph';
 import { ALL_NON_FUNGIBLE_ACCOUNT_FIELDS } from './fields/non-fungible-account.graph';
 import { CORE_NON_FUNGIBLE_CHAIN_ACCOUNT_FIELDS } from './fields/non-fungible-chain-account.graph';
-import { CORE_TRANSACTION_FIELDS } from './fields/transaction.graph';
+import {
+  ALL_TRANSACTION_FIELDS,
+  CORE_TRANSACTION_FIELDS,
+} from './fields/transaction.graph';
 import { CORE_TRANSFER_FIELDS } from './fields/transfer.graph';
 
 import type { DocumentNode } from '@apollo/client';
 import { gql } from '@apollo/client';
+
+export const getTransactionNode: DocumentNode = gql`
+  ${ALL_TRANSACTION_FIELDS}
+  ${CORE_EVENT_FIELDS}
+
+  query getTransactionNode($id: ID!) {
+    node(id: $id) {
+      ... on Transaction {
+        ...AllTransactionFields
+        block {
+          hash
+        }
+        events {
+          ...CoreEventFields
+        }
+        signers {
+          publicKey
+          signature
+        }
+      }
+    }
+  }
+`;
+
+export const getBlockNodes: DocumentNode = gql`
+  query getBlockNodes($ids: [ID!]!) {
+    nodes(ids: $ids) {
+      ... on Block {
+        height
+        hash
+        parentHash
+        chainId
+        creationTime
+        confirmationDepth
+        transactions {
+          totalCount
+        }
+      }
+    }
+  }
+`;
+
+export const getEventNodes: DocumentNode = gql`
+  ${ALL_EVENT_FIELDS}
+
+  query getEventNodes($ids: [ID!]!) {
+    nodes(ids: $ids) {
+      ... on Event {
+        ...AllEventFields
+        block {
+          id
+        }
+        transaction {
+          requestKey
+        }
+      }
+    }
+  }
+`;
 
 export const getBlockFromHash: DocumentNode = gql`
   ${ALL_BLOCK_FIELDS}
