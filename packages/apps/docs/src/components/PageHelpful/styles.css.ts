@@ -8,12 +8,12 @@ export const textAreaClass = style([
     border: 'none',
     outline: 'none',
     flexGrow: 1,
-    paddingY: '$2',
-    paddingX: '$2',
     color: '$foreground',
     borderRadius: '$sm',
   }),
   {
+    paddingBlock: vars.sizes.$2,
+    paddingInline: vars.sizes.$2,
     border: `1px solid ${vars.colors.$neutral3}`,
     resize: 'none',
     width: '100%',
@@ -31,7 +31,7 @@ export const textAreaClass = style([
 
 export const modalWrapperClass = style([
   {
-    marginTop: `calc(${vars.sizes.$16} * -1)`,
-    paddingRight: vars.sizes.$10,
+    marginBlockStart: `calc(${vars.sizes.$16} * -1)`,
+    paddingInlineEnd: vars.sizes.$10,
   },
 ]);

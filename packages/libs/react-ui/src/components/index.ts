@@ -60,7 +60,6 @@ export type {
   IProfileSummaryLinkProps,
   IProfileSummaryRootProps,
 } from './ProfileSummary';
-export type { IProgressBarProps } from './ProgressBar';
 export type {
   ITBodyProps,
   ITHeadProps,
@@ -81,7 +80,7 @@ export type {
 } from './Typography';
 
 export { Accordion } from './Accordion';
-export { Breadcrumbs } from './Breadcrumbs';
+export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
 export { Button } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
@@ -121,7 +120,6 @@ export {
 } from './Notification';
 export { Pagination } from './Pagination';
 export { ProfileSummary } from './ProfileSummary';
-export { ProgressBar } from './ProgressBar';
 export { Table } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';

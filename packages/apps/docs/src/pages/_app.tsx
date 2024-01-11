@@ -90,54 +90,17 @@ export const MyApp = ({
             <meta name="author" content={authorInfo.name} />
           </>
         )}
-        <link
-          rel="icon"
-          href="/assets/favicons/light/icon@32.png"
-          sizes="32x32"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="icon"
-          href="/assets/favicons/dark/icon@32.png"
-          sizes="32x32"
-          media="(prefers-color-scheme: dark)"
-        />
-        <link
-          rel="icon"
-          href="/assets/favicons/light/icon@128.png"
-          sizes="128x128"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="icon"
-          href="/assets/favicons/dark/icon@128.png"
-          sizes="128x128"
-          media="(prefers-color-scheme: dark)"
-        />
+        <link rel="icon" href="/assets/favicons/icon@32.png" sizes="32x32" />
+        <link rel="icon" href="/assets/favicons/icon@128.png" sizes="128x128" />
         <link
           rel="shortcut icon"
           sizes="192x192"
-          href="/assets/favicons/dark/icon@192.png"
-        />
-        <link
-          rel="icon"
-          href="/assets/favicons/light/icon@192.png"
-          sizes="192x192"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="icon"
-          href="/assets/favicons/dark/icon@192.png"
-          sizes="192x192"
-          media="(prefers-color-scheme: dark)"
+          href="/assets/favicons/icon@192.png"
         />
         {/* Android Shortcut icon */}
-        <link rel="shortcut icon" href="/assets/favicons/dark/icon@192.png" />
+        <link rel="shortcut icon" href="/assets/favicons/icon@192.png" />
         {/* Apple touch icon */}
-        <link
-          rel="apple-touch-icon"
-          href="/assets/favicons/dark/icon@192.png"
-        />
+        <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png" />
       </Head>
       <MDXProvider components={markDownComponents}>
         <ThemeProvider
@@ -150,7 +113,7 @@ export const MyApp = ({
           }}
         >
           <MenuProvider>
-            <Header menuItems={props.leftMenuTree} />
+            <Header menuItems={props.headerMenuItems} />
             <CookieConsent />
             <Layout {...props}>
               <Component {...props} />

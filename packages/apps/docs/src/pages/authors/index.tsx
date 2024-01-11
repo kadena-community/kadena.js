@@ -30,7 +30,7 @@ const Home: FC<IProps> = ({ frontmatter, authors }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Stack direction="column" gap="$2xl">
+          <Stack flexDirection="column" gap="xxl">
             <AuthorList>
               {authors.map((author) => (
                 <AuthorListItem key={author.id}>

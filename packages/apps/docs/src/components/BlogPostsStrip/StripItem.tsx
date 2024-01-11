@@ -36,7 +36,7 @@ export const StripItem: FC<IProps> = ({ post }) => {
               <div />
             )}
           </figure>
-          <Box marginY="$2">
+          <Box marginBlock="sm">
             <h4 className={headerClass}>{post.title}</h4>
           </Box>
           <div className={textClass}>{post.description}</div>

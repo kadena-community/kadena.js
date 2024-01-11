@@ -46,7 +46,6 @@ export type {
   IPaginationProps,
   IProfileSummaryLinkProps,
   IProfileSummaryRootProps,
-  IProgressBarProps,
   ISelectFieldProps,
   ISelectProps,
   IStackProps,
@@ -75,6 +74,7 @@ export {
   Accordion,
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
   ContentHeader,
@@ -102,7 +102,6 @@ export {
   Pagination,
   ProductIcon,
   ProfileSummary,
-  ProgressBar,
   Select,
   SelectField,
   Stack,
@@ -124,3 +123,6 @@ export {
   maskValue,
   useDialog,
 } from './components';
+
+// re-exports from 'react-aria'
+export { RouterProvider } from 'react-aria';

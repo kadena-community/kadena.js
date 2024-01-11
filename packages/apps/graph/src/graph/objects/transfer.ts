@@ -1,4 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Transfer } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { PRISMA, builder } from '../builder';
@@ -29,59 +31,57 @@ export default builder.prismaNode('Transfer', {
         'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
       type: 'Transfer',
       nullable: true,
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 4, // In the worst case resolve scenario, it executes 4 queries.
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 2, // In the worst case resolve scenario, it executes 2 queries.
       async resolve(__query, parent) {
         try {
-          let counterTransaction;
-
-          // Try to find finisher transfer
-          const finisherTransfer = await prismaClient.transaction.findFirst({
+          // Find all transactions that match either of the two conditions
+          const transactions = await prismaClient.transaction.findMany({
             where: {
-              pactId: parent.requestKey,
+              OR: [
+                { pactId: parent.requestKey },
+                { blockHash: parent.blockHash, requestKey: parent.requestKey },
+              ],
             },
+            include: { transfers: true },
           });
 
-          if (finisherTransfer) {
-            counterTransaction = finisherTransfer;
-          } else {
-            // If not found, try to find the initiating transfer
-            // First find the corresponding transaction
-            const finisherTransaction =
-              await prismaClient.transaction.findFirst({
-                where: {
-                  blockHash: parent.blockHash,
-                  requestKey: parent.requestKey,
-                },
-              });
+          // Filter the transactions to find the counterTransaction
+          let counterTransaction = transactions.find(
+            (transaction) =>
+              transaction.pactId === parent.requestKey ||
+              (transaction.blockHash === parent.blockHash &&
+                transaction.requestKey === parent.requestKey &&
+                transaction.pactId !== null &&
+                transaction.pactId !== undefined),
+          );
 
-            if (
-              !finisherTransaction ||
-              finisherTransaction.pactId === undefined ||
-              finisherTransaction.pactId === null
-            ) {
-              return null;
-            }
+          if (!counterTransaction) {
+            return null;
+          }
 
-            // Then find the initiating transaction with the pactId
+          // If the counterTransaction was found using the second condition, find the initiating transaction
+          if (
+            counterTransaction.blockHash === parent.blockHash &&
+            counterTransaction.requestKey === parent.requestKey &&
+            counterTransaction.pactId
+          ) {
             const initiatingTransaction =
               await prismaClient.transaction.findFirstOrThrow({
                 where: {
-                  requestKey: finisherTransaction.pactId,
+                  requestKey: counterTransaction.pactId,
                   pactId: undefined,
                 },
+                include: { transfers: true },
               });
 
             counterTransaction = initiatingTransaction;
           }
 
-          return await prismaClient.transfer.findFirst({
-            where: {
-              blockHash: counterTransaction.blockHash,
-              requestKey: counterTransaction.requestKey,
-              OR: [{ senderAccount: '' }, { receiverAccount: '' }],
-              amount: parent.amount,
-            },
-          });
+          return counterTransaction.transfers
+            ? (counterTransaction.transfers.find((transfer) =>
+                transfer.amount.equals(new Decimal(parent.amount)),
+              ) as Transfer)
+            : null;
         } catch (error) {
           throw normalizeError(error);
         }

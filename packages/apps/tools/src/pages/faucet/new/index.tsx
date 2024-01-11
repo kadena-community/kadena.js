@@ -2,6 +2,7 @@ import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
   Heading,
@@ -12,11 +13,9 @@ import {
 } from '@kadena/react-ui';
 
 import {
-  buttonContainerClass,
   hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
-  notificationContainerStyle,
   notificationContentStyle,
   notificationLinkStyle,
   pubKeyInputWrapperStyle,
@@ -25,9 +24,11 @@ import {
 
 import {
   accountNameContainerClass,
+  buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
   inputContainerClass,
+  notificationContainerStyle,
 } from '../styles.css';
 
 import type { FormStatus } from '@/components/Global';
@@ -98,7 +99,13 @@ const NewAccountFaucetPage: FC = () => {
     queryKey: ['accountName', pubKeys, chainID, pred],
     queryFn: () => createPrincipal(pubKeys, chainID, pred),
     enabled: pubKeys.length > 0,
+    placeholderData: '',
+    keepPreviousData: true,
   });
+
+  useEffect(() => {
+    setRequestStatus({ status: 'idle' });
+  }, [pubKeys.length]);
 
   const {
     register,
@@ -216,10 +223,10 @@ const NewAccountFaucetPage: FC = () => {
       <Head>
         <title>Kadena Developer Tools - Faucet</title>
       </Head>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('New')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>{' '}
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('New')}</BreadcrumbsItem>
+      </Breadcrumbs>{' '}
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
@@ -284,22 +291,20 @@ const NewAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <Stack direction="column" gap="$lg">
+        <Stack flexDirection="column" gap="lg">
           <Card fullWidth>
             <Heading as="h5">Public Keys</Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
 
             <div className={pubKeyInputWrapperStyle}>
               <div className={inputWrapperStyle}>
                 <PublicKeyField
                   helperText={errors?.pubKey?.message}
-                  inputProps={{
-                    ...register('pubKey', {
-                      onChange: () => {
-                        clearErrors('pubKey');
-                      },
-                    }),
-                  }}
+                  {...register('pubKey', {
+                    onChange: () => {
+                      clearErrors('pubKey');
+                    },
+                  })}
                   error={errors.pubKey}
                 />
               </div>
@@ -336,7 +341,7 @@ const NewAccountFaucetPage: FC = () => {
           </Card>
           <Card fullWidth>
             <Heading as="h5">{t('Account')}</Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField

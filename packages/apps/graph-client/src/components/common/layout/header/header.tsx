@@ -50,6 +50,11 @@ const Header: FC<IHeaderProps> = (props) => {
       fields: ['cmd', 'hash', 'sigs'],
     },
     {
+      route: routes.NON_FUNGIBLE_ACCOUNT,
+      searchType: SearchType.NonFungibleAccount,
+      fields: ['account'],
+    },
+    {
       route: routes.ACCOUNT_ROOT,
       searchType: SearchType.Account,
       fields: ['account', 'fungible'],
@@ -104,6 +109,10 @@ const Header: FC<IHeaderProps> = (props) => {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.ACCOUNT}/${secondSearchField}/${searchField}`);
         break;
+      case SearchType.NonFungibleAccount:
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push(`${routes.NON_FUNGIBLE_ACCOUNT}/${searchField}`);
+        break;
       case SearchType.Event:
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push(`${routes.EVENT}/${searchField}`);
@@ -147,6 +156,9 @@ const Header: FC<IHeaderProps> = (props) => {
       fieldValue.startsWith('K:') ||
       fieldValue.startsWith('W:')
     ) {
+      if (searchType === SearchType.NonFungibleAccount) {
+        return;
+      }
       setSecondSearchField('coin');
       setSearchType(SearchType.Account);
     }
@@ -183,6 +195,9 @@ const Header: FC<IHeaderProps> = (props) => {
       setSecondSearchField('');
       setGridColumns(5);
     }
+    if (event.target.value === SearchType.NonFungibleAccount) {
+      setGridColumns(3);
+    }
     setSearchField('');
   };
 
@@ -203,7 +218,7 @@ const Header: FC<IHeaderProps> = (props) => {
           {title}
         </Text>
 
-        <Grid columns={gridColumns}>
+        <Grid columns={gridColumns + 1}>
           <GridItem>
             <FormFieldWrapper htmlFor="search-type" label="Search Type">
               <Select
@@ -214,6 +229,9 @@ const Header: FC<IHeaderProps> = (props) => {
               >
                 <option value={SearchType.Transactions}>Request Key</option>
                 <option value={SearchType.Account}>Account</option>
+                <option value={SearchType.NonFungibleAccount}>
+                  Non-Fungible Account
+                </option>
                 <option value={SearchType.Event}>Event</option>
                 <option value={SearchType.Block}>Block</option>
                 <option value={SearchType.GasEstimation}>Gas Estimation</option>
@@ -275,8 +293,8 @@ const Header: FC<IHeaderProps> = (props) => {
               onClick={search}
               style={{
                 position: 'relative',
-                top: '50%',
-                transform: 'translateY(-50%)',
+                top: '100%',
+                transform: 'translateY(-100%)',
               }}
             >
               Search

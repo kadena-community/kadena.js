@@ -1,9 +1,9 @@
+import { ErrorHeader } from '@/components/Layout/Landing/components/Headers/ErrorHeader';
 import {
   articleClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
-import { ErrorHeader } from '@/components/Layout/Landing/components/Headers/ErrorHeader';
 import { Search } from '@/components/Search/Search';
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { getPageConfig } from '@/utils/config';
@@ -72,7 +72,6 @@ export const getStaticProps: GetStaticProps = async (context, ...args) => {
   return {
     props: {
       ...(await getPageConfig({ filename: __filename })),
-
       frontmatter: {
         title: '404 - Not found',
         menu: '404 - Not found',

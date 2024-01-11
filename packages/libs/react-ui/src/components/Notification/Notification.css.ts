@@ -5,7 +5,6 @@ import { recipe } from '@vanilla-extract/recipes';
 
 const iconColorVar = createVar();
 
-// eslint-disable-next-line
 const semanticColors = ['info', 'positive', 'warning', 'negative'] as const;
 type SemanticColor = (typeof semanticColors)[number];
 
@@ -61,7 +60,7 @@ export const notificationRecipe = recipe({
 
 export const closeButtonClass = style([
   atoms({
-    marginLeft: 'auto',
+    marginInlineStart: 'auto',
     padding: 'no',
     border: 'none',
     backgroundColor: 'transparent',
@@ -77,7 +76,7 @@ export const contentClass = style([
     fontSize: 'base',
     gap: 'xs',
     maxWidth: 'content.maxWidth',
-    marginTop: 'xxs',
+    marginBlockStart: 'xxs',
   }),
 ]);
 
@@ -85,7 +84,7 @@ export const titleClass = style([
   atoms({
     fontSize: 'base',
     fontWeight: 'bodyFont.bold',
-    marginBottom: 'xs',
+    marginBlockEnd: 'xs',
   }),
 ]);
 
@@ -102,7 +101,7 @@ export const iconClass = style([
 
 export const actionsContainerClass = style([
   atoms({
-    marginTop: 'md',
+    marginBlockStart: 'md',
     display: 'flex',
     justifyContent: 'flex-start',
     gap: 'xl',
@@ -154,7 +153,7 @@ export const actionButtonIntentVariants = styleVariants(
 
 export const actionButtonIconClass = style([
   atoms({
-    marginLeft: 'sm',
+    marginInlineStart: 'sm',
   }),
   {
     color: actionIconVar,

@@ -1,5 +1,6 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { FormItemCard } from '@/components/Global/FormItemCard';
+import { ProgressBar } from '@/components/Global/ProgressBar';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
 } from '@/components/Global/RequestKeyField';
@@ -17,6 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Grid,
   GridItem,
@@ -24,7 +26,6 @@ import {
   NotificationButton,
   NotificationFooter,
   NotificationHeading,
-  ProgressBar,
   Stack,
   SystemIcon,
   TrackerCard,
@@ -163,18 +164,18 @@ const CrossChainTransferTracker: FC = () => {
   return (
     <div className={mainContentStyle}>
       <Stack
-        direction="column"
-        paddingTop={'$2'}
-        paddingBottom={'$10'}
-        gap={'$6'}
+        flexDirection="column"
+        paddingBlockStart={'xs'}
+        paddingBlockEnd={'xxxl'}
+        gap={'lg'}
       >
-        <Stack direction="column" gap={'$2'}>
-          <Breadcrumbs.Root>
-            <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-            <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
-          </Breadcrumbs.Root>
+        <Stack flexDirection="column" gap={'xs'}>
+          <Breadcrumbs>
+            <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
+            <BreadcrumbsItem>{t('Cross Chain Tracker')}</BreadcrumbsItem>
+          </Breadcrumbs>
           <Stack
-            gap={'$6'}
+            gap={'lg'}
             justifyContent={'space-between'}
             alignItems={'flex-end'}
           >
@@ -231,11 +232,9 @@ const CrossChainTransferTracker: FC = () => {
                 <RequestKeyField
                   helperText={inputError || undefined}
                   status={validRequestKey}
-                  inputProps={{
-                    ...register('requestKey'),
-                    onKeyUp: checkRequestKey,
-                    onChange: onRequestKeyChange,
-                  }}
+                  {...register('requestKey')}
+                  onKeyUp={checkRequestKey}
+                  onChange={onRequestKeyChange}
                   error={errors.requestKey}
                 />
               </GridItem>

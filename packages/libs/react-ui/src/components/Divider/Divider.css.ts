@@ -5,7 +5,7 @@ import { style } from '@vanilla-extract/css';
 export const dividerClass = style([
   atoms({
     width: '100%',
-    marginY: 'lg',
+    marginBlock: 'lg',
     border: 'none',
   }),
   {

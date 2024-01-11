@@ -14,10 +14,10 @@ export const cardClass = style([
     width: '100%',
     height: '100%',
     borderRadius: '$md',
-    paddingX: '$10',
-    paddingY: '$6',
   }),
   {
+    paddingInline: vars.sizes.$10,
+    paddingBlock: vars.sizes.$6,
     transition: 'all .3s ease',
   },
 ]);

@@ -4,11 +4,24 @@ import {
   useGetGraphConfigurationQuery,
 } from '@/__generated__/sdk';
 import { centerBlockStyle } from '@/components/common/center-block/styles.css';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import {
+  getBlockFromHash,
+  getGraphConfiguration,
+} from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { Text } from '@components/text';
 import routes from '@constants/routes';
-import { Accordion, Box, Breadcrumbs, Link, Table } from '@kadena/react-ui';
+import {
+  Accordion,
+  Box,
+  Breadcrumbs,
+  BreadcrumbsItem,
+  Link,
+  Stack,
+  Table,
+} from '@kadena/react-ui';
 
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -16,8 +29,13 @@ import React from 'react';
 const Block: React.FC = () => {
   const router = useRouter();
 
+  const getBlockFromHashVariables = {
+    hash: router.query.hash as string,
+    first: 10,
+  };
+
   const { loading, data, error } = useGetBlockFromHashQuery({
-    variables: { hash: router.query.hash as string, first: 10 },
+    variables: getBlockFromHashVariables,
   });
 
   const { data: configData } = useGetGraphConfigurationQuery();
@@ -29,12 +47,20 @@ const Block: React.FC = () => {
   return (
     <div className={centerBlockStyle}>
       <div style={{ maxWidth: '1000px' }}>
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item>Block Overview</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+        <Stack justifyContent="space-between">
+          <Breadcrumbs>
+            <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+            <BreadcrumbsItem>Block Overview</BreadcrumbsItem>
+          </Breadcrumbs>
+          <GraphQLQueryDialog
+            queries={[
+              { query: getBlockFromHash, variables: getBlockFromHashVariables },
+              { query: getGraphConfiguration },
+            ]}
+          />
+        </Stack>
 
-        <Box marginBottom="$8" />
+        <Box margin="md" />
 
         <LoaderAndError
           error={error}
@@ -92,7 +118,7 @@ const Block: React.FC = () => {
               </Table.Body>
             </Table.Root>
 
-            <Box margin={'$3'} />
+            <Box margin="sm" />
 
             <Accordion.Root>
               {[
@@ -129,7 +155,7 @@ const Block: React.FC = () => {
               ]}
             </Accordion.Root>
 
-            <Box margin={'$10'} />
+            <Box margin="md" />
 
             <Text
               as="h2"
@@ -159,7 +185,7 @@ const Block: React.FC = () => {
                 </Table.Tr>
               </Table.Body>
             </Table.Root>
-            <Box margin={'$3'} />
+            <Box margin="sm" />
             <Accordion.Root>
               {[
                 <Accordion.Section title="See more" key={'accordion-payload'}>
@@ -202,7 +228,7 @@ const Block: React.FC = () => {
               ]}
             </Accordion.Root>
 
-            <Box margin={'$10'} />
+            <Box margin="md" />
 
             {data.block.transactions.totalCount > 0 && (
               <CompactTransactionsTable

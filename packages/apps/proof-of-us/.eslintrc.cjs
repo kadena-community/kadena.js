@@ -9,7 +9,7 @@ module.exports = {
   ],
   plugins: ['import'],
   parserOptions: { tsconfigRootDir: __dirname },
-  ignorePatterns: ['**/generated/**'],
+  ignorePatterns: ['**/generated/**', 'vitest.*.ts'],
   settings: {
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
