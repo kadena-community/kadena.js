@@ -26,6 +26,7 @@ const AccountTransfers: React.FC = () => {
 
   const { loading, data, error, fetchMore } = useGetTransfersQuery({
     variables,
+    skip: !router.query.fungible || !router.query.account,
   });
 
   return (

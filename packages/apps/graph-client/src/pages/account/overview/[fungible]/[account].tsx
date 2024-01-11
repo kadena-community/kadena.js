@@ -32,11 +32,11 @@ const Account: React.FC = () => {
     accountName: router.query.account as string,
   };
 
-  const { loading, data, error } = useGetFungibleAccountQuery({ variables });
-  console.log(1111111111);
-  console.log(JSON.stringify(loading));
-  console.log(JSON.stringify(data));
-  console.log(JSON.stringify(error));
+  const { loading, data, error } = useGetFungibleAccountQuery({
+    variables,
+    skip: !router.query.fungible || !router.query.account,
+  });
+
   return (
     <>
       <Stack justifyContent="space-between">

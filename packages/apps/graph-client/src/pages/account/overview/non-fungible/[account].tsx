@@ -29,7 +29,10 @@ const NonFungibleAccount: React.FC = () => {
     accountName: router.query.account as string,
   };
 
-  const { loading, data, error } = useGetNonFungibleAccountQuery({ variables });
+  const { loading, data, error } = useGetNonFungibleAccountQuery({
+    variables,
+    skip: !router.query.account,
+  });
 
   return (
     <>

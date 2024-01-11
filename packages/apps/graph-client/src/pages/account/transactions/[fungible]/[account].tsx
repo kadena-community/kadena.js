@@ -27,6 +27,7 @@ const AccountTransactions: React.FC = () => {
 
   const { loading, data, error, fetchMore } = useGetTransactionsQuery({
     variables,
+    skip: !router.query.fungible || !router.query.account,
   });
 
   const accountOverviewUrl =

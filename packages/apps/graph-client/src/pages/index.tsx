@@ -11,7 +11,11 @@ import { centerBlockStyle } from '@/components/common/center-block/styles.css';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import { getRecentHeights, getTransactions } from '@/graphql/queries.graph';
+import {
+  getBlockNodes,
+  getRecentHeights,
+  getTransactions,
+} from '@/graphql/queries.graph';
 import { getBlocksSubscription } from '@/graphql/subscriptions.graph';
 import { ChainwebGraph } from '@components/chainweb';
 import routes from '@constants/routes';
@@ -86,6 +90,7 @@ const Home: React.FC = () => {
         <GraphQLQueryDialog
           queries={[
             { query: getBlocksSubscription },
+            { query: getBlockNodes, variables: nodesQueryVariables },
             { query: getRecentHeights, variables: getRecentHeightsVariables },
             { query: getTransactions, variables: getTransactionsVariables },
           ]}
