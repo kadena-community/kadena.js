@@ -52,7 +52,6 @@ import {
   formContentStyle,
   notificationContainerStyle,
   sidebarLinksStyle,
-  textAreaStyle,
   textareaContainerStyle,
 } from './styles.css';
 
