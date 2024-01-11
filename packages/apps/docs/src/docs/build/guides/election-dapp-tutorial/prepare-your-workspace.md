@@ -87,24 +87,18 @@ To use the Pact extension in Visual Studio Code:
 
 1. Click the **Explorer** view and notice that the `election-dapp` contains the following folders: 
    
-   - `frontend`
-     
-     The `frontend` folder contains the files for the election website.
+   - The `frontend` folder contains the files for the election website.
      In this tutorial, the website consists of React components, but you could use any framework to create the frontend.
      The frontend of the application connects to the blockchain through the [Kadena client](https://www.npmjs.com/package/@kadena/client).
      The Kadena client is an `npm` package that can be imported into any JavaScript projec and acts as a conduit for making HTTP API requests to the blockchain. 
      You'll get a closer look at the frontend components in [Explore the frontend application](#explore-the-frontend-application).
 
-   - `pact`
-     
-      The `pact` folder contains your smart contract `.pact` files  and the `.repl` files that are used to test your smart contracts before you deploy them. You'll see that the `pact/root` folder already contains some `.pact` files. 
+   - The `pact` folder contains your smart contract `.pact` files  and the `.repl` files that are used to test your smart contracts before you deploy them. You'll see that the `pact/root` folder already contains some `.pact` files. 
       These files are Pact modules that the smart contracts you create in later tutorials depend on. 
       These modules are for local testing with `.repl` files. 
       You don't need to deploy them because they are deployed on Kadena networks by default.
 
-   - `snippets`
-      
-      The `snippets` folder contains JavaScript snippets that use the Kadena client library to perform actions against the blockchain that aren't directly related to the functionality of the election application. 
+   - The `snippets` folder contains JavaScript snippets that use the Kadena client library to perform actions against the blockchain that aren't directly related to the functionality of the election application. 
       For example, files in the snippets folder support deploying and upgrading smart contracts, creating and funding accounts, and transferring coins. 
       You'll learn more about the snippets in the later tutorials.
 
