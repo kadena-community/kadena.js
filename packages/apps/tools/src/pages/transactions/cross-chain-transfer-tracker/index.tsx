@@ -274,7 +274,7 @@ const CrossChainTransferTracker: FC = () => {
 
         {data.receiverAccount ? (
           <FormItemCard heading={t('Overview')} disabled={false}>
-            <Stack direction="row" gap="$md">
+            <Stack flexDirection="row" gap="md">
               <TrackerCard
                 variant="vertical"
                 icon={'QuickStart'}
@@ -338,10 +338,10 @@ const CrossChainTransferTracker: FC = () => {
       {data.id === StatusId.Pending ? (
         <div className={footerBarStyle}>
           <Stack
-            padding={'$4'}
+            padding={'xs'}
             justifyContent={'space-between'}
             alignItems={'flex-start'}
-            direction={'row-reverse'}
+            flexDirection={'row-reverse'}
           >
             <Link
               href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
