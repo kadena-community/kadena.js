@@ -87,6 +87,9 @@ importers:
       '@vanilla-extract/css':
         specifier: ^1.13.0
         version: 1.14.0
+      chrome-types:
+        specifier: ^0.1.248
+        version: 0.1.248
       ed25519-keygen:
         specifier: ^0.4.8
         version: 0.4.10
@@ -154,6 +157,9 @@ importers:
       vite:
         specifier: ^4.4.5
         version: 4.4.8(@types/node@18.17.14)
+      vite-plugin-static-copy:
+        specifier: ^1.0.0
+        version: 1.0.0(vite@4.4.8)
       vite-tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.1(typescript@5.2.2)(vite@4.4.8)
@@ -17304,6 +17310,10 @@ packages:
     resolution: {integrity: sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==}
     engines: {node: '>=6.0'}
 
+  /chrome-types@0.1.248:
+    resolution: {integrity: sha512-1yIRIBf+cgmbA+mf2RRnvRY9VR1KfA0XXBLnn7+PiewE2QQylpXD/7+Nte4cFtoOGeDJnxkQ1FbvN8CUSmEIHg==}
+    dev: false
+
   /chunkd@2.0.1:
     resolution: {integrity: sha512-7d58XsFmOq0j6el67Ug9mHf9ELUXsQXYJBkyxhH/k+6Ke0qXRnv0kbemx+Twc6fRJ07C49lcbdgm9FL1Ei/6SQ==}
     dev: false
@@ -31266,6 +31276,19 @@ packages:
       - sugarss
       - supports-color
       - terser
+
+  /vite-plugin-static-copy@1.0.0(vite@4.4.8):
+    resolution: {integrity: sha512-kMlrB3WDtC5GzFedNIPkpjnOAr8M11PfWOiUaONrUZ3AqogTsOmIhTt6w7Fh311wl8pN81ld7sfuOEogFJ9N8A==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    peerDependencies:
+      vite: ^5.0.0
+    dependencies:
+      chokidar: 3.5.3
+      fast-glob: 3.3.2
+      fs-extra: 11.1.1
+      picocolors: 1.0.0
+      vite: 4.4.8(@types/node@18.17.14)
+    dev: true
 
   /vite-tsconfig-paths@4.2.1(typescript@5.2.2)(vite@4.4.8):
     resolution: {integrity: sha512-GNUI6ZgPqT3oervkvzU+qtys83+75N/OuDaQl7HmOqFTb0pjZsuARrRipsyJhJ3enqV8beI1xhGbToR4o78nSQ==}

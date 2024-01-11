@@ -8,7 +8,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@kadena/client": "^1.0.0",
+    "@kadena/client": "workspace:*",
     "peerjs": "^1.5.0"
   }
 }

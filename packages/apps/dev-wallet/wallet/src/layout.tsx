@@ -10,10 +10,11 @@ import {
   createMemoryRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-import { useCrypto } from './hooks/crypto.context.js';
-import HomePage from './pages/home/HomePage.js';
-import Providers from './providers.js';
-import { getScriptType } from './utils/window.js';
+import { useCrypto } from './hooks/crypto.context';
+import { rootLayout } from './layout.css';
+import HomePage from './pages/home/HomePage';
+import Providers from './providers';
+import { getScriptType } from './utils/window';
 
 const Layout: FC = () => {
   const wallet = useCrypto();
@@ -88,7 +89,11 @@ export const RootLayout: FC = () => {
   const handler =
     getScriptType() === 'POPUP' ? createMemoryRouter : createBrowserRouter;
 
-  return <RouterProvider router={handler(routes)} />;
+  return (
+    <div className={rootLayout}>
+      <RouterProvider router={handler(routes)} />;
+    </div>
+  );
 };
 
 export const App = () => (

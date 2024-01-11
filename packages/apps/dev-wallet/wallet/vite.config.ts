@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
 import path from 'path';
 import { defineConfig, UserConfig } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 /**
@@ -29,7 +30,19 @@ const monorepoPathsRegex = monorepoPackages.map(
 monorepoPackages.push('@kadena/client/fp');
 
 export const config: UserConfig = {
-  plugins: [react(), tsconfigPaths(), vanillaExtractPlugin()],
+  plugins: [
+    react(),
+    tsconfigPaths(),
+    vanillaExtractPlugin(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'manifest.json',
+          dest: './',
+        },
+      ],
+    }),
+  ],
 
   optimizeDeps: {
     // add all monorepo packages to optimizeDeps since they are commonjs
@@ -58,5 +71,3 @@ export const config: UserConfig = {
 };
 
 export default defineConfig(config);
-
-console.log('monorepoPackages', monorepoPackages);
