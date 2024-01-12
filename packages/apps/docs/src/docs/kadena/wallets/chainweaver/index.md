@@ -69,7 +69,7 @@ With this icon
 
 :::note Help
 
-See the [Chainweaver Troubleshoot](./chainweaver-troubleshooting) page if you
+See the [Chainweaver Troubleshoot](./chainweaver-troubleshooting.md) page if you
 encountered issues installing the .deb
 
 :::
@@ -112,7 +112,7 @@ Kadena Chainweaver” icon from the desktop
 
 :::note Help
 
-See the [Chainweaver Troubleshoot ](./chainweaver-troubleshooting)page if you
+See the [Chainweaver Troubleshoot ](./chainweaver-troubleshooting.md)page if you
 encountered issues installing the .ova
 
 :::
