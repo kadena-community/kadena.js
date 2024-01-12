@@ -6,11 +6,8 @@ export const isLocalPageLink = (url: string): boolean => {
   const extension = getFileExtension(url);
 
   return (
-    !url.startsWith('http') &&
-    (extension === 'md' ||
-      extension === 'mdx' ||
-      extension === 'tsx' ||
-      url.startsWith('./'))
+    (!url.startsWith('http') || url.startsWith('./')) &&
+    (extension === 'md' || extension === 'mdx' || extension === 'tsx')
   );
 };
 
