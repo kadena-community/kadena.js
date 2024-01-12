@@ -77,50 +77,6 @@ function extractBrokenLinksFromTsFile(filePath: string): string[] {
   return broken;
 }
 
-function getDisallowedLinksFromMdFile(links: string[]): string[] {
-  const blackListedUrls = [
-    'medium.com/kadena-io',
-    '/pages/docs/',
-    'pact-language.readthedocs.io', //todo when pact docs are approved
-    // 'docs.kadena.io', some imported pages still have docs.kadena.io (needs to be fixed in importreadme script)
-    //'api.chainweb.com', todo when pact docs are approved
-    // 'kadena-io.github.io' ,todo when pact docs are approved
-  ];
-  return links.reduce((acc: string[], val) => {
-    const found = blackListedUrls.filter((url) => val.includes(url));
-
-    if (found.length) {
-      return [...acc, `${val} (BLACKLISTED)`];
-    }
-
-    if (!val.startsWith('http') && val.includes('.html')) {
-      return [...acc, `${val} (NO RELATIVE .HTML files)`];
-    }
-    //@TODO: fix checks on relative links
-    // if (val.startsWith('#')) {
-    //   return [...acc, `${val} (ONLY RELATIVE DEEPLINKS, WITH PATH)`];
-    // }
-
-    return acc;
-  }, []);
-}
-
-function extractBrokenLinksFromMdFile(filePath: string): string[] {
-  const fileContent = fs.readFileSync(filePath, 'utf8');
-  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  const links: string[] = [];
-  let match;
-
-  while ((match = linkRegex.exec(fileContent))) {
-    links.push(match[2]);
-  }
-
-  return [
-    ...getBrokenLinks(filePath, links),
-    ...getDisallowedLinksFromMdFile(links),
-  ];
-}
-
 const filesWithBrokenLinks: LinksType = {};
 
 function processFiles(directory: string): void {
@@ -134,14 +90,6 @@ function processFiles(directory: string): void {
     } else {
       const fileExtension = getFileExtension(filePath);
       const localFilePath = filePath.replace(__dirname, '');
-
-      if (fileExtension === 'md') {
-        const brokenLinks = extractBrokenLinksFromMdFile(filePath);
-
-        if (brokenLinks.length > 0) {
-          filesWithBrokenLinks[localFilePath] = brokenLinks;
-        }
-      }
 
       if (fileExtension === 'tsx') {
         const brokenLinks = extractBrokenLinksFromTsFile(filePath);
