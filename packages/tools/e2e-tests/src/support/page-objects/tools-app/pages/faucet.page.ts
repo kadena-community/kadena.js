@@ -24,11 +24,16 @@ export class FaucetPage {
     account: string,
     chainId: string,
   ): Promise<void> {
+    await this._card.setValueForCombobox(this._i18n.t(`Chain ID`), chainId);
     await this._card.setValueForTextbox(
       'The account name to fund coins to',
       account,
     );
-    await this._card.setValueForCombobox(this._i18n.t(`Chain ID`), chainId);
+    await expect(
+      this._page.getByRole('textbox', {
+        name: 'The account name to fund coins to',
+      }),
+    ).toHaveValue(account);
     await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();
   }
 

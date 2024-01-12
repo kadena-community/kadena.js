@@ -243,6 +243,9 @@ importers:
       chromatic:
         specifier: 6.20.0
         version: 6.20.0
+      concurrently:
+        specifier: ^7.2.2
+        version: 7.2.2
       dotenv:
         specifier: ~16.0.3
         version: 16.0.3
@@ -1966,6 +1969,19 @@ importers:
         version: 0.1.1(vitest@1.1.0)
 
   packages/tools/e2e-tests:
+    dependencies:
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../../libs/client-utils
+      '@kadena/cryptography-utils':
+        specifier: workspace:*
+        version: link:../../libs/cryptography-utils
+      '@kadena/tools':
+        specifier: workspace:*
+        version: link:../../apps/tools
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -2000,6 +2016,9 @@ importers:
       parse-md:
         specifier: 2.0.5
         version: 2.0.5
+      playwright-i18next-fixture:
+        specifier: ^1.0.0
+        version: 1.0.0(@playwright/test@1.40.1)
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
@@ -19046,6 +19065,12 @@ packages:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}
     dev: false
 
+  /i18next@21.10.0:
+    resolution: {integrity: sha512-YeuIBmFsGjUfO3qBmMOc0rQaun4mIpGKET5WDwvu8lU7gvwpcariZLNtL0Fzj+zazcHUrlXHiptcFhBMFaxzfg==}
+    dependencies:
+      '@babel/runtime': 7.22.15
+    dev: true
+
   /iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -23286,6 +23311,15 @@ packages:
     resolution: {integrity: sha512-+hkOycxPiV534c4HhpfX6yrlawqVUzITRKwHAmYfmsVreltEl6fAZJ3DPfLMOODw0H3s1Itd6MDCWmP1fl/QvQ==}
     engines: {node: '>=16'}
     hasBin: true
+    dev: true
+
+  /playwright-i18next-fixture@1.0.0(@playwright/test@1.40.1):
+    resolution: {integrity: sha512-7YQXB8zNGlu8ThXaM1pfGefcHdS97FE0Y4R/VrSLwi2DqjJrYx60cWR4KgcEjGvOUaaVMgyu7WlbQJDoHXGzAQ==}
+    peerDependencies:
+      '@playwright/test': ^1.26.0
+    dependencies:
+      '@playwright/test': 1.40.1
+      i18next: 21.10.0
     dev: true
 
   /playwright@1.40.1:

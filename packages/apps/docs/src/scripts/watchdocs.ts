@@ -1,10 +1,17 @@
 import chokidar from 'chokidar';
-import { fixLocalLinks } from './fixLocalLinks';
+import { fixLocalLinks, fixLocalLinksSingle } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
 import { movePages } from './movePages';
+import type { IEventType } from './movePages/singlePage';
+import { moveSinglePage } from './movePages/singlePage';
 import { initFunc } from './utils/build';
 
-const run = async (): Promise<void> => {
+const runSingleChange = async (path: string): Promise<void> => {
+  await initFunc(moveSinglePage(path), 'move a single page');
+  await initFunc(fixLocalLinksSingle(path), 'Fix local links for single page');
+};
+
+const runAll = async (event: IEventType, path: string): Promise<void> => {
   await initFunc(movePages, 'Create folder tree from config.yaml');
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(fixLocalLinks, 'Fix local links from the config.yaml');
@@ -14,10 +21,14 @@ const run = async (): Promise<void> => {
 (async function async(): Promise<void> {
   chokidar
     .watch('./src/docs', { ignoreInitial: true })
-    .on('all', async (event, path) => {
-      console.log(event, path);
-      await run();
+    .on('change', async (path) => {
+      await runSingleChange(path);
     });
 
-  await run();
+  //when the config.yaml is changed, we need to rebuild the whole thing
+  chokidar
+    .watch('./src/config.yaml', { ignoreInitial: true })
+    .on('all', async (event, path) => {
+      await runAll(event, path);
+    });
 })();

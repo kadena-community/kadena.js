@@ -20,7 +20,7 @@ import {
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export interface IDevOption {
   title: string;
@@ -31,10 +31,17 @@ export interface IDevOption {
 
 interface IOptionsModalProps extends IDialogProps {}
 
-export const OptionsModal: FC<IOptionsModalProps> = (props) => {
+export const OptionsModal: FC<IOptionsModalProps> = ({
+  onOpenChange,
+  ...rest
+}) => {
   const { t } = useTranslation('common');
   const { devOption, setDevOption } = useAppContext();
   const [selected, setSelected] = useState(devOption);
+
+  useEffect(() => {
+    setSelected(devOption);
+  }, [devOption]);
 
   const devOptions: {
     [Key in DevOption]: IDevOption;
@@ -113,7 +120,19 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
   };
 
   return (
-    <Dialog {...props}>
+    <Dialog
+      {...rest}
+      onOpenChange={(isOpen) => {
+        if (typeof onOpenChange === 'function') {
+          onOpenChange(isOpen);
+        }
+
+        if (isOpen === false) {
+          // When closing, reset to its original state
+          setSelected(devOption);
+        }
+      }}
+    >
       {(state) => (
         <>
           <DialogHeader>Settings</DialogHeader>

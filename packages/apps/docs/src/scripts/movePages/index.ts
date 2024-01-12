@@ -21,6 +21,14 @@ const copyBlogchain = (): void => {
   });
 };
 
+export const copyPage = (parentDir: string, page: IConfigTreeItem): void => {
+  const dir = `${parentDir}${page.url}`;
+  const file = `${dir}/index.${getFileExtension(page.file)}`;
+
+  fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
+  fs.copyFileSync(`./src/docs${page.file}`, `./src/pages${file}`);
+};
+
 const copyPages = async (
   pages: IConfigTreeItem[],
   parentDir: string = '',
@@ -34,11 +42,7 @@ const copyPages = async (
 
       await importRepo(item);
     } else {
-      const dir = `${parentDir}${page.url}`;
-      const file = `${dir}/index.${getFileExtension(page.file)}`;
-
-      fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
-      fs.copyFileSync(`./src/docs${page.file}`, `./src/pages${file}`);
+      copyPage(parentDir, page);
     }
 
     if (page.children) {
