@@ -12,7 +12,6 @@ export const comboBoxControlClass = style([
     color: 'text.base.default',
     outline: 'none',
     flex: 1,
-    fontSize: 'base',
     overflow: 'hidden',
     lineHeight: 'lg',
   }),
@@ -40,35 +39,41 @@ export const comboBoxControlClass = style([
     },
   },
 ]);
-export const comboBoxInputClass = style({
-  flex: 1,
-  height: '100%',
-  border: 'none',
-  background: 'transparent',
-  padding: 0,
-  margin: 0,
-  outline: 'none',
-  color: 'inherit',
-  '::-webkit-search-cancel-button': {
-    appearance: 'none',
-  },
-  '::placeholder': {
-    color: token('color.text.subtlest.default'),
-  },
-  selectors: {
-    "&[data-disabled='true']": {
-      color: token('color.text.base.@disabled'),
+export const comboBoxInputClass = style([
+  atoms({
+    fontSize: 'base',
+    flex: 1,
+    height: '100%',
+    border: 'none',
+    backgroundColor: 'transparent',
+    margin: 'no',
+    padding: 'no',
+    color: 'inherit',
+    outline: 'none',
+  }),
+  {
+    '::-webkit-search-cancel-button': {
+      appearance: 'none',
+    },
+    '::placeholder': {
+      color: token('color.text.subtlest.default'),
+    },
+    selectors: {
+      "&[data-disabled='true']": {
+        color: token('color.text.base.@disabled'),
+      },
     },
   },
-});
+]);
 
 export const comboBoxButtonClass = style([
   buttonReset,
-  style({
+  atoms({
     background: 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
+    cursor: 'pointer',
   }),
 ]);

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { atoms } from '@theme/atoms.css';
 import React, { useState } from 'react';
 import { onLayer2, withContentWidth } from '../../../storyDecorators';
 import { Button } from '../../Button';
@@ -9,6 +10,12 @@ import { CopyButton } from '../ActionButtons/CopyButton';
 import { Form } from '../Form';
 import { TextField } from '../TextField';
 import type { ITextFieldProps } from './TextField';
+
+const formStoryClass = atoms({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 'md',
+});
 
 const meta: Meta<ITextFieldProps> = {
   title: 'Form/TextField',
@@ -182,6 +189,7 @@ export const WithAddons: Story = {
 
     return (
       <Form
+        className={formStoryClass}
         onSubmit={(e) => {
           e.preventDefault();
           alert(value);
@@ -210,6 +218,7 @@ export const NativeValidation: Story = {
 
     return (
       <Form
+        className={formStoryClass}
         onSubmit={(e) => {
           e.preventDefault();
           alert(JSON.stringify({ email, minMaxLength, url, pattern }));
@@ -274,6 +283,7 @@ export const ServerValidation: Story = {
 
     return (
       <Form
+        className={formStoryClass}
         onSubmit={(e) => {
           e.preventDefault();
           alert(value);
@@ -315,6 +325,7 @@ export const CustomValidation: Story = {
   render: () => {
     return (
       <Form
+        className={formStoryClass}
         onSubmit={(e) => {
           e.preventDefault();
         }}
@@ -341,6 +352,7 @@ export const CustomErrorMessage: Story = {
     const v = value.toLowerCase();
     return (
       <Form
+        className={formStoryClass}
         onSubmit={(e) => {
           e.preventDefault();
         }}

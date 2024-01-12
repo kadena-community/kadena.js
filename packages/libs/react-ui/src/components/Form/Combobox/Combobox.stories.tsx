@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { atoms } from '@theme/atoms.css';
 import React, { useState } from 'react';
 import { onLayer2, withContentWidth } from '../../../storyDecorators';
 import { getArrayOf } from '../../../utils';
@@ -196,6 +197,11 @@ export const NativeValidation: Story = {
 
     return (
       <Form
+        className={atoms({
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'md',
+        })}
         onSubmit={(e) => {
           e.preventDefault();
         }}
