@@ -88,7 +88,7 @@ const focusRing = {
   outlineOffset: tokens.kda.foundation.border.width.normal,
 };
 
-const buttonReset = style({
+export const buttonReset = style({
   position: 'relative',
   appearance: 'button',
   WebkitAppearance: 'button',
