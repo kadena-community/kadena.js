@@ -37,6 +37,17 @@ export function normalizeError(error: any): GraphQLError {
         },
       });
     }
+    if (error.message.includes("Can't reach database server")) {
+      return new GraphQLError('Prisma Client Database Connection Error', {
+        extensions: {
+          type: error.name,
+          message: 'Prisma Client Database Connection Error',
+          description:
+            'The Prisma client was unable to reach the database. Check if your database is running and reachable.',
+          data: error.stack,
+        },
+      });
+    }
   }
 
   if (error instanceof PactCommandError) {
