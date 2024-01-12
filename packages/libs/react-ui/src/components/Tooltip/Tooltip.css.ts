@@ -24,6 +24,7 @@ export const base = style([
       borderBottom: `6px solid ${tokens.kda.foundation.color.background['layer-3'].default}`,
       borderLeft: '6px solid transparent',
     },
+    zIndex: tokens.kda.foundation.zIndex.overlay,
   },
 ]);
 
