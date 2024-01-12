@@ -1,26 +1,33 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 import { $$footerMenu, $$pageWidth } from '../../global.css';
 
 export const footerWrapperClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
-    backgroundColor: '$gray90',
+    backgroundColor: 'layer-1.inverse.default',
   }),
   {
-    marginBlockStart: vars.sizes.$40,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        backgroundColor:
+          tokens.kda.foundation.color.background['layer-1'].default,
+      },
+    },
+    marginBlockStart: tokens.kda.foundation.size.n40,
     zIndex: $$footerMenu,
     gridArea: 'footer',
   },
 ]);
 export const logoClass = style({
-  maxWidth: vars.sizes.$48,
+  maxWidth: tokens.kda.foundation.size.n48,
 });
 
 export const footerClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
     display: 'flex',
+    paddingInline: 'md',
     alignItems: {
       xs: 'flex-start',
       md: 'center',
@@ -32,37 +39,44 @@ export const footerClass = style([
     },
   }),
   {
-    paddingBlock: vars.sizes.$3,
-    paddingInline: vars.sizes.$4,
+    paddingBlock: tokens.kda.foundation.size.n3,
     margin: '0 auto',
     maxWidth: $$pageWidth,
   },
 ]);
 
 export const textClass = style([
-  sprinkles({
+  atoms({
     display: 'block',
-    color: '$gray40',
+    color: 'text.subtlest.inverse.default',
     textAlign: 'center',
   }),
   {
-    paddingInline: vars.sizes.$3,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        color: tokens.kda.foundation.color.text.subtlest.default,
+      },
+    },
+    paddingInline: tokens.kda.foundation.size.n3,
   },
 ]);
 
 export const linkClass = style([
-  sprinkles({
+  atoms({
     display: 'block',
     textDecoration: 'none',
-    color: '$gray40',
+    color: 'text.subtlest.inverse.default',
     textAlign: 'center',
   }),
   {
-    paddingInline: vars.sizes.$3,
+    paddingInline: tokens.kda.foundation.size.n3,
     selectors: {
+      [`${darkThemeClass} &`]: {
+        color: tokens.kda.foundation.color.text.subtlest.default,
+      },
       '&:hover': {
         textDecoration: 'none',
-        color: vars.colors.$white,
+        color: tokens.kda.foundation.color.text.subtlest['@hover'],
       },
     },
   },

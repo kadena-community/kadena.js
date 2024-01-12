@@ -18,3 +18,7 @@ export const getFlatData = async (): Promise<IMenuData[]> => {
   const data = await getData();
   return data.reduce(flatPosts, []).flat();
 };
+
+export const flattenData = (data: IMenuData[]): IMenuData[] => {
+  return data.reduce(flatPosts, []).flat();
+};

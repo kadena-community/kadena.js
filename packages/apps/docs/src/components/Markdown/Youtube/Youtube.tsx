@@ -7,7 +7,7 @@ interface IProps {
   title: string;
 }
 
-export const Youtube: FC<IProps> = ({ videoId, title }) => {
+export const Youtube: FC<IProps> = ({ videoId, title = 'Youtube' }) => {
   return (
     <div className={wrapperClass}>
       <iframe

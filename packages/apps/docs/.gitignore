@@ -2,21 +2,6 @@
 src/_generated
 src/_generated/specs
 public/sitemap.xml
-src/pages/kadena/kadenajs
-src/pages/build/quickstart/index.md
-src/pages/kadena/client
-src/pages/pact/cli
-src/pages/pact/pactjs-test-project/api
-src/pages/pact/pactjs-test-project/project-api
-src/pages/build/kda-cli
-src/pages/build/cryptography-utils
-src/pages/pact/pactjs
-src/pages/pact/pactjs-generator
-src/pages/kadena/client-examples
-src/pages/build/cookbook/cookbook
-src/pages/chainweb/stream-client
-src/pages/chainweb/node-client
-src/pages/chainweb/js-bindings
 
 
 .tempimport

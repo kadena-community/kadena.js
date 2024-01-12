@@ -204,7 +204,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <BrowseSection.LinkBlock
                 title="Docs"
                 subtitle="Help to improve our docs"
-                href="/contribute/contribute"
+                href="/contribute/docs"
               />
             </BrowseSection>
 

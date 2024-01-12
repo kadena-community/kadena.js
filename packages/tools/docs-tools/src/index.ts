@@ -1,7 +1,6 @@
 import remarkAdmonitions from './remarkAdmonition';
 import remarkCheckForCodeTitle from './remarkCheckForCodeTitle';
 import remarkFigureOutOfParagraph from './remarkFigureOutOfParagraph';
-import remarkFixAbsoluteLinks from './remarkFixAbsoluteLinks';
 import remarkFrontmatterToProps from './remarkFrontmatterToProps';
 import remarkHeadersToProps from './remarkHeadersToProps';
 import remarkPropsToStaticRender from './remarkPropsToStaticRender';
@@ -9,24 +8,44 @@ import remarkSideMenuToProps from './remarkSideMenuToProps';
 import remarkTwitter from './remarkTwitter';
 import remarkYoutube from './remarkYoutube';
 import { getReadTime } from './utils';
+import { getUrlNameOfPageFile } from './utils/config/getUrlNameOfPageFile';
+import { getFileExtension } from './utils/getFileExtension';
+import { getFrontmatterFromTsx } from './utils/getFrontmatter';
+import { getHeaderMenuItems } from './utils/getHeaderMenuItems';
+import { getParentTreeFromPage } from './utils/getParentTreeFromPage';
+import { isMarkDownFile } from './utils/markdown/isMarkdownFile';
 import {
   checkSubTreeForActive,
   getPathName,
 } from './utils/staticGeneration/checkSubTreeForActive';
-import { flatPosts, getFlatData } from './utils/staticGeneration/flatPosts';
-import { getData as getMenuData } from './utils/staticGeneration/getData';
+import {
+  flatPosts,
+  flattenData,
+  getFlatData,
+} from './utils/staticGeneration/flatPosts';
+import {
+  getData as getMenuData,
+  getPages,
+} from './utils/staticGeneration/getData';
 
 export {
   checkSubTreeForActive,
   flatPosts,
+  flattenData,
+  getFileExtension,
   getFlatData,
+  getFrontmatterFromTsx,
+  getHeaderMenuItems,
   getMenuData,
+  getPages,
+  getParentTreeFromPage,
   getPathName,
   getReadTime,
+  getUrlNameOfPageFile,
+  isMarkDownFile,
   remarkAdmonitions,
   remarkCheckForCodeTitle,
   remarkFigureOutOfParagraph,
-  remarkFixAbsoluteLinks,
   remarkFrontmatterToProps,
   remarkHeadersToProps,
   remarkPropsToStaticRender,

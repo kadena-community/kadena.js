@@ -1,5 +1,5 @@
-import type { FC } from 'react';
-import React from 'react';
+import type { ForwardedRef } from 'react';
+import React, { forwardRef } from 'react';
 import type { IBoxProps } from '../Box';
 import { Box } from '../Box';
 
@@ -7,15 +7,15 @@ export interface IStackProps extends IBoxProps {
   display?: 'flex' | 'inline-flex';
 }
 
-export const Stack: FC<IStackProps> = ({
-  children,
-  as = 'div',
-  display = 'flex',
-  ...props
-}) => {
+const BaseStack = (
+  { children, as = 'div', display = 'flex', ...props }: IStackProps,
+  ref: ForwardedRef<HTMLElement>,
+): React.ReactElement => {
   return (
-    <Box as={as} display={display} {...props}>
+    <Box ref={ref} as={as} display={display} {...props}>
       {children}
     </Box>
   );
 };
+
+export const Stack = forwardRef(BaseStack);
