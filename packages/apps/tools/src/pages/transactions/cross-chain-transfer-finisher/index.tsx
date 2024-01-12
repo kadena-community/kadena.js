@@ -1,22 +1,28 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { FormStatusNotification } from '@/components/Global';
 import {
   AccountNameField,
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import { FormItemCard } from '@/components/Global/FormItemCard';
+import { OptionsModal } from '@/components/Global/OptionsModal';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
 } from '@/components/Global/RequestKeyField';
-import ResourceLinks from '@/components/Global/ResourceLinks';
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
+import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useAppContext } from '@/context/app-context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
+import {
+  infoBoxStyle,
+  linksBoxStyle,
+} from '@/pages/transactions/cross-chain-transfer-tracker/styles.css';
 import type { ITransferResult } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import type { ITransferDataResult } from '@/services/cross-chain-transfer-finish/get-transfer-data';
@@ -26,6 +32,7 @@ import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Accordion,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -34,12 +41,15 @@ import {
   GridItem,
   Heading,
   IconButton,
+  Notification,
+  NotificationHeading,
   Stack,
   TextField,
   Textarea,
-  TrackerCard, NotificationHeading, Notification,
+  TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
@@ -51,12 +61,9 @@ import {
   formButtonStyle,
   formContentStyle,
   notificationContainerStyle,
-  sidebarLinksStyle,
-  textareaContainerStyle,
   notificationLinkStyle,
+  textareaContainerStyle,
 } from './styles.css';
-import Trans from "next-translate/Trans";
-import {OptionsModal} from "@/components/Global/OptionsModal";
 
 // @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
 const DOMAIN_NAME_REGEX: RegExp =
@@ -89,7 +96,6 @@ const CrossChainTransferFinisher: FC = () => {
   const router = useRouter();
   const { devOption } = useAppContext();
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
-  const helpCenterRef = useRef<HTMLElement | null>(null);
 
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
@@ -98,15 +104,15 @@ const CrossChainTransferFinisher: FC = () => {
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
   const [processingTx, setProcessingTx] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const networkData: INetworkData = networksData.filter(
     (item) => (network as Network) === item.networkId,
   )[0];
-
-  const handleOpenHelpCenter = (): void => {
-    // @ts-ignore
-    helpCenterRef.openSection(0);
-  };
 
   const checkRequestKey = async (reqKey = requestKey): Promise<void> => {
     if (!validateRequestKey(reqKey)) {
@@ -128,7 +134,7 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     setPollResults(pollResult);
-    handleOpenHelpCenter();
+    setOpenItem(undefined);
     if (pollResults.tx === undefined) {
       return;
     }
@@ -226,6 +232,7 @@ const CrossChainTransferFinisher: FC = () => {
   const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       setRequestKey(e.target.value);
+      setOpenItem(undefined);
     },
     [],
   );
@@ -240,7 +247,7 @@ const CrossChainTransferFinisher: FC = () => {
     if (reqKey) {
       setRequestKey(reqKey as string);
       await checkRequestKey(reqKey as string);
-      handleOpenHelpCenter();
+      setOpenItem(undefined);
     }
   }, [router.isReady]);
 
@@ -275,7 +282,6 @@ const CrossChainTransferFinisher: FC = () => {
   const showInputHelper =
     pollResults.error !== undefined ? pollResults.error : '';
   const showNotification = Object.keys(finalResults).length > 0;
-  const [openModal, setOpenModal] = useState(false);
 
   const formattedSigData = `{
     "pred": "${pollResults.tx?.receiverGuard.pred}",
@@ -307,10 +313,20 @@ const CrossChainTransferFinisher: FC = () => {
     setOpenModal(true);
   };
 
-  const handleCopySigData = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleCopySigData = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     event.preventDefault();
     await navigator.clipboard.writeText(formattedSigData);
-  }
+  };
+
+  const onOpenItemChange = () => {
+    setOpenItem({ item: 0 });
+  };
+
+  const handleOnClickLink = () => {
+    setOpenItem(undefined);
+  };
 
   useEffect(() => {
     resetField('requestKey');
@@ -321,79 +337,6 @@ const CrossChainTransferFinisher: FC = () => {
 
   return (
     <section className={containerClass}>
-      <DrawerToolbar
-        ref={helpCenterRef}
-        sections={[
-          {
-            icon: 'HelpCircle',
-            title: t('Pact Information'),
-            children: (
-              <>
-                <TrackerCard
-                  variant="vertical"
-                  labelValues={[
-                    {
-                      label: t('Network'),
-                      value: networkData.networkId,
-                    },
-                    {
-                      label: t('Server'),
-                      value: networkData.API,
-                    },
-                  ]}
-                />
-                <TrackerCard
-                  variant="vertical"
-                  icon="QuickStart"
-                  labelValues={[
-                    {
-                      label: t('Sender'),
-                      value: pollResults?.tx?.sender.account,
-                      isAccount: true,
-                    },
-                    {
-                      label: t('Chain'),
-                      value: pollResults?.tx?.sender.chain,
-                    },
-                  ]}
-                />
-                <TrackerCard
-                  variant="vertical"
-                  icon="Gas"
-                  labelValues={[
-                    {
-                      label: t('Gas Payer'),
-                      value: getValues('gasPayer'),
-                      isAccount: false,
-                    },
-                  ]}
-                />
-                <TrackerCard
-                  variant="vertical"
-                  icon="Receiver"
-                  labelValues={[
-                    {
-                      label: t('Receiver'),
-                      value: pollResults?.tx?.receiver.account,
-                      isAccount: true,
-                    },
-                    {
-                      label: t('Chain'),
-                      value: pollResults?.tx?.receiver.chain,
-                    },
-                  ]}
-                />
-                <div className={sidebarLinksStyle}>
-                  <ResourceLinks
-                    links={[{ title: t('Transactions link'), href: '#' }]}
-                  />
-                </div>
-              </>
-            ),
-          },
-        ]}
-      />
-
       <Breadcrumbs>
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
@@ -402,9 +345,7 @@ const CrossChainTransferFinisher: FC = () => {
 
       <div className={notificationContainerStyle}>
         <Notification intent="warning" role="status" isDismissable>
-          <NotificationHeading>
-            {t('Application Settings')}
-          </NotificationHeading>
+          <NotificationHeading>{t('Application Settings')}</NotificationHeading>
           <Trans
             i18nKey="common:application-settings-warning"
             components={[
@@ -418,7 +359,6 @@ const CrossChainTransferFinisher: FC = () => {
         </Notification>
       </div>
 
-
       {showNotification ? (
         <div className={notificationContainerStyle}>{renderNotification}</div>
       ) : null}
@@ -431,16 +371,18 @@ const CrossChainTransferFinisher: FC = () => {
 
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
-          <Stack flexDirection="column"
-                 paddingBlockStart={'md'}
-                 paddingBlockEnd={'xxxl'}
-                 gap={'lg'}
+          <Stack
+            flexDirection="column"
+            paddingBlockStart={'md'}
+            paddingBlockEnd={'xxxl'}
+            gap={'lg'}
           >
             <FormItemCard
               heading={t('Search Request')}
               helper={t('Where can I find the request key?')}
               helperHref="#"
               disabled={false}
+              helperOnClick={() => onOpenItemChange()}
             >
               <Box marginBlockEnd="md" />
               <Grid>
@@ -458,47 +400,122 @@ const CrossChainTransferFinisher: FC = () => {
               </Grid>
             </FormItemCard>
 
-            <FormItemCard
-              heading={t('Gas Settings')}
-              helper={t('What is a gas payer?')}
-              helperHref="#"
-              disabled={false}
-            >
-              <Grid columns={1} marginBlockStart="md">
-                <GridItem>
-                  <AccountNameField
-                    label={t('Gas Payer')}
-                    inputProps={{
-                      ...register('gasPayer', { shouldUnregister: true }),
-                      id: 'gas-payer-account-input',
-                      placeholder: t('Enter Your Account'),
-                    }}
-                    error={!isGasStation ? { message: 'Please enter kadena-xchain-gas', type: 'gas-station'} : errors.gasPayer}
+            {pollResults.tx !== undefined ? (
+              <FormItemCard heading={t('Overview')} disabled={false}>
+                <Stack flexDirection="row" gap="xxl">
+                  <TrackerCard
+                    variant="horizontal"
+                    labelValues={[
+                      {
+                        label: t('Network'),
+                        value: networkData.networkId,
+                      },
+                      {
+                        label: t('Server'),
+                        value: networkData.API,
+                      },
+                    ]}
                   />
-                </GridItem>
-              </Grid>
+                  <TrackerCard
+                    variant="vertical"
+                    icon="Gas"
+                    labelValues={[
+                      {
+                        label: t('Gas Payer'),
+                        value: getValues('gasPayer'),
+                        isAccount: false,
+                      },
+                    ]}
+                  />
+                </Stack>
+                <Stack flexDirection="row" gap="xxl">
+                  <TrackerCard
+                    variant="horizontal"
+                    icon="QuickStart"
+                    labelValues={[
+                      {
+                        label: t('Sender'),
+                        value: pollResults?.tx?.sender.account,
+                        isAccount: true,
+                      },
+                      {
+                        label: t('Chain'),
+                        value: pollResults?.tx?.sender.chain,
+                      },
+                    ]}
+                  />
 
-              <Grid columns={1} marginBlockStart="md">
-                <GridItem>
-                  <TextField
-                    disabled={!isAdvancedOptions}
-                    helperText={t(
-                      'This input field will only be enabled if the user is in expert mode',
-                    )}
-                    {...register('gasLimit', { shouldUnregister: true })}
-                    label={t('Gas Limit')}
-                    id="gas-limit-input"
-                    placeholder={t('Enter Gas Limit')}
+                  <TrackerCard
+                    variant="horizontal"
+                    icon="Receiver"
+                    labelValues={[
+                      {
+                        label: t('Receiver'),
+                        value: pollResults?.tx?.receiver.account,
+                        isAccount: true,
+                      },
+                      {
+                        label: t('Chain'),
+                        value: pollResults?.tx?.receiver.chain,
+                      },
+                    ]}
                   />
-                </GridItem>
-              </Grid>
-            </FormItemCard>
+                </Stack>
+              </FormItemCard>
+            ) : null}
+
+            {pollResults.tx !== undefined ? (
+              <FormItemCard
+                heading={t('Gas Settings')}
+                helper={t('What is a gas payer?')}
+                helperHref="#"
+                disabled={false}
+                helperOnClick={() => onOpenItemChange()}
+              >
+                <Grid columns={1} marginBlockStart="md">
+                  <GridItem>
+                    <AccountNameField
+                      label={t('Gas Payer')}
+                      inputProps={{
+                        ...register('gasPayer', { shouldUnregister: true }),
+                        id: 'gas-payer-account-input',
+                        placeholder: t('Enter Your Account'),
+                      }}
+                      error={
+                        !isGasStation
+                          ? {
+                              message: 'Please enter kadena-xchain-gas',
+                              type: 'gas-station',
+                            }
+                          : errors.gasPayer
+                      }
+                    />
+                  </GridItem>
+                </Grid>
+
+                <Grid columns={1} marginBlockStart="md">
+                  <GridItem>
+                    <TextField
+                      disabled={!isAdvancedOptions}
+                      helperText={t(
+                        'This input field will only be enabled if the user is in expert mode',
+                      )}
+                      {...register('gasLimit', { shouldUnregister: true })}
+                      label={t('Gas Limit')}
+                      id="gas-limit-input"
+                      placeholder={t('Enter Gas Limit')}
+                    />
+                  </GridItem>
+                </Grid>
+              </FormItemCard>
+            ) : null}
 
             {pollResults.tx !== undefined ? (
               <FormItemCard
                 heading={t('SigData')}
                 helper={t('How do I use the Signature data')}
                 helperHref="#"
+                helperOnClick={() => onOpenItemChange()}
               >
                 <Box marginBlockEnd="md" />
                 <Grid columns={1}>
@@ -515,7 +532,7 @@ const CrossChainTransferFinisher: FC = () => {
                         color="primary"
                         icon={'ContentCopy'}
                         onClick={async (event) => {
-                          await handleCopySigData(event)
+                          await handleCopySigData(event);
                         }}
                         title={t('copySigData')}
                       />
@@ -533,6 +550,44 @@ const CrossChainTransferFinisher: FC = () => {
         </section>
       </form>
 
+      <DrawerToolbar
+        ref={drawerPanelRef}
+        initialOpenItem={openItem}
+        sections={[
+          {
+            icon: 'Information',
+            title: t('Where can I find the request key?'),
+            children: (
+              <div className={infoBoxStyle}>
+                <span>
+                  You can start a cross chain transfer on Chainweaver and get a
+                  request key.
+                </span>
+              </div>
+            ),
+          },
+          {
+            icon: 'Link',
+            title: t('Resources & Links'),
+            children: (
+              <div className={linksBoxStyle}>
+                <Accordion.Root>
+                  {sidebarLinks.map((item, index) => (
+                    <MenuLinkButton
+                      title={item.title}
+                      key={`menu-link-${index}`}
+                      href={item.href}
+                      active={item.href === router.pathname}
+                      target="_blank"
+                      onClick={handleOnClickLink}
+                    />
+                  ))}
+                </Accordion.Root>
+              </div>
+            ),
+          },
+        ]}
+      />
 
       <OptionsModal
         isOpen={openModal}

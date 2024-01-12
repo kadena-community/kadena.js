@@ -5,6 +5,7 @@ import { ProgressBar } from '@/components/Global/ProgressBar';
 import RequestKeyField, {
   REQUEST_KEY_VALIDATION,
 } from '@/components/Global/RequestKeyField';
+import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
@@ -66,25 +67,6 @@ const CrossChainTransferTracker: FC = () => {
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
   );
-
-  const links = [
-    {
-      title: t('Tutorial'),
-      href: 'https://kadena.io/',
-    },
-    {
-      title: t('Documentation'),
-      href: 'https://kadena.io/',
-    },
-    {
-      title: t('Privacy & Policy'),
-      href: 'https://kadena.io/',
-    },
-    {
-      title: t('Terms of use'),
-      href: 'https://kadena.io/',
-    },
-  ];
 
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
@@ -376,7 +358,7 @@ const CrossChainTransferTracker: FC = () => {
             children: (
               <div className={linksBoxStyle}>
                 <Accordion.Root>
-                  {links.map((item, index) => (
+                  {sidebarLinks.map((item, index) => (
                     <MenuLinkButton
                       title={item.title}
                       key={`menu-link-${index}`}
