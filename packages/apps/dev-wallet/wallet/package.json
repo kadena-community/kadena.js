@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
+    "build-dev": "vite build --mode development --watch",
     "dev": "vite",
     "generate-coin-type": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact\"",
     "postinstall": "npm run generate-coin-type",
@@ -17,7 +18,6 @@
     "@hookform/resolvers": "^3.2.0",
     "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/lib-kadena-wallet": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@scure/bip39": "^1.2.1",

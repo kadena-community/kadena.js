@@ -1,7 +1,6 @@
-import { IconButton, Stack } from '@kadena/react-ui';
+import { Stack, Text } from '@kadena/react-ui';
 import { FC, PropsWithChildren } from 'react';
 import {
-  Link,
   Navigate,
   Outlet,
   Route,
@@ -10,53 +9,30 @@ import {
   createMemoryRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-import { useCrypto } from './hooks/crypto.context';
+
 import { rootLayout } from './layout.css';
 import HomePage from './pages/home/HomePage';
 import Providers from './providers';
 import { getScriptType } from './utils/window';
 
 const Layout: FC = () => {
-  const wallet = useCrypto();
-
-  const links = (
-    <>
-      <Link to="/">Home</Link>
-      {!wallet.loaded && <Link to="/signin">Sign-In</Link>}
-      {wallet.loaded && (
-        <>
-          <Link to="/keys">Keys</Link>
-          {/* <Link to="/transfer">Transfer</Link> */}
-          <Link to="/pact">Pact</Link>
-          <Link to="/accounts">Accounts</Link>
-        </>
-      )}
-    </>
-  );
-
   return (
-    <>
+    <div className={rootLayout}>
       <Stack
         as="nav"
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
+        padding={'sm'}
+        backgroundColor="base.default"
       >
         <Stack gap="sm" padding="sm">
-          {links}
+          <Text bold>DX-Wallet</Text>
         </Stack>
-        {wallet.loaded && (
-          <IconButton
-            icon="ExitToApp"
-            title="Sign out"
-            onClick={() => wallet.reset()}
-          />
-        )}
       </Stack>
-      <hr />
       <Outlet />
       <div id="modalportal"></div>
-    </>
+    </div>
   );
 };
 
@@ -75,12 +51,12 @@ const ProtectedRoute: FC<
 };
 
 export const RootLayout: FC = () => {
-  const wallet = useCrypto();
+  const logedIn = false;
   const routes = createRoutesFromElements(
     <Route element={<Layout />}>
       <Route path="/" element={<HomePage />} />
       <Route path="/signin" element={<p>SignIn</p>} />
-      <Route element={<ProtectedRoute isAllowed={wallet.loaded} />}>
+      <Route element={<ProtectedRoute isAllowed={logedIn} />}>
         <Route path="/accounts/:account" element={<p>Account</p>} />,
       </Route>
     </Route>,
@@ -89,11 +65,7 @@ export const RootLayout: FC = () => {
   const handler =
     getScriptType() === 'POPUP' ? createMemoryRouter : createBrowserRouter;
 
-  return (
-    <div className={rootLayout}>
-      <RouterProvider router={handler(routes)} />;
-    </div>
-  );
+  return <RouterProvider router={handler(routes)} />;
 };
 
 export const App = () => (
