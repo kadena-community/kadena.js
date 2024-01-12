@@ -97,6 +97,24 @@ const CrossChainTransferFinisher: FC = () => {
   const { devOption } = useAppContext();
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
+  const helpInfoSections = [
+    {
+      tag: 'request-key',
+      title: t('help-request-key-question'),
+      content: t('help-request-key-content'),
+    },
+    {
+      tag: 'gas-settings',
+      title: t('help-gas-settings-question'),
+      content: t('help-gas-settings-content'),
+    },
+    {
+      tag: 'signature-data',
+      title: t('help-signature-data-question'),
+      content: t('help-signature-data-content'),
+    },
+  ];
+
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
   );
@@ -108,6 +126,9 @@ const CrossChainTransferFinisher: FC = () => {
   const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
     undefined,
   );
+  const [activeInfoTag, setActiveInfoTag] = useState<
+    { tag: string; title: string; content: string } | undefined
+  >(undefined);
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const networkData: INetworkData = networksData.filter(
@@ -325,8 +346,11 @@ const CrossChainTransferFinisher: FC = () => {
     await navigator.clipboard.writeText(formattedSigData);
   };
 
-  const onOpenItemChange = () => {
+  const onOpenItemChange = (tag: string) => {
     setOpenItem({ item: 0 });
+    const helpSection = helpInfoSections.find((item) => item.tag === tag);
+    if (!helpSection) return;
+    setActiveInfoTag(helpSection);
   };
 
   const handleOnClickLink = () => {
@@ -387,7 +411,7 @@ const CrossChainTransferFinisher: FC = () => {
               helper={t('Where can I find the request key?')}
               helperHref="#"
               disabled={false}
-              helperOnClick={() => onOpenItemChange()}
+              helperOnClick={() => onOpenItemChange('request-key')}
             >
               <Box marginBlockEnd="md" />
               <Grid>
@@ -475,7 +499,7 @@ const CrossChainTransferFinisher: FC = () => {
                 helper={t('What is a gas payer?')}
                 helperHref="#"
                 disabled={false}
-                helperOnClick={() => onOpenItemChange()}
+                helperOnClick={() => onOpenItemChange('gas-settings')}
               >
                 <Grid columns={1} marginBlockStart="md">
                   <GridItem>
@@ -520,7 +544,7 @@ const CrossChainTransferFinisher: FC = () => {
                 heading={t('SigData')}
                 helper={t('How do I use the Signature data')}
                 helperHref="#"
-                helperOnClick={() => onOpenItemChange()}
+                helperOnClick={() => onOpenItemChange('signature-data')}
               >
                 <Box marginBlockEnd="md" />
                 <Grid columns={1}>
@@ -555,44 +579,43 @@ const CrossChainTransferFinisher: FC = () => {
         </section>
       </form>
 
-      <DrawerToolbar
-        ref={drawerPanelRef}
-        initialOpenItem={openItem}
-        sections={[
-          {
-            icon: 'Information',
-            title: t('Where can I find the request key?'),
-            children: (
-              <div className={infoBoxStyle}>
-                <span>
-                  You can start a cross chain transfer on Chainweaver and get a
-                  request key.
-                </span>
-              </div>
-            ),
-          },
-          {
-            icon: 'Link',
-            title: t('Resources & Links'),
-            children: (
-              <div className={linksBoxStyle}>
-                <Accordion.Root>
-                  {sidebarLinks.map((item, index) => (
-                    <MenuLinkButton
-                      title={item.title}
-                      key={`menu-link-${index}`}
-                      href={item.href}
-                      active={item.href === router.pathname}
-                      target="_blank"
-                      onClick={handleOnClickLink}
-                    />
-                  ))}
-                </Accordion.Root>
-              </div>
-            ),
-          },
-        ]}
-      />
+      {activeInfoTag ? (
+        <DrawerToolbar
+          ref={drawerPanelRef}
+          initialOpenItem={openItem}
+          sections={[
+            {
+              icon: 'Information',
+              title: activeInfoTag.title,
+              children: (
+                <div className={infoBoxStyle}>
+                  <span>{activeInfoTag.content}</span>
+                </div>
+              ),
+            },
+            {
+              icon: 'Link',
+              title: t('Resources & Links'),
+              children: (
+                <div className={linksBoxStyle}>
+                  <Accordion.Root>
+                    {sidebarLinks.map((item, index) => (
+                      <MenuLinkButton
+                        title={item.title}
+                        key={`menu-link-${index}`}
+                        href={item.href}
+                        active={item.href === router.pathname}
+                        target="_blank"
+                        onClick={handleOnClickLink}
+                      />
+                    ))}
+                  </Accordion.Root>
+                </div>
+              ),
+            },
+          ]}
+        />
+      ) : null}
 
       <OptionsModal
         isOpen={openModal}
