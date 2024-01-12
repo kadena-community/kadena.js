@@ -1,12 +1,11 @@
 import type { Atoms } from '@theme/atoms.css';
 import { atoms } from '@theme/atoms.css';
 import classnames from 'classnames';
-import type React from 'react';
-import type { ComponentPropsWithRef, ElementType } from 'react';
-import { createElement } from 'react';
+import type { ComponentPropsWithRef, ElementType, ForwardedRef } from 'react';
+import React, { createElement } from 'react';
 
 export interface IBoxProps
-  extends ComponentPropsWithRef<'div'>,
+  extends ComponentPropsWithRef<ElementType>,
     Partial<
       Pick<
         Atoms,
@@ -58,55 +57,58 @@ export interface IBoxProps
   as?: ElementType;
 }
 
-export const Box = ({
-  as = 'div',
-  alignItems,
-  backgroundColor,
-  borderColor,
-  borderRadius,
-  borderStyle,
-  borderWidth,
-  bottom,
-  children,
-  className,
-  cursor,
-  display = 'block',
-  flex,
-  flexDirection,
-  flexGrow,
-  flexShrink,
-  flexWrap,
-  gap,
-  height,
-  inset,
-  justifyContent,
-  left,
-  margin,
-  marginBlock,
-  marginBlockEnd,
-  marginBlockStart,
-  marginInline,
-  marginInlineEnd,
-  marginInlineStart,
-  maxWidth,
-  minWidth,
-  opacity,
-  overflow,
-  padding,
-  paddingBlock,
-  paddingBlockEnd,
-  paddingBlockStart,
-  paddingInline,
-  paddingInlineEnd,
-  paddingInlineStart,
-  position,
-  right,
-  textAlign,
-  top,
-  width,
-  zIndex,
-  ...props
-}: IBoxProps): React.ReactElement => {
+const BaseBox = (
+  {
+    as = 'div',
+    alignItems,
+    backgroundColor,
+    borderColor,
+    borderRadius,
+    borderStyle,
+    borderWidth,
+    bottom,
+    children,
+    className,
+    cursor,
+    display = 'block',
+    flex,
+    flexDirection,
+    flexGrow,
+    flexShrink,
+    flexWrap,
+    gap,
+    height,
+    inset,
+    justifyContent,
+    left,
+    margin,
+    marginBlock,
+    marginBlockEnd,
+    marginBlockStart,
+    marginInline,
+    marginInlineEnd,
+    marginInlineStart,
+    maxWidth,
+    minWidth,
+    opacity,
+    overflow,
+    padding,
+    paddingBlock,
+    paddingBlockEnd,
+    paddingBlockStart,
+    paddingInline,
+    paddingInlineEnd,
+    paddingInlineStart,
+    position,
+    right,
+    textAlign,
+    top,
+    width,
+    zIndex,
+    ...props
+  }: IBoxProps,
+  ref: ForwardedRef<HTMLElement>,
+): React.ReactElement => {
   return createElement(
     as,
     {
@@ -159,7 +161,10 @@ export const Box = ({
         className,
       ),
       ...props,
+      ref,
     },
     children,
   );
 };
+
+export const Box = React.forwardRef(BaseBox);
