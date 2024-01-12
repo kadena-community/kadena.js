@@ -1,74 +1,120 @@
-import classNames from 'classnames';
-import type { FC } from 'react';
-import React, { forwardRef, useContext } from 'react';
-import { SystemIcon } from '../../Icon';
-import { baseOutlinedClass } from '../Form.css';
-import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
-import {
-  chevronIconClass,
-  containerClass,
-  containerClassDisabled,
-  iconClass,
-  selectClass,
-} from './Select.css';
+import { useObjectRef } from '@react-aria/utils';
+import type { ForwardedRef, ReactNode } from 'react';
+import React, { forwardRef } from 'react';
+import type { AriaSelectProps } from 'react-aria';
+import { HiddenSelect, useSelect } from 'react-aria';
+import { useSelectState } from 'react-stately';
 
-export interface ISelectProps
-  extends Omit<
-    React.HTMLAttributes<HTMLSelectElement>,
-    'aria-label' | 'as' | 'className' | 'children' | 'id'
-  > {
-  ariaLabel: string;
-  children: React.ReactNode;
+import { ListBox } from '../../ListBox';
+import { Popover } from '../../Popover';
+
+import { formField } from '../Form.css';
+import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
+import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
+import { selectValueClass } from './Select.css';
+import { SelectButton } from './SelectButton';
+
+export interface ISelectProps<T extends object = any>
+  extends AriaSelectProps<T> {
+  isPositive?: boolean;
+  startIcon?: ReactNode;
+  tag?: string;
+  info?: string;
+  /*
+   * @deprecated Use `isDisabled` instead. only here to support libs that manages props like `react-hook-form`
+   */
   disabled?: boolean;
-  startIcon?: React.ReactElement;
-  ref?: React.ForwardedRef<HTMLSelectElement>;
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
-  id: string;
-  value?: string;
-  outlined?: boolean;
 }
-
-/**
- * @deprecated Use `SelectField` instead.
- */
-export const Select: FC<ISelectProps> = forwardRef<
-  HTMLSelectElement,
-  ISelectProps
->(function Select(
-  {
-    ariaLabel,
-    children,
-    disabled = false,
-    outlined = false,
-    startIcon,
-    ...rest
-  },
-  ref,
+function SelectBase<T extends object>(
+  props: ISelectProps<T>,
+  forwardedRef: ForwardedRef<HTMLButtonElement>,
 ) {
-  const { status } = useContext(FormFieldWrapperContext);
-  const ChevronDown = SystemIcon.ChevronDown;
+  const state = useSelectState(props);
+  const ref = useObjectRef(forwardedRef);
+  const {
+    labelProps,
+    triggerProps,
+    valueProps,
+    menuProps,
+    descriptionProps,
+    errorMessageProps,
+    ...validation
+  } = useSelect(props, state, ref);
+
+  // aggregate error message from validation props
+  const errorMessage =
+    typeof props.errorMessage === 'function'
+      ? props.errorMessage(validation)
+      : props.errorMessage ?? validation.validationErrors.join(' ');
 
   return (
-    <div
-      className={classNames(containerClass, {
-        [containerClassDisabled]: disabled,
-        [baseOutlinedClass]: outlined || status,
-      })}
-      data-testid="kda-select"
-    >
-      {startIcon && <span className={iconClass}>{startIcon}</span>}
-      <select
-        aria-label={ariaLabel}
-        className={selectClass}
-        disabled={disabled}
+    <div className={formField}>
+      {props.label && (
+        <FormFieldHeader
+          {...labelProps}
+          label={props.label}
+          info={props.info}
+          tag={props.tag}
+        />
+      )}
+      <HiddenSelect
+        isDisabled={props.isDisabled}
+        state={state}
+        triggerRef={ref}
+        label={props.label}
+        name={props.name}
+      />
+      <SelectButton
+        {...triggerProps}
         ref={ref}
-        {...rest}
+        state={state}
+        isDisabled={props.isDisabled}
+        autoFocus={props.autoFocus}
+        isInvalid={validation.isInvalid}
+        isPositive={props.isPositive}
+        startIcon={props.startIcon}
+        elementType="button"
       >
-        {children}
-      </select>
-      <span className={chevronIconClass}>
-        <ChevronDown size="md" />
-      </span>
+        <span
+          {...valueProps}
+          className={selectValueClass}
+          data-placeholder={!state.selectedItem}
+        >
+          {state.selectedItem
+            ? state.selectedItem.rendered
+            : props.placeholder || 'Select an option'}
+        </span>
+      </SelectButton>
+      {props.description && !validation.isInvalid && (
+        <FormFieldHelpText
+          {...descriptionProps}
+          intent={props.isPositive ? 'positive' : 'info'}
+          data-disabled={props.isDisabled || undefined}
+        >
+          {props.description}
+        </FormFieldHelpText>
+      )}
+      {validation.isInvalid && (
+        <FormFieldHelpText {...errorMessageProps} intent="negative">
+          {errorMessage}
+        </FormFieldHelpText>
+      )}
+      {state.isOpen && (
+        <Popover
+          state={state}
+          triggerRef={ref}
+          showArrow={false}
+          placement="bottom start"
+        >
+          <ListBox {...menuProps} state={state} />
+        </Popover>
+      )}
     </div>
   );
-});
+}
+
+export const Select = forwardRef(SelectBase) as <T extends object>(
+  props: ISelectProps<T> & { ref?: ForwardedRef<HTMLButtonElement> },
+) => JSX.Element;
+
+export { Item as SelectItem } from 'react-stately';

@@ -1,0 +1,116 @@
+import { style } from '@vanilla-extract/css';
+import { atoms, bodyBaseRegular, token } from '../../styles';
+
+// applied on ul
+export const listBoxClass = style([
+  atoms({
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: 'layer-3.default',
+    margin: 'no',
+    padding: 'no',
+    listStyleType: 'none',
+    paddingBlock: 'sm',
+    borderRadius: 'sm',
+    overflowX: 'hidden',
+  }),
+  {
+    boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
+    // check this magic number
+    maxWidth: '300px',
+    ':focus': {
+      outline: 'none',
+    },
+    ':focus-visible': {
+      outline: 'none',
+    },
+    selectors: {
+      "&[data-scrollable='true']": {
+        maxHeight: '500px',
+        overflowY: 'auto',
+      },
+      "&[data-submenu='true']": {
+        padding: '0',
+        borderRadius: '0',
+        boxShadow: 'none',
+      },
+    },
+  },
+]);
+
+// applied on li
+export const listItemClass = style([
+  bodyBaseRegular,
+  atoms({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    listStyleType: 'none',
+    paddingBlock: 'sm',
+    paddingInline: 'sm',
+    color: 'text.base.default',
+    backgroundColor: 'layer-3.default',
+    cursor: 'pointer',
+  }),
+  {
+    transition: 'background 0.2s',
+    ':focus': {
+      outline: 'none',
+    },
+    ':focus-visible': {
+      outline: 'none',
+    },
+    selectors: {
+      '&[data-hovered="true"]': {
+        color: token('color.text.semantic.info.@hover'),
+        backgroundColor: token('color.background.semantic.info.@hover'),
+      },
+      '&[data-disabled="true"]': {
+        color: token('color.text.base.@disabled'),
+        backgroundColor: token('color.background.base.@disabled'),
+        cursor: 'not-allowed',
+      },
+      '&[data-focused="true"]': {
+        color: token('color.text.semantic.info.@focus'),
+        backgroundColor: token('color.background.semantic.info.@focus'),
+      },
+      '&[data-selected="true"]': {
+        color: token('color.text.semantic.info.@hover'),
+        backgroundColor: token('color.background.semantic.info.@hover'),
+      },
+      '&[data-has-children="true"]': {
+        padding: '0',
+        marginBlock: token('spacing.xs'),
+      },
+    },
+  },
+]);
+
+// applied on li
+export const listSeparatorClass = style([
+  atoms({
+    listStyleType: 'none',
+    margin: 'no',
+    padding: 'no',
+    backgroundColor: 'layer-2.default',
+  }),
+  {
+    height: '1px',
+  },
+]);
+
+// applied on span
+export const listSectionHeadingClass = style([
+  atoms({
+    display: 'flex',
+    paddingBlock: 'xs',
+    paddingInline: 'sm',
+    color: 'text.base.default',
+    backgroundColor: 'layer-3.default',
+    fontWeight: 'bodyFont.bold',
+  }),
+  {
+    cursor: 'default',
+    alignSelf: 'stretch',
+  },
+]);

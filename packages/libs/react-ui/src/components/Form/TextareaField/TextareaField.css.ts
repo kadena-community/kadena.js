@@ -1,6 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms } from '../../../styles/atoms.css';
-import { token } from '../../../styles/themeUtils';
+import { atoms, token } from '../../../styles';
 
 export const addon = style({
   position: 'absolute',

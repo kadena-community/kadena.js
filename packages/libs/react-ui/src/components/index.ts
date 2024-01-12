@@ -92,14 +92,12 @@ export {
 } from './Dialog';
 export { Divider } from './Divider/Divider';
 export {
-  FormFieldWrapper,
-  Input,
-  InputCopy,
+  Form,
+  FormFieldHeader,
+  FormFieldHelper,
   Select,
   SelectField,
   TextField,
-  Textarea,
-  TextareaCopy,
   TextareaField,
 } from './Form';
 export { ProductIcon, SystemIcon } from './Icon';

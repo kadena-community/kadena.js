@@ -1,9 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { onLayer2, withContentWidth } from '../../../storyDecorators';
-import { SystemIcon } from '../../Icon';
+import { getArrayOf } from '../../../utils';
+import { Button } from '../../Button';
+import { Account, Plus } from '../../Icon/System/SystemIcon';
+import { Box } from '../../Layout';
+import { Form } from '../Form';
 import type { ISelectProps } from './Select';
-import { Select } from './Select';
+import { Select, SelectItem } from './Select';
 
 const meta: Meta<ISelectProps> = {
   title: 'Form/Select',
@@ -14,66 +18,210 @@ const meta: Meta<ISelectProps> = {
     docs: {
       description: {
         component:
-          'The Select component renders a select element with options. The select element can be disabled with the `disabled` prop. The startIcon of the select element can be set with the `startIcon` prop.',
+          'Fully accessible select component. This component is built on top of [react-aria](https://react-spectrum.adobe.com/react-aria/index.html).',
       },
     },
   },
   argTypes: {
-    disabled: {
-      description: 'toggle disabled state of component',
+    description: {
+      description: 'Helper text to display below the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    info: {
+      description: 'Additional information to display below the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    label: {
+      description: 'Label to display above the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+
+    placeholder: {
+      description: 'Placeholder text to display in the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+
+    errorMessage: {
+      description: 'Error message to display below the input.',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    isPositive: {
+      description: 'Applies positive visual styling.',
       control: {
         type: 'boolean',
-        defaultValue: false,
       },
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    startIcon: {
-      options: ['-', ...Object.keys(SystemIcon)],
+
+    isInvalid: {
+      description: 'Marks the input as invalid and applies visual styling.',
       control: {
-        type: 'select',
+        type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+
+    isDisabled: {
+      description: 'Disables the input and applies visual styling.',
+      control: {
+        type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    isRequired: {
+      description: 'Marks the input as required',
+      control: {
+        type: 'boolean',
+      },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    startIcon: React.ReactElement | '-';
-  } & Omit<ISelectProps, 'startIcon'>
->;
+type Story = StoryObj<ISelectProps>;
 
-export const Dynamic: Story = {
-  name: 'Select',
+export const Default: Story = {
   args: {
-    startIcon: undefined,
+    isDisabled: false,
+    isInvalid: false,
+    isRequired: false,
+    isPositive: false,
+    description: 'Some description',
+    label: 'Select something',
+    placeholder: 'Select an option',
   },
-  render: ({ startIcon, disabled, outlined }) => {
-    const [value, setValue] = useState<string>('1');
-    const IconComponent =
-      startIcon !== '-'
-        ? SystemIcon[startIcon as unknown as keyof typeof SystemIcon]
-        : undefined;
+  render: (args) => {
+    return (
+      <Select {...args}>
+        <SelectItem key="option1">Option 1</SelectItem>
+        <SelectItem key="option2">Option 2</SelectItem>
+        <SelectItem key="option3">Option 3</SelectItem>
+        <SelectItem key="option4">Option 4</SelectItem>
+      </Select>
+    );
+  },
+};
+
+export const ComplexItems = () => (
+  <Select label="Select an option">
+    <SelectItem key="option1" textValue="Option 1">
+      <Box alignItems="center" gap="xs" display="flex">
+        <Account />
+        Option 1
+      </Box>
+    </SelectItem>
+    <SelectItem key="option2" textValue="Option 2">
+      <Box alignItems="center" gap="xs" display="flex">
+        <Plus />
+        Option 2
+      </Box>
+    </SelectItem>
+  </Select>
+);
+export const ValidationError = () => (
+  <Select label="Select an option" errorMessage="Error message" isInvalid>
+    <SelectItem key="option1">Option 1</SelectItem>
+    <SelectItem key="option2">Option 2</SelectItem>
+    <SelectItem key="option3">Option 3</SelectItem>
+    <SelectItem key="option4">Option 4</SelectItem>
+  </Select>
+);
+
+export const Disabled = () => (
+  <Select label="Select an option" isDisabled>
+    <SelectItem key="option1">Option 1</SelectItem>
+    <SelectItem key="option2">Option 2</SelectItem>
+    <SelectItem key="option3">Option 3</SelectItem>
+    <SelectItem key="option4">Option 4</SelectItem>
+  </Select>
+);
+
+export const Dynamic = () => {
+  const items = getArrayOf(
+    (index) => ({
+      label: `Option ${index}`,
+      key: `option${index}`,
+    }),
+    100,
+  );
+  return (
+    <Select label="Select an option" items={items}>
+      {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
+    </Select>
+  );
+};
+
+export const NativeValidation: Story = {
+  name: 'Native validation',
+  render: () => {
+    const [selectedKey, setSelectedKey] = useState<string>();
 
     return (
-      <Select
-        id="select-story"
-        ariaLabel={'select'}
-        startIcon={IconComponent && <IconComponent />}
-        onChange={(e) => {
-          console.log('clicked on', e.target.value);
-          setValue(e.target.value);
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
         }}
-        disabled={Boolean(disabled)}
-        outlined={Boolean(outlined)}
-        value={value}
       >
-        <option value={'1'}>option 1</option>
-        <option value={'2'}>option 2</option>
-      </Select>
+        <p>
+          Keep in mind that native validation is only triggered when the a form
+          is submitted. for realtime validation use the them `isInvalid` prop.
+        </p>
+        <Select
+          label="Select an option"
+          isRequired
+          validationBehavior="native"
+          selectedKey={selectedKey}
+          onSelectionChange={(e) => {
+            setSelectedKey(e);
+          }}
+          placeholder="Required"
+        >
+          <SelectItem key="option1">Option 1</SelectItem>
+          <SelectItem key="option2">Option 2</SelectItem>
+          <SelectItem key="option3">Option 3</SelectItem>
+          <SelectItem key="option4">Option 4</SelectItem>
+        </Select>
+
+        <Button type="submit">Submit</Button>
+      </Form>
     );
   },
 };

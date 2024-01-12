@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms } from '../../../../styles/atoms.css';
+import { atoms } from '../../../styles';
 
 export const headerClass = style([
   atoms({
@@ -34,4 +34,12 @@ export const tagClass = style([
     paddingTop: '0.05rem',
     paddingBottom: '0.05rem',
   },
+]);
+
+export const labelClass = style([
+  atoms({
+    fontSize: 'sm',
+    color: 'text.base.default',
+    fontWeight: 'bodyFont.bold',
+  }),
 ]);

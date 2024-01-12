@@ -1,67 +1,58 @@
 import { style } from '@vanilla-extract/css';
-import { atoms } from '../../../styles/atoms.css';
-import { tokens } from '../../../styles/index';
-import { baseContainerClass } from '../Form.css';
+import { atoms, bodyBaseRegular, ellipsis, token } from '../../../styles';
 
-export const containerClass = style([
-  baseContainerClass,
+export const selectButtonClass = style([
   atoms({
-    backgroundColor: 'layer-3.default',
-    gap: 'sm',
-    paddingInline: 'md',
-  }),
-]);
-
-export const containerClassDisabled = style([
-  atoms({
-    pointerEvents: 'none',
-    color: 'text.base.inverse.default',
-    backgroundColor: 'layer-3.inverse.default',
-  }),
-]);
-
-export const iconClass = style([
-  atoms({
-    alignItems: 'center',
     display: 'flex',
-  }),
-]);
-
-export const selectClass = style([
-  atoms({
-    background: 'none',
+    alignItems: 'center',
+    borderRadius: 'sm',
+    backgroundColor: 'layer-3.default',
     border: 'none',
     color: 'text.base.default',
-    flexGrow: 1,
     outline: 'none',
-    paddingInlineEnd: 'lg',
-    paddingBlock: 'sm',
+    flex: 1,
     fontSize: 'base',
+    overflow: 'hidden',
+    lineHeight: 'lg',
   }),
   {
-    backgroundColor: 'inherit',
-    color: 'inherit',
-    appearance: 'none',
+    paddingInlineStart: token('spacing.md'),
+    paddingInlineEnd: token('spacing.md'),
+    paddingBlock: token('spacing.sm'),
+    boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
+    outlineOffset: '2px',
+    selectors: {
+      '&[data-hovered]': {
+        backgroundColor: token('color.background.base.@hover'),
+      },
+      '&[data-positive]': {
+        outline: `2px solid ${token('color.border.semantic.positive.@focus')}`,
+      },
+      '&[data-disabled]': {
+        pointerEvents: 'none',
+        backgroundColor: token('color.background.base.@disabled'),
+        color: token('color.text.base.@disabled'),
+      },
+      '&[data-focused]': {
+        outline: `2px solid ${token('color.border.semantic.info.@focus')}`,
+      },
+      '&[data-invalid]': {
+        outline: `2px solid ${token('color.border.semantic.negative.@focus')}`,
+      },
+    },
   },
 ]);
 
-export const chevronIconClass = style([
-  atoms({
-    display: 'inline-flex',
-    alignItems: 'center',
-    marginInlineEnd: 'sm',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    color: 'icon.base.default',
-  }),
+// applied on a span
+export const selectValueClass = style([
+  bodyBaseRegular,
+  ellipsis,
   {
-    pointerEvents: 'none',
-    zIndex: 10,
+    flex: '1',
+    textAlign: 'start',
     selectors: {
-      '&:active': {
-        color: tokens.kda.foundation.color.icon.base.default,
+      "&[data-placeholder='true']": {
+        color: token('color.text.subtlest.default'),
       },
     },
   },
