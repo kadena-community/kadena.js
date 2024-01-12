@@ -114,7 +114,7 @@ compare your solution with the finished code at every step along the way.
 
 - [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace)
 - [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain)
-- [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account)
+- [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account)
 - [Define a namespaces](/build/guides/election-dapp-tutorial/define-a-namespace)
 - [Define keysets](/build/guides/election-dapp-tutorial/define-keysets)
 - [Write the smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
