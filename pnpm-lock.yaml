@@ -49,15 +49,6 @@ importers:
         specifier: ^1.4.0
         version: 1.5.7
 
-  packages/apps/dev-wallet/lib-kadena-wallet:
-    dependencies:
-      '@kadena/client':
-        specifier: workspace:*
-        version: link:../../../libs/client
-      peerjs:
-        specifier: ^1.5.0
-        version: 1.5.1
-
   packages/apps/dev-wallet/wallet:
     dependencies:
       '@hookform/resolvers':
@@ -69,9 +60,6 @@ importers:
       '@kadena/cryptography-utils':
         specifier: workspace:*
         version: link:../../../libs/cryptography-utils
-      '@kadena/lib-kadena-wallet':
-        specifier: workspace:*
-        version: link:../lib-kadena-wallet
       '@kadena/pactjs':
         specifier: workspace:*
         version: link:../../../libs/pactjs
@@ -17084,12 +17072,6 @@ packages:
       cbor-extract: 2.1.1
     dev: false
 
-  /cbor-x@1.5.6:
-    resolution: {integrity: sha512-+TXdnDNdr8JH5GQRoAhjdT/5s5N+b71s2Nz8DpDRyuWx0uzMj8JTR3AqqMTBO/1HtUBHZpmK1enD2ViXFx0Nug==}
-    optionalDependencies:
-      cbor-extract: 2.1.1
-    dev: false
-
   /cbor@8.1.0:
     resolution: {integrity: sha512-DwGjNW9omn6EwP70aXsn7FQJx5kO12tX0bZkaTjzdVFM6/7nhA4t0EENocKGx6D2Bch9PE2KzCUf5SceBdeijg==}
     engines: {node: '>=12.19'}
@@ -26259,17 +26241,6 @@ packages:
   /peerjs-js-binarypack@2.1.0:
     resolution: {integrity: sha512-YIwCC+pTzp3Bi8jPI9UFKO0t0SLo6xALnHkiNt/iUFmUUZG0fEEmEyFKvjsDKweiFitzHRyhuh6NvyJZ4nNxMg==}
     engines: {node: '>= 14.0.0'}
-    dev: false
-
-  /peerjs@1.5.1:
-    resolution: {integrity: sha512-jpE2jPZ99vuSVHBAhn7bVCPKlwsPgcAqgcDKEZR4L7SaMaEL6wqD/G6VI0+awmhuEFcUN2ttusly+sKQGD64hQ==}
-    engines: {node: '>= 14'}
-    dependencies:
-      '@msgpack/msgpack': 2.8.0
-      cbor-x: 1.5.6
-      eventemitter3: 4.0.7
-      peerjs-js-binarypack: 2.1.0
-      webrtc-adapter: 8.2.3
     dev: false
 
   /peerjs@1.5.2:

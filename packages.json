@@ -220,11 +220,5 @@
     "version": "0.0.1",
     "private": true,
     "path": "packages/apps/dev-wallet/desktop"
-  },
-  {
-    "name": "@kadena/lib-kadena-wallet",
-    "version": "0.0.1",
-    "private": true,
-    "path": "packages/apps/dev-wallet/lib-kadena-wallet"
   }
 ]
