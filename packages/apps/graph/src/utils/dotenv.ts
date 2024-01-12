@@ -41,7 +41,7 @@ export const dotenv: {
   ),
   DATABASE_URL: or(
     process.env.DATABASE_URL,
-    'postgresql://devnet@localhost:5432/devnet',
+    'postgresql://devnet@localhost:5432/devnet?pool_timeout=0',
   ),
   MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH: parseInt(
     or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '7'),
