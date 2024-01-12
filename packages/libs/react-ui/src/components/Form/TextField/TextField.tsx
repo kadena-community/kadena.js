@@ -11,7 +11,8 @@ import React, { forwardRef, useCallback } from 'react';
 import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
 import { formField, inputContainer } from '../Form.css';
-import { FormFieldHeader, FormFieldHelper } from '../FormFieldWrapper';
+import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
+import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 import { endAddon, input, startAddon } from './TextField.css';
 
 type PickedAriaTextFieldProps = Omit<
@@ -143,17 +144,17 @@ export function TextFieldBase(
       </div>
 
       {props.description && !validation.isInvalid && (
-        <FormFieldHelper
+        <FormFieldHelpText
           {...descriptionProps}
           intent={props.isPositive ? 'positive' : 'info'}
         >
           {props.description}
-        </FormFieldHelper>
+        </FormFieldHelpText>
       )}
       {validation.isInvalid && (
-        <FormFieldHelper {...errorMessageProps} intent="negative">
+        <FormFieldHelpText {...errorMessageProps} intent="negative">
           {errorMessage}
-        </FormFieldHelper>
+        </FormFieldHelpText>
       )}
     </div>
   );

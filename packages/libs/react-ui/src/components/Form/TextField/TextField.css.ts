@@ -1,6 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms } from '../../../styles/atoms.css';
-import { token } from '../../../styles/themeUtils';
+import { atoms, token } from '../../../styles';
 
 export const startAddon = style({
   position: 'absolute',
@@ -53,7 +52,8 @@ export const input = style([
       },
       '&[data-disabled]': {
         pointerEvents: 'none',
-        backgroundColor: token('color.background.layer-3.default'),
+        backgroundColor: token('color.background.base.@disabled'),
+        color: token('color.text.base.@disabled'),
       },
       '&[data-focused]': {
         outline: `2px solid ${token('color.border.semantic.info.@focus')}`,

@@ -1,7 +1,6 @@
 import { recipe } from '@vanilla-extract/recipes';
-import { atoms } from '../../../../styles/atoms.css';
-import { token } from '../../../../styles/themeUtils';
-import { iconFill } from '../../../Icon/IconWrapper.css';
+import { atoms, token } from '../../../styles';
+import { iconFill } from '../../Icon/IconWrapper.css';
 
 export const helperText = recipe({
   base: atoms({
