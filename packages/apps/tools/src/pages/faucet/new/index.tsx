@@ -221,7 +221,7 @@ const NewAccountFaucetPage: FC = () => {
             deletePublicKey(index);
           }}
           icon="TrashCan"
-          maskOptions={{ headLength: 4 }}
+          maskOptions={{ headLength: 4, character: '.' }}
         />
       ))}
     </div>
