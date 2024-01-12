@@ -1,5 +1,5 @@
+import { loadConfigPages } from '@/scripts/fixLocalLinks/utils/loadConfigPages.mock';
 import { getFileNameOfPageFile } from '../getFileNameOfPageFile';
-import { loadConfigPages } from './../loadConfigPages.mock';
 
 vi.mock('@/scripts/movePages', () => {
   return {

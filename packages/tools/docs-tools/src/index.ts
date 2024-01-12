@@ -1,7 +1,6 @@
 import remarkAdmonitions from './remarkAdmonition';
 import remarkCheckForCodeTitle from './remarkCheckForCodeTitle';
 import remarkFigureOutOfParagraph from './remarkFigureOutOfParagraph';
-import remarkFixAbsoluteLinks from './remarkFixAbsoluteLinks';
 import remarkFrontmatterToProps from './remarkFrontmatterToProps';
 import remarkHeadersToProps from './remarkHeadersToProps';
 import remarkPropsToStaticRender from './remarkPropsToStaticRender';
@@ -47,7 +46,6 @@ export {
   remarkAdmonitions,
   remarkCheckForCodeTitle,
   remarkFigureOutOfParagraph,
-  remarkFixAbsoluteLinks,
   remarkFrontmatterToProps,
   remarkHeadersToProps,
   remarkPropsToStaticRender,
