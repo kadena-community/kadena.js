@@ -4,6 +4,7 @@ import { atoms, bodyBaseRegular, token } from '../../styles';
 // applied on ul
 export const listBoxClass = style([
   atoms({
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: 'layer-3.default',
@@ -16,8 +17,6 @@ export const listBoxClass = style([
   }),
   {
     boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
-    // check this magic number
-    maxWidth: '300px',
     ':focus': {
       outline: 'none',
     },
@@ -48,9 +47,11 @@ export const listItemClass = style([
     listStyleType: 'none',
     paddingBlock: 'sm',
     paddingInline: 'sm',
+    marginInline: 'xs',
     color: 'text.base.default',
     backgroundColor: 'layer-3.default',
     cursor: 'pointer',
+    borderRadius: 'sm',
   }),
   {
     transition: 'background 0.2s',
@@ -75,8 +76,8 @@ export const listItemClass = style([
         backgroundColor: token('color.background.semantic.info.@focus'),
       },
       '&[data-selected="true"]': {
-        color: token('color.text.semantic.info.@hover'),
-        backgroundColor: token('color.background.semantic.info.@hover'),
+        color: token('color.text.semantic.info.default'),
+        fontWeight: token('typography.weight.bodyFont.bold'),
       },
       '&[data-has-children="true"]': {
         padding: '0',

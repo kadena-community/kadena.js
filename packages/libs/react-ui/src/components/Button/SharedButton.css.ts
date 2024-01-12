@@ -101,7 +101,7 @@ export const buttonReset = style({
   /* prevent touch scrolling on buttons */
   touchAction: 'none',
   userSelect: 'none',
-  cursor: 'default',
+  cursor: 'pointer',
   textDecoration: 'none',
   isolation: 'isolate',
   border: 'none',

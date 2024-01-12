@@ -23,7 +23,7 @@ export const selectButtonClass = style([
     outlineOffset: '2px',
     selectors: {
       '&[data-hovered]': {
-        backgroundColor: token('color.background.base.@hover'),
+        cursor: 'pointer',
       },
       '&[data-positive]': {
         outline: `2px solid ${token('color.border.semantic.positive.@focus')}`,

@@ -20,7 +20,7 @@ function PopoverBase(
     offset = 8,
     showArrow = true,
     arrowBoundaryOffset = 10,
-    resizeToTrigger = false,
+    resizeToTrigger = true,
     triggerRef,
     ...props
   }: IPopoverProps,
@@ -43,11 +43,11 @@ function PopoverBase(
     <Overlay>
       <div {...underlayProps} className={underlayClass} />
       <div
+        {...popoverProps}
         style={{
           ...popoverProps.style,
           minWidth: resizeToTrigger ? triggerWidth : undefined,
         }}
-        {...popoverProps}
         ref={popoverRef}
         className={popoverClass}
       >
