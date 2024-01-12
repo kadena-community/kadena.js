@@ -9,6 +9,7 @@ import {
 } from '@/__generated__/sdk';
 import { centerBlockStyle } from '@/components/common/center-block/styles.css';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
+import { ErrorBox } from '@/components/error-box/error-box';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import {
@@ -23,7 +24,7 @@ import { useChainTree } from '@context/chain-tree-context';
 import { useParsedBlocks } from '@utils/hooks/use-parsed-blocks';
 import { usePrevious } from '@utils/hooks/use-previous';
 import isEqual from 'lodash.isequal';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Home: React.FC = () => {
   const {
@@ -36,12 +37,17 @@ const Home: React.FC = () => {
     ids: newBlocksIds?.newBlocks as string[],
   };
 
-  const { data: nodesQueryData } = useGetBlockNodesQuery({
-    variables: nodesQueryVariables,
-    skip: !newBlocksIds?.newBlocks?.length,
-  });
+  const { data: nodesQueryData, error: nodesQueryError } =
+    useGetBlockNodesQuery({
+      variables: nodesQueryVariables,
+      skip: !newBlocksIds?.newBlocks?.length,
+    });
 
-  const newBlocks = nodesQueryData?.nodes as Block[];
+  const [newBlocks, setNewBlocks] = useState<Block[]>([]);
+
+  useEffect(() => {
+    setNewBlocks(nodesQueryData?.nodes as Block[]);
+  }, [nodesQueryData]);
 
   const getRecentHeightsVariables = { count: 3 };
   const { data: recentBlocks, error: recentBlocksError } =
@@ -102,6 +108,8 @@ const Home: React.FC = () => {
         loading={loadingNewBlockIds}
         loaderText="Loading..."
       />
+
+      {nodesQueryError && <ErrorBox error={nodesQueryError} />}
 
       <div className={centerBlockStyle}>
         {allBlocks && <ChainwebGraph blocks={allBlocks} />}
