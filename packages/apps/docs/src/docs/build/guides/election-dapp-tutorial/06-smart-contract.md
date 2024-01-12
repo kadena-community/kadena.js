@@ -319,209 +319,391 @@ To test upgrading with the correct keyset:
    Load successful
    ```
 
-Earlier, you used `expect-failure` in the test REPL to catch and test errors
-that were thrown as a result of an illegal attempt to redefine a namespace or
-keyset. This will not work with module definitions, because they are special in
-nature. It is possible to see what happens when someone illegally tries to
-redefine a module without wrapping the attempt in an `except-failure` assertion.
-However, the execution of the `module.repl` file will be marked as a failure.
-For demonstration purposes, it does not matter, so go ahead and add the
-following code at the end of the file and run it again.
+Yo can't use `expect-failure` in the Pact REPL to test module definitions, but you can simulate an unauthorized user attempting to update a module.
 
-```pact
-(env-data
-  { 'admin-keyset :
-    { 'keys : [ 'other-key ]
-    , 'pred : 'keys-all
-    }
-  }
-)
+To test upgrading with an incorrect keyset:
 
-(env-sigs
-  [{ 'key  : 'other-key
-   , 'caps : []
-  }]
-)
+1. Open the `election-dapp/pact/module.repl` file in the code editor on your computer.
 
-(begin-tx
-  "Upgrade the module without permission"
-)
-  (namespace 'election)
-    (module election "election.admin-keyset"
-      (defun list-candidates () [])
-    )
-(commit-tx)
-```
+2. Add the following lines of code after the last transaction:
+   
+   ```pact
+   (env-data
+     { 'admin-keyset :
+       { 'keys : [ 'other-key ]
+       , 'pred : 'keys-all
+       }
+     }
+   )
+   
+   (env-sigs
+     [{ 'key  : 'other-key
+      , 'caps : []
+     }]
+   )
+   
+   (begin-tx
+     "Upgrade the module without permission"
+   )
+       (module election "election.admin-keyset"
+         (defun list-candidates () [])
+       )
+   (commit-tx)
+   ```
 
-If all is well, the last line of the output should be `Load failed`. A few lines
-up you will notice a `Keyset failure` error. This means that another keyset than
-the `election.admin-keyset` cannot update the `election` module. So, you have
-proven that you can govern a Pact module with a keyset. Remove the code to
-make sure that the `module.repl` file can load successfully again before you
-continue with the next exercise.
+   2. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact module.repl -t
+   ```
+   
+   You should see the `Load failed`message and that the failure was caused by a `Keyset failure` error. 
+   With these two tests, you know that you can update the Pact module by signing a transaction with with the `election.admin-keyset` and that no other keyset can update the `election` module. 
+   
+1. Remove the code you added for testing an incorrect keyset.
+      
+2. Execute the transaction using the `pact` command-line program to verify that the `module.repl` file loads successfully before you continue:
+   
+   ```pact
+   pact module.repl -t
+   ```
 
-## Exercise: Governance with Capability
+## Modify module governance
 
-The `election.admin-keyset` that governs the `election` module will later be
-used to restrict access to high impact functions of the modules, such as
-nominating new candidates. To keep the module code DRY (Don't Repeat Yourself)
-and descriptive, you will use a capability to govern the module instead of the
-keyset directly. Add the following code after the last transaction in
-`module.repl`. It defines a capability `GOVERNANCE` that enforces the keyset
-`election.admin-keyset`. Run `module.repl` again.
+You now have the basic scaffolding for the `election` module in place.
+However, your current configuration uses the `election.admin-keyset` to governs the `election` module.
+To simplify permission management with a separation of concerns, you can use a **capability** to govern the module instead of using the `election.admin-keyset` keyset directly.
+By moving module ownership to a governance capability, you can later use the `election.admin-keyset` keyset to restrict access to specific functions without repeating code.
 
-```pact
-(begin-tx
-  "Refactor governance of the module"
-)
-  (module election GOVERNANCE
-    (defcap GOVERNANCE ()
-      (enforce-keyset "election.admin-keyset"))
-    (defun list-candidates () [1, 2, 3])
-  )
-(commit-tx)
-```
+To modify governance for the module:
 
-The last line of the output should be `Load successful`, meaning that the you
-successfully upgraded the `election` module to be governed by a capability.
-Using the examples from the exercises in this chapter, you can write additional
-test cases to verify if the `election.admin-keyset` is still able to upgrade the
-module now that governance of the module is implemented with a capability.
+1. Open the `election-dapp/pact/module.repl` file in the code editor on your computer.
 
-## Deploy the election Pact module to Devnet
+2. Add the following lines of code after the last transaction:
+   
+   ```pact
+   (env-data
+     { 'admin-keyset :
+       { 'keys : [ 'admin-key ]
+       , 'pred : 'keys-all
+       }
+     }
+   )
+   
+   (env-sigs
+     [{ 'key  : 'admin-key
+      , 'caps : []
+     }]
+   )
 
-Before you deploy your Pact module to Devnet, make sure that Chainweaver is open
-and the Devnet network is selected. Chainweaver needs to remain open, because
-you will use it to sign the transaction for deploying the module. Also, verify
-that the following requirements are met:
+   (begin-tx
+     "Refactor governance of the module"
+   )
+     (module election GOVERNANCE
+      (defcap GOVERNANCE ()
+         (enforce-keyset "election.admin-keyset"))
+       (defun list-candidates () [1, 2, 3])
+     )
+   (commit-tx)
+   ```
+   
+   This code resets the environment and defines a capability `GOVERNANCE` that enforces the keyset `election.admin-keyset`. 
 
-- your admin account exists on chain 1 of Devnet
-- your admin account has a positive KDA balance
-- the `admin-keyset` is defined in your principal namespace on Devnet
+2. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact module.repl -t
+   ```
+   
+   You should see output similar to the following that indicates you successfully upgraded the `election` module to be governed by a capability:
 
-If these requirements are not met, repeat the steps in the previous chapters.
-Create a file `election.pact` in the `./pact/` folder of your project and add
-the final Pact module code from the exercises above to it. Replace the principal
-namespace with the one you defined on Devnet in the previous chapter in both
-places.
+   ```
+   module.repl:106:0:Trace: Begin Tx 7: Refactor governance of the module
+   module.repl:109:4:Trace: Loaded module election, hash QIk-zRAVReFt6NAFNhdEjXOVYRhqlKsGDH8q0-gB0sA
+   module.repl:114:0:Trace: Commit Tx 7: Refactor governance of the module
+   Load successful
+   ```
 
-```pact
-(namespace 'n_fd020525c953aa002f20fb81a920982b175cdf1a)
+You can write additional test cases to verify that the `election.admin-keyset` is still able to upgrade the module now that governance of the module is implemented with a capability.
 
-(module election GOVERNANCE
-  (defcap GOVERNANCE ()
-    (enforce-keyset "n_fd020525c953aa002f20fb81a920982b175cdf1a.admin-keyset"))
+## Deploy the Pact module locally
 
-  (defun list-candidates () [1, 2, 3])
-)
-```
+Now that you've seen how to define and update a Pact module, you're ready to deploy the module on the local development network with the administrative account you created using Chainweaver.
 
-Open the file `./snippets/deploy-module.ts` and you will notice there are some
-differences compared to the previous snippets you used. First of all, the Pact
-code to execute is not passed as a string or a function call on something like
-`Pact.modules.coin`. Instead, the code is read from your `election.pact` file.
-This helps you keep your code organized. Second, a very high gas limit is
-specified in the metadata of the transaction. This is necessary, because
-deploying a Pact module costs a lot of gas and the transaction will fail if you
-use the default gas limit. Finally, after signing the transaction, a preflight
-request for the signed transaction is sent to the blockchain using the Kadena
-client. The response contains feedback about the expected success of the
-transaction and the amount of gas the transaction will cost. If the feedback is
-negative, the snippet will not send the actual transaction to the blockchain.
-This is economical, because you would have to pay for gas, even if a transaction
-fails. So, for expensive transactions like deploying a module it is recommended
-to make a preflight request before sending the actual transaction to the
-blockchain.
+To deploy the Pact module on the development network:
 
-Open up a terminal and change the directory to the `./snippets` folder in the
-root of your project. Execute the `./deploy-module.ts` snippet by running the
-following command. Replace `k:account` with your admin account.
+1. Verify the development network is currently running on your local computer.
 
-```bash
-npm run deploy-module:devnet -- k:account
-```
+2. Open and unlock the Chainweaver desktop or web application and verify that:
 
-The Chainweaver window usually comes to the foreground as soon as there is a new
-signing request for one of your accounts. If not, manually bring the Chainweaver
-window to the foreground. You will see a modal with details of the signing
-request. Click `Sign All` to sign the request and switch back to your terminal
-window. If everything went well, you will see something similar to the following
-output.
+   - You're connected to **development network (devnet)** from the network list.
+   - Your administrative account name with the **k:** prefix exists on chain 1.
+   - Your administrative account name is funded with KDA on chain 1. 
+   
+   You're going to use Chainweaver to sign the transaction that defines the keyset. 
 
-```bash
-{
-  status: 'success',
-  data: 'Loaded module n_fd020525c953aa002f20fb81a920982b175cdf1a.election, hash xJZhwnEffBNXySXJFpEAAES_TUd-PJE8BCG6YBi736E'
-}
-```
+3. Open the `election-dapp/pact` folder file in your code editor and create a new file named `election.pact`.
 
-Congratulations! You have deployed a smart contract consisting of the `election`
-module that is governed by the `admin-keyset` in your principal namespace on
-your local Devnet. If you would now run the `list-modules:devnet` script, you
-will find your module in the list of deployed modules.
+4. Add the minimal Pact code required to define a module to the `election.pact` file. 
+   
+   Remember that a module definition requires a namespace, a governing owner, and at least one function.
+   
+   Because your deploying the module in your own principal namespace on the local development network, replace the generic `election` namespace and keyset you used in the` module.repl` file with the unique principal namespace you defined on the development network.
+   
+   For example:
 
-```bash
-npm run list-modules:devnet
-```
+   ```pact
+   (namespace 'n_14912521e87a6d387157d526b281bde8422371d1)
+   
+   (module election GOVERNANCE
+     (defcap GOVERNANCE ()
+       (enforce-keyset "n_14912521e87a6d387157d526b281bde8422371d1.admin-keyset"))
+   
+     (defun list-candidates () [1, 2, 3])
+   )
+   ```
 
-Open Chainweaver and navigate to `Contracts` via the left navigation bar. Select
-the `Module Explorer` tab in the right panel and search for `election` on chain
-1 under `Deployed Contracts`. You may have to click the refresh button on the
-right above the table with contracts for your module to show up. Click the
-`View` button to the right of the name of your module. In the right panel you
-will see the name of the function and capability that you defined in the module.
-On the top right of the panel, click `Open` to see the content of the module.
-Notice that the statement for selecting the namespace is not displayed. It is
-not considered part of the module itself. In the right pane, click the `Call`
-button to the right of the `list-candidates` function. In the modal that pops
-up, do not click `Next`, but select the `Preview` tab and scroll down. There you
-will see the `Raw Response` from the blockchain displayed as `[1, 2, 3]`. This
-is an actual response from the blockchain that you are able to receive without
-paying gas, which is similar to the `dirtyRead` method of the Kadena JavaScript
-client. You will learn more about that in the next chapter. In situations that
-allow it, this is a cheaper alternative than sending an actual transaction to
-the blockchain to call the module function, since sending a transaction requires
-you to pay for gas.
+1. Open the `./snippets/deploy-module.ts` file in your code editor. 
+   
+   You'll notice several differences between this script and the previous scripts you've used. 
+   For example, in this script, the Pact code is read from your `election.pact` module rather than passed as a string or a function call to an existing module like `Pact.modules.coin`. 
 
-Update `./pact/election.pact` in your editor to return a different list, like
-`[1, 2, 3, 4, 5]` and upgrade the module using the `deploy-module:devnet` npm
-script. View your module in Chainweaver and click `Open` once more to refresh
-the module and confirm that the module is upgraded according to your
-expectations. Click the `Call` button to the right of the `list-candidates`
-function again, select the `Preview` tab in the modal and scroll all the way
-down. The `Raw Response` from the blockchain should now display
-`[1, 2, 3, 4, 5]`, or whatever you changed the return value of the function to.
+   ```typescript
+   async function main(account: string, upgrade: boolean) {
+     const transaction = Pact.builder
+       .execution(fs.readFileSync('../pact/election.pact', 'utf8'))
+   ```
 
-The only thing that is left is to verify that other accounts cannot upgrade your
-election module on Devnet. Navigate to `Keys` via the left navigation bar of
-Chainweaver and generate a new key. Add a `k:account` for the new key and copy
-it. Run the following script to create and fund the account on your Devnet.
-Replace `k:account` with this new account.
+   You'll also see that the metadata for the transaction specifies a gas limit and gas price:
+   
+   ```typescript
+   gasLimit: 100000,
+   gasPrice: 0.00000001,
+   ```
+  
+  Deploying a Pact module is a relatively expensive type of transaction because of the resources required to update the blockchain.
+  The transaction will fail if the gas limit is set too low. 
+  
+  After the code used to sign the transaction, the script sends a **preflight request** for the signed transaction to the blockchain using the Kadena client. 
+  The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires. 
+  The preflight request helps to ensure that the script doesn't send a transaction to the blockchain that is likely to fail.
+  
+  Because you must for pay processing any transaction request even if a transaction fails, you should use a preflight request for any computationally expensive transactions—like deploying a module—before sending the actual transaction to the blockchain.
 
-```bash
-npm run transfer-create:devnet -- k:account
-```
+1. Deploy your election module on the development network by running a command similar to the following with your administrative account name:
+   
+   ```bash
+   npm run deploy-module:devnet -- k:<your-public-key>
+   ```
+   
+  Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+  You can copy this account name from Chainweaver when viewing the account watch list.
+  When you run the script, you should see Chainweaver display a QuickSign Request.
+  
+1. Click **Sign All** to sign the request.
+   
+   After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
+   For example, you should see output similar to the following:
 
-Now try to upgrade the `election` module using the following script, again
-replacing `k:account` with the new account.
+   ```bash
+   {
+     gas: 60322,
+     result: {
+       status: 'success',
+       data: 'Loaded module n_14912521e87a6d387157d526b281bde8422371d1.election, hash U76LNmIBivLHjDUq3CADxeMQG5iPO7vaFF84ROMSeXA'
+     },
+     reqKey: 'RAGwn_Jf67lOIISXsNy6qXbBqlN4sVxt8v8B9q6hLxw',
+     logs: 'A42hBn7VEdDxa4vuhuLd0D3R0MzNQMI-hXaJVVcmVwg',
+     events: [
+       {
+         params: [Array],
+         name: 'TRANSFER',
+         module: [Object],
+         moduleHash: 'M1gabakqkEi_1N8dRKt4z5lEv1kuC_nxLTnyDCuZIK0'
+       }
+     ],
+     metaData: {
+       publicMeta: {
+         creationTime: 1705011524,
+         ttl: 28800,
+         gasLimit: 100000,
+         chainId: '1',
+         gasPrice: 1e-8,
+         sender: 'k:5ec41b89d323398a609ffd54581f2bd6afc706858063e8f3e8bc76dc5c35e2c0'
+       },
+       blockTime: 1705011521970026,
+       prevBlockHash: 'oJhZZ8m00vBdH4z8_siE1gbHhb4aUE0W2G9uB2QSlHQ',
+       blockHeight: 996
+     },
+     continuation: null,
+     txId: 1014,
+     preflightWarnings: []
+   }
+   {
+     status: 'success',
+     data: 'Loaded module n_14912521e87a6d387157d526b281bde8422371d1.election, hash U76LNmIBivLHjDUq3CADxeMQG5iPO7vaFF84ROMSeXA'
+   }
+   ```
 
-```bash
-npm run deploy-module:devnet -- k:account
-```
+   You now have a smart contract with one `election` module governed by the `admin-keyset` deployed in your principal namespace on your local development network.
+   You can verify that your module is deployed by running the following command:
 
-If all is well, the transaction should fail with a `Keyset failure (keys-all)`.
-This means that your Pact module is safely protected on the blockchain by the
-`admin-keyset` that contains the public key of your admin account.
+   ```bash
+   npm run list-modules:devnet
+   ```
+
+   You should see output similar to the following:
+
+   ```bash
+   [
+     'coin',
+     'fungible-v1',
+     'fungible-v2',
+     'fungible-xchain-v1',
+     'gas-payer-v1',
+     'n_14912521e87a6d387157d526b281bde8422371d1.election',
+     'ns'
+   ]
+   ```
+
+## View smart contract modules in Chainweaver
+
+After you deploy a module, you can use Chainweaver to view and interact with it.
+
+To view the module in Chainweaver:
+
+1. Open and unlock the Chainweaver desktop or web application.
+
+2. In Chainweaver, click **Contracts** in the navigation panel, then click **Module Explorer**.
+3. Under **Deployed Contracts**, search for the `election` module. 
+4. Click **View** to see the name of the function and capability that you defined in the module
+5. Click **Open** to see the content of the module.
+   
+   The line specifying the namespace for the module isn't included because it isn't considered part of the module itself. 
+6. Click **Call** to the right of the `list-candidates` function. 
+7. In Function modal, click **Preview** tab and scroll down to see that the **Raw Response** displayed is `[1, 2, 3]`. 
+   
+   This is an actual response from the blockchain that you can receive without paying transaction fees.
+   
+   In certain situations, getting a raw response is a preferable alternative to sending an actual transaction to the blockchain because sending a transaction requires you to pay for gas.
+
+1. Leave Chainweaver open with the content of the election module displayed.
+
+## Update your deployed Pact module
+
+Being able to update a deployed smart contract is an important part of building applications on the Kadena network.
+Many blockchain projects don't allow smart contracts to be updated after they have been deployed on the public blockchain.
+With Kadena, you can build and deploy iteratively so you can add new features and fix bugs as your application matures.
+
+To test updating a deployed smart contract:
+
+1. Open the `election-dapp/pact/election.psct` file in the code editor on your computer.
+
+2. Modify the `list-candidates` function to return a different list.
+   For example:
+   
+   ```pact
+     (defun list-candidates () [1, 2, 3, 4, 5])
+   ```
+
+3. Update the `election` module by running the `deploy-module:devnet` script in a terminal shell:
+   
+   ```bash
+   npm run deploy-module:devnet -- k:<your-public-key>
+   ```
+
+1. Click **Sign All** in Chainweaver to sign the request.
+
+2. In Chainweaver, click **Open** to refresh the module and confirm that the module displays the changes you made. 
+
+3. Click **Call** to the right of the `list-candidates` function, click **Preview** and scroll to see that the **Raw Response** from the blockchain now displays the changes you made for the return value of the function.
+
+## Verify other accounts can't update your module
+
+You've seen that you can use your account to deploy and update the election module on the local development network.
+You might also want to verify that no other accounts can make changes to your deployed module.
+
+To verify that other accounts can't update your module:
+
+1. In Chainweaver, click **Keys** in the navigation panel.
+
+1. Click **Generate Key** to add a new public key to your list of public keys.
+
+2. Click **Add k: Account** for the new public key to add a new account to the list of accounts you are watching.
+
+3. Copy the **Account name** for the new account.
+
+4. Open a terminal shell on your computer.
+5. Create and fund the new account using the `transfer-create` script by running a command similar to the following with the new account name you copied from Chainweaver:
+
+   ```bash
+   npm run transfer-create:devnet -- <new-account-name>
+   ```
+
+6. Verify that updating the `election` module fails by running a command similar to the following with the new account name you copied from Chainweaver:
+
+   ```bash
+   npm run deploy-module:devnet -- <new-account-name>
+   ```
+   
+   You should see that the transaction fails with output similar to the following:
+   
+   ```bash
+   {
+     gas: 100000,
+     result: {
+       status: 'failure',
+       error: {
+         callStack: [],
+         type: 'TxFailure',
+         message: "Keyset failure (keys-all): 'n_14912521e87a6d387157d526b281bde8422371d1.admin-keyset",
+         info: ''
+       }
+     },
+     reqKey: 'Bk61YLKYVx6lv2HiHtTonpppoVwiz3iiroQtMYEa2XI',
+     logs: 'cNEOIFujnGkxkEMnfh9oFCek13XvxAqHq4truHweGYg',
+     events: [
+       {
+         params: [Array],
+         name: 'TRANSFER',
+         module: [Object],
+         moduleHash: 'M1gabakqkEi_1N8dRKt4z5lEv1kuC_nxLTnyDCuZIK0'
+       }
+     ],
+     metaData: {
+       publicMeta: {
+         creationTime: 1705016898,
+         ttl: 28800,
+         gasLimit: 100000,
+         chainId: '1',
+         gasPrice: 1e-8,
+         sender: 'k:99d30af3fa91d78cc06cf53a0d4eb2d7fa2a5a72944cc5451311b455a67a3c1c'
+       },
+       blockTime: 1705016899793480,
+       prevBlockHash: 'LbPeMhAF-hLbpG76FO9DJQLtapRtg3ITyHRDpqec1wg',
+       blockHeight: 2016
+     },
+     continuation: null,
+     txId: null,
+     preflightWarnings: []
+   }
+   ```
+
+   With this result, you can be confident that your Pact module is protected on the blockchain by the `admin-keyset` that contains the public key for your administrative account.
 
 ## Next steps
 
-In this chapter you learned how to deploy, use and upgrade a Pact module. You
-implemented governance of the module with a keyset and with a capability.
-Moreover, you verified that it is impossible for others to make changes to a
-Pact module governed by your keyset. In the next chapter, you will add a schema
-and a database table to the `election` module. The table will store the names of
-election candidates and the number of votes they have received. The `list-candidates`
-function will remain public, but will return data from the database table. You will
-add another function to nominate candidates, guarded by the governance
-capability you defined in this chapter. The election website will come to life
-as you will connect the front-end to the `election` module on Devnet.
+In this tutorial, you learned how to: 
+
+- Define a minimal Pact module.
+- Test a Pact module using the Pact REPL.
+- Deploy a Pact module on the local development network.
+- Navigate and view module functions in Chainweaver.
+- Implement governance for a module using a keyset and using a capability.
+- Update a deployed module governed by your keyset.
+  
+You also verified that other accounts can't make changes to a Pact module governed by your keyset. 
+So far, your `election` module only contains one simple function that doesn't do very much.
+The next tutorial demonstrates how to add a schema and a database table to the `election` module and how to use that table to store the names of election candidates and the number of votes each candidate receives. 
+
+You'll also update the `list-candidates` function to return data from the database table and add a new function to nominate candidates.
