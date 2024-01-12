@@ -39,33 +39,23 @@ importers:
         specifier: ^1.10.15
         version: 1.10.16
 
-  packages/apps/dev-wallet/desktop:
-    dependencies:
-      '@kadena/dev-wallet':
-        specifier: workspace:*
-        version: link:../wallet
-    devDependencies:
-      '@tauri-apps/cli':
-        specifier: ^1.4.0
-        version: 1.5.7
-
-  packages/apps/dev-wallet/wallet:
+  packages/apps/dev-wallet:
     dependencies:
       '@hookform/resolvers':
         specifier: ^3.2.0
         version: 3.3.2(react-hook-form@7.45.4)
       '@kadena/client':
         specifier: workspace:*
-        version: link:../../../libs/client
+        version: link:../../libs/client
       '@kadena/cryptography-utils':
         specifier: workspace:*
-        version: link:../../../libs/cryptography-utils
+        version: link:../../libs/cryptography-utils
       '@kadena/pactjs':
         specifier: workspace:*
-        version: link:../../../libs/pactjs
+        version: link:../../libs/pactjs
       '@kadena/react-ui':
         specifier: workspace:*
-        version: link:../../../libs/react-ui
+        version: link:../../libs/react-ui
       '@scure/bip39':
         specifier: ^1.2.1
         version: 1.2.1
@@ -108,7 +98,7 @@ importers:
     devDependencies:
       '@kadena/pactjs-cli':
         specifier: workspace:*
-        version: link:../../../tools/pactjs-cli
+        version: link:../../tools/pactjs-cli
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
         version: 25.0.7
@@ -3032,7 +3022,7 @@ packages:
       '@babel/helpers': 7.22.15
       '@babel/parser': 7.23.6
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.22.15(supports-color@5.5.0)
+      '@babel/traverse': 7.22.15
       '@babel/types': 7.23.6
       convert-source-map: 1.9.0
       debug: 4.3.4(supports-color@5.5.0)
@@ -4866,6 +4856,23 @@ packages:
       '@babel/parser': 7.23.6
       '@babel/types': 7.23.6
 
+  /@babel/traverse@7.22.15:
+    resolution: {integrity: sha512-DdHPwvJY0sEeN4xJU5uRLmZjgMMDIvMPniLuYzUVXj/GGzysPl0/fwt44JBkyUIzGJPV8QgHMcQdQ34XFuKTYQ==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/code-frame': 7.22.13
+      '@babel/generator': 7.22.15
+      '@babel/helper-environment-visitor': 7.22.5
+      '@babel/helper-function-name': 7.22.5
+      '@babel/helper-hoist-variables': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/parser': 7.23.6
+      '@babel/types': 7.23.6
+      debug: 4.3.4(supports-color@5.5.0)
+      globals: 11.12.0
+    transitivePeerDependencies:
+      - supports-color
+
   /@babel/traverse@7.22.15(supports-color@5.5.0):
     resolution: {integrity: sha512-DdHPwvJY0sEeN4xJU5uRLmZjgMMDIvMPniLuYzUVXj/GGzysPl0/fwt44JBkyUIzGJPV8QgHMcQdQ34XFuKTYQ==}
     engines: {node: '>=6.9.0'}
@@ -4882,6 +4889,7 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@babel/traverse@7.23.7:
     resolution: {integrity: sha512-tY3mM8rH9jM0YHFGyfC0/xf+SB5eKUu7HPj7/k3fpi9dAlsMc5YbQvDi0Sh2QTPXqMhyaAtzAr807TIyfQrmyg==}
@@ -13060,113 +13068,6 @@ packages:
     resolution: {integrity: sha512-6unsZDOdlXTmauU3NhWhn+Cx0rODV+rvNvTdvolE5Kls5ybA6cqndQENDt1+FS0tF7ozCP66jwWoH6a5h90BrA==}
     engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
     dev: false
-
-  /@tauri-apps/cli-darwin-arm64@1.5.7:
-    resolution: {integrity: sha512-eUpOUhs2IOpKaLa6RyGupP2owDLfd0q2FR/AILzryjtBtKJJRDQQvuotf+LcbEce2Nc2AHeYJIqYAsB4sw9K+g==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli-darwin-x64@1.5.7:
-    resolution: {integrity: sha512-zfumTv1xUuR+RB1pzhRy+51tB6cm8I76g0xUBaXOfEdOJ9FqW5GW2jdnEUbpNuU65qJ1lB8LVWHKGrSWWKazew==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli-linux-arm-gnueabihf@1.5.7:
-    resolution: {integrity: sha512-JngWNqS06bMND9PhiPWp0e+yknJJuSozsSbo+iMzHoJNRauBZCUx+HnUcygUR66Cy6qM4eJvLXtsRG7ApxvWmg==}
-    engines: {node: '>= 10'}
-    cpu: [arm]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli-linux-arm64-gnu@1.5.7:
-    resolution: {integrity: sha512-WyIYP9BskgBGq+kf4cLAyru8ArrxGH2eMYGBJvuNEuSaqBhbV0i1uUxvyWdazllZLAEz1WvSocUmSwLknr1+sQ==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli-linux-arm64-musl@1.5.7:
-    resolution: {integrity: sha512-OrDpihQP2MB0JY1a/wP9wsl9dDjFDpVEZOQxt4hU+UVGRCZQok7ghPBg4+Xpd1CkNkcCCuIeY8VxRvwLXpnIzg==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli-linux-x64-gnu@1.5.7:
-    resolution: {integrity: sha512-4T7FAYVk76rZi8VkuLpiKUAqaSxlva86C1fHm/RtmoTKwZEV+MI3vIMoVg+AwhyWIy9PS55C75nF7+OwbnFnvQ==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli-linux-x64-musl@1.5.7:
-    resolution: {integrity: sha512-LL9aMK601BmQjAUDcKWtt5KvAM0xXi0iJpOjoUD3LPfr5dLvBMTflVHQDAEtuZexLQyqpU09+60781PrI/FCTw==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli-win32-arm64-msvc@1.5.7:
-    resolution: {integrity: sha512-TmAdM6GVkfir3AUFsDV2gyc25kIbJeAnwT72OnmJGAECHs/t/GLP9IkFLLVcFKsiosRf8BXhVyQ84NYkSWo14w==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli-win32-ia32-msvc@1.5.7:
-    resolution: {integrity: sha512-bqWfxwCfLmrfZy69sEU19KHm5TFEaMb8KIekd4aRq/kyOlrjKLdZxN1PyNRP8zpJA1lTiRHzfUDfhpmnZH/skg==}
-    engines: {node: '>= 10'}
-    cpu: [ia32]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli-win32-x64-msvc@1.5.7:
-    resolution: {integrity: sha512-OxLHVBNdzyQ//xT3kwjQFnJTn/N5zta/9fofAkXfnL7vqmVn6s/RY1LDa3sxCHlRaKw0n3ShpygRbM9M8+sO9w==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@tauri-apps/cli@1.5.7:
-    resolution: {integrity: sha512-z7nXLpDAYfQqR5pYhQlWOr88DgPq1AfQyxHhGiakiVgWlaG0ikEfQxop2txrd52H0TRADG0JHR9vFrVFPv4hVQ==}
-    engines: {node: '>= 10'}
-    hasBin: true
-    optionalDependencies:
-      '@tauri-apps/cli-darwin-arm64': 1.5.7
-      '@tauri-apps/cli-darwin-x64': 1.5.7
-      '@tauri-apps/cli-linux-arm-gnueabihf': 1.5.7
-      '@tauri-apps/cli-linux-arm64-gnu': 1.5.7
-      '@tauri-apps/cli-linux-arm64-musl': 1.5.7
-      '@tauri-apps/cli-linux-x64-gnu': 1.5.7
-      '@tauri-apps/cli-linux-x64-musl': 1.5.7
-      '@tauri-apps/cli-win32-arm64-msvc': 1.5.7
-      '@tauri-apps/cli-win32-ia32-msvc': 1.5.7
-      '@tauri-apps/cli-win32-x64-msvc': 1.5.7
-    dev: true
 
   /@testing-library/dom@9.3.1:
     resolution: {integrity: sha512-0DGPd9AR3+iDTjGoMpxIkAsUihHZ3Ai6CneU6bRRrffXMgzCdlNk43jTrD2/5LT6CBb3MWTP8v510JzYtahD2w==}
