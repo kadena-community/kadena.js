@@ -31,6 +31,7 @@ function SelectBase<T extends object>(
 ) {
   const state = useSelectState(props);
   const ref = useObjectRef(forwardedRef);
+  const isDisabled = props.disabled ?? props.isDisabled;
   const {
     labelProps,
     triggerProps,
@@ -39,7 +40,14 @@ function SelectBase<T extends object>(
     descriptionProps,
     errorMessageProps,
     ...validation
-  } = useSelect(props, state, ref);
+  } = useSelect(
+    {
+      ...props,
+      isDisabled,
+    },
+    state,
+    ref,
+  );
 
   // aggregate error message from validation props
   const errorMessage =
@@ -58,7 +66,7 @@ function SelectBase<T extends object>(
         />
       )}
       <HiddenSelect
-        isDisabled={props.isDisabled}
+        isDisabled={isDisabled}
         state={state}
         triggerRef={ref}
         label={props.label}
@@ -68,7 +76,7 @@ function SelectBase<T extends object>(
         {...triggerProps}
         ref={ref}
         state={state}
-        isDisabled={props.isDisabled}
+        isDisabled={isDisabled}
         autoFocus={props.autoFocus}
         isInvalid={validation.isInvalid}
         isPositive={props.isPositive}
@@ -89,7 +97,7 @@ function SelectBase<T extends object>(
         <FormFieldHelpText
           {...descriptionProps}
           intent={props.isPositive ? 'positive' : 'info'}
-          data-disabled={props.isDisabled || undefined}
+          data-disabled={isDisabled || undefined}
         >
           {props.description}
         </FormFieldHelpText>

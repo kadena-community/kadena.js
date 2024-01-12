@@ -6,19 +6,19 @@ import { Button } from '../../Button';
 import { Account, Plus } from '../../Icon/System/SystemIcon';
 import { Box } from '../../Layout';
 import { Form } from '../Form';
-import type { ISelectProps } from './Select';
-import { Select, SelectItem } from './Select';
+import type { IComboboxProps } from './Combobox';
+import { Combobox, ComboboxItem } from './Combobox';
 
-const meta: Meta<ISelectProps> = {
-  title: 'Form/Select',
-  component: Select,
+const meta: Meta<IComboboxProps> = {
+  title: 'Form/Combobox',
+  component: Combobox,
   decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'inDevelopment' },
     docs: {
       description: {
         component:
-          'Fully accessible select component. This component is built on top of [react-aria](https://react-spectrum.adobe.com/react-aria/index.html).',
+          'Fully accessible combobox component. This component is built on top of [react-aria](https://react-spectrum.adobe.com/react-aria/index.html).',
       },
     },
   },
@@ -116,7 +116,7 @@ const meta: Meta<ISelectProps> = {
 };
 
 export default meta;
-type Story = StoryObj<ISelectProps>;
+type Story = StoryObj<IComboboxProps>;
 
 export const Default: Story = {
   args: {
@@ -130,48 +130,48 @@ export const Default: Story = {
   },
   render: (args) => {
     return (
-      <Select {...args}>
-        <SelectItem key="option1">Option 1</SelectItem>
-        <SelectItem key="option2">Option 2</SelectItem>
-        <SelectItem key="option3">Option 3</SelectItem>
-        <SelectItem key="option4">Option 4</SelectItem>
-      </Select>
+      <Combobox {...args}>
+        <ComboboxItem key="option1">Option 1</ComboboxItem>
+        <ComboboxItem key="option2">Option 2</ComboboxItem>
+        <ComboboxItem key="option3">Option 3</ComboboxItem>
+        <ComboboxItem key="option4">Option 4</ComboboxItem>
+      </Combobox>
     );
   },
 };
 
 export const ComplexItems = () => (
-  <Select label="Select an option">
-    <SelectItem key="option1" textValue="Option 1">
+  <Combobox label="Select an option">
+    <ComboboxItem key="option1" textValue="Option 1">
       <Box alignItems="center" gap="xs" display="flex">
         <Account />
         Option 1
       </Box>
-    </SelectItem>
-    <SelectItem key="option2" textValue="Option 2">
+    </ComboboxItem>
+    <ComboboxItem key="option2" textValue="Option 2">
       <Box alignItems="center" gap="xs" display="flex">
         <Plus />
         Option 2
       </Box>
-    </SelectItem>
-  </Select>
+    </ComboboxItem>
+  </Combobox>
 );
 export const ValidationError = () => (
-  <Select label="Select an option" errorMessage="Error message" isInvalid>
-    <SelectItem key="option1">Option 1</SelectItem>
-    <SelectItem key="option2">Option 2</SelectItem>
-    <SelectItem key="option3">Option 3</SelectItem>
-    <SelectItem key="option4">Option 4</SelectItem>
-  </Select>
+  <Combobox label="Select an option" errorMessage="Error message" isInvalid>
+    <ComboboxItem key="option1">Option 1</ComboboxItem>
+    <ComboboxItem key="option2">Option 2</ComboboxItem>
+    <ComboboxItem key="option3">Option 3</ComboboxItem>
+    <ComboboxItem key="option4">Option 4</ComboboxItem>
+  </Combobox>
 );
 
 export const Disabled = () => (
-  <Select label="Select an option" isDisabled>
-    <SelectItem key="option1">Option 1</SelectItem>
-    <SelectItem key="option2">Option 2</SelectItem>
-    <SelectItem key="option3">Option 3</SelectItem>
-    <SelectItem key="option4">Option 4</SelectItem>
-  </Select>
+  <Combobox label="Select an option" isDisabled>
+    <ComboboxItem key="option1">Option 1</ComboboxItem>
+    <ComboboxItem key="option2">Option 2</ComboboxItem>
+    <ComboboxItem key="option3">Option 3</ComboboxItem>
+    <ComboboxItem key="option4">Option 4</ComboboxItem>
+  </Combobox>
 );
 
 export const Dynamic = () => {
@@ -183,9 +183,9 @@ export const Dynamic = () => {
     100,
   );
   return (
-    <Select label="Select an option" items={items}>
-      {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
-    </Select>
+    <Combobox label="Select an option" items={items}>
+      {(item) => <ComboboxItem key={item.key}>{item.label}</ComboboxItem>}
+    </Combobox>
   );
 };
 
@@ -204,7 +204,7 @@ export const NativeValidation: Story = {
           Keep in mind that native validation is only triggered when the a form
           is submitted. for realtime validation use the them `isInvalid` prop.
         </p>
-        <Select
+        <Combobox
           label="Select an option"
           isRequired
           validationBehavior="native"
@@ -214,11 +214,11 @@ export const NativeValidation: Story = {
           }}
           placeholder="Required"
         >
-          <SelectItem key="option1">Option 1</SelectItem>
-          <SelectItem key="option2">Option 2</SelectItem>
-          <SelectItem key="option3">Option 3</SelectItem>
-          <SelectItem key="option4">Option 4</SelectItem>
-        </Select>
+          <ComboboxItem key="option1">Option 1</ComboboxItem>
+          <ComboboxItem key="option2">Option 2</ComboboxItem>
+          <ComboboxItem key="option3">Option 3</ComboboxItem>
+          <ComboboxItem key="option4">Option 4</ComboboxItem>
+        </Combobox>
 
         <Button type="submit">Submit</Button>
       </Form>
