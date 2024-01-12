@@ -10,6 +10,7 @@ import {
   // marmalade,
   networks,
   security,
+  simulate as simulatePrompts,
   typescript,
 } from '../prompts/index.js';
 
@@ -195,6 +196,56 @@ export const globalOptions = {
       'Version of the kadena/devnet Docker image to use (e.g. "latest")',
     ),
   }),
+  //Simulate
+  simulateNoAccounts: createOption({
+    key: 'simulateAccountAmount' as const,
+    prompt: simulatePrompts.simulateNoAccountsPrompt,
+    validation: z.number(),
+    option: new Option(
+      '-a, --accounts <accounts>',
+      'Enter the amount of accounts to be created in the simulation.',
+    ),
+  }),
+  simulateTransferInterval: createOption({
+    key: 'simulateTransferInterval' as const,
+    prompt: simulatePrompts.simulateTransferIntervalPromt,
+    validation: z.number(),
+    option: new Option(
+      '-i, --interval <interval>',
+      'Enter the transfer interval in milliseconds.',
+    ).argParser((value) => parseInt(value, 10)),
+  }),
+
+  simulateMaxAmount: createOption({
+    key: 'simulateMaxAmount' as const,
+    prompt: simulatePrompts.simulateMaxAmountPromt,
+    validation: z.number(),
+    option: new Option(
+      '-t, --max-amount <maxAmount>',
+      'Enter the max transfer amount per single transaction (coin).',
+    ),
+  }),
+
+  simulateTokenPool: createOption({
+    key: 'simulateTokenPool' as const,
+    prompt: simulatePrompts.simulateTokenPoolPromt,
+    validation: z.number(),
+    option: new Option(
+      '-tp, --token-pool <tokenPool>',
+      'Enter the total token pool (coin).',
+    ),
+  }),
+
+  simulateSeed: createOption({
+    key: 'simulateSeed' as const,
+    prompt: simulatePrompts.simulateSeedPromt,
+    validation: z.string(),
+    option: new Option(
+      '-s, --seed <seed>',
+      'Enter the seed for the simulation.',
+    ),
+  }),
+
   // Network
   networkName: createOption({
     key: 'network' as const,
