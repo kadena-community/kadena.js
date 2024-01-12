@@ -119,6 +119,9 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
 
+    router.query.reqKey = reqKey;
+    await router.push(router);
+
     setTxError('');
     setFinalResults({});
 
