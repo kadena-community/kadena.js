@@ -5,11 +5,11 @@
   "description": "Kadena developer wallet",
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build",
+    "prebuild": "npm run generate-coin-type",
+    "build": "pnpm run prebuild && tsc && vite build",
     "build-dev": "vite build --mode development --watch",
     "dev": "vite",
     "generate-coin-type": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact\"",
-    "postinstall": "npm run generate-coin-type",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest"
