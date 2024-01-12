@@ -2,7 +2,7 @@
 title: "Add an administrator account"
 description: "Create an administrative account for the election application to control access to specific functions."
 menu: "Workshop: Election application"
-label: "Add an administrator account"
+label: "Add administrator account"
 order: 3
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
@@ -97,16 +97,10 @@ To transfer coins to fund the administrative account:
 
 1. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
 
-2. Install the TypeScript types for the pre-installed `coin` contract on the development network by running the following command:
-
-   ```bash
-   npm run generate-types:coin:devnet
-   ```
-
    As you saw in the previous tutorial, the development network includes several smart contracts by default.
    In this tutorial, you'll use the `transfer-create` function that's defined in the `coin` smart contract to transfer 20 KDA to the administrative account.
 
-3. Open the `./transferCreate.ts` script in your code editor.
+2. Open the `./transferCreate.ts` script in your code editor.
 
    This script uses the Kadena client to call the `transfer-create` function of the `coin` contract to create and fund your administrative account.
    After importing the dependencies and creating the client with the `devnet` configuration, the `main` function is called with information about the sender, the receiver, and the amount.
@@ -128,7 +122,7 @@ To transfer coins to fund the administrative account:
    In the `.setMeta()` function, `sender00` is specified as the `senderAccount`.
    After setting the network id from the `devnet` configuration, the transaction is created. Next, the transaction is signed with the private key of the `sender00` account and the transaction is submitted.
 
-4. Create and fund your administrative account using the `transfer-create` script by running  a command similar to the following with your administrative account name:
+3. Create and fund your administrative account using the `transfer-create` script by running  a command similar to the following with your administrative account name:
 
    ```bash
    npm run transfer-create:devnet -- k:<your-public-key>
@@ -140,7 +134,7 @@ To transfer coins to fund the administrative account:
    { status: 'success', data: 'Write succeeded' }
    ```
 
-5. Verify that your account was created using the Kadena client and the `coin-details` script for the administrative account with a command similar to the following:
+4. Verify that your account was created using the Kadena client and the `coin-details` script for the administrative account with a command similar to the following:
 
    ```bash
    npm run coin-details:devnet -- k:<your-public-key>
@@ -162,9 +156,9 @@ To transfer coins to fund the administrative account:
    }
    ```
 
-6. Click **Accounts** in the Chainweaver navigation panel.
+5. Click **Accounts** in the Chainweaver navigation panel.
 
-7. Expand your administrative account to verify that on chain 1 you are the owner, one keyset is defined, and the balance is 20 KDA.
+6. Expand your administrative account to verify that on chain 1 you are the owner, one keyset is defined, and the balance is 20 KDA.
 
    ![Your funded administrative account on the development network](/assets/docs/election-workshop/funded-account.png)
 

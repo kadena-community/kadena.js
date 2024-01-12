@@ -174,13 +174,13 @@ pages:
                 file: /build/guides/election-dapp-tutorial/start-a-local-blockchain.md
               adminaccount:
                 url: /03-admin-account
-                file: /build/guides/election-dapp-tutorial/03-admin-account.md
+                file: /build/guides/election-dapp-tutorial/add-admin-account.md
               namespaces:
                 url: /04-namespaces
                 file: /build/guides/election-dapp-tutorial/define-a-namespace.md
               keysets:
-                url: /05-keysets
-                file: /build/guides/election-dapp-tutorial/05-keysets.md
+                url: /define-keysets
+                file: /build/guides/election-dapp-tutorial/define-keysets.md
               smart-contract:
                 url: /06-smart-contract
                 file: /build/guides/election-dapp-tutorial/06-smart-contract.md
