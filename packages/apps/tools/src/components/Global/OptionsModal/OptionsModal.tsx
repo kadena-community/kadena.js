@@ -20,7 +20,7 @@ import {
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export interface IDevOption {
   title: string;
@@ -35,6 +35,10 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
   const { t } = useTranslation('common');
   const { devOption, setDevOption } = useAppContext();
   const [selected, setSelected] = useState(devOption);
+
+  useEffect(() => {
+    setSelected(devOption);
+  }, [devOption]);
 
   const devOptions: {
     [Key in DevOption]: IDevOption;
