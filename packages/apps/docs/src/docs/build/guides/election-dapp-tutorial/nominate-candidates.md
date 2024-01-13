@@ -464,19 +464,33 @@ To guard access to adding candidates:
 
 Now that you've updated and tested your election modules using the Pact REPL, you can update the module deployed on the local development network.
 
-TO update the election module:
+To update the election module on the development network:
 
-Open up a terminal and change the directory to the `./snippets` folder in the root of
-your project. Execute the `./deploy-module.ts` snippet by running the following command.
-Replace `k:account` with your admin account. Also, make sure that Devnet is running and
-Chainweaver is open so you can sign the transaction. In addition to the account name, you
-need to pass `upgrade` and `init-candidates` as arguments. This will add
-`{"init-candidates": true, "upgrade": true}` to the transaction, allowing you to upgrade the
-module and execute `(create-table candidates)` at the bottom of your `./pact/election.pact`.
+1. Verify the development network is currently running on your local computer.
 
-```bash
-npm run deploy-module:devnet -- k:account upgrade init-candidates
-```
+2. Open and unlock the Chainweaver desktop or web application and verify that:
+   - You're connected to **development network (devnet)** from the network list.
+   - Your administrative account name with the **k:** prefix exists on chain 1.
+   - Your administrative account name is funded with KDA on chain 1. 
+   
+   You're going to use Chainweaver to sign the transaction that defines the keyset. 
+
+3. Open the `election-dapp/snippets` folder file in your code editor.
+
+1. Deploy your election module on the development network by running a command similar to the following with your administrative account name:
+   
+   ```bash
+   npm run deploy-module:devnet -- k:<your-public-key> upgrade init-candidates
+   ```
+   
+  Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+  You can copy this account name from Chainweaver when viewing the account watch list.
+  When you run the script, you should see Chainweaver display a QuickSign Request.4. 
+  
+  In addition to the account name, you pass `upgrade` and `init-candidates` to add`{"init-candidates": true, "upgrade": true}` to the transaction data.
+  These fields are required to allow you to upgrade the module and execute `(create-table candidates)` statement from your `election` module.
+
+****START HERE
 
 If all is well, the last line of the output will be as follows.
 
