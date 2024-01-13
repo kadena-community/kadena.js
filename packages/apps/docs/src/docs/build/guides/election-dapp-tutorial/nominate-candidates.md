@@ -483,70 +483,109 @@ To update the election module on the development network:
    npm run deploy-module:devnet -- k:<your-public-key> upgrade init-candidates
    ```
    
-  Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-  You can copy this account name from Chainweaver when viewing the account watch list.
-  When you run the script, you should see Chainweaver display a QuickSign Request.4. 
+   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list. 
   
-  In addition to the account name, you pass `upgrade` and `init-candidates` to add`{"init-candidates": true, "upgrade": true}` to the transaction data.
-  These fields are required to allow you to upgrade the module and execute `(create-table candidates)` statement from your `election` module.
+   In addition to the account name, you pass `upgrade` and `init-candidates` to add`{"init-candidates": true, "upgrade": true}` to the transaction data.
+   These fields are required to allow you to upgrade the module and execute `(create-table candidates)` statement from your `election` module.
 
-****START HERE
+1. Click **Sign All** in Chainweaver to sign the request.
+   
+   After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
+   For example, you should see output similar to the following:
 
-If all is well, the last line of the output will be as follows.
+   ```bash
+   {
+     gas: 60855,
+     result: { status: 'success', data: [ 'TableCreated' ] },
+     reqKey: 'Bd80eOQ-yeWqrcsj6iEuFZ2rcMrv3OsWXhGZKOyEkHw',
+     logs: 'UjxuW6e-d_p2nmYsytoqdKjqza3Gq_839IIWZ1uQDDs',
+     events: [
+       {
+         params: [Array],
+         name: 'TRANSFER',
+         module: [Object],
+         moduleHash: 'M1gabakqkEi_1N8dRKt4z5lEv1kuC_nxLTnyDCuZIK0'
+       }
+     ],
+     metaData: {
+       publicMeta: {
+         creationTime: 1705172812,
+         ttl: 28800,
+         gasLimit: 100000,
+         chainId: '1',
+         gasPrice: 1e-8,
+         sender: 'k:5ec41b89d323398a609ffd54581f2bd6afc706858063e8f3e8bc76dc5c35e2c0'
+       },
+       blockTime: 1705172951004717,
+       prevBlockHash: 'AMJ6IoPnkMJ8WZFe6Vso5uuYAhep4gP87ANb7rYyvwg',
+       blockHeight: 14456
+     },
+     continuation: null,
+     txId: 14483,
+     preflightWarnings: []
+   }
+   { status: 'success', data: [ 'TableCreated' ] }
+   ```
 
-```bash
-{ status: 'success', data: [ 'TableCreated' ] }
-```
+2. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election` module. 
+   
+   After you click View, the Module Explorer displays the `list-candidates` and  `add-candidate` functions.
+   If you click **Open**, you can view the module code in the editor pane and verify that the `election` module deployed on the local development network is what you expect.
 
-Look up your `election` module in the Module Explorer of Chainweaver. Click the refresh button
-at the top right of the table and view the module. You should see the `add-candidate` being
-added to the list of functions in the right pane. Click the `Open` button on the top right
-to load the Pact code into the editor in the left pane and verify that the `election` module
-on Devnet is in sync with the version on your local computer.
+## Connect the front-end
 
-## Connect the front-end to Devnet
+You now have the election backend defined in a smart contract running on development network.
+To make the functions in the smart contract available to the election application website, you need to modify the frontend to exchange data with the development network.
 
-Now that you have a working election smart contract running on Devnet, the time has finally
-come to connect the front-end of the election website to the blockchain. The front-end
-uses repositories to exchange data with the back-end. The interfaces of these repositories
-are defined in `frontend/src/types.ts`. By default, the front-end is configured
-to use the in-memory implementations of the repositories. After making some changes to the
-Devnet implementation of the `interface ICandidateRepository` in
+The frontend, written in TypeScript, uses repositories to exchange data with the backend. 
+The interfaces for these repositories are defined in the `frontend/src/types.ts` file. 
+By default, the frontend uses the in-memory implementations of the repositories. 
+By making changes to the implementation of the `interface ICandidateRepository` in
 `frontend/src/repositories/candidate/DevnetCandidateRepository.ts`, you can configure the
-front-end to use the `devnet` back-end instead of the `in-memory` back-end. Then, you
-should be able to add candidates to the candidates table of your election module on Devnet,
-and list nominated candidates, via the forms on your election website.
+frontend to use the `devnet` backend instead of the `in-memory` backend. 
+After making these changes, you can use the frontend to add candidates to and list candidates from the `candidates` table managed by your election module running on the development network blockchain.
 
 ### List candidates
 
-Open `frontend/src/repositories/candidate/DevnetCandidateRepository.ts` in your editor. For
-now, you only need to focus on the `listCandidates` and `addCandidates`. The implementation
-of these repository method is slightly more complex than the in-memory implementation in
-`frontend/src/repositories/candidate/InMemoryCandidateRepository.ts`, but the pattern
-should look familiar to the snippets you have used in the previous chapters. Start easy by
-replacing the value `NAMESPACE` constant with your own principal namespace.
+To modify the frontend to list candidates from the development network:
 
-```typescript
-const NAMESPACE = 'n_fd020525c953aa002f20fb81a920982b175cdf1a';
-```
+1. Open `election-dapp/frontend/src/repositories/candidate/DevnetCandidateRepository.ts` in your code editor.
+2. Replace the value of the `NAMESPACE` constant with your own principal namespace.
 
-Have a look at the first three lines of the `listCandidates` function. There `@ts-ignore`
-comment suppresses a type error on the following line.
+   ```typescript
+   const NAMESPACE = 'n_14912521e87a6d387157d526b281bde8422371d1';
+   ```
 
-```typescript
-const transaction = Pact.builder
-    // @ts-ignore
-    .execution(Pact.modules[`${NAMESPACE}.election`]['list-candidates']())
-```
+3. Review the `listCandidates` function:
+   
+   ```typescript
+   const listCandidates = async (): Promise<ICandidate[]> => {
+     const transaction = Pact.builder
+       // @ts-ignore
+       .execution(Pact.modules[`${NAMESPACE}.election`]['list-candidates']())
+       .setMeta({
+         chainId: CHAIN_ID,
+         gasLimit: 100000,
+       })
+       .setNetworkId(NETWORK_ID)
+       .createTransaction();
+   
+     const { result } = await client.dirtyRead(transaction);
+   
+     return result.status === 'success' ? (result.data.valueOf() as ICandidate[]) : [];
+   };
+   ```
+    
+    Remove the `@ts-ignore`comment and notice that the name of your module cannot be found in `Pact.modules`.
+    To fix this problem, you must generate types for your Pact module that can be picked up by `@kadena/client`.
 
-Remove the comment and inspect the problem displayed in your editor or thrown when you
-run the project. The problem is that the name of your module cannot be found in `Pact.modules`.
-To fix the error, you need to generate types for your election Pact module, that can be
-picked up by `@kadena/client`.
-
-```bash
-npm run pactjs:generate:contract:election
-```
+4. Open a terminal and generate types for your `election` module by running the following command:
+   
+   ```bash
+   npm run pactjs:generate:contract:election
+   ```
+******** PROBLEM FOUND*********
 
 The error should have disappeared from your editor. If you are using Visual Studio Code, you
 may have to reload the window first. The front-end should now be fine to build and run.
