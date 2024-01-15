@@ -186,7 +186,7 @@ const CrossChainTransferTracker: FC = () => {
       </Head>
       <Breadcrumbs>
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('Cross Chain Tracker')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Cross Chain Transfer Tracker')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Heading as="h4">{t('Track & trace transactions')}</Heading>
       <Stack
