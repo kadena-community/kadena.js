@@ -34,7 +34,7 @@ test('Query: getAccount by AccountName', async ({ request }) => {
           },
         },
       ],
-      id: base64Encode(`FungibleAccount:["coin","${testAccount.account}]`),
+      id: base64Encode(`FungibleAccount:["coin","${testAccount.account}"]`),
       fungibleName: 'coin',
       totalBalance: 100,
       transactions: {
