@@ -10,6 +10,7 @@ import remarkYoutube from './remarkYoutube';
 import { getReadTime } from './utils';
 import { getUrlNameOfPageFile } from './utils/config/getUrlNameOfPageFile';
 import { getFileExtension } from './utils/getFileExtension';
+import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
 import { getFrontmatterFromTsx } from './utils/getFrontmatter';
 import { getHeaderMenuItems } from './utils/getHeaderMenuItems';
 import { getParentTreeFromPage } from './utils/getParentTreeFromPage';
@@ -33,6 +34,7 @@ export {
   flatPosts,
   flattenData,
   getFileExtension,
+  getFileFromNameOfUrl,
   getFlatData,
   getFrontmatterFromTsx,
   getHeaderMenuItems,
