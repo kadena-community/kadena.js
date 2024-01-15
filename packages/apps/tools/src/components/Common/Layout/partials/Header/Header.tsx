@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
 import React, { useState } from 'react';
+import {OptionsModal} from "@/components/Global/OptionsModal";
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -35,6 +36,8 @@ const Header: FC<IHeaderProps> = () => {
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const [isOpen, setIsOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
 
   const openNetworkModal = () => setIsOpen(true);
 
@@ -48,6 +51,10 @@ const Header: FC<IHeaderProps> = () => {
   const toggleTheme = (): void => {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
+  };
+
+  const handleDevOptionsClick = (): void => {
+    setOpenModal(true);
   };
 
   return (
@@ -69,6 +76,11 @@ const Header: FC<IHeaderProps> = () => {
             title={'Toggle theme'}
             icon={'ThemeLightDark'}
             onClick={() => toggleTheme()}
+          />
+          <HeaderMenuButton
+            title={'Application Settings'}
+            icon={'ApplicationBrackets'}
+            onClick={() => handleDevOptionsClick()}
           />
           <NavHeader.Select
             id="network-select"
@@ -92,6 +104,10 @@ const Header: FC<IHeaderProps> = () => {
       <AddNetworkModal
         isOpen={isOpen}
         onOpenChange={(isOpen) => setIsOpen(isOpen)}
+      />
+      <OptionsModal
+        isOpen={openModal}
+        onOpenChange={() => setOpenModal(false)}
       />
     </>
   );
