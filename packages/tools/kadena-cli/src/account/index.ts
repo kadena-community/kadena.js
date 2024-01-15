@@ -1,9 +1,9 @@
 import type { Command } from 'commander';
 import { createAccountCommand } from './commands/accountCreate.js';
 import { accountDetailsCommand } from './commands/accountDetails.js';
+import { fundCommand } from './commands/accountFund.js';
 import { getBalanceCommand } from './commands/accountGetBalance.js';
 import { transferCreateCommand } from './commands/accountTransferCreate.js';
-import { fundCommand } from './commands/accountFund.js';
 
 const SUBCOMMAND_ROOT: 'account' = 'account';
 
