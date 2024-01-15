@@ -435,65 +435,72 @@ const CrossChainTransferFinisher: FC = () => {
 
             {pollResults.tx !== undefined ? (
               <FormItemCard heading={t('Overview')} disabled={false}>
-                <Stack flexDirection="row" gap="xxl">
-                  <TrackerCard
-                    variant="horizontal"
-                    labelValues={[
-                      {
-                        label: t('Network'),
-                        value: networkData.networkId,
-                      },
-                      {
-                        label: t('Server'),
-                        value: networkData.API,
-                      },
-                    ]}
-                  />
-                  <TrackerCard
-                    variant="vertical"
-                    icon="Gas"
-                    labelValues={[
-                      {
-                        label: t('Gas Payer'),
-                        value: getValues('gasPayer'),
-                        isAccount: false,
-                      },
-                    ]}
-                  />
-                </Stack>
-                <Stack flexDirection="row" gap="xxl">
-                  <TrackerCard
-                    variant="horizontal"
-                    icon="QuickStart"
-                    labelValues={[
-                      {
-                        label: t('Sender'),
-                        value: pollResults?.tx?.sender.account,
-                        isAccount: true,
-                      },
-                      {
-                        label: t('Chain'),
-                        value: pollResults?.tx?.sender.chain,
-                      },
-                    ]}
-                  />
-
-                  <TrackerCard
-                    variant="horizontal"
-                    icon="Receiver"
-                    labelValues={[
-                      {
-                        label: t('Receiver'),
-                        value: pollResults?.tx?.receiver.account,
-                        isAccount: true,
-                      },
-                      {
-                        label: t('Chain'),
-                        value: pollResults?.tx?.receiver.chain,
-                      },
-                    ]}
-                  />
-                </Stack>
+                <Grid columns={2} marginBlockStart="md" gap={'md'}>
+                  <GridItem>
+                    <TrackerCard
+                      variant="vertical"
+                      labelValues={[
+                        {
+                          label: t('Network'),
+                          value: networkData.networkId,
+                        },
+                        {
+                          label: t('Server'),
+                          value: networkData.API,
+                        },
+                      ]}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <TrackerCard
+                      variant="vertical"
+                      icon="Gas"
+                      labelValues={[
+                        {
+                          label: t('Gas Payer'),
+                          value: getValues('gasPayer'),
+                          isAccount: false,
+                        },
+                      ]}
+                    />
+                  </GridItem>
+                </Grid>
+                <Grid columns={2} marginBlockStart="md" gap={'md'}>
+                  <GridItem>
+                    <TrackerCard
+                      variant="vertical"
+                      icon="QuickStart"
+                      labelValues={[
+                        {
+                          label: t('Sender'),
+                          value: pollResults?.tx?.sender.account,
+                          isAccount: true,
+                        },
+                        {
+                          label: t('Chain'),
+                          value: pollResults?.tx?.sender.chain,
+                        },
+                      ]}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <TrackerCard
+                      variant="vertical"
+                      icon="Receiver"
+                      labelValues={[
+                        {
+                          label: t('Receiver'),
+                          value: pollResults?.tx?.receiver.account,
+                          isAccount: true,
+                        },
+                        {
+                          label: t('Chain'),
+                          value: pollResults?.tx?.receiver.chain,
+                        },
+                      ]}
+                    />
+                  </GridItem>
+                </Grid>
               </FormItemCard>
             ) : null}
 
