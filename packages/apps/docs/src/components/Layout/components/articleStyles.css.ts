@@ -23,6 +23,7 @@ export const contentClass = style([
   atoms({
     display: 'flex',
     position: 'relative',
+    paddingInline: 'no',
     overflow: 'hidden',
     width: '100%',
     height: '100%',
