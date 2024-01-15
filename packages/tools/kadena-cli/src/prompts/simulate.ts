@@ -13,7 +13,7 @@ export async function simulateNoAccountsPrompt(): Promise<number> {
   return parseInt(noAccounts);
 }
 
-export async function simulateTransferIntervalPromt(): Promise<number> {
+export async function simulateTransferIntervalPrompt(): Promise<number> {
   const transferInterval = await input({
     message: 'Enter the transfer interval in milliseconds.',
     default: '100',
@@ -26,7 +26,7 @@ export async function simulateTransferIntervalPromt(): Promise<number> {
   return parseInt(transferInterval);
 }
 
-export async function simulateMaxAmountPromt(): Promise<number> {
+export async function simulateMaxAmountPrompt(): Promise<number> {
   const maxAmount = await input({
     message: 'Enter the max transfer amount per single transaction (coin).',
     default: '25',
@@ -39,7 +39,7 @@ export async function simulateMaxAmountPromt(): Promise<number> {
   return parseInt(maxAmount);
 }
 
-export async function simulateTokenPoolPromt(): Promise<number> {
+export async function simulateTokenPoolPrompt(): Promise<number> {
   const tokenPool = await input({
     message: 'Enter the total token pool (coin).',
     default: '1000000',
@@ -52,9 +52,16 @@ export async function simulateTokenPoolPromt(): Promise<number> {
   return parseInt(tokenPool);
 }
 
-export function simulateSeedPromt(): Promise<string> {
+export function simulateSeedPrompt(): Promise<string> {
   return input({
     message: 'Enter the seed for the simulation.',
     default: Date.now().toString(),
+  });
+}
+
+export function simulateLogFolderPrompt(): Promise<string> {
+  return input({
+    message: 'Specify the directory where the log file will be generated',
+    default: `${process.cwd()}/logs/simute`,
   });
 }

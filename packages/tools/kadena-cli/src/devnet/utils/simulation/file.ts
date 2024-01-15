@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { SIMULATION_CONFIG } from './config.js';
+import { simulationDefaults } from '../../../constants/devnets.js';
 
 export interface IFileData {
   timestamp: number;
@@ -30,7 +30,7 @@ export function createDir(directory: string): void {
   }
 }
 
-export function createFile(filename: string): string {
+export function createFile(folder: string, filename: string): string {
   const exampleData: IFileData = {
     timestamp: 0,
     from: '',
@@ -39,7 +39,7 @@ export function createFile(filename: string): string {
     requestKey: '',
     action: undefined,
   };
-  const directory = path.join(`${SIMULATION_CONFIG.LOG_FOLDERNAME}/`);
+  const directory = path.join(`${folder}/`);
   createDir(directory);
   const filepath = path.join(directory, filename);
   const headers = `${Object.keys(exampleData).join(',')}\n`;

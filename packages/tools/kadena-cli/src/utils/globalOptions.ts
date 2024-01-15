@@ -208,7 +208,7 @@ export const globalOptions = {
   }),
   simulateTransferInterval: createOption({
     key: 'simulateTransferInterval' as const,
-    prompt: simulatePrompts.simulateTransferIntervalPromt,
+    prompt: simulatePrompts.simulateTransferIntervalPrompt,
     validation: z.number(),
     option: new Option(
       '-i, --interval <interval>',
@@ -218,7 +218,7 @@ export const globalOptions = {
 
   simulateMaxAmount: createOption({
     key: 'simulateMaxAmount' as const,
-    prompt: simulatePrompts.simulateMaxAmountPromt,
+    prompt: simulatePrompts.simulateMaxAmountPrompt,
     validation: z.number(),
     option: new Option(
       '-t, --max-amount <maxAmount>',
@@ -228,21 +228,29 @@ export const globalOptions = {
 
   simulateTokenPool: createOption({
     key: 'simulateTokenPool' as const,
-    prompt: simulatePrompts.simulateTokenPoolPromt,
+    prompt: simulatePrompts.simulateTokenPoolPrompt,
     validation: z.number(),
     option: new Option(
       '-tp, --token-pool <tokenPool>',
       'Enter the total token pool (coin).',
     ),
   }),
-
   simulateSeed: createOption({
     key: 'simulateSeed' as const,
-    prompt: simulatePrompts.simulateSeedPromt,
+    prompt: simulatePrompts.simulateSeedPrompt,
     validation: z.string(),
     option: new Option(
       '-s, --seed <seed>',
       'Enter the seed for the simulation.',
+    ),
+  }),
+  simulateLogFolder: createOption({
+    key: 'simulateLogFolder' as const,
+    prompt: simulatePrompts.simulateLogFolderPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-l, --log-folder <logFolder>',
+      'Specify the directory where the log file will be generated.',
     ),
   }),
 

@@ -1,5 +1,6 @@
 import type { ChainId } from '@kadena/client';
-import { SIMULATION_CONFIG } from '../config.js';
+import { simulationDefaults } from '../../../../constants/devnets.js';
+import { IDevnetsCreateOptions } from '../../devnetHelpers.js';
 import type { TransferType } from '../file.js';
 import { appendToFile, createFile } from '../file.js';
 import {
@@ -25,18 +26,22 @@ const simulationTransferOptions: TransferType[] = [
 export const MARMALADE_TEMPLATE_FOLDER = 'src/devnet/contracts/marmalade-v2';
 
 export interface ISimulationOptions {
+  network: { host: string; id: string };
   numberOfAccounts: number;
   transferInterval: number;
   maxAmount: number;
   tokenPool: number;
+  logFolder: string;
   seed: string;
 }
 
 export async function simulateCoin({
+  network,
   numberOfAccounts = 6,
   transferInterval = 100,
   maxAmount = 25,
   tokenPool = 1000000,
+  logFolder,
   seed = Date.now().toString(),
 }: ISimulationOptions): Promise<void> {
   const accounts: IAccount[] = [];
@@ -55,7 +60,7 @@ export async function simulateCoin({
   }
 
   console.log('Seed value: ', seed);
-  const filepath = createFile(`coin-${Date.now()}-${seed}.csv`);
+  const filepath = createFile(logFolder, `coin-${Date.now()}-${seed}.csv`);
 
   try {
     // Create accounts
@@ -90,17 +95,20 @@ export async function simulateCoin({
         const sender: IAccount = { ...sender00, chainId: '0' };
 
         result = await crossChainTransfer({
+          network,
           sender,
           receiver: account,
           amount: tokenPool / numberOfAccounts,
         });
       } else if (fundingType === 'safe-transfer') {
         result = await safeTransfer({
+          network,
           receiver: account,
           amount: tokenPool / numberOfAccounts,
         });
       } else {
         result = await transfer({
+          network,
           receiver: account,
           amount: tokenPool / numberOfAccounts,
         });
@@ -135,6 +143,7 @@ export async function simulateCoin({
         // To avoid underflowing the token pool, we fund an account when there has been more iterations than total amount of circulating tokens divided by max amount
         if (counter >= tokenPool / maxAmount) {
           await transfer({
+            network,
             receiver: account,
             amount: tokenPool / numberOfAccounts,
           });
@@ -143,7 +152,7 @@ export async function simulateCoin({
 
         const balance = await getAccountBalance({
           account: account.account,
-          chainId: account.chainId || SIMULATION_CONFIG.DEFAULT_CHAIN_ID,
+          chainId: account.chainId || simulationDefaults.DEFAULT_CHAIN_ID,
         });
 
         // using a random number safety gap to avoid underflowing the account
@@ -173,14 +182,14 @@ export async function simulateCoin({
         // This is to simulate cross chain transfers
         if (
           transferType === 'cross-chain-transfer' &&
-          SIMULATION_CONFIG.CHAIN_COUNT > 1
+          simulationDefaults.CHAIN_COUNT > 1
         ) {
           if (account.chainId === nextAccount.chainId) {
             nextAccount = {
               ...nextAccount,
               chainId: `${getRandomNumber(
                 seededRandomNo,
-                SIMULATION_CONFIG.CHAIN_COUNT,
+                simulationDefaults.CHAIN_COUNT,
               )}` as ChainId,
             };
           }
@@ -194,6 +203,7 @@ export async function simulateCoin({
           const possibleGasPayer = getRandomOption(seededRandomNo, accounts);
 
           result = await crossChainTransfer({
+            network,
             sender: account,
             receiver: nextAccount,
             amount,
@@ -216,6 +226,7 @@ export async function simulateCoin({
           // Using a random number to determine if the transfer is a safe transfer or not
           if (transferType === 'transfer') {
             result = await transfer({
+              network,
               receiver: nextAccount,
               sender: account,
               amount,
@@ -224,6 +235,7 @@ export async function simulateCoin({
           }
           if (transferType === 'safe-transfer') {
             result = await safeTransfer({
+              network,
               receiver: nextAccount,
               sender: account,
               amount,
