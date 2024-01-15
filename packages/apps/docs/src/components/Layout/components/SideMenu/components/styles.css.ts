@@ -1,8 +1,8 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const showOnMobileClass = style([
-  sprinkles({
+  atoms({
     display: {
       sm: 'block',
       md: 'none',
@@ -11,31 +11,32 @@ export const showOnMobileClass = style([
 ]);
 
 export const linkClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    color: '$neutral4',
-    fontWeight: '$semiBold',
+    color: 'text.subtle.default',
+    fontWeight: 'bodyFont.bold',
     textDecoration: 'none',
   }),
   {
     selectors: {
       '&::after': {
         position: 'absolute',
-        right: vars.sizes.$2,
+        right: tokens.kda.foundation.spacing.sm,
         content: '',
-        width: vars.sizes.$2,
-        height: vars.sizes.$2,
-        borderRight: `2px solid ${vars.colors.$neutral4}`,
-        borderTop: `2px solid ${vars.colors.$neutral4}`,
+        width: tokens.kda.foundation.spacing.sm,
+        height: tokens.kda.foundation.spacing.sm,
+        borderRight: `2px solid ${tokens.kda.foundation.color.border.base.inverse.default}`,
+        borderTop: `2px solid ${tokens.kda.foundation.color.border.base.inverse.default}`,
         opacity: 0,
-        transform: `rotate(45deg) translate(-${vars.sizes.$1}, ${vars.sizes.$1})`,
+
+        transform: `rotate(45deg) translate(-${tokens.kda.foundation.spacing.xs}, ${tokens.kda.foundation.spacing.xs})`,
         transition: 'transform .2s ease ',
       },
       '&:hover': {
-        color: vars.colors.$primaryContrastInverted,
+        color: tokens.kda.foundation.color.text.brand.primary.default,
       },
       '&:hover::after': {
         opacity: 1,
