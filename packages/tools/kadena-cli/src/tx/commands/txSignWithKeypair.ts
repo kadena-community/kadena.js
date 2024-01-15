@@ -2,12 +2,46 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 
+import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
-import { signTransaction } from '../utils/helpers.js';
+import {
+  getSignersFromTransactionPlain,
+  signTransaction,
+} from '../utils/helpers.js';
 import { saveSignedTransaction } from '../utils/storage.js';
+
+import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
+
+export const signActionPlain = async (
+  unsignedCommand: IUnsignedCommand,
+  keyPairs: IKeyPair[],
+): Promise<CommandResult<ICommand>> => {
+  try {
+    const keys = await getSignersFromTransactionPlain(
+      unsignedCommand.cmd,
+      keyPairs,
+    );
+
+    if (keys.length === 0) {
+      throw new Error('Error signing transaction: no keys found.');
+    }
+    const signedCommand = await signTransaction(keys)({ unsignedCommand });
+
+    if (!signedCommand) {
+      throw new Error('Error signing transaction: transaction not signed.');
+    }
+
+    return { success: true, data: signedCommand };
+  } catch (error) {
+    return {
+      success: false,
+      errors: [`Error in signAction: ${error.message}`],
+    };
+  }
+};
 
 /**
  * Creates a command for signing a Kadena transaction.
@@ -23,9 +57,7 @@ export const createSignTransactionWithKeypairCommand: (
   'Sign a transaction using a keypair.',
   [
     globalOptions.txTransaction(),
-    globalOptions.keyPublicKey(),
-    globalOptions.keySecretKey(),
-    globalOptions.securityPassword(),
+    globalOptions.keyPairs(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
@@ -33,11 +65,10 @@ export const createSignTransactionWithKeypairCommand: (
       debug('sign-transaction:keypair:action')({ config });
       const {
         txTransaction: { unsignedCommand },
-        ...rest
       } = config;
-      const data = { unsignedCommand, ...rest };
 
-      const result = await signTransaction(data);
+      const result = await signActionPlain(unsignedCommand, config.keyPairs);
+
       assertCommandError(result);
 
       await saveSignedTransaction(

@@ -1,23 +1,27 @@
+import type { IPactCommand } from '@kadena/client';
+// import { createSignWithKeypair, Sign } from '@kadena/client';
+import { createSignWithKeypair } from '@kadena/client';
 import type { EncryptedString } from '@kadena/hd-wallet';
-import { kadenaSignWithKeyPair } from '@kadena/hd-wallet';
-import { kadenaSign } from '@kadena/hd-wallet/chainweaver';
-import type { ICommand, IUnsignedCommand } from '@kadena/types';
+// import { kadenaSign } from '@kadena/hd-wallet/chainweaver';
+import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
+
 import { join } from 'path';
 import { TRANSACTION_DIR, WALLET_DIR } from '../../constants/config.js';
 import {
   ensureWalletExists,
   getKeysFromWallet,
   getLegacyKeysFromWallet,
+  toHexStr,
 } from '../../keys/utils/keysHelpers.js';
-import type { IKeyPair, TSeedContent } from '../../keys/utils/storage.js';
+import type {
+  IKeyPair as LocalIKeyPair,
+  TSeedContent,
+} from '../../keys/utils/storage.js';
 import { readKeyFileContent } from '../../keys/utils/storage.js';
 import { services } from '../../services/index.js';
-import type { CommandResult } from '../../utils/command.util.js';
 
-/**
- * @returns {Promise<string[]>}
- * @throws
- */
+import { kadenaDecrypt } from '@kadena/hd-wallet';
+
 export async function getAllTransactions(): Promise<string[]> {
   try {
     const files = await services.filesystem.readDir(TRANSACTION_DIR);
@@ -41,150 +45,187 @@ export function formatDate(): string {
   return `${year}-${month}-${day}-${hours}:${minutes}`;
 }
 
+// export const legacySignWithKeyPairHelper = (
+//   password: string,
+//   cmd: string,
+//   secretKey: EncryptedString,
+// ): ((tx: IUnsignedCommand) => Promise<{ sigs: { sig: string }[] }>) => {
+//   return async (tx: IUnsignedCommand) => {
+//     const result = await kadenaSign(password, cmd, secretKey);
+//     const sig = Buffer.from(result).toString('hex');
+//     if (!sig) {
+//       throw new Error('Signature is undefined or empty');
+//     }
+//     return {
+//       ...tx,
+//       sigs: [{ sig }],
+//     };
+//   };
+// };
+
 /**
- * @param {string} password
- * @param {string} cmd
- * @param {EncryptedString} secretKey
- * @returns {(tx: IUnsignedCommand) => Promise<{ sigs: { sig: string }[] }>}
+ * @param  obj
+ * @returns If the object is of type ICommand.
  */
-export const legacySignWithKeyPairHelper = (
+// Helper function to check if an object is of type ICommand
+function isCommand(obj: ICommand | IUnsignedCommand): obj is ICommand {
+  return (
+    obj !== undefined &&
+    typeof obj === 'object' &&
+    'cmd' in obj &&
+    'hash' in obj &&
+    'sigs' in obj
+  );
+}
+
+export const decryptSecretKeys = (
   password: string,
-  cmd: string,
-  secretKey: EncryptedString,
-): ((tx: IUnsignedCommand) => Promise<{ sigs: { sig: string }[] }>) => {
-  return async (tx: IUnsignedCommand) => {
-    const result = await kadenaSign(password, cmd, secretKey);
-    const sig = Buffer.from(result).toString('hex');
-    if (!sig) {
-      throw new Error('Signature is undefined or empty');
-    }
-    return {
-      ...tx,
-      sigs: [{ sig }],
-    };
+): ((encrypted: EncryptedString) => string) => {
+  return (encrypted: EncryptedString): string => {
+    return toHexStr(kadenaDecrypt(password, encrypted));
   };
 };
 
-/**
- *
- * @param {Object} config
- * @returns {Promise<CommandResult<{ succes: boolean; data: ICommand }>>}
- */
-export const signTransaction = async (config: {
+export const signTransaction = (
+  keys: IKeyPair[],
+): ((config: {
   unsignedCommand: IUnsignedCommand;
-  keyPublicKey: string;
-  keySecretKey: string;
-  securityPassword: string;
-  legacy?: boolean;
-}): Promise<CommandResult<ICommand>> => {
-  let signedCommand: ICommand;
+}) => Promise<ICommand | undefined>) => {
+  return async (config): Promise<ICommand | undefined> => {
+    const signWithKeypair = createSignWithKeypair(keys);
 
-  if (config.legacy === true) {
-    const signedCommand = (await legacySignWithKeyPairHelper(
-      config.securityPassword,
-      config.unsignedCommand.cmd,
-      config.keySecretKey as EncryptedString,
-    )(config.unsignedCommand)) as ICommand;
+    try {
+      // if (config.legacy === true) {
+      //   // Handle legacy signing
+      //   signedCommand = await legacySignWithKeyPairHelper(
+      //     config.securityPassword,
+      //     config.unsignedTransaction.cmd,
+      //     config.keySecretKey as EncryptedString,
+      //   )(config.unsignedTransaction);
+      // } else {
+      //   // Handle non-legacy signing
+      //   signedCommand = await signWithKeypair(config.unsignedTransaction);
+      // }
 
-    return {
-      success: true,
-      data: signedCommand,
-    };
-  } else {
-    signedCommand = kadenaSignWithKeyPair(
-      config.securityPassword,
-      config.keyPublicKey,
-      config.keySecretKey as EncryptedString,
-    )(config.unsignedCommand) as ICommand;
+      const signedCommand: ICommand | IUnsignedCommand = await signWithKeypair(
+        config.unsignedCommand,
+      );
 
-    return { success: true, data: signedCommand };
-  }
+      if (isCommand(signedCommand)) {
+        return signedCommand;
+      } else {
+        return undefined;
+      }
+    } catch (error) {
+      throw new Error(`Error signing transaction: ${error.message}`);
+    }
+  };
 };
 
-/**
- * @param {string} walletName
- * @param {string} publicKey
- * @returns {Promise<EncryptedString | undefined>}
- */
-export async function findSecretKeyByWalletAndPublicKey(
-  walletName: string,
-  publicKey: string,
-): Promise<EncryptedString | undefined> {
+export async function findSecretKeys(
+  publicKeys: string[],
+  walletName?: string,
+): Promise<Map<string, EncryptedString | undefined>> {
   await ensureWalletExists();
 
-  const walletDir = join(WALLET_DIR, walletName);
-  if (!(await services.filesystem.directoryExists(walletDir))) {
-    console.error(`Wallet directory for '${walletName}' not found.`);
-    return undefined;
-  }
+  const searchInWallet = async (
+    name: string,
+  ): Promise<Map<string, EncryptedString | undefined>> => {
+    const walletDir = join(WALLET_DIR, name);
+    const secretKeysMap = new Map<string, EncryptedString | undefined>();
 
-  const keyFiles = await getKeysFromWallet(walletName);
-  const legacyKeyFiles = await getLegacyKeysFromWallet(walletName);
-  const allKeyFiles: string[] = [...keyFiles, ...legacyKeyFiles];
-
-  for (const keyFile of allKeyFiles) {
-    const keyContent: TSeedContent | IKeyPair | undefined =
-      await readKeyFileContent(join(walletDir, keyFile));
-    if (
-      keyContent !== undefined &&
-      typeof keyContent !== 'string' &&
-      keyContent.publicKey === publicKey
-    ) {
-      return keyContent.secretKey as EncryptedString;
+    if (!(await services.filesystem.directoryExists(walletDir))) {
+      return secretKeysMap;
     }
-  }
 
-  return undefined;
-}
+    const keyFiles = await getKeysFromWallet(name);
+    const legacyKeyFiles = await getLegacyKeysFromWallet(name);
+    const allKeyFiles: string[] = [...keyFiles, ...legacyKeyFiles];
 
-/**
- * @param {string} publicKey
- * @returns {Promise<string | undefined>}
- */
-export async function findSecretKeyByPublicKey(
-  publicKey: string,
-): Promise<string | undefined> {
-  await ensureWalletExists();
-
-  const walletDirs: string[] = await services.filesystem.readDir(WALLET_DIR);
-  for (const dirName of walletDirs) {
-    const secretKey = await findSecretKeyByWalletAndPublicKey(
-      dirName,
-      publicKey,
-    );
-    if (secretKey !== undefined) {
-      return secretKey;
-    }
-  }
-
-  return undefined;
-}
-
-/**
- *
- * @param {Object} transaction
- * @returns {string[]}
- */
-export function extractPublicKeysFromTransaction(transaction: {
-  // eslint-disable-next-line @rushstack/no-new-null
-  sigs: Record<string, null>;
-}): string[] {
-  const publicKeys: string[] = [];
-
-  if (transaction.sigs !== undefined) {
-    for (const key in transaction.sigs) {
+    for (const keyFile of allKeyFiles) {
+      const keyContent: TSeedContent | LocalIKeyPair | undefined =
+        await readKeyFileContent(join(walletDir, keyFile));
       if (
-        transaction.sigs.hasOwnProperty(key) &&
-        transaction.sigs[key] === null
+        keyContent !== undefined &&
+        typeof keyContent !== 'string' &&
+        publicKeys.includes(keyContent.publicKey)
       ) {
-        // "publickey:null"
-        const publicKey = key.split(':')[0];
-        if (publicKey) {
-          publicKeys.push(publicKey);
-        }
+        secretKeysMap.set(
+          keyContent.publicKey,
+          keyContent.secretKey as EncryptedString,
+        );
       }
     }
+
+    return secretKeysMap;
+  };
+
+  const secretKeysMap = new Map<string, EncryptedString | undefined>();
+
+  if (walletName !== undefined) {
+    return searchInWallet(walletName);
+  } else {
+    const walletDirs: string[] = await services.filesystem.readDir(WALLET_DIR);
+    for (const dirName of walletDirs) {
+      const walletSecretKeysMap = await searchInWallet(dirName);
+      walletSecretKeysMap.forEach((secretKey, publicKey) => {
+        if (!secretKeysMap.has(publicKey)) {
+          secretKeysMap.set(publicKey, secretKey);
+        }
+      });
+    }
   }
 
-  return publicKeys;
+  return secretKeysMap;
+}
+
+export async function findKeyPairsByPublicKeys(
+  publicKeys: string[],
+  walletName?: string,
+): Promise<IKeyPair[]> {
+  const keyPairs: IKeyPair[] = [];
+  const secretKeysMap = await findSecretKeys(publicKeys, walletName);
+
+  publicKeys.forEach((publicKey) => {
+    const secretKey = secretKeysMap.get(publicKey);
+    if (secretKey !== undefined) {
+      keyPairs.push({ publicKey, secretKey });
+    }
+  });
+
+  return keyPairs;
+}
+
+export function extractPublicKeysFromTransactionCmd(cmd: string): string[] {
+  try {
+    const transaction: IPactCommand = JSON.parse(cmd);
+    return transaction.signers.map((signer) => signer.pubKey);
+  } catch (e) {
+    console.error(`Error: ${e}`);
+    return [];
+  }
+}
+
+export async function getSignersFromTransactionHd(
+  cmd: string,
+  walletName?: string,
+): Promise<IKeyPair[]> {
+  const publicKeys = extractPublicKeysFromTransactionCmd(cmd);
+  const signers = await findKeyPairsByPublicKeys(publicKeys, walletName);
+
+  return signers;
+}
+
+export async function getSignersFromTransactionPlain(
+  cmd: string,
+  keyPairs: IKeyPair[],
+): Promise<IKeyPair[]> {
+  const publicKeys = extractPublicKeysFromTransactionCmd(cmd);
+
+  const signers = keyPairs.filter(
+    (keyPair) =>
+      publicKeys.includes(keyPair.publicKey) && keyPair.secretKey !== undefined,
+  );
+
+  return signers;
 }

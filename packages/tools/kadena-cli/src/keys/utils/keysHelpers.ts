@@ -1,3 +1,4 @@
+import type { IKeyPair } from '@kadena/types';
 import { join } from 'node:path';
 import sanitizeFilename from 'sanitize-filename';
 import {
@@ -267,5 +268,48 @@ export function extractStartIndex(
     throw new TypeError(
       'Invalid input: Input must be a number or a range tuple of two numbers.',
     );
+  }
+}
+
+export function parseKeyPairsInput(input: string): IKeyPair[] {
+  try {
+    const keyPairs = JSON.parse(input);
+    if (
+      Array.isArray(keyPairs) &&
+      keyPairs.every(
+        (keyPair) =>
+          typeof keyPair.publicKey === 'string' &&
+          typeof keyPair.secretKey === 'string',
+      )
+    ) {
+      return keyPairs as IKeyPair[];
+    }
+    throw new Error('Invalid JSON format');
+  } catch (error) {
+    return input.split(';').map((pairStr) => {
+      const keyValuePairs = pairStr
+        .trim()
+        .split(',')
+        .reduce((acc: Partial<IKeyPair>, keyValue) => {
+          const [key, value] = keyValue.split('=').map((item) => item.trim());
+          if (key === 'publicKey' || key === 'secretKey') {
+            acc[key as keyof IKeyPair] = value;
+          }
+          return acc;
+        }, {});
+
+      if (
+        keyValuePairs.publicKey === undefined ||
+        keyValuePairs.secretKey === undefined
+      ) {
+        throw new Error(
+          'Invalid custom string format. Expected "publicKey=xxx,secretKey=xxx;..."',
+        );
+      }
+      return {
+        publicKey: keyValuePairs.publicKey,
+        secretKey: keyValuePairs.secretKey,
+      } as IKeyPair;
+    });
   }
 }

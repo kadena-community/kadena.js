@@ -2,11 +2,62 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 
+import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { signTransaction } from '../utils/helpers.js';
+
+import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
+
+import type { EncryptedString } from '@kadena/hd-wallet';
+import { removeAfterFirstDot } from '../../utils/path.util.js';
+import {
+  decryptSecretKeys,
+  getSignersFromTransactionHd,
+  signTransaction,
+} from '../utils/helpers.js';
 import { saveSignedTransaction } from '../utils/storage.js';
+
+export const signActionHd = async (
+  unsignedCommand: IUnsignedCommand,
+  walletName: string,
+  password: string,
+): Promise<CommandResult<ICommand>> => {
+  try {
+    const keys = await getSignersFromTransactionHd(
+      unsignedCommand.cmd,
+      walletName,
+    );
+
+    if (keys.length === 0) {
+      throw new Error('Error signing transaction: no keys found.');
+    }
+
+    const decryptedKeys = keys.map((key) => {
+      return {
+        publicKey: key.publicKey,
+        secretKey: decryptSecretKeys(password)(
+          key.secretKey as EncryptedString,
+        ),
+      };
+    }) as IKeyPair[];
+
+    const signedCommand = await signTransaction(decryptedKeys)({
+      unsignedCommand,
+    });
+
+    if (!signedCommand) {
+      throw new Error('Error signing transaction: transaction not signed.');
+    }
+
+    return { success: true, data: signedCommand };
+  } catch (error) {
+    return {
+      success: false,
+      errors: [`Error in signAction: ${error.message}`],
+    };
+  }
+};
 
 /**
  * Creates a command for signing a Kadena transaction.
@@ -21,10 +72,9 @@ export const createSignTransactionWithLocalWalletCommand: (
   'sign-with-local-wallet',
   'Sign a transaction using your local  wallet',
   [
-    globalOptions.txTransaction(),
-    globalOptions.keyPublicKey(),
-    globalOptions.keySecretKey(),
+    globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
+    globalOptions.txTransaction(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
@@ -32,19 +82,21 @@ export const createSignTransactionWithLocalWalletCommand: (
       debug('sign-transaction:keypair:action')({ config });
       const {
         txTransaction: { unsignedCommand },
-        ...rest
+        keyWallet,
+        securityPassword,
       } = config;
-      const data = { unsignedCommand, ...rest };
 
-      // remove Prompts for secretKey
-      // get transaction file: config.txTransaction.transactionFile  | extractPublicKeysFromTransaction
+      const walletName =
+        typeof keyWallet === 'string'
+          ? keyWallet
+          : removeAfterFirstDot(keyWallet.fileName);
 
-      // * After speaking with javad redo the transaction part, and the signing part with the helper from kadena cleint
+      const result = await signActionHd(
+        unsignedCommand,
+        walletName,
+        securityPassword,
+      );
 
-      // get secret keys for each public key  |  findSecretKeyByWalletAndPublicKey
-      // sign transaction with each secret key  |  signTransaction
-
-      const result = await signTransaction(data);
       assertCommandError(result);
 
       await saveSignedTransaction(

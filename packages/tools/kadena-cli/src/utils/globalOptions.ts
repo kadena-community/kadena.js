@@ -15,9 +15,10 @@ import {
 } from '../prompts/index.js';
 import { services } from '../services/index.js';
 
-import type { ChainId } from '@kadena/types';
+import type { ChainId, IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
+
 import {
   KEY_EXT,
   TRANSACTION_DIR,
@@ -26,7 +27,11 @@ import {
   WALLET_LEGACY_EXT,
 } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
-import { getWallet, parseKeyIndexOrRange } from '../keys/utils/keysHelpers.js';
+import {
+  getWallet,
+  parseKeyIndexOrRange,
+  parseKeyPairsInput,
+} from '../keys/utils/keysHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import {
   ensureNetworksConfiguration,
@@ -284,8 +289,23 @@ export const globalOptions = {
       return chainId as ChainId;
     },
   }),
-
   // Keys
+  keyPairs: createOption({
+    key: 'keyPairs',
+    prompt: keys.keyPairsPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-k, --key-pairs <keyPairs>',
+      'Enter key pairs as a JSON string [{publicKey: xxx, secretKey: xxx}, ...] or as a string publicKey=xxx,secretKey=xxx;...',
+    ),
+    transform: (input) => {
+      try {
+        return parseKeyPairsInput(input);
+      } catch (error) {
+        throw new Error(`Error parsing key pairs: ${error.message}`);
+      }
+    },
+  }),
   keyPublicKey: createOption({
     key: 'keyPublicKey' as const,
     prompt: keys.keyPublicKeyPrompt,
@@ -542,7 +562,7 @@ export const globalOptions = {
         tx.IUnsignedCommandSchema.safeParse(transaction);
         return {
           transactionFile,
-          unsignedCommand: transaction,
+          unsignedCommand: transaction as IUnsignedCommand,
         };
       } catch (error) {
         console.error(

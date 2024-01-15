@@ -9,9 +9,11 @@ import {
   getLegacyKeysFromWallet,
   getLegacyWallets,
   getWallets,
+  parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 
 import chalk from 'chalk';
+
 import type { KeyContent } from '../keys/utils/storage.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import type { IPrompt } from '../utils/createOption.js';
@@ -393,6 +395,21 @@ export const keyDeletePrompt: IPrompt<string> = async (
     ],
   });
 };
+
+export async function keyPairsPrompt(): Promise<string> {
+  return await input({
+    message:
+      'Enter key pairs as a JSON string [{publicKey: xxx, secretKey: xxx}, ...] or as a string "publicKey=xxx,secretKey=xxx;..."',
+    validate: function (input) {
+      try {
+        parseKeyPairsInput(input);
+        return true;
+      } catch (error) {
+        return error.message;
+      }
+    },
+  });
+}
 
 /**
  * Formats a key based on its type.
