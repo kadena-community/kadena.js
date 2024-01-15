@@ -87,7 +87,10 @@ export const Toolbar: FC = () => {
       <ul
         className={classNames(gridMiniMenuListStyle, bottomIconsContainerStyle)}
       >
-        <li key={String('Application Settings')} className={gridMiniMenuListItemStyle}>
+        <li
+          key={String('Application Settings')}
+          className={gridMiniMenuListItemStyle}
+        >
           <div>
             <MenuButton
               title={'Application Settings'}

@@ -32,14 +32,15 @@ export const linksBoxStyle = style([
 export const footerBarStyle = style([
   atoms({
     width: '100%',
-    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     paddingBlock: 'sm',
     paddingInlineEnd: 'sm',
+    display: 'block',
   }),
   {
+    position: 'sticky',
     background: '#FAFAFA70',
     backdropFilter: 'blur(3px)',
   },
