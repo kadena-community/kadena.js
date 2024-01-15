@@ -1,4 +1,4 @@
-import { atoms, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 import { $$pageWidth, globalClass } from '../Layout/global.css';
 
@@ -8,7 +8,7 @@ export const containerClass = style([
     backgroundColor: 'semantic.info.default',
   }),
   {
-    top: vars.sizes.$17,
+    top: tokens.kda.foundation.size.n17,
     zIndex: 1000,
   },
 ]);
