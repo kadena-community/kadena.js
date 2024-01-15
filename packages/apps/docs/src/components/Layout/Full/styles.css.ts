@@ -1,10 +1,4 @@
-import {
-  atoms,
-  responsiveStyle,
-  sprinkles,
-  tokens,
-  vars,
-} from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { createVar, style } from '@vanilla-extract/css';
 import {
   $$asideMenuWidthLGDefault,
