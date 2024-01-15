@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { simulationDefaults } from '../../../constants/devnets.js';
 
 export interface IFileData {
   timestamp: number;
