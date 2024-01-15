@@ -51,6 +51,7 @@ import {
 import Debug from 'debug';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -366,6 +367,9 @@ const CrossChainTransferFinisher: FC = () => {
 
   return (
     <section className={containerClass}>
+      <Head>
+        <title>Kadena Developer Tools - Transactions</title>
+      </Head>
       <Breadcrumbs>
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
