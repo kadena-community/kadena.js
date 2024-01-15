@@ -31,23 +31,38 @@ export const dotenv: {
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
-  COMPLEXITY_ENABLED: or(process.env.COMPLEXITY_ENABLED === 'true', false),
-  COMPLEXITY_EXPOSED: or(process.env.COMPLEXITY_EXPOSED === 'true', false),
+  COMPLEXITY_ENABLED: or(
+    process.env.COMPLEXITY_ENABLED?.toLocaleLowerCase() === 'true',
+    false,
+  ),
+  COMPLEXITY_EXPOSED: or(
+    process.env.COMPLEXITY_EXPOSED?.toLocaleLowerCase() === 'true',
+    false,
+  ),
   DATABASE_URL: or(
     process.env.DATABASE_URL,
-    'postgresql://devnet@localhost:5432/devnet',
+    'postgresql://devnet@localhost:5432/devnet?pool_timeout=0',
   ),
   MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH: parseInt(
-    or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '11'),
+    or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '7'),
     10,
   ),
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
   NETWORK_ID: or(process.env.NETWORK_ID, 'fast-development'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
-  TRACING_ENABLED: or(process.env.TRACING_ENABLED === 'true', false),
-  TRACING_EXPOSED: or(process.env.TRACING_EXPOSED === 'true', false),
+  TRACING_ENABLED: or(
+    process.env.TRACING_ENABLED?.toLocaleLowerCase() === 'true',
+    false,
+  ),
+  TRACING_EXPOSED: or(
+    process.env.TRACING_EXPOSED?.toLocaleLowerCase() === 'true',
+    false,
+  ),
   TRACING_LOG_FILENAME: or(process.env.TRACING_LOG_FILENAME, 'traces.log'),
-  MARMALADE_ENABLED: or(process.env.MARMALADE_ENABLED === 'true', false),
+  MARMALADE_ENABLED: or(
+    process.env.MARMALADE_ENABLED?.toLocaleLowerCase() === 'true',
+    false,
+  ),
   MARMALADE_REPOSITORY_OWNER: or(
     process.env.MARMALADE_REPOSITORY_OWNER,
     'kadena-io',

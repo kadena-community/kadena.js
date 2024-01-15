@@ -23,18 +23,14 @@ export default builder.node(
   {
     description: 'A non-fungible-specific account.',
     id: {
-      resolve(parent) {
-        return `${NonFungibleAccountName}/${parent.accountName}`;
-      },
-      // Do not use parse here since there is a bug in the pothos relay plugin which can cause incorrect results. Parse the ID directly in the loadOne function.
+      resolve: (parent) => parent.accountName,
+      parse: (id) => id,
     },
     isTypeOf(source) {
       return (source as any).__typename === NonFungibleAccountName;
     },
-    async loadOne(id) {
+    async loadOne(accountName) {
       try {
-        const accountName = id.split('/')[1];
-
         return {
           __typename: NonFungibleAccountName,
           accountName,

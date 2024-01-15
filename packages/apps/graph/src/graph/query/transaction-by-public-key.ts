@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 builder.queryField('transactionsByPublicKey', (t) =>
@@ -37,26 +38,30 @@ builder.queryField('transactionsByPublicKey', (t) =>
       });
     },
     async resolve(query, __parent, args) {
-      const requestKeys = await prismaClient.signer.findMany({
-        where: {
-          publicKey: args.publicKey,
-        },
-        select: {
-          requestKey: true,
-        },
-      });
-
-      return prismaClient.transaction.findMany({
-        ...query,
-        where: {
-          requestKey: {
-            in: requestKeys.map((value) => value.requestKey),
+      try {
+        const requestKeys = await prismaClient.signer.findMany({
+          where: {
+            publicKey: args.publicKey,
           },
-        },
-        orderBy: {
-          height: 'desc',
-        },
-      });
+          select: {
+            requestKey: true,
+          },
+        });
+
+        return await prismaClient.transaction.findMany({
+          ...query,
+          where: {
+            requestKey: {
+              in: requestKeys.map((value) => value.requestKey),
+            },
+          },
+          orderBy: {
+            height: 'desc',
+          },
+        });
+      } catch (error) {
+        throw normalizeError(error);
+      }
     },
   }),
 );

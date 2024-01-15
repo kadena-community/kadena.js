@@ -1,11 +1,11 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
+import { atoms } from '@theme/atoms.css';
+import { tokens } from '@theme/tokens/contract.css';
 import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    padding: 0,
+    padding: 'no',
   }),
   {
     flexFlow: 'wrap',
@@ -14,67 +14,60 @@ export const containerClass = style([
 ]);
 
 export const itemClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    padding: 0,
-    color: '$neutral4',
+    padding: 'no',
+    whiteSpace: 'nowrap',
   }),
   {
-    whiteSpace: 'nowrap',
     selectors: {
-      '&::before': {
-        margin: `0 ${vars.sizes.$2}`,
-      },
       '&:not(:first-child):not(:last-child)::before': {
         content: '/',
+        marginInline: tokens.kda.foundation.spacing.sm,
       },
       '&:last-child::before': {
         content: '∙',
+        marginInline: tokens.kda.foundation.spacing.sm,
       },
       '&:first-child': {
         fontWeight: 'bold',
-      },
-      '&:first-child::before': {
-        content: '',
-        margin: '0',
       },
     },
   },
 ]);
 
 export const linkClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    color: '$neutral4',
+    color: 'text.base.default',
   }),
   {
     textDecoration: 'none',
     selectors: {
       '&:hover': {
         textDecoration: 'underline',
+        color: tokens.kda.foundation.color.text.base.default,
+      },
+      '&[data-current="true"]': {
+        textDecoration: 'none',
+        cursor: 'default',
+      },
+      "&[data-disabled='true']": {
+        textDecoration: 'none',
+        cursor: 'default',
+        color: tokens.kda.foundation.color.text.base['@disabled'],
       },
     },
   },
 ]);
 
-export const spanClass = style([
-  sprinkles({
-    marginRight: '$1',
-  }),
-]);
-
-export const iconContainer = style([
-  sprinkles({
-    display: 'flex',
-    marginX: '$2',
-  }),
-]);
-
 export const navClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 'max-content',
   }),
+  {
+    width: 'max-content',
+  },
 ]);

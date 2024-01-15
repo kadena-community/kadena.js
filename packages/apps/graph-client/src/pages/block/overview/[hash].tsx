@@ -19,6 +19,7 @@ import {
   Breadcrumbs,
   BreadcrumbsItem,
   Link,
+  Notification,
   Stack,
   Table,
 } from '@kadena/react-ui';
@@ -36,6 +37,7 @@ const Block: React.FC = () => {
 
   const { loading, data, error } = useGetBlockFromHashQuery({
     variables: getBlockFromHashVariables,
+    skip: !router.query.hash,
   });
 
   const { data: configData } = useGetGraphConfigurationQuery();
@@ -67,6 +69,13 @@ const Block: React.FC = () => {
           loading={loading}
           loaderText="Retrieving block data..."
         />
+
+        {!loading && !error && !data?.block && (
+          <Notification intent="info" role="status">
+            We could not find any data on this block. Please check the block
+            hash.
+          </Notification>
+        )}
 
         {data?.block && (
           <>
@@ -107,12 +116,12 @@ const Block: React.FC = () => {
                     <strong>Confirmation Depth</strong>
                   </Table.Td>
                   <Table.Td>
-                    {configData?.graphConfiguration?.maximumConfirmationDepth
-                      ? data.block.confirmationDepth ===
-                        configData.graphConfiguration?.maximumConfirmationDepth
-                        ? `> ${data.block.confirmationDepth - 1}`
-                        : data.block.confirmationDepth
-                      : data.block.confirmationDepth}
+                    {!configData?.graphConfiguration
+                      ?.maximumConfirmationDepth ||
+                    data.block.confirmationDepth <
+                      configData.graphConfiguration.maximumConfirmationDepth
+                      ? data.block.confirmationDepth
+                      : `>${data.block.confirmationDepth}`}
                   </Table.Td>
                 </Table.Tr>
               </Table.Body>

@@ -4,7 +4,13 @@ import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-qu
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
 import { getTransactions } from '@/graphql/queries.graph';
-import { Box, Breadcrumbs, BreadcrumbsItem, Stack } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  BreadcrumbsItem,
+  Notification,
+  Stack,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -15,6 +21,7 @@ const BlockTransactions: React.FC = () => {
 
   const { loading, data, error, fetchMore } = useGetTransactionsQuery({
     variables,
+    skip: !router.query.hash,
   });
 
   return (
@@ -40,7 +47,13 @@ const BlockTransactions: React.FC = () => {
         loaderText="Retrieving transactions..."
       />
 
-      {data?.transactions && (
+      {!loading && !error && !data?.transactions?.edges.length && (
+        <Notification intent="info" role="status">
+          We could not find any transactions on this block.
+        </Notification>
+      )}
+
+      {data?.transactions?.edges.length && (
         <ExtendedTransactionsTable
           transactions={data.transactions}
           fetchMore={fetchMore}
