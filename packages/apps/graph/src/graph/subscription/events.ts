@@ -1,58 +1,68 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Event } from '@prisma/client';
+import { createID } from '@utils/global-id';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
+import GQLEvent from '../objects/event';
 
 builder.subscriptionField('events', (t) =>
-  t.prismaField({
+  t.field({
     description: 'Listen for events by qualifiedName (e.g. `coin.TRANSFER`).',
     args: {
       qualifiedEventName: t.arg.string({ required: true }),
     },
-    type: ['Event'],
+    type: ['ID'],
     nullable: true,
-    subscribe: (__parent, args, context) =>
+    subscribe: (__root, args, context) =>
       iteratorFn(args.qualifiedEventName, context),
-    resolve: (__query, parent) => parent as Event[],
+    resolve: (parent) => parent,
   }),
 );
 
 async function* iteratorFn(
   qualifiedEventName: string,
   context: IContext,
-): AsyncGenerator<Event[] | undefined, void, unknown> {
-  // Get the last event and yield it
-  const eventResult = await getLastEvent(qualifiedEventName);
+): AsyncGenerator<string[] | undefined, void, unknown> {
+  const eventResult = await getLastEvents(qualifiedEventName);
   let lastEvent;
 
   if (!nullishOrEmpty(eventResult)) {
     lastEvent = eventResult[0];
-    yield [lastEvent];
+    yield [
+      createID(GQLEvent.name, [
+        lastEvent.blockHash,
+        lastEvent.orderIndex,
+        lastEvent.requestKey,
+      ]),
+    ];
   }
 
   while (!context.req.socket.destroyed) {
-    // Get new events
-    const newEvents = await getLastEvent(qualifiedEventName, lastEvent?.id);
+    const newEvents = await getLastEvents(qualifiedEventName, lastEvent?.id);
 
     if (!nullishOrEmpty(newEvents)) {
       lastEvent = newEvents[0];
-      yield newEvents;
+      yield newEvents.map((event) =>
+        createID(GQLEvent.name, [
+          event.blockHash,
+          event.orderIndex,
+          event.requestKey,
+        ]),
+      );
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }
 
-async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
-  // Define a default filter for the query
+async function getLastEvents(eventName: string, id?: number): Promise<Event[]> {
   const defaultFilter: Parameters<typeof prismaClient.event.findMany>[0] = {
     orderBy: {
       id: 'desc',
     },
   } as const;
 
-  // Define an extended filter for the query: if id is undefined, take 5 events, otherwise take 500 events
   const extendedFilter =
     id === undefined
       ? { take: 5, ...defaultFilter }
@@ -61,7 +71,6 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
           where: { id: { gt: id } },
         };
 
-  // Find the events
   const foundEvents = await prismaClient.event.findMany({
     ...extendedFilter,
     where: {
@@ -73,6 +82,5 @@ async function getLastEvent(eventName: string, id?: number): Promise<Event[]> {
     },
   });
 
-  // sort by id desc
   return foundEvents.sort((a, b) => b.id - a.id);
 }

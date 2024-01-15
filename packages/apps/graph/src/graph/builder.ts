@@ -83,14 +83,6 @@ export const builder = new SchemaBuilder<
     TracingPlugin,
   ],
 
-  ...(dotenv.COMPLEXITY_ENABLED && {
-    complexity: {
-      limit: {
-        complexity: dotenv.COMPLEXITY_LIMIT,
-      },
-    },
-  }),
-
   prisma: {
     client: prismaClient,
     dmmf: Prisma.dmmf,
@@ -104,6 +96,14 @@ export const builder = new SchemaBuilder<
     clientMutationId: 'optional',
     cursorType: 'String',
   },
+
+  ...(dotenv.COMPLEXITY_ENABLED && {
+    complexity: {
+      limit: {
+        complexity: dotenv.COMPLEXITY_LIMIT,
+      },
+    },
+  }),
 
   ...(dotenv.TRACING_ENABLED && {
     tracing: {

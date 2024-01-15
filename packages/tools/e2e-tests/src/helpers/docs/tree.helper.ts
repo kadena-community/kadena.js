@@ -26,6 +26,7 @@ export default class TreeHelper {
       '..',
       '..',
       '..',
+      '..',
       'apps',
       'docs',
       'src',
@@ -38,8 +39,6 @@ export default class TreeHelper {
       extensions: /\.md/,
       exclude: [/index.md/, exclusionRegExp],
     });
-
-    console.log(directory);
 
     const parents = expectedTree?.children;
 

@@ -12,7 +12,7 @@ const runSingleChange = async (path: string): Promise<void> => {
 };
 
 const runAll = async (event: IEventType, path: string): Promise<void> => {
-  await initFunc(movePages, 'Create folder tree from config.yaml');
+  await initFunc(movePages, 'Move all pages from docs with config.yaml');
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(fixLocalLinks, 'Fix local links from the config.yaml');
 };

@@ -1,9 +1,12 @@
+import type { IAccountWithSecretKey } from '@fixtures/graph/testdata/constants/accounts';
+import {
+  devnetHost,
+  networkId,
+} from '@fixtures/graph/testdata/constants/network';
 import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer, transferCrossChain } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
-import type { IAccountWithSecretKey } from '../testdata/constants/accounts';
-import { devnetHost, networkId } from '../testdata/constants/network';
 
 export async function transferFunds(
   source: IAccountWithSecretKey,

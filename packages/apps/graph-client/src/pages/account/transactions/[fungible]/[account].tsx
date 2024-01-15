@@ -5,7 +5,13 @@ import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { NON_FUNGIBLE_TRANSACTION } from '@/constants/non-fungible';
 import routes from '@/constants/routes';
 import { getTransactions } from '@/graphql/queries.graph';
-import { Box, Breadcrumbs, BreadcrumbsItem, Stack } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  BreadcrumbsItem,
+  Notification,
+  Stack,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -21,6 +27,7 @@ const AccountTransactions: React.FC = () => {
 
   const { loading, data, error, fetchMore } = useGetTransactionsQuery({
     variables,
+    skip: !router.query.fungible || !router.query.account,
   });
 
   const accountOverviewUrl =
@@ -50,6 +57,12 @@ const AccountTransactions: React.FC = () => {
         loading={loading}
         loaderText="Retrieving transactions..."
       />
+
+      {!loading && !error && !data?.transactions?.edges.length && (
+        <Notification intent="info" role="status">
+          We could not find any transactions with these parameters.
+        </Notification>
+      )}
 
       {data?.transactions && (
         <ExtendedTransactionsTable
