@@ -177,7 +177,7 @@ pages:
                 file: /build/guides/election-dapp-tutorial/03-admin-account.md
               namespaces:
                 url: /04-namespaces
-                file: /build/guides/election-dapp-tutorial/04-namespaces.md
+                file: /build/guides/election-dapp-tutorial/define-a-namespace.md
               keysets:
                 url: /05-keysets
                 file: /build/guides/election-dapp-tutorial/05-keysets.md
