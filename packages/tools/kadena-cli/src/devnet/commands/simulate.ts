@@ -41,6 +41,7 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
       tokenPool: config.simulateTokenPool,
       logFolder: config.simulateLogFolder,
       seed: config.simulateSeed,
+      stopAfter: config.simulateMaxTime,
     });
   },
 );
