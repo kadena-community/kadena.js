@@ -1,6 +1,7 @@
 import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
 import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import { AddNetworkModal } from '@/components/Global';
+import { OptionsModal } from '@/components/Global/OptionsModal';
 import type { Network } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
@@ -16,7 +17,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
 import React, { useState } from 'react';
-import {OptionsModal} from "@/components/Global/OptionsModal";
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -37,7 +37,6 @@ const Header: FC<IHeaderProps> = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
 
   const openNetworkModal = () => setIsOpen(true);
 

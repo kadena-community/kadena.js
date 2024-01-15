@@ -5,7 +5,7 @@ import { getHref } from '@/utils/getHref';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, { useState } from 'react';
+import React from 'react';
 import { MenuButton } from './MenuButton';
 import {
   bottomIconsContainerStyle,

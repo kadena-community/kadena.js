@@ -65,7 +65,6 @@ import {
   notificationLinkStyle,
   textareaContainerStyle,
 } from './styles.css';
-import Head from "next/head";
 
 // @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
 const DOMAIN_NAME_REGEX: RegExp =
