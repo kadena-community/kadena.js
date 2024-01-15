@@ -2,7 +2,11 @@
 title: Deploy on Kadena
 subTitle: "Deploy Chainweb nodes and Pact smart contract applications"
 id: deploy
+<<<<<<< HEAD
 description: "Learn how to deploy Chainweb nodes and Pact smart contract applications on the Kadena network."
+=======
+description: "Learn how to deploy Chainweb nodes and Pact smart contract applications on the Kadena network"
+>>>>>>> 4806fd272 (Restore doc structure WIP)
 menu: Deploy
 label: Deploy
 order: 1
@@ -10,6 +14,7 @@ layout: landing
 tags: [pact, chainweb, network, node operator, developer]
 ---
 
+<<<<<<< HEAD
 There are two main deployment scenarios for the Kadena network:
 
 - Deploying and managing a node to support the decentralized network infrastructure and earn rewards.
@@ -48,6 +53,25 @@ If you are preparing to deploy on the Kadena test or main network, see the follo
 - Prepare formal verification
 - Prepare your namespace on the target network
 - 
+=======
+Topics in this section might address a few different audiences, but I'm not sure how much material exists.
+
+## Node operators
+
+Topics for node operators.
+
+## Miners
+
+Topics for miners.
+
+## Smart contract developers
+
+Topics for smart contract developers.
+
+## Network administrators
+
+Topics for DevOps and network management might overlap with node operators.
+>>>>>>> 4806fd272 (Restore doc structure WIP)
 
 ## View recent articles
 

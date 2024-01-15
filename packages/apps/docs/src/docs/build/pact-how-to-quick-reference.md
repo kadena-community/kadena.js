@@ -1,8 +1,15 @@
 ---
+<<<<<<<< HEAD:packages/apps/docs/src/docs/build/code-templates.md
 title: Code templates for common use cases
 description: Provides TypeScript and Pact code templates for performing common tasks with Pact and the Kadena client.
 menu: Code templates
 label: Code templates
+========
+title: Pact-lang-API Cookbook
+description: Common use cases for `pact-lang-api`
+menu: Cookbook
+label: Cookbook
+>>>>>>>> 4806fd272 (Restore doc structure WIP):packages/apps/docs/src/docs/build/pact-how-to-quick-reference.md
 order: 3
 layout: full
 tags: [pact, typescript, account, transactions, utils]

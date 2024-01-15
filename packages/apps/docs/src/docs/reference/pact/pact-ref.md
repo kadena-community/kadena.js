@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: Pact language reference
 description:
   This document is a reference for the Pact smart contract language, designed
@@ -6,10 +7,20 @@ description:
 menu: "Language reference"
 label: "Language reference"
 order: 2
+=======
+title: Pact functions
+description:
+  This document is a reference for the Pact smart-contract language, designed
+  for correct, transactional execution on a high-performance blockchain.
+menu: Pact functions
+label: Pact functions
+order: 1
+>>>>>>> 4806fd272 (Restore doc structure WIP)
 layout: full
 tags: ['pact', 'language reference']
 ---
 
+<<<<<<< HEAD
 # Pact language reference
 
 Pact is a smart contract programming language, specifically designed for correct, transactional execution on the [Kadena high-performance blockchain](http://kadena.io).
@@ -34,6 +45,14 @@ The language reference covers the following topics:
 - [Pact REPL](/reference/pact/pact-repl-cli)
 
 For information about the design of the Pact programming language, see the [Pact white paper](/kadena) or the [pact home page](http://kadena.io/#pactModal).
+=======
+# Pact built-in functions
+
+Pact is a smart contract programming language, specifically designed for
+correct, transactional execution on the [Kadena high-performance blockchain](http://kadena.io). 
+For more information about the design of the Pact, see
+the [Pact white paper](/kadena) or the [pact home page](http://kadena.io/#pactModal).
+>>>>>>> 4806fd272 (Restore doc structure WIP)
 
 ## General purpose functions
 
