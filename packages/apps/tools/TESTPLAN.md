@@ -97,7 +97,7 @@ This document covers high-level test scenarios for Tools Website and is intended
 - **Objective:** User can finish an incomplete cross chain transfer successfully.
 - **Preconditions:** User has a valid request key already created in a specific wallet (like Chainweaver). The transfer is incomplete since the receiving account does not have nay funds on the target chain.
 - **Inputs:** User enters a valid request key.
-- **Expected Outcome:** The user enters a valid request key and sees information on the cross chain transfer (sender, reveiver, gas station account and network data). The user clicks on 'Finish transaction' button and sees information (a notification at the top of the screen) that the cross chain transfer was successful to the given account.
+- **Expected Outcome:** The user enters a valid request key and sees information on the cross chain transfer (sender, receiver, gas station account and network data). The user clicks on 'Finish transaction' button and sees information (a notification at the top of the screen) that the cross chain transfer was successful to the given account.
 
 #### Scenario 2: Get error on entering invalid request key
 - **Objective:** User cannot get info on the cross chain transfer.
@@ -109,7 +109,7 @@ This document covers high-level test scenarios for Tools Website and is intended
 - **Objective:** User can get info that the cross chain transfer is completed.
 - **Preconditions:** User has a valid request key already created in a specific wallet (like Chainweaver).
 - **Inputs:** User enters a valid request key.
-- **Expected Outcome:** The user enters a valid request key and sees information on the cross chain transfer (sender, reveiver, gas station account and network data). The user clicks on 'Finish transaction' button and sees information (a notification at the top of the screen) that the cross chain transfer has already been completed.
+- **Expected Outcome:** The user enters a valid request key and sees information on the cross chain transfer (sender, receiver, gas station account and network data). The user clicks on 'Finish transaction' button and sees information (a notification at the top of the screen) that the cross chain transfer has already been completed.
 
 
 ## 4. Test Data
@@ -127,6 +127,11 @@ This document covers high-level test scenarios for Tools Website and is intended
 - Scenario 1: any valid request key
 - Scenario 2: any valid request key
 - Scenario 3: any invalid request key
+
+3.4 [Transactions / Cross Chain Transfer Finisher]
+- Scenario 1: any valid request key
+- Scenario 2: any invalid request key
+- Scenario 3: any valid request key
 
 
 ## 5. Dependencies
