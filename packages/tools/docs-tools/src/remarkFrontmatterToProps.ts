@@ -5,7 +5,6 @@ import { join } from 'path';
 import type {
   DocsRootContent,
   IAuthorInfo,
-  IConfigTreeItem,
   IFile,
   IFrontMatterYaml,
   IMenuData,

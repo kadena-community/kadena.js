@@ -1,4 +1,4 @@
-import { IConfigTreeItem } from 'src';
+import type { IConfigTreeItem } from 'src';
 import { loadConfigPages } from './loadConfigPages';
 
 export const getFileFromNameOfUrl = async (
