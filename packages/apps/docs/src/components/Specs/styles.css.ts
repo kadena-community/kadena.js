@@ -1,4 +1,4 @@
-import { tokens, vars } from '@kadena/react-ui/theme';
+import { tokens } from '@kadena/react-ui/theme';
 import { globalStyle } from '@vanilla-extract/css';
 
 export const specsWrapper = 'specs-wrapper';
