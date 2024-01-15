@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 import {
   $$backgroundOverlayColor,
@@ -8,14 +8,14 @@ import {
 
 export const headerWrapperClass = style([
   globalClass,
-  sprinkles({
+  atoms({
     position: 'relative',
     display: 'grid',
   }),
   {
     gridArea: 'pageheader',
-    height: `calc(${vars.sizes.$64} + ${vars.sizes.$10})`,
-    gridTemplateRows: `${vars.sizes.$64} ${vars.sizes.$10}`,
+    height: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.spacing.xxxl})`,
+    gridTemplateRows: `${tokens.kda.foundation.size.n64} ${tokens.kda.foundation.spacing.xxxl}`,
     gridTemplateAreas: `
     "main"
     "shadow"
@@ -29,8 +29,7 @@ export const headerWrapperClass = style([
         top: 0,
         left: 0,
         right: 0,
-        bottom: vars.sizes.$10,
-        backgroundColor: vars.colors.$background,
+        bottom: tokens.kda.foundation.spacing.xxxl,
       },
       '&::after': {
         content: '',
@@ -62,7 +61,7 @@ export const headerLoadedClass = style({
 });
 
 export const headerClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
   }),
   {
@@ -73,27 +72,27 @@ export const headerClass = style([
 ]);
 
 export const wrapperClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    marginInline: 'auto',
+    marginBlockStart: 'no',
   }),
   {
-    marginInline: 'auto',
-    marginBlockStart: 0,
-    marginBlockEnd: vars.sizes.$6,
-    paddingBlockEnd: vars.sizes.$10,
-    paddingBlockStart: vars.sizes.$20,
-    paddingInline: vars.sizes.$4,
+    marginBlockEnd: tokens.kda.foundation.spacing.lg,
+    paddingBlockEnd: tokens.kda.foundation.spacing.xxxl,
+    paddingBlockStart: tokens.kda.foundation.size.n20,
+    paddingInline: tokens.kda.foundation.spacing.md,
     maxWidth: $$pageWidth,
   },
 ]);
 
 export const subheaderClass = style([
-  sprinkles({
-    color: '$neutral4',
+  atoms({
+    color: 'text.base.default',
     textAlign: 'center',
   }),
 ]);

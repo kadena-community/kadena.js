@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { createVar, globalStyle, style } from '@vanilla-extract/css';
 import {
   $$backgroundOverlayColor,
@@ -8,16 +8,16 @@ import {
 
 globalStyle('html, body', {
   margin: 0,
-  backgroundColor: vars.colors.$background,
+  backgroundColor: tokens.kda.foundation.color.neutral.n0,
   overscrollBehavior: 'none',
 });
 
 globalStyle('a', {
-  color: vars.colors.$primaryContrastInverted,
+  color: tokens.kda.foundation.color.link.brand.primary.default,
   textDecoration: 'underline',
 });
 globalStyle('a:hover', {
-  color: vars.colors.$primaryHighContrast,
+  color: tokens.kda.foundation.color.link.brand.primary['@hover'],
   textDecoration: 'none',
 });
 globalStyle('p a', {
@@ -25,7 +25,7 @@ globalStyle('p a', {
 });
 
 export const basebackgroundClass = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
     pointerEvents: 'none',
     zIndex: 0,
@@ -59,13 +59,13 @@ export const $$asideMenuWidthMDDefault = createVar();
 export const $$asideMenuWidthLGDefault = createVar();
 
 export const baseGridClass = style([
-  sprinkles({
+  atoms({
     display: 'grid',
     position: 'relative',
+    marginBlock: 'no',
+    marginInline: 'auto',
   }),
   {
-    marginBlock: 0,
-    marginInline: 'auto',
     vars: {
       [$$asideMenuWidthMDDefault]: '200px',
       [$$asideMenuWidthLGDefault]: '300px',
