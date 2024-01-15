@@ -189,12 +189,7 @@ const CrossChainTransferTracker: FC = () => {
         <BreadcrumbsItem>{t('Cross Chain Transfer Tracker')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Heading as="h4">{t('Track & trace transactions')}</Heading>
-      <Stack
-        flexDirection="column"
-        paddingBlockStart={'md'}
-        paddingBlockEnd={'xxxl'}
-        gap={'lg'}
-      >
+      <Stack flexDirection="column" paddingBlockStart={'md'} gap={'lg'}>
         {txError ? (
           <div className={notificationContainerStyle}>
             <Notification

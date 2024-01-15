@@ -68,8 +68,8 @@ export const progressBarStyle = style([
 export const progressBarContentStyle = style([
   sprinkles({
     display: 'flex',
-    alignItems: 'center',
     flexDirection: 'column',
+    alignItems: 'flex-start',
     marginLeft: '$2',
   }),
 ]);
