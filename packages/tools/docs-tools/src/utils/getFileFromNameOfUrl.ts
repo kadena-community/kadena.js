@@ -1,10 +1,11 @@
-import { loadConfigPages } from '@/scripts/movePages/utils/loadConfigPages';
-import type { IConfigTreeItem } from '@kadena/docs-tools';
+import { IConfigTreeItem } from 'src';
+import { loadConfigPages } from './loadConfigPages';
 
-export const getFileFromNameOfUrl = (
-  link: string,
-): IConfigTreeItem | undefined => {
-  const pages = loadConfigPages();
+export const getFileFromNameOfUrl = async (
+  link?: string,
+): Promise<IConfigTreeItem | undefined> => {
+  if (!link) return;
+  const pages = await loadConfigPages();
   const [, ...linkArr] = link.split('/');
 
   const innerFind = (

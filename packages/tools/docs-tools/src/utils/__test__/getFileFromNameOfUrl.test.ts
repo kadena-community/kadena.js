@@ -1,5 +1,5 @@
+import { loadConfigPages } from 'src/mock/loadConfigPages.mock';
 import { getFileFromNameOfUrl } from '../getFileFromNameOfUrl';
-import { loadConfigPages } from './../loadConfigPages.mock';
 
 vi.mock('@/scripts/movePages', () => {
   return {
@@ -13,17 +13,19 @@ describe('utils getFileNameOfUrl', () => {
   });
 
   it('should return the page for the given url', async () => {
-    const result = getFileFromNameOfUrl('/contribute/ambassadors/moderator');
+    const result = await getFileFromNameOfUrl(
+      '/contribute/ambassadors/moderator',
+    );
     const expectedResult = {
       url: '/moderator',
       file: '/contribute/ambassadors/moderator.md',
-      id: 'moderator',
+      id: 'mod',
     };
     expect(result).toStrictEqual(expectedResult);
   });
 
   it('should return undefined when the url is not found', async () => {
-    const result = getFileFromNameOfUrl('/he-man/skeletor');
+    const result = await getFileFromNameOfUrl('/he-man/skeletor');
     expect(result).toStrictEqual(undefined);
   });
 });
