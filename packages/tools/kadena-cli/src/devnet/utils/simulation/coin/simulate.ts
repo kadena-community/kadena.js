@@ -33,6 +33,7 @@ export interface ISimulationOptions {
   tokenPool: number;
   logFolder: string;
   seed: string;
+  stopAfter?: number;
 }
 
 export async function simulateCoin({
@@ -43,6 +44,7 @@ export async function simulateCoin({
   tokenPool = 1000000,
   logFolder,
   seed = Date.now().toString(),
+  stopAfter,
 }: ISimulationOptions): Promise<void> {
   const accounts: IAccount[] = [];
 
@@ -133,6 +135,8 @@ export async function simulateCoin({
     // Generate first seeded random number
     let seededRandomNo = seedRandom(seed);
     let counter: number = 0;
+
+    const startTime = Date.now();
 
     while (true) {
       // Transfer between accounts
@@ -262,6 +266,15 @@ export async function simulateCoin({
         }
 
         await new Promise((resolve) => setTimeout(resolve, transferInterval));
+
+        const simulatedTime = Date.now() - startTime;
+
+        if (stopAfter && simulatedTime > stopAfter) {
+          console.log(
+            `Simulation stopped after ${stopAfter}ms. Please wait for the last transactions to complete.`,
+          );
+          return;
+        }
       }
       counter++;
     }

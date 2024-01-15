@@ -65,3 +65,17 @@ export function simulateLogFolderPrompt(): Promise<string> {
     default: `${process.cwd()}/logs/simute`,
   });
 }
+
+export async function simulateMaxTimePrompt(): Promise<number> {
+  const maxTime = await input({
+    message: 'Specify the maximum time in miliseconds for the simulation',
+    default: (86400000 * 7).toString(), // 7 days
+    validate: (value) => {
+      if (value === null || value === '') return true;
+      const valid = !isNaN(parseFloat(value));
+      return valid || 'Please enter a number';
+    },
+  });
+
+  return parseInt(maxTime);
+}

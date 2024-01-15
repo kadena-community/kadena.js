@@ -16,9 +16,12 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
     globalOptions.simulateTokenPool(),
     globalOptions.simulateMaxAmount(),
     globalOptions.simulateSeed(),
+    globalOptions.simulateMaxTime({ isOptional: true }),
   ],
   async (config) => {
     debug('devnet-simulate:action')({ config });
+
+    config.simulateMaxTime = config.simulateMaxTime ?? null;
 
     guardDocker();
 

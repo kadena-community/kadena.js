@@ -253,6 +253,15 @@ export const globalOptions = {
       'Specify the directory where the log file will be generated.',
     ),
   }),
+  simulateMaxTime: createOption({
+    key: 'simulateMaxTime' as const,
+    prompt: simulatePrompts.simulateMaxTimePrompt,
+    validation: z.number().optional(),
+    option: new Option(
+      '-mt, --max-time <maxTime>',
+      'Specify the maximum time in miliseconds the simulation will run.',
+    ),
+  }),
 
   // Network
   networkName: createOption({
