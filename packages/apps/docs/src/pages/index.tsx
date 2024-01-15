@@ -43,10 +43,10 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   background="whitepapers"
                 >
                   <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/kadena/overview">
-                      What is Kadena?
+                    <Link className={docsCardLink} href="/learn/why-kadena">
+                      Why Kadena?
                     </Link>
-                    <Link className={docsCardLink} href="/kadena/kda">
+                    <Link className={docsCardLink} href="/learn/kda">
                       What is the KDA token?
                     </Link>
                     <Link className={docsCardLink} href="/pact">
