@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { createVar, style } from '@vanilla-extract/css';
 import {
   $$asideMenuWidthLGDefault,
@@ -9,13 +9,13 @@ import { $$leftSideWidth, $$pageWidth, $$sideMenu } from '../global.css';
 const $$shadowWidth = createVar();
 
 export const asidebackgroundClass = style([
-  sprinkles({
+  atoms({
     display: 'none',
   }),
 
   {
     vars: {
-      [$$shadowWidth]: vars.sizes.$25,
+      [$$shadowWidth]: tokens.kda.foundation.size.n25,
     },
 
     selectors: {
@@ -45,7 +45,7 @@ export const asidebackgroundClass = style([
       '&::after': {
         ...responsiveStyle({
           lg: {
-            left: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${vars.sizes.$4}))`,
+            left: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${tokens.kda.foundation.spacing.md}))`,
           },
           xxl: {
             left: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2) - ${$$asideMenuWidthLGDefault})`,
@@ -83,21 +83,23 @@ export const pageGridClass = style(
 );
 
 export const stickyAsideWrapperClass = style([
-  sprinkles({
+  atoms({
     position: 'sticky',
     display: 'flex',
-    top: '$10',
+    paddingInlineStart: 'md',
   }),
   {
-    paddingInlineStart: vars.sizes.$4,
+    top: tokens.kda.foundation.size.n10,
   },
 ]);
 
 export const stickyAsideClass = style([
+  atoms({
+    paddingBlockStart: 'xxxl',
+  }),
   {
-    paddingBlockStart: vars.sizes.$10,
     overflowY: 'auto',
-    height: `calc(100vh - ${vars.sizes.$20})`,
+    height: `calc(100vh - ${tokens.kda.foundation.size.n20})`,
     selectors: {
       '&::-webkit-scrollbar': {
         display: 'none',
@@ -107,15 +109,15 @@ export const stickyAsideClass = style([
 ]);
 
 export const asideClass = style([
-  sprinkles({
+  atoms({
     display: 'none',
     position: 'absolute',
     height: '100%',
     width: '100%',
+    paddingInline: 'md',
   }),
   {
     paddingBlock: 0,
-    paddingInline: vars.sizes.$4,
     gridArea: 'aside',
     gridColumn: '4 / span 2',
     gridRow: '2 / span 2',
