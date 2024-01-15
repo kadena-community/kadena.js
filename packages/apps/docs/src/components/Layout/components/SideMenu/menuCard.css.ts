@@ -1,14 +1,14 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const menuCardClass = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
     width: '100%',
     height: '100%',
+    paddingInline: 'lg',
   }),
   {
-    paddingInline: vars.sizes.$6,
     transition: 'transform .2s ease',
     ...responsiveStyle({ md: { overflowY: 'auto' } }),
 

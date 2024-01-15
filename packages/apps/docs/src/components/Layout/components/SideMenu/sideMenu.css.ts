@@ -1,25 +1,25 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const sideMenuClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
   }),
   {
-    height: `calc(100vh - ${vars.sizes.$18})`,
+    height: `calc(100vh - ${tokens.kda.foundation.size.n18})`,
     overflowY: 'auto',
     overflowX: 'hidden',
     ...responsiveStyle({
       md: {
-        height: `calc(100vh - ${vars.sizes.$48})`,
+        height: `calc(100vh - ${tokens.kda.foundation.size.n48})`,
       },
     }),
   },
 ]);
 
 export const listClass = style([
-  sprinkles({
-    padding: 0,
+  atoms({
+    padding: 'no',
   }),
   {
     listStyle: 'none',
@@ -27,55 +27,55 @@ export const listClass = style([
 ]);
 
 export const listItemClass = style([
+  atoms({
+    paddingBlockStart: 'md',
+    paddingBlockEnd: 'sm',
+  }),
   {
-    paddingBlockStart: vars.sizes.$4,
-    paddingBlockEnd: vars.sizes.$2,
-    borderBottom: `1px solid ${vars.colors.$borderDefault}`,
+    borderBottom: `1px solid ${tokens.kda.foundation.color.border.base.bold}`,
   },
 ]);
 
 export const sideMenuTitleClass = style([
-  sprinkles({
+  atoms({
     display: 'block',
-    padding: 0,
+    padding: 'no',
     textAlign: 'left',
-    fontSize: '$sm',
+    fontSize: 'sm',
     backgroundColor: 'transparent',
     border: 'none',
+    paddingInlineStart: 'md',
+    marginBlock: 'md',
   }),
-  {
-    paddingInlineStart: vars.sizes.$4,
-    marginBlock: vars.sizes.$4,
-  },
 ]);
 
 export const sideMenuTitleButtonClass = style([
-  sprinkles({
+  atoms({
     display: {
       sm: 'flex',
       md: 'none',
     },
     textAlign: 'left',
     cursor: 'pointer',
+    paddingInlineStart: 'xxl',
+    border: 'none',
+    backgroundColor: 'transparent',
   }),
   {
-    paddingInlineStart: vars.sizes.$9,
-    border: '0',
-    backgroundColor: 'transparent',
-
     selectors: {
       '&:hover::before': {
-        transform: `translate(0, ${vars.sizes.$2}) rotate(45deg)`,
+        transform: `translate(0, ${tokens.kda.foundation.size.n2}) rotate(45deg)`,
       },
       '&::before': {
         position: 'absolute',
-        left: vars.sizes.$3,
+        left: tokens.kda.foundation.size.n3,
+        top: tokens.kda.foundation.size.n5,
         content: '',
-        width: vars.sizes.$2,
-        height: vars.sizes.$2,
-        borderLeft: `2px solid ${vars.colors.$foreground}`,
-        borderBottom: `2px solid ${vars.colors.$foreground}`,
-        transform: `translate(${vars.sizes.$2}, ${vars.sizes.$2}) rotate(45deg)`,
+        width: tokens.kda.foundation.spacing.sm,
+        height: tokens.kda.foundation.spacing.sm,
+        borderLeft: `2px solid ${tokens.kda.foundation.color.border.base.inverse.default}`,
+        borderBottom: `2px solid ${tokens.kda.foundation.color.border.base.inverse.default}`,
+        transform: `translate(${tokens.kda.foundation.spacing.sm}, ${tokens.kda.foundation.spacing.sm}) rotate(45deg)`,
         transition: 'transform .2s ease ',
       },
     },
