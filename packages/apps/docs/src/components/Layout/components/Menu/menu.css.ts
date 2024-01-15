@@ -1,20 +1,20 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 import { $$leftSideWidth, $$sideMenu } from '../../global.css';
 
 export const menuClass = style([
-  sprinkles({
+  atoms({
     position: 'fixed',
     height: '100%',
     width: '100%',
-    backgroundColor: '$background',
-    overflow: 'hidden',
-    top: '$17',
     bottom: 0,
+    paddingBlockEnd: 'md',
   }),
   {
-    paddingBlockEnd: vars.sizes.$4,
-    height: `calc(100vh - ${vars.sizes.$13})`,
+    backgroundColor: tokens.kda.foundation.color.neutral.n0,
+    top: tokens.kda.foundation.size.n17,
+    overflow: 'hidden',
+    height: `calc(100vh - ${tokens.kda.foundation.size.n13})`,
     gridArea: 'menu',
     gridRow: '2 / span 3',
     zIndex: $$sideMenu,
@@ -27,12 +27,12 @@ export const menuClass = style([
       },
       md: {
         position: 'sticky',
-        top: vars.sizes.$18,
+        top: tokens.kda.foundation.size.n18,
         bottom: 'auto',
-        height: `calc(100vh - ${vars.sizes.$18})`,
+        height: `calc(100vh - ${tokens.kda.foundation.size.n18})`,
         transform: 'translateX(0)',
         backgroundColor: 'transparent',
-        paddingBlockEnd: vars.sizes.$40,
+        paddingBlockEnd: tokens.kda.foundation.size.n40,
       },
     }),
   },
@@ -49,12 +49,12 @@ export const menuOpenVariants = styleVariants({
 
 export const menuInLayoutVariants = styleVariants({
   true: [
-    sprinkles({
+    atoms({
       display: 'block',
     }),
   ],
   false: [
-    sprinkles({
+    atoms({
       display: {
         xs: 'block',
         md: 'none',
@@ -69,7 +69,7 @@ export const menuLayoutVariants = styleVariants({
 });
 
 export const menuBackClass = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
     top: 0,
     bottom: 0,

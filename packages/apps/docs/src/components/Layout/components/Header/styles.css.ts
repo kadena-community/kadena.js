@@ -1,42 +1,42 @@
 import {
+  atoms,
   darkThemeClass,
   responsiveStyle,
-  sprinkles,
-  vars,
+  tokens,
 } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
 
 export const logoClass = style({
   zIndex: $$navMenu,
-  maxWidth: vars.sizes.$48,
-  paddingRight: vars.sizes.$10,
+  maxWidth: tokens.kda.foundation.size.n48,
+  paddingRight: tokens.kda.foundation.spacing.xxxl,
 });
 
 export const headerButtonClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: '$lg',
+    paddingBlock: 'sm',
+    borderRadius: 'lg',
     cursor: 'pointer',
-    color: '$neutral2',
-    width: '$11',
+    color: 'text.base.inverse.default',
   }),
   {
-    paddingBlock: vars.sizes.$2,
+    width: tokens.kda.foundation.size.n11,
     border: 0,
     transition: `opacity 0.2s ease`,
     selectors: {
       [`${darkThemeClass} &`]: {
-        color: vars.colors.$neutral5,
-      },
-      [`${darkThemeClass} &:hover`]: {
-        color: vars.colors.$neutral5,
-        opacity: '.6',
+        color: tokens.kda.foundation.color.text.base.default,
       },
       [`&:hover`]: {
-        color: vars.colors.$neutral2,
+        color: tokens.kda.foundation.color.text.subtle.inverse.default,
+        opacity: '.6',
+      },
+      [`${darkThemeClass} &:hover`]: {
+        color: tokens.kda.foundation.color.text.subtle.default,
         opacity: '.6',
       },
     },
@@ -44,19 +44,22 @@ export const headerButtonClass = style([
 ]);
 
 export const iconButtonClass = style([
-  sprinkles({
+  atoms({
     backgroundColor: 'transparent',
   }),
 ]);
 
 export const hamburgerButtonClass = style([
-  sprinkles({
-    backgroundColor: '$neutral4',
-  }),
   {
+    color: tokens.kda.foundation.color.neutral.n10,
+    backgroundColor: tokens.kda.foundation.color.neutral.n60,
     selectors: {
+      [`${darkThemeClass} &`]: {
+        backgroundColor: tokens.kda.foundation.color.neutral.n40,
+        color: tokens.kda.foundation.color.neutral.n90,
+      },
       '&:hover': {
-        backgroundColor: vars.colors.$neutral4,
+        opacity: 0.6,
       },
     },
 
@@ -69,67 +72,72 @@ export const hamburgerButtonClass = style([
 ]);
 
 export const searchButtonClass = style([
-  sprinkles({
-    backgroundColor: '$neutral4',
-  }),
+  atoms({ paddingInline: 'sm' }),
   {
     width: 'inherit',
-    paddingInline: vars.sizes.$2,
 
+    color: tokens.kda.foundation.color.neutral.n10,
+    backgroundColor: tokens.kda.foundation.color.neutral.n60,
     selectors: {
       [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$neutral3,
+        backgroundColor: tokens.kda.foundation.color.neutral.n40,
+        color: tokens.kda.foundation.color.neutral.n90,
+      },
+      '&:hover': {
+        opacity: 0.6,
       },
     },
   },
 ]);
 
 export const searchButtonSlashClass = style([
-  sprinkles({
-    borderRadius: '$lg',
-    backgroundColor: '$neutral3',
-    color: '$white',
+  atoms({
+    borderRadius: 'lg',
+    marginInlineStart: 'sm',
   }),
   {
-    marginInlineStart: vars.sizes.$2,
+    backgroundColor: tokens.kda.foundation.color.neutral.n40,
+    color: tokens.kda.foundation.color.neutral.n10,
     selectors: {
       [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$neutral4,
+        backgroundColor: tokens.kda.foundation.color.neutral.n60,
+        color: tokens.kda.foundation.color.neutral.n90,
       },
     },
   },
 ]);
 
 export const headerClass = style([
-  sprinkles({
+  atoms({
     position: 'sticky',
     top: 0,
-    backgroundColor: '$neutral5',
-    color: '$white',
+    backgroundColor: 'layer-1.inverse.default',
   }),
   {
+    color: tokens.kda.foundation.color.neutral.n0,
     gridArea: 'header',
     zIndex: $$navMenu,
     selectors: {
       [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$neutral2,
+        backgroundColor:
+          tokens.kda.foundation.color.background['layer-1'].default,
       },
     },
   },
 ]);
 
 export const skipNavClass = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
     top: 0,
     left: 0,
-    color: '$white',
-    fontWeight: '$bold',
+    fontWeight: 'bodyFont.bold',
     opacity: 0,
+    paddingBlock: 'sm',
+    paddingInline: 'md',
   }),
   {
-    paddingBlock: vars.sizes.$2,
-    paddingInline: vars.sizes.$4,
+    color: tokens.kda.foundation.color.neutral.n0,
     backgroundColor: 'red',
     transform: 'translateY(-40px)',
     transition: 'transform .1s ease-in, opacity .1s ease-in',
@@ -144,16 +152,16 @@ export const skipNavClass = style([
 ]);
 
 export const innerWrapperClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
+    paddingInline: 'md',
   }),
   {
     marginInline: 'auto',
     marginBlock: 0,
-    paddingBlock: vars.sizes.$3,
-    paddingInline: vars.sizes.$4,
+    paddingBlock: tokens.kda.foundation.size.n3,
     maxWidth: $$pageWidth,
   },
 ]);
@@ -163,16 +171,14 @@ export const spacerClass = style({
 });
 
 export const headerIconGroupClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     gap: {
-      xs: '$3',
-      lg: '$3',
+      xs: 'sm',
+      lg: 'sm',
     },
+    marginInlineStart: 'sm',
   }),
-  {
-    marginInlineStart: vars.sizes.$3,
-  },
 ]);
 
 export const socialGroupClass = style({
@@ -185,7 +191,7 @@ export const socialGroupClass = style({
 });
 
 export const animationBackgroundClass = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
     top: 0,
     left: 0,
@@ -204,7 +210,7 @@ export const animationBackgroundShowVariant = styleVariants({
 });
 
 export const navClass = style([
-  sprinkles({
+  atoms({
     display: 'none',
     alignItems: 'center',
     zIndex: 1,
@@ -218,10 +224,10 @@ export const navClass = style([
 ]);
 
 export const ulClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    gap: '$4',
-    padding: 0,
+    gap: 'md',
+    padding: 'no',
     width: '100%',
   }),
   {
@@ -230,49 +236,29 @@ export const ulClass = style([
 ]);
 
 export const navLinkClass = style([
-  sprinkles({
-    color: '$neutral2',
-    fontFamily: '$main',
+  atoms({
+    color: 'text.base.inverse.default',
+    fontFamily: 'bodyFont',
     textDecoration: 'none',
-    borderRadius: '$sm',
+    borderRadius: 'sm',
   }),
   {
-    padding: `${vars.sizes.$1} clamp(${vars.sizes.$1}, .5vw, ${vars.sizes.$12})`,
-    fontSize: `clamp(${vars.sizes.$3}, 1.4vw, ${vars.sizes.$4})`,
+    padding: `${tokens.kda.foundation.size.n1} clamp(${tokens.kda.foundation.size.n1}, .5vw, ${tokens.kda.foundation.size.n12})`,
+    fontSize: `clamp(${tokens.kda.foundation.size.n3}, 1.4vw, ${tokens.kda.foundation.size.n4})`,
     selectors: {
       '&:hover': {
-        color: vars.colors.$neutral2,
+        color: tokens.kda.foundation.color.text.base.inverse.default,
         opacity: '.5',
       },
       [`${darkThemeClass} &`]: {
-        color: vars.colors.$neutral6,
+        color: tokens.kda.foundation.color.text.base.default,
       },
     },
   },
 ]);
 
-export const navLinkActiveVariant = styleVariants({
-  true: {
-    backgroundColor: vars.colors.$neutral2,
-    color: vars.colors.$neutral5,
-
-    selectors: {
-      '&:hover': {
-        color: vars.colors.$neutral5,
-        opacity: '.8',
-      },
-
-      [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$neutral5,
-        color: vars.colors.$neutral1,
-      },
-    },
-  },
-  false: {},
-});
-
 export const hideOnMobileClass = style([
-  sprinkles({
+  atoms({
     display: 'none',
   }),
   responsiveStyle({
