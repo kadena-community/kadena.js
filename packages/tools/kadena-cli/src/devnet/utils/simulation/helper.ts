@@ -4,12 +4,12 @@ import { getBalance } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import type { ChainId } from '@kadena/types';
 import seedrandom from 'seedrandom';
-import { SIMULATION_CONFIG } from './config.js';
+import { simulationDefaults } from '../../../constants/devnets.js';
 import { IAccount } from './utils.js';
 
 export const generateAccount = async (
   keys: number = 1,
-  chainId: ChainId = SIMULATION_CONFIG.DEFAULT_CHAIN_ID,
+  chainId: ChainId = simulationDefaults.DEFAULT_CHAIN_ID,
 ): Promise<IAccount> => {
   const keyPairs = Array.from({ length: keys }, () => genKeyPair());
   const account = await createPrincipal(
@@ -19,9 +19,9 @@ export const generateAccount = async (
       },
     },
     {
-      host: SIMULATION_CONFIG.NETWORK_HOST,
+      host: simulationDefaults.NETWORK_HOST,
       defaults: {
-        networkId: SIMULATION_CONFIG.NETWORK_ID,
+        networkId: simulationDefaults.NETWORK_ID,
         meta: { chainId },
       },
     },
@@ -102,9 +102,9 @@ export const getAccountBalance = async ({
 }) => {
   const result = await getBalance(
     account,
-    SIMULATION_CONFIG.NETWORK_ID,
-    chainId || SIMULATION_CONFIG.DEFAULT_CHAIN_ID,
-    SIMULATION_CONFIG.NETWORK_HOST,
+    simulationDefaults.NETWORK_ID,
+    chainId || simulationDefaults.DEFAULT_CHAIN_ID,
+    simulationDefaults.NETWORK_HOST,
   );
 
   return result || '0';

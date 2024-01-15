@@ -3,16 +3,18 @@ import { Pact, createSignWithKeypair } from '@kadena/client';
 import { submitClient } from '@kadena/client-utils/core';
 import { PactNumber } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
-import { SIMULATION_CONFIG } from '../config.js';
+import { simulationDefaults } from '../../../../constants/devnets.js';
 import { stringifyProperty } from '../helper.js';
 import { IAccount, sender00 } from '../utils.js';
 
 export async function safeTransfer({
+  network,
   receiver,
-  chainId = SIMULATION_CONFIG.DEFAULT_CHAIN_ID,
+  chainId = simulationDefaults.DEFAULT_CHAIN_ID,
   sender = sender00,
   amount = 100,
 }: {
+  network: { host: string; id: string };
   receiver: IAccount;
   chainId?: ChainId;
   sender?: IAccount;
@@ -32,10 +34,10 @@ export async function safeTransfer({
   );
 
   return submitClient({
-    host: SIMULATION_CONFIG.NETWORK_HOST,
+    host: network.host,
     sign: createSignWithKeypair([...sender.keys, ...receiver.keys]),
     defaults: {
-      networkId: SIMULATION_CONFIG.NETWORK_ID,
+      networkId: network.id,
     },
   })(
     Pact.builder
@@ -85,7 +87,7 @@ export async function safeTransfer({
         senderAccount: sender.account,
         ttl: 8 * 60 * 60, //8 hours
       })
-      .setNetworkId(SIMULATION_CONFIG.NETWORK_ID)
+      .setNetworkId(network.id)
       .getCommand(),
   ).executeTo('listen');
 }

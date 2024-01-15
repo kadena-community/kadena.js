@@ -2,15 +2,16 @@ import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCrossChain } from '@kadena/client-utils/coin';
 
-import { SIMULATION_CONFIG } from '../config.js';
 import { IAccount, sender00 } from '../utils.js';
 
 export async function crossChainTransfer({
+  network,
   sender,
   receiver,
   amount,
   gasPayer = sender00,
 }: {
+  network: { host: string; id: string };
   sender: IAccount;
   receiver: IAccount;
   amount: number;
@@ -57,9 +58,9 @@ export async function crossChainTransfer({
       amount: amount.toString(),
     },
     {
-      host: SIMULATION_CONFIG.NETWORK_HOST,
+      host: network.host,
       defaults: {
-        networkId: SIMULATION_CONFIG.NETWORK_ID,
+        networkId: network.id,
       },
       sign: createSignWithKeypair([...sender.keys, ...gasPayer.keys]),
     },

@@ -2,16 +2,18 @@ import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
 import { PactNumber } from '@kadena/pactjs';
-import { SIMULATION_CONFIG } from '../config.js';
+import { simulationDefaults } from '../../../../constants/devnets.js';
 import { stringifyProperty } from '../helper.js';
 import { IAccount, sender00 } from '../utils.js';
 
 export async function transfer({
+  network,
   receiver,
-  chainId = SIMULATION_CONFIG.DEFAULT_CHAIN_ID,
+  chainId = simulationDefaults.DEFAULT_CHAIN_ID,
   sender = sender00,
   amount = 100,
 }: {
+  network: { host: string; id: string };
   receiver: IAccount;
   chainId?: ChainId;
   sender?: IAccount;
@@ -44,9 +46,9 @@ export async function transfer({
       },
     },
     {
-      host: SIMULATION_CONFIG.NETWORK_HOST,
+      host: network.host,
       defaults: {
-        networkId: SIMULATION_CONFIG.NETWORK_ID,
+        networkId: network.id,
       },
       sign: createSignWithKeypair(sender.keys),
     },
