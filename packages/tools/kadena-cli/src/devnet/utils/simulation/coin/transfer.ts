@@ -4,7 +4,7 @@ import { transferCreate } from '@kadena/client-utils/coin';
 import { PactNumber } from '@kadena/pactjs';
 import { simulationDefaults } from '../../../../constants/devnets.js';
 import { stringifyProperty } from '../helper.js';
-import type { IAccount} from '../utils.js';
+import type { IAccount } from '../utils.js';
 import { sender00 } from '../utils.js';
 
 export async function transfer({

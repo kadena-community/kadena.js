@@ -5,7 +5,7 @@ import { PactNumber } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
 import { simulationDefaults } from '../../../../constants/devnets.js';
 import { stringifyProperty } from '../helper.js';
-import type { IAccount} from '../utils.js';
+import type { IAccount } from '../utils.js';
 import { sender00 } from '../utils.js';
 
 export async function safeTransfer({
