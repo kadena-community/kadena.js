@@ -3,10 +3,10 @@ import { AsideComponent } from '../components/aside.component';
 
 export class TransactionsPage {
   private readonly _page: Page;
-  public aside: AsideComponent;
+  public asidePanel: AsideComponent;
 
   public constructor(page: Page) {
     this._page = page;
-    this.aside = new AsideComponent(this._page);
+    this.asidePanel = new AsideComponent(this._page);
   }
 }

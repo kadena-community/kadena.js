@@ -3,11 +3,12 @@ import { test } from '../../support/fixtures/test.fixture';
 import {
   createAccount,
   generateAccount,
-} from '../../support/helpers/accounts.helper';
+} from '../../support/helpers/client-utils.helper';
 
 test.beforeEach(async ({ page, toolsApp }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
     await page.goto('/');
+    await toolsApp.homePage.header.goToPage('Faucet');
     await toolsApp.homePage.header.setNetwork('devnet');
   });
 });
