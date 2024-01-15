@@ -2,7 +2,8 @@ import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCrossChain } from '@kadena/client-utils/coin';
 
-import { IAccount, sender00 } from '../utils.js';
+import type { IAccount} from '../utils.js';
+import { sender00 } from '../utils.js';
 
 export async function crossChainTransfer({
   network,

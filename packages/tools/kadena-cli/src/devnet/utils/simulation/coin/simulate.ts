@@ -1,6 +1,5 @@
 import type { ChainId } from '@kadena/client';
 import { simulationDefaults } from '../../../../constants/devnets.js';
-import { IDevnetsCreateOptions } from '../../devnetHelpers.js';
 import type { TransferType } from '../file.js';
 import { appendToFile, createFile } from '../file.js';
 import {
@@ -12,7 +11,8 @@ import {
   seedRandom,
   stringifyProperty,
 } from '../helper.js';
-import { IAccount, sender00 } from '../utils.js';
+import type { IAccount } from '../utils.js';
+import { sender00 } from '../utils.js';
 import { crossChainTransfer } from './crosschain-transfer.js';
 import { safeTransfer } from './safe-transfer.js';
 import { transfer } from './transfer.js';

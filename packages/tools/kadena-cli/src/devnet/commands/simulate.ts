@@ -1,10 +1,8 @@
 import debug from 'debug';
-import {
-  CreateCommandReturnType,
-  createCommand,
-} from '../../utils/createCommand.js';
+import type { CreateCommandReturnType } from '../../utils/createCommand.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { containerIsRunning, guardDocker, runDevnet } from '../utils/docker.js';
+import { containerIsRunning, guardDocker } from '../utils/docker.js';
 import { simulateCoin } from '../utils/simulation/coin/simulate.js';
 
 export const simulateCommand: CreateCommandReturnType = createCommand(

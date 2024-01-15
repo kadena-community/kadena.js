@@ -1,4 +1,4 @@
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import type { IDevnetsCreateOptions } from '../devnet/utils/devnetHelpers.js';
 
 export interface IDefaultDevnetOptions {
