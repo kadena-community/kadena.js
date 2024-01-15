@@ -1,18 +1,18 @@
 export const sidebarLinks: { title: string; href: string }[] = [
   {
-    title: 'Tutorial',
-    href: 'https://kadena.io/',
+    title: 'Tutorials',
+    href: 'https://docs.kadena.io/build/quickstart',
   },
   {
     title: 'Documentation',
-    href: 'https://kadena.io/',
+    href: 'https://docs.kadena.io',
   },
   {
     title: 'Privacy & Policy',
-    href: 'https://kadena.io/',
+    href: 'https://www.kadena.io/privacy-policy',
   },
   {
-    title: 'Terms of use',
-    href: 'https://kadena.io/',
+    title: 'Terms and conditions',
+    href: 'https://www.kadena.io/terms-and-conditions',
   },
 ];

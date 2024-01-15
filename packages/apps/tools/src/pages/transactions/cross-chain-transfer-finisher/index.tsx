@@ -527,7 +527,7 @@ const CrossChainTransferFinisher: FC = () => {
                     <TextField
                       disabled={!isAdvancedOptions}
                       helperText={t(
-                        'This input field will only be enabled if the user is in expert mode',
+                        'This input field will only be enabled if the user is in Backend or dApp Developer mode',
                       )}
                       {...register('gasLimit', { shouldUnregister: true })}
                       label={t('Gas Limit')}

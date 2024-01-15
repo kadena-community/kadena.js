@@ -95,13 +95,13 @@ This document covers high-level test scenarios for Tools Website and is intended
 
 #### Scenario 1: Successfully finish an incomplete cross chain transfer
 - **Objective:** User can finish an incomplete cross chain transfer successfully.
-- **Preconditions:** User has a valid request key already created in a specific wallet (like Chainweaver). The transfer is incomplete since the receiving account does not have nay funds on the target chain.
+- **Preconditions:** User has a valid request key already created in a specific wallet (like Chainweaver). The transfer is incomplete since the receiving account does not have any funds on the target chain.
 - **Inputs:** User enters a valid request key.
 - **Expected Outcome:** The user enters a valid request key and sees information on the cross chain transfer (sender, receiver, gas station account and network data). The user clicks on 'Finish transaction' button and sees information (a notification at the top of the screen) that the cross chain transfer was successful to the given account.
 
 #### Scenario 2: Get error on entering invalid request key
 - **Objective:** User cannot get info on the cross chain transfer.
-- **Preconditions:** User has some request key already created in a specific wallet (like Chainweaver).
+- **Preconditions:** User has some invalid request key.
 - **Inputs:** User enters an invalid request key.
 - **Expected Outcome:** The user enters an invalid request key (non-existent) and the input shows error status. There is no info on the transfer on the main panel.
 
