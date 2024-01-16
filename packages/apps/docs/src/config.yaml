@@ -76,6 +76,9 @@ pages:
       docs:
         url: /docs
         file: /participate/docs.md
+      developers:
+        url: /developers
+        file: /participate/developer.md
   tutorials:
     url: /tutorials
     file: /tutorials/tutorials.md

@@ -1,6 +1,6 @@
 ---
-title: A Step-By-Step Guide to Writing Pact Smart Contract
-description: A Step-By-Step Guide to Writing Pact Smart Contract
+title: "Workshop: Build a Faucet application"
+description: "Workshop: Build a Faucet application"
 menu: "Workshop: Faucet application"
 label: "Workshop: Faucet application"
 order: 4

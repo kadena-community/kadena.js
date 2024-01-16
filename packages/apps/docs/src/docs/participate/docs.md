@@ -3,30 +3,28 @@ title: Contribute to Kadena Docs
 description:
   How to contribute to the docs from docs.kadena.io, GitHub, or a local
   environment.
-menu: Docs
-label: Docs
+menu: Contribute to documentation
+label: Contribute to documentation
 order: 5
 layout: full
 ---
 
 # Contribute to Kadena Docs
 
-The Kadena documentation is open source and hosted on GitHub. Using our
-public-facing [Docs](https://github.com/kadena-community/docs) repo in the
+The Kadena documentation is open source and hosted on GitHub. 
+Using our public-facing [Docs](https://github.com/kadena-community/docs) repo in the
 [Kadena Community GitHub](https://github.com/kadena-community), you can make
 suggested changes using pull requests. This allows community members to improve
 the documentation and helps improve the Kadena developer experience.
 
-There are 3 ways to contribute to the Docs depending on where you are starting
+There are three ways to contribute to Kadena documentation depending on where you are starting
 from.
 
 - From the Docs
 - From GitHub
 - From a Local Environment.
 
-[test link](kadena-dao.md) This article goes over each of these options to help
-you suggest changes to the
-[Kadena Docs](https://github.com/kadena-community/docs).
+This article goes over each of these options to help you suggest changes to the [Kadena Docs](https://github.com/kadena-community/docs).
 
 ## Before Getting Started
 
@@ -41,15 +39,6 @@ Create a GitHub account [here](https://github.com/) and read their
 
 Learn about [Markdown](https://www.markdownguide.org/) to better understand the
 syntax for editing documentation.
-
-![github](/assets/docs/2-contribute.png)
-
-**Docusaurus**
-
-Read the [Docusaurus Docs](https://docusaurus.io/) to get familiar with the tool
-used to publish the Kadena Documentation.
-
-![github](/assets/docs/3-contribute.png)
 
 ## Edit from the Docs
 
