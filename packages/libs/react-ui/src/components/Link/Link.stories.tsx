@@ -96,7 +96,7 @@ export const _Link: LinkStory = {
   name: 'Link',
   args: {
     text: 'Click me',
-    variant: 'contained',
+    variant: 'text',
     color: 'primary',
     isDisabled: false,
     isCompact: false,
