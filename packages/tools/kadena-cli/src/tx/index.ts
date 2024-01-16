@@ -5,6 +5,7 @@ import { createSignTransactionWithKeypairCommand } from './commands/txSignWithKe
 import { createSignTransactionWithLocalWalletCommand } from './commands/txSignWithLocalWallet.js';
 import { createSignTransactionWithWalletConnect } from './commands/txSignWithWalletConnect.js';
 import { createSignTransactionWithWebAuthN } from './commands/txSignWithWebAuthN.js';
+import { createTestSignedTransactionCommand } from './commands/txTestSignedTransaction.js';
 
 import type { Command } from 'commander';
 
@@ -22,4 +23,5 @@ export function txCommandFactory(program: Command, version: string): void {
   createSignTransactionWithWalletConnect(txProgram, version);
   createSignTransactionWithChainweaver(txProgram, version);
   createSignTransactionWithWebAuthN(txProgram, version);
+  createTestSignedTransactionCommand(txProgram, version);
 }

@@ -81,6 +81,7 @@ export async function getWallet(walletFile: string): Promise<IWallet | null> {
 
 export async function getWalletContent(
   walletPath: string,
+  // eslint-disable-next-line @rushstack/no-new-null
 ): Promise<string | null> {
   const wallet = await getWallet(walletPath);
   if (!wallet) return null;
@@ -271,6 +272,15 @@ export function extractStartIndex(
   }
 }
 
+/*
+ * Parses a string input to extract key pairs in either JSON or custom string format.
+ *
+ * @param {string} input - The string input containing the key pairs in either JSON
+ *                         array format or custom string format.
+ * @returns {IKeyPair[]} An array of objects, each containing 'publicKey' and 'secretKey'.
+ * @throws {Error} If the input is neither valid JSON format nor valid custom string format,
+ *                 or if required keys are missing in either format.
+ */
 export function parseKeyPairsInput(input: string): IKeyPair[] {
   try {
     const keyPairs = JSON.parse(input);

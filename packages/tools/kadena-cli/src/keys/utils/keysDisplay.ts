@@ -16,6 +16,7 @@ import { services } from '../../services/index.js';
 import type { IWallet } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
+// eslint-disable-next-line @rushstack/no-new-null
 export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
   if (!wallet) return;
 

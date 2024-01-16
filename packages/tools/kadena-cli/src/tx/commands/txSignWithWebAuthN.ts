@@ -5,10 +5,10 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 import type { CommandResult } from '../../utils/command.util.js';
-import { assertCommandError } from '../../utils/command.util.js';
+// import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { saveSignedTransaction } from '../utils/storage.js';
+// import { saveSignedTransaction } from '../utils/storage.js';
 /**
  * Signs a Kadena transaction with the provided key pair.
  *
@@ -59,10 +59,10 @@ export const createSignTransactionWithWebAuthN: (
   async (config) => {
     try {
       debug('sign-transaction:webauthn:action')({ config });
-      const {
-        txTransaction: { unsignedCommand },
-        ...rest
-      } = config;
+      // const {
+      //   txTransaction: { unsignedCommand },
+      //   ...rest
+      // } = config;
       // const data = { unsignedCommand, ...rest };
 
       // const result = await signTransactionAction(data);

@@ -8,7 +8,6 @@ import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 import { join } from 'path';
 import { TRANSACTION_DIR, WALLET_DIR } from '../../constants/config.js';
 import {
-  ensureWalletExists,
   getKeysFromWallet,
   getLegacyKeysFromWallet,
   toHexStr,
@@ -22,10 +21,16 @@ import { services } from '../../services/index.js';
 
 import { kadenaDecrypt } from '@kadena/hd-wallet';
 
-export async function getAllTransactions(): Promise<string[]> {
+/**
+ * Retrieves all transaction file names from the transaction directory based on the signature status.
+ * @param {boolean} signed - Whether to retrieve signed or unsigned transactions.
+ * @returns {Promise<string[]>} A promise that resolves to an array of transaction file names.
+ * @throws Throws an error if reading the transaction directory fails.
+ */
+export async function getTransactions(signed: boolean): Promise<string[]> {
   try {
     const files = await services.filesystem.readDir(TRANSACTION_DIR);
-    return files.filter((file) => !file.includes('-signed'));
+    return files.filter((file) => signed === file.includes('-signed'));
   } catch (error) {
     console.error(`Error reading transaction directory: ${error}`);
     throw error;
@@ -33,7 +38,8 @@ export async function getAllTransactions(): Promise<string[]> {
 }
 
 /**
- * @returns {string}
+ * Formats the current date and time into a string with the format 'YYYY-MM-DD-HH:MM'.
+ * @returns {string} Formatted date and time string.
  */
 export function formatDate(): string {
   const now = new Date();
@@ -64,20 +70,26 @@ export function formatDate(): string {
 // };
 
 /**
- * @param  obj
- * @returns If the object is of type ICommand.
+ * Helper function to check if an object is of type ICommand
+ * @param {ICommand | IUnsignedCommand} obj - The object to check.
+ * @returns {boolean} True if the object is of type ICommand, false otherwise.
  */
-// Helper function to check if an object is of type ICommand
 function isCommand(obj: ICommand | IUnsignedCommand): obj is ICommand {
   return (
     obj !== undefined &&
     typeof obj === 'object' &&
     'cmd' in obj &&
     'hash' in obj &&
-    'sigs' in obj
+    'sigs' in obj &&
+    obj.sigs.every((sig) => sig !== undefined)
   );
 }
 
+/**
+ * Creates a function to decrypt secret keys using the provided password.
+ * @param {string} password - The password used for decryption.
+ * @returns {(encrypted: EncryptedString) => string}
+ */
 export const decryptSecretKeys = (
   password: string,
 ): ((encrypted: EncryptedString) => string) => {
@@ -86,6 +98,11 @@ export const decryptSecretKeys = (
   };
 };
 
+/**
+ * Creates a function to sign a transaction with the provided keys.
+ * @param {IKeyPair[]} keys - The key pairs used for signing.
+ * @returns {(config: { unsignedCommand: IUnsignedCommand }) => Promise<ICommand | undefined>}
+ */
 export const signTransaction = (
   keys: IKeyPair[],
 ): ((config: {
@@ -122,63 +139,102 @@ export const signTransaction = (
   };
 };
 
+/**
+ * Retrieves wallet directories, optionally filtering by wallet name.
+ * @param {string} [walletName] - Optional name of the wallet.
+ * @returns {Promise<string[]>}
+ */
+export async function getWalletDirectories(
+  walletName?: string,
+): Promise<string[]> {
+  if (walletName !== undefined) {
+    return [walletName];
+  }
+  return services.filesystem.readDir(WALLET_DIR);
+}
+
+/**
+ * Retrieves key file names from the specified directory.
+ * @param {string} dirName - The name of the directory to search.
+ * @returns {Promise<string[]>}
+ */
+export async function getKeyFilesFromDirectory(
+  dirName: string,
+): Promise<string[]> {
+  const keyFiles = await getKeysFromWallet(dirName);
+  const legacyKeyFiles = await getLegacyKeysFromWallet(dirName);
+  return [...keyFiles, ...legacyKeyFiles];
+}
+
+/**
+ * Finds and returns a secret key matching any of the provided public keys.
+ * @param {string[]} publicKeys - Array of public keys to match.
+ * @param {string} walletDir - The wallet directory to search in.
+ * @param {string} keyFile - The key file to check.
+ * @returns {Promise<{ publicKey: string; secretKey: EncryptedString } | null>}
+ */
+export async function getSecretKeyIfMatch(
+  publicKeys: string[],
+  walletDir: string,
+  keyFile: string,
+  // eslint-disable-next-line @rushstack/no-new-null
+): Promise<{ publicKey: string; secretKey: EncryptedString } | null> {
+  const keyContent: TSeedContent | LocalIKeyPair | undefined =
+    await readKeyFileContent(join(walletDir, keyFile));
+  if (
+    keyContent !== undefined &&
+    typeof keyContent !== 'string' &&
+    publicKeys.includes(keyContent.publicKey)
+  ) {
+    return {
+      publicKey: keyContent.publicKey,
+      secretKey: keyContent.secretKey as EncryptedString,
+    };
+  }
+  return null;
+}
+
+/**
+ * Finds secret keys corresponding to the provided public keys.
+ * @param {string[]} publicKeys - Array of public keys to find secret keys for.
+ * @param {string} [walletName] - Optional name of the wallet.
+ * @returns {Promise<Map<string, EncryptedString | undefined>>}
+ */
 export async function findSecretKeys(
   publicKeys: string[],
   walletName?: string,
 ): Promise<Map<string, EncryptedString | undefined>> {
-  await ensureWalletExists();
-
-  const searchInWallet = async (
-    name: string,
-  ): Promise<Map<string, EncryptedString | undefined>> => {
-    const walletDir = join(WALLET_DIR, name);
-    const secretKeysMap = new Map<string, EncryptedString | undefined>();
-
-    if (!(await services.filesystem.directoryExists(walletDir))) {
-      return secretKeysMap;
-    }
-
-    const keyFiles = await getKeysFromWallet(name);
-    const legacyKeyFiles = await getLegacyKeysFromWallet(name);
-    const allKeyFiles: string[] = [...keyFiles, ...legacyKeyFiles];
-
-    for (const keyFile of allKeyFiles) {
-      const keyContent: TSeedContent | LocalIKeyPair | undefined =
-        await readKeyFileContent(join(walletDir, keyFile));
-      if (
-        keyContent !== undefined &&
-        typeof keyContent !== 'string' &&
-        publicKeys.includes(keyContent.publicKey)
-      ) {
-        secretKeysMap.set(
-          keyContent.publicKey,
-          keyContent.secretKey as EncryptedString,
-        );
-      }
-    }
-
-    return secretKeysMap;
-  };
-
+  const walletDirs = await getWalletDirectories(walletName);
   const secretKeysMap = new Map<string, EncryptedString | undefined>();
 
-  if (walletName !== undefined) {
-    return searchInWallet(walletName);
-  } else {
-    const walletDirs: string[] = await services.filesystem.readDir(WALLET_DIR);
-    for (const dirName of walletDirs) {
-      const walletSecretKeysMap = await searchInWallet(dirName);
-      walletSecretKeysMap.forEach((secretKey, publicKey) => {
-        if (!secretKeysMap.has(publicKey)) {
-          secretKeysMap.set(publicKey, secretKey);
-        }
-      });
+  for (const dirName of walletDirs) {
+    const walletDir = join(WALLET_DIR, dirName);
+    if (!(await services.filesystem.directoryExists(walletDir))) {
+      continue;
     }
+
+    const keyFiles = await getKeyFilesFromDirectory(dirName);
+    const keyPromises = keyFiles.map((keyFile) =>
+      getSecretKeyIfMatch(publicKeys, walletDir, keyFile),
+    );
+    const keys = await Promise.all(keyPromises);
+
+    keys.forEach((key) => {
+      if (key && !secretKeysMap.has(key.publicKey)) {
+        secretKeysMap.set(key.publicKey, key.secretKey);
+      }
+    });
   }
 
   return secretKeysMap;
 }
 
+/**
+ * Finds key pairs by their public keys.
+ * @param {string[]} publicKeys - Array of public keys to find matching key pairs for.
+ * @param {string} [walletName] - Optional name of the wallet.
+ * @returns {Promise<IKeyPair[]>}
+ */
 export async function findKeyPairsByPublicKeys(
   publicKeys: string[],
   walletName?: string,
@@ -196,6 +252,11 @@ export async function findKeyPairsByPublicKeys(
   return keyPairs;
 }
 
+/**
+ * Extracts public keys from a transaction command string.
+ * @param {string} cmd - The transaction command string.
+ * @returns {string[]}
+ */
 export function extractPublicKeysFromTransactionCmd(cmd: string): string[] {
   try {
     const transaction: IPactCommand = JSON.parse(cmd);
@@ -206,6 +267,12 @@ export function extractPublicKeysFromTransactionCmd(cmd: string): string[] {
   }
 }
 
+/**
+ * retrieves key pairs used as signers for a transaction from an HD wallet.
+ * @param {string} cmd - The transaction command string.
+ * @param {string} [walletName] - Optional name of the wallet.
+ * @returns {Promise<IKeyPair[]>}
+ */
 export async function getSignersFromTransactionHd(
   cmd: string,
   walletName?: string,
@@ -216,6 +283,12 @@ export async function getSignersFromTransactionHd(
   return signers;
 }
 
+/**
+ * Retrieves key pairs used as signers for a transaction from provided key pairs.
+ * @param {string} cmd - The transaction command string.
+ * @param {IKeyPair[]} keyPairs - Array of key pairs to filter from.
+ * @returns {Promise<IKeyPair[]>}
+ */
 export async function getSignersFromTransactionPlain(
   cmd: string,
   keyPairs: IKeyPair[],

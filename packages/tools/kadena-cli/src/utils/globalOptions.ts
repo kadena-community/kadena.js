@@ -2,26 +2,24 @@ import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
   account,
-  // contract,
   devnet as devnetPrompts,
   generic,
   genericActionsPrompts,
   keys,
-  // marmalade,
   networks,
   security,
   tx,
   typescript,
 } from '../prompts/index.js';
-import { services } from '../services/index.js';
 
-import type { ChainId, IUnsignedCommand } from '@kadena/types';
+import { createTransactionOption } from './optionCreator.js';
+
+import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
 
 import {
   KEY_EXT,
-  TRANSACTION_DIR,
   WALLET_DIR,
   WALLET_EXT,
   WALLET_LEGACY_EXT,
@@ -542,36 +540,8 @@ export const globalOptions = {
       'enter your unsigned command to sign',
     ),
   }),
-  txTransaction: createOption({
-    key: 'txTransaction',
-    prompt: tx.transactionSelectPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-t, --tx-transaction <txTransaction>',
-      'Please select your transaction file containing your UnsignedCommand to sign',
-    ),
-    transform: async (transactionFile: string) => {
-      try {
-        const transactionFilePath = join(TRANSACTION_DIR, transactionFile);
-        const fileContent =
-          await services.filesystem.readFile(transactionFilePath);
-        if (fileContent === null) {
-          throw Error(`Failed to read file at path: ${transactionFilePath}`);
-        }
-        const transaction = JSON.parse(fileContent);
-        tx.IUnsignedCommandSchema.safeParse(transaction);
-        return {
-          transactionFile,
-          unsignedCommand: transaction as IUnsignedCommand,
-        };
-      } catch (error) {
-        console.error(
-          `Error processing transaction file: ${transactionFile}, failed with error: ${error}`,
-        );
-        throw error;
-      }
-    },
-  }),
+  txTransaction: createTransactionOption(false),
+  txSignedTransaction: createTransactionOption(true),
 } as const;
 
 export type GlobalOptions = typeof globalOptions;

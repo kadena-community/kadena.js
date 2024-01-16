@@ -92,7 +92,7 @@ export const createSignTransactionWithLocalWalletCommand: (
           : removeAfterFirstDot(keyWallet.fileName);
 
       const result = await signActionHd(
-        unsignedCommand,
+        unsignedCommand as IUnsignedCommand,
         walletName,
         securityPassword,
       );

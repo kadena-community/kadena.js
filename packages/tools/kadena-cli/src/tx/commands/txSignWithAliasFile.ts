@@ -5,10 +5,10 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 import type { CommandResult } from '../../utils/command.util.js';
-import { assertCommandError } from '../../utils/command.util.js';
+// import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { saveSignedTransaction } from '../utils/storage.js';
+// import { saveSignedTransaction } from '../utils/storage.js';
 /**
  * Signs a Kadena transaction with the provided key pair.
  *
@@ -60,19 +60,19 @@ export const createSignTransactionWithAliasFileCommand: (
   async (config) => {
     try {
       debug('sign-transaction:alias-file:action')({ config });
-      const {
-        txTransaction: { unsignedCommand },
-        ...rest
-      } = config;
-      const data = { unsignedCommand, ...rest };
+      // const {
+      //   txTransaction: { unsignedCommand },
+      //   ...rest
+      // } = config;
+      // const data = { unsignedCommand, ...rest };
 
-      const result = await signTransactionAction(data);
-      assertCommandError(result);
+      // const result = await signTransactionAction({});
+      // assertCommandError(result);
 
-      await saveSignedTransaction(
-        result.data,
-        config.txTransaction.transactionFile,
-      );
+      // await saveSignedTransaction(
+      //   result.data,
+      //   config.txTransaction.transactionFile,
+      // );
 
       console.log(chalk.green(`\nTransaction signed successfully.\n`));
     } catch (error) {

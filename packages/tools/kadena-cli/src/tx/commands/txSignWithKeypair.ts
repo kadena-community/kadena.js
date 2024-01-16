@@ -67,7 +67,10 @@ export const createSignTransactionWithKeypairCommand: (
         txTransaction: { unsignedCommand },
       } = config;
 
-      const result = await signActionPlain(unsignedCommand, config.keyPairs);
+      const result = await signActionPlain(
+        unsignedCommand as IUnsignedCommand,
+        config.keyPairs,
+      );
 
       assertCommandError(result);
 
