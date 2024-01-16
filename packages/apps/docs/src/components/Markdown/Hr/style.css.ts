@@ -1,9 +1,9 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { atoms } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const hr = style([
-  sprinkles({
-    margin: '$10',
-    borderColor: '$neutral4',
+  atoms({
+    margin: 'xxxl',
+    borderColor: 'base.boldest',
   }),
 ]);
