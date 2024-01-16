@@ -61,7 +61,7 @@ export const createTestSignedTransactionCommand: (
       });
       assertCommandError(result);
 
-      txDisplayTransaction(result.data);
+      txDisplayTransaction(result.data, 'txSignedTransaction result:');
     } catch (error) {
       console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
       process.exit(1);
