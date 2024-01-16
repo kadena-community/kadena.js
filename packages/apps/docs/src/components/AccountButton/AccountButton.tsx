@@ -1,14 +1,33 @@
 import { useAccount } from '@/hooks/useAccount';
-import { IconButton } from '@kadena/react-ui';
+import { IconButton, SystemIcon } from '@kadena/react-ui';
+import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import {
+  headerButtonClass,
+  iconButtonClass,
+} from '../Layout/components/Header/styles.css';
 
 export const AccountButton: FC = () => {
   const { login, logout, account } = useAccount();
 
   if (account) {
-    return <IconButton icon="Account" onClick={logout} />;
+    return (
+      <button
+        onClick={logout}
+        className={classNames(headerButtonClass, iconButtonClass)}
+      >
+        <SystemIcon.KIcon />
+      </button>
+    );
   }
 
-  return <IconButton icon="WIcon" onClick={login} />;
+  return (
+    <button
+      onClick={login}
+      className={classNames(headerButtonClass, iconButtonClass)}
+    >
+      <SystemIcon.Account />
+    </button>
+  );
 };
