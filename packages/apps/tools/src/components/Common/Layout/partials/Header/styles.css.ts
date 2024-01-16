@@ -7,6 +7,12 @@ export const walletConnectWrapperStyle = style([
   }),
 ]);
 
+export const headerButtonsWrapperStyle = style([
+  sprinkles({
+    marginRight: '$4',
+  }),
+]);
+
 export const headerButtonStyle = style([
   sprinkles({
     outline: 'none',
@@ -14,7 +20,6 @@ export const headerButtonStyle = style([
     border: 'none',
     cursor: 'pointer',
     padding: '$3',
-    marginRight: '$2',
     color: '$gray40',
   }),
   {

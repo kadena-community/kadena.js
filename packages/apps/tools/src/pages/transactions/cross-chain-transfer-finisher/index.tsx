@@ -127,9 +127,11 @@ const CrossChainTransferFinisher: FC = () => {
   const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
     undefined,
   );
-  const [activeInfoTag, setActiveInfoTag] = useState<
-    { tag: string; title: string; content: string } | undefined
-  >(undefined);
+  const [activeInfoTag, setActiveInfoTag] = useState<{
+    tag: string;
+    title: string;
+    content: string;
+  }>(helpInfoSections[0]);
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const networkData: INetworkData = networksData.filter(
@@ -590,43 +592,41 @@ const CrossChainTransferFinisher: FC = () => {
         </section>
       </form>
 
-      {activeInfoTag ? (
-        <DrawerToolbar
-          ref={drawerPanelRef}
-          initialOpenItem={openItem}
-          sections={[
-            {
-              icon: 'Information',
-              title: activeInfoTag.title,
-              children: (
-                <div className={infoBoxStyle}>
-                  <span>{activeInfoTag.content}</span>
-                </div>
-              ),
-            },
-            {
-              icon: 'Link',
-              title: t('Resources & Links'),
-              children: (
-                <div className={linksBoxStyle}>
-                  <Accordion.Root>
-                    {sidebarLinks.map((item, index) => (
-                      <MenuLinkButton
-                        title={item.title}
-                        key={`menu-link-${index}`}
-                        href={item.href}
-                        active={item.href === router.pathname}
-                        target="_blank"
-                        onClick={handleOnClickLink}
-                      />
-                    ))}
-                  </Accordion.Root>
-                </div>
-              ),
-            },
-          ]}
-        />
-      ) : null}
+      <DrawerToolbar
+        ref={drawerPanelRef}
+        initialOpenItem={openItem}
+        sections={[
+          {
+            icon: 'Information',
+            title: activeInfoTag.title,
+            children: (
+              <div className={infoBoxStyle}>
+                <span>{activeInfoTag.content}</span>
+              </div>
+            ),
+          },
+          {
+            icon: 'Link',
+            title: t('Resources & Links'),
+            children: (
+              <div className={linksBoxStyle}>
+                <Accordion.Root>
+                  {sidebarLinks.map((item, index) => (
+                    <MenuLinkButton
+                      title={item.title}
+                      key={`menu-link-${index}`}
+                      href={item.href}
+                      active={item.href === router.pathname}
+                      target="_blank"
+                      onClick={handleOnClickLink}
+                    />
+                  ))}
+                </Accordion.Root>
+              </div>
+            ),
+          },
+        ]}
+      />
 
       <OptionsModal
         isOpen={openModal}
