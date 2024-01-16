@@ -1,4 +1,10 @@
-import { ChainId, Pact, readKeyset } from '@kadena/client';
+import {
+  ChainId,
+  IPactModules,
+  Pact,
+  PactReturnType,
+  readKeyset,
+} from '@kadena/client';
 import {
   addKeyset,
   composePactCommand,
@@ -20,34 +26,30 @@ interface ICreateTokenIdInput {
       pred: 'keys-all' | 'keys-2' | 'keys-any';
     };
   };
-  networkId: string;
-  host: IClientConfig['host'];
 }
 
-export async function createTokenId({
+export const createTokenIdCommand = ({
   policies = [],
   uri,
   precision,
   creator,
-  host,
-  networkId,
   chainId,
-}: ICreateTokenIdInput): Promise<string> {
-  return (await dirtyReadClient({
-    host,
-    defaults: {
-      networkId,
-    },
-  })(
-    composePactCommand(
-      execution(
-        Pact.modules['marmalade-v2.ledger']['create-token-id'](
-          { precision, uri, policies },
-          readKeyset('creation-guard'),
-        ),
+}: ICreateTokenIdInput) =>
+  composePactCommand(
+    execution(
+      Pact.modules['marmalade-v2.ledger']['create-token-id'](
+        { precision, uri, policies },
+        readKeyset('creation-guard'),
       ),
-      addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
-      setMeta({ senderAccount: creator.account, chainId }),
     ),
-  ).execute()) as string;
-}
+    addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
+    setMeta({ senderAccount: creator.account, chainId }),
+  );
+
+export const createTokenId = (
+  inputs: ICreateTokenIdInput,
+  config: IClientConfig,
+) =>
+  dirtyReadClient<
+    PactReturnType<IPactModules['marmalade-v2.ledger']['create-token-id']>
+  >(config)(createTokenIdCommand(inputs));

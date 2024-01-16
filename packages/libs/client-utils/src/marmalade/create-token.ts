@@ -1,5 +1,11 @@
-import type { ChainId, ICommandResult, PactReference } from '@kadena/client';
-import { Pact, createSignWithKeypair, readKeyset } from '@kadena/client';
+import type {
+  ChainId,
+  ICommandResult,
+  IPactModules,
+  PactReference,
+  PactReturnType,
+} from '@kadena/client';
+import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
   addSigner,
@@ -59,3 +65,11 @@ export const createTokenCommand = ({
 
 export const createToken = (inputs: ICreateTokenInput, config: IClientConfig) =>
   submitClient<ICommandResult>(config)(createTokenCommand(inputs));
+
+export const createToken1 = (
+  inputs: ICreateTokenInput,
+  config: IClientConfig,
+) =>
+  submitClient<
+    PactReturnType<IPactModules['marmalade-v2.ledger']['create-token']>
+  >(config)(createTokenCommand(inputs));
