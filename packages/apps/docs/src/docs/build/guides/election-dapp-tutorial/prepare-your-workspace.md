@@ -1,6 +1,6 @@
 ---
 title: "Prepare your workspace"
-description: "Get stated with the Election workshop by downloading project code and exploring the directories and application frontend."
+description: "Get started with the Election workshop by downloading project code and exploring the directories and application frontend."
 menu: "Workshop: Election application"
 label: "Prepare your workspace"
 order: 1
