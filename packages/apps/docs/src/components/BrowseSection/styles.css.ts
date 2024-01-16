@@ -1,29 +1,24 @@
-import {
-  darkThemeClass,
-  responsiveStyle,
-  sprinkles,
-  vars,
-} from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const sectionRowContainerClass = style([
-  sprinkles({
+  atoms({
     width: '100%',
   }),
 ]);
 
 export const directionVariants = styleVariants({
   row: [
-    sprinkles({
+    atoms({
       display: 'flex',
       flexWrap: 'wrap',
-      padding: 0,
+      padding: 'no',
       width: '100%',
+      flexDirection: 'column',
     }),
     {
       listStyle: 'none',
       rowGap: 0,
-      flexDirection: 'column',
 
       ...responsiveStyle({
         md: {
@@ -35,43 +30,41 @@ export const directionVariants = styleVariants({
   column: [
     {
       paddingBlock: 0,
-      paddingInline: vars.sizes.$5,
+      paddingInline: tokens.kda.foundation.size.n5,
       listStyle: 'disc',
     },
   ],
 });
 
 export const columnLinkListItemClass = style([
-  sprinkles({
-    color: '$primaryContrastInverted',
+  atoms({
+    paddingBlock: 'xs',
+    color: 'text.brand.primary.default',
   }),
-  {
-    paddingBlock: vars.sizes.$1,
-  },
 ]);
 
 export const columnLinkClass = style([
-  sprinkles({
-    color: '$primaryContrastInverted',
+  atoms({
+    color: 'text.brand.primary.default',
     textDecoration: 'underline',
   }),
   {
     ':hover': {
-      color: vars.colors.$primaryHighContrast,
+      color: tokens.kda.foundation.color.text.brand['@hover'],
       textDecoration: 'none',
     },
   },
 ]);
 
 export const listItemClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    gap: '$4',
+    gap: 'md',
+    paddingInlineEnd: 'md',
+    paddingBlock: 'md',
   }),
   {
     flexBasis: '50%',
-    paddingInlineEnd: vars.sizes.$4,
-    paddingBlock: vars.sizes.$3,
     ...responsiveStyle({
       md: {
         flexBasis: '33%',
@@ -81,10 +74,10 @@ export const listItemClass = style([
 ]);
 
 export const listItemLinkClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     textDecoration: 'none',
-    color: '$primaryContrastInverted',
+    color: 'text.brand.primary.default',
   }),
   {
     ':hover': {
@@ -94,12 +87,7 @@ export const listItemLinkClass = style([
 ]);
 
 export const listItemLinkTextClass = style({
-  color: vars.colors.$gray60,
-  selectors: {
-    [`${darkThemeClass} &`]: {
-      color: vars.colors.$gray40,
-    },
-  },
+  color: tokens.kda.foundation.color.neutral.n60,
 });
 
 export const markerVariants = styleVariants({

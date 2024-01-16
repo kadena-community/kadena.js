@@ -1,12 +1,12 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const bottomWrapperClass = style([
-  sprinkles({
+  atoms({
     width: '100%',
   }),
   {
-    marginBlockStart: vars.sizes.$40,
+    marginBlockStart: tokens.kda.foundation.size.n40,
   },
 ]);
 

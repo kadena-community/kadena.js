@@ -1,10 +1,10 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    padding: 0,
+    padding: 'no',
     width: '100%',
     flexWrap: 'wrap',
   }),
@@ -14,14 +14,13 @@ export const listClass = style([
 ]);
 
 export const itemClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     width: '100%',
+    paddingInline: 'sm',
   }),
   {
-    paddingInline: vars.sizes.$2,
     flex: '100%',
-
     ...responsiveStyle({
       sm: {
         flex: '50%',
@@ -36,7 +35,7 @@ export const itemClass = style([
   },
 ]);
 export const itemLinkClass = style([
-  sprinkles({
+  atoms({
     display: 'block',
     width: '100%',
     textDecoration: 'none',

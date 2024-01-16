@@ -1,12 +1,11 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 const browseSectionWrapper = style([
-  sprinkles({}),
   {
-    marginBlockEnd: vars.sizes.$6,
+    marginBlockEnd: tokens.kda.foundation.spacing.lg,
     flexBasis: '50%',
-    rowGap: vars.sizes.$4,
+    rowGap: tokens.kda.foundation.spacing.md,
 
     ...responsiveStyle({ md: { flexBasis: '33%' } }),
   },
