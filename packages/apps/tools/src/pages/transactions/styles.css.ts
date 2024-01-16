@@ -1,8 +1,8 @@
-import { atoms, sprinkles } from '@kadena/react-ui/theme';
+import { atoms } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
-  sprinkles({
+  atoms({
     height: '100%',
     position: 'relative',
   }),

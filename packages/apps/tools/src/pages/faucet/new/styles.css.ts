@@ -1,4 +1,4 @@
-import { atoms, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 
 import { style } from '@vanilla-extract/css';
 
@@ -26,10 +26,8 @@ export const pubKeysContainerStyle = style([
     display: 'flex',
     marginBlock: 'sm',
     flexWrap: 'wrap',
+    gap: 'sm',
   }),
-  {
-    gap: vars.sizes.$2,
-  },
 ]);
 
 export const inputWrapperStyle = style([
@@ -43,9 +41,9 @@ export const iconButtonWrapper = style([
     position: 'absolute',
   }),
   {
-    width: vars.sizes.$sm,
-    top: vars.sizes.$10,
-    right: vars.sizes.$6,
+    width: tokens.kda.foundation.size.n2,
+    top: tokens.kda.foundation.size.n10,
+    right: tokens.kda.foundation.size.n6,
   },
 ]);
 
