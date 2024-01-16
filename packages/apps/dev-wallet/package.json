@@ -18,6 +18,7 @@
     "@hookform/resolvers": "^3.2.0",
     "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/hd-wallet": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@scure/bip39": "^1.2.1",

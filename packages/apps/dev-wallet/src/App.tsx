@@ -10,9 +10,9 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
+import { ThemeProvider } from 'next-themes';
 import { rootLayout } from './App.css';
 import HomePage from './pages/home/HomePage';
-import Providers from './providers';
 import { getScriptType } from './utils/window';
 
 const Layout: FC = () => {
@@ -50,7 +50,7 @@ const ProtectedRoute: FC<
   return <> {children ? children : <Outlet />}</>;
 };
 
-export const RootLayout: FC = () => {
+const Routes: FC = () => {
   const logedIn = false;
   const routes = createRoutesFromElements(
     <Route element={<Layout />}>
@@ -68,8 +68,23 @@ export const RootLayout: FC = () => {
   return <RouterProvider router={handler(routes)} />;
 };
 
+function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider
+      attribute="class"
+      enableSystem={true}
+      defaultTheme="light"
+      value={{
+        light: 'light',
+      }}
+    >
+      {children}
+    </ThemeProvider>
+  );
+}
+
 export const App = () => (
   <Providers>
-    <RootLayout />
+    <Routes />
   </Providers>
 );
