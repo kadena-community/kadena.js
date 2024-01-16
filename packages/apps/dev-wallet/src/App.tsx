@@ -10,7 +10,7 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
-import { rootLayout } from './layout.css';
+import { rootLayout } from './App.css';
 import HomePage from './pages/home/HomePage';
 import Providers from './providers';
 import { getScriptType } from './utils/window';
