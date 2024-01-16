@@ -1,78 +1,65 @@
 import { getClassName } from '@/utils/getClassName';
-import {
-  darkThemeClass,
-  responsiveStyle,
-  sprinkles,
-  vars,
-} from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
+export const descriptionWrapperClass = style([
+  {
+    ...responsiveStyle({
+      sm: {
+        marginInlineEnd: tokens.kda.foundation.size.n20,
+      },
+      md: {
+        marginInlineEnd: tokens.kda.foundation.spacing.md,
+      },
+      lg: {
+        marginInlineEnd: tokens.kda.foundation.size.n20,
+      },
+    }),
+  },
+]);
+
 export const cardClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
     height: '100%',
-    borderRadius: '$md',
+    borderRadius: 'md',
+    paddingInline: 'xxxl',
+    paddingBlock: 'lg',
   }),
   {
-    paddingInline: vars.sizes.$10,
-    paddingBlock: vars.sizes.$6,
     transition: 'all .3s ease',
   },
 ]);
 
 export const cardVariants = styleVariants({
   info: [
-    sprinkles({
-      backgroundColor: {
-        lightMode: '$blue10',
-        darkMode: '$blue90',
-      },
-    }),
     {
+      backgroundColor: tokens.kda.foundation.color.semantic.info.n10,
       selectors: {
-        [`${darkThemeClass} &:hover`]: {
-          backgroundColor: vars.colors.$blue80,
-        },
         [`&:hover`]: {
-          backgroundColor: vars.colors.$blue20,
+          backgroundColor: tokens.kda.foundation.color.semantic.info.n20,
         },
       },
     },
   ],
   warning: [
-    sprinkles({
-      backgroundColor: {
-        lightMode: '$pink10',
-        darkMode: '$pink90',
-      },
-    }),
     {
+      backgroundColor: tokens.kda.foundation.color.semantic.warning.n10,
       selectors: {
-        [`${darkThemeClass} &:hover`]: {
-          backgroundColor: vars.colors.$pink80,
-        },
         [`&:hover`]: {
-          backgroundColor: vars.colors.$pink20,
+          backgroundColor: tokens.kda.foundation.color.semantic.warning.n20,
         },
       },
     },
   ],
   success: [
-    sprinkles({
-      backgroundColor: {
-        lightMode: '$green10',
-        darkMode: '$green90',
-      },
-    }),
     {
+      backgroundColor: tokens.kda.foundation.color.semantic.positive.n10,
       selectors: {
-        [`${darkThemeClass} &:hover`]: {
-          backgroundColor: vars.colors.$green80,
-        },
         [`&:hover`]: {
-          backgroundColor: vars.colors.$green30,
+          backgroundColor: tokens.kda.foundation.color.semantic.positive.n20,
         },
       },
     },
@@ -80,13 +67,10 @@ export const cardVariants = styleVariants({
 });
 
 export const docsCardLink = style([
-  sprinkles({
+  atoms({
     textDecoration: 'none',
-    fontWeight: '$bold',
-    color: {
-      lightMode: '$primaryContrastInverted',
-      darkMode: '$primaryContrast',
-    },
+    fontWeight: 'bodyFont.bold',
+    color: 'text.brand.primary.default',
   }),
   {
     selectors: {
@@ -183,87 +167,38 @@ export const backgroundVariant = styleVariants({
 globalStyle(
   `${getClassName(cardVariants.info)} ${getClassName(docsCardLink)}`,
   {
-    color: vars.colors.$primaryContrastInverted,
+    color: tokens.kda.foundation.color.semantic.info.n90,
   },
 );
 globalStyle(
   `${getClassName(cardVariants.info)} ${getClassName(docsCardLink)}:hover`,
   {
-    color: vars.colors.$primaryHighContrast,
-  },
-);
-
-globalStyle(
-  `${darkThemeClass} ${getClassName(cardVariants.info)} ${getClassName(
-    docsCardLink,
-  )}`,
-  {
-    color: vars.colors.$blue30,
-  },
-);
-globalStyle(
-  `${darkThemeClass} ${getClassName(cardVariants.info)} ${getClassName(
-    docsCardLink,
-  )}:hover`,
-  {
-    color: vars.colors.$blue20,
+    color: tokens.kda.foundation.color.semantic.info.n100,
   },
 );
 
 globalStyle(
   `${getClassName(cardVariants.warning)} ${getClassName(docsCardLink)}`,
   {
-    color: vars.colors.$pink90,
+    color: tokens.kda.foundation.color.semantic.warning.n90,
   },
 );
 globalStyle(
   `${getClassName(cardVariants.warning)} ${getClassName(docsCardLink)}:hover`,
   {
-    color: vars.colors.$pink100,
-  },
-);
-globalStyle(
-  `${darkThemeClass} ${getClassName(cardVariants.warning)} ${getClassName(
-    docsCardLink,
-  )}`,
-  {
-    color: vars.colors.$pink30,
-  },
-);
-globalStyle(
-  `${darkThemeClass} ${getClassName(cardVariants.warning)} ${getClassName(
-    docsCardLink,
-  )}:hover`,
-  {
-    color: vars.colors.$pink20,
+    color: tokens.kda.foundation.color.semantic.warning.n100,
   },
 );
 
 globalStyle(
   `${getClassName(cardVariants.success)} ${getClassName(docsCardLink)}`,
   {
-    color: vars.colors.$green90,
+    color: tokens.kda.foundation.color.semantic.positive.n90,
   },
 );
 globalStyle(
   `${getClassName(cardVariants.success)} ${getClassName(docsCardLink)}:hover`,
   {
-    color: vars.colors.$green100,
-  },
-);
-globalStyle(
-  `${darkThemeClass} ${getClassName(cardVariants.success)} ${getClassName(
-    docsCardLink,
-  )}`,
-  {
-    color: vars.colors.$green30,
-  },
-);
-globalStyle(
-  `${darkThemeClass} ${getClassName(cardVariants.success)} ${getClassName(
-    docsCardLink,
-  )}:hover`,
-  {
-    color: vars.colors.$green20,
+    color: tokens.kda.foundation.color.semantic.positive.n100,
   },
 );

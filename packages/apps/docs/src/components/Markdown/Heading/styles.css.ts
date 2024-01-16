@@ -1,5 +1,5 @@
 import { getClassName } from '@/utils/getClassName';
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 import {
   createVar,
   fallbackVar,
@@ -12,11 +12,11 @@ import { ulListClass } from '../UnorderedList/styles.css';
 const articleLinkOpacity = createVar();
 
 export const headerIconLinkClass = style([
-  sprinkles({
+  atoms({
     display: 'inline-block',
   }),
   {
-    paddingInlineStart: vars.sizes.$3,
+    paddingInlineStart: tokens.kda.foundation.size.n3,
     scrollMarginTop: `80px`,
     scrollSnapMarginTop: `80px`,
     transition: 'opacity .3s ease',
@@ -25,13 +25,13 @@ export const headerIconLinkClass = style([
 ]);
 
 export const headerClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
+    marginBlockStart: 'xl',
   }),
   {
-    marginBlockStart: vars.sizes.$xl,
     selectors: {
       '&:hover': {
         vars: {
@@ -43,38 +43,38 @@ export const headerClass = style([
 ]);
 
 const h1Class = style([
-  sprinkles({
-    fontSize: '$3xl',
+  atoms({
+    fontSize: '3xl',
   }),
 ]);
 
 const h2Class = style([
-  sprinkles({
-    fontSize: '$xl',
+  atoms({
+    fontSize: 'xl',
   }),
 ]);
 
 const h3Class = style([
-  sprinkles({
-    fontSize: '$base',
+  atoms({
+    fontSize: 'base',
   }),
 ]);
 
 const h4Class = style([
-  sprinkles({
-    fontSize: '$base',
+  atoms({
+    fontSize: 'base',
   }),
 ]);
 
 const h5Class = style([
-  sprinkles({
-    fontSize: '$base',
+  atoms({
+    fontSize: 'base',
   }),
 ]);
 
 const h6Class = style([
-  sprinkles({
-    fontSize: '$base',
+  atoms({
+    fontSize: 'base',
   }),
 ]);
 
@@ -94,7 +94,7 @@ globalStyle(
   h1${getClassName(headerClass)} +
   h2${getClassName(headerClass)}`,
   {
-    marginBlockStart: vars.sizes.$lg,
+    marginBlockStart: tokens.kda.foundation.spacing.lg,
   },
 );
 
@@ -103,7 +103,7 @@ globalStyle(
   figure
   `,
   {
-    marginBlockStart: vars.sizes.$4,
+    marginBlockStart: tokens.kda.foundation.spacing.md,
   },
 );
 
@@ -114,7 +114,7 @@ globalStyle(
   h3${getClassName(headerClass)} +
   ${getClassName(ulListClass)}`,
   {
-    marginBlockEnd: `${vars.sizes.$xl} !important`,
-    paddingBlockStart: `${vars.sizes.$xl} !important`,
+    marginBlockEnd: `${tokens.kda.foundation.spacing.xl} !important`,
+    paddingBlockStart: `${tokens.kda.foundation.spacing.xl} !important`,
   },
 );

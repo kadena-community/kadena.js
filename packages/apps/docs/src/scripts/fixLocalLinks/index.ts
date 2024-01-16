@@ -2,6 +2,7 @@ import { createSlug } from '@/utils/createSlug';
 import type { IConfigTreeItem } from '@kadena/docs-tools';
 import {
   getFileExtension,
+  getFileFromNameOfUrl,
   getParentTreeFromPage,
   getUrlNameOfPageFile,
 } from '@kadena/docs-tools';
@@ -24,7 +25,6 @@ import { getFileNameOfPageFile } from './../utils/getFileNameOfPageFile';
 import { splitContentFrontmatter } from './../utils/splitContentFrontmatter';
 import { refactorAbsoluteDocsLink } from './refactorAbsoluteDocsLink';
 import { getCleanedHash } from './utils/getCleanedHash';
-import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
 import { getLinkHash } from './utils/getLinkHash';
 import { getPageFromPath } from './utils/getPageFromPath';
 import { getUrlofImageFile } from './utils/getUrlofImageFile';
@@ -48,7 +48,7 @@ const fixHashLinks = async (link: string): Promise<string> => {
   const cleanedHashUrl = getCleanedHash(arr[1]);
 
   // get the page to the hashlink
-  const file = getFileFromNameOfUrl(cleanedLink);
+  const file = await getFileFromNameOfUrl(cleanedLink);
 
   if (!file) return `#${createSlug(cleanedHashUrl)}`;
 
