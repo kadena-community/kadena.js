@@ -51,6 +51,27 @@ pages:
           start:
             url: /start-local-blockchain
             file: /build/election-app/start-a-local-blockchain.md
+          admin:
+            url: /admin-account
+            file: /build/election-app/add-admin-account.md
+          namespace:
+            url: /namespace
+            file: /build/election-app/define-a-namespace.md
+          keysets:
+            url: /keysets
+            file: /build/election-app/define-keysets.md
+          smartcontract:
+            url: /smart-contract
+            file: /build/election-app/write-a-smart-contract.md
+          candidates:
+            url: /candidates
+            file: /build/election-app/nominate-candidates.md
+          voting:
+            url: /vote-management
+            file: /build/election-app/add-vote-management.md
+          gasstation:
+            url: /gas-station
+            file: /build/election-app/add-gas-station.md
       faucet:
         url: /faucet
         file: /faucet-app.md
