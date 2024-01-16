@@ -26,3 +26,13 @@ export const linkStyle = style([
     },
   },
 ]);
+
+export const infoBoxStyle = style([
+  sprinkles({
+    fontSize: '$sm',
+    padding: '$4',
+    borderRadius: '$sm',
+    display: 'flex',
+    flexDirection: 'column',
+  }),
+]);

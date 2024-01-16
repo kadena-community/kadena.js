@@ -5,6 +5,7 @@ import { useToolbar } from '@/context/layout-context';
 import {
   helpCenterButtonClass,
   homeWrapperClass,
+  infoBoxStyle,
   linkStyle,
 } from '@/pages/home/styles.css';
 import {
@@ -99,13 +100,16 @@ const Home: FC = () => {
             title: t('Help Center'),
             children: (
               <>
-                <p>
-                  Blockchain transactions are irreversible. If you make a
-                  mistake, your coins may not be recoverable. Before you
-                  transfer large sums, it is always best to do a small test
-                  transaction first and then send those coins back to the sender
-                  to verify that the receiver account works as expected.
-                </p>
+                <div className={infoBoxStyle}>
+                  <span>
+                    Blockchain transactions are irreversible. If you make a
+                    mistake, your coins may not be recoverable. Before you
+                    transfer large sums, it is always best to do a small test
+                    transaction first and then send those coins back to the
+                    sender to verify that the receiver account works as
+                    expected.
+                  </span>
+                </div>
                 <ResourceLinks
                   links={[
                     { title: 'Pact Language Resources', href: '#' },

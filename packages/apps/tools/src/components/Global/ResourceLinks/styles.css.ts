@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 export const resourceLinksWrapperClass = style([
   sprinkles({
     marginTop: '$4',
-    paddingTop: '$4',
+    padding: '$4',
   }),
   {
     borderTop: `1px solid ${vars.colors.$borderSubtle}`,
