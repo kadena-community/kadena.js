@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const dialogClass = style([
@@ -14,7 +14,7 @@ export const dialogClass = style([
 ]);
 
 export const contentClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
     overflowY: 'hidden',

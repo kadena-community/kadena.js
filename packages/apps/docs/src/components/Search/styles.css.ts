@@ -1,9 +1,9 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const staticResultsListClass = style([
-  sprinkles({
-    padding: 0,
+  atoms({
+    padding: 'no',
   }),
   {
     listStyle: 'none',
@@ -11,11 +11,11 @@ export const staticResultsListClass = style([
 ]);
 
 export const tabContainerClass = style([
-  sprinkles({ flex: 1, overflowY: 'hidden', overflowX: 'visible' }),
+  atoms({ flex: 1, overflowY: 'hidden', overflowX: 'visible' }),
 ]);
 
 export const tabClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
@@ -25,35 +25,23 @@ export const tabClass = style([
 ]);
 
 export const itemLinkClass = style([
-  sprinkles({
+  atoms({
     display: 'block',
     textDecoration: 'none',
-    padding: '$sm',
+    padding: 'sm',
+    marginBlockEnd: 'md',
   }),
-  {
-    marginBlockEnd: vars.sizes.$4,
-    ':hover': {
-      color: '$neutral100',
-      backgroundColor: '$primaryContrastInverted',
-      borderRadius: '$sm',
-    },
-    ':focus': {
-      color: '$neutral100',
-      backgroundColor: '$primaryContrastInverted',
-      borderRadius: '$sm',
-    },
-  },
 ]);
 
 export const loadingWrapperClass = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '$background',
   }),
   {
+    backgroundColor: tokens.kda.foundation.color.neutral.n0,
     opacity: '.8',
     inset: 0,
   },
