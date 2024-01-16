@@ -115,7 +115,7 @@ export const AllVariants: StoryFn<IButtonProps> = ({
 }) => (
   <Box gap="xs" display="flex">
     <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Default</Heading>
+      <Heading variant="h6">Contained (default)</Heading>
       {buttonColors.map((color) => (
         <Button
           key={color}

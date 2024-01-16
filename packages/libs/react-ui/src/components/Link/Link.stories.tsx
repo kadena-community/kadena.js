@@ -118,7 +118,7 @@ export const AllVariants: StoryFn<ILinkProps> = ({
 }) => (
   <Box gap="xs" display="flex">
     <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Default</Heading>
+      <Heading variant="h6">Contained</Heading>
       {buttonColors.map((color) => (
         <Link
           key={color}
@@ -126,6 +126,7 @@ export const AllVariants: StoryFn<ILinkProps> = ({
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
+          variant="contained"
           startIcon={<LeadingIcon />}
           endIcon={<TrailingIcon />}
         >
@@ -171,7 +172,7 @@ export const AllVariants: StoryFn<ILinkProps> = ({
     </Box>
 
     <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Text</Heading>
+      <Heading variant="h6">Text (default)</Heading>
       {buttonColors.map((color) => (
         <Link
           key={color}

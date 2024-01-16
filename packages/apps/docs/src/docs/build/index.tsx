@@ -8,7 +8,6 @@ import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
 import {
   Box,
-  Button,
   Card,
   Grid,
   GridItem,
@@ -46,6 +45,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             </Box>
             <Link
               endIcon={<SystemIcon.TrailingIcon />}
+              variant="contained"
               href="/build/quickstart"
             >
               Quick start

@@ -59,6 +59,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <KadenaLink
                 endIcon={<SystemIcon.TrailingIcon />}
                 href="/pact/beginner"
+                variant="contained"
               >
                 Getting started
               </KadenaLink>
