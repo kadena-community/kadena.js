@@ -2,7 +2,7 @@
 title: 'Write a smart contract'
 description:
   'Use the Pact smart contract language to build the scaffolding for the election application smart contract backend.'
-menu: "Workshop: Build an Election application"
+menu: "Workshop: Election application"
 label: 'Write a smart contract'
 order: 6
 layout: full
