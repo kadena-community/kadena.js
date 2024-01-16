@@ -1,6 +1,5 @@
 import type {
   ChainId,
-  ICommandResult,
   IPactModules,
   PactReference,
   PactReturnType,
@@ -64,12 +63,6 @@ export const createTokenCommand = ({
   );
 
 export const createToken = (inputs: ICreateTokenInput, config: IClientConfig) =>
-  submitClient<ICommandResult>(config)(createTokenCommand(inputs));
-
-export const createToken1 = (
-  inputs: ICreateTokenInput,
-  config: IClientConfig,
-) =>
   submitClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['create-token']>
   >(config)(createTokenCommand(inputs));
