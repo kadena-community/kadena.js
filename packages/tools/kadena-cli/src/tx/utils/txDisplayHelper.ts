@@ -33,19 +33,37 @@ export function txDisplayTransaction(
   for (const [key, value] of Object.entries(obj)) {
     const formattedKey = `${' '.repeat(baseIndent)}${key}:`;
 
-    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+    if (
+      value !== undefined &&
+      value !== null &&
+      typeof value === 'object' &&
+      !Array.isArray(value)
+    ) {
       console.log(`${chalk.black(formattedKey)}`);
-      console.log(
-        ' '.repeat(baseIndent * 2) +
-          chalk.green(JSON.stringify(value, null, 2)),
-      );
+
+      if (key === 'result' && 'status' in value) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const resultValue = value as { status: string; [key: string]: any };
+        const color =
+          resultValue.status === 'failure' ? chalk.red : chalk.green;
+        console.log(
+          ' '.repeat(baseIndent * 2) +
+            color(JSON.stringify(resultValue, null, 2)),
+        );
+      } else {
+        console.log(
+          ' '.repeat(baseIndent * 2) +
+            chalk.green(JSON.stringify(value, null, 2)),
+        );
+      }
     } else {
       const formattedValue =
-        value !== null && value !== undefined
-          ? chalk.green(value.toString())
-          : chalk.green('null');
-      console.log(`${chalk.black(formattedKey)} ${formattedValue}`);
+        value !== null && value !== undefined ? value.toString() : 'null';
+      console.log(
+        `${chalk.black(formattedKey)} ${chalk.green(formattedValue)}`,
+      );
     }
   }
+
   displaySeparator();
 }
