@@ -207,7 +207,7 @@
   "Theme": "Theme",
   "Notification title success": "Successful transaction",
   "Resources & Links": "Resources & Links",
-  "application-settings-warning": "You can change Application Settings in the left sidebar or by clicking <0>HERE</0>.",
+  "application-settings-warning": "You can change Application Settings in the top navigation or by clicking <0>HERE</0>.",
   "Application Settings": "Application Settings",
   "form-status-content-processing": "Please have some patience while the transaction is being processed. Depending on the Network (e.g. Mainnet), this may take up to 10 minutes.",
   "help-request-key-question": "Where can I find the request key?",
