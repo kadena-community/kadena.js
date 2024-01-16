@@ -247,12 +247,19 @@ const Home: FC = () => {
             <Table.Root striped>
               <Table.Body>
                 <Table.Tr>
-                  <Table.Td>July 28, 2023</Table.Td>
-                  <Table.Td>Added the Account Transactions Overview.</Table.Td>
+                  <Table.Td>January 31, 2024</Table.Td>
+                  <Table.Td>
+                    Released version 1.2 of the Tools Website, including the
+                    Transactions module, which has a Cross Chain Transfer
+                    Tracker & Cross Chain Transfer Finisher.
+                  </Table.Td>
                 </Table.Tr>
                 <Table.Tr>
-                  <Table.Td>July 10, 2023</Table.Td>
-                  <Table.Td>Released version 1 of the Tools Website.</Table.Td>
+                  <Table.Td>November 30, 2023</Table.Td>
+                  <Table.Td>
+                    Initial release of the Tools Website, including the Faucet
+                    module.
+                  </Table.Td>
                 </Table.Tr>
               </Table.Body>
             </Table.Root>
