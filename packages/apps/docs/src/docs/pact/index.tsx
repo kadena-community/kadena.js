@@ -9,6 +9,10 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
+import {
+  extraMarginSmallWrapper,
+  extraMarginWrapper,
+} from '@/styles/index.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
 import {
@@ -20,7 +24,6 @@ import {
   Heading,
   Text,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -59,10 +62,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </GridItem>
           <GridItem>
             <Box
-              className={sprinkles({
-                marginBlockStart: '$8',
-                marginInlineEnd: { sm: 0, xl: '$32' },
-              })}
+              className={extraMarginWrapper}
               marginInlineStart={{ sm: 'no', lg: 'md' }}
             >
               <MostPopular
@@ -74,12 +74,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </GridItem>
         </Grid>
 
-        <Box
-          className={sprinkles({
-            marginBlockStart: '$8',
-            marginBlockEnd: '$20',
-          })}
-        >
+        <Box className={extraMarginSmallWrapper}>
           <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
             <GridItem rowSpan={2}>
               <DocsCard

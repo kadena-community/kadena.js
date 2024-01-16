@@ -1,6 +1,10 @@
 import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
+export const headingWrapperClass = style({
+  marginInlineStart: tokens.kda.foundation.size.n12,
+});
+
 export const blogitem = style([
   atoms({
     backgroundColor: 'transparent',
@@ -31,7 +35,7 @@ export const link = style([
   {
     selectors: {
       '&:hover': {
-        color: tokens.kda.foundation.color.text.subtle.default['@hover'],
+        color: tokens.kda.foundation.color.text.subtlest['@hover'],
       },
     },
   },
@@ -140,7 +144,13 @@ export const gridWrapperClass = style([
   },
 ]);
 
-export const gridBlogItemImage = style({});
+export const gridBlogItemImage = style([
+  atoms({
+    marginInlineStart: { xs: 'no', md: 'xxl' },
+    marginBlockEnd: { xs: 'xxl', md: 'no' },
+  }),
+]);
+
 export const gridBlogItemContent = styleVariants({
   default: {
     marginBlockStart: tokens.kda.foundation.spacing.sm,
