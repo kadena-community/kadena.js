@@ -1,37 +1,31 @@
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const textAreaClass = style([
-  sprinkles({
+  atoms({
     alignItems: 'center',
     background: 'none',
     border: 'none',
     outline: 'none',
     flexGrow: 1,
-    color: '$foreground',
-    borderRadius: '$sm',
+    color: 'text.base.default',
+    borderRadius: 'sm',
+    paddingBlock: 'sm',
+    paddingInline: 'sm',
+    width: '100%',
   }),
   {
-    paddingBlock: vars.sizes.$2,
-    paddingInline: vars.sizes.$2,
-    border: `1px solid ${vars.colors.$neutral3}`,
+    border: `1px solid ${tokens.kda.foundation.color.border.base.boldest}`,
     resize: 'none',
-    width: '100%',
     height: '100px',
-  },
-  {
-    '::placeholder': {
-      color: vars.colors.$gray40,
-    },
-    [`${darkThemeClass} &::placeholder`]: {
-      color: vars.colors.$gray50,
-    },
   },
 ]);
 
 export const modalWrapperClass = style([
+  atoms({
+    paddingInlineEnd: 'xxxl',
+  }),
   {
-    marginBlockStart: `calc(${vars.sizes.$16} * -1)`,
-    paddingInlineEnd: vars.sizes.$10,
+    marginBlockStart: `calc(${tokens.kda.foundation.size.n16} * -1)`,
   },
 ]);

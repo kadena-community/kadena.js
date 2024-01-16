@@ -1,10 +1,10 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const asideItemLinkClass = style([
-  sprinkles({
+  atoms({
     textDecoration: 'none',
-    fontSize: '$sm',
+    fontSize: 'sm',
   }),
   {
     selectors: {
@@ -17,34 +17,35 @@ export const asideItemLinkClass = style([
 
 export const asideItemLinkActiveVariants = styleVariants({
   true: {
-    color: vars.colors.$neutral6,
+    color: tokens.kda.foundation.color.text.base.default,
   },
   false: {
-    color: vars.colors.$neutral6,
+    color: tokens.kda.foundation.color.text.base.default,
     opacity: 0.6,
   },
 });
 
 export const asideItemClass = style([
-  sprinkles({}),
+  atoms({
+    paddingBlock: 'xs',
+  }),
   {
-    paddingBlock: vars.sizes.$1,
     selectors: {
       '&::marker': {
-        color: vars.colors.$primaryHighContrast,
-        fontWeight: vars.fontWeights.$bold,
+        color: tokens.kda.foundation.color.brand.primary.default,
+        fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
         display: 'inline-block',
-        width: vars.sizes.$4,
-        margin: `0 ${vars.sizes.$1}`,
+        width: tokens.kda.foundation.spacing.md,
+        margin: `0 ${tokens.kda.foundation.spacing.xs}`,
       },
     },
   },
 ]);
 
 export const asideListClass = style([
-  sprinkles({
-    margin: 0,
-    padding: 0,
+  atoms({
+    margin: 'no',
+    padding: 'no',
   }),
   {
     listStyle: 'initial',
@@ -54,7 +55,7 @@ export const asideListClass = style([
 
 export const asideListInnerVariants = styleVariants({
   true: {
-    paddingInlineStart: vars.sizes.$6,
+    paddingInlineStart: tokens.kda.foundation.spacing.lg,
   },
   false: {},
 });
