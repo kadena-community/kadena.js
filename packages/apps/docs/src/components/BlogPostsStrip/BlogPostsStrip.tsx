@@ -1,6 +1,5 @@
 import type { IMenuData } from '@kadena/docs-tools';
 import { Link } from '@kadena/react-ui';
-import NextLink from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import { StripItem } from './StripItem';
