@@ -20,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Accordion,
+  Box,
   Breadcrumbs,
   BreadcrumbsItem,
   Button,
@@ -228,6 +229,7 @@ const CrossChainTransferTracker: FC = () => {
             helperOnClick={() => onOpenItemChange()}
             disabled={false}
           >
+            <Box marginBlockEnd="md" />
             <Grid>
               <GridItem>
                 <RequestKeyField
