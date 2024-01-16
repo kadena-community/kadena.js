@@ -2,12 +2,10 @@ import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
   account,
-  // contract,
   devnet as devnetPrompts,
   generic,
   genericActionsPrompts,
   keys,
-  // marmalade,
   networks,
   security,
   typescript,
@@ -42,19 +40,19 @@ export const globalFlags = {
     'Disables interactive prompts and skips confirmations',
   ),
   legacy: new Option('-l, --legacy', 'Output legacy format'),
-} as const;
+};
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   // Account
   accountName: createOption({
-    key: 'accountName' as const,
+    key: 'accountName',
     prompt: account.accountNamePrompt,
     validation: z.string(),
     option: new Option('-a, --account-name <accountName>', 'Account name'),
   }),
   publicKeys: createOption({
-    key: 'publicKeys' as const,
+    key: 'publicKeys',
     prompt: account.publicKeysPrompt,
     validation: z.string(),
     option: new Option(
@@ -66,7 +64,7 @@ export const globalOptions = {
     },
   }),
   amount: createOption({
-    key: 'amount' as const,
+    key: 'amount',
     prompt: account.amountPrompt,
     validation: z
       .string({
@@ -77,26 +75,26 @@ export const globalOptions = {
     option: new Option('-a, --amount <amount>', 'Amount'),
   }),
   fungible: createOption({
-    key: 'fungible' as const,
+    key: 'fungible',
     prompt: account.fungiblePrompt,
     validation: z.string(),
     option: new Option('-f, --fungible <fungible>', 'Fungible'),
   }),
   predicate: createOption({
-    key: 'predicate' as const,
+    key: 'predicate',
     prompt: account.predicatePrompt,
     validation: z.string(),
     option: new Option('-p, --predicate <predicate>', 'Keyset predicate'),
   }),
   // global
   quiet: createOption({
-    key: 'quiet' as const,
+    key: 'quiet',
     prompt: ({ quiet }): boolean => quiet === true || quiet === 'true' || false,
     validation: z.boolean().optional(),
     option: globalFlags.quiet,
   }),
   legacy: createOption({
-    key: 'legacy' as const,
+    key: 'legacy',
     prompt: ({ legacy }): boolean => {
       return legacy === true || legacy === 'true' || false;
     },
@@ -105,7 +103,7 @@ export const globalOptions = {
   }),
   // security
   securityCurrentPassword: createOption({
-    key: 'securityCurrentPassword' as const,
+    key: 'securityCurrentPassword',
     prompt: security.securityCurrentPasswordPrompt,
     validation: z.string(),
     option: new Option(
@@ -114,7 +112,7 @@ export const globalOptions = {
     ),
   }),
   securityNewPassword: createOption({
-    key: 'securityNewPassword' as const,
+    key: 'securityNewPassword',
     prompt: security.securityNewPasswordPrompt,
     validation: z.string(),
     option: new Option(
@@ -124,7 +122,7 @@ export const globalOptions = {
   }),
   // Devnet
   devnet: createOption({
-    key: 'devnet' as const,
+    key: 'devnet',
     prompt: devnetPrompts.devnetPrompt,
     validation: z.string(),
     option: new Option('-d, --devnet <devnet>', 'Devnet name'),
@@ -148,13 +146,13 @@ export const globalOptions = {
     },
   }),
   devnetName: createOption({
-    key: 'name' as const,
+    key: 'name',
     prompt: devnetPrompts.devnetNamePrompt,
     validation: z.string(),
     option: new Option('-n, --name <name>', 'Devnet name (e.g. "devnet")'),
   }),
   devnetPort: createOption({
-    key: 'port' as const,
+    key: 'port',
     prompt: devnetPrompts.devnetPortPrompt,
     validation: z.number(),
     option: new Option(
@@ -163,7 +161,7 @@ export const globalOptions = {
     ).argParser((value) => parseInt(value, 10)),
   }),
   devnetUseVolume: createOption({
-    key: 'useVolume' as const,
+    key: 'useVolume',
     prompt: devnetPrompts.devnetUseVolumePrompt,
     validation: z.boolean(),
     option: new Option(
@@ -172,7 +170,7 @@ export const globalOptions = {
     ),
   }),
   devnetMountPactFolder: createOption({
-    key: 'mountPactFolder' as const,
+    key: 'mountPactFolder',
     prompt: devnetPrompts.devnetMountPactFolderPrompt,
     validation: z.string(),
     option: new Option(
@@ -181,13 +179,13 @@ export const globalOptions = {
     ),
   }),
   devnetSelect: createOption({
-    key: 'name' as const,
+    key: 'name',
     prompt: devnetPrompts.devnetSelectPrompt,
     validation: z.string(),
     option: new Option('-n, --name <name>', 'Devnet name'),
   }),
   devnetVersion: createOption({
-    key: 'version' as const,
+    key: 'version',
     prompt: devnetPrompts.devnetVersionPrompt,
     validation: z.string(),
     option: new Option(
@@ -197,7 +195,7 @@ export const globalOptions = {
   }),
   // Network
   networkName: createOption({
-    key: 'network' as const,
+    key: 'network',
     prompt: networks.networkNamePrompt,
     validation: z.string(),
     option: new Option(
@@ -206,7 +204,7 @@ export const globalOptions = {
     ),
   }),
   networkId: createOption({
-    key: 'networkId' as const,
+    key: 'networkId',
     prompt: networks.networkIdPrompt,
     validation: z.string(),
     option: new Option(
@@ -215,7 +213,7 @@ export const globalOptions = {
     ),
   }),
   networkHost: createOption({
-    key: 'networkHost' as const,
+    key: 'networkHost',
     prompt: networks.networkHostPrompt,
     validation: z.string(),
     option: new Option(
@@ -224,7 +222,7 @@ export const globalOptions = {
     ),
   }),
   networkExplorerUrl: createOption({
-    key: 'networkExplorerUrl' as const,
+    key: 'networkExplorerUrl',
     prompt: networks.networkExplorerUrlPrompt,
     validation: z.string().optional(),
     option: new Option(
@@ -233,7 +231,7 @@ export const globalOptions = {
     ),
   }),
   networkOverwrite: createOption({
-    key: 'networkOverwrite' as const,
+    key: 'networkOverwrite',
     prompt: networks.networkOverwritePrompt,
     validation: z.string(),
     option: new Option(
@@ -242,7 +240,7 @@ export const globalOptions = {
     ),
   }),
   network: createOption({
-    key: 'network' as const,
+    key: 'network',
     prompt: networks.networkSelectPrompt,
     validation: z.string(),
     option: new Option(
@@ -267,7 +265,7 @@ export const globalOptions = {
     },
   }),
   chainId: createOption({
-    key: 'chainId' as const,
+    key: 'chainId',
     prompt: networks.chainIdPrompt,
     validation: z
       .string({
@@ -293,7 +291,7 @@ export const globalOptions = {
     ),
   }),
   keyWallet: createOption({
-    key: 'keyWallet' as const,
+    key: 'keyWallet',
     prompt: keys.keyWallet,
     validation: z.string(),
     option: new Option(
@@ -302,7 +300,7 @@ export const globalOptions = {
     ),
   }),
   keyIndexOrRange: createOption({
-    key: 'keyIndexOrRange' as const,
+    key: 'keyIndexOrRange',
     prompt: keys.keyIndexOrRangePrompt,
     validation: z.string(),
     option: new Option(
@@ -314,14 +312,14 @@ export const globalOptions = {
     },
   }),
   keyAmount: createOption({
-    key: 'keyAmount' as const,
+    key: 'keyAmount',
     prompt: keys.keyAmountPrompt,
     validation: z.string(),
     option: new Option(
       '-n, --key-amount <keyAmount>',
       'Enter the number of key pairs you want to generate (default: 1)',
     ),
-    transform: (keyAmount: string) => {
+    transform: (keyAmount) => {
       const parsed = parseInt(keyAmount, 10);
       return isNaN(parsed) ? null : parsed;
     },
@@ -341,7 +339,7 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
     defaultIsOptional: false,
-    transform: async (keyWallet: string) => {
+    transform: async (keyWallet) => {
       if (
         keyWallet.includes(WALLET_EXT) ||
         keyWallet.includes(WALLET_LEGACY_EXT)
@@ -362,7 +360,7 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (keyWallet: string) => {
+    expand: async (keyWallet) => {
       return await getWallet(keyWallet);
     },
   }),
@@ -376,7 +374,7 @@ export const globalOptions = {
     ),
   }),
   securityVerifyPassword: createOption({
-    key: 'securityVerifyPassword' as const,
+    key: 'securityVerifyPassword',
     prompt: security.securityPasswordVerifyPrompt,
     validation: z.string(),
     option: new Option(
@@ -385,7 +383,7 @@ export const globalOptions = {
     ),
   }),
   keyMnemonic: createOption({
-    key: 'keyMnemonic' as const,
+    key: 'keyMnemonic',
     prompt: keys.keyMnemonicPrompt,
     validation: z.string(),
     option: new Option(
@@ -394,7 +392,7 @@ export const globalOptions = {
     ),
   }),
   keyUsePassword: createOption({
-    key: 'keyUsePassword' as const,
+    key: 'keyUsePassword',
     prompt: genericActionsPrompts.actionAskForPassword,
     validation: z.string(),
     option: new Option(
@@ -403,7 +401,7 @@ export const globalOptions = {
     ),
   }),
   keyFilename: createOption({
-    key: 'keyFilename' as const,
+    key: 'keyFilename',
     prompt: () => generic.genericFileNamePrompt('key'),
     validation: z.string(),
     option: new Option(
@@ -412,13 +410,13 @@ export const globalOptions = {
     ),
   }),
   typescriptClean: createOption({
-    key: 'typescriptClean' as const,
+    key: 'typescriptClean',
     prompt: typescript.typescriptClean,
     validation: z.boolean(),
     option: new Option('--typescript-clean', 'Clean existing generated files'),
   }),
   typescriptCapsInterface: createOption({
-    key: 'typescriptCapsInterface' as const,
+    key: 'typescriptCapsInterface',
     prompt: typescript.typescriptCapsInterface,
     validation: z.string().optional(),
     option: new Option(
@@ -427,7 +425,7 @@ export const globalOptions = {
     ),
   }),
   typescriptFile: createOption({
-    key: 'typescriptFile' as const,
+    key: 'typescriptFile',
     prompt: typescript.typescriptFile,
     validation: z.string().optional(),
     option: new Option(
@@ -442,7 +440,7 @@ export const globalOptions = {
     },
   }),
   typescriptContract: createOption({
-    key: 'typescriptContract' as const,
+    key: 'typescriptContract',
     prompt: typescript.typescriptContract,
     validation: z.string().optional(),
     option: new Option(
@@ -457,7 +455,7 @@ export const globalOptions = {
     },
   }),
   typescriptNamespace: createOption({
-    key: 'typescriptNamespace' as const,
+    key: 'typescriptNamespace',
     prompt: typescript.typescriptNamespace,
     validation: z.string().optional(),
     option: new Option(
@@ -466,13 +464,13 @@ export const globalOptions = {
     ),
   }),
   key: createOption({
-    key: 'key' as const,
+    key: 'key',
     prompt: keys.keyDeleteSelectPrompt,
     validation: z.string(),
     option: new Option('-k, --key <key>', 'Select key from keyfile'),
   }),
   keyMessage: createOption({
-    key: 'keyMessage' as const,
+    key: 'keyMessage',
     prompt: keys.keyMessagePrompt,
     validation: z.string(),
     option: new Option(
@@ -490,7 +488,7 @@ export const globalOptions = {
       return keyMessage;
     },
   }),
-} as const;
+};
 
 export type GlobalOptions = typeof globalOptions;
 export type GlobalFlags = typeof globalFlags;

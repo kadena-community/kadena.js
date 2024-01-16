@@ -1,6 +1,5 @@
-import { Option } from 'commander';
-import { z } from 'zod';
-import { keys } from '../prompts/index.js';
+import type { Option } from 'commander';
+import type { z } from 'zod';
 
 /**
  * Function that defines the prompt behavior.
@@ -15,6 +14,11 @@ export type IPrompt<T> = (
   args: Record<string, unknown>,
   isOptional: boolean,
 ) => T | Promise<T>;
+
+type IPromptCreator<T> = (
+  responses: Record<string, unknown>,
+  args: Record<string, unknown>,
+) => T;
 
 export interface IOptionCreatorObject {
   key: string;
@@ -37,10 +41,8 @@ export function createOption<const T extends IOptionCreatorObject>(data: T) {
     const isOptional = settings?.isOptional ?? data.defaultIsOptional ?? true;
     const isInQuestions = settings?.disableQuestion ?? false;
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    const prompt: T['prompt'] = (
-      responses: Record<string, unknown>,
-      args: Record<string, unknown>,
-    ) => data.prompt(responses, args, isOptional);
+    const prompt: T['prompt'] = (responses, args) =>
+      data.prompt(responses, args, isOptional);
     const validation =
       isOptional === true ? data.validation.optional() : data.validation;
     return {
@@ -53,32 +55,9 @@ export function createOption<const T extends IOptionCreatorObject>(data: T) {
   };
 }
 
-export const testoptioncreator = createOption({
-  key: 'keyAlias',
-  prompt: keys.keyAliasPrompt,
-  validation: z.string(),
-  option: new Option(
-    '-a, --key-alias <keyAlias>',
-    'Enter an alias to store your key',
-  ),
-  expand(value: ReturnType<typeof keys.keyAliasPrompt>) {
-    return { foo: 'bar' };
-  },
-  transform(value: ReturnType<typeof keys.keyAliasPrompt>) {
-    return 123;
-  },
-});
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type TestOption = ReturnType<typeof testoptioncreator>;
-
-export interface IEmptyOption {
-  key: string;
-  option: Option;
-  expand: (value: string) => unknown;
-  transform: (value: string) => unknown;
-  isOptional: boolean;
-  isInQuestions: boolean;
-  prompt: (responses: any, args: any, optional: boolean) => Promise<string>;
-  validation: z.Schema;
-}
+export type OptionType = Omit<
+  ReturnType<ReturnType<typeof createOption>>,
+  'prompt'
+> & {
+  prompt: IPromptCreator<any>;
+};

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { z } from 'zod';
 import { CLIRootName } from '../constants/config.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
-import { createOption } from './createOption.js';
+import type { createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
 import { collectResponses } from './helpers.js';
 import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
@@ -136,7 +135,7 @@ export function createCommand<
 
 type Fn = (...args: any[]) => unknown;
 
-type TransformOption<
+export type TransformOption<
   Option extends { key: string; prompt: Fn; transform?: Fn; expand?: Fn },
 > = {
   [P in Option['key']]: Option['transform'] extends (...args: any[]) => infer Tr
@@ -189,8 +188,8 @@ export async function executeOption<
   let value = args[option.key];
 
   if (value === undefined) {
-    if (args.quiet !== true) {
-      value = await option.prompt(args, {}, option.isOptional);
+    if (args.quiet !== 'true') {
+      value = await option.prompt(args, args, option.isOptional);
     } else if (option.isOptional === false) {
       throw new Error(
         `Missing required argument: ${option.key} (${option.option.flags})`,
@@ -236,21 +235,26 @@ export function getCommandExecution(
             displayValue = '******';
           }
         } else {
-          if (Array.isArray(value)) {
-            displayValue = value.join(' ');
-          } else if (typeof value === 'string') {
+          if (typeof value === 'string') {
             displayValue = `"${value}"`;
           } else if (typeof value === 'number') {
             displayValue = value.toString();
           } else if (typeof value === 'boolean' && value === false) {
             return undefined;
+          } else if (
+            typeof value === 'object' &&
+            value !== null &&
+            Object.getPrototypeOf(value) === Object.prototype
+          ) {
+            return Object.entries(value)
+              .map(([key, value]) => `--${key}=${value}`)
+              .join(' ');
           }
         }
 
-        return `--${arg.replace(
-          /[A-Z]/g,
-          (match) => `-${match.toLowerCase()}`,
-        )} ${
+        const key = arg.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+
+        return `--${key} ${
           displayValue !== null && displayValue !== undefined
             ? displayValue
             : ''
