@@ -1,6 +1,7 @@
+import { AccountButton } from '@/components/AccountButton/AccountButton';
 import { useMenu } from '@/hooks/useMenu/useMenu';
 import type { IMenuItem, LayoutType } from '@kadena/docs-tools';
-import { SystemIcon } from '@kadena/react-ui';
+import { Box, SystemIcon } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -85,6 +86,9 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
           <div className={hideOnMobileClass}>
             <SearchButton />
           </div>
+          <Box className={headerButtonClass}>
+            <AccountButton />
+          </Box>
           <HamburgerMenuToggle
             toggleMenu={toggleMenu}
             isMenuOpen={isMenuOpen}

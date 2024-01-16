@@ -14,3 +14,11 @@ export interface IResponseError {
   status: number;
   message: string;
 }
+
+interface IAccount {
+  name: string;
+  waccount: string;
+  caccount: string;
+  publicKey: string;
+  cid: string;
+}
