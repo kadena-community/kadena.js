@@ -211,7 +211,15 @@ export const button = recipe({
       text: {
         background: 'none',
         color: bg,
+
         selectors: {
+          '&[href]': {
+            fontFamily: 'inherit',
+            fontSize: 'inherit',
+            fontWeight: 'inherit',
+            lineHeight: 'inherit',
+            letterSpacing: 'inherit',
+          },
           '&[data-hovered]': {
             color: bgHover,
             textDecoration: 'underline',
