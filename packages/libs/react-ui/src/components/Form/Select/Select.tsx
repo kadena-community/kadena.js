@@ -54,7 +54,6 @@ function SelectBase<T extends object>(
     typeof props.errorMessage === 'function'
       ? props.errorMessage(validation)
       : props.errorMessage ?? validation.validationErrors.join(' ');
-
   return (
     <div className={formField}>
       {props.label && (
