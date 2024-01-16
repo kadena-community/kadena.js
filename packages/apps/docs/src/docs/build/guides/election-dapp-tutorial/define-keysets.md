@@ -463,3 +463,9 @@ In this tutorial, you learned how to:
 
 In the next tutorial, you'll create your first **Pact module** for the election application.
 You'll define the Pact module inside of your principal namespace and control how it's used with the keyset you defined in this tutorial. After you complete the tutorial, you'll have the basic functionality for the election website.
+
+To see the code for the activity you completed in this tutorial and get the starter code for the next tutorial, check out the `06-smart-contracts` branch from the `election-dapp` repository by running the following command in your terminal shell:
+
+```bash
+git checkout 06-smart-contracts
+```
