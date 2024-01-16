@@ -551,6 +551,7 @@ After making these changes, you can use the frontend to add candidates to and li
 To modify the frontend to list candidates from the development network:
 
 1. Open `election-dapp/frontend/src/repositories/candidate/DevnetCandidateRepository.ts` in your code editor.
+
 2. Replace the value of the `NAMESPACE` constant with your own principal namespace.
 
    ```typescript
@@ -577,134 +578,153 @@ To modify the frontend to list candidates from the development network:
    };
    ```
     
-    Remove the `@ts-ignore`comment and notice that the name of your module cannot be found in `Pact.modules`.
+    Remove the `@ts-ignore` comment and notice that the name of your module cannot be found in `Pact.modules`.
     To fix this problem, you must generate types for your Pact module that can be picked up by `@kadena/client`.
 
-4. Open a terminal and generate types for your `election` module by running the following command:
+4. Open a terminal, change to the `election-dapp/frontend` directory, then generate types for your `election` module by running the following command:
    
    ```bash
    npm run pactjs:generate:contract:election
    ```
-******** PROBLEM FOUND*********
+   
+   This command uses the `pactjs` library to generate the TypeScript definitions for the election contract and should clear the error reported by the code editor. 
+   Depending on the code editor, you might need to close the project in the editor and reopen it to reload the code editor window with the change.
 
-The error should have disappeared from your editor. If you are using Visual Studio Code, you
-may have to reload the window first. The front-end should now be fine to build and run.
-Before the transaction is created, only the chain id and network id are configured, and
-a remarkably high gas limit is set. Apparently, sending a full table read transaction to
-the blockchain is quite expensive. Fortunately, you can preview the result, like you
-did in Chainweaver earlier, without actually sending a transaction to the blockchain. The
-`dirtyRead` method of the client conveniently handles this preview request. The rest
-of the `listCandidates` function deals with processing the response from Devnet. If the
-transaction was successful, a list of candidates is returned, otherwise an empty list.
+   After you clear the error, note that the listCandidates function:
+   
+   - Sets the chain identifier, gas limit, and network identifier before creating the transaction.
+   - Uses the `dirtyRead` method to preview the without sending a transaction to the blockchain. 
+     The `dirtyRead` method is provided by the Kadena client package and allows you to return a raw response for a transaction as you saw when you deployed your smart contract. 
+   - Processes the response from the development network and returns a list of candidates or an empty list.
 
-Open up a terminal with the current directory set to `./frontend` relative to the root
-of your project. Run the front-end application configured with the `devnet` back-end by
-executing the following commands. Visit `http://localhost:5173` in your browser and
-verify that the website loads without errors.
+5. Open the `election-dapp/frontend` directory in a terminal shell. 
+6. Install the frontend dependencies by running the following command:
+   
+   ```bash
+   npm install
+   ```
 
-```bash
-npm install
-npm run start-devnet
-```
+1. Start the frontend application configured to use the `devnet` backend by
+running the following command: 
+
+   ```bash
+   npm run start-devnet
+   ```
+
+1. Open `http://localhost:5173` in your browser and verify that the website loads without errors.
+
+   You'll notice that—unlike the frontend configured to the in-memory backend—there are no candidates displayed when the frontend connects to the development network backend.
+   With the development network backend, candidates must be added to the `candidates` table before they can be displayed.
+   To do that, you must first modify the `addCandidate` function in the frontend.
 
 ### Add candidate
 
-While the front-end configured with the in-memory back-end displayed a list of five
-candidates right away, no candidates will be displayed when using the devnet back-end.
-You will first need to add candidates. Before adding a candidate, open
-`frontend/src/repositories/candidate/DevnetCandidateRepository.ts` in your editor and
-make sure you understand the `addCandidate` implementation. The function receives a
-candidate object and the account of the transaction sender. These will be provided by
-you via the form on the website. Remove the `@ts-ignore` comment and observe that the
-`insert-candidate` function of your `election` module will be called with the candidate
-object when the transaction is executed. Recall that the `add-candidate` function is
-guarded by the `GOVERNANCE` capability that enforces the `admin-keyset`. That is why
-the following data and signer need to be added to the transaction.
+To modify the frontend to add candidates from the development network:
 
-```typescript
-.addData('admin-keyset', {
-  keys: [accountKey(sender)],
-  pred: 'keys-all',
-})
-.addSigner(accountKey(sender))
-```
+1. Open `election-dapp/frontend/src/repositories/candidate/DevnetCandidateRepository.ts` in your code editor.
 
-Notice that these lines correspond to the following code in your `./pact/election.repl` file.
+3. Review the `addCandidate` function.
+   
+   In the fist line, the function receives a candidate object and the account of the transaction sender.
 
-```pact
-(env-data
-  { 'admin-keyset:
-      { 'keys : [ "128c32eb3b4d99be6619aa421bc3df9ebc91bde7a4acf5e8eb9c27f553fa84f3" ]
-      , 'pred : 'keys-all
-      }
-  }
-)
+   ```typescript
+   const addCandidate = async (candidate: ICandidate, sender: string = ''): Promise<void> => {
+   ```
 
-(env-sigs
-  [{ 'key  : "128c32eb3b4d99be6619aa421bc3df9ebc91bde7a4acf5e8eb9c27f553fa84f3"
-   , 'caps : []
-  }]
-)
-```
+   You provide this information using a form on the website.
+   
+   The next lines start constructing the transaction:
 
-In contrast to when you listed candidates, the transaction for adding candidates is actually
-sent to the blockchain, so gas must be paid for processing the transaction. The value of the
-`senderAccount` field of the metadata specifies the account that will pay for gas. This is
-important to remember, because in the next chapters you will specify the account of a
-gas station to pay for the gas of a transaction that is signed by the account of a voter.
-The transaction to add a candidate will be signed and paid by the same account, though.
+   ```typescript
+     const transaction = Pact.builder
+    .execution(
+      // @ts-ignore
+      Pact.modules[`${NAMESPACE}.election`]['add-candidate'](candidate),
+    )
+   ```
+   
+   Remove the `@ts-ignore` comment to enable the frontend function to call the `add-candidate` function in your `election` module.
+   The function takes the `candidate` object to insert data into the `candidates` database when the transaction is executed.
+   
+   Because the `add-candidate` function is guarded by the `GOVERNANCE` capability that enforces the `admin-keyset`, the next lines add the keyset and signer data to the transaction:
 
-```typescript
-.addSigner(accountKey(sender))
-.setMeta({
-  chainId: CHAIN_ID,
-  senderAccount: sender,
-})
-```
+   ```typescript
+   .addData('admin-keyset', {
+     keys: [accountKey(sender)],
+     pred: 'keys-all',
+   })
+   .addSigner(accountKey(sender))
+   ```
 
-Another difference between the `listCandidates` and `addCandidate` implementation is the use
-of a preflight request in the `addCandidate` function. This allows you to dry run the
-transaction without actually sending the transaction and paying for gas. The preflight
-response contains information about the expected success of the transaction and the
-amount of gas it will cost. If the transaction would fail or the gas fee is higher than you
-would like, you can choose not to send the transaction. This helps to prevent unnecessary loss
-of KDA paid for gas.
+   These lines correspond to the `(env-data)` and `(env-sig)` code you specified in your `./pact/election.repl` file.
+   Unlike the transaction for listing candidates, the transaction for adding candidates must be sent to the blockchain, so gas must be paid for processing the transaction. 
+   
+   The value of the `senderAccount` field in the metadata specifies the account that pays for gas. This is important to remember because, in the next tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
+   However, the transaction to add a candidate must be signed and paid by the same account.
 
-```typescript
-const preflightResponse = await client.preflight(signedTx);
+   ```typescript
+   .addSigner(accountKey(sender))
+   .setMeta({
+     chainId: CHAIN_ID,
+     senderAccount: sender,
+   })
+   ```
 
-if (preflightResponse.result.status === 'failure') {
-  throw preflightResponse.result.error;
-}
-```
+   The `addCandidate` function also implements a preflight request. 
+   The preflight request allows you to test a transaction without sending it. 
+   The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires.
+   If the transaction would fail or the gas fee is higher than you would like, you can choose not to send the transaction.
 
-The remainder of the `addCandidate` function deals with sending the transaction and processing
-the response. An error will be thrown if the transaction fails.
+   ```typescript
+   const preflightResponse = await client.preflight(signedTx);
+   
+   if (preflightResponse.result.status === 'failure') {
+     throw preflightResponse.result.error;
+   }
+   ```
 
-Make sure that Chainweaver is open so you can sign the request. Then, enter your admin account
-name on the election website. Click the `Add candidate` button that appears and add a candidate
-in the following format.
+   The remainder of the `addCandidate` function deals with sending the transaction and processing
+   the response.
 
-```json
-{ "key": "1", "name": "Your name" }
-```
+2. Open and unlock the Chainweaver desktop or web application and verify that:
 
-After signing the request, a loading indicator will be displayed on the
-website while the transaction is in progress. As soon as the transaction
-completes successfully, the loading indicator will disappear and
-the candidate you nominated will be added to the list. Great job!
+   - You're connected to **development network (devnet)** from the network list.
+   - Your administrative account name with the **k:** prefix exists on chain 1.
+   - Your administrative account name is funded with KDA on chain 1. 
+   
+   You're going to use Chainweaver to sign the transaction that defines the keyset. 
+
+1. Click Accounts in the Chainweaver navigation panel, then copy the account name for your administrative account.
+
+2. Open `http://localhost:5173` in your browser, then click **Set Account**.
+
+1. Paste your administrative account, then click **Save**.
+
+2. Click **Add candidate**, type the candidate information, then click **Save**. 
+   
+   Type candidate information using the following format:
+
+   ```json
+   { "key": "1", "name": "Your name" }
+   ```
+
+3. Click **Sign All**.
+   
+   After signing the request, a loading indicator is displayed on the website while the transaction is in progress. 
+   As soon as the transaction completes successfully, the candidate you nominated is added to the list.
 
 ## Next steps
 
-In this chapter, you have upgraded the smart contract for your election
-website. You added a candidates table and functions for listing and adding
-candidates to the table. Furthermore, you connected the front-end of the
-election website to you local Devnet. The only thing left to finish the
-election website is to make it possible to cast a vote on one of the
-candidates. In the next chapter, you will upgrade the election module
-with functionality that enables people to cast a vote on a candidate with
-their Kadena account.
+In this tutorial, you learned how to:
 
-## Recommended reading
+- Upgrade the smart contract for your election website.
+- Include a `candidates` database table and functions for listing and adding candidates to the table. 
+- Connect the frontend of the election website to the local development network as a backend. 
 
- * [Pact Schemas and Tables](/pact/beginner/schemas-and-tables)
+In the next tutorial, you'll upgrade the `election` module to enables people to cast a vote on a candidate with their Kadena account.
+
+To see the code for the activity you completed in this tutorial and get the starter code for the next tutorial, check out the `08-voting` branch from the `election-dapp` repository by running the following command in your terminal shell:
+
+```bash
+git checkout 08-voting
+```
