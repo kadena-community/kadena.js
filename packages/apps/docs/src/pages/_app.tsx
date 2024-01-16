@@ -1,5 +1,6 @@
 import { KodeMono } from '@kadena/fonts';
 // eslint-disable-next-line import/no-unresolved
+import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
 import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Layout/components/Header/Header';
@@ -102,26 +103,28 @@ export const MyApp = ({
         {/* Apple touch icon */}
         <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png" />
       </Head>
-      <MDXProvider components={markDownComponents}>
-        <ThemeProvider
-          attribute="class"
-          enableSystem={true}
-          defaultTheme="light"
-          value={{
-            light: 'light',
-            dark: darkThemeClass,
-          }}
-        >
-          <MenuProvider>
-            <Header menuItems={props.headerMenuItems} />
-            <CookieConsent />
-            <Layout {...props}>
-              <Component {...props} />
-            </Layout>
-          </MenuProvider>
-        </ThemeProvider>
-      </MDXProvider>
-      <Analytics />
+      <AccountProvider>
+        <MDXProvider components={markDownComponents}>
+          <ThemeProvider
+            attribute="class"
+            enableSystem={true}
+            defaultTheme="light"
+            value={{
+              light: 'light',
+              dark: darkThemeClass,
+            }}
+          >
+            <MenuProvider>
+              <Header menuItems={props.headerMenuItems} />
+              <CookieConsent />
+              <Layout {...props}>
+                <Component {...props} />
+              </Layout>
+            </MenuProvider>
+          </ThemeProvider>
+        </MDXProvider>
+        <Analytics />
+      </AccountProvider>
     </>
   );
 };
