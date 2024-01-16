@@ -13,11 +13,12 @@ import {
   Grid,
   GridItem,
   Heading,
+  Link,
   Stack,
+  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
-import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -43,9 +44,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 clicking Quick start.
               </Text>
             </Box>
-            <Button as="a" asChild icon="TrailingIcon">
-              <Link href={'/build/quickstart'}>Quick start</Link>
-            </Button>
+            <Link
+              endIcon={<SystemIcon.TrailingIcon />}
+              href="/build/quickstart"
+            >
+              Quick start
+            </Link>
           </Card>
         </GridItem>
         <GridItem>

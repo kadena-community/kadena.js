@@ -17,11 +17,12 @@ import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
 import {
   Box,
-  Button,
   Card,
   Grid,
   GridItem,
   Heading,
+  Link as KadenaLink,
+  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import classNames from 'classnames';
@@ -55,9 +56,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   Pact to create a smart contract
                 </Text>
               </Box>
-              <Button as="a" asChild icon="TrailingIcon">
-                <Link href={'/pact/beginner'}>Getting started</Link>
-              </Button>
+              <KadenaLink
+                endIcon={<SystemIcon.TrailingIcon />}
+                href="/pact/beginner"
+              >
+                Getting started
+              </KadenaLink>
             </Card>
           </GridItem>
           <GridItem>

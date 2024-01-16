@@ -33,6 +33,7 @@ import {
   Heading,
   IconButton,
   Stack,
+  SystemIcon,
   TextField,
   TrackerCard,
 } from '@kadena/react-ui';
@@ -462,7 +463,11 @@ const CrossChainTransferFinisher: FC = () => {
           </Stack>
         </section>
         <section className={formButtonStyle}>
-          <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">
+          <Button
+            type="submit"
+            isDisabled={!isGasStation}
+            endIcon={<SystemIcon.TrailingIcon />}
+          >
             {t('Finish Transaction')}
           </Button>
         </section>

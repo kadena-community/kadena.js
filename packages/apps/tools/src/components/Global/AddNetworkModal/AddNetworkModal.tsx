@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogHeader,
   Stack,
+  SystemIcon,
   TextField,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
@@ -127,8 +128,8 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                 <section className={formButtonStyle}>
                   <Button
                     type="submit"
-                    icon="TrailingIcon"
-                    disabled={Boolean(error)}
+                    endIcon={<SystemIcon.TrailingIcon />}
+                    isDisabled={Boolean(error)}
                   >
                     {t('Save Network')}
                   </Button>
