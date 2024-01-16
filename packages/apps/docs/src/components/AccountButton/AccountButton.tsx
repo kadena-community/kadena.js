@@ -1,5 +1,5 @@
 import { useAccount } from '@/hooks/useAccount';
-import { IconButton, SystemIcon } from '@kadena/react-ui';
+import { SystemIcon } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
