@@ -1,10 +1,10 @@
 import { createSendTransactionCommand } from './commands/txSend.js';
 import { createSignTransactionWithAliasFileCommand } from './commands/txSignWithAliasFile.js';
-import { createSignTransactionWithChainweaver } from './commands/txSignWithChainweaver.js';
+// import { createSignTransactionWithChainweaver } from './commands/txSignWithChainweaver.js';
 import { createSignTransactionWithKeypairCommand } from './commands/txSignWithKeypair.js';
 import { createSignTransactionWithLocalWalletCommand } from './commands/txSignWithLocalWallet.js';
-import { createSignTransactionWithWalletConnect } from './commands/txSignWithWalletConnect.js';
-import { createSignTransactionWithWebAuthN } from './commands/txSignWithWebAuthN.js';
+// import { createSignTransactionWithWalletConnect } from './commands/txSignWithWalletConnect.js';
+// import { createSignTransactionWithWebAuthN } from './commands/txSignWithWebAuthN.js';
 import { createTestSignedTransactionCommand } from './commands/txTestSignedTransaction.js';
 
 import type { Command } from 'commander';
@@ -20,8 +20,8 @@ export function txCommandFactory(program: Command, version: string): void {
   createSignTransactionWithKeypairCommand(txProgram, version);
   createSignTransactionWithAliasFileCommand(txProgram, version);
   createSignTransactionWithLocalWalletCommand(txProgram, version);
-  createSignTransactionWithWalletConnect(txProgram, version);
-  createSignTransactionWithChainweaver(txProgram, version);
-  createSignTransactionWithWebAuthN(txProgram, version);
+  //createSignTransactionWithWalletConnect(txProgram, version);
+  // createSignTransactionWithChainweaver(txProgram, version);
+  // createSignTransactionWithWebAuthN(txProgram, version);
   createTestSignedTransactionCommand(txProgram, version);
 }
