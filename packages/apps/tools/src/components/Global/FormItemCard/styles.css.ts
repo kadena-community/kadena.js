@@ -19,6 +19,7 @@ export const helperTextIconStyle = style([
     gap: '$2',
     cursor: 'pointer',
     color: '$neutral5',
+    fontSize: '$sm',
   }),
 ]);
 

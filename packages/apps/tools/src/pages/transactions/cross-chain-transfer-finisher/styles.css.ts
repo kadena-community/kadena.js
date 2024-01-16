@@ -1,11 +1,10 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { atoms, sprinkles } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const formContentStyle = style([
   sprinkles({
     position: 'relative',
     height: '100%',
-    marginY: '$sm',
   }),
   {
     width: '680px',
@@ -23,37 +22,24 @@ export const notificationContainerStyle = style([
   },
 ]);
 
+export const notificationLinkStyle = style([
+  atoms({
+    fontWeight: 'bodyFont.bold',
+    color: 'text.semantic.warning.default',
+    cursor: 'pointer',
+  }),
+]);
+
 export const formButtonStyle = style([
   sprinkles({
     display: 'flex',
     flexDirection: 'row-reverse',
     marginTop: '$4',
+    paddingBottom: '$4',
     gap: '$8',
   }),
   {
     width: '680px',
-  },
-]);
-
-export const sideContentStyle = style([
-  sprinkles({
-    display: 'flex',
-    flexDirection: 'column',
-  }),
-]);
-
-export const formHeaderStyle = style([
-  sprinkles({
-    display: 'flex',
-    paddingTop: '$6',
-    paddingRight: '$10',
-    paddingLeft: '$10',
-    alignItems: 'flex-start',
-    gap: '$2',
-  }),
-  {
-    alignSelf: 'stretch',
-    background: 'rgba(71, 79, 82, 0.4)',
   },
 ]);
 
@@ -64,15 +50,6 @@ export const sidebarLinksStyle = style([
     position: 'absolute',
     bottom: 0,
   }),
-]);
-
-export const textAreaStyle = style([
-  sprinkles({
-    outline: 'none',
-  }),
-  {
-    width: '-webkit-fill-available',
-  },
 ]);
 
 export const textareaContainerStyle = style([

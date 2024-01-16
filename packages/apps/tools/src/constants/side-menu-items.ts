@@ -23,7 +23,7 @@ export const menuData: ISidebarToolbarItem[] = [
     href: 'transactions',
     items: [
       {
-        title: 'Transfer Tracker',
+        title: 'Cross Chain Transfer Tracker',
         href: Routes.CROSS_CHAIN_TRANSFER_TRACKER,
       },
       {

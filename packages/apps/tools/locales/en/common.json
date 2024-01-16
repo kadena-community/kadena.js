@@ -166,7 +166,7 @@
   "SigData": "SigData",
   "How do I use the Signature data": "How do I use the Signature data",
   "copySigData": "copySigData",
-  "This input field will only be enabled if the user is in expert mode": "This input field will only be enabled if the user is in expert mode",
+  "This input field will only be enabled if the user is in Backend or dApp Developer mode": "This input field will only be enabled if the user is in Backend or dApp Developer mode (Application Settings)",
   "approx. USD 000.1 ¢": "approx. USD 000.1 ¢",
   "What is a gas payer?": "What is a gas payer?",
   "Gas Settings": "Gas Settings",
@@ -206,5 +206,14 @@
   "Mode": "Mode",
   "Theme": "Theme",
   "Notification title success": "Successful transaction",
-  "Resources & Links": "Resources & Links"
+  "Resources & Links": "Resources & Links",
+  "application-settings-warning": "You can change Application Settings in the left sidebar or by clicking <0>HERE</0>.",
+  "Application Settings": "Application Settings",
+  "form-status-content-processing": "Please have some patience while the transaction is being processed. Depending on the Network (e.g. Mainnet), this may take up to 10 minutes.",
+  "help-request-key-question": "Where can I find the request key?",
+  "help-request-key-content": "You can start a cross chain transfer on Chainweaver and get a request key.",
+  "help-gas-settings-question": "What is a gas payer?",
+  "help-gas-settings-content": "A gas station is an account that exists only to fund gas payments on behalf of other users under specific conditions. By having a gas station pay user onboarding costs, we remove the friction of acquiring tokens in advance of signup, which allows a user’s first interaction with a dApp to be as easy as filling out a web form.",
+  "help-signature-data-question": "How do I use the Signature data?",
+  "help-signature-data-content": "You can use the signature data exclusively for signing transactions."
 }
