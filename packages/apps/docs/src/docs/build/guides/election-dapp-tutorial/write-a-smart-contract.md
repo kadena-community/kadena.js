@@ -707,3 +707,9 @@ So far, your `election` module only contains one simple function that doesn't do
 The next tutorial demonstrates how to add a schema and a database table to the `election` module and how to use that table to store the names of election candidates and the number of votes each candidate receives. 
 
 You'll also update the `list-candidates` function to return data from the database table and add a new function to nominate candidates.
+
+To see the code for the activity you completed in this tutorial and get the starter code for the next tutorial, check out the `07-nominate-candidates` branch from the `election-dapp` repository by running the following command in your terminal shell:
+
+```bash
+git checkout 07-nominate-candidates
+```
