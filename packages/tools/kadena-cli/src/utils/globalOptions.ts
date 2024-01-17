@@ -253,6 +253,15 @@ export const globalOptions = {
       'Specify the directory where the log file will be generated.',
     ),
   }),
+  simulateDefaultChain: createOption({
+    key: 'defaultChain' as const,
+    prompt: simulatePrompts.simulateDefaultChainPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-c, --default-chain <defaultChain>',
+      'Specify the default chain for the simulation.',
+    ),
+  }),
 
   // Network
   networkName: createOption({

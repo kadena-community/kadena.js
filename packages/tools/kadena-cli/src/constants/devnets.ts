@@ -27,7 +27,6 @@ export const defaultDevnet: string = 'devnet';
  * @const simulationDefaults
  * Provides the default simulation configurations.
  */
-
 export const simulationDefaults = {
   DEFAULT_CHAIN_ID: '0' as ChainId,
   NETWORK_HOST: 'http://localhost:8080',

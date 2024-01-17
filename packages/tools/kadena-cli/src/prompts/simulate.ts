@@ -1,11 +1,12 @@
 import { input } from '@inquirer/prompts';
+import { ChainId } from '@kadena/types';
 
 export async function simulateNoAccountsPrompt(): Promise<number> {
   const noAccounts = await input({
     message: 'Enter the amount of accounts to be created in the simulation.',
     default: '6',
     validate: (value) => {
-      const valid = !isNaN(parseFloat(value));
+      const valid = !isNaN(parseInt(value));
       return valid || 'Please enter a number';
     },
   });
@@ -18,7 +19,7 @@ export async function simulateTransferIntervalPrompt(): Promise<number> {
     message: 'Enter the transfer interval in milliseconds.',
     default: '100',
     validate: (value) => {
-      const valid = !isNaN(parseFloat(value));
+      const valid = !isNaN(parseInt(value));
       return valid || 'Please enter a number';
     },
   });
@@ -31,7 +32,7 @@ export async function simulateMaxAmountPrompt(): Promise<number> {
     message: 'Enter the max transfer amount per single transaction (coin).',
     default: '25',
     validate: (value) => {
-      const valid = !isNaN(parseFloat(value));
+      const valid = !isNaN(parseInt(value));
       return valid || 'Please enter a number';
     },
   });
@@ -44,7 +45,7 @@ export async function simulateTokenPoolPrompt(): Promise<number> {
     message: 'Enter the total token pool (coin).',
     default: '1000000',
     validate: (value) => {
-      const valid = !isNaN(parseFloat(value));
+      const valid = !isNaN(parseInt(value));
       return valid || 'Please enter a number';
     },
   });
@@ -63,5 +64,12 @@ export function simulateLogFolderPrompt(): Promise<string> {
   return input({
     message: 'Specify the directory where the log file will be generated',
     default: `${process.cwd()}/logs/simute`,
+  });
+}
+
+export function simulateDefaultChainPrompt(): Promise<string> {
+  return input({
+    message: 'Specify the default chain for the simulation',
+    default: '0',
   });
 }

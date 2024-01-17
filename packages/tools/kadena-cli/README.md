@@ -1,4 +1,4 @@
-pa<!-- genericHeader start -->
+<!-- genericHeader start -->
 
 # @kadena/kadena-cli
 
@@ -86,9 +86,12 @@ To install the executable from this repo:
 ```sh
 pnpm install
 pnpm build --filter @kadena/kadena-cli
-# if you are using NVM, you should have this environment variable available
+# in order to be able to use the kda command globally, we need to create a symlink
+# if you are using NVM, we can do that by running
 ln -s $(pwd)/bin/kadena-cli.js $NVM_BIN/kda
 # if not, you can replace $NVM_BIN to any path you have added in your $PATH
+# for example:
+ln -s $(pwd)/bin/kadena-cli.js $NVM_BIN/kda
 ```
 
 ## list of commands
