@@ -22,6 +22,7 @@ import {
   Button,
   Grid,
   GridItem,
+  Link,
   Notification,
   NotificationButton,
   NotificationFooter,
@@ -183,16 +184,14 @@ const CrossChainTransferTracker: FC = () => {
               {t('Track & trace transactions')}
             </div>
             {data.id === StatusId.Pending ? (
-              <Button
+              <Link
                 title={t('Finish Transaction')}
-                as="a"
                 href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
-                icon="Link"
-                iconAlign="right"
+                endIcon={<SystemIcon.Link />}
                 color="positive"
               >
                 {t('Finish Transaction')}
-              </Button>
+              </Link>
             ) : null}
           </Stack>
         </Stack>
@@ -244,8 +243,7 @@ const CrossChainTransferTracker: FC = () => {
             <Button
               type="submit"
               title={t('Search')}
-              icon="Magnify"
-              iconAlign="right"
+              endIcon={<SystemIcon.Magnify />}
             >
               {t('Search')}
             </Button>
