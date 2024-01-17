@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import { queryFromInfo } from '@pothos/plugin-prisma';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
@@ -13,9 +14,14 @@ builder.queryField('block', (t) =>
     type: Block,
     nullable: true,
     complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
-    async resolve(query, __parent, args) {
+    async resolve(query, __parent, args, context, info) {
       try {
+        const res = queryFromInfo({
+          info,
+          context,
+        });
         const block = await prismaClient.block.findUnique({
+          ...res,
           ...query,
           where: {
             hash: args.hash,
