@@ -178,7 +178,7 @@ export const convertTemplateTxToPactCommand = (
       creationTime: Math.floor(Date.now() / 1000),
     },
     nonce: kdaToolTx.nonce ? kdaToolTx.nonce : '',
-    signers: kdaToolTx.signers.map(publicToPubkey),
+    signers: (kdaToolTx.signers ?? []).map(publicToPubkey),
     networkId: kdaToolTx.networkId,
   };
 };
