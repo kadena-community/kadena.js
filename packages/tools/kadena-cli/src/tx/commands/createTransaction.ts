@@ -1,14 +1,18 @@
-import { Option } from 'commander';
-
 import { input, select } from '@inquirer/prompts';
-import {
-  createPactCommandFromTemplate,
-  getPartsAndHoles,
-} from '@kadena/client-utils/nodejs';
+import { Option } from 'commander';
 import path from 'path';
 import { z } from 'zod';
+
+import type { IUnsignedCommand } from '@kadena/client';
+import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
+import {
+  createPactCommandFromStringTemplate,
+  getPartsAndHoles,
+} from '@kadena/client-utils/nodejs';
+
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { createOption } from '../../utils/createOption.js';
 
@@ -38,7 +42,7 @@ const templateOption = createOption({
     );
     if (template === null) return { variables: [] };
     const variables = getTemplateVariables(template);
-    return { variables };
+    return { template, variables };
   },
 });
 
@@ -76,10 +80,6 @@ const templateVariablesOption = createOption({
   },
 });
 
-// type xprompt = ReturnType<typeof templateVariablesOption>['prompt'];
-// type xtr = ReturnType<typeof templateVariablesOption>['transform'];
-// type xex = ReturnType<typeof templateVariablesOption>['expand'];
-
 function getTemplateVariables(template: string): string[] {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,28 +90,19 @@ function getTemplateVariables(template: string): string[] {
 }
 
 export const createTransaction = async (
-  templateFile: string,
-): Promise<CommandResult<{}>> => {
-  console.log('>', templateFile);
-  const template = await services.filesystem.readFile(
-    path.join(TEMPLATE_DIR, templateFile),
+  template: string,
+  variables: Record<string, string>,
+): Promise<CommandResult<{ transaction: IUnsignedCommand }>> => {
+  const command = await createPactCommandFromStringTemplate(
+    template,
+    variables,
   );
-  if (template === null) {
-    return {
-      success: false,
-      errors: [`Template: ${templateFile} does not exist.`],
-    };
-  }
 
-  // const variables = getTemplateVariables(template);
-  const command = await createPactCommandFromTemplate(
-    templateFile,
-    {},
-    TEMPLATE_DIR,
-  );
   console.log(command);
 
-  return { success: true, data: {} };
+  const transaction = kadenaCreateTransaction(command);
+
+  return { success: true, data: { transaction } };
 };
 
 export const createTransactionCommandNew = createCommandFlexible(
@@ -129,5 +120,17 @@ export const createTransactionCommandNew = createCommandFlexible(
       ...template,
       ...templateVariables,
     });
+
+    if (template.templateConfig.template === undefined) {
+      return console.log('template not found');
+    }
+
+    const result = await createTransaction(
+      template.templateConfig.template,
+      templateVariables.templateVariables,
+    );
+    assertCommandError(result);
+
+    console.log(result.data.transaction);
   },
 );

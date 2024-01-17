@@ -29,16 +29,18 @@ interface ITemplateContextReplacedHoles extends ITemplateContext {
   filledYamlString: FilledYamlString;
 }
 
+interface IPublicMeta {
+  chainId: string;
+  sender: string;
+  gasLimit: number;
+  gasPrice: number;
+  ttl: number;
+}
 interface ITemplateTransaction {
   codeFile?: string;
   command: string;
-  publicMeta: {
-    chainId: string;
-    sender: string;
-    gasLimit: number;
-    gasPrice: number;
-    ttl: number;
-  };
+  meta?: IPublicMeta;
+  publicMeta?: IPublicMeta;
   networkId: string;
   data: Record<string, any>;
   signers: Array<{ public: string }>;
@@ -162,14 +164,44 @@ export const convertTemplateTxToPactCommand = (
     },
   };
 
-  const { publicMeta, ...kdaToolTxWithoutMeta } = kdaToolTx;
+  const { publicMeta, meta, ...kdaToolTxWithoutMeta } = kdaToolTx;
+  const metadata = meta || publicMeta || ({} as IPublicMeta);
 
   return {
     ...kdaToolTxWithoutMeta,
     payload: execPayload,
     meta: {
-      ...publicMeta,
-      chainId: publicMeta.chainId as ChainId,
+      ...metadata,
+      chainId: metadata.chainId as ChainId,
+      creationTime: Math.floor(Date.now() / 1000),
+    },
+    nonce: kdaToolTx.nonce ? kdaToolTx.nonce : '',
+    signers: kdaToolTx.signers.map(publicToPubkey),
+    networkId: kdaToolTx.networkId,
+  };
+};
+
+export const convertTemplateTxToPactCommandFixed = (
+  tplTx: ITemplateContextPactCommand['tplTx'],
+): IPactCommand => {
+  const { data, ...kdaToolTx } = tplTx;
+
+  const execPayload: IExecutionPayloadObject = {
+    exec: {
+      data: data ? data : {},
+      code: kdaToolTx.code!,
+    },
+  };
+
+  const { publicMeta, meta, ...kdaToolTxWithoutMeta } = kdaToolTx;
+  const metadata = meta || publicMeta || ({} as IPublicMeta);
+
+  return {
+    ...kdaToolTxWithoutMeta,
+    payload: execPayload,
+    meta: {
+      ...metadata,
+      chainId: metadata.chainId as ChainId,
       creationTime: Math.floor(Date.now() / 1000),
     },
     nonce: kdaToolTx.nonce ? kdaToolTx.nonce : '',
@@ -189,6 +221,20 @@ export const createPactCommandFromTemplate = async (
     parseYamlToKdaTx(args),
     convertTemplateTxToPactCommand,
   )(path, cwd);
+};
+
+export const createPactCommandFromStringTemplate = async (
+  template: string,
+  args: Record<string, string | number>,
+): Promise<IPactCommand> => {
+  return asyncPipe(
+    getPartsAndHoles,
+    (holes) => replaceHoles(holes, args),
+    (filledYamlString) =>
+      convertTemplateTxToPactCommandFixed(
+        yaml.load(filledYamlString) as ITemplateContextPactCommand['tplTx'],
+      ),
+  )(template);
 };
 
 // Responsible for zipping together parts and holes
