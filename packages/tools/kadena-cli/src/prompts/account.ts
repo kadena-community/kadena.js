@@ -10,7 +10,7 @@ export const accountAliasPrompt: IPrompt<string> = async () =>
   await input({
     message: 'Enter an alias for an account.',
     validate: function(value: string) {
-      if(!value || value.trim().length <= 3) {
+      if(!value || value.trim().length < 3) {
         return 'Alias must be minimum at least 3 characters long.';
       }
 
