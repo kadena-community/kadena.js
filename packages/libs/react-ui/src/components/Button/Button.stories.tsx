@@ -1,11 +1,12 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
 import { Box } from '../Layout/Box/Box';
-import { Heading } from '../Typography/Heading/Heading';
+import { Heading, Text } from '../Typography';
 import type { IButtonProps } from './Button';
 import { Button } from './Button';
 import { button } from './SharedButton.css';
+import { ToggleButton } from './ToggleButton';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const buttonVariants = Object.keys(
@@ -241,5 +242,26 @@ export const OnlyIcon: StoryFn<IButtonProps> = ({
     variant={variant}
   />
 );
+
+export const _ToggleButton = () => {
+  const [isSelected, setIsSelected] = useState(false);
+  return (
+    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
+      <Text>
+        Toggle button is same as button button can stay selected (active) the
+        styles are not final for now it is the same as button in addition to
+        selected state which is same as active/focused state
+      </Text>
+      <ToggleButton
+        variant="contained"
+        color="primary"
+        onChange={setIsSelected}
+        isSelected={isSelected}
+      >
+        {isSelected ? 'Selected' : 'Not selected'}
+      </ToggleButton>
+    </Box>
+  );
+};
 
 export default meta;

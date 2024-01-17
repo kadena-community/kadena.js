@@ -31,7 +31,6 @@ import {
   Grid,
   GridItem,
   Heading,
-  IconButton,
   Stack,
   SystemIcon,
   TextField,
@@ -447,13 +446,14 @@ const CrossChainTransferFinisher: FC = () => {
                       <textarea rows={4} className={textAreaStyle}>
                         {formattedSigData}
                       </textarea>
-                      <IconButton
+                      <Button
                         color="primary"
-                        icon={'ContentCopy'}
-                        onClick={async () => {
+                        icon={<SystemIcon.ContentCopy />}
+                        onPress={async () => {
                           await navigator.clipboard.writeText(formattedSigData);
                         }}
                         title={t('copySigData')}
+                        aria-label={t('copySigData')}
                       />
                     </div>
                   </GridItem>

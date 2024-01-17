@@ -6,7 +6,6 @@ import {
   Button,
   Card,
   Heading,
-  IconButton,
   Notification,
   NotificationHeading,
   Stack,
@@ -310,9 +309,9 @@ const NewAccountFaucetPage: FC = () => {
                 />
               </div>
               <div className={iconButtonWrapper}>
-                <IconButton
-                  icon={'Plus'}
-                  onClick={() => {
+                <Button
+                  icon={<SystemIcon.Plus />}
+                  onPress={() => {
                     const value = getValues('pubKey');
                     const valid = validatePublicKey(value || '');
                     if (valid) {
@@ -324,6 +323,8 @@ const NewAccountFaucetPage: FC = () => {
                       });
                     }
                   }}
+                  aria-label="Add public key"
+                  title="Add Public Key"
                   color="primary"
                   type="button"
                 />
