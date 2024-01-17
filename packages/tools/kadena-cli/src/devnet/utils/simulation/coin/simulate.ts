@@ -33,7 +33,7 @@ export interface ISimulationOptions {
   tokenPool: number;
   logFolder: string;
   seed: string;
-  stopAfter?: number;
+  maxTime?: number;
 }
 
 export async function simulateCoin({
@@ -44,7 +44,7 @@ export async function simulateCoin({
   tokenPool = 1000000,
   logFolder,
   seed = Date.now().toString(),
-  stopAfter,
+  maxTime,
 }: ISimulationOptions): Promise<void> {
   const accounts: IAccount[] = [];
 
@@ -269,9 +269,9 @@ export async function simulateCoin({
 
         const simulatedTime = Date.now() - startTime;
 
-        if (stopAfter && simulatedTime > stopAfter) {
+        if (maxTime && simulatedTime > maxTime) {
           console.log(
-            `Simulation stopped after ${stopAfter}ms. Please wait for the last transactions to complete.`,
+            `Simulation stopped after ${maxTime}ms. Please wait for the last transactions to complete.`,
           );
           return;
         }

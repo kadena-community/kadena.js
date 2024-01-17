@@ -21,8 +21,6 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
   async (config) => {
     debug('devnet-simulate:action')({ config });
 
-    config.simulateMaxTime = config.simulateMaxTime ?? null;
-
     guardDocker();
 
     if (!containerIsRunning(config.devnetConfig.name)) {
