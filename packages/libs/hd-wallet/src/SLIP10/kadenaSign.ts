@@ -1,5 +1,5 @@
 import { verifySig } from '@kadena/cryptography-utils';
-import { BinaryLike } from 'crypto';
+import type { BinaryLike } from 'crypto';
 import type { EncryptedString } from '../utils/kadenaEncryption';
 import { kadenaDecrypt } from '../utils/kadenaEncryption';
 import { signWithKeyPair, signWithSeed } from './utils/sign';
