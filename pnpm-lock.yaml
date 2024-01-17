@@ -554,6 +554,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-qrcode-logo:
+        specifier: ^2.9.0
+        version: 2.9.0(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -24145,6 +24148,10 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: true
 
+  /qrcode-generator@1.4.4:
+    resolution: {integrity: sha512-HM7yY8O2ilqhmULxGMpcHSF1EhJJ9yBj8gvDEuZ6M+KGJ0YY2hKpnXvRD+hZPLrDVck3ExIGhmPtSdcjC+guuw==}
+    dev: false
+
   /qrcode@1.5.3:
     resolution: {integrity: sha512-puyri6ApkEHYiVl4CFzo1tDkAZ+ATcnbJrJ6RiBM1Fhctdn/ix9MTE3hRph33omisEbC/2fcfemsseiKgBPKZg==}
     engines: {node: '>=10.13.0'}
@@ -24442,6 +24449,18 @@ packages:
       vfile: 5.3.7
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /react-qrcode-logo@2.9.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-x9uctB/8kuQ+x7p4V/BRv6qbQV4xYopLcitBuQT3925U/zVFb3bbDUsUZsi7hEKuAX/wRsfhs331FhlPSYCO9Q==}
+    peerDependencies:
+      react: '>=16.4.1'
+      react-dom: '>=16.4.1'
+    dependencies:
+      lodash.isequal: 4.5.0
+      qrcode-generator: 1.4.4
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-reconciler@0.29.0(react@18.2.0):

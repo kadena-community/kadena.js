@@ -3,7 +3,9 @@ import { useAccount } from '@/hooks/account';
 import type { FC } from 'react';
 
 export const AccountInfo: FC = () => {
-  const { account, login, logout } = useAccount();
+  const { account, login, logout, isMounted } = useAccount();
+
+  if (!isMounted) return null;
   return (
     <section>
       {account ? (
