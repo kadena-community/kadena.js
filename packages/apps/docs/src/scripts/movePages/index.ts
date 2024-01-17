@@ -5,7 +5,7 @@ import {
   getUrlNameOfPageFile,
 } from '@kadena/docs-tools';
 import * as fs from 'fs';
-import { importRepo } from '../importReadme/importRepo';
+import { importRepo, noImportRepo } from '../importReadme/importRepo';
 import type { IImportReadMeItem } from '../utils';
 import type { IScriptResult } from './../types';
 import { promiseExec } from './../utils/build';
@@ -21,6 +21,14 @@ const copyBlogchain = (): void => {
   });
 };
 
+export const copyPage = (parentDir: string, page: IConfigTreeItem): void => {
+  const dir = `${parentDir}${page.url}`;
+  const file = `${dir}/index.${getFileExtension(page.file)}`;
+
+  fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
+  fs.copyFileSync(`./src/docs${page.file}`, `./src/pages${file}`);
+};
+
 const copyPages = async (
   pages: IConfigTreeItem[],
   parentDir: string = '',
@@ -28,17 +36,16 @@ const copyPages = async (
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
     if (page.repo) {
-      const item = { ...page } as unknown as IImportReadMeItem;
       const parentTree = await getParentTreeFromPage(page);
-      item.destination = getUrlNameOfPageFile(page, parentTree ?? []);
+      page.destination = getUrlNameOfPageFile(page, parentTree ?? []);
 
-      await importRepo(item);
+      if (process.env.IGNOREREPO) {
+        await noImportRepo(page, parentTree);
+      } else {
+        await importRepo(page as unknown as IImportReadMeItem);
+      }
     } else {
-      const dir = `${parentDir}${page.url}`;
-      const file = `${dir}/index.${getFileExtension(page.file)}`;
-
-      fs.mkdirSync(`./src/pages${dir}`, { recursive: true });
-      fs.copyFileSync(`./src/docs${page.file}`, `./src/pages${file}`);
+      copyPage(parentDir, page);
     }
 
     if (page.children) {

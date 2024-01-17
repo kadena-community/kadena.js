@@ -125,6 +125,14 @@ const buttonReset = style({
     },
   },
 });
+
+const typographyReset = {
+  fontFamily: 'inherit',
+  fontSize: 'inherit',
+  fontWeight: 'inherit',
+  lineHeight: 'inherit',
+  letterSpacing: 'inherit',
+};
 export const button = recipe({
   base: [
     buttonReset,
@@ -142,8 +150,12 @@ export const button = recipe({
       transition:
         'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
       selectors: {
+        '&[data-hovered]': {
+          cursor: 'pointer',
+        },
         '&[data-pressed]': focusRing,
         '&[data-focus-visible]': focusRing,
+        '&[data-selected]': focusRing,
         '&[data-disabled]': {
           background: token('color.background.base.@disabled'),
           color: token('color.text.base.@disabled'),
@@ -185,7 +197,7 @@ export const button = recipe({
         },
       },
       outlined: {
-        border: `${tokens.kda.foundation.border.width.normal} solid ${fg}`,
+        border: `${token('border.width.normal')} solid ${fg}`,
         outline: 'none',
         color: bg,
         background: 'none',
@@ -194,6 +206,10 @@ export const button = recipe({
             borderColor: fgHover,
           },
           '&[data-pressed]': {
+            borderColor: focusColor,
+            outline: 'none',
+          },
+          '&[data-selected]': {
             borderColor: focusColor,
             outline: 'none',
           },
@@ -211,12 +227,19 @@ export const button = recipe({
       text: {
         background: 'none',
         color: bg,
+
         selectors: {
+          'a&': typographyReset,
           '&[data-hovered]': {
             color: bgHover,
             textDecoration: 'underline',
           },
           '&[data-pressed]': {
+            color: focusColor,
+            textDecoration: 'underline',
+            outline: 'none',
+          },
+          '&[data-selected]': {
             color: focusColor,
             textDecoration: 'underline',
             outline: 'none',

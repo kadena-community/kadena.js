@@ -76,7 +76,7 @@ builder.queryField('completedBlockHeights', (t) =>
           LIMIT ${args.heightCount}
         `) as { height: number }[];
 
-        return prismaClient.block.findMany({
+        return await prismaClient.block.findMany({
           where: {
             AND: [
               {

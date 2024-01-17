@@ -1,4 +1,4 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { tokens } from '@kadena/react-ui/theme';
 import { keyframes, style } from '@vanilla-extract/css';
 
 const rotate = keyframes({
@@ -7,11 +7,9 @@ const rotate = keyframes({
 });
 
 export const loaderClass = style([
-  sprinkles({
-    width: '$6',
-    height: '$6',
-  }),
   {
+    width: tokens.kda.foundation.spacing.lg,
+    height: tokens.kda.foundation.spacing.lg,
     animation: `${rotate} 1s infinite linear `,
   },
 ]);

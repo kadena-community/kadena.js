@@ -13,6 +13,7 @@ import {
   BreadcrumbsItem,
   Grid,
   GridItem,
+  Notification,
   Stack,
   Table,
 } from '@kadena/react-ui';
@@ -30,6 +31,7 @@ const FungibleChainAccount: React.FC = () => {
 
   const { loading, data, error } = useGetChainNonFungibleAccountQuery({
     variables,
+    skip: !router.query.account || !router.query.chain,
   });
 
   return (
@@ -58,6 +60,13 @@ const FungibleChainAccount: React.FC = () => {
         loading={loading}
         loaderText="Retrieving account information..."
       />
+
+      {!loading && !error && !data?.nonFungibleChainAccount && (
+        <Notification intent="info" role="status">
+          We could not find any data on this account. Please check the account
+          name and chain.
+        </Notification>
+      )}
 
       {data?.nonFungibleChainAccount && (
         <>

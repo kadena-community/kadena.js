@@ -39,8 +39,8 @@ export async function crossChainTransfer({
   const crossChainTransferRequest = transferCrossChain(
     {
       sender: {
-        account: sender00.account,
-        publicKeys: sender00.keys.map((key) => key.publicKey),
+        account: sender.account,
+        publicKeys: sender.keys.map((key) => key.publicKey),
       },
       receiver: {
         account: receiver.account,
@@ -48,6 +48,10 @@ export async function crossChainTransfer({
           keys: receiver.keys.map((key) => key.publicKey),
           pred: 'keys-all',
         },
+      },
+      targetChainGasPayer: {
+        account: gasPayer.account,
+        publicKeys: gasPayer.keys.map((key) => key.publicKey),
       },
       chainId: sender.chainId as ChainId,
       targetChainId: receiver.chainId as ChainId,
@@ -58,7 +62,7 @@ export async function crossChainTransfer({
       defaults: {
         networkId: dotenv.NETWORK_ID,
       },
-      sign: createSignWithKeypair(sender00.keys),
+      sign: createSignWithKeypair([...sender.keys, ...gasPayer.keys]),
     },
   );
 

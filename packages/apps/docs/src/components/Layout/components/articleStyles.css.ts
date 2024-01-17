@@ -1,31 +1,29 @@
 import type { LayoutType } from '@kadena/docs-tools';
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const articleClass = style([
-  sprinkles({
+  atoms({
     width: '100%',
-    paddingBlock: 0,
+    paddingBlock: 'no',
     backgroundColor: 'transparent',
+    paddingInline: 'md',
   }),
   {
     zIndex: 3,
-    paddingInline: vars.sizes.$4,
-
     ...responsiveStyle({
       md: {
-        paddingInline: vars.sizes.$10,
+        paddingInline: tokens.kda.foundation.spacing.xxxl,
       },
     }),
   },
 ]);
 
 export const contentClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     position: 'relative',
-
-    paddingInline: 0,
+    paddingInline: 'no',
     overflow: 'hidden',
     width: '100%',
     height: '100%',

@@ -1,4 +1,4 @@
-import { Button, Heading, Stack, Text } from '@kadena/react-ui';
+import { Button, Heading, Stack, SystemIcon, Text } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React, { useEffect, useRef } from 'react';
 import { Loading } from '../Loading/Loading';
@@ -47,9 +47,8 @@ export const InfiniteScroll: FC<IProps> = ({
             <Heading as="h5">{error}</Heading>
 
             <Button
-              onClick={() => handleLoad(true)}
-              icon="Refresh"
-              iconAlign="left"
+              onPress={() => handleLoad(true)}
+              startIcon={<SystemIcon.Refresh />}
             >
               Try again
             </Button>

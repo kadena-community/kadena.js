@@ -1,15 +1,15 @@
 import { getClassName } from '@/utils/getClassName';
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
 export const figure = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginInline: 0,
-    marginBlock: 0,
+    marginInline: 'no',
+    marginBlock: 'no',
     width: '100%',
     position: 'relative',
   }),
@@ -17,16 +17,16 @@ export const figure = style([
     ...responsiveStyle({
       md: {
         boxSizing: 'border-box',
-        marginInlineStart: vars.sizes.$5,
-        marginInlineEnd: vars.sizes.$5,
-        marginBlockEnd: vars.sizes.$8,
+        marginInlineStart: tokens.kda.foundation.size.n5,
+        marginInlineEnd: tokens.kda.foundation.size.n5,
+        marginBlockEnd: tokens.kda.foundation.size.n8,
       },
     }),
   },
 ]);
 
 export const figureImg = style([
-  sprinkles({
+  atoms({
     height: '100%',
     width: '100%',
   }),
@@ -40,16 +40,16 @@ export const figureImg = style([
 ]);
 
 export const figCaption = style([
-  sprinkles({
+  atoms({
     textAlign: 'center',
   }),
   {
-    marginBlockEnd: vars.sizes.$8,
-    marginInline: vars.sizes.$4,
+    marginBlockEnd: tokens.kda.foundation.size.n8,
+    marginInline: tokens.kda.foundation.size.n4,
     ...responsiveStyle({
       md: {
         maxWidth: '50%',
-        marginBlockStart: vars.sizes.$2,
+        marginBlockStart: tokens.kda.foundation.size.n2,
         marginInlineStart: 0,
         marginInlineEnd: 0,
       },
@@ -62,7 +62,7 @@ globalStyle(
   figure
   `,
   {
-    marginBlockStart: vars.sizes.$4,
+    marginBlockStart: tokens.kda.foundation.size.n4,
   },
 );
 

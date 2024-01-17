@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Kode Mono';
+  src: url('./fonts/KodeMono-Regular.woff2') format('woff2');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Kode Mono Bold';
+  src: url('./fonts/KodeMono-Bold.woff2') format('woff2');
+  font-weight: bold;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #e6e6e6;
+}
+
+code {
+  background-color: #222;
+  color: #fff;
+  border: 1px solid #9ea1a6;
+  border-radius: 2px;
+  padding: 0 8px;
+  font-family: 'Kode Mono Bold', Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  font-size: 20px;
+  line-height: 14px;
+}
+
+textarea {
+  resize: none;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+strong {
+  font-weight: 700;
+}

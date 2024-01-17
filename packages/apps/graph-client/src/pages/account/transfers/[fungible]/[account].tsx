@@ -4,7 +4,13 @@ import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-qu
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { getTransfers } from '@/graphql/queries.graph';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, BreadcrumbsItem, Stack } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  BreadcrumbsItem,
+  Notification,
+  Stack,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -20,6 +26,7 @@ const AccountTransfers: React.FC = () => {
 
   const { loading, data, error, fetchMore } = useGetTransfersQuery({
     variables,
+    skip: !router.query.fungible || !router.query.account,
   });
 
   return (
@@ -46,6 +53,12 @@ const AccountTransfers: React.FC = () => {
         loading={loading}
         loaderText="Retrieving transfers..."
       />
+
+      {!loading && !error && !data?.transfers?.edges.length && (
+        <Notification intent="info" role="status">
+          We could not find any transfers with these parameters.
+        </Notification>
+      )}
 
       {data?.transfers && (
         <ExtendedTransfersTable

@@ -245,6 +245,7 @@ export interface IConfigTreeItem {
   file: string;
   repo?: string;
   children?: IConfigTreeItem[];
+  destination?: string;
 }
 export interface IConfig {
   menu: IConfigMenu;

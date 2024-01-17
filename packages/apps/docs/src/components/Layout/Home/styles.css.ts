@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { createVar, style } from '@vanilla-extract/css';
 import { $$asideMenuWidthCode } from '../basestyles.css';
 import {
@@ -10,11 +10,9 @@ import {
 export const $$shadowWidth = createVar();
 
 export const codebackgroundClass = style([
-  sprinkles({}),
-
   {
     vars: {
-      [$$shadowWidth]: vars.sizes.$20,
+      [$$shadowWidth]: tokens.kda.foundation.size.n20,
     },
     selectors: {
       '&::before': {
@@ -23,7 +21,7 @@ export const codebackgroundClass = style([
         position: 'absolute',
         pointerEvents: 'none',
         inset: 0,
-        backgroundColor: vars.colors.$background,
+        backgroundColor: tokens.kda.foundation.color.background.base.default,
         backgroundImage: 'url("/assets/bg-vertical.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: '-100px',
@@ -50,16 +48,16 @@ export const codebackgroundClass = style([
 
         ...responsiveStyle({
           md: {
-            left: `calc(100vw  - (${$$asideMenuWidthCode} +  ${vars.sizes.$4}))`,
+            left: `calc(100vw  - (${$$asideMenuWidthCode} +  ${tokens.kda.foundation.spacing.md}))`,
           },
           lg: {
-            left: `calc(100vw  - (${$$asideMenuWidthCode} +  ${vars.sizes.$4}  + ${vars.sizes.$4}))`,
+            left: `calc(100vw  - (${$$asideMenuWidthCode} +  ${tokens.kda.foundation.spacing.md}  + ${tokens.kda.foundation.spacing.md}))`,
           },
           xl: {
             backgroundColor: $$backgroundOverlayColor,
           },
           xxl: {
-            left: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2) - (${$$asideMenuWidthCode} + ${vars.sizes.$6} ))`,
+            left: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2) - (${$$asideMenuWidthCode} + ${tokens.kda.foundation.spacing.lg} ))`,
           },
         }),
       },

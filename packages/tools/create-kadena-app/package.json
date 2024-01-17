@@ -1,0 +1,69 @@
+{
+  "name": "@kadena/create-kadena-app",
+  "version": "0.0.1",
+  "description": "CLI tool to create a starter project with @kadena/client integration",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/tools/create-kadena-app"
+  },
+  "type": "module",
+  "license": "ISC",
+  "bin": {
+    "create-kadena-app": "./bin/index.js"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "contributors": [
+    {
+      "name": "Jermaine Jong",
+      "email": "jermaine@kadena.io"
+    },
+    {
+      "name": "Mohamed Ismail",
+      "email": "mohamed@kadena.io"
+    }
+  ],
+  "scripts": {
+    "cleanup": "rimraf dist lib",
+    "preinstall": "npx only-allow pnpm",
+    "copy": "node ./src/scripts/copy.mjs",
+    "build": "pnpm run cleanup && tsc && pnpm run copy",
+    "format": "prettier config src templates --write",
+    "lint": "eslint ./src --ext .js,.ts --fix",
+    "start": "ts-node --transpile-only src/index.ts",
+    "test": "echo 'No unit tests'",
+    "test:integration": "rimraf test-* && cross-env NG_CLI_ANALYTICS=false ./scripts/generate-test.sh"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "cross-fetch": "~3.1.5",
+    "cross-spawn": "~7.0.3",
+    "yaml": "~2.1.1"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@types/cross-spawn": "~6.0.2",
+    "@types/debug": "~4.1.7",
+    "@types/heft-jest": "~1.0.6",
+    "@types/mkdirp": "~1.0.2",
+    "@types/node": "^18.17.14",
+    "@types/rimraf": "~3.0.2",
+    "chalk": "^5.2.0",
+    "cross-env": "~7.0.3",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.3",
+    "recursive-copy": "^2.0.14",
+    "rimraf": "~5.0.1",
+    "ts-node": "~10.8.2",
+    "typescript": "5.2.2"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  }
+}

@@ -2,14 +2,38 @@ import {
   $$backgroundOverlayColor,
   $$pageWidth,
 } from '@/components/Layout/global.css';
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
+import {
+  atoms,
+  darkThemeClass,
+  responsiveStyle,
+  tokens,
+} from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
+export const mostPopularBoxClass = style([
+  {
+    ...responsiveStyle({
+      sm: {
+        paddingInlineStart: tokens.kda.foundation.spacing.xs,
+      },
+      lg: {
+        paddingInlineStart: tokens.kda.foundation.size.n15,
+      },
+      xl: {
+        paddingInlineStart: tokens.kda.foundation.size.n32,
+      },
+      xxl: {
+        paddingInlineStart: tokens.kda.foundation.size.n48,
+      },
+    }),
+  },
+]);
+
 export const headerClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
-    margin: 0,
-    padding: 0,
+    margin: 'no',
+    padding: 'no',
   }),
   {
     maxWidth: '100vw',
@@ -20,7 +44,7 @@ export const headerClass = style([
         content: '',
         position: 'absolute',
         inset: 0,
-        bottom: `calc(0px - ${vars.sizes.$5})`,
+        bottom: `calc(0px - ${tokens.kda.foundation.size.n5})`,
         background: 'url("/assets/bg-horizontal.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
@@ -45,19 +69,19 @@ export const headerLoadedClass = style({
 });
 
 export const wrapperClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     width: '100%',
+    paddingInline: 'xxxl',
   }),
   {
-    paddingInline: vars.sizes.$10,
-    paddingBlockStart: vars.sizes.$20,
-    paddingBlockEnd: vars.sizes.$20,
+    paddingBlockStart: tokens.kda.foundation.size.n20,
+    paddingBlockEnd: tokens.kda.foundation.size.n20,
     marginInline: 'auto',
-    marginBlockEnd: vars.sizes.$16,
+    marginBlockEnd: tokens.kda.foundation.size.n16,
     maxWidth: $$pageWidth,
     backgroundColor: $$backgroundOverlayColor,
     boxSizing: 'border-box',
@@ -65,19 +89,20 @@ export const wrapperClass = style([
 ]);
 
 export const subheaderClass = style([
-  sprinkles({
-    color: '$neutral4',
-    fontSize: '$xl',
+  atoms({
+    color: 'text.base.default',
+    fontSize: 'xl',
   }),
   {
     selectors: {
       [`${darkThemeClass} &`]: {
-        color: vars.colors.$neutral4,
+        color: tokens.kda.foundation.color.text.subtle.default,
       },
     },
   },
 ]);
 
 export const searchInputWrapper = style({
-  maxWidth: `calc(3 * ${vars.sizes.$40})`,
+  marginBlockStart: tokens.kda.foundation.size.n5,
+  maxWidth: `calc(3 * ${tokens.kda.foundation.size.n40})`,
 });

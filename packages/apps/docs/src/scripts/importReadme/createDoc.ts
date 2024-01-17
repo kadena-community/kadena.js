@@ -19,7 +19,7 @@ import type { IImportReadMeItem } from '../utils';
 import { getTypes } from '../utils';
 import { removeRepoDomain } from './index';
 
-const DOCS_ROOT = './src/pages';
+export const DOCS_ROOT = './src/pages';
 
 const createFrontMatter = (
   title: string,
@@ -70,7 +70,7 @@ const getTitle = (pageAST: Root): string => {
     .join(' ');
 };
 
-const createDir = (dir: string): void => {
+export const createDir = (dir: string): void => {
   fs.mkdirSync(dir, { recursive: true });
 };
 

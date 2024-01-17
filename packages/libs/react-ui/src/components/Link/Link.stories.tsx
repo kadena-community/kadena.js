@@ -1,113 +1,253 @@
-import type { ILinkProps } from '@components/Link';
-import { Link } from '@components/Link';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Stack } from '..';
-import { SystemIcon } from '../Icon';
+import { button } from '../Button/SharedButton.css';
+import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
+import { Box } from '../Layout/Box/Box';
+import { Heading } from '../Typography/Heading/Heading';
+import type { ILinkProps } from './Link';
+import { Link } from './Link';
 
-const meta: Meta<
-  {
-    selectIcon: keyof typeof SystemIcon;
-  } & ILinkProps
-> = {
+// eslint-disable-next-line @kadena-dev/typedef-var
+const buttonVariants = Object.keys(
+  (button as any).classNames?.variants?.variant,
+) as ILinkProps['variant'][];
+
+// eslint-disable-next-line @kadena-dev/typedef-var
+const buttonColors = Object.keys(
+  (button as any).classNames?.variants?.color,
+) as ILinkProps['color'][];
+
+const meta: Meta<ILinkProps> = {
   title: 'Components/Link',
   component: Link,
   parameters: {
-    status: {
-      type: ['inDevelopment'],
+    status: { type: 'inDevelopment' },
+    controls: {
+      hideNoControlsWarning: true,
+      sort: 'requiredFirst',
     },
     docs: {
       description: {
-        component:
-          'This component provides a styled anchor element that takes an optional icon prop that can be aligned to the left or right of the text.<br><br><i>Note: In times when you need to use a different `Link` component (like next/link in Next.js), you can wrap it in this component and set the `asChild` prop to pass on styles, icons, and additional props.</i>',
+        component: `The LinkButton component renders an anchor element <a/> which will be styled with the same variants/colors as the Button component.
+        <br/><br/>
+        To support client side routing make sure to import/use "RouterProvider" from "@kadena/react-ui" see https://react-spectrum.adobe.com/react-aria/routing.html for more info on how to integrate it with NextJS and client side routing.
+        `,
       },
     },
   },
   argTypes: {
-    href: {
-      description:
-        "The href prop that is passed to the anchor or child element. If you're using the 'asChild' prop, you can pass the href to the child element and leave it undefined on the Link element. In times when both are defined, the child element href will be used.",
-      control: {
-        type: 'text',
+    onClick: {
+      action: 'clicked',
+      description: '(deprecated) callback when button is clicked',
+      table: {
+        disable: true,
       },
     },
-    target: {
-      control: {
-        type: 'select',
-        options: ['_blank', '_self', '_parent', '_top'],
-      },
-    },
-    icon: {
-      options: [
-        ...['-'],
-        ...Object.keys(SystemIcon),
-      ] as (keyof typeof SystemIcon)[],
+    variant: {
+      options: buttonVariants,
       control: {
         type: 'select',
       },
-    },
-    iconAlign: {
-      description: 'Align icon to left or right',
-      options: ['left', 'right'] as ILinkProps['iconAlign'][],
-      control: {
-        type: 'radio',
+      description: 'button style variant',
+      table: {
+        type: { summary: buttonVariants.join(' | ') },
+        defaultValue: { summary: 'default' },
       },
-      if: { arg: 'selectIcon', neq: '-' },
     },
-    asChild: {
-      description:
-        "Use this prop when you're using a different Link component and want to pass on styles, icons, and additional props. For example when using next/link in Next.js.",
+    color: {
+      options: buttonColors,
+      control: {
+        type: 'select',
+      },
+      description: 'button color variant',
+      table: {
+        type: { summary: buttonColors.join(' | ') },
+        defaultValue: { summary: 'default' },
+      },
     },
-    block: {
-      description: 'Set to true to make the link a block element.',
+    isDisabled: {
+      description: 'only used when rendered as button',
+      control: {
+        type: 'boolean',
+      },
+    },
+    isLoading: {
+      description: 'loading state',
+      control: {
+        type: 'boolean',
+      },
+    },
+    isCompact: {
+      description: 'compact button style',
+      control: {
+        type: 'boolean',
+      },
     },
   },
 };
 
-export default meta;
-
-type Story = StoryObj<
+type LinkStory = StoryObj<
   {
-    selectIcon: keyof typeof SystemIcon;
+    text: string;
   } & ILinkProps
 >;
 
-export const Primary: Story = {
+export const _Link: LinkStory = {
   name: 'Link',
   args: {
-    href: 'https://kadena.io',
-    target: '_blank',
-    icon: 'Link',
-    iconAlign: 'left',
+    text: 'Click me',
+    variant: 'text',
+    color: 'primary',
+    isDisabled: false,
+    isCompact: false,
+    isLoading: false,
+    icon: undefined,
+    startIcon: undefined,
+    endIcon: undefined,
+    href: '#',
   },
-  render: ({ href, target, icon, iconAlign }) => {
-    return (
-      <>
-        <Stack flexDirection="row" gap="xs">
-          <Link href={href} target={target} asChild>
-            Link without icon
-          </Link>
-          <Link
-            href={`${href}?${Date.now()}`}
-            target={target}
-            iconAlign={iconAlign}
-            icon={icon}
-          >
-            Non-visited
-          </Link>
-          <Link href={href} target={target} icon={icon}>
-            Kadena.io
-          </Link>
-          <Link asChild>
-            <a href={href} target={target}>
-              Link asChild
-            </a>
-          </Link>
-        </Stack>
-        <Link href={href} target={target} icon={icon} block>
-          Block Link
-        </Link>
-      </>
-    );
+  render: ({ text, ...props }) => {
+    return <Link {...props}>{text}</Link>;
   },
 };
+
+export const AllVariants: StoryFn<ILinkProps> = ({
+  isCompact,
+  isDisabled,
+  isLoading,
+}) => (
+  <Box gap="xs" display="flex">
+    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
+      <Heading variant="h6">Contained</Heading>
+      {buttonColors.map((color) => (
+        <Link
+          key={color}
+          color={color}
+          isCompact={isCompact}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          href="#"
+          variant="contained"
+          startIcon={<LeadingIcon />}
+          endIcon={<TrailingIcon />}
+        >
+          {color}
+        </Link>
+      ))}
+    </Box>
+
+    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
+      <Heading variant="h6">Alternative</Heading>
+      {buttonColors.map((color) => (
+        <Link
+          key={color}
+          color={color}
+          variant="alternative"
+          isCompact={isCompact}
+          href="#"
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          startIcon={<LeadingIcon />}
+          endIcon={<TrailingIcon />}
+        >
+          {color}
+        </Link>
+      ))}
+    </Box>
+
+    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
+      <Heading variant="h6">Outlined</Heading>
+      {buttonColors.map((color) => (
+        <Link
+          key={color}
+          color={color}
+          variant="outlined"
+          href="#"
+          isCompact={isCompact}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          startIcon={<LeadingIcon />}
+          endIcon={<TrailingIcon />}
+        >
+          {color}
+        </Link>
+      ))}
+    </Box>
+
+    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
+      <Heading variant="h6">Text (default)</Heading>
+      {buttonColors.map((color) => (
+        <Link
+          key={color}
+          color={color}
+          variant="text"
+          href="#"
+          isCompact={isCompact}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          startIcon={<LeadingIcon />}
+          endIcon={<TrailingIcon />}
+        >
+          {color}
+        </Link>
+      ))}
+    </Box>
+  </Box>
+);
+
+export const StartIcon: StoryFn<ILinkProps> = ({
+  isCompact,
+  isDisabled,
+  isLoading,
+  color,
+  variant,
+}) => (
+  <Link
+    startIcon={<Plus />}
+    isCompact={isCompact}
+    isDisabled={isDisabled}
+    isLoading={isLoading}
+    color={color}
+    variant={variant}
+  >
+    Click me
+  </Link>
+);
+
+export const EndIcon: StoryFn<ILinkProps> = ({
+  isCompact,
+  isDisabled,
+  isLoading,
+  color,
+  variant,
+}) => (
+  <Link
+    endIcon={<Plus />}
+    isCompact={isCompact}
+    isDisabled={isDisabled}
+    isLoading={isLoading}
+    color={color}
+    variant={variant}
+  >
+    Click me
+  </Link>
+);
+
+export const OnlyIcon: StoryFn<ILinkProps> = ({
+  isCompact,
+  isDisabled,
+  isLoading,
+  color,
+  variant,
+}) => (
+  <Link
+    icon={<Plus />}
+    isCompact={isCompact}
+    isDisabled={isDisabled}
+    isLoading={isLoading}
+    color={color}
+    variant={variant}
+  />
+);
+
+export default meta;

@@ -1,46 +1,53 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 
+export const headingWrapperClass = style({
+  marginInlineStart: tokens.kda.foundation.size.n12,
+});
+
 export const blogitem = style([
-  sprinkles({
+  atoms({
     backgroundColor: 'transparent',
   }),
   {
-    paddingBlock: vars.sizes.$10,
-    paddingInline: vars.sizes.$10,
-    marginBlockStart: `${vars.sizes.$8}!important`,
-    marginBlockEnd: `${vars.sizes.$8}!important`,
+    paddingBlock: tokens.kda.foundation.spacing.xxxl,
+    paddingInline: tokens.kda.foundation.spacing.xxxl,
+    marginBlockStart: `${tokens.kda.foundation.size.n8}!important`,
+    marginBlockEnd: `${tokens.kda.foundation.size.n8}!important`,
     willChange: 'background-color',
     transition: 'background-color .2s ease',
 
     selectors: {
       '&:hover': {
-        backgroundColor: vars.colors.$neutral2,
+        backgroundColor:
+          tokens.kda.foundation.color.background['layer-2'].default,
       },
     },
   },
 ]);
 
 export const link = style([
-  sprinkles({
+  atoms({
     display: 'block',
-    color: '$foreground',
+    color: 'text.subtle.default',
     textDecoration: 'none',
   }),
   {
     selectors: {
       '&:hover': {
-        color: vars.colors.$neutral4,
+        color: tokens.kda.foundation.color.text.subtlest['@hover'],
       },
     },
   },
 ]);
 
 export const footer = style([
-  sprinkles({
-    marginBlockStart: '$3',
-    color: '$neutral3',
+  atoms({
+    color: 'text.subtlest.inverse.default',
   }),
+  {
+    marginBlockStart: tokens.kda.foundation.size.n3,
+  },
 ]);
 
 export const footerVariant = styleVariants({
@@ -49,34 +56,33 @@ export const footerVariant = styleVariants({
 });
 
 export const metaItem = style([
-  sprinkles({}),
   {
     selectors: {
       '&:not(:last-child)::after': {
         content: '"•"',
-        margin: `0 ${vars.sizes.$6}`,
+        margin: `0 ${tokens.kda.foundation.size.n6}`,
       },
     },
   },
 ]);
 
 export const figureClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    margin: 0,
+    margin: 'no',
 
     position: 'relative',
-    backgroundColor: '$neutral2',
-    borderRadius: '$md',
+    backgroundColor: 'base.default',
+    borderRadius: 'md',
   }),
   {
     width: `100%`,
 
     ...responsiveStyle({
       md: {
-        width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
+        width: `clamp(${tokens.kda.foundation.size.n32}, 15vw, ${tokens.kda.foundation.size.n48})`,
         aspectRatio: '1',
       },
     }),
@@ -89,7 +95,7 @@ export const figureVariant = styleVariants({
     aspectRatio: '16 / 3',
     ...responsiveStyle({
       md: {
-        width: `clamp(${vars.sizes.$32}, 15vw, ${vars.sizes.$48})`,
+        width: `clamp(${tokens.kda.foundation.size.n32}, 15vw, ${tokens.kda.foundation.size.n48})`,
       },
     }),
   },
@@ -98,28 +104,28 @@ export const figureVariant = styleVariants({
     aspectRatio: '16 / 7',
     ...responsiveStyle({
       md: {
-        width: `clamp(${vars.sizes.$48}, 20vw, ${vars.sizes.$64})`,
+        width: `clamp(${tokens.kda.foundation.size.n48}, 20vw, ${tokens.kda.foundation.size.n64})`,
       },
     }),
   },
 });
 
 export const imageClass = style([
-  sprinkles({
-    borderRadius: '$md',
+  atoms({
+    borderRadius: 'md',
   }),
 ]);
 
 export const authorTitleClass = style([
-  sprinkles({
-    fontSize: '$md',
-    fontWeight: '$normal',
-    color: '$neutral3',
+  atoms({
+    fontSize: 'md',
+    fontWeight: 'bodyFont.regular',
+    color: 'text.subtlest.inverse.default',
   }),
 ]);
 
 export const gridWrapperClass = style([
-  sprinkles({
+  atoms({
     display: 'grid',
   }),
   {
@@ -138,23 +144,29 @@ export const gridWrapperClass = style([
   },
 ]);
 
-export const gridBlogItemImage = style({});
+export const gridBlogItemImage = style([
+  atoms({
+    marginInlineStart: { xs: 'no', md: 'xxl' },
+    marginBlockEnd: { xs: 'xxl', md: 'no' },
+  }),
+]);
+
 export const gridBlogItemContent = styleVariants({
   default: {
-    marginBlockStart: vars.sizes.$2,
-    marginBlockEnd: vars.sizes.$4,
+    marginBlockStart: tokens.kda.foundation.spacing.sm,
+    marginBlockEnd: tokens.kda.foundation.spacing.md,
   },
   large: {},
 });
 
 export const footerTags = style({
   display: 'block',
-  marginBlockStart: vars.sizes.$3,
+  marginBlockStart: tokens.kda.foundation.size.n3,
 });
 
 globalStyle(
   `${gridBlogItemContent.default}  h4, ${gridBlogItemContent.default}  h4 span`,
   {
-    fontSize: vars.sizes.$md,
+    fontSize: tokens.kda.foundation.typography.fontSize.base,
   },
 );

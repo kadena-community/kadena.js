@@ -18,7 +18,7 @@ builder.queryField('nonFungibleChainAccount', (t) =>
       COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
     async resolve(__parent, args) {
       try {
-        return getNonFungibleChainAccount({
+        return await getNonFungibleChainAccount({
           chainId: args.chainId,
           accountName: args.accountName,
         });
