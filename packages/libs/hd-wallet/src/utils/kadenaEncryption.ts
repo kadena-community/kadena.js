@@ -1,4 +1,4 @@
-import { randomBytes } from 'crypto';
+import { BinaryLike, randomBytes } from 'crypto';
 import { decrypt, encrypt } from './crypto';
 
 export type EncryptedString = string & { _brand: 'EncryptedString' };
@@ -6,11 +6,11 @@ export type EncryptedString = string & { _brand: 'EncryptedString' };
 /**
  * Encrypts the message with a password .
  * @param {Uint8Array} message - The message to be encrypted.
- * @param {string} password - password used for encryption.
+ * @param {BinaryLike} password - password used for encryption.
  * @returns {string} The encrypted string
  */
 export function kadenaEncrypt(
-  password: string,
+  password: BinaryLike,
   message: Uint8Array,
 ): EncryptedString {
   // Using randomBytes for the salt is fine here because the salt is not secret but should be unique.
@@ -28,12 +28,12 @@ export function kadenaEncrypt(
  * for public-facing API usage where the private key encryption follows
  *
  * @param {string} encryptedData - The encrypted data as a Base64 encoded string.
- * @param {string} password - The password used to encrypt the private key.
+ * @param {BinaryLike} password - The password used to encrypt the private key.
  * @returns {Uint8Array} The decrypted private key.
  * @throws {Error} Throws an error if decryption fails.
  */
 export function kadenaDecrypt(
-  password: string,
+  password: BinaryLike,
   encryptedData: EncryptedString,
 ): Uint8Array {
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -65,13 +65,13 @@ export function kadenaDecrypt(
  * Changes the password of an encrypted data.
  *
  * @param {string} privateKey - The encrypted private key as a Base64 encoded string.
- * @param {string} password - The current password used to encrypt the private key.
+ * @param {BinaryLike} password - The current password used to encrypt the private key.
  * @param {string} newPassword - The new password to encrypt the private key with.
  * @returns {string} - The newly encrypted private key as a Base64 encoded string.
  * @throws {Error} - Throws an error if the old password is empty, new password is incorrect empty passwords are empty, or if encryption with the new password fails.
  */
 export function kadenaChangePassword(
-  password: string,
+  password: BinaryLike,
   encryptedData: EncryptedString,
   newPassword: string,
 ): EncryptedString {

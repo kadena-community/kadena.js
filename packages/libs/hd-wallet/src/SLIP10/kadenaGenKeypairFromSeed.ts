@@ -1,9 +1,10 @@
+import { BinaryLike } from 'crypto';
 import type { EncryptedString } from '../utils/kadenaEncryption';
 import { kadenaDecrypt, kadenaEncrypt } from '../utils/kadenaEncryption';
 import { deriveKeyPair } from './utils/sign';
 
 function genKeypairFromSeed(
-  password: string,
+  password: BinaryLike,
   seedBuffer: Uint8Array,
   index: number,
   derivationPathTemplate: string,
@@ -24,14 +25,14 @@ function genKeypairFromSeed(
 }
 
 export function kadenaGenKeypairFromSeed(
-  password: string,
+  password: BinaryLike,
   seed: EncryptedString,
   index: number,
   derivationPathTemplate?: string,
 ): [string, EncryptedString];
 
 export function kadenaGenKeypairFromSeed(
-  password: string,
+  password: BinaryLike,
   seed: EncryptedString,
   indexRange: [number, number],
   derivationPathTemplate?: string,
@@ -48,7 +49,7 @@ export function kadenaGenKeypairFromSeed(
  * @throws {Error} Throws an error if the seed buffer is not provided, if the indices are invalid, or if encryption fails.
  */
 export function kadenaGenKeypairFromSeed(
-  password: string,
+  password: BinaryLike,
   seed: EncryptedString,
   indexOrRange: number | [number, number],
   derivationPathTemplate: string = `m'/44'/626'/<index>'`,

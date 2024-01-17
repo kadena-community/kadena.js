@@ -1,5 +1,4 @@
-import type { IUnsignedCommand } from '@kadena/client';
-import { sign } from '@kadena/cryptography-utils';
+import { signHash } from '@kadena/cryptography-utils';
 
 import { HDKey } from 'ed25519-keygen/hdkey';
 import { uint8ArrayToHex } from '../../utils/buffer-helpers';
@@ -36,21 +35,14 @@ export const deriveKeyPair = (
  *
  * @throws {Error} Throws an error if the signature is undefined.
  */
-export const signWithKeyPair = (
-  publicKey: string,
-  secretKey: string,
-): ((tx: IUnsignedCommand) => { sigs: { sig: string }[] }) => {
-  return (tx: IUnsignedCommand) => {
-    const { sig } = sign(tx.cmd, { publicKey, secretKey });
+export const signWithKeyPair =
+  (publicKey: string, secretKey: string) => (hash: string) => {
+    const { sig } = signHash(hash, { publicKey, secretKey });
     if (sig === undefined) {
       throw new Error('Signature is undefined');
     }
-    return {
-      ...tx,
-      sigs: [{ sig }],
-    };
+    return sig;
   };
-};
 
 /**
  * Generate a signer function using a seed and an index.
@@ -61,7 +53,7 @@ export const signWithKeyPair = (
 export const signWithSeed = (
   seed: Uint8Array,
   derivationPath: string,
-): ((tx: IUnsignedCommand) => { sigs: { sig: string }[] }) => {
+): ((hash: string) => string) => {
   const { publicKey, privateKey } = deriveKeyPair(seed, derivationPath);
   return signWithKeyPair(publicKey, privateKey);
 };

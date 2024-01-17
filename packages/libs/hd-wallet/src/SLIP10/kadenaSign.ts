@@ -1,5 +1,5 @@
-import type { IUnsignedCommand } from '@kadena/client';
 import { verifySig } from '@kadena/cryptography-utils';
+import { BinaryLike } from 'crypto';
 import type { EncryptedString } from '../utils/kadenaEncryption';
 import { kadenaDecrypt } from '../utils/kadenaEncryption';
 import { signWithKeyPair, signWithSeed } from './utils/sign';
@@ -12,10 +12,10 @@ import { signWithKeyPair, signWithSeed } from './utils/sign';
  * @returns {Function} A function that takes an unsigned command (`IUnsignedCommand`) and returns an object with an array of signatures.
  */
 export function kadenaSignWithKeyPair(
-  password: string,
+  password: BinaryLike,
   publicKey: string,
   encryptedPrivateKey: EncryptedString,
-): (tx: IUnsignedCommand) => { sigs: { sig: string }[] } {
+): (hash: string) => string {
   return signWithKeyPair(
     publicKey,
     Buffer.from(kadenaDecrypt(password, encryptedPrivateKey)).toString('hex'),
@@ -30,11 +30,11 @@ export function kadenaSignWithKeyPair(
  * @returns {Function} A function that takes an unsigned command (`IUnsignedCommand`) and returns an object with an array of signatures.
  */
 export function kadenaSignWithSeed(
-  password: string,
+  password: BinaryLike,
   seed: EncryptedString,
   index: number,
   derivationPathTemplate: string = `m'/44'/626'/<index>'`,
-): (tx: IUnsignedCommand) => { sigs: { sig: string }[] } {
+): (hash: string) => string {
   return signWithSeed(
     kadenaDecrypt(password, seed),
     derivationPathTemplate.replace('<index>', index.toString()),
@@ -50,12 +50,15 @@ export function kadenaSignWithSeed(
  * @returns {boolean} - Returns true if verification succeeded or false if it failed.
  */
 export function kadenaVerify(
-  message: string,
+  message: BinaryLike,
   publicKey: string,
   signature: string,
 ): boolean {
   // Convert the message, public key, and signature from hex string to Uint8Array
-  const msgUint8Array = Uint8Array.from(Buffer.from(message, 'hex'));
+  const msgUint8Array =
+    typeof message === 'string'
+      ? Uint8Array.from(Buffer.from(message, 'hex'))
+      : new Uint8Array(message.buffer);
   const publicKeyUint8Array = Uint8Array.from(Buffer.from(publicKey, 'hex'));
   const signatureUint8Array = Uint8Array.from(Buffer.from(signature, 'hex'));
 
