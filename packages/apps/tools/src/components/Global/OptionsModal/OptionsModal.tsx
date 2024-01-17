@@ -93,6 +93,8 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                       aria-label="Radio"
                       icon={<SystemIcon.RadioboxMarked />}
                       color="primary"
+                      variant="text"
+                      onPress={() => setSelected(key as DevOption)}
                     />
                   ) : (
                     <Button
@@ -100,6 +102,8 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                       aria-label="Radio"
                       icon={<SystemIcon.RadioboxBlank />}
                       color="primary"
+                      variant="text"
+                      onPress={() => setSelected(key as DevOption)}
                     />
                   )}
                   <Button
@@ -107,6 +111,8 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                     aria-label="Radio"
                     icon={<Icon />}
                     color="primary"
+                    variant="text"
+                    onPress={() => setSelected(key as DevOption)}
                   />
                   <Stack flexDirection="column" marginInline="md">
                     <div className={titleTagStyle}>
