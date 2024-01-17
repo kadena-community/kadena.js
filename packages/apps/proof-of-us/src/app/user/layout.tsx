@@ -1,5 +1,6 @@
 'use client';
 import { useAccount } from '@/hooks/account';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useEffect } from 'react';
@@ -16,12 +17,7 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
 
   if (!account) return null;
 
-  return (
-    <section>
-      logged in
-      {children}
-    </section>
-  );
+  return <section>{children}</section>;
 };
 
 export default UserLayout;

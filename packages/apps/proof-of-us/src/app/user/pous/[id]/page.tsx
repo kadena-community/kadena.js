@@ -2,6 +2,7 @@
 import { IsLoading } from '@/components/IsLoading/IsLoading';
 import { POU_QR_URL } from '@/constants';
 import { useGetPou } from '@/hooks/getPou';
+import { usePou } from '@/hooks/pou';
 import { env } from '@/utils/env';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
@@ -16,8 +17,8 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const router = useRouter();
-  const { data, isLoading, error } = useGetPou({ id: params.id });
+
+  const { data } = usePou();
 
   const handleQRPNGDownload = () => {
     if (!qrRef.current || !data) return;
@@ -35,22 +36,17 @@ const Page: FC<IProps> = ({ params }) => {
     document.body.removeChild(downloadLink);
   };
 
-  if (isLoading) return <IsLoading />;
-  if (error) return <div>{error.message}</div>;
-  if (!data) {
-    router.replace('/404');
-    return null;
-  }
+  if (!data) return;
 
   return (
     <div>
-      pou with ID ({params.id})
+      pou with ID ({data.id})
       <section>
         <h2>qr code</h2>
         <QRCode
           ecLevel="H"
           ref={qrRef}
-          value={`${env.URL}${POU_QR_URL}/${params.id}`}
+          value={`${env.URL}${POU_QR_URL}/${data.id}`}
           removeQrCodeBehindLogo={true}
           logoImage="/assets/qrlogo.png"
           logoPadding={5}

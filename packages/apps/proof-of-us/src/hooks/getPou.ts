@@ -17,11 +17,11 @@ export const useGetPou: IDataHook<IPou | undefined> = ({ id }) => {
     if ((data || error) && isLoading) {
       setIsLoading(false);
     }
-  }, [data, error, isLoading, setIsLoading]);
+  }, [data, error, isLoading]);
 
   useEffect(() => {
     load();
-  }, [setError, setIsLoading, setData]);
+  }, []);
 
   return {
     isLoading,
