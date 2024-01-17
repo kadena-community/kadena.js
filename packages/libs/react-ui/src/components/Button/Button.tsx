@@ -1,15 +1,13 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-
 import { mergeProps, useObjectRef } from '@react-aria/utils';
-import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
-import type { ComponentProps, ForwardedRef, ReactNode } from 'react';
+import type { ForwardedRef } from 'react';
 import React, { forwardRef } from 'react';
-import type { AriaButtonProps, HoverEvents } from 'react-aria';
+import type { AriaButtonProps } from 'react-aria';
 import { useButton, useFocusRing, useHover } from 'react-aria';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { button } from './SharedButton.css';
-import { ISharedButtonProps, disableLoadingProps } from './utils';
+import type { ISharedButtonProps } from './utils';
+import { disableLoadingProps } from './utils';
 
 // omit link related props from `AriaButtonProps`
 type PickedAriaButtonProps = Omit<
@@ -21,8 +19,6 @@ export interface IButtonProps
   extends PickedAriaButtonProps,
     ISharedButtonProps {}
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable react/function-component-definition */
 function BaseButton(
   props: IButtonProps,
   forwardedRef: ForwardedRef<HTMLButtonElement>,

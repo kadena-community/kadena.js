@@ -1,16 +1,14 @@
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import classNames from 'classnames';
-import React, { ForwardedRef, forwardRef } from 'react';
-import {
-  AriaToggleButtonProps,
-  useFocusRing,
-  useHover,
-  useToggleButton,
-} from 'react-aria';
+import type { ForwardedRef } from 'react';
+import React, { forwardRef } from 'react';
+import type { AriaToggleButtonProps } from 'react-aria';
+import { useFocusRing, useHover, useToggleButton } from 'react-aria';
 import { useToggleState } from 'react-stately';
 import { ProgressCircle } from '../ProgressCircle';
 import { button } from './SharedButton.css';
-import { ISharedButtonProps, disableLoadingProps } from './utils';
+import type { ISharedButtonProps } from './utils';
+import { disableLoadingProps } from './utils';
 
 type PickedAriaToggleButtonProps = Omit<AriaToggleButtonProps, 'elementType'>;
 

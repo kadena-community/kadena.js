@@ -1,7 +1,7 @@
-import { RecipeVariants } from '@vanilla-extract/recipes';
-import { ComponentProps, ReactNode } from 'react';
-import { HoverEvents } from 'react-aria';
-import { button } from './SharedButton.css';
+import type { RecipeVariants } from '@vanilla-extract/recipes';
+import type { ComponentProps, ReactNode } from 'react';
+import type { HoverEvents } from 'react-aria';
+import type { button } from './SharedButton.css';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function disableLoadingProps<T>(props: T): T {
