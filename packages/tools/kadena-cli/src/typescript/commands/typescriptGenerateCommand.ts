@@ -1,21 +1,16 @@
 import debug from 'debug';
 import { join } from 'path';
 
-import { generateDts, pactParser } from '@kadena/pactjs-generator';
 import chalk from 'chalk';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import {
-  TARGET_PACKAGE,
-  findPackageJson,
-  getTargetDirectory,
-  prepareTargetDirectory,
-} from '../utils/directories.js';
-import { writeModulesJson } from '../utils/files.js';
-import { retrieveContractFromChain } from '../utils/retrieveContractFromChain.js';
 import { shallowFindFile } from '../utils/shallowFindFile.js';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { TARGET_PACKAGE, findPackageJson, getTargetDirectory, prepareTargetDirectory } from '../utils/directories.js';
+import { generateDts, pactParser } from '@kadena/pactjs-generator';
+import { retrieveContractFromChain } from '../utils/retrieveContractFromChain.js';
+import { writeModulesJson } from '../utils/files.js';
 
 export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
   'generate',
@@ -33,15 +28,17 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
     debug('typescript-contract-generate:action')({ config });
 
     if (!config.typescriptFile === !config.typescriptContract) {
-      console.log(chalk.red(`\nEither file or contract must be specified.\n`));
+      console.log(
+        chalk.red(
+          `\nEither file or contract must be specified.\n`,
+        ),
+      );
     }
 
     if (config.typescriptContractConfig.length > 0) {
       console.log(
         chalk.green(
-          `Generating types for pact contracts from chainweb for ${config.typescriptContractConfig.join(
-            ',',
-          )}`,
+          `Generating types for pact contracts from chainweb for ${config.typescriptContractConfig.join(',')}`,
         ),
       );
     }
@@ -49,16 +46,18 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
     if (config.typescriptFileConfig.length > 0) {
       console.log(
         chalk.green(
-          `Generating types for pact contracts from files for ${config.typescriptFileConfig.join(
-            ',',
-          )}`,
+          `Generating types for pact contracts from files for ${config.typescriptFileConfig.join(',')}`,
         ),
       );
     }
 
     const packageJson = findPackageJson();
 
-    console.log(chalk.green(`Using package.json at ${packageJson}.`));
+    console.log(
+      chalk.green(
+        `Using package.json at ${packageJson}.`,
+      ),
+    );
 
     const targetDirectory = getTargetDirectory(packageJson);
 
@@ -66,11 +65,11 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       chalk.green(
         config.typescriptClean
           ? `Cleaning ${targetDirectory}.`
-          : `Using directory ${targetDirectory}.`,
+          : `Using directory ${targetDirectory}.`
       ),
     );
 
-    prepareTargetDirectory(targetDirectory, !!config.typescriptClean);
+    prepareTargetDirectory(targetDirectory, !!config.typescriptClean)
 
     const getContract = async (name: string): Promise<string> => {
       console.log(chalk.green(`Fetching ${name}.`));
@@ -85,9 +84,10 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       return content ?? '';
     };
 
-    const files: string[] = config.typescriptFileConfig.map((file: string) =>
-      readFileSync(join(process.cwd(), file), 'utf-8'),
-    );
+    const files: string[] =
+      config.typescriptFileConfig.map((file: string) =>
+        readFileSync(join(process.cwd(), file), 'utf-8'),
+      );
 
     const modules = await pactParser({
       contractNames: config.typescriptContractConfig,
@@ -112,10 +112,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
     });
 
     moduleDtss.forEach((dts, moduleName) => {
-      const targetFilePath: string = join(
-        targetDirectory,
-        `${moduleName}.d.ts`,
-      );
+      const targetFilePath: string = join(targetDirectory,  `${moduleName}.d.ts`);
 
       // write dts to index.d.ts to file
       const indexPath: string = join(targetDirectory, 'index.d.ts');
@@ -141,14 +138,15 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       }
     });
 
-    console.log(chalk.green(`\nTypescript types have been generated.\n`));
-
-    const defaultPackageJsonPath: string = join(
-      targetDirectory,
-      'package.json',
+    console.log(
+      chalk.green(
+        `\nTypescript types have been generated.\n`,
+      ),
     );
 
-    if (!existsSync(defaultPackageJsonPath)) {
+    const defaultPackageJsonPath: string = join(targetDirectory, 'package.json');
+
+    if (! existsSync(defaultPackageJsonPath)) {
       console.log(
         chalk.green(
           `Writing default package.json to ${defaultPackageJsonPath}`,
@@ -184,7 +182,9 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
     }
 
     console.log(
-      chalk.green(`\nVerifying tsconfig.json at \`${tsconfigPath}\``),
+      chalk.green(
+        `\nVerifying tsconfig.json at \`${tsconfigPath}\``,
+      ),
     );
 
     const tsconfig: string = readFileSync(tsconfigPath, 'utf8');
@@ -199,6 +199,10 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       return;
     }
 
-    console.log(chalk.green(`\nThe tsconfig.json file is valid.\n`));
+    console.log(
+      chalk.green(
+        `\nThe tsconfig.json file is valid.\n`,
+      ),
+    );
   },
 );

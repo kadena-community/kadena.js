@@ -1,8 +1,8 @@
-import { existsSync } from 'fs';
-import mkdirp from 'mkdirp';
-import { dirname, join } from 'path';
-import { rimraf } from 'rimraf';
-import { shallowFindFile } from './shallowFindFile.js';
+import { dirname, join } from "path";
+import { shallowFindFile } from "./shallowFindFile.js";
+import { rimraf } from "rimraf";
+import { existsSync } from "fs";
+import mkdirp from "mkdirp";
 
 export const TARGET_PACKAGE: '.kadena/pactjs-generated' =
   '.kadena/pactjs-generated' as const;
@@ -25,13 +25,14 @@ export const findPackageJson = (): string | never => {
 };
 
 export const getTargetDirectory = (packageJson: string): string => {
-  return join(dirname(packageJson), 'node_modules', TARGET_PACKAGE);
-};
+  return join(
+    dirname(packageJson),
+    'node_modules',
+    TARGET_PACKAGE,
+  );
+}
 
-export const prepareTargetDirectory = (
-  targetDirectory: string,
-  clean: boolean = true,
-): void => {
+export const prepareTargetDirectory = (targetDirectory: string, clean: boolean = true): void => {
   if (clean === true) {
     rimraf.sync(targetDirectory);
   }
@@ -39,4 +40,4 @@ export const prepareTargetDirectory = (
   if (!existsSync(targetDirectory)) {
     mkdirp.sync(targetDirectory);
   }
-};
+}

@@ -12,12 +12,7 @@ export function retrieveContract(
   __version: string,
 ): (args: TOptions) => Promise<void> {
   return async function action({ module, out, network, chain, api }: TOptions) {
-    const code = await retrieveContractFromChain(
-      module,
-      api,
-      network,
-      chain as unknown as ChainId,
-    );
+    const code = await retrieveContractFromChain(module, api, network, chain as unknown as ChainId);
 
     if (code !== undefined && code.length !== 0) {
       writeFileSync(join(process.cwd(), out), code, 'utf8');
