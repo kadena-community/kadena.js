@@ -1,5 +1,4 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Block } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
 import { createID } from '@utils/global-id';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
@@ -50,7 +49,7 @@ async function* iteratorFn(
 async function getLastBlocks(
   chainIds: number[],
   id?: number,
-): Promise<Block[]> {
+): Promise<{ id: number; hash: string }[]> {
   const defaultFilter: Parameters<typeof prismaClient.block.findMany>[0] = {
     orderBy: {
       id: 'desc',
@@ -68,6 +67,10 @@ async function getLastBlocks(
   const foundblocks = await prismaClient.block.findMany({
     ...extendedFilter,
     where: { ...extendedFilter.where, chainId: { in: chainIds } },
+    select: {
+      id: true,
+      hash: true,
+    },
   });
 
   return foundblocks.sort((a, b) => b.id - a.id);
