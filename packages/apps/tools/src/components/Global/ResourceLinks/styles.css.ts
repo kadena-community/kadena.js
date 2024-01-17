@@ -1,47 +1,52 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const resourceLinksWrapperClass = style([
-  sprinkles({
-    marginTop: '$4',
-    paddingTop: '$4',
+  atoms({
+    marginBlockStart: 'md',
+    paddingBlockStart: 'md',
   }),
   {
-    borderTop: `1px solid ${vars.colors.$borderSubtle}`,
+    borderTop: `1px solid #E3E1E5`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid #27232999`,
+      },
+    },
   },
 ]);
 
 export const titleWrapperClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
   }),
 ]);
 
 export const titleTextClass = style([
-  sprinkles({
-    fontSize: '$sm',
-    fontWeight: '$bold',
-    marginRight: '$2',
+  atoms({
+    fontSize: 'sm',
+    fontWeight: 'bodyFont.bold',
+    marginInlineStart: 'sm',
   }),
 ]);
 
 export const linksClass = style([
-  sprinkles({
-    paddingLeft: '$4',
-    marginTop: '$2',
-    color: '$blue80',
+  atoms({
+    paddingInlineStart: 'md',
+    marginBlockStart: 'sm',
   }),
   {
+    color: tokens.kda.foundation.color.palette.blue.n80,
     selectors: {
       [`&.visited`]: {
-        color: vars.colors.$blue60,
+        color: tokens.kda.foundation.color.palette.blue.n60,
       },
     },
   },
 ]);
 
 export const linkClass = style([
-  sprinkles({
+  atoms({
     textDecoration: 'underline',
     color: 'inherit',
   }),

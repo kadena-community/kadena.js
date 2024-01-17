@@ -33,11 +33,14 @@ export const gridItemMiniMenuStyle = style([
     position: 'relative',
   }),
   {
-    borderLeft: `solid 1px ${tokens.kda.foundation.color.border.base}`,
+    borderLeft: `1px solid #E3E1E5`,
     transition: 'width 0.1s ease',
     selectors: {
       '&.isOpen': {
         width: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n20})`,
+      },
+      [`${darkThemeClass} &`]: {
+        borderLeft: `1px solid #27232999`,
       },
     },
   },
@@ -51,7 +54,12 @@ export const buttonWrapperClass = style([
     cursor: 'pointer',
   }),
   {
-    borderBottom: `solid 1px ${tokens.kda.foundation.color.border.base}`,
+    borderBottom: `1px solid #E3E1E5`,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        borderBottom: `1px solid #27232999`,
+      },
+    },
   },
 ]);
 
