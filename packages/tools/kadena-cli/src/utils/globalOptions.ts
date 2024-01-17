@@ -45,6 +45,15 @@ export const globalFlags = {
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   // Account
+  accountAlias: createOption({
+    key: 'accountAlias' as const,
+    prompt: account.accountAliasPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --account-alias <accountAlias>',
+      'Enter an alias to store your account',
+    ),
+  }),
   accountName: createOption({
     key: 'accountName' as const,
     prompt: account.accountNamePrompt,
