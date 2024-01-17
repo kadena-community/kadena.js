@@ -71,25 +71,23 @@ describe('yaml-converter', () => {
 
   describe('replaceHoles', () => {
     it('replaces holes for simple string', () => {
-      const result = replaceHoles(
+      const result = replaceHoles({
+        name: 'Albert',
+      })(
         getPartsAndHolesInCtx('./aux-files/simple-test.yaml', __dirname)
           .tplString,
-        {
-          name: 'Albert',
-        },
       );
       expect(result).eq(`Hello Albert!
 `);
     });
 
     it('replaces holes for simple string', () => {
-      const result = replaceHoles(
+      const result = replaceHoles({
+        name: 'Albert',
+        literalName: 'literalAlbert',
+      })(
         getPartsAndHolesInCtx('./aux-files/complex-test.yaml', __dirname)
           .tplString,
-        {
-          name: 'Albert',
-          literalName: 'literalAlbert',
-        },
       );
       expect(result).eq(`Hello Albert! Where is AlbertliteralAlbert!
 `);
@@ -97,12 +95,11 @@ describe('yaml-converter', () => {
 
     it('throws an error when a hole is not provided', () => {
       expect(() =>
-        replaceHoles(
+        replaceHoles({
+          notName: 'Albert',
+        })(
           getPartsAndHolesInCtx('./aux-files/complex-test.yaml', __dirname)
             .tplString,
-          {
-            notName: 'Albert',
-          },
         ),
       ).to.throw(
         'argument to fill hole for name is missing in Hello {{name}}!',
@@ -118,13 +115,13 @@ describe('yaml-converter', () => {
         literalName: 'My Literal Name',
       };
 
-      const res = parseYamlToKdaTx(args)(
+      const tplTx = parseYamlToKdaTx(args)(
         replaceHolesInCtx(args)(
           getPartsAndHolesInCtx('./aux-files/tx-with-codefile.yaml', __dirname),
         ),
       );
 
-      expect(res.tplTx).deep.eq({
+      expect(tplTx).deep.eq({
         code: `(module 12 My Literal Name)
 `,
         data: 12,
@@ -138,7 +135,7 @@ describe('yaml-converter', () => {
         aNumber: 12,
       };
 
-      const res = parseYamlToKdaTx(args)(
+      const tplTx = parseYamlToKdaTx(args)(
         replaceHolesInCtx(args)(
           getPartsAndHolesInCtx(
             './aux-files/tx-without-codefile.yaml',
@@ -147,7 +144,7 @@ describe('yaml-converter', () => {
         ),
       );
 
-      expect(res.tplTx).deep.eq({
+      expect(tplTx).deep.eq({
         code: `(module 123 Nil)`,
         data: 12,
         something: false,

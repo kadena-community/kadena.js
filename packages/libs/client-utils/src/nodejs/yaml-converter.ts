@@ -165,7 +165,8 @@ export const convertTemplateTxToPactCommand = (
     },
   };
 
-  const { publicMeta, meta, ...kdaToolTxWithoutMeta } = kdaToolTx;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { publicMeta, meta, code, ...kdaToolTxWithoutMeta } = kdaToolTx;
   const metadata = meta || publicMeta || ({} as IPublicMeta);
 
   return {
