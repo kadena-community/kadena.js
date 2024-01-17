@@ -6,13 +6,13 @@ import {
 } from '@/components/Global/OptionsModal/styles.css';
 import type { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
+import type { IDialogProps } from '@kadena/react-ui';
 import {
   Button,
   Card,
   Dialog,
   DialogContent,
   DialogHeader,
-  IDialogProps,
   Stack,
   SystemIcon,
   Tag,
