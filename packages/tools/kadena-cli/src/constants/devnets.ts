@@ -29,7 +29,6 @@ export const defaultDevnet: string = 'devnet';
  */
 
 export const simulationDefaults = {
-  LOG_FOLDERNAME: `${process.cwd()}/simulation-logs}`,
   DEFAULT_CHAIN_ID: '0' as ChainId,
   NETWORK_HOST: 'http://localhost:8080',
   NETWORK_ID: 'fast-development',
