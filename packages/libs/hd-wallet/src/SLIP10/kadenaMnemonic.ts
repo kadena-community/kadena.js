@@ -1,5 +1,6 @@
 import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
+import { BinaryLike } from 'crypto';
 import type { EncryptedString } from '../utils/kadenaEncryption';
 import { kadenaEncrypt } from '../utils/kadenaEncryption';
 /**
@@ -21,7 +22,7 @@ export function kadenaGenMnemonic(): string {
  * @returns {Promise<{ seedBuffer: Uint8Array, seed: string }>} - Returns the seed buffer and processed seed.
  */
 export async function kadenaMnemonicToSeed(
-  password: string,
+  password: BinaryLike,
   mnemonic: string,
   // wordList: string[] = wordlist,
 ): Promise<EncryptedString> {
