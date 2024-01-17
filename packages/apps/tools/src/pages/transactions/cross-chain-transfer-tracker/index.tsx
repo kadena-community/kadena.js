@@ -245,9 +245,8 @@ const CrossChainTransferTracker: FC = () => {
             <Button
               type="submit"
               title={t('Search')}
-              icon="Magnify"
-              iconAlign="right"
-              onClick={() => setOpenItem(undefined)}
+              onPress={() => setOpenItem(undefined)}
+              endIcon={<SystemIcon.Magnify />}
             >
               {t('Search')}
             </Button>
@@ -326,11 +325,12 @@ const CrossChainTransferTracker: FC = () => {
             flexDirection={'row-reverse'}
           >
             <Link
+              title={t('Finish Transaction')}
               href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
+              endIcon={<SystemIcon.Link />}
+              color="positive"
             >
-              <Button color={'positive'} icon="Link" iconAlign="right">
-                {t('Finish Transaction')}
-              </Button>
+              {t('Finish Transaction')}
             </Link>
           </Stack>
         </div>

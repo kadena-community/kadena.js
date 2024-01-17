@@ -48,7 +48,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['@kadena/client', '@kadena/client-utils']
+        package:
+          [
+            '@kadena/client',
+            '@kadena/client-utils',
+            '@kadena/create-kadena-app',
+          ]
 
     steps:
       - uses: actions/checkout@v4

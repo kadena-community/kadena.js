@@ -10,7 +10,6 @@ import {
   Heading,
   Stack,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
@@ -18,6 +17,7 @@ import React, { useEffect, useState } from 'react';
 import {
   headerClass,
   headerLoadedClass,
+  mostPopularBoxClass,
   searchInputWrapper,
   subheaderClass,
   wrapperClass,
@@ -68,26 +68,14 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
                   Explore our guides and examples to build on Kadena
                 </span>
 
-                <Box className={sprinkles({ marginBlockStart: '$5' })}>
-                  <div className={searchInputWrapper}>
-                    <SearchBar onKeyUp={handleKeyPress} />
-                  </div>
+                <Box className={searchInputWrapper}>
+                  <SearchBar onKeyUp={handleKeyPress} />
                 </Box>
               </Stack>
             </GridItem>
             <GridItem>
               {popularPages.length > 0 && (
-                <Box
-                  className={sprinkles({
-                    paddingInlineStart: {
-                      sm: '$xs',
-                      lg: '$15',
-                      xl: '$32',
-                      xxl: '$48',
-                    },
-                  })}
-                  marginInlineEnd="xxxl"
-                >
+                <Box className={mostPopularBoxClass} marginInlineEnd="xxxl">
                   <MostPopular pages={popularPages} title="Most viewed docs" />
                 </Box>
               )}

@@ -30,7 +30,8 @@
     "storybook": "storybook dev -p 6006",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify": "tsc --noEmit"
   },
   "dependencies": {
     "@7-docs/edge": "^0.5.1",

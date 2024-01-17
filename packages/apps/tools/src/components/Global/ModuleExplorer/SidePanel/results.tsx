@@ -1,6 +1,6 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { ITreeProps } from '@kadena/react-ui';
-import { Button, Tree } from '@kadena/react-ui';
+import { Button, SystemIcon, Tree } from '@kadena/react-ui';
 import React, { useMemo } from 'react';
 import type { IChainModule } from '../types';
 import type { getModulesMap } from '../utils';
@@ -39,9 +39,9 @@ const resultsMapToTreeItems = (
     items: chainsInfo.map(({ chainId, hash }) => ({
       title: (
         <Button
-          onClick={() => onItemClick({ chainId, moduleName })}
-          variant="compact"
-          icon="ExitToApp"
+          onPress={() => onItemClick({ chainId, moduleName })}
+          isCompact
+          endIcon={<SystemIcon.ExitToApp />}
           title={chainId + (hash ? ` - ${hash}` : '')}
         >
           {chainId}

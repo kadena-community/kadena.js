@@ -41,7 +41,8 @@
     "storybook": "storybook dev -p 6006",
     "test": "vitest run",
     "test:watch": "vitest",
-    "tokens:sync": "design-sync sync"
+    "tokens:sync": "design-sync sync",
+    "verify": "tsc --noEmit"
   },
   "dependencies": {
     "@kadena/fonts": "~0.0.1",

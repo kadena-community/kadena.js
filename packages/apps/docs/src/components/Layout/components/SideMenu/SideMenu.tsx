@@ -1,7 +1,6 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
 import { Box, Heading, Input, SystemIcon } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
@@ -66,11 +65,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         </button>
       )}
       <ShowOnMobile>
-        <Box
-          marginInline="md"
-          marginBlockStart="md"
-          className={sprinkles({ marginBlockEnd: '$8' })}
-        >
+        <Box marginInline="md" marginBlockStart="md" marginBlockEnd="xl">
           <Input
             id="search"
             onKeyUp={handleKeyPress}
