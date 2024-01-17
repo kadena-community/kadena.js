@@ -2,19 +2,19 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 
+import { kadenaDecrypt } from '@kadena/hd-wallet';
+import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-
-import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { removeAfterFirstDot } from '../../utils/path.util.js';
 import {
   decryptSecretKeys,
   getSignersFromTransactionHd,
-  signTransaction,
+  signTransactionWithKeypair,
 } from '../utils/helpers.js';
 import { saveSignedTransaction } from '../utils/storage.js';
 
@@ -36,13 +36,14 @@ export const signActionHd = async (
     const decryptedKeys = keys.map((key) => {
       return {
         publicKey: key.publicKey,
-        secretKey: decryptSecretKeys(password)(
+        secretKey: decryptSecretKeys(
+          password,
           key.secretKey as EncryptedString,
         ),
       };
     }) as IKeyPair[];
 
-    const signedCommand = await signTransaction(decryptedKeys)({
+    const signedCommand = await signTransactionWithKeypair(decryptedKeys)({
       unsignedCommand,
     });
 

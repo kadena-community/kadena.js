@@ -1,8 +1,8 @@
 import type { IPactCommand } from '@kadena/client';
 // import { createSignWithKeypair, Sign } from '@kadena/client';
-import { createSignWithKeypair } from '@kadena/client';
+import { addSignatures, createSignWithKeypair } from '@kadena/client';
 import type { EncryptedString } from '@kadena/hd-wallet';
-// import { kadenaSign } from '@kadena/hd-wallet/chainweaver';
+import { kadenaSign as legacyKadenaSign } from '@kadena/hd-wallet/chainweaver';
 import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 import { join } from 'path';
@@ -51,24 +51,6 @@ export function formatDate(): string {
   return `${year}-${month}-${day}-${hours}:${minutes}`;
 }
 
-// export const legacySignWithKeyPairHelper = (
-//   password: string,
-//   cmd: string,
-//   secretKey: EncryptedString,
-// ): ((tx: IUnsignedCommand) => Promise<{ sigs: { sig: string }[] }>) => {
-//   return async (tx: IUnsignedCommand) => {
-//     const result = await kadenaSign(password, cmd, secretKey);
-//     const sig = Buffer.from(result).toString('hex');
-//     if (!sig) {
-//       throw new Error('Signature is undefined or empty');
-//     }
-//     return {
-//       ...tx,
-//       sigs: [{ sig }],
-//     };
-//   };
-// };
-
 /**
  * Helper function to check if an object is of type ICommand
  * @param {ICommand | IUnsignedCommand} obj - The object to check.
@@ -92,41 +74,46 @@ function isCommand(obj: ICommand | IUnsignedCommand): obj is ICommand {
  */
 export const decryptSecretKeys = (
   password: string,
-): ((encrypted: EncryptedString) => string) => {
-  return (encrypted: EncryptedString): string => {
-    return toHexStr(kadenaDecrypt(password, encrypted));
-  };
-};
+  encrypted: EncryptedString,
+): string => toHexStr(kadenaDecrypt(password, encrypted));
 
 /**
  * Creates a function to sign a transaction with the provided keys.
  * @param {IKeyPair[]} keys - The key pairs used for signing.
  * @returns {(config: { unsignedCommand: IUnsignedCommand }) => Promise<ICommand | undefined>}
  */
-export const signTransaction = (
+export const signTransactionWithKeypair = (
   keys: IKeyPair[],
 ): ((config: {
   unsignedCommand: IUnsignedCommand;
+  legacy?: boolean;
 }) => Promise<ICommand | undefined>) => {
   return async (config): Promise<ICommand | undefined> => {
-    const signWithKeypair = createSignWithKeypair(keys);
+    let signedCommand: ICommand | IUnsignedCommand;
 
     try {
-      // if (config.legacy === true) {
-      //   // Handle legacy signing
-      //   signedCommand = await legacySignWithKeyPairHelper(
-      //     config.securityPassword,
-      //     config.unsignedTransaction.cmd,
-      //     config.keySecretKey as EncryptedString,
-      //   )(config.unsignedTransaction);
-      // } else {
-      //   // Handle non-legacy signing
-      //   signedCommand = await signWithKeypair(config.unsignedTransaction);
-      // }
+      if (config.legacy === true) {
+        const parsedTransaction = JSON.parse(config.unsignedCommand.cmd);
+        const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
-      const signedCommand: ICommand | IUnsignedCommand = await signWithKeypair(
-        config.unsignedCommand,
-      );
+        const signatures = await Promise.all(
+          relevantKeyPairs.map(async (key) => {
+            const sigUint8Array = await legacyKadenaSign(
+              '',
+              config.unsignedCommand.cmd,
+              key.secretKey as EncryptedString,
+            );
+
+            const sigHexString = Buffer.from(sigUint8Array).toString('hex');
+            return { sig: sigHexString, pubKey: key.publicKey };
+          }),
+        );
+
+        signedCommand = addSignatures(config.unsignedCommand, ...signatures);
+      } else {
+        const signWithKeypair = createSignWithKeypair(keys);
+        signedCommand = await signWithKeypair(config.unsignedCommand);
+      }
 
       if (isCommand(signedCommand)) {
         return signedCommand;
@@ -267,6 +254,17 @@ export function extractPublicKeysFromTransactionCmd(cmd: string): string[] {
   }
 }
 
+/* would be handy if exponsed by @kadena/client */
+export function getRelevantKeypairs(
+  tx: IPactCommand,
+  keypairs: IKeyPair[],
+): IKeyPair[] {
+  const relevantKeypairs = keypairs.filter((keypair) =>
+    tx.signers.some(({ pubKey }) => pubKey === keypair.publicKey),
+  );
+  return relevantKeypairs;
+}
+
 /**
  * retrieves key pairs used as signers for a transaction from an HD wallet.
  * @param {string} cmd - The transaction command string.
@@ -279,26 +277,6 @@ export async function getSignersFromTransactionHd(
 ): Promise<IKeyPair[]> {
   const publicKeys = extractPublicKeysFromTransactionCmd(cmd);
   const signers = await findKeyPairsByPublicKeys(publicKeys, walletName);
-
-  return signers;
-}
-
-/**
- * Retrieves key pairs used as signers for a transaction from provided key pairs.
- * @param {string} cmd - The transaction command string.
- * @param {IKeyPair[]} keyPairs - Array of key pairs to filter from.
- * @returns {Promise<IKeyPair[]>}
- */
-export async function getSignersFromTransactionPlain(
-  cmd: string,
-  keyPairs: IKeyPair[],
-): Promise<IKeyPair[]> {
-  const publicKeys = extractPublicKeysFromTransactionCmd(cmd);
-
-  const signers = keyPairs.filter(
-    (keyPair) =>
-      publicKeys.includes(keyPair.publicKey) && keyPair.secretKey !== undefined,
-  );
 
   return signers;
 }
