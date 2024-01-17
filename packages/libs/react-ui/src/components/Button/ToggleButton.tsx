@@ -1,49 +1,29 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-
 import { mergeProps, useObjectRef } from '@react-aria/utils';
-import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
-import type { ComponentProps, ForwardedRef, ReactNode } from 'react';
+import type { ForwardedRef } from 'react';
 import React, { forwardRef } from 'react';
-import type { AriaButtonProps, HoverEvents } from 'react-aria';
-import { useButton, useFocusRing, useHover } from 'react-aria';
-import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
+import type { AriaToggleButtonProps } from 'react-aria';
+import { useFocusRing, useHover, useToggleButton } from 'react-aria';
+import { useToggleState } from 'react-stately';
+import { ProgressCircle } from '../ProgressCircle';
 import { button } from './SharedButton.css';
+import type { ISharedButtonProps } from './utils';
 import { disableLoadingProps } from './utils';
 
-type Variants = Omit<NonNullable<RecipeVariants<typeof button>>, 'onlyIcon'>;
-// omit link related props from `AriaButtonProps`
-type PickedAriaButtonProps = Omit<
-  AriaButtonProps,
-  'href' | 'target' | 'rel' | 'elementType'
->;
+type PickedAriaToggleButtonProps = Omit<AriaToggleButtonProps, 'elementType'>;
 
-export interface IButtonProps
-  extends PickedAriaButtonProps,
-    HoverEvents,
-    Variants {
-  className?: string;
-  startIcon?: ReactNode;
-  endIcon?: ReactNode;
-  icon?: ReactNode;
-  /**
-   * @deprecated use `onPress` instead to be consistent with React Aria, also keep in mind that `onPress` is not a native event it is a synthetic event created by React Aria
-   * @see https://react-spectrum.adobe.com/react-aria/useButton.html#props
-   */
-  onClick?: ComponentProps<'button'>['onClick'];
-  style?: ComponentProps<'button'>['style'];
-  title?: ComponentProps<'button'>['title'];
-}
+export interface IToggleButtonProps
+  extends PickedAriaToggleButtonProps,
+    ISharedButtonProps {}
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable react/function-component-definition */
-function BaseButton(
-  props: IButtonProps,
+function ToggleButtonBase(
+  props: IToggleButtonProps,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
 ) {
   props = disableLoadingProps(props);
   const ref = useObjectRef(forwardedRef);
-  const { buttonProps, isPressed } = useButton(props, ref);
+  let state = useToggleState(props);
+  const { buttonProps, isPressed } = useToggleButton(props, state, ref);
   const { hoverProps, isHovered } = useHover(props);
   const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
 
@@ -84,6 +64,7 @@ function BaseButton(
       data-pressed={isPressed || undefined}
       data-hovered={isHovered || undefined}
       data-focused={isFocused || undefined}
+      data-selected={state.isSelected || undefined}
       data-focus-visible={isFocusVisible || undefined}
     >
       {props.isLoading ? (
@@ -102,4 +83,4 @@ function BaseButton(
   );
 }
 
-export const Button = forwardRef(BaseButton);
+export const ToggleButton = forwardRef(ToggleButtonBase);

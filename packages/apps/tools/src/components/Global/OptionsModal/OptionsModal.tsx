@@ -6,15 +6,15 @@ import {
 } from '@/components/Global/OptionsModal/styles.css';
 import type { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
-import type { IDialogProps, SystemIcon } from '@kadena/react-ui';
+import type { IDialogProps } from '@kadena/react-ui';
 import {
   Button,
   Card,
   Dialog,
   DialogContent,
   DialogHeader,
-  IconButton,
   Stack,
+  SystemIcon,
   Tag,
   Text,
 } from '@kadena/react-ui';
@@ -65,12 +65,12 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
   };
 
   const options = Object.entries(devOptions);
-
   const renderOptions = (): React.JSX.Element => {
     return (
       <>
         {options.map((item) => {
           const [key, value] = item;
+          const Icon = SystemIcon[value.icon];
 
           return (
             <div
@@ -81,19 +81,26 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
               <Card fullWidth>
                 <Stack>
                   {selected === key ? (
-                    <IconButton
+                    <Button
                       title="Radio"
-                      icon={'RadioboxMarked'}
+                      aria-label="Radio"
+                      icon={<SystemIcon.RadioboxMarked />}
                       color="primary"
                     />
                   ) : (
-                    <IconButton
+                    <Button
                       title="Radio"
-                      icon={'RadioboxBlank'}
+                      aria-label="Radio"
+                      icon={<SystemIcon.RadioboxBlank />}
                       color="primary"
                     />
                   )}
-                  <IconButton title="Radio" icon={value.icon} color="primary" />
+                  <Button
+                    title="Radio"
+                    aria-label="Radio"
+                    icon={<Icon />}
+                    color="primary"
+                  />
                   <Stack flexDirection="column" marginInline="md">
                     <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>

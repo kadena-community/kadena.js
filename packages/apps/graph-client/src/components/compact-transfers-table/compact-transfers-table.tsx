@@ -4,10 +4,9 @@ import type {
   Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
+import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
 import React from 'react';
-
 interface ICompactTransfersTableProps {
   fungibleName: string;
   accountName: string;
@@ -66,15 +65,14 @@ export const CompactTransfersTable = (
         }
       />
       <Box margin="sm" />
-      <Button
-        variant="compact"
-        as="a"
+      <Link
+        isCompact
         href={`${routes.ACCOUNT_TRANSFERS}/${fungibleName}/${accountName}${
           chainId !== undefined ? `?chain=${chainId}` : ''
         }`}
       >
         View all transfers
-      </Button>
+      </Link>
       <Box margin="xs" />
       <Table.Root wordBreak="break-word">
         <Table.Head>

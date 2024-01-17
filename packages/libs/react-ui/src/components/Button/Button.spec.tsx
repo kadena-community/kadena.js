@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React, { useState } from 'react';
-import { Button } from './NewButton';
+import { Button } from './Button';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 

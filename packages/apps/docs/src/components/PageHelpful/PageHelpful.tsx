@@ -4,9 +4,10 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  IconButton,
   Stack,
+  SystemIcon,
   Text,
+  ToggleButton,
 } from '@kadena/react-ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -43,21 +44,23 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
           Was this page helpful?
         </Text>
         <Stack gap="xs">
-          <IconButton
+          <ToggleButton
             color="positive"
-            icon="ThumbUpOutline"
-            onClick={handlePageHelpful}
+            icon={<SystemIcon.ThumbUpOutline />}
+            onPress={handlePageHelpful}
             title="Useful"
+            aria-label="Useful"
             variant="alternative"
-            active={isPageHelpful === 'up'}
+            isSelected={isPageHelpful === 'up'}
           />
-          <IconButton
+          <ToggleButton
             color="negative"
-            icon="ThumbDownOutline"
-            onClick={handlePageNotHelpful}
+            icon={<SystemIcon.ThumbDownOutline />}
+            onPress={handlePageNotHelpful}
             title="Not useful"
+            aria-label="Not useful"
             variant="alternative"
-            active={isPageHelpful === 'down'}
+            isSelected={isPageHelpful === 'down'}
           />
         </Stack>
       </Stack>

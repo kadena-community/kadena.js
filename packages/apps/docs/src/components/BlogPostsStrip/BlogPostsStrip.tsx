@@ -1,6 +1,5 @@
 import type { IMenuData } from '@kadena/docs-tools';
 import { Link } from '@kadena/react-ui';
-import NextLink from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 import { StripItem } from './StripItem';
@@ -21,11 +20,7 @@ export const BlogPostsStrip: FC<IProps> = ({ data, link, linkLabel }) => {
         ))}
       </ul>
 
-      {link && (
-        <NextLink href={link} passHref legacyBehavior>
-          <Link asChild>{linkLabel}</Link>
-        </NextLink>
-      )}
+      {link && <Link href={link}>{linkLabel}</Link>}
     </section>
   );
 };
