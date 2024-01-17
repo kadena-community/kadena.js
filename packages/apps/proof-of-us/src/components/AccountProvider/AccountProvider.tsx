@@ -13,18 +13,21 @@ interface IAccountError {
 export interface IAccountContext {
   account?: IAccount;
   error?: IAccountError;
+  isMounted: boolean;
   login: () => void;
   logout: () => void;
 }
 
 export const AccountContext = createContext<IAccountContext>({
   account: undefined,
+  isMounted: false,
   login: () => {},
   logout: () => {},
 });
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const [account, setAccount] = useState<IAccount>();
+  const [isMounted, setIsMounted] = useState(false);
   const { addToast } = useToasts();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -69,17 +72,20 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     localStorage.setItem(ACCOUNT_COOKIE_NAME, response);
     const account = decodeAccount(response);
     setAccount(account);
-  }, [searchParams, setAccount, decodeAccount]);
+    setIsMounted(true);
+  }, [searchParams, setAccount, decodeAccount, setIsMounted]);
 
   useEffect(() => {
     const response = localStorage.getItem(ACCOUNT_COOKIE_NAME);
+    setIsMounted(true);
     if (!response) return;
+
     const account = decodeAccount(response);
     setAccount(account);
-  }, [setAccount, decodeAccount]);
+  }, [setAccount, decodeAccount, setIsMounted]);
 
   return (
-    <AccountContext.Provider value={{ account, login, logout }}>
+    <AccountContext.Provider value={{ account, login, logout, isMounted }}>
       {children}
     </AccountContext.Provider>
   );
