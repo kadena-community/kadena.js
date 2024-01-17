@@ -1,4 +1,4 @@
-import { atoms, darkThemeClass, vars } from '@kadena/react-ui/theme';
+import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const headerStyle = style([
@@ -10,7 +10,7 @@ export const headerStyle = style([
     zIndex: 1,
   }),
   {
-    height: vars.sizes.$16,
+    height: tokens.kda.foundation.size.n16,
   },
 ]);
 
@@ -36,8 +36,8 @@ export const gridItemMainStyle = style([
   }),
   {
     height: '100vh',
-    paddingTop: vars.sizes.$20,
-    paddingInline: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
+    paddingTop: tokens.kda.foundation.size.n20,
+    paddingInline: `calc(${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
     borderRight: `1px solid #E3E1E5`,
     selectors: {
       [`${darkThemeClass} &`]: {
@@ -45,7 +45,7 @@ export const gridItemMainStyle = style([
       },
 
       '&.isMenuOpen': {
-        paddingLeft: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$2})`,
+        paddingLeft: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
       },
       [`${darkThemeClass} &.isMenuOpen`]: {
         borderRight: `1px solid #27232999`,
@@ -64,14 +64,14 @@ export const sidebarStyle = style([
     zIndex: 1,
   }),
   {
-    width: vars.sizes.$12,
-    top: vars.sizes.$16,
-    backgroundColor: vars.colors.$neutral1,
+    width: tokens.kda.foundation.size.n12,
+    top: tokens.kda.foundation.size.n16,
+    backgroundColor: tokens.kda.foundation.color.neutral.n1,
     transition: 'width 0.1s ease-in',
     borderRight: `1px solid #E3E1E5`,
     selectors: {
       '&.isMenuOpen': {
-        width: `calc(${vars.sizes.$64} + ${vars.sizes.$10})`,
+        width: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n10})`,
       },
       [`${darkThemeClass} &`]: {
         borderRight: `1px solid #27232999`,

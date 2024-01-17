@@ -1,4 +1,4 @@
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const gridItemMiniMenuStyle = style([
@@ -10,47 +10,47 @@ export const gridItemMiniMenuStyle = style([
 ]);
 
 export const gridMiniMenuListButtonStyle = style([
-  sprinkles({
+  atoms({
     outline: 'none',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    padding: '$4',
-    color: '$gray50',
+    padding: 'md',
   }),
   {
+    color: tokens.kda.foundation.color.neutral.n50,
     selectors: {
       [`${darkThemeClass} &:hover`]: {
-        color: vars.colors.$white,
+        color: tokens.kda.foundation.color.neutral.n100,
       },
       [`&:hover`]: {
-        color: vars.colors.$blue60,
+        color: tokens.kda.foundation.color.palette.blue.n60,
       },
       [`${darkThemeClass} &.active`]: {
-        color: vars.colors.$blue40,
+        color: tokens.kda.foundation.color.palette.blue.n60,
       },
       [`&.active`]: {
-        color: vars.colors.$blue80,
+        color: tokens.kda.foundation.color.palette.blue.n80,
       },
       [`${darkThemeClass} &.active:hover`]: {
-        color: vars.colors.$blue20,
+        color: tokens.kda.foundation.color.palette.blue.n20,
       },
       ['&.active:hover']: {
-        color: vars.colors.$blue60,
+        color: tokens.kda.foundation.color.palette.blue.n60,
       },
     },
   },
 ]);
 
 export const gridMiniMenuLinkButtonStyle = style([
-  sprinkles({
+  atoms({
     outline: 'none',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
     textAlign: 'left',
-    fontWeight: '$bold',
-    fontSize: '$sm',
+    fontWeight: 'bodyFont.bold',
+    fontSize: 'sm',
     pointerEvents: 'none',
   }),
   {
@@ -63,22 +63,22 @@ export const gridMiniMenuLinkButtonStyle = style([
         borderBottom: `1px solid #27232999`,
       },
       [`${darkThemeClass} &:hover`]: {
-        color: vars.colors.$white,
+        color: tokens.kda.foundation.color.neutral.n100,
       },
       [`&:hover`]: {
-        color: vars.colors.$blue60,
+        color: tokens.kda.foundation.color.palette.blue.n60,
       },
       [`${darkThemeClass} &.active`]: {
-        color: vars.colors.$blue40,
+        color: tokens.kda.foundation.color.palette.blue.n60,
       },
       [`&.active`]: {
-        color: vars.colors.$blue80,
+        color: tokens.kda.foundation.color.palette.blue.n80,
       },
       [`${darkThemeClass} &.active:hover`]: {
-        color: vars.colors.$blue20,
+        color: tokens.kda.foundation.color.palette.blue.n20,
       },
       ['&.active:hover']: {
-        color: vars.colors.$blue60,
+        color: tokens.kda.foundation.color.palette.blue.n60,
       },
       '&:last-child': {
         marginBottom: 0,
@@ -98,17 +98,15 @@ export const gridMiniMenuListItemStyle = style([
 ]);
 
 export const gridMiniMenuListStyle = style([
-  sprinkles({
+  {
     padding: 0,
     margin: 0,
-  }),
-  {
     listStyle: 'none',
   },
 ]);
 
 export const bottomIconsContainerStyle = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
     bottom: 0,
   }),
@@ -134,13 +132,13 @@ export const gridItemMenuStyle = style([
 ]);
 
 export const subMenuTitleClass = style([
-  sprinkles({
-    fontSize: '$sm',
-    fontWeight: '$bold',
+  atoms({
+    fontSize: 'sm',
+    fontWeight: 'bodyFont.bold',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: '$3',
+    paddingInlineStart: 'md',
   }),
   {
     borderBottom: `1px solid #E3E1E5`,
@@ -165,7 +163,7 @@ export const iconRightStyle = style([
 ]);
 
 export const subMenuContentStyle = style([
-  sprinkles({
+  atoms({
     height: '100%',
   }),
   {
