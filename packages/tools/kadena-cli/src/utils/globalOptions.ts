@@ -198,7 +198,7 @@ export const globalOptions = {
   }),
   //Simulate
   simulateNoAccounts: createOption({
-    key: 'simulateAccountAmount' as const,
+    key: 'accounts' as const,
     prompt: simulatePrompts.simulateNoAccountsPrompt,
     validation: z.number(),
     option: new Option(
@@ -207,7 +207,7 @@ export const globalOptions = {
     ),
   }),
   simulateTransferInterval: createOption({
-    key: 'simulateTransferInterval' as const,
+    key: 'interval' as const,
     prompt: simulatePrompts.simulateTransferIntervalPrompt,
     validation: z.number(),
     option: new Option(
@@ -217,26 +217,26 @@ export const globalOptions = {
   }),
 
   simulateMaxAmount: createOption({
-    key: 'simulateMaxAmount' as const,
+    key: 'maxAmount' as const,
     prompt: simulatePrompts.simulateMaxAmountPrompt,
     validation: z.number(),
     option: new Option(
-      '-t, --max-amount <maxAmount>',
+      '-x, --max-amount <maxAmount>',
       'Enter the max transfer amount per single transaction (coin).',
     ),
   }),
 
   simulateTokenPool: createOption({
-    key: 'simulateTokenPool' as const,
+    key: 'tokenPool' as const,
     prompt: simulatePrompts.simulateTokenPoolPrompt,
     validation: z.number(),
     option: new Option(
-      '-tp, --token-pool <tokenPool>',
+      '-p, --token-pool <tokenPool>',
       'Enter the total token pool (coin).',
     ),
   }),
   simulateSeed: createOption({
-    key: 'simulateSeed' as const,
+    key: 'seed' as const,
     prompt: simulatePrompts.simulateSeedPrompt,
     validation: z.string(),
     option: new Option(
@@ -245,7 +245,7 @@ export const globalOptions = {
     ),
   }),
   simulateLogFolder: createOption({
-    key: 'simulateLogFolder' as const,
+    key: 'logFolder' as const,
     prompt: simulatePrompts.simulateLogFolderPrompt,
     validation: z.string(),
     option: new Option(
