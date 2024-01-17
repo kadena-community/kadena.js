@@ -1,8 +1,8 @@
 'use client';
 import { ACCOUNT_COOKIE_NAME } from '@/constants';
 import { useToasts } from '@/hooks/toast';
+import { env } from '@/utils/env';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { env } from 'process';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
 
@@ -33,26 +33,29 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     return `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
   };
 
-  const decodeAccount = useCallback((response: string) => {
-    if (!response) return;
-    try {
-      const account: IAccount = JSON.parse(
-        Buffer.from(response, 'base64').toString(),
-      );
-      return account;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      addToast({
-        type: 'error',
-        message: e.message,
-      });
-      return;
-    }
-  }, []);
+  const decodeAccount = useCallback(
+    (response: string) => {
+      if (!response) return;
+      try {
+        const account: IAccount = JSON.parse(
+          Buffer.from(response, 'base64').toString(),
+        );
+        return account;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (e: any) {
+        addToast({
+          type: 'error',
+          message: e.message,
+        });
+        return;
+      }
+    },
+    [addToast],
+  );
 
   const login = useCallback(() => {
     router.push(`${env.WALLET_URL}/login?returnUrl=${getReturnUrl()}`);
-  }, []);
+  }, [router]);
 
   const logout = useCallback(() => {
     localStorage.removeItem(ACCOUNT_COOKIE_NAME);
