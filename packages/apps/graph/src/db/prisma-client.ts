@@ -1,4 +1,5 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
 import { highlight } from 'cli-highlight';
 import fs from 'fs';
@@ -35,7 +36,7 @@ if (dotenv.PRISMA_LOGGING_ENABLED) {
   prismaClient.$on('query' as never, (e: Prisma.QueryEvent) => {
     console.log('\n   Query:', highlight(e.query));
     console.log('   Params:', highlight(e.params));
-    console.log('   Duration:', e.duration + 'ms');
+    console.log('   Duration:', `${e.duration}ms`);
 
     if (dotenv.PRISMA_LOG_TO_FILE) {
       fs.appendFileSync(
