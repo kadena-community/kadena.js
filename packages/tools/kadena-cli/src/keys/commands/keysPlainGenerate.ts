@@ -1,9 +1,9 @@
+import { kadenaEncrypt, kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
+import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { randomBytes } from 'crypto';
 import debug from 'debug';
-import { kadenaEncrypt, kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
-import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
 
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
