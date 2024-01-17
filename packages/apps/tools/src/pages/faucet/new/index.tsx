@@ -311,6 +311,7 @@ const NewAccountFaucetPage: FC = () => {
               <div className={iconButtonWrapper}>
                 <Button
                   icon={<SystemIcon.Plus />}
+                  variant="text"
                   onPress={() => {
                     const value = getValues('pubKey');
                     const valid = validatePublicKey(value || '');

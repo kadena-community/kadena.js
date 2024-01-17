@@ -69,6 +69,7 @@ export const DrawerToolbar: ForwardRefExoticComponent<
               icon={<SystemIcon.Close />}
               title="close"
               aria-label="close"
+              variant="text"
             />
           </div>
           <div className={expandedDrawerContentClass}>
