@@ -18,7 +18,7 @@ const queryClient = new QueryClient();
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
-  let router = useRouter();
+  const router = useRouter();
 
   return (
     <QueryClientProvider client={queryClient}>
