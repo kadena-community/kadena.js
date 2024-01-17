@@ -1,12 +1,12 @@
 import type { Command } from 'commander';
 import { createAccountCommand } from './commands/accountCreate.js';
-import { addAccountCommand } from './commands/accountAdd.js';
 import { accountDetailsCommand } from './commands/accountDetails.js';
 import { fundCommand } from './commands/accountFund.js';
 import { getBalanceCommand } from './commands/accountGetBalance.js';
 import { resolveAddressToNameCommand } from './commands/accountResolveAddressToName.js';
 import { resolveNameToAddressCommand } from './commands/accountResolveNameToAddress.js';
 import { transferCreateCommand } from './commands/accountTransferCreate.js';
+import { addAccountSetupCommand } from './commands/accountSetup.js';
 
 const SUBCOMMAND_ROOT: 'account' = 'account';
 
@@ -15,7 +15,8 @@ export function accountCommandFactory(program: Command, version: string): void {
     .command(SUBCOMMAND_ROOT)
     .description(`Tool to manage accounts of fungibles (e.g. 'coin')`);
 
-  addAccountCommand(accountProgram, version);
+
+  addAccountSetupCommand(accountProgram, version);
   createAccountCommand(accountProgram, version);
   fundCommand(accountProgram, version);
   accountDetailsCommand(accountProgram, version);
