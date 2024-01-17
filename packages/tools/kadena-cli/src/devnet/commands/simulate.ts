@@ -32,12 +32,12 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
         id: 'fast-development',
         host: `http://localhost:${config.devnetConfig.port}`,
       },
-      maxAmount: config.simulateMaxAmount,
-      numberOfAccounts: config.simulateAccountAmount,
-      transferInterval: config.simulateTransferInterval,
-      tokenPool: config.simulateTokenPool,
-      logFolder: config.simulateLogFolder,
-      seed: config.simulateSeed,
+      maxAmount: config.maxAmount,
+      numberOfAccounts: config.accounts,
+      transferInterval: config.interval,
+      tokenPool: config.tokenPool,
+      logFolder: config.logFolder,
+      seed: config.seed,
     });
   },
 );
