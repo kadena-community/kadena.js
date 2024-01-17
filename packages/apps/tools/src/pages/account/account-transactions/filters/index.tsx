@@ -1,7 +1,8 @@
-import { ChainSelect } from '@/components/Global';
-import AccountNameField, {
+import {
+  AccountNameField,
+  ChainSelect,
   NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
+} from '@/components/Global';
 import Routes from '@/constants/routes';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
