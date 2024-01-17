@@ -6,10 +6,10 @@ import {
   Button,
   Card,
   Heading,
-  IconButton,
   Notification,
   NotificationHeading,
   Stack,
+  SystemIcon,
 } from '@kadena/react-ui';
 
 import {
@@ -321,9 +321,10 @@ const NewAccountFaucetPage: FC = () => {
                 />
               </div>
               <div className={iconButtonWrapper}>
-                <IconButton
-                  icon={'Plus'}
-                  onClick={() => {
+                <Button
+                  icon={<SystemIcon.Plus />}
+                  variant="text"
+                  onPress={() => {
                     const value = getValues('pubKey');
                     const valid = validatePublicKey(value || '');
                     if (valid) {
@@ -335,7 +336,8 @@ const NewAccountFaucetPage: FC = () => {
                       });
                     }
                   }}
-                  aria-label="Add Public Key"
+                  aria-label="Add public key"
+                  title="Add Public Key"
                   color="primary"
                   type="button"
                 />
@@ -375,11 +377,11 @@ const NewAccountFaucetPage: FC = () => {
           </Card>
           <div className={buttonContainerClass}>
             <Button
-              loading={requestStatus.status === 'processing'}
-              icon="TrailingIcon"
-              iconAlign="right"
+              isLoading={requestStatus.status === 'processing'}
+              endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-              disabled={disabledButton}
+              isDisabled={disabledButton}
+              type="submit"
             >
               {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>

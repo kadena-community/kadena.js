@@ -40,10 +40,10 @@ import {
   Grid,
   GridItem,
   Heading,
-  IconButton,
   Notification,
   NotificationHeading,
   Stack,
+  SystemIcon,
   TextField,
   Textarea,
   TrackerCard,
@@ -342,10 +342,7 @@ const CrossChainTransferFinisher: FC = () => {
     setOpenModal(true);
   };
 
-  const handleCopySigData = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
+  const handleCopySigData = async () => {
     await navigator.clipboard.writeText(formattedSigData);
   };
 
@@ -569,14 +566,15 @@ const CrossChainTransferFinisher: FC = () => {
                         id="sig-text-area"
                         value={formattedSigData}
                       />
-                      <IconButton
-                        as={'button'}
+                      <Button
                         color="primary"
-                        icon={'ContentCopy'}
-                        onClick={async (event) => {
-                          await handleCopySigData(event);
+                        icon={<SystemIcon.ContentCopy />}
+                        onPress={async () => {
+                          await handleCopySigData();
                         }}
                         title={t('copySigData')}
+                        aria-label={t('copySigData')}
+                        variant="text"
                       />
                     </div>
                   </GridItem>
@@ -586,7 +584,11 @@ const CrossChainTransferFinisher: FC = () => {
           </Stack>
         </section>
         <section className={formButtonStyle}>
-          <Button type="submit" disabled={processingTx} icon="TrailingIcon">
+          <Button
+            type="submit"
+            isDisabled={processingTx}
+            endIcon={<SystemIcon.TrailingIcon />}
+          >
             {t('Finish Transaction')}
           </Button>
         </section>

@@ -1,22 +1,22 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const blockquote = style([
-  sprinkles({
-    borderColor: '$neutral4',
-    backgroundColor: '$infoLowContrast',
-    fontSize: '$sm',
+  atoms({
+    borderColor: 'base.boldest',
+    backgroundColor: 'semantic.info.default',
+    fontSize: 'sm',
+    marginBlock: 'md',
+    paddingBlock: 'sm',
+    paddingInlineStart: 'md',
   }),
   {
-    marginBlock: vars.sizes.$4,
-    paddingBlock: vars.sizes.$2,
-    paddingInlineStart: vars.sizes.$4,
-    borderLeftWidth: '2px',
     borderLeftStyle: 'solid',
     whiteSpace: 'pre-wrap',
+    borderLeftWidth: '2px',
     ...responsiveStyle({
       md: {
-        paddingInlineEnd: vars.sizes.$8,
+        paddingInlineEnd: tokens.kda.foundation.spacing.xl,
       },
     }),
   },

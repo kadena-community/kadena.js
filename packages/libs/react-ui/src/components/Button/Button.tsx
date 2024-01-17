@@ -1,134 +1,87 @@
-import { SystemIcon } from '@components/Icon';
-import cn from 'classnames';
-import type {
-  ButtonHTMLAttributes,
-  FC,
-  HTMLAttributeAnchorTarget,
-  ReactNode,
-} from 'react';
-import React from 'react';
-import type { colorVariants, typeVariants } from './Button.css';
-import {
-  activeClass,
-  alternativeVariant,
-  buttonLoadingClass,
-  compactVariant,
-  defaultVariant,
-  iconLoadingClass,
-} from './Button.css';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
+import classNames from 'classnames';
+import type { ForwardedRef } from 'react';
+import React, { forwardRef } from 'react';
+import type { AriaButtonProps } from 'react-aria';
+import { useButton, useFocusRing, useHover } from 'react-aria';
+import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
+import { button } from './SharedButton.css';
+import type { ISharedButtonProps } from './utils';
+import { disableLoadingProps } from './utils';
+
+// omit link related props from `AriaButtonProps`
+type PickedAriaButtonProps = Omit<
+  AriaButtonProps,
+  'href' | 'target' | 'rel' | 'elementType'
+>;
 
 export interface IButtonProps
-  extends Omit<
-    ButtonHTMLAttributes<HTMLButtonElement>,
-    'as' | 'disabled' | 'className'
-  > {
-  active?: boolean;
-  as?: 'button' | 'a';
-  asChild?: boolean;
-  children: React.ReactNode;
-  color?: keyof typeof colorVariants;
-  disabled?: boolean;
-  href?: string;
-  icon?: keyof typeof SystemIcon;
-  iconAlign?: 'left' | 'right';
-  loading?: boolean;
-  onClick?:
-    | React.MouseEventHandler<HTMLButtonElement>
-    | React.FormEventHandler<HTMLButtonElement>;
-  target?: HTMLAttributeAnchorTarget;
-  title?: string;
-  type?: 'button' | 'submit' | 'reset';
-  variant?: keyof typeof typeVariants;
-}
+  extends PickedAriaButtonProps,
+    ISharedButtonProps {}
 
-export const Button: FC<IButtonProps> = ({
-  active = false,
-  as = 'button',
-  asChild = false,
-  children,
-  color = 'primary',
-  href,
-  icon,
-  iconAlign = 'right',
-  loading,
-  target,
-  title = '',
-  type,
-  variant = 'default',
-  ...restProps
-}) => {
-  const ariaLabel = restProps['aria-label'] ?? title;
-  const renderAsAnchor = as === 'a' && href !== undefined && href !== '';
+function BaseButton(
+  props: IButtonProps,
+  forwardedRef: ForwardedRef<HTMLButtonElement>,
+) {
+  props = disableLoadingProps(props);
+  const ref = useObjectRef(forwardedRef);
+  const { buttonProps, isPressed } = useButton(props, ref);
+  const { hoverProps, isHovered } = useHover(props);
+  const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
 
-  let Icon = icon && SystemIcon[icon];
-  if (loading) {
-    Icon = SystemIcon.Loading;
-  }
-
-  const buttonVariant = (): string => {
-    switch (variant) {
-      case 'compact':
-        return compactVariant[color];
-      case 'alternative':
-        return alternativeVariant[color];
-      default:
-        return defaultVariant[color];
-    }
-  };
-
-  const buttonClassname = cn(buttonVariant(), {
-    [buttonLoadingClass]: loading,
-    [activeClass]: active,
-  });
-
-  const iconClassname = cn({
-    [iconLoadingClass]: loading,
-  });
-
-  const getContents = (linkContents: ReactNode): ReactNode => (
+  const onlyIcon = props.icon !== undefined;
+  const content = onlyIcon ? (
+    props.icon
+  ) : (
     <>
-      {Icon && iconAlign === 'left' && (
-        <Icon size="md" className={iconClassname} />
-      )}
-      {linkContents}
-      {Icon && iconAlign === 'right' && (
-        <Icon size="md" className={iconClassname} />
-      )}
+      {props.startIcon}
+      {props.children}
+      {props.endIcon}
     </>
   );
 
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      ...restProps,
-      ...children.props,
-      ariaLabel,
-      children: getContents(children.props.children),
-      className: buttonClassname,
-    });
-  }
-
-  if (renderAsAnchor) {
-    return (
-      <a
-        aria-label={ariaLabel}
-        className={buttonClassname}
-        data-testid="kda-button"
-        href={href}
-        target={target}
-      >
-        {getContents(children)}
-      </a>
-    );
-  }
+  const isLoadingAriaLiveLabel = `${
+    typeof props.children === 'string'
+      ? props.children
+      : buttonProps['aria-label'] ?? 'is'
+  } loading`.trim();
 
   return (
     <button
-      {...restProps}
-      aria-label={ariaLabel}
-      className={buttonClassname}
-      type={type}
+      {...mergeProps(buttonProps, hoverProps, focusProps)}
+      ref={ref}
+      className={classNames(
+        button({
+          variant: props.variant,
+          color: props.color,
+          isCompact: props.isCompact,
+          isLoading: props.isLoading,
+        }),
+        props.className,
+      )}
+      style={props.style}
+      title={props.title}
+      aria-disabled={props.isLoading || undefined}
+      data-disabled={props.isDisabled || undefined}
+      data-pressed={isPressed || undefined}
+      data-hovered={isHovered || undefined}
+      data-focused={isFocused || undefined}
+      data-focus-visible={isFocusVisible || undefined}
     >
-      {getContents(children)}
+      {props.isLoading ? (
+        <>
+          {onlyIcon ? null : 'Loading'}
+          <ProgressCircle
+            aria-hidden="true"
+            aria-label={isLoadingAriaLiveLabel}
+            isIndeterminate
+          />
+        </>
+      ) : (
+        content
+      )}
     </button>
   );
-};
+}
+
+export const Button = forwardRef(BaseButton);
