@@ -1,6 +1,9 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   convertTemplateTxToPactCommand,
+  createPactCommandFromStringTemplate,
   createPactCommandFromTemplate,
   getPartsAndHolesInCtx,
   parseYamlToKdaTx,
@@ -298,6 +301,24 @@ describe('yaml-converter', () => {
             code: '(let\n    ((mk-guard (lambda (max-gas-price:decimal)\n                (util.guards.guard-or\n                  (keyset-ref-guard "ns-admin-keyset")\n                  (util.guards1.guard-all\n                    [ (create-user-guard (coin.gas-only))\n                      (util.guards1.max-gas-price max-gas-price)\n                      (util.guards1.max-gas-limit 500)\n                    ]))\n               )\n     )\n    )\n\n    (coin.transfer-create\n      "k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94"\n      "my-gas-station"\n      (mk-guard 0.0000000001)\n      123000)\n    (coin.rotate\n      "my-gas-station"\n      (mk-guard 0.00000001))\n  )\n',
           },
         },
+      });
+    });
+
+    it('converts a yaml from string', async () => {
+      const result = await createPactCommandFromStringTemplate(
+        readFileSync(
+          join(__dirname, './aux-files/tx-without-codefile.yaml'),
+          'utf8',
+        ),
+        { aNumber: 1, thisIsFalse: '1' },
+      );
+      expect(result).toStrictEqual({
+        something: 1,
+        payload: { exec: { data: 1, code: '(module 123 Nil)' } },
+        meta: { chainId: undefined, creationTime: 1698278400 },
+        nonce: '',
+        signers: [],
+        networkId: undefined,
       });
     });
 
