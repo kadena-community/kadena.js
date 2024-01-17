@@ -1,0 +1,96 @@
+;; begin-tx and commit-tx simulate a transaction
+(begin-tx "Load modules")
+
+  ;; set transaction JSON data
+  (env-data {
+    ;; Here we set the required keysets.
+    ;; Note:
+    ;; - in a real transaction, `admin-key` would be a public key
+    ;; - "keys-all" is a built-in predicate that specifies all keys are needed to sign a tx,
+    ;;   in this case we only set one key
+    'cka-admin-keyset: { "keys": ["admin-key"], "pred": "keys-all" },
+    'jane-keyset: { "keys": ["jane-key"], "pred": "keys-all" },
+    'namespace-keyset: { "keys": [ ], "pred": "keys-all" },
+
+    ;; Upgrade key is set to false because we are deploying the modules
+    'upgrade: false
+  })
+
+  ;; All Pact modules must exist within a namespace on Chainweb, except for basic contracts provided by Kadena.
+  ;; There are two namespaces available for anyone to use on Chainweb: the 'free' namespace and the 'user'
+  ;; namespace. Our contract uses the "free" namespace, so we need to make sure it exists in our REPL
+  ;; environment.
+
+  ;; Defining a namespace requires that we provide two keysets. The first keyset indicates the user that must
+  ;; have signed any transaction that deploys code to the given namespace. The second keyset is the namespace
+  ;; admin's keyset, and it indicates that the admin must sign the transaction that creates the new namespace.
+  ;; For testing purposes we will use the same mock namespace keyset for both.
+  (define-namespace "free" (read-keyset "namespace-keyset") (read-keyset "namespace-keyset"))
+
+  ;; load fungible-v2 interface
+  (load "root/fungible-v2.pact")
+
+  ;; load fungible-xchain-v1 interface
+  (load "root/fungible-xchain-v1.pact")
+
+  ;; load coin module
+  (load "root/coin-v5.pact")
+
+  ;; create coin module tables
+  (create-table coin.coin-table)
+  (create-table coin.allocation-table)
+
+  ;; load cka-message-store module
+  (load "message-store.pact")
+
+;; commit the transaction
+(commit-tx)
+
+(begin-tx "Create KDA accounts")
+
+  ;; create "jane" KDA account
+  (coin.create-account "jane" (read-keyset "jane-keyset"))
+
+(commit-tx)
+
+(begin-tx "write message")
+  (use free.cka-message-store)
+  ;; we set the key signing this tx and the capabilities that can be signed
+  ;; coin.GAS is a capability that allows gas payments.
+  ;; free.message-store.ACCOUNT-OWNER is the capability we implemented that validates the owner of the KDA account
+  (env-sigs [{ "key": "jane-key", "caps": [(coin.GAS), (free.cka-message-store.ACCOUNT-OWNER "jane")]}])
+
+  (expect "should store a message"
+    "Write succeeded"
+    (write-message "jane" "Hello Kadena")
+  )
+
+(commit-tx)
+
+(begin-tx "write message validations")
+  (use free.cka-message-store)
+  ;; we set the key signing this tx and the capabilities that can be signed
+  ;; coin.GAS is a capability that allows gas payments and we're deliberately not the ACCOUNT-OWNER capability this time
+  (env-sigs [{ "key": "jane-key", "caps": [(coin.GAS)]}])
+
+  (expect-failure "should fail because the length of the message exceeds the maximum of 150 characters"
+    "Message can be a maximum of 150 characters long"
+    (write-message "jane" "Kadena makes blockchain work for everyone. Our ecosystem provides the security of Bitcoin, virtually free gas, unparalleled throughput, and smarter contracts")
+  )
+
+  (expect-failure "should fail because the account owner capability is missing"
+    "Keyset failure"
+    (write-message "jane" "Hello Kadena")
+  )
+
+(commit-tx)
+
+(begin-tx "read message")
+  (use free.cka-message-store)
+
+  (expect "should retrieve the correct message"
+    "Hello Kadena"
+    (read-message "jane")
+  )
+
+(commit-tx)
