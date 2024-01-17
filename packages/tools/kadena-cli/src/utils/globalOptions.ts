@@ -254,11 +254,11 @@ export const globalOptions = {
     ),
   }),
   simulateMaxTime: createOption({
-    key: 'simulateMaxTime' as const,
+    key: 'maxTime' as const,
     prompt: simulatePrompts.simulateMaxTimePrompt,
     validation: z.number().optional(),
     option: new Option(
-      '-mt, --max-time <maxTime>',
+      '-t, --max-time <maxTime>',
       'Specify the maximum time in miliseconds the simulation will run.',
     ),
   }),
