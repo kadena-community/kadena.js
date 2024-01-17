@@ -1,26 +1,29 @@
-import type { IAccountWithSecretKey } from '@fixtures/graph/testdata/constants/accounts';
 import { devnetMiner } from '@fixtures/graph/testdata/constants/accounts';
 import { transferAmount } from '@fixtures/graph/testdata/constants/amounts';
 import { coinModuleHash } from '@fixtures/graph/testdata/constants/modules';
 import { getTransactionsQuery } from '@fixtures/graph/testdata/queries/getTransactions';
-import { createAccount, generateAccount } from '@helpers/graph/account.helper';
-import { getBlockHash } from '@helpers/graph/block.helper';
-import { base64Encode } from '@helpers/graph/cryptography.helper';
-import { sendQuery } from '@helpers/graph/request.helper';
+import {
+  createAccount,
+  generateAccount,
+} from '@helpers/client-utils/account.helper';
 import {
   transferFunds,
   transferFundsCrossChain,
-} from '@helpers/graph/transfer.helper';
+} from '@helpers/client-utils/transfer.helper';
+import { getBlockHash } from '@helpers/graph/block.helper';
+import { base64Encode } from '@helpers/graph/cryptography.helper';
+import { sendQuery } from '@helpers/graph/request.helper';
 import type { ICommandResult } from '@kadena/client';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { expect, test } from '@playwright/test';
+import type { IAccount } from 'src/support/types/types';
 
 test.describe('Query: getTransactions', async () => {
   test('Query: getTransactions - Same Chain Transfer', async ({ request }) => {
     // declare testcase scoped variables.
     let query: any;
-    let sourceAccount: IAccountWithSecretKey;
-    let targetAccount: IAccountWithSecretKey;
+    let sourceAccount: IAccount;
+    let targetAccount: IAccount;
     let initialResponse: any;
     let transfer: ICommandResult;
     let finalResponse: any;
@@ -74,7 +77,7 @@ test.describe('Query: getTransactions', async () => {
         events: [
           {
             requestKey: transfer.reqKey,
-            parameterText: `["${sourceAccount.account}","${devnetMiner.account}",7.36e-6]`,
+            parameterText: `["${sourceAccount.account}","${devnetMiner}",7.36e-6]`,
             id: base64Encode(
               `Event:["${transfer.metaData?.blockHash}","0","${transfer.reqKey}"]`,
             ),
@@ -92,7 +95,7 @@ test.describe('Query: getTransactions', async () => {
             amount: 0.00000736,
             chainId: 0,
             crossChainTransfer: null,
-            receiverAccount: devnetMiner.account,
+            receiverAccount: devnetMiner,
             requestKey: transfer.reqKey,
             senderAccount: sourceAccount.account,
             id: base64Encode(
@@ -114,7 +117,7 @@ test.describe('Query: getTransactions', async () => {
         signers: [
           {
             capabilities: `[{\"args\":[\"${sourceAccount.account}\",\"${targetAccount.account}\",{\"decimal\":\"20\"}],\"name\":\"coin.TRANSFER\"},{\"args\":[],\"name\":\"coin.GAS\"}]`,
-            publicKey: sourceAccount.publicKey,
+            publicKey: sourceAccount.keys[0].publicKey,
             requestKey: transfer.reqKey,
             id: base64Encode(`Signer:["${transfer.reqKey}","0"]`),
           },
@@ -125,9 +128,9 @@ test.describe('Query: getTransactions', async () => {
 
   test('Query: getTransactions - Cross Chain Transfer', async ({ request }) => {
     // declare testcase scoped variables.
-    let sourceAccountOnChain0: IAccountWithSecretKey;
-    let sourceAccountOnChain1: IAccountWithSecretKey;
-    let targetAccountOnChain1: IAccountWithSecretKey;
+    let sourceAccountOnChain0: IAccount;
+    let sourceAccountOnChain1: IAccount;
+    let targetAccountOnChain1: IAccount;
     let query: any;
     let initialResponse: any;
     let transfer: ICommandResult;
@@ -157,8 +160,6 @@ test.describe('Query: getTransactions', async () => {
         sourceAccountOnChain0,
         targetAccountOnChain1,
         transferAmount,
-        '0',
-        '1',
       );
       continuationBlockHash = await getBlockHash(
         request,
@@ -175,7 +176,7 @@ test.describe('Query: getTransactions', async () => {
         gasLimit: 2500,
         gasPrice: 1e-8,
         senderAccount: sourceAccountOnChain0.account,
-        continuation: `{"step":1,"yield":null,"pactId":"${transfer.continuation?.pactId}","executed":null,"stepCount":2,"continuation":{"def":"coin.transfer-crosschain","args":["${sourceAccountOnChain0.account}","${targetAccountOnChain1.account}",{"keys":["${targetAccountOnChain1.publicKey}"],"pred":"keys-all"},"1",20]},"stepHasRollback":false}`,
+        continuation: `{"step":1,"yield":null,"pactId":"${transfer.continuation?.pactId}","executed":null,"stepCount":2,"continuation":{"def":"coin.transfer-crosschain","args":["${sourceAccountOnChain0.account}","${targetAccountOnChain1.account}",{"keys":["${targetAccountOnChain1.keys[0].publicKey}"],"pred":"keys-all"},"1",20]},"stepHasRollback":false}`,
         pactId: transfer.continuation?.pactId,
         proof: expect.anything(),
         rollback: false,
@@ -189,7 +190,7 @@ test.describe('Query: getTransactions', async () => {
         events: [
           {
             requestKey: transfer.reqKey,
-            parameterText: `["${sourceAccountOnChain0.account}","${devnetMiner.account}",4.73e-6]`,
+            parameterText: `["${sourceAccountOnChain0.account}","${devnetMiner}",4.73e-6]`,
             id: base64Encode(
               `Event:["${transfer.metaData?.blockHash}","0","${transfer.reqKey}"]`,
             ),
@@ -210,7 +211,7 @@ test.describe('Query: getTransactions', async () => {
           },
           {
             requestKey: transfer.reqKey,
-            parameterText: `["0","coin.transfer-crosschain",["${sourceAccountOnChain0.account}","${targetAccountOnChain1.account}",{"pred":"keys-all","keys":["${targetAccountOnChain1.publicKey}"]},"1",20]]`,
+            parameterText: `["0","coin.transfer-crosschain",["${sourceAccountOnChain0.account}","${targetAccountOnChain1.account}",{"pred":"keys-all","keys":["${targetAccountOnChain1.keys[0].publicKey}"]},"1",20]]`,
             id: base64Encode(
               `Event:["${transfer.metaData?.blockHash}","3","${transfer.reqKey}"]`,
             ),
@@ -220,7 +221,7 @@ test.describe('Query: getTransactions', async () => {
           {
             amount: 0.00000473,
             chainId: 1,
-            receiverAccount: devnetMiner.account,
+            receiverAccount: devnetMiner,
             requestKey: transfer.reqKey,
             senderAccount: sourceAccountOnChain0.account,
             id: base64Encode(
@@ -254,7 +255,7 @@ test.describe('Query: getTransactions', async () => {
         signers: [
           {
             capabilities: '[{"args":[],"name":"coin.GAS"}]',
-            publicKey: sourceAccountOnChain0.publicKey,
+            publicKey: sourceAccountOnChain0.keys[0].publicKey,
             requestKey: transfer.reqKey,
             id: base64Encode(`Signer:["${transfer.reqKey}","0"]`),
           },
@@ -262,7 +263,7 @@ test.describe('Query: getTransactions', async () => {
       });
       expect(finalResponse.transactions.edges[1].node).toEqual({
         code: `"(coin.transfer-crosschain \\"${sourceAccountOnChain0.account}\\" \\"${targetAccountOnChain1.account}\\" (read-keyset \\"account-guard\\") \\"1\\" ${transferAmount}.0)"`,
-        data: `{"account-guard":{"keys":["${targetAccountOnChain1.publicKey}"],"pred":"keys-all"}}`,
+        data: `{"account-guard":{"keys":["${targetAccountOnChain1.keys[0].publicKey}"],"pred":"keys-all"}}`,
         gas: 621,
         gasLimit: 2500,
         gasPrice: 1e-8,
@@ -274,14 +275,14 @@ test.describe('Query: getTransactions', async () => {
         requestKey: transfer.continuation?.pactId,
         rollback: null,
         eventCount: 4,
-        continuation: `{\"step\":0,\"yield\":{\"data\":{\"amount\":20,\"receiver\":\"${targetAccountOnChain1.account}\",\"source-chain\":\"0\",\"receiver-guard\":{\"keys\":[\"${targetAccountOnChain1.publicKey}\"],\"pred\":\"keys-all\"}},\"source\":\"0\",\"provenance\":{\"moduleHash\":\"${coinModuleHash}\",\"targetChainId\":\"1\"}},\"pactId\":\"${transfer.continuation?.pactId}\",\"executed\":null,\"stepCount\":2,\"continuation\":{\"def\":\"coin.transfer-crosschain\",\"args\":[\"${sourceAccountOnChain0.account}\",\"${targetAccountOnChain1.account}\",{\"keys\":[\"${targetAccountOnChain1.publicKey}\"],\"pred\":\"keys-all\"},\"1\",20]},\"stepHasRollback\":false}`,
+        continuation: `{\"step\":0,\"yield\":{\"data\":{\"amount\":20,\"receiver\":\"${targetAccountOnChain1.account}\",\"source-chain\":\"0\",\"receiver-guard\":{\"keys\":[\"${targetAccountOnChain1.keys[0].publicKey}\"],\"pred\":\"keys-all\"}},\"source\":\"0\",\"provenance\":{\"moduleHash\":\"${coinModuleHash}\",\"targetChainId\":\"1\"}},\"pactId\":\"${transfer.continuation?.pactId}\",\"executed\":null,\"stepCount\":2,\"continuation\":{\"def\":\"coin.transfer-crosschain\",\"args\":[\"${sourceAccountOnChain0.account}\",\"${targetAccountOnChain1.account}\",{\"keys\":[\"${targetAccountOnChain1.keys[0].publicKey}\"],\"pred\":\"keys-all\"},\"1\",20]},\"stepHasRollback\":false}`,
         id: base64Encode(
           `Transaction:["${continuationBlockHash}","${transfer.continuation?.pactId}"]`,
         ),
         signers: [
           {
             capabilities: `[{"args":["${sourceAccountOnChain0.account}","${targetAccountOnChain1.account}",{"decimal":"20"},"1"],"name":"coin.TRANSFER_XCHAIN"},{"args":[],"name":"coin.GAS"}]`,
-            publicKey: sourceAccountOnChain0.publicKey,
+            publicKey: sourceAccountOnChain0.keys[0].publicKey,
             requestKey: transfer.continuation?.pactId,
             id: base64Encode(`Signer:["${transfer.continuation?.pactId}","0"]`),
           },
@@ -290,7 +291,7 @@ test.describe('Query: getTransactions', async () => {
           {
             amount: 0.00000621,
             chainId: 0,
-            receiverAccount: devnetMiner.account,
+            receiverAccount: devnetMiner,
             requestKey: transfer.continuation?.pactId,
             senderAccount: sourceAccountOnChain0.account,
             id: base64Encode(
@@ -324,7 +325,7 @@ test.describe('Query: getTransactions', async () => {
         events: [
           {
             requestKey: transfer.continuation?.pactId,
-            parameterText: `["${sourceAccountOnChain0.account}","${devnetMiner.account}",6.21e-6]`,
+            parameterText: `["${sourceAccountOnChain0.account}","${devnetMiner}",6.21e-6]`,
             id: base64Encode(
               `Event:["${continuationBlockHash}","0","${transfer.continuation?.pactId}"]`,
             ),
@@ -345,7 +346,7 @@ test.describe('Query: getTransactions', async () => {
           },
           {
             requestKey: transfer.continuation?.pactId,
-            parameterText: `["1","coin.transfer-crosschain",["${sourceAccountOnChain0.account}","${targetAccountOnChain1.account}",{"pred":"keys-all","keys":["${targetAccountOnChain1.publicKey}"]},"1",20]]`,
+            parameterText: `["1","coin.transfer-crosschain",["${sourceAccountOnChain0.account}","${targetAccountOnChain1.account}",{"pred":"keys-all","keys":["${targetAccountOnChain1.keys[0].publicKey}"]},"1",20]]`,
             id: base64Encode(
               `Event:["${continuationBlockHash}","3","${transfer.continuation?.pactId}"]`,
             ),

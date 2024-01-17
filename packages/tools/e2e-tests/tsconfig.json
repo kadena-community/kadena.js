@@ -11,7 +11,8 @@
       "@fixtures/graph/*": ["./src/fixtures/graph/*"],
       "@fixtures/tools/*": ["./src/fixtures/tools/*"],
       "@helpers/graph/*": ["./src/helpers/graph/*"],
-      "@helpers/tools/*": ["./src/helpers/tools/*"]
+      "@helpers/tools/*": ["./src/helpers/tools/*"],
+      "@helpers/client-utils/*": ["./src/helpers/client-utils/*"],
     }
   },
   "include": ["**/*.ts", "/**/*.tsx"]

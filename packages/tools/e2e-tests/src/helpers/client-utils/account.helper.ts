@@ -2,10 +2,7 @@ import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
 import type { IKeyPair } from '@kadena/types';
-import type {
-  IAccount,
-  IAccountWithSecretKey,
-} from '../../fixtures/graph/testdata/constants/accounts';
+import type { IAccount } from 'src/support/types/types';
 import { sender00 } from '../../fixtures/graph/testdata/constants/accounts';
 import {
   devnetHost,
@@ -15,13 +12,11 @@ import {
 export async function generateAccount(
   keyPair: IKeyPair,
   chain: ChainId,
-): Promise<IAccountWithSecretKey> {
+): Promise<IAccount> {
   return {
     account: `k:${keyPair.publicKey}`,
-    publicKey: keyPair.publicKey,
     chainId: chain,
-    guard: keyPair.publicKey,
-    secretKey: keyPair.secretKey as string,
+    keys: [{ publicKey: keyPair.publicKey, secretKey: keyPair.secretKey }],
   };
 }
 
@@ -30,12 +25,12 @@ export async function createAccount(input: IAccount): Promise<ICommandResult> {
     {
       sender: {
         account: sender00.account,
-        publicKeys: [sender00.publicKey],
+        publicKeys: [sender00.keys[0].publicKey],
       },
       receiver: {
         account: input.account,
         keyset: {
-          keys: [input.publicKey],
+          keys: [input.keys[0].publicKey],
           pred: 'keys-all',
         },
       },
@@ -47,7 +42,7 @@ export async function createAccount(input: IAccount): Promise<ICommandResult> {
       defaults: {
         networkId: networkId,
       },
-      sign: createSignWithKeypair([sender00]),
+      sign: createSignWithKeypair([sender00.keys[0]]),
     },
   );
 

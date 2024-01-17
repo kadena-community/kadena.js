@@ -1,7 +1,10 @@
 import type { IAccountWithSecretKey } from '@fixtures/graph/testdata/constants/accounts';
 import { sender00 } from '@fixtures/graph/testdata/constants/accounts';
 import { getAccountQuery } from '@fixtures/graph/testdata/queries/getAccount';
-import { createAccount, generateAccount } from '@helpers/graph/account.helper';
+import {
+  createAccount,
+  generateAccount,
+} from '@helpers/client-utils/account.helper';
 import { base64Encode } from '@helpers/graph/cryptography.helper';
 import { sendQuery } from '@helpers/graph/request.helper';
 import { genKeyPair } from '@kadena/cryptography-utils';
