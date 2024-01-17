@@ -329,6 +329,7 @@ const CrossChainTransferTracker: FC = () => {
               href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
               endIcon={<SystemIcon.Link />}
               color="positive"
+              variant="contained"
             >
               {t('Finish Transaction')}
             </Link>
