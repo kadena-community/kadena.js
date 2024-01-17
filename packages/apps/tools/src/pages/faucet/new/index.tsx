@@ -368,6 +368,7 @@ const NewAccountFaucetPage: FC = () => {
               endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
               isDisabled={disabledButton}
+              type="submit"
             >
               {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>

@@ -199,6 +199,7 @@ const ExistingAccountFaucetPage: FC = () => {
               endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
               isDisabled={disabledButton}
+              type="submit"
             >
               {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>
