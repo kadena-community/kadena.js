@@ -27,12 +27,13 @@ const WalletContext = createContext<{
   createPublicKeys: (quantity?: number) => string[];
   sign: (TXs: IUnsignedCommand[]) => IUnsignedCommand[];
   publicKeys: string[];
+  isUnlocked: boolean;
 } | null>(null);
 
-export const useCrypto = () => {
+export const useWallet = () => {
   const context = useContext(WalletContext);
   if (!context) {
-    throw new Error('useCrypto must be used within a CryptoContextProvider');
+    throw new Error('useWallet must be used within a CryptoContextProvider');
   }
   return context;
 };
@@ -123,6 +124,7 @@ export const WalletContextProvider: FC<WalletContextProviderProps> = ({
         createPublicKeys,
         publicKeys,
         sign,
+        isUnlocked: Boolean(encryptedSeed),
       }}
     >
       {children}

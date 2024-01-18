@@ -13,6 +13,8 @@ import {
 import { ThemeProvider } from 'next-themes';
 import { rootLayout } from './App.css';
 import HomePage from './pages/home/HomePage';
+import { CreateWallet } from './pages/on-boarding/create-wallet';
+import { WalletContextProvider, useWallet } from './service/wallet.context';
 import { getScriptType } from './utils/window';
 
 const Layout: FC = () => {
@@ -51,12 +53,12 @@ const ProtectedRoute: FC<
 };
 
 const Routes: FC = () => {
-  const logedIn = false;
+  const { isUnlocked } = useWallet();
   const routes = createRoutesFromElements(
     <Route element={<Layout />}>
       <Route path="/" element={<HomePage />} />
-      <Route path="/signin" element={<p>SignIn</p>} />
-      <Route element={<ProtectedRoute isAllowed={logedIn} />}>
+      <Route path="/create-wallet" element={<CreateWallet />} />
+      <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>
         <Route path="/accounts/:account" element={<p>Account</p>} />,
       </Route>
     </Route>,
@@ -78,7 +80,7 @@ function Providers({ children }: { children: React.ReactNode }) {
         light: 'light',
       }}
     >
-      {children}
+      <WalletContextProvider>{children}</WalletContextProvider>
     </ThemeProvider>
   );
 }
