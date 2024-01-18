@@ -5,7 +5,6 @@ import { useToolbar } from '@/context/layout-context';
 import {
   helpCenterButtonClass,
   homeWrapperClass,
-  linkStyle,
 } from '@/pages/home/styles.css';
 import {
   Accordion,
@@ -16,13 +15,13 @@ import {
   Grid,
   GridItem,
   Heading,
+  Link,
   Stack,
   Table,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
-import Link from 'next/link';
 
 import type { FC } from 'react';
 import React, { useRef } from 'react';
@@ -38,16 +37,12 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:faucet-description"
           components={[
-            <Link
-              className={linkStyle}
-              href="/faucet/existing"
-              key="faucet-existing-link"
-            />,
-            <Link
-              className={linkStyle}
-              href="/faucet/new"
-              key="faucet-new-link"
-            />,
+            <Link key="faucet-existing-link" href="/faucet/existing">
+              {t('faucet-existing-link')}
+            </Link>,
+            <Link key="faucet-new-link" href="/faucet/new">
+              {t('faucet-new-link')}
+            </Link>,
           ]}
         />
       ),
@@ -58,21 +53,20 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:how-to-keypair"
           components={[
-            <a
-              className={linkStyle}
+            <Link
+              key="chainweb-transfer-link"
               href="https://transfer.chainweb.com/"
               target="_blank"
-              rel="noreferrer"
-              key="chainweb-transfer-link"
-            />,
-            <strong key="generate-keypair" />,
-            <a
-              className={linkStyle}
+            >
+              {t('chainweb-transfer-link')}
+            </Link>,
+            <Link
+              key="chainweaver-link"
               href="https://kadena.io/chainweaver-tos/"
               target="_blank"
-              rel="noreferrer"
-              key="chainweaver-link"
-            />,
+            >
+              {t('chainweaver-link')}
+            </Link>,
           ]}
         />
       ),
@@ -142,34 +136,22 @@ const Home: FC = () => {
                 <Box marginBlockEnd="md" />
                 <ul>
                   <li>
-                    <a
-                      className={linkStyle}
-                      href="https://docs.kadena.io/kadena"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
+                    <Link href="https://docs.kadena.io/kadena" target="_blank">
                       {t('Overview of Kadena')}
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      className={linkStyle}
+                    <Link
                       href="https://docs.kadena.io/kadena/kda/manage-kda"
                       target="_blank"
-                      rel="noreferrer"
                     >
                       {t('Manage your KDA')}
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      className={linkStyle}
-                      href="https://kadena.io/grants/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
+                    <Link href="https://kadena.io/grants/" target="_blank">
                       {t('Contribute to the network')}
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </GridItem>
@@ -180,34 +162,25 @@ const Home: FC = () => {
                 <Box marginBlockEnd="md" />
                 <ul>
                   <li>
-                    <a
-                      className={linkStyle}
+                    <Link
                       href="https://docs.kadena.io/build/quickstart"
                       target="_blank"
-                      rel="noreferrer"
                     >
                       {t('Quick start')}
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      className={linkStyle}
-                      href="https://docs.kadena.io/pact"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
+                    <Link href="https://docs.kadena.io/pact" target="_blank">
                       {t('Pact language resources')}
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      className={linkStyle}
+                    <Link
                       href="https://docs.kadena.io/build/guides/election-dapp-tutorial"
                       target="_blank"
-                      rel="noreferrer"
                     >
                       {t('Build your first dApp')}
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </GridItem>

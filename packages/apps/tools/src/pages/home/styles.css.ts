@@ -13,16 +13,3 @@ export const helpCenterButtonClass = style([
     cursor: 'pointer',
   }),
 ]);
-
-export const linkStyle = style([
-  atoms({
-    color: 'text.brand.primary.default',
-  }),
-  {
-    selectors: {
-      [`&.visited`]: {
-        color: tokens.kda.foundation.color.palette.blue.n80,
-      },
-    },
-  },
-]);

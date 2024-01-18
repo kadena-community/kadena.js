@@ -14,9 +14,9 @@ export const headerButtonStyle = style([
     border: 'none',
     cursor: 'pointer',
     marginInlineEnd: 'sm',
+    color: 'text.gray.default',
   }),
   {
-    color: tokens.kda.foundation.color.neutral.n50,
     padding: tokens.kda.foundation.size.n3,
     selectors: {
       [`${darkThemeClass} &:hover`]: {

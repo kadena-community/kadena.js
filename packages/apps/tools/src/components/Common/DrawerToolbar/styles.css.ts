@@ -1,4 +1,4 @@
-import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const gridItemCollapsedSidebarStyle = style([
@@ -7,6 +7,7 @@ export const gridItemCollapsedSidebarStyle = style([
     bottom: 0,
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: 'layer-2.default',
     fontSize: 'sm',
     zIndex: 1,
   }),
@@ -15,8 +16,7 @@ export const gridItemCollapsedSidebarStyle = style([
     right: tokens.kda.foundation.size.n12,
     top: tokens.kda.foundation.size.n16,
     height: '100vh',
-    backgroundColor: tokens.kda.foundation.color.neutral.n1,
-    borderLeft: `solid 1px ${tokens.kda.foundation.color.border.base}`,
+    borderLeft: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     transition: 'width 0.1s ease',
     selectors: {
       '&.isOpen': {
@@ -33,14 +33,11 @@ export const gridItemMiniMenuStyle = style([
     position: 'relative',
   }),
   {
-    borderLeft: `1px solid #E3E1E5`,
+    borderLeft: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     transition: 'width 0.1s ease',
     selectors: {
       '&.isOpen': {
         width: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n20})`,
-      },
-      [`${darkThemeClass} &`]: {
-        borderLeft: `1px solid #27232999`,
       },
     },
   },
@@ -54,12 +51,7 @@ export const buttonWrapperClass = style([
     cursor: 'pointer',
   }),
   {
-    borderBottom: `1px solid #E3E1E5`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `1px solid #27232999`,
-      },
-    },
+    borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
   },
 ]);
 
@@ -69,15 +61,11 @@ export const expandedDrawerTitleClass = style([
     justifyContent: 'space-between',
     alignItems: 'center',
     fontWeight: 'bodyFont.bold',
+    backgroundColor: 'layer-1.default',
   }),
   {
-    borderBottom: `1px solid #E3E1E5`,
+    borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     paddingLeft: '1.25rem',
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `1px solid #27232999`,
-      },
-    },
   },
 ]);
 
@@ -99,6 +87,7 @@ export const expandedDrawerContentStyle = style([
     position: 'fixed',
     right: 0,
     bottom: 0,
+    backgroundColor: 'layer-1.default',
     fontSize: 'sm',
     zIndex: 1,
   }),
@@ -106,7 +95,6 @@ export const expandedDrawerContentStyle = style([
     width: tokens.kda.foundation.size.n12,
     top: tokens.kda.foundation.size.n16,
     height: '100vh',
-    backgroundColor: tokens.kda.foundation.color.neutral.n1,
     overflowY: 'auto',
   },
 ]);

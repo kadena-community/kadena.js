@@ -27,7 +27,7 @@ export const gridMiniMenuListButtonStyle = style([
         color: tokens.kda.foundation.color.palette.blue.n60,
       },
       [`${darkThemeClass} &.active`]: {
-        color: tokens.kda.foundation.color.palette.blue.n60,
+        color: tokens.kda.foundation.color.palette.blue.n40,
       },
       [`&.active`]: {
         color: tokens.kda.foundation.color.palette.blue.n80,
@@ -55,13 +55,10 @@ export const gridMiniMenuLinkButtonStyle = style([
   }),
   {
     width: '100%',
-    borderBottom: `1px solid #E3E1E5`,
+    borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     padding: '0.85rem 1rem',
 
     selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `1px solid #27232999`,
-      },
       [`${darkThemeClass} &:hover`]: {
         color: tokens.kda.foundation.color.neutral.n100,
       },
@@ -69,7 +66,7 @@ export const gridMiniMenuLinkButtonStyle = style([
         color: tokens.kda.foundation.color.palette.blue.n60,
       },
       [`${darkThemeClass} &.active`]: {
-        color: tokens.kda.foundation.color.palette.blue.n60,
+        color: tokens.kda.foundation.color.palette.blue.n40,
       },
       [`&.active`]: {
         color: tokens.kda.foundation.color.palette.blue.n80,
@@ -88,12 +85,7 @@ export const gridMiniMenuLinkButtonStyle = style([
 ]);
 export const gridMiniMenuListItemStyle = style([
   {
-    borderBottom: `1px solid #E3E1E5`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `1px solid #27232999`,
-      },
-    },
+    borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
   },
 ]);
 
@@ -111,23 +103,13 @@ export const bottomIconsContainerStyle = style([
     bottom: 0,
   }),
   {
-    borderTop: `1px solid #E3E1E5`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderTop: `1px solid #27232999`,
-      },
-    },
+    borderTop: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
   },
 ]);
 
 export const gridItemMenuStyle = style([
   {
-    borderLeft: `1px solid #E3E1E5`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderLeft: `1px solid #27232999`,
-      },
-    },
+    borderLeft: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
   },
 ]);
 
@@ -141,12 +123,7 @@ export const subMenuTitleClass = style([
     paddingInlineStart: 'md',
   }),
   {
-    borderBottom: `1px solid #E3E1E5`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `1px solid #27232999`,
-      },
-    },
+    borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
   },
 ]);
 
@@ -165,13 +142,6 @@ export const iconRightStyle = style([
 export const subMenuContentStyle = style([
   atoms({
     height: '100%',
+    backgroundColor: 'layer-2.default',
   }),
-  {
-    backgroundColor: '#F5F2F7',
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        backgroundColor: '#171519',
-      },
-    },
-  },
 ]);
