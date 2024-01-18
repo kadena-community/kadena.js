@@ -10,14 +10,16 @@ export type OnChainSelectChange = (value: ChainwebChainId) => void;
 // eslint-disable-next-line @kadena-dev/typedef-var
 const ELEMENT_ID = 'select-chain-id';
 
-interface ChainSelectProps
+interface IChainSelectProps
   extends Omit<ISelectProps, 'onSelectionChange' | 'selectedKey' | 'children'> {
   onSelectionChange?: OnChainSelectChange;
   selectedKey?: ChainwebChainId;
+  id?: ISelectProps['id'];
 }
-const ChainSelect: FC<ChainSelectProps> = ({
+const ChainSelect: FC<IChainSelectProps> = ({
   selectedKey,
   onSelectionChange,
+  id = ELEMENT_ID,
   ...rest
 }) => {
   const onSelectChange = useCallback(
@@ -35,7 +37,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
     <Select
       {...rest}
       label="Chain ID"
-      id={ELEMENT_ID}
+      id={id}
       onSelectionChange={onSelectChange}
       selectedKey={selectedKey}
       startIcon={<SystemIcon.Link />}
