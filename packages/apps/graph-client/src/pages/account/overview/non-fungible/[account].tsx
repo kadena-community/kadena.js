@@ -45,7 +45,7 @@ const NonFungibleAccount: React.FC = () => {
         />
       </Stack>
 
-      <Box marginBlockEnd="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}
