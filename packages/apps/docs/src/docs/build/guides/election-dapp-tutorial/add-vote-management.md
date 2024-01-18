@@ -11,11 +11,11 @@ tags: [pact, smart contract, typescript, tutorial]
 # Add vote management
 
 In the previous tutorial, you built and deployed an election smart contract on the local development network. 
-You then connected the frontend built with the `@kaden/client` library to the development network backend.
-After connecting the frontend to the backend smart contract, you were able to add a candidate to a `candidates` database table in the Pact `election` module and see the results in the election application website.
+You then connected the frontend built with the `@kadena/client` library to the development network backend.
+After connecting the frontend to the development network backend, you were able to add a candidate to a `candidates` database table in the Pact `election` module and see the results in the election application website.
 
 In this tutorial, you'll update the `election` module to allow anyone with a Kadena account to cast a vote on a candidate. 
-After you update the backend functionality, you'll modify the frontend to use the development network so that Kadena account holder can vote using the election application website and have their votes recorded on the blockchain, ensuring the security and transparency of the election process.
+After you update the backend functionality, you'll modify the frontend to use the development network so that Kadena account holders can vote using the election application website and have their votes recorded on the blockchain, ensuring the security and transparency of the election process.
 
 ## Before you begin
 
@@ -23,7 +23,7 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace).
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace).
 - You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
 - You are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
 - You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
@@ -33,7 +33,7 @@ Before you start this tutorial, verify the following basic requirements:
 
 ## Increment votes for a candidate
 
-When an account holder clicks **Vote** in the election application, it triggers a call to the `vote` function in the `frontend/src/repositories/vote/DevnetVoteRepository.ts` file, passing the account name and the name of the candidate corresponding to the table row that was clicked. 
+When an account holder clicks **Vote Now** in the election application, it triggers a call to the `vote` function in the `frontend/src/repositories/vote/DevnetVoteRepository.ts` file, passing the account name and the name of the candidate corresponding to the table row that was clicked. 
 The `vote` function in the frontend uses the Kadena client to execute the `vote` function defined in the `election` module. 
 
 To implement the `vote` function in the `election` Pact module, you can test your code as you go using the Pact REPL as you did in previous tutorials.
@@ -42,7 +42,7 @@ To implement the `vote` function in the `election` Pact module, you can test you
 
 So far, you have added all of your tests for the `election` module to the  `election-dapp/pact/election.repl` file. 
 While this is convenient if you have a small number of tests, continuing to add tests to a single file will make testing more complex and difficult to follow. 
-To keep tests more organized, you can split them up into multiple `.repl` files and reuse the code by loading one file into the other. 
+To keep tests more organized, you can split them into multiple `.repl` files and reuse the code by loading one file into the other. 
 
 To organize tests into separate files:
 
@@ -65,13 +65,13 @@ To organize tests into separate files:
    (load "setup.repl")
    ```
 
-7. Verify tests in the `candidates.repl` file still pass by running the following:
+7. Verify tests in the `candidates.repl` file still pass by running the following command:
 
    ```bash
    pact candidates.repl -t
    ```
 
-8. Verify that `voting.repl` loads successfully by running the following:
+8. Verify that `voting.repl` loads successfully by running the following command:
 
    ```bash
    pact voting.repl -t
@@ -79,7 +79,7 @@ To organize tests into separate files:
 
 ### Prepare a test for incrementing votes
 
-Based on the work you did in the previous tutorial, the election application website displays a table of the candidates you added.
+Based on the work you did in the previous tutorial, the election application website displays a table of the candidates you have added.
 Each candidate starts with zero (0) votes.
 Each row in the table has a **Vote Now** button.
 If you click **Vote Now**, the number of votes displayed in corresponding row should be increased by one. 
@@ -98,7 +98,7 @@ To prepare a test for incrementing votes:
    (commit-tx)
    
    (begin-tx "Add a candidate")
-     (use n_fd020525c953aa002f20fb81a920982b175cdf1a.election)
+     (use n_14912521e87a6d387157d526b281bde8422371d1.election)
      (add-candidate { "key": "1", "name": "Candidate A" })
    (commit-tx)
    ```
@@ -127,7 +127,7 @@ To prepare a test for incrementing votes:
    This code:
    
    - Verifies that the candidate is initialized with zero votes.
-   - Calls the `vote` function with the `key` of the candidate as the only argument.
+   - Calls the `vote` function with the key value (`1`) of the candidate as the only argument.
    - Asserts that the candidate has one vote.
    
    If you were to execute the transaction, the test would fail because the `vote` function doesn't exist yet in the `election` module and you would see output similar to the following:
@@ -208,7 +208,7 @@ To prepare a test for votes on an invalid candidate:
    pact voting.repl -t
    ```
 
-   You should see the transaction succeeds with output similar to the following:
+   You should see that the transaction succeeds with output similar to the following:
 
    ```bash
    voting.repl:11:0:Trace: Begin Tx 4: Voting for a non-existing candidate
@@ -362,15 +362,15 @@ To define the database schema and table:
 
 ### Test the votes table
 
-To test that an account can only votes once:
+To test that an account can only vote once:
 
 1. Open the `election-dapp/pact/voting.repl` file in the code editor on your computer.
 
-2. Add the following transaction to assert that it is not possible to cast more than one vote
+2. Add the following transaction to assert that it is not possible to cast more than one vote:
 
    ```pact
    (begin-tx "Double vote")
-     (use n_fd020525c953aa002f20fb81a920982b175cdf1a.election)
+     (use n_14912521e87a6d387157d526b281bde8422371d1.election)
      (expect-failure
        "Cannot vote more than once"
        "Multiple voting not allowed"
@@ -502,13 +502,13 @@ To demonstrate voting on behalf of another account:
      (create-table coin.allocation-table)
    
      (coin.create-account "voter" (read-keyset "voter-keyset"))
-     (coin.create-account "k:128c32eb3b4d99be6619aa421bc3df9ebc91bde7a4acf5e8eb9c27f553fa84f3" (read-keyset "admin-keyset"))
+     (coin.create-account "k:5ec41b89d323398a609ffd54581f2bd6afc706858063e8f3e8bc76dc5c35e2c0" (read-keyset "admin-keyset"))
    (commit-tx)
    ```
    
    This code:
    
-   - Creates the `coin.coin-table` and `coin.allocation-table` required to create the voter account.
+   - Creates the `coin.coin-table` and `coin.allocation-table` required to create the `voter` account.
    - Creates the `voter` account and your administrative account in the `coin` module database. 
    
    Remember to replace the administrative account name with your own account name.
@@ -563,7 +563,7 @@ To demonstrate voting on behalf of another account:
    In this case, the guard for the account is the `voter-keyset`. 
    By enforcing this guard, you can ensure that the keyset used to sign the `vote` transaction belongs to the account name passed to the function.
 
-1. Apply the capability by wrapping the `update` and `insert` statements in `vote` function inside a `with-capability` statement as follows:
+1. Apply the capability by wrapping the `update` and `insert` statements in the `vote` function inside a `with-capability` statement as follows:
 
    ```pact
    (defun vote (account:string candidateKey:string)
@@ -636,8 +636,9 @@ To demonstrate voting on behalf of another account:
    Load successful
    ```
 
-Congratulations!
-You are now ready to upgrade the `election` module on the development network.
+Impressive.
+You now have a simple smart contract with the basic functionality for conducting an election that allows Kadena account holders to vote on the candidate of their choice.
+With these changes, you're ready to upgrade the `election` module on the development network.
 
 ## Update the development network
 
@@ -722,8 +723,8 @@ To cast a vote using the election application website:
    };
    ```
    
-   Remove the `@ts-ignore` comment and notice the resulting errors.
-   To fix this problem, you must generate types for your Pact module that can be picked up by `@kadena/client`.
+1. Remove the `@ts-ignore` comment from the function and notice the resulting errors.
+   To fix the errors, you must generate types for your Pact module that can be picked up by `@kadena/client`.
 
 4. Open a terminal, change to the `election-dapp/frontend` directory, then generate types for your `election` module by running the following command:
    
@@ -731,7 +732,7 @@ To cast a vote using the election application website:
    npm run pactjs:generate:contract:election
    ```
    
-   This command uses the `pactjs` library to generate the TypeScript definitions for the election contract and should clear the error reported by the code editor. 
+   This command uses the `pactjs` library to generate the TypeScript definitions for the election contract and should clear the errors reported by the code editor. 
    Depending on the code editor, you might need to close the project in the editor and reopen it to reload the code editor window with the change.
 
 5. Review the `vote` function, remove the `@ts-ignore` comment, and save your changes to the `DevnetVoteRepository.ts` file.
@@ -743,8 +744,7 @@ To cast a vote using the election application website:
    npm install
    ```
 
-8. Start the frontend application configured to use the `devnet` backend by
-running the following command: 
+8. Start the frontend application configured to use the `devnet` backend by running the following command: 
 
    ```bash
    npm run start-devnet
@@ -761,11 +761,19 @@ finish.
 
 ## Next steps
 
-Congratulations! 
-You have completed the `election` Pact module, deployed it on your local development network and demonstrated that the frontend of the election application website can use it as its backend.
+In this tutorial, you learned how to:
+
+- Organize test cases into separate REPL files.
+- Modify the `vote` function iteratively using test cases and expected results.
+- Use the `with-default-read` function.
+- Add a `votes` database table to store the vote cast by each account holder. 
+- Connect the voting functionality from the frontend to the development network as a backend. 
+  
+With this tutorial, you completed the functional requirements for the `election` Pact module, deployed it as a smart contract on your local development network, and interacted with the blockchain backend through the frontend of the election application website.
+
 However, you might have noticed that your administrative account had to pay for gas to cast a vote. 
 
-To make the election accessible for everyone, it should be possible to cast a vote without having to pay transaction fees. 
+To make the election accessible, account holders should be able to cast a vote without having to pay transaction fees. 
 The next tutorial demonstrates how to add a **gas station** module to the `election` smart contract.
 With this module, an election organization can act as the owner of an account that provides funds to pay the transaction fees on behalf of election voters. 
 By using a gas station, voters can cast votes without incurring any transaction fees.
