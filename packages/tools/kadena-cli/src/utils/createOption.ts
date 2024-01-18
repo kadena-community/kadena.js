@@ -1,6 +1,5 @@
-import { Option } from 'commander';
-import { z } from 'zod';
-import { keys } from '../prompts/index.js';
+import type { Option } from 'commander';
+import type { z } from 'zod';
 
 /**
  * Function that defines the prompt behavior.
@@ -16,76 +15,49 @@ export type IPrompt<T> = (
   isOptional: boolean,
 ) => T | Promise<T>;
 
+type IPromptCreator<T> = (
+  responses: Record<string, unknown>,
+  args: Record<string, unknown>,
+) => T;
+
 export interface IOptionCreatorObject {
   key: string;
-  prompt: IPrompt<unknown>;
+  prompt: IPrompt<any>;
   validation: z.ZodSchema;
   option: Option;
-  expand?: (label: string) => unknown;
-  transform?: (key: string) => unknown;
+  expand?: (value: any) => unknown;
+  transform?: (value: any) => unknown;
   defaultIsOptional?: boolean;
+}
+
+export interface IOptionSettings {
+  isOptional?: boolean;
+  disableQuestion?: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function createOption<const T extends IOptionCreatorObject>(data: T) {
-  return (
-    {
+  return (settings?: IOptionSettings) => {
+    const isOptional = settings?.isOptional ?? data.defaultIsOptional ?? true;
+    const isInQuestions = settings?.disableQuestion ?? false;
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    const prompt: T['prompt'] = (responses, args) =>
+      data.prompt(responses, args, isOptional);
+    const validation =
+      isOptional === true ? data.validation.optional() : data.validation;
+    return {
+      ...data,
       isOptional,
-      disableQuestion: isInQuestions = true,
-    }: {
-      isOptional?: boolean;
-      disableQuestion?: boolean;
-    } = { disableQuestion: true },
-  ) => {
-    const {
-      key,
-      option,
-      expand,
-      transform,
+      isInQuestions,
       prompt,
       validation,
-      defaultIsOptional,
-    } = data;
-    const optional = isOptional ?? defaultIsOptional ?? true;
-    return {
-      key: key as T['key'],
-      option,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expand: expand as T['expand'] extends (...args: any[]) => unknown
-        ? (value: Awaited<ReturnType<T['prompt']>>) => ReturnType<T['expand']>
-        : undefined,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      transform: transform as T['transform'] extends (...args: any[]) => unknown
-        ? (
-            value: Awaited<ReturnType<T['prompt']>>,
-          ) => ReturnType<T['transform']>
-        : undefined,
-      isOptional: optional,
-      isInQuestions,
-      prompt: ((responses, args) =>
-        prompt(responses, args, optional)) as T['prompt'],
-      validation: (isOptional === true
-        ? validation.optional()
-        : validation) as T['validation'],
     };
   };
 }
 
-const testoption = createOption({
-  key: 'keyAlias',
-  prompt: keys.keyAliasPrompt,
-  validation: z.string(),
-  option: new Option(
-    '-a, --key-alias <keyAlias>',
-    'Enter an alias to store your key',
-  ),
-  expand() {
-    return { foo: 'bar' };
-  },
-  transform(key) {
-    return 123;
-  },
-});
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type TestOption = ReturnType<typeof testoption>;
+export type OptionType = Omit<
+  ReturnType<ReturnType<typeof createOption>>,
+  'prompt'
+> & {
+  prompt: IPromptCreator<any>;
+};

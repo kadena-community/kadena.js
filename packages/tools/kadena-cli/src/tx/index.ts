@@ -1,3 +1,4 @@
+import { createTransactionCommandNew } from './commands/createTransaction.js';
 import { sendCommand } from './commands/txSend.js';
 
 import type { Command } from 'commander';
@@ -10,4 +11,5 @@ export function txCommandFactory(program: Command, version: string): void {
     .description(`Tool for creating and managing transactions`);
 
   sendCommand(txProgram, version);
+  createTransactionCommandNew(txProgram, version);
 }
