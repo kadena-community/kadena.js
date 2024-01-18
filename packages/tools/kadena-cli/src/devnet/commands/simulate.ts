@@ -11,11 +11,11 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
   [
     globalOptions.devnet(),
     globalOptions.simulateNoAccounts({ isOptional: true }),
-    globalOptions.simulateTransferInterval(),
-    globalOptions.simulateLogFolder(),
-    globalOptions.simulateTokenPool(),
-    globalOptions.simulateMaxAmount(),
-    globalOptions.simulateSeed(),
+    globalOptions.simulateTransferInterval({ isOptional: true }),
+    globalOptions.simulateLogFolder({ isOptional: true }),
+    globalOptions.simulateTokenPool({ isOptional: true }),
+    globalOptions.simulateMaxAmount({ isOptional: true }),
+    globalOptions.simulateSeed({ isOptional: true }),
   ],
   async (config) => {
     debug('devnet-simulate:action')({ config });
