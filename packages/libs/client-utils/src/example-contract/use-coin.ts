@@ -1,8 +1,9 @@
-import { signWithChainweaver } from '@kadena/client';
+import { createSignWithChainweaver } from '@kadena/client';
 
 import { createAccount } from '../coin/create-account';
 
 export async function consumer() {
+  const signWithChainweaver = createSignWithChainweaver();
   const result = await createAccount(
     {
       account: 'javad',
