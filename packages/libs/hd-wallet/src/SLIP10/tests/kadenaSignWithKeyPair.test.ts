@@ -12,13 +12,17 @@ describe('kadenaSignWithKeyPair', async () => {
   const mnemonic = kadenaGenMnemonic();
   const seed = await kadenaMnemonicToSeed(password, mnemonic);
 
-  const [publicKey, privateKey] = kadenaGenKeypairFromSeed(password, seed, 0);
+  const [publicKey, privateKey] = await kadenaGenKeypairFromSeed(
+    password,
+    seed,
+    0,
+  );
 
   const txHash: string = 'tx-hash';
 
-  it('should sign a transaction with a public and private key ans password', () => {
+  it('should sign a transaction with a public and private key ans password', async () => {
     const signer = kadenaSignWithKeyPair(password, publicKey, privateKey);
-    const signature = signer(txHash);
+    const signature = await signer(txHash);
     expect(signature).toBeTruthy();
     expect(signature.sig.length > 0).toBeTruthy();
   });

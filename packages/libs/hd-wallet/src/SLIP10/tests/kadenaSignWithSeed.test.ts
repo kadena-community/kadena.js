@@ -13,9 +13,9 @@ describe('kadenaSignWithSeed', async () => {
   const index = 0;
   const hash = 'transaction-hash';
 
-  it('should sign a transaction with a seed and index', () => {
+  it('should sign a transaction with a seed and index', async () => {
     const signer = kadenaSignWithSeed(password, seed, index);
-    const signature = signer(hash);
+    const signature = await signer(hash);
     expect(signature).toBeTruthy();
     expect(signature.sig.length > 0).toBeTruthy();
   });
