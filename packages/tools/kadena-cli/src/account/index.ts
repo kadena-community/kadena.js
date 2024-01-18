@@ -7,6 +7,7 @@ import { resolveAddressToNameCommand } from './commands/accountResolveAddressToN
 import { resolveNameToAddressCommand } from './commands/accountResolveNameToAddress.js';
 import { transferCreateCommand } from './commands/accountTransferCreate.js';
 import { addAccountManualCommand } from './commands/accountAddManual.js';
+import { addAccountWalletCommand } from './commands/accountAddWallet.js';
 
 
 const SUBCOMMAND_ROOT: 'account' = 'account';
@@ -18,6 +19,7 @@ export function accountCommandFactory(program: Command, version: string): void {
 
 
   addAccountManualCommand(accountProgram, version);
+  addAccountWalletCommand(accountProgram, version);
   createAccountCommand(accountProgram, version);
   fundCommand(accountProgram, version);
   accountDetailsCommand(accountProgram, version);
