@@ -268,7 +268,7 @@ describe('signWithChainweaver', () => {
     );
 
     const signWithChainweaver = createSignWithChainweaver({
-      chainweaverUrl: 'http://my-host.kadena:9467',
+      host: 'http://my-host.kadena:9467',
     });
     const signedTx = await signWithChainweaver(unsignedTransaction);
 

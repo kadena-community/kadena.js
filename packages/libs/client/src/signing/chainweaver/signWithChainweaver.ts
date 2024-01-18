@@ -102,12 +102,13 @@ export const signWithChainweaver: ISignFunction = signTransactions(
  * @param options - object to customize behaviour.
  *   - `host: string` - the host of the chainweaver instance to use. Defaults to `http://127.0.0.1:9467`
  * @returns - {@link ISignFunction}
+ * @public
  */
 export function createSignWithChainweaver(
   options = { host: 'http://127.0.0.1:9467' },
 ): ISignFunction {
-  const { chainweaverUrl } = options;
-  const signWithChainweaver = signTransactions(chainweaverUrl);
+  const { host } = options;
+  const signWithChainweaver = signTransactions(host);
 
   return signWithChainweaver;
 }

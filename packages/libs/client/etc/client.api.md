@@ -39,7 +39,7 @@ export function createEckoWalletSign(): IEckoSignSingleFunction;
 
 // @public
 export function createSignWithChainweaver(options?: {
-    chainweaverUrl: string;
+    host: string;
 }): ISignFunction;
 
 // @public
