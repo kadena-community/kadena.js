@@ -1,13 +1,20 @@
-export const CLIRootName: string = 'bin/kadena-cli.js';
+// appN name
+export const CLIName: string = 'bin/kadena-cli.js';
 
-export const workPath: string = `${process.cwd()}/.kadena`;
+// root folder
+export const rootFolder = '/.kadena';
+
+export const workPath: string = `${process.cwd()}${rootFolder}`;
 export const projectRootPath: string = `${process.cwd()}`;
 
 // wallet path
-export const WALLET_DIR: string = `${process.cwd()}/.kadena/wallets`;
+export const WALLET_DIR: string = `${process.cwd()}${rootFolder}/wallets`;
 
 // plain key path
-export const PLAIN_KEY_DIR: string = `${process.cwd()}/.kadena/keys`;
+export const PLAIN_KEY_DIR: string = `${process.cwd()}${rootFolder}/keys`;
+
+// transactions
+export const TRANSACTION_DIR = `${process.cwd()}/transactions`;
 
 // key extensions
 export const WALLET_EXT: string = '.wallet';
@@ -16,6 +23,3 @@ export const KEY_EXT: string = '.key';
 export const KEY_LEGACY_EXT: string = '.legacy.key';
 export const PLAIN_KEY_EXT: string = '.key';
 export const PLAIN_KEY_LEGACY_EXT: string = '.legacy.key';
-
-// transactions
-export const TRANSACTION_DIR = `${process.cwd()}/transactions`;

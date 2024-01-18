@@ -97,24 +97,23 @@ export async function signTransactionWithSeed(
 ): Promise<ICommand | undefined> {
   try {
     let signedCommand: ICommand | IUnsignedCommand;
-    if (legacy === true) {
-      console.log('legacy signing');
-    } else {
-      const parsedTransaction = JSON.parse(unsignedCommand.cmd);
-      const keys = await getPublicKeysAndIndicesFromFileSystem(walletName);
-      const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
+    const parsedTransaction = JSON.parse(unsignedCommand.cmd);
+    const keys = await getPublicKeysAndIndicesFromFileSystem(walletName);
+    const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
+    if (legacy === true) {
+      signedCommand = {} as ICommand;
+    } else {
       const signatures = await Promise.all(
-        relevantKeyPairs
-          .filter((key) => key.index !== undefined)
-          .map(async (key) => {
-            const sig = kadenaSignWithSeed(
-              password,
-              wallet,
-              key.index as number,
-            );
-            return sig(unsignedCommand.hash);
-          }),
+        relevantKeyPairs.map((key) => {
+          const signWithSeed = kadenaSignWithSeed(
+            password,
+            wallet,
+            key.index as number,
+          );
+          const { sigs } = signWithSeed(unsignedCommand);
+          return { sig: sigs[0].sig, pubKey: key.publicKey };
+        }),
       );
       signedCommand = addSignatures(unsignedCommand, ...signatures);
     }
@@ -362,6 +361,7 @@ export async function getPublicKeysAndIndicesFromFileSystem(
 ): Promise<Array<IKeyPairLocal>> {
   const walletDirs = await getWalletDirectories(walletName);
   const publicKeysAndIndices: Array<IKeyPairLocal> = [];
+  const encounteredPublicKeys = new Set<string>();
 
   for (const dirName of walletDirs) {
     const walletDir = join(WALLET_DIR, dirName);
@@ -376,7 +376,8 @@ export async function getPublicKeysAndIndicesFromFileSystem(
     const keys = await Promise.all(publicKeyPromises);
 
     keys.forEach((key) => {
-      if (key) {
+      if (key && !encounteredPublicKeys.has(key.publicKey)) {
+        encounteredPublicKeys.add(key.publicKey);
         publicKeysAndIndices.push(key);
       }
     });

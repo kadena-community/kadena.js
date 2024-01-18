@@ -9,7 +9,7 @@ import { globalOptions } from '../../utils/globalOptions.js';
 
 import {
   // getSignersFromTransactionPlain,
-  signTransactionWithKeypair,
+  signTransactionWithKeyPair,
 } from '../utils/helpers.js';
 import { saveSignedTransaction } from '../utils/storage.js';
 
@@ -29,9 +29,10 @@ export const signActionPlain = async (
     if (keys.length === 0) {
       throw new Error('Error signing transaction: no keys found.');
     }
-    const signedCommand = await signTransactionWithKeypair(keys)({
+    const signedCommand = await signTransactionWithKeyPair(
+      keys,
       unsignedCommand,
-    });
+    );
 
     if (!signedCommand) {
       throw new Error('Error signing transaction: transaction not signed.');
