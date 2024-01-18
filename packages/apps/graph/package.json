@@ -89,9 +89,9 @@
     "typescript": "5.2.2"
   },
   "_moduleAliases": {
-    "@db": "src/db",
-    "@services": "src/services",
-    "@utils": "src/utils",
-    "@devnet": "src/devnet"
+    "@db": "dist/db",
+    "@services": "dist/services",
+    "@utils": "dist/utils",
+    "@devnet": "dist/devnet"
   }
 }

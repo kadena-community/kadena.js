@@ -97,3 +97,5 @@ temp
 /packages/*/*/test-results
 /packages/*/*/playwright-report
 
+# 0x flamegraph files
+*.0x
