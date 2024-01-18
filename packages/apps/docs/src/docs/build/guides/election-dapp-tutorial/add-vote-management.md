@@ -777,3 +777,9 @@ To make the election accessible, account holders should be able to cast a vote w
 The next tutorial demonstrates how to add a **gas station** module to the `election` smart contract.
 With this module, an election organization can act as the owner of an account that provides funds to pay the transaction fees on behalf of election voters. 
 By using a gas station, voters can cast votes without incurring any transaction fees.
+
+To see the code for the activity you completed in this tutorial and get the starter code for the next tutorial, check out the `09-gas-station` branch from the `election-dapp` repository by running the following command in your terminal shell:
+
+```bash
+git checkout 09-gas-station
+```
