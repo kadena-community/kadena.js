@@ -34,53 +34,67 @@ For more information about the introduction of gas stations, see [The First Cryp
 
 ## Before you begin
 
+Before you start this tutorial, verify the following basic requirements:
+
+- You have an internet connection and a web browser installed on your local computer.
+- You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace).
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
+- You are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
+- You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace).
+- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/guides/election-dapp-tutorial/define-keysets).
+- You have created an election Pact module and deployed it as described in [Write a smart contract](/build/guides/election-dapp-tutorial/write-a-smart-contract).
+- You have updated and deployed the election smart contract on the development network as described in [Nominate candidates](/build/guides/election-dapp-tutorial/nominate-candidates) and [Add vote management](/build/guides/election-dapp-tutorial/add-vote-management).
+
 ## Create a voter account
 
-In the previous chapter you voted with your admin account. The transaction was successful, because
-this account had sufficient KDA to pay the gas fee of the transaction. Now, you will create a voter
-account with a zero KDA balance on chain 1 of your local Devnet to prove that the voting transaction
-triggered from the election website will fail with this account.
+In the previous tutorial, you voted with your administrative account. 
+The transaction was successful because the account had sufficient funds to pay the transaction fee. 
+For this tutorial, you need to create a new voter account on development network. 
+Initially, you'll use the voter account to see that voting transactions in the election application require funds.
 
-### Create voter key in Chainweaver
+The steps for creating the voter account are similar to the steps you followed to create your administrative account.
 
-Open Chainweaver and make sure that the Devnet network is selected.
-Also make sure that your local Devnet is running. In Chainweaver, navigate to `Keys`
-via the top section of the
-navigation bar on the left side of the window. When you click `+ Generate Key` on the
-top right, a new public key will be added to the list of public keys. Click `Add k: Account`
-on the right of this new public key and your k:account will be added to the accounts
-that you are watching via Chainweaver. Expand the row of the account you just added
-by clicking the arrow on the left side of the account name. You will see that no KDA balance
-exists for this account on any of the chains and the information about the owner and keyset
-of the account is missing. This indicates that your account does not yet exist on Devnet.
+To create a voter account:
 
-The Kadena JavaScript client will tell you the same. Open up a terminal and change the directory
-to the `./snippets` folder in the root of your project. Execute the `./coin-details.ts`
-snippet by running the following command. Replace `k:account` with your voter account.
+1. Verify the development network is currently running on your local computer.
 
-```bash
-npm run coin-details:devnet -- k:account
-```
+2. Open Chainweaver.
 
-You will see an error logged to your terminal, stating `row not found`, confirming that your
-voter account indeed does not yet exist on Devnet.
+3. Select **devnet** from the network list.
 
-### Create voter account on Devnet
+4. Click **Keys** in the Chainweaver navigation panel.
 
-The admin account was created by calling the `transferCreate` function in the `coin` module. You
-will create the voter account using the `create-account` function in the same module by running
-the npm scripts that executes the snippet `./snippets/create-account.ts`. Take a look at this snippet
-and notice that it is highly similar to `./snippets/transfer-create.ts`, except that no amount
-is passed to the executed function and it is not necessary to sign for the `COIN.TRANSFER`
-capability. Open up a terminal window with the current directory set to the `./snippets` folder. 
-Run the following command to create your voter account. Replace `k:account` with your voter account.
+5. Click **Generate Key** to add a new public key to your list of public keys.
 
-```bash
-npm run create-account:devnet -- k:account
-```
+6. Click **Add k: Account**  for the new public key to add a new account to the list of accounts you are watching in Chainweaver.
 
-After a few seconds, `Write succeeded` should be printed in the terminal window. Verify that the
-account was created by checking the account details using the Kadena JavaScript client.
+   If you expand the new account, you'll see that no balance exists for the account on any chain and there's no information about the owner or keyset for the account.
+
+1. Open the `election-dapp/snippets` folder in the code editor in a terminal shell on your computer.
+
+2. Open the `./create-account.ts` script.
+
+   This script uses the Kadena client to call the `createaccount` function of the `coin` contract to create and voter account.
+   After importing the dependencies and creating the client with the `devnet` configuration, the `main` function is called
+   You'll notice that this script is  similar to `./snippets/transfer-create.ts`, except that no amount is passed to the executed function and it isn't necessary to sign for the `COIN.TRANSFER` capability. 
+   
+1. Open the `election-dapp/snippets` folder in a terminal shell on your computer. 
+
+2. Run the following command to create your voter account. Replace `k:account` with your voter account.
+
+   ```bash
+   npm run create-account:devnet -- k:<your-public-key>
+   ```
+
+   After a few seconds, you should see a status message:
+
+   ```bash
+   { status: 'success', data: 'Write succeeded' }
+   ```
+
+1. Verify that the account was created by checking the account details using the Kadena JavaScript client.
 Replace `k:account` with your voter account.
 
 ```bash
