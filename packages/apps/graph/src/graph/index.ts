@@ -28,10 +28,9 @@ import './query/pact-query';
 import './query/transaction-by-public-key';
 import './query/transactions';
 import './query/transfers';
-import './subscription/event';
+import './subscription/events';
 import './subscription/new-blocks';
 import './subscription/transaction';
+
 builder.queryType({});
-// no mutation fields defined yet, hence commented
-// builder.mutationType({});
 builder.subscriptionType({});

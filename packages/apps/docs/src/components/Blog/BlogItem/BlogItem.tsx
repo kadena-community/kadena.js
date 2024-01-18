@@ -1,6 +1,6 @@
 import type { IMenuData } from '@kadena/docs-tools';
 import { Box, Heading, Stack, TagGroup, TagItem } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
+
 import classNames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,6 +19,7 @@ import {
   gridBlogItemContent,
   gridBlogItemImage,
   gridWrapperClass,
+  headingWrapperClass,
   imageClass,
   link,
   metaItem,
@@ -35,25 +36,18 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
       <Link className={link} href={item.root}>
         <div className={gridWrapperClass}>
           <div className={gridBlogItemImage} style={{ gridArea: 'image' }}>
-            <Box
-              className={sprinkles({
-                marginInlineStart: { xs: 0, md: '$8' },
-                marginBlockEnd: { xs: '$8', md: 0 },
-              })}
-            >
-              <figure className={classNames(figureClass, figureVariant[size])}>
-                {item.headerImage && (
-                  <Image
-                    className={imageClass}
-                    src={item.headerImage}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    alt={item.title}
-                    sizes="100%"
-                  />
-                )}
-              </figure>
-            </Box>
+            <figure className={classNames(figureClass, figureVariant[size])}>
+              {item.headerImage && (
+                <Image
+                  className={imageClass}
+                  src={item.headerImage}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  alt={item.title}
+                  sizes="100%"
+                />
+              )}
+            </figure>
           </div>
           <div
             className={gridBlogItemContent[size]}
@@ -74,10 +68,7 @@ export const BlogItem: FC<IProps> = ({ item, size = 'default' }) => {
                 )}
               </Heading>
             </Stack>
-            <Box
-              marginBlockStart="md"
-              className={sprinkles({ marginInlineStart: '$12' })}
-            >
+            <Box marginBlockStart="md" className={headingWrapperClass}>
               <Heading as="h3" variant={size === 'large' ? 'h5' : 'h6'}>
                 {item.title}
               </Heading>

@@ -1,7 +1,10 @@
 import { expect } from '@playwright/test';
-import { accountsData } from '../../fixtures/data/accounts';
-import { pollFinished, pollInProgress } from '../../fixtures/mocks/poll.mocks';
-import { sendMocks } from '../../fixtures/mocks/send.mocks';
+import { accountsData } from '../../fixtures/tools/data/accounts';
+import {
+  pollFinished,
+  pollInProgress,
+} from '../../fixtures/tools/mocks/poll.mocks';
+import { sendMocks } from '../../fixtures/tools/mocks/send.mocks';
 import { test } from '../../page-objects';
 
 test('Fund existing account @mocks', async ({ page, toolsApp, mockHelper }) => {

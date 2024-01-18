@@ -31,8 +31,8 @@ import {
   Grid,
   GridItem,
   Heading,
-  IconButton,
   Stack,
+  SystemIcon,
   TextField,
   TrackerCard,
 } from '@kadena/react-ui';
@@ -446,13 +446,14 @@ const CrossChainTransferFinisher: FC = () => {
                       <textarea rows={4} className={textAreaStyle}>
                         {formattedSigData}
                       </textarea>
-                      <IconButton
+                      <Button
                         color="primary"
-                        icon={'ContentCopy'}
-                        onClick={async () => {
+                        icon={<SystemIcon.ContentCopy />}
+                        onPress={async () => {
                           await navigator.clipboard.writeText(formattedSigData);
                         }}
                         title={t('copySigData')}
+                        aria-label={t('copySigData')}
                       />
                     </div>
                   </GridItem>
@@ -462,7 +463,11 @@ const CrossChainTransferFinisher: FC = () => {
           </Stack>
         </section>
         <section className={formButtonStyle}>
-          <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">
+          <Button
+            type="submit"
+            isDisabled={!isGasStation}
+            endIcon={<SystemIcon.TrailingIcon />}
+          >
             {t('Finish Transaction')}
           </Button>
         </section>

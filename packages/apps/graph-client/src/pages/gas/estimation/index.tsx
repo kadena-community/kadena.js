@@ -26,7 +26,10 @@ const GasEstimation: React.FC = () => {
     transaction: { cmd: cmdString, hash: hashString, sigs: sigsArray },
   };
 
-  const { loading, data, error } = useEstimateGasLimitQuery({ variables });
+  const { loading, data, error } = useEstimateGasLimitQuery({
+    variables,
+    skip: !cmdString || !hashString || !sigsString,
+  });
 
   return (
     <>

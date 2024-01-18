@@ -2,7 +2,7 @@ import type { IBreadcrumbsProps } from '@components/Breadcrumbs';
 import { ProductIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { BreadcrumbsContainer } from './Breadcrumbs';
+import { Breadcrumbs } from './Breadcrumbs';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 
 const ItemArray: string[] = [
@@ -26,7 +26,7 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'The Breadcrumb component displays the position of the current page within the site hierarchy, allowing page visitors to navigate the page hierarchy from their current location. It is composed by BreadcrumbsContainer and BreadcrumbsItem.<br><br><i>Note: In times when you need to use an external `Link` component (like next/link in Next.js), you can wrap the external component in BreadcrumbsItem and set the `asChild` prop to pass on styles and props to the child component.</i>',
+          'The Breadcrumb component displays the position of the current page within the site hierarchy, allowing page visitors to navigate the page hierarchy from their current location. It is composed by Breadcrumbs and BreadcrumbsItem.<br><br><i>Note: In times when you need to use an external `Link` component (like next/link in Next.js), you can wrap the external component in BreadcrumbsItem and set the `asChild` prop to pass on styles and props to the child component.</i>',
       },
     },
   },
@@ -63,18 +63,19 @@ export const Primary: Story = {
   render: ({ itemsCount, icon }) => {
     const items = ItemArray.slice(0, itemsCount);
     return (
-      <BreadcrumbsContainer icon={icon}>
+      <Breadcrumbs icon={icon}>
         {items.map((item, idx) => {
           return (
             <BreadcrumbsItem
               key={item}
               href={idx < items.length - 1 ? item : undefined}
+              isDisabled={idx % 2 === 1}
             >
               {item}
             </BreadcrumbsItem>
           );
         })}
-      </BreadcrumbsContainer>
+      </Breadcrumbs>
     );
   },
 };

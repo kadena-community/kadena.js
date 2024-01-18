@@ -2,6 +2,7 @@ import { createSlug } from '@/utils/createSlug';
 import type { IConfigTreeItem } from '@kadena/docs-tools';
 import {
   getFileExtension,
+  getFileFromNameOfUrl,
   getParentTreeFromPage,
   getUrlNameOfPageFile,
 } from '@kadena/docs-tools';
@@ -17,17 +18,18 @@ import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
 import { loadConfigPages } from '../movePages/utils/loadConfigPages';
+import { crawlPage } from '../utils/crawlPage';
 import type { IScriptResult } from './../types';
 import { getTypes } from './../utils';
+import { getFileNameOfPageFile } from './../utils/getFileNameOfPageFile';
+import { splitContentFrontmatter } from './../utils/splitContentFrontmatter';
+import { refactorAbsoluteDocsLink } from './refactorAbsoluteDocsLink';
 import { getCleanedHash } from './utils/getCleanedHash';
-import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
-import { getFileNameOfPageFile } from './utils/getFileNameOfPageFile';
 import { getLinkHash } from './utils/getLinkHash';
 import { getPageFromPath } from './utils/getPageFromPath';
 import { getUrlofImageFile } from './utils/getUrlofImageFile';
 import { isLocalImageLink, isLocalPageLink } from './utils/isLocalPageLink';
 import { removeFileExtenion } from './utils/removeFileExtenion';
-import { splitContentFrontmatter } from './utils/splitContentFrontmatter';
 
 const errors: string[] = [];
 const success: string[] = [];
@@ -46,7 +48,7 @@ const fixHashLinks = async (link: string): Promise<string> => {
   const cleanedHashUrl = getCleanedHash(arr[1]);
 
   // get the page to the hashlink
-  const file = getFileFromNameOfUrl(cleanedLink);
+  const file = await getFileFromNameOfUrl(cleanedLink);
 
   if (!file) return `#${createSlug(cleanedHashUrl)}`;
 
@@ -157,6 +159,10 @@ const fixLinks = async (
   for (let i = 0; i < linkArray.length; i++) {
     const link = linkArray[i];
 
+    //fix docs.kadena.io links to relative links.
+    //this way SPA links will still work and we can check relative links for 404's
+    link.url = refactorAbsoluteDocsLink(link.url);
+
     if (isLocalPageLink(link.url)) {
       link.url = getUrlofPageFile(link.url);
       link.url = await fixHashLinks(link.url);
@@ -178,21 +184,6 @@ ${newContent}
   );
 };
 
-const crawlPage = async (
-  page: IConfigTreeItem,
-  parentTree: IConfigTreeItem[],
-): Promise<void> => {
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  await fixLinks(page, parentTree);
-
-  if (page.children) {
-    for (let i = 0; i < page.children.length; i++) {
-      const child = page.children[i];
-      await crawlPage(child, [...parentTree, page]);
-    }
-  }
-};
-
 export const fixLocalLinks = async (): Promise<IScriptResult> => {
   errors.length = 0;
   success.length = 0;
@@ -200,10 +191,12 @@ export const fixLocalLinks = async (): Promise<IScriptResult> => {
 
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
-    await crawlPage(page, []);
+    await crawlPage(page, [], fixLinks);
   }
 
-  success.push('Locallinks are fixed');
+  if (!errors.length) {
+    success.push('Locallinks are fixed');
+  }
   return { errors, success };
 };
 
@@ -217,7 +210,7 @@ export const fixLocalLinksSingle =
       errors.push('page not found in config');
     } else {
       const parentTree = await getParentTreeFromPage(page);
-      await crawlPage(page, parentTree);
+      await crawlPage(page, parentTree, fixLinks);
       success.push('Locallinks are fixed');
     }
 

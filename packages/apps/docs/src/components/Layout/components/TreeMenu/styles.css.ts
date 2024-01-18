@@ -1,11 +1,11 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 import { $$borderColor } from '../../global.css';
 
 export const treeListClass = style([
-  sprinkles({
-    padding: 0,
-    fontSize: '$sm',
+  atoms({
+    padding: 'no',
+    fontSize: 'sm',
   }),
   {
     overflowX: 'hidden',
@@ -19,7 +19,7 @@ export const treeListLevelVariantClass = styleVariants({
   l1: {},
   l2: {},
   l3: {
-    marginInlineStart: vars.sizes.$1,
+    marginInlineStart: tokens.kda.foundation.spacing.xs,
     borderLeft: `1px solid ${$$borderColor}`,
   },
 });
@@ -32,15 +32,15 @@ export const treeListRootVariantClass = styleVariants({
 });
 
 export const linkClass = style([
-  sprinkles({
+  atoms({
     textDecoration: 'none',
-    color: '$foreground',
+    color: 'text.base.default',
     textTransform: 'capitalize',
   }),
   {
     selectors: {
       '&:hover': {
-        color: vars.colors.$primaryHighContrast,
+        color: tokens.kda.foundation.color.brand.primary.default,
         textDecoration: 'none',
       },
     },
@@ -50,7 +50,7 @@ export const linkClass = style([
 export const listItemClass = style({
   selectors: {
     '&:first-of-type': {
-      marginBlockStart: vars.sizes.$2,
+      marginBlockStart: tokens.kda.foundation.spacing.sm,
     },
   },
 });
@@ -59,10 +59,10 @@ export const listItemVariants = styleVariants({
   l1: {},
   l2: {},
   l3: {
-    marginBlockStart: vars.sizes.$2,
+    marginBlockStart: tokens.kda.foundation.spacing.sm,
     selectors: {
       '&:last-of-type': {
-        marginBlockEnd: vars.sizes.$6,
+        marginBlockEnd: tokens.kda.foundation.spacing.lg,
       },
     },
   },
@@ -70,29 +70,29 @@ export const listItemVariants = styleVariants({
 
 export const linkActiveClass = styleVariants({
   false: {},
-  true: { color: vars.colors.$primaryContrastInverted },
+  true: { color: tokens.kda.foundation.color.text.brand.primary.default },
 });
 
 export const levelItemVariantClass = styleVariants({
   l1: {
     display: 'block',
     cursor: 'pointer',
-    fontWeight: vars.fontWeights.$bold,
-    padding: `${vars.sizes.$4} 0 ${vars.sizes.$2}`,
+    fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
+    padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
     borderBottom: `1px solid ${$$borderColor}`,
   },
   l2: {
     display: 'block',
     cursor: 'pointer',
-    padding: `${vars.sizes.$1} 0`,
+    padding: `${tokens.kda.foundation.spacing.xs} 0`,
     border: 0,
   },
   l3: {
     display: 'block',
     cursor: 'pointer',
-    padding: `0 ${vars.sizes.$3}`,
+    padding: `0 ${tokens.kda.foundation.size.n3}`,
     border: 0,
-    fontSize: vars.fontSizes.$sm,
+    fontSize: tokens.kda.foundation.typography.fontSize.sm,
   },
 });
 
@@ -100,7 +100,7 @@ const markerStyle: Record<string, string> = {
   content: '∙',
   fontWeight: '$bold',
   display: 'inline-block',
-  width: vars.sizes.$4,
+  width: tokens.kda.foundation.spacing.md,
 };
 
 export const levelItemLinkPseudoVariantClass = styleVariants({
@@ -127,29 +127,29 @@ export const treeItemPseudoMenuVariantClass = styleVariants({
   },
   'l1-false': {},
   'l2-true': {
-    padding: `${vars.sizes.$2} ${vars.sizes.$4}`,
+    padding: `${tokens.kda.foundation.spacing.sm} ${tokens.kda.foundation.spacing.md}`,
     selectors: {
       '&::before': {
-        transform: `translate(${vars.sizes.$2}, ${vars.sizes.$1}) rotate(135deg)!important`,
+        transform: `translate(${tokens.kda.foundation.spacing.sm}, ${tokens.kda.foundation.spacing.xs}) rotate(135deg)!important`,
       },
     },
   },
   'l2-false': {
-    padding: `${vars.sizes.$2} ${vars.sizes.$4}`,
+    padding: `${tokens.kda.foundation.spacing.sm} ${tokens.kda.foundation.spacing.md}`,
   },
   'l3-true': {},
   'l3-false': {},
 });
 
 export const treeItemButtonClass = style([
-  sprinkles({
+  atoms({
     position: 'relative',
     width: '100%',
     textAlign: 'left',
     backgroundColor: 'transparent',
     textTransform: 'capitalize',
-    fontSize: '$sm',
-    color: '$foreground',
+    fontSize: 'sm',
+    color: 'text.base.default',
   }),
   {
     borderTop: 0,
@@ -157,7 +157,7 @@ export const treeItemButtonClass = style([
     borderLeft: 0,
     selectors: {
       '&:hover': {
-        color: vars.colors.$primaryHighContrast,
+        color: tokens.kda.foundation.color.brand.primary.default,
       },
     },
   },
@@ -168,9 +168,9 @@ export const treeItemPseudoVariantClass = styleVariants({
     selectors: {
       '&::after': {
         position: 'absolute',
-        right: vars.sizes.$1,
+        right: tokens.kda.foundation.spacing.xs,
         content: '+',
-        fontWeight: vars.fontWeights.$light,
+        fontWeight: tokens.kda.foundation.typography.weight.bodyFont.regular,
         transform: 'translate(0, 0) rotate(0)',
         transition: 'transform .2s ease',
       },
@@ -180,13 +180,13 @@ export const treeItemPseudoVariantClass = styleVariants({
     selectors: {
       '&::before': {
         position: 'absolute',
-        left: `calc(0px - ${vars.sizes.$2})`,
+        left: `calc(0px - ${tokens.kda.foundation.spacing.sm})`,
         content: '',
-        width: vars.sizes.$2,
-        height: vars.sizes.$2,
+        width: tokens.kda.foundation.spacing.sm,
+        height: tokens.kda.foundation.spacing.sm,
         borderRight: `2px solid ${$$borderColor}`,
         borderTop: `2px solid ${$$borderColor}`,
-        transform: `translate(${vars.sizes.$2}, ${vars.sizes.$1}) rotate(45deg)`,
+        transform: `translate(${tokens.kda.foundation.spacing.sm}, ${tokens.kda.foundation.spacing.xs}) rotate(45deg)`,
         transition: 'transform .2s ease',
       },
     },

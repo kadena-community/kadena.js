@@ -17,8 +17,7 @@
     "kadena-graph": "./dist/index.js"
   },
   "scripts": {
-    "prebuild": "pnpm run pactjs:generate:contract:coin && pnpm run pactjs:generate:contract:marmalade && pnpm prisma:generate",
-    "build": "tsc",
+    "build": "pnpm run pactjs:generate:contract:coin && pnpm run pactjs:generate:contract:marmalade && pnpm prisma:generate && tsc",
     "deploy:marmalade": "ts-node -T src/devnet/deployment/index.ts deploy:marmalade",
     "devnet": "docker volume create kadena_devnet; docker run --rm -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v kadena_devnet:/data -v ./cwd-extra-migrations:/cwd-extra-migrations:ro --name devnet kadena/devnet",
     "devnet:update": "docker pull kadena/devnet",
@@ -58,6 +57,7 @@
     "@pothos/plugin-relay": "~3.45.1",
     "@pothos/plugin-tracing": "^0.5.8",
     "@prisma/client": "^5.7.1",
+    "cli-highlight": "^2.1.11",
     "commander": "^11.0.0",
     "dataloader": "^2.2.2",
     "debug": "~4.3.4",
