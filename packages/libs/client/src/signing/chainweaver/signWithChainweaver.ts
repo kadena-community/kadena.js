@@ -97,12 +97,14 @@ export const signWithChainweaver: ISignFunction = signTransactions(
 
 /**
  * Creates the signWithChainweaver function with interface {@link ISignFunction}
- * Lets you sign with chainweaver according to {@link https://github.com/kadena-io/KIPs/blob/master/kip-0015.md | sign-v1 API}
+ * Lets you sign with Chainweaver according to {@link https://github.com/kadena-io/KIPs/blob/master/kip-0015.md | sign-v1 API}
  *
- * @public
+ * @param options - object to customize behaviour.
+ *   - `host: string` - the host of the chainweaver instance to use. Defaults to `http://127.0.0.1:9467`
+ * @returns - {@link ISignFunction}
  */
 export function createSignWithChainweaver(
-  options = { chainweaverUrl: 'http://127.0.0.1:9467' },
+  options = { host: 'http://127.0.0.1:9467' },
 ): ISignFunction {
   const { chainweaverUrl } = options;
   const signWithChainweaver = signTransactions(chainweaverUrl);
