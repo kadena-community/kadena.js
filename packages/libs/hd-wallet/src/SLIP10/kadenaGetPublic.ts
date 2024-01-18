@@ -1,4 +1,4 @@
-import type { EncryptedString } from '../utils/kadenaEncryption';
+import type { BinaryLike } from 'crypto';
 import { kadenaDecrypt } from '../utils/kadenaEncryption';
 import { deriveKeyPair } from './utils/sign';
 
@@ -18,15 +18,15 @@ function genPublicKeyFromSeed(
 }
 
 export function kadenaGetPublic(
-  password: string,
-  seed: EncryptedString,
+  password: BinaryLike,
+  seed: BinaryLike,
   index: number,
   derivationPathTemplate?: string,
 ): string;
 
 export function kadenaGetPublic(
-  password: string,
-  seed: EncryptedString,
+  password: BinaryLike,
+  seed: BinaryLike,
   indexRange: [number, number],
   derivationPathTemplate?: string,
 ): string[];
@@ -42,8 +42,8 @@ export function kadenaGetPublic(
  * @throws {Error} Throws an error if the seed buffer is not provided, if the indices are invalid, or if encryption fails.
  */
 export function kadenaGetPublic(
-  password: string,
-  seed: EncryptedString,
+  password: BinaryLike,
+  seed: BinaryLike,
   indexOrRange: number | [number, number],
   derivationPathTemplate: string = `m'/44'/626'/<index>'`,
 ): string | string[] {
