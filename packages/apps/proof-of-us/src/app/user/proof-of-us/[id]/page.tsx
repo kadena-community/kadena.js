@@ -1,9 +1,11 @@
 'use client';
+import { ScanAnimation } from '@/components/ScanAnimation/ScanAnimation';
 import { PROOFOFUS_QR_URL } from '@/constants';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
+
 import type { FC } from 'react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 
 interface IProps {
@@ -14,6 +16,7 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const qrRef = useRef<QRCode | null>(null);
+  const [successScan, setSuccessScan] = useState(false);
 
   const { data } = useProofOfUs();
 
@@ -33,11 +36,22 @@ const Page: FC<IProps> = ({ params }) => {
     document.body.removeChild(downloadLink);
   };
 
+  const handleScan = async () => {
+    setSuccessScan(true);
+  };
+
   if (!data) return;
 
   return (
     <div>
       Proof Of Us with ID ({data.id})
+      <section>
+        <h2>Screenshot</h2>
+
+        <ScanAnimation play={successScan} onEnd={() => setSuccessScan(false)} />
+
+        <button onClick={handleScan}>scan!</button>
+      </section>
       <section>
         <h2>qr code</h2>
         <QRCode

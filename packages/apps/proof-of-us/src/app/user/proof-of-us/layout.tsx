@@ -10,7 +10,6 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const params = useParams();
   const router = useRouter();
 
-  console.log({ params });
   const { data, isLoading, error } = useGetProofOfUs({ id: params.id });
 
   if (isLoading) return <IsLoading />;

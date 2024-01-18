@@ -19,6 +19,7 @@
     "@google-analytics/data": "~3.2.2",
     "@kadena/fonts": "~0.0.1",
     "@vanilla-extract/css": "1.14.0",
+    "html-to-image": "^1.11.11",
     "next": "13.5.5",
     "next-themes": "~0.2.1",
     "react": "^18.2.0",
