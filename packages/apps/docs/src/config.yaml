@@ -47,7 +47,7 @@ pages:
         children:
           prepare:
             url: /prepare-your-workspace
-            file: /build/election-app/01-getting-started.md
+            file: /build/election-app/prepare-your-workspace.md
           start:
             url: /start-local-blockchain
             file: /build/election-app/start-a-local-blockchain.md
