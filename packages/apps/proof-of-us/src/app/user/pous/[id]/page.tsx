@@ -1,10 +1,7 @@
 'use client';
-import { IsLoading } from '@/components/IsLoading/IsLoading';
 import { POU_QR_URL } from '@/constants';
-import { useGetPou } from '@/hooks/getPou';
 import { usePou } from '@/hooks/pou';
 import { env } from '@/utils/env';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
