@@ -3,7 +3,7 @@ import { signHash } from '@kadena/cryptography-utils';
 import { HDKey } from 'ed25519-keygen/hdkey';
 import { uint8ArrayToHex } from '../../utils/buffer-helpers';
 
-export interface SignatureWithPublicKey {
+export interface ISignatureWithPublicKey {
   sig: string;
   pubKey: string;
 }
@@ -58,7 +58,7 @@ export const signWithKeyPair =
 export const signWithSeed = (
   seed: Uint8Array,
   derivationPath: string,
-): ((hash: string) => SignatureWithPublicKey) => {
+): ((hash: string) => ISignatureWithPublicKey) => {
   const { publicKey, privateKey } = deriveKeyPair(seed, derivationPath);
   return signWithKeyPair(publicKey, privateKey);
 };

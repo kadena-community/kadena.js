@@ -1,5 +1,4 @@
 import type { BinaryLike } from 'crypto';
-import type { EncryptedString } from '../utils/kadenaEncryption';
 import { kadenaDecrypt } from '../utils/kadenaEncryption';
 import { deriveKeyPair } from './utils/sign';
 

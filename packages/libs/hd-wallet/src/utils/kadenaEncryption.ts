@@ -1,6 +1,5 @@
 import type { BinaryLike } from 'crypto';
 import { randomBytes } from 'crypto';
-import { U } from 'vitest/dist/reporters-O4LBziQ_';
 import { decrypt, encrypt } from './crypto';
 
 export type EncryptedString = string & { _brand: 'EncryptedString' };
