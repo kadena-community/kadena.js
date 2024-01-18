@@ -18,7 +18,6 @@ import {
   Table,
   Tabs,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -46,7 +45,7 @@ const NonFungibleAccount: React.FC = () => {
         />
       </Stack>
 
-      <Box className={sprinkles({ marginBlockEnd: '$8' })} />
+      <Box marginBlockEnd="$8" />
 
       <LoaderAndError
         error={error}

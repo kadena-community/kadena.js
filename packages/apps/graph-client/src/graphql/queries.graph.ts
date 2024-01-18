@@ -46,7 +46,6 @@ export const getBlockNodes: DocumentNode = gql`
       ... on Block {
         height
         hash
-        parentHash
         chainId
         creationTime
         confirmationDepth
@@ -125,21 +124,6 @@ export const getGraphConfiguration: DocumentNode = gql`
     graphConfiguration {
       maximumConfirmationDepth
       minimumBlockHeight
-    }
-  }
-`;
-
-export const getRecentHeights: DocumentNode = gql`
-  query getRecentHeights($completedOnly: Boolean = true, $count: Int!) {
-    completedBlockHeights(
-      completedHeights: $completedOnly
-      heightCount: $count
-    ) {
-      ...AllBlockFields
-      confirmationDepth
-      transactions {
-        totalCount
-      }
     }
   }
 `;

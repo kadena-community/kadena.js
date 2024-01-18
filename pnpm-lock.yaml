@@ -451,24 +451,12 @@ importers:
       '@parcel/watcher':
         specifier: ^2.1.0
         version: 2.3.0
-      '@radix-ui/colors':
-        specifier: ~3.0.0
-        version: 3.0.0
-      '@radix-ui/react-icons':
-        specifier: ~1.3.0
-        version: 1.3.0(react@18.2.0)
-      '@stitches/react':
-        specifier: 1.3.1-1
-        version: 1.3.1-1(react@18.2.0)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
       graphql:
         specifier: ~16.8.1
         version: 16.8.1
-      lodash.isequal:
-        specifier: ~4.5.0
-        version: 4.5.0
       next:
         specifier: 13.5.5
         version: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
@@ -506,9 +494,6 @@ importers:
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
-      '@types/lodash.isequal':
-        specifier: ~4.5.8
-        version: 4.5.8
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
@@ -7603,10 +7588,6 @@ packages:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
     dev: false
 
-  /@radix-ui/colors@3.0.0:
-    resolution: {integrity: sha512-FUOsGBkHrYJwCSEtWRCIfQbZG7q1e6DgxCIOe1SUQzDe/7rXXeA47s8yCn6fuTNQAj1Zq4oTFi9Yjp3wzElcxg==}
-    dev: false
-
   /@radix-ui/number@1.0.1:
     resolution: {integrity: sha512-T5gIdVO2mmPW3NNhjNgEP3cqMXjXL9UbO0BzWcXfvdBs+BohbQxvd/K5hSVKmn9/lbTdsQVKbUcP5WLCwvUbBg==}
     dependencies:
@@ -7767,14 +7748,6 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
-
-  /@radix-ui/react-icons@1.3.0(react@18.2.0):
-    resolution: {integrity: sha512-jQxj/0LKgp+j9BiTXz3O3sgs26RNet2iLWmsPyRz2SIcR4q/4SbazXfnYwbAr+vLYKSfc7qxzyGQA1HLlYiuNw==}
-    peerDependencies:
-      react: ^16.x || ^17.x || ^18.x
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /@radix-ui/react-id@1.0.1(@types/react@18.2.15)(react@18.2.0):
     resolution: {integrity: sha512-tI7sT/kqYp8p96yGWY1OAnLHrqDgzHefRBKQ2YAkBS5ja7QLcZ9Z/uY7bEjPUatf8RomoXM8/1sMj1IJaE5UzQ==}
@@ -12036,12 +12009,6 @@ packages:
       '@types/lodash': 4.14.197
     dev: true
 
-  /@types/lodash.isequal@4.5.8:
-    resolution: {integrity: sha512-uput6pg4E/tj2LGxCZo9+y27JNyB2OZuuI/T5F+ylVDYuqICLG2/ktjxx0v6GvVntAf8TvEzeQLcV0ffRirXuA==}
-    dependencies:
-      '@types/lodash': 4.14.197
-    dev: true
-
   /@types/lodash.mapvalues@4.6.7:
     resolution: {integrity: sha512-yGTo9zD60Iw1Q+YBvx4Ad7RDj5rA6EpvYTpVPVsfe6pwHcwDcGChSqL1n2sPBMbCeHJ3R5kcaqpkdlrFe/y4Vg==}
     dependencies:
@@ -13279,7 +13246,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
+      webpack: 5.88.2(webpack-cli@4.9.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
