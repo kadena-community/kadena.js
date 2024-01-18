@@ -29,7 +29,8 @@ Before you start this tutorial, verify the following basic requirements:
 - You are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
 - You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
 - You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace).
-- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/guides/election-dapp-tutorial/define-keysets). 
+- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/guides/election-dapp-tutorial/define-keysets).
+- You have created a minimal election module using the Pact smart contract language as described in [Write a smart contract](/build/guides/election-dapp-tutorial/write-a-smart-contract). 
 
 ## Define the database schema and table
 
@@ -53,7 +54,7 @@ To define the database schema and table:
 
    In this code, `defschema` defines a `candidate-schema` for a database table with two columns: `name` of type string and `votes` of type integer.
 
-1. Create the table outside of the election module by adding the following lines of codecat the end of `./pact/election.pact`, after the `election` module definition:
+3. Create the table outside of the election module by adding the following lines of code at the end of `./pact/election.pact`, after the `election` module definition:
 
    ```pact
    (if (read-msg "init-candidates")
@@ -194,7 +195,7 @@ To test that the table works as expected:
    Load failed
    ```
    
-   Tou can fix this issue by updating the return value of the `list-candidates` function in `election-dapp/pact/election.pact` file.
+   You can fix this issue by updating the return value of the `list-candidates` function in the `election-dapp/pact/election.pact` file.
 
 1. Open the `election-dapp/pact/election.pact` file in your code editor.
 
@@ -282,7 +283,7 @@ To add candidates to the database:
    Load failed
    ```
 
-   However, from this code, you can see that the `add-candidate` function accept a candidate object as an argument, defined in JSON format. 
+   However, from this code, you can see that the `add-candidate` function accepts a candidate object as an argument, and that the object is defined in JSON format. 
    
    Notice that this object has the fields `key` and `name`, while the `candidate-schema` you defined for the `candidates` table has two columns `name` and `votes`. 
    The `votes` column always has an initial value of `0` when a new candidate is added, so you don't need to send a value for votes in the transaction. 
@@ -413,7 +414,7 @@ To guard access to adding candidates:
    pact election.repl -t
    ```
 
-   You should see that the transaction failed with output simillar to the following:
+   You should see that the transaction failed with output similar to the following:
 
    ```bash
    election.repl:89:4:Trace: FAILURE: Adding a candidate with the wrong keyset should fail: expected failure, got result = "Write succeeded"
@@ -469,6 +470,7 @@ To update the election module on the development network:
 1. Verify the development network is currently running on your local computer.
 
 2. Open and unlock the Chainweaver desktop or web application and verify that:
+   
    - You're connected to **development network (devnet)** from the network list.
    - Your administrative account name with the **k:** prefix exists on chain 1.
    - Your administrative account name is funded with KDA on chain 1. 
@@ -477,7 +479,7 @@ To update the election module on the development network:
 
 3. Open the `election-dapp/snippets` folder file in your code editor.
 
-1. Deploy your election module on the development network by running a command similar to the following with your administrative account name:
+4. Deploy your election module on the development network by running a command similar to the following with your administrative account name:
    
    ```bash
    npm run deploy-module:devnet -- k:<your-public-key> upgrade init-candidates
@@ -489,7 +491,7 @@ To update the election module on the development network:
    In addition to the account name, you pass `upgrade` and `init-candidates` to add`{"init-candidates": true, "upgrade": true}` to the transaction data.
    These fields are required to allow you to upgrade the module and execute `(create-table candidates)` statement from your `election` module.
 
-1. Click **Sign All** in Chainweaver to sign the request.
+5. Click **Sign All** in Chainweaver to sign the request.
    
    After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
    For example, you should see output similar to the following:
@@ -528,7 +530,7 @@ To update the election module on the development network:
    { status: 'success', data: [ 'TableCreated' ] }
    ```
 
-2. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election` module. 
+6. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election` module. 
    
    After you click View, the Module Explorer displays the `list-candidates` and  `add-candidate` functions.
    If you click **Open**, you can view the module code in the editor pane and verify that the `election` module deployed on the local development network is what you expect.
@@ -590,7 +592,7 @@ To modify the frontend to list candidates from the development network:
    This command uses the `pactjs` library to generate the TypeScript definitions for the election contract and should clear the error reported by the code editor. 
    Depending on the code editor, you might need to close the project in the editor and reopen it to reload the code editor window with the change.
 
-   After you clear the error, note that the listCandidates function:
+   After you clear the error, note that the `listCandidates` function:
    
    - Sets the chain identifier, gas limit, and network identifier before creating the transaction.
    - Uses the `dirtyRead` method to preview the without sending a transaction to the blockchain. 
@@ -657,10 +659,10 @@ To modify the frontend to add candidates from the development network:
    ```
 
    These lines correspond to the `(env-data)` and `(env-sig)` code you specified in your `./pact/election.repl` file.
-   Unlike the transaction for listing candidates, the transaction for adding candidates must be sent to the blockchain, so gas must be paid for processing the transaction. 
+   Unlike the transaction for listing candidates, the transaction for adding candidates must be sent to the blockchain, so you must pay a transaction fee—in units of gas—for the resources consumed to process the transaction. 
    
    The value of the `senderAccount` field in the metadata specifies the account that pays for gas. This is important to remember because, in the next tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
-   However, the transaction to add a candidate must be signed and paid by the same account.
+   However, the transaction to add a candidate must be signed and paid for by the same account.
 
    ```typescript
    .addSigner(accountKey(sender))
@@ -686,7 +688,7 @@ To modify the frontend to add candidates from the development network:
    The remainder of the `addCandidate` function deals with sending the transaction and processing
    the response.
 
-2. Open and unlock the Chainweaver desktop or web application and verify that:
+4. Open and unlock the Chainweaver desktop or web application and verify that:
 
    - You're connected to **development network (devnet)** from the network list.
    - Your administrative account name with the **k:** prefix exists on chain 1.
@@ -694,13 +696,13 @@ To modify the frontend to add candidates from the development network:
    
    You're going to use Chainweaver to sign the transaction that defines the keyset. 
 
-1. Click Accounts in the Chainweaver navigation panel, then copy the account name for your administrative account.
+5. Click **Accounts** in the Chainweaver navigation panel, then copy the account name for your administrative account.
 
-2. Open `http://localhost:5173` in your browser, then click **Set Account**.
+6. Open `http://localhost:5173` in your browser, then click **Set Account**.
 
-1. Paste your administrative account, then click **Save**.
+7. Paste your administrative account, then click **Save**.
 
-2. Click **Add candidate**, type the candidate information, then click **Save**. 
+8. Click **Add candidate**, type the candidate information, then click **Save**. 
    
    Type candidate information using the following format:
 
@@ -708,7 +710,7 @@ To modify the frontend to add candidates from the development network:
    { "key": "1", "name": "Your name" }
    ```
 
-3. Click **Sign All**.
+9. Click **Sign All**.
    
    After signing the request, a loading indicator is displayed on the website while the transaction is in progress. 
    As soon as the transaction completes successfully, the candidate you nominated is added to the list.
