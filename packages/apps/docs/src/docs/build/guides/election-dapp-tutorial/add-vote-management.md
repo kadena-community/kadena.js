@@ -769,5 +769,3 @@ To make the election accessible for everyone, it should be possible to cast a vo
 The next tutorial demonstrates how to add a **gas station** module to the `election` smart contract.
 With this module, an election organization can act as the owner of an account that provides funds to pay the transaction fees on behalf of election voters. 
 By using a gas station, voters can cast votes without incurring any transaction fees.
-
-
