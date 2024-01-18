@@ -8,7 +8,11 @@ import React from 'react';
 import { PageHelpful } from '../PageHelpful/PageHelpful';
 import { EditPage } from './components/EditPage';
 import { Subscribe } from './components/Subscribe';
-import { bottomWrapperClass, bottomWrapperCodeLayoutClass } from './styles.css';
+import {
+  bottomWrapperClass,
+  bottomWrapperCodeLayoutClass,
+  navClass,
+} from './styles.css';
 
 interface IProps {
   editLink?: string;
@@ -47,9 +51,9 @@ export const BottomPageSection: FC<IProps> = ({
         </GridItem>
         <GridItem columnSpan={{ xs: 1, lg: 2, xl: 3 }}>
           <Stack
-            width={{ xs: '100%', lg: '100%' }}
-            direction="row"
+            flexDirection="row"
             justifyContent="space-between"
+            className={navClass}
           >
             {navigation?.previous !== undefined && (
               <Link
@@ -79,10 +83,10 @@ export const BottomPageSection: FC<IProps> = ({
 
       <Divider />
       <Stack
-        direction={{ xs: 'column', lg: 'row' }}
+        flexDirection={{ xs: 'column', lg: 'row' }}
         justifyContent="space-between"
         width="100%"
-        gap={{ xs: '$8', lg: '$2' }}
+        gap={{ xs: 'xl', lg: 'xs' }}
       >
         <PageHelpful editLink={editLink} />
         <Subscribe />

@@ -1,16 +1,16 @@
-import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import type { ComplexStyleRule } from '@vanilla-extract/css';
 import { style } from '@vanilla-extract/css';
 
 export const stripWrapper = style([
-  sprinkles({
-    marginTop: '$md',
+  atoms({
+    marginBlockStart: 'md',
   }),
 ]);
 
 export const stripClass = style([
-  sprinkles({
-    padding: 0,
+  atoms({
+    padding: 'no',
     display: 'flex',
   }),
   {
@@ -21,11 +21,9 @@ export const stripClass = style([
 ]);
 
 export const stripItemWrapperClass = style([
-  sprinkles({
-    paddingRight: '$8',
-    marginBottom: '$8',
-  }),
   {
+    paddingInlineEnd: tokens.kda.foundation.size.n8,
+    marginBlockEnd: tokens.kda.foundation.size.n8,
     minWidth: '100px',
     flex: '100%',
     selectors: {
@@ -51,13 +49,13 @@ export const stripItemWrapperClass = style([
 ]);
 
 export const stripItemClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
     textDecoration: 'none',
-    marginBottom: '$8',
   }),
   {
+    marginBlockEnd: tokens.kda.foundation.size.n8,
     selectors: {
       '&:hover': {
         textDecoration: 'none',
@@ -68,15 +66,15 @@ export const stripItemClass = style([
 ]);
 
 export const figureClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    margin: 0,
+    margin: 'no',
     width: '100%',
     position: 'relative',
-    backgroundColor: '$neutral2',
-    borderRadius: '$md',
+    backgroundColor: 'base.default',
+    borderRadius: 'md',
   }),
   {
     aspectRatio: '20 / 9',
@@ -84,19 +82,19 @@ export const figureClass = style([
 ]);
 
 export const imageClass = style([
-  sprinkles({
-    borderRadius: '$md',
+  atoms({
+    borderRadius: 'md',
   }),
 ]);
 
 export const headerClass = style([
-  sprinkles({
-    color: '$primaryContrastInverted',
-    paddingRight: '$4',
-    fontSize: '$lg',
-    marginTop: '$4',
+  atoms({
+    color: 'text.brand.primary.default',
+    fontSize: 'lg',
   }),
   {
+    paddingInlineEnd: tokens.kda.foundation.spacing.md,
+    marginBlockStart: tokens.kda.foundation.spacing.md,
     flex: 1,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -105,11 +103,11 @@ export const headerClass = style([
 ]);
 
 export const textClass = style([
-  sprinkles({
-    color: '$foreground',
-    paddingRight: '$4',
+  atoms({
+    color: 'text.subtle.default',
   }),
   {
+    paddingInlineEnd: tokens.kda.foundation.spacing.md,
     display: '-webkit-box',
     WebkitLineClamp: 3,
     WebkitBoxOrient: 'vertical',

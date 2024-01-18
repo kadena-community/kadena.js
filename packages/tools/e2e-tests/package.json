@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
+    "build": "echo 'No build required'",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -12,18 +13,32 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test:e2e": "playwright test"
+    "test": "echo 'No test required'",
+    "test:e2e": "playwright test",
+    "test:e2e:docs": "playwright test -c playwright.docs.config.ts",
+    "test:e2e:graph": "playwright test -c playwright.graph.config.ts",
+    "test:e2e:tools": "playwright test -c playwright.tools.config.ts"
+  },
+  "dependencies": {
+    "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "eslint-import-resolver-typescript": "3.5.5"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@playwright/test": "^1.39.0",
+    "@kadena/types": "workspace:*",
+    "@playwright/test": "^1.40.1",
     "@rushstack/eslint-config": "~3.3.0",
     "@types/node": "^18.17.14",
+    "directory-tree": "3.5.1",
     "eslint": "^8.45.0",
     "eslint-plugin-playwright": "0.16.0",
+    "parse-md": "2.0.5",
     "prettier": "~3.0.3"
   }
 }

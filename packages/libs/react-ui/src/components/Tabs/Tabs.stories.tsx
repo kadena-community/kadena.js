@@ -143,7 +143,7 @@ export const ControlledTabsStory: Story = {
     const [timePeriod, setTimePeriod] = useState<Key>('jurassic');
 
     return (
-      <Stack direction="column" gap="$lg" width="100%">
+      <Stack flexDirection="column" gap="lg" width="100%">
         <Text>Selected time period: {timePeriod}</Text>
         <Tabs
           aria-label="Mesozoic time periods"

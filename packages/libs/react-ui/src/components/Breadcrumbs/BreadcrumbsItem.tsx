@@ -1,25 +1,33 @@
-import type { FC, ReactNode } from 'react';
+import { mergeRefs } from '@react-aria/utils';
+import cn from 'classnames';
+import type { FC } from 'react';
 import React from 'react';
-import { itemClass, linkClass, spanClass } from './Breadcrumbs.css';
+import type { AriaBreadcrumbItemProps } from 'react-aria';
+import { useBreadcrumbItem } from 'react-aria';
+import { itemClass, linkClass } from './Breadcrumbs.css';
 
-export interface IBreadcrumbItemProps {
-  children?: ReactNode;
+export interface IBreadcrumbItemProps extends AriaBreadcrumbItemProps {
   href?: string;
   asChild?: boolean;
 }
 
-export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = ({
-  children,
-  href,
-  asChild = false,
-}) => {
+export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = (props) => {
+  const { href, isCurrent, isDisabled, asChild, children } = props;
+  const ref = React.useRef(null);
+  const { itemProps } = useBreadcrumbItem(props, ref);
+
   if (asChild && React.isValidElement(children)) {
     return (
       <li className={itemClass}>
         {React.cloneElement(children, {
           href,
-          className: linkClass,
+          ...itemProps,
           ...children.props,
+          className: cn(linkClass, children.props.className),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ref: mergeRefs(ref, (children as any).ref),
+          'data-current': isCurrent,
+          'data-disabled': isDisabled,
         })}
       </li>
     );
@@ -27,13 +35,16 @@ export const BreadcrumbsItem: FC<IBreadcrumbItemProps> = ({
 
   return (
     <li className={itemClass}>
-      {href !== undefined ? (
-        <a className={linkClass} href={href}>
-          {children}
-        </a>
-      ) : (
-        <span className={spanClass}>{children}</span>
-      )}
+      <a
+        {...itemProps}
+        className={linkClass}
+        ref={ref}
+        href={href}
+        data-current={isCurrent}
+        data-disabled={isDisabled}
+      >
+        {children}
+      </a>
     </li>
   );
 };

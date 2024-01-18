@@ -13,6 +13,8 @@ import type {
   ITree,
   Plugin,
 } from './types';
+import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
+import { getUrlFromFilePath } from './utils/getUrlFromFilePath';
 import { getReadTime } from './utils/index';
 import { getPathName } from './utils/staticGeneration/checkSubTreeForActive';
 import { getFlatData } from './utils/staticGeneration/flatPosts';
@@ -93,6 +95,7 @@ const getFileName = (file: IFile): string => {
 
 const getFileNameInPackage = (file: IFile): string => {
   const filename = getFileName(file);
+
   if (!filename) return '';
   const endPoint = 'packages';
 
@@ -105,6 +108,20 @@ const getFileNameInPackage = (file: IFile): string => {
     .join('/');
 
   return `/${newPath}`;
+};
+
+const createEditLink = async (file: IFile): Promise<string> => {
+  process.env.NEXT_PUBLIC_GIT_EDIT_ROOT;
+  const filePath = getFileNameInPackage(file);
+
+  const pageItem = await getFileFromNameOfUrl(getUrlFromFilePath(filePath));
+  if (!pageItem) return '';
+
+  if (pageItem.repo) {
+    return `${pageItem.repo}/tree/main${pageItem.file}`;
+  }
+
+  return `${process.env.NEXT_PUBLIC_GIT_EDIT_ROOT}/packages/apps/docs/src/docs${pageItem.file}`;
 };
 
 /**
@@ -137,15 +154,15 @@ const remarkFrontmatterToProps = (): Plugin => {
         const navigation = await createNavigation(file);
         const authorInfo = await getBlogAuthorInfo(frontMatterData);
 
+        const editLink = await createEditLink(file);
         return {
           type: 'props',
           data: {
             frontmatter: {
               lastModifiedDate: menuData?.lastModifiedDate,
               ...getReadTime(file.value),
-              editLink:
-                process.env.NEXT_PUBLIC_GIT_EDIT_ROOT +
-                getFileNameInPackage(file),
+              editLink,
+
               navigation,
               ...frontMatterData,
               authorInfo,

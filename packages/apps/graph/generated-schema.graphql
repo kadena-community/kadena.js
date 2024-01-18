@@ -18,9 +18,9 @@ type Block implements Node {
   hash: ID!
   height: BigInt!
   id: ID!
-  minerAccount: ChainFungibleAccount!
+  minerAccount: FungibleChainAccount!
   parent: Block
-  parentHash: String
+  parentHash: String!
   payloadHash: String!
 
   """The proof of work hash."""
@@ -40,40 +40,6 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
-"""A chain- and fungible-specific account."""
-type ChainFungibleAccount implements Node {
-  accountName: String!
-  balance: Float!
-  chainId: ID!
-  fungibleName: String!
-  guard: Guard!
-  id: ID!
-  transactions(after: String, before: String, first: Int, last: Int): ChainFungibleAccountTransactionsConnection!
-  transfers(after: String, before: String, first: Int, last: Int): ChainFungibleAccountTransfersConnection!
-}
-
-type ChainFungibleAccountTransactionsConnection {
-  edges: [ChainFungibleAccountTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type ChainFungibleAccountTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
-}
-
-type ChainFungibleAccountTransfersConnection {
-  edges: [ChainFungibleAccountTransfersConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type ChainFungibleAccountTransfersConnectionEdge {
-  cursor: String!
-  node: Transfer!
-}
-
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -90,6 +56,7 @@ type Event implements Node {
   """The height of the block where the event was emitted."""
   height: BigInt!
   id: ID!
+  incrementedId: Int!
   moduleName: String!
   name: String!
 
@@ -110,7 +77,7 @@ type Event implements Node {
 """A fungible-specific account."""
 type FungibleAccount implements Node {
   accountName: String!
-  chainAccounts: [ChainFungibleAccount!]!
+  chainAccounts: [FungibleChainAccount!]!
   fungibleName: String!
   id: ID!
   totalBalance: Decimal!
@@ -136,6 +103,40 @@ type FungibleAccountTransfersConnection {
 }
 
 type FungibleAccountTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
+}
+
+"""A fungible specific chain-account."""
+type FungibleChainAccount implements Node {
+  accountName: String!
+  balance: Float!
+  chainId: ID!
+  fungibleName: String!
+  guard: Guard!
+  id: ID!
+  transactions(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransactionsConnection!
+  transfers(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransfersConnection!
+}
+
+type FungibleChainAccountTransactionsConnection {
+  edges: [FungibleChainAccountTransactionsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type FungibleChainAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type FungibleChainAccountTransfersConnection {
+  edges: [FungibleChainAccountTransfersConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type FungibleChainAccountTransfersConnectionEdge {
   cursor: String!
   node: Transfer!
 }
@@ -167,6 +168,47 @@ interface Node {
   id: ID!
 }
 
+"""A non-fungible-specific account."""
+type NonFungibleAccount implements Node {
+  accountName: String!
+  chainAccounts: [NonFungibleChainAccount!]!
+  id: ID!
+  nonFungibles: [Token!]!
+  transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
+}
+
+type NonFungibleAccountTransactionsConnection {
+  edges: [NonFungibleAccountTransactionsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type NonFungibleAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+"""A chain and non-fungible-specific account."""
+type NonFungibleChainAccount implements Node {
+  accountName: String!
+  chainId: ID!
+  guard: Guard!
+  id: ID!
+  nonFungibles: [Token!]!
+  transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
+}
+
+type NonFungibleChainAccountTransactionsConnection {
+  edges: [NonFungibleChainAccountTransactionsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type NonFungibleChainAccountTransactionsConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
 input PactQuery {
   chainId: String!
   code: String!
@@ -195,22 +237,30 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
-  """Retrieve an account by its name and fungible, such as coin."""
-  account(accountName: String!, fungibleName: String!): FungibleAccount
-
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
   """Retrieve blocks by chain and minimal height."""
   blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
 
+  """Retrieve all completed blocks from a given height."""
+  completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
+
+  """Retrieve a single event by its unique key."""
+  event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
+
+  """Retrieve events."""
+  events(after: String, before: String, first: Int, last: Int, qualifiedEventName: String!): QueryEventsConnection!
+
+  """
+  Retrieve an fungible specific account by its name and fungible, such as coin.
+  """
+  fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
+
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
-  chainAccount(accountName: String!, chainId: String!, fungibleName: String!): ChainFungibleAccount
-
-  """Retrieve all completed blocks from a given height."""
-  completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
+  fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
 
   """Estimate the gas limit for a transaction."""
   gasLimitEstimate(transaction: PactTransaction!): Int!
@@ -226,6 +276,12 @@ type Query {
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
 
+  """Retrieve a non-fungible specific account by its name."""
+  nonFungibleAccount(accountName: String!): NonFungibleAccount
+
+  """Retrieve an account by its name on a specific chain."""
+  nonFungibleChainAccount(accountName: String!, chainId: String!): NonFungibleChainAccount
+
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
@@ -236,14 +292,31 @@ type Query {
   """
   pactQuery(pactQuery: PactQuery!): String!
 
+  """Retrieve one transaction by its unique key."""
+  transaction(blockHash: String!, requestKey: String!): Transaction
+
   """Retrieve transactions."""
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
 
   """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
 
+  """Retrieve one transfer by its unique key."""
+  transfer(blockHash: String!, chainId: String!, moduleHash: String!, orderIndex: Int!, requestKey: String!): Transfer
+
   """Retrieve transfers."""
   transfers(accountName: String, after: String, before: String, chainId: String, first: Int, fungibleName: String, last: Int): QueryTransfersConnection!
+}
+
+type QueryEventsConnection {
+  edges: [QueryEventsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryEventsConnectionEdge {
+  cursor: String!
+  node: Event!
 }
 
 type QueryTransactionsByPublicKeyConnection {
@@ -297,16 +370,23 @@ type Signer implements Node {
 }
 
 type Subscription {
-  """Listen for a specific event by qualifiedName (e.g. `coin.TRANSFER`)."""
-  event(eventName: String!): [Event!]
+  """Listen for events by qualifiedName (e.g. `coin.TRANSFER`)."""
+  events(qualifiedEventName: String!): [ID!]
 
   """Subscribe to new blocks."""
-  newBlocks(chainIds: [Int!]): [Block!]
+  newBlocks(chainIds: [Int!]): [ID!]
 
   """
-  Listen for a transaction by request key. Returns when it is in a block.
+  Listen for a transaction by request key. Returns the ID when it is in a block.
   """
-  transaction(requestKey: String!): Transaction
+  transaction(requestKey: String!): ID
+}
+
+"""The token identifier and its balance."""
+type Token {
+  balance: Int!
+  chainId: Int!
+  id: ID!
 }
 
 """A confirmed transaction."""

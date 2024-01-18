@@ -23,7 +23,7 @@ export type CommandData = {
 };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type ChainFungibleAccountDetails = {
+export type FungibleChainAccountDetails = {
   account: string;
   balance: number;
   guard: {
@@ -36,7 +36,7 @@ export async function getAccountDetails(
   fungibleName: string,
   accountName: string,
   chainId: string,
-): Promise<ChainFungibleAccountDetails | null> {
+): Promise<FungibleChainAccountDetails | null> {
   let result;
   try {
     result = (await details(
@@ -51,9 +51,12 @@ export async function getAccountDetails(
       result.balance = parseFloat(result.balance.decimal);
     }
 
-    return result as ChainFungibleAccountDetails;
+    return result as FungibleChainAccountDetails;
   } catch (error) {
-    if (error.message.includes('with-read: row not found')) {
+    if (
+      error.message.includes('with-read: row not found') || // Account not found
+      error.message.includes('Cannot resolve') // Fungible or contract not found
+    ) {
       return null;
     } else {
       throw new PactCommandError('Pact Command failed with error', result);

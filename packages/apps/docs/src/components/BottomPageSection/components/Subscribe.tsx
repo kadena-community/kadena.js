@@ -27,13 +27,13 @@ export const Subscribe: FC = () => {
 
   return (
     <section data-cy="subscribe">
-      <Stack direction="column" gap="$sm">
+      <Stack flexDirection="column" gap="sm">
         <Heading as="h6">Receive important developer updates</Heading>
 
         {!hasSuccess ? (
           <>
             <form>
-              <Stack gap="$sm" paddingY="$1">
+              <Stack gap="sm" paddingBlock="xs">
                 <Input
                   id="email"
                   startIcon={<SystemIcon.At />}
@@ -45,10 +45,11 @@ export const Subscribe: FC = () => {
                 />
 
                 <Button
-                  disabled={!canSubmit}
+                  type="submit"
+                  isDisabled={!canSubmit}
                   onClick={handleSubscribe}
                   title="Subscribe"
-                  loading={isLoading}
+                  isLoading={isLoading}
                 >
                   Subscribe
                 </Button>

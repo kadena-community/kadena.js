@@ -7,8 +7,8 @@ export const base = style([
     position: 'absolute',
     backgroundColor: 'layer-3.default',
     fontSize: 'sm',
-    paddingY: 'sm',
-    paddingX: 'md',
+    paddingBlock: 'sm',
+    paddingInline: 'md',
     borderRadius: 'md',
     color: 'text.base.default',
     pointerEvents: 'none',
@@ -24,6 +24,7 @@ export const base = style([
       borderBottom: `6px solid ${tokens.kda.foundation.color.background['layer-3'].default}`,
       borderLeft: '6px solid transparent',
     },
+    zIndex: tokens.kda.foundation.zIndex.overlay,
   },
 ]);
 

@@ -65,7 +65,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         </button>
       )}
       <ShowOnMobile>
-        <Box marginX="$4" marginBottom="$8" marginTop="$4">
+        <Box marginInline="md" marginBlockStart="md" marginBlockEnd="xl">
           <Input
             id="search"
             onKeyUp={handleKeyPress}

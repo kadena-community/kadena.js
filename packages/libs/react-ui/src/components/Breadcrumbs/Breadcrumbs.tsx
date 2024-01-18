@@ -1,28 +1,33 @@
-import { ProductIcon } from '@components/Icon';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
-import { containerClass, iconContainer, navClass } from './Breadcrumbs.css';
+import type { AriaBreadcrumbsProps } from 'react-aria';
+import { useBreadcrumbs } from 'react-aria';
+import { Box } from '..';
+import { containerClass, navClass } from './Breadcrumbs.css';
 import type { IBreadcrumbItemProps } from './BreadcrumbsItem';
 
-export interface IBreadcrumbsProps {
-  children?: FunctionComponentElement<IBreadcrumbItemProps>[];
-  icon?: keyof typeof ProductIcon;
+export interface IBreadcrumbsProps extends AriaBreadcrumbsProps {
+  children:
+    | FunctionComponentElement<IBreadcrumbItemProps>
+    | FunctionComponentElement<IBreadcrumbItemProps>[];
+  icon?: React.ReactElement;
 }
 
-export const BreadcrumbsContainer: FC<IBreadcrumbsProps> = ({
-  children,
+export const Breadcrumbs: FC<IBreadcrumbsProps> = ({
   icon,
+  ...breadcrumbProps
 }) => {
-  const Icon = icon && ProductIcon[icon];
+  const { navProps } = useBreadcrumbs(breadcrumbProps);
+  const childCount = React.Children.count(breadcrumbProps.children);
 
   return (
-    <nav className={navClass} data-testid="kda-breadcrumbs">
-      {Icon && (
-        <span className={iconContainer}>
-          <Icon size="sm" />
-        </span>
-      )}
-      <ul className={containerClass}>{children}</ul>
+    <nav className={navClass} {...navProps}>
+      {icon && <Box marginInline="sm">{icon}</Box>}
+      <ol className={containerClass}>
+        {React.Children.map(breadcrumbProps.children, (child, i) =>
+          React.cloneElement(child as any, { isCurrent: i === childCount - 1 }),
+        )}
+      </ol>
     </nav>
   );
 };

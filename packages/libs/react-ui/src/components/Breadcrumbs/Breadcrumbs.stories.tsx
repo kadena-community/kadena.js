@@ -1,8 +1,9 @@
 import type { IBreadcrumbsProps } from '@components/Breadcrumbs';
-import { Breadcrumbs } from '@components/Breadcrumbs';
 import { ProductIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Breadcrumbs } from './Breadcrumbs';
+import { BreadcrumbsItem } from './BreadcrumbsItem';
 
 const ItemArray: string[] = [
   'He-man',
@@ -25,18 +26,14 @@ const meta: Meta<
     docs: {
       description: {
         component:
-          'The Breadcrumb component displays the position of the current page within the site hierarchy, allowing page visitors to navigate the page hierarchy from their current location. It uses a composition of the `Root` and `Item` subcomponents to define the paths and structure of the entire breadcrumb component.<br><br><i>Note: In times when you need to use an external `Link` component (like next/link in Next.js), you can wrap the external component in `Breadcrumb.Item` and set the `asChild` prop to pass on styles and props to the child component.</i>',
+          'The Breadcrumb component displays the position of the current page within the site hierarchy, allowing page visitors to navigate the page hierarchy from their current location. It is composed by Breadcrumbs and BreadcrumbsItem.<br><br><i>Note: In times when you need to use an external `Link` component (like next/link in Next.js), you can wrap the external component in BreadcrumbsItem and set the `asChild` prop to pass on styles and props to the child component.</i>',
       },
     },
   },
   argTypes: {
     icon: {
       description:
-        'The base icon for the breadcrumb component displayed to the left of the breadcrumb items.',
-      options: Object.keys(ProductIcon) as (keyof typeof ProductIcon)[],
-      control: {
-        type: 'select',
-      },
+        'The base icon for the breadcrumb component displayed to the left of the breadcrumb items. is part of the ProductIcon',
     },
     itemsCount: {
       control: { type: 'range', min: 1, max: 6, step: 1 },
@@ -60,24 +57,25 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'Breadcrumbs',
   args: {
-    icon: 'KadenaOverview',
+    icon: <ProductIcon.KadenaOverview />,
     itemsCount: 3,
   },
   render: ({ itemsCount, icon }) => {
     const items = ItemArray.slice(0, itemsCount);
     return (
-      <Breadcrumbs.Root icon={icon}>
+      <Breadcrumbs icon={icon}>
         {items.map((item, idx) => {
           return (
-            <Breadcrumbs.Item
+            <BreadcrumbsItem
               key={item}
               href={idx < items.length - 1 ? item : undefined}
+              isDisabled={idx % 2 === 1}
             >
               {item}
-            </Breadcrumbs.Item>
+            </BreadcrumbsItem>
           );
         })}
-      </Breadcrumbs.Root>
+      </Breadcrumbs>
     );
   },
 };

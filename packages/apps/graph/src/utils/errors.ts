@@ -1,4 +1,7 @@
-import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
+import {
+  PrismaClientInitializationError,
+  PrismaClientKnownRequestError,
+} from '@prisma/client/runtime/library';
 import { PactCommandError } from '@services/node-service';
 import { GraphQLError } from 'graphql';
 
@@ -12,10 +15,39 @@ export function normalizeError(error: any): GraphQLError {
         type: error.name,
         message: error.message,
         description:
-          'Prisma Client failed to initialize. Are you sure the database is running and reachable?',
+          'The Prisma client failed to initialize. Are you sure the database is running and reachable?',
         data: error.stack,
       },
     });
+  }
+
+  if (error instanceof PrismaClientKnownRequestError) {
+    if (
+      error.message.includes(
+        'Timed out fetching a new connection from the connection pool',
+      )
+    ) {
+      return new GraphQLError('Prisma Client Connection Pool Timeout', {
+        extensions: {
+          type: error.name,
+          message: 'Prisma Client Connection Pool Timeout',
+          description:
+            'The Prisma client failed to fetch a new connection from the connection pool. This is most likely due to the database being overloaded.',
+          data: error.stack,
+        },
+      });
+    }
+    if (error.message.includes("Can't reach database server")) {
+      return new GraphQLError('Prisma Client Database Connection Error', {
+        extensions: {
+          type: error.name,
+          message: 'Prisma Client Database Connection Error',
+          description:
+            'The Prisma client was unable to reach the database. Check if your database is running and reachable.',
+          data: error.stack,
+        },
+      });
+    }
   }
 
   if (error instanceof PactCommandError) {
@@ -61,14 +93,4 @@ export function normalizeError(error: any): GraphQLError {
       data: error.stack,
     },
   });
-}
-
-/**
- * Checks if the error is a row not found error. An example case is when we loop over all chainIds to get the account details for a module account. If the module account does not exist on a chain, we get a row not found error. We want to ignore this error and continue with the next chainId.
- */
-export function isRowNotFoundError(error: any): boolean {
-  return (
-    error instanceof PactCommandError &&
-    error.pactError?.message?.includes('with-read: row not found')
-  );
 }

@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import yaml from 'js-yaml';
-import { TEMP_DIR } from './importReadme/createDoc';
 import { clone } from './importReadme/index';
 import type { IScriptResult } from './types';
+import { TEMP_DIR } from './utils/build';
 
 const errors: string[] = [];
 const success: string[] = [];

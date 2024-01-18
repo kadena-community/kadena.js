@@ -1,12 +1,12 @@
-import { responsiveStyle, sprinkles } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle } from '@kadena/react-ui/theme';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const menuCardClass = style([
-  sprinkles({
+  atoms({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    paddingX: '$6',
+    paddingInline: 'lg',
   }),
   {
     transition: 'transform .2s ease',

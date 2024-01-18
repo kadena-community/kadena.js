@@ -27,7 +27,6 @@ export const InputCopyStory: Story = {
   name: 'InputCopy',
   args: {
     type: 'text',
-    leadingTextWidth: undefined,
     leadingText: '',
     outlined: false,
   },

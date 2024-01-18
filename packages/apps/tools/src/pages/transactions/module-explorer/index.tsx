@@ -24,7 +24,7 @@ import type {
   ILocalCommandResult,
 } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
-import { Breadcrumbs } from '@kadena/react-ui';
+import { Breadcrumbs, BreadcrumbsItem } from '@kadena/react-ui';
 import type { QueryClient } from '@tanstack/react-query';
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
@@ -292,10 +292,10 @@ const ModuleExplorerPage = (
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Module Explorer')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Module Explorer')}</BreadcrumbsItem>
+      </Breadcrumbs>
       <ModuleExplorer
         modules={modules}
         onModuleClick={openModule}

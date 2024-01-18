@@ -1,6 +1,5 @@
 import { atoms } from '@theme/atoms.css';
-import { sprinkles } from '@theme/sprinkles.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
+import { tokens } from '@theme/index';
 import { style } from '@vanilla-extract/css';
 import { baseContainerClass } from '../Form.css';
 
@@ -9,28 +8,16 @@ export const containerClass = style([
   atoms({
     backgroundColor: 'layer-3.default',
     gap: 'sm',
-    paddingX: 'md',
+    paddingInline: 'md',
   }),
 ]);
 
 export const containerClassDisabled = style([
-  sprinkles({
+  atoms({
     pointerEvents: 'none',
-    backgroundColor: {
-      lightMode: '$gray20',
-      darkMode: '$gray60',
-    },
-    color: {
-      lightMode: '$foreground',
-    },
+    color: 'text.base.inverse.default',
+    backgroundColor: 'layer-3.inverse.default',
   }),
-  {
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        backgroundColor: vars.colors.$gray60, // NOTE: this is to override the normal bg color
-      },
-    },
-  },
 ]);
 
 export const iconClass = style([
@@ -47,8 +34,8 @@ export const selectClass = style([
     color: 'text.base.default',
     flexGrow: 1,
     outline: 'none',
-    paddingRight: 'lg',
-    paddingY: 'sm',
+    paddingInlineEnd: 'lg',
+    paddingBlock: 'sm',
     fontSize: 'base',
   }),
   {
@@ -62,7 +49,7 @@ export const chevronIconClass = style([
   atoms({
     display: 'inline-flex',
     alignItems: 'center',
-    marginRight: 'sm',
+    marginInlineEnd: 'sm',
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -74,7 +61,7 @@ export const chevronIconClass = style([
     zIndex: 10,
     selectors: {
       '&:active': {
-        color: vars.colors.$gray40,
+        color: tokens.kda.foundation.color.icon.base.default,
       },
     },
   },

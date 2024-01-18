@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogHeader,
   Stack,
+  SystemIcon,
   TextField,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
@@ -88,40 +89,34 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                 })}
               >
                 <section>
-                  <Stack direction="column" gap="$sm">
+                  <Stack flexDirection="column" gap="sm">
                     <TextField
                       label={t('Network label')}
-                      inputProps={{
-                        id: 'label',
-                        ...register('label'),
-                        onChange: (e) => setLabel(e.target.value),
-                        value: label,
-                        placeholder: 'devnet',
-                      }}
+                      id="label"
+                      {...register('label')}
+                      onChange={(e) => setLabel(e.target.value)}
+                      value={label}
+                      placeholder="devnet"
                       status={errors?.label ? 'negative' : undefined}
                       helperText={errors?.label?.message ?? ''}
                     />
                     <TextField
                       label={t('Network ID')}
-                      inputProps={{
-                        id: 'networkId',
-                        ...register('networkId'),
-                        onChange: (e) => setNetworkId(e.target.value),
-                        value: networkId,
-                        placeholder: 'fast-development',
-                      }}
+                      id="networkId"
+                      {...register('networkId')}
+                      onChange={(e) => setNetworkId(e.target.value)}
+                      value={networkId}
+                      placeholder="fast-development"
                       status={errors?.networkId ? 'negative' : undefined}
                       helperText={errors?.networkId?.message ?? ''}
                     />
                     <TextField
                       label={t('Network api')}
-                      inputProps={{
-                        id: 'api',
-                        ...register('api'),
-                        onChange: (e) => setApi(e.target.value),
-                        value: api,
-                        placeholder: 'localhost:8080',
-                      }}
+                      id="api"
+                      {...register('api')}
+                      onChange={(e) => setApi(e.target.value)}
+                      value={api}
+                      placeholder="localhost:8080"
                       status={errors?.api ? 'negative' : undefined}
                       helperText={errors?.api?.message ?? ''}
                     />
@@ -133,8 +128,8 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                 <section className={formButtonStyle}>
                   <Button
                     type="submit"
-                    icon="TrailingIcon"
-                    disabled={Boolean(error)}
+                    endIcon={<SystemIcon.TrailingIcon />}
+                    isDisabled={Boolean(error)}
                   >
                     {t('Save Network')}
                   </Button>

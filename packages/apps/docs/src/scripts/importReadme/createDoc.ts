@@ -19,13 +19,11 @@ import type { IImportReadMeItem } from '../utils';
 import { getTypes } from '../utils';
 import { removeRepoDomain } from './index';
 
-const DOCS_ROOT = './src/pages';
-export const TEMP_DIR = './.tempimport';
+export const DOCS_ROOT = './src/pages';
 
 const createFrontMatter = (
   title: string,
   menuTitle: string,
-  order: number,
   editLink: string,
   tags: string[] = [],
   lastModifiedDate?: string,
@@ -35,7 +33,6 @@ title: ${title}
 description: Kadena makes blockchain work for everyone.
 menu: ${menuTitle}
 label: ${title}
-order: ${order}
 editLink: ${editLink}
 layout: full
 tags: [${tags.toString()}]
@@ -45,7 +42,6 @@ lastModifiedDate: ${lastModifiedDate}
 };
 
 const createEditOverwrite = (item: IImportReadMeItem): string => {
-  if (item.options.hideEditLink) return '';
   return `${item.repo}/edit/main${item.file}`;
 };
 
@@ -61,42 +57,56 @@ export const createSlug = (str: string): string | undefined => {
 };
 
 const getTitle = (pageAST: Root): string => {
-  // flatten all children recursively to prevent issue with
-  // E.g. ## some title with `code`
-  const node = pageAST.children[0];
-  if (node.type !== 'heading' || node.depth !== 1) {
+  const headings = getTypes<Heading>(pageAST, 'heading');
+  if (
+    headings.length === 0 ||
+    (headings.length > 0 && headings[0].depth !== 1)
+  ) {
     throw new Error('first node is not a Heading');
   }
 
-  return node.children.flatMap((child) => toString(child).trim()).join(' ');
+  return headings[0].children
+    .flatMap((child) => toString(child).trim())
+    .join(' ');
 };
 
-const createTreeRoot = (page: Content[]): Root => ({
-  type: 'root',
-  children: page,
-});
-
-const createDir = (dir: string): void => {
+export const createDir = (dir: string): void => {
   fs.mkdirSync(dir, { recursive: true });
 };
 
-const divideIntoPages = (md: Root): Root[] => {
-  const pages = md.children.reduce((acc: Content[][], val: Content) => {
-    if (val.type === 'heading' && val.depth === 2) {
-      val.depth = 1;
-      acc.push([val]);
+//get the first title heading you find in the doc
+export const getFirstHeading = (doc: string): Heading | undefined => {
+  const md: Root = remark.parse(doc);
+  const headings = getTypes<Heading>(md, 'heading');
+
+  if (!headings.length) return;
+  const value = (headings[0].children[0] as any).value;
+  (headings[0].children[0] as any).value = value
+    .replace('@kadena/', '')
+    .replace(/-/g, ' ');
+  return headings[0];
+};
+
+//check the first header.
+// if it is an h2 make it an h1
+const setTitleHeader = (tree: Root, firstHeading?: Heading): void => {
+  const headings = getTypes<Heading>(tree, 'heading');
+
+  if (headings.length > 0 && headings[0].depth !== 1) {
+    //if the first found heading is not the same as the heading that is still in the tree add the first heading to the tree
+    //remember, we removed the generic header from the tree. in there, there is a Heading as well
+    if (
+      firstHeading?.children[0] &&
+      firstHeading?.depth === 1 &&
+      firstHeading?.children[0] !== headings[0].children[0]
+    ) {
+      tree.children.unshift(firstHeading);
     } else {
-      if (acc.length) {
-        acc[acc.length - 1].push(val);
-      }
+      headings[0].depth = 1;
     }
+  }
 
-    return acc;
-  }, []);
-
-  const rootedPages = pages.map((page) => createTreeRoot(page));
-
-  return rootedPages;
+  return;
 };
 
 // find the correct title
@@ -156,6 +166,7 @@ const recreateUrl = (pages: Root[], url: string, root: string): string => {
 
 const cleanUp = (content: Root | Content, filename: string): Root | Content => {
   let hasFirstHeader = false;
+
   const innerCleanUp = (content: Content, filename: string): Content => {
     if (content.type === 'heading' && content.depth === 1) {
       if (hasFirstHeader) {
@@ -234,41 +245,30 @@ const relinkReferences = (md: Root, pages: Root[], root: string): void => {
 const createPage = async (
   page: Root,
   item: IImportReadMeItem,
-  hasMultiplePages?: boolean,
-  idx?: number,
 ): Promise<void> => {
-  if (hasMultiplePages) {
-    createDir(`${DOCS_ROOT}/${item.destination}`);
-  }
-
   const lastModifiedDate = await getLastModifiedDate(
     `.${removeRepoDomain(item.repo)}${item.file}`,
   );
 
   const title = getTitle(page);
-  const slug =
-    idx === 0 || item.options.RootOrder === 0 ? 'index' : createSlug(title);
-  const menuTitle =
-    idx === 0 || item.options.RootOrder === 0 ? item.title : title;
-  const order = idx === 0 ? item.options.RootOrder : idx ? idx : 0;
+  const slug = 'index';
+  const menuTitle = title;
+
+  createDir(`${DOCS_ROOT}/${item.destination}`);
 
   // check that there is just 1 h1.
   // if more, keep only 1 and replace the next with an h2
-  const pageContent = cleanUp(
-    page,
-    `/${item.destination}/${order === 0 ? '' : slug}`,
-  );
+  const pageContent = cleanUp(page, `/${item.destination}/${slug}`);
 
   const doc = toMarkdown(pageContent);
 
   fs.writeFileSync(
-    `${DOCS_ROOT}/${item.destination}/${order === 0 ? 'index' : slug}.md`,
+    `${DOCS_ROOT}/${item.destination}/index.md`,
     createFrontMatter(
       title,
       menuTitle,
-      order,
       createEditOverwrite(item),
-      item.options.tags,
+      [],
       lastModifiedDate,
     ) + doc,
     {
@@ -279,35 +279,40 @@ const createPage = async (
 
 const removeFrontmatter = (doc: string): string => {
   // Find the first occurrence of '---' to locate the end of frontmatter
-  const frontmatterEnd = doc.indexOf('---', doc.indexOf('---') + 1);
+  const frontmatterEnd = doc.indexOf('\n---', doc.indexOf('---') + 1);
 
   if (frontmatterEnd !== -1) {
     // Extract the frontmatter and remove it from the content
-    //const frontmatter = markdownContent.slice(0, frontmatterEnd + 3);
     return doc.slice(frontmatterEnd + 3).trim();
   }
 
   return doc;
 };
 
+const removeGenericHeader = (doc: string): string => {
+  const regExp = new RegExp(
+    /<!-- genericHeader start -->[\s\S]*?<!-- genericHeader end -->/g,
+  );
+
+  return doc.replace(regExp, '');
+};
+
 export const importDocs = async (
   filename: string,
   item: IImportReadMeItem,
 ): Promise<void | undefined> => {
-  const doc = removeFrontmatter(fs.readFileSync(`${filename}`, 'utf-8'));
+  const doc = removeGenericHeader(
+    removeFrontmatter(fs.readFileSync(`${filename}`, 'utf-8')),
+  );
+
+  const firstHeading = getFirstHeading(
+    removeFrontmatter(fs.readFileSync(`${filename}`, 'utf-8')),
+  );
 
   const md: Root = remark.parse(doc);
+  setTitleHeader(md, firstHeading);
 
-  if (item.options.singlePage) {
-    relinkReferences(md, [md], `/${item.destination}/`);
-    await createPage(md, item);
-    return;
-  }
-
-  const pages = divideIntoPages(md);
-  relinkReferences(md, pages, `/${item.destination}/`);
-
-  pages.forEach(async (page: Root, idx: number) => {
-    await createPage(page, item, true, idx);
-  });
+  relinkReferences(md, [md], `/${item.destination}/`);
+  await createPage(md, item);
+  return;
 };

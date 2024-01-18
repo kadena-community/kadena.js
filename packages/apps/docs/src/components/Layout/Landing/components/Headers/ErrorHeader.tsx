@@ -38,7 +38,7 @@ export const ErrorHeader: FC<IProps> = ({
         <Heading as="h1" variant="h2">
           {title}
         </Heading>
-        <Stack direction="column" gap="$2xs">
+        <Stack flexDirection="column" gap="xxs">
           <Heading as="h2" variant="h4">
             {subTitle}
           </Heading>

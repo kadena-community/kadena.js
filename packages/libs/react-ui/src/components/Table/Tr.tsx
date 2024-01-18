@@ -1,6 +1,7 @@
-import { IconButton } from '@components/IconButton';
 import type { FC } from 'react';
 import React from 'react';
+import { Link, SystemIcon } from '..';
+import { Button } from '../Button/Button';
 import { linkButtonClass, trClass } from './Table.css';
 import { Td } from './Td';
 import { Th } from './Th';
@@ -27,15 +28,20 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick }) => {
 
       {url !== undefined ? (
         <td className={linkButtonClass}>
-          <IconButton as="a" href={url} title={url} icon="TrailingIcon" />
+          <Link
+            href={url}
+            title={url}
+            icon={<SystemIcon.TrailingIcon />}
+            aria-label={url}
+          />
         </td>
       ) : onClick !== undefined ? (
         <td className={linkButtonClass}>
-          <IconButton
-            as="button"
+          <Button
             title=""
+            aria-label=""
             onClick={onClick}
-            icon="TrailingIcon"
+            icon={<SystemIcon.TrailingIcon />}
           />
         </td>
       ) : (

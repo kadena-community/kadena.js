@@ -1,4 +1,4 @@
-import { responsiveStyle, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
 import { createVar, style } from '@vanilla-extract/css';
 import {
   $$asideMenuWidthLGDefault,
@@ -9,13 +9,13 @@ import { $$leftSideWidth, $$pageWidth, $$sideMenu } from '../global.css';
 const $$shadowWidth = createVar();
 
 export const asidebackgroundClass = style([
-  sprinkles({
+  atoms({
     display: 'none',
   }),
 
   {
     vars: {
-      [$$shadowWidth]: vars.sizes.$25,
+      [$$shadowWidth]: tokens.kda.foundation.size.n25,
     },
 
     selectors: {
@@ -25,7 +25,7 @@ export const asidebackgroundClass = style([
         pointerEvents: 'none',
         inset: 0,
         zIndex: 0,
-        backgroundImage: 'url("/assets/bg-code.png")',
+        backgroundImage: 'url("/assets/bg-code.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: '-100px',
         backgroundPositionX: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${$$shadowWidth}))`,
@@ -45,7 +45,7 @@ export const asidebackgroundClass = style([
       '&::after': {
         ...responsiveStyle({
           lg: {
-            left: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${vars.sizes.$4}))`,
+            left: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${tokens.kda.foundation.spacing.md}))`,
           },
           xxl: {
             left: `calc(${$$pageWidth} + ((100vw - ${$$pageWidth}) /2) - ${$$asideMenuWidthLGDefault})`,
@@ -83,21 +83,23 @@ export const pageGridClass = style(
 );
 
 export const stickyAsideWrapperClass = style([
-  sprinkles({
+  atoms({
     position: 'sticky',
     display: 'flex',
-    top: '$10',
-    paddingLeft: '$4',
+    paddingInlineStart: 'md',
   }),
+  {
+    top: tokens.kda.foundation.size.n10,
+  },
 ]);
 
 export const stickyAsideClass = style([
-  sprinkles({
-    paddingTop: '$10',
+  atoms({
+    paddingBlockStart: 'xxxl',
   }),
   {
     overflowY: 'auto',
-    height: `calc(100vh - ${vars.sizes.$20})`,
+    height: `calc(100vh - ${tokens.kda.foundation.size.n20})`,
     selectors: {
       '&::-webkit-scrollbar': {
         display: 'none',
@@ -107,15 +109,15 @@ export const stickyAsideClass = style([
 ]);
 
 export const asideClass = style([
-  sprinkles({
+  atoms({
     display: 'none',
     position: 'absolute',
     height: '100%',
     width: '100%',
-    paddingY: 0,
-    paddingX: '$4',
+    paddingInline: 'md',
   }),
   {
+    paddingBlock: 0,
     gridArea: 'aside',
     gridColumn: '4 / span 2',
     gridRow: '2 / span 2',

@@ -61,11 +61,11 @@ export const Primary: Story = {
       <>
         <Card fullWidth={fullWidth} disabled={disabled}>
           <Stack
-            direction="column"
-            gap="$2"
+            flexDirection="column"
+            gap="xs"
             alignItems="flex-start"
-            marginBottom="$6"
-            maxWidth="$maxContentWidth"
+            marginBlockEnd="md"
+            maxWidth="content.maxWidth"
           >
             <Heading as="h5">Intro to Kadena</Heading>
             <Text>

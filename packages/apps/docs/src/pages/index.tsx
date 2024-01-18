@@ -11,7 +11,16 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
-import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
+import {
+  Box,
+  Grid,
+  GridItem,
+  Heading,
+  Link as KandenaLink,
+  Stack,
+  SystemIcon,
+} from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -32,8 +41,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Box marginBottom="$20">
-            <Grid gap="$lg" columns={{ sm: 1, md: 2 }}>
+          <Box className={sprinkles({ marginBlockEnd: '$20' })}>
+            <Grid gap="lg" columns={{ sm: 1, md: 2 }}>
               <GridItem rowSpan={2}>
                 <DocsCard
                   label="Start with core concepts"
@@ -61,15 +70,15 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="warning"
                   background="contribute"
                 >
-                  <Box marginY="$4">
-                    <Button
-                      as="a"
+                  <Box marginBlock="md">
+                    <KandenaLink
                       href="/build/guides/election-dapp-tutorial"
-                      icon="TrailingIcon"
+                      endIcon={<SystemIcon.TrailingIcon />}
                       color="negative"
+                      variant="contained"
                     >
                       Build your first dApp
-                    </Button>
+                    </KandenaLink>
                   </Box>
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/build/quickstart">
@@ -123,7 +132,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
             </Grid>
           </Box>
 
-          <Stack direction="column" gap="$3xl">
+          <Stack flexDirection="column" gap="xxxl">
             <BrowseSection title="Download useful tools" direction="row">
               <BrowseSection.LinkBlock
                 title="Bootstrap Kadena dApp"
@@ -203,7 +212,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <BrowseSection.LinkBlock
                 title="Docs"
                 subtitle="Help to improve our docs"
-                href="/contribute/contribute"
+                href="/contribute/docs"
               />
             </BrowseSection>
 

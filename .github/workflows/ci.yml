@@ -2,12 +2,16 @@ name: CI (build, lint, test)
 # All pull requests, and
 # Workflow dispatch allows you to run this workflow manually from the Actions tab
 on:
+  push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  CI: true
 
 jobs:
   build:
@@ -44,16 +48,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['@kadena/client', '@kadena/client-utils']
-
-    services:
-      devnet:
-        image: kadena/devnet
-        options:
-          --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
-          http://localhost:8080/info || exit 1"
-        ports:
-          - 8080:8080
+        package:
+          [
+            '@kadena/client',
+            '@kadena/client-utils',
+            '@kadena/create-kadena-app',
+          ]
 
     steps:
       - uses: actions/checkout@v4
@@ -70,6 +70,11 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
+      - name: Start devnet
+        uses: ./.github/actions/devnet
+        with:
+          migrations: packages/apps/graph/cwd-extra-migrations
+
       - name: Install dependencies
         run: pnpm install
 
@@ -77,12 +82,12 @@ jobs:
         run: pnpm run test:integration --filter ${{ matrix.package }}
 
   end-to-end-tests:
-    name: E2E - ${{ matrix.package }}
+    name: E2E - ${{ matrix.app }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['@kadena/tools']
+        app: ['tools', 'docs', 'graph']
 
     steps:
       - uses: actions/checkout@v4
@@ -100,25 +105,27 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
+      - name: Start devnet
+        uses: ./.github/actions/devnet
+        with:
+          migrations: packages/apps/graph/cwd-extra-migrations
+
       - name: Install dependencies
         run: pnpm install
 
       - name: Install browsers
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
 
-      # Disable remote caching for this step, otherwise env variables will not be used.
+      # Disable remote caching, we need to explicitly rebuild Apps.
       - name: build dApp
-        run: pnpm --filter ${{ matrix.package }}... build
-        env:
-          # Dummy values for faucet transactions.
-          FAUCET_PUBLIC_KEY: 782127638ab9cc8fa8598ff0120464ceef6f367ddcd616b47afffbdb175dcc5e
-          FAUCET_PRIVATE_KEY: 93fd78bd1e79a3b593d4732b76050b418aeefa5e4e6ea80f351b4c3a5b0dd19f
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
 
       - name: Run end-to-end tests
-        run: pnpm run test:e2e -- --project=${{ matrix.package }}
+        run:
+          pnpm turbo test:e2e --filter @kadena-dev/e2e-tests -- -c
+          playwright.${{ matrix.app }}.config.ts
         env:
-          CI: true
-          TESTOBJECT: ${{ matrix.package }}
+          TESTOBJECT: ${{ matrix.app }}
 
       - uses: actions/upload-artifact@v3
         if: always()

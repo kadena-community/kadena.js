@@ -21,7 +21,9 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
     useGlow();
 
   useEffect(() => {
-    if (activeHref !== _activeHref) setActiveHref(activeHref);
+    if (activeHref !== _activeHref) {
+      setActiveHref(activeHref);
+    }
   }, [activeHref]);
 
   return (
@@ -34,7 +36,7 @@ export const NavHeaderNavigation: FC<INavHeaderNavigationProps> = ({
           className={glowClass}
           ref={glowRef}
           style={{
-            opacity: glowX ? 1 : 0,
+            opacity: 1,
             transform: `translateX(${glowX}px)`,
             transitionDuration: `${animationDuration}ms`,
           }}

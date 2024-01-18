@@ -2,21 +2,20 @@ import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
   Heading,
-  IconButton,
   Notification,
   NotificationHeading,
   Stack,
+  SystemIcon,
 } from '@kadena/react-ui';
 
 import {
-  buttonContainerClass,
   hoverTagContainerStyle,
   iconButtonWrapper,
   inputWrapperStyle,
-  notificationContainerStyle,
   notificationContentStyle,
   notificationLinkStyle,
   pubKeyInputWrapperStyle,
@@ -25,9 +24,11 @@ import {
 
 import {
   accountNameContainerClass,
+  buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
   inputContainerClass,
+  notificationContainerStyle,
 } from '../styles.css';
 
 import type { FormStatus } from '@/components/Global';
@@ -98,7 +99,13 @@ const NewAccountFaucetPage: FC = () => {
     queryKey: ['accountName', pubKeys, chainID, pred],
     queryFn: () => createPrincipal(pubKeys, chainID, pred),
     enabled: pubKeys.length > 0,
+    placeholderData: '',
+    keepPreviousData: true,
   });
+
+  useEffect(() => {
+    setRequestStatus({ status: 'idle' });
+  }, [pubKeys.length]);
 
   const {
     register,
@@ -216,10 +223,10 @@ const NewAccountFaucetPage: FC = () => {
       <Head>
         <title>Kadena Developer Tools - Faucet</title>
       </Head>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Faucet')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('New')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>{' '}
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('New')}</BreadcrumbsItem>
+      </Breadcrumbs>{' '}
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
         {mainnetSelected ? (
@@ -284,29 +291,28 @@ const NewAccountFaucetPage: FC = () => {
           }}
           body={requestStatus.message}
         />
-        <Stack direction="column" gap="$lg">
+        <Stack flexDirection="column" gap="lg">
           <Card fullWidth>
             <Heading as="h5">Public Keys</Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
 
             <div className={pubKeyInputWrapperStyle}>
               <div className={inputWrapperStyle}>
                 <PublicKeyField
                   helperText={errors?.pubKey?.message}
-                  inputProps={{
-                    ...register('pubKey', {
-                      onChange: () => {
-                        clearErrors('pubKey');
-                      },
-                    }),
-                  }}
+                  {...register('pubKey', {
+                    onChange: () => {
+                      clearErrors('pubKey');
+                    },
+                  })}
                   error={errors.pubKey}
                 />
               </div>
               <div className={iconButtonWrapper}>
-                <IconButton
-                  icon={'Plus'}
-                  onClick={() => {
+                <Button
+                  icon={<SystemIcon.Plus />}
+                  variant="text"
+                  onPress={() => {
                     const value = getValues('pubKey');
                     const valid = validatePublicKey(value || '');
                     if (valid) {
@@ -318,6 +324,8 @@ const NewAccountFaucetPage: FC = () => {
                       });
                     }
                   }}
+                  aria-label="Add public key"
+                  title="Add Public Key"
                   color="primary"
                   type="button"
                 />
@@ -336,7 +344,7 @@ const NewAccountFaucetPage: FC = () => {
           </Card>
           <Card fullWidth>
             <Heading as="h5">{t('Account')}</Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField
@@ -357,11 +365,11 @@ const NewAccountFaucetPage: FC = () => {
           </Card>
           <div className={buttonContainerClass}>
             <Button
-              loading={requestStatus.status === 'processing'}
-              icon="TrailingIcon"
-              iconAlign="right"
+              isLoading={requestStatus.status === 'processing'}
+              endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-              disabled={disabledButton}
+              isDisabled={disabledButton}
+              type="submit"
             >
               {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>

@@ -1,8 +1,8 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const sectionClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
   }),
@@ -11,7 +11,7 @@ export const sectionClass = style([
   },
 ]);
 export const sectionExtraClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'column',
   }),
@@ -21,14 +21,14 @@ export const sectionExtraClass = style([
 ]);
 
 export const linkClass = style([
-  sprinkles({
-    color: '$foreground',
+  atoms({
+    color: 'text.subtlest.default',
     textDecoration: 'none',
   }),
   {
     selectors: {
       '&:hover': {
-        color: vars.colors.$primaryContrastInverted,
+        color: tokens.kda.foundation.color.text.subtlest['@hover'],
         textDecoration: 'underline',
       },
     },
@@ -36,7 +36,7 @@ export const linkClass = style([
 ]);
 
 export const descriptionClass = style([
-  sprinkles({
-    color: '$neutral3',
+  atoms({
+    color: 'text.subtlest.inverse.default',
   }),
 ]);

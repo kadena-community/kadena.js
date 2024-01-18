@@ -6,8 +6,6 @@ import type { FC, ReactNode } from 'react';
 import React from 'react';
 import type { ILinkBlock } from './LinkBlock';
 import { LinkBlock } from './LinkBlock';
-import type { ILinkList } from './LinkList';
-import { LinkList } from './LinkList';
 import {
   columnLinkClass,
   columnLinkListItemClass,
@@ -27,7 +25,6 @@ interface IBrowseSectionProps {
 
 type BrowseSectionType = FC<IBrowseSectionProps> & {
   LinkBlock: FC<ILinkBlock>;
-  LinkList: FC<ILinkList>;
 };
 
 const BrowseSection: BrowseSectionType = ({
@@ -99,6 +96,5 @@ const BrowseSection: BrowseSectionType = ({
 };
 
 BrowseSection.LinkBlock = LinkBlock;
-BrowseSection.LinkList = LinkList;
 
 export { BrowseSection };

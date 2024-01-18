@@ -1,27 +1,27 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Transaction } from '@prisma/client';
+import { createID } from '@utils/global-id';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
+import GQLTransaction from '../objects/transaction';
 
 builder.subscriptionField('transaction', (t) =>
-  t.prismaField({
+  t.field({
     description:
-      'Listen for a transaction by request key. Returns when it is in a block.',
+      'Listen for a transaction by request key. Returns the ID when it is in a block.',
     args: {
       requestKey: t.arg.string({ required: true }),
     },
-    type: 'Transaction',
+    type: 'ID',
     nullable: true,
-    subscribe: (__parent, args, context) =>
-      iteratorFn(args.requestKey, context),
-    resolve: (__query, parent) => parent as Transaction,
+    subscribe: (__root, args, context) => iteratorFn(args.requestKey, context),
+    resolve: (parent) => parent,
   }),
 );
 
 async function* iteratorFn(
   requestKey: string,
   context: IContext,
-): AsyncGenerator<Transaction | undefined, void, unknown> {
+): AsyncGenerator<string | undefined, void, unknown> {
   while (!context.req.socket.destroyed) {
     const transaction = await prismaClient.transaction.findFirst({
       where: {
@@ -30,7 +30,10 @@ async function* iteratorFn(
     });
 
     if (transaction) {
-      yield transaction;
+      yield createID(GQLTransaction.name, [
+        transaction.blockHash,
+        transaction.requestKey,
+      ]);
       return;
     }
 

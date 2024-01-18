@@ -20,12 +20,14 @@
     "start": "next start",
     "start:graph": "cd ../graph && pnpm run start",
     "start:graph:generate": "cd ../graph && pnpm run start:generate",
-    "test": "echo \"No tests yet.\""
+    "test": "echo \"No tests yet.\"",
+    "verify": "tsc --noEmit"
   },
   "dependencies": {
     "@apollo/client": "~3.8.8",
     "@graphql-yoga/apollo-link": "~3.0.3",
     "@kadena/react-ui": "workspace:*",
+    "@parcel/watcher": "^2.1.0",
     "@radix-ui/colors": "~3.0.0",
     "@radix-ui/react-icons": "~1.3.0",
     "@stitches/react": "1.3.1-1",

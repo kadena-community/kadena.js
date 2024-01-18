@@ -1,11 +1,13 @@
 import type {
   BlockTransactionsConnection,
-  ChainFungibleAccountTransactionsConnection,
   FungibleAccountTransactionsConnection,
+  FungibleChainAccountTransactionsConnection,
+  NonFungibleAccountTransactionsConnection,
+  NonFungibleChainAccountTransactionsConnection,
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
+import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
 import React from 'react';
 
@@ -15,9 +17,11 @@ interface ICompactTransactionsTableProps {
   truncateColumns?: boolean;
   transactions:
     | FungibleAccountTransactionsConnection
-    | ChainFungibleAccountTransactionsConnection
+    | FungibleChainAccountTransactionsConnection
     | BlockTransactionsConnection
-    | QueryTransactionsConnection;
+    | QueryTransactionsConnection
+    | NonFungibleAccountTransactionsConnection
+    | NonFungibleChainAccountTransactionsConnection;
 }
 
 export const CompactTransactionsTable = (
@@ -36,11 +40,11 @@ export const CompactTransactionsTable = (
             : 'All transactions where this account is the initiator'
         }
       />
-      <Box margin={'$4'} />
-      <Button variant="compact" as="a" href={viewAllHref}>
+      <Box margin="sm" />
+      <Link isCompact href={viewAllHref}>
         View all transactions
-      </Button>
-      <Box margin={'$2'} />
+      </Link>
+      <Box margin="xs" />
       <Table.Root wordBreak="break-word">
         <Table.Head>
           <Table.Tr>

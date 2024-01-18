@@ -51,7 +51,7 @@ export const FormFieldWrapper: FC<IFormFieldWrapperProps> = ({
             info={info}
           />
         )}
-        <Stack gap="$2" direction="column">
+        <Stack gap="xs" flexDirection="column">
           {children}
         </Stack>
         {Boolean(helperText) && <FormFieldHelper>{helperText}</FormFieldHelper>}

@@ -1,4 +1,5 @@
 import type { IMenuItem, IPropsType, ITree, Plugin } from './types';
+import { getHeaderMenuItems } from './utils/getHeaderMenuItems';
 import { checkSubTreeForActive } from './utils/staticGeneration/checkSubTreeForActive';
 
 const getPath = (filename: string): string => {
@@ -34,9 +35,12 @@ const remarkSideMenuToProps = (): Plugin => {
       return item;
     });
 
+    const headerMenuItems = await getHeaderMenuItems();
+
     tree.children.push({
       type: 'props',
       data: {
+        headerMenuItems,
         leftMenuTree: itemsReduced,
       },
     } as unknown as IPropsType);

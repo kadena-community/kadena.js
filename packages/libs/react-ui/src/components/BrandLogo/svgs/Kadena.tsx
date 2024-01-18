@@ -3,50 +3,22 @@ import * as React from 'react';
 
 export const KadenaLogo: React.FC<SVGProps<SVGSVGElement>> = () => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="40"
-    height="40"
-    viewBox="0 0 40 40"
+    height="24"
+    viewBox="0 0 64 64"
     fill="none"
-    aria-label="Kadena"
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <g clipPath="url(#clip0_3_15)">
-      <path
-        d="M31.5523 6.62952H23.7098L14.4796 16.3155V24.3859L31.5523 6.62952Z"
-        fill="url(#paint0_linear_3_15)"
-      />
-      <path d="M14.4796 33.3705H7.8501V6.62952H14.4796V33.3705Z" fill="white" />
-      <path
-        d="M32.1499 33.3705L21.256 17.3386L16.8195 21.9499L24.4518 33.3705H32.1499Z"
-        fill="url(#paint1_linear_3_15)"
-      />
-    </g>
-    <defs>
-      <linearGradient
-        id="paint0_linear_3_15"
-        x1="14.4796"
-        y1="15.5077"
-        x2="31.5523"
-        y2="15.5077"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop />
-        <stop offset="0.6" stopColor="white" />
-      </linearGradient>
-      <linearGradient
-        id="paint1_linear_3_15"
-        x1="15.5989"
-        y1="20.6432"
-        x2="29.3973"
-        y2="29.6024"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop />
-        <stop offset="0.6" stopColor="white" />
-      </linearGradient>
-      <clipPath id="clip0_3_15">
-        <rect width="40" height="40" fill="white" />
-      </clipPath>
-    </defs>
+    <path
+      d="M56.9124 55.9986H39.5461L39.5347 55.99L39.3979 55.8843L17.8766 39.0708L26.6852 31.9998L56.7671 55.8843L56.9124 55.9986Z"
+      fill="#4A9079"
+    />
+    <path
+      d="M56.9124 8.00116H39.5461L39.5347 8.00973L39.3979 8.11544L17.8766 24.9289L26.6852 32L56.7671 8.11544L56.9124 8.00116Z"
+      fill="#4A9079"
+    />
+    <path
+      d="M17.8795 33.0657V39.0539V39.0739L17.8824 55.8846V55.9988L17.871 55.9903L17.737 55.8846L7.26421 47.5992L7.23856 47.5792L7.08752 47.4621V16.5379L7.23856 16.4208L7.26421 16.4008L17.737 8.11544L17.871 8.00973L17.8824 8.00116V8.11544L17.8795 24.9261V24.9461V32V33.0657Z"
+      fill="#4A9079"
+    />
   </svg>
 );

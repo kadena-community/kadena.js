@@ -1,12 +1,21 @@
-import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
+import type { Transaction } from '@/__generated__/sdk';
+import {
+  useGetTransactionByRequestKeySubscription,
+  useGetTransactionNodeQuery,
+} from '@/__generated__/sdk';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
+import { getTransactionNode } from '@/graphql/queries.graph';
+import { getTransactionByRequestKey } from '@/graphql/subscriptions.graph';
 import { formatCode, formatLisp } from '@/utils/formatter';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Link,
   Notification,
+  Stack,
   SystemIcon,
   Table,
 } from '@kadena/react-ui';
@@ -16,29 +25,76 @@ import React from 'react';
 const RequestKey: React.FC = () => {
   const router = useRouter();
 
-  const { loading, data, error } = useGetTransactionByRequestKeySubscription({
-    variables: { requestKey: router.query.key as string },
+  const transactionSubscriptionVariables = {
+    requestKey: router.query.key as string,
+  };
+
+  const {
+    loading: transactionSubscriptionLoading,
+    data: transactionSubscriptionData,
+    error: transactionSubscriptionError,
+  } = useGetTransactionByRequestKeySubscription({
+    variables: transactionSubscriptionVariables,
+    skip: !router.query.key,
   });
+
+  const nodeQueryVariables = {
+    id: transactionSubscriptionData?.transaction as string,
+  };
+
+  const {
+    loading: nodeQueryLoading,
+    data: nodeQueryData,
+    error: nodeQueryError,
+  } = useGetTransactionNodeQuery({
+    variables: nodeQueryVariables,
+    skip: !transactionSubscriptionData?.transaction,
+  });
+
+  const transaction = nodeQueryData?.node as Transaction;
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item href={`${routes.TRANSACTIONS}`}>
-          Transactions
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item>Transaction</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Stack justifyContent="space-between">
+        <Breadcrumbs>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem href={`${routes.TRANSACTIONS}`}>
+            Transactions
+          </BreadcrumbsItem>
+          <BreadcrumbsItem>Transaction</BreadcrumbsItem>
+        </Breadcrumbs>
+        <GraphQLQueryDialog
+          queries={[
+            {
+              query: getTransactionByRequestKey,
+              variables: transactionSubscriptionVariables,
+            },
+            {
+              query: getTransactionNode,
+              variables: nodeQueryVariables,
+            },
+          ]}
+        />
+      </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
-        error={error}
-        loading={loading}
-        loaderText="Waiting for request key..."
+        error={transactionSubscriptionError}
+        loading={transactionSubscriptionLoading}
+        loaderText="Waiting for transaction to come in..."
       />
+      {!transactionSubscriptionLoading &&
+        !transactionSubscriptionError &&
+        nodeQueryLoading && (
+          <LoaderAndError
+            error={nodeQueryError}
+            loading={nodeQueryLoading}
+            loaderText="Waiting for transaction to come in..."
+          />
+        )}
 
-      {data?.transaction && (
+      {transaction && (
         <>
           <Table.Root striped wordBreak="break-word">
             <Table.Head>
@@ -53,7 +109,7 @@ const RequestKey: React.FC = () => {
                   <strong>Status</strong>
                 </Table.Td>
                 <Table.Td>
-                  {data?.transaction?.badResult && (
+                  {transaction.badResult && (
                     <Notification
                       intent="negative"
                       icon={<SystemIcon.Close />}
@@ -62,14 +118,14 @@ const RequestKey: React.FC = () => {
                       Transaction failed with status:{' '}
                       <pre>
                         {JSON.stringify(
-                          JSON.parse(data?.transaction?.badResult),
+                          JSON.parse(transaction.badResult),
                           null,
                           4,
                         )}
                       </pre>
                     </Notification>
                   )}
-                  {data?.transaction?.goodResult && (
+                  {transaction.goodResult && (
                     <Notification
                       intent="positive"
                       icon={<SystemIcon.Check />}
@@ -77,28 +133,27 @@ const RequestKey: React.FC = () => {
                     >
                       Transaction succeeded with status:
                       <br />
-                      <pre>{formatCode(data?.transaction?.goodResult)}</pre>
+                      <pre>{formatCode(transaction.goodResult)}</pre>
                     </Notification>
                   )}
-                  {!data?.transaction?.goodResult &&
-                    !data?.transaction?.badResult && (
-                      <Notification intent="warning" role="status">
-                        Unknown transaction status
-                      </Notification>
-                    )}
+                  {!transaction.goodResult && !transaction.badResult && (
+                    <Notification intent="warning" role="status">
+                      Unknown transaction status
+                    </Notification>
+                  )}
                 </Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Request Key</strong>
                 </Table.Td>
-                <Table.Td>{data?.transaction?.requestKey}</Table.Td>
+                <Table.Td>{transaction.requestKey}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Chain</strong>
                 </Table.Td>
-                <Table.Td>{data?.transaction?.chainId}</Table.Td>
+                <Table.Td>{transaction.chainId}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
@@ -106,9 +161,9 @@ const RequestKey: React.FC = () => {
                 </Table.Td>
                 <Table.Td>
                   <Link
-                    href={`${routes.BLOCK_OVERVIEW}/${data?.transaction?.block?.hash}`}
+                    href={`${routes.BLOCK_OVERVIEW}/${transaction.block?.hash}`}
                   >
-                    {data?.transaction?.block?.hash}
+                    {transaction.block?.hash}
                   </Link>
                 </Table.Td>
               </Table.Tr>
@@ -117,7 +172,7 @@ const RequestKey: React.FC = () => {
                   <strong>Code</strong>
                 </Table.Td>
                 <Table.Td>
-                  <pre>{formatLisp(JSON.parse(data?.transaction?.code))}</pre>
+                  <pre>{formatLisp(JSON.parse(transaction.code))}</pre>
                 </Table.Td>
               </Table.Tr>
               <Table.Tr>
@@ -131,7 +186,7 @@ const RequestKey: React.FC = () => {
                         <Table.Td>
                           <strong>Gas</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.gas}</Table.Td>
+                        <Table.Td>{transaction.gas}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
@@ -139,10 +194,10 @@ const RequestKey: React.FC = () => {
                         </Table.Td>
                         <Table.Td>
                           <pre>
-                            {data?.transaction?.goodResult
-                              ? formatCode(data.transaction.goodResult)
-                              : data?.transaction?.badResult
-                              ? formatCode(data.transaction.badResult)
+                            {transaction.goodResult
+                              ? formatCode(transaction.goodResult)
+                              : transaction.badResult
+                              ? formatCode(transaction.badResult)
                               : 'Unknown'}
                           </pre>
                         </Table.Td>
@@ -151,13 +206,13 @@ const RequestKey: React.FC = () => {
                         <Table.Td>
                           <strong>Logs</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.logs}</Table.Td>
+                        <Table.Td>{transaction.logs}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Metadata</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.metadata}</Table.Td>
+                        <Table.Td>{transaction.metadata}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
@@ -165,8 +220,8 @@ const RequestKey: React.FC = () => {
                         </Table.Td>
                         <Table.Td>
                           <pre>
-                            {data?.transaction?.continuation
-                              ? formatCode(data.transaction.continuation)
+                            {transaction.continuation
+                              ? formatCode(transaction.continuation)
                               : 'None'}
                           </pre>
                         </Table.Td>
@@ -175,7 +230,7 @@ const RequestKey: React.FC = () => {
                         <Table.Td>
                           <strong>Transaction ID</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.transactionId}</Table.Td>
+                        <Table.Td>{transaction.transactionId}</Table.Td>
                       </Table.Tr>
                     </Table.Body>
                   </Table.Root>
@@ -186,7 +241,7 @@ const RequestKey: React.FC = () => {
                   <strong>Events</strong>
                 </Table.Td>
                 <Table.Td>
-                  {data?.transaction?.events?.map((event, index) => (
+                  {transaction.events?.map((event, index) => (
                     <Table.Root key={index}>
                       <Table.Body>
                         <Table.Tr>
@@ -214,12 +269,8 @@ const RequestKey: React.FC = () => {
                 </Table.Td>
                 <Table.Td>
                   <pre>
-                    {data?.transaction?.data &&
-                      JSON.stringify(
-                        JSON.parse(data.transaction.data),
-                        null,
-                        4,
-                      )}
+                    {transaction.data &&
+                      JSON.stringify(JSON.parse(transaction.data), null, 4)}
                   </pre>
                 </Table.Td>
               </Table.Tr>
@@ -228,7 +279,7 @@ const RequestKey: React.FC = () => {
                   <strong>Nonce</strong>
                 </Table.Td>
                 <Table.Td>
-                  <pre>{data?.transaction?.nonce}</pre>
+                  <pre>{transaction.nonce}</pre>
                 </Table.Td>
               </Table.Tr>
               <Table.Tr>
@@ -242,67 +293,67 @@ const RequestKey: React.FC = () => {
                         <Table.Td>
                           <strong>Chain</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.chainId}</Table.Td>
+                        <Table.Td>{transaction.chainId}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Sender</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.senderAccount}</Table.Td>
+                        <Table.Td>{transaction.senderAccount}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Gas Price</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.gasPrice}</Table.Td>
+                        <Table.Td>{transaction.gasPrice}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Gas Limit</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.gasLimit}</Table.Td>
+                        <Table.Td>{transaction.gasLimit}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>TTL</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.ttl}</Table.Td>
+                        <Table.Td>{transaction.ttl}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Creation Time</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.creationTime}</Table.Td>
+                        <Table.Td>{transaction.creationTime}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Height</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.height}</Table.Td>
+                        <Table.Td>{transaction.height}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Pact ID</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.pactId}</Table.Td>
+                        <Table.Td>{transaction.pactId}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Proof</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.proof}</Table.Td>
+                        <Table.Td>{transaction.proof}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Rollback</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.rollback}</Table.Td>
+                        <Table.Td>{transaction.rollback}</Table.Td>
                       </Table.Tr>
                       <Table.Tr>
                         <Table.Td>
                           <strong>Step</strong>
                         </Table.Td>
-                        <Table.Td>{data?.transaction?.step}</Table.Td>
+                        <Table.Td>{transaction.step}</Table.Td>
                       </Table.Tr>
                     </Table.Body>
                   </Table.Root>
@@ -313,7 +364,7 @@ const RequestKey: React.FC = () => {
                   <strong>Signers</strong>
                 </Table.Td>
                 <Table.Td>
-                  {data?.transaction?.signers
+                  {transaction.signers
                     ?.map((signer) => {
                       return signer.publicKey;
                     })
@@ -325,7 +376,7 @@ const RequestKey: React.FC = () => {
                   <strong>Signatures</strong>
                 </Table.Td>
                 <Table.Td>
-                  {data?.transaction?.signers
+                  {transaction.signers
                     ?.map((signer) => {
                       return signer.signature;
                     })

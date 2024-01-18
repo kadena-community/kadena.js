@@ -45,6 +45,7 @@ export const Analytics: FC = () => {
   return (
     <>
       <Script
+        rel="dns-prefetch"
         src={`https://www.googletagmanager.com/gtag/js?id=${TRACKING_ID}`}
       ></Script>
       <Script
@@ -55,11 +56,15 @@ export const Analytics: FC = () => {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
+
+
             gtag('consent', 'default', {
               'analytics_storage': 'denied'
             });
 
-            gtag('config', '${process.env.TRACKING_ID}');
+            gtag('config', '${TRACKING_ID}', {
+              'debug_mode': false
+            });
           `,
         }}
       />

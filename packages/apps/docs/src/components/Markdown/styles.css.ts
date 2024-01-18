@@ -1,10 +1,9 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([
-  sprinkles({
-    marginY: '$5',
-    marginX: 0,
-  }),
-  {},
+  {
+    marginBlock: tokens.kda.foundation.size.n5,
+    marginInline: 0,
+  },
 ]);

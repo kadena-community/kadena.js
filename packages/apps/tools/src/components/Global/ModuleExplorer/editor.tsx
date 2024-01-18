@@ -53,17 +53,15 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
     );
   }
   return (
-    <Stack direction={'column'}>
+    <Stack flexDirection={'column'}>
       <Grid columns={3}>
         <GridItem>
           <SelectField
             label={t('Keyboard handler')}
-            selectProps={{
-              id: 'editor-keyboard-select',
-              ariaLabel: t('Select which keyboard to use for the code editor'),
-              onChange: (e) => {
-                setKeyboardHandler(e.target.value as KeyboardHandler);
-              },
+            id="editor-keyboard-handler"
+            ariaLabel={t('Select which keyboard to use for the code editor')}
+            onChange={(e) => {
+              setKeyboardHandler(e.target.value as KeyboardHandler);
             }}
           >
             {keyboards.map((keyboard) => (
@@ -74,12 +72,10 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
         <GridItem>
           <SelectField
             label={t('Theme')}
-            selectProps={{
-              id: 'editor-theme-select',
-              ariaLabel: t('Select which theme to use for the code editor'),
-              onChange: (e) => {
-                setTheme(e.target.value as Theme);
-              },
+            id="editor-theme-select"
+            ariaLabel={t('Select which theme to use for the code editor')}
+            onChange={(e) => {
+              setTheme(e.target.value as Theme);
             }}
           >
             {themes.map((theme) => (
@@ -90,12 +86,10 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
         <GridItem>
           <SelectField
             label={t('Mode')}
-            selectProps={{
-              id: 'editor-mode-select',
-              ariaLabel: t('Select which mode to use for the code editor'),
-              onChange: (e) => {
-                setMode(e.target.value as Mode);
-              },
+            id="editor-mode-select"
+            ariaLabel={t('Select which mode to use for the code editor')}
+            onChange={(e) => {
+              setMode(e.target.value as Mode);
             }}
           >
             {modes.map((mode) => (

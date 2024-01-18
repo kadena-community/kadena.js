@@ -67,8 +67,8 @@
   },
   {
     "name": "@kadena/graph",
-    "version": "1.0.7",
-    "private": true,
+    "version": "1.0.6",
+    "private": false,
     "path": "packages/apps/graph"
   },
   {
@@ -166,6 +166,12 @@
     "version": "0.0.8",
     "private": false,
     "path": "packages/tools/eslint-plugin"
+  },
+  {
+    "name": "@kadena-dev/integration-tests",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/tools/integration-tests"
   },
   {
     "name": "@kadena-dev/lint-package",

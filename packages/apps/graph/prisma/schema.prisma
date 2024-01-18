@@ -49,13 +49,15 @@ model Event {
   parameterText String       @map("paramtext") @db.VarChar
   qualifiedName String       @map("qualname") @db.VarChar
   requestKey    String       @map("requestkey") @db.VarChar
-  id            Int          @unique(map: "events_id_uniq") @default(autoincrement())
+  id            Int          @unique(map: "events_id") @default(autoincrement())
   transaction   Transaction? @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey])
   block         Block        @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([blockHash, orderIndex, requestKey])
-  @@index([height(sort: Desc), chainId, orderIndex], map: "events_height_chainid_orderIndex")
   @@index([requestKey])
+  @@index([blockHash, requestKey], map: "events_block_requestkey")
+  @@index([height(sort: Desc), chainId, orderIndex], map: "events_height_chainid_idx")
+  @@index([moduleName], map: "events_module")
   @@map("events")
 }
 
@@ -65,6 +67,7 @@ model MinerKey {
   blocks    Block  @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([blockHash, key])
+  @@index([blockHash], map: "minerkeys_block")
   @@map("minerkeys")
 }
 
@@ -78,6 +81,8 @@ model Signer {
   signature    String  @map("sig") @db.VarChar
 
   @@id([requestKey, orderIndex])
+  @@index([publicKey], map: "signers_pubkey")
+  @@index([requestKey], map: "signers_requestkey")
   @@map("signers")
 }
 
@@ -113,6 +118,7 @@ model Transaction {
   @@id([blockHash, requestKey], map: "transaction_pkey")
   @@index([height])
   @@index([requestKey])
+  @@index([blockHash], map: "transactions_block")
   @@map("transactions")
 }
 
@@ -131,8 +137,11 @@ model Transfer {
   transaction     Transaction? @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([blockHash, chainId, orderIndex, moduleHash, requestKey])
-  @@index([senderAccount, height(sort: Desc), orderIndex], map: "transfers_senderAccount_height_orderIndex")
   @@index([receiverAccount, height(sort: Desc), orderIndex])
+  @@index([blockHash, requestKey], map: "transfers_block_requestkey")
+  @@index([blockHash, senderAccount], map: "transfers_from_acct")
+  @@index([senderAccount, height(sort: Desc), orderIndex], map: "transfers_from_acct_height_idx")
+  @@index([blockHash, receiverAccount], map: "transfers_to_acct")
   @@map("transfers")
 }
 

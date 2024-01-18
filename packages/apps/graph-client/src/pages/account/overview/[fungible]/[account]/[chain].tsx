@@ -1,42 +1,62 @@
 import type {
-  ChainFungibleAccountTransactionsConnection,
-  ChainFungibleAccountTransfersConnection,
+  FungibleChainAccountTransactionsConnection,
+  FungibleChainAccountTransfersConnection,
 } from '@/__generated__/sdk';
-import { useGetChainAccountQuery } from '@/__generated__/sdk';
+import { useGetFungibleChainAccountQuery } from '@/__generated__/sdk';
+import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
+import { getFungibleChainAccount } from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import { CompactTransfersTable } from '@components/compact-transfers-table/compact-transfers-table';
 import routes from '@constants/routes';
-import { Box, Breadcrumbs, Grid, GridItem, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  BreadcrumbsItem,
+  Grid,
+  GridItem,
+  Notification,
+  Stack,
+  Table,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 const ChainAccount: React.FC = () => {
   const router = useRouter();
 
-  const { loading, data, error } = useGetChainAccountQuery({
-    variables: {
-      fungibleName: router.query.fungible as string,
-      accountName: router.query.account as string,
-      chainId: router.query.chain as string,
-    },
+  const variables = {
+    fungibleName: router.query.fungible as string,
+    accountName: router.query.account as string,
+    chainId: router.query.chain as string,
+  };
+
+  const { loading, data, error } = useGetFungibleChainAccountQuery({
+    variables,
+    skip:
+      !router.query.fungible || !router.query.account || !router.query.chain,
   });
 
   return (
     <>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-        <Breadcrumbs.Item
-          href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
-            router.query.account as string
-          }`}
-        >
-          Account Overview
-        </Breadcrumbs.Item>
-        <Breadcrumbs.Item>Chain</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Stack justifyContent="space-between">
+        <Breadcrumbs>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem
+            href={`${routes.ACCOUNT}/${router.query.fungible as string}/${
+              router.query.account as string
+            }`}
+          >
+            Account Overview
+          </BreadcrumbsItem>
+          <BreadcrumbsItem>Chain</BreadcrumbsItem>
+        </Breadcrumbs>
+        <GraphQLQueryDialog
+          queries={[{ query: getFungibleChainAccount, variables }]}
+        />
+      </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}
@@ -44,7 +64,14 @@ const ChainAccount: React.FC = () => {
         loaderText="Retrieving account information..."
       />
 
-      {data?.chainAccount && (
+      {!loading && !error && !data?.fungibleChainAccount && (
+        <Notification intent="info" role="status">
+          We could not find any data on this account. Please check the fungible
+          name, account name and chain.
+        </Notification>
+      )}
+
+      {data?.fungibleChainAccount && (
         <>
           <Table.Root wordBreak="break-all">
             <Table.Body>
@@ -52,42 +79,42 @@ const ChainAccount: React.FC = () => {
                 <Table.Td>
                   <strong>Account Name</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.accountName}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.accountName}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Fungible</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.fungibleName}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.fungibleName}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Chain</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.chainId}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.chainId}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Balance</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.balance}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.balance}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Guard Predicate</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.guard.predicate}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.guard.predicate}</Table.Td>
               </Table.Tr>
               <Table.Tr>
                 <Table.Td>
                   <strong>Guard Keys</strong>
                 </Table.Td>
-                <Table.Td>{data.chainAccount.guard.keys}</Table.Td>
+                <Table.Td>{data.fungibleChainAccount.guard.keys}</Table.Td>
               </Table.Tr>
             </Table.Body>
           </Table.Root>
-          <Box margin={'$8'} />
-          <Grid columns={2} gap="$lg">
+          <Box margin="md" />
+          <Grid columns={2} gap="lg">
             <GridItem>
               <CompactTransfersTable
                 fungibleName={router.query.fungible as string}
@@ -95,8 +122,8 @@ const ChainAccount: React.FC = () => {
                 chainId={router.query.chain as string}
                 truncateColumns={true}
                 transfers={
-                  data.chainAccount
-                    .transfers as ChainFungibleAccountTransfersConnection
+                  data.fungibleChainAccount
+                    .transfers as FungibleChainAccountTransfersConnection
                 }
               />
             </GridItem>
@@ -109,8 +136,8 @@ const ChainAccount: React.FC = () => {
                 }`}
                 truncateColumns={true}
                 transactions={
-                  data.chainAccount
-                    .transactions as ChainFungibleAccountTransactionsConnection
+                  data.fungibleChainAccount
+                    .transactions as FungibleChainAccountTransactionsConnection
                 }
               />
             </GridItem>

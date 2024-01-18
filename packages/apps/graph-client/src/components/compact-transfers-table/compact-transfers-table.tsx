@@ -1,13 +1,12 @@
 import type {
-  ChainFungibleAccountTransfersConnection,
   FungibleAccountTransfersConnection,
+  FungibleChainAccountTransfersConnection,
   Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
+import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
 import React from 'react';
-
 interface ICompactTransfersTableProps {
   fungibleName: string;
   accountName: string;
@@ -15,7 +14,7 @@ interface ICompactTransfersTableProps {
   truncateColumns?: boolean;
   transfers:
     | FungibleAccountTransfersConnection
-    | ChainFungibleAccountTransfersConnection;
+    | FungibleChainAccountTransfersConnection;
 
   description?: string;
 }
@@ -65,17 +64,16 @@ export const CompactTransfersTable = (
           description ? description : 'All transfers from this fungible'
         }
       />
-      <Box margin={'$4'} />
-      <Button
-        variant="compact"
-        as="a"
+      <Box margin="sm" />
+      <Link
+        isCompact
         href={`${routes.ACCOUNT_TRANSFERS}/${fungibleName}/${accountName}${
           chainId !== undefined ? `?chain=${chainId}` : ''
         }`}
       >
         View all transfers
-      </Button>
-      <Box margin={'$2'} />
+      </Link>
+      <Box margin="xs" />
       <Table.Root wordBreak="break-word">
         <Table.Head>
           <Table.Tr>
