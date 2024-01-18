@@ -70,93 +70,24 @@ export function createCommand<
 
     command.action(async (args, ...rest) => {
       try {
-        const getCommandExecution = (args: Record<string, unknown>): string => {
-          return chalk.yellow(
-            `${CLIRootName} ${program.name()} ${name} ${Object.getOwnPropertyNames(
-              args,
-            )
-              .map((arg) => {
-                let displayValue: string | null = null;
-                const value = args[arg];
-                const argName = arg.toLowerCase();
-
-                if (argName.includes('password')) {
-                  if (value === '') {
-                    displayValue = '';
-                  } else {
-                    displayValue = '******';
-                  }
-                } else {
-                  if (Array.isArray(value)) {
-                    displayValue = value.join(' ');
-                  } else if (typeof value === 'string') {
-                    displayValue = `"${value}"`;
-                  } else if (typeof value === 'number') {
-                    displayValue = value.toString();
-                  } else if (typeof value === 'boolean' && value === false) {
-                    return undefined;
-                  }
-                }
-
-                return `--${arg.replace(
-                  /[A-Z]/g,
-                  (match) => `-${match.toLowerCase()}`,
-                )} ${
-                  displayValue !== null && displayValue !== undefined
-                    ? displayValue
-                    : ''
-                }`;
-              })
-              .filter(Boolean)
-              .join(' ')}`,
-          );
-        };
-
         // collectResponses
-        const questionsMap = options
-          .filter((o) => o.isInQuestions)
-          .map(({ prompt, key, isOptional }) => ({
-            key,
-            prompt,
-            isOptional,
-          }));
+        const questionsMap = options.filter((o) => o.isInQuestions);
 
-        if (args.quiet === true) {
-          const missing = questionsMap.filter(
-            (question) =>
-              question.isOptional === false && args[question.key] === undefined,
-          );
-          if (missing.length) {
-            console.log(
-              `${chalk.yellow('Missing arguments in: ')}${getCommandExecution(
-                args,
-              )}`,
-            );
-            console.log(
-              chalk.red(
-                `\nMissing required arguments:\n${missing
-                  .map((m) => options.find((q) => q.key === m.key)!)
-                  .map((m) => `- ${m.key} (${m.option.flags})\n`)
-                  .join('')}`,
-              ),
-            );
-            console.log(
-              chalk.yellow(
-                'Remove the --quiet flag to enable interactive prompts\n',
-              ),
-            );
-            process.exit(1);
-          }
-        }
+        handleQuietOption(`${program.name()} ${name}`, args, questionsMap);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const newArgs: any =
           args.quiet === true
             ? args
             : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              await collectResponses<any>(args, questionsMap);
+              await collectResponses<any>(args, questionsMap as any);
 
-        console.log(`\nExecuting: ${getCommandExecution(newArgs)}`);
+        console.log(
+          `\nExecuting: ${getCommandExecution(
+            `${program.name()} ${name}`,
+            newArgs,
+          )}`,
+        );
 
         // zod validation
         const zodValidationObject = options.reduce(
@@ -200,4 +131,136 @@ export function createCommand<
       }
     });
   };
+}
+
+type Fn = (...args: any[]) => unknown;
+
+export type TransformOption<
+  Option extends { key: string; prompt: Fn; transform?: Fn; expand?: Fn },
+> = {
+  [P in Option['key']]: Option['transform'] extends (...args: any[]) => infer Tr
+    ? Awaited<Tr>
+    : Awaited<ReturnType<Option['prompt']>>;
+} & (Option['expand'] extends (...args: any[]) => infer Ex
+  ? {
+      [P in `${Option['key']}Config`]: Awaited<Ex>;
+    }
+  : {});
+
+export function handleQuietOption(
+  command: string,
+  args: Record<string, unknown>,
+  options: ReturnType<ReturnType<typeof createOption>>[],
+): void {
+  if (args.quiet === true) {
+    const missing = options.filter(
+      (option) => option.isOptional === false && args[option.key] === undefined,
+    );
+    if (missing.length) {
+      console.log(
+        `${chalk.yellow('Missing arguments in: ')}${getCommandExecution(
+          `${command}`,
+          args,
+        )}`,
+      );
+      console.log(
+        chalk.red(
+          `\nMissing required arguments:\n${missing
+            .map((m) => options.find((q) => q.key === m.key)!)
+            .map((m) => `- ${m.key} (${m.option.flags})\n`)
+            .join('')}`,
+        ),
+      );
+      console.log(
+        chalk.yellow('Remove the --quiet flag to enable interactive prompts\n'),
+      );
+      process.exit(1);
+    }
+  }
+}
+
+export async function executeOption<
+  Option extends ReturnType<ReturnType<typeof createOption>>,
+>(
+  option: Option,
+  args: Record<string, unknown> = {},
+): Promise<Prettify<TransformOption<Option>>> {
+  let value = args[option.key];
+
+  if (value === undefined) {
+    if (args.quiet !== 'true') {
+      value = await option.prompt(args, args, option.isOptional);
+    } else if (option.isOptional === false) {
+      throw new Error(
+        `Missing required argument: ${option.key} (${option.option.flags})`,
+      );
+    }
+  }
+
+  const newConfig = { [option.key]: value } as TransformOption<Option>;
+  if ('expand' in option) {
+    if (typeof option.expand === 'function') {
+      const expanded = await option.expand(value);
+      if (expanded !== undefined && expanded !== null) {
+        // @ts-ignore
+        newConfig[`${option.key}Config`] = expanded;
+      }
+    }
+  }
+  if ('transform' in option) {
+    if (typeof option.transform === 'function') {
+      // @ts-ignore
+      newConfig[option.key] = await option.transform(value);
+    }
+  }
+
+  return newConfig;
+}
+
+export function getCommandExecution(
+  command: string,
+  args: Record<string, unknown>,
+): string {
+  return chalk.yellow(
+    `${CLIRootName} ${command} ${Object.getOwnPropertyNames(args)
+      .map((arg) => {
+        let displayValue: string | null = null;
+        const value = args[arg];
+        const argName = arg.toLowerCase();
+
+        if (argName.includes('password')) {
+          if (value === '') {
+            displayValue = '';
+          } else {
+            displayValue = '******';
+          }
+        } else {
+          if (typeof value === 'string') {
+            displayValue = `"${value}"`;
+          } else if (typeof value === 'number') {
+            displayValue = value.toString();
+          } else if (typeof value === 'boolean' && value === false) {
+            return undefined;
+          } else if (
+            typeof value === 'object' &&
+            value !== null &&
+            Object.getPrototypeOf(value) === Object.prototype
+          ) {
+            return Object.entries(value)
+              .map(([key, value]) => `--${key}=${value}`)
+              .join(' ');
+          }
+        }
+
+        const key = arg.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+
+        return `--${key} ${
+          displayValue !== null && displayValue !== undefined
+            ? displayValue
+            : ''
+        }`;
+      })
+      .filter(Boolean)
+      .join(' ')}`,
+  );
 }
