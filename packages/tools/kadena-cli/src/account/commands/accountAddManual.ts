@@ -146,8 +146,8 @@ async function handleExistingAccount(filePath: string, config: any): Promise<voi
   );
 }
 
-export const addAccountCommand: (program: Command, version: string) => void = createCommand(
-  'add',
+export const addAccountManualCommand: (program: Command, version: string) => void = createCommand(
+  'add-manual',
   'Add an existing account to the CLI',
   [
     globalOptions.accountAlias(),
@@ -160,7 +160,7 @@ export const addAccountCommand: (program: Command, version: string) => void = cr
   ],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function addAccount(config: any): Promise<void> {
-    debug('account-add:action')({ config });
+    debug('account-add-manual:action')({ config });
 
     const sanitizedAlias = sanitizeFilename(config.accountAlias).toLowerCase();
     const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
