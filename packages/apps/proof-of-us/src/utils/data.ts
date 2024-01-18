@@ -1,4 +1,4 @@
-export const pous = [
+export const proofOfUsData = [
   {
     id: '1',
     date: 245599529000,

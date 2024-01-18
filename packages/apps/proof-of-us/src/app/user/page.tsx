@@ -1,22 +1,22 @@
 'use client';
 import { IsLoading } from '@/components/IsLoading/IsLoading';
-import { useGetAllPous } from '@/hooks/getAllPous';
+import { useGetAllProofOfUs } from '@/hooks/getAllProofOfUs';
 import Link from 'next/link';
 import type { FC } from 'react';
 
 const Page: FC = () => {
-  const { data, isLoading, error } = useGetAllPous();
+  const { data, isLoading, error } = useGetAllProofOfUs();
   return (
     <div>
-      list of your pous
+      list of your Proof Of Us
       {isLoading && <IsLoading />}
       {error && <div>{error.message}</div>}
       {!isLoading && !error && (
         <ul>
-          {data.map((pou) => (
-            <li key={pou.id}>
-              <Link href={`/user/pous/${pou.id}`}>
-                {new Date(pou.date).toLocaleDateString()}
+          {data.map((proofOfUs) => (
+            <li key={proofOfUs.id}>
+              <Link href={`/user/proof-of-us/${proofOfUs.id}`}>
+                {new Date(proofOfUs.date).toLocaleDateString()}
               </Link>
             </li>
           ))}

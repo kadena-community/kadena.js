@@ -9,7 +9,7 @@ interface IProps {
 const Page: FC<IProps> = ({ params }) => {
   return (
     <div>
-      scanned pou with ID ({params.id})<section></section>
+      scanned Proof Of Us with ID ({params.id})<section></section>
     </div>
   );
 };

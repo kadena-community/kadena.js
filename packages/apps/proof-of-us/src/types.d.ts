@@ -18,7 +18,7 @@ type IDataHook<T> = (...args: any) => {
   data: T;
 };
 
-interface IPou {
+interface IProofOfUs {
   id: string;
   date: number;
   minted: number;

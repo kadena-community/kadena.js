@@ -1,6 +1,6 @@
 'use client';
 
-import { usePou } from '@/hooks/pou';
+import { useProofOfUs } from '@/hooks/proofOfUs';
 
 import type { FC } from 'react';
 
@@ -11,14 +11,14 @@ interface IProps {
 }
 
 const Page: FC<IProps> = () => {
-  const { data } = usePou();
+  const { data } = useProofOfUs();
 
   if (!data) return null;
 
   return (
     <div>
       <h2>Analytics</h2>
-      pou with ID ({data.id})
+      Proof Of Us with ID ({data.id})
     </div>
   );
 };

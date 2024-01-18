@@ -1,6 +1,6 @@
 'use client';
-import { POU_QR_URL } from '@/constants';
-import { usePou } from '@/hooks/pou';
+import { PROOFOFUS_QR_URL } from '@/constants';
+import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
 import type { FC } from 'react';
 import { useRef } from 'react';
@@ -15,7 +15,7 @@ interface IProps {
 const Page: FC<IProps> = ({ params }) => {
   const qrRef = useRef<QRCode | null>(null);
 
-  const { data } = usePou();
+  const { data } = useProofOfUs();
 
   const handleQRPNGDownload = () => {
     if (!qrRef.current || !data) return;
@@ -37,13 +37,13 @@ const Page: FC<IProps> = ({ params }) => {
 
   return (
     <div>
-      pou with ID ({data.id})
+      Proof Of Us with ID ({data.id})
       <section>
         <h2>qr code</h2>
         <QRCode
           ecLevel="H"
           ref={qrRef}
-          value={`${env.URL}${POU_QR_URL}/${data.id}`}
+          value={`${env.URL}${PROOFOFUS_QR_URL}/${data.id}`}
           removeQrCodeBehindLogo={true}
           logoImage="/assets/qrlogo.png"
           logoPadding={5}

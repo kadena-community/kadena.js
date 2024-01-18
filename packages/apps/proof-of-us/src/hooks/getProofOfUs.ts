@@ -1,14 +1,14 @@
-import { getPou } from '@/utils/pou';
+import { getProofOfUs } from '@/utils/proofOfUs';
 import { useEffect, useState } from 'react';
 
-export const useGetPou: IDataHook<IPou | undefined> = ({ id }) => {
+export const useGetProofOfUs: IDataHook<IProofOfUs | undefined> = ({ id }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<IError>();
-  const [data, setData] = useState<IPou | undefined>(undefined);
+  const [data, setData] = useState<IProofOfUs | undefined>(undefined);
 
   const load = async () => {
     setError(undefined);
-    const result = await getPou(id);
+    const result = await getProofOfUs(id);
 
     setData(result);
   };

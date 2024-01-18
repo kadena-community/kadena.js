@@ -1,7 +1,7 @@
 'use client';
 import { IsLoading } from '@/components/IsLoading/IsLoading';
-import { PouContext } from '@/components/PouProvider/PouProvider';
-import { useGetPou } from '@/hooks/getPou';
+import { ProofOfUsContext } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
+import { useGetProofOfUs } from '@/hooks/getProofOfUs';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
@@ -11,7 +11,7 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
 
   console.log({ params });
-  const { data, isLoading, error } = useGetPou({ id: params.id });
+  const { data, isLoading, error } = useGetProofOfUs({ id: params.id });
 
   if (isLoading) return <IsLoading />;
   if (error) return <div>{error.message}</div>;
@@ -21,18 +21,18 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   }
 
   return (
-    <PouContext.Provider value={{ data }}>
+    <ProofOfUsContext.Provider value={{ data }}>
       <ul>
         <li>
-          <Link href={`/user/pous/${data.id}`}>pou</Link>
+          <Link href={`/user/proof-of-us/${data.id}`}>Proof Of Us</Link>
         </li>
         <li>
-          <Link href={`/user/pous/${data.id}/analytics`}>analytics</Link>
+          <Link href={`/user/proof-of-us/${data.id}/analytics`}>analytics</Link>
         </li>
       </ul>
 
       {children}
-    </PouContext.Provider>
+    </ProofOfUsContext.Provider>
   );
 };
 

@@ -13,7 +13,7 @@ const ScanLayout: FC<PropsWithChildren> = ({ children }) => {
       {!account && isMounted ? (
         <section>
           <p>
-            You need to be logged in to scan and claim your POU
+            You need to be logged in to scan and claim your Proof Of Us
             <button onClick={login}>login</button>
           </p>
         </section>
