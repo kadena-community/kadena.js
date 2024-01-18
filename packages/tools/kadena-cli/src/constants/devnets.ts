@@ -1,8 +1,18 @@
-import type { ChainId } from '@kadena/types';
+import type { ChainId, IKeyPair } from '@kadena/types';
 import type { IDevnetsCreateOptions } from '../devnet/utils/devnetHelpers.js';
 
 export interface IDefaultDevnetOptions {
   [key: string]: IDevnetsCreateOptions;
+}
+
+export interface IAccount {
+  account: string;
+  chainId?: ChainId;
+  keys: IKeyPair[];
+}
+
+export interface IAccountWithTokens extends IAccount {
+  tokens: { [key: string]: number };
 }
 
 /**
@@ -28,8 +38,18 @@ export const defaultDevnet: string = 'devnet';
  * Provides the default simulation configurations.
  */
 export const simulationDefaults = {
-  DEFAULT_CHAIN_ID: '0' as ChainId,
-  NETWORK_HOST: 'http://localhost:8080',
   NETWORK_ID: 'fast-development',
   CHAIN_COUNT: 20,
+};
+
+export const sender00: IAccount = {
+  keys: [
+    {
+      publicKey:
+        '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+      secretKey:
+        '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
+    },
+  ],
+  account: 'sender00',
 };

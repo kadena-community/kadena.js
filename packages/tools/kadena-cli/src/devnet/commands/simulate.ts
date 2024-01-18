@@ -1,3 +1,4 @@
+import type { ChainId } from '@kadena/types';
 import debug from 'debug';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -15,6 +16,7 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
     globalOptions.simulateLogFolder({ isOptional: true }),
     globalOptions.simulateTokenPool({ isOptional: true }),
     globalOptions.simulateMaxAmount({ isOptional: true }),
+    globalOptions.simulateDefaultChain({ isOptional: true }),
     globalOptions.simulateSeed({ isOptional: true }),
   ],
   async (config) => {
@@ -37,6 +39,7 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
       transferInterval: config.interval,
       tokenPool: config.tokenPool,
       logFolder: config.logFolder,
+      defaultChain: config.defaultChain as ChainId,
       seed: config.seed,
     });
   },

@@ -143,7 +143,9 @@ export function updateDevnet(version?: string): void {
 }
 
 export function containerIsRunning(name: string): boolean {
-  const runningContainers = execSync('docker ps --format "{{.Names}}"')
+  const runningContainers = execSync(
+    'docker ps --filter ancestor=kadena/devnet --format "{{.Names}}"',
+  )
     .toString()
     .trim()
     .split('\n');

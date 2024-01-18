@@ -1,22 +1,21 @@
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCrossChain } from '@kadena/client-utils/coin';
-
-import type { IAccount } from '../utils.js';
-import { sender00 } from '../utils.js';
+import type { IAccount} from '../../../../constants/devnets.js';
+import { sender00 } from '../../../../constants/devnets.js';
 
 export async function crossChainTransfer({
   network,
   sender,
   receiver,
   amount,
-  gasPayer = sender00,
+  gasPayer,
 }: {
   network: { host: string; id: string };
   sender: IAccount;
   receiver: IAccount;
   amount: number;
-  gasPayer?: IAccount;
+  gasPayer: IAccount;
 }): Promise<ICommandResult> {
   // Gas Payer validations
   if (gasPayer.chainId !== receiver.chainId && gasPayer !== sender00) {

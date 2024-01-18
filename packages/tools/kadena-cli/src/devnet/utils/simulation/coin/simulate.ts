@@ -1,5 +1,10 @@
 import type { ChainId } from '@kadena/client';
-import { simulationDefaults } from '../../../../constants/devnets.js';
+import type {
+  IAccount} from '../../../../constants/devnets.js';
+import {
+  sender00,
+  simulationDefaults,
+} from '../../../../constants/devnets.js';
 import type { TransferType } from '../file.js';
 import { appendToFile, createFile } from '../file.js';
 import {
@@ -11,8 +16,6 @@ import {
   seedRandom,
   stringifyProperty,
 } from '../helper.js';
-import type { IAccount } from '../utils.js';
-import { sender00 } from '../utils.js';
 import { crossChainTransfer } from './crosschain-transfer.js';
 import { safeTransfer } from './safe-transfer.js';
 import { transfer } from './transfer.js';
@@ -32,17 +35,19 @@ export interface ISimulationOptions {
   maxAmount: number;
   tokenPool: number;
   logFolder: string;
+  defaultChain: ChainId;
   seed: string;
 }
 
 export async function simulateCoin({
   network,
-  numberOfAccounts = 6,
-  transferInterval = 100,
-  maxAmount = 25,
-  tokenPool = 1000000,
+  numberOfAccounts,
+  transferInterval,
+  maxAmount,
+  tokenPool,
   logFolder,
-  seed = Date.now().toString(),
+  defaultChain,
+  seed,
 }: ISimulationOptions): Promise<void> {
   const accounts: IAccount[] = [];
 
@@ -67,7 +72,7 @@ export async function simulateCoin({
     for (let i = 0; i < numberOfAccounts; i++) {
       // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
       const noOfKeys = i % 2 === 0 ? 1 : 2;
-      let account = await generateAccount(noOfKeys);
+      let account = await generateAccount(noOfKeys, defaultChain, network.host);
       console.log(
         `Generated KeyPair\nAccount: ${
           account.account
@@ -85,6 +90,7 @@ export async function simulateCoin({
           : 'transfer';
 
       let result;
+      const sender: IAccount = { ...sender00, chainId: '0' };
 
       if (fundingType === 'cross-chain-transfer') {
         account = {
@@ -92,25 +98,28 @@ export async function simulateCoin({
           chainId: '1',
         };
 
-        const sender: IAccount = { ...sender00, chainId: '0' };
-
         result = await crossChainTransfer({
           network,
           sender,
           receiver: account,
           amount: tokenPool / numberOfAccounts,
+          gasPayer: sender00,
         });
       } else if (fundingType === 'safe-transfer') {
         result = await safeTransfer({
           network,
+          chainId: defaultChain,
           receiver: account,
           amount: tokenPool / numberOfAccounts,
+          sender,
         });
       } else {
         result = await transfer({
           network,
           receiver: account,
+          chainId: defaultChain,
           amount: tokenPool / numberOfAccounts,
+          sender,
         });
       }
 
@@ -145,14 +154,17 @@ export async function simulateCoin({
           await transfer({
             network,
             receiver: account,
+            chainId: defaultChain,
             amount: tokenPool / numberOfAccounts,
+            sender: sender00,
           });
           counter = 0;
         }
 
         const balance = await getAccountBalance({
           account: account.account,
-          chainId: account.chainId || simulationDefaults.DEFAULT_CHAIN_ID,
+          chainId: account.chainId || defaultChain,
+          networkHost: network.host,
         });
 
         // using a random number safety gap to avoid underflowing the account
@@ -230,7 +242,7 @@ export async function simulateCoin({
               receiver: nextAccount,
               sender: account,
               amount,
-              chainId: account.chainId,
+              chainId: account.chainId || defaultChain,
             });
           }
           if (transferType === 'safe-transfer') {
@@ -239,7 +251,7 @@ export async function simulateCoin({
               receiver: nextAccount,
               sender: account,
               amount,
-              chainId: account.chainId,
+              chainId: account.chainId || defaultChain,
             });
           }
         }

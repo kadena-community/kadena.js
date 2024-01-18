@@ -1,5 +1,4 @@
 import { input } from '@inquirer/prompts';
-import { ChainId } from '@kadena/types';
 
 export async function simulateNoAccountsPrompt(): Promise<number> {
   const noAccounts = await input({
@@ -71,5 +70,12 @@ export function simulateDefaultChainPrompt(): Promise<string> {
   return input({
     message: 'Specify the default chain for the simulation',
     default: '0',
+    validate: (value) => {
+      const valid =
+        !isNaN(parseInt(value)) &&
+        parseInt(value) >= 0 &&
+        parseInt(value) <= 20;
+      return valid || 'Please enter a valid chain id';
+    },
   });
 }
