@@ -1,5 +1,6 @@
 import type { BinaryLike } from 'crypto';
 import { randomBytes } from 'crypto';
+import { U } from 'vitest/dist/reporters-O4LBziQ_';
 import { decrypt, encrypt } from './crypto';
 
 export type EncryptedString = string & { _brand: 'EncryptedString' };
@@ -10,17 +11,27 @@ export type EncryptedString = string & { _brand: 'EncryptedString' };
  * @param {BinaryLike} password - password used for encryption.
  * @returns {string} The encrypted string
  */
-export function kadenaEncrypt(
+export function kadenaEncrypt<
+  TEncode extends 'base64' | 'buffer' = 'base64',
+  TReturn = TEncode extends 'base64' ? EncryptedString : Uint8Array,
+>(
   password: BinaryLike,
-  message: Uint8Array,
-): EncryptedString {
+  message: Uint8Array | string,
+  encode: TEncode = 'base64' as TEncode,
+): TReturn {
   // Using randomBytes for the salt is fine here because the salt is not secret but should be unique.
   const salt = randomBytes(16);
   const { cipherText, iv, tag } = encrypt(Buffer.from(message), password, salt);
 
-  return Buffer.from(
+  const encrypted = Buffer.from(
     [salt, iv, tag, cipherText].map((x) => x.toString('base64')).join('.'),
-  ).toString('base64') as EncryptedString;
+  );
+
+  return (
+    encode === 'base64'
+      ? (encrypted.toString('base64') as EncryptedString)
+      : new Uint8Array(encrypted)
+  ) as TReturn;
 }
 
 /**
@@ -35,18 +46,16 @@ export function kadenaEncrypt(
  */
 export function kadenaDecrypt(
   password: BinaryLike,
-  encryptedData: EncryptedString,
+  encryptedData: EncryptedString | BinaryLike,
 ): Uint8Array {
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!encryptedData) {
     throw new Error('Encrypted data is empty');
   }
-  const [saltBase64, ivBase64, tagBase64, encryptedBase64] = Buffer.from(
-    encryptedData,
-    'base64',
-  )
-    .toString()
-    .split('.');
+  const [saltBase64, ivBase64, tagBase64, encryptedBase64] =
+    typeof encryptedData === 'string'
+      ? Buffer.from(encryptedData, 'base64').toString().split('.')
+      : Buffer.from(encryptedData.buffer).toString().split('.');
 
   // Convert from Base64.
   const salt = Buffer.from(saltBase64, 'base64');
@@ -73,7 +82,7 @@ export function kadenaDecrypt(
  */
 export function kadenaChangePassword(
   password: BinaryLike,
-  encryptedData: EncryptedString,
+  encryptedData: EncryptedString | Uint8Array,
   newPassword: string,
 ): EncryptedString {
   if (typeof password !== 'string' || typeof newPassword !== 'string') {

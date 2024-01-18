@@ -20,14 +20,14 @@ function genPublicKeyFromSeed(
 
 export function kadenaGetPublic(
   password: BinaryLike,
-  seed: EncryptedString,
+  seed: BinaryLike,
   index: number,
   derivationPathTemplate?: string,
 ): string;
 
 export function kadenaGetPublic(
   password: BinaryLike,
-  seed: EncryptedString,
+  seed: BinaryLike,
   indexRange: [number, number],
   derivationPathTemplate?: string,
 ): string[];
@@ -44,7 +44,7 @@ export function kadenaGetPublic(
  */
 export function kadenaGetPublic(
   password: BinaryLike,
-  seed: EncryptedString,
+  seed: BinaryLike,
   indexOrRange: number | [number, number],
   derivationPathTemplate: string = `m'/44'/626'/<index>'`,
 ): string | string[] {

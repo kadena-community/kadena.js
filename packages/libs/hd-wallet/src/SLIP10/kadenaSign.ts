@@ -2,7 +2,11 @@ import { verifySig } from '@kadena/cryptography-utils';
 import type { BinaryLike } from 'crypto';
 import type { EncryptedString } from '../utils/kadenaEncryption';
 import { kadenaDecrypt } from '../utils/kadenaEncryption';
-import { signWithKeyPair, signWithSeed } from './utils/sign';
+import {
+  SignatureWithPublicKey,
+  signWithKeyPair,
+  signWithSeed,
+} from './utils/sign';
 
 /**
  * Signs a Kadena transaction with a given public and private key pair.
@@ -15,12 +19,26 @@ export function kadenaSignWithKeyPair(
   password: BinaryLike,
   publicKey: string,
   encryptedPrivateKey: EncryptedString,
-): (hash: string) => string {
+): (hash: string) => SignatureWithPublicKey {
   return signWithKeyPair(
     publicKey,
     Buffer.from(kadenaDecrypt(password, encryptedPrivateKey)).toString('hex'),
   );
 }
+
+export function kadenaSignWithSeed(
+  password: BinaryLike,
+  seed: BinaryLike,
+  index: number,
+  derivationPathTemplate?: string,
+): (hash: string) => SignatureWithPublicKey;
+
+export function kadenaSignWithSeed(
+  password: BinaryLike,
+  seed: BinaryLike,
+  index: number[],
+  derivationPathTemplate?: string,
+): (hash: string) => SignatureWithPublicKey[];
 
 /**
  * Signs a Kadena transaction with a seed and index.
@@ -31,14 +49,25 @@ export function kadenaSignWithKeyPair(
  */
 export function kadenaSignWithSeed(
   password: BinaryLike,
-  seed: EncryptedString,
-  index: number,
+  seed: BinaryLike,
+  index: number | number[],
   derivationPathTemplate: string = `m'/44'/626'/<index>'`,
-): (hash: string) => string {
-  return signWithSeed(
-    kadenaDecrypt(password, seed),
-    derivationPathTemplate.replace('<index>', index.toString()),
+): (hash: string) => SignatureWithPublicKey | SignatureWithPublicKey[] {
+  const decryptedSeed = kadenaDecrypt(password, seed);
+  if (typeof index === 'number') {
+    return signWithSeed(
+      decryptedSeed,
+      derivationPathTemplate.replace('<index>', index.toString()),
+    );
+  }
+  const signers = index.map((i) =>
+    signWithSeed(
+      decryptedSeed,
+      derivationPathTemplate.replace('<index>', i.toString()),
+    ),
   );
+
+  return (hash: string) => signers.map((signer) => signer(hash));
 }
 
 /**

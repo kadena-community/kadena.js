@@ -17,6 +17,6 @@ describe('kadenaSignWithSeed', async () => {
     const signer = kadenaSignWithSeed(password, seed, index);
     const signature = signer(hash);
     expect(signature).toBeTruthy();
-    expect(signature.length > 0).toBeTruthy();
+    expect(signature.sig.length > 0).toBeTruthy();
   });
 });

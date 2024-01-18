@@ -20,6 +20,6 @@ describe('kadenaSignWithKeyPair', async () => {
     const signer = kadenaSignWithKeyPair(password, publicKey, privateKey);
     const signature = signer(txHash);
     expect(signature).toBeTruthy();
-    expect(signature.length > 0).toBeTruthy();
+    expect(signature.sig.length > 0).toBeTruthy();
   });
 });

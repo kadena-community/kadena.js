@@ -3,6 +3,11 @@ import { signHash } from '@kadena/cryptography-utils';
 import { HDKey } from 'ed25519-keygen/hdkey';
 import { uint8ArrayToHex } from '../../utils/buffer-helpers';
 
+export interface SignatureWithPublicKey {
+  sig: string;
+  pubKey: string;
+}
+
 /**
  * Derive a key pair using a seed and an index.
  * @param {Uint8Array} seed - The seed for key derivation.
@@ -41,7 +46,7 @@ export const signWithKeyPair =
     if (sig === undefined) {
       throw new Error('Signature is undefined');
     }
-    return sig;
+    return { sig, pubKey: publicKey };
   };
 
 /**
@@ -53,7 +58,7 @@ export const signWithKeyPair =
 export const signWithSeed = (
   seed: Uint8Array,
   derivationPath: string,
-): ((hash: string) => string) => {
+): ((hash: string) => SignatureWithPublicKey) => {
   const { publicKey, privateKey } = deriveKeyPair(seed, derivationPath);
   return signWithKeyPair(publicKey, privateKey);
 };
