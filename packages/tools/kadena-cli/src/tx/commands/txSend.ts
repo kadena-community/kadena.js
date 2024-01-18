@@ -6,7 +6,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 
-import { globalOptions } from '../../utils/globalOptions.js';
+// import { globalOptions } from '../../utils/globalOptions.js';
 
 /*
 

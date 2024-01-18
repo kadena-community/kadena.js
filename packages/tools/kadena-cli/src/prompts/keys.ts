@@ -96,8 +96,8 @@ export async function keyAmountPrompt(): Promise<string> {
 
 export async function keyIndexOrRangePrompt(): Promise<string> {
   return await input({
-    message: `Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 1`,
-    default: '1',
+    message: `Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 0`,
+    default: '0',
   });
 }
 
