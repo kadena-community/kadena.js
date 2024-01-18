@@ -12,7 +12,7 @@ type BinaryLike = string | NodeJS.ArrayBufferView;
  * @param {string} password - User's password.
  * @returns {Buffer} - Returns the derived cryptographic key.
  */
-function deriveKey(password: string, salt: BinaryLike): Buffer {
+function deriveKey(password: BinaryLike, salt: BinaryLike): Buffer {
   return pbkdf2Sync(password, salt, 1000, 32, 'sha256');
 }
 
@@ -24,7 +24,7 @@ function deriveKey(password: string, salt: BinaryLike): Buffer {
  */
 export function encrypt(
   text: Buffer,
-  password: string,
+  password: BinaryLike,
   salt: BinaryLike,
 ): { cipherText: Buffer; iv: Buffer; tag: Buffer } {
   const key = deriveKey(password, salt);
@@ -52,7 +52,7 @@ export function decrypt(
     iv: Buffer;
     tag: Buffer;
   },
-  password: string,
+  password: BinaryLike,
   salt: BinaryLike,
 ): Buffer | undefined {
   const key = deriveKey(password, salt);
