@@ -1,12 +1,8 @@
 import type { ChainId } from '@kadena/client';
-import type {
-  IAccount} from '../../../../constants/devnets.js';
-import {
-  sender00,
-  simulationDefaults,
-} from '../../../../constants/devnets.js';
+import type { IAccount } from '../../../../constants/devnets.js';
+import { sender00, simulationDefaults } from '../../../../constants/devnets.js';
 import type { TransferType } from '../file.js';
-import { appendToFile, createFile } from '../file.js';
+import { appendToLogFile, createFile } from '../file.js';
 import {
   generateAccount,
   getAccountBalance,
@@ -129,7 +125,7 @@ export async function simulateCoin({
       }
       accounts.push(account);
 
-      appendToFile(filepath, {
+      appendToLogFile(filepath, {
         timestamp: Date.now(),
         from: 'sender00',
         to: account.account,
@@ -256,7 +252,7 @@ export async function simulateCoin({
           }
         }
 
-        appendToFile(filepath, {
+        appendToLogFile(filepath, {
           timestamp: Date.now(),
           from: account.account,
           to: nextAccount.account,
@@ -279,7 +275,7 @@ export async function simulateCoin({
     }
   } catch (error) {
     console.error(error);
-    appendToFile(filepath, { error });
+    appendToLogFile(filepath, { error });
     throw error;
   }
 }

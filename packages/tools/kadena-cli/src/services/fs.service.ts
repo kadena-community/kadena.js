@@ -12,6 +12,7 @@ export interface IFileSystemService {
   ensureDirectoryExists: (path: string) => Promise<void>;
   readDir: (path: string) => Promise<string[]>;
   readDirWithTypes: (path: string) => Promise<Dirent[]>;
+  appendFile: (path: string, data: string) => Promise<void>;
 }
 
 export const fileSystemService: IFileSystemService = {
@@ -61,5 +62,8 @@ export const fileSystemService: IFileSystemService = {
   },
   async readDirWithTypes(path: string) {
     return fs.readdir(path, { withFileTypes: true });
+  },
+  async appendFile(path: string, data: string) {
+    await fs.appendFile(path, data, { encoding: 'utf8' });
   },
 };

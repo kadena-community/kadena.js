@@ -1,6 +1,6 @@
 import { input } from '@inquirer/prompts';
 
-export async function simulateNoAccountsPrompt(): Promise<number> {
+export async function numberOfAccountsPrompt(): Promise<number> {
   const noAccounts = await input({
     message: 'Enter the amount of accounts to be created in the simulation.',
     default: '6',
@@ -13,7 +13,7 @@ export async function simulateNoAccountsPrompt(): Promise<number> {
   return parseInt(noAccounts);
 }
 
-export async function simulateTransferIntervalPrompt(): Promise<number> {
+export async function transferIntervalPrompt(): Promise<number> {
   const transferInterval = await input({
     message: 'Enter the transfer interval in milliseconds.',
     default: '100',
@@ -26,7 +26,7 @@ export async function simulateTransferIntervalPrompt(): Promise<number> {
   return parseInt(transferInterval);
 }
 
-export async function simulateMaxAmountPrompt(): Promise<number> {
+export async function maxTransferAmountPrompt(): Promise<number> {
   const maxAmount = await input({
     message: 'Enter the max transfer amount per single transaction (coin).',
     default: '25',
@@ -39,7 +39,7 @@ export async function simulateMaxAmountPrompt(): Promise<number> {
   return parseInt(maxAmount);
 }
 
-export async function simulateTokenPoolPrompt(): Promise<number> {
+export async function tokenPoolPrompt(): Promise<number> {
   const tokenPool = await input({
     message: 'Enter the total token pool (coin).',
     default: '1000000',
@@ -52,29 +52,22 @@ export async function simulateTokenPoolPrompt(): Promise<number> {
   return parseInt(tokenPool);
 }
 
-export function simulateSeedPrompt(): Promise<string> {
+export function seedPrompt(): Promise<string> {
   return input({
     message: 'Enter the seed for the simulation.',
     default: Date.now().toString(),
   });
 }
 
-export function simulateLogFolderPrompt(): Promise<string> {
+export function defaultChainIdPrompt(): Promise<string> {
   return input({
-    message: 'Specify the directory where the log file will be generated',
-    default: `${process.cwd()}/logs/simute`,
-  });
-}
-
-export function simulateDefaultChainPrompt(): Promise<string> {
-  return input({
-    message: 'Specify the default chain for the simulation',
+    message: 'Specify the default chain for the simulation (0-19)',
     default: '0',
     validate: (value) => {
       const valid =
         !isNaN(parseInt(value)) &&
         parseInt(value) >= 0 &&
-        parseInt(value) <= 20;
+        parseInt(value) <= 19;
       return valid || 'Please enter a valid chain id';
     },
   });

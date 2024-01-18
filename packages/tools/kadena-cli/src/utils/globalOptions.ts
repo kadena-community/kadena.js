@@ -10,7 +10,7 @@ import {
   // marmalade,
   networks,
   security,
-  simulate as simulatePrompts,
+  simulate as simulationPrompts,
   typescript,
 } from '../prompts/index.js';
 
@@ -196,70 +196,70 @@ export const globalOptions = {
       'Version of the kadena/devnet Docker image to use (e.g. "latest")',
     ),
   }),
-  //Simulate
-  simulateNoAccounts: createOption({
+  //Simulation
+  numberOfAccounts: createOption({
     key: 'accounts' as const,
-    prompt: simulatePrompts.simulateNoAccountsPrompt,
+    prompt: simulationPrompts.numberOfAccountsPrompt,
     validation: z.number(),
     option: new Option(
       '-a, --accounts <accounts>',
-      'Enter the amount of accounts to be created in the simulation.',
+      'Amount of accounts to be created in the simulation.',
     ),
   }),
-  simulateTransferInterval: createOption({
+  transferInterval: createOption({
     key: 'interval' as const,
-    prompt: simulatePrompts.simulateTransferIntervalPrompt,
+    prompt: simulationPrompts.transferIntervalPrompt,
     validation: z.number(),
     option: new Option(
       '-i, --interval <interval>',
-      'Enter the transfer interval in milliseconds.',
+      'Transfer interval in milliseconds.',
     ).argParser((value) => parseInt(value, 10)),
   }),
 
-  simulateMaxAmount: createOption({
-    key: 'maxAmount' as const,
-    prompt: simulatePrompts.simulateMaxAmountPrompt,
+  maxTransferAmount: createOption({
+    key: 'maxTransferAmount' as const,
+    prompt: simulationPrompts.maxTransferAmountPrompt,
     validation: z.number(),
     option: new Option(
-      '-x, --max-amount <maxAmount>',
-      'Enter the max transfer amount per single transaction (coin).',
+      '-x, --max-transfer-amount <maxTransferAmount>',
+      'Max transfer amount per single transaction (coin).',
     ),
   }),
 
-  simulateTokenPool: createOption({
+  tokenPool: createOption({
     key: 'tokenPool' as const,
-    prompt: simulatePrompts.simulateTokenPoolPrompt,
+    prompt: simulationPrompts.tokenPoolPrompt,
     validation: z.number(),
     option: new Option(
       '-p, --token-pool <tokenPool>',
-      'Enter the total token pool (coin).',
+      'Total token pool (coin).',
     ),
   }),
-  simulateSeed: createOption({
+  seed: createOption({
     key: 'seed' as const,
-    prompt: simulatePrompts.simulateSeedPrompt,
+    prompt: simulationPrompts.seedPrompt,
     validation: z.string(),
-    option: new Option(
-      '-s, --seed <seed>',
-      'Enter the seed for the simulation.',
-    ),
+    option: new Option('-s, --seed <seed>', 'Seed for the simulation.'),
   }),
-  simulateLogFolder: createOption({
+  logFolder: createOption({
     key: 'logFolder' as const,
-    prompt: simulatePrompts.simulateLogFolderPrompt,
+    prompt: generic.logFolderPrompt,
     validation: z.string(),
     option: new Option(
       '-l, --log-folder <logFolder>',
-      'Specify the directory where the log file will be generated.',
+      'Directory where the log file will be generated. (e.g. ./kadena/simulation-logs/',
     ),
   }),
-  simulateDefaultChain: createOption({
-    key: 'defaultChain' as const,
-    prompt: simulatePrompts.simulateDefaultChainPrompt,
+  defaultChainId: createOption({
+    key: 'defaultChainId' as const,
+    prompt: simulationPrompts.defaultChainIdPrompt,
     validation: z.string(),
+    transform: (chainId: string) => {
+      return chainId as ChainId;
+    },
     option: new Option(
-      '-c, --default-chain <defaultChain>',
-      'Specify the default chain for the simulation.',
+      '-c, --default-chain-id <defaultChainId>',
+      'Default chain id for the simulation (eg. 0).',
     ),
   }),
 

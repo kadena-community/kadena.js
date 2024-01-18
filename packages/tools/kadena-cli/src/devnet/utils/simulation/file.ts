@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { services } from '../../../services/index.js';
 
 export interface IFileData {
   timestamp: number;
@@ -46,10 +47,11 @@ export function createFile(folder: string, filename: string): string {
   return filepath;
 }
 
-export function appendToFile(
+export async function appendToLogFile(
   filepath: string,
   data: IFileData | IFileError,
-): void {
+): Promise<void> {
   const dataString = Object.values(data).join(',');
-  fs.appendFileSync(filepath, `${dataString}\n`);
+  await services.filesystem.appendFile(filepath, `${dataString}\n`);
+  // fs.appendFileSync(filepath, `${dataString}\n`);
 }

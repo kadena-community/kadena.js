@@ -3,9 +3,9 @@ import { deleteDevnetCommand } from './commands/devnetDelete.js';
 import { listDevnetsCommand } from './commands/devnetList.js';
 import { manageDevnetsCommand } from './commands/devnetManage.js';
 import { runDevnetCommand } from './commands/devnetRun.js';
+import { simulateCommand } from './commands/devnetSimulation.js';
 import { stopDevnetCommand } from './commands/devnetStop.js';
 import { updateDevnetCommand } from './commands/devnetUpdate.js';
-import { simulateCommand } from './commands/simulate.js';
 
 import type { Command } from 'commander';
 

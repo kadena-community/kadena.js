@@ -60,3 +60,10 @@ export function createExternalPrompt<T extends Record<string, IPrompt<any>>>(
     {} as Record<keyof T, (defaultValue?: string) => Promise<string>>,
   );
 }
+
+export function logFolderPrompt(): Promise<string> {
+  return input({
+    message: 'Specify the directory where the log file will be generated',
+    default: `${process.cwd()}/logs/simulate`,
+  });
+}
