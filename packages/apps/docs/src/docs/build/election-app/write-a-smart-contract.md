@@ -172,7 +172,6 @@ To create the starter code for a Pact module:
    )
      (define-namespace 'election (read-keyset 'admin-keyset) (read-keyset 'admin-keyset))
    (commit-tx)
-
    (begin-tx
      "Define a keyset to govern the module"
    )
@@ -258,7 +257,6 @@ To test access to the election module:
    ```pact
    (env-data {})
    (env-sigs [])
-
    (begin-tx
      "Call list-candidates"
    )
@@ -316,13 +314,11 @@ To test updating a module with the correct keyset:
        }
      }
    )
-
    (env-sigs
      [{ 'key  : 'admin-key
       , 'caps : []
      }]
    )
-
    (begin-tx
      "Update the module"
    )
@@ -330,7 +326,6 @@ To test updating a module with the correct keyset:
        (defun list-candidates () [1, 2, 3])
      )
    (commit-tx)
-
    (begin-tx
      "Call updated list-candidates function"
    )
@@ -383,13 +378,11 @@ To test updating a module with an incorrect keyset:
        }
      }
    )
-
    (env-sigs
      [{ 'key  : 'other-key
       , 'caps : []
      }]
    )
-
    (begin-tx
      "Upgrade the module without permission"
    )
@@ -438,7 +431,6 @@ To modify governance for the module:
        }
      }
    )
-
    (env-sigs
      [{ 'key  : 'admin-key
       , 'caps : []
