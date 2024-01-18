@@ -1,77 +1,38 @@
 ---
-title: "09: Gas station"
-description: "In the ninth chapter of the Election dApp tutorial you will add a gas station module to the election smart contract."
-menu: Election dApp tutorial
-label: "09: Gas station"
+title: "Add a gas station"
+description: "Prepare a gas station module to pay the transaction fees for account holders who cast votes in the election application."
+menu: "Workshop: Election application"
+label: "Add a gas station"
 order: 9
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
 
-# Chapter 09: Gas station
+# Add a gas station
 
-In a traditional government election, all citizens usually receive a paper invitation
-to vote from their government in the traditional mail. They would take their invitation
-to a nearby election office. There, they will receive an anonymous voting ballot from
-an election official upon showing their invitation and a matching ID. In a voting booth,
-they anonymously select the name of their favorite candidate and cast the voting ballot
-in a voting bin. At this point, it is no longer possible to prove that each voting ballot
-corresponds to one unique citizen. Corrupt election officials could easily take a number
-of voting ballots from the stack of unused voting ballots and use them to cast extra votes on
-any given candidate. In many countries, the votes are counted and submitted manually, leaving
-even more room for human error. Even though the votes can be cast anonymously in traditional
-election, the process is inherently unreliable. It is also inconvenient for voters to physically
-vote at an election office. Moreover, a traditional election costs a lot of taxpayer money
-to organize.
+Traditional elections have minimal safeguards against fraud, corruption, mishandling of ballots, and intentional or unintentional disruptions.
+Even where voting is available by mail or online, elections can be costly, inefficient, and subject to human error.
 
-An election on the blockchain would be more convenient, transparent and reliable. Namely,
-everyone who owns a smartphone or computer could vote from the comfort of their own home.
-The election would be transparent, because all voting transactions will be logged publically
-on the blockchain. Voting would still be anonymous, because citizens vote with their account
-name, which is a hash, instead of their social security number. Moreover, the smart contract
-of the election itself is also publically accessible on the Kadena blockchain, allowing
-everyone to verify that the election rules are fair. Furthermore, the counting process will
-be fully automated, leaving no room for human error. Because all votes are publically accessible
-on the blockchain, everyone will be able to verify that the outcome of the election is indeed
-correct.
+By using blockchain technology, elections could be made more convenient, transparent and reliable.
+For example:
 
-A possible pitfall of a blockchain election is that every vote is a transaction and processing
-a transaction comes at the price of a gas fee. At the time of the election, some citizens
-may have run out of money and would not be able to pay this gas fee and thus would not be
-able to vote. That is not very democratic. Kadena solves this with the concept of gas stations.
-Kadena created the first crypto gas station on a blockchain in 2020. A gas station is an
-account that exists only to make gas payments on behalf of other accounts under specific conditions.
-The government could use a fraction of the traditional election budget to fund a gas station
-that can pay the gas fee for every voting transaction, allowing all citizens to vote for free.
+- Every vote can be recorded as a public transaction that can't be altered.
+- Voters can remain anonymous with votes linked to an encrypted digital fingerprint instead of government-issued identification.
+- Election results can be independently verified by anyone.
 
-## Recommended reading
+However, there is one main drawback to using a blockchain to cast votes in an election.
+Because every vote is a public transaction that changes the state of the blockchain, every vote requires computational resources and incurs a processing fee—commonly referred to as a **gas** payment.
 
- * [The First Crypto Gas Station is Now on Kadena’s Blockchain](/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06)
- * [Introducing Kadena Account Protocols (KIP-0012)](/blogchain/2021/introducing-kadena-account-protocols-kip-0012-2021-09-27)
+Paying for transaction processing is normal in the context of many business operations, but paying to vote is essentially undemocratic. 
+To address this issue, Kadena introduced a transaction processing clearing house for paying fees called a **gas station**.
 
-## Get the code
+A gas station is an account that exists only to make transaction fee payments on behalf of other accounts and under specific conditions.
+For example, a government agency could apply a fraction of its budget for a traditional election to fund a gas station.
+The gas station could then pay the transaction fee for every voting transaction, allowing all citizens to vote for free.
 
-If you are following along with the tutorial you can continue working on your current
-branch. In case you started the tutorial with this chapter, clone the tutorial
-project and change the current directory of your terminal to the project folder.
+For more information about the introduction of gas stations, see [The First Crypto Gas Station is Now on Kadena’s Blockchain](/blogchain/2020/the-first-crypto-gas-station-is-now-on-kadenas-blockchain-2020-08-06).
 
-```bash
-git clone git@github.com:kadena-community/voting-dapp.git election-dapp
-cd election-dapp
-```
-
-Switch branches to get the starter code for this chapter.
-
-```bash
-git checkout 09-gas-station
-```
-
-If you want to skip ahead and see the completed code for this tutorial, you can check
-out the following branch.
-
-```bash
-git checkout 00-complete
-```
+## Before you begin
 
 ## Create a voter account
 
