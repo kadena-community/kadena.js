@@ -27,6 +27,10 @@ async function* iteratorFn(
       where: {
         requestKey: requestKey,
       },
+      select: {
+        blockHash: true,
+        requestKey: true,
+      },
     });
 
     if (transaction) {

@@ -7,6 +7,7 @@ export default builder.prismaNode('Event', {
   description:
     'An event emitted by the execution of a smart-contract function.',
   id: { field: 'blockHash_orderIndex_requestKey' },
+  select: {},
   fields: (t) => ({
     // database fields
     incrementedId: t.exposeInt('id'),
@@ -34,6 +35,10 @@ export default builder.prismaNode('Event', {
       type: 'Transaction',
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      select: {
+        blockHash: true,
+        requestKey: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.transaction.findUnique({
@@ -55,6 +60,9 @@ export default builder.prismaNode('Event', {
       type: 'Block',
       nullable: false,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      select: {
+        blockHash: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.block.findUniqueOrThrow({
