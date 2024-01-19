@@ -7,7 +7,6 @@ import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import type { ComponentType } from 'react';
 import React from 'react';
-import { ChainTreeContextProvider } from '../context/chain-tree-context';
 
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -30,9 +29,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
     <ApolloProvider client={client}>
       <RouterProvider navigate={router.push}>
         <Layout omitHeader={is404}>
-          <ChainTreeContextProvider>
-            <ReactComponent {...pageProps} />
-          </ChainTreeContextProvider>
+          <ReactComponent {...pageProps} />
         </Layout>
       </RouterProvider>
     </ApolloProvider>

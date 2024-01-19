@@ -402,7 +402,7 @@ export const globalOptions = {
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
     defaultIsOptional: false,
     expand: async (keyWallet: string) => {
-      return await getWallet(keyWallet);
+      return keyWallet === 'all' ? null : await getWallet(keyWallet);
     },
   }),
   securityPassword: createOption({
