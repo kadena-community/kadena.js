@@ -14,6 +14,7 @@ import { ThemeProvider } from 'next-themes';
 import { rootLayout } from './App.css';
 import { WalletContextProvider, useWallet } from './hooks/wallet.context';
 import { BackupRecoveryPhrase } from './pages/backup-recovery-phrase/backup-recovery-phrase';
+import { WriteDownRecoveryPhrase } from './pages/backup-recovery-phrase/write-down/write-down-recovery-phrase';
 import { HomePage } from './pages/home/home-page';
 import { CreateWallet } from './pages/on-boarding/create-wallet';
 import { UnlockWallet } from './pages/unlock-wallet/unlock-wallet';
@@ -65,6 +66,10 @@ const Routes: FC = () => {
         <Route
           path="/backup-recovery-phrase"
           element={<BackupRecoveryPhrase />}
+        />
+        <Route
+          path="/backup-recovery-phrase/write-down"
+          element={<WriteDownRecoveryPhrase />}
         />
         <Route path="/accounts/:account" element={<p>Account</p>} />,
       </Route>

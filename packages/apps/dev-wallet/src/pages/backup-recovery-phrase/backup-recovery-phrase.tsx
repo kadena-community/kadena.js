@@ -11,7 +11,7 @@ export function BackupRecoveryPhrase() {
           everyone with the phrase have access to your assets
         </Text>
         <Heading variant="h5">Choose a method</Heading>
-        <Link to="/backup-recovery-phrase/write-it-down">
+        <Link to="/backup-recovery-phrase/write-down">
           Write down the phrase
         </Link>
         <br />

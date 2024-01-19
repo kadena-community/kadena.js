@@ -34,6 +34,7 @@ const WalletContext = createContext<{
   sign: (TXs: IUnsignedCommand[]) => Promise<IUnsignedCommand[]>;
   keyStores: KeyStore[];
   isUnlocked: boolean;
+  decryptMnemonic: (password: string) => Promise<string>;
 } | null>(null);
 
 export const useWallet = () => {
@@ -60,7 +61,6 @@ export const WalletContextProvider: FC<WalletContextProviderProps> = ({
   const [keyStores, setKeyStores] = useLocalStorage<KeyStore[]>(KEYS, []);
 
   const [encryptedSeed, setEncryptedSeed] = useState<ArrayBuffer>();
-  console.log('encryptedSeed', encryptedSeed);
 
   const createWallet = async (password: string, mnemonic: string) => {
     const encryptedMnemonic = await kadenaEncrypt(password, mnemonic);
@@ -144,6 +144,21 @@ export const WalletContextProvider: FC<WalletContextProviderProps> = ({
     return signedTx;
   };
 
+  const decryptMnemonic = async (password: string) => {
+    const encryptedMnemonic = localStorage.getItem(
+      ENCRYPTED_MNEMONIC,
+    ) as EncryptedString | null;
+    if (!encryptedMnemonic) {
+      throw new Error('No wallet found');
+    }
+    const decryptedMnemonicBuffer = await kadenaDecrypt(
+      password,
+      encryptedMnemonic,
+    );
+    const mnemonic = new TextDecoder().decode(decryptedMnemonicBuffer);
+    return mnemonic;
+  };
+
   return (
     <WalletContext.Provider
       value={{
@@ -152,6 +167,7 @@ export const WalletContextProvider: FC<WalletContextProviderProps> = ({
         createPublicKeys,
         keyStores,
         sign,
+        decryptMnemonic,
         isUnlocked: Boolean(encryptedSeed),
       }}
     >
