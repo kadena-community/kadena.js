@@ -1,6 +1,6 @@
-import { logoVariants } from '@components/BrandLogo';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { logoVariants } from '../BrandLogo';
 import { NavHeader } from './';
 import type { INavHeaderRootProps } from './NavHeader';
 import type { INavHeaderLinkProps } from './NavHeaderLink';

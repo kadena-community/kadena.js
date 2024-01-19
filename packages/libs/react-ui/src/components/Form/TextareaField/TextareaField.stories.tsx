@@ -1,8 +1,8 @@
-import type { ITextareaFieldProps } from '@components/Form';
-import { TextareaField } from '@components/Form';
-import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import type { ITextareaFieldProps } from '../TextareaField';
+import { TextareaField } from '../TextareaField';
 
 const meta: Meta<ITextareaFieldProps> = {
   title: 'Form/TextareaField',

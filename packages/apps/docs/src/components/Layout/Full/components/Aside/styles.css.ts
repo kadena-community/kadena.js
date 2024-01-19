@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const asideItemLinkClass = style([
@@ -32,7 +32,7 @@ export const asideItemClass = style([
   {
     selectors: {
       '&::marker': {
-        color: tokens.kda.foundation.color.brand.primary.default,
+        color: tokens.kda.foundation.color.brand.primary.n60,
         fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
         display: 'inline-block',
         width: tokens.kda.foundation.spacing.md,

@@ -1,6 +1,6 @@
-import { SystemIcon } from '@components/Icon';
 import type { FC } from 'react';
 import React from 'react';
+import { SystemIcon } from '../Icon';
 import { pageNavButtonClass, pageNavLabelClass } from './Pagination.css';
 
 interface IPageNavProps {

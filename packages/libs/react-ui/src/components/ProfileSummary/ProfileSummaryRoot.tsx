@@ -1,6 +1,6 @@
-import { Tag } from '@components/Tag';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
+import { Tag } from '../Tag';
 import {
   boldTextClass,
   containerClass,

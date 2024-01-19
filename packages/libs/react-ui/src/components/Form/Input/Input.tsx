@@ -5,7 +5,7 @@ import React, { forwardRef } from 'react';
 import type { FormFieldStatus } from '../Form.css';
 import { baseContainerClass, baseOutlinedClass } from '../Form.css';
 
-import { atoms } from '@theme/atoms.css';
+import { atoms } from '../../../styles/atoms.css';
 import {
   disabledClass,
   inputChildrenClass,

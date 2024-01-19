@@ -1,8 +1,8 @@
-import type { ITagGroupProps } from '@components/Tag';
-import { Tag, TagGroup, TagItem } from '@components/Tag';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Stack, SystemIcon } from '..';
+import type { ITagGroupProps } from '../Tag';
+import { Tag, TagGroup, TagItem } from '../Tag';
 
 const meta: Meta<ITagGroupProps> = {
   title: 'Components/TagGroup',

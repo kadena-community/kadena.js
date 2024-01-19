@@ -1,4 +1,4 @@
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const sectionRowContainerClass = style([
@@ -50,7 +50,7 @@ export const columnLinkClass = style([
   }),
   {
     ':hover': {
-      color: tokens.kda.foundation.color.text.brand['@hover'],
+      color: tokens.kda.foundation.color.text.brand.primary['@hover'],
       textDecoration: 'none',
     },
   },

@@ -1,4 +1,4 @@
-import { atoms, responsiveStyle } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style([

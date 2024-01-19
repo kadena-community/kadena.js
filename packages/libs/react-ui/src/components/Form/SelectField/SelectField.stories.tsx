@@ -1,10 +1,10 @@
-import type { ISelectFieldProps } from '@components/Form';
-import { SelectField } from '@components/Form';
-import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
-import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
-import { onLayer2, withContentWidth } from '@storyDecorators';
 import React from 'react';
+import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import { SystemIcon } from '../../Icon';
+import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
+import type { ISelectFieldProps } from '../SelectField';
+import { SelectField } from '../SelectField';
 
 const meta: Meta<ISelectFieldProps> = {
   title: 'Form/SelectField',

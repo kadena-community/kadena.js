@@ -1,6 +1,6 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/tokens/contract.css';
 import { createVar, fallbackVar, style } from '@vanilla-extract/css';
+import { atoms } from '../../styles/atoms.css';
+import { tokens } from '../../styles/tokens/contract.css';
 
 export type FormFieldStatus = 'disabled' | 'positive' | 'warning' | 'negative';
 export const statusColor = createVar();

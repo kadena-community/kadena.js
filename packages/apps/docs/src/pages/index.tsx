@@ -20,7 +20,7 @@ import {
   Stack,
   SystemIcon,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
+import { sprinkles } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';

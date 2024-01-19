@@ -1,9 +1,9 @@
-import type { IInputProps } from '@components/Form';
-import { InputCopy } from '@components/Form';
+import type { IInputProps } from '../../../Form';
+import { InputCopy } from '../../../Form';
 
 import type { Meta, StoryObj } from '@storybook/react';
-import { onLayer2, withContentWidth } from '@storyDecorators';
 import React from 'react';
+import { onLayer2, withContentWidth } from '../../../../storyDecorators';
 
 const meta: Meta<IInputProps> = {
   title: 'Form/Input/InputCopy',

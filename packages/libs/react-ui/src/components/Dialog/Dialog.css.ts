@@ -1,8 +1,8 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/index';
-import { responsiveStyle } from '@theme/themeUtils';
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
+import { atoms } from '../../styles/atoms.css';
+import { responsiveStyle } from '../../styles/themeUtils';
+import { tokens } from '../../styles/tokens/contract.css';
 import { containerClass as cardContainerClass } from '../Card/Card.css';
 
 export const openModal = style([

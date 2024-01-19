@@ -1,10 +1,10 @@
-import type { IFormFieldWrapperProps, ISelectProps } from '@components/Form';
-import { Select } from '@components/Form';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
+import type { IFormFieldWrapperProps } from '../FormFieldWrapper';
 import { FormFieldHeader, FormFieldHelper } from '../FormFieldWrapper';
 import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
-
+import type { ISelectProps } from '../Select';
+import { Select } from '../Select';
 export interface ISelectFieldProps
   extends Omit<IFormFieldWrapperProps, 'htmlFor'>,
     Omit<ISelectProps, 'disabled' | 'children'> {}

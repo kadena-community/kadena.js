@@ -1,4 +1,4 @@
-import { tokens } from '@kadena/react-ui/theme';
+import { tokens } from '@kadena/react-ui/styles';
 import { keyframes, style } from '@vanilla-extract/css';
 
 const rotate = keyframes({

@@ -1,10 +1,10 @@
-import { Box } from '@components/Layout';
 import { mergeRefs } from '@react-aria/utils';
 import type { FC, ReactElement, ReactNode } from 'react';
 import React, { cloneElement, useRef } from 'react';
 import { useTooltip, useTooltipTrigger } from 'react-aria';
 import type { TooltipTriggerProps } from 'react-stately';
 import { useTooltipTriggerState } from 'react-stately';
+import { Box } from '../Layout';
 import { tooltipPositionVariants } from './Tooltip.css';
 export interface ITooltipProps
   extends Omit<TooltipTriggerProps, 'trigger' | 'onOpenChange'> {

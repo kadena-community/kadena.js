@@ -1,11 +1,11 @@
-import { Stack } from '@components/Layout';
-import type { ITabsProps } from '@components/Tabs';
-import { TabItem, Tabs } from '@components/Tabs';
-import { Text } from '@components/Typography';
-import { onLayer2 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import type { Key } from 'react-aria';
+import { onLayer2 } from '../../storyDecorators';
+import { Stack } from '../Layout';
+import type { ITabsProps } from '../Tabs';
+import { TabItem, Tabs } from '../Tabs';
+import { Text } from '../Typography';
 
 interface IExampleTab {
   title: string;
