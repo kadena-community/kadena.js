@@ -14,10 +14,12 @@ export function BackupRecoveryPhrase() {
         <Link to="/backup-recovery-phrase/write-it-down">
           Write down the phrase
         </Link>
+        <br />
         <Link to="/backup-recovery-phrase/export-encrypted">
           Export encrypted phrase
         </Link>
-        <Link to="/home">Skip</Link>
+        <br />
+        <Link to="/">Skip for now</Link>
       </Box>
     </main>
   );

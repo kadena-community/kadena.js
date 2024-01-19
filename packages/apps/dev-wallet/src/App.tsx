@@ -12,9 +12,11 @@ import {
 
 import { ThemeProvider } from 'next-themes';
 import { rootLayout } from './App.css';
-import HomePage from './pages/home/HomePage';
+import { WalletContextProvider, useWallet } from './hooks/wallet.context';
+import { BackupRecoveryPhrase } from './pages/backup-recovery-phrase/backup-recovery-phrase';
+import { HomePage } from './pages/home/home-page';
 import { CreateWallet } from './pages/on-boarding/create-wallet';
-import { WalletContextProvider, useWallet } from './service/wallet.context';
+import { UnlockWallet } from './pages/unlock-wallet/unlock-wallet';
 import { getScriptType } from './utils/window';
 
 const Layout: FC = () => {
@@ -58,7 +60,12 @@ const Routes: FC = () => {
     <Route element={<Layout />}>
       <Route path="/" element={<HomePage />} />
       <Route path="/create-wallet" element={<CreateWallet />} />
+      <Route path="/unlock-wallet" element={<UnlockWallet />} />
       <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>
+        <Route
+          path="/backup-recovery-phrase"
+          element={<BackupRecoveryPhrase />}
+        />
         <Route path="/accounts/:account" element={<p>Account</p>} />,
       </Route>
     </Route>,
