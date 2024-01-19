@@ -1,3 +1,4 @@
+const sendTemplate = `
 code: |-
   (coin.transfer "{{{from-acct}}}" "{{{to-acct}}}" {{amount}})
 data:
@@ -18,3 +19,9 @@ signers:
       - name: "coin.GAS"
         args: []
 type: exec
+`;
+
+export const defaultTemplates = { send: sendTemplate } as Record<
+  string,
+  string
+>;

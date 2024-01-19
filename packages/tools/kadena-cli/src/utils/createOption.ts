@@ -15,10 +15,12 @@ export type IPrompt<T> = (
   isOptional: boolean,
 ) => T | Promise<T>;
 
-type IPromptCreator<T> = (
-  responses: Record<string, unknown>,
-  args: Record<string, unknown>,
-) => T;
+// Should be used by OptionType but that causes issues in createCommandFlexible
+// See @ts-ignore comment there for details
+// type IPromptCreator<T> = (
+//   responses: Record<string, unknown>,
+//   args: Record<string, unknown>,
+// ) => T;
 
 export interface IOptionCreatorObject {
   key: string;
@@ -59,5 +61,5 @@ export type OptionType = Omit<
   ReturnType<ReturnType<typeof createOption>>,
   'prompt'
 > & {
-  prompt: IPromptCreator<any>;
+  prompt: IPrompt<any>;
 };

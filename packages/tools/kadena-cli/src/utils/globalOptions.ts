@@ -2,14 +2,13 @@ import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
   account,
-  // contract,
   devnet as devnetPrompts,
   generic,
   genericActionsPrompts,
   keys,
-  // marmalade,
   networks,
   security,
+  tx,
   typescript,
 } from '../prompts/index.js';
 
@@ -31,6 +30,9 @@ import {
 } from '../networks/utils/networkHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
+import { templateVariables } from '../prompts/tx.js';
+import { defaultTemplates } from '../tx/commands/templates/templates.js';
+import { getTemplateVariables } from '../tx/utils/template.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 import { removeAfterFirstDot } from './path.util.js';
@@ -489,6 +491,48 @@ export const globalOptions = {
       }
       return keyMessage;
     },
+  }),
+  // TX
+  outFileJson: createOption({
+    key: 'outFile',
+    prompt: tx.outFilePrompt,
+    validation: z.string().optional(),
+    option: new Option(
+      '-o, --out-file <outFile>',
+      'Enter the file name to save the output',
+    ),
+    defaultIsOptional: true,
+    transform(value: string) {
+      if (!value) return null;
+      const file = value.endsWith('.json') ? value : `${value}.json`;
+      return join(process.cwd(), file);
+    },
+  }),
+  selectTemplate: createOption({
+    key: 'template',
+    option: new Option('--template <template>', 'select a template'),
+    validation: z.string(),
+    prompt: tx.selectTemplate,
+    async expand(templateFile: string) {
+      const template = defaultTemplates[templateFile];
+
+      if (template === undefined) {
+        throw Error(`Template "${templateFile}" not found`);
+      }
+
+      const variables = getTemplateVariables(template);
+
+      return { template, variables };
+    },
+  }),
+  templateVariables: createOption({
+    key: 'templateVariables',
+    validation: z.object({}).passthrough(),
+    option: new Option(
+      '--template-variables <templateVariables>',
+      'template variables',
+    ),
+    prompt: templateVariables,
   }),
 } as const;
 

@@ -241,6 +241,9 @@ export function getCommandExecution(
             displayValue = value.toString();
           } else if (typeof value === 'boolean' && value === false) {
             return undefined;
+          } else if (value === null) {
+            // if null, leave out from command entirely
+            return;
           } else if (
             typeof value === 'object' &&
             value !== null &&

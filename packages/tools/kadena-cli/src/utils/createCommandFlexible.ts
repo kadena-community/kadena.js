@@ -28,6 +28,8 @@ export async function executeOption<Option extends OptionType>(
 
   if (value === undefined) {
     if (args.quiet !== 'true') {
+      // @ts-ignore prompt is called with two arguments, it's typings here are wrong
+      // but it is hard to fix while other types correct because prompt overwrites itself in createOption
       value = await option.prompt(args, originalArgs);
     } else if (option.isOptional === false) {
       throw new Error(
