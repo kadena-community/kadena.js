@@ -1,13 +1,11 @@
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
 
-import {
-  FormFieldHeader,
-  FormFieldHelper,
-  IFormFieldWrapperProps,
-} from '../FormFieldWrapper';
+import type { IFormFieldWrapperProps } from '../FormFieldWrapper';
+import { FormFieldHeader, FormFieldHelper } from '../FormFieldWrapper';
 import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
-import { ITextareaProps, Textarea } from '../Textarea/Textarea';
+import type { ITextareaProps } from '../Textarea/Textarea';
+import { Textarea } from '../Textarea/Textarea';
 
 export interface ITextareaFieldProps
   extends Omit<IFormFieldWrapperProps, 'htmlFor' | 'children'>,

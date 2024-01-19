@@ -5,8 +5,8 @@ import type { FormFieldStatus } from '../Form.css';
 import type { ISelectProps } from '../Select';
 
 import { Stack } from '../../Layout';
-import { IInputProps } from '../Input';
-import { ITextareaProps } from '../Textarea';
+import type { IInputProps } from '../Input';
+import type { ITextareaProps } from '../Textarea';
 import type { IFormFieldHeaderProps } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHeader } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHelper } from './FormFieldHelper/FormFieldHelper';

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { ProductIcon } from '..';
-import { IIconProps } from '../IconWrapper';
+import type { IIconProps } from '../IconWrapper';
 import { sizeVariants } from '../IconWrapper.css';
 import { gridContainer, gridItem } from '../stories.css';
 
