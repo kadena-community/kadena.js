@@ -3,6 +3,7 @@ import 'module-alias/register';
 import type { IAccount } from '@devnet/utils';
 import { logger } from '@utils/logger';
 import { Command, Option } from 'commander';
+import { flood } from './coin/flood';
 import { simulateCoin } from './coin/simulate';
 import { transfer } from './coin/transfer';
 import { generateAccount } from './helper';
@@ -113,6 +114,16 @@ program
     } catch (error) {
       console.error(error);
     }
+  });
+
+program
+  .command('simulate:flood')
+  .description('Flood traffic on the devnet')
+  .addOption(
+    new Option('-i, --iterations <number>', 'Number of iterations').default(1),
+  )
+  .action(async (args) => {
+    flood({ iterations: args.iterations, timeout: 1000 });
   });
 
 program.parse();
