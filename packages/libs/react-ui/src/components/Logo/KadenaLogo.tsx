@@ -1,12 +1,13 @@
 import type { SVGProps } from 'react';
 import * as React from 'react';
 
-export const KadenaLogo: React.FC<SVGProps<SVGSVGElement>> = () => (
+export const KadenaLogo: React.FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
-    height="24"
+    height={24}
     viewBox="0 0 64 64"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    {...props}
   >
     <path
       d="M56.9124 55.9986H39.5461L39.5347 55.99L39.3979 55.8843L17.8766 39.0708L26.6852 31.9998L56.7671 55.8843L56.9124 55.9986Z"

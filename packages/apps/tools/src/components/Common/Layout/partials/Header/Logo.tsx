@@ -1,12 +1,13 @@
 import type { SVGProps } from 'react';
 import * as React from 'react';
 
-const KadenaDevToolsLogo: React.FC<SVGProps<SVGSVGElement>> = () => (
+export const Logo: React.FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
     height="24"
     viewBox="0 0 400 48"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    {...props}
   >
     <path
       d="M58.2977 38.2827V9.71265H62.6664V21.5864H63.3418C65.1172 19.6207 68.6509 15.6638 73.9485 9.71265H79.668C77.5221 12.0782 73.2475 16.7666 66.8384 23.7777C69.0612 26.1947 73.4983 31.0288 80.1439 38.2827H74.225C72.4239 36.2628 68.7962 32.2258 63.3418 26.169H62.6664V38.2827H58.2977Z"
@@ -79,5 +80,3 @@ const KadenaDevToolsLogo: React.FC<SVGProps<SVGSVGElement>> = () => (
     />
   </svg>
 );
-
-export { KadenaDevToolsLogo };

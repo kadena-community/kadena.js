@@ -39,10 +39,11 @@ export type {
   INavFooterRootProps,
 } from './NavFooter';
 export type {
-  INavHeaderContentProps,
+  INavHeaderButtonLinkProps,
+  INavHeaderButtonProps,
+  INavHeaderLinkListProps,
   INavHeaderLinkProps,
-  INavHeaderNavigationProps,
-  INavHeaderRootProps,
+  INavHeaderProps,
   INavHeaderSelectProps,
 } from './NavHeader';
 export type {
@@ -100,11 +101,19 @@ export {
 export { ProductIcon, SystemIcon } from './Icon';
 export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
+export { KadenaLogo } from './Logo';
 export { MaskedValue } from './MaskedValue/MaskedValue';
 export { maskValue } from './MaskedValue/utils';
 export { Modal } from './Modal';
 export { NavFooter } from './NavFooter';
-export { NavHeader } from './NavHeader';
+export {
+  NavHeader,
+  NavHeaderButton,
+  NavHeaderButtonLink,
+  NavHeaderLink,
+  NavHeaderLinkList,
+  NavHeaderSelect,
+} from './NavHeader';
 export {
   Notification,
   NotificationButton,

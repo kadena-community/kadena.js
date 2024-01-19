@@ -1,20 +1,27 @@
 'use client';
-import classNames from 'classnames';
-import type { FC, HTMLAttributeAnchorTarget, ReactNode } from 'react';
-import React, { useContext, useEffect, useRef } from 'react';
-import { activeLinkClass, linkClass } from './NavHeader.css';
-import { NavHeaderNavigationContext } from './NavHeaderNavigation.context';
+import cn from 'classnames';
+import type {
+  ComponentPropsWithRef,
+  FC,
+  HTMLAttributeAnchorTarget,
+  ReactNode,
+} from 'react';
+import React, { useContext, useRef } from 'react';
+import { NavHeaderContext } from './NavHeader.context';
+import { linkClass } from './NavHeader.css';
 
-export interface INavHeaderLinkProps {
+export interface INavHeaderLinkProps extends ComponentPropsWithRef<'a'> {
   children: ReactNode;
-  href: string;
+  href?: string;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   target?: HTMLAttributeAnchorTarget;
   asChild?: boolean;
 }
 
-function hasPath(path: string, basePath: string): boolean {
-  return path.indexOf(basePath) === 0;
+function getDataState(path?: string, basePath?: string): 'active' | 'inactive' {
+  if (!path || !basePath) return 'inactive';
+
+  return path.indexOf(basePath) === 0 ? 'active' : 'inactive';
 }
 
 export const NavHeaderLink: FC<INavHeaderLinkProps> = ({
@@ -22,25 +29,13 @@ export const NavHeaderLink: FC<INavHeaderLinkProps> = ({
   onClick,
   asChild = false,
   href,
+  className,
   ...restProps
 }) => {
   const ref = useRef<HTMLAnchorElement>(null);
-  const { setGlowPosition, setActiveHref, activeHref } = useContext(
-    NavHeaderNavigationContext,
-  );
-
-  const className = classNames(linkClass, {
-    [activeLinkClass]: activeHref ? hasPath(activeHref, href) : false,
-  });
-
-  useEffect(() => {
-    if (activeHref && hasPath(activeHref, href) && ref.current) {
-      setGlowPosition(ref.current.getBoundingClientRect());
-    }
-  }, [activeHref, href, setGlowPosition]);
+  const { setActiveHref, activeHref } = useContext(NavHeaderContext);
 
   const _onClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
-    setGlowPosition(e.currentTarget.getBoundingClientRect());
     setActiveHref(href);
     if (onClick) onClick(e);
   };
@@ -51,9 +46,10 @@ export const NavHeaderLink: FC<INavHeaderLinkProps> = ({
       href,
       ...children.props,
       children: children.props.children,
-      className: className,
+      className: cn(linkClass, className, children.props.className),
       onClick: _onClick,
       ref,
+      'data-state': getDataState(activeHref, children.props.href || href),
     });
   }
 
@@ -61,9 +57,10 @@ export const NavHeaderLink: FC<INavHeaderLinkProps> = ({
     <li>
       <a
         ref={ref}
-        className={className}
+        className={cn(linkClass, className)}
         onClick={_onClick}
         href={href}
+        data-state={getDataState(activeHref, href)}
         {...restProps}
       >
         {children}
