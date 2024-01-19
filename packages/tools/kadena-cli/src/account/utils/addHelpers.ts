@@ -1,10 +1,15 @@
+import { select } from '@inquirer/prompts';
+import { createPrincipal } from '@kadena/client-utils/built-in';
+import { details } from '@kadena/client-utils/coin';
 import chalk from 'chalk';
 import yaml from 'js-yaml';
-import { select } from '@inquirer/prompts';
-import { details } from '@kadena/client-utils/coin';
-import { createPrincipal } from '@kadena/client-utils/built-in';
 
+import type { ChainId } from '@kadena/types';
 import { services } from '../../services/index.js';
+
+export const isEmpty = (value?: string): boolean => (
+  value === undefined || value === '' || value === null
+);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function writeAlias(config: any, filePath: string): Promise<void> {
@@ -12,123 +17,220 @@ export async function writeAlias(config: any, filePath: string): Promise<void> {
   await services.filesystem.writeFile(filePath, yaml.dump(config));
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getAccountDetails(config: any): Promise<void> {
+const validatePublicKeys = (
+  publicKeysConfig: string[],
+  keys: string[],
+): boolean => {
+  const publicKeys = publicKeysConfig.filter((key: string) => !!key);
+
+  const hasSamePublicKeysLength = publicKeys.length === keys.length;
+
+  return publicKeys.length === 0
+    ? true
+    : hasSamePublicKeysLength && keys.every((key) => publicKeys.includes(key));
+};
+
+interface IAccountDetailsResult {
+  publicKeys: string[];
+  predicate?: string;
+}
+
+export async function getAccountDetailsFromChain(
+  accountName: string,
+  networkId: string,
+  chainId: string,
+  networkHost: string,
+): Promise<IAccountDetailsResult> {
   try {
     const accountDetails = await details(
-      config.accountName,
-      config.networkConfig.networkId,
-      config.chainId,
-      config.networkConfig.networkHost,
+      accountName,
+      networkId,
+      chainId as ChainId,
+      networkHost,
     );
-    const {
-      guard: { keys = [], pred: storedPred } = {}
-    } = accountDetails as { guard: { keys: string[], pred: string } };
+    const { guard: { keys = [], pred } = {} } = accountDetails as {
+      guard: { keys: string[]; pred: string };
+    };
 
-    const publicKeys = config.publicKeysConfig.filter((key: string) => !!key);
-
-    const hasSamePublicKeysLength = publicKeys.length === keys.length;
-
-    const isSameKeys = publicKeys.length === 0
-      ? true
-      : hasSamePublicKeysLength && keys.every((key) => publicKeys.includes(key));
-
-    if (!isSameKeys || config.predicate !== storedPred) {
-      const updateOption = await select({
-        message: 'The account details do not match the account details on the chain. Do you want to continue?',
-        choices: [
-          { value: 'userInput', name: 'Add, anyway with user inputs' },
-          { value: 'chain', name: 'Add with values from the chain' },
-        ],
-      });
-
-      if (updateOption === 'userInput') {
-        return config;
-      } else {
-        Object.assign(config, {
-          publicKeys: keys,
-          predicate: storedPred,
-        });
-        return config;
-      }
-    } else {
-      return config;
-    }
+    return {
+      publicKeys: keys,
+      predicate: pred,
+    };
   } catch (e) {
-    if(e.message?.includes('row not found') === true) {
-      console.log(chalk.red(`The account is not on chain yet. To create it on-chain, transfer funds to it from ${config.network} and use "fund" command).`));
+    if (e.message?.includes('row not found') === true) {
+      console.log(
+        chalk.red(
+          `The account ${accountName} is not on chain yet. To create it on-chain, transfer funds to it from ${networkId} and use "fund" command).`,
+        ),
+      );
       process.exit(1);
     }
-    console.log(chalk.red('There was an error getting the account details. Please try again.'));
+    console.log(
+      chalk.red(
+        'There was an error getting the account details. Please try again.',
+      ),
+    );
     process.exit(1);
   }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getAccountName(config: any): Promise<string | undefined> {
+export async function compareAndUpdateConfig(
+  config: any,
+  accountDetails: any,
+): Promise<void> {
+  const { publicKeys, predicate } = accountDetails;
+  const isSameKeys = validatePublicKeys(config.publicKeysConfig, publicKeys);
+
+  if (!isSameKeys || config.predicate !== predicate) {
+    const updateOption = await select({
+      message:
+        'The account details do not match the account details on the chain. Do you want to continue?',
+      choices: [
+        { value: 'userInput', name: 'Add, anyway with user inputs' },
+        { value: 'chain', name: 'Add with values from the chain' },
+      ],
+    });
+
+    if (updateOption === 'userInput') {
+      return config;
+    } else {
+      Object.assign(config, {
+        publicKeys,
+        predicate,
+      });
+      return config;
+    }
+  } else {
+    return config;
+  }
+}
+
+export async function createAccountName(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config: any,
+): Promise<string | undefined> {
   const publicKeys = config.publicKeysConfig.filter((key: string) => !!key);
 
-  if(publicKeys.length === 0) {
-    console.log(chalk.red('No public keys provided. Please provide at least one public key.'));
+  if (publicKeys.length === 0) {
+    console.log(
+      chalk.red(
+        'No public keys provided. Please provide at least one public key.',
+      ),
+    );
     return;
   }
 
-  if(config.predicate === undefined || config.predicate === '' || config.predicate === null) {
-    console.log(chalk.red('No predicate provided. Please provide a predicate.'));
+  if (
+    config.predicate === undefined ||
+    config.predicate === '' ||
+    config.predicate === null
+  ) {
+    console.log(
+      chalk.red('No predicate provided. Please provide a predicate.'),
+    );
     return;
   }
 
-  const accountName = publicKeys.length === 1
-    ? `k:${publicKeys[0]}`
-    : await createPrincipal({
+  try {
+    const accountName = await createPrincipal(
+      {
         keyset: {
           pred: config.predicate,
           keys: publicKeys,
-        }
-      }, {
+        },
+      },
+      {
         host: config.networkConfig.networkHost,
         defaults: {
           networkId: config.networkConfig.networkId,
           meta: {
             chainId: config.chainId,
-          }
-        }
-      });
+          },
+        },
+      },
+    );
 
-  return accountName;
+    return accountName;
+  } catch (e) {
+    console.log(
+      chalk.red(
+        'There was an error creating the account. Please try again.',
+      ),
+    );
+    process.exit(1);
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getAccountDetails(config: any): Promise<void> {
+  const {
+    accountName,
+    chainId,
+    networkConfig: { networkHost, networkId }
+  } = config;
+
+  const { publicKeys, predicate } = await getAccountDetailsFromChain(
+    accountName,
+    networkId,
+    chainId,
+    networkHost,
+  );
+
+  return compareAndUpdateConfig(config, {
+    publicKeys,
+    predicate,
+  });
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createAccount(config: any): Promise<void> {
-  const accountName = await getAccountName(config);
-  if(accountName !== undefined && accountName !== '' && accountName !== null) {
-    Object.assign(config, { accountName });
-  } else {
-    console.log(chalk.red('There was an error creating the account. Please try again.'));
-    return;
+  const accountName = await createAccountName(config);
+  if (isEmpty(accountName)) {
+    console.log(
+      chalk.red('There was an error creating the account. Please try again.'),
+    );
+    process.exit(1);
   }
-  return checkAccountDetails(config);
+
+  Object.assign(config, { accountName });
+  return validateAccountDetails(config);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function checkAccountDetails(config: any): Promise<void> {
-  if(config.accountName !== undefined && config.accountName !== '' && config.accountName !== null) {
-    return getAccountDetails(config);
-  }
-  else {
-    return createAccount(config);
-  }
+export async function validateAccountDetails(config: any): Promise<void> {
+  const { accountName } = config;
+  return isEmpty(accountName)
+    ? createAccount(config)
+    : getAccountDetails(config);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function handleExistingAccount(filePath: string, config: any): Promise<void> {
+export async function validateConfigFileExistence(
+  filePath: string,
+): Promise<boolean> {
   if (await services.filesystem.fileExists(filePath)) {
+    console.log(
+      chalk.red(
+        `\nThe account configuration "${filePath}" already exists.\n`,
+      ),
+    );
+    return true;
+  }
+  return false;
+}
+
+export async function writeConfigInFile(
+  filePath: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config: any,
+): Promise<void> {
+  if (await validateConfigFileExistence(filePath)) {
     console.log(
       chalk.yellow(
         `\nThe existing account configuration "${config.accountAlias}" will not be updated.\n`,
       ),
     );
-    return;
+    process.exit(1);
   }
 
   await writeAlias(config, filePath);

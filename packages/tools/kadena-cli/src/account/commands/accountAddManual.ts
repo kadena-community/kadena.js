@@ -1,13 +1,19 @@
-import debug from 'debug';
 import type { Command } from 'commander';
+import debug from 'debug';
 import path from 'path';
-import { createCommand } from "../../utils/createCommand.js";
-import { globalOptions } from "../../utils/globalOptions.js";
 import { defaultAccountPath } from '../../constants/account.js';
+import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
-import { checkAccountDetails, handleExistingAccount } from '../utils/addHelpers.js';
+import {
+  writeConfigInFile,
+  validateAccountDetails,
+} from '../utils/addHelpers.js';
 
-export const addAccountManualCommand: (program: Command, version: string) => void = createCommand(
+export const addAccountManualCommand: (
+  program: Command,
+  version: string,
+) => void = createCommand(
   'add-manual',
   'Add an existing account to the CLI',
   [
@@ -26,8 +32,8 @@ export const addAccountManualCommand: (program: Command, version: string) => voi
     const sanitizedAlias = sanitizeFilename(config.accountAlias).toLowerCase();
     const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
 
-    const newConfig = await checkAccountDetails(config);
+    const newConfig = await validateAccountDetails(config);
 
-    await handleExistingAccount(filePath, newConfig);
-  }
+    await writeConfigInFile(filePath, newConfig);
+  },
 );

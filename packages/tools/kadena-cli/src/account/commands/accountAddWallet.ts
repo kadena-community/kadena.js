@@ -1,21 +1,27 @@
-import debug from 'debug';
-import type { Command } from 'commander';
-import path from 'path';
-import chalk from 'chalk';
-import yaml from 'js-yaml';
 import { checkbox } from '@inquirer/prompts';
+import chalk from 'chalk';
+import type { Command } from 'commander';
+import debug from 'debug';
+import yaml from 'js-yaml';
+import path from 'path';
 
-import { services } from '../../services/index.js';
-import { createCommand } from "../../utils/createCommand.js";
-import { globalOptions } from "../../utils/globalOptions.js";
-import { defaultAccountPath } from '../../constants/account.js';
-import { sanitizeFilename } from '../../utils/helpers.js';
-import { printWalletKeys } from '../../keys/utils/keysDisplay.js';
-import { WALLET_DIR } from '../../constants/config.js';
 import type { IKeyPair } from '@kadena/types';
-import { checkAccountDetails, handleExistingAccount } from '../utils/addHelpers.js';
+import { defaultAccountPath } from '../../constants/account.js';
+import { WALLET_DIR } from '../../constants/config.js';
+import { printWalletKeys } from '../../keys/utils/keysDisplay.js';
+import { services } from '../../services/index.js';
+import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
+import { sanitizeFilename } from '../../utils/helpers.js';
+import {
+  writeConfigInFile,
+  validateAccountDetails,
+} from '../utils/addHelpers.js';
 
-export const addAccountWalletCommand: (program: Command, version: string) => void = createCommand(
+export const addAccountWalletCommand: (
+  program: Command,
+  version: string,
+) => void = createCommand(
   'add-wallet',
   'Add an account from a wallet to the CLI',
   [
@@ -31,7 +37,7 @@ export const addAccountWalletCommand: (program: Command, version: string) => voi
     debug('account-add-manual:action')({ config });
     const { keyWalletConfig } = config;
     await printWalletKeys(keyWalletConfig);
-    if(!keyWalletConfig) {
+    if (!keyWalletConfig) {
       console.log(chalk.red(`Wallet ${config.keyWallet} does not exist.`));
       return;
     }
@@ -53,17 +59,14 @@ export const addAccountWalletCommand: (program: Command, version: string) => voi
       choices: publicKeysList.map((key) => ({ value: key })),
     });
 
-    console.log(selectPublicKeys);
-
     // eslint-disable-next-line require-atomic-updates
     config.publicKeysConfig = selectPublicKeys;
 
     const sanitizedAlias = sanitizeFilename(config.accountAlias).toLowerCase();
     const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
 
-    const newConfig = await checkAccountDetails(config);
+    const newConfig = await validateAccountDetails(config);
 
-    await handleExistingAccount(filePath, newConfig);
-
-  }
+    await writeConfigInFile(filePath, newConfig);
+  },
 );
