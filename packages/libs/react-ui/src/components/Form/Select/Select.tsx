@@ -8,6 +8,7 @@ import { useSelectState } from 'react-stately';
 import { ListBox } from '../../ListBox';
 import { Popover } from '../../Popover';
 
+import classNames from 'classnames';
 import { formField } from '../Form.css';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
@@ -16,6 +17,7 @@ import { SelectButton } from './SelectButton';
 
 export interface ISelectProps<T extends object = any>
   extends AriaSelectProps<T> {
+  className?: string;
   isPositive?: boolean;
   startIcon?: ReactNode;
   tag?: string;
@@ -55,7 +57,7 @@ function SelectBase<T extends object>(
       ? props.errorMessage(validation)
       : props.errorMessage ?? validation.validationErrors.join(' ');
   return (
-    <div className={formField}>
+    <div className={classNames(formField, props.className)}>
       {props.label && (
         <FormFieldHeader
           {...labelProps}

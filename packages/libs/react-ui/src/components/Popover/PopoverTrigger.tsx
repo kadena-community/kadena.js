@@ -6,8 +6,8 @@ import { useOverlayTriggerState } from 'react-stately';
 import { useObjectRef } from '@react-aria/utils';
 import type { ForwardedRef, ReactElement } from 'react';
 import React, { cloneElement, forwardRef } from 'react';
-import type { IButtonProps } from '../Button/NewButton';
-import { Button } from '../Button/NewButton';
+import type { IButtonProps } from '../Button';
+import { Button } from '../Button';
 import { Popover } from './Popover';
 
 type PopoverButtonProps = Pick<

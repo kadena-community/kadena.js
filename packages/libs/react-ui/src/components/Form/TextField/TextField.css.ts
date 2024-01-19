@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms, token } from '../../../styles';
+import { atoms, bodyBaseRegular, token } from '../../../styles';
 
 export const startAddon = style({
   position: 'absolute',
@@ -16,6 +16,7 @@ export const endAddon = style({
 });
 
 export const input = style([
+  bodyBaseRegular,
   atoms({
     borderRadius: 'sm',
     backgroundColor: 'layer-3.default',
@@ -37,6 +38,9 @@ export const input = style([
     boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
     outlineOffset: '2px',
     selectors: {
+      '&[data-outlined]': {
+        border: `2px solid ${token('color.border.base.default')}`,
+      },
       '&[data-has-end-addon]': {
         paddingInlineEnd: `calc(var(--end-addon-width) + ${token(
           'spacing.lg',

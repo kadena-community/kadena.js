@@ -38,6 +38,7 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
   onValueChange?: (value: string) => void;
   startAddon?: ReactNode;
   endAddon?: ReactNode;
+  isOutlined?: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, react/function-component-definition
@@ -124,6 +125,7 @@ export function TextFieldBase(
           data-positive={props.isPositive || undefined}
           data-has-start-addon={!!props.startAddon || undefined}
           data-has-end-addon={!!props.endAddon || undefined}
+          data-outlined={props.isOutlined || undefined}
         />
 
         {props.endAddon && (

@@ -1,8 +1,8 @@
 import type { ISelectProps } from '@kadena/react-ui';
-import { FormFieldWrapper, Select } from '@kadena/react-ui';
+import { Select, SelectItem } from '@kadena/react-ui';
 
-import type { FC, FormEventHandler } from 'react';
-import React, { useCallback } from 'react';
+import type { FC } from 'react';
+import { useCallback } from 'react';
 
 export type PredKey = 'keys-all' | 'keys-any' | 'keys-2';
 
@@ -11,22 +11,26 @@ export type OnPredSelectChange = (value: PredKey) => void;
 const ELEMENT_ID = 'select-pred';
 
 const predicates: Array<PredKey> = ['keys-all', 'keys-any', 'keys-2'];
+interface IPredKeysSelectProps
+  extends Omit<ISelectProps, 'onSelectionChange' | 'selectedKey' | 'children'> {
+  onSelectionChange?: OnPredSelectChange;
+  selectedKey?: PredKey;
+}
 
-const PredKeysSelect: FC<
-  Omit<ISelectProps, 'children' | 'value' | 'onChange' | 'icon' | 'id'> & {
-    value: PredKey;
-    onChange: OnPredSelectChange;
-  }
-> = ({ value, onChange, ...rest }) => {
-  const onSelectChange = useCallback<FormEventHandler<HTMLSelectElement>>(
-    (e) => {
+const PredKeysSelect: FC<IPredKeysSelectProps> = ({
+  selectedKey,
+  onSelectionChange,
+  ...rest
+}) => {
+  const onSelectChange = useCallback(
+    (key: string | number) => {
       const pred = predicates.find((pred) => {
-        return pred === e.currentTarget.value;
+        return pred === key;
       });
 
-      onChange(pred!);
+      onSelectionChange?.(pred!);
     },
-    [onChange],
+    [onSelectionChange],
   );
 
   const options = predicates.map((pred) => {
@@ -34,17 +38,18 @@ const PredKeysSelect: FC<
   });
 
   return (
-    <FormFieldWrapper label="Predicate" htmlFor={ELEMENT_ID}>
-      <Select
-        {...rest}
-        id={ELEMENT_ID}
-        onChange={onSelectChange}
-        value={value}
-        ariaLabel="Select Predicate"
-      >
-        {options}
-      </Select>
-    </FormFieldWrapper>
+    <Select
+      {...rest}
+      id={ELEMENT_ID}
+      label="Predicate"
+      onSelectionChange={onSelectChange}
+      selectedKey={selectedKey}
+      aria-label="Select Predicate"
+    >
+      {predicates.map((pred) => (
+        <SelectItem key={pred}>{pred}</SelectItem>
+      ))}
+    </Select>
   );
 };
 

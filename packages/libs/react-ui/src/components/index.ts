@@ -90,11 +90,13 @@ export {
 export { Divider } from './Divider/Divider';
 export {
   Combobox,
+  ComboboxItem,
   CopyButton,
   Form,
   FormFieldHeader,
   FormFieldHelper,
   Select,
+  SelectItem,
   TextField,
   TextareaField,
 } from './Form';
