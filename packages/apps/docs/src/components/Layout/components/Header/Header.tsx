@@ -1,7 +1,6 @@
 import { useMenu } from '@/hooks/useMenu/useMenu';
 import type { IMenuItem, LayoutType } from '@kadena/docs-tools';
 import {
-  Box,
   NavHeader,
   NavHeaderButtonLink,
   NavHeaderLink,
@@ -21,7 +20,6 @@ import { SearchButton } from './SearchButton';
 import { ThemeToggle } from './ThemeToggle';
 import {
   headerClass,
-  hideOnMobileClass,
   hideOnTabletClass,
   navLinkClass,
   skipNavClass,

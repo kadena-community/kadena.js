@@ -19,10 +19,8 @@ export interface IButtonProps
   extends PickedAriaButtonProps,
     ISharedButtonProps {}
 
-function BaseButton(
-  props: IButtonProps,
-  forwardedRef: ForwardedRef<HTMLButtonElement>,
-) {
+const BaseButton = (props: IButtonProps,
+  forwardedRef: ForwardedRef<HTMLButtonElement>) => {
   props = disableLoadingProps(props);
   const ref = useObjectRef(forwardedRef);
   const { buttonProps, isPressed } = useButton(props, ref);
