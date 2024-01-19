@@ -6,12 +6,14 @@ import {
   kadenaGetPublic,
   kadenaMnemonicToSeed,
   kadenaSignWithSeed,
+  randomBytes,
 } from '@kadena/hd-wallet';
 import {
   FC,
   PropsWithChildren,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 
@@ -19,8 +21,6 @@ import { useLocalStorage } from 'usehooks-ts';
 
 // we need to handle multiple wallets later; for now I just prefix the keys with "default_"
 // it can be profile id or something when we have multiple wallets or even using indexeddb
-const ENCRYPTED_MNEMONIC = 'default_kadena_encrypted_mnemonic';
-const KEYS = 'default_kadena_keys';
 
 interface KeyStore {
   derivationPathTemplate: string;
@@ -28,8 +28,12 @@ interface KeyStore {
 }
 
 const WalletContext = createContext<{
-  createWallet: (password: string, mnemonic: string) => Promise<void>;
-  unlockWallet: (password: string) => Promise<void>;
+  createWallet: (
+    profile: string,
+    password: string,
+    mnemonic: string,
+  ) => Promise<void>;
+  unlockWallet: (profile: string, password: string) => Promise<void>;
   createPublicKeys: (quantity?: number) => Promise<string[]>;
   sign: (TXs: IUnsignedCommand[]) => Promise<IUnsignedCommand[]>;
   keyStores: KeyStore[];
@@ -45,33 +49,37 @@ export const useWallet = () => {
   return context;
 };
 
-type WalletContextProviderProps = PropsWithChildren<{
-  derivationPathTemplate?: string;
-}>;
+const getMnemonicKey = (profile: string) => `p_${profile}_kadena_mnemonic`;
+const getKeysKey = (profile: string) => `p_${profile}_kadena_keys`;
 
-export const WalletContextProvider: FC<WalletContextProviderProps> = ({
-  children,
-}) => {
-  const [encryptionKey] = useState<ArrayBuffer>(() => {
-    const randomBytesBuffer = new Uint8Array(32);
-    crypto.getRandomValues(randomBytesBuffer);
-    return randomBytesBuffer.buffer;
-  });
+export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [activeProfile, setActiveProfile] = useState<string>('default');
+
+  const KEYS = getKeysKey(activeProfile);
+
+  const [encryptionKey] = useState<ArrayBuffer>(() => randomBytes(16));
 
   const [keyStores, setKeyStores] = useLocalStorage<KeyStore[]>(KEYS, []);
 
   const [encryptedSeed, setEncryptedSeed] = useState<ArrayBuffer>();
 
-  const createWallet = async (password: string, mnemonic: string) => {
+  const createWallet = async (
+    profile: string,
+    password: string,
+    mnemonic: string,
+  ) => {
+    const mnemonicKey = getMnemonicKey(profile);
     const encryptedMnemonic = await kadenaEncrypt(password, mnemonic);
-    localStorage.setItem(ENCRYPTED_MNEMONIC, encryptedMnemonic);
+    localStorage.setItem(mnemonicKey, encryptedMnemonic);
     const seed = await kadenaMnemonicToSeed(encryptionKey, mnemonic, 'buffer');
     setEncryptedSeed(seed);
+    setActiveProfile(profile);
   };
 
-  const unlockWallet = async (password: string) => {
+  const unlockWallet = async (profile: string, password: string) => {
+    const mnemonicKey = getMnemonicKey(profile);
     const encryptedMnemonic = localStorage.getItem(
-      ENCRYPTED_MNEMONIC,
+      mnemonicKey,
     ) as EncryptedString | null;
     if (!encryptedMnemonic) {
       throw new Error('No wallet found');
@@ -83,8 +91,7 @@ export const WalletContextProvider: FC<WalletContextProviderProps> = ({
     const mnemonic = new TextDecoder().decode(decryptedMnemonicBuffer);
     const seed = await kadenaMnemonicToSeed(encryptionKey, mnemonic, 'buffer');
     setEncryptedSeed(seed);
-    const keys = JSON.parse(localStorage.getItem(KEYS) || '[]') as KeyStore[];
-    setKeyStores(keys);
+    setActiveProfile(profile);
   };
 
   const createPublicKeys = async (
@@ -145,8 +152,9 @@ export const WalletContextProvider: FC<WalletContextProviderProps> = ({
   };
 
   const decryptMnemonic = async (password: string) => {
+    const mnemonicKey = getMnemonicKey(activeProfile);
     const encryptedMnemonic = localStorage.getItem(
-      ENCRYPTED_MNEMONIC,
+      mnemonicKey,
     ) as EncryptedString | null;
     if (!encryptedMnemonic) {
       throw new Error('No wallet found');

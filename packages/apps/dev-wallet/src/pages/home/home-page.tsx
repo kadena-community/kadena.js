@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 export function HomePage() {
   const wallet = useWallet();
   if (!wallet.isUnlocked) {
-    return <Navigate to="/unlock-wallet" replace />;
+    return <Navigate to="/select-profile" replace />;
   }
   return (
     <main>
