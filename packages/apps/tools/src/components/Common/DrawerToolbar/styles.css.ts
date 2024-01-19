@@ -79,6 +79,7 @@ export const expandedDrawerContentClass = style([
     flexDirection: 'column',
   }),
   {
+    zIndex: 99,
     overflowY: 'auto',
     height: `calc(100% - ${vars.sizes.$20})`,
   },
@@ -95,9 +96,9 @@ export const expandedDrawerContentStyle = style([
     backgroundColor: '$neutral1',
     width: '$12',
     fontSize: '$sm',
-    zIndex: 1,
   }),
   {
+    zIndex: 99,
     overflowY: 'auto',
   },
 ]);

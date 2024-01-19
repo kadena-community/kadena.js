@@ -1,5 +1,6 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
+  Accordion,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -27,10 +28,16 @@ import {
   buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
+  infoBoxStyle,
+  infoTitleStyle,
   inputContainerClass,
+  linkStyle,
+  linksBoxStyle,
   notificationContainerStyle,
 } from '../styles.css';
 
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
@@ -39,6 +46,7 @@ import { HoverTag } from '@/components/Global/HoverTag';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
 import { PublicKeyField } from '@/components/Global/PublicKeyField';
+import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
@@ -54,7 +62,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -94,6 +102,10 @@ const NewAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
   const [pubKeys, setPubKeys] = useState<string[]>([]);
+  const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const { data: accountName } = useQuery({
     queryKey: [
@@ -109,6 +121,54 @@ const NewAccountFaucetPage: FC = () => {
     placeholderData: '',
     keepPreviousData: true,
   });
+
+  const faqs: Array<{ title: string; body: React.ReactNode }> = [
+    {
+      title: t('What can I do with the Faucet?'),
+      body: (
+        <Trans
+          i18nKey="common:faucet-description"
+          components={[
+            <Link
+              className={linkStyle}
+              href="/faucet/existing"
+              key="faucet-existing-link"
+            />,
+            <Link
+              className={linkStyle}
+              href="/faucet/new"
+              key="faucet-new-link"
+            />,
+          ]}
+        />
+      ),
+    },
+    {
+      title: t('How do I generate a key pair?'),
+      body: (
+        <Trans
+          i18nKey="common:how-to-keypair"
+          components={[
+            <a
+              className={linkStyle}
+              href="https://transfer.chainweb.com/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweb-transfer-link"
+            />,
+            <strong key="generate-keypair" />,
+            <a
+              className={linkStyle}
+              href="https://chainweaver.kadena.network/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweaver-link"
+            />,
+          ]}
+        />
+      ),
+    },
+  ];
 
   useEffect(() => {
     setRequestStatus({ status: 'idle' });
@@ -165,6 +225,7 @@ const NewAccountFaucetPage: FC = () => {
           return;
         }
         setRequestStatus({ status: 'successful' });
+        setOpenItem(undefined);
       } catch (err) {
         let message;
         if (isCustomError(err)) {
@@ -209,6 +270,10 @@ const NewAccountFaucetPage: FC = () => {
     copyPubKeys.splice(index, 1);
 
     setPubKeys(copyPubKeys);
+  };
+
+  const handleOnClickLink = () => {
+    setOpenItem(undefined);
   };
 
   const renderPubKeys = () => (
@@ -274,7 +339,7 @@ const NewAccountFaucetPage: FC = () => {
               <a
                 className={notificationLinkStyle}
                 target={'_blank'}
-                href={'https://kadena.io/chainweaver-tos/'}
+                href={'https://chainweaver.kadena.network/'}
                 rel="noreferrer"
                 key="chainweaver-link"
               />,
@@ -388,6 +453,46 @@ const NewAccountFaucetPage: FC = () => {
           </div>
         </Stack>
       </form>
+      <DrawerToolbar
+        ref={drawerPanelRef}
+        initialOpenItem={openItem}
+        sections={[
+          {
+            icon: 'Information',
+            title: t('Frequently asked questions'),
+            children: (
+              <>
+                {faqs.map((faq) => (
+                  <div className={infoBoxStyle} key={faq.title}>
+                    <p className={infoTitleStyle}>{faq.title}</p>
+                    <p>{faq.body}</p>
+                  </div>
+                ))}
+              </>
+            ),
+          },
+          {
+            icon: 'Link',
+            title: t('Resources & Links'),
+            children: (
+              <div className={linksBoxStyle}>
+                <Accordion.Root>
+                  {sidebarLinks.map((item, index) => (
+                    <MenuLinkButton
+                      title={item.title}
+                      key={`menu-link-${index}`}
+                      href={item.href}
+                      active={item.href === router.pathname}
+                      target="_blank"
+                      onClick={handleOnClickLink}
+                    />
+                  ))}
+                </Accordion.Root>
+              </div>
+            ),
+          },
+        ]}
+      />
     </section>
   );
 };

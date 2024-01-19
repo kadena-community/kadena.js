@@ -69,7 +69,7 @@ const Home: FC = () => {
             <strong key="generate-keypair" />,
             <a
               className={linkStyle}
-              href="https://kadena.io/chainweaver-tos/"
+              href="https://chainweaver.kadena.network/"
               target="_blank"
               rel="noreferrer"
               key="chainweaver-link"

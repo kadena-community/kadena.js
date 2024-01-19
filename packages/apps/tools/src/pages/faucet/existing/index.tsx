@@ -11,6 +11,7 @@ import { fundExistingAccount } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
+  Accordion,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -27,17 +28,25 @@ import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
+import { sidebarLinks } from '@/constants/side-links';
 import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
+import Link from 'next/link';
 import {
   accountNameContainerClass,
   buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
+  infoBoxStyle,
+  infoTitleStyle,
   inputContainerClass,
+  linkStyle,
+  linksBoxStyle,
   notificationContainerStyle,
 } from '../styles.css';
 
@@ -72,6 +81,54 @@ const ExistingAccountFaucetPage: FC = () => {
   const router = useRouter();
   const { selectedNetwork, networksData } = useWalletConnectClient();
 
+  const faqs: Array<{ title: string; body: React.ReactNode }> = [
+    {
+      title: t('What can I do with the Faucet?'),
+      body: (
+        <Trans
+          i18nKey="common:faucet-description"
+          components={[
+            <Link
+              className={linkStyle}
+              href="/faucet/existing"
+              key="faucet-existing-link"
+            />,
+            <Link
+              className={linkStyle}
+              href="/faucet/new"
+              key="faucet-new-link"
+            />,
+          ]}
+        />
+      ),
+    },
+    {
+      title: t('How do I generate a key pair?'),
+      body: (
+        <Trans
+          i18nKey="common:how-to-keypair"
+          components={[
+            <Link
+              className={linkStyle}
+              href="https://transfer.chainweb.com/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweb-transfer-link"
+            />,
+            <strong key="generate-keypair" />,
+            <a
+              className={linkStyle}
+              href="https://chainweaver.kadena.network/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweaver-link"
+            />,
+          ]}
+        />
+      ),
+    },
+  ];
+
   const [chainID, onChainSelectChange] = usePersistentChainID();
 
   const [requestStatus, setRequestStatus] = useState<{
@@ -79,11 +136,17 @@ const ExistingAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
 
+  const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
+
   useToolbar(menuData, router.pathname);
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {
       setRequestStatus({ status: 'processing' });
+      setOpenItem(undefined);
 
       try {
         const result = (await fundExistingAccount(
@@ -131,6 +194,10 @@ const ExistingAccountFaucetPage: FC = () => {
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
   const disabledButton: boolean =
     requestStatus.status === 'processing' || mainnetSelected;
+
+  const handleOnClickLink = () => {
+    setOpenItem(undefined);
+  };
 
   const {
     register,
@@ -211,6 +278,47 @@ const ExistingAccountFaucetPage: FC = () => {
           </div>
         </Stack>
       </form>
+
+      <DrawerToolbar
+        ref={drawerPanelRef}
+        initialOpenItem={openItem}
+        sections={[
+          {
+            icon: 'Information',
+            title: t('Frequently asked questions'),
+            children: (
+              <>
+                {faqs.map((faq) => (
+                  <div className={infoBoxStyle} key={faq.title}>
+                    <p className={infoTitleStyle}>{faq.title}</p>
+                    <p>{faq.body}</p>
+                  </div>
+                ))}
+              </>
+            ),
+          },
+          {
+            icon: 'Link',
+            title: t('Resources & Links'),
+            children: (
+              <div className={linksBoxStyle}>
+                <Accordion.Root>
+                  {sidebarLinks.map((item, index) => (
+                    <MenuLinkButton
+                      title={item.title}
+                      key={`menu-link-${index}`}
+                      href={item.href}
+                      active={item.href === router.pathname}
+                      target="_blank"
+                      onClick={handleOnClickLink}
+                    />
+                  ))}
+                </Accordion.Root>
+              </div>
+            ),
+          },
+        ]}
+      />
     </section>
   );
 };
