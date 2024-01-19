@@ -56,7 +56,7 @@ export const changeWalletPassword = async (
     return { success: false, errors: [`Wallet: ${keyWallet} does not exist.`] };
   }
 
-  let encryptedNewSeed: EncryptedString | undefined;
+  let encryptedNewSeed: EncryptedString;
   if (wallet.legacy === true) {
     encryptedNewSeed = await kadenaChangePassword(
       walletContent as EncryptedString,
