@@ -8,6 +8,7 @@ import { PRISMA, builder } from '../builder';
 export default builder.prismaNode('Transfer', {
   description: 'A transfer of funds from a fungible between two accounts.',
   id: { field: 'blockHash_chainId_orderIndex_moduleHash_requestKey' },
+  select: {},
   fields: (t) => ({
     // database fields
     amount: t.expose('amount' as never, { type: 'Decimal' }),
@@ -32,6 +33,11 @@ export default builder.prismaNode('Transfer', {
       type: 'Transfer',
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 2, // In the worst case resolve scenario, it executes 2 queries.
+      select: {
+        amount: true,
+        blockHash: true,
+        requestKey: true,
+      },
       async resolve(__query, parent) {
         try {
           // Find all transactions that match either of the two conditions
@@ -92,6 +98,9 @@ export default builder.prismaNode('Transfer', {
     blocks: t.prismaField({
       type: ['Block'],
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      select: {
+        blockHash: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.block.findMany({
@@ -112,6 +121,10 @@ export default builder.prismaNode('Transfer', {
       nullable: true,
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      select: {
+        blockHash: true,
+        requestKey: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.transaction.findUnique({
