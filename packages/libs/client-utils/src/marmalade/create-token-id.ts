@@ -1,7 +1,7 @@
 import type { ChainId } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { dirtyReadClient } from '../core';
-import { IClientConfig } from '../core/utils/helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 
 interface ICreateTokenIdInput {
   uri: string;
