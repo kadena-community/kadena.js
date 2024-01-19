@@ -1,7 +1,7 @@
-import { Close, Information } from '@components/Icon/System/SystemIcon';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { Close, Information } from '../Icon/System/SystemIcon';
 import {
   closeButtonClass,
   contentClass,

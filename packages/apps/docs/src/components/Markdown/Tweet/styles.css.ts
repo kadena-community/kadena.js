@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([
@@ -8,6 +8,6 @@ export const wrapperClass = style([
     justifyContent: 'center',
   }),
   {
-    borderBottom: `1px solid ${tokens.kda.foundation.color.border.default}`,
+    borderBottom: `1px solid ${tokens.kda.foundation.color.border.base.default}`,
   },
 ]);

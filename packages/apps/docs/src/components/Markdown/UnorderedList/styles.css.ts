@@ -1,5 +1,5 @@
 import { getClassName } from '@/utils/getClassName';
-import { atoms, tokens } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
@@ -22,7 +22,7 @@ globalStyle(`article ul > li`, {
 globalStyle(
   `article ul +
   ${getClassName(paragraphWrapperClass)},
-  
+
   `,
   {
     marginBlockStart: tokens.kda.foundation.spacing.md,

@@ -1,6 +1,6 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/index';
 import { style } from '@vanilla-extract/css';
+import { atoms } from '../../../styles/atoms.css';
+import { tokens } from '../../../styles/index';
 
 export const gradientTextClass = style([
   atoms({

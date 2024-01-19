@@ -1,14 +1,12 @@
-import type {
-  IInputProps,
-  ISelectProps,
-  ITextareaProps,
-} from '@components/Form';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
 import type { vars } from 'src/styles';
 import type { FormFieldStatus } from '../Form.css';
+import type { ISelectProps } from '../Select';
 
-import { Stack } from '@components/Layout';
+import { Stack } from '../../Layout';
+import { IInputProps } from '../Input';
+import { ITextareaProps } from '../Textarea';
 import type { IFormFieldHeaderProps } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHeader } from './FormFieldHeader/FormFieldHeader';
 import { FormFieldHelper } from './FormFieldHelper/FormFieldHelper';

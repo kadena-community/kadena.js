@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const mainContentClass = style([

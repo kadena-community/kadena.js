@@ -1,8 +1,8 @@
-import type { ITextareaProps } from '@components/Form';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { ITextareaProps } from '../Textarea';
 
-import { onLayer2, withContentWidth } from '@storyDecorators';
+import { onLayer2, withContentWidth } from '../../../../storyDecorators';
 import { TextareaCopy } from './TextareaCopy';
 
 const meta: Meta<ITextareaProps> = {

@@ -1,7 +1,7 @@
-import type { IProfileSummaryRootProps } from '@components/ProfileSummary';
-import { ProfileSummary } from '@components/ProfileSummary';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { IProfileSummaryRootProps } from '../ProfileSummary';
+import { ProfileSummary } from '../ProfileSummary';
 
 type StoryComponentType = IProfileSummaryRootProps & {
   links: Record<string, string>;

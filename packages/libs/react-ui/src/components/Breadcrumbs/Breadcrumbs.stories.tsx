@@ -1,7 +1,7 @@
-import type { IBreadcrumbsProps } from '@components/Breadcrumbs';
-import { ProductIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { IBreadcrumbsProps } from '../Breadcrumbs';
+import { ProductIcon } from '../Icon';
 import { Breadcrumbs } from './Breadcrumbs';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 
