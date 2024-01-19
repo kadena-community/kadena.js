@@ -1,15 +1,17 @@
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Box, Button, Heading, Input, Text } from '@kadena/react-ui';
 import { useForm } from 'react-hook-form';
+import { redirect } from 'react-router-dom';
 import { useWallet } from '../../service/wallet.context';
 
 export function CreateWallet() {
   const { register, handleSubmit } = useForm<{ password: string }>();
   const wallet = useWallet();
 
-  function create({ password }: { password: string }) {
+  async function create({ password }: { password: string }) {
     const mnemonic = kadenaGenMnemonic();
-    wallet.createWallet(password, mnemonic);
+    await wallet.createWallet(password, mnemonic);
+    redirect('/backup-recovery-phrase');
   }
   return (
     <main>
