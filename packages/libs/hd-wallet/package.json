@@ -47,7 +47,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@scure/bip39": "^1.2.1",
     "debug": "~4.3.4",

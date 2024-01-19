@@ -1,6 +1,6 @@
 import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
-import type { EncryptedString } from '../utils/kadenaEncryption.js';
+import type { BinaryLike } from 'crypto';
 import { kadenaEncrypt } from '../utils/kadenaEncryption.js';
 /**
  * Generates a mnemonic phrase using the BIP39 protocol with a specified wordlist.
@@ -20,16 +20,19 @@ export function kadenaGenMnemonic(): string {
  * @throws {Error} Throws an error if the provided mnemonic is not valid.
  * @returns {Promise<{ seedBuffer: Uint8Array, seed: string }>} - Returns the seed buffer and processed seed.
  */
-export async function kadenaMnemonicToSeed(
-  password: string,
+export async function kadenaMnemonicToSeed<
+  TEncode extends 'base64' | 'buffer' = 'base64',
+>(
+  password: BinaryLike,
   mnemonic: string,
+  encode: TEncode = 'base64' as TEncode,
   // wordList: string[] = wordlist,
-): Promise<EncryptedString> {
+) {
   if (bip39.validateMnemonic(mnemonic, wordlist) === false) {
     throw Error('Invalid mnemonic.');
   }
 
   const seedBuffer = await bip39.mnemonicToSeed(mnemonic);
 
-  return kadenaEncrypt(password, seedBuffer);
+  return kadenaEncrypt(password, seedBuffer, encode);
 }

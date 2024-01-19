@@ -7,8 +7,6 @@ import {
   kadenaSignWithKeyPair,
 } from '../index.js';
 
-import type { IUnsignedCommand } from '@kadena/client';
-
 describe('kadenaSignWithKeyPair', async () => {
   const password = 'password';
   const mnemonic = kadenaGenMnemonic();
@@ -16,21 +14,12 @@ describe('kadenaSignWithKeyPair', async () => {
 
   const [publicKey, privateKey] = kadenaGenKeypairFromSeed(password, seed, 0);
 
-  const mockUnsignedCommand: IUnsignedCommand = {
-    cmd: '{"command":"value"}',
-    hash: 'kadena-hash',
-    sigs: [],
-  };
+  const txHash: string = 'tx-hash';
 
   it('should sign a transaction with a public and private key ans password', () => {
     const signer = kadenaSignWithKeyPair(password, publicKey, privateKey);
-
-    const signedTx = signer(mockUnsignedCommand);
-
-    expect(signedTx).toHaveProperty('sigs');
-    expect(signedTx.sigs).toBeInstanceOf(Array);
-    expect(signedTx.sigs.length).toBeGreaterThan(0);
-    expect(signedTx.sigs[0]).toHaveProperty('sig');
-    expect(signedTx.sigs[0].sig).toBeTruthy();
+    const signature = signer(txHash);
+    expect(signature).toBeTruthy();
+    expect(signature.sig.length > 0).toBeTruthy();
   });
 });

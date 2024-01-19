@@ -16,12 +16,7 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
 
   if (!account) return null;
 
-  return (
-    <section>
-      logged in
-      {children}
-    </section>
-  );
+  return <section>{children}</section>;
 };
 
 export default UserLayout;
