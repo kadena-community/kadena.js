@@ -71,7 +71,7 @@ pages:
             file: /build/election-app/add-vote-management.md
           gasstation:
             url: /gas-station
-            file: /build/election-app/add-gas-station.md
+            file: /build/election-app/add-a-gas-station.md
       faucet:
         url: /faucet
         file: /faucet-app.md
