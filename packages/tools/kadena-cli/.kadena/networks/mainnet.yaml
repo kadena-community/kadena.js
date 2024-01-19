@@ -1,4 +1,0 @@
-network: mainnet
-networkId: mainnet01
-networkHost: https://api.chainweb.com
-networkExplorerUrl: https://explorer.chainweb.com/mainnet/tx/

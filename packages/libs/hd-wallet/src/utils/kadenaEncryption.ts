@@ -1,6 +1,6 @@
 import type { BinaryLike } from 'crypto';
 import { randomBytes } from 'crypto';
-import { decrypt, encrypt } from './crypto';
+import { decrypt, encrypt } from './crypto.js';
 
 export type EncryptedString = string & { _brand: 'EncryptedString' };
 

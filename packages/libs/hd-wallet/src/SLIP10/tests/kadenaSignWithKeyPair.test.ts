@@ -5,7 +5,7 @@ import {
   kadenaGenMnemonic,
   kadenaMnemonicToSeed,
   kadenaSignWithKeyPair,
-} from '..';
+} from '../index.js';
 
 describe('kadenaSignWithKeyPair', async () => {
   const password = 'password';

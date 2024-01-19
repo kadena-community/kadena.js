@@ -4,9 +4,9 @@ import {
   kadenaGenKeypairFromSeed,
   kadenaGenMnemonic,
   kadenaMnemonicToSeed,
-} from '..';
+} from '../index.js';
 
-import { kadenaDecrypt } from '../../utils/kadenaEncryption';
+import { kadenaDecrypt } from '../../utils/kadenaEncryption.js';
 
 describe('kadenaGenKeypairFromSeed', () => {
   it('should generate an encrypted keypair from the seedBuffer when a password is provided', async () => {
