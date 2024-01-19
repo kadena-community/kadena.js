@@ -14,8 +14,8 @@ import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 import {
-  writeConfigInFile,
   validateAccountDetails,
+  writeConfigInFile,
 } from '../utils/addHelpers.js';
 
 export const addAccountWalletCommand: (

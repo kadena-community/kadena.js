@@ -6,13 +6,15 @@ import yaml from 'js-yaml';
 
 import type { ChainId } from '@kadena/types';
 import { services } from '../../services/index.js';
+import type { IAddAccountManualConfig } from '../types.js';
 
-export const isEmpty = (value?: string): boolean => (
-  value === undefined || value === '' || value === null
-);
+export const isEmpty = (value?: string): boolean =>
+  value === undefined || value === '' || value === null;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function writeAlias(config: any, filePath: string): Promise<void> {
+export async function writeAlias(
+  config: IAddAccountManualConfig,
+  filePath: string,
+): Promise<void> {
   await services.filesystem.ensureDirectoryExists(filePath);
   await services.filesystem.writeFile(filePath, yaml.dump(config));
 }
@@ -74,11 +76,10 @@ export async function getAccountDetailsFromChain(
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function compareAndUpdateConfig(
-  config: any,
-  accountDetails: any,
-): Promise<void> {
+  config: IAddAccountManualConfig,
+  accountDetails: IAccountDetailsResult,
+): Promise<IAddAccountManualConfig> {
   const { publicKeys, predicate } = accountDetails;
   const isSameKeys = validatePublicKeys(config.publicKeysConfig, publicKeys);
 
@@ -107,8 +108,7 @@ export async function compareAndUpdateConfig(
 }
 
 export async function createAccountName(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  config: any,
+  config: IAddAccountManualConfig,
 ): Promise<string | undefined> {
   const publicKeys = config.publicKeysConfig.filter((key: string) => !!key);
 
@@ -121,11 +121,7 @@ export async function createAccountName(
     return;
   }
 
-  if (
-    config.predicate === undefined ||
-    config.predicate === '' ||
-    config.predicate === null
-  ) {
+  if (config.predicate === undefined || config.predicate === null) {
     console.log(
       chalk.red('No predicate provided. Please provide a predicate.'),
     );
@@ -154,24 +150,23 @@ export async function createAccountName(
     return accountName;
   } catch (e) {
     console.log(
-      chalk.red(
-        'There was an error creating the account. Please try again.',
-      ),
+      chalk.red('There was an error creating the account. Please try again.'),
     );
     process.exit(1);
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getAccountDetails(config: any): Promise<void> {
+export async function getAccountDetails(
+  config: IAddAccountManualConfig,
+): Promise<IAddAccountManualConfig> {
   const {
     accountName,
     chainId,
-    networkConfig: { networkHost, networkId }
+    networkConfig: { networkHost, networkId },
   } = config;
 
   const { publicKeys, predicate } = await getAccountDetailsFromChain(
-    accountName,
+    accountName as string,
     networkId,
     chainId,
     networkHost,
@@ -183,8 +178,9 @@ export async function getAccountDetails(config: any): Promise<void> {
   });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function createAccount(config: any): Promise<void> {
+export async function createAccount(
+  config: IAddAccountManualConfig,
+): Promise<IAddAccountManualConfig> {
   const accountName = await createAccountName(config);
   if (isEmpty(accountName)) {
     console.log(
@@ -193,12 +189,13 @@ export async function createAccount(config: any): Promise<void> {
     process.exit(1);
   }
 
-  Object.assign(config, { accountName });
+  Object.assign(config, { accountName }) as IAddAccountManualConfig;
   return validateAccountDetails(config);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function validateAccountDetails(config: any): Promise<void> {
+export async function validateAccountDetails(
+  config: IAddAccountManualConfig,
+): Promise<IAddAccountManualConfig> {
   const { accountName } = config;
   return isEmpty(accountName)
     ? createAccount(config)
@@ -210,9 +207,7 @@ export async function validateConfigFileExistence(
 ): Promise<boolean> {
   if (await services.filesystem.fileExists(filePath)) {
     console.log(
-      chalk.red(
-        `\nThe account configuration "${filePath}" already exists.\n`,
-      ),
+      chalk.red(`\nThe account configuration "${filePath}" already exists.\n`),
     );
     return true;
   }
@@ -221,8 +216,7 @@ export async function validateConfigFileExistence(
 
 export async function writeConfigInFile(
   filePath: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  config: any,
+  config: IAddAccountManualConfig,
 ): Promise<void> {
   if (await validateConfigFileExistence(filePath)) {
     console.log(
