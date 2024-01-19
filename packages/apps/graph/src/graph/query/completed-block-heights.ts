@@ -24,7 +24,7 @@ builder.queryField('completedBlockHeights', (t) =>
         (args.heightCount as number) * // heightCount has a default value so cannot be null. Bug in pothos.
         4, // In the worst case resolve scenario, it executes 4 queries.
     }),
-    async resolve(__query, __parent, args) {
+    async resolve(query, __parent, args) {
       try {
         if (args.completedHeights) {
           const completedHeights = (await prismaClient.$queryRaw`
@@ -39,6 +39,7 @@ builder.queryField('completedBlockHeights', (t) =>
 
           if (completedHeights.length > 0) {
             return prismaClient.block.findMany({
+              ...query,
               where: {
                 AND: [
                   {
@@ -77,6 +78,7 @@ builder.queryField('completedBlockHeights', (t) =>
         `) as { height: number }[];
 
         return await prismaClient.block.findMany({
+          ...query,
           where: {
             AND: [
               {
