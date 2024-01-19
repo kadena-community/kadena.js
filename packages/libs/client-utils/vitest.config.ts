@@ -16,7 +16,7 @@ const localConfig = defineConfig({
         'src/interfaces/**/*',
         // its just type and I have a test for that
         'src/core/utils/types.ts',
-        // its a script the generated the asyncPipe type
+        // its a script that generates the asyncPipe type
         'src/scripts/**/*',
       ],
       provider: 'v8',
