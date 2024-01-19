@@ -24,28 +24,20 @@ export const REQUEST_KEY_VALIDATION = z
     },
   );
 
-interface IRequestKeyFieldProps extends Partial<ITextFieldProps> {
-  error?: FieldError;
-}
-
-const RequestKeyField: FC<IRequestKeyFieldProps> = forwardRef<
+const RequestKeyField: FC<ITextFieldProps> = forwardRef<
   HTMLInputElement,
-  IRequestKeyFieldProps
->(function RequestKeyField({ error, status, helperText, ...rest }, ref) {
+  ITextFieldProps
+>(function RequestKeyField(props, ref) {
   const { t } = useTranslation('common');
-
-  const helper = helperText || error?.message;
 
   return (
     <TextField
       ref={ref}
       label={t('Request Key')}
-      status={error ? 'negative' : status}
-      helperText={helper}
       id="request-key-input"
       placeholder={t('Enter Request Key')}
-      startIcon={<SystemIcon.KeyIconFilled />}
-      {...rest}
+      startAddon={<SystemIcon.KeyIconFilled />}
+      {...props}
     />
   );
 });

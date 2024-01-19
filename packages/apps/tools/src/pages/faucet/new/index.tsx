@@ -34,7 +34,7 @@ import {
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
-import AccountNameField from '@/components/Global/AccountNameField';
+import { AccountNameField } from '@/components/Global/AccountNameField';
 import { HoverTag } from '@/components/Global/HoverTag';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
@@ -299,13 +299,13 @@ const NewAccountFaucetPage: FC = () => {
             <div className={pubKeyInputWrapperStyle}>
               <div className={inputWrapperStyle}>
                 <PublicKeyField
-                  helperText={errors?.pubKey?.message}
                   {...register('pubKey', {
                     onChange: () => {
                       clearErrors('pubKey');
                     },
                   })}
-                  error={errors.pubKey}
+                  errorMessage={errors?.pubKey?.message}
+                  isInvalid={!!errors.pubKey}
                 />
               </div>
               <div className={iconButtonWrapper}>
@@ -336,9 +336,9 @@ const NewAccountFaucetPage: FC = () => {
 
             {pubKeys.length > 1 ? (
               <PredKeysSelect
-                onChange={onPredSelectChange}
-                value={pred}
-                ariaLabel="Select Predicate"
+                onSelectionChange={onPredSelectChange}
+                selectedKey={pred}
+                aria-label="Select Predicate"
               />
             ) : null}
           </Card>
@@ -348,17 +348,17 @@ const NewAccountFaucetPage: FC = () => {
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField
-                  inputProps={register('name')}
-                  error={errors.name}
+                  {...register('name')}
+                  isInvalid={!!errors.name}
                   label={t('The account name to fund coins to')}
-                  disabled
+                  isDisabled
                 />
               </div>
               <div className={chainSelectContainerClass}>
                 <ChainSelect
-                  onChange={onChainSelectChange}
-                  value={chainID}
-                  ariaLabel="Select Chain ID"
+                  onSelectionChange={onChainSelectChange}
+                  selectedKey={chainID}
+                  aria-label="Select Chain ID"
                 />
               </div>
             </div>

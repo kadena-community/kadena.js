@@ -2,6 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { atoms, bodyBaseRegular, ellipsis, token } from '../../../styles';
 
 export const selectButtonClass = style([
+  bodyBaseRegular,
   atoms({
     display: 'flex',
     alignItems: 'center',
@@ -11,9 +12,7 @@ export const selectButtonClass = style([
     color: 'text.base.default',
     outline: 'none',
     flex: 1,
-    fontSize: 'base',
     overflow: 'hidden',
-    lineHeight: 'lg',
   }),
   {
     paddingInlineStart: token('spacing.md'),
@@ -45,7 +44,6 @@ export const selectButtonClass = style([
 
 // applied on a span
 export const selectValueClass = style([
-  bodyBaseRegular,
   ellipsis,
   {
     flex: '1',

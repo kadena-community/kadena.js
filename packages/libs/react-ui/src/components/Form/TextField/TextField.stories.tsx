@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
 import React, { useState } from 'react';
 import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import { atoms } from '../../../styles';
 import { Button } from '../../Button';
 import { Plus } from '../../Icon/System/SystemIcon';
 import { Account } from '../../Icon/System/svgs/Account';

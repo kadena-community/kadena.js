@@ -1,8 +1,9 @@
 import { style } from '@vanilla-extract/css';
-import { atoms, token } from '../../../styles';
+import { atoms, bodyBaseRegular, token } from '../../../styles';
 import { buttonReset } from '../../Button/SharedButton.css';
 
 export const comboBoxControlClass = style([
+  bodyBaseRegular,
   atoms({
     display: 'flex',
     alignItems: 'center',
@@ -13,7 +14,6 @@ export const comboBoxControlClass = style([
     outline: 'none',
     flex: 1,
     overflow: 'hidden',
-    lineHeight: 'lg',
   }),
   {
     paddingInlineStart: token('spacing.md'),
