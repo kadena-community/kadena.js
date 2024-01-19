@@ -1,4 +1,4 @@
-import { useProfile } from '@/hooks/useProfile';
+import { useProfile } from '@/hooks/use-profile';
 import { Box, Heading, Text } from '@kadena/react-ui';
 import { Link } from 'react-router-dom';
 

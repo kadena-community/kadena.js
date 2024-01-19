@@ -1,4 +1,4 @@
-import { useProfile } from '@/hooks/useProfile';
+import { useProfile } from '@/hooks/use-profile';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Box, Button, Heading, Input, Text } from '@kadena/react-ui';
 import { useForm } from 'react-hook-form';

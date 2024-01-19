@@ -1,6 +1,6 @@
 import { Box, Button, Heading, Input, Text } from '@kadena/react-ui';
 import { useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../hooks/wallet.context';
 

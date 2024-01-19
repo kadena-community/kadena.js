@@ -13,14 +13,10 @@ import {
   PropsWithChildren,
   createContext,
   useContext,
-  useEffect,
   useState,
 } from 'react';
 
 import { useLocalStorage } from 'usehooks-ts';
-
-// we need to handle multiple wallets later; for now I just prefix the keys with "default_"
-// it can be profile id or something when we have multiple wallets or even using indexeddb
 
 interface KeyStore {
   derivationPathTemplate: string;
